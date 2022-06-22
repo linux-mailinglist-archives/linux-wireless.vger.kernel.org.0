@@ -2,171 +2,285 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA0E65549CE
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 14:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C279554A1A
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 14:36:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242073AbiFVMLa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Jun 2022 08:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
+        id S241794AbiFVMg2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jun 2022 08:36:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbiFVML3 (ORCPT
+        with ESMTP id S230476AbiFVMgY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jun 2022 08:11:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573563DA55
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 05:11:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0C752B81E35
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 12:11:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F506C3411B;
-        Wed, 22 Jun 2022 12:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655899885;
-        bh=ySEhGBP4dL5OJFL8JLdXSfxY0+baNjQznRJbeJ1nnXI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IJRCKpl7gh6jCLVilJGRem27SdxkwCYkXQcbDEM0WspKNf1cgWyUMgvsBsmvlEN0b
-         uitlF3vIwXyY+EyBtt2mxPWc+GL4lfeLjdjF2Vw92xSBDRD4tEhuKR+1B5/sSEMf9y
-         /+zoL2g5Sw9Z+j/FM97OrEnVxB9YiocTrduLa6epsAry0w1NSwONqSGRAGX3ZMIsvo
-         Qg3teKboW7nBk2vDA5CPWlVyIR96a8CLQwPh2emH8oKZax3Ft2mw671BG2VZVFP8xj
-         OKpYySak/OB7vtz2OcNcBlL0KC3BrTQZYVlQAaTDjUFBGHG1pfGwiPe09bhdO5Bb7e
-         95LnrriABOXWg==
-Date:   Wed, 22 Jun 2022 14:11:21 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, deren.wu@mediatek.com,
-        ryder.lee@mediatek.com
-Subject: Re: [PATCH 2/6] mt76: move mt7615_txp_ptr in mt76_connac module
-Message-ID: <YrMG6caJqbCx1b2+@localhost.localdomain>
-References: <cover.1655649421.git.lorenzo@kernel.org>
- <c5a0f03bc5ca1e994bb6010033058d07848bef0c.1655649422.git.lorenzo@kernel.org>
+        Wed, 22 Jun 2022 08:36:24 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A27A35AB7
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 05:36:20 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id o18so8230201plg.2
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 05:36:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=heSxLF11QgYHttTAqhG8oCmZoCO+1xR7GFLh1Q02oeg=;
+        b=aOGzgzJwrBs9kg4JpF/WMYNP+n8cXfTx9Nt9murYIA/jM4jaxYx5LGdT5TL4ewCROE
+         Y+l1tDaCkPPUjzxYiHwO8QERKqE/dRP2VcNO7fTpyC1l7SWmsxCZeH6DPo9P8wxH9EvS
+         OYFT2sGQL9Np4/j7bUrKLeZeRxOV/mrqywACc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=heSxLF11QgYHttTAqhG8oCmZoCO+1xR7GFLh1Q02oeg=;
+        b=OEKYL4bKg35WsuUmOt1HjKQOWgup5oNQXy1QHd8RnrJAUdc3acjHPeNYhGKXRMPj99
+         XgC2ej37FqKuwnXjGrxuuRMM5rHm64TWZPubIagSgrNmIhGxAk7SHnHCKaswmTqsjEmn
+         OHSAxtVa2gvxcm1WxUMmN5vJxb0ut446Xy20qZ5UCUza8rAm312G28TTGxWjK7TkLdey
+         a/SEkDvVU+A/Bg4i3to/6SmVQb1T5Y6Xo8RXnq77MSU+QuiBrxcdJ9zojpy43hpOJkz4
+         eIply3Od+GI16uBTgU5n5w90Ma8ogRcZJ3fy49IHLQDlk/Zc7dhqS/LyHdP/PNcFuobC
+         XM4w==
+X-Gm-Message-State: AJIora8Ja+LdIw/UIkiYzDMgZ5FT22QgwA7iB7K/wRXdqy67d19Bfhjz
+        jH4n5mt9EpymXCsWezrpMV6eNg==
+X-Google-Smtp-Source: AGRyM1sIdFL3XxPiErN6RQL0n38J5oT6ueziNC4s7mI7aweNvFACj2YqbCj9xhHJtvt24ctQaym0uw==
+X-Received: by 2002:a17:903:110d:b0:168:c610:9a80 with SMTP id n13-20020a170903110d00b00168c6109a80mr33854374plh.12.1655901380045;
+        Wed, 22 Jun 2022 05:36:20 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id z22-20020a637e16000000b0040cc830b0cfsm5491252pgc.39.2022.06.22.05.36.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jun 2022 05:36:18 -0700 (PDT)
+Message-ID: <f14afd46-0bad-9d7b-1361-203bcad92e06@broadcom.com>
+Date:   Wed, 22 Jun 2022 14:36:15 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Fw66DQZwoHHlAc0n"
-Content-Disposition: inline
-In-Reply-To: <c5a0f03bc5ca1e994bb6010033058d07848bef0c.1655649422.git.lorenzo@kernel.org>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3] brcmfmac: prevent double-free on hardware-reset.
+To:     Danny van Heumen <danny@dannyvanheumen.nl>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+References: <ThT2jwvySn9tFQm9FxrlPNMQkiGUnx_87cOhmmeexoVOFZqOkpjmAntCWG-kIBMj2830LHZaOULlJxQKiRXkVtGYrrT8rBaB7R65qjIinYo=@dannyvanheumen.nl>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <ThT2jwvySn9tFQm9FxrlPNMQkiGUnx_87cOhmmeexoVOFZqOkpjmAntCWG-kIBMj2830LHZaOULlJxQKiRXkVtGYrrT8rBaB7R65qjIinYo=@dannyvanheumen.nl>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000008ed4f005e20895e8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--0000000000008ed4f005e20895e8
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---Fw66DQZwoHHlAc0n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
++ Uffe
 
-[...]
+On 6/17/2022 4:24 PM, Danny van Heumen wrote:
+>  From f1fcceb65d4a44c078cd684ea25a2f2c7f53deb2 Mon Sep 17 00:00:00 2001
+> From: Danny van Heumen <danny@dannyvanheumen.nl>
+> Date: Tue, 24 May 2022 18:30:50 +0200
+> Subject: [PATCH v3] brcmfmac: prevent double-free on hardware-reset.
+> 
+> In case of buggy firmware, brcmfmac may perform a hardware reset. If during
+> reset and subsequent probing an early failure occurs, a memory region is
+> accidentally double-freed. With hardened memory allocation enabled, this error
+> will be detected.
+> 
+> - return early where appropriate to skip unnecessary clean-up.
+> - set '.freezer' pointer to NULL to prevent double-freeing under possible
+>    other circumstances and to re-align result under various different
+>    behaviors of memory allocation freeing.
+> 
+> Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
+> 'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitialize
+> the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
+> early, which includes calling 'brcmf_sdiod_remove'. In both cases
+> 'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
+> has not yet been re-allocated the second time.
 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/pci.c
-> index 624eb75c15cd..dde7709edc6c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> @@ -230,7 +230,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->  {
->  	static const struct mt76_driver_ops drv_ops =3D {
->  		/* txwi_size =3D txd size + txp size */
-> -		.txwi_size =3D MT_TXD_SIZE + sizeof(struct mt7921_txp_common),
-> +		.txwi_size =3D MT_TXD_SIZE + sizeof(struct mt76_connac_txp_common),
+For testing you can also trigger the brcmf_sdio_bus_reset() through debugfs:
 
-I spotted a minor issue in this patch, we should use mt76_connac_hw_txp her=
-e.
-@Felix: please drop this patch, I will post v2 soon.
+# cd /sys/kernel/debug/ieee80211/phyX
+# echo 1 > reset
+
+So I did that without your patch and observed following:
+
+[  531.481045] brcmfmac: brcmf_sdiod_probe: Failed to set F1 blocksize 
+
+[  531.487314] brcmfmac: brcmf_sdio_bus_reset: Failed to probe after 
+sdio device
+  reset: ret -123 
+
+[  531.495893] mmc0: card 0001 removed 
+
+[  531.550567] mmc0: new high speed SDIO card at address 0001 
+
+[  531.556561] brcmfmac: F1 signature read @0x18000000=0x16044330
+
+So I looked in brcmf_sdio_bus_reset() and noticed that this function 
+actually does a call to mmc_hw_reset() which is what I suggested 
+earlier. Looking at this log it seems the actual remove and subsequent 
+rescan is a deferred work and it will take care of probing the driver anew.
+
+So I changed debug message level for the sdio ops and then I see:
+
+[ 1327.686828] brcmfmac: brcmf_sdiod_probe: Failed to set F1 blocksize 
+
+[ 1327.693091] brcmfmac: brcmf_sdio_bus_reset: Failed to probe after 
+sdio device
+  reset: ret -123 
+
+[ 1327.701626] brcmfmac: brcmf_ops_sdio_remove Enter 
+
+[ 1327.706333] brcmfmac: brcmf_ops_sdio_remove Function: 1 
+
+[ 1327.711557] brcmfmac: brcmf_ops_sdio_remove Exit 
+
+[ 1327.716203] brcmfmac: brcmf_ops_sdio_remove Enter 
+
+[ 1327.720911] brcmfmac: brcmf_ops_sdio_remove Function: 2 
+
+[ 1327.726135] brcmfmac: brcmf_ops_sdio_remove Exit 
+
+[ 1327.730768] mmc0: card 0001 removed 
+
+[ 1327.785458] mmc0: new high speed SDIO card at address 0001 
+
+[ 1327.791068] brcmfmac: brcmf_ops_sdio_probe Enter 
+
+[ 1327.795687] brcmfmac: brcmf_ops_sdio_probe Function#: 1 
+
+[ 1327.800988] brcmfmac: brcmf_ops_sdio_probe Enter 
+
+[ 1327.805610] brcmfmac: brcmf_ops_sdio_probe Function#: 2 
+
+[ 1327.811317] brcmfmac: F1 signature read @0x18000000=0x16044330
+
+So to me it seems mmc_hw_reset() is doing everything we need and we can 
+make brcmf_sdio_bus_reset() a bit simpler. The only scary part here is 
+that brcmf_ops_sdio_remove() is called first for func1 and then for 
+func2. Upon rmmod this is different, ie. first func2 and then func1. 
+Looking at the implementation in brcmf_ops_sdio_remove() it means we run 
+into use-after-free upon mmc_hw_reset().
 
 Regards,
-Lorenzo
+Arend
 
->  		.drv_flags =3D MT_DRV_TXWI_NO_FREE | MT_DRV_HW_MGMT_TXQ,
->  		.survey_flags =3D SURVEY_INFO_TIME_TX |
->  				SURVEY_INFO_TIME_RX |
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/driver=
-s/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-> index 9608b5ae8820..8e051bdae673 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-> @@ -9,8 +9,8 @@ static void
->  mt7921_write_hw_txp(struct mt7921_dev *dev, struct mt76_tx_info *tx_info,
->  		    void *txp_ptr, u32 id)
->  {
-> -	struct mt7921_hw_txp *txp =3D txp_ptr;
-> -	struct mt7921_txp_ptr *ptr =3D &txp->ptr[0];
-> +	struct mt76_connac_hw_txp *txp =3D txp_ptr;
-> +	struct mt76_connac_txp_ptr *ptr =3D &txp->ptr[0];
->  	int i, nbuf =3D tx_info->nbuf - 1;
-> =20
->  	tx_info->buf[0].len =3D MT_TXD_SIZE + sizeof(*txp);
-> @@ -44,8 +44,8 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void =
-*txwi_ptr,
->  	struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, mt76);
->  	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(tx_info->skb);
->  	struct ieee80211_key_conf *key =3D info->control.hw_key;
-> +	struct mt76_connac_txp_common *txp;
->  	struct mt76_txwi_cache *t;
-> -	struct mt7921_txp_common *txp;
->  	int id, pid;
->  	u8 *txwi =3D (u8 *)txwi_ptr;
-> =20
-> @@ -75,8 +75,8 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void =
-*txwi_ptr,
->  	mt76_connac2_mac_write_txwi(mdev, txwi_ptr, tx_info->skb, wcid, key,
->  				    pid, 0);
-> =20
-> -	txp =3D (struct mt7921_txp_common *)(txwi + MT_TXD_SIZE);
-> -	memset(txp, 0, sizeof(struct mt7921_txp_common));
-> +	txp =3D (struct mt76_connac_txp_common *)(txwi + MT_TXD_SIZE);
-> +	memset(txp, 0, sizeof(struct mt76_connac_txp_common));
->  	mt7921_write_hw_txp(dev, tx_info, txp, id);
-> =20
->  	tx_info->skb =3D DMA_DUMMY_DATA;
-> @@ -87,13 +87,13 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, voi=
-d *txwi_ptr,
->  static void
->  mt7921_txp_skb_unmap(struct mt76_dev *dev, struct mt76_txwi_cache *t)
->  {
-> -	struct mt7921_txp_common *txp;
-> +	struct mt76_connac_txp_common *txp;
->  	int i;
-> =20
->  	txp =3D mt76_connac_txwi_to_txp(dev, t);
-> =20
->  	for (i =3D 0; i < ARRAY_SIZE(txp->hw.ptr); i++) {
-> -		struct mt7921_txp_ptr *ptr =3D &txp->hw.ptr[i];
-> +		struct mt76_connac_txp_ptr *ptr =3D &txp->hw.ptr[i];
->  		bool last;
->  		u16 len;
-> =20
-> @@ -271,8 +271,8 @@ void mt7921e_tx_complete_skb(struct mt76_dev *mdev, s=
-truct mt76_queue_entry *e)
-> =20
->  	/* error path */
->  	if (e->skb =3D=3D DMA_DUMMY_DATA) {
-> +		struct mt76_connac_txp_common *txp;
->  		struct mt76_txwi_cache *t;
-> -		struct mt7921_txp_common *txp;
->  		u16 token;
-> =20
->  		txp =3D mt76_connac_txwi_to_txp(mdev, e->txwi);
-> --=20
-> 2.36.1
->=20
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c 
+b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 212fbbe1cd7e..21e15f571eea 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -4158,24 +4158,15 @@ static int brcmf_sdio_bus_reset(struct device *dev)
 
---Fw66DQZwoHHlAc0n
-Content-Type: application/pgp-signature; name="signature.asc"
+  	brcmf_dbg(SDIO, "Enter\n");
 
------BEGIN PGP SIGNATURE-----
+-	/* start by unregistering irqs */
+  	brcmf_sdiod_intr_unregister(sdiodev);
+-
+  	brcmf_sdiod_remove(sdiodev);
++	brcmf_bus_change_state(sdiodev->bus_if, BRCMF_BUS_DOWN);
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYrMG5gAKCRA6cBh0uS2t
-rFt6AQCciFquvHEILXt+x2NOt/VrBbzrcKzyIjwmT3oZcV+uXgEAuHaUjrUr85cl
-FQq3u8b0fW6s6NWTSM/O0j/2c67qQA0=
-=Ylor
------END PGP SIGNATURE-----
+-	/* reset the adapter */
++	/* reset the card */
+  	sdio_claim_host(sdiodev->func1);
+  	mmc_hw_reset(sdiodev->func1->card);
+  	sdio_release_host(sdiodev->func1);
 
---Fw66DQZwoHHlAc0n--
+-	brcmf_bus_change_state(sdiodev->bus_if, BRCMF_BUS_DOWN);
+-
+-	ret = brcmf_sdiod_probe(sdiodev);
+-	if (ret) {
+-		brcmf_err("Failed to probe after sdio device reset: ret %d\n",
+-			  ret);
+-	}
+-
+  	return ret;
+  }
+
+--0000000000008ed4f005e20895e8
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA2Dzx8Y+e4/fBDGpZR
+nkRiSzOw0r/ImkhCFGf1GNHUATAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjA2MjIxMjM2MjBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAicbFtyD5wlOBeNHvT7wfNPJrW+szmvDN3Z8K
+UwjJ9IZN2rBXPXB2itcaOoGj8XVTu4JPabHRz3v4RP1fuUyUXCMikVTulCigvW063IR62iY91+rF
+vIw8OiuVhSTEoG6+ZQX6HTHB7wWioM/LoQoJImMzcwSbReREkUajxhlqSE851WC++sdE+iW784n6
+HoIZeMDGI9MPl4fy6R7qmUBe+QmFMtv/uTA7R70mxwRhxP2xIJkYadbnsZYB96yht2CbUh5ntmoT
+ZTdVuyBSEaYuHmzYauGAFBlWJnP06+IuQU0roZAe2MuNLmeoAx4gNTkYjJje/MhF4OVC+Z+RydLE
+RQ==
+--0000000000008ed4f005e20895e8--
