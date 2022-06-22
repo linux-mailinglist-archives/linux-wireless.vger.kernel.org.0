@@ -2,130 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DFE75547DD
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 14:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C68A554696
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 14:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232105AbiFVJr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Jun 2022 05:47:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42642 "EHLO
+        id S1357476AbiFVLeH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jun 2022 07:34:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347200AbiFVJrY (ORCPT
+        with ESMTP id S233017AbiFVLeG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jun 2022 05:47:24 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 104B33A1BB
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 02:47:21 -0700 (PDT)
-X-UUID: a2d8e2180a8649f0b8cfa243daa68730-20220622
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:eefcebbe-8d76-4a5f-94bc-c87817a75ce7,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,AC
-        TION:release,TS:105
-X-CID-INFO: VERSION:1.1.6,REQID:eefcebbe-8d76-4a5f-94bc-c87817a75ce7,OB:0,LOB:
-        0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,AC
-        TION:quarantine,TS:105
-X-CID-META: VersionHash:b14ad71,CLOUDID:e1e3be2d-1756-4fa3-be7f-474a6e4be921,C
-        OID:05257f553409,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: a2d8e2180a8649f0b8cfa243daa68730-20220622
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 248377425; Wed, 22 Jun 2022 17:47:17 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Wed, 22 Jun 2022 17:47:17 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 22 Jun 2022 17:47:17 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>
-Subject: [PATCH] mt76: mt7915: update the maximum size of beacon offload
-Date:   Wed, 22 Jun 2022 17:46:55 +0800
-Message-ID: <20220622094655.26594-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 22 Jun 2022 07:34:06 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C823B3F9;
+        Wed, 22 Jun 2022 04:34:05 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id x6-20020a1c7c06000000b003972dfca96cso8771890wmc.4;
+        Wed, 22 Jun 2022 04:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=haqf5GAD+rBGZmKx8o4rvCABso31NnBIfgcGxz1iBNs=;
+        b=AWN4YMhKAoutEapQGnWeMke/rKPJlCaCezrIfmxIpkWd396JJxnKIZkHh2B59yrVvq
+         utQsmdA1jRNOYDi5Lk/ktS/lUlMWhOg0XaBtqbYbdDQoqxC6GBqxJ6ULmY9NDeEOaMzw
+         Yrcy//rngcpVE9SrSd5e/WCHXkAn7U9ywLMemDtgQr6rBh54xiidrf50UPiOWRuotUY1
+         Vin4oFYDUDvduOFGjmxgDKhUjs/1hRU+VkbRnxY4W7d0kTFq1q3NSPhW2tPKp+6NhPT7
+         Sj5oabOuY+/MKWJiA4DlXgd9MmSG/45VMAC+pEOiUPJVdUIbd1pZ1PNQviBFqj9EeEkz
+         CBKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=haqf5GAD+rBGZmKx8o4rvCABso31NnBIfgcGxz1iBNs=;
+        b=H6Xp/PHe6SYta0Pa36fFREnkoIr1HGeRoggAqdn0cuYJMYX+7BDeCNwAf4GT1wUpBw
+         OrgiBnbs8CNDSZ6nyiHp1I7AG8Z/FaoKDKKaVkVHG/0kqjP+XWMfniGFL1lBU0Wq79yO
+         w7K7zKdOn649rEV2Xc+UMZ/5b6LQ1aEz095NbZcaqKT9zANjKLkowq7S/h1wKzlNb6/b
+         PKBu+TVGuJ+/PIDtHob79wm+hDNvTU/ftFq4HvOySAtkgU6dVpaQ3qvnEZ7iIUo5N6P3
+         OWjUv6J38BrB9dnGsc/urTE3gdzj72vEQXc5bi0aJsfbSlcdrxbUwpceXeqtJTeKgTHt
+         yNcw==
+X-Gm-Message-State: AOAM5327vSKnKaCbo3wLmtz8IIIuGcvS6s1biUmghAn8io9oTjXS9jMB
+        jiXFJ6dvsIpfCIutoJ7zPDs=
+X-Google-Smtp-Source: ABdhPJwi79hEQgvXjW2FpgFPTTrDBh6WNF6EFxEzmfTuRlQu3v4bPDHcV5K4z9/nw5GoUjrI8CY/Rg==
+X-Received: by 2002:a1c:5444:0:b0:39c:3761:ac37 with SMTP id p4-20020a1c5444000000b0039c3761ac37mr47051687wmi.144.1655897644234;
+        Wed, 22 Jun 2022 04:34:04 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id l12-20020a056000022c00b0021a3daef45esm20279297wrz.63.2022.06.22.04.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jun 2022 04:34:03 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: mac80211: remove redundant pointer bss
+Date:   Wed, 22 Jun 2022 12:34:02 +0100
+Message-Id: <20220622113402.16969-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since an in-band discovery frame is offloaded by MCU,
-here we enlarge the command size to accommodate the additional content.
+The pointer bss is being assigned a value that is never read, the
+pointer is redundant and can be removed.
 
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Money Wang <Money.Wang@mediatek.com>
-Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+Cleans up clang scan-build warning:
+drivers/net/wireless/rsi/rsi_91x_hal.c:362:2: warning: Value stored
+to 'bss' is never read [deadcode.DeadStores]
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 9 +++++++--
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.h | 6 ++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/wireless/rsi/rsi_91x_hal.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 3a7051858892..417f6402aff4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1980,6 +1980,12 @@ mt7915_mcu_beacon_inband_discov(struct mt7915_dev *dev, struct ieee80211_vif *vi
- 	len = sizeof(*discov) + MT_TXD_SIZE + skb->len;
- 	len = (len & 0x3) ? ((len | 0x3) + 1) : len;
- 
-+	if (len > (MAX_BSS_OFFLOAD_SIZE - rskb->len)) {
-+		dev_err(dev->mt76.dev, "inband discovery size limit exceed\n");
-+		dev_kfree_skb(skb);
-+		return;
-+	}
-+
- 	tlv = mt7915_mcu_add_nested_subtlv(rskb, BSS_INFO_BCN_DISCOV,
- 					   len, &bcn->sub_ntlv, &bcn->len);
- 	discov = (struct bss_info_inband_discovery *)tlv;
-@@ -2002,7 +2008,6 @@ mt7915_mcu_beacon_inband_discov(struct mt7915_dev *dev, struct ieee80211_vif *vi
- int mt7915_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  int en, u32 changed)
+diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
+index 40f9a31f9ca7..c61f83a7333b 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_hal.c
++++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
+@@ -334,7 +334,6 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
+ 		      struct sk_buff *skb)
  {
--#define MAX_BEACON_SIZE 512
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
-@@ -2011,7 +2016,7 @@ int mt7915_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct sk_buff *skb, *rskb;
- 	struct tlv *tlv;
- 	struct bss_info_bcn *bcn;
--	int len = MT7915_BEACON_UPDATE_SIZE + MAX_BEACON_SIZE;
-+	int len = MAX_BSS_OFFLOAD_SIZE;
- 	bool ext_phy = phy != &dev->phy;
+ 	struct rsi_hw *adapter = common->priv;
+-	struct ieee80211_bss_conf *bss;
+ 	struct ieee80211_hdr *wh;
+ 	struct ieee80211_tx_info *info;
+ 	struct skb_info *tx_params;
+@@ -359,7 +358,6 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
+ 		return status;
+ 	}
  
- 	if (vif->bss_conf.nontransmitted)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 5abde482a97f..f73259d376b0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -489,6 +489,12 @@ enum {
- 	SER_RECOVER
- };
- 
-+#define MAX_BEACON_SIZE		512
-+#define MAX_INBND_FRME_SIZE	256
-+#define MAX_BSS_OFFLOAD_SIZE	(MAX_BEACON_SIZE +	  \
-+				 MAX_INBND_FRME_SIZE +	  \
-+				 MT7915_BEACON_UPDATE_SIZE)
-+
- #define MT7915_BSS_UPDATE_MAX_SIZE	(sizeof(struct sta_req_hdr) +	\
- 					 sizeof(struct bss_info_omac) +	\
- 					 sizeof(struct bss_info_basic) +\
+-	bss = &info->control.vif->bss_conf;
+ 	wh = (struct ieee80211_hdr *)&skb->data[header_size];
+ 	mgmt_desc = (struct rsi_mgmt_desc *)skb->data;
+ 	xtend_desc = (struct rsi_xtended_desc *)&skb->data[FRAME_DESC_SZ];
 -- 
-2.18.0
+2.35.3
 
