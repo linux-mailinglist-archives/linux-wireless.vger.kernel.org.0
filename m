@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DEBF5571F5
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jun 2022 06:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8725B55724E
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jun 2022 06:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbiFWEqV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jun 2022 00:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
+        id S232556AbiFWEpl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jun 2022 00:45:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243098AbiFWDri (ORCPT
+        with ESMTP id S243111AbiFWDrj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jun 2022 23:47:38 -0400
+        Wed, 22 Jun 2022 23:47:39 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF4C38D89
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 20:47:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD71038D90
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 20:47:37 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25N3lUt85019184, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25N3lUt85019184
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25N3lWRp9019195, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25N3lWRp9019195
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 23 Jun 2022 11:47:30 +0800
+        Thu, 23 Jun 2022 11:47:32 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 23 Jun 2022 11:47:30 +0800
+ 15.1.2375.7; Thu, 23 Jun 2022 11:47:31 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Thu, 23 Jun
- 2022 11:47:29 +0800
+ 2022 11:47:31 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 08/13] rtw89: concentrate chandef setting to stack callback
-Date:   Thu, 23 Jun 2022 11:46:30 +0800
-Message-ID: <20220623034635.20964-9-pkshih@realtek.com>
+Subject: [PATCH v2 09/13] rtw89: initialize entity and configure default chandef
+Date:   Thu, 23 Jun 2022 11:46:31 +0800
+Message-ID: <20220623034635.20964-10-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220623034635.20964-1-pkshih@realtek.com>
 References: <20220623034635.20964-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvMjMgpFekyCAxMjo1MTowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -70,175 +70,122 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Originally, we didn't support mac80211 chanctx, so it's expected that
-ieee80211_hw::conf::chandef would be filled by mac80211. And then, we
-could just query it whenever we need the current chandef.
+While idle, we need a default chandef to set channel for things,
+such as scan. Before support of mac80211 chanctx, mac80211 would
+configure a default one on ieee80211_hw::conf::chandef. And we
+just queried it whenever we did set channel. However, after support
+of mac80211 chanctx, the flow won't work like before.
 
-However, we are planing to support mac80211 chanctx. After that, the
-above assumption would be broken. So, we adjust a bit ahead to reduce
-future works about mac80211 chanctx.
+Besides, we don't now query chandef from ieee80211_hw::conf::chandef
+either. So, similar to mac80211 without using chanctx, we configure
+the default chandef with ieee80211_channel of index 0 in 2GHz.
 
-After this, we don't query ieee80211_hw::conf::chandef directly, and
-we add a map, entity_map, to HAL to indicate which chandef came from
-stack. And it will later be used to recalcate entity mode.
+Although we have not added the support of mac80211 chanctx here,
+this configuration should be compatible before that. So, we commit
+this ahead.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c     | 20 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/chan.h     |  3 +++
- drivers/net/wireless/realtek/rtw89/core.c     | 14 +++++++------
- drivers/net/wireless/realtek/rtw89/core.h     | 12 +++++++++++
- drivers/net/wireless/realtek/rtw89/mac80211.c |  6 +++++-
- 5 files changed, 48 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/chan.c | 16 ++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/chan.h |  1 +
+ drivers/net/wireless/realtek/rtw89/core.c |  7 +++++++
+ drivers/net/wireless/realtek/rtw89/core.h |  1 +
+ drivers/net/wireless/realtek/rtw89/ser.c  |  2 ++
+ 5 files changed, 27 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index 0bf27a344d2b4..a9f0133f8089d 100644
+index a9f0133f8089d..e0f1c89bbfa6b 100644
 --- a/drivers/net/wireless/realtek/rtw89/chan.c
 +++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -118,3 +118,23 @@ bool rtw89_assign_entity_chan(struct rtw89_dev *rtwdev,
- 	*chan = *new;
- 	return band_changed;
+@@ -138,3 +138,19 @@ void rtw89_config_entity_chandef(struct rtw89_dev *rtwdev,
+ {
+ 	__rtw89_config_entity_chandef(rtwdev, idx, chandef, true);
  }
 +
-+static void __rtw89_config_entity_chandef(struct rtw89_dev *rtwdev,
-+					  enum rtw89_sub_entity_idx idx,
-+					  const struct cfg80211_chan_def *chandef,
-+					  bool from_stack)
++static void rtw89_config_default_chandef(struct rtw89_dev *rtwdev)
++{
++	struct cfg80211_chan_def chandef = {0};
++
++	rtw89_get_default_chandef(&chandef);
++	__rtw89_config_entity_chandef(rtwdev, RTW89_SUB_ENTITY_0, &chandef, false);
++}
++
++void rtw89_entity_init(struct rtw89_dev *rtwdev)
 +{
 +	struct rtw89_hal *hal = &rtwdev->hal;
 +
-+	hal->chandef[idx] = *chandef;
-+
-+	if (from_stack)
-+		set_bit(idx, hal->entity_map);
-+}
-+
-+void rtw89_config_entity_chandef(struct rtw89_dev *rtwdev,
-+				 enum rtw89_sub_entity_idx idx,
-+				 const struct cfg80211_chan_def *chandef)
-+{
-+	__rtw89_config_entity_chandef(rtwdev, idx, chandef, true);
++	bitmap_zero(hal->entity_map, NUM_OF_RTW89_SUB_ENTITY);
++	rtw89_config_default_chandef(rtwdev);
 +}
 diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
-index d39311a3d5baf..b2022bb0afc6a 100644
+index b2022bb0afc6a..9c714f00c3c13 100644
 --- a/drivers/net/wireless/realtek/rtw89/chan.h
 +++ b/drivers/net/wireless/realtek/rtw89/chan.h
-@@ -26,5 +26,8 @@ void rtw89_chan_create(struct rtw89_chan *chan, u8 center_chan, u8 primary_chan,
- bool rtw89_assign_entity_chan(struct rtw89_dev *rtwdev,
- 			      enum rtw89_sub_entity_idx idx,
- 			      const struct rtw89_chan *new);
-+void rtw89_config_entity_chandef(struct rtw89_dev *rtwdev,
-+				 enum rtw89_sub_entity_idx idx,
-+				 const struct cfg80211_chan_def *chandef);
+@@ -29,5 +29,6 @@ bool rtw89_assign_entity_chan(struct rtw89_dev *rtwdev,
+ void rtw89_config_entity_chandef(struct rtw89_dev *rtwdev,
+ 				 enum rtw89_sub_entity_idx idx,
+ 				 const struct cfg80211_chan_def *chandef);
++void rtw89_entity_init(struct rtw89_dev *rtwdev);
  
  #endif
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index fb3943c6ee9e2..4c25fef476e01 100644
+index 4c25fef476e01..04ba705a14a7b 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -225,7 +225,7 @@ static void rtw89_traffic_stats_accu(struct rtw89_dev *rtwdev,
+@@ -225,6 +225,12 @@ static void rtw89_traffic_stats_accu(struct rtw89_dev *rtwdev,
  	}
  }
  
--static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
-+static void rtw89_get_channel_params(const struct cfg80211_chan_def *chandef,
- 				     struct rtw89_chan *chan)
- {
- 	struct ieee80211_channel *channel = chandef->chan;
-@@ -302,7 +302,8 @@ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
- 
- void rtw89_set_channel(struct rtw89_dev *rtwdev)
- {
--	struct ieee80211_hw *hw = rtwdev->hw;
-+	const struct cfg80211_chan_def *chandef =
-+		rtw89_chandef_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct rtw89_chan chan;
- 	struct rtw89_channel_help_params bak;
-@@ -311,7 +312,7 @@ void rtw89_set_channel(struct rtw89_dev *rtwdev)
- 
- 	entity_active = rtw89_get_entity_state(rtwdev);
- 
--	rtw89_get_channel_params(&hw->conf.chandef, &chan);
-+	rtw89_get_channel_params(chandef, &chan);
- 	if (WARN(chan.channel == 0, "Invalid channel\n"))
- 		return;
- 
-@@ -1607,14 +1608,15 @@ static void rtw89_core_update_rx_status(struct rtw89_dev *rtwdev,
- 					struct rtw89_rx_desc_info *desc_info,
- 					struct ieee80211_rx_status *rx_status)
- {
--	struct ieee80211_hw *hw = rtwdev->hw;
-+	const struct cfg80211_chan_def *chandef =
-+		rtw89_chandef_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	const struct rtw89_chan *cur = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	u16 data_rate;
- 	u8 data_rate_mode;
- 
- 	/* currently using single PHY */
--	rx_status->freq = hw->conf.chandef.chan->center_freq;
--	rx_status->band = hw->conf.chandef.chan->band;
-+	rx_status->freq = chandef->chan->center_freq;
-+	rx_status->band = chandef->chan->band;
- 
- 	if (rtwdev->scanning &&
- 	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 7de9e228c6187..f8027b9a36a0c 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2634,6 +2634,9 @@ struct rtw89_hal {
- 	bool support_cckpd;
- 	bool support_igi;
- 
-+	DECLARE_BITMAP(entity_map, NUM_OF_RTW89_SUB_ENTITY);
-+	struct cfg80211_chan_def chandef[NUM_OF_RTW89_SUB_ENTITY];
-+
- 	bool entity_active;
- 
- 	struct rtw89_chan chan[NUM_OF_RTW89_SUB_ENTITY];
-@@ -3629,6 +3632,15 @@ void rtw89_chip_set_channel_done(struct rtw89_dev *rtwdev,
- 					    mac_idx, phy_idx);
- }
- 
-+static inline
-+const struct cfg80211_chan_def *rtw89_chandef_get(struct rtw89_dev *rtwdev,
-+						  enum rtw89_sub_entity_idx idx)
++void rtw89_get_default_chandef(struct cfg80211_chan_def *chandef)
 +{
-+	struct rtw89_hal *hal = &rtwdev->hal;
-+
-+	return &hal->chandef[idx];
++	cfg80211_chandef_create(chandef, &rtw89_channels_2ghz[0],
++				NL80211_CHAN_NO_HT);
 +}
 +
- static inline
- const struct rtw89_chan *rtw89_chan_get(struct rtw89_dev *rtwdev,
- 					enum rtw89_sub_entity_idx idx)
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 95ff4bafe5424..2bfd570d7bd2e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -3,6 +3,7 @@
-  */
+ static void rtw89_get_channel_params(const struct cfg80211_chan_def *chandef,
+ 				     struct rtw89_chan *chan)
+ {
+@@ -2935,6 +2941,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 		return ret;
+ 	}
+ 	rtw89_ser_init(rtwdev);
++	rtw89_entity_init(rtwdev);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index f8027b9a36a0c..3b6660d76f797 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3955,6 +3955,7 @@ void rtw89_core_deinit(struct rtw89_dev *rtwdev);
+ int rtw89_core_register(struct rtw89_dev *rtwdev);
+ void rtw89_core_unregister(struct rtw89_dev *rtwdev);
+ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev);
++void rtw89_get_default_chandef(struct cfg80211_chan_def *chandef);
+ void rtw89_set_channel(struct rtw89_dev *rtwdev);
+ u8 rtw89_core_acquire_bit_map(unsigned long *addr, unsigned long size);
+ void rtw89_core_release_bit_map(unsigned long *addr, u8 bit);
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 726223f25dc69..74af916ac7423 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -5,6 +5,7 @@
+ #include <linux/devcoredump.h>
  
  #include "cam.h"
 +#include "chan.h"
- #include "coex.h"
  #include "debug.h"
  #include "fw.h"
-@@ -85,8 +86,11 @@ static int rtw89_ops_config(struct ieee80211_hw *hw, u32 changed)
- 		}
- 	}
+ #include "mac.h"
+@@ -601,6 +602,7 @@ static void ser_l2_reset_st_pre_hdl(struct rtw89_ser *ser)
  
--	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
-+	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
-+		rtw89_config_entity_chandef(rtwdev, RTW89_SUB_ENTITY_0,
-+					    &hw->conf.chandef);
- 		rtw89_set_channel(rtwdev);
-+	}
+ 	ser_reset_mac_binding(rtwdev);
+ 	rtw89_core_stop(rtwdev);
++	rtw89_entity_init(rtwdev);
+ 	INIT_LIST_HEAD(&rtwdev->rtwvifs_list);
+ }
  
- 	if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
- 	    (hw->conf.flags & IEEE80211_CONF_IDLE))
 -- 
 2.25.1
 
