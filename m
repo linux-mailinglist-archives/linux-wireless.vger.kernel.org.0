@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B7D557217
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jun 2022 06:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 665385571FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jun 2022 06:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232710AbiFWEqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jun 2022 00:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45168 "EHLO
+        id S232287AbiFWEqT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jun 2022 00:46:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243105AbiFWDri (ORCPT
+        with ESMTP id S243094AbiFWDrg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jun 2022 23:47:38 -0400
+        Wed, 22 Jun 2022 23:47:36 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C6438D8A
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 20:47:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8FF38D90
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 20:47:33 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25N3lOreD019081, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25N3lOreD019081
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25N3lQCD1019107, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25N3lQCD1019107
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 23 Jun 2022 11:47:24 +0800
+        Thu, 23 Jun 2022 11:47:26 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 23 Jun 2022 11:47:24 +0800
+ 15.1.2375.28; Thu, 23 Jun 2022 11:47:26 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Thu, 23 Jun
- 2022 11:47:23 +0800
+ 2022 11:47:25 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 04/13] rtw89: create rtw89_chan centrally to avoid breakage
-Date:   Thu, 23 Jun 2022 11:46:26 +0800
-Message-ID: <20220623034635.20964-5-pkshih@realtek.com>
+Subject: [PATCH v2 05/13] rtw89: txpwr: concentrate channel related control to top
+Date:   Thu, 23 Jun 2022 11:46:27 +0800
+Message-ID: <20220623034635.20964-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220623034635.20964-1-pkshih@realtek.com>
 References: <20220623034635.20964-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvMjMgpFekyCAxMjo1MTowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -70,327 +70,860 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Sometimes we need to write current rtw89_chan outside set_channel(),
-e.g. during HW scan, we adjust it to align FW process through C2H.
-However, we don't have full parameters to fill entire rtw89_chan.
-And it will breakage if we update only part of current rtw89_chan.
-That is what we don't want to see because most flows throughout
-driver treat rtw89_chan as a whole.
+For future support on multiple channels, it would be disturbing if we
+still allow scattered leaf functions of TX power to query and manage
+channel related control by themselves.
 
-So, we divide struct rtw89_chan to basic part and derived part. The
-basic part contains the parameters which we are always able to know.
-And the derived part will be calculated by the basic part. Then, a
-central function, rtw89_chan_create(), is added to deal with this.
+So, query rtw89_chan only on top functions. Then, pass it via functions
+to make sure that the values coming from the same struct rtw89_chan.
+
+Besides, fix rtw8852a_set_txpwr_offset() from rtw8852a_set_txpwr_ctrl()
+to rtw8852a_set_txpwr(). TX power offset should consider current band,
+so move it to chip_ops::set_txpwr() which will be called every time that
+channel is set.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 98 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/chan.h |  2 +
- drivers/net/wireless/realtek/rtw89/core.c | 70 +---------------
- drivers/net/wireless/realtek/rtw89/core.h |  6 +-
- drivers/net/wireless/realtek/rtw89/fw.c   |  7 +-
- drivers/net/wireless/realtek/rtw89/mac.c  |  7 +-
- 6 files changed, 109 insertions(+), 81 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     |   4 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |   9 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 235 +++++++++++-------
+ drivers/net/wireless/realtek/rtw89/phy.h      |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  35 +--
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |   9 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  39 +--
+ 7 files changed, 206 insertions(+), 131 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index a5d1bf573ea62..0bf27a344d2b4 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -4,6 +4,104 @@
- 
- #include "chan.h"
- 
-+static enum rtw89_subband rtw89_get_subband_type(enum rtw89_band band,
-+						 u8 center_chan)
-+{
-+	switch (band) {
-+	default:
-+	case RTW89_BAND_2G:
-+		switch (center_chan) {
-+		default:
-+		case 1 ... 14:
-+			return RTW89_CH_2G;
-+		}
-+	case RTW89_BAND_5G:
-+		switch (center_chan) {
-+		default:
-+		case 36 ... 64:
-+			return RTW89_CH_5G_BAND_1;
-+		case 100 ... 144:
-+			return RTW89_CH_5G_BAND_3;
-+		case 149 ... 177:
-+			return RTW89_CH_5G_BAND_4;
-+		}
-+	case RTW89_BAND_6G:
-+		switch (center_chan) {
-+		default:
-+		case 1 ... 29:
-+			return RTW89_CH_6G_BAND_IDX0;
-+		case 33 ... 61:
-+			return RTW89_CH_6G_BAND_IDX1;
-+		case 65 ... 93:
-+			return RTW89_CH_6G_BAND_IDX2;
-+		case 97 ... 125:
-+			return RTW89_CH_6G_BAND_IDX3;
-+		case 129 ... 157:
-+			return RTW89_CH_6G_BAND_IDX4;
-+		case 161 ... 189:
-+			return RTW89_CH_6G_BAND_IDX5;
-+		case 193 ... 221:
-+			return RTW89_CH_6G_BAND_IDX6;
-+		case 225 ... 253:
-+			return RTW89_CH_6G_BAND_IDX7;
-+		}
-+	}
-+}
-+
-+static enum rtw89_sc_offset rtw89_get_primary_chan_idx(enum rtw89_bandwidth bw,
-+						       u32 center_freq,
-+						       u32 primary_freq)
-+{
-+	u8 primary_chan_idx;
-+	u32 offset;
-+
-+	switch (bw) {
-+	default:
-+	case RTW89_CHANNEL_WIDTH_20:
-+		primary_chan_idx = RTW89_SC_DONT_CARE;
-+		break;
-+	case RTW89_CHANNEL_WIDTH_40:
-+		if (primary_freq > center_freq)
-+			primary_chan_idx = RTW89_SC_20_UPPER;
-+		else
-+			primary_chan_idx = RTW89_SC_20_LOWER;
-+		break;
-+	case RTW89_CHANNEL_WIDTH_80:
-+	case RTW89_CHANNEL_WIDTH_160:
-+		if (primary_freq > center_freq) {
-+			offset = (primary_freq - center_freq - 10) / 20;
-+			primary_chan_idx = RTW89_SC_20_UPPER + offset * 2;
-+		} else {
-+			offset = (center_freq - primary_freq - 10) / 20;
-+			primary_chan_idx = RTW89_SC_20_LOWER + offset * 2;
-+		}
-+		break;
-+	}
-+
-+	return primary_chan_idx;
-+}
-+
-+void rtw89_chan_create(struct rtw89_chan *chan, u8 center_chan, u8 primary_chan,
-+		       enum rtw89_band band, enum rtw89_bandwidth bandwidth)
-+{
-+	enum nl80211_band nl_band = rtw89_hw_to_nl80211_band(band);
-+	u32 center_freq, primary_freq;
-+
-+	memset(chan, 0, sizeof(*chan));
-+	chan->channel = center_chan;
-+	chan->primary_channel = primary_chan;
-+	chan->band_type = band;
-+	chan->band_width = bandwidth;
-+
-+	center_freq = ieee80211_channel_to_frequency(center_chan, nl_band);
-+	primary_freq = ieee80211_channel_to_frequency(primary_chan, nl_band);
-+
-+	chan->freq = center_freq;
-+	chan->subband_type = rtw89_get_subband_type(band, center_chan);
-+	chan->pri_ch_idx = rtw89_get_primary_chan_idx(bandwidth, center_freq,
-+						      primary_freq);
-+}
-+
- bool rtw89_assign_entity_chan(struct rtw89_dev *rtwdev,
- 			      enum rtw89_sub_entity_idx idx,
- 			      const struct rtw89_chan *new)
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
-index ac5cc356b8182..d39311a3d5baf 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.h
-+++ b/drivers/net/wireless/realtek/rtw89/chan.h
-@@ -21,6 +21,8 @@ static inline void rtw89_set_entity_state(struct rtw89_dev *rtwdev, bool active)
- 	WRITE_ONCE(hal->entity_active, active);
- }
- 
-+void rtw89_chan_create(struct rtw89_chan *chan, u8 center_chan, u8 primary_chan,
-+		       enum rtw89_band band, enum rtw89_bandwidth bandwidth);
- bool rtw89_assign_entity_chan(struct rtw89_dev *rtwdev,
- 			      enum rtw89_sub_entity_idx idx,
- 			      const struct rtw89_chan *new);
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 78d9e6a7a0981..6ffad5da9161e 100644
+index 6ffad5da9161e..ebe1980b0aa08 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -233,10 +233,8 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
- 	u32 primary_freq, center_freq;
- 	u8 center_chan;
- 	u8 bandwidth = RTW89_CHANNEL_WIDTH_20;
--	u8 primary_chan_idx = 0;
- 	u32 offset;
- 	u8 band;
--	u8 subband;
+@@ -288,14 +288,16 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
+ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
++	const struct rtw89_chan *chan;
+ 	bool entity_active;
  
- 	center_chan = channel->hw_value;
- 	primary_freq = channel->center_freq;
-@@ -246,15 +244,12 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
- 	case NL80211_CHAN_WIDTH_20_NOHT:
- 	case NL80211_CHAN_WIDTH_20:
- 		bandwidth = RTW89_CHANNEL_WIDTH_20;
--		primary_chan_idx = RTW89_SC_DONT_CARE;
- 		break;
- 	case NL80211_CHAN_WIDTH_40:
- 		bandwidth = RTW89_CHANNEL_WIDTH_40;
- 		if (primary_freq > center_freq) {
--			primary_chan_idx = RTW89_SC_20_UPPER;
- 			center_chan -= 2;
- 		} else {
--			primary_chan_idx = RTW89_SC_20_LOWER;
- 			center_chan += 2;
- 		}
- 		break;
-@@ -263,11 +258,9 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
- 		bandwidth = nl_to_rtw89_bandwidth(width);
- 		if (primary_freq > center_freq) {
- 			offset = (primary_freq - center_freq - 10) / 20;
--			primary_chan_idx = RTW89_SC_20_UPPER + offset * 2;
- 			center_chan -= 2 + offset * 4;
- 		} else {
- 			offset = (center_freq - primary_freq - 10) / 20;
--			primary_chan_idx = RTW89_SC_20_LOWER + offset * 2;
- 			center_chan += 2 + offset * 4;
- 		}
- 		break;
-@@ -289,68 +282,7 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
- 		break;
- 	}
+ 	entity_active = rtw89_get_entity_state(rtwdev);
+ 	if (!entity_active)
+ 		return;
  
--	switch (band) {
--	default:
--	case RTW89_BAND_2G:
--		switch (center_chan) {
--		default:
--		case 1 ... 14:
--			subband = RTW89_CH_2G;
--			break;
--		}
--		break;
--	case RTW89_BAND_5G:
--		switch (center_chan) {
--		default:
--		case 36 ... 64:
--			subband = RTW89_CH_5G_BAND_1;
--			break;
--		case 100 ... 144:
--			subband = RTW89_CH_5G_BAND_3;
--			break;
--		case 149 ... 177:
--			subband = RTW89_CH_5G_BAND_4;
--			break;
--		}
--		break;
--	case RTW89_BAND_6G:
--		switch (center_chan) {
--		default:
--		case 1 ... 29:
--			subband = RTW89_CH_6G_BAND_IDX0;
--			break;
--		case 33 ... 61:
--			subband = RTW89_CH_6G_BAND_IDX1;
--			break;
--		case 65 ... 93:
--			subband = RTW89_CH_6G_BAND_IDX2;
--			break;
--		case 97 ... 125:
--			subband = RTW89_CH_6G_BAND_IDX3;
--			break;
--		case 129 ... 157:
--			subband = RTW89_CH_6G_BAND_IDX4;
--			break;
--		case 161 ... 189:
--			subband = RTW89_CH_6G_BAND_IDX5;
--			break;
--		case 193 ... 221:
--			subband = RTW89_CH_6G_BAND_IDX6;
--			break;
--		case 225 ... 253:
--			subband = RTW89_CH_6G_BAND_IDX7;
--			break;
--		}
--		break;
--	}
--
--	chan->channel = center_chan;
--	chan->freq = center_freq;
--	chan->primary_channel = channel->hw_value;
--	chan->band_type = band;
--	chan->band_width = bandwidth;
--	chan->subband_type = subband;
--	chan->pri_ch_idx = primary_chan_idx;
-+	rtw89_chan_create(chan, center_chan, channel->hw_value, band, bandwidth);
++	chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	if (chip->ops->set_txpwr)
+-		chip->ops->set_txpwr(rtwdev);
++		chip->ops->set_txpwr(rtwdev, chan, RTW89_PHY_0);
  }
  
- void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
+ void rtw89_set_channel(struct rtw89_dev *rtwdev)
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 86e7341198c6f..cc61043fb5da6 100644
+index cc61043fb5da6..526a595882168 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -632,10 +632,14 @@ enum rtw89_sc_offset {
+@@ -2127,8 +2127,11 @@ struct rtw89_chip_ops {
+ 	void (*rfk_scan)(struct rtw89_dev *rtwdev, bool start);
+ 	void (*rfk_track)(struct rtw89_dev *rtwdev);
+ 	void (*power_trim)(struct rtw89_dev *rtwdev);
+-	void (*set_txpwr)(struct rtw89_dev *rtwdev);
+-	void (*set_txpwr_ctrl)(struct rtw89_dev *rtwdev);
++	void (*set_txpwr)(struct rtw89_dev *rtwdev,
++			  const struct rtw89_chan *chan,
++			  enum rtw89_phy_idx phy_idx);
++	void (*set_txpwr_ctrl)(struct rtw89_dev *rtwdev,
++			       enum rtw89_phy_idx phy_idx);
+ 	int (*init_txpwr_unit)(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx);
+ 	u8 (*get_thermal)(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path);
+ 	void (*ctrl_btg)(struct rtw89_dev *rtwdev, bool btg);
+@@ -3691,7 +3694,7 @@ static inline void rtw89_chip_set_txpwr_ctrl(struct rtw89_dev *rtwdev)
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
  
- struct rtw89_chan {
- 	u8 channel;
--	u32 freq;
- 	u8 primary_channel;
- 	enum rtw89_band band_type;
- 	enum rtw89_bandwidth band_width;
-+
-+	/* The follow-up are derived from the above. We must ensure that it
-+	 * is assigned correctly in rtw89_chan_create() if new one is added.
-+	 */
-+	u32 freq;
- 	enum rtw89_subband subband_type;
- 	enum rtw89_sc_offset pri_ch_idx;
- };
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 8dcd02d90f457..cee9815b6df6f 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2388,11 +2388,8 @@ void rtw89_store_op_chan(struct rtw89_dev *rtwdev, bool backup)
- 		scan_info->op_bw = cur->band_width;
- 		scan_info->op_band = cur->band_type;
- 	} else {
--		new = *cur;
--		new.primary_channel = scan_info->op_pri_ch;
--		new.channel = scan_info->op_chan;
--		new.band_width = scan_info->op_bw;
--		new.band_type = scan_info->op_band;
-+		rtw89_chan_create(&new, scan_info->op_chan, scan_info->op_pri_ch,
-+				  scan_info->op_band, scan_info->op_bw);
- 		rtw89_assign_entity_chan(rtwdev, RTW89_SUB_ENTITY_0, &new);
+ 	if (chip->ops->set_txpwr_ctrl)
+-		chip->ops->set_txpwr_ctrl(rtwdev);
++		chip->ops->set_txpwr_ctrl(rtwdev,  RTW89_PHY_0);
+ }
+ 
+ static inline void rtw89_chip_power_trim(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index dce3ff0cde3ed..a4dfd2ec8fdf6 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1470,11 +1470,9 @@ EXPORT_SYMBOL(rtw89_phy_load_txpwr_byrate);
+ 	(txpwr_rf) >> (__c->txpwr_factor_rf - __c->txpwr_factor_mac);	\
+ })
+ 
+-s8 rtw89_phy_read_txpwr_byrate(struct rtw89_dev *rtwdev,
++s8 rtw89_phy_read_txpwr_byrate(struct rtw89_dev *rtwdev, u8 band,
+ 			       const struct rtw89_rate_desc *rate_desc)
+ {
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+-	enum rtw89_band band = chan->band_type;
+ 	s8 *byr;
+ 	u8 idx;
+ 
+@@ -1541,12 +1539,10 @@ static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 band, u8 channel)
  	}
  }
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index b9fb983b6ce24..b90ab56b1c771 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3655,7 +3655,6 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
- 			   u32 len)
+ 
+-s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
++s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
+ 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch)
  {
- 	struct ieee80211_vif *vif = rtwdev->scan_info.scanning_vif;
--	const struct rtw89_chan *cur = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	struct rtw89_chan new;
- 	u8 reason, status, tx_fail, band;
- 	u16 chan;
-@@ -3682,11 +3681,7 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
- 		rtw89_hw_scan_complete(rtwdev, vif, false);
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+-	u8 band = chan->band_type;
+ 	u8 ch_idx = rtw89_channel_to_idx(rtwdev, band, ch);
+ 	u8 regd = rtw89_regd_get(rtwdev, band);
+ 	s8 lmt = 0, sar;
+@@ -1582,11 +1578,12 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
+ }
+ EXPORT_SYMBOL(rtw89_phy_read_txpwr_limit);
+ 
+-#define __fill_txpwr_limit_nonbf_bf(ptr, bw, ntx, rs, ch)		\
++#define __fill_txpwr_limit_nonbf_bf(ptr, band, bw, ntx, rs, ch)		\
+ 	do {								\
+ 		u8 __i;							\
+ 		for (__i = 0; __i < RTW89_BF_NUM; __i++)		\
+ 			ptr[__i] = rtw89_phy_read_txpwr_limit(rtwdev,	\
++							      band,	\
+ 							      bw, ntx,	\
+ 							      rs, __i,	\
+ 							      (ch));	\
+@@ -1594,64 +1591,75 @@ EXPORT_SYMBOL(rtw89_phy_read_txpwr_limit);
+ 
+ static void rtw89_phy_fill_txpwr_limit_20m(struct rtw89_dev *rtwdev,
+ 					   struct rtw89_txpwr_limit *lmt,
+-					   u8 ntx, u8 ch)
++					   u8 band, u8 ntx, u8 ch)
+ {
+-	__fill_txpwr_limit_nonbf_bf(lmt->cck_20m, RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->cck_20m, band, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_CCK, ch);
+-	__fill_txpwr_limit_nonbf_bf(lmt->cck_40m, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->cck_40m, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_CCK, ch);
+-	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, band, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_OFDM, ch);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch);
+ }
+ 
+ static void rtw89_phy_fill_txpwr_limit_40m(struct rtw89_dev *rtwdev,
+ 					   struct rtw89_txpwr_limit *lmt,
+-					   u8 ntx, u8 ch, u8 pri_ch)
++					   u8 band, u8 ntx, u8 ch, u8 pri_ch)
+ {
+-	__fill_txpwr_limit_nonbf_bf(lmt->cck_20m, RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->cck_20m, band, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_CCK, ch - 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->cck_40m, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->cck_40m, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_CCK, ch);
+-	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, band, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_OFDM, pri_ch);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch);
+ }
+ 
+ static void rtw89_phy_fill_txpwr_limit_80m(struct rtw89_dev *rtwdev,
+ 					   struct rtw89_txpwr_limit *lmt,
+-					   u8 ntx, u8 ch, u8 pri_ch)
++					   u8 band, u8 ntx, u8 ch, u8 pri_ch)
+ {
+ 	s8 val_0p5_n[RTW89_BF_NUM];
+ 	s8 val_0p5_p[RTW89_BF_NUM];
+ 	u8 i;
+ 
+-	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, band, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_OFDM, pri_ch);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 6);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[2], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[2], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[3], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[3], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 6);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch - 4);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[1], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[1], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch + 4);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[0], RTW89_CHANNEL_WIDTH_80,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[0], band,
++				    RTW89_CHANNEL_WIDTH_80,
+ 				    ntx, RTW89_RS_MCS, ch);
+ 
+-	__fill_txpwr_limit_nonbf_bf(val_0p5_n, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(val_0p5_n, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch - 4);
+-	__fill_txpwr_limit_nonbf_bf(val_0p5_p, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(val_0p5_p, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch + 4);
+ 
+ 	for (i = 0; i < RTW89_BF_NUM; i++)
+@@ -1660,7 +1668,7 @@ static void rtw89_phy_fill_txpwr_limit_80m(struct rtw89_dev *rtwdev,
+ 
+ static void rtw89_phy_fill_txpwr_limit_160m(struct rtw89_dev *rtwdev,
+ 					    struct rtw89_txpwr_limit *lmt,
+-					    u8 ntx, u8 ch, u8 pri_ch)
++					    u8 band, u8 ntx, u8 ch, u8 pri_ch)
+ {
+ 	s8 val_0p5_n[RTW89_BF_NUM];
+ 	s8 val_0p5_p[RTW89_BF_NUM];
+@@ -1669,60 +1677,75 @@ static void rtw89_phy_fill_txpwr_limit_160m(struct rtw89_dev *rtwdev,
+ 	u8 i;
+ 
+ 	/* fill ofdm section */
+-	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, band, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_OFDM, pri_ch);
+ 
+ 	/* fill mcs 20m section */
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 14);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 10);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[2], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[2], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 6);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[3], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[3], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[4], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[4], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 2);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[5], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[5], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 6);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[6], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[6], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 10);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[7], RTW89_CHANNEL_WIDTH_20,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[7], band,
++				    RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch + 14);
+ 
+ 	/* fill mcs 40m section */
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch - 12);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[1], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[1], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch - 4);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[2], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[2], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch + 4);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[3], RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[3], band,
++				    RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch + 12);
+ 
+ 	/* fill mcs 80m section */
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[0], RTW89_CHANNEL_WIDTH_80,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[0], band,
++				    RTW89_CHANNEL_WIDTH_80,
+ 				    ntx, RTW89_RS_MCS, ch - 8);
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[1], RTW89_CHANNEL_WIDTH_80,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[1], band,
++				    RTW89_CHANNEL_WIDTH_80,
+ 				    ntx, RTW89_RS_MCS, ch + 8);
+ 
+ 	/* fill mcs 160m section */
+-	__fill_txpwr_limit_nonbf_bf(lmt->mcs_160m, RTW89_CHANNEL_WIDTH_160,
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_160m, band,
++				    RTW89_CHANNEL_WIDTH_160,
+ 				    ntx, RTW89_RS_MCS, ch);
+ 
+ 	/* fill mcs 40m 0p5 section */
+-	__fill_txpwr_limit_nonbf_bf(val_0p5_n, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(val_0p5_n, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch - 4);
+-	__fill_txpwr_limit_nonbf_bf(val_0p5_p, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(val_0p5_p, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch + 4);
+ 
+ 	for (i = 0; i < RTW89_BF_NUM; i++)
+ 		lmt->mcs_40m_0p5[i] = min_t(s8, val_0p5_n[i], val_0p5_p[i]);
+ 
+ 	/* fill mcs 40m 2p5 section */
+-	__fill_txpwr_limit_nonbf_bf(val_2p5_n, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(val_2p5_n, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch - 8);
+-	__fill_txpwr_limit_nonbf_bf(val_2p5_p, RTW89_CHANNEL_WIDTH_40,
++	__fill_txpwr_limit_nonbf_bf(val_2p5_p, band, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_MCS, ch + 8);
+ 
+ 	for (i = 0; i < RTW89_BF_NUM; i++)
+@@ -1730,10 +1753,11 @@ static void rtw89_phy_fill_txpwr_limit_160m(struct rtw89_dev *rtwdev,
+ }
+ 
+ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
++				const struct rtw89_chan *chan,
+ 				struct rtw89_txpwr_limit *lmt,
+ 				u8 ntx)
+ {
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
++	u8 band = chan->band_type;
+ 	u8 pri_ch = chan->primary_channel;
+ 	u8 ch = chan->channel;
+ 	u8 bw = chan->band_width;
+@@ -1742,27 +1766,28 @@ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
+ 
+ 	switch (bw) {
+ 	case RTW89_CHANNEL_WIDTH_20:
+-		rtw89_phy_fill_txpwr_limit_20m(rtwdev, lmt, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_20m(rtwdev, lmt, band, ntx, ch);
  		break;
- 	case RTW89_SCAN_ENTER_CH_NOTIFY:
--		new = *cur;
--		new.channel = chan;
--		new.primary_channel = chan;
--		new.band_type = band;
--		new.band_width = RTW89_CHANNEL_WIDTH_20;
-+		rtw89_chan_create(&new, chan, chan, band, RTW89_CHANNEL_WIDTH_20);
- 		rtw89_assign_entity_chan(rtwdev, RTW89_SUB_ENTITY_0, &new);
- 		if (rtw89_is_op_chan(rtwdev, band, chan)) {
- 			rtw89_store_op_chan(rtwdev, false);
+ 	case RTW89_CHANNEL_WIDTH_40:
+-		rtw89_phy_fill_txpwr_limit_40m(rtwdev, lmt, ntx, ch, pri_ch);
++		rtw89_phy_fill_txpwr_limit_40m(rtwdev, lmt, band, ntx, ch,
++					       pri_ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_80:
+-		rtw89_phy_fill_txpwr_limit_80m(rtwdev, lmt, ntx, ch, pri_ch);
++		rtw89_phy_fill_txpwr_limit_80m(rtwdev, lmt, band, ntx, ch,
++					       pri_ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_160:
+-		rtw89_phy_fill_txpwr_limit_160m(rtwdev, lmt, ntx, ch, pri_ch);
++		rtw89_phy_fill_txpwr_limit_160m(rtwdev, lmt, band, ntx, ch,
++						pri_ch);
+ 		break;
+ 	}
+ }
+ EXPORT_SYMBOL(rtw89_phy_fill_txpwr_limit);
+ 
+-static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev,
++static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev, u8 band,
+ 					u8 ru, u8 ntx, u8 ch)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+-	u8 band = chan->band_type;
+ 	u8 ch_idx = rtw89_channel_to_idx(rtwdev, band, ch);
+ 	u8 regd = rtw89_regd_get(rtwdev, band);
+ 	s8 lmt_ru = 0, sar;
+@@ -1800,85 +1825,106 @@ static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ static void
+ rtw89_phy_fill_txpwr_limit_ru_20m(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_txpwr_limit_ru *lmt_ru,
+-				  u8 ntx, u8 ch)
++				  u8 band, u8 ntx, u8 ch)
+ {
+-	lmt_ru->ru26[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch);
+-	lmt_ru->ru52[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch);
+-	lmt_ru->ru106[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch);
+ }
+ 
+ static void
+ rtw89_phy_fill_txpwr_limit_ru_40m(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_txpwr_limit_ru *lmt_ru,
+-				  u8 ntx, u8 ch)
++				  u8 band, u8 ntx, u8 ch)
+ {
+-	lmt_ru->ru26[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch - 2);
+-	lmt_ru->ru26[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch + 2);
+-	lmt_ru->ru52[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch - 2);
+-	lmt_ru->ru52[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch + 2);
+-	lmt_ru->ru106[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch - 2);
+-	lmt_ru->ru106[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch + 2);
+ }
+ 
+ static void
+ rtw89_phy_fill_txpwr_limit_ru_80m(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_txpwr_limit_ru *lmt_ru,
+-				  u8 ntx, u8 ch)
++				  u8 band, u8 ntx, u8 ch)
+ {
+-	lmt_ru->ru26[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch - 6);
+-	lmt_ru->ru26[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch - 2);
+-	lmt_ru->ru26[2] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[2] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch + 2);
+-	lmt_ru->ru26[3] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU26,
++	lmt_ru->ru26[3] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU26,
+ 							ntx, ch + 6);
+-	lmt_ru->ru52[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch - 6);
+-	lmt_ru->ru52[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch - 2);
+-	lmt_ru->ru52[2] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[2] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch + 2);
+-	lmt_ru->ru52[3] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU52,
++	lmt_ru->ru52[3] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							RTW89_RU52,
+ 							ntx, ch + 6);
+-	lmt_ru->ru106[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[0] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch - 6);
+-	lmt_ru->ru106[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[1] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch - 2);
+-	lmt_ru->ru106[2] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[2] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch + 2);
+-	lmt_ru->ru106[3] = rtw89_phy_read_txpwr_limit_ru(rtwdev, RTW89_RU106,
++	lmt_ru->ru106[3] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
++							 RTW89_RU106,
+ 							 ntx, ch + 6);
+ }
+ 
+ static void
+ rtw89_phy_fill_txpwr_limit_ru_160m(struct rtw89_dev *rtwdev,
+ 				   struct rtw89_txpwr_limit_ru *lmt_ru,
+-				   u8 ntx, u8 ch)
++				   u8 band, u8 ntx, u8 ch)
+ {
+ 	static const int ofst[] = { -14, -10, -6, -2, 2, 6, 10, 14 };
+ 	int i;
+ 
+ 	static_assert(ARRAY_SIZE(ofst) == RTW89_RU_SEC_NUM);
+ 	for (i = 0; i < RTW89_RU_SEC_NUM; i++) {
+-		lmt_ru->ru26[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
++		lmt_ru->ru26[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
+ 								RTW89_RU26,
+ 								ntx,
+ 								ch + ofst[i]);
+-		lmt_ru->ru52[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
++		lmt_ru->ru52[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
+ 								RTW89_RU52,
+ 								ntx,
+ 								ch + ofst[i]);
+-		lmt_ru->ru106[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
++		lmt_ru->ru106[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev, band,
+ 								 RTW89_RU106,
+ 								 ntx,
+ 								 ch + ofst[i]);
+@@ -1886,10 +1932,11 @@ rtw89_phy_fill_txpwr_limit_ru_160m(struct rtw89_dev *rtwdev,
+ }
+ 
+ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
++				   const struct rtw89_chan *chan,
+ 				   struct rtw89_txpwr_limit_ru *lmt_ru,
+ 				   u8 ntx)
+ {
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
++	u8 band = chan->band_type;
+ 	u8 ch = chan->channel;
+ 	u8 bw = chan->band_width;
+ 
+@@ -1897,16 +1944,20 @@ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 
+ 	switch (bw) {
+ 	case RTW89_CHANNEL_WIDTH_20:
+-		rtw89_phy_fill_txpwr_limit_ru_20m(rtwdev, lmt_ru, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_ru_20m(rtwdev, lmt_ru, band, ntx,
++						  ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_40:
+-		rtw89_phy_fill_txpwr_limit_ru_40m(rtwdev, lmt_ru, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_ru_40m(rtwdev, lmt_ru, band, ntx,
++						  ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_80:
+-		rtw89_phy_fill_txpwr_limit_ru_80m(rtwdev, lmt_ru, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_ru_80m(rtwdev, lmt_ru, band, ntx,
++						  ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_160:
+-		rtw89_phy_fill_txpwr_limit_ru_160m(rtwdev, lmt_ru, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_ru_160m(rtwdev, lmt_ru, band, ntx,
++						   ch);
+ 		break;
+ 	}
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index d1f6e38a98ce3..e48d387d33afb 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -460,15 +460,17 @@ void rtw89_phy_write32_idx(struct rtw89_dev *rtwdev, u32 addr, u32 mask,
+ 			   u32 data, enum rtw89_phy_idx phy_idx);
+ void rtw89_phy_load_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 				 const struct rtw89_txpwr_table *tbl);
+-s8 rtw89_phy_read_txpwr_byrate(struct rtw89_dev *rtwdev,
++s8 rtw89_phy_read_txpwr_byrate(struct rtw89_dev *rtwdev, u8 band,
+ 			       const struct rtw89_rate_desc *rate_desc);
+ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
++				const struct rtw89_chan *chan,
+ 				struct rtw89_txpwr_limit *lmt,
+ 				u8 ntx);
+ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
++				   const struct rtw89_chan *chan,
+ 				   struct rtw89_txpwr_limit_ru *lmt_ru,
+ 				   u8 ntx);
+-s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
++s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
+ 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch);
+ void rtw89_phy_ra_assoc(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta);
+ void rtw89_phy_ra_update(struct rtw89_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index ef200d32eab33..06e2c8205eeda 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -1379,9 +1379,10 @@ static void rtw8852a_set_txpwr_ref(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852a_set_txpwr_byrate(struct rtw89_dev *rtwdev,
++				      const struct rtw89_chan *chan,
+ 				      enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
++	u8 band = chan->band_type;
+ 	u8 ch = chan->channel;
+ 	static const u8 rs[] = {
+ 		RTW89_RS_CCK,
+@@ -1408,7 +1409,8 @@ static void rtw8852a_set_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 			for (j = 0; j < rtw89_rs_idx_max[rs[i]]; j++) {
+ 				cur.idx = j;
+ 				shf = (j % 4) * 8;
+-				tmp = rtw89_phy_read_txpwr_byrate(rtwdev, &cur);
++				tmp = rtw89_phy_read_txpwr_byrate(rtwdev, band,
++								  &cur);
+ 				val |= (tmp << shf);
+ 
+ 				if ((j + 1) % 4)
+@@ -1423,8 +1425,10 @@ static void rtw8852a_set_txpwr_byrate(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852a_set_txpwr_offset(struct rtw89_dev *rtwdev,
++				      const struct rtw89_chan *chan,
+ 				      enum rtw89_phy_idx phy_idx)
+ {
++	u8 band = chan->band_type;
+ 	struct rtw89_rate_desc desc = {
+ 		.nss = RTW89_NSS_1,
+ 		.rs = RTW89_RS_OFFSET,
+@@ -1435,7 +1439,7 @@ static void rtw8852a_set_txpwr_offset(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set txpwr offset\n");
+ 
+ 	for (desc.idx = 0; desc.idx < RTW89_RATE_OFFSET_MAX; desc.idx++) {
+-		v = rtw89_phy_read_txpwr_byrate(rtwdev, &desc);
++		v = rtw89_phy_read_txpwr_byrate(rtwdev, band, &desc);
+ 		val |= ((v & 0xf) << (4 * desc.idx));
+ 	}
+ 
+@@ -1444,10 +1448,10 @@ static void rtw8852a_set_txpwr_offset(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852a_set_txpwr_limit(struct rtw89_dev *rtwdev,
++				     const struct rtw89_chan *chan,
+ 				     enum rtw89_phy_idx phy_idx)
+ {
+ #define __MAC_TXPWR_LMT_PAGE_SIZE 40
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	u8 ch = chan->channel;
+ 	u8 bw = chan->band_width;
+ 	struct rtw89_txpwr_limit lmt[NTX_NUM_8852A];
+@@ -1459,7 +1463,7 @@ static void rtw8852a_set_txpwr_limit(struct rtw89_dev *rtwdev,
+ 		    "[TXPWR] set txpwr limit with ch=%d bw=%d\n", ch, bw);
+ 
+ 	for (i = 0; i < NTX_NUM_8852A; i++) {
+-		rtw89_phy_fill_txpwr_limit(rtwdev, &lmt[i], i);
++		rtw89_phy_fill_txpwr_limit(rtwdev, chan, &lmt[i], i);
+ 
+ 		for (j = 0; j < __MAC_TXPWR_LMT_PAGE_SIZE; j += 4) {
+ 			addr = R_AX_PWR_LMT + j + __MAC_TXPWR_LMT_PAGE_SIZE * i;
+@@ -1476,10 +1480,10 @@ static void rtw8852a_set_txpwr_limit(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852a_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
++					const struct rtw89_chan *chan,
+ 					enum rtw89_phy_idx phy_idx)
+ {
+ #define __MAC_TXPWR_LMT_RU_PAGE_SIZE 24
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	u8 ch = chan->channel;
+ 	u8 bw = chan->band_width;
+ 	struct rtw89_txpwr_limit_ru lmt_ru[NTX_NUM_8852A];
+@@ -1491,7 +1495,7 @@ static void rtw8852a_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 		    "[TXPWR] set txpwr limit ru with ch=%d bw=%d\n", ch, bw);
+ 
+ 	for (i = 0; i < NTX_NUM_8852A; i++) {
+-		rtw89_phy_fill_txpwr_limit_ru(rtwdev, &lmt_ru[i], i);
++		rtw89_phy_fill_txpwr_limit_ru(rtwdev, chan, &lmt_ru[i], i);
+ 
+ 		for (j = 0; j < __MAC_TXPWR_LMT_RU_PAGE_SIZE; j += 4) {
+ 			addr = R_AX_PWR_RU_LMT + j +
+@@ -1509,17 +1513,20 @@ static void rtw8852a_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ #undef __MAC_TXPWR_LMT_RU_PAGE_SIZE
+ }
+ 
+-static void rtw8852a_set_txpwr(struct rtw89_dev *rtwdev)
++static void rtw8852a_set_txpwr(struct rtw89_dev *rtwdev,
++			       const struct rtw89_chan *chan,
++			       enum rtw89_phy_idx phy_idx)
+ {
+-	rtw8852a_set_txpwr_byrate(rtwdev, RTW89_PHY_0);
+-	rtw8852a_set_txpwr_limit(rtwdev, RTW89_PHY_0);
+-	rtw8852a_set_txpwr_limit_ru(rtwdev, RTW89_PHY_0);
++	rtw8852a_set_txpwr_byrate(rtwdev, chan, phy_idx);
++	rtw8852a_set_txpwr_offset(rtwdev, chan, phy_idx);
++	rtw8852a_set_txpwr_limit(rtwdev, chan, phy_idx);
++	rtw8852a_set_txpwr_limit_ru(rtwdev, chan, phy_idx);
+ }
+ 
+-static void rtw8852a_set_txpwr_ctrl(struct rtw89_dev *rtwdev)
++static void rtw8852a_set_txpwr_ctrl(struct rtw89_dev *rtwdev,
++				    enum rtw89_phy_idx phy_idx)
+ {
+-	rtw8852a_set_txpwr_ref(rtwdev, RTW89_PHY_0);
+-	rtw8852a_set_txpwr_offset(rtwdev, RTW89_PHY_0);
++	rtw8852a_set_txpwr_ref(rtwdev, phy_idx);
+ }
+ 
+ static int
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index 32744201241ec..582ff0d3a9ea0 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -3491,6 +3491,7 @@ static void _tssi_high_power(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
+ 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	u8 ch = chan->channel, ch_tmp;
+ 	u8 bw = chan->band_width;
++	u8 band = chan->band_type;
+ 	u8 subband = chan->subband_type;
+ 	s8 power;
+ 	s32 xdbm;
+@@ -3502,7 +3503,7 @@ static void _tssi_high_power(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
+ 	else
+ 		ch_tmp = ch;
+ 
+-	power = rtw89_phy_read_txpwr_limit(rtwdev, bw, RTW89_1TX,
++	power = rtw89_phy_read_txpwr_limit(rtwdev, band, bw, RTW89_1TX,
+ 					   RTW89_RS_MCS, RTW89_NONBF, ch_tmp);
+ 
+ 	xdbm = power * 100 / 4;
+@@ -3538,6 +3539,7 @@ static void _tssi_pre_tx(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
+ 	const struct rtw89_chip_info *mac_reg = rtwdev->chip;
+ 	u8 ch = chan->channel, ch_tmp;
+ 	u8 bw = chan->band_width;
++	u8 band = chan->band_type;
+ 	u32 tx_en;
+ 	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, 0);
+ 	s8 power;
+@@ -3551,8 +3553,9 @@ static void _tssi_pre_tx(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
+ 	else
+ 		ch_tmp = ch;
+ 
+-	power = rtw89_phy_read_txpwr_limit(rtwdev, RTW89_CHANNEL_WIDTH_20, RTW89_1TX,
+-					   RTW89_RS_OFDM, RTW89_NONBF, ch_tmp);
++	power = rtw89_phy_read_txpwr_limit(rtwdev, band, RTW89_CHANNEL_WIDTH_20,
++					   RTW89_1TX, RTW89_RS_OFDM,
++					   RTW89_NONBF, ch_tmp);
+ 
+ 	xdbm = (power * 100) >> mac_reg->txpwr_factor_mac;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index b81aec0630969..1625089d83408 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -1962,9 +1962,10 @@ static void rtw8852c_set_txpwr_ref(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852c_set_txpwr_byrate(struct rtw89_dev *rtwdev,
++				      const struct rtw89_chan *chan,
+ 				      enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
++	u8 band = chan->band_type;
+ 	u8 ch = chan->channel;
+ 	static const u8 rs[] = {
+ 		RTW89_RS_CCK,
+@@ -1991,7 +1992,8 @@ static void rtw8852c_set_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 			for (j = 0; j < rtw89_rs_idx_max[rs[i]]; j++) {
+ 				cur.idx = j;
+ 				shf = (j % 4) * 8;
+-				tmp = rtw89_phy_read_txpwr_byrate(rtwdev, &cur);
++				tmp = rtw89_phy_read_txpwr_byrate(rtwdev, band,
++								  &cur);
+ 				val |= (tmp << shf);
+ 
+ 				if ((j + 1) % 4)
+@@ -2006,8 +2008,10 @@ static void rtw8852c_set_txpwr_byrate(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852c_set_txpwr_offset(struct rtw89_dev *rtwdev,
++				      const struct rtw89_chan *chan,
+ 				      enum rtw89_phy_idx phy_idx)
+ {
++	u8 band = chan->band_type;
+ 	struct rtw89_rate_desc desc = {
+ 		.nss = RTW89_NSS_1,
+ 		.rs = RTW89_RS_OFFSET,
+@@ -2018,7 +2022,7 @@ static void rtw8852c_set_txpwr_offset(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set txpwr offset\n");
+ 
+ 	for (desc.idx = 0; desc.idx < RTW89_RATE_OFFSET_MAX; desc.idx++) {
+-		v = rtw89_phy_read_txpwr_byrate(rtwdev, &desc);
++		v = rtw89_phy_read_txpwr_byrate(rtwdev, band, &desc);
+ 		val |= ((v & 0xf) << (4 * desc.idx));
+ 	}
+ 
+@@ -2082,9 +2086,9 @@ static void rtw8852c_bb_set_tx_shape_dfir(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852c_set_tx_shape(struct rtw89_dev *rtwdev,
++				  const struct rtw89_chan *chan,
+ 				  enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	u8 band = chan->band_type;
+ 	u8 regd = rtw89_regd_get(rtwdev, band);
+ 	u8 tx_shape_cck = rtw89_8852c_tx_shape[band][RTW89_RS_CCK][regd];
+@@ -2099,10 +2103,10 @@ static void rtw8852c_set_tx_shape(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852c_set_txpwr_limit(struct rtw89_dev *rtwdev,
++				     const struct rtw89_chan *chan,
+ 				     enum rtw89_phy_idx phy_idx)
+ {
+ #define __MAC_TXPWR_LMT_PAGE_SIZE 40
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	u8 ch = chan->channel;
+ 	u8 bw = chan->band_width;
+ 	struct rtw89_txpwr_limit lmt[NTX_NUM_8852C];
+@@ -2114,7 +2118,7 @@ static void rtw8852c_set_txpwr_limit(struct rtw89_dev *rtwdev,
+ 		    "[TXPWR] set txpwr limit with ch=%d bw=%d\n", ch, bw);
+ 
+ 	for (i = 0; i < NTX_NUM_8852C; i++) {
+-		rtw89_phy_fill_txpwr_limit(rtwdev, &lmt[i], i);
++		rtw89_phy_fill_txpwr_limit(rtwdev, chan, &lmt[i], i);
+ 
+ 		for (j = 0; j < __MAC_TXPWR_LMT_PAGE_SIZE; j += 4) {
+ 			addr = R_AX_PWR_LMT + j + __MAC_TXPWR_LMT_PAGE_SIZE * i;
+@@ -2131,10 +2135,10 @@ static void rtw8852c_set_txpwr_limit(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw8852c_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
++					const struct rtw89_chan *chan,
+ 					enum rtw89_phy_idx phy_idx)
+ {
+ #define __MAC_TXPWR_LMT_RU_PAGE_SIZE 24
+-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
+ 	u8 ch = chan->channel;
+ 	u8 bw = chan->band_width;
+ 	struct rtw89_txpwr_limit_ru lmt_ru[NTX_NUM_8852C];
+@@ -2146,7 +2150,7 @@ static void rtw8852c_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 		    "[TXPWR] set txpwr limit ru with ch=%d bw=%d\n", ch, bw);
+ 
+ 	for (i = 0; i < NTX_NUM_8852C; i++) {
+-		rtw89_phy_fill_txpwr_limit_ru(rtwdev, &lmt_ru[i], i);
++		rtw89_phy_fill_txpwr_limit_ru(rtwdev, chan, &lmt_ru[i], i);
+ 
+ 		for (j = 0; j < __MAC_TXPWR_LMT_RU_PAGE_SIZE; j += 4) {
+ 			addr = R_AX_PWR_RU_LMT + j +
+@@ -2164,18 +2168,21 @@ static void rtw8852c_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ #undef __MAC_TXPWR_LMT_RU_PAGE_SIZE
+ }
+ 
+-static void rtw8852c_set_txpwr(struct rtw89_dev *rtwdev)
++static void rtw8852c_set_txpwr(struct rtw89_dev *rtwdev,
++			       const struct rtw89_chan *chan,
++			       enum rtw89_phy_idx phy_idx)
+ {
+-	rtw8852c_set_txpwr_byrate(rtwdev, RTW89_PHY_0);
+-	rtw8852c_set_txpwr_offset(rtwdev, RTW89_PHY_0);
+-	rtw8852c_set_tx_shape(rtwdev, RTW89_PHY_0);
+-	rtw8852c_set_txpwr_limit(rtwdev, RTW89_PHY_0);
+-	rtw8852c_set_txpwr_limit_ru(rtwdev, RTW89_PHY_0);
++	rtw8852c_set_txpwr_byrate(rtwdev, chan, phy_idx);
++	rtw8852c_set_txpwr_offset(rtwdev, chan, phy_idx);
++	rtw8852c_set_tx_shape(rtwdev, chan, phy_idx);
++	rtw8852c_set_txpwr_limit(rtwdev, chan, phy_idx);
++	rtw8852c_set_txpwr_limit_ru(rtwdev, chan, phy_idx);
+ }
+ 
+-static void rtw8852c_set_txpwr_ctrl(struct rtw89_dev *rtwdev)
++static void rtw8852c_set_txpwr_ctrl(struct rtw89_dev *rtwdev,
++				    enum rtw89_phy_idx phy_idx)
+ {
+-	rtw8852c_set_txpwr_ref(rtwdev, RTW89_PHY_0);
++	rtw8852c_set_txpwr_ref(rtwdev, phy_idx);
+ }
+ 
+ static void
 -- 
 2.25.1
 
