@@ -2,163 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FDF55A17A
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D69055A2FC
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 22:45:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbiFXTNj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jun 2022 15:13:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43088 "EHLO
+        id S230421AbiFXUov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jun 2022 16:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231437AbiFXTNG (ORCPT
+        with ESMTP id S229441AbiFXUou (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jun 2022 15:13:06 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F182B7CD
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jun 2022 12:13:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=zMZakQ7QZ8dM9Zo84u+FfjfAPencMcY9TB+qQHsTPNI=; b=KZdrGy104Sik6sJWo6MUXta82G
-        EHrLEm+6oKqJsVO+S/lPRp9Xhogy1+A30Jk8KtgNnGMlKDfC+iln5Q60Mm9QFUR6LIHo+sQTeJV5S
-        TZU/twfKq5pU0v5GBFkOQQr5ySJZ5RHADiJAATQC+NE2wbRQoHkOAeI+ixguEk95gAzw=;
-Received: from p200300daa71a4800391046fbc91acf5a.dip0.t-ipconnect.de ([2003:da:a71a:4800:3910:46fb:c91a:cf5a] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1o4ojn-0002r8-30
-        for linux-wireless@vger.kernel.org; Fri, 24 Jun 2022 21:13:03 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 4/4] mt76: mt7615: fix throughput regression on DFS channels
-Date:   Fri, 24 Jun 2022 21:13:00 +0200
-Message-Id: <20220624191300.52766-4-nbd@nbd.name>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220624191300.52766-1-nbd@nbd.name>
-References: <20220624191300.52766-1-nbd@nbd.name>
+        Fri, 24 Jun 2022 16:44:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4CCA4DF57;
+        Fri, 24 Jun 2022 13:44:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F0BE6231C;
+        Fri, 24 Jun 2022 20:44:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBE6C34114;
+        Fri, 24 Jun 2022 20:44:47 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="h3Et6jJ1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1656103485;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DyE3XRKNY/LXaKfwAinhWk9HKfQb7/UzeJju5lrYwSQ=;
+        b=h3Et6jJ11suSJoxCKZXMYYx2ylOCtTjWcFnlxqjIUKnr20+rfa6Yu0JT8LkJRRKdeQBjsi
+        GrRIxeM3/fpfkM13XKfCPUzZ3s5tt3V4pi9tvKrhSxTfWPGadw28W0Czf8VLifhaWAMVbl
+        rDuRxuBD20MOFa2rh6XjCxRuZHGTTZU=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 647248f1 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Fri, 24 Jun 2022 20:44:45 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     Gregory Erwin <gregerwin256@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Rui Salvaterra <rsalvaterra@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] ath9k: sleep for less time when unregistering hwrng
+Date:   Fri, 24 Jun 2022 22:44:33 +0200
+Message-Id: <20220624204433.2371980-1-Jason@zx2c4.com>
+In-Reply-To: <YrYMqqqoK7HBAXgJ@zx2c4.com>
+References: <YrYMqqqoK7HBAXgJ@zx2c4.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For some reason, mt7615 reacts badly to repeatedly enabling/disabling the radar
-detector without also switching the channel.
-This results in very bad throughput on DFS channels, because
-hw->conf.radar_enabled can get toggled a few times after CAC ends.
-Fix this by always leaving the DFS detector enabled on DFS channels and instead
-suppress unwanted detection events.
+Even though hwrng provides a `wait` parameter, it doesn't work very well
+when waiting for a long time. There are numerous deadlocks that emerge
+related to shutdown. Work around this API limitation by waiting for a
+shorter amount of time and erroring more frequently. This commit also
+prevents hwrng from splatting messages to dmesg when there's a timeout
+and prevents calling msleep_interruptible() for tons of time when a
+thread is supposed to be shutting down, since msleep_interruptible()
+isn't actually interrupted by kthread_stop().
 
-Fixes: 2c86f6752046 ("mt76: mt7615: fix/rewrite the dfs state handling logic")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reported-by: Gregory Erwin <gregerwin256@gmail.com>
+Cc: Toke Høiland-Jørgensen <toke@redhat.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Rui Salvaterra <rsalvaterra@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org
+Fixes: fcd09c90c3c5 ("ath9k: use hw_random API instead of directly dumping into random.c")
+Link: https://lore.kernel.org/all/CAO+Okf6ZJC5-nTE_EJUGQtd8JiCkiEHytGgDsFGTEjs0c00giw@mail.gmail.com/
+Link: https://lore.kernel.org/lkml/CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_DVXtent3HA@mail.gmail.com/
+Link: https://bugs.archlinux.org/task/75138
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- .../net/wireless/mediatek/mt76/mt7615/mac.c   |  7 ++++---
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 21 -------------------
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  3 +++
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 -
- 4 files changed, 7 insertions(+), 25 deletions(-)
+I do not have an ath9k and therefore I can't test this myself. The
+analysis above was done completely statically, with no dynamic tracing
+and just a bug report of symptoms from Gregory. So it might be totally
+wrong. Thus, this patch very much requires Gregory's testing. Please
+don't apply it until we have his `Tested-by` line.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index d9dd3d404986..038774b3ced0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2231,6 +2231,7 @@ mt7615_dfs_init_radar_specs(struct mt7615_phy *phy)
+ drivers/char/hw_random/core.c        | 10 ++++++++--
+ drivers/net/wireless/ath/ath9k/rng.c | 19 ++-----------------
+ 2 files changed, 10 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
+index 16f227b995e8..af1c1905bb7e 100644
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -513,8 +513,13 @@ static int hwrng_fillfn(void *unused)
+ 			break;
  
- int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy)
- {
-+	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
- 	struct mt7615_dev *dev = phy->dev;
- 	bool ext_phy = phy != &dev->phy;
- 	enum mt76_dfs_state dfs_state, prev_state;
-@@ -2241,13 +2242,13 @@ int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy)
+ 		if (rc <= 0) {
+-			pr_warn("hwrng: no data available\n");
+-			msleep_interruptible(10000);
++			int i;
++
++			for (i = 0; i < 100; ++i) {
++				if (kthread_should_stop() ||
++				    msleep_interruptible(10000 / 100))
++					goto out;
++			}
+ 			continue;
+ 		}
  
- 	prev_state = phy->mt76->dfs_state;
- 	dfs_state = mt76_phy_dfs_state(phy->mt76);
-+	if ((chandef->chan->flags & IEEE80211_CHAN_RADAR) &&
-+	    dfs_state < MT_DFS_STATE_CAC)
-+		dfs_state = MT_DFS_STATE_ACTIVE;
- 
- 	if (prev_state == dfs_state)
- 		return 0;
- 
--	if (prev_state == MT_DFS_STATE_UNKNOWN)
--		mt7615_dfs_stop_radar_detector(phy);
--
- 	if (dfs_state == MT_DFS_STATE_DISABLED)
- 		goto stop;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 277c22a4d049..28bc76c8e8e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -282,26 +282,6 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
- 	mt76_packet_id_flush(&dev->mt76, &mvif->sta.wcid);
+@@ -529,6 +534,7 @@ static int hwrng_fillfn(void *unused)
+ 		add_hwgenerator_randomness((void *)rng_fillbuf, rc,
+ 					   entropy >> 10);
+ 	}
++out:
+ 	hwrng_fill = NULL;
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/ath/ath9k/rng.c b/drivers/net/wireless/ath/ath9k/rng.c
+index cb5414265a9b..883110c66e5e 100644
+--- a/drivers/net/wireless/ath/ath9k/rng.c
++++ b/drivers/net/wireless/ath/ath9k/rng.c
+@@ -52,20 +52,6 @@ static int ath9k_rng_data_read(struct ath_softc *sc, u32 *buf, u32 buf_size)
+ 	return j << 2;
  }
  
--static void mt7615_init_dfs_state(struct mt7615_phy *phy)
+-static u32 ath9k_rng_delay_get(u32 fail_stats)
 -{
--	struct mt76_phy *mphy = phy->mt76;
--	struct ieee80211_hw *hw = mphy->hw;
--	struct cfg80211_chan_def *chandef = &hw->conf.chandef;
+-	u32 delay;
 -
--	if (hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
--		return;
+-	if (fail_stats < 100)
+-		delay = 10;
+-	else if (fail_stats < 105)
+-		delay = 1000;
+-	else
+-		delay = 10000;
 -
--	if (!(chandef->chan->flags & IEEE80211_CHAN_RADAR) &&
--	    !(mphy->chandef.chan->flags & IEEE80211_CHAN_RADAR))
--		return;
--
--	if (mphy->chandef.chan->center_freq == chandef->chan->center_freq &&
--	    mphy->chandef.width == chandef->width)
--		return;
--
--	phy->dfs_state = -1;
+-	return delay;
 -}
 -
- int mt7615_set_channel(struct mt7615_phy *phy)
+ static int ath9k_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
  {
- 	struct mt7615_dev *dev = phy->dev;
-@@ -314,7 +294,6 @@ int mt7615_set_channel(struct mt7615_phy *phy)
+ 	struct ath_softc *sc = container_of(rng, struct ath_softc, rng_ops);
+@@ -80,10 +66,9 @@ static int ath9k_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
+ 			bytes_read += max & 3UL;
+ 			memzero_explicit(&word, sizeof(word));
+ 		}
+-		if (!wait || !max || likely(bytes_read) || fail_stats > 110)
++		if (!wait || !max || likely(bytes_read) ||
++		    ++fail_stats >= 100 || msleep_interruptible(5))
+ 			break;
+-
+-		msleep_interruptible(ath9k_rng_delay_get(++fail_stats));
+ 	}
  
- 	set_bit(MT76_RESET, &phy->mt76->state);
- 
--	mt7615_init_dfs_state(phy);
- 	mt76_set_channel(phy->mt76);
- 
- 	if (is_mt7615(&dev->mt76) && dev->flash_eeprom) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 989b2a41b670..3d35381013f1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -391,6 +391,9 @@ mt7615_mcu_rx_radar_detected(struct mt7615_dev *dev, struct sk_buff *skb)
- 	if (r->band_idx && dev->mt76.phy2)
- 		mphy = dev->mt76.phy2;
- 
-+	if (mt76_phy_dfs_state(mphy) < MT_DFS_STATE_CAC)
-+		return;
-+
- 	ieee80211_radar_detected(mphy->hw);
- 	dev->hw_pattern++;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 8499cdc4bb0d..93a9e8f46193 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -178,7 +178,6 @@ struct mt7615_phy {
- 
- 	u8 chfreq;
- 	u8 rdd_state;
--	int dfs_state;
- 
- 	u32 rx_ampdu_ts;
- 	u32 ampdu_ref;
+ 	if (wait && !bytes_read && max)
 -- 
-2.36.1
+2.35.1
 
