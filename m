@@ -2,100 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 646BD55A1AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447C255A182
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231253AbiFXS7b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jun 2022 14:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56230 "EHLO
+        id S230448AbiFXTNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jun 2022 15:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbiFXS72 (ORCPT
+        with ESMTP id S231512AbiFXTMv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jun 2022 14:59:28 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD847C53B;
-        Fri, 24 Jun 2022 11:59:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1656097168; x=1687633168;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZkJlVC384UNpflENkvCHqRU0Ni7nxmoR7Jcb/6VX51s=;
-  b=kxkKZjc1nzvBtRfk30aZIwd+z/+q/wSLgmlRL/gGD4JMmpmzrODj86KZ
-   9iJ1hO2/+lLdQKXPvy30OstE7e+8GaGBI8QclR9jfgXautYgSMiQ0+0sQ
-   wf47/P08vvlvmWIZcmRXkDNtgnie9i/TAGi9qy2lvNqewxnPJQqDXvywO
-   M=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 24 Jun 2022 11:59:27 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2022 11:59:27 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 24 Jun 2022 11:59:27 -0700
-Received: from [10.110.111.5] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 24 Jun
- 2022 11:59:26 -0700
-Message-ID: <0251f2c9-0f66-7dc9-7fb6-cc41a8dfd918@quicinc.com>
-Date:   Fri, 24 Jun 2022 11:59:25 -0700
+        Fri, 24 Jun 2022 15:12:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5257081DBA;
+        Fri, 24 Jun 2022 12:12:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E43D1621A3;
+        Fri, 24 Jun 2022 19:12:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EC7C34114;
+        Fri, 24 Jun 2022 19:12:48 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="itCPwM20"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1656097966;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4Opv7H7b7jpTZpdXbND2IHSq5Uo5YT03x2GlaOQr9ns=;
+        b=itCPwM20JiYyV1kN1+KDhxgW9w0RihJJu6flpMpZtuZ8oJ0DFV0juVxcxWghz5ae4y59Tq
+        Ek+LUY8t7g9LNLYunYWoKtKz/TxRPNMbQi+OIJnRX5c10ispOAwInSzEKzTvsqvdPGS/KJ
+        WibS2bs7Fpa7NZsS7PEwJlz0XS9DXCs=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1fb3e598 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Fri, 24 Jun 2022 19:12:46 +0000 (UTC)
+Date:   Fri, 24 Jun 2022 21:12:42 +0200
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     Gregory Erwin <gregerwin256@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Rui Salvaterra <rsalvaterra@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] ath9k: rng: escape sleep loop when unregistering
+Message-ID: <YrYMqqqoK7HBAXgJ@zx2c4.com>
+References: <YrUKUt5nvX8qf1Je@zx2c4.com>
+ <20220624011449.1473399-1-Jason@zx2c4.com>
+ <CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_DVXtent3HA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v2] brcmfmac: Remove #ifdef guards for PM related
- functions
-Content-Language: en-US
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Arend Van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220623124221.18238-1-paul@crapouillou.net>
- <9f623bb6-8957-0a9a-3eb7-9a209965ea6e@gmail.com>
- <3013994a-487c-56eb-42d6-b8cdf7615405@quicinc.com>
- <WHVZDR.GB0H9SQC9PDP@crapouillou.net>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <WHVZDR.GB0H9SQC9PDP@crapouillou.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_DVXtent3HA@mail.gmail.com>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/24/2022 11:32 AM, Paul Cercueil wrote:
-> Hi,
-> 
-> Le ven., juin 24 2022 at 09:31:22 -0700, Jeff Johnson 
-> <quic_jjohnson@quicinc.com> a écrit :
->> On 6/24/2022 2:24 AM, Arend Van Spriel wrote:
->>> On 6/23/2022 2:42 PM, Paul Cercueil wrote:
->>
->> [snip]
->>
->>>> -    if (sdiodev->freezer) {
->>>> +    if (IS_ENABLED(CONFIG_PM_SLEEP) && sdiodev->freezer) {
->>>
->>> This change is not necessary. sdiodev->freezer will be NULL when 
->>> CONFIG_PM_SLEEP is not enabled.
->>
->> but won't the compiler be able to completely optimize the code away if 
->> the change is present?
-> 
-> That's correct. But do we want to complexify a bit the code for the sake 
-> of saving a few bytes? I leave that as an open question to the 
-> maintainer, I'm really fine with both options.
+Hi Gregory,
 
-I'm fine either way as well. I'd have stronger opinions if ath drivers 
-were involved ;)
+On Thu, Jun 23, 2022 at 10:25:26PM -0700, Gregory Erwin wrote:
+> Hi Jason,
+> 
+> I think you are on the right track, but even with this patch
+> 'ip link set wlan0 down' blocks until the hwrng reader gives up.
+> The reader can either be userspace (dd, cat, etc) or it can also
+> be the rng_core module. I can replicate the hang in the two different
+> situations, so I gathered two stack traces for 'ip' depending on the
+> reader of hwrng:
+
+Thanks for the traces. I'll send a v2 to you shortly.
+
+Jason
