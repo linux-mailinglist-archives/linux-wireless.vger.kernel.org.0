@@ -2,18 +2,18 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7317255A196
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84C855A1C0
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbiFXTNk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jun 2022 15:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43078 "EHLO
+        id S231268AbiFXTNm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jun 2022 15:13:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbiFXTNG (ORCPT
+        with ESMTP id S232107AbiFXTNH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jun 2022 15:13:06 -0400
+        Fri, 24 Jun 2022 15:13:07 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7345FCB
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF7DB4B1
         for <linux-wireless@vger.kernel.org>; Fri, 24 Jun 2022 12:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -21,20 +21,20 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=n6vH+nPkFRprnxFcyyNMoSHX9CSINWA2seA8qtmF4AI=; b=pXTN+zHSll9c+K9xUSN/f+shTI
-        E5rIjLTNZH5xzM/LyLkp/bEWuEnEMTj+xDVueqIYx8v+8qpWXSLlb1aWUnF6E6uTi/QJ2NGAJ4hSK
-        NsFV0AjvJsjCHmKXVrqgushI1tLr1+3wJtMcUOBNceMdiuj/gG2RrLaCt3sBy7VfogNA=;
+        bh=Ci4rribwEHxyUcm1miVtwoazSs6ChpHM66/8j+Vi/jM=; b=OJEzeSe7h8WP71MphydWBwkKzT
+        +mcYssrc5KuCakaTqceSbn4jk1yyvfHwuAWr6U9eWAKLUSuqkfKCg5ICrmB3A54tjjTVqCmf/hiik
+        eHroevOPGSFUqfh4AakFqESd+5lA9JS17WGt7o9ekdMmeKm6hntkbnj6Ly2AwkQrcZ4w=;
 Received: from p200300daa71a4800391046fbc91acf5a.dip0.t-ipconnect.de ([2003:da:a71a:4800:3910:46fb:c91a:cf5a] helo=localhost.localdomain)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1o4ojm-0002r8-No
+        id 1o4ojm-0002r8-Tv
         for linux-wireless@vger.kernel.org; Fri, 24 Jun 2022 21:13:02 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/4] mt76: mt76x02: improve reliability of the beacon hang check
-Date:   Fri, 24 Jun 2022 21:12:58 +0200
-Message-Id: <20220624191300.52766-2-nbd@nbd.name>
+Subject: [PATCH 3/4] mt76: allow receiving frames with invalid CCMP PN via monitor interfaces
+Date:   Fri, 24 Jun 2022 21:12:59 +0200
+Message-Id: <20220624191300.52766-3-nbd@nbd.name>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220624191300.52766-1-nbd@nbd.name>
 References: <20220624191300.52766-1-nbd@nbd.name>
@@ -49,75 +49,85 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Increment the counter only when writing beacons to the hardware in order
-to avoid triggering restarts if beacons are disabled.
-Additionally, avoid resetting the MAC if stopping it failed
+This can be useful for debugging
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c |  6 +++++-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c    | 11 ++++++++---
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 24 ++++++++-----------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-index b72510949877..ad4dc8e17b58 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-@@ -57,8 +57,11 @@ void mt76x02_mac_set_beacon(struct mt76x02_dev *dev,
- 	int bcn_len = dev->beacon_ops->slot_size;
- 	int bcn_addr = MT_BEACON_BASE + (bcn_len * dev->beacon_data_count);
- 
--	if (!mt76x02_write_beacon(dev, bcn_addr, skb))
-+	if (!mt76x02_write_beacon(dev, bcn_addr, skb)) {
-+		if (!dev->beacon_data_count)
-+			dev->beacon_hang_check++;
- 		dev->beacon_data_count++;
-+	}
- 	dev_kfree_skb(skb);
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index ecf5bd9605db..cb41f54bdd1c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1018,7 +1018,7 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
+ 	*hw = mt76_phy_hw(dev, mstat.ext_phy);
  }
- EXPORT_SYMBOL_GPL(mt76x02_mac_set_beacon);
-@@ -74,6 +77,7 @@ void mt76x02_mac_set_beacon_enable(struct mt76x02_dev *dev,
- 	if (!dev->mt76.beacon_mask)
- 		dev->tbtt_count = 0;
  
-+	dev->beacon_hang_check = 0;
- 	if (enable) {
- 		dev->mt76.beacon_mask |= BIT(mvif->idx);
- 	} else {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index cf4d4110cc99..de30cf5e2d2f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -1044,10 +1044,9 @@ static void mt76x02_check_mac_err(struct mt76x02_dev *dev)
- 			return;
- 		}
+-static int
++static void
+ mt76_check_ccmp_pn(struct sk_buff *skb)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+@@ -1028,13 +1028,13 @@ mt76_check_ccmp_pn(struct sk_buff *skb)
+ 	int ret;
  
--		if (++dev->beacon_hang_check < 10)
-+		if (dev->beacon_hang_check < 10)
- 			return;
+ 	if (!(status->flag & RX_FLAG_DECRYPTED))
+-		return 0;
++		return;
  
--		dev->beacon_hang_check = 0;
- 	} else {
- 		u32 val = mt76_rr(dev, 0x10f4);
- 		if (!(val & BIT(29)) || !(val & (BIT(7) | BIT(5))))
-@@ -1057,10 +1056,16 @@ static void mt76x02_check_mac_err(struct mt76x02_dev *dev)
- 	dev_err(dev->mt76.dev, "MAC error detected\n");
+ 	if (status->flag & RX_FLAG_ONLY_MONITOR)
+-		return 0;
++		return;
  
- 	mt76_wr(dev, MT_MAC_SYS_CTRL, 0);
--	mt76x02_wait_for_txrx_idle(&dev->mt76);
-+	if (!mt76x02_wait_for_txrx_idle(&dev->mt76)) {
-+		dev_err(dev->mt76.dev, "MAC stop failed\n");
-+		goto out;
+ 	if (!wcid || !wcid->rx_check_pn)
+-		return 0;
++		return;
+ 
+ 	security_idx = status->qos_ctl & IEEE80211_QOS_CTL_TID_MASK;
+ 	if (status->flag & RX_FLAG_8023)
+@@ -1048,7 +1048,7 @@ mt76_check_ccmp_pn(struct sk_buff *skb)
+ 		 */
+ 		if (ieee80211_is_frag(hdr) &&
+ 		    !ieee80211_is_first_frag(hdr->frame_control))
+-			return 0;
++			return;
+ 	}
+ 
+ 	/* IEEE 802.11-2020, 12.5.3.4.4 "PN and replay detection" c):
+@@ -1065,15 +1065,15 @@ mt76_check_ccmp_pn(struct sk_buff *skb)
+ 	BUILD_BUG_ON(sizeof(status->iv) != sizeof(wcid->rx_key_pn[0]));
+ 	ret = memcmp(status->iv, wcid->rx_key_pn[security_idx],
+ 		     sizeof(status->iv));
+-	if (ret <= 0)
+-		return -EINVAL; /* replay */
++	if (ret <= 0) {
++		status->flag |= RX_FLAG_ONLY_MONITOR;
++		return;
 +	}
  
-+	dev->beacon_hang_check = 0;
- 	mt76_set(dev, MT_MAC_SYS_CTRL, MT_MAC_SYS_CTRL_RESET_CSR);
- 	udelay(10);
-+
-+out:
- 	mt76_wr(dev, MT_MAC_SYS_CTRL,
- 		MT_MAC_SYS_CTRL_ENABLE_TX | MT_MAC_SYS_CTRL_ENABLE_RX);
+ 	memcpy(wcid->rx_key_pn[security_idx], status->iv, sizeof(status->iv));
+ 
+ 	if (status->flag & RX_FLAG_IV_STRIPPED)
+ 		status->flag |= RX_FLAG_PN_VALIDATED;
+-
+-	return 0;
  }
+ 
+ static void
+@@ -1246,11 +1246,7 @@ void mt76_rx_complete(struct mt76_dev *dev, struct sk_buff_head *frames,
+ 	while ((skb = __skb_dequeue(frames)) != NULL) {
+ 		struct sk_buff *nskb = skb_shinfo(skb)->frag_list;
+ 
+-		if (mt76_check_ccmp_pn(skb)) {
+-			dev_kfree_skb(skb);
+-			continue;
+-		}
+-
++		mt76_check_ccmp_pn(skb);
+ 		skb_shinfo(skb)->frag_list = NULL;
+ 		mt76_rx_convert(dev, skb, &hw, &sta);
+ 		ieee80211_rx_list(hw, sta, skb, &list);
 -- 
 2.36.1
 
