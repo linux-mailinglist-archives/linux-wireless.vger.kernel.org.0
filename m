@@ -2,77 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 447C255A182
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9F855A19B
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 21:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230448AbiFXTNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jun 2022 15:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42320 "EHLO
+        id S230164AbiFXTNh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jun 2022 15:13:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231512AbiFXTMv (ORCPT
+        with ESMTP id S231455AbiFXTNG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jun 2022 15:12:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5257081DBA;
-        Fri, 24 Jun 2022 12:12:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E43D1621A3;
-        Fri, 24 Jun 2022 19:12:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EC7C34114;
-        Fri, 24 Jun 2022 19:12:48 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="itCPwM20"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1656097966;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=4Opv7H7b7jpTZpdXbND2IHSq5Uo5YT03x2GlaOQr9ns=;
-        b=itCPwM20JiYyV1kN1+KDhxgW9w0RihJJu6flpMpZtuZ8oJ0DFV0juVxcxWghz5ae4y59Tq
-        Ek+LUY8t7g9LNLYunYWoKtKz/TxRPNMbQi+OIJnRX5c10ispOAwInSzEKzTvsqvdPGS/KJ
-        WibS2bs7Fpa7NZsS7PEwJlz0XS9DXCs=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1fb3e598 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Fri, 24 Jun 2022 19:12:46 +0000 (UTC)
-Date:   Fri, 24 Jun 2022 21:12:42 +0200
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Gregory Erwin <gregerwin256@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Rui Salvaterra <rsalvaterra@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] ath9k: rng: escape sleep loop when unregistering
-Message-ID: <YrYMqqqoK7HBAXgJ@zx2c4.com>
-References: <YrUKUt5nvX8qf1Je@zx2c4.com>
- <20220624011449.1473399-1-Jason@zx2c4.com>
- <CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_DVXtent3HA@mail.gmail.com>
+        Fri, 24 Jun 2022 15:13:06 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE7EA45A
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jun 2022 12:13:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=ZhKAImJnigp1/EQTMtuNh4AliQfHdZ1j7fmf6bFMB/Y=; b=Y6Uo7kSgcCP+7uQIedLBhFG0ar
+        rHOOIxQB+USzA7GZ8yKXeHl1VAjwTPx9jit3gRFGSCRHcIg6WNHf7vMhZiDqOibeXq1ledDpDC2ae
+        HI8N3pLg3OVqwb/O5g+m0GWXhJN+w6LF+FWcnDZoupF9EXJHK1v7RZmnVsR9sK/JLC6I=;
+Received: from p200300daa71a4800391046fbc91acf5a.dip0.t-ipconnect.de ([2003:da:a71a:4800:3910:46fb:c91a:cf5a] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1o4ojm-0002r8-EC
+        for linux-wireless@vger.kernel.org; Fri, 24 Jun 2022 21:13:02 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/4] mt76: mt7615: add sta_rec with EXTRA_INFO_NEW for the first time only
+Date:   Fri, 24 Jun 2022 21:12:57 +0200
+Message-Id: <20220624191300.52766-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_DVXtent3HA@mail.gmail.com>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Gregory,
+Set EXTRA_INFO_NEW for the first time only to prevent adding the same
+starec entry, otherwise the entry might be removed in fw.
 
-On Thu, Jun 23, 2022 at 10:25:26PM -0700, Gregory Erwin wrote:
-> Hi Jason,
-> 
-> I think you are on the right track, but even with this patch
-> 'ip link set wlan0 down' blocks until the hwrng reader gives up.
-> The reader can either be userspace (dd, cat, etc) or it can also
-> be the rng_core module. I can replicate the hang in the two different
-> situations, so I gathered two stack traces for 'ip' depending on the
-> reader of hwrng:
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c    | 9 ++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h | 1 +
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-Thanks for the traces. I'll send a v2 to you shortly.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 194e9ccd4a73..989b2a41b670 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -844,6 +844,7 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	struct mt7615_dev *dev = phy->dev;
+ 	struct wtbl_req_hdr *wtbl_hdr;
+ 	struct mt7615_sta *msta;
++	bool new_entry = true;
+ 	int cmd, err;
+ 
+ 	msta = sta ? (struct mt7615_sta *)sta->drv_priv : &mvif->sta;
+@@ -853,7 +854,13 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	if (IS_ERR(sskb))
+ 		return PTR_ERR(sskb);
+ 
+-	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, true);
++	if (!sta) {
++		if (mvif->sta_added)
++			new_entry = false;
++		else
++			mvif->sta_added = true;
++	}
++	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, new_entry);
+ 	if (enable && sta)
+ 		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
+ 					MT76_STA_INFO_STATE_ASSOC);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 653181905d09..8499cdc4bb0d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -141,6 +141,7 @@ struct mt7615_sta {
+ struct mt7615_vif {
+ 	struct mt76_vif mt76; /* must be first */
+ 	struct mt7615_sta sta;
++	bool sta_added;
+ };
+ 
+ struct mib_stats {
+-- 
+2.36.1
 
-Jason
