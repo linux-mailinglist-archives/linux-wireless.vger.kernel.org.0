@@ -2,48 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E86A2559753
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 12:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4A5D55975A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jun 2022 12:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231230AbiFXKGw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jun 2022 06:06:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50824 "EHLO
+        id S231185AbiFXKH5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jun 2022 06:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbiFXKGm (ORCPT
+        with ESMTP id S230018AbiFXKH4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jun 2022 06:06:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B25616F4B0
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jun 2022 03:06:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45EA46218C
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jun 2022 10:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19547C34114;
-        Fri, 24 Jun 2022 10:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656065200;
-        bh=PHOHvDSIWwZlgZEjUF9IlCuXjjMkgxlP2mtKSWGku5c=;
-        h=From:To:Cc:Subject:Date:From;
-        b=cuCzwAO1znO9Fw+gReohbOudot/gu0d+uQ/vSmhR7lZ+r6JBpPb8kYACilZjoNfb6
-         jWL6hwjoGvd1l4XSibqRV9MyS4U66LPNYMNpSMHZXXjU9oy9LeM0E4xRN9XjW8Eb+x
-         EdgNcYjJ6caZVeMZpJ9lV5dMoieEdG9MdRaNRFU/AaJHm35dZSGnv43Tk9rXOMndTo
-         4ZhJSY/3WFN1hroT/5Z3Pp+VVfBIGjL8LUMSdsjPo4F0mXkH9uNZvZhoH3bAw4Lqxj
-         g9f4Cf3OinQVX+Vau5MvfA3ioDSa9Nd+IRcGe0cBt/qqKSIzlyt6uOtUHOp7uUlgh+
-         wmOBEJxaIQMhg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7921: make mt7921_pci_driver static
-Date:   Fri, 24 Jun 2022 12:06:29 +0200
-Message-Id: <da9740f81ef48488aaedf7b2effb10779a479e8f.1656065130.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.36.1
+        Fri, 24 Jun 2022 06:07:56 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9378FFD8
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jun 2022 03:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656065275; x=1687601275;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XcEfhdzTZFtKgvR9359QSpy4oXUw0Mr1WerfhaFmtfs=;
+  b=bPA0BMDl5+VVe9jBFnjsklPj9vJ8PvYQ6LhXGX1f86Oj8SzsCgimLKSi
+   NiXPkZwpvifg5d+/PAEgmjV2IelWsAMAJ4aduZ68/6k6DAg/lUflLSgh6
+   fPYrB4M/feXgTl1WOWXotSgigh+W9kHXMq9RhK50U2pDu8GCu456DmdNF
+   wjWDhh9d0+wjsNASTvoMl5VJ71cbBKTMvdd9XnrO1hQ61zFLKLsXIa3QG
+   uoRFb0Pwz7Qjjmq/rnhZmxfRRt6ftz53tWHThlBAaC/XuqS7sC52Te8nx
+   Tw0gE4RwO32cZ9kvQocTf1ECqgiICi/txGgFaTs8zRgdjd5G6MCnn6Ygz
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10387"; a="344964678"
+X-IronPort-AV: E=Sophos;i="5.92,218,1650956400"; 
+   d="scan'208";a="344964678"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2022 03:07:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,218,1650956400"; 
+   d="scan'208";a="691464917"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 24 Jun 2022 03:07:53 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o4gEC-0003yT-RI;
+        Fri, 24 Jun 2022 10:07:52 +0000
+Date:   Fri, 24 Jun 2022 18:07:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless-next:mld] BUILD SUCCESS
+ e6b1d0fdd38fde8195b8b9df547c550b38337e98
+Message-ID: <62b58cd5.JRV4bVJCxsskBMqF%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,40 +63,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt7921_pci_driver struct is only referenced in mt7921/pci.c so make it
-static.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
+branch HEAD: e6b1d0fdd38fde8195b8b9df547c550b38337e98  wifi: mac80211: fix key lookup
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 1 -
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c    | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+elapsed time: 724m
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index efeb82cbbe83..d2d45f381232 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -272,7 +272,6 @@ mt7921_hw_dev(struct ieee80211_hw *hw)
- 	mt76_connac_mutex_release(&(dev)->mt76, &(dev)->pm)
- 
- extern const struct ieee80211_ops mt7921_ops;
--extern struct pci_driver mt7921_pci_driver;
- 
- u32 mt7921_reg_map(struct mt7921_dev *dev, u32 addr);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 23361a505daf..06af35250b3b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -489,7 +489,7 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
- }
- #endif /* CONFIG_PM */
- 
--struct pci_driver mt7921_pci_driver = {
-+static struct pci_driver mt7921_pci_driver = {
- 	.name		= KBUILD_MODNAME,
- 	.id_table	= mt7921_pci_device_table,
- 	.probe		= mt7921_pci_probe,
+configs tested: 57
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                              debian-10.3
+i386                             allyesconfig
+i386                   debian-10.3-kselftests
+i386                                defconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+x86_64                        randconfig-a004
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a015
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220622
+arc                  randconfig-r043-20220623
+riscv                randconfig-r042-20220623
+s390                 randconfig-r044-20220623
+riscv                             allnoconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+
+clang tested configs:
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220623
+hexagon              randconfig-r041-20220622
+s390                 randconfig-r044-20220622
+hexagon              randconfig-r045-20220622
+riscv                randconfig-r042-20220622
+hexagon              randconfig-r045-20220623
+
 -- 
-2.36.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
