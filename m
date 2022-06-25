@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C094255ACBB
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jun 2022 23:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3E7A55ACBE
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jun 2022 23:40:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233505AbiFYVYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Jun 2022 17:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51338 "EHLO
+        id S233520AbiFYVYW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Jun 2022 17:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233468AbiFYVYS (ORCPT
+        with ESMTP id S233485AbiFYVYS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 25 Jun 2022 17:24:18 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C672A13EB5
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Jun 2022 14:24:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DECA13F39
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Jun 2022 14:24:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
         Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=Q/jMzgf/jsjzqIhl2ruHN5aDUCE9o0c0u+/yCZPnc7M=; b=ivvHh4G3IrYaEWjqahgaA2VxRR
-        ufenb3bev4WE1raB14oRmBmiL00vzF+fqClIocTscpm8wqoy5WcP9PA6/qripBOhnYUry3JPZdCKZ
-        HFLPYJkNkRjMe2eoChRdNoJMwAPGGrf4bCtJCsr6i0XeWO0QKDdfd6n2a/BT3f3D038g=;
+        bh=bR2RUPUkWWAzbxL8eF6zc5illViuxH8B5Sbe3Rf7rn0=; b=dxb03xaE1GkK8AXZ2TfOAJ6fT7
+        VE6Lt28dEJSLy5wuRWf4CHiFVUeKJzoHKGjX24+aYOtcivFDxxlXDaSVExcDRCgSoQ4M9eDS40KN7
+        fmPk9M6Cq/top2OLbkNpQnR9x2lb3lh8BiM2mjkNNf2M+Or6VDwtzUmi18stJIbg+Ri8=;
 Received: from p200300daa733bc000d99dad39793d523.dip0.t-ipconnect.de ([2003:da:a733:bc00:d99:dad3:9793:d523] helo=localhost.localdomain)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1o5DGI-0003Vi-4J; Sat, 25 Jun 2022 23:24:14 +0200
+        id 1o5DGI-0003Vi-CB; Sat, 25 Jun 2022 23:24:14 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
 Cc:     toke@kernel.org, johannes@sipsolutions.net
-Subject: [PATCH 6/7] mac80211: add debugfs file to display per-phy AQL pending airtime
-Date:   Sat, 25 Jun 2022 23:24:10 +0200
-Message-Id: <20220625212411.36675-6-nbd@nbd.name>
+Subject: [PATCH 7/7] mac80211: only accumulate airtime deficit for active clients
+Date:   Sat, 25 Jun 2022 23:24:11 +0200
+Message-Id: <20220625212411.36675-7-nbd@nbd.name>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220625212411.36675-1-nbd@nbd.name>
 References: <20220625212411.36675-1-nbd@nbd.name>
@@ -49,63 +49,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now that the global pending airtime is more relevant for airtime fairness,
-it makes sense to make it accessible via debugfs for debugging
+When a client does not generate any local tx activity, accumulating airtime
+deficit for the round-robin scheduler can be harmful. If this goes on for too
+long, the deficit could grow quite large, which might cause unreasonable
+initial latency once the client becomes active
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- net/mac80211/debugfs.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ net/mac80211/sta_info.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 0c748b1eb023..4d4341249759 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -201,6 +201,36 @@ static const struct file_operations airtime_flags_ops = {
- 	.llseek = default_llseek,
- };
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 28ab55a072c6..c9852f71e8e1 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2046,6 +2046,7 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
+ 	struct ieee80211_local *local = sta->sdata->local;
+ 	u8 ac = ieee80211_ac_from_tid(tid);
+ 	u32 airtime = 0;
++	u32 diff;
  
-+static ssize_t aql_pending_read(struct file *file,
-+				char __user *user_buf,
-+				size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_local *local = file->private_data;
-+	char buf[400];
-+	int len = 0;
+ 	if (sta->local->airtime_flags & AIRTIME_USE_TX)
+ 		airtime += tx_airtime;
+@@ -2055,7 +2056,11 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
+ 	spin_lock_bh(&local->active_txq_lock[ac]);
+ 	sta->airtime[ac].tx_airtime += tx_airtime;
+ 	sta->airtime[ac].rx_airtime += rx_airtime;
+-	sta->airtime[ac].deficit -= airtime;
 +
-+	len = scnprintf(buf, sizeof(buf),
-+			"AC     AQL pending\n"
-+			"VO     %u us\n"
-+			"VI     %u us\n"
-+			"BE     %u us\n"
-+			"BK     %u us\n"
-+			"total  %u us\n",
-+			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_VO]),
-+			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_VI]),
-+			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_BE]),
-+			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_BK]),
-+			atomic_read(&local->aql_total_pending_airtime));
-+	return simple_read_from_buffer(user_buf, count, ppos,
-+				       buf, len);
-+}
++	diff = (u32)jiffies - sta->airtime[ac].last_active;
++	if (diff <= AIRTIME_ACTIVE_DURATION)
++		sta->airtime[ac].deficit -= airtime;
 +
-+static const struct file_operations aql_pending_ops = {
-+	.read = aql_pending_read,
-+	.open = simple_open,
-+	.llseek = default_llseek,
-+};
-+
- static ssize_t aql_txq_limit_read(struct file *file,
- 				  char __user *user_buf,
- 				  size_t count,
-@@ -631,6 +661,7 @@ void debugfs_hw_add(struct ieee80211_local *local)
- 	DEBUGFS_ADD(hw_conf);
- 	DEBUGFS_ADD_MODE(force_tx_status, 0600);
- 	DEBUGFS_ADD_MODE(aql_enable, 0600);
-+	DEBUGFS_ADD(aql_pending);
- 
- 	if (local->ops->wake_tx_queue)
- 		DEBUGFS_ADD_MODE(aqm, 0600);
+ 	spin_unlock_bh(&local->active_txq_lock[ac]);
+ }
+ EXPORT_SYMBOL(ieee80211_sta_register_airtime);
 -- 
 2.36.1
 
