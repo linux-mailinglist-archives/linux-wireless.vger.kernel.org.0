@@ -2,59 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8544655A8D1
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jun 2022 12:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A43755AA73
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jun 2022 15:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbiFYKZZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Jun 2022 06:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39088 "EHLO
+        id S232981AbiFYNWX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Jun 2022 09:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232369AbiFYKZY (ORCPT
+        with ESMTP id S232509AbiFYNWW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Jun 2022 06:25:24 -0400
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C38E22524
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Jun 2022 03:25:23 -0700 (PDT)
-Received: by mail-il1-f198.google.com with SMTP id p12-20020a056e02144c00b002d196a4d73eso3150396ilo.18
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Jun 2022 03:25:23 -0700 (PDT)
+        Sat, 25 Jun 2022 09:22:22 -0400
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E2320F7F
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Jun 2022 06:22:21 -0700 (PDT)
+Received: by mail-il1-f200.google.com with SMTP id l4-20020a056e021c0400b002d92232d76dso3346866ilh.1
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Jun 2022 06:22:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=PpTw+0pR7d6KHpWzvUOwmUS7vIoJqaATGHEMY/gsX2A=;
-        b=K2Narrx9d96LO9oV39tPyAhwR4DXkLyycq/Rtd2hJJrbVxrj+iGaGQnUHhhyZkGkgr
-         ax0WcsSoTRTGNiB0uaZ+r/vTUwovRw38BAMW3wdUCTHf/rLuYZVeIcmxBdWT8ob0PymG
-         qLeC1yRIE7A5Gr1ebiNeI1nawwfcqnFPWJ8DQZDgxx8/rcxB7NIPxQTOfUiHMi4uh8xE
-         aHjCO8oTJedUP1//v0XzT8fFhYrH+sPZeJxF4NNZYXiqMsqvi8+5x+S7rc2pCLbwLCIa
-         tQ0GXTsEIXZPjTvEIOI9Ofqxw7V6Rmqsu2MyUjeoT8p5WuAMFOw/2JSP3wCzxWDKJfd9
-         ZcpA==
-X-Gm-Message-State: AJIora/IvamK2WiC+2do8Vw9T57x2zeW5sdOF8TRsmiISiEviMuFmVN+
-        Z6yyWSB9AMadsKmNkwfs/lQsyXSK0MXZR2xTl1F5X80UqFJr
-X-Google-Smtp-Source: AGRyM1vyuTnNG1op68acyHfJlLSr34YHYTrvAEpZwGi6Cbef/aP1GrA3CCCBKweTEXTj6eEY5/aDNdEA2+u9dTrnUMthPogUPw/n
+        bh=BjZQvvA6i1wTN10u+QILwySJyfFf9Ak+YFbYOo2VvfA=;
+        b=Vde+n2qL/9rlpjawzAXPYVpJ2vi1ztFJAT3kV9/d3Zb1beejAgIfUKXMqPjAmyd5GI
+         T/kJugTYmH4Hvi3Nu6qD2MqW8lYdkG3l5xu4Ng3jpKrhV00EItmvYNUUjyPaP+j11Ujc
+         jzq+MKcnAkAr+Yj5mqL8z9pnMtGzOXTo/lGCWJ4d2VbqLi2g613eE6rP7dxF/2FIYe4K
+         zpRbu/OhF42EcLa4ebjN3L2+yLwPPnv0JrXW6Z8emnV/cxsyjOAa1/RVAinFOAkjSiW+
+         CHAe3QwsYqgEu/ZFS975wgcMQKGryy4MNR7TbXHFd/HF73DzPSzISvBykiWjGmyWotft
+         Tyqw==
+X-Gm-Message-State: AJIora8FwCjvsthba7/WEzVHhxgcZ4zvYun5QFZ85Yn/dHPFh1wQq5iF
+        OomD/Trc5b7NwpA34azQRtEBTuLpXEk+fxpwyWLYCM+DSiWL
+X-Google-Smtp-Source: AGRyM1vPCvxsW13MJIXmV3zpoPlQErTa0y92lXPI5yANXTUncWMJ9kKYo8OM+6Tt72LN9h7CB8anzywiKTd16jlw0rCTPnDfsO7Q
 MIME-Version: 1.0
-X-Received: by 2002:a6b:ed15:0:b0:674:f8eb:a373 with SMTP id
- n21-20020a6bed15000000b00674f8eba373mr1734128iog.37.1656152722465; Sat, 25
- Jun 2022 03:25:22 -0700 (PDT)
-Date:   Sat, 25 Jun 2022 03:25:22 -0700
+X-Received: by 2002:a05:6638:371e:b0:331:bc34:c3b1 with SMTP id
+ k30-20020a056638371e00b00331bc34c3b1mr2534999jav.68.1656163340337; Sat, 25
+ Jun 2022 06:22:20 -0700 (PDT)
+Date:   Sat, 25 Jun 2022 06:22:20 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000b76c8005e2431a11@google.com>
-Subject: [syzbot] WARNING in cfg80211_ch_switch_notify
-From:   syzbot <syzbot+90d912872157e63589e4@syzkaller.appspotmail.com>
-To:     SHA-cyfmac-dev-list@infineon.com, ajay.kathat@microchip.com,
-        amitkarwar@gmail.com, aspriel@gmail.com,
-        brcm80211-dev-list.pdl@broadcom.com, claudiu.beznea@microchip.com,
-        davem@davemloft.net, edumazet@google.com, fabioaiuto83@gmail.com,
-        franky.lin@broadcom.com, ganapathi017@gmail.com,
-        geomatsi@gmail.com, gregkh@linuxfoundation.org,
-        hante.meuleman@broadcom.com, hdegoede@redhat.com,
-        huxinming820@gmail.com, imitsyanko@quantenna.com,
-        jagathjog1996@gmail.com, johannes.berg@intel.com,
-        johannes@sipsolutions.net, kuba@kernel.org, kvalo@kernel.org,
-        libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        loic.poulain@linaro.org, netdev@vger.kernel.org, pabeni@redhat.com,
-        prestwoj@gmail.com, sharvari.harisangam@nxp.com, smoch@web.de,
-        syzkaller-bugs@googlegroups.com, ye.guojin@zte.com.cn
+Message-ID: <00000000000097473905e2459315@google.com>
+Subject: [syzbot] WARNING in wdev_chandef
+From:   syzbot <syzbot+b4e9aa0f32ffd9902442@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
@@ -72,59 +62,67 @@ syzbot found the following issue on:
 
 HEAD commit:    34d1d36073ea Add linux-next specific files for 20220621
 git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=175aca1ff00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=15062b7ff00000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=b24b62d1c051cfc8
-dashboard link: https://syzkaller.appspot.com/bug?extid=90d912872157e63589e4
+dashboard link: https://syzkaller.appspot.com/bug?extid=b4e9aa0f32ffd9902442
 compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15a50e1ff00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=104b1cc4080000
 
-The issue was bisected to:
-
-commit 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Thu Apr 14 14:50:57 2022 +0000
-
-    wifi: cfg80211: do some rework towards MLO link APIs
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=177e008ff00000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=14fe008ff00000
-console output: https://syzkaller.appspot.com/x/log.txt?x=10fe008ff00000
+Unfortunately, I don't have any reproducer for this issue yet.
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+90d912872157e63589e4@syzkaller.appspotmail.com
-Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
+Reported-by: syzbot+b4e9aa0f32ffd9902442@syzkaller.appspotmail.com
 
 ------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1021 at net/wireless/nl80211.c:18562 cfg80211_ch_switch_notify+0x3b7/0x8a0 net/wireless/nl80211.c:18562
+WARNING: CPU: 1 PID: 9272 at net/wireless/chan.c:1436 wdev_chandef+0x164/0x1a0 net/wireless/chan.c:1436
 Modules linked in:
-CPU: 1 PID: 1021 Comm: kworker/u4:5 Not tainted 5.19.0-rc3-next-20220621-syzkaller #0
+CPU: 1 PID: 9272 Comm: syz-executor.1 Not tainted 5.19.0-rc3-next-20220621-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy4 ieee80211_csa_finalize_work
-
-RIP: 0010:cfg80211_ch_switch_notify+0x3b7/0x8a0 net/wireless/nl80211.c:18562
-Code: fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 d2 04 00 00 49 8b 14 24 44 89 ee 48 89 ef e8 33 fa fb ff e9 44 ff ff ff e8 e9 78 cc f8 <0f> 0b e9 38 ff ff ff e8 dd 78 cc f8 48 8d bd f8 04 00 00 48 ba 00
-RSP: 0018:ffffc90004dcfc60 EFLAGS: 00010293
-
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff88801eea57c0 RSI: ffffffff88ae4467 RDI: 0000000000000005
-RBP: ffff88801f004c90 R08: 0000000000000005 R09: 0000000000000009
-R10: 0000000000000001 R11: 0000000000000010 R12: ffff88801f006458
-R13: 0000000000000000 R14: ffff88801f004000 R15: ffff888021d90000
-FS:  0000000000000000(0000) GS:ffff8880b9b00000(0000) knlGS:0000000000000000
+RIP: 0010:wdev_chandef+0x164/0x1a0 net/wireless/chan.c:1436
+Code: f8 48 8d bb b0 00 00 00 be ff ff ff ff e8 c4 66 c5 00 31 ff 89 c5 89 c6 e8 c9 1b c5 f8 85 ed 0f 85 f7 fe ff ff e8 6c 1f c5 f8 <0f> 0b e9 eb fe ff ff 48 c7 c7 4c 70 bd 8d e8 69 39 11 f9 e9 c3 fe
+RSP: 0018:ffffc9000302f2f0 EFLAGS: 00010216
+RAX: 0000000000000515 RBX: ffff888074ac0c90 RCX: ffffc9000c92a000
+RDX: 0000000000040000 RSI: ffffffff88b59de4 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000001 R14: 0000000000000004 R15: 0000000000000004
+FS:  00007f71b11d9700(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000021000000 CR3: 000000000ba8e000 CR4: 00000000003506e0
+CR2: 000000002022a000 CR3: 000000002a96d000 CR4: 00000000003506f0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __ieee80211_csa_finalize+0x738/0xc90 net/mac80211/cfg.c:3432
- ieee80211_csa_finalize net/mac80211/cfg.c:3439 [inline]
- ieee80211_csa_finalize_work+0x131/0x170 net/mac80211/cfg.c:3464
- process_one_work+0x996/0x1610 kernel/workqueue.c:2289
- worker_thread+0x665/0x1080 kernel/workqueue.c:2436
- kthread+0x2e9/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:302
+ he_get_txmcsmap net/wireless/nl80211.c:4894 [inline]
+ nl80211_parse_tx_bitrate_mask.isra.0+0x3e8/0x2460 net/wireless/nl80211.c:4994
+ parse_tid_conf net/wireless/nl80211.c:15379 [inline]
+ nl80211_set_tid_config+0x147e/0x18f0 net/wireless/nl80211.c:15444
+ genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:731
+ genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
+ genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:792
+ netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2501
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:803
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x543/0x7f0 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x917/0xe10 net/netlink/af_netlink.c:1921
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:734
+ ____sys_sendmsg+0x6eb/0x810 net/socket.c:2489
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2543
+ __sys_sendmsg net/socket.c:2572 [inline]
+ __do_sys_sendmsg net/socket.c:2581 [inline]
+ __se_sys_sendmsg net/socket.c:2579 [inline]
+ __x64_sys_sendmsg+0x132/0x220 net/socket.c:2579
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+RIP: 0033:0x7f71b0089109
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f71b11d9168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f71b019bf60 RCX: 00007f71b0089109
+RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000003
+RBP: 00007f71b00e305d R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe9a7e5d8f R14: 00007f71b11d9300 R15: 0000000000022000
  </TASK>
 
 
@@ -135,6 +133,3 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this issue. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
