@@ -2,53 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A42455B30C
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jun 2022 19:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1775D55B323
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jun 2022 19:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231739AbiFZRHZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jun 2022 13:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33886 "EHLO
+        id S231676AbiFZRdS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jun 2022 13:33:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbiFZRHY (ORCPT
+        with ESMTP id S229468AbiFZRdP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jun 2022 13:07:24 -0400
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4ACD116
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Jun 2022 10:07:22 -0700 (PDT)
-Received: by mail-il1-f200.google.com with SMTP id s15-20020a056e02216f00b002d3d5e41565so4446388ilv.10
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Jun 2022 10:07:22 -0700 (PDT)
+        Sun, 26 Jun 2022 13:33:15 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3D165BC
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Jun 2022 10:33:11 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id q9so9946012wrd.8
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Jun 2022 10:33:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=LVyzL8mphbtENNv7Ak5Yb4fzhkW9NpbRag7uI4Hacxc=;
+        b=CixvAORRF/ukN2FEZzF3AXwjYn0QSsLkd38tK+4yJetZJEOD2q8BWdl+K7blkYG7QX
+         PEpxd9kqTN2VWUXcz4YD/IK4r7df6FMK1XmJ0tM6GJBIgNOaTzoUXLdb0Hle84111G9o
+         PEcdOK/tcVBUK/beyvIgVjBuqREmne+JuyFWCO/FfnY/agQm+R8Qf8mdpKl+YSiiVc6D
+         warzD6uHfDCskO3OxQ41n/NxKpV0jX6Lm3HwMpdQWZangXskbf0W6LW/iOMuDxXv5+n9
+         tur8NsPqRiFwF1WgpEzx5KFrcp5JtHOeGJzYbiubnZrrT7cSPNOvq+v99yOHeGHnva84
+         muQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=Ghv9V02UI3cW9mMu3tiqyhBVgPq8Zyt/WmlW6q0s4go=;
-        b=03Gu2t+szHZYV41sgra8HyGKLPXzHy706N8RUfb6OjNVntyZbbIffoZsroRTO+LFI3
-         uYjgq43eWN/t+GAnPBvIkZ90AzwKukrUICU/Usk8ACFVQ0jU1k5bogGYbNRMeA2T3MF4
-         JqHL4dRS7v0Gou8Xc+DcfTPLBcyudt/nYliZRFLqrKIzKH5U12IX4To1fRGmJLxRaTB7
-         UUH2YHWWO8njEUFWEDuW/Z1ENvMdJS+0Gyr6ve6XrmID9WxuNveJXYNCSTu9peH9keuY
-         JIxjGMOKWadjEo7t/BPO8RNisHQyV11FtcCPGS3CzlxxdEgvJnQsZDYI0MPZoIIFJlpf
-         Ma7w==
-X-Gm-Message-State: AJIora+5CaJ0/EJODjCsESxBBBU/OQbKtHfcAY8ZXCmv37HMs2/iLlcG
-        W1bGBjDx4xK4O3TrizgLGXmW5Mq9P3c1AogS7YYV4X6wah7q
-X-Google-Smtp-Source: AGRyM1sN7APmK99jnDwy7jPNCtNe+i/wJHImHJsgrv2H6BiEeLMHDzp3yBxbp3fkQkC3JrIulVDmTqMiQr/kj/lNvHCDE5HF+vuq
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=LVyzL8mphbtENNv7Ak5Yb4fzhkW9NpbRag7uI4Hacxc=;
+        b=DcFAShgySVLjRIwKh0T69jimEVc/ND4YuMTU+PSiuo8W2w6ob1LU08NR36wRZKk2y0
+         M175rYrGSumJ9zCCT77xdjVXZkDwrAEphTfePSjQcmKmmOoN/6oAIcbrZ/WboE8oIctk
+         NgOKVHw8yoZ/3nIyWX+WU9Ug1glkShKZLeHjSj0nteJXM/Rsg/HiXhPjBLfjcYFEGkaM
+         sMybe9pei6DMyOBCC56RAUcyPA8k5ndUTMU3N6kfm8pxheV+Wsx1gsF3MVmuUWrbQYhw
+         ePtg44ch9h3z7Qy9Uptl4+Ac3QLxv5RdHuZQpODsAcxdatOOFO6pVCcFleeFLtHuxlmN
+         8QNA==
+X-Gm-Message-State: AJIora95KvWNBY+ZKLZIxR54IE/5A/+g1PcPwdGnkpEalGKVvmUt0LAO
+        lgMpWNBu5YMn9jAF7Dg6OOkwXg==
+X-Google-Smtp-Source: AGRyM1sT+QzEds/eFmu00keheN6WbaWKP57czuiPSPRTt3/jN3GsXQ0byLphmAqRpiPIai9t45cykg==
+X-Received: by 2002:a5d:6ac4:0:b0:21b:a724:1711 with SMTP id u4-20020a5d6ac4000000b0021ba7241711mr8495754wrw.80.1656264790204;
+        Sun, 26 Jun 2022 10:33:10 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id c11-20020a05600c0acb00b00397342e3830sm11310979wmr.0.2022.06.26.10.33.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Jun 2022 10:33:09 -0700 (PDT)
+Message-ID: <43b1c2fd-b746-84eb-c82b-23f1bd39242e@linaro.org>
+Date:   Sun, 26 Jun 2022 19:33:06 +0200
 MIME-Version: 1.0
-X-Received: by 2002:a92:cc4a:0:b0:2d8:f505:a44f with SMTP id
- t10-20020a92cc4a000000b002d8f505a44fmr5273827ilq.207.1656263241776; Sun, 26
- Jun 2022 10:07:21 -0700 (PDT)
-Date:   Sun, 26 Jun 2022 10:07:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000002e465b05e25cd60c@google.com>
-Subject: [syzbot] WARNING in ieee80211_link_info_change_notify
-From:   syzbot <syzbot+bce2ca140cc00578ed07@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 01/14] thermal/core: Change thermal_zone_ops to
+ thermal_sensor_ops
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linexp.org>
+Cc:     Kevin Hilman <khilman@baylibre.com>,
+        Alexandre Bailon <abailon@baylibre.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, Peter Kaestle <peter@piie.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Chuansheng Liu <chuansheng.liu@intel.com>,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Antoine Tenart <atenart@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
+        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER" 
+        <platform-driver-x86@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:RENESAS R-CAR THERMAL DRIVERS" 
+        <linux-renesas-soc@vger.kernel.org>
+References: <20220507125443.2766939-1-daniel.lezcano@linexp.org>
+ <20220507125443.2766939-2-daniel.lezcano@linexp.org>
+ <CAJZ5v0ik_JQ4Awtw7iR68W4-9ZL8FRDsDd-kWmL-n09fgg3reg@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0ik_JQ4Awtw7iR68W4-9ZL8FRDsDd-kWmL-n09fgg3reg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,91 +122,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
 
-syzbot found the following issue on:
+Hi Rafael,
 
-HEAD commit:    ac0ba5454ca8 Add linux-next specific files for 20220622
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=14d4f08ff00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=12809dacb9e7c5e0
-dashboard link: https://syzkaller.appspot.com/bug?extid=bce2ca140cc00578ed07
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1502ddf8080000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17e8c0a8080000
+sorry for the delay, I was OoO.
 
-Bisection is inconclusive: the issue happens on the oldest tested release.
+On 17/05/2022 17:42, Rafael J. Wysocki wrote:
+> On Sat, May 7, 2022 at 2:55 PM Daniel Lezcano <daniel.lezcano@linexp.org> wrote:
+>>
+>> A thermal zone is software abstraction of a sensor associated with
+>> properties and cooling devices if any.
+>>
+>> The fact that we have thermal_zone and thermal_zone_ops mixed is
+>> confusing and does not clearly identify the different components
+>> entering in the thermal management process. A thermal zone appears to
+>> be a sensor while it is not.
+> 
+> Well, the majority of the operations in thermal_zone_ops don't apply
+> to thermal sensors.  For example, ->set_trips(), ->get_trip_type(),
+> ->get_trip_temp().
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=158ee238080000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=178ee238080000
-console output: https://syzkaller.appspot.com/x/log.txt?x=138ee238080000
+The set_trips is necessary to set the sensor interrupt to fire when the 
+trip temperature is crossed the way up or down.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+bce2ca140cc00578ed07@syzkaller.appspotmail.com
+>> In order to set the scene for multiple thermal sensors aggregated into
+>> a single thermal zone. Rename the thermal_zone_ops to
+>> thermal_sensor_ops, that will appear clearyl the thermal zone is not a
+>> sensor but an abstraction of one [or multiple] sensor(s).
+> 
+> So I'm not convinced that the renaming mentioned above is particularly
+> clean either.
+> 
+> IMV the way to go would be to split the thermal sensor operations,
+> like ->get_temp(), out of thermal_zone_ops.
 
-------------[ cut here ]------------
-wlan1: Failed check-sdata-in-driver check, flags: 0x4
-WARNING: CPU: 1 PID: 3613 at net/mac80211/driver-ops.h:189 drv_link_info_changed net/mac80211/driver-ops.h:189 [inline]
-WARNING: CPU: 1 PID: 3613 at net/mac80211/driver-ops.h:189 ieee80211_link_info_change_notify+0x63a/0x730 net/mac80211/main.c:284
-Modules linked in:
-CPU: 1 PID: 3613 Comm: syz-executor275 Not tainted 5.19.0-rc3-next-20220622-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:drv_link_info_changed net/mac80211/driver-ops.h:189 [inline]
-RIP: 0010:ieee80211_link_info_change_notify+0x63a/0x730 net/mac80211/main.c:284
-Code: ab e8 08 00 00 48 85 ed 0f 84 a3 00 00 00 e8 2d ac b8 f8 e8 28 ac b8 f8 8b 14 24 48 89 ee 48 c7 c7 60 e8 f3 8a e8 2a db 74 00 <0f> 0b e9 30 fb ff ff e8 0a ac b8 f8 e8 c5 e3 b9 00 31 ff 41 89 c6
-RSP: 0018:ffffc90002f2f520 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff88807cc94c80 RCX: 0000000000000000
-RDX: ffff88801e921d40 RSI: ffffffff81610778 RDI: fffff520005e5e96
-RBP: ffff88807cc94000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000001 R12: 0000000002000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ffff88807c4e0de0
-FS:  00005555556e0300(0000) GS:ffff8880b9b00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000640940 CR3: 000000007c22d000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ieee80211_set_mcast_rate+0x39/0x40 net/mac80211/cfg.c:2716
- rdev_set_mcast_rate net/wireless/rdev-ops.h:1222 [inline]
- nl80211_set_mcast_rate+0x317/0x610 net/wireless/nl80211.c:11044
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:731
- genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:792
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2501
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:803
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x543/0x7f0 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x917/0xe10 net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec net/socket.c:714 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:734
- ____sys_sendmsg+0x6eb/0x810 net/socket.c:2489
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2543
- __sys_sendmsg net/socket.c:2572 [inline]
- __do_sys_sendmsg net/socket.c:2581 [inline]
- __se_sys_sendmsg net/socket.c:2579 [inline]
- __x64_sys_sendmsg+0x132/0x220 net/socket.c:2579
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-RIP: 0033:0x7f98d742d269
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 41 15 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff75c2ca58 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f98d742d269
-RDX: 0000000000000000 RSI: 0000000020000280 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000c00000000 R09: 0000000c00000000
-R10: 0000000c00000000 R11: 0000000000000246 R12: 0000000000000031
-R13: 00007fff75c2cac0 R14: 00007fff75c2cab0 R15: 00007f98d74a6410
- </TASK>
+Probably, we should first replace all the calls to ops->get_temp with a 
+function. Then create the ops for the sensor:
+
+  - get_trend
+  - get_temp
+  - set_trips
+  - bind / unbind
+
+> But then it is not clear what a thermal zone with multiple sensors in
+> it really means.  I guess it would require an aggregation function to
+> combine the thermal sensors in it that would produce an effective
+> temperature to check against the trip points.
+
+Yes, that is why the above ops->get_temp should be wrapped into a 
+function which can evolve to an aggregation function.
+
+> Honestly, I don't think that setting a separate set of trips for each
+> sensor in a thermal zone would make a lot of sense.
+
+I agree the set_trips is for the interrupt mode only.
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
