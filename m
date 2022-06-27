@@ -2,89 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 227B855DB69
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 15:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE95955D711
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 15:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232495AbiF0K1B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jun 2022 06:27:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
+        id S233277AbiF0Kam (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jun 2022 06:30:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiF0K1A (ORCPT
+        with ESMTP id S232441AbiF0Kal (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jun 2022 06:27:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4440D5FEF;
-        Mon, 27 Jun 2022 03:27:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D03BE612C3;
-        Mon, 27 Jun 2022 10:26:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F80C3411D;
-        Mon, 27 Jun 2022 10:26:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656325619;
-        bh=vjTgWiHh+robp6L83MZ74F5DMaJm4hX3GEkyX/9p/ss=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=ZwSP23aHPP1I3leRTLNvLo1GAOJZqOl1HOcixTm7IAeczV1M8txQaKNuf1cpTwfEy
-         pU95hRPpxaOFsMjvaBeQa7JsYUJKSSJslYDfZGIJ1E7fz0IrA5lZSxzgIpyyFFbVfN
-         aLOtpAcaAI4f7x7R4hoEIM3XO47OCOYhGdy7N5lBvqOZhtbvHN5bXyCs2lK2udCb12
-         /rBSUfw8JVEH8hDyOdxM3b0UGCDtbDJFWzIaP0oFSVXSTOtcuiU8hL18FKjSsPiRV5
-         f+b6bJ1oOflDlSF4ttcRODc8KaHTcpcD9fI1fIrhMHc25ri4RQBXHdOdpQVhaYJnd8
-         kti9DU8aPeLyA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Robert Marko <robimarko@gmail.com>
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, robh+dt@kernel.org,
+        Mon, 27 Jun 2022 06:30:41 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BA86261;
+        Mon, 27 Jun 2022 03:30:39 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id 89so14165695qvc.0;
+        Mon, 27 Jun 2022 03:30:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cZfAPaEvqTx34DnDPzb0WJHLTgfejH45gbcwnO/wivg=;
+        b=G2l+hKTC3b/3VUqvEpG03cbAWnBPUCxVt0TElZyrlXe9sLwg2fGZr+Xbz7KNps23gX
+         FUHqn/6nL6V+5PnjpOPvbU4+0MmRB82Um2XU44C0uYkdL/cw5EC6nUECFdLsKTNCSEIL
+         TYiO7Zif4ZqUm3feIrFdS5VmRvbQcaaCtvnT2zdYqNg6RoAbf/rb6RLjUw4wzHMJvJJo
+         FmbQ93mhlFAyaXF901/8R+aOozJuguPprdQpTYaYCVaftU/st+gZ+DjZ4DzPsSSYEcVo
+         KBQi1zWKuk77SiLYtPDPK8cAa3OTSPMfBFrqeaP0+noIs6TO5oysc1G4glI+yYaHj6nx
+         GIvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cZfAPaEvqTx34DnDPzb0WJHLTgfejH45gbcwnO/wivg=;
+        b=YcpWuWmC7AWCvvtsu8YSe61YPS/2vBbs9ohJQcxdK7gO9m/daWje/8CFZ6UD0uuIS/
+         TqNRU8QSiyXMyITnunAIqMrHRz6hkW0XpZGUn3qYO5rfnONSMFfZMMI5tIfx/GojunuC
+         yv2NWhDmw06EaTDSxU2gEpSv/9iNf0MhOXCa2d+fnxFcaK9Z4gJRl7PQoa3a10+32Sj8
+         v4FMv5njJEPC3uQJC9HW3XPakB/uuutYNquntqtCMZAKBULsPouxYqRAUFnktocSsNc2
+         o4L+pkYdy3x4tjv7+svpVerfSn6mXmZjQbIYjXETAC+iU3sWguTcWuwdL9GAMgVBRbkT
+         fVCA==
+X-Gm-Message-State: AJIora+8TfA0F3xzWX/FFhYGpCbd8gAfUaR64hakAfaaq+kUbU3kOCkm
+        rAyjg0rCgckKrYNo1PAUlxOpgRUSTCo6ESsO9jM=
+X-Google-Smtp-Source: AGRyM1voIwXZ4dMPnpLAqnCx3C8loYQQRTztZqdu3BPiOLJoENjZC+j0T+13kENmWdRQC8XyE5oler0toFCdYmPZk3w=
+X-Received: by 2002:a05:622a:1791:b0:317:76d8:d17f with SMTP id
+ s17-20020a05622a179100b0031776d8d17fmr8667214qtk.82.1656325838358; Mon, 27
+ Jun 2022 03:30:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220621135339.1269409-1-robimarko@gmail.com> <87o7yeo104.fsf@kernel.org>
+In-Reply-To: <87o7yeo104.fsf@kernel.org>
+From:   Robert Marko <robimarko@gmail.com>
+Date:   Mon, 27 Jun 2022 12:30:27 +0200
+Message-ID: <CAOX2RU4G-009qYZF7-LcCT9SCeAmj=v9Hdk+NU-nebq=fGdjBQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add new DT entry
+ for board ID
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+        kuba@kernel.org, pabeni@redhat.com,
+        Rob Herring <robh+dt@kernel.org>,
         krzysztof.kozlowski+dt@linaro.org, ath11k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add new DT entry for board ID
-In-Reply-To: <20220621135339.1269409-1-robimarko@gmail.com> (Robert Marko's
-        message of "Tue, 21 Jun 2022 15:53:38 +0200")
-References: <20220621135339.1269409-1-robimarko@gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 27 Jun 2022 13:26:51 +0300
-Message-ID: <87o7yeo104.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Devicetree List <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Robert Marko <robimarko@gmail.com> writes:
-
-> bus + qmi-chip-id + qmi-board-id and optionally the variant are currently
-> used for identifying the correct board data file.
+On Mon, 27 Jun 2022 at 12:27, Kalle Valo <kvalo@kernel.org> wrote:
 >
-> This however is sometimes not enough as all of the IPQ8074 boards that I
-> have access to dont have the qmi-board-id properly fused and simply return
-> the default value of 0xFF.
+> Robert Marko <robimarko@gmail.com> writes:
 >
-> So, to provide the correct qmi-board-id add a new DT property that allows
-> the qmi-board-id to be overridden from DTS in cases where its not set.
-> This is what vendors have been doing in the stock firmwares that were
-> shipped on boards I have.
+> > bus + qmi-chip-id + qmi-board-id and optionally the variant are currently
+> > used for identifying the correct board data file.
+> >
+> > This however is sometimes not enough as all of the IPQ8074 boards that I
+> > have access to dont have the qmi-board-id properly fused and simply return
+> > the default value of 0xFF.
+> >
+> > So, to provide the correct qmi-board-id add a new DT property that allows
+> > the qmi-board-id to be overridden from DTS in cases where its not set.
+> > This is what vendors have been doing in the stock firmwares that were
+> > shipped on boards I have.
+>
+> What's wrong with using 0xff? Ie. something like this:
+>
+> bus=ahb,qmi-chip-id=0,qmi-board-id=255,variant=foo
+>
+> Or maybe even just skip qmi-board-id entirely if it's not supported? So
+> that the board file string would be something like:
+>
+> bus=ahb,qmi-chip-id=0,variant=foo
+>
+> I really would like to avoid adding more DT properties unless it's
+> absolutely critical.
 
-What's wrong with using 0xff? Ie. something like this:
+Well, I suppose that due to the variant property we can avoid "correcting" the
+qmi-board-id
 
-bus=ahb,qmi-chip-id=0,qmi-board-id=255,variant=foo
-
-Or maybe even just skip qmi-board-id entirely if it's not supported? So
-that the board file string would be something like:
-
-bus=ahb,qmi-chip-id=0,variant=foo
-
-I really would like to avoid adding more DT properties unless it's
-absolutely critical.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards,
+Robert
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
