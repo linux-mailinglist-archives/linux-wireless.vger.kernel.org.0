@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8BBA55CB6D
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 14:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E89CB55C537
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 14:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234272AbiF0KuI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jun 2022 06:50:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49260 "EHLO
+        id S237023AbiF0Ln0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jun 2022 07:43:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233298AbiF0KuH (ORCPT
+        with ESMTP id S237449AbiF0Lmw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jun 2022 06:50:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA98637C;
-        Mon, 27 Jun 2022 03:50:06 -0700 (PDT)
+        Mon, 27 Jun 2022 07:42:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72921B3D;
+        Mon, 27 Jun 2022 04:38:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CDBF61356;
-        Mon, 27 Jun 2022 10:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFDAC3411D;
-        Mon, 27 Jun 2022 10:50:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 22D0FB81126;
+        Mon, 27 Jun 2022 11:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28C8C3411D;
+        Mon, 27 Jun 2022 11:38:08 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Gmhl4g69"
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="U0NsycCg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1656327001;
+        t=1656329886;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ndhjDSh6IDAApHdUOhYyREQEG9KTS7ba1Hpskd+9mCY=;
-        b=Gmhl4g69U3WqJc7i44KmIx8UxtP/m263zqIEmsOgbl6PmUVfMO8YrIHzv4MgOiBsjl8Qb9
-        Y5ujXv8qsMfOUeBcrjI2e0AjH3yuBXKjSSiidOO5sU72beiiIJQQSefeXW3qqsxIgB+6ZR
-        2b3m3IozdIZUu2DU0QPWCiOahDrlbeg=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id eba74c79 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Mon, 27 Jun 2022 10:50:01 +0000 (UTC)
+        bh=mmtDk5vsnneok1FhZ42DmbNlIYBF/ihqmYi8OhtCQUY=;
+        b=U0NsycCgDgx26b01Ari7PRQQoXt8/B+eTA+YCnKjtdJUToEpj1zNY2Mzkeyp/T+kLjQaf+
+        gQI/MrDZLWJZXXbPLBjqAfAgq9SKxMf13Cy2CXo4oPDsduPse0pvc/IuSfEtdyjIgZtSF4
+        ceMnMCMoRPs0fWcBb5B2xnyxxUr0vIs=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2ea245f1 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Mon, 27 Jun 2022 11:38:06 +0000 (UTC)
 From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
 To:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
@@ -45,11 +45,11 @@ Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Rui Salvaterra <rsalvaterra@gmail.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         stable@vger.kernel.org
-Subject: [PATCH v4] ath9k: sleep for less time when unregistering hwrng
-Date:   Mon, 27 Jun 2022 12:49:55 +0200
-Message-Id: <20220627104955.534013-1-Jason@zx2c4.com>
-In-Reply-To: <20220627092927.513709-1-Jason@zx2c4.com>
-References: <20220627092927.513709-1-Jason@zx2c4.com>
+Subject: [PATCH v5] ath9k: sleep for less time when unregistering hwrng
+Date:   Mon, 27 Jun 2022 13:37:49 +0200
+Message-Id: <20220627113749.564132-1-Jason@zx2c4.com>
+In-Reply-To: <20220627104955.534013-1-Jason@zx2c4.com>
+References: <20220627104955.534013-1-Jason@zx2c4.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,9 +68,8 @@ when waiting for a long time. There are numerous deadlocks that emerge
 related to shutdown. Work around this API limitation by waiting for a
 shorter amount of time and erroring more frequently. This commit also
 prevents hwrng from splatting messages to dmesg when there's a timeout
-and prevents calling msleep_interruptible() for tons of time when a
-thread is supposed to be shutting down, since msleep_interruptible()
-isn't actually interrupted by kthread_stop().
+and switches to using schedule_timeout_interruptible(), so that the
+kthread can be stopped.
 
 Reported-by: Gregory Erwin <gregerwin256@gmail.com>
 Tested-by: Gregory Erwin <gregerwin256@gmail.com>
@@ -85,38 +84,30 @@ Link: https://lore.kernel.org/lkml/CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_DVXt
 Link: https://bugs.archlinux.org/task/75138
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- drivers/char/hw_random/core.c        | 10 ++++++++--
+Sorry for all the churn here in sending a v4 and v5 so soon. The
+semantics of schedule_timeout_interruptible vs msleep_interruptible with
+respect to kthreads is kind of confusing. I'll send a follow up patch
+for that elsewhere. For now I think this should suffice for fixing the
+bug.
+
+ drivers/char/hw_random/core.c        |  3 +--
  drivers/net/wireless/ath/ath9k/rng.c | 20 +++-----------------
- 2 files changed, 11 insertions(+), 19 deletions(-)
+ 2 files changed, 4 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
-index 16f227b995e8..a15273271d87 100644
+index 16f227b995e8..5309fab98631 100644
 --- a/drivers/char/hw_random/core.c
 +++ b/drivers/char/hw_random/core.c
-@@ -513,8 +513,13 @@ static int hwrng_fillfn(void *unused)
+@@ -513,8 +513,7 @@ static int hwrng_fillfn(void *unused)
  			break;
  
  		if (rc <= 0) {
 -			pr_warn("hwrng: no data available\n");
 -			msleep_interruptible(10000);
-+			int i;
-+
-+			for (i = 0; i < 100; ++i) {
-+				if (kthread_should_stop() ||
-+				    schedule_timeout_interruptible(HZ / 20))
-+					goto out;
-+			}
++			schedule_timeout_interruptible(HZ * 10);
  			continue;
  		}
  
-@@ -529,6 +534,7 @@ static int hwrng_fillfn(void *unused)
- 		add_hwgenerator_randomness((void *)rng_fillbuf, rc,
- 					   entropy >> 10);
- 	}
-+out:
- 	hwrng_fill = NULL;
- 	return 0;
- }
 diff --git a/drivers/net/wireless/ath/ath9k/rng.c b/drivers/net/wireless/ath/ath9k/rng.c
 index cb5414265a9b..757603d1949d 100644
 --- a/drivers/net/wireless/ath/ath9k/rng.c
