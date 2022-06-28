@@ -2,97 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E40C55D35C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 15:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7603B55C426
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 14:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344283AbiF1Jqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jun 2022 05:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39310 "EHLO
+        id S1344993AbiF1KwL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jun 2022 06:52:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344151AbiF1Jqc (ORCPT
+        with ESMTP id S243923AbiF1KwK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jun 2022 05:46:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4791F25C69;
-        Tue, 28 Jun 2022 02:46:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB414617B3;
-        Tue, 28 Jun 2022 09:46:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F00C341CB;
-        Tue, 28 Jun 2022 09:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656409590;
-        bh=aNsBjoam9FomQGP0KLpmbiHeL/xAsgah34KubXmo/7Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cV5jmYDejNl2eM22Og0AgzjAq1KUDXy9YVpy90dvsGq8t/J9oBSRJNZghpgru6e0Y
-         JYBCsSth17DmDu3kVrH+RNB93KNImGfVfHSmW47GIW8Tl05c5Ut4hDUtDobfYxEsRf
-         mxqamINcbsAdtUplbsQvMHKxMsq09w28pP/gwXI2t8siWGQUBxxVOdqcTP4Fpynqkb
-         wVdayItZkl0b80YceJnP0ZniXQPtKvQF4PtE0Z0sHF9sBORrn/D/XUIuNOWybdTeSO
-         be7YmggGzSrSKeLWWtotW1sUshOjPdtnsByqEJLAEeoCznotST7ObjBOVgcbiecHwB
-         kwDMrHjS7TACg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.95)
-        (envelope-from <mchehab@kernel.org>)
-        id 1o67nf-005HEs-Lu;
-        Tue, 28 Jun 2022 10:46:27 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 03/22] net: mac80211: sta_info: fix a missing kernel-doc struct element
-Date:   Tue, 28 Jun 2022 10:46:07 +0100
-Message-Id: <37d898634bb30776442a33833c48cbb21c90ecc6.1656409369.git.mchehab@kernel.org>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <cover.1656409369.git.mchehab@kernel.org>
-References: <cover.1656409369.git.mchehab@kernel.org>
+        Tue, 28 Jun 2022 06:52:10 -0400
+X-Greylist: delayed 417 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 28 Jun 2022 03:52:09 PDT
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0289724F3D;
+        Tue, 28 Jun 2022 03:52:08 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1656413110; bh=mAaCfPe3fw1fuDEGDpxnsjtKUtYee9b2yyQePpQWJZI=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=EckpsRugV1CYexE0vYH50nYaVQ7NY+FDxUfC5lx/gpbY4bebtiJylu+szLfvIn1js
+         Xo7UEIlt4oCkyhqvR4LH0Ve1sv37XeOmxlcvLGHG8Vvm//NeWlI13mil3IDktthOlY
+         6aqr6JtXCsVruTMhMug635wwGQD2hnsdkc8y5/CxRFIo6pvhjMEx0R3RF/ury2F8SN
+         Eh10oU9s1ZkbLeMLAObgkkziUtaHKytxNey8e4Ogx7CTS1gT4g4MTzyJRMwf1XtBwx
+         bwAF5wdfy7fhZrK9yf+OkFxwo4QZINUNYuSpBlcnC2GSK0bG9v8/ETTl2a4NotDbt5
+         ifk5iV9mdSJVA==
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Gregory Erwin <gregerwin256@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Rui Salvaterra <rsalvaterra@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v6] ath9k: sleep for less time when unregistering hwrng
+In-Reply-To: <20220627120735.611821-1-Jason@zx2c4.com>
+References: <20220627113749.564132-1-Jason@zx2c4.com>
+ <20220627120735.611821-1-Jason@zx2c4.com>
+Date:   Tue, 28 Jun 2022 12:45:10 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87y1xh9idl.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-struct link_sta_info has now a cur_max_bandwidth data:
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
 
-	net/mac80211/sta_info.h:569: warning: Function parameter or member 'cur_max_bandwidth' not described in 'link_sta_info'
+> Even though hwrng provides a `wait` parameter, it doesn't work very well
+> when waiting for a long time. There are numerous deadlocks that emerge
+> related to shutdown. Work around this API limitation by waiting for a
+> shorter amount of time and erroring more frequently. This commit also
+> prevents hwrng from splatting messages to dmesg when there's a timeout
+> and switches to using schedule_timeout_interruptible(), so that the
+> kthread can be stopped.
+>
+> Reported-by: Gregory Erwin <gregerwin256@gmail.com>
+> Tested-by: Gregory Erwin <gregerwin256@gmail.com>
+> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Rui Salvaterra <rsalvaterra@gmail.com>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: stable@vger.kernel.org
+> Fixes: fcd09c90c3c5 ("ath9k: use hw_random API instead of directly dumpin=
+g into random.c")
+> Link: https://lore.kernel.org/all/CAO+Okf6ZJC5-nTE_EJUGQtd8JiCkiEHytGgDsF=
+GTEjs0c00giw@mail.gmail.com/
+> Link: https://lore.kernel.org/lkml/CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8H=
+ys_DVXtent3HA@mail.gmail.com/
+> Link: https://bugs.archlinux.org/task/75138
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Copy the meaning from struct sta_info, documenting it.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
-
-To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
-See [PATCH 00/22] at: https://lore.kernel.org/all/cover.1656409369.git.mchehab@kernel.org/
-
- net/mac80211/sta_info.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 218430790660..4e0b969891de 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -517,6 +517,8 @@ struct ieee80211_fragment_cache {
-  * @status_stats.last_ack_signal: last ACK signal
-  * @status_stats.ack_signal_filled: last ACK signal validity
-  * @status_stats.avg_ack_signal: average ACK signal
-+ * @cur_max_bandwidth: maximum bandwidth to use for TX to the station,
-+ *	taken from HT/VHT capabilities or VHT operating mode notification
-  * @pub: public (driver visible) link STA data
-  * TODO Move other link params from sta_info as required for MLD operation
-  */
--- 
-2.36.1
-
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
