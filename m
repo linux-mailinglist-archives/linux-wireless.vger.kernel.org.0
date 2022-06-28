@@ -2,41 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0E7455E067
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 15:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63E555CA3A
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jun 2022 14:58:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240405AbiF0ThS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jun 2022 15:37:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52444 "EHLO
+        id S243133AbiF1Bjt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jun 2022 21:39:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238466AbiF0ThR (ORCPT
+        with ESMTP id S231764AbiF1Bjs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jun 2022 15:37:17 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBED9631D;
-        Mon, 27 Jun 2022 12:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1656358632; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:references; bh=6eSzpP3gF9wHixe+jAcmFdCUtXsxEMHUrso/b5UAcMU=;
-        b=W/PDWKW+pdopMXowbtUohfKpQSg2dAd2G3CsI91U+epglSW0ADxlADmzw24TOKFXIHZzHd
-        NAHRbbzIzznigka8ZOGaOZ9RKim89SJNBl0y4UCfg8XWQcJzzuxDFB9LkGBTKeHcYjb87k
-        8SuLTjTpbftef72CClCmBxRIe2bgTUo=
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3] brcmfmac: Remove #ifdef guards for PM related functions
-Date:   Mon, 27 Jun 2022 20:37:01 +0100
-Message-Id: <20220627193701.31074-1-paul@crapouillou.net>
+        Mon, 27 Jun 2022 21:39:48 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010AB1C92D;
+        Mon, 27 Jun 2022 18:39:45 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id v38so9043855ybi.3;
+        Mon, 27 Jun 2022 18:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ox6+Io6BGSC8s0kRQJwOIJGx439nhItnmMC9YkQAOrc=;
+        b=hnyr3Pgs4SOImHVvxjD8CHgAVznJET4LCNMirseEGBRBdrFhWD3+1wy69a27JDyCl6
+         OKzDJyvyzVC6AzOngE+BvP5SCwoRjtq1oiPKtx5KEwZMYl3e3bJ7h6bl3j+EUk00JXFQ
+         XzsWeJnBdbfJvmF6DS4WbUeCXPWXFZHNPcBwLELhnnXAn7kq1W7WThQH1d0xfsvqJ5Bt
+         68xnvsoFNobArPLoJngFhUSKT8csnQRpmdje6P1iM4zRgPhADlbCVNLE/jyh/ZxvmL1q
+         KnAIWYWW32QSHKZ04D99PsDyc8hW6bbmkytsGtTh5f714kHtNRT2FSdGL3xSnKciSMrH
+         suqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ox6+Io6BGSC8s0kRQJwOIJGx439nhItnmMC9YkQAOrc=;
+        b=1aquROyabHcDRompxHd+wS32At0OtDolZzayI4kfDX5VmOci+SPMy42IgFHbpKVena
+         8/Y0ogCpztUqiX1x0uAN/Yq93npBzVhkIQVYf1DBW8PYOURTMN+0YCHN9bbTUXOY2G58
+         AbUb2IshpIYxk025CGUleE0dz8AR7nix38/3BF5E2WQUTGXqsbFnjPzo6UIkyiXvR7o0
+         keFzBiW9L0zl8BbO8VQiEfL2tl41FHAoBY2bDqbXKker0xDtPb1vBzZGP1mAPD1lmsq4
+         hBqfM7ZgTqmhvprKZX2NdT3Sl9FSMgMyGln4FW5H3sMk9N3SkbPmxmcCUKmlz003pnRE
+         tjsA==
+X-Gm-Message-State: AJIora84P4lN48KKFHdf5ch5w97yEQXHGMchXSRR/iDOkqwyg5TPoNtW
+        1yHZEbBcMeVjb7YuX5M4JXxHMU3C8GiNbKKipWrWmHfxCmVLKg==
+X-Google-Smtp-Source: AGRyM1tX9NrNa9lFUyRuVQmBjG9hD6YBesB/1lq96fdz99XMTuRDOnm7rIL/mDb42qJee3sRmU0MON8HoaTdlgJicrw=
+X-Received: by 2002:a05:6902:726:b0:66d:e6d:e0b1 with SMTP id
+ l6-20020a056902072600b0066d0e6de0b1mr4249776ybt.269.1656380385235; Mon, 27
+ Jun 2022 18:39:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+References: <20220627113749.564132-1-Jason@zx2c4.com> <20220627120735.611821-1-Jason@zx2c4.com>
+ <87y1xib8pv.fsf@toke.dk>
+In-Reply-To: <87y1xib8pv.fsf@toke.dk>
+From:   Gregory Erwin <gregerwin256@gmail.com>
+Date:   Mon, 27 Jun 2022 18:39:34 -0700
+Message-ID: <CAO+Okf5r-rVVqwYiCHXEt_jh0StmVoUikqYfSn7y3QpGZMR3Vg@mail.gmail.com>
+Subject: Re: [PATCH v6] ath9k: sleep for less time when unregistering hwrng
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Rui Salvaterra <rsalvaterra@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,182 +72,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use the new DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr() macros to
-handle the .suspend/.resume callbacks.
+On Mon, Jun 27, 2022 at 5:18 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
+at.com> wrote:
+>
+> "Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+>
+> > Even though hwrng provides a `wait` parameter, it doesn't work very wel=
+l
+> > when waiting for a long time. There are numerous deadlocks that emerge
+> > related to shutdown. Work around this API limitation by waiting for a
+> > shorter amount of time and erroring more frequently. This commit also
+> > prevents hwrng from splatting messages to dmesg when there's a timeout
+> > and switches to using schedule_timeout_interruptible(), so that the
+> > kthread can be stopped.
+> >
+> > Reported-by: Gregory Erwin <gregerwin256@gmail.com>
+> > Tested-by: Gregory Erwin <gregerwin256@gmail.com>
+> > Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> > Cc: Kalle Valo <kvalo@kernel.org>
+> > Cc: Rui Salvaterra <rsalvaterra@gmail.com>
+> > Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> > Cc: stable@vger.kernel.org
+> > Fixes: fcd09c90c3c5 ("ath9k: use hw_random API instead of directly dump=
+ing into random.c")
+> > Link: https://lore.kernel.org/all/CAO+Okf6ZJC5-nTE_EJUGQtd8JiCkiEHytGgD=
+sFGTEjs0c00giw@mail.gmail.com/
+> > Link: https://lore.kernel.org/lkml/CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY=
+8Hys_DVXtent3HA@mail.gmail.com/
+> > Link: https://bugs.archlinux.org/task/75138
+> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+>
+> Gregory, care to take this version for a spin as well to double-check
+> that it still resolves the issue? :)
+>
+> -Toke
+>
 
-These macros allow the suspend and resume functions to be automatically
-dropped by the compiler when CONFIG_SUSPEND is disabled, without having
-to use #ifdef guards.
+With patch v6, reads from /dev/hwrng block for 5-6s, during which 'ip link =
+set
+wlan0 down' will also block. Otherwise, 'ip link set wlan0 down' returns
+immediately. Similarly, wiphy_suspend() consistently returns in under 10ms.
 
-Some other functions not directly called by the .suspend/.resume
-callbacks, but still related to PM were also taken outside #ifdef
-guards.
-
-The advantage is then that these functions are now always compiled
-independently of any Kconfig option, and thanks to that bugs and
-regressions are easier to catch.
-
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
-
-Notes:
-    v2:
-    - Move checks for IS_ENABLED(CONFIG_PM_SLEEP) inside functions to keep
-      the calling functions intact.
-    - Reword the commit message to explain why this patch is useful.
-    
-    v3:
-    - Remove useless IS_ENABLED(CONFIG_PM_SLEEP) check in
-      brcmf_sdiod_freezer_detach()
-
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 36 +++++++------------
- .../broadcom/brcm80211/brcmfmac/sdio.c        |  5 ++-
- .../broadcom/brcm80211/brcmfmac/sdio.h        | 16 ---------
- 3 files changed, 15 insertions(+), 42 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 9c598ea97499..62d5c5f5fbc8 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -784,9 +784,11 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
- 	sdiodev->txglomsz = sdiodev->settings->bus.sdio.txglomsz;
- }
- 
--#ifdef CONFIG_PM_SLEEP
- static int brcmf_sdiod_freezer_attach(struct brcmf_sdio_dev *sdiodev)
- {
-+	if (!IS_ENABLED(CONFIG_PM_SLEEP))
-+		return 0;
-+
- 	sdiodev->freezer = kzalloc(sizeof(*sdiodev->freezer), GFP_KERNEL);
- 	if (!sdiodev->freezer)
- 		return -ENOMEM;
-@@ -833,7 +835,8 @@ static void brcmf_sdiod_freezer_off(struct brcmf_sdio_dev *sdiodev)
- 
- bool brcmf_sdiod_freezing(struct brcmf_sdio_dev *sdiodev)
- {
--	return atomic_read(&sdiodev->freezer->freezing);
-+	return IS_ENABLED(CONFIG_PM_SLEEP) &&
-+		atomic_read(&sdiodev->freezer->freezing);
- }
- 
- void brcmf_sdiod_try_freeze(struct brcmf_sdio_dev *sdiodev)
-@@ -847,24 +850,16 @@ void brcmf_sdiod_try_freeze(struct brcmf_sdio_dev *sdiodev)
- 
- void brcmf_sdiod_freezer_count(struct brcmf_sdio_dev *sdiodev)
- {
--	atomic_inc(&sdiodev->freezer->thread_count);
-+	if (IS_ENABLED(CONFIG_PM_SLEEP))
-+		atomic_inc(&sdiodev->freezer->thread_count);
- }
- 
- void brcmf_sdiod_freezer_uncount(struct brcmf_sdio_dev *sdiodev)
- {
--	atomic_dec(&sdiodev->freezer->thread_count);
--}
--#else
--static int brcmf_sdiod_freezer_attach(struct brcmf_sdio_dev *sdiodev)
--{
--	return 0;
-+	if (IS_ENABLED(CONFIG_PM_SLEEP))
-+		atomic_dec(&sdiodev->freezer->thread_count);
- }
- 
--static void brcmf_sdiod_freezer_detach(struct brcmf_sdio_dev *sdiodev)
--{
--}
--#endif /* CONFIG_PM_SLEEP */
--
- int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev)
- {
- 	sdiodev->state = BRCMF_SDIOD_DOWN;
-@@ -1136,7 +1131,6 @@ void brcmf_sdio_wowl_config(struct device *dev, bool enabled)
- 	brcmf_dbg(SDIO, "WOWL not supported\n");
- }
- 
--#ifdef CONFIG_PM_SLEEP
- static int brcmf_ops_sdio_suspend(struct device *dev)
- {
- 	struct sdio_func *func;
-@@ -1204,11 +1198,9 @@ static int brcmf_ops_sdio_resume(struct device *dev)
- 	return ret;
- }
- 
--static const struct dev_pm_ops brcmf_sdio_pm_ops = {
--	.suspend	= brcmf_ops_sdio_suspend,
--	.resume		= brcmf_ops_sdio_resume,
--};
--#endif	/* CONFIG_PM_SLEEP */
-+static DEFINE_SIMPLE_DEV_PM_OPS(brcmf_sdio_pm_ops,
-+				brcmf_ops_sdio_suspend,
-+				brcmf_ops_sdio_resume);
- 
- static struct sdio_driver brcmf_sdmmc_driver = {
- 	.probe = brcmf_ops_sdio_probe,
-@@ -1217,9 +1209,7 @@ static struct sdio_driver brcmf_sdmmc_driver = {
- 	.id_table = brcmf_sdmmc_ids,
- 	.drv = {
- 		.owner = THIS_MODULE,
--#ifdef CONFIG_PM_SLEEP
--		.pm = &brcmf_sdio_pm_ops,
--#endif	/* CONFIG_PM_SLEEP */
-+		.pm = pm_sleep_ptr(&brcmf_sdio_pm_ops),
- 		.coredump = brcmf_dev_coredump,
- 	},
- };
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 212fbbe1cd7e..58ed6b70f8c5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -4020,15 +4020,14 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
- 	 */
- 	brcmf_sdiod_sgtable_alloc(sdiodev);
- 
--#ifdef CONFIG_PM_SLEEP
- 	/* wowl can be supported when KEEP_POWER is true and (WAKE_SDIO_IRQ
- 	 * is true or when platform data OOB irq is true).
- 	 */
--	if ((sdio_get_host_pm_caps(sdiodev->func1) & MMC_PM_KEEP_POWER) &&
-+	if (IS_ENABLED(CONFIG_PM_SLEEP) &&
-+	    (sdio_get_host_pm_caps(sdiodev->func1) & MMC_PM_KEEP_POWER) &&
- 	    ((sdio_get_host_pm_caps(sdiodev->func1) & MMC_PM_WAKE_SDIO_IRQ) ||
- 	     (sdiodev->settings->bus.sdio.oob_irq_supported)))
- 		sdiodev->bus_if->wowl_supported = true;
--#endif
- 
- 	if (brcmf_sdio_kso_init(bus)) {
- 		brcmf_err("error enabling KSO\n");
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-index 15d2c02fa3ec..47351ff458ca 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-@@ -346,26 +346,10 @@ int brcmf_sdiod_abort(struct brcmf_sdio_dev *sdiodev, struct sdio_func *func);
- void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev);
- void brcmf_sdiod_change_state(struct brcmf_sdio_dev *sdiodev,
- 			      enum brcmf_sdiod_state state);
--#ifdef CONFIG_PM_SLEEP
- bool brcmf_sdiod_freezing(struct brcmf_sdio_dev *sdiodev);
- void brcmf_sdiod_try_freeze(struct brcmf_sdio_dev *sdiodev);
- void brcmf_sdiod_freezer_count(struct brcmf_sdio_dev *sdiodev);
- void brcmf_sdiod_freezer_uncount(struct brcmf_sdio_dev *sdiodev);
--#else
--static inline bool brcmf_sdiod_freezing(struct brcmf_sdio_dev *sdiodev)
--{
--	return false;
--}
--static inline void brcmf_sdiod_try_freeze(struct brcmf_sdio_dev *sdiodev)
--{
--}
--static inline void brcmf_sdiod_freezer_count(struct brcmf_sdio_dev *sdiodev)
--{
--}
--static inline void brcmf_sdiod_freezer_uncount(struct brcmf_sdio_dev *sdiodev)
--{
--}
--#endif /* CONFIG_PM_SLEEP */
- 
- int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev);
- int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev);
--- 
-2.35.1
-
+Tested-by: Gregory Erwin <gregerwin256@gmail.com>
