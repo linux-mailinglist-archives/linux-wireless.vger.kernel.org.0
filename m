@@ -2,48 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 681DF56127A
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jun 2022 08:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DC99561294
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jun 2022 08:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232741AbiF3Gc4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jun 2022 02:32:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38218 "EHLO
+        id S231699AbiF3Gh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jun 2022 02:37:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbiF3Gcy (ORCPT
+        with ESMTP id S229575AbiF3Gh6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jun 2022 02:32:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264F120F6F
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jun 2022 23:32:53 -0700 (PDT)
+        Thu, 30 Jun 2022 02:37:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47E82E08D;
+        Wed, 29 Jun 2022 23:37:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6C68621ED
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 06:32:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AA3C341C8;
-        Thu, 30 Jun 2022 06:32:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7152CB826A4;
+        Thu, 30 Jun 2022 06:37:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2CEC34115;
+        Thu, 30 Jun 2022 06:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656570772;
-        bh=jdDk5FZOBNYJB0RdwFzat/YxmbQdC+0GA0LykpXzdOs=;
+        s=k20201202; t=1656571075;
+        bh=/4IgsvPx9hX0p7CIMt6foyWsR1g2kqSqShazso0sels=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=YqmfTaU6aLtSJIjGHqexhp0u9J1+XxmYTBEvD3M4J+1HyvQZNYqSNcPqHLPcCrkmo
-         cLFIAtBzS8LKOnA++M9wlLz9JvxsdKFKj34joEd1KdKtwhX73ocSysmMGAtxteiDWp
-         Dm8cKyJ9h1DDiyqCFN80QoLTYR11upxAVTBRO94bj/4yMMhTKmJMu8B6YEZrTi6uyH
-         Qipxta8+jDsydUhWCsD2wNdP59FxRfmCseH3dQgRUm1lkNxfdU3S7oz3xu7/JXb4Ch
-         jvKuT2JgKmQMOPwN6LmvkZNHB/33XG4s1SXbrxX68RjXjydYzYCBzD750/C1FmpCz6
-         79o081exaBl+g==
+        b=VLQSfb4Ta2ZZa/2Ew8AYt2hyGsWClFy0Q7u3JSu0pIwXcxTevJKTeYPTL3pgOWwkI
+         LV5XC7cHws60juXc4C9sYqAY18SM+ZOuxctGY32VsD1AdFZmXKxqsXydrdPkdB+doz
+         q5WPDF6kt62FKzjpEZfjdoTSwFCRiPrbCcjXw61x0Q66LiuxiiuO52d1LdOt/eSKET
+         XOFBuifLuSr1erZUCijCgRMwjbrqf/WK36q+b1w2TvwdaPD+g+oEUuZCSdXgfaji67
+         AFIRBQm1kSx8tPd/3tM9GKLgs0naXQyTrRjsMEC9d6xY+T0WPH3pmu05+wDu9FIM9i
+         4th0CCuUO61Tw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        Jithu Jance <jithu.jance@broadcom.com>
-Subject: Re: [PATCH 1/1] cfg80211: Allow P2P client interface to indicate successful 4way handshake by port authorization
-References: <ef25cb49fcb921df2e5d99e574f65e8a009cc52c.1655905440.git.vinayak.yadawad@broadcom.com>
-        <87a69vpen5.fsf@kernel.org>
-        <CAMLe8U9R=TktuhY_baVyexKsvArw70wyT-k_=LLpkXASK0M9kw@mail.gmail.com>
-Date:   Thu, 30 Jun 2022 09:32:47 +0300
-In-Reply-To: <CAMLe8U9R=TktuhY_baVyexKsvArw70wyT-k_=LLpkXASK0M9kw@mail.gmail.com>
-        (Vinayak Yadawad's message of "Thu, 30 Jun 2022 09:24:54 +0530")
-Message-ID: <87v8sioe40.fsf@kernel.org>
+To:     Hyunwoo Kim <imv4bel@gmail.com>
+Cc:     gregory.greenman@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: pcie: Fixed integer overflow in iwl_write_to_user_buf
+References: <20220626105931.GA57801@ubuntu>
+Date:   Thu, 30 Jun 2022 09:37:51 +0300
+In-Reply-To: <20220626105931.GA57801@ubuntu> (Hyunwoo Kim's message of "Sun,
+        26 Jun 2022 03:59:31 -0700")
+Message-ID: <87leteodvk.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,14 +55,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Vinayak Yadawad <vinayak.yadawad@broadcom.com> writes:
+> I submitted this patch 11 days ago.
+>
+> Can I get feedback on this patch?
 
->>>These kind of disclaimers do not belong to public lists.  
-> This disclosure got added by mistake, I will resend the patch again if needed without the disclaimer footer.
+11 days is not that long, we have other things to do as well. Please
+don't resend a patch, that just increases our workload. Instead comment
+on your original patch and ask for review, but please wait more than 11
+days before commenting.
 
-Also please don't top post or use HTML in emails, it's best to ditch
-Outlook when sending emails to upstream lists. More information in the
-wiki link below.
+Your original patch is in patchwork so it is in the queue:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20220614173352.GA588327@ubuntu/
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
