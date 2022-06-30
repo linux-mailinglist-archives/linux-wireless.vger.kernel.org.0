@@ -2,90 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB20656175B
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jun 2022 12:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F2CD561A3D
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jun 2022 14:22:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234892AbiF3KMx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jun 2022 06:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49996 "EHLO
+        id S234022AbiF3MWd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jun 2022 08:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234937AbiF3KMo (ORCPT
+        with ESMTP id S233206AbiF3MWc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jun 2022 06:12:44 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B8A4477F
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 03:12:42 -0700 (PDT)
-X-UUID: 0c28740b543241a8806eda8a5988db6c-20220630
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.7,REQID:75479113-00d0-4fb1-b997-bbc6810a1d49,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,A
-        CTION:release,TS:95
-X-CID-INFO: VERSION:1.1.7,REQID:75479113-00d0-4fb1-b997-bbc6810a1d49,OB:0,LOB:
-        0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,A
-        CTION:quarantine,TS:95
-X-CID-META: VersionHash:87442a2,CLOUDID:6a533186-57f0-47ca-ba27-fe8c57fbf305,C
-        OID:a4a569f0bb19,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 0c28740b543241a8806eda8a5988db6c-20220630
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <chui-hao.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 81920562; Thu, 30 Jun 2022 18:12:38 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Thu, 30 Jun 2022 18:12:37 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Thu, 30 Jun 2022 18:12:37 +0800
-From:   Peter Chiu <chui-hao.chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.Lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: update mpdu density in 6g capability
-Date:   Thu, 30 Jun 2022 18:12:33 +0800
-Message-ID: <20220630101233.8415-1-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Thu, 30 Jun 2022 08:22:32 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BFF25C79
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 05:22:31 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-317a66d62dfso177057787b3.7
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 05:22:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=BpIId7Y81eTYvlNXWkZuv20aUdoFIjqEN5DAqKxivK8=;
+        b=plCoixbI8GI1dzztYn4Nl0Pf4s4Fk5Wp77hSw62EvfSjkOcIZ8xX9RJWp1N5LcdlOs
+         G/K54ANrMYx41ZTSDyioox/aTyfLHugqsv4tn4OR1mxbR0Vpsg/VW2qNnPbW1FHZaDeO
+         rRio7YvGBpdBuzPVEqDkppf5SYf3HOCR84yYFbkR2WLV+xRV93wM9+tl2xO2F004ocfu
+         Ur6Ji4hVCygFp+abv/sZiPRignc9VEqw4tXdkEDJW6zcbWbEp8hnmq593ewiG7Q8ZAwa
+         EYg0TKIwDLjqqyrr00D64LRQnYtjmJLIfI0dnLltSCOoF9QxOgaBbp5Iw8bOVOQGwpsq
+         zL6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=BpIId7Y81eTYvlNXWkZuv20aUdoFIjqEN5DAqKxivK8=;
+        b=qvEOChu6EmS+wavgJu8YpiNef/ya8TSvPG7nlYLv5OsqOxmdsLTd8sXAsC4mp97Y/l
+         rUkiCh1fl2OnH/1+OFCCLJEPqPA02B7Wh/oox8TSoftFK/waEEfYDca8uN2vOtuSYLHz
+         Oll8Z2avwvfTr3t8ZMcpJCrRroAIBuwzgWX7X88y+vRvl0QuZGkaiE43MTwajuaYvM28
+         ccG8NAjCRnh607mProlm49U7MWBc8Ko9isYSbP2ulKFxbwCEQGs/yO2nnOKTV1DddkDX
+         nxuzKnunIMgmAAnm2hD/vkRXJvIzfWOuSm1thxunl/hmq2k/Owp2GXZhxJ6zVy5f9aRY
+         0MFw==
+X-Gm-Message-State: AJIora9icyPT1IzuDhNTGXTtmT2gQ1sx/vXfSxomGlBAfDz8kXAdWiFW
+        m364E/OY02fCVMhOBQR/k58c8QmkXx5Zdc3T7vQ=
+X-Google-Smtp-Source: AGRyM1uo1aULux8LN4iJAfxoDwDj0QPPp18LzqJlcaq8MaFXZf1CeTbjLF02fUKkDg50iujd6uVTDT1LqLuzOQbU0EQ=
+X-Received: by 2002:a81:a54c:0:b0:317:af38:331 with SMTP id
+ v12-20020a81a54c000000b00317af380331mr10339717ywg.295.1656591750807; Thu, 30
+ Jun 2022 05:22:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7110:4b02:b0:188:8afc:7a93 with HTTP; Thu, 30 Jun 2022
+ 05:22:30 -0700 (PDT)
+Reply-To: honoriomoraisluismiguel@gmail.com
+From:   Honorio Morais Luis Miguel <ytyrggg@gmail.com>
+Date:   Thu, 30 Jun 2022 05:22:30 -0700
+Message-ID: <CALsC7symg=xpb=1pMJShFK3tmprW=OGDHyag8AGU07k-Kr=zZg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set mpdu density to 2 usec in 6g capability to meet hardware
-capability and also enhance throughput.
-
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
----
-v2: update commit message.
----
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 6bdbc59bea..c0f4f20537 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -980,7 +980,7 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 			u16 cap = IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
- 				  IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS;
- 
--			cap |= u16_encode_bits(IEEE80211_HT_MPDU_DENSITY_8,
-+			cap |= u16_encode_bits(IEEE80211_HT_MPDU_DENSITY_2,
- 					       IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
- 			       u16_encode_bits(IEEE80211_VHT_MAX_AMPDU_1024K,
- 					       IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP) |
 -- 
-2.18.0
+Hello
 
+Do you need an affordable loan for ( Business, Personal or Investment
+) at a low interest rate of 3%. Do contact us with this email
+(honoriomoraisluismiguel@gmail.com).
+
+Mr. Honorio Morais Luis Miguel
+Loan Officer
