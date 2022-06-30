@@ -2,48 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F32561ACE
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jun 2022 14:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9B1561B06
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jun 2022 15:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235061AbiF3Mzd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jun 2022 08:55:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36244 "EHLO
+        id S233871AbiF3NJz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jun 2022 09:09:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235145AbiF3Mzc (ORCPT
+        with ESMTP id S233226AbiF3NJy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jun 2022 08:55:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5625642A35
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 05:55:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 097D0B82A7D
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 12:55:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5A8C34115;
-        Thu, 30 Jun 2022 12:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656593727;
-        bh=sPb+aKZxcQB0DTQQMxp20Z9m97RURlz/tRrPqbGNYcA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=U/qrqbrdd+koLjVRTzBhnRrCXKxqsTqa+YXlmIqMkFxeI2KRKnhlCBCmfgw6diH6G
-         HnL+4CSlZQTDm92O2JYn2XiU7P/2BJfa0ogSSsqPeg6YuAodVDNUXFJSnrvsdkKB6Q
-         S3ENH1azYs5C49ytamO5N3RztHZtaguBW3T7avid5WvA+g6WCHcjz55IKy8zvq56Yt
-         pYQwmqUF+gCdP+K0TBrcDINny3hP4CcSg+7e1IGVB6flwSX+R2Rpuoka1Tt2SUlAjM
-         hNuEAf6Y0/OWFJkBAAcJPNWsfrqRYdmXdpLtU8UijFGFpGdUCbEBLq3av29iE88KXP
-         KHKh/5Og4oI5w==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: add len parameter to __mt76_mcu_msg_alloc signature
-Date:   Thu, 30 Jun 2022 14:55:18 +0200
-Message-Id: <04f03d8f8951de1c2e7069992e5b4baf7f85cea1.1656593620.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.36.1
+        Thu, 30 Jun 2022 09:09:54 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDD21C935
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jun 2022 06:09:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656594593; x=1688130593;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VqZDNCJr2nY9IiRb5++/E5G6TPtijYbteqq1qy0n+oQ=;
+  b=XepM+L3KQbsZuuI+DG9aPFdrn6jjhZbAN6pIQWd4f6d+QwW3qpyWEahD
+   cLYU3AV9paJoFDrB5N2tVuheOGsPEQfT/i3kMrzu+xqjAPYzfL+aEQrQO
+   DYK6Z8NjLGLco64Sk7MuVGTVX22nXHjd8N0W3nacKPFLP6PYftiY1X/Gt
+   x7ht6Z+TLrylGeCP+FzKfL+O+PJQDwc4wI0WTgBc12n3cb2f6HGuTPhZy
+   GtGmkAGNSXOcLs2PbstqIhQzF+Uh7k4a/7mkZCQbzR2wVE/7JhD+OK7Wc
+   gaXUVFL81vGam0r7Yof1+87thwG+76IGo7Yj29Em0S+AYyf7hqe1jSv9D
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10393"; a="262140895"
+X-IronPort-AV: E=Sophos;i="5.92,234,1650956400"; 
+   d="scan'208";a="262140895"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2022 06:09:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,234,1650956400"; 
+   d="scan'208";a="541322502"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 30 Jun 2022 06:09:51 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o6tvb-000CmI-0v;
+        Thu, 30 Jun 2022 13:09:51 +0000
+Date:   Thu, 30 Jun 2022 21:09:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 8d70f33ed7207e82e51d5a4436c8ba2268a83b14
+Message-ID: <62bda08c.VzXjIsY+coSNrzpC%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,88 +63,132 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce len to __mt76_mcu_msg_alloc signature in order to add the
-capability to specify two different value for allocation and copy length.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 8d70f33ed7207e82e51d5a4436c8ba2268a83b14  wifi: cfg80211: Allow P2P client interface to indicate port authorization
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mcu.c         | 10 ++++++----
- drivers/net/wireless/mediatek/mt76/mt76.h        |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 11 +++++------
- 3 files changed, 13 insertions(+), 12 deletions(-)
+elapsed time: 1524m
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
-index 914ee278e6e2..a8cafa39a56d 100644
---- a/drivers/net/wireless/mediatek/mt76/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mcu.c
-@@ -7,17 +7,19 @@
- 
- struct sk_buff *
- __mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
--		     int data_len, gfp_t gfp)
-+		     int len, int data_len, gfp_t gfp)
- {
- 	const struct mt76_mcu_ops *ops = dev->mcu_ops;
--	int length = ops->headroom + data_len + ops->tailroom;
- 	struct sk_buff *skb;
- 
--	skb = alloc_skb(length, gfp);
-+	len = max_t(int, len, data_len);
-+	len = ops->headroom + len + ops->tailroom;
-+
-+	skb = alloc_skb(len, gfp);
- 	if (!skb)
- 		return NULL;
- 
--	memset(skb->head, 0, length);
-+	memset(skb->head, 0, len);
- 	skb_reserve(skb, ops->headroom);
- 
- 	if (data && data_len)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 4e8997c45c1b..bae1ec34e721 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1346,12 +1346,12 @@ int mt76s_rd_rp(struct mt76_dev *dev, u32 base,
- 
- struct sk_buff *
- __mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
--		     int data_len, gfp_t gfp);
-+		     int len, int data_len, gfp_t gfp);
- static inline struct sk_buff *
- mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
- 		   int data_len)
- {
--	return __mt76_mcu_msg_alloc(dev, data, data_len, GFP_KERNEL);
-+	return __mt76_mcu_msg_alloc(dev, data, data_len, data_len, GFP_KERNEL);
- }
- 
- void mt76_mcu_rx_event(struct mt76_dev *dev, struct sk_buff *skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index f2f29eca5d49..9bd0b4d56de1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1441,15 +1441,14 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
- 	if (!idx)
- 		return;
- 
--	skb = __mt76_mcu_msg_alloc(&dev->mt76, NULL, sizeof(req_hdr) +
--				   idx * sizeof(struct in6_addr), GFP_ATOMIC);
--	if (!skb)
--		return;
--
- 	req_hdr.arpns.ips_num = idx;
- 	req_hdr.arpns.len = cpu_to_le16(sizeof(struct mt76_connac_arpns_tlv)
- 					+ idx * sizeof(struct in6_addr));
--	skb_put_data(skb, &req_hdr, sizeof(req_hdr));
-+	skb = __mt76_mcu_msg_alloc(&dev->mt76, &req_hdr,
-+			sizeof(req_hdr) + idx * sizeof(struct in6_addr),
-+			sizeof(req_hdr), GFP_ATOMIC);
-+	if (!skb)
-+		return;
- 
- 	for (i = 0; i < idx; i++)
- 		skb_put_data(skb, &ns_addrs[i].in6_u, sizeof(struct in6_addr));
+configs tested: 111
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+arm                           imxrt_defconfig
+arc                              alldefconfig
+nios2                         10m50_defconfig
+sh                            hp6xx_defconfig
+nios2                         3c120_defconfig
+m68k                       m5208evb_defconfig
+powerpc                      ppc6xx_defconfig
+m68k                       bvme6000_defconfig
+powerpc                       maple_defconfig
+sh                          sdk7780_defconfig
+m68k                           virt_defconfig
+m68k                         amcore_defconfig
+sh                          landisk_defconfig
+m68k                       m5475evb_defconfig
+sh                               alldefconfig
+mips                        vocore2_defconfig
+sh                               j2_defconfig
+arc                           tb10x_defconfig
+riscv                    nommu_k210_defconfig
+i386                             alldefconfig
+sh                         apsh4a3a_defconfig
+parisc                generic-64bit_defconfig
+arm                             ezx_defconfig
+mips                     loongson1b_defconfig
+sh                          r7785rp_defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                         microdev_defconfig
+mips                          rb532_defconfig
+sparc                               defconfig
+xtensa                           allyesconfig
+csky                                defconfig
+sparc                            allyesconfig
+x86_64                                  kexec
+s390                                defconfig
+s390                             allmodconfig
+arc                                 defconfig
+alpha                               defconfig
+s390                             allyesconfig
+nios2                            allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220629
+ia64                             allmodconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+i386                                defconfig
+i386                             allyesconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a002
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a004
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arc                  randconfig-r043-20220629
+s390                 randconfig-r044-20220629
+riscv                randconfig-r042-20220629
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+mips                  cavium_octeon_defconfig
+powerpc                 mpc836x_mds_defconfig
+arm                         s5pv210_defconfig
+arm                            mmp2_defconfig
+powerpc                      ppc64e_defconfig
+mips                       rbtx49xx_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                     mpc512x_defconfig
+x86_64                        randconfig-k001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a016
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a005
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220629
+hexagon              randconfig-r045-20220629
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+
 -- 
-2.36.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
