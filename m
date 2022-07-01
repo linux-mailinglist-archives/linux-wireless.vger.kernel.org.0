@@ -2,135 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D88F563114
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 12:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29942563402
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 15:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbiGAKNp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Jul 2022 06:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36746 "EHLO
+        id S236635AbiGANGB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Jul 2022 09:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232001AbiGAKNo (ORCPT
+        with ESMTP id S234328AbiGANGA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Jul 2022 06:13:44 -0400
-Received: from mail-yw1-x1143.google.com (mail-yw1-x1143.google.com [IPv6:2607:f8b0:4864:20::1143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A798F735AE
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 03:13:43 -0700 (PDT)
-Received: by mail-yw1-x1143.google.com with SMTP id 00721157ae682-3176b6ed923so18469247b3.11
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Jul 2022 03:13:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zkRKKkHvNmeWqvRVOQLK4rfH21duyawXjkMEAhn/9YU=;
-        b=jc9gdMoaVyMdn2YJ8TGD4DyU8BGVsno1wLmvRcr2UavKHBClKTu8+gVDn5M5yFujUw
-         R2ijLTgXmeLmPLaKyzfbgHU3e8AXRYqNhNjjuUP9RvKLjPmPcwNXqItmNvkABPBp5iUY
-         Zw7fG+CZK3/1p5XxjFlACaowALfzIkGfraDMkJ1l/0BZE4huaircz41BrP3Omh5ss7Qm
-         WbgHyP2wyGfzlmarTPP7xV3O67bS0tKtnU1bLQ+xowUkWONB7J+wLjwvY6ckiPj48Qqx
-         5w9A6fqVHNPsswdABw53vlPSUlg11qc8kM2yQKg1BSPrjhUmayvP//IE8XlLmX+FfboT
-         EUxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=zkRKKkHvNmeWqvRVOQLK4rfH21duyawXjkMEAhn/9YU=;
-        b=24UZgsdvYLjqQsPLpdlE7nBcs63fQJH4J3Sjl6kdV/YWckNDBCMUD9NTbNcf3sJ4JI
-         JhYx3ULSmF0zFIJzL4L3eDDuGh1/oQmEZsJTVB+K8FEcFh02t8SOJBzwLXIFL9Rst32s
-         0eB9IMO/OPvxSbvRJw63OWaWvrKVR3mYMYIjVu3xPHJvPfAycdlHimtmp61ueeK/qF7A
-         uFRRcK1rV0tMNieP88Psw964oRJFc4rV/V9BFql7Z9XkCG8FIp9jicXYyVaJ5tsw8TTi
-         V4xt5d/RLqZEtUWO04hPiz2qFBEtABtukvazIhNzE5n451ionXnP/MajRdjZKcfvKlxJ
-         VUsg==
-X-Gm-Message-State: AJIora8haJJLR6j72df0h7OUvFBDSI6NNHNSs+fkfE3YkvHQyAVkoHWn
-        1jPQpmRegxpei+rPyhkARO/LqlitjoatZXiS4U8=
-X-Google-Smtp-Source: AGRyM1ufp0bUl+jOYYov+0Zuomx2Ux+d3Pk0S60JFRp6EfGOyTXtX3+RYzPNzSf68K9WfN+iapa6HfdFG9z3v1AzVJE=
-X-Received: by 2002:a81:74d7:0:b0:317:7463:d852 with SMTP id
- p206-20020a8174d7000000b003177463d852mr15641908ywc.385.1656670422593; Fri, 01
- Jul 2022 03:13:42 -0700 (PDT)
+        Fri, 1 Jul 2022 09:06:00 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB132E083
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 06:05:59 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.50.13])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 91B1CA0073;
+        Fri,  1 Jul 2022 13:05:57 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 54965440066;
+        Fri,  1 Jul 2022 13:05:57 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.36.234])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 4A8C513C2B0;
+        Fri,  1 Jul 2022 06:05:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4A8C513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1656680756;
+        bh=XmTv5gDGy9MDp9Ny5xAtYI/QmrLqutwQ+eKFUryHNFc=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=NJ1BUb7J0G3JtSQEDWC4TklYf7lXYafdiJXMcPui2KQhLpNxOszrmUqPQDu8hygbx
+         5AQi7bgor7yjJ7aIgODwaYWzOtEzAa2EAqUyJbhDwjFh7+n18TczPIZbH9zH1CVTrr
+         scCxxpJPQTQP2YQXEWell5QtkLNgkYy6aWSvizlA=
+Subject: Re: [PATCH] mac80211: report per-chain signal values through ethtool.
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20220329210228.8137-1-greearb@candelatech.com>
+ <8542c3eac729563fef1bc78d28c740453fba88bd.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <c7ee84a4-2be5-4176-2701-8c2e691a85fe@candelatech.com>
+Date:   Fri, 1 Jul 2022 06:05:55 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Sender: samsonka22@gmail.com
-Received: by 2002:a05:7000:9993:0:0:0:0 with HTTP; Fri, 1 Jul 2022 03:13:42
- -0700 (PDT)
-From:   HANAH VANDRAD <h.vandrad@gmail.com>
-Date:   Fri, 1 Jul 2022 03:13:42 -0700
-X-Google-Sender-Auth: 0LPyUJdOGIOEMhl_BgWvTe2Dz3Q
-Message-ID: <CAKY8iZrONJE44s7SqojBdusvvmVunMSQBiOpOPbQF7nhpWd5Xw@mail.gmail.com>
-Subject: Greetings dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.3 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1143 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [samsonka22[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [h.vandrad[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  2.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+In-Reply-To: <8542c3eac729563fef1bc78d28c740453fba88bd.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1656680758-BUtElSCjh43a
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings dear
+On 7/1/22 2:55 AM, Johannes Berg wrote:
+> On Tue, 2022-03-29 at 14:02 -0700, greearb@candelatech.com wrote:
+>> From: Ben Greear <greearb@candelatech.com>
+>>
+>> Combine them into a u64, each byte is one chain.
+> 
+> This only works up to 4 chains, but the specs at least support 8. I
+> don't think we have any drivers for that, but ...
+
+u64 gives 8 bytes, so the ethtool part can support 8 chains.
+The mac80211 part only supports up to 4 chains currently though.
+
+> 
+> And it's also rather ugly, IMHO.
+> 
+> We're reporting these through nl80211 anyway though, no? Why should we
+> prefer ethtool, which fundamentally limits to a single value for the AP
+> rather than giving the full per-station view.
+
+I already gather ethtool stats for STA vdevs, so adding another stat is
+basically free as far as performance is concerned.  That is important
+to me.  I do not currently program much against netlink API (just scrape
+existing tools output).
+
+I understand if you don't want it upstream though.
+
+> 
+>> Re-work the way that APs averaged stats to be more
+>> efficient.
+> 
+> Isn't that completely unrelated?
+
+At least somewhat unrelated.
+
+Thanks,
+Ben
+
+> 
+> johannes
+> 
 
 
-   This letter might be a surprise to you, But I believe that you will
-be honest to fulfill my final wish. I bring peace and love to you. It
-is by the grace of god, I had no choice than to do what is lawful and
-right in the sight of God for eternal life and in the sight of man for
-witness of god's mercy and glory upon my life. My dear, I sent this
-mail praying it will find you in a good condition, since I myself am
-in a very critical health condition in which I sleep every night
-without knowing if I may be alive to see the next day. I am Mrs.Hannah
-Vandrad, a widow suffering from a long time illness. I have some funds
-I inherited from my late husband, the sum of ($11,000,000.00,)
-my Doctor told me recently that I have serious
-sickness which is a cancer problem. What disturbs me most is my stroke
-sickness. Having known my condition, I decided to donate this fund to
-a good person that will utilize it the way I am going to instruct
-herein. I need a very honest and God fearing person who can claim this
-money and use it for Charity works, for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of god
-and the effort that the house of god is maintained.
-
- I do not want a situation where this money will be used in an ungodly
-manner. That's why I'm taking this decision. I'm not afraid of death,
-so I know where I'm going. I accept this decision because I do not
-have any child who will inherit this money after I die. Please I want
-your sincere and urgent answer to know if you will be able to execute
-this project, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of god be with you and all those that you
-love and  care for.
-
-I am waiting for your reply.
-
-May God Bless you,
-
- Mrs.Hannah Vandrad.
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
