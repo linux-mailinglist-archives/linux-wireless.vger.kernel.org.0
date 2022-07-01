@@ -2,44 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 710EF563009
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 11:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BED2563023
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 11:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234458AbiGAJ2B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Jul 2022 05:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43006 "EHLO
+        id S232328AbiGAJbH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Jul 2022 05:31:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236739AbiGAJ1t (ORCPT
+        with ESMTP id S231735AbiGAJbG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Jul 2022 05:27:49 -0400
+        Fri, 1 Jul 2022 05:31:06 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 236ACC31
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 02:27:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA58E4882C
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 02:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+TU9QJjGh4aLzrmjv55mJOJRzPq7psQE2qlu91bYDk8=;
-        t=1656667641; x=1657877241; b=Yay65tv8m5MgQBtBq4fLpl2umpvwA5yYQvTA5ksST1XTsYs
-        CflsHpRXSKAeZR5Fc2AlihlQ/+zRGrCzypu58jU8ROc9iwtpS0n7d2eloijjkQ20dpOuA/h5tKlrU
-        jfpMMEUkeuIGEWSqLQ+qfhcxiHOe3APNQVihFA8WIos7rcULAwZ/vAW5voG1k1GUElSgbucwR3Oaf
-        TnyJcJijKy1fMfpMzvjsVnquIqUiu7yKATcRXbwGdwhHsRAZNOdbvJRJAjoff8Zu/jqGFq/jPjoW2
-        VMPH4zCbumNTTR0vl5g0pgBdqOEDjWMD4NvfMrPm88vfHLHXhSkiQA+9YJm1bx5w==;
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=5+6uSfNrB5MmlUrZcyQBSdS5AzXGnKPJWPeRaxv3bjc=;
+        t=1656667865; x=1657877465; b=ZRaOj0z8u7dCcxcteYJx2G9cZXSSAsLRc7iRubD/3oMB/i5
+        PGYgkyGoYGR630NG3KsxVcw/DI273UowZBoj+Ym1o8yJSC4xCOAlAIcacz3hyoiGsw4TSMjh1Y/DP
+        RkpLP9tIETLR3kK+uGXlrNbT4Q/7dl4DwC6Js039kfQR8lf6FNNcWWpl9XMuClBc2yBHw2B/96nFA
+        8FzlGLMF99YQ19Wgn9J0tjkO7Ac9ZZNeFrkDUCXaxJhXRzu6pNg0lxfA+u0H6ZXsGcu/gvoFkKWIi
+        mg158tLfMYWJtztFQILaJtc/KzzNoNvGW2/FWF3AskupUttYgmF2ILXo4go8qupQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1o7Cvm-003QIV-6E;
-        Fri, 01 Jul 2022 11:27:18 +0200
-Message-ID: <9bce16843dcc698740d90d8963a1a55516fb1d39.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/3] Mesh Fast xmit support
+        id 1o7CzQ-003QNc-2P;
+        Fri, 01 Jul 2022 11:31:04 +0200
+Message-ID: <83e4ceafddc3227934b520368dcc2cdca680171d.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: fix mesh airtime link metric estimating
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Sriram R (QUIC)" <quic_srirrama@quicinc.com>, nbd@nbd.name
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Fri, 01 Jul 2022 11:27:17 +0200
-In-Reply-To: <SN6PR02MB4334670B5FD85EB6940A64F8F7BD9@SN6PR02MB4334.namprd02.prod.outlook.com>
-References: <1654857639-12346-1-git-send-email-quic_srirrama@quicinc.com>
-         <98e3a2743ab770fbd3f14dca14b62105c8457bf6.camel@sipsolutions.net>
-         <SN6PR02MB4334670B5FD85EB6940A64F8F7BD9@SN6PR02MB4334.namprd02.prod.outlook.com>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        linux-wireless@vger.kernel.org
+Date:   Fri, 01 Jul 2022 11:31:03 +0200
+In-Reply-To: <20220601070115.24340-1-quic_adisi@quicinc.com>
+References: <20220601070115.24340-1-quic_adisi@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
@@ -54,33 +52,14 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, 2022-06-01 at 12:31 +0530, Aditya Kumar Singh wrote:
+>=20
+> +	/* use rate info set by the driver directly if present */
+> +	if (st->rate)
+> +		rinfo =3D sta->tx_stats.last_rate_info;
+>=20
 
-> =C2=A0=C2=A0Initially it was set it to a default size of 50 when RFC was =
-sent.
-> There was a suggestion to
-> make it configurable where users could configure this cache size
-> proportional to the required/anticipated network capacity.
-
-Oh, right, I missed that this was in the discussion earlier.
-
-The question is what are you afraid of? I mean, even setting it to 500
-wouldn't be a huge amount of memory use (~50k), and probably mostly
-sufficient regardless of the network? And if you never see all those
-nodes, then it wouldn't use all that memory either.
-
-Timing out old entries will also keep memory usage down.
-
-So are you worried about worst-case behaviour in attacks, e.g. somebody
-attempting to join the mesh? But then if you're worried about that I
-guess you have bigger problems (and should be using secure mesh), such
-as the number of station entries?
-
-Or an attacker mutating their Ethernet address behind some gateway? But
-they still need to convince the station to even want to send traffic
-there...
-
-But even then, setting a much higher limit than 50 should cope with
-these cases, while giving enough breathing room for the real usage?
+This doesn't apply anymore due to 44fa75f207d8 ("mac80211: extend
+current rate control tx status API") and the MLO work.
 
 johannes
-
