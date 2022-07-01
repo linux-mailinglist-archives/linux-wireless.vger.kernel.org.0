@@ -2,128 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A66E5636AD
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 17:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75EEA5638A0
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 19:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230039AbiGAPLN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Jul 2022 11:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
+        id S230009AbiGARh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Jul 2022 13:37:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229845AbiGAPLM (ORCPT
+        with ESMTP id S229627AbiGARh1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Jul 2022 11:11:12 -0400
-X-Greylist: delayed 913 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 01 Jul 2022 08:11:11 PDT
-Received: from sender-of-o53.zoho.in (sender-of-o53.zoho.in [103.117.158.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2606723BD5
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 08:11:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1656687325; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=FiEaSlyeB5dJSM7DRWxy7RLVHSOSwxAuUQwWW/z+v3/iTTBRgQqhqjhn8WsmlaiZdMhy0qQ8Wxt4An/fhPhMXhy3gm7t8kCCus+apZY+9UDadMbP05nMLMOoG6dgIlEkm5lrndF7s2iyaQmkpgdN0QDKFwoAImnDTzZNHsSxq5o=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1656687325; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=CrcF49UEX8SWd4LvC7g+h7rckFp6IPoWnRfYza7Wpf4=; 
-        b=EQJdwhLyt76VZ7lKH/G1DVNEeFyuhp2Kdj4E61jM1HYf/eu/gw1/lcd3LEp9FmCjJjgs0kp60bKQddBpG4NO0EQl7lCabNdTZWEyRWQwUIwinocRC/TWoamlGroVKDrnEC9R6i3uimRN0bEnjct3DWMxjIVjYLXIDiIHzN3i4s0=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1656687325;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=CrcF49UEX8SWd4LvC7g+h7rckFp6IPoWnRfYza7Wpf4=;
-        b=QB2xsFvTFpkZpGWLYG/6EoL1vFDTxljo0BxBdEabq/ZUrVzoHxexceL2nc4VXXJh
-        UW//enYAdJiTYS7yuE98h10sTM9umYD6qmp8rljEBDEniUJmAUWr7WPmNk2E8B3C9dO
-        05iAWpaiLEtNxDVZW/OK3q3QB9LZ2+z0tPD6iSTU=
-Received: from localhost.localdomain (103.250.137.221 [103.250.137.221]) by mx.zoho.in
-        with SMTPS id 1656687324349795.6718155316092; Fri, 1 Jul 2022 20:25:24 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-kernel-mentees 
-        <linux-kernel-mentees@lists.linuxfoundation.org>
-Message-ID: <20220701145423.53208-1-code@siddh.me>
-Subject: [PATCH] net: Fix UAF in ieee80211_scan_rx()
-Date:   Fri,  1 Jul 2022 20:24:23 +0530
-X-Mailer: git-send-email 2.35.1
+        Fri, 1 Jul 2022 13:37:27 -0400
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC8D377C9
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 10:37:26 -0700 (PDT)
+Received: by mail-qv1-xf2f.google.com with SMTP id u7so4619979qvm.4
+        for <linux-wireless@vger.kernel.org>; Fri, 01 Jul 2022 10:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=c0efiEkVxtTkTFENAKnUNGf6D7Eoa+H/DnhrKy6xKHg=;
+        b=ft+R/xzWQXjJ3Pa6dRmbJc0B4oP3EM0u4Xkf8Gvl/ueqCAYjAX3sWdSYS+JK1qR3Gs
+         iTB+62uQx3moVL0iKMB5khKS/ba0N6fUUBwfb/DsU1QOFp6cZBI9QuQMq+/Je0eKW8XU
+         8RGbbuW/aY0OtpTCPypWqM0RxXTk5q7Q3gNSmI63Rk/hBlJdkYX+4e1EBZkfczJq3/Sq
+         GrzPedKDm8MNS7PWRcuGVcwyMZEFsh9INnt8U2/leqcSRQCQaq8a5kryx4W9nF2HWcXW
+         pnqPraR7QiYJSejKs9S2TvCNriDvIZ7usfoQn84lUzqLNZWZXLq+zdkMo0oyo6vixlqF
+         14CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=c0efiEkVxtTkTFENAKnUNGf6D7Eoa+H/DnhrKy6xKHg=;
+        b=GZDIVeOBaKlHvtrY3/ctUbahuGSw42VGTRf03bCaIuzaFAJGg8rymzE1CrzC6WAJ/5
+         EJsCOi3f5dBFAiUgtNwIkm5qVCxh4f4WwBBjuFnUVYfmH9AmS85UNpw7DNmvrHGCpskx
+         64ECRrLBvR9YieDA6WiUgSHW0J2jbfbS/ny1rRuiDkTHsyjXDDp8ET6MrWjD1G5fx1nS
+         VXRq/1fZ0eD2UAVBBovT0zCSwmWa0B7c93X+k6szszynn90McL9D88Q4hB7m7cjXWh58
+         lJOGZ1TJsaGVzDj0ect0Bop+Qoka/oI0Ss1J4WxJVB43taP9R6Dpk3tngamH8cZPKuAN
+         IfJA==
+X-Gm-Message-State: AJIora/xlGQXXe57OL6A/vlrfE9RCHz6Rne1B3o/dMW9/B0OH9ZsY+2m
+        CsZX3lt+MpaeaEk3cRCDGK9u2/7mxldYdCEeYFM=
+X-Google-Smtp-Source: AGRyM1til2P+7aPik/0Qo5e9U0MoJpIjwDA8uQF0R6THY3SeYd9NQ5mLyeZZ/7pCVVuoBWLBeAicFfJj23si5iv79o4=
+X-Received: by 2002:a05:6214:caf:b0:470:a512:8473 with SMTP id
+ s15-20020a0562140caf00b00470a5128473mr17228582qvs.75.1656697045665; Fri, 01
+ Jul 2022 10:37:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_RED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:ac8:7044:0:0:0:0:0 with HTTP; Fri, 1 Jul 2022 10:37:25 -0700 (PDT)
+Reply-To: anwarialima4@gmail.com
+From:   Alima Anwari <soniagarang014@gmail.com>
+Date:   Fri, 1 Jul 2022 17:37:25 +0000
+Message-ID: <CANJ88boLT3TjLHHTV+9M51RXy3JEtWD5r5TKtyNYkJC1HaBXWg@mail.gmail.com>
+Subject: Good Day
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_scan_rx() tries to access scan_req->flags after a null check
-(see line 303 of mac80211/scan.c), but ___cfg80211_scan_done() uses
-kfree() on the scan_req (see line 991 of wireless/scan.c).
-
-This results in a UAF.
-
-ieee80211_scan_rx() is called inside a RCU read-critical section
-initiated by ieee80211_rx_napi() (see line 5043 of mac80211/rx.c).
-
-Thus, add an rcu_head to the scan_req struct so as to use kfree_rcu()
-instead of kfree() so that we don't free during the critical section.
-
-Bug report (3): https://syzkaller.appspot.com/bug?extid=3Df9acff9bf08a845f2=
-25d
-Reported-by: syzbot+f9acff9bf08a845f225d@syzkaller.appspotmail.com
-Reported-by: syzbot+6cb476b7c69916a0caca@syzkaller.appspotmail.com
-Reported-by: syzbot+9250865a55539d384347@syzkaller.appspotmail.com
-
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
----
- include/net/cfg80211.h | 2 ++
- net/wireless/scan.c    | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 6d02e12e4702..ba4a49884de8 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2368,6 +2368,7 @@ struct cfg80211_scan_6ghz_params {
-  * @n_6ghz_params: number of 6 GHz params
-  * @scan_6ghz_params: 6 GHz params
-  * @bssid: BSSID to scan for (most commonly, the wildcard BSSID)
-+ * @rcu_head: (internal) RCU head to use for freeing
-  */
- struct cfg80211_scan_request {
- =09struct cfg80211_ssid *ssids;
-@@ -2397,6 +2398,7 @@ struct cfg80211_scan_request {
- =09bool scan_6ghz;
- =09u32 n_6ghz_params;
- =09struct cfg80211_scan_6ghz_params *scan_6ghz_params;
-+=09struct rcu_head rcu_head;
-=20
- =09/* keep last */
- =09struct ieee80211_channel *channels[];
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 6d82bd9eaf8c..638b2805222c 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -988,7 +988,7 @@ void ___cfg80211_scan_done(struct cfg80211_registered_d=
-evice *rdev,
- =09kfree(rdev->int_scan_req);
- =09rdev->int_scan_req =3D NULL;
-=20
--=09kfree(rdev->scan_req);
-+=09kfree_rcu(rdev->scan_req, rcu_head);
- =09rdev->scan_req =3D NULL;
-=20
- =09if (!send_message)
---=20
-2.35.1
-
-
+-- 
+Hello dear friend, i'm Alima Anwari from Afghanistan, please reply
+back to me and have an urgent issue to share with you. I will be waiting
+for your response.
+Thanks.
+Alima.
