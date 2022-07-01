@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BBAF5630C1
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 11:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 303695630CC
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Jul 2022 11:58:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbiGAJzK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Jul 2022 05:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47806 "EHLO
+        id S236178AbiGAJ6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Jul 2022 05:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233002AbiGAJzJ (ORCPT
+        with ESMTP id S235928AbiGAJ6Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Jul 2022 05:55:09 -0400
+        Fri, 1 Jul 2022 05:58:16 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF39D7479E
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 02:55:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53643D58
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Jul 2022 02:58:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=pePzQ70O3qF1BbrHwbaYS/YJeXplHbDhGHZky1QkMIw=;
-        t=1656669308; x=1657878908; b=uAiovKPLrSW9l+YPDxobqiVbftjqXC/5gdN1JX4c1PptqbH
-        R2sMiutxvuMspAqv5QXYi0olTJM+ldG/kUzysm9gagXSX5opt2rNSsPBGLppxPbi1j3ngv5Ve20vz
-        uYrumRzOKYucZk7q99YpGWbxEmMQmmwnUfmaHABwvAqGK7QlcoXEzstOxvJR+qdKHYVLuXaZ4e0ai
-        8Y6m4NELO6K/flNiTKQdC2hMnx6sszHlBgCzTxAxA2oR2tGl1aY6gY5Kwl/zwVo9def4uroIb3CJH
-        ZYgjiHd7BU8z3MICZvT32aBPXwy6wCJA4uUz3k8X73deG/3v4nNkFgiLC1RyKuRg==;
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=2TQVqnYl0YCDnqjTLC+OZA3Hb/N8rBlaMJVrfsItu0c=;
+        t=1656669494; x=1657879094; b=ae4OAyejIqhHiIR983ailkMww2u4jQ99H/0BK2D7gt2x5AR
+        McXV8G14Xk8YTfxr0GpRUyK5t2qU7zlzSS+eaL4Msl8XHlT0eTUYHDyQLeMDWcDACpiD49/oUoCeh
+        P0gug9OkbIMV1HDwXKEg7LbjDu831yOj/eRke/IuCQus5T4Xw55gS5yMS3mKSXQEy/yy4/YTZtn+c
+        DGNMCz/ZAJSFtGz9Jo3Jw6zE6PoL69j6xmL/whT6jSU/FddzSPtZBScbgECY1aUslMRUfuyyG2Fs2
+        tfG/ds9HN8VUqAWnmtH2doqrIm8JEQ1enfC01yzdiQhdcE6roUyIOAtx1d2K/roA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1o7DMh-003QuP-7i;
-        Fri, 01 Jul 2022 11:55:07 +0200
-Message-ID: <8542c3eac729563fef1bc78d28c740453fba88bd.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211:  report per-chain signal values through
- ethtool.
+        id 1o7DPg-003QzG-7T;
+        Fri, 01 Jul 2022 11:58:12 +0200
+Message-ID: <aa0f3770698f4a9a3ec62d7b898838726af4f82e.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix get inactive time for station mode
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
-Date:   Fri, 01 Jul 2022 11:55:06 +0200
-In-Reply-To: <20220329210228.8137-1-greearb@candelatech.com>
-References: <20220329210228.8137-1-greearb@candelatech.com>
+To:     Issam Hamdi <ih@simonwunderlich.de>
+Cc:     linux-wireless@vger.kernel.org, sw@simonwunderlich.de
+Date:   Fri, 01 Jul 2022 11:58:11 +0200
+In-Reply-To: <20220628150511.1185132-1-ih@simonwunderlich.de>
+References: <20220628150511.1185132-1-ih@simonwunderlich.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
@@ -52,23 +52,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-03-29 at 14:02 -0700, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
+On Tue, 2022-06-28 at 17:05 +0200, Issam Hamdi wrote:
+> In station mode, the value last_rx is not updated often.
+> Therefore the calculation of the inactive time will be wrong (will give
+> values between 1000 ms to 30000 ms).
+> To fix this add the update of "sta->deflink.rx_stats.last_rx" for
+> station mode in the response of the packets process
+> (ieee80211_rx_h_sta_process).
+
+Not really sure I understand that.
+
+> +++ b/net/mac80211/rx.c
+> @@ -1756,6 +1756,9 @@ ieee80211_rx_h_sta_process(struct ieee80211_rx_data=
+ *rx)
+>  			sta->deflink.rx_stats.last_rate =3D sta_stats_encode_rate(status);
+>  	}
+> =20
+> +	if (rx->sdata->vif.type =3D=3D NL80211_IFTYPE_STATION)
+> +		sta->deflink.rx_stats.last_rx =3D jiffies;
+
+Why the interface type check? It's a per-station thing, so why would it
+not apply here for other types?
+
+>  	sinfo->inactive_time =3D
+> -		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta));
+> +		jiffies_to_msecs(abs(jiffies - ieee80211_sta_last_active(sta)));
 >=20
-> Combine them into a u64, each byte is one chain.
 
-This only works up to 4 chains, but the specs at least support 8. I
-don't think we have any drivers for that, but ...
-
-And it's also rather ugly, IMHO.
-
-We're reporting these through nl80211 anyway though, no? Why should we
-prefer ethtool, which fundamentally limits to a single value for the AP
-rather than giving the full per-station view.
-
-> Re-work the way that APs averaged stats to be more
-> efficient.
-
-Isn't that completely unrelated?
+That seems ... rather questionable.
 
 johannes
