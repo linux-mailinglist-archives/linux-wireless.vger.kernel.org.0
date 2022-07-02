@@ -2,226 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E2B5641E1
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Jul 2022 19:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710255641F0
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Jul 2022 19:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232257AbiGBRfQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Jul 2022 13:35:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41644 "EHLO
+        id S232221AbiGBRtZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Jul 2022 13:49:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231520AbiGBRfQ (ORCPT
+        with ESMTP id S231520AbiGBRtY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Jul 2022 13:35:16 -0400
-Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955FADFB8
-        for <linux-wireless@vger.kernel.org>; Sat,  2 Jul 2022 10:35:12 -0700 (PDT)
-Date:   Sat, 02 Jul 2022 17:35:03 +0000
+        Sat, 2 Jul 2022 13:49:24 -0400
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F665F8B
+        for <linux-wireless@vger.kernel.org>; Sat,  2 Jul 2022 10:49:21 -0700 (PDT)
+Date:   Sat, 02 Jul 2022 17:49:09 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1656783309; x=1657042509;
-        bh=iILpwwk1OP0q6tgIJOYEDphJskRvDbtg4pkBqD471MQ=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:Feedback-ID:From:To:
-         Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID;
-        b=RC86Mz3D1BeW22m6igcOeaz9Nt8ooH5ipU+EUgC/IUD637MJVtNx+CqvvcXIaoQp8
-         SC19quCJMBOw5ynd5R4zVk6/l6bTkQSVKpWNrbHEsook73arf/bROzVivuRVGb14dt
-         dnOt0+QKqdqPBBsRONM4ZJcUOQR/66yS4IHSrtkBOTEEXyfrn5u0ILF5E32sD3b0R6
-         Cg2XkteEBky7bGFjoNTNmODDxhLihn7HNwRhbtg0ZmfdVBEhls3510cCfGVsRc5AQb
-         X2Mg8xE83dN8TQmpRwIW9BbgO+w47/G5cWcZtboNzu29dRz6K3DWyeuEDOkEkPBTmp
-         yzfFXlSyJDdQA==
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+        s=protonmail2; t=1656784159; x=1657043359;
+        bh=vHRz8Pzy9m8vVwMYpWBRXQ2Kgi+Y/eN7Ww+yf7eq8sI=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=ViX841pvkbSrpsxN8yj4NPlQUqF7AyTOnmzzdeUqyX6xls9onIXcGiteC/FT1YHMd
+         wU/jkyWzDA6waxK86O9k9Gj5ySl2SFBA1BskDpDjAOxVW56V1ibDgzLv/fR515geWl
+         vrEBPiBzC8/F9U2SXQuIN5LOkBhDKutsA47yawx38C/5P7RN82KYsbKA/AdFyafaIB
+         DEmxAxeohQs6HNAGtA6wvFDo1DSmzu6AZfjYi+9b+9DBz+Bl5vTdHgVffIR4AABity
+         uo/Lc25pwNLLBm7ZI2zkdzy44VSD4fOurvgXZDgnsvmppx/5MW3ClA/VZOoCqQfID9
+         82n7E8Q7gcabw==
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
 From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
+        Ulf Hansson <ulf.hansson@linaro.org>
 Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: [PATCH v4] brcmfmac: prevent double-free on hardware-reset
-Message-ID: <g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=@dannyvanheumen.nl>
+Subject: Re: [PATCH v3] brcmfmac: prevent double-free on hardware-reset.
+Message-ID: <Zi4EB2wpeKLBzLYaWQipAoeQ54MOmavmfpFZ887MjuLaCn-wYory5tCLC9HLBTC7t0SOqLGsGfKFS3M5qFDkdF9HP1LRatW6_MXwNJ4MJPw=@dannyvanheumen.nl>
+In-Reply-To: <f14afd46-0bad-9d7b-1361-203bcad92e06@broadcom.com>
+References: <ThT2jwvySn9tFQm9FxrlPNMQkiGUnx_87cOhmmeexoVOFZqOkpjmAntCWG-kIBMj2830LHZaOULlJxQKiRXkVtGYrrT8rBaB7R65qjIinYo=@dannyvanheumen.nl> <f14afd46-0bad-9d7b-1361-203bcad92e06@broadcom.com>
 Feedback-ID: 15073070:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In case of buggy firmware, brcmfmac may perform a hardware reset. If during
-reset and subsequent probing an early failure occurs, a memory region is
-accidentally double-freed. With hardened memory allocation enabled, this er=
-ror
-will be detected.
+Hi all,
 
-- return early where appropriate to skip unnecessary clean-up.
-- set '.freezer' pointer to NULL to prevent double-freeing under possible
-  other circumstances and to re-align result under various different
-  behaviors of memory allocation freeing.
-- correctly claim host on func1 for disabling func2.
-- after reset, do not initiate probing immediately, but rely on events.
+I missed the response for a while. Following up in-line.
 
-Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
-'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitial=
-ize
-the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
-early, which includes calling 'brcmf_sdiod_remove'. In both cases
-'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
-has not yet been re-allocated the second time.
+------- Original Message -------
+On Wednesday, June 22nd, 2022 at 14:36, Arend van Spriel <arend.vanspriel@b=
+roadcom.com> wrote:
 
-Stacktrace of (failing) hardware reset after firmware-crash:
+> + Uffe
+>
+> On 6/17/2022 4:24 PM, Danny van Heumen wrote:
+>
+> > From f1fcceb65d4a44c078cd684ea25a2f2c7f53deb2 Mon Sep 17 00:00:00 2001
+> > From: Danny van Heumen danny@dannyvanheumen.nl
+> > Date: Tue, 24 May 2022 18:30:50 +0200
+> > Subject: [PATCH v3] brcmfmac: prevent double-free on hardware-reset.
+> >
+> > In case of buggy firmware, brcmfmac may perform a hardware reset. If du=
+ring
+> > reset and subsequent probing an early failure occurs, a memory region i=
+s
+> > accidentally double-freed. With hardened memory allocation enabled, thi=
+s error
+> > will be detected.
+> >
+> > - return early where appropriate to skip unnecessary clean-up.
+> > - set '.freezer' pointer to NULL to prevent double-freeing under possib=
+le
+> > other circumstances and to re-align result under various different
+> > behaviors of memory allocation freeing.
+> >
+> > Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It c=
+alls
+> > 'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reini=
+tialize
+> > the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it ex=
+its
+> > early, which includes calling 'brcmf_sdiod_remove'. In both cases
+> > 'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', wh=
+ich
+> > has not yet been re-allocated the second time.
+>
+>
+> For testing you can also trigger the brcmf_sdio_bus_reset() through debug=
+fs:
+>
+> # cd /sys/kernel/debug/ieee80211/phyX
+> # echo 1 > reset
 
-Code: b9402b82 8b0202c0 eb1a02df 54000041 (d4210000)
- ret_from_fork+0x10/0x20
- kthread+0x154/0x160
- worker_thread+0x188/0x504
- process_one_work+0x1f4/0x490
- brcmf_core_bus_reset+0x34/0x44 [brcmfmac]
- brcmf_sdio_bus_reset+0x68/0xc0 [brcmfmac]
- brcmf_sdiod_probe+0x170/0x21c [brcmfmac]
- brcmf_sdiod_remove+0x48/0xc0 [brcmfmac]
- kfree+0x210/0x220
- __slab_free+0x58/0x40c
-Call trace:
-x2 : 0000000000000040 x1 : fffffc00002d2b80 x0 : ffff00000b4aee40
-x5 : ffff8000013fa728 x4 : 0000000000000001 x3 : ffff00000b4aee00
-x8 : ffff800009967ce0 x7 : ffff8000099bfce0 x6 : 00000006f8005d01
-x11: ffff8000099bfce0 x10: 00000000fffff000 x9 : ffff8000083401d0
-x14: 0000000000000000 x13: 657a69736b636f6c x12: 6220314620746573
-x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000030
-x20: fffffc00002d2ba0 x19: fffffc00002d2b80 x18: 0000000000000000
-x23: ffff00000b4aee00 x22: ffff00000b4aee00 x21: 0000000000000001
-x26: ffff00000b4aee00 x25: ffff0000f7753705 x24: 000000000001288a
-x29: ffff80000a22bbf0 x28: ffff000000401200 x27: 000000008020001a
-sp : ffff80000a22bbf0
-lr : kfree+0x210/0x220
-pc : __slab_free+0x58/0x40c
-pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-Workqueue: events brcmf_core_bus_reset [brcmfmac]
-Hardware name: Pine64 Pinebook Pro (DT)
-CPU: 2 PID: 639 Comm: kworker/2:2 Tainted: G         C        5.16.0-0.bpo.=
-4-arm64 #1  Debian 5.16.12-1~bpo11+1
- nvmem_rockchip_efuse industrialio_triggered_buffer videodev snd_soc_core s=
-nd_pcm_dmaengine kfifo_buf snd_pcm io_domain mc industrialio mt>
-Modules linked in: snd_seq_dummy snd_hrtimer snd_seq snd_seq_device nft_fib=
-_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje>
-Internal error: Oops - BUG: 0 [#1] SMP
-kernel BUG at mm/slub.c:379!
+This works. I have done a few resets in a loop to see if the hardware keeps
+recovering and no other issues occur. Everything seems to be fine.
 
-Signed-off-by: Danny van Heumen <danny@dannyvanheumen.nl>
----
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 31 ++++++++++++-------
- .../broadcom/brcm80211/brcmfmac/sdio.c        | 10 +-----
- 2 files changed, 21 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/dr=
-ivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index ac02244a6fdf..dd634edaa0b3 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -802,6 +802,7 @@ static void brcmf_sdiod_freezer_detach(struct brcmf_sdi=
-o_dev *sdiodev)
- =09if (sdiodev->freezer) {
- =09=09WARN_ON(atomic_read(&sdiodev->freezer->freezing));
- =09=09kfree(sdiodev->freezer);
-+=09=09sdiodev->freezer =3D NULL;
- =09}
- }
+>
+>
+> So I did that without your patch and observed following:
+>
+> [ 531.481045] brcmfmac: brcmf_sdiod_probe: Failed to set F1 blocksize
+>
+> [ 531.487314] brcmfmac: brcmf_sdio_bus_reset: Failed to probe after
+> sdio device
+> reset: ret -123
+>
+> [ 531.495893] mmc0: card 0001 removed
+>
+> [ 531.550567] mmc0: new high speed SDIO card at address 0001
+>
+> [ 531.556561] brcmfmac: F1 signature read @0x18000000=3D0x16044330
+>
+> So I looked in brcmf_sdio_bus_reset() and noticed that this function
+> actually does a call to mmc_hw_reset() which is what I suggested
+> earlier. Looking at this log it seems the actual remove and subsequent
+> rescan is a deferred work and it will take care of probing the driver ane=
+w.
 
-@@ -875,13 +876,9 @@ int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev)
+I can confirm that this works. This is helpful.
 
- =09brcmf_sdiod_freezer_detach(sdiodev);
 
--=09/* Disable Function 2 */
--=09sdio_claim_host(sdiodev->func2);
--=09sdio_disable_func(sdiodev->func2);
--=09sdio_release_host(sdiodev->func2);
--
--=09/* Disable Function 1 */
-+=09/* Disable functions 2 then 1. */
- =09sdio_claim_host(sdiodev->func1);
-+=09sdio_disable_func(sdiodev->func2);
- =09sdio_disable_func(sdiodev->func1);
- =09sdio_release_host(sdiodev->func1);
+>
+> So I changed debug message level for the sdio ops and then I see:
+>
+> [ 1327.686828] brcmfmac: brcmf_sdiod_probe: Failed to set F1 blocksize
+>
+> [ 1327.693091] brcmfmac: brcmf_sdio_bus_reset: Failed to probe after
+> sdio device
+> reset: ret -123
+>
+> [ 1327.701626] brcmfmac: brcmf_ops_sdio_remove Enter
+>
+> [ 1327.706333] brcmfmac: brcmf_ops_sdio_remove Function: 1
+>
+> [ 1327.711557] brcmfmac: brcmf_ops_sdio_remove Exit
+>
+> [ 1327.716203] brcmfmac: brcmf_ops_sdio_remove Enter
+>
+> [ 1327.720911] brcmfmac: brcmf_ops_sdio_remove Function: 2
+>
+> [ 1327.726135] brcmfmac: brcmf_ops_sdio_remove Exit
+>
+> [ 1327.730768] mmc0: card 0001 removed
+>
+> [ 1327.785458] mmc0: new high speed SDIO card at address 0001
+>
+> [ 1327.791068] brcmfmac: brcmf_ops_sdio_probe Enter
+>
+> [ 1327.795687] brcmfmac: brcmf_ops_sdio_probe Function#: 1
+>
+> [ 1327.800988] brcmfmac: brcmf_ops_sdio_probe Enter
+>
+> [ 1327.805610] brcmfmac: brcmf_ops_sdio_probe Function#: 2
+>
+> [ 1327.811317] brcmfmac: F1 signature read @0x18000000=3D0x16044330
+>
+> So to me it seems mmc_hw_reset() is doing everything we need and we can
+> make brcmf_sdio_bus_reset() a bit simpler. The only scary part here is
+> that brcmf_ops_sdio_remove() is called first for func1 and then for
+> func2. Upon rmmod this is different, ie. first func2 and then func1.
+> Looking at the implementation in brcmf_ops_sdio_remove() it means we run
+> into use-after-free upon mmc_hw_reset().
 
-@@ -911,7 +908,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
- =09if (ret) {
- =09=09brcmf_err("Failed to set F1 blocksize\n");
- =09=09sdio_release_host(sdiodev->func1);
--=09=09goto out;
-+=09=09return ret;
- =09}
- =09switch (sdiodev->func2->device) {
- =09case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
-@@ -933,7 +930,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
- =09if (ret) {
- =09=09brcmf_err("Failed to set F2 blocksize\n");
- =09=09sdio_release_host(sdiodev->func1);
--=09=09goto out;
-+=09=09return ret;
- =09} else {
- =09=09brcmf_dbg(SDIO, "set F2 blocksize to %d\n", f2_blksz);
- =09}
-@@ -1096,12 +1093,24 @@ static void brcmf_ops_sdio_remove(struct sdio_func =
-*func)
- =09if (bus_if) {
- =09=09sdiodev =3D bus_if->bus_priv.sdio;
+I have looked into this. The logic itself protects from duplicate behavior
+(at least partially) by checking which func is being removed. However,
+irq-releases are duplicated because the check only happens after that logic=
+.
+This is also necessary, because the kernel warns if the irq isn't released
+after executing the callback.
 
-+=09=09if (func->num !=3D 1) {
-+=09=09=09/* Satisfy kernel expectation that the irq is released once the
-+=09=09=09 * '.remove' callback has executed, while respecting the design
-+=09=09=09 * that removal is executed for 'sdiodev', instead of individual
-+=09=09=09 * function.
-+=09=09=09 */
-+=09=09=09brcmf_dbg(SDIO, "Only release irq for function %d", func->num);
-+=09=09=09sdio_claim_host(sdiodev->func1);
-+=09=09=09sdio_release_irq(func);
-+=09=09=09sdio_release_host(sdiodev->func1);
-+=09=09=09return;
-+=09=09}
-+
-+=09=09/* func 1: so do full clean-up and removal */
-+
- =09=09/* start by unregistering irqs */
- =09=09brcmf_sdiod_intr_unregister(sdiodev);
+In the next patch (prefixed "PATCH v4", already sent), I have slightly
+adjusted the control flow such that irq-release happens for each func
+-- as per expectation -- while the removal logic remains rooted at func1,
+but executed based on the full device (`sdiodev` as function arg). This
+should, IIUC, be correct regardless of function order.
 
--=09=09if (func->num !=3D 1)
--=09=09=09return;
--
- =09=09/* only proceed with rest of cleanup if func 1 */
- =09=09brcmf_sdiod_remove(sdiodev);
+This solution isn't a perfect redesign, but should respect both the design
+itself and also sdio driver expectations.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/driv=
-ers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 212fbbe1cd7e..2ed70f809097 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -4152,7 +4152,6 @@ int brcmf_sdio_get_fwname(struct device *dev, const c=
-har *ext, u8 *fw_name)
+Please find the patch at: g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392=
+j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=3D%20()%20dannyv=
+anheumen%20!%20nl
 
- static int brcmf_sdio_bus_reset(struct device *dev)
- {
--=09int ret =3D 0;
- =09struct brcmf_bus *bus_if =3D dev_get_drvdata(dev);
- =09struct brcmf_sdio_dev *sdiodev =3D bus_if->bus_priv.sdio;
+Regards,
+Danny
 
-@@ -4169,14 +4168,7 @@ static int brcmf_sdio_bus_reset(struct device *dev)
- =09sdio_release_host(sdiodev->func1);
-
- =09brcmf_bus_change_state(sdiodev->bus_if, BRCMF_BUS_DOWN);
--
--=09ret =3D brcmf_sdiod_probe(sdiodev);
--=09if (ret) {
--=09=09brcmf_err("Failed to probe after sdio device reset: ret %d\n",
--=09=09=09  ret);
--=09}
--
--=09return ret;
-+=09return 0;
- }
-
- static const struct brcmf_bus_ops brcmf_sdio_bus_ops =3D {
---
-2.34.1
 
