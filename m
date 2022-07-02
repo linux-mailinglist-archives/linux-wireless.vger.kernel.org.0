@@ -2,77 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2274E5640E9
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Jul 2022 17:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 315F056410E
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Jul 2022 17:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232160AbiGBPKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Jul 2022 11:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56630 "EHLO
+        id S231520AbiGBPdM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Jul 2022 11:33:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230213AbiGBPK3 (ORCPT
+        with ESMTP id S230141AbiGBPdM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Jul 2022 11:10:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9ED96BC3F
-        for <linux-wireless@vger.kernel.org>; Sat,  2 Jul 2022 08:10:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1656774626;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=Cqp43LfXGvDDWLcjAcU0nNREspk+kElXMNXTMGJ8P1E=;
-        b=F4lMUD5Wdfss+DZQLPqBh8Q7SInh8hHg2JCKe+XwVxakh6iQaOC7umpSMWP8BYoybLLOBN
-        6Cv2bewxGzYJdXKMyyy0NuuzeZQVHdUuw5l2HRPKRQ/LFamv+hRdSig6kf3Nsfqu7o2EDp
-        dxy+4lxjO51ssVql53afbRd4m/E3kpg=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-624-yCAvJNCrMU6T4hvJurtT3A-1; Sat, 02 Jul 2022 11:10:25 -0400
-X-MC-Unique: yCAvJNCrMU6T4hvJurtT3A-1
-Received: by mail-qt1-f198.google.com with SMTP id c22-20020ac81116000000b0031d25923ea8so1857276qtj.17
-        for <linux-wireless@vger.kernel.org>; Sat, 02 Jul 2022 08:10:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Cqp43LfXGvDDWLcjAcU0nNREspk+kElXMNXTMGJ8P1E=;
-        b=UGUClI+SWrt86DfMA92bNTAV5wid1AvVsJkTwhuUum75VfQPdMz/lXgBCEmDUad1oY
-         y83hnhQppJ3mh/Yp3Fm+A0FyIhV16uQZERGRKBnbicRnfCwmrs8MN/bPeJqMVI3ydNR+
-         uFNsDLFtLY5UuIU4r2q6kn3HIr55a4lDJZ1EkDTQk1ThZfF4zzLKAcIqvpW8EDlL3kgV
-         i22CGBX3B+n8XACFIWF+ZZBO4fGhU+LmWjS9KZ96gEu1LuCGUN6RPwROKok519PIq2Jo
-         GylTHtyccVED8RA1HIx7aloTRVXeDzcrQPewNszsV4qL0r7FdT2lLdtxUcM3F4nun1IK
-         4s9Q==
-X-Gm-Message-State: AJIora/V07Ri11stIpssmv3KI5snRxfP9HjTszyzNJaaj8wFasyYIJa+
-        4JvaJRkDe0aMkFiupPwKNBVyDYQkGuOLN9YluAQg5h6PIF94wQ5Kg3vOdrk+qgSB3X0YLF4CQv6
-        8oYckc970gXWCUhb5/vNwlso2lUU=
-X-Received: by 2002:ac8:5816:0:b0:31d:4178:5fd0 with SMTP id g22-20020ac85816000000b0031d41785fd0mr1632040qtg.253.1656774624762;
-        Sat, 02 Jul 2022 08:10:24 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1vl3/Ai5Vps6cqyXNHSW43QW8v5SfQxKSachr4YHT8JFyALP6kBEa7qly/qiC2VBYhdMdg8Gg==
-X-Received: by 2002:ac8:5816:0:b0:31d:4178:5fd0 with SMTP id g22-20020ac85816000000b0031d41785fd0mr1632016qtg.253.1656774624536;
-        Sat, 02 Jul 2022 08:10:24 -0700 (PDT)
-Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id hh10-20020a05622a618a00b003154e7466casm16292230qtb.51.2022.07.02.08.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Jul 2022 08:10:23 -0700 (PDT)
-From:   Tom Rix <trix@redhat.com>
-To:     gregory.greenman@intel.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        nathan@kernel.org, ndesaulniers@google.com,
-        luciano.coelho@intel.com, ayala.barazani@intel.com,
-        miriam.rachel.korenblit@intel.com, johannes.berg@intel.com,
-        matt.chen@intel.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] iwlwifi: mvm: return an error if setting tbl_rev fails
-Date:   Sat,  2 Jul 2022 11:10:20 -0400
-Message-Id: <20220702151020.2524220-1-trix@redhat.com>
-X-Mailer: git-send-email 2.27.0
+        Sat, 2 Jul 2022 11:33:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5A265F7
+        for <linux-wireless@vger.kernel.org>; Sat,  2 Jul 2022 08:33:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0FB97B8018A
+        for <linux-wireless@vger.kernel.org>; Sat,  2 Jul 2022 15:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B2AC341C8;
+        Sat,  2 Jul 2022 15:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656775988;
+        bh=iAvfsN+YBR+z8SQ4h5GtALiwDDgw9UFzJKT63BH5U8c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WabNUw7HgyXuenkECa0M/qTj9bGq0RDbXQZeYAVrBVunESfQGYMV3j3l+V54tCTZX
+         m/XdTXPORb68OyiLiuVIQdVExeqjswOh04UJMD19jxSnKfixnS44/LJLoJANIBK9H5
+         ipsWVOke/xzrtL/e6jmtDd0BNpD4FKlXZ7FPNYYTIMjLTYSA/H0J8sm+a3DiDbpqzX
+         rio/hQh2vjm+BJr1pazm5CEaecAYPDviP6GrNUXd/8O1vMKWLn57xj9O8m3NMaNCZJ
+         RWOIfmsX2xQcljYcn/T43cdasDfbg3S4rC9ZeW8MSBZ9nm/f0zLjgcvbtE22meC7SL
+         KSOB1r4YUWYdg==
+Date:   Sat, 2 Jul 2022 17:33:04 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, evelyn.tsai@mediatek.com,
+        sean.wang@mediatek.com, Bo Jiao <bo.jiao@mediatek.com>
+Subject: Re: [PATCH 0/5] mt76: add the capability to support more than two
+ phys
+Message-ID: <YsBlMLr3rMe288tA@lore-desk>
+References: <cover.1656624320.git.lorenzo@kernel.org>
+ <4b135d37fc8b9a9ee3a8674126c76c1c45b02054.camel@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fRVNAhNphsrrTQ7C"
+Content-Disposition: inline
+In-Reply-To: <4b135d37fc8b9a9ee3a8674126c76c1c45b02054.camel@mediatek.com>
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,36 +58,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-clang static analysis reports
-drivers/net/wireless/intel/iwlwifi/fw/acpi.c:1048:17: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
-        fwrt->ppag_ver = tbl_rev;
-                       ^ ~~~~~~~
-tbl_rev is optionaly set by a series of calls to iwl_acpi_get_wifi_pkg()
-and then jumping to the read_table when a call is successful.  The
-error case when all the call fails is not handled.  On all failed,
-the code flow falls through to the read_table label.  Add an error
-handler for the all fail case.
 
-Fixes: e8e10a37c51c ("iwlwifi: acpi: move ppag code from mvm to fw/acpi")
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+--fRVNAhNphsrrTQ7C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index e6d64152c81a..1ef1e26c3206 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -1044,6 +1044,9 @@ int iwl_acpi_get_ppag_table(struct iwl_fw_runtime *fwrt)
- 		goto read_table;
- 	}
- 
-+	ret = -EINVAL;
-+	goto out_free;
-+
- read_table:
- 	fwrt->ppag_ver = tbl_rev;
- 	flags = &wifi_pkg->package.elements[1];
--- 
-2.27.0
+> On Thu, 2022-06-30 at 23:41 +0200, Lorenzo Bianconi wrote:
+> > Introduce the capability to support more than two mt76_phys.
+> > This is a preliminary series to add mt7990 support.
+> >=20
+> > Lorenzo Bianconi (5):
+> >   mt76: add phy_idx in mt76_rx_status
+> >   mt76: introduce phys array in mt76_dev structure
+> >   mt76: add phy_idx to mt76_wcid
+> >   mt76: convert MT_TX_HW_QUEUE_EXT_PHY to MT_TX_HW_QUEUE_PHY
+> >   mt76: get rid of mt76_wcid_hw routine
+> >=20
+> >  drivers/net/wireless/mediatek/mt76/dma.c      |  9 ++-
+> >  drivers/net/wireless/mediatek/mt76/mac80211.c | 27 ++++----
+> >  drivers/net/wireless/mediatek/mt76/mt76.h     | 67 ++++++++++-------
+> > --
+> >  .../net/wireless/mediatek/mt76/mt7615/init.c  |  4 +-
+> >  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 44 ++++++------
+> >  .../net/wireless/mediatek/mt76/mt7615/main.c  |  4 +-
+> >  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 32 +++++----
+> >  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 +-
+> >  .../wireless/mediatek/mt76/mt7615/pci_mac.c   | 15 +++--
+> >  .../wireless/mediatek/mt76/mt76_connac_mac.c  | 12 ++--
+> >  .../net/wireless/mediatek/mt76/mt7915/init.c  |  4 +-
+> >  .../net/wireless/mediatek/mt76/mt7915/mac.c   | 23 ++++---
+> >  .../net/wireless/mediatek/mt76/mt7915/main.c  |  4 +-
+> >  .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 25 +++----
+> >  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
+> >  .../net/wireless/mediatek/mt76/mt7921/main.c  |  4 +-
+> >  drivers/net/wireless/mediatek/mt76/testmode.c |  5 +-
+> >  drivers/net/wireless/mediatek/mt76/tx.c       | 48 +++++++------
+> >  18 files changed, 174 insertions(+), 157 deletions(-)
+>=20
+> I think this series should add Bo's SOB as he finished the initial
+> work.
 
+sure, I am fine with it.
+@Felix: do I need to repost or are you taking care of it?
+
+Regards,
+Lorenzo
+
+>=20
+> Ryder
+>=20
+
+--fRVNAhNphsrrTQ7C
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYsBlMAAKCRA6cBh0uS2t
+rG3HAP0cuUDPCYxxSKPM4ZGtrRCXJFFAnQIgchbWkHNX9tk6qAD9HHJMqwy3aRUE
+RDqLi++7QGb3k9IfIXoyJtDR6zB4FAw=
+=D4fq
+-----END PGP SIGNATURE-----
+
+--fRVNAhNphsrrTQ7C--
