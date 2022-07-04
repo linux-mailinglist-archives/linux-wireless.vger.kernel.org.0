@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C28D565228
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 12:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB34565236
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 12:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234502AbiGDKZw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jul 2022 06:25:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
+        id S234286AbiGDKZz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jul 2022 06:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234507AbiGDKZ3 (ORCPT
+        with ESMTP id S234262AbiGDKZd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jul 2022 06:25:29 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED8610FFD
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 03:24:08 -0700 (PDT)
+        Mon, 4 Jul 2022 06:25:33 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5DED1114C
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 03:24:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1656930248; x=1688466248;
+  t=1656930250; x=1688466250;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version;
-  bh=JLjUcfEAoZGdc0LpXM0fzRBNZSHUKbX665cALsYwCoo=;
-  b=keOjFQ4TSAcijuoytFihVG2NPWiz9J1uNHGOiJwjxIYNa7ArzHVqTM+J
-   DmW+sdbZHTFPwszc+hgUO0RyOa7P3m2CzqObsJT/GmbGWW95EtWq916Tx
-   1D6+5Z6i9Ch8ynYzVOk5ZX374phmEz9Amgj163zorUHw5IyL6MfgOK4b+
-   Y=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 04 Jul 2022 03:24:08 -0700
+  bh=fjJINO81/YrRYiiogSNa+48rhNRYhIS+of2WeOkh6AQ=;
+  b=BsDR/UWo+vBkWFq7ut7FFMjm97pAQ9yFNlk2UmgFXqvI7vTcCvUdTbaj
+   p/wNtWZzsPF6TdbI7fUeT+pXjAEqXqE4b/TN+e23v6ioOylZA/7qVOdNT
+   t+Gu8hr9FB7PQsl6TuD3/6APaTfwyTW4Bl63KVpi2Q0rEKsffF8ldMptx
+   w=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 04 Jul 2022 03:24:10 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 03:24:08 -0700
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 03:24:10 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 4 Jul 2022 03:24:07 -0700
+ 15.2.986.22; Mon, 4 Jul 2022 03:24:10 -0700
 Received: from adisi-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 4 Jul 2022 03:24:06 -0700
+ 15.2.986.22; Mon, 4 Jul 2022 03:24:08 -0700
 From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <johannes@sipsolutions.net>,
         Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH 3/7] mac80211: add combined power type definition for 6 GHz
-Date:   Mon, 4 Jul 2022 15:53:37 +0530
-Message-ID: <20220704102341.5692-4-quic_adisi@quicinc.com>
+Subject: [PATCH 4/7] cfg80211: add NL command to set 6 GHz power mode
+Date:   Mon, 4 Jul 2022 15:53:38 +0530
+Message-ID: <20220704102341.5692-5-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220704102341.5692-1-quic_adisi@quicinc.com>
 References: <20220704102341.5692-1-quic_adisi@quicinc.com>
@@ -63,176 +63,216 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-6 GHz regulatory domain introduces different power modes for 6 GHz AP
-operation - Low Power Indoor(LPI), Standard Power(SP) and Very Low
-Power(VLP). 6 GHz STAs could be operated as either Regular or
-Subordinate clients. We have separate definitions of AP and client.
+6 GHz introduces various power modes for access points and for clients.
+When user configures these power modes, currently cfg80211 does not
+have support to store the configured power mode.
 
-However, during concurrency (multi-interfaces), it would be
-difficult to keep different enum containers for different interface
-types in order to track its power mode.
+Add support to store the 6 GHz configured power mode in the structure
+wireless_dev via a new NL command - NL80211_CMD_SET_6GHZ_POWER_MODE.
 
-Add new combined power type definition for 6 GHz interfaces. Also add
-support to convert existing AP/Client Power type to this new combined
-power type enum.
+The  above command uses two new NL attributes to set power mode for AP
+and clients - NL80211_ATTR_6GHZ_REG_AP_POWER_MODE and
+NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE respectively.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- include/net/cfg80211.h       | 19 ++++++++++++
- include/uapi/linux/nl80211.h | 38 +++++++++++++++++++++++
- net/wireless/util.c          | 60 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 117 insertions(+)
+ include/net/cfg80211.h       |  9 ++++++
+ include/uapi/linux/nl80211.h | 15 +++++++++
+ net/wireless/ap.c            |  4 +++
+ net/wireless/nl80211.c       | 62 ++++++++++++++++++++++++++++++++++++
+ net/wireless/sme.c           |  3 ++
+ 5 files changed, 93 insertions(+)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 600c080a280b..ed482b23fb9c 100644
+index ed482b23fb9c..1e8852c6149f 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -5902,6 +5902,25 @@ ieee80211_frequency_to_channel(int freq)
- struct ieee80211_channel *
- ieee80211_get_channel_khz(struct wiphy *wiphy, u32 freq);
- 
-+/**
-+ * ieee80211_ap_reg_power_to_reg_power_mode - convert AP specific 6 GHz power
-+ *				type into combined 6 GHz power type
-+ * @ap_type: AP's power mode
-+ * Return: Power mode as referenced in &enum nl80211_regulatory_power_modes
-+ */
-+enum nl80211_regulatory_power_modes
-+ieee80211_ap_reg_power_to_reg_power_mode(enum ieee80211_ap_reg_power ap_type);
+@@ -5644,6 +5644,9 @@ static inline void wiphy_unlock(struct wiphy *wiphy)
+  * @links: array of %IEEE80211_MLD_MAX_NUM_LINKS elements containing @addr
+  *	@ap and @client for each link
+  * @valid_links: bitmap describing what elements of @links are valid
++ * @ap_6ghz_power: 6 GHz regulatory power mode for Access Points
++ * @client_6ghz_power: 6 GHz regulatory power mode for Clients
++ * @reg_6ghz_pwr_configured: true if 6 GHz power mode is configured
+  */
+ struct wireless_dev {
+ 	struct wiphy *wiphy;
+@@ -5758,6 +5761,12 @@ struct wireless_dev {
+ 		};
+ 	} links[IEEE80211_MLD_MAX_NUM_LINKS];
+ 	u16 valid_links;
 +
-+/**
-+ * ieee80211_client_reg_power_to_reg_power_mode - convert Client specific 6 GHz
-+ *				power type into combined 6 GHz power type
-+ * @client_type: Client's power mode
-+ * @ap_type: AP's power mode to which this client is associating
-+ * Return: Power mode as referenced in &enum nl80211_regulatory_power_modes
-+ */
-+enum nl80211_regulatory_power_modes
-+ieee80211_client_reg_power_to_reg_power_mode(enum ieee80211_client_reg_power client_type,
-+					     enum ieee80211_ap_reg_power ap_type);
- /**
-  * ieee80211_get_channel - get channel struct from wiphy for specified frequency
-  *
++	union {
++		enum ieee80211_ap_reg_power ap_6ghz_power;
++		enum ieee80211_client_reg_power client_6ghz_power;
++	};
++	bool reg_6ghz_pwr_configured;
+ };
+ 
+ static inline const u8 *wdev_address(struct wireless_dev *wdev)
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 8c21136ac18c..789f73878f50 100644
+index 789f73878f50..e62838887802 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -3970,6 +3970,44 @@ enum nl80211_band_attr {
- 
- #define NL80211_BAND_ATTR_HT_CAPA NL80211_BAND_ATTR_HT_CAPA
- 
-+/**
-+ * enum nl80211_regulatory_power_modes - 6 GHz regulatory power
-+ *					 modes
-+ * @NL80211_REG_AP_LPI: Low Power Indoor (Access Point)
-+ * @NL80211_REG_AP_SP: Standard Power (Access Point)
-+ * @NL80211_REG_AP_VLP: Very Low Power (Access Point)
-+ * @NL80211_REG_REGULAR_CLIENT_LPI: Low Power Indoor (Regular
-+ *				    or Default Client)
-+ * @NL80211_REG_REGULAR_CLIENT_SP: Standard Power (Regular
-+ *				   or Default Client)
-+ * @NL80211_REG_REGULAR_CLIENT_VLP: Very Low Power (Regular
-+ *				    or Default Client)
-+ * @NL80211_REG_SUBORDINATE_CLIENT_LPI: Low Power Indoor
-+ *					(Subordinate Client)
-+ * @NL80211_REG_SUBORDINATE_CLIENT_SP: Standard Power
-+ *				       (Subordinate Client)
-+ * @NL80211_REG_SUBORDINATE_CLIENT_VLP: Very Low Power
-+ *					(Subordinate Client)
-+ * @NL80211_REG_MAX_POWER_MODES: Max supported number of power
-+ *				 modes
-+ * @__NL80211_REG_LAST: Internal use
-+ */
-+enum nl80211_regulatory_power_modes {
-+	NL80211_REG_AP_LPI,
-+	NL80211_REG_AP_SP,
-+	NL80211_REG_AP_VLP,
-+	NL80211_REG_REGULAR_CLIENT_LPI,
-+	NL80211_REG_REGULAR_CLIENT_SP,
-+	NL80211_REG_REGULAR_CLIENT_VLP,
-+	NL80211_REG_SUBORDINATE_CLIENT_LPI,
-+	NL80211_REG_SUBORDINATE_CLIENT_SP,
-+	NL80211_REG_SUBORDINATE_CLIENT_VLP,
-+
-+	/* keep last */
-+	__NL80211_REG_LAST,
-+	NL80211_REG_MAX_POWER_MODES = __NL80211_REG_LAST - 1,
-+};
-+
- /**
-  * enum nl80211_wmm_rule - regulatory wmm rule
+@@ -1254,6 +1254,11 @@
+  *	without %NL80211_ATTR_MLO_LINK_ID as an easy way to remove all links
+  *	in preparation for e.g. roaming to a regular (non-MLO) AP.
   *
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index b7257862e0fe..cca0ee321a03 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -190,6 +190,66 @@ struct ieee80211_channel *ieee80211_get_channel_khz(struct wiphy *wiphy,
- }
- EXPORT_SYMBOL(ieee80211_get_channel_khz);
- 
-+enum nl80211_regulatory_power_modes
-+ieee80211_ap_reg_power_to_reg_power_mode(enum ieee80211_ap_reg_power ap_type)
-+{
-+	switch (ap_type) {
-+	case IEEE80211_REG_LPI_AP:
-+		return NL80211_REG_AP_LPI;
-+	case IEEE80211_REG_SP_AP:
-+		return NL80211_REG_AP_SP;
-+	case IEEE80211_REG_VLP_AP:
-+		return NL80211_REG_AP_VLP;
-+	default:
-+		return NL80211_REG_MAX_POWER_MODES + 1;
-+	}
-+}
-+EXPORT_SYMBOL(ieee80211_ap_reg_power_to_reg_power_mode);
-+
-+/* ieee80211_client_reg_power_to_reg_power_mode: Accepts the individual power type of
-+ * a 6 GHz client and power type of AP to which the client is associating and returns
-+ * the final combined power mode as enumerated in &enum nl80211_regulatory_power_modes.
++ * @NL80211_CMD_SET_6GHZ_POWER_MODE: Set 6 GHz power mode for the interface
++ *	using -
++ *	&NL80211_ATTR_6GHZ_REG_AP_POWER_MODE - for access points
++ *	&NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE - for clients
 + *
-+ * Unlike AP, for client there is no direct mapping because final power mode of
-+ * operation of client is dependent upon the power type of AP.
-+ * For example -
-+ * If client is a Regular client and AP is Low Power Indoor then combined power mode
-+ * will be Regular Low Power Indoor where as if AP is Standard Power, then it will be
-+ * Regular Standard Power Mode.
-+ */
-+enum nl80211_regulatory_power_modes
-+ieee80211_client_reg_power_to_reg_power_mode(enum ieee80211_client_reg_power client_type,
-+					     enum ieee80211_ap_reg_power ap_type)
-+{
-+	switch (client_type) {
-+	case IEEE80211_REG_DEFAULT_CLIENT:
-+		switch (ap_type) {
-+		case IEEE80211_REG_LPI_AP:
-+			return NL80211_REG_REGULAR_CLIENT_LPI;
-+		case IEEE80211_REG_SP_AP:
-+			return NL80211_REG_REGULAR_CLIENT_SP;
-+		case IEEE80211_REG_VLP_AP:
-+			return NL80211_REG_REGULAR_CLIENT_VLP;
-+		default:
-+			return NL80211_REG_MAX_POWER_MODES  + 1;
-+		}
-+	case IEEE80211_REG_SUBORDINATE_CLIENT:
-+		switch (ap_type) {
-+		case IEEE80211_REG_LPI_AP:
-+			return NL80211_REG_SUBORDINATE_CLIENT_LPI;
-+		case IEEE80211_REG_SP_AP:
-+			return NL80211_REG_SUBORDINATE_CLIENT_SP;
-+		case IEEE80211_REG_VLP_AP:
-+			return NL80211_REG_SUBORDINATE_CLIENT_SP;
-+		default:
-+			return NL80211_REG_MAX_POWER_MODES;
-+		}
-+	default:
-+		return NL80211_REG_MAX_POWER_MODES + 1;
-+	}
-+}
-+EXPORT_SYMBOL(ieee80211_client_reg_power_to_reg_power_mode);
+  * @NL80211_CMD_MAX: highest used command number
+  * @__NL80211_CMD_AFTER_LAST: internal use
+  */
+@@ -1501,6 +1506,8 @@ enum nl80211_commands {
+ 	NL80211_CMD_ADD_LINK,
+ 	NL80211_CMD_REMOVE_LINK,
+ 
++	NL80211_CMD_SET_6GHZ_POWER_MODE,
 +
- static void set_mandatory_flags_band(struct ieee80211_supported_band *sband)
- {
- 	int i, want;
+ 	/* add new commands above here */
+ 
+ 	/* used to define NL80211_CMD_MAX below */
+@@ -2701,6 +2708,12 @@ enum nl80211_commands {
+  *	suites allowed as %NL80211_MAX_NR_AKM_SUITES which is the legacy maximum
+  *	number prior to the introduction of this attribute.
+  *
++ * @NL80211_ATTR_6GHZ_REG_AP_POWER_MODE: Configure 6 GHz regulatory power mode
++ *	for access points. Referenced from &enum ieee80211_ap_reg_power.
++ *
++ * @NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE: Configure 6 GHz regulatory power
++ *	mode for clients. Referenced from &enum ieee80211_client_reg_power.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3223,6 +3236,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_MAX_NUM_AKM_SUITES,
+ 
++	NL80211_ATTR_6GHZ_REG_AP_POWER_MODE,
++	NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE,
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/ap.c b/net/wireless/ap.c
+index e68923200018..be4e6177d72a 100644
+--- a/net/wireless/ap.c
++++ b/net/wireless/ap.c
+@@ -82,6 +82,10 @@ int cfg80211_stop_ap(struct cfg80211_registered_device *rdev,
+ 
+ 	wdev_lock(wdev);
+ 	err = __cfg80211_stop_ap(rdev, dev, link_id, notify);
++
++	if (wdev->reg_6ghz_pwr_configured)
++		wdev->reg_6ghz_pwr_configured = false;
++
+ 	wdev_unlock(wdev);
+ 
+ 	return err;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index afa8cd686e0e..4d5c45f303ec 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -799,6 +799,12 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+ 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
++	[NL80211_ATTR_6GHZ_REG_AP_POWER_MODE] =
++		NLA_POLICY_RANGE(NLA_U8, IEEE80211_REG_LPI_AP,
++				 IEEE80211_REG_AP_POWER_MAX),
++	[NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE] =
++		NLA_POLICY_RANGE(NLA_U8, IEEE80211_REG_DEFAULT_CLIENT,
++				 IEEE80211_REG_CLIENT_POWER_MAX),
+ };
+ 
+ /* policy for the key attributes */
+@@ -15699,6 +15705,55 @@ static int nl80211_remove_link(struct sk_buff *skb, struct genl_info *info)
+ 	return 0;
+ }
+ 
++static int nl80211_set_6ghz_power_mode(struct sk_buff *skb,
++				       struct genl_info *info)
++{
++	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = NULL;
++	enum nl80211_iftype iftype = NL80211_IFTYPE_UNSPECIFIED;
++	int ret = -EINVAL;
++
++	if (dev)
++		wdev = dev->ieee80211_ptr;
++
++	if (wdev)
++		iftype = wdev->iftype;
++
++	if (iftype != NL80211_IFTYPE_AP &&
++	    iftype != NL80211_IFTYPE_STATION)
++		return -EOPNOTSUPP;
++
++	if (!info->attrs[NL80211_ATTR_6GHZ_REG_AP_POWER_MODE] &&
++	    !info->attrs[NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE])
++		return -EINVAL;
++
++	wdev_lock(wdev);
++	if (wdev->reg_6ghz_pwr_configured) {
++		wdev_unlock(wdev);
++		return -EALREADY;
++	}
++
++	if (iftype == NL80211_IFTYPE_AP &&
++	    info->attrs[NL80211_ATTR_6GHZ_REG_AP_POWER_MODE]) {
++		wdev->ap_6ghz_power =
++		  nla_get_u8(info->attrs[NL80211_ATTR_6GHZ_REG_AP_POWER_MODE]);
++		ret = 0;
++	}
++
++	if (iftype == NL80211_IFTYPE_STATION &&
++	    info->attrs[NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE]) {
++		wdev->client_6ghz_power =
++		  nla_get_u8(info->attrs[NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE]);
++		ret = 0;
++	}
++
++	if (!ret)
++		wdev->reg_6ghz_pwr_configured = true;
++
++	wdev_unlock(wdev);
++	return ret;
++}
++
+ #define NL80211_FLAG_NEED_WIPHY		0x01
+ #define NL80211_FLAG_NEED_NETDEV	0x02
+ #define NL80211_FLAG_NEED_RTNL		0x04
+@@ -16849,6 +16904,13 @@ static const struct genl_small_ops nl80211_small_ops[] = {
+ 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP |
+ 					 NL80211_FLAG_MLO_VALID_LINK_ID),
+ 	},
++	{
++		.cmd = NL80211_CMD_SET_6GHZ_POWER_MODE,
++		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
++		.doit = nl80211_set_6ghz_power_mode,
++		.flags = GENL_UNS_ADMIN_PERM,
++		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV),
++	}
+ };
+ 
+ static struct genl_family nl80211_fam __ro_after_init = {
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 00be498aab2e..8858d396e4f8 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -1500,6 +1500,9 @@ int cfg80211_disconnect(struct cfg80211_registered_device *rdev,
+ 	if (!wdev->connected)
+ 		wdev->u.client.ssid_len = 0;
+ 
++	if (wdev->reg_6ghz_pwr_configured)
++		wdev->reg_6ghz_pwr_configured = false;
++
+ 	return err;
+ }
+ 
 -- 
 2.17.1
 
