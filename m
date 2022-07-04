@@ -2,150 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3602E565782
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 15:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71514565898
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 16:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234667AbiGDNhN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jul 2022 09:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
+        id S234132AbiGDO1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jul 2022 10:27:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234896AbiGDNgw (ORCPT
+        with ESMTP id S229967AbiGDO1n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jul 2022 09:36:52 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F64B27D
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 06:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656941795; x=1688477795;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=s6b+4cmk4nDahK8tyk8317KXMU1TmTo0grTbzLdOw8s=;
-  b=kxSL0bwt+kYOMzi93g2R7D+X2Oh7Q5iNQGPGZPYQywDILOpy7UKU0Ssc
-   u6UhdQl1t6+z3nK7YGcnWQFTpGPjJ49jaGcthD1q/XTa3sUqUvefuf6Iu
-   moTvXc5g1QLZZO03ngbOEGenIu5onQmzJ7aYYQp6P70SBYIlqb4GHaJPj
-   YImbh5jPbdV6oS6uLU4UPuTHoXpXKqHzXrOPXdlFyWDF7Xnk0VWvyuvvY
-   W9soMZRwo9e4dKGtEa6+ESup09YQ8MVAY7C/IwYcycQmv1yfbAMnHgXqo
-   ETRTHk+vhTRtXS2mFOpPE5n6QZlJUjouCpZeLjoR+5MPbTM0j4BUXGjJa
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10397"; a="369455836"
-X-IronPort-AV: E=Sophos;i="5.92,243,1650956400"; 
-   d="scan'208";a="369455836"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 06:36:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,243,1650956400"; 
-   d="scan'208";a="567230943"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 04 Jul 2022 06:36:33 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o8MFc-000Hut-Li;
-        Mon, 04 Jul 2022 13:36:32 +0000
-Date:   Mon, 4 Jul 2022 21:35:59 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     kbuild-all@lists.01.org
-Subject: Re: [PATCH] mt76: remove q->qid
-Message-ID: <202207042158.O7hTDMKY-lkp@intel.com>
-References: <20220704074336.28043-1-nbd@nbd.name>
+        Mon, 4 Jul 2022 10:27:43 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7634A6351
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 07:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1656944862; x=1688480862;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jIckJ6q27CxQEqwm6h7dYIRLxW5M+UO8WF4AeexYZik=;
+  b=c5CpLkTcRQkyuoL7Qrx3pxrGLz8Q06pWHzF1zAUGURc0+ZO/YuyRlMOY
+   gXDoFv9jdPtX1E87tESVM4ZY1T17tasK0EdRCDAHyZlMp3hIKfwqlPw/V
+   +SGEZ1G9iy9CDA+GS7WlNaUnOJv4iZ0ddanwlHzC9tkWfJ4g5VC8J3JVs
+   E=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 04 Jul 2022 07:27:41 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 07:27:41 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 4 Jul 2022 07:27:40 -0700
+Received: from cnss-mw-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 4 Jul 2022 07:27:39 -0700
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: nl80211: Use nested attribute to expose link ID of associated BSS
+Date:   Mon, 4 Jul 2022 19:57:18 +0530
+Message-ID: <20220704142718.1279055-1-quic_vjakkam@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220704074336.28043-1-nbd@nbd.name>
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Felix,
+Use nested attribute instead of top-level attribute when filling link
+ID info in nested message of the associated BSS.
 
-I love your patch! Yet something to improve:
+Fixes: dd374f84baec ("wifi: nl80211: expose link ID for associated BSSes")
+Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+---
+ include/uapi/linux/nl80211.h | 2 ++
+ net/wireless/nl80211.c       | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v5.19-rc5 next-20220704]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Felix-Fietkau/mt76-remove-q-qid/20220704-154431
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20220704/202207042158.O7hTDMKY-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/7cef83a2b5a0f3c5ca3612e34ca2649ac9cf75f4
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Felix-Fietkau/mt76-remove-q-qid/20220704-154431
-        git checkout 7cef83a2b5a0f3c5ca3612e34ca2649ac9cf75f4
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/wireless/mediatek/mt76/usb.c: In function 'mt76u_tx_queue_skb':
->> drivers/net/wireless/mediatek/mt76/usb.c:861:52: error: 'struct mt76_queue' has no member named 'qid'
-     861 |         err = dev->drv->tx_prepare_skb(dev, NULL, q->qid, wcid, sta, &tx_info);
-         |                                                    ^~
---
-   drivers/net/wireless/mediatek/mt76/sdio.c: In function 'mt76s_tx_queue_skb':
->> drivers/net/wireless/mediatek/mt76/sdio.c:531:52: error: 'struct mt76_queue' has no member named 'qid'
-     531 |         err = dev->drv->tx_prepare_skb(dev, NULL, q->qid, wcid, sta, &tx_info);
-         |                                                    ^~
---
-   drivers/net/wireless/mediatek/mt76/dma.c: In function 'mt76_dma_tx_queue_skb':
->> drivers/net/wireless/mediatek/mt76/dma.c:409:52: error: 'struct mt76_queue' has no member named 'qid'
-     409 |         ret = dev->drv->tx_prepare_skb(dev, txwi, q->qid, wcid, sta, &tx_info);
-         |                                                    ^~
-
-
-vim +861 drivers/net/wireless/mediatek/mt76/usb.c
-
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  845  
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  846  static int
-8987059475f503 Lorenzo Bianconi 2020-11-11  847  mt76u_tx_queue_skb(struct mt76_dev *dev, struct mt76_queue *q,
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  848  		   struct sk_buff *skb, struct mt76_wcid *wcid,
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  849  		   struct ieee80211_sta *sta)
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  850  {
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  851  	struct mt76_tx_info tx_info = {
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  852  		.skb = skb,
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  853  	};
-95f61e17eff3d9 Felix Fietkau    2020-08-23  854  	u16 idx = q->head;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  855  	int err;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  856  
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  857  	if (q->queued == q->ndesc)
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  858  		return -ENOSPC;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  859  
-88046b2c9f6d8b Felix Fietkau    2018-10-25  860  	skb->prev = skb->next = NULL;
-8987059475f503 Lorenzo Bianconi 2020-11-11 @861  	err = dev->drv->tx_prepare_skb(dev, NULL, q->qid, wcid, sta, &tx_info);
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  862  	if (err < 0)
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  863  		return err;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  864  
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  865  	err = mt76u_tx_setup_buffers(dev, tx_info.skb, q->entry[idx].urb);
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  866  	if (err < 0)
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  867  		return err;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  868  
-4de92bf10c6df6 Lorenzo Bianconi 2019-02-20  869  	mt76u_fill_bulk_urb(dev, USB_DIR_OUT, q2ep(q->hw_idx),
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  870  			    q->entry[idx].urb, mt76u_complete_tx,
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  871  			    &q->entry[idx]);
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  872  
-95f61e17eff3d9 Felix Fietkau    2020-08-23  873  	q->head = (q->head + 1) % q->ndesc;
-cfaae9e67cf130 Lorenzo Bianconi 2019-04-02  874  	q->entry[idx].skb = tx_info.skb;
-6d51cae28c8de9 Felix Fietkau    2021-05-09  875  	q->entry[idx].wcid = 0xffff;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  876  	q->queued++;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  877  
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  878  	return idx;
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  879  }
-b40b15e1521f77 Lorenzo Bianconi 2018-07-31  880  
-
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 279f9715919e..7bb1ae59f3a5 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -4904,6 +4904,7 @@ enum nl80211_bss_scan_width {
+  *	Contains a nested array of signal strength attributes (u8, dBm),
+  *	using the nesting index as the antenna number.
+  * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
++ * @NL80211_BSS_MLO_LINK_ID: MLO link ID of the BSS (u8).
+  * @__NL80211_BSS_AFTER_LAST: internal
+  * @NL80211_BSS_MAX: highest BSS attribute
+  */
+@@ -4929,6 +4930,7 @@ enum nl80211_bss {
+ 	NL80211_BSS_PARENT_BSSID,
+ 	NL80211_BSS_CHAIN_SIGNAL,
+ 	NL80211_BSS_FREQUENCY_OFFSET,
++	NL80211_BSS_MLO_LINK_ID,
+ 
+ 	/* keep last */
+ 	__NL80211_BSS_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index eda2ad029c90..5d6351d3a484 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -9991,7 +9991,8 @@ static int nl80211_send_bss(struct sk_buff *msg, struct netlink_callback *cb,
+ 			    (nla_put_u32(msg, NL80211_BSS_STATUS,
+ 					 NL80211_BSS_STATUS_ASSOCIATED) ||
+ 			     (wdev->valid_links &&
+-			      nla_put_u8(msg, NL80211_ATTR_MLO_LINK_ID, link_id))))
++			      nla_put_u8(msg, NL80211_BSS_MLO_LINK_ID,
++					 link_id))))
+ 				goto nla_put_failure;
+ 		}
+ 		break;
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
