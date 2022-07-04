@@ -2,180 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C6E56512D
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 11:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C52256523B
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 12:27:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233130AbiGDJoC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jul 2022 05:44:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
+        id S234428AbiGDKZl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jul 2022 06:25:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233643AbiGDJn4 (ORCPT
+        with ESMTP id S234449AbiGDKZU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jul 2022 05:43:56 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B532CBCB3
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 02:43:54 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id b24so6446142qkn.4
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Jul 2022 02:43:54 -0700 (PDT)
+        Mon, 4 Jul 2022 06:25:20 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A315F60
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 03:23:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=hzeCLp00L2CC+O2GQ9ryEDIHCx7qJHqVYy7NMiedFjA=;
-        b=AE42GmBamxUQHUwb5K4CBagiz6Ki/i+OdJLs71JHaaec5lMPXFPzI8f5Xg2fk+CsNj
-         k93t7e+0vgbd8w8ksxg3Ag3n/VL468E5txsPplgQv05RLDd6ODAhd7Bw2uif+lb+zLig
-         /ydSn36Axmpv225jrF4Ksrdtx6cZgseMprrWg3TmIyH2e41FTw0m4T93LXALWFKkFPXo
-         OOAtUL/7ftcEn5jipO9m58CJa6joW9Fcg2KYnV0KcsqZXu07XZdDGsSoQ/HX8TKdYj8A
-         MxJU+Tj7UTfcS6EXhERMIcSA3utywC3FjVCyFd7EkIjL0drkqll0aqK3L+BvfiWVp7Nf
-         q9JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=hzeCLp00L2CC+O2GQ9ryEDIHCx7qJHqVYy7NMiedFjA=;
-        b=h7VdIHkL7mn49W1XzkO1LcGvHWAQqP6MrE38eTEFaQ7TxtADIi1/rboJgqnT/H85/d
-         CUuXYyPQUxvQgJ0Q/AtUYZeCxpa8ORfvi3FKPrMA6aqX5YASXTpEQk40fnMYA5QMesaF
-         KAownNTQHbOtQ/ma94VVg8lmom/ITMDrPaS1t1oyrHw3mM1sU9do5N7/MSACZ+lw1VBi
-         +9hADpKk7DS5kO7pnlUhgdow65YPb70QqvREwozQTjo21DlX2J3YahY6tylm3epiXq+z
-         1LV6HeoIL67ymKxKxCJGs8mCV9imQy8hW8ClZBnlLeVI9KRyz5yWYi81h8kf75PvfDXV
-         4P6w==
-X-Gm-Message-State: AJIora8Uv3Wc3nroCYyGNV2vPsnu1d459xSLZiDHBFXdk52nQVPetECZ
-        eHT80YHUKYjsiBACsAcVrNI=
-X-Google-Smtp-Source: AGRyM1urkNx3JKWsbe8A8DKP99GQ0cBv9ri+tqGmxtJ28LVXiUydspK/VN1aEhWQuWbkF2pwZECKSg==
-X-Received: by 2002:a05:620a:3c4:b0:6af:6468:1c0b with SMTP id r4-20020a05620a03c400b006af64681c0bmr19212782qkm.584.1656927833862;
-        Mon, 04 Jul 2022 02:43:53 -0700 (PDT)
-Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id hh10-20020a05622a618a00b003154e7466casm19560983qtb.51.2022.07.04.02.43.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Jul 2022 02:43:53 -0700 (PDT)
-Message-ID: <a2d63d48-74bf-06e5-0b90-d046dd0966bd@gmail.com>
-Date:   Mon, 4 Jul 2022 11:43:51 +0200
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1656930239; x=1688466239;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=2yMseNHhxDs2jFVL9E+gbcgyMuDTtJ/0jLAdYNnY4fE=;
+  b=QBa92XBW6ypsBqln6aH6Qgz/gRulqXUkd/DJDQfAp+f0pQ17GCVw8O+C
+   4u0fxDrGAJa5CIaEmRGPppJlKCLIlc/Rc9JiFZLbs7HeSySYQBgrDhC9M
+   0li0Pj7C6mEb3+45Bx8pjuDAWKdmo7PXJPW2qRgNsl1QNAwIPplcBoXu8
+   M=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 04 Jul 2022 03:23:58 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 03:23:58 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 4 Jul 2022 03:23:58 -0700
+Received: from adisi-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 4 Jul 2022 03:23:56 -0700
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <johannes@sipsolutions.net>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: [PATCH 0/7] cfg80211/mac80211: extend 6 GHz support for all power modes
+Date:   Mon, 4 Jul 2022 15:53:34 +0530
+Message-ID: <20220704102341.5692-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v4] brcmfmac: prevent double-free on hardware-reset
-Content-Language: en-US
-To:     Danny van Heumen <danny@dannyvanheumen.nl>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-References: <g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=@dannyvanheumen.nl>
-From:   Arend Van Spriel <aspriel@gmail.com>
-In-Reply-To: <g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=@dannyvanheumen.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/2/2022 7:35 PM, Danny van Heumen wrote:
-> In case of buggy firmware, brcmfmac may perform a hardware reset. If during
-> reset and subsequent probing an early failure occurs, a memory region is
-> accidentally double-freed. With hardened memory allocation enabled, this error
-> will be detected.
-> 
-> - return early where appropriate to skip unnecessary clean-up.
-> - set '.freezer' pointer to NULL to prevent double-freeing under possible
->    other circumstances and to re-align result under various different
->    behaviors of memory allocation freeing.
-> - correctly claim host on func1 for disabling func2.
-> - after reset, do not initiate probing immediately, but rely on events.
-> 
-> Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
-> 'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitialize
-> the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
-> early, which includes calling 'brcmf_sdiod_remove'. In both cases
-> 'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
-> has not yet been re-allocated the second time.
-> 
-> Stacktrace of (failing) hardware reset after firmware-crash:
-> 
-> Code: b9402b82 8b0202c0 eb1a02df 54000041 (d4210000)
->   ret_from_fork+0x10/0x20
->   kthread+0x154/0x160
->   worker_thread+0x188/0x504
->   process_one_work+0x1f4/0x490
->   brcmf_core_bus_reset+0x34/0x44 [brcmfmac]
->   brcmf_sdio_bus_reset+0x68/0xc0 [brcmfmac]
->   brcmf_sdiod_probe+0x170/0x21c [brcmfmac]
->   brcmf_sdiod_remove+0x48/0xc0 [brcmfmac]
->   kfree+0x210/0x220
->   __slab_free+0x58/0x40c
-> Call trace:
-> x2 : 0000000000000040 x1 : fffffc00002d2b80 x0 : ffff00000b4aee40
-> x5 : ffff8000013fa728 x4 : 0000000000000001 x3 : ffff00000b4aee00
-> x8 : ffff800009967ce0 x7 : ffff8000099bfce0 x6 : 00000006f8005d01
-> x11: ffff8000099bfce0 x10: 00000000fffff000 x9 : ffff8000083401d0
-> x14: 0000000000000000 x13: 657a69736b636f6c x12: 6220314620746573
-> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000030
-> x20: fffffc00002d2ba0 x19: fffffc00002d2b80 x18: 0000000000000000
-> x23: ffff00000b4aee00 x22: ffff00000b4aee00 x21: 0000000000000001
-> x26: ffff00000b4aee00 x25: ffff0000f7753705 x24: 000000000001288a
-> x29: ffff80000a22bbf0 x28: ffff000000401200 x27: 000000008020001a
-> sp : ffff80000a22bbf0
-> lr : kfree+0x210/0x220
-> pc : __slab_free+0x58/0x40c
-> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> Workqueue: events brcmf_core_bus_reset [brcmfmac]
-> Hardware name: Pine64 Pinebook Pro (DT)
-> CPU: 2 PID: 639 Comm: kworker/2:2 Tainted: G         C        5.16.0-0.bpo.4-arm64 #1  Debian 5.16.12-1~bpo11+1
->   nvmem_rockchip_efuse industrialio_triggered_buffer videodev snd_soc_core snd_pcm_dmaengine kfifo_buf snd_pcm io_domain mc industrialio mt>
-> Modules linked in: snd_seq_dummy snd_hrtimer snd_seq snd_seq_device nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje>
-> Internal error: Oops - BUG: 0 [#1] SMP
-> kernel BUG at mm/slub.c:379!
-> 
-> Signed-off-by: Danny van Heumen <danny@dannyvanheumen.nl>
-> ---
-It is good practice to throw in a changelog here so people know what has 
-changed since earlier version of the patch.
----
->   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 31 ++++++++++++-------
->   .../broadcom/brcm80211/brcmfmac/sdio.c        | 10 +-----
->   2 files changed, 21 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index ac02244a6fdf..dd634edaa0b3 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+6 GHz introduces various power modes of operation. Currently, based
+on the power mode, channel's Power Spectral Density (PSD)  value as
+well as channel disabled flag can change. For single interface,
+current implementation works just fine. But for multi-interfaces, for
+example AP-STA concurrency, two different channel context needs to be
+maintained. This is because, STA power mode also depends on the AP's
+power mode it is going to associate with. Hence, PSD value and channel
+disabled flag might vary. In this case, same channel context cannot be
+used for both AP and STA.
 
-[...]
+Therefore, to support multiple channel space for each power mode, the
+6 GHz channels needs a separate storage space in data structure
+ieee80211_supported_band. Because of this, the existing APIs to get the
+channel/frequency from frequency/channel will not work for 6 GHz band.
 
-> @@ -1096,12 +1093,24 @@ static void brcmf_ops_sdio_remove(struct sdio_func *func)
->   	if (bus_if) {
->   		sdiodev = bus_if->bus_priv.sdio;
-> 
-> +		if (func->num != 1) {
-> +			/* Satisfy kernel expectation that the irq is released once the
-> +			 * '.remove' callback has executed, while respecting the design
-> +			 * that removal is executed for 'sdiodev', instead of individual
-> +			 * function.
-> +			 */
-> +			brcmf_dbg(SDIO, "Only release irq for function %d", func->num);
-> +			sdio_claim_host(sdiodev->func1);
-> +			sdio_release_irq(func);
-> +			sdio_release_host(sdiodev->func1);
-> +			return;
-> +		}
-> +
-> +		/* func 1: so do full clean-up and removal */
-> +
+Add support to store all possible 6 GHz channel pools according to the
+power mode as well as add API support for getting channel/frequency info
+from the new struct ieee80211_6ghz_channel.
 
-The problem is that upon driver unload we get remove for function 2 and 
-then for function 1. Upon mmc_hw_reset() we get a remove for function 1 
-and then for function 2. So in the scenario of mmc_hw_reset() we free 
-sdiodev upon func 1 removal and then for func 2 removal we have a 
-use-after-free of sdiodev. The code currently relies on the order in 
-which remove callback is done. To make it more robust we could throw in 
-a refcount for sdiodev and only do the full clean-up when refcount hits 
-zero.
+Aditya Kumar Singh (6):
+  mac80211: rework on 6 GHz power type definition
+  mac80211: add combined power type definition for 6 GHz
+  cfg80211: add NL command to set 6 GHz power mode
+  mac80211: add support for 6 GHz channels and regulatory
+  cfg80211: rework nl80211_parse_chandef for 6 GHz
+  cfg80211: save 6 GHz power mode of the regulatory rules
 
-Regards,
-Arend
+Wen Gong (1):
+  cfg80211: save Power Spectral Density (PSD) of the regulatory rule
+
+ include/linux/ieee80211.h    |  10 +--
+ include/net/cfg80211.h       |  68 +++++++++++++++
+ include/net/regulatory.h     |   2 +
+ include/uapi/linux/nl80211.h |  66 +++++++++++++++
+ net/mac80211/cfg.c           |  35 ++++++++
+ net/mac80211/util.c          |  42 ++++++++-
+ net/wireless/ap.c            |   4 +
+ net/wireless/nl80211.c       | 159 +++++++++++++++++++++++++++++++----
+ net/wireless/nl80211.h       |   3 +-
+ net/wireless/pmsr.c          |   8 +-
+ net/wireless/rdev-ops.h      |  19 +++++
+ net/wireless/reg.c           |  61 ++++++++++++--
+ net/wireless/sme.c           |   3 +
+ net/wireless/trace.h         |  21 +++++
+ net/wireless/util.c          |  87 +++++++++++++++++++
+ 15 files changed, 552 insertions(+), 36 deletions(-)
+
+-- 
+2.17.1
+
