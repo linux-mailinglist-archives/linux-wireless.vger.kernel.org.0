@@ -2,152 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E369456523C
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 12:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DB60565590
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 14:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233456AbiGDK0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jul 2022 06:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49678 "EHLO
+        id S233235AbiGDMiH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jul 2022 08:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234450AbiGDKZm (ORCPT
+        with ESMTP id S232520AbiGDMiG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jul 2022 06:25:42 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7926211440
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 03:24:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1656930258; x=1688466258;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=MvdYv+YJGN2ILOx1k1ef7ciZKV3uX6IdJ7SV9yLTtkA=;
-  b=v0YoVWrtPt36Vf/T61YlHK3YAxye67906+eBDIQDlVn2wJA3Xwvc7YXc
-   f7XWKhgydVoygIzmKbpKYmggaOucqg+eXoaxvgYgCmSQqd0qHA4UbJ3yw
-   Um44OdTwrtpojnF6ZzrkJgmE+lXqKIXZUoUHer7fHPcU22+jyCP/m8Gsn
-   o=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 04 Jul 2022 03:24:18 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 03:24:18 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 4 Jul 2022 03:24:17 -0700
-Received: from adisi-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 4 Jul 2022 03:24:16 -0700
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-To:     <linux-wireless@vger.kernel.org>
-CC:     <johannes@sipsolutions.net>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH 7/7] cfg80211: save 6 GHz power mode of the regulatory rules
-Date:   Mon, 4 Jul 2022 15:53:41 +0530
-Message-ID: <20220704102341.5692-8-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220704102341.5692-1-quic_adisi@quicinc.com>
-References: <20220704102341.5692-1-quic_adisi@quicinc.com>
+        Mon, 4 Jul 2022 08:38:06 -0400
+X-Greylist: delayed 912 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 04 Jul 2022 05:38:04 PDT
+Received: from m1361.mail.163.com (m1361.mail.163.com [220.181.13.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C10FDEE6
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 05:38:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=x4CYc
+        4QaPXM8z3++F9IQ3jq71sV942F7zDF1OLgiFyQ=; b=iL+1RFdi+ZSCqNJ9o29BT
+        GjH0CL5ihVeCcBrpv84TM9pSKc7DTnVuEPCxyvBfUACeuWlbX+yLl6M4uep9xpVH
+        0PdiFJeiPAIAF5cIsv3ABzS0K/FHkXtuYORVIuN64tHTocusjR2DKLy8GldUMtzs
+        wzAldbJLUbcYfOLad/u468=
+Received: from yxj790222$163.com ( [124.126.152.222] ) by
+ ajax-webmail-wmsvr61 (Coremail) ; Mon, 4 Jul 2022 20:22:11 +0800 (CST)
+X-Originating-IP: [124.126.152.222]
+Date:   Mon, 4 Jul 2022 20:22:11 +0800 (CST)
+From:   =?GBK?B?08jP/r3c?= <yxj790222@163.com>
+To:     linux-wireless@vger.kernel.org
+Subject: BUG: airo: could not associated with ap using wpa/tkip
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
+ Copyright (c) 2002-2022 www.mailtech.cn 163com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Message-ID: <5ff79f86.53ed.181c9293ae3.Coremail.yxj790222@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: PcGowAAnTL1z28JiEZEZAA--.991W
+X-CM-SenderInfo: 510mlmaqssjqqrwthudrp/1tbiQxo0vFc7acd9egABsV
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently when user space demands the reg rules via NL80211_CMD_GET_REG
-command, along with Power Spectral Denity (PSD) values, power mode
-needs to be advertised since in 6 GHz AP beacon, Tx power envelope
-should have PSD info as well which can be opted based on the power
-mode. Similarly, via NL80211_CMD_SET_REG command, user space can try
-to set regulatory rules and cfg80211 needs to store the incoming power
-mode for the rule.
-
-Add support for 6 GHz power mode advertisement in
-NL80211_CMD_GET_REG command and saving 6 GHz power mode for reg rules
-via NL80211_CMD_SET_REG command.
-
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- include/uapi/linux/nl80211.h |  4 ++++
- net/wireless/nl80211.c       | 20 ++++++++++++++++++++
- 2 files changed, 24 insertions(+)
-
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index e62838887802..f2a32023a3f4 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4258,6 +4258,8 @@ enum nl80211_reg_type {
-  *	If not present or 0 default CAC time will be used.
-  * @NL80211_ATTR_POWER_RULE_PSD: power spectral density (in dBm).
-  *	This could be negative.
-+ * @NL80211_ATTR_REG_POWER_MODE: the regulatory power mode for 6 GHz rules.
-+ *	Referenced from &enum nl80211_regulatory_power_modes
-  * @NL80211_REG_RULE_ATTR_MAX: highest regulatory rule attribute number
-  *	currently defined
-  * @__NL80211_REG_RULE_ATTR_AFTER_LAST: internal use
-@@ -4277,6 +4279,8 @@ enum nl80211_reg_rule_attr {
- 
- 	NL80211_ATTR_POWER_RULE_PSD,
- 
-+	NL80211_ATTR_REG_POWER_MODE,
-+
- 	/* keep last */
- 	__NL80211_REG_RULE_ATTR_AFTER_LAST,
- 	NL80211_REG_RULE_ATTR_MAX = __NL80211_REG_RULE_ATTR_AFTER_LAST - 1
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 915516bd4d93..5c0ac12c26b7 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -8200,6 +8200,13 @@ static int nl80211_put_regdom(const struct ieee80211_regdomain *regdom,
- 				reg_rule->dfs_cac_ms))
- 			goto nla_put_failure;
- 
-+		/* Put power mode as well if its a 6 GHz reg rule */
-+		if (freq_range->start_freq_khz >= MHZ_TO_KHZ(5925) &&
-+		    freq_range->end_freq_khz <= MHZ_TO_KHZ(7125) &&
-+		    nla_put_u8(msg, NL80211_ATTR_REG_POWER_MODE,
-+			       reg_rule->power_mode))
-+			goto nla_put_failure;
-+
- 		if ((reg_rule->flags & NL80211_RRF_PSD) &&
- 		    nla_put_s8(msg, NL80211_ATTR_POWER_RULE_PSD,
- 			       reg_rule->psd))
-@@ -8379,6 +8386,10 @@ static const struct nla_policy reg_rule_policy[NL80211_REG_RULE_ATTR_MAX + 1] =
- 	[NL80211_ATTR_POWER_RULE_MAX_EIRP]	= { .type = NLA_U32 },
- 	[NL80211_ATTR_DFS_CAC_TIME]		= { .type = NLA_U32 },
- 	[NL80211_ATTR_POWER_RULE_PSD]		= { .type = NLA_S8 },
-+	[NL80211_ATTR_REG_POWER_MODE]		=
-+			  NLA_POLICY_RANGE(NLA_U8,
-+					   NL80211_REG_AP_LPI,
-+					   NL80211_REG_MAX_POWER_MODES),
- };
- 
- static int parse_reg_rule(struct nlattr *tb[],
-@@ -8426,6 +8437,15 @@ static int parse_reg_rule(struct nlattr *tb[],
- 		reg_rule->dfs_cac_ms =
- 			nla_get_u32(tb[NL80211_ATTR_DFS_CAC_TIME]);
- 
-+	if (freq_range->start_freq_khz >= MHZ_TO_KHZ(5925) &&
-+	    freq_range->end_freq_khz <= MHZ_TO_KHZ(7125)) {
-+		if (!tb[NL80211_ATTR_REG_POWER_MODE])
-+			return -EINVAL;
-+
-+		reg_rule->power_mode =
-+			nla_get_u8(tb[NL80211_ATTR_REG_POWER_MODE]);
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.17.1
-
+CkkgZ290IGNpc2NvIGFpcm9uZXQgcGNtLTM0MCBkZWJpYW4gc2lkKExpbnV4IGRlYmlhbiA1LjE4
+LjAtMi02ODYtcGFlICMxIFNNUCBQUkVFTVBUX0RZTkFNSUMgRGViaWFuIDUuMTguNS0xICgyMDIy
+LTA2LTE2KSBpNjg2IEdOVS9MaW51eAopIHJlY29uaXNlZCBpdC4gQnV0IGl0IGNvdWxkIG5vdCBj
+b25uZWN0IHdpdGggd3BhL3RraXAgYWNjZXNzIHBvaW50LgpkbWVzZzoKWyA5NzM2Ljg3MjcyM10g
+YWlybyhldGgwKTogYXNzb2NpYXRpb24gZmFpbGVkIChyZWFzb246IDQwKQpbIDk3MzcuMDE2Nzkw
+XSBhaXJvKGV0aDApOiBhc3NvY2lhdGlvbiBmYWlsZWQgKHJlYXNvbjogNDApClsgOTczOC4xNjM2
+NDhdIGFpcm8oZXRoMCk6IGFzc29jaWF0aW9uIGZhaWxlZCAocmVhc29uOiA0MCkKWyA5NzQwLjA0
+Mzc2NV0gYWlybyhldGgwKTogYXNzb2NpYXRpb24gZmFpbGVkIChyZWFzb246IDQwKQpbIDk3NDMu
+MzQxNzQzXSBhaXJvKGV0aDApOiBjbWQ6MiBzdGF0dXM6ZmZmZiByc3AwOmZmZmYgcnNwMTpmZmZm
+IHJzcDI6ZmZmZgpbIDk3NTEuNDU1MTQwXSBhaXJvKCk6IGNtZDoxMTEgc3RhdHVzOjdmMTEgcnNw
+MDoyIHJzcDE6MCByc3AyOjAKWyA5NzUxLjQ1NTE1OF0gYWlybygpOiBEb2luZyBmYXN0IGJhcF9y
+ZWFkcwpbIDk3NTEuNDY0OTg0XSBhaXJvKGV0aDApOiBGaXJtd2FyZSB2ZXJzaW9uIDUuMzAuMTcK
+WyA5NzUxLjQ2NDk5NF0gYWlybyhldGgwKTogV1BBIHN1cHBvcnRlZC4KWyA5NzUxLjQ2NDk5Nl0g
+YWlybyhldGgwKTogTUFDIGVuYWJsZWQgMDA6NDA6OTY6MzE6Nzk6N2UKWyA5NzUxLjYwMjE5M10g
+YWlybyhldGgwKTogQmFkIE1BQyBlbmFibGUgcmVhc29uPWNmMDksIHJpZD0zOTQ4LCBvZmZzZXQ9
+NjIzNzgKWyA5NzUxLjYyNjQ4OV0gYWlybyhldGgwKTogQmFkIE1BQyBlbmFibGUgcmVhc29uPWNm
+MDksIHJpZD0zOTQ4LCBvZmZzZXQ9NjIzNzgKCg==
