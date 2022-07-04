@@ -2,48 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2007564FD3
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 10:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A025564FEB
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 10:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233105AbiGDIgz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jul 2022 04:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43042 "EHLO
+        id S232779AbiGDIog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jul 2022 04:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230233AbiGDIgy (ORCPT
+        with ESMTP id S232644AbiGDIoe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jul 2022 04:36:54 -0400
-Received: from m15111.mail.126.com (m15111.mail.126.com [220.181.15.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1C9F8A44B
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 01:36:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=iPysx
-        cqXD4MktxFv2jTlSRSS0lgtVcXHhc6wMprLs+Y=; b=lv3XfKQVqmMuLIrvyUcyW
-        Ev/0PD+jk+dcWi1Z8mrnVTSBM1pvGz+CjtJewQ6VMqIAbqqoBa4HxBrnzKxCuaiR
-        f3H7fLJbH964a+oUtNLZ8QW/xOev2k+4gQ8l4v3Q9i/bkh0wjDOfJytbUlqSFSwD
-        QvBJi8bBdYlKvbMHc1ct5I=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp1 (Coremail) with SMTP id C8mowAAHDyuIpsJidbThFw--.49737S2;
-        Mon, 04 Jul 2022 16:36:24 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        linux-wireless@vger.kernel.org, windhl@126.com, linmq006@gmail.com
-Subject: [PATCH] mediatek: mt7915: fix missing of_node_put() in mt7986_wmac_coninfra_setup
-Date:   Mon,  4 Jul 2022 16:35:56 +0800
-Message-Id: <20220704083556.276827-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: C8mowAAHDyuIpsJidbThFw--.49737S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKrW7Kry8WFyrtr4UGry7trb_yoWfWrb_ur
-        Z2gFnxWF1kCr1vkr42kw43Ca4Yya95Za18uFZIqrWFqrWjvFWUGr1YvF17JrZrurn7Zr98
-        Gr1DAFyFqa98ZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRiUDG3UUUUU==
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuAg0F2JVkLx0MAAAsM
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        Mon, 4 Jul 2022 04:44:34 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8976B7FB
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 01:44:33 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id u93-20020a25ab66000000b0066e3e71c637so2053667ybi.12
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Jul 2022 01:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=auOTRbYq5IQ7VGf4mWr9uR5suqYTHw8ybacsAeqMeSw=;
+        b=EZ9yu2ay5nqh0vsC0uyJNu9nOdm3bB0199Ud/DYqT+taW8LG3i/cnllUoM/dkfb2MQ
+         bOVGPXfRj0/NTRTKQDHR1N1ThJUg/6EuzwVzqEowKJ03n5sQ2+ZkdgHGpATbspYkEXcv
+         Ow9GV9cLgYl3xQIFhTIbXyIVqKIXzsNplEINpylCBw064LjvNjiGaWVS3XdqayAu6Bxu
+         AQSepfMTEchYZLSui8/QWEvyxpNxcUAQk5B1OPp1OR7gt/GAHZ6BaYJiHK1IkKitQPSz
+         aM0T679uRunB3hfsEkXuU0F8RXK+xrMWqfIYpbfbFbRPYxuSj4xD6yNwg4RIfIanzYS5
+         WJcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=auOTRbYq5IQ7VGf4mWr9uR5suqYTHw8ybacsAeqMeSw=;
+        b=i5A+7sY0u1ZecHdiPNwsj7G9MMcoIyYAtWoL6AZCPQjtpQE17Cn684m1/6AA5wuvJs
+         Q7p/AsG2cIh5pVSbFyeWgKHq8Ijwt7VqQ0E3t2/0hrs5Q7Yfos7O0NFKPi14pPClNDic
+         t6Y4zGQ4We4QgxgD2rVqIUNDRUl2DE9glCZ16qP2BIYQVcPthwvpKfFkcX9jIdSkR0gc
+         6C2L1NBsKTao6U1kd16y9d7F4USWgfNtNPC6SYTznCr+OH4VwAPSl3pBuZkKZq15Ag5B
+         TIqEAtx8RIdhLvoTTYLdijm9TSNbIsn2WiDHOPqDza5zMQembHObQtUmOmcHan6g5p5+
+         aSvA==
+X-Gm-Message-State: AJIora/wsgANswtadFksqxDJKY7imQ8GlAgRKQYcl1RcPXZdBKO34mkk
+        HyFDHuQzMqPhdKnVdg3K+yvNTcxad7K7
+X-Google-Smtp-Source: AGRyM1uK0OrarQn4Is+pvY7wtJypAuIfqiih90NjOUib0E6p65n3J3/suHZswDlCDVuN6+5Xpy9bEyv9xHYN
+X-Received: from jeongik.seo.corp.google.com ([2401:fa00:d:11:b90:150b:7488:26ea])
+ (user=jeongik job=sendgmr) by 2002:a25:9ac9:0:b0:66e:4531:d3aa with SMTP id
+ t9-20020a259ac9000000b0066e4531d3aamr5178728ybo.182.1656924273211; Mon, 04
+ Jul 2022 01:44:33 -0700 (PDT)
+Date:   Mon,  4 Jul 2022 17:43:54 +0900
+Message-Id: <20220704084354.3556326-1-jeongik@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
+Subject: [PATCH v1] wifi: mac80211_hwsim: fix race condition in pending packet
+From:   Jeongik Cha <jeongik@google.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     adelva@google.com, kernel-team@android.com, jaeman@google.com,
+        Jeongik Cha <jeongik@google.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,28 +71,84 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We should use of_node_put() for the reference 'np' returned by
-of_parse_phandle() which will increase the refcount.
+A pending packet uses a cookie as an unique key, but it can be duplicated
+because it didn't use atomic operators.
 
-Fixes: 99ad32a4ca3a ("mt76: mt7915: add support for MT7986")
-Co-authored-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Liang He <windhl@126.com>
+And also, a pending packet can be null in hwsim_tx_info_frame_received_nl
+due to race condition with mac80211_hwsim_stop.
+
+For this,
+ * Use an atomic type and operator for a cookie
+ * Add a lock around the loop for pending packets
+
+Signed-off-by: Jeongik Cha <jeongik@google.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/soc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mac80211_hwsim.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-index c74afa746251..ee7ddda4288b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-@@ -278,6 +278,7 @@ static int mt7986_wmac_coninfra_setup(struct mt7915_dev *dev)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index c5bb97b381cf..ea006248ffcd 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -687,7 +687,7 @@ struct mac80211_hwsim_data {
+ 	bool ps_poll_pending;
+ 	struct dentry *debugfs;
  
- 	rmem = of_reserved_mem_lookup(np);
-+	of_node_put(np);
- 	if (!rmem)
- 		return -EINVAL;
+-	uintptr_t pending_cookie;
++	atomic64_t pending_cookie;
+ 	struct sk_buff_head pending;	/* packets pending */
+ 	/*
+ 	 * Only radios in the same group can communicate together (the
+@@ -1358,7 +1358,7 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
+ 	int i;
+ 	struct hwsim_tx_rate tx_attempts[IEEE80211_TX_MAX_RATES];
+ 	struct hwsim_tx_rate_flag tx_attempts_flags[IEEE80211_TX_MAX_RATES];
+-	uintptr_t cookie;
++	u64 cookie;
  
+ 	if (data->ps != PS_DISABLED)
+ 		hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
+@@ -1427,8 +1427,7 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
+ 		goto nla_put_failure;
+ 
+ 	/* We create a cookie to identify this skb */
+-	data->pending_cookie++;
+-	cookie = data->pending_cookie;
++	cookie = (u64)atomic64_inc_return(&data->pending_cookie);
+ 	info->rate_driver_data[0] = (void *)cookie;
+ 	if (nla_put_u64_64bit(skb, HWSIM_ATTR_COOKIE, cookie, HWSIM_ATTR_PAD))
+ 		goto nla_put_failure;
+@@ -4178,6 +4177,7 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ 	const u8 *src;
+ 	unsigned int hwsim_flags;
+ 	int i;
++	unsigned long flags;
+ 	bool found = false;
+ 
+ 	if (!info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER] ||
+@@ -4205,18 +4205,20 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ 	}
+ 
+ 	/* look for the skb matching the cookie passed back from user */
++	spin_lock_irqsave(&data2->pending.lock, flags);
+ 	skb_queue_walk_safe(&data2->pending, skb, tmp) {
+ 		u64 skb_cookie;
+ 
+ 		txi = IEEE80211_SKB_CB(skb);
+-		skb_cookie = (u64)(uintptr_t)txi->rate_driver_data[0];
++		skb_cookie = (u64)txi->rate_driver_data[0];
+ 
+ 		if (skb_cookie == ret_skb_cookie) {
+-			skb_unlink(skb, &data2->pending);
++			__skb_unlink(skb, &data2->pending);
+ 			found = true;
+ 			break;
+ 		}
+ 	}
++	spin_unlock_irqrestore(&data2->pending.lock, flags);
+ 
+ 	/* not found */
+ 	if (!found)
 -- 
-2.25.1
+2.37.0.rc0.161.g10f37bed90-goog
 
