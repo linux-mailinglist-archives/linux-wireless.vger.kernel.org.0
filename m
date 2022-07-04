@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D198564BC3
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 04:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718F2564BC7
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 04:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232068AbiGDCgG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 Jul 2022 22:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
+        id S232348AbiGDCgL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 3 Jul 2022 22:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbiGDCgE (ORCPT
+        with ESMTP id S232204AbiGDCgJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 Jul 2022 22:36:04 -0400
+        Sun, 3 Jul 2022 22:36:09 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F746547
-        for <linux-wireless@vger.kernel.org>; Sun,  3 Jul 2022 19:36:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B80976561
+        for <linux-wireless@vger.kernel.org>; Sun,  3 Jul 2022 19:36:08 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2642Zla36011105, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2642Zla36011105
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2642ZmqS6011305, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2642ZmqS6011305
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 4 Jul 2022 10:35:47 +0800
+        Mon, 4 Jul 2022 10:35:49 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 4 Jul 2022 10:35:47 +0800
+ 15.1.2375.28; Mon, 4 Jul 2022 10:35:48 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Mon, 4 Jul
- 2022 10:35:47 +0800
+ 2022 10:35:48 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <leo.li@realtek.com>, <phhuang@realtek.com>,
         <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/6] rtw89: 8852a: update HW setting on BB
-Date:   Mon, 4 Jul 2022 10:34:49 +0800
-Message-ID: <20220704023453.19935-3-pkshih@realtek.com>
+Subject: [PATCH 3/6] rtw89: declare support HE HTC always
+Date:   Mon, 4 Jul 2022 10:34:50 +0800
+Message-ID: <20220704023453.19935-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220704023453.19935-1-pkshih@realtek.com>
 References: <20220704023453.19935-1-pkshih@realtek.com>
@@ -56,10 +56,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzcvMyCkVaTIIDEwOjAwOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -69,57 +69,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+Correct ability of HE HTC that both STA and AP mode can support.
 
-Sometimes, BB might encounter RX problem on OFDM 6M. It's not quite
-easy to happen, but if it happens, we will keep getting stuck on RX.
-And, since we cannot properly receive layer 2 ACK, it also casues TX
-problem, e.g. constantly retrying TX. Eventually, after some time, we
-would get disconnected due to abnormal behavior.
-
-Update break setting and phy status parsing time to make BB get out
-of stuck state faster.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h      | 3 ++-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index ebf28719d935e..986e27c445aa7 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3431,8 +3431,9 @@
- #define R_MAC_PIN_SEL 0x0734
- #define B_CH_IDX_SEG0 GENMASK(23, 16)
- #define R_PLCP_HISTOGRAM 0x0738
--#define B_STS_DIS_TRIG_BY_BRK BIT(2)
-+#define B_STS_PARSING_TIME GENMASK(19, 16)
- #define B_STS_DIS_TRIG_BY_FAIL BIT(3)
-+#define B_STS_DIS_TRIG_BY_BRK BIT(2)
- #define R_PHY_STS_BITMAP_ADDR_START R_PHY_STS_BITMAP_SEARCH_FAIL
- #define B_PHY_STS_BITMAP_ADDR_MASK GENMASK(6, 2)
- #define R_PHY_STS_BITMAP_SEARCH_FAIL 0x073C
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 81bd0c4fe21bc..7125dbef9d8a8 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -1102,11 +1102,12 @@ static void rtw8852a_bb_sethw(struct rtw89_dev *rtwdev)
- 	if (rtwdev->hal.cv <= CHIP_CCV) {
- 		rtw89_phy_write32_set(rtwdev, R_RSTB_WATCH_DOG, B_P0_RSTB_WATCH_DOG);
- 		rtw89_phy_write32(rtwdev, R_BRK_ASYNC_RST_EN_1, 0x864FA000);
--		rtw89_phy_write32(rtwdev, R_BRK_ASYNC_RST_EN_2, 0x3F);
-+		rtw89_phy_write32(rtwdev, R_BRK_ASYNC_RST_EN_2, 0x43F);
- 		rtw89_phy_write32(rtwdev, R_BRK_ASYNC_RST_EN_3, 0x7FFF);
- 		rtw89_phy_write32_set(rtwdev, R_SPOOF_ASYNC_RST, B_SPOOF_ASYNC_RST);
- 		rtw89_phy_write32_set(rtwdev, R_P0_TXPW_RSTB, B_P0_TXPW_RSTB_MANON);
- 		rtw89_phy_write32_set(rtwdev, R_P1_TXPW_RSTB, B_P1_TXPW_RSTB_MANON);
-+		rtw89_phy_write32_set(rtwdev, R_PLCP_HISTOGRAM, B_STS_PARSING_TIME);
- 	}
- 	rtw89_phy_write32_mask(rtwdev, R_CFO_TRK0, B_CFO_TRK_MSK, 0x1f);
- 	rtw89_phy_write32_mask(rtwdev, R_CFO_TRK1, B_CFO_TRK_MSK, 0x0c);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index a5880a54812e7..ec6e6b4543ceb 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2669,8 +2669,7 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
+ 		phy_cap_info = he_cap->he_cap_elem.phy_cap_info;
+ 
+ 		he_cap->has_he = true;
+-		if (i == NL80211_IFTYPE_AP)
+-			mac_cap_info[0] = IEEE80211_HE_MAC_CAP0_HTC_HE;
++		mac_cap_info[0] = IEEE80211_HE_MAC_CAP0_HTC_HE;
+ 		if (i == NL80211_IFTYPE_STATION)
+ 			mac_cap_info[1] = IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_16US;
+ 		mac_cap_info[2] = IEEE80211_HE_MAC_CAP2_ALL_ACK |
 -- 
 2.25.1
 
