@@ -2,68 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A025564FEB
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 10:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42C6E56512D
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jul 2022 11:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbiGDIog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jul 2022 04:44:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47192 "EHLO
+        id S233130AbiGDJoC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jul 2022 05:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232644AbiGDIoe (ORCPT
+        with ESMTP id S233643AbiGDJn4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jul 2022 04:44:34 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8976B7FB
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 01:44:33 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id u93-20020a25ab66000000b0066e3e71c637so2053667ybi.12
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Jul 2022 01:44:33 -0700 (PDT)
+        Mon, 4 Jul 2022 05:43:56 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B532CBCB3
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Jul 2022 02:43:54 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id b24so6446142qkn.4
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Jul 2022 02:43:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=auOTRbYq5IQ7VGf4mWr9uR5suqYTHw8ybacsAeqMeSw=;
-        b=EZ9yu2ay5nqh0vsC0uyJNu9nOdm3bB0199Ud/DYqT+taW8LG3i/cnllUoM/dkfb2MQ
-         bOVGPXfRj0/NTRTKQDHR1N1ThJUg/6EuzwVzqEowKJ03n5sQ2+ZkdgHGpATbspYkEXcv
-         Ow9GV9cLgYl3xQIFhTIbXyIVqKIXzsNplEINpylCBw064LjvNjiGaWVS3XdqayAu6Bxu
-         AQSepfMTEchYZLSui8/QWEvyxpNxcUAQk5B1OPp1OR7gt/GAHZ6BaYJiHK1IkKitQPSz
-         aM0T679uRunB3hfsEkXuU0F8RXK+xrMWqfIYpbfbFbRPYxuSj4xD6yNwg4RIfIanzYS5
-         WJcw==
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=hzeCLp00L2CC+O2GQ9ryEDIHCx7qJHqVYy7NMiedFjA=;
+        b=AE42GmBamxUQHUwb5K4CBagiz6Ki/i+OdJLs71JHaaec5lMPXFPzI8f5Xg2fk+CsNj
+         k93t7e+0vgbd8w8ksxg3Ag3n/VL468E5txsPplgQv05RLDd6ODAhd7Bw2uif+lb+zLig
+         /ydSn36Axmpv225jrF4Ksrdtx6cZgseMprrWg3TmIyH2e41FTw0m4T93LXALWFKkFPXo
+         OOAtUL/7ftcEn5jipO9m58CJa6joW9Fcg2KYnV0KcsqZXu07XZdDGsSoQ/HX8TKdYj8A
+         MxJU+Tj7UTfcS6EXhERMIcSA3utywC3FjVCyFd7EkIjL0drkqll0aqK3L+BvfiWVp7Nf
+         q9JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=auOTRbYq5IQ7VGf4mWr9uR5suqYTHw8ybacsAeqMeSw=;
-        b=i5A+7sY0u1ZecHdiPNwsj7G9MMcoIyYAtWoL6AZCPQjtpQE17Cn684m1/6AA5wuvJs
-         Q7p/AsG2cIh5pVSbFyeWgKHq8Ijwt7VqQ0E3t2/0hrs5Q7Yfos7O0NFKPi14pPClNDic
-         t6Y4zGQ4We4QgxgD2rVqIUNDRUl2DE9glCZ16qP2BIYQVcPthwvpKfFkcX9jIdSkR0gc
-         6C2L1NBsKTao6U1kd16y9d7F4USWgfNtNPC6SYTznCr+OH4VwAPSl3pBuZkKZq15Ag5B
-         TIqEAtx8RIdhLvoTTYLdijm9TSNbIsn2WiDHOPqDza5zMQembHObQtUmOmcHan6g5p5+
-         aSvA==
-X-Gm-Message-State: AJIora/wsgANswtadFksqxDJKY7imQ8GlAgRKQYcl1RcPXZdBKO34mkk
-        HyFDHuQzMqPhdKnVdg3K+yvNTcxad7K7
-X-Google-Smtp-Source: AGRyM1uK0OrarQn4Is+pvY7wtJypAuIfqiih90NjOUib0E6p65n3J3/suHZswDlCDVuN6+5Xpy9bEyv9xHYN
-X-Received: from jeongik.seo.corp.google.com ([2401:fa00:d:11:b90:150b:7488:26ea])
- (user=jeongik job=sendgmr) by 2002:a25:9ac9:0:b0:66e:4531:d3aa with SMTP id
- t9-20020a259ac9000000b0066e4531d3aamr5178728ybo.182.1656924273211; Mon, 04
- Jul 2022 01:44:33 -0700 (PDT)
-Date:   Mon,  4 Jul 2022 17:43:54 +0900
-Message-Id: <20220704084354.3556326-1-jeongik@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
-Subject: [PATCH v1] wifi: mac80211_hwsim: fix race condition in pending packet
-From:   Jeongik Cha <jeongik@google.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     adelva@google.com, kernel-team@android.com, jaeman@google.com,
-        Jeongik Cha <jeongik@google.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=hzeCLp00L2CC+O2GQ9ryEDIHCx7qJHqVYy7NMiedFjA=;
+        b=h7VdIHkL7mn49W1XzkO1LcGvHWAQqP6MrE38eTEFaQ7TxtADIi1/rboJgqnT/H85/d
+         CUuXYyPQUxvQgJ0Q/AtUYZeCxpa8ORfvi3FKPrMA6aqX5YASXTpEQk40fnMYA5QMesaF
+         KAownNTQHbOtQ/ma94VVg8lmom/ITMDrPaS1t1oyrHw3mM1sU9do5N7/MSACZ+lw1VBi
+         +9hADpKk7DS5kO7pnlUhgdow65YPb70QqvREwozQTjo21DlX2J3YahY6tylm3epiXq+z
+         1LV6HeoIL67ymKxKxCJGs8mCV9imQy8hW8ClZBnlLeVI9KRyz5yWYi81h8kf75PvfDXV
+         4P6w==
+X-Gm-Message-State: AJIora8Uv3Wc3nroCYyGNV2vPsnu1d459xSLZiDHBFXdk52nQVPetECZ
+        eHT80YHUKYjsiBACsAcVrNI=
+X-Google-Smtp-Source: AGRyM1urkNx3JKWsbe8A8DKP99GQ0cBv9ri+tqGmxtJ28LVXiUydspK/VN1aEhWQuWbkF2pwZECKSg==
+X-Received: by 2002:a05:620a:3c4:b0:6af:6468:1c0b with SMTP id r4-20020a05620a03c400b006af64681c0bmr19212782qkm.584.1656927833862;
+        Mon, 04 Jul 2022 02:43:53 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id hh10-20020a05622a618a00b003154e7466casm19560983qtb.51.2022.07.04.02.43.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Jul 2022 02:43:53 -0700 (PDT)
+Message-ID: <a2d63d48-74bf-06e5-0b90-d046dd0966bd@gmail.com>
+Date:   Mon, 4 Jul 2022 11:43:51 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v4] brcmfmac: prevent double-free on hardware-reset
+Content-Language: en-US
+To:     Danny van Heumen <danny@dannyvanheumen.nl>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
+References: <g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=@dannyvanheumen.nl>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=@dannyvanheumen.nl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,84 +76,106 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A pending packet uses a cookie as an unique key, but it can be duplicated
-because it didn't use atomic operators.
-
-And also, a pending packet can be null in hwsim_tx_info_frame_received_nl
-due to race condition with mac80211_hwsim_stop.
-
-For this,
- * Use an atomic type and operator for a cookie
- * Add a lock around the loop for pending packets
-
-Signed-off-by: Jeongik Cha <jeongik@google.com>
+On 7/2/2022 7:35 PM, Danny van Heumen wrote:
+> In case of buggy firmware, brcmfmac may perform a hardware reset. If during
+> reset and subsequent probing an early failure occurs, a memory region is
+> accidentally double-freed. With hardened memory allocation enabled, this error
+> will be detected.
+> 
+> - return early where appropriate to skip unnecessary clean-up.
+> - set '.freezer' pointer to NULL to prevent double-freeing under possible
+>    other circumstances and to re-align result under various different
+>    behaviors of memory allocation freeing.
+> - correctly claim host on func1 for disabling func2.
+> - after reset, do not initiate probing immediately, but rely on events.
+> 
+> Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
+> 'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitialize
+> the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
+> early, which includes calling 'brcmf_sdiod_remove'. In both cases
+> 'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
+> has not yet been re-allocated the second time.
+> 
+> Stacktrace of (failing) hardware reset after firmware-crash:
+> 
+> Code: b9402b82 8b0202c0 eb1a02df 54000041 (d4210000)
+>   ret_from_fork+0x10/0x20
+>   kthread+0x154/0x160
+>   worker_thread+0x188/0x504
+>   process_one_work+0x1f4/0x490
+>   brcmf_core_bus_reset+0x34/0x44 [brcmfmac]
+>   brcmf_sdio_bus_reset+0x68/0xc0 [brcmfmac]
+>   brcmf_sdiod_probe+0x170/0x21c [brcmfmac]
+>   brcmf_sdiod_remove+0x48/0xc0 [brcmfmac]
+>   kfree+0x210/0x220
+>   __slab_free+0x58/0x40c
+> Call trace:
+> x2 : 0000000000000040 x1 : fffffc00002d2b80 x0 : ffff00000b4aee40
+> x5 : ffff8000013fa728 x4 : 0000000000000001 x3 : ffff00000b4aee00
+> x8 : ffff800009967ce0 x7 : ffff8000099bfce0 x6 : 00000006f8005d01
+> x11: ffff8000099bfce0 x10: 00000000fffff000 x9 : ffff8000083401d0
+> x14: 0000000000000000 x13: 657a69736b636f6c x12: 6220314620746573
+> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000030
+> x20: fffffc00002d2ba0 x19: fffffc00002d2b80 x18: 0000000000000000
+> x23: ffff00000b4aee00 x22: ffff00000b4aee00 x21: 0000000000000001
+> x26: ffff00000b4aee00 x25: ffff0000f7753705 x24: 000000000001288a
+> x29: ffff80000a22bbf0 x28: ffff000000401200 x27: 000000008020001a
+> sp : ffff80000a22bbf0
+> lr : kfree+0x210/0x220
+> pc : __slab_free+0x58/0x40c
+> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> Workqueue: events brcmf_core_bus_reset [brcmfmac]
+> Hardware name: Pine64 Pinebook Pro (DT)
+> CPU: 2 PID: 639 Comm: kworker/2:2 Tainted: G         C        5.16.0-0.bpo.4-arm64 #1  Debian 5.16.12-1~bpo11+1
+>   nvmem_rockchip_efuse industrialio_triggered_buffer videodev snd_soc_core snd_pcm_dmaengine kfifo_buf snd_pcm io_domain mc industrialio mt>
+> Modules linked in: snd_seq_dummy snd_hrtimer snd_seq snd_seq_device nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje>
+> Internal error: Oops - BUG: 0 [#1] SMP
+> kernel BUG at mm/slub.c:379!
+> 
+> Signed-off-by: Danny van Heumen <danny@dannyvanheumen.nl>
+> ---
+It is good practice to throw in a changelog here so people know what has 
+changed since earlier version of the patch.
 ---
- drivers/net/wireless/mac80211_hwsim.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+>   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 31 ++++++++++++-------
+>   .../broadcom/brcm80211/brcmfmac/sdio.c        | 10 +-----
+>   2 files changed, 21 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index ac02244a6fdf..dd634edaa0b3 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index c5bb97b381cf..ea006248ffcd 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -687,7 +687,7 @@ struct mac80211_hwsim_data {
- 	bool ps_poll_pending;
- 	struct dentry *debugfs;
- 
--	uintptr_t pending_cookie;
-+	atomic64_t pending_cookie;
- 	struct sk_buff_head pending;	/* packets pending */
- 	/*
- 	 * Only radios in the same group can communicate together (the
-@@ -1358,7 +1358,7 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
- 	int i;
- 	struct hwsim_tx_rate tx_attempts[IEEE80211_TX_MAX_RATES];
- 	struct hwsim_tx_rate_flag tx_attempts_flags[IEEE80211_TX_MAX_RATES];
--	uintptr_t cookie;
-+	u64 cookie;
- 
- 	if (data->ps != PS_DISABLED)
- 		hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
-@@ -1427,8 +1427,7 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
- 		goto nla_put_failure;
- 
- 	/* We create a cookie to identify this skb */
--	data->pending_cookie++;
--	cookie = data->pending_cookie;
-+	cookie = (u64)atomic64_inc_return(&data->pending_cookie);
- 	info->rate_driver_data[0] = (void *)cookie;
- 	if (nla_put_u64_64bit(skb, HWSIM_ATTR_COOKIE, cookie, HWSIM_ATTR_PAD))
- 		goto nla_put_failure;
-@@ -4178,6 +4177,7 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 	const u8 *src;
- 	unsigned int hwsim_flags;
- 	int i;
-+	unsigned long flags;
- 	bool found = false;
- 
- 	if (!info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER] ||
-@@ -4205,18 +4205,20 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 	}
- 
- 	/* look for the skb matching the cookie passed back from user */
-+	spin_lock_irqsave(&data2->pending.lock, flags);
- 	skb_queue_walk_safe(&data2->pending, skb, tmp) {
- 		u64 skb_cookie;
- 
- 		txi = IEEE80211_SKB_CB(skb);
--		skb_cookie = (u64)(uintptr_t)txi->rate_driver_data[0];
-+		skb_cookie = (u64)txi->rate_driver_data[0];
- 
- 		if (skb_cookie == ret_skb_cookie) {
--			skb_unlink(skb, &data2->pending);
-+			__skb_unlink(skb, &data2->pending);
- 			found = true;
- 			break;
- 		}
- 	}
-+	spin_unlock_irqrestore(&data2->pending.lock, flags);
- 
- 	/* not found */
- 	if (!found)
--- 
-2.37.0.rc0.161.g10f37bed90-goog
+[...]
 
+> @@ -1096,12 +1093,24 @@ static void brcmf_ops_sdio_remove(struct sdio_func *func)
+>   	if (bus_if) {
+>   		sdiodev = bus_if->bus_priv.sdio;
+> 
+> +		if (func->num != 1) {
+> +			/* Satisfy kernel expectation that the irq is released once the
+> +			 * '.remove' callback has executed, while respecting the design
+> +			 * that removal is executed for 'sdiodev', instead of individual
+> +			 * function.
+> +			 */
+> +			brcmf_dbg(SDIO, "Only release irq for function %d", func->num);
+> +			sdio_claim_host(sdiodev->func1);
+> +			sdio_release_irq(func);
+> +			sdio_release_host(sdiodev->func1);
+> +			return;
+> +		}
+> +
+> +		/* func 1: so do full clean-up and removal */
+> +
+
+The problem is that upon driver unload we get remove for function 2 and 
+then for function 1. Upon mmc_hw_reset() we get a remove for function 1 
+and then for function 2. So in the scenario of mmc_hw_reset() we free 
+sdiodev upon func 1 removal and then for func 2 removal we have a 
+use-after-free of sdiodev. The code currently relies on the order in 
+which remove callback is done. To make it more robust we could throw in 
+a refcount for sdiodev and only do the full clean-up when refcount hits 
+zero.
+
+Regards,
+Arend
