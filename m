@@ -2,252 +2,314 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6682567C1B
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Jul 2022 04:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F562567C85
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Jul 2022 05:27:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230508AbiGFCu5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Jul 2022 22:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45186 "EHLO
+        id S229522AbiGFD12 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Jul 2022 23:27:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbiGFCuz (ORCPT
+        with ESMTP id S229485AbiGFD1W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Jul 2022 22:50:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E078915A3E;
-        Tue,  5 Jul 2022 19:50:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69791619A6;
-        Wed,  6 Jul 2022 02:50:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A73C341C7;
-        Wed,  6 Jul 2022 02:50:50 +0000 (UTC)
-Date:   Tue, 5 Jul 2022 22:50:49 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     kernel test robot <lkp@intel.com>
-Cc:     linux-kernel@vger.kernel.org, kbuild-all@lists.01.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        Tue, 5 Jul 2022 23:27:22 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CBAF5F
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Jul 2022 20:27:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657078040; x=1688614040;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lGDLONxxNciCtzO6tEgXAoRmBs07JGpgsHtP1EPwKMg=;
+  b=VRAe7tkN6cO/1hlBPVw1hKLYF7rpgGuOzdicHntjQF/i4oYfZr037FA9
+   SS6vUGyRZ5tCn9eY3pnXBZWBo56xBnQE3liTxC2DhJtnYdqrHApgthzZi
+   OBTEeQLILTM0VGQmhW5Gbm3iyGaIFDG6XGFBv8GBnwrbFUVsDQkAL/ONE
+   t6hIk5wdEbw1VclcJBVlX2rvw4cO67qoCd3YqbAPJMRTwEQY49lqR7WkD
+   /bkkuBAMFafcCc8rfJhGtzA9gXL4xTKGuy2+Xs/uNGM1/8gfAntvNeWgP
+   fXmrT/m1mFFB9gc4f+J+LzbA6ryLbOZRky9Nu4C6YR/d7WAhqML6w/qtZ
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10399"; a="347614440"
+X-IronPort-AV: E=Sophos;i="5.92,248,1650956400"; 
+   d="scan'208";a="347614440"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2022 20:27:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,248,1650956400"; 
+   d="scan'208";a="735400160"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 05 Jul 2022 20:27:18 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o8vh7-000JxD-Qc;
+        Wed, 06 Jul 2022 03:27:17 +0000
+Date:   Wed, 6 Jul 2022 11:27:00 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Muna Sinada <quic_msinada@quicinc.com>, johannes@sipsolutions.net
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
         linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Subject: Re: [PATCH 04/13] tracing/brcm: Use the new __vstring() helper
-Message-ID: <20220705225049.665db869@gandalf.local.home>
-In-Reply-To: <202207061019.0zRrehFH-lkp@intel.com>
-References: <20220705224749.622796175@goodmis.org>
-        <202207061019.0zRrehFH-lkp@intel.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Muna Sinada <quic_msinada@quicinc.com>
+Subject: Re: [PATCH v2 1/2] mac80211: Add VHT MU-MIMO related flags in
+ ieee80211_bss_conf
+Message-ID: <202207061106.QWMt1tGm-lkp@intel.com>
+References: <1657058586-4621-1-git-send-email-quic_msinada@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1657058586-4621-1-git-send-email-quic_msinada@quicinc.com>
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 6 Jul 2022 10:35:50 +0800
-kernel test robot <lkp@intel.com> wrote:
+Hi Muna,
 
-> Hi Steven,
-> 
-> Thank you for the patch! Perhaps something to improve:
-> 
-> [auto build test WARNING on rostedt-trace/for-next]
-> [also build test WARNING on wireless-next/main wireless/main linus/master v5.19-rc5 next-20220705]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
+Thank you for the patch! Yet something to improve:
 
+[auto build test ERROR on wireless/main]
+[also build test ERROR on linus/master v5.19-rc5]
+[cannot apply to wireless-next/main next-20220705]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> If you fix the issue, kindly add following tag where applicable
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All warnings (new ones prefixed by >>):
+url:    https://github.com/intel-lab-lkp/linux/commits/Muna-Sinada/mac80211-Add-VHT-MU-MIMO-related-flags-in-ieee80211_bss_conf/20220706-060509
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
+config: hexagon-randconfig-r045-20220703 (https://download.01.org/0day-ci/archive/20220706/202207061106.QWMt1tGm-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project f553287b588916de09c66e3e32bf75e5060f967f)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/d0909fa7d00b2857a0b258722221e1e94ba9c05e
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Muna-Sinada/mac80211-Add-VHT-MU-MIMO-related-flags-in-ieee80211_bss_conf/20220706-060509
+        git checkout d0909fa7d00b2857a0b258722221e1e94ba9c05e
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash net/mac80211/
 
-OK, let's look at all the warnings.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-> 
->    In file included from include/trace/define_trace.h:102,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.h:133,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.c:12:
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h: In function 'trace_event_get_offsets_brcmf_err':
-> >> include/trace/trace_events.h:261:16: warning: function 'trace_event_get_offsets_brcmf_err' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]  
+All errors (new ones prefixed by >>):
 
- 1. "might be a candidate for 'gnu_printf' format attribute"
-
->      261 |         struct trace_event_raw_##call __maybe_unused *entry;            \
->          |                ^~~~~~~~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h:31:1: note: in expansion of macro 'TRACE_EVENT'
->       31 | TRACE_EVENT(brcmf_err,
->          | ^~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h: In function 'trace_event_get_offsets_brcmf_dbg':
-> >> include/trace/trace_events.h:261:16: warning: function 'trace_event_get_offsets_brcmf_dbg' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]  
-
- 2. "might be a candidate for 'gnu_printf' format attribute"
-
->      261 |         struct trace_event_raw_##call __maybe_unused *entry;            \
->          |                ^~~~~~~~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h:45:1: note: in expansion of macro 'TRACE_EVENT'
->       45 | TRACE_EVENT(brcmf_dbg,
->          | ^~~~~~~~~~~
->    In file included from include/trace/define_trace.h:102,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.h:133,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.c:12:
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h: In function 'trace_event_raw_event_brcmf_err':
->    include/trace/trace_events.h:386:16: warning: function 'trace_event_raw_event_brcmf_err' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-
- 3. "might be a candidate for 'gnu_printf' format attribute"
-
->      386 |         struct trace_event_raw_##call *entry;                           \
->          |                ^~~~~~~~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h:31:1: note: in expansion of macro 'TRACE_EVENT'
->       31 | TRACE_EVENT(brcmf_err,
->          | ^~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h: In function 'trace_event_raw_event_brcmf_dbg':
->    include/trace/trace_events.h:386:16: warning: function 'trace_event_raw_event_brcmf_dbg' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-
- 4. "might be a candidate for 'gnu_printf' format attribute"
-
->      386 |         struct trace_event_raw_##call *entry;                           \
->          |                ^~~~~~~~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h:45:1: note: in expansion of macro 'TRACE_EVENT'
->       45 | TRACE_EVENT(brcmf_dbg,
->          | ^~~~~~~~~~~
->    In file included from include/trace/define_trace.h:103,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.h:133,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.c:12:
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h: In function 'perf_trace_brcmf_err':
->    include/trace/perf.h:64:16: warning: function 'perf_trace_brcmf_err' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-
- 5. "might be a candidate for 'gnu_printf' format attribute"
-
->       64 |         struct hlist_head *head;                                        \
->          |                ^~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h:31:1: note: in expansion of macro 'TRACE_EVENT'
->       31 | TRACE_EVENT(brcmf_err,
->          | ^~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h: In function 'perf_trace_brcmf_dbg':
->    include/trace/perf.h:64:16: warning: function 'perf_trace_brcmf_dbg' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-
- 6. "might be a candidate for 'gnu_printf' format attribute"
-
->       64 |         struct hlist_head *head;                                        \
->          |                ^~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmfmac/./tracepoint.h:45:1: note: in expansion of macro 'TRACE_EVENT'
->       45 | TRACE_EVENT(brcmf_dbg,
->          | ^~~~~~~~~~~
-> --
->    In file included from include/trace/define_trace.h:102,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_brcmsmac_msg.h:82,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_events.h:38,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_events.c:22:
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/./brcms_trace_brcmsmac_msg.h: In function 'trace_event_get_offsets_brcms_dbg':
-> >> include/trace/trace_events.h:261:16: warning: function 'trace_event_get_offsets_brcms_dbg' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]  
-
- 7. "might be a candidate for 'gnu_printf' format attribute"
-
->      261 |         struct trace_event_raw_##call __maybe_unused *entry;            \
->          |                ^~~~~~~~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/./brcms_trace_brcmsmac_msg.h:59:1: note: in expansion of macro 'TRACE_EVENT'
->       59 | TRACE_EVENT(brcms_dbg,
->          | ^~~~~~~~~~~
->    In file included from include/trace/define_trace.h:102,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_brcmsmac_msg.h:82,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_events.h:38,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_events.c:22:
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/./brcms_trace_brcmsmac_msg.h: In function 'trace_event_raw_event_brcms_dbg':
->    include/trace/trace_events.h:386:16: warning: function 'trace_event_raw_event_brcms_dbg' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-
- 8. "might be a candidate for 'gnu_printf' format attribute"
+>> net/mac80211/cfg.c:1169:13: error: use of undeclared identifier 'ap_vht_cap'
+                          !!(ap_vht_cap->vht_cap_info &
+                             ^
+   net/mac80211/cfg.c:1172:13: error: use of undeclared identifier 'ap_vht_cap'
+                          !!(ap_vht_cap->vht_cap_info &
+                             ^
+   net/mac80211/cfg.c:1175:13: error: use of undeclared identifier 'ap_vht_cap'
+                          !!(ap_vht_cap->vht_cap_info &
+                             ^
+   net/mac80211/cfg.c:1178:13: error: use of undeclared identifier 'ap_vht_cap'
+                          !!(ap_vht_cap->vht_cap_info &
+                             ^
+   4 errors generated.
 
 
->      386 |         struct trace_event_raw_##call *entry;                           \
->          |                ^~~~~~~~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/./brcms_trace_brcmsmac_msg.h:59:1: note: in expansion of macro 'TRACE_EVENT'
->       59 | TRACE_EVENT(brcms_dbg,
->          | ^~~~~~~~~~~
->    In file included from include/trace/define_trace.h:103,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_brcmsmac_msg.h:82,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_events.h:38,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/brcms_trace_events.c:22:
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/./brcms_trace_brcmsmac_msg.h: In function 'perf_trace_brcms_dbg':
->    include/trace/perf.h:64:16: warning: function 'perf_trace_brcms_dbg' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
+vim +/ap_vht_cap +1169 net/mac80211/cfg.c
 
- 9. "might be a candidate for 'gnu_printf' format attribute"
+  1135	
+  1136	static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+  1137				      struct cfg80211_ap_settings *params)
+  1138	{
+  1139		struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+  1140		struct ieee80211_local *local = sdata->local;
+  1141		struct beacon_data *old;
+  1142		struct ieee80211_sub_if_data *vlan;
+  1143		u32 changed = BSS_CHANGED_BEACON_INT |
+  1144			      BSS_CHANGED_BEACON_ENABLED |
+  1145			      BSS_CHANGED_BEACON |
+  1146			      BSS_CHANGED_SSID |
+  1147			      BSS_CHANGED_P2P_PS |
+  1148			      BSS_CHANGED_TXPOWER |
+  1149			      BSS_CHANGED_TWT;
+  1150		int i, err;
+  1151		int prev_beacon_int;
+  1152	
+  1153		old = sdata_dereference(sdata->u.ap.beacon, sdata);
+  1154		if (old)
+  1155			return -EALREADY;
+  1156	
+  1157		if (params->smps_mode != NL80211_SMPS_OFF)
+  1158			return -ENOTSUPP;
+  1159	
+  1160		sdata->smps_mode = IEEE80211_SMPS_OFF;
+  1161	
+  1162		sdata->needed_rx_chains = sdata->local->rx_chains;
+  1163	
+  1164		prev_beacon_int = sdata->vif.bss_conf.beacon_int;
+  1165		sdata->vif.bss_conf.beacon_int = params->beacon_interval;
+  1166	
+  1167		if (params->vht_cap) {
+  1168			sdata->vif.bss_conf.vht_su_beamformer =
+> 1169			       !!(ap_vht_cap->vht_cap_info &
+  1170				  cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE));
+  1171			sdata->vif.bss_conf.vht_su_beamformee =
+  1172			       !!(ap_vht_cap->vht_cap_info &
+  1173				  cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE));
+  1174			sdata->vif.bss_conf.vht_mu_beamformer =
+  1175			       !!(ap_vht_cap->vht_cap_info &
+  1176				  cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE));
+  1177			sdata->vif.bss_conf.vht_mu_beamformee =
+  1178			       !!(ap_vht_cap->vht_cap_info &
+  1179				  cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE));
+  1180		}
+  1181	
+  1182		if (params->he_cap && params->he_oper) {
+  1183			sdata->vif.bss_conf.he_support = true;
+  1184			sdata->vif.bss_conf.htc_trig_based_pkt_ext =
+  1185				le32_get_bits(params->he_oper->he_oper_params,
+  1186				      IEEE80211_HE_OPERATION_DFLT_PE_DURATION_MASK);
+  1187			sdata->vif.bss_conf.frame_time_rts_th =
+  1188				le32_get_bits(params->he_oper->he_oper_params,
+  1189				      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
+  1190			changed |= BSS_CHANGED_HE_OBSS_PD;
+  1191	
+  1192			if (params->beacon.he_bss_color.enabled)
+  1193				changed |= BSS_CHANGED_HE_BSS_COLOR;
+  1194		}
+  1195	
+  1196		if (sdata->vif.type == NL80211_IFTYPE_AP &&
+  1197		    params->mbssid_config.tx_wdev) {
+  1198			err = ieee80211_set_ap_mbssid_options(sdata,
+  1199							      params->mbssid_config);
+  1200			if (err)
+  1201				return err;
+  1202		}
+  1203	
+  1204		mutex_lock(&local->mtx);
+  1205		err = ieee80211_vif_use_channel(sdata, &params->chandef,
+  1206						IEEE80211_CHANCTX_SHARED);
+  1207		if (!err)
+  1208			ieee80211_vif_copy_chanctx_to_vlans(sdata, false);
+  1209		mutex_unlock(&local->mtx);
+  1210		if (err) {
+  1211			sdata->vif.bss_conf.beacon_int = prev_beacon_int;
+  1212			return err;
+  1213		}
+  1214	
+  1215		/*
+  1216		 * Apply control port protocol, this allows us to
+  1217		 * not encrypt dynamic WEP control frames.
+  1218		 */
+  1219		sdata->control_port_protocol = params->crypto.control_port_ethertype;
+  1220		sdata->control_port_no_encrypt = params->crypto.control_port_no_encrypt;
+  1221		sdata->control_port_over_nl80211 =
+  1222					params->crypto.control_port_over_nl80211;
+  1223		sdata->control_port_no_preauth =
+  1224					params->crypto.control_port_no_preauth;
+  1225		sdata->encrypt_headroom = ieee80211_cs_headroom(sdata->local,
+  1226								&params->crypto,
+  1227								sdata->vif.type);
+  1228	
+  1229		list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
+  1230			vlan->control_port_protocol =
+  1231				params->crypto.control_port_ethertype;
+  1232			vlan->control_port_no_encrypt =
+  1233				params->crypto.control_port_no_encrypt;
+  1234			vlan->control_port_over_nl80211 =
+  1235				params->crypto.control_port_over_nl80211;
+  1236			vlan->control_port_no_preauth =
+  1237				params->crypto.control_port_no_preauth;
+  1238			vlan->encrypt_headroom =
+  1239				ieee80211_cs_headroom(sdata->local,
+  1240						      &params->crypto,
+  1241						      vlan->vif.type);
+  1242		}
+  1243	
+  1244		sdata->vif.bss_conf.dtim_period = params->dtim_period;
+  1245		sdata->vif.bss_conf.enable_beacon = true;
+  1246		sdata->vif.bss_conf.allow_p2p_go_ps = sdata->vif.p2p;
+  1247		sdata->vif.bss_conf.twt_responder = params->twt_responder;
+  1248		sdata->vif.bss_conf.he_obss_pd = params->he_obss_pd;
+  1249		sdata->vif.bss_conf.he_bss_color = params->beacon.he_bss_color;
+  1250		sdata->vif.bss_conf.s1g = params->chandef.chan->band ==
+  1251					  NL80211_BAND_S1GHZ;
+  1252	
+  1253		sdata->vif.bss_conf.ssid_len = params->ssid_len;
+  1254		if (params->ssid_len)
+  1255			memcpy(sdata->vif.bss_conf.ssid, params->ssid,
+  1256			       params->ssid_len);
+  1257		sdata->vif.bss_conf.hidden_ssid =
+  1258			(params->hidden_ssid != NL80211_HIDDEN_SSID_NOT_IN_USE);
+  1259	
+  1260		memset(&sdata->vif.bss_conf.p2p_noa_attr, 0,
+  1261		       sizeof(sdata->vif.bss_conf.p2p_noa_attr));
+  1262		sdata->vif.bss_conf.p2p_noa_attr.oppps_ctwindow =
+  1263			params->p2p_ctwindow & IEEE80211_P2P_OPPPS_CTWINDOW_MASK;
+  1264		if (params->p2p_opp_ps)
+  1265			sdata->vif.bss_conf.p2p_noa_attr.oppps_ctwindow |=
+  1266						IEEE80211_P2P_OPPPS_ENABLE_BIT;
+  1267	
+  1268		sdata->beacon_rate_set = false;
+  1269		if (wiphy_ext_feature_isset(local->hw.wiphy,
+  1270					    NL80211_EXT_FEATURE_BEACON_RATE_LEGACY)) {
+  1271			for (i = 0; i < NUM_NL80211_BANDS; i++) {
+  1272				sdata->beacon_rateidx_mask[i] =
+  1273					params->beacon_rate.control[i].legacy;
+  1274				if (sdata->beacon_rateidx_mask[i])
+  1275					sdata->beacon_rate_set = true;
+  1276			}
+  1277		}
+  1278	
+  1279		if (ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL))
+  1280			sdata->vif.bss_conf.beacon_tx_rate = params->beacon_rate;
+  1281	
+  1282		err = ieee80211_assign_beacon(sdata, &params->beacon, NULL, NULL);
+  1283		if (err < 0)
+  1284			goto error;
+  1285		changed |= err;
+  1286	
+  1287		if (params->fils_discovery.max_interval) {
+  1288			err = ieee80211_set_fils_discovery(sdata,
+  1289							   &params->fils_discovery);
+  1290			if (err < 0)
+  1291				goto error;
+  1292			changed |= BSS_CHANGED_FILS_DISCOVERY;
+  1293		}
+  1294	
+  1295		if (params->unsol_bcast_probe_resp.interval) {
+  1296			err = ieee80211_set_unsol_bcast_probe_resp(sdata,
+  1297								   &params->unsol_bcast_probe_resp);
+  1298			if (err < 0)
+  1299				goto error;
+  1300			changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
+  1301		}
+  1302	
+  1303		err = drv_start_ap(sdata->local, sdata);
+  1304		if (err) {
+  1305			old = sdata_dereference(sdata->u.ap.beacon, sdata);
+  1306	
+  1307			if (old)
+  1308				kfree_rcu(old, rcu_head);
+  1309			RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
+  1310			goto error;
+  1311		}
+  1312	
+  1313		ieee80211_recalc_dtim(local, sdata);
+  1314		ieee80211_bss_info_change_notify(sdata, changed);
+  1315	
+  1316		netif_carrier_on(dev);
+  1317		list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list)
+  1318			netif_carrier_on(vlan->dev);
+  1319	
+  1320		return 0;
+  1321	
+  1322	error:
+  1323		mutex_lock(&local->mtx);
+  1324		ieee80211_vif_release_channel(sdata);
+  1325		mutex_unlock(&local->mtx);
+  1326	
+  1327		return err;
+  1328	}
+  1329	
 
->       64 |         struct hlist_head *head;                                        \
->          |                ^~~~~~~~~~
->    include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->       40 |         DECLARE_EVENT_CLASS(name,                              \
->          |         ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/./brcms_trace_brcmsmac_msg.h:59:1: note: in expansion of macro 'TRACE_EVENT'
->       59 | TRACE_EVENT(brcms_dbg,
->          | ^~~~~~~~~~~
-> 
-> 
-> vim +261 include/trace/trace_events.h
-> 
-> 55de2c0b5610cb include/trace/trace_events.h Masami Hiramatsu         2021-11-22  253  
-> 091ad3658e3c76 include/trace/ftrace.h       Ingo Molnar              2009-11-26  254  #undef DECLARE_EVENT_CLASS
-> 091ad3658e3c76 include/trace/ftrace.h       Ingo Molnar              2009-11-26  255  #define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
-> d0ee8f4a1f5f3d include/trace/trace_events.h Steven Rostedt (Red Hat  2015-05-13  256) static inline notrace int trace_event_get_offsets_##call(		\
-> 62323a148fbeb0 include/trace/trace_events.h Steven Rostedt (Red Hat  2015-05-13  257) 	struct trace_event_data_offsets_##call *__data_offsets, proto)	\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  258  {									\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  259  	int __data_size = 0;						\
-> 114e7b52dee69c include/trace/ftrace.h       Filipe Brandenburger     2014-02-28  260  	int __maybe_unused __item_length;				\
-> a7237765730a10 include/trace/trace_events.h Steven Rostedt (Red Hat  2015-05-13 @261) 	struct trace_event_raw_##call __maybe_unused *entry;		\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  262  									\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  263  	tstruct;							\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  264  									\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  265  	return __data_size;						\
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  266  }
-> 7fcb7c472f455d include/trace/ftrace.h       Li Zefan                 2009-06-01  267  
-> 
-
-Really? 9 warnings about something that *MIGHT* be a candidate for
-gnu_printf format attribute?  This is a macro that expanded into something
-that could possibly use the printf format, but is nested deep in macro
-magic.
-
-Can we please shut this up?
-
-Thanks,
-
--- Steve
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
