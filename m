@@ -2,112 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DACA0569DE1
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Jul 2022 10:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C81EF569E52
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Jul 2022 11:13:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235333AbiGGIpU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Jul 2022 04:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59360 "EHLO
+        id S234751AbiGGJNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Jul 2022 05:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232615AbiGGIpJ (ORCPT
+        with ESMTP id S231545AbiGGJNG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Jul 2022 04:45:09 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563D813F9F;
-        Thu,  7 Jul 2022 01:45:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657183508; x=1688719508;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=edbKoKalbvq90CBmxogPesuIiDjl8rwJ49B+zZvetjQ=;
-  b=BfVKisWKCdx8CvBHxqsYg7j9cXv26yoQXE72HrhvrsHZACMcDf+Q4QeE
-   iezKOt76usGXV+kbwaKO7ucB7IaYA4gBUybR0oLB4xyC1Vm4hlMy3Mfqh
-   9orF/TMUfYsnaA4siDN3OfNN2ZHi8li2Tg62mdzzqPrFaDG0JJbV+DRPP
-   iwpbPp2cvvpvUZ62IKMOCHbcsc96XaEccZnOxR3WRawWvB7mbC3jKctJN
-   8CAuCUDBdHrDFmaFdIMnnGGbzhA6JCPGgQiHYVbqMyi9DeZgOTiWpgxom
-   oJhCT3UL+2okh6qNBEUcmQZZmIof0uguLdB3ImckLr4T46d5mInnCBOBg
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10400"; a="345659129"
-X-IronPort-AV: E=Sophos;i="5.92,252,1650956400"; 
-   d="scan'208";a="345659129"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2022 01:45:06 -0700
-X-IronPort-AV: E=Sophos;i="5.92,252,1650956400"; 
-   d="scan'208";a="651047273"
-Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.255.31.6]) ([10.255.31.6])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2022 01:44:45 -0700
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 088b9c375534d905a4d337c78db3b3bfbb52c4a0
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        kernel test robot <lkp@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        virtualization@lists.linux-foundation.org,
-        usbb2k-api-dev@nongnu.org, tipc-discussion@lists.sourceforge.net,
-        target-devel@vger.kernel.org, sound-open-firmware@alsa-project.org,
-        samba-technical@lists.samba.org, rds-devel@oss.oracle.com,
-        patches@opensource.cirrus.com, osmocom-net-gprs@lists.osmocom.org,
-        openipmi-developer@lists.sourceforge.net, nvdimm@lists.linux.dev,
-        ntb@lists.linux.dev, netfilter-devel@vger.kernel.org,
-        netdev@vger.kernel.org, mjpeg-users@lists.sourceforge.net,
-        megaraidlinux.pdl@broadcom.com, linuxppc-dev@lists.ozlabs.org,
-        linux1394-devel@lists.sourceforge.net, linux-x25@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-unionfs@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        linux-sctp@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-raid@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-parport@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-nfc@lists.01.org, linux-mtd@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-fpga@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linaro-mm-sig@lists.linaro.org,
-        legousb-devel@lists.sourceforge.net, kvm@vger.kernel.org,
-        keyrings@vger.kernel.org, isdn4linux@listserv.isdn4linux.de,
-        iommu@lists.linux.dev, iommu@lists.linux-foundation.org,
-        intel-wired-lan@lists.osuosl.org, greybus-dev@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, dm-devel@redhat.com,
-        devicetree@vger.kernel.org, dev@openvswitch.org,
-        dccp@vger.kernel.org, damon@lists.linux.dev,
-        coreteam@netfilter.org, cgroups@vger.kernel.org,
-        ceph-devel@vger.kernel.org, ath11k@lists.infradead.org,
-        apparmor@lists.ubuntu.com, amd-gfx@lists.freedesktop.org,
-        alsa-devel@alsa-project.org,
-        accessrunner-general@lists.sourceforge.net
-References: <62c683a2.g1VSVt6BrQC6ZzOz%lkp@intel.com>
- <YsaUgfPbOg7WuBuB@kroah.com>
-From:   "Chen, Rong A" <rong.a.chen@intel.com>
-Message-ID: <c86816fd-aaba-01a9-5def-44868f0a46c9@intel.com>
-Date:   Thu, 7 Jul 2022 16:44:43 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.12.0
+        Thu, 7 Jul 2022 05:13:06 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549FA27B05;
+        Thu,  7 Jul 2022 02:13:05 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id v12so9695426edc.10;
+        Thu, 07 Jul 2022 02:13:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=x+63eUrjXUS+FoLmYUnXUsHGEfQ+CC/XntxoPecjWQY=;
+        b=MZSl682fLdY5iXGZZoTOwJ/2sZL5DCelmQ9ACkQCf9eXeXxmEo7j93wyWmcpKINfRu
+         XbyS9U9t9bE/kGVT/NBlYlFkJf6CpCkWo68pTY5j3dgWwzW564NCmsbX4ULon0D5WuW1
+         tRaZMZ1EPnxbAnVxCbPgAzX2cEoSXt2/eiR240jY2pIryUebGuEgTS94+SKf4HPTgbLP
+         mguGaQtE+T0ounVqFWMK/CV6RA6M7hNqipiSLxPyyIcM31pxmvANtkBWaXt6JBWlafrS
+         s+e8ZeyjS19IBk9l7YgDh5u6CnfgyogFltZwFJBpKhbRYLa953ItBdO39iUzn3Lg5fTx
+         JrPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=x+63eUrjXUS+FoLmYUnXUsHGEfQ+CC/XntxoPecjWQY=;
+        b=sacVKz/oDnsyX6hcAy4FUbZVqJ6psdQhPJZaHJ4mswtSgwVbtLaATETxp8wyqb1bLb
+         5cWUay5c30ylnDsUqwNgaceflG9Gpcc5IBAALGwMq+ljCyAohu20bmmILU93ArcYGah7
+         K/P0StM5nV4cPdGtGKEKRlSCVb4Uv1COOzr1xw/44Sce2IPwLL54F74KUZjC880MvkNi
+         qeznJf7m3nmY/AXbVdmz+A+/VClHiPMrbJI1PuHcJjKTmoui990eoS91mW8KhUhpukvM
+         oVDJm4HQ1bTLxORwzeP/dGBwRFudTKEND/cz/ba5e2wZz9+B59xICXpDYQbDT/VNmDBD
+         5uGQ==
+X-Gm-Message-State: AJIora8Hn3gX8Qcj73dLAAZkTw0oRXlr4euwbqNVaISio+BZJBv+3Zm+
+        JHHzQH1s2xdpPOsp3j/xZUw=
+X-Google-Smtp-Source: AGRyM1tYBw5UwvRzB1BekPXgl8hXIyXb25xvzrpMxlE3LhiqtZQ/kkB01z6WGG45sSJVN4TuEjaKwA==
+X-Received: by 2002:a05:6402:34c5:b0:43a:8f90:e643 with SMTP id w5-20020a05640234c500b0043a8f90e643mr8925308edc.88.1657185183791;
+        Thu, 07 Jul 2022 02:13:03 -0700 (PDT)
+Received: from debian64.daheim (pd9e295da.dip0.t-ipconnect.de. [217.226.149.218])
+        by smtp.gmail.com with ESMTPSA id b7-20020a17090630c700b0072aebed5937sm3385767ejb.221.2022.07.07.02.13.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Jul 2022 02:13:03 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.96)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1o9NZH-00084J-0W;
+        Thu, 07 Jul 2022 11:13:03 +0200
+Message-ID: <1e1c7c7e-ef86-e4c9-92cc-f28bf6ec6b8a@gmail.com>
+Date:   Thu, 7 Jul 2022 11:13:03 +0200
 MIME-Version: 1.0
-In-Reply-To: <YsaUgfPbOg7WuBuB@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [RESEND] [PATCH] p54: Use the bitmap API to allocate bitmaps
+Content-Language: de-DE
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <2755b8b7d85a2db0663d39ea6df823f94f3401b3.1656939750.git.christophe.jaillet@wanadoo.fr>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <2755b8b7d85a2db0663d39ea6df823f94f3401b3.1656939750.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -115,81 +85,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
+I'm sending this again because Android added HTML. Sorry for that.
 
-On 7/7/2022 4:08 PM, Greg KH wrote:
-> On Thu, Jul 07, 2022 at 02:56:34PM +0800, kernel test robot wrote:
->> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
->> branch HEAD: 088b9c375534d905a4d337c78db3b3bfbb52c4a0  Add linux-next specific files for 20220706
->>
->> Error/Warning reports:
->>
->> https://lore.kernel.org/linux-doc/202207070644.x48XOOvs-lkp@intel.com
->>
->> Error/Warning: (recently discovered and may have been fixed)
->>
->> Documentation/arm/google/chromebook-boot-flow.rst: WARNING: document isn't included in any toctree
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1108): undefined reference to `__aeabi_ddiv'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1124): undefined reference to `__aeabi_ui2d'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1164): undefined reference to `__aeabi_dmul'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1170): undefined reference to `__aeabi_dadd'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1180): undefined reference to `__aeabi_dsub'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1190): undefined reference to `__aeabi_d2uiz'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x162c): undefined reference to `__aeabi_d2iz'
->> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x16b0): undefined reference to `__aeabi_i2d'
->> dc_dmub_srv.c:(.text+0x10f8): undefined reference to `__aeabi_ui2d'
->> dc_dmub_srv.c:(.text+0x464): undefined reference to `__floatunsidf'
->> dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x33c): undefined reference to `__floatunsidf'
->> drivers/pci/endpoint/functions/pci-epf-vntb.c:975:5: warning: no previous prototype for 'pci_read' [-Wmissing-prototypes]
->> drivers/pci/endpoint/functions/pci-epf-vntb.c:984:5: warning: no previous prototype for 'pci_write' [-Wmissing-prototypes]
->> drivers/vfio/vfio_iommu_type1.c:2141:35: warning: cast to smaller integer type 'enum iommu_cap' from 'void *' [-Wvoid-pointer-to-enum-cast]
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x34c): undefined reference to `__floatunsidf'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x378): undefined reference to `__divdf3'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x38c): undefined reference to `__muldf3'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x3a0): undefined reference to `__adddf3'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x3b4): undefined reference to `__subdf3'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x3d4): undefined reference to `__fixunsdfsi'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x750): undefined reference to `__fixdfsi'
->> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x7c0): undefined reference to `__floatsidf'
->> powerpc-linux-ld: drivers/pci/endpoint/functions/pci-epf-vntb.c:174: undefined reference to `ntb_link_event'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x468): undefined reference to `__divdf3'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x46c): undefined reference to `__muldf3'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x470): undefined reference to `__adddf3'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x474): undefined reference to `__subdf3'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x478): undefined reference to `__fixunsdfsi'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x47c): undefined reference to `__fixdfsi'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x480): undefined reference to `__floatsidf'
->> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x60c): undefined reference to `__floatunsidf'
->>
->> Unverified Error/Warning (likely false positive, please contact us if interested):
->>
->> arch/x86/events/core.c:2114 init_hw_perf_events() warn: missing error code 'err'
->> drivers/android/binder.c:1481:19-23: ERROR: from is NULL but dereferenced.
->> drivers/android/binder.c:2920:29-33: ERROR: target_thread is NULL but dereferenced.
->> drivers/android/binder.c:353:25-35: ERROR: node -> proc is NULL but dereferenced.
->> drivers/android/binder.c:4888:16-20: ERROR: t is NULL but dereferenced.
->> drivers/base/regmap/regmap.c:1996:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
->> drivers/char/random.c:869:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
->> drivers/firmware/arm_scmi/clock.c:394:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
->> drivers/firmware/arm_scmi/powercap.c:376:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
->> drivers/gpu/drm/amd/amdgpu/../pm/powerplay/hwmgr/vega10_powertune.c:1214:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
->> drivers/gpu/drm/amd/display/dc/os_types.h: drm/drm_print.h is included more than once.
->> drivers/gpu/drm/bridge/ite-it66121.c:1398:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
->> drivers/greybus/operation.c:617:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+On 04/07/2022 15:02, Christophe JAILLET wrote:
+> Use bitmap_zalloc()/bitmap_free() instead of hand-writing them.
 > 
-> <snip>
+> It is less verbose and it improves the semantic.
 > 
-> When the compiler crashes, why are you blaming all of these different
-> mailing lists?  Perhaps you need to fix your compiler :)
-> 
-> thanks,
-> 
-> greg k-h
-> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
-Hi Greg,
+> ---
+>   drivers/net/wireless/intersil/p54/fwio.c | 6 ++----
+>   drivers/net/wireless/intersil/p54/main.c | 2 +-
+>   2 files changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intersil/p54/fwio.c b/drivers/net/wireless/intersil/p54/fwio.c
+> index bece14e4ff0d..b52cce38115d 100644
+> --- a/drivers/net/wireless/intersil/p54/fwio.c
+> +++ b/drivers/net/wireless/intersil/p54/fwio.c
+> @@ -173,10 +173,8 @@ int p54_parse_firmware(struct ieee80211_hw *dev, const struct firmware *fw)
+>   		 * keeping a extra list for uploaded keys.
+>   		 */
+>   
+> -		priv->used_rxkeys = kcalloc(BITS_TO_LONGS(priv->rx_keycache_size),
+> -					    sizeof(long),
+> -					    GFP_KERNEL);
+> -
+> +		priv->used_rxkeys = bitmap_zalloc(priv->rx_keycache_size,
+> +						  GFP_KERNEL);
+>   		if (!priv->used_rxkeys)
+>   			return -ENOMEM;
+>   	}
+> diff --git a/drivers/net/wireless/intersil/p54/main.c b/drivers/net/wireless/intersil/p54/main.c
+> index 115be1f3f33d..c1e1711382a7 100644
+> --- a/drivers/net/wireless/intersil/p54/main.c
+> +++ b/drivers/net/wireless/intersil/p54/main.c
+> @@ -830,7 +830,7 @@ void p54_free_common(struct ieee80211_hw *dev)
+>   	kfree(priv->output_limit);
+>   	kfree(priv->curve_data);
+>   	kfree(priv->rssi_db);
+> -	kfree(priv->used_rxkeys);
+> +	bitmap_free(priv->used_rxkeys);
+>   	kfree(priv->survey);
+>   	priv->iq_autocal = NULL;
+>   	priv->output_limit = NULL;
 
-Sorry for the inconvience, we'll fix it ASAP.
-
-Best Regards,
-Rong Chen
