@@ -2,48 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 278F656B212
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jul 2022 07:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E61DB56B21A
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jul 2022 07:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237267AbiGHFA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jul 2022 01:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59672 "EHLO
+        id S237302AbiGHFCk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Jul 2022 01:02:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236202AbiGHFA1 (ORCPT
+        with ESMTP id S236471AbiGHFCi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jul 2022 01:00:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5243176EB8;
-        Thu,  7 Jul 2022 22:00:27 -0700 (PDT)
+        Fri, 8 Jul 2022 01:02:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDEA479693;
+        Thu,  7 Jul 2022 22:02:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC8FD62440;
-        Fri,  8 Jul 2022 05:00:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED703C341C8;
-        Fri,  8 Jul 2022 05:00:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A0E562441;
+        Fri,  8 Jul 2022 05:02:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B847AC341C0;
+        Fri,  8 Jul 2022 05:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657256426;
-        bh=ctspZOysU4hoJiaVJPrttyRUi78rR5sC4yqDKFIA4V8=;
+        s=k20201202; t=1657256556;
+        bh=MkIE5dQrmQrhvk/c5OSQ7HJoMDKtQ9XiTEE+7rfbTYY=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=lt92GpHqgDl/DF9whxA9JGYF0R9DIZXJSis/DCjaGSDU60lNpghyOHgUgV7QQoAXH
-         RLAWwfagj+T2BMde7bxgG3E9ubwwMMcDatmbPJSgS0sCM85oVyrjtFtdv1wjqmRuY8
-         du37QdD4V3zaZZtWlusfLaAPDWvzlvRpFYKFFqsxwqasXUCGqPa9x07Fxw9H9QuUjd
-         +QHsN9M5iQIzsFw5+JbRerVS4T6NM03a53yi2nkim8OPq0sbnOUeoW9skeLR89iEZ+
-         b4UtKNd9bVOvQT9L8FzsTf0D5gccVIrJ7+p1XCF/ekr9N7hl7TwIDBl1xDCNsoW+dF
-         3Qtoahs+tyD7Q==
+        b=YhTMSFf3j0X4ZDTsxkuKfiIaSBMtslBQ2bhggLtYbGaX5rCdsIiVVUIHydP1X9s/p
+         YtXt7RSM0YcjMccVRXqewMu+kmwRwuuwh8r6/O0m9CD0eCroUL2nOaIYCZBbxjn4gu
+         H+Sj6SenwX3B0Y92AbgL10+vA2dP25GCms4ja1PIoKRyyWZROo+GzQblCdiS4j/4yE
+         VL2MmHw3sFRtKo94ZDRrM2BVCTi+UIyyEbZD3paXpBfPGL++tLIwBONEs06oH9VEvx
+         iHgB+hNjYTzYxnOBgoGA/2tOYQrKr5xqNfxq1g13nWG4O4C/SsTJwYenqhSENYtSsn
+         SYJDvvucXzDcA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     "Tan Zhongjun" <tanzhongjun@coolpad.com>
-Cc:     <jirislaby@kernel.org>, <mickflemm@gmail.com>, <mcgrof@kernel.org>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath5k: Use swap() instead of open coding it
-References: <20220704130614.37467-1-tanzhongjun@coolpad.com>
-Date:   Fri, 08 Jul 2022 08:00:20 +0300
-In-Reply-To: <20220704130614.37467-1-tanzhongjun@coolpad.com> (Tan Zhongjun's
-        message of "Mon, 04 Jul 2022 21:06:23 +0800")
-Message-ID: <87r12wtd0b.fsf@kernel.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+Subject: Re: [PATCH 04/13] tracing/brcm: Use the new __vstring() helper
+References: <20220705224453.120955146@goodmis.org>
+        <20220705224749.622796175@goodmis.org>
+Date:   Fri, 08 Jul 2022 08:02:31 +0300
+In-Reply-To: <20220705224749.622796175@goodmis.org> (Steven Rostedt's message
+        of "Tue, 05 Jul 2022 18:44:57 -0400")
+Message-ID: <87mtdktcwo.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,14 +66,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Tan Zhongjun" <tanzhongjun@coolpad.com> writes:
+Steven Rostedt <rostedt@goodmis.org> writes:
 
-> Use swap() instead of open coding it. 
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 >
-> Signed-off-by: Tan Zhongjun 
+> Instead of open coding a __dynamic_array() with a fixed length (which
+> defeats the purpose of the dynamic array in the first place). Use the new
+> __vstring() helper that will use a va_list and only write enough of the
+> string into the ring buffer that is needed.
+>
+> Cc: Arend van Spriel <aspriel@gmail.com>
+> Cc: Franky Lin <franky.lin@broadcom.com>
+> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: brcm80211-dev-list.pdl@broadcom.com
+> Cc: SHA-cyfmac-dev-list@infineon.com
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> ---
+>  .../broadcom/brcm80211/brcmfmac/tracepoint.h         | 12 ++++--------
+>  .../brcm80211/brcmsmac/brcms_trace_brcmsmac_msg.h    | 12 ++++--------
+>  2 files changed, 8 insertions(+), 16 deletions(-)
 
-Please don't send HTML emails, our lists automatically drop those. More
-info in the wiki below.
+Feel free to take this via your tree:
+
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
