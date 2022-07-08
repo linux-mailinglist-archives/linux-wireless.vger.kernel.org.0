@@ -2,116 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4120F56B9AF
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jul 2022 14:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC5456BAE2
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jul 2022 15:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237747AbiGHM0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jul 2022 08:26:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50240 "EHLO
+        id S238219AbiGHNce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Jul 2022 09:32:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231287AbiGHM0V (ORCPT
+        with ESMTP id S238196AbiGHNcb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jul 2022 08:26:21 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C32430F43
-        for <linux-wireless@vger.kernel.org>; Fri,  8 Jul 2022 05:26:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1657283179; x=1688819179;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=P5z5Mvh2uC3Xu3K3JbnvVrwIqNSxFc5ChefpUIqiwyA=;
-  b=ne8kKR+IIESS5HcwbBUXjdeRU1I/yQ1NEjrq5tXPWreVorZR0BYXIhNJ
-   hAzdObmdJpq9Sk0xfW7Fb8alpPFsB+a2JNaGUyD9AZHRlGQ4G01s6Cqvg
-   9SRx5gIA6YUIULVQw/9xWJW4eh+Jgeq4j3U7Yd6m+IU/9MqsKOxPsfrGt
-   4=;
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 08 Jul 2022 05:26:19 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2022 05:26:19 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 8 Jul 2022 05:26:18 -0700
-Received: from cnss-mw-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 8 Jul 2022 05:26:17 -0700
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2] wifi: nl80211: fix sending link ID info of associated BSS
-Date:   Fri, 8 Jul 2022 17:56:07 +0530
-Message-ID: <20220708122607.1836958-1-quic_vjakkam@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 8 Jul 2022 09:32:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E711B2F390
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Jul 2022 06:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1657287149;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=fiqEigVON0EX2+Io7XzvpJmaokF5cBbC+Hrru1BMVcY=;
+        b=LnFFjRMMf1Sj8MGBvLLbYSYqx+OzeKXfxj3DCJsh4hkmK4n7e0T3MZmE3K3xFDgB2080kd
+        y6xyUlC0DcC71tVbKVpJNHpupkthIpFKp+aa+GWB8pOBEgUz+imldzrFHp8hNbTxrUiMZr
+        FAr7hXtACScBpA/Ju19LFq9MAZHZ2WM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-674-_CLE_gbxPRqeLEAp4ucytA-1; Fri, 08 Jul 2022 09:32:25 -0400
+X-MC-Unique: _CLE_gbxPRqeLEAp4ucytA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13AC91019C89;
+        Fri,  8 Jul 2022 13:32:25 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.193.188])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DBC9E492C3B;
+        Fri,  8 Jul 2022 13:32:23 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: [PATCH 1/2] brcmfmac: Add brcmf_c_set_cur_etheraddr() helper
+Date:   Fri,  8 Jul 2022 15:32:22 +0200
+Message-Id: <20220708133223.101558-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-commit dd374f84baec ("wifi: nl80211: expose link ID for associated
- BSSes") used a top-level attribute to send link ID of the associated
-BSS in the nested attribute NL80211_ATTR_BSS. But since NL80211_ATTR_BSS
-is a nested attribute of the attributes defined in enum nl80211_bss,
-define a new attribute in enum nl80211_bss and use it for sending the
-link ID of the BSS.
+Add a little helper to send "cur_etheraddr" commands to the interface
+and to handle the error reporting of it in a single place.
 
-Fixes: dd374f84baec ("wifi: nl80211: expose link ID for associated BSSes")
-Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-v2:
- - Write more appropriate and detailed commit text
----
- include/uapi/linux/nl80211.h | 2 ++
- net/wireless/nl80211.c       | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ .../broadcom/brcm80211/brcmfmac/common.c       | 18 +++++++++++++-----
+ .../broadcom/brcm80211/brcmfmac/common.h       |  1 +
+ .../broadcom/brcm80211/brcmfmac/core.c         |  8 ++------
+ 3 files changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 279f9715919e..7bb1ae59f3a5 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4904,6 +4904,7 @@ enum nl80211_bss_scan_width {
-  *	Contains a nested array of signal strength attributes (u8, dBm),
-  *	using the nesting index as the antenna number.
-  * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
-+ * @NL80211_BSS_MLO_LINK_ID: MLO link ID of the BSS (u8).
-  * @__NL80211_BSS_AFTER_LAST: internal
-  * @NL80211_BSS_MAX: highest BSS attribute
-  */
-@@ -4929,6 +4930,7 @@ enum nl80211_bss {
- 	NL80211_BSS_PARENT_BSSID,
- 	NL80211_BSS_CHAIN_SIGNAL,
- 	NL80211_BSS_FREQUENCY_OFFSET,
-+	NL80211_BSS_MLO_LINK_ID,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index fe01da9e620d..dccd8f4ca1d0 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -190,6 +190,17 @@ static int brcmf_c_process_clm_blob(struct brcmf_if *ifp)
+ 	return err;
+ }
  
- 	/* keep last */
- 	__NL80211_BSS_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index eda2ad029c90..5d6351d3a484 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -9991,7 +9991,8 @@ static int nl80211_send_bss(struct sk_buff *msg, struct netlink_callback *cb,
- 			    (nla_put_u32(msg, NL80211_BSS_STATUS,
- 					 NL80211_BSS_STATUS_ASSOCIATED) ||
- 			     (wdev->valid_links &&
--			      nla_put_u8(msg, NL80211_ATTR_MLO_LINK_ID, link_id))))
-+			      nla_put_u8(msg, NL80211_BSS_MLO_LINK_ID,
-+					 link_id))))
- 				goto nla_put_failure;
- 		}
- 		break;
++int brcmf_c_set_cur_etheraddr(struct brcmf_if *ifp, const u8 *addr)
++{
++	s32 err;
++
++	err = brcmf_fil_iovar_data_set(ifp, "cur_etheraddr", addr, ETH_ALEN);
++	if (err < 0)
++		bphy_err(ifp->drvr, "Setting cur_etheraddr failed, %d\n", err);
++
++	return err;
++}
++
+ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+ {
+ 	struct brcmf_pub *drvr = ifp->drvr;
+@@ -204,12 +215,9 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+ 
+ 	if (is_valid_ether_addr(ifp->mac_addr)) {
+ 		/* set mac address */
+-		err = brcmf_fil_iovar_data_set(ifp, "cur_etheraddr", ifp->mac_addr,
+-					       ETH_ALEN);
+-		if (err < 0) {
+-			bphy_err(ifp->drvr, "Setting cur_etheraddr failed, %d\n", err);
++		err = brcmf_c_set_cur_etheraddr(ifp, ifp->mac_addr);
++		if (err < 0)
+ 			goto done;
+-		}
+ 	} else {
+ 		/* retrieve mac address */
+ 		err = brcmf_fil_iovar_data_get(ifp, "cur_etheraddr", ifp->mac_addr,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
+index 15accc88d5c0..7329eb751945 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
+@@ -65,6 +65,7 @@ void brcmf_release_module_param(struct brcmf_mp_device *module_param);
+ 
+ /* Sets dongle media info (drv_version, mac address). */
+ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp);
++int brcmf_c_set_cur_etheraddr(struct brcmf_if *ifp, const u8 *addr);
+ 
+ #ifdef CONFIG_DMI
+ void brcmf_dmi_probe(struct brcmf_mp_device *settings, u32 chip, u32 chiprev);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index 87aef211b35f..bd164a0821f9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -233,16 +233,12 @@ static int brcmf_netdev_set_mac_address(struct net_device *ndev, void *addr)
+ {
+ 	struct brcmf_if *ifp = netdev_priv(ndev);
+ 	struct sockaddr *sa = (struct sockaddr *)addr;
+-	struct brcmf_pub *drvr = ifp->drvr;
+ 	int err;
+ 
+ 	brcmf_dbg(TRACE, "Enter, bsscfgidx=%d\n", ifp->bsscfgidx);
+ 
+-	err = brcmf_fil_iovar_data_set(ifp, "cur_etheraddr", sa->sa_data,
+-				       ETH_ALEN);
+-	if (err < 0) {
+-		bphy_err(drvr, "Setting cur_etheraddr failed, %d\n", err);
+-	} else {
++	err = brcmf_c_set_cur_etheraddr(ifp, sa->sa_data);
++	if (err >= 0) {
+ 		brcmf_dbg(TRACE, "updated to %pM\n", sa->sa_data);
+ 		memcpy(ifp->mac_addr, sa->sa_data, ETH_ALEN);
+ 		eth_hw_addr_set(ifp->ndev, ifp->mac_addr);
 -- 
-2.25.1
+2.36.0
 
