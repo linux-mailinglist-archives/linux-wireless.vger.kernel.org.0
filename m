@@ -2,68 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 646DC56CAB1
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 18:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD6556CB36
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 21:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbiGIQik convert rfc822-to-8bit (ORCPT
+        id S229448AbiGITHQ convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Jul 2022 12:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33676 "EHLO
+        Sat, 9 Jul 2022 15:07:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbiGIQii (ORCPT
+        with ESMTP id S229469AbiGITHP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Jul 2022 12:38:38 -0400
-Received: from relay5.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE48DF40
-        for <linux-wireless@vger.kernel.org>; Sat,  9 Jul 2022 09:38:36 -0700 (PDT)
-Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay06.hostedemail.com (Postfix) with ESMTP id 32846353BB;
-        Sat,  9 Jul 2022 16:38:35 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf14.hostedemail.com (Postfix) with ESMTPA id 7B11333;
-        Sat,  9 Jul 2022 16:38:33 +0000 (UTC)
-Message-ID: <3cbbd8c924c2d8105115535de6b9b35b618a6eb6.camel@perches.com>
-Subject: Re: [PATCH] wifi: mvm: fix repeated words in comments
+        Sat, 9 Jul 2022 15:07:15 -0400
+Received: from relay4.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F19C13CD2;
+        Sat,  9 Jul 2022 12:07:14 -0700 (PDT)
+Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+        by unirelay12.hostedemail.com (Postfix) with ESMTP id CC1DB120311;
+        Sat,  9 Jul 2022 19:07:12 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf07.hostedemail.com (Postfix) with ESMTPA id 0DA9420032;
+        Sat,  9 Jul 2022 19:07:10 +0000 (UTC)
+Message-ID: <b47293b4b8874c0ae32868533bd0df94e08b8706.camel@perches.com>
+Subject: Re: [PATCH] wifi: wcn36xx: fix repeated words in comments
 From:   Joe Perches <joe@perches.com>
-To:     Jilin Yuan <yuanjilin@cdjrlc.com>, gregory.greenman@intel.com,
-        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, quic_srirrama@quicinc.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Sat, 09 Jul 2022 09:38:32 -0700
-In-Reply-To: <20220709141259.60127-1-yuanjilin@cdjrlc.com>
-References: <20220709141259.60127-1-yuanjilin@cdjrlc.com>
+To:     Jilin Yuan <yuanjilin@cdjrlc.com>, kvalo@kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Sat, 09 Jul 2022 12:07:10 -0700
+In-Reply-To: <20220709124356.52543-1-yuanjilin@cdjrlc.com>
+References: <20220709124356.52543-1-yuanjilin@cdjrlc.com>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8BIT
 User-Agent: Evolution 3.44.1-0ubuntu1 
 MIME-Version: 1.0
-X-Stat-Signature: c71kasigjg54jxiquqf9dabaiu1qytzz
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 7B11333
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: 0DA9420032
 X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.6
+        KHOP_HELO_FCRDNS,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
+X-Stat-Signature: zjeymh5t1ywdjs75snkez43foa6p6gra
 X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX188vpeTFgqpyYLvMefLfVV9ZatXLOnW/XQ=
-X-HE-Tag: 1657384713-908630
+X-Session-ID: U2FsdGVkX18ENkg52OUH3RO+NWHMWJrFQPA9iNDLJHg=
+X-HE-Tag: 1657393630-573364
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2022-07-09 at 22:12 +0800, Jilin Yuan wrote:
->  Delete the redundant word 'to'.
+On Sat, 2022-07-09 at 20:43 +0800, Jilin Yuan wrote:
 >  Delete the redundant word 'the'.
 []
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
 []
-> @@ -251,7 +251,7 @@ static void iwl_mvm_wowlan_get_rsc_tsc_data(struct ieee80211_hw *hw,
+> @@ -1961,7 +1961,7 @@ struct wcn36xx_hal_config_bss_params {
 >  
->  		/*
->  		 * For non-QoS this relies on the fact that both the uCode and
-> -		 * mac80211 use TID 0 (as they need to to avoid replay attacks)
-> +		 * mac80211 use TID 0 (as they need to avoid replay attacks)
+>  	/* HAL should update the existing BSS entry, if this flag is set.
+>  	 * UMAC will set this flag in case of reassoc, where we want to
+> -	 * resue the the old BSSID and still return success 0 = Add, 1 =
+> +	 * resue the old BSSID and still return success 0 = Add, 1 =
 
-Maybe ok as is, could be "as required to" or "as they must to"
+
+s/resue/reuse/
+
+>  	 * Update */
+>  	u8 action;
+>  
+> @@ -2098,7 +2098,7 @@ struct wcn36xx_hal_config_bss_params_v1 {
+>  
+>  	/* HAL should update the existing BSS entry, if this flag is set.
+>  	 * UMAC will set this flag in case of reassoc, where we want to
+> -	 * resue the the old BSSID and still return success 0 = Add, 1 =
+> +	 * resue the old BSSID and still return success 0 = Add, 1 =
+
+here too
+
+>  	 * Update */
+>  	u8 action;
+>  
+> @@ -4142,7 +4142,7 @@ struct wcn36xx_hal_dump_cmd_rsp_msg {
+>  	/* Length of the responce message */
+>  	u32 rsp_length;
+>  
+> -	/* FIXME: Currently considering the the responce will be less than
+> +	/* FIXME: Currently considering the responce will be less than
+
+s/responce/response/
+
+>  	 * 100bytes */
+>  	u8 rsp_buffer[DUMPCMD_RSP_BUFFER];
+>  } __packed;
 
