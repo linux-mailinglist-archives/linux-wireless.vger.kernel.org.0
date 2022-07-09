@@ -2,116 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB79A56C545
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 02:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3530F56C963
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 14:33:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbiGIAPo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jul 2022 20:15:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        id S229482AbiGIMdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Jul 2022 08:33:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbiGIAPn (ORCPT
+        with ESMTP id S229379AbiGIMdP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jul 2022 20:15:43 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AAD691E7
-        for <linux-wireless@vger.kernel.org>; Fri,  8 Jul 2022 17:15:41 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-31c936387fbso2719117b3.2
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Jul 2022 17:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=18zwxTMww86cndEzpYub9pnZe0fDkNY6EnCvkW/t9JY=;
-        b=msxqFvaOZSoAWLO402a9iXoMeeEmvOcEg5VOhX+o22iSw24U+MJ7v5aJbXYhjOXEcs
-         80KPM4xIH89KOQGhECF+FEZEs0ZImyjKLbt6Mjaj7LDHuEIKn4GysLo5nD9ujirYiRc4
-         IgHy2nx/83FOn6x/5OM7PPbJlxmw2aA847iuBYirfRbTGllNigutmESrvh5uJ09m2Mkv
-         l1GzyelrnzqNCsFX/zFW/lxNYJkZrXMfA3eK8aHziKCL6C/UMKfsCZEgFvs42zjW7YkW
-         SV0eehnKB7Ka7Mco0HyzgpIJXij9SbnHq6hNPjgtpyS3thEq/3GvRWmlVHpnOUQJW1kd
-         gVqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=18zwxTMww86cndEzpYub9pnZe0fDkNY6EnCvkW/t9JY=;
-        b=lpyBll+ts3F6hqYSs3aK82B0cm9gJ1hOKQ2kxVPIYyGbcvxqPDxVKtVAgaQ3gaW5L3
-         UuqXSMokQazYF1QpcZQZemLv82PZXiobCbLbqlQVd/FZaOPIRPIY61YV87nW3QxtnYWN
-         XEJOgTVGHvjhGZ+/5jWUboRznnBpHS7dx94bEwq2co8Z+0ZkubtLPPCbPLhT+sDmjCct
-         m3PPv+pz3I8MMzTAyaAxW4KSI+QoYNf7WM5CDUK872Jfwjl/6RBlFG9vkdNEjIUzgBqe
-         r3PfXtJ+CZOKzjoYE02NCTYFj1WYX307p8tVZqKl7+G3Q6oEkD4MMC0+BAlmj23h+WYN
-         xmOg==
-X-Gm-Message-State: AJIora/GMPrGND6TJzmRkVelDhDwZApf3VxiKdo+AM0lzeDDDTZMLUjB
-        aSzjxjElbHyBumle3JaycDa0GrEx0Ezonpb1Eg==
-X-Google-Smtp-Source: AGRyM1sfR9BLCzjhQ7iB9/w8T0nTXqnCY8GM70POd4QwcuIQdsEQRKXzL/APCV3KaFIEOVcpID4t0hTXIVbShLssFQ==
-X-Received: from justinstitt.mtv.corp.google.com ([2620:15c:211:202:f21c:9185:9405:36f])
- (user=justinstitt job=sendgmr) by 2002:a25:907:0:b0:66e:3f14:c463 with SMTP
- id 7-20020a250907000000b0066e3f14c463mr6447554ybj.243.1657325741218; Fri, 08
- Jul 2022 17:15:41 -0700 (PDT)
-Date:   Fri,  8 Jul 2022 17:15:27 -0700
-Message-Id: <20220709001527.618593-1-justinstitt@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
-Subject: [PATCH] mediatek: mt76: eeprom: fix clang -Wformat warning
-From:   Justin Stitt <justinstitt@google.com>
-To:     Jakub Kicinski <kubakici@wp.pl>, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        Sat, 9 Jul 2022 08:33:15 -0400
+X-Greylist: delayed 74571 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 09 Jul 2022 05:33:09 PDT
+Received: from smtpbg.qq.com (unknown [43.155.67.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF87E17E03;
+        Sat,  9 Jul 2022 05:33:09 -0700 (PDT)
+X-QQ-mid: bizesmtp82t1657369958tkb4jeu2
+Received: from localhost.localdomain ( [182.148.15.109])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Sat, 09 Jul 2022 20:32:15 +0800 (CST)
+X-QQ-SSF: 01000000002000B0C000B00A0000000
+X-QQ-FEAT: 2y6l/C9CgvuTB3CSaiaIXWePfVtVmlUFyEU2Pp2+wmActmh89r3aVOCDl9kXP
+        zketmaxcnJ4HNXno09F9ppO8I5OKkaXYI/6TIcldsYNiJc25Yv1IOAXA+snUC27qdhna0xf
+        uJe/PFdEnVZZ7w+UaQI2hVpkdIZ8Bf1e/v+L62EjPxiSTbEEBXW1ucUoQSwXs5xsJ3IqSYv
+        yrnFyp9LSe6bTtSCKFvhgX+UXm2UyJ8/MQuYg/9Arhnn+KIB7cXako4isE5c2fjS8p7pXvV
+        jdghPMVHAbw0Iai5XQcZ6uorhrkn+a6PxiGFrm3jXI/Eb00clCuWIkZkltmCqt4fJSunPxA
+        kviCXfJVhxtE8nUXNz7MNtG5SDjIQ==
+X-QQ-GoodBg: 0
+From:   Jilin Yuan <yuanjilin@cdjrlc.com>
+To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>
+Subject: [PATCH] wifi: ath6kl:: fix repeated words in comments
+Date:   Sat,  9 Jul 2022 20:32:08 +0800
+Message-Id: <20220709123208.41736-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When building with Clang we encounter the following warning:
-| drivers/net/wireless/mediatek/mt7601u/eeprom.c:193:5: error: format
-| specifies type 'char' but the argument has type 'int' [-Werror,-Wformat]
-| chan_bounds[idx].start + chan_bounds[idx].num - 1);
+ Delete the redundant word 'the'.
+ Delete the redundant word 'of'.
 
-Variadic functions (printf-like) undergo default argument promotion.
-Documentation/core-api/printk-formats.rst specifically recommends using
-the promoted-to-type's format flag.
-
-Moreover, C11 6.3.1.1 states:
-(https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1548.pdf) `If an int
-can represent all values of the original type ..., the value is
-converted to an int; otherwise, it is converted to an unsigned int.
-These are called the integer promotions.`
-
-With this information in hand, we really should stop using `%hh[dxu]` or
-`%h[dxu]` as they usually prompt Clang -Wformat warnings as well as go
-against documented standard recommendations.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/378
-Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
 ---
-Note: produced warning with x86 allyesconfig.
+ drivers/net/wireless/ath/ath6kl/hif.h  | 2 +-
+ drivers/net/wireless/ath/ath6kl/sdio.c | 2 +-
+ drivers/net/wireless/ath/ath6kl/wmi.h  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
- drivers/net/wireless/mediatek/mt7601u/eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt7601u/eeprom.c b/drivers/net/wireless/mediatek/mt7601u/eeprom.c
-index aa3b64902cf9..625bebe60538 100644
---- a/drivers/net/wireless/mediatek/mt7601u/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/eeprom.c
-@@ -188,7 +188,7 @@ mt7601u_set_country_reg(struct mt7601u_dev *dev, u8 *eeprom)
+diff --git a/drivers/net/wireless/ath/ath6kl/hif.h b/drivers/net/wireless/ath/ath6kl/hif.h
+index f9d3f3a5edfe..ba16b98c872d 100644
+--- a/drivers/net/wireless/ath/ath6kl/hif.h
++++ b/drivers/net/wireless/ath/ath6kl/hif.h
+@@ -92,7 +92,7 @@ struct bus_request {
+  *     emode - This indicates the whether the command is to be executed in a
+  *             blocking or non-blocking fashion (HIF_SYNCHRONOUS/
+  *             HIF_ASYNCHRONOUS). The read/write data paths in HTC have been
+- *             implemented using the asynchronous mode allowing the the bus
++ *             implemented using the asynchronous mode allowing the bus
+  *             driver to indicate the completion of operation through the
+  *             registered callback routine. The requirement primarily comes
+  *             from the contexts these operations get called from (a driver's
+diff --git a/drivers/net/wireless/ath/ath6kl/sdio.c b/drivers/net/wireless/ath/ath6kl/sdio.c
+index 6b51a2dceadc..8a43c48ec1cf 100644
+--- a/drivers/net/wireless/ath/ath6kl/sdio.c
++++ b/drivers/net/wireless/ath/ath6kl/sdio.c
+@@ -1185,7 +1185,7 @@ static int ath6kl_sdio_bmi_read(struct ath6kl *ar, u8 *buf, u32 len)
+ 	 *        Wait for first 4 bytes to be in FIFO
+ 	 *        If CONSERVATIVE_BMI_READ is enabled, also wait for
+ 	 *        a BMI command credit, which indicates that the ENTIRE
+-	 *        response is available in the the FIFO
++	 *        response is available in the FIFO
+ 	 *
+ 	 *  CASE 3: length > 128
+ 	 *        Wait for the first 4 bytes to be in FIFO
+diff --git a/drivers/net/wireless/ath/ath6kl/wmi.h b/drivers/net/wireless/ath/ath6kl/wmi.h
+index 672014973cee..7eeb7ea68518 100644
+--- a/drivers/net/wireless/ath/ath6kl/wmi.h
++++ b/drivers/net/wireless/ath/ath6kl/wmi.h
+@@ -698,7 +698,7 @@ enum auth_mode {
  
- 	if (idx != -1)
- 		dev_info(dev->dev,
--			 "EEPROM country region %02hhx (channels %hhd-%hhd)\n",
-+			 "EEPROM country region %02x (channels %d-%d)\n",
- 			 val, chan_bounds[idx].start,
- 			 chan_bounds[idx].start + chan_bounds[idx].num - 1);
- 	else
+ /*
+  * NB: these values are ordered carefully; there are lots of
+- * of implications in any reordering.  In particular beware
++ * implications in any reordering.  In particular beware
+  * that 4 is not used to avoid conflicting with IEEE80211_F_PRIVACY.
+  */
+ #define ATH6KL_CIPHER_WEP            0
 -- 
-2.37.0.rc0.161.g10f37bed90-goog
+2.36.1
 
