@@ -2,47 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7B356C96D
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 14:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA24C56C981
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 15:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbiGIMot (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Jul 2022 08:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54860 "EHLO
+        id S229605AbiGINWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Jul 2022 09:22:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbiGIMot (ORCPT
+        with ESMTP id S229568AbiGINWQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Jul 2022 08:44:49 -0400
-Received: from smtpbg.qq.com (unknown [43.155.67.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3FFF4C639;
-        Sat,  9 Jul 2022 05:44:43 -0700 (PDT)
-X-QQ-mid: bizesmtp89t1657370648tq64gdvv
+        Sat, 9 Jul 2022 09:22:16 -0400
+Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7CE32ED0;
+        Sat,  9 Jul 2022 06:22:10 -0700 (PDT)
+X-QQ-mid: bizesmtp87t1657372907tk53euzj
 Received: from localhost.localdomain ( [182.148.15.109])
         by bizesmtp.qq.com (ESMTP) with 
-        id ; Sat, 09 Jul 2022 20:44:05 +0800 (CST)
-X-QQ-SSF: 01000000002000B0C000B00A0000000
-X-QQ-FEAT: 89zkXg0mlYZO48zndYkhgG+NXJJJj15O7inoRCXCj2z1xHrOcCFfZXlNufKds
-        VmAApYwCEqONtsUZMVdrG6B/Qx/MUk9OUZW3nI+i7Ko3qemdHGlfbJUbONRY7W5dLb6Egl6
-        m1krrpiFISbYr9n/M4W7h3D/sJxvaarb9s6Yv7S7GvnaO/pzEXGg95t18MAMIGQrmhE1sqN
-        xi8zauKRH0sUUjcRu9QtBAUk1wwthxspHZJtaPviWgzbLd8Ei/GysDcjOILgCFxInrJWkBa
-        naARImL0cq4vaqQG3LLP2MQyxEpPHDdrOpsxxjThbMTR7Gus1zUxSggRa5w8jDvKSMij5n+
-        5d3/wz5QejSVGm8LzUSw/3dea6U5U8UIyUCAIIq
+        id ; Sat, 09 Jul 2022 21:21:44 +0800 (CST)
+X-QQ-SSF: 01000000002000B0C000C00A0000000
+X-QQ-FEAT: MFQNDABwGMnbI3+zPdQ+CVJ73bFABe6xFN9qPX+xShDslADrWhdoXqR9M+dNl
+        +XmcI5B7nHUCBjX6Fcvlbm9GK0VuuV9j18dYTQVk4jaTTIU06bGXqQmK4fgcjXKSz3mA7eu
+        nRfxUXIyeivvB5QE3P89kxAzGWtuKz8HIJy5sfmhP4gHdRBLsenLauD1WW1Kx1HvhRTvXUQ
+        HP09r7ShF25B4Uct2Yt3k2LEHexJ2BwrE0TXV5+UPffH9YUNno8Rskl5KqNrliXv9N/3XQL
+        BWi7VWUms0Gg6/S40ycpJFu5P1yDp7UsvIK5bzKUraUMKZk/PjUCwf7I6tbJIsZ5GDRHuCT
+        IITpxEOSh16vphVxgOCd66sxDnOK1PSBdNzyKc8oJcX3m+WSwY=
 X-QQ-GoodBg: 0
 From:   Jilin Yuan <yuanjilin@cdjrlc.com>
 To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
         kuba@kernel.org, pabeni@redhat.com
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jilin Yuan <yuanjilin@cdjrlc.com>
-Subject: [PATCH] wifi: wcn36xx: fix repeated words in comments
-Date:   Sat,  9 Jul 2022 20:43:56 +0800
-Message-Id: <20220709124356.52543-1-yuanjilin@cdjrlc.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>
+Subject: [PATCH] wifi: wil6210: fix repeated words in comments
+Date:   Sat,  9 Jul 2022 21:21:37 +0800
+Message-Id: <20220709132137.12442-1-yuanjilin@cdjrlc.com>
 X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=no
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,RDNS_DYNAMIC,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,44 +49,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
- Delete the redundant word 'the'.
+ Delete the redundant word 'for'.
 
 Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
 ---
- drivers/net/wireless/ath/wcn36xx/hal.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/wil6210/txrx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-index 46a49f0a51b3..a1afe1f85f0e 100644
---- a/drivers/net/wireless/ath/wcn36xx/hal.h
-+++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-@@ -1961,7 +1961,7 @@ struct wcn36xx_hal_config_bss_params {
- 
- 	/* HAL should update the existing BSS entry, if this flag is set.
- 	 * UMAC will set this flag in case of reassoc, where we want to
--	 * resue the the old BSSID and still return success 0 = Add, 1 =
-+	 * resue the old BSSID and still return success 0 = Add, 1 =
- 	 * Update */
- 	u8 action;
- 
-@@ -2098,7 +2098,7 @@ struct wcn36xx_hal_config_bss_params_v1 {
- 
- 	/* HAL should update the existing BSS entry, if this flag is set.
- 	 * UMAC will set this flag in case of reassoc, where we want to
--	 * resue the the old BSSID and still return success 0 = Add, 1 =
-+	 * resue the old BSSID and still return success 0 = Add, 1 =
- 	 * Update */
- 	u8 action;
- 
-@@ -4142,7 +4142,7 @@ struct wcn36xx_hal_dump_cmd_rsp_msg {
- 	/* Length of the responce message */
- 	u32 rsp_length;
- 
--	/* FIXME: Currently considering the the responce will be less than
-+	/* FIXME: Currently considering the responce will be less than
- 	 * 100bytes */
- 	u8 rsp_buffer[DUMPCMD_RSP_BUFFER];
- } __packed;
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wireless/ath/wil6210/txrx.h
+index 1f4c8ec75be8..1ae1bec1b97f 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.h
++++ b/drivers/net/wireless/ath/wil6210/txrx.h
+@@ -356,7 +356,7 @@ struct vring_rx_mac {
+  * bit     10 : cmd_dma_it:1 immediate interrupt
+  * bit 11..15 : reserved:5
+  * bit 16..29 : phy_info_length:14 It is valid when the PII is set.
+- *		When the FFM bit is set bits 29-27 are used for for
++ *		When the FFM bit is set bits 29-27 are used for
+  *		Flex Filter Match. Matching Index to one of the L2
+  *		EtherType Flex Filter
+  * bit 30..31 : l4_type:2 valid if the L4I bit is set in the status field
 -- 
 2.36.1
+
 
