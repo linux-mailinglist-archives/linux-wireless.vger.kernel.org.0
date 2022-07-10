@@ -2,95 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD6556CB36
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jul 2022 21:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C30856CC97
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Jul 2022 06:11:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbiGITHQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Jul 2022 15:07:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37922 "EHLO
+        id S229616AbiGJELm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 Jul 2022 00:11:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiGITHP (ORCPT
+        with ESMTP id S229543AbiGJELl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Jul 2022 15:07:15 -0400
-Received: from relay4.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F19C13CD2;
-        Sat,  9 Jul 2022 12:07:14 -0700 (PDT)
-Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay12.hostedemail.com (Postfix) with ESMTP id CC1DB120311;
-        Sat,  9 Jul 2022 19:07:12 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf07.hostedemail.com (Postfix) with ESMTPA id 0DA9420032;
-        Sat,  9 Jul 2022 19:07:10 +0000 (UTC)
-Message-ID: <b47293b4b8874c0ae32868533bd0df94e08b8706.camel@perches.com>
-Subject: Re: [PATCH] wifi: wcn36xx: fix repeated words in comments
-From:   Joe Perches <joe@perches.com>
-To:     Jilin Yuan <yuanjilin@cdjrlc.com>, kvalo@kernel.org,
+        Sun, 10 Jul 2022 00:11:41 -0400
+Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7470212D2B;
+        Sat,  9 Jul 2022 21:11:36 -0700 (PDT)
+X-QQ-mid: bizesmtp77t1657426231tnuffod5
+Received: from localhost.localdomain ( [182.148.15.109])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Sun, 10 Jul 2022 12:10:12 +0800 (CST)
+X-QQ-SSF: 01000000002000B0C000B00A0000000
+X-QQ-FEAT: oxgq2YVMtX9MQTofHkQKgiDEHM7Bgjj+t/NFgLdd7CEME+1B/eNaBqi1ws05s
+        YNvpzpCRPLk8iav88zBeDfnOm3jF5xFQo++nca7E+BF3CWdmUE68NlmjyXHaiwD+hLNXWsb
+        9DaEl+0kJFavTRVQjU7ByHCQpAatXO4iLCqERkZyFNe32newUVyPNHz098fLcYQo82eGJAW
+        2ICYIepIh7XIwWLsshdLOzMIyCIpFG441jZiybS6V5M+mj+0rZCMts2zaejQ6h6CWGmWSYD
+        HpMXfZ7PG7W47GnQ1ASZ5OaZVRPDo0wFTnh1pt98yCIMs1BDXF+vvF5pPcqVY7zubtiPEeq
+        JjbFWpNLUDLAgXyUxEQokvahLKqLw==
+X-QQ-GoodBg: 0
+From:   Jilin Yuan <yuanjilin@cdjrlc.com>
+To:     imitsyanko@quantenna.com, geomatsi@gmail.co, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sat, 09 Jul 2022 12:07:10 -0700
-In-Reply-To: <20220709124356.52543-1-yuanjilin@cdjrlc.com>
-References: <20220709124356.52543-1-yuanjilin@cdjrlc.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.44.1-0ubuntu1 
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>
+Subject: [PATCH] wifi: qtnfmac: fix repeated words in comments
+Date:   Sun, 10 Jul 2022 12:10:05 +0800
+Message-Id: <20220710041005.10950-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-X-Rspamd-Server: rspamout04
-X-Rspamd-Queue-Id: 0DA9420032
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
-        KHOP_HELO_FCRDNS,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
-X-Stat-Signature: zjeymh5t1ywdjs75snkez43foa6p6gra
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18ENkg52OUH3RO+NWHMWJrFQPA9iNDLJHg=
-X-HE-Tag: 1657393630-573364
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,RDNS_DYNAMIC,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2022-07-09 at 20:43 +0800, Jilin Yuan wrote:
->  Delete the redundant word 'the'.
-[]
-> diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-[]
-> @@ -1961,7 +1961,7 @@ struct wcn36xx_hal_config_bss_params {
->  
->  	/* HAL should update the existing BSS entry, if this flag is set.
->  	 * UMAC will set this flag in case of reassoc, where we want to
-> -	 * resue the the old BSSID and still return success 0 = Add, 1 =
-> +	 * resue the old BSSID and still return success 0 = Add, 1 =
+ Delete the redundant word 'the'.
 
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
+---
+ drivers/net/wireless/quantenna/qtnfmac/qlink.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-s/resue/reuse/
-
->  	 * Update */
->  	u8 action;
->  
-> @@ -2098,7 +2098,7 @@ struct wcn36xx_hal_config_bss_params_v1 {
->  
->  	/* HAL should update the existing BSS entry, if this flag is set.
->  	 * UMAC will set this flag in case of reassoc, where we want to
-> -	 * resue the the old BSSID and still return success 0 = Add, 1 =
-> +	 * resue the old BSSID and still return success 0 = Add, 1 =
-
-here too
-
->  	 * Update */
->  	u8 action;
->  
-> @@ -4142,7 +4142,7 @@ struct wcn36xx_hal_dump_cmd_rsp_msg {
->  	/* Length of the responce message */
->  	u32 rsp_length;
->  
-> -	/* FIXME: Currently considering the the responce will be less than
-> +	/* FIXME: Currently considering the responce will be less than
-
-s/responce/response/
-
->  	 * 100bytes */
->  	u8 rsp_buffer[DUMPCMD_RSP_BUFFER];
->  } __packed;
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/qlink.h b/drivers/net/wireless/quantenna/qtnfmac/qlink.h
+index 2dda4c5d7427..674461fa7fb3 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/qlink.h
++++ b/drivers/net/wireless/quantenna/qtnfmac/qlink.h
+@@ -1721,8 +1721,8 @@ enum qlink_chan_stat {
+  * @time_on: amount of time radio operated on that channel.
+  * @time_tx: amount of time radio spent transmitting on the channel.
+  * @time_rx: amount of time radio spent receiving on the channel.
+- * @cca_busy: amount of time the the primary channel was busy.
+- * @cca_busy_ext: amount of time the the secondary channel was busy.
++ * @cca_busy: amount of time the primary channel was busy.
++ * @cca_busy_ext: amount of time the secondary channel was busy.
+  * @time_scan: amount of radio spent scanning on the channel.
+  * @chan_noise: channel noise.
+  */
+-- 
+2.36.1
 
