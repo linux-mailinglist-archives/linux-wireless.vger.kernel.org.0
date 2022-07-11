@@ -2,245 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5141D57010D
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Jul 2022 13:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19DF3570152
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Jul 2022 13:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbiGKLrY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Jul 2022 07:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35952 "EHLO
+        id S231211AbiGKLyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Jul 2022 07:54:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229901AbiGKLrI (ORCPT
+        with ESMTP id S230468AbiGKLyA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Jul 2022 07:47:08 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931DD23BF4
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Jul 2022 04:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=z2kMES+SGLSLF6MDUZSt5xeUrnNPsNwaxJa+2wfU5Jo=; b=WpGndAX+Z43lGXM+8/mzd9CJkO
-        sf8mkc99z1XzYCq/tTqO98eRE7cBMc35slt5huUCYYxRv/sTj0xghsAHoYJX6p4Qhq7MphjsdKz4z
-        h7554jqbhIbQ9iknkA/kyobhFNKB5ByLgsiQTGYKzm9KLQGgmiKqprX6Y8reqVFpnW0A=;
-Received: from p200300daa706010035504eaa13556367.dip0.t-ipconnect.de ([2003:da:a706:100:3550:4eaa:1355:6367] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1oArr2-00014q-7b; Mon, 11 Jul 2022 13:45:32 +0200
-Message-ID: <b85651ee-d469-aff9-e351-c65868be34f3@nbd.name>
-Date:   Mon, 11 Jul 2022 13:45:31 +0200
+        Mon, 11 Jul 2022 07:54:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2DA5275C8;
+        Mon, 11 Jul 2022 04:53:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C7866114C;
+        Mon, 11 Jul 2022 11:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D45EC341CD;
+        Mon, 11 Jul 2022 11:53:38 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MzCw4sK9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1657540414;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=720mTc1nsSAPrwWFG+973FguSUx8/hicJxk0ef4PlVU=;
+        b=MzCw4sK9qZsQsPPK1O23afqypc3QjfcYtfDr5Phr3bgH0rLukZ9+znNizqsFlom/dF4uHM
+        4soBx2Yc2m42FPOdZLdHkwPe3k/XNSU4S8HNZlpaf7wFGsuXqBlhq4YjM4rCHDXACMn6jy
+        KlLcwb0nbtXoBZIEdZBZhRwd3TtXWlw=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f0912a61 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Mon, 11 Jul 2022 11:53:34 +0000 (UTC)
+Received: by mail-il1-f169.google.com with SMTP id v1so2847305ilg.11;
+        Mon, 11 Jul 2022 04:53:34 -0700 (PDT)
+X-Gm-Message-State: AJIora9GZFVJ2OWd16ug+6eNkIayYvS4lF7xxZPYUPmBgAPuZX1PaIai
+        68cSfPGyYKN1aD9xo4VjkKga5jxNO6lSme3ko5w=
+X-Google-Smtp-Source: AGRyM1u5obHWevbMsvQU1IKF5fNjRTUaC3CDj1Mg81SozNPECyRaM6/1pfwyObSD0LHNocgSliRVj9L1FRR/H0CkoSw=
+X-Received: by 2002:a05:6e02:164f:b0:2dc:6d38:ff8e with SMTP id
+ v15-20020a056e02164f00b002dc6d38ff8emr5606184ilu.16.1657540412032; Mon, 11
+ Jul 2022 04:53:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.11.0
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2022-07-11
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6e02:20e5:0:0:0:0 with HTTP; Mon, 11 Jul 2022 04:53:31
+ -0700 (PDT)
+In-Reply-To: <xhsmho7xv512f.mognet@vschneid.remote.csb>
+References: <Yrw5f8GN2fh2orid@zx2c4.com> <20220629114240.946411-1-Jason@zx2c4.com>
+ <87v8s8ubws.fsf@kernel.org> <xhsmho7xv512f.mognet@vschneid.remote.csb>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Mon, 11 Jul 2022 13:53:31 +0200
+X-Gmail-Original-Message-ID: <CAHmME9q8-1vpV9zFsKkawk+XFm96S6fmug7v-NPJNpQmRoe6-Q@mail.gmail.com>
+Message-ID: <CAHmME9q8-1vpV9zFsKkawk+XFm96S6fmug7v-NPJNpQmRoe6-Q@mail.gmail.com>
+Subject: Re: [PATCH v8] ath9k: let sleep be interrupted when unregistering hwrng
+To:     Valentin Schneider <vschneid@redhat.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Gregory Erwin <gregerwin256@gmail.com>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        Rui Salvaterra <rsalvaterra@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Christian Brauner <brauner@kernel.org>,
+        linux-crypto@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+Hi Valentin,
 
-here's my first pull request for 5.20
+On 7/11/22, Valentin Schneider <vschneid@redhat.com> wrote:
+> On 07/07/22 19:26, Kalle Valo wrote:
+>> "Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+>>
+>>> There are two deadlock scenarios that need addressing, which cause
+>>> problems when the computer goes to sleep, the interface is set down, an=
+d
+>>> hwrng_unregister() is called. When the deadlock is hit, sleep is delaye=
+d
+>>> for tens of seconds, causing it to fail. These scenarios are:
+>>>
+>>> 1) The hwrng kthread can't be stopped while it's sleeping, because it
+>>>    uses msleep_interruptible() instead of
+>>> schedule_timeout_interruptible().
+>>>    The fix is a simple moving to the correct function. At the same time=
+,
+>>>    we should cleanup a common and useless dmesg splat in the same area.
+>>>
+>>> 2) A normal user thread can't be interrupted by hwrng_unregister() whil=
+e
+>>>    it's sleeping, because hwrng_unregister() is called from elsewhere.
+>>>    The solution here is to keep track of which thread is currently
+>>>    reading, and asleep, and signal that thread when it's time to
+>>>    unregister. There's a bit of book keeping required to prevent
+>>>    lifetime issues on current.
+>>>
+>>> Reported-by: Gregory Erwin <gregerwin256@gmail.com>
+>>> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>>> Cc: Kalle Valo <kvalo@kernel.org>
+>>> Cc: Rui Salvaterra <rsalvaterra@gmail.com>
+>>> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: fcd09c90c3c5 ("ath9k: use hw_random API instead of directly
+>>> dumping into random.c")
+>>> Link:
+>>> https://lore.kernel.org/all/CAO+Okf6ZJC5-nTE_EJUGQtd8JiCkiEHytGgDsFGTEj=
+s0c00giw@mail.gmail.com/
+>>> Link:
+>>> https://lore.kernel.org/lkml/CAO+Okf5k+C+SE6pMVfPf-d8MfVPVq4PO7EY8Hys_D=
+VXtent3HA@mail.gmail.com/
+>>> Link: https://bugs.archlinux.org/task/75138
+>>> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+>>> ---
+>>> Changes v7->v8:
+>>> - Add a missing export_symbol.
+>>>
+>>>  drivers/char/hw_random/core.c        | 30 ++++++++++++++++++++++++----
+>>>  drivers/net/wireless/ath/ath9k/rng.c | 19 +++++++-----------
+>>>  kernel/sched/core.c                  |  1 +
+>>>  3 files changed, 34 insertions(+), 16 deletions(-)
+>>
+>> I don't see any acks for the hw_random and the scheduler change, adding
+>> more
+>> people to CC. Full patch here:
+>>
+>> https://patchwork.kernel.org/project/linux-wireless/patch/20220629114240=
+.946411-1-Jason@zx2c4.com/
+>>
+>> Are everyone ok if I take this patch via wireless-next?
+>>
+>
+> Thanks for the Cc.
+>
+> I'm not hot on the export of wake_up_state(), IMO any wakeup with
+> !(state & TASK_NORMAL) should be reserved to kernel internals. Now, here
+> IIUC the problem is that the patch uses an inline invoking
+>
+>   wake_up_state(p, TASK_INTERRUPTIBLE)
+>
+> so this isn't playing with any 'exotic' task state, thus it shouldn't
+> actually need the export.
+>
+> I've been trying to figure out if this could work with just a
+> wake_up_process(), but the sleeping pattern here is not very conforming
+> (cf. 'wait loop' pattern in sched/core.c), AFAICT the signal is used to
+> circumvent that :/
 
-- Felix
+I don't intend to work on this patch more. If you'd like to ack the
+trivial scheduler change (adding EXPORT_SYMBOL), that'd help, and then
+this can move forward as planned. Otherwise, if you have particular
+opinions about this patch that you want to happen, feel free to pick
+up the patch and send your own revisions (though I don't intend to do
+further review). Alternatively, I'll just send a patch to remove the
+driver entirely. Hopefully you do find this ack-able, though.
 
-The following changes since commit 58b6259d820d63c2adf1c7541b54cce5a2ae6073:
-
-   wifi: mac80211_hwsim: add back erroneously removed cast (2022-07-11 13:16:30 +0200)
-
-are available in the Git repository at:
-
-   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-07-11
-
-for you to fetch changes up to 454b768f9ba653d65968c1ef29d2d4aa477147ea:
-
-   mt76: mt7921: Let PCI core handle power state and use pm_sleep_ptr() (2022-07-11 13:40:03 +0200)
-
-----------------------------------------------------------------
-mt76 patches for 5.20
-
-- preparation for new chipset support
-- fixes
-- VHT/HE related improvements
-- ACPI SAR support
-
-----------------------------------------------------------------
-Dan Carpenter (1):
-       mt76: mt7915: fix endian bug in mt7915_rf_regval_set()
-
-Deren Wu (9):
-       mt76: add 6 GHz band support in mt76_sar_freq_ranges
-       mt76: mt7921: introduce ACPI SAR support
-       mt76: mt7921: introduce ACPI SAR config in tx power
-       mt76: enable the VHT extended NSS BW feature
-       mt76: mt7921: not support beacon offload disable command
-       mt76: mt7921: fix command timeout in AP stop period
-       mt76: mt7921s: fix possible sdio deadlock in command fail
-       mt76: mt7921: fix aggregation subframes setting to HE max
-       mt76: mt7921: enlarge maximum VHT MPDU length to 11454
-
-Felix Fietkau (10):
-       mt76: mt7915: add missing bh-disable around tx napi enable/schedule
-       mt76: mt7615: add missing bh-disable around rx napi schedule
-       mt76: mt7915: disable UL MU-MIMO for mt7915
-       mt76: mt7615: add sta_rec with EXTRA_INFO_NEW for the first time only
-       mt76: mt76x02: improve reliability of the beacon hang check
-       mt76: allow receiving frames with invalid CCMP PN via monitor interfaces
-       mt76: mt7615: fix throughput regression on DFS channels
-       mt76: pass original queue id from __mt76_tx_queue_skb to the driver
-       mt76: do not use skb_set_queue_mapping for internal purposes
-       mt76: remove q->qid
-
-Kai-Heng Feng (1):
-       mt76: mt7921: Let PCI core handle power state and use pm_sleep_ptr()
-
-Liang He (2):
-       mediatek: mt76: mac80211: Fix missing of_node_put() in mt76_led_init()
-       mediatek: mt76: eeprom: fix missing of_node_put() in mt76_find_power_limits_node()
-
-Lorenzo Bianconi (40):
-       mt76: mt7915: fix endianness in mt7915_rf_regval_get
-       mt76: mt76x02u: fix possible memory leak in __mt76x02u_mcu_send_msg
-       mt76: mt7921: add missing bh-disable around rx napi schedule
-       mt76: mt7921: get rid of mt7921_mcu_exit
-       mt76: connac: move shared fw structures in connac module
-       mt76: mt7921: move fw toggle in mt7921_load_firmware
-       mt76: connac: move mt76_connac2_load_ram in connac module
-       mt76: connac: move mt76_connac2_load_patch in connac module
-       mt76: mt7663: rely on mt76_connac2_fw_trailer
-       mt76: mt7921: rely on mt76_dev in mt7921_mac_write_txwi signature
-       mt76: mt7915: rely on mt76_dev in mt7915_mac_write_txwi signature
-       mt76: connac: move mac connac2 defs in mt76_connac2_mac.h
-       mt76: connac: move connac2_mac_write_txwi in mt76_connac module
-       mt76: connac: move mt76_connac2_mac_add_txs_skb in connac module
-       mt76: connac: move HE radiotap parsing in connac module
-       mt76: connac: move mt76_connac2_reverse_frag0_hdr_trans in mt76-connac module
-       mt76: connac: move mt76_connac2_mac_fill_rx_rate in connac module
-       mt76: mt7921s: remove unnecessary goto in mt7921s_mcu_drv_pmctrl
-       mt76: mt7615: do not update pm stats in case of error
-       mt76: mt7921: do not update pm states in case of error
-       mt76: mt7915: get rid of unnecessary new line in mt7915_mac_write_txwi
-       mt76: connac: move mt76_connac_fw_txp in common module
-       mt76: move mt7615_txp_ptr in mt76_connac module
-       mt76: connac: move mt76_connac_tx_free in shared code
-       mt76: connac: move mt76_connac_tx_complete_skb in shared code
-       mt76: connac: move mt76_connac_write_hw_txp in shared code
-       mt76: connac: move mt7615_txp_skb_unmap in common code
-       mt76: mt7915: rely on mt76_connac_tx_free
-       mt76: move mcu_txd/mcu_rxd structures in shared code
-       mt76: move mt76_connac2_mcu_fill_message in mt76_connac module
-       mt76: mt7915: do not copy ieee80211_ops pointer in mt7915_mmio_probe
-       mt76: mt7921: make mt7921_pci_driver static
-       mt76: connac: move tx initialization/cleanup in mt76_connac module
-       mt76: add len parameter to __mt76_mcu_msg_alloc signature
-       mt76: introduce MT_RXQ_BAND2 and MT_RXQ_BAND2_WA in mt76_rxq_id
-       mt76: add phy_idx in mt76_rx_status
-       mt76: introduce phys array in mt76_dev structure
-       mt76: add phy_idx to mt76_wcid
-       mt76: convert MT_TX_HW_QUEUE_EXT_PHY to MT_TX_HW_QUEUE_PHY
-       mt76: get rid of mt76_wcid_hw routine
-
-MeiChia Chiu (3):
-       mt76: do not check the ccmp pn for ONLY_MONITOR frame
-       mt76: mt7915: update the maximum size of beacon offload
-       mt76: mt7915 add ht mpdu density
-
-Peter Chiu (2):
-       dt-bindings: net: wireless: mt76: add clock description for MT7986.
-       mt76: mt7915: update mpdu density in 6g capability
-
-Ryder Lee (2):
-       mt76: mt7915: add more ethtool stats
-       mt76: add DBDC rxq handlings into mac_reset_work
-
-Sean Wang (4):
-       mt76: mt7921: enable HW beacon filter not depending on PM flag
-       mt76: mt7921: enable HW beacon filter in the initialization stage
-       mt76: mt7921: reduce log severity levels for informative messages
-       mt76: mt7921: reduce the mutex lock scope during reset
-
-Shayne Chen (2):
-       mt76: mt7915: fix incorrect testmode ipg on band 1 caused by wmm_idx
-       mt76: mt7915: add sta_rec with EXTRA_INFO_NEW for the first time only
-
-YN Chen (2):
-       mt76: mt7921: add PATCH_FINISH_REQ cmd response handling
-       mt76: mt7921s: fix firmware download random fail
-
-  Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml |  13 ++
-  drivers/net/wireless/mediatek/mt76/dma.c                          |  19 +--
-  drivers/net/wireless/mediatek/mt76/eeprom.c                       |   5 +-
-  drivers/net/wireless/mediatek/mt76/mac80211.c                     |  61 ++++++----
-  drivers/net/wireless/mediatek/mt76/mcu.c                          |  10 +-
-  drivers/net/wireless/mediatek/mt76/mt76.h                         |  85 ++++++-------
-  drivers/net/wireless/mediatek/mt76/mt7603/beacon.c                |   6 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/dma.c                   |   9 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/init.c                  |   5 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/mac.c                   | 121 ++++++------------
-  drivers/net/wireless/mediatek/mt76/mt7615/mac.h                   |  69 -----------
-  drivers/net/wireless/mediatek/mt76/mt7615/main.c                  |  25 +---
-  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                   |  75 ++++++------
-  drivers/net/wireless/mediatek/mt76/mt7615/mcu.h                   |   3 -
-  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c                  |   4 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                |  10 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c               | 109 ++++-------------
-  drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c              |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac.h                  | 116 ++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h             | 323 ++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c              | 920 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c              | 303 +++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h              | 156 ++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c               |   6 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                  |  11 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c                 |   3 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c              |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c               |   5 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/dma.c                   |  69 +++++------
-  drivers/net/wireless/mediatek/mt76/mt7915/init.c                  |  21 ++--
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.c                   | 915 +++++++++++++++-------------------------------------------------------------------------------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.h                   | 333 +-------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/main.c                  |  20 ++-
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                   | 403 +++++++++---------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h                   |  51 ++------
-  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c                  |  19 ++-
-  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                |  32 ++---
-  drivers/net/wireless/mediatek/mt76/mt7915/regs.h                  |  24 ++--
-  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c              |  11 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/Makefile                |   1 +
-  drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c              | 279 ++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h              |  93 ++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7921/dma.c                   |  21 +---
-  drivers/net/wireless/mediatek/mt76/mt7921/init.c                  |  13 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.c                   | 716 ++++++----------------------------------------------------------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.h                   | 340 +--------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7921/main.c                  | 120 +++++++++++++-----
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                   | 418 +++++---------------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.h                   |  88 --------------
-  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                |  50 ++++----
-  drivers/net/wireless/mediatek/mt76/mt7921/pci.c                   |  34 ++----
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c               | 106 ++--------------
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c               |  17 ++-
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c                  |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c              |  31 +++--
-  drivers/net/wireless/mediatek/mt76/mt7921/usb.c                   |  14 ++-
-  drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c               |   4 +-
-  drivers/net/wireless/mediatek/mt76/sdio.c                         |   8 +-
-  drivers/net/wireless/mediatek/mt76/testmode.c                     |   9 +-
-  drivers/net/wireless/mediatek/mt76/tx.c                           |  54 ++++----
-  drivers/net/wireless/mediatek/mt76/usb.c                          |   7 +-
-  61 files changed, 3005 insertions(+), 3794 deletions(-)
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
+Jason
