@@ -2,201 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE55956CCE9
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Jul 2022 06:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A2556D259
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Jul 2022 03:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbiGJEj6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 10 Jul 2022 00:39:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54912 "EHLO
+        id S229708AbiGKBIz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 Jul 2022 21:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbiGJEj4 (ORCPT
+        with ESMTP id S229706AbiGKBIy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 10 Jul 2022 00:39:56 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3D524F01
-        for <linux-wireless@vger.kernel.org>; Sat,  9 Jul 2022 21:39:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657427995; x=1688963995;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zI5fH8zDpElmDKvZt5Zn3kmjLOLrwFKkjQA0V8olPoY=;
-  b=htRkpgYlo/3yNzaJDpPGh+7xx6/rqKqrZ7woRXZpWYpSuqY7Q8AOykfP
-   MWR91s/PDZOOtO6Ddnl38zXHFP6MEvVnvUyTY0LKyxabrtb0zTaRKGOtW
-   Ta77UDvSHCJPXk6M6PfPbvhbv9EobccBZACisxW0woQsBZcQgl2tsS3/8
-   DKzOY1jFWd9+4z6mKAZMWUhpEEvzvis2PWGaLJJcvGcSnuBusrLNfi1R/
-   mubo91oM6eD9zXC+v9oXiQcIbQ96eZAq3wmWtlQihvykXl1ECH4GJ7QxU
-   I2OGioyIJEObcyxO4swmBARDE+tGOBg1i64GLOKx7v2ReVxjEabDGvs4R
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10403"; a="283233890"
-X-IronPort-AV: E=Sophos;i="5.92,260,1650956400"; 
-   d="scan'208";a="283233890"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2022 21:39:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,260,1650956400"; 
-   d="scan'208";a="544637243"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 09 Jul 2022 21:39:53 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1oAOjY-000PU0-NU;
-        Sun, 10 Jul 2022 04:39:52 +0000
-Date:   Sun, 10 Jul 2022 12:38:59 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
+        Sun, 10 Jul 2022 21:08:54 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC92A47D
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Jul 2022 18:08:53 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id 5so3183107plk.9
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Jul 2022 18:08:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/41UlKQKx9NDMQjTETKiMHddFQC+LRRYf3LFL7cwKQ0=;
+        b=dwXJrSfz0TCr4q+pGPuMfTIyyG1ITOASVlvS9RlWgUeGGL7hIdoBM3EGO1AkhGXYJh
+         h2Bey4MQMOU29VYRekzZBNsJHZET0ivByc+OUWbCnFVpq7NYtyMP8z/RTZbCEdqDQJQw
+         wlsmVRZinAV/2hxwEvmuit3/PVHuG8+dOVhjU4EQyQioO+SSlOFJVOjDuyWZHOJtl3uj
+         ydXUNkcr/pi2zdD5Q8iK7dXFNMfhE4IQ69mJlZUQeLvA/3fAUPBZCyAJuUkYWYXwKXKL
+         HlH3/iCkjbjwHnHqKlosV2X7of8K5KTnHgcTwH+2pePhIFz21GGZ70ISxnSTPy6o9dg0
+         FRqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/41UlKQKx9NDMQjTETKiMHddFQC+LRRYf3LFL7cwKQ0=;
+        b=a8kR+gRkF08vkL0d7hX1s3EXMPL64hEnxKjv42EV9FmZPVG4Nb5L8JUNb3h+jYNX2R
+         mY2EGIYNKigs7pflww3Nn3L8IjbjV89wuFezhG2lrmJSfm5AJcB8u+DoHb6lIIuzd+Nb
+         aiuS65dCKDaDmct+aLchKEuS2nrCgOvVO8l1VuXmOPWiEWSoCkBk2cGRyL8td/ZIUZLt
+         qW3GhPrOvRh6r4WWTR4e3nD+F9R/v9HiA5eQOy1FxX9MYx0aZp/XBX4VX1xuxNEGF6OY
+         OU4zWzfcqMWXrb6O7I8bJ9xpzGN6Ll4DskOR/n5G0t24bGdVvuiKds48jAoPYkM5Y2cK
+         icgw==
+X-Gm-Message-State: AJIora/srhcvkMjNICGk5A5FNkPdmKqcSXQe0Lx/+Os+ZSfsp4xspJat
+        FayyFUCQqsXBZG+mAsDmE5g8TKsomNk5bCvh
+X-Google-Smtp-Source: AGRyM1sOOajwD6CDUAoaoIXkIobxBBG1VWHO+rKILdeQdxiAXl5AXaf5bfvKGdFmuQmUL4p1r/UxwA==
+X-Received: by 2002:a17:903:41c7:b0:16c:4e4c:7440 with SMTP id u7-20020a17090341c700b0016c4e4c7440mr1472306ple.169.1657501733232;
+        Sun, 10 Jul 2022 18:08:53 -0700 (PDT)
+Received: from virs-pc-021.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
+        by smtp.gmail.com with ESMTPSA id ij5-20020a170902ab4500b0015e8d4eb1dbsm3341330plb.37.2022.07.10.18.08.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Jul 2022 18:08:52 -0700 (PDT)
+From:   Kieran Frewen <kieran.frewen@morsemicro.com>
+To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- 38b6c01a6b34719b66aa58490fd258974ae2f8e8
-Message-ID: <62ca57e3.mQ/y5z6hE5xSptCh%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Kieran Frewen <kieran.frewen@morsemicro.com>
+Subject: [PATCH 00/12] Additional support for 802.11ah (S1G)
+Date:   Mon, 11 Jul 2022 01:08:04 +0000
+Message-Id: <20220711010816.45927-1-kieran.frewen@morsemicro.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 38b6c01a6b34719b66aa58490fd258974ae2f8e8  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+This patchset builds on the work down by Thomas Pedersen to add further
+support for 802.11ah in cfg80211 and mac80211. The ultimate goal is
+to enable the successful starting of an AP on 802.11ah using 802.11ah
+terms by implementing the various features that are required by the
+AP. The features are split into their own commits, please see those
+patches for more details.
 
-elapsed time: 2291m
+The patchset has been tested on both real hardware (Morse Micro MM610x)
+and mac80211_hwsim, in AP and STA modes. Basic regression testing was
+performed on 802.11n with mac80211_hwsim by starting an AP and having a
+STA interface connect to it.
 
-configs tested: 116
-configs skipped: 3
+802.11ah features/support missing:
+ - Rate control integration
+ - Regulatory database updates (only US regulatory information exists)
+ - Optional 802.11ah (S1G) features such as RAW, TWT and AID grouping
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Kieran Frewen (12):
+  cfg80211: regulatory: extend regulatory support for S1G
+  mac80211: update TIM for S1G specification changes
+  mac80211: S1G beacon/short beacon support
+  nl80211: support setting S1G short beacon period
+  nl80211: support advertising S1G capabilities
+  mac80211: support ieee80211_ext format
+  mac80211: S1G capabilities information element in probe request
+  cfg80211: S1G rate flags
+  nl80211: support advertising S1G rate information
+  mac80211: support S1G rate encoding.
+  cfg80211: support for calculating S1G bitrates
+  mac80211_hwsim: support for S1G rate information
 
-gcc tested configs:
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-sh                               j2_defconfig
-powerpc                     sequoia_defconfig
-arm                           h3600_defconfig
-mips                         rt305x_defconfig
-ia64                          tiger_defconfig
-sh                          rsk7264_defconfig
-sh                        edosk7705_defconfig
-arm                           corgi_defconfig
-powerpc                     ep8248e_defconfig
-powerpc                 linkstation_defconfig
-arm                         vf610m4_defconfig
-sh                           se7619_defconfig
-sh                           se7712_defconfig
-sh                           se7721_defconfig
-sh                           se7750_defconfig
-alpha                            alldefconfig
-arm                        clps711x_defconfig
-arm                        oxnas_v6_defconfig
-powerpc                        warp_defconfig
-arm                            hisi_defconfig
-powerpc                     taishan_defconfig
-parisc64                            defconfig
-nios2                            alldefconfig
-mips                      maltasmvp_defconfig
-sparc                               defconfig
-xtensa                           allyesconfig
-csky                                defconfig
-sparc                            allyesconfig
-x86_64                                  kexec
-powerpc                          allyesconfig
-riscv                               defconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-s390                                defconfig
-s390                             allmodconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allyesconfig
-nios2                            allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc                           allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20220707
-ia64                             allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220707
-riscv                randconfig-r042-20220707
-s390                 randconfig-r044-20220707
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-powerpc              randconfig-c003-20220707
-x86_64                        randconfig-c007
-riscv                randconfig-c006-20220707
-i386                          randconfig-c001
-arm                  randconfig-c002-20220707
-mips                 randconfig-c004-20220707
-s390                 randconfig-c005-20220707
-mips                   sb1250_swarm_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                      ppc64e_defconfig
-hexagon                          alldefconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                    gamecube_defconfig
-arm                            dove_defconfig
-x86_64                        randconfig-k001
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220707
-hexagon              randconfig-r041-20220707
+ drivers/net/wireless/mac80211_hwsim.c |  40 +++-
+ include/net/cfg80211.h                |  16 +-
+ include/net/mac80211.h                |  33 ++-
+ include/uapi/linux/nl80211.h          |  27 +++
+ net/mac80211/cfg.c                    |  43 +++-
+ net/mac80211/ieee80211_i.h            |   1 +
+ net/mac80211/rx.c                     |  32 ++-
+ net/mac80211/sta_info.c               |   7 +
+ net/mac80211/sta_info.h               |   7 +
+ net/mac80211/tx.c                     |  27 ++-
+ net/mac80211/util.c                   |  67 +++++-
+ net/wireless/nl80211.c                |  37 ++++
+ net/wireless/reg.c                    |  50 +++--
+ net/wireless/reg_s1g.h                | 281 ++++++++++++++++++++++++++
+ net/wireless/util.c                   | 144 ++++++++++++-
+ 15 files changed, 758 insertions(+), 54 deletions(-)
+ create mode 100644 net/wireless/reg_s1g.h
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
