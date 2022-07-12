@@ -2,58 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F40DC572731
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 22:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F22B0572902
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 00:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230362AbiGLU05 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jul 2022 16:26:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34756 "EHLO
+        id S229933AbiGLWIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jul 2022 18:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbiGLU04 (ORCPT
+        with ESMTP id S231415AbiGLWIf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jul 2022 16:26:56 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C5CFC921F
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Jul 2022 13:26:55 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.202])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D6B801C0063;
-        Tue, 12 Jul 2022 20:26:53 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6953680082;
-        Tue, 12 Jul 2022 20:26:53 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 9C8BA13C2B0;
-        Tue, 12 Jul 2022 13:26:52 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9C8BA13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1657657612;
-        bh=bNUdmHk+1BCTHMCL0ZrFq2s8EH37xU9XsxornGqT6Tk=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=mKB6oAbAzeRxDmjmNnZbq4KXtXzy7/A7zW8rrx0FvD/162HWzznEKO/zIR1Z25IwC
-         oeQRDdigaXmJjcY3J5z5Gf7eH8LUe+47veGuRRoCmc6mRE0wsTvG/NtEZIzT1srtkD
-         z+PNBXxKUkTPyNQawpcUwyKjn5SaE8pIEOzbg2yo=
-Subject: Re: [PATCH] mac80211: do not wake queues on a vif that is being
- stopped
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-References: <20220531190824.60019-1-nbd@nbd.name>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <5d6df29d-5c72-64b7-5fcd-183458bcdc5a@candelatech.com>
-Date:   Tue, 12 Jul 2022 13:26:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Tue, 12 Jul 2022 18:08:35 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEA8B4B
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Jul 2022 15:08:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1657663711; x=1689199711;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ZkUo+1qnDJvUvf8/GBUzwNs7Bbn+3ngGp5W1aFmbFY0=;
+  b=Tgx7Oy+5fpZ1VKFKqhSp1dwuKV6SkhlEQKGR6bLE44CRFyUW8PQ696+I
+   yCov2rf3uMGdYsPkHRUBiepAB4Dj1hAkq/Izy2cj50NfWbL3+lM6yqgMe
+   PpKw2TCZi2RCVA5WZa0TvNLpkuk97REIa56JONQd5i+1FB+DNveQMedh0
+   w=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 12 Jul 2022 15:08:31 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2022 15:08:30 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 12 Jul 2022 15:08:29 -0700
+Received: from [10.110.97.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 12 Jul
+ 2022 15:08:29 -0700
+Message-ID: <2b75f624-da68-6cb0-89c1-cca788896969@quicinc.com>
+Date:   Tue, 12 Jul 2022 15:08:28 -0700
 MIME-Version: 1.0
-In-Reply-To: <20220531190824.60019-1-nbd@nbd.name>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 04/12] nl80211: support setting S1G short beacon period
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-MDID: 1657657614-2Vwgx3h4yf_8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,
+To:     Kieran Frewen <kieran.frewen@morsemicro.com>,
+        <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Bassem Dawood <bassem@morsemicro.com>
+References: <20220711010816.45927-1-kieran.frewen@morsemicro.com>
+ <20220711010816.45927-5-kieran.frewen@morsemicro.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220711010816.45927-5-kieran.frewen@morsemicro.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,63 +68,89 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/31/22 12:08 PM, Felix Fietkau wrote:
-> When a vif is being removed and sdata->bss is cleared, __ieee80211_wake_txqs
-> can still be called on it, which crashes as soon as sdata->bss is being
-> dereferenced.
-> To fix this properly, check for SDATA_STATE_RUNNING before waking queues,
-> and take the fq lock when setting it (to ensure that __ieee80211_wake_txqs
-> observes the change when running on a different CPU
-
-I patched this into my 5.17+ kernel, and in a test that brings up 16 virtual
-station vdevs on an mtk7915, 4 of them on each of two radios will not associate.
-They get 4-way timeouts.
-
-So, I think there must be something wrong with assumptions in this patch, or
-maybe it depends on some other patch I am missing.  I'll remove it from my tree...
-
-Thanks,
-Ben
-
+On 7/10/2022 6:08 PM, Kieran Frewen wrote:
+> With the kernel able to send both short and long S1G beacons, include
+> the ability for setting the short beacon period.
 > 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
+> Signed-off-by: Bassem Dawood <bassem@morsemicro.com>
 > ---
->   net/mac80211/iface.c | 2 ++
->   net/mac80211/util.c  | 3 +++
->   2 files changed, 5 insertions(+)
+>   include/uapi/linux/nl80211.h | 6 ++++++
+>   net/wireless/nl80211.c       | 4 ++++
+>   2 files changed, 10 insertions(+)
 > 
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index 41531478437c..15a73b7fdd75 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
-> @@ -377,7 +377,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
->   	bool cancel_scan;
->   	struct cfg80211_nan_func *func;
+> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+> index 89f64f46b98d..bd6e2cae1dd3 100644
+> --- a/include/uapi/linux/nl80211.h
+> +++ b/include/uapi/linux/nl80211.h
+> @@ -2694,6 +2694,8 @@ enum nl80211_commands {
+>    *	connection. Used with %NL80211_CMD_CONNECT. If this attribute is not
+>    *	included in NL80211_CMD_CONNECT drivers must not perform MLO connection.
+>    *
+> + * @NL80211_ATTR_SHORT_BEACON_PERIOD: S1G short beacon period in TUs.
+> + *
+>    * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+>    * @NL80211_ATTR_MAX: highest attribute number currently defined
+>    * @__NL80211_ATTR_AFTER_LAST: internal use
+> @@ -3214,6 +3216,8 @@ enum nl80211_attrs {
 >   
-> +	spin_lock_bh(&local->fq.lock);
->   	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
-> +	spin_unlock_bh(&local->fq.lock);
+>   	NL80211_ATTR_MLO_SUPPORT,
 >   
->   	cancel_scan = rcu_access_pointer(local->scan_sdata) == sdata;
->   	if (cancel_scan)
-> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-> index 1e26b5235add..dad42d42aa84 100644
-> --- a/net/mac80211/util.c
-> +++ b/net/mac80211/util.c
-> @@ -301,6 +301,9 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
->   	local_bh_disable();
->   	spin_lock(&fq->lock);
->   
-> +	if (!test_bit(SDATA_STATE_RUNNING, &sdata->state))
-> +		goto out;
+> +	NL80211_ATTR_SHORT_BEACON_PERIOD,
 > +
->   	if (sdata->vif.type == NL80211_IFTYPE_AP)
->   		ps = &sdata->bss->ps;
+>   	/* add attributes here, update the policy in nl80211.c */
 >   
-> 
+>   	__NL80211_ATTR_AFTER_LAST,
+> @@ -4890,6 +4894,7 @@ enum nl80211_bss_scan_width {
+>    *	Contains a nested array of signal strength attributes (u8, dBm),
+>    *	using the nesting index as the antenna number.
+>    * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
+> + * @NL80211_BSS_SHORT_BEACON_PERIOD: S1G short beacon period in TUs
+>    * @__NL80211_BSS_AFTER_LAST: internal
+>    * @NL80211_BSS_MAX: highest BSS attribute
+>    */
+> @@ -4915,6 +4920,7 @@ enum nl80211_bss {
+>   	NL80211_BSS_PARENT_BSSID,
+>   	NL80211_BSS_CHAIN_SIGNAL,
+>   	NL80211_BSS_FREQUENCY_OFFSET,
+> +	NL80211_BSS_SHORT_BEACON_PERIOD,
+
+please rebase against latest wireless-next since a new attribute 
+NL80211_BSS_MLO_LINK_ID was very recently added
+
+>   
+>   	/* keep last */
+>   	__NL80211_BSS_AFTER_LAST,
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 6a45801c783c..ab47e4130141 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -798,6 +798,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+>   		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
+>   	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+>   	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+> +	[NL80211_ATTR_SHORT_BEACON_PERIOD] = { .type = NLA_U32 },
+
+entire range of u32 values are valid?
+
+IEEE Std 802.11-2020 Figure 9-684—Short Beacon Interval element format 
+indicates a 2 octet field, so consider either changing the type to U16 
+or use NLA_POLICY_RANGE() to align with the MIB definition:
+dot11ShortBeaconPeriod OBJECT-TYPE
+SYNTAX Unsigned32 (1..65535)
 
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+>   };
+>   
+>   /* policy for the key attributes */
+> @@ -5654,6 +5655,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+>   		nla_get_u32(info->attrs[NL80211_ATTR_BEACON_INTERVAL]);
+>   	params->dtim_period =
+>   		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
+> +	if (info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD])
+> +		params->short_beacon_period =
+> +			nla_get_u32(info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD]);
+>   
+>   	err = cfg80211_validate_beacon_int(rdev, dev->ieee80211_ptr->iftype,
+>   					   params->beacon_interval);
 
