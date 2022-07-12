@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F22B0572902
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 00:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3819357292B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 00:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbiGLWIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jul 2022 18:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58182 "EHLO
+        id S231846AbiGLWSz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jul 2022 18:18:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231415AbiGLWIf (ORCPT
+        with ESMTP id S230470AbiGLWSx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jul 2022 18:08:35 -0400
+        Tue, 12 Jul 2022 18:18:53 -0400
 Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEA8B4B
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Jul 2022 15:08:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15B8412D2F
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Jul 2022 15:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1657663711; x=1689199711;
+  t=1657664331; x=1689200331;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ZkUo+1qnDJvUvf8/GBUzwNs7Bbn+3ngGp5W1aFmbFY0=;
-  b=Tgx7Oy+5fpZ1VKFKqhSp1dwuKV6SkhlEQKGR6bLE44CRFyUW8PQ696+I
-   yCov2rf3uMGdYsPkHRUBiepAB4Dj1hAkq/Izy2cj50NfWbL3+lM6yqgMe
-   PpKw2TCZi2RCVA5WZa0TvNLpkuk97REIa56JONQd5i+1FB+DNveQMedh0
+  bh=FVMK9AygpjQcLx4ESIo2P8KeYQjM+Y0zo7lAGOzDOhE=;
+  b=r4XoJBLVn9REuH7lqOxaAnzs4CbzUkuFEoMd0qGH7fntiR2cEiKNqn3Q
+   2ygWBtYpTkf/MMdFOhejk20qAP6HKC6C1xXS23iZ/NjnXwUkNbK0S8uO0
+   xTwZeXCNNOWPWYVtI6qr9t/NUyTm514ec7wHygulXmbIjHMqi2/bNjUa4
    w=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 12 Jul 2022 15:08:31 -0700
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 12 Jul 2022 15:18:50 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2022 15:08:30 -0700
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2022 15:18:50 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 12 Jul 2022 15:08:29 -0700
+ 15.2.986.22; Tue, 12 Jul 2022 15:18:50 -0700
 Received: from [10.110.97.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 12 Jul
- 2022 15:08:29 -0700
-Message-ID: <2b75f624-da68-6cb0-89c1-cca788896969@quicinc.com>
-Date:   Tue, 12 Jul 2022 15:08:28 -0700
+ 2022 15:18:49 -0700
+Message-ID: <d7951be2-30b4-c180-464d-4699fc153efa@quicinc.com>
+Date:   Tue, 12 Jul 2022 15:18:48 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH 04/12] nl80211: support setting S1G short beacon period
+Subject: Re: [PATCH 06/12] mac80211: support ieee80211_ext format
 Content-Language: en-US
 To:     Kieran Frewen <kieran.frewen@morsemicro.com>,
         <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>,
         Bassem Dawood <bassem@morsemicro.com>
 References: <20220711010816.45927-1-kieran.frewen@morsemicro.com>
- <20220711010816.45927-5-kieran.frewen@morsemicro.com>
+ <20220711010816.45927-7-kieran.frewen@morsemicro.com>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220711010816.45927-5-kieran.frewen@morsemicro.com>
+In-Reply-To: <20220711010816.45927-7-kieran.frewen@morsemicro.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
@@ -69,88 +69,82 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On 7/10/2022 6:08 PM, Kieran Frewen wrote:
-> With the kernel able to send both short and long S1G beacons, include
-> the ability for setting the short beacon period.
+> Ensure S1G beacons use the new ieee80211_ext format when required.
 > 
 > Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
 > Signed-off-by: Bassem Dawood <bassem@morsemicro.com>
 > ---
->   include/uapi/linux/nl80211.h | 6 ++++++
->   net/wireless/nl80211.c       | 4 ++++
->   2 files changed, 10 insertions(+)
+>   net/mac80211/rx.c | 24 +++++++++++++++++-------
+>   1 file changed, 17 insertions(+), 7 deletions(-)
 > 
-> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-> index 89f64f46b98d..bd6e2cae1dd3 100644
-> --- a/include/uapi/linux/nl80211.h
-> +++ b/include/uapi/linux/nl80211.h
-> @@ -2694,6 +2694,8 @@ enum nl80211_commands {
->    *	connection. Used with %NL80211_CMD_CONNECT. If this attribute is not
->    *	included in NL80211_CMD_CONNECT drivers must not perform MLO connection.
->    *
-> + * @NL80211_ATTR_SHORT_BEACON_PERIOD: S1G short beacon period in TUs.
-> + *
->    * @NUM_NL80211_ATTR: total number of nl80211_attrs available
->    * @NL80211_ATTR_MAX: highest attribute number currently defined
->    * @__NL80211_ATTR_AFTER_LAST: internal use
-> @@ -3214,6 +3216,8 @@ enum nl80211_attrs {
+> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+> index d017ad14d7db..feab1d58e932 100644
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> @@ -4772,6 +4772,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+>   	struct ieee80211_local *local = hw_to_local(hw);
+>   	struct ieee80211_sub_if_data *sdata;
+>   	struct ieee80211_hdr *hdr;
+> +	struct ieee80211_ext *ext_hdr;
+>   	__le16 fc;
+>   	struct ieee80211_rx_data rx;
+>   	struct ieee80211_sub_if_data *prev;
+> @@ -4787,7 +4788,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+>   	if (ieee80211_is_data(fc) || ieee80211_is_mgmt(fc))
+>   		I802_DEBUG_INC(local->dot11ReceivedFragmentCount);
 >   
->   	NL80211_ATTR_MLO_SUPPORT,
+> -	if (ieee80211_is_mgmt(fc)) {
+> +	if (ieee80211_is_mgmt(fc) || ieee80211_is_s1g_beacon(fc)) {
+>   		/* drop frame if too short for header */
+>   		if (skb->len < ieee80211_hdrlen(fc))
+>   			err = -ENOBUFS;
+> @@ -4802,13 +4803,16 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+>   		return;
+>   	}
 >   
-> +	NL80211_ATTR_SHORT_BEACON_PERIOD,
-> +
->   	/* add attributes here, update the policy in nl80211.c */
+> -	hdr = (struct ieee80211_hdr *)skb->data;
+> +	if (ieee80211_is_s1g_beacon(fc))
+> +		ext_hdr = (struct ieee80211_ext *)skb->data;
+> +	else
+> +		hdr = (struct ieee80211_hdr *)skb->data;
+
+consider extracting the SA here instead of having conditional code in 
+two places later?
+
+>   	ieee80211_parse_qos(&rx);
+>   	ieee80211_verify_alignment(&rx);
 >   
->   	__NL80211_ATTR_AFTER_LAST,
-> @@ -4890,6 +4894,7 @@ enum nl80211_bss_scan_width {
->    *	Contains a nested array of signal strength attributes (u8, dBm),
->    *	using the nesting index as the antenna number.
->    * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
-> + * @NL80211_BSS_SHORT_BEACON_PERIOD: S1G short beacon period in TUs
->    * @__NL80211_BSS_AFTER_LAST: internal
->    * @NL80211_BSS_MAX: highest BSS attribute
->    */
-> @@ -4915,6 +4920,7 @@ enum nl80211_bss {
->   	NL80211_BSS_PARENT_BSSID,
->   	NL80211_BSS_CHAIN_SIGNAL,
->   	NL80211_BSS_FREQUENCY_OFFSET,
-> +	NL80211_BSS_SHORT_BEACON_PERIOD,
-
-please rebase against latest wireless-next since a new attribute 
-NL80211_BSS_MLO_LINK_ID was very recently added
-
+> -	if (unlikely(ieee80211_is_probe_resp(hdr->frame_control) ||
+> -		     ieee80211_is_beacon(hdr->frame_control) ||
+> -		     ieee80211_is_s1g_beacon(hdr->frame_control)))
+> +	if (unlikely(ieee80211_is_probe_resp(fc) ||
+> +		     ieee80211_is_beacon(fc) ||
+> +		     ieee80211_is_s1g_beacon(fc)))
+>   		ieee80211_scan_rx(local, skb);
 >   
->   	/* keep last */
->   	__NL80211_BSS_AFTER_LAST,
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index 6a45801c783c..ab47e4130141 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -798,6 +798,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
->   		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
->   	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
->   	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
-> +	[NL80211_ATTR_SHORT_BEACON_PERIOD] = { .type = NLA_U32 },
-
-entire range of u32 values are valid?
-
-IEEE Std 802.11-2020 Figure 9-684—Short Beacon Interval element format 
-indicates a 2 octet field, so consider either changing the type to U16 
-or use NLA_POLICY_RANGE() to align with the MIB definition:
-dot11ShortBeaconPeriod OBJECT-TYPE
-SYNTAX Unsigned32 (1..65535)
-
-
->   };
+>   	if (ieee80211_is_data(fc)) {
+> @@ -4868,7 +4872,10 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+>   			continue;
+>   		}
 >   
->   /* policy for the key attributes */
-> @@ -5654,6 +5655,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
->   		nla_get_u32(info->attrs[NL80211_ATTR_BEACON_INTERVAL]);
->   	params->dtim_period =
->   		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
-> +	if (info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD])
-> +		params->short_beacon_period =
-> +			nla_get_u32(info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD]);
+> -		rx.sta = sta_info_get_bss(prev, hdr->addr2);
+> +		if (ieee80211_is_s1g_beacon(fc))
+> +			rx.sta = sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
+> +		else
+> +			rx.sta = sta_info_get_bss(prev, hdr->addr2);
+>   		rx.sdata = prev;
+>   		ieee80211_prepare_and_rx_handle(&rx, skb, false);
 >   
->   	err = cfg80211_validate_beacon_int(rdev, dev->ieee80211_ptr->iftype,
->   					   params->beacon_interval);
+> @@ -4876,7 +4883,10 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+>   	}
+>   
+>   	if (prev) {
+> -		rx.sta = sta_info_get_bss(prev, hdr->addr2);
+> +		if (ieee80211_is_s1g_beacon(fc))
+> +			rx.sta = sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
+> +		else
+> +			rx.sta = sta_info_get_bss(prev, hdr->addr2);
+>   		rx.sdata = prev;
+>   
+>   		if (ieee80211_prepare_and_rx_handle(&rx, skb, true))
 
