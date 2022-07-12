@@ -2,134 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4226057109B
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 05:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF8C57116C
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 06:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231259AbiGLDFe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Jul 2022 23:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57474 "EHLO
+        id S229542AbiGLE07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jul 2022 00:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbiGLDF3 (ORCPT
+        with ESMTP id S229518AbiGLE07 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Jul 2022 23:05:29 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25135B7BA;
-        Mon, 11 Jul 2022 20:05:21 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id n18so10054669lfq.1;
-        Mon, 11 Jul 2022 20:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YoTTltPsqg9i+vMO+2k1XGkEPtLOgLm70bL2HmR/2po=;
-        b=L6D6YTRAzy4tsp2EqX9g3Pk80hDnEM50H6fw1xDnXl5xIvTD7LzrRgDc4TA7g7o1nt
-         N0zek6j/tvgUkIvbaQ4XRjTy0c2VoL9HfZ5dFNbi3bfUYB11h+zYy8oXwyrlP3k7Arie
-         L/+SD0hVQaDQpEWZR6eYI7g+umKighuZjiGreR984GfblGchXCI3bn/Xc+q/LbQCIJJn
-         4Co8InrYn1Rf4OodkJmKr86TAI97D4TF4vZe1gAHC+JOOVK4s31hXuQW21elj+OtpuQt
-         XN4wwhZbYS/gY9JHd/+1mboTr1Mllc2ugxAmqm0hHwImln39Umn/5CSmyhUes1tRDEBw
-         btJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YoTTltPsqg9i+vMO+2k1XGkEPtLOgLm70bL2HmR/2po=;
-        b=Bdc8xvYjgw+sZ8HLq87ExJa5zkU/K0dUFELay1yZJWMhhPA8A2U5R352OgD90Q2QDP
-         eqNsYrn+ZGk7wHZBygP6tLqDD4YOeXPeEE04CBFwPAd/meChr+k4mGBLqa/PL2IL/kbY
-         QFzYe6AutJCJurIW2zoIifEEqSPDXJxRoel5z/LCGYmxwn1Ki7Iqi4I1AvFQYxwxgMf6
-         PjwCNnRZtMpzhRYtg4ogdxy3Q6jmakjVVmR+B3Xh+5Ng8bqTzHz62pAKgr1sZ4QdICKK
-         WpoT390RG8LRRYNanN76MHp5hz4CqmiMtZdmjtoLgro8GpqRgpfCHKafIaVbWKOHZbpo
-         uSwQ==
-X-Gm-Message-State: AJIora9fcFFlmdGozsa90HUcUfD6r8S9tvusbetmDbUDSbFLvfwrmGeb
-        Q283hqUTQhZHOC+nUQ2OXzfAqdSU2ka+Emnb1spA8rUX08k=
-X-Google-Smtp-Source: AGRyM1vh5CLlDcDB4y/T06kpLm0eXF+Zwt32CXlwZERnHuT1IBZ8LUmvNecrk1cWT0INXt1bicXwGKCb+jJUbKK+g/A=
-X-Received: by 2002:ac2:4288:0:b0:489:da8b:293a with SMTP id
- m8-20020ac24288000000b00489da8b293amr6007885lfh.106.1657595120089; Mon, 11
- Jul 2022 20:05:20 -0700 (PDT)
+        Tue, 12 Jul 2022 00:26:59 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870351209D
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Jul 2022 21:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657600018; x=1689136018;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SggBeQ3wybSidtYIC9e9tCy+UR63tf4dBPU3gQZHUAw=;
+  b=A/mkY2JArVWNK5R7xD7oJpFpzN+JcyWKJtvHI872Hx5F0JwepTrHaHhr
+   14d/GQKrq2+ioukg/jlVEkQ9wMaGQOF6fr4EfrOdmKODWSErC6l7YhMWB
+   0RFpNWHYpfHGNFo8fuL9B8KmTUikB8jxqc+OJCYih3DVico6d3oQ1j4NB
+   MapzqnLh++nQo4iZ3jHj3c34Y7WM4oxLFyJT9ls9Uu7llrN6sxWuR8Qpn
+   FePCsGUJd8RfOy3sD47KECJnHH/Nj1RZQ5OoO0hDJrB99E8FzYtUf2nxg
+   nVrG5LVv107xVBaQ/ASUn5osDnBRbxWXT0RvA5foC+ovITxz99k2YLOGS
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10405"; a="371143036"
+X-IronPort-AV: E=Sophos;i="5.92,264,1650956400"; 
+   d="scan'208";a="371143036"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2022 21:26:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,264,1650956400"; 
+   d="scan'208";a="570039316"
+Received: from lkp-server02.sh.intel.com (HELO 8708c84be1ad) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 11 Jul 2022 21:26:56 -0700
+Received: from kbuild by 8708c84be1ad with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oB7U8-0001fz-8p;
+        Tue, 12 Jul 2022 04:26:56 +0000
+Date:   Tue, 12 Jul 2022 12:26:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless-next:main] BUILD SUCCESS WITH WARNING
+ 58b6259d820d63c2adf1c7541b54cce5a2ae6073
+Message-ID: <62ccf7f8.uR3XslqEw65Ok74u%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <db3b4f30-cd32-fa24-5ed0-038d4925860f@molgen.mpg.de>
-In-Reply-To: <db3b4f30-cd32-fa24-5ed0-038d4925860f@molgen.mpg.de>
-From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date:   Mon, 11 Jul 2022 20:05:07 -0700
-Message-ID: <CABBYNZKibt14eHLFMUre9CZ+XNmUvsh_BNaDz+LzDtHB0NMBDQ@mail.gmail.com>
-Subject: Re: [REGRESSION] hci0 hci_power_on [bluetooth] blocks for more than 2
- min preventing suspend and shutdown
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Paul,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 58b6259d820d63c2adf1c7541b54cce5a2ae6073  wifi: mac80211_hwsim: add back erroneously removed cast
 
-On Mon, Jul 11, 2022 at 12:14 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> Dear Linux folks,
->
->
-> On a Dell Latitude E7250 with
->
->       Bus 001 Device 003: ID 8087:0a2a Intel Corp. Bluetooth wireless
-> interface
->
-> with Debian sid/unstable upgrading from Linux 5.18.5 to 5.19-rc4 results
-> in a regression, where the system does not suspend or does not power
-> off. Linux logs earlier:
->
-> ```
-> [  242.677813] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-> disables this message.
-> [  242.677818] task:kworker/u9:1    state:D stack:    0 pid:  379 ppid:
->     2 flags:0x00004000
-> [  242.677831] Workqueue: hci0 hci_power_on [bluetooth]
-> [  242.677934] Call Trace:
-> [  242.677938]  <TASK>
-> [  242.677946]  __schedule+0x30b/0x9f0
-> [  242.677961]  ? enqueue_entity+0x1a1/0x520
-> [  242.677973]  schedule+0x4e/0xb0
-> [  242.677981]  schedule_timeout+0x115/0x150
-> [  242.677993]  ? resched_curr+0x20/0xb0
-> [  242.678004]  ? preempt_count_add+0x68/0xa0
-> [  242.678013]  __wait_for_common+0x93/0x1d0
-> [  242.678022]  ? usleep_range_state+0x90/0x90
-> [  242.678034]  __flush_work.isra.0+0x160/0x220
-> [  242.678044]  ? flush_workqueue_prep_pwqs+0x110/0x110
-> [  242.678052]  __cancel_work_timer+0x104/0x190
-> [  242.678060]  ? led_trigger_event+0x1d/0x60
-> [  242.678067]  ? led_trigger_event+0x1d/0x60
-> [  242.678073]  hci_dev_close_sync+0x27/0x540 [bluetooth]
-> [  242.678183]  hci_dev_do_close+0x26/0x60 [bluetooth]
-> [  242.678253]  hci_power_on+0x8c/0x260 [bluetooth]
-> [  242.678337]  ? __schedule+0x313/0x9f0
-> [  242.678347]  process_one_work+0x1e5/0x3b0
-> [  242.678357]  ? rescuer_thread+0x390/0x390
-> [  242.678364]  worker_thread+0x50/0x3a0
-> [  242.678373]  ? rescuer_thread+0x390/0x390
-> [  242.678380]  kthread+0xe8/0x110
-> [  242.678387]  ? kthread_complete_and_exit+0x20/0x20
-> [  242.678394]  ret_from_fork+0x22/0x30
-> [  242.678409]  </TASK>
-> ```
->
-> `sudo modprobe -r btusb` also hangs:
->
->       [ 4115.987537] usbcore: deregistering interface driver btusb
->       [ 4116.128277] Bluetooth: hci0: urb 00000000434e95f7 failed to
-> resubmit (2)
->
-> Please find the output of `dmesg` attached.
+Warning reports:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/commit/?id=e36bea6e78ab2b6c9c7396972fee231eae551cfc
+https://lore.kernel.org/linux-wireless/202207111835.B5zUbIhZ-lkp@intel.com
 
+Warning: (recently discovered and may have been fixed)
+
+drivers/net/wireless/mac80211_hwsim.c:1431:37: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arc-allyesconfig
+|   `-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
+|-- m68k-allyesconfig
+|   `-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
+`-- sh-allmodconfig
+    `-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
+
+elapsed time: 950m
+
+configs tested: 49
+configs skipped: 2
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arc                              allyesconfig
+m68k                             allyesconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+sh                               allmodconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                                defconfig
+i386                             allyesconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220710
+s390                 randconfig-r044-20220710
+riscv                randconfig-r042-20220710
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+
+clang tested configs:
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220710
+hexagon              randconfig-r045-20220710
 
 -- 
-Luiz Augusto von Dentz
+0-DAY CI Kernel Test Service
+https://01.org/lkp
