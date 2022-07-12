@@ -2,80 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6933570E3E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 01:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7D8570EDA
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 02:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231520AbiGKXZh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Jul 2022 19:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46538 "EHLO
+        id S232081AbiGLATf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Jul 2022 20:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbiGKXZd (ORCPT
+        with ESMTP id S232167AbiGLATI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Jul 2022 19:25:33 -0400
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6E38AB0A
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Jul 2022 16:25:32 -0700 (PDT)
-Date:   Mon, 11 Jul 2022 23:24:56 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1657581930; x=1657841130;
-        bh=dJ7XzW9JR+iR7w3Orjx2VNxD5Zp98I27EpmQYwWURhE=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=tUGSepESaZCFMuuJis/hrTnwlh1rUqWLVaadlYQ+XSio/obCfcXvqT/S6k6uMknJ5
-         tJxwnb9GkEVqep9Fr6F6h+VzQ/kBQETeY9aEhGErQ9xn48tkQiuEXCPcisovnyG7aQ
-         R9ukfCWtw7YCUMWC2hhsrnvrxhdMH+kec+kaMrMqpKjAG1mGwnysjDoVoENKXjbBKr
-         61HCbce2+W5/4ng00C7s408CKq7ekTnULW614Jf+Ht47S/V3VtVF8h8wSyJt36kiZG
-         +wSnwXD3V686b7lGmlmxYbvkSnHwdX9ywRSdhY0MlL7ry4V/MjdV4thgmrAa+8H99B
-         9Us9ywsA/DkFg==
-To:     Arend Van Spriel <aspriel@gmail.com>
-From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: Re: [PATCH v4] brcmfmac: prevent double-free on hardware-reset
-Message-ID: <LjavNS7FQVriCInc6oiPjdmmCyQgXWVsmHv_kiDNEJ1UXiSKuOpLVLEIbzhOPFY1eEza2BePSqwe7k59rNTgDPihwOdb9Kx77yb0ly0weQw=@dannyvanheumen.nl>
-In-Reply-To: <768ee7d7-bbc1-b466-480d-de6390d26051@gmail.com>
-References: <g_Py6bM1lfcJOWWmHwKU8x4tCFrTRdgFtoM13qYHeN441F392j_6etJnEJ8gHJMRZ6OEKxpJYuP45x3iziHqY6HNXnVwIiyvJLYjvzxT0Xk=@dannyvanheumen.nl> <a2d63d48-74bf-06e5-0b90-d046dd0966bd@gmail.com> <SpNFVBNIoAMOViIfL2pA_NfZkIX1ldRs865SC5DNvEzTfnDVAQALh3ugJVVMnWZ6XZDQI9L85yb0TEhzjKMTt8CjZuXW8mE-FY6GMSoWCs4=@dannyvanheumen.nl> <b9af59ff-d218-69d6-35b6-eedbd8a7eb6b@gmail.com> <aK4oYk4CE84W9CQcWokt10umUlVCVt4DUEHbuT1e6euFshQ5CC4Hu5svEL0qhPF6W-LYeu8-EUNMfc4odaYa-LyxofrBZt_6KhkiE0sfwp8=@dannyvanheumen.nl> <48f31e63-f4de-faf9-3c8c-eb2bdd8a2b04@broadcom.com> <Ev2sGFWgWlkty5T3AbZMd-KmLY_PJiasOdrKka6OuNmLFBSOet2lSDVUj8_x3lKuJ-lNLkAdDKwzkeS9rEIGLXb3RwDhrkBMyESbuTRcu90=@dannyvanheumen.nl> <768ee7d7-bbc1-b466-480d-de6390d26051@gmail.com>
-Feedback-ID: 15073070:user:proton
+        Mon, 11 Jul 2022 20:19:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AE910551;
+        Mon, 11 Jul 2022 17:18:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C91B615B2;
+        Tue, 12 Jul 2022 00:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937E8C34115;
+        Tue, 12 Jul 2022 00:18:38 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="WjyGjZ1G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1657585116;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hVrNX/eAqVsApgBJHG8TQUp5ikaUrDBLgMgzzv+gsZE=;
+        b=WjyGjZ1GO0te8xIrhejWIPcOGkDMpZsuQnL98VWJYdtnSnY+dJKhKSwyTc9+8FZie0aFyI
+        6KJy06Bz9MwKZ73fIFf7LYVKprOI769ET1Div7L0xoBTd/EdRjHVQcJC/G3MfVZbxLyS/N
+        +wwak93B7rMegaSX9mHRDGuhxsLvs6Y=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 33856e4a (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Tue, 12 Jul 2022 00:18:36 +0000 (UTC)
+Date:   Tue, 12 Jul 2022 02:18:34 +0200
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     linux-kernel@vger.kernel.org, gregerwin256@gmail.com,
+        toke@redhat.com, kvalo@kernel.org, rsalvaterra@gmail.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5] signal: break out of wait loops on kthread_stop()
+Message-ID: <Ysy92qs6Nc9zLqdp@zx2c4.com>
+References: <87h73n9ufn.fsf@email.froward.int.ebiederm.org>
+ <20220711232123.136330-1-Jason@zx2c4.com>
+ <87sfn76vza.fsf@email.froward.int.ebiederm.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <87sfn76vza.fsf@email.froward.int.ebiederm.org>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Eric,
 
-------- Original Message -------
-On Thursday, July 7th, 2022 at 22:25, Arend Van Spriel <aspriel@gmail.com> =
-wrote:
+On Mon, Jul 11, 2022 at 07:00:25PM -0500, Eric W. Biederman wrote:
+> "Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+> 
+> > I was recently surprised to learn that msleep_interruptible(),
+> > wait_for_completion_interruptible_timeout(), and related functions
+> > simply hung when I called kthread_stop() on kthreads using them. The
+> > solution to fixing the case with msleep_interruptible() was more simply
+> > to move to schedule_timeout_interruptible(). Why?
+> >
+> > The reason is that msleep_interruptible(), and many functions just like
+> > it, has a loop like this:
+> >
+> >         while (timeout && !signal_pending(current))
+> >                 timeout = schedule_timeout_interruptible(timeout);
+> >
+> > The call to kthread_stop() woke up the thread, so schedule_timeout_
+> > interruptible() returned early, but because signal_pending() returned
+> > true, it went back into another timeout, which was never woken up.
+> >
+> > This wait loop pattern is common to various pieces of code, and I
+> > suspect that the subtle misuse in a kthread that caused a deadlock in
+> > the code I looked at last week is also found elsewhere.
+> >
+> > So this commit causes signal_pending() to return true when
+> > kthread_stop() is called, by setting TIF_NOTIFY_SIGNAL.
+> >
+> > The same also probably applies to the similar kthread_park()
+> > functionality, but that can be addressed later, as its semantics are
+> > slightly different.
+> 
+> Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+> 
+> Do I need to pick this up and put it on a topic branch?
+> Or does this patch have another patch to get merged?
 
-> [..]
->
-> Right. I prefer dropping the interrupt clean-up and rest of the patch is
-> fine by me.
+I think it'd make sense to put this in a topic branch.
 
-Please find patch v5 submitted. Subject: [PATCH v5] brcmfmac: prevent doubl=
-e-free on hardware-reset
+I discovered this in the process of developing [1] (which could use an
+Ack for the wake_up_state EXPORT_SYMBOL, by the way). That's marked
+for stable@ because the breakage there is kind of bad -- people can't put
+their laptops to sleep right now. After both this patch and that one
+land, I may then revisit the ath9k one and make changes for non-stable@.
+That is, of course, if [1] even lands; right now I fear it might be
+relegated to scheduler bikeshed purgatory and I don't have the time
+right now to deal with that.
 
-I have reverted the split, in-order freeing of func irqs, as discussed. No =
-further changes.
+Longer term, this patch here will let me rework [1] to get rid of the
+set_notify_signal() trick and use a proper condition variable wait with
+`wait_for_condition_interruptible_timeout`, since this patch makes that
+function work right for both contexts in which hwrng devices are called
+(kthread and process). But that will mean reworking the hwrng API, which
+means writing patches for every single hwrng driver, so that's work for
+another time.
 
-During my time running with the various patches, I have not had any issues.=
- As mentioned before, repeated resets did not result in any issues. (I didn=
-'t count exactly, maybe 30+ resets in a scripted run.)
+In the mean time, [1] is a good way forward (provided it gets acked).
+And then this patch puts things in a good position to improve down the
+line. I did a bunch of testing of this patch when trying out different
+candidates for [1] before settling on [1] as a good-enough intermediate
+solution. 
 
-IIUC this should be ready for integration.
+So, anyway, feel free to put this in a topic branch.
 
-Regards,
-Danny
+Jason
+
+[1] https://lore.kernel.org/lkml/20220629114240.946411-1-Jason@zx2c4.com/
