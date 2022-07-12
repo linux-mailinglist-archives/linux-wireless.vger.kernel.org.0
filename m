@@ -2,128 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7D8570EDA
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 02:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2A95570F22
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jul 2022 02:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbiGLATf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Jul 2022 20:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50724 "EHLO
+        id S231490AbiGLA4F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Jul 2022 20:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232167AbiGLATI (ORCPT
+        with ESMTP id S229616AbiGLA4E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Jul 2022 20:19:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AE910551;
-        Mon, 11 Jul 2022 17:18:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C91B615B2;
-        Tue, 12 Jul 2022 00:18:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937E8C34115;
-        Tue, 12 Jul 2022 00:18:38 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="WjyGjZ1G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1657585116;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hVrNX/eAqVsApgBJHG8TQUp5ikaUrDBLgMgzzv+gsZE=;
-        b=WjyGjZ1GO0te8xIrhejWIPcOGkDMpZsuQnL98VWJYdtnSnY+dJKhKSwyTc9+8FZie0aFyI
-        6KJy06Bz9MwKZ73fIFf7LYVKprOI769ET1Div7L0xoBTd/EdRjHVQcJC/G3MfVZbxLyS/N
-        +wwak93B7rMegaSX9mHRDGuhxsLvs6Y=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 33856e4a (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Tue, 12 Jul 2022 00:18:36 +0000 (UTC)
-Date:   Tue, 12 Jul 2022 02:18:34 +0200
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     linux-kernel@vger.kernel.org, gregerwin256@gmail.com,
-        toke@redhat.com, kvalo@kernel.org, rsalvaterra@gmail.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5] signal: break out of wait loops on kthread_stop()
-Message-ID: <Ysy92qs6Nc9zLqdp@zx2c4.com>
-References: <87h73n9ufn.fsf@email.froward.int.ebiederm.org>
- <20220711232123.136330-1-Jason@zx2c4.com>
- <87sfn76vza.fsf@email.froward.int.ebiederm.org>
+        Mon, 11 Jul 2022 20:56:04 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2CD22A72C
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Jul 2022 17:56:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1657587363; x=1689123363;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=0090zWVa2AslLxcfJGhjj/6B3Kyfvi31R8og1Hvh+gU=;
+  b=NBiiF0iJHBOmhZU8UwLkqBdXIKABiDgnDRNVfe3xL04gaQ0fH5jvAWdV
+   Y6N0NOQZzN8+LEca5kDXAlcOODAWE1zuVfncbkMymQ6x7zFkA43H1cQM6
+   Mp3LcHZK1i2xPqQVfXIXxqy4h63uFtnDuTd4mkPTJqesyrbXVjlNTGvjo
+   A=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 11 Jul 2022 17:56:03 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2022 17:56:03 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 11 Jul 2022 17:56:03 -0700
+Received: from [10.110.97.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Mon, 11 Jul
+ 2022 17:56:02 -0700
+Message-ID: <f662a668-fb16-61b0-cfb2-886c1fb72261@quicinc.com>
+Date:   Mon, 11 Jul 2022 17:56:01 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87sfn76vza.fsf@email.froward.int.ebiederm.org>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] nl80211: Fix reading NL80211_ATTR_MLO_LINK_ID in
+ nl80211_pre_doit
+Content-Language: en-US
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+        <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+References: <1657517683-5724-1-git-send-email-quic_vjakkam@quicinc.com>
+ <0d61898f-f17a-d8e5-a35d-8da85d7c973d@quicinc.com>
+In-Reply-To: <0d61898f-f17a-d8e5-a35d-8da85d7c973d@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Eric,
-
-On Mon, Jul 11, 2022 at 07:00:25PM -0500, Eric W. Biederman wrote:
-> "Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+On 7/11/2022 8:59 AM, Jeff Johnson wrote:
+> On 7/10/2022 10:34 PM, Veerendranath Jakkam wrote:
+>> nl80211_pre_doit() using nla_get_u16() to read u8 attribute
 > 
-> > I was recently surprised to learn that msleep_interruptible(),
-> > wait_for_completion_interruptible_timeout(), and related functions
-> > simply hung when I called kthread_stop() on kthreads using them. The
-> > solution to fixing the case with msleep_interruptible() was more simply
-> > to move to schedule_timeout_interruptible(). Why?
-> >
-> > The reason is that msleep_interruptible(), and many functions just like
-> > it, has a loop like this:
-> >
-> >         while (timeout && !signal_pending(current))
-> >                 timeout = schedule_timeout_interruptible(timeout);
-> >
-> > The call to kthread_stop() woke up the thread, so schedule_timeout_
-> > interruptible() returned early, but because signal_pending() returned
-> > true, it went back into another timeout, which was never woken up.
-> >
-> > This wait loop pattern is common to various pieces of code, and I
-> > suspect that the subtle misuse in a kthread that caused a deadlock in
-> > the code I looked at last week is also found elsewhere.
-> >
-> > So this commit causes signal_pending() to return true when
-> > kthread_stop() is called, by setting TIF_NOTIFY_SIGNAL.
-> >
-> > The same also probably applies to the similar kthread_park()
-> > functionality, but that can be addressed later, as its semantics are
-> > slightly different.
-> 
-> Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
-> 
-> Do I need to pick this up and put it on a topic branch?
-> Or does this patch have another patch to get merged?
+> I would be more explicit and say:
+> nl80211_pre_doit() is incorrectly using ...
 
-I think it'd make sense to put this in a topic branch.
-
-I discovered this in the process of developing [1] (which could use an
-Ack for the wake_up_state EXPORT_SYMBOL, by the way). That's marked
-for stable@ because the breakage there is kind of bad -- people can't put
-their laptops to sleep right now. After both this patch and that one
-land, I may then revisit the ath9k one and make changes for non-stable@.
-That is, of course, if [1] even lands; right now I fear it might be
-relegated to scheduler bikeshed purgatory and I don't have the time
-right now to deal with that.
-
-Longer term, this patch here will let me rework [1] to get rid of the
-set_notify_signal() trick and use a proper condition variable wait with
-`wait_for_condition_interruptible_timeout`, since this patch makes that
-function work right for both contexts in which hwrng devices are called
-(kthread and process). But that will mean reworking the hwrng API, which
-means writing patches for every single hwrng driver, so that's work for
-another time.
-
-In the mean time, [1] is a good way forward (provided it gets acked).
-And then this patch puts things in a good position to improve down the
-line. I did a bunch of testing of this patch when trying out different
-candidates for [1] before settling on [1] as a good-enough intermediate
-solution. 
-
-So, anyway, feel free to put this in a topic branch.
-
-Jason
-
-[1] https://lore.kernel.org/lkml/20220629114240.946411-1-Jason@zx2c4.com/
+but I see this is already in wireless-next so nevermind :)
