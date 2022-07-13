@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88622573356
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB47057334B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236290AbiGMJpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 05:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36044 "EHLO
+        id S236295AbiGMJp4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 05:45:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234940AbiGMJpR (ORCPT
+        with ESMTP id S234944AbiGMJpS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 05:45:17 -0400
+        Wed, 13 Jul 2022 05:45:18 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0068EBFAEB
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED00E0279
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Icl1V9WmB8V0WgUfIMD5I9jYYC/WlmNZadhTxeFQXqw=;
-        t=1657705517; x=1658915117; b=dTCwgdYwkgV/xEJSbqmMZ2KFYNDoCBr2JlNfLgs9Vpnl9cn
-        cErf9LXRHj3nJg+jw1xhx8PrUpJAmU7LQRza5Q6XQwE9NsN0E3MMvQdoMryAVjHcWt5D0gFI6xDol
-        r0/PpZoY5RV66G74mvksz+ggLXLxCke4PVpjmGi6Hj/IkYKO/dJUsBU/xrtFAAkr+OrqDmR98QCi3
-        4Wd2K9wduHwS3/ppYLVas2c1m/thdLdjHyj34QP9x7hkH8r0nEFla95eUsnKy6ytSd+gmtDyCvBUs
-        SNWASn4sbHKLrro1DpQuqBO2/JGVtON8itf/s2Cf4al7WmEAwn/ghhM+1rXDjaTg==;
+        Resent-Cc:Resent-Message-ID; bh=Shs8bo+gTKDLdpln9DmHNM551HLaD47nArTrrT1D46s=;
+        t=1657705517; x=1658915117; b=fOE1myynOgNwPh2Ngd/jYYnpKWpO0UlamUJnO/ku/N3Qu6L
+        5IbFWpS8xADn1+1hOsnuI9oTSnQO2iUYrwIS95FWxLrwbKESJOmUjnheWcqK0wNuX4PDh5tfhPr+6
+        KrzGOncvf1wxR2gOQdvi8otSDSnzWAqQAWYr6ml77Ag6pNtR+PExbd2En6DYKQkeZrlIeAFg/7Hio
+        qeEhxEzP/0CdSbKrVINjAFK4N7UrFUsvgYxH1KvUUUScU43SOmlefN047sGUjyaEKKq7DnqOPXUMC
+        vjxdUUzoxxO8qHcMnf3ZNVmXQ3ZPzspeZPYy8XXm8h6VlyBwD9sv4ZYEZ+dl3bRA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBYvj-00EgvB-1V;
+        id 1oBYvj-00EgvB-8o;
         Wed, 13 Jul 2022 11:45:15 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 34/76] wifi: mac80211: split IEEE80211_STA_DISABLE_WMM to link data
-Date:   Wed, 13 Jul 2022 11:44:20 +0200
-Message-Id: <20220713114425.f083fde05269.I31b8d276b9f1449cf445aed9f85bce80a728a734@changeid>
+Subject: [PATCH 35/76] wifi: mac80211: mlme: use ieee80211_get_link_sband()
+Date:   Wed, 13 Jul 2022 11:44:21 +0200
+Message-Id: <20220713114425.35973aa556f0.I1394dd82298f09c6cb452be538dba8ba13f11b01@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713094502.163926-1-johannes@sipsolutions.net>
 References: <20220713094502.163926-1-johannes@sipsolutions.net>
@@ -52,82 +52,82 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If we decide to stop tracking QoS/WMM parameters, then
-this should be a per-link decision. Move the flag to
-the link instead.
+This requires a few more changes.
+
+While at it, also add a warning to ieee80211_get_sband()
+to avoid it being used when there are multiple links.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/ieee80211_i.h | 2 +-
- net/mac80211/mlme.c        | 9 +++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/mlme.c        | 12 ++++++------
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 20b9979d1506..3e360bcaa03b 100644
+index 3e360bcaa03b..a0743c78d171 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -361,7 +361,6 @@ enum ieee80211_sta_flags {
- 	IEEE80211_STA_MFP_ENABLED	= BIT(6),
- 	IEEE80211_STA_UAPSD_ENABLED	= BIT(7),
- 	IEEE80211_STA_NULLFUNC_ACKED	= BIT(8),
--	IEEE80211_STA_DISABLE_WMM	= BIT(14),
- 	IEEE80211_STA_ENABLE_RRM	= BIT(15),
- };
+@@ -1539,6 +1539,8 @@ ieee80211_get_sband(struct ieee80211_sub_if_data *sdata)
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	enum nl80211_band band;
  
-@@ -883,6 +882,7 @@ struct ieee80211_link_data_managed {
++	WARN_ON(sdata->vif.valid_links);
++
+ 	rcu_read_lock();
+ 	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
  
- 	bool have_beacon;
- 	bool tracking_signal_avg;
-+	bool disable_wmm_tracking;
- 
- 	bool csa_waiting_bcn;
- 	bool csa_ignored_same_chan;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f3e901793ae1..80a31777922e 100644
+index 80a31777922e..edd7f74f1ef3 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -2539,6 +2539,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+@@ -2264,17 +2264,17 @@ static void ieee80211_stop_poll(struct ieee80211_sub_if_data *sdata)
+ 	mutex_unlock(&sdata->local->mtx);
+ }
  
- 	link->u.mgd.have_beacon = false;
- 	link->u.mgd.tracking_signal_avg = false;
-+	link->u.mgd.disable_wmm_tracking = false;
+-static u32 ieee80211_handle_bss_capability(struct ieee80211_sub_if_data *sdata,
++static u32 ieee80211_handle_bss_capability(struct ieee80211_link_data *link,
+ 					   u16 capab, bool erp_valid, u8 erp)
+ {
+-	struct ieee80211_bss_conf *bss_conf = &sdata->vif.bss_conf;
++	struct ieee80211_bss_conf *bss_conf = link->conf;
+ 	struct ieee80211_supported_band *sband;
+ 	u32 changed = 0;
+ 	bool use_protection;
+ 	bool use_short_preamble;
+ 	bool use_short_slot;
  
- 	ifmgd->flags = 0;
- 	link->u.mgd.conn_flags = 0;
-@@ -3794,21 +3795,21 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 	link->u.mgd.wmm_last_param_set = -1;
- 	link->u.mgd.mu_edca_last_param_set = -1;
+-	sband = ieee80211_get_sband(sdata);
++	sband = ieee80211_get_link_sband(link);
+ 	if (!sband)
+ 		return changed;
  
--	if (ifmgd->flags & IEEE80211_STA_DISABLE_WMM) {
-+	if (link->u.mgd.disable_wmm_tracking) {
- 		ieee80211_set_wmm_default(link, false, false);
- 	} else if (!ieee80211_sta_wmm_params(local, link, elems->wmm_param,
- 					     elems->wmm_param_len,
- 					     elems->mu_edca_param_set)) {
- 		/* still enable QoS since we might have HT/VHT */
- 		ieee80211_set_wmm_default(link, false, true);
--		/* set the disable-WMM flag in this case to disable
-+		/* disable WMM tracking in this case to disable
- 		 * tracking WMM parameter changes in the beacon if
- 		 * the parameters weren't actually valid. Doing so
- 		 * avoids changing parameters very strangely when
- 		 * the AP is going back and forth between valid and
- 		 * invalid parameters.
- 		 */
--		ifmgd->flags |= IEEE80211_STA_DISABLE_WMM;
-+		link->u.mgd.disable_wmm_tracking = true;
+@@ -2320,7 +2320,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
+ 
+ 	bss_info_changed |= BSS_CHANGED_ASSOC;
+-	bss_info_changed |= ieee80211_handle_bss_capability(sdata,
++	bss_info_changed |= ieee80211_handle_bss_capability(link,
+ 		bss_conf->assoc_capability, bss->has_erp_value, bss->erp_value);
+ 
+ 	sdata->u.mgd.beacon_timeout = usecs_to_jiffies(ieee80211_tu_to_usec(
+@@ -3621,7 +3621,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		goto out;
  	}
- 	changed |= BSS_CHANGED_QOS;
  
-@@ -4396,7 +4397,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 					 rx_status->device_timestamp,
- 					 elems, true);
+-	sband = ieee80211_get_sband(sdata);
++	sband = ieee80211_get_link_sband(link);
+ 	if (!sband) {
+ 		mutex_unlock(&sdata->local->sta_mtx);
+ 		ret = false;
+@@ -4429,7 +4429,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	}
  
--	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_WMM) &&
-+	if (!link->u.mgd.disable_wmm_tracking &&
- 	    ieee80211_sta_wmm_params(local, link, elems->wmm_param,
- 				     elems->wmm_param_len,
- 				     elems->mu_edca_param_set))
+ 	if (!ieee80211_is_s1g_beacon(hdr->frame_control))
+-		changed |= ieee80211_handle_bss_capability(sdata,
++		changed |= ieee80211_handle_bss_capability(link,
+ 				le16_to_cpu(mgmt->u.beacon.capab_info),
+ 				erp_valid, erp_value);
+ 
 -- 
 2.36.1
 
