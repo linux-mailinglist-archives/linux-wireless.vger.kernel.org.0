@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C99573357
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7487573354
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235669AbiGMJqD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 05:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        id S235151AbiGMJqB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 05:46:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236206AbiGMJpX (ORCPT
+        with ESMTP id S236207AbiGMJpX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 13 Jul 2022 05:45:23 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3B18F5D65
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28E9BF6826
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=TqfV+mUl3yeYgPmsWRQrkxNo01IBRV6fnW6JiQ88rYQ=;
-        t=1657705520; x=1658915120; b=BAYZanPV1VJQJb+XqW4x2BXAeOuDI7dwkVnwR+DS+3kCbv/
-        GxUUmtMfSiXlPn6+nNKLBj/2K6SXHA+oUkw5a2mUMakA2XZvqeY53XUJ8uzyk9Uxk8iL8meLdBqA4
-        /RTO2vUh+VNZpXgY/9T9gSUXmxvvdV41bBhSzYxMEBsJtDMovdFq1ZWT9HX/Jc9/Zjsv+Gk4Bop3t
-        n8+TG0LGkEYEe2AqwZf7eEGDYB5UroEYGytXxwKNJMln+IOnKFQfz4C8hA3teNFNiP2UNqK+MHNPS
-        eBNx6TJ03fnwM/ecSdJI3LETsBGeiZHoAWyFnZWuueLcdrrxO4s22iRJbL158bOw==;
+        Resent-Cc:Resent-Message-ID; bh=juJwWG8lFFbPo4Sh68ofoGEUelchpRYCkzcP3V/Eko4=;
+        t=1657705520; x=1658915120; b=OLJUTkkDp5k85IjhsxzUtGP0YSO83UEqNbaOOFxnov58RoQ
+        o71l9L29YqwrrbkLCsas+p6L3qokFpNJ4JkRegJxAas208fZkqoDWgcIBepZdOoOvbHrVHwCKtqGF
+        B6Sv/ho1GomV+ydEhboIetm68o9ZNoDi4i40yKLKDOepeC/iMM/fbiJzujz7Jc6vTei8oy58OhXGR
+        ZkNPvNfiq95Q77H4NsAArnt8nCXBFskHTNdw69P5O/W8JmRnHNdRxihlzaa1WUSEfOvOXqDMJ+q8y
+        NCWVlbaKUVOVoSAmt9aYwFkSszXoQCUVuBcQf7YQb873ij23p5a1rFcuwbOF0y7A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBYvl-00EgvB-18;
+        id 1oBYvl-00EgvB-8b;
         Wed, 13 Jul 2022 11:45:17 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 40/76] wifi: mac80211: mlme: unify assoc data event sending
-Date:   Wed, 13 Jul 2022 11:44:26 +0200
-Message-Id: <20220713114425.e67d694db6eb.I52052f42007a7bc31de514281f618192a3c628c2@changeid>
+Subject: [PATCH 41/76] wifi: cfg80211: adjust assoc comeback for MLO
+Date:   Wed, 13 Jul 2022 11:44:27 +0200
+Message-Id: <20220713114425.137431011758.Ie74dbd117976d94f5030dba0e2e704ad952c7e40@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713094502.163926-1-johannes@sipsolutions.net>
 References: <20220713094502.163926-1-johannes@sipsolutions.net>
@@ -52,161 +52,112 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There are a few cases where we send an event to cfg80211
-manually, but ieee80211_destroy_assoc_data() also handles
-the case of abandoning; some cases don't need an event
-and success is handled yet differently.
-
-Unify this by providing a single status argument to the
-ieee80211_destroy_assoc_data() function and then handling
-all the different cases of events (or no events) there.
-
-This will help simplify the code when MLO support is
-added.
+We only report the BSSID to userspace, so change the
+argument from BSS struct pointer to AP address, which
+we'll use to carry either the BSSID or AP MLD address.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 51 ++++++++++++++++++---------------------------
- 1 file changed, 20 insertions(+), 31 deletions(-)
+ include/net/cfg80211.h |  4 ++--
+ net/mac80211/mlme.c    |  2 +-
+ net/wireless/nl80211.c |  6 +++---
+ net/wireless/trace.h   | 10 +++++-----
+ 4 files changed, 11 insertions(+), 11 deletions(-)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 2a70f8900a4f..e24233b6d4bb 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -8592,13 +8592,13 @@ bool cfg80211_iftype_allowed(struct wiphy *wiphy, enum nl80211_iftype iftype,
+  * cfg80211_assoc_comeback - notification of association that was
+  * temporarly rejected with a comeback
+  * @netdev: network device
+- * @bss: the bss entry with which association is in progress.
++ * @ap_addr: AP (MLD) address that rejected the assocation
+  * @timeout: timeout interval value TUs.
+  *
+  * this function may sleep. the caller must hold the corresponding wdev's mutex.
+  */
+ void cfg80211_assoc_comeback(struct net_device *netdev,
+-			     struct cfg80211_bss *bss, u32 timeout);
++			     const u8 *ap_addr, u32 timeout);
+ 
+ /* Logging, debugging and troubleshooting/diagnostic helpers. */
+ 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 8d339d3f89ab..772584732b6e 100644
+index 772584732b6e..feb5929b37e7 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -2998,14 +2998,21 @@ static void ieee80211_destroy_auth_data(struct ieee80211_sub_if_data *sdata,
- 	sdata->u.mgd.auth_data = NULL;
+@@ -3943,7 +3943,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 	    elems->timeout_int->type == WLAN_TIMEOUT_ASSOC_COMEBACK) {
+ 		u32 tu, ms;
+ 
+-		cfg80211_assoc_comeback(sdata->dev, assoc_data->bss,
++		cfg80211_assoc_comeback(sdata->dev, assoc_data->bss->bssid,
+ 					le32_to_cpu(elems->timeout_int->value));
+ 
+ 		tu = le32_to_cpu(elems->timeout_int->value);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 886d964242ae..6c3b47a7960f 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -18036,7 +18036,7 @@ static void nl80211_send_remain_on_chan_event(
  }
  
-+enum assoc_status {
-+	ASSOC_SUCCESS,
-+	ASSOC_REJECTED,
-+	ASSOC_TIMEOUT,
-+	ASSOC_ABANDON,
-+};
-+
- static void ieee80211_destroy_assoc_data(struct ieee80211_sub_if_data *sdata,
--					 bool assoc, bool abandon)
-+					 enum assoc_status status)
+ void cfg80211_assoc_comeback(struct net_device *netdev,
+-			     struct cfg80211_bss *bss, u32 timeout)
++			     const u8 *ap_addr, u32 timeout)
  {
- 	struct ieee80211_mgd_assoc_data *assoc_data = sdata->u.mgd.assoc_data;
+ 	struct wireless_dev *wdev = netdev->ieee80211_ptr;
+ 	struct wiphy *wiphy = wdev->wiphy;
+@@ -18044,7 +18044,7 @@ void cfg80211_assoc_comeback(struct net_device *netdev,
+ 	struct sk_buff *msg;
+ 	void *hdr;
  
- 	sdata_assert_lock(sdata);
+-	trace_cfg80211_assoc_comeback(wdev, bss->bssid, timeout);
++	trace_cfg80211_assoc_comeback(wdev, ap_addr, timeout);
  
--	if (!assoc) {
-+	if (status != ASSOC_SUCCESS) {
- 		/*
- 		 * we are not associated yet, the only timer that could be
- 		 * running is the timeout for the association response which
-@@ -3026,9 +3033,10 @@ static void ieee80211_destroy_assoc_data(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_link_release_channel(&sdata->deflink);
- 		mutex_unlock(&sdata->local->mtx);
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!msg)
+@@ -18058,7 +18058,7 @@ void cfg80211_assoc_comeback(struct net_device *netdev,
  
--		if (abandon) {
-+		if (status != ASSOC_REJECTED) {
- 			struct cfg80211_assoc_failure data = {
- 				.bss[0] = assoc_data->bss,
-+				.timeout = status == ASSOC_TIMEOUT,
- 			};
+ 	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
+ 	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, netdev->ifindex) ||
+-	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, bss->bssid) ||
++	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, ap_addr) ||
+ 	    nla_put_u32(msg, NL80211_ATTR_TIMEOUT, timeout))
+ 		goto nla_put_failure;
  
- 			cfg80211_assoc_failure(sdata->dev, &data);
-@@ -3309,7 +3317,7 @@ static void ieee80211_rx_mgmt_deauth(struct ieee80211_sub_if_data *sdata,
- 			   bssid, reason_code,
- 			   ieee80211_get_reason_code_string(reason_code));
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 19efb9539533..94d107cab72c 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -3764,20 +3764,20 @@ TRACE_EVENT(cfg80211_bss_color_notify,
+ );
  
--		ieee80211_destroy_assoc_data(sdata, false, true);
-+		ieee80211_destroy_assoc_data(sdata, ASSOC_ABANDON);
+ TRACE_EVENT(cfg80211_assoc_comeback,
+-	TP_PROTO(struct wireless_dev *wdev, const u8 *bssid, u32 timeout),
+-	TP_ARGS(wdev, bssid, timeout),
++	TP_PROTO(struct wireless_dev *wdev, const u8 *ap_addr, u32 timeout),
++	TP_ARGS(wdev, ap_addr, timeout),
+ 	TP_STRUCT__entry(
+ 		WDEV_ENTRY
+-		MAC_ENTRY(bssid)
++		MAC_ENTRY(ap_addr)
+ 		__field(u32, timeout)
+ 	),
+ 	TP_fast_assign(
+ 		WDEV_ASSIGN;
+-		MAC_ASSIGN(bssid, bssid);
++		MAC_ASSIGN(ap_addr, ap_addr);
+ 		__entry->timeout = timeout;
+ 	),
+ 	TP_printk(WDEV_PR_FMT ", " MAC_PR_FMT ", timeout: %u TUs",
+-		  WDEV_PR_ARG, MAC_PR_ARG(bssid), __entry->timeout)
++		  WDEV_PR_ARG, MAC_PR_ARG(ap_addr), __entry->timeout)
+ );
  
- 		cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
- 		return;
-@@ -3953,19 +3961,14 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 	if (status_code != WLAN_STATUS_SUCCESS) {
- 		sdata_info(sdata, "%pM denied association (code=%d)\n",
- 			   mgmt->sa, status_code);
--		ieee80211_destroy_assoc_data(sdata, false, false);
-+		ieee80211_destroy_assoc_data(sdata, ASSOC_REJECTED);
- 		event.u.mlme.status = MLME_DENIED;
- 		event.u.mlme.reason = status_code;
- 		drv_event_callback(sdata->local, sdata, &event);
- 	} else {
- 		if (!ieee80211_assoc_success(sdata, cbss, mgmt, len, elems)) {
- 			/* oops -- internal error -- send timeout for now */
--			struct cfg80211_assoc_failure data = {
--				.timeout = true,
--				.bss[0] = cbss,
--			};
--			ieee80211_destroy_assoc_data(sdata, false, false);
--			cfg80211_assoc_failure(sdata->dev, &data);
-+			ieee80211_destroy_assoc_data(sdata, ASSOC_TIMEOUT);
- 			goto notify_driver;
- 		}
- 		event.u.mlme.status = MLME_SUCCESS;
-@@ -3977,7 +3980,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 		 * recalc after assoc_data is NULL but before associated
- 		 * is set can cause the interface to go idle
- 		 */
--		ieee80211_destroy_assoc_data(sdata, true, false);
-+		ieee80211_destroy_assoc_data(sdata, ASSOC_SUCCESS);
- 
- 		/* get uapsd queues configuration */
- 		uapsd_queues = 0;
-@@ -4835,19 +4838,13 @@ void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata)
- 		if ((ifmgd->assoc_data->need_beacon &&
- 		     !sdata->deflink.u.mgd.have_beacon) ||
- 		    ieee80211_do_assoc(sdata)) {
--			struct cfg80211_bss *bss = ifmgd->assoc_data->bss;
- 			struct ieee80211_event event = {
- 				.type = MLME_EVENT,
- 				.u.mlme.data = ASSOC_EVENT,
- 				.u.mlme.status = MLME_TIMEOUT,
- 			};
--			struct cfg80211_assoc_failure data = {
--				.bss[0] = bss,
--				.timeout = true,
--			};
- 
--			ieee80211_destroy_assoc_data(sdata, false, false);
--			cfg80211_assoc_failure(sdata->dev, &data);
-+			ieee80211_destroy_assoc_data(sdata, ASSOC_TIMEOUT);
- 			drv_event_callback(sdata->local, sdata, &event);
- 		}
- 	} else if (ifmgd->assoc_data && ifmgd->assoc_data->timeout_started)
-@@ -5012,7 +5009,7 @@ void ieee80211_mgd_quiesce(struct ieee80211_sub_if_data *sdata)
- 					       WLAN_REASON_DEAUTH_LEAVING,
- 					       false, frame_buf);
- 		if (ifmgd->assoc_data)
--			ieee80211_destroy_assoc_data(sdata, false, true);
-+			ieee80211_destroy_assoc_data(sdata, ASSOC_ABANDON);
- 		if (ifmgd->auth_data)
- 			ieee80211_destroy_auth_data(sdata, false);
- 		cfg80211_tx_mlme_mgmt(sdata->dev, frame_buf,
-@@ -6407,7 +6404,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
- 					       IEEE80211_STYPE_DEAUTH,
- 					       req->reason_code, tx,
- 					       frame_buf);
--		ieee80211_destroy_assoc_data(sdata, false, true);
-+		ieee80211_destroy_assoc_data(sdata, ASSOC_ABANDON);
- 		ieee80211_report_disconnect(sdata, frame_buf,
- 					    sizeof(frame_buf), true,
- 					    req->reason_code, false);
-@@ -6478,16 +6475,8 @@ void ieee80211_mgd_stop(struct ieee80211_sub_if_data *sdata)
- 	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
- 
- 	sdata_lock(sdata);
--	if (ifmgd->assoc_data) {
--		struct cfg80211_bss *bss = ifmgd->assoc_data->bss;
--		struct cfg80211_assoc_failure data = {
--			.bss[0] = bss,
--			.timeout = true,
--		};
--
--		ieee80211_destroy_assoc_data(sdata, false, false);
--		cfg80211_assoc_failure(sdata->dev, &data);
--	}
-+	if (ifmgd->assoc_data)
-+		ieee80211_destroy_assoc_data(sdata, ASSOC_TIMEOUT);
- 	if (ifmgd->auth_data)
- 		ieee80211_destroy_auth_data(sdata, false);
- 	spin_lock_bh(&ifmgd->teardown_lock);
+ DECLARE_EVENT_CLASS(link_station_add_mod,
 -- 
 2.36.1
 
