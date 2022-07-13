@@ -2,42 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41BA1573A32
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4081E573A34
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236746AbiGMPel (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 11:34:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40448 "EHLO
+        id S236944AbiGMPen (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 11:34:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231655AbiGMPek (ORCPT
+        with ESMTP id S231841AbiGMPel (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 11:34:40 -0400
+        Wed, 13 Jul 2022 11:34:41 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D542FFE0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D2EA30F46
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:To:From:Content-Type:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=HG7y0ESzg/HVXf11y4m8ABJsFjuKCK9fZ6cL9kZRp64=; t=1657726479; x=1658936079; 
-        b=r8YzTsIHOZ+Ex4TyImXu+lkHJPRhVsny8Wx2DyXB80qc8OwViIjsE6BgVBHM2d+QZM9EPQOgdY1
-        8lrbo2bcC11Hh0Mp152s/Y4IJfQjCMwh0E/iOmw4s9safWgQ7KsLUnoL0AlDh7KEb6T+bfVPr6Qrq
-        zeipfoEDEHvCUw1FiQ4DORDSj1DlEW6aRh5EXHV0zWQZyecaPoNEiJYBg+lrLNTsTC9f3PV8j4XU/
-        EDBbXGRVdwWdwQWN7SiSKi9yFJT98zXAMZqCFJZdI2RdybKdctp6PNcTpq99ADGkZkj98+CnMVJ4i
-        qOB8qR37doD8Jw2IHhXfy6Mv6nLh2zpm0sXg==;
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=dowT5/fbHMQCPQq7DYbtU6a7iyOiKETaI20mzGTRkqk=;
+        t=1657726480; x=1658936080; b=G8lVgFIvIE143HJ4RDOo68DLO41VSvbIjXVqaU+OGH7WcG2
+        IrtdbqCfBSeqq6MrFGybdm0bDIp/Hem7yXGZqAyGZlLFv3jIJFAhB4YdV4j9HCvNp1vBHJhhkJFnr
+        yNb1HwWFWwsVrDeCcevKU5JbXn0HBLXqAkSXp5XxgOG3ZhA7dbrvskF0DCoMhnzgM8ReMRAj9qyvg
+        4Vby4Y0k5azDEuVCJhBW402RrqKx/y//gtQDj4zjFvrSZUhOtEPUTAhOsEt1h2ngB6Q2OmWCYMXbH
+        r965z3OfrCn+CpjTGemgpAfzwQI/hSraz/Z+T6ddrCJQ8011xod11zI2qSYeK/Cg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBeNp-00EnaA-AR
-        for linux-wireless@vger.kernel.org;
+        id 1oBeNp-00EnaA-Hr;
         Wed, 13 Jul 2022 17:34:37 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 00/21] wifi: client-side MLO preparations
-Date:   Wed, 13 Jul 2022 17:34:12 +0200
-Message-Id: <20220713153433.279227-1-johannes@sipsolutions.net>
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 01/21] wifi: nl80211: reject link specific elements on assoc link
+Date:   Wed, 13 Jul 2022 17:34:13 +0200
+Message-Id: <20220713173301.0c5d0302c561.I01b2db7b91d0f03790751b6bee9c7001ce323317@changeid>
 X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220713153433.279227-1-johannes@sipsolutions.net>
+References: <20220713153433.279227-1-johannes@sipsolutions.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -49,15 +50,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Next patch dump, this time with client-side MLO preparations.
+From: Johannes Berg <johannes.berg@intel.com>
 
-The key portions here are still missing, so this is all fairly
-much obvious refactoring.
+When we associate, we'll include all the elements for the
+link we're sending the association request on in the frame
+and the specific ones for other links in the multi-link
+element container. Prohibit adding link-specific elements
+for the association link.
 
-After another round of internal fixes/reviews I'll probably
-send out the auth/assoc patch for mac80211 (and some hwsim
-bits) next, but possibly limited to a single link for now.
+Fixes: d648c23024bd ("wifi: nl80211: support MLO in auth/assoc")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-johannes
-
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index ead9bd111280..be969f64b5c3 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10813,6 +10813,13 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 			goto free;
+ 		}
+ 
++		if (req.links[req.link_id].elems_len) {
++			GENL_SET_ERR_MSG(info,
++					 "cannot have per-link elems on assoc link");
++			err = -EINVAL;
++			goto free;
++		}
++
+ 		kfree(attrs);
+ 		attrs = NULL;
+ 	} else {
+-- 
+2.36.1
 
