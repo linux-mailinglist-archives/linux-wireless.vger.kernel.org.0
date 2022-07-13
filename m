@@ -2,99 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0381573181
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 10:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 194155731BE
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 10:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235796AbiGMIsn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 04:48:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57740 "EHLO
+        id S235992AbiGMI6H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 04:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235793AbiGMIsa (ORCPT
+        with ESMTP id S235917AbiGMI5k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 04:48:30 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 15C18EABF0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 01:48:28 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26D8mKSn9019019, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26D8mKSn9019019
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 13 Jul 2022 16:48:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 13 Jul 2022 16:48:22 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Wed, 13 Jul
- 2022 16:48:22 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <gary.chang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 7/7] wifi: rtw88: prohibit enter IPS during HW scan
-Date:   Wed, 13 Jul 2022 16:47:58 +0800
-Message-ID: <20220713084758.41654-8-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220713084758.41654-1-pkshih@realtek.com>
-References: <20220713084758.41654-1-pkshih@realtek.com>
+        Wed, 13 Jul 2022 04:57:40 -0400
+Received: from sender-of-o53.zoho.in (sender-of-o53.zoho.in [103.117.158.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADDE4D215F;
+        Wed, 13 Jul 2022 01:57:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1657702628; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=KNaYsDeveHlOzBv1GjxVNi/T4WsP63SF/SZK6FNfjlNQmWf8NHhba1qz8OuDSMDZ3n7y383AtUFE1A0cScoUfMpeVeWPQhbV2QgrLI5LktErurgojbesbASkusDLxmFAQAkVDqhZ0+EhcY90pEjobYHyWGRjNMk6k1xTJrVCl4g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1657702628; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=; 
+        b=Z9lb8al4lnUqDjINI+ufYyTwadNmckwd3Uh9fiZxJpKlVx2eDqSfFMYYmtphYgkUQeuXXb+/S+GQ6bPsWWhPqIKkvFGNWvW8DiyhYTqcJD36i+2bMLdEafWB1YLoqV4G4wZTrqNa6IJog74aEXCw04z2yQ013Du4IIkKiDFCxWw=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1657702628;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=BnR6M2bsB9joSRee+nJmsq+INg5DPuVgdHgoSpQIb4mXnSDekY1EOY9UkRQTxX0C
+        cHPuRRz5VtrnhRrg8PDrsJGimTWBMwnN+mbPOcL8GHmdw6K7A2m9xrIQVPb/5eMsCkK
+        SOlpmXGZ9t+RjbzR4UQ0jEeqTdIpHzA9WBQQscO4=
+Received: from localhost.localdomain (43.241.144.124 [43.241.144.124]) by mx.zoho.in
+        with SMTPS id 1657702626310445.2710759486872; Wed, 13 Jul 2022 14:27:06 +0530 (IST)
+From:   Siddh Raman Pant <code@siddh.me>
+To:     syzbot+7a942657a255a9d9b18a@syzkaller.appspotmail.com
+Cc:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Message-ID: <20220713085643.9148-1-code@siddh.me>
+Subject: Re: [syzbot] memory leak in cfg80211_inform_single_bss_frame_data
+Date:   Wed, 13 Jul 2022 14:26:43 +0530
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <000000000000f632ba05c3cb12c2@google.com>
+References: <000000000000f632ba05c3cb12c2@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/13/2022 08:26:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzcvMTMgpFekyCAwNjo1NDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf8
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,TVD_SPACE_RATIO,URIBL_RED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
-
-Mac80211 core may ask driver to change to idle mode during HW scan,
-then H2C command for HW scan will send failed since chip is in idle
-mode. Therefore, We check the SCANNING flag before entering IPS to
-prevent this behavior.
-
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/mac80211.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index f9809b68febbe..e69067d041bd8 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -101,7 +101,8 @@ static int rtw_ops_config(struct ieee80211_hw *hw, u32 changed)
- 		rtw_set_channel(rtwdev);
- 
- 	if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
--	    (hw->conf.flags & IEEE80211_CONF_IDLE))
-+	    (hw->conf.flags & IEEE80211_CONF_IDLE) &&
-+	    !test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
- 		rtw_enter_ips(rtwdev);
- 
- out:
--- 
-2.25.1
 
