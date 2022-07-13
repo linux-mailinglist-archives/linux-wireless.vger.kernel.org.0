@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 960FE57317A
+	by mail.lfdr.de (Postfix) with ESMTP id DD07157317B
 	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 10:48:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235772AbiGMIse (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 04:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57648 "EHLO
+        id S235768AbiGMIsh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 04:48:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235774AbiGMIs0 (ORCPT
+        with ESMTP id S235787AbiGMIs2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 04:48:26 -0400
+        Wed, 13 Jul 2022 04:48:28 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8E429ECB88
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 01:48:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 46F47EBBFA
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 01:48:26 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26D8mFefD018985, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26D8mFefD018985
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26D8mGe35018989, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26D8mGe35018989
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 13 Jul 2022 16:48:15 +0800
+        Wed, 13 Jul 2022 16:48:16 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Wed, 13 Jul 2022 16:48:17 +0800
+ 15.1.2375.7; Wed, 13 Jul 2022 16:48:19 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Wed, 13 Jul
- 2022 16:48:17 +0800
+ 2022 16:48:18 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <gary.chang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/7] wifi: rtw88: add mutex when set regulatory and get Tx power table
-Date:   Wed, 13 Jul 2022 16:47:53 +0800
-Message-ID: <20220713084758.41654-3-pkshih@realtek.com>
+Subject: [PATCH 3/7] wifi: rtw88: add the update channel flow to support setting by parameters
+Date:   Wed, 13 Jul 2022 16:47:54 +0800
+Message-ID: <20220713084758.41654-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220713084758.41654-1-pkshih@realtek.com>
 References: <20220713084758.41654-1-pkshih@realtek.com>
@@ -55,10 +55,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzcvMTMgpFekyCAwNjo1NDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -70,67 +70,301 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Applying regulatory and getting Tx power table will access hal
-data, it should hold rtwdev::mutex to avoid hal data changed during
-setting flow.
+In order to set channel info to hal during HW scan, we add the update
+channel flow to support setting by parameters to meet the HW scan
+requriement.
 
 Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 11 +++++++----
- drivers/net/wireless/realtek/rtw88/regd.c  |  2 ++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 164 +++++++++++++---------
+ drivers/net/wireless/realtek/rtw88/main.h |  24 +++-
+ 2 files changed, 116 insertions(+), 72 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 7cde6bcf253b4..9ebe544e51d0d 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -621,11 +621,13 @@ static int rtw_debugfs_get_tx_pwr_tbl(struct seq_file *m, void *v)
- 	struct rtw_debugfs_priv *debugfs_priv = m->private;
- 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
- 	struct rtw_hal *hal = &rtwdev->hal;
--	u8 path, rate;
-+	u8 path, rate, bw, ch, regd;
- 	struct rtw_power_params pwr_param = {0};
--	u8 bw = hal->current_band_width;
--	u8 ch = hal->current_channel;
--	u8 regd = rtw_regd_get(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 7e4c63cc3fff8..f6fe06c91e2ed 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -675,67 +675,127 @@ void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period)
+ 	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period - 1);
+ }
+ 
++void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
++			u8 primary_channel, enum rtw_supported_band band,
++			enum rtw_bandwidth bandwidth)
++{
++	enum nl80211_band nl_band = rtw_hw_to_nl80211_band(band);
++	struct rtw_hal *hal = &rtwdev->hal;
++	u8 *cch_by_bw = hal->cch_by_bw;
++	u32 center_freq, primary_freq;
++	enum rtw_sar_bands sar_band;
++	u8 primary_channel_idx;
 +
-+	mutex_lock(&rtwdev->mutex);
-+	bw = hal->current_band_width;
-+	ch = hal->current_channel;
-+	regd = rtw_regd_get(rtwdev);
++	center_freq = ieee80211_channel_to_frequency(center_channel, nl_band);
++	primary_freq = ieee80211_channel_to_frequency(primary_channel, nl_band);
++
++	/* assign the center channel used while 20M bw is selected */
++	cch_by_bw[RTW_CHANNEL_WIDTH_20] = primary_channel;
++
++	/* assign the center channel used while current bw is selected */
++	cch_by_bw[bandwidth] = center_channel;
++
++	switch (bandwidth) {
++	case RTW_CHANNEL_WIDTH_20:
++		primary_channel_idx = RTW_SC_DONT_CARE;
++		break;
++	case RTW_CHANNEL_WIDTH_40:
++		if (primary_freq > center_freq)
++			primary_channel_idx = RTW_SC_20_UPPER;
++		else
++			primary_channel_idx = RTW_SC_20_LOWER;
++		break;
++	case RTW_CHANNEL_WIDTH_80:
++		if (primary_freq > center_freq) {
++			if (primary_freq - center_freq == 10)
++				primary_channel_idx = RTW_SC_20_UPPER;
++			else
++				primary_channel_idx = RTW_SC_20_UPMOST;
++
++			/* assign the center channel used
++			 * while 40M bw is selected
++			 */
++			cch_by_bw[RTW_CHANNEL_WIDTH_40] = center_channel + 4;
++		} else {
++			if (center_freq - primary_freq == 10)
++				primary_channel_idx = RTW_SC_20_LOWER;
++			else
++				primary_channel_idx = RTW_SC_20_LOWEST;
++
++			/* assign the center channel used
++			 * while 40M bw is selected
++			 */
++			cch_by_bw[RTW_CHANNEL_WIDTH_40] = center_channel - 4;
++		}
++		break;
++	default:
++		break;
++	}
++
++	switch (center_channel) {
++	case 1 ... 14:
++		sar_band = RTW_SAR_BAND_0;
++		break;
++	case 36 ... 64:
++		sar_band = RTW_SAR_BAND_1;
++		break;
++	case 100 ... 144:
++		sar_band = RTW_SAR_BAND_3;
++		break;
++	case 149 ... 177:
++		sar_band = RTW_SAR_BAND_4;
++		break;
++	default:
++		WARN(1, "unknown ch(%u) to SAR band\n", center_channel);
++		sar_band = RTW_SAR_BAND_0;
++		break;
++	}
++
++	hal->current_primary_channel_index = primary_channel_idx;
++	hal->current_band_width = bandwidth;
++	hal->primary_channel = primary_channel;
++	hal->current_channel = center_channel;
++	hal->current_band_type = band;
++	hal->sar_band = sar_band;
++}
++
+ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
+ 			    struct rtw_channel_params *chan_params)
+ {
+ 	struct ieee80211_channel *channel = chandef->chan;
+ 	enum nl80211_chan_width width = chandef->width;
+-	u8 *cch_by_bw = chan_params->cch_by_bw;
+ 	u32 primary_freq, center_freq;
+ 	u8 center_chan;
+ 	u8 bandwidth = RTW_CHANNEL_WIDTH_20;
+-	u8 primary_chan_idx = 0;
+-	u8 i;
  
- 	seq_printf(m, "channel: %u\n", ch);
- 	seq_printf(m, "bandwidth: %u\n", bw);
-@@ -667,6 +669,7 @@ static int rtw_debugfs_get_tx_pwr_tbl(struct seq_file *m, void *v)
- 	}
+ 	center_chan = channel->hw_value;
+ 	primary_freq = channel->center_freq;
+ 	center_freq = chandef->center_freq1;
  
- 	mutex_unlock(&hal->tx_power_mutex);
-+	mutex_unlock(&rtwdev->mutex);
+-	/* assign the center channel used while 20M bw is selected */
+-	cch_by_bw[RTW_CHANNEL_WIDTH_20] = channel->hw_value;
+-
+ 	switch (width) {
+ 	case NL80211_CHAN_WIDTH_20_NOHT:
+ 	case NL80211_CHAN_WIDTH_20:
+ 		bandwidth = RTW_CHANNEL_WIDTH_20;
+-		primary_chan_idx = RTW_SC_DONT_CARE;
+ 		break;
+ 	case NL80211_CHAN_WIDTH_40:
+ 		bandwidth = RTW_CHANNEL_WIDTH_40;
+-		if (primary_freq > center_freq) {
+-			primary_chan_idx = RTW_SC_20_UPPER;
++		if (primary_freq > center_freq)
+ 			center_chan -= 2;
+-		} else {
+-			primary_chan_idx = RTW_SC_20_LOWER;
++		else
+ 			center_chan += 2;
+-		}
+ 		break;
+ 	case NL80211_CHAN_WIDTH_80:
+ 		bandwidth = RTW_CHANNEL_WIDTH_80;
+ 		if (primary_freq > center_freq) {
+-			if (primary_freq - center_freq == 10) {
+-				primary_chan_idx = RTW_SC_20_UPPER;
++			if (primary_freq - center_freq == 10)
+ 				center_chan -= 2;
+-			} else {
+-				primary_chan_idx = RTW_SC_20_UPMOST;
++			else
+ 				center_chan -= 6;
+-			}
+-			/* assign the center channel used
+-			 * while 40M bw is selected
+-			 */
+-			cch_by_bw[RTW_CHANNEL_WIDTH_40] = center_chan + 4;
+ 		} else {
+-			if (center_freq - primary_freq == 10) {
+-				primary_chan_idx = RTW_SC_20_LOWER;
++			if (center_freq - primary_freq == 10)
+ 				center_chan += 2;
+-			} else {
+-				primary_chan_idx = RTW_SC_20_LOWEST;
++			else
+ 				center_chan += 6;
+-			}
+-			/* assign the center channel used
+-			 * while 40M bw is selected
+-			 */
+-			cch_by_bw[RTW_CHANNEL_WIDTH_40] = center_chan - 4;
+ 		}
+ 		break;
+ 	default:
+@@ -745,13 +805,7 @@ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
  
+ 	chan_params->center_chan = center_chan;
+ 	chan_params->bandwidth = bandwidth;
+-	chan_params->primary_chan_idx = primary_chan_idx;
+-
+-	/* assign the center channel used while current bw is selected */
+-	cch_by_bw[bandwidth] = center_chan;
+-
+-	for (i = bandwidth + 1; i <= RTW_MAX_CHANNEL_WIDTH; i++)
+-		cch_by_bw[i] = 0;
++	chan_params->primary_chan = channel->hw_value;
+ }
+ 
+ void rtw_set_channel(struct rtw_dev *rtwdev)
+@@ -760,45 +814,21 @@ void rtw_set_channel(struct rtw_dev *rtwdev)
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_channel_params ch_param;
+-	u8 center_chan, bandwidth, primary_chan_idx;
+-	u8 i;
++	u8 center_chan, primary_chan, bandwidth, band;
+ 
+ 	rtw_get_channel_params(&hw->conf.chandef, &ch_param);
+ 	if (WARN(ch_param.center_chan == 0, "Invalid channel\n"))
+ 		return;
+ 
+ 	center_chan = ch_param.center_chan;
++	primary_chan = ch_param.primary_chan;
+ 	bandwidth = ch_param.bandwidth;
+-	primary_chan_idx = ch_param.primary_chan_idx;
+-
+-	hal->current_band_width = bandwidth;
+-	hal->current_channel = center_chan;
+-	hal->current_primary_channel_index = primary_chan_idx;
+-	hal->current_band_type = center_chan > 14 ? RTW_BAND_5G : RTW_BAND_2G;
+-
+-	switch (center_chan) {
+-	case 1 ... 14:
+-		hal->sar_band = RTW_SAR_BAND_0;
+-		break;
+-	case 36 ... 64:
+-		hal->sar_band = RTW_SAR_BAND_1;
+-		break;
+-	case 100 ... 144:
+-		hal->sar_band = RTW_SAR_BAND_3;
+-		break;
+-	case 149 ... 177:
+-		hal->sar_band = RTW_SAR_BAND_4;
+-		break;
+-	default:
+-		WARN(1, "unknown ch(%u) to SAR band\n", center_chan);
+-		hal->sar_band = RTW_SAR_BAND_0;
+-		break;
+-	}
++	band = ch_param.center_chan > 14 ? RTW_BAND_5G : RTW_BAND_2G;
+ 
+-	for (i = RTW_CHANNEL_WIDTH_20; i <= RTW_MAX_CHANNEL_WIDTH; i++)
+-		hal->cch_by_bw[i] = ch_param.cch_by_bw[i];
++	rtw_update_channel(rtwdev, center_chan, primary_chan, band, bandwidth);
+ 
+-	chip->ops->set_channel(rtwdev, center_chan, bandwidth, primary_chan_idx);
++	chip->ops->set_channel(rtwdev, center_chan, bandwidth,
++			       hal->current_primary_channel_index);
+ 
+ 	if (hal->current_band_type == RTW_BAND_5G) {
+ 		rtw_coex_switchband_notify(rtwdev, COEX_SWITCH_TO_5G);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 96ecb21b5039d..9bb8053413d24 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -510,12 +510,8 @@ struct rtw_timer_list {
+ 
+ struct rtw_channel_params {
+ 	u8 center_chan;
++	u8 primary_chan;
+ 	u8 bandwidth;
+-	u8 primary_chan_idx;
+-	/* center channel by different available bandwidth,
+-	 * val of (bw > current bandwidth) is invalid
+-	 */
+-	u8 cch_by_bw[RTW_MAX_CHANNEL_WIDTH + 1];
+ };
+ 
+ struct rtw_hw_reg {
+@@ -1901,6 +1897,7 @@ struct rtw_hal {
+ 	u8 current_primary_channel_index;
+ 	u8 current_band_width;
+ 	u8 current_band_type;
++	u8 primary_channel;
+ 
+ 	/* center channel for different available bandwidth,
+ 	 * val of (bw > current_band_width) is invalid
+@@ -2134,6 +2131,20 @@ static inline int rtw_chip_dump_fw_crash(struct rtw_dev *rtwdev)
  	return 0;
  }
-diff --git a/drivers/net/wireless/realtek/rtw88/regd.c b/drivers/net/wireless/realtek/rtw88/regd.c
-index 315c2b193e92c..2f547cbcf6da5 100644
---- a/drivers/net/wireless/realtek/rtw88/regd.c
-+++ b/drivers/net/wireless/realtek/rtw88/regd.c
-@@ -479,6 +479,7 @@ void rtw_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request)
- 	rtw_dbg(rtwdev, RTW_DBG_REGD, "regd state: %d -> %d\n",
- 		rtwdev->regd.state, next_regd.state);
  
-+	mutex_lock(&rtwdev->mutex);
- 	rtwdev->regd = next_regd;
- 	rtw_dbg_regd_dump(rtwdev, "get alpha2 %c%c from initiator %d: ",
- 			  request->alpha2[0],
-@@ -487,6 +488,7 @@ void rtw_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request)
- 
- 	rtw_phy_adaptivity_set_mode(rtwdev);
- 	rtw_phy_set_tx_power_level(rtwdev, hal->current_channel);
-+	mutex_unlock(&rtwdev->mutex);
- }
- 
- u8 rtw_regd_get(struct rtw_dev *rtwdev)
++static inline
++enum nl80211_band rtw_hw_to_nl80211_band(enum rtw_supported_band hw_band)
++{
++	switch (hw_band) {
++	default:
++	case RTW_BAND_2G:
++		return NL80211_BAND_2GHZ;
++	case RTW_BAND_5G:
++		return NL80211_BAND_5GHZ;
++	case RTW_BAND_60G:
++		return NL80211_BAND_60GHZ;
++	}
++}
++
+ void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel);
+ void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period);
+ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
+@@ -2175,4 +2186,7 @@ int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+ 		u32 fwcd_item);
+ int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size);
+ void rtw_set_txrx_1ss(struct rtw_dev *rtwdev, bool config_1ss);
++void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
++			u8 primary_channel, enum rtw_supported_band band,
++			enum rtw_bandwidth bandwidth);
+ #endif
 -- 
 2.25.1
 
