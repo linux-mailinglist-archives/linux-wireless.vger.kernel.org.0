@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0A3573340
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6E3573353
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235104AbiGMJp7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 05:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
+        id S235181AbiGMJqE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 05:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235327AbiGMJpT (ORCPT
+        with ESMTP id S236212AbiGMJpX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 05:45:19 -0400
+        Wed, 13 Jul 2022 05:45:23 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0C9CF32E5
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF50C04F4
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=qzNytJmWPrUXHM/hm/8e2Stxa0vZhtOTNr3wo1oGcxs=;
-        t=1657705518; x=1658915118; b=Z8/TIz3nWBTTseG6nEpdjuXvO4fvIfk4ymmS57BK1YMG0Zm
-        8av+NNkVE6EawQR+cTVMI/KGneW5pLQIUQToVrASALhrmmYAgRtX44GyBIxn7d2nY9zzhso9GIC43
-        Z+8SHzMgLXr47O11HYvbX/PFs88W/6/+t9GshVqmbBFt7in4iEz9GZWVi7HWL9mzpC1R030KTQvBU
-        XekDtz16quvYqLCcOMGvqWEWjAOMSR1axtxOIhQ45Qh4skQB4xd2tIPeMIE6EE+21Uoxkhvqjjaw7
-        95QLO3aJztdBOoLEChKFd4Z6/YO5lDt8ACpWvjiRG87Lf886HPxLwFt/nD0aTjaQ==;
+        Resent-Cc:Resent-Message-ID; bh=TG9oBaJziNF8wnrAAMKjLv2aa3BbfHZygjIgor+8uOU=;
+        t=1657705520; x=1658915120; b=Zz8LWEG+S8BKRMBHMLtrjOFQIQgo/5q8TABsU3R2FzpyjA4
+        SvBzA1/e/6DBxkQpUjKAgqzULbZ2iSNCY/86ofXLodMCUFLPjGq/CMq+ubG5FYTe0xz2O2HrTXZjR
+        uesVoFY6zU4K6NJ50WZfSjx0wNV6G8+9K9ffwzgLrZ69sTUdkM+JDo+agt+Q2bxKedQ1VqM6QWOdw
+        rz76yThlMoHBiDRvp+fynZAwGowtFvMiqGxwkjMc5Ii0uHxqvrnXsvOstMrDkQrrfLLG3zIJIBQoN
+        Jth/oeKFfnlGcpC3amyw8zrUZ17ktTi0uW0SSroivWgpoBm+t4VPFHMoI+0UPZ7A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBYvk-00EgvB-1G;
+        id 1oBYvk-00EgvB-D4;
         Wed, 13 Jul 2022 11:45:16 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 37/76] wifi: mac80211: mlme: use correct link_sta
-Date:   Wed, 13 Jul 2022 11:44:23 +0200
-Message-Id: <20220713114425.55b3149a7261.I3ed0c7572e1daf2f1bbc42d490a61f2928fda267@changeid>
+Subject: [PATCH 38/76] wifi: cfg80211: remove BSS pointer from cfg80211_disassoc_request
+Date:   Wed, 13 Jul 2022 11:44:24 +0200
+Message-Id: <20220713114425.d91527f387df.Ie3f9ceefd2ecf78d55bb09b2e434da9b2a992dcc@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713094502.163926-1-johannes@sipsolutions.net>
 References: <20220713094502.163926-1-johannes@sipsolutions.net>
@@ -52,173 +52,142 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-For station capabilities, e.g. TWT, we need to use the correct
-link station instead of deflink. Switch the code to do that.
+The race described by the comment in mac80211 hasn't existed
+since the locking rework to use the same lock and for MLO we
+need to pass the AP MLD address, so just pass the BSSID or
+AP MLD address instead of the BSS struct pointer, and adjust
+all the code accordingly.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 46 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 31 insertions(+), 15 deletions(-)
+ include/net/cfg80211.h |  6 +++---
+ net/mac80211/mlme.c    | 14 +++++---------
+ net/wireless/core.h    |  2 +-
+ net/wireless/mlme.c    |  8 +++-----
+ net/wireless/trace.h   |  5 +----
+ 5 files changed, 13 insertions(+), 22 deletions(-)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index e50b93160319..cc20f0036e75 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2886,7 +2886,7 @@ struct cfg80211_assoc_request {
+  * This structure provides information needed to complete IEEE 802.11
+  * deauthentication.
+  *
+- * @bssid: the BSSID of the BSS to deauthenticate from
++ * @bssid: the BSSID or AP MLD address to deauthenticate from
+  * @ie: Extra IEs to add to Deauthentication frame or %NULL
+  * @ie_len: Length of ie buffer in octets
+  * @reason_code: The reason code for the deauthentication
+@@ -2907,7 +2907,7 @@ struct cfg80211_deauth_request {
+  * This structure provides information needed to complete IEEE 802.11
+  * disassociation.
+  *
+- * @bss: the BSS to disassociate from
++ * @ap_addr: the BSSID or AP MLD address to disassociate from
+  * @ie: Extra IEs to add to Disassociation frame or %NULL
+  * @ie_len: Length of ie buffer in octets
+  * @reason_code: The reason code for the disassociation
+@@ -2915,7 +2915,7 @@ struct cfg80211_deauth_request {
+  *	Disassociation frame is to be transmitted.
+  */
+ struct cfg80211_disassoc_request {
+-	struct cfg80211_bss *bss;
++	const u8 *ap_addr;
+ 	const u8 *ie;
+ 	size_t ie_len;
+ 	u16 reason_code;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index fcd964e634d5..7870e3e23e26 100644
+index 7870e3e23e26..0c432e3abd90 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -3395,7 +3395,7 @@ static void ieee80211_get_rates(struct ieee80211_supported_band *sband,
- 	}
+@@ -6425,18 +6425,14 @@ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ {
+ 	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
+ 
+-	/*
+-	 * cfg80211 should catch this ... but it's racy since
+-	 * we can receive a disassoc frame, process it, hand it
+-	 * to cfg80211 while that's in a locked section already
+-	 * trying to tell us that the user wants to disconnect.
+-	 */
+-	if (sdata->deflink.u.mgd.bss != req->bss)
+-		return -ENOLINK;
++	if (!sdata->u.mgd.associated ||
++	    memcmp(sdata->vif.cfg.ap_addr, req->ap_addr, ETH_ALEN))
++		return -ENOTCONN;
+ 
+ 	sdata_info(sdata,
+ 		   "disassociating from %pM by local choice (Reason: %u=%s)\n",
+-		   req->bss->bssid, req->reason_code, ieee80211_get_reason_code_string(req->reason_code));
++		   req->ap_addr, req->reason_code,
++		   ieee80211_get_reason_code_string(req->reason_code));
+ 
+ 	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DISASSOC,
+ 			       req->reason_code, !req->local_state_change,
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index fd723fa5e2d7..e72ca6eefafb 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -372,7 +372,7 @@ int cfg80211_mlme_deauth(struct cfg80211_registered_device *rdev,
+ 			 const u8 *ie, int ie_len, u16 reason,
+ 			 bool local_state_change);
+ int cfg80211_mlme_disassoc(struct cfg80211_registered_device *rdev,
+-			   struct net_device *dev, const u8 *bssid,
++			   struct net_device *dev, const u8 *ap_addr,
+ 			   const u8 *ie, int ie_len, u16 reason,
+ 			   bool local_state_change);
+ void cfg80211_mlme_down(struct cfg80211_registered_device *rdev,
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 935537c64ed8..4a35b3559daa 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -370,7 +370,7 @@ int cfg80211_mlme_deauth(struct cfg80211_registered_device *rdev,
  }
  
--static bool ieee80211_twt_req_supported(const struct sta_info *sta,
-+static bool ieee80211_twt_req_supported(const struct link_sta_info *link_sta,
- 					const struct ieee802_11_elems *elems)
+ int cfg80211_mlme_disassoc(struct cfg80211_registered_device *rdev,
+-			   struct net_device *dev, const u8 *bssid,
++			   struct net_device *dev, const u8 *ap_addr,
+ 			   const u8 *ie, int ie_len, u16 reason,
+ 			   bool local_state_change)
  {
- 	if (elems->ext_capab_len < 10)
-@@ -3404,15 +3404,15 @@ static bool ieee80211_twt_req_supported(const struct sta_info *sta,
- 	if (!(elems->ext_capab[9] & WLAN_EXT_CAPA10_TWT_RESPONDER_SUPPORT))
- 		return false;
+@@ -380,6 +380,7 @@ int cfg80211_mlme_disassoc(struct cfg80211_registered_device *rdev,
+ 		.local_state_change = local_state_change,
+ 		.ie = ie,
+ 		.ie_len = ie_len,
++		.ap_addr = ap_addr,
+ 	};
+ 	int err;
  
--	return sta->sta.deflink.he_cap.he_cap_elem.mac_cap_info[0] &
-+	return link_sta->pub->he_cap.he_cap_elem.mac_cap_info[0] &
- 		IEEE80211_HE_MAC_CAP0_TWT_RES;
- }
+@@ -388,10 +389,7 @@ int cfg80211_mlme_disassoc(struct cfg80211_registered_device *rdev,
+ 	if (!wdev->connected)
+ 		return -ENOTCONN;
  
- static int ieee80211_recalc_twt_req(struct ieee80211_link_data *link,
--				    struct sta_info *sta,
-+				    struct link_sta_info *link_sta,
- 				    struct ieee802_11_elems *elems)
- {
--	bool twt = ieee80211_twt_req_supported(sta, elems);
-+	bool twt = ieee80211_twt_req_supported(link_sta, elems);
+-	if (ether_addr_equal(wdev->links[0].client.current_bss->pub.bssid,
+-			     bssid))
+-		req.bss = &wdev->links[0].client.current_bss->pub;
+-	else
++	if (memcmp(wdev->u.client.connected_addr, ap_addr, ETH_ALEN))
+ 		return -ENOTCONN;
  
- 	if (link->conf->twt_requester != twt) {
- 		link->conf->twt_requester = twt;
-@@ -3424,14 +3424,14 @@ static int ieee80211_recalc_twt_req(struct ieee80211_link_data *link,
- static bool ieee80211_twt_bcast_support(struct ieee80211_sub_if_data *sdata,
- 					struct ieee80211_bss_conf *bss_conf,
- 					struct ieee80211_supported_band *sband,
--					struct sta_info *sta)
-+					struct link_sta_info *link_sta)
- {
- 	const struct ieee80211_sta_he_cap *own_he_cap =
- 		ieee80211_get_he_iftype_cap(sband,
- 					    ieee80211_vif_type_p2p(&sdata->vif));
- 
- 	return bss_conf->he_support &&
--		(sta->sta.deflink.he_cap.he_cap_elem.mac_cap_info[2] &
-+		(link_sta->pub->he_cap.he_cap_elem.mac_cap_info[2] &
- 			IEEE80211_HE_MAC_CAP2_BCAST_TWT) &&
- 		own_he_cap &&
- 		(own_he_cap->he_cap_elem.mac_cap_info[2] &
-@@ -3446,6 +3446,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_supported_band *sband;
-+	struct link_sta_info *link_sta;
- 	struct sta_info *sta;
- 	u16 capab_info, aid;
- 	struct ieee80211_bss_conf *bss_conf = &sdata->vif.bss_conf;
-@@ -3617,6 +3618,14 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 		goto out;
- 	}
- 
-+	link_sta = rcu_dereference_protected(sta->link[link->link_id],
-+					     lockdep_is_held(&local->sta_mtx));
-+	if (WARN_ON(!link_sta)) {
-+		mutex_unlock(&sdata->local->sta_mtx);
-+		ret = false;
-+		goto out;
-+	}
-+
- 	sband = ieee80211_get_link_sband(link);
- 	if (!sband) {
- 		mutex_unlock(&sdata->local->sta_mtx);
-@@ -3637,12 +3646,12 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 	if (elems->ht_cap_elem && !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HT))
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
- 						  elems->ht_cap_elem,
--						  &sta->deflink);
-+						  link_sta);
- 
- 	if (elems->vht_cap_elem && !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT))
- 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
- 						    elems->vht_cap_elem,
--						    &sta->deflink);
-+						    link_sta);
- 
- 	if (elems->he_operation && !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE) &&
- 	    elems->he_cap) {
-@@ -3650,9 +3659,9 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 						  elems->he_cap,
- 						  elems->he_cap_len,
- 						  elems->he_6ghz_capa,
--						  &sta->deflink);
-+						  link_sta);
- 
--		bss_conf->he_support = sta->sta.deflink.he_cap.has_he;
-+		bss_conf->he_support = link_sta->pub->he_cap.has_he;
- 		if (elems->rsnx && elems->rsnx_len &&
- 		    (elems->rsnx[0] & WLAN_RSNX_CAPA_PROTECTED_TWT) &&
- 		    wiphy_ext_feature_isset(local->hw.wiphy,
-@@ -3661,7 +3670,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 		else
- 			bss_conf->twt_protected = false;
- 
--		changed |= ieee80211_recalc_twt_req(link, sta, elems);
-+		changed |= ieee80211_recalc_twt_req(link, link_sta, elems);
- 
- 		if (elems->eht_operation && elems->eht_cap &&
- 		    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_EHT)) {
-@@ -3684,7 +3693,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 	}
- 
- 	bss_conf->twt_broadcast =
--		ieee80211_twt_bcast_support(sdata, bss_conf, sband, sta);
-+		ieee80211_twt_bcast_support(sdata, bss_conf, sband, link_sta);
- 
- 	if (bss_conf->he_support) {
- 		bss_conf->he_bss_color.color =
-@@ -3749,7 +3758,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 		nss = *elems->opmode_notif & IEEE80211_OPMODE_NOTIF_RX_NSS_MASK;
- 		nss >>= IEEE80211_OPMODE_NOTIF_RX_NSS_SHIFT;
- 		nss += 1;
--		sta->sta.deflink.rx_nss = nss;
-+		link_sta->pub->rx_nss = nss;
- 	}
- 
- 	rate_control_rate_init(sta);
-@@ -4190,6 +4199,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_chanctx_conf *chanctx_conf;
- 	struct ieee80211_channel *chan;
-+	struct link_sta_info *link_sta;
- 	struct sta_info *sta;
- 	u32 changed = 0;
- 	bool erp_valid;
-@@ -4431,8 +4441,14 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 
- 	mutex_lock(&local->sta_mtx);
- 	sta = sta_info_get(sdata, sdata->vif.cfg.ap_addr);
-+	if (WARN_ON(!sta))
-+		goto free;
-+	link_sta = rcu_dereference_protected(sta->link[link->link_id],
-+					     lockdep_is_held(&local->sta_mtx));
-+	if (WARN_ON(!link_sta))
-+		goto free;
- 
--	changed |= ieee80211_recalc_twt_req(link, sta, elems);
-+	changed |= ieee80211_recalc_twt_req(link, link_sta, elems);
- 
- 	if (ieee80211_config_bw(link, elems->ht_cap_elem,
- 				elems->vht_cap_elem, elems->ht_operation,
-@@ -4454,7 +4470,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 	}
- 
- 	if (sta && elems->opmode_notif)
--		ieee80211_vht_handle_opmode(sdata, &sta->deflink,
-+		ieee80211_vht_handle_opmode(sdata, link_sta,
- 					    *elems->opmode_notif,
- 					    rx_status->band);
- 	mutex_unlock(&local->sta_mtx);
+ 	err = rdev_disassoc(rdev, dev, &req);
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index c50e8a04199e..4316d3dc31ea 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1318,10 +1318,7 @@ TRACE_EVENT(rdev_disassoc,
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+ 		NETDEV_ASSIGN;
+-		if (req->bss)
+-			MAC_ASSIGN(bssid, req->bss->bssid);
+-		else
+-			eth_zero_addr(__entry->bssid);
++		MAC_ASSIGN(bssid, req->ap_addr);
+ 		__entry->reason_code = req->reason_code;
+ 		__entry->local_state_change = req->local_state_change;
+ 	),
 -- 
 2.36.1
 
