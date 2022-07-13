@@ -2,159 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C669572A5D
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 02:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A68C2572EE0
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 09:13:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbiGMAsW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jul 2022 20:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36914 "EHLO
+        id S234657AbiGMHNo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 03:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbiGMAsV (ORCPT
+        with ESMTP id S231748AbiGMHNm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jul 2022 20:48:21 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9B1AEF60
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Jul 2022 17:48:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1657673299; x=1689209299;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2rEVIR93nuJXdLLZy1ten/rGcolAL17PKYaChVThIaw=;
-  b=mrGxzHpgHRtLVUQk9b09g3QLNdGFCYicdhafME2fIBu53NbJvFsque3D
-   RCreTY5A6Y1AIyS5aPDsJ1uhlxUNQz0za67JeEMM9JhdJiOMLFJ/IQZnb
-   t9m4vpBPZAFWdrmBkuzF2YjQGXv/af2yufZIRX8UzQH1Fn+rpfc1RCW4B
-   M=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 12 Jul 2022 17:48:19 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2022 17:48:19 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 12 Jul 2022 17:48:18 -0700
-Received: from [10.110.97.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 12 Jul
- 2022 17:48:18 -0700
-Message-ID: <11aa90b3-86cb-044b-1c93-8e1ef34125be@quicinc.com>
-Date:   Tue, 12 Jul 2022 17:48:17 -0700
+        Wed, 13 Jul 2022 03:13:42 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B711163;
+        Wed, 13 Jul 2022 00:13:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=9pIcFcBJ2kqaxG/2C64Os3L7Qwb6VJENhcuLxSwGJQE=; t=1657696422; x=1658906022; 
+        b=FLx3lu1ULPMQRfiu4PAjK0j7nOdG5y5MHoOr38plvbUaN8gaQesQ3ZkuCZlVq1BOVhY5L2q7ZsM
+        8TZ6gxgGXKawdouRZLSy9FW+/Fy3da93QB8OhFL3ms6ngIW4IJFzPsV/kJC7g1zqT/+k1f/egm+ZO
+        2/wNwuKMnAbH+vOUO74TenYKrVFu34ymtl9LdYdAaNKdMBc6xH4WFlYF35Lw0xbHgIvb//bu/83EF
+        dtjFu4T6zyaa+VQ5wTKu7ZDr330VhUrFK/NcNjBmDBhuluZC5vSnTTw3MwiXKKUfVoZ6FgNaSYTqR
+        2Q+yv1cHdQGWrc6rr/gW2F8kBW3lPPWxzo/w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oBWZ2-00EbSx-6r;
+        Wed, 13 Jul 2022 09:13:40 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2022-07-13
+Date:   Wed, 13 Jul 2022 09:13:32 +0200
+Message-Id: <20220713071333.19713-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 09/12] nl80211: support advertising S1G rate information
-Content-Language: en-US
-To:     Kieran Frewen <kieran.frewen@morsemicro.com>,
-        <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Bassem Dawood <bassem@morsemicro.com>
-References: <20220711010816.45927-1-kieran.frewen@morsemicro.com>
- <20220711010816.45927-10-kieran.frewen@morsemicro.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220711010816.45927-10-kieran.frewen@morsemicro.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/10/2022 6:08 PM, Kieran Frewen wrote:
-> Add S1G rate information to netlink STA rate message.
-> 
-> Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
-> Signed-off-by: Bassem Dawood <bassem@morsemicro.com>
-> ---
->   include/uapi/linux/nl80211.h | 14 ++++++++++++++
->   net/wireless/nl80211.c       | 23 +++++++++++++++++++++++
->   2 files changed, 37 insertions(+)
-> 
-> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-> index 71074332ccc5..19cf030004e9 100644
-> --- a/include/uapi/linux/nl80211.h
-> +++ b/include/uapi/linux/nl80211.h
-> @@ -3539,6 +3539,13 @@ enum nl80211_eht_ru_alloc {
->    *	(u8, see &enum nl80211_eht_gi)
->    * @NL80211_RATE_INFO_EHT_RU_ALLOC: EHT RU allocation, if not present then
->    *	non-OFDMA was used (u8, see &enum nl80211_eht_ru_alloc)
-> + * @NL80211_RATE_INFO_S1G_MCS: S1G MCS index (u8, 0-10)
-> + * @NL80211_RATE_INFO_S1G_nss: S1G NSS value (u8, 1-4)
+Hi,
 
-nit: s/nss/NSS/
+Here's a small set of fixes for the current cycle, see the
+description in the tag below.
 
-> + * @NL80211_RATE_INFO_1_MHZ_WIDTH: 1 MHz S1G rate
-> + * @NL80211_RATE_INFO_2_MHZ_WIDTH: 2 MHz S1G rate
-> + * @NL80211_RATE_INFO_4_MHZ_WIDTH: 4 MHz S1G rate
-> + * @NL80211_RATE_INFO_8_MHZ_WIDTH: 8 MHz S1G rate
-> + * @NL80211_RATE_INFO_16_MHZ_WIDTH: 16 MHz S1G rate
->    * @__NL80211_RATE_INFO_AFTER_LAST: internal use
->    */
->   enum nl80211_rate_info {
-> @@ -3565,6 +3572,13 @@ enum nl80211_rate_info {
->   	NL80211_RATE_INFO_EHT_NSS,
->   	NL80211_RATE_INFO_EHT_GI,
->   	NL80211_RATE_INFO_EHT_RU_ALLOC,
-> +	NL80211_RATE_INFO_S1G_MCS,
-> +	NL80211_RATE_INFO_S1G_NSS,
-> +	NL80211_RATE_INFO_1_MHZ_WIDTH,
-> +	NL80211_RATE_INFO_2_MHZ_WIDTH,
-> +	NL80211_RATE_INFO_4_MHZ_WIDTH,
-> +	NL80211_RATE_INFO_8_MHZ_WIDTH,
-> +	NL80211_RATE_INFO_16_MHZ_WIDTH,
->   
->   	/* keep last */
->   	__NL80211_RATE_INFO_AFTER_LAST,
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index 077dc2938551..70efed2b5899 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -6073,6 +6073,21 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
->   		return false;
->   
->   	switch (info->bw) {
-> +	case RATE_INFO_BW_1:
-> +		rate_flg = NL80211_RATE_INFO_1_MHZ_WIDTH;
-> +		break;
-> +	case RATE_INFO_BW_2:
-> +		rate_flg = NL80211_RATE_INFO_2_MHZ_WIDTH;
-> +		break;
-> +	case RATE_INFO_BW_4:
-> +		rate_flg = NL80211_RATE_INFO_4_MHZ_WIDTH;
-> +		break;
-> +	case RATE_INFO_BW_8:
-> +		rate_flg = NL80211_RATE_INFO_8_MHZ_WIDTH;
-> +		break;
-> +	case RATE_INFO_BW_16:
-> +		rate_flg = NL80211_RATE_INFO_16_MHZ_WIDTH;
-> +		break;
+No known conflicts.
 
-does it make sense to order these 1 2 4 5 8 10 16 20...
+Please pull and let me know if there's any problem.
 
->   	case RATE_INFO_BW_5:
->   		rate_flg = NL80211_RATE_INFO_5_MHZ_WIDTH;
->   		break;
-> @@ -6137,6 +6152,14 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
->   		    nla_put_u8(msg, NL80211_RATE_INFO_HE_RU_ALLOC,
->   			       info->he_ru_alloc))
->   			return false;
-> +	} else if (info->flags & RATE_INFO_FLAGS_S1G_MCS) {
-> +		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_MCS, info->mcs))
-> +			return false;
-> +		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_NSS, info->nss))
-> +			return false;
-> +		if (info->flags & RATE_INFO_FLAGS_SHORT_GI &&
-> +		    nla_put_flag(msg, NL80211_RATE_INFO_SHORT_GI))
-> +			return false;
->   	} else if (info->flags & RATE_INFO_FLAGS_EHT_MCS) {
->   		if (nla_put_u8(msg, NL80211_RATE_INFO_EHT_MCS, info->mcs))
->   			return false;
+Thanks,
+johannes
+
+
+
+The following changes since commit bf56a0917fd329d5adecfd405e681ff7ba1abb52:
+
+  Merge tag 'mlx5-fixes-2022-06-08' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux (2022-06-09 22:05:37 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-07-13
+
+for you to fetch changes up to 50e2ab39291947b6c6c7025cf01707c270fcde59:
+
+  wifi: mac80211: fix queue selection for mesh/OCB interfaces (2022-07-11 10:36:55 +0200)
+
+----------------------------------------------------------------
+A small set of fixes for
+ * queue selection in mesh/ocb
+ * queue handling on interface stop
+ * hwsim virtio device vs. some other virtio changes
+ * dt-bindings email addresses
+ * color collision memory allocation
+ * a const variable in rtw88
+ * shared SKB transmit in the ethernet format path
+ * P2P client port authorization
+
+----------------------------------------------------------------
+Felix Fietkau (2):
+      wifi: mac80211: do not wake queues on a vif that is being stopped
+      wifi: mac80211: fix queue selection for mesh/OCB interfaces
+
+Johannes Berg (1):
+      wifi: mac80211_hwsim: set virtio device ready in probe()
+
+Kalle Valo (2):
+      dt-bindings: net: wireless: ath9k: Change Toke as maintainer
+      dt-bindings: net: wireless: ath11k: change Kalle's email
+
+Lorenzo Bianconi (1):
+      wifi: mac80211: add gfp_t parameter to ieeee80211_obss_color_collision_notify
+
+Ping-Ke Shih (1):
+      rtw88: 8821c: fix access const table of channel parameters
+
+Ryder Lee (1):
+      wifi: mac80211: check skb_shared in ieee80211_8023_xmit()
+
+Vinayak Yadawad (1):
+      wifi: cfg80211: Allow P2P client interface to indicate port authorization
+
+ .../bindings/net/wireless/qca,ath9k.yaml           |  2 +-
+ .../bindings/net/wireless/qcom,ath11k.yaml         |  2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c              |  3 +-
+ drivers/net/wireless/mac80211_hwsim.c              |  2 ++
+ drivers/net/wireless/realtek/rtw88/main.h          |  6 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c      | 14 +++++----
+ include/net/cfg80211.h                             |  5 +--
+ include/net/mac80211.h                             |  3 +-
+ net/mac80211/cfg.c                                 |  4 +--
+ net/mac80211/iface.c                               |  2 ++
+ net/mac80211/rx.c                                  |  3 +-
+ net/mac80211/tx.c                                  | 36 ++++++++--------------
+ net/mac80211/util.c                                |  3 ++
+ net/mac80211/wme.c                                 |  4 +--
+ net/wireless/sme.c                                 |  3 +-
+ 15 files changed, 48 insertions(+), 44 deletions(-)
 
