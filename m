@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69367573A3F
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93895573A46
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236979AbiGMPev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S236977AbiGMPev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 13 Jul 2022 11:34:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236945AbiGMPen (ORCPT
+        with ESMTP id S236943AbiGMPen (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 13 Jul 2022 11:34:43 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAD34B0E2
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914E430F46
         for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=6nXTKEIE53vQkJfwYXrTV8vCLa+VW5ygDMmFJAiD4d8=;
-        t=1657726481; x=1658936081; b=HQNRx5lZbsXr0juO5R7IZJOjUwZqoffmCP8Mk/clBH3uF9+
-        WJVMOyzzKcTQZVYmcSvd2YBBcz5Y6SQz1QpVw+nrXOTBQXCO34kaXbJBaQM+4AXIgXFmfU6ONvDA6
-        xR2MrKInYJUCviFAzeznrOZOjV42VlgFkChTSkPdtUOwPHUD4DgMzdkVasmMwLluMGCFE9+9URxKm
-        TGdWL/H+CfmNJNqG7Wo8B62AvvvvZDM1YWgXN/W7iwDOR3UVyKBb3u17B85T3R+Uvl4NAkca2QYUb
-        w49nX0B+hAlt2fLsj1oa5Au59JtBPMAA0vfpKB5qS+1tVli+c0wdiMizZVlECIOQ==;
+        Resent-Cc:Resent-Message-ID; bh=IBwzJ2pYjQdKlLTvLxk5WbODqcT3/OVmRQWSGr+aRTE=;
+        t=1657726481; x=1658936081; b=ug15WYw3mhgtLnTyd0IeXd5IxY+B+vsYNvdQNfgvus9H6fX
+        dB4yPLGGF019EUP3DJMiKEgs++Ib34JKUh3n5a2Yyx/S/TYwUXaII9hZ3idbgVCv6CbSWJvcn/SBP
+        NilZ3ES4lck5905++RyQ1KiEQ5sABO3wRpKujTB/1EmA3+xSjsyWRM61Sa/mk1OvvN0LPBYow/BXJ
+        zWfXF2ytlfogPB+qeafhoNABs1KxWuyipYz/fV4Lx9fmTHONyL7bP5JExmurwMZJDRugnkZ23DXgr
+        fw3TL7MeQT3kYjglA0b4YM2yn9sjGauboxF8dxRRXv79OaS0dUMFNcy5waoRPSfw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBeNr-00EnaA-EH;
+        id 1oBeNr-00EnaA-Mw;
         Wed, 13 Jul 2022 17:34:39 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 09/21] wifi: mac80211: move IEEE80211_SDATA_OPERATING_GMODE to link
-Date:   Wed, 13 Jul 2022 17:34:21 +0200
-Message-Id: <20220713173301.5533c438e2a3.Ia6f6f76d35f30a669968cb7bdb3912c2a89227e2@changeid>
+Subject: [PATCH 10/21] wifi: mac80211: mlme: refactor link station setup
+Date:   Wed, 13 Jul 2022 17:34:22 +0200
+Message-Id: <20220713173301.c21bda9e2df3.I3a34da939f6aa4772c07b59e9aaaa08601c20ddb@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713153433.279227-1-johannes@sipsolutions.net>
 References: <20220713153433.279227-1-johannes@sipsolutions.net>
@@ -52,159 +52,168 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The flag here is currently per interface, but the way we
-set and clear it means it should be per link, so change
-it.
+Refactor the code here since we need to have it also for each
+link station after association in MLO later.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/ibss.c        | 6 ++----
- net/mac80211/ieee80211_i.h | 6 ++++--
- net/mac80211/mlme.c        | 7 ++-----
- net/mac80211/ocb.c         | 2 +-
- net/mac80211/tx.c          | 2 +-
- net/mac80211/util.c        | 8 ++++----
- 6 files changed, 14 insertions(+), 17 deletions(-)
+ net/mac80211/mlme.c | 119 ++++++++++++++++++++++++--------------------
+ 1 file changed, 65 insertions(+), 54 deletions(-)
 
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index e8df4ce33984..60b5230778a3 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -351,10 +351,8 @@ static void __ieee80211_sta_join_ibss(struct ieee80211_sub_if_data *sdata,
- 	bss_change |= BSS_CHANGED_ERP_SLOT;
- 
- 	/* cf. IEEE 802.11 9.2.12 */
--	if (chan->band == NL80211_BAND_2GHZ && have_higher_than_11mbit)
--		sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
--	else
--		sdata->flags &= ~IEEE80211_SDATA_OPERATING_GMODE;
-+	sdata->deflink.operating_11g_mode =
-+		chan->band == NL80211_BAND_2GHZ && have_higher_than_11mbit;
- 
- 	ieee80211_set_wmm_default(&sdata->deflink, true, false);
- 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 877f2441b74b..baaff4c7a79c 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -726,7 +726,6 @@ struct ieee80211_if_mesh {
-  * enum ieee80211_sub_if_data_flags - virtual interface flags
-  *
-  * @IEEE80211_SDATA_ALLMULTI: interface wants all multicast packets
-- * @IEEE80211_SDATA_OPERATING_GMODE: operating in G-only mode
-  * @IEEE80211_SDATA_DONT_BRIDGE_PACKETS: bridge packets between
-  *	associated stations and deliver multicast frames both
-  *	back to wireless media and to the local net stack.
-@@ -737,7 +736,6 @@ struct ieee80211_if_mesh {
-  */
- enum ieee80211_sub_if_data_flags {
- 	IEEE80211_SDATA_ALLMULTI		= BIT(0),
--	IEEE80211_SDATA_OPERATING_GMODE		= BIT(2),
- 	IEEE80211_SDATA_DONT_BRIDGE_PACKETS	= BIT(3),
- 	IEEE80211_SDATA_DISCONNECT_RESUME	= BIT(4),
- 	IEEE80211_SDATA_IN_DRIVER		= BIT(5),
-@@ -884,6 +882,7 @@ struct ieee80211_link_data_managed {
- 	bool have_beacon;
- 	bool tracking_signal_avg;
- 	bool disable_wmm_tracking;
-+	bool operating_11g_mode;
- 
- 	bool csa_waiting_bcn;
- 	bool csa_ignored_same_chan;
-@@ -946,6 +945,9 @@ struct ieee80211_link_data {
- 
- 	struct work_struct csa_finalize_work;
- 	bool csa_block_tx; /* write-protected by sdata_lock and local->mtx */
-+
-+	bool operating_11g_mode;
-+
- 	struct cfg80211_chan_def csa_chandef;
- 
- 	struct work_struct color_change_finalize_work;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 3986bf70fc5c..6822bf1c3cae 100644
+index 6822bf1c3cae..78b8fcd5fdb2 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -5810,11 +5810,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 		link->conf->basic_rates = basic_rates;
+@@ -3484,6 +3484,67 @@ static bool ieee80211_twt_bcast_support(struct ieee80211_sub_if_data *sdata,
+ 			IEEE80211_HE_MAC_CAP2_BCAST_TWT);
+ }
  
- 		/* cf. IEEE 802.11 9.2.12 */
--		if (cbss->channel->band == NL80211_BAND_2GHZ &&
--		    have_higher_than_11mbit)
--			sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
--		else
--			sdata->flags &= ~IEEE80211_SDATA_OPERATING_GMODE;
-+		link->operating_11g_mode = sband->band == NL80211_BAND_2GHZ &&
-+					   have_higher_than_11mbit;
++static int ieee80211_mgd_setup_link_sta(struct ieee80211_link_data *link,
++					struct sta_info *sta,
++					struct ieee80211_link_sta *link_sta,
++					struct cfg80211_bss *cbss)
++{
++	struct ieee80211_sub_if_data *sdata = link->sdata;
++	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_bss *bss = (void *)cbss->priv;
++	u32 rates = 0, basic_rates = 0;
++	bool have_higher_than_11mbit = false;
++	int min_rate = INT_MAX, min_rate_index = -1;
++	/* this is clearly wrong for MLO but we'll just remove it later */
++	int shift = ieee80211_vif_get_shift(&sdata->vif);
++	struct ieee80211_supported_band *sband;
++
++	memcpy(link_sta->addr, cbss->bssid, ETH_ALEN);
++
++	/* TODO: S1G Basic Rate Set is expressed elsewhere */
++	if (cbss->channel->band == NL80211_BAND_S1GHZ) {
++		ieee80211_s1g_sta_rate_init(sta);
++		return 0;
++	}
++
++	sband = local->hw.wiphy->bands[cbss->channel->band];
++
++	ieee80211_get_rates(sband, bss->supp_rates, bss->supp_rates_len,
++			    &rates, &basic_rates, &have_higher_than_11mbit,
++			    &min_rate, &min_rate_index, shift);
++
++	/*
++	 * This used to be a workaround for basic rates missing
++	 * in the association response frame. Now that we no
++	 * longer use the basic rates from there, it probably
++	 * doesn't happen any more, but keep the workaround so
++	 * in case some *other* APs are buggy in different ways
++	 * we can connect -- with a warning.
++	 * Allow this workaround only in case the AP provided at least
++	 * one rate.
++	 */
++	if (min_rate_index < 0) {
++		link_info(link, "No legacy rates in association response\n");
++		return -EINVAL;
++	} else if (!basic_rates) {
++		link_info(link, "No basic rates, using min rate instead\n");
++		basic_rates = BIT(min_rate_index);
++	}
++
++	if (rates)
++		link_sta->supp_rates[cbss->channel->band] = rates;
++	else
++		link_info(link, "No rates found, keeping mandatory only\n");
++
++	link->conf->basic_rates = basic_rates;
++
++	/* cf. IEEE 802.11 9.2.12 */
++	link->operating_11g_mode = sband->band == NL80211_BAND_2GHZ &&
++				   have_higher_than_11mbit;
++
++	return 0;
++}
++
+ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 				    struct cfg80211_bss *cbss,
+ 				    struct ieee80211_mgmt *mgmt, size_t len,
+@@ -5717,13 +5778,10 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	struct sta_info *new_sta = NULL;
+-	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_link_data *link = &sdata->deflink;
+ 	bool have_sta = false;
+ 	int err;
  
- skip_rates:
- 		memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index 2ca2164a3098..8664fee699e9 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -181,7 +181,7 @@ int ieee80211_ocb_join(struct ieee80211_sub_if_data *sdata,
- 	if (ifocb->joined == true)
+-	sband = local->hw.wiphy->bands[cbss->channel->band];
+-
+ 	if (WARN_ON(!ifmgd->auth_data && !ifmgd->assoc_data))
  		return -EINVAL;
  
--	sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
-+	sdata->deflink.operating_11g_mode = true;
- 	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
- 	sdata->deflink.needed_rx_chains = sdata->local->rx_chains;
+@@ -5757,63 +5815,16 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 	 * it might need the new channel for that.
+ 	 */
+ 	if (new_sta) {
+-		u32 rates = 0, basic_rates = 0;
+-		bool have_higher_than_11mbit = false;
+-		int min_rate = INT_MAX, min_rate_index = -1;
+ 		const struct cfg80211_bss_ies *ies;
+-		int shift = ieee80211_vif_get_shift(&sdata->vif);
+ 		struct ieee80211_link_sta *link_sta = &new_sta->sta.deflink;
  
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index b9cb71dfa6cf..f10318cadd4c 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -148,7 +148,7 @@ static __le16 ieee80211_duration(struct ieee80211_tx_data *tx,
- 		case NL80211_BAND_2GHZ:
- 		case NL80211_BAND_LC: {
- 			u32 flag;
--			if (tx->sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
-+			if (tx->sdata->deflink.operating_11g_mode)
- 				flag = IEEE80211_RATE_MANDATORY_G;
- 			else
- 				flag = IEEE80211_RATE_MANDATORY_B;
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index b6ddcbbb22e8..a6963feaf75d 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -191,7 +191,7 @@ __le16 ieee80211_generic_frame_duration(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		short_preamble = sdata->vif.bss_conf.use_short_preamble;
--		if (sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
-+		if (sdata->deflink.operating_11g_mode)
- 			erp = rate->flags & IEEE80211_RATE_ERP_G;
- 		shift = ieee80211_vif_get_shift(vif);
- 	}
-@@ -225,7 +225,7 @@ __le16 ieee80211_rts_duration(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		short_preamble = sdata->vif.bss_conf.use_short_preamble;
--		if (sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
-+		if (sdata->deflink.operating_11g_mode)
- 			erp = rate->flags & IEEE80211_RATE_ERP_G;
- 		shift = ieee80211_vif_get_shift(vif);
- 	}
-@@ -268,7 +268,7 @@ __le16 ieee80211_ctstoself_duration(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		short_preamble = sdata->vif.bss_conf.use_short_preamble;
--		if (sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
-+		if (sdata->deflink.operating_11g_mode)
- 			erp = rate->flags & IEEE80211_RATE_ERP_G;
- 		shift = ieee80211_vif_get_shift(vif);
- 	}
-@@ -1614,7 +1614,7 @@ void ieee80211_set_wmm_default(struct ieee80211_link_data *link,
- 	chanctx_conf = rcu_dereference(link->conf->chanctx_conf);
- 	use_11b = (chanctx_conf &&
- 		   chanctx_conf->def.chan->band == NL80211_BAND_2GHZ) &&
--		 !(sdata->flags & IEEE80211_SDATA_OPERATING_GMODE);
-+		 !link->operating_11g_mode;
- 	rcu_read_unlock();
+-		memcpy(link_sta->addr, cbss->bssid, ETH_ALEN);
+-
+-		/* TODO: S1G Basic Rate Set is expressed elsewhere */
+-		if (cbss->channel->band == NL80211_BAND_S1GHZ) {
+-			ieee80211_s1g_sta_rate_init(new_sta);
+-			goto skip_rates;
+-		}
+-
+-		ieee80211_get_rates(sband, bss->supp_rates,
+-				    bss->supp_rates_len,
+-				    &rates, &basic_rates,
+-				    &have_higher_than_11mbit,
+-				    &min_rate, &min_rate_index,
+-				    shift);
+-
+-		/*
+-		 * This used to be a workaround for basic rates missing
+-		 * in the association response frame. Now that we no
+-		 * longer use the basic rates from there, it probably
+-		 * doesn't happen any more, but keep the workaround so
+-		 * in case some *other* APs are buggy in different ways
+-		 * we can connect -- with a warning.
+-		 * Allow this workaround only in case the AP provided at least
+-		 * one rate.
+-		 */
+-		if (min_rate_index < 0) {
+-			sdata_info(sdata,
+-				   "No legacy rates in association response\n");
+-
++		err = ieee80211_mgd_setup_link_sta(link, new_sta,
++						   link_sta, cbss);
++		if (err) {
+ 			sta_info_free(local, new_sta);
+-			return -EINVAL;
+-		} else if (!basic_rates) {
+-			sdata_info(sdata,
+-				   "No basic rates, using min rate instead\n");
+-			basic_rates = BIT(min_rate_index);
++			return err;
+ 		}
  
- 	is_ocb = (sdata->vif.type == NL80211_IFTYPE_OCB);
+-		if (rates)
+-			link_sta->supp_rates[cbss->channel->band] = rates;
+-		else
+-			sdata_info(sdata,
+-				   "No rates found, keeping mandatory only\n");
+-
+-		link->conf->basic_rates = basic_rates;
+-
+-		/* cf. IEEE 802.11 9.2.12 */
+-		link->operating_11g_mode = sband->band == NL80211_BAND_2GHZ &&
+-					   have_higher_than_11mbit;
+-
+-skip_rates:
+ 		memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
+ 
+ 		/* set timing information */
 -- 
 2.36.1
 
