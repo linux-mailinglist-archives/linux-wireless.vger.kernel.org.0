@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FCDC573348
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70C75573359
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235800AbiGMJqP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 05:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36384 "EHLO
+        id S230295AbiGMJqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 05:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235831AbiGMJp3 (ORCPT
+        with ESMTP id S236209AbiGMJpa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 05:45:29 -0400
+        Wed, 13 Jul 2022 05:45:30 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF068F6B90
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A05BC04F4
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=xjpNZliAd/V9glIkDdcmRImIMhNmiwn12ErW+RTqh3w=;
-        t=1657705523; x=1658915123; b=CuJTEXQYYROqCze8Q0AdCyK0YDI8/wZHhAP3qQsMZVcr/eN
-        +AS8YRpRmFUUjUN+G0lNORUhS21i5zSPqXNuScnF6Lau/lsROUivH+X0UN6XuWZBZVQbulEOdqHe7
-        MktBnd/3ZgWy4+ggI4nk3F+eQYF3LvJM1o5/zHEyTYBl/9To2CJLP7NUYJVA8fDyvSTsdfEoPF5gv
-        suCG1XfjojZz6uelMyADjBu3ELx40zC/XOguwCpcGASj2hkIRdBfHbjDZsQ5RUIqfCDkAtVnSb2bK
-        IO1fWYUSm6Hi1H7+UIaWTKwV4We06Qe+ej0LWUdLbYvN1XoDoVyrrpzdpzAwYlFA==;
+        Resent-Cc:Resent-Message-ID; bh=4EP6jGLBQKZKgdD/VOKX7mPjEE6XduW9Buc5D9UEsd4=;
+        t=1657705524; x=1658915124; b=Fe5B6P17DwSupV1cdVrv5rZTrzWbAq2yjWdOXnnUq7ZqjXe
+        hJjGPJoVk6zLCYbM+kKY3cpjzzhrcBdfB1ghrs4InxdoR06tFfrtqJ7vhg6qteGHlKRnNxKtIxOet
+        AUSMPbWA/li3AVa6jYYecNGNUV5D4CCtARm7iJIAh2bzcT9DssE9L65014CINHYvIxdxOWvlc62Jf
+        0SIctHxH46DGxjyCwsVU1BNVBsq6DzOYA9dOt9QU+PB93sGWvAgBAnGHLyC97Wh8/6rFQ8qT+i09u
+        fdqd7bptsG/5DxRbmbDabP8Mbb7zxOI1r0T3PNcNA+Q7ggFniGOGuMiWfb0Oxm4w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBYvq-00EgvB-6J;
+        id 1oBYvq-00EgvB-Dw;
         Wed, 13 Jul 2022 11:45:22 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 49/76] wifi: mac80211: don't set link address for station
-Date:   Wed, 13 Jul 2022 11:44:35 +0200
-Message-Id: <20220713114425.f1264fe770d8.I56a551890a5b416dc98f9e9547e75d88c6dfa744@changeid>
+Subject: [PATCH 50/76] wifi: mac80211: remove redundant condition
+Date:   Wed, 13 Jul 2022 11:44:36 +0200
+Message-Id: <20220713114425.9ce50552c12a.I76913759932eba1c2c5ec770923b10450c991323@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713094502.163926-1-johannes@sipsolutions.net>
 References: <20220713094502.163926-1-johannes@sipsolutions.net>
@@ -52,31 +52,28 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We need to handle the link addresses for station differently,
-they will be determined by the association code, stored, and
-then applied when the links are actually created on success,
-cfg80211 will fill in the right addresses per the data we're
-sending back to it.
+Here, ext_capa is checked and can only be non-NULL if
+assoc_data->ie_len was set before, so the check here
+is redundant.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/iface.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 4b4a36692c68..fc5869f40279 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -409,9 +409,6 @@ static void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
- 			WARN_ON(!(sdata->wdev.valid_links & BIT(link_id)));
- 			break;
- 		case NL80211_IFTYPE_STATION:
--			eth_random_addr(link_conf->addr);
--			ether_addr_copy(sdata->wdev.links[link_id].addr,
--					link_conf->addr);
- 			break;
- 		default:
- 			WARN_ON(1);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d4a54375b9d2..fd8d7545a896 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -981,7 +981,7 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 
+ 	/* Set MBSSID support for HE AP if needed */
+ 	if (ieee80211_hw_check(&local->hw, SUPPORTS_ONLY_HE_MULTI_BSSID) &&
+-	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE) && assoc_data->ie_len &&
++	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE) &&
+ 	    ext_capa && ext_capa->datalen >= 3)
+ 		ext_capa->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
+ 
 -- 
 2.36.1
 
