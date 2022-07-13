@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9A2573A44
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69367573A3F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236973AbiGMPet (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 11:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40508 "EHLO
+        id S236979AbiGMPev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 11:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236806AbiGMPem (ORCPT
+        with ESMTP id S236945AbiGMPen (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 11:34:42 -0400
+        Wed, 13 Jul 2022 11:34:43 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077CC41D38
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAD34B0E2
         for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=byRy5DE04FosmI7ShOE9jYDvUvldHf+9y/jdXN2TQzs=;
-        t=1657726481; x=1658936081; b=C7C+kfc+7MNwW9o1tcnyhRbXVfUH15DYysDhgjk3YupC2Vz
-        jLIhU87isWlEzy9uifROrcXLSaPOgQiLrYesB6dKj/5ZHrhf+XkYL3s6WOdau8IxqUs5T5xanb0ny
-        OtljnRFnndioKFFYYF3I6CpsVpkN8vAKC5/GfGzGRAV0HUu26CmmAnAJ39WTDiBalzhcsmhaacrzv
-        cik810BaxknQg2bjAy3jjBj21TORc/xPk7Klpw+ScMh3wvoqjXWSNjhP2+pZfk+BVD31PqoSANHKv
-        u4MBolxTyW4amB6tANYmzAROWZi3+/S+EgrBep6aG2DKquy6Gg6VcVtTpY6O+npg==;
+        Resent-Cc:Resent-Message-ID; bh=6nXTKEIE53vQkJfwYXrTV8vCLa+VW5ygDMmFJAiD4d8=;
+        t=1657726481; x=1658936081; b=HQNRx5lZbsXr0juO5R7IZJOjUwZqoffmCP8Mk/clBH3uF9+
+        WJVMOyzzKcTQZVYmcSvd2YBBcz5Y6SQz1QpVw+nrXOTBQXCO34kaXbJBaQM+4AXIgXFmfU6ONvDA6
+        xR2MrKInYJUCviFAzeznrOZOjV42VlgFkChTSkPdtUOwPHUD4DgMzdkVasmMwLluMGCFE9+9URxKm
+        TGdWL/H+CfmNJNqG7Wo8B62AvvvvZDM1YWgXN/W7iwDOR3UVyKBb3u17B85T3R+Uvl4NAkca2QYUb
+        w49nX0B+hAlt2fLsj1oa5Au59JtBPMAA0vfpKB5qS+1tVli+c0wdiMizZVlECIOQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBeNr-00EnaA-6x;
+        id 1oBeNr-00EnaA-EH;
         Wed, 13 Jul 2022 17:34:39 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 08/21] wifi: mac80211: make ieee80211_check_rate_mask() link-aware
-Date:   Wed, 13 Jul 2022 17:34:20 +0200
-Message-Id: <20220713173301.e6ac357a8943.I68489f528743ecf1b4f31f7e7bc786f5adca4b21@changeid>
+Subject: [PATCH 09/21] wifi: mac80211: move IEEE80211_SDATA_OPERATING_GMODE to link
+Date:   Wed, 13 Jul 2022 17:34:21 +0200
+Message-Id: <20220713173301.5533c438e2a3.Ia6f6f76d35f30a669968cb7bdb3912c2a89227e2@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713153433.279227-1-johannes@sipsolutions.net>
 References: <20220713153433.279227-1-johannes@sipsolutions.net>
@@ -52,83 +52,159 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Change ieee80211_check_rate_mask() to use a link rather than
-the sdata and deflink/bss_conf.
+The flag here is currently per interface, but the way we
+set and clear it means it should be per link, so change
+it.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/cfg.c  | 2 +-
- net/mac80211/mlme.c | 2 +-
- net/mac80211/rate.c | 9 +++++----
- net/mac80211/rate.h | 2 +-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ net/mac80211/ibss.c        | 6 ++----
+ net/mac80211/ieee80211_i.h | 6 ++++--
+ net/mac80211/mlme.c        | 7 ++-----
+ net/mac80211/ocb.c         | 2 +-
+ net/mac80211/tx.c          | 2 +-
+ net/mac80211/util.c        | 8 ++++----
+ 6 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 498dce37adad..bc2aaecd2a8c 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2524,7 +2524,7 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
- 					 params->basic_rates_len,
- 					 &sdata->vif.bss_conf.basic_rates);
- 		changed |= BSS_CHANGED_BASIC_RATES;
--		ieee80211_check_rate_mask(sdata);
-+		ieee80211_check_rate_mask(&sdata->deflink);
- 	}
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index e8df4ce33984..60b5230778a3 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -351,10 +351,8 @@ static void __ieee80211_sta_join_ibss(struct ieee80211_sub_if_data *sdata,
+ 	bss_change |= BSS_CHANGED_ERP_SLOT;
  
- 	if (params->ap_isolate >= 0) {
+ 	/* cf. IEEE 802.11 9.2.12 */
+-	if (chan->band == NL80211_BAND_2GHZ && have_higher_than_11mbit)
+-		sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
+-	else
+-		sdata->flags &= ~IEEE80211_SDATA_OPERATING_GMODE;
++	sdata->deflink.operating_11g_mode =
++		chan->band == NL80211_BAND_2GHZ && have_higher_than_11mbit;
+ 
+ 	ieee80211_set_wmm_default(&sdata->deflink, true, false);
+ 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 877f2441b74b..baaff4c7a79c 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -726,7 +726,6 @@ struct ieee80211_if_mesh {
+  * enum ieee80211_sub_if_data_flags - virtual interface flags
+  *
+  * @IEEE80211_SDATA_ALLMULTI: interface wants all multicast packets
+- * @IEEE80211_SDATA_OPERATING_GMODE: operating in G-only mode
+  * @IEEE80211_SDATA_DONT_BRIDGE_PACKETS: bridge packets between
+  *	associated stations and deliver multicast frames both
+  *	back to wireless media and to the local net stack.
+@@ -737,7 +736,6 @@ struct ieee80211_if_mesh {
+  */
+ enum ieee80211_sub_if_data_flags {
+ 	IEEE80211_SDATA_ALLMULTI		= BIT(0),
+-	IEEE80211_SDATA_OPERATING_GMODE		= BIT(2),
+ 	IEEE80211_SDATA_DONT_BRIDGE_PACKETS	= BIT(3),
+ 	IEEE80211_SDATA_DISCONNECT_RESUME	= BIT(4),
+ 	IEEE80211_SDATA_IN_DRIVER		= BIT(5),
+@@ -884,6 +882,7 @@ struct ieee80211_link_data_managed {
+ 	bool have_beacon;
+ 	bool tracking_signal_avg;
+ 	bool disable_wmm_tracking;
++	bool operating_11g_mode;
+ 
+ 	bool csa_waiting_bcn;
+ 	bool csa_ignored_same_chan;
+@@ -946,6 +945,9 @@ struct ieee80211_link_data {
+ 
+ 	struct work_struct csa_finalize_work;
+ 	bool csa_block_tx; /* write-protected by sdata_lock and local->mtx */
++
++	bool operating_11g_mode;
++
+ 	struct cfg80211_chan_def csa_chandef;
+ 
+ 	struct work_struct color_change_finalize_work;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 042cd5439bb8..3986bf70fc5c 100644
+index 3986bf70fc5c..6822bf1c3cae 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -2360,7 +2360,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 	memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
- 	memcpy(sdata->vif.cfg.ap_addr, cbss->bssid, ETH_ALEN);
+@@ -5810,11 +5810,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 		link->conf->basic_rates = basic_rates;
  
--	ieee80211_check_rate_mask(sdata);
-+	ieee80211_check_rate_mask(link);
+ 		/* cf. IEEE 802.11 9.2.12 */
+-		if (cbss->channel->band == NL80211_BAND_2GHZ &&
+-		    have_higher_than_11mbit)
+-			sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
+-		else
+-			sdata->flags &= ~IEEE80211_SDATA_OPERATING_GMODE;
++		link->operating_11g_mode = sband->band == NL80211_BAND_2GHZ &&
++					   have_higher_than_11mbit;
  
- 	if (sdata->vif.p2p ||
- 	    sdata->vif.driver_flags & IEEE80211_VIF_GET_NOA_UPDATE) {
-diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
-index 7947e9a162a9..d5ea5f5bcf3a 100644
---- a/net/mac80211/rate.c
-+++ b/net/mac80211/rate.c
-@@ -270,17 +270,18 @@ static void rate_control_free(struct ieee80211_local *local,
- 	kfree(ctrl_ref);
- }
+ skip_rates:
+ 		memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index 2ca2164a3098..8664fee699e9 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -181,7 +181,7 @@ int ieee80211_ocb_join(struct ieee80211_sub_if_data *sdata,
+ 	if (ifocb->joined == true)
+ 		return -EINVAL;
  
--void ieee80211_check_rate_mask(struct ieee80211_sub_if_data *sdata)
-+void ieee80211_check_rate_mask(struct ieee80211_link_data *link)
- {
-+	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_supported_band *sband;
--	u32 user_mask, basic_rates = sdata->vif.bss_conf.basic_rates;
-+	u32 user_mask, basic_rates = link->conf->basic_rates;
- 	enum nl80211_band band;
+-	sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
++	sdata->deflink.operating_11g_mode = true;
+ 	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
+ 	sdata->deflink.needed_rx_chains = sdata->local->rx_chains;
  
--	if (WARN_ON(!sdata->vif.bss_conf.chandef.chan))
-+	if (WARN_ON(!link->conf->chandef.chan))
- 		return;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index b9cb71dfa6cf..f10318cadd4c 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -148,7 +148,7 @@ static __le16 ieee80211_duration(struct ieee80211_tx_data *tx,
+ 		case NL80211_BAND_2GHZ:
+ 		case NL80211_BAND_LC: {
+ 			u32 flag;
+-			if (tx->sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
++			if (tx->sdata->deflink.operating_11g_mode)
+ 				flag = IEEE80211_RATE_MANDATORY_G;
+ 			else
+ 				flag = IEEE80211_RATE_MANDATORY_B;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index b6ddcbbb22e8..a6963feaf75d 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -191,7 +191,7 @@ __le16 ieee80211_generic_frame_duration(struct ieee80211_hw *hw,
+ 	if (vif) {
+ 		sdata = vif_to_sdata(vif);
+ 		short_preamble = sdata->vif.bss_conf.use_short_preamble;
+-		if (sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
++		if (sdata->deflink.operating_11g_mode)
+ 			erp = rate->flags & IEEE80211_RATE_ERP_G;
+ 		shift = ieee80211_vif_get_shift(vif);
+ 	}
+@@ -225,7 +225,7 @@ __le16 ieee80211_rts_duration(struct ieee80211_hw *hw,
+ 	if (vif) {
+ 		sdata = vif_to_sdata(vif);
+ 		short_preamble = sdata->vif.bss_conf.use_short_preamble;
+-		if (sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
++		if (sdata->deflink.operating_11g_mode)
+ 			erp = rate->flags & IEEE80211_RATE_ERP_G;
+ 		shift = ieee80211_vif_get_shift(vif);
+ 	}
+@@ -268,7 +268,7 @@ __le16 ieee80211_ctstoself_duration(struct ieee80211_hw *hw,
+ 	if (vif) {
+ 		sdata = vif_to_sdata(vif);
+ 		short_preamble = sdata->vif.bss_conf.use_short_preamble;
+-		if (sdata->flags & IEEE80211_SDATA_OPERATING_GMODE)
++		if (sdata->deflink.operating_11g_mode)
+ 			erp = rate->flags & IEEE80211_RATE_ERP_G;
+ 		shift = ieee80211_vif_get_shift(vif);
+ 	}
+@@ -1614,7 +1614,7 @@ void ieee80211_set_wmm_default(struct ieee80211_link_data *link,
+ 	chanctx_conf = rcu_dereference(link->conf->chanctx_conf);
+ 	use_11b = (chanctx_conf &&
+ 		   chanctx_conf->def.chan->band == NL80211_BAND_2GHZ) &&
+-		 !(sdata->flags & IEEE80211_SDATA_OPERATING_GMODE);
++		 !link->operating_11g_mode;
+ 	rcu_read_unlock();
  
--	band = sdata->vif.bss_conf.chandef.chan->band;
-+	band = link->conf->chandef.chan->band;
- 	if (band == NL80211_BAND_S1GHZ) {
- 		/* TODO */
- 		return;
-diff --git a/net/mac80211/rate.h b/net/mac80211/rate.h
-index d89c13584dc8..d6190f10fe7c 100644
---- a/net/mac80211/rate.h
-+++ b/net/mac80211/rate.h
-@@ -85,7 +85,7 @@ static inline void rate_control_add_debugfs(struct ieee80211_local *local)
- #endif
- }
- 
--void ieee80211_check_rate_mask(struct ieee80211_sub_if_data *sdata);
-+void ieee80211_check_rate_mask(struct ieee80211_link_data *link);
- 
- /* Get a reference to the rate control algorithm. If `name' is NULL, get the
-  * first available algorithm. */
+ 	is_ocb = (sdata->vif.type == NL80211_IFTYPE_OCB);
 -- 
 2.36.1
 
