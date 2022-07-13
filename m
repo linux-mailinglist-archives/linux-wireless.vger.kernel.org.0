@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE16357335A
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334DB57335B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 11:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234566AbiGMJq0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 05:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36370 "EHLO
+        id S236193AbiGMJq3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 05:46:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234908AbiGMJpc (ORCPT
+        with ESMTP id S235687AbiGMJpc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 13 Jul 2022 05:45:32 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC395F682B
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EE27E0279
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 02:45:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=YdoP4xpeu8yzq81x6SM2u02pWcs+6B77bGoqZ15CHnA=;
-        t=1657705525; x=1658915125; b=XaRdlbhj5S47nbTYb1vpp66tOanQ7gmEZw+9Cq9A5vgEAxo
-        j2G+9pFbido8hNN308qetWwEAUhqkd+4tJnMTkJ8MWTjbMMy8P9mUJELj8ApwTJZDOPKF9w8LlZKF
-        W9PSJNuU3BtpzHMTv9i7VSXlYcoBRgj6SQ0VYIqp5qv5t+Hoqw6FiiSmGvrI3asQSjEKWkWvBl5Xl
-        ZGmOFuT3tMnFXOpH6c+N7Ym500SwyqQMgnkxTRgPG7jZW5O/M0dw7QrSgwudvc6V0S4LG1kjgLs/W
-        EQgGA3d08xUlvm+Lmx+lEP7cYStbjXJBZCz3cEYa/W5gLcGQa3K32n5CzTybd6lA==;
+        Resent-Cc:Resent-Message-ID; bh=IBOQ418tE56q8szLN9lqkFLIhYwqB3RBHJTKCj1uteo=;
+        t=1657705525; x=1658915125; b=LarnNZjeeknB3nJ1EXvV9rJwXp+ONU0ROSpfYbSD/Gdn4Ts
+        5R0slB0dwj+NhC/uLOis/rMj3NKIX3OJRphB4i0p26lZCxHlDXc4yL+OA9teKWVIvOSrn4iYp9Yno
+        0XxMkv0Y+k1b3mwP+DS8BD/2i0ms81kTCm68jLXUSLwyWdRCfceLwwcW7aLPfocwWOucOoBqTkJ1s
+        VlWPeTgFRZX/vaegmgvIFtEircbIqpwteCv3TTyOpQOsZnLEdvBzge/teYwVQSbpaoUPbdk9uFOoy
+        huo4Jz0wyxAz0oO3LuGCZjQGs3C4pCK4hJP23sEthii1Jk1bpgC+DqaxDmCrYUlQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBYvr-00EgvB-69;
+        id 1oBYvr-00EgvB-Fr;
         Wed, 13 Jul 2022 11:45:23 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 52/76] wifi: mac80211: use only channel width in ieee80211_parse_bitrates()
-Date:   Wed, 13 Jul 2022 11:44:38 +0200
-Message-Id: <20220713114425.b125faaaa9a6.I44ad959d94ec256e175763777ac646ada7148dd4@changeid>
+Subject: [PATCH 53/76] wifi: mac80211: refactor adding rates to assoc request
+Date:   Wed, 13 Jul 2022 11:44:39 +0200
+Message-Id: <20220713114425.7cbc8a87848d.I7e9c71b58c7bc510f967c28fc82bf37acc01f3e1@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713094502.163926-1-johannes@sipsolutions.net>
 References: <20220713094502.163926-1-johannes@sipsolutions.net>
@@ -52,111 +52,203 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-For MLO, we may not have a full chandef here later, so change
-the API to pass only the width.
+There's some awkward code that really only exists
+because we want to optimize the allocation size,
+but that's not really all that necessary.
+
+Refactor the code that adds rates to the association
+request frame to have a separate function, removing
+the goto.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/cfg.c         |  4 ++--
- net/mac80211/ieee80211_i.h | 12 +++++++++---
- net/mac80211/mlme.c        |  3 ++-
- net/mac80211/util.c        |  6 +++---
- 4 files changed, 16 insertions(+), 9 deletions(-)
+ net/mac80211/mlme.c | 141 +++++++++++++++++++++++---------------------
+ 1 file changed, 74 insertions(+), 67 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 555c135e9fcd..498dce37adad 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1633,7 +1633,7 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 
- 	if (params->supported_rates &&
- 	    params->supported_rates_len) {
--		ieee80211_parse_bitrates(&link->conf->chandef,
-+		ieee80211_parse_bitrates(link->conf->chandef.width,
- 					 sband, params->supported_rates,
- 					 params->supported_rates_len,
- 					 &link_sta->pub->supp_rates[sband->band]);
-@@ -2518,7 +2518,7 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
- 	}
- 
- 	if (params->basic_rates) {
--		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
-+		ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
- 					 wiphy->bands[sband->band],
- 					 params->basic_rates,
- 					 params->basic_rates_len,
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index dc38f57fcdc9..74d5fc5889bb 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1102,9 +1102,9 @@ sdata_assert_lock(struct ieee80211_sub_if_data *sdata)
- }
- 
- static inline int
--ieee80211_chandef_get_shift(struct cfg80211_chan_def *chandef)
-+ieee80211_chanwidth_get_shift(enum nl80211_chan_width width)
- {
--	switch (chandef->width) {
-+	switch (width) {
- 	case NL80211_CHAN_WIDTH_5:
- 		return 2;
- 	case NL80211_CHAN_WIDTH_10:
-@@ -1114,6 +1114,12 @@ ieee80211_chandef_get_shift(struct cfg80211_chan_def *chandef)
- 	}
- }
- 
-+static inline int
-+ieee80211_chandef_get_shift(struct cfg80211_chan_def *chandef)
-+{
-+	return ieee80211_chanwidth_get_shift(chandef->width);
-+}
-+
- static inline int
- ieee80211_vif_get_shift(struct ieee80211_vif *vif)
- {
-@@ -2346,7 +2352,7 @@ u8 *ieee80211_ie_build_he_cap(ieee80211_conn_flags_t disable_flags, u8 *pos,
- void ieee80211_ie_build_he_6ghz_cap(struct ieee80211_sub_if_data *sdata,
- 				    struct sk_buff *skb);
- u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef);
--int ieee80211_parse_bitrates(struct cfg80211_chan_def *chandef,
-+int ieee80211_parse_bitrates(enum nl80211_chan_width width,
- 			     const struct ieee80211_supported_band *sband,
- 			     const u8 *srates, int srates_len, u32 *rates);
- int ieee80211_add_srates_ie(struct ieee80211_sub_if_data *sdata,
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index fd8d7545a896..c65fe9f6f000 100644
+index c65fe9f6f000..a442de3670b9 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -819,7 +819,8 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
- 		 * in the association request (e.g. D-Link DAP 1353 in
- 		 * b-only mode)...
- 		 */
--		rates_len = ieee80211_parse_bitrates(&chanctx_conf->def, sband,
-+		rates_len = ieee80211_parse_bitrates(chanctx_conf->def.width,
-+						     sband,
- 						     assoc_data->supp_rates,
- 						     assoc_data->supp_rates_len,
- 						     &rates);
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 1de6b6256acc..86b6ee7e8156 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3686,12 +3686,12 @@ bool ieee80211_chandef_s1g_oper(const struct ieee80211_s1g_oper_ie *oper,
- 	return true;
+@@ -770,6 +770,75 @@ static void ieee80211_add_eht_ie(struct ieee80211_link_data *link,
+ 	ieee80211_ie_build_eht_cap(pos, he_cap, eht_cap, pos + eht_cap_size);
  }
  
--int ieee80211_parse_bitrates(struct cfg80211_chan_def *chandef,
-+int ieee80211_parse_bitrates(enum nl80211_chan_width width,
- 			     const struct ieee80211_supported_band *sband,
- 			     const u8 *srates, int srates_len, u32 *rates)
++static void ieee80211_assoc_add_rates(struct sk_buff *skb,
++				      enum nl80211_chan_width width,
++				      struct ieee80211_supported_band *sband,
++				      struct ieee80211_mgd_assoc_data *assoc_data)
++{
++	unsigned int shift = ieee80211_chanwidth_get_shift(width);
++	unsigned int rates_len, supp_rates_len;
++	u32 rates = 0;
++	int i, count;
++	u8 *pos;
++
++	if (assoc_data->supp_rates_len) {
++		/*
++		 * Get all rates supported by the device and the AP as
++		 * some APs don't like getting a superset of their rates
++		 * in the association request (e.g. D-Link DAP 1353 in
++		 * b-only mode)...
++		 */
++		rates_len = ieee80211_parse_bitrates(width, sband,
++						     assoc_data->supp_rates,
++						     assoc_data->supp_rates_len,
++						     &rates);
++	} else {
++		/*
++		 * In case AP not provide any supported rates information
++		 * before association, we send information element(s) with
++		 * all rates that we support.
++		 */
++		rates_len = sband->n_bitrates;
++		for (i = 0; i < sband->n_bitrates; i++)
++			rates |= BIT(i);
++	}
++
++	supp_rates_len = rates_len;
++	if (supp_rates_len > 8)
++		supp_rates_len = 8;
++
++	pos = skb_put(skb, supp_rates_len + 2);
++	*pos++ = WLAN_EID_SUPP_RATES;
++	*pos++ = supp_rates_len;
++
++	count = 0;
++	for (i = 0; i < sband->n_bitrates; i++) {
++		if (BIT(i) & rates) {
++			int rate = DIV_ROUND_UP(sband->bitrates[i].bitrate,
++						5 * (1 << shift));
++			*pos++ = (u8)rate;
++			if (++count == 8)
++				break;
++		}
++	}
++
++	if (rates_len > count) {
++		pos = skb_put(skb, rates_len - count + 2);
++		*pos++ = WLAN_EID_EXT_SUPP_RATES;
++		*pos++ = rates_len - count;
++
++		for (i++; i < sband->n_bitrates; i++) {
++			if (BIT(i) & rates) {
++				int rate;
++
++				rate = DIV_ROUND_UP(sband->bitrates[i].bitrate,
++						    5 * (1 << shift));
++				*pos++ = (u8)rate;
++			}
++		}
++	}
++}
++
+ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
  {
--	u32 rate_flags = ieee80211_chandef_rate_flags(chandef);
--	int shift = ieee80211_chandef_get_shift(chandef);
-+	u32 rate_flags = ieee80211_chanwidth_rate_flags(width);
-+	int shift = ieee80211_chanwidth_get_shift(width);
- 	struct ieee80211_rate *br;
- 	int brate, rate, i, j, count = 0;
+ 	struct ieee80211_local *local = sdata->local;
+@@ -779,12 +848,11 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	struct ieee80211_mgmt *mgmt;
+ 	u8 *pos, qos_info, *ie_start;
+ 	size_t offset = 0, noffset;
+-	int i, count, rates_len, supp_rates_len, shift;
++	int i;
+ 	u16 capab;
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	struct ieee80211_channel *chan;
+-	u32 rates = 0;
+ 	__le16 listen_int;
+ 	struct element *ext_capa = NULL;
+ 	enum nl80211_iftype iftype = ieee80211_vif_type_p2p(&sdata->vif);
+@@ -810,39 +878,13 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	chan = chanctx_conf->def.chan;
+ 	rcu_read_unlock();
+ 	sband = local->hw.wiphy->bands[chan->band];
+-	shift = ieee80211_vif_get_shift(&sdata->vif);
+-
+-	if (assoc_data->supp_rates_len) {
+-		/*
+-		 * Get all rates supported by the device and the AP as
+-		 * some APs don't like getting a superset of their rates
+-		 * in the association request (e.g. D-Link DAP 1353 in
+-		 * b-only mode)...
+-		 */
+-		rates_len = ieee80211_parse_bitrates(chanctx_conf->def.width,
+-						     sband,
+-						     assoc_data->supp_rates,
+-						     assoc_data->supp_rates_len,
+-						     &rates);
+-	} else {
+-		/*
+-		 * In case AP not provide any supported rates information
+-		 * before association, we send information element(s) with
+-		 * all rates that we support.
+-		 */
+-		rates_len = 0;
+-		for (i = 0; i < sband->n_bitrates; i++) {
+-			rates |= BIT(i);
+-			rates_len++;
+-		}
+-	}
  
+ 	iftd = ieee80211_get_sband_iftype_data(sband, iftype);
+ 
+ 	skb = alloc_skb(local->hw.extra_tx_headroom +
+ 			sizeof(*mgmt) + /* bit too much but doesn't matter */
+ 			2 + assoc_data->ssid_len + /* SSID */
+-			4 + rates_len + /* (extended) rates */
++			4 + sband->n_bitrates + /* (extended) rates */
+ 			4 + /* power capability */
+ 			2 + 2 * sband->n_channels + /* supported channels */
+ 			2 + sizeof(struct ieee80211_ht_cap) + /* HT */
+@@ -911,45 +953,10 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	*pos++ = assoc_data->ssid_len;
+ 	memcpy(pos, assoc_data->ssid, assoc_data->ssid_len);
+ 
+-	if (sband->band == NL80211_BAND_S1GHZ)
+-		goto skip_rates;
+-
+-	/* add all rates which were marked to be used above */
+-	supp_rates_len = rates_len;
+-	if (supp_rates_len > 8)
+-		supp_rates_len = 8;
+-
+-	pos = skb_put(skb, supp_rates_len + 2);
+-	*pos++ = WLAN_EID_SUPP_RATES;
+-	*pos++ = supp_rates_len;
+-
+-	count = 0;
+-	for (i = 0; i < sband->n_bitrates; i++) {
+-		if (BIT(i) & rates) {
+-			int rate = DIV_ROUND_UP(sband->bitrates[i].bitrate,
+-						5 * (1 << shift));
+-			*pos++ = (u8) rate;
+-			if (++count == 8)
+-				break;
+-		}
+-	}
+-
+-	if (rates_len > count) {
+-		pos = skb_put(skb, rates_len - count + 2);
+-		*pos++ = WLAN_EID_EXT_SUPP_RATES;
+-		*pos++ = rates_len - count;
+-
+-		for (i++; i < sband->n_bitrates; i++) {
+-			if (BIT(i) & rates) {
+-				int rate;
+-				rate = DIV_ROUND_UP(sband->bitrates[i].bitrate,
+-						    5 * (1 << shift));
+-				*pos++ = (u8) rate;
+-			}
+-		}
+-	}
++	if (sband->band != NL80211_BAND_S1GHZ)
++		ieee80211_assoc_add_rates(skb, chanctx_conf->def.width,
++					  sband, assoc_data);
+ 
+-skip_rates:
+ 	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT ||
+ 	    capab & WLAN_CAPABILITY_RADIO_MEASURE) {
+ 		pos = skb_put(skb, 4);
 -- 
 2.36.1
 
