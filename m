@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B57573A39
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9A2573A44
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236971AbiGMPes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 11:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+        id S236973AbiGMPet (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 11:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236784AbiGMPem (ORCPT
+        with ESMTP id S236806AbiGMPem (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 13 Jul 2022 11:34:42 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1562341D3A
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077CC41D38
         for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=bM5w5nfF6EkhHYX8Sz4nGkzE5bziwujdNy+U/ulO2cY=;
-        t=1657726481; x=1658936081; b=oWjTSLWUQZ7AOPXeIdBty5OR4uMcH2Q9AJEo9PVxMqQFDSp
-        mKZ5Vi8epy3OSfgEEMRbxVoyQpXMqbyC3iVgxNG3GGXRF/sWkTMneYUYU1swweD/byEJJUutWN5Jx
-        bohxjFnUDLIZuXbrpoL78JMu5gD58ZJOuK7CwjitQrNLR2Siv1bW7DcZxMLjvRN31kQA65TtrsFlp
-        psx8gB8CR0qHYX5wdrGRRc6RciVgJEb+xy0LT2RjsOhXsttwuVcn/dT4mgMkFxGJoPn6xpkhA3fIU
-        M5C3a0wJgEO5MuHFwBuAqLQb3paRtudx9vj45EwF9mSVAc/Shnknd3rfqz1s0ZXA==;
+        Resent-Cc:Resent-Message-ID; bh=byRy5DE04FosmI7ShOE9jYDvUvldHf+9y/jdXN2TQzs=;
+        t=1657726481; x=1658936081; b=C7C+kfc+7MNwW9o1tcnyhRbXVfUH15DYysDhgjk3YupC2Vz
+        jLIhU87isWlEzy9uifROrcXLSaPOgQiLrYesB6dKj/5ZHrhf+XkYL3s6WOdau8IxqUs5T5xanb0ny
+        OtljnRFnndioKFFYYF3I6CpsVpkN8vAKC5/GfGzGRAV0HUu26CmmAnAJ39WTDiBalzhcsmhaacrzv
+        cik810BaxknQg2bjAy3jjBj21TORc/xPk7Klpw+ScMh3wvoqjXWSNjhP2+pZfk+BVD31PqoSANHKv
+        u4MBolxTyW4amB6tANYmzAROWZi3+/S+EgrBep6aG2DKquy6Gg6VcVtTpY6O+npg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBeNq-00EnaA-Ve;
+        id 1oBeNr-00EnaA-6x;
         Wed, 13 Jul 2022 17:34:39 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 07/21] wifi: mac80211: add multi-link element to AUTH frames
-Date:   Wed, 13 Jul 2022 17:34:19 +0200
-Message-Id: <20220713173301.8ce1b3fb7c9d.I8b2ece0e92aa8454f106730cac9d31a86495f540@changeid>
+Subject: [PATCH 08/21] wifi: mac80211: make ieee80211_check_rate_mask() link-aware
+Date:   Wed, 13 Jul 2022 17:34:20 +0200
+Message-Id: <20220713173301.e6ac357a8943.I68489f528743ecf1b4f31f7e7bc786f5adca4b21@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713153433.279227-1-johannes@sipsolutions.net>
 References: <20220713153433.279227-1-johannes@sipsolutions.net>
@@ -52,58 +52,83 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-When sending an authentication frame from an MLD, include
-the multi-link element with the MLD address and use the
-link address for transmission.
+Change ieee80211_check_rate_mask() to use a link rather than
+the sdata and deflink/bss_conf.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/util.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c  | 2 +-
+ net/mac80211/mlme.c | 2 +-
+ net/mac80211/rate.c | 9 +++++----
+ net/mac80211/rate.h | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 994a49b892a6..b6ddcbbb22e8 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1711,11 +1711,28 @@ void ieee80211_send_auth(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_local *local = sdata->local;
- 	struct sk_buff *skb;
- 	struct ieee80211_mgmt *mgmt;
-+	bool multi_link = sdata->vif.valid_links;
-+	struct {
-+		u8 id;
-+		u8 len;
-+		u8 ext_id;
-+		struct ieee80211_multi_link_elem ml;
-+		struct ieee80211_mle_basic_common_info basic;
-+	} __packed mle = {
-+		.id = WLAN_EID_EXTENSION,
-+		.len = sizeof(mle) - 2,
-+		.ext_id = WLAN_EID_EXT_EHT_MULTI_LINK,
-+		.ml.control = cpu_to_le16(IEEE80211_ML_CONTROL_TYPE_BASIC),
-+		.basic.len = sizeof(mle.basic),
-+	};
- 	int err;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 498dce37adad..bc2aaecd2a8c 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2524,7 +2524,7 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 					 params->basic_rates_len,
+ 					 &sdata->vif.bss_conf.basic_rates);
+ 		changed |= BSS_CHANGED_BASIC_RATES;
+-		ieee80211_check_rate_mask(sdata);
++		ieee80211_check_rate_mask(&sdata->deflink);
+ 	}
  
-+	memcpy(mle.basic.mld_mac_addr, sdata->vif.addr, ETH_ALEN);
-+
- 	/* 24 + 6 = header + auth_algo + auth_transaction + status_code */
- 	skb = dev_alloc_skb(local->hw.extra_tx_headroom + IEEE80211_WEP_IV_LEN +
--			    24 + 6 + extra_len + IEEE80211_WEP_ICV_LEN);
-+			    24 + 6 + extra_len + IEEE80211_WEP_ICV_LEN +
-+			    multi_link * sizeof(mle));
- 	if (!skb)
+ 	if (params->ap_isolate >= 0) {
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 042cd5439bb8..3986bf70fc5c 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2360,7 +2360,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
+ 	memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
+ 	memcpy(sdata->vif.cfg.ap_addr, cbss->bssid, ETH_ALEN);
+ 
+-	ieee80211_check_rate_mask(sdata);
++	ieee80211_check_rate_mask(link);
+ 
+ 	if (sdata->vif.p2p ||
+ 	    sdata->vif.driver_flags & IEEE80211_VIF_GET_NOA_UPDATE) {
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 7947e9a162a9..d5ea5f5bcf3a 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -270,17 +270,18 @@ static void rate_control_free(struct ieee80211_local *local,
+ 	kfree(ctrl_ref);
+ }
+ 
+-void ieee80211_check_rate_mask(struct ieee80211_sub_if_data *sdata)
++void ieee80211_check_rate_mask(struct ieee80211_link_data *link)
+ {
++	struct ieee80211_sub_if_data *sdata = link->sdata;
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_supported_band *sband;
+-	u32 user_mask, basic_rates = sdata->vif.bss_conf.basic_rates;
++	u32 user_mask, basic_rates = link->conf->basic_rates;
+ 	enum nl80211_band band;
+ 
+-	if (WARN_ON(!sdata->vif.bss_conf.chandef.chan))
++	if (WARN_ON(!link->conf->chandef.chan))
  		return;
  
-@@ -1732,6 +1749,8 @@ void ieee80211_send_auth(struct ieee80211_sub_if_data *sdata,
- 	mgmt->u.auth.status_code = cpu_to_le16(status);
- 	if (extra)
- 		skb_put_data(skb, extra, extra_len);
-+	if (multi_link)
-+		skb_put_data(skb, &mle, sizeof(mle));
+-	band = sdata->vif.bss_conf.chandef.chan->band;
++	band = link->conf->chandef.chan->band;
+ 	if (band == NL80211_BAND_S1GHZ) {
+ 		/* TODO */
+ 		return;
+diff --git a/net/mac80211/rate.h b/net/mac80211/rate.h
+index d89c13584dc8..d6190f10fe7c 100644
+--- a/net/mac80211/rate.h
++++ b/net/mac80211/rate.h
+@@ -85,7 +85,7 @@ static inline void rate_control_add_debugfs(struct ieee80211_local *local)
+ #endif
+ }
  
- 	if (auth_alg == WLAN_AUTH_SHARED_KEY && transaction == 3) {
- 		mgmt->frame_control |= cpu_to_le16(IEEE80211_FCTL_PROTECTED);
+-void ieee80211_check_rate_mask(struct ieee80211_sub_if_data *sdata);
++void ieee80211_check_rate_mask(struct ieee80211_link_data *link);
+ 
+ /* Get a reference to the rate control algorithm. If `name' is NULL, get the
+  * first available algorithm. */
 -- 
 2.36.1
 
