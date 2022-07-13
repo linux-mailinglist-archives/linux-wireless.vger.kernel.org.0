@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47809573A45
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D13D573A3E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236978AbiGMPez (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 11:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40576 "EHLO
+        id S236951AbiGMPey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 11:34:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236950AbiGMPeo (ORCPT
+        with ESMTP id S236949AbiGMPeo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 13 Jul 2022 11:34:44 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF764C638
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3D832060
         for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=NDVuU4hUY8s4cKu/LRQDiVWaVDRW97RVN78U/lr/wIk=;
-        t=1657726483; x=1658936083; b=JC5VNMHHDqnweiI+rMDohxK3iTP0Zsm1cqMbygU4+PMpKu+
-        w3Z5eeMJI+gSrYB1NmxPdgPshFeRqKZ1JSBjWgVNHZ0twGIchS8xC5GBnILkiYIWwfrOUYG6zvxym
-        xsQvfPDuHQgDC1wGPXuCJ9a+CKU7BoonG+WE9YMrEsfKP0XAyAdOEJiUwfkT0TULELwwKXuVYyqY6
-        c5LLHoCU4cnbQcPztEcmUaBMpdvWyuB3kuuQyb+tjnLIHsKVgfH6oAXekAzqVmUNz5L4tdwIKv15n
-        JmmHY/+Ryc1v2cNCFUgzErAG5H7xZDNlsBT1ELiSN6w8utmwr5T7KBLVGP4HFzJA==;
+        Resent-Cc:Resent-Message-ID; bh=b+c44Roxnzht342gdjNbU8KZbA09y+EyQAFVX3RYmPg=;
+        t=1657726482; x=1658936082; b=dCGWwhSG7lYUne3s7hvEJEKo+ujYir55kiZ2Q+dzPbdPzKi
+        oEhm6EhYu4Hzpwao2oPpXCn9wVUd1gLRtDHiehiNCVDHTEYYS05d6OyOo2lWmorikGfeRDuuGMmCw
+        eejdwO3utU/Xqpz/t1J/cZSN+9RB3rEW42q0WjXOgltuE6MM2V5cPOfpsZkLxWI8u1BMPtaIfB4+O
+        cHUhZKqKypZO8ODEsHNeHtrS2kqshvJMt1mxYiiNKDu+7HINVVRGKixK5Nua8IN9dP+lSbLj3Ch0f
+        G2i6qRWsowNDnF0JoRqmnGTUHzqGGIKhiMYEk35o79ES0SSPiQothFRAOVd94rLg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oBeNs-00EnaA-GF;
+        id 1oBeNs-00EnaA-Ob;
         Wed, 13 Jul 2022 17:34:40 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 13/21] wifi: mac80211: mlme: switch some things back to deflink
-Date:   Wed, 13 Jul 2022 17:34:25 +0200
-Message-Id: <20220713173301.2941d7b03f50.I1da3e7cbc88305d2c2c89bd3e345d7f6b73a1ea7@changeid>
+Subject: [PATCH 14/21] wifi: mac80211: mlme: refactor assoc req element building
+Date:   Wed, 13 Jul 2022 17:34:26 +0200
+Message-Id: <20220713173301.fdc756ca1a1c.Id2b09ee06bb8ebe3cd5125ba1db9963b4bda5aa0@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220713153433.279227-1-johannes@sipsolutions.net>
 References: <20220713153433.279227-1-johannes@sipsolutions.net>
@@ -52,178 +52,360 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-With MLO, when we'll disconnect from an AP MLD, we'll just
-destroy all the links. Therefore, the only thing we (may)
-need to reset is the deflink data, so switch back to that
-and adjust the comments accordingly.
+For MLO, we will need to build these elements per link, so
+factor out the code that does this, returning the capability,
+to simplify building the multi-link element in the future.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 71 +++++++++++++++++++++++++--------------------
- 1 file changed, 39 insertions(+), 32 deletions(-)
+ net/mac80211/mlme.c | 278 ++++++++++++++++++++++++++------------------
+ 1 file changed, 162 insertions(+), 116 deletions(-)
 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 03f6da885ce4..999eead2129e 100644
+index 999eead2129e..26c354e1b042 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -2437,7 +2437,6 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- {
- 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
- 	struct ieee80211_local *local = sdata->local;
--	struct ieee80211_bss_conf *bss_conf = &sdata->vif.bss_conf;
- 	struct ieee80211_link_data *link = &sdata->deflink;
- 	u32 changed = 0;
- 	struct ieee80211_prep_tx_info info = {
-@@ -2455,7 +2454,10 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	ieee80211_stop_poll(sdata);
- 
- 	ifmgd->associated = false;
--	link->u.mgd.bss = NULL;
-+
-+	/* other links will be destroyed */
-+	sdata->deflink.u.mgd.bss = NULL;
-+
- 	netif_carrier_off(sdata->dev);
- 
- 	/*
-@@ -2493,7 +2495,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 		 * driver requested so.
- 		 */
- 		if (ieee80211_hw_check(&local->hw, DEAUTH_NEED_MGD_TX_PREP) &&
--		    !link->u.mgd.have_beacon) {
-+		    !sdata->deflink.u.mgd.have_beacon) {
- 			drv_mgd_prepare_tx(sdata->local, sdata, &info);
- 		}
- 
-@@ -2524,9 +2526,9 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	changed |= BSS_CHANGED_ASSOC;
- 	sdata->vif.cfg.assoc = false;
- 
--	link->u.mgd.p2p_noa_index = -1;
--	memset(&link->conf->p2p_noa_attr, 0,
--	       sizeof(link->conf->p2p_noa_attr));
-+	sdata->deflink.u.mgd.p2p_noa_index = -1;
-+	memset(&sdata->vif.bss_conf.p2p_noa_attr, 0,
-+	       sizeof(sdata->vif.bss_conf.p2p_noa_attr));
- 
- 	/* on the next assoc, re-program HT/VHT parameters */
- 	memset(&ifmgd->ht_capa, 0, sizeof(ifmgd->ht_capa));
-@@ -2534,15 +2536,19 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	memset(&ifmgd->vht_capa, 0, sizeof(ifmgd->vht_capa));
- 	memset(&ifmgd->vht_capa_mask, 0, sizeof(ifmgd->vht_capa_mask));
- 
--	/* reset MU-MIMO ownership and group data */
--	memset(link->conf->mu_group.membership, 0,
--	       sizeof(link->conf->mu_group.membership));
--	memset(link->conf->mu_group.position, 0,
--	       sizeof(link->conf->mu_group.position));
--	changed |= BSS_CHANGED_MU_GROUPS;
--	link->conf->mu_mimo_owner = false;
-+	/*
-+	 * reset MU-MIMO ownership and group data in default link,
-+	 * if used, other links are destroyed
-+	 */
-+	memset(sdata->vif.bss_conf.mu_group.membership, 0,
-+	       sizeof(sdata->vif.bss_conf.mu_group.membership));
-+	memset(sdata->vif.bss_conf.mu_group.position, 0,
-+	       sizeof(sdata->vif.bss_conf.mu_group.position));
-+	if (!sdata->vif.valid_links)
-+		changed |= BSS_CHANGED_MU_GROUPS;
-+	sdata->vif.bss_conf.mu_mimo_owner = false;
- 
--	link->ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
-+	sdata->deflink.ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
- 
- 	del_timer_sync(&local->dynamic_ps_timer);
- 	cancel_work_sync(&local->dynamic_ps_enable_work);
-@@ -2551,7 +2557,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	if (sdata->vif.cfg.arp_addr_cnt)
- 		changed |= BSS_CHANGED_ARP_FILTER;
- 
--	link->conf->qos = false;
-+	sdata->vif.bss_conf.qos = false;
- 	changed |= BSS_CHANGED_QOS;
- 
- 	/* The BSSID (not really interesting) and HT changed */
-@@ -2564,27 +2570,27 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	del_timer_sync(&sdata->u.mgd.conn_mon_timer);
- 	del_timer_sync(&sdata->u.mgd.bcn_mon_timer);
- 	del_timer_sync(&sdata->u.mgd.timer);
--	del_timer_sync(&link->u.mgd.chswitch_timer);
-+	del_timer_sync(&sdata->deflink.u.mgd.chswitch_timer);
- 
--	link->conf->dtim_period = 0;
--	link->conf->beacon_rate = NULL;
-+	sdata->vif.bss_conf.dtim_period = 0;
-+	sdata->vif.bss_conf.beacon_rate = NULL;
- 
--	link->u.mgd.have_beacon = false;
--	link->u.mgd.tracking_signal_avg = false;
--	link->u.mgd.disable_wmm_tracking = false;
-+	sdata->deflink.u.mgd.have_beacon = false;
-+	sdata->deflink.u.mgd.tracking_signal_avg = false;
-+	sdata->deflink.u.mgd.disable_wmm_tracking = false;
- 
- 	ifmgd->flags = 0;
--	link->u.mgd.conn_flags = 0;
-+	sdata->deflink.u.mgd.conn_flags = 0;
- 	mutex_lock(&local->mtx);
- 	ieee80211_link_release_channel(link);
- 
--	link->conf->csa_active = false;
--	link->u.mgd.csa_waiting_bcn = false;
--	link->u.mgd.csa_ignored_same_chan = false;
--	if (link->csa_block_tx) {
-+	sdata->vif.bss_conf.csa_active = false;
-+	sdata->deflink.u.mgd.csa_waiting_bcn = false;
-+	sdata->deflink.u.mgd.csa_ignored_same_chan = false;
-+	if (sdata->deflink.csa_block_tx) {
- 		ieee80211_wake_vif_queues(local, sdata,
- 					  IEEE80211_QUEUE_STOP_REASON_CSA);
--		link->csa_block_tx = false;
-+		sdata->deflink.csa_block_tx = false;
- 	}
- 	mutex_unlock(&local->mtx);
- 
-@@ -2592,9 +2598,10 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	memset(ifmgd->tx_tspec, 0, sizeof(ifmgd->tx_tspec));
- 	cancel_delayed_work_sync(&ifmgd->tx_tspec_wk);
- 
--	bss_conf->pwr_reduction = 0;
--	bss_conf->tx_pwr_env_num = 0;
--	memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
-+	sdata->vif.bss_conf.pwr_reduction = 0;
-+	sdata->vif.bss_conf.tx_pwr_env_num = 0;
-+	memset(sdata->vif.bss_conf.tx_pwr_env, 0,
-+	       sizeof(sdata->vif.bss_conf.tx_pwr_env));
+@@ -936,17 +936,158 @@ static size_t ieee80211_add_before_he_elems(struct sk_buff *skb,
+ 	return noffset;
  }
  
- static void ieee80211_reset_ap_probe(struct ieee80211_sub_if_data *sdata)
-@@ -2911,6 +2918,7 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
- 					WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
- 			       tx, frame_buf);
- 	mutex_lock(&local->mtx);
-+	/* the other links will be destroyed */
- 	sdata->vif.bss_conf.csa_active = false;
- 	sdata->deflink.u.mgd.csa_waiting_bcn = false;
- 	if (sdata->deflink.csa_block_tx) {
-@@ -3057,7 +3065,6 @@ static void ieee80211_destroy_assoc_data(struct ieee80211_sub_if_data *sdata,
- 		del_timer_sync(&sdata->u.mgd.timer);
- 		sta_info_destroy_addr(sdata, assoc_data->bss->bssid);
++static size_t ieee80211_assoc_link_elems(struct ieee80211_sub_if_data *sdata,
++					 struct sk_buff *skb, u16 *capab,
++					 const struct element *ext_capa,
++					 const u8 *extra_elems,
++					 size_t extra_elems_len,
++					 struct ieee80211_link_data *link)
++{
++	enum nl80211_iftype iftype = ieee80211_vif_type_p2p(&sdata->vif);
++	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
++	struct ieee80211_mgd_assoc_data *assoc_data = ifmgd->assoc_data;
++	struct cfg80211_bss *cbss = assoc_data->bss;
++	struct ieee80211_channel *chan = cbss->channel;
++	const struct ieee80211_sband_iftype_data *iftd;
++	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_supported_band *sband;
++	enum nl80211_chan_width width = NL80211_CHAN_WIDTH_20;
++	struct ieee80211_chanctx_conf *chanctx_conf;
++	size_t offset = 0;
++	u8 *pos;
++	int i;
++
++	/*
++	 * 5/10 MHz scenarios are only viable without MLO, in which
++	 * case this pointer should be used ... All of this is a bit
++	 * unclear though, not sure this even works at all.
++	 */
++	rcu_read_lock();
++	chanctx_conf = rcu_dereference(link->conf->chanctx_conf);
++	if (chanctx_conf)
++		width = chanctx_conf->def.width;
++	rcu_read_unlock();
++
++	sband = local->hw.wiphy->bands[chan->band];
++	iftd = ieee80211_get_sband_iftype_data(sband, iftype);
++
++	if (sband->band == NL80211_BAND_2GHZ) {
++		*capab |= WLAN_CAPABILITY_SHORT_SLOT_TIME;
++		*capab |= WLAN_CAPABILITY_SHORT_PREAMBLE;
++	}
++
++	if ((cbss->capability & WLAN_CAPABILITY_SPECTRUM_MGMT) &&
++	    ieee80211_hw_check(&local->hw, SPECTRUM_MGMT))
++		*capab |= WLAN_CAPABILITY_SPECTRUM_MGMT;
++
++	if (sband->band != NL80211_BAND_S1GHZ)
++		ieee80211_assoc_add_rates(skb, width, sband, assoc_data);
++
++	if (*capab & WLAN_CAPABILITY_SPECTRUM_MGMT ||
++	    *capab & WLAN_CAPABILITY_RADIO_MEASURE) {
++		struct cfg80211_chan_def chandef = {
++			.width = width,
++			.chan = chan,
++		};
++
++		pos = skb_put(skb, 4);
++		*pos++ = WLAN_EID_PWR_CAPABILITY;
++		*pos++ = 2;
++		*pos++ = 0; /* min tx power */
++		 /* max tx power */
++		*pos++ = ieee80211_chandef_max_power(&chandef);
++	}
++
++	/*
++	 * Per spec, we shouldn't include the list of channels if we advertise
++	 * support for extended channel switching, but we've always done that;
++	 * (for now?) apply this restriction only on the (new) 6 GHz band.
++	 */
++	if (*capab & WLAN_CAPABILITY_SPECTRUM_MGMT &&
++	    (sband->band != NL80211_BAND_6GHZ ||
++	     !ext_capa || ext_capa->datalen < 1 ||
++	     !(ext_capa->data[0] & WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING))) {
++		/* TODO: get this in reg domain format */
++		pos = skb_put(skb, 2 * sband->n_channels + 2);
++		*pos++ = WLAN_EID_SUPPORTED_CHANNELS;
++		*pos++ = 2 * sband->n_channels;
++		for (i = 0; i < sband->n_channels; i++) {
++			int cf = sband->channels[i].center_freq;
++
++			*pos++ = ieee80211_frequency_to_channel(cf);
++			*pos++ = 1; /* one channel in the subband*/
++		}
++	}
++
++	/* if present, add any custom IEs that go before HT */
++	offset = ieee80211_add_before_ht_elems(skb, extra_elems,
++					       extra_elems_len,
++					       offset);
++
++	if (sband->band != NL80211_BAND_6GHZ &&
++	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HT))
++		ieee80211_add_ht_ie(sdata, skb,
++				    assoc_data->ap_ht_param,
++				    sband, chan, link->smps_mode,
++				    link->u.mgd.conn_flags);
++
++	/* if present, add any custom IEs that go before VHT */
++	offset = ieee80211_add_before_vht_elems(skb, extra_elems,
++						extra_elems_len,
++						offset);
++
++	if (sband->band != NL80211_BAND_6GHZ &&
++	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT))
++		link->conf->mu_mimo_owner =
++			ieee80211_add_vht_ie(sdata, skb, sband,
++					     &assoc_data->ap_vht_cap,
++					     link->u.mgd.conn_flags);
++
++	/*
++	 * If AP doesn't support HT, mark HE and EHT as disabled.
++	 * If on the 5GHz band, make sure it supports VHT.
++	 */
++	if (link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HT ||
++	    (sband->band == NL80211_BAND_5GHZ &&
++	     link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT))
++		link->u.mgd.conn_flags |=
++			IEEE80211_CONN_DISABLE_HE |
++			IEEE80211_CONN_DISABLE_EHT;
++
++	/* if present, add any custom IEs that go before HE */
++	offset = ieee80211_add_before_he_elems(skb, extra_elems,
++					       extra_elems_len,
++					       offset);
++
++	if (!(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE))
++		ieee80211_add_he_ie(sdata, skb, sband,
++				    link->u.mgd.conn_flags);
++
++	if (!(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_EHT))
++		ieee80211_add_eht_ie(sdata, skb, sband);
++
++	if (sband->band == NL80211_BAND_S1GHZ) {
++		ieee80211_add_aid_request_ie(sdata, skb);
++		ieee80211_add_s1g_capab_ie(sdata, &sband->s1g_cap, skb);
++	}
++
++	if (iftd && iftd->vendor_elems.data && iftd->vendor_elems.len)
++		skb_put_data(skb, iftd->vendor_elems.data, iftd->vendor_elems.len);
++
++	return offset;
++}
++
+ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_mgd_assoc_data *assoc_data = ifmgd->assoc_data;
++	struct ieee80211_link_data *link = &sdata->deflink;
+ 	struct sk_buff *skb;
+ 	struct ieee80211_mgmt *mgmt;
+ 	u8 *pos, qos_info, *ie_start;
+-	size_t offset = 0, noffset;
+-	int i;
+-	u16 capab;
++	size_t offset, noffset;
++	u16 capab = WLAN_CAPABILITY_ESS;
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	struct ieee80211_channel *chan;
+@@ -955,7 +1096,7 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	enum nl80211_iftype iftype = ieee80211_vif_type_p2p(&sdata->vif);
+ 	const struct ieee80211_sband_iftype_data *iftd;
+ 	struct ieee80211_prep_tx_info info = {};
+-	struct ieee80211_link_data *link = &sdata->deflink;
++	void *capab_pos;
+ 	int ret;
  
--		/* FIXME: other links are destroyed? */
- 		sdata->deflink.u.mgd.conn_flags = 0;
- 		eth_zero_addr(sdata->deflink.u.mgd.bssid);
- 		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
-@@ -6407,7 +6414,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	/* we know it's writable, cast away the const */
+@@ -1003,23 +1144,18 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
  
- 	return 0;
-  err_clear:
--	eth_zero_addr(link->u.mgd.bssid);
-+	eth_zero_addr(sdata->deflink.u.mgd.bssid);
- 	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
- 					  BSS_CHANGED_BSSID);
- 	ifmgd->assoc_data = NULL;
+ 	skb_reserve(skb, local->hw.extra_tx_headroom);
+ 
+-	capab = WLAN_CAPABILITY_ESS;
+-
+-	if (sband->band == NL80211_BAND_2GHZ) {
+-		capab |= WLAN_CAPABILITY_SHORT_SLOT_TIME;
+-		capab |= WLAN_CAPABILITY_SHORT_PREAMBLE;
+-	}
+-
+ 	if (assoc_data->capability & WLAN_CAPABILITY_PRIVACY)
+ 		capab |= WLAN_CAPABILITY_PRIVACY;
+ 
+-	if ((assoc_data->capability & WLAN_CAPABILITY_SPECTRUM_MGMT) &&
+-	    ieee80211_hw_check(&local->hw, SPECTRUM_MGMT))
+-		capab |= WLAN_CAPABILITY_SPECTRUM_MGMT;
+-
+ 	if (ifmgd->flags & IEEE80211_STA_ENABLE_RRM)
+ 		capab |= WLAN_CAPABILITY_RADIO_MEASURE;
+ 
++	/* Set MBSSID support for HE AP if needed */
++	if (ieee80211_hw_check(&local->hw, SUPPORTS_ONLY_HE_MULTI_BSSID) &&
++	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE) &&
++	    ext_capa && ext_capa->datalen >= 3)
++		ext_capa->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
++
+ 	mgmt = skb_put_zero(skb, 24);
+ 	memcpy(mgmt->da, assoc_data->bss->bssid, ETH_ALEN);
+ 	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
+@@ -1032,7 +1168,7 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 		skb_put(skb, 10);
+ 		mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
+ 						  IEEE80211_STYPE_REASSOC_REQ);
+-		mgmt->u.reassoc_req.capab_info = cpu_to_le16(capab);
++		capab_pos = &mgmt->u.reassoc_req.capab_info;
+ 		mgmt->u.reassoc_req.listen_interval = listen_int;
+ 		memcpy(mgmt->u.reassoc_req.current_ap, assoc_data->prev_bssid,
+ 		       ETH_ALEN);
+@@ -1041,7 +1177,7 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 		skb_put(skb, 4);
+ 		mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
+ 						  IEEE80211_STYPE_ASSOC_REQ);
+-		mgmt->u.assoc_req.capab_info = cpu_to_le16(capab);
++		capab_pos = &mgmt->u.assoc_req.capab_info;
+ 		mgmt->u.assoc_req.listen_interval = listen_int;
+ 		info.subtype = IEEE80211_STYPE_ASSOC_REQ;
+ 	}
+@@ -1053,97 +1189,15 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	*pos++ = assoc_data->ssid_len;
+ 	memcpy(pos, assoc_data->ssid, assoc_data->ssid_len);
+ 
+-	if (sband->band != NL80211_BAND_S1GHZ)
+-		ieee80211_assoc_add_rates(skb, chanctx_conf->def.width,
+-					  sband, assoc_data);
+-
+-	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT ||
+-	    capab & WLAN_CAPABILITY_RADIO_MEASURE) {
+-		pos = skb_put(skb, 4);
+-		*pos++ = WLAN_EID_PWR_CAPABILITY;
+-		*pos++ = 2;
+-		*pos++ = 0; /* min tx power */
+-		 /* max tx power */
+-		*pos++ = ieee80211_chandef_max_power(&chanctx_conf->def);
+-	}
+-
+-	/*
+-	 * Per spec, we shouldn't include the list of channels if we advertise
+-	 * support for extended channel switching, but we've always done that;
+-	 * (for now?) apply this restriction only on the (new) 6 GHz band.
+-	 */
+-	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT &&
+-	    (sband->band != NL80211_BAND_6GHZ ||
+-	     !ext_capa || ext_capa->datalen < 1 ||
+-	     !(ext_capa->data[0] & WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING))) {
+-		/* TODO: get this in reg domain format */
+-		pos = skb_put(skb, 2 * sband->n_channels + 2);
+-		*pos++ = WLAN_EID_SUPPORTED_CHANNELS;
+-		*pos++ = 2 * sband->n_channels;
+-		for (i = 0; i < sband->n_channels; i++) {
+-			int cf = sband->channels[i].center_freq;
+-
+-			*pos++ = ieee80211_frequency_to_channel(cf);
+-			*pos++ = 1; /* one channel in the subband*/
+-		}
+-	}
+-
+-	/* Set MBSSID support for HE AP if needed */
+-	if (ieee80211_hw_check(&local->hw, SUPPORTS_ONLY_HE_MULTI_BSSID) &&
+-	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE) &&
+-	    ext_capa && ext_capa->datalen >= 3)
+-		ext_capa->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
+-
+-	/* if present, add any custom IEs that go before HT */
+-	offset = ieee80211_add_before_ht_elems(skb, assoc_data->ie,
+-					       assoc_data->ie_len,
+-					       offset);
+-
+-	if (WARN_ON_ONCE((link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HT) &&
+-			 !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT)))
+-		link->u.mgd.conn_flags |= IEEE80211_CONN_DISABLE_VHT;
+-
+-	if (sband->band != NL80211_BAND_6GHZ &&
+-	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HT))
+-		ieee80211_add_ht_ie(sdata, skb, assoc_data->ap_ht_param,
+-				    sband, chan, link->smps_mode,
+-				    link->u.mgd.conn_flags);
+-
+-	/* if present, add any custom IEs that go before VHT */
+-	offset = ieee80211_add_before_vht_elems(skb, assoc_data->ie,
+-						assoc_data->ie_len,
+-						offset);
+-
+-	if (sband->band != NL80211_BAND_6GHZ &&
+-	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT))
+-		link->conf->mu_mimo_owner =
+-			ieee80211_add_vht_ie(sdata, skb, sband,
+-					     &assoc_data->ap_vht_cap,
+-					     link->u.mgd.conn_flags);
+-
+-	/*
+-	 * If AP doesn't support HT, mark HE and EHT as disabled.
+-	 * If on the 5GHz band, make sure it supports VHT.
+-	 */
+-	if (link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HT ||
+-	    (sband->band == NL80211_BAND_5GHZ &&
+-	     link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT))
+-		link->u.mgd.conn_flags |= IEEE80211_CONN_DISABLE_HE |
+-						   IEEE80211_CONN_DISABLE_EHT;
+-
+-	/* if present, add any custom IEs that go before HE */
+-	offset = ieee80211_add_before_he_elems(skb, assoc_data->ie,
+-					       assoc_data->ie_len,
+-					       offset);
+-
+-	if (!(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE)) {
+-		ieee80211_add_he_ie(sdata, skb, sband, link->u.mgd.conn_flags);
+-
+-		if (!(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_EHT))
+-			ieee80211_add_eht_ie(sdata, skb, sband);
+-	}
+-
+-	/* if present, add any custom non-vendor IEs that go after HE */
++	/* add the elements for the assoc (main) link */
++	offset = ieee80211_assoc_link_elems(sdata, skb, &capab,
++					    ext_capa,
++					    assoc_data->ie,
++					    assoc_data->ie_len,
++					    link);
++	put_unaligned_le16(capab, capab_pos);
++
++	/* if present, add any custom non-vendor IEs */
+ 	if (assoc_data->ie_len) {
+ 		noffset = ieee80211_ie_split_vendor(assoc_data->ie,
+ 						    assoc_data->ie_len,
+@@ -1164,14 +1218,6 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 		pos = ieee80211_add_wmm_info_ie(skb_put(skb, 9), qos_info);
+ 	}
+ 
+-	if (sband->band == NL80211_BAND_S1GHZ) {
+-		ieee80211_add_aid_request_ie(sdata, skb);
+-		ieee80211_add_s1g_capab_ie(sdata, &sband->s1g_cap, skb);
+-	}
+-
+-	if (iftd && iftd->vendor_elems.data && iftd->vendor_elems.len)
+-		skb_put_data(skb, iftd->vendor_elems.data, iftd->vendor_elems.len);
+-
+ 	/* add any remaining custom (i.e. vendor specific here) IEs */
+ 	if (assoc_data->ie_len) {
+ 		noffset = assoc_data->ie_len;
 -- 
 2.36.1
 
