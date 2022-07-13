@@ -2,177 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086C9573A3B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 17:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCC5573AF8
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jul 2022 18:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236981AbiGMPe5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jul 2022 11:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40576 "EHLO
+        id S236207AbiGMQPB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jul 2022 12:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236946AbiGMPep (ORCPT
+        with ESMTP id S236348AbiGMQPA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jul 2022 11:34:45 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A20AE3E759
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 08:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=tSv1WmBbVAdt4ofDkoF1Oqmtk2vFmui+wpujQYU3ehw=;
-        t=1657726484; x=1658936084; b=RQrxiTTuIsH9JCiM9EAoy55YfofyfKOOlgUrHkh12lO7twJ
-        WLhu1SLxbjQTjft096Ixt7EpFWk5hkYRSVidE2F41r8nxqIGOGjripO3Z7rskqJbu3719wXEG1v8B
-        r5izMFgsNQIabWqtIT2QuNREOwiLRVXCFCe+zt64UuJUxIa3E8sjP7bhJthxBgxXatwIa9QiTR7BC
-        ObIPhZ5NZNY78uyaHFSZF0dTkorc/cGV6jvajeCXHv9qwPeJAwEizbKr0mgDd8ufjWQfl3jj/zjn5
-        TL3eqsdrY40Ufb1NREErW6hAKsam0zcI6vLHo8PYUaJVhzY3T7QQu5KPciuR/Tcg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oBeNu-00EnaA-J7;
-        Wed, 13 Jul 2022 17:34:42 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 21/21] wifi: mac80211: mlme: refactor ieee80211_set_associated()
-Date:   Wed, 13 Jul 2022 17:34:33 +0200
-Message-Id: <20220713173301.98639a6d390e.I9562d40805f25728f9ac08102f91f202e198a590@changeid>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220713153433.279227-1-johannes@sipsolutions.net>
-References: <20220713153433.279227-1-johannes@sipsolutions.net>
+        Wed, 13 Jul 2022 12:15:00 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B91A509CF
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Jul 2022 09:15:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1657728900; x=1689264900;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WFxVPsBp1qZCCd5MTdNJkIBS1kwhgQMW5pte/Mt1TcA=;
+  b=A5ejU4kiAcP/qweL49gwXTcnT7GNkeByuibgwpbYpg2Ln0M5cj8pLws1
+   p+xzjTwOmBEbABRTwUznylRVdYI8VtE0Q5vkYqiI5dwXTdSNjdZ3ZaKlD
+   u1cSX0FP8TI09FFyq5weKia28mn4cePKJnoXrSVuKt/Ifovn3B3Cu5DqB
+   4=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 13 Jul 2022 09:14:59 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2022 09:14:59 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 13 Jul 2022 09:14:59 -0700
+Received: from [10.110.97.41] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Wed, 13 Jul
+ 2022 09:14:58 -0700
+Message-ID: <bc928f09-cdbc-b5e5-c2f2-0c13ba3ebadb@quicinc.com>
+Date:   Wed, 13 Jul 2022 09:14:57 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 03/76] wifi: mac80211: rx: accept link-addressed frames
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     Johannes Berg <johannes.berg@intel.com>
+References: <20220713094502.163926-1-johannes@sipsolutions.net>
+ <20220713114425.bf1302a63e1c.Idcd337705a4d1737a89bf9247ba73f82a0fc8b61@changeid>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220713114425.bf1302a63e1c.Idcd337705a4d1737a89bf9247ba73f82a0fc8b61@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 7/13/2022 2:43 AM, Johannes Berg wrote:
+>    * This structure is the "EHT Operation Element" fields as
+> - * described in P802.11be_D1.4 section 9.4.2.311
+> + * described in P802.11be_D1.5 section 9.4.2.311
 
-Split out much of the code in ieee80211_set_associated()
-into a new ieee80211_link_set_associated() which can be
-called per link later for MLO.
+In D2.0 this has changed to add the fixed 4-octet Basic EHT-MCS
+And Nss Set before the variable-length EHT Operation
+Information
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/mlme.c | 67 +++++++++++++++++++++++++++------------------
- 1 file changed, 41 insertions(+), 26 deletions(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 0614712236de..d8e0ca4b316f 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2387,29 +2387,27 @@ static u32 ieee80211_handle_bss_capability(struct ieee80211_link_data *link,
- 	return changed;
- }
- 
--static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
--				     struct cfg80211_bss *cbss,
--				     u32 bss_info_changed)
-+static u32 ieee80211_link_set_associated(struct ieee80211_link_data *link,
-+					 struct cfg80211_bss *cbss)
- {
--	struct ieee80211_bss *bss = (void *)cbss->priv;
--	struct ieee80211_local *local = sdata->local;
--	struct ieee80211_link_data *link = &sdata->deflink;
-+	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_bss_conf *bss_conf = link->conf;
--	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
-+	struct ieee80211_bss *bss = (void *)cbss->priv;
-+	u32 changed = 0;
- 
--	bss_info_changed |= BSS_CHANGED_ASSOC;
--	bss_info_changed |= ieee80211_handle_bss_capability(link,
--		bss_conf->assoc_capability, bss->has_erp_value, bss->erp_value);
-+	sdata->u.mgd.beacon_timeout =
-+		usecs_to_jiffies(ieee80211_tu_to_usec(beacon_loss_count *
-+						      bss_conf->beacon_int));
- 
--	sdata->u.mgd.beacon_timeout = usecs_to_jiffies(ieee80211_tu_to_usec(
--		beacon_loss_count * bss_conf->beacon_int));
-+	changed |= ieee80211_handle_bss_capability(link,
-+						   bss_conf->assoc_capability,
-+						   bss->has_erp_value,
-+						   bss->erp_value);
-+
-+	ieee80211_check_rate_mask(link);
- 
--	sdata->u.mgd.associated = true;
- 	link->u.mgd.bss = cbss;
- 	memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
--	memcpy(sdata->vif.cfg.ap_addr, cbss->bssid, ETH_ALEN);
--
--	ieee80211_check_rate_mask(link);
- 
- 	if (sdata->vif.p2p ||
- 	    sdata->vif.driver_flags & IEEE80211_VIF_GET_NOA_UPDATE) {
-@@ -2428,17 +2426,12 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 			if (ret >= 2) {
- 				link->u.mgd.p2p_noa_index =
- 					bss_conf->p2p_noa_attr.index;
--				bss_info_changed |= BSS_CHANGED_P2P_PS;
-+				changed |= BSS_CHANGED_P2P_PS;
- 			}
- 		}
- 		rcu_read_unlock();
- 	}
- 
--	/* just to be sure */
--	ieee80211_stop_poll(sdata);
--
--	ieee80211_led_assoc(local, 1);
--
- 	if (link->u.mgd.have_beacon) {
- 		/*
- 		 * If the AP is buggy we may get here with no DTIM period
-@@ -2448,18 +2441,40 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 		 */
- 		bss_conf->dtim_period = link->u.mgd.dtim_period ?: 1;
- 		bss_conf->beacon_rate = bss->beacon_rate;
--		bss_info_changed |= BSS_CHANGED_BEACON_INFO;
-+		changed |= BSS_CHANGED_BEACON_INFO;
- 	} else {
- 		bss_conf->beacon_rate = NULL;
- 		bss_conf->dtim_period = 0;
- 	}
- 
--	vif_cfg->assoc = 1;
--
- 	/* Tell the driver to monitor connection quality (if supported) */
- 	if (sdata->vif.driver_flags & IEEE80211_VIF_SUPPORTS_CQM_RSSI &&
- 	    bss_conf->cqm_rssi_thold)
--		bss_info_changed |= BSS_CHANGED_CQM;
-+		changed |= BSS_CHANGED_CQM;
-+
-+	return changed;
-+}
-+
-+static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
-+				     struct cfg80211_bss *cbss,
-+				     u32 bss_info_changed)
-+{
-+	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_link_data *link = &sdata->deflink;
-+	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
-+
-+	bss_info_changed |= BSS_CHANGED_ASSOC;
-+	bss_info_changed |= ieee80211_link_set_associated(link, cbss);
-+
-+	sdata->u.mgd.associated = true;
-+	memcpy(sdata->vif.cfg.ap_addr, cbss->bssid, ETH_ALEN);
-+
-+	/* just to be sure */
-+	ieee80211_stop_poll(sdata);
-+
-+	ieee80211_led_assoc(local, 1);
-+
-+	vif_cfg->assoc = 1;
- 
- 	/* Enable ARP filtering */
- 	if (vif_cfg->arp_addr_cnt)
--- 
-2.36.1
-
+Do you have a timeline to incorporate D2.0 changes?
