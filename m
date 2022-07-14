@@ -2,65 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3B0B574A18
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 12:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70352574D1F
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 14:10:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237953AbiGNKGK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jul 2022 06:06:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
+        id S230220AbiGNMKH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jul 2022 08:10:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238111AbiGNKFh (ORCPT
+        with ESMTP id S236398AbiGNMJw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jul 2022 06:05:37 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7474551426
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 03:05:36 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id b12so694930ilh.4
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 03:05:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LDjJyUSkOlX/2H1Dive48wrqPvTAsUMOt9cw//VSMrc=;
-        b=q1ELvm7oR2NzdBi0ujuceOdlQGdJDpT6NOD0OWgbFKut+pagnhtHwWyGvGP9U3ZGtS
-         T5W2f7V7NVLLh5thUxJu8HdFyw9nt+UlY9k4orcm2mTey0WMn5Oc3dI5JUVftBoyACFS
-         Vv80H1u6uxGbWudW5F+spfFRWGqzrxqXS7MQ5QgtzhqdlazfQzQaAEwPDeiHy25FRyy0
-         /5bnNaL4CO/p9vZXkVmtODglknULaKGMvWEVFJ/jZdI8N7n5vLcj4xbdQGoB/quX9ljG
-         EfhswoCJ4uXi1g4e+68BdP/EAXH2a7U61w5p0/8WjW/iwWibrDHcwmdliWCUe/bwNAEp
-         w1IQ==
+        Thu, 14 Jul 2022 08:09:52 -0400
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F4AD3FA06
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 05:08:49 -0700 (PDT)
+Received: by mail-il1-f199.google.com with SMTP id 1-20020a056e0220c100b002dc2923add3so985719ilq.7
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 05:08:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LDjJyUSkOlX/2H1Dive48wrqPvTAsUMOt9cw//VSMrc=;
-        b=4E0DnkJTUa0xgEc5E7kGMdGu8A8Sl50n4GS+iub2FtSd1rp/pf4hLOy5bWHz6pmG+D
-         VR/kdGlE1mA75PGNaF2DTT5GL6X1xz8jQ4hLc5XhZPOXKPfo81GTyPuY1baOGeiI3pWj
-         jwzrZdjzYAmyqtmVwhZ0kve6dwME+VvyVaX0Q2KONo8sQubPkRL8nUUsmjaWaaJMGSA7
-         qJ6CHLLBQt5Gy07jBjIZhmySk0tKjJVHKBjfngjliXLQbJY06si2nnrZGtwmBnsKnqDS
-         lrWG7el81dA6+Bab/QTUdWSygfU0YOCAu4+QectNEr1vHsyazJUa9vFe+eMcU9NBIlbT
-         j0rg==
-X-Gm-Message-State: AJIora8pz227SL0cJ1nYvMeE+VUGAnN4VqeRM2noCVvXJ0y6UzTTaNVN
-        OQlhPwF9s5q3lb3U311eWlNZT3ua/CMMOfukf66LjxJ71AhnEQ==
-X-Google-Smtp-Source: AGRyM1tXPEiF/Ebqv0UIK3YrJR3rUIt+FlvFw69mtkWy5wB9QvELbcveOsX3e0Zj139v8uMp69Irif9XkGwkT3QHZp4=
-X-Received: by 2002:a05:6e02:20e9:b0:2dc:734b:d52b with SMTP id
- q9-20020a056e0220e900b002dc734bd52bmr4366286ilv.261.1657793135719; Thu, 14
- Jul 2022 03:05:35 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=xFnPnpP/G7u2XnAw40xBSXDR4IKqMm4aVVQnDeJHz1g=;
+        b=AXsVTc9TmA5V7SJ6ehU5MKBmmiCdvdYsCb93vSft05p246iqkUj8s7OLrmh5qlXRUy
+         TGYCS5yjxiR06Gp16pJq7K/Nlgv7Qqr+yrV0MjVSldd0qZIKcdT+YWzBaK102muMQU6k
+         J4qSsSdDupVZ2tBeBoq/44gZn3IlTPgebO9W4mffJ/7MKZNgt9i29Lfi8N3D+k/cmG7i
+         wlhJInCDW9ZPzHtgjjatOkyuLVXjUheu/QwyTjf8wxtxR52GhGQ2NK5Xu8HGqvbhNOa+
+         zcglUNrwVI/wOadNtDixpTjk7nRFzYwtmKtMh16gLeT43M2PrHQDaMkveQd2ooIXAYpF
+         qPag==
+X-Gm-Message-State: AJIora98SHhnPOx+uAE1pYw604OMNfrM/KlH8tjArlarTzZBWsPoboiq
+        5lCEpyVweQzmZz+qhVmGxLP/hUqZQI6VeIHcqOqVCErR4758
+X-Google-Smtp-Source: AGRyM1uHruF+JtwFguHVwlc4HWMQAzNuNdkMKcgYVJZ8aL9xJ0irTHvP+9dNr1/xZ7pAJFVuv5qMVFYjMIkQdt+beiCDmmI/JfFW
 MIME-Version: 1.0
-References: <id1HN6qCMAirApBzTA6fT7ZFWBBGCJhULpflxQ7NT6cgCboVnn3RHpiOFjA9SbRqzBRFLk9ES0C4FNvO6fUQsNg7pqF6ZSNAYUo99nHy8PY=@dannyvanheumen.nl>
-In-Reply-To: <id1HN6qCMAirApBzTA6fT7ZFWBBGCJhULpflxQ7NT6cgCboVnn3RHpiOFjA9SbRqzBRFLk9ES0C4FNvO6fUQsNg7pqF6ZSNAYUo99nHy8PY=@dannyvanheumen.nl>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Jul 2022 12:04:59 +0200
-Message-ID: <CAPDyKFpa6Z0Uhb0OnhMJ-KTQg5CQW93KMz1j1cQJS-Ho8FVhmQ@mail.gmail.com>
-Subject: Re: [PATCH v5] brcmfmac: prevent double-free on hardware-reset
-To:     Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
+X-Received: by 2002:a05:6602:2c4e:b0:657:4115:d9e4 with SMTP id
+ x14-20020a0566022c4e00b006574115d9e4mr4164255iov.91.1657800505735; Thu, 14
+ Jul 2022 05:08:25 -0700 (PDT)
+Date:   Thu, 14 Jul 2022 05:08:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000040bd4905e3c2c237@google.com>
+Subject: [syzbot] INFO: trying to register non-static key in ieee80211_do_stop
+From:   syzbot <syzbot+eceab52db7c4b961e9d6@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,165 +56,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 12 Jul 2022 at 01:22, Danny van Heumen <danny@dannyvanheumen.nl> wrote:
->
-> In case of buggy firmware, brcmfmac may perform a hardware reset. If during
-> reset and subsequent probing an early failure occurs, a memory region is
-> accidentally double-freed. With hardened memory allocation enabled, this error
-> will be detected.
->
-> - return early where appropriate to skip unnecessary clean-up.
-> - set '.freezer' pointer to NULL to prevent double-freeing under possible
->   other circumstances and to re-align result under various different
->   behaviors of memory allocation freeing.
-> - correctly claim host on func1 for disabling func2.
-> - after reset, do not initiate probing immediately, but rely on events.
->
-> Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
-> 'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitialize
-> the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
-> early, which includes calling 'brcmf_sdiod_remove'. In both cases
-> 'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
-> has not yet been re-allocated the second time.
->
-> Stacktrace of (failing) hardware reset after firmware-crash:
->
-> Code: b9402b82 8b0202c0 eb1a02df 54000041 (d4210000)
->  ret_from_fork+0x10/0x20
->  kthread+0x154/0x160
->  worker_thread+0x188/0x504
->  process_one_work+0x1f4/0x490
->  brcmf_core_bus_reset+0x34/0x44 [brcmfmac]
->  brcmf_sdio_bus_reset+0x68/0xc0 [brcmfmac]
->  brcmf_sdiod_probe+0x170/0x21c [brcmfmac]
->  brcmf_sdiod_remove+0x48/0xc0 [brcmfmac]
->  kfree+0x210/0x220
->  __slab_free+0x58/0x40c
-> Call trace:
-> x2 : 0000000000000040 x1 : fffffc00002d2b80 x0 : ffff00000b4aee40
-> x5 : ffff8000013fa728 x4 : 0000000000000001 x3 : ffff00000b4aee00
-> x8 : ffff800009967ce0 x7 : ffff8000099bfce0 x6 : 00000006f8005d01
-> x11: ffff8000099bfce0 x10: 00000000fffff000 x9 : ffff8000083401d0
-> x14: 0000000000000000 x13: 657a69736b636f6c x12: 6220314620746573
-> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000030
-> x20: fffffc00002d2ba0 x19: fffffc00002d2b80 x18: 0000000000000000
-> x23: ffff00000b4aee00 x22: ffff00000b4aee00 x21: 0000000000000001
-> x26: ffff00000b4aee00 x25: ffff0000f7753705 x24: 000000000001288a
-> x29: ffff80000a22bbf0 x28: ffff000000401200 x27: 000000008020001a
-> sp : ffff80000a22bbf0
-> lr : kfree+0x210/0x220
-> pc : __slab_free+0x58/0x40c
-> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> Workqueue: events brcmf_core_bus_reset [brcmfmac]
-> Hardware name: Pine64 Pinebook Pro (DT)
-> CPU: 2 PID: 639 Comm: kworker/2:2 Tainted: G         C        5.16.0-0.bpo.4-arm64 #1  Debian 5.16.12-1~bpo11+1
->  nvmem_rockchip_efuse industrialio_triggered_buffer videodev snd_soc_core snd_pcm_dmaengine kfifo_buf snd_pcm io_domain mc industrialio mt>
-> Modules linked in: snd_seq_dummy snd_hrtimer snd_seq snd_seq_device nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje>
-> Internal error: Oops - BUG: 0 [#1] SMP
-> kernel BUG at mm/slub.c:379!
->
-> Signed-off-by: Danny van Heumen <danny@dannyvanheumen.nl>
+Hello,
 
-I have to admit that, to me, it looks a bit weird to have one driver
-instance managing two different SDIO func devices. On the other hand,
-I don't know the HW so there might be good reasons for why.
+syzbot found the following issue on:
 
-In any case, I want to point out a commit [1] for the mwifiex driver,
-which could serve as a good inspiration of how to make use of the
-mmc_hw_reset(). For example, one may look at the return code from
-mmc_hw_reset() to understand whether the reset will be done
-synchronous or asynchronous (via device re-registration).
+HEAD commit:    b11e5f6a3a5c net: sunhme: output link status with a single..
+git tree:       net
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=108ed862080000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=fa95f12403a2e0d2
+dashboard link: https://syzkaller.appspot.com/bug?extid=eceab52db7c4b961e9d6
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173a7c78080000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1102749a080000
 
-That said, I think the $subject patch looks reasonable to me. So feel
-free to add:
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+eceab52db7c4b961e9d6@syzkaller.appspotmail.com
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 PID: 3615 Comm: syz-executor630 Not tainted 5.19.0-rc5-syzkaller-00263-gb11e5f6a3a5c #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/29/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
+ assign_lock_key kernel/locking/lockdep.c:979 [inline]
+ register_lock_class+0xf30/0x1130 kernel/locking/lockdep.c:1292
+ __lock_acquire+0x10a/0x5660 kernel/locking/lockdep.c:4932
+ lock_acquire kernel/locking/lockdep.c:5665 [inline]
+ lock_acquire+0x1ab/0x570 kernel/locking/lockdep.c:5630
+ __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+ _raw_spin_lock_bh+0x2f/0x40 kernel/locking/spinlock.c:178
+ spin_lock_bh include/linux/spinlock.h:354 [inline]
+ ieee80211_do_stop+0xc3/0x1ff0 net/mac80211/iface.c:380
+ ieee80211_runtime_change_iftype net/mac80211/iface.c:1789 [inline]
+ ieee80211_if_change_type+0x383/0x840 net/mac80211/iface.c:1827
+ ieee80211_change_iface+0x57/0x3f0 net/mac80211/cfg.c:190
+ rdev_change_virtual_intf net/wireless/rdev-ops.h:69 [inline]
+ cfg80211_change_iface+0x5e1/0xf10 net/wireless/util.c:1078
+ nl80211_set_interface+0x64f/0x8c0 net/wireless/nl80211.c:4041
+ genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:731
+ genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
+ genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:792
+ netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2501
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:803
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x543/0x7f0 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x917/0xe10 net/netlink/af_netlink.c:1921
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:734
+ ____sys_sendmsg+0x6eb/0x810 net/socket.c:2488
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2542
+ __sys_sendmsg net/socket.c:2571 [inline]
+ __do_sys_sendmsg net/socket.c:2580 [inline]
+ __se_sys_sendmsg net/socket.c:2578 [inline]
+ __x64_sys_sendmsg+0x132/0x220 net/socket.c:2578
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+RIP: 0033:0x7f5bf1b37b89
+Code: 28 c3 e8 5a 14 00 00 66 2e 0f 1f 84 00 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd682b8a38 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
 
-Kind regards
-Uffe
 
-[1]
-cdb2256f795e ("mwifiex: Re-work support for SDIO HW reset")
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-> ---
->  .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c   | 13 +++++--------
->  .../net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 10 +---------
->  2 files changed, 6 insertions(+), 17 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index ac02244a6fdf..414ee21f42e3 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -802,6 +802,7 @@ static void brcmf_sdiod_freezer_detach(struct brcmf_sdio_dev *sdiodev)
->         if (sdiodev->freezer) {
->                 WARN_ON(atomic_read(&sdiodev->freezer->freezing));
->                 kfree(sdiodev->freezer);
-> +               sdiodev->freezer = NULL;
->         }
->  }
->
-> @@ -875,13 +876,9 @@ int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev)
->
->         brcmf_sdiod_freezer_detach(sdiodev);
->
-> -       /* Disable Function 2 */
-> -       sdio_claim_host(sdiodev->func2);
-> -       sdio_disable_func(sdiodev->func2);
-> -       sdio_release_host(sdiodev->func2);
-> -
-> -       /* Disable Function 1 */
-> +       /* Disable functions 2 then 1. */
->         sdio_claim_host(sdiodev->func1);
-> +       sdio_disable_func(sdiodev->func2);
->         sdio_disable_func(sdiodev->func1);
->         sdio_release_host(sdiodev->func1);
->
-> @@ -911,7 +908,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
->         if (ret) {
->                 brcmf_err("Failed to set F1 blocksize\n");
->                 sdio_release_host(sdiodev->func1);
-> -               goto out;
-> +               return ret;
->         }
->         switch (sdiodev->func2->device) {
->         case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
-> @@ -933,7 +930,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
->         if (ret) {
->                 brcmf_err("Failed to set F2 blocksize\n");
->                 sdio_release_host(sdiodev->func1);
-> -               goto out;
-> +               return ret;
->         } else {
->                 brcmf_dbg(SDIO, "set F2 blocksize to %d\n", f2_blksz);
->         }
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index 212fbbe1cd7e..2ed70f809097 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -4152,7 +4152,6 @@ int brcmf_sdio_get_fwname(struct device *dev, const char *ext, u8 *fw_name)
->
->  static int brcmf_sdio_bus_reset(struct device *dev)
->  {
-> -       int ret = 0;
->         struct brcmf_bus *bus_if = dev_get_drvdata(dev);
->         struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
->
-> @@ -4169,14 +4168,7 @@ static int brcmf_sdio_bus_reset(struct device *dev)
->         sdio_release_host(sdiodev->func1);
->
->         brcmf_bus_change_state(sdiodev->bus_if, BRCMF_BUS_DOWN);
-> -
-> -       ret = brcmf_sdiod_probe(sdiodev);
-> -       if (ret) {
-> -               brcmf_err("Failed to probe after sdio device reset: ret %d\n",
-> -                         ret);
-> -       }
-> -
-> -       return ret;
-> +       return 0;
->  }
->
->  static const struct brcmf_bus_ops brcmf_sdio_bus_ops = {
-> --
-> 2.34.1
->
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
