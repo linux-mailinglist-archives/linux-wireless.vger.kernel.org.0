@@ -2,26 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C9A2574886
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 11:22:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EA34574960
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 11:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238184AbiGNJWE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jul 2022 05:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49734 "EHLO
+        id S238424AbiGNJpd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jul 2022 05:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237834AbiGNJVq (ORCPT
+        with ESMTP id S238446AbiGNJpO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jul 2022 05:21:46 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B8A0550AF;
-        Thu, 14 Jul 2022 02:18:25 -0700 (PDT)
-Received: from rustam-GF63-Thin-9RCX.intra.ispras.ru (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPS id E1B5940D4004;
-        Thu, 14 Jul 2022 09:18:17 +0000 (UTC)
-From:   Rustam Subkhankulov <subkhankulov@ispras.ru>
-To:     Christian Lamparter <chunkeey@googlemail.com>
-Cc:     Rustam Subkhankulov <subkhankulov@ispras.ru>,
-        Kalle Valo <kvalo@kernel.org>,
+        Thu, 14 Jul 2022 05:45:14 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303C22982B;
+        Thu, 14 Jul 2022 02:45:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=07oUEKHSzm+NLpMZQXlziUA9naI9SGuvr9Rc9aLt8XE=;
+        t=1657791912; x=1659001512; b=V/fjWiVYh2fLZwviFs5feSv7Uwyq5bSbkmUBMxq+4k5s2Ur
+        7MO3xTQuIm+pWTpTcSo3r3MTtDdwrTvhhKhoimhMy1D4aoB1p4Jkc8WAM1PaTIeCQ/MYdl4iX29Wc
+        t+O4zy2lnmzgQw9yBynt3AamfQExS/5QMfCpTIIDkqRxAIitZLJ+8PS4kBOupD9xmLLLeljVBvT1k
+        K0ZteVPCYrLUNNs9SsV01Kqx8Y/17K1Q0kVk0kziRDhTp0AeJItX2VGBn2jzo9slCpycEVhkVrrCZ
+        FguVmzVX9t8e489IIfDzCb5WEC0Ay3Zn9QA5V1GhHQp8Y9/ZkOb2BGjFNRlFgyRQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oBvP5-00Fa1N-Ix;
+        Thu, 14 Jul 2022 11:45:03 +0200
+Message-ID: <7cebf20083d2464e5f1467a406cda583ae2750a0.camel@sipsolutions.net>
+Subject: Re: [PATCH] p54: add missing parentheses in p54_flush()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Rustam Subkhankulov <subkhankulov@ispras.ru>,
+        Christian Lamparter <chunkeey@googlemail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -30,50 +44,38 @@ Cc:     Rustam Subkhankulov <subkhankulov@ispras.ru>,
         linux-kernel@vger.kernel.org,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
         ldv-project@linuxtesting.org
-Subject: [PATCH] p54: add missing parentheses in p54_flush()
-Date:   Thu, 14 Jul 2022 12:17:41 +0300
-Message-Id: <20220714091741.90747-1-subkhankulov@ispras.ru>
-X-Mailer: git-send-email 2.25.1
+Date:   Thu, 14 Jul 2022 11:45:02 +0200
+In-Reply-To: <20220714091741.90747-1-subkhankulov@ispras.ru>
+References: <20220714091741.90747-1-subkhankulov@ispras.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The assignment of the value to the variable total in the loop
-condition must be enclosed in additional parentheses, since otherwise,
-in accordance with the precedence of the operators, the conjunction
-will be performed first, and only then the assignment.
+On Thu, 2022-07-14 at 12:17 +0300, Rustam Subkhankulov wrote:
+> The assignment of the value to the variable total in the loop
+> condition must be enclosed in additional parentheses, since otherwise,
+> in accordance with the precedence of the operators, the conjunction
+> will be performed first, and only then the assignment.
+>=20
+> Due to this error, a warning later in the function after the loop may
+> not occur in the situation when it should.
+>=20
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>=20
+> Signed-off-by: Rustam Subkhankulov <subkhankulov@ispras.ru>
+> Fixes: d3466830c165 ("p54: move under intersil vendor directory")
+>=20
 
-Due to this error, a warning later in the function after the loop may
-not occur in the situation when it should.
+That fixes can't be right, it just moved the code.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rustam Subkhankulov <subkhankulov@ispras.ru>
-Fixes: d3466830c165 ("p54: move under intersil vendor directory")
----
- drivers/net/wireless/intersil/p54/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intersil/p54/main.c b/drivers/net/wireless/intersil/p54/main.c
-index a3ca6620dc0c..8fa3ec71603e 100644
---- a/drivers/net/wireless/intersil/p54/main.c
-+++ b/drivers/net/wireless/intersil/p54/main.c
-@@ -682,7 +682,7 @@ static void p54_flush(struct ieee80211_hw *dev, struct ieee80211_vif *vif,
- 	 * queues have already been stopped and no new frames can sneak
- 	 * up from behind.
- 	 */
--	while ((total = p54_flush_count(priv) && i--)) {
-+	while ((total = p54_flush_count(priv)) && i--) {
- 		/* waste time */
- 		msleep(20);
- 	}
--- 
-2.25.1
-
+johannes
