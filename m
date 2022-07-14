@@ -2,170 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 111995751B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 17:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C50C575309
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 18:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239993AbiGNPWd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jul 2022 11:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58364 "EHLO
+        id S238023AbiGNQnk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jul 2022 12:43:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238594AbiGNPWd (ORCPT
+        with ESMTP id S235870AbiGNQnh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jul 2022 11:22:33 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F86A62482
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 08:22:32 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1oC0fO-0004Zv-2k; Thu, 14 Jul 2022 17:22:14 +0200
-Message-ID: <efa997a0-f1a1-c09f-801c-80617e2f51dc@pengutronix.de>
-Date:   Thu, 14 Jul 2022 17:22:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH 2/2] wifi: brcmfmac: support brcm,ccode-map-trivial DT
- property
-Content-Language: en-US
-To:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alvin@pqrs.dk>,
+        Thu, 14 Jul 2022 12:43:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3845511D;
+        Thu, 14 Jul 2022 09:43:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C942FB82733;
+        Thu, 14 Jul 2022 16:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFB8C341E0;
+        Thu, 14 Jul 2022 16:43:30 +0000 (UTC)
+Received: from rostedt by gandalf.local.home with local (Exim 4.95)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1oC1w1-004lPA-Hp;
+        Thu, 14 Jul 2022 12:43:29 -0400
+Message-ID: <20220714164329.384685373@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Thu, 14 Jul 2022 12:43:04 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        van Spriel <arend@broadcom.com>
-Cc:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alsi@bang-olufsen.dk>,
+        Paolo Abeni <pabeni@redhat.com>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20220711123005.3055300-1-alvin@pqrs.dk>
- <20220711123005.3055300-3-alvin@pqrs.dk>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220711123005.3055300-3-alvin@pqrs.dk>
+        ath11k@lists.infradead.org
+Subject: [for-next][PATCH 08/23] tracing/ath: Use the new __vstring() helper
+References: <20220714164256.403842845@goodmis.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11.07.22 14:30, Alvin Šipraga wrote:
-> From: Alvin Šipraga <alsi@bang-olufsen.dk>
-> 
-> Commit a21bf90e927f ("brcmfmac: use ISO3166 country code and 0 rev as
-> fallback on some devices") introduced a fallback mechanism whereby a
-> trivial mapping from ISO3166 country codes to firmware country code and
-> revision is used on some devices. This fallback operates on the device
-> level, so it is enabled only for certain supported chipsets.
-> 
-> In general though, the firmware country codes are determined by the CLM
-> blob, which is board-specific and may vary despite the underlying
-> chipset being the same.
-> 
-> The aforementioned commit is actually a refinement of a previous commit
-> that was reverted in commit 151a7c12c4fc ("Revert "brcmfmac: use ISO3166
-> country code and 0 rev as fallback"") due to regressions with a BCM4359
-> device. The refinement restricted the fallback mechanism to specific
-> chipsets such as the BCM4345.
-> 
-> We use a chipset - CYW88359 - that the driver identifies as a BCM4359
-> too. But in our case, the CLM blob uses ISO3166 country codes
-> internally, and all with revision 0. So the trivial mapping is exactly
-> what is needed in order for the driver to sync the kernel regulatory
-> domain to the firmware. This is just a matter of how the CLM blob was
-> prepared by the hardware vendor. The same could hold for other boards
-> too.
-> 
-> Although the brcm,ccode-map device tree property is useful for cases
-> where the mapping is more complex, the trivial case invites a much
-> simpler specification. This patch adds support for parsing the
-> brcm,ccode-map-trivial device tree property. Subordinate to the more
-> specific brcm,ccode-map property, this new proprety simply informs the
-> driver that the fallback method should be used in every case.
-> 
-> In the absence of the new property in the device tree, expect no
-> functional change.
-> 
-> Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Instead of open coding a __dynamic_array() with a fixed length (which
+defeats the purpose of the dynamic array in the first place). Use the new
+__vstring() helper that will use a va_list and only write enough of the
+string into the ring buffer that is needed.
 
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h   | 2 ++
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c       | 6 ++++++
->  3 files changed, 11 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 3ae6779fe153..db45da33adfd 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -7481,6 +7481,9 @@ int brcmf_cfg80211_wait_vif_event(struct brcmf_cfg80211_info *cfg,
->  
->  static bool brmcf_use_iso3166_ccode_fallback(struct brcmf_pub *drvr)
->  {
-> +	if (drvr->settings->trivial_ccode_map)
-> +		return true;
-> +
->  	switch (drvr->bus_if->chip) {
->  	case BRCM_CC_4345_CHIP_ID:
->  	case BRCM_CC_43602_CHIP_ID:
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-> index 15accc88d5c0..fe717cce5d55 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-> @@ -38,6 +38,7 @@ extern struct brcmf_mp_global_t brcmf_mp_global;
->   * @fcmode: FWS flow control.
->   * @roamoff: Firmware roaming off?
->   * @ignore_probe_fail: Ignore probe failure.
-> + * @trivial_ccode_map: Assume firmware uses ISO3166 country codes with rev 0
->   * @country_codes: If available, pointer to struct for translating country codes
->   * @bus: Bus specific platform data. Only SDIO at the mmoment.
->   */
-> @@ -48,6 +49,7 @@ struct brcmf_mp_device {
->  	bool		roamoff;
->  	bool		iapp;
->  	bool		ignore_probe_fail;
-> +	bool		trivial_ccode_map;
->  	struct brcmfmac_pd_cc *country_codes;
->  	const char	*board_type;
->  	unsigned char	mac[ETH_ALEN];
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index 083ac58f466d..1add942462f8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> @@ -24,6 +24,12 @@ static int brcmf_of_get_country_codes(struct device *dev,
->  
->  	count = of_property_count_strings(np, "brcm,ccode-map");
->  	if (count < 0) {
-> +		/* If no explicit country code map is specified, check whether
-> +		 * the trivial map should be used.
-> +		 */
-> +		settings->trivial_ccode_map =
-> +			of_property_read_bool(np, "brcm,ccode-map-trivial");
-> +
->  		/* The property is optional, so return success if it doesn't
->  		 * exist. Otherwise propagate the error code.
->  		 */
+Link: https://lkml.kernel.org/r/20220705224749.430339634@goodmis.org
 
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: ath10k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: ath11k@lists.infradead.org
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ drivers/net/wireless/ath/ath10k/trace.h  | 14 ++++----------
+ drivers/net/wireless/ath/ath11k/trace.h  |  7 ++-----
+ drivers/net/wireless/ath/ath6kl/trace.h  | 14 ++++----------
+ drivers/net/wireless/ath/trace.h         |  7 ++-----
+ drivers/net/wireless/ath/wil6210/trace.h |  7 ++-----
+ 5 files changed, 14 insertions(+), 35 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath10k/trace.h b/drivers/net/wireless/ath/ath10k/trace.h
+index 4714c86bb501..64e7a767d963 100644
+--- a/drivers/net/wireless/ath/ath10k/trace.h
++++ b/drivers/net/wireless/ath/ath10k/trace.h
+@@ -52,15 +52,12 @@ DECLARE_EVENT_CLASS(ath10k_log_event,
+ 	TP_STRUCT__entry(
+ 		__string(device, dev_name(ar->dev))
+ 		__string(driver, dev_driver_string(ar->dev))
+-		__dynamic_array(char, msg, ATH10K_MSG_MAX)
++		__vstring(msg, vaf->fmt, vaf->va)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(device, dev_name(ar->dev));
+ 		__assign_str(driver, dev_driver_string(ar->dev));
+-		WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-				       ATH10K_MSG_MAX,
+-				       vaf->fmt,
+-				       *vaf->va) >= ATH10K_MSG_MAX);
++		__assign_vstr(msg, vaf->fmt, vaf->va);
+ 	),
+ 	TP_printk(
+ 		"%s %s %s",
+@@ -92,16 +89,13 @@ TRACE_EVENT(ath10k_log_dbg,
+ 		__string(device, dev_name(ar->dev))
+ 		__string(driver, dev_driver_string(ar->dev))
+ 		__field(unsigned int, level)
+-		__dynamic_array(char, msg, ATH10K_MSG_MAX)
++		__vstring(msg, vaf->fmt, vaf->va)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(device, dev_name(ar->dev));
+ 		__assign_str(driver, dev_driver_string(ar->dev));
+ 		__entry->level = level;
+-		WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-				       ATH10K_MSG_MAX,
+-				       vaf->fmt,
+-				       *vaf->va) >= ATH10K_MSG_MAX);
++		__assign_vstr(msg, vaf->fmt, vaf->va);
+ 	),
+ 	TP_printk(
+ 		"%s %s %s",
+diff --git a/drivers/net/wireless/ath/ath11k/trace.h b/drivers/net/wireless/ath/ath11k/trace.h
+index a02e54735e88..76560587bea0 100644
+--- a/drivers/net/wireless/ath/ath11k/trace.h
++++ b/drivers/net/wireless/ath/ath11k/trace.h
+@@ -126,15 +126,12 @@ DECLARE_EVENT_CLASS(ath11k_log_event,
+ 	TP_STRUCT__entry(
+ 		__string(device, dev_name(ab->dev))
+ 		__string(driver, dev_driver_string(ab->dev))
+-		__dynamic_array(char, msg, ATH11K_MSG_MAX)
++		__vstring(msg, vaf->fmt, vaf->va)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(device, dev_name(ab->dev));
+ 		__assign_str(driver, dev_driver_string(ab->dev));
+-		WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-				       ATH11K_MSG_MAX,
+-				       vaf->fmt,
+-				       *vaf->va) >= ATH11K_MSG_MAX);
++		__assign_vstr(msg, vaf->fmt, vaf->va);
+ 	),
+ 	TP_printk(
+ 		"%s %s %s",
+diff --git a/drivers/net/wireless/ath/ath6kl/trace.h b/drivers/net/wireless/ath/ath6kl/trace.h
+index a3d3740419eb..231a94769ddb 100644
+--- a/drivers/net/wireless/ath/ath6kl/trace.h
++++ b/drivers/net/wireless/ath/ath6kl/trace.h
+@@ -253,13 +253,10 @@ DECLARE_EVENT_CLASS(ath6kl_log_event,
+ 	TP_PROTO(struct va_format *vaf),
+ 	TP_ARGS(vaf),
+ 	TP_STRUCT__entry(
+-		__dynamic_array(char, msg, ATH6KL_MSG_MAX)
++		__vstring(msg, vaf->fmt, vaf->va)
+ 	),
+ 	TP_fast_assign(
+-		WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-				       ATH6KL_MSG_MAX,
+-				       vaf->fmt,
+-				       *vaf->va) >= ATH6KL_MSG_MAX);
++		__assign_vstr(msg, vaf->fmt, vaf->va);
+ 	),
+ 	TP_printk("%s", __get_str(msg))
+ );
+@@ -284,14 +281,11 @@ TRACE_EVENT(ath6kl_log_dbg,
+ 	TP_ARGS(level, vaf),
+ 	TP_STRUCT__entry(
+ 		__field(unsigned int, level)
+-		__dynamic_array(char, msg, ATH6KL_MSG_MAX)
++		__vstring(msg, vaf->fmt, vaf->va)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->level = level;
+-		WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-				       ATH6KL_MSG_MAX,
+-				       vaf->fmt,
+-				       *vaf->va) >= ATH6KL_MSG_MAX);
++		__assign_vstr(msg, vaf->fmt, vaf->va);
+ 	),
+ 	TP_printk("%s", __get_str(msg))
+ );
+diff --git a/drivers/net/wireless/ath/trace.h b/drivers/net/wireless/ath/trace.h
+index ba711644d27e..9935cf475b6d 100644
+--- a/drivers/net/wireless/ath/trace.h
++++ b/drivers/net/wireless/ath/trace.h
+@@ -40,16 +40,13 @@ TRACE_EVENT(ath_log,
+ 	    TP_STRUCT__entry(
+ 		    __string(device, wiphy_name(wiphy))
+ 		    __string(driver, KBUILD_MODNAME)
+-		    __dynamic_array(char, msg, ATH_DBG_MAX_LEN)
++		    __vstring(msg, vaf->fmt, vaf->va)
+ 	    ),
+ 
+ 	    TP_fast_assign(
+ 		    __assign_str(device, wiphy_name(wiphy));
+ 		    __assign_str(driver, KBUILD_MODNAME);
+-		    WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-					   ATH_DBG_MAX_LEN,
+-					   vaf->fmt,
+-					   *vaf->va) >= ATH_DBG_MAX_LEN);
++		    __assign_vstr(msg, vaf->fmt, vaf->va);
+ 	    ),
+ 
+ 	    TP_printk(
+diff --git a/drivers/net/wireless/ath/wil6210/trace.h b/drivers/net/wireless/ath/wil6210/trace.h
+index 11c989e95880..201f44612c31 100644
+--- a/drivers/net/wireless/ath/wil6210/trace.h
++++ b/drivers/net/wireless/ath/wil6210/trace.h
+@@ -70,13 +70,10 @@ DECLARE_EVENT_CLASS(wil6210_log_event,
+ 	TP_PROTO(struct va_format *vaf),
+ 	TP_ARGS(vaf),
+ 	TP_STRUCT__entry(
+-		__dynamic_array(char, msg, WIL6210_MSG_MAX)
++		__vstring(msg, vaf->fmt, vaf->va)
+ 	),
+ 	TP_fast_assign(
+-		WARN_ON_ONCE(vsnprintf(__get_dynamic_array(msg),
+-				       WIL6210_MSG_MAX,
+-				       vaf->fmt,
+-				       *vaf->va) >= WIL6210_MSG_MAX);
++		__assign_vstr(msg, vaf->fmt, vaf->va);
+ 	),
+ 	TP_printk("%s", __get_str(msg))
+ );
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.35.1
