@@ -2,134 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 047FA5745E3
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 09:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47C9F5746AF
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jul 2022 10:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237182AbiGNHhQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jul 2022 03:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37414 "EHLO
+        id S231770AbiGNI0n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jul 2022 04:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233783AbiGNHhQ (ORCPT
+        with ESMTP id S230381AbiGNI0l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jul 2022 03:37:16 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC8041F63C
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 00:37:12 -0700 (PDT)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1oBtPJ-0003J3-5b; Thu, 14 Jul 2022 09:37:09 +0200
-Message-ID: <6654209a-9d94-440e-bea0-65a473195c0f@leemhuis.info>
-Date:   Thu, 14 Jul 2022 09:37:08 +0200
+        Thu, 14 Jul 2022 04:26:41 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077FF3AB36
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 01:26:41 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id c3so299038pfb.13
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Jul 2022 01:26:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=+ljiopVAcm6QExRVXWo1dE+qDNeRyQgTM9QHO1UnTkc=;
+        b=CtsBv3eQYR/8FqtJs/BFBDxdN/zbhHohBaf5+P33uB0drUwoNiB9u6kKivdlROnVMD
+         x8jy/98zmMDQQfrYhd6184EEZGpZMqbRQHfJMWsCRUZLmgJkpP81LOoURvceATsqZxqU
+         bMjdIVRK9abmjxqYtm34uxHzosDOK0WF2/7gEKGDPIFZ8K9x8CYEBUWzRs0JQrIMQDr4
+         MklBfB1Y774vMeceg7XWrigy4IPbDlStBWHEnxhSf8pqt8Wr2DjqP4rGomC2VEgX1esc
+         7XzyfqY8pe9zWg8/TU3AD5a5CkBr9N66UDU0xyZLNOHpdsvyFa635gTPzuC2SRByAShE
+         ejEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=+ljiopVAcm6QExRVXWo1dE+qDNeRyQgTM9QHO1UnTkc=;
+        b=VPMpqVkZSSg/36SHXHMQzkwK3IdtrqReogmDSkvkH9S62p4hDHe4i5G4iTQTsmdw3R
+         3edK72Xta0TWlK/wiu6AH24d04+uCdyCuzzG4TpKfGewjMO0tA9jNHgirmCzSXpwRGF/
+         FfvIv0g/So2C1E3TybGRhyVCxPDi0XR+P/XlQfNszuhvdXTeO/Yw3mr4b/V8A9jwwxA3
+         7G1BLy91dQm3YhAFLtWBEuuLs/jkvvZ2KwexTjVe8RywuL9UudZO3bAEOKE0gagLlmDf
+         cJXT9C9Xh4hrfD9NsgBV8TcVN7GLDq0/VUn/62D6XzEr12/AB1xH+j6zakMYTzRgNpMx
+         dbRQ==
+X-Gm-Message-State: AJIora/AMidNUW6ku/AK69ygT5bVPCYT5JVhQq9OA6LHESYsoPtABBZM
+        bMfPTUsrUxL0kJy2IacYY0JPpjXo2vo2t+4h
+X-Google-Smtp-Source: AGRyM1tlQbKZhfK/gyGS9I0AKgfnR75RRXCGEfiWoo4HN0T7kAo4UHKMnAKRfUbH1MlmRSHwMTcI5w==
+X-Received: by 2002:a63:5c42:0:b0:412:b2e9:97e4 with SMTP id n2-20020a635c42000000b00412b2e997e4mr6975263pgm.36.1657787200517;
+        Thu, 14 Jul 2022 01:26:40 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id g21-20020aa796b5000000b005289cade5b0sm989786pfk.124.2022.07.14.01.26.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Jul 2022 01:26:39 -0700 (PDT)
+Message-ID: <e9ecb9c8-cb5b-d727-38d6-ef5a0bf81cef@gmail.com>
+Date:   Thu, 14 Jul 2022 10:26:37 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: Bug 215635 - iwlwifi: Firmware crash with firmware 36.ca7b901d.0
- (8265-36.ucode)
+Subject: Re: [PATCH 00/76] wifi: more MLO work
 Content-Language: en-US
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Jakub Kicinski <kuba@kernel.org>, golan.ben.ami@intel.com,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Cc:     Udo Steinberg <udo@hypervisor.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <915d6d66-4e42-8cbf-76bc-0f2f72d5e7d6@leemhuis.info>
- <20220616115808.141dec76@kernel.org>
- <28d2123f-65ce-f69c-12e1-f672b26225f4@leemhuis.info>
-In-Reply-To: <28d2123f-65ce-f69c-12e1-f672b26225f4@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20220713094502.163926-1-johannes@sipsolutions.net>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <20220713094502.163926-1-johannes@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1657784233;698e01c5;
-X-HE-SMSGID: 1oBtPJ-0003J3-5b
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, this is your Linux kernel regression tracker. Top-posting for once,
-to make this easily accessible to everyone.
+On 7/13/2022 11:43 AM, Johannes Berg wrote:
+> Hi,
+> 
+> So our MLO work is progressing. Internally, I have limited support
+> for MLO connections now (over hwsim), but that's at least another
+> 25 patches on top of this series.
+> 
+> But would be good to get things out first anyway. I'm tempted to
+> just apply this (after net-next merges wireless-next and we will
+> merge back) though - even if we have more fixes to it later.
 
-Hey Iwlwifi maintainers, can you tell me why this regression report
-(https://bugzilla.kernel.org/show_bug.cgi?id=215635 ) and earlier mails
-in this thread seem to be ignored? Yes, sadly the issue was not
-bisected, but some help to track this down from your side would be
-really helpful to get to the root of the regression and fix it, as it'd
-expected due to Linus 'no regressions' policy.
+Just for my own patch submit process. What is the reason I am seeing the 
+"wifi:" prefix being used with patches on linux-wireless list? Is there 
+other wireless tech used, eg. "bt:" or so?
 
-And yes, it seems the issue is still present, as Udo recently confirmed
-in a update comment to above ticket:
-
-"""
-BTW, I can confirm the issue is still present in 5.19.0-rc5 (which is
-the latest kernel as of today) and also with the new firmware
-(36.f82a4177.0). I've updated the bug title accordingly.
-"""
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-
-P.S.: As the Linux kernel's regression tracker I deal with a lot of
-reports and sometimes miss something important when writing mails like
-this. If that's the case here, don't hesitate to tell me in a public
-reply, it's in everyone's interest to set the public record straight.
-
-On 17.06.22 08:38, Thorsten Leemhuis wrote:
-> CCing Gregory, which became iwlwifi maintainer inbetween.
-> 
-> On 16.06.22 20:58, Jakub Kicinski wrote:
->> On Mon, 14 Mar 2022 12:51:38 +0100 Thorsten Leemhuis wrote:
->>> Hi, this is your Linux kernel regression tracker.
->>>
->>> I noticed a regression report in bugzilla.kernel.org that afaics isn't
->>> properly handled, that's why I decided to forward it to the lists and a
->>> few relevant people to the CC. To quote from
->>> https://bugzilla.kernel.org/show_bug.cgi?id=215635 :
-> 
-> BTW, Udo recently confirmed there that the issue still happens on 5.18.
-> 
->>>> Seeing the following firmware crash frequently with
->>>> firmware-version: 36.ca7b901d.0 8265-36.ucode
->>>>
->>>> [...]
->>>>
->>>> Afterwards iwlwifi is entirely unusable, i.e. the hardware does not recover.  
->>>
->>>> I have not been able to observe the problem with 5.15.x so far.
->>>>
->>>> The problem manifests either by Wi-Fi becoming entirely unresponsive (not even ping to gateway works anymore) or by producing a firmware crash.
->>>>
->>>> In response to #3, the problem was most recently observed as a firmware crash on Linux 5.16.13. HW is Intel Corporation Wireless 8265 / 8275 (rev 78) (Windstorm Peak) and firmware version 36.ca7b901d.0 8265-36.ucode.
->>>>
->>>> I'm attaching the dmesg output from 5.16.13 (with the TWT patch mentioned above applied) which includes a firmware crash.  
->>>
->>> Could somebody take a look into this? Or was this discussed somewhere
->>> else already? Or even fixed?
->>
->> Any progress / outputs on this one? Folks are reporting it's still
->> happening on Fedora 36 w/ 5.17.13.
-> 
-> Jakub, thx for bringing this up, I had "look  into this again" on my
-> todo list for some time already. Out of interest: where where those reports?
-> 
-> Besides the one the quoted mail is about
-> (https://bugzilla.kernel.org/show_bug.cgi?id=215635 ) I'm aware of two
-> other reports that look similar and might or might not be related (hard
-> to tell without domain knowledge, I guess it might be just similar
-> symptoms):
-> 
-> https://bugzilla.kernel.org/show_bug.cgi?id=215697
-> https://bugzilla.kernel.org/show_bug.cgi?id=215789
-> 
-> Gregory, are you aware of these regressions? Is anyone working on them?
-> Or is this faulty hw or something like that?
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> 
-> P.S.: As the Linux kernel's regression tracker I deal with a lot of
-> reports and sometimes miss something important when writing mails like
-> this. If that's the case here, don't hesitate to tell me in a public
-> reply, it's in everyone's interest to set the public record straight.
+Regards,
+Arend
