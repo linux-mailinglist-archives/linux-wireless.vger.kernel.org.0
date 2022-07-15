@@ -2,230 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C05575BD8
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jul 2022 08:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BDC1575EEF
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jul 2022 12:04:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231174AbiGOGuS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Jul 2022 02:50:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57742 "EHLO
+        id S230239AbiGOKEL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Jul 2022 06:04:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230514AbiGOGuI (ORCPT
+        with ESMTP id S232501AbiGOKEH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Jul 2022 02:50:08 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C7F54646;
-        Thu, 14 Jul 2022 23:50:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657867807; x=1689403807;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=33ZdI80MJCy7N9zKpMRHryy7Es8BAke9kkY6oGAN+ro=;
-  b=j5NIT/05/UBfGuwPlfJHn1Q9TgulIDP5tZicr/jmBZTKVjwDEvoeOZ89
-   3bZSE110N6WGfMBx/+zwoXQmATaA/OfGnxbDqPkK8cGMtM1L6qfDFQgWE
-   xlQr/prPq0zclxK6i+Ejaz9qGaPo1174LT4pakjuQE9pnt81Ibt3NLYqE
-   v6lq5AhZc2203oxm72b45UlbTPmUz3UnijsdAYIBn7yGis8HPjSiu64vV
-   +erEH4cJ1erPA5PHeTwtqGfJtLfmcHPn1t/aUfLCqrBTGe5s1CAiXzlMH
-   h+R5tTBS5m4YdL2qwUXya0cp1KbVo4wXqUIl5nVAwYHxqZAyZ6w44YkvX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10408"; a="286455855"
-X-IronPort-AV: E=Sophos;i="5.92,273,1650956400"; 
-   d="scan'208";a="286455855"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2022 23:50:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,273,1650956400"; 
-   d="scan'208";a="923391190"
-Received: from lkp-server01.sh.intel.com (HELO fd2c14d642b4) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 14 Jul 2022 23:50:04 -0700
-Received: from kbuild by fd2c14d642b4 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1oCF9I-0001cL-2s;
-        Fri, 15 Jul 2022 06:50:04 +0000
-Date:   Fri, 15 Jul 2022 14:49:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, apparmor@lists.ubuntu.com,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 37b355fdaf31ee18bda9a93c2a438dc1cbf57ec9
-Message-ID: <62d10e04.xFaeAbIP2Lzid8n4%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Fri, 15 Jul 2022 06:04:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D0721E1C
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 03:04:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F3101B82B5F
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 10:04:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5D7C34115;
+        Fri, 15 Jul 2022 10:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657879443;
+        bh=ZcDZyE0COk55jsJHm1e18Qr2sZ94ugA8Z9fnKkbfzsg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=VBE+2Q4Ax916BllcbFpJK/x+6PV6ZTYeNUWD1zYgWrptTQYNZvsocuh0iPA3+Tptu
+         dObhP6wOsDmjgsRKFWEVd1rl3joo4wSlGF3XBLQB/+zFr2QCl/MPj7dBkILQAVGEX0
+         oTKFOR4KDs5gwM9vi0BNHV5p4Fua5MUTLluMeTh1hzJH20VKCjb/xitzLCYm+hNYlD
+         QujpIoCUqrNTaH6bMyuyKjlzQqxCbXr1SjbS+ES6Bm68lzn1ylYxeJveUf/78GXOaJ
+         U1YIznhhBb31zbEQ8mkL3kGjEZ+g9cZ+IEGzwoZnxa/KQFyLNo0YUkTlqPGOFWKaOe
+         9XZ7a8skW7Awg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>
+Subject: Re: [PATCH] ath11k: Fix register write failure on QCN9074
+In-Reply-To: <20220608062954.27792-1-quic_mpubbise@quicinc.com> (Manikanta
+        Pubbisetty's message of "Wed, 8 Jun 2022 11:59:54 +0530")
+References: <20220608062954.27792-1-quic_mpubbise@quicinc.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Fri, 15 Jul 2022 13:03:59 +0300
+Message-ID: <87wncesne8.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 37b355fdaf31ee18bda9a93c2a438dc1cbf57ec9  Add linux-next specific files for 20220714
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-Error/Warning reports:
+> Commit 56c8ccf331bd ("ath11k: Add register access logic for WCN6750")
+> regressed QCN9074. With the above mentioned commit, writes are failing
+> for some registers on QCN9074 although the device seems to work
+> normally.
+>
+> ath11k_pci 0000:03:00.0: failed to set pcie link register0x01e0e0a8: 0xffffffff != 0x00000010
+> ath11k_pci 0000:03:00.0: failed to set sysclk: -110
+>
+> PCIe devices in ath11k (QCA6390, WCN6855, QCN9074, WCN6750) use window
+> concept for register accesses. There are two schemes, dynamic & static
+> window.
+>
+> In dynamic window scheme, a single window(region in the BAR) is mapped
+> either to CE or DP register windows at any give time. QCA6390 & WCN6855
+> follow this scheme for register accesses.
+>
+> In static window scheme, CE & DP register windows are statically mapped
+> to separate regions with in the BAR so that there is no switching of
+> register windows between CE & DP register accesses. QCN9074 & WCN6750
+> follow this scheme although the window start offsets are different for
+> QCN9074 & WCN6750.
+>
+> QCN9074 uses 3rd & 2nd window for DP & CE register accesses respectively
+> whereas WCN6750 uses 1st & 2nd window for DP & CE. In QCN9074, along with
+> 2nd & 3rd windows, 1st window is also used for certain configurations
+> which commit 56c8ccf331bd ("ath11k: Add register access logic for WCN6750")
+> did not account for and hence the regression.
+>
+> Fix this by going back to the original way of accessing the registers on
+> QCN9074. Since this diverges from WCN6750 way of accessing registers, it
+> is required to register window_read32/window_write32() pci_ops for WCN6750.
+> We can also get rid of dp_window_idx & ce_window_idx members in hw_params,
+> so remove them.
+>
+> Also add a new API ath11k_pcic_register_pci_ops() for registering pci_ops
+> to the ath11k core. This API checks for mandatory pci_ops() and reports
+> error if those are missing. Also initialize unused pci_ops to NULL.
+>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+>
+> Fixes: 56c8ccf331bd ("ath11k: Add register access logic for WCN6750")
+> Reported-by: Maxime Bizon <mbizon@freebox.fr>
+> Tested-by: Maxime Bizon <mbizon@freebox.fr>
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-https://lore.kernel.org/linux-mm/202207142026.qqAoch7S-lkp@intel.com
-https://lore.kernel.org/llvm/202207150057.s8huMpLd-lkp@intel.com
-https://lore.kernel.org/llvm/202207150400.NMBYJFkA-lkp@intel.com
+[...]
 
-Error/Warning: (recently discovered and may have been fixed)
+> --- a/drivers/net/wireless/ath/ath11k/pci.c
+> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+> @@ -50,6 +50,23 @@ static void ath11k_pci_bus_release(struct ath11k_base *ab)
+>  	mhi_device_put(ab_pci->mhi_ctrl->mhi_dev);
+>  }
+>  
+> +static inline u32 ath11k_pci_get_window_start(struct ath11k_base *ab, u32 offset)
+> +{
+> +	u32 window_start;
+> +
+> +	/* If offset lies within DP register range, use 3rd window */
+> +	if ((offset ^ HAL_SEQ_WCSS_UMAC_OFFSET) < ATH11K_PCI_WINDOW_RANGE_MASK)
+> +		window_start = 3 * ATH11K_PCI_WINDOW_START;
+> +	/* If offset lies within CE register range, use 2nd window */
+> +	else if ((offset ^ HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab)) <
+> +		 ATH11K_PCI_WINDOW_RANGE_MASK)
+> +		window_start = 2 * ATH11K_PCI_WINDOW_START;
+> +	else
+> +		window_start = ATH11K_PCI_WINDOW_START;
+> +
+> +	return window_start;
+> +}
+> +
+>  static inline void ath11k_pci_select_window(struct ath11k_pci *ab_pci, u32 offset)
+>  {
+>  	struct ath11k_base *ab = ab_pci->ab;
+> @@ -70,13 +87,23 @@ static void
+>  ath11k_pci_window_write32(struct ath11k_base *ab, u32 offset, u32 value)
+>  {
+>  	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
+> -	u32 window_start = ATH11K_PCI_WINDOW_START;
+> +	u32 window_start;
+>  
+> -	spin_lock_bh(&ab_pci->window_lock);
+> -	ath11k_pci_select_window(ab_pci, offset);
+> -	iowrite32(value, ab->mem + window_start +
+> -		  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
+> -	spin_unlock_bh(&ab_pci->window_lock);
+> +	if (ab->hw_params.static_window_map)
+> +		window_start = ath11k_pci_get_window_start(ab, offset);
+> +	else
+> +		window_start = ATH11K_PCI_WINDOW_START;
+> +
+> +	if (window_start == ATH11K_PCI_WINDOW_START) {
+> +		spin_lock_bh(&ab_pci->window_lock);
+> +		ath11k_pci_select_window(ab_pci, offset);
+> +		iowrite32(value, ab->mem + window_start +
+> +			  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
+> +		spin_unlock_bh(&ab_pci->window_lock);
+> +	} else {
+> +		iowrite32(value, ab->mem + window_start +
+> +			  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
+> +	}
+>  }
 
-/opt/cross/gcc-12.1.0-nolibc/s390x-linux/bin/s390x-linux-ld: pci-epf-vntb.c:(.text+0x213a): undefined reference to `ntb_link_event'
-aarch64-linux-ld: Unexpected GOT/PLT entries detected!
-aarch64-linux-ld: Unexpected run-time procedure linkages detected!
-drivers/clk/qcom/gpucc-sm8350.c:111:2: error: initializer element is not a compile-time constant
-drivers/net/wireless/mac80211_hwsim.c:1431:37: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-drivers/pci/endpoint/functions/pci-epf-vntb.c:1247: undefined reference to `ntb_register_device'
-drivers/pci/endpoint/functions/pci-epf-vntb.c:174: undefined reference to `ntb_link_event'
-drivers/pci/endpoint/functions/pci-epf-vntb.c:262: undefined reference to `ntb_db_event'
-drivers/pci/endpoint/functions/pci-epf-vntb.c:975:5: warning: no previous prototype for 'pci_read' [-Wmissing-prototypes]
-drivers/pci/endpoint/functions/pci-epf-vntb.c:984:5: warning: no previous prototype for 'pci_write' [-Wmissing-prototypes]
-drivers/scsi/qla2xxx/qla_init.c:171:10: warning: variable 'bail' set but not used [-Wunused-but-set-variable]
-drivers/vfio/vfio_iommu_type1.c:2141:35: warning: cast to smaller integer type 'enum iommu_cap' from 'void *' [-Wvoid-pointer-to-enum-cast]
-security/apparmor/policy_ns.c:83:20: warning: no previous prototype for 'alloc_unconfined' [-Wmissing-prototypes]
-security/apparmor/policy_ns.c:83:20: warning: no previous prototype for function 'alloc_unconfined' [-Wmissing-prototypes]
+I refactored ath11k_pci_get_window_start() a bit, please check my
+changes here:
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-arch/x86/kernel/cpu/rdrand.c:36 x86_init_rdrand() error: uninitialized symbol 'prev'.
-fs/kernel_read_file.c:61 kernel_read_file() warn: impossible condition '(i_size > (((~0) >> 1))) => (s64min-s64max > s64max)'
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- arc-allyesconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- arm64-randconfig-c023-20220715
-|   |-- aarch64-linux-ld:Unexpected-GOT-PLT-entries-detected
-|   |-- aarch64-linux-ld:Unexpected-run-time-procedure-linkages-detected
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:undefined-reference-to-ntb_db_event
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:undefined-reference-to-ntb_link_event
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:undefined-reference-to-ntb_register_device
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- i386-allyesconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- i386-randconfig-a001-20220124
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- i386-randconfig-c001
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- i386-randconfig-m021
-|   `-- arch-x86-kernel-cpu-rdrand.c-x86_init_rdrand()-error:uninitialized-symbol-prev-.
-|-- m68k-allmodconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- m68k-allyesconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- mips-allyesconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- powerpc-allmodconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- sh-allmodconfig
-|   |-- drivers-net-wireless-mac80211_hwsim.c:warning:cast-to-pointer-from-integer-of-different-size
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-alloc_unconfined
-|-- x86_64-allyesconfig
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-`-- x86_64-randconfig-m001
-clang_recent_errors
-|-- arm-randconfig-r023-20220714
-|   `-- drivers-clk-qcom-gpucc-sm8350.c:error:initializer-element-is-not-a-compile-time-constant
-|-- riscv-randconfig-r002-20220714
-|   `-- drivers-scsi-qla2xxx-qla_init.c:warning:variable-bail-set-but-not-used
-|-- s390-randconfig-r036-20220714
-|   `-- opt-cross-gcc-..-nolibc-s39-linux-bin-s39-linux-ld:pci-epf-vntb.c:(.text):undefined-reference-to-ntb_link_event
-|-- x86_64-randconfig-a001
-|   `-- drivers-vfio-vfio_iommu_type1.c:warning:cast-to-smaller-integer-type-enum-iommu_cap-from-void
-|-- x86_64-randconfig-a005
-|   |-- drivers-vfio-vfio_iommu_type1.c:warning:cast-to-smaller-integer-type-enum-iommu_cap-from-void
-|   `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-function-alloc_unconfined
-|-- x86_64-randconfig-a012
-|   `-- drivers-vfio-vfio_iommu_type1.c:warning:cast-to-smaller-integer-type-enum-iommu_cap-from-void
-`-- x86_64-randconfig-a016
-    `-- security-apparmor-policy_ns.c:warning:no-previous-prototype-for-function-alloc_unconfined
-
-elapsed time: 1263m
-
-configs tested: 51
-configs skipped: 3
-
-gcc tested configs:
-i386                          randconfig-c001
-powerpc                          allmodconfig
-mips                             allyesconfig
-powerpc                           allnoconfig
-sh                               allmodconfig
-i386                                defconfig
-i386                             allyesconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-m68k                             allyesconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                          randconfig-a014
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-
-clang tested configs:
-arm                   milbeaut_m10v_defconfig
-arm                        vexpress_defconfig
-powerpc                 mpc8315_rdb_defconfig
-powerpc                 mpc832x_rdb_defconfig
-arm                         s3c2410_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220714
-hexagon              randconfig-r041-20220714
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=95094045d7f467aa8928307ea538d1fd9d15a239
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
