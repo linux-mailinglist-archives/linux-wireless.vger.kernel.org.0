@@ -2,73 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21B395762AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jul 2022 15:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131B05764DC
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jul 2022 18:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234612AbiGONTU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Jul 2022 09:19:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56008 "EHLO
+        id S232299AbiGOQAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Jul 2022 12:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiGONTT (ORCPT
+        with ESMTP id S232141AbiGOQAq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Jul 2022 09:19:19 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A2661C139
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 06:19:18 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id k30so6247929edk.8
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 06:19:18 -0700 (PDT)
+        Fri, 15 Jul 2022 12:00:46 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33176C119;
+        Fri, 15 Jul 2022 09:00:45 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id 70so5029326pfx.1;
+        Fri, 15 Jul 2022 09:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=O8DLbgglBGHNywiyiwJp3vk5O+TxJ2vQyZzR9Mj8vPU=;
-        b=WgsP1KweTVZO0H8BORqAZ9uhhHTBJ0oEl6OKRK5r2vGy4VMK23pEELqFFRhZMuA0GU
-         yulnxiFUlyc9cqkexRA4oel17kqCnhpKz1pz6VhyDSOARX42a+rnrSFCrOKA0HFKUNrU
-         +VpqKecJnkeuKuDwfF6BblI+33QUcbG0TfvhEiJE4vKWX7lpsiOLP4kjBDSlHQTURuTM
-         gdtZDdyHx1onZTBanEtyJS4iJjZwEfJWFVMEUXGhTLEmuZb5vhmc8m4mBPJybdZ0NDde
-         8HQUf/eyifRpk6ZTH3Y3jMXfwZ3qkZS0Zs/AtRLnQwu9MoZMPWvq4r235G9ZNexYF76e
-         eO6w==
+        bh=5LGljlDRN/ydm3T3ODxiya+fJfbjgilfTW9xAoT3jJA=;
+        b=EVG/TbMnsXixCI5bI8Tbl5G7fQB5z0fGv6UWiaASyO8WLHthHm3WMDO49oMXWS8YeK
+         wZaFh1V4Vhe4cH821NUUZdjo2l3AoRXL5xvf89q0QPjU/eslPEM8CWreJqgXIzrY6msW
+         KPSPWAp+ppSXRuGkn8UCmX2YD1w/C/vY0+sBwNZhVK7Ohz/KxbeO4HRSSzj24NlOvcqr
+         cBUHzWLa9QSkSjhXmVtqFZQoUA3cjoPt0Fh9MzMYEOA3B35bztlfrYax929kryW8B/vj
+         leKNSYVYewlvm6eT/jxTlzDqbgs+XaMO3n12TYfPqz9YIJydkzrynjpoYskxR5F8YRKW
+         tIMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=O8DLbgglBGHNywiyiwJp3vk5O+TxJ2vQyZzR9Mj8vPU=;
-        b=oABVEVi9My4pQ1bdyclJ92vM1bZDhGMgSFvr3ku0LOSBaVVoZwxWSYiqTAwglZ3OC6
-         lUZVxvj1tT8N4sK0m2pI/c0IYpSFLKNZ6CkonMlpGFPrfl0lPpxGmBZcZ26kGQdsRWKP
-         /og7Flmznncl5Q3xwqbNxImFQPFYnnLpyRE5c64KeslHKcO97l/ZxC0usCXAaz8OLWrS
-         PeXbEmc2yZWCq50+ULNacwZygbT/JPqOp+IH/B0Zh0t25sijVT5tw44oWfI9Sqs2pQlc
-         TL3O90Wqpae15lFpP0YUdBi1C9sr03H4dqfFzyvOLSGeW3CTDqYfWfOedbV8qie37BDx
-         6wcg==
-X-Gm-Message-State: AJIora/4S81dXU+IuoC+KImmttUmC4jMJGv/MbqqQlTXQxwm9LFACKdc
-        CbrW15UoLR4F4NqOx2KAxW5aKp3KUnOzHYgtrsqEpQ==
-X-Google-Smtp-Source: AGRyM1u1hhhzZnGYUeCqkt88fDqmPewDP13+7VE4LtWqtAGdO7EGobeQ64n5iLk6ebW8Zyof0susPQ==
-X-Received: by 2002:a05:6402:3326:b0:43a:902b:d335 with SMTP id e38-20020a056402332600b0043a902bd335mr18952342eda.412.1657891156637;
-        Fri, 15 Jul 2022 06:19:16 -0700 (PDT)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id c17-20020a17090618b100b006fe9e717143sm2036475ejf.94.2022.07.15.06.19.15
+        bh=5LGljlDRN/ydm3T3ODxiya+fJfbjgilfTW9xAoT3jJA=;
+        b=BqflH+mxwzOZVihFQJwd+YkfnXqBx6NZgYGOyP/hzPQ2p42M1Nz1qP/4HTYXo51853
+         DZUHem6XFQyPCsqlclY5oIeT6IAnfAIu9gu7fK8O85Vhe4FUsKcf2Ph7BcatLminSHqK
+         9M35QWkEEAVLFDZT/B+KkQgnck5EpWD1hKT2SNfw4hq71SvSAcmO0w2Hb3kZ21LTWhcv
+         9WAKdO+EPIMBOP3CBylefRF5fH8TCCjvKFbx1ULV+SDsRuddRPIGYStdVabriVUkumdR
+         cTaYyf8odJdCGFaqIVq3hLLSqbhNnFeefzr7WjtUTKc8hm8LE9i8LhTgRiy2FY0hNJUh
+         HURg==
+X-Gm-Message-State: AJIora/clhRCK6oZD+43TU48NUU96+uKhanYbqqym0aE+Jn1jH+YNh62
+        lZ+/PlWTFXC9QXnvUqFp8PQ=
+X-Google-Smtp-Source: AGRyM1vyB8v4iIfJgL+68ZEpv0zfeBAs52DOSDB3LAww/+lbiWYnwrxaTGncp06e/qkV+bmJE9z+aA==
+X-Received: by 2002:a05:6a00:1a01:b0:52a:d4dc:5653 with SMTP id g1-20020a056a001a0100b0052ad4dc5653mr14711000pfv.69.1657900844668;
+        Fri, 15 Jul 2022 09:00:44 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id i137-20020a62878f000000b0052542cbff9dsm4106444pfe.99.2022.07.15.09.00.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Jul 2022 06:19:15 -0700 (PDT)
-Message-ID: <d25eb33d-858b-1d8c-4c10-0358c2d923af@gmail.com>
-Date:   Fri, 15 Jul 2022 15:19:15 +0200
+        Fri, 15 Jul 2022 09:00:44 -0700 (PDT)
+Message-ID: <0c91388e-17a5-5304-d554-effb4bc4479a@gmail.com>
+Date:   Fri, 15 Jul 2022 09:00:42 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH v5] brcmfmac: prevent double-free on hardware-reset
+Subject: Re: [PATCH] crypto: keembay-ocs-ecc: Drop if with an always false
+ condition
 Content-Language: en-US
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Danny van Heumen <danny@dannyvanheumen.nl>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-References: <id1HN6qCMAirApBzTA6fT7ZFWBBGCJhULpflxQ7NT6cgCboVnn3RHpiOFjA9SbRqzBRFLk9ES0C4FNvO6fUQsNg7pqF6ZSNAYUo99nHy8PY=@dannyvanheumen.nl>
- <CAPDyKFpa6Z0Uhb0OnhMJ-KTQg5CQW93KMz1j1cQJS-Ho8FVhmQ@mail.gmail.com>
- <fa052de7-31ca-2657-858f-651b97908ba7@gmail.com>
- <CAPDyKFoRRxe8wUtJWfuDCxuz8wktUOyMD7jQApYGJO0zbax1Jw@mail.gmail.com>
-From:   Arend Van Spriel <aspriel@gmail.com>
-In-Reply-To: <CAPDyKFoRRxe8wUtJWfuDCxuz8wktUOyMD7jQApYGJO0zbax1Jw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel@pengutronix.de
+References: <20220715103026.82224-1-u.kleine-koenig@pengutronix.de>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20220715103026.82224-1-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -79,89 +80,15 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/14/2022 4:39 PM, Ulf Hansson wrote:
-> On Thu, 14 Jul 2022 at 14:49, Arend Van Spriel <aspriel@gmail.com> wrote:
->>
->> On 7/14/2022 12:04 PM, Ulf Hansson wrote:
->>> On Tue, 12 Jul 2022 at 01:22, Danny van Heumen <danny@dannyvanheumen.nl> wrote:
->>>>
->>>> In case of buggy firmware, brcmfmac may perform a hardware reset. If during
->>>> reset and subsequent probing an early failure occurs, a memory region is
->>>> accidentally double-freed. With hardened memory allocation enabled, this error
->>>> will be detected.
->>>>
->>>> - return early where appropriate to skip unnecessary clean-up.
->>>> - set '.freezer' pointer to NULL to prevent double-freeing under possible
->>>>     other circumstances and to re-align result under various different
->>>>     behaviors of memory allocation freeing.
->>>> - correctly claim host on func1 for disabling func2.
->>>> - after reset, do not initiate probing immediately, but rely on events.
->>>>
->>>> Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
->>>> 'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitialize
->>>> the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
->>>> early, which includes calling 'brcmf_sdiod_remove'. In both cases
->>>> 'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
->>>> has not yet been re-allocated the second time.
->>>>
->>>> Stacktrace of (failing) hardware reset after firmware-crash:
->>>>
->>>> Code: b9402b82 8b0202c0 eb1a02df 54000041 (d4210000)
->>>>    ret_from_fork+0x10/0x20
->>>>    kthread+0x154/0x160
->>>>    worker_thread+0x188/0x504
->>>>    process_one_work+0x1f4/0x490
->>>>    brcmf_core_bus_reset+0x34/0x44 [brcmfmac]
->>>>    brcmf_sdio_bus_reset+0x68/0xc0 [brcmfmac]
->>>>    brcmf_sdiod_probe+0x170/0x21c [brcmfmac]
->>>>    brcmf_sdiod_remove+0x48/0xc0 [brcmfmac]
->>>>    kfree+0x210/0x220
->>>>    __slab_free+0x58/0x40c
->>>> Call trace:
->>>> x2 : 0000000000000040 x1 : fffffc00002d2b80 x0 : ffff00000b4aee40
->>>> x5 : ffff8000013fa728 x4 : 0000000000000001 x3 : ffff00000b4aee00
->>>> x8 : ffff800009967ce0 x7 : ffff8000099bfce0 x6 : 00000006f8005d01
->>>> x11: ffff8000099bfce0 x10: 00000000fffff000 x9 : ffff8000083401d0
->>>> x14: 0000000000000000 x13: 657a69736b636f6c x12: 6220314620746573
->>>> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000030
->>>> x20: fffffc00002d2ba0 x19: fffffc00002d2b80 x18: 0000000000000000
->>>> x23: ffff00000b4aee00 x22: ffff00000b4aee00 x21: 0000000000000001
->>>> x26: ffff00000b4aee00 x25: ffff0000f7753705 x24: 000000000001288a
->>>> x29: ffff80000a22bbf0 x28: ffff000000401200 x27: 000000008020001a
->>>> sp : ffff80000a22bbf0
->>>> lr : kfree+0x210/0x220
->>>> pc : __slab_free+0x58/0x40c
->>>> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>> Workqueue: events brcmf_core_bus_reset [brcmfmac]
->>>> Hardware name: Pine64 Pinebook Pro (DT)
->>>> CPU: 2 PID: 639 Comm: kworker/2:2 Tainted: G         C        5.16.0-0.bpo.4-arm64 #1  Debian 5.16.12-1~bpo11+1
->>>>    nvmem_rockchip_efuse industrialio_triggered_buffer videodev snd_soc_core snd_pcm_dmaengine kfifo_buf snd_pcm io_domain mc industrialio mt>
->>>> Modules linked in: snd_seq_dummy snd_hrtimer snd_seq snd_seq_device nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje>
->>>> Internal error: Oops - BUG: 0 [#1] SMP
->>>> kernel BUG at mm/slub.c:379!
->>>>
->>>> Signed-off-by: Danny van Heumen <danny@dannyvanheumen.nl>
->>>
->>> I have to admit that, to me, it looks a bit weird to have one driver
->>> instance managing two different SDIO func devices. On the other hand,
->>> I don't know the HW so there might be good reasons for why.
->>>
->>> In any case, I want to point out a commit [1] for the mwifiex driver,
->>> which could serve as a good inspiration of how to make use of the
->>> mmc_hw_reset(). For example, one may look at the return code from
->>> mmc_hw_reset() to understand whether the reset will be done
->>> synchronous or asynchronous (via device re-registration).
->>
->> Thanks, Uffe
->>
->> Could the API be extended so the caller can request the reset to be
->> asynchronous.
+On 7/15/22 03:30, Uwe Kleine-König wrote:
+> The remove callback is only called after probe completed successfully.
+> In this case platform_set_drvdata() was called with a non-NULL argument
+> (in wlcore_probe()) and so wl is never NULL.
 > 
-> Yes, that should be fine. The current behaviour is that it will be
-> asynchronous if there are more than one SDIO func device bound to a
-> driver.
+> This is a preparation for making platform remove callbacks return void.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-I see. So for brcmfmac we fall into that category. Thanks for the info.
-
-Regards,
-Arend
+The subject appears to have been borrowed from another file/subsystem.
+-- 
+Florian
