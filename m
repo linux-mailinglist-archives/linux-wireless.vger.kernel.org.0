@@ -2,108 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E90245767EE
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jul 2022 22:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67B35769BF
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Jul 2022 00:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbiGOT7u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Jul 2022 15:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58490 "EHLO
+        id S232792AbiGOWQA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Jul 2022 18:16:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbiGOT7p (ORCPT
+        with ESMTP id S232801AbiGOWPl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Jul 2022 15:59:45 -0400
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED53E753B1;
-        Fri, 15 Jul 2022 12:59:44 -0700 (PDT)
-Received: by mail-pj1-f43.google.com with SMTP id p9so6530298pjd.3;
-        Fri, 15 Jul 2022 12:59:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HL4YqkhHTZulmVGkQ727X6hpWd2MP1vP+U3JHn48XIg=;
-        b=yHuwHoyYr6cZ5w+uU6rGl9fUGgxOhS6/kma3F2Ov01SCRLQrwu1ehCADoeMsGv27J7
-         p1csZJFX8PI29SK8hrNC8FKlNieNpOMuJbhZpDaxcPgYG8ISOIJhTsF3EP5fXpaxkY13
-         1NIUEZliLSIXdmNhcrg235nAxNyir7MsgOiWQokhR5inJePbZIVQ53te2EgECbv9kpC4
-         f1HGWFmeFzXpScKzmf+Zf/1Svv87gQ5Xth3hwhhQjZDnIPtRatdQWWC4jP3XERujs4hb
-         OaV6T61OkF3LQZGUpK6Si+TX2ivmNx3l26RBfL+IyDiRIyIwnqW29Mfc9nBnWOa8Wi6x
-         2euQ==
-X-Gm-Message-State: AJIora/17vwzhWoCPFf3uyL9VdWsHfnQ/FYm13/g1uN4JO0s0ze4AcDr
-        RH62wSwxhxr1Cvh6UtF+QhEu25LAzaM=
-X-Google-Smtp-Source: AGRyM1ukmZfUzuo48kaMe5GDLlJagmXC8YovtfPvTQyT4c6UyqIKlUNyVjgw7YKbJ1QDyS4v2d0GSQ==
-X-Received: by 2002:a17:902:d2c8:b0:16c:58d:7278 with SMTP id n8-20020a170902d2c800b0016c058d7278mr15621362plc.45.1657915184160;
-        Fri, 15 Jul 2022 12:59:44 -0700 (PDT)
-Received: from sean-ThinkPad-T450s.lan (c-73-71-21-1.hsd1.ca.comcast.net. [73.71.21.1])
-        by smtp.gmail.com with ESMTPSA id y1-20020a62ce01000000b00528bc6d8939sm4224629pfg.157.2022.07.15.12.59.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jul 2022 12:59:43 -0700 (PDT)
-From:   sean.wang@kernel.org
-To:     stable@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH v2 5.15 5/5] mt76: mt7921: Fix the error handling path of mt7921_pci_probe()
-Date:   Fri, 15 Jul 2022 12:59:26 -0700
-Message-Id: <768b04c445f39ad1fc166b98be8154bd413f978a.1657915079.git.sean.wang@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <27b8ccd411f2c51e2b8193a4eb1fa7e6f416a2f0.1657915079.git.sean.wang@kernel.org>
-References: <27b8ccd411f2c51e2b8193a4eb1fa7e6f416a2f0.1657915079.git.sean.wang@kernel.org>
+        Fri, 15 Jul 2022 18:15:41 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 168F7115C
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 15:13:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657923228; x=1689459228;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oWYF1RusdAjd2VSXysP9zk3Sdq9blcO5xJbr3DEcxKM=;
+  b=RgmQfQ3OtH9mrcab2jq4cGpDi7AGiQZVhRt3XNrOz7hbjRHMTKTzpbqZ
+   ai4LRr8VXInbjAVxyrEIi5rSewE9TwQM9+6XkeqCeTZIEMSyFFO3U/Hp0
+   42//1xUvC+e+969dioUX0n/lxYQVMMtNlPu4IJ1aDhTvQItbhCZ6CENPN
+   6/HfznMmVtXY6ocuRFdcOasg1M5Fqq/DHOc0dPS1SlK21pzysIfoGwdsz
+   WxX7nNe8zy6Wdj5RbvY6toVo+uoEv0QDWMWdDj6g9igEr6DUwBnn17dV0
+   qo+tkf8FIKheb+rbUUSKdzJxlLnqcGq+9jPsQ3Icnvr3CDBD50DuPwY5i
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10409"; a="268931076"
+X-IronPort-AV: E=Sophos;i="5.92,275,1650956400"; 
+   d="scan'208";a="268931076"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2022 15:13:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,275,1650956400"; 
+   d="scan'208";a="923676679"
+Received: from lkp-server02.sh.intel.com (HELO ff137eb26ff1) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 15 Jul 2022 15:13:46 -0700
+Received: from kbuild by ff137eb26ff1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oCTZB-0000nc-TP;
+        Fri, 15 Jul 2022 22:13:45 +0000
+Date:   Sat, 16 Jul 2022 06:12:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless-next:mld] BUILD SUCCESS
+ cbee535ba539e8e13ca2c15c8624545e5214f599
+Message-ID: <62d1e663.iZ6FzsyeMCh0r/+E%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
+branch HEAD: cbee535ba539e8e13ca2c15c8624545e5214f599  wifi: mac80211: support MLO authentication/association with one link
 
-commit 4e90db5e21eb3bb272fe47386dc3506755e209e9 upstream.
+elapsed time: 726m
 
-In case of error, some resources must be freed, as already done above and
-below the devm_kmemdup() and __mt7921e_mcu_drv_pmctrl() calls added in the
-commit in Fixes:.
+configs tested: 52
+configs skipped: 2
 
-Fixes: 602cc0c9618a ("mt76: mt7921e: fix possible probe failure after reboot")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
-v2: no changed
----
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 815b926e52e9..36e6495ae658 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -254,8 +254,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 	dev->bus_ops = dev->mt76.bus;
- 	bus_ops = devm_kmemdup(dev->mt76.dev, dev->bus_ops, sizeof(*bus_ops),
- 			       GFP_KERNEL);
--	if (!bus_ops)
--		return -ENOMEM;
-+	if (!bus_ops) {
-+		ret = -ENOMEM;
-+		goto err_free_dev;
-+	}
- 
- 	bus_ops->rr = mt7921_rr;
- 	bus_ops->wr = mt7921_wr;
-@@ -264,7 +266,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 
- 	ret = __mt7921e_mcu_drv_pmctrl(dev);
- 	if (ret)
--		return ret;
-+		goto err_free_dev;
- 
- 	mdev->rev = (mt7921_l1_rr(dev, MT_HW_CHIPID) << 16) |
- 		    (mt7921_l1_rr(dev, MT_HW_REV) & 0xff);
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+ia64                             allmodconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+i386                                defconfig
+i386                             allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+x86_64                        randconfig-a006
+arc                  randconfig-r043-20220715
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+
+clang tested configs:
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
+hexagon              randconfig-r045-20220715
+hexagon              randconfig-r041-20220715
+s390                 randconfig-r044-20220715
+riscv                randconfig-r042-20220715
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
