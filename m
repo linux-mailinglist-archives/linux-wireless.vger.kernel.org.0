@@ -2,138 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E91FC576A20
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Jul 2022 00:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 376E5576B07
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Jul 2022 02:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230204AbiGOWqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Jul 2022 18:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50062 "EHLO
+        id S231899AbiGPAIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Jul 2022 20:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbiGOWq3 (ORCPT
+        with ESMTP id S231839AbiGPAIt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Jul 2022 18:46:29 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8679DD76
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 15:46:27 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oCU4n-0005MP-Bh; Sat, 16 Jul 2022 00:46:25 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oCU4l-001CJG-G1; Sat, 16 Jul 2022 00:46:23 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oCU4k-005R1b-HB; Sat, 16 Jul 2022 00:46:22 +0200
-Date:   Sat, 16 Jul 2022 00:46:19 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Eric Dumazet <edumazet@google.com>, kernel@pengutronix.de,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH] wlcore/wl12xx: Drop if with an always false condition
-Message-ID: <20220715224619.ht7bbzzrmysielm7@pengutronix.de>
-References: <20220715103026.82224-1-u.kleine-koenig@pengutronix.de>
- <0c91388e-17a5-5304-d554-effb4bc4479a@gmail.com>
+        Fri, 15 Jul 2022 20:08:49 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2797913D58
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 17:08:47 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id ss3so11504757ejc.11
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Jul 2022 17:08:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yF0qYkuNUhOMnwb9sHzODwkBW5iHpEMQMtEm7GeRBIA=;
+        b=BS6oH5L2ejQrjFIcp4AzXd6YcaSkbptMyBqZLLMeKwDpYPko8vPRFEtEht99LRRGGT
+         K6iWrq2PRnSy6EK3Q6IswNuhFhDDeTW9LEYpyAmJ3eWeP20JyqGdYfmmFBmqy7vzoGsy
+         Ze25JNbCPxNTNh1V3Hg36j33yANMIkxQblFLcYR4Y0+89yuK8cBYflOFjIbpcAsfLShD
+         C4Qn+01ennW2EjDyRAxA7i4761Zq0ImawDtDmXMpnWR5jq0YsGAk9oRjf97EM/XXda/4
+         u/3p/ziM3tmYOFOC0fvL5WOrzjNa4MiRpYucWBIrWUP8OjOnOK4IHPAsJenq75fg+Yy3
+         GhpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yF0qYkuNUhOMnwb9sHzODwkBW5iHpEMQMtEm7GeRBIA=;
+        b=S3YG8j+78HvaB1kHT7Eqsc2250XKRbm9/XX45+EQ/NYX0L2EpIPJcCjbohZ/Wammrc
+         5PHezSUGaq4L/SSokNcIZOxiJ6u6rHIzUEQLqBJqXNSyt6yZng3ZMAuc+CYiTVti1kWK
+         nu2JT/oodoSeqZxj72xQRtct+zIsh4mq8Vk0jZA4kgAShdFUsVrVtrtz4ErrxCdUehI2
+         PNLF78pu5IsfozRbvoxUHZBaKgXedz+x2UsXqLBfLkFKJp5n2G4cNe+p9+G8owfiXh/z
+         alfb4fv9aCkR9BJUiHYfytO3hmT3qg3EEtaeQuStNCoyoutcMVmNvP0V6/6sgs9QJuo3
+         X4lA==
+X-Gm-Message-State: AJIora+oHYaMvlObhs78gryPaFLeIZpMO7N0goJgV1YdjXK7/jH+N7lX
+        p5QE4AZwovhgAQMlM1uCy3GhPuPLkaWYRm/dIubCqg==
+X-Google-Smtp-Source: AGRyM1spC6JwR89kxZwG4nhVeU6bfHjOmE3IEYDMJtJEYU9x3nVNTSOepK3dhEdseTGM80Ow8f/gWmafk1TI1WvUpZ0=
+X-Received: by 2002:a17:906:5a67:b0:72b:610d:4aa4 with SMTP id
+ my39-20020a1709065a6700b0072b610d4aa4mr16444194ejc.294.1657930125539; Fri, 15
+ Jul 2022 17:08:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4oso5kxt3yvpjyzq"
-Content-Disposition: inline
-In-Reply-To: <0c91388e-17a5-5304-d554-effb4bc4479a@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20220711212932.1501592-1-justinstitt@google.com> <84e873c27f2426ce003e650004fe856bf72c634b.camel@perches.com>
+In-Reply-To: <84e873c27f2426ce003e650004fe856bf72c634b.camel@perches.com>
+From:   Justin Stitt <justinstitt@google.com>
+Date:   Fri, 15 Jul 2022 17:08:34 -0700
+Message-ID: <CAFhGd8pJyRYq-3VrKM+6+k0AysfYbVJEJm3FMFt9eAysAKDUpQ@mail.gmail.com>
+Subject: Re: [PATCH] mediatek: mt7601u: fix clang -Wformat warning
+To:     Joe Perches <joe@perches.com>
+Cc:     Jakub Kicinski <kubakici@wp.pl>, Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Thu, Jul 14, 2022 at 11:33 PM Joe Perches <joe@perches.com> wrote:
+>
+> On Mon, 2022-07-11 at 14:29 -0700, Justin Stitt wrote:
+> > When building with Clang we encounter this warning:
+> > > drivers/net/wireless/mediatek/mt7601u/debugfs.c:92:6: error: format
+> > > specifies type 'unsigned char' but the argument has type 'int'
+> > > [-Werror,-Wformat] dev->ee->reg.start + dev->ee->reg.num - 1);
+> >
+> > The format specifier used is `%hhu` which describes a u8. Both
+> > `dev->ee->reg.start` and `.num` are u8 as well. However, the expression
+> > as a whole is promoted to an int as you cannot get smaller-than-int from
+> > addition. Therefore, to fix the warning, use the promoted-to-type's
+> > format specifier -- in this case `%d`.
+>
+> I think whenever a sizeof(unsigned type) that is less than sizeof(int) is
+> emitted with vsprintf, the preferred format specifier should be %u not %d.
 
---4oso5kxt3yvpjyzq
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I believe the standard recommends using the promoted-to-type's format
+specifier, in this case integer. I agree, though, that it is quite
+bizarre to represent unsigned types with signed types. I'd be
+interested in hearing more opinions on the matter.
 
-The remove callback is only called after probe completed successfully.
-In this case platform_set_drvdata() was called with a non-NULL argument
-(in wlcore_probe()) and so wl is never NULL.
+> > diff --git a/drivers/net/wireless/mediatek/mt7601u/debugfs.c b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> []
+> > @@ -88,7 +88,7 @@ mt7601u_eeprom_param_show(struct seq_file *file, void *data)
+> >                  dev->ee->rssi_offset[0], dev->ee->rssi_offset[1]);
+> >       seq_printf(file, "Reference temp: %hhx\n", dev->ee->ref_temp);
+> >       seq_printf(file, "LNA gain: %hhx\n", dev->ee->lna_gain);
+> > -     seq_printf(file, "Reg channels: %hhu-%hhu\n", dev->ee->reg.start,
+> > +     seq_printf(file, "Reg channels: %hhu-%d\n", dev->ee->reg.start,
+> >                  dev->ee->reg.start + dev->ee->reg.num - 1);
+>
+> And this is not a promotion of an argument to int via varargs.
+> The arithmetic did the promotion.
 
-This is a preparation for making platform remove callbacks return void.
+Right, I noted in my patch message that the type promotion was due to addition.
 
-Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
----
-On Fri, Jul 15, 2022 at 09:00:42AM -0700, Florian Fainelli wrote:
-> On 7/15/22 03:30, Uwe Kleine-K=F6nig wrote:
-> > The remove callback is only called after probe completed successfully.
-> > In this case platform_set_drvdata() was called with a non-NULL argument
-> > (in wlcore_probe()) and so wl is never NULL.
-> >=20
-> > This is a preparation for making platform remove callbacks return void.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> The subject appears to have been borrowed from another file/subsystem.
+>
+> I suggest s/%hh/%/ for all the uses here, not just this one.
 
-Damn! Fixed here. Thanks for your feedback.
+I also contemplated this change but I think it might be a bit out of
+scope for https://github.com/ClangBuiltLinux/linux/issues/378  -- What
+do you think?
+It could be argued that every single instance of %hh[dux] should be
+replaced with %[dux].
 
-Best regards
-Uwe
-
- drivers/net/wireless/ti/wl12xx/main.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/t=
-i/wl12xx/main.c
-index c6da0cfb4afb..d06a2c419447 100644
---- a/drivers/net/wireless/ti/wl12xx/main.c
-+++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1924,13 +1924,10 @@ static int wl12xx_remove(struct platform_device *pd=
-ev)
- 	struct wl1271 *wl =3D platform_get_drvdata(pdev);
- 	struct wl12xx_priv *priv;
-=20
--	if (!wl)
--		goto out;
- 	priv =3D wl->priv;
-=20
- 	kfree(priv->rx_mem_addr);
-=20
--out:
- 	return wlcore_remove(pdev);
- }
-=20
-
-base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
---=20
-2.36.1
-
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---4oso5kxt3yvpjyzq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmLR7jgACgkQwfwUeK3K
-7AlAYQf9E12hVBk3rLJgFei4XfZneUQtpiF0XmAOl6XwxnwOLIMDGG6k2V2TkFjP
-fDUXc+itoEYACFOEr8IRIWxd5q90Ase2rlrm03U4rXqA8DxHq/6xwAuzqxVa1d1P
-5RN71+6Hg0oskV8nO4BIe2ufN4FC+U+adQvUqcMuo9uXUGikLyT29OvngT6TZX26
-DAQC42I44/DR+DJzJiNMcvTHos7PQ4ES+YbbLeJUEGS+OUYh07cj4oEy2CS/2yoU
-CZJWCItLqRA5qjHepuGmeNkMprCvWVXDB+43TFb5iij4xPHmL7bjmYLu2i7fnYhp
-j34DgNjRKbBWRs6i5nUsxasNR8MHjw==
-=HJFt
------END PGP SIGNATURE-----
-
---4oso5kxt3yvpjyzq--
+> checkpatch could do this somewhat automatically.
+> Of course any changes it suggests need human review.
+>
+> $ ./scripts/checkpatch.pl -f drivers/net/wireless/mediatek/mt7601u/debugfs.c --show-types --types=unnecessary_modifier --fix-inplace
+> $ git diff --stat -p drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> ---
+>  drivers/net/wireless/mediatek/mt7601u/debugfs.c | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt7601u/debugfs.c b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> index 20669eacb66ea..b7a6376e3352e 100644
+> --- a/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> +++ b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> @@ -83,28 +83,28 @@ mt7601u_eeprom_param_show(struct seq_file *file, void *data)
+>         struct tssi_data *td = &dev->ee->tssi_data;
+>         int i;
+>
+> -       seq_printf(file, "RF freq offset: %hhx\n", dev->ee->rf_freq_off);
+> -       seq_printf(file, "RSSI offset: %hhx %hhx\n",
+> +       seq_printf(file, "RF freq offset: %x\n", dev->ee->rf_freq_off);
+> +       seq_printf(file, "RSSI offset: %x %x\n",
+>                    dev->ee->rssi_offset[0], dev->ee->rssi_offset[1]);
+> -       seq_printf(file, "Reference temp: %hhx\n", dev->ee->ref_temp);
+> -       seq_printf(file, "LNA gain: %hhx\n", dev->ee->lna_gain);
+> -       seq_printf(file, "Reg channels: %hhu-%hhu\n", dev->ee->reg.start,
+> +       seq_printf(file, "Reference temp: %x\n", dev->ee->ref_temp);
+> +       seq_printf(file, "LNA gain: %x\n", dev->ee->lna_gain);
+> +       seq_printf(file, "Reg channels: %u-%u\n", dev->ee->reg.start,
+>                    dev->ee->reg.start + dev->ee->reg.num - 1);
+>
+>         seq_puts(file, "Per rate power:\n");
+>         for (i = 0; i < 2; i++)
+> -               seq_printf(file, "\t raw:%02hhx bw20:%02hhx bw40:%02hhx\n",
+> +               seq_printf(file, "\t raw:%02x bw20:%02x bw40:%02x\n",
+>                            rp->cck[i].raw, rp->cck[i].bw20, rp->cck[i].bw40);
+>         for (i = 0; i < 4; i++)
+> -               seq_printf(file, "\t raw:%02hhx bw20:%02hhx bw40:%02hhx\n",
+> +               seq_printf(file, "\t raw:%02x bw20:%02x bw40:%02x\n",
+>                            rp->ofdm[i].raw, rp->ofdm[i].bw20, rp->ofdm[i].bw40);
+>         for (i = 0; i < 4; i++)
+> -               seq_printf(file, "\t raw:%02hhx bw20:%02hhx bw40:%02hhx\n",
+> +               seq_printf(file, "\t raw:%02x bw20:%02x bw40:%02x\n",
+>                            rp->ht[i].raw, rp->ht[i].bw20, rp->ht[i].bw40);
+>
+>         seq_puts(file, "Per channel power:\n");
+>         for (i = 0; i < 7; i++)
+> -               seq_printf(file, "\t tx_power  ch%u:%02hhx ch%u:%02hhx\n",
+> +               seq_printf(file, "\t tx_power  ch%u:%02x ch%u:%02x\n",
+>                            i * 2 + 1, dev->ee->chan_pwr[i * 2],
+>                            i * 2 + 2, dev->ee->chan_pwr[i * 2 + 1]);
+>
+> @@ -112,8 +112,8 @@ mt7601u_eeprom_param_show(struct seq_file *file, void *data)
+>                 return 0;
+>
+>         seq_puts(file, "TSSI:\n");
+> -       seq_printf(file, "\t slope:%02hhx\n", td->slope);
+> -       seq_printf(file, "\t offset=%02hhx %02hhx %02hhx\n",
+> +       seq_printf(file, "\t slope:%02x\n", td->slope);
+> +       seq_printf(file, "\t offset=%02x %02x %02x\n",
+>                    td->offset[0], td->offset[1], td->offset[2]);
+>         seq_printf(file, "\t delta_off:%08x\n", td->tx0_delta_offset);
+>
+>
