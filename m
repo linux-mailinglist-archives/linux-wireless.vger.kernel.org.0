@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FFE4577C99
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 09:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87CA6577DFA
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 10:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbiGRHb4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 03:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56986 "EHLO
+        id S233195AbiGRIvO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 04:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233878AbiGRHbv (ORCPT
+        with ESMTP id S229711AbiGRIvM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 03:31:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B6E1834B
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 00:31:51 -0700 (PDT)
+        Mon, 18 Jul 2022 04:51:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1BDE5B;
+        Mon, 18 Jul 2022 01:51:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B081061354
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 07:31:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABD2C341CD;
-        Mon, 18 Jul 2022 07:31:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C2A2AB8106E;
+        Mon, 18 Jul 2022 08:51:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E09AC341C0;
+        Mon, 18 Jul 2022 08:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658129510;
-        bh=g8HAlHQeDhXpBJg4ov/0sp2aRCVUjeBdLioC9+VWIGI=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=tLFu3ymiJ9zL/GML01HMxRJYqOS8Pz98comtGav+S9YADg0X06YVGBpmoHr8TcCmZ
-         ltyLuJhEFaow+6yTDQrgSO5uQXg3kUhTzkb1oB6MMwxHGhQiBXuqQ33iVaEnAgavP6
-         0QVfb4xfVtc9CDvypuLiasCPZbi0XXnuaXBBr3tHUNsDDgKROQatxEwAECEXQbvwIn
-         AzcOYBx/XC4rsPb71ngUGFsfmJP3LS1DJ/46bIWvPdh8aKQUE+UB9Jh41spwIcPpSf
-         0mVbjPIXuuPxvxsAYgR/kUq6amuXaYPaMI5LEdjcq4TA8KMnNTMftlS9XsBX2Fj1l+
-         Ou34IHBRbZH/Q==
+        s=k20201202; t=1658134269;
+        bh=8OcSldP5MdP1ragykkXMMIrZpPvWJ7ED+acz8DAaOX8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=F4USemY0SFc+vfITUtHqCy72rC+SgZ4Lxr06fhi+c2gk2z04gr2BaY88n3YOwYsLv
+         sZHwbnEpm1SLmOBgOifnIgjXlnPM4llRHnRErjY3GgNRfugo4ueRb8NnDKDXYkUqGM
+         nJA/cBW6v0rxwhEGGJRHgeAkrTt2IXksSD1g6xb7lgTkWP8tHvYQeXe4cWF2TFZL/x
+         oqvLEfGSswtObg+X7xtQvSz7aBA8kPYsXp9EFBxKefL0kdDiPgBTReC9uAM6VNa9jX
+         sCX2rURrghIcmzPfRBy/ohI72DlE0cM3B90W9lwW5nuXDjVk7jtgGpWPZbX2z8DViw
+         3PswjtAjbTHOw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        "Maxime Bizon" <mbizon@freebox.fr>
-Subject: Re: [PATCH] ath11k: Fix register write failure on QCN9074
-In-Reply-To: <fc902e10-9d99-d272-84bf-87450678982a@quicinc.com> (Manikanta
-        Pubbisetty's message of "Fri, 15 Jul 2022 15:40:41 +0530")
-References: <20220608062954.27792-1-quic_mpubbise@quicinc.com>
-        <87wncesne8.fsf@kernel.org>
-        <fc902e10-9d99-d272-84bf-87450678982a@quicinc.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Arend Van Spriel <aspriel@gmail.com>,
+        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 00/76] wifi: more MLO work
+References: <20220713094502.163926-1-johannes@sipsolutions.net>
+        <e9ecb9c8-cb5b-d727-38d6-ef5a0bf81cef@gmail.com>
+        <3ac3c91120a128f66ca3806294f6a783e0f1131f.camel@sipsolutions.net>
+Date:   Mon, 18 Jul 2022 11:51:04 +0300
+In-Reply-To: <3ac3c91120a128f66ca3806294f6a783e0f1131f.camel@sipsolutions.net>
+        (Johannes Berg's message of "Thu, 14 Jul 2022 10:30:19 +0200")
+Message-ID: <87k08ast1j.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 18 Jul 2022 10:31:46 +0300
-Message-ID: <87r12iswpp.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,22 +57,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+Johannes Berg <johannes@sipsolutions.net> writes:
 
->> I refactored ath11k_pci_get_window_start() a bit, please check my
->> changes here:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=95094045d7f467aa8928307ea538d1fd9d15a239
->>
+> On Thu, 2022-07-14 at 10:26 +0200, Arend Van Spriel wrote:
+>> 
+>> Just for my own patch submit process. What is the reason I am seeing the 
+>> "wifi:" prefix being used with patches on linux-wireless list? Is there 
+>> other wireless tech used, eg. "bt:" or so?
+>> 
 >
-> Refactored code looks okay to me. Just one comment though, you may
-> probably remove initialization of "u32 window_start =
-> ATH11K_PCI_WINDOW_START;" in ath11k_pci_window_read32? It is removed
-> in ath11k_pci_window_write32.
+> Well, we had a discussion with Jakub, and he kind of indicated that he'd
+> like to see a bit more generic prefixes to clarify things.
+>
+> We've kind of been early adopters to try it out and see what it looks
+> like, he hasn't pushed it and wanted to have a discussion (e.g. at LPC
+> or netdevconf) about it first, but it kind of makes sense since not
+> everyone can know all the different drivers and components.
 
-Good point, removed that now:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=70fbceb8841910a2af9a392a6b1f4eb53c3a6716
+I have been supposed to document this in the wiki and announce it
+properly, but as usual I was too busy before the vacation to do
+anything. And now I'm on vacation and trying to enjoy the 13 C of
+"warmth" here in Finland :D
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
