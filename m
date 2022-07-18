@@ -2,54 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87CA6577DFA
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 10:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4930577EBA
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 11:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233195AbiGRIvO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 04:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56354 "EHLO
+        id S234145AbiGRJdS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 05:33:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiGRIvM (ORCPT
+        with ESMTP id S233190AbiGRJdQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 04:51:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1BDE5B;
-        Mon, 18 Jul 2022 01:51:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C2A2AB8106E;
-        Mon, 18 Jul 2022 08:51:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E09AC341C0;
-        Mon, 18 Jul 2022 08:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658134269;
-        bh=8OcSldP5MdP1ragykkXMMIrZpPvWJ7ED+acz8DAaOX8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=F4USemY0SFc+vfITUtHqCy72rC+SgZ4Lxr06fhi+c2gk2z04gr2BaY88n3YOwYsLv
-         sZHwbnEpm1SLmOBgOifnIgjXlnPM4llRHnRErjY3GgNRfugo4ueRb8NnDKDXYkUqGM
-         nJA/cBW6v0rxwhEGGJRHgeAkrTt2IXksSD1g6xb7lgTkWP8tHvYQeXe4cWF2TFZL/x
-         oqvLEfGSswtObg+X7xtQvSz7aBA8kPYsXp9EFBxKefL0kdDiPgBTReC9uAM6VNa9jX
-         sCX2rURrghIcmzPfRBy/ohI72DlE0cM3B90W9lwW5nuXDjVk7jtgGpWPZbX2z8DViw
-         3PswjtAjbTHOw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Arend Van Spriel <aspriel@gmail.com>,
-        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 00/76] wifi: more MLO work
-References: <20220713094502.163926-1-johannes@sipsolutions.net>
-        <e9ecb9c8-cb5b-d727-38d6-ef5a0bf81cef@gmail.com>
-        <3ac3c91120a128f66ca3806294f6a783e0f1131f.camel@sipsolutions.net>
-Date:   Mon, 18 Jul 2022 11:51:04 +0300
-In-Reply-To: <3ac3c91120a128f66ca3806294f6a783e0f1131f.camel@sipsolutions.net>
-        (Johannes Berg's message of "Thu, 14 Jul 2022 10:30:19 +0200")
-Message-ID: <87k08ast1j.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 18 Jul 2022 05:33:16 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DB01A83B;
+        Mon, 18 Jul 2022 02:33:14 -0700 (PDT)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1oDN7o-0004Gz-Cy; Mon, 18 Jul 2022 11:33:12 +0200
+Message-ID: <97e5afd3-77a3-2227-0fbf-da2f9a41520f@leemhuis.info>
+Date:   Mon, 18 Jul 2022 11:33:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
+ guidelines.
+Content-Language: en-US
+To:     Dave Airlie <airlied@gmail.com>, torvalds@linux-foundation.org,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        gregkh@linuxfoundation.org, Daniel Vetter <daniel@ffwll.ch>,
+        mcgrof@kernel.org
+Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.sf.net,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
+        linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>
+References: <20220718072144.2699487-1-airlied@gmail.com>
+From:   Thorsten Leemhuis <linux@leemhuis.info>
+In-Reply-To: <20220718072144.2699487-1-airlied@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1658136794;4a0ff83e;
+X-HE-SMSGID: 1oDN7o-0004Gz-Cy
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,29 +49,97 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
 
-> On Thu, 2022-07-14 at 10:26 +0200, Arend Van Spriel wrote:
->> 
->> Just for my own patch submit process. What is the reason I am seeing the 
->> "wifi:" prefix being used with patches on linux-wireless list? Is there 
->> other wireless tech used, eg. "bt:" or so?
->> 
->
-> Well, we had a discussion with Jakub, and he kind of indicated that he'd
-> like to see a bit more generic prefixes to clarify things.
->
-> We've kind of been early adopters to try it out and see what it looks
-> like, he hasn't pushed it and wanted to have a discussion (e.g. at LPC
-> or netdevconf) about it first, but it kind of makes sense since not
-> everyone can know all the different drivers and components.
+On 18.07.22 09:21, Dave Airlie wrote:
+> From: Dave Airlie <airlied@redhat.com>
+> 
+> A recent snafu where Intel ignored upstream feedback on a firmware
+> change, led to a late rc6 fix being required. In order to avoid this
+> in the future we should document some expectations around
+> linux-firmware.
+> 
+> I was originally going to write this for drm, but it seems quite generic
+> advice.
+> 
+> I'm cc'ing this quite widely to reach subsystems which use fw a lot.
 
-I have been supposed to document this in the wiki and announce it
-properly, but as usual I was too busy before the vacation to do
-anything. And now I'm on vacation and trying to enjoy the 13 C of
-"warmth" here in Finland :D
+Thx for this, I kinda put "add a few words about firmware into
+Documentation/process/handling-regressions.rst" on my todo list already,
+but having a separate document is likely better.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Took a quick look, here are a few suggestions for your consideration.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> [...]
+> diff --git a/Documentation/driver-api/firmware/firmware-usage-guidelines.rst b/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
+> new file mode 100644
+> index 000000000000..34d2412e78c6
+> --- /dev/null
+> +++ b/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
+> @@ -0,0 +1,34 @@
+> +===================
+> +Firmware Guidelines
+> +===================
+> +
+> +Drivers that use firmware from linux-firmware should attempt to follow
+> +the rules in this guide.
+
+How about spelling out the main aspect first clearly before going into
+the details about its consequence? Maybe something along these lines:
+
+```
+Users switching to a newer kernel should *not* have to install newer
+firmware files to keep their hardware working. At the same time updated
+firmware files must not cause any regressions for users of older kernel
+releases.
+
+Drivers that use such firmware (like that in linux-firmware) should thus
+follow these rules:
+```
+
+> +* Firmware should be versioned with at least a major/minor version it
+> +  is suggested that the firmware files in linux-firmware be named with
+> +  some device specific name, and just the major version. The
+> +  major/minor/patch versions should be stored in a header in the
+> +  firmware file for the driver to detect any non-ABI fixes/issues. The
+> +  firmware files in linux-firmware should be overwritten with the newest
+> +  compatible major version. Newer major version firmware should remain
+> +  compatible with all kernels that load that major number.
+> +
+> +* Users should *not* have to install newer firmware to use existing
+> +  hardware when they install a newer kernel. 
+
+This will need changes if you pick up the suggestion above.
+
+> If the hardware isn't
+> +  enabled by default or under development,
+
+Wondering if it might be better to drop the "or under development", as
+the "enabled by default" is the main part afaics. Maybe something like
+"If support for the hardware is normally inactive (e.g. has to be
+enabled manually by a kernel parameter)" would be better anyway.
+
+> this can be ignored, until
+> +  the first kernel release that enables that hardware.  This means no
+> +  major version bumps without the kernel retaining backwards
+> +  compatibility for the older major versions.  Minor version bumps
+> +  should not introduce new features that newer kernels depend on
+> +  non-optionally.
+> +
+> +* If a security fix needs lockstep firmware and kernel fixes in order to
+> +  be successful, then all supported major versions in the linux-firmware
+> +  repo
+
+This made me wonder: what exactly are "all supported major versions" in
+this context? Do you mean something like "all major versions in the
+linux-firmware required by currently supported stable/longterm kernel
+series"? Then it might be wise to write that.
+
+> should be updated with the security fix, and the kernel patches
+> +  should detect if the firmware is new enough to declare if the security
+> +  issue is fixed.  All communications around security fixes should point
+> +  at both the firmware and kernel fixes. If a security fix requires
+> +  deprecating old major versions, then this should only be done as a
+> +  last option, and be stated clearly in all communications.
+> +
+
+HTH, Ciao, Thorsten
