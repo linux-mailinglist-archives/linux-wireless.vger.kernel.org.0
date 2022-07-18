@@ -2,76 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA71578303
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 15:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92616578193
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 14:07:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234962AbiGRNDS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 09:03:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53176 "EHLO
+        id S234618AbiGRMHO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 08:07:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbiGRNDQ (ORCPT
+        with ESMTP id S234593AbiGRMHO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 09:03:16 -0400
-Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68156BF53;
-        Mon, 18 Jul 2022 06:03:11 -0700 (PDT)
-X-QQ-mid: bizesmtp68t1658149373tewd1ljf
-Received: from localhost.localdomain ( [171.223.96.21])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Mon, 18 Jul 2022 21:02:50 +0800 (CST)
-X-QQ-SSF: 01000000002000E0U000C00A0000000
-X-QQ-FEAT: MbRi8nWEoaZu3SJ8oD7aDH5D4190Q3e+iCesuFvAspGXqe/14tFEbxCAUGyN6
-        LBqqJdZkl3XiGuWP+qip5Wg8JaamUv/zn5NWIkvBlmU+On9A6c1gjED4mprB+sNWbL7Ei+d
-        8HLUqzLAfYbZ6y1ADftEBykpze43svum1QubwSXCGIOJAHU1xe/UgNDkyMrE5NNeMA/un2g
-        WuyhOELLBZOH+8nrLYc9/bliCaB5dP2qdZlmrXnxjmxl3Xxov3LGKRkmjV/oXBzgQEUWiDE
-        xgRBAyXy/hwSTBZKWcy7sRDIuCg6MRyzZNZTVsdzqNpmkqk7lWphNbwky4ax5SN6BzA/4W7
-        NGFsQNAEC9bsxFcmOarCh9XV2NvdGG6sI+TO9+6N2g+yTahwdn0ROSaeN6bwABQ+3gd5Oca
-        AVjcGGIzBAQ=
-X-QQ-GoodBg: 0
-From:   Jason Wang <wangborong@cdjrlc.com>
-To:     ganapathi017@gmail.com
-Cc:     amitkarwar@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jason Wang <wangborong@cdjrlc.com>
-Subject: [PATCH] mwifiex: Fix comment typo
-Date:   Fri, 15 Jul 2022 13:00:53 +0800
-Message-Id: <20220715050053.24382-1-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.35.1
+        Mon, 18 Jul 2022 08:07:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A04F23BF5;
+        Mon, 18 Jul 2022 05:07:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C90146145C;
+        Mon, 18 Jul 2022 12:07:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20D2C341C0;
+        Mon, 18 Jul 2022 12:07:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658146032;
+        bh=MkDHkSlfkcJ91+BNoi+8C0lZD/bC53v6Sb4q992ApH4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=jjxCjQljo/o4SHf2QRQBjXLPhVt6m+LzROqmARhhtq7CXSYr0qdKfrOhh+k4Y9msR
+         s3qzhmZ2StICjhuWTpcXWCrqtWgPjz1E94tRb2LGGZnRKRBHUZ86VdaquEKIk3bJH7
+         41/7mPCBd6OJITbdmiJ4FahgZ15sjS5iF5cNqcjdmHlEu30UGrbnwlYatWil9F0TR2
+         EmXABJEGmSNRVjJIg+7dbB7foqzB3TLsUXEAMPmhVlFfpOGu2EtOqNx1w9oVfLP+zj
+         Dh0TMDDHHAeHgMeNwXehuSizU/6AIjcnlVOr3dqobSyqsZ4LeTCo8qxOsjULwJraTo
+         +Rj/C7DhzorPQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,RDNS_DYNAMIC,
-        SPF_PASS,T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: atmel: fix repeated words in comments
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220709132637.16717-1-yuanjilin@cdjrlc.com>
+References: <20220709132637.16717-1-yuanjilin@cdjrlc.com>
+To:     Jilin Yuan <yuanjilin@cdjrlc.com>
+Cc:     simon@thekelleys.org.uk, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jilin Yuan <yuanjilin@cdjrlc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165814602466.32602.18190706420188832956.kvalo@kernel.org>
+Date:   Mon, 18 Jul 2022 12:07:09 +0000 (UTC)
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The double `the' is duplicated in line 1540, remove one.
+Jilin Yuan <yuanjilin@cdjrlc.com> wrote:
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
----
- drivers/net/wireless/marvell/mwifiex/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Delete the redundant word 'long'.
+> 
+> Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index 1a886978ed5d..b8dc3b5c9ad9 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -1537,7 +1537,7 @@ static int mwifiex_prog_fw_w_helper(struct mwifiex_adapter *adapter,
- /*
-  * This function decode sdio aggreation pkt.
-  *
-- * Based on the the data block size and pkt_len,
-+ * Based on the data block size and pkt_len,
-  * skb data will be decoded to few packets.
-  */
- static void mwifiex_deaggr_sdio_pkt(struct mwifiex_adapter *adapter,
+Patch applied to wireless-next.git, thanks.
+
+15978ea38d79 wifi: atmel: fix repeated words in comments
+
 -- 
-2.35.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20220709132637.16717-1-yuanjilin@cdjrlc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
