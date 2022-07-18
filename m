@@ -2,72 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 990505781CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 14:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C126A578831
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 19:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234880AbiGRMM0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 08:12:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
+        id S233100AbiGRRSI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 13:18:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234886AbiGRMMW (ORCPT
+        with ESMTP id S230263AbiGRRSI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 08:12:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6769F24955;
-        Mon, 18 Jul 2022 05:12:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3AA261477;
-        Mon, 18 Jul 2022 12:12:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63089C341D5;
-        Mon, 18 Jul 2022 12:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658146336;
-        bh=KU5XG89/tyFz/Oo7SvzDbI2yUM/Xgd+xaHy715tmcZ0=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=DWUG4Y6uQvGk746GZMk+lGC9BgD6G/iN0LkDOLjoAagJWBlq/hFgsgLacl2AGtHLH
-         hw3DTcFeXwjUWFGV8wCixktHj2+JUSVBuGwi9acsR+FzXky0H+X9MJraLxNjesq06E
-         z54WAXrmGIzint8OtZUOrN6aYuf8NxnimA2ilZYDAZb/GIiSwvD+rKu/rpl73lm9Mz
-         loeVNDWuVP17bUCu4+WtkX1LTqvEirPE7XEyOPFbxRY8ogIkBC2RNAMJWKtn4/wPtX
-         7Ix4MJH7G7yTwkj1TS0/pAiAhjeJdPii+Pl8iEhLzxOpd7kgll35IxZRcMXJ9dMjHE
-         UMH3QogDWvRHA==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 18 Jul 2022 13:18:08 -0400
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA6B2C135
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 10:18:06 -0700 (PDT)
+Date:   Mon, 18 Jul 2022 17:17:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
+        s=protonmail3; t=1658164684; x=1658423884;
+        bh=jirZHvt4u1Kp6psm5UkIeThesuuC9ZjPIZfQ3IjOwbM=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=d4HEFVsPaL0SP+Czkm059MR65JsnZCGCw5UOlGDFhl8dNaDvVipUow0s3Y9ciVlXV
+         Pxz8cDO/DubDyOVvCrx0p67/EHoR4dUfA+DgbQ1mWTU7upSK5BfPB3C62m6A1ZA6n9
+         SFOj7/zBWE0vD6+FlJzLNyxAOwxP/9zBog6a41qFdCxQ5vhrE/Pe2wHtJc8A240ybk
+         SeJvcyMcy182mg5XKoB4O+/Rh7G6jS/YKk91apORJhuAuHuglVTDoGg0GulshkhsNL
+         A6yxHjB8xGZD6hI+eH8eu+CJ1JlNvR6gcolLrUJnYef4LMWOpZyWhXjE/b0ROvcV0u
+         3GSt9tV+2Je/g==
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+From:   Danny van Heumen <danny@dannyvanheumen.nl>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>
+Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
+Subject: Re: [PATCH v5] brcmfmac: prevent double-free on hardware-reset
+Message-ID: <Jf288fBmG7i8omrWIg5n1dG3Ei2z8Cc-sPjQGVhBHbeHxN8OZYfMhPNX4kop3CpXz4dh7FBKtw-t29PO0MhIthA_030s1GhpnMlKjnAeies=@dannyvanheumen.nl>
+In-Reply-To: <CAPDyKFpa6Z0Uhb0OnhMJ-KTQg5CQW93KMz1j1cQJS-Ho8FVhmQ@mail.gmail.com>
+References: <id1HN6qCMAirApBzTA6fT7ZFWBBGCJhULpflxQ7NT6cgCboVnn3RHpiOFjA9SbRqzBRFLk9ES0C4FNvO6fUQsNg7pqF6ZSNAYUo99nHy8PY=@dannyvanheumen.nl> <CAPDyKFpa6Z0Uhb0OnhMJ-KTQg5CQW93KMz1j1cQJS-Ho8FVhmQ@mail.gmail.com>
+Feedback-ID: 15073070:user:proton
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: wl1251: fix repeated words in comments
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220710043405.38304-1-yuanjilin@cdjrlc.com>
-References: <20220710043405.38304-1-yuanjilin@cdjrlc.com>
-To:     Jilin Yuan <yuanjilin@cdjrlc.com>
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jilin Yuan <yuanjilin@cdjrlc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165814633252.32602.10124173678960288207.kvalo@kernel.org>
-Date:   Mon, 18 Jul 2022 12:12:14 +0000 (UTC)
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jilin Yuan <yuanjilin@cdjrlc.com> wrote:
+------- Original Message -------
+On Thursday, July 14th, 2022 at 12:04, Ulf Hansson <ulf.hansson@linaro.org>=
+ wrote:
 
-> Delete the redundant word 'the'.
-> 
-> Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
+> [..]
+>
+> That said, I think the $subject patch looks reasonable to me. So feel
+> free to add:
+>
+> Reviewed-by: Ulf Hansson ulf.hansson@linaro.org
 
-Patch applied to wireless-next.git, thanks.
+I am a first-time contributor. Is this your way of saying that I should sub=
+mit
+the patch somewhere other than 'linux-wireless@...'? I suppose this fix is =
+not
+urgent enough for 'stable@...', or is it?
 
-f1cee996f185 wifi: wl1251: fix repeated words in comments
+I would appreciate information on who will and/or how to follow-up.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220710043405.38304-1-yuanjilin@cdjrlc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards,
+Danny
 
