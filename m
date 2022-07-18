@@ -2,142 +2,188 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65551578C45
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 22:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54ECD578C4B
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 22:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbiGRU61 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 16:58:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57672 "EHLO
+        id S236203AbiGRU7g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 16:59:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236188AbiGRU6T (ORCPT
+        with ESMTP id S236153AbiGRU7e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 16:58:19 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A53AD32B8B
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:58:18 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id u15so15090614lji.10
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:58:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MiQ+xQxx8hd0dlOeoQTIZgHydZebknID1GX7TXEZwqY=;
-        b=UXe8Cf2JLOSGbf9v+WHy5ow7tsX4GzUvDFhUAw4qsj86k+3sd8z+PTBhrJqCT64GOB
-         vlJP5xyX+3SnkFvEPX7q2tjxrYwW7oPoKSwe03WAxTwyuxLVNewsJlodCViVgrkVGIrc
-         JojBGrNyo4qc9W7bJODpPBqt7bX1uijY5sD7E4OlMYo5Eru8cRZCO3uUzLA2vZX+cxPh
-         ZSFbBi3GMNWelh4qZ2/ECU2pSwTqhujohHLiYwDwCRsOe7X1nUNXpG1khIP/h/ohwRX8
-         6jNSahP4U8pUBsP26GpgD2lf36mMTjkvdcVz4X0bZW4CArL1q37WzWw4+POFiTs5g+Hc
-         Ou2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MiQ+xQxx8hd0dlOeoQTIZgHydZebknID1GX7TXEZwqY=;
-        b=iQq/Q/KksZHZuy+IvM6lzRZ1/Ykv+PQS5tr6UUDdBC+X7f1kaTqEfXk1/beg7XSR6A
-         oi697RitTFQA/NtLF0UYBA6VZr8gnA+67HKn8/p+YY4NNmZWHOCtXcKfTQaxjQmoI5or
-         XbcrIxUrl8SI/+lTAje0CAII4Wqr4cggxc56Wnk+BeasrFqnwDJ/HOG05Ox1CwzkAsw2
-         kdJo3vV+v8vRX40NCtQSNMyLhKO8ABMGWOkBGJR26xVR9PAMAmgOkXEbmj5XBJDfba/E
-         ZejdMnuY5YHdzG22JyqdllNRCUTuBYrmmMkdC/HC/mFtgbEm4IN/hiJSRgNe+BTt8twd
-         TjQA==
-X-Gm-Message-State: AJIora8Rr1R1sxTh3Ncz7ibBx2uCPJORTXROHmyjYLSJeLNo6swrYUED
-        dgUy6edku4LeuNxvi4DG7WCGhCPUPFOKLAxYq9PK4g==
-X-Google-Smtp-Source: AGRyM1t51RWTLgYvPAUANqa/emkL/JY9rxxZTykAFTNHaWCbZ02W5NqJ5SzgkzMSkS2CC69AQN7HvjqAYJHsNPJ++QA=
-X-Received: by 2002:a2e:a5cb:0:b0:25d:7a70:2891 with SMTP id
- n11-20020a2ea5cb000000b0025d7a702891mr13859068ljp.295.1658177896827; Mon, 18
- Jul 2022 13:58:16 -0700 (PDT)
+        Mon, 18 Jul 2022 16:59:34 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E4D3192B
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658177974; x=1689713974;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oEbuNt2z7AJE70ajacgTpy7ogXvULuOreZiJfpjKsrI=;
+  b=cYGJ4NhhbniaE1iqOXKxcQLwqv+5tCQZRbZ1Q4CFzA18zXAybzCRXZfN
+   G+XfuFJdEPh9YdfHmOkM1LFpl1DjBpcQ33Y6vbfzfcBGCw6hjDS7/7Sa3
+   dyxUr3MEEfs60V8hH7Z+TcfW67k5OM1QF7s5PTdvTIrLznILF7lmvLeaU
+   ysitaXOd9R1+zu2BJV1cctCbz/inG3hADbjfOBeHYOIszqxXGcISpNJjb
+   c2MeutkBVRnDVJDZsKJmy1CrMShspABo+g/hO0HJHGmm7zrEs5SDISNzE
+   NqblQfReJj1Z85OGB9O1opEvWjB4qcS0a63hJ2Ws7m8SrTeftXIsOJQAC
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="283885529"
+X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
+   d="scan'208";a="283885529"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 13:59:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
+   d="scan'208";a="572567215"
+Received: from lkp-server02.sh.intel.com (HELO ff137eb26ff1) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 18 Jul 2022 13:59:31 -0700
+Received: from kbuild by ff137eb26ff1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oDXpz-0004j3-1W;
+        Mon, 18 Jul 2022 20:59:31 +0000
+Date:   Tue, 19 Jul 2022 04:58:40 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:pending] BUILD SUCCESS
+ 1b50966f53125472532585573d1a1d9b30d75cbb
+Message-ID: <62d5c980.BPrjAwPdR12owN3m%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220711222919.2043613-1-justinstitt@google.com>
-In-Reply-To: <20220711222919.2043613-1-justinstitt@google.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 18 Jul 2022 13:58:05 -0700
-Message-ID: <CAKwvOd=P7Wv0Z5YuxkwiqGfXGav9nZsBiC3mxdy0UfyF8D_c8A@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: mvm: fix clang -Wformat warnings
-To:     Justin Stitt <justinstitt@google.com>
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Tom Rix <trix@redhat.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Avraham Stern <avraham.stern@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 11, 2022 at 3:29 PM Justin Stitt <justinstitt@google.com> wrote:
->
-> When building with Clang we encounter these warnings:
-> | drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1108:47: error:
-> | format specifies type 'unsigned char' but the argument has type 's16'
-> | (aka 'short') [-Werror,-Wformat] IWL_DEBUG_INFO(mvm, "\tburst index:
-> | %hhu\n", res->ftm.burst_index);
-> -
-> | drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1111:47: error:
-> | format specifies type 'unsigned char' but the argument has type 's32'
-> | (aka 'int') [-Werror,-Wformat] IWL_DEBUG_INFO(mvm, "\trssi spread:
-> | %hhu\n", res->ftm.rssi_spread);
->
-> The previous format specifier `%hhu` describes a u8 but our arguments
-> are wider than this which means bits are potentially being lost.
->
-> Variadic functions (printf-like) undergo default argument promotion.
-> Documentation/core-api/printk-formats.rst specifically recommends using
-> the promoted-to-type's format flag.
->
-> As per C11 6.3.1.1:
-> (https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1548.pdf) `If an int
-> can represent all values of the original type ..., the value is
-> converted to an int; otherwise, it is converted to an unsigned int.
-> These are called the integer promotions.` Thus it makes sense to change
-> `%hhu` to `%d` for both instances of the warning.
->
-> Link: https://github.com/ClangBuiltLinux/linux/issues/378
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: 1b50966f53125472532585573d1a1d9b30d75cbb  Merge tag 'mt76-for-kvalo-2022-07-11' of https://github.com/nbd168/wireless into pending
 
-Thanks for the patch!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+elapsed time: 727m
 
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-> index 430044bc4755..e8702184c950 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-> @@ -1105,10 +1105,10 @@ static void iwl_mvm_debug_range_resp(struct iwl_mvm *mvm, u8 index,
->         IWL_DEBUG_INFO(mvm, "\tstatus: %d\n", res->status);
->         IWL_DEBUG_INFO(mvm, "\tBSSID: %pM\n", res->addr);
->         IWL_DEBUG_INFO(mvm, "\thost time: %llu\n", res->host_time);
-> -       IWL_DEBUG_INFO(mvm, "\tburst index: %hhu\n", res->ftm.burst_index);
-> +       IWL_DEBUG_INFO(mvm, "\tburst index: %d\n", res->ftm.burst_index);
->         IWL_DEBUG_INFO(mvm, "\tsuccess num: %u\n", res->ftm.num_ftmr_successes);
->         IWL_DEBUG_INFO(mvm, "\trssi: %d\n", res->ftm.rssi_avg);
-> -       IWL_DEBUG_INFO(mvm, "\trssi spread: %hhu\n", res->ftm.rssi_spread);
-> +       IWL_DEBUG_INFO(mvm, "\trssi spread: %d\n", res->ftm.rssi_spread);
->         IWL_DEBUG_INFO(mvm, "\trtt: %lld\n", res->ftm.rtt_avg);
->         IWL_DEBUG_INFO(mvm, "\trtt var: %llu\n", res->ftm.rtt_variance);
->         IWL_DEBUG_INFO(mvm, "\trtt spread: %llu\n", res->ftm.rtt_spread);
-> --
-> 2.37.0.144.g8ac04bfd2-goog
->
+configs tested: 106
+configs skipped: 4
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                 randconfig-c001-20220718
+m68k                       m5249evb_defconfig
+nios2                            allyesconfig
+arm                           corgi_defconfig
+powerpc                 mpc834x_mds_defconfig
+arc                                 defconfig
+arm                        spear6xx_defconfig
+parisc                generic-32bit_defconfig
+sh                   sh7770_generic_defconfig
+xtensa                    xip_kc705_defconfig
+ia64                      gensparse_defconfig
+arm                            pleb_defconfig
+arm                             pxa_defconfig
+sh                   secureedge5410_defconfig
+xtensa                  audio_kc705_defconfig
+powerpc                      bamboo_defconfig
+arm                         cm_x300_defconfig
+arm                           tegra_defconfig
+nios2                               defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                           se7619_defconfig
+s390                                defconfig
+s390                             allmodconfig
+alpha                               defconfig
+s390                             allyesconfig
+loongarch                           defconfig
+ia64                             allmodconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+x86_64               randconfig-k001-20220718
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64               randconfig-a014-20220718
+x86_64               randconfig-a016-20220718
+x86_64               randconfig-a012-20220718
+x86_64               randconfig-a013-20220718
+x86_64               randconfig-a015-20220718
+x86_64               randconfig-a011-20220718
+i386                 randconfig-a015-20220718
+i386                 randconfig-a011-20220718
+i386                 randconfig-a012-20220718
+i386                 randconfig-a014-20220718
+i386                 randconfig-a016-20220718
+i386                 randconfig-a013-20220718
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+s390                 randconfig-r044-20220718
+riscv                randconfig-r042-20220718
+arc                  randconfig-r043-20220718
+arc                  randconfig-r043-20220717
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+mips                        qi_lb60_defconfig
+arm                         bcm2835_defconfig
+powerpc                    ge_imp3a_defconfig
+powerpc                    socrates_defconfig
+powerpc                 mpc836x_mds_defconfig
+arm                       aspeed_g4_defconfig
+mips                     loongson1c_defconfig
+mips                      bmips_stb_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+i386                 randconfig-a004-20220718
+i386                 randconfig-a001-20220718
+i386                 randconfig-a005-20220718
+i386                 randconfig-a006-20220718
+i386                 randconfig-a002-20220718
+i386                 randconfig-a003-20220718
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220717
+hexagon              randconfig-r045-20220717
+riscv                randconfig-r042-20220717
+s390                 randconfig-r044-20220717
 
 -- 
-Thanks,
-~Nick Desaulniers
+0-DAY CI Kernel Test Service
+https://01.org/lkp
