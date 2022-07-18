@@ -2,75 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5FB5578BBA
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 22:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41BB578C24
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 22:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235167AbiGRU35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 16:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37362 "EHLO
+        id S234728AbiGRUvr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 16:51:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235176AbiGRU3h (ORCPT
+        with ESMTP id S234311AbiGRUvq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 16:29:37 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC605BCB8
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:29:36 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id w185so11693896pfb.4
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:29:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=2K0FhOkxoPSlQLD2WY+lMGGddcsgjCNwFv767Hz5I6Y=;
-        b=j3PfO4zEZFkjg7rbetiYnbs2c85iMYMuRNZdKXZNHmzaJZo9+opRNiu+O3nnTfY2DD
-         6dq+IQX3dPLc9s+1V8WL7DGhcYytBFQ9jYkIIPggcm1B1UQ+8F2BXMWt4VNgKJSJHtZM
-         p/Zo6epjXos66tBLEGzKwLq1E/jVEWE98cgJHSV25Bv/U6qMYbEJTdHHYCyY2WLmihFz
-         eC0B2pwr1K/CPWjeTmNhbvmlUp2lw5qtvbvxTZVwZmE/UbwSZvmDVW25kisw/rJ7Ccro
-         5VtOpI11uKASh9pEDduQL4eAzxuCbPSE7O3emKdy0UNr+lETW+VwnRGHZhPvi0f/jhRz
-         1k3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=2K0FhOkxoPSlQLD2WY+lMGGddcsgjCNwFv767Hz5I6Y=;
-        b=2vazyjU8JObcmcHdCBQSMJaf5PYui/Z2Yzr/6zkv7VT0W/ZATTOoIfCkH3V834xLpM
-         cpCl3QJso7Qc4GdKSNkGlUX4J9zMQ2ohhv9xN1qUo7MbC6dwYAF8KGgUpFyoxNKNWHiV
-         nv6Sp1v2NMs7SPTOMVtCKB3+JmpZZ03/PnO0bafLM9kTDxE5nP1t1nZYOKvVIGrMcPrF
-         L8SWQwwltAVNT4Hg4l2jrRZbctqqQrBturOMjw51PVmM+1kJ/D9svad52x+l3yw48LHD
-         XSZtOt/5CbFw/idfZRzWIW+ezYNjfF7uLBa5+WQG1iRvqCSYoa0LOFX14GvGGTMPFMRf
-         viXg==
-X-Gm-Message-State: AJIora+kQchgreIYXy/e4btm2RgjCuLHK1bvxU22Q+xe5szOeQ0EYA5U
-        DTuI8kPjaZ/4u5vMGIkam68=
-X-Google-Smtp-Source: AGRyM1s0UovQ9K0yTeSUrmxZN8DBuSeiaiQnEKKL2MAUD48Yrud5qB4oIqy/I+AvKUH2iQYK+dJ7zA==
-X-Received: by 2002:a05:6a00:238c:b0:52a:dcad:7847 with SMTP id f12-20020a056a00238c00b0052adcad7847mr30300376pfc.8.1658176176339;
-        Mon, 18 Jul 2022 13:29:36 -0700 (PDT)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id z9-20020a631909000000b0041992864d69sm8497464pgl.77.2022.07.18.13.29.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Jul 2022 13:29:35 -0700 (PDT)
-Message-ID: <0a2b1520-b5d2-8a19-b85b-62b7df77553d@gmail.com>
-Date:   Mon, 18 Jul 2022 22:29:32 +0200
+        Mon, 18 Jul 2022 16:51:46 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494A7326D6
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:51:38 -0700 (PDT)
+X-UUID: 0fcb69af21a54ffdb449b692c5246cb4-20220719
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:73c66cd9-7724-43b6-a8b9-7eba31b2b7f2,OB:0,LO
+        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:5
+X-CID-META: VersionHash:0f94e32,CLOUDID:f79ed0d7-5d6d-4eaf-a635-828a3ee48b7c,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
+        ,QS:nil,BEC:nil,COL:0
+X-UUID: 0fcb69af21a54ffdb449b692c5246cb4-20220719
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 591921104; Tue, 19 Jul 2022 04:51:31 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Tue, 19 Jul 2022 04:51:30 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Tue, 19 Jul 2022 04:51:30 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
+        <druth@google.com>, <abhishekpandit@google.com>,
+        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/4] mt76: mt7921e: fix race issue between reset and suspend/resume
+Date:   Tue, 19 Jul 2022 04:51:23 +0800
+Message-ID: <a1437e413116364ac9f3b777c7922ca0728ddc0d.1658176701.git.sean.wang@kernel.org>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v5] brcmfmac: prevent double-free on hardware-reset
-Content-Language: en-US
-To:     Danny van Heumen <danny@dannyvanheumen.nl>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-References: <id1HN6qCMAirApBzTA6fT7ZFWBBGCJhULpflxQ7NT6cgCboVnn3RHpiOFjA9SbRqzBRFLk9ES0C4FNvO6fUQsNg7pqF6ZSNAYUo99nHy8PY=@dannyvanheumen.nl>
- <CAPDyKFpa6Z0Uhb0OnhMJ-KTQg5CQW93KMz1j1cQJS-Ho8FVhmQ@mail.gmail.com>
- <Jf288fBmG7i8omrWIg5n1dG3Ei2z8Cc-sPjQGVhBHbeHxN8OZYfMhPNX4kop3CpXz4dh7FBKtw-t29PO0MhIthA_030s1GhpnMlKjnAeies=@dannyvanheumen.nl>
-From:   Arend Van Spriel <aspriel@gmail.com>
-In-Reply-To: <Jf288fBmG7i8omrWIg5n1dG3Ei2z8Cc-sPjQGVhBHbeHxN8OZYfMhPNX4kop3CpXz4dh7FBKtw-t29PO0MhIthA_030s1GhpnMlKjnAeies=@dannyvanheumen.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,55 +65,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/18/2022 7:17 PM, Danny van Heumen wrote:
-> ------- Original Message -------
-> On Thursday, July 14th, 2022 at 12:04, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> 
->> [..]
->>
->> That said, I think the $subject patch looks reasonable to me. So feel
->> free to add:
->>
->> Reviewed-by: Ulf Hansson ulf.hansson@linaro.org
-> 
-> I am a first-time contributor. Is this your way of saying that I should submit
-> the patch somewhere other than 'linux-wireless@...'? I suppose this fix is not
-> urgent enough for 'stable@...', or is it?
-> 
-> I would appreciate information on who will and/or how to follow-up.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Hi Danny,
+It is unexpected that the reset work is running simultaneously with
+the suspend or resume context and it is possible that reset work is still
+running even after mt7921 is suspended if we don't fix the race issue.
 
-The above means that Uffe is okay with the patch being included. Kalle 
-Valo is the linux-wireless maintainer and he will apply the patch to the 
-linux-wireless repo. The status of your patch can be monitored through 
-patchwork [1].
+Thus, the suspend procedure should be waiting until the reset is completed
+at the beginning and ignore the subsequent the reset requests.
 
-By the way, you can add the Fixes: tag referring to the commit that 
-introduced the issue. Not sure which one should be considered here, but 
-it is either this one ...
+In case there is an error that happens during either suspend or resume
+handler, we will schedule a reset task to recover the error before
+returning the error code to ensure we can immediately fix the error there.
 
-Fixes: 9982464379e8 ("brcmfmac: make sdio suspend wait for threads to 
-freeze")
+Fixes: 0c1ce9884607 ("mt76: mt7921: add wifi reset support")
+Co-developed-by: YN Chen <YN.Chen@mediatek.com>
+Signed-off-by: YN Chen <YN.Chen@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c |  5 +++++
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 13 +++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-... or ...
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 47f0aa81ab02..6bd9fc9228a2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -780,6 +780,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ void mt7921_reset(struct mt76_dev *mdev)
+ {
+ 	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
++	struct mt76_connac_pm *pm = &dev->pm;
+ 
+ 	if (!dev->hw_init_done)
+ 		return;
+@@ -787,8 +788,12 @@ void mt7921_reset(struct mt76_dev *mdev)
+ 	if (dev->hw_full_reset)
+ 		return;
+ 
++	if (pm->suspended)
++		return;
++
+ 	queue_work(dev->mt76.wq, &dev->reset_work);
+ }
++EXPORT_SYMBOL_GPL(mt7921_reset);
+ 
+ void mt7921_mac_update_mib_stats(struct mt7921_phy *phy)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 9d1ba838e54f..07573ea55389 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -363,6 +363,7 @@ static int mt7921_pci_suspend(struct device *device)
+ 	int i, err;
+ 
+ 	pm->suspended = true;
++	cancel_work_sync(&dev->reset_work);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+ 
+@@ -424,6 +425,9 @@ static int mt7921_pci_suspend(struct device *device)
+ restore_suspend:
+ 	pm->suspended = false;
+ 
++	if (err < 0)
++		mt7921_reset(&dev->mt76);
++
+ 	return err;
+ }
+ 
+@@ -437,7 +441,7 @@ static int mt7921_pci_resume(struct device *device)
+ 
+ 	err = mt7921_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
+-		return err;
++		goto failed;
+ 
+ 	mt7921_wpdma_reinit_cond(dev);
+ 
+@@ -467,11 +471,12 @@ static int mt7921_pci_resume(struct device *device)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+-	if (err)
+-		return err;
+-
++failed:
+ 	pm->suspended = false;
+ 
++	if (err < 0)
++		mt7921_reset(&dev->mt76);
++
+ 	return err;
+ }
+ 
+-- 
+2.25.1
 
-Fixes: 7836102a750a ("brcmfmac: reset SDIO bus on a firmware crash")
-
-How to create the tag is described here [2]. With git configured 
-properly you can simply do:
-
-$ git log --pretty=fixes -1 <commit_sha1>
-
-Stable patches have their additional rules [3]. The bus reset was added 
-in kernel v5.9. Hope this helps.
-
-Regards,
-Arend
-
-[1] 
-https://patchwork.kernel.org/project/linux-wireless/patch/id1HN6qCMAirApBzTA6fT7ZFWBBGCJhULpflxQ7NT6cgCboVnn3RHpiOFjA9SbRqzBRFLk9ES0C4FNvO6fUQsNg7pqF6ZSNAYUo99nHy8PY=@dannyvanheumen.nl/
-[2] 
-https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html#describe-your-changes
-[3] 
-https://www.kernel.org/doc/html/v4.10/process/stable-kernel-rules.html#procedure-for-submitting-patches-to-the-stable-tree
