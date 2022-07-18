@@ -2,104 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B4415789B7
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 20:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C712B578A27
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 21:01:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236039AbiGRSoE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 14:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
+        id S235471AbiGRTBp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 15:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236035AbiGRSoC (ORCPT
+        with ESMTP id S235063AbiGRTBb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 14:44:02 -0400
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA9E46313;
-        Mon, 18 Jul 2022 11:43:58 -0700 (PDT)
-Received: by mail-il1-f180.google.com with SMTP id w9so2970117ilg.1;
-        Mon, 18 Jul 2022 11:43:58 -0700 (PDT)
+        Mon, 18 Jul 2022 15:01:31 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BACE32FFDC
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 12:01:18 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 7so4976529ybw.0
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 12:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=IQXHlBQ3jHSYUTt89EYBBYMpS/rXYtHBaNUJ6e2ZzB07/ETpvOJM0/ZijryokIEfDh
+         oJG0jiachEiIldTcksV5XzU+dy3csOVeMrzVRYAIpdf4PUrGYfI/KNNvcLIWjvmc8oHa
+         yWKlPWKnOFkuEw2Mq2CzZYpqcRK9kJ+LygeUXE0izxh4s3I+nauj1w40rP+480vJCi+X
+         rAPSoEvo8wXV23cydMjOZnuzBivYToT/OwjRuq1iqX/8Isb8Rqougy46FnOdoQuh9Z/u
+         z7xKihQATs9EIIDqpmGAQl/2n//vpMk3ZDpLHQioaLk/1hVBrL4som/CgeyT77yPFwbn
+         VU6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=LD3jbsEBREK2eP4j8JRnU6BGqeHPwEv2Qmp6Ugb/5qQ=;
-        b=4KJ0HC7tmiypX1eTrjKhG6Ye9il5jBQyFKXnYIR2vbVrj7t2LKnV738+oWCmHqnHgM
-         D+hxNGlQnVX18BlSW3E3amp8BWQZwbcNIC6kVeqS/e/We6tgzBGUM+AvfNlMSYEqKYHe
-         Ue10xXaX87+UYfUss/aL/Eb4l22XBemlMN8CHVh4+YkxfsX1Cb33ig2+z2K2Zc40TLtr
-         dxdlsv+YZgN5xzIwhCahFT8pDB+WZxMQNJytRX6bZ9QgX/t1Nhumc0fI6SgLpMgnGv9c
-         xKs5JLv4eY7B2Ctu7dd2aZbgeR4+MfIlWh0kgBOuoEg0XXw1muhGAHjtX0uFk26pHn2i
-         qoDQ==
-X-Gm-Message-State: AJIora+hiVGOcnghGFS8W90xDf+sRo31dFXhdkHtYA4qi1YvXwB+/vWn
-        Ag8gy8rc6bgYa59ay12RGQ==
-X-Google-Smtp-Source: AGRyM1sfYtsdKVAWmLlEzocHZtR9Hf5/A/3tf8A57ZltfKBeCCy+zLJhYGsU+xCXjYyzTImCk0NIGg==
-X-Received: by 2002:a05:6e02:219e:b0:2dc:d166:f603 with SMTP id j30-20020a056e02219e00b002dcd166f603mr6367261ila.79.1658169838044;
-        Mon, 18 Jul 2022 11:43:58 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id bs20-20020a056638451400b00341523a2a32sm4076443jab.122.2022.07.18.11.43.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jul 2022 11:43:57 -0700 (PDT)
-Received: (nullmailer pid 3325584 invoked by uid 1000);
-        Mon, 18 Jul 2022 18:43:55 -0000
-Date:   Mon, 18 Jul 2022 12:43:55 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin@pqrs.dk>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, van Spriel <arend@broadcom.com>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Franky Lin <franky.lin@broadcom.com>, netdev@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Arend van Spriel <aspriel@gmail.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: bcm4329-fmac: add optional
- brcm,ccode-map-trivial
-Message-ID: <20220718184355.GA3325548-robh@kernel.org>
-References: <20220711123005.3055300-1-alvin@pqrs.dk>
- <20220711123005.3055300-2-alvin@pqrs.dk>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=tzSx44mcOconIBsd7w6a+ry1qlvnYYCELVn/CSsQOUoeIAo5WgtGHD3sN1t+U3Olef
+         LGjU5lbX1EYnxcVDXCCyc6DhWNpkDAGItt09ipBvcqnlatX1Yc8aYkeLwiaAWOEYokIJ
+         IYC1fFsMZ98wpkD6b1CEBANaJWL6xjUpyLAEEzgmpjtWh7r3NvOamKXnlMrNbWsygMfW
+         LbQt8wgYfbfwcoXYY79JggLidUpvrvuYgfLMCW4OM7NMucQqcEU0BreUC4oDnoLF/rAz
+         uEjhENdu1uiYLGC0NWb1iZjW0F0uAAjo1T+Dj2SW+0fWBg2286+oojqtPWjIIKb45gUJ
+         s5tQ==
+X-Gm-Message-State: AJIora8olbIwo8rYomCSp1Vj/pb1GkArzWlxRHYcwnJf9flYtuMHgesE
+        mr5gFqyLgfv6O83LnE5JQreW5i3xYdnbIDkTVLCsAOHepJKxxQ==
+X-Google-Smtp-Source: AGRyM1sOF4caZ/Mzb7i1HwUB8dyXYAmjf9y+Pd1nVHRKiUHeMR6opOrMc10oZNu5DLkN2HS0cpkKNGEh0T+MU99Jmes=
+X-Received: by 2002:a81:5747:0:b0:31d:1bb8:65b7 with SMTP id
+ l68-20020a815747000000b0031d1bb865b7mr30830046ywb.168.1658170865217; Mon, 18
+ Jul 2022 12:01:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220711123005.3055300-2-alvin@pqrs.dk>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6919:4004:b0:cc:50ff:b3d8 with HTTP; Mon, 18 Jul 2022
+ 12:01:04 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <sgtalberts@gmail.com>
+Date:   Mon, 18 Jul 2022 11:01:04 -0800
+Message-ID: <CALPTejMFgL0Bg7jCKa7j+5KxVv_jnSM4ZPq-QhHCiUpG_ZswsQ@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 11 Jul 2022 14:30:03 +0200, Alvin Šipraga wrote:
-> From: Alvin Šipraga <alsi@bang-olufsen.dk>
-> 
-> The bindings already offer a brcm,ccode-map property to describe the
-> mapping between the kernel's ISO3166 alpha 2 country code string and the
-> firmware's country code string and revision number. This is a
-> board-specific property and determined by the CLM blob firmware provided
-> by the hardware vendor.
-> 
-> However, in some cases the firmware will also use ISO3166 country codes
-> internally, and the revision will always be zero. This implies a trivial
-> mapping: cc -> { cc, 0 }.
-> 
-> For such cases, add an optional property brcm,ccode-map-trivial which
-> obviates the need to describe every trivial country code mapping in the
-> device tree with the existing brcm,ccode-map property. The new property
-> is subordinate to the more explicit brcm,ccode-map property.
-> 
-> Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
-> ---
->  .../bindings/net/wireless/brcm,bcm4329-fmac.yaml       | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
+Hi Dear,
 
-Acked-by: Rob Herring <robh@kernel.org>
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
+
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
+
+Thanks
+
+With love
+Lily
