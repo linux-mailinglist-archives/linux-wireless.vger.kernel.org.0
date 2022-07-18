@@ -2,44 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE03578D97
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 00:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A51B3578E3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 01:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234332AbiGRWg2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 18:36:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40134 "EHLO
+        id S233929AbiGRX0G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 19:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbiGRWg2 (ORCPT
+        with ESMTP id S230182AbiGRX0F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 18:36:28 -0400
-X-Greylist: delayed 474 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 Jul 2022 15:36:26 PDT
-Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3D0E22BED;
-        Mon, 18 Jul 2022 15:36:26 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2ADCC3EEC0;
-        Tue, 19 Jul 2022 00:28:19 +0200 (CEST)
-From:   =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+        Mon, 18 Jul 2022 19:26:05 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E3D30F6B
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 16:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658186764; x=1689722764;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=S7sAj1NRwIenNLKFZD92tV8FgUlcYxFRqWRS8Y4zvP0=;
+  b=eu3aOYQT4+PyXaCoLMyf9ezsiVqdwSDNndLdqGeF7htWEsPH1XDvYd0x
+   5GWRKIsaKtfIIytUJLP6N/e9ko5rnEewUlS17z5oIh/IAuPghzebO+hKT
+   GPNf36gxBo8uhUW/VbuNMQcmm2V0ByIPEOpC4QyLsnd0IqYrtaSGfuns5
+   1l6BobaShDlvXWh0M3Up+JkbPBFSsZC9t14QheDrikjm3RhLvqxVYsK0t
+   XRDA5sDzeCHhDXAizEXAf97InezJvFCApHbh2m8wPCvzH9RbJ/MREH5mA
+   m9UDUJljT5LFod8sGyfIZgdp2xqxTM7QjkiHpqH2bnLgqkZyamnZmfdPY
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="286359748"
+X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
+   d="scan'208";a="286359748"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 16:26:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
+   d="scan'208";a="547686304"
+Received: from lkp-server02.sh.intel.com (HELO ff137eb26ff1) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 18 Jul 2022 16:26:02 -0700
+Received: from kbuild by ff137eb26ff1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oDa7m-0004rO-80;
+        Mon, 18 Jul 2022 23:26:02 +0000
+Date:   Tue, 19 Jul 2022 07:26:00 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-        Simon Wunderlich <sw@simonwunderlich.de>,
-        Sven Eckelmann <sven@narfation.org>,
-        =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Linus=20L=C3=BCssing?= <ll@simonwunderlich.de>
-Subject: [PATCH] mac80211: Fix wrong channel bandwidths reported for aggregates
-Date:   Tue, 19 Jul 2022 00:28:04 +0200
-Message-Id: <20220718222804.21708-1-linus.luessing@c0d3.blue>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless-next:mld] BUILD SUCCESS
+ dd5a559d8e90fdb9424e0580b91702c5838928dc
+Message-ID: <62d5ec08.TT7dpwN9EfyC5OeX%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,127 +62,107 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Linus Lüssing <ll@simonwunderlich.de>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
+branch HEAD: dd5a559d8e90fdb9424e0580b91702c5838928dc  wifi: mac80211: mlme: fix override calculation
 
-AR9003 based wifi chips have a hardware bug, they always report a
-channel bandwidth of HT40 for any sub-frame of an aggregate which is
-not the last one. Only the last sub-frame has correct channel bandwidth
-information.
+elapsed time: 724m
 
-This can be easily reproduced by setting an ath9k based wifi to HT20 and
-running an iperf test. Then "iw dev wlan0 station dump" will occasionally,
-wrongly show something like:
+configs tested: 86
+configs skipped: 4
 
-  rx bitrate:     121.5 MBit/s MCS 6 40MHz
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Debug output in ath9k_hw_process_rxdesc_edma() confirmed that it is
-always frames with (rxs->rs_isaggr && !rxs->rs_moreaggr) and no others
-which report RATE_INFO_BW_40.
+gcc tested configs:
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                 randconfig-c001-20220718
+m68k                       m5249evb_defconfig
+nios2                            allyesconfig
+arm                           corgi_defconfig
+powerpc                 mpc834x_mds_defconfig
+arc                                 defconfig
+arm                        spear6xx_defconfig
+parisc                generic-32bit_defconfig
+sh                   sh7770_generic_defconfig
+xtensa                    xip_kc705_defconfig
+ia64                      gensparse_defconfig
+arm                            pleb_defconfig
+arm                             pxa_defconfig
+sh                   secureedge5410_defconfig
+xtensa                  audio_kc705_defconfig
+arm                           tegra_defconfig
+nios2                               defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                           se7619_defconfig
+loongarch                           defconfig
+ia64                             allmodconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+x86_64               randconfig-k001-20220718
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+x86_64               randconfig-a014-20220718
+x86_64               randconfig-a016-20220718
+x86_64               randconfig-a012-20220718
+x86_64               randconfig-a013-20220718
+x86_64               randconfig-a015-20220718
+x86_64               randconfig-a011-20220718
+i386                 randconfig-a015-20220718
+i386                 randconfig-a011-20220718
+i386                 randconfig-a012-20220718
+i386                 randconfig-a014-20220718
+i386                 randconfig-a016-20220718
+i386                 randconfig-a013-20220718
+s390                 randconfig-r044-20220718
+riscv                randconfig-r042-20220718
+arc                  randconfig-r043-20220718
+arc                  randconfig-r043-20220717
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
 
-Unfortunately we cannot easily fix this within ath9k as in ath9k we
-cannot peek at the rate/bandwidth info of the last aggregate
-sub-frame and there is no queueing within ath9k after receiving the
-frame from the wifi chip, it is directly handed over to mac80211.
+clang tested configs:
+mips                        qi_lb60_defconfig
+arm                         bcm2835_defconfig
+powerpc                    ge_imp3a_defconfig
+arm                       aspeed_g4_defconfig
+mips                     loongson1c_defconfig
+mips                      bmips_stb_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                 randconfig-a004-20220718
+i386                 randconfig-a001-20220718
+i386                 randconfig-a005-20220718
+i386                 randconfig-a006-20220718
+i386                 randconfig-a002-20220718
+i386                 randconfig-a003-20220718
+hexagon              randconfig-r041-20220717
+hexagon              randconfig-r045-20220717
+riscv                randconfig-r042-20220717
+s390                 randconfig-r044-20220717
 
-Therefore fixing this within mac80211: For an aggergated AMPDU only
-update the RX "last_rate" variable from the last sub-frame of an
-aggregate. In theory, without hardware bugs, rate/bandwidth info
-should be the same for all sub-frames of an aggregate anyway.
-
-This change only affects ath9k, ath9k-htc and ath10k as these are
-currently the only drivers implementing the RX_FLAG_AMPDU_LAST_KNOWN
-flag.
-
-Tested-on: 8devices Lima board, QCA9531 WiFi
-
-Cc: Sven Eckelmann <sven@narfation.org>
-Cc: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: Linus Lüssing <linus.luessing@c0d3.blue>
-Signed-off-by: Linus Lüssing <ll@simonwunderlich.de>
----
- net/mac80211/rx.c       |  8 ++++----
- net/mac80211/sta_info.h | 16 +++++++++++++---
- 2 files changed, 17 insertions(+), 7 deletions(-)
-
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 304b9909f025..988dbf058489 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1723,6 +1723,7 @@ ieee80211_rx_h_sta_process(struct ieee80211_rx_data *rx)
- 	struct sk_buff *skb = rx->skb;
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+	u32 *last_rate = &sta->deflink.rx_stats.last_rate;
- 	int i;
- 
- 	if (!sta)
-@@ -1744,8 +1745,7 @@ ieee80211_rx_h_sta_process(struct ieee80211_rx_data *rx)
- 			sta->deflink.rx_stats.last_rx = jiffies;
- 			if (ieee80211_is_data(hdr->frame_control) &&
- 			    !is_multicast_ether_addr(hdr->addr1))
--				sta->deflink.rx_stats.last_rate =
--					sta_stats_encode_rate(status);
-+				sta_stats_encode_rate(status, last_rate);
- 		}
- 	} else if (rx->sdata->vif.type == NL80211_IFTYPE_OCB) {
- 		sta->deflink.rx_stats.last_rx = jiffies;
-@@ -1757,7 +1757,7 @@ ieee80211_rx_h_sta_process(struct ieee80211_rx_data *rx)
- 		 */
- 		sta->deflink.rx_stats.last_rx = jiffies;
- 		if (ieee80211_is_data(hdr->frame_control))
--			sta->deflink.rx_stats.last_rate = sta_stats_encode_rate(status);
-+			sta_stats_encode_rate(status, last_rate);
- 	}
- 
- 	sta->deflink.rx_stats.fragments++;
-@@ -4502,7 +4502,7 @@ static void ieee80211_rx_8023(struct ieee80211_rx_data *rx,
- 	/* end of statistics */
- 
- 	stats->last_rx = jiffies;
--	stats->last_rate = sta_stats_encode_rate(status);
-+	sta_stats_encode_rate(status, &stats->last_rate);
- 
- 	stats->fragments++;
- 	stats->packets++;
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 70ee55ec5518..67f9c1647567 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -941,10 +941,19 @@ enum sta_stats_type {
- 
- #define STA_STATS_RATE_INVALID		0
- 
--static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
-+static inline void
-+sta_stats_encode_rate(struct ieee80211_rx_status *s, u32 *rate)
- {
- 	u32 r;
- 
-+	/* some drivers (notably ath9k) only report a valid bandwidth
-+	 * in the last subframe of an aggregate, skip the others
-+	 * in that case
-+	 */
-+	if (s->flag & RX_FLAG_AMPDU_LAST_KNOWN &&
-+	    !(s->flag & RX_FLAG_AMPDU_IS_LAST))
-+		return;
-+
- 	r = STA_STATS_FIELD(BW, s->bw);
- 
- 	if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
-@@ -975,10 +984,11 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
- 		break;
- 	default:
- 		WARN_ON(1);
--		return STA_STATS_RATE_INVALID;
-+		*rate = STA_STATS_RATE_INVALID;
-+		return;
- 	}
- 
--	return r;
-+	*rate = r;
- }
- 
- #endif /* STA_INFO_H */
 -- 
-2.36.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
