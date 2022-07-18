@@ -2,67 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68A67578C26
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 22:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65551578C45
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jul 2022 22:58:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235129AbiGRUw0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 16:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52880 "EHLO
+        id S233955AbiGRU61 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 16:58:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234980AbiGRUwZ (ORCPT
+        with ESMTP id S236188AbiGRU6T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 16:52:25 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA97326D6
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:52:24 -0700 (PDT)
-X-UUID: ae476c31a51a4f5e9c0b6d1a37ca3aa8-20220719
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:a1cdb392-5ec7-4988-beb8-b47e91ed2450,OB:0,LO
-        B:10,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,AC
-        TION:release,TS:100
-X-CID-INFO: VERSION:1.1.8,REQID:a1cdb392-5ec7-4988-beb8-b47e91ed2450,OB:0,LOB:
-        10,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,AC
-        TION:quarantine,TS:100
-X-CID-META: VersionHash:0f94e32,CLOUDID:80164e33-b9e4-42b8-b28a-6364427c76bb,C
-        OID:681906c2c761,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: ae476c31a51a4f5e9c0b6d1a37ca3aa8-20220719
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1759691411; Tue, 19 Jul 2022 04:52:19 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Tue, 19 Jul 2022 04:52:17 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Tue, 19 Jul 2022 04:52:17 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 3/3] mt76: mt7663s: fix the deadlock caused by sdio->stat_work
-Date:   Tue, 19 Jul 2022 04:52:15 +0800
-Message-ID: <106a510630a27440b49170e9586f9dfbe831848e.1658176763.git.sean.wang@kernel.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <aa7d7ed8f3a817525ab8c7b736f1ce52490a835e.1658176763.git.sean.wang@kernel.org>
-References: <aa7d7ed8f3a817525ab8c7b736f1ce52490a835e.1658176763.git.sean.wang@kernel.org>
+        Mon, 18 Jul 2022 16:58:19 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A53AD32B8B
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:58:18 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id u15so15090614lji.10
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 13:58:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MiQ+xQxx8hd0dlOeoQTIZgHydZebknID1GX7TXEZwqY=;
+        b=UXe8Cf2JLOSGbf9v+WHy5ow7tsX4GzUvDFhUAw4qsj86k+3sd8z+PTBhrJqCT64GOB
+         vlJP5xyX+3SnkFvEPX7q2tjxrYwW7oPoKSwe03WAxTwyuxLVNewsJlodCViVgrkVGIrc
+         JojBGrNyo4qc9W7bJODpPBqt7bX1uijY5sD7E4OlMYo5Eru8cRZCO3uUzLA2vZX+cxPh
+         ZSFbBi3GMNWelh4qZ2/ECU2pSwTqhujohHLiYwDwCRsOe7X1nUNXpG1khIP/h/ohwRX8
+         6jNSahP4U8pUBsP26GpgD2lf36mMTjkvdcVz4X0bZW4CArL1q37WzWw4+POFiTs5g+Hc
+         Ou2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MiQ+xQxx8hd0dlOeoQTIZgHydZebknID1GX7TXEZwqY=;
+        b=iQq/Q/KksZHZuy+IvM6lzRZ1/Ykv+PQS5tr6UUDdBC+X7f1kaTqEfXk1/beg7XSR6A
+         oi697RitTFQA/NtLF0UYBA6VZr8gnA+67HKn8/p+YY4NNmZWHOCtXcKfTQaxjQmoI5or
+         XbcrIxUrl8SI/+lTAje0CAII4Wqr4cggxc56Wnk+BeasrFqnwDJ/HOG05Ox1CwzkAsw2
+         kdJo3vV+v8vRX40NCtQSNMyLhKO8ABMGWOkBGJR26xVR9PAMAmgOkXEbmj5XBJDfba/E
+         ZejdMnuY5YHdzG22JyqdllNRCUTuBYrmmMkdC/HC/mFtgbEm4IN/hiJSRgNe+BTt8twd
+         TjQA==
+X-Gm-Message-State: AJIora8Rr1R1sxTh3Ncz7ibBx2uCPJORTXROHmyjYLSJeLNo6swrYUED
+        dgUy6edku4LeuNxvi4DG7WCGhCPUPFOKLAxYq9PK4g==
+X-Google-Smtp-Source: AGRyM1t51RWTLgYvPAUANqa/emkL/JY9rxxZTykAFTNHaWCbZ02W5NqJ5SzgkzMSkS2CC69AQN7HvjqAYJHsNPJ++QA=
+X-Received: by 2002:a2e:a5cb:0:b0:25d:7a70:2891 with SMTP id
+ n11-20020a2ea5cb000000b0025d7a702891mr13859068ljp.295.1658177896827; Mon, 18
+ Jul 2022 13:58:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+References: <20220711222919.2043613-1-justinstitt@google.com>
+In-Reply-To: <20220711222919.2043613-1-justinstitt@google.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 18 Jul 2022 13:58:05 -0700
+Message-ID: <CAKwvOd=P7Wv0Z5YuxkwiqGfXGav9nZsBiC3mxdy0UfyF8D_c8A@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: mvm: fix clang -Wformat warnings
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Avraham Stern <avraham.stern@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,62 +79,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Mon, Jul 11, 2022 at 3:29 PM Justin Stitt <justinstitt@google.com> wrote:
+>
+> When building with Clang we encounter these warnings:
+> | drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1108:47: error:
+> | format specifies type 'unsigned char' but the argument has type 's16'
+> | (aka 'short') [-Werror,-Wformat] IWL_DEBUG_INFO(mvm, "\tburst index:
+> | %hhu\n", res->ftm.burst_index);
+> -
+> | drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1111:47: error:
+> | format specifies type 'unsigned char' but the argument has type 's32'
+> | (aka 'int') [-Werror,-Wformat] IWL_DEBUG_INFO(mvm, "\trssi spread:
+> | %hhu\n", res->ftm.rssi_spread);
+>
+> The previous format specifier `%hhu` describes a u8 but our arguments
+> are wider than this which means bits are potentially being lost.
+>
+> Variadic functions (printf-like) undergo default argument promotion.
+> Documentation/core-api/printk-formats.rst specifically recommends using
+> the promoted-to-type's format flag.
+>
+> As per C11 6.3.1.1:
+> (https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1548.pdf) `If an int
+> can represent all values of the original type ..., the value is
+> converted to an int; otherwise, it is converted to an unsigned int.
+> These are called the integer promotions.` Thus it makes sense to change
+> `%hhu` to `%d` for both instances of the warning.
+>
+> Link: https://github.com/ClangBuiltLinux/linux/issues/378
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
 
-Because wake_work and sdio->stat_work share the same workqueue mt76->wq,
-if sdio->stat_work cannot acquire the mutex lock such as that was possibly
-held up by mt7615_mutex_acquire, we should exit immediately and schedule
-another stat_work to avoid blocking the mt7615_mutex_acquire.
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Also, if mt7615_mutex_acquire was called by sdio->stat_work self, the wake
-would be blocked by itself, so we have to changing into an unblocking wake
-(directly wakeup via mt7615_mcu_drv_pmctrl, not via the wake_work) in the
-context.
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+> index 430044bc4755..e8702184c950 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+> @@ -1105,10 +1105,10 @@ static void iwl_mvm_debug_range_resp(struct iwl_mvm *mvm, u8 index,
+>         IWL_DEBUG_INFO(mvm, "\tstatus: %d\n", res->status);
+>         IWL_DEBUG_INFO(mvm, "\tBSSID: %pM\n", res->addr);
+>         IWL_DEBUG_INFO(mvm, "\thost time: %llu\n", res->host_time);
+> -       IWL_DEBUG_INFO(mvm, "\tburst index: %hhu\n", res->ftm.burst_index);
+> +       IWL_DEBUG_INFO(mvm, "\tburst index: %d\n", res->ftm.burst_index);
+>         IWL_DEBUG_INFO(mvm, "\tsuccess num: %u\n", res->ftm.num_ftmr_successes);
+>         IWL_DEBUG_INFO(mvm, "\trssi: %d\n", res->ftm.rssi_avg);
+> -       IWL_DEBUG_INFO(mvm, "\trssi spread: %hhu\n", res->ftm.rssi_spread);
+> +       IWL_DEBUG_INFO(mvm, "\trssi spread: %d\n", res->ftm.rssi_spread);
+>         IWL_DEBUG_INFO(mvm, "\trtt: %lld\n", res->ftm.rtt_avg);
+>         IWL_DEBUG_INFO(mvm, "\trtt var: %llu\n", res->ftm.rtt_variance);
+>         IWL_DEBUG_INFO(mvm, "\trtt spread: %llu\n", res->ftm.rtt_spread);
+> --
+> 2.37.0.144.g8ac04bfd2-goog
+>
 
-Fixes: a66cbdd6573d ("mt76: mt7615: introduce mt7663s support")
-Co-developed-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- .../wireless/mediatek/mt76/mt7615/usb_sdio.c  | 23 +++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-index 0052d103e276..5991b23e0d13 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-@@ -157,10 +157,29 @@ bool mt7663_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update)
- {
- 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
- 
--	mt7615_mutex_acquire(dev);
-+	if (!mutex_trylock(&mdev->mutex)) {
-+		/* Because wake_work and stat_work share the same workqueue
-+		 * mt76->wq, if sdio->stat_work cannot acquire the mutex lock,
-+		 * we should exit immediately and schedule another stat_work
-+		 * to avoid blocking the wake_work.
-+		 */
-+		struct work_struct *stat_work;
-+
-+		stat_work = mt76_is_sdio(mdev) ? &mdev->sdio.stat_work :
-+			    &mdev->usb.stat_work;
-+		queue_work(dev->mt76.wq, stat_work);
-+
-+		goto out;
-+	}
-+
-+	mt7615_mcu_set_drv_ctrl(dev);
-+
- 	mt7615_mac_sta_poll(dev);
--	mt7615_mutex_release(dev);
- 
-+	mt76_connac_power_save_sched(&mdev->phy, &dev->pm);
-+	mutex_unlock(&mdev->mutex);
-+
-+out:
- 	return false;
- }
- EXPORT_SYMBOL_GPL(mt7663_usb_sdio_tx_status_data);
 -- 
-2.25.1
-
+Thanks,
+~Nick Desaulniers
