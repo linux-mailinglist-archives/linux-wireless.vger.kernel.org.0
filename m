@@ -2,222 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 355F9579580
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 10:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C5A579C81
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 14:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237082AbiGSIsr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jul 2022 04:48:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
+        id S241178AbiGSMkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jul 2022 08:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237135AbiGSIso (ORCPT
+        with ESMTP id S241519AbiGSMjs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jul 2022 04:48:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E6613C8FC;
-        Tue, 19 Jul 2022 01:48:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5B2161790;
-        Tue, 19 Jul 2022 08:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD50C341C6;
-        Tue, 19 Jul 2022 08:48:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658220521;
-        bh=Y80I/9h5gwXwAl7BrWnNgRboomD0Q/i4fsdukksbxuA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ftz2opaB3z+yb8RtydfLoLtaxsjl9hbVDuSH7gqPczmybG3jqnAUX/sMgYFai0B3B
-         D/GVCtngIJW3ALxtzJdXN9F9GYV3fLFB6cJSSD+sVPPUikiEIjT0M8UPFkwT0aa5xL
-         S6gbKGCyNjELTnqJzmWgE2WySNetGPq/TuPWVf762sbXBQXxv4Ch7L0hoP4OKxhBeF
-         wempCKHPca39pk1WqmSOjqnkIctwswq4BX7jZBwaQ4uWPl0JWkCWzcYye7zvAQIS3v
-         mXo4NI3t11uKJPh3r7gX87oIZdPIvGwwnzMg2urBDZulfeOAMM5Uk/DRfnKWweGNcg
-         ixWwiuFbfaCqw==
-Date:   Tue, 19 Jul 2022 09:48:35 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Dave Airlie <airlied@gmail.com>
-Cc:     torvalds@linux-foundation.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-doc@vger.kernel.org, gregkh@linuxfoundation.org,
-        Daniel Vetter <daniel@ffwll.ch>, mcgrof@kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.sf.net,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
-        linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
- guidelines. (v2)
-Message-ID: <20220719094835.52197852@sal.lan>
-In-Reply-To: <20220719065357.2705918-1-airlied@gmail.com>
-References: <20220719065357.2705918-1-airlied@gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+        Tue, 19 Jul 2022 08:39:48 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AFB35C36D
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Jul 2022 05:16:04 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id j1so16849582wrs.4
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Jul 2022 05:16:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RwHEqLtmk8HL9Ww//S4odt+l7hi4xgTWmrkBY/CKPIs=;
+        b=LpB8xZ3c3oJCofhYLr0Aci6sZg7GIE7XY84Jv5nKBLVuLZca/QxAIxl6401SHm3Z+B
+         u+43Ax7Lm4VJamAWdpMgaRPqj/4jn7YvOqGGfhp1wCmjpmmQTqoLMsEEeNVluRVj+8Ze
+         gU8THpjakerIOcg977kDnXi1NsRjg58lVshlqMqdyGGSyjKEvZmKQ5FzBbFQqtcn5+Bp
+         wJ8WeIGJeQpCAJNdB0AMIy5MbgizzI8JwGjnikUm4ogQp7Qhj1V+npTL0jpbTGy99aj7
+         HhSQJ1jqZX/EMD2Z7shmGiZnX0r2zNhMprwMJ7qo+tb8IH5u4gMqBX1Hw89FQaZPYD8X
+         pKDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RwHEqLtmk8HL9Ww//S4odt+l7hi4xgTWmrkBY/CKPIs=;
+        b=2H5vo8jqBBUH326PdWF56TGhKLUHeg4m3aIyYGgPSrpk1nv7Zc3PnLXlxXsvRU5VnW
+         NAXUhxxZYg6BKxA+9+qGOcp8DP991u4OMZShy4qz3buchNzJQZTM92ZSk5MqVDKrX8YK
+         fQO4QuD0MMM2VzXtSCVBtrEl64cx6PwMJ8IG6w3qqjFBUAj4CAN3KAnzKQB/Shb4DyVi
+         5dSfngZzu9D1EP0TjmUOXEu6F+P6x4mhVUUD+dJheWVQGdp9k5PNFArrYEbyeNQrgVKT
+         o8y2wU27GGHqcmaQ4G2qn245OXMyDPyrD8Nkt5IfKF9XnFGzpFCmAnASEQ3rMwsMm49I
+         9xrQ==
+X-Gm-Message-State: AJIora9/MMT0dcoN2Vb/wX/wXhny8jQePYvjIsthR4Y/ec4efIDqvWW1
+        YIQw6g6zUx5/qE01RrLio89pug==
+X-Google-Smtp-Source: AGRyM1s3zxtxoKLdZ+vw6fUumL7goNqELxEg9O+CuOzIE91gPcd25P5HMdSfpIABSiU07nK5cJRSog==
+X-Received: by 2002:a5d:6112:0:b0:21d:774e:df1c with SMTP id v18-20020a5d6112000000b0021d774edf1cmr25456862wrt.109.1658232962787;
+        Tue, 19 Jul 2022 05:16:02 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id d16-20020a05600c34d000b0039c5642e430sm14423812wmq.20.2022.07.19.05.16.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jul 2022 05:16:02 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@kernel.org, loic.poulain@linaro.org
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        bryan.odonoghue@linaro.org
+Subject: [PATCH 0/4] wcn36xx: Add in debugfs export of firmware feature bits
+Date:   Tue, 19 Jul 2022 13:15:56 +0100
+Message-Id: <20220719121600.1847440-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em Tue, 19 Jul 2022 16:53:57 +1000
-Dave Airlie <airlied@gmail.com> escreveu:
+This series tidies up the code to get/set/clear discovered firmware feature
+bits and adds a new debugfs entry to read the feature bits as strings.
 
-> From: Dave Airlie <airlied@redhat.com>
-> 
-> A recent snafu where Intel ignored upstream feedback on a firmware
-> change, led to a late rc6 fix being required. In order to avoid this
-> in the future we should document some expectations around
-> linux-firmware.
-> 
-> I was originally going to write this for drm, but it seems quite generic
-> advice.
+cat /sys/kernel/debug/ieee80211/phy0/wcn36xx/firmware_feat_caps
 
-Indeed it makes sense to document firmware API compatibility in a generic way.
+wcn3680b:
+FW Cap = MCC
+FW Cap = P2P
+FW Cap = DOT11AC
+FW Cap = SLM_SESSIONIZATION
+FW Cap = DOT11AC_OPMODE
+FW Cap = SAP32STA
+FW Cap = TDLS
+FW Cap = P2P_GO_NOA_DECOUPLE_INIT_SCAN
+FW Cap = WLANACTIVE_OFFLOAD
+FW Cap = BEACON_OFFLOAD
+FW Cap = SCAN_OFFLOAD
+FW Cap = BCN_MISS_OFFLOAD
+FW Cap = STA_POWERSAVE
+FW Cap = STA_ADVANCED_PWRSAVE
+FW Cap = BCN_FILTER
+FW Cap = RTT
+FW Cap = RATECTRL
+FW Cap = WOW
+FW Cap = WLAN_ROAM_SCAN_OFFLOAD
+FW Cap = SPECULATIVE_PS_POLL
+FW Cap = IBSS_HEARTBEAT_OFFLOAD
+FW Cap = WLAN_SCAN_OFFLOAD
+FW Cap = WLAN_PERIODIC_TX_PTRN
+FW Cap = ADVANCE_TDLS
+FW Cap = BATCH_SCAN
+FW Cap = FW_IN_TX_PATH
+FW Cap = EXTENDED_NSOFFLOAD_SLOT
+FW Cap = CH_SWITCH_V1
+FW Cap = HT40_OBSS_SCAN
+FW Cap = UPDATE_CHANNEL_LIST
+FW Cap = WLAN_MCADDR_FLT
+FW Cap = WLAN_CH144
+FW Cap = TDLS_SCAN_COEXISTENCE
+FW Cap = LINK_LAYER_STATS_MEAS
+FW Cap = MU_MIMO
+FW Cap = EXTENDED_SCAN
+FW Cap = DYNAMIC_WMM_PS
+FW Cap = MAC_SPOOFED_SCAN
+FW Cap = FW_STATS
+FW Cap = WPS_PRBRSP_TMPL
+FW Cap = BCN_IE_FLT_DELTA
 
-Some suggestions below.
+wcn3620:
+FW Cap = MCC
+FW Cap = P2P
+FW Cap = SLM_SESSIONIZATION
+FW Cap = DOT11AC_OPMODE
+FW Cap = SAP32STA
+FW Cap = TDLS
+FW Cap = P2P_GO_NOA_DECOUPLE_INIT_SCAN
+FW Cap = WLANACTIVE_OFFLOAD
+FW Cap = BEACON_OFFLOAD
+FW Cap = SCAN_OFFLOAD
+FW Cap = BCN_MISS_OFFLOAD
+FW Cap = STA_POWERSAVE
+FW Cap = STA_ADVANCED_PWRSAVE
+FW Cap = BCN_FILTER
+FW Cap = RTT
+FW Cap = RATECTRL
+FW Cap = WOW
+FW Cap = WLAN_ROAM_SCAN_OFFLOAD
+FW Cap = SPECULATIVE_PS_POLL
+FW Cap = IBSS_HEARTBEAT_OFFLOAD
+FW Cap = WLAN_SCAN_OFFLOAD
+FW Cap = WLAN_PERIODIC_TX_PTRN
+FW Cap = ADVANCE_TDLS
+FW Cap = BATCH_SCAN
+FW Cap = FW_IN_TX_PATH
+FW Cap = EXTENDED_NSOFFLOAD_SLOT
+FW Cap = CH_SWITCH_V1
+FW Cap = HT40_OBSS_SCAN
+FW Cap = UPDATE_CHANNEL_LIST
+FW Cap = WLAN_MCADDR_FLT
+FW Cap = WLAN_CH144
+FW Cap = TDLS_SCAN_COEXISTENCE
+FW Cap = LINK_LAYER_STATS_MEAS
+FW Cap = EXTENDED_SCAN
+FW Cap = DYNAMIC_WMM_PS
+FW Cap = MAC_SPOOFED_SCAN
+FW Cap = FW_STATS
+FW Cap = WPS_PRBRSP_TMPL
+FW Cap = BCN_IE_FLT_DELTA
 
-> v2: rewritten with suggestions from Thorsten Leemhuis.
->
-> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-> Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Dave Airlie <airlied@redhat.com>
-> ---
->  Documentation/driver-api/firmware/core.rst    |  1 +
->  .../firmware/firmware-usage-guidelines.rst    | 34 +++++++++++++++++++
->  2 files changed, 35 insertions(+)
->  create mode 100644 Documentation/driver-api/firmware/firmware-usage-guidelines.rst
-> 
-> diff --git a/Documentation/driver-api/firmware/core.rst b/Documentation/driver-api/firmware/core.rst
-> index 1d1688cbc078..803cd574bbd7 100644
-> --- a/Documentation/driver-api/firmware/core.rst
-> +++ b/Documentation/driver-api/firmware/core.rst
-> @@ -13,4 +13,5 @@ documents these features.
->     direct-fs-lookup
->     fallback-mechanisms
->     lookup-order
-> +   firmware-usage-guidelines
->  
-> diff --git a/Documentation/driver-api/firmware/firmware-usage-guidelines.rst b/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
-> new file mode 100644
-> index 000000000000..34d2412e78c6
-> --- /dev/null
-> +++ b/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
-> @@ -0,0 +1,34 @@
-> +===================
-> +Firmware Guidelines
-> +===================
-> +
-> +Drivers that use firmware from linux-firmware should attempt to follow
-> +the rules in this guide.
-> +
-> +* Firmware should be versioned with at least a major/minor version.
+This is a handy way of debugging WiFi on different platforms without
+necessarily having to recompile to see the debug printout on firmware boot.
 
-It is hard to enforce how vendors will version their firmware. On media,
-we have some drivers whose major means different hardware versions. For
-instance, on xc3028, v3.x means low voltage chips, while v2.x means
-"normal" voltage. We end changing the file name on Linux to avoid the risk
-of damaging the hardware, as using v27 firmware on low power chips damage
-them. So, we have:
+Bryan O'Donoghue (4):
+  wcn36xx: Rename clunky firmware feature bit enum
+  wcn36xx: Move firmware feature bit storage to dedicated firmware.c
+    file
+  wcn36xx: Move capability bitmap to string translation function to
+    firmware.c
+  wcn36xx: Add debugfs entry to read firmware feature strings
 
-	drivers/media/tuners/xc2028.h:#define XC2028_DEFAULT_FIRMWARE "xc3028-v27.fw"
-	drivers/media/tuners/xc2028.h:#define XC3028L_DEFAULT_FIRMWARE "xc3028L-v36.fw"
+ drivers/net/wireless/ath/wcn36xx/Makefile   |   3 +-
+ drivers/net/wireless/ath/wcn36xx/debug.c    |  37 ++++++
+ drivers/net/wireless/ath/wcn36xx/debug.h    |   1 +
+ drivers/net/wireless/ath/wcn36xx/firmware.c | 125 ++++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/firmware.h |  84 +++++++++++++
+ drivers/net/wireless/ath/wcn36xx/hal.h      |  68 -----------
+ drivers/net/wireless/ath/wcn36xx/main.c     |  86 ++------------
+ drivers/net/wireless/ath/wcn36xx/smd.c      |  57 ++-------
+ drivers/net/wireless/ath/wcn36xx/smd.h      |   3 -
+ 9 files changed, 264 insertions(+), 200 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/wcn36xx/firmware.c
+ create mode 100644 drivers/net/wireless/ath/wcn36xx/firmware.h
 
-As their main market is not Linux - nor PC - as their main sales are on 
-TV sets, and them don't officially support Linux, there's nothing we can
-do to enforce it.
+-- 
+2.36.1
 
-IMO we need a more generic text here to indicate that Linux firmware
-files should be defined in a way that it should be possible to detect
-when there are incompatibilities with past versions. 
-So, I would say, instead:
-
-	Firmware files shall be designed in a way that it allows
-	checking for firmware ABI version changes. It is recommended
-	that firmware files to be versioned with at least major/minor
-	version.
-
-> It
-> +  is suggested that the firmware files in linux-firmware be named with
-> +  some device specific name, and just the major version. 
-
-> The
-> +  major/minor/patch versions should be stored in a header in the
-> +  firmware file for the driver to detect any non-ABI fixes/issues. 
-
-I would also make this more generic. On media, we ended adding the firmware
-version indicated at the file name. For instance, xc4000 driver checks for
-two firmware files:
-
-drivers/media/tuners/xc4000.c:#define XC4000_DEFAULT_FIRMWARE "dvb-fe-xc4000-1.4.fw"
-drivers/media/tuners/xc4000.c:#define XC4000_DEFAULT_FIRMWARE_NEW "dvb-fe-xc4000-1.4.1.fw"
-
-On such cases, the driver can take decisions based on the firmware name.
-
-I would change the text to be more generic covering both cases:
-
-	The firmware version shall either be stored at the firmware
-	header or as part of the firmware file name, in order to let the
-	driver to detect any non-ABI fixes/changes.
-
-> The
-> +  firmware files in linux-firmware should be overwritten with the newest
-> +  compatible major version.
-
-For me "shall" is mandatory, while "should" is optional.
-
-In this specific case, I'm not so sure if overriding it is the best thing 
-to do on all subsystems. I mean, even with the same ABI, older firmware 
-usually means that some bugs and/or limitations will be present there.
-
-That's specially true on codecs: even having the same ABI, older versions
-won't support decoding newer protocols. We have one case with some
-digital TV decoders that only support some Cable-TV protocols with
-newer firmware versions. We have also one case were remote controller
-decoding is buggy with older firmwares. On both situations, the ABI
-didn't change.
-
-> Newer major version firmware should remain
-> +  compatible with all kernels that load that major number.
-
-	should -> shall
-
-> +
-> +* Users should *not* have to install newer firmware to use existing
-> +  hardware when they install a newer kernel. 
-
-> If the hardware isn't
-> +  enabled by default or under development,
-
-Hmm.. someone might understand that not having a "default Y" at Kconfig
-would mean that this is not enabled by default ;-)
-
-IMO you can just tell, instead:
-
-	"This can be ignored until the first kernel release that enables support
-	 for such hardware."
-
-> this can be ignored, until
-> +  the first kernel release that enables that hardware. 
-
-> This means no
-> +  major version bumps without the kernel retaining backwards
-> +  compatibility for the older major versions.  Minor version bumps
-> +  should not introduce new features that newer kernels depend on
-> +  non-optionally.
-> +
-> +* If a security fix needs lockstep firmware and kernel fixes in order to
-> +  be successful, then all supported major versions in the linux-firmware
-> +  repo should be updated with the security fix, and the kernel patches
-> +  should detect if the firmware is new enough to declare if the security
-> +  issue is fixed.  All communications around security fixes should point
-> +  at both the firmware and kernel fixes. If a security fix requires
-> +  deprecating old major versions, then this should only be done as a
-> +  last option, and be stated clearly in all communications.
-> +
-
-Perfect!
-
-Regards,
-Mauro
