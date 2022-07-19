@@ -2,202 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7DA57A1D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 16:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE37757A264
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 16:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239294AbiGSOi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jul 2022 10:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54630 "EHLO
+        id S239405AbiGSOuG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jul 2022 10:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237614AbiGSOiH (ORCPT
+        with ESMTP id S238614AbiGSOtt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jul 2022 10:38:07 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3B6D2E683
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Jul 2022 07:33:10 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id u14-20020a05600c00ce00b003a323062569so1086736wmm.4
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Jul 2022 07:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1A3RZDz93CJsUVu1ZGCAc3vc85qUDp5cTEvniEHIFDU=;
-        b=jQ8wwS67AZC0aPGPY8PtQuc2BqAASJQpUhW/K6fech4c+AVZwp66x+6Z44uIf9LULB
-         nhfdbRw0X0rnv0dVxDNAEXkdUJLvTE+R/lXP+m4Bc3PW3RAzubD4k9tsrHVgC2lshbhX
-         Y2T/A5tIayW+O9MNMT/W9LENM2/XkociCwxoGiangLxgdCn/CFQX9fGPvDB/nB1gLIH+
-         D+HCLD6E9Omu4ypFYTC1+ci5QZYmNEV5rUQJ6GwkHcxLlgdb3KLy9zwQJGV8UNLVxvHA
-         ceeTu4o4rUKYhrYTpEDt1QJZ8os47jAM7U+lZK6BU4w2KbL3RiXePBk4jVWWLmJhwnwJ
-         OdkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1A3RZDz93CJsUVu1ZGCAc3vc85qUDp5cTEvniEHIFDU=;
-        b=Z6inURhP1Sug6HCtmVhT9ODtJR8DoDVffg0qm9VzthyB2MLU/g4RChbk3SeRiz5T/e
-         tjXJJVD+VNmr6khPO6H6QeJDKZePJV1+yUokgGuUomVjxQeryhnFpIWgmgz7lz16tjEI
-         KwcU3FNHmlD4bX7/Tfps4sBPxsTX4G5igex/DQqU4CiUV0ObUmZarPS9seHm2Mey3b12
-         3fCWisemag/KAC2vw1jypLvMUFP6a+FK/8HW/McnWAsWFsWPdoSs41fWskrgGeBWntHt
-         W0/QgMFmfgxt0QlFdXVoZILTYswud45mF9Dqr/pVFSG801pWN1sTkG7L5s/QEEptRs5e
-         QUUw==
-X-Gm-Message-State: AJIora9SXIFF6876Nn+o2eL9c9alOZqZnlCPDCVCpmqJtfa7aNI/XJ4A
-        9TEso2mdxhLMS/O+18zxflscvA==
-X-Google-Smtp-Source: AGRyM1vWu67gzk72zMk4h+O6x4e3mmM0paqu8OTlTC4v8U6LhUBXFI0Oir0UzV1Kc79+RienOUfk0g==
-X-Received: by 2002:a05:600c:34c6:b0:3a3:2549:1905 with SMTP id d6-20020a05600c34c600b003a325491905mr2295740wmq.204.1658241189152;
-        Tue, 19 Jul 2022 07:33:09 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id d15-20020adffbcf000000b0020fff0ea0a3sm13634378wrs.116.2022.07.19.07.33.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jul 2022 07:33:08 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@kernel.org, loic.poulain@linaro.org
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        bryan.odonoghue@linaro.org
-Subject: [PATCH v2 4/4] wcn36xx: Add debugfs entry to read firmware feature strings
-Date:   Tue, 19 Jul 2022 15:33:02 +0100
-Message-Id: <20220719143302.2071223-5-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220719143302.2071223-1-bryan.odonoghue@linaro.org>
-References: <20220719143302.2071223-1-bryan.odonoghue@linaro.org>
+        Tue, 19 Jul 2022 10:49:49 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF12DF65;
+        Tue, 19 Jul 2022 07:49:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658242187; x=1689778187;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hHKtJ6+Dxw4RZU20X6JIbyKBSqc3/xUJvDskXuGrQIc=;
+  b=Lc+qJn4qMJQJDWWaDlCmrIPKgBmUkq9tjBUc/+ESu/N20pEntfpo0bYM
+   YE74x8lRrex7wrg06u9oznax2BsPv6TzIeTmQIUyxQakaJLxvfGgm4NGE
+   xFWdgwSaNawk9D5xZzeBcXROccqbodpYY9FmQbjL0Tb96K3LBXPwV9Uoe
+   VVXoasAwcv9qKVDZFTwF4t+CYwzTJMnLnTbBDa99h8XpWh0adH0vPdG4a
+   vvSP4afxeEmexsC3BwxeFFyBi4cCXRDiubiKnIIYOAiapVIfzqAJA324y
+   5AMO6SlZvniyEJrpLy/0RkYXa8THxuNjbDYeKCTteKGXXKaSvFgEdb3oF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10413"; a="287661303"
+X-IronPort-AV: E=Sophos;i="5.92,284,1650956400"; 
+   d="scan'208";a="287661303"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2022 07:49:47 -0700
+X-IronPort-AV: E=Sophos;i="5.92,284,1650956400"; 
+   d="scan'208";a="594852649"
+Received: from kckollur-mobl1.amr.corp.intel.com (HELO [10.212.118.182]) ([10.212.118.182])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2022 07:49:45 -0700
+Message-ID: <95fc3b8f-7556-371d-2817-7e0d811de24a@linux.intel.com>
+Date:   Tue, 19 Jul 2022 09:49:44 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.11.0
+Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
+ guidelines.
+Content-Language: en-US
+To:     Dave Airlie <airlied@gmail.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc:     alsa-devel@alsa-project.org,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linux Wireless List <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-block@vger.kernel.org,
+        "Luis R. Rodriguez" <mcgrof@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Network Development <netdev@vger.kernel.org>,
+        "dri-devel@lists.sf.net" <dri-devel@lists.sf.net>,
+        Dave Airlie <airlied@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
+References: <20220718072144.2699487-1-airlied@gmail.com>
+ <YtWeUOJewho7p/vM@intel.com>
+ <CAPM=9tyhOfOz1tn7uNsg_0EzvrBHcSoY+8bignNb2zfgZr6iRw@mail.gmail.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <CAPM=9tyhOfOz1tn7uNsg_0EzvrBHcSoY+8bignNb2zfgZr6iRw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add in the ability to easily find the firmware feature bits reported in the
-get feature exchange without having to compile-in debug prints.
 
-root@linaro-alip:~# cat /sys/kernel/debug/ieee80211/phy0/wcn36xx/firmware_feat_caps
-MCC
-P2P
-DOT11AC
-SLM_SESSIONIZATION
-DOT11AC_OPMODE
-SAP32STA
-TDLS
-P2P_GO_NOA_DECOUPLE_INIT_SCAN
-WLANACTIVE_OFFLOAD
-BEACON_OFFLOAD
-SCAN_OFFLOAD
-BCN_MISS_OFFLOAD
-STA_POWERSAVE
-STA_ADVANCED_PWRSAVE
-BCN_FILTER
-RTT
-RATECTRL
-WOW
-WLAN_ROAM_SCAN_OFFLOAD
-SPECULATIVE_PS_POLL
-IBSS_HEARTBEAT_OFFLOAD
-WLAN_SCAN_OFFLOAD
-WLAN_PERIODIC_TX_PTRN
-ADVANCE_TDLS
-BATCH_SCAN
-FW_IN_TX_PATH
-EXTENDED_NSOFFLOAD_SLOT
-CH_SWITCH_V1
-HT40_OBSS_SCAN
-UPDATE_CHANNEL_LIST
-WLAN_MCADDR_FLT
-WLAN_CH144
-TDLS_SCAN_COEXISTENCE
-LINK_LAYER_STATS_MEAS
-MU_MIMO
-EXTENDED_SCAN
-DYNAMIC_WMM_PS
-MAC_SPOOFED_SCAN
-FW_STATS
-WPS_PRBRSP_TMPL
-BCN_IE_FLT_DELTA
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/debug.c | 37 ++++++++++++++++++++++++
- drivers/net/wireless/ath/wcn36xx/debug.h |  1 +
- 2 files changed, 38 insertions(+)
+On 7/18/22 19:29, Dave Airlie wrote:
+>>> +* Firmware should be versioned with at least a major/minor version. It
+>>> +  is suggested that the firmware files in linux-firmware be named with
+>>> +  some device specific name, and just the major version. The
+>>> +  major/minor/patch versions should be stored in a header in the
+>>> +  firmware file for the driver to detect any non-ABI fixes/issues. The
+>>> +  firmware files in linux-firmware should be overwritten with the newest
+>>> +  compatible major version. Newer major version firmware should remain
+>>> +  compatible with all kernels that load that major number.
+>>
+>> would symbolic links be acceptable in the linux-firmware.git where
+>> the <fmw>_<major>.bin is a sym link to <fwm>_<major>.<minor>.bin
+>>
+>> or having the <fwm>_<major>.bin really to be the overwritten every minor
+>> update?
+> 
+> I don't think providing multiple minor versions of fw in
+> linux-firmware is that interesting.
+> Like if the major is the same, surely you always want the newer ones.
+> As long as the
+> ABI doesn't break. Otherwise we are just wasting disk space with fws
+> nobody will be using.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/debug.c b/drivers/net/wireless/ath/wcn36xx/debug.c
-index 6af306ae41ad..220f338045bd 100644
---- a/drivers/net/wireless/ath/wcn36xx/debug.c
-+++ b/drivers/net/wireless/ath/wcn36xx/debug.c
-@@ -21,6 +21,7 @@
- #include "wcn36xx.h"
- #include "debug.h"
- #include "pmc.h"
-+#include "firmware.h"
- 
- #ifdef CONFIG_WCN36XX_DEBUGFS
- 
-@@ -136,6 +137,40 @@ static const struct file_operations fops_wcn36xx_dump = {
- 	.write =       write_file_dump,
- };
- 
-+static ssize_t read_file_firmware_feature_caps(struct file *file,
-+					       char __user *user_buf,
-+					       size_t count, loff_t *ppos)
-+{
-+	struct wcn36xx *wcn = file->private_data;
-+	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	char *p = (char *)page;
-+	int i;
-+	int ret;
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	mutex_lock(&wcn->hal_mutex);
-+	for (i = 0; i < MAX_FEATURE_SUPPORTED; i++) {
-+		if (wcn36xx_firmware_get_feat_caps(wcn->fw_feat_caps, i)) {
-+			p += sprintf(p, "%s\n",
-+				     wcn36xx_firmware_get_cap_name(i));
-+		}
-+	}
-+	mutex_unlock(&wcn->hal_mutex);
-+
-+	ret = simple_read_from_buffer(user_buf, count, ppos, (char *)page,
-+				      (unsigned long)p - page);
-+
-+	free_page(page);
-+	return ret;
-+}
-+
-+static const struct file_operations fops_wcn36xx_firmware_feat_caps = {
-+	.open = simple_open,
-+	.read = read_file_firmware_feature_caps,
-+};
-+
- #define ADD_FILE(name, mode, fop, priv_data)		\
- 	do {							\
- 		struct dentry *d;				\
-@@ -163,6 +198,8 @@ void wcn36xx_debugfs_init(struct wcn36xx *wcn)
- 
- 	ADD_FILE(bmps_switcher, 0600, &fops_wcn36xx_bmps, wcn);
- 	ADD_FILE(dump, 0200, &fops_wcn36xx_dump, wcn);
-+	ADD_FILE(firmware_feat_caps, 0200,
-+		 &fops_wcn36xx_firmware_feat_caps, wcn);
- }
- 
- void wcn36xx_debugfs_exit(struct wcn36xx *wcn)
-diff --git a/drivers/net/wireless/ath/wcn36xx/debug.h b/drivers/net/wireless/ath/wcn36xx/debug.h
-index 46307aa562d3..7116d96e0543 100644
---- a/drivers/net/wireless/ath/wcn36xx/debug.h
-+++ b/drivers/net/wireless/ath/wcn36xx/debug.h
-@@ -31,6 +31,7 @@ struct wcn36xx_dfs_entry {
- 	struct dentry *rootdir;
- 	struct wcn36xx_dfs_file file_bmps_switcher;
- 	struct wcn36xx_dfs_file file_dump;
-+	struct wcn36xx_dfs_file file_firmware_feat_caps;
- };
- 
- void wcn36xx_debugfs_init(struct wcn36xx *wcn);
--- 
-2.36.1
+It was my understanding that once a firmware file is in linux-firmware
+it's there forever. There are tons of existing symlinks to point to the
+latest version, but the previous versions are not removed/overwritten.
+
+see random examples:
+ls -lR /lib/firmware  | grep t4fw
+ls -lR /lib/firmware  | grep fw_release
+
 
