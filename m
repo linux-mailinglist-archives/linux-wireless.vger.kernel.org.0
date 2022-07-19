@@ -2,102 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D77C9578F4F
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 02:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1AD578F55
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 02:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235903AbiGSAeB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 20:34:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38846 "EHLO
+        id S233150AbiGSAeb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 20:34:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230104AbiGSAd7 (ORCPT
+        with ESMTP id S229888AbiGSAea (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 20:33:59 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9B820BE3;
-        Mon, 18 Jul 2022 17:33:58 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id tk8so12968667ejc.7;
-        Mon, 18 Jul 2022 17:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IvxZ+pT9eeB1oLC9gFmEKd/KuQtpynmxv5JFp2p4LmA=;
-        b=gIwUl/XuJhRTTGvtNQ0aWFNNZ72RlbJkwCpGM7wO/sSbDoqxUvqlBJWjDWb4nUVxkr
-         wA4kzWGIsYd+oyTYPVOyC2ZEirNy56kC6YvoOg+Fu9JlIyx/BhzBlvQ+GB0MbVTk2jEb
-         eyBlXAwQJroWvaq2gnY/J8A7Jy+02RK/TtexgA7MBUZK9FnxBH7HPm/OPbZR2kp6FIOG
-         BYDIh26pR+njlg0wqOtuaPaePG5L+WBmSIyBqxyMD5dCULrXaEhs9vg/GnJqlYLpsG/y
-         w38dp1uD5s55WeggWwrAh2xQxeFiYqJgAS/5mGamYHgRw4gT0je1cudllgWrZEayUSK0
-         E39A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IvxZ+pT9eeB1oLC9gFmEKd/KuQtpynmxv5JFp2p4LmA=;
-        b=3pozF0Sp0Y31M6XUXg5S/pg5PQ13T7OSXUI/u2d+ngzgnenZaMrKdO629nBNmeWgaV
-         Z3v5bRHB17DWBN5oYUBjDNFHhCNu0vZiPPOwfymIjFbjWChr7WSzs+R6V34YH+U19Uzt
-         6rJanp842pyNVovP9mzCtmEt1nNpJxy47uzLplu14L6nH4JjqcSd25fu5Bxcu1dj5lFy
-         A4oWGSWmK/oPkvYllMLtce9K6fy9UMOhCW38s7vGzS+/svDbiubNe9GF6KTHKmoLTnnJ
-         5H3dmqQOwXwYadKi/VLKJ8rOG+AxNsi5OoQFVSylk9202nm9Lhq7QfAGK06YuwwUy0AW
-         X7UQ==
-X-Gm-Message-State: AJIora+rHTGTED0YfyLnHtBoK9I+cU5fbEc/G345v467NOlVM8Y0IQRV
-        CGEj0Esz4xHEXBrRkwPytQSkZjfs3QgMF4WVmNc=
-X-Google-Smtp-Source: AGRyM1sRm67nRsWZfFSFhouVBqucc4bOtFjiV6na1gILOaBHlxhxwORoLOL7DxP/wH7oPhk7TCfa/L42Gn4aM8oO2I8=
-X-Received: by 2002:a17:906:149:b0:712:502:bc62 with SMTP id
- 9-20020a170906014900b007120502bc62mr28280283ejh.720.1658190836834; Mon, 18
- Jul 2022 17:33:56 -0700 (PDT)
+        Mon, 18 Jul 2022 20:34:30 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B50420BE3
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 17:34:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658190869; x=1689726869;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BIdmT0A3HlqeqU2jYvzzWFvcS1Jus/aj6TaAZCkDr4g=;
+  b=EmTpAl/Gsz2Cth5VI3EtQPrE0EUqZeBCVw85EJ1DSLMi5dEvef5yfUp+
+   /TviKugiAjLY+MNBJj/UWaTgy5Tf+R13x02OhvdtHNo/U3jRm2keGxV6F
+   5EbuLpB9oSnSEk8RUfoeS4QDRG+J8q79/ZJk0sbNHCN5DUH10r3f7Wk+B
+   c9e/wwOrQlkAJk25NLmHYiV2Cb74zFlHMlyyWdbOfjU2OW3WRGPAenMB5
+   3PvUQ/y8IiUN+OT2513NF4BxpyqSWz5BNIV+z+Z0ti6VCqsqS4DEdHgyg
+   n3o1Jy9QM1d/1LThcvMO8tiyHkpEhiObcQPhMhCYVXt8StmEl3VEsTGzo
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="287094822"
+X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
+   d="scan'208";a="287094822"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 17:34:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
+   d="scan'208";a="624952265"
+Received: from lkp-server02.sh.intel.com (HELO ff137eb26ff1) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 18 Jul 2022 17:34:27 -0700
+Received: from kbuild by ff137eb26ff1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oDbBz-00052U-5Y;
+        Tue, 19 Jul 2022 00:34:27 +0000
+Date:   Tue, 19 Jul 2022 08:34:04 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ f1cee996f1858ba07dce9e377559ea33f318af0f
+Message-ID: <62d5fbfc.RlByl7tRszHf+s44%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220718072144.2699487-1-airlied@gmail.com> <97e5afd3-77a3-2227-0fbf-da2f9a41520f@leemhuis.info>
- <20220718150414.1767bbd8@kernel.org>
-In-Reply-To: <20220718150414.1767bbd8@kernel.org>
-From:   Dave Airlie <airlied@gmail.com>
-Date:   Tue, 19 Jul 2022 10:33:45 +1000
-Message-ID: <CAPM=9tw6iP3Ti1idrBLTLVX57uYgf79rG2-0ad-fS48z+pXzeA@mail.gmail.com>
-Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware guidelines.
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Thorsten Leemhuis <linux@leemhuis.info>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Luis R. Rodriguez" <mcgrof@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "dri-devel@lists.sf.net" <dri-devel@lists.sf.net>,
-        Network Development <netdev@vger.kernel.org>,
-        Linux Wireless List <linux-wireless@vger.kernel.org>,
-        alsa-devel@alsa-project.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 19 Jul 2022 at 08:04, Jakub Kicinski <kuba@kernel.org> wrote:
->
-> On Mon, 18 Jul 2022 11:33:11 +0200 Thorsten Leemhuis wrote:
-> > > If the hardware isn't
-> > > +  enabled by default or under development,
-> >
-> > Wondering if it might be better to drop the "or under development", as
-> > the "enabled by default" is the main part afaics. Maybe something like
-> > "If support for the hardware is normally inactive (e.g. has to be
-> > enabled manually by a kernel parameter)" would be better anyway.
->
-> It's a tricky one, I'd say something like you can break the FW ABI
-> "until HW becomes available for public consumption" or such.
-> I'm guessing what we're after is letting people break the compatibility
-> in early stages of the product development cycles. Pre-silicon and
-> bring up, but not after there are products on the market?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: f1cee996f1858ba07dce9e377559ea33f318af0f  wifi: wl1251: fix repeated words in comments
 
-I'll stick with enabled by default I think, "public consumption"
-invites efforts to describe corners of the cloud or other places where
-hw has shipped but is not technically "public",
+elapsed time: 730m
 
-Dave.
+configs tested: 88
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                 randconfig-c001-20220718
+m68k                       m5249evb_defconfig
+nios2                            allyesconfig
+arm                           corgi_defconfig
+powerpc                 mpc834x_mds_defconfig
+arc                                 defconfig
+arm                        spear6xx_defconfig
+parisc                generic-32bit_defconfig
+sh                   sh7770_generic_defconfig
+xtensa                    xip_kc705_defconfig
+ia64                      gensparse_defconfig
+arm                            pleb_defconfig
+arm                             pxa_defconfig
+sh                   secureedge5410_defconfig
+xtensa                  audio_kc705_defconfig
+arm                           tegra_defconfig
+nios2                               defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                           se7619_defconfig
+sparc                               defconfig
+xtensa                           allyesconfig
+csky                                defconfig
+sparc                            allyesconfig
+x86_64                                  kexec
+loongarch                           defconfig
+ia64                             allmodconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+x86_64               randconfig-k001-20220718
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+sh                               allmodconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+x86_64               randconfig-a014-20220718
+x86_64               randconfig-a016-20220718
+x86_64               randconfig-a012-20220718
+x86_64               randconfig-a013-20220718
+x86_64               randconfig-a015-20220718
+x86_64               randconfig-a011-20220718
+i386                 randconfig-a015-20220718
+i386                 randconfig-a011-20220718
+i386                 randconfig-a012-20220718
+i386                 randconfig-a014-20220718
+i386                 randconfig-a016-20220718
+i386                 randconfig-a013-20220718
+arc                  randconfig-r043-20220718
+s390                 randconfig-r044-20220718
+riscv                randconfig-r042-20220718
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+mips                        qi_lb60_defconfig
+arm                         bcm2835_defconfig
+powerpc                    ge_imp3a_defconfig
+arm                       aspeed_g4_defconfig
+mips                     loongson1c_defconfig
+mips                      bmips_stb_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                 randconfig-a004-20220718
+i386                 randconfig-a001-20220718
+i386                 randconfig-a005-20220718
+i386                 randconfig-a006-20220718
+i386                 randconfig-a002-20220718
+i386                 randconfig-a003-20220718
+hexagon              randconfig-r041-20220718
+hexagon              randconfig-r045-20220718
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
