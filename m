@@ -2,171 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1AD578F55
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 02:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D80D8578F61
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jul 2022 02:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233150AbiGSAeb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jul 2022 20:34:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39486 "EHLO
+        id S236256AbiGSAob (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jul 2022 20:44:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbiGSAea (ORCPT
+        with ESMTP id S233490AbiGSAoa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jul 2022 20:34:30 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B50420BE3
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jul 2022 17:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658190869; x=1689726869;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BIdmT0A3HlqeqU2jYvzzWFvcS1Jus/aj6TaAZCkDr4g=;
-  b=EmTpAl/Gsz2Cth5VI3EtQPrE0EUqZeBCVw85EJ1DSLMi5dEvef5yfUp+
-   /TviKugiAjLY+MNBJj/UWaTgy5Tf+R13x02OhvdtHNo/U3jRm2keGxV6F
-   5EbuLpB9oSnSEk8RUfoeS4QDRG+J8q79/ZJk0sbNHCN5DUH10r3f7Wk+B
-   c9e/wwOrQlkAJk25NLmHYiV2Cb74zFlHMlyyWdbOfjU2OW3WRGPAenMB5
-   3PvUQ/y8IiUN+OT2513NF4BxpyqSWz5BNIV+z+Z0ti6VCqsqS4DEdHgyg
-   n3o1Jy9QM1d/1LThcvMO8tiyHkpEhiObcQPhMhCYVXt8StmEl3VEsTGzo
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="287094822"
-X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
-   d="scan'208";a="287094822"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 17:34:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,282,1650956400"; 
-   d="scan'208";a="624952265"
-Received: from lkp-server02.sh.intel.com (HELO ff137eb26ff1) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 18 Jul 2022 17:34:27 -0700
-Received: from kbuild by ff137eb26ff1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1oDbBz-00052U-5Y;
-        Tue, 19 Jul 2022 00:34:27 +0000
-Date:   Tue, 19 Jul 2022 08:34:04 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- f1cee996f1858ba07dce9e377559ea33f318af0f
-Message-ID: <62d5fbfc.RlByl7tRszHf+s44%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Mon, 18 Jul 2022 20:44:30 -0400
+Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C279248FC;
+        Mon, 18 Jul 2022 17:44:27 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0VJp5nlb_1658191464;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0VJp5nlb_1658191464)
+          by smtp.aliyun-inc.com;
+          Tue, 19 Jul 2022 08:44:25 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     davem@davemloft.net
+Cc:     Larry.Finger@lwfinger.net, kvalo@kernel.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH -next] wifi: mac80211: clean up one inconsistent indenting
+Date:   Tue, 19 Jul 2022 08:44:23 +0800
+Message-Id: <20220719004423.85142-1-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: f1cee996f1858ba07dce9e377559ea33f318af0f  wifi: wl1251: fix repeated words in comments
+Eliminate the follow smatch warning:
+drivers/net/wireless/broadcom/b43legacy/main.c:2947 b43legacy_wireless_core_stop() warn: inconsistent indenting
 
-elapsed time: 730m
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ drivers/net/wireless/broadcom/b43legacy/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-configs tested: 88
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                 randconfig-c001-20220718
-m68k                       m5249evb_defconfig
-nios2                            allyesconfig
-arm                           corgi_defconfig
-powerpc                 mpc834x_mds_defconfig
-arc                                 defconfig
-arm                        spear6xx_defconfig
-parisc                generic-32bit_defconfig
-sh                   sh7770_generic_defconfig
-xtensa                    xip_kc705_defconfig
-ia64                      gensparse_defconfig
-arm                            pleb_defconfig
-arm                             pxa_defconfig
-sh                   secureedge5410_defconfig
-xtensa                  audio_kc705_defconfig
-arm                           tegra_defconfig
-nios2                               defconfig
-powerpc                 mpc834x_itx_defconfig
-sh                           se7619_defconfig
-sparc                               defconfig
-xtensa                           allyesconfig
-csky                                defconfig
-sparc                            allyesconfig
-x86_64                                  kexec
-loongarch                           defconfig
-ia64                             allmodconfig
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-x86_64               randconfig-k001-20220718
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-sh                               allmodconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64               randconfig-a014-20220718
-x86_64               randconfig-a016-20220718
-x86_64               randconfig-a012-20220718
-x86_64               randconfig-a013-20220718
-x86_64               randconfig-a015-20220718
-x86_64               randconfig-a011-20220718
-i386                 randconfig-a015-20220718
-i386                 randconfig-a011-20220718
-i386                 randconfig-a012-20220718
-i386                 randconfig-a014-20220718
-i386                 randconfig-a016-20220718
-i386                 randconfig-a013-20220718
-arc                  randconfig-r043-20220718
-s390                 randconfig-r044-20220718
-riscv                randconfig-r042-20220718
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                    rhel-8.3-kselftests
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-mips                        qi_lb60_defconfig
-arm                         bcm2835_defconfig
-powerpc                    ge_imp3a_defconfig
-arm                       aspeed_g4_defconfig
-mips                     loongson1c_defconfig
-mips                      bmips_stb_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                 randconfig-a004-20220718
-i386                 randconfig-a001-20220718
-i386                 randconfig-a005-20220718
-i386                 randconfig-a006-20220718
-i386                 randconfig-a002-20220718
-i386                 randconfig-a003-20220718
-hexagon              randconfig-r041-20220718
-hexagon              randconfig-r045-20220718
-
+diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
+index cbc21c7c3138..4022c544aefe 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/main.c
++++ b/drivers/net/wireless/broadcom/b43legacy/main.c
+@@ -2944,7 +2944,7 @@ static void b43legacy_wireless_core_stop(struct b43legacy_wldev *dev)
+ 			dev_kfree_skb(skb_dequeue(&wl->tx_queue[queue_num]));
+ 	}
+ 
+-b43legacy_mac_suspend(dev);
++	b43legacy_mac_suspend(dev);
+ 	free_irq(dev->dev->irq, dev);
+ 	b43legacydbg(wl, "Wireless interface stopped\n");
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.20.1.7.g153144c
+
