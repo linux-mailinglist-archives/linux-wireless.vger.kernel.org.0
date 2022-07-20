@@ -2,165 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F83857BFAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 23:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C83E57C008
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jul 2022 00:26:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbiGTVgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jul 2022 17:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58848 "EHLO
+        id S230388AbiGTW0A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jul 2022 18:26:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbiGTVgE (ORCPT
+        with ESMTP id S230389AbiGTWZ6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jul 2022 17:36:04 -0400
-Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068E11F2C5
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 14:36:02 -0700 (PDT)
-Date:   Wed, 20 Jul 2022 21:35:55 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1658352960; x=1658612160;
-        bh=jH4VDOPv2lb/d3yrm1e5K4Tho7HF0+4gYPmK5Trdgk4=;
-        h=Date:To:From:Reply-To:Subject:Message-ID:Feedback-ID:From:To:Cc:
-         Date:Subject:Reply-To:Feedback-ID:Message-ID;
-        b=Debjlo6Fhvczg02s+bKqiwa59D37w9y5r9HfcN7F3Q7yOWJGKh66VWKgimV5IreHS
-         ziB+oY0zzVHeIlvQr9aSvtFo0acM2XeMiY58VbFtpKBAa1q23K1ZEhap65zhD+gNDY
-         0hKiWrgtCbw5xlSrMYfInlD1rsWu0cu+CSzDoZEUdroYQbdUcrNrq76nnmgBVJ5gRo
-         aMNcl7NQRNz8mETbmnQT45gpumYIATD33ZGFsXMU+dGwfWJg+aO1Mx2A7uUSenjMFo
-         2GVpfFS8A+CwQghg/VME2GZiMfZ3VUbeaMLLyJTv1j6U1evrkQvVZyGk5GgXcskmtE
-         hc853zAS8eG8Q==
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Subject: rtw88: Doesn't work for 60-90 seconds several times a day
-Message-ID: <Ej2iRcw0tVYRZD-CNBij8Uu3T-8IG-NVQ_EUM4Oz6IstXLQn0JKvkcfec1RDYKReWdi7JbPiMTOmeihtId1j91nq_IdMWYY482HTOXecGCg=@protonmail.com>
-Feedback-ID: 34463299:user:proton
+        Wed, 20 Jul 2022 18:25:58 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CDF616E
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 15:25:52 -0700 (PDT)
+X-UUID: 50c1afaf55ed4ddebf53650322da33e6-20220721
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:870280ff-d455-4d25-ab7c-e9724d7e376c,OB:30,L
+        OB:20,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,A
+        CTION:release,TS:100
+X-CID-INFO: VERSION:1.1.8,REQID:870280ff-d455-4d25-ab7c-e9724d7e376c,OB:30,LOB
+        :20,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,A
+        CTION:quarantine,TS:100
+X-CID-META: VersionHash:0f94e32,CLOUDID:22118433-b9e4-42b8-b28a-6364427c76bb,C
+        OID:dfdc1513ed4c,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 50c1afaf55ed4ddebf53650322da33e6-20220721
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1680167666; Thu, 21 Jul 2022 06:25:42 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Thu, 21 Jul 2022 06:25:41 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Thu, 21 Jul 2022 06:25:41 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
+        <druth@google.com>, <abhishekpandit@google.com>,
+        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/4] mt76: mt7921e: fix race issue between reset and suspend/resume
+Date:   Thu, 21 Jul 2022 06:25:37 +0800
+Message-ID: <5f835553ee8b76e4a4ed83f9562eaa0b1a24c1e6.1658355599.git.sean.wang@kernel.org>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello.
+From: Sean Wang <sean.wang@mediatek.com>
 
-I am unable to open any sites in Firefox for 60-90 seconds at a time.
-On one occasion it was 156 seconds. Firefox gives up after 20 seconds
-or so. NetworkManager reports "limited connectivity". The router doesn't
-reply to pings. The journal shows that the laptop remains connected to
-the router. This happens several times a day.
+It is unexpected that the reset work is running simultaneously with
+the suspend or resume context and it is possible that reset work is still
+running even after mt7921 is suspended if we don't fix the race issue.
 
-However, my IRC client seems to be unaffected. It never detected any
-abnormally high lag during these events, not even the one that lasted
-156 seconds. It checks the lag every 30 seconds. Also, the bot named
-"phrik" from the #archlinux-offtopic channel reacts immediately when
-I send it "!ping" during one of these events. (It sends back "pong".)
-So I guess existing connections are not affected.
+Thus, the suspend procedure should be waiting until the reset is completed
+at the beginning and ignore the subsequent the reset requests.
 
-I have had this problem ever since support for RTL8821CE with RFE 2
-was added. (The wifi card's RFE type is 2.)
+In case there is an error that happens during either suspend or resume
+handler, we will schedule a reset task to recover the error before
+returning the error code to ensure we can immediately fix the error there.
 
-Other devices connected to the same router don't have this problem.
+Fixes: 0c1ce9884607 ("mt76: mt7921: add wifi reset support")
+Co-developed-by: YN Chen <YN.Chen@mediatek.com>
+Signed-off-by: YN Chen <YN.Chen@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: use flush_work instead of cancel_work_sync
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c |  5 +++++
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 13 +++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-The laptop and the router are in the same room. The distance
-between them is about 3 meters.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 47f0aa81ab02..6bd9fc9228a2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -780,6 +780,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ void mt7921_reset(struct mt76_dev *mdev)
+ {
+ 	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
++	struct mt76_connac_pm *pm = &dev->pm;
+ 
+ 	if (!dev->hw_init_done)
+ 		return;
+@@ -787,8 +788,12 @@ void mt7921_reset(struct mt76_dev *mdev)
+ 	if (dev->hw_full_reset)
+ 		return;
+ 
++	if (pm->suspended)
++		return;
++
+ 	queue_work(dev->mt76.wq, &dev->reset_work);
+ }
++EXPORT_SYMBOL_GPL(mt7921_reset);
+ 
+ void mt7921_mac_update_mib_stats(struct mt7921_phy *phy)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 9d1ba838e54f..a88561a4e903 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -363,6 +363,7 @@ static int mt7921_pci_suspend(struct device *device)
+ 	int i, err;
+ 
+ 	pm->suspended = true;
++	flush_work(&dev->reset_work);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+ 
+@@ -424,6 +425,9 @@ static int mt7921_pci_suspend(struct device *device)
+ restore_suspend:
+ 	pm->suspended = false;
+ 
++	if (err < 0)
++		mt7921_reset(&dev->mt76);
++
+ 	return err;
+ }
+ 
+@@ -437,7 +441,7 @@ static int mt7921_pci_resume(struct device *device)
+ 
+ 	err = mt7921_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
+-		return err;
++		goto failed;
+ 
+ 	mt7921_wpdma_reinit_cond(dev);
+ 
+@@ -467,11 +471,12 @@ static int mt7921_pci_resume(struct device *device)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+-	if (err)
+-		return err;
+-
++failed:
+ 	pm->suspended = false;
+ 
++	if (err < 0)
++		mt7921_reset(&dev->mt76);
++
+ 	return err;
+ }
+ 
+-- 
+2.25.1
 
-
-These are the things I tried which did not help:
-
-- The rtw88_core option disable_lps_deep=3D1
-
-- `iw wlo1 set power_save off`
-
-- Installing wireless-regdb and uncommenting my country in
-  /etc/conf.d/wireless-regdom
-
-- Switching the router to "n only" mode. Previously it was in "b/g/n"
-  mode.
-
-- Making the router use channel 9 instead of "auto". By itself it was
-  selecting channels 1 or 11 the few times I checked that. Channel 9
-  seemed less crowded than those.
-
-- Making the router use 40 MHz channel width instead of the "20/40"
-  setting. This doubled the speed but didn't help with my problem.
-
-- The firmware from the rtl8821ce driver [0] (version 20.1.0),
-  instead of the one from linux-firmware (version 24.11.0). I used the
-  one with the length of 137616 bytes.
-
-This doesn't happen with the rtl8821ce driver, which is why I extracted
-that firmware from it, to see if it's a firmware issue.
-
-
-Pinging the router all day seems to prevent this problem. Enabling all
-the debug flags for rtw88_core also *may* prevent it. I'm not sure about
-that.
-
-
-Most of the time I don't have any bluetooth devices connected.
-When I do, they don't cause problems.
-
-
-I captured a bit of wifi traffic using another laptop, including two of
-these events, and noticed something strange:
-
-- rtw88 sends "Null function" telling the router it's going to sleep
-- router immediately sends ack (after less than 1 ms)
-- rtw88 resends "Null function" (same SN, Retry flag set)
-- router immediately sends ack
-- rtw88 resends
-- router immediately sends ack
-- rtw88 resends
-- ...
-- ...
-
-rtw88 resends the "Null function" 3-4 times, even though the router
-promptly sends ack each time, then it sends a new "Null function" with
-different SN and the process repeats. This seems to happen all the time,
-not just when I can't open any pages in Firefox. The rtl8821ce driver
-doesn't do this, but rtw88 with the old 20.1.0 firmware does. My phone
-doesn't do this either.
-
-I can provide the captures in private.
-
-
-Currently I'm using the rtw88_pci option disable_aspm=3D1, because kernel
-5.18 brought the freezes back. [1]
-
-
-My laptop is HP 250 G7 with a Core i3 7020U CPU.
-
-The RTL8821CE wifi card is in M.2 slot, not soldered to the motherboard,
-even though the interface is named wlo1. It has one antenna, in case
-that matters.
-
-The router is a Fiberhome HG6544C.
-
-The network is secured with WPA2 Personal.
-
-The kernel version is 5.18.5-arch1-1.
-
-The wifi firmware version is 24.11.0.
-
-NetworkManager version is 1.38.2-1.
-
-wpa_supplicant version is 2.10-4.
-
-The operating system is Arch Linux.
-
-
-
-Just out of curiosity, what is C2H with id 0x15 ? It is not handled by
-rtw88, but the firmware sends it often.
-
-
-[0] https://raw.githubusercontent.com/tomaspinho/rtl8821ce/be733dc86781c685=
-71650b395dd0fa6b53c0a039/hal/rtl8821c/hal8821c_fw.c
-[1] https://lore.kernel.org/linux-wireless/Te_PJvJjKCi-lK28Zu0d8VQG0AGdwTl6=
-cJydYEETLbc3gN0l8liXH1DSOZnKxUHYGxavLBCs1sqos2e6jeiRzzO0RLRSISdWvTiiPp0v9kM=
-=3D@protonmail.com/
