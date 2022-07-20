@@ -2,148 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7548D57BC23
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 18:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB9E57BEC6
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 21:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236036AbiGTQ4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jul 2022 12:56:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56310 "EHLO
+        id S236934AbiGTTnv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jul 2022 15:43:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236137AbiGTQ4x (ORCPT
+        with ESMTP id S236528AbiGTTnu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jul 2022 12:56:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0506717C
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 09:56:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27D8461DD4
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 16:56:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FE5C341CA;
-        Wed, 20 Jul 2022 16:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658336211;
-        bh=we89arXV3oUBu00b8/7gRcvUv23ZKOiNSUByhXyMw+w=;
-        h=From:To:Cc:Subject:Date:From;
-        b=jbd2dHlW1mstWIShdjfwjkV/EvZnHQwbtwH4Blxv3/1fKIvemoMVF8LdQYaWzyF+4
-         5gwGPVwMSSUUeNR7XKAyMd8pNsPJL8tmhqAlv2gtO/8f63k6Il7OHsRjyuGlBlhpaU
-         yX7G1iBOVpAPcDvSit3YxROeJzSzYudEWkOKkjvhu92avtbbqI6Qq104AJYZtO17He
-         f87ZL8rDnH+kR9XWpwEQ4RlwJ/RNUkVWAAoBsmEVHa3JXzNGywV+pNgdaDFZs+YSZ6
-         pwTvBamlLcIl1EM+eJx/e0wnx28fHcU8Wv4nfA66WYV78Hm8AR2qnMQ7DdWIDDb6NU
-         YKuV5YY1yA01Q==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: add rx_check callback for usb devices
-Date:   Wed, 20 Jul 2022 18:56:37 +0200
-Message-Id: <1ce2555483783c2f62bb8fecc575ceca1aad8583.1658335993.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.36.1
+        Wed, 20 Jul 2022 15:43:50 -0400
+Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B86B068DC4;
+        Wed, 20 Jul 2022 12:43:45 -0700 (PDT)
+X-QQ-mid: bizesmtp87t1658346178tf9ar22l
+Received: from harry-jrlc.. ( [125.70.163.183])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Thu, 21 Jul 2022 03:42:47 +0800 (CST)
+X-QQ-SSF: 0100000000200030C000C00A0000020
+X-QQ-FEAT: KfdWLgjtJHZnYfL4/TlHXincVqdrjmUZX2CfrZIoxIJUb1Jv+GS1V2tXzXOhM
+        pG3EYQNNGq5dwwe6bTd4pSDIPh1YWU0zyyojJMYm2PDPw63PAnN57bsM3V1b8sIlbGAhnmM
+        FErGUxHooWzuzh3CD3yakhRpmzOI+gNlsgkv8C6l1JbsBUYAUCdDpes7rdacyok/hOhWXsi
+        YDcgdvB0mH/R5A1XgK+NxmTEocQGcvK/+4IUxvdgGW4NhZc7M0Q967n44AVs4FWV+p3ryjE
+        E0N6I4dvX3YNvZLCriaKGfTSZGh3YTTFgbVL4bZIwGvJ9BoT4aWmkTbWwFMtrEZ7ZEwbGiH
+        rSxXrSNPWL0bAHxYcaMByIYmEO6AgMmGXc7ile2SGkjo6AXrJVLWqPlM6Sivw==
+X-QQ-GoodBg: 0
+From:   Xin Gao <gaoxin@cdjrlc.com>
+To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xin Gao <gaoxin@cdjrlc.com>
+Subject: [PATCH] b43:do not initialise statics to 0.
+Date:   Thu, 21 Jul 2022 03:42:45 +0800
+Message-Id: <20220720194245.8442-1-gaoxin@cdjrlc.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,RDNS_DYNAMIC,
+        SPF_PASS,T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce rx_check callback support for mt7663u and mt7921u drivers.
+do not initialise statics to 0.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Xin Gao <gaoxin@cdjrlc.com>
 ---
- .../net/wireless/mediatek/mt76/mt7615/usb.c   |  1 +
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 20 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7921/usb.c   |  1 +
- drivers/net/wireless/mediatek/mt76/usb.c      |  5 +++++
- 5 files changed, 28 insertions(+)
+ drivers/net/wireless/broadcom/b43/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-index 967641aebf5f..f2d651d7adff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-@@ -119,6 +119,7 @@ static int mt7663u_probe(struct usb_interface *usb_intf,
- 		.tx_complete_skb = mt7663_usb_sdio_tx_complete_skb,
- 		.tx_status_data = mt7663_usb_sdio_tx_status_data,
- 		.rx_skb = mt7615_queue_rx_skb,
-+		.rx_check = mt7615_rx_check,
- 		.sta_ps = mt7615_sta_ps,
- 		.sta_add = mt7615_mac_sta_add,
- 		.sta_remove = mt7615_mac_sta_remove,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 47f0aa81ab02..b00fb463b4f1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -554,6 +554,26 @@ void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
- }
- EXPORT_SYMBOL_GPL(mt7921_mac_add_txs);
+diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
+index 17bcec5f3ff7..5e233d0e06c0 100644
+--- a/drivers/net/wireless/broadcom/b43/main.c
++++ b/drivers/net/wireless/broadcom/b43/main.c
+@@ -105,7 +105,7 @@ int b43_modparam_verbose = B43_VERBOSITY_DEFAULT;
+ module_param_named(verbose, b43_modparam_verbose, int, 0644);
+ MODULE_PARM_DESC(verbose, "Log message verbosity: 0=error, 1=warn, 2=info(default), 3=debug");
  
-+bool mt7921_rx_check(struct mt76_dev *mdev, void *data, int len)
-+{
-+	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
-+	__le32 *rxd = (__le32 *)data;
-+	__le32 *end = (__le32 *)&rxd[len / 4];
-+	enum rx_pkt_type type;
-+
-+	type = le32_get_bits(rxd[0], MT_RXD0_PKT_TYPE);
-+
-+	switch (type) {
-+	case PKT_TYPE_TXS:
-+		for (rxd += 2; rxd + 8 <= end; rxd += 8)
-+			mt7921_mac_add_txs(dev, rxd);
-+		return false;
-+	default:
-+		return true;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mt7921_rx_check);
-+
- void mt7921_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			 struct sk_buff *skb)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index c161031ac62a..12c145a30c60 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -380,6 +380,7 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+-static int b43_modparam_pio = 0;
++static int b43_modparam_pio;
+ module_param_named(pio, b43_modparam_pio, int, 0644);
+ MODULE_PARM_DESC(pio, "Use PIO accesses by default: 0=DMA, 1=PIO");
  
- void mt7921_tx_worker(struct mt76_worker *w);
- void mt7921_tx_token_put(struct mt7921_dev *dev);
-+bool mt7921_rx_check(struct mt76_dev *mdev, void *data, int len);
- void mt7921_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			 struct sk_buff *skb);
- void mt7921_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-index dd3b8884e162..29fc7698f75d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -183,6 +183,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
- 		.tx_complete_skb = mt7921_usb_sdio_tx_complete_skb,
- 		.tx_status_data = mt7921_usb_sdio_tx_status_data,
- 		.rx_skb = mt7921_queue_rx_skb,
-+		.rx_check = mt7921_rx_check,
- 		.sta_ps = mt7921_sta_ps,
- 		.sta_add = mt7921_mac_sta_add,
- 		.sta_assoc = mt7921_mac_sta_assoc,
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 6b8964c19f50..4c4033bb1bb3 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -528,6 +528,11 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb,
- 
- 	head_room = drv_flags & MT_DRV_RX_DMA_HDR ? 0 : MT_DMA_HDR_LEN;
- 	data_len = min_t(int, len, data_len - head_room);
-+
-+	if (len == data_len &&
-+	    dev->drv->rx_check && !dev->drv->rx_check(dev, data, data_len))
-+		return 0;
-+
- 	skb = mt76u_build_rx_skb(dev, data, data_len, buf_size);
- 	if (!skb)
- 		return 0;
 -- 
-2.36.1
+2.30.2
 
