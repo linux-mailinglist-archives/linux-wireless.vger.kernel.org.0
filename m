@@ -2,72 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4C3F57B08D
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 07:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B72257B17B
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 09:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235161AbiGTFua (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jul 2022 01:50:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60528 "EHLO
+        id S231344AbiGTHPB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jul 2022 03:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbiGTFu3 (ORCPT
+        with ESMTP id S230087AbiGTHPA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jul 2022 01:50:29 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C75B47B94;
-        Tue, 19 Jul 2022 22:50:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+qLfk60txktshM7fOydevMibyPjNFKqz9X4NNvfiDbg=;
-        t=1658296228; x=1659505828; b=HUB8GRelZ/y2BN17hNP/z8oi3WB07lnAiTY6kxeor1wCg/A
-        HqtEVEzZ5U/2TFEOMirgfF52TZRW4SyZ4ubh6La6LEh8ryoPR3rsqd0NJSgnPGZCDrbXXAKXgzlWP
-        k2gS/dxSqQpP2VFwuDach0xw5AK6LcmlgVOpcmssnSqmEveYjks0fhb5ZnGUz9CFxQNeTR3YMuoDw
-        b1Q/n9Wo4c/YlmSFFfcozlz+yd1nzR3qnEr0cqKNJUlggaJV9iSG5Dfq27rq04ATnwVeOEjQjtgML
-        SAUjehgSekDHSggrxAOJTuwcWfyUK3oaUM2EXJjiAnuSMgRnx243TkUvuVVmXK7g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oE2b0-003LG4-20;
-        Wed, 20 Jul 2022 07:50:07 +0200
-Message-ID: <ff30252059ae6a7a74c135f9fa9525d379f9e74a.camel@sipsolutions.net>
-Subject: Re: [PATCH AUTOSEL 5.4 06/16] wifi: mac80211: do not wake queues on
- a vif that is being stopped
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>,
-        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@kernel.org>,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Wed, 20 Jul 2022 07:50:04 +0200
-In-Reply-To: <b43cfde3-7f33-9153-42ca-9e1ecf409d2a@candelatech.com>
-References: <20220720011730.1025099-1-sashal@kernel.org>
-         <20220720011730.1025099-6-sashal@kernel.org>
-         <b43cfde3-7f33-9153-42ca-9e1ecf409d2a@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
+        Wed, 20 Jul 2022 03:15:00 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF945D5B0
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 00:14:59 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id p8so4400794plq.13
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 00:14:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pVkItwTHcetYXqroDuMt1lH+JgP0rFpRC16Og54SJ64=;
+        b=SEMQmcQLfL7FTqdD64nANbE/RadG5iHYHFE5Ojo16Nxd4Fh0MAQqZ2WiVrxbovNDPI
+         3m/zEef4JHoP9UGmF1ojhpLJqBUFapQnTiRvYan/LWJKdlvIXE6esfcOJ2KDJiEgznc5
+         0k3z8xszPxHBEoEQsDWMIax3XWjFU1K9ZvLnELZtnI6xw4PYN/80AoblZYN6yfj8POzo
+         PCnQkj3nOEB0U+6qB3IG9l1ypzqudIGTFs9gnUy1tVmsmFjD+YS7PTobV7sn60Xz0sOP
+         aabWzHaVWyIeHror+J6D5FKppwZywlB5J82h1HEgRECEr5SR9Ji7F+3kbjtnZzJWiQCa
+         /SzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pVkItwTHcetYXqroDuMt1lH+JgP0rFpRC16Og54SJ64=;
+        b=YdwD9MTFB/cooLmURwOhEhgRuTLTdAeM0ICLNYMKyMNPmNqfr7Tm8IEPLxnCiA3V7p
+         QPsIHG83i5woU05tR8DEYbVYFs3TJL5CpsLbOaMw1Rcy4s4ngVcw0fJ9BOAxd2EsROAK
+         Ysnm8hIawSYfDyiCJIo66jbaQpRMhctER50toWm5BLKyDpDmx0wUxkI8hEqINIRnU0q+
+         ZI5/6M6ck6lDdIHb+VSPePGZ8s+sDHy5HFCPOMfiye6d+6eXPiXj41bZH/rVdlAJOXbX
+         qbX1UQp8GKzMn+4UZEPbagJ7/avf15DDa3puLoKD/1H+L0+zcfMCY0wG2h/GsEEr6NIA
+         vWwQ==
+X-Gm-Message-State: AJIora+REMSKXZcEF59r2U7Nkga9hoIXLZQT+vUM2Ob7HDDFRyoB/tqM
+        O3KrFL47fqobyoduxner4yzI83Vvf3wLMNi5C3RSmg==
+X-Google-Smtp-Source: AGRyM1thKRI2Q3Wt20w/gs/+kf+0PUWGAccSpvKv4GztFsnkMc9x75eCTUOqVa70Wis9GA9jFjpgZzlnKJAZbfjdzOQ=
+X-Received: by 2002:a17:90b:681:b0:1f2:147a:5e55 with SMTP id
+ m1-20020a17090b068100b001f2147a5e55mr3719444pjz.159.1658301299301; Wed, 20
+ Jul 2022 00:14:59 -0700 (PDT)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20220719143302.2071223-1-bryan.odonoghue@linaro.org> <20220719143302.2071223-2-bryan.odonoghue@linaro.org>
+In-Reply-To: <20220719143302.2071223-2-bryan.odonoghue@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Wed, 20 Jul 2022 09:14:22 +0200
+Message-ID: <CAMZdPi8RpNvycWx7rMMSY31FDkW2Dcyw0jC-eQKKL+rzzit2Gw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] wcn36xx: Rename clunky firmware feature bit enum
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-07-19 at 18:58 -0700, Ben Greear wrote:
-> I think this one had a regression and needs another init-lock-early patch=
- to keep from causing
-> problems?
->=20
+On Tue, 19 Jul 2022 at 16:33, Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> The enum name "place_holder_in_cap_bitmap" is self descriptively asking to
+> be changed to something else.
+>
+> Rename place_holder_in_cap_bitmap to wcn36xx_firmware_feat_caps so that the
+> contents and intent of the enum is obvious.
+>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-Yes, for now we should drop it from all stable trees. We'll re-assess
-the situation later if it's needed there or not, I guess.
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
 
-johannes
+> ---
+>  drivers/net/wireless/ath/wcn36xx/hal.h  | 2 +-
+>  drivers/net/wireless/ath/wcn36xx/main.c | 2 +-
+>  drivers/net/wireless/ath/wcn36xx/smd.c  | 6 +++---
+>  drivers/net/wireless/ath/wcn36xx/smd.h  | 6 +++---
+>  4 files changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
+> index 46a49f0a51b3..5e48c97682c2 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/hal.h
+> +++ b/drivers/net/wireless/ath/wcn36xx/hal.h
+> @@ -4760,7 +4760,7 @@ struct wcn36xx_hal_set_power_params_resp {
+>
+>  /* Capability bitmap exchange definitions and macros starts */
+>
+> -enum place_holder_in_cap_bitmap {
+> +enum wcn36xx_firmware_feat_caps {
+>         MCC = 0,
+>         P2P = 1,
+>         DOT11AC = 2,
+> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+> index e34d3d0b7082..efd776b20e60 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/main.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
+> @@ -260,7 +260,7 @@ static const char * const wcn36xx_caps_names[] = {
+>
+>  #undef DEFINE
+>
+> -static const char *wcn36xx_get_cap_name(enum place_holder_in_cap_bitmap x)
+> +static const char *wcn36xx_get_cap_name(enum wcn36xx_firmware_feat_caps x)
+>  {
+>         if (x >= ARRAY_SIZE(wcn36xx_caps_names))
+>                 return "UNKNOWN";
+> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+> index 7ac9a1e6f768..88ee92be8562 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+> @@ -2431,7 +2431,7 @@ int wcn36xx_smd_dump_cmd_req(struct wcn36xx *wcn, u32 arg1, u32 arg2,
+>         return ret;
+>  }
+>
+> -void set_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
+> +void set_feat_caps(u32 *bitmap, enum wcn36xx_firmware_feat_caps cap)
+>  {
+>         int arr_idx, bit_idx;
+>
+> @@ -2445,7 +2445,7 @@ void set_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
+>         bitmap[arr_idx] |= (1 << bit_idx);
+>  }
+>
+> -int get_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
+> +int get_feat_caps(u32 *bitmap, enum wcn36xx_firmware_feat_caps cap)
+>  {
+>         int arr_idx, bit_idx;
+>
+> @@ -2460,7 +2460,7 @@ int get_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
+>         return (bitmap[arr_idx] & (1 << bit_idx)) ? 1 : 0;
+>  }
+>
+> -void clear_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap)
+> +void clear_feat_caps(u32 *bitmap, enum wcn36xx_firmware_feat_caps cap)
+>  {
+>         int arr_idx, bit_idx;
+>
+> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.h b/drivers/net/wireless/ath/wcn36xx/smd.h
+> index 3fd598ac2a27..186dad4fe80e 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/smd.h
+> +++ b/drivers/net/wireless/ath/wcn36xx/smd.h
+> @@ -125,9 +125,9 @@ int wcn36xx_smd_keep_alive_req(struct wcn36xx *wcn,
+>  int wcn36xx_smd_dump_cmd_req(struct wcn36xx *wcn, u32 arg1, u32 arg2,
+>                              u32 arg3, u32 arg4, u32 arg5);
+>  int wcn36xx_smd_feature_caps_exchange(struct wcn36xx *wcn);
+> -void set_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap);
+> -int get_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap);
+> -void clear_feat_caps(u32 *bitmap, enum place_holder_in_cap_bitmap cap);
+> +void set_feat_caps(u32 *bitmap, enum wcn36xx_firmware_feat_caps cap);
+> +int get_feat_caps(u32 *bitmap, enum wcn36xx_firmware_feat_caps cap);
+> +void clear_feat_caps(u32 *bitmap, enum wcn36xx_firmware_feat_caps cap);
+>
+>  int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
+>                 struct ieee80211_sta *sta,
+> --
+> 2.36.1
+>
