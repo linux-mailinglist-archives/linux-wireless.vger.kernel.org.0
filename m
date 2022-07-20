@@ -2,204 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D6B57B1AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 09:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A8B57B36A
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 10:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239046AbiGTHYk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jul 2022 03:24:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43584 "EHLO
+        id S230378AbiGTI7S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jul 2022 04:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbiGTHYj (ORCPT
+        with ESMTP id S236043AbiGTI6w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jul 2022 03:24:39 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6869D67596
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 00:24:38 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id p8so4420511plq.13
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 00:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BVWr2Ne6VTTH9qr+tYFWCXZ5JgjelGtMY0FnCgju6Oc=;
-        b=I6t4zG33DZ+QufTZxRgN8Vy1T1czojOYfyv3UAY/xHWyCX/rNNZss/ieO5y4HCoC1S
-         FrQwF3cxa/Cv3BNTRkl770ijAAB1+zyubneK5DjAgCj7DibkFsRbNyrnlLtj2Xz09Y3z
-         tgIO/8GvX7k9rYbetyoY3dwIYf/ggK4EXXzgcI2rj46genWb8BOnEU7wvipQbjICUUJv
-         lDoE89bwBpx3TASR0CkxUZHT5wn3T2iMze6LR1BF8viqM2n+eX150kb7SxCvLI49IsNq
-         1NyUMNmPhlw9bVJkes+aTbnyQlXbCrvtM5QDRRY3q3FYbCItdNXmasBj69VeguKXcreA
-         n1ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BVWr2Ne6VTTH9qr+tYFWCXZ5JgjelGtMY0FnCgju6Oc=;
-        b=cyyzRoI35xbW3L/odRIwnZEx2lv7r0PaoNQ1PM9IeJ+BoJlY36o9HDQ2svwbuq9UAV
-         o0hC+n3k6NSrJBfQ/UKxZ41BHMoc8mkzT1RxELQU8h0Bo4nmW3mTM5SEa1MEz9NCoFyO
-         JGoo5+3SjHA9pw1KXcKskueCUKzwaeh3Jry0ppohVyWU14Ilz5pVqo3apyFHveibLRkD
-         cndledrcswV2x1SIkdRzKvCUgNIm8he80vlfgIvIngZUa/vIzip9cUEOv9iwPhDcNIBK
-         NVuQqFGv9MZu60TPWsg/0OYsDDb/F7cUc5e98VdX+1A+IVfOsuNdCYZYP+q7qFg01vs+
-         2cYw==
-X-Gm-Message-State: AJIora/hKWTwJ4vYr/P1Wrg9qumhRF7AHjufsG0mJxhYltZihP0Je7rC
-        ecn5EjviT0FpwZOkGs4LA1yGlDoMkjI5dPElrtdkhw==
-X-Google-Smtp-Source: AGRyM1v0wWUwzGy7Ehrr/48UJiVCBIDIpEoOoo6wkrT3wkGBoI7YRIhSmqedXfpZnR7KfupRTFLGDXhTkLbEwN8ZCGY=
-X-Received: by 2002:a17:90b:681:b0:1f2:147a:5e55 with SMTP id
- m1-20020a17090b068100b001f2147a5e55mr3751729pjz.159.1658301877841; Wed, 20
- Jul 2022 00:24:37 -0700 (PDT)
+        Wed, 20 Jul 2022 04:58:52 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E3F70E50
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 01:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658307502; x=1689843502;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Q5I2c1TAM4ATk7Q1oUcrEGsgK4ggI77TBUyFCCBquwk=;
+  b=SC6lFvKI2GvhhwSgT44+pKOnSl1fOUlB49Twhqml3w+uFHkMeAngFo+r
+   SZREN6RNcK6gAgSwEF65Kl6O98Su0YJheelCVVdcwFJhfpgv3jH8sfktN
+   33m7aAJLRUFpXeNOXI153LZCuHKR3sG3h088FVdRBYEPl169b/EGvYEKp
+   MqDzjLtWctp6L7OqdXAxhSuIBlKAmz7lTuoUS9xaJbvUQGJ6uyX5rexuh
+   l2WBskQsM8b7CFWwowvM0Ve0q/JDE15zDdKOf8SMTiqaKOhwKEsGdnvHi
+   XrA7a1cETwZOdsEpfnCULMKSV1WnjL90+DW+s3ibKUWZ/LaaEKLbJAOuL
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10413"; a="285486619"
+X-IronPort-AV: E=Sophos;i="5.92,286,1650956400"; 
+   d="scan'208";a="285486619"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2022 01:58:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,286,1650956400"; 
+   d="scan'208";a="740213797"
+Received: from lkp-server01.sh.intel.com (HELO 7dfbdc7c7900) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Jul 2022 01:58:20 -0700
+Received: from kbuild by 7dfbdc7c7900 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oE5X9-0000JR-LX;
+        Wed, 20 Jul 2022 08:58:19 +0000
+Date:   Wed, 20 Jul 2022 16:57:33 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless-next:mld] BUILD SUCCESS
+ 5f9032f10c735d4bce6ba6e1de8d834a3e0cde76
+Message-ID: <62d7c37d.5VNHmyp9BJuZcWiB%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220719143302.2071223-1-bryan.odonoghue@linaro.org> <20220719143302.2071223-5-bryan.odonoghue@linaro.org>
-In-Reply-To: <20220719143302.2071223-5-bryan.odonoghue@linaro.org>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Wed, 20 Jul 2022 09:24:01 +0200
-Message-ID: <CAMZdPi9MBZQxiybohQT-cK9X6VEgqX1UOiGbba4APaL-dDBO8Q@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] wcn36xx: Add debugfs entry to read firmware
- feature strings
-To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 19 Jul 2022 at 16:33, Bryan O'Donoghue
-<bryan.odonoghue@linaro.org> wrote:
->
-> Add in the ability to easily find the firmware feature bits reported in the
-> get feature exchange without having to compile-in debug prints.
->
-> root@linaro-alip:~# cat /sys/kernel/debug/ieee80211/phy0/wcn36xx/firmware_feat_caps
-> MCC
-> P2P
-> DOT11AC
-> SLM_SESSIONIZATION
-> DOT11AC_OPMODE
-> SAP32STA
-> TDLS
-> P2P_GO_NOA_DECOUPLE_INIT_SCAN
-> WLANACTIVE_OFFLOAD
-> BEACON_OFFLOAD
-> SCAN_OFFLOAD
-> BCN_MISS_OFFLOAD
-> STA_POWERSAVE
-> STA_ADVANCED_PWRSAVE
-> BCN_FILTER
-> RTT
-> RATECTRL
-> WOW
-> WLAN_ROAM_SCAN_OFFLOAD
-> SPECULATIVE_PS_POLL
-> IBSS_HEARTBEAT_OFFLOAD
-> WLAN_SCAN_OFFLOAD
-> WLAN_PERIODIC_TX_PTRN
-> ADVANCE_TDLS
-> BATCH_SCAN
-> FW_IN_TX_PATH
-> EXTENDED_NSOFFLOAD_SLOT
-> CH_SWITCH_V1
-> HT40_OBSS_SCAN
-> UPDATE_CHANNEL_LIST
-> WLAN_MCADDR_FLT
-> WLAN_CH144
-> TDLS_SCAN_COEXISTENCE
-> LINK_LAYER_STATS_MEAS
-> MU_MIMO
-> EXTENDED_SCAN
-> DYNAMIC_WMM_PS
-> MAC_SPOOFED_SCAN
-> FW_STATS
-> WPS_PRBRSP_TMPL
-> BCN_IE_FLT_DELTA
->
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
+branch HEAD: 5f9032f10c735d4bce6ba6e1de8d834a3e0cde76  wifi: mac80211: sta_info: fix link_sta insertion
 
+elapsed time: 728m
 
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+configs tested: 88
+configs skipped: 3
 
-> ---
->  drivers/net/wireless/ath/wcn36xx/debug.c | 37 ++++++++++++++++++++++++
->  drivers/net/wireless/ath/wcn36xx/debug.h |  1 +
->  2 files changed, 38 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/wcn36xx/debug.c b/drivers/net/wireless/ath/wcn36xx/debug.c
-> index 6af306ae41ad..220f338045bd 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/debug.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/debug.c
-> @@ -21,6 +21,7 @@
->  #include "wcn36xx.h"
->  #include "debug.h"
->  #include "pmc.h"
-> +#include "firmware.h"
->
->  #ifdef CONFIG_WCN36XX_DEBUGFS
->
-> @@ -136,6 +137,40 @@ static const struct file_operations fops_wcn36xx_dump = {
->         .write =       write_file_dump,
->  };
->
-> +static ssize_t read_file_firmware_feature_caps(struct file *file,
-> +                                              char __user *user_buf,
-> +                                              size_t count, loff_t *ppos)
-> +{
-> +       struct wcn36xx *wcn = file->private_data;
-> +       unsigned long page = get_zeroed_page(GFP_KERNEL);
-> +       char *p = (char *)page;
-> +       int i;
-> +       int ret;
-> +
-> +       if (!p)
-> +               return -ENOMEM;
-> +
-> +       mutex_lock(&wcn->hal_mutex);
-> +       for (i = 0; i < MAX_FEATURE_SUPPORTED; i++) {
-> +               if (wcn36xx_firmware_get_feat_caps(wcn->fw_feat_caps, i)) {
-> +                       p += sprintf(p, "%s\n",
-> +                                    wcn36xx_firmware_get_cap_name(i));
-> +               }
-> +       }
-> +       mutex_unlock(&wcn->hal_mutex);
-> +
-> +       ret = simple_read_from_buffer(user_buf, count, ppos, (char *)page,
-> +                                     (unsigned long)p - page);
-> +
-> +       free_page(page);
-> +       return ret;
-> +}
-> +
-> +static const struct file_operations fops_wcn36xx_firmware_feat_caps = {
-> +       .open = simple_open,
-> +       .read = read_file_firmware_feature_caps,
-> +};
-> +
->  #define ADD_FILE(name, mode, fop, priv_data)           \
->         do {                                                    \
->                 struct dentry *d;                               \
-> @@ -163,6 +198,8 @@ void wcn36xx_debugfs_init(struct wcn36xx *wcn)
->
->         ADD_FILE(bmps_switcher, 0600, &fops_wcn36xx_bmps, wcn);
->         ADD_FILE(dump, 0200, &fops_wcn36xx_dump, wcn);
-> +       ADD_FILE(firmware_feat_caps, 0200,
-> +                &fops_wcn36xx_firmware_feat_caps, wcn);
->  }
->
->  void wcn36xx_debugfs_exit(struct wcn36xx *wcn)
-> diff --git a/drivers/net/wireless/ath/wcn36xx/debug.h b/drivers/net/wireless/ath/wcn36xx/debug.h
-> index 46307aa562d3..7116d96e0543 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/debug.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/debug.h
-> @@ -31,6 +31,7 @@ struct wcn36xx_dfs_entry {
->         struct dentry *rootdir;
->         struct wcn36xx_dfs_file file_bmps_switcher;
->         struct wcn36xx_dfs_file file_dump;
-> +       struct wcn36xx_dfs_file file_firmware_feat_caps;
->  };
->
->  void wcn36xx_debugfs_init(struct wcn36xx *wcn);
-> --
-> 2.36.1
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+i386                 randconfig-c001-20220718
+arm                        realview_defconfig
+arm                             rpc_defconfig
+powerpc                     sequoia_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                    sam440ep_defconfig
+xtensa                    smp_lx200_defconfig
+arm                          pxa3xx_defconfig
+powerpc                       maple_defconfig
+m68k                        m5307c3_defconfig
+sh                        dreamcast_defconfig
+arm                            xcep_defconfig
+powerpc                     mpc83xx_defconfig
+powerpc                      ep88xc_defconfig
+arm                      footbridge_defconfig
+x86_64                              defconfig
+sh                        sh7757lcr_defconfig
+loongarch                           defconfig
+loongarch                         allnoconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64               randconfig-a014-20220718
+x86_64               randconfig-a016-20220718
+x86_64               randconfig-a012-20220718
+x86_64               randconfig-a013-20220718
+x86_64               randconfig-a015-20220718
+x86_64               randconfig-a011-20220718
+i386                 randconfig-a015-20220718
+i386                 randconfig-a011-20220718
+i386                 randconfig-a012-20220718
+i386                 randconfig-a014-20220718
+i386                 randconfig-a016-20220718
+i386                 randconfig-a013-20220718
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+s390                 randconfig-r044-20220718
+riscv                randconfig-r042-20220718
+arc                  randconfig-r043-20220718
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+arm                     am200epdkit_defconfig
+riscv                            alldefconfig
+arm                        magician_defconfig
+hexagon                          alldefconfig
+mips                        maltaup_defconfig
+powerpc                     mpc5200_defconfig
+mips                          ath25_defconfig
+x86_64                        randconfig-k001
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                 randconfig-a004-20220718
+i386                 randconfig-a001-20220718
+i386                 randconfig-a005-20220718
+i386                 randconfig-a002-20220718
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+i386                 randconfig-a006-20220718
+i386                 randconfig-a003-20220718
+hexagon              randconfig-r041-20220718
+hexagon              randconfig-r045-20220718
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
