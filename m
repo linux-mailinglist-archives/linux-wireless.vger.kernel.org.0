@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F181857AC58
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 03:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E15957AC81
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jul 2022 03:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240795AbiGTBXK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jul 2022 21:23:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
+        id S241302AbiGTBTu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jul 2022 21:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240792AbiGTBNf (ORCPT
+        with ESMTP id S241695AbiGTBT2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jul 2022 21:13:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59DD64B49F;
-        Tue, 19 Jul 2022 18:12:40 -0700 (PDT)
+        Tue, 19 Jul 2022 21:19:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C210691C3;
+        Tue, 19 Jul 2022 18:15:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EAF7E61740;
-        Wed, 20 Jul 2022 01:12:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3D6C36AE2;
-        Wed, 20 Jul 2022 01:12:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CA53FB81DE3;
+        Wed, 20 Jul 2022 01:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1BDC341CA;
+        Wed, 20 Jul 2022 01:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658279559;
-        bh=r7YlJCntL0XrhxsAKw8631lX25bI5NcVLxGL+fraBR8=;
+        s=k20201202; t=1658279731;
+        bh=z7iBJy5Yjy8zO9n/ZqopUEeBf43/XBe9Ivswdo0nPyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ozt0DOuTUp/3LRh/zJGeY72jrdIIu/8IOWDXFVVHsDolThBxKli0m57CIsS4/EdAA
-         VAhy6WmXvbv5axia+iSmoMi9be47/6X4w3GqirHGo8uxRXNF+b6DvbwFxDe7ii0E9A
-         IDRvjInv4yFvMs++dC+mgUoqY8jvpqemKIjmpi56DxwcKu+rBZYXa1LXd7+xjISJlI
-         l+58mCu7p6d4+90p4GzyHLE7TLDlFajqxn+lDSEabpQR8OWC50nyU30Qd9UcbdHfZ3
-         gZ/X1i0ooOlmIwCz6pUdzZQSoRzjOS+CAkqK6wbs2VuHSIn0QQrRcbXSDtyJZ9zLsZ
-         fNlT48gSwhYTA==
+        b=Q2g0ojDrqdhFo0BL0G/qBSBlH6cHkhc7yV675gb4JOF53fX8KELauC+toz8KKaBAL
+         TKT9aIy9zxam4MQoDETqjO7yQIR99GBHRquJ62CV/S8/HXti2SngzFGsFvJlb3nzBm
+         rro30V9WxOJSlR0i0KzcPTNo4wgMd4W+p/LMfF4Dd364RZu4NlWi5XXiOOtGNBGF0x
+         /Rvx7/8WSWtz7ALhWCwNAFibv469x/e6Wu1L277zd0d5Qbhe7R+8k+1nUDJRADkN0v
+         Zk1LE0eN5wefgYZRHkIyOpYfc2gpcVjeLsw+8F6CxzfCwtL/Ad2Jcmz/J9nX0jr55j
+         Yx47MrTVBsN4Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Vinayak Yadawad <vinayak.yadawad@broadcom.com>,
+Cc:     Ryder Lee <ryder.lee@mediatek.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 31/54] wifi: cfg80211: Allow P2P client interface to indicate port authorization
-Date:   Tue, 19 Jul 2022 21:10:08 -0400
-Message-Id: <20220720011031.1023305-31-sashal@kernel.org>
+        pabeni@redhat.com, matthias.bgg@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 23/42] wifi: mac80211: check skb_shared in ieee80211_8023_xmit()
+Date:   Tue, 19 Jul 2022 21:13:31 -0400
+Message-Id: <20220720011350.1024134-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220720011031.1023305-1-sashal@kernel.org>
-References: <20220720011031.1023305-1-sashal@kernel.org>
+In-Reply-To: <20220720011350.1024134-1-sashal@kernel.org>
+References: <20220720011350.1024134-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,38 +61,90 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 8d70f33ed7207e82e51d5a4436c8ba2268a83b14 ]
+[ Upstream commit a4926abb787e2ef3ee2997e6ca8844d859478647 ]
 
-In case of 4way handshake offload, cfg80211_port_authorized
-enables driver to indicate successful 4way handshake to cfg80211 layer.
-Currently this path of port authorization is restricted to
-interface type NL80211_IFTYPE_STATION. This patch extends
-the use of port authorization API for P2P client as well.
+Add a missing skb_shared check into 802.3 path to prevent potential
+use-after-free from happening. This also uses skb_share_check()
+instead of open-coding in tx path.
 
-Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Link: https://lore.kernel.org/r/ef25cb49fcb921df2e5d99e574f65e8a009cc52c.1655905440.git.vinayak.yadawad@broadcom.com
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Link: https://lore.kernel.org/r/e7a73aaf7742b17e43421c56625646dfc5c4d2cb.1653571902.git.ryder.lee@mediatek.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/sme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index ff4d48fcbfb2..607a68911047 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -1031,7 +1031,8 @@ void __cfg80211_port_authorized(struct wireless_dev *wdev, const u8 *bssid)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index a499b07fee33..717698ff5a37 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2817,19 +2817,10 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 	/*
+ 	 * If the skb is shared we need to obtain our own copy.
+ 	 */
+-	if (skb_shared(skb)) {
+-		struct sk_buff *tmp_skb = skb;
+-
+-		/* can't happen -- skb is a clone if info_id != 0 */
+-		WARN_ON(info_id);
+-
+-		skb = skb_clone(skb, GFP_ATOMIC);
+-		kfree_skb(tmp_skb);
+-
+-		if (!skb) {
+-			ret = -ENOMEM;
+-			goto free;
+-		}
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (unlikely(!skb)) {
++		ret = -ENOMEM;
++		goto free;
+ 	}
+ 
+ 	hdr.frame_control = fc;
+@@ -3540,15 +3531,9 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 
+ 	/* after this point (skb is modified) we cannot return false */
+ 
+-	if (skb_shared(skb)) {
+-		struct sk_buff *tmp_skb = skb;
+-
+-		skb = skb_clone(skb, GFP_ATOMIC);
+-		kfree_skb(tmp_skb);
+-
+-		if (!skb)
+-			return true;
+-	}
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (unlikely(!skb))
++		return true;
+ 
+ 	if ((hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) &&
+ 	    ieee80211_amsdu_aggregate(sdata, sta, fast_tx, skb))
+@@ -4438,7 +4423,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 				struct net_device *dev, struct sta_info *sta,
+ 				struct ieee80211_key *key, struct sk_buff *skb)
  {
- 	ASSERT_WDEV_LOCK(wdev);
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_tx_info *info;
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct tid_ampdu_tx *tid_tx;
+ 	u8 tid;
+@@ -4453,6 +4438,11 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 	    test_bit(SDATA_STATE_OFFCHANNEL, &sdata->state))
+ 		goto out_free;
  
--	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_STATION))
-+	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_STATION &&
-+		    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT))
- 		return;
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (unlikely(!skb))
++		return;
++
++	info = IEEE80211_SKB_CB(skb);
+ 	memset(info, 0, sizeof(*info));
  
- 	if (WARN_ON(!wdev->current_bss) ||
+ 	ieee80211_aggr_check(sdata, sta, skb);
 -- 
 2.35.1
 
