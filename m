@@ -2,62 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9AB757C29E
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jul 2022 05:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A53FE57C2DF
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jul 2022 05:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231664AbiGUDW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jul 2022 23:22:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46378 "EHLO
+        id S230363AbiGUDnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jul 2022 23:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiGUDW2 (ORCPT
+        with ESMTP id S230042AbiGUDnd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jul 2022 23:22:28 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE81E47BA9;
-        Wed, 20 Jul 2022 20:22:26 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id c139so584408pfc.2;
-        Wed, 20 Jul 2022 20:22:26 -0700 (PDT)
+        Wed, 20 Jul 2022 23:43:33 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B827821F;
+        Wed, 20 Jul 2022 20:43:31 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id e15so662544edj.2;
+        Wed, 20 Jul 2022 20:43:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id;
-        bh=tmOBFYH42N10hufY6EnMZkuSIJQa7Ph0o+F6wvrL7r4=;
-        b=TnvsdkgwV7J+MzZ8FTOfBZhWP0XD7qBQRgy6NZ6A8sIt9Fm2XT5TQcwZgpVeoMCgQu
-         dO6/xSi3i4CLjSiF5p5EeoF7EDlWOCEy+EvRerDJLQJGjU3ItvkpFLmJ0L7TN1a5/tr3
-         K8Dgx0Fc59Tl3kPLi29F15QXEMMHZ471xtfIeIWa6ZY9MOQ2JUpSTy+tcHzigGcyZJN3
-         mPvRqVYHvo/i3yoyKiMpw2ACkh/GZ1TBtSDQcYOZClXxn11qTWo9wtZ4BdmvWSYuiaUD
-         OzbcfV9hFFw75Tq0Vc7GcreeN1PsBMFElZSO2w2vphoSyaVcxwXU/S1AJFU94lpi62Ql
-         rftA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=6npaS1zRKm+yyU2zCsQvl5XLwT7kKQ+yzE8xge/iXYI=;
+        b=p1MOI/PwyKmAKZLRGUU7wHJ3gwmCfOuMSd9qe8/di7NRgYoQPVattGIm2LLA/5ZRzt
+         UmkU5j7zN1FHuEPODuf5718XISFVfuLHo7rlPOyFt0V58zPmMwJD1kG7cNARq4n1qG1/
+         xWPDaDD+f5JXnDkwiGvO7GhQVNM9VnDE/QT9Wer6VhUl3z6bBcM9aN93BWHJJX/y/Q3I
+         HBozrneJP0gbcCgI0IKl+MyC0FQKZzDHKL02n/9I3eqSk38jOFbMYJk3ShWxQIAokptk
+         0ew9hHw8UUP63i9jplHud3h+FVPCkA0FQyUiO55QiCkqmVKmB+mDy86it0JvXhH0iuM9
+         +ncw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tmOBFYH42N10hufY6EnMZkuSIJQa7Ph0o+F6wvrL7r4=;
-        b=jISRjxc6d4w71WyyxAWYY1nY+im66NilllPCBrl6JigaokZ7pFLabR875LzXwYRWWj
-         on8br7eSLc4YwA//URXC85uQ6nWLDnthjs+9fEJMLk1LA3TXwfzy0W+iAwf0s9ANtmW/
-         rF84GSh/ZRilZf4wI58w+VH5ssyj3n6jmeWlIzLkoIppG2EdZ4xdtxcEmvvjSI0v894r
-         0M2GVkhhLxM5r6rxctLdd+huaNwsAAGIXukSZafvABgvSTzbCmhXhU35385CqPcU+NaD
-         XZS4gCpdpSZhG57hom9I3xOnCWnkebUTX5DmnEPPi8M09wECP/Gbonur2UyGC7KFxkr7
-         6Fvw==
-X-Gm-Message-State: AJIora97F9DCEbxjKLlCznAO5/12JBUk6SCnWvilz+boM5BQWX1vbtjE
-        /OFlMpXB8eePaShERmPsxmE=
-X-Google-Smtp-Source: AGRyM1tORNW2tFg+DpPkRBpx1jCUm6ZAFOaogXfK8IeuYViZnV8Xm2Xx/zCLnP4DdsgcOs40/acSPg==
-X-Received: by 2002:a63:565f:0:b0:41a:57d8:a814 with SMTP id g31-20020a63565f000000b0041a57d8a814mr7797545pgm.517.1658373746289;
-        Wed, 20 Jul 2022 20:22:26 -0700 (PDT)
-Received: from localhost.localdomain ([23.91.97.158])
-        by smtp.gmail.com with ESMTPSA id z124-20020a623382000000b00528c34f514dsm391684pfz.121.2022.07.20.20.22.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 20:22:26 -0700 (PDT)
-From:   xiaolinkui <xiaolinkui@gmail.com>
-X-Google-Original-From: xiaolinkui <xiaolinkui@kylinos.cn>
-To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, gustavoars@kernel.org,
-        quic_jjohnson@quicinc.com, keescook@chromium.org, johan@kernel.org,
-        dan.carpenter@oracle.com, xiaolinkui@gmail.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH] wireless: ath6kl: fix out of bound from length.
-Date:   Thu, 21 Jul 2022 11:21:58 +0800
-Message-Id: <20220721032158.31479-1-xiaolinkui@kylinos.cn>
-X-Mailer: git-send-email 2.17.1
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=6npaS1zRKm+yyU2zCsQvl5XLwT7kKQ+yzE8xge/iXYI=;
+        b=dHnO52Nrs8NsXSweRjVS5eZfc1Kt7RNuGUa/g/xPB4OJ7PzT3B4tTWmXN6A65WqWde
+         XfMz2J4nCTB67af2Pqnhz6DAPX6zJ3jtKeoB+zaL6MCmgHM1AO4F3wt63tvRfNofY4TA
+         HbgncIAiptQhZpi5krjYrLcVWT2WyohDYSA32h38Y3tx7bzzPj2KW9Ml+XsJE33xAqXY
+         V+4+3+fPcTpGwwP50y5EX5jGSaU7vUFb5qWWUEeDL6hFTX3T4T09gApn+4NCIKEUWEHZ
+         pGxQmpRv3UDJ7tGstTpcNdPNVl7boaWVqRUDl8PWJ/vgqrKRrILNSb0+yI2ypcFEN53z
+         Oyew==
+X-Gm-Message-State: AJIora9P8JU41bewVPddCmr/LPwe89hqB4djJJHxDsrryoa6hAuDDMhP
+        mDnTZcdz0e+k+rnrgGC6fk9ustbJdS9HI6sbnCE=
+X-Google-Smtp-Source: AGRyM1uOI+8BZmBho8NWh0C+///IOSzyEsQPkRoYp57fJlWZ+qY2k+4HwdfPpAVjNR2BGQDSHLue/6IDKdxW5yyntWw=
+X-Received: by 2002:a05:6402:3326:b0:43a:902b:d335 with SMTP id
+ e38-20020a056402332600b0043a902bd335mr55228432eda.412.1658375009916; Wed, 20
+ Jul 2022 20:43:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220719065357.2705918-1-airlied@gmail.com> <20220719094835.52197852@sal.lan>
+In-Reply-To: <20220719094835.52197852@sal.lan>
+From:   Dave Airlie <airlied@gmail.com>
+Date:   Thu, 21 Jul 2022 13:43:18 +1000
+Message-ID: <CAPM=9tzoB_dJXgb9M7y9cJ24Z4vBmy7NRePxJARdYRLag2Vx9g@mail.gmail.com>
+Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
+ guidelines. (v2)
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Luis R. Rodriguez" <mcgrof@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "dri-devel@lists.sf.net" <dri-devel@lists.sf.net>,
+        Network Development <netdev@vger.kernel.org>,
+        Linux Wireless List <linux-wireless@vger.kernel.org>,
+        alsa-devel@alsa-project.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -68,63 +79,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> It is hard to enforce how vendors will version their firmware. On media,
+> we have some drivers whose major means different hardware versions. For
+> instance, on xc3028, v3.x means low voltage chips, while v2.x means
+> "normal" voltage. We end changing the file name on Linux to avoid the risk
+> of damaging the hardware, as using v27 firmware on low power chips damage
+> them. So, we have:
+>
+>         drivers/media/tuners/xc2028.h:#define XC2028_DEFAULT_FIRMWARE "xc3028-v27.fw"
+>         drivers/media/tuners/xc2028.h:#define XC3028L_DEFAULT_FIRMWARE "xc3028L-v36.fw"
+>
+> As their main market is not Linux - nor PC - as their main sales are on
+> TV sets, and them don't officially support Linux, there's nothing we can
+> do to enforce it.
+>
+> IMO we need a more generic text here to indicate that Linux firmware
+> files should be defined in a way that it should be possible to detect
+> when there are incompatibilities with past versions.
+> So, I would say, instead:
+>
+>         Firmware files shall be designed in a way that it allows
+>         checking for firmware ABI version changes. It is recommended
+>         that firmware files to be versioned with at least major/minor
+>         version.
 
-If length from debug_buf.length is 4294967293 (0xfffffffd), the result of
-ALIGN(size, 4) will be 0.
+This sounds good, will update with this.
 
-	length = ALIGN(length, 4);
+>
+> > It
+> > +  is suggested that the firmware files in linux-firmware be named with
+> > +  some device specific name, and just the major version.
+>
+> > The
+> > +  major/minor/patch versions should be stored in a header in the
+> > +  firmware file for the driver to detect any non-ABI fixes/issues.
+>
+> I would also make this more generic. On media, we ended adding the firmware
+> version indicated at the file name. For instance, xc4000 driver checks for
+> two firmware files:
+>
+> drivers/media/tuners/xc4000.c:#define XC4000_DEFAULT_FIRMWARE "dvb-fe-xc4000-1.4.fw"
+> drivers/media/tuners/xc4000.c:#define XC4000_DEFAULT_FIRMWARE_NEW "dvb-fe-xc4000-1.4.1.fw"
 
-In case of length == 4294967293 after four-byte aligned access, length will
-become 0.
+This is probably fine for products where development never produces
+much firmwares, but it quickly becomes unmanageable when you end up
+with _NEW_NEW_NEW etc.
 
-	ret = ath6kl_diag_read(ar, address, buf, length);
+I'd rather not encourage this sort of thing unless it is totally
+outside our control. So I'd like to keep the guidelines for when we
+have some control what we'd recommend.
 
-will fail to read.
+In this case I'd have recommended you put the 1.4.1 in the header of
+the fw, and just have it called dvb-fe-xc4000-1.fw and overwrite the
+NEW with the OLD, I understand we likely don't have the control here.
 
-Fixes: bc07ddb29a7b ("ath6kl: read fwlog from firmware ring buffer")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- drivers/net/wireless/ath/ath6kl/core.h | 2 +-
- drivers/net/wireless/ath/ath6kl/main.c | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+> > +  firmware files in linux-firmware should be overwritten with the newest
+> > +  compatible major version.
+>
+> For me "shall" is mandatory, while "should" is optional.
+>
+> In this specific case, I'm not so sure if overriding it is the best thing
+> to do on all subsystems. I mean, even with the same ABI, older firmware
+> usually means that some bugs and/or limitations will be present there.
 
-diff --git a/drivers/net/wireless/ath/ath6kl/core.h b/drivers/net/wireless/ath/ath6kl/core.h
-index 77e052336eb5..b90ad9541e09 100644
---- a/drivers/net/wireless/ath/ath6kl/core.h
-+++ b/drivers/net/wireless/ath/ath6kl/core.h
-@@ -907,7 +907,7 @@ void ath6kl_cleanup_amsdu_rxbufs(struct ath6kl *ar);
- int ath6kl_diag_write32(struct ath6kl *ar, u32 address, __le32 value);
- int ath6kl_diag_write(struct ath6kl *ar, u32 address, void *data, u32 length);
- int ath6kl_diag_read32(struct ath6kl *ar, u32 address, u32 *value);
--int ath6kl_diag_read(struct ath6kl *ar, u32 address, void *data, u32 length);
-+int ath6kl_diag_read(struct ath6kl *ar, u32 address, void *data, size_t length);
- int ath6kl_read_fwlogs(struct ath6kl *ar);
- void ath6kl_init_profile_info(struct ath6kl_vif *vif);
- void ath6kl_tx_data_cleanup(struct ath6kl *ar);
-diff --git a/drivers/net/wireless/ath/ath6kl/main.c b/drivers/net/wireless/ath/ath6kl/main.c
-index d3aa9e7a37c2..e9e66d5ad505 100644
---- a/drivers/net/wireless/ath/ath6kl/main.c
-+++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -233,7 +233,7 @@ int ath6kl_diag_write32(struct ath6kl *ar, u32 address, __le32 value)
- 	return 0;
- }
- 
--int ath6kl_diag_read(struct ath6kl *ar, u32 address, void *data, u32 length)
-+int ath6kl_diag_read(struct ath6kl *ar, u32 address, void *data, size_t length)
- {
- 	u32 count, *buf = data;
- 	int ret;
-@@ -272,7 +272,8 @@ int ath6kl_read_fwlogs(struct ath6kl *ar)
- {
- 	struct ath6kl_dbglog_hdr debug_hdr;
- 	struct ath6kl_dbglog_buf debug_buf;
--	u32 address, length, firstbuf, debug_hdr_addr;
-+	u32 address, firstbuf, debug_hdr_addr;
-+	size_t length;
- 	int ret, loop;
- 	u8 *buf;
- 
--- 
-2.17.1
+As long as you can detect the minor/patch versions from the firmware
+file after loading it you should be able to do sufficient workarounds.
+>
+> That's specially true on codecs: even having the same ABI, older versions
+> won't support decoding newer protocols. We have one case with some
+> digital TV decoders that only support some Cable-TV protocols with
+> newer firmware versions. We have also one case were remote controller
+> decoding is buggy with older firmwares. On both situations, the ABI
+> didn't change.
 
+If the only way to figure that out is by the filename or minor
+version, then so be it, but where people have some control I'd rather
+provide some harder guidelines.
+
+Dave.
