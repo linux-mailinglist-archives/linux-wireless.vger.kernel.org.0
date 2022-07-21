@@ -2,158 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53FE57C2DF
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jul 2022 05:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DEAF57C39B
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jul 2022 06:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbiGUDnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jul 2022 23:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58582 "EHLO
+        id S230147AbiGUEoQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Jul 2022 00:44:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230042AbiGUDnd (ORCPT
+        with ESMTP id S229579AbiGUEoO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jul 2022 23:43:33 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B827821F;
-        Wed, 20 Jul 2022 20:43:31 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id e15so662544edj.2;
-        Wed, 20 Jul 2022 20:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=6npaS1zRKm+yyU2zCsQvl5XLwT7kKQ+yzE8xge/iXYI=;
-        b=p1MOI/PwyKmAKZLRGUU7wHJ3gwmCfOuMSd9qe8/di7NRgYoQPVattGIm2LLA/5ZRzt
-         UmkU5j7zN1FHuEPODuf5718XISFVfuLHo7rlPOyFt0V58zPmMwJD1kG7cNARq4n1qG1/
-         xWPDaDD+f5JXnDkwiGvO7GhQVNM9VnDE/QT9Wer6VhUl3z6bBcM9aN93BWHJJX/y/Q3I
-         HBozrneJP0gbcCgI0IKl+MyC0FQKZzDHKL02n/9I3eqSk38jOFbMYJk3ShWxQIAokptk
-         0ew9hHw8UUP63i9jplHud3h+FVPCkA0FQyUiO55QiCkqmVKmB+mDy86it0JvXhH0iuM9
-         +ncw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=6npaS1zRKm+yyU2zCsQvl5XLwT7kKQ+yzE8xge/iXYI=;
-        b=dHnO52Nrs8NsXSweRjVS5eZfc1Kt7RNuGUa/g/xPB4OJ7PzT3B4tTWmXN6A65WqWde
-         XfMz2J4nCTB67af2Pqnhz6DAPX6zJ3jtKeoB+zaL6MCmgHM1AO4F3wt63tvRfNofY4TA
-         HbgncIAiptQhZpi5krjYrLcVWT2WyohDYSA32h38Y3tx7bzzPj2KW9Ml+XsJE33xAqXY
-         V+4+3+fPcTpGwwP50y5EX5jGSaU7vUFb5qWWUEeDL6hFTX3T4T09gApn+4NCIKEUWEHZ
-         pGxQmpRv3UDJ7tGstTpcNdPNVl7boaWVqRUDl8PWJ/vgqrKRrILNSb0+yI2ypcFEN53z
-         Oyew==
-X-Gm-Message-State: AJIora9P8JU41bewVPddCmr/LPwe89hqB4djJJHxDsrryoa6hAuDDMhP
-        mDnTZcdz0e+k+rnrgGC6fk9ustbJdS9HI6sbnCE=
-X-Google-Smtp-Source: AGRyM1uOI+8BZmBho8NWh0C+///IOSzyEsQPkRoYp57fJlWZ+qY2k+4HwdfPpAVjNR2BGQDSHLue/6IDKdxW5yyntWw=
-X-Received: by 2002:a05:6402:3326:b0:43a:902b:d335 with SMTP id
- e38-20020a056402332600b0043a902bd335mr55228432eda.412.1658375009916; Wed, 20
- Jul 2022 20:43:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220719065357.2705918-1-airlied@gmail.com> <20220719094835.52197852@sal.lan>
-In-Reply-To: <20220719094835.52197852@sal.lan>
+        Thu, 21 Jul 2022 00:44:14 -0400
+Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [205.139.111.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EEB63743D1
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Jul 2022 21:44:13 -0700 (PDT)
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-198-wCWCKbzDPBOPH_d9xnmbWw-1; Thu, 21 Jul 2022 00:44:01 -0400
+X-MC-Unique: wCWCKbzDPBOPH_d9xnmbWw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 80331811E80;
+        Thu, 21 Jul 2022 04:44:00 +0000 (UTC)
+Received: from dreadlord.bne.redhat.com (fdacunha.bne.redhat.com [10.64.0.157])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BEEA3909FF;
+        Thu, 21 Jul 2022 04:43:55 +0000 (UTC)
 From:   Dave Airlie <airlied@gmail.com>
-Date:   Thu, 21 Jul 2022 13:43:18 +1000
-Message-ID: <CAPM=9tzoB_dJXgb9M7y9cJ24Z4vBmy7NRePxJARdYRLag2Vx9g@mail.gmail.com>
-Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
- guidelines. (v2)
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Luis R. Rodriguez" <mcgrof@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "dri-devel@lists.sf.net" <dri-devel@lists.sf.net>,
-        Network Development <netdev@vger.kernel.org>,
-        Linux Wireless List <linux-wireless@vger.kernel.org>,
-        alsa-devel@alsa-project.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
+To:     torvalds@linux-foundation.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org, gregkh@linuxfoundation.org,
+        Daniel Vetter <daniel@ffwll.ch>, mcgrof@kernel.org
+Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.sf.net,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
         linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Harry Wentland <harry.wentland@amd.com>
+Subject: [PATCH] docs: driver-api: firmware: add driver firmware guidelines. (v3)
+Date:   Thu, 21 Jul 2022 14:43:52 +1000
+Message-Id: <20220721044352.3110507-1-airlied@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
+X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_SOFTFAIL,SPOOFED_FREEMAIL,SPOOF_GMAIL_MID
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> It is hard to enforce how vendors will version their firmware. On media,
-> we have some drivers whose major means different hardware versions. For
-> instance, on xc3028, v3.x means low voltage chips, while v2.x means
-> "normal" voltage. We end changing the file name on Linux to avoid the risk
-> of damaging the hardware, as using v27 firmware on low power chips damage
-> them. So, we have:
->
->         drivers/media/tuners/xc2028.h:#define XC2028_DEFAULT_FIRMWARE "xc3028-v27.fw"
->         drivers/media/tuners/xc2028.h:#define XC3028L_DEFAULT_FIRMWARE "xc3028L-v36.fw"
->
-> As their main market is not Linux - nor PC - as their main sales are on
-> TV sets, and them don't officially support Linux, there's nothing we can
-> do to enforce it.
->
-> IMO we need a more generic text here to indicate that Linux firmware
-> files should be defined in a way that it should be possible to detect
-> when there are incompatibilities with past versions.
-> So, I would say, instead:
->
->         Firmware files shall be designed in a way that it allows
->         checking for firmware ABI version changes. It is recommended
->         that firmware files to be versioned with at least major/minor
->         version.
+From: Dave Airlie <airlied@redhat.com>
 
-This sounds good, will update with this.
+A recent snafu where Intel ignored upstream feedback on a firmware
+change, led to a late rc6 fix being required. In order to avoid this
+in the future we should document some expectations around
+linux-firmware.
 
->
-> > It
-> > +  is suggested that the firmware files in linux-firmware be named with
-> > +  some device specific name, and just the major version.
->
-> > The
-> > +  major/minor/patch versions should be stored in a header in the
-> > +  firmware file for the driver to detect any non-ABI fixes/issues.
->
-> I would also make this more generic. On media, we ended adding the firmware
-> version indicated at the file name. For instance, xc4000 driver checks for
-> two firmware files:
->
-> drivers/media/tuners/xc4000.c:#define XC4000_DEFAULT_FIRMWARE "dvb-fe-xc4000-1.4.fw"
-> drivers/media/tuners/xc4000.c:#define XC4000_DEFAULT_FIRMWARE_NEW "dvb-fe-xc4000-1.4.1.fw"
+I was originally going to write this for drm, but it seems quite generic
+advice.
 
-This is probably fine for products where development never produces
-much firmwares, but it quickly becomes unmanageable when you end up
-with _NEW_NEW_NEW etc.
+v2: rewritten with suggestions from Thorsten Leemhuis
+v3: rewritten with suggestions from Mauro
 
-I'd rather not encourage this sort of thing unless it is totally
-outside our control. So I'd like to keep the guidelines for when we
-have some control what we'd recommend.
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Acked-by: Daniel Vetter <daniel@ffwll.ch>
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+---
+ Documentation/driver-api/firmware/core.rst    |  1 +
+ .../firmware/firmware-usage-guidelines.rst    | 44 +++++++++++++++++++
+ 2 files changed, 45 insertions(+)
+ create mode 100644 Documentation/driver-api/firmware/firmware-usage-guidelines.rst
 
-In this case I'd have recommended you put the 1.4.1 in the header of
-the fw, and just have it called dvb-fe-xc4000-1.fw and overwrite the
-NEW with the OLD, I understand we likely don't have the control here.
+diff --git a/Documentation/driver-api/firmware/core.rst b/Documentation/driver-api/firmware/core.rst
+index 1d1688cbc078..803cd574bbd7 100644
+--- a/Documentation/driver-api/firmware/core.rst
++++ b/Documentation/driver-api/firmware/core.rst
+@@ -13,4 +13,5 @@ documents these features.
+    direct-fs-lookup
+    fallback-mechanisms
+    lookup-order
++   firmware-usage-guidelines
+ 
+diff --git a/Documentation/driver-api/firmware/firmware-usage-guidelines.rst b/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
+new file mode 100644
+index 000000000000..fdcfce42c6d2
+--- /dev/null
++++ b/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
+@@ -0,0 +1,44 @@
++===================
++Firmware Guidelines
++===================
++
++Users switching to a newer kernel should *not* have to install newer
++firmware files to keep their hardware working. At the same time updated
++firmware files must not cause any regressions for users of older kernel
++releases.
++
++Drivers that use firmware from linux-firmware should follow the rules in
++this guide. (Where there is limited control of the firmware,
++i.e. company doesn't support Linux, firmwares sourced from misc places,
++then of course these rules will not apply strictly.)
++
++* Firmware files shall be designed in a way that it allows checking for
++  firmware ABI version changes. It is recommended that firmware files be
++  versioned with at least a major/minor version. It is suggested that
++  the firmware files in linux-firmware be named with some device
++  specific name, and just the major version. The firmware version should
++  be stored in the firmware header, or as an exception, as part of the
++  firmware file name, in order to let the driver detact any non-ABI
++  fixes/changes. The firmware files in linux-firmware should be
++  overwritten with the newest compatible major version. Newer major
++  version firmware shall remain compatible with all kernels that load
++  that major number.
++
++* If the kernel support for the hardware is normally inactive, or the
++  hardware isn't available for public consumption, this can
++  be ignored, until the first kernel release that enables that hardware.
++  This means no major version bumps without the kernel retaining
++  backwards compatibility for the older major versions.  Minor version
++  bumps should not introduce new features that newer kernels depend on
++  non-optionally.
++
++* If a security fix needs lockstep firmware and kernel fixes in order to
++  be successful, then all supported major versions in the linux-firmware
++  repo that are required by currently supported stable/LTS kernels,
++  should be updated with the security fix. The kernel patches should
++  detect if the firmware is new enough to declare if the security issue
++  is fixed.  All communications around security fixes should point at
++  both the firmware and kernel fixes. If a security fix requires
++  deprecating old major versions, then this should only be done as a
++  last option, and be stated clearly in all communications.
++
+-- 
+2.36.1
 
-> > +  firmware files in linux-firmware should be overwritten with the newest
-> > +  compatible major version.
->
-> For me "shall" is mandatory, while "should" is optional.
->
-> In this specific case, I'm not so sure if overriding it is the best thing
-> to do on all subsystems. I mean, even with the same ABI, older firmware
-> usually means that some bugs and/or limitations will be present there.
-
-As long as you can detect the minor/patch versions from the firmware
-file after loading it you should be able to do sufficient workarounds.
->
-> That's specially true on codecs: even having the same ABI, older versions
-> won't support decoding newer protocols. We have one case with some
-> digital TV decoders that only support some Cable-TV protocols with
-> newer firmware versions. We have also one case were remote controller
-> decoding is buggy with older firmwares. On both situations, the ABI
-> didn't change.
-
-If the only way to figure that out is by the filename or minor
-version, then so be it, but where people have some control I'd rather
-provide some harder guidelines.
-
-Dave.
