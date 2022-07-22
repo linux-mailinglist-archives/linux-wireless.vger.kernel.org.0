@@ -2,46 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA4A57D819
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Jul 2022 03:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D069457DA5E
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Jul 2022 08:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233210AbiGVBuC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Jul 2022 21:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39566 "EHLO
+        id S234258AbiGVGfa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Jul 2022 02:35:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbiGVBuB (ORCPT
+        with ESMTP id S231193AbiGVGf1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Jul 2022 21:50:01 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42DF0972D8
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Jul 2022 18:49:59 -0700 (PDT)
-Date:   Fri, 22 Jul 2022 01:49:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=z7stl6zkmnhrfhcp2axdpkokwa.protonmail; t=1658454594; x=1658713794;
-        bh=CbITnMjkqqKnsfO+DLnsAndgAOJubbFkLcp66wvYH6E=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:Feedback-ID:From:To:
-         Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID;
-        b=XR8KZgZ4wPC1r0jYRoK6sWqihAiKJcKCzn53HIXXux3ddRNVSS5IG+M7xEghByg/h
-         qxr/Hyudrg5brZJRglQI8GhKCmrSv67aAtLLSNluFawybJNEfQfq7pWMoftXw5vq34
-         w/CWpGcmTPRgxQBo53wY2mEtZ9B89cZneMEFAZt4D3At7Ipj2EPscYfFtXn2zY3yYU
-         8yYI0OLssCl0X6VK2f2WEdrVrJMnZ4EEmvf0jd3fmpNI5N9myBK/O7jiNqljfW01b9
-         Gg38GstnhDBDaiNFbJHLlo25aSz2atg0NfFOPyf0QFf0vaRh29akChr+SdV/3hNs17
-         NBta5NnheZ68Q==
-To:     "ryder.lee@mediatek.com" <ryder.lee@mediatek.com>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        "nbd@nbd.name" <nbd@nbd.name>
-From:   leadrdrk <LeadRDRK@proton.me>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Reply-To: leadrdrk <LeadRDRK@proton.me>
-Subject: mt7921e: MT7921K randomly disconnects itself
-Message-ID: <JkcUgyYl9g8c4XmHMqTi1vC594vlX9LfkfZxEToH2Spl9OevhKqxktPbJiWmQUrWaqF1KptUJ2-iIUO9A84f1CG-5WxHFpnje3ehXYzuOsU=@proton.me>
-Feedback-ID: 51250809:user:proton
+        Fri, 22 Jul 2022 02:35:27 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCEE27CE7;
+        Thu, 21 Jul 2022 23:35:25 -0700 (PDT)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26M6Sptm002647;
+        Fri, 22 Jul 2022 06:35:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : content-type : mime-version; s=corp-2022-7-12;
+ bh=HsyqjK+NWJ8OY8YRkPjB2Rxi0LRYUmudTd2Lst+WheU=;
+ b=Qi25qdCuU9Q51C9arxniz4Gu6AJrq6WaupqOBtOi1LRe/pqA0O8gm6YqbV+Br2cTN8Z6
+ Olq7BBQKwAcoGbR/8DEmBNDPjF48QPfkDiCMofBaZD61us86D/QNhkhfSha9qJGWq9gU
+ 4e7v+Mjn14AK+wMmfZk9kQWQvkflEW2WkP8Kw7Yfl8Xwm4b9wEyGPshmkxjt7Pc1KfBC
+ KMokgUDsKba9Y72ZzAkGFHDan8iJ12Fpc+OjSIEPqI2F16iXTXhek1GgR26uIAU8pd79
+ nl29n1lC4el2/COYXZARLXeSHy4YhTUAo5O72O5R4q9UNee1LPjBdIzCMbs2QXRQNdBE dQ== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3hbm42pjq3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Jul 2022 06:35:11 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 26M3L0A7039245;
+        Fri, 22 Jul 2022 06:35:10 GMT
+Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04lp2049.outbound.protection.outlook.com [104.47.73.49])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3hc1k7hr0f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Jul 2022 06:35:10 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h90koX4yLzxlK9G0RZLGwbyyoqMfVDKRzWMNG7l6iyUMmMcuqw2SiI9/X3hkDoNBrc5c1JSEynU9caH9j7NFvLc6FzrWQgsvcV1o2p9SIQNiiCvpeG3jLP1+UhgCa5HdIj5GTxnYhd51jrd70P59yiUdbHDaBihPEyf7ZpXpE6fHSGfhoztLtWuzh+uS4Ls7I6VwIXZ5HcSxLX8DdG14JXGm49NTMZyoJ67wkGaulYuRPAmnfI5Jcwm0wbDuyuiRRryqXOCE5Opq4fIAaPt0BwTmvsPQhJDb3sQb+q6fe9iGoqOzcrnxgosS7Ai0Qge9IXX359wVf4EiUrsx/bcvBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HsyqjK+NWJ8OY8YRkPjB2Rxi0LRYUmudTd2Lst+WheU=;
+ b=Qc8qkzRq+BAOY2ar1/REqDbb37XTZ7xnb8fkhxsYEMmgKj1bfnDYfasvQK/63WfgLGu1CoFz4RO7TZqBq7a9vrt6iTYtaHcfUUOb3H6H+EPH2bVIDtR61Ay7aIhf3RW/kMZmAsENitwVLIx8t+NG5MRFUBg+ZIo73o3Gc5srjwmmXVoZiocty1VHjGUzdqPQ18OHtNwx5Il9XAO3ea7WrlDkFUQfbrHzeETmGNfUYVNBHJgpo3PWLC67ruVQlwxGkiSJQnl5TQ/FxLvYK8eLkUQF1Em+6rIQLlwmgwoGADMeEMRhg2jRQcbHFBCp4ZnzQdO8w1p2GkoAvqXPiLdxsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HsyqjK+NWJ8OY8YRkPjB2Rxi0LRYUmudTd2Lst+WheU=;
+ b=AT1ZV+SaBtI4rpZyMWaZe/vRT+ObQZauQ5Oz+pCec4MEctEQRLL8PpEOs6YZIAJI8yI49blaCJp9E4aTddJJVrEIOSdduteg2hD3ziLOU1KKg41G9TFVVg+LvurzWLjmrNR8II+LwNyj09lgizaA30LwEVwEPWiMR0Lg1qiD7Q0=
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by IA1PR10MB6196.namprd10.prod.outlook.com
+ (2603:10b6:208:3a4::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.18; Fri, 22 Jul
+ 2022 06:35:07 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::24dc:9f9a:c139:5c97]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::24dc:9f9a:c139:5c97%4]) with mapi id 15.20.5458.018; Fri, 22 Jul 2022
+ 06:35:07 +0000
+Date:   Fri, 22 Jul 2022 09:34:55 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Ben Greear <greearb@candelatech.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mt76: mt7915: fix an uninitialized variable bug
+Message-ID: <YtpFD1kBU7TLG4fi@kili>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-ClientProxiedBy: ZR0P278CA0081.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:22::14) To MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,HK_RANDOM_REPLYTO,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 60888a68-6235-4027-688f-08da6bac5170
+X-MS-TrafficTypeDiagnostic: IA1PR10MB6196:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: tpAJFqC9Z+FayGYGJMbK83MgnkPbbl4XhiD7t+Wb73INMGPvDZLL/idiC30nNgtQUyGpUr9ZMq+uKffe0XQHlC4orPZAcxrQam2Aw4gQ7MBqVLF6i+0L+ibp3dnI/Mg1SM+SyGdxBRIGihq0al9rqc/no+dRvpcS7RD4MxCPKCWiPCE8lJ6+lVJRaVUDqaKj5uYR14Tu+pbn23Up2KcC92l1hTK9pRguYSD28EHKANoLhxuHgsg+V00SJV5rrVQzsfavphUP3kdMjtDU4V5Y9jFVVglZQ8/GXGp99VAc4wTEeYxTlM1LgpAak2DcQYfrtKsb5UisTfuG5dfGOPMAavKDUDKjDSFiR1RJpLofQ2TGhNssOJ/MeD8OMdz9TXGQJqySrxaiUuGZlcey8Zvr8ig49nJOM/WRc1USJrKF6dnok0+whPWoG+q7z5dL51XcS3l+Qrwes8bLrcbgsoYBg3PVoADztBuri/kbYlU1N22HznQb28BksaD/m6AsX26BlF49Wc97gOc7pN/GXABvEmAfQtNBV+OB5fQBODWpL0eaInT5JbOVBv44ZgnCXUfXPwqVoDho4cAB9SpNvlPDJ9mzLjw4o9HTETIf+69UCi0Nwajhs5f/EA0lrBI8c2/rnXEfe4+htNz2eQpi3G2u2oZpEUTiZQHuyjYOuoB1jCwiXQFyXY709NEbd1L3xXwQxtBm5eUvS/sAlQSbKB601VSxHpTGhAwHhLsrNkPqX+q5kqs+Umh4JESNdhzqXtYHzYMImEnsmXc6PLjMXXczM7fJgxnljtTr9pqPW50QqbYHrWzvRy034jYas4MDD7jE
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(396003)(366004)(376002)(136003)(346002)(39860400002)(8676002)(4326008)(66946007)(33716001)(8936002)(7416002)(66476007)(66556008)(44832011)(9686003)(5660300002)(6506007)(38350700002)(2906002)(110136005)(38100700002)(478600001)(26005)(6486002)(41300700001)(83380400001)(86362001)(54906003)(316002)(6666004)(186003)(52116002)(6512007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Jup8HEP3o/Kpzdd0wCRDXYPj9RJaOOpPWSWfnIWp4MK0k1y8fzopwqIWbAG0?=
+ =?us-ascii?Q?AMZDBfm/7zweLePbUlCVMZiHPbGVpxsZ2IJ+1uLkeNO6QJhdK5wb3zMC774Q?=
+ =?us-ascii?Q?qdLIcfts2+8svABRhPT8gXMfuDUzW03xwKTSqX1zeP194h4S9/x4FW0ja6J7?=
+ =?us-ascii?Q?mfpcP53vL1MGBfb7cCQKl1UxrCDnKBONf6mdf0EE4nXUkOWobEoF4nlJmIGp?=
+ =?us-ascii?Q?lCHSz0PuZWbmjoohUSg4ny/SBPt+p4GTUfHn7XQeWBjMSNdELmNTKTqTxaWf?=
+ =?us-ascii?Q?tXusC5IQ+dR0boLQEfN7SCnLc1n9kCb5hw9PIJW8CVSn/K3vWQvX/HuioJtP?=
+ =?us-ascii?Q?bWoUUDbN/5WA9Rmo86lBwldkwWHVSqxjiB3HNF1m9lW/Fs+Tf0LbGcEWx3HS?=
+ =?us-ascii?Q?H5aWzMw2R2vdOedSRxyUS4WxJUXNW4qwr/PbbGFrU72pWA/JASilT7owDhlF?=
+ =?us-ascii?Q?5f5ID17Ye4evpI++qnqKUkbAfDh7Vjq7PCtYgaPJcEALpWesGIdExqKn7em1?=
+ =?us-ascii?Q?lX6LgsKH+Br2thdbgMVgRWCYdfbMWyBL6fREc23fLyB+CylW3dcL9WD4DBqI?=
+ =?us-ascii?Q?uhhYlji3X21JufNLAqeaUYtf/XSqwhwkTG0m4yX98mOeqyBAbmhx3DLOefzh?=
+ =?us-ascii?Q?vwU1Z9H3+7BK6j+fnG7Ez7WwDLeHZC9AMRPwle0eucEITo1QD4X3Ol7CUWi9?=
+ =?us-ascii?Q?fM2FCLvrRhO95lqKyotIgPUPGjTMQcZbzQB72FTewsdzfGXvy+f8KWiSilSa?=
+ =?us-ascii?Q?OJsQnTdl+aEwoXqPYbySOP3T1jf/f40gzmiNcy+W4CBol8y8I4VmEy6dLQ5Q?=
+ =?us-ascii?Q?rHnLDTcm5sM2RXpUh9KRVTz6ddRCOW7EqKLOhWYkhJ1w11U8RrJA+YBKzjlt?=
+ =?us-ascii?Q?4bV6wEIzYOkWY2QK7qllOdnHTztmHlYeNmEDWLxe/Sqq7cYBTh20rBlOksVH?=
+ =?us-ascii?Q?Y2v/JDv7uCQ1zY/z2Bza4ZVCg9nH6qMjyimtKAJ1pXlrqQuDJEPnrAXi1bgK?=
+ =?us-ascii?Q?96/zWztphMaC4JWfMpmtBjQ2bVi44EJ8UE/FrQpyY4/2m2G9MSIp+bQRvktx?=
+ =?us-ascii?Q?o1Q98KR5wCeRirfpJazP4HsHuYzEugeVtNqNPqvpPfFq7+2D8pB6eAlz+Xf4?=
+ =?us-ascii?Q?UofRjhCpUm8cNeqgacYN6U3KY13XE4/Evf99Eqh4sR5ORppVjmhoOu7eGukz?=
+ =?us-ascii?Q?aM0Km6evjEGvEiTv/QYPEN7D5+cjGFCJoKQlEU986PeI6dnT3jUa91WZqd4+?=
+ =?us-ascii?Q?S+GVU3QTRu+Z8qngjZBmR0oPHO+pjo/ffFFWMU5juKzR9g26ckHAOm91QNyL?=
+ =?us-ascii?Q?Ffo12G3XlcwyyDAVyjuwS+irm+dz7v5VJxH4qV3H9SWA/nmsZsZ24fd8VWXo?=
+ =?us-ascii?Q?U5ApUcXdZS7v+7mEJFVulRwDxtfYBRXOma5vGcLjUQ9THsWmzIGtOLRy337m?=
+ =?us-ascii?Q?321lsDPAZpKuktbJLApZ3Fr/DW0/oA+W9UCRo6I38AH1vZOZ6d3PWrsHDaAL?=
+ =?us-ascii?Q?8JgCWr2aTlwIVsQ4PuFI3RCkd91CuaQUWQdmi3z5kJIUpvPvcy41f6i34iTN?=
+ =?us-ascii?Q?Y+GoJ57pmOhe4fTWdq6CVwdvr03DORgKJJF8yNvpX6IQe5YMhHcun0uj3KRx?=
+ =?us-ascii?Q?fA=3D=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60888a68-6235-4027-688f-08da6bac5170
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2022 06:35:07.4026
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xbflE2x8j4t/xc1yM2yAPhmVXzdJJ3H49ZltdR3F6LQC99+ETRuKc0zQ9NB0w2t0gglvOAy4gxcfxa3xpDkwGAN5r/vlfxNb4bq0CgL5RwQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6196
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-21_28,2022-07-21_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207220026
+X-Proofpoint-ORIG-GUID: ngqJYVKxKja7-KZ3jRisjva9hvl8gYaE
+X-Proofpoint-GUID: ngqJYVKxKja7-KZ3jRisjva9hvl8gYaE
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,126 +150,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, I got a brand new MSI Bravo 15 B5DD that comes with a MediaTek MT7921K =
-(RZ608). It works without any issues on Windows, but on Linux, it randomly =
-disconnects itself multiple times until it fails.
+Smatch complains that:
 
-After it crashes, booting into BIOS immediately would reveal that the syste=
-m couldn't detect the WiFi module. I have to wait a few minutes before boot=
-ing the machine back up for it to come back.
+    drivers/net/wireless/mediatek/mt76/mt7915/mac.c:428 mt7915_mac_fill_rx()
+    error: uninitialized symbol 'msta'.
 
-This problem is=C2=A0reproducible on another Bravo 15 as I had 2 of them. I=
- don't know exactly how it's triggered, but just using them for a while cou=
-ld cause the issue to occur.
+It looks like this was supposed to be initialized to NULL.
 
-I'm using kernel version=C2=A05.18.12 on Arch Linux.
+Fixes: 0880d40871d1 ("mt76: connac: move mt76_connac2_reverse_frag0_hdr_trans in mt76-connac module")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Kernel logs:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 60ae834d95a6..4ddcd3afa428 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -232,7 +232,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	bool unicast, insert_ccmp_hdr = false;
+ 	u8 remove_pad, amsdu_info;
+ 	u8 mode = 0, qos_ctl = 0;
+-	struct mt7915_sta *msta;
++	struct mt7915_sta *msta = NULL;
+ 	bool hdr_trans;
+ 	u16 hdr_gap;
+ 	u16 seq_ctrl = 0;
+-- 
+2.35.1
 
-[12706.121643] ------------[ cut here ]------------
-[12706.121645] WARNING: CPU: 8 PID: 19353 at kernel/kthread.c:659 kthread_p=
-ark+0x7f/0x90
-[12706.121659] Modules linked in: ccm algif_aead cbc des_generic libdes ecb=
- algif_skcipher cmac md4 algif_hash af_alg hid_sensor_gyro_3d hid_sensor_ac=
-cel_3d hid_sensor_magn_3d hid_sensor_als hid_sensor_prox hid_sensor_trigger=
- industrialio_triggered_buffer kfifo_buf hid_sensor_iio_common industrialio=
- intel_rapl_msr joydev hid_sensor_hub uvcvideo videobuf2_vmalloc intel_rapl=
-_common videobuf2_memops snd_acp3x_rn snd_soc_dmic snd_acp3x_pdm_dma moused=
-ev hid_multitouch videobuf2_v4l2 videobuf2_common wmi_bmof edac_mce_amd msi=
-_wmi sparse_keymap videodev kvm_amd mc gpio_keys kvm irqbypass crct10dif_pc=
-lmul snd_sof_amd_renoir crc32_pclmul ghash_clmulni_intel snd_sof_amd_acp sn=
-d_sof_pci aesni_intel mt7921e snd_sof crypto_simd snd_hda_codec_realtek cry=
-ptd mt7921_common snd_sof_utils rapl snd_hda_codec_generic mt76_connac_lib =
-pcspkr btusb ledtrig_audio snd_hda_codec_hdmi psmouse snd_soc_core btrtl sn=
-d_hda_intel mt76 btbcm snd_compress snd_intel_dspcfg amdgpu ac97_bus snd_pc=
-m_dmaengine
-[12706.121748] =C2=A0snd_intel_sdw_acpi btintel mac80211 k10temp amd_sfh sn=
-d_acp_pci snd_hda_codec btmtk libarc4 snd_pci_acp6x tpm_crb bluetooth snd_p=
-ci_acp5x r8169 snd_hda_core snd_rn_pci_acp3x cfg80211 tpm_tis snd_hwdep rea=
-ltek snd_acp_config tpm_tis_core vfat snd_pcm gpu_sched snd_soc_acpi mdio_d=
-evres sp5100_tco drm_ttm_helper snd_timer snd_pci_acp3x ecdh_generic usbhid=
- fat snd ttm drm_dp_helper rfkill soundcore ccp libphy i2c_piix4 mac_hid wm=
-i tpm video i2c_hid_acpi rng_core amd_pmc soc_button_array i2c_hid pinctrl_=
-amd acpi_cpufreq pkcs8_key_parser crypto_user fuse bpf_preload ip_tables x_=
-tables ext4 crc32c_generic crc16 mbcache jbd2 serio_raw atkbd libps2 vivald=
-i_fmap nvme xhci_pci crc32c_intel i8042 nvme_core xhci_pci_renesas serio
-[12706.121834] CPU: 8 PID: 19353 Comm: kworker/u32:4 Not tainted 5.18.12-ar=
-ch1-1 #1 96418c890ae0efcbf26c551e98cb3d72a56d7da8
-[12706.121840] Hardware name: Micro-Star International Co., Ltd. Bravo 15 B=
-5DD/MS-158K, BIOS E158KAMS.10F 11/22/2021
-[12706.121844] Workqueue: mt76 mt7921_mac_reset_work [mt7921_common]
-[12706.121857] RIP: 0010:kthread_park+0x7f/0x90
-[12706.121863] Code: 89 df e8 d4 76 01 00 48 85 c0 74 27 31 c0 5b 5d c3 cc =
-0f 0b 48 8b ab d0 06 00 00 a8 04 74 af 0f 0b b8 da ff ff ff 5b 5d c3 cc <0f=
-> 0b b8 f0 ff ff ff eb db 0f 0b eb d5 0f 1f 40 00 f3 0f 1e fa 0f
-[12706.121866] RSP: 0018:ffffa6a187333e00 EFLAGS: 00010202
-[12706.121870] RAX: 0000000000000004 RBX: ffff8af55c22c100 RCX: 00000000000=
-00000
-[12706.121873] RDX: 0000000000000003 RSI: 0000000000000003 RDI: ffff8af55c2=
-2c100
-[12706.121875] RBP: ffff8af5441d2200 R08: ffff8af54f4a24a0 R09: 00000000fff=
-ffff0
-[12706.121877] R10: 0000000000000003 R11: ffffffffb6ecaa08 R12: ffff8af54f4=
-a08e0
-[12706.121878] R13: ffff8af54f4a20e0 R14: ffff8af54f4a8610 R15: ffff8af54f4=
-a2430
-[12706.121881] FS: =C2=A00000000000000000(0000) GS:ffff8af666600000(0000) k=
-nlGS:0000000000000000
-[12706.121884] CS: =C2=A00010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[12706.121886] CR2: 0000163e00375000 CR3: 000000015d33a000 CR4: 00000000007=
-50ee0
-[12706.121888] PKRU: 55555554
-[12706.121890] Call Trace:
-[12706.121893] =C2=A0<TASK>
-[12706.121897] =C2=A0mt7921e_mac_reset+0xa2/0x2e0 [mt7921e 0dcda7569a383081=
-0bad886efce3a88657007fb3]
-[12706.121908] =C2=A0mt7921_mac_reset_work+0xa3/0x14e [mt7921_common d24f52=
-02d3fe775650f5e1ae1d7ca1dd557c1030]
-[12706.121918] =C2=A0process_one_work+0x1c7/0x380
-[12706.121924] =C2=A0worker_thread+0x51/0x380
-[12706.121928] =C2=A0? rescuer_thread+0x3a0/0x3a0
-[12706.121931] =C2=A0kthread+0xde/0x110
-[12706.121937] =C2=A0? kthread_complete_and_exit+0x20/0x20
-[12706.121942] =C2=A0ret_from_fork+0x22/0x30
-[12706.121951] =C2=A0</TASK>
-[12706.121952] ---[ end trace 0000000000000000 ]---
-
-Before crashing there were also these messages which are repeated several t=
-imes from the driver resetting:
-
-[12487.289769] mt7921e 0000:05:00.0: driver own failed
-[12487.555608] mt7921e 0000:05:00.0: chip reset
-[12487.652848] mt7921e 0000:05:00.0: HW/SW Version: 0x8a108a10, Build Time:=
- 20220311230842a
-
-[12487.681787] mt7921e 0000:05:00.0: WM Firmware Version: ____010000, Build=
- Time: 20220311230931
-[12489.381806] wlan0: Driver requested disconnection from AP bc:62:0e:1b:5c=
-:c8
-[12489.720414] audit: type=3D1130 audit(1658209453.908:141): pid=3D1 uid=3D=
-0 auid=3D4294967295 ses=3D4294967295 msg=3D'unit=3DNetworkManager-dispatche=
-r comm=3D"systemd" exe=3D"/usr/lib/systemd/systemd" hostname=3D? addr=3D? t=
-erminal=3D? res=3Dsuccess'
-[12489.863063] wlan0: authenticate with bc:62:0e:1b:5c:c8
-[12489.863076] wlan0: bad VHT capabilities, disabling VHT
-[12489.863077] wlan0: Invalid HE elem, Disable HE
-[12489.875548] wlan0: send auth to bc:62:0e:1b:5c:c8 (try 1/3)
-[12489.879368] wlan0: authenticated
-[12489.881651] wlan0: associate with bc:62:0e:1b:5c:c8 (try 1/3)
-[12489.886851] wlan0: RX AssocResp from bc:62:0e:1b:5c:c8 (capab=3D0x1411 s=
-tatus=3D0 aid=3D3)
-[12489.933933] wlan0: associated
-[12489.942173] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by=
- bc:62:0e:1b:5c:c8
-[12490.080217] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
-[12499.730833] audit: type=3D1131 audit(1658209463.918:142): pid=3D1 uid=3D=
-0 auid=3D4294967295 ses=3D4294967295 msg=3D'unit=3DNetworkManager-dispatche=
-r comm=3D"systemd" exe=3D"/usr/lib/systemd/systemd" hostname=3D? addr=3D? t=
-erminal=3D? res=3Dsuccess'
-[12702.628081] mt7921e 0000:05:00.0: driver own failed
-[12702.628106] mt7921e 0000:05:00.0: chip reset
-[12703.834315] mt7921e 0000:05:00.0: driver own failed
-[12703.835973] mt7921e 0000:05:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT do=
-main=3D0x0010 address=3D0xaec50000 flags=3D0x0020]
-[12704.927705] mt7921e 0000:05:00.0: Timeout for driver own
-[12706.121628] mt7921e 0000:05:00.0: driver own failed
