@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B4D57F5B8
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jul 2022 17:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B10EC57F711
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jul 2022 22:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232877AbiGXPWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Jul 2022 11:22:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
+        id S229739AbiGXU0e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Jul 2022 16:26:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiGXPWH (ORCPT
+        with ESMTP id S229446AbiGXU0d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Jul 2022 11:22:07 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEAA811C07;
-        Sun, 24 Jul 2022 08:22:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=RG/BJ3Nv9HakG4zVWqCXWL3uZp6IBIbE/vdVZRgFNzw=;
-        t=1658676126; x=1659885726; b=hyxJq9tjqYBSUs+yl2lXhjEasadf4QDDhUQtDVBgBTsOCXy
-        dXAS1NdbzZAH8t2GUlNLJhRhD49LM6qQYr6ikt7VEwb372PnhXfEw2eIErL3/1g/NmcQS7A1MmBoj
-        M7sI/c7TKKmGWAVMuqOX0QISRHvCSzFTYdLMvn4EDRAsr7qLMVn4yGnhfPIrpN9AlVZXuznPdF7KL
-        MRGo6/1aZIACWmI+uYVqBv6MGHPydotxxqBIszWJT+2aLy/cMHaEc5ZyPntvis9Hxxu9S7XG2Yi0g
-        ypD4kw1ai5Re/1SorP2ClE+MC/OBt+Q4GXVXOTKFomMo1MmltlwK5AiDCvwoP4Gg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oFdQP-006zmj-2a;
-        Sun, 24 Jul 2022 17:21:45 +0200
-Message-ID: <4f8ab262d98ba2a4d0e106e127c171e75b52ad47.camel@sipsolutions.net>
-Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
- guidelines. (v3)
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Dave Airlie <airlied@gmail.com>, torvalds@linux-foundation.org,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        gregkh@linuxfoundation.org, Daniel Vetter <daniel@ffwll.ch>,
-        mcgrof@kernel.org
-Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.sf.net,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
-        linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Harry Wentland <harry.wentland@amd.com>
-Date:   Sun, 24 Jul 2022 17:21:43 +0200
-In-Reply-To: <20220721044352.3110507-1-airlied@gmail.com>
-References: <20220721044352.3110507-1-airlied@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
+        Sun, 24 Jul 2022 16:26:33 -0400
+Received: from gnuweeb.org (gnuweeb.org [51.81.211.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 918FCD12C;
+        Sun, 24 Jul 2022 13:26:32 -0700 (PDT)
+Received: from integral2.. (unknown [125.160.99.33])
+        by gnuweeb.org (Postfix) with ESMTPSA id D28FB7E328;
+        Sun, 24 Jul 2022 20:26:27 +0000 (UTC)
+X-GW-Data: lPqxHiMPbJw1wb7CM9QUryAGzr0yq5atzVDdxTR0iA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gnuweeb.org;
+        s=default; t=1658694391;
+        bh=upcwVnPzO07Kr5AImxs3CXXPqhTn+Mt/d3N1UpRAOdM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ffMt7dFWpB+2sQge4Rtn4oz/pSB/Ue+lmfVYtRnZWQUtjsW/TTBu/Tyv1cXf1YKvC
+         E/u6GY3AhXkV0BZxLJMacwkS4MMjj1cXedFqv/QzoKU/nPR3X+TRmWZPgWNuchgyii
+         at7SxYGtU8WxPgCDlH/KTY74dWvdv7lmzuOWO0ro5yinJivn/A8xlpDegiP17coYxk
+         vL8NHuAxj7Ov9rLB4fEV85Cdz2hdGkDbMqumWo7OIInbYkkylqfSIE1PN5q6AotxS4
+         Zi5ScdOBGJq0iiQbT8It5tCgHjgvhviwVUD+SZ38Dz/lXxsbfdUyUa1fcAxrvxvzLm
+         B3uPOrhqXI5tQ==
+From:   Ammar Faizi <ammarfaizi2@gnuweeb.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Ammar Faizi <ammarfaizi2@gnuweeb.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Wireless Mailing List <linux-wireless@vger.kernel.org>,
+        netdev Mailing List <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        GNU/Weeb Mailing List <gwml@vger.gnuweeb.org>,
+        llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH] wifi: wil6210: debugfs: fix uninitialized variable use in `wil_write_file_wmi()`
+Date:   Mon, 25 Jul 2022 03:26:18 +0700
+Message-Id: <20220724202452.61846-1-ammar.faizi@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <202207250332.5ud26AGE-lkp@intel.com>
+References: <202207250332.5ud26AGE-lkp@intel.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -61,52 +61,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2022-07-21 at 14:43 +1000, Dave Airlie wrote:
->=20
-> +Users switching to a newer kernel should *not* have to install newer
-> +firmware files to keep their hardware working. At the same time updated
-> +firmware files must not cause any regressions for users of older kernel
-> +releases.
+Commit 7a4836560a61 changes simple_write_to_buffer() with memdup_user()
+but it forgets to change the value to be returned that came from
+simple_write_to_buffer() call. It results in the following warning:
 
-That seems sane, and certainly something we've done in wireless in the
-past.
+  warning: variable 'rc' is uninitialized when used here [-Wuninitialized]
+           return rc;
+                  ^~
 
-> +* Firmware files shall be designed in a way that it allows checking for
-> +  firmware ABI version changes. It is recommended that firmware files be
-> +  versioned with at least a major/minor version. It is suggested that
-> +  the firmware files in linux-firmware be named with some device
-> +  specific name, and just the major version. The firmware version should
-> +  be stored in the firmware header, or as an exception, as part of the
-> +  firmware file name,
+Remove rc variable and just return the passed in length if the
+memdup_user() succeeds.
 
-Eh, I went to write a whole paragraph here and then read it again ...
-Maybe this should say "[t]he _full_ firmware version", to contrast with
-the previous sentence mentioning the "major version".
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: 7a4836560a6198d245d5732e26f94898b12eb760 ("wifi: wil6210: debugfs: fix info leak in wil_write_file_wmi()")
+Fixes: ff974e4083341383d3dd4079e52ed30f57f376f0 ("wil6210: debugfs interface to send raw WMI command")
+Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+---
+ drivers/net/wireless/ath/wil6210/debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->  in order to let the driver detact any non-ABI
+diff --git a/drivers/net/wireless/ath/wil6210/debugfs.c b/drivers/net/wireless/ath/wil6210/debugfs.c
+index fe84362718de..04d1aa0e2d35 100644
+--- a/drivers/net/wireless/ath/wil6210/debugfs.c
++++ b/drivers/net/wireless/ath/wil6210/debugfs.c
+@@ -1010,7 +1010,7 @@ static ssize_t wil_write_file_wmi(struct file *file, const char __user *buf,
+ 	void *cmd;
+ 	int cmdlen = len - sizeof(struct wmi_cmd_hdr);
+ 	u16 cmdid;
+-	int rc, rc1;
++	int rc1;
+ 
+ 	if (cmdlen < 0 || *ppos != 0)
+ 		return -EINVAL;
+@@ -1027,7 +1027,7 @@ static ssize_t wil_write_file_wmi(struct file *file, const char __user *buf,
+ 
+ 	wil_info(wil, "0x%04x[%d] -> %d\n", cmdid, cmdlen, rc1);
+ 
+-	return rc;
++	return len;
+ }
+ 
+ static const struct file_operations fops_wmi = {
 
-typo - 'detect'
+base-commit: 086f67ba21ede199307e78476353bda9ffef982c
+-- 
+Ammar Faizi
 
-> +  fixes/changes. The firmware files in linux-firmware should be
-> +  overwritten with the newest compatible major version.
->=20
-
-That's also a bit confusing IMHO - did that mean "minor version"? Or
-something? I mean ... if you overwrite a file that has the major version
-in the filename then by definition it is the same major version?
-
-> +  This means no major version bumps without the kernel retaining
-> +  backwards compatibility for the older major versions.
-
-Strictly reading this might require aeons of support for firmware
-version, if you have a release cadence of them like every 6 weeks for a
-new _major_ version (yes, because APIs change), then that's rather
-harsh. In practice we've often done this, but I think some reasonable
-cut-off could/should be there, such as dropping support after a
-reasonably long time frame (say a year?)
-
-Often though that's less a question of "does it still work" and rather
-one of "do I still support that" and the answer for the latter is
-obviously "no" much quicker than the former.
-
-johannes
