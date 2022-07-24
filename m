@@ -2,108 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B0657F43C
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jul 2022 10:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6B4D57F5B8
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jul 2022 17:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbiGXI66 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Jul 2022 04:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
+        id S232877AbiGXPWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Jul 2022 11:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiGXI65 (ORCPT
+        with ESMTP id S229640AbiGXPWH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Jul 2022 04:58:57 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C80312AA3
-        for <linux-wireless@vger.kernel.org>; Sun, 24 Jul 2022 01:58:49 -0700 (PDT)
-X-UUID: bbb5a51e639b4ca5a47e83eaf5bdab38-20220724
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:5dfef7ca-a59e-4c5b-8d09-e565306ea7bf,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:100
-X-CID-INFO: VERSION:1.1.8,REQID:5dfef7ca-a59e-4c5b-8d09-e565306ea7bf,OB:0,LOB:
-        0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,ACT
-        ION:quarantine,TS:100
-X-CID-META: VersionHash:0f94e32,CLOUDID:7b7ac6d3-912a-458b-a623-74f605a77e93,C
-        OID:801c7d0cc6d4,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: bbb5a51e639b4ca5a47e83eaf5bdab38-20220724
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1145365221; Sun, 24 Jul 2022 16:58:44 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Sun, 24 Jul 2022 16:58:42 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sun, 24 Jul 2022 16:58:42 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 2/2] mt76: mt7921: add mt7921_mutex_acquire at mt7921_sta_set_decap_offload
-Date:   Sun, 24 Jul 2022 16:58:39 +0800
-Message-ID: <02ef9b9464024d2375caf598ae7c6b1e8e8e20de.1658641200.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <acb86f6ecd2f446e4102a2ef2e7a9c0003ae8b46.1658641200.git.objelf@gmail.com>
-References: <acb86f6ecd2f446e4102a2ef2e7a9c0003ae8b46.1658641200.git.objelf@gmail.com>
+        Sun, 24 Jul 2022 11:22:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEAA811C07;
+        Sun, 24 Jul 2022 08:22:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=RG/BJ3Nv9HakG4zVWqCXWL3uZp6IBIbE/vdVZRgFNzw=;
+        t=1658676126; x=1659885726; b=hyxJq9tjqYBSUs+yl2lXhjEasadf4QDDhUQtDVBgBTsOCXy
+        dXAS1NdbzZAH8t2GUlNLJhRhD49LM6qQYr6ikt7VEwb372PnhXfEw2eIErL3/1g/NmcQS7A1MmBoj
+        M7sI/c7TKKmGWAVMuqOX0QISRHvCSzFTYdLMvn4EDRAsr7qLMVn4yGnhfPIrpN9AlVZXuznPdF7KL
+        MRGo6/1aZIACWmI+uYVqBv6MGHPydotxxqBIszWJT+2aLy/cMHaEc5ZyPntvis9Hxxu9S7XG2Yi0g
+        ypD4kw1ai5Re/1SorP2ClE+MC/OBt+Q4GXVXOTKFomMo1MmltlwK5AiDCvwoP4Gg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oFdQP-006zmj-2a;
+        Sun, 24 Jul 2022 17:21:45 +0200
+Message-ID: <4f8ab262d98ba2a4d0e106e127c171e75b52ad47.camel@sipsolutions.net>
+Subject: Re: [PATCH] docs: driver-api: firmware: add driver firmware
+ guidelines. (v3)
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Dave Airlie <airlied@gmail.com>, torvalds@linux-foundation.org,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        gregkh@linuxfoundation.org, Daniel Vetter <daniel@ffwll.ch>,
+        mcgrof@kernel.org
+Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.sf.net,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
+        linux-block@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Harry Wentland <harry.wentland@amd.com>
+Date:   Sun, 24 Jul 2022 17:21:43 +0200
+In-Reply-To: <20220721044352.3110507-1-airlied@gmail.com>
+References: <20220721044352.3110507-1-airlied@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        RDNS_NONE,SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Thu, 2022-07-21 at 14:43 +1000, Dave Airlie wrote:
+>=20
+> +Users switching to a newer kernel should *not* have to install newer
+> +firmware files to keep their hardware working. At the same time updated
+> +firmware files must not cause any regressions for users of older kernel
+> +releases.
 
-Add mt7921_mutex_acquire at mt7921_[start, stop]_ap to fix the race
-with the context holding dev->muxtex and the driver might access the
-device in low power state.
+That seems sane, and certainly something we've done in wireless in the
+past.
 
-Fixes: 24299fc869f7 ("mt76: mt7921: enable rx header traslation offload")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> +* Firmware files shall be designed in a way that it allows checking for
+> +  firmware ABI version changes. It is recommended that firmware files be
+> +  versioned with at least a major/minor version. It is suggested that
+> +  the firmware files in linux-firmware be named with some device
+> +  specific name, and just the major version. The firmware version should
+> +  be stored in the firmware header, or as an exception, as part of the
+> +  firmware file name,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 7a4a3ed1817e..0d1b17e439dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1404,6 +1404,8 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
- 	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
- 
-+	mt7921_mutex_acquire(dev);
-+
- 	if (enabled)
- 		set_bit(MT_WCID_FLAG_HDR_TRANS, &msta->wcid.flags);
- 	else
-@@ -1411,6 +1413,8 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
- 
- 	mt76_connac_mcu_sta_update_hdr_trans(&dev->mt76, vif, &msta->wcid,
- 					     MCU_UNI_CMD(STA_REC_UPDATE));
-+
-+	mt7921_mutex_release(dev);
- }
- 
- #if IS_ENABLED(CONFIG_IPV6)
--- 
-2.25.1
+Eh, I went to write a whole paragraph here and then read it again ...
+Maybe this should say "[t]he _full_ firmware version", to contrast with
+the previous sentence mentioning the "major version".
 
+>  in order to let the driver detact any non-ABI
+
+typo - 'detect'
+
+> +  fixes/changes. The firmware files in linux-firmware should be
+> +  overwritten with the newest compatible major version.
+>=20
+
+That's also a bit confusing IMHO - did that mean "minor version"? Or
+something? I mean ... if you overwrite a file that has the major version
+in the filename then by definition it is the same major version?
+
+> +  This means no major version bumps without the kernel retaining
+> +  backwards compatibility for the older major versions.
+
+Strictly reading this might require aeons of support for firmware
+version, if you have a release cadence of them like every 6 weeks for a
+new _major_ version (yes, because APIs change), then that's rather
+harsh. In practice we've often done this, but I think some reasonable
+cut-off could/should be there, such as dropping support after a
+reasonably long time frame (say a year?)
+
+Often though that's less a question of "does it still work" and rather
+one of "do I still support that" and the answer for the latter is
+obviously "no" much quicker than the former.
+
+johannes
