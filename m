@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F9757FDC7
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 12:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 759FD57FDCE
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 12:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234771AbiGYKoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jul 2022 06:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34512 "EHLO
+        id S234899AbiGYKpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jul 2022 06:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbiGYKox (ORCPT
+        with ESMTP id S234829AbiGYKpR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jul 2022 06:44:53 -0400
+        Mon, 25 Jul 2022 06:45:17 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199F017A81
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 03:44:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3AFA470
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 03:45:12 -0700 (PDT)
 Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 9A1886601ABA;
-        Mon, 25 Jul 2022 11:44:50 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 491EF6601AD9;
+        Mon, 25 Jul 2022 11:45:09 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1658745891;
-        bh=fOWPnsIMKc3cDjDnNmAoOPpcjVUIo0Nn5r1oaX8r5HA=;
+        s=mail; t=1658745911;
+        bh=8jqDRz7pmMCFgF9l2ImU8VeeQTeNrBDh76+ym1NgW+A=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=cNv7NE9Nyps8hTGkGbK8I5oDY2lg+ueWA/aVOx2E389XIk6How3h426jqjgpKXIgq
-         HRbU3sN16lhDvUYfzSeac/ePi5GufH8AC56lkokjUFULVj2SLUq1tLdBDHeAx/m/Yt
-         W1DlX5xEAmWZF/o6ovXLYFem6vGgSu12luYyWQ/AQSOhRI6jxf7LO3W8qcUWe69JKP
-         N0dy8/6JZ/MImMAVB3P1lmLCnE6Gv8jKh7eUUR2elZz+oyydWdmRmvw1RVtI89cjwK
-         P+mjXCZNOulA1ugdq0oI56dHKeCMQNYNX1t4eiRNLk8OHQMRfrj9CdvIlDkFp7Q53r
-         PNtDwz5QA/r+w==
-Message-ID: <03bf9014-e47f-32fc-4ee1-5fc4a4d381e4@collabora.com>
-Date:   Mon, 25 Jul 2022 12:44:48 +0200
+        b=LaKHIvkhyLjcACgIe2Q1iGCENgeoUGrDw6wFlzCkYsfFv+tNPmm/hRdyFqfalSWko
+         h39EGl8V97qYdNIJXfzhl+e20USyc/GK9zR6ofa3MDxfBBSj2+V+VuUkF6ocOdaR6G
+         M16IdHYSVuWnT2ydUV6J7mZVKxSThvWIdLaa8pTkgumtZyMWrgXGha/EfcQpTjA/Oh
+         X9a+6IwZfy46ShwOqtVgN2fLTm7Q1/7gT1TlcXNfxSDDubHq+FxmWvbOFm4Qq2CoXj
+         uhCMPQo/SP3wf06gLpkY6cLH66MbM+OGCA2CSY0DL6b0nkhEbyrzCkBDYaFmxTV/Tq
+         paCMnsYCKHGdg==
+Message-ID: <42747f5b-cd51-6a42-c793-db5f410b3bcc@collabora.com>
+Date:   Mon, 25 Jul 2022 12:45:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH 1/2] mt76: mt7921: add mt7921_mutex_acquire at
- mt7921_[start, stop]_ap
+Subject: Re: [PATCH 2/2] mt76: mt7921: add mt7921_mutex_acquire at
+ mt7921_sta_set_decap_offload
 Content-Language: en-US
 To:     sean.wang@mediatek.com, nbd@nbd.name, lorenzo.bianconi@redhat.com
 Cc:     Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
@@ -53,9 +53,10 @@ Cc:     Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
         shawnku@google.com, linux-wireless@vger.kernel.org,
         linux-mediatek@lists.infradead.org
 References: <acb86f6ecd2f446e4102a2ef2e7a9c0003ae8b46.1658641200.git.objelf@gmail.com>
+ <02ef9b9464024d2375caf598ae7c6b1e8e8e20de.1658641200.git.objelf@gmail.com>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <acb86f6ecd2f446e4102a2ef2e7a9c0003ae8b46.1658641200.git.objelf@gmail.com>
+In-Reply-To: <02ef9b9464024d2375caf598ae7c6b1e8e8e20de.1658641200.git.objelf@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -74,9 +75,9 @@ Il 24/07/22 10:58, sean.wang@mediatek.com ha scritto:
 > with the context holding dev->muxtex and the driver might access the
 > device in low power state.
 > 
-> Fixes: 9d958b60ebc2 ("mt76: mt7921: fix command timeout in AP stop period")
+> Fixes: 24299fc869f7 ("mt76: mt7921: enable rx header traslation offload")
 > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
 Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-(P.S.: I agree with Lorenzo's nits.)
