@@ -2,25 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24EED58028C
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 18:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D1C158033E
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 19:02:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236000AbiGYQWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jul 2022 12:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52576 "EHLO
+        id S232954AbiGYRCw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jul 2022 13:02:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235966AbiGYQWP (ORCPT
+        with ESMTP id S235549AbiGYRCu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jul 2022 12:22:15 -0400
-X-Greylist: delayed 357 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Jul 2022 09:22:12 PDT
-Received: from mail-m121145.qiye.163.com (mail-m121145.qiye.163.com [115.236.121.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CE3167EB;
-        Mon, 25 Jul 2022 09:22:12 -0700 (PDT)
-Received: from localhost.localdomain (unknown [113.118.189.34])
-        by mail-m121145.qiye.163.com (Hmail) with ESMTPA id 0C493800017;
-        Tue, 26 Jul 2022 00:16:10 +0800 (CST)
-From:   Chukun Pan <amadeus@jmu.edu.cn>
-To:     Jakub Kicinski <kubakici@wp.pl>
+        Mon, 25 Jul 2022 13:02:50 -0400
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C066DEB9
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 10:02:47 -0700 (PDT)
+Received: (wp-smtpd smtp.wp.pl 7474 invoked from network); 25 Jul 2022 19:02:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1658768564; bh=jZl6nmbwdbhYiW5mJjTv3vyZliHhWUIo2ivhXQ0y+Pg=;
+          h=From:To:Cc:Subject;
+          b=edtMkbOVm74DvTmD0kYjSk2tEzAPXV6hVJuIWp+sydlGE3bnkUTxZpKBtjB/7FhLi
+           OIWlyAwWRUFAaNCSEJduOXSEYyRmO0DKPAL49dt4JWbTGB1NCIc3t0wc5ZWE9OOVOs
+           CsxzIE+EqJi3IlfujDZKCj9C/jLcKl4vEWAPG6AY=
+Received: from unknown (HELO kicinski-fedora-PC1C0HJN) (kubakici@wp.pl@[163.114.132.128])
+          (envelope-sender <kubakici@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <amadeus@jmu.edu.cn>; 25 Jul 2022 19:02:43 +0200
+Date:   Mon, 25 Jul 2022 10:02:35 -0700
+From:   Jakub Kicinski <kubakici@wp.pl>
+To:     Chukun Pan <amadeus@jmu.edu.cn>
 Cc:     Kalle Valo <kvalo@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
@@ -28,52 +36,32 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Lintel Huang <lintel.huang@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chukun Pan <amadeus@jmu.edu.cn>
-Subject: [PATCH] wifi: mt7601u: Add AP mode support
-Date:   Tue, 26 Jul 2022 00:16:03 +0800
-Message-Id: <20220725161603.15201-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.25.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mt7601u: Add AP mode support
+Message-ID: <20220725100235.2a6d0ee8@kicinski-fedora-PC1C0HJN>
+In-Reply-To: <20220725161603.15201-1-amadeus@jmu.edu.cn>
+References: <20220725161603.15201-1-amadeus@jmu.edu.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTBodVkNDTkkfSUoYTkJCT1UTARMWGhIXJBQOD1
-        lXWRgSC1lBWUpKSFVKSkNVSkNCVUhPWVdZFhoPEhUdFFlBWU9LSFVKSktISkNVS1kG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Ok06GTo4ND09PE42KD4WKwkr
-        PwIaFDBVSlVKTU5DTE1OTExLTE9PVTMWGhIXVRoWGh8eDgg7ERYOVR4fDlUYFUVZV1kSC1lBWUpK
-        SFVKSkNVSkNCVUhPWVdZCAFZQUlJTU03Bg++
-X-HM-Tid: 0a823624fe87b03akuuu0c493800017
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-WP-MailID: ebff1ada147d0a9580d9a20cd51d747d
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 000000A [cUNk]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add AP mode support to mt7601u chipset.
-Simply tested it with firmware version
-201302052146 and it seems working fine.
+On Tue, 26 Jul 2022 00:16:03 +0800 Chukun Pan wrote:
+> Add AP mode support to mt7601u chipset.
+> Simply tested it with firmware version
+> 201302052146 and it seems working fine.
 
-Run-tested-by: Lintel Huang <lintel.huang@gmail.com>
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
----
- drivers/net/wireless/mediatek/mt7601u/init.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt7601u/init.c b/drivers/net/wireless/mediatek/mt7601u/init.c
-index 5d9e952b2966..d18800b41704 100644
---- a/drivers/net/wireless/mediatek/mt7601u/init.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/init.c
-@@ -609,7 +609,8 @@ int mt7601u_register_device(struct mt7601u_dev *dev)
- 	SET_IEEE80211_PERM_ADDR(hw, dev->macaddr);
- 
- 	wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR;
--	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION);
-+	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
-+				 BIT(NL80211_IFTYPE_AP);
- 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS;
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
--- 
-2.25.1
-
+The chipset does not support CAB properly, trying to run APs on it is 
+a waste of everyone's time. Just buy better HW if you need AP mode.
+These are $5 dongles so I hope the suggestion is acceptable.
