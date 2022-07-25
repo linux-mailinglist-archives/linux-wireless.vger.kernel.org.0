@@ -2,51 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 355A657FE44
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 13:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FB7057FE5A
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 13:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234884AbiGYLXO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jul 2022 07:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57478 "EHLO
+        id S235056AbiGYL07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jul 2022 07:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234784AbiGYLXN (ORCPT
+        with ESMTP id S235054AbiGYL06 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jul 2022 07:23:13 -0400
+        Mon, 25 Jul 2022 07:26:58 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B97314D08
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 04:23:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC31117E29
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 04:26:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A58B9B80E4C
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 11:23:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7B5C341C8;
-        Mon, 25 Jul 2022 11:23:09 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8B296B80E4B
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 11:26:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595B9C341C6;
+        Mon, 25 Jul 2022 11:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658748190;
-        bh=BVdjLwLxOOb/BTqcmnVSOT7tpDS8HiwfdQrWI1fdU4M=;
+        s=k20201202; t=1658748415;
+        bh=ByzNrFzGDisnp6Rd1c9XlWdax0TrZxDkLwMrmCNll9g=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JCO18uHVn822/vHLs34I00heNZZKFBrNacEisIqzwqUg+UTTv00u0vzqJVffPkfH7
-         HsqIH1lDSpIMMo/5Cq+kbbcwpsqfWpRkH4fTZV7iE5g82HN2UBFTVsiDaPLf/jXmpE
-         7Od3y5OFs/L+FpY+JMW0i5vSgiZZEDpebzRz+EhWgcvM2s2uA3igqJ7VsXWsZuA+j4
-         vamXT0EL9RUqxPZwJWK5jzf2xBD77CyaaI1KBlCAvJ/diEGn7lMItY1plHdlIVk5Km
-         LEeZvD7MyOalF1UZYcT3YqQQkN1OjKUHtKcGLQ9OABsomu9QoWLjNho9zdjgufHU42
-         u3eOVyzaKvvgQ==
+        b=uFKAUIBK4FHMWe6SnIoPT4S3BYt9mzZ8XCzEVtbTTiM7PhdQVVEGcN1yRCLup6ri0
+         rfPFEeECRv6FDXp8wSiKqiz8rlAnPpBOQyPy4fhNGzdPGkocKcnNsUhXKokNjZDhhH
+         XQaW5ne9M8gZXMJKxBfGu1O5j3D06Y+dFWor8kdk2V8BIZ8WpWCGS9SSq7yzgFy38g
+         yPxNNwNPpOklCdb47XRDhYxGXknhnZvN/Te8KDYNhHLQvjekRNpgSwAGXjxkDkNNkR
+         /tYfrznx5qhzg1YfcUoDKDYfIhP9hJMTbH4o6gbKiLSwJfrwX/lZ2+kPb7VnMXt7wy
+         VhF7zs30Qjnug==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Add support to get power save duration for each
- client
+Subject: Re: [PATCHv2] ath11k: Add spectral scan support for 160 MHz
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220725054601.14719-1-quic_tamizhr@quicinc.com>
-References: <20220725054601.14719-1-quic_tamizhr@quicinc.com>
+In-Reply-To: <20220725055001.15194-1-quic_tamizhr@quicinc.com>
+References: <20220725055001.15194-1-quic_tamizhr@quicinc.com>
 To:     Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
         Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165874818328.809.14159736625387988844.kvalo@kernel.org>
-Date:   Mon, 25 Jul 2022 11:23:09 +0000 (UTC)
+Message-ID: <165874840987.809.11956403256946513470.kvalo@kernel.org>
+Date:   Mon, 25 Jul 2022 11:26:54 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,51 +56,43 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Tamizh Chelvam Raja <quic_tamizhr@quicinc.com> wrote:
 
-> Add support to get the following power save information through debugfs interface,
+> There are two types of 160 MHz spectral scan support mentioned below
 > 
->  * Current ps state of the peer
->  * Time duration since the peer is in power save
->  * Total duration of the peer spent in power save
+> 1. Fragmented approach
+> 2. Single event approach
 > 
-> Above information is helpful in debugging the issues with power save clients.
+> In this fragmented approach, single 160 MHz will be split as two
+> 80 MHz buffer. First fft sample buffer will contain spectral scan
+> result of primary 80 MHz and the second fft sample buffer will contain
+> secondary 80 MHz and here cfreq1 and cfreq2 will be mentioned.
+> In case of 160 MHz on 36th channel will contain cfreq1 as 5210 and
+> cfreq2 as 5290. Chipsets which support this approach are IPQ8074/IPQ6018.
 > 
-> This patch also add trace log support for PS timekeeper to track the PS state
-> change of the peers alongs with the peer MAC address and timestamp.
+> Replacing freq1 with freq2 in every secondary sepctral scan event to
+> distinguish between two different 80 MHz spectral event data.
 > 
-> Use the below commands to get the above power save information,
+> In the 2nd approach each fft sample buffer will contain spectral scan
+> result for whole 160 MHz by mentioning cfreq1 as 5250 which is center
+> frequency of whole 160 MHz. Chipset which support this approach is QCN9074.
 > 
-> To know the time_since_station_in_power_save:
-> cat /sys/kernel/debug/ieee80211/phyX/netdev:wlanX/stations/
-> XX:XX:XX:XX:XX:XX/current_ps_duration
+> Host will receive spectral event from target for every 5 fft samples.
 > 
-> To know power_save_duration:
-> cat /sys/kernel/debug/ieee80211/phyX/netdev:wlanX/stations/
-> XX:XX:XX:XX:XX:XX/total_ps_duration
-> 
-> To reset the power_save_duration of all stations connected to AP:
-> echo 1 > /sys/kernel/debug/ieee80211/phyX/ath11k/reset_ps_duration
-> 
-> To enable/disable the ps_timekeeper:
-> echo Y > /sys/kernel/debug/ieee80211/phyX/ath11k/ps_timekeeper_enable
-> Y = 1 to enable and Y = 0 to disable.
-> 
-> To record PS timekeeer logs after enabling ps_timekeeper:
-> trace-cmd record -e ath11k_ps_timekeeper
-> 
-> Tested-on: Tested-on: IPQ8074 WLAN.HK.2.5.0.1-00991-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01120-QCAHKSWPL-1
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01120-QCAHKSWP
 > 
 > Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-This failed to build:
+This added a new warning:
 
-drivers/net/wireless/ath/ath11k/wmi.c:6771:1: error: no previous prototype for 'ath11k_wmi_event_peer_sta_ps_state_chg' [-Werror=missing-prototypes]
+drivers/net/wireless/ath/ath11k/spectral.c:682:43: warning: incorrect type in assignment (different base types)
+drivers/net/wireless/ath/ath11k/spectral.c:682:43:    expected restricted __be16 [usertype] freq1
+drivers/net/wireless/ath/ath11k/spectral.c:682:43:    got unsigned short [assigned] [usertype] freq
 
-I fixed it in the pending branch.
+Remember to use ath11k-check to check your code. I fixed this in the pending branch.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220725054601.14719-1-quic_tamizhr@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220725055001.15194-1-quic_tamizhr@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
