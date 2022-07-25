@@ -2,97 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB7057FE5A
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 13:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4348657FE82
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 13:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235056AbiGYL07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jul 2022 07:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60750 "EHLO
+        id S233717AbiGYLls (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jul 2022 07:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235054AbiGYL06 (ORCPT
+        with ESMTP id S229614AbiGYLlq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jul 2022 07:26:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC31117E29
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 04:26:57 -0700 (PDT)
+        Mon, 25 Jul 2022 07:41:46 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA559AE49;
+        Mon, 25 Jul 2022 04:41:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8B296B80E4B
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 11:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595B9C341C6;
-        Mon, 25 Jul 2022 11:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658748415;
-        bh=ByzNrFzGDisnp6Rd1c9XlWdax0TrZxDkLwMrmCNll9g=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=uFKAUIBK4FHMWe6SnIoPT4S3BYt9mzZ8XCzEVtbTTiM7PhdQVVEGcN1yRCLup6ri0
-         rfPFEeECRv6FDXp8wSiKqiz8rlAnPpBOQyPy4fhNGzdPGkocKcnNsUhXKokNjZDhhH
-         XQaW5ne9M8gZXMJKxBfGu1O5j3D06Y+dFWor8kdk2V8BIZ8WpWCGS9SSq7yzgFy38g
-         yPxNNwNPpOklCdb47XRDhYxGXknhnZvN/Te8KDYNhHLQvjekRNpgSwAGXjxkDkNNkR
-         /tYfrznx5qhzg1YfcUoDKDYfIhP9hJMTbH4o6gbKiLSwJfrwX/lZ2+kPb7VnMXt7wy
-         VhF7zs30Qjnug==
-Content-Type: text/plain; charset="utf-8"
+        by sin.source.kernel.org (Postfix) with ESMTPS id 9ED02CE1197;
+        Mon, 25 Jul 2022 11:41:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65907C341CE;
+        Mon, 25 Jul 2022 11:41:39 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OX8iP9XF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1658749296;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=snNmtNpAD+4T2xYJlTy16N746DVx+7vAQcSlY0eqPQ4=;
+        b=OX8iP9XFveAlJues0PzDBzCSpGKd5MZFA3ggJ4bIMbv5qRjzfCdMDRiAxHV2J5Rl4PMPWg
+        hyQqdi2I816VJViagjOPOg9sXOBjKupEtZ9Wp0xhVeq+3DpgxcK3wcrVbQZvCgWyyHYEcb
+        hvDhqxvlMk7SGSCRIlG68fivrzJLoMo=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id a5eb5f0c (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Mon, 25 Jul 2022 11:41:36 +0000 (UTC)
+Received: by mail-yb1-f179.google.com with SMTP id d124so2105484ybb.5;
+        Mon, 25 Jul 2022 04:41:36 -0700 (PDT)
+X-Gm-Message-State: AJIora+b71Bbq5sKdJVr6xGFP8ewT1sGAe9JBSizN0cxYtmOQv1s1Fm1
+        hjv2/5GMJPZD7QNMLfERpBCltq6CZb7j9ZZumII=
+X-Google-Smtp-Source: AGRyM1uEWMaeH2vYM13zJOE12Ad5anczdXVRTirNiVZun7WozkUU416pIzL0vNTGDpg+YFrRsXbp0oPPFl+U9IsqWsY=
+X-Received: by 2002:a25:cf16:0:b0:671:60e5:e9e2 with SMTP id
+ f22-20020a25cf16000000b0067160e5e9e2mr496508ybg.231.1658749294667; Mon, 25
+ Jul 2022 04:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCHv2] ath11k: Add spectral scan support for 160 MHz
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220725055001.15194-1-quic_tamizhr@quicinc.com>
-References: <20220725055001.15194-1-quic_tamizhr@quicinc.com>
-To:     Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165874840987.809.11956403256946513470.kvalo@kernel.org>
-Date:   Mon, 25 Jul 2022 11:26:54 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CAHmME9qrd25vfRYYvCWtPg+wVC5joEzzJiihCN+L4rqMfTL4Rg@mail.gmail.com>
+ <20220719201108.264322-1-Jason@zx2c4.com> <xhsmhfsisgbam.mognet@vschneid.remote.csb>
+ <CAHmME9pEvr_F2C9cG4qNSCc91a7YAAquW7Jqczcgn2fr_vA4Ow@mail.gmail.com> <xhsmhbktdfqrp.mognet@vschneid.remote.csb>
+In-Reply-To: <xhsmhbktdfqrp.mognet@vschneid.remote.csb>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Mon, 25 Jul 2022 13:41:23 +0200
+X-Gmail-Original-Message-ID: <CAHmME9rp0kCLKvXWfmRHi=p2PLYRszqQqQWZLHyofJ=9xZCtMA@mail.gmail.com>
+Message-ID: <CAHmME9rp0kCLKvXWfmRHi=p2PLYRszqQqQWZLHyofJ=9xZCtMA@mail.gmail.com>
+Subject: Re: [PATCH v10] ath9k: let sleep be interrupted when unregistering hwrng
+To:     Valentin Schneider <vschneid@redhat.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Rui Salvaterra <rsalvaterra@gmail.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        stable <stable@vger.kernel.org>,
+        Gregory Erwin <gregerwin256@gmail.com>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tamizh Chelvam Raja <quic_tamizhr@quicinc.com> wrote:
+Hi Valentin,
 
-> There are two types of 160 MHz spectral scan support mentioned below
-> 
-> 1. Fragmented approach
-> 2. Single event approach
-> 
-> In this fragmented approach, single 160 MHz will be split as two
-> 80 MHz buffer. First fft sample buffer will contain spectral scan
-> result of primary 80 MHz and the second fft sample buffer will contain
-> secondary 80 MHz and here cfreq1 and cfreq2 will be mentioned.
-> In case of 160 MHz on 36th channel will contain cfreq1 as 5210 and
-> cfreq2 as 5290. Chipsets which support this approach are IPQ8074/IPQ6018.
-> 
-> Replacing freq1 with freq2 in every secondary sepctral scan event to
-> distinguish between two different 80 MHz spectral event data.
-> 
-> In the 2nd approach each fft sample buffer will contain spectral scan
-> result for whole 160 MHz by mentioning cfreq1 as 5250 which is center
-> frequency of whole 160 MHz. Chipset which support this approach is QCN9074.
-> 
-> Host will receive spectral event from target for every 5 fft samples.
-> 
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01120-QCAHKSWPL-1
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01120-QCAHKSWP
-> 
-> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+On Mon, Jul 25, 2022 at 12:09 PM Valentin Schneider <vschneid@redhat.com> wrote:
+> > maybe at some point I'll look into overhauling all of this so that
+> > none of this will be required anyway. So I think v10 is my final
+> > submission on this.
+>
+> I think that's fair, I hope I didn't discourage you too much from
+> contributing in that area.
 
-This added a new warning:
+While not strictly necessary because of Eric's ack, since you continue
+to grow this thread that addresses an active bug people are suffering
+from, it might be some very useful signaling if you too would provide
+your Acked-by, so that Kalle picks this up and people's laptops work
+again.
 
-drivers/net/wireless/ath/ath11k/spectral.c:682:43: warning: incorrect type in assignment (different base types)
-drivers/net/wireless/ath/ath11k/spectral.c:682:43:    expected restricted __be16 [usertype] freq1
-drivers/net/wireless/ath/ath11k/spectral.c:682:43:    got unsigned short [assigned] [usertype] freq
+>
+> Just to make sure I'm on the same page as you - is your patch solely for
+> ath9k, or is it supposed to fix other drivers?
 
-Remember to use ath11k-check to check your code. I fixed this in the pending branch.
+The intent here is ath9k, but in the process it of course fixes other
+things too, and I'm quite pleased with the multiple-birds-one-stone
+consequence.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220725055001.15194-1-quic_tamizhr@quicinc.com/
+> So if ath9k is widely used / a problem for lots of folks, we could just fix
+> that one and leave the others TBD. What do you think?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+No, that kind of band aid doesn't really sit well, especially as
+you've proposed struct changes inside hwrng. I'm not going to do that.
 
+As mentioned, v10 is my final submission here. If you'd like to Ack
+it, please go ahead. If not, and if as a consequence Kalle doesn't
+pick up the patch, perhaps you'll develop this yourself moving forward
+and you'll also fix the longstanding problems with hwrng so that I
+don't have to. In case it's not clear to you: I'm no longer interested
+in any aspect of this discussion, I find the current patch
+satisfactory of numerous goals, and I would appreciate this whole
+thing being over. I am no longer available to work further on this
+patch.
+
+Thanks,
+Jason
