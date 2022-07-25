@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2994457F841
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 04:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A0057F846
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 04:36:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232704AbiGYCgB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Jul 2022 22:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47150 "EHLO
+        id S232809AbiGYCgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Jul 2022 22:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbiGYCf7 (ORCPT
+        with ESMTP id S231419AbiGYCf7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 24 Jul 2022 22:35:59 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 298DFE020
-        for <linux-wireless@vger.kernel.org>; Sun, 24 Jul 2022 19:35:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2B436E022
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Jul 2022 19:35:56 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26P2ZZd04014719, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26P2ZZd04014719
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26P2ZadX6014733, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26P2ZadX6014733
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 25 Jul 2022 10:35:35 +0800
+        Mon, 25 Jul 2022 10:35:37 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Mon, 25 Jul 2022 10:35:41 +0800
+ 15.1.2375.7; Mon, 25 Jul 2022 10:35:42 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Mon, 25 Jul
- 2022 10:35:40 +0800
+ 2022 10:35:42 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 3/9] rtw89: coex: Add logic to parsing rtl8852c firmware type ctrl report
-Date:   Mon, 25 Jul 2022 10:35:03 +0800
-Message-ID: <20220725023509.43114-4-pkshih@realtek.com>
+Subject: [PATCH v2 4/9] rtw89: coex: Define BT B1 slot length
+Date:   Mon, 25 Jul 2022 10:35:04 +0800
+Message-ID: <20220725023509.43114-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220725023509.43114-1-pkshih@realtek.com>
 References: <20220725023509.43114-1-pkshih@realtek.com>
@@ -55,10 +55,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzcvMjQgpFWkyCAxMToyOTowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,231 +69,264 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-Add a part of logic to parse type of ctrl report from firmware, and
-remove Bluetooth packet counter count from driver, the feature was
-moved to firmware at rtl8852c.
+It is for setting up BT slot max length at BT auto slot mechanism.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c     | 44 +++++++++++--
- drivers/net/wireless/realtek/rtw89/core.h     | 63 +++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 18 +-----
- 3 files changed, 98 insertions(+), 27 deletions(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 131 +++++++++++-----------
+ 1 file changed, 66 insertions(+), 65 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index f9c67aa1570dd..020b2628ef2c4 100644
+index 020b2628ef2c4..f8e335ead91a2 100644
 --- a/drivers/net/wireless/realtek/rtw89/coex.c
 +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -876,7 +876,9 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
- 	struct rtw89_btc_dm *dm = &btc->dm;
- 	struct rtw89_btc_rpt_cmn_info *pcinfo = NULL;
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
--	struct rtw89_btc_fbtc_rpt_ctrl *prpt = NULL;
-+	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
-+	struct rtw89_btc_fbtc_rpt_ctrl *prpt;
-+	struct rtw89_btc_fbtc_rpt_ctrl_v1 *prpt_v1;
- 	struct rtw89_btc_fbtc_cysta *pcysta_le32 = NULL;
- 	struct rtw89_btc_fbtc_cysta_cpu pcysta[1];
- 	struct rtw89_btc_prpt *btc_prpt = NULL;
-@@ -907,8 +909,13 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
- 	switch (rpt_type) {
- 	case BTC_RPT_TYPE_CTRL:
- 		pcinfo = &pfwinfo->rpt_ctrl.cinfo;
--		pfinfo = (u8 *)(&pfwinfo->rpt_ctrl.finfo);
--		pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo);
-+		if (chip->chip_id == RTL8852A) {
-+			pfinfo = (u8 *)(&pfwinfo->rpt_ctrl.finfo);
-+			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo);
-+		} else {
-+			pfinfo = (u8 *)(&pfwinfo->rpt_ctrl.finfo_v1);
-+			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo_v1);
-+		}
- 		pcinfo->req_fver = chip->fcxbtcrpt_ver;
- 		pcinfo->rx_len = rpt_len;
- 		pcinfo->rx_cnt++;
-@@ -1127,12 +1134,12 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
- 		_chk_btc_err(rtwdev, BTC_DCNT_CYCLE_FREEZE, (u32)pcysta->cycles);
- 	}
+@@ -322,25 +322,25 @@ enum btc_cx_poicy_type {
+ 	BTC_CXP_PFIX_TDW1B1 = (BTC_CXP_PFIX << 8) | 6,
  
--	if (rpt_type == BTC_RPT_TYPE_CTRL) {
-+	if (rpt_type == BTC_RPT_TYPE_CTRL && chip->chip_id == RTL8852A) {
- 		prpt = &pfwinfo->rpt_ctrl.finfo;
- 		btc->fwinfo.rpt_en_map = prpt->rpt_enable;
- 		wl->ver_info.fw_coex = prpt->wl_fw_coex_ver;
- 		wl->ver_info.fw = prpt->wl_fw_ver;
--		dm->wl_fw_cx_offload = !!(prpt->wl_fw_cx_offload);
-+		dm->wl_fw_cx_offload = !!prpt->wl_fw_cx_offload;
+ 	/* TDMA Auto slot-0: W1:B1 = 50:200 */
+-	BTC_CXP_AUTO_TD50200 = (BTC_CXP_AUTO << 8) | 0,
++	BTC_CXP_AUTO_TD50B1 = (BTC_CXP_AUTO << 8) | 0,
  
- 		_chk_btc_err(rtwdev, BTC_DCNT_RPT_FREEZE,
- 			     pfwinfo->event[BTF_EVNT_RPT]);
-@@ -1145,6 +1152,33 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
- 			btc->cx.cnt_bt[BTC_BCNT_POLUT] =
- 				rtw89_mac_get_plt_cnt(rtwdev, RTW89_MAC_0);
+ 	/* TDMA Auto slot-1: W1:B1 = 60:200 */
+-	BTC_CXP_AUTO_TD60200 = (BTC_CXP_AUTO << 8) | 1,
++	BTC_CXP_AUTO_TD60B1 = (BTC_CXP_AUTO << 8) | 1,
+ 
+ 	/* TDMA Auto slot-2: W1:B1 = 20:200 */
+-	BTC_CXP_AUTO_TD20200 = (BTC_CXP_AUTO << 8) | 2,
++	BTC_CXP_AUTO_TD20B1 = (BTC_CXP_AUTO << 8) | 2,
+ 
+ 	/* TDMA Auto slot-3: W1:B1 = user-define */
+ 	BTC_CXP_AUTO_TDW1B1 = (BTC_CXP_AUTO << 8) | 3,
+ 
+ 	/* PS-TDMA Auto slot-0: W1:B1 = 50:200 */
+-	BTC_CXP_PAUTO_TD50200 = (BTC_CXP_PAUTO << 8) | 0,
++	BTC_CXP_PAUTO_TD50B1 = (BTC_CXP_PAUTO << 8) | 0,
+ 
+ 	/* PS-TDMA Auto slot-1: W1:B1 = 60:200 */
+-	BTC_CXP_PAUTO_TD60200 = (BTC_CXP_PAUTO << 8) | 1,
++	BTC_CXP_PAUTO_TD60B1 = (BTC_CXP_PAUTO << 8) | 1,
+ 
+ 	/* PS-TDMA Auto slot-2: W1:B1 = 20:200 */
+-	BTC_CXP_PAUTO_TD20200 = (BTC_CXP_PAUTO << 8) | 2,
++	BTC_CXP_PAUTO_TD20B1 = (BTC_CXP_PAUTO << 8) | 2,
+ 
+ 	/* PS-TDMA Auto slot-3: W1:B1 = user-define */
+ 	BTC_CXP_PAUTO_TDW1B1 = (BTC_CXP_PAUTO << 8) | 3,
+@@ -531,6 +531,7 @@ enum btc_reason_and_action {
+ #define BTC_FREERUN_ANTISO_MIN 30
+ #define BTC_TDMA_BTHID_MAX 2
+ #define BTC_BLINK_NOCONNECT 0
++#define BTC_B1_MAX 250 /* unit ms */
+ 
+ static void _run_coex(struct rtw89_dev *rtwdev,
+ 		      enum btc_reason_and_action reason);
+@@ -2117,17 +2118,17 @@ static void _set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
+ 		_write_scbd(rtwdev, BTC_WSCB_TDMA, true);
+ 		*t = t_def[CXTD_AUTO];
+ 		switch (policy_type) {
+-		case BTC_CXP_AUTO_TD50200:
+-			_slot_set(btc, CXST_W1,  50, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
++		case BTC_CXP_AUTO_TD50B1:
++			_slot_set(btc, CXST_W1, 50, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+-		case BTC_CXP_AUTO_TD60200:
+-			_slot_set(btc, CXST_W1,  60, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
++		case BTC_CXP_AUTO_TD60B1:
++			_slot_set(btc, CXST_W1, 60, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+-		case BTC_CXP_AUTO_TD20200:
+-			_slot_set(btc, CXST_W1,  20, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
++		case BTC_CXP_AUTO_TD20B1:
++			_slot_set(btc, CXST_W1, 20, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_AUTO_TDW1B1: /* W1:B1 = user-define */
+ 			_slot_set(btc, CXST_W1, dm->slot_dur[CXST_W1],
+@@ -2141,17 +2142,17 @@ static void _set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
+ 		_write_scbd(rtwdev, BTC_WSCB_TDMA, true);
+ 		*t = t_def[CXTD_PAUTO];
+ 		switch (policy_type) {
+-		case BTC_CXP_PAUTO_TD50200:
+-			_slot_set(btc, CXST_W1,  50, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
++		case BTC_CXP_PAUTO_TD50B1:
++			_slot_set(btc, CXST_W1, 50, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+-		case BTC_CXP_PAUTO_TD60200:
+-			_slot_set(btc, CXST_W1,  60, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
++		case BTC_CXP_PAUTO_TD60B1:
++			_slot_set(btc, CXST_W1, 60, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+-		case BTC_CXP_PAUTO_TD20200:
+-			_slot_set(btc, CXST_W1,  20, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
++		case BTC_CXP_PAUTO_TD20B1:
++			_slot_set(btc, CXST_W1, 20, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_PAUTO_TDW1B1:
+ 			_slot_set(btc, CXST_W1, dm->slot_dur[CXST_W1],
+@@ -2166,29 +2167,29 @@ static void _set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
+ 		*t = t_def[CXTD_AUTO2];
+ 		switch (policy_type) {
+ 		case BTC_CXP_AUTO2_TD3050:
+-			_slot_set(btc, CXST_W1,  30, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 30, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_AUTO2_TD3070:
+-			_slot_set(btc, CXST_W1,  30, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  70, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 30, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 70, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_AUTO2_TD5050:
+-			_slot_set(btc, CXST_W1,  50, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 50, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_AUTO2_TD6060:
+-			_slot_set(btc, CXST_W1,  60, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  60, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 60, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 60, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_AUTO2_TD2080:
+-			_slot_set(btc, CXST_W1,  20, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  80, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 20, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 80, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_AUTO2_TDW1B4: /* W1:B1 = user-define */
+ 			_slot_set(btc, CXST_W1, dm->slot_dur[CXST_W1],
+@@ -2203,29 +2204,29 @@ static void _set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
+ 		*t = t_def[CXTD_PAUTO2];
+ 		switch (policy_type) {
+ 		case BTC_CXP_PAUTO2_TD3050:
+-			_slot_set(btc, CXST_W1,  30, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 30, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_PAUTO2_TD3070:
+-			_slot_set(btc, CXST_W1,  30, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  70, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 30, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 70, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_PAUTO2_TD5050:
+-			_slot_set(btc, CXST_W1,  50, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 50, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 50, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_PAUTO2_TD6060:
+-			_slot_set(btc, CXST_W1,  60, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  60, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 60, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 60, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_PAUTO2_TD2080:
+-			_slot_set(btc, CXST_W1,  20, tbl_w1, SLOT_ISO);
+-			_slot_set(btc, CXST_B1, 200, tbl_b1, SLOT_MIX);
+-			_slot_set(btc, CXST_B4,  80, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_W1, 20, tbl_w1, SLOT_ISO);
++			_slot_set(btc, CXST_B4, 80, tbl_b4, SLOT_MIX);
++			_slot_set(btc, CXST_B1, BTC_B1_MAX, tbl_b1, SLOT_MIX);
+ 			break;
+ 		case BTC_CXP_PAUTO2_TDW1B4: /* W1:B1 = user-define */
+ 			_slot_set(btc, CXST_W1, dm->slot_dur[CXST_W1],
+@@ -2574,7 +2575,7 @@ static void _action_bt_a2dp(struct rtw89_dev *rtwdev)
+ 				    BTC_CXP_PAUTO_TDW1B1, BTC_ACT_BT_A2DP);
+ 		} else {
+ 			_set_policy(rtwdev,
+-				    BTC_CXP_PAUTO_TD50200, BTC_ACT_BT_A2DP);
++				    BTC_CXP_PAUTO_TD50B1, BTC_ACT_BT_A2DP);
  		}
-+	} else if (rpt_type == BTC_RPT_TYPE_CTRL) {
-+		prpt_v1 = &pfwinfo->rpt_ctrl.finfo_v1;
-+		btc->fwinfo.rpt_en_map = le32_to_cpu(prpt_v1->rpt_info.en);
-+		wl->ver_info.fw_coex = le32_to_cpu(prpt_v1->wl_fw_info.cx_ver);
-+		wl->ver_info.fw = le32_to_cpu(prpt_v1->wl_fw_info.fw_ver);
-+		dm->wl_fw_cx_offload = !!le32_to_cpu(prpt_v1->wl_fw_info.cx_offload);
-+
-+		for (i = RTW89_PHY_0; i < RTW89_PHY_MAX; i++)
-+			memcpy(&dm->gnt.band[i], &prpt_v1->gnt_val[i],
-+			       sizeof(dm->gnt.band[i]));
-+
-+		btc->cx.cnt_bt[BTC_BCNT_HIPRI_TX] = le32_to_cpu(prpt_v1->bt_cnt[BTC_BCNT_HI_TX]);
-+		btc->cx.cnt_bt[BTC_BCNT_HIPRI_RX] = le32_to_cpu(prpt_v1->bt_cnt[BTC_BCNT_HI_RX]);
-+		btc->cx.cnt_bt[BTC_BCNT_LOPRI_TX] = le32_to_cpu(prpt_v1->bt_cnt[BTC_BCNT_LO_TX]);
-+		btc->cx.cnt_bt[BTC_BCNT_LOPRI_RX] = le32_to_cpu(prpt_v1->bt_cnt[BTC_BCNT_LO_RX]);
-+		btc->cx.cnt_bt[BTC_BCNT_POLUT] = le32_to_cpu(prpt_v1->bt_cnt[BTC_BCNT_POLLUTED]);
-+
-+		_chk_btc_err(rtwdev, BTC_DCNT_BTCNT_FREEZE, 0);
-+		_chk_btc_err(rtwdev, BTC_DCNT_RPT_FREEZE,
-+			     pfwinfo->event[BTF_EVNT_RPT]);
-+
-+		if (le32_to_cpu(prpt_v1->bt_cnt[BTC_BCNT_RFK_TIMEOUT]) > 0)
-+			bt->rfk_info.map.timeout = 1;
-+		else
-+			bt->rfk_info.map.timeout = 0;
-+
-+		dm->error.map.bt_rfk_timeout = bt->rfk_info.map.timeout;
+ 		break;
+ 	case BTC_WBUSY_BSCAN: /* wl-busy + bt-inq + bt-A2DP */
+@@ -2591,12 +2592,12 @@ static void _action_bt_a2dp(struct rtw89_dev *rtwdev)
+ 			_set_policy(rtwdev, BTC_CXP_AUTO_TDW1B1,
+ 				    BTC_ACT_BT_A2DP);
+ 		} else {
+-			_set_policy(rtwdev, BTC_CXP_AUTO_TD50200,
++			_set_policy(rtwdev, BTC_CXP_AUTO_TD50B1,
+ 				    BTC_ACT_BT_A2DP);
+ 		}
+ 		break;
+ 	case BTC_WIDLE:  /* wl-idle + bt-A2DP */
+-		_set_policy(rtwdev, BTC_CXP_AUTO_TD20200, BTC_ACT_BT_A2DP);
++		_set_policy(rtwdev, BTC_CXP_AUTO_TD20B1, BTC_ACT_BT_A2DP);
+ 		break;
  	}
- 
- 	if (rpt_type >= BTC_RPT_TYPE_BT_VER &&
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 686ff8760c847..6722aa26e48f4 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -809,7 +809,7 @@ struct rtw89_mac_ax_gnt {
- 	u8 gnt_bt;
- 	u8 gnt_wl_sw_en;
- 	u8 gnt_wl;
--};
-+} __packed;
- 
- #define RTW89_MAC_AX_COEX_GNT_NR 2
- struct rtw89_mac_ax_coex_gnt {
-@@ -1376,13 +1376,18 @@ struct rtw89_btc_fbtc_tdma {
- #define FCXMAX_STEP 255 /*STEP trace record cnt, Max:65535, default:255*/
- #define BTC_CYCLE_SLOT_MAX 48 /* must be even number, non-zero */
- 
--enum rtw89_btc_bt_rfk_counter {
-+enum rtw89_btc_bt_sta_counter {
- 	BTC_BCNT_RFK_REQ = 0,
- 	BTC_BCNT_RFK_GO = 1,
- 	BTC_BCNT_RFK_REJECT = 2,
- 	BTC_BCNT_RFK_FAIL = 3,
- 	BTC_BCNT_RFK_TIMEOUT = 4,
--	BTC_BCNT_RFK_MAX
-+	BTC_BCNT_HI_TX = 5,
-+	BTC_BCNT_HI_RX = 6,
-+	BTC_BCNT_LO_TX = 7,
-+	BTC_BCNT_LO_RX = 8,
-+	BTC_BCNT_POLLUTED = 9,
-+	BTC_BCNT_STA_MAX
- };
- 
- struct rtw89_btc_fbtc_rpt_ctrl {
-@@ -1399,11 +1404,56 @@ struct rtw89_btc_fbtc_rpt_ctrl {
- 	u32 mb_a2dp_empty_cnt; /* a2dp empty count */
- 	u32 mb_a2dp_flct_cnt; /* a2dp empty flow control counter */
- 	u32 mb_a2dp_full_cnt; /* a2dp empty full counter */
--	u32 bt_rfk_cnt[BTC_BCNT_RFK_MAX];
-+	u32 bt_rfk_cnt[BTC_BCNT_HI_TX];
- 	u32 c2h_cnt; /* fw send c2h counter  */
- 	u32 h2c_cnt; /* fw recv h2c counter */
- } __packed;
- 
-+struct rtw89_btc_fbtc_rpt_ctrl_info {
-+	__le32 cnt; /* fw report counter */
-+	__le32 en; /* report map */
-+	__le32 para; /* not used */
-+
-+	__le32 cnt_c2h; /* fw send c2h counter  */
-+	__le32 cnt_h2c; /* fw recv h2c counter */
-+	__le32 len_c2h; /* The total length of the last C2H  */
-+
-+	__le32 cnt_aoac_rf_on;  /* rf-on counter for aoac switch notify */
-+	__le32 cnt_aoac_rf_off; /* rf-off counter for aoac switch notify */
-+} __packed;
-+
-+struct rtw89_btc_fbtc_rpt_ctrl_wl_fw_info {
-+	__le32 cx_ver; /* match which driver's coex version */
-+	__le32 cx_offload;
-+	__le32 fw_ver;
-+} __packed;
-+
-+struct rtw89_btc_fbtc_rpt_ctrl_a2dp_empty {
-+	__le32 cnt_empty; /* a2dp empty count */
-+	__le32 cnt_flowctrl; /* a2dp empty flow control counter */
-+	__le32 cnt_tx;
-+	__le32 cnt_ack;
-+	__le32 cnt_nack;
-+} __packed;
-+
-+struct rtw89_btc_fbtc_rpt_ctrl_bt_mailbox {
-+	__le32 cnt_send_ok; /* fw send mailbox ok counter */
-+	__le32 cnt_send_fail; /* fw send mailbox fail counter */
-+	__le32 cnt_recv; /* fw recv mailbox counter */
-+	struct rtw89_btc_fbtc_rpt_ctrl_a2dp_empty a2dp;
-+} __packed;
-+
-+struct rtw89_btc_fbtc_rpt_ctrl_v1 {
-+	u8 fver;
-+	u8 rsvd;
-+	__le16 rsvd1;
-+	struct rtw89_btc_fbtc_rpt_ctrl_info rpt_info;
-+	struct rtw89_btc_fbtc_rpt_ctrl_wl_fw_info wl_fw_info;
-+	struct rtw89_btc_fbtc_rpt_ctrl_bt_mailbox bt_mbx_info;
-+	__le32 bt_cnt[BTC_BCNT_STA_MAX];
-+	struct rtw89_mac_ax_gnt gnt_val[RTW89_PHY_MAX];
-+} __packed;
-+
- enum rtw89_fbtc_ext_ctrl_type {
- 	CXECTL_OFF = 0x0, /* tdma off */
- 	CXECTL_B2 = 0x1, /* allow B2 (beacon-early) */
-@@ -1707,7 +1757,10 @@ struct rtw89_btc_rpt_cmn_info {
- 
- struct rtw89_btc_report_ctrl_state {
- 	struct rtw89_btc_rpt_cmn_info cinfo; /* common info, by driver */
--	struct rtw89_btc_fbtc_rpt_ctrl finfo; /* info from fw */
-+	union {
-+		struct rtw89_btc_fbtc_rpt_ctrl finfo; /* info from fw for 52A*/
-+		struct rtw89_btc_fbtc_rpt_ctrl_v1 finfo_v1; /* info from fw for 52C*/
-+	};
- };
- 
- struct rtw89_btc_rpt_fbtc_tdma {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 62aa103a8272c..f4012f1e04d91 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2793,23 +2793,7 @@ void rtw8852c_btc_bt_aci_imp(struct rtw89_dev *rtwdev)
- static
- void rtw8852c_btc_update_bt_cnt(struct rtw89_dev *rtwdev)
- {
--	struct rtw89_btc *btc = &rtwdev->btc;
--	struct rtw89_btc_cx *cx = &btc->cx;
--	u32 val;
--
--	val = rtw89_read32(rtwdev, R_BTC_BT_CNT_HIGH);
--	cx->cnt_bt[BTC_BCNT_HIPRI_TX] = FIELD_GET(B_AX_STATIS_BT_HI_TX_MASK, val);
--	cx->cnt_bt[BTC_BCNT_HIPRI_RX] = FIELD_GET(B_AX_STATIS_BT_HI_RX_MASK, val);
--
--	val = rtw89_read32(rtwdev, R_BTC_BT_CNT_LOW);
--	cx->cnt_bt[BTC_BCNT_LOPRI_TX] = FIELD_GET(B_AX_STATIS_BT_LO_TX_1_MASK, val);
--	cx->cnt_bt[BTC_BCNT_LOPRI_RX] = FIELD_GET(B_AX_STATIS_BT_LO_RX_1_MASK, val);
--
--	/* clock-gate off before reset counter*/
--	rtw89_write32_set(rtwdev, R_AX_BTC_CFG, B_AX_DIS_BTC_CLK_G);
--	rtw89_write32_clr(rtwdev, R_AX_BT_CNT_CFG, B_AX_BT_CNT_RST);
--	rtw89_write32_set(rtwdev, R_AX_BT_CNT_CFG, B_AX_BT_CNT_RST);
--	rtw89_write32_clr(rtwdev, R_AX_BTC_CFG, B_AX_DIS_BTC_CLK_G);
-+	/* Feature move to firmware */
  }
- 
- static
+@@ -2676,7 +2677,7 @@ static void _action_bt_a2dp_hid(struct rtw89_dev *rtwdev)
+ 				    BTC_CXP_PAUTO_TDW1B1, BTC_ACT_BT_A2DP_HID);
+ 		} else {
+ 			_set_policy(rtwdev,
+-				    BTC_CXP_PAUTO_TD50200, BTC_ACT_BT_A2DP_HID);
++				    BTC_CXP_PAUTO_TD50B1, BTC_ACT_BT_A2DP_HID);
+ 		}
+ 		break;
+ 	case BTC_WBUSY_BSCAN: /* wl-busy + bt-inq + bt-A2DP+HID */
+@@ -2694,7 +2695,7 @@ static void _action_bt_a2dp_hid(struct rtw89_dev *rtwdev)
+ 			_set_policy(rtwdev, BTC_CXP_AUTO_TDW1B1,
+ 				    BTC_ACT_BT_A2DP_HID);
+ 		} else {
+-			_set_policy(rtwdev, BTC_CXP_AUTO_TD50200,
++			_set_policy(rtwdev, BTC_CXP_AUTO_TD50B1,
+ 				    BTC_ACT_BT_A2DP_HID);
+ 		}
+ 		break;
+@@ -5033,13 +5034,13 @@ static const char *steps_to_str(u16 step)
+ 	CASE_BTC_POLICY_STR(PFIX_TD3070);
+ 	CASE_BTC_POLICY_STR(PFIX_TD2080);
+ 	CASE_BTC_POLICY_STR(PFIX_TDW1B1);
+-	CASE_BTC_POLICY_STR(AUTO_TD50200);
+-	CASE_BTC_POLICY_STR(AUTO_TD60200);
+-	CASE_BTC_POLICY_STR(AUTO_TD20200);
++	CASE_BTC_POLICY_STR(AUTO_TD50B1);
++	CASE_BTC_POLICY_STR(AUTO_TD60B1);
++	CASE_BTC_POLICY_STR(AUTO_TD20B1);
+ 	CASE_BTC_POLICY_STR(AUTO_TDW1B1);
+-	CASE_BTC_POLICY_STR(PAUTO_TD50200);
+-	CASE_BTC_POLICY_STR(PAUTO_TD60200);
+-	CASE_BTC_POLICY_STR(PAUTO_TD20200);
++	CASE_BTC_POLICY_STR(PAUTO_TD50B1);
++	CASE_BTC_POLICY_STR(PAUTO_TD60B1);
++	CASE_BTC_POLICY_STR(PAUTO_TD20B1);
+ 	CASE_BTC_POLICY_STR(PAUTO_TDW1B1);
+ 	CASE_BTC_POLICY_STR(AUTO2_TD3050);
+ 	CASE_BTC_POLICY_STR(AUTO2_TD3070);
 -- 
 2.25.1
 
