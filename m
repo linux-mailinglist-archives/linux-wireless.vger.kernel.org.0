@@ -2,108 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37822580355
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 19:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24EED58028C
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jul 2022 18:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236645AbiGYRIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jul 2022 13:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59168 "EHLO
+        id S236000AbiGYQWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jul 2022 12:22:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235991AbiGYRIe (ORCPT
+        with ESMTP id S235966AbiGYQWP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jul 2022 13:08:34 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D59717A8C;
-        Mon, 25 Jul 2022 10:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658768913; x=1690304913;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sSdI+BU9e3YX5dM7OgmzfeHQiDsLJgc/tN6SHdRbQbE=;
-  b=K3egCreI9cpkezxpMXJbaL/YMPbWhdJ6lhTl6x5qj+BT80VX2BE7S5li
-   oqfp+d5LPU6/4b3LhX3UU41Vbx1N0OK7jZa441wVx8xCdIkXMFuDnl0Bl
-   U9d6VwkhIjFDoEazKH2YoFG68d7XMVIZ0/wioeCpnfeBhfVgFHnt37wFj
-   2PpMsrJ4RKTBX040pRjMSdMjeZwgeujJn8xjUyX24EKjwIYJuFABda97o
-   zfBOXCzTVJpzp2Q7xz+R7CBOx7A3LA6mFQx0GO7NgUKXkaNCbkaTjReca
-   SqICogQniHWApMeKY635Q1pBRtc1caS1VhU/fPWrp9PMwqdrAvYHJdgiv
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10419"; a="287760223"
-X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
-   d="scan'208";a="287760223"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2022 10:08:33 -0700
-X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
-   d="scan'208";a="550062694"
-Received: from jxzhao-mobl.amr.corp.intel.com (HELO [10.212.0.178]) ([10.212.0.178])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2022 10:08:31 -0700
-Message-ID: <148f6cb9-aafc-4fd5-9e30-24078866d3fd@linux.intel.com>
-Date:   Mon, 25 Jul 2022 10:32:27 -0500
+        Mon, 25 Jul 2022 12:22:15 -0400
+X-Greylist: delayed 357 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Jul 2022 09:22:12 PDT
+Received: from mail-m121145.qiye.163.com (mail-m121145.qiye.163.com [115.236.121.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CE3167EB;
+        Mon, 25 Jul 2022 09:22:12 -0700 (PDT)
+Received: from localhost.localdomain (unknown [113.118.189.34])
+        by mail-m121145.qiye.163.com (Hmail) with ESMTPA id 0C493800017;
+        Tue, 26 Jul 2022 00:16:10 +0800 (CST)
+From:   Chukun Pan <amadeus@jmu.edu.cn>
+To:     Jakub Kicinski <kubakici@wp.pl>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Lintel Huang <lintel.huang@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chukun Pan <amadeus@jmu.edu.cn>
+Subject: [PATCH] wifi: mt7601u: Add AP mode support
+Date:   Tue, 26 Jul 2022 00:16:03 +0800
+Message-Id: <20220725161603.15201-1-amadeus@jmu.edu.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Firefox/91.0 Thunderbird/91.11.0
-Subject: Re: [BISECTED] igb initialization failure on Bay Trail
-Content-Language: en-US
-To:     "Matwey V. Kornilov" <matwey.kornilov@gmail.com>,
-        hdegoede@redhat.com
-Cc:     andriy.shevchenko@linux.intel.com, carlo@endlessm.com,
-        davem@davemloft.net, hkallweit1@gmail.com, js@sig21.net,
-        linux-clk@vger.kernel.org, linux-wireless@vger.kernel.org,
-        mturquette@baylibre.com, netdev@vger.kernel.org, sboyd@kernel.org
-References: <20180912093456.23400-4-hdegoede@redhat.com>
- <20220724210037.3906-1-matwey.kornilov@gmail.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <20220724210037.3906-1-matwey.kornilov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTBodVkNDTkkfSUoYTkJCT1UTARMWGhIXJBQOD1
+        lXWRgSC1lBWUpKSFVKSkNVSkNCVUhPWVdZFhoPEhUdFFlBWU9LSFVKSktISkNVS1kG
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Ok06GTo4ND09PE42KD4WKwkr
+        PwIaFDBVSlVKTU5DTE1OTExLTE9PVTMWGhIXVRoWGh8eDgg7ERYOVR4fDlUYFUVZV1kSC1lBWUpK
+        SFVKSkNVSkNCVUhPWVdZCAFZQUlJTU03Bg++
+X-HM-Tid: 0a823624fe87b03akuuu0c493800017
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Add AP mode support to mt7601u chipset.
+Simply tested it with firmware version
+201302052146 and it seems working fine.
 
+Run-tested-by: Lintel Huang <lintel.huang@gmail.com>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+---
+ drivers/net/wireless/mediatek/mt7601u/init.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On 7/24/22 16:00, Matwey V. Kornilov wrote:
-> Hello,
-> 
-> I've just found that the following commit
-> 
->     648e921888ad ("clk: x86: Stop marking clocks as CLK_IS_CRITICAL")
-> 
-> breaks the ethernet on my Lex 3I380CW (Atom E3845) motherboard. The board is
-> equipped with dual Intel I211 based 1Gbps copper ethernet.
+diff --git a/drivers/net/wireless/mediatek/mt7601u/init.c b/drivers/net/wireless/mediatek/mt7601u/init.c
+index 5d9e952b2966..d18800b41704 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/init.c
++++ b/drivers/net/wireless/mediatek/mt7601u/init.c
+@@ -609,7 +609,8 @@ int mt7601u_register_device(struct mt7601u_dev *dev)
+ 	SET_IEEE80211_PERM_ADDR(hw, dev->macaddr);
+ 
+ 	wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR;
+-	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION);
++	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
++				 BIT(NL80211_IFTYPE_AP);
+ 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS;
+ 
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+-- 
+2.25.1
 
-It's not going to be simple, it's 4 yr old commit that fixes other
-issues with S0i3...
-
-> 
-> Before the commit I see the following:
-> 
->      igb 0000:01:00.0: added PHC on eth0
->      igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
->      igb 0000:01:00.0: eth0: (PCIe:2.5Gb/s:Width x1) 4c:02:89:10:02:e4
->      igb 0000:01:00.0: eth0: PBA No: FFFFFF-0FF
->      igb 0000:01:00.0: Using MSI-X interrupts. 2 rx queue(s), 2 tx queue(s)
->      igb 0000:02:00.0: added PHC on eth1
->      igb 0000:02:00.0: Intel(R) Gigabit Ethernet Network Connection
->      igb 0000:02:00.0: eth1: (PCIe:2.5Gb/s:Width x1) 4c:02:89:10:02:e5
->      igb 0000:02:00.0: eth1: PBA No: FFFFFF-0FF
->      igb 0000:02:00.0: Using MSI-X interrupts. 2 rx queue(s), 2 tx queue(s)
-> 
-> while when the commit is applied I see the following:
-> 
->      igb 0000:01:00.0: added PHC on eth0
->      igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
->      igb 0000:01:00.0: eth0: (PCIe:2.5Gb/s:Width x1) 4c:02:89:10:02:e4
->      igb 0000:01:00.0: eth0: PBA No: FFFFFF-0FF
->      igb 0000:01:00.0: Using MSI-X interrupts. 2 rx queue(s), 2 tx queue(s)
->      igb: probe of 0000:02:00.0 failed with error -2
-> 
-> Please note, that the second ethernet initialization is failed.
-> 
-> 
-> See also: http://www.lex.com.tw/products/pdf/3I380A&3I380CW.pdf
