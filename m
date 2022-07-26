@@ -2,60 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE71580AB4
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jul 2022 07:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD6DF580BFA
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jul 2022 08:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbiGZFRq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jul 2022 01:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
+        id S237656AbiGZGzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jul 2022 02:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbiGZFRo (ORCPT
+        with ESMTP id S232075AbiGZGzw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jul 2022 01:17:44 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A237222B4
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jul 2022 22:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658812664; x=1690348664;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3n+0zOfkYQ3f3Gb08kboN3ct7rT1VnhV+NwoR0R0r2s=;
-  b=J3uI4tPWzmVgvJ/rvYNI6yg0/sVEspxDLB+Ax+6662SMi0SGTkmE/ZiL
-   +3/rzSqR5lMJtVeIOA8KEixb+TO+2HYsaD+u1sbEVZpCFkcppht/h6I4z
-   XIFfUzz+4y2hlTvwZ78q6u5H4CgBAaeNrFcO9b9epxRTn0mnMK8/+eMM+
-   +W2bteDnHn+CaN5jH5UUFT9daNJminmjIC32q+0hbdFeqafdHWOCMT43N
-   HZZE119tpS21jTFgeEZfoD1VBpTdHNimhhHxjYYAD7+BzOX7UB8sSJUY8
-   OcrzR+OfbvvsC6fLEdJKpVitHJZRqps4plrV+KGoWrEwTVQ7tfhgsp/lB
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10419"; a="349562366"
-X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
-   d="scan'208";a="349562366"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2022 22:17:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
-   d="scan'208";a="550261758"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 25 Jul 2022 22:17:42 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oGCwv-00065M-29;
-        Tue, 26 Jul 2022 05:17:41 +0000
-Date:   Tue, 26 Jul 2022 13:17:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- 9fab4cc8c3450df15c9bcaedd0d3c954211a7a54
-Message-ID: <62df78da.ctOgI+TrhpWP+0nU%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Tue, 26 Jul 2022 02:55:52 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22485275CD;
+        Mon, 25 Jul 2022 23:55:49 -0700 (PDT)
+Received: from fsav119.sakura.ne.jp (fsav119.sakura.ne.jp [27.133.134.246])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 26Q6taPg088886;
+        Tue, 26 Jul 2022 15:55:36 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav119.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav119.sakura.ne.jp);
+ Tue, 26 Jul 2022 15:55:36 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav119.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 26Q6tZJX088883
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 26 Jul 2022 15:55:35 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <9487e319-7ab4-995a-ddfd-67c4c701680c@I-love.SAKURA.ne.jp>
+Date:   Tue, 26 Jul 2022 15:55:35 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2] wifi: mac80211: do not abuse fq.lock in
+ ieee80211_do_stop()
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <9cc9b81d-75a3-3925-b612-9d0ad3cab82b@I-love.SAKURA.ne.jp>
+ <165814567948.32602.9899358496438464723.kvalo@kernel.org>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <165814567948.32602.9899358496438464723.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,78 +56,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 9fab4cc8c3450df15c9bcaedd0d3c954211a7a54  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+Since this patch fixes a regression introduced in 5.19-rc7, can this patch go to 5.19-final ?
 
-elapsed time: 723m
+syzbot is failing to test linux.git for 12 days due to this regression.
+syzbot will fail to bisect new bugs found in the upcoming merge window
+if unable to test v5.19 due to this regression.
 
-configs tested: 57
-configs skipped: 2
+On 2022/07/18 21:01, Kalle Valo wrote:
+> Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
+> 
+>> lockdep complains use of uninitialized spinlock at ieee80211_do_stop() [1],
+>> for commit f856373e2f31ffd3 ("wifi: mac80211: do not wake queues on a vif
+>> that is being stopped") guards clear_bit() using fq.lock even before
+>> fq_init() from ieee80211_txq_setup_flows() initializes this spinlock.
+>>
+>> According to discussion [2], Toke was not happy with expanding usage of
+>> fq.lock. Since __ieee80211_wake_txqs() is called under RCU read lock, we
+>> can instead use synchronize_rcu() for flushing ieee80211_wake_txqs().
+>>
+>> Link: https://syzkaller.appspot.com/bug?extid=eceab52db7c4b961e9d6 [1]
+>> Link: https://lkml.kernel.org/r/874k0zowh2.fsf@toke.dk [2]
+>> Reported-by: syzbot <syzbot+eceab52db7c4b961e9d6@syzkaller.appspotmail.com>
+>> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+>> Fixes: f856373e2f31ffd3 ("wifi: mac80211: do not wake queues on a vif that is being stopped")
+>> Tested-by: syzbot <syzbot+eceab52db7c4b961e9d6@syzkaller.appspotmail.com>
+>> Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
+> 
+> Patch applied to wireless-next.git, thanks.
+> 
+> 3598cb6e1862 wifi: mac80211: do not abuse fq.lock in ieee80211_do_stop()
+> 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-ia64                             allmodconfig
-arc                               allnoconfig
-alpha                             allnoconfig
-riscv                             allnoconfig
-csky                              allnoconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-mips                             allyesconfig
-alpha                            allyesconfig
-arc                              allyesconfig
-i386                                defconfig
-i386                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-i386                          randconfig-a016
-i386                          randconfig-a012
-arc                  randconfig-r043-20220724
-s390                 randconfig-r044-20220724
-riscv                randconfig-r042-20220724
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-
-clang tested configs:
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a014
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a015
-i386                          randconfig-a011
-i386                          randconfig-a013
-hexagon              randconfig-r041-20220724
-hexagon              randconfig-r045-20220724
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
