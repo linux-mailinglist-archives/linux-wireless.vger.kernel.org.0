@@ -2,109 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FEFD581506
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jul 2022 16:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B4F58153A
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jul 2022 16:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239001AbiGZOV5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jul 2022 10:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59704 "EHLO
+        id S239073AbiGZO2G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jul 2022 10:28:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238935AbiGZOV4 (ORCPT
+        with ESMTP id S233444AbiGZO2E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jul 2022 10:21:56 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E841D32D
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Jul 2022 07:21:50 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id oy13so26466028ejb.1
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Jul 2022 07:21:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=lLG88JCPgF7Yhflf4FNi4GQedsSNMbwmPtgneUr9Mu0=;
-        b=qROVlOahP1/GrDITbQaQ786srtXVhgetCJwyVrBqZ0yys3z7MsVKvG4VIpvIoHamOC
-         dQxkXEP+Yn5+jdI3q0xD7P/0OFfWciHdAaGconOD0l85s/rBtxirjWITyCCQDoQ8H2V2
-         gLxkJVxQMKh+bRWL02V7EKTzqIpqdK3XRkUcDmGId1FRIjLIH7gEgBMpEKV6Wfv5Y/tZ
-         6H5CJA2AkGbQ6RXbyt04vqnnMDhlk+oFIsivwICn/nVEagSgUhNdHcMyvqrVcpLjDC/+
-         hyY2f+K0dtakIL5YB39L2UKVfrh7vRPhku3EJxTefzJAjx8O86skVXGwx+MUvUN/0Kht
-         FZ1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=lLG88JCPgF7Yhflf4FNi4GQedsSNMbwmPtgneUr9Mu0=;
-        b=F+EU2A7AIJfO/5iQZ/cdy3d9Hn9RXaU4GlePnReuo6gnH5cqwwPSki1yAvlbHYspJ3
-         iTgwRpK0mwXJbYQ9eN8fsxz2bfVJagEuo/efJp7vSw7k8sRyCMY3HiNsJVyWvmlEOiCb
-         lDyURVtSlm4xzYzjawQCTFY4PUbSQbdmApLFWaQB5QeXXHnQN+7bhY79oM4ZA4d/g6pM
-         1vL3WDdfL+KPxHsITmVm1NQ5r1FBBnhq73odsSc7G3ulECYx68Kg/X3EKO3BGCZui3af
-         kPvace07u9Bs507iqwriDk7FHB6FMmhZftFAf1T91t1irHzZUZYx7r9aJSBo784Ekler
-         NlTg==
-X-Gm-Message-State: AJIora/QgZ7QfPRH9bQPKkvWv7yIUbGiSoQ0Ljr1dJ+SQi9Gwh+9/JX6
-        tNHT1cJkI0Qy+PU9SFQkuK2PXakhirHFP6KduOY=
-X-Google-Smtp-Source: AGRyM1veOVKvmu/b5RrrDM8/fYBGX7fUBqU4wDLmT71UUlESCe/TsS6SK8MUJjAYdFCUdw4EVveYWPb/rfK6QSkcSM4=
-X-Received: by 2002:a17:906:a402:b0:72b:8e6e:64ea with SMTP id
- l2-20020a170906a40200b0072b8e6e64eamr14726142ejz.469.1658845309629; Tue, 26
- Jul 2022 07:21:49 -0700 (PDT)
+        Tue, 26 Jul 2022 10:28:04 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6F0B9;
+        Tue, 26 Jul 2022 07:28:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7D1D5B81644;
+        Tue, 26 Jul 2022 14:28:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0371CC433D6;
+        Tue, 26 Jul 2022 14:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658845680;
+        bh=tYGaxmOtEWct+hY2SoBnCZGzvOcL/UBUptCOL4UpjVI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=UE9AOoyfew0LRVvAXnX/z7P9HC5z/3chQoC4Y3lmgaPJCwuGsji/aJoMr8iVnCY6H
+         Ke9phrGkuaIY1ItJOKTkT5QCMPoPOJup8vfq98c6iGA2NjNjcvEWM/n9hPD1isbgD0
+         tUdeZL5JgERnrCU9lPl9xq1sclipC9cUyXJaxWowLkORPBX7LU929UR09F7gcUwS52
+         LkEmBiGr/9qR31PR8nL3EEqsQl4qbvu8aXnBsTP/1btUn2MFrDBVXYLGxIZ7ZvALsO
+         Kycmnr5E/RXL2MNzC8CEkGg+DcZKufVAFTM5Xv1k+R21EJTNk/CXqc/Bg+AclmEchj
+         2AlSfSXxwH3hg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Avraham Stern <avraham.stern@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] iwlwifi: mvm: fix clang -Wformat warnings
+References: <20220711222919.2043613-1-justinstitt@google.com>
+        <CAFhGd8qRfhQg2k8E7pUm5EYSLp+vmtSd5tZuqtpZUyKud6_Zag@mail.gmail.com>
+Date:   Tue, 26 Jul 2022 17:27:53 +0300
+In-Reply-To: <CAFhGd8qRfhQg2k8E7pUm5EYSLp+vmtSd5tZuqtpZUyKud6_Zag@mail.gmail.com>
+        (Justin Stitt's message of "Mon, 18 Jul 2022 10:37:05 -0700")
+Message-ID: <87sfmoq786.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:906:241b:0:0:0:0 with HTTP; Tue, 26 Jul 2022 07:21:49
- -0700 (PDT)
-Reply-To: clmloans9@gmail.com
-From:   MR ANTHONY EDWARD <zayyanusaidu009@gmail.com>
-Date:   Tue, 26 Jul 2022 15:21:49 +0100
-Message-ID: <CADM+8wSoMon4UwTNHD1_W+tjPLPo1pZPuBbx3PHESBbBOARKEw@mail.gmail.com>
-Subject: SICHERES KREDITANGEBOT BEI 2%
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_HK_NAME_FM_MR_MRS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:631 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [clmloans9[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [zayyanusaidu009[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [zayyanusaidu009[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Ben=C3=B6tigen Sie ein Gesch=C3=A4ftsdarlehen oder ein Darlehen jeglicher A=
-rt?
-Wenn ja, kontaktieren Sie uns
+Justin Stitt <justinstitt@google.com> writes:
 
-*Vollst=C3=A4ndiger Name:
-* Ben=C3=B6tigte Menge:
-*Leihdauer:
-*Mobiltelefon:
-*Land:
+> Any chance a maintainer could take a look at this patch? I am trying
+> to get it through this cycle and we are so close to enabling the
+> -Wformat option for Clang. There's only a handful of patches remaining
+> until the patch enabling this warning can be sent!
+
+Gregory, can I take this directly to wireless-next? I assigned it to me
+in patchwork.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
