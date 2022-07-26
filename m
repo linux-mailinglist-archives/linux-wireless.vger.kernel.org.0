@@ -2,110 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13A18581580
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jul 2022 16:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DD14581597
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jul 2022 16:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239376AbiGZOi2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jul 2022 10:38:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47748 "EHLO
+        id S239411AbiGZOmr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jul 2022 10:42:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiGZOi0 (ORCPT
+        with ESMTP id S230391AbiGZOmq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jul 2022 10:38:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919E020BD5;
-        Tue, 26 Jul 2022 07:38:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 39D3EB8167A;
-        Tue, 26 Jul 2022 14:38:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABC5C433D6;
-        Tue, 26 Jul 2022 14:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658846302;
-        bh=cgZg+rhtv9wr0MSR6nX51BTfEgBAgbyS5aVLOMUs23M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=PJPxEPfEIFg2xolAKB7coxbpIv0p8AB8FcsczpwMwAwjd9r8AR/s56M2qIEtRDQv1
-         WsCWnBBIEL6Qo0dkC7pIxPucVrznY6KgQP1kTk4Nd+8E9OwFoDKtjQXtwVsFCRVBQJ
-         F0tsUicHtyk4aa32KenTIJRx7wirDOaMdrQxPV0FGdL3Bs7HxrVNrsy8K8I1FxVjVx
-         ik5c+Q9fCCwmAVELnqReWI5vdF5sDlR3Q3h+nqRG6Pmnmk9MlvuZBGXBIIThSaBlbe
-         S5V3BeYjc3xDGS0wJug/RG0O7FCIAdzgsBIOSylDPQYueuI8LSl15kVa9TeIzQQnPb
-         4mC9g3ZXvZorA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Toke =?utf-8?Q?H=C3=B8ilan?= =?utf-8?Q?d-J=C3=B8rgensen?= 
-        <toke@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: mac80211: do not abuse fq.lock in ieee80211_do_stop()
-References: <9cc9b81d-75a3-3925-b612-9d0ad3cab82b@I-love.SAKURA.ne.jp>
-        <165814567948.32602.9899358496438464723.kvalo@kernel.org>
-        <9487e319-7ab4-995a-ddfd-67c4c701680c@I-love.SAKURA.ne.jp>
-Date:   Tue, 26 Jul 2022 17:38:18 +0300
-In-Reply-To: <9487e319-7ab4-995a-ddfd-67c4c701680c@I-love.SAKURA.ne.jp>
-        (Tetsuo Handa's message of "Tue, 26 Jul 2022 15:55:35 +0900")
-Message-ID: <87o7xcq6qt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Tue, 26 Jul 2022 10:42:46 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A168F27CC4
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Jul 2022 07:42:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=5eImNlI6wDq/9vABSGgcw2zQ/FpvKUSzo/yYKvYnX4o=;
+        t=1658846565; x=1660056165; b=XoV3zVZolRV559qchO8Cm2htH7/E4SHp9jgxLhL7vQIADIY
+        aaiKdyrM6P9wmocfOOAB8Qp62ST1H/IZ0QETe1/jyvtRyVVXVBGm2tGyPEg43oShJ8w6HD+yoxjhd
+        uIkkYttULYwpTHGNE+gBoyrJDFbhFna723aSUcaoZiTXFgzF644f5H3Sd3QLPaIwU1oO2CiPRhcoh
+        7aAaUngfjfOdAVuk8mbQGrUQYam42dwoTh4DgxDzGK5EElU78seNrN/jIirMah16rA4bH/hnN8/R0
+        p+digaeZGMiNBjKDANYnRkwUgOUwEAKqApZR9UwLYWdDxLaDJtZwrRYhWNv5vvQw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oGLli-008jP2-1R;
+        Tue, 26 Jul 2022 16:42:42 +0200
+Message-ID: <5cdc7a91910a803ef531ae04ba330541476c0f18.camel@sipsolutions.net>
+Subject: Re: [bug report] wifi: nl80211/mac80211: clarify link ID in control
+ port TX
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 26 Jul 2022 16:42:41 +0200
+In-Reply-To: <Yt/16E0ufa0D0Ziq@kili>
+References: <Yt/16E0ufa0D0Ziq@kili>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(please don't top post, I manually fixed that)
+Hi Dan,
 
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> writes:
 
-> On 2022/07/18 21:01, Kalle Valo wrote:
->> Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
->>=20
->>> lockdep complains use of uninitialized spinlock at ieee80211_do_stop() =
-[1],
->>> for commit f856373e2f31ffd3 ("wifi: mac80211: do not wake queues on a v=
-if
->>> that is being stopped") guards clear_bit() using fq.lock even before
->>> fq_init() from ieee80211_txq_setup_flows() initializes this spinlock.
->>>
->>> According to discussion [2], Toke was not happy with expanding usage of
->>> fq.lock. Since __ieee80211_wake_txqs() is called under RCU read lock, we
->>> can instead use synchronize_rcu() for flushing ieee80211_wake_txqs().
->>>
->>> Link: https://syzkaller.appspot.com/bug?extid=3Deceab52db7c4b961e9d6 [1]
->>> Link: https://lkml.kernel.org/r/874k0zowh2.fsf@toke.dk [2]
->>> Reported-by: syzbot <syzbot+eceab52db7c4b961e9d6@syzkaller.appspotmail.=
-com>
->>> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
->>> Fixes: f856373e2f31ffd3 ("wifi: mac80211: do not wake queues on a vif t=
-hat is being stopped")
->>> Tested-by: syzbot <syzbot+eceab52db7c4b961e9d6@syzkaller.appspotmail.co=
-m>
->>> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
->>=20
->> Patch applied to wireless-next.git, thanks.
->>=20
->> 3598cb6e1862 wifi: mac80211: do not abuse fq.lock in ieee80211_do_stop()
->
-> Since this patch fixes a regression introduced in 5.19-rc7, can this patc=
-h go to 5.19-final ?
->
-> syzbot is failing to test linux.git for 12 days due to this regression.
-> syzbot will fail to bisect new bugs found in the upcoming merge window
-> if unable to test v5.19 due to this regression.
+On Tue, 2022-07-26 at 17:10 +0300, Dan Carpenter wrote:
+>     5885         rcu_read_lock();
+>     5886         err =3D ieee80211_lookup_ra_sta(sdata, skb, &sta);
+>=20
+> For sdata->vif.type =3D=3D NL80211_IFTYPE_MESH_POINT then "sta" can be NU=
+LL.
+> Smatch doesn't know the value of sdata->vif.type at this point, and even
+> if it did, then it doesn't split the return states up with enough
+> granularity for that to make a difference.
 
-I took this to wireless-next as I didn't think there's enough time to
-get this to v5.19 (and I only heard Linus' -rc8 plans after the fact).
-So this will be in v5.20-rc1 and I recommend pushing this to a v5.19
-stable release.
+Right, but that wouldn't matter anyway?
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+>     5887         if (err) {
+>     5888                 rcu_read_unlock();
+>     5889                 return err;
+>     5890         }
+>     5891=20
+>     5892         if (!IS_ERR(sta)) {
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Since this is all independent of the interface type.
+
+>     5893                 u16 queue =3D __ieee80211_select_queue(sdata, st=
+a, skb);
+>     5894=20
+>     5895                 skb_set_queue_mapping(skb, queue);
+>     5896                 skb_get_hash(skb);
+>     5897=20
+>     5898                 /*
+>     5899                  * for MLO STA, the SA should be the AP MLD addr=
+ess, but
+>     5900                  * the link ID has been selected already
+>     5901                  */
+> --> 5902                 if (sta->sta.mlo)
+>=20
+> Which Smatch complains about here.
+
+Makes sense, should be "if (sta && sta->sta.mlo)" then I suppose. I'm on
+vacation now, so if you want to send a patch as a reminder that'd be
+nice.
+
+I might clean this up later - it's not the first time the strange return
+behaviour semantics of ieee80211_lookup_ra_sta() have gotten confusing
+...
+
+Thanks!
+
+johannes
+
