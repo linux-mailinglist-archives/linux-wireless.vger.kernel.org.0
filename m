@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF46E583574
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 01:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89067583571
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 01:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234046AbiG0XBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jul 2022 19:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34756 "EHLO
+        id S234022AbiG0XBp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jul 2022 19:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231808AbiG0XBo (ORCPT
+        with ESMTP id S231587AbiG0XBm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jul 2022 19:01:44 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED2C205E7
+        Wed, 27 Jul 2022 19:01:42 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F1A1FCF4
         for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 16:01:41 -0700 (PDT)
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.165])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 5B91420061;
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.64.31])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 471041C0087;
         Wed, 27 Jul 2022 23:01:40 +0000 (UTC)
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0F6679C0066;
-        Wed, 27 Jul 2022 23:01:39 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1A21B600079;
+        Wed, 27 Jul 2022 23:01:40 +0000 (UTC)
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 8D80813C2B3;
+        by mail3.candelatech.com (Postfix) with ESMTP id B85B613C2B4;
         Wed, 27 Jul 2022 16:01:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8D80813C2B3
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B85B613C2B4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
         s=default; t=1658962899;
-        bh=hw54Lh/cn+8Lf1SYZ1CzOHrOZuIUOp2lGdLr85Xg6eI=;
+        bh=/PN2qJTTJOcxuwObz7TvZN3FTEksAAunF11gXOzaFng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jJnYj9AB0JLiRaMSrWSytXAPTmwv6tiZAhemcunPRz0dyXikrYWTV2hjnYraWlfmM
-         nTQKse/0+SGNkhiDROzHG9OzOK4/wiDwb7DJy/h+xbi9Kkq/pngY2IsZAqHVXaH3r8
-         DCm2dipOrRY2Xr+HsctgvpACau0Zzf/cqyUHBHkc=
+        b=SVvca/MPWVPhwnP71N8jaEenMrXmcBnLXOn3GSyte7VWIMsEvmzjMrec9FfCYiAf7
+         hkFkU3GtP2snRAQk3Y7tUFez2V8eMfu+OmIpshaC+GOe/ypd67cZf3QT+TCVTidMdm
+         o0ob5AaK9QkHe1bqRlTTw5ZepemTiR9ypHRfz/sc=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     nbd@nbd.name, Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 03/12] wifi: mt76: mt7915: debugfs hook to enable TXS for NO_SKB pkt-ids
-Date:   Wed, 27 Jul 2022 16:01:13 -0700
-Message-Id: <20220727230122.29842-3-greearb@candelatech.com>
+Subject: [PATCH 04/12] wifi: mt76: mt7915: txfree status to show txcount instead of latency
+Date:   Wed, 27 Jul 2022 16:01:14 -0700
+Message-Id: <20220727230122.29842-4-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220727230122.29842-1-greearb@candelatech.com>
 References: <20220727230122.29842-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1658962900-osxRL_D2RqZY
+X-MDID: 1658962900-E5PEqJlAzysd
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -56,90 +56,63 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-This lets user turn on/off this feature.  Enabling gives better
-tx-rate related stats, but will cause extra driver and (maybe)
-firmware work.  Not sure if it actually affects performance or
-not.
+Latency is not obviously that useful, but txcount can let us deduce
+retries, which may be more interesting.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 24 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mac.c   |  3 ++-
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  5 ++++
- 3 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.h  | 6 +++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/regs.h | 4 ++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index cab6e02e1f8c..f71d80cd4002 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -633,6 +633,29 @@ mt7915_fw_util_wa_show(struct seq_file *file, void *data)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 91a31b9d52f2..b4ceb78c6745 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -460,6 +460,9 @@ static void mt7915_mac_init(struct mt7915_dev *dev)
+ 	/* enable hardware de-agg */
+ 	mt76_set(dev, MT_MDP_DCR0, MT_MDP_DCR0_DAMSDU_EN);
  
- DEFINE_SHOW_ATTRIBUTE(mt7915_fw_util_wa);
++	/* disable Tx latency report to enable Tx count in txfree path */
++	mt76_clear(dev, MT_PLE_HOST_RPT0, MT_PLE_HOST_RPT0_TX_LATENCY);
++
+ 	for (i = 0; i < mt7915_wtbl_size(dev); i++)
+ 		mt7915_mac_wtbl_update(dev, i,
+ 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+index 2e6c574ae2dd..503a4b90ad11 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+@@ -314,8 +314,12 @@ struct mt7915_tx_free {
+ #define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
+ #define MT_TX_FREE_MSDU_CNT_V0	GENMASK(6, 0)
+ #define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
++/* when configured for txfree latency mode.  See MT_PLE_HOST_RPT0_TX_LATENCY
++ * Not enabled by default now.
++ */
+ #define MT_TX_FREE_LATENCY		GENMASK(12, 0)
+-/* 0: success, others: dropped */
++/* when configured for txcount mode.  See MT_PLE_HOST_RPT0_TX_LATENCY. */
++#define MT_TX_FREE_TXCNT		GENMASK(12, 0)
+ #define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
+ #define MT_TX_FREE_PAIR			BIT(31)
+ #define MT_TX_FREE_MPDU_HEADER		BIT(30)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index 4953be208c5e..8bbc9a0ae699 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -132,6 +132,10 @@ enum offs_rev {
+ #define MT_PLE_BASE			0x820c0000
+ #define MT_PLE(ofs)			(MT_PLE_BASE + (ofs))
  
-+static int
-+mt7915_txs_for_no_skb_set(void *data, u64 val)
-+{
-+	struct mt7915_dev *dev = data;
++/* Modify whether txfree struct returns latency or txcount. */
++#define MT_PLE_HOST_RPT0               MT_PLE(0x030)
++#define MT_PLE_HOST_RPT0_TX_LATENCY    BIT(3)
 +
-+	dev->txs_for_no_skb_enabled = !!val;
-+
-+	return 0;
-+}
-+
-+static int
-+mt7915_txs_for_no_skb_get(void *data, u64 *val)
-+{
-+	struct mt7915_dev *dev = data;
-+
-+	*val = dev->txs_for_no_skb_enabled;
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_txs_for_no_skb, mt7915_txs_for_no_skb_get,
-+			 mt7915_txs_for_no_skb_set, "%lld\n");
-+
- static void
- mt7915_ampdu_stat_read_phy(struct mt7915_phy *phy,
- 			   struct seq_file *file)
-@@ -1017,6 +1040,7 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
- 			    &mt7915_fw_util_wm_fops);
- 	debugfs_create_file("fw_util_wa", 0400, dir, dev,
- 			    &mt7915_fw_util_wa_fops);
-+	debugfs_create_file("force_txs", 0600, dir, dev, &fops_txs_for_no_skb);
- 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
- 			    &fops_implicit_txbf);
- 	debugfs_create_file("txpower_sku", 0400, dir, phy,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 2d1a8d8b04fb..cf4d11c0a88d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1257,7 +1257,8 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	txwi[4] = 0;
- 
- 	val = FIELD_PREP(MT_TXD5_PID, pid);
--	if (pid >= MT_PACKET_ID_FIRST)
-+	if (pid >= MT_PACKET_ID_FIRST ||
-+	    (pid == MT_PACKET_ID_NO_SKB && dev->txs_for_no_skb_enabled))
- 		val |= MT_TXD5_TX_STATUS_HOST;
- 	txwi[5] = cpu_to_le32(val);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 4dcae6991669..fa755bfa223f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -294,6 +294,11 @@ struct mt7915_dev {
- 	u16 chainmask;
- 	u16 chainshift;
- 	u32 hif_idx;
-+	/* Should we request TXS for MT_PACKET_ID_NO_SKB?  Doing so gives better
-+	 * costs but causes a great deal more TXS packet processing by driver and
-+	 * creation by firmware, so may be a performance drag.
-+	 */
-+	bool txs_for_no_skb_enabled;
- 
- 	struct work_struct init_work;
- 	struct work_struct rc_work;
+ #define MT_FL_Q_EMPTY			MT_PLE(__OFFS(PLE_FL_Q_EMPTY))
+ #define MT_FL_Q0_CTRL			MT_PLE(__OFFS(PLE_FL_Q_CTRL))
+ #define MT_FL_Q2_CTRL			MT_PLE(__OFFS(PLE_FL_Q_CTRL) + 0x8)
 -- 
 2.20.1
 
