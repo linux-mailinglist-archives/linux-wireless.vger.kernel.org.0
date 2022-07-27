@@ -2,64 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A02582A80
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 18:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C318F582E5C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 19:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234930AbiG0QRP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jul 2022 12:17:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44762 "EHLO
+        id S241122AbiG0RMG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jul 2022 13:12:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234851AbiG0QRI (ORCPT
+        with ESMTP id S241502AbiG0RLc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jul 2022 12:17:08 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF6A3FA05
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 09:17:02 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id i8so2231373wro.11
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 09:17:02 -0700 (PDT)
+        Wed, 27 Jul 2022 13:11:32 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749B55B062
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 09:41:39 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id v21so1847027ljh.3
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 09:41:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Icy1itBuOJXPstLh7p436HInbNyv8F9IUq31oFPnQsU=;
-        b=H/TLrFlbsbJ9lD+RstNCXJV/CCKbsOXFc/Yh8RuzRSJqpS1AqSUt1SGssOGgx2Bgw9
-         U7qqW4LztdS96jje0uAwnvNQ91W9j9lvoQnvAkINasOMhRGnAKvjgXehcXhMhqA3crlz
-         yepNMV/YU7YeYpCzpJXWAb5Zm7L5p7mdfDbVvPq2rqRi91EIHIZ+Hh2YFohb++cFx7Dl
-         eypXGhmtyb1f1ehB2Skfz142QCQUoOMEmMAPqvVm6npvMxEHkn9PnRPZvXNe5SAjOu2w
-         eSirbX6E+tBfeUu3O/rZ0fau+rraf8bAgeLDYOv78FO+5p9Pd7R8aK6L1QqMr4O0esXf
-         5gwg==
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EjrmIY6br0JwMML5I5IsH4l21ubS3Zd2UVsxfz0zrWQ=;
+        b=jMMOnDuOyvT5MjTFryYduQK/RY48LBB89wkU1nKr3g22oGREE8Wlw5ovuddGmk1777
+         C5oyCsNSgVwjzgaMVV3lrx/A9RSJXDUlw/6oRB6h95ewv0MRYNZ7JaiAXafHdi/AaMoR
+         gwFiup9G4e394tdCjmRY8aQCKVjQndYSllXn3/tYsHVyAWsURSC+28LRzBtd1L9bG7tW
+         YcSv/hu6PKMNjl/xVP/hN/HMu56kKFibCPKwO7n4NY8kpwTbTHQWwmbX1/BKLClzbw6G
+         yiXqWnuj7YDnyDJ+zjd+XmiqP+SZbgUPMDOKgb7mr1M6reSluGSe2P2BR3fy+KXy9Km8
+         e9bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Icy1itBuOJXPstLh7p436HInbNyv8F9IUq31oFPnQsU=;
-        b=SpBeuLHuQdUFnrFRqvKLAcuBwMe+equJvP8ukZ5o0egtHTNKFqmmhGvDcnfLYctNRv
-         XsDGGENNX/C0lwTVj/KjPYn2pDoerPtRrS2GIf5I4WG5L93FFe0j846A/I8hbfJkRXrZ
-         z7L2RlF2KGnACHAmHjoTlnzWmM8BMUrPC961xfGDnzoYnxp9jgH5cxLunsj/sZxqGhPJ
-         Fdf5Cfq0tyd6ecPJ/SQ/L1JaqTblNynraeyM3MVhDIaya63QwQWey+ctB4fFqT3fPK+s
-         nWfCdcgzwnpjJf0IW3ipVq0WuavqmMFbQkkXGawf1afFsLYEambWnqABlds9OgTUgdN/
-         sBDg==
-X-Gm-Message-State: AJIora9O6QfSI15//wyFj3mxC0hSwjg6HARXLDvmI0ZprQeGChFChZpz
-        JBS3DIvLQcDQdjePn1Jpb2SCHg==
-X-Google-Smtp-Source: AGRyM1s7fzRmS3iTUCrcUn1INv3SC5qrLxw8s+lr9E2h2PnmVvOvHeXo1vP8RuEuCtFeTJgxsQPcCg==
-X-Received: by 2002:a5d:5582:0:b0:21e:9c12:4d65 with SMTP id i2-20020a5d5582000000b0021e9c124d65mr6460870wrv.175.1658938622078;
-        Wed, 27 Jul 2022 09:17:02 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id l4-20020a05600012c400b0021e4829d359sm17245474wrx.39.2022.07.27.09.17.01
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EjrmIY6br0JwMML5I5IsH4l21ubS3Zd2UVsxfz0zrWQ=;
+        b=fwjakGfNk68WBin1Ws1TvaTpk6d/oFV7y/F5HLkMeEt02Cz9GKi1evkPxQ1mYVZf9q
+         i2QN9HhWz1gknAKVkWH6bVNuUcgkr9gpBRnZPAspaPFZs3M93jLOPdb3d2uStgsHtRmF
+         75x3BsF2EDSAZsW06OhkzpMrZwb8iPiJCK4Uvm37o3hKIhC+DRMxVeuQfP8BT35RoW5i
+         daWAabviY2lYktDYKM/Im+I+gHqk42Ww8bsh4xhO+et1aUbVZwBAeIW04rGujkaYuZYX
+         dGIxzBUxtfGWf6yaOu793F1C5y8iE4vnN7/KpotJXOEcLP9xnuQ656f8anX14S792Dpq
+         qzRA==
+X-Gm-Message-State: AJIora9WZ/qoZSpwg1pKHsIVNf+ENegp6YVqKcCDVICfTUN8ty6H9Lw/
+        dNr3IX2b380FydCoDuBRGibsow==
+X-Google-Smtp-Source: AGRyM1tbxmt+m0wPQaDPBmSI4ZOiMzOv0P2lpYBxlI5htHP/NbFnJvzztwcBcIVithfgzBx/B6J3Aw==
+X-Received: by 2002:a05:651c:1587:b0:25d:7844:5910 with SMTP id h7-20020a05651c158700b0025d78445910mr8508285ljq.325.1658940093266;
+        Wed, 27 Jul 2022 09:41:33 -0700 (PDT)
+Received: from krzk-bin.lan (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id i17-20020a2ea231000000b0025a67779931sm3872519ljm.57.2022.07.27.09.41.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 09:17:01 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@kernel.org, loic.poulain@linaro.org
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, bryan.odonoghue@linaro.org
-Subject: [PATCH v3 4/4] wcn36xx: Add debugfs entry to read firmware feature strings
-Date:   Wed, 27 Jul 2022 17:16:55 +0100
-Message-Id: <20220727161655.2286867-5-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220727161655.2286867-1-bryan.odonoghue@linaro.org>
-References: <20220727161655.2286867-1-bryan.odonoghue@linaro.org>
+        Wed, 27 Jul 2022 09:41:32 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Greer <mgreer@animalcreek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Adham Abozaeid <adham.abozaeid@microchip.com>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Tony Lindgren <tony@atomide.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: nfc: use spi-peripheral-props.yaml
+Date:   Wed, 27 Jul 2022 18:41:29 +0200
+Message-Id: <20220727164130.385411-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -71,134 +79,144 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add in the ability to easily find the firmware feature bits reported in the
-get feature exchange without having to compile-in debug prints.
+Instead of listing directly properties typical for SPI peripherals,
+reference the spi-peripheral-props.yaml schema.  This allows using all
+properties typical for SPI-connected devices, even these which device
+bindings author did not tried yet.
 
-root@linaro-alip:~# cat /sys/kernel/debug/ieee80211/phy0/wcn36xx/firmware_feat_caps
-MCC
-P2P
-DOT11AC
-SLM_SESSIONIZATION
-DOT11AC_OPMODE
-SAP32STA
-TDLS
-P2P_GO_NOA_DECOUPLE_INIT_SCAN
-WLANACTIVE_OFFLOAD
-BEACON_OFFLOAD
-SCAN_OFFLOAD
-BCN_MISS_OFFLOAD
-STA_POWERSAVE
-STA_ADVANCED_PWRSAVE
-BCN_FILTER
-RTT
-RATECTRL
-WOW
-WLAN_ROAM_SCAN_OFFLOAD
-SPECULATIVE_PS_POLL
-IBSS_HEARTBEAT_OFFLOAD
-WLAN_SCAN_OFFLOAD
-WLAN_PERIODIC_TX_PTRN
-ADVANCE_TDLS
-BATCH_SCAN
-FW_IN_TX_PATH
-EXTENDED_NSOFFLOAD_SLOT
-CH_SWITCH_V1
-HT40_OBSS_SCAN
-UPDATE_CHANNEL_LIST
-WLAN_MCADDR_FLT
-WLAN_CH144
-TDLS_SCAN_COEXISTENCE
-LINK_LAYER_STATS_MEAS
-MU_MIMO
-EXTENDED_SCAN
-DYNAMIC_WMM_PS
-MAC_SPOOFED_SCAN
-FW_STATS
-WPS_PRBRSP_TMPL
-BCN_IE_FLT_DELTA
+Remove the spi-* properties which now come via spi-peripheral-props.yaml
+schema, except for the cases when device schema adds some constraints
+like maximum frequency.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+While changing additionalProperties->unevaluatedProperties, put it in
+typical place, just before example DTS.
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- drivers/net/wireless/ath/wcn36xx/debug.c | 39 ++++++++++++++++++++++++
- drivers/net/wireless/ath/wcn36xx/debug.h |  1 +
- 2 files changed, 40 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/debug.c b/drivers/net/wireless/ath/wcn36xx/debug.c
-index 6af306ae41ad9..58b3c0501bfde 100644
---- a/drivers/net/wireless/ath/wcn36xx/debug.c
-+++ b/drivers/net/wireless/ath/wcn36xx/debug.c
-@@ -21,6 +21,7 @@
- #include "wcn36xx.h"
- #include "debug.h"
- #include "pmc.h"
-+#include "firmware.h"
+Technically, this depends on [1] merged to SPI tree, if we want to
+preserve existing behavior of not allowing SPI CPHA and CPOL in each of
+schemas in this patch.
+
+If this patch comes independently via different tree, the SPI CPHA and
+CPOL will be allowed for brief period of time, before [1] is merged.
+This will not have negative impact, just DT schema checks will be
+loosened for that period.
+
+[1] https://lore.kernel.org/all/20220722191539.90641-2-krzysztof.kozlowski@linaro.org/
+---
+ Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml | 4 ++--
+ Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml   | 5 ++---
+ Documentation/devicetree/bindings/net/nfc/st,st95hf.yaml   | 7 ++++---
+ Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml | 7 ++++---
+ 4 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml b/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
+index 1bcaf6ba822c..a191a04e681c 100644
+--- a/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
+@@ -58,7 +58,6 @@ properties:
  
- #ifdef CONFIG_WCN36XX_DEBUGFS
+   spi-cpha: true
+   spi-cpol: true
+-  spi-max-frequency: true
  
-@@ -136,6 +137,42 @@ static const struct file_operations fops_wcn36xx_dump = {
- 	.write =       write_file_dump,
- };
+ required:
+   - compatible
+@@ -85,6 +84,7 @@ allOf:
+           contains:
+             const: marvell,nfc-spi
+     then:
++      $ref: /schemas/spi/spi-peripheral-props.yaml#
+       properties:
+         break-control: false
+         flow-control: false
+@@ -108,7 +108,7 @@ allOf:
+         spi-max-frequency: false
+         reg: false
  
-+static ssize_t read_file_firmware_feature_caps(struct file *file,
-+					       char __user *user_buf,
-+					       size_t count, loff_t *ppos)
-+{
-+	struct wcn36xx *wcn = file->private_data;
-+	size_t len = 0, buf_len = 2048;
-+	char *buf;
-+	int i;
-+	int ret;
-+
-+	buf = kzalloc(buf_len, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	mutex_lock(&wcn->hal_mutex);
-+	for (i = 0; i < MAX_FEATURE_SUPPORTED; i++) {
-+		if (wcn36xx_firmware_get_feat_caps(wcn->fw_feat_caps, i)) {
-+			len += scnprintf(buf + len, buf_len - len, "%s\n",
-+					 wcn36xx_firmware_get_cap_name(i));
-+		}
-+		if (len >= buf_len)
-+			break;
-+	}
-+	mutex_unlock(&wcn->hal_mutex);
-+
-+	ret = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+	kfree(buf);
-+
-+	return ret;
-+}
-+
-+static const struct file_operations fops_wcn36xx_firmware_feat_caps = {
-+	.open = simple_open,
-+	.read = read_file_firmware_feature_caps,
-+};
-+
- #define ADD_FILE(name, mode, fop, priv_data)		\
- 	do {							\
- 		struct dentry *d;				\
-@@ -163,6 +200,8 @@ void wcn36xx_debugfs_init(struct wcn36xx *wcn)
+-additionalProperties: false
++unevaluatedProperties: false
  
- 	ADD_FILE(bmps_switcher, 0600, &fops_wcn36xx_bmps, wcn);
- 	ADD_FILE(dump, 0200, &fops_wcn36xx_dump, wcn);
-+	ADD_FILE(firmware_feat_caps, 0200,
-+		 &fops_wcn36xx_firmware_feat_caps, wcn);
- }
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+index ef1155038a2f..1dcbddbc5a74 100644
+--- a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+@@ -30,8 +30,6 @@ properties:
+   reg:
+     maxItems: 1
  
- void wcn36xx_debugfs_exit(struct wcn36xx *wcn)
-diff --git a/drivers/net/wireless/ath/wcn36xx/debug.h b/drivers/net/wireless/ath/wcn36xx/debug.h
-index 46307aa562d37..7116d96e0543d 100644
---- a/drivers/net/wireless/ath/wcn36xx/debug.h
-+++ b/drivers/net/wireless/ath/wcn36xx/debug.h
-@@ -31,6 +31,7 @@ struct wcn36xx_dfs_entry {
- 	struct dentry *rootdir;
- 	struct wcn36xx_dfs_file file_bmps_switcher;
- 	struct wcn36xx_dfs_file file_dump;
-+	struct wcn36xx_dfs_file file_firmware_feat_caps;
- };
+-  spi-max-frequency: true
+-
+   uicc-present:
+     type: boolean
+     description: |
+@@ -55,10 +53,11 @@ then:
+   properties:
+     spi-max-frequency: false
+ else:
++  $ref: /schemas/spi/spi-peripheral-props.yaml#
+   required:
+     - spi-max-frequency
  
- void wcn36xx_debugfs_init(struct wcn36xx *wcn);
+-additionalProperties: false
++unevaluatedProperties: false
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/net/nfc/st,st95hf.yaml b/Documentation/devicetree/bindings/net/nfc/st,st95hf.yaml
+index 963d9531a856..647569051ed8 100644
+--- a/Documentation/devicetree/bindings/net/nfc/st,st95hf.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/st,st95hf.yaml
+@@ -25,8 +25,6 @@ properties:
+   st95hfvin-supply:
+     description: ST95HF transceiver's Vin regulator supply
+ 
+-  spi-max-frequency: true
+-
+ required:
+   - compatible
+   - enable-gpio
+@@ -34,7 +32,10 @@ required:
+   - reg
+   - spi-max-frequency
+ 
+-additionalProperties: false
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+index 404c8df99364..9cc236ec42f2 100644
+--- a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+@@ -40,8 +40,6 @@ properties:
+   reg:
+     maxItems: 1
+ 
+-  spi-max-frequency: true
+-
+   ti,enable-gpios:
+     minItems: 1
+     maxItems: 2
+@@ -65,7 +63,10 @@ required:
+   - ti,enable-gpios
+   - vin-supply
+ 
+-additionalProperties: false
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
+ 
+ examples:
+   - |
 -- 
-2.36.1
+2.34.1
 
