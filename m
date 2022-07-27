@@ -2,61 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 822E8582237
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 10:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4EF58223A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 10:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbiG0Idt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jul 2022 04:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52440 "EHLO
+        id S230434AbiG0IeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jul 2022 04:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbiG0Idr (ORCPT
+        with ESMTP id S230393AbiG0IeY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jul 2022 04:33:47 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AB07145982
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 01:33:44 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26R8XNFH0026115, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26R8XNFH0026115
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 27 Jul 2022 16:33:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 27 Jul 2022 16:33:29 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Wed, 27 Jul
- 2022 16:33:29 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] rtlwifi: 8192de: correct checking of IQK reload
-Date:   Wed, 27 Jul 2022 16:33:06 +0800
-Message-ID: <20220727083306.32689-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 27 Jul 2022 04:34:24 -0400
+Received: from fornost.hmeau.com (helcar.hmeau.com [216.24.177.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 924DE45988;
+        Wed, 27 Jul 2022 01:34:22 -0700 (PDT)
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
+        by fornost.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1oGcUd-004w0z-1m; Wed, 27 Jul 2022 18:34:12 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Wed, 27 Jul 2022 16:34:11 +0800
+Date:   Wed, 27 Jul 2022 16:34:11 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+        Gregory Erwin <gregerwin256@gmail.com>,
+        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        "Eric W . Biederman" <ebiederm@xmission.com>, vschneid@redhat.com
+Subject: Re: [PATCH RESEND v11] hwrng: core - let sleep be interrupted when
+ unregistering hwrng
+Message-ID: <YuD4g+ZPx7uEa999@gondor.apana.org.au>
+References: <20220725215536.767961-1-Jason@zx2c4.com>
+ <Yt+3ic4YYpAsUHMF@gondor.apana.org.au>
+ <Yt+/HvfC+OYRVrr+@zx2c4.com>
+ <87zggvoykr.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/27/2022 08:17:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzcvMjcgpFekyCAwNDo0MzowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zggvoykr.fsf@kernel.org>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,36 +46,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This mistake is found by commit ee3db469dd31
-("wifi: rtlwifi: remove always-true condition pointed out by GCC 12"), so
-I recall the vendor driver to find fix and apply the correctness.
+On Wed, Jul 27, 2022 at 09:32:20AM +0300, Kalle Valo wrote:
+>
+> But just so that I understand correctly, after Herbert's patch no ath9k
+> changes is needed anymore? That sounds great.
 
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+No a small change is still needed in ath9k to completely fix
+the problem, basically a one-liner.  Either I could split that
+out and give it to you once the core bits land in mainline, or
+we could just do it in one patch with your ack.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 15e6a6aded319..d18c092b61426 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -2386,11 +2386,10 @@ void rtl92d_phy_reload_iqk_setting(struct ieee80211_hw *hw, u8 channel)
- 			rtl_dbg(rtlpriv, COMP_SCAN, DBG_LOUD,
- 				"Just Read IQK Matrix reg for channel:%d....\n",
- 				channel);
--			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
--					rtlphy->iqk_matrix[
--					indexforchannel].value,	0,
--					(rtlphy->iqk_matrix[
--					indexforchannel].value[0][2] == 0));
-+			if (rtlphy->iqk_matrix[indexforchannel].value[0][0] != 0)
-+				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
-+					rtlphy->iqk_matrix[indexforchannel].value, 0,
-+					rtlphy->iqk_matrix[indexforchannel].value[0][2] == 0);
- 			if (IS_92D_SINGLEPHY(rtlhal->version)) {
- 				if ((rtlphy->iqk_matrix[
- 					indexforchannel].value[0][4] != 0)
+The chances of conflicts are remote.
+
+Cheers,
 -- 
-2.25.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
