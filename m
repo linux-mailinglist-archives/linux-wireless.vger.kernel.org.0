@@ -2,48 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F60958245B
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 12:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 806FC58249D
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 12:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbiG0KbY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jul 2022 06:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37124 "EHLO
+        id S229953AbiG0Kkn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jul 2022 06:40:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229695AbiG0KbX (ORCPT
+        with ESMTP id S231766AbiG0Kk2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jul 2022 06:31:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC4042AD5;
-        Wed, 27 Jul 2022 03:31:22 -0700 (PDT)
+        Wed, 27 Jul 2022 06:40:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B03617B
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 03:40:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 150E4B82006;
-        Wed, 27 Jul 2022 10:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E80C433D6;
-        Wed, 27 Jul 2022 10:31:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECC776188C
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 10:40:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00853C433D6;
+        Wed, 27 Jul 2022 10:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658917879;
-        bh=jRNYk6q8JzeuZqnThtLOMt1QaoYkFMc7uSjjv3CFDnY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NgEdFGzSPv+GYc9QqMnLSR3JvMuHzb9KqxiSI2nMH8rMkSWzLJee7W6solgNmXYni
-         5BwrNstW0LGaDDDCaEvNrzIvodyPnCHnFgtvFHqK/69jHP7JN8n83n59gwq87YQRCD
-         W6N6+eIztdY9wXkgkwrhA1l71xUCM3hyBJHWBKP/Z7tNIMaKI5O4uvjBUavQfBwIrW
-         1044iYw3rBt0mvqyUO8PKLzmeCJMsJGrgs8kiDseZb8dgtzXweDV9OsE8ZVD5usEod
-         6PmEYRkQic3dZanbavyBhFOeuDOzK+rzhEayDkapdq5cf2lMKavV60PP9kaX16gK12
-         +xHQZeHAHs9kg==
+        s=k20201202; t=1658918426;
+        bh=2aAAbl7HtqycJhSGG4MOhyn4n1vDDbjI8YyivZ1vBOg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jL3akpO6Z0zFN3pNnIUd4tsrVSOmkK7DUCN7ic9Eb04HBI9hwklJxLZgCnKYgoSpo
+         LfvRAqCMOMy9LmWlBtJh3UqWQPkevc0pLEZD8kjoQpXPDvJ4+1EXIDkOPc04eWGXz9
+         EG+fiZxfCOkpbvZ4MvJGOnNzXH8umohHcXLTewNStUKTDUNVMU/1kP/cstGA4MSNWL
+         TScRHUJdp8cYt576dp+QmpZH+4NEr9PEgvGlPW9qIJmctMhH+D4QIUdeLVeb/AB+eF
+         ZtOM+yEDPQgtbmJOWRL/KSd97qESYuDohor2OIY1uwGQ2SLMBlMikGNmLwyX1nta2J
+         OPiquoGPh/LLg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     loic.poulain@linaro.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] wcn36xx: Add debugfs entry to read firmware feature strings
-References: <20220719143302.2071223-1-bryan.odonoghue@linaro.org>
-        <20220719143302.2071223-5-bryan.odonoghue@linaro.org>
-Date:   Wed, 27 Jul 2022 13:31:15 +0300
-In-Reply-To: <20220719143302.2071223-5-bryan.odonoghue@linaro.org> (Bryan
-        O'Donoghue's message of "Tue, 19 Jul 2022 15:33:02 +0100")
-Message-ID: <87k07yq230.fsf@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>, gregory.greenman@intel.com,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: [IMPORTANT] Use of wifi: prefix in patch titles
+Date:   Wed, 27 Jul 2022 13:40:23 +0300
+Message-ID: <87bktaq1ns.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -56,94 +52,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
+Hi,
 
-> Add in the ability to easily find the firmware feature bits reported in the
-> get feature exchange without having to compile-in debug prints.
->
-> root@linaro-alip:~# cat /sys/kernel/debug/ieee80211/phy0/wcn36xx/firmware_feat_caps
-> MCC
-> P2P
-> DOT11AC
-> SLM_SESSIONIZATION
-> DOT11AC_OPMODE
-> SAP32STA
-> TDLS
-> P2P_GO_NOA_DECOUPLE_INIT_SCAN
-> WLANACTIVE_OFFLOAD
-> BEACON_OFFLOAD
-> SCAN_OFFLOAD
-> BCN_MISS_OFFLOAD
-> STA_POWERSAVE
-> STA_ADVANCED_PWRSAVE
-> BCN_FILTER
-> RTT
-> RATECTRL
-> WOW
-> WLAN_ROAM_SCAN_OFFLOAD
-> SPECULATIVE_PS_POLL
-> IBSS_HEARTBEAT_OFFLOAD
-> WLAN_SCAN_OFFLOAD
-> WLAN_PERIODIC_TX_PTRN
-> ADVANCE_TDLS
-> BATCH_SCAN
-> FW_IN_TX_PATH
-> EXTENDED_NSOFFLOAD_SLOT
-> CH_SWITCH_V1
-> HT40_OBSS_SCAN
-> UPDATE_CHANNEL_LIST
-> WLAN_MCADDR_FLT
-> WLAN_CH144
-> TDLS_SCAN_COEXISTENCE
-> LINK_LAYER_STATS_MEAS
-> MU_MIMO
-> EXTENDED_SCAN
-> DYNAMIC_WMM_PS
-> MAC_SPOOFED_SCAN
-> FW_STATS
-> WPS_PRBRSP_TMPL
-> BCN_IE_FLT_DELTA
->
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Some of you have already noticed that few weeks ago we started using
+"wifi:" in patch titles, here are few examples:
 
-[...]
+wifi: mac80211: optionally implement MLO multicast TX
+wifi: cfg80211: report link ID in NL80211_CMD_FRAME
+wifi: wcn36xx: fix repeated words in comments
+wifi: ath11k: mac: fix long line
 
-> +static ssize_t read_file_firmware_feature_caps(struct file *file,
-> +					       char __user *user_buf,
-> +					       size_t count, loff_t *ppos)
-> +{
-> +	struct wcn36xx *wcn = file->private_data;
-> +	unsigned long page = get_zeroed_page(GFP_KERNEL);
-> +	char *p = (char *)page;
-> +	int i;
-> +	int ret;
-> +
-> +	if (!p)
-> +		return -ENOMEM;
-> +
-> +	mutex_lock(&wcn->hal_mutex);
-> +	for (i = 0; i < MAX_FEATURE_SUPPORTED; i++) {
-> +		if (wcn36xx_firmware_get_feat_caps(wcn->fw_feat_caps, i)) {
-> +			p += sprintf(p, "%s\n",
-> +				     wcn36xx_firmware_get_cap_name(i));
-> +		}
-> +	}
-> +	mutex_unlock(&wcn->hal_mutex);
-> +
-> +	ret = simple_read_from_buffer(user_buf, count, ppos, (char *)page,
-> +				      (unsigned long)p - page);
-> +
-> +	free_page(page);
-> +	return ret;
-> +}
+Everyone, please start using this new prefix on all wireless patches
+from now on. But no need to resend existing patches because of this.
 
-Why not use the normal use kzalloc() and kfree()? That way you would not
-need a separate page variable. What's the benefit from
-get_zeroed_page()?
-
-Also I don't see any checks for a memory allocation failure.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I also updated the wiki:
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+Kalle
