@@ -2,56 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69664582025
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 08:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36316582073
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jul 2022 08:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbiG0Gcu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jul 2022 02:32:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45408 "EHLO
+        id S230424AbiG0Gvs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jul 2022 02:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiG0Gcr (ORCPT
+        with ESMTP id S230350AbiG0Gv2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jul 2022 02:32:47 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3773C8F7
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Jul 2022 23:32:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1658903566; x=1690439566;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=StAwd9Yq3ilcHJTzCCnVUCEz2K4sPRTAkvruuE94TMc=;
-  b=Ci24JRs+9f9cC/ZnYwfXyzp4KldTGoJOnW3hS0mH6kAoQ6nBFlp8vhqA
-   pMDlq6HS8w7QtmtoaxOCLgthNWo9IXGU3foK55wF2JnkItItCQIiODpp2
-   vV6tS1DDaBCKiHlfwAugcCm4EQsUjpo6JCLOO6ropi/WDn9XsaX6xzG+a
-   4=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 26 Jul 2022 23:32:46 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2022 23:32:46 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 26 Jul 2022 23:32:45 -0700
-Received: from haric-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 26 Jul 2022 23:32:43 -0700
-From:   <quic_haric@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Hari Chandrakanthan <quic_haric@quicinc.com>
-Subject: [PATCH] mac80211 : allow bw change during channel switch in mesh
-Date:   Wed, 27 Jul 2022 12:02:29 +0530
-Message-ID: <1658903549-21218-1-git-send-email-quic_haric@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        Wed, 27 Jul 2022 02:51:28 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C1D1AD134
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Jul 2022 23:50:49 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 26R6oPSp9001369, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 26R6oPSp9001369
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 27 Jul 2022 14:50:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Wed, 27 Jul 2022 14:50:31 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Wed, 27 Jul
+ 2022 14:50:31 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <gary.chang@realtek.com>, <phhuang@realtek.com>,
+        <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v3 0/4] rtw88: use const pointer of chip_info and fix hw_scan misbehavior
+Date:   Wed, 27 Jul 2022 14:49:59 +0800
+Message-ID: <20220727065003.28340-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/27/2022 06:32:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzcvMjcgpFekyCAwMToxNDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,39 +66,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+Patch 1~3 is to fix hw_scan misbehavior, and the final patch is fix smatch
+warning.
 
-From 'IEEE Std 802.11-2020 section 11.8.8.4.1' :
-The mesh channel switch may be triggered by the need to avoid
-interference to a detected radar signal, or to reassign mesh STA
-channels to ensure the MBSS connectivity.
-A 20/40 MHz MBSS may be changed to a 20 MHz MBSS and a 20 MHz MBSS may be
-changed to a 20/40 MHz MBSS.
+v3: do rebase to the latest codebase.
+v2: shink patchset from 5 to 4 patches, because the first patch is based on
+    another patch that get merged into wireless.git. So, the patch is
+    postponed.
 
-Since the standard allows the change of bandwidth during
-the channel switch in mesh, remove the bandwidth check present in
-ieee80211_set_csa_beacon.
+Chih-Kang Chang (2):
+  rtw88: fix stopping queues in wrong timing when HW scan
+  rtw88: fix store OP channel info timing when HW scan
 
-Fixes: c6da674aff94 ("{nl,cfg,mac}80211: enable the triggering of CSA frame in mesh")
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
----
- net/mac80211/cfg.c | 3 ---
- 1 file changed, 3 deletions(-)
+Po-Hao Huang (1):
+  rtw88: 8822c: extend supported probe request size
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index fe6500b..5db2cba 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3598,9 +3598,6 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 	case NL80211_IFTYPE_MESH_POINT: {
- 		struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
- 
--		if (params->chandef.width != sdata->vif.bss_conf.chandef.width)
--			return -EINVAL;
--
- 		/* changes into another band are not supported */
- 		if (sdata->vif.bss_conf.chandef.chan->band !=
- 		    params->chandef.chan->band)
+Zong-Zhe Yang (1):
+  rtw88: phy: fix warning of possible buffer overflow
+
+ drivers/net/wireless/realtek/rtw88/fw.c       | 36 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw88/fw.h       | 19 +++++++++-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  5 ++-
+ drivers/net/wireless/realtek/rtw88/main.c     | 21 ++++++++++-
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 ++-
+ drivers/net/wireless/realtek/rtw88/phy.c      | 21 +++++------
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  3 +-
+ 10 files changed, 90 insertions(+), 28 deletions(-)
+
 -- 
-2.7.4
+2.25.1
 
