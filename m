@@ -2,129 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14BD2583578
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 01:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6222583779
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 05:21:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235229AbiG0XBu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jul 2022 19:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34778 "EHLO
+        id S236208AbiG1DVJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jul 2022 23:21:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233766AbiG0XBo (ORCPT
+        with ESMTP id S237821AbiG1DUs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jul 2022 19:01:44 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35CB42181E
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 16:01:43 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.64.75])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id AAB1A2005E;
-        Wed, 27 Jul 2022 23:01:41 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6B3758007B;
-        Wed, 27 Jul 2022 23:01:41 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 28BD213C2B1;
-        Wed, 27 Jul 2022 16:01:41 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 28BD213C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1658962901;
-        bh=pO2GKPhCZ0/STsKTAzAQh3+K4aMTP5A/BqeWnzeSEQA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bCuWY0Oi0ycwWjT6jQmbJjLV7SEOvevA3Nc9Sj6tx4RYuoVJwEqW4CudYz7aF5ol1
-         NY2drWVPzVTFGaVRVaMeI1iFC1yYEAqdRnidDDQCe5ydVMi601933ad04n6HGp2NcV
-         SZMeZk4kfMwQv9dQsECPBM6xiMcNLFlzL6pK+AUE=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     nbd@nbd.name, Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 12/12] wifi: mt76: mt7915: add rx-ppdu-size-out-of-range ethtool counter
-Date:   Wed, 27 Jul 2022 16:01:22 -0700
-Message-Id: <20220727230122.29842-12-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220727230122.29842-1-greearb@candelatech.com>
+        Wed, 27 Jul 2022 23:20:48 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298825A142
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Jul 2022 20:20:47 -0700 (PDT)
+X-UUID: 37c1d49e7a65438cbd091a2a9c94c5ae-20220728
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:f00b0566-d9b4-4e0d-a378-f7b7043efc39,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:45
+X-CID-INFO: VERSION:1.1.8,REQID:f00b0566-d9b4-4e0d-a378-f7b7043efc39,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACTIO
+        N:release,TS:45
+X-CID-META: VersionHash:0f94e32,CLOUDID:c1e2868e-b90a-4310-9e08-cd036292eb9e,C
+        OID:dc5365b0e233,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 37c1d49e7a65438cbd091a2a9c94c5ae-20220728
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1750394842; Thu, 28 Jul 2022 11:20:42 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Thu, 28 Jul 2022 11:20:41 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n1.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.792.15 via Frontend
+ Transport; Thu, 28 Jul 2022 11:20:41 +0800
+Message-ID: <7f5284ae5f78f59dcf0d1cf559bf444e237eadbe.camel@mediatek.com>
+Subject: Re: [PATCH 05/12] wifi: mt76: mt7915: report tx-retries
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     <greearb@candelatech.com>, <linux-wireless@vger.kernel.org>
+CC:     <nbd@nbd.name>
+Date:   Thu, 28 Jul 2022 11:20:41 +0800
+In-Reply-To: <20220727230122.29842-5-greearb@candelatech.com>
 References: <20220727230122.29842-1-greearb@candelatech.com>
+         <20220727230122.29842-5-greearb@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1658962902-FUVu7abVkSsQ
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On Wed, 2022-07-27 at 16:01 -0700, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> mac80211 stack will only report tx-status for skb claiming to be
+> ampdu heads, so lie a bit in mt7915 and set the flag so that mac80211
+> will record status for each skb.
+> 
+> mt7915 appears to report retry status on an individual per-skb
+> manner,
+> so that method above seems to work.
+> 
+> Re-constitute the txinfo status rate info so that the rix and flags
+> is also at least close to correct.  No direct way to report HE
+> rates that way, so mac80211 might could use some tweaking in
+> the ieee80211_tx_status_ext to take both info and status->rate
+> into account.
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mac80211.c |  4 +
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |  5 +
+>  .../net/wireless/mediatek/mt76/mt7915/init.c  |  1 +
+>  .../net/wireless/mediatek/mt76/mt7915/mac.c   | 95
+> ++++++++++++++++++-
+>  .../net/wireless/mediatek/mt76/mt7915/mac.h   |  6 +-
+>  .../net/wireless/mediatek/mt76/mt7915/main.c  |  4 +
+>  .../net/wireless/mediatek/mt76/mt7921/main.c  |  4 +
+>  drivers/net/wireless/mediatek/mt76/tx.c       | 18 +++-
+>  8 files changed, 129 insertions(+), 8 deletions(-)
 
-Support this additional MIB counter, it shares register with
-the rx-fifo-overflow counter.
+Hi Ben,
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/main.c   | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h   | 1 +
- 4 files changed, 6 insertions(+), 1 deletion(-)
+Looks like we have a similar goal but I don't use txs_for_no_skb. 
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index afd480dd255b..921fad4a3873 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -2490,6 +2490,7 @@ void mt7915_mac_update_stats(struct mt7915_phy *phy)
- 
- 	cnt = mt76_rr(dev, MT_MIB_SDR4(phy->band_idx));
- 	mib->rx_fifo_full_cnt += FIELD_GET(MT_MIB_SDR4_RX_FIFO_FULL_MASK, cnt);
-+	mib->rx_oor_cnt += FIELD_GET(MT_MIB_SDR4_RX_OOR_MASK, cnt);
- 
- 	cnt = mt76_rr(dev, MT_MIB_SDR5(phy->band_idx));
- 	mib->rx_mpdu_cnt += cnt;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index f2e215468a38..4c847aac6de8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1148,6 +1148,7 @@ static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
- 
- 	/* rx counters */
- 	"rx_fifo_full_cnt",
-+	"rx_oor_cnt", /* rx ppdu length is bad */
- 	"rx_mpdu_cnt",
- 	"channel_idle_cnt",
- 	"rx_vector_mismatch_cnt",
-@@ -1331,7 +1332,8 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 		data[ei++] = mib->tx_amsdu[i];
- 
- 	/* rx counters */
--	data[ei++] = mib->rx_fifo_full_cnt;
-+	data[ei++] = mib->rx_fifo_full_cnt; /* group-5 might exacerbate this */
-+	data[ei++] = mib->rx_oor_cnt;
- 	data[ei++] = mib->rx_mpdu_cnt;
- 	data[ei++] = mib->channel_idle_cnt;
- 	data[ei++] = mib->rx_vector_mismatch_cnt;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index c0bb87bf2a2c..895dff9d053c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -208,6 +208,7 @@ struct mib_stats {
- 
- 	/* rx stats */
- 	u32 rx_fifo_full_cnt;
-+	u32 rx_oor_cnt;
- 	u32 channel_idle_cnt;
- 	u32 rx_vector_mismatch_cnt;
- 	u32 rx_delimiter_fail_cnt;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 8bbc9a0ae699..d8c0caa71122 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -292,6 +292,7 @@ enum offs_rev {
- 
- #define MT_MIB_SDR4(_band)		MT_WF_MIB(_band, __OFFS(MIB_SDR4))
- #define MT_MIB_SDR4_RX_FIFO_FULL_MASK	GENMASK(15, 0)
-+#define MT_MIB_SDR4_RX_OOR_MASK		GENMASK(23, 16)
- 
- /* rx mpdu counter, full 32 bits */
- #define MT_MIB_SDR5(_band)		MT_WF_MIB(_band, __OFFS(MIB_SDR5))
--- 
-2.20.1
+What about directly switching to PPDU bases reporting (it should
+include MPDUs total/failed/retries counts/bytes) and using
+.sta_statistics? I think this might simplify the codes and can use
+mac80211 ethtool as is.
+
+I made these changes for .net_fill_forward_path (WED) cases. We're
+doing some throughput tests.
+https://pastebin.com/raw/qCzNNDzw
+https://pastebin.com/raw/25Vsk2xs
+
+
+Ryder
+
 
