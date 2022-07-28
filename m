@@ -2,55 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53366584593
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 20:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8BF584600
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 20:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbiG1SQu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jul 2022 14:16:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48934 "EHLO
+        id S231590AbiG1SdK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jul 2022 14:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbiG1SQt (ORCPT
+        with ESMTP id S231279AbiG1SdI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jul 2022 14:16:49 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BAD52E61
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 11:16:48 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.25])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D0B3E2006C
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 18:16:46 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id EEF28B000F0
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 18:16:45 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 504EB13C2B0
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 11:16:45 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 504EB13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1659032205;
-        bh=7LLcjKc252ck4p6ZMKyeTHHrDkZdOcXQ1pBYgyEV8l0=;
-        h=To:From:Subject:Date:From;
-        b=ZlmFytHJd8UAcHuVaQRj4224+RftsJf43Ujt8RN6RCMG7nlw5u9W8FfeV9ZCeDhdk
-         CTbm2AEAyoEQdLMHHzSWEgFhLfrPNRWk1nHySkBrtpD90BuZe2llfBc1BNORencG5l
-         7M7jKfbsFmSDMluOr6feseRbgHTRjTdhLCG/7Dx0=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: Problem changing bw in 5.19 related to EHT?
-Organization: Candela Technologies
-Message-ID: <be7f0ca3-5d93-0592-1153-7020a3cf2f2c@candelatech.com>
-Date:   Thu, 28 Jul 2022 11:16:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Thu, 28 Jul 2022 14:33:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BE9DB72EF4
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 11:33:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1659033186;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AnwrS3QG5lQ/HFybxQGG7GTUMb3M7fOrNMLIdEswKn0=;
+        b=QIsezi2fBxAlCLsF5pdOgOqaHbNcF1+0acQZP/hQ2CfDZhRelCytYyiSyiTX2S/+LZiqNy
+        8dYKRL2Xp9AJshbxdQcebFlyxKSaQ8V35BV9DEmPxChwAXSW/dxQAo5adp7kk2rq7wk3kG
+        LHu6NpVl9iPKqMCw+JIFkYRNksQoamY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-372-i-yfLtHDObyfLdgwHCk3Iw-1; Thu, 28 Jul 2022 14:33:05 -0400
+X-MC-Unique: i-yfLtHDObyfLdgwHCk3Iw-1
+Received: by mail-ej1-f70.google.com with SMTP id hb41-20020a170907162900b0072f044ca263so913298ejc.15
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 11:33:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=AnwrS3QG5lQ/HFybxQGG7GTUMb3M7fOrNMLIdEswKn0=;
+        b=PpeiWpJGe3T4InYHXi8cl91LtFg9FYwg85yHG73SPFzSHpKNP69j1vJb3O/+T9ftPm
+         aC27i+XOUs1fVkt1fuixLG90TR++1ZCSKcGTVe2N8FWObvRONG5HEbhFtVV2ar7FFpte
+         vxthaLJH0XSMz1vbnERYN7vTLQDSdOKCIgoTZdzy2Ih53aZ1zrwG52XTdfcKSyTIsTX4
+         PdR3YPgpQfomkhyVfmKCdu3TCXjjDvLfdr1IGiIj47dbySE3mIKYggGqt1QP/XPGpTTv
+         whSdrzv8p4eQfZdYblHgTdtH5d5xILE7VTjWgin1YZliPqQpozVdxBs2mWSlvA+Ws4js
+         VlUw==
+X-Gm-Message-State: AJIora++Zd4ZEpzJHW+18/yjlo9eWFz8+zoSQTsS+D8Ue4gvyt86sY3F
+        MfQxYMRkBSnrBZkJqrNvwKocxz0S3L7ziG1meTqHQt/CRgivesUFxvzOf6gTD7h5vdwQT4VFu55
+        wyjeICsge8xHAzdNUldcWD6PTzxw=
+X-Received: by 2002:a05:6402:64c:b0:43c:ea8e:85d6 with SMTP id u12-20020a056402064c00b0043cea8e85d6mr228278edx.269.1659033183292;
+        Thu, 28 Jul 2022 11:33:03 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1v6jMX+dL/aR+KCCQhisVrXzLNFfAbYhLOElpzO/t39tU0Nz9HTKclrOheDtnessZNd6m87uQ==
+X-Received: by 2002:a05:6402:64c:b0:43c:ea8e:85d6 with SMTP id u12-20020a056402064c00b0043cea8e85d6mr228236edx.269.1659033182840;
+        Thu, 28 Jul 2022 11:33:02 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id sy13-20020a1709076f0d00b00722d5b26ecesm670162ejc.205.2022.07.28.11.33.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Jul 2022 11:33:02 -0700 (PDT)
+Message-ID: <5f0b98a5-1929-a78e-4d44-0bb2aec18b5a@redhat.com>
+Date:   Thu, 28 Jul 2022 20:33:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] platform/x86: pmc_atom: Add DMI quirk for Lex 3I380A/CW
+ boards
 Content-Language: en-US
+To:     "Matwey V. Kornilov" <matwey@sai.msu.ru>
+Cc:     andriy.shevchenko@linux.intel.com, carlo@endlessm.com,
+        davem@davemloft.net, hkallweit1@gmail.com, js@sig21.net,
+        linux-clk@vger.kernel.org, linux-wireless@vger.kernel.org,
+        matwey.kornilov@gmail.com, mturquette@baylibre.com,
+        netdev@vger.kernel.org, pierre-louis.bossart@linux.intel.com,
+        sboyd@kernel.org, markgross@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        paul.gortmaker@windriver.com, stable@vger.kernel.org
+References: <20220727153232.13359-1-matwey@sai.msu.ru>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220727153232.13359-1-matwey@sai.msu.ru>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MDID: 1659032207-dFSjVS-5Jv74
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,184 +88,108 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
- From what I can tell, my 160Mhz STA was not properly connecting to a 160Mhz AP
-because ieee80211_determine_chantype was not ORing in the IEEE80211_STA_DISABLE_EHT
-flag.  eht_oper is NULL in my case, as this is an AX radio on both sides.
+Hi,
 
-The change below allows the STA to connect for me.  I'm not sure if this
-is the best fix or not, however....any opinions?
-
-Thanks,
-Ben
-
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 6de771313657..d5ee411e6c93 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -167,7 +167,8 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-         struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
-         struct cfg80211_chan_def vht_chandef;
-         struct ieee80211_sta_ht_cap sta_ht_cap;
--       u32 ht_cfreq, ret;
-+       u32 ht_cfreq;
-+       u32 ret = 0;
-
-         memset(chandef, 0, sizeof(struct cfg80211_chan_def));
-         chandef->chan = channel;
-@@ -175,17 +176,18 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-         chandef->center_freq1 = channel->center_freq;
-         chandef->freq1_offset = channel->freq_offset;
-
-+       if (!eht_oper)
-+               ret |= IEEE80211_STA_DISABLE_EHT;
-+
-         if (channel->band == NL80211_BAND_6GHZ) {
-                 if (!ieee80211_chandef_he_6ghz_oper(sdata, he_oper, eht_oper,
-                                                     chandef)) {
-                         mlme_dbg(sdata,
-                                  "bad 6 GHz operation, disabling HT/VHT/HE/EHT\n");
--                       ret = IEEE80211_STA_DISABLE_HT |
--                             IEEE80211_STA_DISABLE_VHT |
--                             IEEE80211_STA_DISABLE_HE |
--                             IEEE80211_STA_DISABLE_EHT;
--               } else {
--                       ret = 0;
-+                       ret |= IEEE80211_STA_DISABLE_HT |
-+                              IEEE80211_STA_DISABLE_VHT |
-+                              IEEE80211_STA_DISABLE_HE |
-+                              IEEE80211_STA_DISABLE_EHT;
-                 }
-                 vht_chandef = *chandef;
-                 goto out;
-@@ -196,10 +198,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                         chandef->width = ieee80211_s1g_channel_width(channel);
-                 }
-
--               ret = IEEE80211_STA_DISABLE_HT | IEEE80211_STA_DISABLE_40MHZ |
--                     IEEE80211_STA_DISABLE_VHT |
--                     IEEE80211_STA_DISABLE_80P80MHZ |
--                     IEEE80211_STA_DISABLE_160MHZ;
-+               ret |= IEEE80211_STA_DISABLE_HT | IEEE80211_STA_DISABLE_40MHZ |
-+                      IEEE80211_STA_DISABLE_VHT |
-+                      IEEE80211_STA_DISABLE_80P80MHZ |
-+                      IEEE80211_STA_DISABLE_160MHZ;
-                 goto out;
-         }
-
-@@ -208,10 +210,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-
-         if (!ht_oper || !sta_ht_cap.ht_supported) {
-                 mlme_dbg(sdata, "HT operation missing / HT not supported\n");
--               ret = IEEE80211_STA_DISABLE_HT |
--                     IEEE80211_STA_DISABLE_VHT |
--                     IEEE80211_STA_DISABLE_HE |
--                     IEEE80211_STA_DISABLE_EHT;
-+               ret |= IEEE80211_STA_DISABLE_HT |
-+                      IEEE80211_STA_DISABLE_VHT |
-+                      IEEE80211_STA_DISABLE_HE |
-+                      IEEE80211_STA_DISABLE_EHT;
-                 goto out;
-         }
-
-@@ -232,10 +234,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                            "Wrong control channel: center-freq: %d ht-cfreq: %d ht->primary_chan: %d band: %d - Disabling HT\n",
-                            channel->center_freq, ht_cfreq,
-                            ht_oper->primary_chan, channel->band);
--               ret = IEEE80211_STA_DISABLE_HT |
--                     IEEE80211_STA_DISABLE_VHT |
--                     IEEE80211_STA_DISABLE_HE |
--                     IEEE80211_STA_DISABLE_EHT;
-+               ret |= IEEE80211_STA_DISABLE_HT |
-+                      IEEE80211_STA_DISABLE_VHT |
-+                      IEEE80211_STA_DISABLE_HE |
-+                      IEEE80211_STA_DISABLE_EHT;
-                 goto out;
-         }
-
-@@ -245,7 +247,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-         } else {
-                 mlme_dbg(sdata, "40 MHz not supported\n");
-                 /* 40 MHz (and 80 MHz) must be supported for VHT */
--               ret = IEEE80211_STA_DISABLE_VHT;
-+               ret |= IEEE80211_STA_DISABLE_VHT;
-                 /* also mark 40 MHz disabled */
-                 ret |= IEEE80211_STA_DISABLE_40MHZ;
-                 goto out;
-@@ -253,7 +255,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-
-         if (!vht_oper || !sband->vht_cap.vht_supported) {
-                 mlme_dbg(sdata, "VHT operation missing / VHT not supported\n");
--               ret = IEEE80211_STA_DISABLE_VHT;
-+               ret |= IEEE80211_STA_DISABLE_VHT;
-                 goto out;
-         }
-
-@@ -276,7 +278,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                         if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
-                                 sdata_info(sdata,
-                                            "HE AP VHT information is invalid, disabling HE\n");
--                       ret = IEEE80211_STA_DISABLE_HE | IEEE80211_STA_DISABLE_EHT;
-+                       ret |= IEEE80211_STA_DISABLE_HE | IEEE80211_STA_DISABLE_EHT;
-                         goto out;
-                 }
-         } else if (!ieee80211_chandef_vht_oper(&sdata->local->hw,
-@@ -286,7 +288,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                 if (!(ifmgd->flags & IEEE80211_STA_DISABLE_VHT))
-                         sdata_info(sdata,
-                                    "AP VHT information is invalid, disabling VHT\n");
--               ret = IEEE80211_STA_DISABLE_VHT;
-+               ret |= IEEE80211_STA_DISABLE_VHT;
-                 goto out;
-         }
-
-@@ -294,12 +296,11 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                 if (!(ifmgd->flags & IEEE80211_STA_DISABLE_VHT))
-                         sdata_info(sdata,
-                                    "AP VHT information is invalid, disabling VHT\n");
--               ret = IEEE80211_STA_DISABLE_VHT;
-+               ret |= IEEE80211_STA_DISABLE_VHT;
-                 goto out;
-         }
-
-         if (cfg80211_chandef_identical(chandef, &vht_chandef)) {
--               ret = 0;
-                 goto out;
-         }
-
-@@ -307,14 +308,12 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                 if (!(ifmgd->flags & IEEE80211_STA_DISABLE_VHT))
-                         sdata_info(sdata,
-                                    "AP VHT information doesn't match HT, disabling VHT\n");
--               ret = IEEE80211_STA_DISABLE_VHT;
-+               ret |= IEEE80211_STA_DISABLE_VHT;
-                 goto out;
-         }
-
-         *chandef = vht_chandef;
-
--       ret = 0;
--
-  out:
-         /*
-          * When tracking the current AP, don't do any further checks if the
-@@ -354,10 +353,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
-                                         tracking ? 0 :
-                                                    IEEE80211_CHAN_DISABLED)) {
-                 if (WARN_ON(chandef->width == NL80211_CHAN_WIDTH_20_NOHT)) {
--                       ret = IEEE80211_STA_DISABLE_HT |
--                             IEEE80211_STA_DISABLE_VHT |
--                             IEEE80211_STA_DISABLE_HE |
--                             IEEE80211_STA_DISABLE_EHT;
-+                       ret |= IEEE80211_STA_DISABLE_HT |
-+                              IEEE80211_STA_DISABLE_VHT |
-+                              IEEE80211_STA_DISABLE_HE |
-+                              IEEE80211_STA_DISABLE_EHT;
-                         break;
-                 }
+On 7/27/22 17:32, Matwey V. Kornilov wrote:
+> Lex 3I380A/CW (Atom E3845) motherboards are equipped with dual Intel I211
+> based 1Gbps copper ethernet:
+> 
+>      http://www.lex.com.tw/products/pdf/3I380A&3I380CW.pdf
+> 
+> This patch is to fix the issue with broken "LAN2" port. Before the
+> patch, only one ethernet port is initialized:
+> 
+>      igb 0000:01:00.0: added PHC on eth0
+>      igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
+>      igb 0000:01:00.0: eth0: (PCIe:2.5Gb/s:Width x1) 4c:02:89:10:02:e4
+>      igb 0000:01:00.0: eth0: PBA No: FFFFFF-0FF
+>      igb 0000:01:00.0: Using MSI-X interrupts. 2 rx queue(s), 2 tx queue(s)
+>      igb: probe of 0000:02:00.0 failed with error -2
+> 
+> With this patch, both ethernet ports are available:
+> 
+>      igb 0000:01:00.0: added PHC on eth0
+>      igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
+>      igb 0000:01:00.0: eth0: (PCIe:2.5Gb/s:Width x1) 4c:02:89:10:02:e4
+>      igb 0000:01:00.0: eth0: PBA No: FFFFFF-0FF
+>      igb 0000:01:00.0: Using MSI-X interrupts. 2 rx queue(s), 2 tx queue(s)
+>      igb 0000:02:00.0: added PHC on eth1
+>      igb 0000:02:00.0: Intel(R) Gigabit Ethernet Network Connection
+>      igb 0000:02:00.0: eth1: (PCIe:2.5Gb/s:Width x1) 4c:02:89:10:02:e5
+>      igb 0000:02:00.0: eth1: PBA No: FFFFFF-0FF
+>      igb 0000:02:00.0: Using MSI-X interrupts. 2 rx queue(s), 2 tx queue(s)
+> 
+> The issue was observed at 3I380A board with BIOS version "A4 01/15/2016"
+> and 3I380CW board with BIOS version "A3 09/29/2014".
+> 
+> Reference: https://lore.kernel.org/netdev/08c744e6-385b-8fcf-ecdf-1292b5869f94@redhat.com/
+> Fixes: 648e921888ad ("clk: x86: Stop marking clocks as CLK_IS_CRITICAL")
+> Cc: <stable@vger.kernel.org> # v4.19+
+> Signed-off-by: Matwey V. Kornilov <matwey@sai.msu.ru>
 
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Thank you for the patch.
+
+The last week I have received 2 different patches adding
+a total of 3 new "Lex BayTrail" entries to critclk_systems[]
+on top of the existing 2.
+
+Looking at: https://www.lex.com.tw/products/embedded-ipc-board/
+we can see that Lex BayTrail makes many embedded boards with
+multiple ethernet boards and none of their products are battery
+powered so we don't need to worry (too much) about power consumption
+when suspended.
+
+So instead of adding 3 new entries I've written a patch to
+simply disable the turning off of the clocks on all
+systems which have "Lex BayTrail" as their DMI sys_vendor:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/commit/?h=review-hans&id=c9d959fc32a5f9312282817052d8986614f2dc08
+
+I've added a Reported-by tag to give you credit for the work
+you have done on this.
+
+I will send this alternative fix to Linus as part of
+the other pdx86 patches for 5.21.
+
+Regards,
+
+Hans
+
+
+
+
+> ---
+>  drivers/platform/x86/pmc_atom.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/pmc_atom.c b/drivers/platform/x86/pmc_atom.c
+> index b8b1ed1406de..5dc82667907b 100644
+> --- a/drivers/platform/x86/pmc_atom.c
+> +++ b/drivers/platform/x86/pmc_atom.c
+> @@ -388,6 +388,24 @@ static const struct dmi_system_id critclk_systems[] = {
+>  			DMI_MATCH(DMI_PRODUCT_NAME, "CEC10 Family"),
+>  		},
+>  	},
+> +	{
+> +		/* pmc_plt_clk* - are used for ethernet controllers */
+> +		.ident = "Lex 3I380A",
+> +		.callback = dmi_callback,
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Lex BayTrail"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "3I380A"),
+> +		},
+> +	},
+> +	{
+> +		/* pmc_plt_clk* - are used for ethernet controllers */
+> +		.ident = "Lex 3I380CW",
+> +		.callback = dmi_callback,
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Lex BayTrail"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "3I380CW"),
+> +		},
+> +	},
+>  	{
+>  		/* pmc_plt_clk0 - 3 are used for the 4 ethernet controllers */
+>  		.ident = "Lex 3I380D",
 
