@@ -2,45 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DDAC583B46
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 11:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37F4A583B53
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jul 2022 11:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235563AbiG1Jdk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jul 2022 05:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40422 "EHLO
+        id S235453AbiG1Jg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jul 2022 05:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235556AbiG1Jdi (ORCPT
+        with ESMTP id S234943AbiG1Jg2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jul 2022 05:33:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672CD61D97
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 02:33:38 -0700 (PDT)
+        Thu, 28 Jul 2022 05:36:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47A337F94
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 02:36:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03C1D60CA4
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 09:33:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96037C433D6;
-        Thu, 28 Jul 2022 09:33:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5EFC1B8040B
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 09:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54225C433C1;
+        Thu, 28 Jul 2022 09:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659000817;
-        bh=a6hcMWwzqQGy+v7SIblZVXv11DEwTLHOubU9AWfz+LQ=;
+        s=k20201202; t=1659000985;
+        bh=43iVTtiJ13HoSvU9WA10CynbFYNm3wgRhS5DsauDolM=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=sRRkV0XW2pxP4i7pzkRhrpueHOLRRxNX/8tLSSM6ZEKPlMXjweFC8VKzzOtQweZIU
-         iW6S9IGDdx7UjJWO3e+B/lhIo8lV86ADIT7dZ8wXwQzaMQ9mLmfj1rN2UnCas153Ck
-         s8DiVjf3nkjxtR1GNrOz//mxbSPa0WFQ2QVsA/vcjGscpo5g64a76DGWNrct6ZxARD
-         Re/5gsco3PzokJhA1nO4JsYN+8mcS+KXc1klVeuFcU19gj3N+Cgi4f16E1VnK84nlT
-         IWHk02azaQGsv5VWtPpare8k44n5IRSJahzk03cDtXncIV/ljGp5Im9MX3Rd06u+Y5
-         Je3fOYW5oTpcA==
+        b=hIqycj1e9DoPidLivtDxegYdcSNZlU3x/nLpJWp+G2N58gmxoAMnQ39cSZqj4Or6o
+         dkJ8sHdI6N0kptQrsQbRi/S/5IG5yfWNdN9jv993nqPw3xSVNkc9rjB9TIY5Js9iK8
+         c0cwbI4actjStIe9b5YRVlPHZm9JVAl8Rk1C5yoYhp/1vdDOCV3YxSbPYtX/rfxXV0
+         n3vd6jR1YJ9nvE+k3vG7cqw8pmqB6AhB+eWrFqSti5dXHV1iUD3nMNI1CWDDVmnL9L
+         00d8oM3Bmc6V8lCf4hASXhlGR2UuZOBydQYkL6TwOpkNOmDltdPVu3c6cWVDNyZuch
+         HZc8Kaiiw0wTA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     aspriel@gmail.com
 Cc:     arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 0/7] brcmfmac: support devices from multiple vendors
-References: <CAJ65rDxwRshw4Qwte9bU4K+xifcS0Yo7TjCKJ2aNPg4wBLeg5w@mail.gmail.com>
-Date:   Thu, 28 Jul 2022 12:33:32 +0300
-In-Reply-To: <CAJ65rDxwRshw4Qwte9bU4K+xifcS0Yo7TjCKJ2aNPg4wBLeg5w@mail.gmail.com>
-        (aspriel's message of "Mon, 13 Jun 2022 05:19:23 -0400")
-Message-ID: <87wnbxoa37.fsf@kernel.org>
+Subject: Re: [PATCH 3/7] brcmfmac: add support for vendor-specific firmware api
+References: <20220613091915.18884-1-arend.vanspriel@broadcom.com>
+        <CAJ65rDxy3ERmDAV1BYH_BCUM3_GnzotWpp7yYO6OtA_CZVgbzw@mail.gmail.com>
+Date:   Thu, 28 Jul 2022 12:36:21 +0300
+In-Reply-To: <CAJ65rDxy3ERmDAV1BYH_BCUM3_GnzotWpp7yYO6OtA_CZVgbzw@mail.gmail.com>
+        (aspriel's message of "Mon, 13 Jun 2022 05:19:26 -0400")
+Message-ID: <87sfmlo9yi.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -55,38 +56,47 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 aspriel@gmail.com writes:
 
-> The bcm43xx family of wifi chipsets found its way to different
-> groups inside and outside Broadcom. For the fullmac devices this
-> means that in those difference groups firmware is being developed
-> and the firmware api is bound to diverge. This series introduces
-> a design change to accomodate supporting multiple firmware api's.
-> The vender-specific support can be compiled in brcmfmac or
-> built as a separate module. Currently the vendor-specific support
-> does not have any real effect. At the momemt looking into SAE support
-> which appear to be different for Cypress devices so that might be a
-> first use-case. Meanwhile wanted to put this series out there and
-> get feedback on it. Some ideas were taken from iwlwifi which does
-> similar things for iwlmvm, iwldvm, etc.
+> The driver is being used by multiple vendors who develop the firmware
+> api independently. So far the firmware api as used by the driver has
+> not diverged (yet). This change adds framework for supporting multiple
+> firmware apis. The vendor-specific support code has to provide a number
+> of callback operations. Right now it is only attach and detach callbacks
+> so no real functionality as the api is still common. This code only
+> adds WCC variant anyway, which is selected for all devices right now.
 >
-> The patches apply to the main branch of the wireless-next repository.
+> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+
+[...]
+
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
+> @@ -8,6 +8,22 @@ config BRCMFMAC
+>  	  interface support. If you choose to build a module, it'll be called
+>  	  brcmfmac.ko.
 >
-> Arend van Spriel (7):
->   brcmfmac: add function to unbind device to bus layer api
->   brcmfmac: add firmware vendor info in driver data
->   brcmfmac: add support for vendor-specific firmware api
->   brcmfmac: add support for Cypress firmware api
->   brcmfmac: add support Broadcom BCA firmware api
->   brcmfmac: add vendor name in revinfo debugfs file
->   brcmfmac: introduce BRCMFMAC exported symbols namespace
+> +config BRCMFMAC_VENDOR_MODULES
+> +	bool "Use vendor-specific modules"
+> +	depends on BRCMFMAC = m
+> +	help
+> +	  This option will build separate modules for the vendor-specific
+> +	  firmware support. If not selected the vendor-specific support
+> +	  will be build in brcmfmac.ko.
+> +
+> +config BRCMFMAC_VENDOR_WCC
+> +	bool "Broadcom WCC"
+> +	default y
+> +	depends on BRCMFMAC
+> +        help
+> +          This option will allow the driver to communicate with devices
+> +          shipped by Broadcom WCC division.
+> +
 
-I think there's something wrong in mail formatting, tried to apply just
-for a test and it failed:
-
-error: git diff header lacks filename information when removing 1 leading pathname component (line 7)
-error: could not build fake ancestor
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-Applying: brcmfmac: add function to unbind device to bus layer api
-Patch failed at 0001 brcmfmac: add function to unbind device to bus layer api
+I'm not really a fan of these Kconfig options, I would rather have them
+always enabled. Why do we need these options, what would be the use case
+when user disables these?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
