@@ -2,107 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A87005851C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 16:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9025851E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 16:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235862AbiG2OpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jul 2022 10:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49600 "EHLO
+        id S236746AbiG2O6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jul 2022 10:58:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235283AbiG2OpW (ORCPT
+        with ESMTP id S236539AbiG2O6g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jul 2022 10:45:22 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31BB115831
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 07:45:16 -0700 (PDT)
-X-UUID: 23a98cd47989462c90afb3fab26c6f2d-20220729
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:9a593e24-3106-432a-9357-e080fa0f06d7,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:5
-X-CID-META: VersionHash:0f94e32,CLOUDID:874abe24-a982-4824-82d2-9da3b6056c2a,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 23a98cd47989462c90afb3fab26c6f2d-20220729
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 211206583; Fri, 29 Jul 2022 22:45:09 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 29 Jul 2022 22:45:08 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 29 Jul 2022 22:45:08 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH RESEND v2 2/2] mt76: mt7921: add mt7921_mutex_acquire at mt7921_sta_set_decap_offload
-Date:   Fri, 29 Jul 2022 22:44:57 +0800
-Message-ID: <aa6418271cc601dd25a165d05cfd7136a1d6930a.1659105379.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <6353fe62ebeb0f78aa34b40e9c1745061b229f6c.1659105379.git.objelf@gmail.com>
-References: <6353fe62ebeb0f78aa34b40e9c1745061b229f6c.1659105379.git.objelf@gmail.com>
+        Fri, 29 Jul 2022 10:58:36 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D3A07FE56;
+        Fri, 29 Jul 2022 07:58:34 -0700 (PDT)
+Received: from [127.0.0.1] (ip-109-43-49-118.web.vodafone.de [109.43.49.118])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 0BFCF22246;
+        Fri, 29 Jul 2022 16:58:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1659106711;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=W+YShM8tCWwaAykVrnA9+dAAicvUjJ1+V+R6kmbwKkA=;
+        b=Fb/dpvs46e3e9OHp3FckYJH0lYNTUX0cSMGtqSanZdFeT3MFBOVZxkdzYN6g7pMzajlnDW
+        Mq+n2wgNji9jOK0Cw3zQTqLP6Y4qkLD73CEv69jZ+QAO87Q91MxVVhVfyM8o4/shgKO4rO
+        sUliLx42Y+BszUhKs/U3zpKXVvt/AQE=
+Date:   Fri, 29 Jul 2022 16:58:28 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     David Laight <David.Laight@ACULAB.COM>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+CC:     Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Michael Walle <mwalle@kernel.org>
+Subject: RE: [PATCH] wilc1000: fix DMA on stack objects
+User-Agent: K-9 Mail for Android
+In-Reply-To: <0ed9ec85a55941fd93773825fe9d374c@AcuMS.aculab.com>
+References: <20220728152037.386543-1-michael@walle.cc> <0ed9ec85a55941fd93773825fe9d374c@AcuMS.aculab.com>
+Message-ID: <612ECEE6-1C05-4325-92A3-21E17EC177A9@walle.cc>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        RDNS_NONE,SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Am 29=2E Juli 2022 11:51:12 MESZ schrieb David Laight <David=2ELaight@ACULA=
+B=2ECOM>:
+>From: Michael Walle
+>> Sent: 28 July 2022 16:21
+>>=20
+>> From: Michael Walle <mwalle@kernel=2Eorg>
+>>=20
+>> Sometimes wilc_sdio_cmd53() is called with addresses pointing to an
+>> object on the stack=2E E=2Eg=2E wilc_sdio_write_reg() will call it with=
+ an
+>> address pointing to one of its arguments=2E Detect whether the buffer
+>> address is not DMA-able in which case a bounce buffer is used=2E The bo=
+unce
+>> buffer itself is protected from parallel accesses by sdio_claim_host()=
+=2E
+>>=20
+>> Fixes: 5625f965d764 ("wilc1000: move wilc driver out of staging")
+>> Signed-off-by: Michael Walle <mwalle@kernel=2Eorg>
+>> ---
+>> The bug itself probably goes back way more, but I don't know if it make=
+s
+>> any sense to use an older commit for the Fixes tag=2E If so, please sug=
+gest
+>> one=2E
+>>=20
+>> The bug leads to an actual error on an imx8mn SoC with 1GiB of RAM=2E B=
+ut the
+>> error will also be catched by CONFIG_DEBUG_VIRTUAL:
+>> [    9=2E817512] virt_to_phys used for non-linear address: (____ptrval_=
+___) (0xffff80000a94bc9c)
+>>=20
+>>  =2E=2E=2E/net/wireless/microchip/wilc1000/sdio=2Ec    | 28 +++++++++++=
++++++---
+>>  1 file changed, 24 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio=2Ec
+>> b/drivers/net/wireless/microchip/wilc1000/sdio=2Ec
+>> index 7962c11cfe84=2E=2Ee988bede880c 100644
+>> --- a/drivers/net/wireless/microchip/wilc1000/sdio=2Ec
+>> +++ b/drivers/net/wireless/microchip/wilc1000/sdio=2Ec
+>> @@ -27,6 +27,7 @@ struct wilc_sdio {
+>>  	bool irq_gpio;
+>>  	u32 block_size;
+>>  	int has_thrpt_enh3;
+>> +	u8 *dma_buffer;
+>>  };
+>>=20
+>>  struct sdio_cmd52 {
+>> @@ -89,6 +90,9 @@ static int wilc_sdio_cmd52(struct wilc *wilc, struct =
+sdio_cmd52 *cmd)
+>>  static int wilc_sdio_cmd53(struct wilc *wilc, struct sdio_cmd53 *cmd)
+>>  {
+>>  	struct sdio_func *func =3D container_of(wilc->dev, struct sdio_func, =
+dev);
+>> +	struct wilc_sdio *sdio_priv =3D wilc->bus_data;
+>> +	bool need_bounce_buf =3D false;
+>> +	u8 *buf =3D cmd->buffer;
+>>  	int size, ret;
+>>=20
+>>  	sdio_claim_host(func);
+>> @@ -100,12 +104,20 @@ static int wilc_sdio_cmd53(struct wilc *wilc, str=
+uct sdio_cmd53 *cmd)
+>>  	else
+>>  		size =3D cmd->count;
+>>=20
+>> +	if ((!virt_addr_valid(buf) || object_is_on_stack(buf)) &&
+>
+>How cheap are the above tests?
+>It might just be worth always doing the 'bounce'?
 
-Add mt7921_mutex_acquire at mt7921_[start, stop]_ap to fix the race
-with the context holding dev->muxtex and the driver might access the
-device in low power state.
+I'm not sure how cheap they are, but I don't think it costs more than copy=
+ing the bulk data around=2E That's up to the maintainer to decide=2E=20
 
-Fixes: 24299fc869f7 ("mt76: mt7921: enable rx header traslation offload")
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+>
+>> +	    !WARN_ON_ONCE(size > WILC_SDIO_BLOCK_SIZE)) {
+>
+>That WARN() ought to be an error return?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 63fd33dcd3af..7214735011d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1404,6 +1404,8 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
- 	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
- 
-+	mt7921_mutex_acquire(dev);
-+
- 	if (enabled)
- 		set_bit(MT_WCID_FLAG_HDR_TRANS, &msta->wcid.flags);
- 	else
-@@ -1411,6 +1413,8 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
- 
- 	mt76_connac_mcu_sta_update_hdr_trans(&dev->mt76, vif, &msta->wcid,
- 					     MCU_UNI_CMD(STA_REC_UPDATE));
-+
-+	mt7921_mutex_release(dev);
- }
- 
- #if IS_ENABLED(CONFIG_IPV6)
--- 
-2.25.1
+It will just behave as before=2E I noticed it *will* work in some cases, a=
+lthough the object is on the stack=2E I mean the driver seems to work fine =
+at least on some SoCs=2E So I didn't want to change the behavior if the bou=
+nce buffer is too small=2E Of course we could also return an error here=2E =
+All the calls with stack adresses I've seen for now were the register reads=
+ and writes and the txq handling (the vmm_tables IIRC)=2E=20
+
+>Or just assume that large buffers will dma-capable?
+
+See above=2E It should be large enough=2E But I didn't audit everything=2E=
+=20
+
+-michael=20
+
+>
+>	David
+>
+>> +		need_bounce_buf =3D true;
+>> +		buf =3D sdio_priv->dma_buffer;
+>> +	}
+>> +
+>>  	if (cmd->read_write) {  /* write */
+>> -		ret =3D sdio_memcpy_toio(func, cmd->address,
+>> -				       (void *)cmd->buffer, size);
+>> +		if (need_bounce_buf)
+>> +			memcpy(buf, cmd->buffer, size);
+>> +		ret =3D sdio_memcpy_toio(func, cmd->address, buf, size);
+>>  	} else {        /* read */
+>> -		ret =3D sdio_memcpy_fromio(func, (void *)cmd->buffer,
+>> -					 cmd->address,  size);
+>> +		ret =3D sdio_memcpy_fromio(func, buf, cmd->address, size);
+>> +		if (need_bounce_buf)
+>> +			memcpy(cmd->buffer, buf, size);
+>>  	}
+>>=20
+>>  	sdio_release_host(func);
+>> @@ -127,6 +139,12 @@ static int wilc_sdio_probe(struct sdio_func *func,
+>>  	if (!sdio_priv)
+>>  		return -ENOMEM;
+>>=20
+>> +	sdio_priv->dma_buffer =3D kzalloc(WILC_SDIO_BLOCK_SIZE, GFP_KERNEL);
+>> +	if (!sdio_priv->dma_buffer) {
+>> +		ret =3D -ENOMEM;
+>> +		goto free;
+>> +	}
+>> +
+>>  	ret =3D wilc_cfg80211_init(&wilc, &func->dev, WILC_HIF_SDIO,
+>>  				 &wilc_hif_sdio);
+>>  	if (ret)
+>> @@ -160,6 +178,7 @@ static int wilc_sdio_probe(struct sdio_func *func,
+>>  	irq_dispose_mapping(wilc->dev_irq_num);
+>>  	wilc_netdev_cleanup(wilc);
+>>  free:
+>> +	kfree(sdio_priv->dma_buffer);
+>>  	kfree(sdio_priv);
+>>  	return ret;
+>>  }
+>> @@ -171,6 +190,7 @@ static void wilc_sdio_remove(struct sdio_func *func=
+)
+>>=20
+>>  	clk_disable_unprepare(wilc->rtc_clk);
+>>  	wilc_netdev_cleanup(wilc);
+>> +	kfree(sdio_priv->dma_buffer);
+>>  	kfree(sdio_priv);
+>>  }
+>>=20
+>> --
+>> 2=2E30=2E2
+>
+>-
+>Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1=
+ 1PT, UK
+>Registration No: 1397386 (Wales)
+>
 
