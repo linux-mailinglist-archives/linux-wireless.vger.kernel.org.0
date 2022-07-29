@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 094065849CB
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 04:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FBB5849CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 04:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233190AbiG2Ccd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S232456AbiG2Ccd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 28 Jul 2022 22:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231522AbiG2Ccc (ORCPT
+        with ESMTP id S231966AbiG2Ccc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 28 Jul 2022 22:32:32 -0400
-Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EE17AC13
+Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 993936A9E4
         for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 19:32:30 -0700 (PDT)
-Received: by mail-vk1-xa34.google.com with SMTP id v22so1653490vkc.6
+Received: by mail-vs1-xe29.google.com with SMTP id o4so3280359vsc.12
         for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 19:32:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
          :to:cc;
         bh=+D1zF2DCKf5WB+zgoPewh33B5r7wz0pan/6d9WW6hok=;
-        b=Fm0ShrdIsrBUriJRwckvrscm21bcMQ2hft2jZxhYYVnluqU14oEMxx5Q32rqA5nHON
-         ge7kkHbXf4ycYanpxO/eYpkuXpFmqfjhhHgzGpc6UM4DvAhcNP2Um9YHSL8hIt/S3Yma
-         Pc7aAeDZly/dYE2gJ2gQRLSLCZF+UgCFKWqHUUER/GpWiHieskrwlZOhDJ2vv8EjnITM
-         gRM8bnUc7xxKaAlfk+5q0fZZqrZ3ONmxY+7YGyddkIPIljCc7T6p72ZHEMo8VUTkBu/5
-         GIqqd7R7ww+IqXdp2iBCe8PGY1bTvn2vo13F9I36aCrRbTFSQjweDW18/ziUcHXzBBO4
-         barA==
+        b=Yc5D9LlEs+Sma+wPy5txRxFFC3l2e8rpqRXSQwqGm3NpcXO9vA/R8xPKxhefELo/a3
+         XB9Mchrho8B53ngBnR7NwIOQnEdXJeCqGMTjU82Gfw9lqvpJVvnIZziua4dLeSXS2c9z
+         LAnkKUihY4SYoqkspuYVcMuDNy+rWUETHewN8z17cyZ6NRG2mqXzT3Hg9YLgM7JJverI
+         i9iBLz6d7lorjbYSP55i0WwQucPAfs7Wqk0NkxkrNTB4Bwdt9glEvjs4NphfNKXXrudP
+         nl9Iq6ticauvEtRuRPPHbdPrwC6QullUtJFztu2dLOMWQtccE1uWGxvUUg6WC+TcPiAs
+         8IKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=to:subject:message-id:date:from:sender:reply-to:mime-version
          :x-gm-message-state:from:to:cc;
         bh=+D1zF2DCKf5WB+zgoPewh33B5r7wz0pan/6d9WW6hok=;
-        b=4Hi4TwafY/kIytTphW3kqQIFB/cKu7ZQ7Q53rMpNOVX/GWEgaX1vEvxh04HTTXXJid
-         2tBm0qhjnrnMZ8tKVIDp/SOYjURPFK9+Wy0Pz05SCA0oY+kqU0cPnJ20vi6GtSbb+JVw
-         ygxQaH+GoiKJd78yzanTVmeMDTFxNXjed+q+IXlfubQuRtQdxy3ICjsJBNck8g0c7cbV
-         FSFPCEDB2hqeFxCrri/rQC8MSzqbUJbrw+/NxA26w5Q4lMwWdJCiw9E593i9kCgWct3S
-         5w2nzui0AbOjAdffoB3Ppa9dFzzDymUnpMRxd8FvXTdpZzRNZhPqO07n4dOBHWFWSihe
-         V3MQ==
-X-Gm-Message-State: AJIora+3DBtpDKvkuY6zG1RhgvOJh69Js2DR0BXrxqeRG8/AVDkTbgtU
-        1Hx+2kPNGO77K20z7+D5rpbUInfA1I5byd7K8oE=
-X-Google-Smtp-Source: AGRyM1uVuOxtqXCcJHdFNTL7J8JWVFeTI0EJ9PpAYDRKrh1A4xhrUQr5c4iAQX9fIxIl6Fbm4hdRrwhvmSx09Ci9FuY=
-X-Received: by 2002:ac5:c916:0:b0:376:f130:808f with SMTP id
- t22-20020ac5c916000000b00376f130808fmr482675vkl.19.1659061949751; Thu, 28 Jul
+        b=j3WAU8437MI7p72cYpl4rZf++zhJnutWvAJ64pZ4VwUSXGuuBG5Lz6c6czLyTK+d7t
+         wi3RqybzU33bbgD48kD6wwk1mPP6XkIHGI2wGTZjLdW76pc76g5brYh/q5xWbobfEbBd
+         ytI25ULW5lytqI1Z/8u7DOvZl8DRclUUOiQWtzdnXoorwrFL25FgVj47AkMNq408FBlU
+         OOKCbXBVH9356oSy2zzkj8hQFlp0+PlcflDo0R0ob0wilJMKjNbC7Hvsd+8o2g/jlPOE
+         M4SJR0JXCPak543ILtN7r+Wcmvd41ctRlFH4AAIrKhWV+D1BzQ6x7eGiuCXGQMQu6s93
+         NwnQ==
+X-Gm-Message-State: AJIora8P1Ea8UvxMrxgjTh0f0ii/90s3EjdjqKOQKhzCUtEGnRCT7Q0d
+        l7uOCaAQeoNI6FaJpHuhZD3//TAYrVPntNpVZSs=
+X-Google-Smtp-Source: AGRyM1uH66armppnePmFqsmxLSztiN7jnMUG3NfBryr4xDrVBI05nevovMmaySMUq6Gz0B9alMt4EU8i4uOvy4LJHos=
+X-Received: by 2002:a67:f2c8:0:b0:358:3bf8:22aa with SMTP id
+ a8-20020a67f2c8000000b003583bf822aamr496016vsn.56.1659061949740; Thu, 28 Jul
  2022 19:32:29 -0700 (PDT)
 MIME-Version: 1.0
 Reply-To: edmondpamela60@gmail.com
@@ -52,8 +52,8 @@ Received: by 2002:a05:6102:3137:0:0:0:0 with HTTP; Thu, 28 Jul 2022 19:32:29
  -0700 (PDT)
 From:   Pamela Edmond <edmondpamela60@gmail.com>
 Date:   Fri, 29 Jul 2022 02:32:29 +0000
-X-Google-Sender-Auth: Cz3O2f5ibF9eShpRLPRwIaG6SR4
-Message-ID: <CANLyv5hzW684Q0BecHTrMvemqN+LQPxp8u8LnSKAsiTqVNny-g@mail.gmail.com>
+X-Google-Sender-Auth: yYaq3iu1bOgd3R-f7wZxwcDDgOo
+Message-ID: <CANLyv5hA0XFFKLNConawZ68+N6u4LdV+wqj1EEj-0guOvbTuhg@mail.gmail.com>
 Subject: It concern Ukraine and Russian issue
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
