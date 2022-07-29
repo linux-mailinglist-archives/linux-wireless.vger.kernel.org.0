@@ -2,86 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 861D358487F
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 01:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E825584946
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 03:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231959AbiG1XAd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jul 2022 19:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32890 "EHLO
+        id S233387AbiG2BNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jul 2022 21:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233343AbiG1XA3 (ORCPT
+        with ESMTP id S229535AbiG2BNF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jul 2022 19:00:29 -0400
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6151928D
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 16:00:27 -0700 (PDT)
-Received: from fsav411.sakura.ne.jp (fsav411.sakura.ne.jp [133.242.250.110])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 26SN03HV026620;
-        Fri, 29 Jul 2022 08:00:03 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav411.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav411.sakura.ne.jp);
- Fri, 29 Jul 2022 08:00:03 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav411.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 26SN02EQ026614
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 29 Jul 2022 08:00:03 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <ea010779-7296-006e-1212-63a18a1ba633@I-love.SAKURA.ne.jp>
-Date:   Fri, 29 Jul 2022 08:00:00 +0900
+        Thu, 28 Jul 2022 21:13:05 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B37FC48C9A
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 18:13:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659057184; x=1690593184;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=q9eN3XW4375ROb2R2uUA4R2OlD6uIBt67vwZBKgXDHk=;
+  b=I9bAebtZqNaHvIVyqwPFqOcJvlT3cIGaxZoySphw4RXPdEFIVJuyIfXF
+   2vvRNGe77QqPM/KJDBJrgVDcumiHYl6cul8NZJTMCmGq/EoUWP1uzQ7Ov
+   PX8G0J9qgRf1cPYvHbc8ch5yAGb35aAt/xAYrZk3xbTrKII+40RpjPn5j
+   VwTiNcwc1w1jaBIqsOr4cPnCVY/wNrTVMXJkQcXhLlFmfCI7Q8+j1VG1b
+   3JiGz3R9ugDExP2/N54H4uMLRGyGk5YI176bAMaUKOzmSo4SErt3bi8w5
+   w9lB9tSJZ1vfyxR73U5SPFyqOPol8FoBbaWvStgpULdhZ8vzO9ntfVFZ8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10422"; a="288676348"
+X-IronPort-AV: E=Sophos;i="5.93,199,1654585200"; 
+   d="scan'208";a="288676348"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2022 18:13:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,199,1654585200"; 
+   d="scan'208";a="551559149"
+Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 28 Jul 2022 18:13:02 -0700
+Received: from kbuild by e0eace57cfef with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oHEYo-000ApR-0X;
+        Fri, 29 Jul 2022 01:13:02 +0000
+Date:   Fri, 29 Jul 2022 09:12:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ cb774bd35318c1b4cb61f6f2caac85537d07fbde
+Message-ID: <62e33415.8c+JlJ49IPE/iADo%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2] wifi: mac80211: do not abuse fq.lock in
- ieee80211_do_stop()
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Ben Greear <greearb@candelatech.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <9cc9b81d-75a3-3925-b612-9d0ad3cab82b@I-love.SAKURA.ne.jp>
- <165814567948.32602.9899358496438464723.kvalo@kernel.org>
- <9487e319-7ab4-995a-ddfd-67c4c701680c@I-love.SAKURA.ne.jp>
- <87o7xcq6qt.fsf@kernel.org>
- <df9efa23-e729-d1d0-b66f-248d7ae67c60@candelatech.com>
- <20220726143807.68f46fb3@kernel.org>
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <20220726143807.68f46fb3@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022/07/27 6:38, Jakub Kicinski wrote:
-> On Tue, 26 Jul 2022 08:05:12 -0700 Ben Greear wrote:
->>>> Since this patch fixes a regression introduced in 5.19-rc7, can this patch go to 5.19-final ?
->>>>
->>>> syzbot is failing to test linux.git for 12 days due to this regression.
->>>> syzbot will fail to bisect new bugs found in the upcoming merge window
->>>> if unable to test v5.19 due to this regression.  
->>>
->>> I took this to wireless-next as I didn't think there's enough time to
->>> get this to v5.19 (and I only heard Linus' -rc8 plans after the fact).
->>> So this will be in v5.20-rc1 and I recommend pushing this to a v5.19
->>> stable release.  
->>
->> Would it be worth reverting the patch that broke things until the first stable 5.19.x
->> tree then?  Seems lame to ship an official kernel with a known bug like this.
-> 
-> I cherry-picked the fix across the trees after talking to Kalle and
-> DaveM. Let's see how that goes...
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: cb774bd35318c1b4cb61f6f2caac85537d07fbde  wifi: brcmfmac: prevent double-free on hardware-reset
 
-This patch successfully arrived at linux.git, in time for 5.19-final.
+elapsed time: 885m
 
-Thank you.
+configs tested: 99
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                  randconfig-r043-20220728
+riscv                randconfig-r042-20220728
+powerpc                          allmodconfig
+i386                          randconfig-a001
+mips                             allyesconfig
+s390                 randconfig-r044-20220728
+powerpc                           allnoconfig
+i386                                defconfig
+i386                          randconfig-a003
+i386                          randconfig-a005
+i386                          randconfig-a014
+x86_64                           rhel-8.3-syz
+arm                                 defconfig
+x86_64                        randconfig-a002
+i386                          randconfig-a016
+arm                              allyesconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+arm64                            allyesconfig
+i386                          randconfig-a012
+ia64                             allmodconfig
+sh                               allmodconfig
+i386                             allyesconfig
+x86_64                         rhel-8.3-kunit
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-kvm
+x86_64                    rhel-8.3-kselftests
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+s390                       zfcpdump_defconfig
+openrisc                         alldefconfig
+i386                          randconfig-c001
+ia64                        generic_defconfig
+sh                           se7343_defconfig
+arm                            mps2_defconfig
+openrisc                    or1ksim_defconfig
+xtensa                  cadence_csp_defconfig
+mips                           ip32_defconfig
+arc                            hsdk_defconfig
+sh                 kfr2r09-romimage_defconfig
+sh                     sh7710voipgw_defconfig
+loongarch                           defconfig
+loongarch                         allnoconfig
+m68k                        m5407c3_defconfig
+powerpc                     taishan_defconfig
+sh                         ap325rxa_defconfig
+powerpc                      tqm8xx_defconfig
+arm                          lpd270_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+mips                 randconfig-c004-20220728
+powerpc              randconfig-c003-20220728
+nios2                               defconfig
+m68k                            mac_defconfig
+
+clang tested configs:
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+hexagon              randconfig-r045-20220728
+hexagon              randconfig-r041-20220728
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a001
+i386                          randconfig-a015
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a013
+i386                          randconfig-a011
+powerpc                 mpc836x_mds_defconfig
+riscv                             allnoconfig
+x86_64                        randconfig-k001
+powerpc                     tqm5200_defconfig
+powerpc                        fsp2_defconfig
+powerpc                      katmai_defconfig
+powerpc                   microwatt_defconfig
+powerpc                      ppc64e_defconfig
+mips                          rm200_defconfig
+arm                  colibri_pxa270_defconfig
+arm                      pxa255-idp_defconfig
+powerpc                  mpc885_ads_defconfig
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
