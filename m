@@ -2,110 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A975585362
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 18:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C31585477
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 19:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237249AbiG2QZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jul 2022 12:25:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
+        id S236263AbiG2R0v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jul 2022 13:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229979AbiG2QZd (ORCPT
+        with ESMTP id S232888AbiG2R0u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jul 2022 12:25:33 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C71418340
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 09:25:27 -0700 (PDT)
-X-UUID: 694d9abefd3e4dd9a110025bf4f439c6-20220730
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:f4126faa-9971-4da1-8705-d3915a69cbb1,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:5
-X-CID-META: VersionHash:0f94e32,CLOUDID:e04fb6d0-841b-4e95-ad42-8f86e18f54fc,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 694d9abefd3e4dd9a110025bf4f439c6-20220730
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1051595895; Sat, 30 Jul 2022 00:25:22 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
- Fri, 29 Jul 2022 16:23:53 +0000
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 29 Jul 2022 22:45:08 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 29 Jul 2022 22:45:08 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH RESEND v2 2/2] mt76: mt7921: add mt7921_mutex_acquire at mt7921_sta_set_decap_offload
-Date:   Fri, 29 Jul 2022 22:44:57 +0800
-Message-ID: <aa6418271cc601dd25a165d05cfd7136a1d6930a.1659105379.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <6353fe62ebeb0f78aa34b40e9c1745061b229f6c.1659105379.git.objelf@gmail.com>
+        Fri, 29 Jul 2022 13:26:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6DD111472
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 10:26:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C11661EC0
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 17:26:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C038C433D6;
+        Fri, 29 Jul 2022 17:26:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659115607;
+        bh=TTETB8o7PvQdP2mX6Ys+iLsrFmlIEx9xlCqi+ww3iz8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mEp2i0yO10ftohBAY8DWk0IaVKxuui91sT2nh87qBhawO10UMafu9r0Dx8cEjWVT1
+         KW7ik3QLGiXbmEut0/bS5c86tUmxFFdlLarCGSxtCHPRX/cdkiUwJPT/JsOiTOB53s
+         JaWDX04KiOB7E1zb6IvYxtEhWs9ESdR1eJFqZich1t+Fp1PGhvwqArekbDXVGNQnbN
+         BeKvNbPJiin7+BOcyvhbESpgLu9A0zmD1HQymp+ygO5IAA9L/YBcolY1Mm9KgTE36Y
+         47/PsYayw1+6KHcg34YMEFxIcdWGQ1kLgjsNC/uGIlZZk8+GaswyiHlrU4+kCYJuYR
+         iI3ITF0b9YI4w==
+Date:   Fri, 29 Jul 2022 19:26:43 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
+        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
+        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, jenhao.yang@mediatek.com,
+        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
+        ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
+        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
+        kuabhs@google.com, druth@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH RESEND v2 1/2] mt76: mt7921: add mt7921_mutex_acquire at
+ mt7921_[start, stop]_ap
+Message-ID: <YuQYU2SxIyHvIODd@lore-desk>
 References: <6353fe62ebeb0f78aa34b40e9c1745061b229f6c.1659105379.git.objelf@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="QR/FOKVDFLb314yh"
+Content-Disposition: inline
+In-Reply-To: <6353fe62ebeb0f78aa34b40e9c1745061b229f6c.1659105379.git.objelf@gmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
 
-Add mt7921_mutex_acquire at mt7921_[start, stop]_ap to fix the race
-with the context holding dev->muxtex and the driver might access the
-device in low power state.
+--QR/FOKVDFLb314yh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 24299fc869f7 ("mt76: mt7921: enable rx header traslation offload")
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> From: Sean Wang <sean.wang@mediatek.com>
+>=20
+> Add mt7921_mutex_acquire at mt7921_[start, stop]_ap to fix the race
+> with the context holding dev->muxtex and the driver might access the
+> device in low power state.
+>=20
+> Fixes: 9d958b60ebc2 ("mt76: mt7921: fix command timeout in AP stop period=
+")
+> Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabor=
+a.com>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 63fd33dcd3af..7214735011d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1404,6 +1404,8 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
- 	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
- 
-+	mt7921_mutex_acquire(dev);
-+
- 	if (enabled)
- 		set_bit(MT_WCID_FLAG_HDR_TRANS, &msta->wcid.flags);
- 	else
-@@ -1411,6 +1413,8 @@ static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
- 
- 	mt76_connac_mcu_sta_update_hdr_trans(&dev->mt76, vif, &msta->wcid,
- 					     MCU_UNI_CMD(STA_REC_UPDATE));
-+
-+	mt7921_mutex_release(dev);
- }
- 
- #if IS_ENABLED(CONFIG_IPV6)
--- 
-2.25.1
+> ---
+> v2: use "out" label instead and add the Tested-by tag from AngeloGioacchi=
+no
+> ---
+>  .../net/wireless/mediatek/mt76/mt7921/main.c  | 21 ++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/main.c
+> index 1438a9f8d1fd..63fd33dcd3af 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -1526,17 +1526,23 @@ mt7921_start_ap(struct ieee80211_hw *hw, struct i=
+eee80211_vif *vif,
+>  	struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+>  	int err;
+> =20
+> +	mt7921_mutex_acquire(dev);
+> +
+>  	err =3D mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid,
+>  					  true);
+>  	if (err)
+> -		return err;
+> +		goto out;
+> =20
+>  	err =3D mt7921_mcu_set_bss_pm(dev, vif, true);
+>  	if (err)
+> -		return err;
+> +		goto out;
+> +
+> +	err =3D mt7921_mcu_sta_update(dev, NULL, vif, true,
+> +				    MT76_STA_INFO_STATE_NONE);
+> +out:
+> +	mt7921_mutex_release(dev);
+> =20
+> -	return mt7921_mcu_sta_update(dev, NULL, vif, true,
+> -				     MT76_STA_INFO_STATE_NONE);
+> +	return err;
+>  }
+> =20
+>  static void
+> @@ -1548,11 +1554,16 @@ mt7921_stop_ap(struct ieee80211_hw *hw, struct ie=
+ee80211_vif *vif,
+>  	struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+>  	int err;
+> =20
+> +	mt7921_mutex_acquire(dev);
+> +
+>  	err =3D mt7921_mcu_set_bss_pm(dev, vif, false);
+>  	if (err)
+> -		return;
+> +		goto out;
+> =20
+>  	mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid, false);
+> +
+> +out:
+> +	mt7921_mutex_release(dev);
+>  }
+> =20
+>  const struct ieee80211_ops mt7921_ops =3D {
+> --=20
+> 2.25.1
+>=20
 
+--QR/FOKVDFLb314yh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYuQYUwAKCRA6cBh0uS2t
+rFYcAQC6fw/AttTCMgPr9rVM0wmTBsyrie78IoSnVZuckMiTowD/XAqFayOYJfR5
+7SHvc7DoQBYK1I1uiYWy6SiuAewu5wQ=
+=YI9g
+-----END PGP SIGNATURE-----
+
+--QR/FOKVDFLb314yh--
