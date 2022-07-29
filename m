@@ -2,72 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E46B0584C98
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 09:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9FF584D9B
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 10:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234463AbiG2Hai (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jul 2022 03:30:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
+        id S234639AbiG2IpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jul 2022 04:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234603AbiG2Hag (ORCPT
+        with ESMTP id S229771AbiG2IpS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jul 2022 03:30:36 -0400
-Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4770772ED2
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 00:30:35 -0700 (PDT)
-Received: by mail.coredeal.pl (Postfix, from userid 1002)
-        id 2D21CA9B64; Fri, 29 Jul 2022 07:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
-        t=1659079787; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
-        h=Date:From:To:Subject:From;
-        b=lWSs89pPQwwzZbJqtugQZ5xSegbKWaU3jdMUaRShdYV+MUXRq+/l7uAQPkkKkqP2x
-         dQJt0MoMTZT5k6456tm76Pc7xxJLRLtXsERv594Rd5SsxQ90Vq6MCV+MGafsICiE41
-         atYpz9YJLznkCA1Va0FNSvjOI34QwqUVHN/fP+5+6CqPIesW26Sar+jSNVuzBKzSGI
-         3mcUwmy+dABMwhHnNG6LOgRrIJju1QMqy0gYP6ayAkfFEvBdecCWi2EMSJhoqL0rbF
-         xiUT7/QnyVDFPMUiEb56pGJ+rzxV6THtCH7Nz4oVTMAIDmtmyidJEHhNWGnVxP5BoQ
-         QLl8+fvUTfA8w==
-Received: by mail.coredeal.pl for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 07:29:16 GMT
-Message-ID: <20220729063000-0.1.4l.1802n.0.jpgdd8y38r@coredeal.pl>
-Date:   Fri, 29 Jul 2022 07:29:16 GMT
-From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Biznesowy angielski
-X-Mailer: mail.coredeal.pl
+        Fri, 29 Jul 2022 04:45:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6828F26CD
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 01:45:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EBAC61D1E
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 08:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D04C433D6;
+        Fri, 29 Jul 2022 08:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659084314;
+        bh=Ym4Nbc4rPTQPZhh+SRG0WgGbhugdnT04+7RoiXZxl6k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hYRBDuL4Oj3UPSgd8lIcd7pEVvyplj2WsPXFAc8pLdmqKihjHrnB79azSJUSfTpwC
+         aWxnCs23w/e1agcoXI39Nr7FOaJ39k1S8dc6/d2x4NxmxwhthoKTJVPbmXkTCfM7iT
+         Dm9g50xtCEDNQJCtJEU7cnfeuIaj6ag8JeA9kwsc613WOBuzELHD03ce01lOzGO/kA
+         6GSOHDxJmWCUsaqmI5l1NkOgZ0kA0agP9nZuRlJuI4u8pzeIXO559BYRmqttonhGJi
+         NldgzfrON+fWGinorl236Yk9D0zBrByZaZfI19bBEa8672RJVEe3BuzRUwmxIlwIjU
+         7HjhRkunk9I4A==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        Gergo Koteles <soyer@irl.hu>
+Subject: [PATCH] mt76: mt76_usb.mt76u_mcu.burst is always false remove related code
+Date:   Fri, 29 Jul 2022 10:45:09 +0200
+Message-Id: <129572d903df0a4993f096a46bb6ae8d4a1657cd.1659084253.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+From: Gergo Koteles <soyer@irl.hu>
 
-czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
-swoich pracownik=C3=B3w?
+Simplify mt76x02u_multiple_mcu_reads routine since burst is always
+false.
 
-Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
-w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
-ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
-=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 -
+ .../wireless/mediatek/mt76/mt76x02_usb_mcu.c  | 30 +++++--------------
+ 2 files changed, 8 insertions(+), 23 deletions(-)
 
-Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
-=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
-re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
-o=C5=BCliwo=C5=9Bci biznesowe.=20
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 4da77d47b0a6..abfa660cc815 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -527,7 +527,6 @@ struct mt76_usb {
+ 		struct mt76_reg_pair *rp;
+ 		int rp_len;
+ 		u32 base;
+-		bool burst;
+ 	} mcu;
+ };
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
+index c6c16fe8ee85..02da543dfc5c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
+@@ -21,29 +21,16 @@ static void
+ mt76x02u_multiple_mcu_reads(struct mt76_dev *dev, u8 *data, int len)
+ {
+ 	struct mt76_usb *usb = &dev->usb;
+-	u32 reg, val;
+ 	int i;
+ 
+-	if (usb->mcu.burst) {
+-		WARN_ON_ONCE(len / 4 != usb->mcu.rp_len);
+-
+-		reg = usb->mcu.rp[0].reg - usb->mcu.base;
+-		for (i = 0; i < usb->mcu.rp_len; i++) {
+-			val = get_unaligned_le32(data + 4 * i);
+-			usb->mcu.rp[i].reg = reg++;
+-			usb->mcu.rp[i].value = val;
+-		}
+-	} else {
+-		WARN_ON_ONCE(len / 8 != usb->mcu.rp_len);
+-
+-		for (i = 0; i < usb->mcu.rp_len; i++) {
+-			reg = get_unaligned_le32(data + 8 * i) -
+-			      usb->mcu.base;
+-			val = get_unaligned_le32(data + 8 * i + 4);
+-
+-			WARN_ON_ONCE(usb->mcu.rp[i].reg != reg);
+-			usb->mcu.rp[i].value = val;
+-		}
++	WARN_ON_ONCE(len / 8 != usb->mcu.rp_len);
++
++	for (i = 0; i < usb->mcu.rp_len; i++) {
++		u32 reg = get_unaligned_le32(data + 8 * i) - usb->mcu.base;
++		u32 val = get_unaligned_le32(data + 8 * i + 4);
++
++		WARN_ON_ONCE(usb->mcu.rp[i].reg != reg);
++		usb->mcu.rp[i].value = val;
+ 	}
+ }
+ 
+@@ -207,7 +194,6 @@ mt76x02u_mcu_rd_rp(struct mt76_dev *dev, u32 base,
+ 	usb->mcu.rp = data;
+ 	usb->mcu.rp_len = n;
+ 	usb->mcu.base = base;
+-	usb->mcu.burst = false;
+ 
+ 	ret = __mt76x02u_mcu_send_msg(dev, skb, CMD_RANDOM_READ, true);
+ 
+-- 
+2.37.1
 
-Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
- kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
-za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
-=2E
-
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
-w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
-
-
-Pozdrawiam
-Krzysztof Maj
