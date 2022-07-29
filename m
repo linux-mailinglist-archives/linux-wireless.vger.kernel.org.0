@@ -2,66 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA66584DAA
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 10:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 887F3584E0E
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 11:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234767AbiG2Ivt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jul 2022 04:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58718 "EHLO
+        id S234660AbiG2Jcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jul 2022 05:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234622AbiG2Ivs (ORCPT
+        with ESMTP id S232795AbiG2Jca (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jul 2022 04:51:48 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF0E82F99
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 01:51:45 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id l23so7361382ejr.5
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 01:51:44 -0700 (PDT)
+        Fri, 29 Jul 2022 05:32:30 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685D5140B1
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 02:32:28 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id tk8so7519212ejc.7
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 02:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=sXyFwqv0iqJuiLeWnyuN03PxHI0aJD4V1vIUpZUTo1E=;
-        b=JQxSCJvWOAHljCC1UyWUj/t+l6GM3YJNIrOvubG7c0FktV3QLrX09KOSyhwvEvel36
-         Npy9+Tf87W3UBfscLsV7/oW9N+iSKM1VFIiTu7f6FRxQSV3arke1PQ6if2YFw1o+Ve28
-         N/RbZfSUZNp3GA/3GR4erhnjeUTdJIDCxyGzh0C54UHo5qJ+w72oZpbA0KYWCt5awUz1
-         P5R+z2Gr8W6FEqq/uYM9+iEjlSX28GlHw9JekY6TvzrXW++HZyf1iHS7WtpSkSp8ALJk
-         6dc0Mt13fImO1C+dQw8KnCFq1nsySO2+wemJm0zl+1cO74e6HE3Oe2jgwnvH7oi+tsbv
-         jjqw==
+        bh=NrfgRugzBHaLDQI30ztA44x/8iQuQCRZbmL8D4ZJtHE=;
+        b=eMJKO6dRlSlqPIB3XO+44kiGscbI6NzOMDgCgb1I2Oy08yHXjANDCyEjbcEQcox4UU
+         OocZH+SpTjTjOZfRapZsmn4GNBVVRf7jv2PAaRgfP2ju7cNDDMFJsYqyNgNcWUg66nWA
+         UsmfGG7JrPOh1FQaYn0pma24daDl7005ABvmp7Dz1l5HlNzsk+76GqJWi0uCi3M8BW6T
+         3K+qTEcIFV5rPqgAcAl12h1/W4VlFT0sB3LayF61FH7Zyzx8QbFeLgWIaBtt23/ZT9z+
+         tPkuoPW7miat58DqcQ5YgLWPgKUvHhLLETBEFnNSAgPDWQeU6YmiXq20YNfSk5IotpI4
+         FXiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=sXyFwqv0iqJuiLeWnyuN03PxHI0aJD4V1vIUpZUTo1E=;
-        b=XKC4nF+uc0O+eaY/MSmRw5TzWFaGOUVMh4xPP2IDjewKs88k3gSEf6GC1At+b+alMq
-         rkvEbm0/6fR3ktAPwuWm1TFaxcn8aC4SuCZuf3aw1wlZ0z32wovUAWmVgyDl3UKKCgG3
-         pDUFTfzPV0q6gz/8EwuNZ9AqqvegkQHmiuUR8Y0oe5vn1UzokXEBL2Q+vBEKwB77Z5Nv
-         q9uGTSWer7JxcMtSqf1C9x4Y3HF6xKJ9P448D/MzMlMMc2laiOtGAmyrz8Dx23IweFgY
-         Co8JVGalovPxtQFU9L4ntuMpAFU9FjRfFaWyDEzDSXKYNJaNkXknIB0kOLjyIcDWS0bU
-         b3iQ==
-X-Gm-Message-State: AJIora818QXAkEIx0QOCpxI4X/vOht8TxU2fEqvZQ22NvxpaaK24yzzv
-        5+2JInkLuUajs98xQRneA4A=
-X-Google-Smtp-Source: AGRyM1sm/avV3UlNWGNNRQNCmFy9vHiZGJcY9BZ7AJUX2TkjMVoy69irH7mxj3t1ojlIGYxHXLLi/A==
-X-Received: by 2002:a17:907:7f05:b0:72f:550c:69f3 with SMTP id qf5-20020a1709077f0500b0072f550c69f3mr2105611ejc.744.1659084703358;
-        Fri, 29 Jul 2022 01:51:43 -0700 (PDT)
+        bh=NrfgRugzBHaLDQI30ztA44x/8iQuQCRZbmL8D4ZJtHE=;
+        b=mT/M+vHggJui4rLylvArkM8wQ4BAV/siGw5Miwf9DMj3GsNZ8Xp3D5ekjuxNoUKuoN
+         6gettz3CRE15JonyDceVtzu3cDUD4ZpsNpaJ/ebPpGDEELNOy5jeF6jS+EPp+9JY8uJs
+         iAwJUagpQfVtzXXTlXaZp+oTlJW4CAF4xdz1lhHV4ofCujuCaimU/QQZAfWHJPjFcOvr
+         WtkRfATNKjoW3R542+KtIe2DJLMDcJwQssSk7u+CSp51QR54VvDxPnnBOJ1G9hGMWuZg
+         WLCwhm43bG1FR17P0/r2AiyGjzG/zT8pTI9wmM5ZMMd8E9AcnGmE1VUsHAFIC+nnhshe
+         6MdA==
+X-Gm-Message-State: AJIora8yUUVhEiRJTxiv0exPmItmc9leqeBGf3OU6mnI+DhVr0JklvkE
+        FqsVfNxRMuA8Gd6wyRG55S0=
+X-Google-Smtp-Source: AGRyM1tr6dwDGwRc5S8P1jDh1FAy+YnEOPLfnBKGoHFBkxkRi1XcHilLJLOvjEJZYkhof02s0mJ6eQ==
+X-Received: by 2002:a17:907:6d8b:b0:72b:5f51:a9e7 with SMTP id sb11-20020a1709076d8b00b0072b5f51a9e7mr2268303ejc.628.1659087146951;
+        Fri, 29 Jul 2022 02:32:26 -0700 (PDT)
 Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id b15-20020a17090630cf00b0073022b796a7sm895984ejb.93.2022.07.29.01.51.42
+        by smtp.gmail.com with ESMTPSA id e21-20020a170906315500b0072af930cf97sm1453706eje.115.2022.07.29.02.32.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Jul 2022 01:51:42 -0700 (PDT)
-Message-ID: <428a96cf-1072-8bbd-937a-6e3558e9448e@gmail.com>
-Date:   Fri, 29 Jul 2022 10:51:42 +0200
+        Fri, 29 Jul 2022 02:32:26 -0700 (PDT)
+Message-ID: <4e5c9cc1-a00e-c3de-3186-6d4cf5694339@gmail.com>
+Date:   Fri, 29 Jul 2022 11:32:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH 0/7] brcmfmac: support devices from multiple vendors
+Subject: Re: [PATCH 3/7] brcmfmac: add support for vendor-specific firmware
+ api
 Content-Language: en-US
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org
-References: <CAJ65rDxwRshw4Qwte9bU4K+xifcS0Yo7TjCKJ2aNPg4wBLeg5w@mail.gmail.com>
- <87wnbxoa37.fsf@kernel.org>
+References: <20220613091915.18884-1-arend.vanspriel@broadcom.com>
+ <CAJ65rDxy3ERmDAV1BYH_BCUM3_GnzotWpp7yYO6OtA_CZVgbzw@mail.gmail.com>
+ <87sfmlo9yi.fsf@kernel.org>
 From:   Arend Van Spriel <aspriel@gmail.com>
-In-Reply-To: <87wnbxoa37.fsf@kernel.org>
+In-Reply-To: <87sfmlo9yi.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -74,44 +76,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/28/2022 11:33 AM, Kalle Valo wrote:
+On 7/28/2022 11:36 AM, Kalle Valo wrote:
 > aspriel@gmail.com writes:
 > 
->> The bcm43xx family of wifi chipsets found its way to different
->> groups inside and outside Broadcom. For the fullmac devices this
->> means that in those difference groups firmware is being developed
->> and the firmware api is bound to diverge. This series introduces
->> a design change to accomodate supporting multiple firmware api's.
->> The vender-specific support can be compiled in brcmfmac or
->> built as a separate module. Currently the vendor-specific support
->> does not have any real effect. At the momemt looking into SAE support
->> which appear to be different for Cypress devices so that might be a
->> first use-case. Meanwhile wanted to put this series out there and
->> get feedback on it. Some ideas were taken from iwlwifi which does
->> similar things for iwlmvm, iwldvm, etc.
+>> The driver is being used by multiple vendors who develop the firmware
+>> api independently. So far the firmware api as used by the driver has
+>> not diverged (yet). This change adds framework for supporting multiple
+>> firmware apis. The vendor-specific support code has to provide a number
+>> of callback operations. Right now it is only attach and detach callbacks
+>> so no real functionality as the api is still common. This code only
+>> adds WCC variant anyway, which is selected for all devices right now.
 >>
->> The patches apply to the main branch of the wireless-next repository.
+>> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+>> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+>> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> 
+> [...]
+> 
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
+>> @@ -8,6 +8,22 @@ config BRCMFMAC
+>>   	  interface support. If you choose to build a module, it'll be called
+>>   	  brcmfmac.ko.
 >>
->> Arend van Spriel (7):
->>    brcmfmac: add function to unbind device to bus layer api
->>    brcmfmac: add firmware vendor info in driver data
->>    brcmfmac: add support for vendor-specific firmware api
->>    brcmfmac: add support for Cypress firmware api
->>    brcmfmac: add support Broadcom BCA firmware api
->>    brcmfmac: add vendor name in revinfo debugfs file
->>    brcmfmac: introduce BRCMFMAC exported symbols namespace
+>> +config BRCMFMAC_VENDOR_MODULES
+>> +	bool "Use vendor-specific modules"
+>> +	depends on BRCMFMAC = m
+>> +	help
+>> +	  This option will build separate modules for the vendor-specific
+>> +	  firmware support. If not selected the vendor-specific support
+>> +	  will be build in brcmfmac.ko.
+>> +
+>> +config BRCMFMAC_VENDOR_WCC
+>> +	bool "Broadcom WCC"
+>> +	default y
+>> +	depends on BRCMFMAC
+>> +        help
+>> +          This option will allow the driver to communicate with devices
+>> +          shipped by Broadcom WCC division.
+>> +
 > 
-> I think there's something wrong in mail formatting, tried to apply just
-> for a test and it failed:
-> 
-> error: git diff header lacks filename information when removing 1 leading pathname component (line 7)
-> error: could not build fake ancestor
-> hint: Use 'git am --show-current-patch=diff' to see the failed patch
-> Applying: brcmfmac: add function to unbind device to bus layer api
-> Patch failed at 0001 brcmfmac: add function to unbind device to bus layer api
+> I'm not really a fan of these Kconfig options, I would rather have them
+> always enabled. Why do we need these options, what would be the use case
+> when user disables these?
 
-Hi Kalle,
+I assume with "always enabled" you mean "drop these options". Obviously 
+I would prefer to keep them. The default will result in a single module 
+with all vendor support built-in, but this allows people to trim down 
+their configuration based on what they have. So the choices are:
 
-Looks strange indeed. I will look into it and resend the whole series.
+1) single module with all vendor support built-in
+2) single module with partial vendor support built-in (as needed)
 
-Gr. AvS
+    allows users to select vendor for their specific device not carrying
+    stuff they don't need. If they have a Cypress/Infineon device they
+    only need support for that.
+
+3) separate vendor support modules loaded as needed during device probe
+
+    build one or more vendor support modules and they are loaded into
+    memory only when they are needed for the device detected.
+
+Regards,
+Arend
