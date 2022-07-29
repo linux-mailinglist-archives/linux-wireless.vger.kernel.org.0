@@ -2,182 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E825584946
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 03:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213FA5849A7
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jul 2022 04:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233387AbiG2BNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jul 2022 21:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
+        id S232972AbiG2CPb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jul 2022 22:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbiG2BNF (ORCPT
+        with ESMTP id S229535AbiG2CPa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jul 2022 21:13:05 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B37FC48C9A
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 18:13:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659057184; x=1690593184;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=q9eN3XW4375ROb2R2uUA4R2OlD6uIBt67vwZBKgXDHk=;
-  b=I9bAebtZqNaHvIVyqwPFqOcJvlT3cIGaxZoySphw4RXPdEFIVJuyIfXF
-   2vvRNGe77QqPM/KJDBJrgVDcumiHYl6cul8NZJTMCmGq/EoUWP1uzQ7Ov
-   PX8G0J9qgRf1cPYvHbc8ch5yAGb35aAt/xAYrZk3xbTrKII+40RpjPn5j
-   VwTiNcwc1w1jaBIqsOr4cPnCVY/wNrTVMXJkQcXhLlFmfCI7Q8+j1VG1b
-   3JiGz3R9ugDExP2/N54H4uMLRGyGk5YI176bAMaUKOzmSo4SErt3bi8w5
-   w9lB9tSJZ1vfyxR73U5SPFyqOPol8FoBbaWvStgpULdhZ8vzO9ntfVFZ8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10422"; a="288676348"
-X-IronPort-AV: E=Sophos;i="5.93,199,1654585200"; 
-   d="scan'208";a="288676348"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2022 18:13:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,199,1654585200"; 
-   d="scan'208";a="551559149"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 28 Jul 2022 18:13:02 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oHEYo-000ApR-0X;
-        Fri, 29 Jul 2022 01:13:02 +0000
-Date:   Fri, 29 Jul 2022 09:12:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- cb774bd35318c1b4cb61f6f2caac85537d07fbde
-Message-ID: <62e33415.8c+JlJ49IPE/iADo%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 28 Jul 2022 22:15:30 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D358193FE
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jul 2022 19:15:23 -0700 (PDT)
+X-UUID: 7ecbbf46ba4f485896c412c2ff699a36-20220729
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:096d1839-ff88-47db-9f42-921a58760a42,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:0
+X-CID-META: VersionHash:0f94e32,CLOUDID:9c85a2d0-841b-4e95-ad42-8f86e18f54fc,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
+        ,QS:nil,BEC:nil,COL:0
+X-UUID: 7ecbbf46ba4f485896c412c2ff699a36-20220729
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1845451508; Fri, 29 Jul 2022 10:15:17 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Fri, 29 Jul 2022 10:15:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Fri, 29 Jul 2022 10:15:16 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+CC:     <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] wifi: mac80211: read ethtool's sta_stats from sinfo
+Date:   Fri, 29 Jul 2022 10:15:15 +0800
+Message-ID: <ccfce8848c7bf7199ab90ccf3b4b14e1c7633385.1659060644.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: cb774bd35318c1b4cb61f6f2caac85537d07fbde  wifi: brcmfmac: prevent double-free on hardware-reset
+Driver may update sinfo directly through .sta_statistics, so this
+patch makes sure that ethool gets the correct statistics.
 
-elapsed time: 885m
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ net/mac80211/ethtool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-configs tested: 99
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                  randconfig-r043-20220728
-riscv                randconfig-r042-20220728
-powerpc                          allmodconfig
-i386                          randconfig-a001
-mips                             allyesconfig
-s390                 randconfig-r044-20220728
-powerpc                           allnoconfig
-i386                                defconfig
-i386                          randconfig-a003
-i386                          randconfig-a005
-i386                          randconfig-a014
-x86_64                           rhel-8.3-syz
-arm                                 defconfig
-x86_64                        randconfig-a002
-i386                          randconfig-a016
-arm                              allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-arm64                            allyesconfig
-i386                          randconfig-a012
-ia64                             allmodconfig
-sh                               allmodconfig
-i386                             allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-kvm
-x86_64                    rhel-8.3-kselftests
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-s390                       zfcpdump_defconfig
-openrisc                         alldefconfig
-i386                          randconfig-c001
-ia64                        generic_defconfig
-sh                           se7343_defconfig
-arm                            mps2_defconfig
-openrisc                    or1ksim_defconfig
-xtensa                  cadence_csp_defconfig
-mips                           ip32_defconfig
-arc                            hsdk_defconfig
-sh                 kfr2r09-romimage_defconfig
-sh                     sh7710voipgw_defconfig
-loongarch                           defconfig
-loongarch                         allnoconfig
-m68k                        m5407c3_defconfig
-powerpc                     taishan_defconfig
-sh                         ap325rxa_defconfig
-powerpc                      tqm8xx_defconfig
-arm                          lpd270_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-mips                 randconfig-c004-20220728
-powerpc              randconfig-c003-20220728
-nios2                               defconfig
-m68k                            mac_defconfig
-
-clang tested configs:
-x86_64                        randconfig-a014
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-hexagon              randconfig-r045-20220728
-hexagon              randconfig-r041-20220728
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a001
-i386                          randconfig-a015
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a013
-i386                          randconfig-a011
-powerpc                 mpc836x_mds_defconfig
-riscv                             allnoconfig
-x86_64                        randconfig-k001
-powerpc                     tqm5200_defconfig
-powerpc                        fsp2_defconfig
-powerpc                      katmai_defconfig
-powerpc                   microwatt_defconfig
-powerpc                      ppc64e_defconfig
-mips                          rm200_defconfig
-arm                  colibri_pxa270_defconfig
-arm                      pxa255-idp_defconfig
-powerpc                  mpc885_ads_defconfig
-
+diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
+index 31cd3c1ac07f..26d7a967f10a 100644
+--- a/net/mac80211/ethtool.c
++++ b/net/mac80211/ethtool.c
+@@ -83,17 +83,17 @@ static void ieee80211_get_stats(struct net_device *dev,
+ 
+ #define ADD_STA_STATS(sta)					\
+ 	do {							\
+-		data[i++] += sta->rx_stats.packets;		\
+-		data[i++] += sta->rx_stats.bytes;		\
++		data[i++] += sinfo.rx_packets;			\
++		data[i++] += sinfo.rx_bytes;			\
+ 		data[i++] += sta->rx_stats.num_duplicates;	\
+ 		data[i++] += sta->rx_stats.fragments;		\
+-		data[i++] += sta->rx_stats.dropped;		\
++		data[i++] += sinfo.rx_dropped_misc;		\
+ 								\
+ 		data[i++] += sinfo.tx_packets;			\
+ 		data[i++] += sinfo.tx_bytes;			\
+ 		data[i++] += sta->status_stats.filtered;	\
+-		data[i++] += sta->status_stats.retry_failed;	\
+-		data[i++] += sta->status_stats.retry_count;	\
++		data[i++] += sinfo.tx_failed;			\
++		data[i++] += sinfo.tx_retries;			\
+ 	} while (0)
+ 
+ 	/* For Managed stations, find the single station based on BSSID
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.36.1
+
