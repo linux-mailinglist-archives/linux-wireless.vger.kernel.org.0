@@ -2,63 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 032E05858CC
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jul 2022 07:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39898585A22
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jul 2022 12:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbiG3Frr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 Jul 2022 01:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
+        id S232749AbiG3Kgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 Jul 2022 06:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbiG3Frq (ORCPT
+        with ESMTP id S230226AbiG3Kgg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 Jul 2022 01:47:46 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDF36611B
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jul 2022 22:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1659160066; x=1690696066;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CleC7Jn8klxB7k3auNaCz8+eQYmy43SPP/3+LeSNIzA=;
-  b=ga4fCxvWNPyu2BB6yMZ9ZrZD69PM6JXMOUXd9/CKgI7ya6Hqs2PRB0sK
-   oYns5vSqJTvlWz1SYc2PrYSShqnB+hZaT6mgnE1+bLGMpAHgnMi06tXp/
-   q6Kg8+Op708UmiAKszjeNVyxCyzIbE+tM+CUQFpYwVNecogeCziBhCzTI
-   s=;
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 29 Jul 2022 22:47:45 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2022 22:47:46 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 29 Jul 2022 22:47:45 -0700
-Received: from [10.216.44.71] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 29 Jul
- 2022 22:47:43 -0700
-Message-ID: <7b0d857f-90f4-6ee6-2186-01cadeda998d@quicinc.com>
-Date:   Sat, 30 Jul 2022 11:17:40 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
+        Sat, 30 Jul 2022 06:36:36 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8EABC15
+        for <linux-wireless@vger.kernel.org>; Sat, 30 Jul 2022 03:36:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=TwYcnGLSJ9FtzZT3COMxCNG/8jqI1JbJQjj2+IZlzIo=;
+        t=1659177395; x=1660386995; b=JUHxH8sLLD0PcrOAXvbKwE8GX5hpi0+6aYIqX6f6Ywqe+zu
+        04/FmPOHfxGthZtT3TQc96W5D0O6a2TE3rIADFSdFDnZO9or1KFSmxksy3TF295WmnUKzUqTZTPKj
+        dIhqaIuvXfgsX+9L1hmRRk9kgWupGhASTSulGi8kYP03hNAYDAfBv0q9dqo7TqZ9VGMfEZ3PLjeli
+        5uWyMF6XWdD8OC5E0BJ6FIo5iCmiQwzBO7kHA5YtK8EeyjrQ/vVYMUnqy9oIVwiab8bXSEKv39v+3
+        En7K9ZXNCGbbdxWYAiO0NI8wYVl+1IIpcYLG+vAx1SRb/SYFVobqqIlOn02yBOsA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oHjpf-00CF6B-2m;
+        Sat, 30 Jul 2022 12:36:32 +0200
+Date:   Sat, 30 Jul 2022 12:36:29 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+CC:     linux-wireless@vger.kernel.org
 Subject: Re: [RFC] cfg80211: Add link_id to various key operations for MLO
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-References: <1657518327-17390-1-git-send-email-quic_vjakkam@quicinc.com>
- <2d90dfefd79fb2d4c942026856ef11ae6b4279cb.camel@sipsolutions.net>
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-In-Reply-To: <2d90dfefd79fb2d4c942026856ef11ae6b4279cb.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <7b0d857f-90f4-6ee6-2186-01cadeda998d@quicinc.com>
+References: <1657518327-17390-1-git-send-email-quic_vjakkam@quicinc.com> <2d90dfefd79fb2d4c942026856ef11ae6b4279cb.camel@sipsolutions.net> <7b0d857f-90f4-6ee6-2186-01cadeda998d@quicinc.com>
+Message-ID: <7E6625AA-B48B-4063-99BB-E16CEF5F795A@sipsolutions.net>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -66,78 +53,31 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 7/14/2022 1:52 AM, Johannes Berg wrote:
+
+On 30 July 2022 07:47:40 CEST, Veerendranath Jakkam <quic_vjakkam@quicinc=
+=2Ecom> wrote:
 >
->> + *	%NL80211_ATTR_MLO_LINK_ID, If %NL80211_ATTR_MLO_LINK_ID is not present
->> + *	the specified key index data should be deleted for all the links.
-> really? for all the links seems... complicated?
-
-
-Thought delete key operation can be optimized in some cases with single 
-request to delete group keys
-
-on all MLO links.  I agree that it is not inline with other key 
-operations and makes it complicated, dropped this comment in v2 patch.
-
+>On 7/14/2022 1:52 AM, Johannes Berg wrote:
+>>=20
+>>> + *	%NL80211_ATTR_MLO_LINK_ID, If %NL80211_ATTR_MLO_LINK_ID is not pre=
+sent
+>>> + *	the specified key index data should be deleted for all the links=
+=2E
+>> really? for all the links seems=2E=2E=2E complicated?
 >
->> --- a/net/wireless/util.c
->> +++ b/net/wireless/util.c
->> @@ -935,13 +935,13 @@ void cfg80211_upload_connect_keys(struct wireless_dev *wdev)
->>   	for (i = 0; i < CFG80211_MAX_WEP_KEYS; i++) {
->>   		if (!wdev->connect_keys->params[i].cipher)
->>   			continue;
->> -		if (rdev_add_key(rdev, dev, i, false, NULL,
->> +		if (rdev_add_key(rdev, dev, -1, i, false, NULL,
->>   				 &wdev->connect_keys->params[i])) {
->>   			netdev_err(dev, "failed to set key %d\n", i);
->>   			continue;
->>   		}
->>   		if (wdev->connect_keys->def == i &&
->> -		    rdev_set_default_key(rdev, dev, i, true, true)) {
->> +		    rdev_set_default_key(rdev, dev, -1, i, true, true)) {
->>   			netdev_err(dev, "failed to set defkey %d\n", i);
->>   			continue;
->>   		}
-> Now in this case we probably couldn't have made an MLO connection, can
-> we? Or maybe we can with full offload firmware? And then should this
-> really be -1 towards the driver?
 >
-> Actually - these are WEP keys, so no MLO?
+>Thought delete key operation can be optimized in some cases with single r=
+equest to delete group keys
 
+Honestly, you don't even need to delete keys explicitly, when stopping AP =
+or disconnecting it'll be done automatically anyway=2E So if you want to op=
+timise, particularly wrt=2E RCU delays, don't delete the keys at all=2E I t=
+hink at some point years ago we wanted to add a flag to nl80211 but not sur=
+e we did=2E But we can do that=2E=20
 
-yes, MLO connection shouldn't happen in this case since these are WEP keys.
+And in normal operation you never remove keys anyway, just overwrite them =
+with new ones=2E=20
 
->
->> diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
->> index a9767bf..3dd0946 100644
->> --- a/net/wireless/wext-compat.c
->> +++ b/net/wireless/wext-compat.c
->> @@ -470,7 +470,7 @@ static int __cfg80211_set_encryption(struct cfg80211_registered_device *rdev,
->>   			    !(rdev->wiphy.flags & WIPHY_FLAG_IBSS_RSN))
->>   				err = -ENOENT;
->>   			else
->> -				err = rdev_del_key(rdev, dev, idx, pairwise,
->> +				err = rdev_del_key(rdev, dev, -1, idx, pairwise,
->>   						   addr);
->>   		}
->>   		wdev->wext.connect.privacy = false;
->
-> All of this stuff has me thinking though - now you still need driver
-> validation, because on an MLO connection the WEXT handlers could be
-> called?! YUCK!
->
-> Maybe we should just prevent all of these handlers on interfaces that
-> are MLDs, i.e. have valid_links != 0?
->
-> I guess that's not really specific to your patch though.
->
-> johannes
-
-Yeah, already in most of the cases WEXT specific code is 
-skipped/rejected for MLO.
-
-addressed other comments from you and added few checks for WEP and WEXT 
-in v2 patch series. Please review.
-
-- veeru
-
+johannes=20
+--=20
+Sent from my phone=2E 
