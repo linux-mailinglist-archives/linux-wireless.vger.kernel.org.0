@@ -2,62 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80F9D5861DE
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Aug 2022 00:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72F75861EB
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Aug 2022 00:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238321AbiGaWqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Jul 2022 18:46:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40456 "EHLO
+        id S238021AbiGaW7D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 Jul 2022 18:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231453AbiGaWqJ (ORCPT
+        with ESMTP id S231264AbiGaW7B (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Jul 2022 18:46:09 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0FE6361
-        for <linux-wireless@vger.kernel.org>; Sun, 31 Jul 2022 15:46:01 -0700 (PDT)
-X-UUID: 3818f59cc95d4c70a50763814675085c-20220801
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:78c187a0-6e22-4a37-9d08-a935ed9fbc76,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:5
-X-CID-META: VersionHash:0f94e32,CLOUDID:e77ed1d0-841b-4e95-ad42-8f86e18f54fc,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 3818f59cc95d4c70a50763814675085c-20220801
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1943846357; Mon, 01 Aug 2022 06:45:55 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Mon, 1 Aug 2022 06:45:53 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Mon, 1 Aug 2022 06:45:53 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix the firmware version report
-Date:   Mon, 1 Aug 2022 06:45:51 +0800
-Message-ID: <110121d53abbf45179564b57252fd5ab27781a0d.1659307042.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Sun, 31 Jul 2022 18:59:01 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1FDDB49A;
+        Sun, 31 Jul 2022 15:59:00 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id f65so8205517pgc.12;
+        Sun, 31 Jul 2022 15:59:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=oJqk7d4+5LcTXsCWtgqi9TT/AZXIsZdt+L9iCfbFF0Y=;
+        b=D6Q7uM3MuWq8prZwXZVC3HbxsoTpyFkc63QmZq/7klpjYjoEPoW+I5NW2nXtR0spgn
+         TLJO7UGBrk9p92fo94Igh1VFvdr4vttake7BMx13JTBaxYe6jSDmxsNhYObDUx7v75hJ
+         T4Sp4uqKNJG7OYfd4FXeLHJskx6EDnBU3MrNJF1A4nUEiWlL8MelrvxY2vuM+mhu2Qk4
+         tS7FB70gTVRu1Fb9k0UIMCRsMQYPLF/mIl9Rl2Z+6Ul/bzHBFATGfRvzuOe5yH/8p/1Z
+         ALRSzz/YgAzLTMWDAnfRLeTtxlEvRRGlHTnqxJXXoeianjL2s4St4IaLK8wkPfNahdbA
+         cNrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=oJqk7d4+5LcTXsCWtgqi9TT/AZXIsZdt+L9iCfbFF0Y=;
+        b=48xo6qKpOYn7R72k8KFoHqWTSGtXWvFHp0aZ42Bm+74VdJuKIMSH+WbR98lQWsLXjv
+         x3BBoGursJyRvHHclXCVnSnWNqMipvwYXW7+t4IEeCavLPjXnFxDG0OKakTdLJHwcunE
+         OVUCzgEtFew//fF2Tr4qptCXLQH/QnPE1jkvkdCjHet8FeXhCXFfE6fHtabJM5rKo7/r
+         RXAHZ1rx7vaKPkPpzv4zahNIakDJHjiUNxenVnrBwmGxplA3JDYZ1hNz1d5I0Tr2B65h
+         rXmOrEu9/cW72H3YU7msRciUqNPPPyklVonqv611/4retA2R/X5cRfzAOAYi1myBLdG+
+         6XWA==
+X-Gm-Message-State: AJIora8wiHW6sLpCTFuYgICSt/UkVmXh8zFhjcGdcZUVoIVjgYxSqH2n
+        rxipEdUMrWDeLO/2ld5o0Q+pPHrq7C0=
+X-Google-Smtp-Source: AA6agR5H03DT59ieEnrLk41UBn3dv1CbP/Q3QMAlvI4jtXfT7ASlbmndI0eGR21v5Mf9gyvI1g9W9g==
+X-Received: by 2002:a05:6a00:124c:b0:52b:26b6:2ab4 with SMTP id u12-20020a056a00124c00b0052b26b62ab4mr13785950pfi.85.1659308340081;
+        Sun, 31 Jul 2022 15:59:00 -0700 (PDT)
+Received: from rfl-device.localdomain ([39.124.24.102])
+        by smtp.gmail.com with ESMTPSA id j37-20020a635965000000b0041bee4032e5sm1713756pgm.38.2022.07.31.15.58.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Jul 2022 15:58:59 -0700 (PDT)
+From:   Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
+X-Google-Original-From: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] brcm80211: remove duplicate words
+Date:   Mon,  1 Aug 2022 07:58:50 +0900
+Message-Id: <20220731225850.106290-1-RuffaloLavoisier@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_PASS,T_SPF_HELO_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,33 +79,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Remove repeated 'to' from 'to to'
 
-Fix the regression of the firmware version report since
-'b9ec27102ac0 ('mt76: connac: move mt76_connac2_load_ram in connac
-module')'.
-
-Fixes: b9ec27102ac0 ("mt76: connac: move mt76_connac2_load_ram in connac module")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 9b17bd97ec09..0afcadce87fc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2886,6 +2886,10 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
- 		goto out;
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h
+index ae1f3ad40d45..2b0df07ced74 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h
+@@ -123,7 +123,7 @@
+ 					 */
  
-+	snprintf(dev->hw->wiphy->fw_version,
-+		 sizeof(dev->hw->wiphy->fw_version),
-+		 "%.10s-%.15s", hdr->fw_ver, hdr->build_date);
-+
- 	release_firmware(fw);
- 
- 	if (!fw_wa)
+ /********************************************************************
+- * Phy/Core Configuration.  Defines macros to to check core phy/rev *
++ * Phy/Core Configuration.  Defines macros to check core phy/rev *
+  * compile-time configuration.  Defines default core support.       *
+  * ******************************************************************
+  */
 -- 
 2.25.1
 
