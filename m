@@ -2,103 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E72F75861EB
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Aug 2022 00:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 344ED58657D
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Aug 2022 09:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238021AbiGaW7D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Jul 2022 18:59:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45480 "EHLO
+        id S229594AbiHAHEP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Aug 2022 03:04:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231264AbiGaW7B (ORCPT
+        with ESMTP id S229478AbiHAHEN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Jul 2022 18:59:01 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1FDDB49A;
-        Sun, 31 Jul 2022 15:59:00 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id f65so8205517pgc.12;
-        Sun, 31 Jul 2022 15:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=oJqk7d4+5LcTXsCWtgqi9TT/AZXIsZdt+L9iCfbFF0Y=;
-        b=D6Q7uM3MuWq8prZwXZVC3HbxsoTpyFkc63QmZq/7klpjYjoEPoW+I5NW2nXtR0spgn
-         TLJO7UGBrk9p92fo94Igh1VFvdr4vttake7BMx13JTBaxYe6jSDmxsNhYObDUx7v75hJ
-         T4Sp4uqKNJG7OYfd4FXeLHJskx6EDnBU3MrNJF1A4nUEiWlL8MelrvxY2vuM+mhu2Qk4
-         tS7FB70gTVRu1Fb9k0UIMCRsMQYPLF/mIl9Rl2Z+6Ul/bzHBFATGfRvzuOe5yH/8p/1Z
-         ALRSzz/YgAzLTMWDAnfRLeTtxlEvRRGlHTnqxJXXoeianjL2s4St4IaLK8wkPfNahdbA
-         cNrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=oJqk7d4+5LcTXsCWtgqi9TT/AZXIsZdt+L9iCfbFF0Y=;
-        b=48xo6qKpOYn7R72k8KFoHqWTSGtXWvFHp0aZ42Bm+74VdJuKIMSH+WbR98lQWsLXjv
-         x3BBoGursJyRvHHclXCVnSnWNqMipvwYXW7+t4IEeCavLPjXnFxDG0OKakTdLJHwcunE
-         OVUCzgEtFew//fF2Tr4qptCXLQH/QnPE1jkvkdCjHet8FeXhCXFfE6fHtabJM5rKo7/r
-         RXAHZ1rx7vaKPkPpzv4zahNIakDJHjiUNxenVnrBwmGxplA3JDYZ1hNz1d5I0Tr2B65h
-         rXmOrEu9/cW72H3YU7msRciUqNPPPyklVonqv611/4retA2R/X5cRfzAOAYi1myBLdG+
-         6XWA==
-X-Gm-Message-State: AJIora8wiHW6sLpCTFuYgICSt/UkVmXh8zFhjcGdcZUVoIVjgYxSqH2n
-        rxipEdUMrWDeLO/2ld5o0Q+pPHrq7C0=
-X-Google-Smtp-Source: AA6agR5H03DT59ieEnrLk41UBn3dv1CbP/Q3QMAlvI4jtXfT7ASlbmndI0eGR21v5Mf9gyvI1g9W9g==
-X-Received: by 2002:a05:6a00:124c:b0:52b:26b6:2ab4 with SMTP id u12-20020a056a00124c00b0052b26b62ab4mr13785950pfi.85.1659308340081;
-        Sun, 31 Jul 2022 15:59:00 -0700 (PDT)
-Received: from rfl-device.localdomain ([39.124.24.102])
-        by smtp.gmail.com with ESMTPSA id j37-20020a635965000000b0041bee4032e5sm1713756pgm.38.2022.07.31.15.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Jul 2022 15:58:59 -0700 (PDT)
-From:   Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
-X-Google-Original-From: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] brcm80211: remove duplicate words
-Date:   Mon,  1 Aug 2022 07:58:50 +0900
-Message-Id: <20220731225850.106290-1-RuffaloLavoisier@gmail.com>
+        Mon, 1 Aug 2022 03:04:13 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F1CC30574
+        for <linux-wireless@vger.kernel.org>; Mon,  1 Aug 2022 00:04:02 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2716hGAz9007248, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2716hGAz9007248
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 1 Aug 2022 14:43:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Mon, 1 Aug 2022 14:43:24 +0800
+Received: from localhost (172.16.16.191) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 1 Aug 2022
+ 14:43:23 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] rtlwifi: 8192de: correct checking of IQK reload
+Date:   Mon, 1 Aug 2022 14:42:55 +0800
+Message-ID: <20220801064255.19345-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.191]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/01/2022 06:30:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzgvMSCkV6TIIDA0OjAwOjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove repeated 'to' from 'to to'
+Since IQK could spend time, we make a cache of IQK result matrix that looks
+like iqk_matrix[channel_idx].val[x][y], and we can reload the matrix if we
+have made a cache. To determine a cache is made, we check
+iqk_matrix[channel_idx].val[0][0].
 
-Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
+The initial commit 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
+make a mistake that checks incorrect iqk_matrix[channel_idx].val[0] that
+is always true, and this mistake is found by commit ee3db469dd31
+("wifi: rtlwifi: remove always-true condition pointed out by GCC 12"), so
+I recall the vendor driver to find fix and apply the correctness.
+
+Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: add more commit message to make it clear what this patch does
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h
-index ae1f3ad40d45..2b0df07ced74 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/types.h
-@@ -123,7 +123,7 @@
- 					 */
- 
- /********************************************************************
-- * Phy/Core Configuration.  Defines macros to to check core phy/rev *
-+ * Phy/Core Configuration.  Defines macros to check core phy/rev *
-  * compile-time configuration.  Defines default core support.       *
-  * ******************************************************************
-  */
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+index 15e6a6aded319..d18c092b61426 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -2386,11 +2386,10 @@ void rtl92d_phy_reload_iqk_setting(struct ieee80211_hw *hw, u8 channel)
+ 			rtl_dbg(rtlpriv, COMP_SCAN, DBG_LOUD,
+ 				"Just Read IQK Matrix reg for channel:%d....\n",
+ 				channel);
+-			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
+-					rtlphy->iqk_matrix[
+-					indexforchannel].value,	0,
+-					(rtlphy->iqk_matrix[
+-					indexforchannel].value[0][2] == 0));
++			if (rtlphy->iqk_matrix[indexforchannel].value[0][0] != 0)
++				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
++					rtlphy->iqk_matrix[indexforchannel].value, 0,
++					rtlphy->iqk_matrix[indexforchannel].value[0][2] == 0);
+ 			if (IS_92D_SINGLEPHY(rtlhal->version)) {
+ 				if ((rtlphy->iqk_matrix[
+ 					indexforchannel].value[0][4] != 0)
 -- 
 2.25.1
 
