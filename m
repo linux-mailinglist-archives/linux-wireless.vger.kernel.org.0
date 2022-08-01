@@ -2,189 +2,258 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3913586CA8
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Aug 2022 16:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EFB7586CB6
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Aug 2022 16:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232450AbiHAOOE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Aug 2022 10:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33814 "EHLO
+        id S232450AbiHAOTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Aug 2022 10:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232106AbiHAOOC (ORCPT
+        with ESMTP id S230109AbiHAOTr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Aug 2022 10:14:02 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE9711EEF5
-        for <linux-wireless@vger.kernel.org>; Mon,  1 Aug 2022 07:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1659363239; x=1690899239;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version;
-  bh=HgVSpHNwn00iCMf93yXJy9iR0PIi2YVJjXz3o1KOboo=;
-  b=2FbzbGOo3qAr+8g7ZjTIKYnLPpsoxmQ/GnDhL1BrGZiygQkcVdYKT+MH
-   Rxjr7d3uKdUAGqvxsbOkVaEaLbl2ifpp7aW8j1IS70MkzNhUc0VUXiSl9
-   jmU2yGod2BPZfwDXV+GIJSldm1Gpi8ts8KrvaTReTciwLlH79WxlfVsmg
-   ziTe6Bq2aCK5L5M3ajiJPtCMCRi5HRwC1jR0b7sWa4QPjkFhK98S82jmc
-   k0zOwrhQmXVmNqqimKrbp5qgUKr6UmuhCbIrDVJy2F2+Nzpf6E51xq1tI
-   FEb8yJDgczUU1/IKbcYGZWmgyd9cfmIeoAyG+mF4y4n64sPQYRVJdJwxq
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.93,208,1654585200"; 
-   d="scan'208";a="107036461"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 01 Aug 2022 07:13:58 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Mon, 1 Aug 2022 07:13:58 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28 via Frontend Transport; Mon, 1 Aug 2022 07:13:58 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ie7g/hRNHbZ53r2dMKnJdtHuOgzC/AMDI8MfwcHC4vgHmbCpsnSsRsmY3Le10QX0C6ua56647GEQ02BT3vySB0+w6/TlhMsbu8VC5GBlZZVqhNJbySv4kLlfT7G73jl1UcuGqtgKyBEVocA3iNhY8F0ANjsaGBEnCVo+BhruypbnmmOLumlwjpNtfnzwdbibOhwkdqOS7/lHVBvjx7JF5KC/wmY5lQTnfk4pTZyo5bPCWqg+y9hUknY/NhMRK9yZb2LT8gkHoarQF8+vJ0DTS0g9C6Bk6WSvzFw1jZoZHRtJvFCQmj5HOafSoOZNwhTZF5KSakie+UcHlKe7d7vgag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HgVSpHNwn00iCMf93yXJy9iR0PIi2YVJjXz3o1KOboo=;
- b=L/W9UTDxO58g9hYeI/YNu13d7dFBQE5esAFZWc0rHlcsrBpqAD1qgf+8SfRfClSc4N/U0PlhK+RsmCoRSWYSVlHIQZmGqRF4yKMNENYl5g3ZNRipZPNsl2CzG5+8CHpAE0KRnDmxF6N3Wc4qmRzSFBKnzho8BPB/ftMWagEUmbwqzuPr3gYIdbe12QidEjfNNyzskMtSuzr1anU5JMD0bNpc+AeXT5Y0El8HPyV/WoxfnsCLB65EWVs2JVMvoFppL5kj39AgGKNJpz9PGT1+ibyyJerZflWPsSqzTCanwLSQjF4fGPHxh0AV+g4Z5OzLk35sUjcTOMJMug3ILRx2MA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        Mon, 1 Aug 2022 10:19:47 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D214E22BF6
+        for <linux-wireless@vger.kernel.org>; Mon,  1 Aug 2022 07:19:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HgVSpHNwn00iCMf93yXJy9iR0PIi2YVJjXz3o1KOboo=;
- b=KoKIL3T6Vv05gna6qBee6+xQlj/7G/wt2w85qcARU+zn+dUVjpu8pF3zQjN/iEQK2/Kc7n4l/HOxhudz78WgsP3aeUrqKldraG4pRSQr5/sXW/iAD5yepoN5SX+aoiGOqs32z3lBoUD9VQOyqHmh4/Y05Xyc97bwhfhPJXFJQFI=
-Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
- by BN7PR11MB2675.namprd11.prod.outlook.com (2603:10b6:406:ab::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.25; Mon, 1 Aug
- 2022 14:13:56 +0000
-Received: from PH0PR11MB5176.namprd11.prod.outlook.com
- ([fe80::8d74:5951:571e:531e]) by PH0PR11MB5176.namprd11.prod.outlook.com
- ([fe80::8d74:5951:571e:531e%7]) with mapi id 15.20.5482.016; Mon, 1 Aug 2022
- 14:13:56 +0000
-From:   <Ajay.Kathat@microchip.com>
-To:     <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH wireless] wifi: wilc1000: fix spurious inline in
- wilc_handle_disconnect()
-Thread-Topic: [PATCH wireless] wifi: wilc1000: fix spurious inline in
- wilc_handle_disconnect()
-Thread-Index: AQHYpZaYp6RBnFTK+kW9Xxzh3zfGwa2aFrIA
-Date:   Mon, 1 Aug 2022 14:13:56 +0000
-Message-ID: <af73ba89-2a41-5da2-9418-6eb498f1e392@microchip.com>
-References: <20220801110440.13144-1-kvalo@kernel.org>
-In-Reply-To: <20220801110440.13144-1-kvalo@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 914aa558-5399-47eb-b377-08da73c81288
-x-ms-traffictypediagnostic: BN7PR11MB2675:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: BMHB7nYByBlo37pDxKpgaCDl1C6+cdcoc1qPXbQUKWGLynHMltuD6r6fkkMkknJAVY/QRtHCFQcX+zLtZB/Qz50bZ5PWNC+KFLLPGi3M0oWQmXQKvkt+9XHWmwLSR8lFvcfFG0Em+mBvpwCgnmg74V5ucMbUXvsPJSfrnCLlgst9D1cQL4UQIh4925wE90GLei0KCKqZjaHz3+SDADT3w0GDJeT+tqjd4ABLSgZFuciLymt3Oy/LW3IzFLY3PkOucGNpQz1cyWnkT5kdDj18h5HTlZ+jIk9pk5ruiIy1GJKbeqXRwqEnopd+JIs6WJF2Tco/cH63+U1lEMU+/UrPH7Z5nKAxIyxn2fzCnSDUVtlhZ9Tu3CFrB63/Bo2dzlU33wlmEq7njtP7meUBVXIfWxtS3Km6oCckUQjwUzbzulZIvHfpRimAYDBDWv4IYPi8jw/1aJnoRV3S4rL5nJtK6TIJZL6z60QfEC2pv4MFSzYZRQiI+exZQvMT1irWNV+Gyxxaxcj3Ql5TtM+xmG0WeKOQo1Svx7n6Kl1U2mPNceUeFHEcrEpUAR/RQMytH2LmBAB1oN3xuu8w4LmvAA3vdKEML4JK2+sT9w777mfkhLglAV4Fwq5lUH6uEkQu0uTgTR4li9SdND6lHBsdTv4ea4ntzhV1OjXGVCiOlwcHpFs1/xUdxsztycUeqJMhnCiRAlutMoo396K0gWrO6f1OKR6YSzfoLfQT4sIlzyzcGfAEd1LzcZUrLm60DdtPOd5zyQYW8CoGcIiEmZvVlxyM8nWpbs4VZog/hLZprzKzcfddsxM0Lanw7DKiDb0D7kxd/031R5i1D7q8X8J1lhLkhTphosziEX+lpn+iTDLb/E23w7jzCDlUu/if9HyUpcpC
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(346002)(376002)(366004)(136003)(39860400002)(396003)(8936002)(66946007)(91956017)(64756008)(66476007)(5660300002)(66446008)(186003)(66556008)(83380400001)(76116006)(8676002)(2906002)(38070700005)(31696002)(122000001)(6486002)(36756003)(316002)(6512007)(2616005)(86362001)(71200400001)(31686004)(41300700001)(6506007)(26005)(110136005)(53546011)(38100700002)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TFFRckQ5aXVIejh6ZEttenF1ditTYTVleTFWblUzT0pwL0dZTTVET2lkcGVU?=
- =?utf-8?B?Qmt2T1JYelQrUFhxZE12aEF3cStVMzB0NFd5Q3dDU1czVjF4SXl3M2g1eHJs?=
- =?utf-8?B?ZlVUSTBLdzh4TDRJeG0rc1owRmpkbU1EZGV5TElWVGQ0WlJoY0tjSEczRTdi?=
- =?utf-8?B?RmVvM25rKzROWTNzTzJ3Vkg4N1A3WDUxcW9vZ3BqRE0veXRFMGcxVGFoUlRC?=
- =?utf-8?B?T1RibWlsRUsxdk1tK2pSRm1zMDBhVERPLy9RWGlqRDFzWFFGb1FOSWY3aFkr?=
- =?utf-8?B?K052UzBGemY1UWxvak1HUHVOeUpWMnlLOEV4SU8zQWZQZ2FnSFR1K3lCRjVo?=
- =?utf-8?B?dkVVRmV2UmYrdUZ1U21tMk9JY0Y5MlVVQmtJRTYreG80cjdyYzRmU01TMzgr?=
- =?utf-8?B?aDhYd2NScUs4c25xVFBudDVnY0x2SFh1cXh6Wjh4L3dDOW1rMW9tYnlQaTcr?=
- =?utf-8?B?NGxybkhNcm9wSWgvY01kU1VQR0plUy81K09KcEtxckFGTnFpK1JLczNEWDc1?=
- =?utf-8?B?dlNmSngrUit6enJic3B0bzY2Ymo3bHd6MXRlVnhtUUlFZ2hiWEh4WkZBK3dO?=
- =?utf-8?B?QlpvOU5rYnNVZ0VLUnlkdjd2UHplb2Q3ZlhVaGIrNUNtdmZGNzZJSUV3ZDlv?=
- =?utf-8?B?WStwbDVxeW80bzJ6RFdNYXJtSWUyZEZTU2RSMkRYOEgvdjZUZ2tGRldUaUJO?=
- =?utf-8?B?UlRBcCtYVEM2M0lqWWZlSVkzNXd3WldyOHBPWXhOK21MMkxYdkhZOXd1NEc1?=
- =?utf-8?B?UVhnSm5xdi83T2dyNnk3VlN5MmZnZUtZbzJKU3JlVXRLK2NTTzNFNTYxNW9n?=
- =?utf-8?B?cTFsdEJoU3RZcStEUjhhQWR0bjBSamVwenpqdnorSHdUbjBJU3MwWFlzM2hS?=
- =?utf-8?B?VmcvVVlZb00xRSs2V2FEYVdwMTZLOVQ2TzBsU2xpR2d0U3hPaDYyZ05pVGQ2?=
- =?utf-8?B?VmlNOWZSOHhIbDBZaDBLcVBJWk5kZjNzeFh4MjBub1M5L01qcnpJSUE5bzVD?=
- =?utf-8?B?MFpoRnRyL0JxTGpmS2c3eWZ1aWxVY3U1dHRHenJNTnB6eURwTU9KOE82c0tY?=
- =?utf-8?B?aG1PdE9LVERWZm9aZFBRYjA3NncyalRXSHdEc1RHczlxTW1qcnZIQ0tQc0Nh?=
- =?utf-8?B?My9lSTY2bitXejQ0U0psdTdTQnFBbmZMZkVGbWxGQVZiOWNRNno3Q2pTZlZu?=
- =?utf-8?B?TDBQbEx2NTVRWlVsTitsRU1KUStVTVJwM0libDJMQmZ2ZXBJTDVDSno2TWxW?=
- =?utf-8?B?ZTR1RGl3R1ArOE1URmdhejVCOGk3dyt4R0ZnZHRRU3FHUVo5VkpYMTNHLzRQ?=
- =?utf-8?B?UVdGMUVSSEpnSzBWMmpLQi82aU5ReXgzMHA5RkE1NDN0ZGJKU2FaTnBtL0ZI?=
- =?utf-8?B?UmFNQ1I1aTZ0aWxLZXhTcTFtNHNON0NWQ2NGbjFlcDZjREpYOFlydDByekgv?=
- =?utf-8?B?SDIzRDRUaG1rWm9xZkh3cEcvaGdyaEQxQkduMkZydCtGYVI2bEhqcEtHSVdU?=
- =?utf-8?B?TlVoNCtKOXJYSlNUZit0VDZCODJDQytrNVloV3laY21WWmpBN0wzR25SbTJB?=
- =?utf-8?B?c1FZdk03YnZGak5sVmxtNjkyaG93WW1DN0lkMkpwbVdZZ0l3dVhGblJJbVBt?=
- =?utf-8?B?ZmVsU1JXaG41Q1UvdHZ5N2JoaFVnRzY0L29kS0tocjNvTkxaKzRVeWFEWmlp?=
- =?utf-8?B?clNORVQ3M1ljeE01N1N2RjNKS2tFSDcxRnc1NWxHY3oydDVydWJ1Sk0yN211?=
- =?utf-8?B?bWdIbjJIc0RjbmhPT1VVV1E4VndhQmpKZnRwRTVleVEvQml2bjkxM2FzWlpx?=
- =?utf-8?B?b04vdUp4dVpnM3loTm9BcXdVd0N1NG9SeG8rc0Y1RHlJdklMbXkzL2JnOG5p?=
- =?utf-8?B?dWFLRjN3aE9KeVJ6dTNMam1Fck9pbDdsamRjK1o1eHh4cDJ0WjJzR0lEdTI0?=
- =?utf-8?B?UTZPYzkzSTNMQ01KOWhTWm9kK05KQjJUdHVKekcwOCthTlFiaEhRNysrOW9Q?=
- =?utf-8?B?SXBNMEQxbHQrL3JzMHlieUFXd3VUMXVYaDV4Y1EyU0pHUitUSWVid21RZ1VI?=
- =?utf-8?B?dzh6ZytCeit3QlhlSE54c2hMa1dpRWRZTHdDVXJJbGxXd2FCRXFKS1A4eHUr?=
- =?utf-8?Q?kx9NuP8sPqJb8gb6n29ZWnU3Y?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9B55C9C30CB1F0428103E8BFEAC8B418@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1659363586; x=1690899586;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=t2X0WI6Nw8+PxkH+8k9Ql55DG6fzAKqBzfbuQLlTSFE=;
+  b=blPL1rJYvvQGBEVFxYUaISiyk1zxbnPwMKoxm2wIrPEkeuoL4caZnnzQ
+   i68phq4nZ8rqgSmsYka4rpI39DnNURyVcg0aO9p7sIFKkdFW1pw+SMGWy
+   kEV1fiZtxDAFqpCCXzi4Vk+Jsu5RgUZ6eUOCtnhlrADxW5TO/WQt5WjUC
+   A=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 01 Aug 2022 07:19:46 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2022 07:19:46 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 1 Aug 2022 07:19:45 -0700
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 1 Aug 2022 07:19:44 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath10k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v2] wifi: ath10k: add peer map clean up for peer delete in ath10k_sta_state()
+Date:   Mon, 1 Aug 2022 10:19:30 -0400
+Message-ID: <20220801141930.16794-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 914aa558-5399-47eb-b377-08da73c81288
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2022 14:13:56.7636
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BAozxyPTa/rxJTtxQacV8akkDDrYVgFw11UECxJIyJa+7Xc0fugqZPtPOWUTPYw33hwL1UGIvqp9MOfU885QFUIxJlIh7GuMnjuygSVXBos=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR11MB2675
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gMDEvMDgvMjIgMTY6MzQsIEthbGxlIFZhbG8gd3JvdGU6DQo+IEVYVEVSTkFMIEVNQUlMOiBE
-byBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhl
-IGNvbnRlbnQgaXMgc2FmZQ0KPg0KPiBTcGFyc2Ugd2FybnM6DQo+DQo+IGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9oaWYuaDoyMTg6MzU6IGVycm9yOiBtYXJrZWQgaW5s
-aW5lLCBidXQgd2l0aG91dCBhIGRlZmluaXRpb24NCj4NCj4gUmVtb3ZlIHRoZSBpbmxpbmUsIGl0
-J3Mgbm90IG5lZWRlZC4NCj4NCkFja2VkLWJ5OiBBamF5IFNpbmdoIDxhamF5LmthdGhhdEBtaWNy
-b2NoaXAuY29tPg0KDQoNCj4gUmVwb3J0ZWQtYnk6IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5l
-bC5vcmc+DQo+IFNpZ25lZC1vZmYtYnk6IEthbGxlIFZhbG8gPGt2YWxvQGtlcm5lbC5vcmc+DQo+
-IC0tLQ0KPiAgIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9oaWYuYyB8
-IDIgKy0NCj4gICBkcml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvaGlmLmgg
-fCAzICsrLQ0KPiAgIDIgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
-cygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dp
-bGMxMDAwL2hpZi5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL2hp
-Zi5jDQo+IGluZGV4IGI4OTUxOWFiOTIwNS4uZWIxZDFiYTNhNDQzIDEwMDY0NA0KPiAtLS0gYS9k
-cml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvaGlmLmMNCj4gKysrIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL2hpZi5jDQo+IEBAIC02MzUsNyAr
-NjM1LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIGhvc3RfaW50X3BhcnNlX2Fzc29jX3Jlc3BfaW5m
-byhzdHJ1Y3Qgd2lsY192aWYgKnZpZiwNCj4gICAgICAgICAgY29ubl9pbmZvLT5yZXFfaWVzX2xl
-biA9IDA7DQo+ICAgfQ0KPg0KPiAtaW5saW5lIHZvaWQgd2lsY19oYW5kbGVfZGlzY29ubmVjdChz
-dHJ1Y3Qgd2lsY192aWYgKnZpZikNCj4gK3ZvaWQgd2lsY19oYW5kbGVfZGlzY29ubmVjdChzdHJ1
-Y3Qgd2lsY192aWYgKnZpZikNCj4gICB7DQo+ICAgICAgICAgIHN0cnVjdCBob3N0X2lmX2RydiAq
-aGlmX2RydiA9IHZpZi0+aGlmX2RydjsNCj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9oaWYuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21p
-Y3JvY2hpcC93aWxjMTAwMC9oaWYuaA0KPiBpbmRleCA2OWJhMWQ0NjllOWYuLmJhYTI4ODFmNDQ2
-NSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAw
-L2hpZi5oDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9o
-aWYuaA0KPiBAQCAtMjE1LDUgKzIxNSw2IEBAIHZvaWQgd2lsY19nbnJsX2FzeW5jX2luZm9fcmVj
-ZWl2ZWQoc3RydWN0IHdpbGMgKndpbGMsIHU4ICpidWZmZXIsIHUzMiBsZW5ndGgpOw0KPiAgIHZv
-aWQgKndpbGNfcGFyc2Vfam9pbl9ic3NfcGFyYW0oc3RydWN0IGNmZzgwMjExX2JzcyAqYnNzLA0K
-PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgY2ZnODAyMTFfY3J5cHRv
-X3NldHRpbmdzICpjcnlwdG8pOw0KPiAgIGludCB3aWxjX3NldF9kZWZhdWx0X21nbXRfa2V5X2lu
-ZGV4KHN0cnVjdCB3aWxjX3ZpZiAqdmlmLCB1OCBpbmRleCk7DQo+IC1pbmxpbmUgdm9pZCB3aWxj
-X2hhbmRsZV9kaXNjb25uZWN0KHN0cnVjdCB3aWxjX3ZpZiAqdmlmKTsNCj4gK3ZvaWQgd2lsY19o
-YW5kbGVfZGlzY29ubmVjdChzdHJ1Y3Qgd2lsY192aWYgKnZpZik7DQo+ICsNCj4gICAjZW5kaWYN
-Cj4NCj4gYmFzZS1jb21taXQ6IDYzNzU3MjI1YTkzMzUzYmMyY2U0NDk5YWY1NTAxZWFiZGJiZjIz
-ZjkNCj4gLS0NCj4gMi4zMC4yDQo+DQoNCg==
+When peer delete failed in a disconnect operation, use-after-free
+detected by KFENCE in below log. It is because for each vdev_id and
+address, it has only one struct ath10k_peer, it is allocated in
+ath10k_peer_map_event(). When connected to an AP, it has more than
+one HTT_T2H_MSG_TYPE_PEER_MAP reported from firmware, then the
+array peer_map of struct ath10k will be set muti-elements to the
+same ath10k_peer in ath10k_peer_map_event(). When peer delete failed
+in ath10k_sta_state(), the ath10k_peer will be free for the 1st peer
+id in array peer_map of struct ath10k, and then use-after-free happened
+for the 2nd peer id because they map to the same ath10k_peer.
+
+And clean up all peers in array peer_map for the ath10k_peer, then
+user-after-free disappeared
+
+peer map event log:
+[  306.911021] wlan0: authenticate with b0:2a:43:e6:75:0e
+[  306.957187] ath10k_pci 0000:01:00.0: mac vdev 0 peer create b0:2a:43:e6:75:0e (new sta) sta 1 / 32 peer 1 / 33
+[  306.957395] ath10k_pci 0000:01:00.0: htt peer map vdev 0 peer b0:2a:43:e6:75:0e id 246
+[  306.957404] ath10k_pci 0000:01:00.0: htt peer map vdev 0 peer b0:2a:43:e6:75:0e id 198
+[  306.986924] ath10k_pci 0000:01:00.0: htt peer map vdev 0 peer b0:2a:43:e6:75:0e id 166
+
+peer unmap event log:
+[  435.715691] wlan0: deauthenticating from b0:2a:43:e6:75:0e by local choice (Reason: 3=DEAUTH_LEAVING)
+[  435.716802] ath10k_pci 0000:01:00.0: mac vdev 0 peer delete b0:2a:43:e6:75:0e sta ffff990e0e9c2b50 (sta gone)
+[  435.717177] ath10k_pci 0000:01:00.0: htt peer unmap vdev 0 peer b0:2a:43:e6:75:0e id 246
+[  435.717186] ath10k_pci 0000:01:00.0: htt peer unmap vdev 0 peer b0:2a:43:e6:75:0e id 198
+[  435.717193] ath10k_pci 0000:01:00.0: htt peer unmap vdev 0 peer b0:2a:43:e6:75:0e id 166
+
+use-after-free log:
+<6>[21705.888627] wlan0: deauthenticating from d0:76:8f:82:be:75 by local choice (Reason: 3=DEAUTH_LEAVING)
+<4>[21713.799910] ath10k_pci 0000:01:00.0: failed to delete peer d0:76:8f:82:be:75 for vdev 0: -110
+<4>[21713.799925] ath10k_pci 0000:01:00.0: found sta peer d0:76:8f:82:be:75 (ptr 0000000000000000 id 102) entry on vdev 0 after it was supposedly removed
+<3>[21713.799968] ==================================================================
+<3>[21713.799991] BUG: KFENCE: use-after-free read in ath10k_sta_state+0x265/0xb8a [ath10k_core]
+<3>[21713.799991]
+<3>[21713.799997] Use-after-free read at 0x00000000abe1c75e (in kfence-#69):
+<4>[21713.800010]  ath10k_sta_state+0x265/0xb8a [ath10k_core]
+<4>[21713.800041]  drv_sta_state+0x115/0x677 [mac80211]
+<4>[21713.800059]  __sta_info_destroy_part2+0xb1/0x133 [mac80211]
+<4>[21713.800076]  __sta_info_flush+0x11d/0x162 [mac80211]
+<4>[21713.800093]  ieee80211_set_disassoc+0x12d/0x2f4 [mac80211]
+<4>[21713.800110]  ieee80211_mgd_deauth+0x26c/0x29b [mac80211]
+<4>[21713.800137]  cfg80211_mlme_deauth+0x13f/0x1bb [cfg80211]
+<4>[21713.800153]  nl80211_deauthenticate+0xf8/0x121 [cfg80211]
+<4>[21713.800161]  genl_rcv_msg+0x38e/0x3be
+<4>[21713.800166]  netlink_rcv_skb+0x89/0xf7
+<4>[21713.800171]  genl_rcv+0x28/0x36
+<4>[21713.800176]  netlink_unicast+0x179/0x24b
+<4>[21713.800181]  netlink_sendmsg+0x3a0/0x40e
+<4>[21713.800187]  sock_sendmsg+0x72/0x76
+<4>[21713.800192]  ____sys_sendmsg+0x16d/0x1e3
+<4>[21713.800196]  ___sys_sendmsg+0x95/0xd1
+<4>[21713.800200]  __sys_sendmsg+0x85/0xbf
+<4>[21713.800205]  do_syscall_64+0x43/0x55
+<4>[21713.800210]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+<3>[21713.800213]
+<4>[21713.800219] kfence-#69: 0x000000009149b0d5-0x000000004c0697fb, size=1064, cache=kmalloc-2k
+<4>[21713.800219]
+<4>[21713.800224] allocated by task 13 on cpu 0 at 21705.501373s:
+<4>[21713.800241]  ath10k_peer_map_event+0x7e/0x154 [ath10k_core]
+<4>[21713.800254]  ath10k_htt_t2h_msg_handler+0x586/0x1039 [ath10k_core]
+<4>[21713.800265]  ath10k_htt_htc_t2h_msg_handler+0x12/0x28 [ath10k_core]
+<4>[21713.800277]  ath10k_htc_rx_completion_handler+0x14c/0x1b5 [ath10k_core]
+<4>[21713.800283]  ath10k_pci_process_rx_cb+0x195/0x1df [ath10k_pci]
+<4>[21713.800294]  ath10k_ce_per_engine_service+0x55/0x74 [ath10k_core]
+<4>[21713.800305]  ath10k_ce_per_engine_service_any+0x76/0x84 [ath10k_core]
+<4>[21713.800310]  ath10k_pci_napi_poll+0x49/0x144 [ath10k_pci]
+<4>[21713.800316]  net_rx_action+0xdc/0x361
+<4>[21713.800320]  __do_softirq+0x163/0x29a
+<4>[21713.800325]  asm_call_irq_on_stack+0x12/0x20
+<4>[21713.800331]  do_softirq_own_stack+0x3c/0x48
+<4>[21713.800337]  __irq_exit_rcu+0x9b/0x9d
+<4>[21713.800342]  common_interrupt+0xc9/0x14d
+<4>[21713.800346]  asm_common_interrupt+0x1e/0x40
+<4>[21713.800351]  ksoftirqd_should_run+0x5/0x16
+<4>[21713.800357]  smpboot_thread_fn+0x148/0x211
+<4>[21713.800362]  kthread+0x150/0x15f
+<4>[21713.800367]  ret_from_fork+0x22/0x30
+<4>[21713.800370]
+<4>[21713.800374] freed by task 708 on cpu 1 at 21713.799953s:
+<4>[21713.800498]  ath10k_sta_state+0x2c6/0xb8a [ath10k_core]
+<4>[21713.800515]  drv_sta_state+0x115/0x677 [mac80211]
+<4>[21713.800532]  __sta_info_destroy_part2+0xb1/0x133 [mac80211]
+<4>[21713.800548]  __sta_info_flush+0x11d/0x162 [mac80211]
+<4>[21713.800565]  ieee80211_set_disassoc+0x12d/0x2f4 [mac80211]
+<4>[21713.800581]  ieee80211_mgd_deauth+0x26c/0x29b [mac80211]
+<4>[21713.800598]  cfg80211_mlme_deauth+0x13f/0x1bb [cfg80211]
+<4>[21713.800614]  nl80211_deauthenticate+0xf8/0x121 [cfg80211]
+<4>[21713.800619]  genl_rcv_msg+0x38e/0x3be
+<4>[21713.800623]  netlink_rcv_skb+0x89/0xf7
+<4>[21713.800628]  genl_rcv+0x28/0x36
+<4>[21713.800632]  netlink_unicast+0x179/0x24b
+<4>[21713.800637]  netlink_sendmsg+0x3a0/0x40e
+<4>[21713.800642]  sock_sendmsg+0x72/0x76
+<4>[21713.800646]  ____sys_sendmsg+0x16d/0x1e3
+<4>[21713.800651]  ___sys_sendmsg+0x95/0xd1
+<4>[21713.800655]  __sys_sendmsg+0x85/0xbf
+<4>[21713.800659]  do_syscall_64+0x43/0x55
+<4>[21713.800663]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
+
+Fixes: d0eeafad1189 ("ath10k: Clean up peer when sta goes away.")
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+v2: add "wifi:" in subject
+
+ drivers/net/wireless/ath/ath10k/mac.c | 54 ++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index a04e18250dae..5ccbb81739de 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -864,11 +864,36 @@ static int ath10k_peer_delete(struct ath10k *ar, u32 vdev_id, const u8 *addr)
+ 	return 0;
+ }
+ 
++static void ath10k_peer_map_cleanup(struct ath10k *ar, struct ath10k_peer *peer)
++{
++	int peer_id, i;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	for_each_set_bit(peer_id, peer->peer_ids,
++			 ATH10K_MAX_NUM_PEER_IDS) {
++		ar->peer_map[peer_id] = NULL;
++	}
++
++	/* Double check that peer is properly un-referenced from
++	 * the peer_map
++	 */
++	for (i = 0; i < ARRAY_SIZE(ar->peer_map); i++) {
++		if (ar->peer_map[i] == peer) {
++			ath10k_warn(ar, "removing stale peer_map entry for %pM (ptr %pK idx %d)\n",
++				    peer->addr, peer, i);
++			ar->peer_map[i] = NULL;
++		}
++	}
++
++	list_del(&peer->list);
++	kfree(peer);
++	ar->num_peers--;
++}
++
+ static void ath10k_peer_cleanup(struct ath10k *ar, u32 vdev_id)
+ {
+ 	struct ath10k_peer *peer, *tmp;
+-	int peer_id;
+-	int i;
+ 
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
+@@ -880,25 +905,7 @@ static void ath10k_peer_cleanup(struct ath10k *ar, u32 vdev_id)
+ 		ath10k_warn(ar, "removing stale peer %pM from vdev_id %d\n",
+ 			    peer->addr, vdev_id);
+ 
+-		for_each_set_bit(peer_id, peer->peer_ids,
+-				 ATH10K_MAX_NUM_PEER_IDS) {
+-			ar->peer_map[peer_id] = NULL;
+-		}
+-
+-		/* Double check that peer is properly un-referenced from
+-		 * the peer_map
+-		 */
+-		for (i = 0; i < ARRAY_SIZE(ar->peer_map); i++) {
+-			if (ar->peer_map[i] == peer) {
+-				ath10k_warn(ar, "removing stale peer_map entry for %pM (ptr %pK idx %d)\n",
+-					    peer->addr, peer, i);
+-				ar->peer_map[i] = NULL;
+-			}
+-		}
+-
+-		list_del(&peer->list);
+-		kfree(peer);
+-		ar->num_peers--;
++		ath10k_peer_map_cleanup(ar, peer);
+ 	}
+ 	spin_unlock_bh(&ar->data_lock);
+ }
+@@ -7620,10 +7627,7 @@ static int ath10k_sta_state(struct ieee80211_hw *hw,
+ 				/* Clean up the peer object as well since we
+ 				 * must have failed to do this above.
+ 				 */
+-				list_del(&peer->list);
+-				ar->peer_map[i] = NULL;
+-				kfree(peer);
+-				ar->num_peers--;
++				ath10k_peer_map_cleanup(ar, peer);
+ 			}
+ 		}
+ 		spin_unlock_bh(&ar->data_lock);
+
+base-commit: c35538ce3b892dd4b41e24e887a434f296792959
+-- 
+2.31.1
+
