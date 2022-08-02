@@ -2,112 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC60758767C
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Aug 2022 06:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F0A587743
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Aug 2022 08:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235528AbiHBExr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Aug 2022 00:53:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
+        id S233779AbiHBGun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Aug 2022 02:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232033AbiHBExp (ORCPT
+        with ESMTP id S233442AbiHBGum (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Aug 2022 00:53:45 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B892873B;
-        Mon,  1 Aug 2022 21:53:44 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id t22so4661118pjy.1;
-        Mon, 01 Aug 2022 21:53:44 -0700 (PDT)
+        Tue, 2 Aug 2022 02:50:42 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C2060EF
+        for <linux-wireless@vger.kernel.org>; Mon,  1 Aug 2022 23:50:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=+KpNao5DG7AgBe+XvT6M4EMyYgz3pagE9PCUtC/M5Qs=;
-        b=p/rl1dPUeQ2vYN5Dhcil7pLpG1hqHac7bLGJpzTs90nEs2OGv2s/9FtL19vlUmt9oM
-         XVIl7uV+SyCMvJ+CBjAHZD4IjXYGkbKees9UVyr/IOq1g3eynIbqYvmmeMDiLEu+6wj5
-         U7JcYfXB+pp+i06JTiqaKJZBnHkHm5NnbrhQtVTRDfNKKnOoYjNRZZZ8zQktz7eysk+/
-         6JijXrq5VvJMbXA4F1DCsVjT/+tqbkw2le44wWKoLppBFNQreW3lmlZDi7i0fNmwZj2d
-         1SbigSHkeoots49CuF8pn7MU4xdGaDhBE15Gx5iqKSJebF5M6M6RNB3N3JYHXG4kGBPD
-         3fvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=+KpNao5DG7AgBe+XvT6M4EMyYgz3pagE9PCUtC/M5Qs=;
-        b=X6OYrHoGIOJl+hhnWhgEBpkwlOzmy6J/ykvQe/QkkKiKMLu2Jg1QvM/78+DaFdcCkj
-         aq9iwnqLXy0B6Sjzo7qJm6wMV2nzr3UI+7Lo+WZg+km+Bve6qFNykadvYc/J5qrX3OAp
-         lJXDfIkejGy3ZVfFP7K5d5S7QJ/i0BsTL5XpFpafrwoqy8Po6NWzwmuVT7IsKSrbwT2B
-         +/+7V+xykSgPdyjmIF6muLAPufxApb80WIQ1YXH2R+DsSjTkoLSeyfEcshjWzmHlAVLT
-         x3CBlPNKPHUHsUPNwP64aXV9ciXfLearjmKW+7fBRPh3OPq1JIBu37HSjMcsCKhDntLL
-         xSyg==
-X-Gm-Message-State: ACgBeo2jXep3beGd//bdQ0iLrIoowuKuf9naj9zNuDxElGwwUdzRjwkv
-        6gHf3ldW1ei0qRs2BxQVIbc=
-X-Google-Smtp-Source: AA6agR7tU5h+hx79npWg1wA4HCycS2NujBy2/9g+YfJDHOS4B1pfIuXPNViqQihXlb/VWY06zsck+w==
-X-Received: by 2002:a17:90b:1e11:b0:1f4:ee94:6236 with SMTP id pg17-20020a17090b1e1100b001f4ee946236mr12181849pjb.63.1659416024243;
-        Mon, 01 Aug 2022 21:53:44 -0700 (PDT)
-Received: from localhost.localdomain ([103.184.239.49])
-        by smtp.gmail.com with ESMTPSA id b5-20020a170902d50500b0016be24e3668sm10619133plg.291.2022.08.01.21.53.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Aug 2022 21:53:43 -0700 (PDT)
-From:   Sebin Sebastian <mailmesebin00@gmail.com>
-Cc:     mailmesebin00@gmail.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
-        Sergey Matyukevich <geomatsi@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH -next] qtnfmac: remove braces around single statement blocks
-Date:   Tue,  2 Aug 2022 10:22:39 +0530
-Message-Id: <20220802045305.235684-1-mailmesebin00@gmail.com>
-X-Mailer: git-send-email 2.34.1
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1659423042; x=1690959042;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=swf5klhNTqw414ycRFxHu3r93E9CMpBlB6kAQlk5sVY=;
+  b=FvjqZgpluP2rteaeY8NKDsCYm3JFXmmhy2kdZaWDpXcAI7e1lv/ivxmP
+   1IjaP+uEA/gVUAI9OKsJdjcqDxZsRw/yThTdZHziipFeDDZIOvGBgOQYi
+   hyj6ueA+OtiA2ZG0p/JcLs7MkmgG+Hm6iprcDEfdUYIeB3rkXN6gyZRq9
+   A=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 01 Aug 2022 23:50:41 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2022 23:50:41 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 1 Aug 2022 23:50:40 -0700
+Received: from CDCCSTEX0180100-LIN.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 1 Aug 2022 23:50:39 -0700
+From:   Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [RFC 0/2] wifi: mac80211:  extend rx API with link_id for MLO connection
+Date:   Tue, 2 Aug 2022 12:20:17 +0530
+Message-ID: <20220802065019.20791-1-quic_vthiagar@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove braces around single statement blocks in order to improve
-readability. Also, an extra blank line was removed. Both warnings are
-reported by checkpatch.pl
+In MLO, the frames can be received on any of the affiliated links.
+When the address translation for rx frames are done in fw/hw, it
+is very important to have an explicit link information reported
+for every rx frame to mac80211. Per-link processing includes
+stats update, GTK/IGTK/BIGTK retrieval and so on. This patch
+set only tries to use the link at the top level APIs, deep
+rx handlers are yet to be changed to use the respective
+link accordingly.
 
-Signed-off-by: Sebin Sebastian <mailmesebin00@gmail.com>
----
- drivers/net/wireless/quantenna/qtnfmac/cfg80211.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+This series is prepared on top of the latest mld branch.
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-index 1593e810b3ca..8e478118a1ca 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-@@ -721,9 +721,8 @@ qtnf_disconnect(struct wiphy *wiphy, struct net_device *dev,
- 		return -EFAULT;
- 	}
- 
--	if (vif->wdev.iftype != NL80211_IFTYPE_STATION) {
-+	if (vif->wdev.iftype != NL80211_IFTYPE_STATION)
- 		return -EOPNOTSUPP;
--	}
- 
- 	ret = qtnf_cmd_send_disconnect(vif, reason_code);
- 	if (ret)
-@@ -750,7 +749,6 @@ qtnf_dump_survey(struct wiphy *wiphy, struct net_device *dev,
- 	struct ieee80211_channel *chan;
- 	int ret;
- 
--
- 	sband = wiphy->bands[NL80211_BAND_2GHZ];
- 	if (sband && idx >= sband->n_channels) {
- 		idx -= sband->n_channels;
+Base mld commit
+
+commit f69d4554386b4d2b56ca883fb97c92d64e188615
+Author: Shaul Triebitz <shaul.triebitz@intel.com>
+Date:   Sun Jul 24 11:07:32 2022 +0300
+
+    wifi: mac80211: properly set old_links when removing a link
+
+    In ieee80211_sta_remove_link, valid_links is set to
+    the new_links before calling drv_change_sta_links, but
+    is used for the old_links.
+
+    Change-Id: I7f74b5d818c6154bc544a75a2933ab924b0c8937
+    Fixes: cb71f1d136a6 ("wifi: mac80211: add sta link addition/removal")
+    Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
+    Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+
+Vasanthakumar Thiagarajan (2):
+  wifi: mac80211: add a new field in ieee80211_rx_status for link id
+  wifi: mac80211: use link_id from ieee80211_rx_status to retrieve rx
+    link
+
+ include/net/mac80211.h |   4 ++
+ net/mac80211/rx.c      | 133 ++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 128 insertions(+), 9 deletions(-)
+
 -- 
-2.34.1
+2.17.1
 
