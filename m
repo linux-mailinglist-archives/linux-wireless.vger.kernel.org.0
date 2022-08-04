@@ -2,149 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07943589598
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 03:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C375896D5
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 06:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238924AbiHDBIE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Aug 2022 21:08:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39800 "EHLO
+        id S237347AbiHDER3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Aug 2022 00:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236360AbiHDBIC (ORCPT
+        with ESMTP id S229476AbiHDER2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Aug 2022 21:08:02 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6986D40BD8
-        for <linux-wireless@vger.kernel.org>; Wed,  3 Aug 2022 18:07:55 -0700 (PDT)
-X-UUID: 72c6e1a255e846e6bf7f1fff3df857e4-20220804
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ShN5Al7J98eU+m9SLdyQUvLe6L2xd8dZtVuQ/xF+kFs=;
-        b=lIwB2IVFrVkCRl9JQ2lW1zazaouOmmbHeL7p3/2A0WxwaIRhbeqA51eBwpHhf4AJASA8zp945x/NgQiwuWT+xr7X1rDzaHcfqYdBPjmDGLLfqC2qRdkCf/sYzZlR/cCPkUZakhwLY3wvK3dSrZD4zUkCtLKbEAcO6czVr4sxt1M=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:11499bf4-708a-4049-8258-b7213881c0e2,OB:10,L
-        OB:20,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,A
-        CTION:release,TS:100
-X-CID-INFO: VERSION:1.1.8,REQID:11499bf4-708a-4049-8258-b7213881c0e2,OB:10,LOB
-        :20,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,A
-        CTION:quarantine,TS:100
-X-CID-META: VersionHash:0f94e32,CLOUDID:da7739d0-a6cf-4fb6-be1b-c60094821ca2,C
-        OID:a6890e36c514,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 72c6e1a255e846e6bf7f1fff3df857e4-20220804
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1970289718; Thu, 04 Aug 2022 09:07:48 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Thu, 4 Aug 2022 09:07:46 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Thu, 4 Aug 2022 09:07:46 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Deren Wu" <deren.wu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7921: fix antenna signal are way off in monitor mode
-Date:   Thu, 4 Aug 2022 09:07:45 +0800
-Message-ID: <0f95fcdb8511ec765040c8fe85c1fa09437e8ef5.1659574985.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Thu, 4 Aug 2022 00:17:28 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC653C142
+        for <linux-wireless@vger.kernel.org>; Wed,  3 Aug 2022 21:17:26 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id f22so12800291edc.7
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Aug 2022 21:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=4mHygLe4KsW6UUzeqoymi1F4W/THMx9/uJZ7a897Fp8=;
+        b=cy1AtVBWN0pdaq+LGKPf0QBumg7rpxIEz/njl4j/pXRRZ5Coh6CyF4SaVlR2qsfakO
+         Hl9OWQWkUdCHn19C3E9U//kC7Ik6iMRzNo6ciNyWmFbf1LuWmyztnBVfibzRZZkJvYO3
+         0M3Eyr2M5GoJmNarlwfYpuLli0sA1Yb37ukjE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=4mHygLe4KsW6UUzeqoymi1F4W/THMx9/uJZ7a897Fp8=;
+        b=R0koyClUKBbJiFx5fx1y/awIRNGeR109nhGOpQMQ0pPEaiHyFEY8IRBiQ0W7ouzemN
+         0xtsYyyFbho0Kf+GIvBTgWWfRi72wpoD1v4xT4BeZt5knyotuSQ3QJ7MxVKwGckep8Ho
+         axduAddStS0Q7YtrkIv+kAuZhO+ZKmGaOgs4ZbI6ZDzZP4dhjfK/IhBugUwBfG7MBb7v
+         7+X4OoyyQ0aumHhvYPjjWujH5nbEzm9r2/r05MC/7ljVDO7FdQSF1s7xPJPdEm34PoKR
+         DPdlEBgdYg1lif/ii086zDOynCccCrg5urJXKawxIPzf7H++1ZPLjnlTDBBfTKOAFbhi
+         IL7g==
+X-Gm-Message-State: ACgBeo3TMeL0X6pvqgeCVfBku90780yGvXf4l/0qJlpU5CraAdJ4H1im
+        xHUuFmmvU9RsCKGwyrp52BizYBbsHmbnOhWn
+X-Google-Smtp-Source: AA6agR42GL7rM1LZO8Ab6MBi+L8XB0yPjln6LkVRL+bLezyCl4Ii3vDg/el00ohhTj7ONXNqqDYgMw==
+X-Received: by 2002:a05:6402:2788:b0:43a:e0aa:97f4 with SMTP id b8-20020a056402278800b0043ae0aa97f4mr14166ede.329.1659586645268;
+        Wed, 03 Aug 2022 21:17:25 -0700 (PDT)
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com. [209.85.221.49])
+        by smtp.gmail.com with ESMTPSA id f5-20020a170906c08500b0072b36cbcdaasm7955773ejz.92.2022.08.03.21.17.24
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Aug 2022 21:17:24 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id l4so23808787wrm.13
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Aug 2022 21:17:24 -0700 (PDT)
+X-Received: by 2002:adf:edcb:0:b0:21e:d043:d271 with SMTP id
+ v11-20020adfedcb000000b0021ed043d271mr32376wro.274.1659586643687; Wed, 03 Aug
+ 2022 21:17:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,MAY_BE_FORGED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
-        version=3.4.6
+References: <20220803101438.24327-1-pabeni@redhat.com>
+In-Reply-To: <20220803101438.24327-1-pabeni@redhat.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 3 Aug 2022 21:17:07 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjhSSHM+ESVnchxazGx4Vi0fEfmHpwYxE45JZDSC8SUAQ@mail.gmail.com>
+Message-ID: <CAHk-=wjhSSHM+ESVnchxazGx4Vi0fEfmHpwYxE45JZDSC8SUAQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Networking for 6.0
+To:     Paolo Abeni <pabeni@redhat.com>,
+        Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="0000000000005f466805e562a0cf"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+--0000000000005f466805e562a0cf
+Content-Type: text/plain; charset="UTF-8"
 
-Group 3 in RxD is disabled in monitor mode. We should use the group 5 in
-RxD instead to fix antenna signal way off issue, e.g we would see the
-incorrect antenna signal value in wireshark. On the other hand, Group 5
-wouldn't be used in STA or AP mode, so the patch shouldn't cause any
-harm to those modes.
+Hmm. Another issue with the networking pull..
 
-Fixes: cbaa0a404f8d ("mt76: mt7921: fix up the monitor mode")
-Reported-by: Adrian Granados <agranados@gmail.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
-v2: drop an unnecessary blank line and fix typo
----
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 32 ++++++++++++-------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+On Wed, Aug 3, 2022 at 3:15 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git tags/net-next-6.0
+>
+> Veerendranath Jakkam (5):
+>       cfg80211: Indicate MLO connection info in connect and roam callbacks
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
- b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 47f0aa81ab02..1c242f2ae997 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -394,6 +394,27 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct
- sk_buff *skb)
- 		if (v0 & MT_PRXV_HT_AD_CODE)
- 			status->enc_flags |= RX_ENC_FLAG_LDPC;
- 
-+		ret = mt76_connac2_mac_fill_rx_rate(&dev->mt76, status, sband,
-+						    rxv, &mode);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (rxd1 & MT_RXD1_NORMAL_GROUP_5) {
-+			rxd += 6;
-+			if ((u8 *)rxd - skb->data >= skb->len)
-+				return -EINVAL;
-+
-+			rxv = rxd;
-+			/* Monitor mode would use RCPI described in GROUP 5
-+			 * instead.
-+			 */
-+			v1 = le32_to_cpu(rxv[0]);
-+
-+			rxd += 12;
-+			if ((u8 *)rxd - skb->data >= skb->len)
-+				return -EINVAL;
-+		}
-+
- 		status->chains = mphy->antenna_mask;
- 		status->chain_signal[0] = to_rssi(MT_PRXV_RCPI0, v1);
- 		status->chain_signal[1] = to_rssi(MT_PRXV_RCPI1, v1);
-@@ -408,17 +429,6 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct
- sk_buff *skb)
- 			status->signal = max(status->signal,
- 					     status->chain_signal[i]);
- 		}
--
--		ret = mt76_connac2_mac_fill_rx_rate(&dev->mt76, status, sband,
--						    rxv, &mode);
--		if (ret < 0)
--			return ret;
--
--		if (rxd1 & MT_RXD1_NORMAL_GROUP_5) {
--			rxd += 18;
--			if ((u8 *)rxd - skb->data >= skb->len)
--				return -EINVAL;
--		}
- 	}
- 
- 	amsdu_info = FIELD_GET(MT_RXD4_NORMAL_PAYLOAD_FORMAT, rxd4);
--- 
-2.25.1
+This one added a
 
+                for_each_valid_link(cr, link) {
+                        if (WARN_ON_ONCE(!cr->links[link].bss))
+                                break;
+                }
+
+in net/wireless/sme.c, and it seems to trigger on my brand new M2 Macbook Air.
+
+Wireless still works fine (I'm writing this report on the machine),
+but you get a scary splat:
+
+  WARNING: CPU: 5 PID: 514 at net/wireless/sme.c:786
+__cfg80211_connect_result+0x2fc/0x5c0 [cfg80211]
+
+full call trace etc in the attachment.
+
+               Linus
+
+--0000000000005f466805e562a0cf
+Content-Type: application/octet-stream; name=out
+Content-Disposition: attachment; filename=out
+Content-Transfer-Encoding: base64
+Content-ID: <f_l6eizc1r0>
+X-Attachment-Id: f_l6eizc1r0
+
+ClsgICAgMy4wNDU1OTBdIGJyY21mbWFjOiBicmNtZl9jX3Byb2Nlc3NfdHhjYXBfYmxvYjogVHhD
+YXAgYmxvYiBmb3VuZCwgbG9hZGluZwpbICAgIDMuMDQ5NDg2XSBicmNtZm1hYzogYnJjbWZfY19w
+cm9jZXNzX2NhbF9ibG9iOiBDYWxpYnJhdGlvbiBibG9iIHByb3ZpZGVkIGJ5IHBsYXRmb3JtLCBs
+b2FkaW5nClsgICAgMy4wNjIyOTNdIGJyY21mbWFjOiBicmNtZl9jX3ByZWluaXRfZGNtZHM6IEZp
+cm13YXJlOiBCQ000Mzg3Lzcgd2wwOiBBcHIgIDYgMjAyMiAwNTo1NTo1NCB2ZXJzaW9uIDIwLjkw
+LjQ1LjAuOC43LjExOCBGV0lEIDAxLWU3MTM4ZmYyClsgICAgMy4wOTQzMzldIGJyY21mbWFjIDAw
+MDA6MDE6MDAuMCB3bHAxczBmMDogcmVuYW1lZCBmcm9tIHdsYW4wClsgICAgMy43NzI3NDldIGll
+ZWU4MDIxMSBwaHkwOiBicmNtZl9wMnBfc2V0X2Zpcm13YXJlOiBmYWlsZWQgdG8gdXBkYXRlIGRl
+dmljZSBhZGRyZXNzIHJldCAtNTIKWyAgICAzLjc3Mzg3OF0gaWVlZTgwMjExIHBoeTA6IGJyY21m
+X3AycF9jcmVhdGVfcDJwZGV2OiBzZXQgcDJwX2Rpc2MgZXJyb3IKWyAgICAzLjc3Mzg4Nl0gaWVl
+ZTgwMjExIHBoeTA6IGJyY21mX2NmZzgwMjExX2FkZF9pZmFjZTogYWRkIGlmYWNlIHAycC1kZXYt
+d2xwMXMwZiB0eXBlIDEwIGZhaWxlZDogZXJyPS01MgpbICAgIDUuMzc4NjE0XSByZmtpbGw6IGlu
+cHV0IGhhbmRsZXIgZGlzYWJsZWQKWyAgICA1Ljc5NjI3NV0gQmx1ZXRvb3RoOiBSRkNPTU0gVFRZ
+IGxheWVyIGluaXRpYWxpemVkClsgICAgNS43OTYyODFdIEJsdWV0b290aDogUkZDT01NIHNvY2tl
+dCBsYXllciBpbml0aWFsaXplZApbICAgIDUuNzk2Mjg0XSBCbHVldG9vdGg6IFJGQ09NTSB2ZXIg
+MS4xMQpbICAgIDguNzgzNTI0XSByZmtpbGw6IGlucHV0IGhhbmRsZXIgZW5hYmxlZApbICAgIDku
+MzE5ODY3XSAtLS0tLS0tLS0tLS1bIGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0KWyAgICA5LjMxOTg3
+MV0gV0FSTklORzogQ1BVOiA1IFBJRDogNTE0IGF0IG5ldC93aXJlbGVzcy9zbWUuYzo3ODYgX19j
+Zmc4MDIxMV9jb25uZWN0X3Jlc3VsdCsweDJmYy8weDVjMCBbY2ZnODAyMTFdClsgICAgOS4zMTk4
+ODZdIE1vZHVsZXMgbGlua2VkIGluOiBzbmRfc2VxX2R1bW15IHNuZF9ocnRpbWVyIHNuZF9zZXEg
+c25kX3NlcV9kZXZpY2UgcmZjb21tIG5mdF9maWJfaW5ldCBuZnRfZmliX2lwdjQgbmZ0X2ZpYl9p
+cHY2IG5mdF9maWIgbmZ0X3JlamVjdF9pbmV0IG5mX3JlamVjdF9pcHY2IG5mdF9yZWplY3QgbmZ0
+X2N0IG5mdF9jaGFpbl9uYXQgbmZfbmF0IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9k
+ZWZyYWdfaXB2NCBpcF9zZXQgbmZfdGFibGVzIG5mbmV0bGluayBxcnRyIGJuZXAgam95ZGV2IGhp
+ZF9tYWdpY21vdXNlIGhjaV9iY200Mzc3IGJyY21mbWFjIGJyY211dGlsIGJsdWV0b290aCBjZmc4
+MDIxMSBlY2RoX2dlbmVyaWMgZWNjIHJma2lsbCBtYWNzbWNfaGlkIGhpZF9hcHBsZSBzbmRfc29j
+X3RhczI3NjQgYXBwbGVfc29jX2NwdWZyZXEgc25kX3NvY19hcHBsZV9tY2Egc25kX3NvY19hcHBs
+ZV9zaWxpY29uIHNuZF9zb2Nfc2ltcGxlX2NhcmRfdXRpbHMgenJhbSB4aGNpX3BsYXRfaGNkIHho
+Y2lfaGNkIG52bWVtX3NwbWlfbWZkIG1hY3NtY19wb3dlciBydGNfbWFjc21jIG1hY3NtY19yZWJv
+b3QgZG9ja2NoYW5uZWxfaGlkIHNpbXBsZV9tZmRfc3BtaSByZWdtYXBfc3BtaSB0cHM2NTk4eCB0
+eXBlYyBwY2llX2FwcGxlIGR3YzMgcGNpX2hvc3RfY29tbW9uIG52bWVfYXBwbGUgYXBwbGVfZG9j
+a2NoYW5uZWwgYXBwbGVfc2FydCB1ZGNfY29yZSBhcHBsZV9tYWlsYm94IHNwbWlfYXBwbGVfY29u
+dHJvbGxlciBwaW5jdHJsX2FwcGxlX2dwaW8gY2xrX2FwcGxlX25jbyBhcHBsZV9hZG1hYyBhcHBs
+ZV9kYXJ0IGkyY19hcHBsZSBidHJmcyByYWlkNl9wcSB6c3RkX2NvbXByZXNzIGlwNl90YWJsZXMg
+cGtjczhfa2V5X3BhcnNlciBmdXNlClsgICAgOS4zMTk5MDldIENQVTogNSBQSUQ6IDUxNCBDb21t
+OiBrd29ya2VyL3UxNjo4IFRhaW50ZWQ6IEcgUyAgICAgIFcgICAgICAgICAgNi4wLjAtcmMwLTA3
+NDYzLWc4MmY1NGVkZjdhNDkgIzE1ClsgICAgOS4zMTk5MTFdIEhhcmR3YXJlIG5hbWU6IEFwcGxl
+IE1hY0Jvb2sgQWlyICgxMy1pbmNoLCBNMiwgMjAyMikgKERUKQpbICAgIDkuMzE5OTExXSBXb3Jr
+cXVldWU6IGNmZzgwMjExIGNmZzgwMjExX2V2ZW50X3dvcmsgW2NmZzgwMjExXQpbICAgIDkuMzE5
+OTIxXSBwc3RhdGU6IDAwNDAwMDA5IChuemN2IGRhaWYgK1BBTiAtVUFPIC1UQ08gLURJVCAtU1NC
+UyBCVFlQRT0tLSkKWyAgICA5LjMxOTkyM10gcGMgOiBfX2NmZzgwMjExX2Nvbm5lY3RfcmVzdWx0
+KzB4MmZjLzB4NWMwIFtjZmc4MDIxMV0KWyAgICA5LjMxOTkzMV0gbHIgOiBfX2NmZzgwMjExX2Nv
+bm5lY3RfcmVzdWx0KzB4MmU0LzB4NWMwIFtjZmc4MDIxMV0KWyAgICA5LjMxOTkzOV0gc3AgOiBm
+ZmZmODAwMDA5ZDIzY2MwClsgICAgOS4zMTk5MzldIHgyOTogZmZmZjgwMDAwOWQyM2NjMCB4Mjg6
+IDAwMDAwMDAwMDAwMDAwMDAgeDI3OiAwMDAwMDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NDFdIHgy
+NjogZmZmZjgwMDAwOTE3NzAwMCB4MjU6IGRlYWQwMDAwMDAwMDAxMDAgeDI0OiBkZWFkMDAwMDAw
+MDAwMTIyClsgICAgOS4zMTk5NDJdIHgyMzogZmZmZjgwMDAwOWQyM2QwOCB4MjI6IGZmZmYwMDAw
+MGY3MzIwMDggeDIxOiBmZmZmMDAwMDRmZGM0YjcyClsgICAgOS4zMTk5NDNdIHgyMDogZmZmZjAw
+MDAxMmY2OTAwMCB4MTk6IGZmZmYwMDAwNGZkYzQ4MTggeDE4OiBmZmZmMDAwMDFiMDYwZGIwClsg
+ICAgOS4zMTk5NDRdIHgxNzogMDAwMDAwMDAwMDAwMDAwMCB4MTY6IDAwMDAwMDAwMDAwMDAwMDAg
+eDE1OiBmZmZjMDA5YjAxMDVjMDA2ClsgICAgOS4zMTk5NDZdIHgxNDogMThmZmFhMDYxOGZmYWEz
+MyB4MTM6IDAwMDAwMDAwMDAwMDAwMDAgeDEyOiBhMzNkMDExMWY0Y2MwMDAxClsgICAgOS4zMTk5
+NDddIHgxMTogMDAwMGZmZmEwMDAwMDAyZiB4MTA6IDMyNjIwMDVlNDM0MjAwMDAgeDkgOiAwMDAw
+MDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NDhdIHg4IDogZmZmZjAwMDAxNjdlODA0YyB4NyA6IDAw
+MDAwMDAwMDAwMDAwMDAgeDYgOiAwMDAwMDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NDldIHg1IDog
+ZmZmZjgwMDAwODg5MjA2OCB4NCA6IGU5YmU4MDAwMDg4OTIwNjggeDMgOiBmZmZmMDAwM2RhY2I5
+MTA1ClsgICAgOS4zMTk5NTBdIHgyIDogMDAwMDAwMDAwMDAwMDAwMCB4MSA6IGZmZmYwMDAwMDFm
+MWNhMDAgeDAgOiAwMDAwMDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NTFdIENhbGwgdHJhY2U6Clsg
+ICAgOS4zMTk5NTJdICBfX2NmZzgwMjExX2Nvbm5lY3RfcmVzdWx0KzB4MmZjLzB4NWMwIFtjZmc4
+MDIxMV0KWyAgICA5LjMxOTk2MF0gIGNmZzgwMjExX3Byb2Nlc3Nfd2Rldl9ldmVudHMrMHgxNDAv
+MHgxODAgW2NmZzgwMjExXQpbICAgIDkuMzE5OTY4XSAgY2ZnODAyMTFfcHJvY2Vzc19yZGV2X2V2
+ZW50cysweDMwLzB4NTAgW2NmZzgwMjExXQpbICAgIDkuMzE5OTc1XSAgY2ZnODAyMTFfZXZlbnRf
+d29yaysweDI4LzB4NDAgW2NmZzgwMjExXQpbICAgIDkuMzE5OTgzXSAgcHJvY2Vzc19vbmVfd29y
+aysweDFkNC8weDMzYwpbICAgIDkuMzE5OTg3XSAgd29ya2VyX3RocmVhZCsweDZjLzB4NDMwClsg
+ICAgOS4zMTk5ODhdICBrdGhyZWFkKzB4ZTQvMHhmMApbICAgIDkuMzE5OTkwXSAgcmV0X2Zyb21f
+Zm9yaysweDEwLzB4MjAKWyAgICA5LjMxOTk5MV0gLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAw
+MDAwMCBdLS0tClsgICAgOS4zMjA5ODZdIElQdjY6IEFERFJDT05GKE5FVERFVl9DSEFOR0UpOiB3
+bHAxczBmMDogbGluayBiZWNvbWVzIHJlYWR5ClsgICAxMC4yNjMwMDRdIHJma2lsbDogaW5wdXQg
+aGFuZGxlciBkaXNhYmxlZApbICAgMTQuNjEwODQ2XSBzeXN0ZW1kLWpvdXJuYWxkWzU2MV06IFRp
+bWUganVtcGVkIGJhY2t3YXJkcywgcm90YXRpbmcuCg==
+--0000000000005f466805e562a0cf--
