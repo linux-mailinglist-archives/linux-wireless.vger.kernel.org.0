@@ -2,186 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C375896D5
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 06:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E878F58979E
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 08:07:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237347AbiHDER3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Aug 2022 00:17:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57326 "EHLO
+        id S231463AbiHDGH2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Aug 2022 02:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbiHDER2 (ORCPT
+        with ESMTP id S229538AbiHDGH1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Aug 2022 00:17:28 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC653C142
-        for <linux-wireless@vger.kernel.org>; Wed,  3 Aug 2022 21:17:26 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id f22so12800291edc.7
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Aug 2022 21:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=4mHygLe4KsW6UUzeqoymi1F4W/THMx9/uJZ7a897Fp8=;
-        b=cy1AtVBWN0pdaq+LGKPf0QBumg7rpxIEz/njl4j/pXRRZ5Coh6CyF4SaVlR2qsfakO
-         Hl9OWQWkUdCHn19C3E9U//kC7Ik6iMRzNo6ciNyWmFbf1LuWmyztnBVfibzRZZkJvYO3
-         0M3Eyr2M5GoJmNarlwfYpuLli0sA1Yb37ukjE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=4mHygLe4KsW6UUzeqoymi1F4W/THMx9/uJZ7a897Fp8=;
-        b=R0koyClUKBbJiFx5fx1y/awIRNGeR109nhGOpQMQ0pPEaiHyFEY8IRBiQ0W7ouzemN
-         0xtsYyyFbho0Kf+GIvBTgWWfRi72wpoD1v4xT4BeZt5knyotuSQ3QJ7MxVKwGckep8Ho
-         axduAddStS0Q7YtrkIv+kAuZhO+ZKmGaOgs4ZbI6ZDzZP4dhjfK/IhBugUwBfG7MBb7v
-         7+X4OoyyQ0aumHhvYPjjWujH5nbEzm9r2/r05MC/7ljVDO7FdQSF1s7xPJPdEm34PoKR
-         DPdlEBgdYg1lif/ii086zDOynCccCrg5urJXKawxIPzf7H++1ZPLjnlTDBBfTKOAFbhi
-         IL7g==
-X-Gm-Message-State: ACgBeo3TMeL0X6pvqgeCVfBku90780yGvXf4l/0qJlpU5CraAdJ4H1im
-        xHUuFmmvU9RsCKGwyrp52BizYBbsHmbnOhWn
-X-Google-Smtp-Source: AA6agR42GL7rM1LZO8Ab6MBi+L8XB0yPjln6LkVRL+bLezyCl4Ii3vDg/el00ohhTj7ONXNqqDYgMw==
-X-Received: by 2002:a05:6402:2788:b0:43a:e0aa:97f4 with SMTP id b8-20020a056402278800b0043ae0aa97f4mr14166ede.329.1659586645268;
-        Wed, 03 Aug 2022 21:17:25 -0700 (PDT)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com. [209.85.221.49])
-        by smtp.gmail.com with ESMTPSA id f5-20020a170906c08500b0072b36cbcdaasm7955773ejz.92.2022.08.03.21.17.24
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Aug 2022 21:17:24 -0700 (PDT)
-Received: by mail-wr1-f49.google.com with SMTP id l4so23808787wrm.13
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Aug 2022 21:17:24 -0700 (PDT)
-X-Received: by 2002:adf:edcb:0:b0:21e:d043:d271 with SMTP id
- v11-20020adfedcb000000b0021ed043d271mr32376wro.274.1659586643687; Wed, 03 Aug
- 2022 21:17:23 -0700 (PDT)
+        Thu, 4 Aug 2022 02:07:27 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23EFB6068E
+        for <linux-wireless@vger.kernel.org>; Wed,  3 Aug 2022 23:07:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 2DCE4CE2544
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 06:07:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDBCC433D7;
+        Thu,  4 Aug 2022 06:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659593241;
+        bh=qD4WESCBpdKVJwtb6NvKw/sL7Gg1CFWcsifaEdp2uUI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=C7Zyh4SBS0UXSRciLF+MHsN57ykfujucy18TAQE8lYrvXsdbQwcylxzbcsM9X04Jv
+         /fTDriYcjqEVz+79SyW9w6xgnkJfi3sWn10lcXmrMYst0v8178GZeTqQTDoqCfTjhx
+         hC4mvLMIgUJWSK2vTpr2sI+ORqUCcvdX6QKIXgFjf5o4aHrsOtsoqjErZXFZ8xu7eE
+         NCrSa+KlevgGi7/fgM/QP5DAaIPGdBYdUhA4xwc63dka8wr4izoFhL34pg2NP11O5Z
+         FDQTeyUAoS+oubTlUGM16dfgUuwJnff1S+MRoi3ZKwp2fxP06hQFP3+d2aEp41DvIN
+         afkFx6lBlLsVw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     <sean.wang@mediatek.com>
+Cc:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <kuabhs@google.com>, <druth@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] mt76: mt7921: apply the previous MCU timeout
+References: <b0dfe8afc5cf88ab9a6d54c88fba4a29631c125a.1659571732.git.objelf@gmail.com>
+Date:   Thu, 04 Aug 2022 09:07:14 +0300
+In-Reply-To: <b0dfe8afc5cf88ab9a6d54c88fba4a29631c125a.1659571732.git.objelf@gmail.com>
+        (sean wang's message of "Thu, 4 Aug 2022 08:26:31 +0800")
+Message-ID: <87v8r8ilt9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20220803101438.24327-1-pabeni@redhat.com>
-In-Reply-To: <20220803101438.24327-1-pabeni@redhat.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 3 Aug 2022 21:17:07 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjhSSHM+ESVnchxazGx4Vi0fEfmHpwYxE45JZDSC8SUAQ@mail.gmail.com>
-Message-ID: <CAHk-=wjhSSHM+ESVnchxazGx4Vi0fEfmHpwYxE45JZDSC8SUAQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Networking for 6.0
-To:     Paolo Abeni <pabeni@redhat.com>,
-        Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="0000000000005f466805e562a0cf"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000005f466805e562a0cf
-Content-Type: text/plain; charset="UTF-8"
+<sean.wang@mediatek.com> writes:
 
-Hmm. Another issue with the networking pull..
-
-On Wed, Aug 3, 2022 at 3:15 AM Paolo Abeni <pabeni@redhat.com> wrote:
+> From: Sean Wang <sean.wang@mediatek.com>
 >
->   git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git tags/net-next-6.0
+> Apply back the previous MCU timeout that can trigger the chip reset to
+> recover the fatal error in time.
 >
-> Veerendranath Jakkam (5):
->       cfg80211: Indicate MLO connection info in connect and roam callbacks
+> Fixes: 8fcd1fb7cbd5 ("mt76: move mt76_connac2_mcu_fill_message in
+>  mt76_connac module")
 
-This one added a
+Fixes tag in one line, please.
 
-                for_each_valid_link(cr, link) {
-                        if (WARN_ON_ONCE(!cr->links[link].bss))
-                                break;
-                }
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-in net/wireless/sme.c, and it seems to trigger on my brand new M2 Macbook Air.
-
-Wireless still works fine (I'm writing this report on the machine),
-but you get a scary splat:
-
-  WARNING: CPU: 5 PID: 514 at net/wireless/sme.c:786
-__cfg80211_connect_result+0x2fc/0x5c0 [cfg80211]
-
-full call trace etc in the attachment.
-
-               Linus
-
---0000000000005f466805e562a0cf
-Content-Type: application/octet-stream; name=out
-Content-Disposition: attachment; filename=out
-Content-Transfer-Encoding: base64
-Content-ID: <f_l6eizc1r0>
-X-Attachment-Id: f_l6eizc1r0
-
-ClsgICAgMy4wNDU1OTBdIGJyY21mbWFjOiBicmNtZl9jX3Byb2Nlc3NfdHhjYXBfYmxvYjogVHhD
-YXAgYmxvYiBmb3VuZCwgbG9hZGluZwpbICAgIDMuMDQ5NDg2XSBicmNtZm1hYzogYnJjbWZfY19w
-cm9jZXNzX2NhbF9ibG9iOiBDYWxpYnJhdGlvbiBibG9iIHByb3ZpZGVkIGJ5IHBsYXRmb3JtLCBs
-b2FkaW5nClsgICAgMy4wNjIyOTNdIGJyY21mbWFjOiBicmNtZl9jX3ByZWluaXRfZGNtZHM6IEZp
-cm13YXJlOiBCQ000Mzg3Lzcgd2wwOiBBcHIgIDYgMjAyMiAwNTo1NTo1NCB2ZXJzaW9uIDIwLjkw
-LjQ1LjAuOC43LjExOCBGV0lEIDAxLWU3MTM4ZmYyClsgICAgMy4wOTQzMzldIGJyY21mbWFjIDAw
-MDA6MDE6MDAuMCB3bHAxczBmMDogcmVuYW1lZCBmcm9tIHdsYW4wClsgICAgMy43NzI3NDldIGll
-ZWU4MDIxMSBwaHkwOiBicmNtZl9wMnBfc2V0X2Zpcm13YXJlOiBmYWlsZWQgdG8gdXBkYXRlIGRl
-dmljZSBhZGRyZXNzIHJldCAtNTIKWyAgICAzLjc3Mzg3OF0gaWVlZTgwMjExIHBoeTA6IGJyY21m
-X3AycF9jcmVhdGVfcDJwZGV2OiBzZXQgcDJwX2Rpc2MgZXJyb3IKWyAgICAzLjc3Mzg4Nl0gaWVl
-ZTgwMjExIHBoeTA6IGJyY21mX2NmZzgwMjExX2FkZF9pZmFjZTogYWRkIGlmYWNlIHAycC1kZXYt
-d2xwMXMwZiB0eXBlIDEwIGZhaWxlZDogZXJyPS01MgpbICAgIDUuMzc4NjE0XSByZmtpbGw6IGlu
-cHV0IGhhbmRsZXIgZGlzYWJsZWQKWyAgICA1Ljc5NjI3NV0gQmx1ZXRvb3RoOiBSRkNPTU0gVFRZ
-IGxheWVyIGluaXRpYWxpemVkClsgICAgNS43OTYyODFdIEJsdWV0b290aDogUkZDT01NIHNvY2tl
-dCBsYXllciBpbml0aWFsaXplZApbICAgIDUuNzk2Mjg0XSBCbHVldG9vdGg6IFJGQ09NTSB2ZXIg
-MS4xMQpbICAgIDguNzgzNTI0XSByZmtpbGw6IGlucHV0IGhhbmRsZXIgZW5hYmxlZApbICAgIDku
-MzE5ODY3XSAtLS0tLS0tLS0tLS1bIGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0KWyAgICA5LjMxOTg3
-MV0gV0FSTklORzogQ1BVOiA1IFBJRDogNTE0IGF0IG5ldC93aXJlbGVzcy9zbWUuYzo3ODYgX19j
-Zmc4MDIxMV9jb25uZWN0X3Jlc3VsdCsweDJmYy8weDVjMCBbY2ZnODAyMTFdClsgICAgOS4zMTk4
-ODZdIE1vZHVsZXMgbGlua2VkIGluOiBzbmRfc2VxX2R1bW15IHNuZF9ocnRpbWVyIHNuZF9zZXEg
-c25kX3NlcV9kZXZpY2UgcmZjb21tIG5mdF9maWJfaW5ldCBuZnRfZmliX2lwdjQgbmZ0X2ZpYl9p
-cHY2IG5mdF9maWIgbmZ0X3JlamVjdF9pbmV0IG5mX3JlamVjdF9pcHY2IG5mdF9yZWplY3QgbmZ0
-X2N0IG5mdF9jaGFpbl9uYXQgbmZfbmF0IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9k
-ZWZyYWdfaXB2NCBpcF9zZXQgbmZfdGFibGVzIG5mbmV0bGluayBxcnRyIGJuZXAgam95ZGV2IGhp
-ZF9tYWdpY21vdXNlIGhjaV9iY200Mzc3IGJyY21mbWFjIGJyY211dGlsIGJsdWV0b290aCBjZmc4
-MDIxMSBlY2RoX2dlbmVyaWMgZWNjIHJma2lsbCBtYWNzbWNfaGlkIGhpZF9hcHBsZSBzbmRfc29j
-X3RhczI3NjQgYXBwbGVfc29jX2NwdWZyZXEgc25kX3NvY19hcHBsZV9tY2Egc25kX3NvY19hcHBs
-ZV9zaWxpY29uIHNuZF9zb2Nfc2ltcGxlX2NhcmRfdXRpbHMgenJhbSB4aGNpX3BsYXRfaGNkIHho
-Y2lfaGNkIG52bWVtX3NwbWlfbWZkIG1hY3NtY19wb3dlciBydGNfbWFjc21jIG1hY3NtY19yZWJv
-b3QgZG9ja2NoYW5uZWxfaGlkIHNpbXBsZV9tZmRfc3BtaSByZWdtYXBfc3BtaSB0cHM2NTk4eCB0
-eXBlYyBwY2llX2FwcGxlIGR3YzMgcGNpX2hvc3RfY29tbW9uIG52bWVfYXBwbGUgYXBwbGVfZG9j
-a2NoYW5uZWwgYXBwbGVfc2FydCB1ZGNfY29yZSBhcHBsZV9tYWlsYm94IHNwbWlfYXBwbGVfY29u
-dHJvbGxlciBwaW5jdHJsX2FwcGxlX2dwaW8gY2xrX2FwcGxlX25jbyBhcHBsZV9hZG1hYyBhcHBs
-ZV9kYXJ0IGkyY19hcHBsZSBidHJmcyByYWlkNl9wcSB6c3RkX2NvbXByZXNzIGlwNl90YWJsZXMg
-cGtjczhfa2V5X3BhcnNlciBmdXNlClsgICAgOS4zMTk5MDldIENQVTogNSBQSUQ6IDUxNCBDb21t
-OiBrd29ya2VyL3UxNjo4IFRhaW50ZWQ6IEcgUyAgICAgIFcgICAgICAgICAgNi4wLjAtcmMwLTA3
-NDYzLWc4MmY1NGVkZjdhNDkgIzE1ClsgICAgOS4zMTk5MTFdIEhhcmR3YXJlIG5hbWU6IEFwcGxl
-IE1hY0Jvb2sgQWlyICgxMy1pbmNoLCBNMiwgMjAyMikgKERUKQpbICAgIDkuMzE5OTExXSBXb3Jr
-cXVldWU6IGNmZzgwMjExIGNmZzgwMjExX2V2ZW50X3dvcmsgW2NmZzgwMjExXQpbICAgIDkuMzE5
-OTIxXSBwc3RhdGU6IDAwNDAwMDA5IChuemN2IGRhaWYgK1BBTiAtVUFPIC1UQ08gLURJVCAtU1NC
-UyBCVFlQRT0tLSkKWyAgICA5LjMxOTkyM10gcGMgOiBfX2NmZzgwMjExX2Nvbm5lY3RfcmVzdWx0
-KzB4MmZjLzB4NWMwIFtjZmc4MDIxMV0KWyAgICA5LjMxOTkzMV0gbHIgOiBfX2NmZzgwMjExX2Nv
-bm5lY3RfcmVzdWx0KzB4MmU0LzB4NWMwIFtjZmc4MDIxMV0KWyAgICA5LjMxOTkzOV0gc3AgOiBm
-ZmZmODAwMDA5ZDIzY2MwClsgICAgOS4zMTk5MzldIHgyOTogZmZmZjgwMDAwOWQyM2NjMCB4Mjg6
-IDAwMDAwMDAwMDAwMDAwMDAgeDI3OiAwMDAwMDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NDFdIHgy
-NjogZmZmZjgwMDAwOTE3NzAwMCB4MjU6IGRlYWQwMDAwMDAwMDAxMDAgeDI0OiBkZWFkMDAwMDAw
-MDAwMTIyClsgICAgOS4zMTk5NDJdIHgyMzogZmZmZjgwMDAwOWQyM2QwOCB4MjI6IGZmZmYwMDAw
-MGY3MzIwMDggeDIxOiBmZmZmMDAwMDRmZGM0YjcyClsgICAgOS4zMTk5NDNdIHgyMDogZmZmZjAw
-MDAxMmY2OTAwMCB4MTk6IGZmZmYwMDAwNGZkYzQ4MTggeDE4OiBmZmZmMDAwMDFiMDYwZGIwClsg
-ICAgOS4zMTk5NDRdIHgxNzogMDAwMDAwMDAwMDAwMDAwMCB4MTY6IDAwMDAwMDAwMDAwMDAwMDAg
-eDE1OiBmZmZjMDA5YjAxMDVjMDA2ClsgICAgOS4zMTk5NDZdIHgxNDogMThmZmFhMDYxOGZmYWEz
-MyB4MTM6IDAwMDAwMDAwMDAwMDAwMDAgeDEyOiBhMzNkMDExMWY0Y2MwMDAxClsgICAgOS4zMTk5
-NDddIHgxMTogMDAwMGZmZmEwMDAwMDAyZiB4MTA6IDMyNjIwMDVlNDM0MjAwMDAgeDkgOiAwMDAw
-MDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NDhdIHg4IDogZmZmZjAwMDAxNjdlODA0YyB4NyA6IDAw
-MDAwMDAwMDAwMDAwMDAgeDYgOiAwMDAwMDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NDldIHg1IDog
-ZmZmZjgwMDAwODg5MjA2OCB4NCA6IGU5YmU4MDAwMDg4OTIwNjggeDMgOiBmZmZmMDAwM2RhY2I5
-MTA1ClsgICAgOS4zMTk5NTBdIHgyIDogMDAwMDAwMDAwMDAwMDAwMCB4MSA6IGZmZmYwMDAwMDFm
-MWNhMDAgeDAgOiAwMDAwMDAwMDAwMDAwMDAwClsgICAgOS4zMTk5NTFdIENhbGwgdHJhY2U6Clsg
-ICAgOS4zMTk5NTJdICBfX2NmZzgwMjExX2Nvbm5lY3RfcmVzdWx0KzB4MmZjLzB4NWMwIFtjZmc4
-MDIxMV0KWyAgICA5LjMxOTk2MF0gIGNmZzgwMjExX3Byb2Nlc3Nfd2Rldl9ldmVudHMrMHgxNDAv
-MHgxODAgW2NmZzgwMjExXQpbICAgIDkuMzE5OTY4XSAgY2ZnODAyMTFfcHJvY2Vzc19yZGV2X2V2
-ZW50cysweDMwLzB4NTAgW2NmZzgwMjExXQpbICAgIDkuMzE5OTc1XSAgY2ZnODAyMTFfZXZlbnRf
-d29yaysweDI4LzB4NDAgW2NmZzgwMjExXQpbICAgIDkuMzE5OTgzXSAgcHJvY2Vzc19vbmVfd29y
-aysweDFkNC8weDMzYwpbICAgIDkuMzE5OTg3XSAgd29ya2VyX3RocmVhZCsweDZjLzB4NDMwClsg
-ICAgOS4zMTk5ODhdICBrdGhyZWFkKzB4ZTQvMHhmMApbICAgIDkuMzE5OTkwXSAgcmV0X2Zyb21f
-Zm9yaysweDEwLzB4MjAKWyAgICA5LjMxOTk5MV0gLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAw
-MDAwMCBdLS0tClsgICAgOS4zMjA5ODZdIElQdjY6IEFERFJDT05GKE5FVERFVl9DSEFOR0UpOiB3
-bHAxczBmMDogbGluayBiZWNvbWVzIHJlYWR5ClsgICAxMC4yNjMwMDRdIHJma2lsbDogaW5wdXQg
-aGFuZGxlciBkaXNhYmxlZApbICAgMTQuNjEwODQ2XSBzeXN0ZW1kLWpvdXJuYWxkWzU2MV06IFRp
-bWUganVtcGVkIGJhY2t3YXJkcywgcm90YXRpbmcuCg==
---0000000000005f466805e562a0cf--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
