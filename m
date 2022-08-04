@@ -2,52 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DE758A045
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 20:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E3958A051
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 20:13:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238488AbiHDSJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Aug 2022 14:09:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        id S239889AbiHDSNr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Aug 2022 14:13:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239846AbiHDSJH (ORCPT
+        with ESMTP id S232643AbiHDSNp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Aug 2022 14:09:07 -0400
+        Thu, 4 Aug 2022 14:13:45 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCCD6BD7A
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 11:09:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55EB751A0E
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 11:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1659636545; x=1691172545;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=BPLKIjk9Xz5ipuZH8emEinB08gm9Lq6XH9SLM+7oV8E=;
-  b=Zfeb6+AOn5yFA8h65NYQ9LV/erQhWiJ/U7MuLHjuA4nOU13fJrON1T3/
-   2NdaPlyVW3uIrgj3JgWLVGMmB7u3wBpmioNHylYHOxXYaLu6tflXsxmbU
-   9eA5FG4d5ddxiAcRAyaYiBUo+mHMDBlViO2bXR/6rV54k+EZzBUbhl0ZK
-   tLg64ZMNpCLbYnPeJsqyh78QayOwVfR7/vB/38pN8YsdeD0PPGDjfbOi+
-   ItCmGtH31NXJnjAAaFjRWWam6wEct/cbM1QAe5S0GPglyS7bpfpN4ZGwB
-   fdsmBRwAySSmop7/WeVHtYA4I7o8ohVyhy1NJiKpqx/v0l59533lR1MnV
-   w==;
+  t=1659636824; x=1691172824;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=r6XJ0SeY6rxCDySXDY40Q1mXMhU3k9jnDRpXHUTtN+E=;
+  b=xAQ+1Zm6tF2RMryAKXAF6n2fgPSutS88EBfDKSDKJV9vCyBOINtDP9aY
+   keE0FNyCK8fnZq7fvmRiiplzAPOWW0m8NvB1LoK3/r5572Seqj2+vcx+y
+   UcVjEnWrTvSblqCa/NqKuKcWKrtHuQzpIU+jBMqMCHLW87CcA0M/RF209
+   OTu/R8zRlO8SEbzAD9/IKzkSXyrwLpmhTgHqA72e+d++sDe1v8vsveNt6
+   CsnzrB2NQqY8Ss5JdMh+206w7rgOE9wCMfLnC7ovBoiXqSIYW0o9deQ8Z
+   /zVnGzrNszKI9lEB0XGvdBcb2tgjjmmgiuh+hvjHJknKhh8iIqAkx634U
+   A==;
 X-IronPort-AV: E=Sophos;i="5.93,216,1654585200"; 
-   d="scan'208";a="175124089"
+   d="scan'208";a="185153282"
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 04 Aug 2022 11:09:04 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 04 Aug 2022 11:13:43 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 4 Aug 2022 11:09:04 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ 15.1.2375.28; Thu, 4 Aug 2022 11:13:43 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (10.10.215.89) by
  email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17 via Frontend
- Transport; Thu, 4 Aug 2022 11:09:04 -0700
+ Transport; Thu, 4 Aug 2022 11:13:43 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yej9EeO0vSZOd9g+iVaFBsugr2Bs+IPoyIGpx9bn7CEbTURBGAX6U49778h4NUr8yiNg67RGIO7sU4vM32AqwfsoNVsbXFPYKZM4DikhR/Hl6/34v2Gk6fvtpR8JroOXuxZ9KK6KS+4yuFU+va8KE8yid6wBX+Ll88oU+SaF2zC6mpew0mR81m2ccrPvDKLbA9cycrA7IwEyGicKEYKASM2mQVTaqQCKO+KrifR32WK2F/+TNQ/xZOmX/uAcEuNF5lycdLt3vEd4YuPqyjQaJUF8gSOhUJfLEXaoRG3lLUZF6EyBOKI11me4LDVvt7sEV1YMdCEHgiOJ3myTqrFgBg==
+ b=AFYRhLrFfNXST2ujcEUpn+0H6t+UtxEdESy0jXK4s8D/Ak8ghTDFUH2ZUFB/qICDLnE4q70TO5URcya4WzVEXIOA0X6ZIg7IrgPxlZnvPm74YEe6BoPuMZhbCfxEuYmuw7LH4l6VpzWpQiy2lVwKBj9wQoa2Wb4IkhDS7ONFNHW+fQEgxbCGRDu7fxlCn/jd38pzoiuxtj3pdQmB+1IyzoaYyYWrkWRBhsqop5MPjK9CEzMdqHD0GaJO+FPnICSD9JzmnYDjrKQmhDkCeAvtIW8qzhHr/iuLhy/LSNo0vhYv5F6AbACdd3PrTgLB/BF7peohKrDqyBLdEQT/ue5lzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BPLKIjk9Xz5ipuZH8emEinB08gm9Lq6XH9SLM+7oV8E=;
- b=kK9hTOvLXpTJsCDFb4NZ1bAeOuSsnfmrYGjs6ZnegV3bCVBu8iYHCZfhGLZ1434bH0pxE4syxhQIkQKXV2PcIOtwFD6+Bov/6g3cs2o5L/RsV4i5P01dcOJNYu7KXyd+V0VSQVwDsmplHDZqTSAnJcP72KwBVq5IHdpi6MP3goMg98E6fNt0u7rX3QMRJn33Y3x9KfLYTpsUEjyhIwb38t+Vu4L4lBFebzUKznn1KW4WzwXgCEXgpwQjelmkn3v7+JNPiy5kjpRxGJU0jn0rDdRLWDNal1Wr2iWTygSd1wlL3J0MI+Khv57rRoQcv7geIDQfbG2GjgiJDNyl7f8bLw==
+ bh=M8vKX4bKf4Xn79o0+G+M/R6eq68flbGtKlrQm1FVjN8=;
+ b=Gcz3eXuFNJBbFb8maEoeBqhG4QuVnfklqdO+EI8O44B1/iDGu8ppgClu1pxKrYumxX3tapkriGnP1uPdcNCJktjO6umyqhSOZWSWowdIufy7Bk+3KtchaDmIALY/8DApZBZRv1ITWrSuLQKBMf+ja+OSDkKQj0vyDlzxh8nzAc1jmNvu9SY+W6WQIldSt/WbT6fg9Xc3MiFz4dSVUHAV/WeaHt3mqgwC3Ml2jaEEIovEkZ2jfFOUvnB8fHtCTGIFtrEs8wlCBR7grTKsIQ2Xf/O7zFFD9QPSVxic4QWm5S+vAdiEv1LYikPCOP/TA0f+qlfWCiB5ja/7Lx0g0/2dVg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -55,187 +54,309 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BPLKIjk9Xz5ipuZH8emEinB08gm9Lq6XH9SLM+7oV8E=;
- b=fFiqK2Pegvm5yTQdB+Wb5wCpWaA9kRGYg+lIs0f9EMcAnLq8gkoVckyzITkhArNrk3Jc6+9gdcup2X1Ho6hyoXNec1HKwz7f3PUq5SugFXel6j3z3cRQbD7kfGJjLJYs2xSAD6gvWs9cp7GVdCPKhBkQ25SFkq6PNoBy9lkvwJM=
+ bh=M8vKX4bKf4Xn79o0+G+M/R6eq68flbGtKlrQm1FVjN8=;
+ b=W9bBZnXfj454SxzSyG1DyjbKFHQasLqS0D35ksmos0b6ShSZsNVVVVE4C+iJWWvEr/dRTK1SaYfEJZVk/mLdoztoVJTXrp8oH1RVuv4XpW9oWj5Q3ycH9x/HEptsIMVLlrC7k31HL1gJc8HpMEg5+LQAvVQXCIslSJRe3oVRwBo=
 Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
- by CY4PR11MB1767.namprd11.prod.outlook.com (2603:10b6:903:11f::20) with
+ by SA2PR11MB5211.namprd11.prod.outlook.com (2603:10b6:806:fb::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5482.15; Thu, 4 Aug
- 2022 18:09:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.14; Thu, 4 Aug
+ 2022 18:13:42 +0000
 Received: from PH0PR11MB5176.namprd11.prod.outlook.com
  ([fe80::8d74:5951:571e:531e]) by PH0PR11MB5176.namprd11.prod.outlook.com
  ([fe80::8d74:5951:571e:531e%9]) with mapi id 15.20.5504.015; Thu, 4 Aug 2022
- 18:08:59 +0000
+ 18:13:42 +0000
 From:   <Ajay.Kathat@microchip.com>
-To:     <michael@walle.cc>
-CC:     <linux-wireless@vger.kernel.org>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>, <mwalle@kernel.org>
-Subject: Re: [PATCH] wifi: wilc1000: fix DMA on stack objects
-Thread-Topic: [PATCH] wifi: wilc1000: fix DMA on stack objects
-Thread-Index: AQHYqAS2buySm8vdCEW3DEuKM8hVrq2ey/cAgAA+iYA=
-Date:   Thu, 4 Aug 2022 18:08:59 +0000
-Message-ID: <f1a81362-78a6-f4b9-e728-835755262077@microchip.com>
-References: <20220804131837.336769-1-ajay.kathat@microchip.com>
- <f25d53c4fe90b2ef153a721bd225f8db@walle.cc>
-In-Reply-To: <f25d53c4fe90b2ef153a721bd225f8db@walle.cc>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
+        <mwalle@kernel.org>, <Ajay.Kathat@microchip.com>
+Subject: [PATCH v2] wifi: wilc1000: fix DMA on stack objects
+Thread-Topic: [PATCH v2] wifi: wilc1000: fix DMA on stack objects
+Thread-Index: AQHYqC3tsnzfAAD+gEWLNR85ROYhfw==
+Date:   Thu, 4 Aug 2022 18:13:42 +0000
+Message-ID: <20220804181340.365429-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
+x-mailer: git-send-email 2.34.1
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=microchip.com;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6372289a-87f0-4c89-103a-08da764467de
-x-ms-traffictypediagnostic: CY4PR11MB1767:EE_
+x-ms-office365-filtering-correlation-id: 8d843c9d-dfff-4e4f-7992-08da7645100f
+x-ms-traffictypediagnostic: SA2PR11MB5211:EE_
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: kvF0CnxA9r4+Obiboi+XYif4fwYkIKEL7dcOB9vXNK1DeTMi1yyvKeZSEfPJCmT9r9Ehz6zh7kb0AQ205CPdJZ0qDCDR+hW3xUOH7INfRX4e/xD7GKJSfUlKG8DmFZ6RetUEvoeu2ZJGEPJxpKZQh2vCF3a0SGRsUVKjo012+xsMNkbrxvgiwDK7VhBNqL54zICZ3Qm2IXcbEQXUqwM80gBDMCoj4NAeUNCMwmTcTQ3V940hj2IaifXTG2xOZn2amBJpMPaiOvQcsjznXMKaVp/hoFEr9Wj4tVNrhZZ3sp5BPDqFo8NP0+6fv/x+4ncmSzrbagPDDN8hrUNAQJGirKLnr420Di9jMheuDO5Houfhb2DbMpFnaRko5HZk5ai10hB0xxb793Xeo26YKd8om5WKrdXk6zMijSCN/01gd6Yvos1M7XMoGL09aRYV5Vbf9dgezAy/WdZ/797tKRDYhhXVwxMs7yy7e4VxtQ02TOwCHeZrBGFfhvj57xIbKUPaNvebn/+bpO11LxGkiMoZtK/qMTLld8bYP9e8nNUoYH0FdpB7s+uoskAr4K7o/pLNvpmY8Y/iMWYonv5/6zGRpFQrrHPAzZ5Ho1zEjLk1g0nFbiWE+NPKhY9AZASFIuURkB2Le44BFz15qod2Ia5UEo/iXzynhJ02rC0jhEPVzg3rXLEl2T/g5xTtomrjd1OrL4ocZzw8oPtkzLNYlft9mC9FKviyZqPjTu6lWYx0iYcSgieML1RR8qkZrXjQpbakRehwIufpDdeywwDs82GDQLv/UfabkwHF70ZOflSFdjqaktBgm5k0XdhQYG4jyIVQl6Cl9p5hBdAUB+81WzlzjFrEpmdGgMw7fkPx6CNrT5lY9RywVrNzYT7VtPW8DX2j2OmLK8Duem5VD+gZ4zZcLQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(136003)(39860400002)(376002)(396003)(346002)(122000001)(186003)(38100700002)(2616005)(6506007)(26005)(36756003)(31686004)(6512007)(41300700001)(55236004)(53546011)(38070700005)(2906002)(83380400001)(6916009)(54906003)(4326008)(66476007)(8936002)(66556008)(966005)(316002)(71200400001)(8676002)(76116006)(86362001)(6486002)(31696002)(66946007)(5660300002)(478600001)(66446008)(64756008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: e69t3laD3zdJ/96CQh/6DHwyyLYxQF8X1UfabvyOYcaqL6iaN9JPhhQP+FYGjKaprROta7wkSquIb6OhwtfphyjRnAyReNbav34LYJhHXmol/z9srP1FiGyVVQ6bULnq5OAtla9qei7pZhj8JaukIVEI0bHwM+0agIrdr6O/WBFhZWsAC17a85gB9CeSbKNWy7tJ+q7yTLQceOIyansfJXXqgWWXW9+JqfiRC9imD2Ecno0JkFwinxm5plwI9pp66SEXDbDxFmrhtcUQon6+EbECuwRufwIo4zVCbAYImhZp3Ag3KwcuGszeOlIfopUiXC2f3kAKfsuDqT/JlhQdfB52PLT6cgv2mr/LUrSmknsb/JjAnb+LbB3vFrc6gpTUxDwUYHR/oBQLxJ2fj1umDLN+TVyuA3ASemqFPzyqNrCaCllKUub189GnImSvhp3NFdXll8xnkC+uQYQilI9v1fhqFm17MIw+lm3TqmWn+H7PteC/2PNPqzIE2aJfJ/sUoy8t7q4ty/Cl/Ks3vYvdOCVmr7h4lpePntnNL/eqMkeueYK8y6JIeZReHt0Xmq4dIepA4B2ks2IFZUoYG2dHvMyBuSeLbTQfzqQ0P+sTLOVZcjxyAMm/vwVjOOGqh5jzRZijWKmkOXt28Tl3uNGtmvTtpV01QBS1egj8W4QetvxB+2LDjm+1+BBMA0KaYNhom5lhBtV/II3wVAjQiXTz4PvYHzoRGQzDRLmAIg70pHlVGRFASkGhL1GwZRMsRxX5txyM3XwJ/VorQw7AdXeyQO91VgR1gll7C47RooSCqaCKtvzWKJ7vYtrariD8+tUdu3bufgDpGmwHt5x+GmuNTg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(136003)(39860400002)(346002)(376002)(396003)(6916009)(36756003)(41300700001)(4326008)(66446008)(91956017)(8676002)(54906003)(66476007)(66556008)(66946007)(76116006)(64756008)(71200400001)(966005)(478600001)(86362001)(6486002)(26005)(55236004)(6506007)(8936002)(6512007)(5660300002)(1076003)(107886003)(2616005)(83380400001)(186003)(38100700002)(2906002)(316002)(122000001)(38070700005);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?d0RsTmR1UnVFZ21mUzFlZitXNmJXY3A3SHJvQzhBajR1V3B6UCtUc2dHa0Ja?=
- =?utf-8?B?THUvUWNyZElGMUV2bXFoQjNNellNNy9nWDZtM0xla3ZpRWh0c0hSSXhacXYz?=
- =?utf-8?B?alNyaDdSU0g2M1FBMzlqYUlHaDh0VFRmNC9NdDd4WThPZUo5N1NjNEJkTjVr?=
- =?utf-8?B?THNRUS9pektFTzAxTTViQmtCWXBkSUw2elcwWDlCak5mTHAva3djSW92V3lZ?=
- =?utf-8?B?aHJpcW9TWmUvM3BMZUdsMUdKMkkrTkQ1eUJoRHNVdzhkQ0dEMjZxSThPYWx5?=
- =?utf-8?B?OXp2OExxbXd0VzFvS2VmUUJIL096MnpjNlFBVUNrSmJmSDJYK3pSSVo1ZDRN?=
- =?utf-8?B?WUlpV2ZzelVwNWFydmJrTExkMldGVVBMM3c5eVlCcHBPR0poS0NOS1ZUREpu?=
- =?utf-8?B?TWloYmpwMDUzY2FabEhZS3cvMlQ3MXErYk1MVis4Z2JkWXlHeEN5KzJvVFFI?=
- =?utf-8?B?NW43RmJJK2dWMHBkNTJYWjEzMHpYdmVuellHWlVpMFVmQVJTU0hKVTVuRGtH?=
- =?utf-8?B?aEsrTERiYnhvdGRqZTV3Z284a2dJRG9PZXBieUVCeXhRMzY4cVYxTkU1R2Vu?=
- =?utf-8?B?QmpWMUdLK1lidVI3UGZBemxMMjlyQkNvUkRWNnhKUVErckxtL1NtbkRYWnZB?=
- =?utf-8?B?cHBoekdRR2kweWlwZHB4clVrRFF6Qms2OGVZVXoybk1DdzBKSHh2LzRITlVB?=
- =?utf-8?B?c0U0Kzc5VmQvT2RoTVd2NFpDSFBZdUxteU1tUUJEbDM2YnZUM0xtckc2dXox?=
- =?utf-8?B?UVJITjF5K1ExTXovcnVtUG41b0hFOVBIVGlhOVN6a0YxeWVjSGh2RzZGaklD?=
- =?utf-8?B?cnhJYnVORHVDOE5EdHNkc2lVRDhZRnlDZStYbTJFeUw3M1lwUG9yaGRJQ3M3?=
- =?utf-8?B?U1BROUNXbC9xekNtQWVkOG40RlV4Wjk5Wnhmby9UV0lMbHJoVm9aUDFnank4?=
- =?utf-8?B?YTEyeVcyc2RONWZIeVFONC9BZ1N3akVMa2M1TEYyUjhnekhpSFFJUlZNV1Vr?=
- =?utf-8?B?d1RhY25ub3FzWmFiMUNUTHVhbHltRFZVZFB4QnRGRkc1Sjl2YWQ4U2xUVFhE?=
- =?utf-8?B?UkozSFBueTYxSDE4Z1p5SFFZUU5ZbmVidGljbmF6RHZjMTBuMHJIQ3N3MjRy?=
- =?utf-8?B?K0wzZEFiYStsU2lHNzlxQk9EcmhYZldaeWZnckV5M2t6QjRkcDUwZGJHOHBp?=
- =?utf-8?B?Ly9ZZTdZRnczQU9DTHdLVyt4TVZNN3I3eEZnTnY4emIvVjk2SnRBRy9XNU1i?=
- =?utf-8?B?SnhjOUFGUDFaazNaQU1OT0dERFNuRytsMklLQjBjTTEzY3ozV01td3NsQTRB?=
- =?utf-8?B?Znc1RHc1azlWc3AzTHQxZlFEa2Y1S2xxYnRkK3o3WlREMTZHZnVlQXlJSXZR?=
- =?utf-8?B?TFcxdERrWlFLTWVFQnlmZmVpOVJ0Y2xoNlRDZHBHMGNjdWlxQXBFeUhWUG9I?=
- =?utf-8?B?dmpBekVCazg0TGIvZ21CM3pUSnRuNXdyaUhrVWR1OGl3QVJ4NjdudWszTVhO?=
- =?utf-8?B?aDNybE1UMlJKWkVNNlFZNlQwZVUxSnk0YTFwSGdsUnBhMDJkdWcvdHY5bTdx?=
- =?utf-8?B?Q2FJVngweHJvb3E0ZkNENk5SaUdLdVo4ZUJDUTA2UUx3ekdCd1hjZDVhWmdz?=
- =?utf-8?B?QW00Z1dUSnZ6R1lRSGxUbElQOXUwOXlqcnkvVXpTZXhQcHR5YkUyZElZQkMy?=
- =?utf-8?B?akxoemVTbzVuU3QzZVE4V1c2eXY3REJiUUUrcjdHbEFqcURyNHh3bHBuUkJP?=
- =?utf-8?B?RjlwYThWNms0ZFNUNkVZWG9IbjRaS0x6QXJxU3p5eUNielpGbHVCZ1JrSEEv?=
- =?utf-8?B?NVlrdEY3aXVvZ2ttS2ZVOFZNQkZTZi82ZlVQL01MVHVib3J4UnpJRENjRW5R?=
- =?utf-8?B?QzlkdWxYWjUzbzhlU3V2NzhzL0tCSEtFWUZSQjcxenFmRGVXWXpMVitpSlVh?=
- =?utf-8?B?L3U5bWNtRDJ4MnZDQ0hVWllyZVpXSWJEUTI2S3F1SmN4M0tiejh3ZG0wU1pu?=
- =?utf-8?B?bzNuSCtJNDcyUEU4bGt3S0Nhd2lrQ2hpdTVwQXkxNmJLTG54djJRdGFLcHA2?=
- =?utf-8?B?ZGlUbWpDa1g0VnFKenJhN0k5M2Y3VjByM3lOd2hzNjNBOVZrT1VaR2pDdkZn?=
- =?utf-8?Q?IROvLqOkeCNZqFlyjCL4z55Bo?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A5A2360DF105934F8C52565AE283B1C4@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?W/M/ikl+A+vPrIrQAIkttEK2ENYxUy4beTIFVJyTWkI12QJhj1wqIRBcPN?=
+ =?iso-8859-1?Q?Quo79e6ArjsWuUg4ufNQp7vlrWXq+bm5COr+pIWuctAJntLfnU7N6Cc+rw?=
+ =?iso-8859-1?Q?uGtoLvrdShRNPexE+HTsbg6lqLPAXUPmmctYMpoDyC1g1fKjQ6X9NBphjQ?=
+ =?iso-8859-1?Q?UpFn5eVuGiygEFyGjxJBfhNcRM0POytagjD30Njmgu0Y+FU9W273TvqJr6?=
+ =?iso-8859-1?Q?D560P3lx389VscpH5Wk+CAYzIP3gecgs1vIHUoHV2h/yd2EyA1raMKbMe7?=
+ =?iso-8859-1?Q?yBEIjITyRGCK9VZD26aTxcUH9oJidldeq24M69sP8sWZUyb4QtjvELMw6e?=
+ =?iso-8859-1?Q?/I0Gp54FK+RwxRKSeAMNc26eXu4nr/OjD99EqE/a+CwtAvHHVIp0ufVfYE?=
+ =?iso-8859-1?Q?kYZksMEpb3XfX0LMr5fj0jvQo5ZH4QlsnqAbEPvgO/zUiBg2hTHWEBGQm8?=
+ =?iso-8859-1?Q?toLm/ayTfDGezgTCKtHPvf8VSKedghngF/9tI31++BFbzpks7aKTgIuPYN?=
+ =?iso-8859-1?Q?MEUzff2mtEATbSeq5TWll1h/D09nNGG1PYTcKSB5LRXYMks7sNR9dg8s41?=
+ =?iso-8859-1?Q?xxwqftSdCs+koIEURUjM6/lHXmfQ9afcQq7ZGmsJrD55xm/bDwc74nkzxG?=
+ =?iso-8859-1?Q?+s7BN6qTNKpXOmwjVl/vnQEFjHebB+Q/yUNIbo0L9YgP5fDJapYbI4rnBH?=
+ =?iso-8859-1?Q?AwG7ompim1c1+XfP4ssNo/BOJ3vX/xwX5rJ+3caA8eQgN/E2i9LmJOrs2t?=
+ =?iso-8859-1?Q?kM3GxBQHm9XpMr3aJDEfk4++52MO2zwG54+5/+lFUhhaHat20GznJuwefZ?=
+ =?iso-8859-1?Q?R37V8zLX2f6zGXWX3fFNBnd9yVewEN9YvKOJ0SBVb1nudb9KA6cNYIutmU?=
+ =?iso-8859-1?Q?j5hzDH/BQuYXnfctgaOXd/qTc34b37APWTzb51ntTfdDN9ROLyPVOLH+Ha?=
+ =?iso-8859-1?Q?PO8aLydxx3eyRhLDhyjSdS8dA8llrhyptTY9sNI2fyWxdpfXL96/rF5dT3?=
+ =?iso-8859-1?Q?g6Y1M99tQpRWLrCMvZVXgSLzRrQ9dVBfVEIYTZ85Dk5kiWwzDqZrWL1XWy?=
+ =?iso-8859-1?Q?4oV3MGH0W9hXBnzrxgpNBTM2wtdUpxVAkwcvbRyfiR6Vegce7XRXUZbyo+?=
+ =?iso-8859-1?Q?yDgXUyuLK1eKpJP/F0jtH82PcGpWnVZdziuigL6XTWv/5+7+cxwXD6a+Po?=
+ =?iso-8859-1?Q?E8atT2bzUtV+jKgDlna8cP+/kjKQNex9W3rv77qS2PeHQ7e0TjSidhxJu5?=
+ =?iso-8859-1?Q?xeF8rrrEIo3R7WhL15xR/tSR2iMIyMW++3QU3iySmO1rAs7fxxCillZhph?=
+ =?iso-8859-1?Q?01u45eMlBCojJTkAiaU+UuG5Zo/YfF0IPiXraAf26duTiOHi8t0vH/pzdU?=
+ =?iso-8859-1?Q?1Iv4VQ1ZRRIceUTxUInW+9PoBLq2l2EZKNnkw3ta2VTIP/NYAx6vLZeaIt?=
+ =?iso-8859-1?Q?MhDD3Mppb/k0IeAdreNhQFbporZV6hOTQU733v142lgfbvpojtJEm2N0YV?=
+ =?iso-8859-1?Q?mI9udDShS+7jF6fkNeJMBmJ6dyJuSixUZ3ggN6YyPN/iGIypLHCwPMjnva?=
+ =?iso-8859-1?Q?I2h1NpuQht/hH1zoGUSBXp9joyjOUit8vxVqtg439YRR8cWkVOPDLnnIjV?=
+ =?iso-8859-1?Q?O3Tiu+K6priIQrMN7nbfLQW0XIzJQkZ1Au5kO7n1s2ZcOIA6UV4z5FKA?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6372289a-87f0-4c89-103a-08da764467de
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Aug 2022 18:08:59.8337
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d843c9d-dfff-4e4f-7992-08da7645100f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Aug 2022 18:13:42.0460
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tP0+LJtJpIS7K+2spLZFrQngvZfZmY0sjv0IzzDS9zWuw8ily0QjwbyrHJIA2z3L+BOj5C3JITSle4KD2PDbZWyPzcNu+rpwj2eLir5DBd4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR11MB1767
+X-MS-Exchange-CrossTenant-userprincipalname: jXwf6yoSANhcWE7wUUslmIo1jwEdieQNfJuTHSfCptaByAfH6mk2BZ/C0aEqEwLAvoRNmbyCwPrQ3ghcIkYtEct97gCllJA9lDW6IzHAHRQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5211
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gMDQvMDgvMjIgMTk6NTUsIE1pY2hhZWwgV2FsbGUgd3JvdGU6DQo+IEVYVEVSTkFMIEVNQUlM
-OiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cg
-DQo+IHRoZSBjb250ZW50IGlzIHNhZmUNCj4NCj4gSGksDQo+DQo+IHRoYW5rcyBmb3IgdGhlIHBh
-dGNoIQ0KPg0KPiBBbSAyMDIyLTA4LTA0IDE1OjE4LCBzY2hyaWViIEFqYXkuS2F0aGF0QG1pY3Jv
-Y2hpcC5jb206DQo+PiBGcm9tOiBBamF5IFNpbmdoIDxhamF5LmthdGhhdEBtaWNyb2NoaXAuY29t
-Pg0KPj4NCj4+IFNvbWV0aW1lcyAnd2lsY19zZGlvX2NtZDUzJyBpcyBjYWxsZWQgd2l0aCBhZGRy
-ZXNzZXMgcG9pbnRpbmcgdG8gYW4NCj4+IG9iamVjdCBvbiB0aGUgc3RhY2suIFVzZSBkeW5hbWlj
-YWxseSBhbGxvY2F0ZWQgbWVtb3J5IGZvciBjbWQ1MyBpbnN0ZWFkDQo+PiBvZiBzdGFjayBhZGRy
-ZXNzIHdoaWNoIGlzIG5vdCBETUEnYWJsZS4NCj4+DQo+PiBGaXhlczogNTYyNWY5NjVkNzY0ICgi
-d2lsYzEwMDA6IG1vdmUgd2lsYyBkcml2ZXIgb3V0IG9mIHN0YWdpbmciKQ0KPj4gUmVwb3J0ZWQt
-Ynk6IE1pY2hhZWwgV2FsbGUgPG13YWxsZUBrZXJuZWwub3JnPg0KPj4gU3VnZ2VzdGVkLWJ5OiBN
-aWNoYWVsIFdhbGxlIDxtd2FsbGVAa2VybmVsLm9yZz4NCj4+IFNpZ25lZC1vZmYtYnk6IEFqYXkg
-U2luZ2ggPGFqYXkua2F0aGF0QG1pY3JvY2hpcC5jb20+DQo+PiAtLS0NCj4+DQo+PiBUaGlzIHBh
-dGNoIGlzIGNyZWF0ZWQgYmFzZWQgb24gWzFdIGFuZCBjaGFuZ2VzIGFyZSBkb25lIGFzIGRpc2N1
-c3NlZCBpbg0KPj4gdGhlIHNhbWUgdGhyZWFkLg0KPj4NCj4+IFsxXS4NCj4+IGh0dHBzOi8vcGF0
-Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9saW51eC13aXJlbGVzcy9wYXRjaC8yMDIyMDcyODE1
-MjAzNy4zODY1NDMtMS1taWNoYWVsQHdhbGxlLmNjLyANCj4+DQo+Pg0KPj4gwqAuLi4vbmV0L3dp
-cmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9uZXRkZXYuaMKgIHzCoCAxICsNCj4+IMKgLi4uL25l
-dC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvc2Rpby5jwqDCoMKgIHwgMjMgKysrKysrKysr
-KysrKysrLS0tLQ0KPj4gwqAuLi4vbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC93bGFu
-LmPCoMKgwqAgfMKgIDIgKy0NCj4+IMKgMyBmaWxlcyBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCsp
-LCA2IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9taWNyb2NoaXAvd2lsYzEwMDAvbmV0ZGV2LmgNCj4+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWljcm9jaGlwL3dpbGMxMDAwL25ldGRldi5oDQo+PiBpbmRleCA0M2MwODVjNzRiN2EuLjIxMzdl
-ZjI5NDk1MyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93
-aWxjMTAwMC9uZXRkZXYuaA0KPj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlw
-L3dpbGMxMDAwL25ldGRldi5oDQo+PiBAQCAtMjQ1LDYgKzI0NSw3IEBAIHN0cnVjdCB3aWxjIHsN
-Cj4+IMKgwqDCoMKgwqAgdTggKnJ4X2J1ZmZlcjsNCj4+IMKgwqDCoMKgwqAgdTMyIHJ4X2J1ZmZl
-cl9vZmZzZXQ7DQo+PiDCoMKgwqDCoMKgIHU4ICp0eF9idWZmZXI7DQo+PiArwqDCoMKgwqAgdTMy
-IHZtbV90YWJsZVtXSUxDX1ZNTV9UQkxfU0laRV07DQo+DQo+IFNob3VsZG4ndCB0aGlzIGJlICJ1
-MzIgKnZtbV90YWJsZSIganVkZ2luZyBieSB0aGUNCj4gb3RoZXIgbWVtYmVycyBvZiB0aGlzIHN0
-cnVjdHVyZS4NCj4NCg0KT2theS4gSSB3aWxsIGNoYW5nZSBpdC4NCg0KDQo+PiDCoMKgwqDCoMKg
-IHN0cnVjdCB0eHFfaGFuZGxlIHR4cVtOUVVFVUVTXTsNCj4+IMKgwqDCoMKgwqAgaW50IHR4cV9l
-bnRyaWVzOw0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93
-aWxjMTAwMC9zZGlvLmMNCj4+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMx
-MDAwL3NkaW8uYw0KPj4gaW5kZXggNjAwY2M1N2U5ZGEyLi44YmIwYjhlMTg5YWYgMTAwNjQ0DQo+
-PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvc2Rpby5jDQo+
-PiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvc2Rpby5jDQo+
-PiBAQCAtMjgsNiArMjgsNyBAQCBzdHJ1Y3Qgd2lsY19zZGlvIHsNCj4+IMKgwqDCoMKgwqAgdTMy
-IGJsb2NrX3NpemU7DQo+PiDCoMKgwqDCoMKgIGJvb2wgaXNpbml0Ow0KPj4gwqDCoMKgwqDCoCBp
-bnQgaGFzX3RocnB0X2VuaDM7DQo+PiArwqDCoMKgwqAgdTggKmNtZDUzX2J1ZjsNCj4+IMKgfTsN
-Cj4+DQo+PiDCoHN0cnVjdCBzZGlvX2NtZDUyIHsNCj4+IEBAIC0xMjgsMTAgKzEyOSwxNiBAQCBz
-dGF0aWMgaW50IHdpbGNfc2Rpb19wcm9iZShzdHJ1Y3Qgc2Rpb19mdW5jDQo+PiAqZnVuYywNCj4+
-IMKgwqDCoMKgwqAgaWYgKCFzZGlvX3ByaXYpDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCByZXR1cm4gLUVOT01FTTsNCj4+DQo+PiArwqDCoMKgwqAgc2Rpb19wcml2LT5jbWQ1M19idWYg
-PSBremFsbG9jKHNpemVvZih1MzIpLCBHRlBfS0VSTkVMKTsNCj4+ICvCoMKgwqDCoCBpZiAoIXNk
-aW9fcHJpdi0+Y21kNTNfYnVmKSB7DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldCA9
-IC1FTk9NRU07DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGdvdG8gZnJlZTsNCj4+ICvC
-oMKgwqDCoCB9DQo+PiArDQo+PiDCoMKgwqDCoMKgIHJldCA9IHdpbGNfY2ZnODAyMTFfaW5pdCgm
-d2lsYywgJmZ1bmMtPmRldiwgV0lMQ19ISUZfU0RJTywNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAmd2lsY19oaWZfc2Rpbyk7
-DQo+PiDCoMKgwqDCoMKgIGlmIChyZXQpDQo+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGdv
-dG8gZnJlZTsNCj4NCj4ganVzdCB1c2UgImdvdG8gZnJlZTsiLiBrZnJlZShOVUxMKSBpcyBhIG5v
-b3AuDQo+DQpPaw0KDQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGdvdG8gZnJlZV9idWZm
-ZXI7DQo+Pg0KPj4gwqDCoMKgwqDCoCBpZiAoSVNfRU5BQkxFRChDT05GSUdfV0lMQzEwMDBfSFdf
-T09CX0lOVFIpKSB7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgZGV2aWNl
-X25vZGUgKm5wID0gZnVuYy0+Y2FyZC0+ZGV2Lm9mX25vZGU7DQo+PiBAQCAtMTYwLDYgKzE2Nyw4
-IEBAIHN0YXRpYyBpbnQgd2lsY19zZGlvX3Byb2JlKHN0cnVjdCBzZGlvX2Z1bmMgKmZ1bmMsDQo+
-PiDCoGRpc3Bvc2VfaXJxOg0KPj4gwqDCoMKgwqDCoCBpcnFfZGlzcG9zZV9tYXBwaW5nKHdpbGMt
-PmRldl9pcnFfbnVtKTsNCj4+IMKgwqDCoMKgwqAgd2lsY19uZXRkZXZfY2xlYW51cCh3aWxjKTsN
-Cj4+ICtmcmVlX2J1ZmZlcjoNCj4+ICvCoMKgwqDCoCBrZnJlZShzZGlvX3ByaXYtPmNtZDUzX2J1
-Zik7DQo+PiDCoGZyZWU6DQo+PiDCoMKgwqDCoMKgIGtmcmVlKHNkaW9fcHJpdik7DQo+PiDCoMKg
-wqDCoMKgIHJldHVybiByZXQ7DQo+PiBAQCAtMTcyLDYgKzE4MSw3IEBAIHN0YXRpYyB2b2lkIHdp
-bGNfc2Rpb19yZW1vdmUoc3RydWN0IHNkaW9fZnVuYw0KPj4gKmZ1bmMpDQo+Pg0KPj4gwqDCoMKg
-wqDCoCBjbGtfZGlzYWJsZV91bnByZXBhcmUod2lsYy0+cnRjX2Nsayk7DQo+PiDCoMKgwqDCoMKg
-IHdpbGNfbmV0ZGV2X2NsZWFudXAod2lsYyk7DQo+PiArwqDCoMKgwqAga2ZyZWUoc2Rpb19wcml2
-LT5jbWQ1M19idWYpOw0KPj4gwqDCoMKgwqDCoCBrZnJlZShzZGlvX3ByaXYpOw0KPj4gwqB9DQo+
-Pg0KPj4gQEAgLTM3NSw4ICszODUsMTAgQEAgc3RhdGljIGludCB3aWxjX3NkaW9fd3JpdGVfcmVn
-KHN0cnVjdCB3aWxjICp3aWxjLA0KPj4gdTMyIGFkZHIsIHUzMiBkYXRhKQ0KPj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgY21kLmFkZHJlc3MgPSBXSUxDX1NESU9fRkJSX0RBVEFfUkVHOw0K
-Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY21kLmJsb2NrX21vZGUgPSAwOw0KPj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY21kLmluY3JlbWVudCA9IDE7DQo+PiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIGNtZC5jb3VudCA9IDQ7DQo+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGNtZC5idWZmZXIgPSAodTggKikmZGF0YTsNCj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgY21kLmNvdW50ID0gc2l6ZW9mKHUzMik7DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IC8qIGNvcHkgdG8gYSBib3VuY2UgYnVmZmVyIHRvIGF2b2lkIHVzZSBvZiBzdGFjayANCj4+IHZh
-cmlhYmxlICovDQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1lbWNweShzZGlvX3ByaXYt
-PmNtZDUzX2J1ZiwgJmRhdGEsIHNpemVvZih1MzIpKTsNCj4NCj4gTG9ja2luZyBzZWVtcyB0byBi
-ZSBtaXNzaW5nLCBubz8gSG93IGlzIHNkaW9fcHJpdi0+Y21kNTNfYnVmDQo+IHByb3RlY3RlZCBm
-cm9tIHBhcmFsbGVsIGFjY2Vzcz8NCg0KWWVzLCBJIGFsc28gdGhpbmsgbG9jayB3b3VsZCBiZSBy
-ZXF1aXJlZCB3aXRoIHRoZXNlIGNoYW5nZXMuIEkgYW0gDQpwbGFubmluZyB0byB1c2UgdGhlIGV4
-aXN0aW5nICdzZGlvX2NsYWltX2hvc3QnIGxvY2tpbmcgaW5zdGVhZCBvZiANCmludHJvZHVjaW5n
-IGEgbmV3IGxvY2sgYW5kIGFsc28gdGFrZSBjYXJlIHRvIG5vdCBhZGRpbmcgYSBkdXBsaWNhdGUg
-QVBJIA0KdG8gaGFuZGxlIGNtZDUzLiBGb3IgYmV0dGVyIHVuZGVyc3RhbmRpbmcsIEkgd2lsbCBz
-ZW5kIHRoZSB2MiBwYXRjaCBmb3IgDQpyZXZpZXcuDQoNClJlZ2FyZHMsDQpBamF5Jw0KDQo=
+From: Ajay Singh <ajay.kathat@microchip.com>
+
+Sometimes 'wilc_sdio_cmd53' is called with addresses pointing to an
+object on the stack. Use dynamically allocated memory for cmd53 instead
+of stack address which is not DMA'able.
+
+Fixes: 5625f965d764 ("wilc1000: move wilc driver out of staging")
+Reported-by: Michael Walle <mwalle@kernel.org>
+Suggested-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+---
+This patch is created based on [1] and changes are done as discussed in
+the same thread.
+
+[1]. https://patchwork.kernel.org/project/linux-wireless/patch/202207281520=
+37.386543-1-michael@walle.cc/=20
+
+changes since v1:
+        - add 'use_global_buf' variable to know when to use bounce buffer
+        - remove unnecessary goto label
+	- dynamically allocate 'vmm_table'
+
+ .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
+ .../net/wireless/microchip/wilc1000/sdio.c    | 35 +++++++++++++++----
+ .../net/wireless/microchip/wilc1000/wlan.c    | 15 ++++++--
+ 3 files changed, 43 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net=
+/wireless/microchip/wilc1000/netdev.h
+index 43c085c74b7a..bb1a315a7b7e 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -245,6 +245,7 @@ struct wilc {
+ 	u8 *rx_buffer;
+ 	u32 rx_buffer_offset;
+ 	u8 *tx_buffer;
++	u32 *vmm_table;
+=20
+ 	struct txq_handle txq[NQUEUES];
+ 	int txq_entries;
+diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/w=
+ireless/microchip/wilc1000/sdio.c
+index 600cc57e9da2..b12f411aec06 100644
+--- a/drivers/net/wireless/microchip/wilc1000/sdio.c
++++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+@@ -28,6 +28,7 @@ struct wilc_sdio {
+ 	u32 block_size;
+ 	bool isinit;
+ 	int has_thrpt_enh3;
++	u8 *cmd53_buf;
+ };
+=20
+ struct sdio_cmd52 {
+@@ -47,6 +48,7 @@ struct sdio_cmd53 {
+ 	u32 count:		9;
+ 	u8 *buffer;
+ 	u32 block_size;
++	u8 use_global_buf;
+ };
+=20
+ static const struct wilc_hif_func wilc_hif_sdio;
+@@ -91,6 +93,8 @@ static int wilc_sdio_cmd53(struct wilc *wilc, struct sdio=
+_cmd53 *cmd)
+ {
+ 	struct sdio_func *func =3D container_of(wilc->dev, struct sdio_func, dev)=
+;
+ 	int size, ret;
++	struct wilc_sdio *sdio_priv =3D wilc->bus_data;
++	u8 *buf =3D cmd->buffer;
+=20
+ 	sdio_claim_host(func);
+=20
+@@ -101,12 +105,19 @@ static int wilc_sdio_cmd53(struct wilc *wilc, struct =
+sdio_cmd53 *cmd)
+ 	else
+ 		size =3D cmd->count;
+=20
++	if (cmd->use_global_buf)
++		buf =3D sdio_priv->cmd53_buf;
++
+ 	if (cmd->read_write) {  /* write */
+-		ret =3D sdio_memcpy_toio(func, cmd->address,
+-				       (void *)cmd->buffer, size);
++		if (cmd->use_global_buf)
++			memcpy(buf, cmd->buffer, size);
++
++		ret =3D sdio_memcpy_toio(func, cmd->address, buf, size);
+ 	} else {        /* read */
+-		ret =3D sdio_memcpy_fromio(func, (void *)cmd->buffer,
+-					 cmd->address,  size);
++		ret =3D sdio_memcpy_fromio(func, buf, cmd->address, size);
++
++		if (cmd->use_global_buf)
++			memcpy(cmd->buffer, buf, size);
+ 	}
+=20
+ 	sdio_release_host(func);
+@@ -128,6 +139,12 @@ static int wilc_sdio_probe(struct sdio_func *func,
+ 	if (!sdio_priv)
+ 		return -ENOMEM;
+=20
++	sdio_priv->cmd53_buf =3D kzalloc(sizeof(u32), GFP_KERNEL);
++	if (!sdio_priv->cmd53_buf) {
++		ret =3D -ENOMEM;
++		goto free;
++	}
++
+ 	ret =3D wilc_cfg80211_init(&wilc, &func->dev, WILC_HIF_SDIO,
+ 				 &wilc_hif_sdio);
+ 	if (ret)
+@@ -161,6 +178,7 @@ static int wilc_sdio_probe(struct sdio_func *func,
+ 	irq_dispose_mapping(wilc->dev_irq_num);
+ 	wilc_netdev_cleanup(wilc);
+ free:
++	kfree(sdio_priv->cmd53_buf);
+ 	kfree(sdio_priv);
+ 	return ret;
+ }
+@@ -172,6 +190,7 @@ static void wilc_sdio_remove(struct sdio_func *func)
+=20
+ 	clk_disable_unprepare(wilc->rtc_clk);
+ 	wilc_netdev_cleanup(wilc);
++	kfree(sdio_priv->cmd53_buf);
+ 	kfree(sdio_priv);
+ }
+=20
+@@ -375,8 +394,9 @@ static int wilc_sdio_write_reg(struct wilc *wilc, u32 a=
+ddr, u32 data)
+ 		cmd.address =3D WILC_SDIO_FBR_DATA_REG;
+ 		cmd.block_mode =3D 0;
+ 		cmd.increment =3D 1;
+-		cmd.count =3D 4;
++		cmd.count =3D sizeof(u32);
+ 		cmd.buffer =3D (u8 *)&data;
++		cmd.use_global_buf =3D 1;
+ 		cmd.block_size =3D sdio_priv->block_size;
+ 		ret =3D wilc_sdio_cmd53(wilc, &cmd);
+ 		if (ret)
+@@ -414,6 +434,7 @@ static int wilc_sdio_write(struct wilc *wilc, u32 addr,=
+ u8 *buf, u32 size)
+ 	nblk =3D size / block_size;
+ 	nleft =3D size % block_size;
+=20
++	cmd.use_global_buf =3D 0;
+ 	if (nblk > 0) {
+ 		cmd.block_mode =3D 1;
+ 		cmd.increment =3D 1;
+@@ -492,8 +513,9 @@ static int wilc_sdio_read_reg(struct wilc *wilc, u32 ad=
+dr, u32 *data)
+ 		cmd.address =3D WILC_SDIO_FBR_DATA_REG;
+ 		cmd.block_mode =3D 0;
+ 		cmd.increment =3D 1;
+-		cmd.count =3D 4;
++		cmd.count =3D sizeof(u32);
+ 		cmd.buffer =3D (u8 *)data;
++		cmd.use_global_buf =3D 1;
+=20
+ 		cmd.block_size =3D sdio_priv->block_size;
+ 		ret =3D wilc_sdio_cmd53(wilc, &cmd);
+@@ -535,6 +557,7 @@ static int wilc_sdio_read(struct wilc *wilc, u32 addr, =
+u8 *buf, u32 size)
+ 	nblk =3D size / block_size;
+ 	nleft =3D size % block_size;
+=20
++	cmd.use_global_buf =3D 0;
+ 	if (nblk > 0) {
+ 		cmd.block_mode =3D 1;
+ 		cmd.increment =3D 1;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/w=
+ireless/microchip/wilc1000/wlan.c
+index 947d9a0a494e..58bbf50081e4 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -714,7 +714,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_co=
+unt)
+ 	int ret =3D 0;
+ 	int counter;
+ 	int timeout;
+-	u32 vmm_table[WILC_VMM_TBL_SIZE];
++	u32 *vmm_table =3D wilc->vmm_table;
+ 	u8 ac_pkt_num_to_chip[NQUEUES] =3D {0, 0, 0, 0};
+ 	const struct wilc_hif_func *func;
+ 	int srcu_idx;
+@@ -1252,6 +1252,8 @@ void wilc_wlan_cleanup(struct net_device *dev)
+ 	while ((rqe =3D wilc_wlan_rxq_remove(wilc)))
+ 		kfree(rqe);
+=20
++	kfree(wilc->vmm_table);
++	wilc->vmm_table =3D NULL;
+ 	kfree(wilc->rx_buffer);
+ 	wilc->rx_buffer =3D NULL;
+ 	kfree(wilc->tx_buffer);
+@@ -1489,6 +1491,14 @@ int wilc_wlan_init(struct net_device *dev)
+ 			goto fail;
+ 	}
+=20
++	if (!wilc->vmm_table)
++		wilc->vmm_table =3D kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
++
++	if (!wilc->vmm_table) {
++		ret =3D -ENOBUFS;
++		goto fail;
++	}
++
+ 	if (!wilc->tx_buffer)
+ 		wilc->tx_buffer =3D kmalloc(WILC_TX_BUFF_SIZE, GFP_KERNEL);
+=20
+@@ -1513,7 +1523,8 @@ int wilc_wlan_init(struct net_device *dev)
+ 	return 0;
+=20
+ fail:
+-
++	kfree(wilc->vmm_table);
++	wilc->vmm_table =3D NULL;
+ 	kfree(wilc->rx_buffer);
+ 	wilc->rx_buffer =3D NULL;
+ 	kfree(wilc->tx_buffer);
+--=20
+2.34.1
