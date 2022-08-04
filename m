@@ -2,208 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF20589D72
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 16:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 728F6589F83
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Aug 2022 18:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231909AbiHDOZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Aug 2022 10:25:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41794 "EHLO
+        id S234319AbiHDQrb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Aug 2022 12:47:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229988AbiHDOZP (ORCPT
+        with ESMTP id S234169AbiHDQra (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Aug 2022 10:25:15 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266B8BC7
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 07:25:12 -0700 (PDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 89FA322247;
-        Thu,  4 Aug 2022 16:25:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1659623110;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0yfuFViu5HFr/eP33MvXMlLxNptspuGEzwWameXix/o=;
-        b=NRnqIo9o+hLOZasJhGdr2NQKgYoiy5OdL8L7nfkWIN9TN/x8Zzvz7Sy4NH3dg3oBmi0FJM
-        1dlGQCdjXYC5Qr0Y18KJCOzSw0I27rasHpdoWbpvbUwBXi42eqpxCD0Z590/u0VZEq/8Qd
-        MKYM/ziGt0nTCOmqgK87Xa3b0ZnEVyA=
+        Thu, 4 Aug 2022 12:47:30 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488AF1B7B6
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 09:47:29 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id i84so125012ioa.6
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Aug 2022 09:47:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc;
+        bh=13zAhPFqYptAMYO+yTsXCLsMUg9Bk2fdg2na4GDfxbQ=;
+        b=SJD6PEmywG7k8htfKj53McptRoCw7aNrP9I37H7+teKTx9yYH+vltEgO8kMbLfYjMy
+         SFtoC007QTcSKbouRrk6xczrYkTgL/L8TvzLL6GFc485SjDY0dGcJ/0Ry9/dVJgmgI7t
+         ekykioGdU+8P/EsORNtvSMJpDnMYiT7ALKUzqlyt9a5ddMnvr7E8c3VeSOfD4PV1XqXf
+         7LQ8fbShzCb788pIqFpzMPLV7VS4DnnEiDbzdRfyJ6Yia2JaFAbwjlL2XvnOj6zOL0Ii
+         0ZCSrLrHLtB4mkTsweJnSNpBnBLwH3VAMOMh900rrPbEaQeug2a54Rh4EVrmHnSW0mL1
+         XBtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc;
+        bh=13zAhPFqYptAMYO+yTsXCLsMUg9Bk2fdg2na4GDfxbQ=;
+        b=5zGY86qmkuWNpdG3M50cDxDk8z9OAmGvjqrwQk2n8EM0btBxV3nGBJVBrkgJ89kYBd
+         yNHJJwcJOw7aiK0qBptTWEcPAc6zs5XMtC7mU04XI2CkSjh4xj8HeJg0mkl/8DbOvCtr
+         vnNHACwOJa/2q74jMa2BNeOP1AK27zxVqzhKMB0u+dG8ekR0CeLWwkOk97pjDv+ADgew
+         d4ZrL6mtlu5kRk2mRcyw1K/MGsMPYWCIGwUKZxmvMA5c8e5idFiBg99bcOxv7QZroYOk
+         XYCGBN25arZQAqTZobnz14S15tjdFdTODM3LegVqsNCThxhOqMGOAYj/7dAhXWYeNs0S
+         Wj/Q==
+X-Gm-Message-State: ACgBeo0cyvUgxuBHt7u2Dqp50CdI/nzHJf1IwTOad+tHeSzcDrcruyn7
+        BIOBqSCPQ84L1EYGzvr3q6yeuUxnIBMJOQ==
+X-Google-Smtp-Source: AA6agR4ci8+5UPj/KsIGC34fst8dsDiMJ745KPArRfp8uD/gVXH7fraxmeOWHoZ/AU7SnU2IkuU3vw==
+X-Received: by 2002:a05:6638:d8c:b0:341:4d9a:7d43 with SMTP id l12-20020a0566380d8c00b003414d9a7d43mr1283467jaj.126.1659631648578;
+        Thu, 04 Aug 2022 09:47:28 -0700 (PDT)
+Received: from ?IPV6:2604:2d80:0:d300:e347:f842:8fae:579b? ([2604:2d80:0:d300:e347:f842:8fae:579b])
+        by smtp.gmail.com with ESMTPSA id c7-20020a92cf07000000b002de990656f5sm603111ilo.32.2022.08.04.09.47.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Aug 2022 09:47:28 -0700 (PDT)
+Message-ID: <8155d519-8ae3-6fb2-ca44-552541b3fedf@gmail.com>
+Date:   Thu, 4 Aug 2022 11:47:27 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To:     linux-wireless@vger.kernel.org, regressions@lists.linux.dev,
+        gregory.greenman@intel.com
+From:   dmkgrim80 <dmkgrim80@gmail.com>
+Subject: intel ax200 problem after iwlwifi source change from 5.6 to
+ 5.7,current
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Thu, 04 Aug 2022 16:25:10 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Ajay.Kathat@microchip.com
-Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
-        Sripad.Balwadgi@microchip.com, mwalle@kernel.org
-Subject: Re: [PATCH] wifi: wilc1000: fix DMA on stack objects
-In-Reply-To: <20220804131837.336769-1-ajay.kathat@microchip.com>
-References: <20220804131837.336769-1-ajay.kathat@microchip.com>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <f25d53c4fe90b2ef153a721bd225f8db@walle.cc>
-X-Sender: michael@walle.cc
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello I have a issue I would like resolved
 
-thanks for the patch!
 
-Am 2022-08-04 15:18, schrieb Ajay.Kathat@microchip.com:
-> From: Ajay Singh <ajay.kathat@microchip.com>
-> 
-> Sometimes 'wilc_sdio_cmd53' is called with addresses pointing to an
-> object on the stack. Use dynamically allocated memory for cmd53 instead
-> of stack address which is not DMA'able.
-> 
-> Fixes: 5625f965d764 ("wilc1000: move wilc driver out of staging")
-> Reported-by: Michael Walle <mwalle@kernel.org>
-> Suggested-by: Michael Walle <mwalle@kernel.org>
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-> ---
-> 
-> This patch is created based on [1] and changes are done as discussed in
-> the same thread.
-> 
-> [1].
-> https://patchwork.kernel.org/project/linux-wireless/patch/20220728152037.386543-1-michael@walle.cc/
-> 
->  .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
->  .../net/wireless/microchip/wilc1000/sdio.c    | 23 +++++++++++++++----
->  .../net/wireless/microchip/wilc1000/wlan.c    |  2 +-
->  3 files changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h
-> b/drivers/net/wireless/microchip/wilc1000/netdev.h
-> index 43c085c74b7a..2137ef294953 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-> +++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-> @@ -245,6 +245,7 @@ struct wilc {
->  	u8 *rx_buffer;
->  	u32 rx_buffer_offset;
->  	u8 *tx_buffer;
-> +	u32 vmm_table[WILC_VMM_TBL_SIZE];
+            Hi, I have a intel AX200 m.2 installed in a old Acer Aspire 
+E15 E5-553-11PT
 
-Shouldn't this be "u32 *vmm_table" judging by the
-other members of this structure.
+I am having some issues with kernels newer than 5.4 and possibly 5.6.
 
->  	struct txq_handle txq[NQUEUES];
->  	int txq_entries;
-> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c
-> b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> index 600cc57e9da2..8bb0b8e189af 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> @@ -28,6 +28,7 @@ struct wilc_sdio {
->  	u32 block_size;
->  	bool isinit;
->  	int has_thrpt_enh3;
-> +	u8 *cmd53_buf;
->  };
-> 
->  struct sdio_cmd52 {
-> @@ -128,10 +129,16 @@ static int wilc_sdio_probe(struct sdio_func 
-> *func,
->  	if (!sdio_priv)
->  		return -ENOMEM;
-> 
-> +	sdio_priv->cmd53_buf = kzalloc(sizeof(u32), GFP_KERNEL);
-> +	if (!sdio_priv->cmd53_buf) {
-> +		ret = -ENOMEM;
-> +		goto free;
-> +	}
-> +
->  	ret = wilc_cfg80211_init(&wilc, &func->dev, WILC_HIF_SDIO,
->  				 &wilc_hif_sdio);
->  	if (ret)
-> -		goto free;
+I am using  longterm 5.4.x kernel and it works I have examined the code 
+for longterm and stable kernels.
 
-just use "goto free;". kfree(NULL) is a noop.
+Some kernels give me ADVANCED_SYSASSERT which if I understand is 
+firmware crash.
 
-> +		goto free_buffer;
-> 
->  	if (IS_ENABLED(CONFIG_WILC1000_HW_OOB_INTR)) {
->  		struct device_node *np = func->card->dev.of_node;
-> @@ -160,6 +167,8 @@ static int wilc_sdio_probe(struct sdio_func *func,
->  dispose_irq:
->  	irq_dispose_mapping(wilc->dev_irq_num);
->  	wilc_netdev_cleanup(wilc);
-> +free_buffer:
-> +	kfree(sdio_priv->cmd53_buf);
->  free:
->  	kfree(sdio_priv);
->  	return ret;
-> @@ -172,6 +181,7 @@ static void wilc_sdio_remove(struct sdio_func 
-> *func)
-> 
->  	clk_disable_unprepare(wilc->rtc_clk);
->  	wilc_netdev_cleanup(wilc);
-> +	kfree(sdio_priv->cmd53_buf);
->  	kfree(sdio_priv);
->  }
-> 
-> @@ -375,8 +385,10 @@ static int wilc_sdio_write_reg(struct wilc *wilc,
-> u32 addr, u32 data)
->  		cmd.address = WILC_SDIO_FBR_DATA_REG;
->  		cmd.block_mode = 0;
->  		cmd.increment = 1;
-> -		cmd.count = 4;
-> -		cmd.buffer = (u8 *)&data;
-> +		cmd.count = sizeof(u32);
-> +		/* copy to a bounce buffer to avoid use of stack variable */
-> +		memcpy(sdio_priv->cmd53_buf, &data, sizeof(u32));
 
-Locking seems to be missing, no? How is sdio_priv->cmd53_buf
-protected from parallel access?
+Willing to try and do testing to get my intel AX200 on my laptop till 
+its working.
 
--michael
+I have tried using git for kernel code but the kernel code seems bugged 
+or something.
 
-> +		cmd.buffer = sdio_priv->cmd53_buf;
->  		cmd.block_size = sdio_priv->block_size;
->  		ret = wilc_sdio_cmd53(wilc, &cmd);
->  		if (ret)
-> @@ -492,8 +504,8 @@ static int wilc_sdio_read_reg(struct wilc *wilc,
-> u32 addr, u32 *data)
->  		cmd.address = WILC_SDIO_FBR_DATA_REG;
->  		cmd.block_mode = 0;
->  		cmd.increment = 1;
-> -		cmd.count = 4;
-> -		cmd.buffer = (u8 *)data;
-> +		cmd.count = sizeof(u32);
-> +		cmd.buffer = sdio_priv->cmd53_buf;
-> 
->  		cmd.block_size = sdio_priv->block_size;
->  		ret = wilc_sdio_cmd53(wilc, &cmd);
-> @@ -502,6 +514,7 @@ static int wilc_sdio_read_reg(struct wilc *wilc,
-> u32 addr, u32 *data)
->  				"Failed cmd53, read reg (%08x)...\n", addr);
->  			return ret;
->  		}
-> +		memcpy(data, sdio_priv->cmd53_buf, sizeof(u32));
->  	}
-> 
->  	le32_to_cpus(data);
-> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c
-> b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> index 947d9a0a494e..0576d865c603 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> @@ -714,7 +714,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 
-> *txq_count)
->  	int ret = 0;
->  	int counter;
->  	int timeout;
-> -	u32 vmm_table[WILC_VMM_TBL_SIZE];
-> +	u32 *vmm_table = wilc->vmm_table;
->  	u8 ac_pkt_num_to_chip[NQUEUES] = {0, 0, 0, 0};
->  	const struct wilc_hif_func *func;
->  	int srcu_idx;
+I can compile kernels on my slackware 15 and debian 11.3 that wont 
+compile in git for some reason.
+
+using longterm kernel 5.4.x at moment which the intel AX200 on my laptop 
+likes.
+
+git bisect kernels is time consuming been trying it with previous 
+unsuccessful results.
+
+I also have a desktop Asus motherboard with built in intel AX200 same 
+revision and model 01a and
+
+0x2723, 0x0084 the desktop works with differing results it works on 
+5.10,5.15 and newer
+
+though I recently got ahold of 0x0080 and 0x4080 hardware a netel and 
+deal4go manufacture intel AX200 with same results on laptop so its 
+either code or my laptop or both. Dont have financial means to test 
+other laptops with m.2 wifi/bluetooth. as is sending back 2 
+wifi/bluetooth adapters.
+
+
+Im no good with git and bisect nor am I a programmer though took some 
+classes. tried git clone couldnt get kernel 5.6 to either make or 
+install modules. the kernel code in drv.c of 
+kernel/drivers/net/wireless/intel/iwlwifi/pcie/
+
+
+Works in Windows 10,linux kernel 5.4.x and iwlwifi code is same from 5.4 
+to 5.6 and longterm 5.4.x has the good code.Differs starting 5.7 till 
+mainline or stable and my Laptop with intel AX200 m.2 installed will not 
+work.
+
+
+I have intel 7265 m.2 card and a old original m.2 wifi/bluetooth device 
+qualcom atheros card the laptop came with.
+
+both work kernels 5.10.x,5.15.x,5.18.x
+
+https://bugzilla.kernel.org/show_bug.cgi?id=216058
+
+https://www.linuxquestions.org/questions/debian-26/wifi-problems-intel-ax200-bullseye-11-3-a-4175711770/
+
+https://community.intel.com/t5/Wireless/problem-with-intel-ax200-rev-1a-and-linux/m-p/1384652
+
+https://www.linuxquestions.org/questions/linux-networking-3/trying-to-get-intel-ax200-wifi-card-to-work-in-debian-11-a-4175704711/
+
+intel ax200 m.2 key E stops working after kernel 5.4.x longterm which 
+uses the same iwlwifi code
+
+as 5.6.x kernel after that kernel wifi will either give 
+ADVANCED_SYSASSERT or mac address issues and the ax200 wifi adapter will 
+not work. tried multiple ax200
+
+
+Thanks for your time.
