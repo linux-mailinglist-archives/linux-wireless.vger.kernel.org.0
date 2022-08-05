@@ -2,78 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A526B58A3F2
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Aug 2022 01:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D437358A580
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Aug 2022 06:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240094AbiHDXhZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Aug 2022 19:37:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46782 "EHLO
+        id S231673AbiHEEra (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Aug 2022 00:47:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240005AbiHDXhX (ORCPT
+        with ESMTP id S229820AbiHEEr2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Aug 2022 19:37:23 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995067170C
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 16:37:22 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id l22so1432252wrz.7
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Aug 2022 16:37:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc;
-        bh=YeEFrOpnueqp49lpSsCtkyhW66cD5QzqZPU5hyS5TkM=;
-        b=bo2XBP67BuG05EPFv/XoJIdVEPLxa1771zsCCTAejlB5sRGBBJscipwNLbZSExpHaj
-         pUyKO8j/8PL7bynEnTgIAfFfO5K7kE8SGUNCahnQkTvPNNs2NqPrlMjL+jGU6tqcn8Rr
-         A/uSn/rVR5Iu09uC/vIuAEyZWqqBuJmPhdgTDpmQg7LcGzOoKz8YVbV26QOS7ffG0IIx
-         8/fXPOKXG6S+ehx0Nsw5fiMFEQ4CGeFzBxo5ytpgvK6OynC4YtnkE0s+TZRo5vzbvQqY
-         zpBeWRiCfpL0Ol54u9tRq0gBY0fHGFZvmHpIN8HBVco2JTUPEFgHVWy3oXKtNjGfnyiJ
-         KxbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=YeEFrOpnueqp49lpSsCtkyhW66cD5QzqZPU5hyS5TkM=;
-        b=xIMhwvE53QHbEmI29JtgtmhQsyDl3di0Ff3ZP5BiHBSaGdYgEskC40W+qJKQ4pvbXK
-         uNDyEbI+nsb7wtqf2OhVYi3ABO2OkMXqlaWyGkobuNsjgl3krgfWCkvYksjHlSkEAScs
-         IuTLh3dZOG6wqjMsJizZUnb9bawmFXMFQLtO2Vh2v55zWQ0OyIuED6pwsNJ/MYU7mnlx
-         0JYrxIOyqbeDz5BvrDpC2YdwYmKyGRsXjhdrzY069H6u9vBx4OTX06Pj08G56Lzqa3Pl
-         StsKjN+4+m8P0zznqwdKXBTRdj8tZ3nVodnZzOMBhou37RAEeZKxnWXjjtUhVFkN2QpR
-         tfiA==
-X-Gm-Message-State: ACgBeo11n4SJTj8qC6zLL/jDbFXw4492J2jb4/IBvMxP2+oYZr2/X4jK
-        E8hhwc3uR36qWBdXlr/FoeEagAfCSh45YgGzcjg=
-X-Google-Smtp-Source: AA6agR6f0xgcbz/jJiwHDKBEx340iRt7Ax/7tcMvNnzU6SINdVNPCvSm7LlNyy11FxYItH8Y+id8uuWVtbRpODop/BY=
-X-Received: by 2002:adf:fb12:0:b0:20c:79b2:a200 with SMTP id
- c18-20020adffb12000000b0020c79b2a200mr2693929wrr.617.1659656240885; Thu, 04
- Aug 2022 16:37:20 -0700 (PDT)
+        Fri, 5 Aug 2022 00:47:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E587B3C8F5
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Aug 2022 21:47:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B03160EDD
+        for <linux-wireless@vger.kernel.org>; Fri,  5 Aug 2022 04:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DA7C433D7;
+        Fri,  5 Aug 2022 04:47:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1659674846;
+        bh=FmKwzAx6tYuW/PdvvLxIOtwxLkZ7VwpD8hSB3GYZixo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=otZQ93y5SaMclvsXAAgys3YaI16GRHsa37lmr1hKJ7EkIi2ggKCoKvhEKIILBqGpo
+         kc5eNWaa+UPjT/Ic3xOhAvTfzH1t/Hv4ZRtK9j5ZvTHh3UNgvhn1Md5hntKd13iq/b
+         X/JAiZT7YjYZdxATP4d/hMKurlHt+grfbjCvxlME=
+Date:   Fri, 5 Aug 2022 06:47:22 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     dmkgrim80 <dmkgrim80@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, regressions@lists.linux.dev,
+        gregory.greenman@intel.com
+Subject: Re: intel ax200 problem after iwlwifi source change from 5.6 to
+ 5.7,current
+Message-ID: <Yuyg2nYP0HrwKwUO@kroah.com>
+References: <8155d519-8ae3-6fb2-ca44-552541b3fedf@gmail.com>
 MIME-Version: 1.0
-Sender: rasmaneniampa123@gmail.com
-Received: by 2002:a5d:6d89:0:0:0:0:0 with HTTP; Thu, 4 Aug 2022 16:37:20 -0700 (PDT)
-From:   Lisa Williams <lw23675851@gmail.com>
-Date:   Fri, 5 Aug 2022 00:37:20 +0100
-X-Google-Sender-Auth: mskJh2IMlAJTknsluuWjbZGqJ0Y
-Message-ID: <CAKOWe4C3jnyGfgvXxuZShiyykXU0dpGtbmM1qCzjtEKKCyu8ZQ@mail.gmail.com>
-Subject: My name is Dr Lisa Williams
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8155d519-8ae3-6fb2-ca44-552541b3fedf@gmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dear,
+On Thu, Aug 04, 2022 at 11:47:27AM -0500, dmkgrim80 wrote:
+> Hello I have a issue I would like resolved
+> 
+> 
+>            Hi, I have a intel AX200 m.2 installed in a old Acer Aspire E15
+> E5-553-11PT
+> 
+> I am having some issues with kernels newer than 5.4 and possibly 5.6.
 
-My name is Dr Lisa Williams from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+If you can not use 'git bisect', it's going to be difficult to narrow
+this down to the offending commit.
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+Please try to use that, and also remember that you can use 'make
+localmodconfig' to reduce your configuration file size so you don't end
+up building kernels with all options in it to reduce your build times.
 
-Thanks
+good luck!
 
-With love
-Lisa
+greg k-h
