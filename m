@@ -2,120 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F31A58ACF8
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Aug 2022 17:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A41758AE39
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Aug 2022 18:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233431AbiHEPSq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Aug 2022 11:18:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
+        id S238451AbiHEQfR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Aug 2022 12:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbiHEPSp (ORCPT
+        with ESMTP id S231585AbiHEQfQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Aug 2022 11:18:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772C41EAC2
-        for <linux-wireless@vger.kernel.org>; Fri,  5 Aug 2022 08:18:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 29C18B827DE
-        for <linux-wireless@vger.kernel.org>; Fri,  5 Aug 2022 15:18:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4798C433D6;
-        Fri,  5 Aug 2022 15:18:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659712721;
-        bh=a3J98JmoOsmJUtPTXQWaXfCBE7p1487afXQtkt4+XQw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=G7PB2+KPZ/rqLxAWqGN5HBb/GNhgjNqx7B5XXJHOgbiUuKpefK10Z8jI/T3AVMlYV
-         dN2xCBLsja7SODoPuKaLmtcsMWSit9fZSsR8SiKqekl+IMV/X4nHnMIgz1ZmzlPqnE
-         Lqx/DGqOK+ZDtoq4bs8ZDjhOVTBNCs9MDbCgoLKSztcNly6pfTLQn2DYBnvmX3ITva
-         mvdhKSRbPNlEn1+OB6FTHRnpcxKTJYi6GkBK0lV0POoYK9WzIZJkTe4XWqJ/qv3j3U
-         UY61P9MoGqpCCbD83DgWbpyrsGR3E4vk37QwJ0fykUyrOQID0APXOJXvC+7n7LzfnK
-         6E94/IQ/ZWA6w==
-Date:   Fri, 5 Aug 2022 10:18:40 -0500
-From:   Seth Forshee <sforshee@kernel.org>
-To:     Murtaza Saeed <mnk.saeed@gmail.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: wireless-regdb: Update regulatory rules for Pakistan (PK) on 5GHz
-Message-ID: <Yu000DvbyViZPeC+@ubuntu-x1>
-References: <CAATNLbwMFDj0UrG1PBNh-dj7GT+GJ2Ud38TzHL=FmMG7wgNNbQ@mail.gmail.com>
+        Fri, 5 Aug 2022 12:35:16 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E140B71
+        for <linux-wireless@vger.kernel.org>; Fri,  5 Aug 2022 09:35:14 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id kb8so5964459ejc.4
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Aug 2022 09:35:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=YULM/X0a99ROrDBU1vlbZtwnzv+PMxw5j/XQy+3G098=;
+        b=DH58QeOUomO8H1sFAsPR3cGvtRWtC06FLuWlRRXvEiqMoVZWUsHdyR+bAqaBgk05qh
+         3SBQ7fO6ASqZU+ODlaY5mLk6LbD+3R/vt9oxMTRIuk6TGBGAX/UewmvRIIufU5fQmQJt
+         3OayP7gxpm9Js+yr6ThSM6A3fGcqxNz1GHQfs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=YULM/X0a99ROrDBU1vlbZtwnzv+PMxw5j/XQy+3G098=;
+        b=AtJxft7+TcaqliO6I8dd0zqm124o8t4lDmyCJaLtVcZ2EgzM/Rh1Y5bqwROn/EhJ5k
+         bbfInUGYnQ8IQRu9hM2eQSUPWqfX3/mRlb9T3rjlr2armGAk7242Gi2eo9P4HgwAoYPR
+         gleaZUrV51dWdk5gGlbvEDGF4rDtRo+EF/27q8ibNXoVkwSrVvMWdSfO7DWO9KzvY49A
+         5wCCYRR7jRV/Lt/JQ0D+RFuaMoTzn+tnNQpk6yVu1pK6olzERLg7YmQjaiWEQIgLuaX4
+         xsM3EKl7BhQSM4EtwbWZbYuEzba35cB2CRxL9OgUrxprP1OyJDqdYip7t0su1iNurl18
+         CTRQ==
+X-Gm-Message-State: ACgBeo2T8+5vSZz9yJxsOApObHLPnfD0qmfBzA9cxHtrTrZ3eF/PY+k8
+        VycjuS0cxsyGHvRqUHa0a8SeQDK9KqN9imyG
+X-Google-Smtp-Source: AA6agR6JRySl06pE0s9P5FSKTQ3RE0b/XNoGuDX+sX56zaLPzl3CMOhsoHGY/bVxs+zea+dT2JZTLQ==
+X-Received: by 2002:a17:907:969f:b0:730:df57:123d with SMTP id hd31-20020a170907969f00b00730df57123dmr4619185ejc.430.1659717312663;
+        Fri, 05 Aug 2022 09:35:12 -0700 (PDT)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com. [209.85.221.47])
+        by smtp.gmail.com with ESMTPSA id d25-20020aa7d699000000b0043cedad30a5sm135495edr.21.2022.08.05.09.35.11
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Aug 2022 09:35:11 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id l4so3787392wrm.13
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Aug 2022 09:35:11 -0700 (PDT)
+X-Received: by 2002:a5d:56cf:0:b0:21e:ce64:afe7 with SMTP id
+ m15-20020a5d56cf000000b0021ece64afe7mr4740434wrw.281.1659717310912; Fri, 05
+ Aug 2022 09:35:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAATNLbwMFDj0UrG1PBNh-dj7GT+GJ2Ud38TzHL=FmMG7wgNNbQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220803101438.24327-1-pabeni@redhat.com> <CAHk-=wjhSSHM+ESVnchxazGx4Vi0fEfmHpwYxE45JZDSC8SUAQ@mail.gmail.com>
+ <87les4id7b.fsf@kernel.org> <877d3mixdh.fsf@kernel.org>
+In-Reply-To: <877d3mixdh.fsf@kernel.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 5 Aug 2022 09:34:54 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiW62CSONUNdpPcohmnTOtF_Fa4tSrz-H+pqE3VmpuARA@mail.gmail.com>
+Message-ID: <CAHk-=wiW62CSONUNdpPcohmnTOtF_Fa4tSrz-H+pqE3VmpuARA@mail.gmail.com>
+Subject: Re: [GIT PULL] Networking for 6.0
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Paolo Abeni <pabeni@redhat.com>,
+        Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+        kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Arend van Spriel <aspriel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 05, 2022 at 06:01:43PM +0500, Murtaza Saeed wrote:
-> Hi,
-> 
-> The current regulatory rules for Pakistan (PK) for 5 GHz channels in
-> wireless-regdb are out of date and have been recently updated by the
-> Pakistan Telecommunication Authority (PTA) in June 2022.
-> 
-> PTA has allowed the use of additional 5 GHz channels which were
-> previously restricted for use in Pakistan.
-> 
-> (5150 - 5350) at ≤ 200 mW EIRP (23 dBm)
-> (5470 - 5725) at ≤ 200 mW EIRP (23 dBm)
-> 
-> The current channels (5725 - 5875) remain allowed at a higher power of 1W.
-> 
-> (5725 - 5875) at ≤ 1W EIRP (30 dBm)
-> 
-> The updated regulatory framework from PTA can be found at the link
-> below and the relevant information is available on Page 10.
-> 
-> https://www.pta.gov.pk/assets/media/iot_srd_regulatory_framework_01-06-2022.pdf
-> 
-> If I am correct, the listing for PK in the database should show as follows:
-> 
-> country PK: DFS-JP
-> # https://fab.gov.pk/type-approval/
-> # https://pta.gov.pk/media/Pakistan_Table_of_Frequency_Allocations.pdf
-> # https://www.pta.gov.pk/assets/media/iot_srd_regulatory_framework_01-06-2022.pdf
-> (2402 - 2482 @ 40), (20)
-> (5150 - 5350 @ 80), (23)
-> (5470 - 5725 @ 80), (23)
-> (5725 - 5875 @ 80), (30)
+On Fri, Aug 5, 2022 at 7:22 AM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Linus, do you want to take that directly or should I take it to wireless
+> tree? I assume with the latter you would then get it by the end of next
+> week.
 
-Thanks for the information! This isn't quite right though. Annex A1
-includes additional restrictions which need to be accounted for in the
-rules:
+This isn't holding anything up on my side for the merge window - it's
+just a warning, and the machine works fine.
 
- - 5150-5610 GHz are restricted to indoor use.
- - 5270-5610 GHz requires DFS.
- - 5270-5610 GHz also requires TPC, but since Linux doesn't support TPC
-   we have to lower the max EIRP by half.
+So there's little reason to bypass the normal channels, and getting it
+to me by next week is fine.
 
-It also looks like 60 GHz is allowed, so we can also add a rule for
-that. So I think this is what we end up with for the new rules:
-
-country PK: DFS-JP                                                                                                     
-        # https://fab.gov.pk/type-approval/                                                                            
-        # https://pta.gov.pk/media/Pakistan_Table_of_Frequency_Allocations.pdf                                         
-        # https://www.pta.gov.pk/assets/media/iot_srd_regulatory_framework_01-06-2022.pdf                              
-        (2402 - 2482 @ 40), (100 mW)                                                                                   
-        (5150 - 5270 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW                                                              
-        (5270 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW                                                         
-        (5470 - 5610 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW                                                         
-        (5610 - 5725 @ 80), (200 mW), AUTO-BW                                                                          
-        (5725 - 5875 @ 80), (1000 mW)                                                                                  
-        (57000 - 66000 @ 2160), (40)                                                                                   
-
-Note that I also changed the EIRP to mW to match what's in the document,
-except for 60 GHz where it gives the limit in dBm. We generally try to
-have the rules match the regulatory documents.
-
-If this looks good to you, I can send a patch.
-
-Thanks,
-Seth
+                   Linus
