@@ -2,49 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 314A358C4BC
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Aug 2022 10:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E6058C4C6
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Aug 2022 10:15:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242052AbiHHILX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Aug 2022 04:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42376 "EHLO
+        id S242116AbiHHIPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Aug 2022 04:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234988AbiHHILT (ORCPT
+        with ESMTP id S235829AbiHHIPB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Aug 2022 04:11:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD77310FE0
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Aug 2022 01:11:18 -0700 (PDT)
+        Mon, 8 Aug 2022 04:15:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C007112766;
+        Mon,  8 Aug 2022 01:14:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 783D4B80DCF
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Aug 2022 08:11:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF06C433D6;
-        Mon,  8 Aug 2022 08:11:15 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 671EEB80DD4;
+        Mon,  8 Aug 2022 08:14:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8C5C433C1;
+        Mon,  8 Aug 2022 08:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659946276;
-        bh=cvJPosquDWHM60kC283pdtjQvNHai7KEGa7EcxtmfaU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Jozeg6cSL1W7FpHNOJbyvysHVAJ6XuYy/YEKI3pOwRjnaS5dn81VxVqs+T8iv78tk
-         gJLFbix/KY0t2S2NfBNBwwd4oeSwWmkStllE8Gtr0VehI6WUBGOBRnvPw6dkxKoahi
-         kG2w2pGmku4qGm2+lx+QkLBIMT3L444u3AEKisxAljyuEIOBlSW0g8+JTT/fChwED/
-         Uf1HsFYv05gbAYzwXgsMCI8ExVz0zyPb+HYkAQaCVweHLl+yV+ZkRzvILj5uinGMPf
-         ixcW3CqO9DHl9D72mj0rPmUjnZsawuHUuMlBeiwRjjzT3bpMfPEGU8YIKaUXvtGYyy
-         Wt6iAUbThCsQg==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless] wifi: wilc1000: fix spurious inline in
- wilc_handle_disconnect()
+        s=k20201202; t=1659946494;
+        bh=0OXUkXX376kyAHVXmoOG156albxqwH2Te1I39j40MbY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ez+poJ/XnFkEToDwAtcVXoXUfxRHnyfkNaPTnN2ApHlazHs+4kmaZRK7hgzZ2bfG+
+         FUj+Z4XC6WRouxQw5/vOoFEgiT4fRRKP8j3rORJFj56uOZi73ysVkSEnaA5Mfxblv5
+         o3c8B/THXqf0YUzoHbbgXSxyYl2kf/uUf1V8LF6zxjyFIiizokgRpTHqGBM+KyDqeU
+         roW38rOnweACTiuUDtZ2gyYzHnpplMg1OLNIZKi8Cz76I0skxfOhsPvPZORKtkJ1ID
+         N0Q/bxYjdBYMejOyuk1x2yTRVvM7ykLGPGY0c0e48kJ5VHqQrDywy4Ed7ADIj8qMQI
+         QgF9J3UIyZrQw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220801110440.13144-1-kvalo@kernel.org>
-References: <20220801110440.13144-1-kvalo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165994627009.4951.11229163755018345171.kvalo@kernel.org>
-Date:   Mon,  8 Aug 2022 08:11:15 +0000 (UTC)
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Paolo Abeni <pabeni@redhat.com>,
+        Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+        kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Arend van Spriel <aspriel@gmail.com>
+Subject: Re: [GIT PULL] Networking for 6.0
+References: <20220803101438.24327-1-pabeni@redhat.com>
+        <CAHk-=wjhSSHM+ESVnchxazGx4Vi0fEfmHpwYxE45JZDSC8SUAQ@mail.gmail.com>
+        <87les4id7b.fsf@kernel.org> <877d3mixdh.fsf@kernel.org>
+        <CAHk-=wiW62CSONUNdpPcohmnTOtF_Fa4tSrz-H+pqE3VmpuARA@mail.gmail.com>
+Date:   Mon, 08 Aug 2022 11:14:48 +0300
+In-Reply-To: <CAHk-=wiW62CSONUNdpPcohmnTOtF_Fa4tSrz-H+pqE3VmpuARA@mail.gmail.com>
+        (Linus Torvalds's message of "Fri, 5 Aug 2022 09:34:54 -0700")
+Message-ID: <8735e7i22v.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,24 +63,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Linus Torvalds <torvalds@linux-foundation.org> writes:
 
-> Sparse warns:
-> 
-> drivers/net/wireless/microchip/wilc1000/hif.h:218:35: error: marked inline, but without a definition
-> 
-> Remove the inline, it's not needed.
-> 
-> Reported-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+> On Fri, Aug 5, 2022 at 7:22 AM Kalle Valo <kvalo@kernel.org> wrote:
+>>
+>> Linus, do you want to take that directly or should I take it to wireless
+>> tree? I assume with the latter you would then get it by the end of next
+>> week.
+>
+> This isn't holding anything up on my side for the merge window - it's
+> just a warning, and the machine works fine.
+>
+> So there's little reason to bypass the normal channels, and getting it
+> to me by next week is fine.
 
-Patch applied to wireless.git, thanks.
+Ok, let's do that. I now applied the fix:
 
-f01272ee3856 wifi: wilc1000: fix spurious inline in wilc_handle_disconnect()
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=baa56dfe2cdad12edb2625b2d454e205943c3402
+
+Network folks, I'm planning to submit a pull request on Tuesday or
+Wednesday. Do you still submit your pull requests to Linus on Thursdays?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220801110440.13144-1-kvalo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
