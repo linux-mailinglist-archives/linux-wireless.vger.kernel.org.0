@@ -2,63 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD36C58D7A5
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 12:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B78858D7C4
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 13:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242865AbiHIKuv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Aug 2022 06:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57670 "EHLO
+        id S231187AbiHILA6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Aug 2022 07:00:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242679AbiHIKuj (ORCPT
+        with ESMTP id S238194AbiHILAV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Aug 2022 06:50:39 -0400
+        Tue, 9 Aug 2022 07:00:21 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2F02F2BD0
-        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 03:50:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 34E7425E3
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 04:00:20 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 279AoLrwD018880, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 279AoLrwD018880
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 279B02K30022119, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 279B02K30022119
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 9 Aug 2022 18:50:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Tue, 9 Aug 2022 19:00:03 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Tue, 9 Aug 2022 18:50:32 +0800
-Received: from localhost (172.16.16.191) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 9 Aug 2022
- 18:50:31 +0800
+ 15.1.2375.7; Tue, 9 Aug 2022 19:00:13 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 9 Aug 2022 19:00:12 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::d902:19b0:8613:5b97]) by
+ RTEXMBS04.realtek.com.tw ([fe80::d902:19b0:8613:5b97%5]) with mapi id
+ 15.01.2375.007; Tue, 9 Aug 2022 19:00:12 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3 13/13] wifi: rtw89: early recognize FW feature to decide if chanctx
-Date:   Tue, 9 Aug 2022 18:49:52 +0800
-Message-ID: <20220809104952.61355-14-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220809104952.61355-1-pkshih@realtek.com>
-References: <20220809104952.61355-1-pkshih@realtek.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.191]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/09/2022 10:19:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Kevin Yang" <kevin_yang@realtek.com>
+Subject: Re: [PATCH 13/13] rtw89: prohibit mac80211 chanctx ops without HW scan
+Thread-Topic: [PATCH 13/13] rtw89: prohibit mac80211 chanctx ops without HW
+ scan
+Thread-Index: AQHYgiebmxK+fsrv0UewRp82PNlbwa1YF2M6//+ftYCABCdHAIBKVZUA
+Date:   Tue, 9 Aug 2022 11:00:12 +0000
+Message-ID: <b8f7720937e05c6fd7fde14b8ea57065879928a8.camel@realtek.com>
+References: <20220617084954.61261-1-pkshih@realtek.com>
+         <20220617084954.61261-14-pkshih@realtek.com> <877d5bprxn.fsf@kernel.org>
+         <027f1de5f6ed0da21754c17154cc09411f2c5aa5.camel@realtek.com>
+         <6f6682f8d8c7aec02d113330c87484cbcab14ff3.camel@realtek.com>
+In-Reply-To: <6f6682f8d8c7aec02d113330c87484cbcab14ff3.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.16.191]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzgvOSCkV6TIIDA4OjU0OjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzgvOSDkuIrljYggMDg6NTQ6MDA=?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <65765973ED158843B66372AE1C3F7C66@realtek.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -68,210 +76,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-
-In current flow, FW is asynchronously loaded after alloc_hw(). It defers
-the decision on FW feature map. It makes things difficult for us to decide
-whether to hook chanctx ops, which should be decided while alloc_hw() is
-calling. Still, asynchronous gets its advantages. So, we want to resolve
-this without dropping them.
-
-Based on multi-FW flag, RTW89_MFW_SIG, we can determine runtime FW is
-multi-FW (MFW) or single FW (SFW). Both of them have a quite small chunk
-for header at the head. The difference is that MFW doesn't describe version
-code in its header while SFW does. So, we plan to extend MFW header for
-version code. After that, in both cases, we can determine FW feature map by
-just FW header. And, according to the map, we can decide chanctx.
-
-So, we call request_partial_firmware_into_buf() to request a quite small
-chunk before alloc_hw() to get a early FW feature map without affecting
-things much and only use early map to decide whether to hook chanctx ops.
-
-It means that if non-extended MFW is used at runtime, driver just acts
-without chanctx as before. If extended MFW or SFW, which supports required
-FW features, is used at runtime, driver can hook chanctx ops to mac80211 if
-chip has configured support_chanctx_num > 0.
-
-Besides, key point for now to support single one chanctx is whether HW scan
-is supported at runtime. So, we configure all chip's support_chanctx_num to
-1, and check if HW scan is supported at runtime via early FW feature map.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c     | 12 +++++-
- drivers/net/wireless/realtek/rtw89/core.h     | 12 ++++++
- drivers/net/wireless/realtek/rtw89/fw.c       | 40 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h       | 12 +++++-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  2 +-
- 6 files changed, 76 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 90b18be4fd3a3..93d4d3166e6d2 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3216,12 +3216,19 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	struct rtw89_dev *rtwdev;
- 	struct ieee80211_ops *ops;
- 	u32 driver_data_size;
-+	u32 early_feat_map = 0;
-+	bool no_chanctx;
-+
-+	rtw89_early_fw_feature_recognize(device, chip, &early_feat_map);
- 
- 	ops = kmemdup(&rtw89_ops, sizeof(rtw89_ops), GFP_KERNEL);
- 	if (!ops)
- 		goto err;
- 
--	if (chip->support_chanctx_num == 0) {
-+	no_chanctx = chip->support_chanctx_num == 0 ||
-+		     !(early_feat_map & BIT(RTW89_FW_FEATURE_SCAN_OFFLOAD));
-+
-+	if (no_chanctx) {
- 		ops->add_chanctx = NULL;
- 		ops->remove_chanctx = NULL;
- 		ops->change_chanctx = NULL;
-@@ -3240,6 +3247,9 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	rtwdev->ops = ops;
- 	rtwdev->chip = chip;
- 
-+	rtw89_debug(rtwdev, RTW89_DBG_FW, "probe driver %s chanctx\n",
-+		    no_chanctx ? "without" : "with");
-+
- 	return rtwdev;
- 
- err:
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 3c7b8d9dc1397..8a39377f1dbed 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2561,6 +2561,18 @@ struct rtw89_fw_suit {
- #define RTW89_FW_SUIT_VER_CODE(s)	\
- 	RTW89_FW_VER_CODE((s)->major_ver, (s)->minor_ver, (s)->sub_ver, (s)->sub_idex)
- 
-+#define RTW89_MFW_HDR_VER_CODE(mfw_hdr)		\
-+	RTW89_FW_VER_CODE((mfw_hdr)->ver.major,	\
-+			  (mfw_hdr)->ver.minor,	\
-+			  (mfw_hdr)->ver.sub,	\
-+			  (mfw_hdr)->ver.idx)
-+
-+#define RTW89_FW_HDR_VER_CODE(fw_hdr)				\
-+	RTW89_FW_VER_CODE(GET_FW_HDR_MAJOR_VERSION(fw_hdr),	\
-+			  GET_FW_HDR_MINOR_VERSION(fw_hdr),	\
-+			  GET_FW_HDR_SUBVERSION(fw_hdr),	\
-+			  GET_FW_HDR_SUBINDEX(fw_hdr))
-+
- struct rtw89_fw_info {
- 	const struct firmware *firmware;
- 	struct rtw89_dev *rtwdev;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index cee9815b6df6f..bf07275ca8a3f 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -248,6 +248,46 @@ static void rtw89_fw_recognize_features(struct rtw89_dev *rtwdev)
- 	}
- }
- 
-+void rtw89_early_fw_feature_recognize(struct device *device,
-+				      const struct rtw89_chip_info *chip,
-+				      u32 *early_feat_map)
-+{
-+	union {
-+		struct rtw89_mfw_hdr mfw_hdr;
-+		u8 fw_hdr[RTW89_FW_HDR_SIZE];
-+	} buf = {};
-+	const struct firmware *firmware;
-+	u32 ver_code;
-+	int ret;
-+	int i;
-+
-+	ret = request_partial_firmware_into_buf(&firmware, chip->fw_name,
-+						device, &buf, sizeof(buf), 0);
-+	if (ret) {
-+		dev_err(device, "failed to early request firmware: %d\n", ret);
-+		goto out;
-+	}
-+
-+	ver_code = buf.mfw_hdr.sig != RTW89_MFW_SIG ?
-+		   RTW89_FW_HDR_VER_CODE(&buf.fw_hdr) :
-+		   RTW89_MFW_HDR_VER_CODE(&buf.mfw_hdr);
-+	if (!ver_code)
-+		goto out;
-+
-+	for (i = 0; i < ARRAY_SIZE(fw_feat_tbl); i++) {
-+		const struct __fw_feat_cfg *ent = &fw_feat_tbl[i];
-+
-+		if (chip->chip_id != ent->chip_id)
-+			continue;
-+
-+		if (ent->cond(ver_code, ent->ver_code))
-+			*early_feat_map |= BIT(ent->feature);
-+	}
-+
-+out:
-+	release_firmware(firmware);
-+}
-+
- int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
- {
- 	int ret;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index e75ad22aa85df..1e193928deec8 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -2446,7 +2446,14 @@ struct rtw89_mfw_info {
- struct rtw89_mfw_hdr {
- 	u8 sig;	/* RTW89_MFW_SIG */
- 	u8 fw_nr;
--	u8 rsvd[14];
-+	u8 rsvd0[2];
-+	struct {
-+		u8 major;
-+		u8 minor;
-+		u8 sub;
-+		u8 idx;
-+	} ver;
-+	u8 rsvd1[8];
- 	struct rtw89_mfw_info info[];
- } __packed;
- 
-@@ -2563,6 +2570,9 @@ struct rtw89_fw_h2c_rf_get_mccch {
- 
- int rtw89_fw_check_rdy(struct rtw89_dev *rtwdev);
- int rtw89_fw_recognize(struct rtw89_dev *rtwdev);
-+void rtw89_early_fw_feature_recognize(struct device *device,
-+				      const struct rtw89_chip_info *chip,
-+				      u32 *early_feat_map);
- int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type);
- int rtw89_load_firmware(struct rtw89_dev *rtwdev);
- void rtw89_unload_firmware(struct rtw89_dev *rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 3516e480e622b..f6810fbb3fab1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2133,7 +2133,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.txpwr_factor_mac	= 1,
- 	.dig_table		= &rtw89_8852a_phy_dig_table,
- 	.tssi_dbw_table		= NULL,
--	.support_chanctx_num	= 0,
-+	.support_chanctx_num	= 1,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
- 				  BIT(NL80211_BAND_5GHZ),
- 	.support_bw160		= false,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 0218fa90526ca..01d1ad76534ac 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2981,7 +2981,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.txpwr_factor_mac	= 1,
- 	.dig_table		= NULL,
- 	.tssi_dbw_table		= &rtw89_8852c_tssi_dbw_table,
--	.support_chanctx_num	= 0,
-+	.support_chanctx_num	= 1,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
- 				  BIT(NL80211_BAND_5GHZ) |
- 				  BIT(NL80211_BAND_6GHZ),
--- 
-2.25.1
-
+T24gVGh1LCAyMDIyLTA2LTIzIGF0IDExOjUwICswODAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+
+IE9uIE1vbiwgMjAyMi0wNi0yMCBhdCAxMjozNCArMDAwMCwgUGluZy1LZSBTaGloIHdyb3RlOg0K
+PiA+IE9uIE1vbiwgMjAyMi0wNi0yMCBhdCAxMzowOSArMDMwMCwgS2FsbGUgVmFsbyB3cm90ZToN
+Cj4gPiA+IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cml0ZXM6DQo+ID4gPiAN
+Cj4gPiA+ID4gRnJvbTogWm9uZy1aaGUgWWFuZyA8a2V2aW5feWFuZ0ByZWFsdGVrLmNvbT4NCj4g
+PiA+ID4gDQo+ID4gPiA+IElmIGEgY2hpcCBpcyBjb25maWd1cmVkIHRvIHN1cHBvcnQgbWFjODAy
+MTEgY2hhbmN0eCBvcHMsIHdlIGF2b2lkDQo+ID4gPiA+IHVzaW5nIG9sZGVyIEZXIHRoYXQgZG9l
+cyBub3Qgc3VwcG9ydCBIVyBzY2FuIHRvIG1ha2UgbWFjODAyMTEgc3RhY2sNCj4gPiA+ID4gaGFu
+ZGxlIHNjYW5uaW5nIGFzIGV4cGVjdGVkLg0KPiA+ID4gPiANCj4gPiA+ID4gU2lnbmVkLW9mZi1i
+eTogWm9uZy1aaGUgWWFuZyA8a2V2aW5feWFuZ0ByZWFsdGVrLmNvbT4NCj4gPiA+ID4gU2lnbmVk
+LW9mZi1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+ID4gPiA+IC0tLQ0K
+PiA+ID4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jIHwgOCArKysr
+KysrKw0KPiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKQ0KPiA+ID4gPiAN
+Cj4gPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkv
+ZncuYw0KPiA+ID4gPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuYw0K
+PiA+ID4gPiBpbmRleCAwZTEyNjI5Zjc4OWMzLi5hNDc0NTFkYzlkODFkIDEwMDY0NA0KPiA+ID4g
+PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMNCj4gPiA+ID4g
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jDQo+ID4gPiA+IEBA
+IC0yNTAsNiArMjUwLDcgQEAgc3RhdGljIHZvaWQgcnR3ODlfZndfcmVjb2duaXplX2ZlYXR1cmVz
+KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldikNCj4gPiA+ID4gIA0KPiA+ID4gPiAgaW50IHJ0dzg5
+X2Z3X3JlY29nbml6ZShzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYpDQo+ID4gPiA+ICB7DQo+ID4g
+PiA+ICsJY29uc3Qgc3RydWN0IHJ0dzg5X2NoaXBfaW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsN
+Cj4gPiA+ID4gIAlpbnQgcmV0Ow0KPiA+ID4gPiAgDQo+ID4gPiA+ICAJcmV0ID0gX19ydHc4OV9m
+d19yZWNvZ25pemUocnR3ZGV2LCBSVFc4OV9GV19OT1JNQUwpOw0KPiA+ID4gPiBAQCAtMjYxLDYg
+KzI2MiwxMyBAQCBpbnQgcnR3ODlfZndfcmVjb2duaXplKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rl
+dikNCj4gPiA+ID4gIA0KPiA+ID4gPiAgCXJ0dzg5X2Z3X3JlY29nbml6ZV9mZWF0dXJlcyhydHdk
+ZXYpOw0KPiA+ID4gPiAgDQo+ID4gPiA+ICsJaWYgKGNoaXAtPnN1cHBvcnRfY2hhbmN0eF9udW0g
+IT0gMCAmJg0KPiA+ID4gPiArCSAgICAhUlRXODlfQ0hLX0ZXX0ZFQVRVUkUoU0NBTl9PRkZMT0FE
+LCAmcnR3ZGV2LT5mdykpIHsNCj4gPiA+ID4gKwkJcnR3ODlfZXJyKHJ0d2RldiwNCj4gPiA+ID4g
+KwkJCSAgInJlcXVpcmUgbmV3ZXIgRlcgdG8gc3VwcG9ydCBIVyBzY2FuIGZvciBjaGFuY3R4XG4i
+KTsNCj4gPiA+ID4gKwkJcmV0dXJuIC1FTk9FTlQ7DQo+ID4gPiA+ICsJfQ0KPiA+ID4gDQo+ID4g
+PiBTbyBpZiB0aGUgdXNlciBoYXMgbm90IHVwZGF0ZSB0aGUgZmlybXdhcmUgYSBrZXJuZWwgdXBn
+cmFkZSB3aWxsIGJyZWFrDQo+ID4gPiB0aGVpciBpbnRlcm5ldD8gVGhhdCdzIG5vdCBnb29kLCB3
+ZSBzaG91bGQgbm90IGJyZWFrIGV4aXN0aW5nIHNldHVwcy4gU28NCj4gPiA+IHdoYXQgZmlybXdh
+cmUgdmVyc2lvbiBpcyByZXF1aXJlZD8NCj4gPiA+IA0KPiA+IA0KPiA+IEZpcm13YXJlIHZlcnNp
+b24gMC4xMy4zNS4wIGlzIHJlcXVpcmVkLiBUaGUgZmlybXdhcmUgaGFzIGJlZW4gaW4NCj4gPiBs
+aW51eC1maXJtd2FyZSByZXBvc2l0b3J5IG9uIDIwMjItMDItMTguIEkgdGhpbmsgcGVvcGxlIGJl
+aW5nIGFibGUNCj4gPiB0byB1cGRhdGUga2VybmVsIGNhbiB1cGRhdGUgZmlybXdhcmUgYXMgd2Vs
+bC4NCj4gPiANCj4gPiBUaGUgYWx0ZXJuYXRpdmUgd2F5cyBjb3VsZCBiZQ0KPiA+IDEuIGFkZCBh
+IG1vZHVsZSBwYXJhbWV0ZXIsIGxpa2Ugbm9fY2hhbm5lbF9jb250ZXh0LiBXZSBjYW4gYWRkIGEN
+Cj4gPiAgICBwcm9tcHQgdG8gbm90ZSBwZW9wbGUgY2FuIHNldCBpdCB0byAxIGZvciBvbGQgZmly
+bXdhcmUuDQo+ID4gDQo+ID4gMi4gd2FpdCB2ZXJzaW9uIG9mIHJlcXVlc3RfZmlybXdhcmUoKSBh
+cyBmaXJzdCBzdGVwIG9mIHBjaSBwcm9iZS4NCj4gPiAgICBUaGUgcHJvYmUgY291bGQgY29zdCBs
+b25nZXIgdGltZSwgYmVjYXVzZSBjdXJyZW50bHkgd2UgdXNlDQo+ID4gICAgcmVxdWVzdF9maXJt
+d2FyZV9ub3dhaXQoKSBhbmQgY29udGludWUgdG8gaW5pdGlhbGl6ZSBpbiBwYXJhbGxlbC4NCj4g
+PiAgICBNb3JlLCBody0+cHJpdiBpc24ndCBhbGxvY2F0ZWQgYXQgdGhhdCBtb21lbnQsIHNvIGl0
+IGNvdWxkIGJlIG5vdA0KPiA+ICAgIHNvIHN0cmFpZ2h0Zm9yd2FyZC4NCj4gPiANCj4gDQo+IFRv
+IHByZXZlbnQgYnJlYWsgdXNlcnMnIGV4aXN0aW5nIHNldHVwcywgbW9kaWZpZWQgYXBwcm9hY2gg
+MSBpcyBhZG9wdGVkDQo+IGJ5IHBhdGNoc2V0IHYyLiBXZSBhZGQgYSBtb2R1bGUgcGFyYW1ldGVy
+IHJ0dzg5X3VzZV9jaGFuY3R4LCBhbmQgZGlzYWJsZQ0KPiBpdCBieSBkZWZhdWx0LiBTbywgdXNl
+cnMnIHNldHVwcyB3aXRoIG9sZCBmaXJtd2FyZSBjYW4gc3RpbGwgd29yay4NCj4gDQo+IElmIGEg
+dXNlciB3YW50cyBjaGFubmVsIGNvbnRleHQgdG8gc3VwcG9ydCBjb25jdXJyZW5jeSwgaGUgY2Fu
+IHNldA0KPiBydHc4OV91c2VfY2hhbmN0eD0xIGFuZCB1cGdyYWRlIGZpcm13YXJlLiANCj4gDQo+
+IEkgdGhpbmsgdGhpcyBjb3VsZCBiZSBhIGJldHRlciB1c2VyIGV4cGVyaWVuY2Ugb2Yga2VybmVs
+Lg0KPiANCg0KV2UgaGF2ZSBhIGJldHRlciBpZGVhIHRoYXQgbG9hZCBmaXJtd2FyZSBoZWFkZXIg
+YW5kIHBhcnNlIGZpcm13YXJlDQpmZWF0dXJlcyB3aGVuIHByb2JpbmcgYmVmb3JlIGllZWU4MDIx
+MV9yZWdpc3Rlcl9odygpLiBJZiBmaXJtd2FyZQ0KZG9lc24ndCBzdXBwb3J0IGh3X3NjYW4sIGl0
+IHN0aWxsIGNhbiB3b3JrIGFzIG9yaWdpbmFsLiBTbywgdXNlcnMNCmRvbid0IG5lZWQgdG8gdXBk
+YXRlIGZpcm13YXJlIG9yIHNldCBtb2R1bGUgcGFyYW1ldGVycy4NCg0KSSBoYXZlIHNlbnQgdjMg
+d2l0aCB0aGlzIGlkZWEgdGhhdCBpcyBmcmllbmRseSB0byB1c2Vycy4NCg0KUGluZy1LZQ0KDQoN
+Cg==
