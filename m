@@ -2,82 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9839358E12F
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 22:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8740858E2F0
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Aug 2022 00:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232578AbiHIUfY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Aug 2022 16:35:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56604 "EHLO
+        id S230484AbiHIWQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Aug 2022 18:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234121AbiHIUfV (ORCPT
+        with ESMTP id S230061AbiHIWPU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Aug 2022 16:35:21 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5030362E1
-        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 13:35:20 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id n185so6837337wmn.4
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Aug 2022 13:35:20 -0700 (PDT)
+        Tue, 9 Aug 2022 18:15:20 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A66B26109
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 15:15:15 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id r5so10747235iod.10
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Aug 2022 15:15:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc;
-        bh=oNWNozI9iBrClNUUX2Vj6i1hza4qDVwm9A1CS6S2BfA=;
-        b=Fg2YLIpJM+TiQq2eL7VKibVR0wOGvhO8Te+nlVNuupYGeeP7JIr//HWupUp7CRqq5n
-         JF/Qhif8QwkMzJjWVZaJY8QTcu/zFz0VhvpCMRY1UYlul/A3sZFJ9N+YKzsc0YeCUHlF
-         tk5ky3+HpyBPs4u6AKObXnE5D7XGUJaM7EEIc4v9fiOAGmGKBl2pl5xdyEDW2OXBOspu
-         ASPLlLCEYUbfHFhE5HEyJPjUaiwjyxo6aSewVzvvklCosJfpOH0SBQUd9UotrWlG5/Fr
-         sC5AHz0sKrrKKetwj2H4kD8HKQysi3uOWOT28MXHXoaAyjTaW2XYrLeh7PRUeGWtCNWC
-         n5iA==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
+         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
+         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
+         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
+         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
+         O1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc;
-        bh=oNWNozI9iBrClNUUX2Vj6i1hza4qDVwm9A1CS6S2BfA=;
-        b=hC/U+bCIjVma3bpfRKNMt/yZfAD9Fsu4XyeD5toiLopu8WmkSdEK9AZN/j6HZL4Kr3
-         ExHcL5e9NTZYp06G3KOianUJGULUWv/oDctp00U4ucfFn+MSrcUx56FZixeroMZesw3S
-         ecYDJsf2vp5kCb7lRkkFoS/BQJ6Qb8oFle4OVITVhYqeZkR1TH8lT+bx7BVx7jpWw+zv
-         LRfyJbHMa+cPanVuH9wt4VqprSw3pRzZG20K8G1ZMx7f/YEgegqhLibE4d89K7Vw7xHF
-         hdj/4PT4AM042Ya5JUVaB5O0mRSVStIR3rAtC5FBwoivipxFDSdLJ6c/ODMjenY82fMu
-         BI7Q==
-X-Gm-Message-State: ACgBeo1ZTP+WZRy4bY3cWu4wqZ67ojxxNy5fksM2qE/sUxJ3jBcI7N1N
-        3njWiiJVCKBn0/bg8HCyvnlo0rub8XRZzjMHtgA=
-X-Google-Smtp-Source: AA6agR5TTxBjwyfYf7+FbbGyU25wcLsxo5kb+b38CfXhkx5fJvx7gxwhfmpgdP/OzvXwoxZv+O4F9L9nLC3V+a3WJG4=
-X-Received: by 2002:a05:600c:19cc:b0:3a3:3cfe:d548 with SMTP id
- u12-20020a05600c19cc00b003a33cfed548mr152239wmq.6.1660077318794; Tue, 09 Aug
- 2022 13:35:18 -0700 (PDT)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=VyOIbcdl95OdUKoC93/S1Hc7oxvLSoUrcAVjUQt0aIxJNbd3HNwD/VsGBzvdrMuVP5
+         /0ItbygyPgLtIFzCEjBr3vl9yYJq6Xr2gS8IqQguGfX0+x7qOFy15IT/nHlhkN3xUwb1
+         gowA11QPKBO3nrbE7Andtuqs48r/wpCYkGb8/QH1LfYfwczvFxdxxNn7b+Kq5DjN88cG
+         6cRQV7GnlzhStSMKvce6JpyjgR/lQxiGqe6fbow/Qupy5tFyEGe8g6IKU0heFh7TnkxY
+         6eFk8WKuU+PLFm5FStSNkaf94JqUXS/jOoaTbo5dmloAdVVVa/fB+P4OeR3Nu2n6tid5
+         gw0w==
+X-Gm-Message-State: ACgBeo2wDAq4H8G87IX6d7Y6BMhyiJkmB8rh/Ulq7NbWoB7Zbbx2ScsD
+        rZrWP/WP8jrYEYykQvHVUgtpO4VnYq5zeQjwPSS0YbtNRF0yLg==
+X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
+X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
+ v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
+ Aug 2022 15:15:03 -0700 (PDT)
 MIME-Version: 1.0
-From:   Jill McDonald <jilllmcdonaldd@gmail.com>
-Date:   Tue, 9 Aug 2022 15:35:07 -0500
-Message-ID: <CADb3WDmzwv5Zp9oHEAyEb=a2G7HYt=vF_LATUK3CFFQJBxay=Q@mail.gmail.com>
-Subject: RE: Money20/20 Attendees Email List- 2022
-To:     Jill McDonald <jilllmcdonaldd@gmail.com>
+Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
+ 15:15:03 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Dr. Ali Moses" <alimoses07@gmail.com>
+Date:   Tue, 9 Aug 2022 15:15:03 -0700
+Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
-        FILL_THIS_FORM_LONG,FREEMAIL_FROM,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d32 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [alimoses07[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alimoses07[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+-- 
+Hello,
+We the Board Directors believe you are in good health, doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
-I hope you're doing great and staying healthy!
+My regards,
+Dr. Ali Moses..
 
-Would you be interested in acquiring Money20/20 Attendees Data List 2022?
-
-List contain: Company Name, Contact Name, First Name, Middle Name,
-Last Name, Title, Address, Street, City, Zip code, State, Country,
-Telephone, Email address and more,
-
-No of Contacts:- 12,969
-Cost: $ 1,598
-
-Looking forward for your response,
-
-Kind Regards,
-Jill McDonald
-Marketing Coordinator
+Sincerely,
+Prof. Chin Guang
