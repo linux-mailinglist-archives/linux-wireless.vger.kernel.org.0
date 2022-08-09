@@ -2,96 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1CC58D349
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 07:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1379758D359
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 07:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234905AbiHIFkz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Aug 2022 01:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41048 "EHLO
+        id S235220AbiHIFsm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Aug 2022 01:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234860AbiHIFkk (ORCPT
+        with ESMTP id S229606AbiHIFsi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Aug 2022 01:40:40 -0400
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E531219A
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Aug 2022 22:40:39 -0700 (PDT)
-Received: by mail-pf1-f197.google.com with SMTP id y7-20020a056a00180700b0052d90ab2314so4703102pfa.10
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Aug 2022 22:40:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc;
-        bh=4WRjZBPGOS7PDzHhRHuHLZYa8Vua1VrrZ8WseiQhNsY=;
-        b=opDV5gMq+wnJ2emb3Z6wnzKNnvPmP4HKUmb8/wCznSFSDp7FY9RJHaoQfI1adfEoH/
-         oJidY9n7aUKDeDcyASxBh+Omc9ORJHJNBxmpzoJqRQWMmuvAgZWxmWcq/zVUVbjNwK38
-         tpJALSZulvc+ixLznvV7JfDawB3Ir2L/TXD+7DnxAHqKhjwL62r89eN/Uwt7EkmUQnnz
-         xxnt/e+Oah9r3CJUAZ0ozj90uWJKD6cRAWQZZPd3BJ1c9Y4fCg+rw7ytZSpJIzaD2Z1s
-         WT8CcM7FDazghDuQXVeoyD/SeGyJfTNayD2Rk1fwa1vdTwmK993SFjwnZrH38Tm6RS3Z
-         iVhw==
-X-Gm-Message-State: ACgBeo0LZzP42ycvbNuvN96myuJIz9tbqRF/900k1YP9grKfd/dZZ6lz
-        62omHk58KvTDUco7kmTIGGq218zzHN6/y1cyp3lx8kp4HOxC
-X-Google-Smtp-Source: AA6agR5x4kCvBhEzAZyhAbeD611La5eVcvU33tBUXl8U1eAAv4dU0acgp2hwUCX9zm9lDlTYj3dy1PyezpOzZ6JJ36TxnQvag5PK
+        Tue, 9 Aug 2022 01:48:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1C31BEAD
+        for <linux-wireless@vger.kernel.org>; Mon,  8 Aug 2022 22:48:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F9A461185
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 05:48:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA87C433D6;
+        Tue,  9 Aug 2022 05:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660024115;
+        bh=2W669nJ1EzQXOxEgsEOeCSOqSkjqcX+MKr/icofkDRc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=WqevvAEt1+WqtrYpeEuhVeD3ZPsD2L3+c1TO2KKIrcOrByi394IaTDN1n1m6bjnHd
+         rupB6zZW3PcK/mPYwVxE58Qzfmr83u5AnyX9re9LRYuw5a9Onapc9EFR44BYrGFOjs
+         zUKvIzTmGSBExykC4PC2q1ApM3SOblCubADUb65AIJU4ebw4GuvSRZ5PebKnlLqkVD
+         /ZMkt5GpPMYx8YFPHPRHcetw8Og2fwOsMiK243K02BjPhvwRz8P34PFbyud2lnNbwH
+         ETAaHzRM4k7sukxoFPORan3u3yDTch3Gc0n1UKRyz4m0iLLADjkx//GXDNj81noDWF
+         pvjG3REKVfGgA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1bcc:b0:2de:5182:be7 with SMTP id
- x12-20020a056e021bcc00b002de51820be7mr9478794ilv.265.1660023627840; Mon, 08
- Aug 2022 22:40:27 -0700 (PDT)
-Date:   Mon, 08 Aug 2022 22:40:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a806e205e5c85e54@google.com>
-Subject: [syzbot] WARNING: CPU: NUM PID: NUM at net/wireless/ibss.c:LINE __cfg80211_ibss_join
-From:   syzbot <syzbot+af9c72450de65fd26129@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [v3,1/4] wifi: rtw88: 8822c: extend supported probe request size
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220727065003.28340-2-pkshih@realtek.com>
+References: <20220727065003.28340-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <gary.chang@realtek.com>,
+        <phhuang@realtek.com>, <kevin_yang@realtek.com>,
+        <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166002411090.8958.12960245596599654054.kvalo@kernel.org>
+Date:   Tue,  9 Aug 2022 05:48:34 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-syzbot found the following issue on:
+> From: Po-Hao Huang <phhuang@realtek.com>
+> 
+> Some WSC IEs require size larger than we current supports. Extend size
+> to fit those demands. Separate the registered scan IE length by IC so
+> settings can be independent.
+> 
+> Since old firmware uses fewer page number, define a firmware feature to
+> be compatible with various firmware version.
+> 
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-HEAD commit:    200e340f2196 Merge tag 'pull-work.dcache' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16dd956a080000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a3f4d6985d3164cd
-dashboard link: https://syzkaller.appspot.com/bug?extid=af9c72450de65fd26129
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=126cccbc080000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10b964b6080000
+4 patches applied to wireless-next.git, thanks.
 
-Bisection is inconclusive: the issue happens on the oldest tested release.
+d2eb7cb97c7d wifi: rtw88: 8822c: extend supported probe request size
+8edb22de9de7 wifi: rtw88: fix stopping queues in wrong timing when HW scan
+79ba1062c459 wifi: rtw88: fix store OP channel info timing when HW scan
+86331c7e0cd8 wifi: rtw88: phy: fix warning of possible buffer overflow
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=168a8e61080000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=158a8e61080000
-console output: https://syzkaller.appspot.com/x/log.txt?x=118a8e61080000
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20220727065003.28340-2-pkshih@realtek.com/
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+af9c72450de65fd26129@syzkaller.appspotmail.com
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 46 at net/wireless/ibss.c:37 __cfg80211_ibss_join
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
