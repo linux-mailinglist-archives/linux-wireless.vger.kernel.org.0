@@ -2,164 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54E4358DF3C
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 20:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE4858DF3E
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 20:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245228AbiHISmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Aug 2022 14:42:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53966 "EHLO
+        id S245479AbiHISmY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Aug 2022 14:42:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347819AbiHISlT (ORCPT
+        with ESMTP id S1347919AbiHISl3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Aug 2022 14:41:19 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A4C6155
-        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 11:15:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660068919; x=1691604919;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=z2dhjMCwuK1fgnw4RHDIk7rCdY/5iiIXtDAw/Jbbbuw=;
-  b=oFsCMsQ9STy34Dtqnjzz2h/DR4pbNJFi/ga1TMk6bs6LORM6t2DEYaDx
-   /c9xis6anaBKyLWdP1GCGaqEID5baaZh+UGsLlyw/w6k3RZ2MW0FaA/or
-   aGJz/gWaUQaI1xm/rkcGCZT5aZLAG3eB2SCzeqk5ITvxSww+WbhxgPMc2
-   6UiSwIjsE6R8/nHNDBFG7Ck/bcoDLjn2//NPPzc3xLGR4rRDpNPmaN0dX
-   OnDTL5iVepVc08TnXUbYZWPEvH3LEBdlQYP/h0TkFa6ykHGuM8ZU95fk4
-   xVTyYO5l0D7H4tPILd4xYAmpPnydg75nOtvL7UbskCID6k/bAF1yF+ewB
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10434"; a="289658535"
-X-IronPort-AV: E=Sophos;i="5.93,225,1654585200"; 
-   d="scan'208";a="289658535"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2022 11:14:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,225,1654585200"; 
-   d="scan'208";a="580902454"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 09 Aug 2022 11:14:54 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oLTkk-000N8T-0H;
-        Tue, 09 Aug 2022 18:14:54 +0000
-Date:   Wed, 10 Aug 2022 02:14:48 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- bafe9528b792f4a442aa1ea2b0297cd53a0351ab
-Message-ID: <62f2a418.dxumQTiVN7GOcDjd%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Tue, 9 Aug 2022 14:41:29 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E646810F4
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 11:15:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=tE0XMQILqhYQ+1XeOo06dyc11O7obDyIEuaiBH7MHO8=;
+        t=1660068925; x=1661278525; b=esxugo8kC5cE+aa05yJ5OIXprc/4HmUhJB8zWxVoytw9/O6
+        +4OimqZZBIMqcXzyhKHYYStjU+588c/DelBTlzJzNFKrGopkK+vybiVfdB0qd5/aCArLdqzqyB6qE
+        qMXsaSO9hZ5BPxT+pOoCUSrqBc4h1/F4/bnuHazm9tClz13Fd9iiguLaulF6Zm2h+mvgtOekGB2Ba
+        p4eYdhN+IymR20hhAMXmJPptNcRtSIIG+xS1qWMj/MIBcUjFNecT9uWIQ9v0gxUkDUYx3BrzOYsTc
+        YCclYC+MztwCMp84cj7cvwF3q3mmqjDuene/Et2FlHm/cXc22wRQtsfjP42ENZaA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oLTlA-003Hgk-2w;
+        Tue, 09 Aug 2022 20:15:21 +0200
+Message-ID: <103f62efc89d86773fbd07729326f3ba08f4ea23.camel@sipsolutions.net>
+Subject: Re: [RFC 2/2] wifi: mac80211: use link_id from ieee80211_rx_status
+ to retrieve rx link
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 09 Aug 2022 20:15:20 +0200
+In-Reply-To: <20220802065019.20791-3-quic_vthiagar@quicinc.com>
+References: <20220802065019.20791-1-quic_vthiagar@quicinc.com>
+         <20220802065019.20791-3-quic_vthiagar@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: bafe9528b792f4a442aa1ea2b0297cd53a0351ab  wifi: rtw89: 8852a: correct WDE IMR settings
+On Tue, 2022-08-02 at 12:20 +0530, Vasanthakumar Thiagarajan wrote:
+> Fill rx.link with respective data_link from the reported link_id
+> in rx_status. Any link_id > 15 is invalid. Non-MLO connections
+> can use either 0 or 15 as the link_id. Please note that link_id
+> 0 is used with non-MLO connections to avoid changes in the
+> drivers not supporting MLO. For a 802.11 MLD address translated
+> frame, driver must report the right link_id for the
+> frame to get processed. When processing 802.3 frame format,
+> link_id is not that critical, used only with stats update.
+> In such case, all the stats will be updated for the deflink.
 
-elapsed time: 716m
+I think it might be worth splitting this patch a bit different - putting
+some parts into the first patch already (that fill rx.link_id), and
+keeping some others (statistics etc.) in this patch, which is then more
+related to statistics?
 
-configs tested: 81
-configs skipped: 2
+>=20
+>  	if (rx->link_id >=3D 0) {
+> -		link =3D rcu_dereference(rx->sdata->link[rx->link_id]);
+> -
+> +		link =3D  rcu_dereference(sdata->link[rx->link_id]);
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+that has some spurious whitespace changes
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-i386                                defconfig
-arc                  randconfig-r043-20220808
-x86_64                              defconfig
-i386                             allyesconfig
-x86_64               randconfig-a003-20220808
-arc                              allyesconfig
-i386                 randconfig-a001-20220808
-x86_64                           rhel-8.3-kvm
-i386                 randconfig-a002-20220808
-x86_64                               rhel-8.3
-alpha                            allyesconfig
-x86_64               randconfig-a004-20220808
-i386                 randconfig-a003-20220808
-powerpc                          allmodconfig
-x86_64               randconfig-a001-20220808
-i386                 randconfig-a004-20220808
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-m68k                             allyesconfig
-x86_64               randconfig-a005-20220808
-i386                 randconfig-a006-20220808
-x86_64               randconfig-a002-20220808
-x86_64                           rhel-8.3-syz
-ia64                             allmodconfig
-x86_64               randconfig-a006-20220808
-x86_64                          rhel-8.3-func
-m68k                             allmodconfig
-i386                 randconfig-a005-20220808
-x86_64                         rhel-8.3-kunit
-mips                             allyesconfig
-powerpc                           allnoconfig
-sh                               allmodconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-sh                          rsk7203_defconfig
-riscv                    nommu_k210_defconfig
-powerpc                       holly_defconfig
-sparc64                             defconfig
-arm                           u8500_defconfig
-csky                             alldefconfig
-mips                    maltaup_xpa_defconfig
-loongarch                           defconfig
-loongarch                         allnoconfig
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-sh                ecovec24-romimage_defconfig
-mips                      loongson3_defconfig
-loongarch                        alldefconfig
-sh                           sh2007_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                 randconfig-c001-20220808
+> +	/*
+> +	 * TODO: In MLO, should the frame be dropped if the right link_id is no=
+t
+> +	 * available? Or may be it is fine in the current form to proceed with
+> +	 * the frame processing because with frame being in 802.3 format,
+> +	 * link_id is used only for stats purpose and updating the stats on
+> +	 * the deflink is fine?
+> +	 */
+> +	if (pubsta->mlo && status->link_id !=3D IEEE80211_LINK_UNSPECIFIED)
+> +		rx.link_id =3D status->link_id;
 
-clang tested configs:
-hexagon              randconfig-r045-20220808
-hexagon              randconfig-r041-20220808
-riscv                randconfig-r042-20220808
-s390                 randconfig-r044-20220808
-x86_64               randconfig-a013-20220808
-x86_64               randconfig-a015-20220808
-x86_64               randconfig-a016-20220808
-x86_64               randconfig-a012-20220808
-x86_64               randconfig-a011-20220808
-x86_64               randconfig-a014-20220808
-i386                 randconfig-a011-20220808
-i386                 randconfig-a013-20220808
-i386                 randconfig-a012-20220808
-i386                 randconfig-a014-20220808
-i386                 randconfig-a016-20220808
-i386                 randconfig-a015-20220808
-arm                       mainstone_defconfig
-arm                   milbeaut_m10v_defconfig
-x86_64               randconfig-k001-20220808
+If the driver *does* give a link ID, it better be valid?
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+OTOH, could there be races, e.g. while disabling a link?
+
+johannes
