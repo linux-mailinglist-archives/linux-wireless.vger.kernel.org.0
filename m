@@ -2,48 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BE858D362
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 07:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FA9458D36B
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Aug 2022 07:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235335AbiHIFyJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Aug 2022 01:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48216 "EHLO
+        id S235491AbiHIF7C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Aug 2022 01:59:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230022AbiHIFyI (ORCPT
+        with ESMTP id S235430AbiHIF7A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Aug 2022 01:54:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6101CFF7
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Aug 2022 22:54:07 -0700 (PDT)
+        Tue, 9 Aug 2022 01:59:00 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38AF1D316;
+        Mon,  8 Aug 2022 22:58:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4415661188
-        for <linux-wireless@vger.kernel.org>; Tue,  9 Aug 2022 05:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA88C433D6;
-        Tue,  9 Aug 2022 05:54:05 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8EE41B811B1;
+        Tue,  9 Aug 2022 05:58:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBA4C433D6;
+        Tue,  9 Aug 2022 05:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660024446;
-        bh=jQ0kU5VacR4/MhpAU4KNFqJoD8xssRrISESwfGrjIPU=;
+        s=k20201202; t=1660024737;
+        bh=ZY0ccwDYxX4Fn+uGQpnneqiemjXQnOh06W4BfAG69o0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JH1ULRoyIqeYNmWnJioqTm4zk8fDSp5CE4Z0+zwID8hwmmjzl9LKzUhW//cUZfROf
-         P/327bp/BHRbrVp/IT6ATZ5KghW2ueCToqbMTh9r1JaGcq1EFp2ZvJw6hjg9UW3A3G
-         Yo+Wuel/gBsMbTdZSedQYhDH1NudhZ5UADKPM1DHqqlr10LEkmSl8fA4H+JEwUZJ3S
-         oe4kTX7XpzRIiJFIFqYq8ZcFTs/8sbCakd1LjukLuosbw76EIUEOiXAOC49Dql6PBV
-         uH6bRmQeJYzmRo4/RsNYZK+WFHnxMvL6tbPkQTbnZem7dQwOlkXZGQav6gxxYUMnMO
-         /AzCLzD3XVXHg==
+        b=Ssj5BFwlQCfSiQBLcv36M6FF0ASv180cXXk4N/qvKwQIDstq7o/9FrgodhcbgOKeN
+         0ZrrojuCMC8FtkExsn/VwhhCtHW9fuk/kF/v59NDs+cymveJG7lL3Fx44Xdq9HBe7R
+         CGKjWo59NLd2IRLAU3/QIVZEFzBKKXALFR3vwl9LIu6s493e3S97jbOpHzDg66ZcuS
+         7bN8XBA4/YZM+n5SvjBMQbX7ybgEt72xC5ufQtur7Qs+xSM3SlMjqPUAgVUV6P6WXi
+         hLSEwT70jNYu8Fer7HDEACtLs/TQ2xl1Nzu7G5/VWMyplBkNsKrVqVjEqE7JUHtVe3
+         IaytDPGEN4Q9g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] wifi: rtw88: add mutex when set SAR
+Subject: Re: [PATCH 2/2] dt-bindings: wireless: use spi-peripheral-props.yaml
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220713084758.41654-2-pkshih@realtek.com>
-References: <20220713084758.41654-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <gary.chang@realtek.com>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <20220727164130.385411-2-krzysztof.kozlowski@linaro.org>
+References: <20220727164130.385411-2-krzysztof.kozlowski@linaro.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Greer <mgreer@animalcreek.com>,
+        =?utf-8?b?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Adham Abozaeid <adham.abozaeid@microchip.com>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Tony Lindgren <tony@atomide.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166002444357.8958.15363617243443832259.kvalo@kernel.org>
-Date:   Tue,  9 Aug 2022 05:54:05 +0000 (UTC)
+Message-ID: <166002472926.8958.10247328337582431642.kvalo@kernel.org>
+Date:   Tue,  9 Aug 2022 05:58:53 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,36 +66,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> From: Chih-Kang Chang <gary.chang@realtek.com>
+> Instead of listing directly properties typical for SPI peripherals,
+> reference the spi-peripheral-props.yaml schema.  This allows using all
+> properties typical for SPI-connected devices, even these which device
+> bindings author did not tried yet.
 > 
-> Applying SAR will access hal data, it should hold rtwdev::mutex
-> to avoid hal data changed during setting flow.
+> Remove the spi-* properties which now come via spi-peripheral-props.yaml
+> schema, except for the cases when device schema adds some constraints
+> like maximum frequency.
 > 
-> Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> While changing additionalProperties->unevaluatedProperties, put it in
+> typical place, just before example DTS.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Acked-by: Rob Herring <robh@kernel.org>
 
-Failed to apply, please rebase.
+Patch applied to wireless-next.git, thanks.
 
-error: sha1 information is lacking or useless (drivers/net/wireless/realtek/rtw88/main.c).
-error: could not build fake ancestor
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-Applying: wifi: rtw88: add the update channel flow to support setting by parameters
-Patch failed at 0001 wifi: rtw88: add the update channel flow to support setting by parameters
-
-7 patches set to Changes Requested.
-
-12916288 [1/7] wifi: rtw88: add mutex when set SAR
-12916289 [2/7] wifi: rtw88: add mutex when set regulatory and get Tx power table
-12916291 [3/7] wifi: rtw88: add the update channel flow to support setting by parameters
-12916293 [4/7] wifi: rtw88: fix WARNING:rtw_get_tx_power_params() during HW scan
-12916294 [5/7] wifi: rtw88: add flushing queue before HW scan
-12916292 [6/7] wifi: rtw88: add flag check before enter or leave IPS
-12916295 [7/7] wifi: rtw88: prohibit enter IPS during HW scan
+15273b7b8b4f dt-bindings: wireless: use spi-peripheral-props.yaml
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220713084758.41654-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220727164130.385411-2-krzysztof.kozlowski@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
