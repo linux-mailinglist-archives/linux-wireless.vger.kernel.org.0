@@ -2,85 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1DD58EB5A
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Aug 2022 13:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F256E58EBA8
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Aug 2022 14:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbiHJLgX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Aug 2022 07:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35520 "EHLO
+        id S231721AbiHJMH7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Aug 2022 08:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbiHJLgW (ORCPT
+        with ESMTP id S230282AbiHJMH6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Aug 2022 07:36:22 -0400
-Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7116E899;
-        Wed, 10 Aug 2022 04:36:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1660131358; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=aryWP3VgZHtZyyf1fe+yB/wYpwYI/5u7qDCuk5w1GPKehXmPuT4fQ2NntknHdokV+p+SUeD6kON8r3giMUsGoBWiVB4aByHFH2JxdkOXrM1D3JjBoRXbdbrkJuL5UWTBlTwZCXOQIGi092czqFn4cuqH0F0hBaFOph6DY1IcKQM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1660131358; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=u9HSKOXe5zxLLHtzfzWYR6+aGKllL8CvnILcjWqDyDs=; 
-        b=arB6iGGmipIutBpTpMKc7FGYnmCf4+lCJ+CaqE3vw/RXvicQiTcvggjJvsZCG7K4HEK4TdB8coBHU4UiMkokfQbCBii8p9K1o7dU68dOajMXCxSmJBw6D4n5/GmEqJF0v/NgqE0ig31Fii4p2Hxe7wK1D4NGQLqNFo0MbIG3dCs=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1660131358;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=u9HSKOXe5zxLLHtzfzWYR6+aGKllL8CvnILcjWqDyDs=;
-        b=ip5aGDSkBQDyzNEquBXB9jsVjgOOtNrM/DGtt9uQEr4rPWyfcKB+H6ktLYGuLfCn
-        Og51WvpUI+itDBj1tKENAVJz9IZvR5Np5c1zUuBUq1tD2EhitKeCK5RW53DVrbUanzj
-        Vor0M9FFVphLscHxTUMoeFW8KS8xgHUq0WlS18hM=
-Received: from localhost.localdomain (103.176.10.218 [103.176.10.218]) by mx.zoho.in
-        with SMTPS id 166013135646156.58855889315157; Wed, 10 Aug 2022 17:05:56 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com
-Cc:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Message-ID: <20220810113551.344792-1-code@siddh.me>
-Subject: Re: WARNING in ieee80211_ibss_csa_beacon
-Date:   Wed, 10 Aug 2022 17:05:51 +0530
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <0000000000008c848805b123f174@google.com>
-References: <0000000000008c848805b123f174@google.com>
+        Wed, 10 Aug 2022 08:07:58 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFC013D59
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Aug 2022 05:07:54 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 73BAB221D4;
+        Wed, 10 Aug 2022 14:07:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1660133272;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+IAqyaBmdCqar9LA4rA4MEkwkKAIVuGKn7A+r+hkxyY=;
+        b=t1pGvNdp/hT/8P5hIqAzHLf1EN9jMaWYhRzF54ep93oeVMNu4nnqWghKmb7G+oYHRfIwmg
+        gpzBI5c+/BP1qmp1E934lvZs8kOmjiglXNxAfe82dBjPwcl1mwPOdklUqPt0t8yRlEyLQ7
+        w/X6T6R8uchdVoEE4AcM/FkgN55v8Do=
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_RED
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 10 Aug 2022 14:07:52 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
+        Sripad.Balwadgi@microchip.com, mwalle@kernel.org
+Subject: Re: [PATCH v3] wifi: wilc1000: fix DMA on stack objects
+In-Reply-To: <20220809075749.62752-1-ajay.kathat@microchip.com>
+References: <20220809075749.62752-1-ajay.kathat@microchip.com>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <b1e606e7a36fb900bbc664bbd585ff6a@walle.cc>
+X-Sender: michael@walle.cc
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When we are not connected to a channel, sending channel "switch"
-announcement doesn't make any sense.
+Am 2022-08-09 09:57, schrieb Ajay.Kathat@microchip.com:
+> Sometimes 'wilc_sdio_cmd53' is called with addresses pointing to an
+> object on the stack. Use dynamically allocated memory for cmd53 instead
+> of stack address which is not DMA'able.
+> 
+> Fixes: 5625f965d764 ("wilc1000: move wilc driver out of staging")
+> Reported-by: Michael Walle <mwalle@kernel.org>
+> Suggested-by: Michael Walle <mwalle@kernel.org>
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 
-#syz test https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t master
+Thanks!
 
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -530,6 +530,10 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_=
-data *sdata)
-=20
- =09sdata_assert_lock(sdata);
-=20
-+=09/* When not connected/joined, sending CSA doesn't make sense. */
-+=09if (sdata->u.ibss.state !=3D IEEE80211_IBSS_MLME_JOINED)
-+=09=09return -ENOLINK;
-+
- =09/* update cfg80211 bss information with the new channel */
- =09if (!is_zero_ether_addr(ifibss->bssid)) {
- =09=09cbss =3D cfg80211_get_bss(sdata->local->hw.wiphy,
---=20
-2.35.1
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Tested-by: Michael Walle <mwalle@kernel.org>
 
-
+-michael
