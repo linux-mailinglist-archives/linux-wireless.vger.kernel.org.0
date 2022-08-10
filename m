@@ -2,474 +2,323 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C6658F08F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Aug 2022 18:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC87E58F0B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Aug 2022 18:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232783AbiHJQlD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Aug 2022 12:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
+        id S231826AbiHJQrP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Aug 2022 12:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbiHJQlB (ORCPT
+        with ESMTP id S231310AbiHJQrO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Aug 2022 12:41:01 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34266CC6
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Aug 2022 09:40:54 -0700 (PDT)
-X-UUID: aca97940c8ed422a9a431165fb786603-20220811
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Ddul03CNSFdwG10oEIvInCTND+aMqKYr8aKYBC14Gc8=;
-        b=Z4k+47+ArDKxILSsFwhawlQfOipXWH4Mkf0EMgt9Mu6B8X7oEl5T9rGxV7zpaRezEI81LqyFObd/sU9xd1rbnjqIRG28MGJ7FNcB7wUnxNkYrXCJWCs2WW88FLnBt4KwMG9pIVGXQX0yTZvLbWF8yunTPxbdeAbSyAxqm6SIE2g=;
-X-CID-UNFAMILIAR: 1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.9,REQID:22a80a1e-c132-49a0-a3ef-9538fdb7d071,OB:10,L
-        OB:10,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Relea
-        se_Ham,ACTION:release,TS:105
-X-CID-INFO: VERSION:1.1.9,REQID:22a80a1e-c132-49a0-a3ef-9538fdb7d071,OB:10,LOB
-        :10,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Spam_GS
-        981B3D,ACTION:quarantine,TS:105
-X-CID-META: VersionHash:3d8acc9,CLOUDID:530c73ae-9535-44a6-aa9b-7f62b79b6ff6,C
-        OID:d3cd4ef857b6,Recheck:0,SF:28|16|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0
-X-UUID: aca97940c8ed422a9a431165fb786603-20220811
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 282987944; Thu, 11 Aug 2022 00:40:47 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Thu, 11 Aug 2022 00:40:46 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Thu, 11 Aug 2022 00:40:46 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-Subject: [PATCH 2/2] mt76: add PPDU based TxS support for WED device
-Date:   Thu, 11 Aug 2022 00:40:44 +0800
-Message-ID: <dcd41df64a71d1a93fffe7c1d14dbcc7567b1482.1660092593.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <a9ded159fd293b25c745dea966e5b00a2601e56d.1660092593.git.ryder.lee@mediatek.com>
-References: <a9ded159fd293b25c745dea966e5b00a2601e56d.1660092593.git.ryder.lee@mediatek.com>
+        Wed, 10 Aug 2022 12:47:14 -0400
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4B210F6
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Aug 2022 09:47:13 -0700 (PDT)
+Received: by mail-il1-f198.google.com with SMTP id o5-20020a056e02102500b002ddcc65029cso10864523ilj.8
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Aug 2022 09:47:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:from:subject:message-id:in-reply-to
+         :date:mime-version:x-gm-message-state:from:to:cc;
+        bh=hUNWrnd+Zfkz4ZQhQ2tjQP7nALuL86rrrMxK8e0aiTE=;
+        b=wUPlzcsUteW03bVSM8dQdx2yP7nMHMPNu7UIXLc+klzjcoZ7nA9u8Pbc1FDSX5ajSs
+         W5zq9uHLgn4DzftkCGlKDXeQ+DY08dUSwfNiR3lt81DixsMpB/GHFYAdbNoopt/aCJlq
+         ttFSaVGj2rKKUJXSveGAePaWSR1dw7kZgcC/bd3fs92KdWKIXAY0Vh25/AYUKIWzR56F
+         WPwGUNzSLgrfGanu7YYGdtfHGY0vFYSjA24p1MHxDQHqmIXNIWTQ1IPC3+816bEWQXCT
+         1LlP5ShjAIqBSIOYtByHs1JGj1igbMb6Q1tFLhY2OjTvpDIYRKNyr85bMb3Bd7Y21JX4
+         0/og==
+X-Gm-Message-State: ACgBeo3qUnDpLnL3rLxfRFq0AlcvodLSRQ6t442Obd0pexqj7/qIXenA
+        de3/XN2cxSANooGTapa5mgT8js/0D2W0oKKRSkieOo7M0fMU
+X-Google-Smtp-Source: AA6agR66HtL322jdgGZR1DaOw8R2zwjC0+BITQB2wgyQuiFN+btijKXxRda4MFBidyY/PgULsZgZP2IKVRS2VqayuxyEv4YiPOYj
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,
-        URIBL_CSS autolearn=no autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6602:4192:b0:684:6256:e892 with SMTP id
+ bx18-20020a056602419200b006846256e892mr8034820iob.89.1660150032475; Wed, 10
+ Aug 2022 09:47:12 -0700 (PDT)
+Date:   Wed, 10 Aug 2022 09:47:12 -0700
+In-Reply-To: <20220810113551.344792-1-code@siddh.me>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000f5acfd05e5e5ccdc@google.com>
+Subject: Re: [syzbot] WARNING in ieee80211_ibss_csa_beacon
+From:   syzbot <syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com>
+To:     code@siddh.me, davem@davemloft.net, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Given that there's no data coming from network stack for binding flows,
-hence driver counts and reports station's statistics directly through
-NL80211_STA_INFO_* based on active PPDU based TxS for offloading data.
+Hello,
 
-Apart from that, WA firmware and its offloading engine (SDO) have hardcoded
-"2" as PID, so we introduce MT_PACKET_ID_WED to differentiate WED reporting.
+syzbot tried to test the proposed patch but the build/boot failed:
 
-Note that PPDU format TxS is mutually exclusive with MT_TXD5_TX_STATUS_HOST.
+tered promiscuous mode
+[   49.294465][ T3636] bond0: (slave bond_slave_0): Enslaving as an active interface with an up link
+[   49.305282][ T3636] bond0: (slave bond_slave_1): Enslaving as an active interface with an up link
+[   49.325908][ T3636] team0: Port device team_slave_0 added
+[   49.333047][ T3636] team0: Port device team_slave_1 added
+[   49.350306][ T3636] batman_adv: batadv0: Adding interface: batadv_slave_0
+[   49.357336][ T3636] batman_adv: batadv0: The MTU of interface batadv_slave_0 is too small (1500) to handle the transport of batman-adv packets. Packets going over this interface will be fragmented on layer2 which could impact the performance. Setting the MTU to 1560 would solve the problem.
+[   49.383401][ T3636] batman_adv: batadv0: Not using interface batadv_slave_0 (retrying later): interface not active
+[   49.395845][ T3636] batman_adv: batadv0: Adding interface: batadv_slave_1
+[   49.402957][ T3636] batman_adv: batadv0: The MTU of interface batadv_slave_1 is too small (1500) to handle the transport of batman-adv packets. Packets going over this interface will be fragmented on layer2 which could impact the performance. Setting the MTU to 1560 would solve the problem.
+[   49.430471][ T3636] batman_adv: batadv0: Not using interface batadv_slave_1 (retrying later): interface not active
+[   49.455720][ T3636] device hsr_slave_0 entered promiscuous mode
+[   49.463006][ T3636] device hsr_slave_1 entered promiscuous mode
+[   49.538340][ T3636] netdevsim netdevsim0 netdevsim0: renamed from eth0
+[   49.549079][ T3636] netdevsim netdevsim0 netdevsim1: renamed from eth1
+[   49.558155][ T3636] netdevsim netdevsim0 netdevsim2: renamed from eth2
+[   49.569133][ T3636] netdevsim netdevsim0 netdevsim3: renamed from eth3
+[   49.590785][ T3636] bridge0: port 2(bridge_slave_1) entered blocking state
+[   49.597986][ T3636] bridge0: port 2(bridge_slave_1) entered forwarding state
+[   49.605904][ T3636] bridge0: port 1(bridge_slave_0) entered blocking state
+[   49.613050][ T3636] bridge0: port 1(bridge_slave_0) entered forwarding state
+[   49.657283][ T3636] 8021q: adding VLAN 0 to HW filter on device bond0
+[   49.669522][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): veth0: link becomes ready
+[   49.679945][   T14] bridge0: port 1(bridge_slave_0) entered disabled state
+[   49.688892][   T14] bridge0: port 2(bridge_slave_1) entered disabled state
+[   49.697602][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): bond0: link becomes ready
+[   49.710449][ T3636] 8021q: adding VLAN 0 to HW filter on device team0
+[   49.722894][ T3647] IPv6: ADDRCONF(NETDEV_CHANGE): bridge_slave_0: link becomes ready
+[   49.732572][ T3647] bridge0: port 1(bridge_slave_0) entered blocking state
+[   49.739646][ T3647] bridge0: port 1(bridge_slave_0) entered forwarding state
+[   49.750696][  T923] IPv6: ADDRCONF(NETDEV_CHANGE): bridge_slave_1: link becomes ready
+[   49.759168][  T923] bridge0: port 2(bridge_slave_1) entered blocking state
+[   49.766347][  T923] bridge0: port 2(bridge_slave_1) entered forwarding state
+[   49.783139][ T3647] IPv6: ADDRCONF(NETDEV_CHANGE): team_slave_0: link becomes ready
+[   49.798118][ T3647] IPv6: ADDRCONF(NETDEV_CHANGE): team0: link becomes ready
+[   49.807101][ T3647] IPv6: ADDRCONF(NETDEV_CHANGE): team_slave_1: link becomes ready
+[   49.816367][ T3647] IPv6: ADDRCONF(NETDEV_CHANGE): hsr_slave_0: link becomes ready
+[   49.828659][ T3636] hsr0: Slave B (hsr_slave_1) is not up; please bring it up to get a fully working HSR network
+[   49.841622][ T3636] IPv6: ADDRCONF(NETDEV_CHANGE): hsr0: link becomes ready
+[   49.849961][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): hsr_slave_1: link becomes ready
+[   49.867463][  T923] IPv6: ADDRCONF(NETDEV_CHANGE): vxcan0: link becomes ready
+[   49.875057][  T923] IPv6: ADDRCONF(NETDEV_CHANGE): vxcan1: link becomes ready
+[   49.887724][ T3636] 8021q: adding VLAN 0 to HW filter on device batadv0
+[   49.991352][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): veth0_virt_wifi: link becomes ready
+[   50.007687][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): veth0_vlan: link becomes ready
+[   50.016485][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): vlan0: link becomes ready
+[   50.024664][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): vlan1: link becomes ready
+[   50.034755][ T3636] device veth0_vlan entered promiscuous mode
+[   50.047971][ T3636] device veth1_vlan entered promiscuous mode
+[   50.067469][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): macvlan0: link becomes ready
+[   50.075584][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): macvlan1: link becomes ready
+[   50.084115][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): veth0_macvtap: link becomes ready
+[   50.095890][ T3636] device veth0_macvtap entered promiscuous mode
+[   50.105744][ T3636] device veth1_macvtap entered promiscuous mode
+[   50.120925][ T3636] batman_adv: batadv0: Interface activated: batadv_slave_0
+[   50.129807][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): veth0_to_batadv: link becomes ready
+[   50.139778][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): macvtap0: link becomes ready
+[   50.152837][ T3636] batman_adv: batadv0: Interface activated: batadv_slave_1
+[   50.161478][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): veth1_to_batadv: link becomes ready
+[   50.172240][ T3636] netdevsim netdevsim0 netdevsim0: set [1, 0] type 2 family 0 port 6081 - 0
+[   50.182764][ T3636] netdevsim netdevsim0 netdevsim1: set [1, 0] type 2 family 0 port 6081 - 0
+[   50.192635][ T3636] netdevsim netdevsim0 netdevsim2: set [1, 0] type 2 family 0 port 6081 - 0
+[   50.202479][ T3636] netdevsim netdevsim0 netdevsim3: set [1, 0] type 2 family 0 port 6081 - 0
+[   50.258761][   T33] wlan0: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+[   50.276234][   T33] wlan0: Creating new IBSS network, BSSID 50:50:50:50:50:50
+[   50.292455][   T22] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+[   50.306188][   T11] wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+[   50.315505][   T11] wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
+[   50.325576][   T14] IPv6: ADDRCONF(NETDEV_CHANGE): wlan1: link becomes ready
+2022/08/10 16:46:13 building call list...
+[   50.505046][ T3636] ------------[ cut here ]------------
+[   50.510773][ T3636] ODEBUG: assert_init not available (active state 0) object type: timer_list hint: 0x0
+[   50.520732][ T3636] WARNING: CPU: 1 PID: 3636 at lib/debugobjects.c:505 debug_object_assert_init+0x1fa/0x250
+[   50.530739][ T3636] Modules linked in:
+[   50.534652][ T3636] CPU: 1 PID: 3636 Comm: syz-executor.0 Not tainted 5.19.0-syzkaller #0
+[   50.542991][ T3636] Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/22/2022
+[   50.553063][ T3636] RIP: 0010:debug_object_assert_init+0x1fa/0x250
+[   50.559406][ T3636] Code: e8 bb d2 d1 fd 4c 8b 45 00 48 c7 c7 20 96 6a 8a 48 c7 c6 20 93 6a 8a 48 c7 c2 c0 97 6a 8a 31 c9 49 89 d9 31 c0 e8 86 cd 4e fd <0f> 0b ff 05 da 58 8a 09 48 83 c5 38 48 89 e8 48 c1 e8 03 42 80 3c
+[   50.579117][ T3636] RSP: 0018:ffffc9000392f8c8 EFLAGS: 00010046
+[   50.585300][ T3636] RAX: 8bc764758f9d2d00 RBX: 0000000000000000 RCX: ffff88807f27ba80
+[   50.593296][ T3636] RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+[   50.601277][ T3636] RBP: ffffffff8a0fc700 R08: ffffffff8165ed3d R09: ffffed10173a4f14
+[   50.609266][ T3636] R10: ffffed10173a4f14 R11: 1ffff110173a4f13 R12: dffffc0000000000
+[   50.617255][ T3636] R13: ffff88801bea49d0 R14: 0000000000000015 R15: ffffffff900beb38
+[   50.625245][ T3636] FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+[   50.634196][ T3636] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   50.641255][ T3636] CR2: 00007fe56a2e1200 CR3: 0000000011c4e000 CR4: 00000000003506e0
+[   50.649282][ T3636] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   50.657280][ T3636] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   50.665286][ T3636] Call Trace:
+[   50.668606][ T3636]  <TASK>
+[   50.671567][ T3636]  del_timer+0x3d/0x2d0
+[   50.675770][ T3636]  ? try_to_grab_pending+0xb1/0x700
+[   50.681004][ T3636]  try_to_grab_pending+0xbf/0x700
+[   50.686321][ T3636]  __cancel_work_timer+0x81/0x5b0
+[   50.691373][ T3636]  ? mgmt_send_event_skb+0x2ee/0x4e0
+[   50.696805][ T3636]  ? kmem_cache_free+0x95/0x1d0
+[   50.701675][ T3636]  ? mgmt_send_event_skb+0x2ee/0x4e0
+[   50.706989][ T3636]  mgmt_index_removed+0x244/0x330
+[   50.712032][ T3636]  hci_unregister_dev+0x28e/0x460
+[   50.718115][ T3636]  ? vhci_open+0x360/0x360
+[   50.722542][ T3636]  vhci_release+0x7f/0xd0
+[   50.726883][ T3636]  __fput+0x3b9/0x820
+[   50.730896][ T3636]  task_work_run+0x146/0x1c0
+[   50.735510][ T3636]  do_exit+0x4ed/0x1f30
+[   50.739669][ T3636]  ? rcu_read_lock_sched_held+0x41/0xb0
+[   50.745233][ T3636]  do_group_exit+0x23b/0x2f0
+[   50.749828][ T3636]  ? _raw_spin_unlock_irq+0x1f/0x40
+[   50.755023][ T3636]  ? lockdep_hardirqs_on+0x8d/0x130
+[   50.760218][ T3636]  get_signal+0x16a3/0x1700
+[   50.766302][ T3636]  arch_do_signal_or_restart+0x29/0x5d0
+[   50.771852][ T3636]  exit_to_user_mode_loop+0x74/0x150
+[   50.777133][ T3636]  exit_to_user_mode_prepare+0xb2/0x140
+[   50.782695][ T3636]  syscall_exit_to_user_mode+0x26/0x60
+[   50.788737][ T3636]  do_syscall_64+0x49/0x90
+[   50.793176][ T3636]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   50.799177][ T3636] RIP: 0033:0x4191dc
+[   50.803063][ T3636] Code: Unable to access opcode bytes at RIP 0x4191b2.
+[   50.809916][ T3636] RSP: 002b:00007ffe6c6d7830 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[   50.818354][ T3636] RAX: fffffffffffffe00 RBX: 00007ffe6c6d78f0 RCX: 00000000004191dc
+[   50.826326][ T3636] RDX: 0000000000000050 RSI: 0000000000568020 RDI: 00000000000000f9
+[   50.834295][ T3636] RBP: 0000000000000003 R08: 0000000000000000 R09: 0079746972756365
+[   50.842269][ T3636] R10: 00000000005436a0 R11: 0000000000000246 R12: 0000000000000032
+[   50.850229][ T3636] R13: 000000000000c4c0 R14: 0000000000000000 R15: 00007ffe6c6d7930
+[   50.858211][ T3636]  </TASK>
+[   50.861256][ T3636] Kernel panic - not syncing: panic_on_warn set ...
+[   50.867835][ T3636] CPU: 1 PID: 3636 Comm: syz-executor.0 Not tainted 5.19.0-syzkaller #0
+[   50.876158][ T3636] Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/22/2022
+[   50.886289][ T3636] Call Trace:
+[   50.890527][ T3636]  <TASK>
+[   50.893448][ T3636]  dump_stack_lvl+0x131/0x1c8
+[   50.898221][ T3636]  panic+0x26b/0x693
+[   50.902113][ T3636]  ? __warn+0x131/0x220
+[   50.906266][ T3636]  ? debug_object_assert_init+0x1fa/0x250
+[   50.912064][ T3636]  __warn+0x1fa/0x220
+[   50.916054][ T3636]  ? debug_object_assert_init+0x1fa/0x250
+[   50.921777][ T3636]  report_bug+0x1b3/0x2d0
+[   50.926103][ T3636]  handle_bug+0x3d/0x70
+[   50.930513][ T3636]  exc_invalid_op+0x16/0x40
+[   50.935009][ T3636]  asm_exc_invalid_op+0x16/0x20
+[   50.939919][ T3636] RIP: 0010:debug_object_assert_init+0x1fa/0x250
+[   50.946259][ T3636] Code: e8 bb d2 d1 fd 4c 8b 45 00 48 c7 c7 20 96 6a 8a 48 c7 c6 20 93 6a 8a 48 c7 c2 c0 97 6a 8a 31 c9 49 89 d9 31 c0 e8 86 cd 4e fd <0f> 0b ff 05 da 58 8a 09 48 83 c5 38 48 89 e8 48 c1 e8 03 42 80 3c
+[   50.965962][ T3636] RSP: 0018:ffffc9000392f8c8 EFLAGS: 00010046
+[   50.972034][ T3636] RAX: 8bc764758f9d2d00 RBX: 0000000000000000 RCX: ffff88807f27ba80
+[   50.980009][ T3636] RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+[   50.988148][ T3636] RBP: ffffffff8a0fc700 R08: ffffffff8165ed3d R09: ffffed10173a4f14
+[   50.996123][ T3636] R10: ffffed10173a4f14 R11: 1ffff110173a4f13 R12: dffffc0000000000
+[   51.004180][ T3636] R13: ffff88801bea49d0 R14: 0000000000000015 R15: ffffffff900beb38
+[   51.012153][ T3636]  ? __wake_up_klogd+0xcd/0x100
+[   51.017277][ T3636]  ? debug_object_assert_init+0x1fa/0x250
+[   51.023040][ T3636]  del_timer+0x3d/0x2d0
+[   51.027291][ T3636]  ? try_to_grab_pending+0xb1/0x700
+[   51.032705][ T3636]  try_to_grab_pending+0xbf/0x700
+[   51.037752][ T3636]  __cancel_work_timer+0x81/0x5b0
+[   51.042785][ T3636]  ? mgmt_send_event_skb+0x2ee/0x4e0
+[   51.048148][ T3636]  ? kmem_cache_free+0x95/0x1d0
+[   51.053085][ T3636]  ? mgmt_send_event_skb+0x2ee/0x4e0
+[   51.058748][ T3636]  mgmt_index_removed+0x244/0x330
+[   51.063855][ T3636]  hci_unregister_dev+0x28e/0x460
+[   51.069135][ T3636]  ? vhci_open+0x360/0x360
+[   51.073542][ T3636]  vhci_release+0x7f/0xd0
+[   51.077997][ T3636]  __fput+0x3b9/0x820
+[   51.082080][ T3636]  task_work_run+0x146/0x1c0
+[   51.086847][ T3636]  do_exit+0x4ed/0x1f30
+[   51.091007][ T3636]  ? rcu_read_lock_sched_held+0x41/0xb0
+[   51.096557][ T3636]  do_group_exit+0x23b/0x2f0
+[   51.101224][ T3636]  ? _raw_spin_unlock_irq+0x1f/0x40
+[   51.106439][ T3636]  ? lockdep_hardirqs_on+0x8d/0x130
+[   51.111641][ T3636]  get_signal+0x16a3/0x1700
+[   51.116151][ T3636]  arch_do_signal_or_restart+0x29/0x5d0
+[   51.121725][ T3636]  exit_to_user_mode_loop+0x74/0x150
+[   51.127039][ T3636]  exit_to_user_mode_prepare+0xb2/0x140
+[   51.132611][ T3636]  syscall_exit_to_user_mode+0x26/0x60
+[   51.138271][ T3636]  do_syscall_64+0x49/0x90
+[   51.143033][ T3636]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   51.149376][ T3636] RIP: 0033:0x4191dc
+[   51.153293][ T3636] Code: Unable to access opcode bytes at RIP 0x4191b2.
+[   51.160326][ T3636] RSP: 002b:00007ffe6c6d7830 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[   51.170079][ T3636] RAX: fffffffffffffe00 RBX: 00007ffe6c6d78f0 RCX: 00000000004191dc
+[   51.178052][ T3636] RDX: 0000000000000050 RSI: 0000000000568020 RDI: 00000000000000f9
+[   51.186026][ T3636] RBP: 0000000000000003 R08: 0000000000000000 R09: 0079746972756365
+[   51.194096][ T3636] R10: 00000000005436a0 R11: 0000000000000246 R12: 0000000000000032
+[   51.202061][ T3636] R13: 000000000000c4c0 R14: 0000000000000000 R15: 00007ffe6c6d7930
+[   51.210491][ T3636]  </TASK>
+[   51.213889][ T3636] Kernel Offset: disabled
+[   51.218357][ T3636] Rebooting in 86400 seconds..
 
-Co-developed-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76.h     |  7 +-
- .../net/wireless/mediatek/mt76/mt76_connac.h  |  2 +
- .../wireless/mediatek/mt76/mt76_connac2_mac.h |  8 ++
- .../wireless/mediatek/mt76/mt76_connac_mac.c  | 74 ++++++++++++-------
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 14 ++--
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 17 +++++
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  2 +
- .../net/wireless/mediatek/mt76/mt7915/pci.c   | 23 +++++-
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  4 +
- 9 files changed, 118 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index a45dd038b967..2a86fc591e12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -270,6 +270,10 @@ struct mt76_sta_stats {
- 	u64 tx_bw[4];		/* 20, 40, 80, 160 */
- 	u64 tx_nss[4];		/* 1, 2, 3, 4 */
- 	u64 tx_mcs[16];		/* mcs idx */
-+	u64 tx_bytes;
-+	u32 tx_packets;
-+	u32 tx_retries;
-+	u32 tx_failed;
- };
- 
- enum mt76_wcid_flags {
-@@ -364,7 +368,8 @@ struct mt76_rx_tid {
- #define MT_PACKET_ID_MASK		GENMASK(6, 0)
- #define MT_PACKET_ID_NO_ACK		0
- #define MT_PACKET_ID_NO_SKB		1
--#define MT_PACKET_ID_FIRST		2
-+#define MT_PACKET_ID_WED		2
-+#define MT_PACKET_ID_FIRST		3
- #define MT_PACKET_ID_HAS_RATE		BIT(7)
- /* This is timer for when to give up when waiting for TXS callback,
-  * with starting time being the time at which the DMA_DONE callback
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 851874f782c5..635192c878cb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -354,6 +354,8 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 				 struct sk_buff *skb, struct mt76_wcid *wcid,
- 				 struct ieee80211_key_conf *key, int pid,
- 				 enum mt76_txq_id qid, u32 changed);
-+bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
-+			       __le32 *txs_data);
- bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 				  int pid, __le32 *txs_data);
- void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-index 67ce216fb564..f33171bcd343 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-@@ -158,6 +158,14 @@ enum {
- 
- #define MT_TXS4_TIMESTAMP		GENMASK(31, 0)
- 
-+/* PPDU based TXS */
-+#define MT_TXS5_MPDU_TX_BYTE		GENMASK(22, 0)
-+#define MT_TXS5_MPDU_TX_CNT		GENMASK(31, 23)
-+
-+#define MT_TXS6_MPDU_FAIL_CNT		GENMASK(31, 23)
-+
-+#define MT_TXS7_MPDU_RETRY_CNT		GENMASK(31, 23)
-+
- /* RXD DW1 */
- #define MT_RXD1_NORMAL_WLAN_IDX		GENMASK(9, 0)
- #define MT_RXD1_NORMAL_GROUP_1		BIT(11)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index d0a94cb6d08b..34ac3d81a510 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -490,6 +490,10 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 		p_fmt = mt76_is_mmio(dev) ? MT_TX_TYPE_CT : MT_TX_TYPE_SF;
- 		q_idx = wmm_idx * MT76_CONNAC_MAX_WMM_SETS +
- 			mt76_connac_lmac_mapping(skb_get_queue_mapping(skb));
-+
-+		/* counting non-offloading skbs */
-+		wcid->stats.tx_bytes += skb->len;
-+		wcid->stats.tx_packets++;
- 	}
- 
- 	val = FIELD_PREP(MT_TXD0_TX_BYTES, skb->len + sz_txd) |
-@@ -550,35 +554,29 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- }
- EXPORT_SYMBOL_GPL(mt76_connac2_mac_write_txwi);
- 
--bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
--				  int pid, __le32 *txs_data)
-+bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
-+			       __le32 *txs_data)
- {
- 	struct mt76_sta_stats *stats = &wcid->stats;
- 	struct ieee80211_supported_band *sband;
- 	struct mt76_phy *mphy;
--	struct ieee80211_tx_info *info;
--	struct sk_buff_head list;
- 	struct rate_info rate = {};
--	struct sk_buff *skb;
- 	bool cck = false;
- 	u32 txrate, txs, mode;
- 
--	mt76_tx_status_lock(dev, &list);
--	skb = mt76_tx_status_skb_get(dev, wcid, pid, &list);
--	if (!skb)
--		goto out;
--
- 	txs = le32_to_cpu(txs_data[0]);
- 
--	info = IEEE80211_SKB_CB(skb);
--	if (!(txs & MT_TXS0_ACK_ERROR_MASK))
--		info->flags |= IEEE80211_TX_STAT_ACK;
--
--	info->status.ampdu_len = 1;
--	info->status.ampdu_ack_len = !!(info->flags &
--					IEEE80211_TX_STAT_ACK);
--
--	info->status.rates[0].idx = -1;
-+	/* PPDU based reporting */
-+	if (FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
-+		stats->tx_bytes +=
-+			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE);
-+		stats->tx_packets +=
-+			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_CNT);
-+		stats->tx_failed +=
-+			le32_get_bits(txs_data[6], MT_TXS6_MPDU_FAIL_CNT);
-+		stats->tx_retries +=
-+			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_CNT);
-+	}
- 
- 	txrate = FIELD_GET(MT_TXS0_TX_RATE, txs);
- 
-@@ -613,7 +611,7 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 	case MT_PHY_TYPE_HT:
- 	case MT_PHY_TYPE_HT_GF:
- 		if (rate.mcs > 31)
--			goto out;
-+			return false;
- 
- 		rate.flags = RATE_INFO_FLAGS_MCS;
- 		if (wcid->rate.flags & RATE_INFO_FLAGS_SHORT_GI)
-@@ -621,7 +619,7 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		break;
- 	case MT_PHY_TYPE_VHT:
- 		if (rate.mcs > 9)
--			goto out;
-+			return false;
- 
- 		rate.flags = RATE_INFO_FLAGS_VHT_MCS;
- 		break;
-@@ -630,14 +628,14 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 	case MT_PHY_TYPE_HE_TB:
- 	case MT_PHY_TYPE_HE_MU:
- 		if (rate.mcs > 11)
--			goto out;
-+			return false;
- 
- 		rate.he_gi = wcid->rate.he_gi;
- 		rate.he_dcm = FIELD_GET(MT_TX_RATE_DCM, txrate);
- 		rate.flags = RATE_INFO_FLAGS_HE_MCS;
- 		break;
- 	default:
--		goto out;
-+		return false;
- 	}
- 
- 	stats->tx_mode[mode]++;
-@@ -662,10 +660,34 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 	}
- 	wcid->rate = rate;
- 
--out:
--	if (skb)
--		mt76_tx_status_skb_done(dev, skb, &list);
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac2_mac_fill_txs);
-+
-+bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
-+				  int pid, __le32 *txs_data)
-+{
-+	struct sk_buff_head list;
-+	struct sk_buff *skb;
- 
-+	mt76_tx_status_lock(dev, &list);
-+	skb = mt76_tx_status_skb_get(dev, wcid, pid, &list);
-+	if (skb) {
-+		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+		bool noacked = !(info->flags & IEEE80211_TX_STAT_ACK);
-+
-+		if (!(le32_to_cpu(txs_data[0]) & MT_TXS0_ACK_ERROR_MASK))
-+			info->flags |= IEEE80211_TX_STAT_ACK;
-+
-+		info->status.ampdu_len = 1;
-+		info->status.ampdu_ack_len = !noacked;
-+		info->status.rates[0].idx = -1;
-+
-+		wcid->stats.tx_failed += noacked;
-+
-+		mt76_connac2_mac_fill_txs(dev, wcid, txs_data);
-+		mt76_tx_status_skb_done(dev, skb, &list);
-+	}
- 	mt76_tx_status_unlock(dev, &list);
- 
- 	return !!skb;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 3ae5f1359483..aec6c00f35e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -176,7 +176,7 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 		/*
- 		 * We don't support reading GI info from txs packets.
- 		 * For accurate tx status reporting and AQL improvement,
--		  we need to make sure that flags match so polling GI
-+		 * we need to make sure that flags match so polling GI
- 		 * from per-sta counters directly.
- 		 */
- 		rate = &msta->wcid.rate;
-@@ -1001,7 +1001,7 @@ static void mt7915_mac_add_txs(struct mt7915_dev *dev, void *data)
- 	wcidx = le32_get_bits(txs_data[2], MT_TXS2_WCID);
- 	pid = le32_get_bits(txs_data[3], MT_TXS3_PID);
- 
--	if (pid < MT_PACKET_ID_FIRST)
-+	if (pid < MT_PACKET_ID_WED)
- 		return;
- 
- 	if (wcidx >= mt7915_wtbl_size(dev))
-@@ -1015,7 +1015,11 @@ static void mt7915_mac_add_txs(struct mt7915_dev *dev, void *data)
- 
- 	msta = container_of(wcid, struct mt7915_sta, wcid);
- 
--	mt76_connac2_mac_add_txs_skb(&dev->mt76, wcid, pid, txs_data);
-+	if (pid == MT_PACKET_ID_WED)
-+		mt76_connac2_mac_fill_txs(&dev->mt76, wcid, txs_data);
-+	else
-+		mt76_connac2_mac_add_txs_skb(&dev->mt76, wcid, pid, txs_data);
-+
- 	if (!wcid->sta)
- 		goto out;
- 
-@@ -1046,7 +1050,7 @@ bool mt7915_rx_check(struct mt76_dev *mdev, void *data, int len)
- 		return false;
- 	case PKT_TYPE_TXS:
- 		for (rxd += 2; rxd + 8 <= end; rxd += 8)
--		    mt7915_mac_add_txs(dev, rxd);
-+			mt7915_mac_add_txs(dev, rxd);
- 		return false;
- 	case PKT_TYPE_RX_FW_MONITOR:
- 		mt7915_debugfs_rx_fw_monitor(dev, data, len);
-@@ -1083,7 +1087,7 @@ void mt7915_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 		break;
- 	case PKT_TYPE_TXS:
- 		for (rxd += 2; rxd + 8 <= end; rxd += 8)
--		    mt7915_mac_add_txs(dev, rxd);
-+			mt7915_mac_add_txs(dev, rxd);
- 		dev_kfree_skb(skb);
- 		break;
- 	case PKT_TYPE_RX_FW_MONITOR:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 090c52803052..89b519cfd14c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1010,6 +1010,23 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
- 	}
- 	sinfo->txrate.flags = txrate->flags;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+
-+	/* offloading flows bypass networking stack, so driver counts and
-+	 * reports sta statistics via NL80211_STA_INFO when WED is active.
-+	 */
-+	if (mtk_wed_device_active(&phy->dev->mt76.mmio.wed)) {
-+		sinfo->tx_bytes = msta->wcid.stats.tx_bytes;
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES64);
-+
-+		sinfo->tx_packets = msta->wcid.stats.tx_packets;
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
-+
-+		sinfo->tx_failed = msta->wcid.stats.tx_failed;
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
-+
-+		sinfo->tx_retries = msta->wcid.stats.tx_retries;
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
-+	}
- }
- 
- static void mt7915_sta_rc_work(void *data, struct ieee80211_sta *sta)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index c1256defbea3..7bd5f6725d7b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -75,6 +75,7 @@ static const u32 mt7915_offs[] = {
- 	[AGG_AWSCR0]		= 0x05c,
- 	[AGG_PCR0]		= 0x06c,
- 	[AGG_ACR0]		= 0x084,
-+	[AGG_ACR4]		= 0x08c,
- 	[AGG_MRCR]		= 0x098,
- 	[AGG_ATCR1]		= 0x0f0,
- 	[AGG_ATCR3]		= 0x0f4,
-@@ -148,6 +149,7 @@ static const u32 mt7916_offs[] = {
- 	[AGG_AWSCR0]		= 0x030,
- 	[AGG_PCR0]		= 0x040,
- 	[AGG_ACR0]		= 0x054,
-+	[AGG_ACR4]		= 0x05c,
- 	[AGG_MRCR]		= 0x068,
- 	[AGG_ATCR1]		= 0x1a8,
- 	[AGG_ATCR3]		= 0x080,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-index d74f609775d3..16a5ce352e5f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-@@ -12,7 +12,7 @@
- #include "mac.h"
- #include "../trace.h"
- 
--static bool wed_enable = false;
-+static bool wed_enable;
- module_param(wed_enable, bool, 0644);
- 
- static LIST_HEAD(hif_list);
-@@ -99,6 +99,7 @@ static int mt7915_pci_hif2_probe(struct pci_dev *pdev)
- static int mt7915_wed_offload_enable(struct mtk_wed_device *wed)
- {
- 	struct mt7915_dev *dev;
-+	struct mt7915_phy *phy;
- 	int ret;
- 
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
-@@ -112,18 +113,38 @@ static int mt7915_wed_offload_enable(struct mtk_wed_device *wed)
- 	if (!ret)
- 		return -EAGAIN;
- 
-+	phy = &dev->phy;
-+	mt76_set(dev, MT_AGG_ACR4(phy->band_idx), MT_AGG_ACR_PPDU_TXS2H);
-+
-+	phy = dev->mt76.phys[MT_BAND1] ? dev->mt76.phys[MT_BAND1]->priv : NULL;
-+	if (phy)
-+		mt76_set(dev, MT_AGG_ACR4(phy->band_idx),
-+			 MT_AGG_ACR_PPDU_TXS2H);
-+
- 	return 0;
- }
- 
- static void mt7915_wed_offload_disable(struct mtk_wed_device *wed)
- {
- 	struct mt7915_dev *dev;
-+	struct mt7915_phy *phy;
- 
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
- 
- 	spin_lock_bh(&dev->mt76.token_lock);
- 	dev->mt76.token_size = MT7915_TOKEN_SIZE;
- 	spin_unlock_bh(&dev->mt76.token_lock);
-+
-+	/* MT_TXD5_TX_STATUS_HOST (MPDU format) has higher priority than
-+	 * MT_AGG_ACR_PPDU_TXS2H (PPDU format) even though ACR bit is set.
-+	 */
-+	phy = &dev->phy;
-+	mt76_clear(dev, MT_AGG_ACR4(phy->band_idx), MT_AGG_ACR_PPDU_TXS2H);
-+
-+	phy = dev->mt76.phys[MT_BAND1] ? dev->mt76.phys[MT_BAND1]->priv : NULL;
-+	if (phy)
-+		mt76_clear(dev, MT_AGG_ACR4(phy->band_idx),
-+			   MT_AGG_ACR_PPDU_TXS2H);
- }
- #endif
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 53061aa727e9..5920e705835a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -46,6 +46,7 @@ enum offs_rev {
- 	AGG_AWSCR0,
- 	AGG_PCR0,
- 	AGG_ACR0,
-+	AGG_ACR4,
- 	AGG_MRCR,
- 	AGG_ATCR1,
- 	AGG_ATCR3,
-@@ -465,6 +466,9 @@ enum offs_rev {
- #define MT_AGG_ACR_CFEND_RATE		GENMASK(13, 0)
- #define MT_AGG_ACR_BAR_RATE		GENMASK(29, 16)
- 
-+#define MT_AGG_ACR4(_band)		MT_WF_AGG(_band, __OFFS(AGG_ACR4))
-+#define MT_AGG_ACR_PPDU_TXS2H		BIT(1)
-+
- #define MT_AGG_MRCR(_band)		MT_WF_AGG(_band, __OFFS(AGG_MRCR))
- #define MT_AGG_MRCR_BAR_CNT_LIMIT		GENMASK(15, 12)
- #define MT_AGG_MRCR_LAST_RTS_CTS_RN		BIT(6)
--- 
-2.36.1
+syzkaller build log:
+go env (err=<nil>)
+GO111MODULE="auto"
+GOARCH="amd64"
+GOBIN=""
+GOCACHE="/syzkaller/.cache/go-build"
+GOENV="/syzkaller/.config/go/env"
+GOEXE=""
+GOEXPERIMENT=""
+GOFLAGS=""
+GOHOSTARCH="amd64"
+GOHOSTOS="linux"
+GOINSECURE=""
+GOMODCACHE="/syzkaller/jobs/linux/gopath/pkg/mod"
+GONOPROXY=""
+GONOSUMDB=""
+GOOS="linux"
+GOPATH="/syzkaller/jobs/linux/gopath"
+GOPRIVATE=""
+GOPROXY="https://proxy.golang.org,direct"
+GOROOT="/usr/local/go"
+GOSUMDB="sum.golang.org"
+GOTMPDIR=""
+GOTOOLDIR="/usr/local/go/pkg/tool/linux_amd64"
+GOVCS=""
+GOVERSION="go1.17"
+GCCGO="gccgo"
+AR="ar"
+CC="gcc"
+CXX="g++"
+CGO_ENABLED="1"
+GOMOD="/syzkaller/jobs/linux/gopath/src/github.com/google/syzkaller/go.mod"
+CGO_CFLAGS="-g -O2"
+CGO_CPPFLAGS=""
+CGO_CXXFLAGS="-g -O2"
+CGO_FFLAGS="-g -O2"
+CGO_LDFLAGS="-g -O2"
+PKG_CONFIG="pkg-config"
+GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0 -fdebug-prefix-map=/tmp/go-build478383173=/tmp/go-build -gno-record-gcc-switches"
+
+git status (err=<nil>)
+HEAD detached at 607e3baf1
+nothing to commit, working tree clean
+
+
+go list -f '{{.Stale}}' ./sys/syz-sysgen | grep -q false || go install ./sys/syz-sysgen
+make .descriptions
+bin/syz-sysgen
+touch .descriptions
+GOOS=linux GOARCH=amd64 go build "-ldflags=-s -w -X github.com/google/syzkaller/prog.GitRevision=607e3baf1c25928040d05fc22eff6fce7edd709e -X 'github.com/google/syzkaller/prog.gitRevisionDate=20210324-183421'" "-tags=syz_target syz_os_linux syz_arch_amd64 " -o ./bin/linux_amd64/syz-fuzzer github.com/google/syzkaller/syz-fuzzer
+GOOS=linux GOARCH=amd64 go build "-ldflags=-s -w -X github.com/google/syzkaller/prog.GitRevision=607e3baf1c25928040d05fc22eff6fce7edd709e -X 'github.com/google/syzkaller/prog.gitRevisionDate=20210324-183421'" "-tags=syz_target syz_os_linux syz_arch_amd64 " -o ./bin/linux_amd64/syz-execprog github.com/google/syzkaller/tools/syz-execprog
+GOOS=linux GOARCH=amd64 go build "-ldflags=-s -w -X github.com/google/syzkaller/prog.GitRevision=607e3baf1c25928040d05fc22eff6fce7edd709e -X 'github.com/google/syzkaller/prog.gitRevisionDate=20210324-183421'" "-tags=syz_target syz_os_linux syz_arch_amd64 " -o ./bin/linux_amd64/syz-stress github.com/google/syzkaller/tools/syz-stress
+mkdir -p ./bin/linux_amd64
+gcc -o ./bin/linux_amd64/syz-executor executor/executor.cc \
+	-m64 -O2 -pthread -Wall -Werror -Wparentheses -Wunused-const-variable -Wframe-larger-than=16384 -static -fpermissive -w -DGOOS_linux=1 -DGOARCH_amd64=1 \
+	-DHOSTGOOS_linux=1 -DGIT_REVISION=\"607e3baf1c25928040d05fc22eff6fce7edd709e\"
+
+
+Error text is too large and was truncated, full error text is at:
+https://syzkaller.appspot.com/x/error.txt?x=149def63080000
+
+
+Tested on:
+
+commit:         d4252071 add barriers to buffer_uptodate and set_buffe..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+kernel config:  https://syzkaller.appspot.com/x/.config?x=aac0e3f739de465e
+dashboard link: https://syzkaller.appspot.com/bug?extid=b6c9fe29aefe68e4ad34
+compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=12593366080000
 
