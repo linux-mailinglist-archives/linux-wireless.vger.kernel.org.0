@@ -2,47 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D642D58FF6D
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Aug 2022 17:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E87A6590138
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Aug 2022 17:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235841AbiHKP3t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Aug 2022 11:29:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47294 "EHLO
+        id S236579AbiHKPtm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Aug 2022 11:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235748AbiHKP3l (ORCPT
+        with ESMTP id S236626AbiHKPrl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Aug 2022 11:29:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A643595E43;
-        Thu, 11 Aug 2022 08:29:27 -0700 (PDT)
+        Thu, 11 Aug 2022 11:47:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11D999244;
+        Thu, 11 Aug 2022 08:41:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0205161601;
-        Thu, 11 Aug 2022 15:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABC1C433C1;
-        Thu, 11 Aug 2022 15:29:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 540AAB82123;
+        Thu, 11 Aug 2022 15:41:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1328FC433D6;
+        Thu, 11 Aug 2022 15:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660231766;
-        bh=QoG2AXTUNTkgCb/Z7tMfnRQNeAn8xrjZVWaSk58MQno=;
+        s=k20201202; t=1660232495;
+        bh=bIsUlWJqVgiF4karWSMuXP8WYJpQHJk4XE96U4GHRuc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=crU4yMcOlWTFjnuFcu8m6xr+Wwg7BgDgZ7OzxYphc1qSy86i5ApBhQnbnerdjdHwm
-         nr+SLinvJmy2ZcRLSP294+rp32XquvvvZmfzRaRxdT/qiTqC9O+K6OyNr4ETxXODh3
-         J9gc8EtnmKXpBwkxPIzUbABW6Fcteyo1jO3p7C1BRDQT+LAmdaeyt/VzYBUPE7SO0U
-         wRqVS9Unw58NF/ywY/fDtySAV1QL9RPV1t8xp5DkwSguO+J0wMAPhMBVL5/ZBc4r19
-         RKXK2bYfOitLcGDMWvLzJ4MkSAtJHv2PjExirE1/lgIr9qOyvhPIWPpUr+aDYOjmPv
-         3CrwW+cXOlvYQ==
+        b=AX6kL+aF/uYgSduhfu+ZK5TB8MC3r2d6tVGCRiZD4xe42CG8ASATqrC4zv9xkD+Bd
+         GIhcIF3gbRDSBaHybmFEuLluFrcrnWNJxM8jqYdZG2VsRjM7mwBOIg1h2c/tmiLB6R
+         dmuZn+5arrexhJRW5e+GZ+rDPDYe7s9F69DRxQ9GcSh2FV6tZkNx8aCRT7QJs9LQ3U
+         zDiL7gQg7JY56ZX2lIBTRPZds1aQ9CwdkNTNu2ymLpT7CEHsiUBvCLzTtLzymz+IOR
+         xICfQKoysS3kafGl4s4zY31YzAYGcr0eeleEb70quBcpBCpf+j3bd64mMM7ISAs4fg
+         IrP3Tc7tZMkfQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Gong <quic_wgong@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+Cc:     Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, ath10k@lists.infradead.org,
+        pabeni@redhat.com, ath11k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 009/105] ath10k: fix regdomain info of iw reg set/get
-Date:   Thu, 11 Aug 2022 11:26:53 -0400
-Message-Id: <20220811152851.1520029-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.19 097/105] Revert "ath11k: add support for hardware rfkill for QCA6390"
+Date:   Thu, 11 Aug 2022 11:28:21 -0400
+Message-Id: <20220811152851.1520029-97-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220811152851.1520029-1-sashal@kernel.org>
 References: <20220811152851.1520029-1-sashal@kernel.org>
@@ -60,133 +59,417 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-[ Upstream commit 8723750e2753868591ba86a57b0041c5e38047ad ]
+[ Upstream commit 169ede1f594809d1f0f46d95c071d672dbfc0eb1 ]
 
-When wlan load, firmware report the reg code with 0x6C for QCA6174,
-it is world reg which checked by ath_is_world_regd(), then the reg
-will be save into reg_world_copy of ath_common in ath_regd_init().
-Later the regulatory of ath_common is updated to another country
-code such as "US" in ath_reg_notifier_apply() by below call stack.
-After that, regulatory_hint() is called in ath10k_mac_register()
-and it lead "iw reg get" show two regdomain info as below.
+This reverts commit ec038c6127fa772d2c5604e329f22371830d5fa6. Tyler reported
+that on L390 Yoga Thinkpad with QCA6390 the suspend was failing because of this commit.
 
-global
-country US: DFS-FCC
-	(2400 - 2472 @ 40), (N/A, 30), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-	(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-	(5730 - 5850 @ 80), (N/A, 30), (N/A)
-	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
 
-phy#0
-country US: DFS-FCC
-	(2400 - 2472 @ 40), (N/A, 30), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-	(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-	(5730 - 5850 @ 80), (N/A, 30), (N/A)
-	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
-
-[ 4255.704975] Call Trace:
-[ 4255.704983]  ath_reg_notifier_apply+0xa6/0xc5 [ath]
-[ 4255.704991]  ath10k_reg_notifier+0x2f/0xd2 [ath10k_core]
-[ 4255.705010]  wiphy_regulatory_register+0x5f/0x69 [cfg80211]
-[ 4255.705020]  wiphy_register+0x459/0x8f0 [cfg80211]
-[ 4255.705042]  ? ieee80211_register_hw+0x3a6/0x7d1 [mac80211]
-[ 4255.705049]  ? __kmalloc+0xf4/0x218
-[ 4255.705058]  ? ieee80211_register_hw+0x3a6/0x7d1 [mac80211]
-[ 4255.705066]  ? ath10k_mac_register+0x70/0xaab [ath10k_core]
-[ 4255.705075]  ieee80211_register_hw+0x51a/0x7d1 [mac80211]
-[ 4255.705084]  ath10k_mac_register+0x8b4/0xaab [ath10k_core]
-[ 4255.705094]  ath10k_core_register_work+0xa5e/0xb45 [ath10k_core]
-[ 4255.705100]  ? __schedule+0x61f/0x7d3
-[ 4255.705105]  process_one_work+0x1b7/0x392
-[ 4255.705109]  worker_thread+0x271/0x35d
-[ 4255.705112]  ? pr_cont_work+0x58/0x58
-[ 4255.705116]  kthread+0x13f/0x147
-[ 4255.705119]  ? pr_cont_work+0x58/0x58
-[ 4255.705123]  ? kthread_destroy_worker+0x62/0x62
-[ 4255.705126]  ret_from_fork+0x22/0x40
-
-At this moment, the two regdomain info is same, when run "iw reg set KR",
-the global regdomain info changed to KR, but the regdomain of phy#0
-does not change again. It leads inconsistent values between global and
-phy#0 as below.
-
-global
-country KR: DFS-JP
-        (2402 - 2482 @ 40), (N/A, 13), (N/A)
-        (5170 - 5250 @ 80), (N/A, 20), (N/A), AUTO-BW
-        (5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, AUTO-BW
-        (5490 - 5710 @ 160), (N/A, 30), (0 ms), DFS
-        (5735 - 5835 @ 80), (N/A, 30), (N/A)
-        (57000 - 66000 @ 2160), (N/A, 43), (N/A)
-
-phy#0
-country US: DFS-FCC
-	(2400 - 2472 @ 40), (N/A, 30), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-	(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-	(5730 - 5850 @ 80), (N/A, 30), (N/A)
-	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
-
-The initial reg code is 0x6C which saved in reg_world_copy of ath_common,
-and the code US is updated from cfg80211 later, so ath10k should also
-check the initial reg code before regulatory_hint().
-
-After this fix, regdomain info is same between "iw reg get" and "iw reg
-set xx", it does not have the regdomain info of phy#0 again.
-
-global
-country KR: DFS-JP
-        (2402 - 2482 @ 40), (N/A, 13), (N/A)
-        (5170 - 5250 @ 80), (N/A, 20), (N/A), AUTO-BW
-        (5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, AUTO-BW
-        (5490 - 5710 @ 160), (N/A, 30), (0 ms), DFS
-        (5735 - 5835 @ 80), (N/A, 30), (N/A)
-        (57000 - 66000 @ 2160), (N/A, 43), (N/A)
-
-This does not effect the channel list and power which ath10k used.
-When the country code for regulatory_hint() in ath10k_mac_register()
-is same with the global country code, then reg_set_rd_driver() of
-cfg80211 called from crda which return -EALREADY to set_regdom() and
-then update_all_wiphy_regulatory() will not be called while wlan load.
-When run "iw reg set xx", reg_get_regdomain() which used by function
-handle_channel() in net/wirelss/reg.c always use the regdomain
-returned by get_cfg80211_regdom() because the initiator of last
-regulatory_request is NL80211_REGDOM_SET_BY_USER, get_cfg80211_regdom()
-is the global regdomain, then all the ieee80211_channel info is updated
-in handle_channel() with the global regdomain.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
-Tested-on: QCA9984 hw1.0 PCI 10.4-3.6-00104
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215881
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220525132247.23459-1-quic_wgong@quicinc.com
+Link: https://lore.kernel.org/r/20220708164656.29549-1-kvalo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/core.c | 73 --------------------------
+ drivers/net/wireless/ath/ath11k/core.h |  4 --
+ drivers/net/wireless/ath/ath11k/hw.h   |  3 --
+ drivers/net/wireless/ath/ath11k/mac.c  | 58 --------------------
+ drivers/net/wireless/ath/ath11k/mac.h  |  2 -
+ drivers/net/wireless/ath/ath11k/wmi.c  | 41 ---------------
+ drivers/net/wireless/ath/ath11k/wmi.h  | 25 ---------
+ 7 files changed, 206 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 3570a5895ea8..69da7b826387 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -10229,7 +10229,8 @@ int ath10k_mac_register(struct ath10k *ar)
- 		ar->hw->wiphy->software_iftypes |= BIT(NL80211_IFTYPE_AP_VLAN);
- 	}
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 1e98ff9ff288..79eb035fec8a 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -54,9 +54,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 11,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_ipq8074,
+ 		.svc_to_ce_map_len = 21,
+-		.rfkill_pin = 0,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 0,
+ 		.single_pdev_only = false,
+ 		.rxdma1_enable = true,
+ 		.num_rxmda_per_pdev = 1,
+@@ -133,9 +130,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 11,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_ipq6018,
+ 		.svc_to_ce_map_len = 19,
+-		.rfkill_pin = 0,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 0,
+ 		.single_pdev_only = false,
+ 		.rxdma1_enable = true,
+ 		.num_rxmda_per_pdev = 1,
+@@ -209,9 +203,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 9,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
+ 		.svc_to_ce_map_len = 14,
+-		.rfkill_pin = 48,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 1,
+ 		.single_pdev_only = true,
+ 		.rxdma1_enable = false,
+ 		.num_rxmda_per_pdev = 2,
+@@ -284,9 +275,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 9,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qcn9074,
+ 		.svc_to_ce_map_len = 18,
+-		.rfkill_pin = 0,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 0,
+ 		.rxdma1_enable = true,
+ 		.num_rxmda_per_pdev = 1,
+ 		.rx_mac_buf_ring = false,
+@@ -359,9 +347,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 9,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
+ 		.svc_to_ce_map_len = 14,
+-		.rfkill_pin = 0,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 0,
+ 		.single_pdev_only = true,
+ 		.rxdma1_enable = false,
+ 		.num_rxmda_per_pdev = 2,
+@@ -434,9 +419,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 9,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
+ 		.svc_to_ce_map_len = 14,
+-		.rfkill_pin = 0,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 0,
+ 		.single_pdev_only = true,
+ 		.rxdma1_enable = false,
+ 		.num_rxmda_per_pdev = 2,
+@@ -508,9 +490,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.target_ce_count = 9,
+ 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
+ 		.svc_to_ce_map_len = 14,
+-		.rfkill_pin = 0,
+-		.rfkill_cfg = 0,
+-		.rfkill_on_level = 0,
+ 		.single_pdev_only = true,
+ 		.rxdma1_enable = false,
+ 		.num_rxmda_per_pdev = 1,
+@@ -1402,27 +1381,6 @@ static int ath11k_core_start_firmware(struct ath11k_base *ab,
+ 	return ret;
+ }
  
--	if (!ath_is_world_regd(&ar->ath_common.regulatory)) {
-+	if (!ath_is_world_regd(&ar->ath_common.reg_world_copy) &&
-+	    !ath_is_world_regd(&ar->ath_common.regulatory)) {
- 		ret = regulatory_hint(ar->hw->wiphy,
- 				      ar->ath_common.regulatory.alpha2);
- 		if (ret)
+-static int ath11k_core_rfkill_config(struct ath11k_base *ab)
+-{
+-	struct ath11k *ar;
+-	int ret = 0, i;
+-
+-	if (!(ab->target_caps.sys_cap_info & WMI_SYS_CAP_INFO_RFKILL))
+-		return 0;
+-
+-	for (i = 0; i < ab->num_radios; i++) {
+-		ar = ab->pdevs[i].ar;
+-
+-		ret = ath11k_mac_rfkill_config(ar);
+-		if (ret && ret != -EOPNOTSUPP) {
+-			ath11k_warn(ab, "failed to configure rfkill: %d", ret);
+-			return ret;
+-		}
+-	}
+-
+-	return ret;
+-}
+-
+ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
+ {
+ 	int ret;
+@@ -1475,13 +1433,6 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
+ 		goto err_core_stop;
+ 	}
+ 	ath11k_hif_irq_enable(ab);
+-
+-	ret = ath11k_core_rfkill_config(ab);
+-	if (ret && ret != -EOPNOTSUPP) {
+-		ath11k_err(ab, "failed to config rfkill: %d\n", ret);
+-		goto err_core_stop;
+-	}
+-
+ 	mutex_unlock(&ab->core_lock);
+ 
+ 	return 0;
+@@ -1550,7 +1501,6 @@ void ath11k_core_halt(struct ath11k *ar)
+ 	cancel_delayed_work_sync(&ar->scan.timeout);
+ 	cancel_work_sync(&ar->regd_update_work);
+ 	cancel_work_sync(&ab->update_11d_work);
+-	cancel_work_sync(&ab->rfkill_work);
+ 
+ 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
+ 	synchronize_rcu();
+@@ -1558,28 +1508,6 @@ void ath11k_core_halt(struct ath11k *ar)
+ 	idr_init(&ar->txmgmt_idr);
+ }
+ 
+-static void ath11k_rfkill_work(struct work_struct *work)
+-{
+-	struct ath11k_base *ab = container_of(work, struct ath11k_base, rfkill_work);
+-	struct ath11k *ar;
+-	bool rfkill_radio_on;
+-	int i;
+-
+-	spin_lock_bh(&ab->base_lock);
+-	rfkill_radio_on = ab->rfkill_radio_on;
+-	spin_unlock_bh(&ab->base_lock);
+-
+-	for (i = 0; i < ab->num_radios; i++) {
+-		ar = ab->pdevs[i].ar;
+-		if (!ar)
+-			continue;
+-
+-		/* notify cfg80211 radio state change */
+-		ath11k_mac_rfkill_enable_radio(ar, rfkill_radio_on);
+-		wiphy_rfkill_set_hw_state(ar->hw->wiphy, !rfkill_radio_on);
+-	}
+-}
+-
+ static void ath11k_update_11d(struct work_struct *work)
+ {
+ 	struct ath11k_base *ab = container_of(work, struct ath11k_base, update_11d_work);
+@@ -1891,7 +1819,6 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
+ 	init_waitqueue_head(&ab->qmi.cold_boot_waitq);
+ 	INIT_WORK(&ab->restart_work, ath11k_core_restart);
+ 	INIT_WORK(&ab->update_11d_work, ath11k_update_11d);
+-	INIT_WORK(&ab->rfkill_work, ath11k_rfkill_work);
+ 	INIT_WORK(&ab->reset_work, ath11k_core_reset);
+ 	timer_setup(&ab->rx_replenish_retry, ath11k_ce_rx_replenish_retry, 0);
+ 	init_completion(&ab->htc_suspend);
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 95bca0b078b1..ae0651ded608 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -927,10 +927,6 @@ struct ath11k_base {
+ 
+ 	struct ath11k_dbring_cap *db_caps;
+ 	u32 num_db_cap;
+-	struct work_struct rfkill_work;
+-
+-	/* true means radio is on */
+-	bool rfkill_radio_on;
+ 
+ 	/* To synchronize 11d scan vdev id */
+ 	struct mutex vdev_id_11d_lock;
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 77dc5c851c9b..14c6d092fcdd 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -153,9 +153,6 @@ struct ath11k_hw_params {
+ 	u32 svc_to_ce_map_len;
+ 
+ 	bool single_pdev_only;
+-	u32 rfkill_pin;
+-	u32 rfkill_cfg;
+-	u32 rfkill_on_level;
+ 
+ 	bool rxdma1_enable;
+ 	int num_rxmda_per_pdev;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index ee1590b16eff..47f6127e8736 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -5606,63 +5606,6 @@ static int ath11k_mac_mgmt_tx(struct ath11k *ar, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-int ath11k_mac_rfkill_config(struct ath11k *ar)
+-{
+-	struct ath11k_base *ab = ar->ab;
+-	u32 param;
+-	int ret;
+-
+-	if (ab->hw_params.rfkill_pin == 0)
+-		return -EOPNOTSUPP;
+-
+-	ath11k_dbg(ab, ATH11K_DBG_MAC,
+-		   "mac rfkill_pin %d rfkill_cfg %d rfkill_on_level %d",
+-		   ab->hw_params.rfkill_pin, ab->hw_params.rfkill_cfg,
+-		   ab->hw_params.rfkill_on_level);
+-
+-	param = FIELD_PREP(WMI_RFKILL_CFG_RADIO_LEVEL,
+-			   ab->hw_params.rfkill_on_level) |
+-		FIELD_PREP(WMI_RFKILL_CFG_GPIO_PIN_NUM,
+-			   ab->hw_params.rfkill_pin) |
+-		FIELD_PREP(WMI_RFKILL_CFG_PIN_AS_GPIO,
+-			   ab->hw_params.rfkill_cfg);
+-
+-	ret = ath11k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_HW_RFKILL_CONFIG,
+-					param, ar->pdev->pdev_id);
+-	if (ret) {
+-		ath11k_warn(ab,
+-			    "failed to set rfkill config 0x%x: %d\n",
+-			    param, ret);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int ath11k_mac_rfkill_enable_radio(struct ath11k *ar, bool enable)
+-{
+-	enum wmi_rfkill_enable_radio param;
+-	int ret;
+-
+-	if (enable)
+-		param = WMI_RFKILL_ENABLE_RADIO_ON;
+-	else
+-		param = WMI_RFKILL_ENABLE_RADIO_OFF;
+-
+-	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac %d rfkill enable %d",
+-		   ar->pdev_idx, param);
+-
+-	ret = ath11k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_RFKILL_ENABLE,
+-					param, ar->pdev->pdev_id);
+-	if (ret) {
+-		ath11k_warn(ar->ab, "failed to set rfkill enable param %d: %d\n",
+-			    param, ret);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+ static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
+ 			     struct ieee80211_tx_control *control,
+ 			     struct sk_buff *skb)
+@@ -5917,7 +5860,6 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw)
+ 	cancel_delayed_work_sync(&ar->scan.timeout);
+ 	cancel_work_sync(&ar->regd_update_work);
+ 	cancel_work_sync(&ar->ab->update_11d_work);
+-	cancel_work_sync(&ar->ab->rfkill_work);
+ 
+ 	if (ar->state_11d == ATH11K_11D_PREPARING) {
+ 		ar->state_11d = ATH11K_11D_IDLE;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
+index 57ebfc592b00..2a0d3afb0c99 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.h
++++ b/drivers/net/wireless/ath/ath11k/mac.h
+@@ -148,8 +148,6 @@ u8 ath11k_mac_hw_rate_to_idx(const struct ieee80211_supported_band *sband,
+ 
+ void __ath11k_mac_scan_finish(struct ath11k *ar);
+ void ath11k_mac_scan_finish(struct ath11k *ar);
+-int ath11k_mac_rfkill_enable_radio(struct ath11k *ar, bool enable);
+-int ath11k_mac_rfkill_config(struct ath11k *ar);
+ 
+ struct ath11k_vif *ath11k_mac_get_arvif(struct ath11k *ar, u32 vdev_id);
+ struct ath11k_vif *ath11k_mac_get_arvif_by_vdev_id(struct ath11k_base *ab,
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 7b1dc19c565e..53389a083606 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -129,8 +129,6 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
+ 		= { .min_len = sizeof(struct wmi_peer_assoc_conf_event) },
+ 	[WMI_TAG_STATS_EVENT]
+ 		= { .min_len = sizeof(struct wmi_stats_event) },
+-	[WMI_TAG_RFKILL_EVENT] = {
+-		.min_len = sizeof(struct wmi_rfkill_state_change_ev) },
+ 	[WMI_TAG_PDEV_CTL_FAILSAFE_CHECK_EVENT]
+ 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
+ 	[WMI_TAG_HOST_SWFDA_EVENT] = {
+@@ -533,8 +531,6 @@ static int ath11k_pull_service_ready_tlv(struct ath11k_base *ab,
+ 	cap->default_dbs_hw_mode_index = ev->default_dbs_hw_mode_index;
+ 	cap->num_msdu_desc = ev->num_msdu_desc;
+ 
+-	ath11k_dbg(ab, ATH11K_DBG_WMI, "wmi sys cap info 0x%x\n", cap->sys_cap_info);
+-
+ 	return 0;
+ }
+ 
+@@ -7566,40 +7562,6 @@ ath11k_wmi_pdev_dfs_radar_detected_event(struct ath11k_base *ab, struct sk_buff
+ 	kfree(tb);
+ }
+ 
+-static void ath11k_rfkill_state_change_event(struct ath11k_base *ab,
+-					     struct sk_buff *skb)
+-{
+-	const struct wmi_rfkill_state_change_ev *ev;
+-	const void **tb;
+-	int ret;
+-
+-	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
+-	if (IS_ERR(tb)) {
+-		ret = PTR_ERR(tb);
+-		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
+-		return;
+-	}
+-
+-	ev = tb[WMI_TAG_RFKILL_EVENT];
+-	if (!ev) {
+-		kfree(tb);
+-		return;
+-	}
+-
+-	ath11k_dbg(ab, ATH11K_DBG_MAC,
+-		   "wmi tlv rfkill state change gpio %d type %d radio_state %d\n",
+-		   ev->gpio_pin_num,
+-		   ev->int_type,
+-		   ev->radio_state);
+-
+-	spin_lock_bh(&ab->base_lock);
+-	ab->rfkill_radio_on = (ev->radio_state == WMI_RFKILL_RADIO_STATE_ON);
+-	spin_unlock_bh(&ab->base_lock);
+-
+-	queue_work(ab->workqueue, &ab->rfkill_work);
+-	kfree(tb);
+-}
+-
+ static void
+ ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
+ 				  struct sk_buff *skb)
+@@ -7995,9 +7957,6 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
+ 	case WMI_11D_NEW_COUNTRY_EVENTID:
+ 		ath11k_reg_11d_new_cc_event(ab, skb);
+ 		break;
+-	case WMI_RFKILL_STATE_CHANGE_EVENTID:
+-		ath11k_rfkill_state_change_event(ab, skb);
+-		break;
+ 	case WMI_DIAG_EVENTID:
+ 		ath11k_wmi_diag_event(ab, skb);
+ 		break;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index b1fad4707dc6..4da248ffa318 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -5328,31 +5328,6 @@ struct target_resource_config {
+ 	u32 twt_ap_sta_count;
+ };
+ 
+-enum wmi_sys_cap_info_flags {
+-	WMI_SYS_CAP_INFO_RXTX_LED	= BIT(0),
+-	WMI_SYS_CAP_INFO_RFKILL	= BIT(1),
+-};
+-
+-#define WMI_RFKILL_CFG_GPIO_PIN_NUM		GENMASK(5, 0)
+-#define WMI_RFKILL_CFG_RADIO_LEVEL		BIT(6)
+-#define WMI_RFKILL_CFG_PIN_AS_GPIO		GENMASK(10, 7)
+-
+-enum wmi_rfkill_enable_radio {
+-	WMI_RFKILL_ENABLE_RADIO_ON	= 0,
+-	WMI_RFKILL_ENABLE_RADIO_OFF	= 1,
+-};
+-
+-enum wmi_rfkill_radio_state {
+-	WMI_RFKILL_RADIO_STATE_OFF	= 1,
+-	WMI_RFKILL_RADIO_STATE_ON	= 2,
+-};
+-
+-struct wmi_rfkill_state_change_ev {
+-	u32 gpio_pin_num;
+-	u32 int_type;
+-	u32 radio_state;
+-} __packed;
+-
+ enum wmi_debug_log_param {
+ 	WMI_DEBUG_LOG_PARAM_LOG_LEVEL = 0x1,
+ 	WMI_DEBUG_LOG_PARAM_VDEV_ENABLE,
 -- 
 2.35.1
 
