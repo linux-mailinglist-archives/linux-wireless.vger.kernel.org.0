@@ -2,82 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE6F58F713
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Aug 2022 06:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F5658F7CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Aug 2022 08:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233839AbiHKEzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Aug 2022 00:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51346 "EHLO
+        id S234263AbiHKGlr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Aug 2022 02:41:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229617AbiHKEzK (ORCPT
+        with ESMTP id S234167AbiHKGli (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Aug 2022 00:55:10 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E2266A52
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Aug 2022 21:55:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 94EA7CE1847
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Aug 2022 04:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B8DC433C1;
-        Thu, 11 Aug 2022 04:55:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660193706;
-        bh=/R2TqnSbJxIKcKa+IbinmolWAkYLruxSVtFn4OWCcyY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WFOVVX2frp7skqJVZdYNdgVfcnyS4xe11ThfefQRrJia8Jj5IExfC3jnYibQgP8E8
-         cprFCleAL77SAeIyvAoSV3QXFVCc4sg3iqH5TAbzAofE69QN6bXj6ldVqPWeqBItIA
-         E1U+uC3hWpWcyx1NzAnCUCG/HIdXt1MgTNRKOfHxtnE0BMKnxP+jVkFiX2M/K8rGbH
-         R5CFjUswiAILe4AqqtIqSoKlXw9mkA2PbctQl+S88cKSWWhnm+WYYCKn/0T5etPDxo
-         eVIAGRV0+b14IbXit4+0RG4qzENJn5HyMJqTEBYdZitBNqERRcHYbkcpmWhyzxsOKL
-         Nz5mRE1CdezAQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Michael Walle <michael@walle.cc>
-Cc:     Ajay.Kathat@microchip.com, linux-wireless@vger.kernel.org,
-        Claudiu.Beznea@microchip.com, Sripad.Balwadgi@microchip.com,
-        mwalle@kernel.org
-Subject: Re: [PATCH v3] wifi: wilc1000: fix DMA on stack objects
-References: <20220809075749.62752-1-ajay.kathat@microchip.com>
-        <b1e606e7a36fb900bbc664bbd585ff6a@walle.cc>
-Date:   Thu, 11 Aug 2022 07:55:01 +0300
-In-Reply-To: <b1e606e7a36fb900bbc664bbd585ff6a@walle.cc> (Michael Walle's
-        message of "Wed, 10 Aug 2022 14:07:52 +0200")
-Message-ID: <87k07fgz16.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 11 Aug 2022 02:41:38 -0400
+Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C246277;
+        Wed, 10 Aug 2022 23:41:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1660200073; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=JIuhEtk+zC29CbNkmdOCrw+Q5z2xH1mC4BnEARSwRXYvM3ivF+ov3OHhbg+Uz/sq7kczmueyeTpvLbNf+GjamFTQG9n0ST9ufl3fAYXaerMTAFpR4K79HjTauu27QSgplrXttiR1ORBvfh7Eqz6OM7OWm9MckYroa+Cr5xHkqM0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1660200073; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=qzGf/xcU2qq0loWcNErzo5p+bIrEsm6IFkASa7YpiCw=; 
+        b=RsjzwqRl5kyoQAszaa1fi/Pq/SLsnaS8X4AOvxTio0sa6W20pxrPNP1G/qEKVt2jUTgqMT5afTjCd8+U0vvPC7YMwFWfZKWw7ZIes/Owntd79EXRJNIckiSio0OxDqUadwgr4xa8FnQz4Fjmuue8unB5kA7kkPngLjKPDU6Mmf0=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1660200073;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+        bh=qzGf/xcU2qq0loWcNErzo5p+bIrEsm6IFkASa7YpiCw=;
+        b=UMSq0MqTUseR1Ca9R3QbfhVoBkeMmWaW3kL9mXslNS0ht+KTczA9AXIJJvKLwmCc
+        kJD3rE3ZTwBZGw/sfIC+lN9XB+PS+nZAvysF363UNOw7aEku3XMWNZkoBiP+xfTJjSM
+        lVgHUhqDzFRrdELEHnYQTTQiy9zeXIyKgkLyW4OE=
+Received: from mail.zoho.in by mx.zoho.in
+        with SMTP id 1660200062303914.6279487087534; Thu, 11 Aug 2022 12:11:02 +0530 (IST)
+Date:   Thu, 11 Aug 2022 12:11:02 +0530
+From:   Siddh Raman Pant <code@siddh.me>
+To:     "syzbot" <syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com>
+Cc:     "davem" <davem@davemloft.net>,
+        "johannes" <johannes@sipsolutions.net>, "kuba" <kuba@kernel.org>,
+        "linux-kernel" <linux-kernel@vger.kernel.org>,
+        "linux-wireless" <linux-wireless@vger.kernel.org>,
+        "netdev" <netdev@vger.kernel.org>,
+        "syzkaller-bugs" <syzkaller-bugs@googlegroups.com>
+Message-ID: <1828ba28d43.27f8b7ca86738.4232033862850200536@siddh.me>
+In-Reply-To: <000000000000f5acfd05e5e5ccdc@google.com>
+References: <000000000000f5acfd05e5e5ccdc@google.com>
+Subject: Re: [syzbot] WARNING in ieee80211_ibss_csa_beacon
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_RED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Michael Walle <michael@walle.cc> writes:
+On Wed, 10 Aug 2022 22:17:12 +0530  syzbot  wrote:
+> Hello,
+> 
+> syzbot tried to test the proposed patch but the build/boot failed:
 
-> Am 2022-08-09 09:57, schrieb Ajay.Kathat@microchip.com:
->> Sometimes 'wilc_sdio_cmd53' is called with addresses pointing to an
->> object on the stack. Use dynamically allocated memory for cmd53 instead
->> of stack address which is not DMA'able.
->>
->> Fixes: 5625f965d764 ("wilc1000: move wilc driver out of staging")
->> Reported-by: Michael Walle <mwalle@kernel.org>
->> Suggested-by: Michael Walle <mwalle@kernel.org>
->> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
->
-> Thanks!
->
-> Reviewed-by: Michael Walle <mwalle@kernel.org>
-> Tested-by: Michael Walle <mwalle@kernel.org>
+Trying again.
 
-Thanks Michael. My plan is to take this to the wireless tree, seems
-important enough fix.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+#syz test https://github.com/siddhpant/linux.git warning_ibss_csa_beacon
