@@ -2,47 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09DFE590466
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Aug 2022 18:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D3735904B4
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Aug 2022 18:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238437AbiHKQ3g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Aug 2022 12:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49754 "EHLO
+        id S238485AbiHKQcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Aug 2022 12:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238155AbiHKQ1i (ORCPT
+        with ESMTP id S238547AbiHKQah (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Aug 2022 12:27:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36FB6A405D;
-        Thu, 11 Aug 2022 09:08:40 -0700 (PDT)
+        Thu, 11 Aug 2022 12:30:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681EFB69D6;
+        Thu, 11 Aug 2022 09:09:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C48A7612F0;
-        Thu, 11 Aug 2022 16:08:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7009C43141;
-        Thu, 11 Aug 2022 16:08:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C14BB6144E;
+        Thu, 11 Aug 2022 16:09:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3C4C43470;
+        Thu, 11 Aug 2022 16:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660234119;
-        bh=/q9N+iPToJwMdreUkRYyHNDyXDbWuEokyrUXEgfbwHw=;
+        s=k20201202; t=1660234178;
+        bh=NFpZpKMq+bomHSltcTnqv+LOs2KF3A3My2L1rjVzW9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oTv1Ly0A86HaH0v5JV9Z/LW3okxjoq2DpTEIltc9FXn+yf7EgekDOUV+VScGnji6N
-         P9OLuIxtPrTw7sIkJ5Fg5wJOKHVpVHc7ExEOdXnYP90ZXb3PHAXpkJ+cK/1yQy4UX+
-         LiKho5hHYroT8kyI2YQXnhtZPlcUoeMkys/gQQuBEEs4cyAEx1xb3rGWJ8DCsky01T
-         bIfYC77BOSVIVj+do0myN2uXM64aAU6tc1NfAE4xCYOSTbsUK6c7LE6Yq3uc/j3uJ7
-         yNciFLKye2FreCysZ6KKCKzqjqNV5HTIAqOVrhRcum6R2OPvZF8cAn3A/Yt5xmpFJD
-         wf2tX/wlfK0/w==
+        b=JxYusAdXhBRkvOJceELof1pgbRNI1SB49eLIe5nw0Z6HObe1k1iqJXFlWy1fUSS87
+         b8aC51uM8wZ0oGBIPhpFp8inCAf8QVi55wbVlE5tpMwjtTRYHHGFWfVBOCNbYxIw/F
+         BAciMqiwiq66H2eSmUwBL+FIIuK4IWiBtlhFG0ai4ITuSn0hmTJDeabXpyM9w8lAc4
+         xH4KgVhfEaVfoA2BDBfpRHKlI4GQFS1aCMwer8XSbCJPxlYrxuXfWC0zbX/ywAkdCu
+         Zt3IkZozPcvb+JpVcIcgOOcl1mGBvyPOvEgT5KlTEKmjUI9+yauUV1ArZ1G6FLPEaP
+         k3nUukpqtgTSQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Gong <quic_wgong@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+Cc:     Zheyu Ma <zheyuma97@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, Jes.Sorensen@gmail.com,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 06/25] ath10k: fix regdomain info of iw reg set/get
-Date:   Thu, 11 Aug 2022 12:08:01 -0400
-Message-Id: <20220811160826.1541971-6-sashal@kernel.org>
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 23/25] wifi: rtl8xxxu: Fix the error handling of the probe function
+Date:   Thu, 11 Aug 2022 12:08:18 -0400
+Message-Id: <20220811160826.1541971-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220811160826.1541971-1-sashal@kernel.org>
 References: <20220811160826.1541971-1-sashal@kernel.org>
@@ -60,133 +59,115 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-[ Upstream commit 8723750e2753868591ba86a57b0041c5e38047ad ]
+[ Upstream commit 13876f2a087ad352bf640a7a0a4a4229ea6e9e4f ]
 
-When wlan load, firmware report the reg code with 0x6C for QCA6174,
-it is world reg which checked by ath_is_world_regd(), then the reg
-will be save into reg_world_copy of ath_common in ath_regd_init().
-Later the regulatory of ath_common is updated to another country
-code such as "US" in ath_reg_notifier_apply() by below call stack.
-After that, regulatory_hint() is called in ath10k_mac_register()
-and it lead "iw reg get" show two regdomain info as below.
+When the driver fails at ieee80211_alloc_hw() at the probe time, the
+driver will free the 'hw' which is not allocated, causing a bug.
 
-global
-country US: DFS-FCC
-	(2400 - 2472 @ 40), (N/A, 30), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-	(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-	(5730 - 5850 @ 80), (N/A, 30), (N/A)
-	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
+The following log can reveal it:
 
-phy#0
-country US: DFS-FCC
-	(2400 - 2472 @ 40), (N/A, 30), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-	(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-	(5730 - 5850 @ 80), (N/A, 30), (N/A)
-	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
+[   15.981294] BUG: KASAN: user-memory-access in mutex_is_locked+0xe/0x40
+[   15.981558] Read of size 8 at addr 0000000000001ab0 by task modprobe/373
+[   15.982583] Call Trace:
+[   15.984282]  ieee80211_free_hw+0x22/0x390
+[   15.984446]  rtl8xxxu_probe+0x3a1/0xab30 [rtl8xxxu]
 
-[ 4255.704975] Call Trace:
-[ 4255.704983]  ath_reg_notifier_apply+0xa6/0xc5 [ath]
-[ 4255.704991]  ath10k_reg_notifier+0x2f/0xd2 [ath10k_core]
-[ 4255.705010]  wiphy_regulatory_register+0x5f/0x69 [cfg80211]
-[ 4255.705020]  wiphy_register+0x459/0x8f0 [cfg80211]
-[ 4255.705042]  ? ieee80211_register_hw+0x3a6/0x7d1 [mac80211]
-[ 4255.705049]  ? __kmalloc+0xf4/0x218
-[ 4255.705058]  ? ieee80211_register_hw+0x3a6/0x7d1 [mac80211]
-[ 4255.705066]  ? ath10k_mac_register+0x70/0xaab [ath10k_core]
-[ 4255.705075]  ieee80211_register_hw+0x51a/0x7d1 [mac80211]
-[ 4255.705084]  ath10k_mac_register+0x8b4/0xaab [ath10k_core]
-[ 4255.705094]  ath10k_core_register_work+0xa5e/0xb45 [ath10k_core]
-[ 4255.705100]  ? __schedule+0x61f/0x7d3
-[ 4255.705105]  process_one_work+0x1b7/0x392
-[ 4255.705109]  worker_thread+0x271/0x35d
-[ 4255.705112]  ? pr_cont_work+0x58/0x58
-[ 4255.705116]  kthread+0x13f/0x147
-[ 4255.705119]  ? pr_cont_work+0x58/0x58
-[ 4255.705123]  ? kthread_destroy_worker+0x62/0x62
-[ 4255.705126]  ret_from_fork+0x22/0x40
+Fix the bug by changing the order of the error handling.
 
-At this moment, the two regdomain info is same, when run "iw reg set KR",
-the global regdomain info changed to KR, but the regdomain of phy#0
-does not change again. It leads inconsistent values between global and
-phy#0 as below.
-
-global
-country KR: DFS-JP
-        (2402 - 2482 @ 40), (N/A, 13), (N/A)
-        (5170 - 5250 @ 80), (N/A, 20), (N/A), AUTO-BW
-        (5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, AUTO-BW
-        (5490 - 5710 @ 160), (N/A, 30), (0 ms), DFS
-        (5735 - 5835 @ 80), (N/A, 30), (N/A)
-        (57000 - 66000 @ 2160), (N/A, 43), (N/A)
-
-phy#0
-country US: DFS-FCC
-	(2400 - 2472 @ 40), (N/A, 30), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-	(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-	(5730 - 5850 @ 80), (N/A, 30), (N/A)
-	(57240 - 71000 @ 2160), (N/A, 40), (N/A)
-
-The initial reg code is 0x6C which saved in reg_world_copy of ath_common,
-and the code US is updated from cfg80211 later, so ath10k should also
-check the initial reg code before regulatory_hint().
-
-After this fix, regdomain info is same between "iw reg get" and "iw reg
-set xx", it does not have the regdomain info of phy#0 again.
-
-global
-country KR: DFS-JP
-        (2402 - 2482 @ 40), (N/A, 13), (N/A)
-        (5170 - 5250 @ 80), (N/A, 20), (N/A), AUTO-BW
-        (5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, AUTO-BW
-        (5490 - 5710 @ 160), (N/A, 30), (0 ms), DFS
-        (5735 - 5835 @ 80), (N/A, 30), (N/A)
-        (57000 - 66000 @ 2160), (N/A, 43), (N/A)
-
-This does not effect the channel list and power which ath10k used.
-When the country code for regulatory_hint() in ath10k_mac_register()
-is same with the global country code, then reg_set_rd_driver() of
-cfg80211 called from crda which return -EALREADY to set_regdom() and
-then update_all_wiphy_regulatory() will not be called while wlan load.
-When run "iw reg set xx", reg_get_regdomain() which used by function
-handle_channel() in net/wirelss/reg.c always use the regdomain
-returned by get_cfg80211_regdom() because the initiator of last
-regulatory_request is NL80211_REGDOM_SET_BY_USER, get_cfg80211_regdom()
-is the global regdomain, then all the ieee80211_channel info is updated
-in handle_channel() with the global regdomain.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
-Tested-on: QCA9984 hw1.0 PCI 10.4-3.6-00104
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220525132247.23459-1-quic_wgong@quicinc.com
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220716130444.2950690-1-zheyuma97@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 3026eb54a7f2..95687e41006b 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9030,7 +9030,8 @@ int ath10k_mac_register(struct ath10k *ar)
- 		ar->hw->wiphy->software_iftypes |= BIT(NL80211_IFTYPE_AP_VLAN);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 048984ca81fd..417dd9d0a4e2 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6049,7 +6049,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	if (!hw) {
+ 		ret = -ENOMEM;
+ 		priv = NULL;
+-		goto exit;
++		goto err_put_dev;
  	}
  
--	if (!ath_is_world_regd(&ar->ath_common.regulatory)) {
-+	if (!ath_is_world_regd(&ar->ath_common.reg_world_copy) &&
-+	    !ath_is_world_regd(&ar->ath_common.regulatory)) {
- 		ret = regulatory_hint(ar->hw->wiphy,
- 				      ar->ath_common.regulatory.alpha2);
- 		if (ret)
+ 	priv = hw->priv;
+@@ -6068,24 +6068,24 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 
+ 	ret = rtl8xxxu_parse_usb(priv, interface);
+ 	if (ret)
+-		goto exit;
++		goto err_set_intfdata;
+ 
+ 	ret = rtl8xxxu_identify_chip(priv);
+ 	if (ret) {
+ 		dev_err(&udev->dev, "Fatal - failed to identify chip\n");
+-		goto exit;
++		goto err_set_intfdata;
+ 	}
+ 
+ 	ret = rtl8xxxu_read_efuse(priv);
+ 	if (ret) {
+ 		dev_err(&udev->dev, "Fatal - failed to read EFuse\n");
+-		goto exit;
++		goto err_set_intfdata;
+ 	}
+ 
+ 	ret = priv->fops->parse_efuse(priv);
+ 	if (ret) {
+ 		dev_err(&udev->dev, "Fatal - failed to parse EFuse\n");
+-		goto exit;
++		goto err_set_intfdata;
+ 	}
+ 
+ 	rtl8xxxu_print_chipinfo(priv);
+@@ -6093,12 +6093,12 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	ret = priv->fops->load_firmware(priv);
+ 	if (ret) {
+ 		dev_err(&udev->dev, "Fatal - failed to load firmware\n");
+-		goto exit;
++		goto err_set_intfdata;
+ 	}
+ 
+ 	ret = rtl8xxxu_init_device(hw);
+ 	if (ret)
+-		goto exit;
++		goto err_set_intfdata;
+ 
+ 	hw->wiphy->max_scan_ssids = 1;
+ 	hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
+@@ -6148,12 +6148,12 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	if (ret) {
+ 		dev_err(&udev->dev, "%s: Failed to register: %i\n",
+ 			__func__, ret);
+-		goto exit;
++		goto err_set_intfdata;
+ 	}
+ 
+ 	return 0;
+ 
+-exit:
++err_set_intfdata:
+ 	usb_set_intfdata(interface, NULL);
+ 
+ 	if (priv) {
+@@ -6161,9 +6161,10 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 		mutex_destroy(&priv->usb_buf_mutex);
+ 		mutex_destroy(&priv->h2c_mutex);
+ 	}
+-	usb_put_dev(udev);
+ 
+ 	ieee80211_free_hw(hw);
++err_put_dev:
++	usb_put_dev(udev);
+ 
+ 	return ret;
+ }
 -- 
 2.35.1
 
