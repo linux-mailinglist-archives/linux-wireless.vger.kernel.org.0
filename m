@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 380E45913A3
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C335913B7
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239244AbiHLQKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Aug 2022 12:10:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37870 "EHLO
+        id S239224AbiHLQKx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 12:10:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239227AbiHLQKi (ORCPT
+        with ESMTP id S239219AbiHLQKo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Aug 2022 12:10:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE5A6CD1F
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:31 -0700 (PDT)
+        Fri, 12 Aug 2022 12:10:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5BD9F0E2
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89AC461599
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B03C433B5;
-        Fri, 12 Aug 2022 16:10:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3D979B82469
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E848C433D6;
+        Fri, 12 Aug 2022 16:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660320630;
-        bh=49H7ZDDdWdSaE6Y/cghNvUzhK7E4joUfIW6qJPCixdo=;
+        s=k20201202; t=1660320631;
+        bh=fngFF9Btjy/pt6aVZVv1jBTVLwfa791PvmuCrvtujbE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WmU4tmapqput1U60DPYNAtM2rCyTXRGHuzyMwDO4EBbFfDSzUECRfd/wYjpZvtsbJ
-         NzA7OHIAzW+MsCEFlrShWmTRmKJ+4h8nJhC0R5ts6kMrpAw2t7WFGDeR1LKN5tFZtk
-         tOUnmCWDOvMN5z+V2oioMtqeIX+sCGjkQ+32ZkFL28sQyo9uyZ4Wu1tb+1lU+OmTRL
-         pi46oPZTz+ymVJgH1az1bgagGRrEPnXj9acWQIezigCeEAmJ67+FbGlaUtRlQmJbdL
-         UdOy+1dw2WLJ9Y1I+RpRRa6sYbglm6KwFeWTVdS1i7WQjiX1VrnAM0qENBqpNFKlhx
-         VYnQcMZXbNQ2Q==
+        b=gDnWAD2bqUnEGdJRngykmToQaga/Se3D7WJFWCvR6ooEU38aKmdEdzWQb9BJRyY60
+         CajXSg7INPMINu1VOEwXYwmfBZyuVjy93VvshlshKmprO7Ir79oiG7zvr+vLNCjbMu
+         UVrSPY7EKfiM31CJ0eZybFKrCxmaaOPcArOvnl+j2HkGGEN3X8QL/uxWO/ldmRoqFj
+         dGfkvRRg6sYWiDVTFtFB8Nzkcrnk2L6wzFM1OWR1GdEHzalWVaCiLbEAOBJtnrRnNZ
+         NCub9DY745rqtyyBK1LFDVCBh7tMy8/1l+V1y9rtojdLzdRHpxVLPr8GxseHxqTBsK
+         Xp/LWcJaFp9eA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath12k@lists.infradead.org
-Subject: [PATCH 22/50] wifi: ath12k: add hal_rx.c
-Date:   Fri, 12 Aug 2022 19:09:35 +0300
-Message-Id: <20220812161003.27279-23-kvalo@kernel.org>
+Subject: [PATCH 23/50] wifi: ath12k: add hal_rx.h
+Date:   Fri, 12 Aug 2022 19:09:36 +0300
+Message-Id: <20220812161003.27279-24-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220812161003.27279-1-kvalo@kernel.org>
 References: <20220812161003.27279-1-kvalo@kernel.org>
@@ -60,866 +60,707 @@ commit will be one big patch. See the cover letter for more info.)
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/hal_rx.c | 853 +++++++++++++++++++++++++++++++
- 1 file changed, 853 insertions(+)
+ drivers/net/wireless/ath/ath12k/hal_rx.h | 694 +++++++++++++++++++++++++++++++
+ 1 file changed, 694 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.c b/drivers/net/wireless/ath/ath12k/hal_rx.c
+diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
 new file mode 100644
-index 000000000000..84fb4d2b2fb6
+index 000000000000..883ea1be2525
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/hal_rx.c
-@@ -0,0 +1,853 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
++++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
+@@ -0,0 +1,694 @@
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
 +/*
 + * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
 + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
 + */
 +
-+#include "debug.h"
-+#include "hal.h"
-+#include "hal_tx.h"
-+#include "hal_rx.h"
-+#include "hal_desc.h"
-+#include "hif.h"
++#ifndef ATH12K_HAL_RX_H
++#define ATH12K_HAL_RX_H
 +
-+static void ath12k_hal_reo_set_desc_hdr(struct hal_desc_header *hdr,
-+					u8 owner, u8 buffer_type, u32 magic)
++struct hal_rx_wbm_rel_info {
++	u32 cookie;
++	enum hal_wbm_rel_src_module err_rel_src;
++	enum hal_reo_dest_ring_push_reason push_reason;
++	u32 err_code;
++	bool first_msdu;
++	bool last_msdu;
++	bool continuation;
++	void *rx_desc;
++	bool hw_cc_done;
++};
++
++#define HAL_INVALID_PEERID 0xffff
++#define VHT_SIG_SU_NSS_MASK 0x7
++
++#define HAL_RX_MAX_MCS 12
++#define HAL_RX_MAX_NSS 8
++
++#define HAL_RX_MPDU_INFO_PN_GET_BYTE1(__val) \
++	le32_get_bits((__val), GENMASK(7, 0))
++
++#define HAL_RX_MPDU_INFO_PN_GET_BYTE2(__val) \
++	le32_get_bits((__val), GENMASK(15, 8))
++
++#define HAL_RX_MPDU_INFO_PN_GET_BYTE3(__val) \
++	le32_get_bits((__val), GENMASK(23, 16))
++
++#define HAL_RX_MPDU_INFO_PN_GET_BYTE4(__val) \
++	le32_get_bits((__val), GENMASK(31, 24))
++
++struct hal_rx_mon_status_tlv_hdr {
++	u32 hdr;
++	u8 value[];
++};
++
++enum hal_rx_su_mu_coding {
++	HAL_RX_SU_MU_CODING_BCC,
++	HAL_RX_SU_MU_CODING_LDPC,
++	HAL_RX_SU_MU_CODING_MAX,
++};
++
++enum hal_rx_gi {
++	HAL_RX_GI_0_8_US,
++	HAL_RX_GI_0_4_US,
++	HAL_RX_GI_1_6_US,
++	HAL_RX_GI_3_2_US,
++	HAL_RX_GI_MAX,
++};
++
++enum hal_rx_bw {
++	HAL_RX_BW_20MHZ,
++	HAL_RX_BW_40MHZ,
++	HAL_RX_BW_80MHZ,
++	HAL_RX_BW_160MHZ,
++	HAL_RX_BW_MAX,
++};
++
++enum hal_rx_preamble {
++	HAL_RX_PREAMBLE_11A,
++	HAL_RX_PREAMBLE_11B,
++	HAL_RX_PREAMBLE_11N,
++	HAL_RX_PREAMBLE_11AC,
++	HAL_RX_PREAMBLE_11AX,
++	HAL_RX_PREAMBLE_MAX,
++};
++
++enum hal_rx_reception_type {
++	HAL_RX_RECEPTION_TYPE_SU,
++	HAL_RX_RECEPTION_TYPE_MU_MIMO,
++	HAL_RX_RECEPTION_TYPE_MU_OFDMA,
++	HAL_RX_RECEPTION_TYPE_MU_OFDMA_MIMO,
++	HAL_RX_RECEPTION_TYPE_MAX,
++};
++
++enum hal_rx_legacy_rate {
++	HAL_RX_LEGACY_RATE_1_MBPS,
++	HAL_RX_LEGACY_RATE_2_MBPS,
++	HAL_RX_LEGACY_RATE_5_5_MBPS,
++	HAL_RX_LEGACY_RATE_6_MBPS,
++	HAL_RX_LEGACY_RATE_9_MBPS,
++	HAL_RX_LEGACY_RATE_11_MBPS,
++	HAL_RX_LEGACY_RATE_12_MBPS,
++	HAL_RX_LEGACY_RATE_18_MBPS,
++	HAL_RX_LEGACY_RATE_24_MBPS,
++	HAL_RX_LEGACY_RATE_36_MBPS,
++	HAL_RX_LEGACY_RATE_48_MBPS,
++	HAL_RX_LEGACY_RATE_54_MBPS,
++	HAL_RX_LEGACY_RATE_INVALID,
++};
++
++#define HAL_TLV_STATUS_PPDU_NOT_DONE            0
++#define HAL_TLV_STATUS_PPDU_DONE                1
++#define HAL_TLV_STATUS_BUF_DONE                 2
++#define HAL_TLV_STATUS_PPDU_NON_STD_DONE        3
++#define HAL_RX_FCS_LEN                          4
++
++enum hal_rx_mon_status {
++	HAL_RX_MON_STATUS_PPDU_NOT_DONE,
++	HAL_RX_MON_STATUS_PPDU_DONE,
++	HAL_RX_MON_STATUS_BUF_DONE,
++};
++
++#define HAL_RX_MAX_MPDU		256
++#define HAL_RX_NUM_WORDS_PER_PPDU_BITMAP	(HAL_RX_MAX_MPDU >> 5)
++
++struct hal_rx_user_status {
++	u32 mcs:4,
++	nss:3,
++	ofdma_info_valid:1,
++	ul_ofdma_ru_start_index:7,
++	ul_ofdma_ru_width:7,
++	ul_ofdma_ru_size:8;
++	u32 ul_ofdma_user_v0_word0;
++	u32 ul_ofdma_user_v0_word1;
++	u32 ast_index;
++	u32 tid;
++	u16 tcp_msdu_count;
++	u16 tcp_ack_msdu_count;
++	u16 udp_msdu_count;
++	u16 other_msdu_count;
++	u16 frame_control;
++	u8 frame_control_info_valid;
++	u8 data_sequence_control_info_valid;
++	u16 first_data_seq_ctrl;
++	u32 preamble_type;
++	u16 ht_flags;
++	u16 vht_flags;
++	u16 he_flags;
++	u8 rs_flags;
++	u8 ldpc;
++	u32 mpdu_cnt_fcs_ok;
++	u32 mpdu_cnt_fcs_err;
++	u32 mpdu_fcs_ok_bitmap[HAL_RX_NUM_WORDS_PER_PPDU_BITMAP];
++	u32 mpdu_ok_byte_count;
++	u32 mpdu_err_byte_count;
++};
++
++#define HAL_MAX_UL_MU_USERS	37
++
++struct hal_rx_mon_ppdu_info {
++	u32 ppdu_id;
++	u32 last_ppdu_id;
++	u64 ppdu_ts;
++	u32 num_mpdu_fcs_ok;
++	u32 num_mpdu_fcs_err;
++	u32 preamble_type;
++	u32 mpdu_len;
++	u16 chan_num;
++	u16 tcp_msdu_count;
++	u16 tcp_ack_msdu_count;
++	u16 udp_msdu_count;
++	u16 other_msdu_count;
++	u16 peer_id;
++	u8 rate;
++	u8 mcs;
++	u8 nss;
++	u8 bw;
++	u8 vht_flag_values1;
++	u8 vht_flag_values2;
++	u8 vht_flag_values3[4];
++	u8 vht_flag_values4;
++	u8 vht_flag_values5;
++	u16 vht_flag_values6;
++	u8 is_stbc;
++	u8 gi;
++	u8 sgi;
++	u8 ldpc;
++	u8 beamformed;
++	u8 rssi_comb;
++	u16 tid;
++	u8 fc_valid;
++	u16 ht_flags;
++	u16 vht_flags;
++	u16 he_flags;
++	u16 he_mu_flags;
++	u8 dcm;
++	u8 ru_alloc;
++	u8 reception_type;
++	u64 tsft;
++	u64 rx_duration;
++	u16 frame_control;
++	u32 ast_index;
++	u8 rs_fcs_err;
++	u8 rs_flags;
++	u8 cck_flag;
++	u8 ofdm_flag;
++	u8 ulofdma_flag;
++	u8 frame_control_info_valid;
++	u16 he_per_user_1;
++	u16 he_per_user_2;
++	u8 he_per_user_position;
++	u8 he_per_user_known;
++	u16 he_flags1;
++	u16 he_flags2;
++	u8 he_RU[4];
++	u16 he_data1;
++	u16 he_data2;
++	u16 he_data3;
++	u16 he_data4;
++	u16 he_data5;
++	u16 he_data6;
++	u32 ppdu_len;
++	u32 prev_ppdu_id;
++	u32 device_id;
++	u16 first_data_seq_ctrl;
++	u8 monitor_direct_used;
++	u8 data_sequence_control_info_valid;
++	u8 ltf_size;
++	u8 rxpcu_filter_pass;
++	s8 rssi_chain[8][8];
++	u32 num_users;
++	u32 mpdu_fcs_ok_bitmap[HAL_RX_NUM_WORDS_PER_PPDU_BITMAP];
++	u8 addr1[ETH_ALEN];
++	u8 addr2[ETH_ALEN];
++	u8 addr3[ETH_ALEN];
++	u8 addr4[ETH_ALEN];
++	struct hal_rx_user_status userstats[HAL_MAX_UL_MU_USERS];
++	u8 userid;
++	u16 ampdu_id[HAL_MAX_UL_MU_USERS];
++	bool first_msdu_in_mpdu;
++	bool is_ampdu;
++	u8 medium_prot_type;
++};
++
++#define HAL_RX_PPDU_START_INFO0_PPDU_ID		GENMASK(15, 0)
++
++struct hal_rx_ppdu_start {
++	__le32 info0;
++	__le32 chan_num;
++	__le32 ppdu_start_ts;
++} __packed;
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO0_MPDU_CNT_FCS_ERR	GENMASK(25, 16)
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO1_MPDU_CNT_FCS_OK	GENMASK(8, 0)
++#define HAL_RX_PPDU_END_USER_STATS_INFO1_FC_VALID		BIT(9)
++#define HAL_RX_PPDU_END_USER_STATS_INFO1_QOS_CTRL_VALID		BIT(10)
++#define HAL_RX_PPDU_END_USER_STATS_INFO1_HT_CTRL_VALID		BIT(11)
++#define HAL_RX_PPDU_END_USER_STATS_INFO1_PKT_TYPE		GENMASK(23, 20)
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO2_AST_INDEX		GENMASK(15, 0)
++#define HAL_RX_PPDU_END_USER_STATS_INFO2_FRAME_CTRL		GENMASK(31, 16)
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO3_QOS_CTRL		GENMASK(31, 16)
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO4_UDP_MSDU_CNT		GENMASK(15, 0)
++#define HAL_RX_PPDU_END_USER_STATS_INFO4_TCP_MSDU_CNT		GENMASK(31, 16)
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO5_OTHER_MSDU_CNT		GENMASK(15, 0)
++#define HAL_RX_PPDU_END_USER_STATS_INFO5_TCP_ACK_MSDU_CNT	GENMASK(31, 16)
++
++#define HAL_RX_PPDU_END_USER_STATS_INFO6_TID_BITMAP		GENMASK(15, 0)
++#define HAL_RX_PPDU_END_USER_STATS_INFO6_TID_EOSP_BITMAP	GENMASK(31, 16)
++
++#define HAL_RX_PPDU_END_USER_STATS_RSVD2_6_MPDU_OK_BYTE_COUNT	GENMASK(24, 0)
++#define HAL_RX_PPDU_END_USER_STATS_RSVD2_8_MPDU_ERR_BYTE_COUNT	GENMASK(24, 0)
++
++struct hal_rx_ppdu_end_user_stats {
++	__le32 rsvd0[2];
++	__le32 info0;
++	__le32 info1;
++	__le32 info2;
++	__le32 info3;
++	__le32 ht_ctrl;
++	__le32 rsvd1[2];
++	__le32 info4;
++	__le32 info5;
++	__le32 info6;
++	__le32 rsvd2[11];
++} __packed;
++
++struct hal_rx_ppdu_end_user_stats_ext {
++	__le32 info0;
++	__le32 info1;
++	__le32 info2;
++	__le32 info3;
++	__le32 info4;
++	__le32 info5;
++	__le32 info6;
++} __packed;
++
++#define HAL_RX_HT_SIG_INFO_INFO0_MCS		GENMASK(6, 0)
++#define HAL_RX_HT_SIG_INFO_INFO0_BW		BIT(7)
++
++#define HAL_RX_HT_SIG_INFO_INFO1_STBC		GENMASK(5, 4)
++#define HAL_RX_HT_SIG_INFO_INFO1_FEC_CODING	BIT(6)
++#define HAL_RX_HT_SIG_INFO_INFO1_GI		BIT(7)
++
++struct hal_rx_ht_sig_info {
++	__le32 info0;
++	__le32 info1;
++} __packed;
++
++#define HAL_RX_LSIG_B_INFO_INFO0_RATE	GENMASK(3, 0)
++#define HAL_RX_LSIG_B_INFO_INFO0_LEN	GENMASK(15, 4)
++
++struct hal_rx_lsig_b_info {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_LSIG_A_INFO_INFO0_RATE		GENMASK(3, 0)
++#define HAL_RX_LSIG_A_INFO_INFO0_LEN		GENMASK(16, 5)
++#define HAL_RX_LSIG_A_INFO_INFO0_PKT_TYPE	GENMASK(27, 24)
++
++struct hal_rx_lsig_a_info {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_VHT_SIG_A_INFO_INFO0_BW		GENMASK(1, 0)
++#define HAL_RX_VHT_SIG_A_INFO_INFO0_STBC	BIT(3)
++#define HAL_RX_VHT_SIG_A_INFO_INFO0_GROUP_ID	GENMASK(9, 4)
++#define HAL_RX_VHT_SIG_A_INFO_INFO0_NSTS	GENMASK(21, 10)
++
++#define HAL_RX_VHT_SIG_A_INFO_INFO1_GI_SETTING		GENMASK(1, 0)
++#define HAL_RX_VHT_SIG_A_INFO_INFO1_SU_MU_CODING	BIT(2)
++#define HAL_RX_VHT_SIG_A_INFO_INFO1_MCS			GENMASK(7, 4)
++#define HAL_RX_VHT_SIG_A_INFO_INFO1_BEAMFORMED		BIT(8)
++
++struct hal_rx_vht_sig_a_info {
++	__le32 info0;
++	__le32 info1;
++} __packed;
++
++enum hal_rx_vht_sig_a_gi_setting {
++	HAL_RX_VHT_SIG_A_NORMAL_GI = 0,
++	HAL_RX_VHT_SIG_A_SHORT_GI = 1,
++	HAL_RX_VHT_SIG_A_SHORT_GI_AMBIGUITY = 3,
++};
++
++#define HE_GI_0_8 0
++#define HE_GI_0_4 1
++#define HE_GI_1_6 2
++#define HE_GI_3_2 3
++
++#define HE_LTF_1_X 0
++#define HE_LTF_2_X 1
++#define HE_LTF_4_X 2
++
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_TRANSMIT_MCS	GENMASK(6, 3)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_DCM		BIT(7)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_TRANSMIT_BW	GENMASK(20, 19)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_CP_LTF_SIZE	GENMASK(22, 21)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_NSTS		GENMASK(25, 23)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_BSS_COLOR		GENMASK(13, 8)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_SPATIAL_REUSE	GENMASK(18, 15)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_FORMAT_IND	BIT(0)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_BEAM_CHANGE	BIT(1)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO0_DL_UL_FLAG	BIT(2)
++
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_TXOP_DURATION	GENMASK(6, 0)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_CODING		BIT(7)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_LDPC_EXTRA	BIT(8)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_STBC		BIT(9)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_TXBF		BIT(10)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_PKT_EXT_FACTOR	GENMASK(12, 11)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_PKT_EXT_PE_DISAM	BIT(13)
++#define HAL_RX_HE_SIG_A_SU_INFO_INFO1_DOPPLER_IND	BIT(15)
++
++struct hal_rx_he_sig_a_su_info {
++	__le32 info0;
++	__le32 info1;
++} __packed;
++
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_UL_FLAG		BIT(1)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_MCS_OF_SIGB		GENMASK(3, 1)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_DCM_OF_SIGB		BIT(4)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_BSS_COLOR		GENMASK(10, 5)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_SPATIAL_REUSE	GENMASK(14, 11)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_TRANSMIT_BW		GENMASK(17, 15)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_NUM_SIGB_SYMB	GENMASK(21, 18)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_COMP_MODE_SIGB	BIT(22)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_CP_LTF_SIZE		GENMASK(24, 23)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO0_DOPPLER_INDICATION	BIT(25)
++
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_TXOP_DURATION	GENMASK(6, 0)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_CODING		BIT(7)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_NUM_LTF_SYMB	GENMASK(10, 8)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_LDPC_EXTRA		BIT(11)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_STBC		BIT(12)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_TXBF		BIT(10)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_PKT_EXT_FACTOR	GENMASK(14, 13)
++#define HAL_RX_HE_SIG_A_MU_DL_INFO1_PKT_EXT_PE_DISAM	BIT(15)
++
++struct hal_rx_he_sig_a_mu_dl_info {
++	__le32 info0;
++	__le32 info1;
++} __packed;
++
++#define HAL_RX_HE_SIG_B1_MU_INFO_INFO0_RU_ALLOCATION	GENMASK(7, 0)
++
++struct hal_rx_he_sig_b1_mu_info {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_HE_SIG_B2_MU_INFO_INFO0_STA_ID           GENMASK(10, 0)
++#define HAL_RX_HE_SIG_B2_MU_INFO_INFO0_STA_MCS		GENMASK(18, 15)
++#define HAL_RX_HE_SIG_B2_MU_INFO_INFO0_STA_CODING	BIT(20)
++#define HAL_RX_HE_SIG_B2_MU_INFO_INFO0_STA_NSTS		GENMASK(31, 29)
++
++struct hal_rx_he_sig_b2_mu_info {
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_ID	GENMASK(10, 0)
++#define HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_NSTS	GENMASK(13, 11)
++#define HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_TXBF	BIT(19)
++#define HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_MCS	GENMASK(18, 15)
++#define HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_DCM	BIT(19)
++#define HAL_RX_HE_SIG_B2_OFDMA_INFO_INFO0_STA_CODING	BIT(20)
++
++struct hal_rx_he_sig_b2_ofdma_info {
++	__le32 info0;
++} __packed;
++
++enum hal_rx_ul_reception_type {
++	HAL_RECEPTION_TYPE_ULOFMDA,
++	HAL_RECEPTION_TYPE_ULMIMO,
++	HAL_RECEPTION_TYPE_OTHER,
++	HAL_RECEPTION_TYPE_FRAMELESS
++};
++
++#define HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO0_RSSI_COMB	GENMASK(15, 8)
++#define HAL_RX_PHYRX_RSSI_LEGACY_INFO_RSVD1_RECEPTION   GENMASK(3, 0)
++
++struct hal_rx_phyrx_rssi_legacy_info {
++	__le32 rsvd[35];
++	__le32 info0;
++} __packed;
++
++#define HAL_RX_MPDU_START_INFO0_PPDU_ID	GENMASK(31, 16)
++#define HAL_RX_MPDU_START_INFO1_PEERID	GENMASK(31, 16)
++#define HAL_RX_MPDU_START_INFO2_MPDU_LEN GENMASK(13, 0)
++struct hal_rx_mpdu_start {
++	__le32 info0;
++	__le32 info1;
++	__le32 rsvd1[11];
++	__le32 info2;
++	__le32 rsvd2[9];
++} __packed;
++
++#define HAL_RX_PPDU_END_DURATION	GENMASK(23, 0)
++struct hal_rx_ppdu_end_duration {
++	__le32 rsvd0[9];
++	__le32 info0;
++	__le32 rsvd1[4];
++} __packed;
++
++struct hal_rx_rxpcu_classification_overview {
++	u32 rsvd0;
++} __packed;
++
++struct hal_rx_msdu_desc_info {
++	u32 msdu_flags;
++	u16 msdu_len; /* 14 bits for length */
++};
++
++#define HAL_RX_NUM_MSDU_DESC 6
++struct hal_rx_msdu_list {
++	struct hal_rx_msdu_desc_info msdu_info[HAL_RX_NUM_MSDU_DESC];
++	u32 sw_cookie[HAL_RX_NUM_MSDU_DESC];
++	u8 rbm[HAL_RX_NUM_MSDU_DESC];
++};
++
++#define HAL_RX_FBM_ACK_INFO0_ADDR1_31_0		GENMASK(31, 0)
++#define HAL_RX_FBM_ACK_INFO1_ADDR1_47_32	GENMASK(15, 0)
++#define HAL_RX_FBM_ACK_INFO1_ADDR2_15_0		GENMASK(31, 16)
++#define HAL_RX_FBM_ACK_INFO2_ADDR2_47_16	GENMASK(31, 0)
++
++struct hal_rx_frame_bitmap_ack {
++	__le32 reserved;
++	__le32 info0;
++	__le32 info1;
++	__le32 info2;
++	__le32 reserved1[10];
++} __packed;
++
++#define HAL_RX_RESP_REQ_INFO0_PPDU_ID		GENMASK(15, 0)
++#define HAL_RX_RESP_REQ_INFO0_RECEPTION_TYPE	BIT(16)
++#define HAL_RX_RESP_REQ_INFO1_DURATION		GENMASK(15, 0)
++#define HAL_RX_RESP_REQ_INFO1_RATE_MCS		GENMASK(24, 21)
++#define HAL_RX_RESP_REQ_INFO1_SGI		GENMASK(26, 25)
++#define HAL_RX_RESP_REQ_INFO1_STBC		BIT(27)
++#define HAL_RX_RESP_REQ_INFO1_LDPC		BIT(28)
++#define HAL_RX_RESP_REQ_INFO1_IS_AMPDU		BIT(29)
++#define HAL_RX_RESP_REQ_INFO2_NUM_USER		GENMASK(6, 0)
++#define HAL_RX_RESP_REQ_INFO3_ADDR1_31_0	GENMASK(31, 0)
++#define HAL_RX_RESP_REQ_INFO4_ADDR1_47_32	GENMASK(15, 0)
++#define HAL_RX_RESP_REQ_INFO4_ADDR1_15_0	GENMASK(31, 16)
++#define HAL_RX_RESP_REQ_INFO5_ADDR1_47_16	GENMASK(31, 0)
++
++struct hal_rx_resp_req_info {
++	__le32 info0;
++	__le32 reserved[1];
++	__le32 info1;
++	__le32 info2;
++	__le32 reserved1[2];
++	__le32 info3;
++	__le32 info4;
++	__le32 info5;
++	__le32 reserved2[5];
++} __packed;
++
++#define REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_0 0xDDBEEF
++#define REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_1 0xADBEEF
++#define REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_2 0xBDBEEF
++#define REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_3 0xCDBEEF
++
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W0_VALID		BIT(30)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W0_VER		BIT(31)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W1_NSS		GENMASK(2, 0)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W1_MCS		GENMASK(6, 3)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W1_LDPC		BIT(7)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W1_DCM		BIT(8)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W1_RU_START	GENMASK(15, 9)
++#define HAL_RX_UL_OFDMA_USER_INFO_V0_W1_RU_SIZE		GENMASK(18, 16)
++
++/* HE Radiotap data1 Mask */
++#define HE_SU_FORMAT_TYPE 0x0000
++#define HE_EXT_SU_FORMAT_TYPE 0x0001
++#define HE_MU_FORMAT_TYPE  0x0002
++#define HE_TRIG_FORMAT_TYPE  0x0003
++#define HE_BEAM_CHANGE_KNOWN 0x0008
++#define HE_DL_UL_KNOWN 0x0010
++#define HE_MCS_KNOWN 0x0020
++#define HE_DCM_KNOWN 0x0040
++#define HE_CODING_KNOWN 0x0080
++#define HE_LDPC_EXTRA_SYMBOL_KNOWN 0x0100
++#define HE_STBC_KNOWN 0x0200
++#define HE_DATA_BW_RU_KNOWN 0x4000
++#define HE_DOPPLER_KNOWN 0x8000
++#define HE_BSS_COLOR_KNOWN 0x0004
++
++/* HE Radiotap data2 Mask */
++#define HE_GI_KNOWN 0x0002
++#define HE_TXBF_KNOWN 0x0010
++#define HE_PE_DISAMBIGUITY_KNOWN 0x0020
++#define HE_TXOP_KNOWN 0x0040
++#define HE_LTF_SYMBOLS_KNOWN 0x0004
++#define HE_PRE_FEC_PADDING_KNOWN 0x0008
++#define HE_MIDABLE_PERIODICITY_KNOWN 0x0080
++
++/* HE radiotap data3 shift values */
++#define HE_BEAM_CHANGE_SHIFT 6
++#define HE_DL_UL_SHIFT 7
++#define HE_TRANSMIT_MCS_SHIFT 8
++#define HE_DCM_SHIFT 12
++#define HE_CODING_SHIFT 13
++#define HE_LDPC_EXTRA_SYMBOL_SHIFT 14
++#define HE_STBC_SHIFT 15
++
++/* HE radiotap data4 shift values */
++#define HE_STA_ID_SHIFT 4
++
++/* HE radiotap data5 */
++#define HE_GI_SHIFT 4
++#define HE_LTF_SIZE_SHIFT 6
++#define HE_LTF_SYM_SHIFT 8
++#define HE_TXBF_SHIFT 14
++#define HE_PE_DISAMBIGUITY_SHIFT 15
++#define HE_PRE_FEC_PAD_SHIFT 12
++
++/* HE radiotap data6 */
++#define HE_DOPPLER_SHIFT 4
++#define HE_TXOP_SHIFT 8
++
++/* HE radiotap HE-MU flags1 */
++#define HE_SIG_B_MCS_KNOWN 0x0010
++#define HE_SIG_B_DCM_KNOWN 0x0040
++#define HE_SIG_B_SYM_NUM_KNOWN 0x8000
++#define HE_RU_0_KNOWN 0x0100
++#define HE_RU_1_KNOWN 0x0200
++#define HE_RU_2_KNOWN 0x0400
++#define HE_RU_3_KNOWN 0x0800
++#define HE_DCM_FLAG_1_SHIFT 5
++#define HE_SPATIAL_REUSE_MU_KNOWN 0x0100
++#define HE_SIG_B_COMPRESSION_FLAG_1_KNOWN 0x4000
++
++/* HE radiotap HE-MU flags2 */
++#define HE_SIG_B_COMPRESSION_FLAG_2_SHIFT 3
++#define HE_BW_KNOWN 0x0004
++#define HE_NUM_SIG_B_SYMBOLS_SHIFT 4
++#define HE_SIG_B_COMPRESSION_FLAG_2_KNOWN 0x0100
++#define HE_NUM_SIG_B_FLAG_2_SHIFT 9
++#define HE_LTF_FLAG_2_SYMBOLS_SHIFT 12
++#define HE_LTF_KNOWN 0x8000
++
++/* HE radiotap per_user_1 */
++#define HE_STA_SPATIAL_SHIFT 11
++#define HE_TXBF_SHIFT 14
++#define HE_RESERVED_SET_TO_1_SHIFT 19
++#define HE_STA_CODING_SHIFT 20
++
++/* HE radiotap per_user_2 */
++#define HE_STA_MCS_SHIFT 4
++#define HE_STA_DCM_SHIFT 5
++
++/* HE radiotap per user known */
++#define HE_USER_FIELD_POSITION_KNOWN 0x01
++#define HE_STA_ID_PER_USER_KNOWN 0x02
++#define HE_STA_NSTS_KNOWN 0x04
++#define HE_STA_TX_BF_KNOWN 0x08
++#define HE_STA_SPATIAL_CONFIG_KNOWN 0x10
++#define HE_STA_MCS_KNOWN 0x20
++#define HE_STA_DCM_KNOWN 0x40
++#define HE_STA_CODING_KNOWN 0x80
++
++#define HAL_RX_MPDU_ERR_FCS			BIT(0)
++#define HAL_RX_MPDU_ERR_DECRYPT			BIT(1)
++#define HAL_RX_MPDU_ERR_TKIP_MIC		BIT(2)
++#define HAL_RX_MPDU_ERR_AMSDU_ERR		BIT(3)
++#define HAL_RX_MPDU_ERR_OVERFLOW		BIT(4)
++#define HAL_RX_MPDU_ERR_MSDU_LEN		BIT(5)
++#define HAL_RX_MPDU_ERR_MPDU_LEN		BIT(6)
++#define HAL_RX_MPDU_ERR_UNENCRYPTED_FRAME	BIT(7)
++
++static inline u32 ath12k_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones)
 +{
-+	hdr->info0 = le32_encode_bits(owner, HAL_DESC_HDR_INFO0_OWNER) |
-+		     le32_encode_bits(buffer_type, HAL_DESC_HDR_INFO0_BUF_TYPE);
++	u32 ret = 0;
 +
-+	/* Magic pattern in reserved bits for debugging */
-+	hdr->info0 |= le32_encode_bits(magic, HAL_DESC_HDR_INFO0_DBG_RESERVED);
-+}
-+
-+static int ath12k_hal_reo_cmd_queue_stats(struct hal_tlv_64_hdr *tlv,
-+					  struct ath12k_hal_reo_cmd *cmd)
-+{
-+	struct hal_reo_get_queue_stats *desc;
-+
-+	tlv->tl = u32_encode_bits(HAL_REO_GET_QUEUE_STATS, HAL_TLV_HDR_TAG) |
-+		  u32_encode_bits(sizeof(*desc), HAL_TLV_HDR_LEN);
-+
-+	desc = (struct hal_reo_get_queue_stats *)tlv->value;
-+	memset(&desc->queue_addr_lo, 0,
-+	       (sizeof(*desc) - sizeof(struct hal_reo_cmd_hdr)));
-+
-+	desc->cmd.info0 &= ~cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-+	if (cmd->flag & HAL_REO_CMD_FLG_NEED_STATUS)
-+		desc->cmd.info0 |= cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-+
-+	desc->queue_addr_lo = cpu_to_le32(cmd->addr_lo);
-+	desc->info0 = le32_encode_bits(cmd->addr_hi,
-+				       HAL_REO_GET_QUEUE_STATS_INFO0_QUEUE_ADDR_HI);
-+	if (cmd->flag & HAL_REO_CMD_FLG_STATS_CLEAR)
-+		desc->info0 |= cpu_to_le32(HAL_REO_GET_QUEUE_STATS_INFO0_CLEAR_STATS);
-+
-+	return le32_get_bits(desc->cmd.info0, HAL_REO_CMD_HDR_INFO0_CMD_NUMBER);
-+}
-+
-+static int ath12k_hal_reo_cmd_flush_cache(struct ath12k_hal *hal,
-+					  struct hal_tlv_64_hdr *tlv,
-+					  struct ath12k_hal_reo_cmd *cmd)
-+{
-+	struct hal_reo_flush_cache *desc;
-+	u8 avail_slot = ffz(hal->avail_blk_resource);
-+
-+	if (cmd->flag & HAL_REO_CMD_FLG_FLUSH_BLOCK_LATER) {
-+		if (avail_slot >= HAL_MAX_AVAIL_BLK_RES)
-+			return -ENOSPC;
-+
-+		hal->current_blk_index = avail_slot;
++	switch (ru_tones) {
++	case RU_26:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	case RU_52:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_52;
++		break;
++	case RU_106:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_106;
++		break;
++	case RU_242:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_242;
++		break;
++	case RU_484:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_484;
++		break;
++	case RU_996:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_996;
++		break;
 +	}
-+
-+	tlv->tl = u32_encode_bits(HAL_REO_FLUSH_CACHE, HAL_TLV_HDR_TAG) |
-+		  u32_encode_bits(sizeof(*desc), HAL_TLV_HDR_LEN);
-+
-+	desc = (struct hal_reo_flush_cache *)tlv->value;
-+	memset(&desc->cache_addr_lo, 0,
-+	       (sizeof(*desc) - sizeof(struct hal_reo_cmd_hdr)));
-+
-+	desc->cmd.info0 &= ~cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-+	if (cmd->flag & HAL_REO_CMD_FLG_NEED_STATUS)
-+		desc->cmd.info0 |= cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-+
-+	desc->cache_addr_lo = cpu_to_le32(cmd->addr_lo);
-+	desc->info0 = le32_encode_bits(cmd->addr_hi,
-+				       HAL_REO_FLUSH_CACHE_INFO0_CACHE_ADDR_HI);
-+
-+	if (cmd->flag & HAL_REO_CMD_FLG_FLUSH_FWD_ALL_MPDUS)
-+		desc->info0 |= cpu_to_le32(HAL_REO_FLUSH_CACHE_INFO0_FWD_ALL_MPDUS);
-+
-+	if (cmd->flag & HAL_REO_CMD_FLG_FLUSH_BLOCK_LATER) {
-+		desc->info0 |= cpu_to_le32(HAL_REO_FLUSH_CACHE_INFO0_BLOCK_CACHE_USAGE);
-+		desc->info0 |=
-+			le32_encode_bits(avail_slot,
-+					 HAL_REO_FLUSH_CACHE_INFO0_BLOCK_RESRC_IDX);
-+	}
-+
-+	if (cmd->flag & HAL_REO_CMD_FLG_FLUSH_NO_INVAL)
-+		desc->info0 |= cpu_to_le32(HAL_REO_FLUSH_CACHE_INFO0_FLUSH_WO_INVALIDATE);
-+
-+	if (cmd->flag & HAL_REO_CMD_FLG_FLUSH_ALL)
-+		desc->info0 |= cpu_to_le32(HAL_REO_FLUSH_CACHE_INFO0_FLUSH_ALL);
-+
-+	return le32_get_bits(desc->cmd.info0, HAL_REO_CMD_HDR_INFO0_CMD_NUMBER);
-+}
-+
-+static int ath12k_hal_reo_cmd_update_rx_queue(struct hal_tlv_64_hdr *tlv,
-+					      struct ath12k_hal_reo_cmd *cmd)
-+{
-+	struct hal_reo_update_rx_queue *desc;
-+
-+	tlv->tl = u32_encode_bits(HAL_REO_UPDATE_RX_REO_QUEUE, HAL_TLV_HDR_TAG) |
-+		  u32_encode_bits(sizeof(*desc), HAL_TLV_HDR_LEN);
-+
-+	desc = (struct hal_reo_update_rx_queue *)tlv->value;
-+	memset(&desc->queue_addr_lo, 0,
-+	       (sizeof(*desc) - sizeof(struct hal_reo_cmd_hdr)));
-+
-+	desc->cmd.info0 &= ~cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-+	if (cmd->flag & HAL_REO_CMD_FLG_NEED_STATUS)
-+		desc->cmd.info0 |= cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-+
-+	desc->queue_addr_lo = cpu_to_le32(cmd->addr_lo);
-+	desc->info0 =
-+		le32_encode_bits(cmd->addr_hi,
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_QUEUE_ADDR_HI) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_RX_QUEUE_NUM),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_RX_QUEUE_NUM) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_VLD),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_VLD) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_ALDC),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_ASSOC_LNK_DESC_CNT) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_DIS_DUP_DETECTION),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_DIS_DUP_DETECTION) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_SOFT_REORDER_EN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SOFT_REORDER_EN) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_AC),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_AC) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_BAR),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_BAR) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_RETRY),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_RETRY) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_CHECK_2K_MODE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_CHECK_2K_MODE) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_OOR_MODE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_OOR_MODE) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_BA_WINDOW_SIZE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_BA_WINDOW_SIZE) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_PN_CHECK),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_CHECK) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_EVEN_PN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_EVEN_PN) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_UNEVEN_PN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_UNEVEN_PN) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_PN_HANDLE_ENABLE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_HANDLE_ENABLE) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_PN_SIZE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_SIZE) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_IGNORE_AMPDU_FLG),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_IGNORE_AMPDU_FLG) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_SVLD),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SVLD) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_SSN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SSN) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_SEQ_2K_ERR),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SEQ_2K_ERR) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_PN_VALID),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_VALID) |
-+		le32_encode_bits(!!(cmd->upd0 & HAL_REO_CMD_UPD0_PN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN);
-+
-+	desc->info1 =
-+		le32_encode_bits(cmd->rx_queue_num,
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_RX_QUEUE_NUMBER) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_VLD),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_VLD) |
-+		le32_encode_bits(u32_get_bits(cmd->upd1, HAL_REO_CMD_UPD1_ALDC),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_ASSOC_LNK_DESC_COUNTER) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_DIS_DUP_DETECTION),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_DIS_DUP_DETECTION) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_SOFT_REORDER_EN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_SOFT_REORDER_EN) |
-+		le32_encode_bits(u32_get_bits(cmd->upd1, HAL_REO_CMD_UPD1_AC),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_AC) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_BAR),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_BAR) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_CHECK_2K_MODE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_CHECK_2K_MODE) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_RETRY),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_RETRY) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_OOR_MODE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_OOR_MODE) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_PN_CHECK),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_PN_CHECK) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_EVEN_PN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_EVEN_PN) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_UNEVEN_PN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_UNEVEN_PN) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_PN_HANDLE_ENABLE),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_PN_HANDLE_ENABLE) |
-+		le32_encode_bits(!!(cmd->upd1 & HAL_REO_CMD_UPD1_IGNORE_AMPDU_FLG),
-+				 HAL_REO_UPD_RX_QUEUE_INFO1_IGNORE_AMPDU_FLG);
-+
-+	if (cmd->pn_size == 24)
-+		cmd->pn_size = HAL_RX_REO_QUEUE_PN_SIZE_24;
-+	else if (cmd->pn_size == 48)
-+		cmd->pn_size = HAL_RX_REO_QUEUE_PN_SIZE_48;
-+	else if (cmd->pn_size == 128)
-+		cmd->pn_size = HAL_RX_REO_QUEUE_PN_SIZE_128;
-+
-+	if (cmd->ba_window_size < 1)
-+		cmd->ba_window_size = 1;
-+
-+	if (cmd->ba_window_size == 1)
-+		cmd->ba_window_size++;
-+
-+	desc->info2 =
-+		le32_encode_bits(cmd->ba_window_size - 1,
-+				 HAL_REO_UPD_RX_QUEUE_INFO2_BA_WINDOW_SIZE) |
-+		le32_encode_bits(cmd->pn_size, HAL_REO_UPD_RX_QUEUE_INFO2_PN_SIZE) |
-+		le32_encode_bits(!!(cmd->upd2 & HAL_REO_CMD_UPD2_SVLD),
-+				 HAL_REO_UPD_RX_QUEUE_INFO2_SVLD) |
-+		le32_encode_bits(u32_get_bits(cmd->upd2, HAL_REO_CMD_UPD2_SSN),
-+				 HAL_REO_UPD_RX_QUEUE_INFO2_SSN) |
-+		le32_encode_bits(!!(cmd->upd2 & HAL_REO_CMD_UPD2_SEQ_2K_ERR),
-+				 HAL_REO_UPD_RX_QUEUE_INFO2_SEQ_2K_ERR) |
-+		le32_encode_bits(!!(cmd->upd2 & HAL_REO_CMD_UPD2_PN_ERR),
-+				 HAL_REO_UPD_RX_QUEUE_INFO2_PN_ERR);
-+
-+	return le32_get_bits(desc->cmd.info0, HAL_REO_CMD_HDR_INFO0_CMD_NUMBER);
-+}
-+
-+int ath12k_hal_reo_cmd_send(struct ath12k_base *ab, struct hal_srng *srng,
-+			    enum hal_reo_cmd_type type,
-+			    struct ath12k_hal_reo_cmd *cmd)
-+{
-+	struct hal_tlv_64_hdr *reo_desc;
-+	int ret;
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath12k_hal_srng_access_begin(ab, srng);
-+	reo_desc = ath12k_hal_srng_src_get_next_entry(ab, srng);
-+	if (!reo_desc) {
-+		ret = -ENOBUFS;
-+		goto out;
-+	}
-+
-+	switch (type) {
-+	case HAL_REO_CMD_GET_QUEUE_STATS:
-+		ret = ath12k_hal_reo_cmd_queue_stats(reo_desc, cmd);
-+		break;
-+	case HAL_REO_CMD_FLUSH_CACHE:
-+		ret = ath12k_hal_reo_cmd_flush_cache(&ab->hal, reo_desc, cmd);
-+		break;
-+	case HAL_REO_CMD_UPDATE_RX_QUEUE:
-+		ret = ath12k_hal_reo_cmd_update_rx_queue(reo_desc, cmd);
-+		break;
-+	case HAL_REO_CMD_FLUSH_QUEUE:
-+	case HAL_REO_CMD_UNBLOCK_CACHE:
-+	case HAL_REO_CMD_FLUSH_TIMEOUT_LIST:
-+		ath12k_warn(ab, "Unsupported reo command %d\n", type);
-+		ret = -ENOTSUPP;
-+		break;
-+	default:
-+		ath12k_warn(ab, "Unknown reo command %d\n", type);
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+out:
-+	ath12k_hal_srng_access_end(ab, srng);
-+	spin_unlock_bh(&srng->lock);
-+
 +	return ret;
 +}
 +
-+void ath12k_hal_rx_buf_addr_info_set(struct ath12k_buffer_addr *binfo,
-+				     dma_addr_t paddr, u32 cookie, u8 manager)
-+{
-+	u32 paddr_lo, paddr_hi;
-+
-+	paddr_lo = lower_32_bits(paddr);
-+	paddr_hi = upper_32_bits(paddr);
-+	binfo->info0 = le32_encode_bits(paddr_lo, BUFFER_ADDR_INFO0_ADDR);
-+	binfo->info1 = le32_encode_bits(paddr_hi, BUFFER_ADDR_INFO1_ADDR) |
-+		       le32_encode_bits(cookie, BUFFER_ADDR_INFO1_SW_COOKIE) |
-+		       le32_encode_bits(manager, BUFFER_ADDR_INFO1_RET_BUF_MGR);
-+}
-+
-+void ath12k_hal_rx_buf_addr_info_get(struct ath12k_buffer_addr *binfo,
-+				     dma_addr_t *paddr,
-+				     u32 *cookie, u8 *rbm)
-+{
-+	*paddr = (((u64)le32_get_bits(binfo->info1, BUFFER_ADDR_INFO1_ADDR)) << 32) |
-+		le32_get_bits(binfo->info0, BUFFER_ADDR_INFO0_ADDR);
-+	*cookie = le32_get_bits(binfo->info1, BUFFER_ADDR_INFO1_SW_COOKIE);
-+	*rbm = le32_get_bits(binfo->info1, BUFFER_ADDR_INFO1_RET_BUF_MGR);
-+}
-+
++void ath12k_hal_reo_status_queue_stats(struct ath12k_base *ab,
++				       struct hal_tlv_64_hdr *tlv,
++				       struct hal_reo_status *status);
++void ath12k_hal_reo_flush_queue_status(struct ath12k_base *ab,
++				       struct hal_tlv_64_hdr *tlv,
++				       struct hal_reo_status *status);
++void ath12k_hal_reo_flush_cache_status(struct ath12k_base *ab,
++				       struct hal_tlv_64_hdr *tlv,
++				       struct hal_reo_status *status);
++void ath12k_hal_reo_unblk_cache_status(struct ath12k_base *ab,
++				       struct hal_tlv_64_hdr *tlv,
++				       struct hal_reo_status *status);
++void ath12k_hal_reo_flush_timeout_list_status(struct ath12k_base *ab,
++					      struct hal_tlv_64_hdr *tlv,
++					      struct hal_reo_status *status);
++void ath12k_hal_reo_desc_thresh_reached_status(struct ath12k_base *ab,
++					       struct hal_tlv_64_hdr *tlv,
++					       struct hal_reo_status *status);
++void ath12k_hal_reo_update_rx_reo_queue_status(struct ath12k_base *ab,
++					       struct hal_tlv_64_hdr *tlv,
++					       struct hal_reo_status *status);
 +void ath12k_hal_rx_msdu_link_info_get(struct hal_rx_msdu_link *link, u32 *num_msdus,
 +				      u32 *msdu_cookies,
-+				      enum hal_rx_buf_return_buf_manager *rbm)
-+{
-+	struct hal_rx_msdu_details *msdu;
-+	u32 val;
-+	int i;
-+
-+	*num_msdus = HAL_NUM_RX_MSDUS_PER_LINK_DESC;
-+
-+	msdu = &link->msdu_link[0];
-+	*rbm = le32_get_bits(msdu->buf_addr_info.info1,
-+			     BUFFER_ADDR_INFO1_RET_BUF_MGR);
-+
-+	for (i = 0; i < *num_msdus; i++) {
-+		msdu = &link->msdu_link[i];
-+
-+		val = le32_get_bits(msdu->buf_addr_info.info0,
-+				    BUFFER_ADDR_INFO0_ADDR);
-+		if (val == 0) {
-+			*num_msdus = i;
-+			break;
-+		}
-+		*msdu_cookies = le32_get_bits(msdu->buf_addr_info.info1,
-+					      BUFFER_ADDR_INFO1_SW_COOKIE);
-+		msdu_cookies++;
-+	}
-+}
-+
-+int ath12k_hal_desc_reo_parse_err(struct ath12k_base *ab,
-+				  struct hal_reo_dest_ring *desc,
-+				  dma_addr_t *paddr, u32 *desc_bank)
-+{
-+	enum hal_reo_dest_ring_push_reason push_reason;
-+	enum hal_reo_dest_ring_error_code err_code;
-+	u32 cookie, val;
-+
-+	push_reason = le32_get_bits(desc->info0,
-+				    HAL_REO_DEST_RING_INFO0_PUSH_REASON);
-+	err_code = le32_get_bits(desc->info0,
-+				 HAL_REO_DEST_RING_INFO0_ERROR_CODE);
-+	ab->soc_stats.reo_error[err_code]++;
-+
-+	if (push_reason != HAL_REO_DEST_RING_PUSH_REASON_ERR_DETECTED &&
-+	    push_reason != HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION) {
-+		ath12k_warn(ab, "expected error push reason code, received %d\n",
-+			    push_reason);
-+		return -EINVAL;
-+	}
-+
-+	val = le32_get_bits(desc->info0, HAL_REO_DEST_RING_INFO0_BUFFER_TYPE);
-+	if (val != HAL_REO_DEST_RING_BUFFER_TYPE_LINK_DESC) {
-+		ath12k_warn(ab, "expected buffer type link_desc");
-+		return -EINVAL;
-+	}
-+
-+	ath12k_hal_rx_reo_ent_paddr_get(ab, &desc->buf_addr_info, paddr, &cookie);
-+	*desc_bank = u32_get_bits(cookie, DP_LINK_DESC_BANK_MASK);
-+
-+	return 0;
-+}
-+
-+int ath12k_hal_wbm_desc_parse_err(struct ath12k_base *ab, void *desc,
-+				  struct hal_rx_wbm_rel_info *rel_info)
-+{
-+	struct hal_wbm_release_ring *wbm_desc = desc;
-+	struct hal_wbm_release_ring_cc_rx *wbm_cc_desc = desc;
-+	enum hal_wbm_rel_desc_type type;
-+	enum hal_wbm_rel_src_module rel_src;
-+	bool hw_cc_done;
-+	u64 desc_va;
-+	u32 val;
-+
-+	type = le32_get_bits(wbm_desc->info0, HAL_WBM_RELEASE_INFO0_DESC_TYPE);
-+	/* We expect only WBM_REL buffer type */
-+	if (type != HAL_WBM_REL_DESC_TYPE_REL_MSDU) {
-+		WARN_ON(1);
-+		return -EINVAL;
-+	}
-+
-+	rel_src = le32_get_bits(wbm_desc->info0,
-+				HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE);
-+	if (rel_src != HAL_WBM_REL_SRC_MODULE_RXDMA &&
-+	    rel_src != HAL_WBM_REL_SRC_MODULE_REO)
-+		return -EINVAL;
-+
-+	/* The format of wbm rel ring desc changes based on the
-+	 * hw cookie conversion status
-+	 */
-+	hw_cc_done = le32_get_bits(wbm_desc->info0,
-+				   HAL_WBM_RELEASE_RX_INFO0_CC_STATUS);
-+
-+	if (!hw_cc_done) {
-+		val = le32_get_bits(wbm_desc->buf_addr_info.info1,
-+				    BUFFER_ADDR_INFO1_RET_BUF_MGR);
-+		if (val != HAL_RX_BUF_RBM_SW3_BM) {
-+			ab->soc_stats.invalid_rbm++;
-+			return -EINVAL;
-+		}
-+
-+		rel_info->cookie = le32_get_bits(wbm_desc->buf_addr_info.info1,
-+						 BUFFER_ADDR_INFO1_SW_COOKIE);
-+
-+		rel_info->rx_desc = NULL;
-+	} else {
-+		val = le32_get_bits(wbm_cc_desc->info0,
-+				    HAL_WBM_RELEASE_RX_CC_INFO0_RBM);
-+		if (val != HAL_RX_BUF_RBM_SW3_BM) {
-+			ab->soc_stats.invalid_rbm++;
-+			return -EINVAL;
-+		}
-+
-+		rel_info->cookie = le32_get_bits(wbm_cc_desc->info1,
-+						 HAL_WBM_RELEASE_RX_CC_INFO1_COOKIE);
-+
-+		desc_va = ((u64)le32_to_cpu(wbm_cc_desc->buf_va_hi) << 32 |
-+			   le32_to_cpu(wbm_cc_desc->buf_va_lo));
-+		rel_info->rx_desc =
-+			(struct ath12k_rx_desc_info *)((unsigned long)desc_va);
-+	}
-+
-+	rel_info->err_rel_src = rel_src;
-+	rel_info->hw_cc_done = hw_cc_done;
-+
-+	rel_info->first_msdu = le32_get_bits(wbm_desc->info3,
-+					     HAL_WBM_RELEASE_INFO3_FIRST_MSDU);
-+	rel_info->last_msdu = le32_get_bits(wbm_desc->info3,
-+					    HAL_WBM_RELEASE_INFO3_LAST_MSDU);
-+	rel_info->continuation = le32_get_bits(wbm_desc->info3,
-+					       HAL_WBM_RELEASE_INFO3_CONTINUATION);
-+
-+	if (rel_info->err_rel_src == HAL_WBM_REL_SRC_MODULE_REO) {
-+		rel_info->push_reason =
-+			le32_get_bits(wbm_desc->info0,
-+				      HAL_WBM_RELEASE_INFO0_REO_PUSH_REASON);
-+		rel_info->err_code =
-+			le32_get_bits(wbm_desc->info0,
-+				      HAL_WBM_RELEASE_INFO0_REO_ERROR_CODE);
-+	} else {
-+		rel_info->push_reason =
-+			le32_get_bits(wbm_desc->info0,
-+				      HAL_WBM_RELEASE_INFO0_RXDMA_PUSH_REASON);
-+		rel_info->err_code =
-+			le32_get_bits(wbm_desc->info0,
-+				      HAL_WBM_RELEASE_INFO0_RXDMA_ERROR_CODE);
-+	}
-+
-+	return 0;
-+}
-+
-+void ath12k_hal_rx_reo_ent_paddr_get(struct ath12k_base *ab,
-+				     struct ath12k_buffer_addr *buff_addr,
-+				     dma_addr_t *paddr, u32 *cookie)
-+{
-+	*paddr = ((u64)(le32_get_bits(buff_addr->info1,
-+				      BUFFER_ADDR_INFO1_ADDR)) << 32) |
-+		le32_get_bits(buff_addr->info0, BUFFER_ADDR_INFO0_ADDR);
-+
-+	*cookie = le32_get_bits(buff_addr->info1, BUFFER_ADDR_INFO1_SW_COOKIE);
-+}
-+
++				      enum hal_rx_buf_return_buf_manager *rbm);
 +void ath12k_hal_rx_msdu_link_desc_set(struct ath12k_base *ab,
 +				      struct hal_wbm_release_ring *dst_desc,
 +				      struct hal_wbm_release_ring *src_desc,
-+				      enum hal_wbm_rel_bm_act action)
-+{
-+	dst_desc->buf_addr_info = src_desc->buf_addr_info;
-+	dst_desc->info0 |= le32_encode_bits(HAL_WBM_REL_SRC_MODULE_SW,
-+					    HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE) |
-+			   le32_encode_bits(action, HAL_WBM_RELEASE_INFO0_BM_ACTION) |
-+			   le32_encode_bits(HAL_WBM_REL_DESC_TYPE_MSDU_LINK,
-+					    HAL_WBM_RELEASE_INFO0_DESC_TYPE);
-+}
++				      enum hal_wbm_rel_bm_act action);
++void ath12k_hal_rx_buf_addr_info_set(struct ath12k_buffer_addr *binfo,
++				     dma_addr_t paddr, u32 cookie, u8 manager);
++void ath12k_hal_rx_buf_addr_info_get(struct ath12k_buffer_addr *binfo,
++				     dma_addr_t *paddr,
++				     u32 *cookie, u8 *rbm);
++int ath12k_hal_desc_reo_parse_err(struct ath12k_base *ab,
++				  struct hal_reo_dest_ring *desc,
++				  dma_addr_t *paddr, u32 *desc_bank);
++int ath12k_hal_wbm_desc_parse_err(struct ath12k_base *ab, void *desc,
++				  struct hal_rx_wbm_rel_info *rel_info);
++void ath12k_hal_rx_reo_ent_paddr_get(struct ath12k_base *ab,
++				     struct ath12k_buffer_addr *buff_addr,
++				     dma_addr_t *paddr, u32 *cookie);
 +
-+void ath12k_hal_reo_status_queue_stats(struct ath12k_base *ab, struct hal_tlv_64_hdr *tlv,
-+				       struct hal_reo_status *status)
-+{
-+	struct hal_reo_get_queue_stats_status *desc =
-+		(struct hal_reo_get_queue_stats_status *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+				le32_get_bits(desc->hdr.info0,
-+					      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+				le32_get_bits(desc->hdr.info0,
-+					      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "Queue stats status:\n");
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "header: cmd_num %d status %d\n",
-+		   status->uniform_hdr.cmd_num,
-+		   status->uniform_hdr.cmd_status);
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "ssn %u cur_idx %u\n",
-+		   le32_get_bits(desc->info0,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO0_SSN),
-+		   le32_get_bits(desc->info0,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO0_CUR_IDX));
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "pn = [%08x, %08x, %08x, %08x]\n",
-+		   desc->pn[0], desc->pn[1], desc->pn[2], desc->pn[3]);
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "last_rx: enqueue_tstamp %08x dequeue_tstamp %08x\n",
-+		   desc->last_rx_enqueue_timestamp,
-+		   desc->last_rx_dequeue_timestamp);
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "rx_bitmap [%08x %08x %08x %08x %08x %08x %08x %08x]\n",
-+		   desc->rx_bitmap[0], desc->rx_bitmap[1], desc->rx_bitmap[2],
-+		   desc->rx_bitmap[3], desc->rx_bitmap[4], desc->rx_bitmap[5],
-+		   desc->rx_bitmap[6], desc->rx_bitmap[7]);
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "count: cur_mpdu %u cur_msdu %u\n",
-+		   le32_get_bits(desc->info1,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO1_MPDU_COUNT),
-+		   le32_get_bits(desc->info1,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO1_MSDU_COUNT));
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "fwd_timeout %u fwd_bar %u dup_count %u\n",
-+		   le32_get_bits(desc->info2,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_TIMEOUT_COUNT),
-+		   le32_get_bits(desc->info2,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_FDTB_COUNT),
-+		   le32_get_bits(desc->info2,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_DUPLICATE_COUNT));
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "frames_in_order %u bar_rcvd %u\n",
-+		   le32_get_bits(desc->info3,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO3_FIO_COUNT),
-+		   le32_get_bits(desc->info3,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO3_BAR_RCVD_CNT));
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "num_mpdus %d num_msdus %d total_bytes %d\n",
-+		   desc->num_mpdu_frames, desc->num_msdu_frames,
-+		   desc->total_bytes);
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "late_rcvd %u win_jump_2k %u hole_cnt %u\n",
-+		   le32_get_bits(desc->info4,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO4_LATE_RX_MPDU),
-+		   le32_get_bits(desc->info2,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_WINDOW_JMP2K),
-+		   le32_get_bits(desc->info4,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO4_HOLE_COUNT));
-+	ath12k_dbg(ab, ATH12K_DBG_HAL, "looping count %u\n",
-+		   le32_get_bits(desc->info5,
-+				 HAL_REO_GET_QUEUE_STATS_STATUS_INFO5_LOOPING_CNT));
-+}
-+
-+void ath12k_hal_reo_flush_queue_status(struct ath12k_base *ab, struct hal_tlv_64_hdr *tlv,
-+				       struct hal_reo_status *status)
-+{
-+	struct hal_reo_flush_queue_status *desc =
-+		(struct hal_reo_flush_queue_status *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+	status->u.flush_queue.err_detected =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_FLUSH_QUEUE_INFO0_ERR_DETECTED);
-+}
-+
-+void ath12k_hal_reo_flush_cache_status(struct ath12k_base *ab, struct hal_tlv_64_hdr *tlv,
-+				       struct hal_reo_status *status)
-+{
-+	struct ath12k_hal *hal = &ab->hal;
-+	struct hal_reo_flush_cache_status *desc =
-+		(struct hal_reo_flush_cache_status *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+
-+	status->u.flush_cache.err_detected =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_FLUSH_CACHE_STATUS_INFO0_IS_ERR);
-+	status->u.flush_cache.err_code =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_CACHE_STATUS_INFO0_BLOCK_ERR_CODE);
-+	if (!status->u.flush_cache.err_code)
-+		hal->avail_blk_resource |= BIT(hal->current_blk_index);
-+
-+	status->u.flush_cache.cache_controller_flush_status_hit =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_STATUS_HIT);
-+
-+	status->u.flush_cache.cache_controller_flush_status_desc_type =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_DESC_TYPE);
-+	status->u.flush_cache.cache_controller_flush_status_client_id =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_CLIENT_ID);
-+	status->u.flush_cache.cache_controller_flush_status_err =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_ERR);
-+	status->u.flush_cache.cache_controller_flush_status_cnt =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_COUNT);
-+}
-+
-+void ath12k_hal_reo_unblk_cache_status(struct ath12k_base *ab, struct hal_tlv_64_hdr *tlv,
-+				       struct hal_reo_status *status)
-+{
-+	struct ath12k_hal *hal = &ab->hal;
-+	struct hal_reo_unblock_cache_status *desc =
-+		(struct hal_reo_unblock_cache_status *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+
-+	status->u.unblock_cache.err_detected =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_UNBLOCK_CACHE_STATUS_INFO0_IS_ERR);
-+	status->u.unblock_cache.unblock_type =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_UNBLOCK_CACHE_STATUS_INFO0_TYPE);
-+
-+	if (!status->u.unblock_cache.err_detected &&
-+	    status->u.unblock_cache.unblock_type ==
-+	    HAL_REO_STATUS_UNBLOCK_BLOCKING_RESOURCE)
-+		hal->avail_blk_resource &= ~BIT(hal->current_blk_index);
-+}
-+
-+void ath12k_hal_reo_flush_timeout_list_status(struct ath12k_base *ab,
-+					      struct hal_tlv_64_hdr *tlv,
-+					      struct hal_reo_status *status)
-+{
-+	struct hal_reo_flush_timeout_list_status *desc =
-+		(struct hal_reo_flush_timeout_list_status *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+
-+	status->u.timeout_list.err_detected =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_FLUSH_TIMEOUT_STATUS_INFO0_IS_ERR);
-+	status->u.timeout_list.list_empty =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_FLUSH_TIMEOUT_STATUS_INFO0_LIST_EMPTY);
-+
-+	status->u.timeout_list.release_desc_cnt =
-+		le32_get_bits(desc->info1,
-+			      HAL_REO_FLUSH_TIMEOUT_STATUS_INFO1_REL_DESC_COUNT);
-+	status->u.timeout_list.fwd_buf_cnt =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_FLUSH_TIMEOUT_STATUS_INFO1_FWD_BUF_COUNT);
-+}
-+
-+void ath12k_hal_reo_desc_thresh_reached_status(struct ath12k_base *ab,
-+					       struct hal_tlv_64_hdr *tlv,
-+					       struct hal_reo_status *status)
-+{
-+	struct hal_reo_desc_thresh_reached_status *desc =
-+		(struct hal_reo_desc_thresh_reached_status *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+			le32_get_bits(desc->hdr.info0,
-+				      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+
-+	status->u.desc_thresh_reached.threshold_idx =
-+		le32_get_bits(desc->info0,
-+			      HAL_REO_DESC_THRESH_STATUS_INFO0_THRESH_INDEX);
-+
-+	status->u.desc_thresh_reached.link_desc_counter0 =
-+		le32_get_bits(desc->info1,
-+			      HAL_REO_DESC_THRESH_STATUS_INFO1_LINK_DESC_COUNTER0);
-+
-+	status->u.desc_thresh_reached.link_desc_counter1 =
-+		le32_get_bits(desc->info2,
-+			      HAL_REO_DESC_THRESH_STATUS_INFO2_LINK_DESC_COUNTER1);
-+
-+	status->u.desc_thresh_reached.link_desc_counter2 =
-+		le32_get_bits(desc->info3,
-+			      HAL_REO_DESC_THRESH_STATUS_INFO3_LINK_DESC_COUNTER2);
-+
-+	status->u.desc_thresh_reached.link_desc_counter_sum =
-+		le32_get_bits(desc->info4,
-+			      HAL_REO_DESC_THRESH_STATUS_INFO4_LINK_DESC_COUNTER_SUM);
-+}
-+
-+void ath12k_hal_reo_update_rx_reo_queue_status(struct ath12k_base *ab,
-+					       struct hal_tlv_64_hdr *tlv,
-+					       struct hal_reo_status *status)
-+{
-+	struct hal_reo_status_hdr *desc =
-+		(struct hal_reo_status_hdr *)tlv->value;
-+
-+	status->uniform_hdr.cmd_num =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
-+	status->uniform_hdr.cmd_status =
-+			le32_get_bits(desc->info0,
-+				      HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS);
-+}
-+
-+u32 ath12k_hal_reo_qdesc_size(u32 ba_window_size, u8 tid)
-+{
-+	u32 num_ext_desc;
-+
-+	if (ba_window_size <= 1) {
-+		if (tid != HAL_DESC_REO_NON_QOS_TID)
-+			num_ext_desc = 1;
-+		else
-+			num_ext_desc = 0;
-+	} else if (ba_window_size <= 105) {
-+		num_ext_desc = 1;
-+	} else if (ba_window_size <= 210) {
-+		num_ext_desc = 2;
-+	} else {
-+		num_ext_desc = 3;
-+	}
-+
-+	return sizeof(struct hal_rx_reo_queue) +
-+		(num_ext_desc * sizeof(struct hal_rx_reo_queue_ext));
-+}
-+
-+void ath12k_hal_reo_qdesc_setup(struct hal_rx_reo_queue *qdesc,
-+				int tid, u32 ba_window_size,
-+				u32 start_seq, enum hal_pn_type type)
-+{
-+	struct hal_rx_reo_queue_ext *ext_desc;
-+
-+	memset(qdesc, 0, sizeof(*qdesc));
-+
-+	ath12k_hal_reo_set_desc_hdr(&qdesc->desc_hdr, HAL_DESC_REO_OWNED,
-+				    HAL_DESC_REO_QUEUE_DESC,
-+				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_0);
-+
-+	qdesc->rx_queue_num = le32_encode_bits(tid, HAL_RX_REO_QUEUE_RX_QUEUE_NUMBER);
-+
-+	qdesc->info0 =
-+		le32_encode_bits(1, HAL_RX_REO_QUEUE_INFO0_VLD) |
-+		le32_encode_bits(1, HAL_RX_REO_QUEUE_INFO0_ASSOC_LNK_DESC_COUNTER) |
-+		le32_encode_bits(ath12k_tid_to_ac(tid), HAL_RX_REO_QUEUE_INFO0_AC);
-+
-+	if (ba_window_size < 1)
-+		ba_window_size = 1;
-+
-+	if (ba_window_size == 1 && tid != HAL_DESC_REO_NON_QOS_TID)
-+		ba_window_size++;
-+
-+	if (ba_window_size == 1)
-+		qdesc->info0 |= le32_encode_bits(1, HAL_RX_REO_QUEUE_INFO0_RETRY);
-+
-+	qdesc->info0 |= le32_encode_bits(ba_window_size - 1,
-+					 HAL_RX_REO_QUEUE_INFO0_BA_WINDOW_SIZE);
-+	switch (type) {
-+	case HAL_PN_TYPE_NONE:
-+	case HAL_PN_TYPE_WAPI_EVEN:
-+	case HAL_PN_TYPE_WAPI_UNEVEN:
-+		break;
-+	case HAL_PN_TYPE_WPA:
-+		qdesc->info0 |=
-+			le32_encode_bits(1, HAL_RX_REO_QUEUE_INFO0_PN_CHECK) |
-+			le32_encode_bits(HAL_RX_REO_QUEUE_PN_SIZE_48,
-+					 HAL_RX_REO_QUEUE_INFO0_PN_SIZE);
-+		break;
-+	}
-+
-+	/* TODO: Set Ignore ampdu flags based on BA window size and/or
-+	 * AMPDU capabilities
-+	 */
-+	qdesc->info0 |= le32_encode_bits(1, HAL_RX_REO_QUEUE_INFO0_IGNORE_AMPDU_FLG);
-+
-+	qdesc->info1 |= le32_encode_bits(0, HAL_RX_REO_QUEUE_INFO1_SVLD);
-+
-+	if (start_seq <= 0xfff)
-+		qdesc->info1 = le32_encode_bits(start_seq,
-+						HAL_RX_REO_QUEUE_INFO1_SSN);
-+
-+	if (tid == HAL_DESC_REO_NON_QOS_TID)
-+		return;
-+
-+	ext_desc = qdesc->ext_desc;
-+
-+	/* TODO: HW queue descriptors are currently allocated for max BA
-+	 * window size for all QOS TIDs so that same descriptor can be used
-+	 * later when ADDBA request is received. This should be changed to
-+	 * allocate HW queue descriptors based on BA window size being
-+	 * negotiated (0 for non BA cases), and reallocate when BA window
-+	 * size changes and also send WMI message to FW to change the REO
-+	 * queue descriptor in Rx peer entry as part of dp_rx_tid_update.
-+	 */
-+	memset(ext_desc, 0, 3 * sizeof(*ext_desc));
-+	ath12k_hal_reo_set_desc_hdr(&ext_desc->desc_hdr, HAL_DESC_REO_OWNED,
-+				    HAL_DESC_REO_QUEUE_EXT_DESC,
-+				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_1);
-+	ext_desc++;
-+	ath12k_hal_reo_set_desc_hdr(&ext_desc->desc_hdr, HAL_DESC_REO_OWNED,
-+				    HAL_DESC_REO_QUEUE_EXT_DESC,
-+				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_2);
-+	ext_desc++;
-+	ath12k_hal_reo_set_desc_hdr(&ext_desc->desc_hdr, HAL_DESC_REO_OWNED,
-+				    HAL_DESC_REO_QUEUE_EXT_DESC,
-+				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_3);
-+}
-+
-+void ath12k_hal_reo_init_cmd_ring(struct ath12k_base *ab,
-+				  struct hal_srng *srng)
-+{
-+	struct hal_srng_params params;
-+	struct hal_tlv_64_hdr *tlv;
-+	struct hal_reo_get_queue_stats *desc;
-+	int i, cmd_num = 1;
-+	int entry_size;
-+	u8 *entry;
-+
-+	memset(&params, 0, sizeof(params));
-+
-+	entry_size = ath12k_hal_srng_get_entrysize(ab, HAL_REO_CMD);
-+	ath12k_hal_srng_get_params(ab, srng, &params);
-+	entry = (u8 *)params.ring_base_vaddr;
-+
-+	for (i = 0; i < params.num_entries; i++) {
-+		tlv = (struct hal_tlv_64_hdr *)entry;
-+		desc = (struct hal_reo_get_queue_stats *)tlv->value;
-+		desc->cmd.info0 = le32_encode_bits(cmd_num++,
-+						   HAL_REO_CMD_HDR_INFO0_CMD_NUMBER);
-+		entry += entry_size;
-+	}
-+}
-+
-+void ath12k_hal_reo_hw_setup(struct ath12k_base *ab, u32 ring_hash_map)
-+{
-+	u32 reo_base = HAL_SEQ_WCSS_UMAC_REO_REG;
-+	u32 val;
-+
-+	val = ath12k_hif_read32(ab, reo_base + HAL_REO1_GEN_ENABLE);
-+
-+	val |= u32_encode_bits(1, HAL_REO1_GEN_ENABLE_AGING_LIST_ENABLE) |
-+	       u32_encode_bits(1, HAL_REO1_GEN_ENABLE_AGING_FLUSH_ENABLE);
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_GEN_ENABLE, val);
-+
-+	val = ath12k_hif_read32(ab, reo_base + HAL_REO1_MISC_CTRL_ADDR);
-+
-+	val &= ~(HAL_REO1_MISC_CTL_FRAG_DST_RING |
-+		 HAL_REO1_MISC_CTL_BAR_DST_RING);
-+	val |= u32_encode_bits(HAL_SRNG_RING_ID_REO2SW0,
-+			       HAL_REO1_MISC_CTL_FRAG_DST_RING);
-+	val |= u32_encode_bits(HAL_SRNG_RING_ID_REO2SW0,
-+			       HAL_REO1_MISC_CTL_BAR_DST_RING);
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_MISC_CTRL_ADDR, val);
-+
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_0,
-+			   HAL_DEFAULT_BE_BK_VI_REO_TIMEOUT_USEC);
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_1,
-+			   HAL_DEFAULT_BE_BK_VI_REO_TIMEOUT_USEC);
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_2,
-+			   HAL_DEFAULT_BE_BK_VI_REO_TIMEOUT_USEC);
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_3,
-+			   HAL_DEFAULT_VO_REO_TIMEOUT_USEC);
-+
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_2,
-+			   ring_hash_map);
-+	ath12k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_3,
-+			   ring_hash_map);
-+}
++#endif
 
