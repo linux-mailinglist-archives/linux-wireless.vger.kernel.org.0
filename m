@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C991591396
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4783D5913BA
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239173AbiHLQKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Aug 2022 12:10:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37010 "EHLO
+        id S239177AbiHLQK2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 12:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239145AbiHLQKU (ORCPT
+        with ESMTP id S239197AbiHLQKV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Aug 2022 12:10:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F85DC2
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:16 -0700 (PDT)
+        Fri, 12 Aug 2022 12:10:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659D0A5
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C32DF61592
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3F1C433D7;
-        Fri, 12 Aug 2022 16:10:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C90A26158A
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB35C433C1;
+        Fri, 12 Aug 2022 16:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660320615;
-        bh=3HuRZQ7mHpBGFRiOKZpXORCrciqC9LKHuFEUKnciue0=;
+        s=k20201202; t=1660320616;
+        bh=MDwsYTPrGo9CNwWMSoHQAhvjhFDCQLCa7ws1qSRRgNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U0NDuKzAA4G2jLsc0GmE/FS7qdBj/JLLcpSxbBDIv8SFFXRnt4yK/x6YjUuSRgYtt
-         ST81sFo1cNl7Sfxnr3tT9yhsWmZkg2XFwV4aVJzyNfijvbNgOB6IHxpFtFHtxQSq9Y
-         nH4u2WyG7005WMY06CWpG9MOGwWpaBCdHjiYKafyFGX2bK3T7C/I8+P3uaH0vDgHAz
-         +DHjUB6o91NQNsNAU4L0LaoXrfKA6KxPgDC1mn3V+K3I9Sy2jXHwPpTUwVtU5qaX5f
-         kxg+ziQEQ4Z9sWFMhq3OwdH59iT82+kcRCiuNkYmZlQW+aDPwmBvjoJIZENwEBMBXi
-         FWWDvmWBANxiA==
+        b=DPL/Y8DR/sn+y4eAR/Ayd/apBT7vJgLJt45lKdMFbuASlSwlcpRYzAs6LSwWfVAlM
+         +ozWrcCdJZTzMJa3agu0uD0cW8w6naC090ljnG95hbidqnqjEkkgCLsxW5p51cJRM8
+         E+sqvmOrOt0KdSj06B8rWjB4y2ediKahBpttoHe8KbNZw5Bxk20sEsdUmCyatxkvZp
+         3cV2G6CNT/YVtRogMW4N47Bfpj7dZF5AbPnYphO/N1hb5t8aagRVz0yVkJ8iAmXSqO
+         ttEnUjhVXKlT1Y3bdKRo98TNbZbYydmoJF71+ubnceyfHd/CUic2DC4BAeQAkVglLW
+         xTK2QRsu+9zJg==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath12k@lists.infradead.org
-Subject: [PATCH 08/50] wifi: ath12k: add dbring.h
-Date:   Fri, 12 Aug 2022 19:09:21 +0300
-Message-Id: <20220812161003.27279-9-kvalo@kernel.org>
+Subject: [PATCH 09/50] wifi: ath12k: add debug.c
+Date:   Fri, 12 Aug 2022 19:09:22 +0300
+Message-Id: <20220812161003.27279-10-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220812161003.27279-1-kvalo@kernel.org>
 References: <20220812161003.27279-1-kvalo@kernel.org>
@@ -60,93 +60,115 @@ commit will be one big patch. See the cover letter for more info.)
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/dbring.h | 80 ++++++++++++++++++++++++++++++++
- 1 file changed, 80 insertions(+)
+ drivers/net/wireless/ath/ath12k/debug.c | 102 ++++++++++++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dbring.h b/drivers/net/wireless/ath/ath12k/dbring.h
+diff --git a/drivers/net/wireless/ath/ath12k/debug.c b/drivers/net/wireless/ath/ath12k/debug.c
 new file mode 100644
-index 000000000000..2be2d8def3f0
+index 000000000000..67893923e010
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/dbring.h
-@@ -0,0 +1,80 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
++++ b/drivers/net/wireless/ath/ath12k/debug.c
+@@ -0,0 +1,102 @@
++// SPDX-License-Identifier: BSD-3-Clause-Clear
 +/*
-+ * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
 + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
 + */
 +
-+#ifndef ATH12K_DBRING_H
-+#define ATH12K_DBRING_H
++#include <linux/vmalloc.h>
++#include "core.h"
++#include "debug.h"
 +
-+#include <linux/types.h>
-+#include <linux/idr.h>
-+#include <linux/spinlock.h>
-+#include "dp.h"
++void ath12k_info(struct ath12k_base *ab, const char *fmt, ...)
++{
++	struct va_format vaf = {
++		.fmt = fmt,
++	};
++	va_list args;
 +
-+struct ath12k_dbring_element {
-+	dma_addr_t paddr;
-+	u8 payload[0];
-+};
++	va_start(args, fmt);
++	vaf.va = &args;
++	dev_info(ab->dev, "%pV", &vaf);
++	/* TODO: Trace the log */
++	va_end(args);
++}
 +
-+struct ath12k_dbring_data {
-+	void *data;
-+	u32 data_sz;
-+	struct ath12k_wmi_dma_buf_release_meta_data_params meta;
-+};
++void ath12k_err(struct ath12k_base *ab, const char *fmt, ...)
++{
++	struct va_format vaf = {
++		.fmt = fmt,
++	};
++	va_list args;
 +
-+struct ath12k_dbring_buf_release_event {
-+	struct ath12k_wmi_dma_buf_release_fixed_params fixed;
-+	const struct ath12k_wmi_dma_buf_release_entry_params *buf_entry;
-+	const struct ath12k_wmi_dma_buf_release_meta_data_params *meta_data;
-+	u32 num_buf_entry;
-+	u32 num_meta;
-+};
++	va_start(args, fmt);
++	vaf.va = &args;
++	dev_err(ab->dev, "%pV", &vaf);
++	/* TODO: Trace the log */
++	va_end(args);
++}
 +
-+struct ath12k_dbring_cap {
-+	u32 pdev_id;
-+	enum wmi_direct_buffer_module id;
-+	u32 min_elem;
-+	u32 min_buf_sz;
-+	u32 min_buf_align;
-+};
++void ath12k_warn(struct ath12k_base *ab, const char *fmt, ...)
++{
++	struct va_format vaf = {
++		.fmt = fmt,
++	};
++	va_list args;
 +
-+struct ath12k_dbring {
-+	struct dp_srng refill_srng;
-+	struct idr bufs_idr;
-+	/* Protects bufs_idr */
-+	spinlock_t idr_lock;
-+	dma_addr_t tp_addr;
-+	dma_addr_t hp_addr;
-+	int bufs_max;
-+	u32 pdev_id;
-+	u32 buf_sz;
-+	u32 buf_align;
-+	u32 num_resp_per_event;
-+	u32 event_timeout_ms;
-+	int (*handler)(struct ath12k *ar, struct ath12k_dbring_data *data);
-+};
++	va_start(args, fmt);
++	vaf.va = &args;
++	dev_warn_ratelimited(ab->dev, "%pV", &vaf);
++	/* TODO: Trace the log */
++	va_end(args);
++}
 +
-+int ath12k_dbring_set_cfg(struct ath12k *ar,
-+			  struct ath12k_dbring *ring,
-+			  u32 num_resp_per_event,
-+			  u32 event_timeout_ms,
-+			  int (*handler)(struct ath12k *,
-+					 struct ath12k_dbring_data *));
-+int ath12k_dbring_wmi_cfg_setup(struct ath12k *ar,
-+				struct ath12k_dbring *ring,
-+				enum wmi_direct_buffer_module id);
-+int ath12k_dbring_buf_setup(struct ath12k *ar,
-+			    struct ath12k_dbring *ring,
-+			    struct ath12k_dbring_cap *db_cap);
-+int ath12k_dbring_srng_setup(struct ath12k *ar, struct ath12k_dbring *ring,
-+			     int ring_num, int num_entries);
-+int ath12k_dbring_buffer_release_event(struct ath12k_base *ab,
-+				       struct ath12k_dbring_buf_release_event *ev);
-+int ath12k_dbring_get_cap(struct ath12k_base *ab,
-+			  u8 pdev_idx,
-+			  enum wmi_direct_buffer_module id,
-+			  struct ath12k_dbring_cap *db_cap);
-+void ath12k_dbring_srng_cleanup(struct ath12k *ar, struct ath12k_dbring *ring);
-+void ath12k_dbring_buf_cleanup(struct ath12k *ar, struct ath12k_dbring *ring);
-+#endif /* ATH12K_DBRING_H */
++#ifdef CONFIG_ATH12K_DEBUG
++
++void __ath12k_dbg(struct ath12k_base *ab, enum ath12k_debug_mask mask,
++		  const char *fmt, ...)
++{
++	struct va_format vaf;
++	va_list args;
++
++	va_start(args, fmt);
++
++	vaf.fmt = fmt;
++	vaf.va = &args;
++
++	if (ath12k_debug_mask & mask)
++		dev_dbg(ab->dev, "%pV", &vaf);
++
++	/* TODO: trace log */
++
++	va_end(args);
++}
++
++void ath12k_dbg_dump(struct ath12k_base *ab,
++		     enum ath12k_debug_mask mask,
++		     const char *msg, const char *prefix,
++		     const void *buf, size_t len)
++{
++	char linebuf[256];
++	size_t linebuflen;
++	const void *ptr;
++
++	if (ath12k_debug_mask & mask) {
++		if (msg)
++			__ath12k_dbg(ab, mask, "%s\n", msg);
++
++		for (ptr = buf; (ptr - buf) < len; ptr += 16) {
++			linebuflen = 0;
++			linebuflen += scnprintf(linebuf + linebuflen,
++						sizeof(linebuf) - linebuflen,
++						"%s%08x: ",
++						(prefix ? prefix : ""),
++						(unsigned int)(ptr - buf));
++			hex_dump_to_buffer(ptr, len - (ptr - buf), 16, 1,
++					   linebuf + linebuflen,
++					   sizeof(linebuf) - linebuflen, true);
++			dev_dbg(ab->dev, "%s\n", linebuf);
++		}
++	}
++}
++
++#endif /* CONFIG_ATH12K_DEBUG */
 
