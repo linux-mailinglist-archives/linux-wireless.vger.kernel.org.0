@@ -2,62 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B295912E3
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 17:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB3E591326
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 17:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238990AbiHLP2E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Aug 2022 11:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50296 "EHLO
+        id S238243AbiHLPgp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 11:36:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238885AbiHLP2D (ORCPT
+        with ESMTP id S237169AbiHLPgm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Aug 2022 11:28:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C3A7C186;
-        Fri, 12 Aug 2022 08:28:02 -0700 (PDT)
+        Fri, 12 Aug 2022 11:36:42 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3D3E6E2F1
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 08:36:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 967F56148F;
-        Fri, 12 Aug 2022 15:28:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C47C433C1;
-        Fri, 12 Aug 2022 15:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1660318080;
-        bh=Js90lG2a8CweNtF1ZgBlqyryGecyyYI5L5XDv9jU1pw=;
+        by sin.source.kernel.org (Postfix) with ESMTPS id 11845CE2495
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 15:36:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E686C433D7;
+        Fri, 12 Aug 2022 15:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660318597;
+        bh=HnupT5kL8Fgu2rStLPqKQ8Iy5JQSpNixVqBC54hqVTY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KobhE0oAhe5CUh6J0+dCswDw2xxhwa7nkHxFglctgM1+T6exPV0IQp2feT6W6xJao
-         fcdt0YCo+oB9DfCD2VeRPnAQnmiGfwMIfwDjCfCYj5DsOUNPeVL15cJAbw8nSxoMMB
-         p7hYC6DPcda76poYonlcnU2DZq/6k4d2y6V/M8Js=
-Date:   Fri, 12 Aug 2022 17:27:58 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Siddh Raman Pant <code@siddh.me>
-Cc:     johannes berg <johannes@sipsolutions.net>,
-        "david s. miller" <davem@davemloft.net>,
-        eric dumazet <edumazet@google.com>,
-        jakub kicinski <kuba@kernel.org>,
-        paolo abeni <pabeni@redhat.com>,
-        netdev <netdev@vger.kernel.org>,
-        syzbot+6cb476b7c69916a0caca 
-        <syzbot+6cb476b7c69916a0caca@syzkaller.appspotmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        syzbot+f9acff9bf08a845f225d 
-        <syzbot+f9acff9bf08a845f225d@syzkaller.appspotmail.com>,
-        syzbot+9250865a55539d384347 
-        <syzbot+9250865a55539d384347@syzkaller.appspotmail.com>,
-        linux-kernel-mentees 
-        <linux-kernel-mentees@lists.linuxfoundation.org>
-Subject: Re: [PATCH v2] wifi: cfg80211: Fix UAF in ieee80211_scan_rx()
-Message-ID: <YvZxfpY4JUqvsOG5@kroah.com>
-References: <20220726123921.29664-1-code@siddh.me>
- <18291779771.584fa6ab156295.3990923778713440655@siddh.me>
- <YvZEfnjGIpH6XjsD@kroah.com>
- <18292791718.88f48d22175003.6675210189148271554@siddh.me>
+        b=TUq3MsxlzqBxr9zttPSWIthiYZpLCMgMGaWYvIW3sBw0p9qZtpPjVsvbW1GP9+91e
+         fGHpl7NPz2kCzXyXs2oQC7JmME7bp8WQ04WVgBRUNByQ4bXDKVxu2nerZHRGBKuF2q
+         u/UTXDr6vv/Ytu0izPNPC+FMvwmJvlF6h1oWpf5v4dqHO4TtfRqrBKFlbyYJ/Jd2lv
+         HM3wfDf7SteNYT+R7uBMC0oAR0bojpSir7qvimkEOjyWbRNhEUdn/w52hPrmdHuMC8
+         rAKPZHlLxhLOTJaNjnA+EO4ejLzqrYN/FvAN5LxMH1twcUaikOQeotmBwE7e60rWKB
+         N3OhLijhD3N4g==
+Date:   Fri, 12 Aug 2022 10:36:36 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     wireless-regdb@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: add 5 GHz rules for GY
+Message-ID: <YvZzhIK/cLhzyUlS@ubuntu-x1>
+References: <20220805141709.106684-1-sforshee@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <18292791718.88f48d22175003.6675210189148271554@siddh.me>
+In-Reply-To: <20220805141709.106684-1-sforshee@kernel.org>
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -68,27 +53,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 12, 2022 at 08:03:05PM +0530, Siddh Raman Pant wrote:
-> On Fri, 12 Aug 2022 17:45:58 +0530  Greg KH  wrote:
-> > The merge window is for new features to be added, bugfixes can be merged
-> > at any point in time, but most maintainers close their trees until after
-> > the merge window is closed before accepting new fixes, like this one.
-> > 
-> > So just relax, wait another week or so, and if there's no response,
-> > resend it then.
-> > 
+On Fri, Aug 05, 2022 at 09:17:09AM -0500, Seth Forshee wrote:
+> Add 5 GHz rules which were provided by a representative of the Guyana
+> Telecommunications Agency. There is no published document which can be
+> used as a reference for these rules.
 > 
-> Okay, sure.
+> Signed-off-by: Seth Forshee <sforshee@kernel.org>
+
+Applied.
+
+> ---
+>  db.txt | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> > Personally, this patch seems very incorrect, but hey, I'm not the wifi
-> > subsystem maintainer :)
+> diff --git a/db.txt b/db.txt
+> index 16b38b7cb2b2..16abf2951e77 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -732,6 +732,9 @@ country GU: DFS-FCC
+>  
+>  country GY:
+>  	(2402 - 2482 @ 40), (30)
+> +	(5170 - 5250 @ 80), (23), AUTO-BW
+> +	(5250 - 5330 @ 80), (23), DFS, AUTO-BW
+> +	(5490 - 5730 @ 160), (23), DFS
+>  	(5735 - 5835 @ 80), (30)
+>  
+>  country HK: DFS-ETSI
+> -- 
+> 2.34.1
 > 
-> Why do you think so?
-
-rcu just delays freeing of an object, you might just be delaying the
-race condition.  Just moving a single object to be freed with rcu feels
-very odd if you don't have another reference somewhere.
-
-Anyway, I don't know this codebase, so I could be totally wrong.
-
-greg k-h
+> 
+> _______________________________________________
+> wireless-regdb mailing list
+> wireless-regdb@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/wireless-regdb
