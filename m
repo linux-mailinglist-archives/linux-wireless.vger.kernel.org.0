@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D36F5913AE
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8270D591390
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239251AbiHLQLJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Aug 2022 12:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38170 "EHLO
+        id S239259AbiHLQLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 12:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239231AbiHLQKx (ORCPT
+        with ESMTP id S239219AbiHLQK5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Aug 2022 12:10:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E13615FFF
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:45 -0700 (PDT)
+        Fri, 12 Aug 2022 12:10:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 599F1A50DF
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FAB561579
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF41C433C1;
-        Fri, 12 Aug 2022 16:10:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0383AB8248C
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D9EC433D7;
+        Fri, 12 Aug 2022 16:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660320644;
-        bh=WrKvm8wwl15FznIv+fu2BcwCwl7JMO/pUWKUGl0yjVY=;
+        s=k20201202; t=1660320645;
+        bh=1xHK8GqI1RR066SlJkmt9TyqVekiMv873sCKWYIPPcU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YX56b+X1HUtQsM13DHgQpFzEo9g7RYRtCNDZo5NvjYD41er18qksHKwLuBo7J+LlT
-         tbFJvqO8Jn5zRpFpP112lMt1LeyIY24DT/WxuRjhdx1SVxiWvzZejoAKNi11wIlcXg
-         r4D/7njdOdkNM32kd5NdXwBt3K7+amToDXWD6YGVbvYGB+7+5JqDVV6T8pgB6VEMA4
-         CYaScosRQXWF7nyPSbcqMpAPezOf8rGP9grGVdfQQBu0Sh3vCtIJ76E191TS37m3Nm
-         LIIo8MLdKgyzP7RlfjpClMDsuEmjFr38wzErdskOxJtcRBiOWF7lL6b+CldCciQRtC
-         sw+kerh9ZkOgQ==
+        b=g9iEzlSn38yRBbD361cEhRRbsXgXRG9op+47zeOHrpR40AY9+WzgFQDiPlTY7260T
+         NIHLRAnQlGc1gjTnziG/ijhTNv4cwykxyj3A8KfLuDLrYlAWpwEba0U/jey3s6TGp8
+         duY7qoAfkxqgRikC0ex19IERauW8OHeC5xDv+LnDuVCUDICyNLBZijNSPA/bxJrw1f
+         58EZxrx/+TdY6aurTY8MbbYt7wmQbes64iyA1+UmNbAFH/VJGDmpuEaudI/copMe0Z
+         2G1EvDL/5w0KAqqT5Rleb6j41bzg1t9qipCGW2/3OjzELWYbo33K3Z/Xn7FY25DKIo
+         yRFgWza580mSw==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath12k@lists.infradead.org
-Subject: [PATCH 36/50] wifi: ath12k: add pci.h
-Date:   Fri, 12 Aug 2022 19:09:49 +0300
-Message-Id: <20220812161003.27279-37-kvalo@kernel.org>
+Subject: [PATCH 37/50] wifi: ath12k: add peer.c
+Date:   Fri, 12 Aug 2022 19:09:50 +0300
+Message-Id: <20220812161003.27279-38-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220812161003.27279-1-kvalo@kernel.org>
 References: <20220812161003.27279-1-kvalo@kernel.org>
@@ -60,145 +60,356 @@ commit will be one big patch. See the cover letter for more info.)
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/pci.h | 132 ++++++++++++++++++++++++++++++++++
- 1 file changed, 132 insertions(+)
+ drivers/net/wireless/ath/ath12k/peer.c | 343 +++++++++++++++++++++++++++++++++
+ 1 file changed, 343 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
+diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
 new file mode 100644
-index 000000000000..eb9a0c9b375f
+index 000000000000..30ffdbbdcc7f
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/pci.h
-@@ -0,0 +1,132 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
++++ b/drivers/net/wireless/ath/ath12k/peer.c
+@@ -0,0 +1,343 @@
++// SPDX-License-Identifier: BSD-3-Clause-Clear
 +/*
-+ * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
 + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
 + */
-+#ifndef ATH12K_PCI_H
-+#define ATH12K_PCI_H
-+
-+#include <linux/mhi.h>
 +
 +#include "core.h"
++#include "peer.h"
++#include "debug.h"
 +
-+#define PCIE_SOC_GLOBAL_RESET			0x3008
-+#define PCIE_SOC_GLOBAL_RESET_V			1
-+
-+#define WLAON_WARM_SW_ENTRY			0x1f80504
-+#define WLAON_SOC_RESET_CAUSE_REG		0x01f8060c
-+
-+#define PCIE_Q6_COOKIE_ADDR			0x01f80500
-+#define PCIE_Q6_COOKIE_DATA			0xc0000000
-+
-+/* register to wake the UMAC from power collapse */
-+#define PCIE_SCRATCH_0_SOC_PCIE_REG		0x4040
-+
-+/* register used for handshake mechanism to validate UMAC is awake */
-+#define PCIE_SOC_WAKE_PCIE_LOCAL_REG		0x3004
-+
-+#define PCIE_PCIE_PARF_LTSSM			0x1e081b0
-+#define PARM_LTSSM_VALUE			0x111
-+
-+#define GCC_GCC_PCIE_HOT_RST			0x1e38338
-+#define GCC_GCC_PCIE_HOT_RST_VAL		0x10
-+
-+#define PCIE_PCIE_INT_ALL_CLEAR			0x1e08228
-+#define PCIE_SMLH_REQ_RST_LINK_DOWN		0x2
-+#define PCIE_INT_CLEAR_ALL			0xffffffff
-+
-+#define PCIE_QSERDES_COM_SYSCLK_EN_SEL_REG(ab) \
-+	((ab)->hw_params->regs->pcie_qserdes_sysclk_en_sel)
-+#define PCIE_QSERDES_COM_SYSCLK_EN_SEL_VAL	0x10
-+#define PCIE_QSERDES_COM_SYSCLK_EN_SEL_MSK	0xffffffff
-+#define PCIE_PCS_OSC_DTCT_CONFIG1_REG(ab) \
-+	((ab)->hw_params->regs->pcie_pcs_osc_dtct_config_base)
-+#define PCIE_PCS_OSC_DTCT_CONFIG1_VAL		0x02
-+#define PCIE_PCS_OSC_DTCT_CONFIG2_REG(ab) \
-+	((ab)->hw_params->regs->pcie_pcs_osc_dtct_config_base + 0x4)
-+#define PCIE_PCS_OSC_DTCT_CONFIG2_VAL		0x52
-+#define PCIE_PCS_OSC_DTCT_CONFIG4_REG(ab) \
-+	((ab)->hw_params->regs->pcie_pcs_osc_dtct_config_base + 0xc)
-+#define PCIE_PCS_OSC_DTCT_CONFIG4_VAL		0xff
-+#define PCIE_PCS_OSC_DTCT_CONFIG_MSK		0x000000ff
-+
-+#define WLAON_QFPROM_PWR_CTRL_REG		0x01f8031c
-+#define QFPROM_PWR_CTRL_VDD4BLOW_MASK		0x4
-+
-+#define PCI_BAR_WINDOW0_BASE	0x1E00000
-+#define PCI_BAR_WINDOW0_END	0x1E7FFFC
-+#define PCI_SOC_RANGE_MASK	0x3FFF
-+#define PCI_SOC_PCI_REG_BASE	0x1E04000
-+#define PCI_SOC_PCI_REG_END	0x1E07FFC
-+#define PCI_PARF_BASE		0x1E08000
-+#define PCI_PARF_END		0x1E0BFFC
-+#define PCI_MHIREGLEN_REG	0x1E0E100
-+#define PCI_MHI_REGION_END	0x1E0EFFC
-+#define QRTR_PCI_DOMAIN_NR_MASK		GENMASK(7, 4)
-+#define QRTR_PCI_BUS_NUMBER_MASK	GENMASK(3, 0)
-+
-+struct ath12k_msi_user {
-+	char *name;
-+	int num_vectors;
-+	u32 base_vector;
-+};
-+
-+struct ath12k_msi_config {
-+	int total_vectors;
-+	int total_users;
-+	struct ath12k_msi_user *users;
-+};
-+
-+enum ath12k_pci_flags {
-+	ATH12K_PCI_FLAG_INIT_DONE,
-+	ATH12K_PCI_FLAG_IS_MSI_64,
-+	ATH12K_PCI_ASPM_RESTORE,
-+};
-+
-+struct ath12k_pci {
-+	struct pci_dev *pdev;
-+	struct ath12k_base *ab;
-+	u16 dev_id;
-+	char amss_path[100];
-+	u32 msi_ep_base_data;
-+	struct mhi_controller *mhi_ctrl;
-+	const struct ath12k_msi_config *msi_config;
-+	unsigned long mhi_state;
-+	u32 register_window;
-+
-+	/* protects register_window above */
-+	spinlock_t window_lock;
-+
-+	/* enum ath12k_pci_flags */
-+	unsigned long flags;
-+	u16 link_ctl;
-+};
-+
-+static inline struct ath12k_pci *ath12k_pci_priv(struct ath12k_base *ab)
++struct ath12k_peer *ath12k_peer_find(struct ath12k_base *ab, int vdev_id,
++				     const u8 *addr)
 +{
-+	return (struct ath12k_pci *)ab->drv_priv;
++	struct ath12k_peer *peer;
++
++	lockdep_assert_held(&ab->base_lock);
++
++	list_for_each_entry(peer, &ab->peers, list) {
++		if (peer->vdev_id != vdev_id)
++			continue;
++		if (!ether_addr_equal(peer->addr, addr))
++			continue;
++
++		return peer;
++	}
++
++	return NULL;
 +}
 +
-+int ath12k_pci_get_user_msi_assignment(struct ath12k_base *ab, char *user_name,
-+				       int *num_vectors, u32 *user_base_data,
-+				       u32 *base_vector);
-+int ath12k_pci_get_msi_irq(struct device *dev, unsigned int vector);
-+void ath12k_pci_write32(struct ath12k_base *ab, u32 offset, u32 value);
-+u32 ath12k_pci_read32(struct ath12k_base *ab, u32 offset);
-+int ath12k_pci_map_service_to_pipe(struct ath12k_base *ab, u16 service_id,
-+				   u8 *ul_pipe, u8 *dl_pipe);
-+void ath12k_pci_get_msi_address(struct ath12k_base *ab, u32 *msi_addr_lo,
-+				u32 *msi_addr_hi);
-+void ath12k_pci_get_ce_msi_idx(struct ath12k_base *ab, u32 ce_id,
-+			       u32 *msi_idx);
-+void ath12k_pci_hif_ce_irq_enable(struct ath12k_base *ab);
-+void ath12k_pci_hif_ce_irq_disable(struct ath12k_base *ab);
-+void ath12k_pci_ext_irq_enable(struct ath12k_base *ab);
-+void ath12k_pci_ext_irq_disable(struct ath12k_base *ab);
-+int ath12k_pci_hif_suspend(struct ath12k_base *ab);
-+int ath12k_pci_hif_resume(struct ath12k_base *ab);
-+void ath12k_pci_stop(struct ath12k_base *ab);
-+int ath12k_pci_start(struct ath12k_base *ab);
-+int ath12k_pci_power_up(struct ath12k_base *ab);
-+void ath12k_pci_power_down(struct ath12k_base *ab);
-+#endif /* ATH12K_PCI_H */
++static struct ath12k_peer *ath12k_peer_find_by_pdev_idx(struct ath12k_base *ab,
++							u8 pdev_idx, const u8 *addr)
++{
++	struct ath12k_peer *peer;
++
++	lockdep_assert_held(&ab->base_lock);
++
++	list_for_each_entry(peer, &ab->peers, list) {
++		if (peer->pdev_idx != pdev_idx)
++			continue;
++		if (!ether_addr_equal(peer->addr, addr))
++			continue;
++
++		return peer;
++	}
++
++	return NULL;
++}
++
++struct ath12k_peer *ath12k_peer_find_by_addr(struct ath12k_base *ab,
++					     const u8 *addr)
++{
++	struct ath12k_peer *peer;
++
++	lockdep_assert_held(&ab->base_lock);
++
++	list_for_each_entry(peer, &ab->peers, list) {
++		if (!ether_addr_equal(peer->addr, addr))
++			continue;
++
++		return peer;
++	}
++
++	return NULL;
++}
++
++struct ath12k_peer *ath12k_peer_find_by_id(struct ath12k_base *ab,
++					   int peer_id)
++{
++	struct ath12k_peer *peer;
++
++	lockdep_assert_held(&ab->base_lock);
++
++	list_for_each_entry(peer, &ab->peers, list)
++		if (peer_id == peer->peer_id)
++			return peer;
++
++	return NULL;
++}
++
++struct ath12k_peer *ath12k_peer_find_by_vdev_id(struct ath12k_base *ab,
++						int vdev_id)
++{
++	struct ath12k_peer *peer;
++
++	spin_lock_bh(&ab->base_lock);
++
++	list_for_each_entry(peer, &ab->peers, list) {
++		if (vdev_id == peer->vdev_id) {
++			spin_unlock_bh(&ab->base_lock);
++			return peer;
++		}
++	}
++	spin_unlock_bh(&ab->base_lock);
++	return NULL;
++}
++
++struct ath12k_peer *ath12k_peer_find_by_ast(struct ath12k_base *ab,
++					    int ast_hash)
++{
++	struct ath12k_peer *peer;
++
++	lockdep_assert_held(&ab->base_lock);
++
++	list_for_each_entry(peer, &ab->peers, list)
++		if (ast_hash == peer->ast_hash)
++			return peer;
++
++	return NULL;
++}
++
++void ath12k_peer_unmap_event(struct ath12k_base *ab, u16 peer_id)
++{
++	struct ath12k_peer *peer;
++
++	spin_lock_bh(&ab->base_lock);
++
++	peer = ath12k_peer_find_by_id(ab, peer_id);
++	if (!peer) {
++		ath12k_warn(ab, "peer-unmap-event: unknown peer id %d\n",
++			    peer_id);
++		goto exit;
++	}
++
++	ath12k_dbg(ab, ATH12K_DBG_DP_HTT, "htt peer unmap vdev %d peer %pM id %d\n",
++		   peer->vdev_id, peer->addr, peer_id);
++
++	list_del(&peer->list);
++	kfree(peer);
++	wake_up(&ab->peer_mapping_wq);
++
++exit:
++	spin_unlock_bh(&ab->base_lock);
++}
++
++void ath12k_peer_map_event(struct ath12k_base *ab, u8 vdev_id, u16 peer_id,
++			   u8 *mac_addr, u16 ast_hash, u16 hw_peer_id)
++{
++	struct ath12k_peer *peer;
++
++	spin_lock_bh(&ab->base_lock);
++	peer = ath12k_peer_find(ab, vdev_id, mac_addr);
++	if (!peer) {
++		peer = kzalloc(sizeof(*peer), GFP_ATOMIC);
++		if (!peer)
++			goto exit;
++
++		peer->vdev_id = vdev_id;
++		peer->peer_id = peer_id;
++		peer->ast_hash = ast_hash;
++		peer->hw_peer_id = hw_peer_id;
++		ether_addr_copy(peer->addr, mac_addr);
++		list_add(&peer->list, &ab->peers);
++		wake_up(&ab->peer_mapping_wq);
++	}
++
++	ath12k_dbg(ab, ATH12K_DBG_DP_HTT, "htt peer map vdev %d peer %pM id %d\n",
++		   vdev_id, mac_addr, peer_id);
++
++exit:
++	spin_unlock_bh(&ab->base_lock);
++}
++
++static int ath12k_wait_for_peer_common(struct ath12k_base *ab, int vdev_id,
++				       const u8 *addr, bool expect_mapped)
++{
++	int ret;
++
++	ret = wait_event_timeout(ab->peer_mapping_wq, ({
++				bool mapped;
++
++				spin_lock_bh(&ab->base_lock);
++				mapped = !!ath12k_peer_find(ab, vdev_id, addr);
++				spin_unlock_bh(&ab->base_lock);
++
++				(mapped == expect_mapped ||
++				 test_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags));
++				}), 3 * HZ);
++
++	if (ret <= 0)
++		return -ETIMEDOUT;
++
++	return 0;
++}
++
++void ath12k_peer_cleanup(struct ath12k *ar, u32 vdev_id)
++{
++	struct ath12k_peer *peer, *tmp;
++	struct ath12k_base *ab = ar->ab;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	spin_lock_bh(&ab->base_lock);
++	list_for_each_entry_safe(peer, tmp, &ab->peers, list) {
++		if (peer->vdev_id != vdev_id)
++			continue;
++
++		ath12k_warn(ab, "removing stale peer %pM from vdev_id %d\n",
++			    peer->addr, vdev_id);
++
++		list_del(&peer->list);
++		kfree(peer);
++		ar->num_peers--;
++	}
++
++	spin_unlock_bh(&ab->base_lock);
++}
++
++static int ath12k_wait_for_peer_deleted(struct ath12k *ar, int vdev_id, const u8 *addr)
++{
++	return ath12k_wait_for_peer_common(ar->ab, vdev_id, addr, false);
++}
++
++int ath12k_wait_for_peer_delete_done(struct ath12k *ar, u32 vdev_id,
++				     const u8 *addr)
++{
++	int ret;
++	unsigned long time_left;
++
++	ret = ath12k_wait_for_peer_deleted(ar, vdev_id, addr);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed wait for peer deleted");
++		return ret;
++	}
++
++	time_left = wait_for_completion_timeout(&ar->peer_delete_done,
++						3 * HZ);
++	if (time_left == 0) {
++		ath12k_warn(ar->ab, "Timeout in receiving peer delete response\n");
++		return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
++int ath12k_peer_delete(struct ath12k *ar, u32 vdev_id, u8 *addr)
++{
++	int ret;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	reinit_completion(&ar->peer_delete_done);
++
++	ret = ath12k_wmi_send_peer_delete_cmd(ar, addr, vdev_id);
++	if (ret) {
++		ath12k_warn(ar->ab,
++			    "failed to delete peer vdev_id %d addr %pM ret %d\n",
++			    vdev_id, addr, ret);
++		return ret;
++	}
++
++	ret = ath12k_wait_for_peer_delete_done(ar, vdev_id, addr);
++	if (ret)
++		return ret;
++
++	ar->num_peers--;
++
++	return 0;
++}
++
++static int ath12k_wait_for_peer_created(struct ath12k *ar, int vdev_id, const u8 *addr)
++{
++	return ath12k_wait_for_peer_common(ar->ab, vdev_id, addr, true);
++}
++
++int ath12k_peer_create(struct ath12k *ar, struct ath12k_vif *arvif,
++		       struct ieee80211_sta *sta,
++		       struct ath12k_wmi_peer_create_arg *arg)
++{
++	struct ath12k_peer *peer;
++	int ret;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	if (ar->num_peers > (ar->max_num_peers - 1)) {
++		ath12k_warn(ar->ab,
++			    "failed to create peer due to insufficient peer entry resource in firmware\n");
++		return -ENOBUFS;
++	}
++
++	spin_lock_bh(&ar->ab->base_lock);
++	peer = ath12k_peer_find_by_pdev_idx(ar->ab, ar->pdev_idx, arg->peer_addr);
++	if (peer) {
++		spin_unlock_bh(&ar->ab->base_lock);
++		return -EINVAL;
++	}
++	spin_unlock_bh(&ar->ab->base_lock);
++
++	ret = ath12k_wmi_send_peer_create_cmd(ar, arg);
++	if (ret) {
++		ath12k_warn(ar->ab,
++			    "failed to send peer create vdev_id %d ret %d\n",
++			    arg->vdev_id, ret);
++		return ret;
++	}
++
++	ret = ath12k_wait_for_peer_created(ar, arg->vdev_id,
++					   arg->peer_addr);
++	if (ret)
++		return ret;
++
++	spin_lock_bh(&ar->ab->base_lock);
++
++	peer = ath12k_peer_find(ar->ab, arg->vdev_id, arg->peer_addr);
++	if (!peer) {
++		spin_unlock_bh(&ar->ab->base_lock);
++		ath12k_warn(ar->ab, "failed to find peer %pM on vdev %i after creation\n",
++			    arg->peer_addr, arg->vdev_id);
++
++		reinit_completion(&ar->peer_delete_done);
++
++		ret = ath12k_wmi_send_peer_delete_cmd(ar, arg->peer_addr,
++						      arg->vdev_id);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to delete peer vdev_id %d addr %pM\n",
++				    arg->vdev_id, arg->peer_addr);
++			return ret;
++		}
++
++		ret = ath12k_wait_for_peer_delete_done(ar, arg->vdev_id,
++						       arg->peer_addr);
++		if (ret)
++			return ret;
++
++		return -ENOENT;
++	}
++
++	peer->pdev_idx = ar->pdev_idx;
++	peer->sta = sta;
++
++	if (arvif->vif->type == NL80211_IFTYPE_STATION) {
++		arvif->ast_hash = peer->ast_hash;
++		arvif->ast_idx = peer->hw_peer_id;
++	}
++
++	peer->sec_type = HAL_ENCRYPT_TYPE_OPEN;
++	peer->sec_type_grp = HAL_ENCRYPT_TYPE_OPEN;
++
++	ar->num_peers++;
++
++	spin_unlock_bh(&ar->ab->base_lock);
++
++	return 0;
++}
 
