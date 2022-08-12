@@ -2,109 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF74590F8A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 12:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8915910A7
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 14:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238597AbiHLKdp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Aug 2022 06:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39018 "EHLO
+        id S238608AbiHLMQK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 08:16:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238328AbiHLKdo (ORCPT
+        with ESMTP id S237181AbiHLMQJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Aug 2022 06:33:44 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4318AA721D;
-        Fri, 12 Aug 2022 03:33:43 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-31e7ca45091so6010907b3.3;
-        Fri, 12 Aug 2022 03:33:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=UxBtbERKRh6ik9gzCjPNzlllpU4KxVBTC6cNbI4+dXA=;
-        b=LawWhrTfx1q4KHMfhSlSvd/0gmio1DmqKNElQy5yd08bWUdj0hFLVyGRfX8kvjc1Xb
-         5cDn89Ue5RGBAaSoe6f76D5zoQZxFjIGyUQZLqgB/wdtc8zMPNwIE2AS79QWiC4CK+CP
-         O15bUcPZfzo7q1Dv80ZyxUxl4zbX/iuJUTtAUnYxT67foaDGQ43k1pMjuYp0Y/C7L5QG
-         Bu1fPvdcKkyv6hTb9ti9OM1p0iU1a7hrvJ8YuuJspN+jqwz55rc7UjZmt6YXazYqmCQ+
-         bGAYjAQmmHc/5IiEd6M0TyrUv54rSiZRkyzdrF9Zwc2O59wpjIyebHvvhAMlZXQBCQeq
-         SQug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=UxBtbERKRh6ik9gzCjPNzlllpU4KxVBTC6cNbI4+dXA=;
-        b=roR15rgo2o/chAYh1Ox+krWzxRdhiJR4sgNHDi4k5iv4j+3G9wF/DI9ewjh/YltAYc
-         5SnKZArsEwG31OYW2i+tFA+Yw2u6jxDPrsLHmyK0w5XxuztD5HZfkyIXd6ZTpbm2/VuJ
-         S+I2gSzhSpwZ9L5UHNUHyvrttGWVzipsGYUV70yQ9rQWhoU5yj72T3N38WhC5/szwTtl
-         Dr497P8hm+lTjGH074dx+0VXMrrb4t9HMXk/syIW4ziM/y8lXjMcJSwRO8gjNBMNDd67
-         cQeyb8GvcOI/MzuBa93JR3G8XMUaQgCJkcztiaLjAXuOfoNyCNs8bc9h4W+Ct7l3v8my
-         XQ3Q==
-X-Gm-Message-State: ACgBeo09+fNbo48WckWt0e4HryjGX3Vr5lEffVlfYyK7EZDFO4Cw3O5r
-        bdBixN09QHA2o9LbzJjsYo9W/EhpcY42H2Vt5hk=
-X-Google-Smtp-Source: AA6agR4An6m0htG1a8vO9yYMul4FjxPrN1j/kQAfemDJpmPKdlnnzZZTUnBZqPfRukXwqEgd170A+PfuFMtIU8hkkAk=
-X-Received: by 2002:a81:bc8:0:b0:32a:17d3:d189 with SMTP id
- 191-20020a810bc8000000b0032a17d3d189mr3228899ywl.401.1660300422392; Fri, 12
- Aug 2022 03:33:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220812094438.18291-1-lukas.bulwahn@gmail.com> <20220812100238.GM3438@kadam>
-In-Reply-To: <20220812100238.GM3438@kadam>
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Fri, 12 Aug 2022 12:33:31 +0200
-Message-ID: <CAKXUXMxLuViULgrgP89uBNvbUYcWFiohgWD=LXkifCGTT1WYFQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mac80211: clean up a needless assignment in ieee80211_sta_activate_link()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
+        Fri, 12 Aug 2022 08:16:09 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1708F97D46;
+        Fri, 12 Aug 2022 05:16:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 11F02CE1BA4;
+        Fri, 12 Aug 2022 12:16:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B793FC433D6;
+        Fri, 12 Aug 2022 12:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1660306561;
+        bh=cDPXyw+0tZdATJeb97wbb8Q8vKGfySScZQ9VpUoFvk0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=paLTCH++EckJIU4uEojjfTmtYcEz3socVkzqTh4eohsbCA1/+4U1k/vNZQXLA8q6c
+         N7V78szUNV3pGj+bZbfpXYCD6er1jiC8xkZ2H8cmEZoE0xDdyM5d/he57JEHbwQJO8
+         OyR0Dmf1/TQQ4gy2er5Jav380HFrCA2HDJMOBXw8=
+Date:   Fri, 12 Aug 2022 14:15:58 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Siddh Raman Pant <code@siddh.me>
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        netdev <netdev@vger.kernel.org>,
+        syzbot+6cb476b7c69916a0caca 
+        <syzbot+6cb476b7c69916a0caca@syzkaller.appspotmail.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        syzbot+f9acff9bf08a845f225d 
+        <syzbot+f9acff9bf08a845f225d@syzkaller.appspotmail.com>,
+        syzbot+9250865a55539d384347 
+        <syzbot+9250865a55539d384347@syzkaller.appspotmail.com>,
+        linux-kernel-mentees 
+        <linux-kernel-mentees@lists.linuxfoundation.org>
+Subject: Re: [PATCH v2] wifi: cfg80211: Fix UAF in ieee80211_scan_rx()
+Message-ID: <YvZEfnjGIpH6XjsD@kroah.com>
+References: <20220726123921.29664-1-code@siddh.me>
+ <18291779771.584fa6ab156295.3990923778713440655@siddh.me>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18291779771.584fa6ab156295.3990923778713440655@siddh.me>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 12, 2022 at 12:02 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Fri, Aug 12, 2022 at 11:44:38AM +0200, Lukas Bulwahn wrote:
-> > Commit 177577dbd223 ("wifi: mac80211: sta_info: fix link_sta insertion")
-> > makes ieee80211_sta_activate_link() return 0 in the 'hash' label case.
-> > Hence, setting ret in the !test_sta_flag(...) branch to zero is not needed
-> > anymore and can be dropped.
-> >
-> > Remove a needless assignment.
-> >
-> > No functional change. No change in object code.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On Fri, Aug 12, 2022 at 03:21:50PM +0530, Siddh Raman Pant via Linux-kernel-mentees wrote:
+> On Tue, 26 Jul 2022 18:09:21 +0530  Siddh Raman Pant  wrote:
+> > ieee80211_scan_rx() tries to access scan_req->flags after a null check
+> > (see line 303 of mac80211/scan.c), but ___cfg80211_scan_done() uses
+> > kfree() on the scan_req (see line 991 of wireless/scan.c).
+> > 
+> > This results in a UAF.
+> > 
+> > ieee80211_scan_rx() is called inside a RCU read-critical section
+> > initiated by ieee80211_rx_napi() (see line 5044 of mac80211/rx.c).
+> > 
+> > Thus, add an rcu_head to the scan_req struct, so that we can use
+> > kfree_rcu() instead of kfree() and thus not free during the critical
+> > section.
+> > 
+> > We can clear the pointer before freeing here, since scan_req is
+> > accessed using rcu_dereference().
+> > 
+> > Bug report (3): https://syzkaller.appspot.com/bug?extid=f9acff9bf08a845f225d
+> > Reported-by: syzbot+f9acff9bf08a845f225d@syzkaller.appspotmail.com
+> > Reported-by: syzbot+6cb476b7c69916a0caca@syzkaller.appspotmail.com
+> > Reported-by: syzbot+9250865a55539d384347@syzkaller.appspotmail.com
+> > 
+> > Signed-off-by: Siddh Raman Pant code@siddh.me>
 > > ---
-> >  net/mac80211/sta_info.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-> > index cb23da9aff1e..492c7a29d797 100644
-> > --- a/net/mac80211/sta_info.c
-> > +++ b/net/mac80211/sta_info.c
-> > @@ -2778,7 +2778,6 @@ int ieee80211_sta_activate_link(struct sta_info *sta, unsigned int link_id)
-> >       sta->sta.valid_links = new_links;
-> >
-> >       if (!test_sta_flag(sta, WLAN_STA_INSERTED)) {
-> > -             ret = 0;
-> >               goto hash;
-> >       }
->
-> Please, remove the {} as well.
->
+> > Changes since v1 as requested:
+> > - Fixed commit heading and better commit message.
+> > - Clear pointer before freeing.
+> > 
+> >  include/net/cfg80211.h | 2 ++
+> >  net/wireless/scan.c    | 2 +-
+> >  2 files changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> > index 80f41446b1f0..7e0b448c4cdb 100644
+> > --- a/include/net/cfg80211.h
+> > +++ b/include/net/cfg80211.h
+> > @@ -2368,6 +2368,7 @@ struct cfg80211_scan_6ghz_params {
+> >   * @n_6ghz_params: number of 6 GHz params
+> >   * @scan_6ghz_params: 6 GHz params
+> >   * @bssid: BSSID to scan for (most commonly, the wildcard BSSID)
+> > + * @rcu_head: (internal) RCU head to use for freeing
+> >   */
+> >  struct cfg80211_scan_request {
+> >  	struct cfg80211_ssid *ssids;
+> > @@ -2397,6 +2398,7 @@ struct cfg80211_scan_request {
+> >  	bool scan_6ghz;
+> >  	u32 n_6ghz_params;
+> >  	struct cfg80211_scan_6ghz_params *scan_6ghz_params;
+> > +	struct rcu_head rcu_head;
+> >  
+> >  	/* keep last */
+> >  	struct ieee80211_channel *channels[];
+> > diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+> > index 6d82bd9eaf8c..6cf58fe6dea0 100644
+> > --- a/net/wireless/scan.c
+> > +++ b/net/wireless/scan.c
+> > @@ -988,8 +988,8 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
+> >  	kfree(rdev->int_scan_req);
+> >  	rdev->int_scan_req = NULL;
+> >  
+> > -	kfree(rdev->scan_req);
+> >  	rdev->scan_req = NULL;
+> > +	kfree_rcu(rdev_req, rcu_head);
+> >  
+> >  	if (!send_message)
+> >  		rdev->scan_msg = msg;
+> > -- 
+> > 2.35.1
+> > 
+> 
+> Hello,
+> 
+> Probably the above quoted patch was missed, which can be found on
+> https://lore.kernel.org/linux-wireless/20220726123921.29664-1-code@siddh.me/
+> 
+> This patch was posted more than 2 weeks ago, with changes as requested.
+> 
+> With the merge window almost ending, may I request for another look at
+> this patch?
 
-Thanks for the pointer, Dan! I need to remember that for the future; I
-did expect checkpatch to warn me of such a stylistic pattern, but it
-seems that it does not. So I just need to have an eye on that.
+The merge window is for new features to be added, bugfixes can be merged
+at any point in time, but most maintainers close their trees until after
+the merge window is closed before accepting new fixes, like this one.
 
-Patch v2 sent out:
-https://lore.kernel.org/lkml/20220812103126.25308-1-lukas.bulwahn@gmail.com/
+So just relax, wait another week or so, and if there's no response,
+resend it then.
 
-Lukas
+Personally, this patch seems very incorrect, but hey, I'm not the wifi
+subsystem maintainer :)
+
+thanks,
+
+greg k-h
