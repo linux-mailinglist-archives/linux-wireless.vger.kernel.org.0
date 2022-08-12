@@ -2,216 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE9B5908FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 01:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 240B4590C16
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 08:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235497AbiHKXNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Aug 2022 19:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
+        id S237222AbiHLGqS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 02:46:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229833AbiHKXNs (ORCPT
+        with ESMTP id S229524AbiHLGqR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Aug 2022 19:13:48 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0613A062A
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Aug 2022 16:13:45 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id q19so17726652pfg.8
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Aug 2022 16:13:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=hjICE/2oXuWorxZLYXxrFvZDSwvja9RzSR9cgFDoRnw=;
-        b=awTEIvPbuCK6Ko67nttrHPrapC5scDQ8U/6FxoFiWqeqU1doYSF/boG5zPv7JYS7Jc
-         YW8GB2x0daibVDpXVZuWpZd2821hZ1v8PVo/2J0fR2l22h1aAwL62AxD+ZxBq1vNJloS
-         k1AkQIh4AzryezjuG+yStxcGBiItd+5UjgU8HRWl3XNN4a232t7V2ubT7ffaHzIwJIe/
-         v+3qPs6pTdCu8VKFWpw7yj2AmEQxMmNJL3dcKZTj3gAeCniyYnXdEyMrJEOHDam1Gqf/
-         0R0X94aE2cxoTFnOINRX1UFE8EoauEa8rXcpH7A4q0N0+3jVsV/8h23sHbskF3T5FHFX
-         om3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=hjICE/2oXuWorxZLYXxrFvZDSwvja9RzSR9cgFDoRnw=;
-        b=AwdyPs3KtU1Kjl5blieWeiQhcxvru54XVx/BXLuCHCjTl/DU0PxI+ZyYiYf1Ncz1XV
-         6u6jmR/bYCPMO+BBMZoHyFNfmeUuMtKOH7ZfIEBJZBDXfK3gREbIYklV5P/CTLRT8AON
-         WfSVVOvx4kKU4MWnaZMa5hprIarjcq2bFcMRhF3ai2MSOyFleccRHf9p/5hcRdF0CHJh
-         zQGZzIawJiEwVppNMUbl6CCkF4p8ynxr/HYyeGoGTeyO0Cg7frdA/PWvW/kInyrj2M4l
-         zz6pxuNAsVtDiqPh2I8vPd5TSGODvwybyUtJCSP/6+b9ABLVVQ4RBcGTaSbISPXC4AHw
-         Q8Lw==
-X-Gm-Message-State: ACgBeo0OnBtlSR4WBu7YATeoYmWrHKZaMELj8qnqcgXpaKxnHXGbvsta
-        lNy/N4CyW/wIswm7QnhDO47J5El0Iw4=
-X-Google-Smtp-Source: AA6agR6+K9yil6zpv5oQN5C1dhKiSs1+NB8CEwlAqki+egCEjjKOfdAzOB9iBYrKywu1TOTIB0+6FA==
-X-Received: by 2002:a63:1315:0:b0:421:5af6:8c26 with SMTP id i21-20020a631315000000b004215af68c26mr968741pgl.166.1660259625292;
-        Thu, 11 Aug 2022 16:13:45 -0700 (PDT)
-Received: from jprestwo-xps.none ([50.39.168.145])
-        by smtp.gmail.com with ESMTPSA id z6-20020a170903018600b0016d2db82962sm227644plg.16.2022.08.11.16.13.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Aug 2022 16:13:44 -0700 (PDT)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH v2 2/2] mac80211: Support POWERED_ADDR_CHANGE feature
-Date:   Thu, 11 Aug 2022 16:13:38 -0700
-Message-Id: <20220811231338.563794-3-prestwoj@gmail.com>
-X-Mailer: git-send-email 2.34.3
-In-Reply-To: <20220811231338.563794-1-prestwoj@gmail.com>
-References: <20220811231338.563794-1-prestwoj@gmail.com>
+        Fri, 12 Aug 2022 02:46:17 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4289E99B7C
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Aug 2022 23:46:17 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27C5Hl33014789;
+        Fri, 12 Aug 2022 06:46:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=WMpV9Lko5UMI+fKM8Q6IwB1l7hE0ktIsbYXswOT6HOw=;
+ b=OCaNWp4Kkn5tzahVry/qra6ZmjkDRMeVAG0+wb/OJlkyB34bM3t02AYpQxkRPugS2LNr
+ IA5Im54oAncaRgDfVxF/zbbiCZDWiDNBQDrdWL0nlL6DeafT2KLb8+M0NpF/oRXhrbvV
+ yy+CGQszmJu2mjEhTP9y/NIvKXkBvyamCMzSh0r05eUF51F308VhYPqPPGKr5yqdjRSq
+ hPlL5Jh4SW2zDmIaTag0+D3xFhjapyR8LECRKWrz9W6EcwTDOMKqiPUSU7NCLq5vqbNi
+ pkelCjlM0dTMhNNnBTWhGYR+4fuzj8Poh2G1fU3wCi1DS4+gHEoGa7v6A82KoMG6zdXu LA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3hw89x13su-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 12 Aug 2022 06:46:13 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27C6kDQb027923
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 12 Aug 2022 06:46:13 GMT
+Received: from msinada-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Thu, 11 Aug 2022 23:46:12 -0700
+From:   Muna Sinada <quic_msinada@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Muna Sinada <quic_msinada@quicinc.com>
+Subject: [PATCH v3 1/2] mac80211: Add VHT MU-MIMO related flags in ieee80211_bss_conf
+Date:   Thu, 11 Aug 2022 23:46:06 -0700
+Message-ID: <1660286767-11853-1-git-send-email-quic_msinada@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: j8TxB570TbI26938-YmS6IYwzbtPxECi
+X-Proofpoint-ORIG-GUID: j8TxB570TbI26938-YmS6IYwzbtPxECi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-12_04,2022-08-11_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxlogscore=897 lowpriorityscore=0 phishscore=0 clxscore=1011 spamscore=0
+ suspectscore=0 impostorscore=0 priorityscore=1501 mlxscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2208120017
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Adds support in mac80211 for NL80211_EXT_FEATURE_POWERED_ADDR_CHANGE.
-The motivation behind this functionality is to fix limitations of
-address randomization on frequencies which are disallowed in world
-roaming.
+Adding flags for SU Beamformer, SU Beamformee, MU Beamformer and
+MU Beamformee for VHT. This is utilized to pass MU-MIMO
+configurations from user space to driver.
 
-The way things work now, if a client wants to randomize their address
-per-connection it must power down the device, change the MAC, and
-power back up. Here lies a problem since powering down the device
-may result in frequencies being disabled (until the regdom is set).
-If the desired BSS is on one such frequency the client is unable to
-connect once the phy is powered again.
-
-For mac80211 based devices changing the MAC while powered is possible
-but currently disallowed (-EBUSY). This patch adds some logic to
-allow a MAC change while powered by removing the interface, changing
-the MAC, and adding it again. mac80211 will advertise support for
-this feature so userspace can determine the best course of action e.g.
-disallow address randomization on certain frequencies if not
-supported.
-
-There are certain limitations put on this which simplify the logic:
- - No active connection
- - No offchannel work, including scanning.
-
-Signed-off-by: James Prestwood <prestwoj@gmail.com>
+Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
 ---
- net/mac80211/iface.c | 67 ++++++++++++++++++++++++++++++++++++++++++--
- net/mac80211/main.c  |  2 ++
- 2 files changed, 67 insertions(+), 2 deletions(-)
+ include/net/mac80211.h |  9 +++++++++
+ net/mac80211/cfg.c     | 15 +++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 1a9ada411879..7c8772d8427a 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -199,15 +199,73 @@ static int ieee80211_verify_mac(struct ieee80211_sub_if_data *sdata, u8 *addr,
- 	return ret;
- }
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index f198af600b5e..893cc7b98448 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -651,6 +651,10 @@ struct ieee80211_fils_discovery {
+  *	write-protected by sdata_lock and local->mtx so holding either is fine
+  *	for read access.
+  * @color_change_color: the bss color that will be used after the change.
++ * @vht_su_beamformer: does this BSS support operation as an VHT SU beamformer
++ * @vht_su_beamformee: does this BSS support operation as an VHT SU beamformee
++ * @vht_mu_beamformer: does this BSS support operation as an VHT MU beamformer
++ * @vht_mu_beamformee: does this BSS support operation as an VHT MU beamformee
+  */
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -724,6 +728,11 @@ struct ieee80211_bss_conf {
  
-+static int ieee80211_can_powered_addr_change(struct ieee80211_sub_if_data *sdata)
-+{
-+	struct ieee80211_roc_work *roc;
-+	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_sub_if_data *scan_sdata;
-+	int ret = 0;
+ 	bool color_change_active;
+ 	u8 color_change_color;
 +
-+	/* To be the most flexible here we want to only limit changing the
-+	 * address if the specific interface is doing offchannel work or
-+	 * scanning.
-+	 */
-+	if (netif_carrier_ok(sdata->dev))
-+		return -EBUSY;
-+
-+	mutex_lock(&local->mtx);
-+
-+	/* First check no ROC work is happening on this iface */
-+	list_for_each_entry(roc, &local->roc_list, list) {
-+		if (roc->sdata != sdata)
-+			continue;
-+
-+		if (roc->started) {
-+			ret = -EBUSY;
-+			goto unlock;
-+		}
++	bool vht_su_beamformer;
++	bool vht_su_beamformee;
++	bool vht_mu_beamformer;
++	bool vht_mu_beamformee;
+ };
+ 
+ /**
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index a4f6971b7a19..b13ce9ecfda8 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1179,6 +1179,21 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	prev_beacon_int = link_conf->beacon_int;
+ 	link_conf->beacon_int = params->beacon_interval;
+ 
++	if (params->vht_cap) {
++		sdata->vif.bss_conf.vht_su_beamformer =
++		       !!(params->vht_cap->vht_cap_info &
++			  cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE));
++		sdata->vif.bss_conf.vht_su_beamformee =
++		       !!(params->vht_cap->vht_cap_info &
++			  cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE));
++		sdata->vif.bss_conf.vht_mu_beamformer =
++		       !!(params->vht_cap->vht_cap_info &
++			  cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE));
++		sdata->vif.bss_conf.vht_mu_beamformee =
++		       !!(params->vht_cap->vht_cap_info &
++			  cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE));
 +	}
 +
-+	/* And if this iface is scanning */
-+	if (local->scanning) {
-+		scan_sdata = rcu_dereference_protected(local->scan_sdata,
-+						       lockdep_is_held(&local->mtx));
-+		if (sdata == scan_sdata)
-+			ret = -EBUSY;
-+	}
-+
-+	switch (sdata->vif.type) {
-+	case NL80211_IFTYPE_STATION:
-+	case NL80211_IFTYPE_P2P_CLIENT:
-+		/* More interface types could be added here but changing the
-+		 * address while powered makes the most sense in client modes.
-+		 */
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+unlock:
-+	mutex_unlock(&local->mtx);
-+	return ret;
-+}
-+
- static int ieee80211_change_mac(struct net_device *dev, void *addr)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct ieee80211_local *local = sdata->local;
- 	struct sockaddr *sa = addr;
- 	bool check_dup = true;
-+	bool live = false;
- 	int ret;
- 
--	if (ieee80211_sdata_running(sdata))
--		return -EBUSY;
-+	if (ieee80211_sdata_running(sdata)) {
-+		ret = ieee80211_can_powered_addr_change(sdata);
-+		if (ret)
-+			return ret;
-+
-+		live = true;
-+	}
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
- 	    !(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
-@@ -217,7 +275,11 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- 	if (ret)
- 		return ret;
- 
-+	if (live)
-+		drv_remove_interface(local, sdata);
- 	ret = eth_mac_addr(dev, sa);
-+	if (live)
-+		ret = drv_add_interface(local, sdata);
- 
- 	if (ret == 0)
- 		memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
-@@ -2128,6 +2190,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 			sdata->u.mgd.use_4addr = params->use_4addr;
- 
- 		ndev->features |= local->hw.netdev_features;
-+		ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 		ndev->hw_features |= ndev->features &
- 					MAC80211_SUPPORTED_FEATURES_TX;
- 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 5a385d4146b9..3aeb5e598263 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -616,6 +616,8 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS);
- 	wiphy_ext_feature_set(wiphy,
- 			      NL80211_EXT_FEATURE_SCAN_FREQ_KHZ);
-+	wiphy_ext_feature_set(wiphy,
-+			      NL80211_EXT_FEATURE_POWERED_ADDR_CHANGE);
- 
- 	if (!ops->hw_scan) {
- 		wiphy->features |= NL80211_FEATURE_LOW_PRIORITY_SCAN |
+ 	if (params->he_cap && params->he_oper) {
+ 		link_conf->he_support = true;
+ 		link_conf->htc_trig_based_pkt_ext =
 -- 
-2.34.3
+2.7.4
 
