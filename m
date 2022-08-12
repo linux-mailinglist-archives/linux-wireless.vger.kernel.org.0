@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE9C591391
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B805B591397
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Aug 2022 18:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239205AbiHLQK5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Aug 2022 12:10:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37986 "EHLO
+        id S239245AbiHLQLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Aug 2022 12:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239237AbiHLQKp (ORCPT
+        with ESMTP id S239242AbiHLQKq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Aug 2022 12:10:45 -0400
+        Fri, 12 Aug 2022 12:10:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3F7832F5
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F702A2208
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 09:10:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C61156158A
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9922CC433C1;
-        Fri, 12 Aug 2022 16:10:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D141061597
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Aug 2022 16:10:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A318EC433D7;
+        Fri, 12 Aug 2022 16:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660320636;
-        bh=r/fZJ56+lVOldhdSJMyJDZAGsyrMHZJMAwRg2xzGcJ0=;
+        s=k20201202; t=1660320637;
+        bh=LIWG53yiXVeib5f8hBfBNwP9oObfdNK5FMmh2AqqJWc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sspUwpw0nUxBSkJrDtc503b2Gt+fttEt5TYw6GYH71m0vQZ4C6mqDq37chAnoZx3q
-         2mQZOXAUQplfUhXBIHilQob973hKjWFr0KhGvVByiulfDPnKvb0JUgGcpjbRVIi4r2
-         g0FRpfJsAcDpr5liNkEVYgVH3Nq4b9374cIv378NECXfg3SbgsLkqWiasq7pIhfHVd
-         nF3CedTw+dR4bB4pd5As/fhYs8tuE5AaWvEA2bUjrBBDqsBqCKF2s/Kuurf84PtdaU
-         sJaukJw8aPQmFdiGsPm4stp5CHtfrdrP90V440S2JmAA29dEGUt3hlZOhdCJT5fAUX
-         6TYq94IHZ+ILw==
+        b=SBM2nuJXlkpj31J8GWwS0jddM5vJNrCm7OSfXIcoYIPTyiC/H627pRvD5A3bqLlE0
+         sYhY13/z3anRucmNBCXDyTaR/FOtJCHf+nEcO1DNTXze3NK9tdWeVBBZTVvKSWOQow
+         1IJCjHbldt6qoLe8BwC3OSc6ckbtgr2SRE5hV47WQuV42x1slmZ+I33IBFgUpOeUh5
+         7lGQ9owM/6TPVxJW5kKuWLDHvC34DQCZLoPtTxUL82T4ANB/+QJYglumcFUGwzyLFc
+         Ahn8u1HwRLM89BTVdy4B67D80FryJJLQU83XEP3XxniA+Zml77YgBiX56FuL0jEnt4
+         QvlQ6ZZkaC+jQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath12k@lists.infradead.org
-Subject: [PATCH 28/50] wifi: ath12k: add htc.h
-Date:   Fri, 12 Aug 2022 19:09:41 +0300
-Message-Id: <20220812161003.27279-29-kvalo@kernel.org>
+Subject: [PATCH 29/50] wifi: ath12k: add hw.c
+Date:   Fri, 12 Aug 2022 19:09:42 +0300
+Message-Id: <20220812161003.27279-30-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220812161003.27279-1-kvalo@kernel.org>
 References: <20220812161003.27279-1-kvalo@kernel.org>
@@ -60,324 +60,974 @@ commit will be one big patch. See the cover letter for more info.)
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/htc.h | 311 ++++++++++++++++++++++++++++++++++
- 1 file changed, 311 insertions(+)
+ drivers/net/wireless/ath/ath12k/hw.c | 961 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 961 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/htc.h b/drivers/net/wireless/ath/ath12k/htc.h
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
 new file mode 100644
-index 000000000000..00797fcadff3
+index 000000000000..693dcd0d0f21
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/htc.h
-@@ -0,0 +1,311 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -0,0 +1,961 @@
++// SPDX-License-Identifier: BSD-3-Clause-Clear
 +/*
 + * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
 + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
 + */
 +
-+#ifndef ATH12K_HTC_H
-+#define ATH12K_HTC_H
++#include <linux/types.h>
++#include <linux/bitops.h>
++#include <linux/bitfield.h>
 +
-+#include <linux/kernel.h>
-+#include <linux/list.h>
-+#include <linux/bug.h>
-+#include <linux/skbuff.h>
-+#include <linux/timer.h>
++#include "debug.h"
++#include "core.h"
++#include "ce.h"
++#include "hw.h"
++#include "mhi.h"
++#include "dp_rx.h"
 +
-+struct ath12k_base;
++static u8 ath12k_hw_qcn9274_mac_from_pdev_id(int pdev_idx)
++{
++	return pdev_idx;
++}
 +
-+#define HTC_HDR_ENDPOINTID                       GENMASK(7, 0)
-+#define HTC_HDR_FLAGS                            GENMASK(15, 8)
-+#define HTC_HDR_PAYLOADLEN                       GENMASK(31, 16)
-+#define HTC_HDR_CONTROLBYTES0                    GENMASK(7, 0)
-+#define HTC_HDR_CONTROLBYTES1                    GENMASK(15, 8)
-+#define HTC_HDR_RESERVED                         GENMASK(31, 16)
++static int ath12k_hw_mac_id_to_pdev_id_qcn9274(const struct ath12k_hw_params *hw,
++					       int mac_id)
++{
++	return mac_id;
++}
 +
-+#define HTC_SVC_MSG_SERVICE_ID                   GENMASK(31, 16)
-+#define HTC_SVC_MSG_CONNECTIONFLAGS              GENMASK(15, 0)
-+#define HTC_SVC_MSG_SERVICEMETALENGTH            GENMASK(23, 16)
-+#define HTC_READY_MSG_CREDITCOUNT                GENMASK(31, 16)
-+#define HTC_READY_MSG_CREDITSIZE                 GENMASK(15, 0)
-+#define HTC_READY_MSG_MAXENDPOINTS               GENMASK(23, 16)
++static int ath12k_hw_mac_id_to_srng_id_qcn9274(const struct ath12k_hw_params *hw,
++					       int mac_id)
++{
++	return 0;
++}
 +
-+#define HTC_READY_EX_MSG_HTCVERSION              GENMASK(7, 0)
-+#define HTC_READY_EX_MSG_MAXMSGSPERHTCBUNDLE     GENMASK(15, 8)
++static u8 ath12k_hw_get_ring_selector_qcn9274(struct sk_buff *skb)
++{
++	return smp_processor_id();
++}
 +
-+#define HTC_SVC_RESP_MSG_SERVICEID           GENMASK(31, 16)
-+#define HTC_SVC_RESP_MSG_STATUS              GENMASK(7, 0)
-+#define HTC_SVC_RESP_MSG_ENDPOINTID          GENMASK(15, 8)
-+#define HTC_SVC_RESP_MSG_MAXMSGSIZE          GENMASK(31, 16)
-+#define HTC_SVC_RESP_MSG_SERVICEMETALENGTH   GENMASK(7, 0)
++static bool ath12k_dp_srng_is_comp_ring_qcn9274(int ring_num)
++{
++	if (ring_num < 3 || ring_num == 4)
++		return true;
 +
-+#define HTC_MSG_MESSAGEID                        GENMASK(15, 0)
-+#define HTC_SETUP_COMPLETE_EX_MSG_SETUPFLAGS     GENMASK(31, 0)
-+#define HTC_SETUP_COMPLETE_EX_MSG_MAXMSGSPERBUNDLEDRECV      GENMASK(7, 0)
-+#define HTC_SETUP_COMPLETE_EX_MSG_RSVD0          GENMASK(15, 8)
-+#define HTC_SETUP_COMPLETE_EX_MSG_RSVD1          GENMASK(23, 16)
-+#define HTC_SETUP_COMPLETE_EX_MSG_RSVD2          GENMASK(31, 24)
++	return false;
++}
 +
-+enum ath12k_htc_tx_flags {
-+	ATH12K_HTC_FLAG_NEED_CREDIT_UPDATE = 0x01,
-+	ATH12K_HTC_FLAG_SEND_BUNDLE        = 0x02
++static int ath12k_hw_mac_id_to_pdev_id_wcn7850(const struct ath12k_hw_params *hw,
++					       int mac_id)
++{
++	return 0;
++}
++
++static int ath12k_hw_mac_id_to_srng_id_wcn7850(const struct ath12k_hw_params *hw,
++					       int mac_id)
++{
++	return mac_id;
++}
++
++static u8 ath12k_hw_get_ring_selector_wcn7850(struct sk_buff *skb)
++{
++	return skb_get_queue_mapping(skb);
++}
++
++static bool ath12k_dp_srng_is_comp_ring_wcn7850(int ring_num)
++{
++	if (ring_num == 0 || ring_num == 2 || ring_num == 4)
++		return true;
++
++	return false;
++}
++
++static const struct ath12k_hw_ops qcn9274_ops = {
++	.get_hw_mac_from_pdev_id = ath12k_hw_qcn9274_mac_from_pdev_id,
++	.mac_id_to_pdev_id = ath12k_hw_mac_id_to_pdev_id_qcn9274,
++	.mac_id_to_srng_id = ath12k_hw_mac_id_to_srng_id_qcn9274,
++	.rxdma_ring_sel_config = ath12k_dp_rxdma_ring_sel_config_qcn9274,
++	.get_ring_selector = ath12k_hw_get_ring_selector_qcn9274,
++	.dp_srng_is_tx_comp_ring = ath12k_dp_srng_is_comp_ring_qcn9274,
 +};
 +
-+enum ath12k_htc_rx_flags {
-+	ATH12K_HTC_FLAG_TRAILER_PRESENT = 0x02,
-+	ATH12K_HTC_FLAG_BUNDLE_MASK     = 0xF0
++static const struct ath12k_hw_ops wcn7850_ops = {
++	.get_hw_mac_from_pdev_id = ath12k_hw_qcn9274_mac_from_pdev_id,
++	.mac_id_to_pdev_id = ath12k_hw_mac_id_to_pdev_id_wcn7850,
++	.mac_id_to_srng_id = ath12k_hw_mac_id_to_srng_id_wcn7850,
++	.rxdma_ring_sel_config = ath12k_dp_rxdma_ring_sel_config_wcn7850,
++	.get_ring_selector = ath12k_hw_get_ring_selector_wcn7850,
++	.dp_srng_is_tx_comp_ring = ath12k_dp_srng_is_comp_ring_wcn7850,
 +};
 +
-+struct ath12k_htc_hdr {
-+	__le32 htc_info;
-+	__le32 ctrl_info;
-+} __packed __aligned(4);
++#define ATH12K_TX_RING_MASK_0 0x1
++#define ATH12K_TX_RING_MASK_1 0x2
++#define ATH12K_TX_RING_MASK_2 0x4
++#define ATH12K_TX_RING_MASK_3 0x8
++#define ATH12K_TX_RING_MASK_4 0x10
 +
-+enum ath12k_htc_msg_id {
-+	ATH12K_HTC_MSG_READY_ID                = 1,
-+	ATH12K_HTC_MSG_CONNECT_SERVICE_ID      = 2,
-+	ATH12K_HTC_MSG_CONNECT_SERVICE_RESP_ID = 3,
-+	ATH12K_HTC_MSG_SETUP_COMPLETE_ID       = 4,
-+	ATH12K_HTC_MSG_SETUP_COMPLETE_EX_ID    = 5,
-+	ATH12K_HTC_MSG_SEND_SUSPEND_COMPLETE   = 6,
-+	ATH12K_HTC_MSG_NACK_SUSPEND	       = 7,
-+	ATH12K_HTC_MSG_WAKEUP_FROM_SUSPEND_ID  = 8,
++#define ATH12K_RX_RING_MASK_0 0x1
++#define ATH12K_RX_RING_MASK_1 0x2
++#define ATH12K_RX_RING_MASK_2 0x4
++#define ATH12K_RX_RING_MASK_3 0x8
++
++#define ATH12K_RX_ERR_RING_MASK_0 0x1
++
++#define ATH12K_RX_WBM_REL_RING_MASK_0 0x1
++
++#define ATH12K_REO_STATUS_RING_MASK_0 0x1
++
++#define ATH12K_HOST2RXDMA_RING_MASK_0 0x1
++
++#define ATH12K_RX_MON_RING_MASK_0 0x1
++#define ATH12K_RX_MON_RING_MASK_1 0x2
++#define ATH12K_RX_MON_RING_MASK_2 0x4
++
++#define ATH12K_TX_MON_RING_MASK_0 0x1
++#define ATH12K_TX_MON_RING_MASK_1 0x2
++
++/* Target firmware's Copy Engine configuration. */
++static const struct ce_pipe_config ath12k_target_ce_config_wlan_qcn9274[] = {
++	/* CE0: host->target HTC control and raw streams */
++	{
++		.pipenum = __cpu_to_le32(0),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE1: target->host HTT + HTC control */
++	{
++		.pipenum = __cpu_to_le32(1),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE2: target->host WMI */
++	{
++		.pipenum = __cpu_to_le32(2),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE3: host->target WMI (mac0) */
++	{
++		.pipenum = __cpu_to_le32(3),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE4: host->target HTT */
++	{
++		.pipenum = __cpu_to_le32(4),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(256),
++		.nbytes_max = __cpu_to_le32(256),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE5: target->host Pktlog */
++	{
++		.pipenum = __cpu_to_le32(5),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE6: Reserved for target autonomous hif_memcpy */
++	{
++		.pipenum = __cpu_to_le32(6),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(16384),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE7: host->target WMI (mac1) */
++	{
++		.pipenum = __cpu_to_le32(7),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE8: Reserved for target autonomous hif_memcpy */
++	{
++		.pipenum = __cpu_to_le32(8),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(16384),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE9, 10 and 11: Reserved for MHI */
++
++	/* CE12: Target CV prefetch */
++	{
++		.pipenum = __cpu_to_le32(12),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE13: Target CV prefetch */
++	{
++		.pipenum = __cpu_to_le32(13),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE14: WMI logging/CFR/Spectral/Radar */
++	{
++		.pipenum = __cpu_to_le32(14),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE15: Reserved */
 +};
 +
-+enum ath12k_htc_version {
-+	ATH12K_HTC_VERSION_2P0 = 0x00, /* 2.0 */
-+	ATH12K_HTC_VERSION_2P1 = 0x01, /* 2.1 */
++/* Target firmware's Copy Engine configuration. */
++static const struct ce_pipe_config ath12k_target_ce_config_wlan_wcn7850[] = {
++	/* CE0: host->target HTC control and raw streams */
++	{
++		.pipenum = __cpu_to_le32(0),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE1: target->host HTT + HTC control */
++	{
++		.pipenum = __cpu_to_le32(1),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE2: target->host WMI */
++	{
++		.pipenum = __cpu_to_le32(2),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE3: host->target WMI */
++	{
++		.pipenum = __cpu_to_le32(3),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE4: host->target HTT */
++	{
++		.pipenum = __cpu_to_le32(4),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(256),
++		.nbytes_max = __cpu_to_le32(256),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE5: target->host Pktlog */
++	{
++		.pipenum = __cpu_to_le32(5),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE6: Reserved for target autonomous hif_memcpy */
++	{
++		.pipenum = __cpu_to_le32(6),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(16384),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE7 used only by Host */
++	{
++		.pipenum = __cpu_to_le32(7),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT_H2H),
++		.nentries = __cpu_to_le32(0),
++		.nbytes_max = __cpu_to_le32(0),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE8 target->host used only by IPA */
++	{
++		.pipenum = __cpu_to_le32(8),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(16384),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++	/* CE 9, 10, 11 are used by MHI driver */
 +};
 +
-+#define ATH12K_HTC_CONN_FLAGS_THRESHOLD_LEVEL_MASK GENMASK(1, 0)
-+#define ATH12K_HTC_CONN_FLAGS_RECV_ALLOC GENMASK(15, 8)
-+
-+enum ath12k_htc_conn_flags {
-+	ATH12K_HTC_CONN_FLAGS_THRESHOLD_LEVEL_ONE_FOURTH    = 0x0,
-+	ATH12K_HTC_CONN_FLAGS_THRESHOLD_LEVEL_ONE_HALF      = 0x1,
-+	ATH12K_HTC_CONN_FLAGS_THRESHOLD_LEVEL_THREE_FOURTHS = 0x2,
-+	ATH12K_HTC_CONN_FLAGS_THRESHOLD_LEVEL_UNITY         = 0x3,
-+	ATH12K_HTC_CONN_FLAGS_REDUCE_CREDIT_DRIBBLE    = 1 << 2,
-+	ATH12K_HTC_CONN_FLAGS_DISABLE_CREDIT_FLOW_CTRL = 1 << 3
-+};
-+
-+enum ath12k_htc_conn_svc_status {
-+	ATH12K_HTC_CONN_SVC_STATUS_SUCCESS      = 0,
-+	ATH12K_HTC_CONN_SVC_STATUS_NOT_FOUND    = 1,
-+	ATH12K_HTC_CONN_SVC_STATUS_FAILED       = 2,
-+	ATH12K_HTC_CONN_SVC_STATUS_NO_RESOURCES = 3,
-+	ATH12K_HTC_CONN_SVC_STATUS_NO_MORE_EP   = 4
-+};
-+
-+struct ath12k_htc_ready {
-+	__le32 id_credit_count;
-+	__le32 size_ep;
-+} __packed;
-+
-+struct ath12k_htc_ready_extended {
-+	struct ath12k_htc_ready base;
-+	__le32 ver_bundle;
-+} __packed;
-+
-+struct ath12k_htc_conn_svc {
-+	__le32 msg_svc_id;
-+	__le32 flags_len;
-+} __packed;
-+
-+struct ath12k_htc_conn_svc_resp {
-+	__le32 msg_svc_id;
-+	__le32 flags_len;
-+	__le32 svc_meta_pad;
-+} __packed;
-+
-+struct ath12k_htc_setup_complete_extended {
-+	__le32 msg_id;
-+	__le32 flags;
-+	__le32 max_msgs_per_bundled_recv;
-+} __packed;
-+
-+struct ath12k_htc_msg {
-+	__le32 msg_svc_id;
-+	__le32 flags_len;
-+} __packed __aligned(4);
-+
-+enum ath12k_htc_record_id {
-+	ATH12K_HTC_RECORD_NULL    = 0,
-+	ATH12K_HTC_RECORD_CREDITS = 1
-+};
-+
-+struct ath12k_htc_record_hdr {
-+	u8 id; /* @enum ath12k_htc_record_id */
-+	u8 len;
-+	u8 pad0;
-+	u8 pad1;
-+} __packed;
-+
-+struct ath12k_htc_credit_report {
-+	u8 eid; /* @enum ath12k_htc_ep_id */
-+	u8 credits;
-+	u8 pad0;
-+	u8 pad1;
-+} __packed;
-+
-+struct ath12k_htc_record {
-+	struct ath12k_htc_record_hdr hdr;
-+	union {
-+		struct ath12k_htc_credit_report credit_report[0];
-+		u8 pauload[0];
-+	};
-+} __packed __aligned(4);
-+
-+/* note: the trailer offset is dynamic depending
-+ * on payload length. this is only a struct layout draft
++/* Map from service/endpoint to Copy Engine.
++ * This table is derived from the CE_PCI TABLE, above.
++ * It is passed to the Target at startup for use by firmware.
 + */
-+struct ath12k_htc_frame {
-+	struct ath12k_htc_hdr hdr;
-+	union {
-+		struct ath12k_htc_msg msg;
-+		u8 payload[0];
-+	};
-+	struct ath12k_htc_record trailer[0];
-+} __packed __aligned(4);
++static const struct service_to_pipe ath12k_target_service_to_ce_map_wlan_qcn9274[] = {
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(0),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(1),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_TEST_RAW_STREAMS),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(0),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_TEST_RAW_STREAMS),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(1),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(4),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(1),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL_MAC1),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(7),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL_MAC1),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_PKT_LOG),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(5),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL_DIAG),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(14),
++	},
 +
-+enum ath12k_htc_svc_gid {
-+	ATH12K_HTC_SVC_GRP_RSVD = 0,
-+	ATH12K_HTC_SVC_GRP_WMI = 1,
-+	ATH12K_HTC_SVC_GRP_NMI = 2,
-+	ATH12K_HTC_SVC_GRP_HTT = 3,
-+	ATH12K_HTC_SVC_GRP_CFG = 4,
-+	ATH12K_HTC_SVC_GRP_IPA = 5,
-+	ATH12K_HTC_SVC_GRP_PKTLOG = 6,
++	/* (Additions here) */
 +
-+	ATH12K_HTC_SVC_GRP_TEST = 254,
-+	ATH12K_HTC_SVC_GRP_LAST = 255,
++	{ /* must be last */
++		__cpu_to_le32(0),
++		__cpu_to_le32(0),
++		__cpu_to_le32(0),
++	},
 +};
 +
-+#define SVC(group, idx) \
-+	(int)(((int)(group) << 8) | (int)(idx))
++static const struct service_to_pipe ath12k_target_service_to_ce_map_wlan_wcn7850[] = {
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(3),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(0),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(2),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
++		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		__cpu_to_le32(4),
++	},
++	{
++		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
++		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		__cpu_to_le32(1),
++	},
 +
-+enum ath12k_htc_svc_id {
-+	/* NOTE: service ID of 0x0000 is reserved and should never be used */
-+	ATH12K_HTC_SVC_ID_RESERVED	= 0x0000,
-+	ATH12K_HTC_SVC_ID_UNUSED	= ATH12K_HTC_SVC_ID_RESERVED,
++	/* (Additions here) */
 +
-+	ATH12K_HTC_SVC_ID_RSVD_CTRL	= SVC(ATH12K_HTC_SVC_GRP_RSVD, 1),
-+	ATH12K_HTC_SVC_ID_WMI_CONTROL	= SVC(ATH12K_HTC_SVC_GRP_WMI, 0),
-+	ATH12K_HTC_SVC_ID_WMI_DATA_BE	= SVC(ATH12K_HTC_SVC_GRP_WMI, 1),
-+	ATH12K_HTC_SVC_ID_WMI_DATA_BK	= SVC(ATH12K_HTC_SVC_GRP_WMI, 2),
-+	ATH12K_HTC_SVC_ID_WMI_DATA_VI	= SVC(ATH12K_HTC_SVC_GRP_WMI, 3),
-+	ATH12K_HTC_SVC_ID_WMI_DATA_VO	= SVC(ATH12K_HTC_SVC_GRP_WMI, 4),
-+	ATH12K_HTC_SVC_ID_WMI_CONTROL_MAC1 = SVC(ATH12K_HTC_SVC_GRP_WMI, 5),
-+	ATH12K_HTC_SVC_ID_WMI_CONTROL_MAC2 = SVC(ATH12K_HTC_SVC_GRP_WMI, 6),
-+	ATH12K_HTC_SVC_ID_WMI_CONTROL_DIAG = SVC(ATH12K_HTC_SVC_GRP_WMI, 7),
-+
-+	ATH12K_HTC_SVC_ID_NMI_CONTROL	= SVC(ATH12K_HTC_SVC_GRP_NMI, 0),
-+	ATH12K_HTC_SVC_ID_NMI_DATA	= SVC(ATH12K_HTC_SVC_GRP_NMI, 1),
-+
-+	ATH12K_HTC_SVC_ID_HTT_DATA_MSG	= SVC(ATH12K_HTC_SVC_GRP_HTT, 0),
-+
-+	/* raw stream service (i.e. flash, tcmd, calibration apps) */
-+	ATH12K_HTC_SVC_ID_TEST_RAW_STREAMS = SVC(ATH12K_HTC_SVC_GRP_TEST, 0),
-+	ATH12K_HTC_SVC_ID_IPA_TX = SVC(ATH12K_HTC_SVC_GRP_IPA, 0),
-+	ATH12K_HTC_SVC_ID_PKT_LOG = SVC(ATH12K_HTC_SVC_GRP_PKTLOG, 0),
++	{ /* must be last */
++		__cpu_to_le32(0),
++		__cpu_to_le32(0),
++		__cpu_to_le32(0),
++	},
 +};
 +
-+#undef SVC
-+
-+enum ath12k_htc_ep_id {
-+	ATH12K_HTC_EP_UNUSED = -1,
-+	ATH12K_HTC_EP_0 = 0,
-+	ATH12K_HTC_EP_1 = 1,
-+	ATH12K_HTC_EP_2,
-+	ATH12K_HTC_EP_3,
-+	ATH12K_HTC_EP_4,
-+	ATH12K_HTC_EP_5,
-+	ATH12K_HTC_EP_6,
-+	ATH12K_HTC_EP_7,
-+	ATH12K_HTC_EP_8,
-+	ATH12K_HTC_EP_COUNT,
++static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_qcn9274 = {
++	.tx  = {
++		ATH12K_TX_RING_MASK_0,
++		ATH12K_TX_RING_MASK_1,
++		ATH12K_TX_RING_MASK_2,
++		ATH12K_TX_RING_MASK_3,
++	},
++	.rx_mon_dest = {
++		0, 0, 0,
++		ATH12K_RX_MON_RING_MASK_0,
++		ATH12K_RX_MON_RING_MASK_1,
++		ATH12K_RX_MON_RING_MASK_2,
++	},
++	.rx = {
++		0, 0, 0, 0,
++		ATH12K_RX_RING_MASK_0,
++		ATH12K_RX_RING_MASK_1,
++		ATH12K_RX_RING_MASK_2,
++		ATH12K_RX_RING_MASK_3,
++	},
++	.rx_err = {
++		0, 0, 0,
++		ATH12K_RX_ERR_RING_MASK_0,
++	},
++	.rx_wbm_rel = {
++		0, 0, 0,
++		ATH12K_RX_WBM_REL_RING_MASK_0,
++	},
++	.reo_status = {
++		0, 0, 0,
++		ATH12K_REO_STATUS_RING_MASK_0,
++	},
++	.host2rxdma = {
++		0, 0, 0,
++		ATH12K_HOST2RXDMA_RING_MASK_0,
++	},
++	.tx_mon_dest = {
++		ATH12K_TX_MON_RING_MASK_0,
++		ATH12K_TX_MON_RING_MASK_1,
++		0, 0, 0, 0, 0, 0
++	},
 +};
 +
-+struct ath12k_htc_ep_ops {
-+	void (*ep_tx_complete)(struct ath12k_base *ab, struct sk_buff *skb);
-+	void (*ep_rx_complete)(struct ath12k_base *ab, struct sk_buff *skb);
-+	void (*ep_tx_credits)(struct ath12k_base *ab);
++static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_wcn7850 = {
++	.tx  = {
++		ATH12K_TX_RING_MASK_0,
++		ATH12K_TX_RING_MASK_2,
++		ATH12K_TX_RING_MASK_4,
++	},
++
++	.rx = {
++		0, 0, 0,
++		ATH12K_RX_RING_MASK_0,
++		ATH12K_RX_RING_MASK_1,
++		ATH12K_RX_RING_MASK_2,
++		ATH12K_RX_RING_MASK_3,
++	},
++	.rx_err = {
++		ATH12K_RX_ERR_RING_MASK_0,
++	},
++	.rx_wbm_rel = {
++		ATH12K_RX_WBM_REL_RING_MASK_0,
++	},
++	.reo_status = {
++		ATH12K_REO_STATUS_RING_MASK_0,
++	},
++
++	.host2rxdma = {
++	},
 +};
 +
-+/* service connection information */
-+struct ath12k_htc_svc_conn_req {
-+	u16 service_id;
-+	struct ath12k_htc_ep_ops ep_ops;
-+	int max_send_queue_depth;
++static const struct ath12k_hw_regs qcn9274_regs = {
++	/* SW2TCL(x) R0 ring configuration address */
++	.hal_tcl1_ring_id = 0x00000908,
++	.hal_tcl1_ring_misc = 0x00000910,
++	.hal_tcl1_ring_tp_addr_lsb = 0x0000091c,
++	.hal_tcl1_ring_tp_addr_msb = 0x00000920,
++	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x00000930,
++	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x00000934,
++	.hal_tcl1_ring_msi1_base_lsb = 0x00000948,
++	.hal_tcl1_ring_msi1_base_msb = 0x0000094c,
++	.hal_tcl1_ring_msi1_data = 0x00000950,
++	.hal_tcl_ring_base_lsb = 0x00000b58,
++
++	/* TCL STATUS ring address */
++	.hal_tcl_status_ring_base_lsb = 0x00000d38,
++
++	.hal_wbm_idle_ring_base_lsb = 0x00000d0c,
++	.hal_wbm_idle_ring_misc_addr = 0x00000d1c,
++	.hal_wbm_r0_idle_list_cntl_addr = 0x00000210,
++	.hal_wbm_r0_idle_list_size_addr = 0x00000214,
++	.hal_wbm_scattered_ring_base_lsb = 0x00000220,
++	.hal_wbm_scattered_ring_base_msb = 0x00000224,
++	.hal_wbm_scattered_desc_head_info_ix0 = 0x00000230,
++	.hal_wbm_scattered_desc_head_info_ix1 = 0x00000234,
++	.hal_wbm_scattered_desc_tail_info_ix0 = 0x00000240,
++	.hal_wbm_scattered_desc_tail_info_ix1 = 0x00000244,
++	.hal_wbm_scattered_desc_ptr_hp_addr = 0x0000024c,
++
++	.hal_wbm_sw_release_ring_base_lsb = 0x0000034c,
++	.hal_wbm_sw1_release_ring_base_lsb = 0x000003c4,
++	.hal_wbm0_release_ring_base_lsb = 0x00000dd8,
++	.hal_wbm1_release_ring_base_lsb = 0x00000e50,
++
++	/* PCIe base address */
++	.pcie_qserdes_sysclk_en_sel = 0x01e0c0a8,
++	.pcie_pcs_osc_dtct_config_base = 0x01e0d45c,
 +};
 +
-+/* service connection response information */
-+struct ath12k_htc_svc_conn_resp {
-+	u8 buffer_len;
-+	u8 actual_len;
-+	enum ath12k_htc_ep_id eid;
-+	unsigned int max_msg_len;
-+	u8 connect_resp_code;
++static const struct ath12k_hw_regs wcn7850_regs = {
++	/* SW2TCL(x) R0 ring configuration address */
++	.hal_tcl1_ring_id = 0x00000908,
++	.hal_tcl1_ring_misc = 0x00000910,
++	.hal_tcl1_ring_tp_addr_lsb = 0x0000091c,
++	.hal_tcl1_ring_tp_addr_msb = 0x00000920,
++	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x00000930,
++	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x00000934,
++	.hal_tcl1_ring_msi1_base_lsb = 0x00000948,
++	.hal_tcl1_ring_msi1_base_msb = 0x0000094c,
++	.hal_tcl1_ring_msi1_data = 0x00000950,
++	.hal_tcl_ring_base_lsb = 0x00000b58,
++
++	/* TCL STATUS ring address */
++	.hal_tcl_status_ring_base_lsb = 0x00000d38,
++
++	.hal_wbm_idle_ring_base_lsb = 0x00000d3c,
++	.hal_wbm_idle_ring_misc_addr = 0x00000d4c,
++	.hal_wbm_r0_idle_list_cntl_addr = 0x00000240,
++	.hal_wbm_r0_idle_list_size_addr = 0x00000244,
++	.hal_wbm_scattered_ring_base_lsb = 0x00000250,
++	.hal_wbm_scattered_ring_base_msb = 0x00000254,
++	.hal_wbm_scattered_desc_head_info_ix0 = 0x00000260,
++	.hal_wbm_scattered_desc_head_info_ix1 = 0x00000264,
++	.hal_wbm_scattered_desc_tail_info_ix0 = 0x00000270,
++	.hal_wbm_scattered_desc_tail_info_ix1 = 0x00000274,
++	.hal_wbm_scattered_desc_ptr_hp_addr = 0x00000027c,
++
++	.hal_wbm_sw_release_ring_base_lsb = 0x0000037c,
++	.hal_wbm_sw1_release_ring_base_lsb = 0x00000284,
++	.hal_wbm0_release_ring_base_lsb = 0x00000e08,
++	.hal_wbm1_release_ring_base_lsb = 0x00000e80,
++
++	/* PCIe base address */
++	.pcie_qserdes_sysclk_en_sel = 0x01e0e0a8,
++	.pcie_pcs_osc_dtct_config_base = 0x01e0f45c,
 +};
 +
-+#define ATH12K_NUM_CONTROL_TX_BUFFERS 2
-+#define ATH12K_HTC_MAX_LEN 4096
-+#define ATH12K_HTC_MAX_CTRL_MSG_LEN 256
-+#define ATH12K_HTC_WAIT_TIMEOUT_HZ (1 * HZ)
-+#define ATH12K_HTC_CONTROL_BUFFER_SIZE (ATH12K_HTC_MAX_CTRL_MSG_LEN + \
-+					sizeof(struct ath12k_htc_hdr))
-+#define ATH12K_HTC_CONN_SVC_TIMEOUT_HZ (1 * HZ)
-+#define ATH12K_HTC_MAX_SERVICE_ALLOC_ENTRIES 8
-+
-+struct ath12k_htc_ep {
-+	struct ath12k_htc *htc;
-+	enum ath12k_htc_ep_id eid;
-+	enum ath12k_htc_svc_id service_id;
-+	struct ath12k_htc_ep_ops ep_ops;
-+
-+	int max_tx_queue_depth;
-+	int max_ep_message_len;
-+	u8 ul_pipe_id;
-+	u8 dl_pipe_id;
-+
-+	u8 seq_no; /* for debugging */
-+	int tx_credits;
-+	bool tx_credit_flow_enabled;
++static const struct ath12k_hw_hal_params ath12k_hw_hal_params_qcn9274 = {
++	.rx_buf_rbm = HAL_RX_BUF_RBM_SW3_BM,
++	.wbm2sw_cc_enable = HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW0_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW1_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW2_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW3_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW4_EN,
 +};
 +
-+struct ath12k_htc_svc_tx_credits {
-+	u16 service_id;
-+	u8  credit_allocation;
++static const struct ath12k_hw_hal_params ath12k_hw_hal_params_wcn7850 = {
++	.rx_buf_rbm = HAL_RX_BUF_RBM_SW1_BM,
++	.wbm2sw_cc_enable = HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW0_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW2_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW3_EN |
++			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW4_EN,
 +};
 +
-+struct ath12k_htc {
-+	struct ath12k_base *ab;
-+	struct ath12k_htc_ep endpoint[ATH12K_HTC_EP_COUNT];
-+
-+	/* protects endpoints */
-+	spinlock_t tx_lock;
-+
-+	u8 control_resp_buffer[ATH12K_HTC_MAX_CTRL_MSG_LEN];
-+	int control_resp_len;
-+
-+	struct completion ctl_resp;
-+
-+	int total_transmit_credits;
-+	struct ath12k_htc_svc_tx_credits
-+		service_alloc_table[ATH12K_HTC_MAX_SERVICE_ALLOC_ENTRIES];
-+	int target_credit_size;
-+	u8 wmi_ep_count;
++/* TODO: WCN7850 firmware requires this config now but in future it should
++ * be optional
++ */
++static const char ath12k_hw_qdss_config_wcn7850[] = {
++	"seq_start;\n"
++	"seq_type:mem_req;\n"
++	"sink:etb_lp,0x1,0x1000;\n"
++	"sw_pwr_mask:0x35;\n"
++	"seq_end;\n"
++	"seq_start;\n"
++	"seq_type:mac_event_trace;\n"
++	"subsys_cfg_start:umac;\n"
++	"cxc_eb0:0x2,0x0,0x0,0x0,0x0;\n"
++	"reo_eb0:0x4,0x0,0x0,0x0,0x0;\n"
++	"tqm_eb0:0x5,0x0,0x87C00000,0x0,0x0;\n"
++	"tcl_eb0:0x6,0x0,0x0,0x0,0x0;\n"
++	"wbm_eb0:0x7,0x0,0x0,0x0,0x0;\n"
++	"cxc_eb1:0x8,0x0,0x0,0x0,0x0;\n"
++	"tcl_eb1:0x9,0x0,0x0,0x0,0x0;\n"
++	"reo_eb1:0xA,0x0,0x0,0x0,0x0;\n"
++	"tqm_eb1:0xB,0x0,0x0,0x0,0x0;\n"
++	"wbm_eb1:0xC,0x0,0x0,0x0,0x0;\n"
++	"pmm:0xD,0x0,0x0,0x0,0x0;\n"
++	"mxi:0xE,0x3922234,0x0,0x0,0x0;\n"
++	"lpm:0xF,0x30,0x0,0x0,0x0;\n"
++	"memw:0x0;\n"
++	"subsys_cfg_end:umac;\n"
++	"subsys_cfg_start:dmac;\n"
++	"swevt:0x0,0xFFFFFFFF,0xFFFFFFFF,0x00000000,0x00000000;\n"
++	"txdma_eb0:0x1,0x200,0x0,0x0,0x0;\n"
++	"txdma_eb1:0x2,0x12220,0xAF0,0x0,0x0;\n"
++	"txdma_eb2:0x3,0x12220,0xAF0,0x0,0x0;\n"
++	"rxdma_eb0:0x4,0x93297E3F,0xC00000,0x0,0x0;\n"
++	"rxdma_eb1:0x5,0x707F,0x0,0x0,0x0;\n"
++	"txole_eb0:0x6,0xFFFFFFFF,0x0,0x0,0x0;\n"
++	"txole_eb1:0x7,0x781F0734,0x6,0x0,0x0;\n"
++	"txole_eb2:0x8,0x781F0734,0x6,0x0,0x0;\n"
++	"rxole_eb0:0x9,0x3FF,0x0,0x0,0x0;\n"
++	"rxole_eb1:0xa,0x28F,0x0,0x0,0x0;\n"
++	"rxole_eb2:0xb,0x20F8019F,0x0,0x0,0x0;\n"
++	"crypto:0xC,0xFF3FFF,0x0,0x0,0x0;\n"
++	"mxi:0xD,0x3122234,0x0,0x0,0x0;\n"
++	"sfm_eb0:0xE,0x40000006,0x7F9,0x0,0x0;\n"
++	"txmon_eb0:0x12,0x0,0x0,0x0,0x0;\n"
++	"txmon_eb1:0x13,0x0,0x0,0x0,0x0;\n"
++	"memw:0x0;\n"
++	"subsys_cfg_end:dmac;\n"
++	"subsys_cfg_start:pmac0;\n"
++	"swevt:0x0,0xFFFFFFFF,0xFFFFFFFF,0x00000000,0x00000000;\n"
++	"hwsch:0x1,0x3FFFF7,0x30000,0x0,0x0;\n"
++	"pdg:0x2,0xE430F87,0x622856E,0x0,0x0;\n"
++	"txpcu_eb0:0x8,0xFFFFFFF7,0x1EFF,0x0,0x0;\n"
++	"rxpcu_eb0:0x9,0x10060217,0x1F24500,0x0,0x0;\n"
++	"rri:0xa,0x0,0x0,0x0,0x0;\n"
++	"ampi:0xb,0x69C07,0x0,0x0,0x0;\n"
++	"mxi:0xd,0x3122234,0x0,0x0,0x0;\n"
++	"txpcu_eb1:0x10,0x0,0x0,0x0,0x0;\n"
++	"sfm_eb1:0x12,0x40000003,0x7F8,0x0,0x0;\n"
++	"rxpcu_eb1:0x13,0x0,0x0,0x0,0x0;\n"
++	"hwmlo:0x1c,0x1C100004,0x0,0x0,0x0;\n"
++	"memw:0x0;\n"
++	"subsys_cfg_end:pmac0;\n"
++	"subsys_cfg_start:pmac1;\n"
++	"swevt:0x0,0xFFFFFFFF,0xFFFFFFFF,0x00000000,0x00000000;\n"
++	"hwsch:0x1,0x3FFFF7,0x30000,0x0,0x0;\n"
++	"pdg:0x2,0xE430F87,0x622856E,0x0,0x0;\n"
++	"txpcu_eb0:0x8,0xFFFFFFF7,0x1EFF,0x0,0x0;\n"
++	"rxpcu_eb0:0x9,0x10060217,0x1F24500,0x0,0x0;\n"
++	"rri:0xa,0x0,0x0,0x0,0x0;\n"
++	"ampi:0xb,0x69C07,0x0,0x0,0x0;\n"
++	"mxi:0xd,0x3122234,0x0,0x0,0x0;\n"
++	"txpcu_eb1:0x10,0x0,0x0,0x0,0x0;\n"
++	"sfm_eb1:0x12,0x40000003,0x7F8,0x0,0x0;\n"
++	"rxpcu_eb1:0x13,0x0,0x0,0x0,0x0;\n"
++	"hwmlo:0x1c,0x1C100004,0x0,0x0,0x0;\n"
++	"memw:0x0;\n"
++	"subsys_cfg_end:pmac1;\n"
++	"seq_end;\n"
++	"seq_start;\n"
++	"seq_type:phy_event_trace;\n"
++	"subsys_cfg_start:phya0;\n"
++	"data_tlv:1;\n"
++	"tpc:0x3,0x00000000,0x00000000;\n"
++	"cal:0x4,0x00000000,0x00000000;\n"
++	"impcorr:0x5,0x00000000,0x00000000;\n"
++	"mpi:0x6,0x00000006,0x00000000;\n"
++	"fft:0x7,0x00000000,0x00000000;\n"
++	"txtd:0x8,0x00000000,0x00000000;\n"
++	"pmi:0x9,0x0000000A,0x00000000;\n"
++	"rxtd:0xa,0x0000000A,0x00000110;\n"
++	"demfront:0xb,0x00000000,0x00000000;\n"
++	"pcss:0xc,0x0000007D,0x00000000;\n"
++	"txfd:0xd,0x00000000,0x00000000;\n"
++	"robe:0xe,0x00000000,0x00000000;\n"
++	"dmac_0_1:0x10,0x00000000,0x00000000;\n"
++	"dmac_2_3:0x11,0x00000000,0x00000000;\n"
++	"dmac_4_5:0x12,0x00000000,0x00000000;\n"
++	"dmac_6:0x13,0x00000000,0x00000000;\n"
++	"eos:0x0,0x00000000,0x00000000;\n"
++	"subsys_cfg_end:phya0;\n"
++	"subsys_cfg_start:phya1;\n"
++	"data_tlv:1;\n"
++	"tpc:0x3,0x00000000,0x00000000;\n"
++	"cal:0x4,0x00000000,0x00000000;\n"
++	"impcorr:0x5,0x00000000,0x00000000;\n"
++	"mpi:0x6,0x00000006,0x00000000;\n"
++	"fft:0x7,0x00000000,0x00000000;\n"
++	"txtd:0x8,0x00000000,0x00000000;\n"
++	"pmi:0x9,0x0000000A,0x00000000;\n"
++	"rxtd:0xa,0x0000000A,0x00000110;\n"
++	"demfront:0xb,0x00000000,0x00000000;\n"
++	"pcss:0xc,0x0000007D,0x00000000;\n"
++	"txfd:0xd,0x00000000,0x00000000;\n"
++	"robe:0xe,0x00000000,0x00000000;\n"
++	"dmac_0_1:0x10,0x00000000,0x00000000;\n"
++	"dmac_2_3:0x11,0x00000000,0x00000000;\n"
++	"dmac_4_5:0x12,0x00000000,0x00000000;\n"
++	"dmac_6:0x13,0x00000000,0x00000000;\n"
++	"eos:0x0,0x00000000,0x00000000;\n"
++	"subsys_cfg_end:phya1;\n"
++	"seq_end;\n"
 +};
 +
-+int ath12k_htc_init(struct ath12k_base *ar);
-+int ath12k_htc_wait_target(struct ath12k_htc *htc);
-+int ath12k_htc_start(struct ath12k_htc *htc);
-+int ath12k_htc_connect_service(struct ath12k_htc *htc,
-+			       struct ath12k_htc_svc_conn_req  *conn_req,
-+			       struct ath12k_htc_svc_conn_resp *conn_resp);
-+int ath12k_htc_send(struct ath12k_htc *htc, enum ath12k_htc_ep_id eid,
-+		    struct sk_buff *packet);
-+struct sk_buff *ath12k_htc_alloc_skb(struct ath12k_base *ar, int size);
-+void ath12k_htc_rx_completion_handler(struct ath12k_base *ar,
-+				      struct sk_buff *skb);
++static const struct ath12k_hw_params ath12k_hw_params[] = {
++	{
++		.name = "qcn9274 hw1.0",
++		.hw_rev = ATH12K_HW_QCN9274_HW10,
++		.fw = {
++			.dir = "QCN9274/hw1.0",
++			.board_size = 256 * 1024,
++			.cal_offset = 128 * 1024,
++		},
++		.max_radios = 1,
++		.single_pdev_only = false,
++		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_QCN9274,
++		.internal_sleep_clock = false,
 +
-+#endif
++		.hw_ops = &qcn9274_ops,
++		.ring_mask = &ath12k_hw_ring_mask_qcn9274,
++		.regs = &qcn9274_regs,
++
++		.host_ce_config = ath12k_host_ce_config_qcn9274,
++		.ce_count = 16,
++		.target_ce_config = ath12k_target_ce_config_wlan_qcn9274,
++		.target_ce_count = 12,
++		.svc_to_ce_map = ath12k_target_service_to_ce_map_wlan_qcn9274,
++		.svc_to_ce_map_len = 18,
++
++		.hal_params = &ath12k_hw_hal_params_qcn9274,
++
++		.rxdma1_enable = false,
++		.num_rxmda_per_pdev = 1,
++		.num_rxdma_dst_ring = 0,
++		.rx_mac_buf_ring = false,
++		.vdev_start_delay = false,
++
++		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
++					BIT(NL80211_IFTYPE_AP),
++		.supports_monitor = false,
++
++		.idle_ps = false,
++		.download_calib = true,
++		.supports_suspend = false,
++		.tcl_ring_retry = true,
++		.reoq_lut_support = false,
++		.supports_shadow_regs = false,
++
++		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9274),
++		.num_tcl_banks = 48,
++		.max_tx_ring = 4,
++		.static_window_map = true,
++
++		.mhi_config = &ath12k_mhi_config_qcn9274,
++
++		.wmi_init = ath12k_wmi_init_qcn9274,
++
++		.hal_ops = &hal_qcn9274_ops,
++
++		.qdss_config = NULL,
++		.qdss_config_len = 0,
++	},
++	{
++		.name = "wcn7850 hw2.0",
++		.hw_rev = ATH12K_HW_WCN7850_HW20,
++
++		.fw = {
++			.dir = "WCN7850/hw2.0",
++			.board_size = 256 * 1024,
++			.cal_offset = 256 * 1024,
++		},
++
++		.max_radios = 1,
++		.single_pdev_only = true,
++		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_WCN7850,
++		.internal_sleep_clock = true,
++
++		.hw_ops = &wcn7850_ops,
++		.ring_mask = &ath12k_hw_ring_mask_wcn7850,
++		.regs = &wcn7850_regs,
++
++		.host_ce_config = ath12k_host_ce_config_wcn7850,
++		.ce_count = 9,
++		.target_ce_config = ath12k_target_ce_config_wlan_wcn7850,
++		.target_ce_count = 9,
++		.svc_to_ce_map = ath12k_target_service_to_ce_map_wlan_wcn7850,
++		.svc_to_ce_map_len = 14,
++
++		.hal_params = &ath12k_hw_hal_params_wcn7850,
++
++		.rxdma1_enable = false,
++		.num_rxmda_per_pdev = 2,
++		.num_rxdma_dst_ring = 1,
++		.rx_mac_buf_ring = true,
++		.vdev_start_delay = true,
++
++		.interface_modes = BIT(NL80211_IFTYPE_STATION),
++		.supports_monitor = false,
++
++		.idle_ps = false,
++		.download_calib = false,
++		.supports_suspend = false,
++		.tcl_ring_retry = false,
++		.reoq_lut_support = false,
++		.supports_shadow_regs = true,
++
++		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn7850),
++		.num_tcl_banks = 7,
++		.max_tx_ring = 3,
++		.static_window_map = false,
++
++		.mhi_config = &ath12k_mhi_config_wcn7850,
++
++		.wmi_init = ath12k_wmi_init_wcn7850,
++
++		.hal_ops = &hal_wcn7850_ops,
++
++		.qdss_config = ath12k_hw_qdss_config_wcn7850,
++		.qdss_config_len = sizeof(ath12k_hw_qdss_config_wcn7850),
++	},
++};
++
++int ath12k_hw_init(struct ath12k_base *ab)
++{
++	const struct ath12k_hw_params *hw_params = NULL;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(ath12k_hw_params); i++) {
++		hw_params = &ath12k_hw_params[i];
++
++		if (hw_params->hw_rev == ab->hw_rev)
++			break;
++	}
++
++	if (i == ARRAY_SIZE(ath12k_hw_params)) {
++		ath12k_err(ab, "Unsupported hardware version: 0x%x\n", ab->hw_rev);
++		return -EINVAL;
++	}
++
++	ab->hw_params = hw_params;
++
++	ath12k_info(ab, "Hardware name: %s\n", ab->hw_params->name);
++
++	return 0;
++}
 
