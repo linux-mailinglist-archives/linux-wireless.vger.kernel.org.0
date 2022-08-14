@@ -2,114 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D37592365
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Aug 2022 18:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC5D592590
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Aug 2022 18:47:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232176AbiHNQUw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Aug 2022 12:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
+        id S240907AbiHNQre (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Aug 2022 12:47:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240750AbiHNQUZ (ORCPT
+        with ESMTP id S241127AbiHNQrO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Aug 2022 12:20:25 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83A316584
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Aug 2022 09:01:36 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id b22so1076764uap.0
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Aug 2022 09:01:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=Qocp7Pc45mAEfguMx3AKkwennc/G9y0G5gDdVyfoWC4=;
-        b=AOuQvqY7UYtKBF0cCLlRSWl7Qz8h6sB5A9bwI0Utq2+fV5fYs/upjQUiEOhnsgetZU
-         ojgS5pttA5DfJRaAZSYHiH+KosaqxiPgjRPysikaPvOo0jIuFHSx201HKRWy9fqNIhyy
-         vsEr0UFbkbbnEHZ0DFpp3qjmyAS9O0V97A0r37FweFLaNb5q8n86mV7inyFgNgo9vYhQ
-         3iOzPuqL7OlBxLWqpO4pQO0BuTfdO0aBB//K2QwKpzfZPLMew6cVhn0LnK1qy0HW4Scx
-         miL4ujR3KJNhLyTsPFId29fj+JEd3LEa1QdU9NUTw+RwTvQlL7mnZYd47/mKR+jRsBLA
-         kjvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=Qocp7Pc45mAEfguMx3AKkwennc/G9y0G5gDdVyfoWC4=;
-        b=7IwmEi6kRWyB+2L7go/q8rxrSNuHvGIoX0au+FWgaZieVx81XsYCBaXlp0vguBD6AH
-         a/iRTt4AliVi79GY77I7gRLcjuapI7laJ7f0WseeVj1tl20OEerIFEN3XWRq30tE/Kt+
-         E3nsrLI6TjG5g1DtMiWwZTrtPVwbv8vDxEeccRa9W4mjQ4dwfVLbEdUnq5Ynp95bUlQW
-         dqW5kYT+q4mw8NXahbgwYFtcWP8KsqHpY01/rIeHsfdSrClAjpslh5socR08IX6T0I9E
-         xQIzoXCtTxcItEqTyHgsJix+29NeeSYD3KEiD5uLYdl5oB68zofKD1F1drZKh5lsXDI4
-         4R+g==
-X-Gm-Message-State: ACgBeo2fkSJIJYOp3X97LllYsS+7J6YhAx2d0VvK2zA3kxWrwzJspmgE
-        HLkxdrSFCuIJ6KvhKugk2Tl2SCn1mTBc+7ywu5Q=
-X-Google-Smtp-Source: AA6agR7ZJCLZENELrllWjpXZpSehZmkdgWebE4omZampl+LH+AqSL6cx2+NDKDt1ojmuHFfeVyMZhoWVIS9pGznHWhE=
-X-Received: by 2002:ab0:49a9:0:b0:387:71ed:915c with SMTP id
- e38-20020ab049a9000000b0038771ed915cmr5104235uad.85.1660492895904; Sun, 14
- Aug 2022 09:01:35 -0700 (PDT)
+        Sun, 14 Aug 2022 12:47:14 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 547D995E4D
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Aug 2022 09:37:12 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4M5NNg3cwsz9sPp;
+        Sun, 14 Aug 2022 18:37:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=joachim-breitner.de;
+        s=MBO0001; t=1660495027;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=sUgKaSDTGfAJOnIp6YIP3got4AcrL7V/NfhnZeV0/38=;
+        b=iuFWkKeecKyP25iIPrRg6AaaaWgFzyem7EeweBW2eT+EvRNhEOJCb2Idvyim3KNGu5lbJJ
+        iOHqtqKQHuKgQeyi7npGcfyx/evPERJ+hYZMW69BiN+svjqBiBvRxccbhBBCuSSjnRQeFj
+        X9Do6+Z47eMrNcgclArPf5DkPSPxFqletV2c/fj6Th5bsIOWIZ/01Ewk7rrdlGGVQXt+Oq
+        wzIjfleZrfd4FRWT1qvAO2T9cj5R1gl7kNpFlEccLIIXMYgUVAk5BykjSNth2de1A6/Nyl
+        MPRNIcZchAmxfh588rfgQJPpSfS1+uBnIrPfNHi62/JUHwf+2XKgzm8V1ns/wA==
+Message-ID: <f5a35c6e83835afc114f969ee3d3f6c2003fa51b.camel@joachim-breitner.de>
+Subject: Re: iwlwifi devices disappear after suspend on kernel 5.17
+From:   Joachim Breitner <mail@joachim-breitner.de>
+To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "toke@toke.dk" <toke@toke.dk>,
+        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Stern, Avraham" <avraham.stern@intel.com>
+Date:   Sun, 14 Aug 2022 18:37:04 +0200
+In-Reply-To: <491ec4d63116aa51567f74004b5fba299af42029.camel@intel.com>
+References: <87ilr4hv8k.fsf@toke.dk>
+         <10b81471b9f1af8b15bc5b9a06792a0a605131fc.camel@joachim-breitner.de>
+         <SA1PR11MB5825CF723F193508BC04B051F2669@SA1PR11MB5825.namprd11.prod.outlook.com>
+         <491ec4d63116aa51567f74004b5fba299af42029.camel@intel.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20220226045047.643695-1-mikezackles@gmail.com>
- <c09a353b-8e52-6d9d-a3c6-743e4e6f444b@mail.uni-paderborn.de>
- <871qtyj6b6.fsf@kernel.org> <CAN+PumF3JfmwVh_7BffLza+v7iD58QsxanCvbCrS1ztSt=XjNw@mail.gmail.com>
- <d9dc0c00d9ea8bb5b9341a7bcd4a75fc369a7d8f.camel@intel.com>
-In-Reply-To: <d9dc0c00d9ea8bb5b9341a7bcd4a75fc369a7d8f.camel@intel.com>
-From:   Zachary Michaels <mikezackles@gmail.com>
-Date:   Sun, 14 Aug 2022 09:01:24 -0700
-Message-ID: <CAN+PumF73tYv0tFT3nGdbgpLCFEB3PgobYBgLisTVCw+q_5K6g@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: Make missed beacon timeout configurable
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "tmvolin@gmail.com" <tmvolin@gmail.com>,
-        "dennisba@mail.uni-paderborn.de" <dennisba@mail.uni-paderborn.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Rspamd-Queue-Id: 4M5NNg3cwsz9sPp
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Aug 14, 2022 at 6:05 AM Greenman, Gregory
-<gregory.greenman@intel.com> wrote:
->
-> On Wed, 2022-08-03 at 08:50 -0700, Zachary Michaels wrote:
-> > > Why not just increase the default beacon timeout value?
-> >
-> > I made it a parameter because I was under the vague impression that a
-> > larger timeout wouldn't be ideal on a well-behaved network, but this
-> > isn't my area of expertise. I just thought this would be the most
-> > conservative change since it would support identical default
-> > operation.
-> >
-> > Thanks for taking a look.
->
-> I see that this issue https://bugzilla.kernel.org/show_bug.cgi?id=203709
-> has a long history from 2019. But, anyway, what value for
-> beacon_timeout solves the problem?
+Hi,
 
-It seems that most people have had success with 256, but that number
-may be somewhat arbitrary.
+Am Sonntag, dem 14.08.2022 um 14:06 +0000 schrieb Greenman, Gregory:
+> @Joachim - Can you please file a bug in kernel bugzilla, we will assign
+> someone internally to look into this.
 
-> May I ask you to perform two experiments that could help us find
-> the root cause for this issue? The first is to run with a default driver and
-> to collect a firmware dump (here is a wiki with directions how to do that,
-> https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#firmware_debugging)
-> and the second is to load the defaut driver with modparam power_scheme=1. This will
-> completely disable power save and will let us know if the issue is somehow caused by
-> the NIC going to sleep and missing beacons.
->
-> Thanks,
-> Gregory
+Sure thing! https://bugzilla.kernel.org/show_bug.cgi?id=3D216362
 
-Unfortunately I am no longer experiencing this issue, but someone else
-on this chain may be able to help. (Someone having problems requested
-that I submit the patch.)
+Let me know if I can be of any help, giving more information or testing
+patches.
 
-There may be some relevant information in the linked bug report if you
-care to sift through it. There are reports that turning off power save
-did not work, and there are also some firmware dumps.
+Cheers,
+Joachim
+--=20
+Joachim Breitner
+  mail@joachim-breitner.de
+  http://www.joachim-breitner.de/
 
-Best,
--Zach
