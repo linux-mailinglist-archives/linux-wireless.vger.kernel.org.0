@@ -2,63 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFC7B59294D
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Aug 2022 08:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD86592984
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Aug 2022 08:21:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbiHOGKS convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Aug 2022 02:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39616 "EHLO
+        id S232161AbiHOGUr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Aug 2022 02:20:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbiHOGKP (ORCPT
+        with ESMTP id S241205AbiHOGUn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Aug 2022 02:10:15 -0400
+        Mon, 15 Aug 2022 02:20:43 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D76C4186FE
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Aug 2022 23:10:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 41139EA5
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Aug 2022 23:20:41 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 27F69THV0007014, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 27F6KCEx8006645, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 27F69THV0007014
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 27F6KCEx8006645
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 15 Aug 2022 14:09:29 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+        Mon, 15 Aug 2022 14:20:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 15 Aug 2022 14:09:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 15 Aug 2022 14:09:40 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::d902:19b0:8613:5b97]) by
- RTEXMBS04.realtek.com.tw ([fe80::d902:19b0:8613:5b97%5]) with mapi id
- 15.01.2375.007; Mon, 15 Aug 2022 14:09:40 +0800
+ 15.1.2375.31; Mon, 15 Aug 2022 14:20:16 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 15 Aug
+ 2022 14:20:16 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-Subject: RE: [PATCH 31/50] wifi: ath12k: add mac.c
-Thread-Topic: [PATCH 31/50] wifi: ath12k: add mac.c
-Thread-Index: AQHYrmYoE5ioZXyMF0qYh8Cs5UMSwa2vcq/Q
-Date:   Mon, 15 Aug 2022 06:09:40 +0000
-Message-ID: <c9c4f3027e294e148bd595e3db1a62a8@realtek.com>
-References: <20220812161003.27279-1-kvalo@kernel.org>
- <20220812161003.27279-32-kvalo@kernel.org>
-In-Reply-To: <20220812161003.27279-32-kvalo@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/8/15_=3F=3F_02:38:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw88: fix uninitialized use of primary channel index
+Date:   Mon, 15 Aug 2022 14:20:04 +0800
+Message-ID: <20220815062004.22920-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/15/2022 05:53:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzgvMTUgpFekyCAwMjozODowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
@@ -72,50 +66,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+clang reports uninitialized use:
 
+>> drivers/net/wireless/realtek/rtw88/main.c:731:2: warning: variable
+   'primary_channel_idx' is used uninitialized whenever switch default is
+   taken [-Wsometimes-uninitialized]
+           default:
+           ^~~~~~~
+   drivers/net/wireless/realtek/rtw88/main.c:754:39: note: uninitialized
+   use occurs here
+           hal->current_primary_channel_index = primary_channel_idx;
+                                                ^~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/realtek/rtw88/main.c:687:24: note: initialize the
+   variable 'primary_channel_idx' to silence this warning
+           u8 primary_channel_idx;
+                                 ^
+                                  = '\0'
 
-> -----Original Message-----
-> From: Kalle Valo <kvalo@kernel.org>
-> Sent: Saturday, August 13, 2022 12:10 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: ath12k@lists.infradead.org
-> Subject: [PATCH 31/50] wifi: ath12k: add mac.c
-> 
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> (Patches split into one patch per file for easier review, but the final
-> commit will be one big patch. See the cover letter for more info.)
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 7054 +++++++++++++++++++++++++++++++++
->  1 file changed, 7054 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> new file mode 100644
-> index 000000000000..2ccbd83dc9ca
-> --- /dev/null
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -0,0 +1,7054 @@
+This situation could not happen, because possible channel bandwidth
+20/40/80MHz are enumerated.
 
-[...]
+Fixes: 341dd1f7de4c ("wifi: rtw88: add the update channel flow to support setting by parameters")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> +
-> +static int get_num_chains(u32 mask)
-> +{
-> +	int num_chains = 0;
-> +
-> +	while (mask) {
-> +		if (mask & BIT(0))
-> +			num_chains++;
-> +		mask >>= 1;
-> +	}
-> +
-> +	return num_chains;
-> +}
-
-use hweight32()?
-
---
-Ping-Ke
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 790dcfed1125d..5a74dda977563 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -697,6 +697,7 @@ void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
+ 
+ 	switch (bandwidth) {
+ 	case RTW_CHANNEL_WIDTH_20:
++	default:
+ 		primary_channel_idx = RTW_SC_DONT_CARE;
+ 		break;
+ 	case RTW_CHANNEL_WIDTH_40:
+@@ -728,8 +729,6 @@ void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
+ 			cch_by_bw[RTW_CHANNEL_WIDTH_40] = center_channel - 4;
+ 		}
+ 		break;
+-	default:
+-		break;
+ 	}
+ 
+ 	switch (center_channel) {
+-- 
+2.25.1
 
