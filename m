@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E877D59590C
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 12:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C039559596A
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 13:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234216AbiHPK4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Aug 2022 06:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51382 "EHLO
+        id S229574AbiHPLG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Aug 2022 07:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235208AbiHPKzl (ORCPT
+        with ESMTP id S235220AbiHPLGk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Aug 2022 06:55:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13118F2C9E
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 03:09:51 -0700 (PDT)
+        Tue, 16 Aug 2022 07:06:40 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2AA3A491
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 03:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F1F5612F0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 10:09:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2744AC433C1;
-        Tue, 16 Aug 2022 10:09:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 43FE2B8169C
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 10:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6E2C433D6;
+        Tue, 16 Aug 2022 10:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660644590;
-        bh=papoG9pIkm60eff7CO4HmAEVFaVlnwUd0ZxEl94h/QM=;
+        s=k20201202; t=1660645936;
+        bh=OxawWSQNGh146B7YeJnBuLFop3KY33124+UHtPkz/L0=;
         h=From:To:Cc:Subject:Date:From;
-        b=cdMHX7MGRqkIAW3y5ZKwWrL4oifDJZY6ow0gpyqKs1/EcZyEW7aBb1luXHvu2sRbf
-         S1CppV4Q6DR7JnbETCmouh03EaUweZX7Ue7EdpI88K9PeyculVQSbn+lAxadYRuueV
-         HMgPSSRPCN9B/rL6W7EeFsfZU44q99dpp8Wl4NB+z/K4e/pqxo+J9qISm7oTBwuTIt
-         i/n+0Nu4+1DX+RV1lReo8YkHWYkoPZim0kF4Js49Bk0sgiFAz0cnhNHWvyWTXVGvCz
-         9RHxONozqaxIzxVsD5gDt5VwD7DWge9iBn4qROYBAUUFHfoxcyqAu9Y9+IZzNULXFY
-         4RL6AF+jqg0dw==
+        b=TiuIAv7eYd2B9E+3eG8cehv3MCh4hb2L3iE49jjfSse2Ek/ghgv0VP/l35W7HsIYS
+         xrvGtx2jEHi/zKws1+qZha/cffKuIy80NGe6s6NItGG79nfTXt9f0K8YI2GQZRo2pr
+         PT8/axAI9NDBmLUq2ERNpM+ux5vq5azo0A31h1BUMEdC4YRwHwrdTqClTqMNPr7g2s
+         jIr08crmNSz9nyEqOqSiUZPlOUmDuutsZCIh/gZZhTJHrRjsWfK+sTOMYE7DoiRct6
+         /Pv5BSSYqxHD4m297GEanDD6eKd4BFtNJZmnXgwBZ6BiMWyNPaE+rKeWzeYFBd95xV
+         o40flXyo6IJTg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7921: remove dead code
-Date:   Tue, 16 Aug 2022 12:09:41 +0200
-Message-Id: <2354824dc68444c83a71f7121582f482ee0adab1.1660644457.git.lorenzo@kernel.org>
+Subject: [PATCH] mt76: fix uninitialized pointer in mt79{15,21}_mac_fill_rx
+Date:   Tue, 16 Aug 2022 12:32:12 +0200
+Message-Id: <05aaf0520e876be5e63f3b00295759afabd735d3.1660645902.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,27 +51,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-remove duplicated code in mt7921_pci_suspend routine.
+Initialize msta pointer to NULL in mt7921_mac_fill_rx() and
+mt7915_mac_fill_rx() in order to not dereference a uninitialized
+pointer.
 
+Fixes: 0880d40871d1d ("mt76: connac: move mt76_connac2_reverse_frag0_hdr_trans in mt76-connac module")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 9b75756c2837..2eaff6b6aa13 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -405,9 +405,6 @@ static int mt7921_pci_suspend(struct device *device)
- 	if (err)
- 		goto restore_napi;
- 
--	if (err)
--		goto restore_napi;
--
- 	return 0;
- 
- restore_napi:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index b9b74c706d2c..49aa5c056063 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -232,7 +232,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	bool unicast, insert_ccmp_hdr = false;
+ 	u8 remove_pad, amsdu_info;
+ 	u8 mode = 0, qos_ctl = 0;
+-	struct mt7915_sta *msta;
++	struct mt7915_sta *msta = NULL;
+ 	bool hdr_trans;
+ 	u16 hdr_gap;
+ 	u16 seq_ctrl = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 38f4ee93cbe1..fb76ca9d4e10 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -235,7 +235,7 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	u32 rxd2 = le32_to_cpu(rxd[2]);
+ 	u32 rxd3 = le32_to_cpu(rxd[3]);
+ 	u32 rxd4 = le32_to_cpu(rxd[4]);
+-	struct mt7921_sta *msta;
++	struct mt7921_sta *msta = NULL;
+ 	u16 seq_ctrl = 0;
+ 	__le16 fc = 0;
+ 	u8 mode = 0;
 -- 
 2.37.2
 
