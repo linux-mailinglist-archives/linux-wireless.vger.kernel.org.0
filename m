@@ -2,56 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56FDE595F2A
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 17:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBDC5596067
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 18:38:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236154AbiHPPfG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Aug 2022 11:35:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49738 "EHLO
+        id S236531AbiHPQia (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Aug 2022 12:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235361AbiHPPer (ORCPT
+        with ESMTP id S236528AbiHPQi2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Aug 2022 11:34:47 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0620F6169;
-        Tue, 16 Aug 2022 08:34:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=vRiWoChp5wf/4E0/DJUXs0PJ+PnRLOBn4qlJMVYcMe0=;
-        t=1660664074; x=1661873674; b=ray5ujAc4zk6pPxqTsxTnCqcZle5SliSNqVYX3EDCBLCkmI
-        mHdHwMlNvvJd69SkfKszBJ2EVT9dJ8hLT7ouWD3Ri5oJbw2U+eU2MasC+09LA594AoP7QUH3ZkfD+
-        TAt+rBrf8NAbGLZGy1bTPYHVU3qNsb44iHaprKtyF0GtP2xENJX6e6fuv89WNTjT3aRU3VTHd89sp
-        5M/v62R90RT71pP5o9OAwln6fNncOT65MbZBTziWdnUTO39v9WHNxyBODJIbe2AG47lXljQ4YUEeB
-        cXfWqkgzRSnGoKV4ZqbU2ab4raZu1AYNL2jUyjjaBxRQwuEbh+Pn6X1Rrj8Wlohw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oNyaE-009Zia-1G;
-        Tue, 16 Aug 2022 17:34:22 +0200
-Message-ID: <e81595d0373962b8a9d6e8a6cf97460c513e8926.camel@sipsolutions.net>
-Subject: Re: [syzbot] upstream boot error: general protection fault in
- nl80211_put_iface_combinations
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     syzbot <syzbot+684d4ca200fda0b2141e@syzkaller.appspotmail.com>,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Date:   Tue, 16 Aug 2022 17:34:21 +0200
-In-Reply-To: <20220816153345.GA2905014@roeck-us.net>
-References: <00000000000033169005e657a852@google.com>
-         <6a7b0bc82647440a9036a8e637807da618552cc5.camel@sipsolutions.net>
-         <20220816153345.GA2905014@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+        Tue, 16 Aug 2022 12:38:28 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8F8C7F
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 09:38:27 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1660667906; bh=DDLXlIiM1HQqC2sxPgK6XJiiqnjKJvJbTkPegFracBU=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=BJZ/hjJDePs/eklJ/gLX83uRRBTVLu83IHytDpSBbeKie3H2kcuDLqgd+m2+8S98g
+         O25wnEcmLKCUb/ntb0mWkcEmwm9LOCgpQv1JTDOaqtVrEOdN3Gp9xblisWbmTzhydC
+         AsKxJfDjjHDAr+m7yn/eqfjZYtyJdn/dgdRFenyMb+BhpPQT3AZUNBHJbh2JRKLXnK
+         LgHCD2dRjuZdl8Uv8yOywj7TJqO3wJRSjyfMxNY/RpEl9zWHr0C6pLxCwJW17rMKnV
+         CvWUt8RXi5cre/GRquYFUP20Bdx+k8+ttA7bADkNMAznZT1n7cBm/DDmnzaJLie/v/
+         hXFWencJATSBw==
+To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] ath9k: avoid uninit memory read in ath9k_htc_rx_msg()
+In-Reply-To: <7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.SAKURA.ne.jp>
+References: <000000000000c98a7f05ac744f53@google.com>
+ <cd4287be-5434-039e-59ba-2a9cb2ab5185@I-love.SAKURA.ne.jp>
+ <e0bcd6d4-4029-4ab3-0405-054d26262f64@I-love.SAKURA.ne.jp>
+ <87edxgwarp.fsf@toke.dk>
+ <7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.SAKURA.ne.jp>
+Date:   Tue, 16 Aug 2022 18:38:25 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <871qtgw3cu.fsf@toke.dk>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,30 +50,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-08-16 at 08:33 -0700, Guenter Roeck wrote:
-> On Tue, Aug 16, 2022 at 05:11:32PM +0200, Johannes Berg wrote:
-> > Hmm.
-> >=20
-> > > HEAD commit:    568035b01cfb Linux 6.0-rc1
-> > > git tree:       upstream
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D145d8a470=
-80000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D126b81cc3=
-ce4f07e
-> > >=20
-> >=20
-> > I can't reproduce this, and I don't see anything obviously wrong with
-> > the code there in hwsim either.
-> >=20
-> > Similarly with
-> > https://syzkaller.appspot.com/bug?extid=3D655209e079e67502f2da
-> >=20
-> > Anyone have any ideas what to do next?
-> >=20
-> Ignore it. It is caused by a problem in virtio. See revert series at
-> https://lore.kernel.org/lkml/20220816053602.173815-1-mst@redhat.com/
->=20
+Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> writes:
 
-Oh! OK, great, thanks! :)
+> syzbot is reporting uninit value at ath9k_htc_rx_msg() [1], for
+> ioctl(USB_RAW_IOCTL_EP_WRITE) can call ath9k_hif_usb_rx_stream() with
+> pkt_len =3D 0 but ath9k_hif_usb_rx_stream() uses
+> __dev_alloc_skb(pkt_len + 32, GFP_ATOMIC) based on an assumption that
+> pkt_len is valid. As a result, ath9k_hif_usb_rx_stream() allocates skb
+> with uninitialized memory and ath9k_htc_rx_msg() is reading from
+> uninitialized memory.
+>
+> Since bytes accessed by ath9k_htc_rx_msg() is not known until
+> ath9k_htc_rx_msg() is called, it would be difficult to check minimal valid
+> pkt_len at "if (pkt_len > 2 * MAX_RX_BUF_SIZE) {" line in
+> ath9k_hif_usb_rx_stream().
+>
+> We have two choices. One is to workaround by adding __GFP_ZERO so that
+> ath9k_htc_rx_msg() sees 0 if pkt_len is invalid. The other is to let
+> ath9k_htc_rx_msg() validate pkt_len before accessing. This patch chose
+> the latter.
+>
+> Note that I'm not sure threshold condition is correct, for I can't find
+> details on possible packet length used by this protocol.
+>
+> Link: https://syzkaller.appspot.com/bug?extid=3D2ca247c2d60c7023de7f [1]
+> Reported-by: syzbot <syzbot+2ca247c2d60c7023de7f@syzkaller.appspotmail.co=
+m>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-johannes
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
