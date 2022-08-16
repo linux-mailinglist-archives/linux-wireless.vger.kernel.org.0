@@ -2,72 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F067595387
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 09:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3A35957C4
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 12:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230132AbiHPHNs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Aug 2022 03:13:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37720 "EHLO
+        id S234295AbiHPKO2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Aug 2022 06:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231531AbiHPHN0 (ORCPT
+        with ESMTP id S234389AbiHPKNs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Aug 2022 03:13:26 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DFB18DCE1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Aug 2022 21:44:40 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27G31pAX000356;
-        Tue, 16 Aug 2022 04:43:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=zIA+fZqlZx/rjs6oujnUrA96RwP+POPHbLBSEiMs9a4=;
- b=obHcGeVsQAVFlBECDkMzD8gdNVNbT5GAuKrHsKBhYVDamUNLD3CwRxLyRKiwaTPliX6s
- wdI8SShBBpKLOEX5C7K5sYqgn39LwsxRtxDO7lc7bB1u6CYJRKyHGpgriTH0gWy+qOOY
- ulaDh8sD7acm4hT1hOBxUlPTbYqqzd54pdZ4R4uYgOJ5bEgpc3JuZouYRDF5hF7XIKq9
- dBZEnaec7qEpvE4A1nY3owU1ZXs/eEQSRdLY/XRccJuiHUjn+vc0g//yqWccRBgVQtwC
- D12AvgM5Y3lpghelvCULBJ6XLGIZoCiXyz+Kzgx7ZIZiNGShs4oYTAf6LF86Vz46lohI rQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j01w0rgw7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 Aug 2022 04:43:45 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27G4hi9r030434
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 Aug 2022 04:43:44 GMT
-Received: from youghand-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 15 Aug 2022 21:43:42 -0700
-From:   Youghandhar Chintala <quic_youghand@quicinc.com>
-To:     <ath10k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>,
-        Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH] wifi: ath10k: Delay the unmapping of the buffer
-Date:   Tue, 16 Aug 2022 10:13:10 +0530
-Message-ID: <20220816044310.19101-1-quic_youghand@quicinc.com>
-X-Mailer: git-send-email 2.37.0
+        Tue, 16 Aug 2022 06:13:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81771AD
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 01:00:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1B43FB81647
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 08:00:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2B9C433C1;
+        Tue, 16 Aug 2022 08:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660636835;
+        bh=/zMMHKlKM8s9WCqb2q73VdEph+NkYHoIat6uFjL+JjI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UBtXnKDUgqs6foZAyBY89rUevgsPWiZMuICcUwFdXOE/qy9sa+g1tJS1zOFXRULvJ
+         yQrqfzQ0nhJtK7Ca9Pdtz+o8z/49nwfWTtVGVHRFfQYAXmYAGdhCBazyA7ED19f3Od
+         VKXuPn+NGk0KHo7maJ0kfbe6bmjFqeGHQebFr1K0qCJgG6WUZMjKpT4KeuI3b/1OMa
+         ZyiX+3dPcqvBAUbFlEZ+l6sEvvg2V8KaRQJp8lq1FAuTSahNvrqD8WFsKviTlKllLv
+         Wl9FY4eWjV1VQjTK4QBqTG0G6IpnpD8z4C0zyZrskWUf1yeZeIPlg17b7/NJTHDA1L
+         oI8bWF/z/j2wQ==
+Date:   Tue, 16 Aug 2022 10:00:31 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
+        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
+        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, jenhao.yang@mediatek.com,
+        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
+        ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
+        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
+        kuabhs@google.com, druth@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] mt76: mt7921: get rid of the false positive reset
+Message-ID: <YvtOnx1/jXtKy86Q@lore-desk>
+References: <95b03bb77ce93cb2cade98d947309cd669721939.1660519674.git.objelf@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 0Gr-GHGiIYs_-16S31hyrVni7pGrLu4w
-X-Proofpoint-GUID: 0Gr-GHGiIYs_-16S31hyrVni7pGrLu4w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-16_03,2022-08-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- mlxscore=0 malwarescore=0 spamscore=0 suspectscore=0 priorityscore=1501
- phishscore=0 bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2208160018
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ccOvUDBAjIrhQcpt"
+Content-Disposition: inline
+In-Reply-To: <95b03bb77ce93cb2cade98d947309cd669721939.1660519674.git.objelf@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,179 +64,103 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We are seeing a corner case where host receiving copy completion for WMI
-command though copy engine is processing it. Once host receives the
-copy completion, host is unmapping corresponding memory which results
-in SMMU fault. To avoid such conditions though host receives copy
-completion, as a work around we are adding a delay to unmap the memory
-for WMI end point.
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
+--ccOvUDBAjIrhQcpt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
----
- drivers/net/wireless/ath/ath10k/core.c | 15 +++++++++++++++
- drivers/net/wireless/ath/ath10k/htc.c  |  8 ++++++++
- drivers/net/wireless/ath/ath10k/hw.h   |  2 ++
- 3 files changed, 25 insertions(+)
+> From: Sean Wang <sean.wang@mediatek.com>
+>=20
+> False positive reset would be possibly triggered by those commands we
+> applied in suspend with HZ MCU timeout, especially it happened when we
+> enabled kernel log in pm core to diagnose how much time we spend in each
+> driver during suspend procedure. So we enlarge the value and align the MCU
+> timeout as other commands we did to reduce the false positive reset.
+>=20
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index d1ac64026cb3..c2fda8deb9ef 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -99,6 +99,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA988X_HW_2_0_VERSION,
-@@ -138,6 +139,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA9887_HW_1_0_VERSION,
-@@ -178,6 +180,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA6174_HW_3_2_VERSION,
-@@ -252,6 +255,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA6174_HW_2_1_VERSION,
-@@ -291,6 +295,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA6174_HW_3_0_VERSION,
-@@ -330,6 +335,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA6174_HW_3_2_VERSION,
-@@ -373,6 +379,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = true,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA99X0_HW_2_0_DEV_VERSION,
-@@ -418,6 +425,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA9984_HW_1_0_DEV_VERSION,
-@@ -470,6 +478,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA9888_HW_2_0_DEV_VERSION,
-@@ -519,6 +528,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA9377_HW_1_0_DEV_VERSION,
-@@ -558,6 +568,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA9377_HW_1_1_DEV_VERSION,
-@@ -599,6 +610,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA9377_HW_1_1_DEV_VERSION,
-@@ -631,6 +643,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = QCA4019_HW_1_0_DEV_VERSION,
-@@ -677,6 +690,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = false,
- 		.hw_restart_disconnect = false,
- 		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
- 	},
- 	{
- 		.id = WCN3990_HW_1_0_DEV_VERSION,
-@@ -709,6 +723,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.dynamic_sar_support = true,
- 		.hw_restart_disconnect = true,
- 		.use_fw_tx_credits = false,
-+		.delay_unmap_buffer = true,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
-index 6d1784f74bea..e04b9545cca6 100644
---- a/drivers/net/wireless/ath/ath10k/htc.c
-+++ b/drivers/net/wireless/ath/ath10k/htc.c
-@@ -56,6 +56,14 @@ void ath10k_htc_notify_tx_completion(struct ath10k_htc_ep *ep,
- 	ath10k_dbg(ar, ATH10K_DBG_HTC, "%s: ep %d skb %pK\n", __func__,
- 		   ep->eid, skb);
- 
-+	/* A corner case where the copy completion is reaching to host but still
-+	 * copy engine is processing it due to which host unmaps corresponding
-+	 * memory and causes SMMU fault, hence as workaround adding delay
-+	 * the unmapping memory to avoid SMMU faults.
-+	 */
-+	if (ar->hw_params.delay_unmap_buffer &&
-+	    ep->ul_pipe_id == 3)
-+		mdelay(2);
- 	hdr = (struct ath10k_htc_hdr *)skb->data;
- 	ath10k_htc_restore_tx_skb(ep->htc, skb);
- 
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 1b99f3a39a11..9643031a4427 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -637,6 +637,8 @@ struct ath10k_hw_params {
- 	bool hw_restart_disconnect;
- 
- 	bool use_fw_tx_credits;
-+
-+	bool delay_unmap_buffer;
- };
- 
- struct htt_resp;
--- 
-2.37.0
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c  | 7 +------
+>  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c | 7 +------
+>  drivers/net/wireless/mediatek/mt76/mt7921/usb.c      | 7 +------
+>  3 files changed, 3 insertions(+), 18 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/driver=
+s/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+> index 5efda694fb9d..64568536c1e9 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+> @@ -30,12 +30,7 @@ mt7921_mcu_send_message(struct mt76_dev *mdev, struct =
+sk_buff *skb,
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (cmd =3D=3D MCU_UNI_CMD(HIF_CTRL) ||
+> -	    cmd =3D=3D MCU_UNI_CMD(SUSPEND) ||
+> -	    cmd =3D=3D MCU_UNI_CMD(OFFLOAD))
+> -		mdev->mcu.timeout =3D HZ;
+> -	else
+> -		mdev->mcu.timeout =3D 3 * HZ;
+> +	mdev->mcu.timeout =3D 3 * HZ;
+> =20
+>  	if (cmd =3D=3D MCU_CMD(FW_SCATTER))
+>  		txq =3D MT_MCUQ_FWDL;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+> index e038d7404323..5c1489766d9f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+> @@ -33,12 +33,7 @@ mt7921s_mcu_send_message(struct mt76_dev *mdev, struct=
+ sk_buff *skb,
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (cmd =3D=3D MCU_UNI_CMD(HIF_CTRL) ||
+> -	    cmd =3D=3D MCU_UNI_CMD(SUSPEND) ||
+> -	    cmd =3D=3D MCU_UNI_CMD(OFFLOAD))
+> -		mdev->mcu.timeout =3D HZ;
+> -	else
+> -		mdev->mcu.timeout =3D 3 * HZ;
+> +	mdev->mcu.timeout =3D 3 * HZ;
+> =20
+>  	if (cmd =3D=3D MCU_CMD(FW_SCATTER))
+>  		type =3D MT7921_SDIO_FWDL;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7921/usb.c
+> index dd3b8884e162..d06cee386acd 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> @@ -106,12 +106,7 @@ mt7921u_mcu_send_message(struct mt76_dev *mdev, stru=
+ct sk_buff *skb,
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (cmd =3D=3D MCU_UNI_CMD(HIF_CTRL) ||
+> -	    cmd =3D=3D MCU_UNI_CMD(SUSPEND) ||
+> -	    cmd =3D=3D MCU_UNI_CMD(OFFLOAD))
+> -		mdev->mcu.timeout =3D HZ;
+> -	else
+> -		mdev->mcu.timeout =3D 3 * HZ;
+> +	mdev->mcu.timeout =3D 3 * HZ;
+> =20
+>  	if (cmd !=3D MCU_CMD(FW_SCATTER))
+>  		ep =3D MT_EP_OUT_INBAND_CMD;
+> --=20
+> 2.25.1
+>=20
+
+--ccOvUDBAjIrhQcpt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYvtOnwAKCRA6cBh0uS2t
+rN/KAQDfEBOueDc+W35AUsmTHAL9nFzJRbGYzP90wSMJZ3l2CwD9FpkaYX5DTU67
+2YsunTsm5J0Sdo4op8DYAS6JoUFejgI=
+=9TqW
+-----END PGP SIGNATURE-----
+
+--ccOvUDBAjIrhQcpt--
