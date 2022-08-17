@@ -2,36 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B135596EA5
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Aug 2022 14:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B97597098
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Aug 2022 16:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233658AbiHQMnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Aug 2022 08:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42640 "EHLO
+        id S239980AbiHQOGa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Aug 2022 10:06:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbiHQMnd (ORCPT
+        with ESMTP id S239856AbiHQOGX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Aug 2022 08:43:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E0F6E898;
-        Wed, 17 Aug 2022 05:43:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7F2960B78;
-        Wed, 17 Aug 2022 12:43:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2BCC433C1;
-        Wed, 17 Aug 2022 12:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1660740212;
-        bh=P8dzIB6z9ULz5JdX7NsNy556/nb7bdo5QwU2w5AaOdY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Eh5UOsm3JKInvaIdzkcuPePBtvl3iaFrl+McsEBiFesgxM08TS4cg2yaraXsDxY1K
-         m2mAuiTki4RDuH+hftVvzEqfIR0EjIifVKgrvppAS9CmVON6HJFnhkKS88B8FbfjNX
-         DMKc2ubd+LQ8ARqvJlchkNDcDUexCv8JKjB/gXzs=
-Date:   Wed, 17 Aug 2022 14:43:29 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Duoming Zhou <duoming@zju.edu.cn>
+        Wed, 17 Aug 2022 10:06:23 -0400
+X-Greylist: delayed 5182 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 Aug 2022 07:06:15 PDT
+Received: from zg8tmtm4lje5ny4xodqumjaa.icoremail.net (zg8tmtm4lje5ny4xodqumjaa.icoremail.net [138.197.184.20])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 954F5CE6;
+        Wed, 17 Aug 2022 07:06:14 -0700 (PDT)
+Received: by ajax-webmail-mail-app4 (Coremail) ; Wed, 17 Aug 2022 22:05:37
+ +0800 (GMT+08:00)
+X-Originating-IP: [106.117.76.235]
+Date:   Wed, 17 Aug 2022 22:05:37 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   duoming@zju.edu.cn
+To:     "Greg KH" <gregkh@linuxfoundation.org>
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         briannorris@chromium.org, amitkarwar@gmail.com,
         ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
@@ -41,57 +32,62 @@ Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         rafael@kernel.org
 Subject: Re: [PATCH v7 1/2] devcoredump: remove the useless gfp_t parameter
  in dev_coredumpv and dev_coredumpm
-Message-ID: <YvzicURy8t2JdQke@kroah.com>
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
+ Copyright (c) 2002-2022 www.mailtech.cn zju.edu.cn
+In-Reply-To: <YvzicURy8t2JdQke@kroah.com>
 References: <cover.1660739276.git.duoming@zju.edu.cn>
  <b861ce56ba555109a67f85a146a785a69f0a3c95.1660739276.git.duoming@zju.edu.cn>
+ <YvzicURy8t2JdQke@kroah.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b861ce56ba555109a67f85a146a785a69f0a3c95.1660739276.git.duoming@zju.edu.cn>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <176e7de7.8a223.182ac1fbc47.Coremail.duoming@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: cS_KCgAXq92y9fxiCAIaAw--.19097W
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAgAFAVZdtbEncgAGsa
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 08:39:12PM +0800, Duoming Zhou wrote:
-> The dev_coredumpv() and dev_coredumpm() could not be used in atomic
-> context, because they call kvasprintf_const() and kstrdup() with
-> GFP_KERNEL parameter. The process is shown below:
-> 
-> dev_coredumpv(.., gfp_t gfp)
->   dev_coredumpm(.., gfp_t gfp)
->     dev_set_name
->       kobject_set_name_vargs
->         kvasprintf_const(GFP_KERNEL, ...); //may sleep
->           kstrdup(s, GFP_KERNEL); //may sleep
-> 
-> This patch removes gfp_t parameter of dev_coredumpv() and dev_coredumpm()
-> and changes the gfp_t parameter of kzalloc() in dev_coredumpm() to
-> GFP_KERNEL in order to show they could not be used in atomic context.
-> 
-> Fixes: 833c95456a70 ("device coredump: add new device coredump class")
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-> Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> ---
-> Changes in v7:
->   - Remove gfp_t flag in amdgpu device.
-
-Again, this creates a "flag day" where we have to be sure we hit all
-users of this api at the exact same time.  This will prevent any new
-driver that comes into a maintainer tree during the next 3 months from
-ever being able to use this api without cauing build breakages in the
-linux-next tree.
-
-Please evolve this api to work properly for everyone at the same time,
-like was previously asked for so that we can take this change.  It will
-take 2 releases, but that's fine.
-
-thanks,
-
-greg k-h
+SGVsbG8sCgpPbiBXZWQsIDE3IEF1ZyAyMDIyIDE0OjQzOjI5ICswMjAwIEdyZWcgS0ggd3JvdGU6
+Cgo+IE9uIFdlZCwgQXVnIDE3LCAyMDIyIGF0IDA4OjM5OjEyUE0gKzA4MDAsIER1b21pbmcgWmhv
+dSB3cm90ZToKPiA+IFRoZSBkZXZfY29yZWR1bXB2KCkgYW5kIGRldl9jb3JlZHVtcG0oKSBjb3Vs
+ZCBub3QgYmUgdXNlZCBpbiBhdG9taWMKPiA+IGNvbnRleHQsIGJlY2F1c2UgdGhleSBjYWxsIGt2
+YXNwcmludGZfY29uc3QoKSBhbmQga3N0cmR1cCgpIHdpdGgKPiA+IEdGUF9LRVJORUwgcGFyYW1l
+dGVyLiBUaGUgcHJvY2VzcyBpcyBzaG93biBiZWxvdzoKPiA+IAo+ID4gZGV2X2NvcmVkdW1wdigu
+LiwgZ2ZwX3QgZ2ZwKQo+ID4gICBkZXZfY29yZWR1bXBtKC4uLCBnZnBfdCBnZnApCj4gPiAgICAg
+ZGV2X3NldF9uYW1lCj4gPiAgICAgICBrb2JqZWN0X3NldF9uYW1lX3ZhcmdzCj4gPiAgICAgICAg
+IGt2YXNwcmludGZfY29uc3QoR0ZQX0tFUk5FTCwgLi4uKTsgLy9tYXkgc2xlZXAKPiA+ICAgICAg
+ICAgICBrc3RyZHVwKHMsIEdGUF9LRVJORUwpOyAvL21heSBzbGVlcAo+ID4gCj4gPiBUaGlzIHBh
+dGNoIHJlbW92ZXMgZ2ZwX3QgcGFyYW1ldGVyIG9mIGRldl9jb3JlZHVtcHYoKSBhbmQgZGV2X2Nv
+cmVkdW1wbSgpCj4gPiBhbmQgY2hhbmdlcyB0aGUgZ2ZwX3QgcGFyYW1ldGVyIG9mIGt6YWxsb2Mo
+KSBpbiBkZXZfY29yZWR1bXBtKCkgdG8KPiA+IEdGUF9LRVJORUwgaW4gb3JkZXIgdG8gc2hvdyB0
+aGV5IGNvdWxkIG5vdCBiZSB1c2VkIGluIGF0b21pYyBjb250ZXh0Lgo+ID4gCj4gPiBGaXhlczog
+ODMzYzk1NDU2YTcwICgiZGV2aWNlIGNvcmVkdW1wOiBhZGQgbmV3IGRldmljZSBjb3JlZHVtcCBj
+bGFzcyIpCj4gPiBSZXZpZXdlZC1ieTogQnJpYW4gTm9ycmlzIDxicmlhbm5vcnJpc0BjaHJvbWl1
+bS5vcmc+Cj4gPiBSZXZpZXdlZC1ieTogSm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRp
+b25zLm5ldD4KPiA+IFNpZ25lZC1vZmYtYnk6IER1b21pbmcgWmhvdSA8ZHVvbWluZ0B6anUuZWR1
+LmNuPgo+ID4gLS0tCj4gPiBDaGFuZ2VzIGluIHY3Ogo+ID4gICAtIFJlbW92ZSBnZnBfdCBmbGFn
+IGluIGFtZGdwdSBkZXZpY2UuCj4gCj4gQWdhaW4sIHRoaXMgY3JlYXRlcyBhICJmbGFnIGRheSIg
+d2hlcmUgd2UgaGF2ZSB0byBiZSBzdXJlIHdlIGhpdCBhbGwKPiB1c2VycyBvZiB0aGlzIGFwaSBh
+dCB0aGUgZXhhY3Qgc2FtZSB0aW1lLiAgVGhpcyB3aWxsIHByZXZlbnQgYW55IG5ldwo+IGRyaXZl
+ciB0aGF0IGNvbWVzIGludG8gYSBtYWludGFpbmVyIHRyZWUgZHVyaW5nIHRoZSBuZXh0IDMgbW9u
+dGhzIGZyb20KPiBldmVyIGJlaW5nIGFibGUgdG8gdXNlIHRoaXMgYXBpIHdpdGhvdXQgY2F1aW5n
+IGJ1aWxkIGJyZWFrYWdlcyBpbiB0aGUKPiBsaW51eC1uZXh0IHRyZWUuCj4gCj4gUGxlYXNlIGV2
+b2x2ZSB0aGlzIGFwaSB0byB3b3JrIHByb3Blcmx5IGZvciBldmVyeW9uZSBhdCB0aGUgc2FtZSB0
+aW1lLAo+IGxpa2Ugd2FzIHByZXZpb3VzbHkgYXNrZWQgZm9yIHNvIHRoYXQgd2UgY2FuIHRha2Ug
+dGhpcyBjaGFuZ2UuICBJdCB3aWxsCj4gdGFrZSAyIHJlbGVhc2VzLCBidXQgdGhhdCdzIGZpbmUu
+CgpUaGFuayB5b3UgZm9yIHlvdXIgcmVwbHksIEkgd2lsbCBldm9sdmUgdGhpcyBhcGkgdG8gd29y
+ayBwcm9wZXJseSBmb3IgZXZlcnlvbmUuCklmIHRoZXJlIGFyZSBub3QgYW55IG5ldyBkcml2ZXJz
+IHRoYXQgdXNlIHRoaXMgYXBpIGR1cmluZyB0aGUgbmV4dCAzIG1vbnRocywgCkkgd2lsbCBzZW5k
+IHRoaXMgcGF0Y2ggYWdhaW4uIE90aGVyd2lzZSwgSSB3aWxsIHdhaXQgdW50aWwgdGhlcmUgYXJl
+IG5vdCBuZXcKdXNlcnMgYW55bW9yZS4KCkJlc3QgcmVnYXJkcywKRHVvbWluZyBaaG91Cgo=
