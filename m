@@ -2,67 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9B955963A2
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Aug 2022 22:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0983D596659
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Aug 2022 02:40:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236347AbiHPUT4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Aug 2022 16:19:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54806 "EHLO
+        id S238075AbiHQAh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Aug 2022 20:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233421AbiHPUTz (ORCPT
+        with ESMTP id S238071AbiHQAhY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Aug 2022 16:19:55 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 624FB5E579
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 13:19:54 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a7so21021608ejp.2
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 13:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc;
-        bh=8ADEpdfGA0jqJVpgEhbjoKMmeHDNOBoopF/N+sTzUmE=;
-        b=MGCgac7ljCXXGvkqRXlnA23rglD3jYCgRVlZJMFqLklrXpI4kA7BadECYJxk6VeCZu
-         1sJzCx1Qynymy64YgKMy3Z4MD6XUtPdSIVTxwNHwmtDcs4BjwMsGVk4MbZ3tJB2y1DB2
-         eLAciEemAk1CKxy6nVpb1rWkfB/UlZDXO/U5PJJmHF0u+IrEq49e6LIzo6N79+G5KyXA
-         dfbWXCWW1QUiuAk0CifLPqnv9IFBQqC3Xv+1kUsAghulFnCWmR4qOMRm+prD1jbaEoXl
-         IJNuspb6pHQZn+iQlJW7+kWlC8+JfgUlDVTSN+yzRI3NFCI4Frhh+2tOEauU3l2wvYSt
-         ywgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc;
-        bh=8ADEpdfGA0jqJVpgEhbjoKMmeHDNOBoopF/N+sTzUmE=;
-        b=EW7ugB6ycbpn751ewHrqnvI2CoUqXbE398RlAxGkCFQ/bIcYhK2VrKUAm3jTIAIvsh
-         2QJR8MLVMAI9p+RPl6QIFbbxDgvgshjZKNuf1AsjwzDW81f6YspMlwz51Kc4C/LIOFJL
-         Mou8zhE4lVvFnTzwUWTI1Y4StvgWvILV4nTuVYqQp10A/FTqJ7OAGGc+zQVS/wYm7zwE
-         25RF1P21DZVL9KaEbLyhTFCNj2BfswUV3ZDsECfm0KHZ0fPDikohoyFZAjt+XX4hHqpt
-         /UZXb1e+YwC54vpvo5nG4CIcf43Qu7h8CIXhiu23G/ziTYGa+V/7jUi0pE/627Wvf79d
-         naaQ==
-X-Gm-Message-State: ACgBeo0rb7DB6GG9OQwPYp86Ack4LYaI6QhrtA8XO14skTOcjWeYhBkX
-        iYHIUfPZw10O5g==
-X-Google-Smtp-Source: AA6agR6nuQbEVQkD0oF5YNPgyN+62KjdoiJMvHXhBrBR8GipR+hw6qjWif4SNnZe4AgM9lCNQcqHxw==
-X-Received: by 2002:a17:906:cc48:b0:730:7545:bf51 with SMTP id mm8-20020a170906cc4800b007307545bf51mr14067677ejb.247.1660681192988;
-        Tue, 16 Aug 2022 13:19:52 -0700 (PDT)
-Received: from [192.168.25.160] (ip-176-198-221-165.um43.pools.vodafone-ip.de. [176.198.221.165])
-        by smtp.googlemail.com with ESMTPSA id jz20-20020a170906bb1400b007309a570bacsm5825730ejb.176.2022.08.16.13.19.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Aug 2022 13:19:52 -0700 (PDT)
-Message-ID: <6415466b-f745-df14-2a0b-40861bd1ea10@googlemail.com>
-Date:   Tue, 16 Aug 2022 22:17:46 +0200
+        Tue, 16 Aug 2022 20:37:24 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2D5923C4
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Aug 2022 17:37:16 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27GNSaux020235;
+        Wed, 17 Aug 2022 00:37:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=y81cjkN+/y7I79zdn2eXvOkWrpupcI4sxkAdlBDlyo0=;
+ b=GSnaVEmTj2dTey2R3RAy5CjxC4mU8REYOdYMx0I6Z5sg8q9ZXIkj8WDryv1ucJDsbEzc
+ sdjsz4LbYmcvEVXCZYVlVeMaOXR9wZBdumAcmuNMZHEBBhfQQU0AAMlyDoNz69wsOtvT
+ BjaDnsIRT5bgfPNpJxstu1vMYxXd9Z1UCI5igRUj/S6+9Of1bkp1WVhr0k7/CEwKfeks
+ 1gsrhaZ/lYw95630NjJsK1/fjggb3E0gB/eWXpLPF7fWAszW521MdTkgKBQS7igmd8bl
+ 02e4aDwPuIclDvtrzTMGJK+cYkxCMfUY1m2Xo48K4gXULx9Ldxb7WrRjcSxip0dBsc9R EQ== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j01w0vedk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 Aug 2022 00:37:05 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.47.97.222])
+        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27H0b4iE019027
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 Aug 2022 00:37:04 GMT
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 16 Aug 2022 17:37:04 -0700
+Received: from [10.110.78.115] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 16 Aug
+ 2022 17:37:03 -0700
+Message-ID: <576a0720-fe45-36bd-abd1-b772dbe380b0@quicinc.com>
+Date:   Tue, 16 Aug 2022 17:37:02 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Content-Language: de-DE
-From:   =?UTF-8?Q?Frank_Sch=c3=a4fer?= <fschaefer.oss@googlemail.com>
-Subject: rtw88: "timed out to flush queue 1"
-To:     pkshih@realtek.com, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 15/50] wifi: ath12k: add dp_rx.c
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
+CC:     <ath12k@lists.infradead.org>
+References: <20220812161003.27279-1-kvalo@kernel.org>
+ <20220812161003.27279-16-kvalo@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220812161003.27279-16-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: oPtYrkNBob7cO_CVA93XmtJIe-UPdR2e
+X-Proofpoint-GUID: oPtYrkNBob7cO_CVA93XmtJIe-UPdR2e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-16_08,2022-08-16_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ mlxscore=0 malwarescore=0 spamscore=0 suspectscore=0 priorityscore=1501
+ phishscore=0 bulkscore=0 mlxlogscore=863 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2208170000
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,81 +83,215 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 8/12/2022 9:09 AM, Kalle Valo wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> (Patches split into one patch per file for easier review, but the final
+> commit will be one big patch. See the cover letter for more info.)
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/dp_rx.c | 4308 +++++++++++++++++++++++++++++++
+>   1 file changed, 4308 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
 
-I tried wireless-testing today to see if the recent rtw88 patches are 
-fixing the problems I'm facing with my rtw8821ce device.
-The device now associates much faster and the tons of "failed to get tx 
-report from firmware" messages are gone.
-However, the device disconnects very often and the log shows lots of
+snip
 
-[   20.900786] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
+> +static u16 ath12k_dp_rx_h_frag_no(struct ath12k_base *ab,
+> +				  struct sk_buff *skb)
+> +{
+> +	struct ieee80211_hdr *hdr;
+> +
+> +	hdr = (struct ieee80211_hdr *)(skb->data + ab->hw_params->hal_desc_sz);
+> +	return le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_FRAG;
 
-messages, which is new.
+should there be an ieee80211.h function for this? we already have:
+ieee80211_is_first_frag()
+ieee80211_is_frag()
 
+> +}
 
-A typical section from the dmesg output:
-...
-[   13.099028] wlo1: authenticate with f8:d1:11:xx:xx:xx
-[   13.128833] wlo1: Allocated STA f8:d1:11:xx:xx:xx
-[   13.128846] wlo1: HE not supported, disabling HE and EHT
-[   13.128848] wlo1: EHT not supported, disabling EHT
-[   13.128849] wlo1: bad VHT capabilities, disabling VHT
-[   13.128852] wlo1: VHT operation missing / VHT not supported
-[   13.634812] wlo1: Inserted STA f8:d1:11:xx:xx:xx
-[   13.772803] wlo1: send auth to f8:d1:11:xx:xx:xx (try 1/3)
-[   13.775493] wlo1: authenticated
-[   13.775501] wlo1: moving STA f8:d1:11:xx:xx:xx to state 2
-[   13.775676] rtw_8821ce 0000:02:00.0 wlo1: disabling HT/VHT/HE as 
-WMM/QoS is not supported by the AP
-[   13.812815] wlo1: HE not supported, disabling HE and EHT
-[   13.812822] wlo1: EHT not supported, disabling EHT
-[   13.812826] wlo1: HT operation missing / HT not supported
-[   14.318955] wlo1: associate with f8:d1:11:xx:xx:xx (try 1/3)
-[   14.561324] wlo1: associate with f8:d1:11:xx:xx:xx (try 2/3)
-[   14.571012] wlo1: RX AssocResp from f8:d1:11:xx:xx:xx (capab=0x431 
-status=0 aid=1)
-[   14.571052] wlo1: moving STA f8:d1:11:xx:xx:xx to state 3
-[   14.571208] wlo1: associated
-[   14.649252] IPv6: ADDRCONF(NETDEV_CHANGE): wlo1: link becomes ready
-[   14.649610] wlo1: moving STA f8:d1:11:xx:xx:xx to state 4
-[   20.900786] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   21.392784] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   21.904779] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   22.044770] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   23.312776] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   25.444803] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   25.960816] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   27.249290] wlo1: cancelling AP probe due to a received beacon
-[   31.168781] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   31.604945] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   32.572767] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   33.832856] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   36.461025] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   37.405071] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   37.889031] rtw_8821ce 0000:02:00.0: timed out to flush queue 1
-[   39.641417] wlo1: cancelling AP probe due to a received beacon
-[   49.293315] wlo1: cancelling AP probe due to a received beacon
-[   58.861319] wlo1: cancelling AP probe due to a received beacon
-[   68.669330] wlo1: cancelling AP probe due to a received beacon
-[   78.205321] wlo1: cancelling AP probe due to a received beacon
-[   80.793042] wlo1: detected beacon loss from AP (missed 7 beacons) - 
-probing
-[   80.824424] wlo1: No ack for nullfunc frame to AP f8:d1:11:xx:xx:xx, 
-try 1/2
-[   80.851851] wlo1: No ack for nullfunc frame to AP f8:d1:11:xx:xx:xx, 
-disconnecting.
-[   80.889060] wlo1: moving STA f8:d1:11:xx:xx:xx to state 3
-[   80.905202] wlo1: moving STA f8:d1:11:xx:xx:xx to state 2
-[   80.905230] wlo1: moving STA f8:d1:11:xx:xx:xx to state 1
-[   80.905233] wlo1: Removed STA f8:d1:11:xx:xx:xx
-[   80.905338] wlo1: Destroyed STA f8:d1:11:xx:xx:xx
-...
+snip
 
-FW version is 24.11.0.
-I tried with and without disable_lps_deep / disable_aspm, but that makes 
-no difference.
+> +static int ath12k_dp_purge_mon_ring(struct ath12k_base *ab)
+> +{
+> +	int i, reaped = 0;
+> +	unsigned long timeout = jiffies + msecs_to_jiffies(DP_MON_PURGE_TIMEOUT_MS);
+> +
+> +	do {
+> +		for (i = 0; i < ab->hw_params->num_rxmda_per_pdev; i++)
+> +			reaped += ath12k_dp_mon_process_ring(ab, i, NULL,
+> +							     DP_MON_SERVICE_BUDGET,
+> +							     ATH12K_DP_RX_MONITOR_MODE);
+> +
+> +		/* nothing more to reap */
+> +		if (reaped < DP_MON_SERVICE_BUDGET)
+> +			return 0;
+> +
+> +	} while (time_before(jiffies, timeout));
 
-Any ideas ? Anything I can do ?
+i'm very confused by this loop.
+1) 'reaped' is only initialized at the begining of the function.
+2) inside the loop the first time we call ath12k_dp_mon_process_ring() 
+'reaped' will be the # of packets reaped in that first iteration.
+3) if this is < DP_MON_SERVICE_BUDGET then we will exit the function.
+4) if this is >= DP_MON_SERVICE_BUDGET then we will loop again. in all 
+of the subsequent iterations 'reaped' will be increased by the number of 
+packets reaped (which could be 0!!!), and that ongoing sum will always 
+be >= DP_MON_SERVICE_BUDGET (at least until we wrap the counter!!) and 
+hence even if we don't reap any packets in the subsequent calls we will 
+continue to loop until we exceed the timeout.
 
-Regards,
-Frank
+So it seems that 'reaped' should be initialized to 0 inside the do loop.
+
+In addition it seems strange to have a budget but then not defer 
+additional processing, i.e. yield(), if you use up the budget.
+
+> +
+> +	ath12k_warn(ab, "dp mon ring purge timeout");
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +/* Returns number of Rx buffers replenished */
+> +int ath12k_dp_rx_bufs_replenish(struct ath12k_base *ab, int mac_id,
+> +				struct dp_rxdma_ring *rx_ring,
+> +				int req_entries,
+> +				enum hal_rx_buf_return_buf_manager mgr,
+> +				bool hw_cc)
+> +{
+> +	struct ath12k_buffer_addr *desc;
+> +	struct hal_srng *srng;
+> +	struct sk_buff *skb;
+> +	int num_free;
+> +	int num_remain;
+> +	int buf_id;
+> +	u32 cookie;
+> +	dma_addr_t paddr;
+> +	struct ath12k_dp *dp = &ab->dp;
+> +	struct ath12k_rx_desc_info *rx_desc;
+> +
+> +	req_entries = min(req_entries, rx_ring->bufs_max);
+> +
+> +	srng = &ab->hal.srng_list[rx_ring->refill_buf_ring.ring_id];
+> +
+> +	spin_lock_bh(&srng->lock);
+> +
+> +	ath12k_hal_srng_access_begin(ab, srng);
+> +
+> +	num_free = ath12k_hal_srng_src_num_free(ab, srng, true);
+> +	if (!req_entries && (num_free > (rx_ring->bufs_max * 3) / 4))
+> +		req_entries = num_free;
+> +
+> +	req_entries = min(num_free, req_entries);
+> +	num_remain = req_entries;
+> +
+> +	while (num_remain > 0) {
+> +		skb = dev_alloc_skb(DP_RX_BUFFER_SIZE +
+> +				    DP_RX_BUFFER_ALIGN_SIZE);
+> +		if (!skb)
+> +			break;
+> +
+> +		if (!IS_ALIGNED((unsigned long)skb->data,
+> +				DP_RX_BUFFER_ALIGN_SIZE)) {
+> +			skb_pull(skb,
+> +				 PTR_ALIGN(skb->data, DP_RX_BUFFER_ALIGN_SIZE) -
+> +				 skb->data);
+> +		}
+> +
+> +		paddr = dma_map_single(ab->dev, skb->data,
+> +				       skb->len + skb_tailroom(skb),
+> +				       DMA_FROM_DEVICE);
+> +		if (dma_mapping_error(ab->dev, paddr))
+> +			goto fail_free_skb;
+> +
+> +		if (hw_cc) {
+
+hw_cc is a very cryptic name. is there a better name for this?
+presumably this has something to do with hardware giving us unique 
+cookies so we don't have idr overhead?
+
+> +			spin_lock_bh(&dp->rx_desc_lock);
+> +
+> +			/* Get desc from free list and store in used list
+> +			 * for cleanup purposes
+> +			 *
+> +			 * TODO: pass the removed descs rather than
+> +			 * add/read to optimize
+> +			 */
+> +			rx_desc = list_first_entry_or_null(&dp->rx_desc_free_list,
+> +							   struct ath12k_rx_desc_info,
+> +							   list);
+> +			if (!rx_desc) {
+> +				spin_unlock_bh(&dp->rx_desc_lock);
+> +				goto fail_dma_unmap;
+> +			}
+> +
+> +			rx_desc->skb = skb;
+> +			cookie = rx_desc->cookie;
+> +			list_del(&rx_desc->list);
+> +			list_add_tail(&rx_desc->list, &dp->rx_desc_used_list);
+> +
+> +			spin_unlock_bh(&dp->rx_desc_lock);
+> +		} else {
+> +			spin_lock_bh(&rx_ring->idr_lock);
+> +			buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
+> +					   rx_ring->bufs_max * 3, GFP_ATOMIC);
+> +			spin_unlock_bh(&rx_ring->idr_lock);
+> +			if (buf_id < 0)
+> +				goto fail_idr_remove;
+> +			cookie = u32_encode_bits(mac_id,
+> +						 DP_RXDMA_BUF_COOKIE_PDEV_ID) |
+> +				 u32_encode_bits(buf_id,
+> +						 DP_RXDMA_BUF_COOKIE_BUF_ID);
+> +		}
+> +
+> +		desc = ath12k_hal_srng_src_get_next_entry(ab, srng);
+> +		if (!desc)
+> +			goto fail_list_desc_add;
+> +
+> +		ATH12K_SKB_RXCB(skb)->paddr = paddr;
+> +
+> +		num_remain--;
+> +
+> +		ath12k_hal_rx_buf_addr_info_set(desc, paddr, cookie, mgr);
+> +	}
+> +
+> +	ath12k_hal_srng_access_end(ab, srng);
+> +
+> +	spin_unlock_bh(&srng->lock);
+> +
+> +	return req_entries - num_remain;
+> +
+> +fail_list_desc_add:
+> +	if (hw_cc) {
+> +		spin_lock_bh(&dp->rx_desc_lock);
+> +		list_del(&rx_desc->list);
+> +		list_add_tail(&rx_desc->list, &dp->rx_desc_free_list);
+> +		rx_desc->skb = NULL;
+> +		spin_unlock_bh(&dp->rx_desc_lock);
+> +	}
+> +fail_idr_remove:
+
+should the idr_remove logic be if (!hw_cc) since it will only be added 
+above in the if (hw_cc) else path?
+
+> +	spin_lock_bh(&rx_ring->idr_lock);
+> +	idr_remove(&rx_ring->bufs_idr, buf_id);
+> +	spin_unlock_bh(&rx_ring->idr_lock);
+> +fail_dma_unmap:
+> +	dma_unmap_single(ab->dev, paddr, skb->len + skb_tailroom(skb),
+> +			 DMA_FROM_DEVICE);
+> +fail_free_skb:
+> +	dev_kfree_skb_any(skb);
+> +
+> +	ath12k_hal_srng_access_end(ab, srng);
+> +
+> +	spin_unlock_bh(&srng->lock);
+> +
+> +	return req_entries - num_remain;
+> +}
+
+I've only reviewed up to this point, but want to checkpoint my review 
+for the workday.
