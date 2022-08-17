@@ -2,92 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B97597098
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Aug 2022 16:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB0059761E
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Aug 2022 20:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239980AbiHQOGa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Aug 2022 10:06:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
+        id S238826AbiHQSwF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Aug 2022 14:52:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239856AbiHQOGX (ORCPT
+        with ESMTP id S232481AbiHQSwE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Aug 2022 10:06:23 -0400
-X-Greylist: delayed 5182 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 Aug 2022 07:06:15 PDT
-Received: from zg8tmtm4lje5ny4xodqumjaa.icoremail.net (zg8tmtm4lje5ny4xodqumjaa.icoremail.net [138.197.184.20])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 954F5CE6;
-        Wed, 17 Aug 2022 07:06:14 -0700 (PDT)
-Received: by ajax-webmail-mail-app4 (Coremail) ; Wed, 17 Aug 2022 22:05:37
- +0800 (GMT+08:00)
-X-Originating-IP: [106.117.76.235]
-Date:   Wed, 17 Aug 2022 22:05:37 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   duoming@zju.edu.cn
-To:     "Greg KH" <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        briannorris@chromium.org, amitkarwar@gmail.com,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netdev@vger.kernel.org, johannes@sipsolutions.net,
-        rafael@kernel.org
-Subject: Re: [PATCH v7 1/2] devcoredump: remove the useless gfp_t parameter
- in dev_coredumpv and dev_coredumpm
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
- Copyright (c) 2002-2022 www.mailtech.cn zju.edu.cn
-In-Reply-To: <YvzicURy8t2JdQke@kroah.com>
-References: <cover.1660739276.git.duoming@zju.edu.cn>
- <b861ce56ba555109a67f85a146a785a69f0a3c95.1660739276.git.duoming@zju.edu.cn>
- <YvzicURy8t2JdQke@kroah.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        Wed, 17 Aug 2022 14:52:04 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ECD837F97
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Aug 2022 11:52:02 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-11c4d7d4683so2976937fac.8
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Aug 2022 11:52:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc;
+        bh=rTpBCMVtKmuntK/NfZbgoM8v6fhzpXVJF5UY94PY7Uc=;
+        b=h0R81qX0LeB4TV+823LHVBpaA6d1AjamTa01Ww4zU/DRCpRBwB01PsGJDv0N/0p1dX
+         X17Sjm3VJjWzK9F99mLps/YIHciCXGd/1wHCsmUCOxWxsH3xOioool67m4p5QW5Lp1c6
+         fNTEdO7JrfKn7NxsaDigIhSNl23mgTuwLgp0QFa0qSf2XWiS+cXzoyh+79Gjxos/rvT6
+         XPUg9l4w4EHpJzfAT+bmCx+aPRFtTnNYfXG5/i84Z7g/lJ0K4jFvXRXS9xPVOhNfeIXt
+         d2BDtpzztiJVkD7kAxOI44NxESMr2QDOU3OTx49jSG58vHbCcKPv/Ao82+zrHFZ8urAd
+         KSZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc;
+        bh=rTpBCMVtKmuntK/NfZbgoM8v6fhzpXVJF5UY94PY7Uc=;
+        b=cZXcH9YQv0vdnA6VOQW60ngAPNhAQFeUIVosT+Yj6A8JhXIfPNbt+EK+dUrNEhxjeG
+         L/lskrMYv5HH4CS4yfwbKhBwUA4p5x9dT1WS65qVLNlLSZDf+tdafr5PHA/CHVZafVfq
+         /2NhSR+mXQ1uzAejrEQEpRh6G5/9d5aHuf1ammArLst39mdtDTG9sSgJ7IBESZYPlC2c
+         xIRBtVMhX7DiqAOvSNBUrA/vxE8eqQQZB23zGUSc57pSA8BPJHv4ELuNHz7YOxhRRlsV
+         PYD3mpgkrBYO1DREzuk+18rX8b3KEAH4B3CPax8/efG6DPmx12/fppOPeHOqp3ZGmp0X
+         SF1A==
+X-Gm-Message-State: ACgBeo3gmPl4/KrWKY+9YAcfr0JrliPxBI+TGQNW54tRCH7VQgfhISxV
+        89koxfr/SvOxtrz0tL/5N5mcOsAckS8ONZkTLMqXbvsNPk0=
+X-Google-Smtp-Source: AA6agR6iM0U3rG2peuZNwFM2ZTh1W0tLhF8Rj8ZRUN3vhwPkU/PDU+oNL46/auPm1PUoFpJsJ8XEfZp+c9UJ4X/me4w=
+X-Received: by 2002:a05:6870:b682:b0:11b:d4d1:45bb with SMTP id
+ cy2-20020a056870b68200b0011bd4d145bbmr2320260oab.241.1660762321225; Wed, 17
+ Aug 2022 11:52:01 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <176e7de7.8a223.182ac1fbc47.Coremail.duoming@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cS_KCgAXq92y9fxiCAIaAw--.19097W
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAgAFAVZdtbEncgAGsa
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Agus Isas <isasmendi.agus@gmail.com>
+Date:   Wed, 17 Aug 2022 19:51:50 +0100
+Message-ID: <CAE95GxXXq_-H0jmwiV5YMNFQCfE8feG0sPeLw_P50Zn9D7Yq6Q@mail.gmail.com>
+Subject: [ RTW88 driver ] - P2P support
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGVsbG8sCgpPbiBXZWQsIDE3IEF1ZyAyMDIyIDE0OjQzOjI5ICswMjAwIEdyZWcgS0ggd3JvdGU6
-Cgo+IE9uIFdlZCwgQXVnIDE3LCAyMDIyIGF0IDA4OjM5OjEyUE0gKzA4MDAsIER1b21pbmcgWmhv
-dSB3cm90ZToKPiA+IFRoZSBkZXZfY29yZWR1bXB2KCkgYW5kIGRldl9jb3JlZHVtcG0oKSBjb3Vs
-ZCBub3QgYmUgdXNlZCBpbiBhdG9taWMKPiA+IGNvbnRleHQsIGJlY2F1c2UgdGhleSBjYWxsIGt2
-YXNwcmludGZfY29uc3QoKSBhbmQga3N0cmR1cCgpIHdpdGgKPiA+IEdGUF9LRVJORUwgcGFyYW1l
-dGVyLiBUaGUgcHJvY2VzcyBpcyBzaG93biBiZWxvdzoKPiA+IAo+ID4gZGV2X2NvcmVkdW1wdigu
-LiwgZ2ZwX3QgZ2ZwKQo+ID4gICBkZXZfY29yZWR1bXBtKC4uLCBnZnBfdCBnZnApCj4gPiAgICAg
-ZGV2X3NldF9uYW1lCj4gPiAgICAgICBrb2JqZWN0X3NldF9uYW1lX3ZhcmdzCj4gPiAgICAgICAg
-IGt2YXNwcmludGZfY29uc3QoR0ZQX0tFUk5FTCwgLi4uKTsgLy9tYXkgc2xlZXAKPiA+ICAgICAg
-ICAgICBrc3RyZHVwKHMsIEdGUF9LRVJORUwpOyAvL21heSBzbGVlcAo+ID4gCj4gPiBUaGlzIHBh
-dGNoIHJlbW92ZXMgZ2ZwX3QgcGFyYW1ldGVyIG9mIGRldl9jb3JlZHVtcHYoKSBhbmQgZGV2X2Nv
-cmVkdW1wbSgpCj4gPiBhbmQgY2hhbmdlcyB0aGUgZ2ZwX3QgcGFyYW1ldGVyIG9mIGt6YWxsb2Mo
-KSBpbiBkZXZfY29yZWR1bXBtKCkgdG8KPiA+IEdGUF9LRVJORUwgaW4gb3JkZXIgdG8gc2hvdyB0
-aGV5IGNvdWxkIG5vdCBiZSB1c2VkIGluIGF0b21pYyBjb250ZXh0Lgo+ID4gCj4gPiBGaXhlczog
-ODMzYzk1NDU2YTcwICgiZGV2aWNlIGNvcmVkdW1wOiBhZGQgbmV3IGRldmljZSBjb3JlZHVtcCBj
-bGFzcyIpCj4gPiBSZXZpZXdlZC1ieTogQnJpYW4gTm9ycmlzIDxicmlhbm5vcnJpc0BjaHJvbWl1
-bS5vcmc+Cj4gPiBSZXZpZXdlZC1ieTogSm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRp
-b25zLm5ldD4KPiA+IFNpZ25lZC1vZmYtYnk6IER1b21pbmcgWmhvdSA8ZHVvbWluZ0B6anUuZWR1
-LmNuPgo+ID4gLS0tCj4gPiBDaGFuZ2VzIGluIHY3Ogo+ID4gICAtIFJlbW92ZSBnZnBfdCBmbGFn
-IGluIGFtZGdwdSBkZXZpY2UuCj4gCj4gQWdhaW4sIHRoaXMgY3JlYXRlcyBhICJmbGFnIGRheSIg
-d2hlcmUgd2UgaGF2ZSB0byBiZSBzdXJlIHdlIGhpdCBhbGwKPiB1c2VycyBvZiB0aGlzIGFwaSBh
-dCB0aGUgZXhhY3Qgc2FtZSB0aW1lLiAgVGhpcyB3aWxsIHByZXZlbnQgYW55IG5ldwo+IGRyaXZl
-ciB0aGF0IGNvbWVzIGludG8gYSBtYWludGFpbmVyIHRyZWUgZHVyaW5nIHRoZSBuZXh0IDMgbW9u
-dGhzIGZyb20KPiBldmVyIGJlaW5nIGFibGUgdG8gdXNlIHRoaXMgYXBpIHdpdGhvdXQgY2F1aW5n
-IGJ1aWxkIGJyZWFrYWdlcyBpbiB0aGUKPiBsaW51eC1uZXh0IHRyZWUuCj4gCj4gUGxlYXNlIGV2
-b2x2ZSB0aGlzIGFwaSB0byB3b3JrIHByb3Blcmx5IGZvciBldmVyeW9uZSBhdCB0aGUgc2FtZSB0
-aW1lLAo+IGxpa2Ugd2FzIHByZXZpb3VzbHkgYXNrZWQgZm9yIHNvIHRoYXQgd2UgY2FuIHRha2Ug
-dGhpcyBjaGFuZ2UuICBJdCB3aWxsCj4gdGFrZSAyIHJlbGVhc2VzLCBidXQgdGhhdCdzIGZpbmUu
-CgpUaGFuayB5b3UgZm9yIHlvdXIgcmVwbHksIEkgd2lsbCBldm9sdmUgdGhpcyBhcGkgdG8gd29y
-ayBwcm9wZXJseSBmb3IgZXZlcnlvbmUuCklmIHRoZXJlIGFyZSBub3QgYW55IG5ldyBkcml2ZXJz
-IHRoYXQgdXNlIHRoaXMgYXBpIGR1cmluZyB0aGUgbmV4dCAzIG1vbnRocywgCkkgd2lsbCBzZW5k
-IHRoaXMgcGF0Y2ggYWdhaW4uIE90aGVyd2lzZSwgSSB3aWxsIHdhaXQgdW50aWwgdGhlcmUgYXJl
-IG5vdCBuZXcKdXNlcnMgYW55bW9yZS4KCkJlc3QgcmVnYXJkcywKRHVvbWluZyBaaG91Cgo=
+Dear Wireless Team:
+
+I am reaching out to you to ask for any roadmap or intentions to add
+P2P support to the RTW88 driver
+
+Kind regards
+Agustin Isasmendi
