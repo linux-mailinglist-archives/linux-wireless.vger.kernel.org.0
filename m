@@ -2,116 +2,275 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDCB597F4A
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Aug 2022 09:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF751597F5D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Aug 2022 09:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243615AbiHRHeh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Aug 2022 03:34:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
+        id S243698AbiHRHjd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Aug 2022 03:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240770AbiHRHeg (ORCPT
+        with ESMTP id S243621AbiHRHja (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Aug 2022 03:34:36 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE94A1D24;
-        Thu, 18 Aug 2022 00:34:36 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id pm17so901401pjb.3;
-        Thu, 18 Aug 2022 00:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=9O3+WKD7KG8oLgiPdm+AUt4w5isiLEzFoAsTOOJLFII=;
-        b=GkCH/1S/xdnSR4xpgdPt00VtsCKRTZbW5Imi3RI7xf+fyZGLeTZNIoao8LdoJG/Aga
-         tH4MkKOiuliUkatlBuKCC6hT0fPteT5NYWxOeWiUByj1oOFjNaqJXDWJWn53G6NTpDcb
-         4sdn52ar7FU2zmvoQfMRy+GvxCsGQuUO3N9x2ipWfkc30H7AOeM+noRB3I6vPD8ncwhK
-         FNLxMAXZyciCmOvwA2Ew3ikemHPYC7JSCLau/RX4fKCYtSvkX4G5lH4bPBZ+mgGeUUdv
-         RYu+vUejSeZv9F910n3062fBxZHSUkn8GA9ViNGzK0Ib6qEEMZ4YLPbCbmd7vnCAXd5k
-         60EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=9O3+WKD7KG8oLgiPdm+AUt4w5isiLEzFoAsTOOJLFII=;
-        b=E81N4U+zED5vdT8NdGwVI6g5D4SXhpdCrYeTru2WgG65x6qG+pFpOO+109uWIujg25
-         QGQ4feVgeHcfLA3qyPduVvF+w6yu14DHNGIfwlDnmCqECeDic1MiB6WhVji2ImtoiHwc
-         tDo6Vp1JTm+d+mThk9C+EnwQ+1uxe99L+J049Bo+/VChwY6/pg99jjg+t4YuobYeT5mL
-         XKq07mZjWOMOWl0EbXy+c3pIHsi93y3viyuDiD69UG6BCxMIv9smnKir67iawMF3KYOn
-         oEsuGSFHNH1ULEm2/QCtmZoFKHUYoAKDw6CVIoqks7ZnAg0o497lBXvwBB+ArgOUKs+S
-         j2vA==
-X-Gm-Message-State: ACgBeo28b0j2ZQ3OkJNhsoH02HzAutIn6h+ao8l81oPaoMX4WXT2efSI
-        XA8IIecpMI/VQOt+HVPTSw==
-X-Google-Smtp-Source: AA6agR668eUSdnZqdBay4V9Aq6oNAIkQMLIpEKENvEi+6h503C9fT6UWB59Pv0MxZ3BI3X6lMS+Mig==
-X-Received: by 2002:a17:902:b60a:b0:170:91fb:84c7 with SMTP id b10-20020a170902b60a00b0017091fb84c7mr1608306pls.101.1660808075881;
-        Thu, 18 Aug 2022 00:34:35 -0700 (PDT)
-Received: from localhost.localdomain ([166.111.133.51])
-        by smtp.gmail.com with ESMTPSA id e12-20020a17090a280c00b001f3244768d4sm2786862pjd.13.2022.08.18.00.34.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Aug 2022 00:34:35 -0700 (PDT)
-From:   Zheyu Ma <zheyuma97@gmail.com>
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Zheyu Ma <zheyuma97@gmail.com>, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtl8xxxu: Simplify the error handling code
-Date:   Thu, 18 Aug 2022 15:33:52 +0800
-Message-Id: <20220818073352.3156288-1-zheyuma97@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 18 Aug 2022 03:39:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231792B24D
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 00:39:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4FF06B81BAF
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 07:39:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5910DC433D7;
+        Thu, 18 Aug 2022 07:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660808365;
+        bh=sH0amc1oQGzoAx6pTnDSo2dE4ufvfCYoouKwkZPO7eg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sS+PPvzx/vTOy2Z6pKTG1pDTeuG2A+I7oYn/PXOJu5tNAewCl7Ajfg65wU/7/C990
+         O6lg4oGzH4MGY6eXuyG0m2yNmPuajrMAaSMVrB/exAb2yM4lQYY8o/FYVTffRSDfRb
+         Bydx544aU+bIjdoxCI5meX0VN4MBaEhZx+IPVo5pWNSdTg4jYLsIQKv6xljJetfB4K
+         SbMLR3WE6My0hHtmuOMeGgkIta6T8+5m1VWPS8xJGpKDOg7UuH0i2Nf12F0mM+yXyV
+         A8INz718eaHV19DMmb1bJfoJa6iUryp2zsJC4uWddBytwSYVz6UJW+ehG69TwBdlQG
+         dyxgefqhgYCIw==
+Date:   Thu, 18 Aug 2022 09:39:22 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Sean Wang <sean.wang@kernel.org>
+Cc:     Sean Wang =?utf-8?B?KOeOi+W/l+S6mCk=?= <sean.wang@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, lorenzo.bianconi@redhat.com,
+        Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Deren Wu <Deren.Wu@mediatek.com>, km.lin@mediatek.com,
+        jenhao.yang@mediatek.com, robin.chiu@mediatek.com,
+        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
+        posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
+        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
+        kuabhs@google.com, druth@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 8/9] wifi: mt76: mt7921: introduce remain_on_channel
+ support
+Message-ID: <Yv3sqvhXnGiOpKkE@lore-desk>
+References: <cover.1660606893.git.objelf@gmail.com>
+ <f48a750e8ad17d5b2410eea03fc30a6403732168.1660606893.git.objelf@gmail.com>
+ <YvyUwEdURYHiAduf@lore-desk>
+ <CAGp9LzrvVQOrUNPR8aguUTgWo1wZFMR2Y3kdTk8WqxmG=B8--w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="3UM8ZQzh0v68rXAd"
+Content-Disposition: inline
+In-Reply-To: <CAGp9LzrvVQOrUNPR8aguUTgWo1wZFMR2Y3kdTk8WqxmG=B8--w@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since the logic of the driver's error handling code has changed, the
-previous dead store and checks are not needed.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+--3UM8ZQzh0v68rXAd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index c66f0726b253..e97e35b39225 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6657,7 +6657,6 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	hw = ieee80211_alloc_hw(sizeof(struct rtl8xxxu_priv), &rtl8xxxu_ops);
- 	if (!hw) {
- 		ret = -ENOMEM;
--		priv = NULL;
- 		goto err_put_dev;
- 	}
- 
-@@ -6768,11 +6767,9 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- err_set_intfdata:
- 	usb_set_intfdata(interface, NULL);
- 
--	if (priv) {
--		kfree(priv->fw_data);
--		mutex_destroy(&priv->usb_buf_mutex);
--		mutex_destroy(&priv->h2c_mutex);
--	}
-+	kfree(priv->fw_data);
-+	mutex_destroy(&priv->usb_buf_mutex);
-+	mutex_destroy(&priv->h2c_mutex);
- 
- 	ieee80211_free_hw(hw);
- err_put_dev:
--- 
-2.25.1
+> Hi Lorenzo,
+>=20
+> On Wed, Aug 17, 2022 at 12:18 AM Lorenzo Bianconi <lorenzo@kernel.org> wr=
+ote:
+> >
+> > > From: Sean Wang <sean.wang@mediatek.com>
+> > >
+> > > Introduce remain_on_channel support. Additionally, we add
+> > > mt7921_check_offload_capability to disable .remain_on_channel and
+> > > .cancel_remain_on_channel and related configuration because those
+> > > operations would rely on the fundamental MCU commands that will be on=
+ly
+> > > supported with newer firmware.
+> > >
+> > > Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+> > > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> > > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> > > ---
+> > >  .../net/wireless/mediatek/mt76/mt7921/init.c  |  36 ++++++
+> > >  .../net/wireless/mediatek/mt76/mt7921/main.c  | 112 ++++++++++++++++=
+++
+> > >  .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  24 ++++
+> > >  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  34 ++++++
+> > >  .../net/wireless/mediatek/mt76/mt7921/pci.c   |  13 +-
+> > >  .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  11 +-
+> > >  .../net/wireless/mediatek/mt76/mt7921/usb.c   |   1 +
+> > >  7 files changed, 225 insertions(+), 6 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/init.c
+> > > index cd960e23770f..1b7a18d42f5b 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> > > @@ -44,6 +44,35 @@ mt7921_regd_notifier(struct wiphy *wiphy,
+> > >       mt7921_mutex_release(dev);
+> > >  }
+> > >
+> > > +static int mt7921_check_offload_capability(struct mt7921_dev *dev)
+> > > +{
+> > > +     struct ieee80211_hw *hw =3D mt76_hw(dev);
+> > > +     int year, mon, day, hour, min, sec;
+> > > +     struct wiphy *wiphy =3D hw->wiphy;
+> > > +     bool fw_can_roc =3D false;
+> > > +     int ret;
+> > > +
+> > > +     ret =3D sscanf(dev->mt76.hw->wiphy->fw_version + 11, "%4d%2d%2d=
+%2d%2d%2d",
+> > > +                  &year, &mon, &day, &hour, &min, &sec);
+> >
+> > does the fw have a differnt base version with respect to the previous o=
+nes?
+> > checking the date is a bit ugly.
+>=20
+> I admitted that way was a bit ugly, but I have investigated for a
+> while, and that is the only way we can use to distinguish the version
+> in current mt7921 firmware.
 
+the fw seems pretty new (2022/7/15), is it already available in linux-firmw=
+are
+git tree? If not I guess you can increment fw version in a more evident way.
+For the future please remember to do it for major fw changes.
+
+>=20
+> >
+> > > +     if (ret !=3D 6)
+> > > +             goto out;
+> > > +
+> > > +     /* Old firmware cannot support remained on channel and channel
+> > > +      * context management.
+> > > +      */
+> > > +     fw_can_roc =3D  mktime64(year, mon, day, hour, min, sec) >=3D
+> > > +                   mktime64(2022, 7, 15, 12, 1, 1);
+> > > +out:
+> > > +     if (!fw_can_roc) {
+> > > +             dev->ops->remain_on_channel =3D NULL;
+> > > +             dev->ops->cancel_remain_on_channel =3D NULL;
+> > > +
+> > > +             wiphy->flags &=3D ~WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL;
+> > > +     }
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+>=20
+> <snip>
+>=20
+> > > -     mdev =3D mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt7921_op=
+s,
+> > > -                              &drv_ops);
+> > > +     ops =3D devm_kmemdup(&pdev->dev, &mt7921_ops, sizeof(mt7921_ops=
+),
+> > > +                        GFP_KERNEL);
+> >
+> > why do we need to copy mt7921_ops?
+> >
+>=20
+> As the old fw cannot support the roc and chanctx and considering
+> backward compatibility, I need to copy the mt7921_ops here and
+> disable related operations for old fw before registering the hw to mac802=
+11.
+
+ack, right.
+
+Regards,
+Lorenzo
+
+>=20
+>      Sean
+>=20
+> > Regards,
+> > Lorenzo
+> >
+> > > +     if (!ops) {
+> > > +             ret =3D -ENOMEM;
+> > > +             goto err_free_pci_vec;
+> > > +     }
+> > > +
+> > > +     mdev =3D mt76_alloc_device(&pdev->dev, sizeof(*dev), ops, &drv_=
+ops);
+> > >       if (!mdev) {
+> > >               ret =3D -ENOMEM;
+> > >               goto err_free_pci_vec;
+> > > @@ -286,7 +293,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+> > >
+> > >       dev =3D container_of(mdev, struct mt7921_dev, mt76);
+> > >       dev->hif_ops =3D &mt7921_pcie_ops;
+> > > -
+> > > +     dev->ops =3D ops;
+> > >       mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
+> > >       tasklet_init(&dev->irq_tasklet, mt7921_irq_tasklet, (unsigned l=
+ong)dev);
+> > >
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/sdio.c
+> > > index 487acd6e2be8..6d27875f41b8 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+> > > @@ -120,18 +120,23 @@ static int mt7921s_probe(struct sdio_func *func,
+> > >               .fw_own =3D mt7921s_mcu_fw_pmctrl,
+> > >       };
+> > >
+> > > +     struct ieee80211_ops *ops;
+> > >       struct mt7921_dev *dev;
+> > >       struct mt76_dev *mdev;
+> > >       int ret;
+> > >
+> > > -     mdev =3D mt76_alloc_device(&func->dev, sizeof(*dev), &mt7921_op=
+s,
+> > > -                              &drv_ops);
+> > > +     ops =3D devm_kmemdup(&func->dev, &mt7921_ops, sizeof(mt7921_ops=
+),
+> > > +                        GFP_KERNEL);
+> > > +     if (!ops)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     mdev =3D mt76_alloc_device(&func->dev, sizeof(*dev), ops, &drv_=
+ops);
+> > >       if (!mdev)
+> > >               return -ENOMEM;
+> > >
+> > >       dev =3D container_of(mdev, struct mt7921_dev, mt76);
+> > >       dev->hif_ops =3D &mt7921_sdio_ops;
+> > > -
+> > > +     dev->ops =3D ops;
+> > >       sdio_set_drvdata(func, dev);
+> > >
+> > >       ret =3D mt76s_init(mdev, func, &mt7921s_ops);
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/driver=
+s/net/wireless/mediatek/mt76/mt7921/usb.c
+> > > index d06cee386acd..cf3ec59a4270 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> > > @@ -217,6 +217,7 @@ static int mt7921u_probe(struct usb_interface *us=
+b_intf,
+> > >
+> > >       dev =3D container_of(mdev, struct mt7921_dev, mt76);
+> > >       dev->hif_ops =3D &hif_ops;
+> > > +     dev->ops =3D ops;
+> > >
+> > >       udev =3D usb_get_dev(udev);
+> > >       usb_reset_device(udev);
+> > > --
+> > > 2.25.1
+> > >
+
+--3UM8ZQzh0v68rXAd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYv3sqQAKCRA6cBh0uS2t
+rFZiAQCjVE2G83nEhykFqvrmQDycLZfoVOVpNo2bSixUSKciLQEAgnQ5ZQSRmaSw
+VY39dBMtdmjpyiKfolq8q7Q5ghNJ0wg=
+=I+5d
+-----END PGP SIGNATURE-----
+
+--3UM8ZQzh0v68rXAd--
