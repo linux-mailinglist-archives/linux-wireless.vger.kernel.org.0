@@ -2,221 +2,242 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C384597F5F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Aug 2022 09:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3819597F6C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Aug 2022 09:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243183AbiHRHla (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Aug 2022 03:41:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53906 "EHLO
+        id S243777AbiHRHmj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Aug 2022 03:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231408AbiHRHl3 (ORCPT
+        with ESMTP id S242513AbiHRHmg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Aug 2022 03:41:29 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33A75F9A3
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 00:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660808487; x=1692344487;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:mime-version:content-transfer-encoding;
-  bh=p/voaWHdayp2LjTHwfo71ZCsg82xIw7plSMOOcAhMfY=;
-  b=epE8KYhL2efWinBGLUcCA7SNFj/KD2t5BT0yR0pGBYKjVc+GsoJSFrkK
-   i/Djgs2gkjiMpz6YvtD7ir7grmg7ZR5s0IlXPPvs7ZZqzVANfTKj+tUTk
-   qs8qU5R2kFhNHvZVa5fMFOYl2T9JQfmigeuOumzHln7GLkwim6IliLan1
-   hk91G2i36LT+9XakE85oRQYPfHJayImL5YGnClPpCYw3tkXzp6TeO5gE9
-   o0ZpTCGTo5vp5+OPHN1WU3KiwYFbw2TTWEjnpnSQ6Hdj5LymCuGWGC0IN
-   W5EgcGsKHpnXMlV83141x5XszlcYfELdojFQOkpRT5g2OPJ2HVfGMf9FH
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10442"; a="291444657"
-X-IronPort-AV: E=Sophos;i="5.93,245,1654585200"; 
-   d="scan'208";a="291444657"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2022 00:41:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,245,1654585200"; 
-   d="scan'208";a="607730379"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga002.jf.intel.com with ESMTP; 18 Aug 2022 00:41:27 -0700
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 18 Aug 2022 00:41:26 -0700
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 18 Aug 2022 00:41:26 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28 via Frontend Transport; Thu, 18 Aug 2022 00:41:26 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.48) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.28; Thu, 18 Aug 2022 00:41:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k/kanaS6CJWOwYvzVqHOoOgxitvfk3iqJTZ+nmFPs1hOCBgLd+OzeJU/14wvPJxiJ+z939/TIIX6b7Dag7AgXJ45rSRe3W6kThSGeDIdF6BUt1rfazeu3UqVMkNVac62Sdg0fIezSBp5I4w0Z4uVjrid4OT22ytmfrv9EL4EUSlooFcQ9t/VIwAiN5jKZrKXxLRfYFWii1mHe51hAi8U5loXna6lPCNcwoCrAjwUC9cBBDBdUjSiLJvS4uwlmq6wUvteoaseZSzEtDC4iYGE21AuaQWh+F1fgt9A2mMTMdyUoLC6Feqpwt2k4ERaG5ADb1lIEonSGr5RAwytHnruhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YC6jurO1feo27hudEW9naBH3A9DuXrT0u6Ncv8LVMmo=;
- b=j04ut6Gvz56Qgd0KFv/17on16N0ow3OjhVIBLwKhPH03enjVySOTVg1SWx+qGoBERfVIyGYORq7asd4UrgrMXPHnu6Q/ApklLYw/l0+v3+iSL0Ekqi0+EAwEOfD16D69jZSYdYixlJmDiffk7iymPCWa9C0kXjRrGLBe2DK2QeCzEFD32yNWGBogj4T3QlozdCxjsUPhITIVxkaQWbvpYdyyKTB8OW7ds/KO435d+hfJqrlamHXyh1ZEs8yy65OTDsM72fvd/c9KWwm9o+MxI3o47b+TzzhjcgvLmHMk60Ae2zLXptFqWuCFYTe/F9zcv19ElqfWLqrehqlscHENMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MWHPR1101MB2256.namprd11.prod.outlook.com
- (2603:10b6:301:57::19) by SJ0PR11MB5165.namprd11.prod.outlook.com
- (2603:10b6:a03:2ad::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.19; Thu, 18 Aug
- 2022 07:41:23 +0000
-Received: from MWHPR1101MB2256.namprd11.prod.outlook.com
- ([fe80::adb5:b4b7:47c4:6b2a]) by MWHPR1101MB2256.namprd11.prod.outlook.com
- ([fe80::adb5:b4b7:47c4:6b2a%5]) with mapi id 15.20.5504.028; Thu, 18 Aug 2022
- 07:41:22 +0000
-From:   "Stern, Avraham" <avraham.stern@intel.com>
-To:     Joachim Breitner <mail@joachim-breitner.de>,
-        "toke@toke.dk" <toke@toke.dk>
-CC:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: iwlwifi devices disappear after suspend on kernel 5.17
-Thread-Topic: iwlwifi devices disappear after suspend on kernel 5.17
-Thread-Index: AQHYrmd2pkvk32qVYUuBtO/S5JgINK20RL+A
-Date:   Thu, 18 Aug 2022 07:41:22 +0000
-Message-ID: <MWHPR1101MB225655474DB1C0998812A1FBFF6D9@MWHPR1101MB2256.namprd11.prod.outlook.com>
-References: <87ilr4hv8k.fsf@toke.dk>
- <10b81471b9f1af8b15bc5b9a06792a0a605131fc.camel@joachim-breitner.de>
-In-Reply-To: <10b81471b9f1af8b15bc5b9a06792a0a605131fc.camel@joachim-breitner.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.6.500.17
-dlp-reaction: no-action
-dlp-product: dlpe-windows
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a226a79a-d30a-42ea-8433-08da80ed0c5c
-x-ms-traffictypediagnostic: SJ0PR11MB5165:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 3lMWIj1NQNWuYxVS8LkP/MsBVl5WGziG4loFYI8S0qsyZSIZ6upCXr/UcKpeh790brg9n5qV28qILcA0oVrpLXUsbOMDo2qOLK/GTdd1geM5v32Cs2eLiXXgIHdt6bQgTHIXvfy5yj9PfyE1W/XuREruZCVs8PEgmlfAfcDLA/uuYKQjS6qeiq9/JHRT4Fv6GokclQGuWyb9jBEZkj39b5yyag0VJ3yMyuqedUdKLlfsXMlbOzgqzILJwY+IQjuQYFbIvaTOe/P58EfNMMSGUJASxNHlJhRIfHlW9ecyarsfrOvyB4uq0RcrMHyQPA46jV7LRldNsXNSZvLhiuVFkWa6GD1mMsWOs38SfQ2MQi7k/vkrVObMmKKs9kCCy48H4GC+jLrlL9+KMSTB1eU2BatJdkUZJsIbLk49Q9eFZfs+1Rpq8fJePagP7QAD2UCq33VHJS0OS6bM0eQ86HdxJXAOAgb4hdkjM1r4wL491WaXBwX7axswY+kM8/u7WGpfUT1YtMI0SPHDsXpXF8PnSNAoK6uwRZNwvpYvsYAcu+Xa1AFcXuFWrCmNvnhM+dukGlFBzmNvt8/PstPB+XLd/Oqbj56PmaVgVS9TqkaC20gUzDft9j5c8HVaWZHCnfxXMdPv6r/Ek6NGD3CqsceS03Fe+E8JKARKc2V5Z4XfzgEILSWndvEttYeOTqUCL2IC+q7DWiSsaUwmOh4n0R6bh4GcQ1FrKSOgPBZi3mtFZ837zRtUmNgkUPNsp4lmo7WXGdL0gmjbNN0eEbvAkgoiDUENl5xbZG6Nq6KIgS0GAO3jjSzYQW2fgZcDR12kMAd4wQkA5h4vlic7OBWUgUgfLQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1101MB2256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(346002)(136003)(39860400002)(366004)(376002)(396003)(9686003)(186003)(82960400001)(6506007)(7696005)(33656002)(53546011)(86362001)(38070700005)(38100700002)(122000001)(83380400001)(71200400001)(55016003)(5660300002)(8676002)(478600001)(966005)(66946007)(4326008)(8936002)(76116006)(52536014)(66476007)(2906002)(66556008)(15650500001)(64756008)(66446008)(54906003)(41300700001)(316002)(110136005)(18886065003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?gYBHaAlPDu7IqKvfO675LoWMJ9AqeICVs+vzQaE2DZKZFq+o5MDm5ZnEGBPD?=
- =?us-ascii?Q?WZx703ji+m78LR4EKifo4/yzyodMJFI3SDAyTxpzRW44IggnCQ7Zf3eoFs1a?=
- =?us-ascii?Q?MaBlnI3nnCSBYzIxlKG2m6iI+siw6B+2bCmBLp9tVsEz3tO4tdmDZk/sr6GZ?=
- =?us-ascii?Q?P8w11g6Wm+BQNvNliInhHqIMVl8ji49tYMDZRwY0Ei/4e3Tbq+7L+UrNinVK?=
- =?us-ascii?Q?mDmDQOmpOzU4YhyXhaD+dILUZzBYXBKZbbkVeLsSNWi7Gr9uUp0R8Zpv4q9y?=
- =?us-ascii?Q?OiocDE7p7oHlCn5JkhJgaDKYb9CMPwH/uy+hSrnykf/Or3qAQnHhx1oSK0+h?=
- =?us-ascii?Q?SK/5zBjZQiI3KJZypcEc91RrGVMIcw4womLfHEm4CZFdM/iAfqocsB6mCcab?=
- =?us-ascii?Q?hwftbBDAwUjaEM9m7FVgTe7fBE64xV2kzPAES5617nSOW53MYBNJ7X6UQVx+?=
- =?us-ascii?Q?pxCxpdxsl+IHQMGsmiNFOm5EzOkIWrp8TCxrYaHLNm0zeN+QtECSnbCgVnjb?=
- =?us-ascii?Q?cJqZB8difOodKsobqQ2ODPo02aVyiOA+bSz7DlA8OsvsALGQF/tiE+oWloQI?=
- =?us-ascii?Q?RwTqPOgptk09ZjAPX7I/JFdskVjTVvoS8tNoO5xAtbCll46i/MfWuZBFNOeu?=
- =?us-ascii?Q?5IrI3BI/QN0WGLupV9tEr2hhaGjXf4TcbLOLgAmHSSaBeePBkaQseqX4Yz12?=
- =?us-ascii?Q?M5Qo2igU6qAcy2ZSdjtIyl+QHsbR+csri8w7U0ktIdVMq4g9jB92iDOySYZE?=
- =?us-ascii?Q?ZWkrdkKY4fAjX7hVYVbUUsKdGvb+zlTGIm5iKiUdqkvojCrm05X4G6E2d1nw?=
- =?us-ascii?Q?DEmQXildKVkYIG+s2XUIgivm9Rvqb0G4de3FIIa3A+SP3knixhEIDbtnMQdy?=
- =?us-ascii?Q?WRD5DOSvr9mClWwPxrPKMHA13yExYob1/l3jyRf6BCFteLPCcEYHd+5IEEGE?=
- =?us-ascii?Q?U74DT4wm4vnafWnK0O8aHh3K/T00YjdyyCjBcM8wvcFjLu3KgX6WXOKRUwRZ?=
- =?us-ascii?Q?leE8NbhEaJpJtrnlMnWcq8TjqoLkWJLyX6XWfU0a9kwGWEBVorL/8YgV6w9S?=
- =?us-ascii?Q?sJibmeRbCGMd8YS5i2UJNEv92Cw+O7nzd8wb5CvgcCF04Y/muOdVqCr7f84J?=
- =?us-ascii?Q?wer1iR/+lK67Zb9MqXNWg2ttM4qJDblV9Px+x2cqVj1Sc43lyxeN1zcWd+vu?=
- =?us-ascii?Q?HxYoSriSZtQwRSRE5PAZ+YhRbw+I5pwwHvwOkbqyOk9ev24Eo+85WHBMyo1a?=
- =?us-ascii?Q?GFdD1IzMLHVd51gbLtz6nUhFjG2BOFhXs8JkdvJnLCyMib1HqKHVJVXGuExF?=
- =?us-ascii?Q?5oQtqez6jWWa5zI/uEue4FdPDQOMi/y9N7zvKynxEw0Xr2OCUUU0jD4ReOu7?=
- =?us-ascii?Q?p9E+TE88V5/3GimdojHGK5cOJPIVY9e4dAMuuQNnwuwYY7v5J9vRqec+rMh8?=
- =?us-ascii?Q?e+jFgF9NAgu4EHhyYfuf/CFvfG+gGPRC166axny94yYRDwZV9ePFnROEJTNa?=
- =?us-ascii?Q?FtdV9kEiRjS9IHeJl6sGM/pHYZxPPFsYG/GPDr7iW2uFLVcm07K7MQ1A8e6S?=
- =?us-ascii?Q?Zr+Zq5sOji9JIIrpvYr57JPtVyNCtnvPRnxIxus8GjeL5TjYS5595xvNBnz6?=
- =?us-ascii?Q?BssPBReOtDypFrcg7WzPn84wGxn6hVGkqGPafXKFWFfX?=
-Content-Type: text/plain; charset="us-ascii"
+        Thu, 18 Aug 2022 03:42:36 -0400
+Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFDA16555A
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 00:42:35 -0700 (PDT)
+Date:   Thu, 18 Aug 2022 07:42:25 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1660808554; x=1661067754;
+        bh=g5h/Wm/qy+Rw27cZR7sskbUZyZ3/x8+OxJJPOx18Vfw=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=L38BcskR5pd/0mPnwLqTT63m6vKfumdlUL4ziC3rXHU1vQunnRomA2l5tS/SlD1PR
+         kOqkEyhfv+XkZB/52ELbD8/mIOORb51a4+YrQ6SqPZ9CBwsN7nEPUmMeZh/HMbISX1
+         6NICnEQntMYnQe9QjwfD3piZEIPwKhXxCfnI+Q83UY/cc9I7TmCbm6mE1p1IYvAkhn
+         8nh52l7Yvc288VtvyCAL8k/OYUxxBczFcwGn/KdBc9gd3/7RaS5q4GqeWSuAXUy9gK
+         KFx4GU0KOyZyLJCi2TrxZoqtqdSVwMnWyr6gKXy8ZBhgsMaP2QZ+c2bfEPk2+0hXyJ
+         Qf6t3NQs/pGAQ==
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
+Cc:     "pkshih@realtek.com" <pkshih@realtek.com>
+Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
+Subject: Re: rtw88: Doesn't work for 60-90 seconds several times a day
+Message-ID: <zo6mNApc8pZyF1NC9s5aXHV8KH9XRlJRwJuw031DGp4u2n9psBxnPVHBbHfJU7D1Zp5QrTbXRtHeEeTO06jl7QBcl6AM9IPkQ-4EqS-MdD0=@protonmail.com>
+In-Reply-To: <Ej2iRcw0tVYRZD-CNBij8Uu3T-8IG-NVQ_EUM4Oz6IstXLQn0JKvkcfec1RDYKReWdi7JbPiMTOmeihtId1j91nq_IdMWYY482HTOXecGCg=@protonmail.com>
+References: <Ej2iRcw0tVYRZD-CNBij8Uu3T-8IG-NVQ_EUM4Oz6IstXLQn0JKvkcfec1RDYKReWdi7JbPiMTOmeihtId1j91nq_IdMWYY482HTOXecGCg=@protonmail.com>
+Feedback-ID: 34463299:user:proton
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1101MB2256.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a226a79a-d30a-42ea-8433-08da80ed0c5c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2022 07:41:22.9184
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6ksRbfWLA9rCGTIBx8vUV1LDKnUGA5ROydyyThjoQgpmet9Lq3knZ5G/Hl6vZD+SqZg5fLpRZNVWkOsHHiL4xw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5165
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Joachim,
+On Thursday, July 21st, 2022 at 12:35 AM, rtl8821cerfe2 <rtl8821cerfe2@prot=
+onmail.com> wrote:
 
-Do you see the iwd task hang stack trace like in Toke's logs?
-Can you please send full dmesg?
+> Hello.
+>=20
+> I am unable to open any sites in Firefox for 60-90 seconds at a time.
+> On one occasion it was 156 seconds. Firefox gives up after 20 seconds
+> or so. NetworkManager reports "limited connectivity". The router doesn't
+> reply to pings. The journal shows that the laptop remains connected to
+> the router. This happens several times a day.
+>=20
+> However, my IRC client seems to be unaffected. It never detected any
+> abnormally high lag during these events, not even the one that lasted
+> 156 seconds. It checks the lag every 30 seconds. Also, the bot named
+> "phrik" from the #archlinux-offtopic channel reacts immediately when
+> I send it "!ping" during one of these events. (It sends back "pong".)
+> So I guess existing connections are not affected.
+>=20
+> I have had this problem ever since support for RTL8821CE with RFE 2
+> was added. (The wifi card's RFE type is 2.)
+>=20
+> Other devices connected to the same router don't have this problem.
+>=20
+> The laptop and the router are in the same room. The distance
+> between them is about 3 meters.
+>=20
+>=20
+> These are the things I tried which did not help:
+>=20
+> - The rtw88_core option disable_lps_deep=3D1
+>=20
+> - `iw wlo1 set power_save off`
+>=20
+> - Installing wireless-regdb and uncommenting my country in
+> /etc/conf.d/wireless-regdom
+>=20
+> - Switching the router to "n only" mode. Previously it was in "b/g/n"
+> mode.
+>=20
+> - Making the router use channel 9 instead of "auto". By itself it was
+> selecting channels 1 or 11 the few times I checked that. Channel 9
+> seemed less crowded than those.
+>=20
+> - Making the router use 40 MHz channel width instead of the "20/40"
+> setting. This doubled the speed but didn't help with my problem.
+>=20
+> - The firmware from the rtl8821ce driver [0] (version 20.1.0),
+> instead of the one from linux-firmware (version 24.11.0). I used the
+> one with the length of 137616 bytes.
+>=20
+> This doesn't happen with the rtl8821ce driver, which is why I extracted
+> that firmware from it, to see if it's a firmware issue.
+>=20
+>=20
+> Pinging the router all day seems to prevent this problem. Enabling all
+> the debug flags for rtw88_core also may prevent it. I'm not sure about
+> that.
+>=20
+>=20
+> Most of the time I don't have any bluetooth devices connected.
+> When I do, they don't cause problems.
+>=20
+>=20
+> I captured a bit of wifi traffic using another laptop, including two of
+> these events, and noticed something strange:
+>=20
+> - rtw88 sends "Null function" telling the router it's going to sleep
+> - router immediately sends ack (after less than 1 ms)
+> - rtw88 resends "Null function" (same SN, Retry flag set)
+> - router immediately sends ack
+> - rtw88 resends
+> - router immediately sends ack
+> - rtw88 resends
+> - ...
+> - ...
+>=20
+> rtw88 resends the "Null function" 3-4 times, even though the router
+> promptly sends ack each time, then it sends a new "Null function" with
+> different SN and the process repeats. This seems to happen all the time,
+> not just when I can't open any pages in Firefox. The rtl8821ce driver
+> doesn't do this, but rtw88 with the old 20.1.0 firmware does. My phone
+> doesn't do this either.
+>=20
+> I can provide the captures in private.
+>=20
+>=20
+> Currently I'm using the rtw88_pci option disable_aspm=3D1, because kernel
+> 5.18 brought the freezes back. [1]
+>=20
+>=20
+> My laptop is HP 250 G7 with a Core i3 7020U CPU.
+>=20
+> The RTL8821CE wifi card is in M.2 slot, not soldered to the motherboard,
+> even though the interface is named wlo1. It has one antenna, in case
+> that matters.
+>=20
+> The router is a Fiberhome HG6544C.
+>=20
+> The network is secured with WPA2 Personal.
+>=20
+> The kernel version is 5.18.5-arch1-1.
+>=20
+> The wifi firmware version is 24.11.0.
+>=20
+> NetworkManager version is 1.38.2-1.
+>=20
+> wpa_supplicant version is 2.10-4.
+>=20
+> The operating system is Arch Linux.
+>=20
+>=20
+>=20
+> Just out of curiosity, what is C2H with id 0x15 ? It is not handled by
+> rtw88, but the firmware sends it often.
+>=20
+>=20
+> [0] https://raw.githubusercontent.com/tomaspinho/rtl8821ce/be733dc86781c6=
+8571650b395dd0fa6b53c0a039/hal/rtl8821c/hal8821c_fw.c
+> [1] https://lore.kernel.org/linux-wireless/Te_PJvJjKCi-lK28Zu0d8VQG0AGdwT=
+l6cJydYEETLbc3gN0l8liXH1DSOZnKxUHYGxavLBCs1sqos2e6jeiRzzO0RLRSISdWvTiiPp0v9=
+kM=3D@protonmail.com/
 
-Thanks,
-Avi.
 
------Original Message-----
-From: Joachim Breitner <mail@joachim-breitner.de> =
+Frank's recent message [0] got me thinking and digging again. I added some =
+rtw_warn and found something interesting:
 
-Sent: Friday, August 12, 2022 19:20
-To: toke@toke.dk
-Cc: Stern, Avraham <avraham.stern@intel.com>; Grumbach, Emmanuel <emmanuel.=
-grumbach@intel.com>; Greenman, Gregory <gregory.greenman@intel.com>; linux-=
-wireless@vger.kernel.org
-Subject: Re: iwlwifi devices disappear after suspend on kernel 5.17
+2022-08-18T10:20:44.585943+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
+BEACON-LOSS
+2022-08-18T10:20:44.592099+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_enqueue: sn: 128
+2022-08-18T10:20:44.592997+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: src=3Df, sn=3D128, st=3D0
+2022-08-18T10:20:44.593569+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: tx_report->queue: 128
 
-Hello Emmanuel,
+2022-08-18T10:20:45.599099+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
+BEACON-LOSS
+2022-08-18T10:20:45.602156+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_enqueue: sn: 132
+2022-08-18T10:20:45.602924+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: src=3Df, sn=3D132, st=3D0
+2022-08-18T10:20:45.603495+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: tx_report->queue: 132
 
-> suspend. I get errors like these in dmesg:
-> =
+2022-08-18T10:20:46.585960+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
+BEACON-LOSS
+2022-08-18T10:20:46.592130+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_enqueue: sn: 136
+2022-08-18T10:20:46.593381+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: src=3Df, sn=3D136, st=3D0
+2022-08-18T10:20:46.594114+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: tx_report->queue: 136
 
-> [104393.142264] wlan0: deauthenticating from 4c:60:de:ea:b8:58 by =
+2022-08-18T10:20:47.572620+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
+BEACON-LOSS
+2022-08-18T10:20:47.575483+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_enqueue: sn: 140
+2022-08-18T10:20:47.576486+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: src=3Df, sn=3D140, st=3D0
+2022-08-18T10:20:47.577287+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: tx_report->queue: 140
 
-> local choice (Reason: 3=3DDEAUTH_LEAVING) [104393.347775] iwlmei =
+2022-08-18T10:20:48.558864+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
+BEACON-LOSS
+2022-08-18T10:20:48.562131+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_enqueue: sn: 144
+2022-08-18T10:20:48.562394+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: src=3Df, sn=3D144, st=3D0
+2022-08-18T10:20:48.562565+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: tx_report->queue: 144
 
-> 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: Couldn't get ACK =
+2022-08-18T10:20:56.559084+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
+BEACON-LOSS
+2022-08-18T10:20:56.562157+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_enqueue: sn: 148
+2022-08-18T10:20:56.565498+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: src=3Df, sn=3D148, st=3D0
+2022-08-18T10:20:56.566860+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
+x_report_handle: tx_report->queue: 148
 
-> from CSME on HOST_GOES_DOWN message [104393.347876] iwlmei =
+It looks like the TX reports are coming in just a little too late. In my ca=
+ptures I see the router sends the ack very quickly, and the card sends the =
+TX reports pretty quickly after the requests are enqueued, so I assume rtw8=
+8 is not transmitting quickly enough the frames that require a TX report?
 
-> 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: failed to send the =
-
-> SAP_ME_MSG_CHECK_SHARED_AREA message -19
-> =
-
-> And when the host comes back up, there is no connectivity. Restarting =
-
-> iwd fixes the problem.
-
-I am hitting the same problem, on Kernel 5.19, with the same Intel Wi- Fi 6=
- AX201 device. I reported this initially to iwd, but they said it might be =
-a kernel problem, so I found this thread.
-
-Has there been a solution since?
-
-Thanks,
-Joachim
+I forgot to mention in my previous message that I'm on 2.4 GHz.
 
 
---
-Joachim Breitner
-  mail@joachim-breitner.de
-  http://www.joachim-breitner.de/
-
----------------------------------------------------------------------
-A member of the Intel Corporation group of companies
-
-This e-mail and any attachments may contain confidential material for
-the sole use of the intended recipient(s). Any review or distribution
-by others is strictly prohibited. If you are not the intended
-recipient, please contact the sender and delete all copies.
-
+[0] https://lore.kernel.org/linux-wireless/6415466b-f745-df14-2a0b-40861bd1=
+ea10@googlemail.com/
