@@ -2,75 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CDAD599094
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Aug 2022 00:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11E9B5990CD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Aug 2022 01:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244633AbiHRWbP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Aug 2022 18:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55242 "EHLO
+        id S243759AbiHRXC2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Aug 2022 19:02:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243034AbiHRWbN (ORCPT
+        with ESMTP id S240964AbiHRXC1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Aug 2022 18:31:13 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5D4219A
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 15:31:12 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27ILu2kI025219;
-        Thu, 18 Aug 2022 22:31:04 GMT
+        Thu, 18 Aug 2022 19:02:27 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544F2CAC65
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 16:02:26 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27ILxdfF027517;
+        Thu, 18 Aug 2022 23:02:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=P9weaJudL8pHv9gHYYwBqrX/C20wa3A42CjYHd8mejU=;
- b=JcaUhyBshIkm1uw3qTtBb5n9xGIU63LeF8Vzz7vJ5A5uFtIcgW7jATlpnxeOFeA/M7N2
- HQ8OBYqu/UIgx+TGKPWvJTSEeXhWQsK/F6MjzWYZOrJvO6oVZW0fYoZDvU37xQASPYVW
- BxxYCb0HuqRK1gD3GyeKGtJJOOGYdgVomEc3oOwieFLs4IhD1S7FRus6IrtCQcsbYf+I
- nRkgflf5KIY0Nx6v1ge0zNxm5767bYyFIrA2XyBFEsgYbmp4DPvRwdIGZoEv/49o/Ihj
- nmms8lpuH67HkE7nvfAeq8NIE5yotSLjLUSAcivJJYiRNQKBMJD0mqHrnL5tkFlnyOEh Ag== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j1sjr0w74-1
+ bh=xB2x825eYZu+c0CZhOf14LGGuNhUb+GEZHWjxU8VRAY=;
+ b=kpTm4dBJHyWnKbU2CJ997Hz6LmXBL3nvsB3S62GUZhNI6WhDQBysSmf3pSbKykLgmbBA
+ 71aItDQlgses1nz576W5JcxLYYVXWHsVnsIavsTGfzmm/AwfqZ51ed2mZx8WFoze+TU6
+ Efga8/DmQUI5nL/xEf5MYQiO2fb2ffCwPHz4Oes0wdUDjkW2MDf73yqAslCKOKIl17a0
+ f+eX0l2cClCjOF/u7QdPMLai7X4lI5b3GHuopfA5S5+mF726DO/ZwrvonW05QAk9qZ9w
+ kBWVHKmUY787kVZ97dyGDD0z5M24R5EfSAnVp6W0cyvw9ZxJoTxT1NDYU1ARklO8IjyY 9Q== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j13c05ust-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Aug 2022 22:31:03 +0000
+        Thu, 18 Aug 2022 23:02:19 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27IMV2t9012827
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27IN2JEC002102
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Aug 2022 22:31:02 GMT
+        Thu, 18 Aug 2022 23:02:19 GMT
 Received: from [10.110.11.6] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Thu, 18 Aug
- 2022 15:31:02 -0700
-Message-ID: <d4d4ab35-b38c-6369-e436-5eb37c502ca6@quicinc.com>
-Date:   Thu, 18 Aug 2022 15:30:53 -0700
+ 2022 16:02:18 -0700
+Message-ID: <7b06d248-c976-6c9f-4d5c-5dec7b1d5511@quicinc.com>
+Date:   Thu, 18 Aug 2022 16:02:14 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.12.0
-Subject: Re: [PATCH 34/50] wifi: ath12k: add mhi.h
+Subject: Re: [PATCH 35/50] wifi: ath12k: add pci.c
 Content-Language: en-US
 To:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
 CC:     <ath12k@lists.infradead.org>
 References: <20220812161003.27279-1-kvalo@kernel.org>
- <20220812161003.27279-35-kvalo@kernel.org>
+ <20220812161003.27279-36-kvalo@kernel.org>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220812161003.27279-35-kvalo@kernel.org>
+In-Reply-To: <20220812161003.27279-36-kvalo@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: qvQfmtxM7NBL6DXrYgB8UVDYK7rTgZyv
-X-Proofpoint-GUID: qvQfmtxM7NBL6DXrYgB8UVDYK7rTgZyv
+X-Proofpoint-ORIG-GUID: G-oFaRIwDyhWmJLXyBODr9WRDDlSGvyO
+X-Proofpoint-GUID: G-oFaRIwDyhWmJLXyBODr9WRDDlSGvyO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-08-18_16,2022-08-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 clxscore=1015 malwarescore=0 mlxscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208180081
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ mlxscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 impostorscore=0 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208180084
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -87,63 +87,95 @@ On 8/12/2022 9:09 AM, Kalle Valo wrote:
 > 
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 > ---
->   drivers/net/wireless/ath/ath12k/mhi.h | 46 +++++++++++++++++++++++++++++++++++
->   1 file changed, 46 insertions(+)
+>   drivers/net/wireless/ath/ath12k/pci.c | 1344 +++++++++++++++++++++++++++++++++
+>   1 file changed, 1344 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/ath/ath12k/mhi.h b/drivers/net/wireless/ath/ath12k/mhi.h
-> new file mode 100644
-> index 000000000000..258152d3a7dd
-> --- /dev/null
-> +++ b/drivers/net/wireless/ath/ath12k/mhi.h
-> @@ -0,0 +1,46 @@
-> +/* SPDX-License-Identifier: BSD-3-Clause-Clear */
-> +/*
-> + * Copyright (c) 2020-2021 The Linux Foundation. All rights reserved.
-> + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-> + */
-> +#ifndef _ATH12K_MHI_H
-> +#define _ATH12K_MHI_H
+> diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+
+snip
+
+> +static void ath12k_pci_remove(struct pci_dev *pdev)
+> +{
+> +	struct ath12k_base *ab = pci_get_drvdata(pdev);
+> +	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
 > +
-> +#include "pci.h"
+> +	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
+> +		ath12k_pci_power_down(ab);
+> +		ath12k_qmi_deinit_service(ab);
+> +		goto qmi_fail;
+> +	}
 > +
-> +#define PCIE_TXVECDB				0x360
-> +#define PCIE_TXVECSTATUS			0x368
-> +#define PCIE_RXVECDB				0x394
-> +#define PCIE_RXVECSTATUS			0x39C
+> +	set_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags);
 > +
-> +#define MHISTATUS				0x48
-> +#define MHICTRL					0x38
-> +#define MHICTRL_RESET_MASK			0x2
+> +	cancel_work_sync(&ab->reset_work);
+> +	ath12k_core_deinit(ab);
 > +
-> +enum ath12k_mhi_state {
-> +	ATH12K_MHI_INIT,
-> +	ATH12K_MHI_DEINIT,
-> +	ATH12K_MHI_POWER_ON,
-> +	ATH12K_MHI_POWER_OFF,
-> +	ATH12K_MHI_FORCE_POWER_OFF,
-> +	ATH12K_MHI_SUSPEND,
-> +	ATH12K_MHI_RESUME,
-> +	ATH12K_MHI_TRIGGER_RDDM,
-> +	ATH12K_MHI_RDDM,
-> +	ATH12K_MHI_RDDM_DONE,
+> +qmi_fail:
+> +	ath12k_mhi_unregister(ab_pci);
+> +
+> +	ath12k_pci_free_irq(ab);
+> +	ath12k_pci_msi_free(ab_pci);
+> +	ath12k_pci_free_region(ab_pci);
+> +
+> +	ath12k_hal_srng_deinit(ab);
+> +	ath12k_ce_free_pipes(ab);
+> +	destroy_workqueue(ab->workqueue_aux);
+
+it seems strange/asymetrical to destroy this here.
+
+it was allocated in ath12k_core_alloc() so I'd expect it to be destroyed 
+in ath12k_core_free() to maintain symmetry
+
+in addition I don't see ab->workqueue being destroyed, and imo that 
+should also take place in ath12k_core_free() for the same reason
+
+> +	ath12k_core_free(ab);
+> +}
+
+snip
+
+> +static SIMPLE_DEV_PM_OPS(ath12k_pci_pm_ops,
+> +			 ath12k_pci_pm_suspend,
+> +			 ath12k_pci_pm_resume);
+> +
+> +static struct pci_driver ath12k_pci_driver = {
+> +	.name = "ath12k_pci",
+> +	.id_table = ath12k_pci_id_table,
+> +	.probe = ath12k_pci_probe,
+> +	.remove = ath12k_pci_remove,
+> +	.shutdown = ath12k_pci_shutdown,
+> +#ifdef CONFIG_PM
+> +	.driver.pm = &ath12k_pci_pm_ops,
+> +#endif
+
+conditional compilation is unnecessary here since SIMPLE_DEV_PM_OPS 
+handles the conditional
+
 > +};
 > +
-> +extern struct mhi_controller_config ath12k_mhi_config_qcn9274;
-> +extern struct mhi_controller_config ath12k_mhi_config_wcn7850;
-
-imo both should be const
-
+> +static int ath12k_pci_init(void)
+> +{
+> +	int ret;
 > +
-> +int ath12k_mhi_start(struct ath12k_pci *ar_pci);
-> +void ath12k_mhi_stop(struct ath12k_pci *ar_pci);
-> +int ath12k_mhi_register(struct ath12k_pci *ar_pci);
-> +void ath12k_mhi_unregister(struct ath12k_pci *ar_pci);
-> +void ath12k_mhi_set_mhictrl_reset(struct ath12k_base *ab);
-> +void ath12k_mhi_clear_vector(struct ath12k_base *ab);
+> +	ret = pci_register_driver(&ath12k_pci_driver);
+> +	if (ret) {
+> +		pr_err("failed to register ath12k pci driver: %d\n",
+> +		       ret);
+> +		return ret;
+> +	}
 > +
-> +void ath12k_mhi_suspend(struct ath12k_pci *ar_pci);
-> +void ath12k_mhi_resume(struct ath12k_pci *ar_pci);
+> +	return 0;
+> +}
+> +module_init(ath12k_pci_init);
 > +
-> +#endif
+> +static void ath12k_pci_exit(void)
+> +{
+> +	pci_unregister_driver(&ath12k_pci_driver);
+> +}
+> +
+> +module_exit(ath12k_pci_exit);
+> +
+> +MODULE_DESCRIPTION("Driver support for Qualcomm Technologies 802.11be WLAN PCIe devices");
+> +MODULE_LICENSE("Dual BSD/GPL");
 > 
 
