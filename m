@@ -2,242 +2,426 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3819597F6C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Aug 2022 09:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0464597F6A
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Aug 2022 09:45:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243777AbiHRHmj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Aug 2022 03:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
+        id S243821AbiHRHnM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Aug 2022 03:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242513AbiHRHmg (ORCPT
+        with ESMTP id S243778AbiHRHnK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Aug 2022 03:42:36 -0400
-Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFDA16555A
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 00:42:35 -0700 (PDT)
-Date:   Thu, 18 Aug 2022 07:42:25 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1660808554; x=1661067754;
-        bh=g5h/Wm/qy+Rw27cZR7sskbUZyZ3/x8+OxJJPOx18Vfw=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=L38BcskR5pd/0mPnwLqTT63m6vKfumdlUL4ziC3rXHU1vQunnRomA2l5tS/SlD1PR
-         kOqkEyhfv+XkZB/52ELbD8/mIOORb51a4+YrQ6SqPZ9CBwsN7nEPUmMeZh/HMbISX1
-         6NICnEQntMYnQe9QjwfD3piZEIPwKhXxCfnI+Q83UY/cc9I7TmCbm6mE1p1IYvAkhn
-         8nh52l7Yvc288VtvyCAL8k/OYUxxBczFcwGn/KdBc9gd3/7RaS5q4GqeWSuAXUy9gK
-         KFx4GU0KOyZyLJCi2TrxZoqtqdSVwMnWyr6gKXy8ZBhgsMaP2QZ+c2bfEPk2+0hXyJ
-         Qf6t3NQs/pGAQ==
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Cc:     "pkshih@realtek.com" <pkshih@realtek.com>
-Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Subject: Re: rtw88: Doesn't work for 60-90 seconds several times a day
-Message-ID: <zo6mNApc8pZyF1NC9s5aXHV8KH9XRlJRwJuw031DGp4u2n9psBxnPVHBbHfJU7D1Zp5QrTbXRtHeEeTO06jl7QBcl6AM9IPkQ-4EqS-MdD0=@protonmail.com>
-In-Reply-To: <Ej2iRcw0tVYRZD-CNBij8Uu3T-8IG-NVQ_EUM4Oz6IstXLQn0JKvkcfec1RDYKReWdi7JbPiMTOmeihtId1j91nq_IdMWYY482HTOXecGCg=@protonmail.com>
-References: <Ej2iRcw0tVYRZD-CNBij8Uu3T-8IG-NVQ_EUM4Oz6IstXLQn0JKvkcfec1RDYKReWdi7JbPiMTOmeihtId1j91nq_IdMWYY482HTOXecGCg=@protonmail.com>
-Feedback-ID: 34463299:user:proton
+        Thu, 18 Aug 2022 03:43:10 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9794BD08
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 00:43:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 5A2B7CE2014
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Aug 2022 07:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215B0C433C1;
+        Thu, 18 Aug 2022 07:43:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660808584;
+        bh=zUBUTbL9EdI7rSM3rhdjmTup41sfS5ehS/yX6YaZc9Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ls7dzR03hoUyU7CJ+JoVhAln6IMiHk1DvJ/LIAt9uM1hgnj59cD34n/ZcDv8J1jkm
+         1Trv3PK72rdkQw2W4SrmWOR0EBOJtVCszttLpi2/Zn1hENeV/BS7RA2P4mQgRFdZ3F
+         e4UDvx+H9wuSuRhxryYmtO3qClvmIrTFKKo53cHXivbjQh0KFuVjBQ2JnKALgu2X36
+         hn8xnEcTXGCboE00gSIm3iUHQlxzoI7WBJ0198j8SxThmN/qJNkb0A9eNm5lx15Rn2
+         26AOZ65CRQWrnZToeaBtXbxJdb5DZLB0A8VXPjyGquaAQvF01qBMVXJuGEEFaDRn6Z
+         ThHlQ0o6mJIew==
+Date:   Thu, 18 Aug 2022 09:43:01 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Sean Wang <sean.wang@kernel.org>
+Cc:     Sean Wang =?utf-8?B?KOeOi+W/l+S6mCk=?= <sean.wang@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, lorenzo.bianconi@redhat.com,
+        Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Deren Wu <Deren.Wu@mediatek.com>, km.lin@mediatek.com,
+        jenhao.yang@mediatek.com, robin.chiu@mediatek.com,
+        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
+        posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
+        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
+        kuabhs@google.com, druth@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 9/9] wifi: mt76: mt7921: introduce chanctx support
+Message-ID: <Yv3thcH2phpCD+3N@lore-desk>
+References: <cover.1660606893.git.objelf@gmail.com>
+ <3cf2e1a9658e971392b9b42f05f7b2a36815c7af.1660606893.git.objelf@gmail.com>
+ <YvyXu4jejY7JOnhn@lore-desk>
+ <CAGp9LzqecHa4DzAcugth4EOua8n-tPnS4TmgijETMxkT7fn8gQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qNm2QppFA9tQQwk5"
+Content-Disposition: inline
+In-Reply-To: <CAGp9LzqecHa4DzAcugth4EOua8n-tPnS4TmgijETMxkT7fn8gQ@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thursday, July 21st, 2022 at 12:35 AM, rtl8821cerfe2 <rtl8821cerfe2@prot=
-onmail.com> wrote:
 
-> Hello.
->=20
-> I am unable to open any sites in Firefox for 60-90 seconds at a time.
-> On one occasion it was 156 seconds. Firefox gives up after 20 seconds
-> or so. NetworkManager reports "limited connectivity". The router doesn't
-> reply to pings. The journal shows that the laptop remains connected to
-> the router. This happens several times a day.
->=20
-> However, my IRC client seems to be unaffected. It never detected any
-> abnormally high lag during these events, not even the one that lasted
-> 156 seconds. It checks the lag every 30 seconds. Also, the bot named
-> "phrik" from the #archlinux-offtopic channel reacts immediately when
-> I send it "!ping" during one of these events. (It sends back "pong".)
-> So I guess existing connections are not affected.
->=20
-> I have had this problem ever since support for RTL8821CE with RFE 2
-> was added. (The wifi card's RFE type is 2.)
->=20
-> Other devices connected to the same router don't have this problem.
->=20
-> The laptop and the router are in the same room. The distance
-> between them is about 3 meters.
->=20
->=20
-> These are the things I tried which did not help:
->=20
-> - The rtw88_core option disable_lps_deep=3D1
->=20
-> - `iw wlo1 set power_save off`
->=20
-> - Installing wireless-regdb and uncommenting my country in
-> /etc/conf.d/wireless-regdom
->=20
-> - Switching the router to "n only" mode. Previously it was in "b/g/n"
-> mode.
->=20
-> - Making the router use channel 9 instead of "auto". By itself it was
-> selecting channels 1 or 11 the few times I checked that. Channel 9
-> seemed less crowded than those.
->=20
-> - Making the router use 40 MHz channel width instead of the "20/40"
-> setting. This doubled the speed but didn't help with my problem.
->=20
-> - The firmware from the rtl8821ce driver [0] (version 20.1.0),
-> instead of the one from linux-firmware (version 24.11.0). I used the
-> one with the length of 137616 bytes.
->=20
-> This doesn't happen with the rtl8821ce driver, which is why I extracted
-> that firmware from it, to see if it's a firmware issue.
->=20
->=20
-> Pinging the router all day seems to prevent this problem. Enabling all
-> the debug flags for rtw88_core also may prevent it. I'm not sure about
-> that.
->=20
->=20
-> Most of the time I don't have any bluetooth devices connected.
-> When I do, they don't cause problems.
->=20
->=20
-> I captured a bit of wifi traffic using another laptop, including two of
-> these events, and noticed something strange:
->=20
-> - rtw88 sends "Null function" telling the router it's going to sleep
-> - router immediately sends ack (after less than 1 ms)
-> - rtw88 resends "Null function" (same SN, Retry flag set)
-> - router immediately sends ack
-> - rtw88 resends
-> - router immediately sends ack
-> - rtw88 resends
-> - ...
-> - ...
->=20
-> rtw88 resends the "Null function" 3-4 times, even though the router
-> promptly sends ack each time, then it sends a new "Null function" with
-> different SN and the process repeats. This seems to happen all the time,
-> not just when I can't open any pages in Firefox. The rtl8821ce driver
-> doesn't do this, but rtw88 with the old 20.1.0 firmware does. My phone
-> doesn't do this either.
->=20
-> I can provide the captures in private.
->=20
->=20
-> Currently I'm using the rtw88_pci option disable_aspm=3D1, because kernel
-> 5.18 brought the freezes back. [1]
->=20
->=20
-> My laptop is HP 250 G7 with a Core i3 7020U CPU.
->=20
-> The RTL8821CE wifi card is in M.2 slot, not soldered to the motherboard,
-> even though the interface is named wlo1. It has one antenna, in case
-> that matters.
->=20
-> The router is a Fiberhome HG6544C.
->=20
-> The network is secured with WPA2 Personal.
->=20
-> The kernel version is 5.18.5-arch1-1.
->=20
-> The wifi firmware version is 24.11.0.
->=20
-> NetworkManager version is 1.38.2-1.
->=20
-> wpa_supplicant version is 2.10-4.
->=20
-> The operating system is Arch Linux.
->=20
->=20
->=20
-> Just out of curiosity, what is C2H with id 0x15 ? It is not handled by
-> rtw88, but the firmware sends it often.
->=20
->=20
-> [0] https://raw.githubusercontent.com/tomaspinho/rtl8821ce/be733dc86781c6=
-8571650b395dd0fa6b53c0a039/hal/rtl8821c/hal8821c_fw.c
-> [1] https://lore.kernel.org/linux-wireless/Te_PJvJjKCi-lK28Zu0d8VQG0AGdwT=
-l6cJydYEETLbc3gN0l8liXH1DSOZnKxUHYGxavLBCs1sqos2e6jeiRzzO0RLRSISdWvTiiPp0v9=
-kM=3D@protonmail.com/
+--qNm2QppFA9tQQwk5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+> On Wed, Aug 17, 2022 at 12:42 AM Lorenzo Bianconi <lorenzo@kernel.org> wr=
+ote:
+> >
+> > > From: Sean Wang <sean.wang@mediatek.com>
+> > >
+> > > The firmware can have the capability to manage the channel context
+> > > scheduling on multiple roles running on the device including Station,
+> > > AP and P2P GC/GO mode (will be extended based on the patchset) to help
+> > > users sharing the network with others on a single device.
+> > >
+> > > The firmware is able to support the channel chanctx up to 2 interface
+> > > simultaneously running on the different channels.
+> > >
+> > > Another thing to be noted is that before the driver is going sent out=
+ the
+> > > management frames, the driver has to get the privilege from the firmw=
+are
+> > > to occupy the current channel context until the frame handshake is
+> > > completed and then get the privilege back to the firmware.
+> > >
+> > > We temporarily disable the feature with a module parameter
+> > > mt7921_disable_cnm for a while until we can ensure the patchset doesn=
+'t
+> > > cause any regression.
+> > >
+> > > Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+> > > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> > > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> > > ---
+> > >  .../net/wireless/mediatek/mt76/mt7921/init.c  |  40 ++++++-
+> > >  .../net/wireless/mediatek/mt76/mt7921/main.c  | 111 ++++++++++++++++=
++-
+> > >  .../wireless/mediatek/mt76/mt7921/mt7921.h    |   1 +
+> > >  3 files changed, 145 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/init.c
+> > > index 1b7a18d42f5b..208a6117cb69 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> > > @@ -7,6 +7,10 @@
+> > >  #include "mcu.h"
+> > >  #include "eeprom.h"
+> > >
+> > > +static bool mt7921_disable_cnm =3D true;
+> > > +module_param_named(disable_cnm, mt7921_disable_cnm, bool, 0644);
+> > > +MODULE_PARM_DESC(disable_cnm, "disable concurrent network support");
+> >
+> > do we need it? I guess we can just leave it enabled by default and disa=
+ble it
+> > through a debugfs node. What do you think?
+>=20
+> The kernel parameter would be checked before registering ops to
+> mac80211, it seemed to me the way debugfs node doesn't work for that
+> moment.
 
-Frank's recent message [0] got me thinking and digging again. I added some =
-rtw_warn and found something interesting:
+I am wondering if it is ok to just enable it by default, what do you t thin=
+k?
+It is not a good practise to add a lot of module parameters.
 
-2022-08-18T10:20:44.585943+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
-BEACON-LOSS
-2022-08-18T10:20:44.592099+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_enqueue: sn: 128
-2022-08-18T10:20:44.592997+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: src=3Df, sn=3D128, st=3D0
-2022-08-18T10:20:44.593569+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: tx_report->queue: 128
+Regards,
+Lorenzo
 
-2022-08-18T10:20:45.599099+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
-BEACON-LOSS
-2022-08-18T10:20:45.602156+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_enqueue: sn: 132
-2022-08-18T10:20:45.602924+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: src=3Df, sn=3D132, st=3D0
-2022-08-18T10:20:45.603495+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: tx_report->queue: 132
+>=20
+> >
+> > > +
+> > >  static const struct ieee80211_iface_limit if_limits[] =3D {
+> > >       {
+> > >               .max =3D MT7921_MAX_INTERFACES,
+> > > @@ -25,6 +29,27 @@ static const struct ieee80211_iface_combination if=
+_comb[] =3D {
+> > >               .max_interfaces =3D MT7921_MAX_INTERFACES,
+> > >               .num_different_channels =3D 1,
+> > >               .beacon_int_infra_match =3D true,
+> > > +     },
+> > > +};
+> > > +
+> > > +static const struct ieee80211_iface_limit if_limits_chanctx[] =3D {
+> > > +     {
+> > > +             .max =3D 2,
+> > > +             .types =3D BIT(NL80211_IFTYPE_STATION),
+> > > +     },
+> > > +     {
+> > > +             .max =3D 1,
+> > > +             .types =3D BIT(NL80211_IFTYPE_AP),
+> > > +     }
+> > > +};
+> > > +
+> > > +static const struct ieee80211_iface_combination if_comb_chanctx[] =
+=3D {
+> > > +     {
+> > > +             .limits =3D if_limits_chanctx,
+> > > +             .n_limits =3D ARRAY_SIZE(if_limits_chanctx),
+> > > +             .max_interfaces =3D 2,
+> > > +             .num_different_channels =3D 2,
+> > > +             .beacon_int_infra_match =3D false,
+> > >       }
+> > >  };
+> > >
+> > > @@ -63,11 +88,20 @@ static int mt7921_check_offload_capability(struct=
+ mt7921_dev *dev)
+> > >       fw_can_roc =3D  mktime64(year, mon, day, hour, min, sec) >=3D
+> > >                     mktime64(2022, 7, 15, 12, 1, 1);
+> > >  out:
+> > > -     if (!fw_can_roc) {
+> > > +     if (!fw_can_roc || mt7921_disable_cnm) {
+> > >               dev->ops->remain_on_channel =3D NULL;
+> > >               dev->ops->cancel_remain_on_channel =3D NULL;
+> > > +             dev->ops->add_chanctx =3D NULL;
+> > > +             dev->ops->remove_chanctx =3D NULL;
+> > > +             dev->ops->change_chanctx =3D NULL;
+> > > +             dev->ops->assign_vif_chanctx =3D NULL;
+> > > +             dev->ops->unassign_vif_chanctx =3D NULL;
+> > > +             dev->ops->mgd_prepare_tx =3D NULL;
+> > > +             dev->ops->mgd_complete_tx =3D NULL;
+> > >
+> > >               wiphy->flags &=3D ~WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL;
+> > > +             wiphy->iface_combinations =3D if_comb;
+> > > +             wiphy->n_iface_combinations =3D ARRAY_SIZE(if_comb);
+> > >       }
+> > >
+> > >       return 0;
+> > > @@ -93,12 +127,12 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+> > >       hw->sta_data_size =3D sizeof(struct mt7921_sta);
+> > >       hw->vif_data_size =3D sizeof(struct mt7921_vif);
+> > >
+> > > -     wiphy->iface_combinations =3D if_comb;
+> > > +     wiphy->iface_combinations =3D if_comb_chanctx;
+> > >       wiphy->flags &=3D ~(WIPHY_FLAG_IBSS_RSN | WIPHY_FLAG_4ADDR_AP |
+> > >                         WIPHY_FLAG_4ADDR_STATION);
+> > >       wiphy->interface_modes =3D BIT(NL80211_IFTYPE_STATION) |
+> > >                                BIT(NL80211_IFTYPE_AP);
+> > > -     wiphy->n_iface_combinations =3D ARRAY_SIZE(if_comb);
+> > > +     wiphy->n_iface_combinations =3D ARRAY_SIZE(if_comb_chanctx);
+> > >       wiphy->max_remain_on_channel_duration =3D 5000;
+> > >       wiphy->max_scan_ie_len =3D MT76_CONNAC_SCAN_IE_LEN;
+> > >       wiphy->max_scan_ssids =3D 4;
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/main.c
+> > > index ae0aabe052e3..6386290ba71c 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > @@ -858,7 +858,7 @@ void mt7921_mac_sta_assoc(struct mt76_dev *mdev, =
+struct ieee80211_vif *vif,
+> > >
+> > >       if (vif->type =3D=3D NL80211_IFTYPE_STATION && !sta->tdls)
+> > >               mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta=
+=2Ewcid,
+> > > -                                         true, NULL);
+> > > +                                         true, mvif->ctx);
+> > >
+> > >       mt7921_mac_wtbl_update(dev, msta->wcid.idx,
+> > >                              MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+> > > @@ -890,7 +890,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev,=
+ struct ieee80211_vif *vif,
+> > >               if (!sta->tdls)
+> > >                       mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
+> > >                                                   &mvif->sta.wcid, fa=
+lse,
+> > > -                                                 NULL);
+> > > +                                                 mvif->ctx);
+> > >       }
+> > >
+> > >       spin_lock_bh(&dev->sta_poll_lock);
+> > > @@ -1640,7 +1640,7 @@ mt7921_start_ap(struct ieee80211_hw *hw, struct=
+ ieee80211_vif *vif,
+> > >       mt7921_mutex_acquire(dev);
+> > >
+> > >       err =3D mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.=
+wcid,
+> > > -                                       true, NULL);
+> > > +                                       true, mvif->ctx);
+> > >       if (err)
+> > >               goto failed;
+> > >
+> > > @@ -1672,12 +1672,108 @@ mt7921_stop_ap(struct ieee80211_hw *hw, stru=
+ct ieee80211_vif *vif,
+> > >               goto failed;
+> > >
+> > >       mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid, fa=
+lse,
+> > > -                                 NULL);
+> > > +                                 mvif->ctx);
+> > >
+> > >  failed:
+> > >       mt7921_mutex_release(dev);
+> > >  }
+> > >
+> > > +static int
+> > > +mt7921_add_chanctx(struct ieee80211_hw *hw,
+> > > +                struct ieee80211_chanctx_conf *ctx)
+> > > +{
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static void
+> > > +mt7921_remove_chanctx(struct ieee80211_hw *hw,
+> > > +                   struct ieee80211_chanctx_conf *ctx)
+> > > +{
+> > > +}
+> > > +
+> > > +static void mt7921_ctx_iter(void *priv, u8 *mac,
+> > > +                         struct ieee80211_vif *vif)
+> > > +{
+> > > +     struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
+> > > +     struct ieee80211_chanctx_conf *ctx =3D priv;
+> > > +
+> > > +     if (ctx !=3D mvif->ctx)
+> > > +             return;
+> > > +
+> > > +     mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->mt76, ctx=
+);
+> > > +}
+> > > +
+> > > +static void
+> > > +mt7921_change_chanctx(struct ieee80211_hw *hw,
+> > > +                   struct ieee80211_chanctx_conf *ctx,
+> > > +                   u32 changed)
+> > > +{
+> > > +     struct mt7921_phy *phy =3D mt7921_hw_phy(hw);
+> > > +
+> > > +     mt7921_mutex_acquire(phy->dev);
+> > > +     ieee80211_iterate_active_interfaces(phy->mt76->hw,
+> > > +                                         IEEE80211_IFACE_ITER_ACTIVE,
+> > > +                                         mt7921_ctx_iter, ctx);
+> > > +     mt7921_mutex_release(phy->dev);
+> > > +}
+> > > +
+> > > +static int
+> > > +mt7921_assign_vif_chanctx(struct ieee80211_hw *hw,
+> > > +                       struct ieee80211_vif *vif,
+> > > +                       struct ieee80211_bss_conf *link_conf,
+> > > +                       struct ieee80211_chanctx_conf *ctx)
+> > > +{
+> > > +     struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
+> > > +     struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+> > > +
+> > > +     mt7921_mutex_acquire(dev);
+> >
+> > I think in this case we can just grub the mutex without waking up the d=
+evice.
+> > what do you think?
+>=20
+> ack
+>=20
+> >
+> > > +     mvif->ctx =3D ctx;
+> > > +     mt7921_mutex_release(dev);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static void
+> > > +mt7921_unassign_vif_chanctx(struct ieee80211_hw *hw,
+> > > +                         struct ieee80211_vif *vif,
+> > > +                         struct ieee80211_bss_conf *link_conf,
+> > > +                         struct ieee80211_chanctx_conf *ctx)
+> > > +{
+> > > +     struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
+> > > +     struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+> > > +
+> > > +     mt7921_mutex_acquire(dev);
+> >
+> > same here.
+>=20
+> ack
+>=20
+> >
+> > Regards,
+> > Lorenzo
+> >
+> > > +     mvif->ctx =3D NULL;
+> > > +     mt7921_mutex_release(dev);
+> > > +}
+> > > +
+> > > +static void mt7921_mgd_prepare_tx(struct ieee80211_hw *hw,
+> > > +                               struct ieee80211_vif *vif,
+> > > +                               struct ieee80211_prep_tx_info *info)
+> > > +{
+> > > +     struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
+> > > +     struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+> > > +     u16 duration =3D info->duration ? info->duration :
+> > > +                    jiffies_to_msecs(HZ);
+> > > +
+> > > +     mt7921_mutex_acquire(dev);
+> > > +     mt7921_set_roc(mvif->phy, mvif, mvif->ctx->def.chan, duration,
+> > > +                    MT7921_ROC_REQ_JOIN);
+> > > +     mt7921_mutex_release(dev);
+> > > +}
+> > > +
+> > > +static void mt7921_mgd_complete_tx(struct ieee80211_hw *hw,
+> > > +                                struct ieee80211_vif *vif,
+> > > +                                struct ieee80211_prep_tx_info *info)
+> > > +{
+> > > +     struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
+> > > +     struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+> > > +
+> > > +     mt7921_mutex_acquire(dev);
+> > > +     mt7921_abort_roc(mvif->phy, mvif);
+> > > +     mt7921_mutex_release(dev);
+> > > +}
+> > > +
+> > >  const struct ieee80211_ops mt7921_ops =3D {
+> > >       .tx =3D mt7921_tx,
+> > >       .start =3D mt7921_start,
+> > > @@ -1730,6 +1826,13 @@ const struct ieee80211_ops mt7921_ops =3D {
+> > >       .set_sar_specs =3D mt7921_set_sar_specs,
+> > >       .remain_on_channel =3D mt7921_remain_on_channel,
+> > >       .cancel_remain_on_channel =3D mt7921_cancel_remain_on_channel,
+> > > +     .add_chanctx =3D mt7921_add_chanctx,
+> > > +     .remove_chanctx =3D mt7921_remove_chanctx,
+> > > +     .change_chanctx =3D mt7921_change_chanctx,
+> > > +     .assign_vif_chanctx =3D mt7921_assign_vif_chanctx,
+> > > +     .unassign_vif_chanctx =3D mt7921_unassign_vif_chanctx,
+> > > +     .mgd_prepare_tx =3D mt7921_mgd_prepare_tx,
+> > > +     .mgd_complete_tx =3D mt7921_mgd_complete_tx,
+> > >  };
+> > >  EXPORT_SYMBOL_GPL(mt7921_ops);
+> > >
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/dri=
+vers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > > index 280605ffc4da..fda85252325c 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > > @@ -156,6 +156,7 @@ struct mt7921_vif {
+> > >       struct ewma_rssi rssi;
+> > >
+> > >       struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS=
+];
+> > > +     struct ieee80211_chanctx_conf *ctx;
+> > >  };
+> > >
+> > >  struct mib_stats {
+> > > --
+> > > 2.25.1
+> > >
 
-2022-08-18T10:20:46.585960+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
-BEACON-LOSS
-2022-08-18T10:20:46.592130+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_enqueue: sn: 136
-2022-08-18T10:20:46.593381+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: src=3Df, sn=3D136, st=3D0
-2022-08-18T10:20:46.594114+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: tx_report->queue: 136
+--qNm2QppFA9tQQwk5
+Content-Type: application/pgp-signature; name="signature.asc"
 
-2022-08-18T10:20:47.572620+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
-BEACON-LOSS
-2022-08-18T10:20:47.575483+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_enqueue: sn: 140
-2022-08-18T10:20:47.576486+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: src=3Df, sn=3D140, st=3D0
-2022-08-18T10:20:47.577287+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: tx_report->queue: 140
+-----BEGIN PGP SIGNATURE-----
 
-2022-08-18T10:20:48.558864+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
-BEACON-LOSS
-2022-08-18T10:20:48.562131+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_enqueue: sn: 144
-2022-08-18T10:20:48.562394+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: src=3Df, sn=3D144, st=3D0
-2022-08-18T10:20:48.562565+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: tx_report->queue: 144
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYv3thAAKCRA6cBh0uS2t
+rEK6AQCY9jizHJbwnngtPuQi/rPH7++ieKgu+G3ZpozvnUgV4QD9HlPC754W4+PH
+kps3TOxNvbous6GcMQ5cBmIe75qvVw0=
+=POu2
+-----END PGP SIGNATURE-----
 
-2022-08-18T10:20:56.559084+0300 home wpa_supplicant[441]: wlo1: CTRL-EVENT-=
-BEACON-LOSS
-2022-08-18T10:20:56.562157+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_enqueue: sn: 148
-2022-08-18T10:20:56.565498+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: src=3Df, sn=3D148, st=3D0
-2022-08-18T10:20:56.566860+0300 home kernel: rtw_8821ce 0000:02:00.0: rtw_t=
-x_report_handle: tx_report->queue: 148
-
-It looks like the TX reports are coming in just a little too late. In my ca=
-ptures I see the router sends the ack very quickly, and the card sends the =
-TX reports pretty quickly after the requests are enqueued, so I assume rtw8=
-8 is not transmitting quickly enough the frames that require a TX report?
-
-I forgot to mention in my previous message that I'm on 2.4 GHz.
-
-
-[0] https://lore.kernel.org/linux-wireless/6415466b-f745-df14-2a0b-40861bd1=
-ea10@googlemail.com/
+--qNm2QppFA9tQQwk5--
