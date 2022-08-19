@@ -2,120 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7872759A5B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Aug 2022 20:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAFCE59A5D7
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Aug 2022 21:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350456AbiHSSqc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Aug 2022 14:46:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42598 "EHLO
+        id S1350971AbiHSTBq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Aug 2022 15:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349506AbiHSSqb (ORCPT
+        with ESMTP id S1350406AbiHSTBi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Aug 2022 14:46:31 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id DDA354DB3C
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Aug 2022 11:46:29 -0700 (PDT)
-Received: (qmail 235846 invoked by uid 1000); 19 Aug 2022 14:46:28 -0400
-Date:   Fri, 19 Aug 2022 14:46:28 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Fedor Pchelkin <pchelkin@ispras.ru>
-Cc:     Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        ath9k-devel@qca.qualcomm.com, ldv-project@linuxtesting.org,
-        eli.billauer@gmail.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        andreyknvl@google.com, gustavoars@kernel.org,
-        ingrassia@epigenesys.com, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        oneukum@suse.com, tiwai@suse.de, syzkaller-bugs@googlegroups.com
-Subject: Re: WARNING in hif_usb_alloc_rx_urbs/usb_submit_urb
-Message-ID: <Yv/ahFW577q5woup@rowland.harvard.edu>
-References: <09fbc5ed-d67e-8308-1e49-2de6f2cea7dd@ispras.ru>
+        Fri, 19 Aug 2022 15:01:38 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA045107AD9
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Aug 2022 12:01:35 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27JIvZwj004273;
+        Fri, 19 Aug 2022 19:01:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=QcSLGs4SuAganUIc0YVw/OiPQWqEBg69UHJVY0f3+0w=;
+ b=EkLJ2d1Bp/3ieh+qmxlgsRqt1g1atXBGOUunFIoaO1/zDcHWLIXlLN0Ji4r2fcd+vXQO
+ C4giXuDPFD6wKRA6clFyiqntF/fWpOk+DJwYYKXMuk5JXZyC1n50U6wWU6PjvCt3fFHN
+ hGrh1vjDiZEz6wu3E/tCPoSeCazySThUwbztly288BwRpNsQjJzIxP6aoizho45lFnaN
+ mtJ8Fjc9hQCJByrvEKreXSj8R1HnQ3ESKbYY/OX4I2Z5N+nILN1jWxBW13DV6N84ch2J
+ sGyphv3gTqELh2bJ4ZyWQ8/J7h2BToZ6F9gpZstOIv8x+NveTQRPRiwGCcWlWlqNlR3N kw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j21v52k0n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Aug 2022 19:01:25 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27JIuOgL030297
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Aug 2022 18:56:24 GMT
+Received: from [10.110.11.6] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 19 Aug
+ 2022 11:56:24 -0700
+Message-ID: <3b09b751-54c1-d684-7d5c-8f736cd80707@quicinc.com>
+Date:   Fri, 19 Aug 2022 11:56:23 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09fbc5ed-d67e-8308-1e49-2de6f2cea7dd@ispras.ru>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 33/50] wifi: ath12k: add mhi.c
+Content-Language: en-US
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+To:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
+CC:     <ath12k@lists.infradead.org>
+References: <20220812161003.27279-1-kvalo@kernel.org>
+ <20220812161003.27279-34-kvalo@kernel.org>
+ <05841a52-3d2f-8704-b885-4b02e7a439e0@quicinc.com>
+In-Reply-To: <05841a52-3d2f-8704-b885-4b02e7a439e0@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: PyGS-C6aGoyKhqcXPrP9cEe_XoQnCK_W
+X-Proofpoint-GUID: PyGS-C6aGoyKhqcXPrP9cEe_XoQnCK_W
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-19_10,2022-08-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=923 phishscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208190071
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 09:34:44PM +0300, Fedor Pchelkin wrote:
-> Hi Alan,
-> 
-> Fri, 9 Oct 2020 at 21:55:51 UTC+3, Alan Stern wrote:
-> > To the ath9k_htc maintainers:
-> > This is an attempt to fix a bug detected by the syzbot fuzzer. The bug
-> > arises when a USB device claims to be an ATH9K but doesn't have the
-> > expected endpoints. (In this case there was a bulk endpoint where the
-> > driver expected an interrupt endpoint.) The kernel needs to be able to
-> > handle such devices without getting an internal error.
-> 
-> We are facing the similar warnings [1] in
-> hif_usb_alloc_rx_urbs/usb_submit_urb:
-> 
-> usb 1-1: ath9k_htc: Firmware ath9k_htc/htc_9271-1.4.0.fw requested
-> usb 1-1: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
-> ------------[ cut here ]------------
-> usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-> WARNING: CPU: 3 PID: 500 at drivers/usb/core/urb.c:493
-> usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
-> Modules linked in:
-> CPU: 3 PID: 500 Comm: kworker/3:2 Not tainted 5.10.135-syzkaller #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1
-> 04/01/2014
-> Workqueue: events request_firmware_work_func
-> RIP: 0010:usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
-> Code: 84 d4 02 00 00 e8 0e 00 80 fc 4c 89 ef e8 06 2d 35 ff 41 89 d8 44 89
-> e1 4c 89 f2 48 89 c6 48 c7 c7 c0 f0 a8 88 e8 0e a6 b9 02 <0f> 0b e9 c6 f8 ff
-> ff e8 e2 ff 7f fc 48 81 c5 88 06 00 00 e9 f2 f7
-> RSP: 0018:ffff888147227b60 EFLAGS: 00010282
-> RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-> RDX: ffff888147218000 RSI: ffffffff815909c5 RDI: ffffed1028e44f5e
-> RBP: ffff888021509850 R08: 0000000000000001 R09: ffff888237d38ba7
-> R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000003
-> R13: ffff888021a330a0 R14: ffff88800f82b5a0 R15: ffff88801466a900
-> FS:  0000000000000000(0000) GS:ffff888237d00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000055b2994526c8 CR3: 000000001e730000 CR4: 0000000000350ee0
-> Call Trace:
->  ath9k_hif_usb_alloc_rx_urbs drivers/net/wireless/ath/ath9k/hif_usb.c:908
-> [inline]
->  ath9k_hif_usb_alloc_urbs+0x75e/0x1010
-> drivers/net/wireless/ath/ath9k/hif_usb.c:1019
->  ath9k_hif_usb_dev_init drivers/net/wireless/ath/ath9k/hif_usb.c:1109
-> [inline]
->  ath9k_hif_usb_firmware_cb+0x142/0x530
-> drivers/net/wireless/ath/ath9k/hif_usb.c:1242
->  request_firmware_work_func+0x12e/0x240
-> drivers/base/firmware_loader/main.c:1097
->  process_one_work+0x9af/0x1600 kernel/workqueue.c:2279
->  worker_thread+0x61d/0x12f0 kernel/workqueue.c:2425
->  kthread+0x3b4/0x4a0 kernel/kthread.c:313
->  ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:299
-> 
-> Fri, 9 Oct 2020 at 21:55:51 UTC+3, Alan Stern wrote:
-> > I don't know if all the devices used by the ath9k_htc driver are
-> > expected to have all of these endpoints and no others. I just added
-> > checks for the ones listed in the hif_usb.h file.
-> 
-> I agree with you: kernel should definitely handle itself the situation
-> when endpoint definitions do not correspond to the expected ones because
-> this problem arises in Syzkaller cases. I suppose adding the endpoints
-> to be checked listed in the hif_usb.h file would be enough.
-> 
-> However, it is probable that those warnings can only be triggered with
-> fuzzer and can't happen in real applications. Perhaps it is Syzkaller
-> which does not name endpoints correctly in a way that suits real
-> implementation. But overall, some method of checking endpoints should
-> be implemented inside ath9k driver, and the code you proposed does this
-> functionality.
-> 
-> [1]: https://groups.google.com/g/syzkaller-bugs/c/umu68ITBsRg/m/xy8dtA5JAQAJ
+On 8/18/2022 3:25 PM, Jeff Johnson wrote:
+ > On 8/12/2022 9:09 AM, Kalle Valo wrote:
+ >> +static struct mhi_event_config ath12k_mhi_events_qcn9274[] = {
+ >
+ > seems this should be const
+ > but for some reason struct mhi_controller_config has:
+ >      struct mhi_event_config *event_cfg;
+ >
+ > (not const) so this can't be const :(
+ >
+ > perhaps someone can propose a MHI interface change?
+ > especially since internally to MHI in parse_ev_cfg() we have:
+ >      const struct mhi_event_config *event_cfg;
+ >      [...]
+ >      for (i = 0; i < num; i++) {
+ >          event_cfg = &config->event_cfg[i];
+ >
+ > so it is treated as const
 
-Good.  Should I add your Acked-by: to the patch and submit it?
+I submitted a patch for this
 
-Alan Stern
+<https://lore.kernel.org/mhi/20220819184245.28035-1-quic_jjohnson@quicinc.com/>
+
