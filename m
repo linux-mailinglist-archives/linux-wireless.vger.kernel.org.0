@@ -2,62 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DF4659A6E9
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Aug 2022 22:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B339A59A742
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Aug 2022 23:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351717AbiHSUGI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Aug 2022 16:06:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
+        id S1351998AbiHSUv7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Aug 2022 16:51:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351558AbiHSUGG (ORCPT
+        with ESMTP id S1351995AbiHSUvl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Aug 2022 16:06:06 -0400
-Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE57EC4CD;
-        Fri, 19 Aug 2022 13:06:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1660939524; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=YmzNaWO54q/8fCTIN4jaIZ5Ndxwp9+YSr/ByeZ1N7fM3t9mAdvJ8y6JVwVmhL749gAw2Crf1yFMBP/hmDlyxgG/vh5Z+ClbSGKiIy3i2NJwXvskTK6FyVe5N4KEHj2guGG5g6uEOd1go6jtRcc5iu0jDV2Sp2RVUv6Q4zeceEyk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1660939524; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=ZbOmMhea6mo0GiKmo4Riv4/f27wDQaFeMZfT8F4TkaM=; 
-        b=OTX/jA3DUnqGI4oQNVaV6ZBR9X9H6EIAEQjLXa/wZaMOl2Z3TZz6wxSZaDXy6qqFp6N63Js0NPNTVCPXH/86DU53MrALzPgxdKM/rLiqEHfJ+Mwd1ibKenRYgvk9gbnU3Bpi+dALQyCOps/2DnjxwkyK+0mLveRSoXh3t9vdtSg=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1660939524;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=ZbOmMhea6mo0GiKmo4Riv4/f27wDQaFeMZfT8F4TkaM=;
-        b=Neex3bMTcjTpaHR6LmwPqzEz9gmMywdSnuGnLC4/0PQxWQHeQgjvg/vIyndPhGIP
-        g5dCrqPdTnxpeuhMSYF1XsLA1i8oN+RIhwNXtxznyHNgESUSm8EUXMycuICmyI0cgU/
-        tX8mu62ADEKmBazZSC65bTiBd2o0Fmvhr3jTdaC0=
-Received: from localhost.localdomain (103.86.19.2 [103.86.19.2]) by mx.zoho.in
-        with SMTPS id 1660939523728629.6711836985853; Sat, 20 Aug 2022 01:35:23 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-kernel-mentees 
-        <linux-kernel-mentees@lists.linuxfoundation.org>,
-        syzbot+f9acff9bf08a845f225d@syzkaller.appspotmail.com
-Message-ID: <20220819200340.34826-1-code@siddh.me>
-Subject: [PATCH v3] wifi: mac80211: Fix UAF in ieee80211_scan_rx()
-Date:   Sat, 20 Aug 2022 01:33:40 +0530
-X-Mailer: git-send-email 2.35.1
+        Fri, 19 Aug 2022 16:51:41 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A690D8E1B
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Aug 2022 13:50:52 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27JB1FwI031941;
+        Fri, 19 Aug 2022 20:50:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=NVEKoE6HPyHMIKayE+its8PR3siiCvbCSH1tYN00GI0=;
+ b=lgjPtuvxNdqtlli0ZoT+vGNp2OfiI0IvbgRYXrsWccdBl9Wv4zMTKiBL0TQ0/afexCbS
+ /F33460vMh7X8vklOZIhUtRD0qqunoT4n5JhXc4wX1OqLs2nnXOJfrA32+hKeGzIT3Rn
+ uaeRHwBwI67olRCg42uiqGBf2HImaa4ySxhT3J7SeDI7rjoZmUHcrbgb8AdcxaZDL7l/
+ qtmql2w3Mz11FFGOnXpuWtfaZtiEmt/JAnotkgWHRtk17uyo05LPuI3EQOHSN2NzVFtp
+ shnt/Xmll6zf+UILFEyZiCHSh6q12zVvqqAa9j/zV7l8f9xpJsTGZHDmI0BCMGiZYZcb iw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j256ttbdf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Aug 2022 20:50:29 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27JKjTJr012263
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Aug 2022 20:45:29 GMT
+Received: from [10.110.11.6] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 19 Aug
+ 2022 13:45:28 -0700
+Message-ID: <959339da-3574-8638-02e6-e1459559fa45@quicinc.com>
+Date:   Fri, 19 Aug 2022 13:45:27 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_RED autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 46/50] wifi: ath12k: add wmi.c
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
+CC:     <ath12k@lists.infradead.org>
+References: <20220812161003.27279-1-kvalo@kernel.org>
+ <20220812161003.27279-47-kvalo@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220812161003.27279-47-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: _dNgFRp2Z15Bf7y1aDGO1KXwLpS9Sq7j
+X-Proofpoint-GUID: _dNgFRp2Z15Bf7y1aDGO1KXwLpS9Sq7j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-19_12,2022-08-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ mlxscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 impostorscore=0 mlxlogscore=999 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208190078
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,61 +79,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_scan_rx() tries to access scan_req->flags after a
-null check, but a UAF is observed when the scan is completed
-and __ieee80211_scan_completed() executes, which then calls
-cfg80211_scan_done() leading to the freeing of scan_req.
+On 8/12/2022 9:09 AM, Kalle Valo wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> (Patches split into one patch per file for easier review, but the final
+> commit will be one big patch. See the cover letter for more info.)
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/wmi.c | 6558 +++++++++++++++++++++++++++++++++
 
-Since scan_req is rcu_dereference()'d, prevent the racing in
-__ieee80211_scan_completed() by ensuring that from mac80211's
-POV it is no longer accessed from an RCU read critical section
-before we call cfg80211_scan_done().
+[...]
 
-Bug report: https://syzkaller.appspot.com/bug?extid=3Df9acff9bf08a845f225d
-Reported-by: syzbot+f9acff9bf08a845f225d@syzkaller.appspotmail.com
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
----
-Changes in v3:
-Use Johannes Berg's suggestion as-it-is:
-https://lore.kernel.org/netdev/18fd9b89d45aedc1504d0cbd299ffb289ae96438.cam=
-el@sipsolutions.net/
+I notice an inconsistency in logging, and wonder if there should be 
+consistency. Some commands have a debug log after ath12k_wmi_cmd_send() 
+and some have a debug log before:
 
-v2 is now obsolete since it was an incorrect way to go about things.
+> +int ath12k_wmi_vdev_create(struct ath12k *ar, u8 *macaddr,
+> +			   struct ath12k_wmi_vdev_create_arg *args)
+> +{
 
- net/mac80211/scan.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+[... after case ...]
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index fa8ddf576bc1..c4f2aeb31da3 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -469,16 +469,19 @@ static void __ieee80211_scan_completed(struct ieee802=
-11_hw *hw, bool aborted)
- =09scan_req =3D rcu_dereference_protected(local->scan_req,
- =09=09=09=09=09     lockdep_is_held(&local->mtx));
-=20
--=09if (scan_req !=3D local->int_scan_req) {
--=09=09local->scan_info.aborted =3D aborted;
--=09=09cfg80211_scan_done(scan_req, &local->scan_info);
--=09}
- =09RCU_INIT_POINTER(local->scan_req, NULL);
- =09RCU_INIT_POINTER(local->scan_sdata, NULL);
-=20
- =09local->scanning =3D 0;
- =09local->scan_chandef.chan =3D NULL;
-=20
-+=09synchronize_rcu();
-+
-+=09if (scan_req !=3D local->int_scan_req) {
-+=09=09local->scan_info.aborted =3D aborted;
-+=09=09cfg80211_scan_done(scan_req, &local->scan_info);
-+=09}
-+
- =09/* Set power back to normal operating levels. */
- =09ieee80211_hw_config(local, 0);
-=20
---=20
-2.35.1
+> +	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_VDEV_CREATE_CMDID);
+> +	if (ret) {
+> +		ath12k_warn(ar->ab,
+> +			    "failed to submit WMI_VDEV_CREATE_CMDID\n");
+> +		dev_kfree_skb(skb);
+> +	}
+> +
+> +	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
+> +		   "WMI vdev create: id %d type %d subtype %d macaddr %pM pdevid %d\n",
+> +		   args->if_id, args->type, args->subtype,
+> +		   macaddr, args->pdev_id);
+> +
+> +	return ret;
+> +}
 
+[...]
 
+> +int ath12k_wmi_send_peer_delete_cmd(struct ath12k *ar,
+> +				    const u8 *peer_addr, u8 vdev_id)
+> +{
+
+[... before case ...]
+
+> +	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
+> +		   "WMI peer delete vdev_id %d peer_addr %pM\n",
+> +		   vdev_id,  peer_addr);
+> +
+> +	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_PEER_DELETE_CMDID);
+> +	if (ret) {
+> +		ath12k_warn(ar->ab, "failed to send WMI_PEER_DELETE cmd\n");
+> +		dev_kfree_skb(skb);
+> +	}
+> +
+> +	return ret;
+> +}
+
+in the case where an error is reported I think it would make more sense 
+to have the error log after the debug log.
+
+For the "after" case above, in the error path, you'd have logs:
+failed to submit WMI_VDEV_CREATE_CMDID
+WMI vdev create: id %d type %d subtype %d macaddr %pM pdevid %d
+
+IMO this is confusing since it tells you it failed, but then seems to be 
+telling you it did somethig
+
+For the "before" case above, in the error path, you'd have:
+WMI peer delete vdev_id %d peer_addr %pM
+failed to send WMI_PEER_DELETE cmd
+
+This seems to make more sense since it tells you it is doing something 
+and then tells you that what it was trying to do failed. no ambiguity.
