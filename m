@@ -2,76 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2F5459C4CC
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Aug 2022 19:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CBCC59C5F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Aug 2022 20:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236860AbiHVROl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Aug 2022 13:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38030 "EHLO
+        id S237403AbiHVSV6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Aug 2022 14:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237126AbiHVROh (ORCPT
+        with ESMTP id S237395AbiHVSV4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Aug 2022 13:14:37 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEEB217A9F
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Aug 2022 10:14:35 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27MFLtTA009184;
-        Mon, 22 Aug 2022 17:14:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=YHXKYbZDB+SQmGwa9x657Bpwt9sf1252DVx+CGaF/1k=;
- b=Wq4UU6GaYl+QePCczhdwGxbtarSwy5ATVBmESk4mc2gS3xoRJbl8M8VlmITdXUu8pLyw
- N61Mkw+OuyLkPD169xGBW/XvrSjR+dQlskEsgVvSb2gRG+7NAWn4QG8oxEQJgUbNQDlS
- qI7tcYkVH3tpCHAaiWF5+f1CRRRcg2wEuf7gUL0OJfSngyp9WMwmHsrEvMvbcy0/OGxa
- 3R/bVssfcFCtFnst/uWckguQGbSq4G71WKhm+GnIsnhDSTf0b02Ub1auvltj1tNRBbdP
- aloWb+oCNMOYNqKeEFmCN6bosOT1/9W5rC596Ji65XQyLZQZCFKVwxNz08nMNpuBxbpX kA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j2vwhw8q5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 22 Aug 2022 17:14:22 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27MHEMVD028380
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 22 Aug 2022 17:14:22 GMT
-Received: from [10.110.115.186] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Mon, 22 Aug
- 2022 10:14:21 -0700
-Message-ID: <30a097d8-d084-2a1e-f067-bb7a303968da@quicinc.com>
-Date:   Mon, 22 Aug 2022 10:14:17 -0700
+        Mon, 22 Aug 2022 14:21:56 -0400
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5993C474F8
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Aug 2022 11:21:55 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id z23-20020a4ad1b7000000b0044931ffdcafso2073274oor.4
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Aug 2022 11:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=KxeXKUeRuVUgo6T1WQOko+Q6K9NOCAx+pcM9TQPoDKY=;
+        b=emDZmyCuj4uPG4Bgx/jCNx3nI+rZTnqfKonJwV+kryOTW3PkTafUzA44hv7DwATmP9
+         OVVB9s3lcyJLsx9o8Qvumz4rXuUpC/OQn6ReZ2/4zq5vJciV/wtkLZQPyZV4zLwmGPWM
+         4KcwuzMZ8QzvcN6krVs1/S0uO/WgHkx0mv2I8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=KxeXKUeRuVUgo6T1WQOko+Q6K9NOCAx+pcM9TQPoDKY=;
+        b=JgAbH0xlyb9wiZ6P7cSBm4vLvcHCCs3Q2zaz5KAvhJbivYot0EPdlhhs2FRHrB+Sc4
+         gYEqSqN+haBt4iCfdf6tBFPiKrP+kMOqZGge5P4lijQYIOp9XP9mQTy6k0yPmdBLiPxR
+         DrVMjsrAPw2VjBChlrTvX0dmilw0ebruMoD/UCTXvLc9XGUVE1GUDwUh/hULBgbUMDdW
+         1x5V+BX1dVeqP2mz3Lx6a9PnBbPhFAP8F4iAZc0zlPRJXa0VcL71P2jhas6wo7aySHgm
+         0gJxVMBfSIYN1anoz+Rn9snTPP8TU3FIwB64Xt4oMThwM+Q02AwL9rF0zonZ7nELgaKD
+         YS+g==
+X-Gm-Message-State: ACgBeo0342ZYwnVwRnOeO4/nttSmnKfjB9mQ1ohZvEW0CYHr9BDK+h9u
+        hfrHkjX+OoYIaY9cuzLpxivzKvIsigppNg==
+X-Google-Smtp-Source: AA6agR7g62Z/N0CVy91jAOTVwThiJZNXKXYj5KdJESXUClQNK/B5o/U4ViAKcxSbDS0p0/rzLInpCw==
+X-Received: by 2002:a4a:b688:0:b0:448:69c6:2216 with SMTP id v8-20020a4ab688000000b0044869c62216mr7016597ooo.3.1661192514249;
+        Mon, 22 Aug 2022 11:21:54 -0700 (PDT)
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com. [209.85.160.44])
+        by smtp.gmail.com with ESMTPSA id x18-20020a05683000d200b00636e9a0cce5sm3041261oto.60.2022.08.22.11.21.51
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Aug 2022 11:21:51 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-11d2dcc31dbso5755188fac.7
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Aug 2022 11:21:51 -0700 (PDT)
+X-Received: by 2002:a05:6870:d0d4:b0:10d:4a2:2c0e with SMTP id
+ k20-20020a056870d0d400b0010d04a22c0emr13587797oaa.232.1661192510574; Mon, 22
+ Aug 2022 11:21:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 39/50] wifi: ath12k: add qmi.c
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
-CC:     <ath12k@lists.infradead.org>
-References: <20220812161003.27279-1-kvalo@kernel.org>
- <20220812161003.27279-40-kvalo@kernel.org>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220812161003.27279-40-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 7xOfya9UmTbcT4CE_-TA8jbOvXXQc5h8
-X-Proofpoint-GUID: 7xOfya9UmTbcT4CE_-TA8jbOvXXQc5h8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-22_10,2022-08-22_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
- spamscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208220072
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <cover.1660739276.git.duoming@zju.edu.cn> <b861ce56ba555109a67f85a146a785a69f0a3c95.1660739276.git.duoming@zju.edu.cn>
+ <YvzicURy8t2JdQke@kroah.com> <176e7de7.8a223.182ac1fbc47.Coremail.duoming@zju.edu.cn>
+ <Yv5TefZcrUPY1Qjc@kroah.com> <5108e03b.8c156.182b1a2973f.Coremail.duoming@zju.edu.cn>
+In-Reply-To: <5108e03b.8c156.182b1a2973f.Coremail.duoming@zju.edu.cn>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 22 Aug 2022 11:21:36 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNN81VczMTUt8=AyeytbMjy2vAGi_aVW_MNha9D99Z5VA@mail.gmail.com>
+Message-ID: <CA+ASDXNN81VczMTUt8=AyeytbMjy2vAGi_aVW_MNha9D99Z5VA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] devcoredump: remove the useless gfp_t parameter in
+ dev_coredumpv and dev_coredumpm
+To:     Duoming Zhou <duoming@zju.edu.cn>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        amit karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>, kvalo@kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,20 +88,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/12/2022 9:09 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> (Patches split into one patch per file for easier review, but the final
-> commit will be one big patch. See the cover letter for more info.)
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> ---
->   drivers/net/wireless/ath/ath12k/qmi.c | 3305 +++++++++++++++++++++++++++++++++
->   1 file changed, 3305 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-[...]
-> +static struct qmi_elem_info qmi_wlfw_qdss_trace_config_download_req_msg_v01_ei[] = {
+Hi,
 
-FYI I've submitted a patch which will allow these to be const:
-<https://lore.kernel.org/linux-arm-msm/20220822153435.7856-1-quic_jjohnson@quicinc.com/T/#u>
+On Thu, Aug 18, 2022 at 8:47 AM <duoming@zju.edu.cn> wrote:
+> On Thu, 18 Aug 2022 16:58:01 +0200 Greg KH wrote:
+> > No, that is not necessary.  Do the work now so that there is no flag day
+> > and you don't have to worry about new users, it will all "just work".
+>
+> Do you mean we should replace dev_set_name() in dev_coredumpm() to some other
+> functions that could work both in interrupt context and process context?
+
+No.
+
+I believe the suggestion is that rather than change the signature for
+dev_coredumpv() (which means everyone has to agree on the new
+signature on day 1), you should introduce a new API, like
+dev_coredumpv_noatomic() (I'm not good at naming [1]) with the
+signature you want, and then migrate users over. Once we have a
+release with no users of the old API, we drop it.
+
+There are plenty of examples of the kernel community doing similar
+transitions. You can search around for examples, but a quick search of
+my own shows something like this:
+https://lwn.net/Articles/735887/
+(In particular, timer_setup() was introduced, and all setup_timer()
+users were migrated to it within a release or two.)
+
+Brian
+
+[1] Seriously, dev_coredumpv_noatomic() is not a name I want to see
+last very long. Maybe some other trivial modification? Examples:
+
+dev_core_dumpv()
+dev_coredump_v()
+device_coredumpv()
+...
