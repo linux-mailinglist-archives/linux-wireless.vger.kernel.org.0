@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C2EE59EF11
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 00:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1836659EF81
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 00:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233963AbiHWW0Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Aug 2022 18:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52752 "EHLO
+        id S229798AbiHWW6Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Aug 2022 18:58:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233635AbiHWWZv (ORCPT
+        with ESMTP id S229603AbiHWW6O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Aug 2022 18:25:51 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E3E17D78C;
-        Tue, 23 Aug 2022 15:25:47 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id b5so14327742wrr.5;
-        Tue, 23 Aug 2022 15:25:47 -0700 (PDT)
+        Tue, 23 Aug 2022 18:58:14 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7831176;
+        Tue, 23 Aug 2022 15:58:12 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id ay12so7906705wmb.1;
+        Tue, 23 Aug 2022 15:58:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc;
-        bh=0KiyNC174zzIjrp1GQzwkUvnQfE9zdtStKGjmTOoAis=;
-        b=ISOAaZjBLHcybcp4uPVGbXkobnssTpHtkw01HnsIkvCOXnpw0/0LwaIbeXccRKCQ0M
-         JKTK29tVl3uxvOrLEEfvBYrHm+cjw8F1x0eBXsQjDQKqE5di3ZMDFVqaQ7i6oS3xeTOy
-         McKs03C2T5MNpFnSZw7g/0fM4sFGLp8WtHnfMXFFK1hN7wABEa1w6M8g0mgCbDt7weSS
-         41xaeJvRF1ZAyjpxLi0/3Qh88jiIgM64CTkN5KVXoLNt5qtZDStaC9hJrrsNLuGvrWzK
-         akMDScEddIA2fx0iToXHjyt//hg4dUKZ1sF2TBFvOtWQB+zblWRHviWhK5d7jeKuIryJ
-         7O3Q==
+        bh=lk8/tj/nL+5/3atLQyJ228xPqcFNf3nUrZ03uJtpZEE=;
+        b=pvfL7cJb4Q6aj5gWTQZr10k4cTHpOUxS7OR9MD9VoS52aLJQqXyhRq0jV08egaTM99
+         +PZuXYnNSeIR+5K3C2HGqM0kq7LHIw+Bmdtna0MRXVK7AYCWQfuhPS4audm7Iuq6it+t
+         zxDpN7LXKfs3pakXGXkNaf7nkqR2s9gEe1UCs9azV0aGGogLnmVRsknkLmP3C90Wiqod
+         d8jmm9Qo1MIPLKZOwYA+BCnoxz6dM3fB+Vkgi7RPZrHrGPLzexH9gEYz8gDcOSBDz5Vc
+         NQekFrrPeElUGnSETN4rTBDqiBV9Ca5A1nAh7wXsROpOmYDgoFI2tjnwb+qsY/5mJEM9
+         gDpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc;
-        bh=0KiyNC174zzIjrp1GQzwkUvnQfE9zdtStKGjmTOoAis=;
-        b=tvIDlvs314LcGwFxy0ulf1rhFdyznY7USDQL1R1tbX8rxA9an4mED+nBaTrSPBtmaB
-         fYxNB3FkEXylHYWRJHcArzz2xLInsxOv1cg92oBTGaVj3Y3rTnf4GEF7jCv++mMqkWZR
-         1l62zP4cjQJRW4Awixv/1qI5SS1+xS1HWRnHa9AkekJkxF2t0tLpTJSDOdj9vI3Vvcy0
-         BIzxsoNRjTXwvVDB9CXg6kUDy11vAXGJ9HgSCf7VoSs0464cy9cmdwGZLslaWJD/wiTL
-         6wxCgEB6WbRp7OEJqMWrJf10pTtL+3Utwc5zM8ThiIb/pnWacIfj+XlfZ1HQtmci+eSI
-         LqvQ==
-X-Gm-Message-State: ACgBeo3BBBSDnOne+uUZuh6myhpOVIt/a8uwSSLKySq1C4+aerhxPTbU
-        CqOjaV7DID9xYp+OAgfem48=
-X-Google-Smtp-Source: AA6agR4y17yGEPfUjNos3CS9FizMNvtc29TAVoyBBkCY/cph1Sh1OwBFkf27OS+J6CbR5P851Ny8bw==
-X-Received: by 2002:a5d:594a:0:b0:225:3606:da33 with SMTP id e10-20020a5d594a000000b002253606da33mr12411231wri.60.1661293545431;
-        Tue, 23 Aug 2022 15:25:45 -0700 (PDT)
+        bh=lk8/tj/nL+5/3atLQyJ228xPqcFNf3nUrZ03uJtpZEE=;
+        b=Bj8Q4W0SI1hBRnot+EUI5XlWa1COWrjhUFWIZpmGAsnCe6H2n7U3q6ND7iVVFq163u
+         iQRvccUsFGeATGCrClUylJxBWqXRy/+gAlYxH5S3SZO52lIzlPHMHrEqT+FZK+tdLMoN
+         st0/YLRCa5NnzstZ72/pdd89TUyjPR4yYpg+I8sej6d/TPmKHBqJ2M+mQwpfKWWyWCpt
+         BSUC7Pf9i6OS1s30ARsF6VEbv4670vy6rwCFYN+JunssVKijbCtOPEOkN+maBAIMVD9t
+         t5vo0aKXfdKV1bjvw+gUceSv2iaihqvjuedqJQ5UU50pJOVGWDCdkC9sQcGmxp5hW268
+         vx2Q==
+X-Gm-Message-State: ACgBeo0y4xBHYFkf8Zc5ZNq/S6EOtssZ5oC4eKmoYqLp4KfC6kA+MNKs
+        CAROb00OsSlau6+w+fKWDfQ=
+X-Google-Smtp-Source: AA6agR43PKc2OD8KiUkOBN1+RxOPi6GqXs/g9ouzuKC/13rWTetZzknP+V5rl+Lf0JXq4gPbsnRVWg==
+X-Received: by 2002:a7b:cc90:0:b0:3a5:3899:7be1 with SMTP id p16-20020a7bcc90000000b003a538997be1mr3361217wma.19.1661295491434;
+        Tue, 23 Aug 2022 15:58:11 -0700 (PDT)
 Received: from localhost.localdomain ([84.255.184.228])
-        by smtp.gmail.com with ESMTPSA id g11-20020a05600c4ecb00b003a4c6e67f01sm26522607wmq.6.2022.08.23.15.25.41
+        by smtp.gmail.com with ESMTPSA id y6-20020a056000108600b002250c35826dsm15052123wrw.104.2022.08.23.15.58.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Aug 2022 15:25:44 -0700 (PDT)
+        Tue, 23 Aug 2022 15:58:10 -0700 (PDT)
 From:   Mazin Al Haddad <mazinalhaddad05@gmail.com>
 To:     pontus.fuchs@gmail.com
 Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
@@ -57,9 +57,9 @@ Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
         skhan@linuxfoundation.org, paskripkin@gmail.com,
         Mazin Al Haddad <mazinalhaddad05@gmail.com>,
         syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-Subject: [PATCH] ar5523: check endpoints type and direction in probe()
-Date:   Wed, 24 Aug 2022 01:24:38 +0300
-Message-Id: <20220823222436.514204-1-mazinalhaddad05@gmail.com>
+Subject: [PATCH v2] ar5523: check endpoints type and direction in probe()
+Date:   Wed, 24 Aug 2022 01:57:54 +0300
+Message-Id: <20220823225754.519945-1-mazinalhaddad05@gmail.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -79,7 +79,7 @@ of endpoints and the type which causes an error as the code tries to
 send a URB to the wrong endpoint.
 
 Fix it by adding a check for the number of endpoints and the
-direction/type of the endpoints. If the endpoints do not match the 
+direction/type of the endpoints. If the endpoints do not match the
 expected configuration -ENODEV is returned.
 
 Syzkaller report:
@@ -97,19 +97,23 @@ Call Trace:
  ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
  ar5523_probe+0xc66/0x1da0 drivers/net/wireless/ath/ar5523/ar5523.c:1655
 
-
 Link: https://syzkaller.appspot.com/bug?extid=1bc2c2afd44f820a669f
 Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
 Signed-off-by: Mazin Al Haddad <mazinalhaddad05@gmail.com>
 ---
- drivers/net/wireless/ath/ar5523/ar5523.c | 31 ++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+v1->v2 changes:
+	- Fix incorrect check in if statement within switch case (was missing
+		a "!" operator).
+	- Added comments explaining the code.
+
+ drivers/net/wireless/ath/ar5523/ar5523.c | 33 ++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 6f937d2cc126..5451bf9ab9fb 100644
+index 6f937d2cc126..d7e86dc4c293 100644
 --- a/drivers/net/wireless/ath/ar5523/ar5523.c
 +++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -1581,8 +1581,39 @@ static int ar5523_probe(struct usb_interface *intf,
+@@ -1581,8 +1581,41 @@ static int ar5523_probe(struct usb_interface *intf,
  	struct usb_device *dev = interface_to_usbdev(intf);
  	struct ieee80211_hw *hw;
  	struct ar5523 *ar;
@@ -121,24 +125,26 @@ index 6f937d2cc126..5451bf9ab9fb 100644
 +		return -ENODEV;
 +	}
 +
++	// Check for type of endpoint and direction.
 +	for (int i = 0; i < host->desc.bNumEndpoints; ++i) {
 +		struct usb_endpoint_descriptor *ep = &host->endpoint[i].desc;
-+		// Check for type of endpoint and direction.
++
 +		switch (i) {
 +		case 0:
 +		case 1:
-+			if ((ep->bEndpointAddress & USB_DIR_OUT) &&
-+			    ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
-+			     == USB_ENDPOINT_XFER_BULK)){
++			// if endpoint direction and type does not match
++			if (!((ep->bEndpointAddress & USB_DIR_OUT) &&
++			      ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
++			      == USB_ENDPOINT_XFER_BULK))){
 +				dev_err(&dev->dev, "Wrong type of endpoints\n");
 +				return -ENODEV;
 +			}
 +			break;
 +		case 2:
 +		case 3:
-+			if ((ep->bEndpointAddress & USB_DIR_IN) &&
-+			    ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
-+			     == USB_ENDPOINT_XFER_BULK)){
++			if (!((ep->bEndpointAddress & USB_DIR_IN) &&
++			      ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
++			     == USB_ENDPOINT_XFER_BULK))){
 +				dev_err(&dev->dev, "Wrong type of endpoints\n");
 +				return -ENODEV;
 +			}
