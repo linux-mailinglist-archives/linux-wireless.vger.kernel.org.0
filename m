@@ -2,98 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 725DC59F39F
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 08:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D4F659F673
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 11:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235051AbiHXGdf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Aug 2022 02:33:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
+        id S236402AbiHXJhu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Aug 2022 05:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235043AbiHXGdd (ORCPT
+        with ESMTP id S235637AbiHXJhM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Aug 2022 02:33:33 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F7237F0A4
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Aug 2022 23:33:30 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 27O6X6jL4002231, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 27O6X6jL4002231
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 24 Aug 2022 14:33:06 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 24 Aug 2022 14:33:20 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 24 Aug
- 2022 14:33:20 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: pci: correct TX resource checking in low power mode
-Date:   Wed, 24 Aug 2022 14:33:12 +0800
-Message-ID: <20220824063312.15784-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220824063312.15784-1-pkshih@realtek.com>
-References: <20220824063312.15784-1-pkshih@realtek.com>
+        Wed, 24 Aug 2022 05:37:12 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AF390C46
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 02:37:08 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-11cb3c811d9so18294242fac.1
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 02:37:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=reply-to:date:from:to:subject:content-description
+         :content-transfer-encoding:mime-version:message-id:from:to:cc;
+        bh=VIppib0I37Ohb8K613KZx8H7ZEDiLnl/b0M2YUmeeSA=;
+        b=TOo+kGvo0sFn1SOPnCPFKM4xSpkH14EF2Y2eR5x2c161t6x3yEjDvUxZzcI4zxhH2h
+         a8y8Y/Ar1h/uoQofYdt4lmxmrp+wEm4OdjeFoazeRcPNx2sVoIojXnOy4RCXunT/4jx0
+         /zgx+glsNJ1Jj4+4sCgHmaIRCPtwFxbCvITXAhT4rXsci4VQjBVwhPQVcaosO4WdWB8o
+         dXB/Q2xIWEK1sYlapIfU6INYXVbdwrEpSgbTfqCnqAkBsPY3RIAlm7tOY4OtYf1LB3NO
+         ClrR8AJ2yqsCGUJpDRSD127VrnmJp7Vm9myoT91mq8eXehM9ZsFuwanJ+IuX16CTsMsu
+         Ilqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=reply-to:date:from:to:subject:content-description
+         :content-transfer-encoding:mime-version:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=VIppib0I37Ohb8K613KZx8H7ZEDiLnl/b0M2YUmeeSA=;
+        b=ROMGCArE657QIRiMbzLBVnwk8ZggNMD/rxCOszBSzJ++Hhe0zc0vUnN1SDyaSVgPM0
+         jAVBlJDkPx4aIgq3ftl2oTMJ6G2pCFj8gUq0gmg9ujLq5MS18e62+TzQLX5nZ2jip/Z8
+         Q3f/VVYq7om9NzTIfX7wYG83Tgwv9IyfGCx5jiK+key6QcF7hzOw6S5GUWEExJCegCHZ
+         KeANwwiESMqqJORDbgmWwtUB4EvPOImQluBIVkkfKQ7+zGRU6ZLJhcVFybnYft8fSLVY
+         Olr/7X3vDx/yjCOOU+zC/jiFMdhsBjvKrTUFpyoi9Gh6mcfuHDMT/VNy2VxXd/oe4EG9
+         FwPw==
+X-Gm-Message-State: ACgBeo1js+S/7bfbN7gIcNDrsw+11H7FWoq00/y0HU6SriQkH418m9s9
+        lUUBJl5Fdx7zp3m2DBLSVty479D/hwl/LZWE
+X-Google-Smtp-Source: AA6agR43bzGw6hH9xezQdImDN4NKRamjjZUY5EfzISCJjsNs5+Jkn2HnSEdjtx4HPjjf4R5Iw3GDgA==
+X-Received: by 2002:a05:6870:1787:b0:11c:eb96:7748 with SMTP id r7-20020a056870178700b0011ceb967748mr3163227oae.63.1661333827449;
+        Wed, 24 Aug 2022 02:37:07 -0700 (PDT)
+Received: from [0.0.0.63] ([63.141.237.39])
+        by smtp.gmail.com with ESMTPSA id 67-20020aca0646000000b00342fedaf7d9sm3996437oig.43.2022.08.24.02.37.05
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 24 Aug 2022 02:37:07 -0700 (PDT)
+Message-ID: <6305f143.ca0a0220.970d1.e984@mx.google.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/24/2022 06:20:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzgvMjQgpFekyCAwMjo0MjowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: CONTRACT OPPORTUNITIES,SUPPLY OF GOODS AND SERVICES IN SOUTH SUDAN.
+To:     Recipients <djryuma@gmail.com>
+From:   "Wek Ateny" <djryuma@gmail.com>
+Date:   Wed, 24 Aug 2022 11:37:02 +0200
+Reply-To: wekaeny@gmail.com
+X-Spam-Status: No, score=4.1 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Number of TX resource must be minimum of TX_BD and TX_WD. Only considering
-TX_BD could drop TX packets pulled from mac80211 if TX_WD is unavailable.
+Attention:
 
-Fixes: 52edbb9fb78a ("rtw89: ps: access TX/RX rings via another registers in low power mode")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+RE:OPPORTUNITY FOR CONSTRUCTION, SUPPLY OF GOODS AND SERVICES IN SOUTH SUDA=
+N.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 8a093e1cb328e..7bb1b494c5d15 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -926,10 +926,12 @@ u32 __rtw89_pci_check_and_reclaim_tx_resource_noio(struct rtw89_dev *rtwdev,
- {
- 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
- 	struct rtw89_pci_tx_ring *tx_ring = &rtwpci->tx_rings[txch];
-+	struct rtw89_pci_tx_wd_ring *wd_ring = &tx_ring->wd_ring;
- 	u32 cnt;
- 
- 	spin_lock_bh(&rtwpci->trx_lock);
- 	cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
-+	cnt = min(cnt, wd_ring->curr_num);
- 	spin_unlock_bh(&rtwpci->trx_lock);
- 
- 	return cnt;
--- 
-2.25.1
+Dear Sir,
 
+The Revitalized Transitional Government of National Unity (RTGoNU) of South=
+ Sudan under the terms of the agreement of the government has agreed to wor=
+k together to bring development to the people of South Sudan. The governmen=
+t's major budget has been centered on these opportunities which we intend t=
+o spend higher for the construction and provision of goods and services.
+
+On this note, many opportunities are open to individuals, companies and org=
+anizations to come and partner with the Government of South Sudan to achiev=
+e this aim. Are you a contractor, broker, company, individual=C2=A0 organiz=
+ation or consultant interested in construction, supply of goods and service=
+s in various ministries and government agencies here, kindly contact us bac=
+k for the list of construction, goods and services we require.
+
+We have supply opportunities in these key areas of
+
+
+=C2=A0 =C2=A0 I. Agricultural Equipments & Machineries
+
+=C2=A0 =C2=A0 II.Construction Equipments & Infrastructural Developments
+
+=C2=A0 =C2=A0 III.Consultancy, Health and Hospital consumables
+
+=C2=A0 =C2=A0 IV. Computer=C2=A0 & Accessories, /I.C.T,
+
+=C2=A0 =C2=A0 V. Office Equipment & School Accessories
+
+=C2=A0 =C2=A0 VI.Transportation =E2=80=93 Truck, Buses, Cars & Utility Vehi=
+cles, Motorcycles.
+
+=C2=A0 =C2=A0 VII.Power Plant/ Electricity Development, Generators & Street=
+ Lights
+
+Interested persons, company or origination should send their Application fo=
+r Expression of Interest with full contact information stating clearly thei=
+r area of interest for more information on the goods and services required =
+by the government under: MPA/AD/CGS/VOL/1/22.
+
+This opportunity is open for any interested individual, company or organiza=
+tion from any part of the world as far as you meet our standard. Interested=
+ persons or company can quote many areas of Interest within your individual=
+ or company capacity.
+
+All Application for Expression of Interest should be sent to email below qu=
+oting MPA/AD/CGS/VOL/1/22:
+
+Once I hear from you, a formal and an official response will follow.
+
+The=C2=A0 Executive Director,
+Ministry of Presidential Affairs.
+Juba, Republic of South Sudan.
+
+Important Information:
+
+I) More information will be provided to companies pre-qualified and found c=
+apable of executing contracts based on any of the chosen area(s) of interes=
+t. Only selected people or companies will be contacted.
+
+II) Nothing in the notification shall be interpreted to be a commitment on =
+the part of the Government of South Sudan.
+
+Thank you for your understanding.
+Regards,
+
+Wek Ateny.
+Chief Press Secretary
+Presidential Affairs
+Juba,Republic of South Sudan.
