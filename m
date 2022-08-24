@@ -2,108 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB4F5A02F3
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 22:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8E25A0367
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 23:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240532AbiHXUr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Aug 2022 16:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
+        id S239484AbiHXVua (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Aug 2022 17:50:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236263AbiHXUrZ (ORCPT
+        with ESMTP id S238715AbiHXVu2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Aug 2022 16:47:25 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12581786C9
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 13:47:24 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id v125so20825882oie.0
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 13:47:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=KduZjIEyBxkzWgXFN93eLdrigURNo60WLuJ3gbVZ7XY=;
-        b=HzD4lZ/6vc6C1WbqLgNeBjsTawvUPrh+Xj9kvCaukUs4HQ4qPkl3iXv/4oz9z8HwXo
-         ECVxp5rH4cZomOeGqhdJQD8ko317eSJ1CyxlRlohPXJiVaA5x1hshUDuqSdO4cmtUGMW
-         CNqIz6REQRw99lwDp8gd7kPHARUS2DCtzdD4A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=KduZjIEyBxkzWgXFN93eLdrigURNo60WLuJ3gbVZ7XY=;
-        b=eeYCWq6VWeFqoL/89FZ/rhpgC5ny9yCW6xWhniJfNuo0KpXmVgHFpmK5f1fuR/M5Mz
-         sAgEKS1XbqinTVS6RlGx+zsLw56TPDmdIfUNXEnVTgcKlQsDE4ywbVGynoEKaZJwB8l8
-         v7vPEnlG/zYEDUjTesDboa/Zg3Lhv6jZI9EaaZOytUDb4fVAdimgfdmE53aqKqJHZYA6
-         5lI/KnN8Tdf50IWWnlyHyg6yzBz66DT4BPFpWQzbssT6aJvPtXRBttzeQjyW7ehCbp4v
-         BtVhWf3BZyefeAIQvqOu/3jcaAzKTb5IXjpKQVdQ8HLtWYhKLmcDFZRSdB9sdMZMV408
-         dKqg==
-X-Gm-Message-State: ACgBeo22mIhi/KlDmF0TkgJMMWdrvYUxLEJb9YBSw4BpKyUw4ALnXnQ6
-        TFBKvVhweWBbemAt3fueEhCucqdg9DVfkQ==
-X-Google-Smtp-Source: AA6agR7Tew/jNBWI0QFX23JOaC/YZLqV59+ljHTHIDBrwq6mKSD0Bruh8pq+vtWyefPBk5HgQ/odiw==
-X-Received: by 2002:a05:6808:f0d:b0:343:8cf1:770a with SMTP id m13-20020a0568080f0d00b003438cf1770amr4166736oiw.3.1661374043101;
-        Wed, 24 Aug 2022 13:47:23 -0700 (PDT)
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com. [209.85.167.172])
-        by smtp.gmail.com with ESMTPSA id l14-20020a4ad9ce000000b0044b125e5dabsm3124392oou.35.2022.08.24.13.47.22
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Aug 2022 13:47:22 -0700 (PDT)
-Received: by mail-oi1-f172.google.com with SMTP id r10so14976070oie.1
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 13:47:22 -0700 (PDT)
-X-Received: by 2002:a05:6808:23c4:b0:344:e426:d2a7 with SMTP id
- bq4-20020a05680823c400b00344e426d2a7mr4087711oib.232.1661373740120; Wed, 24
- Aug 2022 13:42:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1661252818.git.duoming@zju.edu.cn>
-In-Reply-To: <cover.1661252818.git.duoming@zju.edu.cn>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 24 Aug 2022 13:42:09 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXNf5JV9mj8mbm1OGZ_zd4d8srFc=E++Amg4MoQjqjS_TA@mail.gmail.com>
-Message-ID: <CA+ASDXNf5JV9mj8mbm1OGZ_zd4d8srFc=E++Amg4MoQjqjS_TA@mail.gmail.com>
-Subject: Re: [PATCH v8 0/2] Add new APIs of devcoredump and fix bugs
-To:     Duoming Zhou <duoming@zju.edu.cn>
-Cc:     Linux Kernel <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        amit karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>, kvalo@kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>
+        Wed, 24 Aug 2022 17:50:28 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BF74E845;
+        Wed, 24 Aug 2022 14:50:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=ea72jXn4qCwy1jlxXBuPqKsWGEHBoJlLe6ksUrb7XRo=; t=1661377828; x=1662587428; 
+        b=p9ZTuOUrOkgT1V5Ozcja5FY0onyP+MEBLgcZ15HnvTKqxME6wMYOXhzrfr3BcRpgCIxvc66vF4D
+        sJ5wXxYDQ0uxb8JejTm20GSm99kRYpGKJH1AsSsIuFVKSTsga/vsfgCXllUHIpmUUcznl7DqmZVZa
+        ZKcNOWLmghYZbEe//e0Tt5LZEviemp8awsT1SW4RtziGof3mKqXm1OKP889WStlBQ+y/vC53MXPVA
+        RzWIawGpS7VBXF+KuEaJOwWrMklTsLYLYxERJVndkU8lwUWkbSTUkJ1Fj8/l+BAAl/RMQba0/Npki
+        Aj29aKlEaxdCHBMayC74JK8A2SQSyjqBakpg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oQyGR-00GND3-2X;
+        Wed, 24 Aug 2022 23:50:19 +0200
+Message-ID: <117aa7ded81af97c7440a9bfdcdf287de095c44f.camel@sipsolutions.net>
+Subject: taprio vs. wireless/mac80211
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+        Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Avi Stern <avraham.stern@intel.com>,
+        linux-wireless@vger.kernel.org
+Date:   Wed, 24 Aug 2022 23:50:18 +0200
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 23, 2022 at 4:21 AM Duoming Zhou <duoming@zju.edu.cn> wrote:
->
-> The first patch adds new APIs to support migration of users
-> from old device coredump related APIs.
->
-> The second patch fix sleep in atomic context bugs of mwifiex
-> caused by dev_coredumpv().
->
-> Duoming Zhou (2):
->   devcoredump: add new APIs to support migration of users from old
->     device coredump related APIs
->   mwifiex: fix sleep in atomic context bugs caused by dev_coredumpv
+Hi,
 
-I would have expected a third patch in here, that actually converts
-existing users. Then in the following release cycle, clean up any new
-users of the old API that pop up in the meantime and drop the old API.
+We're exploring the use of taprio with wireless/mac80211, and in
+mac80211 today (**) we don't have multiple queues (any more) since all
+the queuing actually happens in FQ/Codel inside mac80211. We also set
+IFF_NO_QUEUE, but that of course only really affects the default qdisc,
+not the fact that you could use it or not.
 
-But I'll defer to the people who would actually be merging your code.
-Technically it could also work to simply provide the API this cycle,
-and convert everyone in the next.
+In mac80211 thus we never back-pressure against the qdiscs, which is why
+we basically selected a single queue. Also, there's nothing else we do
+about the queue other than immediately pull a packet from it if
+available, so it'd basically pure overhead to have real queues there.
 
-Brian
+In a sense, given that we cannot back-pressure against the queues, it
+feels a bit wrong to even have multiple queues. We also don't benefit in
+any way from splitting data structures onto multiple CPUs or something
+since we put it all into the same FQ/Codel anyway.
+
+
+Now, in order to use taprio, you're more or less assuming that you have
+multiple (equivalent) queues, as far as I can tell.
+
+
+Obviously we can trivially expose multiple equivalent queues from
+mac80211, but it feels somewhat wrong if that's just to make taprio be
+able to do something?
+
+Also how many should we have, there's more code to run so in many cases
+you probably don't want more than one, but if you want to use taprio you
+need at least two, but who says that's good enough, you might want more
+classes:
+
+        /* taprio imposes that traffic classes map 1:n to tx queues */
+        if (qopt->num_tc > dev->num_tx_queues) {
+                NL_SET_ERR_MSG(extack, "Number of traffic classes is
+greater than number of HW queues");
+                return -EINVAL;
+        }
+
+
+The way taprio is done almost feels like maybe it shouldn't even care
+about the number of queues since taprio_dequeue_soft() anyway only
+queries the sub-qdiscs? I mean, it's scheduling traffic, if you over-
+subscribe and send more than the link can handle, you've already lost
+anyway, no?
+
+(But then Avi pointed out that the sub qdiscs are initialized per HW
+queue, so this doesn't really hold either ...)
+
+
+Anyone have recommendations what we should do?
+
+
+Thanks,
+johannes
+
+
+(**) Assuming internal TXQ usage, but let's do that, we even have a
+first patch somewhere that converts everything to use it; otherwise we
+used to have the queues mapped to the ACs with ndo_select_queue, which
+is also quite wrong from this perspective.
