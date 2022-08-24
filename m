@@ -2,115 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E78835A0231
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 21:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0415A0284
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 22:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239365AbiHXTi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Aug 2022 15:38:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37748 "EHLO
+        id S238576AbiHXUMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Aug 2022 16:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239293AbiHXTiy (ORCPT
+        with ESMTP id S229573AbiHXUMb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Aug 2022 15:38:54 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53591792E1
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 12:38:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D6BC4B8262C
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Aug 2022 19:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EFAC433C1;
-        Wed, 24 Aug 2022 19:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661369928;
-        bh=R4hfsdp6uroBMrUMR69RZsiOlaN6utlNy+v5ZpGfvgI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VnM8BYNvJ3y80vZ1pnymZP99kITzdjDzOsxjAnVk7lkEVkqMev87N7epMndF94wKw
-         k+2zle/3UNJ5yWLpmaJrt6IwzB+ih0OmcKTaHAwUPmSkZ5yDRC+wNh0qoGDCltUr3n
-         YhnngFaGSSyOyBlPoi3xfl2kAvg7CyrB3Hl+p0/5Wl1gV9dXHXS70veQMToMwPT3Ax
-         gxBwWJnyRuHQf00AB94H+v+AzV0ojIhxFLCih8tl+a2cug3Oy4ss1FfAlUIaebmt9r
-         4/bWNkyVXTvpVrdJkJGfcRmn0r+/W3K0uoz7otvbiQUx+16prKLn3jgmW1dxSjCL3C
-         QhIuF8ReRk5Ww==
-Date:   Wed, 24 Aug 2022 12:38:46 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     tony0620emma@gmail.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: rtw88: fix uninitialized use of primary channel
- index
-Message-ID: <YwZ+RsHL+n02gHZx@dev-arch.thelio-3990X>
-References: <20220815062004.22920-1-pkshih@realtek.com>
+        Wed, 24 Aug 2022 16:12:31 -0400
+Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02FC18351;
+        Wed, 24 Aug 2022 13:12:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1661371910; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=C8kXq44ddm3iaKNd1oRbVUneTC5/YlLrbJKbYJFrSyOwIJMx/hjq0CgILBvnIFJPAVQSicL+m8qOpokoVw3ZMaPWfY1DqHUgDEFlLM4BR9i89XFS87vmf19Y8fqV0KN/bA2q4Xjyd0rqGh14dB9VWNk7WC1qPeTFNuguiIM83M8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1661371910; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=o8+2mxY1s6gN8Aqlaw9vhuuz0VwD5wwLUGg9+r5eCc8=; 
+        b=a2y/UZCDL2gII40gkzMEX9teyJwQWRpdW3QqwSBCO0+lko9tBStKMq5Y9iXI32kmFCGqO+zsYv0vipLJ0JM4ZtGxGEIimp76gV0RiAH+uLPsBv7xo6taYzrPvLNRJKjocfXPwGu9qkAnzZxJ8hvAraFh47hj1R4DbRzuU/D72L8=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1661371910;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+        bh=o8+2mxY1s6gN8Aqlaw9vhuuz0VwD5wwLUGg9+r5eCc8=;
+        b=f6VU8o9ZHQIjTgQ3f038x8f+Fkqlna8W0jgLN3dR6uixc8bnzogi1i9up8y56WTy
+        RDBnD0ONbiYGEnVYm/gCbndaiFK/AmidbOtlavg2JYTJHdgCJ7krSJGUL/6L26Ttrcr
+        6Nbi62weq+h7ahrASJ+PzNuuJedi/aX/74v2u5QI=
+Received: from localhost.localdomain (103.249.233.18 [103.249.233.18]) by mx.zoho.in
+        with SMTPS id 1661371907172679.3555503675442; Thu, 25 Aug 2022 01:41:47 +0530 (IST)
+From:   Siddh Raman Pant <code@siddh.me>
+To:     Siddh Raman Pant <code@siddh.me>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-kernel-mentees 
+        <linux-kernel-mentees@lists.linuxfoundation.org>,
+        syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com
+Message-ID: <20220824201136.182039-1-code@siddh.me>
+Subject: Re: [PATCH] wifi: mac80211: Don't finalize CSA in IBSS mode if state is disconnected
+Date:   Thu, 25 Aug 2022 01:41:36 +0530
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220814151512.9985-1-code@siddh.me>
+References: <20220814151512.9985-1-code@siddh.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220815062004.22920-1-pkshih@realtek.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 02:20:04PM +0800, Ping-Ke Shih wrote:
-> clang reports uninitialized use:
-> 
-> >> drivers/net/wireless/realtek/rtw88/main.c:731:2: warning: variable
->    'primary_channel_idx' is used uninitialized whenever switch default is
->    taken [-Wsometimes-uninitialized]
->            default:
->            ^~~~~~~
->    drivers/net/wireless/realtek/rtw88/main.c:754:39: note: uninitialized
->    use occurs here
->            hal->current_primary_channel_index = primary_channel_idx;
->                                                 ^~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/realtek/rtw88/main.c:687:24: note: initialize the
->    variable 'primary_channel_idx' to silence this warning
->            u8 primary_channel_idx;
->                                  ^
->                                   = '\0'
-> 
-> This situation could not happen, because possible channel bandwidth
-> 20/40/80MHz are enumerated.
-> 
-> Fixes: 341dd1f7de4c ("wifi: rtw88: add the update channel flow to support setting by parameters")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+On Sun, 14 Aug 2022 20:45:12 +0530  Siddh Raman Pant  wrote:
+> When we are not connected to a channel, sending channel "switch"
+> announcement doesn't make any sense.
+>=20
+> The BSS list is empty in that case. This causes the for loop in
+> cfg80211_get_bss() to be bypassed, so the function returns NULL
+> (check line 1424 of net/wireless/scan.c), causing the WARN_ON()
+> in ieee80211_ibss_csa_beacon() to get triggered (check line 500
+> of net/mac80211/ibss.c), which was consequently reported on the
+> syzkaller dashboard.
+>=20
+> Thus, check if we have an existing connection before generating
+> the CSA beacon in ieee80211_ibss_finish_csa().
+>=20
+> Fixes: cd7760e62c2a ("mac80211: add support for CSA in IBSS mode")
+> Bug report: https://syzkaller.appspot.com/bug?id=3D05603ef4ae8926761b678d=
+2939a3b2ad28ab9ca6
+> Reported-by: syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com
+> Cc: stable@vger.kernel.org
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com
 
-Can we get this into -next soon? This warning is breaking our builds due
-to CONFIG_WERROR.
+Syzbot is now booting properly and the test ran successfully.
 
+Thanks,
+Siddh
+
+> Signed-off-by: Siddh Raman Pant <code@siddh.me>
 > ---
->  drivers/net/wireless/realtek/rtw88/main.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-> index 790dcfed1125d..5a74dda977563 100644
-> --- a/drivers/net/wireless/realtek/rtw88/main.c
-> +++ b/drivers/net/wireless/realtek/rtw88/main.c
-> @@ -697,6 +697,7 @@ void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
->  
->  	switch (bandwidth) {
->  	case RTW_CHANNEL_WIDTH_20:
-> +	default:
->  		primary_channel_idx = RTW_SC_DONT_CARE;
->  		break;
->  	case RTW_CHANNEL_WIDTH_40:
-> @@ -728,8 +729,6 @@ void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
->  			cch_by_bw[RTW_CHANNEL_WIDTH_40] = center_channel - 4;
->  		}
->  		break;
-> -	default:
-> -		break;
->  	}
->  
->  	switch (center_channel) {
-> -- 
-> 2.25.1
-> 
-> 
+> The fixes commit is old, and syzkaller shows the problem exists for
+> 4.19 and 4.14 as well, so CC'd stable list.
+>=20
+>  net/mac80211/ibss.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+> index d56890e3fabb..9b283bbc7bb4 100644
+> --- a/net/mac80211/ibss.c
+> +++ b/net/mac80211/ibss.c
+> @@ -530,6 +530,10 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_i=
+f_data *sdata)
+> =20
+>  =09sdata_assert_lock(sdata);
+> =20
+> +=09/* When not connected/joined, sending CSA doesn't make sense. */
+> +=09if (ifibss->state !=3D IEEE80211_IBSS_MLME_JOINED)
+> +=09=09return -ENOLINK;
+> +
+>  =09/* update cfg80211 bss information with the new channel */
+>  =09if (!is_zero_ether_addr(ifibss->bssid)) {
+>  =09=09cbss =3D cfg80211_get_bss(sdata->local->hw.wiphy,
+> --=20
+> 2.35.1
+
