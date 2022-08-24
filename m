@@ -2,138 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D73A59F365
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 08:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D3DD59F388
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Aug 2022 08:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234548AbiHXGEn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Aug 2022 02:04:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34354 "EHLO
+        id S234937AbiHXGOu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Aug 2022 02:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234405AbiHXGEm (ORCPT
+        with ESMTP id S234949AbiHXGOs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Aug 2022 02:04:42 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358E091D35;
-        Tue, 23 Aug 2022 23:04:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CF2C4B822DF;
-        Wed, 24 Aug 2022 06:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10050C433C1;
-        Wed, 24 Aug 2022 06:04:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1661321078;
-        bh=Vg8rTF4/cdtBoLL5ouYQ0cWuabQoYYlJa7ce+p3Xejs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VjcVhUpolXkOJk2e7Xbrrmm38DHGKJUqEQ00X9L5/ERNz4hgHNGGcDmsoZztq5NVl
-         b7FlUW3xjkdUD6WyiHQxb5qoxbKQvrsY+cqOOr5MJiRYI0DnevOFXDAPh0EybbK7nv
-         XlxhPjuGxasFT70mMeEtHy3TuazFglf1unjI9UCU=
-Date:   Wed, 24 Aug 2022 08:04:35 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Mazin Al Haddad <mazinalhaddad05@gmail.com>
-Cc:     pontus.fuchs@gmail.com, netdev@vger.kernel.org, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com,
-        edumazet@google.com, paskripkin@gmail.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-kernel-mentees@lists.linuxfoundation.org,
-        davem@davemloft.net
-Subject: Re: [PATCH] ar5523: check endpoints type and direction in probe()
-Message-ID: <YwW/cw2cXLEd5xFo@kroah.com>
-References: <20220823222436.514204-1-mazinalhaddad05@gmail.com>
+        Wed, 24 Aug 2022 02:14:48 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 26A8E43E42
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Aug 2022 23:14:45 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 27O6EL6d8025118, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 27O6EL6d8025118
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 24 Aug 2022 14:14:21 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 24 Aug 2022 14:14:35 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 24 Aug
+ 2022 14:14:35 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <cj.hsieh@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: enlarge the CFO tracking boundary
+Date:   Wed, 24 Aug 2022 14:14:25 +0800
+Message-ID: <20220824061425.13764-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220823222436.514204-1-mazinalhaddad05@gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/24/2022 06:01:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzgvMjQgpFekyCAwMjo0MjowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 24, 2022 at 01:24:38AM +0300, Mazin Al Haddad wrote:
-> Fixes a bug reported by syzbot, where a warning occurs in usb_submit_urb()
-> due to the wrong endpoint type. There is no check for both the number
-> of endpoints and the type which causes an error as the code tries to
-> send a URB to the wrong endpoint.
-> 
-> Fix it by adding a check for the number of endpoints and the
-> direction/type of the endpoints. If the endpoints do not match the 
-> expected configuration -ENODEV is returned.
-> 
-> Syzkaller report:
-> 
-> usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-> WARNING: CPU: 1 PID: 71 at drivers/usb/core/urb.c:502 usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
-> Modules linked in:
-> CPU: 1 PID: 71 Comm: kworker/1:2 Not tainted 5.19.0-rc7-syzkaller-00150-g32f02a211b0a #0
-> Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 06/29/2022
-> Workqueue: usb_hub_wq hub_event
-> Call Trace:
->  <TASK>
->  ar5523_cmd+0x420/0x790 drivers/net/wireless/ath/ar5523/ar5523.c:275
->  ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
->  ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
->  ar5523_probe+0xc66/0x1da0 drivers/net/wireless/ath/ar5523/ar5523.c:1655
-> 
-> 
-> Link: https://syzkaller.appspot.com/bug?extid=1bc2c2afd44f820a669f
-> Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-> Signed-off-by: Mazin Al Haddad <mazinalhaddad05@gmail.com>
-> ---
->  drivers/net/wireless/ath/ar5523/ar5523.c | 31 ++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-> index 6f937d2cc126..5451bf9ab9fb 100644
-> --- a/drivers/net/wireless/ath/ar5523/ar5523.c
-> +++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-> @@ -1581,8 +1581,39 @@ static int ar5523_probe(struct usb_interface *intf,
->  	struct usb_device *dev = interface_to_usbdev(intf);
->  	struct ieee80211_hw *hw;
->  	struct ar5523 *ar;
-> +	struct usb_host_interface *host = intf->cur_altsetting;
->  	int error = -ENOMEM;
->  
-> +	if (host->desc.bNumEndpoints != 4) {
-> +		dev_err(&dev->dev, "Wrong number of endpoints\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	for (int i = 0; i < host->desc.bNumEndpoints; ++i) {
-> +		struct usb_endpoint_descriptor *ep = &host->endpoint[i].desc;
-> +		// Check for type of endpoint and direction.
-> +		switch (i) {
-> +		case 0:
-> +		case 1:
-> +			if ((ep->bEndpointAddress & USB_DIR_OUT) &&
-> +			    ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
-> +			     == USB_ENDPOINT_XFER_BULK)){
+From: Cheng-Chieh Hsieh <cj.hsieh@realtek.com>
 
-Did you run your change through checkpatch?
+The calibration value of XTAL offset may be too large in some wifi
+modules, that the CFO tracking mechanism under the existing tracking
+boundary can not adjust the CFO to the tolerable range. So we enlarge it.
 
-> +				dev_err(&dev->dev, "Wrong type of endpoints\n");
-> +				return -ENODEV;
-> +			}
-> +			break;
-> +		case 2:
-> +		case 3:
-> +			if ((ep->bEndpointAddress & USB_DIR_IN) &&
-> +			    ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
-> +			     == USB_ENDPOINT_XFER_BULK)){
-> +				dev_err(&dev->dev, "Wrong type of endpoints\n");
-> +				return -ENODEV;
-> +			}
-> +			break;
-> +		}
+Signed-off-by: Cheng-Chieh Hsieh <cj.hsieh@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/phy.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We have usb helper functions for all of this, why not use them instead
-of attempting to roll your own?
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index e20636f54b553..67544ee868cf2 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -56,7 +56,7 @@
+ #define CFO_TRK_STOP_TH (2 << 2)
+ #define CFO_SW_COMP_FINE_TUNE (2 << 2)
+ #define CFO_PERIOD_CNT 15
+-#define CFO_BOUND 32
++#define CFO_BOUND 64
+ #define CFO_TP_UPPER 100
+ #define CFO_TP_LOWER 50
+ #define CFO_COMP_PERIOD 250
+-- 
+2.25.1
 
-thanks,
-
-greg k-h
