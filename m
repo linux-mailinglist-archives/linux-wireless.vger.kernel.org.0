@@ -2,71 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9923C5A0C93
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 11:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC645A0D5E
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 11:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239961AbiHYJ2M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 05:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
+        id S240415AbiHYJyX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Aug 2022 05:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237349AbiHYJ2C (ORCPT
+        with ESMTP id S240334AbiHYJyD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 05:28:02 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4E3A4B0A;
-        Thu, 25 Aug 2022 02:28:01 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id q18so17833125ljg.12;
-        Thu, 25 Aug 2022 02:28:01 -0700 (PDT)
+        Thu, 25 Aug 2022 05:54:03 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEA1AB4E8
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 02:52:10 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id d8so15113861lfq.0
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 02:52:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc;
-        bh=bHJbCxqGrMvRJ8HABrOLQY8kdlTtP1fT6llzjdoahEI=;
-        b=F6dgYpp2CWa9EjXLyNUb2hkEr++WEmvoD1Es9jHGjD3nl2s+cUcKf5qo2cYDMhDudh
-         IMnajyC+ijg09SfazUHsyiO0CJsRSfB0wPEfyb0993Y1r4EIbJi/1LdCi3HDAa2NJJ8x
-         +zC5tDOVxxCwf6bf8VbNmzwnczL/SPqiYvkU52CUK7TS4elW2cXs3FEUXudhl83S8u0e
-         SrcF8UkWbV35NopLBg8rBAeTUzSBCzzYntRNyOVr8P409yXN8j/WZFl0g97yIgcnKXs1
-         p38SZYMTy2HmGrbnncEsoQwuSsGvytdaxcgP4HxRFbYOOD0lP9V8LJKk3fFJvFeIQvoT
-         SqiQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=hKfDWH3H7k49OaxlWD9m5PnQEo+ONbPwyxm1Mk2RNsw=;
+        b=MG4M1Wh53E9B6I36jXwCO3n5f7AvA6I0ScJ07llWFKJ7RYAMmP57xIccpirP+XUxAn
+         vAINFdvj6B22sT/LFI+zh8HX/wESKPBJjTYlJExqbTGohrg/6Aqrfk9Xvi0hkQjkr/Fv
+         5qp+pgD2ltwMM1kDbtkUJW5y82Y00dC305HsZ9ZdC6V3fkRmTKtYG0tRbOQ5N7+QKN5C
+         xenA/62EcUoV9pS/HTSUowre6HSFMOrr3vTYxO/9hmV5ZX/yfyBXq7wipIbAiq82anrq
+         VMj15vn0WTY1uUIs7u6pgicRg8gbJT8hk19zgM8z/UHqXUelLa90DJ2Jbca8ig9zSd0+
+         YhLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=bHJbCxqGrMvRJ8HABrOLQY8kdlTtP1fT6llzjdoahEI=;
-        b=R70juOU0TZ9gLbX2BipB38LuUSDYFWfiARCxU9idVW5wvqDp4piQ0V+Cc/RAz5MTod
-         rUxqbSLs53l9TkzUwAQ/ZGqJL/T+LrQrUgYvIT9xoV2vkIiKdcqMdVm4JW2JjMUuQKr6
-         sycDa5QQVuvgbpoqPtIIY3oP9k2Nh9mf0Fj15LE74zx0pkaCaGHNB1GAsvQVhR/Ws0mE
-         I+/SJbvM3zsbRPrkF/mE7ztNDQ72iIxh4oEoWwmKMsHovB44Tfd8MEAch6RsHfdzQ00x
-         21rzPuN7281bQffBfVX6AY28ce9Dtwf9hASyNCjrhhnpZDS2V/qHQ1cOQ2k0ykj+T6YP
-         QPPA==
-X-Gm-Message-State: ACgBeo2SEXae4RP46q+6S/Tj+qclO6MOprNmYSv5uIUYTyb5dD+Enpt+
-        VpWaM5LLZxHl7VF49ynvtBgcowwCC6RXXpt7AZ8=
-X-Google-Smtp-Source: AA6agR450TIsqiag2S5eMHMXUw3UgJhUL8vxaf3i2cYKpNtvBGspRhj5eXNHGG8OC2gIZZGSa5KIZ8mmRqy62CUTnLU=
-X-Received: by 2002:a2e:b0ca:0:b0:261:d46a:4672 with SMTP id
- g10-20020a2eb0ca000000b00261d46a4672mr775822ljl.460.1661419679767; Thu, 25
- Aug 2022 02:27:59 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=hKfDWH3H7k49OaxlWD9m5PnQEo+ONbPwyxm1Mk2RNsw=;
+        b=CWCwPYsaVJIX2mUZgarkjUHcrC/ZUDd7sXA7khZYUvGAZV7wPDfYzO11PQs/XCZhy8
+         Jm+lIazfBHhVyTgosInmGAnzyNlEpLIXB6v01uLrTWKCNE4Od/NM3UrStkLrDjPtp9Rv
+         v0hp9P04crDtufOmw4XDZkePrVmx6NDgb0aKV3Th5xmN5cFgzDlmI+tkn+g0b/yGOxrI
+         H3Z7eHUJTIGK/W2PmQIvhwyMnR2v0jBTfuB1LAWYj7GMu6dwll5ly79Vq4Mf6GUmShCI
+         6TaxorCiNK2eKxi/lUOxoUvxJYcHxNiUKe4Bco+eJ2xDUUC4bmu0XpJlukFLRdz10aBv
+         On9A==
+X-Gm-Message-State: ACgBeo3/Y/FnRTyvdAAv4EIThlyww0wkOMkJ0+K/1Q8TT4/vZipRNeav
+        e3ArsTIvRKzd3TyLi+wulpoMYkGN+WQZTw==
+X-Google-Smtp-Source: AA6agR7P54rzQFMBbuJpDseQ4UEjsJFGV1/CrxQ79RMMHlLNwnipRSNRZHp3sc20vJKsCcyJez7hCQ==
+X-Received: by 2002:a05:6512:1291:b0:492:e988:60f with SMTP id u17-20020a056512129100b00492e988060fmr846351lfs.417.1661421088130;
+        Thu, 25 Aug 2022 02:51:28 -0700 (PDT)
+Received: from localhost.localdomain ([62.141.192.106])
+        by smtp.gmail.com with ESMTPSA id k11-20020a2ea26b000000b0025e304903f5sm463215ljm.6.2022.08.25.02.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Aug 2022 02:51:27 -0700 (PDT)
+From:   Janusz Dziedzic <janusz.dziedzic@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net,
+        Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Subject: [PATCH] iw: add cac background command
+Date:   Thu, 25 Aug 2022 11:51:11 +0200
+Message-Id: <20220825095111.1026649-1-janusz.dziedzic@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220719123525.3448926-1-gasmibal@gmail.com> <20220719123525.3448926-3-gasmibal@gmail.com>
- <a3361036446058fe386634a9016c6925146a078e.camel@sipsolutions.net>
-In-Reply-To: <a3361036446058fe386634a9016c6925146a078e.camel@sipsolutions.net>
-From:   Baligh GASMI <gasmibal@gmail.com>
-Date:   Thu, 25 Aug 2022 11:27:48 +0200
-Message-ID: <CALxDnQYpA+cpUufxkpyqT=JjZUap-i==bn=r2Z3K2Oayh9QhTQ@mail.gmail.com>
-Subject: Re: [RFC/RFT v5 2/4] mac80211: add periodic monitor for channel busy time
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "open list:MAC80211" <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Toke Hoiland-Jorgensen <toke@redhat.com>,
-        Linus Lussing <linus.luessing@c0d3.blue>,
-        Kalle Valo <kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -77,28 +68,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ok, noted !
-I will try to find a way or maybe remove this part, since the busy
-time is not trivial to be used in the estimation, as I thought.
-Thanks for your reply.
+Add command that request background CAC radar scan.
+Tested on mt7915.
 
+Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+---
+ phy.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Le jeu. 25 ao=C3=BBt 2022 =C3=A0 10:58, Johannes Berg
-<johannes@sipsolutions.net> a =C3=A9crit :
->
-> On Tue, 2022-07-19 at 14:35 +0200, Baligh Gasmi wrote:
-> > Add a worker scheduled periodicaly to calculate the busy time average o=
-f
-> > the current channel.
-> >
-> > This will be used in the estimation for expected throughput.
-> >
->
-> I really don't think you should/can do this - having a 1-second periodic
-> timer (for each interface even!) is going to be really bad for power
-> consumption.
->
-> Please find a way to inline the recalculation with statistics updates
-> and/or queries.
->
-> johannes
+diff --git a/phy.c b/phy.c
+index 2d489ef..0a57ecb 100644
+--- a/phy.c
++++ b/phy.c
+@@ -301,6 +301,15 @@ static int handle_cac_trigger(struct nl80211_state *state,
+ 	return put_chandef(msg, &chandef);
+ }
+ 
++static int handle_cac_background(struct nl80211_state *state,
++				 struct nl_msg *msg,
++				 int argc, char **argv,
++				 enum id_input id)
++{
++	nla_put_flag(msg, NL80211_ATTR_RADAR_BACKGROUND);
++	return handle_cac_trigger(state, msg, argc, argv, id);
++}
++
+ static int no_seq_check(struct nl_msg *msg, void *arg)
+ {
+ 	return NL_OK;
+@@ -381,6 +390,14 @@ COMMAND(cac, trigger,
+ 	"Start or trigger a channel availability check (CAC) looking to look for\n"
+ 	"radars on the given channel.");
+ 
++COMMAND(cac, background,
++	"channel <channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]\n"
++	"freq <frequency> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]\n"
++	"freq <frequency> [5|10|20|40|80|80+80|160] [<center1_freq> [<center2_freq>]]",
++	NL80211_CMD_RADAR_DETECT, 0, CIB_NETDEV, handle_cac_background,
++	"Start background channel availability check (CAC) looking to look for\n"
++	"radars on the given channel.");
++
+ static int handle_fragmentation(struct nl80211_state *state,
+ 				struct nl_msg *msg,
+ 				int argc, char **argv,
+-- 
+2.25.1
+
