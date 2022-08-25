@@ -2,116 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5EC5A18ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 20:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E735A196A
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 21:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241625AbiHYSmj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 14:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37998 "EHLO
+        id S243647AbiHYTWK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Aug 2022 15:22:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234877AbiHYSmi (ORCPT
+        with ESMTP id S243608AbiHYTWG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 14:42:38 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D3478C460
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 11:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ns0r/7+N5c7+Pc6XkSNv8jQEQfXT4KB6Y3fTCqHo8Hg=;
-        t=1661452956; x=1662662556; b=Mp+XhuuAUrzR6gNI8lJncDeUr2sOuKuaHCBwVVs+rYUJvyc
-        mu2jIppSaRtQ0hsd00g/A9PiSIKGGTm1BGZ1FkVUzxUtV7HiLpijoDpHy0GYbvw+A+UvOs11GS/zM
-        0os2vDHeP5+XY1/rAQz7+o10OZqJpA9z65FwWlokRpEhk4TbXQtIZSduLn+uatthaFcLji+WDGFQq
-        N7oCFZtVD1IsLm3Qwy4EDFxQJ7RTvGki6BAkIEWRX9ekmjQu/kBv3tDOhfeEfKhhJRu4po3H4GmfR
-        ktMyfIdYNyGiJZeI3fmRFMir5//HIGnLv/VMthGBE5gXmp/GapTviV6/M5/aSrqA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oRHoH-00H9ar-2I;
-        Thu, 25 Aug 2022 20:42:33 +0200
-Message-ID: <6fa6b1b62f6a1bc945708cca9e27136f1737386f.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 2/2] mac80211: Support POWERED_ADDR_CHANGE feature
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Thu, 25 Aug 2022 20:42:32 +0200
-In-Reply-To: <1cdf35f95aca2a65d0d738544fb04079125b9581.camel@gmail.com>
-References: <20220811231338.563794-1-prestwoj@gmail.com>
-         <20220811231338.563794-3-prestwoj@gmail.com>
-         <e898282f0766bdf0bd9cbb92d2a3551ff28cdf6b.camel@sipsolutions.net>
-         <1cdf35f95aca2a65d0d738544fb04079125b9581.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+        Thu, 25 Aug 2022 15:22:06 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C563BD11E
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 12:22:03 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id s199so24465086oie.3
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 12:22:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=j11I9jJbBdP2EsV8zm8vGrZ8to2ALD+DZiEMfyWlhf4=;
+        b=KjzVxnhpw6QKMn5c7oLhZ2YXfy0o0q7ppQDDA/IUG9Tba1CyII5IegLq2jiOsTx6sf
+         9PktWYsvLhv6OduPZa78FKjas33U49IxO+UttcDOMAdp3MTlGJvDXLmU3ofAZEoFFqZT
+         pafvPKdLl3l0hKSE9VWBcm6msZs1UGsFX0W0WhRtsci35MLKycrvSxbg6GiEiXprLSDz
+         35gtzDXDspqbKE6U1rd+mL/P+1w92XWlGqtbdRRUw9gw3+q3FfhdBiDfZom+YIwlZBrE
+         iSIuTPlKIwHdWrtxWrdA/Tch392Qi6e4omMMHzm85TUdvnZFdOZSQACivsWz9KW0c6uk
+         JDjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=j11I9jJbBdP2EsV8zm8vGrZ8to2ALD+DZiEMfyWlhf4=;
+        b=dPDVfA0PTrUhY624g3hgsgnt7zI1pfVffSJPgKJF26rdlDNdVj4k1i4r6ISGc1m4H/
+         BPEljlHY3TI1wpaNSZrySJQ+Nzqs4VUJ60B3PDbZ8h3Z77NWTnlNX3VZ2gIpGTBlkbRk
+         +JReypbecua3XgZXsVtQFdgmcCzGtmOwPAS1+Zccd4Nrsc5kvEQLO0u4spinm1xhADm/
+         K2gnQ4V3IbB4GYZYjGMb/NekV970YPU9GiRgR2Ym54mdW4dtQC1c9DvLAajzcCPphULh
+         jOgKKv4AMTck8zeiEOpj5vvVe1EmgLCFZ4QPsHsnjEVeGQql8hnraw08s9FUtlwvGW8h
+         MHIA==
+X-Gm-Message-State: ACgBeo2UeAHwMQILDtMHkwM9WyhvgnTuFP/Ybtrr3qzPfsg2XGhMUpiP
+        Dq93vJ/M8dglApXWxKxql/ApkoUVo0RrZeoypD2R
+X-Google-Smtp-Source: AA6agR5+NrNDgFeVEqQOH6xO8KzleveZvD24+0ma4hp6CR5I88pcrQbnickGgaR7sl54W0OczwK1VkCsRh+9Rsqv/HQ=
+X-Received: by 2002:a05:6808:3a9:b0:343:4b14:ccce with SMTP id
+ n9-20020a05680803a900b003434b14cccemr243316oie.41.1661455322788; Thu, 25 Aug
+ 2022 12:22:02 -0700 (PDT)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220825001830.1911524-1-kuba@kernel.org>
+In-Reply-To: <20220825001830.1911524-1-kuba@kernel.org>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Thu, 25 Aug 2022 15:21:52 -0400
+Message-ID: <CAHC9VhSxesi0TSSvcQSr1kDhP3Vce4+O3w2diEExGEGnjGpmiw@mail.gmail.com>
+Subject: Re: [PATCH net-next] genetlink: start to validate reserved header bytes
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        pabeni@redhat.com, jiri@resnulli.us, johannes@sipsolutions.net,
+        linux-block@vger.kernel.org, osmocom-net-gprs@lists.osmocom.org,
+        linux-wpan@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-pm@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-cifs@vger.kernel.org, cluster-devel@redhat.com,
+        mptcp@lists.linux.dev, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, dev@openvswitch.org,
+        linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-=C2=A0
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (live)
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0drv_remove_interface(local, sdata);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D eth_mac_addr(=
-dev, sa);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (live)
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0ret =3D drv_add_interface(local, sdata);
-> > > =C2=A0
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret =3D=3D 0)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
-> > >=20
-> >=20
-> > I still don't like the (lack of) error checking here. As far as I know,
-> > eth_mac_addr() can very happily fail if the passed address is invalid,
-> > so we really shouldn't overwrite the ret value by drv_add_interface().
->=20
-> Ah yes, that was an oversight. I assume we do want to add_interface
-> even if eth_mac_addr fails though.
+On Wed, Aug 24, 2022 at 8:18 PM Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> We had historically not checked that genlmsghdr.reserved
+> is 0 on input which prevents us from using those precious
+> bytes in the future.
+>
+> One use case would be to extend the cmd field, which is
+> currently just 8 bits wide and 256 is not a lot of commands
+> for some core families.
+>
+> To make sure that new families do the right thing by default
+> put the onus of opting out of validation on existing families.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: jiri@resnulli.us
+> CC: johannes@sipsolutions.net
+> CC: linux-block@vger.kernel.org
+> CC: osmocom-net-gprs@lists.osmocom.org
+> CC: linux-wpan@vger.kernel.org
+> CC: wireguard@lists.zx2c4.com
+> CC: linux-wireless@vger.kernel.org
+> CC: linux-scsi@vger.kernel.org
+> CC: target-devel@vger.kernel.org
+> CC: linux-pm@vger.kernel.org
+> CC: virtualization@lists.linux-foundation.org
+> CC: linux-cifs@vger.kernel.org
+> CC: cluster-devel@redhat.com
+> CC: mptcp@lists.linux.dev
+> CC: lvs-devel@vger.kernel.org
+> CC: netfilter-devel@vger.kernel.org
+> CC: linux-security-module@vger.kernel.org
+> CC: dev@openvswitch.org
+> CC: linux-s390@vger.kernel.org
+> CC: tipc-discussion@lists.sourceforge.net
+> ---
+>  drivers/block/nbd.c                      | 1 +
+>  drivers/net/gtp.c                        | 1 +
+>  drivers/net/ieee802154/mac802154_hwsim.c | 1 +
+>  drivers/net/macsec.c                     | 1 +
+>  drivers/net/team/team.c                  | 1 +
+>  drivers/net/wireguard/netlink.c          | 1 +
+>  drivers/net/wireless/mac80211_hwsim.c    | 1 +
+>  drivers/target/target_core_user.c        | 1 +
+>  drivers/thermal/thermal_netlink.c        | 1 +
+>  drivers/vdpa/vdpa.c                      | 1 +
+>  fs/cifs/netlink.c                        | 1 +
+>  fs/dlm/netlink.c                         | 1 +
+>  fs/ksmbd/transport_ipc.c                 | 1 +
+>  include/linux/genl_magic_func.h          | 1 +
+>  include/net/genetlink.h                  | 3 +++
+>  kernel/taskstats.c                       | 1 +
+>  net/batman-adv/netlink.c                 | 1 +
+>  net/core/devlink.c                       | 1 +
+>  net/core/drop_monitor.c                  | 1 +
+>  net/ethtool/netlink.c                    | 1 +
+>  net/hsr/hsr_netlink.c                    | 1 +
+>  net/ieee802154/netlink.c                 | 1 +
+>  net/ieee802154/nl802154.c                | 1 +
+>  net/ipv4/fou.c                           | 1 +
+>  net/ipv4/tcp_metrics.c                   | 1 +
+>  net/ipv6/ila/ila_main.c                  | 1 +
+>  net/ipv6/ioam6.c                         | 1 +
+>  net/ipv6/seg6.c                          | 1 +
+>  net/l2tp/l2tp_netlink.c                  | 1 +
+>  net/mptcp/pm_netlink.c                   | 1 +
+>  net/ncsi/ncsi-netlink.c                  | 1 +
+>  net/netfilter/ipvs/ip_vs_ctl.c           | 1 +
+>  net/netlabel/netlabel_calipso.c          | 1 +
+>  net/netlabel/netlabel_cipso_v4.c         | 1 +
+>  net/netlabel/netlabel_mgmt.c             | 1 +
+>  net/netlabel/netlabel_unlabeled.c        | 1 +
+>  net/netlink/genetlink.c                  | 4 ++++
+>  net/nfc/netlink.c                        | 1 +
+>  net/openvswitch/conntrack.c              | 1 +
+>  net/openvswitch/datapath.c               | 3 +++
+>  net/openvswitch/meter.c                  | 1 +
+>  net/psample/psample.c                    | 1 +
+>  net/smc/smc_netlink.c                    | 3 ++-
+>  net/smc/smc_pnet.c                       | 3 ++-
+>  net/tipc/netlink.c                       | 1 +
+>  net/tipc/netlink_compat.c                | 1 +
+>  net/wireless/nl80211.c                   | 1 +
+>  47 files changed, 56 insertions(+), 2 deletions(-)
 
-Right.
+Acked-by: Paul Moore <paul@paul-moore.com> (NetLabel)
 
-> So my only question is about the
-> return from drv_add_interface(). Is this unlikely to fail? If so would
-> just a WARN_ON be sufficient and return the value from eth_mac_addr()?
-
-Hm, yeah, I guess it really ought to not fail here.
-
-> So something like:
->=20
-> 	if (live)
-> 		drv_remove_interface(local, sdata);
-> 	ret =3D eth_mac_addr(dev, sa);
-> 	if (ret =3D=3D 0)
-> 		memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
->=20
-> 	if (live)
-> 		WARN_ON(drv_add_interface(local, sdata));
->=20
-> 	return ret;
-
-Seems reasonable. We could do something like
-
-  err =3D drv_add_interface(...);
-  if (err) {
-     dev_close(...);
-     ret =3D ret ?: err;
-  }
-
-or something, but not sure that's worth it, it really shouldn't fail at
-this point.
-
-But I guess we could leave setting NL80211_EXT_FEATURE_AUTH_TX_RANDOM_TA
-to the driver if we think it'd be less risky that way?
-
-johannes
+-- 
+paul-moore.com
