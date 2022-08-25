@@ -2,68 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E82D5A0C38
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 11:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9923C5A0C93
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 11:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238220AbiHYJEo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 05:04:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55564 "EHLO
+        id S239961AbiHYJ2M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Aug 2022 05:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235033AbiHYJEn (ORCPT
+        with ESMTP id S237349AbiHYJ2C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 05:04:43 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB6A88DCA
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 02:04:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=BO3b9Smj+QsNb25/lzMl2phYryOdiZtlIVRzrfC8HXA=;
-        t=1661418282; x=1662627882; b=lr1wqr/ADMJwfl6Ei3fP/J4pIZJTc5RQRH1tkqkpnTbZ9/D
-        MQ4JAaIt5BCx50b4kxw8C3H4EGwA/S2d6CS4zc6KqT9PzGLAOgVeep3FGNuL0/Y0+HmeIg6UtvMmu
-        YEM89tUZAZXYw6BlkmI0+nCyLdlyw1VtAp/Lz0FkRpjykY5iGLp/oq6JLpot1kMByL/CMcKtLzs+A
-        pAJ2gHUzz+Vf7q7vFEBKHxO4kJ/k/P9ylneKd9HHmfsuWI07siHHVU4eBlqK9APgQdB0ATzrwkebZ
-        l/ExxhPXRgRGc1fa3ctwgKq4Tjh8GEnEoEy93TxmIPJuZa7hP3nGtqCbeMv6vIZA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oR8n2-00Gzhh-1u;
-        Thu, 25 Aug 2022 11:04:40 +0200
-Message-ID: <0344624b36425f93c515748083a0b43280979078.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/1] cfg80211: Allow AP/P2PGO to indicate port
- authorization to peer STA/P2PClient
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org, jithu.jance@broadcom.com
-Date:   Thu, 25 Aug 2022 11:04:39 +0200
-In-Reply-To: <5ee2d7c8f809c3d7f773ad4231cb894af850e1a2.1657720730.git.vinayak.yadawad@broadcom.com>
-References: <5ee2d7c8f809c3d7f773ad4231cb894af850e1a2.1657720730.git.vinayak.yadawad@broadcom.com>
+        Thu, 25 Aug 2022 05:28:02 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4E3A4B0A;
+        Thu, 25 Aug 2022 02:28:01 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id q18so17833125ljg.12;
+        Thu, 25 Aug 2022 02:28:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc;
+        bh=bHJbCxqGrMvRJ8HABrOLQY8kdlTtP1fT6llzjdoahEI=;
+        b=F6dgYpp2CWa9EjXLyNUb2hkEr++WEmvoD1Es9jHGjD3nl2s+cUcKf5qo2cYDMhDudh
+         IMnajyC+ijg09SfazUHsyiO0CJsRSfB0wPEfyb0993Y1r4EIbJi/1LdCi3HDAa2NJJ8x
+         +zC5tDOVxxCwf6bf8VbNmzwnczL/SPqiYvkU52CUK7TS4elW2cXs3FEUXudhl83S8u0e
+         SrcF8UkWbV35NopLBg8rBAeTUzSBCzzYntRNyOVr8P409yXN8j/WZFl0g97yIgcnKXs1
+         p38SZYMTy2HmGrbnncEsoQwuSsGvytdaxcgP4HxRFbYOOD0lP9V8LJKk3fFJvFeIQvoT
+         SqiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
+        bh=bHJbCxqGrMvRJ8HABrOLQY8kdlTtP1fT6llzjdoahEI=;
+        b=R70juOU0TZ9gLbX2BipB38LuUSDYFWfiARCxU9idVW5wvqDp4piQ0V+Cc/RAz5MTod
+         rUxqbSLs53l9TkzUwAQ/ZGqJL/T+LrQrUgYvIT9xoV2vkIiKdcqMdVm4JW2JjMUuQKr6
+         sycDa5QQVuvgbpoqPtIIY3oP9k2Nh9mf0Fj15LE74zx0pkaCaGHNB1GAsvQVhR/Ws0mE
+         I+/SJbvM3zsbRPrkF/mE7ztNDQ72iIxh4oEoWwmKMsHovB44Tfd8MEAch6RsHfdzQ00x
+         21rzPuN7281bQffBfVX6AY28ce9Dtwf9hASyNCjrhhnpZDS2V/qHQ1cOQ2k0ykj+T6YP
+         QPPA==
+X-Gm-Message-State: ACgBeo2SEXae4RP46q+6S/Tj+qclO6MOprNmYSv5uIUYTyb5dD+Enpt+
+        VpWaM5LLZxHl7VF49ynvtBgcowwCC6RXXpt7AZ8=
+X-Google-Smtp-Source: AA6agR450TIsqiag2S5eMHMXUw3UgJhUL8vxaf3i2cYKpNtvBGspRhj5eXNHGG8OC2gIZZGSa5KIZ8mmRqy62CUTnLU=
+X-Received: by 2002:a2e:b0ca:0:b0:261:d46a:4672 with SMTP id
+ g10-20020a2eb0ca000000b00261d46a4672mr775822ljl.460.1661419679767; Thu, 25
+ Aug 2022 02:27:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220719123525.3448926-1-gasmibal@gmail.com> <20220719123525.3448926-3-gasmibal@gmail.com>
+ <a3361036446058fe386634a9016c6925146a078e.camel@sipsolutions.net>
+In-Reply-To: <a3361036446058fe386634a9016c6925146a078e.camel@sipsolutions.net>
+From:   Baligh GASMI <gasmibal@gmail.com>
+Date:   Thu, 25 Aug 2022 11:27:48 +0200
+Message-ID: <CALxDnQYpA+cpUufxkpyqT=JjZUap-i==bn=r2Z3K2Oayh9QhTQ@mail.gmail.com>
+Subject: Re: [RFC/RFT v5 2/4] mac80211: add periodic monitor for channel busy time
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "open list:MAC80211" <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Toke Hoiland-Jorgensen <toke@redhat.com>,
+        Linus Lussing <linus.luessing@c0d3.blue>,
+        Kalle Valo <kvalo@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2022-07-14 at 11:00 +0530, Vinayak Yadawad wrote:
-> In 4way handshake offload, cfg80211_port_authorized
-> enables driver to indicate successful 4way handshake to cfg80211 layer.
-> Currently this path of port authorization is restricted to
-> interface type NL80211_IFTYPE_STATION and NL80211_IFTYPE_P2P_CLIENT.
-> This patch extends the support for NL80211_IFTYPE_AP and
-> NL80211_IFTYPE_P2P_GO interfaces to authorize peer STA/P2P_CLIENT,
-> whenever authentication is offloaded on the AP/P2P_GO interface.
->=20
+Ok, noted !
+I will try to find a way or maybe remove this part, since the busy
+time is not trivial to be used in the estimation, as I thought.
+Thanks for your reply.
 
-This patch no longer applies, please rebase it.
 
-johannes
+Le jeu. 25 ao=C3=BBt 2022 =C3=A0 10:58, Johannes Berg
+<johannes@sipsolutions.net> a =C3=A9crit :
+>
+> On Tue, 2022-07-19 at 14:35 +0200, Baligh Gasmi wrote:
+> > Add a worker scheduled periodicaly to calculate the busy time average o=
+f
+> > the current channel.
+> >
+> > This will be used in the estimation for expected throughput.
+> >
+>
+> I really don't think you should/can do this - having a 1-second periodic
+> timer (for each interface even!) is going to be really bad for power
+> consumption.
+>
+> Please find a way to inline the recalculation with statistics updates
+> and/or queries.
+>
+> johannes
