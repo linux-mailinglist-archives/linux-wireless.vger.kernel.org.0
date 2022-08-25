@@ -2,160 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 652825A1C48
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 00:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E705A1C72
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 00:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244356AbiHYW0d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 18:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S243476AbiHYWdc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Aug 2022 18:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243657AbiHYW0c (ORCPT
+        with ESMTP id S233208AbiHYWda (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 18:26:32 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B450A9DF84
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 15:26:31 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d12so37602plr.6
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 15:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc;
-        bh=ad9fOLQAMebFp6PwoqJFTyuYh4kwz9z5DvCu2sr6Gew=;
-        b=SgwcjkR+hK+N+Px3xA4ytwTACQR4PVr/0w5g6oH9fnnmA3jpgWavVu6OwAYHcQGeBJ
-         RN5Vac7lZlF4/1s8FuI4xBc1gmPru7DTC/h6tcIukkQ9xq8nmrhTrlCOVXzrunrd6Lyo
-         jm9VFMC4OZjdCEGMometjPEFeW823GeQ7WvP+2gKEGbkB73fgCLLaS78JezJKMcmD7BI
-         Et4ap8XPwGwbz2cM02U6wDAGPezdKve2d+NTE0RPmTc2YLqmiy+YGDiLYSKQcOh91NTR
-         VcPlbe9jRCTK62skxIsW0+K6enSZkwLS1AUtaqaxwmFXhidMLkUYyFWz7xVAx7wOctgx
-         fszA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc;
-        bh=ad9fOLQAMebFp6PwoqJFTyuYh4kwz9z5DvCu2sr6Gew=;
-        b=ZEEKznJG5Uwa7lXtNBLWpdzngNwjDxI5JthQ6lL+wupNcJ+yyKGcgMiKcYyn6RmuRj
-         nkBod3dYQ/+sqKYPPL3nHi64+lZLxNGGlfviOXlpB3CW2O+DfV3lWLW0f8b8ni652ttb
-         oshyhBKp6RDwGygxkJ9NjJvM8PiwTJKcc9xhGtgcFxchwgHGORRptZjsrWugibu12Cpq
-         /WCtJa0s0AzUxET8e9g9SKkIssg/J/CTOUz0v0qz55cQp9Yx0ksQQgU0KHMnGtT+ofdf
-         MvwzjvFIAhcB2kivuvmkRBGjsv5+j3qaUQWkjJe8XGZ5tspoE4W5/ATKMLUUMbdAcQpe
-         MWsQ==
-X-Gm-Message-State: ACgBeo0IjQb5qxDXU8rRbhR9rjYY4pOaKKL/rnPfx4VSbvX/EahwXd9u
-        0XmD62cpT+o/nljDdFVyEg7O7+YA+wE=
-X-Google-Smtp-Source: AA6agR4UGpZ8kD5+AiqHI/TEUW386cQgB+/VbuApEe5a96Bpbzz4+YJFNfZxhM96444PrmtxqlPgWQ==
-X-Received: by 2002:a17:90b:4ad1:b0:1fb:eba:9977 with SMTP id mh17-20020a17090b4ad100b001fb0eba9977mr1178466pjb.182.1661466391213;
-        Thu, 25 Aug 2022 15:26:31 -0700 (PDT)
-Received: from [192.168.254.16] ([50.39.168.145])
-        by smtp.gmail.com with ESMTPSA id q16-20020a170902dad000b0017154ae6265sm59446plx.211.2022.08.25.15.26.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Aug 2022 15:26:30 -0700 (PDT)
-Message-ID: <a424a23753eb922c980d54414a0ad0f015f84e94.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] mac80211: Support POWERED_ADDR_CHANGE feature
-From:   James Prestwood <prestwoj@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Date:   Thu, 25 Aug 2022 15:26:29 -0700
-In-Reply-To: <6fa6b1b62f6a1bc945708cca9e27136f1737386f.camel@sipsolutions.net>
-References: <20220811231338.563794-1-prestwoj@gmail.com>
-         <20220811231338.563794-3-prestwoj@gmail.com>
-         <e898282f0766bdf0bd9cbb92d2a3551ff28cdf6b.camel@sipsolutions.net>
-         <1cdf35f95aca2a65d0d738544fb04079125b9581.camel@gmail.com>
-         <6fa6b1b62f6a1bc945708cca9e27136f1737386f.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-5.fc34) 
+        Thu, 25 Aug 2022 18:33:30 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B94B99DA
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 15:33:24 -0700 (PDT)
+X-UUID: 69d3c12e47344a7fbacafb5cf2ae1462-20220826
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=t2alrwEYy46XNmgg17O9/mwJMo7NuDF98DRafstob3Y=;
+        b=NBUSoEXAFYg7ZNSZtf5wuku9xZCsoCpaiPv9p7I0y3topSiQ15tbUw1C0k5hOuj74ZJ37aP2RMTo7i3fwoX+iqDmB7jRie3Yb5XGIzGQA56g2EMPr0j10gvqt8jewMETzD3KIHYU8P3xwihfqQ/w5dysKjSvxrcMvoTKcQQ63i8=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.10,REQID:aeb959d0-58fe-40df-aa6f-fe48fd465ec7,OB:0,L
+        OB:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Releas
+        e_Ham,ACTION:release,TS:100
+X-CID-INFO: VERSION:1.1.10,REQID:aeb959d0-58fe-40df-aa6f-fe48fd465ec7,OB:0,LOB
+        :0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Spam_GS9
+        81B3D,ACTION:quarantine,TS:100
+X-CID-META: VersionHash:84eae18,CLOUDID:98e1a1cf-20bd-4e5e-ace8-00692b7ab380,C
+        OID:eff2868b7b6d,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 69d3c12e47344a7fbacafb5cf2ae1462-20220826
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 135485452; Fri, 26 Aug 2022 06:33:19 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Fri, 26 Aug 2022 06:33:17 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Fri, 26 Aug 2022 06:33:17 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+CC:     <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2] wifi: mac80211: read ethtool's sta_stats from sinfo
+Date:   Fri, 26 Aug 2022 06:33:16 +0800
+Message-ID: <f9edff14dd7f5205acf1c21bae8e9d8f9802dd88.1661466499.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED,
+        URIBL_CSS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2022-08-25 at 20:42 +0200, Johannes Berg wrote:
-> Hi,
->  
-> > > > +       if (live)
-> > > > +               drv_remove_interface(local, sdata);
-> > > >         ret = eth_mac_addr(dev, sa);
-> > > > +       if (live)
-> > > > +               ret = drv_add_interface(local, sdata);
-> > > >  
-> > > >         if (ret == 0)
-> > > >                 memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
-> > > > 
-> > > 
-> > > I still don't like the (lack of) error checking here. As far as I
-> > > know,
-> > > eth_mac_addr() can very happily fail if the passed address is
-> > > invalid,
-> > > so we really shouldn't overwrite the ret value by
-> > > drv_add_interface().
-> > 
-> > Ah yes, that was an oversight. I assume we do want to add_interface
-> > even if eth_mac_addr fails though.
-> 
-> Right.
-> 
-> > So my only question is about the
-> > return from drv_add_interface(). Is this unlikely to fail? If so
-> > would
-> > just a WARN_ON be sufficient and return the value from
-> > eth_mac_addr()?
-> 
-> Hm, yeah, I guess it really ought to not fail here.
-> 
-> > So something like:
-> > 
-> >         if (live)
-> >                 drv_remove_interface(local, sdata);
-> >         ret = eth_mac_addr(dev, sa);
-> >         if (ret == 0)
-> >                 memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
-> > 
-> >         if (live)
-> >                 WARN_ON(drv_add_interface(local, sdata));
-> > 
-> >         return ret;
-> 
-> Seems reasonable. We could do something like
-> 
->   err = drv_add_interface(...);
->   if (err) {
->      dev_close(...);
->      ret = ret ?: err;
->   }
-> 
-> or something, but not sure that's worth it, it really shouldn't fail
-> at
-> this point.
-> 
-> But I guess we could leave setting
-> NL80211_EXT_FEATURE_AUTH_TX_RANDOM_TA
-> to the driver if we think it'd be less risky that way?
+Driver may update sinfo directly through .sta_statistics, so this
+patch makes sure that ethool gets the correct statistics.
 
-(I assume you meant this new POWERED_ADDR_CHANGE feature)
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+change since v2 - rebase on wireless-next
+---
+ net/mac80211/ethtool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Anyways, is this something all mac80211 drivers _should_ be able to do
-(I thought I remember you indicating this was the case)? I'd hate to
-introduce (expose) a bug for some driver I couldn't test... but also
-the WARN_ON would be very easy to pinpoint what happened.
-
-IMO if mac80211-based drivers should be able to handle this, I think we
-should keep it in mac80211. Any issues that arise would be a driver bug
-that was exposed, and needs to be fixed anyways.
-
-Ultimately its up to you. I would like to avoid doing it per-driver but
-at the same time address randomization is completely broken on 6GHz so
-if we can only do it for iwlwifi so be it.
-
-Thanks,
-James
-
-> 
-> johannes
-
+diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
+index c2b38370bfb1..a3830d925cc2 100644
+--- a/net/mac80211/ethtool.c
++++ b/net/mac80211/ethtool.c
+@@ -83,17 +83,17 @@ static void ieee80211_get_stats(struct net_device *dev,
+ 
+ #define ADD_STA_STATS(sta)					\
+ 	do {							\
+-		data[i++] += (sta)->rx_stats.packets;		\
+-		data[i++] += (sta)->rx_stats.bytes;		\
++		data[i++] += sinfo.rx_packets;			\
++		data[i++] += sinfo.rx_bytes;			\
+ 		data[i++] += (sta)->rx_stats.num_duplicates;	\
+ 		data[i++] += (sta)->rx_stats.fragments;		\
+-		data[i++] += (sta)->rx_stats.dropped;		\
++		data[i++] += sinfo.rx_dropped_misc;		\
+ 								\
+ 		data[i++] += sinfo.tx_packets;			\
+ 		data[i++] += sinfo.tx_bytes;			\
+ 		data[i++] += (sta)->status_stats.filtered;	\
+-		data[i++] += (sta)->status_stats.retry_failed;	\
+-		data[i++] += (sta)->status_stats.retry_count;	\
++		data[i++] += sinfo.tx_failed;			\
++		data[i++] += sinfo.tx_retries;			\
+ 	} while (0)
+ 
+ 	/* For Managed stations, find the single station based on BSSID
+-- 
+2.36.1
 
