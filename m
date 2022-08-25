@@ -2,81 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92CC35A0F6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 13:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81E0F5A0FBB
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 13:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238535AbiHYLks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 07:40:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34210 "EHLO
+        id S241172AbiHYL7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Aug 2022 07:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240579AbiHYLk3 (ORCPT
+        with ESMTP id S241021AbiHYL7K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 07:40:29 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E785245A;
-        Thu, 25 Aug 2022 04:40:28 -0700 (PDT)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1oRBDm-0006Sb-Ru; Thu, 25 Aug 2022 13:40:26 +0200
-Message-ID: <2ebb4b04-efe7-ffe8-bf8c-bfc08685eb57@leemhuis.info>
-Date:   Thu, 25 Aug 2022 13:40:26 +0200
+        Thu, 25 Aug 2022 07:59:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF4FA98E0;
+        Thu, 25 Aug 2022 04:59:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2905A61B1C;
+        Thu, 25 Aug 2022 11:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3782EC433D7;
+        Thu, 25 Aug 2022 11:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1661428748;
+        bh=GLfsjUlNp9WLL2wELbBVeoTLtJbmnVEiPK7O3n+1NV0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mghw3e3sHIr/tw03YSnhgwGtdVUsIfgD4OMxiU0g3yfZzBx6Gt4jvslnRHd3iJebx
+         YY6j1jIqlllKpY3SSU5bnBrasc7WpFTXDKpAFxKLj/psqV/RWOGvcE5smvPCSCrh9h
+         ZgdU8wZLOwJOXSgp94Ad2OxfmDiN6+Na3E6A6uYs=
+Date:   Thu, 25 Aug 2022 13:59:05 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     sean.wang@mediatek.com
+Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH 5.19] mt76: mt7921: fix command timeout in AP stop period
+Message-ID: <YwdkCRXdOZCTdPQl@kroah.com>
+References: <94065c608ee60d8a96a3d91913cb1e28d0a302e1.1661397440.git.objelf@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [regression] Bug 216386 - rtw_8822be: Wifi stops working after
- resume #forregzbot
-Content-Language: en-US
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <822ed6b6-fd3a-3873-cdf0-543340fd4103@leemhuis.info>
-In-Reply-To: <822ed6b6-fd3a-3873-cdf0-543340fd4103@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1661427628;9b4fbbc2;
-X-HE-SMSGID: 1oRBDm-0006Sb-Ru
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <94065c608ee60d8a96a3d91913cb1e28d0a302e1.1661397440.git.objelf@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-TWIMC: this mail is primarily send for documentation purposes and for
-regzbot, my Linux kernel regression tracking bot. These mails usually
-contain '#forregzbot' in the subject, to make them easy to spot and filter.
-
-On 25.08.22 13:25, Thorsten Leemhuis wrote:
-> To quote from https://bugzilla.kernel.org/show_bug.cgi?id=216386 :
+On Thu, Aug 25, 2022 at 11:27:22AM +0800, sean.wang@mediatek.com wrote:
+> From: Deren Wu <deren.wu@mediatek.com>
 > 
->>  Utkarsh Verma 2022-08-20 09:16:41 UTC
->>
->> I have an ASUS TUF FX505DT which has the RTL8822BE wifi card. I recently upgraded to kernel 5.19 and this issue started popping up.
->>
->> When I close my laptop lid and let it sleep for a considerable amount of time, the wifi stops working the next time I open it, and I have to reboot my PC to get internet. This is annoying because I suspended my PC to continue with my work after some time quickly, and having to reboot defeats the purpose.
->>
->> I tried removing and reloading the kernel module for this device as well, and it fails with the following dmesg log.
->>
->> ```
->> [ 4914.877037] rtw_8822be 0000:04:00.0: Unable to change power state from D3cold to D0, device inaccessible
->> [ 4914.886333] rtw_8822be 0000:04:00.0: mac power on failed
->> [ 4914.886342] rtw_8822be 0000:04:00.0: failed to power on mac
->> [ 4914.886344] rtw_8822be 0000:04:00.0: failed to setup chip efuse info
->> [ 4914.886348] rtw_8822be 0000:04:00.0: failed to setup chip information
->> [ 4914.892027] rtw_8822be 0000:04:00.0: Firmware version 27.2.0, H2C version 13
->> [ 4914.922150] rtw_8822be: probe of 0000:04:00.0 failed with error -114
->> ```
+> commit 9d958b60ebc2434f2b7eae83d77849e22d1059eb upstream.
 > 
-> #regzbot introduced: https://bugzilla.kernel.org/show_bug.cgi?id=216386
-> #regzbot ignore-activity
+> Due to AP stop improperly, mt7921 driver would face random command timeout
+> by chip fw problem. Migrate AP start/stop process to .start_ap/.stop_ap and
+> congiure BSS network settings in both hooks.
+> 
+> The new flow is shown below.
+> * AP start
+>     .start_ap()
+>       configure BSS network resource
+>       set BSS to connected state
+>     .bss_info_changed()
+>       enable fw beacon offload
+> 
+> * AP stop
+>     .bss_info_changed()
+>       disable fw beacon offload (skip this command)
+>     .stop_ap()
+>       set BSS to disconnected state (beacon offload disabled automatically)
+>       destroy BSS network resource
+> 
+> Fixes: 116c69603b01 ("mt76: mt7921: Add AP mode support")
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  2 +
+>  .../net/wireless/mediatek/mt76/mt7921/main.c  | 47 +++++++++++++++----
+>  .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  5 +-
+>  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +
+>  4 files changed, 43 insertions(+), 13 deletions(-)
 
-Argh, apparently I forgot the appropriate syntax of the bot I wrote
-myself :-/
+Now queued up, thanks,
 
-#regzbot introduced: v5.18..v5.19 ^
-https://bugzilla.kernel.org/show_bug.cgi?id=216386
-#regzbot From: Utkarsh Verma <utkarsh.naveen@gmail.com>
-#regzbot ignore-activity
+greg k-h
