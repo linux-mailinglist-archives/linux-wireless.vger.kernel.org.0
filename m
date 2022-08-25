@@ -2,166 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E735A196A
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 21:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6202B5A1ABB
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Aug 2022 23:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243647AbiHYTWK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 15:22:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33920 "EHLO
+        id S243811AbiHYVCM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Aug 2022 17:02:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243608AbiHYTWG (ORCPT
+        with ESMTP id S243559AbiHYVBr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 15:22:06 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C563BD11E
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 12:22:03 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id s199so24465086oie.3
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 12:22:03 -0700 (PDT)
+        Thu, 25 Aug 2022 17:01:47 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F44A927A
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 14:01:42 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id q7so26126574lfu.5
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 14:01:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=j11I9jJbBdP2EsV8zm8vGrZ8to2ALD+DZiEMfyWlhf4=;
-        b=KjzVxnhpw6QKMn5c7oLhZ2YXfy0o0q7ppQDDA/IUG9Tba1CyII5IegLq2jiOsTx6sf
-         9PktWYsvLhv6OduPZa78FKjas33U49IxO+UttcDOMAdp3MTlGJvDXLmU3ofAZEoFFqZT
-         pafvPKdLl3l0hKSE9VWBcm6msZs1UGsFX0W0WhRtsci35MLKycrvSxbg6GiEiXprLSDz
-         35gtzDXDspqbKE6U1rd+mL/P+1w92XWlGqtbdRRUw9gw3+q3FfhdBiDfZom+YIwlZBrE
-         iSIuTPlKIwHdWrtxWrdA/Tch392Qi6e4omMMHzm85TUdvnZFdOZSQACivsWz9KW0c6uk
-         JDjQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=rMhaiuia9CmujPaYL9dJRVPvKvvGMSUMUutx6AkpMQw=;
+        b=VC0VsqBm6hf9b/XYfHcXBRa0OTcZlYVj3/HjJfn5w7kxJoSsCAYi0wfVeVjxZ9h532
+         FWlZn6cFyJIxqPtUckpqB7t1aCWeRGMXRa/FbtxDW8A0Bhqir02pfz65pCNcexH3HZVq
+         Ybohht4H4Y0iCRmS+x4RMJcU5SiLFtKrYVrPBs4CQ8RLGtvKbt5Jh9HYHDprldzOnTjW
+         PtcEWBK4Z9cBjXZPf4ySpuKtbH1jzDeqDsVmIVpuqXg/gUs/z8qqgKXkKGtdT1fx+fNM
+         s9kJABGGCrHoGqO5i6Qgnz/n7JT4ypUjDw/1yzlUjvJ99XvjSOcGUckDJy5GiOnE7s+e
+         5ziw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=j11I9jJbBdP2EsV8zm8vGrZ8to2ALD+DZiEMfyWlhf4=;
-        b=dPDVfA0PTrUhY624g3hgsgnt7zI1pfVffSJPgKJF26rdlDNdVj4k1i4r6ISGc1m4H/
-         BPEljlHY3TI1wpaNSZrySJQ+Nzqs4VUJ60B3PDbZ8h3Z77NWTnlNX3VZ2gIpGTBlkbRk
-         +JReypbecua3XgZXsVtQFdgmcCzGtmOwPAS1+Zccd4Nrsc5kvEQLO0u4spinm1xhADm/
-         K2gnQ4V3IbB4GYZYjGMb/NekV970YPU9GiRgR2Ym54mdW4dtQC1c9DvLAajzcCPphULh
-         jOgKKv4AMTck8zeiEOpj5vvVe1EmgLCFZ4QPsHsnjEVeGQql8hnraw08s9FUtlwvGW8h
-         MHIA==
-X-Gm-Message-State: ACgBeo2UeAHwMQILDtMHkwM9WyhvgnTuFP/Ybtrr3qzPfsg2XGhMUpiP
-        Dq93vJ/M8dglApXWxKxql/ApkoUVo0RrZeoypD2R
-X-Google-Smtp-Source: AA6agR5+NrNDgFeVEqQOH6xO8KzleveZvD24+0ma4hp6CR5I88pcrQbnickGgaR7sl54W0OczwK1VkCsRh+9Rsqv/HQ=
-X-Received: by 2002:a05:6808:3a9:b0:343:4b14:ccce with SMTP id
- n9-20020a05680803a900b003434b14cccemr243316oie.41.1661455322788; Thu, 25 Aug
- 2022 12:22:02 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=rMhaiuia9CmujPaYL9dJRVPvKvvGMSUMUutx6AkpMQw=;
+        b=qTsxwqNxy0K6/BxhPORukNvrHnyLEUo6GbyLcL4JF5hFsMPDTO0YZtw3B3myoVPQuN
+         vP9bE1us3X3AtdiC87wbLygwUpgiXoDSV/9SqkJ+Ad2nBtTvFKp2KqTgqFWVPNDi8Sry
+         QbbCcAU3OPI5FvmxWMlfErLT8625BgSsjRD6dtSjnHbzbrXSraTWBHKNnhT4UpmMOzfj
+         +D6VRPxF0TU1Kz/2NI1PiobL1ov9YkKChGGNF+bOQVDqQ5J1Ln4Zp0xBbjCtOlbjmWrf
+         E8J2NRhulpOAHhm1k7LV8SwhCrmp9CcAgiImCs/a9+Uw1ki/6rapn98Y2Zj/tQ5iKeee
+         GgNQ==
+X-Gm-Message-State: ACgBeo1rNdLEJdV5XEKeqc+/dhs/CdtbuJ5b/XbTroHFRAHSWC1hwXXB
+        aO10IbaXI7xNEKmNctPGtWc=
+X-Google-Smtp-Source: AA6agR7NrWMq1nTl/P3ubkLCxRkmdp6ndW+rPAU8dNYG4VEu1Aj07c5m3A15cTGzLM7Eps0c0fI0jg==
+X-Received: by 2002:a05:6512:4004:b0:492:c4f2:9451 with SMTP id br4-20020a056512400400b00492c4f29451mr1531844lfb.666.1661461300801;
+        Thu, 25 Aug 2022 14:01:40 -0700 (PDT)
+Received: from ?IPV6:2a02:2168:88a0:5e00:a4c7:4ba3:4116:3? ([2a02:2168:88a0:5e00:a4c7:4ba3:4116:3])
+        by smtp.gmail.com with ESMTPSA id bg26-20020a05651c0b9a00b00261cc85c32fsm87243ljb.31.2022.08.25.14.01.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Aug 2022 14:01:40 -0700 (PDT)
+Message-ID: <ccdb8f94-0879-2c06-5b48-25c2340d1659@gmail.com>
+Date:   Fri, 26 Aug 2022 00:01:39 +0300
 MIME-Version: 1.0
-References: <20220825001830.1911524-1-kuba@kernel.org>
-In-Reply-To: <20220825001830.1911524-1-kuba@kernel.org>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 25 Aug 2022 15:21:52 -0400
-Message-ID: <CAHC9VhSxesi0TSSvcQSr1kDhP3Vce4+O3w2diEExGEGnjGpmiw@mail.gmail.com>
-Subject: Re: [PATCH net-next] genetlink: start to validate reserved header bytes
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, jiri@resnulli.us, johannes@sipsolutions.net,
-        linux-block@vger.kernel.org, osmocom-net-gprs@lists.osmocom.org,
-        linux-wpan@vger.kernel.org, wireguard@lists.zx2c4.com,
-        linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-pm@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-cifs@vger.kernel.org, cluster-devel@redhat.com,
-        mptcp@lists.linux.dev, lvs-devel@vger.kernel.org,
-        netfilter-devel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, dev@openvswitch.org,
-        linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH 0/4] ath11k: Enable low power mode when WLAN is not active
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+References: <20220720134959.15688-1-quic_mpubbise@quicinc.com>
+ <ad99d238-dc1a-3233-fc6b-0cd49e428903@amd.com>
+ <6daefd60-dcbc-06e1-8091-ea225690edf8@amd.com>
+ <ecce8764-1760-4617-49aa-c111305ebd55@quicinc.com>
+ <7e00cc36-3a07-92e2-c60e-a3c8939b407e@amd.com>
+Content-Language: en-US
+From:   Mark Herbert <mark.herbert42@gmail.com>
+In-Reply-To: <7e00cc36-3a07-92e2-c60e-a3c8939b407e@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 24, 2022 at 8:18 PM Jakub Kicinski <kuba@kernel.org> wrote:
 >
-> We had historically not checked that genlmsghdr.reserved
-> is 0 on input which prevents us from using those precious
-> bytes in the future.
+>> The changes that I have posted will not work on other targets like 
+>> WCN6855 as is. It requires additional changes and therefore lots of 
+>> testing.
 >
-> One use case would be to extend the cmd field, which is
-> currently just 8 bits wide and 256 is not a lot of commands
-> for some core families.
->
-> To make sure that new families do the right thing by default
-> put the onus of opting out of validation on existing families.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: jiri@resnulli.us
-> CC: johannes@sipsolutions.net
-> CC: linux-block@vger.kernel.org
-> CC: osmocom-net-gprs@lists.osmocom.org
-> CC: linux-wpan@vger.kernel.org
-> CC: wireguard@lists.zx2c4.com
-> CC: linux-wireless@vger.kernel.org
-> CC: linux-scsi@vger.kernel.org
-> CC: target-devel@vger.kernel.org
-> CC: linux-pm@vger.kernel.org
-> CC: virtualization@lists.linux-foundation.org
-> CC: linux-cifs@vger.kernel.org
-> CC: cluster-devel@redhat.com
-> CC: mptcp@lists.linux.dev
-> CC: lvs-devel@vger.kernel.org
-> CC: netfilter-devel@vger.kernel.org
-> CC: linux-security-module@vger.kernel.org
-> CC: dev@openvswitch.org
-> CC: linux-s390@vger.kernel.org
-> CC: tipc-discussion@lists.sourceforge.net
-> ---
->  drivers/block/nbd.c                      | 1 +
->  drivers/net/gtp.c                        | 1 +
->  drivers/net/ieee802154/mac802154_hwsim.c | 1 +
->  drivers/net/macsec.c                     | 1 +
->  drivers/net/team/team.c                  | 1 +
->  drivers/net/wireguard/netlink.c          | 1 +
->  drivers/net/wireless/mac80211_hwsim.c    | 1 +
->  drivers/target/target_core_user.c        | 1 +
->  drivers/thermal/thermal_netlink.c        | 1 +
->  drivers/vdpa/vdpa.c                      | 1 +
->  fs/cifs/netlink.c                        | 1 +
->  fs/dlm/netlink.c                         | 1 +
->  fs/ksmbd/transport_ipc.c                 | 1 +
->  include/linux/genl_magic_func.h          | 1 +
->  include/net/genetlink.h                  | 3 +++
->  kernel/taskstats.c                       | 1 +
->  net/batman-adv/netlink.c                 | 1 +
->  net/core/devlink.c                       | 1 +
->  net/core/drop_monitor.c                  | 1 +
->  net/ethtool/netlink.c                    | 1 +
->  net/hsr/hsr_netlink.c                    | 1 +
->  net/ieee802154/netlink.c                 | 1 +
->  net/ieee802154/nl802154.c                | 1 +
->  net/ipv4/fou.c                           | 1 +
->  net/ipv4/tcp_metrics.c                   | 1 +
->  net/ipv6/ila/ila_main.c                  | 1 +
->  net/ipv6/ioam6.c                         | 1 +
->  net/ipv6/seg6.c                          | 1 +
->  net/l2tp/l2tp_netlink.c                  | 1 +
->  net/mptcp/pm_netlink.c                   | 1 +
->  net/ncsi/ncsi-netlink.c                  | 1 +
->  net/netfilter/ipvs/ip_vs_ctl.c           | 1 +
->  net/netlabel/netlabel_calipso.c          | 1 +
->  net/netlabel/netlabel_cipso_v4.c         | 1 +
->  net/netlabel/netlabel_mgmt.c             | 1 +
->  net/netlabel/netlabel_unlabeled.c        | 1 +
->  net/netlink/genetlink.c                  | 4 ++++
->  net/nfc/netlink.c                        | 1 +
->  net/openvswitch/conntrack.c              | 1 +
->  net/openvswitch/datapath.c               | 3 +++
->  net/openvswitch/meter.c                  | 1 +
->  net/psample/psample.c                    | 1 +
->  net/smc/smc_netlink.c                    | 3 ++-
->  net/smc/smc_pnet.c                       | 3 ++-
->  net/tipc/netlink.c                       | 1 +
->  net/tipc/netlink_compat.c                | 1 +
->  net/wireless/nl80211.c                   | 1 +
->  47 files changed, 56 insertions(+), 2 deletions(-)
 
-Acked-by: Paul Moore <paul@paul-moore.com> (NetLabel)
+Will the changes be possible for QCA6390 as well?  Currently this chip 
+only activates power saving mode when it is connected, but behaves badly 
+when not associated to any network. So there is a chance that this kind 
+of solution will help.
 
--- 
-paul-moore.com
