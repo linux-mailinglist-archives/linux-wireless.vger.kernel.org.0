@@ -2,137 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F855A1F16
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 04:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FDE65A2037
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 07:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244850AbiHZCqJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Aug 2022 22:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59016 "EHLO
+        id S233717AbiHZFNg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Aug 2022 01:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235939AbiHZCqH (ORCPT
+        with ESMTP id S234463AbiHZFNf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Aug 2022 22:46:07 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C925F51A3B;
-        Thu, 25 Aug 2022 19:46:05 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 27Q2iQoN5005022, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 27Q2iQoN5005022
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 26 Aug 2022 10:44:26 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 26 Aug 2022 10:44:41 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 26 Aug 2022 10:44:40 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::d902:19b0:8613:5b97]) by
- RTEXMBS04.realtek.com.tw ([fe80::d902:19b0:8613:5b97%5]) with mapi id
- 15.01.2375.007; Fri, 26 Aug 2022 10:44:40 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        Bernie Huang <phhuang@realtek.com>
-Subject: RE: [PATCH -next v2] wifi: rtw88: add missing destroy_workqueue() on error path in rtw_core_init()
-Thread-Topic: [PATCH -next v2] wifi: rtw88: add missing destroy_workqueue() on
- error path in rtw_core_init()
-Thread-Index: AQHYuPPXTVNverb67E6eoXZA/kccLq3AeYDg
-Date:   Fri, 26 Aug 2022 02:44:40 +0000
-Message-ID: <3388603e9a874c2d893b5fff8949390e@realtek.com>
-References: <20220826023817.3908255-1-yangyingliang@huawei.com>
-In-Reply-To: <20220826023817.3908255-1-yangyingliang@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/8/25_=3F=3F_11:50:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 26 Aug 2022 01:13:35 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4085C946
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 22:13:34 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id m17-20020a7bce11000000b003a5bedec07bso3801559wmc.0
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Aug 2022 22:13:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=Wh6FLDEnJQ0ruFSeCB7dZ0n+l2/E1h9WWj0E7OrvHN8=;
+        b=gzvm+bQtE8AmMsvbkn6i37XPPtXDA1iCHae/C2j4+xAsmHS2vcozSBzu4Y0tzPlkLB
+         frJAVOMQruttFHaVSU4UIT1aWUo7AfH2Ff9H0fE8ZxJIjYfx2ZQukGpsi0/EwQCS143C
+         kD6saRNrvRRAy7i+99+TpMQ011lbZ9hrepoaC4v+FYOXDntQHyC0UPd1kY8r/jplXWU1
+         QygyRHER5lqg45w8vGM6BUuJ+X9XRh3j1I/WrwWRystcpA+idTltyybUOuOCRsJ4QNsp
+         MV5vxp9/x2Lz+8nyK5a9do0S5iruX2dTEhILARFfIaeWgEwVEt7pjePTAQ9dqY5k5rqA
+         Ikrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=Wh6FLDEnJQ0ruFSeCB7dZ0n+l2/E1h9WWj0E7OrvHN8=;
+        b=faNH2z4O/0ibgDDrezzUv7M00KGM/zQqTMn06XxsswM29DphA1LLwdr+zsMw4XvoVQ
+         EPQjCqv67PlpVYTrx+HPgGBIa2vzzyN6loLCDFHs+fOieX4Svk01TZJY+9n4VhYbsojL
+         pd7YtVa6t2xdOvlkfYmZDE7CuIDKjtnkiQvpSqS/J4U7ropn1d9hJq5x3qEQ3iuTMss5
+         fF10MkDB2uWrps0jB95IEW4Pw1ia37xJUM5XzcLpakPx2iCdrnQSbCCB0TS6YEjyFClY
+         UerdUM/l+LJHLB0zK11eezMEm5xPPiR8G3dwajJpgzi+SR9wFXAd63CBCtraABD6INZB
+         eYSA==
+X-Gm-Message-State: ACgBeo1MoQvpkkRB7VRIRh69xLHU+WIvvvELatpnCgUbk+j9A/Z5dlPV
+        YER3ifWX6DNxbfpajQI9wZKHSoX7WFYCjPZ8sVI=
+X-Google-Smtp-Source: AA6agR7QFJk2fyWRvEx03DjqaHYun1rzfQlrmhMAnyRnD79orGEX+fPxtFvy6QAk3o0D/25is63NMgz/ewnaoA7X3Cc=
+X-Received: by 2002:a05:600c:5008:b0:3a6:1cd8:570d with SMTP id
+ n8-20020a05600c500800b003a61cd8570dmr4030338wmr.57.1661490812559; Thu, 25 Aug
+ 2022 22:13:32 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <fd716a393e20d5db89f4f9d705d6dbbfde7260a6.1661400412.git.objelf@gmail.com>
+ <Ywc1srMmMu51Nuzv@lore-desk>
+In-Reply-To: <Ywc1srMmMu51Nuzv@lore-desk>
+From:   sean wang <objelf@gmail.com>
+Date:   Thu, 25 Aug 2022 22:13:20 -0700
+Message-ID: <CAGp9LzqmSyj0n__1vOhQcqt-7QXWNzia-zngqyufB4-epgBsQg@mail.gmail.com>
+Subject: Re: [PATCH] mt76: mt7921: reset msta->airtime_ac while clearing up hw value
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     =?UTF-8?B?U2VhbiBXYW5nICjnjovlv5fkupgp?= <sean.wang@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, lorenzo.bianconi@redhat.com,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        jenhao.yang@mediatek.com, Robin Chiu <robin.chiu@mediatek.com>,
+        Eddie.Chen@mediatek.com, CH Yeh <ch.yeh@mediatek.com>,
+        Posh Sun <posh.sun@mediatek.com>, ted.huang@mediatek.com,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
+        frankgor@google.com, kuabhs@google.com, druth@google.com,
+        abhishekpandit@google.com, shawnku@google.com,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Lorenzo,
 
-> -----Original Message-----
-> From: Yang Yingliang <yangyingliang@huawei.com>
-> Sent: Friday, August 26, 2022 10:38 AM
-> To: linux-kernel@vger.kernel.org; netdev@vger.kernel.org; linux-wireless@vger.kernel.org
-> Cc: tony0620emma@gmail.com; kvalo@kernel.org; Bernie Huang <phhuang@realtek.com>
-> Subject: [PATCH -next v2] wifi: rtw88: add missing destroy_workqueue() on error path in rtw_core_init()
-> 
-> Add the missing destroy_workqueue() before return from rtw_core_init()
-> in error path.
-> 
-> Fixes: fe101716c7c9 ("rtw88: replace tx tasklet with work queue")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+On Thu, Aug 25, 2022 at 1:41 AM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+> > From: Sean Wang <sean.wang@mediatek.com>
+> >
+> > We should reset mstat->airtime_ac along with clear up the entries in the
+> > hardware WLAN table for the Rx and Rx accumulative airtime. Otherwsie, the
+> > value msta->airtime_ac - [tx, rx]_last may be a negative and that is not
+> > the actual airtime the device took in the last run.
+>
+> the only point where we need it is mt7921_mac_sta_assoc() since in
+> mt7921_mac_sta_add() airtime_ac array is supposed to be already 0 and in
+> mt7921_mac_sta_remove() we are removing the sta. Is my understanding correct?
+> If so, is it better to just add a memset(, 0, ..) in mt7921_mac_sta_assoc()?
+>
 
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+The way looks good to me. I'll add in the v2. thanks!
 
-Thanks
+    Sean
 
-> ---
-> v2:
->   Change labe name to 'out'.
-> ---
->  drivers/net/wireless/realtek/rtw88/main.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-> index 790dcfed1125..475ce0e3071c 100644
-> --- a/drivers/net/wireless/realtek/rtw88/main.c
-> +++ b/drivers/net/wireless/realtek/rtw88/main.c
-> @@ -2094,7 +2094,7 @@ int rtw_core_init(struct rtw_dev *rtwdev)
->  	ret = rtw_load_firmware(rtwdev, RTW_NORMAL_FW);
->  	if (ret) {
->  		rtw_warn(rtwdev, "no firmware loaded\n");
-> -		return ret;
-> +		goto out;
->  	}
-> 
->  	if (chip->wow_fw_name) {
-> @@ -2104,11 +2104,15 @@ int rtw_core_init(struct rtw_dev *rtwdev)
->  			wait_for_completion(&rtwdev->fw.completion);
->  			if (rtwdev->fw.firmware)
->  				release_firmware(rtwdev->fw.firmware);
-> -			return ret;
-> +			goto out;
->  		}
->  	}
-> 
->  	return 0;
-> +
-> +out:
-> +	destroy_workqueue(rtwdev->tx_wq);
-> +	return ret;
->  }
->  EXPORT_SYMBOL(rtw_core_init);
-> 
-> --
-> 2.25.1
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
+> Regards,
+> Lorenzo
+>
+> >
+> > Reported-by: YN Chen <YN.Chen@mediatek.com>
+> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mt7921/mac.c   | 15 ++++++++++-----
+> >  drivers/net/wireless/mediatek/mt76/mt7921/main.c  |  9 +++------
+> >  .../net/wireless/mediatek/mt76/mt7921/mt7921.h    |  2 ++
+> >  3 files changed, 15 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> > index 47f0aa81ab02..87dd0babff7a 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> > @@ -46,6 +46,14 @@ bool mt7921_mac_wtbl_update(struct mt7921_dev *dev, int idx, u32 mask)
+> >                        0, 5000);
+> >  }
+> >
+> > +void mt7921_mac_sta_airtime_clear(struct mt7921_dev *dev,
+> > +                               struct mt7921_sta *msta)
+> > +{
+> > +     mt7921_mac_wtbl_update(dev, msta->wcid.idx,
+> > +                            MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+> > +     memset(msta->airtime_ac, 0, sizeof(msta->airtime_ac));
+> > +}
+> > +
+> >  void mt7921_mac_sta_poll(struct mt7921_dev *dev)
+> >  {
+> >       static const u8 ac_to_tid[] = {
+> > @@ -100,11 +108,8 @@ void mt7921_mac_sta_poll(struct mt7921_dev *dev)
+> >                       addr += 8;
+> >               }
+> >
+> > -             if (clear) {
+> > -                     mt7921_mac_wtbl_update(dev, idx,
+> > -                                            MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+> > -                     memset(msta->airtime_ac, 0, sizeof(msta->airtime_ac));
+> > -             }
+> > +             if (clear)
+> > +                     mt7921_mac_sta_airtime_clear(dev, msta);
+> >
+> >               if (!msta->wcid.sta)
+> >                       continue;
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > index 1438a9f8d1fd..9d70884e24af 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > @@ -723,8 +723,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+> >       if (vif->type == NL80211_IFTYPE_STATION)
+> >               mvif->wep_sta = msta;
+> >
+> > -     mt7921_mac_wtbl_update(dev, idx,
+> > -                            MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+> > +     mt7921_mac_sta_airtime_clear(dev, msta);
+> >
+> >       ret = mt7921_mcu_sta_update(dev, sta, vif, true,
+> >                                   MT76_STA_INFO_STATE_NONE);
+> > @@ -750,8 +749,7 @@ void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+> >               mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.wcid,
+> >                                           true);
+> >
+> > -     mt7921_mac_wtbl_update(dev, msta->wcid.idx,
+> > -                            MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+> > +     mt7921_mac_sta_airtime_clear(dev, msta);
+> >
+> >       mt7921_mcu_sta_update(dev, sta, vif, true, MT76_STA_INFO_STATE_ASSOC);
+> >
+> > @@ -769,8 +767,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+> >       mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+> >
+> >       mt7921_mcu_sta_update(dev, sta, vif, false, MT76_STA_INFO_STATE_NONE);
+> > -     mt7921_mac_wtbl_update(dev, msta->wcid.idx,
+> > -                            MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+> > +     mt7921_mac_sta_airtime_clear(dev, msta);
+> >
+> >       if (vif->type == NL80211_IFTYPE_STATION) {
+> >               struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > index c161031ac62a..8b704d08509d 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > @@ -362,6 +362,8 @@ void mt7921_stop(struct ieee80211_hw *hw);
+> >  int mt7921_mac_init(struct mt7921_dev *dev);
+> >  bool mt7921_mac_wtbl_update(struct mt7921_dev *dev, int idx, u32 mask);
+> >  void mt7921_mac_reset_counters(struct mt7921_phy *phy);
+> > +void mt7921_mac_sta_airtime_clear(struct mt7921_dev *dev,
+> > +                               struct mt7921_sta *msta);
+> >  void mt7921_mac_set_timing(struct mt7921_phy *phy);
+> >  int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+> >                      struct ieee80211_sta *sta);
+> > --
+> > 2.25.1
+> >
