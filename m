@@ -2,120 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCBA15A3068
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 22:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F1E5A30D5
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 23:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344234AbiHZUUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Aug 2022 16:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41568 "EHLO
+        id S233538AbiHZVMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Aug 2022 17:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344912AbiHZUUV (ORCPT
+        with ESMTP id S229676AbiHZVMq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Aug 2022 16:20:21 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D94365806
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 13:20:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=7BDfs3zY1q4ZJ80EnDObosL6epNX9UlV1q7NCAntau4=; t=1661545217; x=1662754817; 
-        b=v+JB27iLCvNtsMcuPq+idMZk/bnoKM+hZSxi3o7Nd781qirFUxlIxlPtTPWsumMXVxHt/MyzVaV
-        8fYL+3WLFCoC4DIvZiFMFl9HFMKW8qC+3I78HK2brt0XA7gtbq8O+BsvN2nNh0fbz5Xg/gUC1U6bP
-        leJc3H2GTMGFPEptsAGpXAw2qYpyw4J1NIGQRqYfBfWsamK9j3mggiZcQUHTpYg/nXCUXkUrQOhfp
-        aaA7jyLBVJtBfhbjAeX/GDzYjJH2XkpeOeI4eBdudA0L02BIaOIgqtZoL1kZcI+X4hS9DXuaFgRh4
-        Lsw/klPHSn2oUu0YC1xm0cQnlSp1pPBEg3GQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oRfoJ-000Qtr-0b;
-        Fri, 26 Aug 2022 22:20:11 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Fri, 26 Aug 2022 17:12:46 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40937E589E
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 14:12:45 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id 202so2427601pgc.8
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 14:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:date:to:from
+         :subject:message-id:from:to:cc;
+        bh=POG5+eCcsauVD5ngyl48W7k4XbDPBYvyvSVLVpFK9S8=;
+        b=Wm2X5SjF/lTm0nvY3up9ZmGv9evW33v612YUheyVFH0/q1AiEKL2yEzgnsxL5d63mN
+         r6huin4zz586UQizoFNYFp3OhTf1JuS8s82mI3+C9Bq3+wjaiVmXRn3fvqosTmMxPxs8
+         QqQIQ59xjJR2hx/RulseFiUlEGMnplW5ym5P11VFAM1H7kcXvuVz71ubShwnmL8uh0tP
+         y2qNkpVbmS34efX7MM2mTr+F6L/GvreYBP/oFHhOK5tbaZ094SBE7VgHTCbQoRhiWFeY
+         TBhWB98Xy70HJzB+g2dPLCAV5B/VhTZE7c3YDwTp+3ptWwpaJuBKMryNgXGWt2Ae0l4h
+         WH2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:date:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc;
+        bh=POG5+eCcsauVD5ngyl48W7k4XbDPBYvyvSVLVpFK9S8=;
+        b=XZ4Z/De33jfzeT4BRSxES1qnLHdpKo+RKRsizRA4/SVZnDMKhdY7w7t2WNaY4hw9yw
+         e3rhCmnK/KFW6Pba5/hLGPf1VHUTUipUJwRsFQzAcNJyZd0Z3TsW/OXLpEGvhsnnlTqZ
+         flH4HVRplhCpe6Sa0irRoYCH2egdlnWEBkmZVn4u6MY2mv/F8fJQyth7e8MCdC0Gh8K0
+         Agk4zU+CCy1XAoxjMXB+PHx4Pl75+DyY1cVVll4RskmclJC86i/MU/rvsKz+N9inALgd
+         p1oqRjVByLibtr2XJ8yZJN2Lnc4E+lL9bUCjvANuyzY2AvGWZbKhDV8eq1nX+15ehAnz
+         wqTw==
+X-Gm-Message-State: ACgBeo3OC1oKDo0acYwbNU2MQA2HeTZcsAKZm1gv5xZHQSF8DPX3pCas
+        NNY0AcBOMC6Xfkxhqu59bA2z89h7N24=
+X-Google-Smtp-Source: AA6agR6a/mRlnXk+xS+u5GktLjP2e/zNvcrZT3SnwPxR+oiTHIRyfLVS67fAGYzEJEuFm+y9lP2HOg==
+X-Received: by 2002:a63:1459:0:b0:411:b06f:646f with SMTP id 25-20020a631459000000b00411b06f646fmr4697564pgu.338.1661548364500;
+        Fri, 26 Aug 2022 14:12:44 -0700 (PDT)
+Received: from [192.168.254.16] ([50.39.168.145])
+        by smtp.gmail.com with ESMTPSA id b10-20020a170903228a00b001728eb339e2sm2052564plh.286.2022.08.26.14.12.43
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Aug 2022 14:12:44 -0700 (PDT)
+Message-ID: <432703ce83ac979ba06e2b85d6dc500f246c6a76.camel@gmail.com>
+Subject: Automatically adding OCI in mac80211
+From:   James Prestwood <prestwoj@gmail.com>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: use struct_group to copy addresses
-Date:   Fri, 26 Aug 2022 22:20:08 +0200
-Message-Id: <20220826222007.7acf78f1ecee.I7c75a7d3599f120c720a5d6ec170fd90ec0dfd51@changeid>
-X-Mailer: git-send-email 2.37.2
+Date:   Fri, 26 Aug 2022 14:12:43 -0700
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-5.fc34) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi,
 
-We sometimes copy all the addresses from the 802.11 header
-for the AAD, which may cause complaints from fortify checks.
-Use struct_group() to enable that.
+I'll preface this with some background:
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/linux/ieee80211.h          | 8 +++++---
- net/mac80211/wpa.c                 | 4 ++--
- net/wireless/lib80211_crypt_ccmp.c | 2 +-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+Long ago support for multiple authenticated BSS's was removed due to
+its complexity. CMD_AUTHENTICATE now changes state/channel, and is not
+recoverable if authentication fails (i.e. disconnect). The spec
+actually allows/intends for multiple authentications to be supported
+and FT specifically can really benefit from this.
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 55e6f4ad0ca6..b6e6d5b40774 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -310,9 +310,11 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
- struct ieee80211_hdr {
- 	__le16 frame_control;
- 	__le16 duration_id;
--	u8 addr1[ETH_ALEN];
--	u8 addr2[ETH_ALEN];
--	u8 addr3[ETH_ALEN];
-+	struct_group(addrs,
-+		u8 addr1[ETH_ALEN];
-+		u8 addr2[ETH_ALEN];
-+		u8 addr3[ETH_ALEN];
-+	);
- 	__le16 seq_ctrl;
- 	u8 addr4[ETH_ALEN];
- } __packed __aligned(2);
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index 93ec2f349748..20f742b5503b 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -351,7 +351,7 @@ static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad)
- 	 * FC | A1 | A2 | A3 | SC | [A4] | [QC] */
- 	put_unaligned_be16(len_a, &aad[0]);
- 	put_unaligned(mask_fc, (__le16 *)&aad[2]);
--	memcpy(&aad[4], &hdr->addr1, 3 * ETH_ALEN);
-+	memcpy(&aad[4], &hdr->addrs, 3 * ETH_ALEN);
- 
- 	/* Mask Seq#, leave Frag# */
- 	aad[22] = *((u8 *) &hdr->seq_ctrl) & 0x0f;
-@@ -792,7 +792,7 @@ static void bip_aad(struct sk_buff *skb, u8 *aad)
- 				IEEE80211_FCTL_MOREDATA);
- 	put_unaligned(mask_fc, (__le16 *) &aad[0]);
- 	/* A1 || A2 || A3 */
--	memcpy(aad + 2, &hdr->addr1, 3 * ETH_ALEN);
-+	memcpy(aad + 2, &hdr->addrs, 3 * ETH_ALEN);
- }
- 
- 
-diff --git a/net/wireless/lib80211_crypt_ccmp.c b/net/wireless/lib80211_crypt_ccmp.c
-index 6a5f08f7491e..37fe93ed2529 100644
---- a/net/wireless/lib80211_crypt_ccmp.c
-+++ b/net/wireless/lib80211_crypt_ccmp.c
-@@ -136,7 +136,7 @@ static int ccmp_init_iv_and_aad(const struct ieee80211_hdr *hdr,
- 	pos = (u8 *) hdr;
- 	aad[0] = pos[0] & 0x8f;
- 	aad[1] = pos[1] & 0xc7;
--	memcpy(aad + 2, hdr->addr1, 3 * ETH_ALEN);
-+	memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
- 	pos = (u8 *) & hdr->seq_ctrl;
- 	aad[20] = pos[0] & 0x0f;
- 	aad[21] = 0;		/* all bits masked */
--- 
-2.37.2
+As a workaround we started playing around with using
+CMD_FRAME/offchannel for authentication, bypassing the kernels state.
+This works, and we can authenticate, fail, try another BSS etc. all
+without the kernel knowing, then proceed to association.
+
+The small problem is dealing with OCV. Prior, we would call
+CMD_AUTHENTICATE (channel changes), then GET_INTERFACE in order to
+obtain the channel/operating class to build the OCI element. Now, since
+authentication is done offchannel we cannot use GET_INTERFACE. Deriving
+the OCI based on capabilities is certainly possible, after all this is
+what the kernel does, but rather than trying to mirror/maintain that
+code I thought it would be great if the kernel could append the OCI
+automatically to the association request. This would also save a round
+trip since GET_INTERFACE wouldn't be needed.
+
+Does this sound reasonable?
+
+Thanks,
+James
+
 
