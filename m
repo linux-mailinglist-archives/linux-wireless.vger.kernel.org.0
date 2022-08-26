@@ -2,261 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C32EA5A25C0
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 12:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 026AC5A2620
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Aug 2022 12:51:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243821AbiHZKVc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Aug 2022 06:21:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57504 "EHLO
+        id S1343946AbiHZKvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Aug 2022 06:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233093AbiHZKVb (ORCPT
+        with ESMTP id S1344027AbiHZKuq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Aug 2022 06:21:31 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C89C57AA;
-        Fri, 26 Aug 2022 03:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=eRCxeatqLFPb1P3n46IT4osvxNIq3wrO3Mn0ZRUPkSI=; t=1661509289; x=1662718889; 
-        b=Dhl1EN3Pgnz8hHct8Cs+NOLu3Awt2IckE7j8dwsdLxBQgvF8tSm75c8hn/A1kJty+W08XFndp9E
-        Pyhv8pVwNviy3CeSdHkjlz+WOJo60TwbU5szo222rFB4y95JYl8vPuy+Z4HH+jVLyw9sGt9kSvZ2N
-        wS2Ozb2icIeXSOZMlr6RA39ArHGQFTKZzm0IXdbEVip6M1zt7M4ApGnIbR+UAvGfT9jyOUV6jb0jC
-        oqN2JF4XT2G9b8NqI+s5LdrkfoBn6w+tORTL4VEWLB6nvgv6B/BcxRLMM/dvAc1AGFNozYRhMA7Oy
-        WPO4WRYrKndWRslRDDFkv9IxULbka/9t5SpA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oRWSt-000CQD-3A;
-        Fri, 26 Aug 2022 12:21:28 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-next-2022-08-26-v2
-Date:   Fri, 26 Aug 2022 12:21:17 +0200
-Message-Id: <20220826102118.25148-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.37.2
+        Fri, 26 Aug 2022 06:50:46 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B345F37181
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 03:50:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 535D0B830AC
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 10:50:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEF8C433D7
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 10:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661511040;
+        bh=GyPmqNhvJM6Rg2RFDCY39gIB8qMT1X8vz4z7CrUDmKc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=OJuFYgDJRMum+ZujmhNJfhQK9hyhlw/T2uF6Pstg1w6yGOmLXzFBCMJF5coj/MNvg
+         fS+UcMZAUKuqphKJ3ZVnl9XMoisDQnIV3zcv6QRZB05DHwXu31rlFswMFnck5GWIKL
+         TrQBQour2PGmE53Dvs8+Sm0JeyYt2LvrxEuonnf3O2EMN/iibIs0TDzViXHL+mxoNl
+         VfQ53anCKVZ/+gbxDkJDN2KeWvzmDlTIW3Qp0jbqiYmZw+8dHiuYsAcCvQc4WJrpqb
+         C+CWq0CikOkvxNoCoprOMssZjNLP6mEae7dE/R1gSX9eIQYZQTJfmvxjfizr17iQTI
+         7e4uat05MGyog==
+Received: by mail-wr1-f51.google.com with SMTP id bs25so1354999wrb.2
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 03:50:40 -0700 (PDT)
+X-Gm-Message-State: ACgBeo0ij+tFmSh0R574OpFziptAo4S4XHRE6PkFE852Av7qbS40WeiU
+        BdwreGvTJpmtEI7wEpH8iQh2HfI8DbfnEKCeY/Q=
+X-Google-Smtp-Source: AA6agR6z4cfT1LyC0KYrLonQjHrBPt3eQqG5KfKkOA0xPqbM5fxaakddMUJQ+f6rD5hhQOREFE4q0zGretEd8X9dqHA=
+X-Received: by 2002:adf:d4c6:0:b0:225:2eeb:fe8e with SMTP id
+ w6-20020adfd4c6000000b002252eebfe8emr4563323wrk.429.1661511038296; Fri, 26
+ Aug 2022 03:50:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <727eb5ffd3c7c805245e512da150ecf0a7154020.1659452909.git.deren.wu@mediatek.com>
+ <CAGp9LzoZkxONid2Kt-ykuQWiY1pTG6NGxho8FeLwMd9MdWd-rA@mail.gmail.com>
+In-Reply-To: <CAGp9LzoZkxONid2Kt-ykuQWiY1pTG6NGxho8FeLwMd9MdWd-rA@mail.gmail.com>
+From:   Sean Wang <sean.wang@kernel.org>
+Date:   Fri, 26 Aug 2022 03:50:26 -0700
+X-Gmail-Original-Message-ID: <CAGp9Lzo+MxynP-Lwb8_eCX4w+EQ6FqZAU3w-OMpcj7x1N8xyyQ@mail.gmail.com>
+Message-ID: <CAGp9Lzo+MxynP-Lwb8_eCX4w+EQ6FqZAU3w-OMpcj7x1N8xyyQ@mail.gmail.com>
+Subject: Re: [PATCH] mt76: mt7921e: fix crash in chip reset fail
+To:     Deren Wu <Deren.Wu@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Johannes,
 
-And here's a one for net-next. Nothing major this time
-around either, MLO work continues of course, along with
-various other updates. Drivers are lagging behind a bit,
-but we'll have that sorted out too.
+Kalle seemed not available this week, so I would like to look for help from you.
+If the patch looks good to you, could you help apply the patch to
+wireless-drivers.git because there are getting more users reporting
+the issue with the stable kernel such as [1]. I would like to backport
+it sooner once it appears in the Linus tree to solve the indefinite
+hang issue. Sorry for the hurry request, I knew you just sent the pull
+request one moment ago :(
 
-This one with the rtw88 warning fix.
+[1] https://lore.kernel.org/linux-wireless/VE1PR04MB64945C660A81D38F290E4A4BE59F9@VE1PR04MB6494.eurprd04.prod.outlook.com/T/
 
-Please pull and let me know if there's any problem.
+Sean
 
-Thanks,
-johannes
-
-
-
-The following changes since commit 63757225a93353bc2ce4499af5501eabdbbf23f9:
-
-  Merge tag 'mlx5-updates-2022-07-28' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux (2022-07-29 21:39:07 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2022-08-26-v2
-
-for you to fetch changes up to 4ffb4d25ef1251d57881da183d6bec7f2dfe1e32:
-
-  wifi: rtw88: fix uninitialized use of primary channel index (2022-08-26 12:16:19 +0200)
-
-----------------------------------------------------------------
-Various updates:
- * rtw88: operation, locking, warning, and code style fixes
- * rtw89: small updates
- * cfg80211/mac80211: more EHT/MLO (802.11be, WiFi 7) work
- * brcmfmac: a couple of fixes
- * misc cleanups etc.
-
-----------------------------------------------------------------
-Chia-Yuan Li (1):
-      wifi: rtw89: 8852a: correct WDE IMR settings
-
-Chih-Kang Chang (9):
-      wifi: rtw88: fix stopping queues in wrong timing when HW scan
-      wifi: rtw88: fix store OP channel info timing when HW scan
-      wifi: rtw88: add mutex when set SAR
-      wifi: rtw88: add mutex when set regulatory and get Tx power table
-      wifi: rtw88: add the update channel flow to support setting by parameters
-      wifi: rtw88: fix WARNING:rtw_get_tx_power_params() during HW scan
-      wifi: rtw88: add flushing queue before HW scan
-      wifi: rtw88: add flag check before enter or leave IPS
-      wifi: rtw88: prohibit enter IPS during HW scan
-
-Hari Chandrakanthan (1):
-      wifi: mac80211: allow bw change during channel switch in mesh
-
-Ilan Peer (1):
-      wifi: cfg80211: Update RNR parsing to align with Draft P802.11be_D2.0
-
-Johannes Berg (12):
-      wifi: mac80211: accept STA changes without link changes
-      wifi: mac80211: fix use-after-free
-      wifi: mac80211: properly implement MLO key handling
-      wifi: mac80211: use link ID for MLO in queued frames
-      wifi: mac80211_hwsim: split iftype data into AP/non-AP
-      wifi: cfg80211/mac80211: check EHT capability size correctly
-      wifi: mac80211: maintain link_id in link_sta
-      wifi: mac80211_hwsim: fix link change handling
-      wifi: mac80211: set link ID in TX info for beacons
-      wifi: mac80211: fix control port frame addressing
-      wifi: mac80211: allow link address A2 in TXQ dequeue
-      wifi: mac80211: correct SMPS mode in HE 6 GHz capability
-
-Krzysztof Kozlowski (1):
-      dt-bindings: wireless: use spi-peripheral-props.yaml
-
-Lukas Bulwahn (1):
-      wifi: mac80211: clean up a needless assignment in ieee80211_sta_activate_link()
-
-Mordechay Goodstein (1):
-      wifi: mac80211: mlme: don't add empty EML capabilities
-
-Ping-Ke Shih (3):
-      wifi: rtw88: access chip_info by const pointer
-      wifi: rtlwifi: 8192de: correct checking of IQK reload
-      wifi: rtw88: fix uninitialized use of primary channel index
-
-Po-Hao Huang (1):
-      wifi: rtw88: 8822c: extend supported probe request size
-
-Ruffalo Lavoisier (1):
-      wifi: brcmsmac: remove duplicate words
-
-Ryder Lee (1):
-      wifi: mac80211: read ethtool's sta_stats from sinfo
-
-Sebin Sebastian (1):
-      wifi: qtnfmac: remove braces around single statement blocks
-
-Shaul Triebitz (5):
-      wifi: mac80211: properly set old_links when removing a link
-      wifi: cfg80211: get correct AP link chandef
-      wifi: mac80211: set link BSSID
-      wifi: cfg80211: add link id to txq params
-      wifi: mac80211: use link in TXQ parameter configuration
-
-Vasanthakumar Thiagarajan (2):
-      wifi: mac80211: add link information in ieee80211_rx_status
-      wifi: mac80211: use the corresponding link for stats update
-
-Veerendranath Jakkam (5):
-      wifi: cfg80211: reject connect response with MLO params for WEP
-      wifi: cfg80211: Prevent cfg80211_wext_siwencodeext() on MLD
-      wifi: cfg80211: Add link_id parameter to various key operations for MLO
-      wifi: nl80211: send MLO links channel info in GET_INTERFACE
-      wifi: cfg80211: Add link_id to cfg80211_ch_switch_started_notify()
-
-Wataru Gohda (2):
-      wifi: brcmfmac: Fix to add brcmf_clear_assoc_ies when rmmod
-      wifi: brcmfmac: Fix to add skb free for TIM update info when tx is completed
-
-Wolfram Sang (1):
-      wifi: mac80211: move from strlcpy with unused retval to strscpy
-
-Wright Feng (3):
-      wifi: brcmfmac: fix continuous 802.1x tx pending timeout error
-      wifi: brcmfmac: fix scheduling while atomic issue when deleting flowring
-      wifi: brcmfmac: fix invalid address access when enabling SCAN log level
-
-Xin Gao (1):
-      wifi: mac80211: use full 'unsigned int' type
-
-Zong-Zhe Yang (2):
-      wifi: rtw88: phy: fix warning of possible buffer overflow
-      wifi: rtw89: refine leaving LPS function
-
- .../bindings/net/wireless/microchip,wilc1000.yaml  |   7 +-
- .../bindings/net/wireless/silabs,wfx.yaml          |  15 +-
- .../bindings/net/wireless/ti,wlcore.yaml           |  30 +-
- drivers/net/wireless/ath/ath6kl/cfg80211.c         |   8 +-
- drivers/net/wireless/ath/wil6210/cfg80211.c        |  10 +-
- .../wireless/broadcom/brcm80211/brcmfmac/bcdc.c    |   3 +-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c         |  23 +-
- .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   4 +-
- .../broadcom/brcm80211/brcmfmac/flowring.c         |   5 +-
- .../broadcom/brcm80211/brcmfmac/fwsignal.c         |  16 +-
- .../broadcom/brcm80211/brcmfmac/fwsignal.h         |   3 +-
- .../wireless/broadcom/brcm80211/brcmfmac/msgbuf.c  |  25 +-
- .../net/wireless/broadcom/brcm80211/brcmfmac/pno.c |  12 +-
- .../wireless/broadcom/brcm80211/brcmsmac/types.h   |   2 +-
- drivers/net/wireless/mac80211_hwsim.c              | 394 ++++++++++++++++++++-
- drivers/net/wireless/marvell/libertas/cfg.c        |   9 +-
- drivers/net/wireless/marvell/mwifiex/cfg80211.c    |  10 +-
- drivers/net/wireless/microchip/wilc1000/cfg80211.c |  17 +-
- drivers/net/wireless/quantenna/qtnfmac/cfg80211.c  |  16 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c   |   9 +-
- drivers/net/wireless/realtek/rtw88/bf.c            |   2 +-
- drivers/net/wireless/realtek/rtw88/coex.c          |  88 ++---
- drivers/net/wireless/realtek/rtw88/coex.h          |  14 +-
- drivers/net/wireless/realtek/rtw88/debug.c         |  11 +-
- drivers/net/wireless/realtek/rtw88/efuse.c         |   4 +-
- drivers/net/wireless/realtek/rtw88/fw.c            |  95 +++--
- drivers/net/wireless/realtek/rtw88/fw.h            |  21 +-
- drivers/net/wireless/realtek/rtw88/mac.c           |  18 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c      |  14 +-
- drivers/net/wireless/realtek/rtw88/main.c          | 212 ++++++-----
- drivers/net/wireless/realtek/rtw88/main.h          |  31 +-
- drivers/net/wireless/realtek/rtw88/pci.c           |  20 +-
- drivers/net/wireless/realtek/rtw88/phy.c           |  65 ++--
- drivers/net/wireless/realtek/rtw88/phy.h           |   2 +-
- drivers/net/wireless/realtek/rtw88/ps.c            |   7 +-
- drivers/net/wireless/realtek/rtw88/regd.c          |   2 +
- drivers/net/wireless/realtek/rtw88/rtw8723d.c      |   3 +-
- drivers/net/wireless/realtek/rtw88/rtw8821c.c      |   3 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |   3 +-
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |   3 +-
- drivers/net/wireless/realtek/rtw88/tx.c            |   8 +-
- drivers/net/wireless/realtek/rtw88/util.c          |   4 +-
- drivers/net/wireless/realtek/rtw89/ps.c            |   3 +-
- drivers/net/wireless/realtek/rtw89/reg.h           |  21 +-
- drivers/net/wireless/rndis_wlan.c                  |  20 +-
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c  |  13 +-
- drivers/staging/wlan-ng/cfg80211.c                 |  12 +-
- include/linux/ieee80211.h                          |  14 +-
- include/net/cfg80211.h                             |  43 ++-
- include/net/mac80211.h                             |   9 +
- include/uapi/linux/nl80211.h                       |  14 +-
- net/mac80211/cfg.c                                 | 129 +++++--
- net/mac80211/eht.c                                 |   4 +-
- net/mac80211/ethtool.c                             |  10 +-
- net/mac80211/ibss.c                                |   8 +-
- net/mac80211/ieee80211_i.h                         |   8 +-
- net/mac80211/iface.c                               |  13 +-
- net/mac80211/key.c                                 | 190 +++++++---
- net/mac80211/key.h                                 |  13 +-
- net/mac80211/mesh.c                                |   2 +-
- net/mac80211/mlme.c                                |  73 +++-
- net/mac80211/rx.c                                  | 200 +++++++++--
- net/mac80211/sta_info.c                            |   9 +-
- net/mac80211/tx.c                                  |  65 +++-
- net/mac80211/util.c                                |  32 +-
- net/wireless/core.c                                |  16 +
- net/wireless/ibss.c                                |   2 +-
- net/wireless/nl80211.c                             | 186 +++++++---
- net/wireless/rdev-ops.h                            |  58 +--
- net/wireless/reg.c                                 |   4 +
- net/wireless/scan.c                                |   2 +-
- net/wireless/sme.c                                 |   5 +-
- net/wireless/trace.h                               |  97 +++--
- net/wireless/util.c                                |   4 +-
- net/wireless/wext-compat.c                         |  18 +-
- 75 files changed, 1850 insertions(+), 695 deletions(-)
-
+On Wed, Aug 24, 2022 at 6:45 PM sean wang <objelf@gmail.com> wrote:
+>
+> Hi Kalle,
+>
+> If the patch looks good to you, could you help apply the patch to
+> wireless-drivers.git because there are getting more users reporting
+> the issue with the stable kernel such as [1]. I would like to backport
+> it earlier once it appears in the Linus tree to solve the indefinite
+> hang issue.
+>
+> [1] https://lore.kernel.org/linux-wireless/VE1PR04MB64945C660A81D38F290E4A4BE59F9@VE1PR04MB6494.eurprd04.prod.outlook.com/T/
+>
+> Sean
+>
+> On Tue, Aug 2, 2022 at 8:20 AM Deren Wu <Deren.Wu@mediatek.com> wrote:
+> >
+> > From: Deren Wu <deren.wu@mediatek.com>
+> >
+> > In case of drv own fail in reset, we may need to run mac_reset several
+> > times. The sequence would trigger system crash as the log below.
+> >
+> > Because we do not re-enable/schedule "tx_napi" before disable it again,
+> > the process would keep waiting for state change in napi_diable(). To
+> > avoid the problem and keep status synchronize for each run, goto final
+> > resource handling if drv own failed.
+> >
+> > [ 5857.353423] mt7921e 0000:3b:00.0: driver own failed
+> > [ 5858.433427] mt7921e 0000:3b:00.0: Timeout for driver own
+> > [ 5859.633430] mt7921e 0000:3b:00.0: driver own failed
+> > [ 5859.633444] ------------[ cut here ]------------
+> > [ 5859.633446] WARNING: CPU: 6 at kernel/kthread.c:659 kthread_park+0x11d
+> > [ 5859.633717] Workqueue: mt76 mt7921_mac_reset_work [mt7921_common]
+> > [ 5859.633728] RIP: 0010:kthread_park+0x11d/0x150
+> > [ 5859.633736] RSP: 0018:ffff8881b676fc68 EFLAGS: 00010202
+> > ......
+> > [ 5859.633766] Call Trace:
+> > [ 5859.633768]  <TASK>
+> > [ 5859.633771]  mt7921e_mac_reset+0x176/0x6f0 [mt7921e]
+> > [ 5859.633778]  mt7921_mac_reset_work+0x184/0x3a0 [mt7921_common]
+> > [ 5859.633785]  ? mt7921_mac_set_timing+0x520/0x520 [mt7921_common]
+> > [ 5859.633794]  ? __kasan_check_read+0x11/0x20
+> > [ 5859.633802]  process_one_work+0x7ee/0x1320
+> > [ 5859.633810]  worker_thread+0x53c/0x1240
+> > [ 5859.633818]  kthread+0x2b8/0x370
+> > [ 5859.633824]  ? process_one_work+0x1320/0x1320
+> > [ 5859.633828]  ? kthread_complete_and_exit+0x30/0x30
+> > [ 5859.633834]  ret_from_fork+0x1f/0x30
+> > [ 5859.633842]  </TASK>
+> >
+> > Fixes: 0efaf31dec57 ("mt76: mt7921: fix MT7921E reset failure")
+> > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> > index e1800674089a..576a0149251b 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> > @@ -261,7 +261,7 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+> >
+> >         err = mt7921e_driver_own(dev);
+> >         if (err)
+> > -               return err;
+> > +               goto out;
+> >
+> >         err = mt7921_run_firmware(dev);
+> >         if (err)
+> > --
+> > 2.18.0
+> >
