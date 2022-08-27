@@ -2,55 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 875EB5A32D4
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Aug 2022 02:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C705A32F3
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Aug 2022 02:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231944AbiH0AAL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Aug 2022 20:00:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
+        id S1345117AbiH0AG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Aug 2022 20:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbiH0AAK (ORCPT
+        with ESMTP id S1345207AbiH0AGk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Aug 2022 20:00:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2087921E34;
-        Fri, 26 Aug 2022 17:00:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ADEEB61C11;
-        Sat, 27 Aug 2022 00:00:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6ADAC433C1;
-        Sat, 27 Aug 2022 00:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661558407;
-        bh=wD91XKnsSION4QMtASBE/ZLFLHF8lfvCcUZC1JU0mQI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CT+bRRC9DlT/Sj0fIpyhBWozvPtyiR8VgCSFsy3Ozq4FezUWd8+jcPLSzYCseLEDc
-         4XFHhPhgcI/s+Jbqv4aWnS6isZ7DWXJ+EE6dgkBn4jEav/ctmpQUSdnhKZpKom8utF
-         u8RnMUr7wK91oT23wh9eKo/b81D49Z5aICAPuH6as2d8EGq9HWqcV4Hg9HkOO6zRsM
-         t2xJXJ89IKvVpH1wkebcSZ+UzDqOzfLRFqTbFf422P6+5BuyFnjRarjhu4qifWk0eD
-         PfmVivOFhgWRY+5CwyVe7aCe0T8egMkExYox60sDb8bMxIRWW7QKrarMvNUgYtnF/B
-         cazthxTym8z6A==
-Date:   Fri, 26 Aug 2022 17:00:05 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org,
-        Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@toke.dk>,
-        Avi Stern <avraham.stern@intel.com>,
+        Fri, 26 Aug 2022 20:06:40 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64F0AEA305
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Aug 2022 17:06:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661558797; x=1693094797;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VWOc6qWsSFG8sx3Xl6IrEfelDtNVia9fkz8HGka4UQk=;
+  b=SR1gqUnxW2wv9rc1mjorzOYluuBROU15g1QN1R756LiMW91nfs45TTKN
+   bg+O2VnxrC0+VhRI/hXJvtzmdcrgKC0k1ONSPVE3NqpeNK+nrcajQIEuk
+   QNIJ+QuKMN+HzIYHYzGZci/NYMECEn117JzJJQLCV9C0VeXwUcsBy+n38
+   b2Hf77qCORH7KLJcUw2Aez7wkBHqKIwjLLWYZ626jAG0bhMS4AhRlWDu2
+   ZGChTVmpGNlpUT55434bovYVm/2p+MWpz8P+UvnbPjo6K0wONfAAtYlCA
+   YIYJbh03WbNqh9xmICUeRoLihq414kqGZ5AjBXH6I70qHVAkVHqiQV1OH
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10451"; a="380920945"
+X-IronPort-AV: E=Sophos;i="5.93,266,1654585200"; 
+   d="scan'208";a="380920945"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2022 17:06:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,266,1654585200"; 
+   d="scan'208";a="679036495"
+Received: from lkp-server01.sh.intel.com (HELO 71b0d3b5b1bc) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 26 Aug 2022 17:06:26 -0700
+Received: from kbuild by 71b0d3b5b1bc with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oRjLF-0000hL-18;
+        Sat, 27 Aug 2022 00:06:25 +0000
+Date:   Sat, 27 Aug 2022 08:05:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Subject: Re: taprio vs. wireless/mac80211
-Message-ID: <20220826170005.79392041@kernel.org>
-In-Reply-To: <87k06uk65f.fsf@intel.com>
-References: <117aa7ded81af97c7440a9bfdcdf287de095c44f.camel@sipsolutions.net>
-        <20220824191500.6f4e3fb7@kernel.org>
-        <87k06uk65f.fsf@intel.com>
+Cc:     kbuild-all@lists.01.org, Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] wifi: use struct_group to copy addresses
+Message-ID: <202208270736.nc6uwnQv-lkp@intel.com>
+References: <20220826222007.7acf78f1ecee.I7c75a7d3599f120c720a5d6ec170fd90ec0dfd51@changeid>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220826222007.7acf78f1ecee.I7c75a7d3599f120c720a5d6ec170fd90ec0dfd51@changeid>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,29 +64,171 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 26 Aug 2022 15:10:36 -0700 Vinicius Costa Gomes wrote:
-> Jakub Kicinski <kuba@kernel.org> writes:
-> 
-> > On Wed, 24 Aug 2022 23:50:18 +0200 Johannes Berg wrote:  
-> >> Anyone have recommendations what we should do?  
-> >
-> > Likely lack of sleep or intelligence on my side but I could not grok
-> > from the email what the stacking is, and what the goal is.
-> >
-> > Are you putting taprio inside mac80211, or leaving it at the netdev
-> > layer but taking the fq/codel out?  
-> 
-> My read was that they want to do something with taprio with wireless
-> devices and were hit by the current limitation that taprio only supports
-> multiqueue interfaces.
-> 
-> The fq/codel part is that, as far as I know, there's already a fq/codel
-> implementation inside mac80211.
-> 
-> The stacking seems to be that packets would be scheduled by taprio and
-> then by the scheduler inside mac80211 (fq/codel based?).
+Hi Johannes,
 
-Doesn't adding another layer of non-time-aware queuing after taprio
-completely defeat its purpose?  Perhaps I'm revealing my lack of
-understanding too much..
+I love your patch! Yet something to improve:
 
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.0-rc2 next-20220826]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Johannes-Berg/wifi-use-struct_group-to-copy-addresses/20220827-042146
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+config: i386-randconfig-a005 (https://download.01.org/0day-ci/archive/20220827/202208270736.nc6uwnQv-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-5) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/b170af98c24ca49976213745cd2ded205febf09d
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Johannes-Berg/wifi-use-struct_group-to-copy-addresses/20220827-042146
+        git checkout b170af98c24ca49976213745cd2ded205febf09d
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash net/wireless/
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/string.h:253,
+                    from arch/x86/include/asm/page_32.h:22,
+                    from arch/x86/include/asm/page.h:14,
+                    from arch/x86/include/asm/processor.h:19,
+                    from arch/x86/include/asm/timex.h:5,
+                    from include/linux/timex.h:67,
+                    from include/linux/time32.h:13,
+                    from include/linux/time.h:60,
+                    from include/linux/stat.h:19,
+                    from include/linux/module.h:13,
+                    from net/wireless/lib80211_crypt_ccmp.c:11:
+   net/wireless/lib80211_crypt_ccmp.c: In function 'ccmp_init_iv_and_aad':
+>> net/wireless/lib80211_crypt_ccmp.c:139:28: error: incompatible type for argument 1 of '__builtin_object_size'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |                         ~~~^~~~~~~
+         |                            |
+         |                            struct <anonymous>
+   include/linux/fortify-string.h:376:52: note: in definition of macro '__fortify_memcpy_chk'
+     376 |         fortify_memcpy_chk(__fortify_size, p_size, q_size,              \
+         |                                                    ^~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:9: note: in expansion of macro 'memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |         ^~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:28: note: expected 'const void *' but argument is of type 'struct <anonymous>'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |                         ~~~^~~~~~~
+   include/linux/fortify-string.h:376:52: note: in definition of macro '__fortify_memcpy_chk'
+     376 |         fortify_memcpy_chk(__fortify_size, p_size, q_size,              \
+         |                                                    ^~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:9: note: in expansion of macro 'memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |         ^~~~~~
+>> net/wireless/lib80211_crypt_ccmp.c:139:28: error: incompatible type for argument 1 of '__builtin_object_size'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |                         ~~~^~~~~~~
+         |                            |
+         |                            struct <anonymous>
+   include/linux/fortify-string.h:377:42: note: in definition of macro '__fortify_memcpy_chk'
+     377 |                            p_size_field, q_size_field, #op);            \
+         |                                          ^~~~~~~~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:9: note: in expansion of macro 'memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |         ^~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:28: note: expected 'const void *' but argument is of type 'struct <anonymous>'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |                         ~~~^~~~~~~
+   include/linux/fortify-string.h:377:42: note: in definition of macro '__fortify_memcpy_chk'
+     377 |                            p_size_field, q_size_field, #op);            \
+         |                                          ^~~~~~~~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:9: note: in expansion of macro 'memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |         ^~~~~~
+>> net/wireless/lib80211_crypt_ccmp.c:139:28: error: incompatible type for argument 2 of '__builtin_memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |                         ~~~^~~~~~~
+         |                            |
+         |                            struct <anonymous>
+   include/linux/fortify-string.h:378:30: note: in definition of macro '__fortify_memcpy_chk'
+     378 |         __underlying_##op(p, q, __fortify_size);                        \
+         |                              ^
+   net/wireless/lib80211_crypt_ccmp.c:139:9: note: in expansion of macro 'memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |         ^~~~~~
+   net/wireless/lib80211_crypt_ccmp.c:139:28: note: expected 'const void *' but argument is of type 'struct <anonymous>'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |                         ~~~^~~~~~~
+   include/linux/fortify-string.h:378:30: note: in definition of macro '__fortify_memcpy_chk'
+     378 |         __underlying_##op(p, q, __fortify_size);                        \
+         |                              ^
+   net/wireless/lib80211_crypt_ccmp.c:139:9: note: in expansion of macro 'memcpy'
+     139 |         memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+         |         ^~~~~~
+
+
+vim +/__builtin_object_size +139 net/wireless/lib80211_crypt_ccmp.c
+
+    93	
+    94	static int ccmp_init_iv_and_aad(const struct ieee80211_hdr *hdr,
+    95					const u8 *pn, u8 *iv, u8 *aad)
+    96	{
+    97		u8 *pos, qc = 0;
+    98		size_t aad_len;
+    99		int a4_included, qc_included;
+   100	
+   101		a4_included = ieee80211_has_a4(hdr->frame_control);
+   102		qc_included = ieee80211_is_data_qos(hdr->frame_control);
+   103	
+   104		aad_len = 22;
+   105		if (a4_included)
+   106			aad_len += 6;
+   107		if (qc_included) {
+   108			pos = (u8 *) & hdr->addr4;
+   109			if (a4_included)
+   110				pos += 6;
+   111			qc = *pos & 0x0f;
+   112			aad_len += 2;
+   113		}
+   114	
+   115		/* In CCM, the initial vectors (IV) used for CTR mode encryption and CBC
+   116		 * mode authentication are not allowed to collide, yet both are derived
+   117		 * from the same vector. We only set L := 1 here to indicate that the
+   118		 * data size can be represented in (L+1) bytes. The CCM layer will take
+   119		 * care of storing the data length in the top (L+1) bytes and setting
+   120		 * and clearing the other bits as is required to derive the two IVs.
+   121		 */
+   122		iv[0] = 0x1;
+   123	
+   124		/* Nonce: QC | A2 | PN */
+   125		iv[1] = qc;
+   126		memcpy(iv + 2, hdr->addr2, ETH_ALEN);
+   127		memcpy(iv + 8, pn, CCMP_PN_LEN);
+   128	
+   129		/* AAD:
+   130		 * FC with bits 4..6 and 11..13 masked to zero; 14 is always one
+   131		 * A1 | A2 | A3
+   132		 * SC with bits 4..15 (seq#) masked to zero
+   133		 * A4 (if present)
+   134		 * QC (if present)
+   135		 */
+   136		pos = (u8 *) hdr;
+   137		aad[0] = pos[0] & 0x8f;
+   138		aad[1] = pos[1] & 0xc7;
+ > 139		memcpy(aad + 2, hdr->addrs, 3 * ETH_ALEN);
+   140		pos = (u8 *) & hdr->seq_ctrl;
+   141		aad[20] = pos[0] & 0x0f;
+   142		aad[21] = 0;		/* all bits masked */
+   143		memset(aad + 22, 0, 8);
+   144		if (a4_included)
+   145			memcpy(aad + 22, hdr->addr4, ETH_ALEN);
+   146		if (qc_included) {
+   147			aad[a4_included ? 28 : 22] = qc;
+   148			/* rest of QC masked */
+   149		}
+   150		return aad_len;
+   151	}
+   152	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
