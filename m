@@ -2,83 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F35345A3D4E
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Aug 2022 13:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE8735A3F82
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Aug 2022 21:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbiH1LW0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 Aug 2022 07:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
+        id S229586AbiH1TuM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Aug 2022 15:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiH1LWY (ORCPT
+        with ESMTP id S229507AbiH1TuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 Aug 2022 07:22:24 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F1230F62;
-        Sun, 28 Aug 2022 04:22:23 -0700 (PDT)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1oSGMr-0008Mr-RJ; Sun, 28 Aug 2022 13:22:17 +0200
-Message-ID: <dd37d8af-d7e4-daee-1f80-36c53fbac076@leemhuis.info>
-Date:   Sun, 28 Aug 2022 13:22:17 +0200
+        Sun, 28 Aug 2022 15:50:11 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239562715;
+        Sun, 28 Aug 2022 12:50:07 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1661716204; bh=4VVgZ7rQh5tbYoNVZ4m2rwL1L6QWOYZAwRIkB40h+lg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ud4mWVwyUceYt5Nuc1sVBj1PHwn/GWFzoIu6uvi4AnQm1tPLWwY7nly84CTBYR+nm
+         aDKxrvGU3ZbQXJG3qKKOveLHlyInJzMhgdrtXiOHLCBQ1UbhwXv3f6eP06yvPc6bsg
+         dCL0cbmtkl6t+XOz5R1yQ7c2CTqKXrZphpj1n/safh9eIw0GBihqSGuP3AGzoxDiC1
+         lFtHrsJ+RCta9ldjy01KRIgcqJ0luRdkzdL7WkmfXrfbiFgugruu3vBFr7l1MW9b16
+         GSavAPrWk96zebcGYyShGoB8tYNaNP2z+nxUN/kceEQI7r1HdBo3GMPdWDwycC1IM+
+         ZFT2tCa+8bVZg==
+To:     Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org
+Cc:     Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+        Avi Stern <avraham.stern@intel.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: taprio vs. wireless/mac80211
+In-Reply-To: <117aa7ded81af97c7440a9bfdcdf287de095c44f.camel@sipsolutions.net>
+References: <117aa7ded81af97c7440a9bfdcdf287de095c44f.camel@sipsolutions.net>
+Date:   Sun, 28 Aug 2022 21:50:04 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87ler86tcj.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Content-Language: en-US
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     XiaoYan Li <lxy.lixiaoyan@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>
-Subject: [Regression] Bug 216421 - [regression] nl80211: kernel reports: key
- addition failed
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1661685744;f053892b;
-X-HE-SMSGID: 1oSGMr-0008Mr-RJ
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, this is your Linux kernel regression tracker speaking.
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-I noticed a regression report in bugzilla.kernel.org. As many (most?)
-kernel developer don't keep an eye on it, I decided to forward it:
+> Anyone have recommendations what we should do?
 
-https://bugzilla.kernel.org/show_bug.cgi?id=216421
+Given that (presumably?) the use case taprio enables needs special
+handling all the way down to the hardware to be able to work at all on
+WiFi, why not just make the driver (or mac80211) expose a separate (set
+of) netdev queue(s) tied to that handling when prompted to do so?
 
->  XiaoYan Li 2022-08-27 12:40:07 UTC
-> 
-> This is a regression. It doesn't happen on 6.0-rc.1 or 5.19 kernel.
-> 
-> Network card: MEDIATEK MT7922 802.11ax
-> 
-> ---
-> wpa_supplicant: nl80211: kernel reports: key addition failed
-> wpa_supplicant: TDLS: Failed to set TPK to the driver
-See the ticket for more details.
-
-I'd also like to add the report to the list of tracked regressions to
-ensure it's doesn't fall through the cracks in the end:
-
-#regzbot introduced: v6.0-rc1..v6.0-rc2
-https://bugzilla.kernel.org/show_bug.cgi?id=216421
-#regzbot ignore-activity
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-
-P.S.: As the Linux kernel's regression tracker I deal with a lot of
-reports and sometimes miss something important when writing mails like
-this. If that's the case here, don't hesitate to tell me in a public
-reply, it's in everyone's interest to set the public record straight.
+-Toke
