@@ -2,98 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E6D5A5045
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Aug 2022 17:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 986C25A505B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Aug 2022 17:40:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbiH2Pfs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Aug 2022 11:35:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
+        id S229692AbiH2Pk4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Aug 2022 11:40:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbiH2Pfr (ORCPT
+        with ESMTP id S229632AbiH2Pky (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Aug 2022 11:35:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E577B28E
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 08:35:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 839086117B
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 15:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E34C433D6;
-        Mon, 29 Aug 2022 15:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661787344;
-        bh=ZWwqvIOS9mKhwMqfV535d6v5lPa4Z7WaRzovmpmsTIM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=j77jFmbVcXy8QsAxHW060Wx/JU21N7UD8xeipEs78TYaxExRfYhxrmIkCODMNH9Nh
-         iBTtl/Xz500VNGlfI/UwVrMjBTtXTbNc2psXglt+oL7i/uHp94u2+vps30xr7Pebnb
-         6oKsWSm8KpD0BM4C5SyHxw2Hf21AOr+dYonKE3e6c/Rcd7mk+EYm61N+a62Uuxc//8
-         Odb0huZdHLLG7TvAOm6dhN/+lEmzzz8PyM5EqpzqMh6D3N6m6Gk+XTM0A04H0lskjE
-         W1JUxJ1Eh4UpkCF2le7GMaCM4ZJqBZBzJiD9jVRgTUhnKYDOo/ZUwFnJ1n4x3Mzt0Y
-         KAYjut4Yhtd5w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, tony0620emma@gmail.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: rtw88: fix uninitialized use of primary channel index
-In-Reply-To: <YwZ+RsHL+n02gHZx@dev-arch.thelio-3990X> (Nathan Chancellor's
-        message of "Wed, 24 Aug 2022 12:38:46 -0700")
-References: <20220815062004.22920-1-pkshih@realtek.com>
-        <YwZ+RsHL+n02gHZx@dev-arch.thelio-3990X>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 29 Aug 2022 18:35:39 +0300
-Message-ID: <87o7w3f4fo.fsf@kernel.org>
+        Mon, 29 Aug 2022 11:40:54 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F022C844E4
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 08:40:53 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-333a4a5d495so205061677b3.10
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 08:40:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=j1IB7j4OLRcSZ3g4J8PWmoYtAO/kHfADj7RgXZEk7hqFtG3q70Lteze87nvzQDS+R9
+         CL8iucEX5+pUR6GFNM9YhGtkQ/K3YSilHFtT6rgltDxGIvOl9WNWofz15dSno2pvUCu1
+         1Bhescdr0s6ryDzQi+7/8n16+XcM1cHIhWF/zqW4grSQ4jgaNHAQGVva5E5CPm2a9nSv
+         SACaO/HrWt5OCxmWYkpTIDTp7wOora+01Wom3zQ/aQLMJRMxDkExUHndf/LECmRtuQrW
+         XvQR9OR4h0bTOOFoK/XuaduqdLSBZdKhGL15qV2OWEaWokw3wRFRvIVWgLQDBU1NqLPb
+         rpTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=sZsJayIjeVoJrj90QRwc1ZDeJdkytpm/CcEm7bjsLYARCGz8Ha0gG9QElDh0Hp++6x
+         Zue8ccYJOqVtX7P1uGlWz2wpL3/P6nHNzl4rS4GdOqqcZ1MEahUfBIDM/7xf+MStVD84
+         EIOQu7jf9uHGbjXRWGiS4uUZbY323qKU91mb2RLugVsGdzGlbORMoN2+weNPnXRJRTT/
+         LYoC9B4NV/965oSFoijs+vFCxQe5c2F4v469zbXrdhxEth2vWqW11sVwKeEAnIBckedl
+         xeM2Ldavoeyj0bn4kqBro/V1+ZZFSIsiSaMyV/+pHBhYw+YZ7/qshQg0sdiUPkRUBZoq
+         ncdg==
+X-Gm-Message-State: ACgBeo1mwDqDjZoo4o5O/QSrSDfB4EFNbiwvkE3tY2Sd1LAlouSurVAq
+        n6E4XHPkRvomFYQ98/EtVAAu5nLu7SWX1+dnjCw=
+X-Google-Smtp-Source: AA6agR4NTWVWHdEWupBK3yUp5civ1v9UDwj6Vijbz90HGEQyeGFiqExsePn6LGFrPnhq5fQhvylUEZGvwX6EMEDEgyQ=
+X-Received: by 2002:a05:6902:1501:b0:697:c614:2079 with SMTP id
+ q1-20020a056902150100b00697c6142079mr8689374ybu.389.1661787653000; Mon, 29
+ Aug 2022 08:40:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a25:8a85:0:0:0:0:0 with HTTP; Mon, 29 Aug 2022 08:40:52
+ -0700 (PDT)
+Reply-To: izzatibrahim724@gmail.com
+From:   "Ibrahim I . Hassan" <issad6927@gmail.com>
+Date:   Mon, 29 Aug 2022 15:40:52 +0000
+Message-ID: <CAKT4aHUraYFxy1fDiAH2JDxUv==nUdCvk56p+w91c2YJe5MOmA@mail.gmail.com>
+Subject: Thanks
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,TVD_SPACE_RATIO,UNDISC_FREEM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1133 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4915]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [issad6927[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [issad6927[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [izzatibrahim724[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.0 TVD_SPACE_RATIO No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nathan Chancellor <nathan@kernel.org> writes:
 
-> On Mon, Aug 15, 2022 at 02:20:04PM +0800, Ping-Ke Shih wrote:
->
->> clang reports uninitialized use:
->> 
->> >> drivers/net/wireless/realtek/rtw88/main.c:731:2: warning: variable
->>    'primary_channel_idx' is used uninitialized whenever switch default is
->>    taken [-Wsometimes-uninitialized]
->>            default:
->>            ^~~~~~~
->>    drivers/net/wireless/realtek/rtw88/main.c:754:39: note: uninitialized
->>    use occurs here
->>            hal->current_primary_channel_index = primary_channel_idx;
->>                                                 ^~~~~~~~~~~~~~~~~~~
->>    drivers/net/wireless/realtek/rtw88/main.c:687:24: note: initialize the
->>    variable 'primary_channel_idx' to silence this warning
->>            u8 primary_channel_idx;
->>                                  ^
->>                                   = '\0'
->> 
->> This situation could not happen, because possible channel bandwidth
->> 20/40/80MHz are enumerated.
->> 
->> Fixes: 341dd1f7de4c ("wifi: rtw88: add the update channel flow to support setting by parameters")
->> Reported-by: kernel test robot <lkp@intel.com>
->> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
->
-> Can we get this into -next soon? This warning is breaking our builds due
-> to CONFIG_WERROR.
-
-Johannes applied it:
-
-https://git.kernel.org/netdev/net-next/c/4ffb4d25ef12
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
