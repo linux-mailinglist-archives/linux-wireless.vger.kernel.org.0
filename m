@@ -2,95 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 183195A43A1
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Aug 2022 09:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71945A4461
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Aug 2022 09:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbiH2HRn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Aug 2022 03:17:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36954 "EHLO
+        id S229675AbiH2H7t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Aug 2022 03:59:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiH2HRm (ORCPT
+        with ESMTP id S229538AbiH2H7s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Aug 2022 03:17:42 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5974DB37;
-        Mon, 29 Aug 2022 00:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=y1AGFp8fhSJfnytRvA3S7bMV03PvXazGKz5zOHFVZqU=;
-        t=1661757460; x=1662967060; b=g1jgCuJ0T4oT4h3TWL5XKHdMPPZLSSopI0UL+f6EeOHBpfp
-        LlW2WSk9DqK5yn6Xbt8X3WJpU0y83e3DGCWf3I2OjuQDiOuIbPQnTtuIMD/upolmZVgaXNvmgnNqw
-        vAO/bvYCOQTxhiQpyDMI3jOTXQEl+QPO9m4j5g9XKJPJcGYvOtJoeYA482xjkZ/JmwbX14AffQffh
-        ivMNoYcDB8ZcoYNaICIGjAuuj8S8HNyRTXDMNgvPuDMisJTygTyT+b+k4cBoAKHU6DLb+kAljtYaQ
-        oItGZLWm569UIsPdoQUUldUJY6uwSBM4NFHQzS1m7KVR9TrpO8nBGzPQ6Gkk4omA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oSZ1d-002fmY-32;
-        Mon, 29 Aug 2022 09:17:38 +0200
-Message-ID: <2bec21b921168ea67a1746f882f30d4a6cabb627.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: ieee80211: Fix for fragmented action frames
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 29 Aug 2022 09:17:37 +0200
-In-Reply-To: <CAG_xHGO1GvSy0pC=xNfBGyAin9b58k+b78+7gWv1YoOuQ9OAHQ@mail.gmail.com>
-References: <20220810224804.2137240-1-gilad.itzkovitch@morsemicro.com>
-         <f97efe8ff5f466ce938f38dc26cb76c7abcc5a71.camel@sipsolutions.net>
-         <CAG_xHGO1GvSy0pC=xNfBGyAin9b58k+b78+7gWv1YoOuQ9OAHQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+        Mon, 29 Aug 2022 03:59:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580052A8;
+        Mon, 29 Aug 2022 00:59:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E81886090A;
+        Mon, 29 Aug 2022 07:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA762C433D6;
+        Mon, 29 Aug 2022 07:59:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661759984;
+        bh=+3aaj/8AximEUiQUzMAF2hVXGvCDb75+FpRM0iYci0s=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=f7KqM8VT1BKfQz3qAOQWSpheDgoxWsucr3vdXHX/yZ01KTFvOo364BCpzgGftfJeX
+         1OX1S1jX1DZp6hb9fzYbifqfh1hFL3WPNrr49Qkpw+5g96Figq8qn/o5mqzQbkHchO
+         tmAoc2X8FegsK/VKmimjL/9s0RNGYC+rHYCm+FvujdZuE/g46NTAKqjt2GArXvb7G/
+         PAy0RjJa5iErgOAQCS7O3shCdYgXH0lhGXCRmJsByzmCpQR3TV5UeHFpbEuv/xvNqO
+         MywMkRH5V/KnGs9gqAlIulmjyEix49N2TSLRexajhBTtjQTcsGZbu/xTwfIlR+lUc7
+         Kf2x8b5xDA+MQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Li Qiong <liqiong@nfschina.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yu Zhe <yuzhe@nfschina.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: cfg80211: add error code in brcmf_notify_sched_scan_results()
+In-Reply-To: <20220829065831.14023-1-liqiong@nfschina.com> (Li Qiong's message
+        of "Mon, 29 Aug 2022 14:58:31 +0800")
+References: <20220829065831.14023-1-liqiong@nfschina.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Mon, 29 Aug 2022 10:59:35 +0300
+Message-ID: <87edwzjx94.fsf@kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
++ linux-wireless
 
-On Mon, 2022-08-29 at 15:43 +1200, Gilad Itzkovitch wrote:
->=20
-> > This doesn't make much sense to me - why would it be allowed or
-> > necessary to call this function on a frame that wasn't yet defragmented=
-?
->=20
-> That was partially our understanding. But, the fragmented action frame is
-> being dropped by this function
->=20
+Li Qiong <liqiong@nfschina.com> writes:
 
-Well, this function doesn't drop anything :) It just answers a question
-"is this a robust management frame", but if the question is nonsense
-(calling it on a fragment other than the first) then the answer will
-also be nonsense, right?
+> The err code is 0 at the first two "out_err" paths, add error code
+> '-EINVAL' for these error paths.
+>
+> Signed-off-by: Li Qiong <liqiong@nfschina.com>
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-> as it is part of the provisioning DPP process
-> (fragmented due to S1G low rates).
+You need to CC linux-wireless, otherwise patchwork won't see it. Also
+the title should be:
 
-Right.
+wifi: brcmfmac: add error code in brcmf_notify_sched_scan_results()
 
-> Trying to avoid a big change here for this specific action category.
+Please resubmit as v2.
 
-It's not really related to any specific category, is it?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> As defragmentation will occur later on in the process there should be a
-> safe way to avoid dropping the frame beforehand.
-
-Sure! But this isn't really a good way, nor would I argue it is safe ...
-
-Perhaps ieee80211_rx_h_decrypt() needs to be more careful? I'm not even
-sure where the frame really is being dropped.
-
-Anyway, I really don't think this patch makes any sense, I think you
-need to back up a bit and look at the higher layer(s) to see where and
-why it's being dropped, and skip that if it's fragmented?
-
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
