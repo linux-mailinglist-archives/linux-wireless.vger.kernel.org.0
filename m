@@ -2,77 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A63755A424D
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Aug 2022 07:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 113B45A425E
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Aug 2022 07:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbiH2FbY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Aug 2022 01:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59322 "EHLO
+        id S229620AbiH2FhO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Aug 2022 01:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiH2FbX (ORCPT
+        with ESMTP id S229457AbiH2FhN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Aug 2022 01:31:23 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E6445076
-        for <linux-wireless@vger.kernel.org>; Sun, 28 Aug 2022 22:31:23 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27T5QKom012414;
-        Mon, 29 Aug 2022 05:31:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Eaj+5Ee2OVv42snYIv6RjUIVV6uwsW+Zj/AkLYh1dS8=;
- b=C4l1aA4DLwbnGrMkQ05SQySVRo5eh9R54v1CLrEYEiK+Qj7ntvu/yEIeTL9MWaUs3e1m
- nPV6De2u2/AXY132CIyCk3ppq2EaDFzeBtrdq2SOhY51QWPfBMyumaNA2AeFpB+1VJI8
- gBBUPJHuMfisfyxnprWk4khYpJgVlzMwe3iWi7McL9WIo0F1ofxTEKKoEnx/7lblzi16
- 43VleJnXg7RryYh4xJUh+lvKX3KPP6kJH4Yxj9YFt4uu+CnEnltYNA1i6N+X7d35Igw8
- +Ik0Xt/F0oq6iQAu/Lb5KKBy1eW73/XQypMiv/ubfGC9aqNeFfCg9SREcX3E4f4UKi5X qQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3j7a7ym82e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 29 Aug 2022 05:31:21 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 27T5VKNO026545
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 29 Aug 2022 05:31:20 GMT
-Received: from [10.204.117.202] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Sun, 28 Aug
- 2022 22:31:18 -0700
-Message-ID: <2b46bca8-4cdc-700c-bd94-058bb2e65868@quicinc.com>
-Date:   Mon, 29 Aug 2022 11:01:17 +0530
+        Mon, 29 Aug 2022 01:37:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFB919C1B;
+        Sun, 28 Aug 2022 22:37:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AD6461011;
+        Mon, 29 Aug 2022 05:37:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1177C433D6;
+        Mon, 29 Aug 2022 05:37:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661751431;
+        bh=AQA+8MVuBm1m9fzmtwrEJo7mlb2Azsxin4LYiGaKpIk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=p/Suk4mvkxPk6oTLabA8smQe8SbKHOag2bcZg714x36x6ojtqwmjvvZb1QRS5YGXM
+         6rFXIzNH9Va92lj5EOnBENdtfG1PPM9uFyTBNngnwI0eylYhpMVBZqpB5KXCUS4mvO
+         nWc4O2c/dPtFehR598n/yoAIjBzHs00NFxdRLKlSUyUvE9PFeXnYl7rXUS5Y/d2/p4
+         wRK8SbLdCWNbb6aLRLKNMqys88naJm4trVL9ZLvvBpYPl3bmuPEpuOme4+IhFOga2b
+         mfbOKSIGGzBO+eySpnVnLhcO0hjebvwbi09AEQq4mcoDvUgmlIAZBNsSZlE9NcgHoL
+         0M+ncqbY5CtNw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Alexander Potapenko <glider@google.com>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        phil@philpotter.co.uk, ath9k-devel@qca.qualcomm.com,
+        David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Subject: Re: KMSAN: uninit-value in ath9k_htc_rx_msg
+References: <000000000000c98a7f05ac744f53@google.com>
+        <000000000000734fe705acb9f3a2@google.com>
+        <a142d63c-7810-40ff-9c24-7160c63bafebn@googlegroups.com>
+        <CAG_fn=U=Vfv3ymNM6W++sbivieQoUuXfAxsC9SsmdtQiTjSi8g@mail.gmail.com>
+        <1a0b4d24-6903-464f-7af0-65c9788545af@I-love.SAKURA.ne.jp>
+        <CAG_fn=Wq51FMbty4c_RwjBSFWS1oceL1rOAUzCyRnGEzajQRAg@mail.gmail.com>
+        <878rnc8ghv.fsf@toke.dk>
+Date:   Mon, 29 Aug 2022 08:36:57 +0300
+In-Reply-To: <878rnc8ghv.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
+ \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
+        "Thu, 25 Aug 2022 17:55:40 +0200")
+Message-ID: <87a67nhapy.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 1/4] ath11k: Fix double free issue during SRNG deinit
-Content-Language: en-US
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20220825111818.30869-1-quic_mpubbise@quicinc.com>
- <20220825111818.30869-2-quic_mpubbise@quicinc.com>
- <44b3af84-1a83-7ff0-b826-8532bee0b4c0@quicinc.com>
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-In-Reply-To: <44b3af84-1a83-7ff0-b826-8532bee0b4c0@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: CyBmMniIOY0R-RSAD8aZiL-4kLfu1tdW
-X-Proofpoint-GUID: CyBmMniIOY0R-RSAD8aZiL-4kLfu1tdW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-29_02,2022-08-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 clxscore=1015 mlxlogscore=744
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208290026
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,15 +70,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
 
+> Alexander Potapenko <glider@google.com> writes:
+>
+>> On Thu, Aug 25, 2022 at 4:34 PM Tetsuo Handa
+>> <penguin-kernel@i-love.sakura.ne.jp> wrote:
+>>>
+>>> Hello.
+>> Hi Tetsuo,
+>>
+>>> I found that your patch was applied. But since the reproducer tested on=
+ly 0 byte
+>>> case, I think that rejecting only less than sizeof(struct htc_frame_hdr=
+) bytes
+>>> is not sufficient.
+>>>
+>>> More complete patch with Ack from Toke is waiting at
+>>> https://lkml.kernel.org/r/7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.S=
+AKURA.ne.jp .
+>>
+>> Thanks for letting me know! I just checked that your patch indeed
+>> fixes the issue I am facing.
+>> If it is more complete, I think we'd indeed better use yours.
+>
+> FWIW, that patch is just waiting for Kalle to apply it, and I just
+> noticed this whole thread has used his old email address, so updating
+> that now as a gentle ping :)
 
-On 8/25/2022 8:29 PM, Jeff Johnson wrote:
-> On 8/25/2022 4:18 AM, Manikanta Pubbisetty wrote:
->> Currently struct ath11k_hal::srng_config pointer is not assigned
->> to NULL after freeing the memory in ath11k_hal_srng_deinit().
->> This could lead to double free issue in a scerario where
-> 
-> nit: s/scerario/scenario/
-> 
+I was on vacation but back now, I'll start processing patches soon.
 
-Thanks Jeff, I'll correct this in next revision.
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
