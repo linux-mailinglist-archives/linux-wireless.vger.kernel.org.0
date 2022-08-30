@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3717C5A5942
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 04:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE10C5A5943
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 04:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229897AbiH3CUw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Aug 2022 22:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38494 "EHLO
+        id S229905AbiH3CU4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Aug 2022 22:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbiH3CUu (ORCPT
+        with ESMTP id S229903AbiH3CUy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Aug 2022 22:20:50 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9FA57E013
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:49 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id f4so9362594pgc.12
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:49 -0700 (PDT)
+        Mon, 29 Aug 2022 22:20:54 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FB47CA80
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:52 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id c2so9749658plo.3
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=94HBYAbisDAuvh8wguvjigNQ4uVcXLkynJD9kKl9mlw=;
-        b=haGMmpEt2yZhM7gvv9GZ7Fukx1Bw4xm1msoG3P05iocWzITjq1d9sEYw9b9O7Ntbst
-         fADkgDUGNuwQ5K5jSJrEFjx/9Bz7Ty4ba3++evOH8MTY4xDyiYQq4dm5NwoeX35ch5QJ
-         3zPCJ/6PxqWM7xu0Or36wpuG2rafxmpLQ7uMuV1W6sDki/PJF23vTUgJc6L8U+ZRN+ng
-         pZnwSZdTwkU6B/sSe1/8QFx+S4X1vwpbv4udGbhXcSQeS03TOsOv8W39ev3bRUB6w5SA
-         0nvvTxz4LCBeTxBYhpwAwUFa3Z3fCQ+Oz+JVAy79EkKBEOxh+IvooVzzcMw9h0lgfyqP
-         romg==
+        bh=Lnc1jRQoUitPJdCP9NlBPCdgamf0FJFP9HvqmIiYuFE=;
+        b=qI/Opfxhx8qAw85Txt3I77Dw+LFuZjuu+pvf+Wif2+mAESb7Z9cX/jSEEl+c7NTNpT
+         ka2z2ywWapJa5QrbZ10dTDckEkeurnDSb9YzGBoM0HmgncK9BHUy6phvHvP3q60TCkth
+         Wu7bloYTJHckCI+ZbnKWJoaFP096RIN6HLzi98sc0iyGu3ifrOkwKyaZI3e9aaAB3/Fz
+         HB7R3nNczPc65JnvA9yxeJu1XCAckKvJH7ZlfD2Wy1n1PI9LurB3X1CAIp8c09J1Mujy
+         kfeI4MEsHqcgurfMTi1qOW8Gdw586L7XvyXV49XsNP2FhoauELDQl6z53ap6KtRO+fc3
+         h+Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=94HBYAbisDAuvh8wguvjigNQ4uVcXLkynJD9kKl9mlw=;
-        b=xJsK8fvTrjZv+xOIG5A2asprdA7U7dg5JsKxQP9X9nKI6nS5euaPKsK7EbKruhN5Dr
-         ON/BXaExJmZkHJJD2qEqVbti/wMFKdL0Hb2cYFnYNPSr3lekqdzSQe8tZ4kEl43Hi3js
-         3tb2e/hc97hcMnleE6jewFI/YKFdrsaSIlBOuhYtLfDsY0i+UlJzYvkqzfvETXm2YKxv
-         +Q4sJ5OopYo0oMBWa5Ikl7SxE6N6ct3LhxVV1t10EFf6tIRogzUqbhLAMKGWngDtHOLF
-         2DQq1vSzB1GM2JZbC394+fHd4JS97xkBz/x3VsfM3uOGrNsPWlQkfnX9NlRqPBduLAOi
-         yr0Q==
-X-Gm-Message-State: ACgBeo3mCBPYzbkDITNGcopPOvug1TEOi0ybnMzjDaTxu92tEwu6dO8n
-        DAHCnGoGoViDwAcDbSdba/JsuQ==
-X-Google-Smtp-Source: AA6agR4t6FdWu/c3d9cpdtEiMOAGhN9MvvipD096JHc/STq54DFJbWesQe1r9jiaZMDUSKhbrxUyjw==
-X-Received: by 2002:a65:6ccf:0:b0:42b:20e8:5b8a with SMTP id g15-20020a656ccf000000b0042b20e85b8amr15653911pgw.500.1661826049491;
-        Mon, 29 Aug 2022 19:20:49 -0700 (PDT)
+        bh=Lnc1jRQoUitPJdCP9NlBPCdgamf0FJFP9HvqmIiYuFE=;
+        b=swjOJFMnm/k1jNKDcaGJg2uiQaSI9/AdITSt+s7O+jmQ1e0DVNXf9pY1ueizYUybNs
+         XyXvGIS59uuOslqfgHM+IbTQalx+ZBuVssNcfBEJL8qwBAr6ViJbCUk6TvGQbgkAdVnm
+         OcDvMdoL5pFY4pYmUy8AEyzselJAWgOtlpwbXayGwzDzTuqqsu3M2OpIzrKvdgP+/ZdC
+         e0nyrJRqQJA/drZ/D6HLkHXs9eHdXx4Kd4NUMDDbfQl21pXEYCcZvKw7GCDRdm+nigki
+         yakTcVNvWPYm89KzF7L1VQZAdg8BvNNNsPLC76q/LLq1ulE26z6Kv6dwXtXqJkZinCQ4
+         xh3g==
+X-Gm-Message-State: ACgBeo0gpPV9nwxDYZm6UAV31mKjhEr9Sp1HPIKSQO1Wmcx7/FbYfG8H
+        5vc7KuS+UFngnPKnxDQEXtVLKg==
+X-Google-Smtp-Source: AA6agR6Og5qGE35Qa9ofTifmJWT9oXigxlmYkimPbGYoXcUbxWBybpI8z5W7990vHYF6pkfSAAph3A==
+X-Received: by 2002:a17:902:7242:b0:171:398d:9e66 with SMTP id c2-20020a170902724200b00171398d9e66mr19317802pll.19.1661826052385;
+        Mon, 29 Aug 2022 19:20:52 -0700 (PDT)
 Received: from virs-pc-021.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id q12-20020a170902a3cc00b0016d8d277c02sm8220050plb.25.2022.08.29.19.20.46
+        by smtp.gmail.com with ESMTPSA id q12-20020a170902a3cc00b0016d8d277c02sm8220050plb.25.2022.08.29.19.20.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Aug 2022 19:20:49 -0700 (PDT)
+        Mon, 29 Aug 2022 19:20:51 -0700 (PDT)
 From:   Kieran Frewen <kieran.frewen@morsemicro.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
         Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: [PATCH v2 04/12] nl80211: support setting S1G short beacon period
-Date:   Tue, 30 Aug 2022 02:20:09 +0000
-Message-Id: <20220830022017.51017-5-kieran.frewen@morsemicro.com>
+Subject: [PATCH v2 05/12] nl80211: support advertising S1G capabilities
+Date:   Tue, 30 Aug 2022 02:20:10 +0000
+Message-Id: <20220830022017.51017-6-kieran.frewen@morsemicro.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220830022017.51017-1-kieran.frewen@morsemicro.com>
 References: <20220830022017.51017-1-kieran.frewen@morsemicro.com>
@@ -69,76 +69,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With the kernel able to send both short and long S1G beacons, include
-the ability for setting the short beacon period.
+Include S1G capabilities in netlink band info messages.
 
 Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
 ---
- include/uapi/linux/nl80211.h | 7 +++++++
- net/wireless/nl80211.c       | 4 ++++
- 2 files changed, 11 insertions(+)
+ include/uapi/linux/nl80211.h |  7 +++++++
+ net/wireless/nl80211.c       | 10 ++++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index ffb7c573e299..7daa2ce1cb57 100644
+index 7daa2ce1cb57..f20b9aefd420 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -2741,6 +2741,9 @@ enum nl80211_commands {
-  *	When used with %NL80211_CMD_FRAME_TX_STATUS, indicates the ack RX
-  *	timestamp. When used with %NL80211_CMD_FRAME RX notification, indicates
-  *	the incoming frame RX timestamp.
-+ *
-+ * @NL80211_ATTR_SHORT_BEACON_PERIOD: S1G short beacon period in TUs.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3269,6 +3272,8 @@ enum nl80211_attrs {
- 	NL80211_ATTR_TX_HW_TIMESTAMP,
- 	NL80211_ATTR_RX_HW_TIMESTAMP,
- 
-+	NL80211_ATTR_SHORT_BEACON_PERIOD,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -4951,6 +4956,7 @@ enum nl80211_bss_scan_width {
-  *	using the nesting index as the antenna number.
-  * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
-  * @NL80211_BSS_MLO_LINK_ID: MLO link ID of the BSS (u8).
-+ * @NL80211_BSS_SHORT_BEACON_PERIOD: S1G short beacon period in TUs
-  * @__NL80211_BSS_AFTER_LAST: internal
-  * @NL80211_BSS_MAX: highest BSS attribute
+@@ -3994,6 +3994,10 @@ enum nl80211_band_iftype_attr {
+  * @NL80211_BAND_ATTR_EDMG_BW_CONFIG: Channel BW Configuration subfield encodes
+  *	the allowed channel bandwidth configurations.
+  *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13.
++ * @NL80211_BAND_ATTR_S1G_MCS_NSS_SET: S1G capabilities, supported S1G-MCS and NSS
++ *	set subfield, as in the S1G information IE, 5 bytes
++ * @NL80211_BAND_ATTR_S1G_CAPA: S1G capabilities information subfield as in the
++ *	S1G information IE, 10 bytes
+  * @NL80211_BAND_ATTR_MAX: highest band attribute currently defined
+  * @__NL80211_BAND_ATTR_AFTER_LAST: internal use
   */
-@@ -4977,6 +4983,7 @@ enum nl80211_bss {
- 	NL80211_BSS_CHAIN_SIGNAL,
- 	NL80211_BSS_FREQUENCY_OFFSET,
- 	NL80211_BSS_MLO_LINK_ID,
-+	NL80211_BSS_SHORT_BEACON_PERIOD,
+@@ -4014,6 +4018,9 @@ enum nl80211_band_attr {
+ 	NL80211_BAND_ATTR_EDMG_CHANNELS,
+ 	NL80211_BAND_ATTR_EDMG_BW_CONFIG,
  
++	NL80211_BAND_ATTR_S1G_MCS_NSS_SET,
++	NL80211_BAND_ATTR_S1G_CAPA,
++
  	/* keep last */
- 	__NL80211_BSS_AFTER_LAST,
+ 	__NL80211_BAND_ATTR_AFTER_LAST,
+ 	NL80211_BAND_ATTR_MAX = __NL80211_BAND_ATTR_AFTER_LAST - 1
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 2705e3ee8fc4..5e9aaa8c0d7d 100644
+index 5e9aaa8c0d7d..931e35619cf4 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -805,6 +805,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
- 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
-+	[NL80211_ATTR_SHORT_BEACON_PERIOD] = { .type = NLA_U16 },
- };
+@@ -1949,6 +1949,16 @@ static int nl80211_send_band_rateinfo(struct sk_buff *msg,
  
- /* policy for the key attributes */
-@@ -5711,6 +5712,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 		nla_get_u32(info->attrs[NL80211_ATTR_BEACON_INTERVAL]);
- 	params->dtim_period =
- 		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
-+	if (info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD])
-+		params->short_beacon_period =
-+			nla_get_u32(info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD]);
+ 	nla_nest_end(msg, nl_rates);
  
- 	err = cfg80211_validate_beacon_int(rdev, dev->ieee80211_ptr->iftype,
- 					   params->beacon_interval);
++	/* S1G capabilities */
++	if (sband->band == NL80211_BAND_S1GHZ && sband->s1g_cap.s1g &&
++	    (nla_put(msg, NL80211_BAND_ATTR_S1G_CAPA,
++		     sizeof(sband->s1g_cap.cap),
++		     sband->s1g_cap.cap) ||
++	     nla_put(msg, NL80211_BAND_ATTR_S1G_MCS_NSS_SET,
++		     sizeof(sband->s1g_cap.nss_mcs),
++		     sband->s1g_cap.nss_mcs)))
++		return -ENOBUFS;
++
+ 	return 0;
+ }
+ 
 -- 
 2.25.1
 
