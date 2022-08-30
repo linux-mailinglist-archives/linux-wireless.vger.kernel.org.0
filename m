@@ -2,138 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12CB75A5F78
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 11:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B905A6129
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 12:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbiH3Jct (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Aug 2022 05:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50270 "EHLO
+        id S230179AbiH3KvT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Aug 2022 06:51:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231892AbiH3Jc2 (ORCPT
+        with ESMTP id S229988AbiH3Kuk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Aug 2022 05:32:28 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A730A2A8A
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Aug 2022 02:32:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661851930; x=1693387930;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gccZn9I0+N8z97syHj0uFijkRdJnRbnaf9VVahNbVog=;
-  b=JNt5uZzGpnkROchWoA3R2vCHXDquNZX7r+MexfOu70jwqg0ikL5Upqib
-   4GdlYlxP0m1yZe86aEi7HOKafrBljdhC+KbM+5AQcY/OlEULQQlZ9Bhif
-   K4ebotmc8hQXOguCpFsaOFRbiTjExKrIOAg11OH/AySjGjL7QvKv1I7Jq
-   +Skfqv/4bXQnY+Zd9PV8wMRujYWC52E8taoDblLQVUEFj6ljn/4bYKfv9
-   GnjrEoJalveWWW/H7Vk9B4u5J93if68HEySFjxLwbAYheI6ApGSixqes/
-   JCROq3kgA8PwAtEcNIGWnsnAGulzfIlCitk4wSkohseVJRchvl0Xd16Qs
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="356846399"
-X-IronPort-AV: E=Sophos;i="5.93,274,1654585200"; 
-   d="scan'208";a="356846399"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 02:32:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,274,1654585200"; 
-   d="scan'208";a="641302532"
-Received: from lkp-server02.sh.intel.com (HELO 77b6d4e16fc5) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 30 Aug 2022 02:32:01 -0700
-Received: from kbuild by 77b6d4e16fc5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oSxbE-00008Y-1I;
-        Tue, 30 Aug 2022 09:32:00 +0000
-Date:   Tue, 30 Aug 2022 17:31:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kieran Frewen <kieran.frewen@morsemicro.com>,
-        johannes@sipsolutions.net
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
-        Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: Re: [PATCH v2 01/12] cfg80211: regulatory: extend regulatory support
- for S1G
-Message-ID: <202208301755.3ARl5XbS-lkp@intel.com>
-References: <20220830022017.51017-2-kieran.frewen@morsemicro.com>
+        Tue, 30 Aug 2022 06:50:40 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B3C61124;
+        Tue, 30 Aug 2022 03:50:25 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id f24so7978141plr.1;
+        Tue, 30 Aug 2022 03:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=IhaMXTWAcaW3hhnK8+sC1vZiKgHn05Km4N0GxkG/RW0=;
+        b=lHomL4xEN0wjcDcNxCpVINhbuhekmy1qmwlIc2sII/l02dAPS2iaLeRNU6nI8XAfhW
+         jK3P+XYW/yAU0LwHZJZDOWItZVfjcCN9TCjdqZSWuJvf/MHz1HLewtQvwtITo7uT9MSX
+         eYoSt5xuhZiXd2ZTN3xen5ijEpdeknJ+8cVHNKV4tRP+o1Rxzw7g1zZQ8BsTyXwIER5a
+         IiEx+mwDnZ4clVX/fzeNf99CUEavXzBQdXsyBUE6sBr5dHz1IspEALz+czefmzQzn5Tb
+         Gh1URRqE64V3TkfnDUAVR6Zh8scB8a+S6ghT0eb+gqbOyPlaY7LfJRVXECPyM93/2r4q
+         7pJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=IhaMXTWAcaW3hhnK8+sC1vZiKgHn05Km4N0GxkG/RW0=;
+        b=JsZSTURZgwWsVD0tVly/Wu7WUYm/mnmK5LAHkbtwFwm7LM3bSY+Rtzwvhq9hz0+CCp
+         WzOvwA7B03qEsnUOd6Xq5VWSV8Ur9odQGpzotFBSNOggTmj7NmBugF88OURU7b/HorXf
+         gZ0/tnD7VTrbpZde0AZBiaM1Esm3Ok0LNC+ssN6zFc1hc/O0RkUZLilzebbC5SvhYQZZ
+         2+KsiscJgJfdy5po31bJkwERzau+zvrjvdZGZCiCv89t2H0tu9puuC7haipvTGdCSQ7b
+         g1Jd6BviDhLuEofOVjCLt/YF52QJ5/daN5eLsn1kbQxt+aBR9svzUqQTbED3VHp2MziO
+         eSrg==
+X-Gm-Message-State: ACgBeo0jm2hmhqM5GDn9YKXTjpNutqufzvDwirMxC49+wfxnuYcEIkHI
+        JOyGJehKmsuVlu+Inj+eWKA=
+X-Google-Smtp-Source: AA6agR4L12NnWdeknXVCJQE3JGwrtXsEDyRO+bGNadYbaB/gOM/nUCFaR6bvSQQg5F9lQHnRIiS+FA==
+X-Received: by 2002:a17:902:a705:b0:172:ecca:8d2d with SMTP id w5-20020a170902a70500b00172ecca8d2dmr20794672plq.27.1661856624399;
+        Tue, 30 Aug 2022 03:50:24 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id p5-20020a17090a2c4500b001efa9e83927sm8150591pjm.51.2022.08.30.03.50.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Aug 2022 03:50:24 -0700 (PDT)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: cui.jinpeng2@zte.com.cn
+To:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com
+Cc:     kuba@kernel.org, pabeni@redhat.com, johannes.berg@intel.com,
+        alsi@bang-olufsen.dk, a.fatoum@pengutronix.de,
+        loic.poulain@linaro.org, quic_vjakkam@quicinc.com,
+        prestwoj@gmail.com, colin.i.king@gmail.com, hdegoede@redhat.com,
+        smoch@web.de, cui.jinpeng2@zte.com.cn,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH v2 linux-next] wifi: brcmfmac: remove redundant err variable
+Date:   Tue, 30 Aug 2022 10:50:16 +0000
+Message-Id: <20220830105016.287337-1-cui.jinpeng2@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220830022017.51017-2-kieran.frewen@morsemicro.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kieran,
+From: Jinpeng Cui <cui.jinpeng2@zte.com.cn>
 
-Thank you for the patch! Perhaps something to improve:
+Return value from brcmf_fil_iovar_data_set() and
+brcmf_config_ap_mgmt_ie() directly instead of
+taking this in another redundant variable.
 
-[auto build test WARNING on wireless/main]
-[also build test WARNING on linus/master v6.0-rc3 next-20220830]
-[cannot apply to wireless-next/main]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Jinpeng Cui <cui.jinpeng2@zte.com.cn>
+---
+ .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kieran-Frewen/Additional-Support-for-802-11ah-S1G/20220830-102217
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
-config: arm-colibri_pxa270_defconfig (https://download.01.org/0day-ci/archive/20220830/202208301755.3ARl5XbS-lkp@intel.com/config)
-compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project c7df82e4693c19e3fd2e25c83eb04d9deb7b7b59)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm cross compiling tool for clang build
-        # apt-get install binutils-arm-linux-gnueabi
-        # https://github.com/intel-lab-lkp/linux/commit/7c0e7a45e22911c6e1b16ecdce1a4d6022fd66ee
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Kieran-Frewen/Additional-Support-for-802-11ah-S1G/20220830-102217
-        git checkout 7c0e7a45e22911c6e1b16ecdce1a4d6022fd66ee
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash net/wireless/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> net/wireless/util.c:137:5: warning: no previous prototype for function 'ieee80211_s1g_channel_to_freq_khz' [-Wmissing-prototypes]
-   u32 ieee80211_s1g_channel_to_freq_khz(int chan)
-       ^
-   net/wireless/util.c:137:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   u32 ieee80211_s1g_channel_to_freq_khz(int chan)
-   ^
-   static 
-   1 warning generated.
---
->> net/wireless/reg.c:2597:33: warning: variable 'center_freq_khz' is uninitialized when used here [-Wuninitialized]
-                   reg_rule = freq_reg_info_regd(center_freq_khz, regd, bw);
-                                                 ^~~~~~~~~~~~~~~
-   net/wireless/reg.c:2586:25: note: initialize the variable 'center_freq_khz' to silence this warning
-           u32 bw, center_freq_khz;
-                                  ^
-                                   = 0
-   1 warning generated.
-
-
-vim +/ieee80211_s1g_channel_to_freq_khz +137 net/wireless/util.c
-
-   136	
- > 137	u32 ieee80211_s1g_channel_to_freq_khz(int chan)
-   138	{
-   139		u32 base = ieee80211_s1g_base_freq(chan);
-   140	
-   141		if (!base)
-   142			return 0;
-   143	
-   144		return (base + chan * 500);
-   145	}
-   146	EXPORT_SYMBOL(ieee80211_s1g_channel_to_freq_khz);
-   147	
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 7c72ea26a7d7..8a8c5a3bb2fb 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -3988,7 +3988,6 @@ brcmf_update_pmklist(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp)
+ 	struct brcmf_pmk_list_le *pmk_list;
+ 	int i;
+ 	u32 npmk;
+-	s32 err;
+ 
+ 	pmk_list = &cfg->pmk_list;
+ 	npmk = le32_to_cpu(pmk_list->npmk);
+@@ -3997,10 +3996,8 @@ brcmf_update_pmklist(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp)
+ 	for (i = 0; i < npmk; i++)
+ 		brcmf_dbg(CONN, "PMK[%d]: %pM\n", i, &pmk_list->pmk[i].bssid);
+ 
+-	err = brcmf_fil_iovar_data_set(ifp, "pmkid_info", pmk_list,
++	return brcmf_fil_iovar_data_set(ifp, "pmkid_info", pmk_list,
+ 				       sizeof(*pmk_list));
+-
+-	return err;
+ }
+ 
+ static s32
+@@ -5046,13 +5043,10 @@ brcmf_cfg80211_change_beacon(struct wiphy *wiphy, struct net_device *ndev,
+ 			     struct cfg80211_beacon_data *info)
+ {
+ 	struct brcmf_if *ifp = netdev_priv(ndev);
+-	s32 err;
+ 
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 
+-	err = brcmf_config_ap_mgmt_ie(ifp->vif, info);
+-
+-	return err;
++	return brcmf_config_ap_mgmt_ie(ifp->vif, info);
+ }
+ 
+ static int
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
