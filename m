@@ -2,69 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6B905A6129
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 12:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E305A6138
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 12:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbiH3KvT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Aug 2022 06:51:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50860 "EHLO
+        id S229977AbiH3KzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Aug 2022 06:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229988AbiH3Kuk (ORCPT
+        with ESMTP id S229510AbiH3KzN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Aug 2022 06:50:40 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B3C61124;
-        Tue, 30 Aug 2022 03:50:25 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id f24so7978141plr.1;
-        Tue, 30 Aug 2022 03:50:25 -0700 (PDT)
+        Tue, 30 Aug 2022 06:55:13 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D77459B4;
+        Tue, 30 Aug 2022 03:55:11 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id l5so6861855pjy.5;
+        Tue, 30 Aug 2022 03:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc;
-        bh=IhaMXTWAcaW3hhnK8+sC1vZiKgHn05Km4N0GxkG/RW0=;
-        b=lHomL4xEN0wjcDcNxCpVINhbuhekmy1qmwlIc2sII/l02dAPS2iaLeRNU6nI8XAfhW
-         jK3P+XYW/yAU0LwHZJZDOWItZVfjcCN9TCjdqZSWuJvf/MHz1HLewtQvwtITo7uT9MSX
-         eYoSt5xuhZiXd2ZTN3xen5ijEpdeknJ+8cVHNKV4tRP+o1Rxzw7g1zZQ8BsTyXwIER5a
-         IiEx+mwDnZ4clVX/fzeNf99CUEavXzBQdXsyBUE6sBr5dHz1IspEALz+czefmzQzn5Tb
-         Gh1URRqE64V3TkfnDUAVR6Zh8scB8a+S6ghT0eb+gqbOyPlaY7LfJRVXECPyM93/2r4q
-         7pJg==
+        bh=YkkKSKY+6i4yHV5ZW1S/rfBMmWbd8iaSJkFCcuATEeY=;
+        b=p3cq/nRDe5bCHQpv+Q/v+EOxCWzkEjShDMWv1x80W2zx27nfFDt9XzgftCVbiiYSwV
+         0XhKEKhquLDXtGPpaf/19mwDLY2OPH9qWQrCD8tOhOVvqK2mwrQEO4uuqPf4c58LJmu+
+         cgQGEBp4NQkeyV49XnxU5u0Z81i+vGZ1XEpwHrM+WAUNRju3ngosUJkHvvPzo0T8FKPF
+         q4V6g915bpJ8FWeUoxbXxUoMyNA0HNe5hg8hTi6a/vBGYszrNroZvLz/rQVyoCW2yuFR
+         rM+DzlLODvcZCMiwYkdinn+D6MX1H4bEqadGhJ2kV8eg0tbAQF7yfqMRLbiLPNw3IHrV
+         PKRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc;
-        bh=IhaMXTWAcaW3hhnK8+sC1vZiKgHn05Km4N0GxkG/RW0=;
-        b=JsZSTURZgwWsVD0tVly/Wu7WUYm/mnmK5LAHkbtwFwm7LM3bSY+Rtzwvhq9hz0+CCp
-         WzOvwA7B03qEsnUOd6Xq5VWSV8Ur9odQGpzotFBSNOggTmj7NmBugF88OURU7b/HorXf
-         gZ0/tnD7VTrbpZde0AZBiaM1Esm3Ok0LNC+ssN6zFc1hc/O0RkUZLilzebbC5SvhYQZZ
-         2+KsiscJgJfdy5po31bJkwERzau+zvrjvdZGZCiCv89t2H0tu9puuC7haipvTGdCSQ7b
-         g1Jd6BviDhLuEofOVjCLt/YF52QJ5/daN5eLsn1kbQxt+aBR9svzUqQTbED3VHp2MziO
-         eSrg==
-X-Gm-Message-State: ACgBeo0jm2hmhqM5GDn9YKXTjpNutqufzvDwirMxC49+wfxnuYcEIkHI
-        JOyGJehKmsuVlu+Inj+eWKA=
-X-Google-Smtp-Source: AA6agR4L12NnWdeknXVCJQE3JGwrtXsEDyRO+bGNadYbaB/gOM/nUCFaR6bvSQQg5F9lQHnRIiS+FA==
-X-Received: by 2002:a17:902:a705:b0:172:ecca:8d2d with SMTP id w5-20020a170902a70500b00172ecca8d2dmr20794672plq.27.1661856624399;
-        Tue, 30 Aug 2022 03:50:24 -0700 (PDT)
+        bh=YkkKSKY+6i4yHV5ZW1S/rfBMmWbd8iaSJkFCcuATEeY=;
+        b=wNRQY8v/ijsHOUCkJYLAmeGkiz0Bo3GV8jPGaBxzVJQxkUojnlT9dScf53Rl+sjaP/
+         CfH61egqtCqYVcnLXuPR7cQWz+v30uWAVvLGnegntrgHdO4p4fpOsTs5US/YOn1VZHPb
+         oLwic3gv8ZJAgObxmfhRoRy020Ak/r72k3E/eSnpeNtN/mFqzi+YAVAAT5ykKsK+TBh2
+         DdRElvl+trYqD2I5SI0fxxr/UIaFtrF0VcD/3kQ4K1/M7XTPjs1tZ1gvRGmKPgmy/+a4
+         BhR2eKoAQxTTt+l8csXZkytIgxPl2kFMPKrc7tAdAhLC5bZ+7yNQV5giCQCE+V/XALD/
+         XGWQ==
+X-Gm-Message-State: ACgBeo1Tlk2zSarx4b3d4Cph8tDIV2Osvc8TqDjfFa1wxmp8PYAyCg1P
+        XL6ipjRSfxO7aSyi0pVMF6g=
+X-Google-Smtp-Source: AA6agR7bl0WZTwMSAILTrpdXV8udJeu1bpiewwcHUflUMe66bj1Y/+sOb0UN6GOSl/1q99T91lqljw==
+X-Received: by 2002:a17:90a:bd02:b0:1fd:d9b5:c6ce with SMTP id y2-20020a17090abd0200b001fdd9b5c6cemr8319660pjr.219.1661856911486;
+        Tue, 30 Aug 2022 03:55:11 -0700 (PDT)
 Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id p5-20020a17090a2c4500b001efa9e83927sm8150591pjm.51.2022.08.30.03.50.20
+        by smtp.gmail.com with ESMTPSA id m20-20020a656a14000000b0042a59ecdbdfsm1349459pgu.84.2022.08.30.03.55.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Aug 2022 03:50:24 -0700 (PDT)
+        Tue, 30 Aug 2022 03:55:11 -0700 (PDT)
 From:   cgel.zte@gmail.com
 X-Google-Original-From: cui.jinpeng2@zte.com.cn
-To:     aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com
-Cc:     kuba@kernel.org, pabeni@redhat.com, johannes.berg@intel.com,
-        alsi@bang-olufsen.dk, a.fatoum@pengutronix.de,
-        loic.poulain@linaro.org, quic_vjakkam@quicinc.com,
-        prestwoj@gmail.com, colin.i.king@gmail.com, hdegoede@redhat.com,
-        smoch@web.de, cui.jinpeng2@zte.com.cn,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH v2 linux-next] wifi: brcmfmac: remove redundant err variable
-Date:   Tue, 30 Aug 2022 10:50:16 +0000
-Message-Id: <20220830105016.287337-1-cui.jinpeng2@zte.com.cn>
+To:     ajay.kathat@microchip.com, claudiu.beznea@microchip.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com
+Cc:     kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jinpeng Cui <cui.jinpeng2@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH v2 linux-next] wifi: wilc1000: remove redundant ret variable
+Date:   Tue, 30 Aug 2022 10:55:05 +0000
+Message-Id: <20220830105505.287564-1-cui.jinpeng2@zte.com.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -80,55 +74,34 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Jinpeng Cui <cui.jinpeng2@zte.com.cn>
 
-Return value from brcmf_fil_iovar_data_set() and
-brcmf_config_ap_mgmt_ie() directly instead of
+Return value from cfg80211_rx_mgmt() directly instead of
 taking this in another redundant variable.
 
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: Jinpeng Cui <cui.jinpeng2@zte.com.cn>
 ---
- .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 7c72ea26a7d7..8a8c5a3bb2fb 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3988,7 +3988,6 @@ brcmf_update_pmklist(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp)
- 	struct brcmf_pmk_list_le *pmk_list;
- 	int i;
- 	u32 npmk;
--	s32 err;
- 
- 	pmk_list = &cfg->pmk_list;
- 	npmk = le32_to_cpu(pmk_list->npmk);
-@@ -3997,10 +3996,8 @@ brcmf_update_pmklist(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp)
- 	for (i = 0; i < npmk; i++)
- 		brcmf_dbg(CONN, "PMK[%d]: %pM\n", i, &pmk_list->pmk[i].bssid);
- 
--	err = brcmf_fil_iovar_data_set(ifp, "pmkid_info", pmk_list,
-+	return brcmf_fil_iovar_data_set(ifp, "pmkid_info", pmk_list,
- 				       sizeof(*pmk_list));
--
--	return err;
- }
- 
- static s32
-@@ -5046,13 +5043,10 @@ brcmf_cfg80211_change_beacon(struct wiphy *wiphy, struct net_device *ndev,
- 			     struct cfg80211_beacon_data *info)
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+index f810a56a7ff0..b89047965e78 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -997,12 +997,11 @@ bool wilc_wfi_mgmt_frame_rx(struct wilc_vif *vif, u8 *buff, u32 size)
  {
- 	struct brcmf_if *ifp = netdev_priv(ndev);
--	s32 err;
+ 	struct wilc *wl = vif->wilc;
+ 	struct wilc_priv *priv = &vif->priv;
+-	int freq, ret;
++	int freq;
  
- 	brcmf_dbg(TRACE, "Enter\n");
+ 	freq = ieee80211_channel_to_frequency(wl->op_ch, NL80211_BAND_2GHZ);
+-	ret = cfg80211_rx_mgmt(&priv->wdev, freq, 0, buff, size, 0);
  
--	err = brcmf_config_ap_mgmt_ie(ifp->vif, info);
--
--	return err;
-+	return brcmf_config_ap_mgmt_ie(ifp->vif, info);
+-	return ret;
++	return cfg80211_rx_mgmt(&priv->wdev, freq, 0, buff, size, 0);
  }
  
- static int
+ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
 -- 
 2.25.1
 
