@@ -2,51 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A67F75A62E2
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 14:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1CE75A630D
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 14:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbiH3MJT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Aug 2022 08:09:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55872 "EHLO
+        id S230074AbiH3MQp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Aug 2022 08:16:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229836AbiH3MJP (ORCPT
+        with ESMTP id S229781AbiH3MQo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Aug 2022 08:09:15 -0400
+        Tue, 30 Aug 2022 08:16:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1607D7CCD;
-        Tue, 30 Aug 2022 05:09:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E297CAB1B5
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Aug 2022 05:16:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A897611AF;
-        Tue, 30 Aug 2022 12:09:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAEFC433C1;
-        Tue, 30 Aug 2022 12:09:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1661861353;
-        bh=5SJoOLlqoi3wA7Tl35RDJpwiROFY/iHL4dfRvU6AjnM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gK/iqDo4C0Zmh3B/Nc+4CrNwNlp8phAoKQBEDV7U6eONb46Joz5lH14kH/W7okd4C
-         z1/xe/VtSl+JhaXC5uMOa8EA3y0s3LfoUGzwklvFeUT74PRSuTWvBuLCnLJs608KOV
-         rFmxIqtIm/n5DlS3PtzYHeWrVCeQrpFhCYQIdgOQ=
-Date:   Tue, 30 Aug 2022 14:09:10 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Mazin Al Haddad <mazinalhaddad05@gmail.com>
-Cc:     pontus.fuchs@gmail.com, netdev@vger.kernel.org, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com,
-        edumazet@google.com, paskripkin@gmail.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-kernel-mentees@lists.linuxfoundation.org,
-        davem@davemloft.net
-Subject: Re: [PATCH] ar5523: check endpoints type and direction in probe()
-Message-ID: <Yw395qJF+eDYaY4Z@kroah.com>
-References: <20220823222436.514204-1-mazinalhaddad05@gmail.com>
- <YwW/cw2cXLEd5xFo@kroah.com>
- <CMGQTZ9XBSTJ.5QY7JQCNULBN@Arch-Desktop>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A7ED6160B
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Aug 2022 12:16:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB68C433D6;
+        Tue, 30 Aug 2022 12:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661861802;
+        bh=/N05Ut6pL6u3K483klYAOd9CgyYiliwvzUbSC8NeEmM=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=O6Ew6NjK1no1vTWscccFnSwjPNKTbwStX00x0Y0WxFjd26Aztpu4SH4ZnBPXltihG
+         elNm4pIMjXPcOm0FuG3SC4FZjEln3cPn+bCN2vEcKw/Xn08pw5CUULoIXTrDx3TfQ4
+         bGM3nDpd0BLMI9+niMpKD/zkDSZhW/cg2BBVEtSGuJZPqrGiRJT5lokmeRoHyR+2+d
+         o9EH9NvmGJc4oyuqC9Xs1Qv5HgCieoL4DJkx7mFZEWOivHZ8q17qEGVWICVFAj9I/m
+         bFdc47Vy/DEFYwfkBCRPVXCq7yjl3X90U/t4sKk3KVyrQfEmByW+OAIBoY/yE85CUV
+         rTfakDqXFIzkA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CMGQTZ9XBSTJ.5QY7JQCNULBN@Arch-Desktop>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] ath9k: avoid uninit memory read in ath9k_htc_rx_msg()
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.SAKURA.ne.jp>
+References: <7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.SAKURA.ne.jp>
+To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166186178944.2851.7181874556097643606.kvalo@kernel.org>
+Date:   Tue, 30 Aug 2022 12:16:41 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,81 +55,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Aug 27, 2022 at 01:36:29PM +0300, Mazin Al Haddad wrote:
-> On Wed Aug 24, 2022 at 9:04 AM +03, Greg KH wrote:
-> > On Wed, Aug 24, 2022 at 01:24:38AM +0300, Mazin Al Haddad wrote:
-> > > Fixes a bug reported by syzbot, where a warning occurs in usb_submit_urb()
-> > > due to the wrong endpoint type. There is no check for both the number
-> > > of endpoints and the type which causes an error as the code tries to
-> > > send a URB to the wrong endpoint.
-> > > 
-> > > Fix it by adding a check for the number of endpoints and the
-> > > direction/type of the endpoints. If the endpoints do not match the 
-> > > expected configuration -ENODEV is returned.
-> > > 
-> > > Syzkaller report:
-> > > 
-> > > usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-> > > WARNING: CPU: 1 PID: 71 at drivers/usb/core/urb.c:502 usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
-> > > Modules linked in:
-> > > CPU: 1 PID: 71 Comm: kworker/1:2 Not tainted 5.19.0-rc7-syzkaller-00150-g32f02a211b0a #0
-> > > Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 06/29/2022
-> > > Workqueue: usb_hub_wq hub_event
-> > > Call Trace:
-> > >  <TASK>
-> > >  ar5523_cmd+0x420/0x790 drivers/net/wireless/ath/ar5523/ar5523.c:275
-> > >  ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
-> > >  ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
-> > >  ar5523_probe+0xc66/0x1da0 drivers/net/wireless/ath/ar5523/ar5523.c:1655
-> > > 
-> > > 
-> > > Link: https://syzkaller.appspot.com/bug?extid=1bc2c2afd44f820a669f
-> > > Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-> > > Signed-off-by: Mazin Al Haddad <mazinalhaddad05@gmail.com>
-> > > ---
-> > >  drivers/net/wireless/ath/ar5523/ar5523.c | 31 ++++++++++++++++++++++++
-> > >  1 file changed, 31 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-> > > index 6f937d2cc126..5451bf9ab9fb 100644
-> > > --- a/drivers/net/wireless/ath/ar5523/ar5523.c
-> > > +++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-> > > @@ -1581,8 +1581,39 @@ static int ar5523_probe(struct usb_interface *intf,
-> > >  	struct usb_device *dev = interface_to_usbdev(intf);
-> > >  	struct ieee80211_hw *hw;
-> > >  	struct ar5523 *ar;
-> > > +	struct usb_host_interface *host = intf->cur_altsetting;
-> > >  	int error = -ENOMEM;
-> > >  
-> > > +	if (host->desc.bNumEndpoints != 4) {
-> > > +		dev_err(&dev->dev, "Wrong number of endpoints\n");
-> > > +		return -ENODEV;
-> > > +	}
-> > > +
-> > > +	for (int i = 0; i < host->desc.bNumEndpoints; ++i) {
-> > > +		struct usb_endpoint_descriptor *ep = &host->endpoint[i].desc;
-> > > +		// Check for type of endpoint and direction.
-> > > +		switch (i) {
-> > > +		case 0:
-> > > +		case 1:
-> > > +			if ((ep->bEndpointAddress & USB_DIR_OUT) &&
-> > > +			    ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
-> > > +			     == USB_ENDPOINT_XFER_BULK)){
-> >
-> > Did you run your change through checkpatch?
-> 
-> Yes.
-> 
-> > We have usb helper functions for all of this, why not use them instead
-> > of attempting to roll your own?
-> 
-> Using the helpers is indeed a lot better. I wasn't aware of all of them.
-> Since find_common_endpoints() won't work here, I used the helpers for 
-> checking direction/type. 
+Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
 
-I don't understand why usb_find_common_endpoints() will not work here.
-It seems to be very generic and should work just fine.
+> syzbot is reporting uninit value at ath9k_htc_rx_msg() [1], for
+> ioctl(USB_RAW_IOCTL_EP_WRITE) can call ath9k_hif_usb_rx_stream() with
+> pkt_len = 0 but ath9k_hif_usb_rx_stream() uses
+> __dev_alloc_skb(pkt_len + 32, GFP_ATOMIC) based on an assumption that
+> pkt_len is valid. As a result, ath9k_hif_usb_rx_stream() allocates skb
+> with uninitialized memory and ath9k_htc_rx_msg() is reading from
+> uninitialized memory.
+> 
+> Since bytes accessed by ath9k_htc_rx_msg() is not known until
+> ath9k_htc_rx_msg() is called, it would be difficult to check minimal valid
+> pkt_len at "if (pkt_len > 2 * MAX_RX_BUF_SIZE) {" line in
+> ath9k_hif_usb_rx_stream().
+> 
+> We have two choices. One is to workaround by adding __GFP_ZERO so that
+> ath9k_htc_rx_msg() sees 0 if pkt_len is invalid. The other is to let
+> ath9k_htc_rx_msg() validate pkt_len before accessing. This patch chose
+> the latter.
+> 
+> Note that I'm not sure threshold condition is correct, for I can't find
+> details on possible packet length used by this protocol.
+> 
+> Link: https://syzkaller.appspot.com/bug?extid=2ca247c2d60c7023de7f [1]
+> Reported-by: syzbot <syzbot+2ca247c2d60c7023de7f@syzkaller.appspotmail.com>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-thanks,
+Patch applied to ath-next branch of ath.git, thanks.
 
-greg k-h
+b383e8abed41 wifi: ath9k: avoid uninit memory read in ath9k_htc_rx_msg()
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.SAKURA.ne.jp/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
