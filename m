@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E80455A5945
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 04:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1465A5946
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 04:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbiH3CVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Aug 2022 22:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
+        id S229908AbiH3CVC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Aug 2022 22:21:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229891AbiH3CU6 (ORCPT
+        with ESMTP id S229916AbiH3CVA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Aug 2022 22:20:58 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF0B7F133
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:55 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id u9-20020a17090a1f0900b001fde6477464so3340428pja.4
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:55 -0700 (PDT)
+        Mon, 29 Aug 2022 22:21:00 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876168304B
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:58 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id y127so9985878pfy.5
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=ZjqpoFg5F92iNpozG4jkmKHf9FAGoWr+LPzk3rQ1MkQ=;
-        b=syKd2CVcSM0SymvP/sMg+3YRmaID5LA8wINKRCTx8cPPyKD/WJ8bsM/yogdsr3bTyT
-         aBWutqmrCAuCU6dc6Lm5du9FdVjZyoJAOK7ShXOKIZICMsHNLGH4A+P56eHPnwdEOlRM
-         HONB7IpzPjPWRR7o+1ZeLQXwvj2k+mikY016mxSjVnFg1muIVna29NmsXQxyFImsPS0m
-         AsfaUr7xkBRmHlV8qxStK/dqz2VUHWBD6cpPW/J4X8GYVL/wJPBcZSFvSs4MyY6p9OqU
-         aT8AfmXXl0TamuoT/zewRcBz3jVMh0txlb/gyB4lWp06a4+IMMGD9uDMlXSdjzsAIE/R
-         seZg==
+        bh=e+UtcaVtfXdzb7tBYucETEd2/MznFEQfTq6+/Xfl8Wg=;
+        b=ib9BaZlBpGfcnMZqXWb4OIPMCEfjfFmzM8Gs0W3uzKpyyeGCE8917RhVh+2f0LrxVG
+         vxqfxMXVFDQl+EXYYVXHj4GaIL61hfLMgckrZKmwg/imBrL9fC6ItFmkzbh0FmU21Y/U
+         ITVOlAj4+MUwTQjPG0qjVg3Ev38jyKO8fmqfXlAP2EBsEo+2Ic32gLVoLdqGWpFqd2Fh
+         SyZP0oKq73vbmEYnbWbbQucX38cGi9wkYPInakDmOt+pG9wLR1varS7VTkxKm/0ac94D
+         XlTj63x43d32/O1Cb9bVzoX45kReEhAwwzSZnYo5U8S9r8bPF9hyJX+hjnauTH3aUDLz
+         QsVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=ZjqpoFg5F92iNpozG4jkmKHf9FAGoWr+LPzk3rQ1MkQ=;
-        b=iAd7vvaDviGwEu5ou2RUamDb6Xminfe5eF4GttqNo98KdduTp07qqEGB5+SDRj1ENz
-         isht5syB08bOS+VnCdyynYmcTBYAqsMT5V0sIvfFYFWqeNIgfAv4fbvFX8uTki18Z6yu
-         WwEbb8ft8XfVbI7rXbWeJ11WpChz9fJY85zPvfDQRia0nFLNlpUAmENTBHic+GwLsJ8H
-         PRhRc3wNcnISscvugssA4EAPUeEr/szJ3rVTFGhWK3RkK1Ljt0U0dHGgrobuxj3TWNAz
-         oAvbDdMkc4fRbjuis3THc4YqiZ4XzJH4wP8xgua+r2dNoVhn2hvc08OvubJgzQYk1tWE
-         Qw+g==
-X-Gm-Message-State: ACgBeo1wwwb1xtgX6UKutgDjZBQPwluPEilO9n22fipC3K+C5ha4H8+r
-        52/GdKmlDGNZsT7Ns7Dd9bTJodz9OzeN5hwF
-X-Google-Smtp-Source: AA6agR69Z1F54vIQ8ZehTUmOfb0lNjpxvq+uDYDyEtMWZK/REXIxI8bLFHNSFxssvhX0JroHVk9osQ==
-X-Received: by 2002:a17:902:9006:b0:172:927e:c19a with SMTP id a6-20020a170902900600b00172927ec19amr19217534plp.162.1661826055206;
-        Mon, 29 Aug 2022 19:20:55 -0700 (PDT)
+        bh=e+UtcaVtfXdzb7tBYucETEd2/MznFEQfTq6+/Xfl8Wg=;
+        b=BcW+sEGDxPJHvIORUpJZeZPoZIctpuiXv/QY70G2VDd2RNs2uVi7qFAbZBHqiLDwaG
+         sxZWOvoaspTwqIhJpvEmyis7dfmdF5Ijd4TvGN/jzKeCUgacL54XYOiGHXrAelT89yDA
+         /C4tiim09REon4krD5M5booc9q4F0C/pA3e/xwPuV/LgM4LO4BVSgGr9Wmv7lDciUu2v
+         hMx29vnEIL9MlXpcNylw3aaRRXBJBb4eJGVVPjhphhX1G+N9V4XK1qFXu37IoWbEOipO
+         jwOZfimI7uoManaAwLG9xE1Vf+AVJ8/3zy2HHMDvWjDv2yXT1iDUiC0dFAHoHyHl34Ej
+         Dc5Q==
+X-Gm-Message-State: ACgBeo2xbn8+ljFFOedg1Aq2CNUSTdiwuzWb+YwbaWGhACCudoXqMx+w
+        BBnSPL0oacvrd1gtf0OCvQqk7g==
+X-Google-Smtp-Source: AA6agR62vunWmp1nVKxHh0ClmEjTLYL+l6HH8EhlbMhFDT5uOsg6sUyU5cfYCj7n5xBCo496y+niVw==
+X-Received: by 2002:a65:6d14:0:b0:41d:5f95:179d with SMTP id bf20-20020a656d14000000b0041d5f95179dmr15992207pgb.580.1661826058085;
+        Mon, 29 Aug 2022 19:20:58 -0700 (PDT)
 Received: from virs-pc-021.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id q12-20020a170902a3cc00b0016d8d277c02sm8220050plb.25.2022.08.29.19.20.52
+        by smtp.gmail.com with ESMTPSA id q12-20020a170902a3cc00b0016d8d277c02sm8220050plb.25.2022.08.29.19.20.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Aug 2022 19:20:54 -0700 (PDT)
+        Mon, 29 Aug 2022 19:20:57 -0700 (PDT)
 From:   Kieran Frewen <kieran.frewen@morsemicro.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
         Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: [PATCH v2 06/12] mac80211: support ieee80211_ext format
-Date:   Tue, 30 Aug 2022 02:20:11 +0000
-Message-Id: <20220830022017.51017-7-kieran.frewen@morsemicro.com>
+Subject: [PATCH v2 07/12] mac80211: S1G capabilities information element in probe request
+Date:   Tue, 30 Aug 2022 02:20:12 +0000
+Message-Id: <20220830022017.51017-8-kieran.frewen@morsemicro.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220830022017.51017-1-kieran.frewen@morsemicro.com>
 References: <20220830022017.51017-1-kieran.frewen@morsemicro.com>
@@ -69,79 +69,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ensure S1G beacons use the new ieee80211_ext format when required.
+Add the missing S1G capabilities information element to probe requests.
 
 Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
 ---
- net/mac80211/rx.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ net/mac80211/ieee80211_i.h |  1 +
+ net/mac80211/util.c        | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 57df21e2170a..d46eeebedb4b 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4895,6 +4895,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 	struct ieee80211_local *local = hw_to_local(hw);
- 	struct ieee80211_sub_if_data *sdata;
- 	struct ieee80211_hdr *hdr;
-+	struct ieee80211_ext *ext_hdr;
- 	__le16 fc;
- 	struct ieee80211_rx_data rx;
- 	struct ieee80211_sub_if_data *prev;
-@@ -4911,7 +4912,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 	if (ieee80211_is_data(fc) || ieee80211_is_mgmt(fc))
- 		I802_DEBUG_INC(local->dot11ReceivedFragmentCount);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index cd8879998739..e8ff4af9fc03 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2400,6 +2400,7 @@ void ieee80211_add_s1g_capab_ie(struct ieee80211_sub_if_data *sdata,
+ 				struct sk_buff *skb);
+ void ieee80211_add_aid_request_ie(struct ieee80211_sub_if_data *sdata,
+ 				  struct sk_buff *skb);
++u8 *ieee80211_ie_build_s1g_cap(u8 *pos, struct ieee80211_sta_s1g_cap *s1g_cap);
  
--	if (ieee80211_is_mgmt(fc)) {
-+	if (ieee80211_is_mgmt(fc) || ieee80211_is_s1g_beacon(fc)) {
- 		/* drop frame if too short for header */
- 		if (skb->len < ieee80211_hdrlen(fc))
- 			err = -ENOBUFS;
-@@ -4926,13 +4927,17 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 		return;
- 	}
+ /* channel management */
+ bool ieee80211_chandef_ht_oper(const struct ieee80211_ht_operation *ht_oper,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 53826c663723..78e8c286011e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1857,6 +1857,12 @@ static int ieee80211_build_preq_ies_band(struct ieee80211_sub_if_data *sdata,
+ 	rate_flags = ieee80211_chandef_rate_flags(chandef);
+ 	shift = ieee80211_chandef_get_shift(chandef);
  
--	hdr = (struct ieee80211_hdr *)skb->data;
-+	if (ieee80211_is_s1g_beacon(fc))
-+		ext_hdr = (struct ieee80211_ext *)skb->data;
-+	else
-+		hdr = (struct ieee80211_hdr *)skb->data;
++	/* For direct mac80211 scan (probe request), add S1G IE and consider its override bits */
++	if (band == NL80211_BAND_S1GHZ) {
++		pos = ieee80211_ie_build_s1g_cap(pos, &sband->s1g_cap);
++		goto done;
++	}
 +
- 	ieee80211_parse_qos(&rx);
- 	ieee80211_verify_alignment(&rx);
+ 	num_rates = 0;
+ 	for (i = 0; i < sband->n_bitrates; i++) {
+ 		if ((BIT(i) & rate_mask) == 0)
+@@ -2919,6 +2925,21 @@ size_t ieee80211_ie_split_vendor(const u8 *ies, size_t ielen, size_t offset)
+ 	return pos;
+ }
  
--	if (unlikely(ieee80211_is_probe_resp(hdr->frame_control) ||
--		     ieee80211_is_beacon(hdr->frame_control) ||
--		     ieee80211_is_s1g_beacon(hdr->frame_control)))
-+	if (unlikely(ieee80211_is_probe_resp(fc) ||
-+		     ieee80211_is_beacon(fc) ||
-+		     ieee80211_is_s1g_beacon(fc)))
- 		ieee80211_scan_rx(local, skb);
- 
- 	if (ieee80211_is_data(fc)) {
-@@ -4991,7 +4996,10 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 			prev = sdata;
- 			continue;
- 		}
--
-+		if (ieee80211_is_s1g_beacon(fc))
-+			rx.sta = sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
-+		else
-+			rx.sta = sta_info_get_bss(prev, hdr->addr2);
- 		rx.sdata = prev;
- 		ieee80211_rx_for_interface(&rx, skb, false);
- 
-@@ -4999,6 +5007,10 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 	}
- 
- 	if (prev) {
-+		if (ieee80211_is_s1g_beacon(fc))
-+			rx.sta = sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
-+		else
-+			rx.sta = sta_info_get_bss(prev, hdr->addr2);
- 		rx.sdata = prev;
- 
- 		if (ieee80211_rx_for_interface(&rx, skb, true))
++u8 *ieee80211_ie_build_s1g_cap(u8 *pos, struct ieee80211_sta_s1g_cap *s1g_cap)
++{
++	*pos++ = WLAN_EID_S1G_CAPABILITIES;
++	*pos++ = sizeof(struct ieee80211_s1g_cap);
++	memset(pos, 0, sizeof(struct ieee80211_s1g_cap));
++
++	memcpy(pos, &s1g_cap->cap, sizeof(s1g_cap->cap));
++	pos += sizeof(s1g_cap->cap);
++
++	memcpy(pos, &s1g_cap->nss_mcs, sizeof(s1g_cap->nss_mcs));
++	pos += sizeof(s1g_cap->nss_mcs);
++
++	return pos;
++}
++
+ u8 *ieee80211_ie_build_ht_cap(u8 *pos, struct ieee80211_sta_ht_cap *ht_cap,
+ 			      u16 cap)
+ {
 -- 
 2.25.1
 
