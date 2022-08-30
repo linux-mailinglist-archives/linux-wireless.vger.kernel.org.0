@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 664D15A594A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 04:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8D05A594B
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Aug 2022 04:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbiH3CVM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Aug 2022 22:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39146 "EHLO
+        id S229922AbiH3CVQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Aug 2022 22:21:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbiH3CVK (ORCPT
+        with ESMTP id S229911AbiH3CVP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Aug 2022 22:21:10 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208A27E013
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:21:10 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id y141so9979858pfb.7
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:21:10 -0700 (PDT)
+        Mon, 29 Aug 2022 22:21:15 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E74B77E013
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:21:13 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id w13so9382872pgq.7
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Aug 2022 19:21:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=btEicRQEW6kIhtWiOkgGVo9tjK3NPwQVFn5P37CngZI=;
-        b=TE2kabvyEJn1DLuJRXY8kimA1PBnfBtd9+wKPDPhHqWpYvaKPdRRCI6mw8QwHsuphA
-         Pf3WVnV2L/b6E0cBIGCwsU7n45B9n4pyKQaJrqWCGoziW/QMxNBVmq6aTmdO1bvxxgF5
-         DZUiG2BIdXdhlONjq4sc+5l2PUulxk8ysrp3cvE2T89PkHrez1YUx2f3vEaIDzs4Fow9
-         +RKp0diyfWxOZNCoSkeb8d8KJ2MhKQKLKCteJ93GaE9Rq9h7nad0gwAbvo6UNGJJGZPe
-         P26aPv70O546Gjl9XlM37OMZ/K5E7JFT0xpOYekh2vLVNW09dBdxy0IJ7OpCmnBDeaDi
-         xkdA==
+        bh=uyJmH5QODACX39loBetvnkaSvQzRkAD1ZxCe7Jwbavs=;
+        b=jW0/pHHuEvWNUqTZFXj/6dp78kQJUVSdoW7b4MKyMttf1kLFVp3g7egiRdRPGYr8WX
+         Gjyr9xZQg+z29KxDzwKRzw3/mnNik/o6jM71JWeGb7sjeuwOUf53KnEbhRqxIzPJPGM+
+         TNV9TLgNL2Qax2lSwrBsRV1APhSqB/qQGpU5yNRIMLYJ7i/wYZ6v53+Cw4ecHt95BHvs
+         fjVVVGFXIp29M9lh8UH41dzwxd0CNxNpNdkTYwqATF2Z3o7UjmlFgHxL9NUZyGV2r9w7
+         AXXR0ccTnuxlo4aTS5Tz7gZQ2T2TVmA1VrJqujIrG70G7lkDs5fjLeYS2RZa1oC5D0vN
+         zoJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=btEicRQEW6kIhtWiOkgGVo9tjK3NPwQVFn5P37CngZI=;
-        b=TURF2ovZOZ3UBJfCDQfwb8f3gUvdJIoiIrSDMe43F3Cuq9IOYsPniVJkZlcPKzlx8j
-         ARs2d4NWkrW3h34I1lv1q+1xN6zD5bEfsy6tixJnp/eqjJTKXVn7Q+W7UGGbn916+WRE
-         5nrHZnx93HjiUUREO+jgoklEd1jSlY6BdRAlzIvs/qCq5n9YWSI9d0Wajm2ZJJLn5wU3
-         5/mAUXtbyG8PNZdsbhbbp+LaYCgcck7fVkeg7lCkhvsxb8OJVs87tx6FdGEMps3m8klA
-         6b0jTXkvsFS+HU6osE0bmW0Rg5WHvh/iw7iIOVPFT7BCWii1/f60nuXAI6yng8oCGNhb
-         ZPvQ==
-X-Gm-Message-State: ACgBeo2T3vkxcsKJm13SnIaVmvPgubBm9he+YgQo41v6klLMtpi+d2RC
-        PBKorrwsGmU99qfrSiUBIzijug==
-X-Google-Smtp-Source: AA6agR4+WWI9n4hW90cWtvstBoFmFSC24ynscpt9QPRj0m+Sy0gldo1tbrQjheveHicYQPAHvYucyA==
-X-Received: by 2002:a63:225c:0:b0:42c:3811:93fb with SMTP id t28-20020a63225c000000b0042c381193fbmr5103498pgm.543.1661826069706;
-        Mon, 29 Aug 2022 19:21:09 -0700 (PDT)
+        bh=uyJmH5QODACX39loBetvnkaSvQzRkAD1ZxCe7Jwbavs=;
+        b=dnmYtB/rmvbTb5+li0gNLJmxe8i/3ATEijC+68OQIbYXjqYgkKKpe8BNVA/Rf76ECh
+         ouKAnrju3apOoKX6Z2Geu69E16OvqP/uRawxkqg6MEA8seIjNmyZlcf3xV9DMewxh6NP
+         b/f89WUiD5rcbzs9B/urOkLcqo7+lzuE0vhCTCXhdZAptB8Vcym+pkolQgVlwqUurmaL
+         vgpBpiNe3uRVfxUoCchK1c/+SmkGfDRyEihclSfSE/zuW2wPj3FP8Xv8W38qN1Iugprg
+         F/by4Gixs5l7AUyhFjpP/bo1O7GoVSBvwwH1nyy+rwufqiT6mUAPV8292lg1Kj2X/9Bh
+         P9eQ==
+X-Gm-Message-State: ACgBeo0kE8KBa/ZHshIqcnWZnIYzzgzMHV0Vi/dj/VmfN/KKc1TvYRGE
+        72B+oARnoZV9+s4yYrcfNNJKWw==
+X-Google-Smtp-Source: AA6agR5boHVFZHfDxj0vD8doXQxq/+b4JwpL5uxK5PAkB6jBffvrQoElZBUh0F8loWcSawxGllnKeQ==
+X-Received: by 2002:a05:6a00:1ac7:b0:537:4186:c106 with SMTP id f7-20020a056a001ac700b005374186c106mr19185403pfv.76.1661826072710;
+        Mon, 29 Aug 2022 19:21:12 -0700 (PDT)
 Received: from virs-pc-021.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id q12-20020a170902a3cc00b0016d8d277c02sm8220050plb.25.2022.08.29.19.21.07
+        by smtp.gmail.com with ESMTPSA id q12-20020a170902a3cc00b0016d8d277c02sm8220050plb.25.2022.08.29.19.21.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Aug 2022 19:21:09 -0700 (PDT)
+        Mon, 29 Aug 2022 19:21:12 -0700 (PDT)
 From:   Kieran Frewen <kieran.frewen@morsemicro.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
         Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: [PATCH v2 11/12] cfg80211: support for calculating S1G bitrates
-Date:   Tue, 30 Aug 2022 02:20:16 +0000
-Message-Id: <20220830022017.51017-12-kieran.frewen@morsemicro.com>
+Subject: [PATCH v2 12/12] mac80211_hwsim: support for S1G rate information
+Date:   Tue, 30 Aug 2022 02:20:17 +0000
+Message-Id: <20220830022017.51017-13-kieran.frewen@morsemicro.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220830022017.51017-1-kieran.frewen@morsemicro.com>
 References: <20220830022017.51017-1-kieran.frewen@morsemicro.com>
@@ -69,144 +69,69 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Support for reporting and calculating S1G MCS bitrates.
+Include S1G rate information in S1G frames.
 
-Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
+Signed-off-by: Kieran Frewen<kieran.frewen@morsemicro.com>
 ---
- net/wireless/util.c | 113 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 113 insertions(+)
+ drivers/net/wireless/mac80211_hwsim.c | 38 ++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 9 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index aeccb6ce595c..d9d7dde3d4f2 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1384,6 +1384,117 @@ static u32 cfg80211_calculate_bitrate_vht(struct rate_info *rate)
- 	return 0;
- }
- 
-+static u32 cfg80211_calculate_bitrate_s1g(struct rate_info *rate)
-+{
-+	/* For 1, 2, 4, 8 and 16 MHz channels */
-+	static const u32 base[5][12] = {
-+		{  300000,
-+		   600000,
-+		   900000,
-+		  1200000,
-+		  1800000,
-+		  2400000,
-+		  2700000,
-+		  3000000,
-+		  3600000,
-+		  4000000,
-+		  /* MCS 10 supported in 1 MHz only */
-+		  150000,
-+		},
-+		{  650000,
-+		  1300000,
-+		  1950000,
-+		  2600000,
-+		  3900000,
-+		  5200000,
-+		  5850000,
-+		  6500000,
-+		  7800000,
-+		  /* MCS 9 not valid */
-+		},
-+		{  1350000,
-+		   2700000,
-+		   4050000,
-+		   5400000,
-+		   8100000,
-+		  10800000,
-+		  12150000,
-+		  13500000,
-+		  16200000,
-+		  18000000,
-+		},
-+		{  2925000,
-+		   5850000,
-+		   8775000,
-+		  11700000,
-+		  17550000,
-+		  23400000,
-+		  26325000,
-+		  29250000,
-+		  35100000,
-+		  39000000,
-+		},
-+		{  8580000,
-+		  11700000,
-+		  17550000,
-+		  23400000,
-+		  35100000,
-+		  46800000,
-+		  52650000,
-+		  58500000,
-+		  70200000,
-+		  78000000,
-+		},
-+	};
-+	u32 bitrate;
-+	/* default is 1 MHz index */
-+	int idx = 0;
-+
-+	if (rate->mcs > 11)
-+		goto warn;
-+
-+	switch (rate->bw) {
-+	case RATE_INFO_BW_16:
-+		idx = 4;
-+		break;
-+	case RATE_INFO_BW_8:
-+		idx = 3;
-+		break;
-+	case RATE_INFO_BW_4:
-+		idx = 2;
-+		break;
-+	case RATE_INFO_BW_2:
-+		idx = 1;
-+		break;
-+	case RATE_INFO_BW_1:
-+		idx = 0;
-+		break;
-+	case RATE_INFO_BW_5:
-+	case RATE_INFO_BW_10:
-+	case RATE_INFO_BW_20:
-+	case RATE_INFO_BW_40:
-+	case RATE_INFO_BW_80:
-+	case RATE_INFO_BW_160:
-+	default:
-+		goto warn;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 5ecbc80be338..6742f308ef7a 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1577,7 +1577,14 @@ static bool mac80211_hwsim_tx_frame_no_nl(struct ieee80211_hw *hw,
+ 	rx_status.freq = chan->center_freq;
+ 	rx_status.freq_offset = chan->freq_offset;
+ 	rx_status.band = chan->band;
+-	if (info->control.rates[0].flags & IEEE80211_TX_RC_VHT_MCS) {
++	if (info->control.rates[0].flags & IEEE80211_TX_RC_S1G_MCS &&
++	    rx_status.band == NL80211_BAND_S1GHZ) {
++		rx_status.rate_idx =
++			ieee80211_rate_get_s1g_mcs(&info->control.rates[0]);
++		rx_status.nss =
++			ieee80211_rate_get_s1g_nss(&info->control.rates[0]);
++		rx_status.encoding = RX_ENC_S1G;
++	} else if (info->control.rates[0].flags & IEEE80211_TX_RC_VHT_MCS) {
+ 		rx_status.rate_idx =
+ 			ieee80211_rate_get_vht_mcs(&info->control.rates[0]);
+ 		rx_status.nss =
+@@ -1588,14 +1595,27 @@ static bool mac80211_hwsim_tx_frame_no_nl(struct ieee80211_hw *hw,
+ 		if (info->control.rates[0].flags & IEEE80211_TX_RC_MCS)
+ 			rx_status.encoding = RX_ENC_HT;
+ 	}
+-	if (info->control.rates[0].flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
+-		rx_status.bw = RATE_INFO_BW_40;
+-	else if (info->control.rates[0].flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
+-		rx_status.bw = RATE_INFO_BW_80;
+-	else if (info->control.rates[0].flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
+-		rx_status.bw = RATE_INFO_BW_160;
+-	else
+-		rx_status.bw = RATE_INFO_BW_20;
++	if (rx_status.band == NL80211_BAND_S1GHZ) {
++		if (info->control.rates[0].flags & IEEE80211_TX_RC_2_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_2;
++		else if (info->control.rates[0].flags & IEEE80211_TX_RC_4_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_4;
++		else if (info->control.rates[0].flags & IEEE80211_TX_RC_8_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_8;
++		else if (info->control.rates[0].flags & IEEE80211_TX_RC_16_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_16;
++		else
++			rx_status.bw = RATE_INFO_BW_1;
++	} else {
++		if (info->control.rates[0].flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_40;
++		else if (info->control.rates[0].flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_80;
++		else if (info->control.rates[0].flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
++			rx_status.bw = RATE_INFO_BW_160;
++		else
++			rx_status.bw = RATE_INFO_BW_20;
 +	}
-+
-+	bitrate = base[idx][rate->mcs];
-+	bitrate *= rate->nss;
-+
-+	if (rate->flags & RATE_INFO_FLAGS_SHORT_GI)
-+		bitrate = (bitrate / 9) * 10;
-+	/* do NOT round down here */
-+	return (bitrate + 50000) / 100000;
-+warn:
-+	if (!rate->bw && !rate->mcs && !rate->nss)
-+		pr_debug("%s: rx status was not received yet!", __func__);
-+	else
-+		WARN_ONCE(1, "invalid rate bw=%d, mcs=%d, nss=%d\n",
-+			  rate->bw, rate->mcs, rate->nss);
-+	return 0;
-+}
-+
- static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- {
- #define SCALE 6144
-@@ -1612,6 +1723,8 @@ u32 cfg80211_calculate_bitrate(struct rate_info *rate)
- 		return cfg80211_calculate_bitrate_he(rate);
- 	if (rate->flags & RATE_INFO_FLAGS_EHT_MCS)
- 		return cfg80211_calculate_bitrate_eht(rate);
-+	if (rate->flags & RATE_INFO_FLAGS_S1G_MCS)
-+		return cfg80211_calculate_bitrate_s1g(rate);
- 
- 	return rate->legacy;
- }
+ 	if (info->control.rates[0].flags & IEEE80211_TX_RC_SHORT_GI)
+ 		rx_status.enc_flags |= RX_ENC_FLAG_SHORT_GI;
+ 	/* TODO: simulate optional packet loss */
 -- 
 2.25.1
 
