@@ -2,80 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E2545A7E6A
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Aug 2022 15:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00B8E5A7EBD
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Aug 2022 15:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230498AbiHaNNy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 31 Aug 2022 09:13:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39430 "EHLO
+        id S231356AbiHaNaE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 Aug 2022 09:30:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbiHaNNx (ORCPT
+        with ESMTP id S229629AbiHaNaD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 31 Aug 2022 09:13:53 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40185C6956;
-        Wed, 31 Aug 2022 06:13:49 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id D665F84053;
-        Wed, 31 Aug 2022 15:13:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1661951627;
-        bh=p+x5vCC1MuVZ93HxywP/IqGvH3aiSHuaSnRXADOII7E=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=utzYtx0Xv5xnxbTcCdn+oKwZOEdASaW5/1uRAyeq0HooV7HINMrh01sU5T3xrKcUA
-         lEEi2dvsWJbH3f2tHFezKghxWw0mUMEHOweDCTk8St6N/NxmQF+eFN9DyRDIJMukYr
-         b7V3VyNdUZAQDJHHH6v1X/9Ow3skrwTbODQYiPk+ie5raNuTs+1K7/FgeEWDUY/0jM
-         ieyr6S5YDe8M4sa87i1J0rfQQEypohHkvDpK48lm4SFeApeqW2Q+wDnNfMsvgtcVfY
-         DnXYC1PRdWI2U7lnQ+MiSUXAQvAabFvQ5qNJ8CHaTzBagu5PFpWE0PrLV2RZiWW9Je
-         j7ZOPhXk06h1Q==
-Message-ID: <99ac701e-65b3-3bdf-6051-27723df2dcd8@denx.de>
-Date:   Wed, 31 Aug 2022 15:13:46 +0200
+        Wed, 31 Aug 2022 09:30:03 -0400
+X-Greylist: delayed 402 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 Aug 2022 06:29:59 PDT
+Received: from giacobini.uberspace.de (giacobini.uberspace.de [185.26.156.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D4C31A3B6
+        for <linux-wireless@vger.kernel.org>; Wed, 31 Aug 2022 06:29:57 -0700 (PDT)
+Received: (qmail 15005 invoked by uid 990); 31 Aug 2022 13:23:14 -0000
+Authentication-Results: giacobini.uberspace.de;
+        auth=pass (plain)
+From:   Soenke Huster <soenke.huster@eknoes.de>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Soenke Huster <soenke.huster@eknoes.de>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: mac80211_hwsim: check length for virtio packets
+Date:   Wed, 31 Aug 2022 15:22:06 +0200
+Message-Id: <20220831132205.129922-1-soenke.huster@eknoes.de>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH] brcmfmac: add 43439 SDIO ids and initialization
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org
-References: <20220827024903.617294-1-marex@denx.de>
- <874jxsfxkh.fsf@kernel.org>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <874jxsfxkh.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.6 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Bar: /
+X-Rspamd-Report: R_MISSING_CHARSET(0.5) MIME_GOOD(-0.1) MID_CONTAINS_FROM(1) BAYES_HAM(-0.616589)
+X-Rspamd-Score: 0.78341
+Received: from unknown (HELO unkown) (::1)
+        by giacobini.uberspace.de (Haraka/2.8.28) with ESMTPSA; Wed, 31 Aug 2022 15:23:14 +0200
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/31/22 13:43, Kalle Valo wrote:
-> Marek Vasut <marex@denx.de> writes:
-> 
->> Add HW and SDIO ids for use with the muRata 1YN (Cypress CYW43439).
->> Add the firmware mapping structures for the CYW43439 chipset.
->> The 43439 needs some things setup similar to the 43430 chipset.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
-> 
-> The title should be:
-> 
-> wifi: brcmfmac: add 43439 SDIO ids and initialization
-> 
-> I can fix that during commit.
+An invalid packet with a length shorther than the specified length in the
+netlink header can lead to use-after-frees and slab-out-of-bounds in the
+processing of the netlink attributes, such as the following:
 
-Please do, thank you.
+  BUG: KASAN: slab-out-of-bounds in __nla_validate_parse+0x1258/0x2010
+  Read of size 2 at addr ffff88800ac7952c by task kworker/0:1/12
+
+  Workqueue: events hwsim_virtio_rx_work
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x45/0x5d
+   print_report.cold+0x5e/0x5e5
+   kasan_report+0xb1/0x1c0
+   __nla_validate_parse+0x1258/0x2010
+   __nla_parse+0x22/0x30
+   hwsim_virtio_handle_cmd.isra.0+0x13f/0x2d0
+   hwsim_virtio_rx_work+0x1b2/0x370
+   process_one_work+0x8df/0x1530
+   worker_thread+0x575/0x11a0
+   kthread+0x29d/0x340
+   ret_from_fork+0x22/0x30
+ </TASK>
+
+Discarding packets with an invalid length solves this.
+Therefore, skb->len must be set at reception.
+
+Signed-off-by: Soenke Huster <soenke.huster@eknoes.de>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 4fb8f68e5c3b..6bd9bd50071e 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -5436,6 +5436,10 @@ static int hwsim_virtio_handle_cmd(struct sk_buff *skb)
+ 
+ 	nlh = nlmsg_hdr(skb);
+ 	gnlh = nlmsg_data(nlh);
++
++	if (skb->len < nlh->nlmsg_len)
++		return -EINVAL;
++
+ 	err = genlmsg_parse(nlh, &hwsim_genl_family, tb, HWSIM_ATTR_MAX,
+ 			    hwsim_genl_policy, NULL);
+ 	if (err) {
+@@ -5478,7 +5482,8 @@ static void hwsim_virtio_rx_work(struct work_struct *work)
+ 	spin_unlock_irqrestore(&hwsim_virtio_lock, flags);
+ 
+ 	skb->data = skb->head;
+-	skb_set_tail_pointer(skb, len);
++	skb_reset_tail_pointer(skb);
++	skb_put(skb, len);
+ 	hwsim_virtio_handle_cmd(skb);
+ 
+ 	spin_lock_irqsave(&hwsim_virtio_lock, flags);
+-- 
+2.37.3
+
