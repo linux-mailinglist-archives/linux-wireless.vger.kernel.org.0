@@ -2,57 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E12C15A7C51
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Aug 2022 13:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9B95A7C5A
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Aug 2022 13:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbiHaLkx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 31 Aug 2022 07:40:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33360 "EHLO
+        id S230216AbiHaLnX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 Aug 2022 07:43:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbiHaLkv (ORCPT
+        with ESMTP id S229556AbiHaLnU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 31 Aug 2022 07:40:51 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 326A432D8C
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Aug 2022 04:40:50 -0700 (PDT)
+        Wed, 31 Aug 2022 07:43:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C42F9BA9D8;
+        Wed, 31 Aug 2022 04:43:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EAD4DB8205C
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Aug 2022 11:40:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCF8C433C1;
-        Wed, 31 Aug 2022 11:40:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6B990B82069;
+        Wed, 31 Aug 2022 11:43:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88791C433D6;
+        Wed, 31 Aug 2022 11:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661946047;
-        bh=DotZ1YqFsP2lhFErXQST8bScy9jCXdAhHcJLnPpqtb4=;
+        s=k20201202; t=1661946196;
+        bh=ehCq2Ob3dMV024kvlcrirlxJ9Kh8bhNV8iCQ2RN/mp8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TdnG2BcEAk6ZmIXD+P6Ikw+tTJPz1vIUefums92ETNFtBqyZIUKWyAvBIw1GQdiE2
-         JM5PpEupl1Ub+xtOgu3TFEid/llV9CQyTAMMa5fYKvwARekcClWskY6Ca7R7gwSLCV
-         9GcEe5D2L9Yw+ha2E3oj37/jhapZoUlxnUWxayDM3f8u/PJhOo5YGoqLHHQo+TpIy1
-         861K/iHgcG4yU+IeoHlu/Lb55H1CwAUPi39DGO+Xk7PZgfQjTQ7hT2R9mkJ6Vmenjb
-         Xr+dMfSaPd1tuHoA/G+dVmDyYYcO+ZEBpReJqYi3H7eu0hSgWP6H63Tq2Eoq2PZM0P
-         VSRhimhrj/EVw==
+        b=koVRLrjtfjix/Kl6/n+g0mVzB/hS6PmUvZRgCndJwf8fVWykRzTo0czlmu9awr3pe
+         ixd8+r23ZVwmbcJwWNN32BFQN9DwRvtxW1se+ZYTcYXNg+TZZUh+6ALfhqtK0d5DIr
+         UIC+/r7rOdUzaZ7J14lZl86uKN0qJLrnKWSjahVag/F3+HoFYftasNqyvuMi2QBE5L
+         0jVsMXBzJghWINmQtwGdfvWsrWoIlbZOV4Bl9cHShKHZvmxyCT2nB5Yt4i0rPRbL3Z
+         vbO5r3qJ6DPCFXGXHpzoGn7O/X5gP4ng/tl7lrU3vTrUFQNCJlrUzt8vtvR7PBIbN1
+         psYXse5Hti3Tw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     <sean.wang@mediatek.com>
-Cc:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
-        <steve.lee@mediatek.com>, <jsiuda@google.com>,
-        <frankgor@google.com>, <kuabhs@google.com>, <druth@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7921: get rid of the false positive reset
-References: <95b03bb77ce93cb2cade98d947309cd669721939.1660519674.git.objelf@gmail.com>
-Date:   Wed, 31 Aug 2022 14:40:40 +0300
-In-Reply-To: <95b03bb77ce93cb2cade98d947309cd669721939.1660519674.git.objelf@gmail.com>
-        (sean wang's message of "Mon, 15 Aug 2022 07:37:14 +0800")
-Message-ID: <87bks0fxon.fsf@kernel.org>
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org
+Subject: Re: [PATCH] brcmfmac: add 43439 SDIO ids and initialization
+References: <20220827024903.617294-1-marex@denx.de>
+Date:   Wed, 31 Aug 2022 14:43:10 +0300
+In-Reply-To: <20220827024903.617294-1-marex@denx.de> (Marek Vasut's message of
+        "Sat, 27 Aug 2022 04:49:03 +0200")
+Message-ID: <874jxsfxkh.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -66,23 +59,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<sean.wang@mediatek.com> writes:
+Marek Vasut <marex@denx.de> writes:
 
-> From: Sean Wang <sean.wang@mediatek.com>
+> Add HW and SDIO ids for use with the muRata 1YN (Cypress CYW43439).
+> Add the firmware mapping structures for the CYW43439 chipset.
+> The 43439 needs some things setup similar to the 43430 chipset.
 >
-> False positive reset would be possibly triggered by those commands we
-> applied in suspend with HZ MCU timeout, especially it happened when we
-> enabled kernel log in pm core to diagnose how much time we spend in each
-> driver during suspend procedure. So we enlarge the value and align the MCU
-> timeout as other commands we did to reduce the false positive reset.
->
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Please use the new "wifi:" prefix, so for this patch it should be:
+The title should be:
 
-wifi: mt76: mt7921: get rid of the false positive reset
+wifi: brcmfmac: add 43439 SDIO ids and initialization
 
-No need to resend but please use this in all new patches.
+I can fix that during commit.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
