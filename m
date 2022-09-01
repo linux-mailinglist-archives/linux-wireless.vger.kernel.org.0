@@ -2,102 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E4985A8F13
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Sep 2022 09:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F8F65A913D
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Sep 2022 09:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233489AbiIAHC4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Sep 2022 03:02:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
+        id S233182AbiIAHww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Sep 2022 03:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233446AbiIAHC1 (ORCPT
+        with ESMTP id S233160AbiIAHwd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Sep 2022 03:02:27 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07836124849
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Sep 2022 00:01:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=89XeSP8T3BsfNpJWBy/8NZacz8TzzRo84aSFyOK+BGs=; t=1662015707; x=1663225307; 
-        b=xt+RX1QNyPQw3Y2SkMiCT/NqM7A2E2PvhLtzZWRDtrFl1P9jDVddMROAzP0rwbGrhHjFLgP6u1v
-        yDYiWkWRDX4lRZ6bGps83H7ZdE+PP7VYqCiZphcp9OKGC+GLWfkpp1yTQXsWbK+yeK2Ko0nRqEfne
-        dirbrS7kUlDYEkMEpnax79dWQ5BtEh54BCalZs2F7T8wrL6zzaRrxv3DDKHtXIZj7If0m90nYXg39
-        Hsc7kJub01no8aQPJpw9JHgw0jlMEfpYb3lDJKk0QBkfkXd39Yubtw0L0oA1XLohvQCiPR65qaki/
-        PbUptuR0E4eA0Jr+wjOuSodWys8zCp2sweFw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oTeCn-005CQd-0u;
-        Thu, 01 Sep 2022 09:01:37 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: nl80211: add MLD address to assoc BSS entries
-Date:   Thu,  1 Sep 2022 09:01:34 +0200
-Message-Id: <20220901090133.10cf17b0508f.Ib53e526afe083c823df54903ce334002a9c27b64@changeid>
-X-Mailer: git-send-email 2.37.2
+        Thu, 1 Sep 2022 03:52:33 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1345524093
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Sep 2022 00:51:24 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2814lSeL028048;
+        Thu, 1 Sep 2022 07:51:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=PcFyK6KGvGq4mC0icOyp05Smy4J3x1RKSnP8L9zS3fM=;
+ b=cktMftbNcxpl9bqD5z4mOL97ICxfQVDkmRqeHMdLBcMcA7r0ktGh9OPmBcMtl8ekyAoG
+ t7mpdFze/x3/ixr5RlZkA3dqHbExVQX7jbblPbadXGjRRGpKVGdt3n/INtfvBhn3gm4u
+ bafq2ZhB57N5YqIHQjE/M/Kc00IXjkkoD+nAqpDpE3VbTQRnv11p6tnK2pYutlcxHymR
+ a7UubsQvs5coswmyew40Lzz4ATaMsnBXB+N3T8kYLHjeHfnDWvXcejIUIJcdq1eWLtcS
+ apCCCEEdp1vCX2w5HVv1oGpNdS9GAIdpZF9cMVQlr9wZZoiNHUntLrEe/WZ/lq25tr7E Ig== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ja79kk82x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 01 Sep 2022 07:51:15 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2817oqg3029994
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 1 Sep 2022 07:50:52 GMT
+Received: from [10.216.18.118] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 1 Sep 2022
+ 00:50:50 -0700
+Message-ID: <e2127462-faf5-e22b-642c-9d012142326e@quicinc.com>
+Date:   Thu, 1 Sep 2022 13:20:47 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH] ath11k: Enable remain-on-channel support on WCN6750
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20220720134331.14832-1-quic_mpubbise@quicinc.com>
+ <166192548485.26203.10728415761503127962.kvalo@kernel.org>
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+In-Reply-To: <166192548485.26203.10728415761503127962.kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Pzfu7f81S28qp74zK202tHXgNEpatYd4
+X-Proofpoint-ORIG-GUID: Pzfu7f81S28qp74zK202tHXgNEpatYd4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-01_05,2022-08-31_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ adultscore=0 mlxscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=715 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209010033
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 8/31/2022 11:28 AM, Kalle Valo wrote:
+> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> wrote:
+> 
+>> Enable remain on channel support on WCN6750 as it is needed for
+>> GAS, Passpoint.
+>>
+>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+>>
+>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+> 
+> Failed to apply. And please use --base when submitting ath11k patches.
+> 
 
-Add an MLD address attribute to BSS entries that the interface
-is currently associated with to help userspace figure out what's
-going on.
+Sure, thanks!
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/uapi/linux/nl80211.h | 2 ++
- net/wireless/nl80211.c       | 6 ++++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 573db20403dc..ac31fbd84402 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4959,6 +4959,7 @@ enum nl80211_bss_scan_width {
-  *	using the nesting index as the antenna number.
-  * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
-  * @NL80211_BSS_MLO_LINK_ID: MLO link ID of the BSS (u8).
-+ * @NL80211_BSS_MLD_ADDR: MLD address of this BSS if connected to it.
-  * @__NL80211_BSS_AFTER_LAST: internal
-  * @NL80211_BSS_MAX: highest BSS attribute
-  */
-@@ -4985,6 +4986,7 @@ enum nl80211_bss {
- 	NL80211_BSS_CHAIN_SIGNAL,
- 	NL80211_BSS_FREQUENCY_OFFSET,
- 	NL80211_BSS_MLO_LINK_ID,
-+	NL80211_BSS_MLD_ADDR,
- 
- 	/* keep last */
- 	__NL80211_BSS_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index dad88d231d56..8ab4c907e284 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10182,8 +10182,10 @@ static int nl80211_send_bss(struct sk_buff *msg, struct netlink_callback *cb,
- 			    (nla_put_u32(msg, NL80211_BSS_STATUS,
- 					 NL80211_BSS_STATUS_ASSOCIATED) ||
- 			     (wdev->valid_links &&
--			      nla_put_u8(msg, NL80211_BSS_MLO_LINK_ID,
--					 link_id))))
-+			      (nla_put_u8(msg, NL80211_BSS_MLO_LINK_ID,
-+					  link_id) ||
-+			       nla_put(msg, NL80211_BSS_MLD_ADDR, ETH_ALEN,
-+				       wdev->u.client.connected_addr)))))
- 				goto nla_put_failure;
- 		}
- 		break;
--- 
-2.37.2
-
+Manikanta
