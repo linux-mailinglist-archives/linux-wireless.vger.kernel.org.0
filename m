@@ -2,123 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF645A8EC7
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Sep 2022 08:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E4985A8F13
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Sep 2022 09:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232993AbiIAGwz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Sep 2022 02:52:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36824 "EHLO
+        id S233489AbiIAHC4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Sep 2022 03:02:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232589AbiIAGwy (ORCPT
+        with ESMTP id S233446AbiIAHC1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Sep 2022 02:52:54 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F50DEB5A
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Aug 2022 23:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662015174; x=1693551174;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SHJktcnaOIbisM5xKT/dXAZihZCV8RAS1LacF+hTz00=;
-  b=mAmbMH/DstEgiIijJCy2kfgvfOJIoxI+1e9oSmBxTnuJIO7/R47fDsxt
-   qK022uOUbkc74uTZ2jAhB6Trfd7JQzmsqCg6MKi7/sx9KvApdooMRM3nv
-   2/kujizyfqTLCmcckHKDRK62aqnEYMH49W5f9HdwOOvFmx6BGq0yCAG+U
-   IzaG2Ixa8Z69DvpZItV5uHwYR+4L3+ZjOCOLUY5OBui2r1cVCcwQNNMvQ
-   IhrbDVjFdYmnmcm1ygr60ErwoyTaGaAeP46HPKY369dPOnLIm/xW4tHmo
-   WuSjgAe0sZmek0u535jQbN1omRfe3dg61fNVD2cExZUTs3IeYZil+RgUh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10456"; a="293211329"
-X-IronPort-AV: E=Sophos;i="5.93,280,1654585200"; 
-   d="scan'208";a="293211329"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2022 23:52:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,280,1654585200"; 
-   d="scan'208";a="940731305"
-Received: from lkp-server02.sh.intel.com (HELO 811e2ceaf0e5) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 31 Aug 2022 23:52:52 -0700
-Received: from kbuild by 811e2ceaf0e5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oTe4K-0001FA-0K;
-        Thu, 01 Sep 2022 06:52:52 +0000
-Date:   Thu, 01 Sep 2022 14:52:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld] BUILD SUCCESS
- c927e5e70e33e3d4be21b59a5938d17a93c2d3cb
-Message-ID: <631056b3.0QuxB6dQwxC4GLD4%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 1 Sep 2022 03:02:27 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07836124849
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Sep 2022 00:01:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=89XeSP8T3BsfNpJWBy/8NZacz8TzzRo84aSFyOK+BGs=; t=1662015707; x=1663225307; 
+        b=xt+RX1QNyPQw3Y2SkMiCT/NqM7A2E2PvhLtzZWRDtrFl1P9jDVddMROAzP0rwbGrhHjFLgP6u1v
+        yDYiWkWRDX4lRZ6bGps83H7ZdE+PP7VYqCiZphcp9OKGC+GLWfkpp1yTQXsWbK+yeK2Ko0nRqEfne
+        dirbrS7kUlDYEkMEpnax79dWQ5BtEh54BCalZs2F7T8wrL6zzaRrxv3DDKHtXIZj7If0m90nYXg39
+        Hsc7kJub01no8aQPJpw9JHgw0jlMEfpYb3lDJKk0QBkfkXd39Yubtw0L0oA1XLohvQCiPR65qaki/
+        PbUptuR0E4eA0Jr+wjOuSodWys8zCp2sweFw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oTeCn-005CQd-0u;
+        Thu, 01 Sep 2022 09:01:37 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: nl80211: add MLD address to assoc BSS entries
+Date:   Thu,  1 Sep 2022 09:01:34 +0200
+Message-Id: <20220901090133.10cf17b0508f.Ib53e526afe083c823df54903ce334002a9c27b64@changeid>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
-branch HEAD: c927e5e70e33e3d4be21b59a5938d17a93c2d3cb  wifi: mac80211_hwsim: warn on invalid link address
+From: Johannes Berg <johannes.berg@intel.com>
 
-elapsed time: 806m
+Add an MLD address attribute to BSS entries that the interface
+is currently associated with to help userspace figure out what's
+going on.
 
-configs tested: 41
-configs skipped: 2
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/uapi/linux/nl80211.h | 2 ++
+ net/wireless/nl80211.c       | 6 ++++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                  randconfig-r043-20220831
-riscv                randconfig-r042-20220831
-s390                 randconfig-r044-20220831
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-i386                                defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-i386                             allyesconfig
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-arm                                 defconfig
-ia64                             allmodconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-
-clang tested configs:
-hexagon              randconfig-r045-20220831
-hexagon              randconfig-r041-20220831
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 573db20403dc..ac31fbd84402 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -4959,6 +4959,7 @@ enum nl80211_bss_scan_width {
+  *	using the nesting index as the antenna number.
+  * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
+  * @NL80211_BSS_MLO_LINK_ID: MLO link ID of the BSS (u8).
++ * @NL80211_BSS_MLD_ADDR: MLD address of this BSS if connected to it.
+  * @__NL80211_BSS_AFTER_LAST: internal
+  * @NL80211_BSS_MAX: highest BSS attribute
+  */
+@@ -4985,6 +4986,7 @@ enum nl80211_bss {
+ 	NL80211_BSS_CHAIN_SIGNAL,
+ 	NL80211_BSS_FREQUENCY_OFFSET,
+ 	NL80211_BSS_MLO_LINK_ID,
++	NL80211_BSS_MLD_ADDR,
+ 
+ 	/* keep last */
+ 	__NL80211_BSS_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index dad88d231d56..8ab4c907e284 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10182,8 +10182,10 @@ static int nl80211_send_bss(struct sk_buff *msg, struct netlink_callback *cb,
+ 			    (nla_put_u32(msg, NL80211_BSS_STATUS,
+ 					 NL80211_BSS_STATUS_ASSOCIATED) ||
+ 			     (wdev->valid_links &&
+-			      nla_put_u8(msg, NL80211_BSS_MLO_LINK_ID,
+-					 link_id))))
++			      (nla_put_u8(msg, NL80211_BSS_MLO_LINK_ID,
++					  link_id) ||
++			       nla_put(msg, NL80211_BSS_MLD_ADDR, ETH_ALEN,
++				       wdev->u.client.connected_addr)))))
+ 				goto nla_put_failure;
+ 		}
+ 		break;
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.2
+
