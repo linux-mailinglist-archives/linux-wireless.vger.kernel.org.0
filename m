@@ -2,60 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 292285AAB16
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 11:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD395AAB8E
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 11:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236115AbiIBJOr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 05:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34002 "EHLO
+        id S235548AbiIBJhs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 05:37:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236120AbiIBJOf (ORCPT
+        with ESMTP id S235486AbiIBJhq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 05:14:35 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2366BC1672
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 02:14:05 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id q63so1431866pga.9
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Sep 2022 02:14:05 -0700 (PDT)
+        Fri, 2 Sep 2022 05:37:46 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CD95B069
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 02:37:44 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id i7-20020a17090adc0700b001fd7ccbec3cso7533502pjv.0
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Sep 2022 02:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
         bh=/DFyRGkVRd6t8ipL3Ly3GSyMHS2IH2mq8GElMlTDq80=;
-        b=QBVqmiMpm7LR/uxGSmhTDP2alMMOq2qiR9emaWZ10bfAKNrQD2r9TWdRBMo/FbdJks
-         JkUIFN0XmUjfgQ5u5X1a6IjmI5Ll7lnL+Li6ZKKwnEwkuMZNOPsoFVz9kxO/aNSKeq+s
-         gdNOZm2BGz4Ll8G9qEFLyZyv+EhWl8LkpT5gw=
+        b=dvyOwZ0R0kg8zQWH6TJkWUS66/17B5pOXXHag/ozIQESqnyx5ht82MEy7+jtI5RCQe
+         N+9P7IDDjYZI/SOA5Fp+fd8ZIX7LcgldXzkeQRSIFkm9WpYC2J00y/Cb4DuXl42G27kD
+         5kAqaxYJU/Qja5/jsUPFYwChnoHEEVSb62Be0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
         bh=/DFyRGkVRd6t8ipL3Ly3GSyMHS2IH2mq8GElMlTDq80=;
-        b=7ttNP7RVBAYPXYhz3Kq1REHM+h5qveZ/IyyTHpTuPyS7k7M0VlRTBS05cgqwcuga9H
-         7TsvIg0U2YU3R73NmOQ+VXdUuxTyRrqnGKoeLPbt0BOpNQidAdArbFmmhO9AHOso/JMi
-         r9QAjlOnYeRIoIFwzodLEFewIjMSOW9ZbpCFMh/tjWHpYTitJOt5QsCjFswpcnt0qN3K
-         XFhn67pSPiMWJ30GJg3YCdFKoxewz3YvqqTAPy+GBW8Vo7qS8e7cJB7OqF0SwZ27j/Zq
-         jB2WAqP5jS0/Bq85qB1W28L/hmSCIIVYkUm6QSVqfQZJDtxYmQYkzzpqPtPP1P+2TIfm
-         z8lg==
-X-Gm-Message-State: ACgBeo0KmmWdHSF6CBk4fUZ0qpTReEX6N2EKC3LE8Wo5b2JksYIehnQd
-        9TKeK9Pu6QlsEM6OhMbrKQSvqg==
-X-Google-Smtp-Source: AA6agR5HlmO+OpLeDWm688KtPXvrV/bu2YQ34gDP74RNvtk/0tidFnCToKHrTdTPIXi8ALWuUYWJ5Q==
-X-Received: by 2002:a05:6a00:1a93:b0:536:5dca:a685 with SMTP id e19-20020a056a001a9300b005365dcaa685mr35742518pfv.13.1662110044508;
-        Fri, 02 Sep 2022 02:14:04 -0700 (PDT)
+        b=ahBoSwaJLusP09cluE1FtrwxSQGluxc90ap4J8yuob9xwbxFloDa6PKul0kkMqZQh5
+         Yx4LChCABKVIL0R4H64/s9wWyN6LV9gD80aYSblaOAMnYOzvJmv/xfJsP3OiuZXV2CBu
+         DpCmB0PwSZDRlMi2ULd7J7yx4C7HkZMgau/NOSPaQYGUd7bvR7TDB9x+XnIvycT9R5YY
+         NhFoMieMr3Tkzk2D9FSMIteEWWZMLf2NR3CudrSp/ia95s0pjZ5vcz5rEIDWcBC1UsDx
+         duUn/3kJwXFhSWTtJy+Q6au+3K7Psii9XE6KXLTUAUyhoq5hjdQTF24R5oaQEyRj0NHk
+         eb7Q==
+X-Gm-Message-State: ACgBeo26amKeXT/Hpbp3KtUM/qPqSaWATSx2ReMRzLFSPLy957wAMioV
+        gPIFSbGwoGR72vK3HxqM53vfOw==
+X-Google-Smtp-Source: AA6agR7ptyy6Fp9mjt027DCJNGBjjM/k8G0GcvNk3Yun3skGgVBvu5VLSl4BL2R/Nn1KXIJePL5VoA==
+X-Received: by 2002:a17:90b:4b12:b0:1fe:4fd0:2856 with SMTP id lx18-20020a17090b4b1200b001fe4fd02856mr3917270pjb.59.1662111463397;
+        Fri, 02 Sep 2022 02:37:43 -0700 (PDT)
 Received: from ibnvda0196.ibn.broadcom.net ([192.19.252.250])
-        by smtp.gmail.com with ESMTPSA id q12-20020a170902c9cc00b00174abcb02d6sm1054994pld.235.2022.09.02.02.14.02
+        by smtp.gmail.com with ESMTPSA id c23-20020a63d517000000b0042ba1a95235sm972638pgg.86.2022.09.02.02.37.41
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 02 Sep 2022 02:14:04 -0700 (PDT)
+        Fri, 02 Sep 2022 02:37:42 -0700 (PDT)
 From:   Vinayak Yadawad <vinayak.yadawad@broadcom.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, jithu.jance@broadcom.com,
         Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Subject: [PATCH 2/2] cfg80211: Update Transition Disable policy during port authorization
-Date:   Fri,  2 Sep 2022 14:43:57 +0530
-Message-Id: <080553d39655d0d2b6c717936b6c0b25ca86a7da.1662109386.git.vinayak.yadawad@broadcom.com>
+Subject: [PATCHv2 1/1] cfg80211: Update Transition Disable policy during port authorization
+Date:   Fri,  2 Sep 2022 15:07:37 +0530
+Message-Id: <080553d39655d0d2b6c717936b6c0b25ca86a7da.1662111385.git.vinayak.yadawad@broadcom.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <ae2a823643d71f40751259266f7c2e7d90909662.1662109386.git.vinayak.yadawad@broadcom.com>
-References: <ae2a823643d71f40751259266f7c2e7d90909662.1662109386.git.vinayak.yadawad@broadcom.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
