@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76EB95AB426
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 404E45AB432
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236609AbiIBOvc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 10:51:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33718 "EHLO
+        id S236389AbiIBOvn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 10:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236431AbiIBOvF (ORCPT
+        with ESMTP id S236065AbiIBOvG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 10:51:05 -0400
+        Fri, 2 Sep 2022 10:51:06 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796249F0F2
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 07:13:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 894A462A8B
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 07:13:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Qwz7IDFzJHzLEXI55DmhwjOLK18C8Boe99ke3pY++Is=;
-        t=1662127990; x=1663337590; b=tvDnisghHyN8RD9eU9MNrIHqdXMM0ZO3aoPHsn7uW1Oplmb
-        G5KVcCkdh79LlefvhXZAFzUFcEq4BioXh8qGHrv8Bd6hmBnf6oxtPfIS45wlD5duKcNWr2CvZg5fy
-        o32aFwIokcSOYT1dTneNWv5SwD1jvJPR1Zg5RqfAi6sAKc62d77UZBEa0w8G8IA7SeTZKazWL7VRb
-        nH93uFIY/CaFpRbRdCB1ZorxYZ0OyeakYGN2/fxwyqUmiEV/USHxaEIzerOhaBqfgrPp5CJRGzwXI
-        QkMBB9gh47DYeoqbeUADa+5tyrE28PeK8uCavAa+4Zcro3cDHqyXvMfBPzyR7Atg==;
+        Resent-Cc:Resent-Message-ID; bh=rzcZD5si0tJLIfM5F3DMgNeVrx70fNNY4oJ6A7M/S94=;
+        t=1662127991; x=1663337591; b=NtFS7RBdZhU2tznELSPd05BosdS4X9b4a2NNbH0cwJokM4g
+        vrTj4pi8Kb4oQ4+EFFfBj532jJmTrz+lOEQIEKuN1063Zddj8URJJHq2vMFgDQvpF5huZnNrnL88d
+        5Z1aIGmG5JxZ1jd8sKhv86KUEAX6FAjhEOKCwyHbJj8gBDwPvyxBfzLHrHNJUe+7lC11WQ3EUTFuj
+        2A2O/vhptS+U/YvNOBWo4uyCHrnDwniFtlzjhR5yy4p25VnZ30nEWoiAJkNxixDDaPH+shJN9dGld
+        V6CPnVzuIsLVfuHEg72PWKNGlGMLr2Bihv4q5lTQ1SrlCBT8pDOOvAhUwhSMhX/A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oU7Pw-006Ch3-2I;
-        Fri, 02 Sep 2022 16:13:08 +0200
+        id 1oU7Pw-006Ch3-33;
+        Fri, 02 Sep 2022 16:13:09 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 13/27] wifi: mac80211_hwsim: track active STA links
-Date:   Fri,  2 Sep 2022 16:12:45 +0200
-Message-Id: <20220902161143.91006e4d67ea.Iefbba1427a3aea30d84f60cacd7cbedaf74d2cdd@changeid>
+Subject: [PATCH 14/27] wifi: mac80211: mlme: refactor QoS settings code
+Date:   Fri,  2 Sep 2022 16:12:46 +0200
+Message-Id: <20220902161143.645481f0d71f.Idd077e09ab35a8eee01d885c4cbdebbd91a5368e@changeid>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220902141259.377789-1-johannes@sipsolutions.net>
 References: <20220902141259.377789-1-johannes@sipsolutions.net>
@@ -52,105 +52,85 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Track the powersave bit on frames where we can look up
-the STA by link addresses and set the links active or
-inactive accordingly, and use this information to TX
-only on links that are actually active in the peer.
-
-Note that this doesn't implement powersave fully so
-if no link is active things will not work right.
+Refactor the code to apply QoS settings to the driver so
+we can call it on link switch.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 41 +++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ net/mac80211/ieee80211_i.h |  1 +
+ net/mac80211/mlme.c        | 39 +++++++++++++++++++++++++-------------
+ 2 files changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index f17de806a35d..b5bc707d8e4e 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -229,6 +229,7 @@ static inline void hwsim_clear_magic(struct ieee80211_vif *vif)
- struct hwsim_sta_priv {
- 	u32 magic;
- 	unsigned int last_link;
-+	u16 active_links_rx;
- };
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index b41c49338cd3..977aea4467e0 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1811,6 +1811,7 @@ void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
+ 				   u8 reason, bool tx);
+ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link);
+ void ieee80211_mgd_stop_link(struct ieee80211_link_data *link);
++void ieee80211_mgd_set_link_qos_params(struct ieee80211_link_data *link);
  
- #define HWSIM_STA_MAGIC	0x6d537749
-@@ -1567,6 +1568,29 @@ static void mac80211_hwsim_rx(struct mac80211_hwsim_data *data,
- 			      struct ieee80211_rx_status *rx_status,
- 			      struct sk_buff *skb)
- {
-+	struct ieee80211_hdr *hdr = (void *)skb->data;
-+
-+	if (!ieee80211_has_morefrags(hdr->frame_control) &&
-+	    !is_multicast_ether_addr(hdr->addr1) &&
-+	    (ieee80211_is_mgmt(hdr->frame_control) ||
-+	     ieee80211_is_data(hdr->frame_control))) {
-+		struct ieee80211_sta *sta;
-+		unsigned int link_id;
-+
-+		rcu_read_lock();
-+		sta = ieee80211_find_sta_by_link_addrs(data->hw, hdr->addr2,
-+						       hdr->addr1, &link_id);
-+		if (sta) {
-+			struct hwsim_sta_priv *sp = (void *)sta->drv_priv;
-+
-+			if (ieee80211_has_pm(hdr->frame_control))
-+				sp->active_links_rx &= ~BIT(link_id);
-+			else
-+				sp->active_links_rx |= BIT(link_id);
-+		}
-+		rcu_read_unlock();
-+	}
-+
- 	memcpy(IEEE80211_SKB_RXCB(skb), rx_status, sizeof(*rx_status));
- 
- 	mac80211_hwsim_add_vendor_rtap(skb);
-@@ -1738,6 +1762,9 @@ mac80211_hwsim_select_tx_link(struct mac80211_hwsim_data *data,
- 		if (!(vif->active_links & BIT(link_id)))
- 			continue;
- 
-+		if (!(sp->active_links_rx & BIT(link_id)))
-+			continue;
-+
- 		*link_sta = rcu_dereference(sta->link[link_id]);
- 		if (!*link_sta)
- 			continue;
-@@ -2412,10 +2439,19 @@ static int mac80211_hwsim_sta_add(struct ieee80211_hw *hw,
- 				  struct ieee80211_vif *vif,
- 				  struct ieee80211_sta *sta)
- {
-+	struct hwsim_sta_priv *sp = (void *)sta->drv_priv;
-+
- 	hwsim_check_magic(vif);
- 	hwsim_set_sta_magic(sta);
- 	mac80211_hwsim_sta_rc_update(hw, vif, sta, 0);
- 
-+	if (sta->valid_links) {
-+		WARN(hweight16(sta->valid_links) > 1,
-+		     "expect to add STA with single link, have 0x%x\n",
-+		     sta->valid_links);
-+		sp->active_links_rx = sta->valid_links;
-+	}
-+
- 	return 0;
+ /* IBSS code */
+ void ieee80211_ibss_notify_scan_completed(struct ieee80211_local *local);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 30edac8724d5..bbc62815b067 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2445,6 +2445,29 @@ static void ieee80211_sta_handle_tspec_ac_params_wk(struct work_struct *work)
+ 	ieee80211_sta_handle_tspec_ac_params(sdata);
  }
  
-@@ -3037,8 +3073,13 @@ static int mac80211_hwsim_change_sta_links(struct ieee80211_hw *hw,
- 					   struct ieee80211_sta *sta,
- 					   u16 old_links, u16 new_links)
- {
-+	struct hwsim_sta_priv *sp = (void *)sta->drv_priv;
++void ieee80211_mgd_set_link_qos_params(struct ieee80211_link_data *link)
++{
++	struct ieee80211_sub_if_data *sdata = link->sdata;
++	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
++	struct ieee80211_tx_queue_params *params = link->tx_conf;
++	u8 ac;
 +
- 	hwsim_check_sta_magic(sta);
- 
-+	if (vif->type == NL80211_IFTYPE_STATION)
-+		sp->active_links_rx = new_links;
++	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
++		mlme_dbg(sdata,
++			 "WMM AC=%d acm=%d aifs=%d cWmin=%d cWmax=%d txop=%d uapsd=%d, downgraded=%d\n",
++			 ac, params[ac].acm,
++			 params[ac].aifs, params[ac].cw_min, params[ac].cw_max,
++			 params[ac].txop, params[ac].uapsd,
++			 ifmgd->tx_tspec[ac].downgraded);
++		if (!ifmgd->tx_tspec[ac].downgraded &&
++		    drv_conf_tx(local, link, ac, &params[ac]))
++			link_err(link,
++				 "failed to set TX queue parameters for AC %d\n",
++				 ac);
++	}
++}
 +
- 	return 0;
- }
+ /* MLME */
+ static bool
+ ieee80211_sta_wmm_params(struct ieee80211_local *local,
+@@ -2576,20 +2599,10 @@ ieee80211_sta_wmm_params(struct ieee80211_local *local,
+ 		}
+ 	}
  
+-	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
+-		mlme_dbg(sdata,
+-			 "WMM AC=%d acm=%d aifs=%d cWmin=%d cWmax=%d txop=%d uapsd=%d, downgraded=%d\n",
+-			 ac, params[ac].acm,
+-			 params[ac].aifs, params[ac].cw_min, params[ac].cw_max,
+-			 params[ac].txop, params[ac].uapsd,
+-			 ifmgd->tx_tspec[ac].downgraded);
++	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++)
+ 		link->tx_conf[ac] = params[ac];
+-		if (!ifmgd->tx_tspec[ac].downgraded &&
+-		    drv_conf_tx(local, link, ac, &params[ac]))
+-			link_err(link,
+-				 "failed to set TX queue parameters for AC %d\n",
+-				 ac);
+-	}
++
++	ieee80211_mgd_set_link_qos_params(link);
+ 
+ 	/* enable WMM or activate new settings */
+ 	link->conf->qos = true;
 -- 
 2.37.2
 
