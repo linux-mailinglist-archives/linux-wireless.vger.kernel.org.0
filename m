@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEED95AAA15
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 10:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4915AAA2B
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 10:35:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235826AbiIBIck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 04:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34628 "EHLO
+        id S235859AbiIBIfO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 04:35:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235782AbiIBIc2 (ORCPT
+        with ESMTP id S235860AbiIBIen (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 04:32:28 -0400
+        Fri, 2 Sep 2022 04:34:43 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EA2C121B
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 01:32:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89060C0E66
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 01:33:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5F8C9B82A04
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 08:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCFAC433D7;
-        Fri,  2 Sep 2022 08:32:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3B74DB82A00
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 08:33:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1DAC433D7;
+        Fri,  2 Sep 2022 08:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662107540;
-        bh=JkMkTlMvt3UooPUpVKxTGmzT0g5QAHq839KUMzQ/dkc=;
+        s=k20201202; t=1662107620;
+        bh=CblSeT7UnX0Ze1+lpjaLynbxY03m2gQ20j4pnJxseLo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=aGnGyPMGqGIVgaUKvh0tlm31yudJbyFpyW82P9ATGTGif7WDFIIb1pINYNbUWUFij
-         pwGjWy/nrnGzbOIjnRN1HnZ18XUuBMJCl6JSvuYhYYEMg0xA803sbQbpQO7NS8Y7mH
-         drSnONiverblrTLZyQoPVVvXnm3kK2AdsIVNOtjGTMIlNP0tG9/kz05Os09GeN3au3
-         S8DzTO7gyjQ8HzgWmhvnIrZcbYNNAumRGSiMUINNLOrfp82QPnyiSSkFBB8Sbg2wJK
-         MMTFFwqv9mP5kN7A7ZhzBx2kUqPCQuAhV72+kchuU4HhG5M5swks+y15F214Vswiom
-         mE2CFI+yW+LXA==
+        b=NfjTqZ6saHhcpl+m1NGwrTA7OrmP30b0YsOixH1XO+qOETlJwEijnujW7fFEiQJzP
+         J7iJM8r7rHJPW02iaJir6obkJ5jgZ4x4sTZyroy9WXL7ul83j1AtrzFQiAL8UI0j4M
+         j9lWDo/z1bJ5fHjVTWshU+qQJfUgoojQGswFpkOiN7RCq9G09O9sE4jF3ha0Eu94M5
+         eCyWuWe4AKIYNQ4fhcSD/GeQPNZNii3tMWAVsuqaGJzg8FrxVDP2fDM2dFFffvButi
+         7VUQ2EhJYIxm1jlX7Jt4+QutUV2tJWpGSJ+KAhz3BD3ra5s374wxRqG8zimg5k7CVk
+         pQOUx48pg2Zvw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/6] rtw89: 8852c: disable dma during mac init
+Subject: Re: [PATCH v2 1/9] rtw89: coex: update radio state for
+ RTL8852A/RTL8852C
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220704023453.19935-2-pkshih@realtek.com>
-References: <20220704023453.19935-2-pkshih@realtek.com>
+In-Reply-To: <20220725023509.43114-2-pkshih@realtek.com>
+References: <20220725023509.43114-2-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <leo.li@realtek.com>, <phhuang@realtek.com>,
-        <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Cc:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166210753459.24345.6831667916626644562.kvalo@kernel.org>
-Date:   Fri,  2 Sep 2022 08:32:18 +0000 (UTC)
+Message-ID: <166210761827.24345.2068881385459784249.kvalo@kernel.org>
+Date:   Fri,  2 Sep 2022 08:33:39 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,28 +57,27 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+> From: Ching-Te Ku <ku920601@realtek.com>
 > 
-> Without this patch, our hardware attempts to perform dma while device
-> cpu restarts, and leads to iommu page faults caused by invalid requests.
-> Some platforms show warning messages as below:
-> rtw89_8852ce 0000:01:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT
-> domain=0x000a address=0x10000000004 flags=0x0030]
+> Update scoreboard setting to let Bluetooth know Wi-Fi power save state.
 > 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-6 patches applied to wireless-next.git, thanks.
+9 patches applied to wireless-next.git, thanks.
 
-0e91d191cf4b rtw89: 8852c: disable dma during mac init
-22e2f847c526 rtw89: 8852a: update HW setting on BB
-917606d77910 rtw89: declare support HE HTC always
-8676031bae1c rtw89: ser: leave lps with mutex
-60b2ede9dd38 rtw89: 8852c: modify PCIE prebkf time
-ee5469046474 rtw89: 8852c: adjust mactxen delay of mac/phy interface
+38ede035a21b rtw89: coex: update radio state for RTL8852A/RTL8852C
+ba787c07ca1b rtw89: coex: Move Wi-Fi firmware coexistence matching version to chip
+1162584c799d rtw89: coex: Add logic to parsing rtl8852c firmware type ctrl report
+3893959cd8c7 rtw89: coex: Define BT B1 slot length
+ce986f3dc4fc rtw89: coex: Add v1 version TDMA format and parameters
+e390cf2ebdee rtw89: coex: update WL role info v1 for RTL8852C branch using
+a8a0b1f70780 rtw89: coex: Move _set_policy to chip_ops
+747dc30e64cf rtw89: coex: Add v1 Wi-Fi SCC coexistence policy
+3832a5424902 rtw89: coex: Update Wi-Fi driver/firmware TDMA cycle report for RTL8852c
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220704023453.19935-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220725023509.43114-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
