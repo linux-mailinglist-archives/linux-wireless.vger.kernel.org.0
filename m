@@ -2,60 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0665AA649
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 05:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63E75AA68E
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 05:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235083AbiIBDUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Sep 2022 23:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
+        id S235362AbiIBDsP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Sep 2022 23:48:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbiIBDUl (ORCPT
+        with ESMTP id S235354AbiIBDsI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Sep 2022 23:20:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424C62DD;
-        Thu,  1 Sep 2022 20:20:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F28A9B82980;
-        Fri,  2 Sep 2022 03:20:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C0DC433C1;
-        Fri,  2 Sep 2022 03:20:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662088836;
-        bh=YCJr9iHj+jHwZFgouCTxuRVFKnFA7bJfiUzOTkjxtlU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dYSc+wLxPM3Yxq6Tepm+O2b5CE0LnE/uLcuB3UF7dpSrUCNiaq1IjDnAKB3j5h6Od
-         kde0sBLDinZONd4n/Gd2VmnhXEUL8d2coEnSIqCEye2PPPhtpgvRy+JClBsqQ5yD3B
-         uF2QlkmbEr714wxnl/dzRNK95n5BZunlBWJ+bDTJq8br8+Lj1hMlfXwxko4d4Xb7Bv
-         KU5pvdluBstPOvjtNT2SFQYC1zrftKAuMoQhgjnz07Rke5QZcpPvFNtRCcM0XhRDpN
-         kw7U7gYdianibdtrotsZJbh/dB2Tb3elNYjYf+AQxjaD/1vJmD6XhP2IC+uISPj2Mj
-         zhsHiqcmU66AQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Andy Lavr <andy.lavr@gmail.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: calib: Refactor iwl_calib_result usage for clarity
-References: <20220901204558.2256458-1-keescook@chromium.org>
-Date:   Fri, 02 Sep 2022 06:20:26 +0300
-In-Reply-To: <20220901204558.2256458-1-keescook@chromium.org> (Kees Cook's
-        message of "Thu, 1 Sep 2022 13:45:58 -0700")
-Message-ID: <87ilm6ea2t.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 1 Sep 2022 23:48:08 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2DA65560
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Sep 2022 20:48:05 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2823cDvZ024174;
+        Fri, 2 Sep 2022 03:47:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=U+jWr+3B0VIeR5Z9mFg5X2RsWuN+puYztEtaB1ZZ+/s=;
+ b=gg3EzgmCRLlLyIx5Zk0S7z3Qzv56QSWdBfYT51NymNK3ZNlIIVFj8L88QSDuag34/zIZ
+ msI4zBkRyt3sKIcCB4dP2+84RTT3uV6MD4Pl8Dgo4zcX1P17A5XVAQJpri2L27mYSZbs
+ cHDNuN+qie6IQaN+g+RjAI0gCTyiZZTROBDvN68cUV9+ZD+A4w6TTObiVxrYAHlME8C+
+ YtGq5a4zQgVbQ3iZAMuk1bH+ldzEp6T8otsG35JZDx2F9mmk7Eqs8WTrncG4hNwfVlYx
+ oHINozum/Y87AubI7Z7vxDKr/wVGGUjpOGItLH+QqyxHL46Kb5JPRNwPUyj9THrwqwKW wA== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jba0500r9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Sep 2022 03:47:43 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2823VjN1009764
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 2 Sep 2022 03:31:45 GMT
+Received: from [10.216.51.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 1 Sep 2022
+ 20:31:43 -0700
+Message-ID: <838ff2d7-4cae-741b-b952-1c765bc71216@quicinc.com>
+Date:   Fri, 2 Sep 2022 09:01:38 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH 0/2] wifi: mac80211: extend rx API with link_id for MLO
+ connection
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+References: <20220817104213.2531-1-quic_vthiagar@quicinc.com>
+ <87mtbje60u.fsf@kernel.org>
+From:   Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <87mtbje60u.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lrqoS_9CQd_2GetzMRT006HZQGQwvJKh
+X-Proofpoint-ORIG-GUID: lrqoS_9CQd_2GetzMRT006HZQGQwvJKh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-01_12,2022-08-31_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ malwarescore=0 impostorscore=0 adultscore=0 phishscore=0 suspectscore=0
+ clxscore=1011 spamscore=0 mlxlogscore=487 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209020017
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,41 +80,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
 
-> In preparation for FORTIFY_SOURCE performing run-time destination buffer
-> bounds checking for memcpy(), refactor the use of struct iwl_calib_result:
->
-> - Have struct iwl_calib_result contain struct iwl_calib_cmd since
->   functions expect to operate on the "data" flex array in "cmd", which
->   follows the "hdr" member.
-> - Switch argument passing around to use struct iwl_calib_cmd instead of
->   struct iwl_calib_hdr to prepare functions to see the "data" member.
-> - Change iwl_calib_set()'s "len" argument to a size_t since it is always
->   unsigned and is normally receiving the output of sizeof().
-> - Add an explicit length sanity check in iwl_calib_set().
-> - Adjust the memcpy() to avoid copying across the now visible composite
->   flex array structure.
->
-> This avoids the future run-time warning:
->
->   memcpy: detected field-spanning write (size 8) of single field "&res->hdr" (size 4)
->
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Reported-by: Andy Lavr <andy.lavr@gmail.com>
-> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Gregory, as this fixes a future warning can I take this directly to
-wireless-next?
+On 9/1/2022 4:05 PM, Kalle Valo wrote:
+> Vasanthakumar <quic_vthiagar@quicinc.com> writes:
+> 
+>> From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+> 
+> Your last name is missing from SMTP From header:
+> 
+> From:   Vasanthakumar <quic_vthiagar@quicinc.com>
+> 
+> If you fix that git doesn't need to add a second From header to the mail
+> body.
+> 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Sure, ill fix this. Thanks for pointing this out.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Vasanth
