@@ -2,60 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6305AA497
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 02:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F0665AA649
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 05:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbiIBArM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Sep 2022 20:47:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36596 "EHLO
+        id S235083AbiIBDUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Sep 2022 23:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233114AbiIBArL (ORCPT
+        with ESMTP id S229804AbiIBDUl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Sep 2022 20:47:11 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CFAA3478
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Sep 2022 17:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662079630; x=1693615630;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rng5btMRYg2RfNGoPBuNd4JsJS0SdByYwPyG3TcgmIM=;
-  b=LVISmNx27S/9noxuFJaOlvDKLu4lYh0Hp41DsH+V9vlyG3k+6ooGRRTa
-   hQx+TL/S26+M90WdSJ6dFT/Ric+Dsq23yJCh5aM71MBqG3C/csXgW/3a5
-   VrZRkQEKs/0GRtbjiRhcCvDppy0MyHjF+S/6jOtTG0l75awsPEkqUuoY0
-   tn2fOJ+lT9d6sxPMSUCUV8EqY0BMhmnkoGTQwu1Mwhyws0BZ2N3ncGZFg
-   1COvbSaHBL90v8dt3b7R6C9nVJFpUWO/2mH0e0D02zP+9z1EXrUGK16j6
-   VcHKU7FBtoR5L10GzgvkpFgWKF2TEsMTobxSy4i7JCvVW16ihmQMc3qsi
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10457"; a="294603425"
-X-IronPort-AV: E=Sophos;i="5.93,281,1654585200"; 
-   d="scan'208";a="294603425"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2022 17:47:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,281,1654585200"; 
-   d="scan'208";a="589814697"
-Received: from lkp-server02.sh.intel.com (HELO b138c9e8658c) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 01 Sep 2022 17:47:08 -0700
-Received: from kbuild by b138c9e8658c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oTupv-0000wn-2R;
-        Fri, 02 Sep 2022 00:47:07 +0000
-Date:   Fri, 02 Sep 2022 08:46:49 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld-wip] BUILD REGRESSION
- 10cf17b0508f56ee45e15ad2a612b64999264d4f
-Message-ID: <63115279.sdSELItEr3Uec5eg%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 1 Sep 2022 23:20:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424C62DD;
+        Thu,  1 Sep 2022 20:20:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F28A9B82980;
+        Fri,  2 Sep 2022 03:20:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C0DC433C1;
+        Fri,  2 Sep 2022 03:20:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662088836;
+        bh=YCJr9iHj+jHwZFgouCTxuRVFKnFA7bJfiUzOTkjxtlU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=dYSc+wLxPM3Yxq6Tepm+O2b5CE0LnE/uLcuB3UF7dpSrUCNiaq1IjDnAKB3j5h6Od
+         kde0sBLDinZONd4n/Gd2VmnhXEUL8d2coEnSIqCEye2PPPhtpgvRy+JClBsqQ5yD3B
+         uF2QlkmbEr714wxnl/dzRNK95n5BZunlBWJ+bDTJq8br8+Lj1hMlfXwxko4d4Xb7Bv
+         KU5pvdluBstPOvjtNT2SFQYC1zrftKAuMoQhgjnz07Rke5QZcpPvFNtRCcM0XhRDpN
+         kw7U7gYdianibdtrotsZJbh/dB2Tb3elNYjYf+AQxjaD/1vJmD6XhP2IC+uISPj2Mj
+         zhsHiqcmU66AQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Andy Lavr <andy.lavr@gmail.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: calib: Refactor iwl_calib_result usage for clarity
+References: <20220901204558.2256458-1-keescook@chromium.org>
+Date:   Fri, 02 Sep 2022 06:20:26 +0300
+In-Reply-To: <20220901204558.2256458-1-keescook@chromium.org> (Kees Cook's
+        message of "Thu, 1 Sep 2022 13:45:58 -0700")
+Message-ID: <87ilm6ea2t.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,103 +64,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld-wip
-branch HEAD: 10cf17b0508f56ee45e15ad2a612b64999264d4f  wifi: nl80211: add MLD address to assoc BSS entries
+Kees Cook <keescook@chromium.org> writes:
 
-Error/Warning reports:
+> In preparation for FORTIFY_SOURCE performing run-time destination buffer
+> bounds checking for memcpy(), refactor the use of struct iwl_calib_result:
+>
+> - Have struct iwl_calib_result contain struct iwl_calib_cmd since
+>   functions expect to operate on the "data" flex array in "cmd", which
+>   follows the "hdr" member.
+> - Switch argument passing around to use struct iwl_calib_cmd instead of
+>   struct iwl_calib_hdr to prepare functions to see the "data" member.
+> - Change iwl_calib_set()'s "len" argument to a size_t since it is always
+>   unsigned and is normally receiving the output of sizeof().
+> - Add an explicit length sanity check in iwl_calib_set().
+> - Adjust the memcpy() to avoid copying across the now visible composite
+>   flex array structure.
+>
+> This avoids the future run-time warning:
+>
+>   memcpy: detected field-spanning write (size 8) of single field "&res->hdr" (size 4)
+>
+> Cc: Luca Coelho <luciano.coelho@intel.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Reported-by: Andy Lavr <andy.lavr@gmail.com>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-https://lore.kernel.org/lkml/202209011914.qsuHMsE0-lkp@intel.com
-https://lore.kernel.org/lkml/202209011952.4tMld57n-lkp@intel.com
-https://lore.kernel.org/lkml/202209012046.5sg4d0qh-lkp@intel.com
-https://lore.kernel.org/lkml/202209020842.MRD1g4vr-lkp@intel.com
-
-Error/Warning: (recently discovered and may have been fixed)
-
-drivers/net/wireless/realtek/rtw88/fw.c:1085:27: error: too few arguments to function 'ieee80211_nullfunc_get'
-drivers/net/wireless/st/cw1200/sta.c:198:23: error: too few arguments to function 'ieee80211_nullfunc_get'
-net/mac80211/link.c:398:51: error: 'BSS_CHANGED_EHT_PUNCTURING' undeclared (first use in this function)
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- arm-randconfig-r015-20220901
-|   |-- drivers-net-wireless-realtek-rtw88-fw.c:error:too-few-arguments-to-function-ieee80211_nullfunc_get
-|   `-- drivers-net-wireless-st-cw1200-sta.c:error:too-few-arguments-to-function-ieee80211_nullfunc_get
-|-- i386-randconfig-a005
-|   `-- net-mac80211-link.c:error:BSS_CHANGED_EHT_PUNCTURING-undeclared-(first-use-in-this-function)
-|-- sh-allmodconfig
-|   `-- drivers-net-wireless-st-cw1200-sta.c:error:too-few-arguments-to-function-ieee80211_nullfunc_get
-`-- sparc-allyesconfig
-    |-- drivers-net-wireless-realtek-rtw88-fw.c:error:too-few-arguments-to-function-ieee80211_nullfunc_get
-    |-- drivers-net-wireless-st-cw1200-sta.c:error:too-few-arguments-to-function-ieee80211_nullfunc_get
-    `-- net-mac80211-link.c:error:BSS_CHANGED_EHT_PUNCTURING-undeclared-(first-use-in-this-function)
-clang_recent_errors
-`-- x86_64-randconfig-a003
-    |-- drivers-net-wireless-st-cw1200-sta.c:error:too-few-arguments-to-function-call-expected-have
-    `-- net-mac80211-link.c:error:use-of-undeclared-identifier-BSS_CHANGED_EHT_PUNCTURING
-
-elapsed time: 1057m
-
-configs tested: 53
-configs skipped: 2
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-powerpc                           allnoconfig
-i386                                defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64                               rhel-8.3
-i386                             allyesconfig
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                        randconfig-a013
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-m68k                             allyesconfig
-x86_64                        randconfig-a015
-x86_64                           rhel-8.3-syz
-x86_64                           rhel-8.3-kvm
-arc                  randconfig-r043-20220901
-sh                               allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-x86_64                              defconfig
-m68k                             allmodconfig
-x86_64                           allyesconfig
-alpha                            allyesconfig
-arc                              allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-ia64                             allmodconfig
-
-clang tested configs:
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-i386                          randconfig-a002
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-i386                          randconfig-a006
-x86_64                        randconfig-a016
-riscv                randconfig-r042-20220901
-hexagon              randconfig-r045-20220901
-hexagon              randconfig-r041-20220901
-s390                 randconfig-r044-20220901
+Gregory, as this fixes a future warning can I take this directly to
+wireless-next?
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
