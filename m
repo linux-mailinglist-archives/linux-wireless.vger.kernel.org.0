@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB8C55AB43C
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E78A05AB430
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236060AbiIBOvu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 10:51:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39290 "EHLO
+        id S236939AbiIBOvs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 10:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236601AbiIBOvH (ORCPT
+        with ESMTP id S236602AbiIBOvI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 10:51:07 -0400
+        Fri, 2 Sep 2022 10:51:08 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31461844C5
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3FFCC6CFD
         for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 07:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=JoRpIaSn/yg/bA5m9ebBTAxMk8IJhCEFeuk66bpZOtA=;
-        t=1662127992; x=1663337592; b=StW75uXcB/Naef5kAkbSdzAtM4yCDruHbFmPVQvVYq2nMnX
-        q90X0v49j9pHpfEAoOnzRzJYjHfnRTri/OG49twr8WLmFwmu+yLy9Hz965SZGXGfnTOTQk3lHzQRX
-        ZpO0CvjMoZIpb2z+dzeab6hPJCun/VH0eSABF4Uoi8pOo1hBaa0fGmnLGZkaClcIMJ+RIYfG1bxva
-        dWg10eBF5e6gZeQLXAzlYVUFHcgHV7ZOeiT6burW994+s0HHx51wZKcxTrfD2w2yHD9Mw/fkpJqF2
-        TCNcT5mhCDzudHA99REXErjG5Kn0DbB6UQZAnORGNfsv+BApGR9rtWp38id+0Qcw==;
+        Resent-Cc:Resent-Message-ID; bh=AIU9Cq4XFIi0mNMtUqFV+kVrHz3R9jjwNT8zL48ZNN8=;
+        t=1662127992; x=1663337592; b=KqrwBpGe7KAaADEy6KIZ5nM9OLNRj8RDAtEKBKlPmBkUf7k
+        +Udd1sjp/mXdM1/l/VQLg+7GpP966Gug8qfDhIK7ljPFlqxndv3PkSARQCQPQcz9rUEpWKQQjrk8V
+        3RX+RWho2vsow5AuA+QlgV9L9RVXk02IgVepcMw2hj4djBj7ABucEzBZXmfiD0eUSXmzoKO24D62n
+        oUFkbhmACjus72kqubG/in7hxO2971LcrNVRx7Iu3mGeNy5hs9RtDm4zRMG0aJ4ZNrZE5sDhbs+Yg
+        OA8+eCv0YCVum8zlrXywqFZ3kbBmT9xMWpmI9hTWcXhoE9OilrV4kfoH+QAbVTiA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oU7Py-006Ch3-1l;
+        id 1oU7Py-006Ch3-2o;
         Fri, 02 Sep 2022 16:13:10 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 20/27] wifi: mac80211: add vif/sta link RCU dereference macros
-Date:   Fri,  2 Sep 2022 16:12:52 +0200
-Message-Id: <20220902161143.310be75ff36d.Iefc3fac151a2f5df338b68ed73d03559a8373b55@changeid>
+Subject: [PATCH 21/27] wifi: mac80211: set up beacon timing config on links
+Date:   Fri,  2 Sep 2022 16:12:53 +0200
+Message-Id: <20220902161143.b3ab2553538c.I47c496386723d852da80f17e8b504a97176aa696@changeid>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220902141259.377789-1-johannes@sipsolutions.net>
 References: <20220902141259.377789-1-johannes@sipsolutions.net>
@@ -52,109 +52,122 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add macros (and an exported function) to allow checking some
-link RCU protected accesses that are happening in callbacks
-from mac80211 and are thus under the correct lock.
+On secondary MLO links, I forgot to set the beacon interval
+and DTIM period, fix that.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/mac80211_hwsim.c |  3 +--
- include/net/mac80211.h                | 31 ++++++++++++++++++++++++---
- net/mac80211/sta_info.c               | 10 +++++++++
- 3 files changed, 39 insertions(+), 5 deletions(-)
+ net/mac80211/mlme.c | 83 +++++++++++++++++++++++++--------------------
+ 1 file changed, 47 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index f464d3507fe9..f044db1621dd 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -3069,8 +3069,7 @@ static int mac80211_hwsim_change_vif_links(struct ieee80211_hw *hw,
- 	for_each_set_bit(i, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
- 		struct ieee80211_bss_conf *link_conf;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index bf883f2e6de3..8a2237106002 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4819,6 +4819,40 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 	return ret;
+ }
  
--		/* FIXME: figure out how to get the locking here */
--		link_conf = rcu_dereference_protected(vif->link_conf[i], 1);
-+		link_conf = link_conf_dereference_protected(vif, i);
- 		if (WARN_ON(!link_conf))
- 			continue;
- 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index bfa6a1625c5c..d9e7f62cc972 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -18,6 +18,7 @@
- #include <linux/if_ether.h>
- #include <linux/skbuff.h>
- #include <linux/ieee80211.h>
-+#include <linux/lockdep.h>
- #include <net/cfg80211.h>
- #include <net/codel.h>
- #include <net/ieee80211_radiotap.h>
-@@ -1901,6 +1902,19 @@ struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev);
-  */
- struct wireless_dev *ieee80211_vif_to_wdev(struct ieee80211_vif *vif);
- 
-+/**
-+ * lockdep_vif_mutex_held - for lockdep checks on link poiners
-+ * @vif: the interface to check
-+ */
-+static inline bool lockdep_vif_mutex_held(struct ieee80211_vif *vif)
++static bool ieee80211_get_dtim(const struct cfg80211_bss_ies *ies,
++			       u8 *dtim_count, u8 *dtim_period)
 +{
-+	return lockdep_is_held(&ieee80211_vif_to_wdev(vif)->mtx);
-+}
++	const u8 *tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies->data, ies->len);
++	const u8 *idx_ie = cfg80211_find_ie(WLAN_EID_MULTI_BSSID_IDX, ies->data,
++					 ies->len);
++	const struct ieee80211_tim_ie *tim = NULL;
++	const struct ieee80211_bssid_index *idx;
++	bool valid = tim_ie && tim_ie[1] >= 2;
 +
-+#define link_conf_dereference_protected(vif, link_id)		\
-+	rcu_dereference_protected((vif)->link_conf[link_id],	\
-+				  lockdep_vif_mutex_held(vif))
++	if (valid)
++		tim = (void *)(tim_ie + 2);
 +
- /**
-  * enum ieee80211_key_flags - key flags
-  *
-@@ -2266,13 +2280,24 @@ struct ieee80211_sta {
- 	u8 drv_priv[] __aligned(sizeof(void *));
- };
- 
--/* FIXME: check the locking correctly */
-+#ifdef CONFIG_LOCKDEP
-+bool lockdep_sta_mutex_held(struct ieee80211_sta *pubsta);
-+#else
-+static inline bool lockdep_sta_mutex_held(struct ieee80211_sta *pubsta)
-+{
++	if (dtim_count)
++		*dtim_count = valid ? tim->dtim_count : 0;
++
++	if (dtim_period)
++		*dtim_period = valid ? tim->dtim_period : 0;
++
++	/* Check if value is overridden by non-transmitted profile */
++	if (!idx_ie || idx_ie[1] < 3)
++		return valid;
++
++	idx = (void *)(idx_ie + 2);
++
++	if (dtim_count)
++		*dtim_count = idx->dtim_count;
++
++	if (dtim_period)
++		*dtim_period = idx->dtim_period;
++
 +	return true;
 +}
-+#endif
 +
-+#define link_sta_dereference_protected(sta, link_id)		\
-+	rcu_dereference_protected((sta)->link[link_id],		\
-+				  lockdep_sta_mutex_held(sta))
-+
- #define for_each_sta_active_link(vif, sta, link_sta, link_id)			\
- 	for (link_id = 0; link_id < ARRAY_SIZE((sta)->link); link_id++)		\
- 		if ((!(vif)->active_links ||					\
- 		     (vif)->active_links & BIT(link_id)) &&			\
--		    ((link_sta) = rcu_dereference_protected((sta)->link[link_id],\
--							    1)))
-+		    ((link_sta) = link_sta_dereference_protected(sta, link_id)))
+ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 				    struct ieee80211_mgmt *mgmt,
+ 				    struct ieee802_11_elems *elems,
+@@ -4882,8 +4916,19 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 			goto out_err;
  
- /**
-  * enum sta_notify_cmd - sta notify command
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 1749c21e735c..baa55fbab0a2 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2871,3 +2871,13 @@ void ieee80211_sta_set_max_amsdu_subframes(struct sta_info *sta,
- 	if (val)
- 		sta->sta.max_amsdu_subframes = 4 << val;
+ 		if (link_id != assoc_data->assoc_link_id) {
+-			err = ieee80211_prep_channel(sdata, link,
+-						     assoc_data->link[link_id].bss,
++			struct cfg80211_bss *cbss = assoc_data->link[link_id].bss;
++			const struct cfg80211_bss_ies *ies;
++
++			rcu_read_lock();
++			ies = rcu_dereference(cbss->ies);
++			ieee80211_get_dtim(ies,
++					   &link->conf->sync_dtim_count,
++					   &link->u.mgd.dtim_period);
++			link->conf->dtim_period = link->u.mgd.dtim_period ?: 1;
++			link->conf->beacon_int = cbss->beacon_interval;
++			rcu_read_unlock();
++
++			err = ieee80211_prep_channel(sdata, link, cbss,
+ 						     &link->u.mgd.conn_flags);
+ 			if (err) {
+ 				link_info(link, "prep_channel failed\n");
+@@ -6356,40 +6401,6 @@ void ieee80211_mlme_notify_scan_completed(struct ieee80211_local *local)
+ 	rcu_read_unlock();
  }
-+
-+#ifdef CONFIG_LOCKDEP
-+bool lockdep_sta_mutex_held(struct ieee80211_sta *pubsta)
-+{
-+	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
-+
-+	return lockdep_is_held(&sta->local->sta_mtx);
-+}
-+EXPORT_SYMBOL(lockdep_sta_mutex_held);
-+#endif
+ 
+-static bool ieee80211_get_dtim(const struct cfg80211_bss_ies *ies,
+-			       u8 *dtim_count, u8 *dtim_period)
+-{
+-	const u8 *tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies->data, ies->len);
+-	const u8 *idx_ie = cfg80211_find_ie(WLAN_EID_MULTI_BSSID_IDX, ies->data,
+-					 ies->len);
+-	const struct ieee80211_tim_ie *tim = NULL;
+-	const struct ieee80211_bssid_index *idx;
+-	bool valid = tim_ie && tim_ie[1] >= 2;
+-
+-	if (valid)
+-		tim = (void *)(tim_ie + 2);
+-
+-	if (dtim_count)
+-		*dtim_count = valid ? tim->dtim_count : 0;
+-
+-	if (dtim_period)
+-		*dtim_period = valid ? tim->dtim_period : 0;
+-
+-	/* Check if value is overridden by non-transmitted profile */
+-	if (!idx_ie || idx_ie[1] < 3)
+-		return valid;
+-
+-	idx = (void *)(idx_ie + 2);
+-
+-	if (dtim_count)
+-		*dtim_count = idx->dtim_count;
+-
+-	if (dtim_period)
+-		*dtim_period = idx->dtim_period;
+-
+-	return true;
+-}
+-
+ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 				     struct cfg80211_bss *cbss, s8 link_id,
+ 				     const u8 *ap_mld_addr, bool assoc,
 -- 
 2.37.2
 
