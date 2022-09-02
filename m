@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9A435AB423
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C80E5AB424
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236372AbiIBOv0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 10:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58254 "EHLO
+        id S236612AbiIBOv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 10:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235921AbiIBOvE (ORCPT
+        with ESMTP id S232681AbiIBOvE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 2 Sep 2022 10:51:04 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7276625EAF
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A6B40E2A
         for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 07:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=4Gipd64EzMlnznd/CUNYXHCRtR+85bb+BXUY15tTYus=;
-        t=1662127988; x=1663337588; b=MxOTq1z4EhLQ8+tf2ytlLsXAnUX7PFpT1eu0h1OU1ax6ApW
-        B2j+UexMZkt/WTPnluSisxfahRsVQS4Ln5AcL8IWn+pLiojqvN7o0wo5krH/5NaGZNHM5dV8Qazab
-        7t1Hig9FHeoleO0l1tERL2ttSRcxE6AgN2Gi+NmQibiUUXFW+OZxTWmnc3NEMlPLMK9E2XljXngzy
-        6XiMcuP0tDPz8ya4NBKIkQ/cM3p+7o15wwPSH4HgMLrtLFSlcGRiQhLhZRLPt16TDHsCpwxfceTRT
-        FFtvpvxkCX/+hM0h0osckX7xTsQtBfb+cz90+tg2Eddd1xA2ZT5FsJ3XhVe9byAQ==;
+        Resent-Cc:Resent-Message-ID; bh=l0opTpHt6Rx1DUw/Kr7GdVubMvkd2iqrbkwIVu7k4/I=;
+        t=1662127989; x=1663337589; b=UrCqk6MrLUcg8i8kLrwWrKD4Y5vA6F+/c4IjXKZ+CSbqqVG
+        aNen9u768kVpSLcQXGtTedc7IzKhHnjXF51TyK1JbnW0O+Q8Oe9iNDM82vNBgyHoiQVITyJ1DhOkA
+        dypry/z+iJiTrgD+Q3/NCcDd35UpviYTpGLakosB1xPeLH0g/+fLbqkR9LXimoZ8N8i0rBf0M0sAX
+        qWPW9lYIoKVihZV/7+a3sfC2DL0zYvMJmw0AlfNjkH6Q7NT5c+HBJ33jlcCurGxIDo4J5L5IuUBd4
+        EWNwKunOQ6ej05GD2cfw4KqlaPVPfbO5Lm7YPNJrlH7LTOZoyVBEA/WO1mlWaG9w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oU7Ps-006Ch3-0t;
-        Fri, 02 Sep 2022 16:13:04 +0200
+        id 1oU7Pu-006Ch3-1l;
+        Fri, 02 Sep 2022 16:13:06 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 06/27] wifi: mac80211: mlme: assign link address correctly
-Date:   Fri,  2 Sep 2022 16:12:38 +0200
-Message-Id: <20220902161143.dde5fca43e3a.Ie8541b90865553a827c70c903c2f2a5238e77b4c@changeid>
+Subject: [PATCH 07/27] wifi: mac80211_hwsim: warn on invalid link address
+Date:   Fri,  2 Sep 2022 16:12:39 +0200
+Message-Id: <20220902161143.e0f195a3d28e.Ie35415a32f735d579bb26b35d43ab9206da85927@changeid>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220902141259.377789-1-johannes@sipsolutions.net>
 References: <20220902141259.377789-1-johannes@sipsolutions.net>
@@ -52,44 +52,27 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Right now, we assign the link address only after we add
-the link to the driver, which is quite obviously wrong.
-It happens to work in many cases because it gets updated
-immediately, and then link_conf updates may update it,
-but it's clearly not really right.
+Catch the bug fixed in mac80211 by the previous patch
+and warn if an invalid address is added (or removed).
 
-Set the link address during ieee80211_mgd_setup_link()
-so it's set before telling the driver about the link.
-
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mac80211_hwsim.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ef192974949c..4c8bbf0bd25b 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -6322,6 +6322,8 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- 	if (sdata->u.mgd.assoc_data)
- 		ether_addr_copy(link->conf->addr,
- 				sdata->u.mgd.assoc_data->link[link_id].addr);
-+	else if (!is_valid_ether_addr(link->conf->addr))
-+		eth_random_addr(link->conf->addr);
- }
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 70a72a03398a..a75420d92816 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1299,6 +1299,8 @@ static void mac80211_hwsim_config_mac_nl(struct ieee80211_hw *hw,
+ 	struct sk_buff *skb;
+ 	void *msg_head;
  
- /* scan finished notification */
-@@ -6409,9 +6411,6 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 		goto out_err;
- 	}
++	WARN_ON(!is_valid_ether_addr(addr));
++
+ 	if (!_portid && !hwsim_virtio_enabled)
+ 		return;
  
--	if (mlo && !is_valid_ether_addr(link->conf->addr))
--		eth_random_addr(link->conf->addr);
--
- 	if (WARN_ON(!ifmgd->auth_data && !ifmgd->assoc_data)) {
- 		err = -EINVAL;
- 		goto out_err;
 -- 
 2.37.2
 
