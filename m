@@ -2,109 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0155AA811
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 08:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADE0A5AA93E
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 09:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235490AbiIBGdC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 02:33:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56162 "EHLO
+        id S235573AbiIBH5o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 03:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235487AbiIBGdB (ORCPT
+        with ESMTP id S235570AbiIBH5j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 02:33:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37721B3B37
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Sep 2022 23:33:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D5727B829EA
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 06:32:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0B2C433D7;
-        Fri,  2 Sep 2022 06:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662100377;
-        bh=KjnZ1meSyoCIWwZ1JHVVLS1Crez+SqnBEMPQzuyoFVc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=m2J+M6hpZthuewplv0LsxqI8dolHNsKLyscqJBXUb8KympwWn2rKT6mXHVvGIH9lD
-         qRFrONHMyBxeK4UT/+u5dN2vobYnrXKTET+aAAiDzSb8q4GCX+YVMgGOi0VQngGsa8
-         4deMw6geyjxKZYZGlh/cyyQDl3mNL2uEkIguT8zHp+ND/ErA7R+8vasLKIJrcqeIbL
-         hytiRImNKCFh/smnwbdEJEcTPgYzmYVaQ6SKBDzWl0W/CSMPmBeSkcxKzSFnh4OmAo
-         r+aGz0A8WSc28VULICA4ljBVC75W8Ny8dXaTPc53reFhS2fGluX9IxslD5xP7WGU4k
-         R8JbYT4m/8SqA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 3/9] rtw89: coex: Add logic to parsing rtl8852c firmware type ctrl report
-References: <20220725023509.43114-1-pkshih@realtek.com>
-        <20220725023509.43114-4-pkshih@realtek.com>
-Date:   Fri, 02 Sep 2022 09:32:53 +0300
-In-Reply-To: <20220725023509.43114-4-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Mon, 25 Jul 2022 10:35:03 +0800")
-Message-ID: <87tu5qb816.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 2 Sep 2022 03:57:39 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B704B99FF;
+        Fri,  2 Sep 2022 00:57:38 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id f12so1078000plb.11;
+        Fri, 02 Sep 2022 00:57:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=vIy9hDwkx4yZn4J8a69vMd0+2priltLA6LrvRstnlSw=;
+        b=fpA4Y3ToNbXxHsdaEE0lX/1oD4nWABvDQl4PNC1J/7Ck4uuwpYzTTHBHaOuIiom1ew
+         6nsaohKhgJpMhiBruxbK7FzsuYWlvgLMtlULpP7TvgTqzSkKpSX5BS1eoSHAAxhcjP+Q
+         ny1m+i5dzAv+nfzb/zIJIvQSx4/zH1ztjaW91DI3SzHe2bTy9s7yIwoUh5NdpohJ+uvd
+         8XRuTlwakpDT8jQefggv19R/6MYevAa98mAlPvCXyHXgdqAijutgb3hETd2Ah5hCH5zt
+         T34chFMsoHY8y4cV8BIzm2Yg24A5TYjKsbmGBXA0SULu5CNAVIIyWsoX7inyug/pVzlL
+         zWtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=vIy9hDwkx4yZn4J8a69vMd0+2priltLA6LrvRstnlSw=;
+        b=anJ2Crh0EAeUiL0m+P89sdlbEWRcS+/KiB2waiIXzXYxfTiQp+LiHokySAXo9HcfH/
+         Ty1tNqF6M8GmICR3lqj5Bv3IxokREpjkpzzU8/fKXFqBCa5E3ArkpB0hIyQ41fWgRpWo
+         nsfHyCaFOTdfjwU4jykA8wiqJ4gX0duX8SwMj/ngD+p3hS/Hmi1CqI8ROR8vOt6Dh989
+         uSF/014l9JorvtHDyeakwuECb2gko47r90Hh9x3b572G1h6oauXcTGNb7+F08XcpXMB2
+         gzGfMECefLbmTOBAl5ZuDhJJbr0FKhSsXgbA9MVvSSJIZaaKe7HAeMU+S9jqIrc0SWxA
+         JSbg==
+X-Gm-Message-State: ACgBeo1TSJcysRGbMY+koXOkQoNmwy2WwBXwYYgCpEnMn+3AOWSOBALr
+        C+9S0euLIlFvpuSS6MYDdLY3nkgy0VmyFQ==
+X-Google-Smtp-Source: AA6agR5UAq2hV61FB3FoMipbuvEVVIYjmubJuI4EbaRWyxqf2LPOGobOPPaHb1QY9ryGj21rLTHeBQ==
+X-Received: by 2002:a17:90b:4a82:b0:1f5:5eaa:68a with SMTP id lp2-20020a17090b4a8200b001f55eaa068amr3422244pjb.13.1662105457472;
+        Fri, 02 Sep 2022 00:57:37 -0700 (PDT)
+Received: from localhost.localdomain (lily-optiplex-3070.dynamic.ucsd.edu. [2607:f720:1300:3033::1:4dd])
+        by smtp.googlemail.com with ESMTPSA id q96-20020a17090a17e900b001fd6460c2dcsm4519455pja.44.2022.09.02.00.57.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Sep 2022 00:57:36 -0700 (PDT)
+From:   Li Zhong <floridsleeves@gmail.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        lily <floridsleeves@gmail.com>
+Subject: [PATCH v1] net/mac80211/agg-tx: check the return value of rcu_dereference_protected_tid_tx()
+Date:   Fri,  2 Sep 2022 00:57:25 -0700
+Message-Id: <20220902075725.2214351-1-floridsleeves@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+From: lily <floridsleeves@gmail.com>
 
-> From: Ching-Te Ku <ku920601@realtek.com>
->
-> Add a part of logic to parse type of ctrl report from firmware, and
-> remove Bluetooth packet counter count from driver, the feature was
-> moved to firmware at rtl8852c.
->
-> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw89/coex.c     | 44 +++++++++++--
->  drivers/net/wireless/realtek/rtw89/core.h     | 63 +++++++++++++++++--
->  drivers/net/wireless/realtek/rtw89/rtw8852c.c | 18 +-----
->  3 files changed, 98 insertions(+), 27 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-> index f9c67aa1570dd..020b2628ef2c4 100644
-> --- a/drivers/net/wireless/realtek/rtw89/coex.c
-> +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-> @@ -876,7 +876,9 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
->  	struct rtw89_btc_dm *dm = &btc->dm;
->  	struct rtw89_btc_rpt_cmn_info *pcinfo = NULL;
->  	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
-> -	struct rtw89_btc_fbtc_rpt_ctrl *prpt = NULL;
-> +	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
-> +	struct rtw89_btc_fbtc_rpt_ctrl *prpt;
-> +	struct rtw89_btc_fbtc_rpt_ctrl_v1 *prpt_v1;
->  	struct rtw89_btc_fbtc_cysta *pcysta_le32 = NULL;
->  	struct rtw89_btc_fbtc_cysta_cpu pcysta[1];
->  	struct rtw89_btc_prpt *btc_prpt = NULL;
-> @@ -907,8 +909,13 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
->  	switch (rpt_type) {
->  	case BTC_RPT_TYPE_CTRL:
->  		pcinfo = &pfwinfo->rpt_ctrl.cinfo;
-> -		pfinfo = (u8 *)(&pfwinfo->rpt_ctrl.finfo);
-> -		pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo);
-> +		if (chip->chip_id == RTL8852A) {
-> +			pfinfo = (u8 *)(&pfwinfo->rpt_ctrl.finfo);
-> +			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo);
-> +		} else {
-> +			pfinfo = (u8 *)(&pfwinfo->rpt_ctrl.finfo_v1);
-> +			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo_v1);
-> +		}
+Check the return value of rcu_dereference_protected_tid_tx(), which
+could be NULL and result in null pointer dereference if not checked.
 
-That u8 cast is not really pretty, shouldn't pfinfo be a void pointer
-and then all these casts could be avoided? But of course that's not
-introduced by this patch so need to resend the patch because of this.
+Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+---
+ net/mac80211/agg-tx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
+index 07c892aa8c73..ce5f4a39bce2 100644
+--- a/net/mac80211/agg-tx.c
++++ b/net/mac80211/agg-tx.c
+@@ -503,6 +503,8 @@ void ieee80211_tx_ba_session_handle_start(struct sta_info *sta, int tid)
+ 	int ret;
+ 
+ 	tid_tx = rcu_dereference_protected_tid_tx(sta, tid);
++	if (!tid_tx)
++		return;
+ 
+ 	/*
+ 	 * Start queuing up packets for this aggregation session.
+@@ -742,6 +744,8 @@ static void ieee80211_agg_tx_operational(struct ieee80211_local *local,
+ 	lockdep_assert_held(&sta->ampdu_mlme.mtx);
+ 
+ 	tid_tx = rcu_dereference_protected_tid_tx(sta, tid);
++	if (!tid_tx)
++		return;
+ 	params.buf_size = tid_tx->buf_size;
+ 	params.amsdu = tid_tx->amsdu;
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
