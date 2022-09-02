@@ -2,89 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 227145AB2DA
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8862E5AB344
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Sep 2022 16:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238857AbiIBOEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 10:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56268 "EHLO
+        id S238113AbiIBOTc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Sep 2022 10:19:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239105AbiIBOEC (ORCPT
+        with ESMTP id S238536AbiIBOTP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 10:04:02 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72995148D11
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 06:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=w2HUe7Es17kP59gNgIPZBWy7C9aq9/2YnNXR3m3gUmo=; t=1662125584; x=1663335184; 
-        b=g1LVZHWFvTaIPWeSXEXhadlsp/6keOLFWWRQWnYRasjxmsSXZgQ6w+retX8gOobfx82VyJ+A2JI
-        8uPgt1CAb4aUNFMTGLR4Tggs4huEaio+/m9F9npcQ4n/7F55ysSpzmLibcIGyVgROjNJWH6mJvISV
-        9YZHDnHNsR6LsFZO4IbZb7vqrxnoaamrt8UaVBnkEDP+3fjAtBZbHgGvHunDlTwoZpxzouRqq/q9N
-        hzlFbFtsKlNaFxXiIu72ruranX9Hvz+UNyMSHGKm15akDs5m7bu+SzfeJUegykUpaSGAM+pspFslQ
-        jIzrceTPX1QaAN3uy7mjXm08wRn1GVILQiPw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oU662-0069og-19;
-        Fri, 02 Sep 2022 14:48:30 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Subject: [PATCH] wifi: mac80211: fix link warning in RX agg timer expiry
-Date:   Fri,  2 Sep 2022 14:48:27 +0200
-Message-Id: <20220902144826.8ef6beda92f6.I3d9a23c49e1df3bd0c91ef0e1c1805dd09937db8@changeid>
-X-Mailer: git-send-email 2.37.2
+        Fri, 2 Sep 2022 10:19:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550EFA6C5D
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 06:45:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C7331B82A99
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 12:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5B1C433D7;
+        Fri,  2 Sep 2022 12:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662122967;
+        bh=AZvZJ0jjzWJfltJK4ejkskk2BjBVpGVq9U3dhyhrP5o=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=TZRfdlq79lFLOc38iSKpu6WCPb/sdeTDTuz8vjp6wkTYLvO3dVYDnJqpXbfP31Wqy
+         cUXe2CqYB2sf7XpnIjK0TDhBF21CYsuX8NBaSZiioAO9F1mOtNSQ007KKOJ2x9Sypx
+         ArblIQosACIxEA5ZiK3myJutrer707e5V1hwNoMUt4ISn6vdfr155ZSab0C+n/+QwY
+         TijMnFh3dMHwnbALiWEvARCgioc7d2BaSvus8crpevVtGlrDA5dT7dXwF9kaGklbxo
+         czPqN3o4KKzxazRCe1fJjA9Xy6uFMvaFhcgEKhBFe1hZXhIx4icVIapNyI9xWYs/rq
+         HSCK3y2UTaqKg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 2/3] ath11k: Add multi TX ring support for WCN6750
+References: <20220720135113.15755-1-quic_mpubbise@quicinc.com>
+        <20220720135113.15755-3-quic_mpubbise@quicinc.com>
+Date:   Fri, 02 Sep 2022 15:49:24 +0300
+In-Reply-To: <20220720135113.15755-3-quic_mpubbise@quicinc.com> (Manikanta
+        Pubbisetty's message of "Wed, 20 Jul 2022 19:21:12 +0530")
+Message-ID: <878rn2aqln.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-The rx data link pointer isn't set from the RX aggregation timer,
-resulting in a later warning. Fix that by setting it to the first
-valid link for now, with a FIXME to worry about statistics later,
-it's not very important since it's just the timeout case.
+> Currently in the case of WCN6750, only one TCL ring is used for TX,
+> this is limiting the TX throughput in 160 MHz case, enabling multiple
+> TCL rings on WCN6750 has shown an improvement of nearly 300 Mbps in
+> the case of TCP TX, therefore add the support of multi TX ring for
+> WCN6750.
+>
+> Currently TCL ring is selected based on CPU ID, this logic cannot be
+> applied for WCN6750 as there is chance of out of order TX of packets
+> and to avoid this, choose TCL ring based on flow hash so that packets
+> of the same flow will end up on same TCL ring. For the same reason,
+> TCL ring retry logic is also not applicable for WCN6750.
+>
+> Also the mapping of TCL, WBM & RBM IDs for WCN6750 is different from
+> existing devices. Create a new TCM/WBM/RBM mapping for WCN6750.
+>
+> Change does not impact existing ath11k devices.
 
-Fixes: 56057da4569b ("wifi: mac80211: rx: track link in RX data")
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+It would also nice to document _why_ it doesn't impact existing (or do
+you mean "other"?) devices.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index cc139fe5fb78..511c809e2c6b 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4084,6 +4084,7 @@ void ieee80211_release_reorder_timeout(struct sta_info *sta, int tid)
- 		.link_id = -1,
- 	};
- 	struct tid_ampdu_rx *tid_agg_rx;
-+	u8 link_id;
- 
- 	tid_agg_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
- 	if (!tid_agg_rx)
-@@ -4103,6 +4104,9 @@ void ieee80211_release_reorder_timeout(struct sta_info *sta, int tid)
- 		};
- 		drv_event_callback(rx.local, rx.sdata, &event);
- 	}
-+	/* FIXME: statistics won't be right with this */
-+	link_id = sta->sta.valid_links ? ffs(sta->sta.valid_links) - 1 : 0;
-+	rx.link = rcu_dereference(sta->sdata->link[link_id]);
- 
- 	ieee80211_rx_handlers(&rx, &frames);
- }
 -- 
-2.37.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
