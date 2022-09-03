@@ -2,112 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE41A5ABE6F
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Sep 2022 12:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5F85ABED8
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Sep 2022 14:05:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230231AbiICKRS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Sep 2022 06:17:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40754 "EHLO
+        id S230254AbiICMFF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Sep 2022 08:05:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbiICKRR (ORCPT
+        with ESMTP id S229506AbiICMFE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Sep 2022 06:17:17 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F94A550A2
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Sep 2022 03:17:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662200236; x=1693736236;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Fl5wHYACfqrk88SmL14P2V2T2m+OCSYDQdv9p57MO48=;
-  b=dcDIC7ceF1FplUX52vlW58G4bCNHZS48MHAedz1dJ7SidnxdVo+p/Ggh
-   QxIrG4GW2mHG65x+2CrpNBhdO3VCBuFyDltHU0Wo5POFABz6hy/C50kbl
-   cqieEAx8o9Iqxgbjf3eZD7oZNR/kghjS4siacRX3pNPQEAFamPkDvLYD4
-   TmRXu5rGXY4/9vgkm3ihuoLxRw4WHh0SukeZALUhBxrQRO03+OKoU1aOx
-   mUcr8IQyi3WDbHnILMr6LWAgu4fl63DQfwW7+S/jsydGx08puQT+l8gwj
-   ZgHuLb17JRV0ZxGVNhq3JwcgeBjrFCP4iD+2S9PuHNioHEuBlXbLY13Y4
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10458"; a="360104006"
-X-IronPort-AV: E=Sophos;i="5.93,287,1654585200"; 
-   d="scan'208";a="360104006"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2022 03:17:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,287,1654585200"; 
-   d="scan'208";a="702397342"
-Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 03 Sep 2022 03:17:14 -0700
-Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oUQDC-0001S7-00;
-        Sat, 03 Sep 2022 10:17:14 +0000
-Date:   Sat, 03 Sep 2022 18:16:15 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld-wip] BUILD SUCCESS
- 6c91fe3dbcdf1d526f4db5a7eb16c8198b5dd893
-Message-ID: <6313296f.JDJ9yeQT1T/7rukk%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sat, 3 Sep 2022 08:05:04 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC03275C8;
+        Sat,  3 Sep 2022 05:05:00 -0700 (PDT)
+Received: from localhost.localdomain (unknown [46.242.14.200])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 8850440737B2;
+        Sat,  3 Sep 2022 12:04:54 +0000 (UTC)
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        ldv-project@linuxtesting.org,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH] ath9k: verify the expected usb_endpoints are present
+Date:   Sat,  3 Sep 2022 15:04:24 +0300
+Message-Id: <20220903120424.12472-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld-wip
-branch HEAD: 6c91fe3dbcdf1d526f4db5a7eb16c8198b5dd893  wifi: mac80211: prevent VLANs on MLDs
+The bug arises when a USB device claims to be an ATH9K but doesn't
+have the expected endpoints. (In this case there was an interrupt
+endpoint where the driver expected a bulk endpoint.) The kernel
+needs to be able to handle such devices without getting an internal error.
 
-elapsed time: 844m
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 3 PID: 500 at drivers/usb/core/urb.c:493 usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
+Modules linked in:
+CPU: 3 PID: 500 Comm: kworker/3:2 Not tainted 5.10.135-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+Workqueue: events request_firmware_work_func
+RIP: 0010:usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
+Call Trace:
+ ath9k_hif_usb_alloc_rx_urbs drivers/net/wireless/ath/ath9k/hif_usb.c:908 [inline]
+ ath9k_hif_usb_alloc_urbs+0x75e/0x1010 drivers/net/wireless/ath/ath9k/hif_usb.c:1019
+ ath9k_hif_usb_dev_init drivers/net/wireless/ath/ath9k/hif_usb.c:1109 [inline]
+ ath9k_hif_usb_firmware_cb+0x142/0x530 drivers/net/wireless/ath/ath9k/hif_usb.c:1242
+ request_firmware_work_func+0x12e/0x240 drivers/base/firmware_loader/main.c:1097
+ process_one_work+0x9af/0x1600 kernel/workqueue.c:2279
+ worker_thread+0x61d/0x12f0 kernel/workqueue.c:2425
+ kthread+0x3b4/0x4a0 kernel/kthread.c:313
+ ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:299
 
-configs tested: 32
-configs skipped: 2
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-gcc tested configs:
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-um                             i386_defconfig
-um                           x86_64_defconfig
-m68k                             allyesconfig
-mips                             allyesconfig
-m68k                             allmodconfig
-powerpc                           allnoconfig
-arc                              allyesconfig
-powerpc                          allmodconfig
-alpha                            allyesconfig
-x86_64                              defconfig
-sh                               allmodconfig
-x86_64                               rhel-8.3
-i386                                defconfig
-x86_64                           allyesconfig
-arm                                 defconfig
-i386                             allyesconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-powerpc                    adder875_defconfig
-powerpc                       ppc64_defconfig
-mips                            ar7_defconfig
-mips                    maltaup_xpa_defconfig
-ia64                             allmodconfig
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 4d9002a9d082..2b26acf409fc 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1332,6 +1332,20 @@ static int ath9k_hif_usb_probe(struct usb_interface *interface,
+ 	struct usb_device *udev = interface_to_usbdev(interface);
+ 	struct hif_device_usb *hif_dev;
+ 	int ret = 0;
++	struct usb_host_interface *alt;
++	struct usb_endpoint_descriptor *bulk_in, *bulk_out, *int_in, *int_out;
++
++	/* Verify the expected endpoints are present */
++	alt = interface->cur_altsetting;
++	if (usb_find_common_endpoints(alt, &bulk_in, &bulk_out, &int_in, &int_out) < 0 ||
++			usb_endpoint_num(bulk_in) != USB_WLAN_RX_PIPE ||
++			usb_endpoint_num(bulk_out) != USB_WLAN_TX_PIPE ||
++			usb_endpoint_num(int_in) != USB_REG_IN_PIPE ||
++			usb_endpoint_num(int_out) != USB_REG_OUT_PIPE) {
++		dev_err(&udev->dev,
++				"ath9k_htc: Device endpoint numbers are not the expected ones\n");
++		return -ENODEV;
++	}
+ 
+ 	if (id->driver_info == STORAGE_DEVICE)
+ 		return send_eject_command(interface);
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
