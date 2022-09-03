@@ -2,50 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A80BD5ABACB
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Sep 2022 00:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D4175ABDB0
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Sep 2022 09:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231280AbiIBWWF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Sep 2022 18:22:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39596 "EHLO
+        id S232251AbiICHjG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Sep 2022 03:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230428AbiIBWWB (ORCPT
+        with ESMTP id S231938AbiICHjF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Sep 2022 18:22:01 -0400
-Received: from mail4987.hm1479.locaweb.com.br (mail4987.hm1479.locaweb.com.br [201.76.49.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BEE7FDD760
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Sep 2022 15:21:59 -0700 (PDT)
-Received: from mcbain0006.email.locaweb.com.br (189.126.112.72) by mail4970.hm1479.locaweb.com.br id h2a02i2n8lgh for <linux-wireless@vger.kernel.org>; Fri, 2 Sep 2022 19:14:01 -0300 (envelope-from <cesarb@cesarb.eti.br>)
-Received: from proxy.email-ssl.com.br (unknown [10.31.120.228])
-        by mcbain0006.email.locaweb.com.br (Postfix) with ESMTP id ADD9F6C03AB;
-        Fri,  2 Sep 2022 19:21:36 -0300 (-03)
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOsUrt2HjzFxJA84Xs1vckHsec-zS6UliOx17_zm9IZkMLTvVK8i2L_eaL5QfFqwvPaPa3RPUNEbbnjpb2EoMenWQylBNnnNiZAUd6qXaHo-KQ== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOsUrt2HjzFxJA84Xs1vckHsec-zS6UliOx17_zm9IZkMLTvVK8i2L_eaL5QfFqwvPaPa3RPUNEbbnjpb2EoMenWQylBNnnNiZAUd6qXaHo-KQ== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOsUrt2HjzFxJA84Xs1vckHsec-zS6UliOx17_zm9IZkMLTvVK8i2L_eaL5QfFqwvPaPa3RPUNEbbnjpb2EoMenWQylBNnnNiZAUd6qXaHo-KQ== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOsUrt2HjzFxJA84Xs1vckHsec-zS6UliOx17_zm9IZkMLTvVK8i2L_eaL5QfFqwvPaPa3RPUNEbbnjpb2EoMenWQylBNnnNiZAUd6qXaHo-KQ== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-X-LocaWeb-COR: locaweb_2009_x-mail
-X-AuthUser: cesarb@cesarb.eti.br
-Received: from [192.168.96.204] (unknown [200.187.114.14])
-        (Authenticated sender: cesarb@cesarb.eti.br)
-        by proxy.email-ssl.com.br (Postfix) with ESMTPSA id D5FC4408A6;
-        Fri,  2 Sep 2022 19:21:50 -0300 (-03)
-Message-ID: <6b577581-9daf-ff11-1aaa-ff1243eb9c03@cesarb.eti.br>
-Date:   Fri, 2 Sep 2022 19:21:50 -0300
+        Sat, 3 Sep 2022 03:39:05 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30DDA6F549
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Sep 2022 00:39:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662190745; x=1693726745;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6+NamG2HHjRo5XF7i3AiYBQVm/jBz0ctEOJBsKKB8Bs=;
+  b=FQwp3BM7hhWl0bsDGIJJgSxLAM7yx2Wf8kVF6qDOhFHhBHtuD0A2Uf9B
+   WaXrDhKpZFNC9ooOUHaWHI9jXTFIp5p7inzZg6W8y0RIsBaqwwWNWr8bn
+   DInN9Y7JYOxQIm2I6nbISVAyULNdqtCRplizS/56xZuviF45kygBkpF4q
+   J2/Dxab5hYHsZQlosBeVtx0K1zmwCNAWeIFwyNSXID5NxPEXsdw65O2t6
+   PPyS/M6bFoMxEI4cyHdAdFWslKPQp9z5yVYK6RHuzryfQNV47vjEJj6ok
+   Z/ulTym5+YDseUJrhie6GsI0hSzG6mamtvQmEaTn8v/MnGDcTfkrHLyoc
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10458"; a="275883528"
+X-IronPort-AV: E=Sophos;i="5.93,286,1654585200"; 
+   d="scan'208";a="275883528"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2022 00:39:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,286,1654585200"; 
+   d="scan'208";a="941544103"
+Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 03 Sep 2022 00:39:03 -0700
+Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oUNk1-0001F5-2y;
+        Sat, 03 Sep 2022 07:38:57 +0000
+Date:   Sat, 03 Sep 2022 15:38:10 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ bf99f11df4de45fcba6f6c441b411a16bccaccf6
+Message-ID: <63130462.5x/IiKdrxkxsLxUs%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Brazil (BR)
-To:     Johannes Berg <johannes@sipsolutions.net>, sforshee@kernel.org
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20220901232734.5488-1-cesarb@cesarb.eti.br>
- <b8674e67fee2393d4c5fe9d9842028545c6adcfa.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Cesar Eduardo Barros <cesarb@cesarb.eti.br>
-In-Reply-To: <b8674e67fee2393d4c5fe9d9842028545c6adcfa.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,25 +64,69 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em 02/09/2022 11:53, Johannes Berg escreveu:
-> On Thu, 2022-09-01 at 20:27 -0300, Cesar Eduardo Barros wrote:
->>
->> +	# This range ends at 5725 MHz, but channel 144 extends to 5730 MHz.
->> +	# Since 5725 ~ 5730 MHz belongs to the next range which has looser
->> +	# requirements, we can extend the range by 5 MHz to make the kernel
->> +	# happy and be able to use channel 144.
->> +	(5470 - 5730 @ 160), (27), DFS
->> +	(5730 - 5850 @ 80), (30)
->>
-> 
-> If you do the latter as 160 as well, and add AUTO-BW, couldn't you split
-> them at 5725 correctly? But I guess it doesn't matter anyway.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: bf99f11df4de45fcba6f6c441b411a16bccaccf6  wifi: move from strlcpy with unused retval to strscpy
 
-This was copied from the US rules (including the four-line comment), 
-which have an identical split. If AUTO-BW worked here, I'd expect the US 
-rules to use it.
+elapsed time: 1078m
+
+configs tested: 48
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+arc                  randconfig-r043-20220901
+sh                               allmodconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a004
+x86_64                              defconfig
+x86_64                        randconfig-a002
+i386                                defconfig
+i386                          randconfig-a012
+alpha                            allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                           allyesconfig
+arc                              allyesconfig
+i386                          randconfig-a014
+x86_64                    rhel-8.3-kselftests
+m68k                             allmodconfig
+x86_64                         rhel-8.3-kunit
+i386                             allyesconfig
+m68k                             allyesconfig
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-kvm
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+ia64                             allmodconfig
+
+clang tested configs:
+hexagon              randconfig-r041-20220901
+hexagon              randconfig-r045-20220901
+riscv                randconfig-r042-20220901
+i386                          randconfig-a002
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+s390                 randconfig-r044-20220901
+i386                          randconfig-a006
+i386                          randconfig-a013
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+i386                          randconfig-a011
+x86_64                        randconfig-a003
 
 -- 
-Cesar Eduardo Barros
-cesarb@cesarb.eti.br
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
