@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C70E5AC624
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Sep 2022 21:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1FCE5AC627
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Sep 2022 21:30:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234933AbiIDT3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Sep 2022 15:29:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
+        id S234888AbiIDT3o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Sep 2022 15:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234798AbiIDT32 (ORCPT
+        with ESMTP id S234804AbiIDT33 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Sep 2022 15:29:28 -0400
+        Sun, 4 Sep 2022 15:29:29 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33CFEE47
-        for <linux-wireless@vger.kernel.org>; Sun,  4 Sep 2022 12:29:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F34E6F
+        for <linux-wireless@vger.kernel.org>; Sun,  4 Sep 2022 12:29:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Vgsv8HQMTzYZeqKn9+OV7mnf0XXRWj0X2rUbLf9lWWg=;
-        t=1662319762; x=1663529362; b=eLRy5Ct1rol4HPGK0a2hHpRy++GDWGkhbkP2T62VG81BnUt
-        clOPmVlDWICVa5VOBDF91nZDiQj1xO/N0mt8OiGbwKnYSz+bnalJzea9VEzOd/swD/FD1Z/JReY57
-        O5HrvI/8jSTkWjkjjgEeadBlOaItzHv+6xprCII26woMR6adEwFDwFNZCwMP84F8HV1UG0QAwCMmm
-        CbmaHhHILhITI+F4CRo/VhxB8FTsq5NX4GuEkdU7+axtReFp5DXoXG6jIMifOIJMnpj2ycRP0N5xh
-        coBT4wqiDfYQ8UPLODdH+eWVBNE9mPdk59TqcRNc3STWCPXxfxxt/GMX9Chu8ADw==;
+        Resent-Cc:Resent-Message-ID; bh=FaVm/KMr8KZJ4C2iMgCupxVWJ5k7WqrPwqGZksbYjzU=;
+        t=1662319762; x=1663529362; b=xV7oDyzuLXKY26NVK1a8q/xrHX4TVNaJ8M4ffd56F3ED7xx
+        ewSi5Lq3CtIbYhf/IHUhoxp7snnXrdnXYs+1rGJh8z1StbM1HvYz75J7y76xhGfs+5A4L4mXKlF85
+        Wpjj+PB70Cm+29lR6cI87RkftaNMLM/DcW/QnuHMCLj/Hd1xUQGiM8XstlMh5QkpMHr6QcPCL8hcH
+        R5aNq1IxqPpenY2rfr2oFhN+xvUKITVmEIF+yVscDw7w8k/cO92to9zwfDxb7uE4AGLCwM5rdZh3X
+        CXiNaiI32I1qwRl/bZyuNQqcSNMCY55jr9t6SJWxfWeqbWy9JygdMeXmXzlm1fxg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oUvJ0-007pTZ-0d;
+        id 1oUvJ0-007pTZ-2X;
         Sun, 04 Sep 2022 21:29:18 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 05/12] wifi: wl18xx: add some missing endian conversions
-Date:   Sun,  4 Sep 2022 21:29:05 +0200
-Message-Id: <20220904212910.2b5cb713cf4b.Ibabba2deb7bb22863d3a134e7a3333422d7eff17@changeid>
+Subject: [PATCH 06/12] wifi: mwifiex: mark a variable unused
+Date:   Sun,  4 Sep 2022 21:29:06 +0200
+Message-Id: <20220904212910.5d67f55178a1.If0789ab326935896e5886fa06dbb9ef0da6c0b41@changeid>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220904212910.8169e8c9090c.I0357e80cc86be2d4ac6205d1f53568444dcf7c9b@changeid>
 References: <20220904212910.8169e8c9090c.I0357e80cc86be2d4ac6205d1f53568444dcf7c9b@changeid>
@@ -52,33 +52,28 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This caused sparse warnings, and clearly is needed per
-how other firmware interfaces behave.
+We need to read a value from the device to wake it, but if it
+succeeds we don't really care about it. Mark the variable to
+avoid a compiler warning.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/ti/wl18xx/event.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wl18xx/event.c b/drivers/net/wireless/ti/wl18xx/event.c
-index 13d78ada4bb6..34d95f458e1a 100644
---- a/drivers/net/wireless/ti/wl18xx/event.c
-+++ b/drivers/net/wireless/ti/wl18xx/event.c
-@@ -131,10 +131,10 @@ int wl18xx_process_mailbox_events(struct wl1271 *wl)
+diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
+index f7f9277602a5..5dcf61761a16 100644
+--- a/drivers/net/wireless/marvell/mwifiex/pcie.c
++++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+@@ -644,7 +644,7 @@ static int mwifiex_pm_wakeup_card(struct mwifiex_adapter *adapter)
+ {
+ 	struct pcie_service_card *card = adapter->card;
+ 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
+-	int retval;
++	int retval __maybe_unused;
  
- 	if (vector & TIME_SYNC_EVENT_ID)
- 		wlcore_event_time_sync(wl,
--			mbox->time_sync_tsf_high_msb,
--			mbox->time_sync_tsf_high_lsb,
--			mbox->time_sync_tsf_low_msb,
--			mbox->time_sync_tsf_low_lsb);
-+			le16_to_cpu(mbox->time_sync_tsf_high_msb),
-+			le16_to_cpu(mbox->time_sync_tsf_high_lsb),
-+			le16_to_cpu(mbox->time_sync_tsf_low_msb),
-+			le16_to_cpu(mbox->time_sync_tsf_low_lsb));
- 
- 	if (vector & RADAR_DETECTED_EVENT_ID) {
- 		wl1271_info("radar event: channel %d type %s",
+ 	mwifiex_dbg(adapter, EVENT,
+ 		    "event: Wakeup device...\n");
 -- 
 2.37.2
 
