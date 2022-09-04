@@ -2,60 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9809A5AC254
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Sep 2022 06:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F40FA5AC3EB
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Sep 2022 12:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233146AbiIDEXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Sep 2022 00:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
+        id S233625AbiIDKaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Sep 2022 06:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233099AbiIDEXe (ORCPT
+        with ESMTP id S233213AbiIDKaT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Sep 2022 00:23:34 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8224D814
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Sep 2022 21:23:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662265413; x=1693801413;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xrrIp60k0yEadpwLwEy4O2igijr1HZ+qzcDh+jPO+ho=;
-  b=md2ecZuwXhAfUD6bk8jEl6SJNC0R0XpZZSGBmq5aoAdfIP8NRlM08l3W
-   zP/LpUcf/BNCktQyPXRO8ElyBtIOJN18gZy63mjF/W5V8ZeEQshWQqtAZ
-   q4QfC8r8HYujh+COoJ6JORLFMp1kEM33l2unRdedoZwYyNIKaN8WchE6r
-   fI4YDyPdj8MIVMR50NoQZpnDM6YHLKPLSMuycqQl7Z00L3XHI1bUkxwMw
-   mvWjQ1nw5NLTSscYm5J2SsxPE3obLbfkZE6JBuob7ZSELpipQl+5vh5Fg
-   ZBFYXtpZN2OcJSwvdRNoWAFykt566r5qDfOjVWgd45E0Vn3QI/ijXJa3N
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10459"; a="360164406"
-X-IronPort-AV: E=Sophos;i="5.93,288,1654585200"; 
-   d="scan'208";a="360164406"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2022 21:23:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,288,1654585200"; 
-   d="scan'208";a="613433498"
-Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 03 Sep 2022 21:23:31 -0700
-Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oUhAQ-0002YN-2H;
-        Sun, 04 Sep 2022 04:23:30 +0000
-Date:   Sun, 04 Sep 2022 12:23:17 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld-wip] BUILD SUCCESS
- f7be5f6a2174bc94d0230d7aeb42fc08da18956f
-Message-ID: <63142835.HWAIxFSTaNPABNEb%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sun, 4 Sep 2022 06:30:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD6B1E3D9;
+        Sun,  4 Sep 2022 03:30:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33C2D60F53;
+        Sun,  4 Sep 2022 10:30:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 94C2DC433D6;
+        Sun,  4 Sep 2022 10:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662287415;
+        bh=4xItITvB09LXZTE/Dt2LR+Q6hPF+fmotlYZtZXDpR34=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=N6tHprYenMBKba7marcqRvgUuxZPX+AN/e0oVlTA87j3thLqW6CWN97cKKoUx6R/G
+         9UaBt1m0gu3i77vdvW/gldmOan705+yUKxDfwwqRCZDkxlg8a3iRfFcvwmAnfYZY53
+         g2dOmpxtpKauj1y4SyEU8TqKZAe8pv1A08LqL4bbIl750OIY8Ko1yrTWYz5Rx77o1I
+         rVDdsOc0EfkpVLKpftbWaXPHsumFgdqKvlt8tkOR6Hx8IyVvQciHMNCOU1EA1htM0G
+         7kNDG59dPJOoGmfClBL9jytV+Qqyi6d9rbFTassP15GUY7aYFDKGjMDOt79K37ITC4
+         RTZxqZqZ5TVug==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 744E3C395DB;
+        Sun,  4 Sep 2022 10:30:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-2022-09-03
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <166228741546.4621.14755594680799707752.git-patchwork-notify@kernel.org>
+Date:   Sun, 04 Sep 2022 10:30:15 +0000
+References: <20220903145618.77721-1-johannes@sipsolutions.net>
+In-Reply-To: <20220903145618.77721-1-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,109 +56,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld-wip
-branch HEAD: f7be5f6a2174bc94d0230d7aeb42fc08da18956f  wifi: mac80211_hwsim: always activate all links
+Hello:
 
-elapsed time: 725m
+This pull request was applied to netdev/net.git (master)
+by David S. Miller <davem@davemloft.net>:
 
-configs tested: 88
-configs skipped: 3
+On Sat,  3 Sep 2022 16:56:17 +0200 you wrote:
+> Hi,
+> 
+> So here we have a set of fixes for the current cycle again,
+> the one thing I know of that's been relatively widely reported
+> is the aggregation timer warning, which Mukesh fixes by setting
+> the link pointer. Also with various other fixes, of course, no
+> less important.
+> 
+> [...]
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Here is the summary with links:
+  - pull-request: wireless-2022-09-03
+    https://git.kernel.org/netdev/net/c/c90714017cb3
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-i386                                defconfig
-x86_64                              defconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-arm                                 defconfig
-i386                          randconfig-a014
-arc                               allnoconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-x86_64                               rhel-8.3
-i386                          randconfig-a016
-i386                          randconfig-a005
-x86_64                         rhel-8.3-kunit
-x86_64                           allyesconfig
-alpha                             allnoconfig
-riscv                             allnoconfig
-csky                              allnoconfig
-x86_64                        randconfig-a013
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                        randconfig-a011
-m68k                             allmodconfig
-arc                              allyesconfig
-arm64                            allyesconfig
-arc                  randconfig-r043-20220904
-alpha                            allyesconfig
-m68k                             allyesconfig
-x86_64                        randconfig-a006
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-arm                              allyesconfig
-s390                 randconfig-r044-20220904
-sh                               allmodconfig
-mips                             allyesconfig
-m68k                           sun3_defconfig
-riscv                randconfig-r042-20220904
-arc                            hsdk_defconfig
-x86_64                        randconfig-a002
-i386                             allyesconfig
-powerpc                 mpc837x_rdb_defconfig
-ia64                             allmodconfig
-arm                           u8500_defconfig
-m68k                       m5475evb_defconfig
-mips                      fuloong2e_defconfig
-sparc64                          alldefconfig
-sh                           se7722_defconfig
-x86_64                        randconfig-a004
-arm                         assabet_defconfig
-m68k                          atari_defconfig
-mips                         bigsur_defconfig
-arc                  randconfig-r043-20220902
-arm                           tegra_defconfig
-mips                  decstation_64_defconfig
-arm                          gemini_defconfig
-arc                  randconfig-r043-20220903
-riscv                randconfig-r042-20220902
-s390                 randconfig-r044-20220902
-i386                          randconfig-c001
-
-clang tested configs:
-i386                          randconfig-a013
-i386                          randconfig-a002
-i386                          randconfig-a015
-i386                          randconfig-a004
-i386                          randconfig-a011
-i386                          randconfig-a006
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a005
-x86_64                        randconfig-a012
-hexagon              randconfig-r045-20220904
-hexagon              randconfig-r041-20220904
-x86_64                        randconfig-a001
-powerpc                 xes_mpc85xx_defconfig
-arm                   milbeaut_m10v_defconfig
-x86_64                        randconfig-a003
-riscv                randconfig-r042-20220903
-hexagon              randconfig-r045-20220902
-powerpc                 mpc8315_rdb_defconfig
-mips                          rm200_defconfig
-arm                           sama7_defconfig
-arm                          moxart_defconfig
-hexagon              randconfig-r045-20220903
-hexagon              randconfig-r041-20220903
-hexagon              randconfig-r041-20220902
-s390                 randconfig-r044-20220903
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
