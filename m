@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A355AC61E
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Sep 2022 21:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E41775AC620
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Sep 2022 21:29:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234925AbiIDT3a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Sep 2022 15:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
+        id S234988AbiIDT3c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Sep 2022 15:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234810AbiIDT3Z (ORCPT
+        with ESMTP id S234855AbiIDT3Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 4 Sep 2022 15:29:25 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E2102A9
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3782E1
         for <linux-wireless@vger.kernel.org>; Sun,  4 Sep 2022 12:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=286l/mBXFdy7JvDZ6GJznj7ef9gXPpBcfEHSW032al8=;
-        t=1662319761; x=1663529361; b=XGOHEo6OL+hdhT2nYhTEGvxIBm+9vg7ZxGqeU6l7RrzvSVp
-        pBB6HD9rIiC3+WH6RSXpgO0qH7ipLe9xlxQwNYYOS2dx/SksItAO5lpi4rqUBzuCcoflj0qWHZRMs
-        LcDZAKQxPMF3WYh62K02Zm0BDicwRsSnSXxgQoKxsJBoEphk3y7ut7pi+0K8ZBLnzWGhp2QdHc3ox
-        Q66iDAjIOBJlvFHOXNVgDG3YE7XeDHtYof8V+kyPMEfxYuWhY7HTAGtIW1VVMMMmtl9pI8Y6QCYm7
-        QdEBLzkJ+CsCF8KrVr8WPXwnrfLleP1qckmUmKHry81G1bLjRvS/TG7Ll63C4+dA==;
+        Resent-Cc:Resent-Message-ID; bh=aWTMKTni8LE38W0sPBEwDKc7LbsI4GZP/Z8aTMB/o1s=;
+        t=1662319761; x=1663529361; b=Twe27cmbxFqWTF9lqRUcRSPuMbDH4eVUt5tgO7JdiTYGW8B
+        ng2LBtq6zRkLtD3wxFL23lYNNrK8CgjzaRJLlJcNQBsvLI8ZMAZDYGtxVdq/j7wGkwgWwqopbyCEj
+        j1W/qK1yJZl0S3NwYPtwTMwdUepXVqNP5zHi2L5UpSyJIj8gR1cVzLpYXQbqr/ZPLKzQ8ynyJaY8O
+        iq9urxS00+1lZ+4Smep5Uor3ZJdvvwlUVFfkzSOsUlIIn3gW1H/EUjeMilalMcfSz6VqI0QZ7H7wv
+        8o07De1auAy5JeZzPW37UfjpHDx6XYjWyCOWwjkPuQp8TLtUNOQ0YIx9V+cQCt5A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oUvIz-007pTZ-1G;
+        id 1oUvIz-007pTZ-21;
         Sun, 04 Sep 2022 21:29:17 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 02/12] wifi: ipw2x00: fix array of flexible structures warnings
-Date:   Sun,  4 Sep 2022 21:29:02 +0200
-Message-Id: <20220904212910.645346411660.I471e8fadce54ea262920828f25b8e84545bcd07e@changeid>
+Subject: [PATCH 03/12] wifi: libertas: fix a couple of sparse warnings
+Date:   Sun,  4 Sep 2022 21:29:03 +0200
+Message-Id: <20220904212910.76c34b2ae7a0.Ieb97c72b6d26f9d695cc4ab10fa7af5c3509612b@changeid>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220904212910.8169e8c9090c.I0357e80cc86be2d4ac6205d1f53568444dcf7c9b@changeid>
 References: <20220904212910.8169e8c9090c.I0357e80cc86be2d4ac6205d1f53568444dcf7c9b@changeid>
@@ -52,115 +52,42 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There are a number of these here, fix them by using
-appropriate casts. No binary changes.
+ - endian swapping is required in one place, use the
+   already swapped 'bsssize' local
+ - lbs_disablemesh need not be exported and can be static
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/ipw2x00/libipw.h    | 13 ++++++-------
- drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 10 +++++-----
- 2 files changed, 11 insertions(+), 12 deletions(-)
+ drivers/net/wireless/marvell/libertas/cfg.c  | 2 +-
+ drivers/net/wireless/marvell/libertas/main.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw.h b/drivers/net/wireless/intel/ipw2x00/libipw.h
-index 7964ef7d15f0..bec7bc273748 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw.h
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw.h
-@@ -405,7 +405,7 @@ struct libipw_auth {
- 	__le16 transaction;
- 	__le16 status;
- 	/* challenge */
--	struct libipw_info_element info_element[];
-+	u8 variable[];
- } __packed;
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 5e3ae00153b8..3e065cbb0af9 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -546,7 +546,7 @@ static int lbs_ret_scan(struct lbs_private *priv, unsigned long dummy,
+ 	pos = scanresp->bssdesc_and_tlvbuffer;
  
- struct libipw_channel_switch {
-@@ -423,7 +423,6 @@ struct libipw_action {
- 	union {
- 		struct libipw_action_exchange {
- 			u8 token;
--			struct libipw_info_element info_element[0];
- 		} exchange;
- 		struct libipw_channel_switch channel_switch;
+ 	lbs_deb_hex(LBS_DEB_SCAN, "SCAN_RSP", scanresp->bssdesc_and_tlvbuffer,
+-			scanresp->bssdescriptsize);
++		    bsssize);
  
-@@ -441,7 +440,7 @@ struct libipw_disassoc {
- struct libipw_probe_request {
- 	struct libipw_hdr_3addr header;
- 	/* SSID, supported rates */
--	struct libipw_info_element info_element[];
-+	u8 variable[];
- } __packed;
+ 	tsfdesc = pos + bsssize;
+ 	tsfsize = 4 + 8 * scanresp->nr_sets;
+diff --git a/drivers/net/wireless/marvell/libertas/main.c b/drivers/net/wireless/marvell/libertas/main.c
+index 5c9f295536ea..8f5220cee112 100644
+--- a/drivers/net/wireless/marvell/libertas/main.c
++++ b/drivers/net/wireless/marvell/libertas/main.c
+@@ -39,8 +39,7 @@ unsigned int lbs_debug;
+ EXPORT_SYMBOL_GPL(lbs_debug);
+ module_param_named(libertas_debug, lbs_debug, int, 0644);
  
- struct libipw_probe_response {
-@@ -451,7 +450,7 @@ struct libipw_probe_response {
- 	__le16 capability;
- 	/* SSID, supported rates, FH params, DS params,
- 	 * CF params, IBSS params, TIM (if beacon), RSN */
--	struct libipw_info_element info_element[];
-+	u8 variable[];
- } __packed;
+-unsigned int lbs_disablemesh;
+-EXPORT_SYMBOL_GPL(lbs_disablemesh);
++static unsigned int lbs_disablemesh;
+ module_param_named(libertas_disablemesh, lbs_disablemesh, int, 0644);
  
- /* Alias beacon for probe_response */
-@@ -462,7 +461,7 @@ struct libipw_assoc_request {
- 	__le16 capability;
- 	__le16 listen_interval;
- 	/* SSID, supported rates, RSN */
--	struct libipw_info_element info_element[];
-+	u8 variable[];
- } __packed;
- 
- struct libipw_reassoc_request {
-@@ -470,7 +469,7 @@ struct libipw_reassoc_request {
- 	__le16 capability;
- 	__le16 listen_interval;
- 	u8 current_ap[ETH_ALEN];
--	struct libipw_info_element info_element[];
-+	u8 variable[];
- } __packed;
- 
- struct libipw_assoc_response {
-@@ -479,7 +478,7 @@ struct libipw_assoc_response {
- 	__le16 status;
- 	__le16 aid;
- 	/* supported rates */
--	struct libipw_info_element info_element[];
-+	u8 variable[];
- } __packed;
- 
- struct libipw_txb {
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-index 7a684b76f39b..48d6870bbf4e 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-@@ -1329,8 +1329,8 @@ static int libipw_handle_assoc_resp(struct libipw_device *ieee, struct libipw_as
- 	network->wpa_ie_len = 0;
- 	network->rsn_ie_len = 0;
- 
--	if (libipw_parse_info_param
--	    (frame->info_element, stats->len - sizeof(*frame), network))
-+	if (libipw_parse_info_param((void *)frame->variable,
-+				    stats->len - sizeof(*frame), network))
- 		return 1;
- 
- 	network->mode = 0;
-@@ -1389,8 +1389,8 @@ static int libipw_network_init(struct libipw_device *ieee, struct libipw_probe_r
- 	network->wpa_ie_len = 0;
- 	network->rsn_ie_len = 0;
- 
--	if (libipw_parse_info_param
--	    (beacon->info_element, stats->len - sizeof(*beacon), network))
-+	if (libipw_parse_info_param((void *)beacon->variable,
-+				    stats->len - sizeof(*beacon), network))
- 		return 1;
- 
- 	network->mode = 0;
-@@ -1510,7 +1510,7 @@ static void libipw_process_probe_response(struct libipw_device
- 	struct libipw_network *target;
- 	struct libipw_network *oldest = NULL;
- #ifdef CONFIG_LIBIPW_DEBUG
--	struct libipw_info_element *info_element = beacon->info_element;
-+	struct libipw_info_element *info_element = (void *)beacon->variable;
- #endif
- 	unsigned long flags;
  
 -- 
 2.37.2
