@@ -2,96 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7018D5AD739
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 18:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7DB5AD845
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 19:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231296AbiIEQPK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Sep 2022 12:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46066 "EHLO
+        id S231545AbiIERPQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Sep 2022 13:15:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbiIEQPJ (ORCPT
+        with ESMTP id S231697AbiIERPO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Sep 2022 12:15:09 -0400
-Received: from mail-oa1-x41.google.com (mail-oa1-x41.google.com [IPv6:2001:4860:4864:20::41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB9A1EC61
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 09:15:06 -0700 (PDT)
-Received: by mail-oa1-x41.google.com with SMTP id 586e51a60fabf-127a3a39131so1571959fac.13
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Sep 2022 09:15:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=FcyQcUXi9xALQQ6Lm7VNXiWYStBjH/LCUTADg6v4m+k=;
-        b=HURqEsL5vGgNP8D+eKx3/PEV2fgz8GnYsI58XUSSZjhkoAzxXFiCNmuWDtjgKW6vRG
-         UAK5DjkAn3KbvdJNR7qWpNuQ7n0QyLkIMqlP8zdNtmDlD56QPPgJUjV9HgSZN8HyrRmH
-         fQxTXKq2embzpDyspbFn+6tqaLcGJAA2Li7n8cKWPJK4DwgiGS8n9r26lQIHy5r/NtH1
-         PIKzNsVgPLeuremlX1Po64CLCJnues9nN14xm1N0EGSIhhNrnrCjNDZAa+H44eh5cnsp
-         Cymof3GezGIB4HCiMV/rXVK+fOfsJvIP01BvKPZCieQKFf/C2cFSPfNqZkXBzxvA3D19
-         egjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=FcyQcUXi9xALQQ6Lm7VNXiWYStBjH/LCUTADg6v4m+k=;
-        b=1pUDsMErnr+4fG3whE1X2JzDpd86NR6GlX0pgCWraDqhzkSPt5gvrEzk2KLKaXw0iK
-         CtRl+y5DFVFmSsdrGgQoTNgz+hx8xl13kpuGPIXDGY602rrgZ9cL85FxyB3e2desiYh/
-         6AiB0U0UjuSqFru0SM25DHH0uFuEVCJ5sKofiTf/bO2cGpd7UjsFoQZY7KhmbGnDdb9m
-         4+9BcYIJxLW2PTk+ZMqTh03huDdaSXxc8PlHY97uWQ4juClJJdnTj0bLh66Mx694Zxcv
-         mVtkHrsPRi/S25L6J2jzMjrQ14Ip2glXIqYfLjrZ9W1ShJR0LwaR7cR070Dc0qDEOuU9
-         smBw==
-X-Gm-Message-State: ACgBeo1zAIgsP0FAMnm8RYcWjfNfO3sfcxdkAyp6ZZUiqliy4P8sGssf
-        AubkhAkKl96dk1CPvKI+b4Gega6mnnQbFpNnvFQ=
-X-Google-Smtp-Source: AA6agR6HeoXbMcqHi1LQUPxgwv/dzKytzYJpqTGDBo8qOzhkCQ+AxQgPPSjwpL5vgqajYE0tSDFKsdSZqA6c9gE+jHk=
-X-Received: by 2002:a05:6870:5804:b0:11c:b6d0:b844 with SMTP id
- r4-20020a056870580400b0011cb6d0b844mr9514609oap.184.1662394504801; Mon, 05
- Sep 2022 09:15:04 -0700 (PDT)
+        Mon, 5 Sep 2022 13:15:14 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C9C4B0FE
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 10:15:13 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 9A553353D3;
+        Mon,  5 Sep 2022 17:15:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1662398111; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lqcIPRczxfdWmkZO56Kcs83+FDpNphXjP0tEpVlr5po=;
+        b=x/qpakKfGis4g+seQSubpFaqRmZYGSO69JFx5LcL+8e1bA+POzNT+ZAm3lWgQOg5HcQQ7z
+        tsBaKRplXdJW2Z2rvhl4xT1Kbh5FvuJcSiat/SjPt3K0/rhmGBLFLS/EtOoTtIQkeqWQJl
+        BI0C4tGCi71oRrdP6x3TYHsciKUeIQU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1662398111;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lqcIPRczxfdWmkZO56Kcs83+FDpNphXjP0tEpVlr5po=;
+        b=5n8cy8fiULoFLurr1YhFj0CmLdG2cB88tvq8HFeT8/nqYOJX9BVUnYWW4LxdLopLCSPtQI
+        d0zB+kj8Lcjlx7CQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4111113A66;
+        Mon,  5 Sep 2022 17:15:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id ZnYLDZ8uFmOLCQAAMHmgww
+        (envelope-from <lhenriques@suse.de>); Mon, 05 Sep 2022 17:15:11 +0000
+Received: from localhost (brahms.olymp [local])
+        by brahms.olymp (OpenSMTPD) with ESMTPA id 09434c0c;
+        Mon, 5 Sep 2022 17:16:00 +0000 (UTC)
+Date:   Mon, 5 Sep 2022 18:16:00 +0100
+From:   =?iso-8859-1?Q?Lu=EDs?= Henriques <lhenriques@suse.de>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: New 6.1 net/mac80211/rx.c warning with iwlwifi / Ultimate-N 6300
+ wifi
+Message-ID: <YxYu0CawomVcTlRn@suse.de>
+References: <498d714c-76be-9d04-26db-a1206878de5e@redhat.com>
+ <YwNNXKEFcX/GK2Sv@suse.de>
+ <644e506ab60a58b95bdbbb5d9c3e425622931f8f.camel@sipsolutions.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6358:8403:b0:b3:9407:5fcf with HTTP; Mon, 5 Sep 2022
- 09:15:04 -0700 (PDT)
-Reply-To: maryalbert00045@gmail.com
-From:   Mary Albert <bariyoussif@gmail.com>
-Date:   Mon, 5 Sep 2022 17:15:04 +0100
-Message-ID: <CAA67+kCAQL=xr8BfLDZO0Zyo2k7ERB2YbAkMUhR4h2MgapGOHQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2001:4860:4864:20:0:0:0:41 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.7520]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [maryalbert00045[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [bariyoussif[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <644e506ab60a58b95bdbbb5d9c3e425622931f8f.camel@sipsolutions.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Hello,
-how are you?
+On Mon, Aug 22, 2022 at 12:21:49PM +0200, Johannes Berg wrote:
+> On Mon, 2022-08-22 at 10:33 +0100, Luís Henriques wrote:
+> > On Sat, Aug 20, 2022 at 03:12:33PM +0200, Hans de Goede wrote:
+> > > Hi All,
+> > > 
+> > > While testing 6.0-rc1 on a Dell Latitude E6430 with:
+> > > 
+> > > 03:00.0 Network controller: Intel Corporation Centrino Ultimate-N 6300 (rev 35)
+> > > 
+> > 
+> > I've just seem a similar splat on -rc2, with a different card:
+> > 
+> > 02:00.0 Network controller: Intel Corporation Wireless 8260 (rev 3a)
+> > 
+> 
+> Yeah this is an issue with the new multi-link work.
+> 
+> We've seen it too, though the rx->link _should_ be set to deflink here
+> in the cases of non-MLO connections.
+> 
+> We're investigating.
+
+FWIW I'm still seeing this with RC4.
+
+Cheers,
+--
+Luís
