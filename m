@@ -2,98 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 531C25AD864
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 19:32:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2525D5AD870
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 19:36:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236536AbiIERcb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Sep 2022 13:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36922 "EHLO
+        id S231642AbiIERgb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Sep 2022 13:36:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231630AbiIERca (ORCPT
+        with ESMTP id S230035AbiIERga (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Sep 2022 13:32:30 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEDD5A3C8
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 10:32:29 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id z8so12158212edb.6
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Sep 2022 10:32:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
-         :to:cc:subject:date;
-        bh=FSC/JOUkzfGiawvUsuwBhFL5jIBix+tJ2uc4E2WmI/o=;
-        b=TpQuyn82hNxO6J43K15JCybXJjwaCJw5itHidX8gINTiCVRB7utzWidFVILmU+Yn0i
-         /epXU82RMf8yW7+Bdw699u5Ut2PeayfZ9yV6ks4P4eEnJZppuEysNDVkYuBD+e9O047X
-         3nm8/x9XqOVdgQVyYGyVxMhw4uynd/5+3aIad0eeiEUS4Sl5bveEgStz2ng2Ob6vIlXM
-         DdETV7UaslP3HEMmACiT7J3OAbGSvLd/T77Cf+T+r0P1ZfIoQmSnP+/XezNj2btCRS7p
-         gSiDF/+oWXoe3C8h19rwgv7PUgTVTCmvqEFIb6ajbRpWDVFHW83P+Fhiao1o0BETpyNq
-         udUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=FSC/JOUkzfGiawvUsuwBhFL5jIBix+tJ2uc4E2WmI/o=;
-        b=Q27975FecAosnvJbCgeCJBun0E8TQc/eucLNyZGNcX752IamzKFJUH6K3LiYGqbhth
-         aUs0zMTt1BHIoMY1WBGSimcDTkBenzWr4/pj/XCEou7PNI25cR7T4sbHlbMDRd7pGtfD
-         KIMkXcY6Xjb+PL4e3szO7x2/I7q0lhqCgglvEsOKEBIViD5DdHHy/qLIr4TTaTuYvrPR
-         /Pw8mPs13gaVprGM9GURzo9V90q2OaO0TJlhLSP7StTBcnCKdXzZ1mi1zt64Nlv2HYod
-         nqxAZB8cpGKwDjpT8jJZLFVajAGdVLjiO4RheAg6R7f2gj+RfHwwREFyH1NzlGUg+QkP
-         D5zw==
-X-Gm-Message-State: ACgBeo0nAPOqC72d+brhy7+1ZjauYuw8hls+QG2SFLc00c06LEt0Nj1t
-        hiLQvf9S8WjtRoEtTxWZZ1BxGORyHyJv1F6uw0U=
-X-Google-Smtp-Source: AA6agR6NgtEFkMwvNRJ38N1tnGgqPxphWRXSdc/NNe6RKih6tj0dYN2prQroSmdelF4/DRcwsQM/FjLfMy2sJuhaRWE=
-X-Received: by 2002:a50:fe91:0:b0:43d:c97d:1b93 with SMTP id
- d17-20020a50fe91000000b0043dc97d1b93mr45868484edt.67.1662399147808; Mon, 05
- Sep 2022 10:32:27 -0700 (PDT)
+        Mon, 5 Sep 2022 13:36:30 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECCE25E668
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 10:36:29 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id AA53133993;
+        Mon,  5 Sep 2022 17:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1662399388; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=G6W8U86kPx/mPCR+56y7wv4ZsWr7F5WzkVJfYQbzX10=;
+        b=qb/7wr33HpUbIqHcn3VNMJFe1LHTpvK9MuUzjGamhiA2wnPCiZ/GbalPXyLEDYVYBjXgam
+        3VfKpnmC+eovGl+KHB1NBNVnJA3ucHizXaLEs5tAB7svQj61ERsbdSETxHaI2u90D/WmKs
+        WMaMo9grzCTN/IdHYfUREfmG0SGj86s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1662399388;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=G6W8U86kPx/mPCR+56y7wv4ZsWr7F5WzkVJfYQbzX10=;
+        b=YKWCRwVaHKZ3qjAQPZ7B4Z2s40TLXHS0o/xovxZ0x3MdbZNW4lal8bC2qd/XqFldvytXai
+        zQnFK40EK1QoJsBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 59061139C7;
+        Mon,  5 Sep 2022 17:36:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 8EYgE5wzFmP5EQAAMHmgww
+        (envelope-from <lhenriques@suse.de>); Mon, 05 Sep 2022 17:36:28 +0000
+Received: from localhost (brahms.olymp [local])
+        by brahms.olymp (OpenSMTPD) with ESMTPA id acde58a4;
+        Mon, 5 Sep 2022 17:37:20 +0000 (UTC)
+Date:   Mon, 5 Sep 2022 18:37:20 +0100
+From:   =?iso-8859-1?Q?Lu=EDs?= Henriques <lhenriques@suse.de>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: New 6.1 net/mac80211/rx.c warning with iwlwifi / Ultimate-N 6300
+ wifi
+Message-ID: <YxYz0OhcbmMzUvMp@suse.de>
+References: <498d714c-76be-9d04-26db-a1206878de5e@redhat.com>
+ <YwNNXKEFcX/GK2Sv@suse.de>
+ <644e506ab60a58b95bdbbb5d9c3e425622931f8f.camel@sipsolutions.net>
+ <YxYu0CawomVcTlRn@suse.de>
+ <f2288c0419d2d1a4ae9935e52c0ef62bfaed5f9a.camel@sipsolutions.net>
 MIME-Version: 1.0
-Reply-To: f.k.fleckenstein01@gmail.com
-Sender: arnettdavid65@gmail.com
-Received: by 2002:a05:6400:17:0:0:0:0 with HTTP; Mon, 5 Sep 2022 10:32:27
- -0700 (PDT)
-From:   "Mr. Ken Fleckenstein" <f.k.fleckenstein01@gmail.com>
-Date:   Mon, 5 Sep 2022 10:32:27 -0700
-X-Google-Sender-Auth: wy-fusLIK_HLk_I0460ZsTP1Bv4
-Message-ID: <CAKbeoUt9TWV37PGJzxgmkSWLyfj=+jz54GO6Bk24Di5AeWXv5g@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_80,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MILLION_USD,
-        MONEY_FRAUD_8,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_HK_NAME_FM_MR_MRS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f2288c0419d2d1a4ae9935e52c0ef62bfaed5f9a.camel@sipsolutions.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I assume you and your family are in good health. I am the Foreign
-operations Manager at one of the leading generation bank here in West
-Africa.
+On Mon, Sep 05, 2022 at 07:23:41PM +0200, Johannes Berg wrote:
+> On Mon, 2022-09-05 at 18:16 +0100, Luís Henriques wrote:
+> > On Mon, Aug 22, 2022 at 12:21:49PM +0200, Johannes Berg wrote:
+> > > On Mon, 2022-08-22 at 10:33 +0100, Luís Henriques wrote:
+> > > > On Sat, Aug 20, 2022 at 03:12:33PM +0200, Hans de Goede wrote:
+> > > > > Hi All,
+> > > > > 
+> > > > > While testing 6.0-rc1 on a Dell Latitude E6430 with:
+> > > > > 
+> > > > > 03:00.0 Network controller: Intel Corporation Centrino Ultimate-N 6300 (rev 35)
+> > > > > 
+> > > > 
+> > > > I've just seem a similar splat on -rc2, with a different card:
+> > > > 
+> > > > 02:00.0 Network controller: Intel Corporation Wireless 8260 (rev 3a)
+> > > > 
+> > > 
+> > > Yeah this is an issue with the new multi-link work.
+> > > 
+> > > We've seen it too, though the rx->link _should_ be set to deflink here
+> > > in the cases of non-MLO connections.
+> > > 
+> > > We're investigating.
+> > 
+> > FWIW I'm still seeing this with RC4.
+> > 
+> 
+> Yes we just missed rc4, but 
+> 
+> commit 4a86c5462616e0d690ad3c94dc84c3b5f1ea5631
+> Author: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+> Date:   Fri Sep 2 16:11:31 2022 +0200
+> 
+>     wifi: mac80211: fix link warning in RX agg timer expiry
+> 
+> 
+> should be coming to a tree near you soon. :)
 
-This being a wide world in which it can be difficult to make new
-acquaintances and because it is virtually impossible to know who is
-trustworthy and who can be believed, i have decided to repose
-confidence in you after much fasting and prayer. It is only because of
-this that I have decided to confide in you and to share with you this
-confidential business.
+Ah! Awesome, thank you for the update.
 
-In my bank; there resides an overdue and unclaimed sum of $18,
-(Million United State Dollars) when the account holder suddenly passed
-on, he left no beneficiary who would be entitled to the receipt of
-this fund. For this reason, I have found it expedient to transfer this
-fund to a trustworthy individual with capacity to act as foreign
-business partner. Thus i humbly request your assistance to claim this
-fund.
-
-Upon the transfer of this fund in your account, you will take 45% as
-your share from the total fund, 10% will be shared to Charity
-Organizations in both country and 45% will be for me. Please if you
-are really sure
-you can handle this project, contact me immediately.
-
-Yours Faithful,
-Mr. Ken Fleckenstein.
+Cheers,
+--
+Luís
