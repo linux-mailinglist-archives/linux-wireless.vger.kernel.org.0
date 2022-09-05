@@ -2,458 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CA85ACEC4
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 11:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 317E25ACEE6
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 11:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236916AbiIEJ0c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Sep 2022 05:26:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40326 "EHLO
+        id S236379AbiIEJcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Sep 2022 05:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236631AbiIEJ01 (ORCPT
+        with ESMTP id S234960AbiIEJcw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Sep 2022 05:26:27 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 45967402D4
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 02:26:24 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2859Pv9dA013745, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2859Pv9dA013745
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 5 Sep 2022 17:25:57 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 5 Sep 2022 17:26:15 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 5 Sep 2022
- 17:26:14 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 7/7] wifi: rtw89: coex: Combine set grant WL/BT and correct the debug log
-Date:   Mon, 5 Sep 2022 17:25:39 +0800
-Message-ID: <20220905092539.51926-8-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220905092539.51926-1-pkshih@realtek.com>
-References: <20220905092539.51926-1-pkshih@realtek.com>
+        Mon, 5 Sep 2022 05:32:52 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC845006C
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 02:32:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=tX9QgcGn7+fLXns8mV9DE9uO/rUf0e8OnYl5WG4WCJ4=;
+        t=1662370371; x=1663579971; b=uzNU4imbetzad3/Hy/cPTZT/spBwdKz6LsfmiNoIe4BrUOu
+        lJcx00+7whJluJZw1gV1hMY2/ynB9qIFtcnV9YYUm45VrNipFugCwZwGHn08bqtSR4zlwKVfa51Gc
+        BKKlr4o1OvMAs6SnnuBmIRuO+Nj+FUToLly6aXm7fM6StfUhcXm0XMo0UBD341702lMWbrpSQSn8D
+        hBIcjbO2MoKJtUrPNcRjbWSFrjE43GYcSxWKOsFFcSYm1YGZwohtDD8j7GgYDLzSUJiCEBS+OADNJ
+        EQOPVu/PxbEDzVvuqT3dZB0FvMpD3T4BF7TtyvNcNzwvu1soUb+YxmDWpFBaFOHw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oV8TH-008UlX-1E;
+        Mon, 05 Sep 2022 11:32:47 +0200
+Message-ID: <af05af0f8f88c42af486bbc6cd5412e3f97e1369.camel@sipsolutions.net>
+Subject: Re: [PATCHv4] wifi: mac80211: Mesh Fast xmit support
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "Sriram R (QUIC)" <quic_srirrama@quicinc.com>,
+        "nbd@nbd.name" <nbd@nbd.name>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Mon, 05 Sep 2022 11:32:46 +0200
+In-Reply-To: <SN6PR02MB4334A54FCCA1F46A0FF4CC5FF77C9@SN6PR02MB4334.namprd02.prod.outlook.com>
+References: <20220818070542.15870-1-quic_srirrama@quicinc.com>
+         <5e0b07409a8c30f61ebe514d31d77e4564b86258.camel@sipsolutions.net>
+         <SN6PR02MB4334A54FCCA1F46A0FF4CC5FF77C9@SN6PR02MB4334.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/05/2022 09:05:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvNSCkV6TIIDAzOjM4OjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ching-Te Ku <ku920601@realtek.com>
+On Sun, 2022-09-04 at 03:14 +0000, Sriram R (QUIC) wrote:
+> >=20
+> > Though I've actually thought for a while now that we have so many capab=
+ility
+> > checks, we might benefit from making those static keys for systems that=
+ only
+> > have a single wifi NIC (or multiple similar ones), which is quite many =
+I guess.
+> Sure, we could check for fast-xmit cap. But, I added 'enabled' so as to a=
+void
+> accessing local->hw in all these functions and also in case if we need a
+> selective enable/disable of this cache in future.
 
-To reduce register IO, combine set_gnt_wl/set_gnt_bt to set the same
-register one time. Because RTL8852C use different register to control
-antenna path, so make correction of path control related debug logs.
+Right, that's what I meant wrt. cache locality - I guess we can keep it
+this way. Though we probably check local so often I'm not sure it
+matters, and if we ever do revive the static keys idea (I did have a
+patch at some point), it'd be better with the flag check.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.c | 208 +++++++++++-----------
- drivers/net/wireless/realtek/rtw89/core.h |   3 +-
- drivers/net/wireless/realtek/rtw89/reg.h  |  12 ++
- 3 files changed, 118 insertions(+), 105 deletions(-)
+> > > +     if (key) {
+> > > +             hdr =3D (struct ieee80211_hdr *)mhdr->hdr;
+> > > +             hdr->frame_control |=3D cpu_to_le16(IEEE80211_FCTL_PROT=
+ECTED);
+> > > +     }
+> >=20
+> > Isn't "if (key)" equivalent to "if (pn_offs)" at this point, so you can=
+ move it into
+> > the same if?
+> The pn_offs will be set only on IEEE80211_KEY_FLAG_GENERATE_IV is set in =
+key->conf.flags
+> So had separate checks.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index c67ceea3a3828..194695309c63e 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -491,6 +491,11 @@ enum btc_gnt_state {
- 	BTC_GNT_MAX
- };
- 
-+enum btc_ctr_path {
-+	BTC_CTRL_BY_BT = 0,
-+	BTC_CTRL_BY_WL
-+};
-+
- enum btc_wl_max_tx_time {
- 	BTC_MAX_TX_TIME_L1 = 500,
- 	BTC_MAX_TX_TIME_L2 = 1000,
-@@ -1621,7 +1626,7 @@ void btc_fw_event(struct rtw89_dev *rtwdev, u8 evt_id, void *data, u32 len)
- 	}
- }
- 
--static void _set_gnt_wl(struct rtw89_dev *rtwdev, u8 phy_map, u8 state)
-+static void _set_gnt(struct rtw89_dev *rtwdev, u8 phy_map, u8 wl_state, u8 bt_state)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_dm *dm = &btc->dm;
-@@ -1635,7 +1640,7 @@ static void _set_gnt_wl(struct rtw89_dev *rtwdev, u8 phy_map, u8 state)
- 		if (!(phy_map & BIT(i)))
- 			continue;
- 
--		switch (state) {
-+		switch (wl_state) {
- 		case BTC_GNT_HW:
- 			g[i].gnt_wl_sw_en = 0;
- 			g[i].gnt_wl = 0;
-@@ -1649,6 +1654,21 @@ static void _set_gnt_wl(struct rtw89_dev *rtwdev, u8 phy_map, u8 state)
- 			g[i].gnt_wl = 1;
- 			break;
- 		}
-+
-+		switch (bt_state) {
-+		case BTC_GNT_HW:
-+			g[i].gnt_bt_sw_en = 0;
-+			g[i].gnt_bt = 0;
-+			break;
-+		case BTC_GNT_SW_LO:
-+			g[i].gnt_bt_sw_en = 1;
-+			g[i].gnt_bt = 0;
-+			break;
-+		case BTC_GNT_SW_HI:
-+			g[i].gnt_bt_sw_en = 1;
-+			g[i].gnt_bt = 1;
-+			break;
-+		}
- 	}
- 
- 	rtw89_chip_mac_cfg_gnt(rtwdev, &dm->gnt);
-@@ -2783,39 +2803,6 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- }
- EXPORT_SYMBOL(rtw89_btc_set_policy_v1);
- 
--static void _set_gnt_bt(struct rtw89_dev *rtwdev, u8 phy_map, u8 state)
--{
--	struct rtw89_btc *btc = &rtwdev->btc;
--	struct rtw89_btc_dm *dm = &btc->dm;
--	struct rtw89_mac_ax_gnt *g = dm->gnt.band;
--	u8 i;
--
--	if (phy_map > BTC_PHY_ALL)
--		return;
--
--	for (i = 0; i < RTW89_PHY_MAX; i++) {
--		if (!(phy_map & BIT(i)))
--			continue;
--
--		switch (state) {
--		case BTC_GNT_HW:
--			g[i].gnt_bt_sw_en = 0;
--			g[i].gnt_bt = 0;
--			break;
--		case BTC_GNT_SW_LO:
--			g[i].gnt_bt_sw_en = 1;
--			g[i].gnt_bt = 0;
--			break;
--		case BTC_GNT_SW_HI:
--			g[i].gnt_bt_sw_en = 1;
--			g[i].gnt_bt = 1;
--			break;
--		}
--	}
--
--	rtw89_chip_mac_cfg_gnt(rtwdev, &dm->gnt);
--}
--
- static void _set_bt_plut(struct rtw89_dev *rtwdev, u8 phy_map,
- 			 u8 tx_val, u8 rx_val)
- {
-@@ -2880,86 +2867,74 @@ static void _set_ant(struct rtw89_dev *rtwdev, bool force_exec,
- 
- 	switch (type) {
- 	case BTC_ANT_WPOWERON:
--		rtw89_chip_cfg_ctrl_path(rtwdev, false);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_BT);
- 		break;
- 	case BTC_ANT_WINIT:
--		if (bt->enable.now) {
--			_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_LO);
--			_set_gnt_bt(rtwdev, phy_map, BTC_GNT_SW_HI);
--		} else {
--			_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_HI);
--			_set_gnt_bt(rtwdev, phy_map, BTC_GNT_SW_LO);
--		}
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
-+		if (bt->enable.now)
-+			_set_gnt(rtwdev, phy_map, BTC_GNT_SW_LO, BTC_GNT_SW_HI);
-+		else
-+			_set_gnt(rtwdev, phy_map, BTC_GNT_SW_HI, BTC_GNT_SW_LO);
-+
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
- 		_set_bt_plut(rtwdev, BTC_PHY_ALL, BTC_PLT_BT, BTC_PLT_BT);
- 		break;
- 	case BTC_ANT_WONLY:
--		_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_HI);
--		_set_gnt_bt(rtwdev, phy_map, BTC_GNT_SW_LO);
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
-+		_set_gnt(rtwdev, phy_map, BTC_GNT_SW_HI, BTC_GNT_SW_LO);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
- 		_set_bt_plut(rtwdev, BTC_PHY_ALL, BTC_PLT_NONE, BTC_PLT_NONE);
- 		break;
- 	case BTC_ANT_WOFF:
--		rtw89_chip_cfg_ctrl_path(rtwdev, false);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_BT);
- 		_set_bt_plut(rtwdev, BTC_PHY_ALL, BTC_PLT_NONE, BTC_PLT_NONE);
- 		break;
- 	case BTC_ANT_W2G:
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
- 		if (rtwdev->dbcc_en) {
- 			for (i = 0; i < RTW89_PHY_MAX; i++) {
- 				b2g = (wl_dinfo->real_band[i] == RTW89_BAND_2G);
- 
- 				gnt_wl_ctrl = b2g ? BTC_GNT_HW : BTC_GNT_SW_HI;
--				_set_gnt_wl(rtwdev, BIT(i), gnt_wl_ctrl);
--
- 				gnt_bt_ctrl = b2g ? BTC_GNT_HW : BTC_GNT_SW_HI;
- 				/* BT should control by GNT_BT if WL_2G at S0 */
- 				if (i == 1 &&
- 				    wl_dinfo->real_band[0] == RTW89_BAND_2G &&
- 				    wl_dinfo->real_band[1] == RTW89_BAND_5G)
- 					gnt_bt_ctrl = BTC_GNT_HW;
--				_set_gnt_bt(rtwdev, BIT(i), gnt_bt_ctrl);
--
-+				_set_gnt(rtwdev, BIT(i), gnt_wl_ctrl, gnt_bt_ctrl);
- 				plt_ctrl = b2g ? BTC_PLT_BT : BTC_PLT_NONE;
- 				_set_bt_plut(rtwdev, BIT(i),
- 					     plt_ctrl, plt_ctrl);
- 			}
- 		} else {
--			_set_gnt_wl(rtwdev, phy_map, BTC_GNT_HW);
--			_set_gnt_bt(rtwdev, phy_map, BTC_GNT_HW);
-+			_set_gnt(rtwdev, phy_map, BTC_GNT_HW, BTC_GNT_HW);
- 			_set_bt_plut(rtwdev, BTC_PHY_ALL,
- 				     BTC_PLT_BT, BTC_PLT_BT);
- 		}
- 		break;
- 	case BTC_ANT_W5G:
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
--		_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_HI);
--		_set_gnt_bt(rtwdev, phy_map, BTC_GNT_HW);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
-+		_set_gnt(rtwdev, phy_map, BTC_GNT_SW_HI, BTC_GNT_HW);
- 		_set_bt_plut(rtwdev, BTC_PHY_ALL, BTC_PLT_NONE, BTC_PLT_NONE);
- 		break;
- 	case BTC_ANT_W25G:
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
--		_set_gnt_wl(rtwdev, phy_map, BTC_GNT_HW);
--		_set_gnt_bt(rtwdev, phy_map, BTC_GNT_HW);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
-+		_set_gnt(rtwdev, phy_map, BTC_GNT_HW, BTC_GNT_HW);
- 		_set_bt_plut(rtwdev, BTC_PHY_ALL,
- 			     BTC_PLT_GNT_WL, BTC_PLT_GNT_WL);
- 		break;
- 	case BTC_ANT_FREERUN:
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
--		_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_HI);
--		_set_gnt_bt(rtwdev, phy_map, BTC_GNT_SW_HI);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
-+		_set_gnt(rtwdev, phy_map, BTC_GNT_SW_HI, BTC_GNT_SW_HI);
- 		_set_bt_plut(rtwdev, BTC_PHY_ALL, BTC_PLT_NONE, BTC_PLT_NONE);
- 		break;
- 	case BTC_ANT_WRFK:
--		rtw89_chip_cfg_ctrl_path(rtwdev, true);
--		_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_HI);
--		_set_gnt_bt(rtwdev, phy_map, BTC_GNT_SW_LO);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_WL);
-+		_set_gnt(rtwdev, phy_map, BTC_GNT_SW_HI, BTC_GNT_SW_LO);
- 		_set_bt_plut(rtwdev, phy_map, BTC_PLT_NONE, BTC_PLT_NONE);
- 		break;
- 	case BTC_ANT_BRFK:
--		rtw89_chip_cfg_ctrl_path(rtwdev, false);
--		_set_gnt_wl(rtwdev, phy_map, BTC_GNT_SW_LO);
--		_set_gnt_bt(rtwdev, phy_map, BTC_GNT_SW_HI);
-+		rtw89_chip_cfg_ctrl_path(rtwdev, BTC_CTRL_BY_BT);
-+		_set_gnt(rtwdev, phy_map, BTC_GNT_SW_LO, BTC_GNT_SW_HI);
- 		_set_bt_plut(rtwdev, phy_map, BTC_PLT_NONE, BTC_PLT_NONE);
- 		break;
- 	default:
-@@ -4636,7 +4611,7 @@ void rtw89_btc_ntfy_init(struct rtw89_dev *rtwdev, u8 mode)
- 	_write_scbd(rtwdev,
- 		    BTC_WSCB_ACTIVE | BTC_WSCB_ON | BTC_WSCB_BTLOG, true);
- 	_update_bt_scbd(rtwdev, true);
--	if (rtw89_mac_get_ctrl_path(rtwdev)) {
-+	if (rtw89_mac_get_ctrl_path(rtwdev) && chip->chip_id == RTL8852A) {
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): PTA owner warning!!\n",
- 			    __func__);
-@@ -6391,6 +6366,47 @@ static void _show_fw_dm_msg(struct rtw89_dev *rtwdev, struct seq_file *m)
- 	_show_fbtc_step(rtwdev, m);
- }
- 
-+static void _get_gnt(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_coex_gnt *gnt_cfg)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	struct rtw89_mac_ax_gnt *gnt;
-+	u32 val, status;
-+
-+	if (chip->chip_id == RTL8852A || chip->chip_id == RTL8852B) {
-+		rtw89_mac_read_lte(rtwdev, R_AX_LTE_SW_CFG_1, &val);
-+		rtw89_mac_read_lte(rtwdev, R_AX_GNT_VAL, &status);
-+
-+		gnt = &gnt_cfg->band[0];
-+		gnt->gnt_bt_sw_en = !!(val & B_AX_GNT_BT_RFC_S0_SW_CTRL);
-+		gnt->gnt_bt = !!(status & B_AX_GNT_BT_RFC_S0_STA);
-+		gnt->gnt_wl_sw_en = !!(val & B_AX_GNT_WL_RFC_S0_SW_CTRL);
-+		gnt->gnt_wl = !!(status & B_AX_GNT_WL_RFC_S0_STA);
-+
-+		gnt = &gnt_cfg->band[1];
-+		gnt->gnt_bt_sw_en = !!(val & B_AX_GNT_BT_RFC_S1_SW_CTRL);
-+		gnt->gnt_bt = !!(status & B_AX_GNT_BT_RFC_S1_STA);
-+		gnt->gnt_wl_sw_en = !!(val & B_AX_GNT_WL_RFC_S1_SW_CTRL);
-+		gnt->gnt_wl = !!(status & B_AX_GNT_WL_RFC_S1_STA);
-+	} else if (chip->chip_id == RTL8852C) {
-+		val = rtw89_read32(rtwdev, R_AX_GNT_SW_CTRL);
-+		status = rtw89_read32(rtwdev, R_AX_GNT_VAL_V1);
-+
-+		gnt = &gnt_cfg->band[0];
-+		gnt->gnt_bt_sw_en = !!(val & B_AX_GNT_BT_RFC_S0_SWCTRL);
-+		gnt->gnt_bt = !!(status & B_AX_GNT_BT_RFC_S0);
-+		gnt->gnt_wl_sw_en = !!(val & B_AX_GNT_WL_RFC_S0_SWCTRL);
-+		gnt->gnt_wl = !!(status & B_AX_GNT_WL_RFC_S0);
-+
-+		gnt = &gnt_cfg->band[1];
-+		gnt->gnt_bt_sw_en = !!(val & B_AX_GNT_BT_RFC_S1_SWCTRL);
-+		gnt->gnt_bt = !!(status & B_AX_GNT_BT_RFC_S1);
-+		gnt->gnt_wl_sw_en = !!(val & B_AX_GNT_WL_RFC_S1_SWCTRL);
-+		gnt->gnt_wl = !!(status & B_AX_GNT_WL_RFC_S1);
-+	} else {
-+		return;
-+	}
-+}
-+
- static void _show_mreg(struct rtw89_dev *rtwdev, struct seq_file *m)
- {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
-@@ -6402,7 +6418,8 @@ static void _show_mreg(struct rtw89_dev *rtwdev, struct seq_file *m)
- 	struct rtw89_btc_cx *cx = &btc->cx;
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
- 	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
--	struct rtw89_mac_ax_gnt gnt[2] = {0};
-+	struct rtw89_mac_ax_coex_gnt gnt_cfg = {};
-+	struct rtw89_mac_ax_gnt gnt;
- 	u8 i = 0, type = 0, cnt = 0;
- 	u32 val, offset;
- 
-@@ -6419,45 +6436,28 @@ static void _show_mreg(struct rtw89_dev *rtwdev, struct seq_file *m)
- 
- 	/* To avoid I/O if WL LPS or power-off  */
- 	if (!wl->status.map.lps && !wl->status.map.rf_off) {
--		rtw89_mac_read_lte(rtwdev, R_AX_LTE_SW_CFG_1, &val);
--		if (val & (B_AX_GNT_BT_RFC_S0_SW_VAL |
--		    B_AX_GNT_BT_BB_S0_SW_VAL))
--			gnt[0].gnt_bt = true;
--		if (val & (B_AX_GNT_BT_RFC_S0_SW_CTRL |
--		    B_AX_GNT_BT_BB_S0_SW_CTRL))
--			gnt[0].gnt_bt_sw_en = true;
--		if (val & (B_AX_GNT_WL_RFC_S0_SW_VAL |
--		    B_AX_GNT_WL_BB_S0_SW_VAL))
--			gnt[0].gnt_wl = true;
--		if (val & (B_AX_GNT_WL_RFC_S0_SW_CTRL |
--		    B_AX_GNT_WL_BB_S0_SW_CTRL))
--			gnt[0].gnt_wl_sw_en = true;
--
--		if (val & (B_AX_GNT_BT_RFC_S1_SW_VAL |
--		    B_AX_GNT_BT_BB_S1_SW_VAL))
--			gnt[1].gnt_bt = true;
--		if (val & (B_AX_GNT_BT_RFC_S1_SW_CTRL |
--		    B_AX_GNT_BT_BB_S1_SW_CTRL))
--			gnt[1].gnt_bt_sw_en = true;
--		if (val & (B_AX_GNT_WL_RFC_S1_SW_VAL |
--		    B_AX_GNT_WL_BB_S1_SW_VAL))
--			gnt[1].gnt_wl = true;
--		if (val & (B_AX_GNT_WL_RFC_S1_SW_CTRL |
--		    B_AX_GNT_WL_BB_S1_SW_CTRL))
--			gnt[1].gnt_wl_sw_en = true;
-+		if (chip->chip_id == RTL8852A)
-+			btc->dm.pta_owner = rtw89_mac_get_ctrl_path(rtwdev);
-+		else if (chip->chip_id == RTL8852C)
-+			btc->dm.pta_owner = 0;
- 
-+		_get_gnt(rtwdev, &gnt_cfg);
-+		gnt = gnt_cfg.band[0];
- 		seq_printf(m,
- 			   " %-15s : pta_owner:%s, phy-0[gnt_wl:%s-%d/gnt_bt:%s-%d], ",
- 			   "[gnt_status]",
--			   (rtw89_mac_get_ctrl_path(rtwdev) ? "WL" : "BT"),
--			   (gnt[0].gnt_wl_sw_en ? "SW" : "HW"), gnt[0].gnt_wl,
--			   (gnt[0].gnt_bt_sw_en ? "SW" : "HW"), gnt[0].gnt_bt);
-+			   chip->chip_id == RTL8852C ? "HW" :
-+			   btc->dm.pta_owner == BTC_CTRL_BY_WL ? "WL" : "BT",
-+			   gnt.gnt_wl_sw_en ? "SW" : "HW", gnt.gnt_wl,
-+			   gnt.gnt_bt_sw_en ? "SW" : "HW", gnt.gnt_bt);
- 
-+		gnt = gnt_cfg.band[1];
- 		seq_printf(m, "phy-1[gnt_wl:%s-%d/gnt_bt:%s-%d]\n",
--			   (gnt[1].gnt_wl_sw_en ? "SW" : "HW"), gnt[1].gnt_wl,
--			   (gnt[1].gnt_bt_sw_en ? "SW" : "HW"), gnt[1].gnt_bt);
-+			   gnt.gnt_wl_sw_en ? "SW" : "HW",
-+			   gnt.gnt_wl,
-+			   gnt.gnt_bt_sw_en ? "SW" : "HW",
-+			   gnt.gnt_bt);
- 	}
--
- 	pcinfo = &pfwinfo->rpt_fbtc_mregval.cinfo;
- 	if (!pcinfo->valid) {
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 0f4f68c940286..c8bc79833fef8 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -1797,8 +1797,9 @@ struct rtw89_btc_dm {
- 	u32 wl_btg_rx: 1;
- 	u32 trx_para_level: 8;
- 	u32 wl_stb_chg: 1;
-+	u32 pta_owner: 1;
- 	u32 tdma_instant_excute: 1;
--	u32 rsvd: 2;
-+	u32 rsvd: 1;
- 
- 	u16 slot_dur[CXST_MAX];
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 38139fff03475..4a23391b0f796 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3135,6 +3135,18 @@
- #define B_AX_GNT_WL_BB_VAL BIT(1)
- #define B_AX_GNT_WL_BB_SWCTRL BIT(0)
- 
-+#define R_AX_GNT_VAL 0x0054
-+#define B_AX_GNT_BT_RFC_S1_STA BIT(5)
-+#define B_AX_GNT_WL_RFC_S1_STA BIT(4)
-+#define B_AX_GNT_BT_RFC_S0_STA BIT(3)
-+#define B_AX_GNT_WL_RFC_S0_STA BIT(2)
-+
-+#define R_AX_GNT_VAL_V1 0xDA4C
-+#define B_AX_GNT_BT_RFC_S1 BIT(4)
-+#define B_AX_GNT_BT_RFC_S0 BIT(3)
-+#define B_AX_GNT_WL_RFC_S1 BIT(2)
-+#define B_AX_GNT_WL_RFC_S0 BIT(1)
-+
- #define R_AX_TDMA_MODE 0xDA4C
- #define R_AX_TDMA_MODE_C1 0xFA4C
- #define B_AX_R_BT_CMD_RPT_MASK GENMASK(31, 16)
--- 
-2.25.1
+Ack.
 
+> > > +     /* availability of hdr entry ensures the mpath and sta are vali=
+d
+> > > +      * hence validation can be avoided.
+> >=20
+> > What about key? :)
+
+> Hmm.. I was relying on the availability of cache entry to ensure sta and =
+key are valid.
+
+And I thought you're right - but you didn't mention it in the comment,
+so I wanted to double-check.
+
+> But I see your point and realize the entry gets removed later in __sta_in=
+fo_destroy_part2()
+> whereas the key can get cleared before the entry is flushed.
+> May be I'll see if I could flush the cache entry in __sta_info_destroy_pa=
+rt1() so that
+> the entry itself is not visible. Hope that solves if such race occurs.
+>=20
+
+Alright, let's see. But you can also remove a key without removing a
+STA, so maybe there's some flushing needed there too?
+
+johannes
