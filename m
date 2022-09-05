@@ -2,73 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8805ACC34
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 09:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87AE15ACECF
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Sep 2022 11:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236858AbiIEHWm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Sep 2022 03:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46408 "EHLO
+        id S236740AbiIEJ02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Sep 2022 05:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237242AbiIEHVu (ORCPT
+        with ESMTP id S235806AbiIEJ00 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Sep 2022 03:21:50 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAB645F5D
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 00:18:38 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2856AGvV005471;
-        Mon, 5 Sep 2022 07:18:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=uLWXwbEquNRf/qovD/zzCxV+3jSh4dEL18uj+vLHmmg=;
- b=U5r6e0Jrn6ulyeSv2/K5DL9+zpCSMFyMezV046WXPIvS5GfSpp0PAu0T6viQNV+/GR0n
- IChs8ZfekSTAlrHZEArZq7QY2Vjb2pYYeb4SGzTk5MeGg3ae/HXZuvNXHfcyVD0kcVW5
- PnVv5zCKHsmavjtmnlbTVFPko2amAmOSAUNw9SAvcni35wAR2ZkgIO1cy17QFGPKPhYP
- +CePZjXM9JCdbCXA6bOxvhRSxs4FVyGKDEbYHoMh5A9V1SWAzjHNxrm+0wxzEkwAHQKV
- 6avH/yWYic8pwNaE0DgEDUjGZSBM0vqpgJUxt9FZLxRjxfaokHP0ApZFop+pAmbIARBX 3w== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jc07dbb8e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 05 Sep 2022 07:18:29 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2857ISv3032422
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 5 Sep 2022 07:18:28 GMT
-Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Mon, 5 Sep 2022 00:18:27 -0700
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH v2 3/3] wifi: ath11k: Increase TCL data ring size for WCN6750
-Date:   Mon, 5 Sep 2022 12:48:05 +0530
-Message-ID: <20220905071805.31625-4-quic_mpubbise@quicinc.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220905071805.31625-1-quic_mpubbise@quicinc.com>
-References: <20220905071805.31625-1-quic_mpubbise@quicinc.com>
+        Mon, 5 Sep 2022 05:26:26 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CC7AA3C17A
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 02:26:22 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2859PnrvE013700, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2859PnrvE013700
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 5 Sep 2022 17:25:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 5 Sep 2022 17:26:07 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 5 Sep 2022
+ 17:26:07 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/7] wifi: rtw89: coex: extend BT coexistence to support 8852CE
+Date:   Mon, 5 Sep 2022 17:25:32 +0800
+Message-ID: <20220905092539.51926-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: WO6bNaU6c16pvpmDAIIWig3OvJCsgP5i
-X-Proofpoint-ORIG-GUID: WO6bNaU6c16pvpmDAIIWig3OvJCsgP5i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-09-05_05,2022-09-05_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- spamscore=0 suspectscore=0 malwarescore=0 mlxlogscore=996 impostorscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209050035
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/05/2022 09:05:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvNSCkV6TIIDAzOjM4OjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,127 +66,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Increase TCL data ring size to 2048 for WCN6750. This is
-needed to meet 160 MHz TX throughput.
+Introduce more patches to support new formats used by 8852CE.
 
-Add a new hw_param to indicate the TX ring size for
-individual devices.
+Ching-Te Ku (6):
+  wifi: rtw89: coex: Add v1 Wi-Fi firmware power-saving null data report
+  wifi: rtw89: coex: Move coexistence firmware buffer size parameter to
+    chip info
+  wifi: rtw89: coex: Parsing Wi-Fi firmware error message from reports
+  wifi: rtw89: coex: Parsing Wi-Fi firmware TDMA slot steps from reports
+  wifi: rtw89: coex: Remove trace_step at COEX-MECH control structure
+    for RTL8852C
+  wifi: rtw89: coex: Combine set grant WL/BT and correct the debug log
 
-Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+Ping-Ke Shih (1):
+  wifi: rtw89: coex: use void pointer as temporal type to copy report
 
-Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.c | 7 +++++++
- drivers/net/wireless/ath/ath11k/dp.c   | 2 +-
- drivers/net/wireless/ath/ath11k/dp.h   | 2 ++
- drivers/net/wireless/ath/ath11k/hw.h   | 1 +
- 4 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/coex.c     | 354 ++++++++++--------
+ drivers/net/wireless/realtek/rtw89/core.h     |  18 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |   4 +-
+ drivers/net/wireless/realtek/rtw89/reg.h      |  12 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
+ 6 files changed, 237 insertions(+), 153 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 1bcc108e9a85..e054514b3b09 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -109,6 +109,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = false,
- 		.supports_multi_bssid = false,
- 		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
-@@ -183,6 +184,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = false,
- 		.supports_multi_bssid = false,
- 		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 	},
- 	{
- 		.name = "qca6390 hw2.0",
-@@ -256,6 +258,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = true,
- 		.supports_multi_bssid = true,
- 		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 	},
- 	{
- 		.name = "qcn9074 hw1.0",
-@@ -329,6 +332,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = false,
- 		.supports_multi_bssid = false,
- 		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 	},
- 	{
- 		.name = "wcn6855 hw2.0",
-@@ -402,6 +406,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = true,
- 		.supports_multi_bssid = true,
- 		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 	},
- 	{
- 		.name = "wcn6855 hw2.1",
-@@ -474,6 +479,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = true,
- 		.supports_multi_bssid = true,
- 		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 	},
- 	{
- 		.name = "wcn6750 hw1.0",
-@@ -546,6 +552,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.support_off_channel_tx = false,
- 		.supports_multi_bssid = true,
- 		.tcl_ring_retry = false,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE_WCN6750,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
-index 4f7381719840..fff8decf311b 100644
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -401,7 +401,7 @@ static int ath11k_dp_srng_common_setup(struct ath11k_base *ab)
- 
- 		ret = ath11k_dp_srng_setup(ab, &dp->tx_ring[i].tcl_data_ring,
- 					   HAL_TCL_DATA, tcl_num, 0,
--					   DP_TCL_DATA_RING_SIZE);
-+					   ab->hw_params.tx_ring_size);
- 		if (ret) {
- 			ath11k_warn(ab, "failed to set up tcl_data ring (%d) :%d\n",
- 				    i, ret);
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index 8af2985ca2d9..16fb536da5cf 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH11K_DP_H
-@@ -203,6 +204,7 @@ struct ath11k_pdev_dp {
- 
- #define DP_WBM_RELEASE_RING_SIZE	64
- #define DP_TCL_DATA_RING_SIZE		512
-+#define DP_TCL_DATA_RING_SIZE_WCN6750	2048
- #define DP_TX_COMP_RING_SIZE		32768
- #define DP_TX_IDR_SIZE			DP_TX_COMP_RING_SIZE
- #define DP_TCL_CMD_RING_SIZE		32
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 5164c471da6e..06c4dc30827b 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -210,6 +210,7 @@ struct ath11k_hw_params {
- 	bool support_off_channel_tx;
- 	bool supports_multi_bssid;
- 	bool tcl_ring_retry;
-+	u32 tx_ring_size;
- };
- 
- struct ath11k_hw_ops {
 -- 
-2.37.1
+2.25.1
 
