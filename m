@@ -2,137 +2,464 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D20605AE893
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 14:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D525AEA30
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 15:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232680AbiIFMkF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 08:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
+        id S230148AbiIFNld (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 09:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231700AbiIFMkD (ORCPT
+        with ESMTP id S241035AbiIFNj2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 08:40:03 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B4DA184
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Sep 2022 05:39:54 -0700 (PDT)
-X-UUID: 47ed7dbbd2f94310a0f516223f05bff5-20220906
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=WEgvbtBsCFeZ50c9fMqUTAwLSZshYL4FjCd/clXuW18=;
-        b=bD2hzbQVmtRMp5h+Fap5NSYlhQM3vVchl2CH7Q7lAGjURKnR43hYGrU1q0K7J7D9/OgbuEDdmN5Vm87eMvfktkDkQr+J4q36b86UgyzBR5LDCHRsXork7tXbxgjear3YZdEafoKtV1GJHOX79zXWWEeLynWdl4vG9k9zUDo4gjM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.10,REQID:5b130fe4-f2dd-4b80-a4a6-87ae243efa0b,OB:0,L
-        OB:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release
-        _Ham,ACTION:release,TS:95
-X-CID-INFO: VERSION:1.1.10,REQID:5b130fe4-f2dd-4b80-a4a6-87ae243efa0b,OB:0,LOB
-        :0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS98
-        1B3D,ACTION:quarantine,TS:95
-X-CID-META: VersionHash:84eae18,CLOUDID:0906dfd0-20bd-4e5e-ace8-00692b7ab380,C
-        OID:8b8077ea9c6d,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 47ed7dbbd2f94310a0f516223f05bff5-20220906
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 595268623; Tue, 06 Sep 2022 20:39:51 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Tue, 6 Sep 2022 20:39:50 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 6 Sep 2022 20:39:50 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921e: fix rmmod crash in driver reload test
-Date:   Tue, 6 Sep 2022 20:39:43 +0800
-Message-ID: <152c474c6d9a0871b040e54261cf45d8229d09c3.1662467716.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 6 Sep 2022 09:39:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A13F7C76C;
+        Tue,  6 Sep 2022 06:36:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F6061556;
+        Tue,  6 Sep 2022 13:35:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8D3C433D6;
+        Tue,  6 Sep 2022 13:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1662471314;
+        bh=c76RdZkpfwhlMFS1txr+2Nnlyyy8hNqQ90Jsk48vrvk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=19rAxVucJPUi/nwB0VgoPWUyFkgSxuoNDPMHW20sKZl78nZxhLajvX5JsKipealz+
+         ATngCHcYE7P0LnVNrBQ/ureY46UnoY04qzTeskasO/ir8H5DdgqBrafTDWmJryw/lX
+         gwSL/nmHPaYs3b0JNX/53JdR/oMO4KBQvz/JQjio=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Catherine Sullivan <csully@google.com>,
+        David Awogbemila <awogbemila@google.com>,
+        Dimitris Michailidis <dmichail@fungible.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        oss-drivers@corigine.com,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 5.10 68/80] net: Use u64_stats_fetch_begin_irq() for stats fetch.
+Date:   Tue,  6 Sep 2022 15:31:05 +0200
+Message-Id: <20220906132819.937966050@linuxfoundation.org>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20220906132816.936069583@linuxfoundation.org>
+References: <20220906132816.936069583@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_CSS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-In insmod/rmmod stress test, the following crash dump shows up immediately.
-The problem is caused by missing mt76_dev in mt7921_pci_remove(). We
-should make sure the drvdata is ready before probe() finished.
+commit 278d3ba61563ceed3cb248383ced19e14ec7bc1f upstream.
 
-[168.862789] ==================================================================
-[168.862797] BUG: KASAN: user-memory-access in try_to_grab_pending+0x59/0x480
-[168.862805] Write of size 8 at addr 0000000000006df0 by task rmmod/5361
-[168.862812] CPU: 7 PID: 5361 Comm: rmmod Tainted: G           OE     5.19.0-rc6 #1
-[168.862816] Hardware name: Intel(R) Client Systems NUC8i7BEH/NUC8BEB, 05/04/2020
-[168.862820] Call Trace:
-[168.862822]  <TASK>
-[168.862825]  dump_stack_lvl+0x49/0x63
-[168.862832]  print_report.cold+0x493/0x6b7
-[168.862845]  kasan_report+0xa7/0x120
-[168.862857]  kasan_check_range+0x163/0x200
-[168.862861]  __kasan_check_write+0x14/0x20
-[168.862866]  try_to_grab_pending+0x59/0x480
-[168.862870]  __cancel_work_timer+0xbb/0x340
-[168.862898]  cancel_work_sync+0x10/0x20
-[168.862902]  mt7921_pci_remove+0x61/0x1c0 [mt7921e]
-[168.862909]  pci_device_remove+0xa3/0x1d0
-[168.862914]  device_remove+0xc4/0x170
-[168.862920]  device_release_driver_internal+0x163/0x300
-[168.862925]  driver_detach+0xc7/0x1a0
-[168.862930]  bus_remove_driver+0xeb/0x2d0
-[168.862935]  driver_unregister+0x71/0xb0
-[168.862939]  pci_unregister_driver+0x30/0x230
-[168.862944]  mt7921_pci_driver_exit+0x10/0x1b [mt7921e]
-[168.862949]  __x64_sys_delete_module+0x2f9/0x4b0
-[168.862968]  do_syscall_64+0x38/0x90
-[168.862973]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+On 32bit-UP u64_stats_fetch_begin() disables only preemption. If the
+reader is in preemptible context and the writer side
+(u64_stats_update_begin*()) runs in an interrupt context (IRQ or
+softirq) then the writer can update the stats during the read operation.
+This update remains undetected.
 
-Test steps:
-1. insmode
-2. do not ifup
-3. rmmod quickly (within 1 second)
+Use u64_stats_fetch_begin_irq() to ensure the stats fetch on 32bit-UP
+are not interrupted by a writer. 32bit-SMP remains unaffected by this
+change.
 
-Fixes: 1c71e03afe4b ("mt76: mt7921: move mt7921_init_hw in a dedicated work")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Catherine Sullivan <csully@google.com>
+Cc: David Awogbemila <awogbemila@google.com>
+Cc: Dimitris Michailidis <dmichail@fungible.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Hans Ulli Kroll <ulli.kroll@googlemail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jeroen de Borst <jeroendb@google.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <simon.horman@corigine.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: oss-drivers@corigine.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/cortina/gemini.c                |   24 +++++++++----------
+ drivers/net/ethernet/google/gve/gve_ethtool.c        |   16 ++++++------
+ drivers/net/ethernet/google/gve/gve_main.c           |   12 ++++-----
+ drivers/net/ethernet/huawei/hinic/hinic_rx.c         |    4 +--
+ drivers/net/ethernet/huawei/hinic/hinic_tx.c         |    4 +--
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c  |    8 +++---
+ drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c |    8 +++---
+ drivers/net/netdevsim/netdev.c                       |    4 +--
+ net/mac80211/sta_info.c                              |    8 +++---
+ net/mpls/af_mpls.c                                   |    4 +--
+ 10 files changed, 46 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 9d1ba838e54f..be77026e8974 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -284,6 +284,8 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 		goto err_free_pci_vec;
- 	}
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1920,7 +1920,7 @@ static void gmac_get_stats64(struct net_
  
-+	pci_set_drvdata(pdev, mdev);
-+
- 	dev = container_of(mdev, struct mt7921_dev, mt76);
- 	dev->hif_ops = &mt7921_pcie_ops;
+ 	/* Racing with RX NAPI */
+ 	do {
+-		start = u64_stats_fetch_begin(&port->rx_stats_syncp);
++		start = u64_stats_fetch_begin_irq(&port->rx_stats_syncp);
  
--- 
-2.18.0
+ 		stats->rx_packets = port->stats.rx_packets;
+ 		stats->rx_bytes = port->stats.rx_bytes;
+@@ -1932,11 +1932,11 @@ static void gmac_get_stats64(struct net_
+ 		stats->rx_crc_errors = port->stats.rx_crc_errors;
+ 		stats->rx_frame_errors = port->stats.rx_frame_errors;
+ 
+-	} while (u64_stats_fetch_retry(&port->rx_stats_syncp, start));
++	} while (u64_stats_fetch_retry_irq(&port->rx_stats_syncp, start));
+ 
+ 	/* Racing with MIB and TX completion interrupts */
+ 	do {
+-		start = u64_stats_fetch_begin(&port->ir_stats_syncp);
++		start = u64_stats_fetch_begin_irq(&port->ir_stats_syncp);
+ 
+ 		stats->tx_errors = port->stats.tx_errors;
+ 		stats->tx_packets = port->stats.tx_packets;
+@@ -1946,15 +1946,15 @@ static void gmac_get_stats64(struct net_
+ 		stats->rx_missed_errors = port->stats.rx_missed_errors;
+ 		stats->rx_fifo_errors = port->stats.rx_fifo_errors;
+ 
+-	} while (u64_stats_fetch_retry(&port->ir_stats_syncp, start));
++	} while (u64_stats_fetch_retry_irq(&port->ir_stats_syncp, start));
+ 
+ 	/* Racing with hard_start_xmit */
+ 	do {
+-		start = u64_stats_fetch_begin(&port->tx_stats_syncp);
++		start = u64_stats_fetch_begin_irq(&port->tx_stats_syncp);
+ 
+ 		stats->tx_dropped = port->stats.tx_dropped;
+ 
+-	} while (u64_stats_fetch_retry(&port->tx_stats_syncp, start));
++	} while (u64_stats_fetch_retry_irq(&port->tx_stats_syncp, start));
+ 
+ 	stats->rx_dropped += stats->rx_missed_errors;
+ }
+@@ -2032,18 +2032,18 @@ static void gmac_get_ethtool_stats(struc
+ 	/* Racing with MIB interrupt */
+ 	do {
+ 		p = values;
+-		start = u64_stats_fetch_begin(&port->ir_stats_syncp);
++		start = u64_stats_fetch_begin_irq(&port->ir_stats_syncp);
+ 
+ 		for (i = 0; i < RX_STATS_NUM; i++)
+ 			*p++ = port->hw_stats[i];
+ 
+-	} while (u64_stats_fetch_retry(&port->ir_stats_syncp, start));
++	} while (u64_stats_fetch_retry_irq(&port->ir_stats_syncp, start));
+ 	values = p;
+ 
+ 	/* Racing with RX NAPI */
+ 	do {
+ 		p = values;
+-		start = u64_stats_fetch_begin(&port->rx_stats_syncp);
++		start = u64_stats_fetch_begin_irq(&port->rx_stats_syncp);
+ 
+ 		for (i = 0; i < RX_STATUS_NUM; i++)
+ 			*p++ = port->rx_stats[i];
+@@ -2051,13 +2051,13 @@ static void gmac_get_ethtool_stats(struc
+ 			*p++ = port->rx_csum_stats[i];
+ 		*p++ = port->rx_napi_exits;
+ 
+-	} while (u64_stats_fetch_retry(&port->rx_stats_syncp, start));
++	} while (u64_stats_fetch_retry_irq(&port->rx_stats_syncp, start));
+ 	values = p;
+ 
+ 	/* Racing with TX start_xmit */
+ 	do {
+ 		p = values;
+-		start = u64_stats_fetch_begin(&port->tx_stats_syncp);
++		start = u64_stats_fetch_begin_irq(&port->tx_stats_syncp);
+ 
+ 		for (i = 0; i < TX_MAX_FRAGS; i++) {
+ 			*values++ = port->tx_frag_stats[i];
+@@ -2066,7 +2066,7 @@ static void gmac_get_ethtool_stats(struc
+ 		*values++ = port->tx_frags_linearized;
+ 		*values++ = port->tx_hw_csummed;
+ 
+-	} while (u64_stats_fetch_retry(&port->tx_stats_syncp, start));
++	} while (u64_stats_fetch_retry_irq(&port->tx_stats_syncp, start));
+ }
+ 
+ static int gmac_get_ksettings(struct net_device *netdev,
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -172,14 +172,14 @@ gve_get_ethtool_stats(struct net_device
+ 				struct gve_rx_ring *rx = &priv->rx[ring];
+ 
+ 				start =
+-				  u64_stats_fetch_begin(&priv->rx[ring].statss);
++				  u64_stats_fetch_begin_irq(&priv->rx[ring].statss);
+ 				tmp_rx_pkts = rx->rpackets;
+ 				tmp_rx_bytes = rx->rbytes;
+ 				tmp_rx_skb_alloc_fail = rx->rx_skb_alloc_fail;
+ 				tmp_rx_buf_alloc_fail = rx->rx_buf_alloc_fail;
+ 				tmp_rx_desc_err_dropped_pkt =
+ 					rx->rx_desc_err_dropped_pkt;
+-			} while (u64_stats_fetch_retry(&priv->rx[ring].statss,
++			} while (u64_stats_fetch_retry_irq(&priv->rx[ring].statss,
+ 						       start));
+ 			rx_pkts += tmp_rx_pkts;
+ 			rx_bytes += tmp_rx_bytes;
+@@ -193,10 +193,10 @@ gve_get_ethtool_stats(struct net_device
+ 		if (priv->tx) {
+ 			do {
+ 				start =
+-				  u64_stats_fetch_begin(&priv->tx[ring].statss);
++				  u64_stats_fetch_begin_irq(&priv->tx[ring].statss);
+ 				tmp_tx_pkts = priv->tx[ring].pkt_done;
+ 				tmp_tx_bytes = priv->tx[ring].bytes_done;
+-			} while (u64_stats_fetch_retry(&priv->tx[ring].statss,
++			} while (u64_stats_fetch_retry_irq(&priv->tx[ring].statss,
+ 						       start));
+ 			tx_pkts += tmp_tx_pkts;
+ 			tx_bytes += tmp_tx_bytes;
+@@ -254,13 +254,13 @@ gve_get_ethtool_stats(struct net_device
+ 			data[i++] = rx->cnt;
+ 			do {
+ 				start =
+-				  u64_stats_fetch_begin(&priv->rx[ring].statss);
++				  u64_stats_fetch_begin_irq(&priv->rx[ring].statss);
+ 				tmp_rx_bytes = rx->rbytes;
+ 				tmp_rx_skb_alloc_fail = rx->rx_skb_alloc_fail;
+ 				tmp_rx_buf_alloc_fail = rx->rx_buf_alloc_fail;
+ 				tmp_rx_desc_err_dropped_pkt =
+ 					rx->rx_desc_err_dropped_pkt;
+-			} while (u64_stats_fetch_retry(&priv->rx[ring].statss,
++			} while (u64_stats_fetch_retry_irq(&priv->rx[ring].statss,
+ 						       start));
+ 			data[i++] = tmp_rx_bytes;
+ 			/* rx dropped packets */
+@@ -313,9 +313,9 @@ gve_get_ethtool_stats(struct net_device
+ 			data[i++] = tx->done;
+ 			do {
+ 				start =
+-				  u64_stats_fetch_begin(&priv->tx[ring].statss);
++				  u64_stats_fetch_begin_irq(&priv->tx[ring].statss);
+ 				tmp_tx_bytes = tx->bytes_done;
+-			} while (u64_stats_fetch_retry(&priv->tx[ring].statss,
++			} while (u64_stats_fetch_retry_irq(&priv->tx[ring].statss,
+ 						       start));
+ 			data[i++] = tmp_tx_bytes;
+ 			data[i++] = tx->wake_queue;
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -40,10 +40,10 @@ static void gve_get_stats(struct net_dev
+ 		for (ring = 0; ring < priv->rx_cfg.num_queues; ring++) {
+ 			do {
+ 				start =
+-				  u64_stats_fetch_begin(&priv->rx[ring].statss);
++				  u64_stats_fetch_begin_irq(&priv->rx[ring].statss);
+ 				packets = priv->rx[ring].rpackets;
+ 				bytes = priv->rx[ring].rbytes;
+-			} while (u64_stats_fetch_retry(&priv->rx[ring].statss,
++			} while (u64_stats_fetch_retry_irq(&priv->rx[ring].statss,
+ 						       start));
+ 			s->rx_packets += packets;
+ 			s->rx_bytes += bytes;
+@@ -53,10 +53,10 @@ static void gve_get_stats(struct net_dev
+ 		for (ring = 0; ring < priv->tx_cfg.num_queues; ring++) {
+ 			do {
+ 				start =
+-				  u64_stats_fetch_begin(&priv->tx[ring].statss);
++				  u64_stats_fetch_begin_irq(&priv->tx[ring].statss);
+ 				packets = priv->tx[ring].pkt_done;
+ 				bytes = priv->tx[ring].bytes_done;
+-			} while (u64_stats_fetch_retry(&priv->tx[ring].statss,
++			} while (u64_stats_fetch_retry_irq(&priv->tx[ring].statss,
+ 						       start));
+ 			s->tx_packets += packets;
+ 			s->tx_bytes += bytes;
+@@ -1041,9 +1041,9 @@ void gve_handle_report_stats(struct gve_
+ 	if (priv->tx) {
+ 		for (idx = 0; idx < priv->tx_cfg.num_queues; idx++) {
+ 			do {
+-				start = u64_stats_fetch_begin(&priv->tx[idx].statss);
++				start = u64_stats_fetch_begin_irq(&priv->tx[idx].statss);
+ 				tx_bytes = priv->tx[idx].bytes_done;
+-			} while (u64_stats_fetch_retry(&priv->tx[idx].statss, start));
++			} while (u64_stats_fetch_retry_irq(&priv->tx[idx].statss, start));
+ 			stats[stats_idx++] = (struct stats) {
+ 				.stat_name = cpu_to_be32(TX_WAKE_CNT),
+ 				.value = cpu_to_be64(priv->tx[idx].wake_queue),
+--- a/drivers/net/ethernet/huawei/hinic/hinic_rx.c
++++ b/drivers/net/ethernet/huawei/hinic/hinic_rx.c
+@@ -74,14 +74,14 @@ void hinic_rxq_get_stats(struct hinic_rx
+ 	unsigned int start;
+ 
+ 	do {
+-		start = u64_stats_fetch_begin(&rxq_stats->syncp);
++		start = u64_stats_fetch_begin_irq(&rxq_stats->syncp);
+ 		stats->pkts = rxq_stats->pkts;
+ 		stats->bytes = rxq_stats->bytes;
+ 		stats->errors = rxq_stats->csum_errors +
+ 				rxq_stats->other_errors;
+ 		stats->csum_errors = rxq_stats->csum_errors;
+ 		stats->other_errors = rxq_stats->other_errors;
+-	} while (u64_stats_fetch_retry(&rxq_stats->syncp, start));
++	} while (u64_stats_fetch_retry_irq(&rxq_stats->syncp, start));
+ }
+ 
+ /**
+--- a/drivers/net/ethernet/huawei/hinic/hinic_tx.c
++++ b/drivers/net/ethernet/huawei/hinic/hinic_tx.c
+@@ -98,14 +98,14 @@ void hinic_txq_get_stats(struct hinic_tx
+ 	unsigned int start;
+ 
+ 	do {
+-		start = u64_stats_fetch_begin(&txq_stats->syncp);
++		start = u64_stats_fetch_begin_irq(&txq_stats->syncp);
+ 		stats->pkts    = txq_stats->pkts;
+ 		stats->bytes   = txq_stats->bytes;
+ 		stats->tx_busy = txq_stats->tx_busy;
+ 		stats->tx_wake = txq_stats->tx_wake;
+ 		stats->tx_dropped = txq_stats->tx_dropped;
+ 		stats->big_frags_pkts = txq_stats->big_frags_pkts;
+-	} while (u64_stats_fetch_retry(&txq_stats->syncp, start));
++	} while (u64_stats_fetch_retry_irq(&txq_stats->syncp, start));
+ }
+ 
+ /**
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -3373,21 +3373,21 @@ static void nfp_net_stat64(struct net_de
+ 		unsigned int start;
+ 
+ 		do {
+-			start = u64_stats_fetch_begin(&r_vec->rx_sync);
++			start = u64_stats_fetch_begin_irq(&r_vec->rx_sync);
+ 			data[0] = r_vec->rx_pkts;
+ 			data[1] = r_vec->rx_bytes;
+ 			data[2] = r_vec->rx_drops;
+-		} while (u64_stats_fetch_retry(&r_vec->rx_sync, start));
++		} while (u64_stats_fetch_retry_irq(&r_vec->rx_sync, start));
+ 		stats->rx_packets += data[0];
+ 		stats->rx_bytes += data[1];
+ 		stats->rx_dropped += data[2];
+ 
+ 		do {
+-			start = u64_stats_fetch_begin(&r_vec->tx_sync);
++			start = u64_stats_fetch_begin_irq(&r_vec->tx_sync);
+ 			data[0] = r_vec->tx_pkts;
+ 			data[1] = r_vec->tx_bytes;
+ 			data[2] = r_vec->tx_errors;
+-		} while (u64_stats_fetch_retry(&r_vec->tx_sync, start));
++		} while (u64_stats_fetch_retry_irq(&r_vec->tx_sync, start));
+ 		stats->tx_packets += data[0];
+ 		stats->tx_bytes += data[1];
+ 		stats->tx_errors += data[2];
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
+@@ -494,7 +494,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+ 		unsigned int start;
+ 
+ 		do {
+-			start = u64_stats_fetch_begin(&nn->r_vecs[i].rx_sync);
++			start = u64_stats_fetch_begin_irq(&nn->r_vecs[i].rx_sync);
+ 			data[0] = nn->r_vecs[i].rx_pkts;
+ 			tmp[0] = nn->r_vecs[i].hw_csum_rx_ok;
+ 			tmp[1] = nn->r_vecs[i].hw_csum_rx_inner_ok;
+@@ -502,10 +502,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
+ 			tmp[3] = nn->r_vecs[i].hw_csum_rx_error;
+ 			tmp[4] = nn->r_vecs[i].rx_replace_buf_alloc_fail;
+ 			tmp[5] = nn->r_vecs[i].hw_tls_rx;
+-		} while (u64_stats_fetch_retry(&nn->r_vecs[i].rx_sync, start));
++		} while (u64_stats_fetch_retry_irq(&nn->r_vecs[i].rx_sync, start));
+ 
+ 		do {
+-			start = u64_stats_fetch_begin(&nn->r_vecs[i].tx_sync);
++			start = u64_stats_fetch_begin_irq(&nn->r_vecs[i].tx_sync);
+ 			data[1] = nn->r_vecs[i].tx_pkts;
+ 			data[2] = nn->r_vecs[i].tx_busy;
+ 			tmp[6] = nn->r_vecs[i].hw_csum_tx;
+@@ -515,7 +515,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+ 			tmp[10] = nn->r_vecs[i].hw_tls_tx;
+ 			tmp[11] = nn->r_vecs[i].tls_tx_fallback;
+ 			tmp[12] = nn->r_vecs[i].tls_tx_no_fallback;
+-		} while (u64_stats_fetch_retry(&nn->r_vecs[i].tx_sync, start));
++		} while (u64_stats_fetch_retry_irq(&nn->r_vecs[i].tx_sync, start));
+ 
+ 		data += NN_RVEC_PER_Q_STATS;
+ 
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -67,10 +67,10 @@ nsim_get_stats64(struct net_device *dev,
+ 	unsigned int start;
+ 
+ 	do {
+-		start = u64_stats_fetch_begin(&ns->syncp);
++		start = u64_stats_fetch_begin_irq(&ns->syncp);
+ 		stats->tx_bytes = ns->tx_bytes;
+ 		stats->tx_packets = ns->tx_packets;
+-	} while (u64_stats_fetch_retry(&ns->syncp, start));
++	} while (u64_stats_fetch_retry_irq(&ns->syncp, start));
+ }
+ 
+ static int
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2175,9 +2175,9 @@ static inline u64 sta_get_tidstats_msdu(
+ 	u64 value;
+ 
+ 	do {
+-		start = u64_stats_fetch_begin(&rxstats->syncp);
++		start = u64_stats_fetch_begin_irq(&rxstats->syncp);
+ 		value = rxstats->msdu[tid];
+-	} while (u64_stats_fetch_retry(&rxstats->syncp, start));
++	} while (u64_stats_fetch_retry_irq(&rxstats->syncp, start));
+ 
+ 	return value;
+ }
+@@ -2241,9 +2241,9 @@ static inline u64 sta_get_stats_bytes(st
+ 	u64 value;
+ 
+ 	do {
+-		start = u64_stats_fetch_begin(&rxstats->syncp);
++		start = u64_stats_fetch_begin_irq(&rxstats->syncp);
+ 		value = rxstats->bytes;
+-	} while (u64_stats_fetch_retry(&rxstats->syncp, start));
++	} while (u64_stats_fetch_retry_irq(&rxstats->syncp, start));
+ 
+ 	return value;
+ }
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -1078,9 +1078,9 @@ static void mpls_get_stats(struct mpls_d
+ 
+ 		p = per_cpu_ptr(mdev->stats, i);
+ 		do {
+-			start = u64_stats_fetch_begin(&p->syncp);
++			start = u64_stats_fetch_begin_irq(&p->syncp);
+ 			local = p->stats;
+-		} while (u64_stats_fetch_retry(&p->syncp, start));
++		} while (u64_stats_fetch_retry_irq(&p->syncp, start));
+ 
+ 		stats->rx_packets	+= local.rx_packets;
+ 		stats->rx_bytes		+= local.rx_bytes;
+
 
