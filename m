@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2491D5ADE9E
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 06:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 857675ADE9C
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 06:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232563AbiIFEtR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 00:49:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46408 "EHLO
+        id S232568AbiIFEtX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 00:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231664AbiIFEtP (ORCPT
+        with ESMTP id S232364AbiIFEtS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 00:49:15 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62265F981
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 21:49:08 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id c24so9573261pgg.11
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Sep 2022 21:49:08 -0700 (PDT)
+        Tue, 6 Sep 2022 00:49:18 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C123365544
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 21:49:11 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id w63so1127980pgb.7
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Sep 2022 21:49:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=cGKebCJTTmHoJDxgEyDfxV59WE1YuVso0IOHSeDM1lI=;
-        b=wO/ETsTV2qOsXmTsnTQz34UjxOkDNgoXJIyJJVfLoOGuDBXrFsPaEx2i76RnDzn84J
-         0/Csne0fUoriRurBuoC1ZSEpqLPQgksIExe1eWEAmUia7GPL1hnVthHIjlFOAHD867Vu
-         sgRLikXi7onrtiQ0dGa3Pu1xQtFxsnTVsowImAzAbWms9voa16J0+QcaEnSwyBSnxnD4
-         nnwLpD7o0JSdpON15nWPXQq3VRgFmbGaj9/hJepBaeumvk07BLjF6Ma1YxK/br2KQnHJ
-         suKyc+Ip4MxDUeWjtt9DqzPEMoOCgXU15mbKDBEeVehh81ztWr2keoEe6AFoRUPIgN7R
-         KwCg==
+        bh=+yMmPcPzo0P0xN20tJgU4+omK6D2iL+r9spD1mNUQ7Q=;
+        b=PJMs44VNdW7QfUFem0LZY8I0KNYDz8U3WQXH0zHJ1SqYq/ENEID8HlyT8TwovUKdRE
+         jeMZgvC+XO35RboMah/cXhi/GhGDu+gjCOkjrJocw5jWUv9dxuNd+iemzV5toWLlA5jY
+         ChM76NnhV9kEj3zn7wR0WkxjG4iYzu5TEW5ScFnP/ubgApKBOtsnhSmHnyIGW1u2NlFl
+         3j7cYo+C+7QdI9Ly+hGkcwRFLXtIAxVd9ILCkgwXb5WrFxsvdz7wUQkGlqOGqgcIv3Vf
+         b9ZwiMfo5tSrvIwTjYZNLZfhEkEZWcn1FpSgNw5pabl2cXFkbESXE5ikBOf+mktFWmHJ
+         9nmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=cGKebCJTTmHoJDxgEyDfxV59WE1YuVso0IOHSeDM1lI=;
-        b=qTFabjMkWK5flZLb58s88ZI/jgQAjI2F/LyDV15CsdrptlsjTLXYYs/srq1rZybItn
-         +wA3gCHggn/vHnUuUk128bIQu7WmnBdhtXT4Wrv8lAF1hfu6ncGYnV9xWd2JhMG7X41a
-         P71RLXte0TsCqv3UWTxsWjzujboj8knn4Ecv/E6ggvl1tAw8xXIWeorNmLa59Xc5PJMM
-         l8ja0hJ2BD50LUtAl6PjtwOhQw8+1eddyjY4wZ6u6wmUby6s1crS6Z0AVSxYI9xBjHfI
-         aSwqnyx5PR5EPmQcLxvg4cBQEHw5ZKiao87P6B0hUnl9RXXnCJJn6HhTeBmMluC80NLU
-         sAeA==
-X-Gm-Message-State: ACgBeo1lOqyEyQrfiLUoORGZZ7xyiCyWTDqml7CTh+SsIQyMBZTxDdD8
-        RrPCUxg+gapfBN9nOWzQenEP0A==
-X-Google-Smtp-Source: AA6agR4JpCal74uSGWvpzxVWwRXPXeMsceoxQURFEnAfjsYDOlPv9zylrWyxozZSZPOa2FTdQEyD/Q==
-X-Received: by 2002:a62:1c8f:0:b0:537:2284:bd00 with SMTP id c137-20020a621c8f000000b005372284bd00mr53457672pfc.78.1662439748434;
-        Mon, 05 Sep 2022 21:49:08 -0700 (PDT)
+        bh=+yMmPcPzo0P0xN20tJgU4+omK6D2iL+r9spD1mNUQ7Q=;
+        b=qU2msAvQlep3eEQS5LKMkirdeD4f3fZNqrM7ajo21/MA/jGUbpBnDPuuWvsY9Wq2lQ
+         7edQIB4VwzBKx72x7w/erMmrNBsZlwS/kT4QFggNyYHTY8qARD+UguM3LEl+8rBG8f4X
+         jgABvVr9WRbh98UYS7NofNx+xNE51JaT/CZsp809sNRpHFvL5k2tsZCC8Y6ckhehbYz4
+         AlHvxF6LBi6to4TzlF4OauNUF1jQvrrj7PK5ClEP0lLIgE/9O6Kn2QrmFyIq5UCg/RiP
+         +XOG4+H7qcZZQ8T/RoMZ5NPRjDdloq2wwHD6I2cUDTOGKmVL6ykdNJfuRUPJAKVoAFCB
+         QBFw==
+X-Gm-Message-State: ACgBeo1SfufHHajqYeioQdHafhWUdH2YkMl9EbtTT6Cbkpc6l8QICvpu
+        eL+gjbD/ZBEHRPCQ5i3hblHpig==
+X-Google-Smtp-Source: AA6agR65megw1DFKiEJFcuL00xTzzuZj3/avKxjibl22fLIv/vaHDYe7eF9Wo3a1Kvc0LT79AS8Mdg==
+X-Received: by 2002:a05:6a00:bd8:b0:537:ea87:45f3 with SMTP id x24-20020a056a000bd800b00537ea8745f3mr49081680pfu.55.1662439751276;
+        Mon, 05 Sep 2022 21:49:11 -0700 (PDT)
 Received: from virs-pc-021.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id ij28-20020a170902ab5c00b00176b66954a6sm2726822plb.121.2022.09.05.21.49.06
+        by smtp.gmail.com with ESMTPSA id ij28-20020a170902ab5c00b00176b66954a6sm2726822plb.121.2022.09.05.21.49.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Sep 2022 21:49:08 -0700 (PDT)
+        Mon, 05 Sep 2022 21:49:10 -0700 (PDT)
 From:   Kieran Frewen <kieran.frewen@morsemicro.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
         Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: [PATCH v3 09/12] nl80211: support advertising S1G rate information
-Date:   Tue,  6 Sep 2022 16:48:09 +1200
-Message-Id: <20220906044812.7609-10-kieran.frewen@morsemicro.com>
+Subject: [PATCH v3 10/12] mac80211: support S1G rate encoding.
+Date:   Tue,  6 Sep 2022 16:48:10 +1200
+Message-Id: <20220906044812.7609-11-kieran.frewen@morsemicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220906044812.7609-1-kieran.frewen@morsemicro.com>
 References: <20220906044812.7609-1-kieran.frewen@morsemicro.com>
@@ -70,93 +70,290 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add S1G rate information to netlink STA rate message.
+Add support for receiving and transmitting S1G frames.
 
 Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
 ---
- include/uapi/linux/nl80211.h | 14 ++++++++++++++
- net/wireless/nl80211.c       | 23 +++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ drivers/net/wireless/mac80211_hwsim.c |  2 +-
+ include/net/mac80211.h                | 32 ++++++++++++++++----
+ net/mac80211/cfg.c                    | 42 ++++++++++++++++++++-------
+ net/mac80211/rx.c                     |  8 +++++
+ net/mac80211/sta_info.c               |  7 +++++
+ net/mac80211/sta_info.h               |  7 +++++
+ net/mac80211/util.c                   | 29 +++++++++++++++++-
+ 7 files changed, 109 insertions(+), 18 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index f20b9aefd420..5ae301905671 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -3600,6 +3600,13 @@ enum nl80211_eht_ru_alloc {
-  *	(u8, see &enum nl80211_eht_gi)
-  * @NL80211_RATE_INFO_EHT_RU_ALLOC: EHT RU allocation, if not present then
-  *	non-OFDMA was used (u8, see &enum nl80211_eht_ru_alloc)
-+ * @NL80211_RATE_INFO_S1G_MCS: S1G MCS index (u8, 0-10)
-+ * @NL80211_RATE_INFO_S1G_NSS: S1G NSS value (u8, 1-4)
-+ * @NL80211_RATE_INFO_1_MHZ_WIDTH: 1 MHz S1G rate
-+ * @NL80211_RATE_INFO_2_MHZ_WIDTH: 2 MHz S1G rate
-+ * @NL80211_RATE_INFO_4_MHZ_WIDTH: 4 MHz S1G rate
-+ * @NL80211_RATE_INFO_8_MHZ_WIDTH: 8 MHz S1G rate
-+ * @NL80211_RATE_INFO_16_MHZ_WIDTH: 16 MHz S1G rate
-  * @__NL80211_RATE_INFO_AFTER_LAST: internal use
-  */
- enum nl80211_rate_info {
-@@ -3626,6 +3633,13 @@ enum nl80211_rate_info {
- 	NL80211_RATE_INFO_EHT_NSS,
- 	NL80211_RATE_INFO_EHT_GI,
- 	NL80211_RATE_INFO_EHT_RU_ALLOC,
-+	NL80211_RATE_INFO_S1G_MCS,
-+	NL80211_RATE_INFO_S1G_NSS,
-+	NL80211_RATE_INFO_1_MHZ_WIDTH,
-+	NL80211_RATE_INFO_2_MHZ_WIDTH,
-+	NL80211_RATE_INFO_4_MHZ_WIDTH,
-+	NL80211_RATE_INFO_8_MHZ_WIDTH,
-+	NL80211_RATE_INFO_16_MHZ_WIDTH,
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 6e55f153ff26..5ecbc80be338 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1575,7 +1575,7 @@ static bool mac80211_hwsim_tx_frame_no_nl(struct ieee80211_hw *hw,
+ 	memset(&rx_status, 0, sizeof(rx_status));
+ 	rx_status.flag |= RX_FLAG_MACTIME_START;
+ 	rx_status.freq = chan->center_freq;
+-	rx_status.freq_offset = chan->freq_offset ? 1 : 0;
++	rx_status.freq_offset = chan->freq_offset;
+ 	rx_status.band = chan->band;
+ 	if (info->control.rates[0].flags & IEEE80211_TX_RC_VHT_MCS) {
+ 		rx_status.rate_idx =
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 359edfa9ec1c..2e4a78301e3d 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -863,6 +863,10 @@ enum mac80211_tx_info_flags {
+ #define IEEE80211_TX_CTL_STBC_SHIFT		23
  
- 	/* keep last */
- 	__NL80211_RATE_INFO_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 931e35619cf4..73eef7e9f4c3 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6133,12 +6133,27 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
- 		return false;
+ #define IEEE80211_TX_RC_S1G_MCS IEEE80211_TX_RC_VHT_MCS
++#define IEEE80211_TX_RC_2_MHZ_WIDTH IEEE80211_TX_RC_MCS
++#define IEEE80211_TX_RC_4_MHZ_WIDTH IEEE80211_TX_RC_40_MHZ_WIDTH
++#define IEEE80211_TX_RC_8_MHZ_WIDTH IEEE80211_TX_RC_80_MHZ_WIDTH
++#define IEEE80211_TX_RC_16_MHZ_WIDTH IEEE80211_TX_RC_160_MHZ_WIDTH
  
- 	switch (info->bw) {
-+	case RATE_INFO_BW_1:
-+		rate_flg = NL80211_RATE_INFO_1_MHZ_WIDTH;
-+		break;
-+	case RATE_INFO_BW_2:
-+		rate_flg = NL80211_RATE_INFO_2_MHZ_WIDTH;
-+		break;
-+	case RATE_INFO_BW_4:
-+		rate_flg = NL80211_RATE_INFO_4_MHZ_WIDTH;
-+		break;
- 	case RATE_INFO_BW_5:
- 		rate_flg = NL80211_RATE_INFO_5_MHZ_WIDTH;
+ /**
+  * enum mac80211_tx_control_flags - flags to describe transmit control
+@@ -1051,6 +1055,20 @@ ieee80211_rate_get_vht_nss(const struct ieee80211_tx_rate *rate)
+ 	return (rate->idx >> 4) + 1;
+ }
+ 
++static inline u8
++ieee80211_rate_get_s1g_mcs(const struct ieee80211_tx_rate *rate)
++{
++	/* S1G uses the same MCS encoding as VHT */
++	return ieee80211_rate_get_vht_mcs(rate);
++}
++
++static inline u8
++ieee80211_rate_get_s1g_nss(const struct ieee80211_tx_rate *rate)
++{
++	/* S1G uses the same NSS encoding as VHT */
++	return ieee80211_rate_get_vht_nss(rate);
++}
++
+ /**
+  * struct ieee80211_tx_info - skb transmit information
+  *
+@@ -1435,6 +1453,7 @@ enum mac80211_rx_encoding {
+ 	RX_ENC_HT,
+ 	RX_ENC_VHT,
+ 	RX_ENC_HE,
++	RX_ENC_S1G,
+ };
+ 
+ /**
+@@ -1491,10 +1510,11 @@ struct ieee80211_rx_status {
+ 	u32 device_timestamp;
+ 	u32 ampdu_reference;
+ 	u32 flag;
+-	u16 freq: 13, freq_offset: 1;
++	u16 freq;
++	u16 freq_offset;
+ 	u8 enc_flags;
+-	u8 encoding:2, bw:3, he_ru:3;
+-	u8 he_gi:2, he_dcm:1;
++	u8 encoding:3, bw:5;
++	u8 he_ru:3, he_gi:2, he_dcm:1;
+ 	u8 rate_idx;
+ 	u8 nss;
+ 	u8 rx_flags;
+@@ -1510,8 +1530,7 @@ struct ieee80211_rx_status {
+ static inline u32
+ ieee80211_rx_status_to_khz(struct ieee80211_rx_status *rx_status)
+ {
+-	return MHZ_TO_KHZ(rx_status->freq) +
+-	       (rx_status->freq_offset ? 500 : 0);
++	return MHZ_TO_KHZ(rx_status->freq) + rx_status->freq_offset;
+ }
+ 
+ /**
+@@ -6568,6 +6587,9 @@ bool rate_usable_index_exists(struct ieee80211_supported_band *sband,
+ {
+ 	unsigned int i;
+ 
++	if (sband->band == NL80211_BAND_S1GHZ)
++		return true;
++
+ 	for (i = 0; i < sband->n_bitrates; i++)
+ 		if (rate_supported(sta, sband->band, i))
+ 			return true;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 03ed90ce9a84..7cbf85338c9e 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -747,8 +747,16 @@ void sta_set_rate_info_tx(struct sta_info *sta,
+ 			  const struct ieee80211_tx_rate *rate,
+ 			  struct rate_info *rinfo)
+ {
++	struct ieee80211_supported_band *sband;
++
++	sband = ieee80211_get_sband(sta->sdata);
+ 	rinfo->flags = 0;
+-	if (rate->flags & IEEE80211_TX_RC_MCS) {
++	if (rate->flags & IEEE80211_TX_RC_S1G_MCS &&
++	    sband->band == NL80211_BAND_S1GHZ) {
++		rinfo->flags |= RATE_INFO_FLAGS_S1G_MCS;
++		rinfo->mcs = ieee80211_rate_get_s1g_mcs(rate);
++		rinfo->nss = ieee80211_rate_get_s1g_nss(rate);
++	} else if (rate->flags & IEEE80211_TX_RC_MCS) {
+ 		rinfo->flags |= RATE_INFO_FLAGS_MCS;
+ 		rinfo->mcs = rate->idx;
+ 	} else if (rate->flags & IEEE80211_TX_RC_VHT_MCS) {
+@@ -756,25 +764,37 @@ void sta_set_rate_info_tx(struct sta_info *sta,
+ 		rinfo->mcs = ieee80211_rate_get_vht_mcs(rate);
+ 		rinfo->nss = ieee80211_rate_get_vht_nss(rate);
+ 	} else {
+-		struct ieee80211_supported_band *sband;
+ 		int shift = ieee80211_vif_get_shift(&sta->sdata->vif);
+ 		u16 brate;
+ 
+-		sband = ieee80211_get_sband(sta->sdata);
+ 		WARN_ON_ONCE(sband && !sband->bitrates);
+ 		if (sband && sband->bitrates) {
+ 			brate = sband->bitrates[rate->idx].bitrate;
+ 			rinfo->legacy = DIV_ROUND_UP(brate, 1 << shift);
+ 		}
+ 	}
+-	if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
+-		rinfo->bw = RATE_INFO_BW_40;
+-	else if (rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
+-		rinfo->bw = RATE_INFO_BW_80;
+-	else if (rate->flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
+-		rinfo->bw = RATE_INFO_BW_160;
+-	else
+-		rinfo->bw = RATE_INFO_BW_20;
++	if (sband->band == NL80211_BAND_S1GHZ) {
++		if (rate->flags & IEEE80211_TX_RC_2_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_2;
++		else if (rate->flags & IEEE80211_TX_RC_4_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_4;
++		else if (rate->flags & IEEE80211_TX_RC_8_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_8;
++		else if (rate->flags & IEEE80211_TX_RC_16_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_16;
++		else
++			rinfo->bw = RATE_INFO_BW_1;
++	} else {
++		if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_40;
++		else if (rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_80;
++		else if (rate->flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
++			rinfo->bw = RATE_INFO_BW_160;
++		else
++			rinfo->bw = RATE_INFO_BW_20;
++	}
++
+ 	if (rate->flags & IEEE80211_TX_RC_SHORT_GI)
+ 		rinfo->flags |= RATE_INFO_FLAGS_SHORT_GI;
+ }
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index d46eeebedb4b..9eab2af626d6 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5106,6 +5106,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 				      status->rate_idx, status->nss))
+ 				goto drop;
+ 			break;
++		case RX_ENC_S1G:
++			if (WARN_ONCE(status->rate_idx > 10 ||
++				      !status->nss ||
++				      status->nss > 8,
++				      "Rate marked as a S1G rate but data is invalid: MCS: %d, NSS: %d\n",
++				      status->rate_idx, status->nss))
++				goto drop;
++			break;
+ 		default:
+ 			WARN_ON_ONCE(1);
+ 			fallthrough;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index cb23da9aff1e..331f5551477e 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2295,6 +2295,13 @@ static void sta_stats_decode_rate(struct ieee80211_local *local, u32 rate,
+ 		rinfo->he_ru_alloc = STA_STATS_GET(HE_RU, rate);
+ 		rinfo->he_dcm = STA_STATS_GET(HE_DCM, rate);
  		break;
-+	case RATE_INFO_BW_8:
-+		rate_flg = NL80211_RATE_INFO_8_MHZ_WIDTH;
++	case STA_STATS_RATE_TYPE_S1G:
++		rinfo->flags = RATE_INFO_FLAGS_S1G_MCS;
++		rinfo->mcs = STA_STATS_GET(S1G_MCS, rate);
++		rinfo->nss = STA_STATS_GET(S1G_NSS, rate);
++		if (STA_STATS_GET(SGI, rate))
++			rinfo->flags |= RATE_INFO_FLAGS_SHORT_GI;
 +		break;
- 	case RATE_INFO_BW_10:
- 		rate_flg = NL80211_RATE_INFO_10_MHZ_WIDTH;
+ 	}
+ }
+ 
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 2eb3a9452e07..1c0547769803 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -935,6 +935,8 @@ enum sta_stats_type {
+ #define STA_STATS_FIELD_VHT_NSS		GENMASK( 7,  4)
+ #define STA_STATS_FIELD_HE_MCS		GENMASK( 3,  0)
+ #define STA_STATS_FIELD_HE_NSS		GENMASK( 7,  4)
++#define STA_STATS_FIELD_S1G_MCS		GENMASK( 3,  0)
++#define STA_STATS_FIELD_S1G_NSS		GENMASK( 7,  4)
+ #define STA_STATS_FIELD_BW		GENMASK(11,  8)
+ #define STA_STATS_FIELD_SGI		GENMASK(12, 12)
+ #define STA_STATS_FIELD_TYPE		GENMASK(15, 13)
+@@ -979,6 +981,11 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
+ 		r |= STA_STATS_FIELD(HE_RU, s->he_ru);
+ 		r |= STA_STATS_FIELD(HE_DCM, s->he_dcm);
  		break;
-+	case RATE_INFO_BW_16:
-+		rate_flg = NL80211_RATE_INFO_16_MHZ_WIDTH;
++	case RX_ENC_S1G:
++		r |= STA_STATS_FIELD(TYPE, STA_STATS_RATE_TYPE_S1G);
++		r |= STA_STATS_FIELD(S1G_NSS, s->nss);
++		r |= STA_STATS_FIELD(S1G_MCS, s->rate_idx);
 +		break;
  	default:
  		WARN_ON(1);
- 		fallthrough;
-@@ -6197,6 +6212,14 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
- 		    nla_put_u8(msg, NL80211_RATE_INFO_HE_RU_ALLOC,
- 			       info->he_ru_alloc))
- 			return false;
-+	} else if (info->flags & RATE_INFO_FLAGS_S1G_MCS) {
-+		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_MCS, info->mcs))
-+			return false;
-+		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_NSS, info->nss))
-+			return false;
-+		if (info->flags & RATE_INFO_FLAGS_SHORT_GI &&
-+		    nla_put_flag(msg, NL80211_RATE_INFO_SHORT_GI))
-+			return false;
- 	} else if (info->flags & RATE_INFO_FLAGS_EHT_MCS) {
- 		if (nla_put_u8(msg, NL80211_RATE_INFO_EHT_MCS, info->mcs))
- 			return false;
+ 		return STA_STATS_RATE_INVALID;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 78e8c286011e..68aa99acfdc4 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3929,7 +3929,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 	u64 ts = status->mactime;
+ 	struct rate_info ri;
+ 	u16 rate;
+-	u8 n_ltf;
++	u8 n_ltf, guard_factor;
+ 
+ 	if (WARN_ON(!ieee80211_have_rx_timestamp(status)))
+ 		return 0;
+@@ -4016,6 +4016,33 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 			ts += 4 * n_ltf;
+ 		}
+ 
++		break;
++	case RX_ENC_S1G:
++		/* Set to duration of S1G OFDM symbol with normal GI */
++		guard_factor = 40;
++		ri.flags |= RATE_INFO_FLAGS_S1G_MCS;
++		ri.mcs = status->rate_idx;
++		ri.nss = status->nss;
++		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI) {
++			ri.flags |= RATE_INFO_FLAGS_SHORT_GI;
++			guard_factor = 36;
++		}
++
++		/* See 80211-2020, section 23.3.2 for S1G PPDU
++		 * format and 23.3.6 for timing-related parameters.
++		 * Here using the general structure for S1G_1M as
++		 * in figure 23-3.
++		 */
++		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++			mpdu_offset += 2;
++			ts += (14 * guard_factor);
++
++			/* Add S1G-LTFs per streams */
++			n_ltf = (ri.nss != 1) && (ri.nss % 2) ?
++				ri.nss + 1 : ri.nss;
++			ts += (guard_factor * n_ltf);
++		}
++
+ 		break;
+ 	default:
+ 		WARN_ON(1);
 -- 
 2.34.1
 
