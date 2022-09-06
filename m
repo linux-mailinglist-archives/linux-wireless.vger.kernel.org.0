@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4840D5AEA7C
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 15:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41D095AEF3C
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 17:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239216AbiIFNzT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 09:55:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41214 "EHLO
+        id S233352AbiIFPqu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 11:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239194AbiIFNxb (ORCPT
+        with ESMTP id S233285AbiIFPq3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 09:53:31 -0400
+        Tue, 6 Sep 2022 11:46:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F4B8804B0;
-        Tue,  6 Sep 2022 06:40:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8002C742A;
+        Tue,  6 Sep 2022 07:56:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F4F0614C9;
-        Tue,  6 Sep 2022 13:40:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B7BC433D7;
-        Tue,  6 Sep 2022 13:40:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC1C061540;
+        Tue,  6 Sep 2022 13:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D240C4314A;
+        Tue,  6 Sep 2022 13:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1662471636;
-        bh=6EetTVY8S2ZhgawWaaCaZPYbNXdW00FjqEoMiuxcw58=;
+        s=korg; t=1662472082;
+        bh=D09i4niAL/tZkd/Azuo1u80Iahe4uodRVTNoEk6h7MM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PZh0THmr6HG9es+tJ+uG3YExoAjHCZPsovRp+QWwZt532ue6Ab5n1lm9yx0aoWBXL
-         VaU+v3OWEaMSXgl2giomYuhGNbyK8vFvnN1tB+sewLqWEkTe52Ki2M16QLwKb3IiwT
-         Gne+WNtNFF9LFQu406QarAJiDSYYoNFAVVBVWmTw=
+        b=RcUNO1X1CmSO3bingJTm3u4J3bfnegUw0E2tsLvp9NtEx7YNOFfBcOmqVRh7fAgPw
+         XifCX9g2hbnirEJmb1iCAs7Qhh2F74tFQ24YxnOzLlFtl3VfoqWxQXHu3m4qfu6IA9
+         a9wev9wkSCpNQppT4B7oDrL2zlRhYriY8bulgeiQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         oss-drivers@corigine.com,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.15 093/107] net: Use u64_stats_fetch_begin_irq() for stats fetch.
-Date:   Tue,  6 Sep 2022 15:31:14 +0200
-Message-Id: <20220906132825.765765780@linuxfoundation.org>
+Subject: [PATCH 5.19 142/155] net: Use u64_stats_fetch_begin_irq() for stats fetch.
+Date:   Tue,  6 Sep 2022 15:31:30 +0200
+Message-Id: <20220906132835.439488751@linuxfoundation.org>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220906132821.713989422@linuxfoundation.org>
-References: <20220906132821.713989422@linuxfoundation.org>
+In-Reply-To: <20220906132829.417117002@linuxfoundation.org>
+References: <20220906132829.417117002@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -105,6 +105,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/net/ethernet/cortina/gemini.c                |   24 +++++++++----------
+ drivers/net/ethernet/fungible/funeth/funeth_txrx.h   |    4 +--
  drivers/net/ethernet/google/gve/gve_ethtool.c        |   16 ++++++------
  drivers/net/ethernet/google/gve/gve_main.c           |   12 ++++-----
  drivers/net/ethernet/huawei/hinic/hinic_rx.c         |    4 +--
@@ -114,11 +115,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  drivers/net/netdevsim/netdev.c                       |    4 +--
  net/mac80211/sta_info.c                              |    8 +++---
  net/mpls/af_mpls.c                                   |    4 +--
- 10 files changed, 46 insertions(+), 46 deletions(-)
+ 11 files changed, 48 insertions(+), 48 deletions(-)
 
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1920,7 +1920,7 @@ static void gmac_get_stats64(struct net_
+@@ -1919,7 +1919,7 @@ static void gmac_get_stats64(struct net_
  
  	/* Racing with RX NAPI */
  	do {
@@ -127,7 +128,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		stats->rx_packets = port->stats.rx_packets;
  		stats->rx_bytes = port->stats.rx_bytes;
-@@ -1932,11 +1932,11 @@ static void gmac_get_stats64(struct net_
+@@ -1931,11 +1931,11 @@ static void gmac_get_stats64(struct net_
  		stats->rx_crc_errors = port->stats.rx_crc_errors;
  		stats->rx_frame_errors = port->stats.rx_frame_errors;
  
@@ -141,7 +142,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		stats->tx_errors = port->stats.tx_errors;
  		stats->tx_packets = port->stats.tx_packets;
-@@ -1946,15 +1946,15 @@ static void gmac_get_stats64(struct net_
+@@ -1945,15 +1945,15 @@ static void gmac_get_stats64(struct net_
  		stats->rx_missed_errors = port->stats.rx_missed_errors;
  		stats->rx_fifo_errors = port->stats.rx_fifo_errors;
  
@@ -160,7 +161,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	stats->rx_dropped += stats->rx_missed_errors;
  }
-@@ -2032,18 +2032,18 @@ static void gmac_get_ethtool_stats(struc
+@@ -2031,18 +2031,18 @@ static void gmac_get_ethtool_stats(struc
  	/* Racing with MIB interrupt */
  	do {
  		p = values;
@@ -182,7 +183,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		for (i = 0; i < RX_STATUS_NUM; i++)
  			*p++ = port->rx_stats[i];
-@@ -2051,13 +2051,13 @@ static void gmac_get_ethtool_stats(struc
+@@ -2050,13 +2050,13 @@ static void gmac_get_ethtool_stats(struc
  			*p++ = port->rx_csum_stats[i];
  		*p++ = port->rx_napi_exits;
  
@@ -198,7 +199,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		for (i = 0; i < TX_MAX_FRAGS; i++) {
  			*values++ = port->tx_frag_stats[i];
-@@ -2066,7 +2066,7 @@ static void gmac_get_ethtool_stats(struc
+@@ -2065,7 +2065,7 @@ static void gmac_get_ethtool_stats(struc
  		*values++ = port->tx_frags_linearized;
  		*values++ = port->tx_hw_csummed;
  
@@ -207,9 +208,23 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
  
  static int gmac_get_ksettings(struct net_device *netdev,
+--- a/drivers/net/ethernet/fungible/funeth/funeth_txrx.h
++++ b/drivers/net/ethernet/fungible/funeth/funeth_txrx.h
+@@ -205,9 +205,9 @@ struct funeth_rxq {
+ 
+ #define FUN_QSTAT_READ(q, seq, stats_copy) \
+ 	do { \
+-		seq = u64_stats_fetch_begin(&(q)->syncp); \
++		seq = u64_stats_fetch_begin_irq(&(q)->syncp); \
+ 		stats_copy = (q)->stats; \
+-	} while (u64_stats_fetch_retry(&(q)->syncp, (seq)))
++	} while (u64_stats_fetch_retry_irq(&(q)->syncp, (seq)))
+ 
+ #define FUN_INT_NAME_LEN (IFNAMSIZ + 16)
+ 
 --- a/drivers/net/ethernet/google/gve/gve_ethtool.c
 +++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -174,14 +174,14 @@ gve_get_ethtool_stats(struct net_device
+@@ -177,14 +177,14 @@ gve_get_ethtool_stats(struct net_device
  				struct gve_rx_ring *rx = &priv->rx[ring];
  
  				start =
@@ -226,7 +241,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			rx_pkts += tmp_rx_pkts;
  			rx_bytes += tmp_rx_bytes;
-@@ -195,10 +195,10 @@ gve_get_ethtool_stats(struct net_device
+@@ -198,10 +198,10 @@ gve_get_ethtool_stats(struct net_device
  		if (priv->tx) {
  			do {
  				start =
@@ -239,8 +254,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			tx_pkts += tmp_tx_pkts;
  			tx_bytes += tmp_tx_bytes;
-@@ -256,13 +256,13 @@ gve_get_ethtool_stats(struct net_device
- 			data[i++] = rx->cnt;
+@@ -259,13 +259,13 @@ gve_get_ethtool_stats(struct net_device
+ 			data[i++] = rx->fill_cnt - rx->cnt;
  			do {
  				start =
 -				  u64_stats_fetch_begin(&priv->rx[ring].statss);
@@ -254,8 +269,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +			} while (u64_stats_fetch_retry_irq(&priv->rx[ring].statss,
  						       start));
  			data[i++] = tmp_rx_bytes;
- 			/* rx dropped packets */
-@@ -323,9 +323,9 @@ gve_get_ethtool_stats(struct net_device
+ 			data[i++] = rx->rx_cont_packet_cnt;
+@@ -331,9 +331,9 @@ gve_get_ethtool_stats(struct net_device
  			}
  			do {
  				start =
@@ -295,7 +310,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			s->tx_packets += packets;
  			s->tx_bytes += bytes;
-@@ -1260,9 +1260,9 @@ void gve_handle_report_stats(struct gve_
+@@ -1274,9 +1274,9 @@ void gve_handle_report_stats(struct gve_
  			}
  
  			do {
@@ -328,7 +343,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  /**
 --- a/drivers/net/ethernet/huawei/hinic/hinic_tx.c
 +++ b/drivers/net/ethernet/huawei/hinic/hinic_tx.c
-@@ -98,14 +98,14 @@ void hinic_txq_get_stats(struct hinic_tx
+@@ -99,14 +99,14 @@ void hinic_txq_get_stats(struct hinic_tx
  	unsigned int start;
  
  	do {
@@ -347,7 +362,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  /**
 --- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
 +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -3482,21 +3482,21 @@ static void nfp_net_stat64(struct net_de
+@@ -1629,21 +1629,21 @@ static void nfp_net_stat64(struct net_de
  		unsigned int start;
  
  		do {
@@ -375,7 +390,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		stats->tx_errors += data[2];
 --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
 +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-@@ -483,7 +483,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -494,7 +494,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
  		unsigned int start;
  
  		do {
@@ -384,7 +399,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			data[0] = nn->r_vecs[i].rx_pkts;
  			tmp[0] = nn->r_vecs[i].hw_csum_rx_ok;
  			tmp[1] = nn->r_vecs[i].hw_csum_rx_inner_ok;
-@@ -491,10 +491,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -502,10 +502,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
  			tmp[3] = nn->r_vecs[i].hw_csum_rx_error;
  			tmp[4] = nn->r_vecs[i].rx_replace_buf_alloc_fail;
  			tmp[5] = nn->r_vecs[i].hw_tls_rx;
@@ -397,7 +412,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			data[1] = nn->r_vecs[i].tx_pkts;
  			data[2] = nn->r_vecs[i].tx_busy;
  			tmp[6] = nn->r_vecs[i].hw_csum_tx;
-@@ -504,7 +504,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -515,7 +515,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
  			tmp[10] = nn->r_vecs[i].hw_tls_tx;
  			tmp[11] = nn->r_vecs[i].tls_tx_fallback;
  			tmp[12] = nn->r_vecs[i].tls_tx_no_fallback;
@@ -423,7 +438,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static int
 --- a/net/mac80211/sta_info.c
 +++ b/net/mac80211/sta_info.c
-@@ -2206,9 +2206,9 @@ static inline u64 sta_get_tidstats_msdu(
+@@ -2221,9 +2221,9 @@ static inline u64 sta_get_tidstats_msdu(
  	u64 value;
  
  	do {
@@ -435,7 +450,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	return value;
  }
-@@ -2272,9 +2272,9 @@ static inline u64 sta_get_stats_bytes(st
+@@ -2289,9 +2289,9 @@ static inline u64 sta_get_stats_bytes(st
  	u64 value;
  
  	do {
