@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 895A25ADE9F
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 06:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03865ADE9D
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 06:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232508AbiIFEtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 00:49:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46316 "EHLO
+        id S231785AbiIFEtJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 00:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbiIFEtD (ORCPT
+        with ESMTP id S231487AbiIFEtI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 00:49:03 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E015F233
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 21:48:58 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id q15-20020a17090a304f00b002002ac83485so6337139pjl.0
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Sep 2022 21:48:58 -0700 (PDT)
+        Tue, 6 Sep 2022 00:49:08 -0400
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0C3696E5
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Sep 2022 21:49:00 -0700 (PDT)
+Received: by mail-pg1-x52d.google.com with SMTP id 73so9622485pga.1
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Sep 2022 21:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=qGFhC4Pt6EcprkTSPzvVWVdSH6KTqSlQ80Wc40VOPaU=;
-        b=2seAIBgqWcGKZBYj5qJppmfLVNv0YbjnpSFpnQZZ8R+dFr4ydawr6UQADjynGH826Y
-         7pwAsEQdID2BZKT6XsxScthPlLJG3kcSAL01koiXsqr9e+vRrUI6PHQTz4gjag4Xb4Ci
-         uMJp07qiVd8+oSXQCxQt73e6fN42vWGZ7mLgBv9BXtT9/omo15jW2nusAFdYv7URtUKH
-         8mqtOEvbkDJXZfliszl1mIXTmiowI3axwrFRh0yJF5toB93LvFLEXDgR9EN80tifDv6/
-         hKQJXeQFazSIK1o4+qTEQLz9yl1/9i1hiOOEY079HPoq9qvbq4HTamBGma5rE66glL7E
-         7wCw==
+        bh=N7kGX5xaT//6eWvGI4ewEIkNsO+zil6xVfa/eI991C8=;
+        b=yI/DYOapE4n0Ne5gXB9766V91JiF6EdnbvYV5OCwbsntqxnUVZuR6FzjW/zss0XQiU
+         eRVZj9CMVwwsgBTnrqYL1775nytskFC63DyamIley9DKDamgaU/66JyA4hY55WqSVf5H
+         8QD67ltg2gGnlkwsKSKnwyaBUSw3Vtr1F4T5nwMmSjZOKPJJfOpSzFcsDFCpplYgDbwQ
+         7GJhRGvCNniU6n95Rd0wxuLeI5p3CdJA24eaHcia90LfGDFiK3YUUSjBLcMQieHioL+3
+         IPEIXCCZSI9HNlXnYfQuDCINO+TnxoPyrzR1I7te+TQfE1Hd4TnZ+ARUMIe6qmWRJAEn
+         rc6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=qGFhC4Pt6EcprkTSPzvVWVdSH6KTqSlQ80Wc40VOPaU=;
-        b=RJVZudMfACj/bLGMXIsKsd4p1KTMfqNGFVTaqwEa5Dq9yfTzffdGVo5KaHV3UPRTz2
-         sM8Lah0JV67Noub0N1WY+veEB8PV97DbwuQCMVZDzAiuYJe1CnNqUjr+4HvWxeV2sjdj
-         2ihzsBeL2zSy4bznrOX0p4ZTu3SpQtTRFJdxXWJzWyF29xjiMBFx5PB00pAuObvalU/J
-         PF0Elb+UrtgrJ9BUS2ZjbTwDygFJtCD1ECoJ0TTVV/HAu3bTkwAVZYJuojp1OJZkP7GD
-         FJAx8GnqVXT7A36A/p1NuUszBNu+depv78uN81H7hxRpluh6tn3eo0VCs9yiwdrfyzsz
-         N5EA==
-X-Gm-Message-State: ACgBeo3IPgFgF+MkkUJYBPD6/1N/4RabVrx+xba3dUNJYGJOqtQFr40E
-        1W22zqUBxeJENox1N2uVcw0ZbQ==
-X-Google-Smtp-Source: AA6agR4j7wy4xgUPhF8lwecPZVG/oAhTIjrQH8ppcyAqZRCb3UgWk6aeNk+E42w4o7xt9acqUUbifw==
-X-Received: by 2002:a17:90b:4c8c:b0:200:5fa3:9766 with SMTP id my12-20020a17090b4c8c00b002005fa39766mr9211872pjb.129.1662439737612;
-        Mon, 05 Sep 2022 21:48:57 -0700 (PDT)
+        bh=N7kGX5xaT//6eWvGI4ewEIkNsO+zil6xVfa/eI991C8=;
+        b=NdDGRiBCiXLsYdHHvC+1okS86HEoEXrfsnTfbd0gRsYgFDplxGKCarQkxIpGNCBqFG
+         057vaUGR+m8XPphS571G5V/0jvdpJCYpPHdKD5gqJGVKoeL+SiFx4QGr5oxRTb1eH2NF
+         GXV6C0m9P1dy4+OOM3DQforaORKUAWZO5VovTQ1v6iLW2WIUtAsnO7uFbBxQlNQyhQ82
+         59qPXTL1O+Uf7UJJkN1a+vnQeNMcN1B2G6tEU/61WPTD1FLF5VnuvoEsInwSP8IAymy7
+         WB2DUPgedi41fVOquFWOiRtb27468gxfkECECbXZ4l7qUQuonPCL1GNiyugQxKLfSgT2
+         9p7A==
+X-Gm-Message-State: ACgBeo2Xt4oRYXIkOOmaKipP5s6qBkAER2y+6J3Cy+Xideqmh4u980Bl
+        2wg1Y8LTqZHUQ4s7SPFifp/p+g==
+X-Google-Smtp-Source: AA6agR66y+neQ+eILIKn194uHyUHE082BdizlwENEQQTcXmMbuPJr93zjQO2irDw6pkghP4uCTaP0g==
+X-Received: by 2002:a63:4802:0:b0:41c:ac9e:1950 with SMTP id v2-20020a634802000000b0041cac9e1950mr45249987pga.376.1662439740449;
+        Mon, 05 Sep 2022 21:49:00 -0700 (PDT)
 Received: from virs-pc-021.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id ij28-20020a170902ab5c00b00176b66954a6sm2726822plb.121.2022.09.05.21.48.55
+        by smtp.gmail.com with ESMTPSA id ij28-20020a170902ab5c00b00176b66954a6sm2726822plb.121.2022.09.05.21.48.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Sep 2022 21:48:57 -0700 (PDT)
+        Mon, 05 Sep 2022 21:48:59 -0700 (PDT)
 From:   Kieran Frewen <kieran.frewen@morsemicro.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
         Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: [PATCH v3 05/12] nl80211: support advertising S1G capabilities
-Date:   Tue,  6 Sep 2022 16:48:05 +1200
-Message-Id: <20220906044812.7609-6-kieran.frewen@morsemicro.com>
+Subject: [PATCH v3 06/12] mac80211: support ieee80211_ext format
+Date:   Tue,  6 Sep 2022 16:48:06 +1200
+Message-Id: <20220906044812.7609-7-kieran.frewen@morsemicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220906044812.7609-1-kieran.frewen@morsemicro.com>
 References: <20220906044812.7609-1-kieran.frewen@morsemicro.com>
@@ -70,60 +70,79 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Include S1G capabilities in netlink band info messages.
+Ensure S1G beacons use the new ieee80211_ext format when required.
 
 Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
 ---
- include/uapi/linux/nl80211.h |  7 +++++++
- net/wireless/nl80211.c       | 10 ++++++++++
- 2 files changed, 17 insertions(+)
+ net/mac80211/rx.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 7daa2ce1cb57..f20b9aefd420 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -3994,6 +3994,10 @@ enum nl80211_band_iftype_attr {
-  * @NL80211_BAND_ATTR_EDMG_BW_CONFIG: Channel BW Configuration subfield encodes
-  *	the allowed channel bandwidth configurations.
-  *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13.
-+ * @NL80211_BAND_ATTR_S1G_MCS_NSS_SET: S1G capabilities, supported S1G-MCS and NSS
-+ *	set subfield, as in the S1G information IE, 5 bytes
-+ * @NL80211_BAND_ATTR_S1G_CAPA: S1G capabilities information subfield as in the
-+ *	S1G information IE, 10 bytes
-  * @NL80211_BAND_ATTR_MAX: highest band attribute currently defined
-  * @__NL80211_BAND_ATTR_AFTER_LAST: internal use
-  */
-@@ -4014,6 +4018,9 @@ enum nl80211_band_attr {
- 	NL80211_BAND_ATTR_EDMG_CHANNELS,
- 	NL80211_BAND_ATTR_EDMG_BW_CONFIG,
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 57df21e2170a..d46eeebedb4b 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4895,6 +4895,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 	struct ieee80211_local *local = hw_to_local(hw);
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_hdr *hdr;
++	struct ieee80211_ext *ext_hdr;
+ 	__le16 fc;
+ 	struct ieee80211_rx_data rx;
+ 	struct ieee80211_sub_if_data *prev;
+@@ -4911,7 +4912,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 	if (ieee80211_is_data(fc) || ieee80211_is_mgmt(fc))
+ 		I802_DEBUG_INC(local->dot11ReceivedFragmentCount);
  
-+	NL80211_BAND_ATTR_S1G_MCS_NSS_SET,
-+	NL80211_BAND_ATTR_S1G_CAPA,
+-	if (ieee80211_is_mgmt(fc)) {
++	if (ieee80211_is_mgmt(fc) || ieee80211_is_s1g_beacon(fc)) {
+ 		/* drop frame if too short for header */
+ 		if (skb->len < ieee80211_hdrlen(fc))
+ 			err = -ENOBUFS;
+@@ -4926,13 +4927,17 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 		return;
+ 	}
+ 
+-	hdr = (struct ieee80211_hdr *)skb->data;
++	if (ieee80211_is_s1g_beacon(fc))
++		ext_hdr = (struct ieee80211_ext *)skb->data;
++	else
++		hdr = (struct ieee80211_hdr *)skb->data;
 +
- 	/* keep last */
- 	__NL80211_BAND_ATTR_AFTER_LAST,
- 	NL80211_BAND_ATTR_MAX = __NL80211_BAND_ATTR_AFTER_LAST - 1
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 5e9aaa8c0d7d..931e35619cf4 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1949,6 +1949,16 @@ static int nl80211_send_band_rateinfo(struct sk_buff *msg,
+ 	ieee80211_parse_qos(&rx);
+ 	ieee80211_verify_alignment(&rx);
  
- 	nla_nest_end(msg, nl_rates);
+-	if (unlikely(ieee80211_is_probe_resp(hdr->frame_control) ||
+-		     ieee80211_is_beacon(hdr->frame_control) ||
+-		     ieee80211_is_s1g_beacon(hdr->frame_control)))
++	if (unlikely(ieee80211_is_probe_resp(fc) ||
++		     ieee80211_is_beacon(fc) ||
++		     ieee80211_is_s1g_beacon(fc)))
+ 		ieee80211_scan_rx(local, skb);
  
-+	/* S1G capabilities */
-+	if (sband->band == NL80211_BAND_S1GHZ && sband->s1g_cap.s1g &&
-+	    (nla_put(msg, NL80211_BAND_ATTR_S1G_CAPA,
-+		     sizeof(sband->s1g_cap.cap),
-+		     sband->s1g_cap.cap) ||
-+	     nla_put(msg, NL80211_BAND_ATTR_S1G_MCS_NSS_SET,
-+		     sizeof(sband->s1g_cap.nss_mcs),
-+		     sband->s1g_cap.nss_mcs)))
-+		return -ENOBUFS;
-+
- 	return 0;
- }
+ 	if (ieee80211_is_data(fc)) {
+@@ -4991,7 +4996,10 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 			prev = sdata;
+ 			continue;
+ 		}
+-
++		if (ieee80211_is_s1g_beacon(fc))
++			rx.sta = sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
++		else
++			rx.sta = sta_info_get_bss(prev, hdr->addr2);
+ 		rx.sdata = prev;
+ 		ieee80211_rx_for_interface(&rx, skb, false);
  
+@@ -4999,6 +5007,10 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 	}
+ 
+ 	if (prev) {
++		if (ieee80211_is_s1g_beacon(fc))
++			rx.sta = sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
++		else
++			rx.sta = sta_info_get_bss(prev, hdr->addr2);
+ 		rx.sdata = prev;
+ 
+ 		if (ieee80211_rx_for_interface(&rx, skb, true))
 -- 
 2.34.1
 
