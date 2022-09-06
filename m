@@ -2,43 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D0F95AE49D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 11:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DCC35AE4A7
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 11:47:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbiIFJpe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 05:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37904 "EHLO
+        id S233995AbiIFJr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 05:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiIFJpe (ORCPT
+        with ESMTP id S233690AbiIFJr0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 05:45:34 -0400
+        Tue, 6 Sep 2022 05:47:26 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE1970E5D
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Sep 2022 02:45:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C0576454
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Sep 2022 02:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=jg/ofF9XJhqwR26TdOCE7VGtjcrhOtTmyZohe4yqJWg=;
-        t=1662457532; x=1663667132; b=K383aSkAJyPnG0qvY8BQHXfRqDwlHwuTnkzF6HR039IA1uf
-        fuIgHAPbjPNOV8lti9clFTC0S/vWfmWwl7qrP8V3BSV7RliVxObPSGY3MDvz4uiTAzWS6YnWgOnGq
-        5ScLrEaN3nxSw18dgAigdLi83xe6HTO52rwKBNZxQdoNWHR7d6OuTo463ufCsd/azATjjI5O8BBXb
-        jc0zTziV5glWvSshgxLYKHF6/LAF77MJllu0n/omAxK7Pr48Qo+WhUBIuwT02sSq/B3AuLH7+he66
-        SFuNtMhqXjU088GYEY6ZbLMUpP1wcLaPNVoP4jA0G9xIodNYe+SVd7NvA7YoiUQw==;
+        Resent-Cc:Resent-Message-ID; bh=gTvnpQR9Kcs8G7lZpM4myKC45cSn5caKLVbUtvlaL6E=;
+        t=1662457645; x=1663667245; b=by/a5dCQC+M6aBKj8qJV2KSChk5lEOk1Zj0uUKH1J2fDb56
+        HUxXQlqkTT+z49El+jHYxEAoDXpYyZoG622Xuyi+1B2/Dt+wgZDL0YtMimMcYXdvmZU0L7qyLAAmd
+        qWpQ2vNVo2f0jwI1RXEaxn3SODSN8kJ3el0QEcWMNF0B7ah/Ur2y6ds2j/VVvm2zMm09yFVHQbxXr
+        CS0LQ7tCE9HElFXpxrk/hgkO3icQpmZsWjfo/RqJHSgLCoDVqe9Z0coWIuI+ijdXd5KpHKhop/RGE
+        KPuGse3gNtqUiWd7/WLYotSCvnlejlG01RFqXQOE8361dkS6xYZOvqU1h9ORnpDA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oVV98-009Moh-05;
-        Tue, 06 Sep 2022 11:45:30 +0200
-Message-ID: <c2b9720065e9d8b1b364a4dbb851cd4153b1f093.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 06/12] mac80211: support ieee80211_ext format
+        id 1oVVAx-009MsP-0t;
+        Tue, 06 Sep 2022 11:47:23 +0200
+Message-ID: <4184a31465de442c3f8a66f06aa4c59e77e4c237.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 07/12] mac80211: S1G capabilities information element
+ in probe request
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Kieran Frewen <kieran.frewen@morsemicro.com>
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com
-Date:   Tue, 06 Sep 2022 11:45:29 +0200
-In-Reply-To: <20220906044812.7609-7-kieran.frewen@morsemicro.com>
+Date:   Tue, 06 Sep 2022 11:47:22 +0200
+In-Reply-To: <20220906044812.7609-8-kieran.frewen@morsemicro.com>
 References: <20220906044812.7609-1-kieran.frewen@morsemicro.com>
-         <20220906044812.7609-7-kieran.frewen@morsemicro.com>
+         <20220906044812.7609-8-kieran.frewen@morsemicro.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
@@ -53,30 +54,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-09-06 at 16:48 +1200, Kieran Frewen wrote:
->=20
-> +		if (ieee80211_is_s1g_beacon(fc))
 
-maybe use "if (ext_hdr)" here so it's easier to understand? Even for
-static checkers :)
 
-> +			rx.sta =3D sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
-> +		else
-> +			rx.sta =3D sta_info_get_bss(prev, hdr->addr2);
->  		rx.sdata =3D prev;
->  		ieee80211_rx_for_interface(&rx, skb, false);
+Feels like somewhere in this patch you should consider the size of the
+new element?
+=20
+>  /* channel management */
+>  bool ieee80211_chandef_ht_oper(const struct ieee80211_ht_operation *ht_o=
+per,
+> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+> index 53826c663723..78e8c286011e 100644
+> --- a/net/mac80211/util.c
+> +++ b/net/mac80211/util.c
+> @@ -1857,6 +1857,12 @@ static int ieee80211_build_preq_ies_band(struct ie=
+ee80211_sub_if_data *sdata,
+>  	rate_flags =3D ieee80211_chandef_rate_flags(chandef);
+>  	shift =3D ieee80211_chandef_get_shift(chandef);
 > =20
-> @@ -4999,6 +5007,10 @@ static void __ieee80211_rx_handle_packet(struct ie=
-ee80211_hw *hw,
->  	}
-> =20
->  	if (prev) {
-> +		if (ieee80211_is_s1g_beacon(fc))
-> +			rx.sta =3D sta_info_get_bss(prev, ext_hdr->u.s1g_beacon.sa);
-> +		else
-> +			rx.sta =3D sta_info_get_bss(prev, hdr->addr2);
+> +	/* For direct mac80211 scan (probe request), add S1G IE and consider it=
+s override bits */
+> +	if (band =3D=3D NL80211_BAND_S1GHZ) {
+> +		pos =3D ieee80211_ie_build_s1g_cap(pos, &sband->s1g_cap);
+> +		goto done;
+> +	}
 >=20
 
-here too, I guess
+Though off the top of my head I'm not really sure how it works for the
+other bits.
 
 johannes
