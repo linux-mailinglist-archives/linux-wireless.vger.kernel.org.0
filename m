@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95F035AEC2D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 16:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9761D5AEB9F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 16:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240583AbiIFOKw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 10:10:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59678 "EHLO
+        id S240917AbiIFOK6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 10:10:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241176AbiIFOI6 (ORCPT
+        with ESMTP id S241188AbiIFOJA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 10:08:58 -0400
+        Tue, 6 Sep 2022 10:09:00 -0400
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7AE85F8C
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Sep 2022 06:46:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DF585FEF
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Sep 2022 06:46:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662471981; x=1694007981;
+  t=1662471983; x=1694007983;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nDrSV8tX9zQNNnNIQiyGZucgO8HMjlnExUc5+3dy1l4=;
-  b=UEXBg8dMRPJKCsVBjL6js06mR3sLp7KIAT9Vzfe9EilQ2lrWPWFtCm/G
-   Utvc77BmpVPB+d+YfDA0rDV8SqkwQAqP672GdI0d7cOca24S5HgfcUi7O
-   KWKykOy0B3JNpt9BCVaadX9yCEuputx57/IiiC5oFrOEvBodnba5PYQct
-   9pJAZ5CJDhIEr59tI1Tf4oLbYqqK+05qD6sstDsVnJPDIpyvkjulRZuUK
-   dXgUv2qEg30f9ATqVv5jAGtFg5P1Qm1ehpAZKOWe0q29wes2xtyMLVx8e
-   fdQUVUsIOz/fXBPtneQIi8Adn+PvBxi0HzGV7zL16JKSUGDBABphry/d4
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="276989012"
+  bh=rzUuYUq9kN2DENwdg3HU7YC/J3bpJPa14+nt1QjC20I=;
+  b=lsWHVsfXrahvQRaMlJfDpDfWXTueqLsGup7vAgsnwlITCHimJd+buHRY
+   PlGhQoII17LARIfkbrao+dm3qFN0rEvnSs09BZT1pNCKTR86wew1ha+hu
+   XQxp3IpOzBmxgjqLizRyhFsLet9Dm7hrFAeBJcwFW0F1NEoMu7VkMkCIU
+   PNlrjNxwqc7TLkmyXAQnTAs4HRzPKLSTVi8vjFexaCPY1H9fY8JBtYJTW
+   0JvN7Whh+zqTLw0pMw91pfrKQB4PUhwr95PasaW/tTHPqm72Y4Rf+HHab
+   kmvuvn/kC/UTqz1FbmL3HxjTBzLkYBqroY6FPDN77xaqk/UDxLV3xsM4D
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="276989026"
 X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
-   d="scan'208";a="276989012"
+   d="scan'208";a="276989026"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 06:44:44 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 06:44:47 -0700
 X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
-   d="scan'208";a="942459889"
+   d="scan'208";a="942459895"
 Received: from ygueta-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.249.82.178])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 06:44:42 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 06:44:45 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Haim Dreyfuss <haim.dreyfuss@intel.com>,
         Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 08/15] wifi: iwlwifi: mvm: Add support for wowlan info notification
-Date:   Tue,  6 Sep 2022 16:42:12 +0300
-Message-Id: <20220906161827.3ce8deefd929.Ieba8610e8bb4bec788076371ae38becb4a3d20d5@changeid>
+Subject: [PATCH 09/15] wifi: iwlwifi: mvm: Add support for wowlan wake packet notification
+Date:   Tue,  6 Sep 2022 16:42:13 +0300
+Message-Id: <20220906161827.06d1e6aecf10.Ib3d6a46ffe71d10cbc69bdb5654e6b14c28df245@changeid>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20220906134219.365090-1-gregory.greenman@intel.com>
 References: <20220906134219.365090-1-gregory.greenman@intel.com>
@@ -63,467 +63,298 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Haim Dreyfuss <haim.dreyfuss@intel.com>
 
-IMR (Isolated Memory Regions) is a mechanism to protect memory regions
-from unwarranted access by agents in the system that should not have access
-to that memory.
+The wowlan info notification is quite big.
+(~750 bytes without the wake packet itself).
+The max FW notification size is ~2K.
+There might be cases where the wake packet gets truncated because of
+this limit.
 
-When IMR is enabled, pages in the DRAM will be located within the IMR
-memory space, accessible only by the device.
-As a side effect, during S4 (a.k.a hibernate) the IMR memory space
-is not retained.
+Separating the wake packet from the wowlan info notification allows us to
+get more data without trimming it.
 
-While the DRAM is saved to the disk and restored by the OS upon resume,
-the IMR, which is hidden from the OS neither saved upon suspend nor
-restored upon resume.
-
-As a consequence of the above, it turned out that commands cannot
-be sent as part of the resume flow, and so after ending
-d3 the FW needs to use notifications instead of cmd-resp.
-
-The resume flow becomes asynchronous, with a series
-of notifications, starting with wowlan_info_notif, through
-wowlan_pkt_notif and complete the resume flow by d3_end_notif.
-
-This patch adds the support for wowlan info notification.
-
-The wake packet has been removed from the wowlan info struct
-and will be handled in a dedicated notification.
+Note: we currently limit the wake packet to 1600 bytes.
 
 Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  39 ++-
- .../wireless/intel/iwlwifi/fw/api/offload.h   |   7 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 227 ++++++++++++++----
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  14 ++
+ .../wireless/intel/iwlwifi/fw/api/offload.h   |   5 +
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 126 ++++++++++++++----
  drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   1 +
- 4 files changed, 230 insertions(+), 44 deletions(-)
+ 4 files changed, 118 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-index 4cd9ab23954e..7b2501fe50e6 100644
+index 7b2501fe50e6..5588f6d65813 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-  */
-@@ -766,6 +766,43 @@ struct iwl_wowlan_status_v12 {
- 	u8 wake_packet[]; /* can be truncated from _length to _bufsize */
- } __packed; /* WOWLAN_STATUSES_RSP_API_S_VER_12 */
+@@ -803,6 +803,20 @@ struct iwl_wowlan_info_notif {
+ 	u8 reserved2[2];
+ } __packed; /* WOWLAN_INFO_NTFY_API_S_VER_1 */
  
 +/**
-+ * struct iwl_wowlan_info_notif - WoWLAN information notification
-+ * @gtk: GTK data
-+ * @igtk: IGTK data
-+ * @replay_ctr: GTK rekey replay counter
-+ * @pattern_number: number of the matched patterns
-+ * @reserved1: reserved
-+ * @qos_seq_ctr: QoS sequence counters to use next
-+ * @wakeup_reasons: wakeup reasons, see &enum iwl_wowlan_wakeup_reason
-+ * @num_of_gtk_rekeys: number of GTK rekeys
-+ * @transmitted_ndps: number of transmitted neighbor discovery packets
-+ * @received_beacons: number of received beacons
++ * struct iwl_wowlan_wake_pkt_notif - WoWLAN wake packet notification
 + * @wake_packet_length: wakeup packet length
-+ * @wake_packet_bufsize: wakeup packet buffer size
-+ * @tid_tear_down: bit mask of tids whose BA sessions were closed
-+ *	in suspend state
 + * @station_id: station id
-+ * @reserved2: reserved
++ * @reserved: unused
++ * @wake_packet: wakeup packet
 + */
-+struct iwl_wowlan_info_notif {
-+	struct iwl_wowlan_gtk_status_v3 gtk[WOWLAN_GTK_KEYS_NUM];
-+	struct iwl_wowlan_igtk_status igtk[WOWLAN_IGTK_KEYS_NUM];
-+	__le64 replay_ctr;
-+	__le16 pattern_number;
-+	__le16 reserved1;
-+	__le16 qos_seq_ctr[8];
-+	__le32 wakeup_reasons;
-+	__le32 num_of_gtk_rekeys;
-+	__le32 transmitted_ndps;
-+	__le32 received_beacons;
++struct iwl_wowlan_wake_pkt_notif {
 +	__le32 wake_packet_length;
-+	__le32 wake_packet_bufsize;
-+	u8 tid_tear_down;
 +	u8 station_id;
-+	u8 reserved2[2];
-+} __packed; /* WOWLAN_INFO_NTFY_API_S_VER_1 */
++	u8 reserved[3];
++	u8 wake_packet[1];
++} __packed; /* WOWLAN_WAKE_PKT_NTFY_API_S_VER_1 */
 +
  /* TODO: NetDetect API */
  
  #endif /* __iwl_fw_api_d3_h__ */
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/offload.h b/drivers/net/wireless/intel/iwlwifi/fw/api/offload.h
-index 5204aa94e72a..ae2263e2e293 100644
+index ae2263e2e293..1a1b7ac78309 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/api/offload.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/offload.h
-@@ -3,7 +3,7 @@
-  * Copyright (C) 2012-2014 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-- * Copyright (C) 2021 Intel Corporation
-+ * Copyright (C) 2021-2022 Intel Corporation
-  */
- #ifndef __iwl_fw_api_offload_h__
- #define __iwl_fw_api_offload_h__
 @@ -12,6 +12,11 @@
   * enum iwl_prot_offload_subcmd_ids - protocol offload commands
   */
  enum iwl_prot_offload_subcmd_ids {
 +	/**
-+	 * @WOWLAN_INFO_NOTIFICATION: Notification in &struct iwl_wowlan_info_notif
++	 * @WOWLAN_WAKE_PKT_NOTIFICATION: Notification in &struct iwl_wowlan_wake_pkt_notif
 +	 */
-+	WOWLAN_INFO_NOTIFICATION = 0xFD,
++	WOWLAN_WAKE_PKT_NOTIFICATION = 0xFC,
 +
  	/**
- 	 * @STORED_BEACON_NTF: &struct iwl_stored_beacon_notif
+ 	 * @WOWLAN_INFO_NOTIFICATION: Notification in &struct iwl_wowlan_info_notif
  	 */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 518755b756b4..f522cc105b53 100644
+index f522cc105b53..77e70899c46e 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1995,6 +1995,30 @@ iwl_mvm_parse_wowlan_status_common(v7)
- iwl_mvm_parse_wowlan_status_common(v9)
- iwl_mvm_parse_wowlan_status_common(v12)
+@@ -1427,7 +1427,7 @@ struct iwl_wowlan_status_data {
+ 		u8 flags;
+ 	} igtk;
  
-+static void iwl_mvm_parse_wowlan_info_notif(struct iwl_mvm *mvm,
-+					    struct iwl_wowlan_info_notif *data,
-+					    struct iwl_wowlan_status_data *status,
-+					    u32 len)
-+{
-+	u32 i;
-+
-+	if (len < sizeof(*data)) {
-+		IWL_ERR(mvm, "Invalid WoWLAN info notification!\n");
-+		status = NULL;
-+		return;
-+	}
-+
-+	status->replay_ctr = le64_to_cpu(data->replay_ctr);
-+	status->pattern_number = le16_to_cpu(data->pattern_number);
-+	for (i = 0; i < IWL_MAX_TID_COUNT; i++)
-+		status->qos_seq_ctr[i] =
-+			le16_to_cpu(data->qos_seq_ctr[i]);
-+	status->wakeup_reasons = le32_to_cpu(data->wakeup_reasons);
-+	status->num_of_gtk_rekeys =
-+		le32_to_cpu(data->num_of_gtk_rekeys);
-+	status->received_beacons = le32_to_cpu(data->received_beacons);
-+}
-+
- static void iwl_mvm_convert_gtk_v2(struct iwl_wowlan_status_data *status,
- 				   struct iwl_wowlan_gtk_status_v2 *data)
- {
-@@ -2194,15 +2218,13 @@ iwl_mvm_get_wakeup_status(struct iwl_mvm *mvm, u8 sta_id)
+-	u8 wake_packet[];
++	u8 *wake_packet;
+ };
  
+ static void iwl_mvm_report_wakeup_reasons(struct iwl_mvm *mvm,
+@@ -1480,7 +1480,7 @@ static void iwl_mvm_report_wakeup_reasons(struct iwl_mvm *mvm,
+ 	if (reasons & IWL_WOWLAN_WAKEUP_BY_REM_WAKE_WAKEUP_PACKET)
+ 		wakeup.tcp_match = true;
+ 
+-	if (status->wake_packet_bufsize) {
++	if (status->wake_packet) {
+ 		int pktsize = status->wake_packet_bufsize;
+ 		int pktlen = status->wake_packet_length;
+ 		const u8 *pktdata = status->wake_packet;
+@@ -1965,7 +1965,7 @@ iwl_mvm_parse_wowlan_status_common_ ## _ver(struct iwl_mvm *mvm,	\
+ 		return NULL;						\
+ 	}								\
+ 									\
+-	status = kzalloc(sizeof(*status) + data_size, GFP_KERNEL);	\
++	status = kzalloc(sizeof(*status), GFP_KERNEL);			\
+ 	if (!status)							\
+ 		return NULL;						\
+ 									\
+@@ -1984,8 +1984,18 @@ iwl_mvm_parse_wowlan_status_common_ ## _ver(struct iwl_mvm *mvm,	\
+ 		le32_to_cpu(data->wake_packet_length);			\
+ 	status->wake_packet_bufsize =					\
+ 		le32_to_cpu(data->wake_packet_bufsize);			\
+-	memcpy(status->wake_packet, data->wake_packet,			\
+-	       status->wake_packet_bufsize);				\
++	if (status->wake_packet_bufsize) {				\
++		status->wake_packet =					\
++			kmemdup(data->wake_packet,			\
++				status->wake_packet_bufsize,		\
++				GFP_KERNEL);				\
++		if (!status->wake_packet) {				\
++			kfree(status);					\
++			return NULL;					\
++		}							\
++	} else {							\
++		status->wake_packet = NULL;				\
++	}								\
+ 									\
+ 	return status;							\
+ }
+@@ -2197,25 +2207,6 @@ iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm, u8 sta_id)
+ 	return status;
+ }
+ 
+-static struct iwl_wowlan_status_data *
+-iwl_mvm_get_wakeup_status(struct iwl_mvm *mvm, u8 sta_id)
+-{
+-	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, OFFLOADS_QUERY_CMD,
+-					   IWL_FW_CMD_VER_UNKNOWN);
+-	__le32 station_id = cpu_to_le32(sta_id);
+-	u32 cmd_size = cmd_ver != IWL_FW_CMD_VER_UNKNOWN ? sizeof(station_id) : 0;
+-
+-	if (!mvm->net_detect) {
+-		/* only for tracing for now */
+-		int ret = iwl_mvm_send_cmd_pdu(mvm, OFFLOADS_QUERY_CMD, 0,
+-					       cmd_size, &station_id);
+-		if (ret)
+-			IWL_ERR(mvm, "failed to query offload statistics (%d)\n", ret);
+-	}
+-
+-	return iwl_mvm_send_wowlan_get_status(mvm, sta_id);
+-}
+-
  /* releases the MVM mutex */
  static bool iwl_mvm_query_wakeup_reasons(struct iwl_mvm *mvm,
--					 struct ieee80211_vif *vif)
-+					 struct ieee80211_vif *vif,
-+					 struct iwl_wowlan_status_data *status)
- {
--	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	struct iwl_wowlan_status_data *status;
- 	int i;
- 	bool keep;
- 	struct iwl_mvm_sta *mvm_ap_sta;
+ 					 struct ieee80211_vif *vif,
+@@ -2525,9 +2516,11 @@ static bool iwl_mvm_check_rt_status(struct iwl_mvm *mvm,
+ /**
+  * enum iwl_d3_notif - d3 notifications
+  * @IWL_D3_NOTIF_WOWLAN_INFO: WOWLAN_INFO_NOTIF was received
++ * @IWL_D3_NOTIF_WOWLAN_WAKE_PKT: WOWLAN_WAKE_PKT_NOTIF was received
+  */
+ enum iwl_d3_notif {
+ 	IWL_D3_NOTIF_WOWLAN_INFO =	BIT(0),
++	IWL_D3_NOTIF_WOWLAN_WAKE_PKT =	BIT(1),
+ };
  
--	status = iwl_mvm_get_wakeup_status(mvm, mvmvif->ap_sta_id);
- 	if (!status)
- 		goto out_unlock;
+ /* manage d3 resume data */
+@@ -2553,10 +2546,9 @@ static void iwl_mvm_choose_query_wakeup_reasons(struct iwl_mvm *mvm,
+ 	/* if FW uses status notification, status shouldn't be NULL here */
+ 	if (!d3_data->status) {
+ 		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++		u8 sta_id = mvm->net_detect ? IWL_MVM_INVALID_STA : mvmvif->ap_sta_id;
  
-@@ -2212,7 +2234,7 @@ static bool iwl_mvm_query_wakeup_reasons(struct iwl_mvm *mvm,
- 	/* still at hard-coded place 0 for D3 image */
- 	mvm_ap_sta = iwl_mvm_sta_from_staid_protected(mvm, 0);
- 	if (!mvm_ap_sta)
--		goto out_free;
-+		goto out_unlock;
+-		d3_data->status = iwl_mvm_get_wakeup_status(mvm, mvm->net_detect ?
+-							    IWL_MVM_INVALID_STA :
+-							    mvmvif->ap_sta_id);
++		d3_data->status = iwl_mvm_send_wowlan_get_status(mvm, sta_id);
+ 	}
  
- 	for (i = 0; i < IWL_MAX_TID_COUNT; i++) {
- 		u16 seq = status->qos_seq_ctr[i];
-@@ -2235,11 +2257,8 @@ static bool iwl_mvm_query_wakeup_reasons(struct iwl_mvm *mvm,
- 
- 	keep = iwl_mvm_setup_connection_keep(mvm, vif, status);
- 
--	kfree(status);
- 	return keep;
- 
--out_free:
--	kfree(status);
- out_unlock:
- 	mutex_unlock(&mvm->mutex);
- 	return false;
-@@ -2356,24 +2375,23 @@ static void iwl_mvm_query_set_freqs(struct iwl_mvm *mvm,
+ 	if (mvm->net_detect) {
+@@ -2578,6 +2570,55 @@ static void iwl_mvm_choose_query_wakeup_reasons(struct iwl_mvm *mvm,
+ 	}
  }
  
- static void iwl_mvm_query_netdetect_reasons(struct iwl_mvm *mvm,
--					    struct ieee80211_vif *vif)
-+					    struct ieee80211_vif *vif,
-+					    struct iwl_wowlan_status_data *status)
- {
- 	struct cfg80211_wowlan_nd_info *net_detect = NULL;
- 	struct cfg80211_wowlan_wakeup wakeup = {
- 		.pattern_idx = -1,
- 	};
- 	struct cfg80211_wowlan_wakeup *wakeup_report = &wakeup;
--	struct iwl_wowlan_status_data *status;
- 	struct iwl_mvm_nd_query_results query;
- 	unsigned long matched_profiles;
- 	u32 reasons = 0;
- 	int i, n_matches, ret;
- 
--	status = iwl_mvm_get_wakeup_status(mvm, IWL_MVM_INVALID_STA);
--	if (status) {
--		reasons = status->wakeup_reasons;
--		kfree(status);
--	}
-+	if (WARN_ON(!status))
-+		return;
++#define IWL_WOWLAN_WAKEUP_REASON_HAS_WAKEUP_PKT (IWL_WOWLAN_WAKEUP_BY_MAGIC_PACKET | \
++						 IWL_WOWLAN_WAKEUP_BY_PATTERN | \
++						 IWL_WAKEUP_BY_PATTERN_IPV4_TCP_SYN |\
++						 IWL_WAKEUP_BY_PATTERN_IPV4_TCP_SYN_WILDCARD |\
++						 IWL_WAKEUP_BY_PATTERN_IPV6_TCP_SYN |\
++						 IWL_WAKEUP_BY_PATTERN_IPV6_TCP_SYN_WILDCARD)
 +
-+	reasons = status->wakeup_reasons;
- 
- 	if (reasons & IWL_WOWLAN_WAKEUP_BY_RFKILL_DEASSERTED)
- 		wakeup.rfkill_release = true;
-@@ -2504,16 +2522,142 @@ static bool iwl_mvm_check_rt_status(struct iwl_mvm *mvm,
- 	return false;
- }
- 
-+/**
-+ * enum iwl_d3_notif - d3 notifications
-+ * @IWL_D3_NOTIF_WOWLAN_INFO: WOWLAN_INFO_NOTIF was received
-+ */
-+enum iwl_d3_notif {
-+	IWL_D3_NOTIF_WOWLAN_INFO =	BIT(0),
-+};
-+
-+/* manage d3 resume data */
-+struct iwl_d3_data {
-+	struct iwl_wowlan_status_data *status;
-+	bool test;
-+	u32 notif_expected;	/* bitmap - see &enum iwl_d3_notif */
-+	u32 notif_received;	/* bitmap - see &enum iwl_d3_notif */
-+};
-+
-+/*
-+ * This function assumes:
-+ *	1. The mutex is already held.
-+ *	2. The callee functions unlock the mutex.
-+ */
-+static void iwl_mvm_choose_query_wakeup_reasons(struct iwl_mvm *mvm,
-+						struct ieee80211_vif *vif,
-+						struct iwl_d3_data *d3_data,
-+						bool test)
++static int iwl_mvm_wowlan_store_wake_pkt(struct iwl_mvm *mvm,
++					 struct iwl_wowlan_wake_pkt_notif *notif,
++					 struct iwl_wowlan_status_data *status,
++					 u32 len)
 +{
-+	lockdep_assert_held(&mvm->mutex);
++	u32 data_size, packet_len = le32_to_cpu(notif->wake_packet_length);
 +
-+	/* if FW uses status notification, status shouldn't be NULL here */
-+	if (!d3_data->status) {
-+		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+
-+		d3_data->status = iwl_mvm_get_wakeup_status(mvm, mvm->net_detect ?
-+							    IWL_MVM_INVALID_STA :
-+							    mvmvif->ap_sta_id);
++	if (len < sizeof(*notif)) {
++		IWL_ERR(mvm, "Invalid WoWLAN wake packet notification!\n");
++		return -EIO;
 +	}
 +
-+	if (mvm->net_detect) {
-+		iwl_mvm_query_netdetect_reasons(mvm, vif, d3_data->status);
-+	} else {
-+		bool keep = iwl_mvm_query_wakeup_reasons(mvm, vif,
-+							 d3_data->status);
-+
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+		if (keep)
-+			mvm->keep_vif = vif;
-+#endif
-+
-+		if (!test)
-+			ieee80211_iterate_active_interfaces_mtx(mvm->hw,
-+								IEEE80211_IFACE_ITER_NORMAL,
-+								iwl_mvm_d3_disconnect_iter,
-+								keep ? vif : NULL);
++	if (WARN_ON(!status)) {
++		IWL_ERR(mvm, "Got wake packet notification but wowlan status data is NULL\n");
++		return -EIO;
 +	}
++
++	if (WARN_ON(!(status->wakeup_reasons &
++		      IWL_WOWLAN_WAKEUP_REASON_HAS_WAKEUP_PKT))) {
++		IWL_ERR(mvm, "Got wakeup packet but wakeup reason is %x\n",
++			status->wakeup_reasons);
++		return -EIO;
++	}
++
++	data_size = len - offsetof(struct iwl_wowlan_wake_pkt_notif, wake_packet);
++
++	/* data_size got the padding from the notification, remove it. */
++	if (packet_len < data_size)
++		data_size = packet_len;
++
++	status->wake_packet = kmemdup(notif->wake_packet, data_size,
++				      GFP_ATOMIC);
++
++	if (!status->wake_packet)
++		return -ENOMEM;
++
++	status->wake_packet_length = packet_len;
++	status->wake_packet_bufsize = data_size;
++
++	return 0;
 +}
 +
-+static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
-+				  struct iwl_rx_packet *pkt, void *data)
-+{
-+	struct iwl_mvm *mvm =
-+		container_of(notif_wait, struct iwl_mvm, notif_wait);
-+	struct iwl_d3_data *d3_data = data;
-+	u32 len;
+ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+ 				  struct iwl_rx_packet *pkt, void *data)
+ {
+@@ -2585,6 +2626,7 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+ 		container_of(notif_wait, struct iwl_mvm, notif_wait);
+ 	struct iwl_d3_data *d3_data = data;
+ 	u32 len;
++	int ret;
+ 
+ 	switch (WIDE_ID(pkt->hdr.group_id, pkt->hdr.cmd)) {
+ 	case WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_INFO_NOTIFICATION): {
+@@ -2601,6 +2643,31 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+ 		len = iwl_rx_packet_payload_len(pkt);
+ 		iwl_mvm_parse_wowlan_info_notif(mvm, notif, d3_data->status,
+ 						len);
++		if (d3_data->status &&
++		    d3_data->status->wakeup_reasons & IWL_WOWLAN_WAKEUP_REASON_HAS_WAKEUP_PKT)
++			/* We are supposed to get also wake packet notif */
++			d3_data->notif_expected |= IWL_D3_NOTIF_WOWLAN_WAKE_PKT;
 +
-+	switch (WIDE_ID(pkt->hdr.group_id, pkt->hdr.cmd)) {
-+	case WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_INFO_NOTIFICATION): {
-+		struct iwl_wowlan_info_notif *notif = (void *)pkt->data;
-+
-+		if (d3_data->notif_received & IWL_D3_NOTIF_WOWLAN_INFO) {
-+			/* We might get two notifications due to dual bss */
-+			IWL_DEBUG_WOWLAN(mvm,
-+					 "Got additional wowlan info notification\n");
-+			break;
-+		}
-+
-+		d3_data->notif_received |= IWL_D3_NOTIF_WOWLAN_INFO;
-+		len = iwl_rx_packet_payload_len(pkt);
-+		iwl_mvm_parse_wowlan_info_notif(mvm, notif, d3_data->status,
-+						len);
 +		break;
 +	}
-+	default:
-+		WARN_ON(1);
-+	}
++	case WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_WAKE_PKT_NOTIFICATION): {
++		struct iwl_wowlan_wake_pkt_notif *notif = (void *)pkt->data;
 +
-+	return d3_data->notif_received == d3_data->notif_expected;
-+}
-+
-+#define IWL_MVM_D3_NOTIF_TIMEOUT (HZ / 5)
-+
-+static int iwl_mvm_d3_notif_wait(struct iwl_mvm *mvm,
-+				 struct iwl_d3_data *d3_data,
-+				 enum iwl_d3_status *d3_status,
-+				 bool test)
-+{
-+	static const u16 d3_resume_notif[] = {
-+		WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_INFO_NOTIFICATION)
-+	};
-+	struct iwl_notification_wait wait_d3_notif;
-+	int ret;
-+
-+	iwl_init_notification_wait(&mvm->notif_wait, &wait_d3_notif,
-+				   d3_resume_notif, ARRAY_SIZE(d3_resume_notif),
-+				   iwl_mvm_wait_d3_notif, d3_data);
-+
-+	ret = iwl_trans_d3_resume(mvm->trans, d3_status, test, false);
-+	if (ret) {
-+		iwl_remove_notification(&mvm->notif_wait, &wait_d3_notif);
-+		return ret;
-+	}
-+
-+	if (*d3_status != IWL_D3_STATUS_ALIVE) {
-+		IWL_INFO(mvm, "Device was reset during suspend\n");
-+		iwl_remove_notification(&mvm->notif_wait, &wait_d3_notif);
-+		return -ENOENT;
-+	}
-+
-+	return iwl_wait_notification(&mvm->notif_wait, &wait_d3_notif,
-+				     IWL_MVM_D3_NOTIF_TIMEOUT);
-+}
-+
- static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
- {
- 	struct ieee80211_vif *vif = NULL;
- 	int ret = 1;
- 	enum iwl_d3_status d3_status;
--	bool keep = false;
-+	struct iwl_d3_data d3_data = {
-+		.test = test,
-+		.notif_expected = IWL_D3_NOTIF_WOWLAN_INFO,
-+	};
- 	bool unified_image = fw_has_capa(&mvm->fw->ucode_capa,
- 					 IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG);
- 	bool d0i3_first = fw_has_capa(&mvm->fw->ucode_capa,
- 				      IWL_UCODE_TLV_CAPA_D0I3_END_FIRST);
-+	/* currently disabled */
-+	bool resume_notif_based = false;
- 
- 	mutex_lock(&mvm->mutex);
- 
-@@ -2537,7 +2681,20 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
- 		goto err;
- 	}
- 
--	ret = iwl_trans_d3_resume(mvm->trans, &d3_status, test, !unified_image);
-+	if (resume_notif_based) {
-+		d3_data.status = kzalloc(sizeof(*d3_data.status), GFP_KERNEL);
-+		if (!d3_data.status) {
-+			IWL_ERR(mvm, "Failed to allocate wowlan status\n");
-+			ret = -ENOMEM;
-+			goto err;
++		if (d3_data->notif_received & IWL_D3_NOTIF_WOWLAN_WAKE_PKT) {
++			/* We shouldn't get two wake packet notifications */
++			IWL_ERR(mvm,
++				"Got additional wowlan wake packet notification\n");
++		} else {
++			d3_data->notif_received |= IWL_D3_NOTIF_WOWLAN_WAKE_PKT;
++			len =  iwl_rx_packet_payload_len(pkt);
++			ret = iwl_mvm_wowlan_store_wake_pkt(mvm, notif,
++							    d3_data->status,
++							    len);
++			if (ret)
++				IWL_ERR(mvm,
++					"Can't parse WOWLAN_WAKE_PKT_NOTIFICATION\n");
 +		}
 +
-+		ret = iwl_mvm_d3_notif_wait(mvm, &d3_data, &d3_status, test);
-+	} else {
-+		ret = iwl_trans_d3_resume(mvm->trans, &d3_status, test,
-+					  !unified_image);
-+	}
-+
- 	if (ret)
- 		goto err;
- 
-@@ -2546,7 +2703,7 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
- 		goto err;
+ 		break;
  	}
- 
--	if (d0i3_first) {
-+	if (d0i3_first && mvm->trans->trans_cfg->device_family <= IWL_DEVICE_FAMILY_22000) {
- 		struct iwl_host_cmd cmd = {
- 			.id = D0I3_END_CMD,
- 			.flags = CMD_WANT_SKB | CMD_SEND_IN_D3,
-@@ -2576,41 +2733,27 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
- 		/*  Re-configure default SAR profile */
- 		iwl_mvm_sar_select_profile(mvm, 1, 1);
- 
--	if (mvm->net_detect) {
-+	if (mvm->net_detect && unified_image) {
- 		/* If this is a non-unified image, we restart the FW,
- 		 * so no need to stop the netdetect scan.  If that
- 		 * fails, continue and try to get the wake-up reasons,
- 		 * but trigger a HW restart by keeping a failure code
- 		 * in ret.
- 		 */
--		if (unified_image)
--			ret = iwl_mvm_scan_stop(mvm, IWL_MVM_SCAN_NETDETECT,
--						false);
--
--		iwl_mvm_query_netdetect_reasons(mvm, vif);
--		/* has unlocked the mutex, so skip that */
--		goto out;
--	} else {
--		keep = iwl_mvm_query_wakeup_reasons(mvm, vif);
--#ifdef CONFIG_IWLWIFI_DEBUGFS
--		if (keep)
--			mvm->keep_vif = vif;
--#endif
--		/* has unlocked the mutex, so skip that */
--		goto out_iterate;
-+		ret = iwl_mvm_scan_stop(mvm, IWL_MVM_SCAN_NETDETECT,
-+					false);
- 	}
- 
-+	iwl_mvm_choose_query_wakeup_reasons(mvm, vif, &d3_data, d3_data.test);
-+	/* has unlocked the mutex, so skip that */
-+	goto out;
-+
+ 	default:
+@@ -2618,7 +2685,8 @@ static int iwl_mvm_d3_notif_wait(struct iwl_mvm *mvm,
+ 				 bool test)
+ {
+ 	static const u16 d3_resume_notif[] = {
+-		WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_INFO_NOTIFICATION)
++		WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_INFO_NOTIFICATION),
++		WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_WAKE_PKT_NOTIFICATION)
+ 	};
+ 	struct iwl_notification_wait wait_d3_notif;
+ 	int ret;
+@@ -2751,6 +2819,8 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
  err:
--	iwl_mvm_free_nd(mvm);
  	mutex_unlock(&mvm->mutex);
--
--out_iterate:
--	if (!test)
--		ieee80211_iterate_active_interfaces_mtx(mvm->hw,
--			IEEE80211_IFACE_ITER_NORMAL,
--			iwl_mvm_d3_disconnect_iter, keep ? vif : NULL);
--
  out:
-+	kfree(d3_data.status);
-+	iwl_mvm_free_nd(mvm);
-+
- 	clear_bit(IWL_MVM_STATUS_IN_D3, &mvm->status);
++	if (d3_data.status)
++		kfree(d3_data.status->wake_packet);
+ 	kfree(d3_data.status);
+ 	iwl_mvm_free_nd(mvm);
  
- 	/* no need to reset the device in unified images, if successful */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 7ed4f5a0abc3..e380ee841773 100644
+index e380ee841773..9c8adb0c2acf 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
 @@ -574,6 +574,7 @@ static const struct iwl_hcmd_names iwl_mvm_location_names[] = {
   * Access is done through binary search
   */
  static const struct iwl_hcmd_names iwl_mvm_prot_offload_names[] = {
-+	HCMD_NAME(WOWLAN_INFO_NOTIFICATION),
++	HCMD_NAME(WOWLAN_WAKE_PKT_NOTIFICATION),
+ 	HCMD_NAME(WOWLAN_INFO_NOTIFICATION),
  	HCMD_NAME(STORED_BEACON_NTF),
  };
- 
 -- 
 2.35.3
 
