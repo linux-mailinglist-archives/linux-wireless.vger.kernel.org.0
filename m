@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D525AEA30
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 15:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4840D5AEA7C
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Sep 2022 15:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230148AbiIFNld (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Sep 2022 09:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38924 "EHLO
+        id S239216AbiIFNzT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Sep 2022 09:55:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241035AbiIFNj2 (ORCPT
+        with ESMTP id S239194AbiIFNxb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Sep 2022 09:39:28 -0400
+        Tue, 6 Sep 2022 09:53:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A13F7C76C;
-        Tue,  6 Sep 2022 06:36:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F4B8804B0;
+        Tue,  6 Sep 2022 06:40:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F6061556;
-        Tue,  6 Sep 2022 13:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8D3C433D6;
-        Tue,  6 Sep 2022 13:35:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F4F0614C9;
+        Tue,  6 Sep 2022 13:40:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B7BC433D7;
+        Tue,  6 Sep 2022 13:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1662471314;
-        bh=c76RdZkpfwhlMFS1txr+2Nnlyyy8hNqQ90Jsk48vrvk=;
+        s=korg; t=1662471636;
+        bh=6EetTVY8S2ZhgawWaaCaZPYbNXdW00FjqEoMiuxcw58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=19rAxVucJPUi/nwB0VgoPWUyFkgSxuoNDPMHW20sKZl78nZxhLajvX5JsKipealz+
-         ATngCHcYE7P0LnVNrBQ/ureY46UnoY04qzTeskasO/ir8H5DdgqBrafTDWmJryw/lX
-         gwSL/nmHPaYs3b0JNX/53JdR/oMO4KBQvz/JQjio=
+        b=PZh0THmr6HG9es+tJ+uG3YExoAjHCZPsovRp+QWwZt532ue6Ab5n1lm9yx0aoWBXL
+         VaU+v3OWEaMSXgl2giomYuhGNbyK8vFvnN1tB+sewLqWEkTe52Ki2M16QLwKb3IiwT
+         Gne+WNtNFF9LFQu406QarAJiDSYYoNFAVVBVWmTw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         oss-drivers@corigine.com,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.10 68/80] net: Use u64_stats_fetch_begin_irq() for stats fetch.
-Date:   Tue,  6 Sep 2022 15:31:05 +0200
-Message-Id: <20220906132819.937966050@linuxfoundation.org>
+Subject: [PATCH 5.15 093/107] net: Use u64_stats_fetch_begin_irq() for stats fetch.
+Date:   Tue,  6 Sep 2022 15:31:14 +0200
+Message-Id: <20220906132825.765765780@linuxfoundation.org>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220906132816.936069583@linuxfoundation.org>
-References: <20220906132816.936069583@linuxfoundation.org>
+In-Reply-To: <20220906132821.713989422@linuxfoundation.org>
+References: <20220906132821.713989422@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -209,7 +209,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static int gmac_get_ksettings(struct net_device *netdev,
 --- a/drivers/net/ethernet/google/gve/gve_ethtool.c
 +++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -172,14 +172,14 @@ gve_get_ethtool_stats(struct net_device
+@@ -174,14 +174,14 @@ gve_get_ethtool_stats(struct net_device
  				struct gve_rx_ring *rx = &priv->rx[ring];
  
  				start =
@@ -226,7 +226,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			rx_pkts += tmp_rx_pkts;
  			rx_bytes += tmp_rx_bytes;
-@@ -193,10 +193,10 @@ gve_get_ethtool_stats(struct net_device
+@@ -195,10 +195,10 @@ gve_get_ethtool_stats(struct net_device
  		if (priv->tx) {
  			do {
  				start =
@@ -239,7 +239,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			tx_pkts += tmp_tx_pkts;
  			tx_bytes += tmp_tx_bytes;
-@@ -254,13 +254,13 @@ gve_get_ethtool_stats(struct net_device
+@@ -256,13 +256,13 @@ gve_get_ethtool_stats(struct net_device
  			data[i++] = rx->cnt;
  			do {
  				start =
@@ -255,8 +255,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			data[i++] = tmp_rx_bytes;
  			/* rx dropped packets */
-@@ -313,9 +313,9 @@ gve_get_ethtool_stats(struct net_device
- 			data[i++] = tx->done;
+@@ -323,9 +323,9 @@ gve_get_ethtool_stats(struct net_device
+ 			}
  			do {
  				start =
 -				  u64_stats_fetch_begin(&priv->tx[ring].statss);
@@ -269,7 +269,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			data[i++] = tx->wake_queue;
 --- a/drivers/net/ethernet/google/gve/gve_main.c
 +++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -40,10 +40,10 @@ static void gve_get_stats(struct net_dev
+@@ -51,10 +51,10 @@ static void gve_get_stats(struct net_dev
  		for (ring = 0; ring < priv->rx_cfg.num_queues; ring++) {
  			do {
  				start =
@@ -282,7 +282,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			s->rx_packets += packets;
  			s->rx_bytes += bytes;
-@@ -53,10 +53,10 @@ static void gve_get_stats(struct net_dev
+@@ -64,10 +64,10 @@ static void gve_get_stats(struct net_dev
  		for (ring = 0; ring < priv->tx_cfg.num_queues; ring++) {
  			do {
  				start =
@@ -295,9 +295,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  						       start));
  			s->tx_packets += packets;
  			s->tx_bytes += bytes;
-@@ -1041,9 +1041,9 @@ void gve_handle_report_stats(struct gve_
- 	if (priv->tx) {
- 		for (idx = 0; idx < priv->tx_cfg.num_queues; idx++) {
+@@ -1260,9 +1260,9 @@ void gve_handle_report_stats(struct gve_
+ 			}
+ 
  			do {
 -				start = u64_stats_fetch_begin(&priv->tx[idx].statss);
 +				start = u64_stats_fetch_begin_irq(&priv->tx[idx].statss);
@@ -347,7 +347,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  /**
 --- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
 +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -3373,21 +3373,21 @@ static void nfp_net_stat64(struct net_de
+@@ -3482,21 +3482,21 @@ static void nfp_net_stat64(struct net_de
  		unsigned int start;
  
  		do {
@@ -375,7 +375,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		stats->tx_errors += data[2];
 --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
 +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-@@ -494,7 +494,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -483,7 +483,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
  		unsigned int start;
  
  		do {
@@ -384,7 +384,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			data[0] = nn->r_vecs[i].rx_pkts;
  			tmp[0] = nn->r_vecs[i].hw_csum_rx_ok;
  			tmp[1] = nn->r_vecs[i].hw_csum_rx_inner_ok;
-@@ -502,10 +502,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -491,10 +491,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
  			tmp[3] = nn->r_vecs[i].hw_csum_rx_error;
  			tmp[4] = nn->r_vecs[i].rx_replace_buf_alloc_fail;
  			tmp[5] = nn->r_vecs[i].hw_tls_rx;
@@ -397,7 +397,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			data[1] = nn->r_vecs[i].tx_pkts;
  			data[2] = nn->r_vecs[i].tx_busy;
  			tmp[6] = nn->r_vecs[i].hw_csum_tx;
-@@ -515,7 +515,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -504,7 +504,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
  			tmp[10] = nn->r_vecs[i].hw_tls_tx;
  			tmp[11] = nn->r_vecs[i].tls_tx_fallback;
  			tmp[12] = nn->r_vecs[i].tls_tx_no_fallback;
@@ -423,7 +423,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static int
 --- a/net/mac80211/sta_info.c
 +++ b/net/mac80211/sta_info.c
-@@ -2175,9 +2175,9 @@ static inline u64 sta_get_tidstats_msdu(
+@@ -2206,9 +2206,9 @@ static inline u64 sta_get_tidstats_msdu(
  	u64 value;
  
  	do {
@@ -435,7 +435,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	return value;
  }
-@@ -2241,9 +2241,9 @@ static inline u64 sta_get_stats_bytes(st
+@@ -2272,9 +2272,9 @@ static inline u64 sta_get_stats_bytes(st
  	u64 value;
  
  	do {
@@ -449,7 +449,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
 --- a/net/mpls/af_mpls.c
 +++ b/net/mpls/af_mpls.c
-@@ -1078,9 +1078,9 @@ static void mpls_get_stats(struct mpls_d
+@@ -1079,9 +1079,9 @@ static void mpls_get_stats(struct mpls_d
  
  		p = per_cpu_ptr(mdev->stats, i);
  		do {
