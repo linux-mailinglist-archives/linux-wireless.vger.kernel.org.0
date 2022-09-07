@@ -2,128 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C035E5B0921
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 17:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4A005B0DA8
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 22:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbiIGPsJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 11:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50414 "EHLO
+        id S229583AbiIGUCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 16:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbiIGPsB (ORCPT
+        with ESMTP id S229580AbiIGUCM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 11:48:01 -0400
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11DAB9F90;
-        Wed,  7 Sep 2022 08:47:58 -0700 (PDT)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-127dca21a7dso9740590fac.12;
-        Wed, 07 Sep 2022 08:47:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=P9M7/bzZ0ZMw/d0qpnlcd3bSu1NtUDhgwC52m6jfjak=;
-        b=ay3OgbdOmmRKaP7uBF4xjWNyjko0xdBI/R4BTiAJ+bGYc5lyszUgyVAaMzpbM/tI2s
-         8u415YkLMaaAQmXhPWnVGQHdVLQOfkZEp+osXK/HoQ/uskwBczh1e96ZdBackJ+Oe3H+
-         UHiyChPYq+zTzLms++uTXAFPQ7OejVuBJ9hJEopOiar/MWMZb/JLv+2haJ5F4b5S1kiD
-         Mrlpcqu7yDU1ero7nFL9y3oiytMgNBvtqMxb5ikxKR9EqADxxxrvEKpGGLrMu0bx8T2K
-         xrycjTbM3reI45VbNP+9w7eE/xFY36Ivf30Ok2Wa40IzX1LnThxuHrbR+1DAE/bomJu1
-         jiTQ==
-X-Gm-Message-State: ACgBeo3LkQGy8lLT51Fgs74wK6ooEB7ZIaLRXA4gFv+G2RhFaGjbYoPD
-        jb+TDdPGQ3Y0tdiHqDR+qg==
-X-Google-Smtp-Source: AA6agR7V8XXJWCZA66/vmCNdtFQHBPBeY7vIpPYKBM+iV7v+1t93G419nZX9b4Lu3VamSExZLcbo0Q==
-X-Received: by 2002:a05:6808:1489:b0:344:7ff8:54e8 with SMTP id e9-20020a056808148900b003447ff854e8mr12233447oiw.195.1662565677655;
-        Wed, 07 Sep 2022 08:47:57 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id bm23-20020a0568081a9700b0034480f7eec4sm6558187oib.12.2022.09.07.08.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Sep 2022 08:47:57 -0700 (PDT)
-Received: (nullmailer pid 3514416 invoked by uid 1000);
-        Wed, 07 Sep 2022 15:47:56 -0000
-Date:   Wed, 7 Sep 2022 10:47:56 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Russell King <rmk+kernel@armlinux.org.uk>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-        Hector Martin <marcan@marcan.st>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rafa__ Mi__ecki <zajec5@gmail.com>,
-        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>,
-        van Spriel <arend@broadcom.com>
-Subject: Re: [PATCH net-next 01/12] dt-bindings: net: bcm4329-fmac: Add Apple
- properties & chips
-Message-ID: <20220907154756.GA3505310-robh@kernel.org>
-References: <YxhMaYOfnM+7FG+W@shell.armlinux.org.uk>
- <E1oVpmk-005LBL-5U@rmk-PC.armlinux.org.uk>
+        Wed, 7 Sep 2022 16:02:12 -0400
+Received: from hm1481-n-164.locaweb.com.br (hm1481-n-164.locaweb.com.br [189.126.112.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE6BFA4B16
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 13:02:09 -0700 (PDT)
+Received: from mcbain0021.email.locaweb.com.br (201.76.49.41) by hm1481.locaweb.com.br id h33s482n8lgp for <linux-wireless@vger.kernel.org>; Wed, 7 Sep 2022 17:00:04 -0300 (envelope-from <cesarb@cesarb.eti.br>)
+Received: from proxy.email-ssl.com.br (unknown [10.31.120.232])
+        by mcbain0021.email.locaweb.com.br (Postfix) with ESMTP id 77C9814C01C7;
+        Wed,  7 Sep 2022 16:57:04 -0300 (-03)
+x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
+x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
+x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
+x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
+X-LocaWeb-COR: locaweb_2009_x-mail
+X-AuthUser: cesarb@cesarb.eti.br
+Received: from [192.168.96.204] (unknown [200.187.114.14])
+        (Authenticated sender: cesarb@cesarb.eti.br)
+        by proxy.email-ssl.com.br (Postfix) with ESMTPSA id 4FE1B4404FD;
+        Wed,  7 Sep 2022 17:02:02 -0300 (-03)
+Message-ID: <7c7135cb-ee5d-e7f3-45ca-8b7206312512@cesarb.eti.br>
+Date:   Wed, 7 Sep 2022 17:02:01 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1oVpmk-005LBL-5U@rmk-PC.armlinux.org.uk>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: Update regulatory rules
+ for Brazil (BR)
+To:     Seth Forshee <sforshee@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <20220901232734.5488-1-cesarb@cesarb.eti.br>
+ <b8674e67fee2393d4c5fe9d9842028545c6adcfa.camel@sipsolutions.net>
+ <6b577581-9daf-ff11-1aaa-ff1243eb9c03@cesarb.eti.br>
+ <YxiwFLWhsOtJJhrq@do-x1extreme>
+Content-Language: en-US
+From:   Cesar Eduardo Barros <cesarb@cesarb.eti.br>
+In-Reply-To: <YxiwFLWhsOtJJhrq@do-x1extreme>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 07, 2022 at 08:47:46AM +0100, Russell King wrote:
-> From: Hector Martin <marcan@marcan.st>
+Em 07/09/2022 11:52, Seth Forshee escreveu:
+> On Fri, Sep 02, 2022 at 07:21:50PM -0300, Cesar Eduardo Barros wrote:
+>> Em 02/09/2022 11:53, Johannes Berg escreveu:
+>>> On Thu, 2022-09-01 at 20:27 -0300, Cesar Eduardo Barros wrote:
+>>>>
+>>>> +	# This range ends at 5725 MHz, but channel 144 extends to 5730 MHz.
+>>>> +	# Since 5725 ~ 5730 MHz belongs to the next range which has looser
+>>>> +	# requirements, we can extend the range by 5 MHz to make the kernel
+>>>> +	# happy and be able to use channel 144.
+>>>> +	(5470 - 5730 @ 160), (27), DFS
+>>>> +	(5730 - 5850 @ 80), (30)
+>>>>
+>>>
+>>> If you do the latter as 160 as well, and add AUTO-BW, couldn't you split
+>>> them at 5725 correctly? But I guess it doesn't matter anyway.
+>>
+>> This was copied from the US rules (including the four-line comment), which
+>> have an identical split. If AUTO-BW worked here, I'd expect the US rules to
+>> use it.
 > 
-> This binding is currently used for SDIO devices, but these chips are
-> also used as PCIe devices on DT platforms and may be represented in the
-> DT. Re-use the existing binding and add chip compatibles used by Apple
-> T2 and M1 platforms (the T2 ones are not known to be used in DT
-> platforms, but we might as well document them).
-> 
-> Then, add properties required for firmware selection and calibration on
-> M1 machines.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 37 +++++++++++++++++--
->  1 file changed, 34 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index 53b4153d9bfc..53ded82b273a 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> +title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
->  
->  maintainers:
->    - Arend van Spriel <arend@broadcom.com>
-> @@ -42,10 +42,16 @@ title: Broadcom BCM4329 family fullmac wireless SDIO devices
->                - cypress,cyw43012-fmac
->            - const: brcm,bcm4329-fmac
->        - const: brcm,bcm4329-fmac
+> AUTO-BW would work, and we have countries using it for this case. Iirc
+> for some countries we move the split to 5730 because even though
+> 5725-5730 is at a lower power limit the rules allow channel 144 to be
+> used at the power limit for 5710-5725. For the US though I think it's
+> just historical -- it was done that way initially, and it isn't
+> important enough that anyone has cared to change it.
 
-If you respin, this compatible can be combined with the enum below.
+The only country I found in the database that does it that way is IL, 
+and it has the power limits in the opposite direction (its 5470 - 5725 
+range has a higher power limit than its 5725 - 5875 range, while for BR 
+and US it's the former range which has a lower power limit); looking at 
+other countries, AU does the manual adjustment with a comment like US, 
+while TW has a 5 MHz overlap on its ranges. So the precedent is not 
+enough for me to be confident that using the official split together 
+with AUTO-BW would allow using channel 144 (and the 40 MHz and 80 MHz 
+channels it's part of).
 
-> +      - enum:
-> +          - pci14e4,43dc  # BCM4355
-> +          - pci14e4,4464  # BCM4364
-> +          - pci14e4,4488  # BCM4377
-> +          - pci14e4,4425  # BCM4378
-> +          - pci14e4,4433  # BCM4387
+And the single one which does it using AUTO-BW (IL) doesn't change the 
+bandwidth of its 5725 - 5875 to 160; is it really necessary to do that 
+change to the bandwidth (considering also that channel 144 is not part 
+of a pure 160 MHz channel, it could be used only for 80+80)? What about 
+the 5150 - 5250 and 5250 - 5350 ranges, do they need also to be changed 
+to 160 so that the combined 5170 - 5330 160 MHz channel can be used, or 
+does AUTO-BW allow it even though both ranges are declared as allowing 
+just 80 MHz channels? What about 80+80 channels?
 
+> But we do generally try to keep the rules matching the official
+> documents as much as possible, so for new rules we should split at 5725
+> and use AUTO-BW as Johannes suggested. Could you send a v2 with that
+> change?
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Well, it's not exactly a new rule (the current database already has a 
+5490 - 5730 @ 160 rule), but we could treat it that way since we're 
+mostly rewriting them all (and the original didn't say where that came 
+from).
+
+Since I'm not certain that AUTO-BW will be interpreted as expected, 
+before doing that change, I'll try to see if I can test it first on my 
+laptop (by sheer luck, I happen to be using the 5650 - 5730 80 MHz 
+channel right now, so I'd just have to see if it still connects at 80 
+MHz, assuming I can somehow convince the kernel to load a modified 
+file). Or would you prefer me to send the patch first (with or without a 
+change in the channel bandwidths)?
+
+-- 
+Cesar Eduardo Barros
+cesarb@cesarb.eti.br
+
