@@ -2,75 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C4CA5AFEDC
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 10:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB17E5AFF73
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 10:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbiIGIUW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 04:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59008 "EHLO
+        id S229754AbiIGIpC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 04:45:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229593AbiIGIUU (ORCPT
+        with ESMTP id S230025AbiIGIoq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 04:20:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54CE627DDE
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 01:20:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0E61617BB
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 08:20:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D49CC433D6;
-        Wed,  7 Sep 2022 08:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662538818;
-        bh=vC1xo+f/KdGX8B0lKVlxVLXN+g1w016Xr/3R/zixVPo=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=gJvE3dXJYJOtsg/Mtkg1BHuJGOO3ZtWuUe2h3bqZu1VcJfIgQsZxhwM8YVzxRrIdl
-         plgWcPZxKCcx4/0hZAdyjbscZLQLM99BiIW6sq7X3zrXhVZ6r+ncMSPbIe2doBEXGg
-         YaU46pI00XlWcVI+pPcP2unVuE3XZD7KUtx2A3Qv2kANQkm8ANSwIRA9U/0NP0+jJ6
-         49G0en/VqvmmhSROw2NjNU9ULYcXXCz/1ANZ8ZuUpmrYedFU4RBT/zNR0sq9jCc9rj
-         1n2A7Jr65CJFLrZlxREA0qXG40CeETaM1cfTFPN503X0tsHmjoDOEKNgOIgJTcXlP4
-         K0I2nWrMjIWnQ==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 7 Sep 2022 04:44:46 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C0E1313D79
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 01:44:39 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2878iCqT5020206, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2878iCqT5020206
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 7 Sep 2022 16:44:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 7 Sep 2022 16:44:30 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 7 Sep 2022
+ 16:44:30 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 0/5] wifi: rtw89: support TX diversity for 1T2R variant model
+Date:   Wed, 7 Sep 2022 16:43:57 +0800
+Message-ID: <20220907084402.66480-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath11k: Enable remain-on-channel support on WCN6750
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220901080656.3450-1-quic_mpubbise@quicinc.com>
-References: <20220901080656.3450-1-quic_mpubbise@quicinc.com>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166253881172.23728.9477056475033732029.kvalo@kernel.org>
-Date:   Wed,  7 Sep 2022 08:20:17 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/07/2022 08:13:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvNyCkV6TIIDA2OjI0OjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manikanta Pubbisetty <quic_mpubbise@quicinc.com> wrote:
+To support TX diversity, query firmware to know if it is 1T2R variant
+model. Then, checking RSSI periodically to know which antenna has better
+signal strength that can be seen as the antenna is close to AP. Therefore,
+use the antenna with better RSSI to transmit packets dynamically.
 
-> Enable remain on channel support on WCN6750 as it is needed for
-> GAS, Passpoint.
-> 
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
-> 
-> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+v2:
+  - patch 3/5: use separate 'ret'
+  - patch 5/5: no need casting from void pointer
 
-Patch applied to ath-next branch of ath.git, thanks.
+Ping-Ke Shih (5):
+  wifi: rtw89: use u32_get_bits to access C2H content of PHY capability
+  wifi: rtw89: parse phycap of TX/RX antenna number
+  wifi: rtw89: configure TX path via H2C command
+  wifi: rtw89: record signal strength per RF path
+  wifi: rtw89: support TX diversity for 1T2R chipset
 
-36893e45b192 ath11k: Enable remain-on-channel support on WCN6750
+ drivers/net/wireless/realtek/rtw89/core.c     | 21 +++++--
+ drivers/net/wireless/realtek/rtw89/core.h     |  6 +-
+ drivers/net/wireless/realtek/rtw89/debug.c    | 12 +++-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 62 ++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/fw.h       | 43 ++++++++-----
+ drivers/net/wireless/realtek/rtw89/mac.c      | 35 ++++++++---
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  3 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 56 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  6 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  6 +-
+ 12 files changed, 211 insertions(+), 46 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220901080656.3450-1-quic_mpubbise@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.25.1
 
