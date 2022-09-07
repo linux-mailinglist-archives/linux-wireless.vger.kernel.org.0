@@ -2,121 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D2335B07DD
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 17:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C035E5B0921
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 17:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbiIGPCb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 11:02:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
+        id S229760AbiIGPsJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 11:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbiIGPCa (ORCPT
+        with ESMTP id S229786AbiIGPsB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 11:02:30 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590E032D
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 08:02:28 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id g14so10579250qto.11
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Sep 2022 08:02:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:user-agent:mime-version:date:message-id:from:from:to:cc
-         :subject:date;
-        bh=3r46zgR0SxCiGzmzzXUPWfV053YkrnQyc0E900AmOtw=;
-        b=mspK/NIFjliTgC4+OsA1KdzuNXALsYKw9CwNCwlh/fmfQz/BKyECEtFZbNxH0rrvla
-         vW03BKQH/QzK7j9S3nA5my2uWy44j0LCni1/dWu9kCEOqLuRTQeVfBSNbD7lTu9POhbm
-         vxIqMnrg7Gj86GAoclSzal53M0B8TKCsuvGprkuW8/IIuR0D/MxjlUMDKwjbRW+Jqxmt
-         pC9GHbTXV928Xd9e9LhMaHgD9uf9Tznl0eC7I+nXF/5CM7tUKdep1ixonCT+T4NsN27y
-         UdyPpGWlY1EWz+Z/9lizAVvOI4ICWAf09jktecDjhE1fkdwtjrTHe0qu8wIEr4eRLOEp
-         TYsQ==
+        Wed, 7 Sep 2022 11:48:01 -0400
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11DAB9F90;
+        Wed,  7 Sep 2022 08:47:58 -0700 (PDT)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-127dca21a7dso9740590fac.12;
+        Wed, 07 Sep 2022 08:47:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=3r46zgR0SxCiGzmzzXUPWfV053YkrnQyc0E900AmOtw=;
-        b=Syga0/PIatmYIXH3a5qtjHcvJehcFI1VAe3L+4QVqXan4uDd7OO7Q7G5YFWLZaET7Y
-         UJ1AdmUU3BYO9qSrNG59LOcJmW9wlON12fnVcUM2gxH3g9MsRGJ2WqnGL1djFN8rA9Ca
-         EXhzdy7yzg0OsS1+Vu2BvqvhUUlBdpwCcBmv7YyZuSFWLWbG2JezSd2n3mCSNHEWWAVP
-         UI328gDY1sw4aFG0jxNZKsS+rB3MVPA9tSKxHKDakkfNzyxc8ltSbwpBz11n1rcEQT+k
-         3qNLxLSzboNWodtqjOvJzcNaDZ82oMgHOv0EgPhplvpXX8qHHxlKHm1lZVKhzp1iRNL2
-         fNzQ==
-X-Gm-Message-State: ACgBeo0WRa4goyLhYfkJPqQqMGCP/CAmUbgsldp1r6ORj4xbPE5ZaIKs
-        nrL6NQYvbbjX1SFLVYORKkQ=
-X-Google-Smtp-Source: AA6agR7Hlls1zlkfi2jVmFTTegZwymMMbi7VKkIE0fvTJB0pL4pfhuSV1eCQxr8jpMyTDH9FRjM5XA==
-X-Received: by 2002:ac8:5ad2:0:b0:344:90e7:410f with SMTP id d18-20020ac85ad2000000b0034490e7410fmr3693684qtd.625.1662562947209;
-        Wed, 07 Sep 2022 08:02:27 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c0a8:1102::1244? ([2620:10d:c091:480::a525])
-        by smtp.gmail.com with ESMTPSA id s2-20020ac87582000000b0034502695369sm12273356qtq.54.2022.09.07.08.02.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Sep 2022 08:02:26 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Message-ID: <acd30174-4541-7343-e49a-badd199f4151@gmail.com>
-Date:   Wed, 7 Sep 2022 11:02:25 -0400
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=P9M7/bzZ0ZMw/d0qpnlcd3bSu1NtUDhgwC52m6jfjak=;
+        b=ay3OgbdOmmRKaP7uBF4xjWNyjko0xdBI/R4BTiAJ+bGYc5lyszUgyVAaMzpbM/tI2s
+         8u415YkLMaaAQmXhPWnVGQHdVLQOfkZEp+osXK/HoQ/uskwBczh1e96ZdBackJ+Oe3H+
+         UHiyChPYq+zTzLms++uTXAFPQ7OejVuBJ9hJEopOiar/MWMZb/JLv+2haJ5F4b5S1kiD
+         Mrlpcqu7yDU1ero7nFL9y3oiytMgNBvtqMxb5ikxKR9EqADxxxrvEKpGGLrMu0bx8T2K
+         xrycjTbM3reI45VbNP+9w7eE/xFY36Ivf30Ok2Wa40IzX1LnThxuHrbR+1DAE/bomJu1
+         jiTQ==
+X-Gm-Message-State: ACgBeo3LkQGy8lLT51Fgs74wK6ooEB7ZIaLRXA4gFv+G2RhFaGjbYoPD
+        jb+TDdPGQ3Y0tdiHqDR+qg==
+X-Google-Smtp-Source: AA6agR7V8XXJWCZA66/vmCNdtFQHBPBeY7vIpPYKBM+iV7v+1t93G419nZX9b4Lu3VamSExZLcbo0Q==
+X-Received: by 2002:a05:6808:1489:b0:344:7ff8:54e8 with SMTP id e9-20020a056808148900b003447ff854e8mr12233447oiw.195.1662565677655;
+        Wed, 07 Sep 2022 08:47:57 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id bm23-20020a0568081a9700b0034480f7eec4sm6558187oib.12.2022.09.07.08.47.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Sep 2022 08:47:57 -0700 (PDT)
+Received: (nullmailer pid 3514416 invoked by uid 1000);
+        Wed, 07 Sep 2022 15:47:56 -0000
+Date:   Wed, 7 Sep 2022 10:47:56 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Russell King <rmk+kernel@armlinux.org.uk>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Hector Martin <marcan@marcan.st>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rafa__ Mi__ecki <zajec5@gmail.com>,
+        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>,
+        van Spriel <arend@broadcom.com>
+Subject: Re: [PATCH net-next 01/12] dt-bindings: net: bcm4329-fmac: Add Apple
+ properties & chips
+Message-ID: <20220907154756.GA3505310-robh@kernel.org>
+References: <YxhMaYOfnM+7FG+W@shell.armlinux.org.uk>
+ <E1oVpmk-005LBL-5U@rmk-PC.armlinux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v2] wifi: rtl8xxxu: Fix skb misuse in TX queue selection
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <7fa4819a-4f20-b2af-b7a6-8ee01ac49295@gmail.com>
-Content-Language: en-US
-In-Reply-To: <7fa4819a-4f20-b2af-b7a6-8ee01ac49295@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1oVpmk-005LBL-5U@rmk-PC.armlinux.org.uk>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/31/22 12:12, Bitterblue Smith wrote:
-> rtl8xxxu_queue_select() selects the wrong TX queues because it's
-> reading memory from the wrong address. It expects to find ieee80211_hdr
-> at skb->data, but that's not the case after skb_push(). Move the call
-> to rtl8xxxu_queue_select() before the call to skb_push().
+On Wed, Sep 07, 2022 at 08:47:46AM +0100, Russell King wrote:
+> From: Hector Martin <marcan@marcan.st>
 > 
-> Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> This binding is currently used for SDIO devices, but these chips are
+> also used as PCIe devices on DT platforms and may be represented in the
+> DT. Re-use the existing binding and add chip compatibles used by Apple
+> T2 and M1 platforms (the T2 ones are not known to be used in DT
+> platforms, but we might as well document them).
+> 
+> Then, add properties required for firmware selection and calibration on
+> M1 machines.
+> 
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 > ---
-> v2:
->   Add Fixes tag.
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-
-Nice catch!
-
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index 52240e945b58..8d6f693bf60b 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -5177,6 +5177,8 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	if (control && control->sta)
->  		sta = control->sta;
+>  .../net/wireless/brcm,bcm4329-fmac.yaml       | 37 +++++++++++++++++--
+>  1 file changed, 34 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> index 53b4153d9bfc..53ded82b273a 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
 >  
-> +	queue = rtl8xxxu_queue_select(hw, skb);
-> +
->  	tx_desc = skb_push(skb, tx_desc_size);
+> -title: Broadcom BCM4329 family fullmac wireless SDIO devices
+> +title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
 >  
->  	memset(tx_desc, 0, tx_desc_size);
-> @@ -5189,7 +5191,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	    is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
->  		tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
->  
-> -	queue = rtl8xxxu_queue_select(hw, skb);
->  	tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
+>  maintainers:
+>    - Arend van Spriel <arend@broadcom.com>
+> @@ -42,10 +42,16 @@ title: Broadcom BCM4329 family fullmac wireless SDIO devices
+>                - cypress,cyw43012-fmac
+>            - const: brcm,bcm4329-fmac
+>        - const: brcm,bcm4329-fmac
 
-This could actually be made more resilient from someone moving the code
-around by passing in 'hdr' instead of relying on using skb->data in
-rtl8xxxu_queue_select(). We could also get rid of the hw argument to
-that function since it isn't used.
+If you respin, this compatible can be combined with the enum below.
 
-Cheers,
-Jes
+> +      - enum:
+> +          - pci14e4,43dc  # BCM4355
+> +          - pci14e4,4464  # BCM4364
+> +          - pci14e4,4488  # BCM4377
+> +          - pci14e4,4425  # BCM4378
+> +          - pci14e4,4433  # BCM4387
 
+
+Reviewed-by: Rob Herring <robh@kernel.org>
