@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E133E5AFDC6
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C7305AFDE0
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbiIGHnh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 03:43:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60936 "EHLO
+        id S229461AbiIGHqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 03:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbiIGHnf (ORCPT
+        with ESMTP id S230054AbiIGHql (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 03:43:35 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE179E2D5
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 00:43:33 -0700 (PDT)
+        Wed, 7 Sep 2022 03:46:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF623A6C3F
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 00:46:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 421F9CE19FA
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:43:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E108C433D7;
-        Wed,  7 Sep 2022 07:43:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76CF661466
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:46:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49532C433B5;
+        Wed,  7 Sep 2022 07:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662536605;
-        bh=4qyxKVwpaEGj9NTGsKdpruZ4umxfn0QYMFxe7K1oHf4=;
+        s=k20201202; t=1662536797;
+        bh=1wxpRn7SVeWqRKiOmsVj2jVYugQeXRnVC0MdVl2hO2Y=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=XgCB9kgV1buc7NUmXjndzBt/mZndtkuozzBmfAUmp+S0wUUc04dkzonopgm9mJkUr
-         VaxuA9kCQlppqlqz4S+E/6AtT5Z5dsti2GwfBzu7VgXuHZg4FeLv1oJDXPn9HH2ohX
-         C/a2Gj58LaQQe92ioDtJnIkFQ/xXDXpvSqntYQ0C7qu7mIIvaPUBNXc3ncGWZ+UBya
-         UnpETlKgG1lu+8voFSxfAZ6jr/YN75giRSmx+Nj2WNNhdmWreaz/9S7ARh7WrCt2md
-         iQ87xykYiYAEBVmuyAlcCI7RlcibpjMA6JqSav3QvvXBrd6Ykii+0XONOOi07S9Xj4
-         zDt40QW20NOSw==
+        b=gfJza38nhI8pQyNlxhGmRIX9cWeJ664rT6caXpGBwOtWjHM8/cFCKHS5ZhEHVroNG
+         QnNIij0Oy34ZfULo6QDT051xDoCOwtaSvRmxlbY3HGOFIS8jBHuBfPp4sbAvGgMx5J
+         1M5srbV9L8h7ZFwaKBTSm2WsexQU5zh465Iyn4PMOH4FFh/fqmgOJ7QacZlO9GdCBt
+         Oq/Gb8txFdou+QJASN3FsNwhphQBAcmvNULH6WUPjkwKwd8XjGl/ZHh/C8YgLOl8DK
+         ya9BjeoydWVpYoThamn+oiTuGnBgGlKHVOIzYsRVDRkf7BNaa7bdDF8/UwWlDraCXa
+         7THtOVcPkxSxg==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 3/5] wifi: rtw89: configure TX path via H2C command
+Subject: Re: [PATCH 5/5] wifi: rtw89: support TX diversity for 1T2R chipset
 References: <20220902124422.13610-1-pkshih@realtek.com>
-        <20220902124422.13610-4-pkshih@realtek.com>
-Date:   Wed, 07 Sep 2022 10:43:22 +0300
-In-Reply-To: <20220902124422.13610-4-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 2 Sep 2022 20:44:20 +0800")
-Message-ID: <87czc7aaud.fsf@kernel.org>
+        <20220902124422.13610-6-pkshih@realtek.com>
+Date:   Wed, 07 Sep 2022 10:46:35 +0300
+In-Reply-To: <20220902124422.13610-6-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 2 Sep 2022 20:44:22 +0800")
+Message-ID: <878rmvaap0.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,58 +57,22 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> writes:
 
-> In order to support TX diversity, add a function to control TX path.
+> Check RSSI strength to decide which path is better, and then set TX path
+> accordingly.
 >
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 [...]
 
-> +int rtw89_fw_h2c_txpath_cmac_tbl(struct rtw89_dev *rtwdev,
-> +				 struct rtw89_sta *rtwsta)
+> +static void rtw89_phy_tx_path_div_sta_iter(void *data, struct ieee80211_sta *sta)
 > +{
-> +	const struct rtw89_chip_info *chip = rtwdev->chip;
-> +	struct sk_buff *skb;
-> +
-> +	if (chip->h2c_cctl_func_id != H2C_FUNC_MAC_CCTLINFO_UD)
-> +		return 0;
-> +
-> +	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_CMC_TBL_LEN);
-> +	if (!skb) {
-> +		rtw89_err(rtwdev, "failed to alloc skb for fw dl\n");
-> +		return -ENOMEM;
-> +	}
-> +	skb_put(skb, H2C_CMC_TBL_LEN);
-> +	SET_CTRL_INFO_MACID(skb->data, rtwsta->mac_id);
-> +	SET_CTRL_INFO_OPERATION(skb->data, 1);
-> +
-> +	__rtw89_fw_h2c_set_tx_path(rtwdev, skb);
-> +
-> +	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-> +			      H2C_CAT_MAC, H2C_CL_MAC_FR_EXCHG,
-> +			      H2C_FUNC_MAC_CCTLINFO_UD, 0, 1,
-> +			      H2C_CMC_TBL_LEN);
-> +
-> +	if (rtw89_h2c_tx(rtwdev, skb, false)) {
-> +		rtw89_err(rtwdev, "failed to send h2c\n");
-> +		goto fail;
-> +	}
+> +	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> +	struct rtw89_dev *rtwdev = rtwsta->rtwdev;
+> +	struct rtw89_vif *rtwvif = rtwsta->rtwvif;
+> +	struct rtw89_hal *hal = &rtwdev->hal;
+> +	bool *done = (bool *)data;
 
-Please add a separate ret variable:
-
-ret = rtw89_h2c_tx(rtwdev, skb, false);
-if (ret) {
-	rtw89_err(rtwdev, "failed to send h2c: %d\n", ret);
-	goto fail;
-}
-
-> +
-> +	return 0;
-> +fail:
-> +	dev_kfree_skb_any(skb);
-> +
-> +	return -EBUSY;
-
-return ret;
+data is a void pointer, you don't need the cast here.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
