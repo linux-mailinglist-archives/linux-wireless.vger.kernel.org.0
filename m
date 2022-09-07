@@ -2,126 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A005B0DA8
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 22:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4CC5B0DC9
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 22:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiIGUCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 16:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35072 "EHLO
+        id S229988AbiIGUKh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 16:10:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbiIGUCM (ORCPT
+        with ESMTP id S229480AbiIGUKg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 16:02:12 -0400
-Received: from hm1481-n-164.locaweb.com.br (hm1481-n-164.locaweb.com.br [189.126.112.164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE6BFA4B16
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 13:02:09 -0700 (PDT)
-Received: from mcbain0021.email.locaweb.com.br (201.76.49.41) by hm1481.locaweb.com.br id h33s482n8lgp for <linux-wireless@vger.kernel.org>; Wed, 7 Sep 2022 17:00:04 -0300 (envelope-from <cesarb@cesarb.eti.br>)
-Received: from proxy.email-ssl.com.br (unknown [10.31.120.232])
-        by mcbain0021.email.locaweb.com.br (Postfix) with ESMTP id 77C9814C01C7;
-        Wed,  7 Sep 2022 16:57:04 -0300 (-03)
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-x-locaweb-id: 5II90qkwcFl608adNSKU11Mhs1xf0MgAzPC-CIfMoteOMOLYZkorw41aZgtgCBGiz7JOWdNt-MIUbUFIqc5n_VfP5aYHWPJEum0HS-HjJOtshNbNEFEr50bJd7dBHU4DI0-ihG9l-wm_qzOmHE6FhA6NUhNRdIbGKKronYtwwdhjaiVaRxzmjoZmIuLaaVDIwjYdIW-u3xzi3rsrIv4KYw== NjM2NTczNjE3MjYyNDA2MzY1NzM2MTcyNjIyZTY1NzQ2OTJlNjI3Mg==
-X-LocaWeb-COR: locaweb_2009_x-mail
-X-AuthUser: cesarb@cesarb.eti.br
-Received: from [192.168.96.204] (unknown [200.187.114.14])
-        (Authenticated sender: cesarb@cesarb.eti.br)
-        by proxy.email-ssl.com.br (Postfix) with ESMTPSA id 4FE1B4404FD;
-        Wed,  7 Sep 2022 17:02:02 -0300 (-03)
-Message-ID: <7c7135cb-ee5d-e7f3-45ca-8b7206312512@cesarb.eti.br>
-Date:   Wed, 7 Sep 2022 17:02:01 -0300
+        Wed, 7 Sep 2022 16:10:36 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD284B0CA;
+        Wed,  7 Sep 2022 13:10:34 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 287JPikM020414;
+        Wed, 7 Sep 2022 20:10:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=yedWkv7HGNs+6IaOUivXiRQDrH8fSJ4sZlLG8ADqlVM=;
+ b=NyTLWGvdstJi2F5NcqgjD12+8dbbwAFVSiB+wppkAg/r6LJbGRVZTWA4KU1ectNmIYHA
+ fPZM2RJ5NliLjZjsEZkIu+0PYJEQ3VyAqKFa8oeA0WurgWE5IBct/uAkq6/rC2E5VbY4
+ 5z0wtW4Af4HKBNQtJs6rprHo8rkCWls9hWaEEv0Z+X6RpGpiLKSBycb6EMnTaYtB58ml
+ R3ZCyylGYnmfF3FQ1t5gRAcb440qfOBjpgH+iAT8+ultU2YOmSf6NkO+1OFcmGBL8nBf
+ Hkntv0kacdXF6O0BYWaJ8P9AKMujQteJscTs9Bi301txG6QP1/hKku5BIFjuN591D4Dz Lw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jefntbrh4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 07 Sep 2022 20:10:16 +0000
+Received: from pps.filterd (NALASPPMTA03.qualcomm.com [127.0.0.1])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 287KAFIC019061;
+        Wed, 7 Sep 2022 20:10:15 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by NALASPPMTA03.qualcomm.com (PPS) with ESMTPS id 3jc00ks9fu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 07 Sep 2022 20:10:15 +0000
+Received: from NALASPPMTA03.qualcomm.com (NALASPPMTA03.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 287KAFr6019055;
+        Wed, 7 Sep 2022 20:10:15 GMT
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (PPS) with ESMTPS id 287KAFkM019054
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 07 Sep 2022 20:10:15 +0000
+Received: from [10.110.17.89] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 7 Sep 2022
+ 13:10:14 -0700
+Message-ID: <48963728-67bd-ace8-68fd-f840a2e65873@quicinc.com>
+Date:   Wed, 7 Sep 2022 13:10:13 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.1
-Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: Update regulatory rules
- for Brazil (BR)
-To:     Seth Forshee <sforshee@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20220901232734.5488-1-cesarb@cesarb.eti.br>
- <b8674e67fee2393d4c5fe9d9842028545c6adcfa.camel@sipsolutions.net>
- <6b577581-9daf-ff11-1aaa-ff1243eb9c03@cesarb.eti.br>
- <YxiwFLWhsOtJJhrq@do-x1extreme>
+Subject: Re: [PATCH] ath11k: mhi: fix potential memory leak in
+ ath11k_mhi_register()
 Content-Language: en-US
-From:   Cesar Eduardo Barros <cesarb@cesarb.eti.br>
-In-Reply-To: <YxiwFLWhsOtJJhrq@do-x1extreme>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Jianglei Nie <niejianglei2021@163.com>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20220907073704.58806-1-niejianglei2021@163.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220907073704.58806-1-niejianglei2021@163.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: CnN1FS8Pc7O4IBn7CX-Lkx1G7Vopqu7V
+X-Proofpoint-GUID: CnN1FS8Pc7O4IBn7CX-Lkx1G7Vopqu7V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-07_10,2022-09-07_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ adultscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=791
+ lowpriorityscore=0 phishscore=0 mlxscore=0 bulkscore=0 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209070075
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em 07/09/2022 11:52, Seth Forshee escreveu:
-> On Fri, Sep 02, 2022 at 07:21:50PM -0300, Cesar Eduardo Barros wrote:
->> Em 02/09/2022 11:53, Johannes Berg escreveu:
->>> On Thu, 2022-09-01 at 20:27 -0300, Cesar Eduardo Barros wrote:
->>>>
->>>> +	# This range ends at 5725 MHz, but channel 144 extends to 5730 MHz.
->>>> +	# Since 5725 ~ 5730 MHz belongs to the next range which has looser
->>>> +	# requirements, we can extend the range by 5 MHz to make the kernel
->>>> +	# happy and be able to use channel 144.
->>>> +	(5470 - 5730 @ 160), (27), DFS
->>>> +	(5730 - 5850 @ 80), (30)
->>>>
->>>
->>> If you do the latter as 160 as well, and add AUTO-BW, couldn't you split
->>> them at 5725 correctly? But I guess it doesn't matter anyway.
->>
->> This was copied from the US rules (including the four-line comment), which
->> have an identical split. If AUTO-BW worked here, I'd expect the US rules to
->> use it.
+On 9/7/2022 12:37 AM, Jianglei Nie wrote:
+> mhi_alloc_controller() allocates a memory space for mhi_ctrl. When gets
+> some error, mhi_ctrl should be freed with mhi_free_controller(). But
+> when ath11k_mhi_read_addr_from_dt() fails, the function returns without
+> calling mhi_free_controller(), which will lead to a memory leak.
 > 
-> AUTO-BW would work, and we have countries using it for this case. Iirc
-> for some countries we move the split to 5730 because even though
-> 5725-5730 is at a lower power limit the rules allow channel 144 to be
-> used at the power limit for 5710-5725. For the US though I think it's
-> just historical -- it was done that way initially, and it isn't
-> important enough that anyone has cared to change it.
+> We can fix it by calling mhi_free_controller() when
+> ath11k_mhi_read_addr_from_dt() fails.
+> 
+> Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
 
-The only country I found in the database that does it that way is IL, 
-and it has the power limits in the opposite direction (its 5470 - 5725 
-range has a higher power limit than its 5725 - 5875 range, while for BR 
-and US it's the former range which has a lower power limit); looking at 
-other countries, AU does the manual adjustment with a comment like US, 
-while TW has a 5 MHz overlap on its ranges. So the precedent is not 
-enough for me to be confident that using the official split together 
-with AUTO-BW would allow using channel 144 (and the 40 MHz and 80 MHz 
-channels it's part of).
+I believe this should have been annotated as -v2 to the following:
+<https://lore.kernel.org/ath11k/20220526100227.483609-1-niejianglei2021@163.com/>
 
-And the single one which does it using AUTO-BW (IL) doesn't change the 
-bandwidth of its 5725 - 5875 to 160; is it really necessary to do that 
-change to the bandwidth (considering also that channel 144 is not part 
-of a pure 160 MHz channel, it could be used only for 80+80)? What about 
-the 5150 - 5250 and 5250 - 5350 ranges, do they need also to be changed 
-to 160 so that the combined 5170 - 5330 160 MHz channel can be used, or 
-does AUTO-BW allow it even though both ranges are declared as allowing 
-just 80 MHz channels? What about 80+80 channels?
+Please properly annotate follow-up patches.
 
-> But we do generally try to keep the rules matching the official
-> documents as much as possible, so for new rules we should split at 5725
-> and use AUTO-BW as Johannes suggested. Could you send a v2 with that
-> change?
+Also please add wifi: to the beginning of the subject prefix
 
-Well, it's not exactly a new rule (the current database already has a 
-5490 - 5730 @ 160 rule), but we could treat it that way since we're 
-mostly rewriting them all (and the original didn't say where that came 
-from).
 
-Since I'm not certain that AUTO-BW will be interpreted as expected, 
-before doing that change, I'll try to see if I can test it first on my 
-laptop (by sheer luck, I happen to be using the 5650 - 5730 80 MHz 
-channel right now, so I'd just have to see if it still connects at 80 
-MHz, assuming I can somehow convince the kernel to load a modified 
-file). Or would you prefer me to send the patch first (with or without a 
-change in the channel bandwidths)?
+> ---
+>   drivers/net/wireless/ath/ath11k/mhi.c | 17 ++++++++++-------
+>   1 file changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+> index c44df17719f6..86995e8dc913 100644
+> --- a/drivers/net/wireless/ath/ath11k/mhi.c
+> +++ b/drivers/net/wireless/ath/ath11k/mhi.c
+> @@ -402,8 +402,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
+>   	ret = ath11k_mhi_get_msi(ab_pci);
+>   	if (ret) {
+>   		ath11k_err(ab, "failed to get msi for mhi\n");
+> -		mhi_free_controller(mhi_ctrl);
+> -		return ret;
+> +		goto free_controller;
+>   	}
+>   
+>   	if (!test_bit(ATH11K_FLAG_MULTI_MSI_VECTORS, &ab->dev_flags))
+> @@ -412,7 +411,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
+>   	if (test_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags)) {
+>   		ret = ath11k_mhi_read_addr_from_dt(mhi_ctrl);
+>   		if (ret < 0)
+> -			return ret;
+> +			goto free_controller;
+>   	} else {
+>   		mhi_ctrl->iova_start = 0;
+>   		mhi_ctrl->iova_stop = 0xFFFFFFFF;
+> @@ -440,18 +439,22 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
+>   	default:
+>   		ath11k_err(ab, "failed assign mhi_config for unknown hw rev %d\n",
+>   			   ab->hw_rev);
+> -		mhi_free_controller(mhi_ctrl);
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		goto free_controller;
+>   	}
+>   
+>   	ret = mhi_register_controller(mhi_ctrl, ath11k_mhi_config);
+>   	if (ret) {
+>   		ath11k_err(ab, "failed to register to mhi bus, err = %d\n", ret);
+> -		mhi_free_controller(mhi_ctrl);
+> -		return ret;
+> +		goto free_controller;
+>   	}
+>   
+>   	return 0;
+> +
+> +free_controller:
+> +	mhi_free_controller(mhi_ctrl);
+> +	ab_pci->mhi_ctrl = NULL;
+> +	return ret;
+>   }
+>   
+>   void ath11k_mhi_unregister(struct ath11k_pci *ab_pci)
 
--- 
-Cesar Eduardo Barros
-cesarb@cesarb.eti.br
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
