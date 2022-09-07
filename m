@@ -2,79 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C7305AFDE0
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EBC95AFDE7
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbiIGHqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 03:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41076 "EHLO
+        id S230094AbiIGHrQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 03:47:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230054AbiIGHql (ORCPT
+        with ESMTP id S230095AbiIGHrH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 03:46:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF623A6C3F
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 00:46:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76CF661466
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:46:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49532C433B5;
-        Wed,  7 Sep 2022 07:46:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662536797;
-        bh=1wxpRn7SVeWqRKiOmsVj2jVYugQeXRnVC0MdVl2hO2Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=gfJza38nhI8pQyNlxhGmRIX9cWeJ664rT6caXpGBwOtWjHM8/cFCKHS5ZhEHVroNG
-         QnNIij0Oy34ZfULo6QDT051xDoCOwtaSvRmxlbY3HGOFIS8jBHuBfPp4sbAvGgMx5J
-         1M5srbV9L8h7ZFwaKBTSm2WsexQU5zh465Iyn4PMOH4FFh/fqmgOJ7QacZlO9GdCBt
-         Oq/Gb8txFdou+QJASN3FsNwhphQBAcmvNULH6WUPjkwKwd8XjGl/ZHh/C8YgLOl8DK
-         ya9BjeoydWVpYoThamn+oiTuGnBgGlKHVOIzYsRVDRkf7BNaa7bdDF8/UwWlDraCXa
-         7THtOVcPkxSxg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 5/5] wifi: rtw89: support TX diversity for 1T2R chipset
-References: <20220902124422.13610-1-pkshih@realtek.com>
-        <20220902124422.13610-6-pkshih@realtek.com>
-Date:   Wed, 07 Sep 2022 10:46:35 +0300
-In-Reply-To: <20220902124422.13610-6-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 2 Sep 2022 20:44:22 +0800")
-Message-ID: <878rmvaap0.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 7 Sep 2022 03:47:07 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C54A74E5;
+        Wed,  7 Sep 2022 00:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+        Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=I+p6cUmDn7OtLSjJelOWcrfySN1QQyfUSzq1+9ZjAjo=; b=RUI5rrUHN+N7Isq/K41V0FL6me
+        N5uzyGeW8ILYu+Pv7g+N5ybL9DjxUJmCuy+WcFKD7slDug3s6aFbVJgrsbOI2u6tbYfM1/fZWSWg5
+        PLdf9qyWf4dL1DzxkfEE0eqFjhN+IINx5CqG6Dkb23nbofcBRlOZpQHZ2daWBbPX/lWWVBasuNtHT
+        ZH6pogpbN+DgcZancUbZKCFfelIb4w7TSK0pD/MoCOXVH06WT+Rypt4TDXciEETQANfCI2Bt1tAv2
+        7qmHTrnq0eZ8cxv+xoeyzuc5N+HeWlRL37J2FCJRwBk0TY+hZPVwaWHVb9T/DW+YZXwZeld8oP4MJ
+        u6r7hKuw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34164)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1oVplu-0004tr-42; Wed, 07 Sep 2022 08:46:54 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1oVplp-0000nx-Jm; Wed, 07 Sep 2022 08:46:49 +0100
+Date:   Wed, 7 Sep 2022 08:46:49 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>
+Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>, asahi@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Hector Martin <marcan@marcan.st>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>,
+        van Spriel <arend@broadcom.com>
+Subject: [PATCH net-next 0/12] Add support for bcm4378 on Apple platforms
+Message-ID: <YxhMaYOfnM+7FG+W@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Hi,
 
-> Check RSSI strength to decide which path is better, and then set TX path
-> accordingly.
->
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+This series adds support for bcm4378 found on Apple platforms, and has
+been tested on the Apple Mac Mini. It is a re-posting of a subset of
+Hector's previous 38 patch series, and it is believed that the comments
+from that review were addressed.
 
-[...]
+(I'm just the middle man; please don't complain if something has been
+missed.)
 
-> +static void rtw89_phy_tx_path_div_sta_iter(void *data, struct ieee80211_sta *sta)
-> +{
-> +	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-> +	struct rtw89_dev *rtwdev = rtwsta->rtwdev;
-> +	struct rtw89_vif *rtwvif = rtwsta->rtwvif;
-> +	struct rtw89_hal *hal = &rtwdev->hal;
-> +	bool *done = (bool *)data;
-
-data is a void pointer, you don't need the cast here.
+ .../bindings/net/wireless/brcm,bcm4329-fmac.yaml   |  37 +-
+ arch/arm64/boot/dts/apple/t8103-j274.dts           |   4 +
+ arch/arm64/boot/dts/apple/t8103-j293.dts           |   4 +
+ arch/arm64/boot/dts/apple/t8103-j313.dts           |   4 +
+ arch/arm64/boot/dts/apple/t8103-j456.dts           |   4 +
+ arch/arm64/boot/dts/apple/t8103-j457.dts           |   4 +
+ arch/arm64/boot/dts/apple/t8103-jxxx.dtsi          |   2 +
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bus.h |  19 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/chip.c    |   2 +
+ .../wireless/broadcom/brcm80211/brcmfmac/common.c  |  12 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/common.h  |   1 +
+ .../broadcom/brcm80211/brcmfmac/firmware.c         | 115 ++++--
+ .../broadcom/brcm80211/brcmfmac/firmware.h         |   4 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/msgbuf.h  |   4 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/of.c  |  12 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 431 +++++++++++++++++++--
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |  38 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.h    |   2 +
+ .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c |  23 +-
+ .../broadcom/brcm80211/include/brcm_hw_ids.h       |   2 +
+ include/linux/bcma/bcma_driver_chipcommon.h        |   1 +
+ 21 files changed, 609 insertions(+), 116 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
