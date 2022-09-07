@@ -2,55 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8BB65AFE3D
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9744A5AFE42
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbiIGH7I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 03:59:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41202 "EHLO
+        id S230152AbiIGH7g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 03:59:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiIGH7G (ORCPT
+        with ESMTP id S230113AbiIGH7b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 03:59:06 -0400
+        Wed, 7 Sep 2022 03:59:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C34AA8943
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 00:59:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39B125FE;
+        Wed,  7 Sep 2022 00:59:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B30F2616EF
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB40C433D6;
-        Wed,  7 Sep 2022 07:59:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8757615E3;
+        Wed,  7 Sep 2022 07:59:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E35C433D6;
+        Wed,  7 Sep 2022 07:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662537545;
-        bh=/ZdOg4ZPP+FE/vsDhizIZ9hMa17gEonQC5yx+7KOVsE=;
+        s=k20201202; t=1662537566;
+        bh=D1dAw+aNRWaAnlIYe9fxn7j36jFtAkbZ16B8SP8wQ/4=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=tBe3kf6GqbXGLE5733x6DZkYD/MN33b+QA829yvg3XBcWBc/mjoepRxSloo0KX+XT
-         dAN8XnJNseXXCzmLUvYn+FjLW3wdgxSClC7E957in07lK6ch4vKpGmZmc5gY6rLUbj
-         mxg4eigyTJqC0vYv2U81s2YFnjNUtmPv2Q5g9pH2Fh1BrACCfK7KcnAZZoQXefErBe
-         MKmjLAvkv1UpASNMx67LpURb/UlzNSVv2xsnS+5sZh3NqALpB0ej1vnRdEtkI/LXUO
-         ieZpFrZnEmGi5FDL4xFQay8UmQLvYPdMISriC+nW9m0Bb6kb2f+mP+9RkQqOs2UI21
-         9R9gy/mPFRUAw==
+        b=ayihZRm7a9rN/Coa8nH3F9D1cBh0glDsrnfJfsqMqP9b7wo80+IvnViDQJxCrPW38
+         p80xc9P47Gz7TMBJO6A7v5PDrrI4eDDpZQRCuDzg6InxfrLeim5geWyKe+DF5PBKBK
+         Bp+PBX9cHdgH7iF7RErntPueaRdFcE7qV+gq+oAqOKAiljiD1uPxlXZ4uvP9uhPU8k
+         mYZdoMlCg/MKCdUMglbJX2bSL92DzprMilD3t1MvK73OBpMaEEfe6Bdi8TRpOzkozM
+         Pwqjo/Slg3NwdlIEQJ2Ri/gMS0x3J4LihBrrgPlZEe2GsDW/tWz9C5RLacLOWS6UzA
+         2bZWVb40Ce6rA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: brcmfmac: Add DMI nvram filename quirk for Chuwi Hi8 Pro
- tablet
+Subject: Re: wifi: mwifiex: Fix comment typo
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220810142333.141044-1-hdegoede@redhat.com>
-References: <20220810142333.141044-1-hdegoede@redhat.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
+In-Reply-To: <20220811120201.10824-1-wangborong@cdjrlc.com>
+References: <20220811120201.10824-1-wangborong@cdjrlc.com>
+To:     Jason Wang <wangborong@cdjrlc.com>
+Cc:     ganapathi017@gmail.com, amitkarwar@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jason Wang <wangborong@cdjrlc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166253754139.23292.2253159123139509753.kvalo@kernel.org>
-Date:   Wed,  7 Sep 2022 07:59:03 +0000 (UTC)
+Message-ID: <166253756181.23292.9598319261128136862.kvalo@kernel.org>
+Date:   Wed,  7 Sep 2022 07:59:23 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -61,25 +59,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hans de Goede <hdegoede@redhat.com> wrote:
+Jason Wang <wangborong@cdjrlc.com> wrote:
 
-> The Chuwi Hi8 Pro tablet contains quite generic names in the sys_vendor
-> and product_name DMI strings, without this patch brcmfmac will try to load:
-> "brcmfmac43430a0-sdio.Default string-Default string.txt" as nvram file
-> which is way too generic.
+> The double `the' is duplicated in the comment, remove one.
 > 
-> The Chuwi Hi8 Pro uses the same Ampak AP6212 module as the Chuwi Vi8 Plus
-> and the nvram for the Vi8 Plus is already in linux-firmware, so point
-> the new DMI nvram filename quirk to the Vi8 Plus nvram file.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
 
 Patch applied to wireless-next.git, thanks.
 
-7d6e30dfcc72 wifi: brcmfmac: Add DMI nvram filename quirk for Chuwi Hi8 Pro tablet
+ed03a2af74d2 wifi: mwifiex: Fix comment typo
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220810142333.141044-1-hdegoede@redhat.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220811120201.10824-1-wangborong@cdjrlc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
