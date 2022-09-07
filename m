@@ -2,23 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 880915B0088
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 11:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7542D5B0068
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 11:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbiIGJcf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 05:32:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32936 "EHLO
+        id S230305AbiIGJ1d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 05:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbiIGJce (ORCPT
+        with ESMTP id S229492AbiIGJ1c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 05:32:34 -0400
+        Wed, 7 Sep 2022 05:27:32 -0400
+X-Greylist: delayed 98 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Sep 2022 02:27:30 PDT
 Received: from sibelius.xs4all.nl (80-61-163-207.fixed.kpn.net [80.61.163.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F5070E71;
-        Wed,  7 Sep 2022 02:32:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ECB67FF90;
+        Wed,  7 Sep 2022 02:27:30 -0700 (PDT)
 Received: from localhost (bloch.sibelius.xs4all.nl [local])
-        by bloch.sibelius.xs4all.nl (OpenSMTPD) with ESMTPA id 009b8c43;
-        Wed, 7 Sep 2022 11:25:48 +0200 (CEST)
-Date:   Wed, 7 Sep 2022 11:25:48 +0200 (CEST)
+        by bloch.sibelius.xs4all.nl (OpenSMTPD) with ESMTPA id b640ccba;
+        Wed, 7 Sep 2022 11:27:25 +0200 (CEST)
+Date:   Wed, 7 Sep 2022 11:27:25 +0200 (CEST)
 From:   Mark Kettenis <mark.kettenis@xs4all.nl>
 To:     Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
@@ -30,14 +31,13 @@ Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
         linux-arm-kernel@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         pabeni@redhat.com, zajec5@gmail.com, robh+dt@kernel.org,
-        SHA-cyfmac-dev-list@infineon.com, sven@svenpeter.dev,
-        arend@broadcom.com
-In-Reply-To: <E1oVpmk-005LBL-5U@rmk-PC.armlinux.org.uk>
+        SHA-cyfmac-dev-list@infineon.com, sven@svenpeter.dev
+In-Reply-To: <E1oVpne-005LCR-RJ@rmk-PC.armlinux.org.uk>
         (rmk+kernel@armlinux.org.uk)
-Subject: Re: [PATCH net-next 01/12] dt-bindings: net: bcm4329-fmac: Add Apple
- properties & chips
-References: <YxhMaYOfnM+7FG+W@shell.armlinux.org.uk> <E1oVpmk-005LBL-5U@rmk-PC.armlinux.org.uk>
-Message-ID: <d3ced5135ffd65d8@bloch.sibelius.xs4all.nl>
+Subject: Re: [PATCH net-next 12/12] arm64: dts: apple: Add WiFi module and antenna
+ properties
+References: <YxhMaYOfnM+7FG+W@shell.armlinux.org.uk> <E1oVpne-005LCR-RJ@rmk-PC.armlinux.org.uk>
+Message-ID: <d3ced546b81f9820@bloch.sibelius.xs4all.nl>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
         SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
@@ -48,93 +48,117 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 > From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Date: Wed, 07 Sep 2022 08:47:46 +0100
+> Date: Wed, 07 Sep 2022 08:48:42 +0100
 > 
 > From: Hector Martin <marcan@marcan.st>
 > 
-> This binding is currently used for SDIO devices, but these chips are
-> also used as PCIe devices on DT platforms and may be represented in the
-> DT. Re-use the existing binding and add chip compatibles used by Apple
-> T2 and M1 platforms (the T2 ones are not known to be used in DT
-> platforms, but we might as well document them).
+> Add the new module-instance/antenna-sku properties required to select
+> WiFi firmwares properly to all board device trees.
 > 
-> Then, add properties required for firmware selection and calibration on
-> M1 machines.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
 Reviewed-by: Mark Kettenis <kettenis@openbsd.org>
 
 > ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 37 +++++++++++++++++--
->  1 file changed, 34 insertions(+), 3 deletions(-)
+>  arch/arm64/boot/dts/apple/t8103-j274.dts  | 4 ++++
+>  arch/arm64/boot/dts/apple/t8103-j293.dts  | 4 ++++
+>  arch/arm64/boot/dts/apple/t8103-j313.dts  | 4 ++++
+>  arch/arm64/boot/dts/apple/t8103-j456.dts  | 4 ++++
+>  arch/arm64/boot/dts/apple/t8103-j457.dts  | 4 ++++
+>  arch/arm64/boot/dts/apple/t8103-jxxx.dtsi | 2 ++
+>  6 files changed, 22 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index 53b4153d9bfc..53ded82b273a 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/arch/arm64/boot/dts/apple/t8103-j274.dts b/arch/arm64/boot/dts/apple/t8103-j274.dts
+> index 2cd429efba5b..c1f3ba9c39f6 100644
+> --- a/arch/arm64/boot/dts/apple/t8103-j274.dts
+> +++ b/arch/arm64/boot/dts/apple/t8103-j274.dts
+> @@ -21,6 +21,10 @@ aliases {
+>  	};
+>  };
 >  
-> -title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> +title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
->  
->  maintainers:
->    - Arend van Spriel <arend@broadcom.com>
-> @@ -42,10 +42,16 @@ title: Broadcom BCM4329 family fullmac wireless SDIO devices
->                - cypress,cyw43012-fmac
->            - const: brcm,bcm4329-fmac
->        - const: brcm,bcm4329-fmac
-> +      - enum:
-> +          - pci14e4,43dc  # BCM4355
-> +          - pci14e4,4464  # BCM4364
-> +          - pci14e4,4488  # BCM4377
-> +          - pci14e4,4425  # BCM4378
-> +          - pci14e4,4433  # BCM4387
->  
->    reg:
-> -    description: SDIO function number for the device, for most cases
-> -      this will be 1.
-> +    description: SDIO function number for the device (for most cases
-> +      this will be 1) or PCI device identifier.
->  
->    interrupts:
->      maxItems: 1
-> @@ -85,6 +91,31 @@ title: Broadcom BCM4329 family fullmac wireless SDIO devices
->        takes precedence.
->      type: boolean
->  
-> +  brcm,cal-blob:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: A per-device calibration blob for the Wi-Fi radio. This
-> +      should be filled in by the bootloader from platform configuration
-> +      data, if necessary, and will be uploaded to the device if present.
+> +&wifi0 {
+> +	brcm,board-type = "apple,atlantisb";
+> +};
 > +
-> +  brcm,board-type:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: Overrides the board type, which is normally the compatible of
-> +      the root node. This can be used to decouple the overall system board or
-> +      device name from the board type for WiFi purposes, which is used to
-> +      construct firmware and NVRAM configuration filenames, allowing for
-> +      multiple devices that share the same module or characteristics for the
-> +      WiFi subsystem to share the same firmware/NVRAM files. On Apple platforms,
-> +      this should be the Apple module-instance codename prefixed by "apple,",
-> +      e.g. "apple,honshu".
+>  /*
+>   * Force the bus number assignments so that we can declare some of the
+>   * on-board devices and properties that are populated by the bootloader
+> diff --git a/arch/arm64/boot/dts/apple/t8103-j293.dts b/arch/arm64/boot/dts/apple/t8103-j293.dts
+> index 49cdf4b560a3..ecb10d237a05 100644
+> --- a/arch/arm64/boot/dts/apple/t8103-j293.dts
+> +++ b/arch/arm64/boot/dts/apple/t8103-j293.dts
+> @@ -17,6 +17,10 @@ / {
+>  	model = "Apple MacBook Pro (13-inch, M1, 2020)";
+>  };
+>  
+> +&wifi0 {
+> +	brcm,board-type = "apple,honshu";
+> +};
 > +
-> +  apple,antenna-sku:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: Antenna SKU used to identify a specific antenna configuration
-> +      on Apple platforms. This is use to build firmware filenames, to allow
-> +      platforms with different antenna configs to have different firmware and/or
-> +      NVRAM. This would normally be filled in by the bootloader from platform
-> +      configuration data.
+>  /*
+>   * Remove unused PCIe ports and disable the associated DARTs.
+>   */
+> diff --git a/arch/arm64/boot/dts/apple/t8103-j313.dts b/arch/arm64/boot/dts/apple/t8103-j313.dts
+> index b0ebb45bdb6f..df741737b8e6 100644
+> --- a/arch/arm64/boot/dts/apple/t8103-j313.dts
+> +++ b/arch/arm64/boot/dts/apple/t8103-j313.dts
+> @@ -17,6 +17,10 @@ / {
+>  	model = "Apple MacBook Air (M1, 2020)";
+>  };
+>  
+> +&wifi0 {
+> +	brcm,board-type = "apple,shikoku";
+> +};
 > +
->  required:
->    - compatible
->    - reg
+>  /*
+>   * Remove unused PCIe ports and disable the associated DARTs.
+>   */
+> diff --git a/arch/arm64/boot/dts/apple/t8103-j456.dts b/arch/arm64/boot/dts/apple/t8103-j456.dts
+> index 884fddf7d363..8c6bf9592510 100644
+> --- a/arch/arm64/boot/dts/apple/t8103-j456.dts
+> +++ b/arch/arm64/boot/dts/apple/t8103-j456.dts
+> @@ -21,6 +21,10 @@ aliases {
+>  	};
+>  };
+>  
+> +&wifi0 {
+> +	brcm,board-type = "apple,capri";
+> +};
+> +
+>  &i2c0 {
+>  	hpm2: usb-pd@3b {
+>  		compatible = "apple,cd321x";
+> diff --git a/arch/arm64/boot/dts/apple/t8103-j457.dts b/arch/arm64/boot/dts/apple/t8103-j457.dts
+> index d7c622931627..fe7c0aaf7d62 100644
+> --- a/arch/arm64/boot/dts/apple/t8103-j457.dts
+> +++ b/arch/arm64/boot/dts/apple/t8103-j457.dts
+> @@ -21,6 +21,10 @@ aliases {
+>  	};
+>  };
+>  
+> +&wifi0 {
+> +	brcm,board-type = "apple,santorini";
+> +};
+> +
+>  /*
+>   * Force the bus number assignments so that we can declare some of the
+>   * on-board devices and properties that are populated by the bootloader
+> diff --git a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+> index fe2ae40fa9dd..3d15b8e2a6c1 100644
+> --- a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+> +++ b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+> @@ -71,8 +71,10 @@ hpm1: usb-pd@3f {
+>  &port00 {
+>  	bus-range = <1 1>;
+>  	wifi0: network@0,0 {
+> +		compatible = "pci14e4,4425";
+>  		reg = <0x10000 0x0 0x0 0x0 0x0>;
+>  		/* To be filled by the loader */
+>  		local-mac-address = [00 00 00 00 00 00];
+> +		apple,antenna-sku = "XX";
+>  	};
+>  };
 > -- 
 > 2.30.2
 > 
