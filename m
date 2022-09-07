@@ -2,120 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D275AFDAB
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E133E5AFDC6
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbiIGHi7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 03:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52564 "EHLO
+        id S229964AbiIGHnh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 03:43:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbiIGHi6 (ORCPT
+        with ESMTP id S229760AbiIGHnf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 03:38:58 -0400
-Received: from mail-m974.mail.163.com (mail-m974.mail.163.com [123.126.97.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 62AF27B29E;
-        Wed,  7 Sep 2022 00:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=5F0Lv
-        wMp5Uf995lkO/Kaz7oV49tMvldju3dPm9T1C4Y=; b=e53lznAbnIsVv5a8/sJWR
-        iLV+M4ptv14xJo2wWlLLbt9f4oM0WfERvZl67bpjHKNH7oE2cS8UHjPzDUyTOQuU
-        0bzRvu6yxYjX8Z+U02/yEp9HxyNmCNwk1ssSTOKBcgTyNsRbs2xqqvAUiqAMkbWd
-        pprZXGza2JZWRTYnfc64lY=
-Received: from localhost.localdomain (unknown [36.112.3.164])
-        by smtp4 (Coremail) with SMTP id HNxpCgAn1cUiShhj2zzxaw--.48992S4;
-        Wed, 07 Sep 2022 15:37:17 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jianglei Nie <niejianglei2021@163.com>
-Subject: [PATCH] ath11k: mhi: fix potential memory leak in ath11k_mhi_register()
-Date:   Wed,  7 Sep 2022 15:37:04 +0800
-Message-Id: <20220907073704.58806-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 7 Sep 2022 03:43:35 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE179E2D5
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 00:43:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 421F9CE19FA
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:43:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E108C433D7;
+        Wed,  7 Sep 2022 07:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662536605;
+        bh=4qyxKVwpaEGj9NTGsKdpruZ4umxfn0QYMFxe7K1oHf4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=XgCB9kgV1buc7NUmXjndzBt/mZndtkuozzBmfAUmp+S0wUUc04dkzonopgm9mJkUr
+         VaxuA9kCQlppqlqz4S+E/6AtT5Z5dsti2GwfBzu7VgXuHZg4FeLv1oJDXPn9HH2ohX
+         C/a2Gj58LaQQe92ioDtJnIkFQ/xXDXpvSqntYQ0C7qu7mIIvaPUBNXc3ncGWZ+UBya
+         UnpETlKgG1lu+8voFSxfAZ6jr/YN75giRSmx+Nj2WNNhdmWreaz/9S7ARh7WrCt2md
+         iQ87xykYiYAEBVmuyAlcCI7RlcibpjMA6JqSav3QvvXBrd6Ykii+0XONOOi07S9Xj4
+         zDt40QW20NOSw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 3/5] wifi: rtw89: configure TX path via H2C command
+References: <20220902124422.13610-1-pkshih@realtek.com>
+        <20220902124422.13610-4-pkshih@realtek.com>
+Date:   Wed, 07 Sep 2022 10:43:22 +0300
+In-Reply-To: <20220902124422.13610-4-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 2 Sep 2022 20:44:20 +0800")
+Message-ID: <87czc7aaud.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: HNxpCgAn1cUiShhj2zzxaw--.48992S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF1ruF4UKw1xJFW3uF13XFb_yoW8uFyDpF
-        4fW3y7AFyrArs3WFWrtF4kJFy3ua93Ar1DKrZrGw1fGwnavF90q345JF1rXFyakw4xGFyU
-        ZF4Ut3W3Gas0qF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziCeHPUUUUU=
-X-Originating-IP: [36.112.3.164]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/xtbBOQB1jF-PPLP6bAAAsJ
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mhi_alloc_controller() allocates a memory space for mhi_ctrl. When gets
-some error, mhi_ctrl should be freed with mhi_free_controller(). But
-when ath11k_mhi_read_addr_from_dt() fails, the function returns without
-calling mhi_free_controller(), which will lead to a memory leak.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-We can fix it by calling mhi_free_controller() when
-ath11k_mhi_read_addr_from_dt() fails.
+> In order to support TX diversity, add a function to control TX path.
+>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
----
- drivers/net/wireless/ath/ath11k/mhi.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+[...]
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index c44df17719f6..86995e8dc913 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -402,8 +402,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	ret = ath11k_mhi_get_msi(ab_pci);
- 	if (ret) {
- 		ath11k_err(ab, "failed to get msi for mhi\n");
--		mhi_free_controller(mhi_ctrl);
--		return ret;
-+		goto free_controller;
- 	}
- 
- 	if (!test_bit(ATH11K_FLAG_MULTI_MSI_VECTORS, &ab->dev_flags))
-@@ -412,7 +411,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	if (test_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags)) {
- 		ret = ath11k_mhi_read_addr_from_dt(mhi_ctrl);
- 		if (ret < 0)
--			return ret;
-+			goto free_controller;
- 	} else {
- 		mhi_ctrl->iova_start = 0;
- 		mhi_ctrl->iova_stop = 0xFFFFFFFF;
-@@ -440,18 +439,22 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	default:
- 		ath11k_err(ab, "failed assign mhi_config for unknown hw rev %d\n",
- 			   ab->hw_rev);
--		mhi_free_controller(mhi_ctrl);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto free_controller;
- 	}
- 
- 	ret = mhi_register_controller(mhi_ctrl, ath11k_mhi_config);
- 	if (ret) {
- 		ath11k_err(ab, "failed to register to mhi bus, err = %d\n", ret);
--		mhi_free_controller(mhi_ctrl);
--		return ret;
-+		goto free_controller;
- 	}
- 
- 	return 0;
-+
-+free_controller:
-+	mhi_free_controller(mhi_ctrl);
-+	ab_pci->mhi_ctrl = NULL;
-+	return ret;
- }
- 
- void ath11k_mhi_unregister(struct ath11k_pci *ab_pci)
+> +int rtw89_fw_h2c_txpath_cmac_tbl(struct rtw89_dev *rtwdev,
+> +				 struct rtw89_sta *rtwsta)
+> +{
+> +	const struct rtw89_chip_info *chip = rtwdev->chip;
+> +	struct sk_buff *skb;
+> +
+> +	if (chip->h2c_cctl_func_id != H2C_FUNC_MAC_CCTLINFO_UD)
+> +		return 0;
+> +
+> +	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_CMC_TBL_LEN);
+> +	if (!skb) {
+> +		rtw89_err(rtwdev, "failed to alloc skb for fw dl\n");
+> +		return -ENOMEM;
+> +	}
+> +	skb_put(skb, H2C_CMC_TBL_LEN);
+> +	SET_CTRL_INFO_MACID(skb->data, rtwsta->mac_id);
+> +	SET_CTRL_INFO_OPERATION(skb->data, 1);
+> +
+> +	__rtw89_fw_h2c_set_tx_path(rtwdev, skb);
+> +
+> +	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
+> +			      H2C_CAT_MAC, H2C_CL_MAC_FR_EXCHG,
+> +			      H2C_FUNC_MAC_CCTLINFO_UD, 0, 1,
+> +			      H2C_CMC_TBL_LEN);
+> +
+> +	if (rtw89_h2c_tx(rtwdev, skb, false)) {
+> +		rtw89_err(rtwdev, "failed to send h2c\n");
+> +		goto fail;
+> +	}
+
+Please add a separate ret variable:
+
+ret = rtw89_h2c_tx(rtwdev, skb, false);
+if (ret) {
+	rtw89_err(rtwdev, "failed to send h2c: %d\n", ret);
+	goto fail;
+}
+
+> +
+> +	return 0;
+> +fail:
+> +	dev_kfree_skb_any(skb);
+> +
+> +	return -EBUSY;
+
+return ret;
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
