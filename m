@@ -2,78 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A415B0596
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 15:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1BB5B06B4
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 16:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbiIGNpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 09:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45682 "EHLO
+        id S229503AbiIGOb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 10:31:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbiIGNpj (ORCPT
+        with ESMTP id S230319AbiIGObc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 09:45:39 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526BC4A13E
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 06:44:53 -0700 (PDT)
-From:   =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1662558291; bh=SrqEawVr+5FHPte1CSGRG/4tZaGnPQ4NzbFMV1G+404=;
-        h=From:To:Cc:Subject:Date:From;
-        b=A+UQrt+y3EDZUeQ48CHRs1icKpz2DBKA/fejOw3BrdsE3WUxSK6Hlu3fdLt70Awvj
-         S6kGeBmNqcqIr56wd532ticDRZn2XXIjkYJoGcqOybnDIKfZ1c/UiWIt7jgf6dgMp8
-         uDPjDmLwTAAwJ9wB5Opq3uA6zXiI88mJd01C8jwrbRT+r+By3VyFjgwQ8/EMdprDXE
-         5Fvu4naUlzQyTr5onijH1U1MQTAlwy5ZCcXFCMwVaD5pEvCMDRLA5Tw/KGnFOnylgK
-         H++OmOobA9BolV8SgAOb8yZOneNULAFpP+K4zhb4db72zaeZ55VArd25AVZNJwBNpN
-         hhktSdA61LBZw==
-To:     Gregory Greenman <gregory.greenman@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ayala Beker <ayala.beker@intel.com>
-Cc:     linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: [PATCH] iwlwifi: Mark IWLMEI as broken
-Date:   Wed,  7 Sep 2022 15:44:50 +0200
-Message-Id: <20220907134450.1183045-1-toke@toke.dk>
+        Wed, 7 Sep 2022 10:31:32 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B7FAB4EA
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:31:16 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id nc14so30786857ejc.4
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Sep 2022 07:31:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=boA3graP4wtJe8cwRxkMJy5rso3t9xyj4fxUFsG0Fez1aWDY0C6gZpYPvm/Hxa5tX5
+         Zk+XDE4h4sSr3Kc7gAmKt5OJ7AP3AEEipJ5m7D7tQ5BTHkXWMmIdiC/g3MqGg04yG8Wz
+         mFTYUlKwIYoLI0bvi9Q3MSV1athb174l2Ms/7z+L0TzD2CQLBWt0bOa5Jg9CBAeygplA
+         zqROn488xUY/B608ffA8/XOsolF390gA0UeCbMrgWX87LxLuf34XOCHn+1VgcYnMY7Sr
+         klavsMj/u/K0iLTegE+9syCXTdcAl7jimLLfNxQJoiGWtjh15Idxzz9bfpV/1Jhy4Wly
+         oLRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=K0lS/vNZmO/mBBjG2ZbDFkgoPuw1ahqFT+eREKxWhXbILOJHpT0azEjhstPHvZwWP2
+         2kHYYEVKLaDEhBhWfy9uUAAz6Sqgg/56PVCrd3GCJlENeXzw+YxB7bY/8RES+xW8W5Fc
+         MONNx+br2YaNp3RgoaMw42nTwUHCnd0tgQdz+fXhnB6sSvO42erlO34IjouKvWue6Sfh
+         4mE35W+Qcph6hneZe/nKIfagZrzXZ+SVZhBjcZeWf//JgEHkdqciADKhpPiJuR8QAomx
+         znJoAf7+qb+CgmBN3LhqVoTtIH01KVzTCnOFW4hH/+jkuMMOOWao55VzK78wNPkS3Jdk
+         DIIw==
+X-Gm-Message-State: ACgBeo1/ihX2ruJcsqI40Zvd1BuU/mGfce+zNRgUy4KIWfTz/MwAYMZy
+        qyaVaqzf8SXU0Aag2/rmI40yeYZ4zh29hSY0dzI=
+X-Google-Smtp-Source: AA6agR7OKiKkSx+MbdKnn4tKaQhdmVzFj2krU0Vhk4MjDetoGwDDBbw+8TT3Fj+g2bgbPAiBcK/73KQpnrd5Cpv4s3c=
+X-Received: by 2002:a17:907:75ec:b0:741:484b:3ca4 with SMTP id
+ jz12-20020a17090775ec00b00741484b3ca4mr2508106ejc.316.1662561074796; Wed, 07
+ Sep 2022 07:31:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:14 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:31:14 +0200
+Message-ID: <CAO4StN0fh9iLpvL71MAvphxmFm4ur7+Op=qm5oJuhdRZZPJ3cA@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:643 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5049]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+ATTENTION
 
-The iwlmei driver breaks iwlwifi when returning from suspend; the bug
-report[0] has been open for four months now, and now fix seems to be
-forthcoming. Since just disabling the iwlmei driver works as a workaround,
-let's mark the config option as broken until it can be fixed properly.
+BUSINESS PARTNER,
 
-[0] https://bugzilla.kernel.org/show_bug.cgi?id=215937
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
-Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation with CSME")
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
- drivers/net/wireless/intel/iwlwifi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-index a647a406b87b..b20409f8c13a 100644
---- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-+++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-@@ -140,6 +140,7 @@ config IWLMEI
- 	depends on INTEL_MEI
- 	depends on PM
- 	depends on CFG80211
-+	depends on BROKEN
- 	help
- 	  Enables the iwlmei kernel module.
- 
--- 
-2.37.2
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
 
+REGARDS,
+
+LUMAR CASEY
