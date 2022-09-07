@@ -2,60 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B47DD5AFD3D
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F605AFD83
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 09:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbiIGHQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 03:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41594 "EHLO
+        id S229682AbiIGH3e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 03:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbiIGHQp (ORCPT
+        with ESMTP id S229669AbiIGH3L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 03:16:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD1AEA2DBE;
-        Wed,  7 Sep 2022 00:16:42 -0700 (PDT)
+        Wed, 7 Sep 2022 03:29:11 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87F9255BD;
+        Wed,  7 Sep 2022 00:29:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4511A6160B;
-        Wed,  7 Sep 2022 07:16:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC0AC433D7;
-        Wed,  7 Sep 2022 07:16:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 56323B81B89;
+        Wed,  7 Sep 2022 07:29:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25219C433B5;
+        Wed,  7 Sep 2022 07:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662535001;
-        bh=MrpRDWXHho8O9dUoFZ11Bt8djGB4NUss+3ZdVZoSHVc=;
+        s=k20201202; t=1662535748;
+        bh=MAKhOisrj5H/XxMjCHU1vIPYaY3C42nvmmE4fodHQbE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=hihLo+HAEXzylR9hMj7Sf4Vq9G0K8zZGgAT0/kM0VQkxGK0fvoJ9pKznCrPla8ole
-         eWgdfNNzUGuaUOOzisB8KLGko3WSU0XVphWKKPGBqABR0KVhn7q2kAKLSh3aYtFif7
-         JZwXS3HX3cXrfxFPdZT+jBp0H3vLMiybGeVdCMpy1gyjILedkIqapFPcs0jtGsHo5V
-         YYs9J9vOr+8k9wvMmmt8nJz3H7Hj826/sAk58HAeTxDI1nI7hPvuwej/9X/sGrhusP
-         AznfQWq38y24d6lV6QPF/9uL91EYADu8fxAvMfBhnlb7kFBMa7eC49SI0X0OUVhTKe
-         kNVGTZvhpp2aw==
+        b=MrzpHAU3adhwuJTn3wfPTK9TmDWoZEcluaDPaExZTU0UEiWcQTvEGbTTHgH4+W44X
+         XyTkvuvbOy9i9NB2kul67+W/tPCMcoRM9hxBezch/r4qOdCle3uCikI5ydCDAgXE35
+         uqzDUCIx36pJVd9YZ603pEIqqnifsdoL2C4E53+x0ODBDXgN0fOwcmEdkacVRsjd4T
+         2khVKU8f1pAnVHnjEgOlC1F9reFzSmP8/W4qVh5VAxWypZcX3i32c73xp18lOKbonq
+         jQRmkGAgUBiTJ1TTaTEVkodj5QnuFg7nbVFSMdIl3/fK/xoowahxTOFhAMjVAZM3MV
+         a3E+/SgFpba7g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: iwlwifi: calib: Refactor iwl_calib_result usage for clarity
+Subject: Re: [PATCH v2] wifi: brcmfmac: add error code in
+ brcmf_notify_sched_scan_results()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220901204558.2256458-1-keescook@chromium.org>
-References: <20220901204558.2256458-1-keescook@chromium.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Andy Lavr <andy.lavr@gmail.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+In-Reply-To: <20220829111256.21923-1-liqiong@nfschina.com>
+References: <20220829111256.21923-1-liqiong@nfschina.com>
+To:     Li Qiong <liqiong@nfschina.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yu Zhe <yuzhe@nfschina.com>,
+        Li Qiong <liqiong@nfschina.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166253499319.23292.401375353887849776.kvalo@kernel.org>
-Date:   Wed,  7 Sep 2022 07:16:38 +0000 (UTC)
+Message-ID: <166253574027.23292.7635371064073371162.kvalo@kernel.org>
+Date:   Wed,  7 Sep 2022 07:29:04 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -66,43 +65,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> wrote:
+Li Qiong <liqiong@nfschina.com> wrote:
 
-> In preparation for FORTIFY_SOURCE performing run-time destination buffer
-> bounds checking for memcpy(), refactor the use of struct iwl_calib_result:
+> The err code is 0 at the first two "out_err" paths, add error code
+> '-EINVAL' for these error paths.
 > 
-> - Have struct iwl_calib_result contain struct iwl_calib_cmd since
->   functions expect to operate on the "data" flex array in "cmd", which
->   follows the "hdr" member.
-> - Switch argument passing around to use struct iwl_calib_cmd instead of
->   struct iwl_calib_hdr to prepare functions to see the "data" member.
-> - Change iwl_calib_set()'s "len" argument to a size_t since it is always
->   unsigned and is normally receiving the output of sizeof().
-> - Add an explicit length sanity check in iwl_calib_set().
-> - Adjust the memcpy() to avoid copying across the now visible composite
->   flex array structure.
-> 
-> This avoids the future run-time warning:
-> 
->   memcpy: detected field-spanning write (size 8) of single field "&res->hdr" (size 4)
-> 
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Reported-by: Andy Lavr <andy.lavr@gmail.com>
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Li Qiong <liqiong@nfschina.com>
 
-Patch applied to wireless-next.git, thanks.
+Arend already commented v1:
 
-0d24201f47c4 wifi: iwlwifi: calib: Refactor iwl_calib_result usage for clarity
+https://lore.kernel.org/netdev/a054ffb1-527b-836c-f43e-9f76058cc9ed@gmail.com/
+
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220901204558.2256458-1-keescook@chromium.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220829111256.21923-1-liqiong@nfschina.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
