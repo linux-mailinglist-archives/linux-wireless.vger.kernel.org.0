@@ -2,91 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF6BD5B0783
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 16:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D2335B07DD
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Sep 2022 17:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229503AbiIGOwL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Sep 2022 10:52:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
+        id S230052AbiIGPCb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Sep 2022 11:02:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbiIGOwK (ORCPT
+        with ESMTP id S229959AbiIGPCa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Sep 2022 10:52:10 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6090A8CF7
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 07:52:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 52667B81D78
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 14:52:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD88C433D6;
-        Wed,  7 Sep 2022 14:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662562326;
-        bh=hNX6u9VQGjSjzDeyqbMU5QyTbDfWFhE3B+VMFKnQlo4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=h5rHwJHLKY3iLk32Yj7U8ZjrkNRf7e9vDEEwmcwl8XwiMvQt/25jB4wnQ9d1PtFeC
-         WFUK1U0o6cqBIPpmUYRwavImE2l0296tfpFNQJmRoHNJZF2YX/oJGIKOfC6e6Isnks
-         c1awQX1kkws4+ae6TH9iAU05WIvxTO6KanCB2Hg8lNGriqjyMcpINF7kyx/X6RfgAS
-         XW+8WQEaHtZyK9IEIsHpU9qcVajsHnEB645MuFnkOUxZqwm7QuHqpWKLFAw1qfjKms
-         tEMw9SPuLfFeUBH3Wrsr3PiROd+DbjZdJHiSEcKl3kL3hCMS+mdc/FqPwl3JANC9PC
-         OtHsDWftdAHfA==
-Date:   Wed, 7 Sep 2022 09:52:04 -0500
-From:   Seth Forshee <sforshee@kernel.org>
-To:     Cesar Eduardo Barros <cesarb@cesarb.eti.br>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: Update regulatory rules
- for Brazil (BR)
-Message-ID: <YxiwFLWhsOtJJhrq@do-x1extreme>
-References: <20220901232734.5488-1-cesarb@cesarb.eti.br>
- <b8674e67fee2393d4c5fe9d9842028545c6adcfa.camel@sipsolutions.net>
- <6b577581-9daf-ff11-1aaa-ff1243eb9c03@cesarb.eti.br>
+        Wed, 7 Sep 2022 11:02:30 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590E032D
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 08:02:28 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id g14so10579250qto.11
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Sep 2022 08:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:user-agent:mime-version:date:message-id:from:from:to:cc
+         :subject:date;
+        bh=3r46zgR0SxCiGzmzzXUPWfV053YkrnQyc0E900AmOtw=;
+        b=mspK/NIFjliTgC4+OsA1KdzuNXALsYKw9CwNCwlh/fmfQz/BKyECEtFZbNxH0rrvla
+         vW03BKQH/QzK7j9S3nA5my2uWy44j0LCni1/dWu9kCEOqLuRTQeVfBSNbD7lTu9POhbm
+         vxIqMnrg7Gj86GAoclSzal53M0B8TKCsuvGprkuW8/IIuR0D/MxjlUMDKwjbRW+Jqxmt
+         pC9GHbTXV928Xd9e9LhMaHgD9uf9Tznl0eC7I+nXF/5CM7tUKdep1ixonCT+T4NsN27y
+         UdyPpGWlY1EWz+Z/9lizAVvOI4ICWAf09jktecDjhE1fkdwtjrTHe0qu8wIEr4eRLOEp
+         TYsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=3r46zgR0SxCiGzmzzXUPWfV053YkrnQyc0E900AmOtw=;
+        b=Syga0/PIatmYIXH3a5qtjHcvJehcFI1VAe3L+4QVqXan4uDd7OO7Q7G5YFWLZaET7Y
+         UJ1AdmUU3BYO9qSrNG59LOcJmW9wlON12fnVcUM2gxH3g9MsRGJ2WqnGL1djFN8rA9Ca
+         EXhzdy7yzg0OsS1+Vu2BvqvhUUlBdpwCcBmv7YyZuSFWLWbG2JezSd2n3mCSNHEWWAVP
+         UI328gDY1sw4aFG0jxNZKsS+rB3MVPA9tSKxHKDakkfNzyxc8ltSbwpBz11n1rcEQT+k
+         3qNLxLSzboNWodtqjOvJzcNaDZ82oMgHOv0EgPhplvpXX8qHHxlKHm1lZVKhzp1iRNL2
+         fNzQ==
+X-Gm-Message-State: ACgBeo0WRa4goyLhYfkJPqQqMGCP/CAmUbgsldp1r6ORj4xbPE5ZaIKs
+        nrL6NQYvbbjX1SFLVYORKkQ=
+X-Google-Smtp-Source: AA6agR7Hlls1zlkfi2jVmFTTegZwymMMbi7VKkIE0fvTJB0pL4pfhuSV1eCQxr8jpMyTDH9FRjM5XA==
+X-Received: by 2002:ac8:5ad2:0:b0:344:90e7:410f with SMTP id d18-20020ac85ad2000000b0034490e7410fmr3693684qtd.625.1662562947209;
+        Wed, 07 Sep 2022 08:02:27 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c0a8:1102::1244? ([2620:10d:c091:480::a525])
+        by smtp.gmail.com with ESMTPSA id s2-20020ac87582000000b0034502695369sm12273356qtq.54.2022.09.07.08.02.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Sep 2022 08:02:26 -0700 (PDT)
+From:   Jes Sorensen <jes.sorensen@gmail.com>
+X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+Message-ID: <acd30174-4541-7343-e49a-badd199f4151@gmail.com>
+Date:   Wed, 7 Sep 2022 11:02:25 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6b577581-9daf-ff11-1aaa-ff1243eb9c03@cesarb.eti.br>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v2] wifi: rtl8xxxu: Fix skb misuse in TX queue selection
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        linux-wireless@vger.kernel.org
+References: <7fa4819a-4f20-b2af-b7a6-8ee01ac49295@gmail.com>
+Content-Language: en-US
+In-Reply-To: <7fa4819a-4f20-b2af-b7a6-8ee01ac49295@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 02, 2022 at 07:21:50PM -0300, Cesar Eduardo Barros wrote:
-> Em 02/09/2022 11:53, Johannes Berg escreveu:
-> > On Thu, 2022-09-01 at 20:27 -0300, Cesar Eduardo Barros wrote:
-> > > 
-> > > +	# This range ends at 5725 MHz, but channel 144 extends to 5730 MHz.
-> > > +	# Since 5725 ~ 5730 MHz belongs to the next range which has looser
-> > > +	# requirements, we can extend the range by 5 MHz to make the kernel
-> > > +	# happy and be able to use channel 144.
-> > > +	(5470 - 5730 @ 160), (27), DFS
-> > > +	(5730 - 5850 @ 80), (30)
-> > > 
-> > 
-> > If you do the latter as 160 as well, and add AUTO-BW, couldn't you split
-> > them at 5725 correctly? But I guess it doesn't matter anyway.
+On 8/31/22 12:12, Bitterblue Smith wrote:
+> rtl8xxxu_queue_select() selects the wrong TX queues because it's
+> reading memory from the wrong address. It expects to find ieee80211_hdr
+> at skb->data, but that's not the case after skb_push(). Move the call
+> to rtl8xxxu_queue_select() before the call to skb_push().
 > 
-> This was copied from the US rules (including the four-line comment), which
-> have an identical split. If AUTO-BW worked here, I'd expect the US rules to
-> use it.
+> Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> ---
+> v2:
+>   Add Fixes tag.
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-AUTO-BW would work, and we have countries using it for this case. Iirc
-for some countries we move the split to 5730 because even though
-5725-5730 is at a lower power limit the rules allow channel 144 to be
-used at the power limit for 5710-5725. For the US though I think it's
-just historical -- it was done that way initially, and it isn't
-important enough that anyone has cared to change it.
+Nice catch!
 
-But we do generally try to keep the rules matching the official
-documents as much as possible, so for new rules we should split at 5725
-and use AUTO-BW as Johannes suggested. Could you send a v2 with that
-change?
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 52240e945b58..8d6f693bf60b 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -5177,6 +5177,8 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>  	if (control && control->sta)
+>  		sta = control->sta;
+>  
+> +	queue = rtl8xxxu_queue_select(hw, skb);
+> +
+>  	tx_desc = skb_push(skb, tx_desc_size);
+>  
+>  	memset(tx_desc, 0, tx_desc_size);
+> @@ -5189,7 +5191,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>  	    is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
+>  		tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
+>  
+> -	queue = rtl8xxxu_queue_select(hw, skb);
+>  	tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
 
-Thanks,
-Seth
+This could actually be made more resilient from someone moving the code
+around by passing in 'hdr' instead of relying on using skb->data in
+rtl8xxxu_queue_select(). We could also get rid of the hw argument to
+that function since it isn't used.
+
+Cheers,
+Jes
+
