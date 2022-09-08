@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D36275B13E1
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Sep 2022 07:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 013D85B13E2
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Sep 2022 07:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229845AbiIHFNt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S229862AbiIHFNt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 8 Sep 2022 01:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50486 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229718AbiIHFNs (ORCPT
+        with ESMTP id S229546AbiIHFNs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 8 Sep 2022 01:13:48 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3FAECB7288
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 63DAEB7753
         for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 22:13:45 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2885DFEk8009661, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2885DFEk8009661
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2885DFPT0009701, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2885DFPT0009701
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 8 Sep 2022 13:13:15 +0800
+        Thu, 8 Sep 2022 13:13:16 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 8 Sep 2022 13:13:34 +0800
+ 15.1.2375.7; Thu, 8 Sep 2022 13:13:34 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 8 Sep 2022
- 13:13:33 +0800
+ 13:13:34 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <leo.li@realtek.com>, <timlee@realtek.com>, <echuang@realtek.com>,
         <phhuang@realtek.com>, <chiuyitang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/9] wifi: rtw89: support deep ps mode for rtw8852c
-Date:   Thu, 8 Sep 2022 13:12:54 +0800
-Message-ID: <20220908051257.25353-7-pkshih@realtek.com>
+Subject: [PATCH 7/9] wifi: rtw89: call tx_wake notify for 8852c in deep ps mode
+Date:   Thu, 8 Sep 2022 13:12:55 +0800
+Message-ID: <20220908051257.25353-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220908051257.25353-1-pkshih@realtek.com>
 References: <20220908051257.25353-1-pkshih@realtek.com>
@@ -57,10 +57,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvOCCkV6TIIDEyOjQ5OjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -72,71 +72,51 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chin-Yen Lee <timlee@realtek.com>
 
-rtw8852c could support deep ps mode if the firmware version
-is greater than 0.17.34.
+8852c transmits packets with slow response in deep ps mode,
+and lead to low throughput. We need to call tx_wake for
+each pakcet to trigger firmware wake earlier to avoid it.
 
 Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     | 3 ++-
- drivers/net/wireless/realtek/rtw89/core.h     | 1 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 4 +++-
- 4 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 5 ++++-
+ drivers/net/wireless/realtek/rtw89/fw.c   | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 71ee237a7c286..342b54a93dd97 100644
+index 342b54a93dd97..064a5bd4380f0 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1703,7 +1703,8 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+@@ -768,13 +768,16 @@ static void
+ rtw89_core_tx_wake(struct rtw89_dev *rtwdev,
+ 		   struct rtw89_core_tx_request *tx_req)
  {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++
+ 	if (!RTW89_CHK_FW_FEATURE(TX_WAKE, &rtwdev->fw))
+ 		return;
  
--	if (rtw89_disable_ps_mode || !chip->ps_mode_supported)
-+	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
-+	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
- 		return RTW89_PS_MODE_NONE;
+ 	if (!test_bit(RTW89_FLAG_LOW_POWER_MODE, rtwdev->flags))
+ 		return;
  
- 	if (chip->ps_mode_supported & BIT(RTW89_PS_MODE_PWR_GATED))
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index e32900615bda0..5beaf311df052 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2731,6 +2731,7 @@ enum rtw89_fw_feature {
- 	RTW89_FW_FEATURE_SCAN_OFFLOAD,
- 	RTW89_FW_FEATURE_TX_WAKE,
- 	RTW89_FW_FEATURE_CRASH_TRIGGER,
-+	RTW89_FW_FEATURE_NO_DEEP_PS,
- };
+-	if (tx_req->tx_type != RTW89_CORE_TX_TYPE_MGMT)
++	if (chip->chip_id != RTL8852C &&
++	    tx_req->tx_type != RTW89_CORE_TX_TYPE_MGMT)
+ 		return;
  
- struct rtw89_fw_suit {
+ 	rtw89_mac_notify_wake(rtwdev);
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 8e4d0e18fa715..cac4afee55591 100644
+index cac4afee55591..72f6534754fff 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -225,6 +225,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, SCAN_OFFLOAD),
+@@ -226,6 +226,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
  	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, TX_WAKE),
  	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 36, 0, CRASH_TRIGGER),
-+	__CFG_FW_FEAT(RTL8852C, le, 0, 27, 33, 0, NO_DEEP_PS),
+ 	__CFG_FW_FEAT(RTL8852C, le, 0, 27, 33, 0, NO_DEEP_PS),
++	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 34, 0, TX_WAKE),
  };
  
  static void rtw89_fw_recognize_features(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 1d3b1776540f4..8dd4c741cd24e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -3059,7 +3059,9 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.rf_para_ulink		= rtw89_btc_8852c_rf_ul,
- 	.rf_para_dlink_num	= ARRAY_SIZE(rtw89_btc_8852c_rf_dl),
- 	.rf_para_dlink		= rtw89_btc_8852c_rf_dl,
--	.ps_mode_supported	= 0,
-+	.ps_mode_supported	= BIT(RTW89_PS_MODE_RFOFF) |
-+				  BIT(RTW89_PS_MODE_CLK_GATED) |
-+				  BIT(RTW89_PS_MODE_PWR_GATED),
- 	.low_power_hci_modes	= BIT(RTW89_PS_MODE_CLK_GATED) |
- 				  BIT(RTW89_PS_MODE_PWR_GATED),
- 	.h2c_cctl_func_id	= H2C_FUNC_MAC_CCTLINFO_UD_V1,
 -- 
 2.25.1
 
