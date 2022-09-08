@@ -2,53 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E99985B14FC
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Sep 2022 08:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EE535B151E
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Sep 2022 08:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbiIHGr0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Sep 2022 02:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53790 "EHLO
+        id S231142AbiIHGuy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Sep 2022 02:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230522AbiIHGrW (ORCPT
+        with ESMTP id S230526AbiIHGuO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Sep 2022 02:47:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630EAD21FD
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 23:46:59 -0700 (PDT)
+        Thu, 8 Sep 2022 02:50:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FD817FFA7
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Sep 2022 23:50:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FF9C6192B
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 06:46:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4BFC433D6;
-        Thu,  8 Sep 2022 06:46:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC58661B48
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 06:50:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50322C433C1;
+        Thu,  8 Sep 2022 06:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662619617;
-        bh=AnEniN/1ezMQjDLZ/D6h3XTQ3sZZuGBFe25f8AVvwEU=;
+        s=k20201202; t=1662619800;
+        bh=U6BKQuMQPjPIj7UYLySFnwE0T6a7A1V+ksMafHOAoJU=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=b8J8yFoY+GUQV2zu8knwJaeJtmPd8TE1uHZSH3ofxE5BmKp9kU/QfOkf2fzu1HfH5
-         /nRxKYFXqduzfgrGlns/DHiQpsMVk0llqWOq/bDOoK8Y4H5wl3cpHpU7YUaYDBzhrj
-         MjSnuCwLaDyVaTMlHnoX4ENNna/V3jKJvfqY14Lg44KoLugc2eHNTS4uFrAOCfGSpv
-         7uR2WIlAPInj4mMVOfFd2zc9xL4Y2aIkZ2skhsYjNOVWiEEn2QHUMb7KPPorbtBw3j
-         tam55lkj9DCHAol2cte/ycM40isssYCX0WKW92V2D+54WG+pFRc5cVBN8jdPnV2atN
-         GpimgpOerNJBw==
+        b=muP1SlBhmY5pUmbfoXIneJjuw8poFU6ghR9oW48duEe3t2B4DaxL0MLNG/i45S0pd
+         9+IuqYw7fyteKnPlAM2H36+KJ9zEAL0vEeu0DINHuPspqHQEU582sOFD0/d46VI+X2
+         D/0A2ldbF7FIBUgIcsrIXaTxP+yvpbMKY5sGeZyo1yHjfIX7WD0ajE2kZqMp8hMhzr
+         0uLgkscE32hFx0KZHymkyMu9MgtIKg6TQ4LlPbJ+UA08cakIdxDhzhTCRGa7za3dJM
+         0Zpb4keFxVF/FuHElwipPXsDuDbcVNcXPSQQoZv2fb4HblmEBQ2xZ5JT7hSuzbWS7u
+         xGJcvQ9vMJRyg==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     Robert Marko <robert.marko@sartura.hr>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 Subject: Re: [PATCH 1/3] ath11k: Enable threaded NAPI on WCN6750
 References: <20220720135113.15755-1-quic_mpubbise@quicinc.com>
         <20220720135113.15755-2-quic_mpubbise@quicinc.com>
         <87czceaqng.fsf@kernel.org>
         <dcc14883-51c9-c1bb-bbea-1b309eccedf2@quicinc.com>
-        <CA+HBbNGEoSyfbs=FHtWyvBnG_jh9m=Q9KW=Pcfq+pDdHWEV4mw@mail.gmail.com>
-        <7615c815-ca2e-c6f1-b627-6e10f1272442@quicinc.com>
-        <CA+HBbNEm9GhYcXQ9gXEb=U4x=BZTDp4UBqF8eNH1N0uCBLdadQ@mail.gmail.com>
-        <5c07bcd5-574c-b13b-44c2-ef8ed9f23cf0@quicinc.com>
-Date:   Thu, 08 Sep 2022 09:46:53 +0300
-In-Reply-To: <5c07bcd5-574c-b13b-44c2-ef8ed9f23cf0@quicinc.com> (Manikanta
-        Pubbisetty's message of "Fri, 2 Sep 2022 20:00:55 +0530")
-Message-ID: <878rmucqhu.fsf@kernel.org>
+Date:   Thu, 08 Sep 2022 09:49:56 +0300
+In-Reply-To: <dcc14883-51c9-c1bb-bbea-1b309eccedf2@quicinc.com> (Manikanta
+        Pubbisetty's message of "Fri, 2 Sep 2022 18:47:41 +0530")
+Message-ID: <874jxicqcr.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,41 +59,26 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-> On 9/2/2022 7:16 PM, Robert Marko wrote:
->> On Fri, Sep 2, 2022 at 3:42 PM Manikanta Pubbisetty
->> <quic_mpubbise@quicinc.com> wrote:
->>>
->>> On 9/2/2022 6:50 PM, Robert Marko wrote:
->>>> On Fri, Sep 2, 2022 at 3:18 PM Manikanta Pubbisetty
->>>> <quic_mpubbise@quicinc.com> wrote:
->>>>>
->>>>> Regardless of the chip family, even I feel that the tput changes like
->>>>> these should be tested on all the chipsets. Availability of the hardware
->>>>> and time are something which are stopping me in testing the changes on
->>>>> all supported targets.
->>>>>
->>>>> As I said, I had made the changes only to WCN6750 initially (using a
->>>>> hw_param). Can we take that approach for now and enable this for other
->>>>> targets only if required & upon thorough testing?
->>>>
->>>> I can tell you that on IPQ8074 threaded NAPI really improves perfromance.
->>>>
->>>
->>> Great. Do you have any test results on IPQ8074?
+>> Also more testing would be nice. Enabling something like this with
+>> testing only on one hardware family (WCN7850) can be risky. I always get
+>> warm fuzzy feelings if a patch is tested with all three hardware
+>> families we currently support:
 >>
->> I dont have full test results, but on Poco F2 Pro as the client @80MHz AX
->> I got ~720Mbps compared to ~550Mbps before.
->>
->> I can tell you that in OpenWrt, we have had it enabled for 6+ months
->> at this point
->> and its been really good.
->>
+>> * IPQ8074 etc
+>> * QCA6390 etc
+>> * WCN7850
 >
-> That's a significant improvement, great to hear that. We have another
-> strong reason to have this change in upstream driver.
+> WCN7850 should be an ath12k device If I'm correct.
 
-Indeed, thanks Robert. Is the code in openwrt similar as what
-Manikanta's patch does?
+Sorry, I meant WCN6855. Too many drivers and too many hardware...
+
+> Regardless of the chip family, even I feel that the tput changes like
+> these should be tested on all the chipsets. Availability of the
+> hardware and time are something which are stopping me in testing the
+> changes on all supported targets.
+
+I have the same problem, I cannot test all possible hardware. That's why
+I was requsting help here.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
