@@ -2,83 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 669515B1559
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Sep 2022 09:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9205B15D8
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Sep 2022 09:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbiIHHHZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Sep 2022 03:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37824 "EHLO
+        id S230234AbiIHHmc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Sep 2022 03:42:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230131AbiIHHHU (ORCPT
+        with ESMTP id S229927AbiIHHm3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Sep 2022 03:07:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF2AA0625
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 00:07:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C316061B7D
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 07:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D89C433D6;
-        Thu,  8 Sep 2022 07:07:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662620838;
-        bh=IJ5Y5859RzK2tBMeAuXEmz2aXfcKQmjm9q1cRifDZUc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rAyIU/ZzEBuKpJL64Xkn16HRr4FxCto9zkmwnJxFUcfi0yODGoQd+fFmvddKuCN62
-         CUkmQwRcyxjCpz2ikXzMnz7/6jGStLOi3F7ygXiLBOzSg6kdBIC9T1SzD1zm56UCp0
-         iFsUVyetBbBghuEugDGRvK2HU6LWqmUMCuElCtkKfwpIG9MuE4/1AXTNVwSFv1Xgi8
-         VdgAFB3/l7LFJRukM5l2axUOOtZKfvBmplaSZQ32UwbdOz1DBPSdMdZUJVD7ie0Mbq
-         jdCRbs3fudq1HDPUBtSYglafbtsGkzWn4dz0Y2FhAjdOJO1TgCt2WyFWvL0tJ+yUx4
-         1E8019Qju5jfg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 3/5] wifi: rtw89: configure TX path via H2C command
-References: <20220907084402.66480-1-pkshih@realtek.com>
-        <20220907084402.66480-4-pkshih@realtek.com>
-Date:   Thu, 08 Sep 2022 10:07:13 +0300
-In-Reply-To: <20220907084402.66480-4-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Wed, 7 Sep 2022 16:44:00 +0800")
-Message-ID: <87r10mbazi.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 8 Sep 2022 03:42:29 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D52B7D51EC
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 00:42:26 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2887fp7N3010317, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2887fp7N3010317
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 8 Sep 2022 15:41:51 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 8 Sep 2022 15:42:10 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 8 Sep 2022
+ 15:42:10 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v3 0/5] wifi: rtw89: support TX diversity for 1T2R variant model
+Date:   Thu, 8 Sep 2022 15:41:35 +0800
+Message-ID: <20220908074140.39776-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/08/2022 07:27:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvOCCkV6TIIDA2OjAwOjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+To support TX diversity, query firmware to know if it is 1T2R variant
+model. Then, checking RSSI periodically to know which antenna has better
+signal strength that can be seen as the antenna is close to AP. Therefore,
+use the antenna with better RSSI to transmit packets dynamically.
 
-> In order to support TX diversity, add a function to control TX path.
->
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+v3:
+  - patch 3/5: just 'return ret' instead of overwriting error code.
 
-[...]
+v2:
+  - patch 3/5: use separate 'ret'
+  - patch 5/5: no need casting from void pointer
 
-> +	ret = rtw89_h2c_tx(rtwdev, skb, false);
-> +	if (ret) {
-> +		rtw89_err(rtwdev, "failed to send h2c\n");
-> +		goto fail;
-> +	}
-> +
-> +	return 0;
-> +fail:
-> +	dev_kfree_skb_any(skb);
-> +
-> +	return -EBUSY;
+Ping-Ke Shih (5):
+  wifi: rtw89: use u32_get_bits to access C2H content of PHY capability
+  wifi: rtw89: parse phycap of TX/RX antenna number
+  wifi: rtw89: configure TX path via H2C command
+  wifi: rtw89: record signal strength per RF path
+  wifi: rtw89: support TX diversity for 1T2R chipset
 
-Overwriting error codes is confusing, so it would be better that this is
-'return ret'.
+ drivers/net/wireless/realtek/rtw89/core.c     | 21 +++++--
+ drivers/net/wireless/realtek/rtw89/core.h     |  6 +-
+ drivers/net/wireless/realtek/rtw89/debug.c    | 12 +++-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 62 ++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/fw.h       | 43 ++++++++-----
+ drivers/net/wireless/realtek/rtw89/mac.c      | 35 ++++++++---
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  3 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 56 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  6 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  6 +-
+ 12 files changed, 211 insertions(+), 46 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
