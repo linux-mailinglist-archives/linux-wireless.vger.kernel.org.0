@@ -2,105 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDABB5B2ED0
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Sep 2022 08:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1355B2F4F
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Sep 2022 08:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230449AbiIIGY5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Sep 2022 02:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41254 "EHLO
+        id S230521AbiIIGye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Sep 2022 02:54:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbiIIGYv (ORCPT
+        with ESMTP id S230143AbiIIGya (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Sep 2022 02:24:51 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0802A21271
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 23:24:43 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id p15-20020a056830130f00b006544f5228e3so495756otq.2
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Sep 2022 23:24:43 -0700 (PDT)
+        Fri, 9 Sep 2022 02:54:30 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E8D395
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Sep 2022 23:54:25 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id u9so1829141ejy.5
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Sep 2022 23:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
-        b=WcH6UHGbsWFkewU/wT0fJawZxX15Zl4hkDGkeADuGdJGmv3t1iQNtgSoMnFwdIiKsl
-         x0SFF8bkohRdk9mKGKM+s9gauDKjJXrvYE2yTKQmchoZQEeCIon6bMdclwr30NYYePtN
-         LlWsahNYX+ZnmYtHuo+L3HiSHKxAxOAJsjY/zT5bRdtKkslqggYR6PeuSVU/Upq3p6Lx
-         v7+3Sl0ycmpNJAkDyyfB3vDmj0Ku1DLMT5UNXcPYiD+ne677L4tBdx+wZ+UEyMq3qhuC
-         L3qiWtmRltydGdTH8yRtHUUCoYBmNYblSu9kOey2R0GaJCd4zJFwUrFzR3gFC4Ma5YBK
-         ywXw==
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=C8mOufAnbZRl+iaqRSjTK1hOqHh/V9tIOH97yB9mTwc=;
+        b=i70d5ZplWnp33lhN8Vn61WeFCfYPosdzPnUEB6i7orIahdXRDcrLwl3JVcLwwTGWgb
+         6By7eYRGKLEWauhv5MMOPudhMfJTU3TQvDfXfDB5EybxtzvOTjO4ryAMuspvxrQOG/UM
+         ISKLtMw+KJzDaYux6MzTozE+5ssOAeS2bghnLKkzCFAqRn1tPp7JIEauEwE0FGfjOORu
+         kLcc+Xlrok6hLnPgF7JDUFxgrkIwi2r/HzCW900qo2JfNtn3XwJ5JFCELbrGoKW+OpOt
+         EQ4X+4jTGgMBsnJB8NvHWGmUBjSSaaVpWYNSAmxqkvwObdtmMrDTzBDRwxAnuaYFeLpD
+         ldFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
-        b=ntDMxtx86yI02GGjDXS8YNCchJf/rrsmuSp1qLtAYznHVsrZTkvPgidW+7n4GFfT1S
-         gPV6+DDAoVgMF34BEQ7kKw414BlN4R9Eo4QacCmMswSLC12imxX+5tjqJ0hNTyS745Oz
-         GB/c2Y85ZCsHOmUwJzZi6JUFn3lDGh11o0atBXPMTHdn48l0llPRFUoRqCjTOeTfZNpB
-         EEdluTx8ltw4GHf0fEXLsDiIKX1MrYoZfqCuWIVuolgMwFoJ6aJXtuIlVQsxTgx1Jc6+
-         D4iNrHGtFmxkuuQXCQSpO/Pf4JvieI/qpGTzkjnevpgB7JJljJwH0ummN6ik7GsYhiKb
-         rJ/g==
-X-Gm-Message-State: ACgBeo3yzcnYZyCoZ4ScE5crGXAcDURNm/ydJbp+9g1DfLHuOolq0Pez
-        y2fVvCGPC5zQa/OyQbRdU4v+4kaqpQxA3PnQiUY=
-X-Google-Smtp-Source: AA6agR5oQwYexb5IuYa5dQgOTrJVTByrVtuS9dapD7VlJ47FKqY17GiN0xDTC5NddRnxIwHXasBmKTYYBxKZ43rAUg0=
-X-Received: by 2002:a9d:6e0e:0:b0:652:6ed2:eb83 with SMTP id
- e14-20020a9d6e0e000000b006526ed2eb83mr3789515otr.308.1662704682511; Thu, 08
- Sep 2022 23:24:42 -0700 (PDT)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=C8mOufAnbZRl+iaqRSjTK1hOqHh/V9tIOH97yB9mTwc=;
+        b=kU0Ywmb3y511IhPemTysGg14asg7DYcjSyPTW3ay0oGMqxfrcb3TQO22DSKUqYhTjO
+         ZjaEs0FSwHqp6LnufAWLuMW+yteN0wgIIJ7v7v6pl75pUr/9dDDN8wlHfjuFBh/VHLTJ
+         9JkKuwQYMqrxbUwc3gaDGHXge3OflGBpCM3av77bJGEXZf+f6pTUtFgczXn913ddOfcV
+         pmVRIuxJlYglvfW4fZKmlknIKwB0Hct+2waK9a7sQx3QCoNNupxf9lU8oRr5KcCPlBcQ
+         MEFoqKIcTqa/1myZqBzMKUZsWy8LibDDdymoV98vfEV4/3zxwVByd+RcRV3bXPs15fak
+         M08g==
+X-Gm-Message-State: ACgBeo1oq+fIoLgu1t47x9xzD/z7kDtV2s3sv7wm3vcviLwiZ8tWYxlf
+        uNIx9DFbSJzcUHr5ZPYv1CUOWwnkGSfhWXlC18xsww831J3PwA==
+X-Google-Smtp-Source: AA6agR4odZFG9aQPmsj/J9R/FLRlSfypcr/wHujTaCRcosfR+czW2zOzYseuoATQ05oqL1HgHWqyKFeuX5nDNUF5j78=
+X-Received: by 2002:a17:907:2c4f:b0:741:5b68:e2d9 with SMTP id
+ hf15-20020a1709072c4f00b007415b68e2d9mr8527349ejc.314.1662706464329; Thu, 08
+ Sep 2022 23:54:24 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6358:c27:b0:bc:944f:7c4e with HTTP; Thu, 8 Sep 2022
- 23:24:42 -0700 (PDT)
-Reply-To: stefanopessina14@gmail.com
-From:   Stefano Pessina <prniceugochukwu@gmail.com>
-Date:   Thu, 8 Sep 2022 23:24:42 -0700
-Message-ID: <CA+eeEkAUSxvd2fRt0O=B0KtG8hzLpcviCGXBvO_1bui7P5TghQ@mail.gmail.com>
-Subject: Donation
-To:     undisclosed-recipients:;
+References: <20220907134450.1183045-1-toke@toke.dk> <87k06daysx.fsf@kernel.org>
+In-Reply-To: <87k06daysx.fsf@kernel.org>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Fri, 9 Sep 2022 09:54:13 +0300
+Message-ID: <CANUX_P3=k-+r6n1MRSiUPuB3FmtuoeUw8z6Sjxb2ed7+gmb+yw@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: Mark IWLMEI as broken
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        linux-wireless@vger.kernel.org,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:343 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [stefanopessina14[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [prniceugochukwu[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-I am Stefano Pessina, an  Italian business tycoon, investor, and
-philanthropist. the vice chairman, chief executive officer (CEO), and
-the single largest shareholder of Walgreens Boots Alliance. I gave
-away 25 percent of my personal wealth to charity. And I also pledged
-to give away the rest of 25% this year 2022 to Individuals.. I have
-decided to donate $2,200,000.00 to you. If you are interested in my
-donation, do contact me for more info
+On Fri, Sep 9, 2022 at 8:59 AM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>
+> > From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> >
+> > The iwlmei driver breaks iwlwifi when returning from suspend; the bug
+> > report[0] has been open for four months now, and now fix seems to be
+>
+> s/now/no/? I can fix that.
+>
+> > forthcoming. Since just disabling the iwlmei driver works as a workarou=
+nd,
+> > let's mark the config option as broken until it can be fixed properly.
+> >
+> > [0] https://bugzilla.kernel.org/show_bug.cgi?id=3D215937
+>
+> So does the bug only happen with iwd? Should I mention that in the
+> commit log? It would be good to describe the conditions when the bug
+> happens.
+
+The only reports I am aware of are using iwd.
+
+>
+> > Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation=
+ with CSME")
+> > Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>
+> I assigned the patch to me on patchwork and will queue for v6.0.
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
