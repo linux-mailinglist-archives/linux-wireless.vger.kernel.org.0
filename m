@@ -2,82 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8374E5B32A7
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Sep 2022 11:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40B2B5B32BE
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Sep 2022 11:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbiIII72 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Sep 2022 04:59:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43932 "EHLO
+        id S231250AbiIIJGH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Sep 2022 05:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231941AbiIII64 (ORCPT
+        with ESMTP id S232070AbiIIJFf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Sep 2022 04:58:56 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4EA82F033
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Sep 2022 01:58:55 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2898YKrN032077;
-        Fri, 9 Sep 2022 08:58:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=HRKsBijzWfVr+tI9EkDRQqqk7M0eW5qBrvWeAn7KiWY=;
- b=mLhnPiS143c95Q0hyVNhylXy9T6Gsh5Zr9+JyJh2TiUKzMAPRs+JLBLXsyQdhjl4ZRHH
- fqov33adrCxRaz+f7Vxetjdj2bpbLpW1BhacA2qNyVHNzSfIJrSTRdUv7vVRF7tVg5Dx
- csfXgelV9tWXuCLBelTmfqPKBe4hEPSLaSEIzzxRejWTkIAtCtMt1p6Exix5UGO+kuqw
- wUp2tbh7LVcT+rPhXCWpdLfoXSrcYNuUiDZBIMQtdWrWMOG7ZlgajJjBiCkvExaN2PRA
- mdRUoouYSiDIqHj8N0aCLmcbQVABtCttVUd4TpXaxDIDBXl2WL7Dmhnoy6I9jh6dNv0F 7g== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jfeuuvbht-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 09 Sep 2022 08:58:43 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2898wgOs011224
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 9 Sep 2022 08:58:42 GMT
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 9 Sep 2022
- 01:58:41 -0700
-Message-ID: <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
-Date:   Fri, 9 Sep 2022 16:58:39 +0800
+        Fri, 9 Sep 2022 05:05:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B0E9FA84
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Sep 2022 02:05:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 63C81B82403
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Sep 2022 09:04:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBDBC433D7;
+        Fri,  9 Sep 2022 09:04:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662714298;
+        bh=x0+8r++HF6A1wPLEFxJcCLQRHIbcMl/u00vuBrLUSTs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=XhsNmAgKg/oro78SWFyn0ig2b+K2ELW8bWCBbEIw1JDmwYrLmNeosblU3CpbgHPDa
+         bs9gNvsMHL03hFc752YjVKAygCCcf08XTt/7TSKt3VFXPCslHS3AO4QJXci19h2suE
+         PtqgE3WbzstaA7/5j/A0s7WqPLtqIZtfCv9nC9PlWPCuyPucYlAKK34fGhXIMmpZ1T
+         9U0krSfCqgSXQ6mo3EADJOpJvGQDusCtnxaAlvFRhxoqA2vnd+MP03cwMlhVDZ0kB1
+         dJM0MG8YORbGRXBKe5/RykjwZyn9QfeEdAxVDaK6oU+NcR+DHWUJOuCzCZRMTdh+ip
+         cK0YjiqSwpN/A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Cc:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: cfg80211: Fix MCS divisor value
+References: <20220908181034.9936-1-quic_tamizhr@quicinc.com>
+Date:   Fri, 09 Sep 2022 12:04:51 +0300
+In-Reply-To: <20220908181034.9936-1-quic_tamizhr@quicinc.com> (Tamizh Chelvam
+        Raja's message of "Thu, 8 Sep 2022 23:40:34 +0530")
+Message-ID: <87fsh0c40c.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
- <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
- <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
- <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
- <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
- <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
- <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: BxpZa624bpRtQUX_-CTdCguTbjMIHsSa
-X-Proofpoint-GUID: BxpZa624bpRtQUX_-CTdCguTbjMIHsSa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-09_04,2022-09-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=999 clxscore=1015 phishscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209090030
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -86,142 +54,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/9/2022 3:28 PM, Johannes Berg wrote:
-> Hi,
->
->>> No, they aren't, and shouldn't be.
->> IEEE P802.11be™/D2.0
->> 35.3.3 Multi-link device addressing
->> An MLD has an MLD MAC address that singly identifies the MLD.
->> Each STA affiliated with an MLD shall have a different MAC address.
->> NOTE 1—The MLD MAC address of an MLD might be the same as the MAC
->> address of one affiliated STA or different
->> from the MAC address of any affiliated STA.
-> Right. I was over-simplifying, that was basically the "tl;dr" version of
-> my statement, without the longer one ;-)
->
->> This means the MLD address can be same with one link.
-> True.
->
->> I suggest to set primary link local addr same with MLD address for station.
-> I wouldn't suggest that, but YMMV.
->
->> reason is:
->> When station up, one link interface of driver will be created with the
->> addr of struct ieee80211_vif,
->> it is used for scan and non-MLO connection.
->> If station start to do MLO connection now, then random local link addr
->> will be generated by below call stack.
->> for the 1st link. This lead driver must change the link interface local
->> address to this random addr.
-> Well, that depends how you treat "address of an interface", no? I don't
-> think there's really any need to "install" a MAC address to the NIC
-> until you even start any kind of operation.
->
-> True, if you cannot scan using the MLD address while you also have a
-> different link address, you might be in trouble - but I find this
-> unrealistic because you would want to be able to scan on any part of the
-> hardware that is doing any of the links?
-Scan probe request needs the local address, so we must fill one address 
-to it.
-And we use the same local address to scan for 2.4 GHz/5 GHz/6 GHz band.
->
->
-> In any case, changing this makes the receive logic a bit different. You
-> would have to ensure that your driver does indeed indicate the link a
-> frame was received on, I think? Also, ieee80211_rx_for_interface() might
-> have to change, something like the below maybe?
-I looked the ieee80211_rx_for_interface(), it is to find struct 
-link_sta_info with the source
-address of an rx frame. For station, the hdr->addr2 means the address of 
-the AP, so
-the the change of mac80211/wireless will not effect the 
-ieee80211_rx_for_interface().
-Because it is the MLD/link address of the AP(maybe it is same addr for 
-MLD/one link) when we as station.
-> If we just change the first link's address to the same as the MLD
-> address without any changes then the code without the changes below
-> would overwrite the link ID because it can find the link STA address,
-> even if the device already did address translation. Of course this is
-> only relevant if it does address translation w/o indicating the link,
-> which it shouldn't ... hence the patch.
->
-> In any case, I expect this will end up being some kind of driver policy,
-> so I can imagine that we could make a relatively simple patch with a new
-> method to let drivers set the link address that gets used. It cannot be
-> changing the link address when it's added to the driver since this patch
-> that this thread is based on means the driver doesn't get to know about
-> the links until it's far too late (and even before this patch, the links
-> were only created after assoc, when the link addresses were already sent
-> to the AP)
-Thanks for the incoming  new method to let drivers set the link address.
-It is better to let driver to fill all the links' address in load phase.
-And then it never change again. And one of the address array is always
-used for primary link.
->
-> johannes
->
->
->
-> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-> index ac2bad57933f..648b2de8dd3e 100644
-> --- a/include/net/mac80211.h
-> +++ b/include/net/mac80211.h
-> @@ -1482,7 +1482,8 @@ enum mac80211_rx_encoding {
->    * @ampdu_delimiter_crc: A-MPDU delimiter CRC
->    * @zero_length_psdu_type: radiotap type of the 0-length PSDU
->    * @link_valid: if the link which is identified by @link_id is valid. This flag
-> - *	is set only when connection is MLO.
-> + *	is set only when connection is MLO. Note that setting this also implies
-> + *	address translation was done.
->    * @link_id: id of the link used to receive the packet. This is used along with
->    *	@link_valid.
->    */
-> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-> index a57811372027..963de5d880d7 100644
-> --- a/net/mac80211/rx.c
-> +++ b/net/mac80211/rx.c
-> @@ -4946,22 +4946,24 @@ static void __ieee80211_rx_handle_8023(struct ieee80211_hw *hw,
->   static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
->   				       struct sk_buff *skb, bool consume)
->   {
-> -	struct link_sta_info *link_sta;
-> +	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
->   	struct ieee80211_hdr *hdr = (void *)skb->data;
-> +	struct link_sta_info *link_sta = NULL;
->   
->   	/*
-> -	 * Look up link station first, in case there's a
-> -	 * chance that they might have a link address that
-> -	 * is identical to the MLD address, that way we'll
-> -	 * have the link information if needed.
-> +	 * Unless the driver did addr translation and provided the link
-> +	 * ID, look up link station first. Note that if we get a frame
-> +	 * without link ID in the status and the device happens to use
-> +	 * identical addresses for one of the links and the MLD, then
-> +	 * we cannot identify whether it was translated already or not.
->   	 */
-> -	link_sta = link_sta_info_get_bss(rx->sdata, hdr->addr2);
-> +	if (!status->link_valid)
-> +		link_sta = link_sta_info_get_bss(rx->sdata, hdr->addr2);
-> +
->   	if (link_sta) {
->   		rx->sta = link_sta->sta;
->   		rx->link_id = link_sta->link_id;
->   	} else {
-> -		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
-> -
->   		rx->sta = sta_info_get_bss(rx->sdata, hdr->addr2);
->   		if (rx->sta) {
->   			if (status->link_valid &&
-Thanks.
-Below patch has said driver should report link id if addr translated.
+Tamizh Chelvam Raja <quic_tamizhr@quicinc.com> writes:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?h=mld&id=ea9d807b56428d65cf43030cbd7ae5a580077147
-wifi: mac80211: add link information in ieee80211_rx_status
-In MLO, when the address translation from link to MLD is done
-in fw/hw, it is necessary to be able to have some information
-on the link on which the frame has been received. Extend the
-rx API to include link_id and a valid flag in ieee80211_rx_status.
-Also make chanes to mac80211 rx APIs to make use of the reported
-link_id after sanity checks.
+> Bitrate for HE/EHT MCS6 is calculated wrongly due to the incorrect
+> MCS divisor value for mcs6. Fix it with the proper value.
+>
+> previous mcs_divisor value = (11769/6144) = 1.915527
+>
+> fixed mcs_divisor value = (11377/6144) = 1.851725
+>
+> Fixes 9c97c88d2 ("cfg80211: Add support to calculate and report 4096-QAM HE rates")
+
+The format for Fixes tag should be:
+
+Fixes: 9c97c88d2f4b ("cfg80211: Add support to calculate and report 4096-QAM HE rates")
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
