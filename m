@@ -2,55 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 291305B2FC8
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Sep 2022 09:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3B5F5B31ED
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Sep 2022 10:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231315AbiIIH2k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Sep 2022 03:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
+        id S231370AbiIIIjF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Sep 2022 04:39:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230378AbiIIH2Y (ORCPT
+        with ESMTP id S231414AbiIIIjD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Sep 2022 03:28:24 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D36111779E
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Sep 2022 00:28:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=FbBXzNt8SmzQwhX0H12a5um5XnMCmL5b+7vb71lt4bE=;
-        t=1662708500; x=1663918100; b=g4d2ac3Tip3rZGIuR6a6iHG1x5jrkfhWbEJUqAcEHgdh17C
-        4y2C5UcVENuHtxECNcwOCbKOIsXGWXR6bKNsiT5CSiWcVe3HHlbb3BNWZFJPwnXTS5rpI6+2+Ei6l
-        cRb2GQXITGVsI81uR4UJimiq8MkdJmrSIQk9LyIXSXYoozdJWpuonpJe7jBf5V8PQiLDVfAKwPqGp
-        bV/GxiDK3pRhm4JxmeWRAYprHX0h7jIO7vekLvYU9BjLiJk5u6jSqH4fyn1JF6LY15WlFDpQePHwP
-        wBYageGWxN5VsekuEYLi5j/uNIOcohCUTx/TckKcKmWN5N6K6a6PI3874HOptFzA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oWYQy-00BvJm-2f;
-        Fri, 09 Sep 2022 09:28:16 +0200
-Message-ID: <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
-Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org
-Date:   Fri, 09 Sep 2022 09:28:16 +0200
-In-Reply-To: <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
-         <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
-         <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
-         <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
-         <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
-         <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
-         <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+        Fri, 9 Sep 2022 04:39:03 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE6A312FBA2
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Sep 2022 01:38:57 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1662712735; bh=N/ilnw/z9un/lpAI2LbnB2098WXoWdTiZTkSpDnCLVk=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=dekgAE+SjQqQv+Xmn/skXgDUjnsqj64JHLkzT8lHHo6zacRbbiSTicOOVwMhRIAGD
+         Q39p5NVTcA6/y9MD/m9nOxJ00BY7HN5MhI9+crj09/ZDv1TZLNeiE8G8Y353Korba6
+         93gLwOPuih4yClDsAVc5xlS33hC/9BxkTAXbZWWFBZ21nSj/aeJqNSoym5MiljxJ26
+         2DYhlm6TL4tzS2fewsN+XvXtPsALOFbZSynkqSmhnjIqktTHMufHL4lBo43IOKgiQM
+         hiIINwmrQ9CuCi3ZUc+I7PNhLUL41aqDscfYB4qRJx+m2rmbLu072o64AU5XlKQGBM
+         DlD3rdPozwTNw==
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: Mark IWLMEI as broken
+In-Reply-To: <87k06daysx.fsf@kernel.org>
+References: <20220907134450.1183045-1-toke@toke.dk> <87k06daysx.fsf@kernel.org>
+Date:   Fri, 09 Sep 2022 08:26:51 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87o7vpcbbo.fsf@toke.dk>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,131 +48,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Kalle Valo <kvalo@kernel.org> writes:
 
-> > No, they aren't, and shouldn't be.
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>
+>> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>>
+>> The iwlmei driver breaks iwlwifi when returning from suspend; the bug
+>> report[0] has been open for four months now, and now fix seems to be
+>
+> s/now/no/? I can fix that.
 
-> IEEE P802.11be=E2=84=A2/D2.0
-> 35.3.3 Multi-link device addressing
+Yeah, oops, sorry...
 
-> An MLD has an MLD MAC address that singly identifies the MLD.
-> Each STA affiliated with an MLD shall have a different MAC address.
-> NOTE 1=E2=80=94The MLD MAC address of an MLD might be the same as the MAC=
-=20
-> address of one affiliated STA or different
-> from the MAC address of any affiliated STA.
+>> forthcoming. Since just disabling the iwlmei driver works as a workaroun=
+d,
+>> let's mark the config option as broken until it can be fixed properly.
+>>
+>> [0] https://bugzilla.kernel.org/show_bug.cgi?id=3D215937
+>
+> So does the bug only happen with iwd? Should I mention that in the
+> commit log? It would be good to describe the conditions when the bug
+> happens.
 
-Right. I was over-simplifying, that was basically the "tl;dr" version of
-my statement, without the longer one ;-)
+Well, what happens is that the interface ends up in the 'down' state
+after coming back from suspend. And iwd doesn't touch the interface
+state, but wpa_supplicant does, so the user-visible "my WiFi doesn't
+work" thing only happens on iwd...
 
-> This means the MLD address can be same with one link.
+>> Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation =
+with CSME")
+>> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>
+> I assigned the patch to me on patchwork and will queue for v6.0.
 
-True.
+Great, thanks!
 
-> I suggest to set primary link local addr same with MLD address for statio=
-n.
-
-I wouldn't suggest that, but YMMV.
-
-> reason is:
-> When station up, one link interface of driver will be created with the=
-=20
-> addr of struct ieee80211_vif,
-> it is used for scan and non-MLO connection.
-> If station start to do MLO connection now, then random local link addr=
-=20
-> will be generated by below call stack.
-> for the 1st link. This lead driver must change the link interface local=
-=20
-> address to this random addr.
-
-Well, that depends how you treat "address of an interface", no? I don't
-think there's really any need to "install" a MAC address to the NIC
-until you even start any kind of operation.
-
-True, if you cannot scan using the MLD address while you also have a
-different link address, you might be in trouble - but I find this
-unrealistic because you would want to be able to scan on any part of the
-hardware that is doing any of the links?
-
-
-In any case, changing this makes the receive logic a bit different. You
-would have to ensure that your driver does indeed indicate the link a
-frame was received on, I think? Also, ieee80211_rx_for_interface() might
-have to change, something like the below maybe?
-
-If we just change the first link's address to the same as the MLD
-address without any changes then the code without the changes below
-would overwrite the link ID because it can find the link STA address,
-even if the device already did address translation. Of course this is
-only relevant if it does address translation w/o indicating the link,
-which it shouldn't ... hence the patch.
-
-In any case, I expect this will end up being some kind of driver policy,
-so I can imagine that we could make a relatively simple patch with a new
-method to let drivers set the link address that gets used. It cannot be
-changing the link address when it's added to the driver since this patch
-that this thread is based on means the driver doesn't get to know about
-the links until it's far too late (and even before this patch, the links
-were only created after assoc, when the link addresses were already sent
-to the AP)
-
-johannes
-
-
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index ac2bad57933f..648b2de8dd3e 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1482,7 +1482,8 @@ enum mac80211_rx_encoding {
-  * @ampdu_delimiter_crc: A-MPDU delimiter CRC
-  * @zero_length_psdu_type: radiotap type of the 0-length PSDU
-  * @link_valid: if the link which is identified by @link_id is valid. This=
- flag
-- *	is set only when connection is MLO.
-+ *	is set only when connection is MLO. Note that setting this also implies
-+ *	address translation was done.
-  * @link_id: id of the link used to receive the packet. This is used along=
- with
-  *	@link_valid.
-  */
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index a57811372027..963de5d880d7 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4946,22 +4946,24 @@ static void __ieee80211_rx_handle_8023(struct ieee8=
-0211_hw *hw,
- static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
- 				       struct sk_buff *skb, bool consume)
- {
--	struct link_sta_info *link_sta;
-+	struct ieee80211_rx_status *status =3D IEEE80211_SKB_RXCB(skb);
- 	struct ieee80211_hdr *hdr =3D (void *)skb->data;
-+	struct link_sta_info *link_sta =3D NULL;
-=20
- 	/*
--	 * Look up link station first, in case there's a
--	 * chance that they might have a link address that
--	 * is identical to the MLD address, that way we'll
--	 * have the link information if needed.
-+	 * Unless the driver did addr translation and provided the link
-+	 * ID, look up link station first. Note that if we get a frame
-+	 * without link ID in the status and the device happens to use
-+	 * identical addresses for one of the links and the MLD, then
-+	 * we cannot identify whether it was translated already or not.
- 	 */
--	link_sta =3D link_sta_info_get_bss(rx->sdata, hdr->addr2);
-+	if (!status->link_valid)
-+		link_sta =3D link_sta_info_get_bss(rx->sdata, hdr->addr2);
-+
- 	if (link_sta) {
- 		rx->sta =3D link_sta->sta;
- 		rx->link_id =3D link_sta->link_id;
- 	} else {
--		struct ieee80211_rx_status *status =3D IEEE80211_SKB_RXCB(skb);
--
- 		rx->sta =3D sta_info_get_bss(rx->sdata, hdr->addr2);
- 		if (rx->sta) {
- 			if (status->link_valid &&
-
+-Toke
