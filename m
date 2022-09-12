@@ -2,73 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BA035B52A2
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 04:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4685B52A5
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 04:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbiILCBh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Sep 2022 22:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39724 "EHLO
+        id S229577AbiILCKt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Sep 2022 22:10:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbiILCBg (ORCPT
+        with ESMTP id S229456AbiILCKs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Sep 2022 22:01:36 -0400
+        Sun, 11 Sep 2022 22:10:48 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B115D275ED;
-        Sun, 11 Sep 2022 19:01:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 142EE2717C
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Sep 2022 19:10:46 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28C20AkN4002827, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28C20AkN4002827
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28C2AEQ30026258, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28C2AEQ30026258
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 12 Sep 2022 10:00:10 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 12 Sep 2022 10:00:30 +0800
+        Mon, 12 Sep 2022 10:10:14 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 12 Sep 2022 10:00:29 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::402d:f52e:eaf0:28a2]) by
- RTEXMBS04.realtek.com.tw ([fe80::402d:f52e:eaf0:28a2%5]) with mapi id
- 15.01.2375.007; Mon, 12 Sep 2022 10:00:29 +0800
+ 15.1.2375.7; Mon, 12 Sep 2022 10:10:34 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 12 Sep
+ 2022 10:10:34 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     sunliming <sunliming@kylinos.cn>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kelulanainsley@gmail.com" <kelulanainsley@gmail.com>,
-        kernel test robot <lkp@intel.com>
-Subject: RE: [PATCH] rtw89: coex: fix for variable set but not used warning
-Thread-Topic: [PATCH] rtw89: coex: fix for variable set but not used warning
-Thread-Index: AQHYxkk1LrygW/FN+UCxqSsY3SRR3q3bCAeA
-Date:   Mon, 12 Sep 2022 02:00:29 +0000
-Message-ID: <e4f549a7a60d4f01bf99a89e9f1cb8c4@realtek.com>
-References: <20220912014411.1432175-1-sunliming@kylinos.cn>
-In-Reply-To: <20220912014411.1432175-1-sunliming@kylinos.cn>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/9/11_=3F=3F_10:00:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: coex: show connecting state in debug message
+Date:   Mon, 12 Sep 2022 10:10:09 +0800
+Message-ID: <20220912021009.6011-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/12/2022 01:41:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMTEgpFWkyCAxMTozMjowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -78,60 +66,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The variable cnt_connecting is to indicate if we are connecting to an AP.
+This is an important clue for coexistence to assign more time slot to WiFi
+side in this situation to ensure WiFi can establish connection.
 
-> -----Original Message-----
-> From: sunliming <sunliming@kylinos.cn>
-> Sent: Monday, September 12, 2022 9:44 AM
-> To: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
-> kuba@kernel.org; pabeni@redhat.com
-> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; kelulanainsley@gmail.com; sunliming
-> <sunliming@kylinos.cn>; kernel test robot <lkp@intel.com>
-> Subject: [PATCH] rtw89: coex: fix for variable set but not used warning
+Without this patch, compiler warns:
+  drivers/net/wireless/realtek/rtw89/coex.c:3244:25: warning: variable
+    'cnt_connecting' set but not used [-Wunused-but-set-variable]
 
-The subject should be 'wifi: rtw89: coex: ...'.
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/coex.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> Fix below kernel warning:
-> drivers/net/wireless/realtek/rtw89/coex.c:3244:25: warning: variable 'cnt_connecting'
-> set but not used [-Wunused-but-set-variable]
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: sunliming <sunliming@kylinos.cn>
-> ---
->  drivers/net/wireless/realtek/rtw89/coex.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-> index 683854bba217..ee4817358c35 100644
-> --- a/drivers/net/wireless/realtek/rtw89/coex.c
-> +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-> @@ -3290,7 +3290,7 @@ static void _update_wl_info(struct rtw89_dev *rtwdev)
->  	struct rtw89_btc_wl_link_info *wl_linfo = wl->link_info;
->  	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
->  	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
-> -	u8 i, cnt_connect = 0, cnt_connecting = 0, cnt_active = 0;
-> +	u8 i, cnt_connect = 0, cnt_active = 0;
->  	u8 cnt_2g = 0, cnt_5g = 0, phy;
->  	u32 wl_2g_ch[2] = {0}, wl_5g_ch[2] = {0};
->  	bool b2g = false, b5g = false, client_joined = false;
-> @@ -3324,9 +3324,7 @@ static void _update_wl_info(struct rtw89_dev *rtwdev)
-> 
->  		if (wl_linfo[i].connected == MLME_NO_LINK) {
->  			continue;
-> -		} else if (wl_linfo[i].connected == MLME_LINKING) {
-> -			cnt_connecting++;
-> -		} else {
-> +		} else if (wl_linfo[i].connected != MLME_LINKING) {
->  			cnt_connect++;
->  			if ((wl_linfo[i].role == RTW89_WIFI_ROLE_P2P_GO ||
->  			     wl_linfo[i].role == RTW89_WIFI_ROLE_AP) &&
-
-Though this patch can fix warning, we would like to show cnt_connecting in 
-debug message, and then we can know the transient state between no link and 
-connected. I will send it by myself.
-
-So, nack this patch.
-
---
-Ping-Ke
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 732502b64b255..e3d1b165c322e 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -4088,8 +4088,8 @@ static void _update_wl_info(struct rtw89_dev *rtwdev)
+ 	}
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_BTC,
+-		    "[BTC], cnt_connect = %d, link_mode = %d\n",
+-		    cnt_connect, wl_rinfo->link_mode);
++		    "[BTC], cnt_connect = %d, connecting = %d, link_mode = %d\n",
++		    cnt_connect, cnt_connecting, wl_rinfo->link_mode);
+ 
+ 	_fw_set_drv_info(rtwdev, CXDRVINFO_ROLE);
+ }
+-- 
+2.25.1
 
