@@ -2,201 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A775B5C31
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 16:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2271E5B5CEB
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 17:07:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbiILO3U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Sep 2022 10:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33266 "EHLO
+        id S229893AbiILPHd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Sep 2022 11:07:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbiILO3S (ORCPT
+        with ESMTP id S229770AbiILPHb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Sep 2022 10:29:18 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CE42E6BD;
-        Mon, 12 Sep 2022 07:29:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ygBlvUkwAP2XjRoIYO5CVyjJWvpc9ks23iroQwJXaNo=; b=ThGggpTTFrROcoC91K4D4bl5Ui
-        HGuV0/mea/MR0DmhU2j2M1Pdcftmj2mH3ZYfz9KKJVUG1dOgls0UgIqdiKDmY2mChkyz3ttaqgx6Y
-        NGrzpwuaqQFQKsdP2phWQ70gVGVWxWEJMT2JPOzgsvs9OmGP+G+orpwSkV/O0nWOcRQvL3Uyn4q3v
-        +7JQFajbNz4opw9n71h2Ld2VvSiisaYEyoOpqGnMhVvJIsEZ65TSt9OPm6qpMUvL7VGyfX2QtMf9p
-        3aExAoNvRViDloiYrd7zhJh72Od87FBcHG9oU/APBJIGGyU/ruSMZbXU/CCaTZSNE4ut6/j+1Rvuj
-        Lk3aCTBQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34266)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1oXkQv-0001mU-D2; Mon, 12 Sep 2022 15:29:09 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oXkQt-0008B7-8i; Mon, 12 Sep 2022 15:29:07 +0100
-Date:   Mon, 12 Sep 2022 15:29:07 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Alvin =?utf-8?Q?=C5=A0ipraga?= <ALSI@bang-olufsen.dk>
-Cc:     Mark Kettenis <mark.kettenis@xs4all.nl>,
-        "aspriel@gmail.com" <aspriel@gmail.com>,
-        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        "alyssa@rosenzweig.io" <alyssa@rosenzweig.io>,
-        "asahi@lists.linux.dev" <asahi@lists.linux.dev>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "marcan@marcan.st" <marcan@marcan.st>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "zajec5@gmail.com" <zajec5@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "sven@svenpeter.dev" <sven@svenpeter.dev>,
-        "arend@broadcom.com" <arend@broadcom.com>
-Subject: Re: [PATCH wireless-next v2 01/12] dt-bindings: net: bcm4329-fmac:
- Add Apple properties & chips
-Message-ID: <Yx9CM210SorcM1nP@shell.armlinux.org.uk>
-References: <Yx8BQbjJT4I2oQ5K@shell.armlinux.org.uk>
- <E1oXg7N-0064ug-9l@rmk-PC.armlinux.org.uk>
- <20220912115911.e7dlm2xugfq57mei@bang-olufsen.dk>
- <Yx8gasTCj90Q5qZz@shell.armlinux.org.uk>
- <Yx87omI/la1o+Aye@shell.armlinux.org.uk>
- <d3cee741b298e526@bloch.sibelius.xs4all.nl>
- <20220912142727.tmqd7h7axwo226hm@bang-olufsen.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Mon, 12 Sep 2022 11:07:31 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E5D1C129;
+        Mon, 12 Sep 2022 08:07:30 -0700 (PDT)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28CF4lh5002163;
+        Mon, 12 Sep 2022 15:07:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : content-type : mime-version; s=corp-2022-7-12;
+ bh=pqAfzFwAMWbdujIn2RqRnlINmEG8HyuAWk7a2Mm9nBg=;
+ b=TDxcTgRGkp6vp7tjftXipAZMaqSsiPZ1yllIXkOa0HMHjP8Io+Bxv9kQpk51dpNva4Xy
+ VqavSgI8Ngx/aM2lQmtn4L1cZvdsAYeHQ4WWbeOHAboWPKJa7souO6MBUaIvz7Ty38dG
+ Bn2mGGMf012lbpIJwCBjMuKfSYrsfnfihGJ5bzxJfUrl2h780D9TcCkW0U2GNeiYq1iC
+ 2FGmbxuH5LDfzPOOuQReJJMDcJ2X0uC6d8/0R8WIul9KCXisAFw+ky/pYXk7p1YQG6Mj
+ 1h0U9DKiPmBDP1R99Pjhf3i/5tXexo1os20rCAArmiraXS7G3b5uesS6WhNQtwzGu07n vQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3jj5w287et-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 12 Sep 2022 15:07:25 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 28CECOV1016843;
+        Mon, 12 Sep 2022 15:07:24 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3jj6b1j7mj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 12 Sep 2022 15:07:24 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NJp71yXi6GKKP4VelwhBQV9KHveE4NqDN9r9howfqq5L7IY/fJpZNePJ6sbDx+8+84dqLyg2CGsqmbKYeNPYkW3AJKkFY6J6r7tLkYoMc3Bf/WUfG1+jXggDauaWD1dc7ca/WlbG5n/kRTTFAaJFxcMXIO/dfnyoYcyZ/J3rcpViEBAUkhorRztLLv4F4PtKD7RTgaaf1Bk1IlaK2pOZGigfZMKexuCDyGwia2fmAPcSOj6qSh1Op4D9qIyKbuOXj87hlUEC/CQ877bLeFVVV1DicyZBrr+0PwU5KuZQsuINt/GTbh1NI7HNbsdVC2JRbxsv9iqY9nPZbTW/vYRtaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pqAfzFwAMWbdujIn2RqRnlINmEG8HyuAWk7a2Mm9nBg=;
+ b=SgbkoRglWgE4rxvfKMHVbVNKdCQqcQ4yNtPPuMYwrRs1hjBRHyVl7czTLn0MrTyzcZkoUZnecOC+dgrLNUknYPy+rD8KVlwZvSjW5i2esRafJgM1bJkmXx/0NL9Tmd0O48kmVIbnh75U4Eul56U/2qifP6tNHfIMj/iavAilCc/0aL5Nt8nbExVsHKoo4Vt8g1Kq+VqdyDJpLDxTC5JvjAe19pJyl51MT0RCSI/QgIBFq6y4n64ciXCsLFtPEme5EZ8Jfz+4VD1sx+pjwA9s+z2ZePoQbXBQRFksvsP7X8sCDLAJeBAhPmaw5ihvior63fDkF/2DFkTjjNOUea+J1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pqAfzFwAMWbdujIn2RqRnlINmEG8HyuAWk7a2Mm9nBg=;
+ b=yweHbD0h7p5s14Vsn8xevDmbr2pOt24DYmT7fZ16VMnFkcX0x6Wo1pw2uLSUdR0nRU8Oqk9zkvkZNvA+rLGZ5QGX3fau/uCV0PYSV+RqZgJWOHBAXlkLkruW73XQvfRdkofCp+Ix8Dh4G6Kixl6I+t4nfhGwQG5vRFOh0gUjeHc=
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by CY5PR10MB6117.namprd10.prod.outlook.com
+ (2603:10b6:930:37::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.22; Mon, 12 Sep
+ 2022 15:07:22 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::a493:38d9:86ee:73d6]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::a493:38d9:86ee:73d6%6]) with mapi id 15.20.5612.022; Mon, 12 Sep 2022
+ 15:07:22 +0000
+Date:   Mon, 12 Sep 2022 18:07:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        James Prestwood <prestwoj@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] wifi: mac80211: unlock on error in
+ ieee80211_can_powered_addr_change()
+Message-ID: <Yx9LJFA7PDSRmb/M@kili>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220912142727.tmqd7h7axwo226hm@bang-olufsen.dk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Mailer: git-send-email haha only kidding
+X-ClientProxiedBy: ZRAP278CA0015.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:10::25) To MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWHPR1001MB2365:EE_|CY5PR10MB6117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b24aa0d-17da-498b-dbff-08da94d07e80
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /D+YQE29Q92YuNTjOGY8dJI8yX4Hs2nhuwnHraAQrUMrN2p8qweYOd8khvdOU06P6UWziTAmtL4hceOSO8j7NwcLkyp/A+RcI105XjEJ8kVESwUwObhKM4alO2nmMHiiizcpvFulw0vKTG/W8nfOlo0lnD0+duJ01Kuui4MUXYG0dUwTW56QrhQKWYXqXOKJttNLSJS6VRsjRle3OiWVXphZ5g0BgagN7XnomkQuclx59DJ/NNduWnj7PH7KPoLJQDvNlpDRULxzNN15f33xcdJGZWFacQj78l2z1DlAw2Bw68b8alo224Mw79DDgIx3EOAhgYoLHkxZLP4slKaueUpByt17C/L31+j67/b4ZIkL+aTyDqhBBgey3GPLmH0bZAvgklvY9A8cMazT6T2Xpe77H5201db5rWJBSYd0LUXa4vzjN+m4UfCPr+QSuJyD0uPpaXALVjU0GTW7L8G2uUg6KfrowgvOtJ414vCTJE9OkSnSkQANaYqyukzs5OWlZF2Ul95qy4CodpBb73lADMEavlkapx+afaZK9aSbBpIkYet9ZFNLxb9n9/Ow0gRrXAPQv7fImYjKecvuFpWT319vp6jq5Dq6xDOBEXJlA1VlOqYk33muAajYEbK3yKO9ErNSyn2ttHnYZ8wCVGUUSxC1r0g84/Rk6dZ9aI5WrLzbqdZMjt/LZbRmrQhlBSz/JnjB7Nb+KsjN75NHRgBSqQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(396003)(366004)(136003)(376002)(346002)(39860400002)(66556008)(110136005)(66946007)(33716001)(316002)(478600001)(6486002)(6512007)(4744005)(9686003)(6506007)(2906002)(26005)(8676002)(4326008)(44832011)(86362001)(66476007)(6666004)(5660300002)(41300700001)(38100700002)(8936002)(186003)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ebwhpV+Tjn7lGkHrgXjjzXCq/KpK+yIi0uSEp8EMAU8pzQXGfIJvTmodTFO5?=
+ =?us-ascii?Q?oplNeR2zoeLDrUmU7i/x9Gt8BC3Me3uv7m05DVPMenuX0+oJ012uHiD5Joar?=
+ =?us-ascii?Q?tSs2C8vxlLKDvZJbtqXNMyT+/PFYI/1MwhIKUFQFrMzzcoP+s5VrWwlrI5aP?=
+ =?us-ascii?Q?TRIk8MQkQfCMEMorX7sapwa1S4xOq1Z1++XsbuxlzD0tCSI5eT/JgyEB4A83?=
+ =?us-ascii?Q?X44KhFeDxRV0dA6Qkn+Hne4Ln8MYkvaYsVIE3QogmPT84g0RF7pjRjhtaEJ5?=
+ =?us-ascii?Q?16ODjbEZPIwIMyIvEeD2NpATKM11sYoKYaLwOCvC9vNHWptAFYLBGY6j4aca?=
+ =?us-ascii?Q?rbvFKsRKUY+F7isC7vu1JRcVYKkJiwYJSuwgXrBc+041gyQE2UG3qwYZUQ7/?=
+ =?us-ascii?Q?GI1046VcoszKLHxO82A82f0/CEYsB12iodTVrTyvm6TtjTIdU1iy90paAjDR?=
+ =?us-ascii?Q?3v1sOsYCZJqgPigWARQB4pUBYZnr4QsXPvTMmyGgllGoC4kLmhX9dC9ljMdo?=
+ =?us-ascii?Q?MKYHSIH8u306nkMdpsv2O+lBCuIlKAIvajU3VDm2kecsK+FESpCqJwOPZz/0?=
+ =?us-ascii?Q?KmA7KaQp9p7m0ddyJIhOGGiDNZkEMn8tNfYCEJMD8mDIAgaxKd8zzC6ql5e0?=
+ =?us-ascii?Q?NQtsVWI5jKALvsdAw0v7iVvmreQ4eysD5ZhjGBFjpjC2vv0EftGJ84vcMAND?=
+ =?us-ascii?Q?zsxefS2rd7Q8EFWZuqeLZJWq9auKX+xTAZtfc+x3yFJgfSU1OSCeWh9cGQHr?=
+ =?us-ascii?Q?qWfgheF9og6RwVzON2XsBV3iEhBCE8vcOYDOj5nMXreV+7xDJCxOf65HzQj4?=
+ =?us-ascii?Q?1CKeyyZ9zOmVetc3Z6D7kjcikc0DSTmZmVuQ5ckw0R6zA2nBOVHabdPq30Hz?=
+ =?us-ascii?Q?Fp0FA7J69dMNnUEF4bragpuTxycyryBAPY/b73IXJcP3U2C5fx8dYCcWySj7?=
+ =?us-ascii?Q?ESw/o83ihliOM2lCMUiS8P3e6MYmouL1I6OxLZCgWmNW/XRlgO844EYXeqim?=
+ =?us-ascii?Q?MrH9eoNZk3T/JbDw4Us+mwIp+f2Q2dk2pYuIzP7X1IKWs8nTaByk/y1QJtRd?=
+ =?us-ascii?Q?2H0ezejYW2oNCooaPLNk2Wb7fdKK1tTIMxj/DcitOsd73SfLLMUDE7I2RUfF?=
+ =?us-ascii?Q?7vZAT2dSHsnHUMatIwP2uXnY+WsKUHbIfJMQivvU2dbwgDhnY/xYTy63bXdg?=
+ =?us-ascii?Q?Pi/fepgjWh9bT6fA5xiuuGRX+LBwNi2YOnWV5naxVDawDFZ0lRy4iMbvTKOf?=
+ =?us-ascii?Q?FdkolXiUqyjxXDPBvcY43IHEgWuu20lgp35LxVNtsoA2CvLN2JypSNi47vCy?=
+ =?us-ascii?Q?rPjwQHpBz95SBipKoqas1032pANx0OMGRFC67Tt4EtUyeaExfW/7Jt+pPOie?=
+ =?us-ascii?Q?uoAKtMKNzubbeZPy4tc6mfOzXprpgxfsIr6ucMal9x6lQlKNsjwYBNiDJykE?=
+ =?us-ascii?Q?f80qvyNBeoMTgZCx/ebYaVBNg3hs0NlwIefJoZMkWuJoJy/sREx1Nue2Z0L5?=
+ =?us-ascii?Q?H1qxswC7CFPZkjiwvP1gLRaLb3/g10QSoofe270Qt4wmycmNvPGQiIIGW6Sj?=
+ =?us-ascii?Q?OX1zlBnniJP2nNVRKizWaS8KAOcIVGL/Dcj0iP1L?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b24aa0d-17da-498b-dbff-08da94d07e80
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2022 15:07:22.4391
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: R8SL+nxL7miGRhQ48T12HWO3ONR13ti1B7NxacSkFsow5XGZv6vJBE3Z9BKy0NWKDp+N8TcOoYfbYdbgSXrvt5nqBsx+qE9DjDJJk4Cwhtk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6117
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-12_10,2022-09-12_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2209120051
+X-Proofpoint-GUID: brZ9zWT34pelp5XFKawfigM24e4WtgF0
+X-Proofpoint-ORIG-GUID: brZ9zWT34pelp5XFKawfigM24e4WtgF0
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 12, 2022 at 02:27:32PM +0000, Alvin Šipraga wrote:
-> Hi both,
-> 
-> On Mon, Sep 12, 2022 at 04:13:08PM +0200, Mark Kettenis wrote:
-> > > Date: Mon, 12 Sep 2022 15:01:06 +0100
-> > > From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-> > > 
-> > > On Mon, Sep 12, 2022 at 01:04:58PM +0100, Russell King (Oracle) wrote:
-> > > > On Mon, Sep 12, 2022 at 11:59:17AM +0000, Alvin Šipraga wrote:
-> > > > > On Mon, Sep 12, 2022 at 10:52:41AM +0100, Russell King wrote:
-> > > > > > From: Hector Martin <marcan@marcan.st>
-> > > > > > 
-> > > > > > This binding is currently used for SDIO devices, but these chips are
-> > > > > > also used as PCIe devices on DT platforms and may be represented in the
-> > > > > > DT. Re-use the existing binding and add chip compatibles used by Apple
-> > > > > > T2 and M1 platforms (the T2 ones are not known to be used in DT
-> > > > > > platforms, but we might as well document them).
-> > > > > > 
-> > > > > > Then, add properties required for firmware selection and calibration on
-> > > > > > M1 machines.
-> > > > > > 
-> > > > > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > > > > > Signed-off-by: Hector Martin <marcan@marcan.st>
-> > > > > > Reviewed-by: Mark Kettenis <kettenis@openbsd.org>
-> > > > > > Reviewed-by: Rob Herring <robh@kernel.org>
-> > > > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > > > > ---
-> > > > > >  .../net/wireless/brcm,bcm4329-fmac.yaml       | 39 +++++++++++++++++--
-> > > > > >  1 file changed, 35 insertions(+), 4 deletions(-)
-> > > > > > 
-> > > > > > diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> > > > > > index 53b4153d9bfc..fec1cc9b9a08 100644
-> > > > > > --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> > > > > > +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> > > > > > @@ -4,7 +4,7 @@
-> > > > > >  $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml
-> > > > > >  $schema: http://devicetree.org/meta-schemas/core.yaml
-> > > > > >  
-> > > > > > -title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> > > > > > +title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
-> > > > > >  
-> > > > > >  maintainers:
-> > > > > >    - Arend van Spriel <arend@broadcom.com>
-> > > > > > @@ -41,11 +41,17 @@ title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> > > > > >                - cypress,cyw4373-fmac
-> > > > > >                - cypress,cyw43012-fmac
-> > > > > >            - const: brcm,bcm4329-fmac
-> > > > > > -      - const: brcm,bcm4329-fmac
-> > > > > > +      - enum:
-> > > > > > +          - brcm,bcm4329-fmac
-> > > > > > +          - pci14e4,43dc  # BCM4355
-> > > > > > +          - pci14e4,4464  # BCM4364
-> > > > > > +          - pci14e4,4488  # BCM4377
-> > > > > > +          - pci14e4,4425  # BCM4378
-> > > > > > +          - pci14e4,4433  # BCM4387
-> > > > > >  
-> > > > > >    reg:
-> > > > > > -    description: SDIO function number for the device, for most cases
-> > > > > > -      this will be 1.
-> > > > > > +    description: SDIO function number for the device (for most cases
-> > > > > > +      this will be 1) or PCI device identifier.
-> > > > > >  
-> > > > > >    interrupts:
-> > > > > >      maxItems: 1
-> > > > > > @@ -85,6 +91,31 @@ title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> > > > > >        takes precedence.
-> > > > > >      type: boolean
-> > > > > >  
-> > > > > > +  brcm,cal-blob:
-> > > > > > +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> > > > > > +    description: A per-device calibration blob for the Wi-Fi radio. This
-> > > > > > +      should be filled in by the bootloader from platform configuration
-> > > > > > +      data, if necessary, and will be uploaded to the device if present.
-> > > > > 
-> > > > > Is this a leftover from a previous revision of the patchset? Because as
-> > > > > far as I can tell, the CLM blob is (still) being loaded via firmware,
-> > > > > and no additional parsing has been added for this particular OF
-> > > > > property. Should it be dropped?
-> > > > 
-> > > > It does appear to be unparsed, but I don't know whether it's needed for
-> > > > the binding or not. I'll wait for the Asahi folk to review your comment
-> > > > before possibly removing it.
-> > > 
-> > > Okay, the answer is, it is still very much part of the binding, and
-> > > the m1n1 boot loader populates it.
-> > > 
-> > > This series is a subset of a larger series (remember the previous 34
-> > > or 35 patch series?), so there are things in the binding document
-> > > which are not included in this series.
-> > > 
-> > > I don't think it makes sense to break up the binding document given
-> > > that it has already been reviewed several times in its current state,
-> > > should we really remove this one property and throw away all that
-> > > review effort.
-> > 
-> > The OpenBSD driver already uses these properties.  So even if the
-> > Linux driver doesn't use this yet, there is an existing implementation
-> > that does.  That should be good enough for it to be included in the
-> > binding isn't it?
-> 
-> Yes, I suspected that might be the case too. I think it's fine.
-> 
-> Thanks Russel for the clarification btw. Feel free to add my
-> 
-> Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Unlock before returning -EOPNOTSUPP.
 
-Thanks!
+Fixes: 3c06e91b40db ("wifi: mac80211: Support POWERED_ADDR_CHANGE feature")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ net/mac80211/iface.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 572254366a0f..b15afa77b87c 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -243,7 +243,7 @@ static int ieee80211_can_powered_addr_change(struct ieee80211_sub_if_data *sdata
+ 		 */
+ 		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		ret = -EOPNOTSUPP;
+ 	}
+ 
+ unlock:
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+2.35.1
+
