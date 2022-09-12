@@ -2,84 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EA005B58B7
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 12:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8120C5B58B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 12:51:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbiILKt0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Sep 2022 06:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50582 "EHLO
+        id S229605AbiILKvI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Sep 2022 06:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbiILKtY (ORCPT
+        with ESMTP id S229520AbiILKvG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Sep 2022 06:49:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4018431368
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Sep 2022 03:49:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 12 Sep 2022 06:51:06 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F7E303EF;
+        Mon, 12 Sep 2022 03:51:05 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE23160B52
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Sep 2022 10:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F494C433C1;
-        Mon, 12 Sep 2022 10:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662979763;
-        bh=GWmpLkDHOamaH18vVPfnc4F1h0ku9hgrS00WmUIaHd4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=GPVtZWPLpQyDW4JdxgKheDA/6H0tLlD3sgTpsGiB86JH1V3s/jgdInhvAyxwBm3zL
-         OHtnci26mAAwfIUJ9Ieg8e8OZ/2H45cPPxF2XfndumxboewD0SrWxZiDMveVSOYZ4P
-         C7p/3r10nxBx08og1c4kbpZ04pLF69KbHuXfBcOGFl9TMHILGkUxn2lpO0en8AJjGw
-         aH1dkqCg6AimMfBjE68452nevXfiEan1qjj5FgP1yCxC3GHKFXhUG9qIFlKxoNQzZQ
-         YQen1gq4TAG4Azu3Zs504nyYb+ODryhA8KwVtfMUniPbkTrj5Wp0PPisV+yCYLDD5M
-         wN8mXuntltKuA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>
-Subject: Re: [PATCH] wifi: mac80211: RCU-ify link STA pointers
-In-Reply-To: <24df3a0c-a312-d9b6-5840-1eacd79d824b@quicinc.com> (Wen Gong's
-        message of "Mon, 12 Sep 2022 17:36:47 +0800")
-References: <24df3a0c-a312-d9b6-5840-1eacd79d824b@quicinc.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 12 Sep 2022 13:49:19 +0300
-Message-ID: <87a67498b4.fsf@kernel.org>
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 7720A6601FDD;
+        Mon, 12 Sep 2022 11:51:03 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1662979864;
+        bh=eZVd2qScKUD7WKyYFGW8QDa1tdf6w4+feyVXfFW/Kzs=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=BxUFu1cVBvCLQ4Mf/CdKdrnrk9hcqvlW7VwC1A7gO3J6QJymI1ksMkDm637fPWjXw
+         FcTHR5qam11QfCG1Fxe0vKcnuIIuHBIKSrlGUgVLgheZkCigXlIKE7seT/jmXvl6tr
+         AT5yv/rAz4sGZS1eR7xTQENRWqIgbjDTDJWxmOw1oz48sOm/Eh+wCGkDJ9a3L/nSb+
+         hVOpJkujSNk2z6C5+e5LPj8k9qtZm3P53Js93J3Oa+Xte3siUsIpSwEKZncpFH7Wb+
+         Jckwb/0Px1xKp1Yigy97qjbElqg1RZYK6mrYPDQJ29i9KlYSIFqUfEe+guZgTMrW0i
+         cTUV7+RoVZ8/g==
+Message-ID: <1d0a84f3-d5d9-5792-d79b-36f5f8cbd149@collabora.com>
+Date:   Mon, 12 Sep 2022 12:51:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v2] wifi: mt76: mt7921e: fix random fw download fail
+Content-Language: en-US
+To:     Deren Wu <Deren.Wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        stable@vger.kernel.org
+References: <1190a401463547e555912ef9417138df4ab2c363.1662972106.git.deren.wu@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <1190a401463547e555912ef9417138df4ab2c363.1662972106.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> writes:
+Il 12/09/22 10:45, Deren Wu ha scritto:
+> From: Deren Wu <deren.wu@mediatek.com>
+> 
+> In case of PCIe interoperability problem shows up, the firmware
+> payload may be corrupted in download stage. Turn off L0s to keep
+> fw download process accurately.
+> 
+> [ 1093.528363] mt7921e 0000:3b:00.0: Message 00000007 (seq 7) timeout
+> [ 1093.528414] mt7921e 0000:3b:00.0: Failed to start patch
+> [ 1096.600156] mt7921e 0000:3b:00.0: Message 00000010 (seq 8) timeout
+> [ 1096.600207] mt7921e 0000:3b:00.0: Failed to release patch semaphore
+> [ 1097.699031] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1098.758427] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1099.834408] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1100.915264] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1101.990625] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1103.077587] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1104.173258] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1105.248466] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1106.336969] mt7921e 0000:3b:00.0: Timeout for driver own
+> [ 1106.397542] mt7921e 0000:3b:00.0: hardware init failed
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 
-> Hi Johannes,
->
-> Currently for MLO test, the others links's rx_nss of struct
-> ieee80211_link_sta is still value 0 in ieee80211_set_associated(),
-> becaue they are not pass into ieee80211_sta_set_rx_nss() in
-> mac80211 except the deflink which means the primary link.
-> This lead driver get nss =3D 0 for other links. Will you fix it
-> or is it design by default?
->
-> Only primary link has valid rx_nss value which is not 0 by below call sta=
-ck.
-> ieee80211_assoc_success()->
-> =C2=A0=C2=A0=C2=A0 rate_control_rate_init(sta);
->
-> commit:c71420db653aba30a234d1e4cf86dde376e604fa
-> wifi: mac80211: RCU-ify link STA pointers
+[For MT8195 Acer Tomato Chromebook]
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Strange format and s-o-b missing. Was this meant as an RFC patch?
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
