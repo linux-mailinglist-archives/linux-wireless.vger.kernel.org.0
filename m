@@ -2,144 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD7E5B5583
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 09:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00B555B5597
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Sep 2022 09:54:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230041AbiILHqu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Sep 2022 03:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44394 "EHLO
+        id S230083AbiILHyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Sep 2022 03:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbiILHqn (ORCPT
+        with ESMTP id S230020AbiILHye (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Sep 2022 03:46:43 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A791A3B9;
-        Mon, 12 Sep 2022 00:46:35 -0700 (PDT)
-X-UUID: 974102ee514c46779d604914c54fb22d-20220912
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=8nqBvEoYhhM10pqeIUysrjTuBKAUboHsqeHxK1jGstA=;
-        b=O6uT2cFoKC41d0EaVV522525+9lckgOck4c3Lt1VN2TQTqYA1cHorzfZpXEWa44CMguIlQ4oEu2XmMgB9e5MGOwqpsDUxuwl0hy5YrTEJH+fBDgBtN6fTNS0YQIODeYd19TVa2rz8oXgy++M41Cs506qekQPNG8chPw0gBz565c=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.10,REQID:fc17f0b4-2541-4899-9761-8f5c472f4cd7,OB:0,L
-        OB:0,IP:0,URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Releas
-        e_Ham,ACTION:release,TS:-25
-X-CID-META: VersionHash:84eae18,CLOUDID:1b0b1bec-2856-4fce-b125-09d4c7ebe045,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 974102ee514c46779d604914c54fb22d-20220912
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1867544988; Mon, 12 Sep 2022 15:46:30 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Mon, 12 Sep 2022 15:46:28 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Mon, 12 Sep 2022 15:46:28 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH] wifi: mt76: mt7921e: fix random fw download fail
-Date:   Mon, 12 Sep 2022 15:45:48 +0800
-Message-ID: <c513094e569a21f23c9b5dfe17cd299b76b514d2.1662968113.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Mon, 12 Sep 2022 03:54:34 -0400
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0FAC1E4;
+        Mon, 12 Sep 2022 00:54:26 -0700 (PDT)
+Received: by mail-pf1-f193.google.com with SMTP id j12so7807014pfi.11;
+        Mon, 12 Sep 2022 00:54:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=lJBwS02KAdobM2rJ9xyt/rRL/BLUdzQqKDAHOmdhQwE=;
+        b=q1voRHu/CaI5b77mNBYkB7BB7CFfDJq+jMchUAzJ+rj5u4JhtXeVEvUy16DCwo1Lv3
+         nFLoeX75cz68TAi6tUZtyeYGlwddE9moFYB+sfN0e9lL+iAOpJCRYVgCi4aZ8OLZ8y9Y
+         1YGEaUqv0enQI0OKFuijLIs7P6PZjCgEL9bEUdyWPOmGL9wr5o0lHjIoHR379QyXEgzi
+         Ae7EBLUtw8PJE8AsIb0P0z63eDqaO7NL0HPp4SeoKBVfxNcxguNA7zrFF40EPI2LhZz+
+         Lk20/1w1TauVxo7mX1wLAxEDxzwkt/prD6E9gBnj0xM6J2E3BhuP7PWYlqjoEGiXHd7P
+         Jdhw==
+X-Gm-Message-State: ACgBeo1hUIoyDbKqT9QR6GwF1IGqJHchVMdi0/HYyuC1oJuh8yI9bzFp
+        tbXX6KRZAc7646sCeMyCKQ==
+X-Google-Smtp-Source: AA6agR4Ga+Y074cdgGWUIfmU9FKdwW2HXPR5Xd23tiKFreNI52KKWUEJpeh/rZ94GGbGKW1uzE7WfA==
+X-Received: by 2002:a05:6a00:ac4:b0:535:c08:2da7 with SMTP id c4-20020a056a000ac400b005350c082da7mr26653838pfl.69.1662969266309;
+        Mon, 12 Sep 2022 00:54:26 -0700 (PDT)
+Received: from localhost.localdomain ([156.146.53.107])
+        by smtp.gmail.com with ESMTPSA id y14-20020a1709029b8e00b001745919b197sm5187970plp.243.2022.09.12.00.54.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Sep 2022 00:54:25 -0700 (PDT)
+From:   sunliming <sunliming@kylinos.cn>
+To:     pkshih@realtek.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kelulanainsley@gmail.com, sunliming <sunliming@kylinos.cn>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH RESEND] wifi rtw89: coex: fix for variable set but not used warning
+Date:   Mon, 12 Sep 2022 15:54:18 +0800
+Message-Id: <20220912075418.1459127-1-sunliming@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+Fix below kernel warning:
+drivers/net/wireless/realtek/rtw89/coex.c:3244:25: warning: variable 'cnt_connecting'
+set but not used [-Wunused-but-set-variable]
 
-In case of PCIe interoperability problem shows up, the firmware
-payload my be corrupted in download stage. Turn off L0s to keep
-fw download process accurately.
-
-[ 1093.528363] mt7921e 0000:3b:00.0: Message 00000007 (seq 7) timeout
-[ 1093.528414] mt7921e 0000:3b:00.0: Failed to start patch
-[ 1096.600156] mt7921e 0000:3b:00.0: Message 00000010 (seq 8) timeout
-[ 1096.600207] mt7921e 0000:3b:00.0: Failed to release patch semaphore
-[ 1097.699031] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1098.758427] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1099.834408] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1100.915264] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1101.990625] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1103.077587] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1104.173258] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1105.248466] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1106.336969] mt7921e 0000:3b:00.0: Timeout for driver own
-[ 1106.397542] mt7921e 0000:3b:00.0: hardware init failed
-
-Cc: stable@vger.kernel.org
-Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: sunliming <sunliming@kylinos.cn>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c     | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/regs.h    | 2 ++
- 3 files changed, 5 insertions(+)
+ drivers/net/wireless/realtek/rtw89/coex.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 9d1ba838e54f..43a8deeb17df 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -148,6 +148,7 @@ static u32 __mt7921_reg_addr(struct mt7921_dev *dev, u32 addr)
- 		{ 0x820c8000, 0x0c000, 0x02000 }, /* WF_UMAC_TOP (PSE) */
- 		{ 0x820cc000, 0x0e000, 0x01000 }, /* WF_UMAC_TOP (PP) */
- 		{ 0x820cd000, 0x0f000, 0x01000 }, /* WF_MDP_TOP */
-+		{ 0x74030000, 0x10000, 0x10000 }, /* PCIE_MAC_IREG */
- 		{ 0x820ce000, 0x21c00, 0x00200 }, /* WF_LMAC_TOP (WF_SEC) */
- 		{ 0x820cf000, 0x22000, 0x01000 }, /* WF_LMAC_TOP (WF_PF) */
- 		{ 0x820e0000, 0x20000, 0x00400 }, /* WF_LMAC_TOP BN0 (WF_CFG) */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-index 5efda694fb9d..19facf31e4e1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-@@ -59,6 +59,8 @@ int mt7921e_mcu_init(struct mt7921_dev *dev)
- 	if (err)
- 		return err;
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 683854bba217..ee4817358c35 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -3290,7 +3290,7 @@ static void _update_wl_info(struct rtw89_dev *rtwdev)
+ 	struct rtw89_btc_wl_link_info *wl_linfo = wl->link_info;
+ 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
+ 	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
+-	u8 i, cnt_connect = 0, cnt_connecting = 0, cnt_active = 0;
++	u8 i, cnt_connect = 0, cnt_active = 0;
+ 	u8 cnt_2g = 0, cnt_5g = 0, phy;
+ 	u32 wl_2g_ch[2] = {0}, wl_5g_ch[2] = {0};
+ 	bool b2g = false, b5g = false, client_joined = false;
+@@ -3324,9 +3324,7 @@ static void _update_wl_info(struct rtw89_dev *rtwdev)
  
-+	mt76_rmw_field(dev, MT_PCIE_MAC_PM, MT_PCIE_MAC_PM_L0S_DIS, 1);
-+
- 	err = mt7921_run_firmware(dev);
- 
- 	mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[MT_MCUQ_FWDL], false);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-index ea643260ceb6..c65582acfa55 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-@@ -440,6 +440,8 @@
- #define MT_PCIE_MAC_BASE		0x10000
- #define MT_PCIE_MAC(ofs)		(MT_PCIE_MAC_BASE + (ofs))
- #define MT_PCIE_MAC_INT_ENABLE		MT_PCIE_MAC(0x188)
-+#define MT_PCIE_MAC_PM			MT_PCIE_MAC(0x194)
-+#define MT_PCIE_MAC_PM_L0S_DIS		BIT(8)
- 
- #define MT_DMA_SHDL(ofs)		(0x7c026000 + (ofs))
- #define MT_DMASHDL_SW_CONTROL		MT_DMA_SHDL(0x004)
+ 		if (wl_linfo[i].connected == MLME_NO_LINK) {
+ 			continue;
+-		} else if (wl_linfo[i].connected == MLME_LINKING) {
+-			cnt_connecting++;
+-		} else {
++		} else if (wl_linfo[i].connected != MLME_LINKING) {
+ 			cnt_connect++;
+ 			if ((wl_linfo[i].role == RTW89_WIFI_ROLE_P2P_GO ||
+ 			     wl_linfo[i].role == RTW89_WIFI_ROLE_AP) &&
 -- 
-2.18.0
+2.25.1
 
