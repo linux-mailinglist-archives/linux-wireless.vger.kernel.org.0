@@ -2,146 +2,231 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49CF75B7D05
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Sep 2022 00:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FE35B7D33
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Sep 2022 00:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbiIMWUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Sep 2022 18:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51996 "EHLO
+        id S229639AbiIMWsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Sep 2022 18:48:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbiIMWUp (ORCPT
+        with ESMTP id S229487AbiIMWr7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Sep 2022 18:20:45 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44B622612E
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Sep 2022 15:20:45 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id l10so13230176plb.10
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Sep 2022 15:20:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date;
-        bh=3rHWukX/982VVQshnDvvj6GQbQddSOFHJAD6q40l/44=;
-        b=o+JJizUy8pfn1jqraehPkUEgD13ovk9c1W5gLZ55nf967c7E8016Mw3UActHWOAzNH
-         fGaCzr3EqcU20N4XaBsrT7BgqLlkvRo3Upz6HGKSUHecP+AAiROD6Pl9TbktOtxFi+E2
-         5RDcnrxaxizAYdwMH5ijjo4mMXIRFod+TZtMZ+J7E6xfoZxttxxJ3WTq9Nvv40NhE76Y
-         iZReX3F0dnTqm2MSXDKNNBfh9J6eI0+fwrkBHJ4mi+7nykvrpoVk7gWd7dDtDAZbHV96
-         OklDJocei34d/t9BWYns1Qr9hT9dg72es4ha8ro9jZtRyqaRtC+7TflbNwAlOgq4PIYX
-         vo8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=3rHWukX/982VVQshnDvvj6GQbQddSOFHJAD6q40l/44=;
-        b=JbRp8UcBaiEMnqj0hDV1vBEHUzxmiDQdARSYBGy2QIg9fvkDILczuQrEG6O9o5KqsD
-         Cm1jPnSxmT3kHgdlHE+s4uKnh8CZ6Ru+PJ5lrFXn0W5mr16f1FLcRQTnuXhLj3/1UGNG
-         IsVqGpYeKJ1dYunPGRDCMN9AN3+pA7i/nX5fv4se66TxsfRRj3AOY/oVT8c8VIJOSBIf
-         fJ5AXGn1/iB8J1ZjPS4nTeoF86Daa8Tco1aqxTZB1GozSM0FI7bIXeqyxPw6hciDGD+1
-         3dW73EeN/YqItJQfbXYNwlgGlZFFfRWte1hhtLt5a//hSv01d7X7XMcF12L21fRQLGoC
-         TP+w==
-X-Gm-Message-State: ACgBeo37ik8rH2ng/dk+mLW+btoHDhPfoNVaWBzCRU4xHcsmvPUpZxwE
-        fjHTN0nPfdhzalAhe8AqBYypx/JXFMXfPp886h4=
-X-Google-Smtp-Source: AMsMyM4W4ukWicFVnIvZg9iqnP9Yvgja388kOdDBgq7jN6b+6I0S4kYOLaz9P9B9vB/zQsdkypZURDQO7FVvX5eANrw=
-X-Received: by 2002:a17:90b:3c6:b0:202:c01b:feb4 with SMTP id
- go6-20020a17090b03c600b00202c01bfeb4mr1489626pjb.28.1663107644762; Tue, 13
- Sep 2022 15:20:44 -0700 (PDT)
+        Tue, 13 Sep 2022 18:47:59 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BB552DCA;
+        Tue, 13 Sep 2022 15:47:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663109278; x=1694645278;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7vuGPrjvpnP8JElr2b5KXy1+oZKLBwocK710pEgM2W4=;
+  b=acMlU++0f/JvE4f+o/Mc4qinBfmGaQoC8B4JidDyHcAod/UeDgyaExVD
+   P6AGeIdDIhSYrt9gkUf44fA4U2uzGfo1Nsl5OqWUlYgVxiS24bY1y9wzZ
+   bRgWgBrzXXFYNybz6uvYuAKm/FzD6rBFed2Ro9Sm371vcARvCR6xpxEOt
+   6keeBQwTe6XRNAi+S2OcX9dM0HmkIKOMM+00OoZQZxz/4EUBWmTxwS0Ic
+   Ee+ia5KKOP9x5Doi9Ll0m2Ijlp83IfvwReRcW/5nlNPglEi83i8FQuUkv
+   g91+cRWaUhPXlZ1LGQIiT4rbxJAtV4beXyIhgUcZyMyIcUKuzLhjyqlGF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="278008848"
+X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
+   d="scan'208";a="278008848"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 15:47:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
+   d="scan'208";a="678778744"
+Received: from lkp-server02.sh.intel.com (HELO 4011df4f4fd3) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 13 Sep 2022 15:47:55 -0700
+Received: from kbuild by 4011df4f4fd3 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oYEh8-00045Z-2P;
+        Tue, 13 Sep 2022 22:47:54 +0000
+Date:   Wed, 14 Sep 2022 06:47:23 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-mm@kvack.org,
+        linux-hwmon@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        damon@lists.linux.dev, bpf@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 0caac1da994900d12a9be6106edb8e98696712a3
+Message-ID: <6321087b.WsDIw5m+1a7xRREp%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Sender: fariqtumuh010@gmail.com
-Received: by 2002:a05:7300:6413:b0:78:c86a:1bfd with HTTP; Tue, 13 Sep 2022
- 15:20:44 -0700 (PDT)
-From:   Juliette Morgan <juliettemorgan21@gmail.com>
-Date:   Wed, 14 Sep 2022 00:20:44 +0200
-X-Google-Sender-Auth: 2EDAOC6nanYwB6L0JsjDduTTJl0
-Message-ID: <CAEotuPTEWjubxurVrAZLuJrBcvTd7J4jaN02zE3iiJiTfun0Kw@mail.gmail.com>
-Subject: READ AND REPLY URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.3 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_99,BAYES_999,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:644 listed in]
-        [list.dnswl.org]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [fariqtumuh010[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [fariqtumuh010[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Dear God,s Select Good Day,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 0caac1da994900d12a9be6106edb8e98696712a3  Add linux-next specific files for 20220913
 
-I apologized, If this mail find's you disturbing, It might not be the
-best way to approach you as we have not met before, but due to the
-urgency of my present situation i decided  to communicate this way, so
-please pardon my manna, I am writing this mail to you with heavy tears
-In my eyes and great sorrow in my heart, My Name is Mrs.Juliette
-Morgan, and I am contacting you from my country Norway, I want to tell
-you this because I don't have any other option than to tell you as I
-was touched to open up to you,
+Error/Warning reports:
 
-I married to Mr.sami Morgan. Who worked with Norway embassy in Burkina
-Faso for nine years before he died in the year 2020.We were married
-for eleven years without a child He died after a brief illness that
-lasted for only five days. Since his death I decided not to remarry,
-When my late husband was alive he deposited the sum of =E2=82=AC 8.5 Millio=
-n
-Euro (Eight million, Five hundred thousand Euros) in a bank in
-Ouagadougou the capital city of Burkina Faso in west Africa Presently
-this money is still in bank. He made this money available for
-exportation of Gold from Burkina Faso mining.
+https://lore.kernel.org/linux-mm/202209042337.FQi69rLV-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209060229.dVuyxjBv-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209080718.y5QmlNKH-lkp@intel.com
 
-Recently, My Doctor told me that I would not last for the period of
-seven months due to cancer problem. The one that disturbs me most is
-my stroke sickness.Having known my condition I decided to hand you
-over this money to take care of the less-privileged people, you will
-utilize this money the way I am going to instruct herein.
+Error/Warning: (recently discovered and may have been fixed)
 
-I want you to take 30 Percent of the total money for your personal use
-While 70% of the money will go to charity, people in the street and
-helping the orphanage. I grew up as an Orphan and I don't have any
-body as my family member, just to endeavour that the house of God is
-maintained. Am doing this so that God will forgive my sins and accept
-my soul because these sicknesses have suffered me so much.
+drivers/gpu/drm/amd/amdgpu/imu_v11_0_3.c:139:6: warning: no previous prototype for 'imu_v11_0_3_program_rlc_ram' [-Wmissing-prototypes]
+drivers/gpu/drm/drm_atomic_helper.c:802: warning: expecting prototype for drm_atomic_helper_check_wb_connector_state(). Prototype was for drm_atomic_helper_check_wb_encoder_state() instead
+drivers/hwmon/emc2305.c:194 emc2305_set_cur_state() warn: impossible condition '(val > 255) => (0-255 > 255)'
+drivers/scsi/qla2xxx/qla_os.c:2854:23: warning: assignment to 'struct trace_array *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+drivers/scsi/qla2xxx/qla_os.c:2854:25: error: implicit declaration of function 'trace_array_get_by_name'; did you mean 'trace_array_set_clr_event'? [-Werror=implicit-function-declaration]
+drivers/scsi/qla2xxx/qla_os.c:2869:9: error: implicit declaration of function 'trace_array_put' [-Werror=implicit-function-declaration]
+kernel/bpf/memalloc.c:499 bpf_mem_alloc_destroy() error: potentially dereferencing uninitialized 'c'.
+mm/damon/vaddr.c:158 __damon_va_three_regions() error: uninitialized symbol 'start'.
+net/mac80211/iface.c:251 ieee80211_can_powered_addr_change() warn: inconsistent returns '&local->mtx'.
+sound/soc/codecs/tas2562.c:442:13: warning: variable 'ret' set but not used [-Wunused-but-set-variable]
 
-As soon as I receive your reply I shall give you the contact of the
-bank in Burkina Faso and I will also instruct the Bank Manager to
-issue you an authority letter that will prove you the present
-beneficiary of the money in the bank that is if you assure me that you
-will act accordingly as I Stated herein.
+Error/Warning ids grouped by kconfigs:
 
-Always reply to my alternative for security purposes
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-imu_v11_0_3.c:warning:no-previous-prototype-for-imu_v11_0_3_program_rlc_ram
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_get_by_name
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_put
+|   |-- drivers-scsi-qla2xxx-qla_os.c:warning:assignment-to-struct-trace_array-from-int-makes-pointer-from-integer-without-a-cast
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- alpha-buildonly-randconfig-r003-20220911
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-imu_v11_0_3.c:warning:no-previous-prototype-for-imu_v11_0_3_program_rlc_ram
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- arc-buildonly-randconfig-r002-20220912
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-r012-20220913
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-r021-20220911
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-r043-20220911
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-r043-20220912
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-s052-20220911
+|   |-- kernel-bpf-hashtab.c:sparse:sparse:cast-removes-address-space-__percpu-of-expression
+|   |-- kernel-bpf-hashtab.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-noderef-__percpu-assigned-pptr-got-void
+|   |-- kernel-bpf-hashtab.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-ptr_to_pptr-got-void-noderef-__percpu-assigned-pptr
+|   |-- kernel-bpf-memalloc.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-noderef-__percpu-__pdata-got-void
+|   |-- kernel-bpf-memalloc.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-noderef-__percpu-__pdata-got-void-pptr
+|   |-- kernel-bpf-memalloc.c:sparse:sparse:incorrect-type-in-initializer-(different-address-spaces)-expected-void-pptr-got-void-noderef-__percpu
+|   `-- kernel-exit.c:sparse:sparse:incorrect-type-in-initializer-(different-address-spaces)-expected-struct-sighand_struct-sighand-got-struct-sighand_struct-noderef-__rcu-sighand
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-imu_v11_0_3.c:warning:no-previous-prototype-for-imu_v11_0_3_program_rlc_ram
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- arm-defconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-randconfig-r001-20220911
+|   |-- drivers-gpu-drm-amd-amdgpu-imu_v11_0_3.c:warning:no-previous-prototype-for-imu_v11_0_3_program_rlc_ram
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- arm-randconfig-r006-20220911
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-imu_v11_0_3.c:warning:no-previous-prototype-for-imu_v11_0_3_program_rlc_ram
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- sound-soc-codecs-tas2562.c:warning:variable-ret-set-but-not-used
+|-- csky-buildonly-randconfig-r001-20220911
+clang_recent_errors
+|-- i386-randconfig-a012-20220912
+|   `-- sound-soc-intel-skylake-skl.c:warning:unused-variable-skl
+|-- i386-randconfig-a015-20220912
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- powerpc-buildonly-randconfig-r006-20220912
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- powerpc-randconfig-r004-20220911
+|   `-- drivers-gpu-drm-amd-amdgpu-imu_v11_0_3.c:warning:no-previous-prototype-for-function-imu_v11_0_3_program_rlc_ram
+`-- riscv-randconfig-r042-20220912
+    `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
 
-Hoping to receive your reply:
-From Mrs.Juliette Morgan,
+elapsed time: 725m
+
+configs tested: 63
+configs skipped: 2
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+i386                 randconfig-a001-20220912
+i386                 randconfig-a002-20220912
+x86_64                              defconfig
+i386                 randconfig-a004-20220912
+x86_64                           rhel-8.3-kvm
+i386                 randconfig-a003-20220912
+x86_64                          rhel-8.3-func
+i386                 randconfig-a006-20220912
+x86_64                               rhel-8.3
+x86_64                         rhel-8.3-kunit
+i386                 randconfig-a005-20220912
+x86_64                    rhel-8.3-kselftests
+m68k                             allmodconfig
+x86_64                           rhel-8.3-syz
+arc                              allyesconfig
+x86_64                           allyesconfig
+alpha                            allyesconfig
+i386                                defconfig
+m68k                             allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+arm                                 defconfig
+mips                             allyesconfig
+x86_64               randconfig-a001-20220912
+x86_64               randconfig-a006-20220912
+sh                               allmodconfig
+x86_64               randconfig-a004-20220912
+riscv                randconfig-r042-20220911
+x86_64               randconfig-a002-20220912
+i386                             allyesconfig
+arc                  randconfig-r043-20220912
+x86_64               randconfig-a005-20220912
+arm64                            allyesconfig
+x86_64               randconfig-a003-20220912
+arm                              allyesconfig
+arc                  randconfig-r043-20220911
+s390                 randconfig-r044-20220911
+ia64                             allmodconfig
+csky                              allnoconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+
+clang tested configs:
+i386                 randconfig-a014-20220912
+i386                 randconfig-a013-20220912
+x86_64               randconfig-a014-20220912
+i386                 randconfig-a011-20220912
+x86_64               randconfig-a011-20220912
+i386                 randconfig-a015-20220912
+x86_64               randconfig-a012-20220912
+i386                 randconfig-a012-20220912
+x86_64               randconfig-a016-20220912
+i386                 randconfig-a016-20220912
+x86_64               randconfig-a013-20220912
+riscv                randconfig-r042-20220912
+x86_64               randconfig-a015-20220912
+hexagon              randconfig-r041-20220912
+hexagon              randconfig-r045-20220911
+hexagon              randconfig-r041-20220911
+hexagon              randconfig-r045-20220912
+s390                 randconfig-r044-20220912
+x86_64                          rhel-8.3-rust
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
