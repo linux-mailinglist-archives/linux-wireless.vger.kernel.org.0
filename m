@@ -2,117 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA625B7960
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Sep 2022 20:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49CF75B7D05
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Sep 2022 00:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231958AbiIMS0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Sep 2022 14:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50662 "EHLO
+        id S229445AbiIMWUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Sep 2022 18:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232030AbiIMSZj (ORCPT
+        with ESMTP id S229492AbiIMWUp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Sep 2022 14:25:39 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8665167159
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Sep 2022 10:42:28 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id n40-20020a05600c3ba800b003b49aefc35fso738240wms.5
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Sep 2022 10:42:28 -0700 (PDT)
+        Tue, 13 Sep 2022 18:20:45 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44B622612E
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Sep 2022 15:20:45 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id l10so13230176plb.10
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Sep 2022 15:20:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=XWi3vvHiUqJXCMHut9LqX+J95oZ0olTscmO96FreQ4s=;
-        b=rkXRdO9ONLQfsImq6bcaY+BN48zK9Kb5jsxoYd3cf0w50EhOd32X7+REX9bHy0/Ult
-         wdB374vMMX7Hv/IAaL5aowszLiQ5mGn4hD3j1Tcw8ZXHinXY8qp3wAUOK3vdgWtErc5w
-         hDSOiGPNuxO5nMsM3tUBYsy3LizfPd6hnCvREt3SZk3kd5moNt80b5aIEPHgksKFsRhE
-         PueSHFHYsHLMjieGRaMv83g660OOkscrOa0yO3iCZjD/5Ox6J0+Fmc6yPX65gewT+osq
-         GGI0EEr1jyt0CoDCfZlBWPMLNgkTAvM3waMmEZcTb1po7ObU46YtjcpxMfrG1/C0mRUI
-         zaBQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:from:to:cc:subject:date;
+        bh=3rHWukX/982VVQshnDvvj6GQbQddSOFHJAD6q40l/44=;
+        b=o+JJizUy8pfn1jqraehPkUEgD13ovk9c1W5gLZ55nf967c7E8016Mw3UActHWOAzNH
+         fGaCzr3EqcU20N4XaBsrT7BgqLlkvRo3Upz6HGKSUHecP+AAiROD6Pl9TbktOtxFi+E2
+         5RDcnrxaxizAYdwMH5ijjo4mMXIRFod+TZtMZ+J7E6xfoZxttxxJ3WTq9Nvv40NhE76Y
+         iZReX3F0dnTqm2MSXDKNNBfh9J6eI0+fwrkBHJ4mi+7nykvrpoVk7gWd7dDtDAZbHV96
+         OklDJocei34d/t9BWYns1Qr9hT9dg72es4ha8ro9jZtRyqaRtC+7TflbNwAlOgq4PIYX
+         vo8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=XWi3vvHiUqJXCMHut9LqX+J95oZ0olTscmO96FreQ4s=;
-        b=cFzFlKjuILXZ7FCC4tCjVA5Wr5IuhoMsQk9VuNdv8LKla08jgpYzZ7oAW0TaCsfYqU
-         T8mS8luGtYoLfyBzx09gmPM/+x+hcu533haiYHZ1aWg+u4sn12cOlbQSbvexStJZRVJt
-         qlWHA4MAIRU6dQPUKaWu6RDKeEumTMBlPU/cLlZW7McUdMBpBazTpbTsBLqrWe5jimdf
-         UcmzCT1G3xylUnDV5qaQxCDCBslo95nZnNkIunoajoiWpcm3CmV9tB9CKWyCwqgv9XDc
-         swIfNQDRILgOeO+ihb/rUGgD7qz/HUv2ZL2zwziDqbmBS8O3YMq+HBMO6mxl0GTvZ0Tu
-         Qe5A==
-X-Gm-Message-State: ACgBeo3my/vGcf66icKP+HsP2PD8sAvkPgmJrscE+mNuOee27V9lSFNh
-        yTOjrJ1M567b6rKJkNmPh3vjrA==
-X-Google-Smtp-Source: AA6agR7QMHbPQzJLbUoPypG9Ka4uZg6nA1r9gxBcXI1yj0J/2GKQQdEligpb+PQWilrxFZ8f04Oc0g==
-X-Received: by 2002:a05:600c:3b2a:b0:3b4:8300:593 with SMTP id m42-20020a05600c3b2a00b003b483000593mr294252wms.129.1663090946592;
-        Tue, 13 Sep 2022 10:42:26 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id t6-20020a5d6906000000b00225239d9265sm11044572wru.74.2022.09.13.10.42.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Sep 2022 10:42:26 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     loic.poulain@linaro.org, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, bryan.odonoghue@linaro.org,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH] wcn36xx: Add RX frame SNR as a source of system entropy
-Date:   Tue, 13 Sep 2022 18:42:24 +0100
-Message-Id: <20220913174224.1399480-1-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.37.3
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=3rHWukX/982VVQshnDvvj6GQbQddSOFHJAD6q40l/44=;
+        b=JbRp8UcBaiEMnqj0hDV1vBEHUzxmiDQdARSYBGy2QIg9fvkDILczuQrEG6O9o5KqsD
+         Cm1jPnSxmT3kHgdlHE+s4uKnh8CZ6Ru+PJ5lrFXn0W5mr16f1FLcRQTnuXhLj3/1UGNG
+         IsVqGpYeKJ1dYunPGRDCMN9AN3+pA7i/nX5fv4se66TxsfRRj3AOY/oVT8c8VIJOSBIf
+         fJ5AXGn1/iB8J1ZjPS4nTeoF86Daa8Tco1aqxTZB1GozSM0FI7bIXeqyxPw6hciDGD+1
+         3dW73EeN/YqItJQfbXYNwlgGlZFFfRWte1hhtLt5a//hSv01d7X7XMcF12L21fRQLGoC
+         TP+w==
+X-Gm-Message-State: ACgBeo37ik8rH2ng/dk+mLW+btoHDhPfoNVaWBzCRU4xHcsmvPUpZxwE
+        fjHTN0nPfdhzalAhe8AqBYypx/JXFMXfPp886h4=
+X-Google-Smtp-Source: AMsMyM4W4ukWicFVnIvZg9iqnP9Yvgja388kOdDBgq7jN6b+6I0S4kYOLaz9P9B9vB/zQsdkypZURDQO7FVvX5eANrw=
+X-Received: by 2002:a17:90b:3c6:b0:202:c01b:feb4 with SMTP id
+ go6-20020a17090b03c600b00202c01bfeb4mr1489626pjb.28.1663107644762; Tue, 13
+ Sep 2022 15:20:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Sender: fariqtumuh010@gmail.com
+Received: by 2002:a05:7300:6413:b0:78:c86a:1bfd with HTTP; Tue, 13 Sep 2022
+ 15:20:44 -0700 (PDT)
+From:   Juliette Morgan <juliettemorgan21@gmail.com>
+Date:   Wed, 14 Sep 2022 00:20:44 +0200
+X-Google-Sender-Auth: 2EDAOC6nanYwB6L0JsjDduTTJl0
+Message-ID: <CAEotuPTEWjubxurVrAZLuJrBcvTd7J4jaN02zE3iiJiTfun0Kw@mail.gmail.com>
+Subject: READ AND REPLY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.3 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_99,BAYES_999,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:644 listed in]
+        [list.dnswl.org]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [fariqtumuh010[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [fariqtumuh010[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The signal-to-noise-ratio of a received frame is a representation of noise
-in a given received frame.
+Hello Dear God,s Select Good Day,
 
-RSSI - received signal strength indication can appear pretty static
-frame-to-frame but noise will "bounce around" more depending on the EM
-environment, temperature or placement of obstacles between the transmitter
-and receiver.
+I apologized, If this mail find's you disturbing, It might not be the
+best way to approach you as we have not met before, but due to the
+urgency of my present situation i decided  to communicate this way, so
+please pardon my manna, I am writing this mail to you with heavy tears
+In my eyes and great sorrow in my heart, My Name is Mrs.Juliette
+Morgan, and I am contacting you from my country Norway, I want to tell
+you this because I don't have any other option than to tell you as I
+was touched to open up to you,
 
-Other WiFi drivers offer up the noise component of the FFT as an entropy
-source for the random pool i.e.
+I married to Mr.sami Morgan. Who worked with Norway embassy in Burkina
+Faso for nine years before he died in the year 2020.We were married
+for eleven years without a child He died after a brief illness that
+lasted for only five days. Since his death I decided not to remarry,
+When my late husband was alive he deposited the sum of =E2=82=AC 8.5 Millio=
+n
+Euro (Eight million, Five hundred thousand Euros) in a bank in
+Ouagadougou the capital city of Burkina Faso in west Africa Presently
+this money is still in bank. He made this money available for
+exportation of Gold from Burkina Faso mining.
 
-Commit: 2aa56cca3571 ("ath9k: Mix the received FFT bins to the random pool")
+Recently, My Doctor told me that I would not last for the period of
+seven months due to cancer problem. The one that disturbs me most is
+my stroke sickness.Having known my condition I decided to hand you
+over this money to take care of the less-privileged people, you will
+utilize this money the way I am going to instruct herein.
 
-I attended Jason's talk on sources of randomness at Plumbers and it occured
-to me that SNR is a reasonable candidate to add.
+I want you to take 30 Percent of the total money for your personal use
+While 70% of the money will go to charity, people in the street and
+helping the orphanage. I grew up as an Orphan and I don't have any
+body as my family member, just to endeavour that the house of God is
+maintained. Am doing this so that God will forgive my sins and accept
+my soul because these sicknesses have suffered me so much.
 
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/txrx.c | 3 +++
- 1 file changed, 3 insertions(+)
+As soon as I receive your reply I shall give you the contact of the
+bank in Burkina Faso and I will also instruct the Bank Manager to
+issue you an authority letter that will prove you the present
+beneficiary of the money in the bank that is if you assure me that you
+will act accordingly as I Stated herein.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index 8da3955995b6e..f3b77d7ffebe4 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -16,6 +16,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/random.h>
- #include "txrx.h"
- 
- static inline int get_rssi0(struct wcn36xx_rx_bd *bd)
-@@ -297,6 +298,8 @@ static void wcn36xx_update_survey(struct wcn36xx *wcn, int rssi, int snr,
- 	wcn->chan_survey[idx].rssi = rssi;
- 	wcn->chan_survey[idx].snr = snr;
- 	spin_unlock(&wcn->survey_lock);
-+
-+	add_device_randomness(&snr, sizeof(int));
- }
- 
- int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
--- 
-2.37.3
+Always reply to my alternative for security purposes
 
+Hoping to receive your reply:
+From Mrs.Juliette Morgan,
