@@ -2,61 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCECF5B649F
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Sep 2022 02:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EC95B65F5
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Sep 2022 05:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbiIMAnl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Sep 2022 20:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46668 "EHLO
+        id S229577AbiIMDGy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Sep 2022 23:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbiIMAnk (ORCPT
+        with ESMTP id S229607AbiIMDGs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Sep 2022 20:43:40 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B73CE5007E
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Sep 2022 17:43:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663029819; x=1694565819;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0iVMdILEFLjPV8GdCF1vrOXrDe6ZlR5gIHm7ALqKrK4=;
-  b=hahPNVfn3WX64ArOYAuGAGe08WfU5T497indHt0QdT+bVTZvMxIcSh0H
-   R9h6t/wY+NMMljxCc9q82mnhDON1wWNhd8pYlRmNjsTIuzjDppMQ0Dh9p
-   81PpOLHSKsqQObvq1RDIU7EvoVfC9KziFLuDAOqcEYNtzuf3NpPujYATg
-   Vmw8StfkSKUlPRvxbW9uLxLGea2r4VzLawqLOOSQON45BjP6/SoBSAzZm
-   JwOD+GoRVZsPAvOuWCZ6S0+CSPhvkbu4An4LIci/t74VkHm3jq5nCh78+
-   T1wkV2X/53WWgG0gUg3UarYpickTQ1fvB9MsSi6/KomssRFqSJ5sE+zXi
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10468"; a="359730402"
-X-IronPort-AV: E=Sophos;i="5.93,311,1654585200"; 
-   d="scan'208";a="359730402"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 17:43:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,311,1654585200"; 
-   d="scan'208";a="758590470"
-Received: from lkp-server02.sh.intel.com (HELO 4011df4f4fd3) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 12 Sep 2022 17:43:38 -0700
-Received: from kbuild by 4011df4f4fd3 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oXu1Z-00032B-1H;
-        Tue, 13 Sep 2022 00:43:37 +0000
-Date:   Tue, 13 Sep 2022 08:42:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless:for-next] BUILD SUCCESS
- 781b80f452fcc1cfc16ee41f12556626a9ced049
-Message-ID: <631fd20d.aP1GsdOqsH4KKnj8%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Mon, 12 Sep 2022 23:06:48 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5EE250079
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Sep 2022 20:06:46 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28D1KpuH020952;
+        Tue, 13 Sep 2022 03:06:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=fDp9I5Fkd0HTzg9jm/QKlvMqpQWJjYdUpUBDYZFpCR0=;
+ b=C3op8/EtowAE7IN1R5+ay9jgsorBHemYbA7YPer1GTanUjY0T5+94SRizfnjBdl6j17/
+ r/QV4zgmd0w5zjMm7QB1fJ/kQ3EfETJaqBG7p8kBIfPuXA1a6KP4Ez8S3ivG8wqloaNm
+ GsDLjUAcJdJ4+nMfeWnOIA1Aws9m0uC53bx1p6NaRERw1a/IYG3OF0lV38k/iMXazMv/
+ FT9/k3bLBdZuj/HLOXZNj8dWxLD86oKpNdGw0AokBVhsS05C4pB0lVFZXW7df77zGIaM
+ 77SUpOEqINQLaCBByc9vNM+mrbODUcddIQ1tie4QbgRheiZnrSXDDeUQRTeQJOwVyNDZ fw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jgk3bdvmn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 13 Sep 2022 03:06:37 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28D36aIb028149
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 13 Sep 2022 03:06:36 GMT
+Received: from [10.253.33.199] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Mon, 12 Sep
+ 2022 20:06:35 -0700
+Message-ID: <0e64e270-77c3-5c1a-08bc-577a82c8abac@quicinc.com>
+Date:   Tue, 13 Sep 2022 11:06:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2 2/2] wifi: ath11k: Implement sram dump interface
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20220802075533.1744-1-quic_bqiang@quicinc.com>
+ <20220802075533.1744-3-quic_bqiang@quicinc.com> <87fsh0962e.fsf@kernel.org>
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <87fsh0962e.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: OCbViw6nqA-1a1tlvlgbmTqOD0uZ7ezl
+X-Proofpoint-GUID: OCbViw6nqA-1a1tlvlgbmTqOD0uZ7ezl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-12_16,2022-09-12_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=999 suspectscore=0 spamscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1011 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209130013
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,109 +79,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 781b80f452fcc1cfc16ee41f12556626a9ced049  wifi: mt76: fix 5 GHz connection regression on mt76x0/mt76x2
 
-elapsed time: 727m
+On 9/9/2022 6:48 PM, Kalle Valo wrote:
+> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+>
+>> Currently this feature is enabled for QCA6390/WCN6855.
+>>
+>> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+>>
+>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> I did quite a few changes to this patch in the pending branch, please
+> check my changes:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=074477aacb419493da6fb4d96fa9d12390c3b40e
+>
+> I improved the commit log.
+>
+>> --- a/drivers/net/wireless/ath/ath11k/hw.h
+>> +++ b/drivers/net/wireless/ath/ath11k/hw.h
+>> @@ -126,6 +126,11 @@ struct ath11k_hw_hal_params {
+>>   	enum hal_rx_buf_return_buf_manager rx_buf_rbm;
+>>   };
+>>   
+>> +struct ath11k_hw_sram_dump {
+>> +	u32 start;
+>> +	u32 end;
+>> +};
+>> +
+>>   struct ath11k_hw_params {
+>>   	const char *name;
+>>   	u16 hw_rev;
+>> @@ -200,6 +205,7 @@ struct ath11k_hw_params {
+>>   	bool hybrid_bus_type;
+>>   	bool fixed_fw_mem;
+>>   	bool support_off_channel_tx;
+>> +	const struct ath11k_hw_sram_dump *sram_dump;
+>>   };
+> Instead of separate structures I used inline structures:
+>
+> 		.sram_dump = {
+> 			.start = 0x01400000,
+> 			.end = 0x0177ffff,
+> 		},
+>
+>> --- a/drivers/net/wireless/ath/ath11k/pcic.c
+>> +++ b/drivers/net/wireless/ath/ath11k/pcic.c
+>> @@ -203,6 +203,35 @@ u32 ath11k_pcic_read32(struct ath11k_base *ab, u32 offset)
+>>   }
+>>   EXPORT_SYMBOL(ath11k_pcic_read32);
+>>   
+>> +int ath11k_pcic_dump_sram(struct ath11k_base *ab, u8 *buf,
+>> +			  u32 start, u32 end)
+>> +{
+>> +	int ret = 0;
+>> +	bool wakeup_required;
+>> +	u32 *data = (u32 *)buf;
+> I changed buf to a void pointer, then the cast is not needed.
+>
+>> +	u32 i;
+>> +
+>> +	/* for offset beyond BAR + 4K - 32, may
+>> +	 * need to wakeup the device to access.
+>> +	 */
+>> +	wakeup_required = test_bit(ATH11K_FLAG_DEVICE_INIT_DONE, &ab->dev_flags) &&
+>> +			  end >= ATH11K_PCI_ACCESS_ALWAYS_OFF;
+>> +	if (wakeup_required && ab->pci.ops->wakeup) {
+>> +		ret = ab->pci.ops->wakeup(ab);
+>> +		if (ret)
+>> +			ath11k_warn(ab, "%s: failed to do wakeup: %d\n", __func__, ret);
+>> +	}
+> I changed the error handling so that if wakeup() fails we do not
+> continue and just return an error.
 
-configs tested: 88
-configs skipped: 5
+I prefer to keep the original design, because in that case we still have 
+something to check after firmware crashes.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I admit that the dump content may be invalid if wakeup fails, but we can 
+know that by checking kernel log, so we can avoid misleading.
 
-gcc tested configs:
-um                           x86_64_defconfig
-um                             i386_defconfig
-m68k                             allyesconfig
-powerpc                           allnoconfig
-x86_64                              defconfig
-i386                                defconfig
-x86_64                           rhel-8.3-kvm
-sh                               allmodconfig
-x86_64                          rhel-8.3-func
-i386                 randconfig-a001-20220912
-mips                             allyesconfig
-arc                  randconfig-r043-20220912
-i386                 randconfig-a002-20220912
-x86_64                         rhel-8.3-kunit
-powerpc                          allmodconfig
-i386                 randconfig-a004-20220912
-x86_64                    rhel-8.3-kselftests
-i386                 randconfig-a003-20220912
-i386                 randconfig-a005-20220912
-arc                  randconfig-r043-20220911
-x86_64                           rhel-8.3-syz
-i386                 randconfig-a006-20220912
-alpha                            allyesconfig
-x86_64                               rhel-8.3
-s390                 randconfig-r044-20220911
-m68k                             allmodconfig
-arc                              allyesconfig
-riscv                randconfig-r042-20220911
-arm                                 defconfig
-i386                             allyesconfig
-x86_64                           allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-x86_64               randconfig-a001-20220912
-x86_64               randconfig-a006-20220912
-x86_64               randconfig-a004-20220912
-x86_64               randconfig-a002-20220912
-x86_64               randconfig-a003-20220912
-x86_64               randconfig-a005-20220912
-ia64                             allmodconfig
-sparc                             allnoconfig
-ia64                             alldefconfig
-sh                          kfr2r09_defconfig
-m68k                         amcore_defconfig
-csky                                defconfig
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-sh                   secureedge5410_defconfig
-arm                         s3c6400_defconfig
-powerpc                      pasemi_defconfig
-i386                          randconfig-c001
-loongarch                           defconfig
-loongarch                         allnoconfig
-arm                             rpc_defconfig
-sh                           se7343_defconfig
-sh                            hp6xx_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sh                             shx3_defconfig
-powerpc                 linkstation_defconfig
-sh                      rts7751r2d1_defconfig
-arm                          pxa910_defconfig
-arm                            qcom_defconfig
-
-clang tested configs:
-riscv                randconfig-r042-20220912
-i386                 randconfig-a013-20220912
-i386                 randconfig-a011-20220912
-i386                 randconfig-a012-20220912
-hexagon              randconfig-r041-20220912
-i386                 randconfig-a014-20220912
-hexagon              randconfig-r045-20220911
-hexagon              randconfig-r045-20220912
-i386                 randconfig-a015-20220912
-hexagon              randconfig-r041-20220911
-i386                 randconfig-a016-20220912
-s390                 randconfig-r044-20220912
-x86_64               randconfig-a016-20220912
-x86_64               randconfig-a012-20220912
-x86_64               randconfig-a013-20220912
-x86_64               randconfig-a014-20220912
-x86_64               randconfig-a011-20220912
-x86_64               randconfig-a015-20220912
-x86_64                        randconfig-k001
-arm                         s3c2410_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>
+>> +	for (i = start; i < end + 1; i += 4)
+>> +		*data++ = ath11k_pcic_do_read32(ab, i);
+>> +
+>> +	if (wakeup_required && !ret && ab->pci.ops->release)
+>> +		ab->pci.ops->release(ab);
+> At the same time I removed the ret check here.
+>
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL(ath11k_pcic_dump_sram);
+> I renamed this to ath11k_pcic_read() as I feel it's more descriptive
+> what the function really does. It's not really care is this for sram
+> dump or something else.
+>
+> I also renamed hif.h interface to ath11k_hif_read().
+>
