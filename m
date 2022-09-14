@@ -2,65 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96CA75B88A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Sep 2022 14:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 889AF5B8EE3
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Sep 2022 20:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbiINMyO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Sep 2022 08:54:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52314 "EHLO
+        id S229695AbiINS30 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Sep 2022 14:29:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbiINMyN (ORCPT
+        with ESMTP id S229565AbiINS3Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Sep 2022 08:54:13 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129007757A
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Sep 2022 05:54:12 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id l65so14807199pfl.8
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Sep 2022 05:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=9MTarLD/Pz82hkgDPc4VnnqjhN28FjyaD0E3mX82COU=;
-        b=K/yaOWTGsX8o27gyE0RR60UFSMA65Kzwajuwdp516iNGY6z1R8XtcZbJdd96vUr4yP
-         neYMOMw+7cc/G1vjcVdKraDInzHbpDgfBp+q1uqaUKWETRLfEBSRjCrf/9jRnWxKJO6e
-         i82f8AyMDeDK7HiOSrIRl5slCmkV9UB+R+UxrmAnIVtnQoUUZqy9+nYVdn4YwEUzbQft
-         STZtvjxXCIcX81KfBTwEEBnj7+AIQxo95yYDRV+4IQ3/+fQCKMT0IbhmY4dde9oIoCJe
-         WO1gly0NYceIRmcWnFUEVHgWtVUxPunSE089xAwD6RRQRBuglqeog/BR8qzjluMEnGjh
-         6fvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=9MTarLD/Pz82hkgDPc4VnnqjhN28FjyaD0E3mX82COU=;
-        b=5ADu/VAm12DWetpOcbUWo/wAgXE99mZNAcwBTJDVzONb56pTUYWug3G6ChiqzJUFfp
-         L/eWtFksNVItCp9j05D2vmvkMsCvYyIhCbA0CJBMhIbfKAoj6/gyP85zGepcNkYEijN6
-         K/y8N81v+4NksDg3V7glxAaG+fLcyV5aaKn6a2t0fEm9MjCvdDkeXqpQGdys6sqRdzt0
-         343+zeBfL1no6qv8RWoG9eVhTa01l6NzqSA/MPPJSGPwm7QAjV58UoJ36tAN6P1pusTx
-         ufaQgEm6z0VKOxoloqmO+Kr9FMvqJueRx8iOy+mdK4hPN2L3t1YwcMQ7DwfmCjjXDVzS
-         jySw==
-X-Gm-Message-State: ACgBeo3mRAGPWRo08OY6EpQrmKMsOsyiDPG4qv2cvepIYawY09p+SmAo
-        c7sIbcglLfJCR0EVUlaYMnth6hIu2PYWGgrt2EZJzg==
-X-Google-Smtp-Source: AA6agR4hp9rR+sKtlF/YqE667eNWP1KTTveHcsyJDzlTL+f/ZXSzspIvUqKVDh5hIlUaSVLeICMzb6Cd9/HyJFIU0Pg=
-X-Received: by 2002:a63:e07:0:b0:429:8604:d9ad with SMTP id
- d7-20020a630e07000000b004298604d9admr31265919pgl.586.1663160051459; Wed, 14
- Sep 2022 05:54:11 -0700 (PDT)
+        Wed, 14 Sep 2022 14:29:25 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9307F12F
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Sep 2022 11:29:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663180164; x=1694716164;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aHJxKOnUXOjW53z6a9Bw9neqqOT6QXA+H/D4I7wrl3A=;
+  b=B2UoOnS+jYasGZgo1fNwkx21Ya6bq4bwWrqyPaftrtQIH2Uj9hpns4dF
+   lirMR2MXyZaHl4jKrrdkWdtsQC55fvg63jZF8WSsDFDm4GOCtGZw7OjfL
+   tUudauAaDeetZR658jJEz0UUjv+qotiApsq1o7BMncFt752LI6y4q7+8x
+   Kq9t97iGnOjPqY9xt9ysKnyFx59mZl3NYwsR1uHvwYLGOvUQK6PQpGLhU
+   MjB86dImoVQ11EGv8kv4JrJGSdawK267IeGpykLkPaqk1JJsrz+LqyBVD
+   UMjTm6IUOMCqML9WJsX/RXziQSOD7p+ensdkdfcYY5kbRqcK9XKp7jMbo
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10470"; a="299869119"
+X-IronPort-AV: E=Sophos;i="5.93,315,1654585200"; 
+   d="scan'208";a="299869119"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2022 11:29:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,315,1654585200"; 
+   d="scan'208";a="685410548"
+Received: from lkp-server01.sh.intel.com (HELO d6e6b7c4e5a2) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 14 Sep 2022 11:29:22 -0700
+Received: from kbuild by d6e6b7c4e5a2 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oYX8T-0000Tc-1h;
+        Wed, 14 Sep 2022 18:29:21 +0000
+Date:   Thu, 15 Sep 2022 02:29:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     venkatch@gmail.com, johannes@sipsolutions.net
+Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
+        victorg@ti.com, Venkat Chimata <venkata@shasta.cloud>
+Subject: Re: [PATCH] wifi: mac80211: Fix performance issue with mutex_lock
+Message-ID: <202209150235.Rz3KTMbf-lkp@intel.com>
+References: <20220914110934.617430-1-venkatch@gmail.com>
 MIME-Version: 1.0
-References: <20220913174224.1399480-1-bryan.odonoghue@linaro.org>
-In-Reply-To: <20220913174224.1399480-1-bryan.odonoghue@linaro.org>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Wed, 14 Sep 2022 14:53:35 +0200
-Message-ID: <CAMZdPi_jZEHSz9+WaR3N-MANU7YdYK0zqO7VXNwAcES=YkNaxg@mail.gmail.com>
-Subject: Re: [PATCH] wcn36xx: Add RX frame SNR as a source of system entropy
-To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220914110934.617430-1-venkatch@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,61 +64,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Bryan,
+Hi,
 
-On Tue, 13 Sept 2022 at 19:42, Bryan O'Donoghue
-<bryan.odonoghue@linaro.org> wrote:
->
-> The signal-to-noise-ratio of a received frame is a representation of noise
-> in a given received frame.
->
-> RSSI - received signal strength indication can appear pretty static
-> frame-to-frame but noise will "bounce around" more depending on the EM
-> environment, temperature or placement of obstacles between the transmitter
-> and receiver.
->
-> Other WiFi drivers offer up the noise component of the FFT as an entropy
-> source for the random pool i.e.
->
-> Commit: 2aa56cca3571 ("ath9k: Mix the received FFT bins to the random pool")
->
-> I attended Jason's talk on sources of randomness at Plumbers and it occured
-> to me that SNR is a reasonable candidate to add.
->
-> Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> ---
->  drivers/net/wireless/ath/wcn36xx/txrx.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-> index 8da3955995b6e..f3b77d7ffebe4 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-> @@ -16,6 +16,7 @@
->
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->
-> +#include <linux/random.h>
->  #include "txrx.h"
->
->  static inline int get_rssi0(struct wcn36xx_rx_bd *bd)
-> @@ -297,6 +298,8 @@ static void wcn36xx_update_survey(struct wcn36xx *wcn, int rssi, int snr,
->         wcn->chan_survey[idx].rssi = rssi;
->         wcn->chan_survey[idx].snr = snr;
->         spin_unlock(&wcn->survey_lock);
-> +
-> +       add_device_randomness(&snr, sizeof(int));
+Thank you for the patch! Perhaps something to improve:
 
-We store the SNR in an integer, but isn't it reported as u8 (or s8) by
-the firmware? So maybe we should just inject the LSByte since the upper
-ones will always be 0?
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.0-rc5 next-20220914]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/venkatch-gmail-com/wifi-mac80211-Fix-performance-issue-with-mutex_lock/20220914-191154
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20220915/202209150235.Rz3KTMbf-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-5) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/1d98b164c14462b445f932d0183b56ee716e1c41
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review venkatch-gmail-com/wifi-mac80211-Fix-performance-issue-with-mutex_lock/20220914-191154
+        git checkout 1d98b164c14462b445f932d0183b56ee716e1c41
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash net/
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   net/mac80211/cfg.c: In function 'ieee80211_dump_station':
+>> net/mac80211/cfg.c:858:33: warning: unused variable 'local' [-Wunused-variable]
+     858 |         struct ieee80211_local *local = sdata->local;
+         |                                 ^~~~~
 
 
+vim +/local +858 net/mac80211/cfg.c
 
->  }
->
->  int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
-> --
-> 2.37.3
->
+6b62bf326393de Thomas Pedersen     2012-03-05  853  
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  854  static int ieee80211_dump_station(struct wiphy *wiphy, struct net_device *dev,
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  855  				  int idx, u8 *mac, struct station_info *sinfo)
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  856  {
+3b53fde8ac40c4 Johannes Berg       2009-11-16  857  	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+66572cfc30a4b7 Victor Goldenshtein 2012-06-21 @858  	struct ieee80211_local *local = sdata->local;
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  859  	struct sta_info *sta;
+d0709a65181beb Johannes Berg       2008-02-25  860  	int ret = -ENOENT;
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  861  
+1d98b164c14462 Venkat Chimata      2022-09-14  862  	rcu_read_lock();
+3b53fde8ac40c4 Johannes Berg       2009-11-16  863  	sta = sta_info_get_by_idx(sdata, idx);
+d0709a65181beb Johannes Berg       2008-02-25  864  	if (sta) {
+d0709a65181beb Johannes Berg       2008-02-25  865  		ret = 0;
+17741cdc264e4d Johannes Berg       2008-09-11  866  		memcpy(mac, sta->sta.addr, ETH_ALEN);
+0fdf1493b41eb6 Johannes Berg       2018-05-18  867  		sta_set_sinfo(sta, sinfo, true);
+d0709a65181beb Johannes Berg       2008-02-25  868  	}
+1d98b164c14462 Venkat Chimata      2022-09-14  869  	rcu_read_unlock();
+d0709a65181beb Johannes Berg       2008-02-25  870  
+d0709a65181beb Johannes Berg       2008-02-25  871  	return ret;
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  872  }
+c5dd9c2bd0b242 Luis Carlos Cobo    2008-02-23  873  
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
