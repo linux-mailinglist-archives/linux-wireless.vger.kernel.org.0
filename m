@@ -2,120 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 401C35BA1A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Sep 2022 21:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B265BA1AD
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Sep 2022 21:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbiIOTz7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Sep 2022 15:55:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43040 "EHLO
+        id S229539AbiIOT7i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Sep 2022 15:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbiIOTz6 (ORCPT
+        with ESMTP id S229480AbiIOT7d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Sep 2022 15:55:58 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65CF095AF2
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 12:55:57 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id q63so18277750pga.9
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 12:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=lFuiqa17cv+dNWmv2faygQb4Aq1P8GzwkTxOnXcWXV8=;
-        b=Fbkn+c4Y7O4us9RyFsDr2IcPkKzHEezQ+K+9DyEhJ6WnvRWmeHr2md1hccIfqiAuIE
-         XbqfVUCxVAz75Q/H9WjJSLebHdI1ZC3lR/v8L1SsJx+Dm6f6CPLLi2wVhoBYQ+4wpQq9
-         0U6pFN0uDt0Vu3/EzFfsJPMAB9ZzycFUvEgHly5FPoMEkSpgu5QD0DEtaiK7armDnhuF
-         wy58cQBkWt7EQKn1l8U+k6vpwuwgYChu/MKza86bqbLHsS3hAKBYNtq7+p4kPpAj+uU7
-         0UlV2xGnkDBXYU12jDahU0O9rsGV62O2r0QU5XiqhYS9mAZNoiNn195ZyNx+FUwx+6vJ
-         6FKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=lFuiqa17cv+dNWmv2faygQb4Aq1P8GzwkTxOnXcWXV8=;
-        b=rtkH5aVcPrT2fw9NG9+G20kX91ZjXWTbw/gV1+zS+yjQx+i9XaGrIkMFYtP7h6MMGj
-         gz/7yAUmHxlMj3Za8tqr1URJdCYhl9TTsNls32b6kn5thUSE9w5Rvg/hj2m9O+oyQ1rT
-         KLtlLMWgay8m2cBlkEtbhqCsfvwvkbgseC2Xp4QVa5tMgyKlXkXoNrVHEN2gKAbLEz6p
-         lIM4wvTuvhfWTHsH4fSpXgbRpof6yY0lzPTx3YIgMwtv1haXZeKsRy+7yfEeMIqsNlRI
-         aNR8o9e+eldo2OBlLSCUXH1RQ8RpQBWEPianEJYroKFXIZfV1qjNc6BQr0ZYIav+5ca3
-         LONw==
-X-Gm-Message-State: ACrzQf1VzWjATzm1OVOrqj541NYAJxvhH4gtoUpdtHptv3Li7VGNg0U3
-        1LYya3pKoEcIDD+crhHopu6mIdf0a20=
-X-Google-Smtp-Source: AMsMyM5/oYB+zZ2qmQCS5mP0ND99dhpTCshJOzjy+mtJXTUUuzqDfQLYmwO/mnHyMBxu7bM0DowQlA==
-X-Received: by 2002:a05:6a00:c86:b0:542:7c38:4a59 with SMTP id a6-20020a056a000c8600b005427c384a59mr1695681pfv.74.1663271756612;
-        Thu, 15 Sep 2022 12:55:56 -0700 (PDT)
-Received: from jprestwo-xps.none ([50.54.173.139])
-        by smtp.gmail.com with ESMTPSA id h184-20020a6283c1000000b0053e80515df8sm12831090pfe.202.2022.09.15.12.55.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Sep 2022 12:55:56 -0700 (PDT)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH] net: mac80211: remove/avoid misleading prints
-Date:   Thu, 15 Sep 2022 12:55:53 -0700
-Message-Id: <20220915195553.1052931-1-prestwoj@gmail.com>
-X-Mailer: git-send-email 2.34.3
+        Thu, 15 Sep 2022 15:59:33 -0400
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3952E2BC0
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 12:59:31 -0700 (PDT)
+Message-ID: <9e36f219-14a6-8960-a5fd-cb9f708237ed@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1663271968;
+        bh=3oa5pKx1ERRbpxo+mvIkSRt+ZadthXn0ikneQ88LL2I=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Xvd2fGvKi5TpzoqBAum5JX9t2ECCZUIvqyH8KZco9WVdbfMEgyeSvfo7AjMUqvra3
+         PAJBRJ4eE2sY1VfsIh3DCumVsnXvRk/pCkjCDETm9cosZ4vEo1xru1zPDR610hGK/Z
+         7mJA3EVFxscaumezAgCQ1bCK5YNKErz6QNnSu58s=
+Date:   Thu, 15 Sep 2022 21:59:25 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH] mac80211: Ensure vif queues are operational after start
+Content-Language: en-US
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>
+References: <20220915130946.302803-1-alexander@wetzel-home.de>
+ <26e9ae91-8e13-df45-815c-cb45c1911032@nbd.name>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <26e9ae91-8e13-df45-815c-cb45c1911032@nbd.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-At some point a few kernel debug prints started appearing which
-indicated something was sending invalid IEs:
+On 15.09.22 18:18, Felix Fietkau wrote:
+> 
+> On 15.09.22 15:09, Alexander Wetzel wrote:
+>> Make sure local->queue_stop_reasons and vif.txqs_stopped stay in sync.
+>>
+>> When a new vif is created the queues may end up in an inconsistent state
+>> and be inoperable:
+>> Communication not using iTXQ will work, allowing to e.g. complete the
+>> association. But the 4-way handshake will time out. The sta will not
+>> send out any skbs queued in iTXQs.
+>>
+>> All normal attempts to start the queues will fail when reaching this
+>> state.
+>> local->queue_stop_reasons will have marked all queues as operational but
+>> vif.txqs_stopped will still be set, creating an inconsistent internal
+>> state.
+>>
+>> In reality this seems to be race between the mac80211 function
+>> ieee80211_do_open() setting SDATA_STATE_RUNNING and the 
+>> wake_txqs_tasklet:
+>> Depending on the driver and the timing the queues may end up to be
+>> operational or not.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: f856373e2f31 ("wifi: mac80211: do not wake queues on a vif that 
+>> is being stopped")
+>> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+> 
+> Acked-by: Felix Fietkau <nbd@nbd.name>
+> 
 
-"bad VHT capabilities, disabling VHT"
-"Invalid HE elem, Disable HE"
+I've got some doubts that my fix is correct...
+While it fixes the problem in my tests it looks like we'll need another 
+queue restart to get the queues working again.
 
-Turns out these were being printed because the local hardware
-supported HE/VHT but the peer/AP did not. Bad/invalid indicates,
-to me at least, that the IE is in some way malformed, not missing.
+After all IEEE80211_TXQ_STOP_NETIF_TX will not be cleared when it has 
+been set by __ieee80211_stop_queue().
 
-For the HE print (ieee80211_verify_peer_he_mcs_support) it will
-now silently fail if the HE capability element is missing (still
-prints if the element size is wrong).
+I'll update the patch and skip setting vif.txqs_stopped when 
+SDATA_STATE_RUNNING is not set. Not having IEEE80211_TXQ_STOP_NETIF_TX 
+set looks harmless, having it set when it should less problematic...
 
-For the VHT print, it has been removed completely and will silently
-set the DISABLE_VHT flag which is consistent with how DISABLE_HT
-is set.
+Alexander
 
-Signed-off-by: James Prestwood <prestwoj@gmail.com>
----
- net/mac80211/mlme.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ff449e0c2e62..97cd70b8784b 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4410,8 +4410,11 @@ ieee80211_verify_peer_he_mcs_support(struct ieee80211_sub_if_data *sdata,
- 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
- 					     ies->data, ies->len);
- 
-+	if (!he_cap_elem)
-+		return false;
-+
- 	/* invalid HE IE */
--	if (!he_cap_elem || he_cap_elem->datalen < 1 + sizeof(*he_cap)) {
-+	if (he_cap_elem->datalen < 1 + sizeof(*he_cap)) {
- 		sdata_info(sdata,
- 			   "Invalid HE elem, Disable HE\n");
- 		return false;
-@@ -4677,8 +4680,6 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
- 		}
- 
- 		if (!elems->vht_cap_elem) {
--			sdata_info(sdata,
--				   "bad VHT capabilities, disabling VHT\n");
- 			*conn_flags |= IEEE80211_CONN_DISABLE_VHT;
- 			vht_oper = NULL;
- 		}
--- 
-2.34.3
 
