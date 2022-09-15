@@ -2,34 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FDCD5B9B54
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Sep 2022 14:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AF645B9BA1
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Sep 2022 15:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbiIOMwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Sep 2022 08:52:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53910 "EHLO
+        id S229779AbiIONLV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Sep 2022 09:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbiIOMwa (ORCPT
+        with ESMTP id S229528AbiIONLT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Sep 2022 08:52:30 -0400
-X-Greylist: delayed 545 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Sep 2022 05:52:28 PDT
+        Thu, 15 Sep 2022 09:11:19 -0400
 Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 48BB3876AB
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 05:52:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 545F7371AF
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 06:11:18 -0700 (PDT)
 From:   Alexander Wetzel <alexander@wetzel-home.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1663245799;
-        bh=BWMUrbwCsBnvb29ULObdwGqAAjEVYyG+fdGEuy9c9ak=;
+        s=wetzel-home; t=1663247476;
+        bh=48tDIj0A9GvYAtg3Z0lO5EOHGEAhb+Ky2FLtbtQEnyw=;
         h=From:To:Cc:Subject:Date;
-        b=o4cj4DeWwL/2W/iWQjRQ2Mtgj+hvVw6TIESEkCFwsZ7EVHCHDIs5GNVsxiSQIhGQM
-         OaBzW9e6fhgn5SgUq0y4misj96PvIh5h/H4d2BPw1C0D7+N1/x1JhPpphBR70bN/95
-         z8/IPkZulBk6aleb3QnKObf1D8kv+8XsIjdGPv8w=
+        b=gzABjwsw0zaNDSDnEI2d+B+BN4kfzn+AiuNUlR9g32bmjGoh3uhohxO64Ioddd7EV
+         nnuuVMIUEnfzRr/JRiYPYtsn7lPmzZpRzJLUOIrrzFngyQLFua6O0Crdc0ISUsN3Ii
+         wTCrCLOrsRwwX00k+Ysw8JyqyGKrTaWs4+4RWMjg=
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Wetzel <alexander@wetzel-home.de>
-Subject: [PATCH] mac80211: Fix deadlock: Don't start TX while holding fq->lock
-Date:   Thu, 15 Sep 2022 14:41:20 +0200
-Message-Id: <20220915124120.301918-1-alexander@wetzel-home.de>
+        Felix Fietkau <nbd@nbd.name>,
+        Alexander Wetzel <alexander@wetzel-home.de>,
+        stable@vger.kernel.org
+Subject: [PATCH] mac80211: Ensure vif queues are operational after start
+Date:   Thu, 15 Sep 2022 15:09:46 +0200
+Message-Id: <20220915130946.302803-1-alexander@wetzel-home.de>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,51 +43,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_txq_purge() calls fq_tin_reset() and
-ieee80211_purge_tx_queue(); Both are then calling
-ieee80211_free_txskb(). Which can decide to TX the skb again.
+Make sure local->queue_stop_reasons and vif.txqs_stopped stay in sync.
 
-There are at least two ways to get a deadlock:
+When a new vif is created the queues may end up in an inconsistent state
+and be inoperable:
+Communication not using iTXQ will work, allowing to e.g. complete the
+association. But the 4-way handshake will time out. The sta will not
+send out any skbs queued in iTXQs.
 
-1) When we have a TDLS teardown packet queued in either tin or frags
-   ieee80211_tdls_td_tx_handle() will call ieee80211_subif_start_xmit()
-   while we still hold fq->lock. ieee80211_txq_enqueue() will thus
-   deadlock.
+All normal attempts to start the queues will fail when reaching this
+state.
+local->queue_stop_reasons will have marked all queues as operational but
+vif.txqs_stopped will still be set, creating an inconsistent internal
+state.
 
-2) A variant of the above happens if aggregation is up and running:
-   In that case ieee80211_iface_work() will deadlock with the original
-   task: The original tasks already holds fq->lock and tries to get
-   sta->lock after kicking off ieee80211_iface_work(). But the worker
-   can get sta->lock prior to the original task and will then spin for
-   fq->lock.
+In reality this seems to be race between the mac80211 function
+ieee80211_do_open() setting SDATA_STATE_RUNNING and the wake_txqs_tasklet:
+Depending on the driver and the timing the queues may end up to be
+operational or not.
 
-Avoid these deadlocks by not sending out any skbs when called via
-ieee80211_free_txskb().
-
+Cc: stable@vger.kernel.org
+Fixes: f856373e2f31 ("wifi: mac80211: do not wake queues on a vif that is being stopped")
 Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
 ---
+ net/mac80211/util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I have deadlock traces for the two scenarios above I can share, if
-desired.
-I found the issue while running the hostapd tests with my WIP patch
-to switch all drivers over to iTXQ.
-
- net/mac80211/status.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 8e77fd2e9fdf..3f9ddd7f04b6 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -729,7 +729,7 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 0ea5d50091dc..bf7461c41bef 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -301,14 +301,14 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ 	local_bh_disable();
+ 	spin_lock(&fq->lock);
  
- 		if (!sdata) {
- 			skb->dev = NULL;
--		} else {
-+		} else if (!dropped) {
- 			unsigned int hdr_size =
- 				ieee80211_hdrlen(hdr->frame_control);
++	sdata->vif.txqs_stopped[ac] = false;
++
+ 	if (!test_bit(SDATA_STATE_RUNNING, &sdata->state))
+ 		goto out;
  
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP)
+ 		ps = &sdata->bss->ps;
+ 
+-	sdata->vif.txqs_stopped[ac] = false;
+-
+ 	list_for_each_entry_rcu(sta, &local->sta_list, list) {
+ 		if (sdata != sta->sdata)
+ 			continue;
 -- 
 2.37.3
 
