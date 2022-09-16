@@ -2,79 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 655AF5BB126
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 18:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7EC85BB12A
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 18:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbiIPQjA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Sep 2022 12:39:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
+        id S229599AbiIPQmL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Sep 2022 12:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbiIPQi7 (ORCPT
+        with ESMTP id S229457AbiIPQmK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Sep 2022 12:38:59 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8F78580EB8
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 09:38:57 -0700 (PDT)
-Message-ID: <1a1d993e-58cd-6f42-38c9-ea7a9fe6456f@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1663346334;
-        bh=Utbi4rfqZk71EVBH8r0qtna/1I21yMd7d8to3UoEWYw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=RhuMOr4NSBRwiZfQoA/ilZe2nuwio37QOoSvHw6FfOkD1zF2aDgQEsQL5ysqigy98
-         N0iyFKiFzwNulqyTOtUGy1+u0r/5MdiRGTyWXvBCusr7c22Q7kGzzNz4GwL7YBSyVj
-         xzh/chFsut3MAoIhTVlmZEhXeQRQ4BNRrsz+kSko=
-Date:   Fri, 16 Sep 2022 18:38:52 +0200
+        Fri, 16 Sep 2022 12:42:10 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F05A3DBC6
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 09:42:09 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id v4so20834789pgi.10
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 09:42:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date;
+        bh=LEDsCQxg94Ho/eSvAXdsw7dBF4zL19ANIEnTAH5+po8=;
+        b=zTYYsWG2PwhmbAyvgkK6bo8KmNvqXUMkrcoqnoeKOPAkmTjw0VkOHdf3CR3UagVMAS
+         1yPP/O+QqYyWPdORQyguxxwh3bC9A8rYmFym65+nhzKErWIUquKhTp/gBV7Tz5aIbe/r
+         IyUI9CL4D9uQvbINQSIqsqm9x528vlqldvtI/kg6eu6YaWSeodUcw+weRcT5bcWtPoCL
+         E6tgPXrppmk9kC7l5AKwF1STKgv1RanxnOFXUSoc7U7kc0J+Azyl+gaYKa8QNLw1wI5W
+         ZDJf+X1vyls+0Asa4owaigwZLJjMT8nhDxr/poQ6kG5xgZLzSeK14bWdnyMdwe2QqSEz
+         Xg4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=LEDsCQxg94Ho/eSvAXdsw7dBF4zL19ANIEnTAH5+po8=;
+        b=Zr5hCOjjwRDEphmS2/zz2XYu1ea/MyC9SF48s8Ht6p1qKMwtRbUmZpAOT11IeekTG8
+         YV0zQ/4ctGoWZWDIYCpXvt43ki6f+U9OYl/d47WrDMRV9km9TG/9QF7BF8Lj5Ek7SuUG
+         1Vqcv74/0GgPC/lUf2kRDfD9c5O6vuJ6euZoY3FnaQo0nEji2+JECLXrope+M4d/zcyw
+         NUv6Yl8R6WX1WsDOGp3DZNJYoXdfhmOIjJJoee9+lMIDpSJzDuuR4qA6zhRxNJ19PkOj
+         v7f21WzPhcI7nmm1tb7z5Y+RAr77K+MDuKjbJ3OqMvLGoLzXbWcQPCl8/M3ZRMq18O3F
+         G9xA==
+X-Gm-Message-State: ACrzQf1w/fHFntfZv3qgme7mlufH4IemDHoj0FP43K1y/2hnFqS0fMOa
+        WufscBz8zHc4SzUKZjVAGdZoRGZ2Z0KvW2KOdsXzew==
+X-Google-Smtp-Source: AMsMyM6AxlzL2A98zdX6EJeu5CT29YoSqGXQTMp6kFIoV9p5CjQ8UX6T01Qfr5U8fhir2FL3+ygLrPrF0cmX8CTMWmg=
+X-Received: by 2002:a63:1d1a:0:b0:433:f6ea:dce6 with SMTP id
+ d26-20020a631d1a000000b00433f6eadce6mr5188833pgd.178.1663346528832; Fri, 16
+ Sep 2022 09:42:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH] mac80211: Ensure vif queues are operational after start
-To:     Ben Greear <greearb@candelatech.com>, Felix Fietkau <nbd@nbd.name>,
-        linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>
-References: <20220915130946.302803-1-alexander@wetzel-home.de>
- <26e9ae91-8e13-df45-815c-cb45c1911032@nbd.name>
- <9e36f219-14a6-8960-a5fd-cb9f708237ed@wetzel-home.de>
- <0b342479-d04a-a45e-d63b-73eec5a1fb40@wetzel-home.de>
- <4f77c10b-a6ea-2b79-cada-deefb2a3a07b@candelatech.com>
-Content-Language: en-US
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <4f77c10b-a6ea-2b79-cada-deefb2a3a07b@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7300:8b26:b0:78:c13b:6a7a with HTTP; Fri, 16 Sep 2022
+ 09:42:08 -0700 (PDT)
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Fri, 16 Sep 2022 18:42:08 +0200
+Message-ID: <CAMZdPi_+zQe41xSx+LHj_FDeHu7rs=TEgbWGBaMxcoSrOvXLRQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] wcn36xx: Add RX frame SNR as a source of system entropy
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     "Jason A . Donenfeld" <Jason@zx2c4.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, wcn36xx@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 15.09.22 22:39, Ben Greear wrote:
+On Thu, 15 Sept 2022 at 02:41, Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+wrote:
+>
+> The signal-to-noise-ratio SNR is returned by the wcn36xx firmware for each
+> received frame. SNR represents all of the unwanted interference signal
+> after filtering out the fundamental frequency and harmonics of the
+> frequency.
+>
+> Noise can come from various electromagnetic sources, from temperature
+> affecting the performance hardware components or quantization effects
+> converting from analog to digital domains.
+>
+> The SNR value returned by the WiFi firmware then is a good source of
+> entropy.
+>
+> Other WiFi drivers offer up the noise component of the FFT as an entropy
+> source for the random pool e.g.
+>
+> commit 2aa56cca3571 ("ath9k: Mix the received FFT bins to the random
+pool")
+>
+> I attended Jason's talk on sources of randomness at Plumbers and it
+> occurred to me that SNR is a reasonable candidate to add.
+>
+> Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
->  From reading the original patch description, it was to stop an NPE when 
-> AP was stopped.  I have been testing
-> this patch below and it fixes the problems I saw with multiple vdevs.  I 
-> was worried that
-> the code in the 'list_for_each_entry_rcu(sta, &local->sta_list, list) {' 
-> might still need to run
-> to keep everything in sync (and my patch allows that to happen), but I 
-> do not know if that is true or not.
-> 
-
-I'm not sure if it's still save to wake the queues for the vif we are 
-tearing down and assumed the intend was to skip those, too.
-
-But it looks like all stations for the vif are deleted prior to setting 
-sdata->bss = NULL, so the outcome should be the same.
-
-Your solution removes potentially set IEEE80211_TXQ_STOP_NETIF_TX flags, 
-reducing the risk that a queue restart during vif setup ends up with 
-inoperable queues.
-But the only way to set IEEE80211_TXQ_STOP_NETIF_TX seems to be during 
-ieee80211_tx_dequeue(). Which should not be possible to be called as 
-long as SDATA_STATE_RUNNING was never set for the vif.
-
-But I'm on thin ice here:-)
-
-Alexander
+Acked-by: Loic Poulain <loic.poulain@linaro.org>
