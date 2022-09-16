@@ -2,127 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80CB15BA1E3
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Sep 2022 22:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E317D5BA37C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 02:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbiIOUkC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Sep 2022 16:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33568 "EHLO
+        id S229621AbiIPAZ0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Sep 2022 20:25:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbiIOUj7 (ORCPT
+        with ESMTP id S229457AbiIPAZX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Sep 2022 16:39:59 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564313E746
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 13:39:58 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.64.219])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id A65FC1C0082;
-        Thu, 15 Sep 2022 20:39:56 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 019EB780078;
-        Thu, 15 Sep 2022 20:39:55 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 75A5613C2B0;
-        Thu, 15 Sep 2022 13:39:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 75A5613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1663274395;
-        bh=CXdSqgaZvbYZurzTR43KgBcueolrjK7Dkx4bmtPbzAk=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=lQP7+hKPRU8QAJW4SzZIHC1mMXD0G7ctmOyDdXMxh+yLc2gy1G2BOsLkZ2+RITv8W
-         xaNmNLhcnyBZoFqOmuBHpu2c6+McZX2kRiivRVAKBxTbLHcdOSQn5Jgi8F3h6ocO1G
-         lYrMoNFfwPSYn2ReIyi9KdgD7wJaLSxqfFPqZm9Q=
-Subject: Re: [PATCH] mac80211: Ensure vif queues are operational after start
-To:     Alexander Wetzel <alexander@wetzel-home.de>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>
-References: <20220915130946.302803-1-alexander@wetzel-home.de>
- <26e9ae91-8e13-df45-815c-cb45c1911032@nbd.name>
- <9e36f219-14a6-8960-a5fd-cb9f708237ed@wetzel-home.de>
- <0b342479-d04a-a45e-d63b-73eec5a1fb40@wetzel-home.de>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <4f77c10b-a6ea-2b79-cada-deefb2a3a07b@candelatech.com>
-Date:   Thu, 15 Sep 2022 13:39:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Thu, 15 Sep 2022 20:25:23 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EB0A241980;
+        Thu, 15 Sep 2022 17:25:21 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28G0OcFgA011362, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28G0OcFgA011362
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 16 Sep 2022 08:24:38 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 16 Sep 2022 08:24:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 16 Sep 2022 08:24:59 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::402d:f52e:eaf0:28a2]) by
+ RTEXMBS04.realtek.com.tw ([fe80::402d:f52e:eaf0:28a2%5]) with mapi id
+ 15.01.2375.007; Fri, 16 Sep 2022 08:24:59 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Kevin Yang <kevin_yang@realtek.com>
+CC:     Kalle Valo <kvalo@kernel.org>, Kevin Yang <kevin_yang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw89: uninitialized variable on error in rtw89_early_fw_feature_recognize()
+Thread-Topic: [PATCH] wifi: rtw89: uninitialized variable on error in
+ rtw89_early_fw_feature_recognize()
+Thread-Index: AQHYyQ1o/mFdmIMpL0eBK9/XzDvoD63hMxKA
+Date:   Fri, 16 Sep 2022 00:24:58 +0000
+Message-ID: <8bd6294dfbc74c3f8ac5e75156be9884@realtek.com>
+References: <YyMzDtX/3fUBnonC@kili>
+In-Reply-To: <YyMzDtX/3fUBnonC@kili>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/9/15_=3F=3F_10:57:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <0b342479-d04a-a45e-d63b-73eec5a1fb40@wetzel-home.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-MDID: 1663274397-b4AlKmjo3kZs
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/15/22 1:06 PM, Alexander Wetzel wrote:
->>
->> I've got some doubts that my fix is correct...
->> While it fixes the problem in my tests it looks like we'll need another queue restart to get the queues working again.
->>
->> After all IEEE80211_TXQ_STOP_NETIF_TX will not be cleared when it has been set by __ieee80211_stop_queue().
->>
->> I'll update the patch and skip setting vif.txqs_stopped when SDATA_STATE_RUNNING is not set. Not having IEEE80211_TXQ_STOP_NETIF_TX set looks harmless, having 
->> it set when it should less problematic...
+
+> -----Original Message-----
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: Thursday, September 15, 2022 10:14 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>; Kevin Yang <kevin_yang@realtek.com>
+> Cc: Kalle Valo <kvalo@kernel.org>; Kevin Yang <kevin_yang@realtek.com>; linux-wireless@vger.kernel.org;
+> kernel-janitors@vger.kernel.org
+> Subject: [PATCH] wifi: rtw89: uninitialized variable on error in rtw89_early_fw_feature_recognize()
 > 
-> Scratch that: The patch should be ok as it is: IEEE80211_TXQ_STOP_NETIF_TX is not set on stop, the patch should be ok as it is.
+> If request_partial_firmware_into_buf() fails then "firmware" is not
+> initialized and the release_firmware(firmware) will crash.
 > 
-> Sorry for the noise.
+> Fixes: deebea35d699 ("wifi: rtw89: early recognize FW feature to decide if chanctx")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+Thank you.
+
+> ---
+>  drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Alexander
+> diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+> index 8e4d0e18fa71..2be70b907762 100644
+> --- a/drivers/net/wireless/realtek/rtw89/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw89/fw.c
+> @@ -268,7 +268,7 @@ void rtw89_early_fw_feature_recognize(struct device *device,
+>  						device, &buf, sizeof(buf), 0);
+>  	if (ret) {
+>  		dev_err(device, "failed to early request firmware: %d\n", ret);
+> -		goto out;
+> +		return;
+>  	}
 > 
-
-To add to the noise...
-
- From reading the original patch description, it was to stop an NPE when AP was stopped.  I have been testing
-this patch below and it fixes the problems I saw with multiple vdevs.  I was worried that
-the code in the 'list_for_each_entry_rcu(sta, &local->sta_list, list) {' might still need to run
-to keep everything in sync (and my patch allows that to happen), but I do not know if that is true or not.
-
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index c768e583aad4..2b5dafe9f4cc 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -370,12 +370,6 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
-         local_bh_disable();
-         spin_lock(&fq->lock);
-
--       if (!test_bit(SDATA_STATE_RUNNING, &sdata->state))
--               goto out;
--
--       if (sdata->vif.type == NL80211_IFTYPE_AP)
--               ps = &sdata->bss->ps;
--
-         sdata->vif.txqs_stopped[ac] = false;
-
-         list_for_each_entry_rcu(sta, &local->sta_list, list) {
-@@ -408,6 +402,10 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
-
-         txqi = to_txq_info(vif->txq);
-
-+       if (test_bit(SDATA_STATE_RUNNING, &sdata->state))
-+               if (sdata->vif.type == NL80211_IFTYPE_AP)
-+                       ps = &sdata->bss->ps;
-+
-         if (!test_and_clear_bit(IEEE80211_TXQ_STOP_NETIF_TX, &txqi->flags) ||
-             (ps && atomic_read(&ps->num_sta_ps)) || ac != vif->txq->ac)
-                 goto out;
-
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+>  	ver_code = buf.mfw_hdr.sig != RTW89_MFW_SIG ?
+> --
+> 2.35.1
+> 
+> 
+> ------Please consider the environment before printing this e-mail.
