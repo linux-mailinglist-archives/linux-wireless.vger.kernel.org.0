@@ -2,57 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C3CC5BA661
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 07:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B57C55BA664
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 07:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbiIPFhU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Sep 2022 01:37:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43414 "EHLO
+        id S229967AbiIPFij (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Sep 2022 01:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbiIPFhT (ORCPT
+        with ESMTP id S229964AbiIPFii (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Sep 2022 01:37:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 367E56F56B
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 22:37:18 -0700 (PDT)
+        Fri, 16 Sep 2022 01:38:38 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480D471BD5;
+        Thu, 15 Sep 2022 22:38:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9F76AB823AE
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 05:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB342C433C1;
-        Fri, 16 Sep 2022 05:37:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0E2C3B823AE;
+        Fri, 16 Sep 2022 05:38:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C9DC433C1;
+        Fri, 16 Sep 2022 05:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663306635;
-        bh=jM5saF8A2jQF85Jq+EzNXODocbAeHuLf4n0rQwVxZlo=;
+        s=k20201202; t=1663306714;
+        bh=XjhJeM8qGrTfgtllNG60b4yqc1CpmpKRtgp6g86FThs=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Smf2uhH/NHhercMlEbVhAZ7OFahC35FBj7VSPD8BLfXVIsx4AeKb+pLgxupUxJT5Y
-         +DdisgxqyoafWZkhCj1xh0t3MsNbzhN2BHRDfDe3PvNz+X34AHkwulQbLhMOsIvzGJ
-         fN5nYnNGBKT3ZAHzOrZvBtvO18UQLvcd76MMdymAwSWdAxjzg1ypXGTESt91J1zJ6A
-         edLw/4T+P4oRE0cHrNSG2sUmW3GM7FM0DRtvwmjA1D6vRM9/9o013hFklas3WlR756
-         SaqHfdrb1C4j/5svet+YZ54nHXPhht417Ex9TpkIpLdK6piNpntTx2lsAMZ4lXFUBS
-         EIiOBulJb8vfA==
+        b=Knu9u1kNuImMnMOkFtkAMf06CxemF3MI2nB+BhrgdHRdnKM1k0T/099pJb0DjIaYK
+         L6rN8XxhSdsI/t1z+v+tRAtRHQAzgu7vQTlTzClfaAasA7JGJHS26CNjp/yzLQ6xa/
+         BcnGRusk1onJFxaXf+IDV/BwKyDTdRQ23rrH8dz5K6ZucvKcjnpnfC2XGZKL7gKVXG
+         djagtWO1UTYpxVPfheQg26wISqHOZ7Zl0AzxgdoocJtUZ0yD7sdpgIFfr0sfjBwFta
+         hULmZErfIzZVPZTaHXCzGJRWXSetNUfGtj+xAIkMHSicrKBMLpfQgbIT6ZOhqB5tuB
+         IgJ0qIdIdMcgg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     sean.wang@mediatek.com, lorenzo.bianconi@redhat.com,
-        Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
-        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
-        Deren.Wu@mediatek.com, km.lin@mediatek.com,
-        jenhao.yang@mediatek.com, robin.chiu@mediatek.com,
-        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, ted.huang@mediatek.com,
-        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
-        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
-        kuabhs@google.com, druth@google.com, abhishekpandit@google.com,
-        shawnku@google.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v2] mt76: mt7921: fix antenna signal are way off in monitor mode
-References: <0f95fcdb8511ec765040c8fe85c1fa09437e8ef5.1659574985.git.objelf@gmail.com>
-        <982053de-7bc0-0d4e-9eb7-9da0be559058@nbd.name>
-Date:   Fri, 16 Sep 2022 08:37:07 +0300
-In-Reply-To: <982053de-7bc0-0d4e-9eb7-9da0be559058@nbd.name> (Felix Fietkau's
-        message of "Thu, 15 Sep 2022 12:37:27 +0200")
-Message-ID: <8735crc22k.fsf@kernel.org>
+To:     Alexander Wetzel <alexander@wetzel-home.de>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>, stable@vger.kernel.org
+Subject: Re: [PATCH] mac80211: Ensure vif queues are operational after start
+References: <20220915130946.302803-1-alexander@wetzel-home.de>
+Date:   Fri, 16 Sep 2022 08:38:31 +0300
+In-Reply-To: <20220915130946.302803-1-alexander@wetzel-home.de> (Alexander
+        Wetzel's message of "Thu, 15 Sep 2022 15:09:46 +0200")
+Message-ID: <87y1ujanfs.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -65,26 +55,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Alexander Wetzel <alexander@wetzel-home.de> writes:
 
-> On 04.08.22 03:07, sean.wang@mediatek.com wrote:
->> From: Sean Wang <sean.wang@mediatek.com>
->>
->> Group 3 in RxD is disabled in monitor mode. We should use the group 5 in
->> RxD instead to fix antenna signal way off issue, e.g we would see the
->> incorrect antenna signal value in wireshark. On the other hand, Group 5
->> wouldn't be used in STA or AP mode, so the patch shouldn't cause any
->> harm to those modes.
->>
->> Fixes: cbaa0a404f8d ("mt76: mt7921: fix up the monitor mode")
->> Reported-by: Adrian Granados <agranados@gmail.com>
->> Co-developed-by: Deren Wu <deren.wu@mediatek.com>
->> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Make sure local->queue_stop_reasons and vif.txqs_stopped stay in sync.
 >
-> This patch has been line wrapped and does not apply. Please resend.
+> When a new vif is created the queues may end up in an inconsistent state
+> and be inoperable:
+> Communication not using iTXQ will work, allowing to e.g. complete the
+> association. But the 4-way handshake will time out. The sta will not
+> send out any skbs queued in iTXQs.
+>
+> All normal attempts to start the queues will fail when reaching this
+> state.
+> local->queue_stop_reasons will have marked all queues as operational but
+> vif.txqs_stopped will still be set, creating an inconsistent internal
+> state.
+>
+> In reality this seems to be race between the mac80211 function
+> ieee80211_do_open() setting SDATA_STATE_RUNNING and the wake_txqs_tasklet:
+> Depending on the driver and the timing the queues may end up to be
+> operational or not.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: f856373e2f31 ("wifi: mac80211: do not wake queues on a vif that is being stopped")
+> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+> ---
+>  net/mac80211/util.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-And please use "wifi:" in the title.
+The title is missing "wifi:", but no need to resend because of this. I
+assume Johannes will fix it during commit.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
