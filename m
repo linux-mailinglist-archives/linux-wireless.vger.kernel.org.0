@@ -2,86 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 793175BB48B
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 00:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8195BB4BC
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 01:16:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbiIPWzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Sep 2022 18:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39300 "EHLO
+        id S229864AbiIPXQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Sep 2022 19:16:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229723AbiIPWzy (ORCPT
+        with ESMTP id S229894AbiIPXPx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Sep 2022 18:55:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B04CABF2F;
-        Fri, 16 Sep 2022 15:55:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35D2362DD1;
-        Fri, 16 Sep 2022 22:55:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A05C43470;
-        Fri, 16 Sep 2022 22:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663368950;
-        bh=CxePb5gSHUo+VC915HSKvQFTvB1YDl7G7mETr2pEKdM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bQLRcpJO4wQpxuKyGPt8hrvOCf0+UCyiCoUTiiNwv/aIhNN2dBjfLe9+QF/vrP3qz
-         yETSihoSo2NYig77KvTY3XH/HlCWIokQfpFPLYX8Qv2gyRTME+saS6Ot3RD4E39+2u
-         ZbzrYBduaPFhF8M4EDAqy/Ag9+IysO1rAr4ocN5mjDDjZk2rQaERZC+Ey8RuAkZcv8
-         jATd6s/+YmiMLcTLj/AGvyq1gL5PLUo0akM3FuoXQ9eliemMvzjswZ1xUJIzWfcw+o
-         xxagVoK8vIdeTEZPhRw3QtjglIMZbew9OpEnnDlG0PTcC4PqVIy8GEhcI3ffi/x3hM
-         3UtsVZcy30L4A==
-Received: by mail-wm1-f47.google.com with SMTP id v185-20020a1cacc2000000b003b42e4f278cso718695wme.5;
-        Fri, 16 Sep 2022 15:55:50 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0htlC4P9wklDtoerfl3559sCb/6L0fIA/MpQcZsLmEfbYS5B+b
-        AusuQfNMR3YqbmYhm1mjUsbe4NUwrbm5AsgYwMY=
-X-Google-Smtp-Source: AMsMyM4DdIs0+/VNJIbbOCv56yQxPrcSrae4oNrMbcWmbPGfpBk1PqD5XW8+CRbBoA9out17hpCehWfW1Yb7zoW8xm0=
-X-Received: by 2002:a7b:c2a2:0:b0:3a8:4959:a327 with SMTP id
- c2-20020a7bc2a2000000b003a84959a327mr4772463wmk.50.1663368948773; Fri, 16 Sep
- 2022 15:55:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <404d2f5ec663128342541fa392a47226a46e5634.1663219530.git.objelf@gmail.com>
- <YyRCtrOtPqu2oEPj@kroah.com>
-In-Reply-To: <YyRCtrOtPqu2oEPj@kroah.com>
-From:   Sean Wang <sean.wang@kernel.org>
-Date:   Fri, 16 Sep 2022 15:55:36 -0700
-X-Gmail-Original-Message-ID: <CAGp9Lzqyd0c0Aw6XSjsepKw_RsTawvbF512DvzaXisRxdYbMZA@mail.gmail.com>
-Message-ID: <CAGp9Lzqyd0c0Aw6XSjsepKw_RsTawvbF512DvzaXisRxdYbMZA@mail.gmail.com>
-Subject: Re: [PATCH 5.19] wifi: mt76: mt7921e: fix crash in chip reset fail
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     sean.wang@mediatek.com, stable@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Deren Wu <deren.wu@mediatek.com>,
+        Fri, 16 Sep 2022 19:15:53 -0400
+Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9E8A59B9
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 16:15:49 -0700 (PDT)
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.96)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1oZKNQ-0006yn-0b;
+        Sat, 17 Sep 2022 01:04:04 +0200
+Date:   Sat, 17 Sep 2022 00:03:57 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Johannes Berg <johannes.berg@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH 00/15] rt2x00: OpenWrt patches improving MT7620
+Message-ID: <YyUA3Xbhe7/RSjGz@makrotopia.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Greg
+Over the years we have been accumulating a number of patches improving
+support for the IEEE 802.11bgn 2T2R wireless interface built into the
+MediaTek MT7620 MIPS SoCs. Many of them have not been in shape for
+being submitted to Linux and changes were needed to make checkpatch.pl
+all happy. Now they look as good as it gets, given that most code deals
+with undocumented registers and was adapted from the vendor driver.
 
-On Fri, Sep 16, 2022 at 2:39 AM Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Sep 15, 2022 at 01:32:35PM +0800, sean.wang@mediatek.com wrote:
-> > From: Deren Wu <deren.wu@mediatek.com>
-> >
-> > commit fa3fbe64037839f448dc569212bafc5a495d8219 upstream.
->
-> This is already in the 5.19.9 kernel release, right?  Do we need it
-> again?
+Patch 1/1 also has been previously submitted and then (imho wrongly)
+rejected, so I've included it in this series.
 
-Ah, If so, we don't need it again. It seemed unavailable when I
-submitted the patch. Sorry for bothering you.
+Alltogether rt2x00 now performs almost as good as the vendor driver,
+see benchmark of HT20 client below:
 
-    Sean
+Accepted connection from 192.168.5.133, port 37382
+[  5] local 192.168.5.175 port 5201 connected to 192.168.5.133 port 37384
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  9.57 MBytes  80.3 Mbits/sec
+[  5]   1.00-2.00   sec  9.68 MBytes  81.2 Mbits/sec
+[  5]   2.00-3.00   sec  9.98 MBytes  83.7 Mbits/sec
+[  5]   3.00-4.00   sec  9.72 MBytes  81.6 Mbits/sec
+[  5]   4.00-5.00   sec  9.49 MBytes  79.6 Mbits/sec
+[  5]   5.00-6.00   sec  9.88 MBytes  82.9 Mbits/sec
+[  5]   6.00-7.00   sec  9.76 MBytes  81.8 Mbits/sec
+[  5]   7.00-8.00   sec  9.96 MBytes  83.6 Mbits/sec
+[  5]   8.00-9.00   sec  9.76 MBytes  81.9 Mbits/sec
+[  5]   9.00-10.00  sec  9.86 MBytes  82.7 Mbits/sec
+[  5]  10.00-10.03  sec   243 KBytes  78.4 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.03  sec  97.9 MBytes  81.9 Mbits/sec                  receiver
 
->
-> thanks,
->
-> greg k-h
+Accepted connection from 192.168.5.133, port 49588
+[  5] local 192.168.5.175 port 5201 connected to 192.168.5.133 port 49598
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  12.7 MBytes   106 Mbits/sec    0    557 KBytes
+[  5]   1.00-2.00   sec  11.1 MBytes  93.0 Mbits/sec    0   1020 KBytes
+[  5]   2.00-3.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.57 MBytes
+[  5]   3.00-4.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.58 MBytes
+[  5]   4.00-5.00   sec  10.0 MBytes  83.9 Mbits/sec    0   1.58 MBytes
+[  5]   5.00-6.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.58 MBytes
+[  5]   6.00-7.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.58 MBytes
+[  5]   7.00-8.00   sec  10.0 MBytes  83.9 Mbits/sec    0   1.58 MBytes
+[  5]   8.00-9.00   sec  12.5 MBytes   105 Mbits/sec    0   1.58 MBytes
+[  5]   9.00-10.00  sec  10.0 MBytes  83.9 Mbits/sec    0   1.58 MBytes
+[  5]  10.00-10.03  sec  1.25 MBytes   381 Mbits/sec    0   1.58 MBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.03  sec   112 MBytes  94.1 Mbits/sec    0             sender
+
+
+Daniel Golle (8):
+  rt2x00: add support for external PA on MT7620
+  rt2x00: don't run Rt5592 IQ calibration on MT7620
+  rt2x00: move helper functions up in file
+  rt2x00: fix HT20/HT40 bandwidth switch on MT7620
+  rt2x00: set correct TX_SW_CFG1 MAC register for MT7620
+  rt2x00: set VGC gain for both chains of MT7620
+  rt2x00: set SoC wmac clock register
+  rt2x00: correctly set BBP register 86 for MT7620
+
+David Bauer (1):
+  rt2x00: add throughput LED trigger
+
+Tomislav Požega (6):
+  rt2x00: define RF5592 in init_eeprom routine
+  rt2x00: add RF self TXDC calibration for MT7620
+  rt2x00: add r calibration for MT7620
+  rt2x00: add RXDCOC calibration for MT7620
+  rt2x00: add RXIQ calibration for MT7620
+  rt2x00: add TX LOFT calibration for MT7620
+
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 1705 ++++++++++++++++-
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |   10 +
+ drivers/net/wireless/ralink/rt2x00/rt2x00.h   |    5 +
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |   18 +
+ 6 files changed, 1787 insertions(+), 25 deletions(-)
+
+-- 
+2.37.3
+
