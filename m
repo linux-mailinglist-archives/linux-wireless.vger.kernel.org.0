@@ -2,185 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20BB75BB0D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 18:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47CF05BB13A
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 18:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230203AbiIPQD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Sep 2022 12:03:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38702 "EHLO
+        id S229662AbiIPQrF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Sep 2022 12:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbiIPQDd (ORCPT
+        with ESMTP id S229495AbiIPQrD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Sep 2022 12:03:33 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3E0B6016;
-        Fri, 16 Sep 2022 09:03:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-        Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-        In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=06h/aLRDpzu0LJwNKp8/O+DW8AdR6QoYK87bZj9Y9rE=; b=OV7B74hkZgueUtosq2xMVJX84k
-        ccK3aMa1th9/C0UDJlVXTnuFbqyT/cq6WfQU07NAOy9aMVfwf4Z0hGMqOgtAaG6NMLn7I0DqWLx9d
-        eEFeU4XjzM5SxFTWptTd+Br948eosJb9Z7UT+kEGBfq2Jgdp0e2kYO1FgLdTTi953Z3ksnN9Zqpul
-        XYkFLuUYbfMW4VtgKcxitEJ+DXgtFDwZFmurAwegpNCY9ah/GNZisu42yKikp+85qRskGCN64EEBM
-        bVtQaWREn4TNupVNSdeFfBkmpEGsBHZSqLDqsJsi3b/THYTeuzRGJdY6k6bfPKaUGXAayc9tJCh+N
-        UzRjMgGw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33148 helo=rmk-PC.armlinux.org.uk)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <rmk@armlinux.org.uk>)
-        id 1oZDoJ-0006wx-1V; Fri, 16 Sep 2022 17:03:23 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-        id 1oZDoI-0077b3-Dd; Fri, 16 Sep 2022 17:03:22 +0100
-In-Reply-To: <YySd3pASZKUh4leX@shell.armlinux.org.uk>
-References: <YySd3pASZKUh4leX@shell.armlinux.org.uk>
-From:   Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>, asahi@lists.linux.dev,
-        brcm80211-dev-list.pdl@broadcom.com,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-        Hector Martin <marcan@marcan.st>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Rafa__ Mi__ecki" <zajec5@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>
-Subject: [PATCH wireless-next v3 12/12] arm64: dts: apple: Add WiFi module and
- antenna properties
+        Fri, 16 Sep 2022 12:47:03 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A72A6ADD
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 09:47:02 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28GG31m7021724;
+        Fri, 16 Sep 2022 16:46:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=zqi4EV6qPnp3p1tyr1Elb5opL0fitFGRnaLyZHpX6BE=;
+ b=DXiasinW6rOpdqMq8IsLWaUEeJa6fsSOv4jwU2EDtFKRFB2vUVsykcXAqq93j4tb/A86
+ s06uMPsuIP31zcv12JuuakR6/54MRfTudEsiRLMJOwWXYKi6HRYVrYEmVQEAHaq22CK4
+ mwG6n4EtogHqv2YiKgJaxCTZOgrfAv6Ysu/CGVutwrc2GfaB3V8M6qucJW7uh2RulqzZ
+ bvlvSI51gg2203FuG/FszxObirdAo30HP0b/qLcjpt9N/Xpre+GjIcWAU2EsbSjw6Vz7
+ rov/Euml0A4qcA70AUicxV1EnDN9jFdp5/Na+vTwWZcYybsbKU4gFsTL4J4qq53zP3it Dg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jm9m1bqwj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 16 Sep 2022 16:46:45 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28GGPtdd017565
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 16 Sep 2022 16:25:55 GMT
+Received: from [10.110.7.80] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 16 Sep
+ 2022 09:25:54 -0700
+Message-ID: <29fe28db-622d-7784-128f-8ec6b4d5a0a3@quicinc.com>
+Date:   Fri, 16 Sep 2022 09:25:53 -0700
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1oZDoI-0077b3-Dd@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date:   Fri, 16 Sep 2022 17:03:22 +0100
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH] wifi: mac80211: Align with Draft P802.11be_D1.5
+Content-Language: en-US
+To:     Howard Hsu <howard-yh.hsu@mediatek.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <20220916141700.28378-1-howard-yh.hsu@mediatek.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220916141700.28378-1-howard-yh.hsu@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Z8WkJoe3Q_HbCQjLdR0s1q1VDCN9qXGy
+X-Proofpoint-GUID: Z8WkJoe3Q_HbCQjLdR0s1q1VDCN9qXGy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-16_10,2022-09-16_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209160123
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Hector Martin <marcan@marcan.st>
+On 9/16/2022 7:17 AM, Howard Hsu wrote:
+> Fix ieee80211_prep_channel to aligh with Draft P80211.be_D1.5. It shall
 
-Add the new module-instance/antenna-sku properties required to select
-WiFi firmwares properly to all board device trees.
+s/aligh/align/
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Reviewed-by: Mark Kettenis <kettenis@openbsd.org>
-Acked-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- arch/arm64/boot/dts/apple/t8103-j274.dts  | 4 ++++
- arch/arm64/boot/dts/apple/t8103-j293.dts  | 4 ++++
- arch/arm64/boot/dts/apple/t8103-j313.dts  | 4 ++++
- arch/arm64/boot/dts/apple/t8103-j456.dts  | 4 ++++
- arch/arm64/boot/dts/apple/t8103-j457.dts  | 4 ++++
- arch/arm64/boot/dts/apple/t8103-jxxx.dtsi | 2 ++
- 6 files changed, 22 insertions(+)
+why refer to D1.5? Current code is using D2.0 definitions.
 
-diff --git a/arch/arm64/boot/dts/apple/t8103-j274.dts b/arch/arm64/boot/dts/apple/t8103-j274.dts
-index 2cd429efba5b..c1f3ba9c39f6 100644
---- a/arch/arm64/boot/dts/apple/t8103-j274.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j274.dts
-@@ -21,6 +21,10 @@ aliases {
- 	};
- };
- 
-+&wifi0 {
-+	brcm,board-type = "apple,atlantisb";
-+};
-+
- /*
-  * Force the bus number assignments so that we can declare some of the
-  * on-board devices and properties that are populated by the bootloader
-diff --git a/arch/arm64/boot/dts/apple/t8103-j293.dts b/arch/arm64/boot/dts/apple/t8103-j293.dts
-index 49cdf4b560a3..ecb10d237a05 100644
---- a/arch/arm64/boot/dts/apple/t8103-j293.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j293.dts
-@@ -17,6 +17,10 @@ / {
- 	model = "Apple MacBook Pro (13-inch, M1, 2020)";
- };
- 
-+&wifi0 {
-+	brcm,board-type = "apple,honshu";
-+};
-+
- /*
-  * Remove unused PCIe ports and disable the associated DARTs.
-  */
-diff --git a/arch/arm64/boot/dts/apple/t8103-j313.dts b/arch/arm64/boot/dts/apple/t8103-j313.dts
-index b0ebb45bdb6f..df741737b8e6 100644
---- a/arch/arm64/boot/dts/apple/t8103-j313.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j313.dts
-@@ -17,6 +17,10 @@ / {
- 	model = "Apple MacBook Air (M1, 2020)";
- };
- 
-+&wifi0 {
-+	brcm,board-type = "apple,shikoku";
-+};
-+
- /*
-  * Remove unused PCIe ports and disable the associated DARTs.
-  */
-diff --git a/arch/arm64/boot/dts/apple/t8103-j456.dts b/arch/arm64/boot/dts/apple/t8103-j456.dts
-index 884fddf7d363..8c6bf9592510 100644
---- a/arch/arm64/boot/dts/apple/t8103-j456.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j456.dts
-@@ -21,6 +21,10 @@ aliases {
- 	};
- };
- 
-+&wifi0 {
-+	brcm,board-type = "apple,capri";
-+};
-+
- &i2c0 {
- 	hpm2: usb-pd@3b {
- 		compatible = "apple,cd321x";
-diff --git a/arch/arm64/boot/dts/apple/t8103-j457.dts b/arch/arm64/boot/dts/apple/t8103-j457.dts
-index d7c622931627..fe7c0aaf7d62 100644
---- a/arch/arm64/boot/dts/apple/t8103-j457.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j457.dts
-@@ -21,6 +21,10 @@ aliases {
- 	};
- };
- 
-+&wifi0 {
-+	brcm,board-type = "apple,santorini";
-+};
-+
- /*
-  * Force the bus number assignments so that we can declare some of the
-  * on-board devices and properties that are populated by the bootloader
-diff --git a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
-index fe2ae40fa9dd..3d15b8e2a6c1 100644
---- a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
-+++ b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
-@@ -71,8 +71,10 @@ hpm1: usb-pd@3f {
- &port00 {
- 	bus-range = <1 1>;
- 	wifi0: network@0,0 {
-+		compatible = "pci14e4,4425";
- 		reg = <0x10000 0x0 0x0 0x0 0x0>;
- 		/* To be filled by the loader */
- 		local-mac-address = [00 00 00 00 00 00];
-+		apple,antenna-sku = "XX";
- 	};
- };
--- 
-2.30.2
+further note it seems at some point we should move all definitions to 
+D2.1 (in which case EHT operation information is now at offset 8 of the 
+EHT operation element)
+
+
+
+> shift 4 byte to fetch EHT Operation information.
+> 
+> Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+> ---
+>   net/mac80211/mlme.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index ff449e0c2e62..9bb085eab12a 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -4735,7 +4735,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+>   						   cbss_ies->data, cbss_ies->len);
+>   		if (eht_oper_ie && eht_oper_ie[1] >=
+>   		    1 + sizeof(struct ieee80211_eht_operation))
+> -			eht_oper = (void *)(eht_oper_ie + 3);
+> +			eht_oper = (void *)(eht_oper_ie + 4);
+>   		else
+>   			eht_oper = NULL;
+>   	}
 
