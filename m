@@ -2,57 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 376455BA66E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 07:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208865BA675
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 07:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbiIPFlA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Sep 2022 01:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
+        id S229685AbiIPFoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Sep 2022 01:44:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229916AbiIPFk7 (ORCPT
+        with ESMTP id S229613AbiIPFoc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Sep 2022 01:40:59 -0400
+        Fri, 16 Sep 2022 01:44:32 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC3FC7FE58
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 22:40:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3BDF5E669
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Sep 2022 22:44:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5CFCAB8235A
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 05:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868FBC433D6;
-        Fri, 16 Sep 2022 05:40:46 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B4D9BB8235A
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Sep 2022 05:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3E4C433D6;
+        Fri, 16 Sep 2022 05:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663306851;
-        bh=0Ry4wH5Rz2WvxH+iMDnYDOverOqyXZxPcfiZSKnbpFw=;
+        s=k20201202; t=1663307063;
+        bh=R1S8FgHayaYhk3ltK1TLwAkBP0yqIaxNrzlMpbcUWqg=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=I0LerziGGTBlBA+grbLxwWaw/+uToo+hb7gYV5vrH53HX7L8ZqIea/e5iXFK0EofE
-         733k1aQ5BUULc5vhp8A2sqE8t6XLxfiflIiLSheXtIikJimlAh+wD2C5QXnegLFKde
-         /ul6kzR9ee458xTn/J0aG6bb5rzmCTDiWT8RBo9ave9oMcAZHR0wG9TEeUcHfp5XFG
-         4RzoryrXu06YKY0ESVHTTCd9eDxmTwv5hEw4nW0rUUuH2vOXwGrQLEJxy/bmOmkedv
-         BDmo3PkiW6ovgcVhOY9doghazpEAhljTHU3KzDmN4/o1bN7K4dNVBD1I6BnEL6Yf4m
-         nhE6qz39Z/NBw==
+        b=QKl9K0Dz71ZfLtqU4u8YitF/WPfWLWa7TFVLgzHQdUtRxUSQ18Av8t4uJUr9a7JUI
+         kr7koPLdwBoqYv0aBKI/WtVnYEEYvT6uEMWo2VFlaBpE7G+uUXMsMLY8Pk6hBWwoWC
+         JvxJlwUTGI8FoDjs1rPGGF5Cd9FGlpt7nu6uKCPPEZqHyhM1+6Q6QXTrgetu0UTlsz
+         trl589AeiOZvbUXDh+4DgBJt3fpv5Pgq4mnvhY0KmpD7Fsj11Z6U7N/ajGEBMRPt2x
+         Isj896uSB/Qnc4F7vEVuM0hxxsi89PntE1yB3YZG2sNAsppgbk5QSaJ00LEk5xbs4s
+         dC70oGzlyDsXg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     <sean.wang@mediatek.com>
-Cc:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
-        <steve.lee@mediatek.com>, <jsiuda@google.com>,
-        <frankgor@google.com>, <kuabhs@google.com>, <druth@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v3] mt76: mt7921: fix antenna signal are way off in monitor mode
-References: <e987d8149d6e00b2bec979a343681ddedea3c347.1663288354.git.objelf@gmail.com>
-Date:   Fri, 16 Sep 2022 08:40:40 +0300
-In-Reply-To: <e987d8149d6e00b2bec979a343681ddedea3c347.1663288354.git.objelf@gmail.com>
-        (sean wang's message of "Fri, 16 Sep 2022 08:39:19 +0800")
-Message-ID: <87tu57anc7.fsf@kernel.org>
+To:     James Prestwood <prestwoj@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] net: mac80211: remove/avoid misleading prints
+References: <20220915195553.1052931-1-prestwoj@gmail.com>
+Date:   Fri, 16 Sep 2022 08:44:17 +0300
+In-Reply-To: <20220915195553.1052931-1-prestwoj@gmail.com> (James Prestwood's
+        message of "Thu, 15 Sep 2022 12:55:53 -0700")
+Message-ID: <87pmfvan66.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -65,23 +53,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<sean.wang@mediatek.com> writes:
+James Prestwood <prestwoj@gmail.com> writes:
 
-> From: Sean Wang <sean.wang@mediatek.com>
+> At some point a few kernel debug prints started appearing which
+> indicated something was sending invalid IEs:
 >
-> Group 3 in RxD is disabled in monitor mode. We should use the group 5 in
-> RxD instead to fix antenna signal way off issue, e.g we would see the
-> incorrect antenna signal value in wireshark. On the other hand, Group 5
-> wouldn't be used in STA or AP mode, so the patch shouldn't cause any
-> harm to those modes.
+> "bad VHT capabilities, disabling VHT"
+> "Invalid HE elem, Disable HE"
 >
-> Fixes: cbaa0a404f8d ("mt76: mt7921: fix up the monitor mode")
-> Reported-by: Adrian Granados <agranados@gmail.com>
-> Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Turns out these were being printed because the local hardware
+> supported HE/VHT but the peer/AP did not. Bad/invalid indicates,
+> to me at least, that the IE is in some way malformed, not missing.
+>
+> For the HE print (ieee80211_verify_peer_he_mcs_support) it will
+> now silently fail if the HE capability element is missing (still
+> prints if the element size is wrong).
+>
+> For the VHT print, it has been removed completely and will silently
+> set the DISABLE_VHT flag which is consistent with how DISABLE_HT
+> is set.
+>
+> Signed-off-by: James Prestwood <prestwoj@gmail.com>
 
-The title is missing "wifi:".
+This has been cluttering my test logs as well, thanks for fixing this.
+But the title should be:
+
+wifi: mac80211: remove/avoid misleading prints
+
+I assume Johannes can fix it during commit.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
