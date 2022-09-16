@@ -2,100 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 982925BA6D8
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 08:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E17725BA772
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Sep 2022 09:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbiIPGa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Sep 2022 02:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40076 "EHLO
+        id S230061AbiIPH1k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Sep 2022 03:27:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbiIPGax (ORCPT
+        with ESMTP id S229994AbiIPH1i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Sep 2022 02:30:53 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFDA75467A;
-        Thu, 15 Sep 2022 23:30:52 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id p1-20020a17090a2d8100b0020040a3f75eso19434248pjd.4;
-        Thu, 15 Sep 2022 23:30:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=kh3qx/CMyciqDvsEcGf9GgOfMAvKQrxqFwrNuTVKiI8=;
-        b=XW6yjn79h0txPYQ9/waG7CV5bMeEwTtTaiBKevHif29ILiLR20UjPv3KQS+oT+nd5/
-         ZjYRf16T2UBs8T31VKkOO4l3/SrANUR9YnMK3rEft3gdxLgS84LQfYa8fhy3Qq7rdFuq
-         Bh4xgi/5/kwA6Y2t3ydDleZ1/Z0X39ewF1DMgkJnzTrt6wacqyVjsI7j7V/GK7zC12ou
-         PlxzKimu1wYdjIQb68jJ7KhIY1CgkJV/3jibe6ptAVZELf0L/pn6vQQI6JSJj4KVs+wu
-         Se+PYnSxhjO3Lu3ZzLSXXRFmpn0Du5rUbmO3OA87QaUJdj/jkd89YnKGVjSRMKeh98nA
-         sVIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=kh3qx/CMyciqDvsEcGf9GgOfMAvKQrxqFwrNuTVKiI8=;
-        b=JotUgCqtddftZgWtUc9E5fJnhP9OkZCyqL3Eb1QHfdy42lAo4TNSDoNVf3acvqW7o7
-         K3rdU6vi6rBoepDLUd3BTR3eeF+Pwc+R5cLt1fSb4rw6n8LFrmYFzeoBLELKqRbrh1y1
-         8dCp+mmH2bt1BB0AoX3/cgQASJykrRDDxoEEmzU0eEFvWfNoVBHgA7cm05BwYrBQcXuQ
-         zMg/60HunI1Yvg7VRfkOc951BjK7KTfFVy8qXgdnB1MrkGR8vIpKUFDrDxwV06JEGp8s
-         0zleyhMpcPR1DPmjsn9I/M6cYm49XrcdqgiLOvB2XEpxJbz+f0X6R6XHZStKhofXr0pJ
-         PkXg==
-X-Gm-Message-State: ACrzQf2sYNlCVDu0gspsY9B15ol3AGvrQyHlB/ZVq4SW3j9ceozKItAs
-        OWFZBG2hjiIe0LmvmDhTL6A39QUyWHg=
-X-Google-Smtp-Source: AMsMyM5/iWsbG6Wc9fZRTipzPEu0saoviPmDVg/k4+GI+qrAZV9o7/wtqE6vvIKNM4CtsqFyurCszw==
-X-Received: by 2002:a17:90b:180a:b0:202:ae1f:328a with SMTP id lw10-20020a17090b180a00b00202ae1f328amr14957464pjb.78.1663309852099;
-        Thu, 15 Sep 2022 23:30:52 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id b9-20020a170902d40900b0016bedcced2fsm13927410ple.35.2022.09.15.23.30.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Sep 2022 23:30:51 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     chunkeey@googlemail.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] carl9170: use strscpy() is more robust and safer
-Date:   Fri, 16 Sep 2022 06:30:47 +0000
-Message-Id: <20220916063047.155021-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        Fri, 16 Sep 2022 03:27:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E232ACC;
+        Fri, 16 Sep 2022 00:27:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 560A4628CB;
+        Fri, 16 Sep 2022 07:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D51CC433D6;
+        Fri, 16 Sep 2022 07:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663313256;
+        bh=2WqayeGnpq9LSlXKGZr91PvrT3313VfKYLAgW4Oxn7E=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GOMH1U1yysGahJvuCohw4unZCtzL6fWPSCwN9QJUNaioNQHLiTUIqvlgXLuQo2iO4
+         22cLwZ3dWZGwom8NwMqZBr4JKU3CZ9wCqJaH5M32eF+mXDsfMPfP7MvYWirue+AJmy
+         V+G8dSXisy5RFmpsl3TLj1QhL2zprt59yEmBPCQgQHssceqaZapkOg+4W6srX8+G5Y
+         65xDYMYLRKw8VkDZmneWIPxg1elIbEKHgnKS5uJ+c3WPA2ybndouQ5H0K7JApu8OAq
+         BmzGJDJ0tv9Uu9eL8AiQ/EpY5i76xzLRgdnDIHD8WfKd0sSi3+eatvqZ7JyxVNrw4i
+         +0IXM5lYPeYrA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Russell King \(Oracle\)" <linux@armlinux.org.uk>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Hector Martin <marcan@marcan.st>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rafa__ Mi__ecki <zajec5@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>
+Subject: Re: [PATCH net-next 12/12] arm64: dts: apple: Add WiFi module and antenna properties
+References: <YxhMaYOfnM+7FG+W@shell.armlinux.org.uk>
+        <E1oVpne-005LCR-RJ@rmk-PC.armlinux.org.uk> <87zgfb8uqx.fsf@kernel.org>
+        <YyCvkrDgsFLYNZ9t@shell.armlinux.org.uk>
+Date:   Fri, 16 Sep 2022 10:27:31 +0300
+In-Reply-To: <YyCvkrDgsFLYNZ9t@shell.armlinux.org.uk> (Russell King's message
+        of "Tue, 13 Sep 2022 17:28:02 +0100")
+Message-ID: <87edwbaie4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+"Russell King (Oracle)" <linux@armlinux.org.uk> writes:
 
-The implementation of strscpy() is more robust and safer.
+> On Wed, Sep 07, 2022 at 11:16:22AM +0300, Kalle Valo wrote:
+>> Russell King (Oracle) <rmk+kernel@armlinux.org.uk> writes:
+>> 
+>> > From: Hector Martin <marcan@marcan.st>
+>> >
+>> > Add the new module-instance/antenna-sku properties required to select
+>> > WiFi firmwares properly to all board device trees.
+>> >
+>> > Signed-off-by: Hector Martin <marcan@marcan.st>
+>> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+>> > ---
+>> >  arch/arm64/boot/dts/apple/t8103-j274.dts  | 4 ++++
+>> >  arch/arm64/boot/dts/apple/t8103-j293.dts  | 4 ++++
+>> >  arch/arm64/boot/dts/apple/t8103-j313.dts  | 4 ++++
+>> >  arch/arm64/boot/dts/apple/t8103-j456.dts  | 4 ++++
+>> >  arch/arm64/boot/dts/apple/t8103-j457.dts  | 4 ++++
+>> >  arch/arm64/boot/dts/apple/t8103-jxxx.dtsi | 2 ++
+>> >  6 files changed, 22 insertions(+)
+>> 
+>> Is it ok to take this via wireless-next? Can I get an ack from the
+>> maintainers of these files?
+>
+> I'm not sure who you're expecting to get an ack from.
 
-That's now the recommended way to copy NUL terminated strings.
+The problem is that I don't know how .dts files are merged, that's why
+I'm extra careful that I'm not breaking the normal flow for them.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
----
- drivers/net/wireless/ath/carl9170/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> If it's the maintainers of these files, that'll be Hector himself, and
+> as he authored the change, there seems to be little point in also
+> having an Acked-by from him too.
+>
+> I just asked Hector on #asahi-dev:
+> 17:21 < rmk> also, I think Kalle Valo is waiting on an answer on the arm64 DTS
+>              changes for brcmfmac:
+> 17:21 < rmk> Is it ok to take this via wireless-next? Can I get an ack from the
+> 17:21 < rmk> maintainers of these files?
+> 17:21 <@marcan> ah yeah, merging via wireless-next is fine, let me give you an
+>                 ack
 
-diff --git a/drivers/net/wireless/ath/carl9170/fw.c b/drivers/net/wireless/ath/carl9170/fw.c
-index 1ab09e1c9ec5..4c1aecd1163c 100644
---- a/drivers/net/wireless/ath/carl9170/fw.c
-+++ b/drivers/net/wireless/ath/carl9170/fw.c
-@@ -105,7 +105,7 @@ static void carl9170_fw_info(struct ar9170 *ar)
- 			 CARL9170FW_GET_MONTH(fw_date),
- 			 CARL9170FW_GET_DAY(fw_date));
- 
--		strlcpy(ar->hw->wiphy->fw_version, motd_desc->release,
-+		strscpy(ar->hw->wiphy->fw_version, motd_desc->release,
- 			sizeof(ar->hw->wiphy->fw_version));
- 	}
- }
+That sounds good to me, thanks!
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
