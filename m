@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A83B5BB984
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 18:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B6405BB985
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 18:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbiIQQpI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Sep 2022 12:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46884 "EHLO
+        id S229524AbiIQQpd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Sep 2022 12:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbiIQQpH (ORCPT
+        with ESMTP id S229501AbiIQQpc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Sep 2022 12:45:07 -0400
+        Sat, 17 Sep 2022 12:45:32 -0400
 Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5AA1EEFF
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Sep 2022 09:45:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E2A02F029
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Sep 2022 09:45:30 -0700 (PDT)
 Received: from local
         by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
          (Exim 4.96)
         (envelope-from <daniel@makrotopia.org>)
-        id 1oZawB-0002dD-2Q;
-        Sat, 17 Sep 2022 18:45:04 +0200
-Date:   Sat, 17 Sep 2022 17:44:58 +0100
+        id 1oZawb-0002dY-14;
+        Sat, 17 Sep 2022 18:45:29 +0200
+Date:   Sat, 17 Sep 2022 17:45:23 +0100
 From:   Daniel Golle <daniel@makrotopia.org>
 To:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
         Helmut Schaa <helmut.schaa@googlemail.com>
@@ -31,12 +31,13 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 02/16] rt2x00: add throughput LED trigger
-Message-ID: <0fd3eebb55fa9e65c01292a1a86021f783799d7a.1663431288.git.daniel@makrotopia.org>
+Subject: [PATCH v2 03/16] rt2x00: add support for external PA on MT7620
+Message-ID: <d0b599e8a8331d81d07df32b63a84c8fe5af1929.1663431288.git.daniel@makrotopia.org>
 References: <cover.1663431288.git.daniel@makrotopia.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1663431288.git.daniel@makrotopia.org>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -46,56 +47,106 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: David Bauer <mail@david-bauer.net>
+Implement support for external PA connected to MT7620A.
 
-This adds a (currently missing) throughput LED trigger for the rt2x00
-driver. Previously, LED triggers had to be assigned to the netdev, which
-was limited to a single VAP.
-
-Tested-by: Christoph Krapp <achterin@googlemail.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: Tomislav Požega <pozega.tomislav@gmail.com>
+[pozega.tomislav@gmail.com: use chanreg and dccal helpers.]
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2800.h   |  1 +
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 52 ++++++++++++++++++-
+ 2 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index e95c101c271113..3a035afcf7f99c 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -1093,6 +1093,19 @@ static void rt2x00lib_remove_hw(struct rt2x00_dev *rt2x00dev)
- 	kfree(rt2x00dev->spec.channels_info);
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800.h b/drivers/net/wireless/ralink/rt2x00/rt2800.h
+index d758e887445783..431502021dc2fe 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800.h
+@@ -2739,6 +2739,7 @@ enum rt2800_eeprom_word {
+ #define EEPROM_NIC_CONF2_RX_STREAM	FIELD16(0x000f)
+ #define EEPROM_NIC_CONF2_TX_STREAM	FIELD16(0x00f0)
+ #define EEPROM_NIC_CONF2_CRYSTAL	FIELD16(0x0600)
++#define EEPROM_NIC_CONF2_EXTERNAL_PA	FIELD16(0x8000)
+ 
+ /*
+  * EEPROM LNA
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index cc9c5554fdc9ca..b34453bd87174f 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -4368,6 +4368,43 @@ static void rt2800_config_channel(struct rt2x00_dev *rt2x00dev,
+ 		rt2800_iq_calibrate(rt2x00dev, rf->channel);
+ 	}
+ 
++	if (rt2x00_rt(rt2x00dev, RT6352)) {
++		if (test_bit(CAPABILITY_EXTERNAL_PA_TX0,
++			     &rt2x00dev->cap_flags)) {
++			reg = rt2800_register_read(rt2x00dev, RF_CONTROL3);
++			reg |= 0x00000101;
++			rt2800_register_write(rt2x00dev, RF_CONTROL3, reg);
++
++			reg = rt2800_register_read(rt2x00dev, RF_BYPASS3);
++			reg |= 0x00000101;
++			rt2800_register_write(rt2x00dev, RF_BYPASS3, reg);
++
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 43, 0x73);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 44, 0x73);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 45, 0x73);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 46, 0x27);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 47, 0xC8);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 48, 0xA4);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 49, 0x05);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 54, 0x27);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 55, 0xC8);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 56, 0xA4);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 57, 0x05);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 58, 0x27);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 59, 0xC8);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 60, 0xA4);
++			rt2800_rfcsr_write_chanreg(rt2x00dev, 61, 0x05);
++			rt2800_rfcsr_write_dccal(rt2x00dev, 05, 0x00);
++
++			rt2800_register_write(rt2x00dev, TX0_RF_GAIN_CORRECT,
++					      0x36303636);
++			rt2800_register_write(rt2x00dev, TX0_RF_GAIN_ATTEN,
++					      0x6C6C6B6C);
++			rt2800_register_write(rt2x00dev, TX1_RF_GAIN_ATTEN,
++					      0x6C6C6B6C);
++		}
++	}
++
+ 	bbp = rt2800_bbp_read(rt2x00dev, 4);
+ 	rt2x00_set_field8(&bbp, BBP4_BANDWIDTH, 2 * conf_is_ht40(conf));
+ 	rt2800_bbp_write(rt2x00dev, 4, bbp);
+@@ -9566,7 +9603,8 @@ static int rt2800_init_eeprom(struct rt2x00_dev *rt2x00dev)
+ 	 */
+ 	eeprom = rt2800_eeprom_read(rt2x00dev, EEPROM_NIC_CONF1);
+ 
+-	if (rt2x00_rt(rt2x00dev, RT3352)) {
++	if (rt2x00_rt(rt2x00dev, RT3352) ||
++	    rt2x00_rt(rt2x00dev, RT6352)) {
+ 		if (rt2x00_get_field16(eeprom,
+ 		    EEPROM_NIC_CONF1_EXTERNAL_TX0_PA_3352))
+ 		    __set_bit(CAPABILITY_EXTERNAL_PA_TX0,
+@@ -9577,6 +9615,18 @@ static int rt2800_init_eeprom(struct rt2x00_dev *rt2x00dev)
+ 			      &rt2x00dev->cap_flags);
+ 	}
+ 
++	eeprom = rt2800_eeprom_read(rt2x00dev, EEPROM_NIC_CONF2);
++
++	if (rt2x00_rt(rt2x00dev, RT6352) && eeprom != 0 && eeprom != 0xffff) {
++		if (!rt2x00_get_field16(eeprom,
++					EEPROM_NIC_CONF2_EXTERNAL_PA)) {
++			__clear_bit(CAPABILITY_EXTERNAL_PA_TX0,
++				    &rt2x00dev->cap_flags);
++			__clear_bit(CAPABILITY_EXTERNAL_PA_TX1,
++				    &rt2x00dev->cap_flags);
++		}
++	}
++
+ 	return 0;
  }
  
-+static const struct ieee80211_tpt_blink rt2x00_tpt_blink[] = {
-+	{ .throughput = 0 * 1024, .blink_time = 334 },
-+	{ .throughput = 1 * 1024, .blink_time = 260 },
-+	{ .throughput = 2 * 1024, .blink_time = 220 },
-+	{ .throughput = 5 * 1024, .blink_time = 190 },
-+	{ .throughput = 10 * 1024, .blink_time = 170 },
-+	{ .throughput = 25 * 1024, .blink_time = 150 },
-+	{ .throughput = 54 * 1024, .blink_time = 130 },
-+	{ .throughput = 120 * 1024, .blink_time = 110 },
-+	{ .throughput = 265 * 1024, .blink_time = 80 },
-+	{ .throughput = 586 * 1024, .blink_time = 50 },
-+};
-+
- static int rt2x00lib_probe_hw(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
-@@ -1174,6 +1187,11 @@ static int rt2x00lib_probe_hw(struct rt2x00_dev *rt2x00dev)
- 
- #undef RT2X00_TASKLET_INIT
- 
-+	ieee80211_create_tpt_led_trigger(rt2x00dev->hw,
-+					 IEEE80211_TPT_LEDTRIG_FL_RADIO,
-+					 rt2x00_tpt_blink,
-+					 ARRAY_SIZE(rt2x00_tpt_blink));
-+
- 	/*
- 	 * Register HW.
- 	 */
 -- 
 2.37.3
 
