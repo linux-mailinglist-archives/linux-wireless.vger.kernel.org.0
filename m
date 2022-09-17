@@ -2,169 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F215BB8DC
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 16:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BBA5BB980
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 18:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbiIQOuE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Sep 2022 10:50:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
+        id S229484AbiIQQn7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Sep 2022 12:43:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbiIQOuD (ORCPT
+        with ESMTP id S229501AbiIQQn6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Sep 2022 10:50:03 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681671277C
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Sep 2022 07:50:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663426202; x=1694962202;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Cr1wgj8QaEilsSF87VZTrjUdwycUY+q/4Sn13bLXrf4=;
-  b=gJzW3Ja4AF8eUvX/ORJBSl/mNz7jT/81hC26A4L6rH7+RNoW8Xn61nwC
-   Qt7L4IFwlEkgBNRrqY6lbRm5UhJ3TDeg17moXSm2nMg+d4rWKmzRRTx73
-   vEKXczESNTDDeNr4KhVqvyp+WRBN+IDJmfnbI1OP7Nqw56gl5YzJXbE32
-   Y4p8RjDqv1CoDyQgj1ZE1RMoqLyOPJ35isHTZXbWgD+h7I/AIZH5RkDw8
-   diJFrTpOamiJm8IpOCsqNOmgpx6MFgJpS1Zt/wlmjvWcyotsTT0E4QKqI
-   LW4pIMYvudHJk2mZfy2YzdFOyyp2TkQJhU2uWZq1WOFzS8kbl8SsaiG7j
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10473"; a="299150589"
-X-IronPort-AV: E=Sophos;i="5.93,323,1654585200"; 
-   d="scan'208";a="299150589"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2022 07:50:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,323,1654585200"; 
-   d="scan'208";a="569144060"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 17 Sep 2022 07:50:00 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oZZ8p-0000PX-1f;
-        Sat, 17 Sep 2022 14:49:59 +0000
-Date:   Sat, 17 Sep 2022 22:49:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jun Yu <junyuu@chromium.org>, ath11k@lists.infradead.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-wireless@vger.kernel.org, Jun Yu <junyuu@chromium.org>
-Subject: Re: [PATCH] wifi: ath11k: retrieve MAC address from system firmware
- if provided
-Message-ID: <202209172236.KWe4R2Dm-lkp@intel.com>
-References: <20220914215408.372520-1-junyuu@chromium.org>
+        Sat, 17 Sep 2022 12:43:58 -0400
+Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D6730575
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Sep 2022 09:43:56 -0700 (PDT)
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.96)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1oZav1-0002cP-0P;
+        Sat, 17 Sep 2022 18:43:51 +0200
+Date:   Sat, 17 Sep 2022 17:43:44 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2 00/16] rt2x00: OpenWrt patches improving MT7620
+Message-ID: <cover.1663431288.git.daniel@makrotopia.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220914215408.372520-1-junyuu@chromium.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jun,
+Over the years we have been accumulating a number of patches improving
+support for the IEEE 802.11bgn 2T2R wireless interface built into the
+MediaTek MT7620 MIPS SoCs. Many of them have not been in shape for
+being submitted to Linux and changes were needed to make checkpatch.pl
+all happy. Now they look as good as it gets, given that most code deals
+with undocumented registers and was adapted from the vendor driver.
 
-Thank you for the patch! Yet something to improve:
+Patch 1/1 also has been previously submitted and then (imho wrongly)
+rejected, so I've included it in this series.
 
-[auto build test ERROR on kvalo-ath/ath-next]
-[also build test ERROR on wireless/main wireless-next/main linus/master v6.0-rc5 next-20220916]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Alltogether rt2x00 now performs almost as good as the vendor driver,
+see benchmark of HT20 client below:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Yu/wifi-ath11k-retrieve-MAC-address-from-system-firmware-if-provided/20220915-055714
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git ath-next
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20220917/202209172236.KWe4R2Dm-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/7a1539aed9ed31bd3b93c177abda0a2f4fea3945
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Jun-Yu/wifi-ath11k-retrieve-MAC-address-from-system-firmware-if-provided/20220915-055714
-        git checkout 7a1539aed9ed31bd3b93c177abda0a2f4fea3945
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
+Accepted connection from 192.168.5.133, port 37382
+[  5] local 192.168.5.175 port 5201 connected to 192.168.5.133 port 37384
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  9.57 MBytes  80.3 Mbits/sec
+[  5]   1.00-2.00   sec  9.68 MBytes  81.2 Mbits/sec
+[  5]   2.00-3.00   sec  9.98 MBytes  83.7 Mbits/sec
+[  5]   3.00-4.00   sec  9.72 MBytes  81.6 Mbits/sec
+[  5]   4.00-5.00   sec  9.49 MBytes  79.6 Mbits/sec
+[  5]   5.00-6.00   sec  9.88 MBytes  82.9 Mbits/sec
+[  5]   6.00-7.00   sec  9.76 MBytes  81.8 Mbits/sec
+[  5]   7.00-8.00   sec  9.96 MBytes  83.6 Mbits/sec
+[  5]   8.00-9.00   sec  9.76 MBytes  81.9 Mbits/sec
+[  5]   9.00-10.00  sec  9.86 MBytes  82.7 Mbits/sec
+[  5]  10.00-10.03  sec   243 KBytes  78.4 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.03  sec  97.9 MBytes  81.9 Mbits/sec                  receiver
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Accepted connection from 192.168.5.133, port 49588
+[  5] local 192.168.5.175 port 5201 connected to 192.168.5.133 port 49598
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  12.7 MBytes   106 Mbits/sec    0    557 KBytes
+[  5]   1.00-2.00   sec  11.1 MBytes  93.0 Mbits/sec    0   1020 KBytes
+[  5]   2.00-3.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.57 MBytes
+[  5]   3.00-4.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.58 MBytes
+[  5]   4.00-5.00   sec  10.0 MBytes  83.9 Mbits/sec    0   1.58 MBytes
+[  5]   5.00-6.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.58 MBytes
+[  5]   6.00-7.00   sec  11.2 MBytes  94.4 Mbits/sec    0   1.58 MBytes
+[  5]   7.00-8.00   sec  10.0 MBytes  83.9 Mbits/sec    0   1.58 MBytes
+[  5]   8.00-9.00   sec  12.5 MBytes   105 Mbits/sec    0   1.58 MBytes
+[  5]   9.00-10.00  sec  10.0 MBytes  83.9 Mbits/sec    0   1.58 MBytes
+[  5]  10.00-10.03  sec  1.25 MBytes   381 Mbits/sec    0   1.58 MBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.03  sec   112 MBytes  94.1 Mbits/sec    0             sender
 
-All errors (new ones prefixed by >>):
+v2: comments from Stanislaw Gruszka have been addressed.
 
->> drivers/net/wireless/ath/ath11k/mac.c:8999:44: error: too many arguments to function call, expected 2, have 3
-           device_get_mac_address(ab->dev, mac_addr, sizeof(ab->mac_addr));
-           ~~~~~~~~~~~~~~~~~~~~~~                    ^~~~~~~~~~~~~~~~~~~~
-   include/linux/etherdevice.h:35:5: note: 'device_get_mac_address' declared here
-   int device_get_mac_address(struct device *dev, char *addr);
-       ^
-   1 error generated.
+Daniel Golle (8):
+  rt2x00: add support for external PA on MT7620
+  rt2x00: don't run Rt5592 IQ calibration on MT7620
+  rt2x00: move helper functions up in file
+  rt2x00: fix HT20/HT40 bandwidth switch on MT7620
+  rt2x00: set correct TX_SW_CFG1 MAC register for MT7620
+  rt2x00: set VGC gain for both chains of MT7620
+  rt2x00: set SoC wmac clock register
+  rt2x00: correctly set BBP register 86 for MT7620
 
+David Bauer (1):
+  rt2x00: add throughput LED trigger
 
-vim +8999 drivers/net/wireless/ath/ath11k/mac.c
+Tomislav Požega (6):
+  rt2x00: define RF5592 in init_eeprom routine
+  rt2x00: add RF self TXDC calibration for MT7620
+  rt2x00: add r calibration for MT7620
+  rt2x00: add RXDCOC calibration for MT7620
+  rt2x00: add RXIQ calibration for MT7620
+  rt2x00: add TX LOFT calibration for MT7620
 
-  8979	
-  8980	int ath11k_mac_register(struct ath11k_base *ab)
-  8981	{
-  8982		struct ath11k *ar;
-  8983		struct ath11k_pdev *pdev;
-  8984		int i;
-  8985		int ret;
-  8986		u8 mac_addr[ETH_ALEN] = {0};
-  8987	
-  8988		if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
-  8989			return 0;
-  8990	
-  8991		/* Initialize channel counters frequency value in hertz */
-  8992		ab->cc_freq_hz = IPQ8074_CC_FREQ_HERTZ;
-  8993		ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
-  8994	
-  8995		ret = ath11k_peer_rhash_tbl_init(ab);
-  8996		if (ret)
-  8997			return ret;
-  8998	
-> 8999		device_get_mac_address(ab->dev, mac_addr, sizeof(ab->mac_addr));
-  9000	
-  9001		for (i = 0; i < ab->num_radios; i++) {
-  9002			pdev = &ab->pdevs[i];
-  9003			ar = pdev->ar;
-  9004			if (ab->pdevs_macaddr_valid) {
-  9005				ether_addr_copy(ar->mac_addr, pdev->mac_addr);
-  9006			} else {
-  9007				if (is_zero_ether_addr(mac_addr))
-  9008					ether_addr_copy(ar->mac_addr, ab->mac_addr);
-  9009				else
-  9010					ether_addr_copy(ar->mac_addr, mac_addr);
-  9011				ar->mac_addr[4] += i;
-  9012			}
-  9013	
-  9014			idr_init(&ar->txmgmt_idr);
-  9015			spin_lock_init(&ar->txmgmt_idr_lock);
-  9016	
-  9017			ret = __ath11k_mac_register(ar);
-  9018			if (ret)
-  9019				goto err_cleanup;
-  9020	
-  9021			init_waitqueue_head(&ar->txmgmt_empty_waitq);
-  9022		}
-  9023	
-  9024		return 0;
-  9025	
-  9026	err_cleanup:
-  9027		for (i = i - 1; i >= 0; i--) {
-  9028			pdev = &ab->pdevs[i];
-  9029			ar = pdev->ar;
-  9030			__ath11k_mac_unregister(ar);
-  9031		}
-  9032	
-  9033		ath11k_peer_rhash_tbl_destroy(ab);
-  9034	
-  9035		return ret;
-  9036	}
-  9037	
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 1705 ++++++++++++++++-
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |   10 +
+ drivers/net/wireless/ralink/rt2x00/rt2x00.h   |    5 +
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |   18 +
+ 6 files changed, 1787 insertions(+), 25 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.3
+
+
+Daniel Golle (9):
+  rt2x00: add support for external PA on MT7620
+  rt2x00: move up and reuse busy wait functions
+  rt2x00: don't run Rt5592 IQ calibration on MT7620
+  rt2x00: move helper functions up in file
+  rt2x00: fix HT20/HT40 bandwidth switch on MT7620
+  rt2x00: set correct TX_SW_CFG1 MAC register for MT7620
+  rt2x00: set VGC gain for both chains of MT7620
+  rt2x00: set SoC wmac clock register
+  rt2x00: correctly set BBP register 86 for MT7620
+
+David Bauer (1):
+  rt2x00: add throughput LED trigger
+
+Tomislav Požega (6):
+  rt2x00: define RF5592 in init_eeprom routine
+  rt2x00: add RF self TXDC calibration for MT7620
+  rt2x00: add r calibration for MT7620
+  rt2x00: add RXDCOC calibration for MT7620
+  rt2x00: add RXIQ calibration for MT7620
+  rt2x00: add TX LOFT calibration for MT7620
+
+ drivers/net/wireless/ralink/rt2x00/rt2800.h   |    3 +
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 1753 ++++++++++++++++-
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |   10 +
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |   18 +
+ 4 files changed, 1706 insertions(+), 78 deletions(-)
+
+-- 
+2.37.3
+
