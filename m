@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46A105BB833
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 14:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D625BB835
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Sep 2022 14:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229645AbiIQMax (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Sep 2022 08:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58888 "EHLO
+        id S229471AbiIQMbi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Sep 2022 08:31:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbiIQMas (ORCPT
+        with ESMTP id S229505AbiIQMbh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Sep 2022 08:30:48 -0400
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560BF255B0
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Sep 2022 05:30:44 -0700 (PDT)
-Received: (wp-smtpd smtp.wp.pl 2556 invoked from network); 17 Sep 2022 14:30:38 +0200
+        Sat, 17 Sep 2022 08:31:37 -0400
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72BC626574
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Sep 2022 05:31:36 -0700 (PDT)
+Received: (wp-smtpd smtp.wp.pl 3410 invoked from network); 17 Sep 2022 14:31:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1663417840; bh=WYgJejCIjfMwad3LivJDoBXp24ZHJVVK3Fs1is7rEFE=;
+          t=1663417893; bh=ykhellfOivvhmRAj6IyaINw4KkjQ5uGdjyexixGo2IU=;
           h=From:To:Cc:Subject;
-          b=FBj5vOD0Dw5F3QPrg1XGH6xS4xLdpIUQG/Mz6W5IhuajVQYg7syPpN/Q7nJZ9GakY
-           0rKO0GgqtTRwrPiLSHQAfofL/18TADzamrz/gBpmWJvmOGrInzHAGSpdAeGBjH9/Ap
-           Krfk02OB3Dt2XLdStCTMsk9V2OlHjL+/b7KS0QaQ=
+          b=nAmVbu6nZxHkYIZQMMuXisrd68vansUSw9Fe0qkuBpMdaxu7GSSezqrvGVpin1xnc
+           xx9Ihp1G2j2O0/H/BWZcxHaiUvMHLyTGPyOQVWWC1q70OQ7BrGskVm1lrCnxl+0GgT
+           F5m74ywkwBIU7Gc4rxVx8AInKefpsDQqRYdUc6qo=
 Received: from 89-64-7-128.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.7.128])
           (envelope-sender <stf_xl@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <daniel@makrotopia.org>; 17 Sep 2022 14:30:38 +0200
-Date:   Sat, 17 Sep 2022 14:30:33 +0200
+          for <daniel@makrotopia.org>; 17 Sep 2022 14:31:33 +0200
+Date:   Sat, 17 Sep 2022 14:31:33 +0200
 From:   Stanislaw Gruszka <stf_xl@wp.pl>
 To:     Daniel Golle <daniel@makrotopia.org>
 Cc:     linux-wireless@vger.kernel.org,
@@ -37,35 +37,32 @@ Cc:     linux-wireless@vger.kernel.org,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH 02/15] rt2x00: add throughput LED trigger
-Message-ID: <20220917123033.GA17901@wp.pl>
-References: <YyUBBqmK0gzmM1mP@makrotopia.org>
+Subject: Re: [PATCH 03/15] rt2x00: add support for external PA on MT7620
+Message-ID: <20220917123133.GB17901@wp.pl>
+References: <YyUBHg40OUWfuUWD@makrotopia.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YyUBBqmK0gzmM1mP@makrotopia.org>
-X-WP-MailID: 79f9218c485c41f1fd0f838ca0445bab
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YyUBHg40OUWfuUWD@makrotopia.org>
+X-WP-MailID: 8bdb55643a4ab468ac896f8d2da5a9bf
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [kcOk]                               
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-WP-SPAM: NO 0000000 [MeNh]                               
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Sep 17, 2022 at 12:04:38AM +0100, Daniel Golle wrote:
-> From: David Bauer <mail@david-bauer.net>
+On Sat, Sep 17, 2022 at 12:05:02AM +0100, Daniel Golle wrote:
+> Implement support for external PA connected to MT7620A.
 > 
-> This adds a (currently missing) throughput LED trigger for the rt2x00
-> driver. Previously, LED triggers had to be assigned to the netdev, which
-> was limited to a single VAP.
-> 
-> Tested-by: Christoph Krapp <achterin@googlemail.com>
-> Signed-off-by: David Bauer <mail@david-bauer.net>
+> Signed-off-by: Tomislav Požega <pozega.tomislav@gmail.com>
+> [pozega.tomislav@gmail.com: use chanreg and dccal helpers.]
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
 Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-
