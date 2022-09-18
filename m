@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106F85BBDCF
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Sep 2022 14:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30C4D5BBDD1
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Sep 2022 14:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbiIRMlB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Sep 2022 08:41:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36438 "EHLO
+        id S229568AbiIRMmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Sep 2022 08:42:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiIRMlA (ORCPT
+        with ESMTP id S229473AbiIRMma (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Sep 2022 08:41:00 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FB771903C
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 05:40:59 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id kr11so12672905ejc.8
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 05:40:59 -0700 (PDT)
+        Sun, 18 Sep 2022 08:42:30 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0EB61903C
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 05:42:28 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id x94so20261177ede.11
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 05:42:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:cc:references:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=ol3m7tPzMVUdI+Aj6IXO2rMbqkG9zYPIL/c2H+8ACYo=;
-        b=jX0YapcnH8bOld3HtGUAn8SLFJxXpTHwShWEQMhFRhQYYy6MfVPKsLOWp1VrcDpgAK
-         teFbqCNf4ovn5NuacLeow21W/CUY7qoDFFHsO9YAYLDYlRo1euZAPdqxoLL0pSpkoKOJ
-         IrF76TLJlFehrsnrkSIJ1kBj8JEvU/K3kIq2NBWo2KUOW5mUz21fwrv4L2h5HNBM6wh3
-         AnOIXpOsFT4uX1ErpcHF92OWLCzCy6fYY0Ca++25eTRlyEgzKUbhT5dRcX4JIjCE0qaH
-         +/COZ9KRNfeqVNjKJygGWdRZnHKhnbB8oDzMt24A0UMbotd/pbCDgPI9R7FtDkkh9nKj
-         0/zA==
+        bh=Pe+lKAHTh4S8T/+iKIxBR+/8tWoiFnTfIU4oElFDrk0=;
+        b=qWc/AekKv5S/6PwX7lKVMHHCkiYVKB3SjuaoXqz6c83Nz0fMOQOaUnXTtXLc122Z/Q
+         FkdDZGh19ompP9G6dcQo2ToiYs5jYsVVqscqlqot+BDcYlqace1I+G/YP3JmWoqMiWOa
+         KBt7SfEOPgrdH0sGT4pm4bbOwIByv0JNzwwdhrwyTQvQHFbh4/czazA2Lnd7vNlSKUJN
+         nNG0cHmcAh8ejcz5aEJvP9v+ocGl6V0w+Hp+96DSuHE3Z8CgWAO+JcDTnljl2aYMBvA4
+         X14FII+o64zWSo8MNXwn16+97DpViOICghizmBn+H3EqsWRrKS3JJcMu5/SCINLZOV3a
+         seAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:cc:references:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=ol3m7tPzMVUdI+Aj6IXO2rMbqkG9zYPIL/c2H+8ACYo=;
-        b=f+hOB+5LuZT8pNynmM3bYD+9o6D81lbWjt9S1B/3xqdNvfC5N4a57FHHcSO+tPxXDR
-         zYXOr2CDvdr5hhrGQ1JMFxmiv7tuHjz9wKD4RvEtmZt4ZCUurXoVXEMCelw3lQiijnUi
-         w6cxypY3VOekZ5gBh7f6s4+WrA2OuvmMFz9WwSqCJSYuyVCkzBae/8fh64VW0B3FsZCs
-         1Xti37TWhDQnWRT7DfZm9BI4xETsiNDq/sC9No1tHbviMUlaSc4sufJhXpdByM3WBuY7
-         BN/in66bvTj7K/ufp32CMnX98gFf0yOJLX7Of+eZxXr5LXAvxu64XJYjgAApuL3Yku2i
-         3LYw==
-X-Gm-Message-State: ACrzQf3ldk/PHPWBCwNYjOAmRqTVeiizNXlCcEdOSYO6UbVTYh6FHiCE
-        1AG5vb0ujGMbv+PskjTj18+j4e7lMro=
-X-Google-Smtp-Source: AMsMyM6oeCWtGqqSyGvxFCSbIk747fV+QGAX2tAILbs2+Fo+K6ivKjyf6mJc0mFMMtKooXHplINF9g==
-X-Received: by 2002:a17:906:8a77:b0:780:a02d:ca4a with SMTP id hy23-20020a1709068a7700b00780a02dca4amr8349357ejc.488.1663504857727;
-        Sun, 18 Sep 2022 05:40:57 -0700 (PDT)
+        bh=Pe+lKAHTh4S8T/+iKIxBR+/8tWoiFnTfIU4oElFDrk0=;
+        b=sFJULxQh/TxnOPFWBfMV0HyPuD5ZjPSUlzYKWoxgM95ra9gP91+iZZ+VNMneVSsQI8
+         1xY+M+FpEvZ/fw1Hezbu5+ME88+BcJQ5BQ2veKwvRWA+ExyCbtgW2PG0oZcT3FrIK6rw
+         CQoUIECuRaVeYE+/byhGHWCjZLdR5a1pEVSOl2LuAQpvpgmm1uH8iEGOVBJPjCwK16CT
+         WBpVww+y14XtuggCn9WOY78wQd/bQyzn3R8g/6ZmJbFMTIZIzl16CWdnW7w3Yrm+GYvv
+         OABA8lRAsFKOyMBj/DZptrQxwuxcABT+0GbJrL05w8//usCRGnXSKWI2f1n6lIROz5Gn
+         8BdA==
+X-Gm-Message-State: ACrzQf15jIeJOrrXZzvNBZ6vq4MWk8L/Ux8Y1mbKJIv1ZdQUWG75oDHN
+        PSEB+HoZAgZckxyHDVYtRYMmnjVZIPg=
+X-Google-Smtp-Source: AMsMyM67POi1tJ90WqmJRaCnRoJoO6uzAr6Cwme45iuCyBXl0iUWwp3dUIcPpGeQJS4dsu92Rz8a+Q==
+X-Received: by 2002:a05:6402:448b:b0:43b:5ec6:8863 with SMTP id er11-20020a056402448b00b0043b5ec68863mr11328628edb.377.1663504947567;
+        Sun, 18 Sep 2022 05:42:27 -0700 (PDT)
 Received: from [192.168.1.50] ([81.196.40.23])
-        by smtp.gmail.com with ESMTPSA id kx24-20020a170907775800b0073d5948855asm13695651ejc.1.2022.09.18.05.40.57
+        by smtp.gmail.com with ESMTPSA id d12-20020aa7d5cc000000b0044e937ddcabsm17872402eds.77.2022.09.18.05.42.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Sep 2022 05:40:57 -0700 (PDT)
-Message-ID: <3a950997-7580-8a6b-97a0-e0a81a135456@gmail.com>
-Date:   Sun, 18 Sep 2022 15:40:56 +0300
+        Sun, 18 Sep 2022 05:42:27 -0700 (PDT)
+Message-ID: <038cc03f-3567-77ba-a7bd-c4930e3b2fad@gmail.com>
+Date:   Sun, 18 Sep 2022 15:42:25 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.12.0
-Subject: [PATCH 2/4] wifi: rtl8xxxu: gen2: Enable 40 MHz channel width
+Subject: [PATCH 3/4] wifi: rtl8xxxu: Fix AIFS written to REG_EDCA_*_PARAM
 Content-Language: en-US
 From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To:     linux-wireless@vger.kernel.org
@@ -74,112 +74,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The module parameter ht40_2g was supposed to enable 40 MHz operation,
-but it didn't.
+ieee80211_tx_queue_params.aifs is not supposed to be written directly
+to the REG_EDCA_*_PARAM registers. Instead process it like the vendor
+drivers do. It's kinda hacky but it works.
 
-Tell the firmware about the channel width when updating the rate mask.
-This makes it work with my gen 2 chip RTL8188FU.
+This change boosts the download speed and makes it more stable.
 
-I'm not sure if anything needs to be done for the gen 1 chips, if 40
-MHz channel width already works or not. They update the rate mask with
-a different structure which doesn't have a field for the channel width.
+Tested with RTL8188FU but all the other supported chips should also
+benefit.
 
-Also set the channel width correctly for sta_statistics.
-
-Fixes: f653e69009c6 ("rtl8xxxu: Implement basic 8723b specific update_rate_mask() function")
-Fixes: bd917b3d28c9 ("rtl8xxxu: fill up txrate info for gen1 chips")
+Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  6 +++---
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 21 +++++++++++++------
- 2 files changed, 18 insertions(+), 9 deletions(-)
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 501900c07fac..9950a2ee00aa 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1477,7 +1477,7 @@ struct rtl8xxxu_fileops {
- 	void (*set_tx_power) (struct rtl8xxxu_priv *priv, int channel,
- 			      bool ht40);
- 	void (*update_rate_mask) (struct rtl8xxxu_priv *priv,
--				  u32 ramask, u8 rateid, int sgi);
-+				  u32 ramask, u8 rateid, int sgi, int txbw_40mhz);
- 	void (*report_connect) (struct rtl8xxxu_priv *priv,
- 				u8 macid, bool connect);
- 	void (*fill_txdesc) (struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
-@@ -1565,9 +1565,9 @@ void rtl8xxxu_gen2_config_channel(struct ieee80211_hw *hw);
- void rtl8xxxu_gen1_usb_quirks(struct rtl8xxxu_priv *priv);
- void rtl8xxxu_gen2_usb_quirks(struct rtl8xxxu_priv *priv);
- void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
--			       u32 ramask, u8 rateid, int sgi);
-+			       u32 ramask, u8 rateid, int sgi, int txbw_40mhz);
- void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
--				    u32 ramask, u8 rateid, int sgi);
-+				    u32 ramask, u8 rateid, int sgi, int txbw_40mhz);
- void rtl8xxxu_gen1_report_connect(struct rtl8xxxu_priv *priv,
- 				  u8 macid, bool connect);
- void rtl8xxxu_gen2_report_connect(struct rtl8xxxu_priv *priv,
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 7978d5dcc826..7724ee8033a8 100644
+index 7724ee8033a8..9ddff43b5cfc 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4407,7 +4407,7 @@ static void rtl8xxxu_sw_scan_complete(struct ieee80211_hw *hw,
+@@ -4656,6 +4656,53 @@ rtl8xxxu_wireless_mode(struct ieee80211_hw *hw, struct ieee80211_sta *sta)
+ 	return network_type;
  }
  
- void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
--			       u32 ramask, u8 rateid, int sgi)
-+			       u32 ramask, u8 rateid, int sgi, int txbw_40mhz)
- {
- 	struct h2c_cmd h2c;
- 
-@@ -4427,10 +4427,15 @@ void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
- }
- 
- void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
--				    u32 ramask, u8 rateid, int sgi)
-+				    u32 ramask, u8 rateid, int sgi, int txbw_40mhz)
- {
- 	struct h2c_cmd h2c;
--	u8 bw = RTL8XXXU_CHANNEL_WIDTH_20;
-+	u8 bw;
++static void rtl8xxxu_set_aifs(struct rtl8xxxu_priv *priv, u8 slot_time)
++{
++	u32 reg_edca_param[IEEE80211_NUM_ACS] = {
++		[IEEE80211_AC_VO] = REG_EDCA_VO_PARAM,
++		[IEEE80211_AC_VI] = REG_EDCA_VI_PARAM,
++		[IEEE80211_AC_BE] = REG_EDCA_BE_PARAM,
++		[IEEE80211_AC_BK] = REG_EDCA_BK_PARAM,
++	};
++	u32 val32;
++	u16 wireless_mode = 0;
++	u8 aifs, aifsn, sifs;
++	int i;
 +
-+	if (txbw_40mhz)
-+		bw = RTL8XXXU_CHANNEL_WIDTH_40;
++	if (priv->vif) {
++		struct ieee80211_sta *sta;
++
++		rcu_read_lock();
++		sta = ieee80211_find_sta(priv->vif, priv->vif->bss_conf.bssid);
++		if (sta)
++			wireless_mode = rtl8xxxu_wireless_mode(priv->hw, sta);
++		rcu_read_unlock();
++	}
++
++	if (priv->hw->conf.chandef.chan->band == NL80211_BAND_5GHZ ||
++	    (wireless_mode & WIRELESS_MODE_N_24G))
++		sifs = 16;
 +	else
-+		bw = RTL8XXXU_CHANNEL_WIDTH_20;
- 
- 	memset(&h2c, 0, sizeof(struct h2c_cmd));
- 
-@@ -4717,7 +4722,11 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 						RATE_INFO_FLAGS_SHORT_GI;
- 				}
- 
--				rarpt->txrate.bw |= RATE_INFO_BW_20;
-+				if (rtl8xxxu_ht40_2g &&
-+				    (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40))
-+					rarpt->txrate.bw = RATE_INFO_BW_40;
-+				else
-+					rarpt->txrate.bw = RATE_INFO_BW_20;
- 			}
- 			bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
- 			rarpt->bit_rate = bit_rate;
-@@ -4726,7 +4735,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			priv->vif = vif;
- 			priv->rssi_level = RTL8XXXU_RATR_STA_INIT;
- 
--			priv->fops->update_rate_mask(priv, ramask, 0, sgi);
-+			priv->fops->update_rate_mask(priv, ramask, 0, sgi, rarpt->txrate.bw == RATE_INFO_BW_40);
- 
- 			rtl8xxxu_write8(priv, REG_BCN_MAX_ERR, 0xff);
- 
-@@ -6440,7 +6449,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 		}
- 
- 		priv->rssi_level = rssi_level;
--		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi);
-+		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi, txbw_40mhz);
++		sifs = 10;
++
++	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
++		val32 = rtl8xxxu_read32(priv, reg_edca_param[i]);
++
++		/* It was set in conf_tx. */
++		aifsn = val32 & 0xff;
++
++		/* aifsn not set yet or already fixed */
++		if (aifsn < 2 || aifsn > 15)
++			continue;
++
++		aifs = aifsn * slot_time + sifs;
++
++		val32 &= ~0xff;
++		val32 |= aifs;
++		rtl8xxxu_write32(priv, reg_edca_param[i], val32);
++	}
++}
++
+ static void
+ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			  struct ieee80211_bss_conf *bss_conf, u64 changed)
+@@ -4775,6 +4822,8 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		else
+ 			val8 = 20;
+ 		rtl8xxxu_write8(priv, REG_SLOT, val8);
++
++		rtl8xxxu_set_aifs(priv, val8);
  	}
- }
  
+ 	if (changed & BSS_CHANGED_BSSID) {
 -- 
 2.37.2
