@@ -2,218 +2,281 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1633E5BBDDB
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Sep 2022 14:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 329E75BBE66
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Sep 2022 16:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbiIRMyK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Sep 2022 08:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44748 "EHLO
+        id S229566AbiIROdY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Sep 2022 10:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbiIRMyI (ORCPT
+        with ESMTP id S229518AbiIROdW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Sep 2022 08:54:08 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD74024BC8
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 05:54:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663505647; x=1695041647;
-  h=from:to:cc:subject:date:message-id:content-id:
-   content-transfer-encoding:mime-version;
-  bh=tBg95mQ1tii10YwuKTH4w7bFPkk1rF1gISR78E9chWY=;
-  b=WFcO3Q7pLPoLe6tpWlMQp//PDO5U33NAuTi1Iso32rpg5h8QYoPqrSSw
-   6nNOZzZO5gEdHEkE/dnj3ysG6IeE1eqE/v7ks12X6XidVi46D2sM8xznW
-   mKJTaSJuFTuZEPse83jOOWz5hzfzRM69aCxFrWnX7MUpZ+ZrkxKTjrPUi
-   OzhBgHa7ZpP9c/HnFiSja8vLjkBC5BzmHhgNrIdfmCX1oE1gRtFgXSTbn
-   bfx4PVh/nTOfx0NDtikm67cLZw6THYOUkb3IIYkugzZ8qHfA9TqC/Z8zC
-   SLjtms+2R9E/1tkpkoDHJ0IzUzOoOFLGzbNWYRARc0Kk3Vffv+ILsLo1u
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10474"; a="286275378"
-X-IronPort-AV: E=Sophos;i="5.93,325,1654585200"; 
-   d="scan'208";a="286275378"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2022 05:54:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,325,1654585200"; 
-   d="scan'208";a="680524272"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmsmga008.fm.intel.com with ESMTP; 18 Sep 2022 05:54:07 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sun, 18 Sep 2022 05:54:06 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sun, 18 Sep 2022 05:54:06 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31 via Frontend Transport; Sun, 18 Sep 2022 05:54:06 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.105)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.31; Sun, 18 Sep 2022 05:54:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OZyBt2EUU/27R4RgtIml3/koTrU2qykwSMNQ+nLqTV0FGsnFDoWqHBSPJKke7MD5nTHAiRw5bHfmP60UpllboCXSPpN5iDbTFoSfiUUvmbnm8Rb41FWCOQH20HutXTdQSmxrNnUklzjJy2UPiXG5dQV6ZdZVVJX3d+MYtwTVkMLdk/faJQfEVL5tZ83bgtAYwZRQa9FSbGEQkrGDXp2cl7CYNULSOs0tP9xNEqnZQV2vi78xJmtc+Gz3/pM4TETaubkGvLOlDEr478B9/bDnc95ZrrTXaXH5e64Zp3Jx7mod2dNMyJ0tExnGmlVViKW8K0KK1lanW0TagvS54qwW3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tBg95mQ1tii10YwuKTH4w7bFPkk1rF1gISR78E9chWY=;
- b=lZo+wIFXcN0e6BgoIoL1akEfzCzHlo8kWnRq9V4rtudaqe/Q0d06GVCLwUQunuMXzJjQjJ5BOBs1Tmmir//c42SqfVhePGfiRRoz0U7nDCZgS0CLzETXGj8UwOASpclxXX1+D822BG0ER4m6CPmpU5WJDfivFsCl5I+S3zxXNWUhuHs8oEZB6E+IeeTI0esrxWBubmjTFL+YYJDZ35ZzxSgjns1rRjE/OX9/FqYkRwqolS2DRJAyrWn4y5Ux4apFWbPUJKaXqSdhZmPrdvc8pSqz9ntet9YW9VgfZmvAl5bKk7yjX0PynJIM6NA7T2K6F/cqLnrBRLvJiEzdoMPXLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5987.namprd11.prod.outlook.com (2603:10b6:208:372::8)
- by DM4PR11MB5440.namprd11.prod.outlook.com (2603:10b6:5:39c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.19; Sun, 18 Sep
- 2022 12:54:04 +0000
-Received: from MN0PR11MB5987.namprd11.prod.outlook.com
- ([fe80::20ab:ad2f:da9f:8c7a]) by MN0PR11MB5987.namprd11.prod.outlook.com
- ([fe80::20ab:ad2f:da9f:8c7a%5]) with mapi id 15.20.5632.018; Sun, 18 Sep 2022
- 12:54:04 +0000
-From:   "Greenman, Gregory" <gregory.greenman@intel.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: pull-request: iwlwifi-next 2022-09-18
-Thread-Topic: pull-request: iwlwifi-next 2022-09-18
-Thread-Index: AQHYy127Qlg5Ti/Ut06tNd0j/dfrsA==
-Date:   Sun, 18 Sep 2022 12:54:04 +0000
-Message-ID: <b18b016d911204bdd5c6f4b08d698d679419a204.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.42.4 (3.42.4-2.fc35) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5987:EE_|DM4PR11MB5440:EE_
-x-ms-office365-filtering-correlation-id: 83d9980c-9a4c-45e0-1cd3-08da9974ddcf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: KNjuYfQonjdbI394923rD21bSfMVR2YkEfaWYRemHQtwgB4Y8qaC/yV3PG8yUaydPj6pon45j6VlvgxWCKrk2/1XBvJPBILWfhHWhjvK56f2H5aJNne4aQwhP/0c4Y257239wml17nwN4kcL4NsquFi30aM8kiuBDsjedR9LPJIFrMUvS9G+4UxD5rqJ9YAebfOFum3KX12P+e9z9i9zmhIvV8ZtCTWRF72hxT24zjEXFlybcEmq76Ee7wkP6DJwrl+Yt+Dw0GyWDkvvzYfuO1i5SYe/7BWZM2sQFPxz66Tn3PeIFWbH3f7Hx+Lf25U6jACrhoL2+oHCjNdLEyopx8XhxqEnTyh1mr6wLwc8DqirqJ0reVPA+iNv8rVuNPZW2hGwjPz6dgs52spQ+aFADNe3g294/e8Iqak6GYIjaOXsDa+6oGcMe4T2TyjUJqfHxH8QFOTkH9Ken1Yup3oRSbIBMZEi2Bnbz2cbtPa1nZfR6CluBulyvug/5spfFJToyg4ED6KyFL2uSCOiIU/u/rwxAGBLS316f64JX3bLEP/ylfQyYhZUZxO10HF6CK/pJ4o3MJoLDEjxRjwSr43Q/HyUBJOlb/fd1h6/jmJUyj5DnNPojS5DSS4bGyN+BE/h5Oxw9B4XimZnlXQQr8BeGaE8Sx4S49I8VjPphDhMZEWBkN7wZ+kgWncDVJHcj2VsUfiN63Zp++Z4hDhkD+o2tRVmU75HmNS7TbnbaBz3XdAWIuiaMFYv6eVL3dC+oCtVmxp6N8pcgg2/Gb7LeqyQfg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5987.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(376002)(39860400002)(346002)(136003)(396003)(366004)(451199015)(41300700001)(122000001)(8936002)(66556008)(66476007)(66446008)(82960400001)(64756008)(4326008)(2906002)(2616005)(36756003)(91956017)(83380400001)(76116006)(66946007)(38100700002)(186003)(316002)(6916009)(6506007)(38070700005)(6486002)(5660300002)(86362001)(8676002)(71200400001)(478600001)(6512007)(26005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MHN0OUVid3RJcnllY0hzUVdYUHBTSjh3VHlLWmIxUDFDSExPeTBQaWM2djF3?=
- =?utf-8?B?d2xqRGFlWXJZNzU3RUlJMDd1NGdzSmNFUmlTbzZhV29PZDJCTFNlOXVRbnEy?=
- =?utf-8?B?VTZWR1lpV3pham1MRHlGSm9icFVYTGN5bTFOK0twdW5OSVhadEdKMk5lUjY3?=
- =?utf-8?B?SlBJdS93OFYvYWVKMUlrYmQzaFlFREw2aW1XaENJZXZOZE5oZlpMZ2hOTGlE?=
- =?utf-8?B?b0Y0T3dzaElUOGQ2cGEwYm9VamR6SWpmZlNXaHlDZ0o0QXh0MGtrYTVWWkQ0?=
- =?utf-8?B?Zzc4amJwbEtzRnRtT055cGlSSHZsajE1SnNDNmsvTTRGemlOdE5XL3NlZEwv?=
- =?utf-8?B?eHVDV0hCd0poYmJTZE9VNmcwejR5aWhTaDkrZ0Y4VWNHdzZmVFY2UXV0bmtv?=
- =?utf-8?B?UmdlNElzQ2t2R3Qxd1NmeFpaYkw4d3ZVWmRhczhaRm5BOEdaempDY3FSbVRx?=
- =?utf-8?B?K3oxRzVIMjJmejNxT2l5VXlLQ1dLRitoY1FKOCtLMmhNcm9mMjRUbFJTOGlY?=
- =?utf-8?B?bUJacWZQbmxJd2JJdTVpT0JsRzNaR1h1MmVHWmc5bHFsdDVWWEtXRmVneXZx?=
- =?utf-8?B?SmdadjJwczZUQU9UVk42VERwZ1ByYkhFcTVVU0ZTTHVlZWUzdW1EZm1JeHlS?=
- =?utf-8?B?UERPbExQcjNXc25hamZIRHpMdGpEdlJxSG5tSDFhN0d2MkZOU0NxT0JzcUFV?=
- =?utf-8?B?UTFVZHkybWM2SndwWVRSbURPRTFDK3dKei9ZcSt0S3o4OTZWQ2JWcFFKQnQ5?=
- =?utf-8?B?aUhBTCtqYjFTOXlVSHBCUmFzVnVvU0kzQWRiRzB5WU5PRlI2TUFMbWFlRDNp?=
- =?utf-8?B?emRUYWxPUFh5KzY2byt2Wk5wUVZUNm8wUUJnR1pRVzZ4WStXKytPS3VWRXJw?=
- =?utf-8?B?TWQ4c1g3TFpkdGJmalFkRnEza213bCtFMERxUkdwUmJUd05NM0F1NzhtTm5L?=
- =?utf-8?B?ZTlGemdQNm5MMmRVck50VGdjVDAwTFMrSGQ0RC9ibCtyenFudnFGYkRKRE1w?=
- =?utf-8?B?WGM1V2VyWmpPb2tIWkpLNWN5UzZwamN2TEVTSVdyUmIzSDNxcnZYWDF0b05N?=
- =?utf-8?B?TDFrZDhRY2NWbDZiUjdpZzRzVXVxZTEvdWFaWUFLWW1QOC83TkR0MThBL3dY?=
- =?utf-8?B?WTI1c1NMbzNoNllMeDBLWWtPL0tDTEQyZVdvdERmdWRlTTViRHRoejB4L3o2?=
- =?utf-8?B?ZmoySXVESUpXVzdtd2VJcTlkTlpGSmxqTjA5MFlzdjhpeElPU1B1dkNKbVNV?=
- =?utf-8?B?d1VmTitHNWhMWTV2QlBzdmFlQVhENGtBbGZDQzI2RmRPSklweUpUT2JNeU04?=
- =?utf-8?B?Vmg1bEgrT0RMbTdjbnNvMVpaTW5aZUJmZDFUc2RjVDBiQU9XcGgzMUxXODdI?=
- =?utf-8?B?ck92bkRlUEhpRHUrTGFIL2R3bmxQVnVCcjNMdGVrUGw3cThXaHJmVFBUUG5G?=
- =?utf-8?B?cXE0M1BmV3N3SCsrMTBlY2JKZjI0WVNaL0hEUkYzYmh4eElkVzV4Z1NBVFMr?=
- =?utf-8?B?dWUyNytXcmd2cFZ1YUU5S21KY0xDQkFsby9BSCtkcVN0WDBKZ3VJUHV4Sk9B?=
- =?utf-8?B?MW9ZeG9tMStkbk8xMmNkNXN6NEh3WXhsWFphWmp4YWpUajdyMStjYi9xVDlX?=
- =?utf-8?B?cDMyNUxrZC9NNitFaGNMTzlzUkpoMDVQZjF2Ukp5bEhETVJjWTIrMy9pSkdj?=
- =?utf-8?B?NTJFdHh5OW8wMTUzbmt3RDE0NjJyNExnZ3Z3YUNNSWF3akVYcHJ4d216cU9K?=
- =?utf-8?B?NmZRMEJwTitBc3MwVzRFdVF3OExoN2d0aFZNOHFBaEFEUTFQOWN6bTZPK0ky?=
- =?utf-8?B?WUpHMmRRNmtybE8rV1NZR2FlcHFPY3RaM3o0QU9NcEtuRTM4SE5tUHdtU3B3?=
- =?utf-8?B?dlpoWEl5MEtmRUlmc1ErRXVXamMxU3hSY3l3MG4rSjFvdGdpcUF2VkY4bE9p?=
- =?utf-8?B?MWhHZkdIZEYwQWhYSjdLZzlXQlU1dHdOWHRpdVU4eDZVMGR6Q1dpa3FyVlhi?=
- =?utf-8?B?SE5wRklDcm1oK0R3QlViaTQ5cUZnVXozZ2NFUjNEMUpramhrWDBjTFJ0K3RR?=
- =?utf-8?B?N0lzTnpNODBZaFRONHBOdk5oUElNd1k5Mi9mWi9uSFJVaHNCMlJ1K1JlT2dH?=
- =?utf-8?B?UFhIbjZ1eHl5bE1sNHBscHFYV0VIeGQ4MFJucnB1WUd1aG5hSjJNRUdoVEt5?=
- =?utf-8?B?UFE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8C09B171275B324D964156974F7594BC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Sun, 18 Sep 2022 10:33:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A771EC56
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 07:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1663511599;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PA5L3Ve4x1vIggfYVl79AfGzEXdCkxkRq/K9eN7R16c=;
+        b=dOwbT3MoqruovUONZNBJKSL1EEDd/EkoTpYRC9SuvVaO6A8UVHjGBRR78mMxTpTVDmaJ8e
+        dFdEhP2yeSzxyu42UBfzdWPI4WL99m6J5DPW82m3GuitCG/Yrj4auQjyzq+3kOcA74fUvo
+        o5o/9Ref4B+wvVC2VcVS9f2J2E/g45o=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-635-VWD7XUSTPMOdcAVgh7Wv3Q-1; Sun, 18 Sep 2022 10:33:18 -0400
+X-MC-Unique: VWD7XUSTPMOdcAVgh7Wv3Q-1
+Received: by mail-ed1-f72.google.com with SMTP id m13-20020a056402510d00b004519332f0b1so15005302edd.7
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Sep 2022 07:33:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=PA5L3Ve4x1vIggfYVl79AfGzEXdCkxkRq/K9eN7R16c=;
+        b=YFCht8UmU0KTFa9NWARqbu12LVBW5MdFpE01cQmYHd3FGZ9CrPCF3fzpMN3EbyqkhT
+         j3V/FtrjxeALrf3zC34RlRw1pcVYfhPZjE+twaK8S+NL50LWZQ8rA+42n57j9i1FdRJh
+         btOmon7OfkOaZ/p1+P3Gf1G7toZwKiS9/1eRAAiNa5gzV4x7xAT1lIXKE3U8FL66CCDE
+         FmYR/DpRg4NipNHk2PUz4oFsndf8rSphEUFBWseGxnZxxNDvF8AHddthSjuYoWkNblyP
+         OvW+AHEVmhxMWhly5jNK7tpyPPAYLHEC92iFIbND4naNKYK5duG6wqk4WhuNyKCwCBvJ
+         dePg==
+X-Gm-Message-State: ACrzQf0k8uiTJSYHNjxdzg3tZSmq5XW74D3PnTQ+sHJr4ok64W/Xu3SY
+        Fh1nRiTaz6SCy2Y0/QMAKJFw4+s2Y/fAoZcvm6mg6WdsyP4Mbuo//auFZQukskm8Pd9yAg2KOnj
+        dSWJnVlap7kcl3jZ9ZQO4Hgtrxz0=
+X-Received: by 2002:a05:6402:51cb:b0:451:6ede:88e3 with SMTP id r11-20020a05640251cb00b004516ede88e3mr11309370edd.45.1663511596607;
+        Sun, 18 Sep 2022 07:33:16 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM7B8oA4i2u5Z2g9aj+/AlrxqnyJzB+Lwl13RO4zqbSwvWqEPWTzsZUIOJYOkD4hy9Ny/flUjA==
+X-Received: by 2002:a05:6402:51cb:b0:451:6ede:88e3 with SMTP id r11-20020a05640251cb00b004516ede88e3mr11309352edd.45.1663511596320;
+        Sun, 18 Sep 2022 07:33:16 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id v23-20020aa7cd57000000b0044e796598bdsm17995674edw.11.2022.09.18.07.33.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Sep 2022 07:33:15 -0700 (PDT)
+Message-ID: <091ccc63-8f0b-322f-3cb6-d4dc4e587fc1@redhat.com>
+Date:   Sun, 18 Sep 2022 16:33:14 +0200
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5987.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83d9980c-9a4c-45e0-1cd3-08da9974ddcf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2022 12:54:04.2628
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: C/t4X7vQ8Dh08qx9ej2rcjw075OWCMkXT+WcXGzXZFfPUoExztw05xc6JmTfXLi7VX1twGVpN9WhK8B29BoXl5BZZZ+BkhrK7gznzJ000BA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5440
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH 0/1] rt2x00 WA for mac80211 core (BUG?) submitting skb-s
+ with queue-ids >= hw.queues
+Content-Language: en-US
+To:     Stanislaw Gruszka <stf_xl@wp.pl>
+Cc:     Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+References: <20220908173618.155291-1-hdegoede@redhat.com>
+ <20220915190107.GB10590@wp.pl>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220915190107.GB10590@wp.pl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgS2FsbGUsDQoNCkhlcmUncyBteSBmaXJzdCBwdWxsIHJlcXVlc3QgZm9yIHY2LjENCg0KSXQg
-Y29udGFpbnMgdGhlIHVzdWFsIGRldmVsb3BtZW50LCBuZXcgZmVhdHVyZXMgYW5kIGNsZWFudXBz
-Lg0KDQpUaGUgY2hhbmdlcyBhcmU6DQoqIFJlZmFjdG9yaW5nIG9mIHNvbWUgd293bGFuIHJlbGF0
-ZWQgY29kZQ0KKiBGaXhlcyBhbmQgY2xlYW51cHMNCiogQWRkaW5nIHN1cHBvcnQgZm9yIEJaIGRl
-dmljZSBmYW1pbHkNCg0KVGhhbmtzLA0KR3JlZ29yeQ0KDQpUaGUgZm9sbG93aW5nIGNoYW5nZXMg
-c2luY2UgY29tbWl0IGQ1MzUwNzU2YzAzY2RmMTg2OTYyOTVjNmIxMWQ3YWNjNGRiZjgyNWM6DQoN
-CiAgd2lmaTogcnRsOHh4eHU6IFJlbW92ZSBjb3B5LXBhc3RlIGxlZnRvdmVyIGluIGdlbjJfdXBk
-YXRlX3JhdGVfbWFzayAoMjAyMi0wOS0xMiAxNDo1Nzo1NCArMDMwMCkNCg0KYXJlIGF2YWlsYWJs
-ZSBpbiB0aGUgR2l0IHJlcG9zaXRvcnkgYXQ6DQoNCiAgZ2l0Oi8vZ2l0Lmtlcm5lbC5vcmcvcHVi
-L3NjbS9saW51eC9rZXJuZWwvZ2l0L2l3bHdpZmkvaXdsd2lmaS1uZXh0LmdpdCB0YWdzL2l3bHdp
-ZmktbmV4dC1mb3Ita2FsbGUtMjAyMi0wOS0xOA0KDQpmb3IgeW91IHRvIGZldGNoIGNoYW5nZXMg
-dXAgdG8gMzJmZWQ0NzA2ZDlhY2EzMWM5ZDU3NWMxZWZhNGEzNjI0YTlkNTU0MzoNCg0KICB3aWZp
-OiBpd2x3aWZpOiBtdm06IGQzOiBwYXJzZSBrZXlzIGZyb20gd293bGFuIGluZm8gbm90aWZpY2F0
-aW9uICgyMDIyLTA5LTE4IDE0OjQwOjE3ICswMzAwKQ0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQppd2x3aWZpIHBhdGNo
-ZXMgZm9yIHY2LjENCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KSGFpbSBEcmV5ZnVzcyAoNSk6DQogICAgICB3aWZpOiBp
-d2x3aWZpOiBtdm06IGRvbid0IGNoZWNrIEQwSTMgdmVyc2lvbg0KICAgICAgd2lmaTogaXdsd2lm
-aTogbXZtOiBBZGQgc3VwcG9ydCBmb3Igd293bGFuIGluZm8gbm90aWZpY2F0aW9uDQogICAgICB3
-aWZpOiBpd2x3aWZpOiBtdm06IEFkZCBzdXBwb3J0IGZvciB3b3dsYW4gd2FrZSBwYWNrZXQgbm90
-aWZpY2F0aW9uDQogICAgICB3aWZpOiBpd2x3aWZpOiBtdm06IEFkZCBzdXBwb3J0IGZvciBkMyBl
-bmQgbm90aWZpY2F0aW9uDQogICAgICB3aWZpOiBpd2x3aWZpOiBtdm06IGVuYWJsZSByZXN1bWUg
-YmFzZWQgb24gbm90aWZpY2F0aW9ucw0KDQpIYWltLCBEcmV5ZnVzcyAoMSk6DQogICAgICB3aWZp
-OiBpd2x3aWZpOiBtdm06IHRyaWdnZXIgcmVzdW1lIGZsb3cgYmVmb3JlIHdhaXQgZm9yIG5vdGlm
-aWNhdGlvbnMNCg0KSWxhbiBQZWVyICgxKToNCiAgICAgIHdpZmk6IGl3bHdpZmk6IG12bTogQWRk
-IGhhbmRsaW5nIGZvciBzY2FuIG9mZmxvYWQgbWF0Y2ggaW5mbyBub3RpZmljYXRpb24NCg0KSm9o
-YW5uZXMgQmVyZyAoNSk6DQogICAgICB3aWZpOiBpd2x3aWZpOiBtdm06IGZpeCB0eXBvIGluIHN0
-cnVjdCBpd2xfcnhfbm9fZGF0YSBBUEkNCiAgICAgIHdpZmk6IGl3bHdpZmk6IG12bTogcnhtcTog
-cmVmYWN0b3IgbWFjODAyMTEgcnhfc3RhdHVzIHNldHRpbmcNCiAgICAgIHdpZmk6IGl3bHdpZmk6
-IG12bTogcnhtcTogZnVydGhlciB1bmlmeSBzb21lIFZIVC9IRSBjb2RlDQogICAgICB3aWZpOiBp
-d2x3aWZpOiBtdm06IHJlZmFjdG9yIGl3bF9tdm1fc2V0X3N0YV9yYXRlKCkgYSBiaXQNCiAgICAg
-IHdpZmk6IGl3bHdpZmk6IGNmZzogcmVtb3ZlIElXTF9ERVZJQ0VfQlpfQ09NTU9OIG1hY3JvDQoN
-Ck5hZnRhbGkgR29sZHN0ZWluICgxKToNCiAgICAgIHdpZmk6IGl3bHdpZmk6IG12bTogZDM6IHBh
-cnNlIGtleXMgZnJvbSB3b3dsYW4gaW5mbyBub3RpZmljYXRpb24NCg0KWWFhcmEgQmFydWNoICgx
-KToNCiAgICAgIHdpZmk6IGl3bHdpZmk6IHBjaWU6IGFkZCBzdXBwb3J0IGZvciBCWiBkZXZpY2Vz
-DQoNClllZGlkeWEgQmVuc2hpbW9sICgxKToNCiAgICAgIHdpZmk6IGl3bHdpZmk6IG12bTogaXRl
-cmF0ZSBvdmVyIGludGVyZmFjZXMgYWZ0ZXIgYW4gYXNzZXJ0IGluIGQzDQoNCiBkcml2ZXJzL25l
-dC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL2NmZy8yMjAwMC5jICAgICAgIHwgIDQyICsrKysrKysr
-KystLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvZncvYXBpL2NvbW1hbmRz
-LmggfCAgIDUgKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL2Z3L2FwaS9k
-My5oICAgICAgIHwgIDYxICsrKysrKysrKysrKysrKystDQogZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-aW50ZWwvaXdsd2lmaS9mdy9hcGkvb2ZmbG9hZC5oICB8ICAxNyArKysrLQ0KIGRyaXZlcnMvbmV0
-L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvZncvYXBpL3J4LmggICAgICAgfCAgIDQgKy0NCiBkcml2
-ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL2Z3L2FwaS9zY2FuLmggICAgIHwgIDIwICsr
-KystLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvaXdsLWNvbmZpZy5oICAg
-ICAgfCAgIDMgKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbXZtL2QzLmMg
-ICAgICAgICAgfCA2NjggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0NCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3
-aWZpL212bS9tYWM4MDIxMS5jICAgIHwgIDI1ICsrKystLS0NCiBkcml2ZXJzL25ldC93aXJlbGVz
-cy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaCAgICAgICAgIHwgICAxIC0NCiBkcml2ZXJzL25ldC93
-aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9vcHMuYyAgICAgICAgIHwgIDE4ICsrKy0tDQogZHJp
-dmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vcnhtcS5jICAgICAgICB8IDM3NiAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQogZHJpdmVycy9uZXQv
-d2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9wY2llL2Rydi5jICAgICAgICB8ICAxOSArKysrKy0NCiAx
-MyBmaWxlcyBjaGFuZ2VkLCA4NDYgaW5zZXJ0aW9ucygrKSwgNDEzIGRlbGV0aW9ucygtKQ0K
+Hi,
+
+On 9/15/22 21:01, Stanislaw Gruszka wrote:
+> On Thu, Sep 08, 2022 at 07:36:17PM +0200, Hans de Goede wrote:
+>> I'm seeing the mac80211 core submitting skb-s with queue-ids >= hw.queues
+>> on a ralink rt2500 PCI card which causes rt2x00queue_get_tx_queue() to
+>> return NULL and the following error to be logged: "ieee80211 phy0:
+>> rt2x00mac_tx: Error - Attempt to send packet over invalid queue 2",
+>> after which association with the AP fails.
+>>
+>> I have a hunch that although I've come up with a quick fix in the rt2x00 
+>> driver, that this is really an issue with the mac80211 core and that
+>> the core should never submit skb-s where skb_get_queue_mapping()
+>> returns a value >= ieee80211_hw.queues ?
+> 
+> Yes, most likely this is mac80211 problem and other prehistoric cards
+> will not work. 
+> 
+> Maybe this commit is related to the issue ?
+> 
+> commit 10cb8e617560fc050a759a897a2dde07a5fe04cb
+> Author: Markus Theil <markus.theil@tu-ilmenau.de>
+> Date:   Sat Feb 6 12:51:12 2021 +0100
+> 
+>     mac80211: enable QoS support for nl80211 ctrl port
+> 
+> If someone have time, could look at it, but not sure if we 
+> have any working hardware except yours rt2500 that require this :-)
+
+Thanks, that commit indeed is the culprit. I have prepared a fix for
+this at the mac80211 core level. I just need to write a commit message
+now and then I will submit it upstream.
+
+Regards,
+
+Hans
+
+
+>> Because of this hunch I have added a WARN_ON(1) when the workaround
+>> triggered to see what I would get. This results in the following
+>> 2 backtraces just after associating with my ISP provisioned access-point:
+>>
+>> [   58.263794] ------------[ cut here ]------------
+>> [   58.263831] WARNING: CPU: 0 PID: 662 at drivers/net/wireless/ralink/rt2x00/rt2x00.h:1316 rt2x00mac_tx+0x59/0x3a0 [rt2x00lib]
+>> [   58.263856] Modules linked in: rt2500pci(E) rt2x00pci(E) rt2x00mmio(E) rt2x00lib(E) mac80211 libarc4 snd_atiixp_modem snd_atiixp snd_ac97_codec ac97_bus cfg80211 snd_seq snd_seq_device snd_pcm joydev edac_mce_amd snd_timer 8139too eeprom_93cx6 pcspkr snd 8139cp mii k8temp soundcore qrtr rfkill i2c_piix4 zram amdgpu iommu_v2 gpu_sched drm_buddy radeon video wmi sdhci_pci drm_ttm_helper cqhci ttm sdhci firewire_ohci drm_display_helper firewire_core mmc_core ata_generic pata_acpi serio_raw yenta_socket cec crc_itu_t pata_atiixp ip6_tables ip_tables i2c_dev fuse
+>> [   58.264061] CPU: 0 PID: 662 Comm: wpa_supplicant Tainted: G            E      6.0.0-rc3+ #112
+>> [   58.264069] Hardware name: MICRO-STAR INT'L CO.,LTD MS-1013, BIOS A1013AMS V4.30 01/09/2006
+>> [   58.264074] RIP: 0010:rt2x00mac_tx+0x59/0x3a0 [rt2x00lib]
+>> [   58.264088] Code: 8b 54 24 08 49 89 f5 8b 4a 18 f6 43 28 20 0f 85 cb 00 00 00 44 0f b7 f8 41 8d 77 fe 83 fe 01 77 56 83 f9 02 0f 87 10 01 00 00 <0f> 0b 83 f9 02 75 12 4d 8b b4 24 98 11 00 00 b8 60 01 00 00 4d 85
+>> [   58.264094] RSP: 0018:ffffa30501c63780 EFLAGS: 00010246
+>> [   58.264103] RAX: 0000000000000002 RBX: ffff93df43ab3e00 RCX: 0000000000000002
+>> [   58.264108] RDX: ffffffffc123c4a0 RSI: 0000000000000000 RDI: ffff93df4b3c8e00
+>> [   58.264113] RBP: ffff93df4b3c8e00 R08: 0000000000000001 R09: 0000000000000001
+>> [   58.264118] R10: ffff93df49860000 R11: 000000000001103d R12: ffff93df4b3cb3c0
+>> [   58.264123] R13: ffffa30501c637e8 R14: ffff93df4b3c9440 R15: 0000000000000002
+>> [   58.264128] FS:  00007feddd63c7c0(0000) GS:ffff93dfb9c00000(0000) knlGS:0000000000000000
+>> [   58.264134] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   58.264139] CR2: 0000557d841633c8 CR3: 000000000994a000 CR4: 00000000000006f0
+>> [   58.264145] Call Trace:
+>> [   58.264149]  <TASK>
+>> [   58.264154]  ? _raw_spin_unlock_irqrestore+0x30/0x60
+>> [   58.264176]  ieee80211_process_measurement_req+0x2ca/0x890 [mac80211]
+>> [   58.264274]  ieee80211_next_txq+0x2162/0x2790 [mac80211]
+>> [   58.264335]  ieee80211_tx_prepare_skb+0x250/0x290 [mac80211]
+>> [   58.264426]  __ieee80211_subif_start_xmit+0x21f/0x410 [mac80211]
+>> [   58.264499]  ieee80211_tx_control_port+0x2d5/0x5a0 [mac80211]
+>> [   58.264572]  nl80211_tx_control_port+0x1cb/0x380 [cfg80211]
+>> [   58.264864]  genl_family_rcv_msg_doit+0xd0/0x120
+>> [   58.264901]  genl_rcv_msg+0xca/0x1c0
+>> [   58.264912]  ? nl80211_prepare_wdev_dump+0x220/0x220 [cfg80211]
+>> [   58.265045]  ? genl_get_cmd+0xe0/0xe0
+>> [   58.265057]  netlink_rcv_skb+0x51/0x100
+>> [   58.265085]  genl_rcv+0x24/0x40
+>> [   58.265092]  netlink_unicast+0x168/0x250
+>> [   58.265109]  netlink_sendmsg+0x242/0x4a0
+>> [   58.265138]  sock_sendmsg+0x5f/0x70
+>> [   58.265149]  ____sys_sendmsg+0x22e/0x270
+>> [   58.265157]  ? import_iovec+0x17/0x20
+>> [   58.265166]  ? copy_msghdr_from_user+0x5d/0x80
+>> [   58.265191]  ___sys_sendmsg+0x86/0xd0
+>> [   58.265219]  ? lock_is_held_type+0xe3/0x140
+>> [   58.265234]  ? find_held_lock+0x2b/0x80
+>> [   58.265253]  ? lock_is_held_type+0xe3/0x140
+>> [   58.265272]  ? rcu_read_lock_sched_held+0x3f/0x80
+>> [   58.265284]  ? kfree+0x365/0x5c0
+>> [   58.265309]  __sys_sendmsg+0x47/0x80
+>> [   58.265339]  ? syscall_enter_from_user_mode+0x22/0xc0
+>> [   58.265352]  do_syscall_64+0x5b/0x80
+>> [   58.265370]  ? asm_common_interrupt+0x22/0x40
+>> [   58.265379]  ? lockdep_hardirqs_on+0x7d/0x100
+>> [   58.265390]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+>> [   58.265396] RIP: 0033:0x7feddd1318e4
+>> [   58.265407] Code: 15 41 45 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 80 3d 1d cd 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+>> [   58.265413] RSP: 002b:00007ffdc089f4f8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+>> [   58.265423] RAX: ffffffffffffffda RBX: 000055c1579c4880 RCX: 00007feddd1318e4
+>> [   58.265428] RDX: 0000000000000000 RSI: 00007ffdc089f530 RDI: 0000000000000006
+>> [   58.265433] RBP: 000055c157a41910 R08: 0000000000000004 R09: 000000000000000d
+>> [   58.265438] R10: 00007ffdc089f610 R11: 0000000000000202 R12: 000055c1579c4790
+>> [   58.265442] R13: 00007ffdc089f530 R14: 0000000000000000 R15: 00007ffdc089f610
+>> [   58.265485]  </TASK>
+>> [   58.265489] irq event stamp: 51698
+>> [   58.265493] hardirqs last  enabled at (51704): [<ffffffff9d184a6e>] __up_console_sem+0x5e/0x70
+>> [   58.265502] hardirqs last disabled at (51709): [<ffffffff9d184a53>] __up_console_sem+0x43/0x70
+>> [   58.265511] softirqs last  enabled at (50976): [<ffffffff9d0fbc9d>] __irq_exit_rcu+0xed/0x160
+>> [   58.265520] softirqs last disabled at (50988): [<ffffffffc1414692>] ieee80211_tx_control_port+0x282/0x5a0 [mac80211]
+>> [   58.265574] ---[ end trace 0000000000000000 ]---
+>>
+>> Backtrace 2:
+>>
+>> [   58.283734] ------------[ cut here ]------------
+>> [   58.283747] WARNING: CPU: 0 PID: 662 at drivers/net/wireless/ralink/rt2x00/rt2x00.h:1316 rt2x00mac_tx+0x59/0x3a0 [rt2x00lib]
+>> [   58.283774] Modules linked in: rt2500pci(E) rt2x00pci(E) rt2x00mmio(E) rt2x00lib(E) mac80211 libarc4 snd_atiixp_modem snd_atiixp snd_ac97_codec ac97_bus cfg80211 snd_seq snd_seq_device snd_pcm joydev edac_mce_amd snd_timer 8139too eeprom_93cx6 pcspkr snd 8139cp mii k8temp soundcore qrtr rfkill i2c_piix4 zram amdgpu iommu_v2 gpu_sched drm_buddy radeon video wmi sdhci_pci drm_ttm_helper cqhci ttm sdhci firewire_ohci drm_display_helper firewire_core mmc_core ata_generic pata_acpi serio_raw yenta_socket cec crc_itu_t pata_atiixp ip6_tables ip_tables i2c_dev fuse
+>> [   58.283986] CPU: 0 PID: 662 Comm: wpa_supplicant Tainted: G        W   E      6.0.0-rc3+ #112
+>> [   58.283994] Hardware name: MICRO-STAR INT'L CO.,LTD MS-1013, BIOS A1013AMS V4.30 01/09/2006
+>> [   58.283999] RIP: 0010:rt2x00mac_tx+0x59/0x3a0 [rt2x00lib]
+>> [   58.284015] Code: 8b 54 24 08 49 89 f5 8b 4a 18 f6 43 28 20 0f 85 cb 00 00 00 44 0f b7 f8 41 8d 77 fe 83 fe 01 77 56 83 f9 02 0f 87 10 01 00 00 <0f> 0b 83 f9 02 75 12 4d 8b b4 24 98 11 00 00 b8 60 01 00 00 4d 85
+>> [   58.284021] RSP: 0018:ffffa30501c63770 EFLAGS: 00010246
+>> [   58.284030] RAX: 0000000000000002 RBX: ffff93df43ab3400 RCX: 0000000000000002
+>> [   58.284035] RDX: ffffffffc123c4a0 RSI: 0000000000000000 RDI: ffff93df4b3c8e00
+>> [   58.284040] RBP: ffff93df4b3c8e00 R08: 0000000000000001 R09: 0000000000000001
+>> [   58.284045] R10: ffff93df49860000 R11: 0000000001761407 R12: ffff93df4b3cb3c0
+>> [   58.284050] R13: ffffa30501c637d8 R14: ffff93df4b3c9440 R15: 0000000000000002
+>> [   58.284056] FS:  00007feddd63c7c0(0000) GS:ffff93dfb9c00000(0000) knlGS:0000000000000000
+>> [   58.284062] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   58.284067] CR2: 000055c157a50668 CR3: 000000000994a000 CR4: 00000000000006f0
+>> [   58.284072] Call Trace:
+>> [   58.284080]  <TASK>
+>> [   58.284084]  ? _raw_spin_unlock_irqrestore+0x30/0x60
+>> [   58.284110]  ieee80211_process_measurement_req+0x2ca/0x890 [mac80211]
+>> [   58.284216]  ieee80211_next_txq+0x2162/0x2790 [mac80211]
+>> [   58.284278]  ieee80211_tx_prepare_skb+0x250/0x290 [mac80211]
+>> [   58.284368]  __ieee80211_subif_start_xmit+0x21f/0x410 [mac80211]
+>> [   58.284441]  ieee80211_tx_control_port+0x2d5/0x5a0 [mac80211]
+>> [   58.284514]  nl80211_tx_control_port+0x1cb/0x380 [cfg80211]
+>> [   58.284791]  genl_family_rcv_msg_doit+0xd0/0x120
+>> [   58.284828]  genl_rcv_msg+0xca/0x1c0
+>> [   58.284840]  ? nl80211_prepare_wdev_dump+0x220/0x220 [cfg80211]
+>> [   58.284973]  ? genl_get_cmd+0xe0/0xe0
+>> [   58.284985]  netlink_rcv_skb+0x51/0x100
+>> [   58.285013]  genl_rcv+0x24/0x40
+>> [   58.285022]  netlink_unicast+0x168/0x250
+>> [   58.285038]  netlink_sendmsg+0x242/0x4a0
+>> [   58.285067]  sock_sendmsg+0x5f/0x70
+>> [   58.285078]  ____sys_sendmsg+0x22e/0x270
+>> [   58.285087]  ? import_iovec+0x17/0x20
+>> [   58.285095]  ? copy_msghdr_from_user+0x5d/0x80
+>> [   58.285120]  ___sys_sendmsg+0x86/0xd0
+>> [   58.285151]  ? lock_is_held_type+0xe3/0x140
+>> [   58.285165]  ? find_held_lock+0x2b/0x80
+>> [   58.285182]  ? lock_is_held_type+0xe3/0x140
+>> [   58.285202]  ? rcu_read_lock_sched_held+0x3f/0x80
+>> [   58.285215]  ? kfree+0x365/0x5c0
+>> [   58.285238]  __sys_sendmsg+0x47/0x80
+>> [   58.285269]  ? syscall_enter_from_user_mode+0x22/0xc0
+>> [   58.285282]  do_syscall_64+0x5b/0x80
+>> [   58.285289]  ? do_syscall_64+0x67/0x80
+>> [   58.285297]  ? lockdep_hardirqs_on+0x7d/0x100
+>> [   58.285308]  ? do_syscall_64+0x67/0x80
+>> [   58.285318]  ? do_syscall_64+0x67/0x80
+>> [   58.285326]  ? lockdep_hardirqs_on+0x7d/0x100
+>> [   58.285337]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+>> [   58.285344] RIP: 0033:0x7feddd1318e4
+>> [   58.285354] Code: 15 41 45 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 80 3d 1d cd 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+>> [   58.285360] RSP: 002b:00007ffdc089f898 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+>> [   58.285369] RAX: ffffffffffffffda RBX: 000055c1579c4880 RCX: 00007feddd1318e4
+>> [   58.285374] RDX: 0000000000000000 RSI: 00007ffdc089f8d0 RDI: 0000000000000006
+>> [   58.285379] RBP: 000055c157a41910 R08: 0000000000000004 R09: 00007feddd1f73e0
+>> [   58.285384] R10: 00007ffdc089f9b0 R11: 0000000000000202 R12: 000055c1579c4790
+>> [   58.285389] R13: 00007ffdc089f8d0 R14: 0000000000000000 R15: 00007ffdc089f9b0
+>> [   58.285431]  </TASK>
+>> [   58.285435] irq event stamp: 52662
+>> [   58.285439] hardirqs last  enabled at (52668): [<ffffffff9d184a6e>] __up_console_sem+0x5e/0x70
+>> [   58.285449] hardirqs last disabled at (52673): [<ffffffff9d184a53>] __up_console_sem+0x43/0x70
+>> [   58.285457] softirqs last  enabled at (51810): [<ffffffff9ddec003>] packet_poll+0xd3/0x140
+>> [   58.285466] softirqs last disabled at (51934): [<ffffffffc1414692>] ieee80211_tx_control_port+0x282/0x5a0 [mac80211]
+>> [   58.285520] ---[ end trace 0000000000000000 ]---
+>>
+>> If this is indeed considered an issue with the core I hope that these
+>> traces might help pinpoint the issue.
+>>
+>> Regards,
+>>
+>> Hans
+>>
+>>
+>> Hans de Goede (1):
+>>   wifi: rt2x00: Fix "Error - Attempt to send packet over invalid queue 2"
+>>
+>>  drivers/net/wireless/ralink/rt2x00/rt2x00.h | 5 ++++-
+>>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> -- 
+>> 2.37.2
+>>
+> 
+
