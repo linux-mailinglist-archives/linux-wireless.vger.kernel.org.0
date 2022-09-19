@@ -2,52 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C5D5BC616
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Sep 2022 12:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE545BCA0A
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Sep 2022 12:54:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiISKJj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 06:09:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41232 "EHLO
+        id S230126AbiISKys (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Sep 2022 06:54:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiISKJe (ORCPT
+        with ESMTP id S230366AbiISKxz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 06:09:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1626FFF;
-        Mon, 19 Sep 2022 03:09:32 -0700 (PDT)
+        Mon, 19 Sep 2022 06:53:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E586C62C2;
+        Mon, 19 Sep 2022 03:50:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 797DE60F3E;
-        Mon, 19 Sep 2022 10:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B31C433C1;
-        Mon, 19 Sep 2022 10:09:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E804BB818FD;
+        Mon, 19 Sep 2022 10:50:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAE7C433B5;
+        Mon, 19 Sep 2022 10:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663582171;
-        bh=oShRlj3BcmnMf17jIzrU1DTdHQXfx+U/kgfjApFm9ng=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=crPM3goFvrbX8KYzbT1gULNL7KELGPPCkkUoEl6xZHB4AIMUiV9S9q2QJdnBKGfzg
-         DkP0vgtGkyL0vFag0K9UiwBwwWaDeCiFKNGw9tGt5kKaHBsr0tBlEGqsf6Vfjk590t
-         E9FXFV+Pcgo3edpF9Gb59QfcFQ6a8JmpmNC4FqwyWF+WDVJLHgeLPyjMiuH5h9RZ4K
-         3kCr3HKksjA1vOuaT7DhYFdG5PWbAQnCvcPHSqCxzhDYHUSCveVQ+/t3Mh0+p02Nx2
-         ozT7lI6tp8X7SbaKnGXU4xkwp5YpLAtBPewGJy8cu582z6DMwVDTtj1Wzlg93xNxSB
-         /kiSr3XLnxkkQ==
+        s=k20201202; t=1663584603;
+        bh=we/uqACxvlSuH1F+o5KROZOH8HmfvuQkcL72+hdQo0g=;
+        h=From:Subject:To:Cc:Date:From;
+        b=ZNil+2UAKtRGWrmMlcJOwD33EMYCpQHLwNPQ5hEJqRXOtYYtSa1USXKhj+HJCxHcI
+         Ei8BzqIT30y50K5mreJcO8vl0GY3jVV2sQITp8pDgi6zaR7uhE0L/bqQiBudSTJqe3
+         A25tXvPnQGK9OqJ1L1776J7GjQCAkpfALaorL8jPG+yidqdjYIDuh2IKMBZ5GLSH6G
+         6SMtGE+Pr8ncnUDTps2auD05YycdywFu3liaxJlpmkVlohgfhJchSzLFaXvWFUilKe
+         mBKzoWLm39MgmQQUjcXm7xaXUkcpwZ916cGKgK0kOVhZ8QsrAUZoVgajqCe1cXRxSF
+         rgwRCIqhvYobQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtw89: uninitialized variable on error in
- rtw89_early_fw_feature_recognize()
+Content-Transfer-Encoding: 8bit
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <YyMzDtX/3fUBnonC@kili>
-References: <YyMzDtX/3fUBnonC@kili>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Zong-Zhe Yang <kevin_yang@realtek.com>,
-        Zong-Zhe Yang <kevin_yang@realtek.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166358216888.24821.8170558068675716786.kvalo@kernel.org>
-Date:   Mon, 19 Sep 2022 10:09:30 +0000 (UTC)
+Subject: pull-request: wireless-2022-09-19
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20220919105003.1EAE7C433B5@smtp.kernel.org>
+Date:   Mon, 19 Sep 2022 10:50:02 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,21 +50,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Hi,
 
-> If request_partial_firmware_into_buf() fails then "firmware" is not
-> initialized and the release_firmware(firmware) will crash.
-> 
-> Fixes: deebea35d699 ("wifi: rtw89: early recognize FW feature to decide if chanctx")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-Patch applied to wireless-next.git, thanks.
+Kalle
 
-4c3140f4cea6 wifi: rtw89: uninitialized variable on error in rtw89_early_fw_feature_recognize()
+The following changes since commit 2aec909912da55a6e469fd6ee8412080a5433ed2:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/YyMzDtX/3fUBnonC@kili/
+  wifi: use struct_group to copy addresses (2022-09-03 16:40:06 +0200)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-09-19
+
+for you to fetch changes up to 781b80f452fcc1cfc16ee41f12556626a9ced049:
+
+  wifi: mt76: fix 5 GHz connection regression on mt76x0/mt76x2 (2022-09-12 14:26:02 +0300)
+
+----------------------------------------------------------------
+wireless fixes for v6.0
+
+Late stage fixes for v6.0. Temporarily mark iwlwifi's mei code broken
+as it breaks suspend for iwd users and also don't spam nss trimming
+messages. mt76 has fixes for aggregation sequence numbers and a
+regression related to the VHT extended NSS BW feature.
+
+----------------------------------------------------------------
+Felix Fietkau (2):
+      wifi: mt76: fix reading current per-tid starting sequence number for aggregation
+      wifi: mt76: fix 5 GHz connection regression on mt76x0/mt76x2
+
+Jason A. Donenfeld (1):
+      wifi: iwlwifi: don't spam logs with NSS>2 messages
+
+Toke Høiland-Jørgensen (1):
+      wifi: iwlwifi: Mark IWLMEI as broken
+
+ drivers/net/wireless/intel/iwlwifi/Kconfig        | 1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mac80211.c     | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c   | 2 +-
+ 4 files changed, 6 insertions(+), 4 deletions(-)
