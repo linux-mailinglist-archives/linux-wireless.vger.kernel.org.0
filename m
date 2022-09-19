@@ -2,104 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 104F95BC50D
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Sep 2022 11:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 809015BC5ED
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Sep 2022 12:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbiISJMT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 05:12:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49860 "EHLO
+        id S229772AbiISKAw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Sep 2022 06:00:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbiISJMI (ORCPT
+        with ESMTP id S229484AbiISKAt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 05:12:08 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BA322B3E
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 02:12:05 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id c7so21698584ljm.12
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 02:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=mAFejXazN7AR4DZL77v39AhpyXgCtkDstk5iMhmKVi0=;
-        b=YFbrFAlMe9QmUKeWXk3YH9B5FY0FZldFJ0WYpCeVOZih5AR2KZZdfJmL+ud0O4j/tJ
-         3pYwPS3qQaInszrT6MRsq9OcMyPyCmo8QYzpvabo6ntG/g6yL1qNwcpJuDO/fFGar8/Y
-         8ieafbV65381IEWHkUqO1osrh4AMjTkDbXycStUJy8QoQQp0+wscFmWiH1egIIKxaaGX
-         yYFJ2PftsQvM/FHAibs/tfYer10uxBIgZ7qTjyAM5XLFAR9bXwRagZ7V9FJSKjhx+BNe
-         8o7l9bASm4fyjIeIOybnMk9C6PPVS0KHUT4xOk17wmkMYaScBxYlusesNpKqp1P1L7D1
-         IfNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=mAFejXazN7AR4DZL77v39AhpyXgCtkDstk5iMhmKVi0=;
-        b=fTsUap0hnf8BygKEwPtsDL1S4ash8Chkt2l8ybf+pLbHTNKn27Ac04dENe0rjYYFIb
-         05cgQrDhbwuXTxVpb9+8EqPV4H6XUhWM691GMxQW9wsVFbDuE3LH5y6Qht+Ay03QDsjc
-         TZ5RRj0plG2xzXkqt7R5NRL0OhAuHX+45FHeGwikeeOraRzNviUwexFgMrem0mPMmiHI
-         SchKHqmGWJOwhJIl7Xo0pw1cWblt3F1QSF4nqpI2QraT2iC78VhjJAUdQwaCe6TA8jOW
-         grGIajOX0v68E7YwzPNXKOCyJG0LDvN4g3jHUmtDLZwWbJn7egb8aMjqEgHH6F58Yyni
-         5huQ==
-X-Gm-Message-State: ACrzQf3wzmHkwiss9JOMt0IKv7L9IA+b95yQaLsyWv3qUKvrjPm3U4/0
-        4CdM+/zdSpuYphJzXxW0ZyaUaCmmlmmFWh+KHNA=
-X-Google-Smtp-Source: AMsMyM7os2hpFj0YHDsZypdcEz8v8zRZ4KHCcitV/zE+Qf0XRi5t4ItAb1WA9u1EFvbvIqQvrEuENjwwH7S5b+b2Lwo=
-X-Received: by 2002:a05:651c:8d:b0:26c:4ef4:e4d8 with SMTP id
- 13-20020a05651c008d00b0026c4ef4e4d8mr1306393ljq.74.1663578723327; Mon, 19 Sep
- 2022 02:12:03 -0700 (PDT)
+        Mon, 19 Sep 2022 06:00:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEFE810D;
+        Mon, 19 Sep 2022 03:00:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4609F61828;
+        Mon, 19 Sep 2022 10:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3AFC433B5;
+        Mon, 19 Sep 2022 10:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663581647;
+        bh=+17s6Wtbdo4L7stYi4UorDpOJxEGDGV29FM19sqxEbs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=bX04CSGo0ee0hnFdJp+TMvEDLAKINbbX05Mg+qSjcOZ/sNT5zqzNbuP8okLs8NFqq
+         vYcb5e/UFd5k73NSEMDy/7LSaRf6aDaCkfuJCayU+8RZwGECoYw8L92tIGOzA+XDaE
+         W3yJmBOixQjwfsSuXj1Jxcld0DFgD6boIjo35PkoikQxFoswnYk0JxoIfqKJ/lQObQ
+         W+becfcJWP/kffx8skuE14osfd1Z/VciUue9rtEW6tMxRHOjsrSV7Vjkh8YTvKLISk
+         o/pUU2RweAGV/B8hVM9By7v/5WEVMBCa3y7hRtzqPC7S1QGvuA4+HpYw4Ub7junJJ/
+         DDisqcNS1BGRQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a2e:9e57:0:0:0:0:0 with HTTP; Mon, 19 Sep 2022 02:12:02
- -0700 (PDT)
-Reply-To: officialmanuelfranco606@gmail.com
-From:   Mr Manuel Franco <zainabadamu6378@gmail.com>
-Date:   Mon, 19 Sep 2022 10:12:02 +0100
-Message-ID: <CAM7omXyak=5_HoKPkNBOE_bKEjwUpBMPqPr5Gw5iQj3mAmkN+g@mail.gmail.com>
-Subject: darowizna
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:243 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [zainabadamu6378[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [officialmanuelfranco606[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [zainabadamu6378[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH wireless-next v3 01/12] dt-bindings: net: bcm4329-fmac:
+ Add
+ Apple properties & chips
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <E1oZDnO-0077Zy-18@rmk-PC.armlinux.org.uk>
+References: <E1oZDnO-0077Zy-18@rmk-PC.armlinux.org.uk>
+To:     Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Hector Martin <marcan@marcan.st>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Rafa__ Mi__ecki" <zajec5@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>,
+        van Spriel <arend@broadcom.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166358162603.24821.1105605322984506505.kvalo@kernel.org>
+Date:   Mon, 19 Sep 2022 10:00:42 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Zosta=C5=82e=C5=9B wybrany do otrzymania darowizny pieni=C4=99=C5=BCnej w w=
-ysoko=C5=9Bci 2 000 000,00 =E2=82=AC
-Odpowiedz, aby uzyska=C4=87 wi=C4=99cej informacji
+Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
 
-Najcieplejsze pozdrowienia,
-pan Manuel Franco
+> From: Hector Martin <marcan@marcan.st>
+> 
+> This binding is currently used for SDIO devices, but these chips are
+> also used as PCIe devices on DT platforms and may be represented in the
+> DT. Re-use the existing binding and add chip compatibles used by Apple
+> T2 and M1 platforms (the T2 ones are not known to be used in DT
+> platforms, but we might as well document them).
+> 
+> Then, add properties required for firmware selection and calibration on
+> M1 machines.
+> 
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> Reviewed-by: Mark Kettenis <kettenis@openbsd.org>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+12 patches applied to wireless-next.git, thanks.
+
+e2e37224e8b3 dt-bindings: net: bcm4329-fmac: Add Apple properties & chips
+e263d7229411 wifi: brcmfmac: firmware: Handle per-board clm_blob files
+a1b5a9022436 wifi: brcmfmac: pcie/sdio/usb: Get CLM blob via standard firmware mechanism
+7cb46e721417 wifi: brcmfmac: firmware: Support passing in multiple board_types
+e63efbcaba7d wifi: brcmfmac: pcie: Read Apple OTP information
+7682de8b3351 wifi: brcmfmac: of: Fetch Apple properties
+6bad3eeab6d3 wifi: brcmfmac: pcie: Perform firmware selection for Apple platforms
+687f767d6fab wifi: brcmfmac: firmware: Allow platform to override macaddr
+f48476780ce3 wifi: brcmfmac: msgbuf: Increase RX ring sizes to 1024
+e01d7a546981 wifi: brcmfmac: pcie: Support PCIe core revisions >= 64
+e8b80bf2fbd7 wifi: brcmfmac: pcie: Add IDs/properties for BCM4378
+4302b3fba12a arm64: dts: apple: Add WiFi module and antenna properties
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/E1oZDnO-0077Zy-18@rmk-PC.armlinux.org.uk/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
