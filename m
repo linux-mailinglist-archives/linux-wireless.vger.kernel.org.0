@@ -2,66 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809015BC5ED
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Sep 2022 12:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A395B5BC5F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Sep 2022 12:02:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbiISKAw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 06:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59838 "EHLO
+        id S230110AbiISKCC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Sep 2022 06:02:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbiISKAt (ORCPT
+        with ESMTP id S230055AbiISKB7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 06:00:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEFE810D;
-        Mon, 19 Sep 2022 03:00:48 -0700 (PDT)
+        Mon, 19 Sep 2022 06:01:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E289A22BC6
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 03:01:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4609F61828;
-        Mon, 19 Sep 2022 10:00:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3AFC433B5;
-        Mon, 19 Sep 2022 10:00:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F17960E9C
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 10:01:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C73EC433D6;
+        Mon, 19 Sep 2022 10:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663581647;
-        bh=+17s6Wtbdo4L7stYi4UorDpOJxEGDGV29FM19sqxEbs=;
+        s=k20201202; t=1663581717;
+        bh=M4CN8KquX+35Lugz3NG27+VlYY6w/l6K6lGuNi1+hG0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=bX04CSGo0ee0hnFdJp+TMvEDLAKINbbX05Mg+qSjcOZ/sNT5zqzNbuP8okLs8NFqq
-         vYcb5e/UFd5k73NSEMDy/7LSaRf6aDaCkfuJCayU+8RZwGECoYw8L92tIGOzA+XDaE
-         W3yJmBOixQjwfsSuXj1Jxcld0DFgD6boIjo35PkoikQxFoswnYk0JxoIfqKJ/lQObQ
-         W+becfcJWP/kffx8skuE14osfd1Z/VciUue9rtEW6tMxRHOjsrSV7Vjkh8YTvKLISk
-         o/pUU2RweAGV/B8hVM9By7v/5WEVMBCa3y7hRtzqPC7S1QGvuA4+HpYw4Ub7junJJ/
-         DDisqcNS1BGRQ==
+        b=pc8qQm+S+ouFY2qhg6TkrjWdIicygtAoEWDIsF7NkM7HosF+6pJPvjQKRFBkduI/R
+         8Vz8hvRgLVbbYLYDXivG0XdHwGn7j7CVym/EA6Dbj2b35I8W06+lDn71kYsjRkK0hZ
+         VrF8oy6VyteKvTsntlPl+8/BScU1QNFtQd5Vgg68ioJbgikKSINd7aafyUqH4+fKJG
+         G1l1ot1VpQN8vr/0ifGfb75irnIVR+pap5zYW1PM1vMoNavhezUkjPB0cSnUQDhh26
+         tGrr3Ysf2pT0xMh6jprnCwW9koY+ERT1nrE4dUwVxRgsUVers4F4nE3ox64ETlBww6
+         RJv0D8dKgIteQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH wireless-next v3 01/12] dt-bindings: net: bcm4329-fmac:
- Add
- Apple properties & chips
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/7] wifi: rtw89: coex: use void pointer as temporal
+ type
+ to copy report
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <E1oZDnO-0077Zy-18@rmk-PC.armlinux.org.uk>
-References: <E1oZDnO-0077Zy-18@rmk-PC.armlinux.org.uk>
-To:     Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-        Hector Martin <marcan@marcan.st>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Rafa__ Mi__ecki" <zajec5@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        SHA-cyfmac-dev-list@infineon.com, Sven Peter <sven@svenpeter.dev>,
-        van Spriel <arend@broadcom.com>
+In-Reply-To: <20220913092546.43722-2-pkshih@realtek.com>
+References: <20220913092546.43722-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166358162603.24821.1105605322984506505.kvalo@kernel.org>
-Date:   Mon, 19 Sep 2022 10:00:42 +0000 (UTC)
+Message-ID: <166358171494.24821.11327207476233684630.kvalo@kernel.org>
+Date:   Mon, 19 Sep 2022 10:01:56 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -71,43 +55,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Hector Martin <marcan@marcan.st>
+> With void pointer, we don't need to cast to 'u8 *' by one by.
 > 
-> This binding is currently used for SDIO devices, but these chips are
-> also used as PCIe devices on DT platforms and may be represented in the
-> DT. Re-use the existing binding and add chip compatibles used by Apple
-> T2 and M1 platforms (the T2 ones are not known to be used in DT
-> platforms, but we might as well document them).
-> 
-> Then, add properties required for firmware selection and calibration on
-> M1 machines.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> Reviewed-by: Mark Kettenis <kettenis@openbsd.org>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-12 patches applied to wireless-next.git, thanks.
+7 patches applied to wireless-next.git, thanks.
 
-e2e37224e8b3 dt-bindings: net: bcm4329-fmac: Add Apple properties & chips
-e263d7229411 wifi: brcmfmac: firmware: Handle per-board clm_blob files
-a1b5a9022436 wifi: brcmfmac: pcie/sdio/usb: Get CLM blob via standard firmware mechanism
-7cb46e721417 wifi: brcmfmac: firmware: Support passing in multiple board_types
-e63efbcaba7d wifi: brcmfmac: pcie: Read Apple OTP information
-7682de8b3351 wifi: brcmfmac: of: Fetch Apple properties
-6bad3eeab6d3 wifi: brcmfmac: pcie: Perform firmware selection for Apple platforms
-687f767d6fab wifi: brcmfmac: firmware: Allow platform to override macaddr
-f48476780ce3 wifi: brcmfmac: msgbuf: Increase RX ring sizes to 1024
-e01d7a546981 wifi: brcmfmac: pcie: Support PCIe core revisions >= 64
-e8b80bf2fbd7 wifi: brcmfmac: pcie: Add IDs/properties for BCM4378
-4302b3fba12a arm64: dts: apple: Add WiFi module and antenna properties
+8d8fe46cd36b wifi: rtw89: coex: use void pointer as temporal type to copy report
+1bb2d4f1551b wifi: rtw89: coex: Add v1 Wi-Fi firmware power-saving null data report
+8468446a6277 wifi: rtw89: coex: Move coexistence firmware buffer size parameter to chip info
+287657e77b21 wifi: rtw89: coex: Parsing Wi-Fi firmware error message from reports
+eacc3f53bdc2 wifi: rtw89: coex: Parsing Wi-Fi firmware TDMA info from reports
+c918f5f49fcd wifi: rtw89: coex: Remove trace_step at COEX-MECH control structure for RTL8852C
+435f87d088e5 wifi: rtw89: coex: Combine set grant WL/BT and correct the debug log
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/E1oZDnO-0077Zy-18@rmk-PC.armlinux.org.uk/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220913092546.43722-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
