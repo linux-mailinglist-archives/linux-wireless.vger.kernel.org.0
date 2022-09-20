@@ -2,81 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0585BD961
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 03:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4953B5BDC88
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 07:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229725AbiITBaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 21:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S229776AbiITFpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Sep 2022 01:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbiITBaS (ORCPT
+        with ESMTP id S229911AbiITFpJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 21:30:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694834056F;
-        Mon, 19 Sep 2022 18:30:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 24DBBB82353;
-        Tue, 20 Sep 2022 01:30:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BCABAC433B5;
-        Tue, 20 Sep 2022 01:30:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663637414;
-        bh=M/Vfuj+1x2pkv02mvuyhLTvrL63Q1EoU5SyK2zCuqvQ=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=AUPmiwUBZAGt8SrBrq9CdgFQuNL7D3FrDRWP0CEo41ucEEsnW4rQvXY8qd8poaA+/
-         ox7aoY0TIvW4QoFx0cVQwzKp/i7Rosch76dmN9Q7paUdb6XQFM3grgL0jvFYV2tgTK
-         Dw0qAJ5A4X1ZP/W8u9G7QCZo+PmwVJg+exozDmSz5fgxQOq6QBKJTvaQ+jMUEuhYAS
-         xfMo8wvetgB7JsCC0+EPmzWwruuHiNFbis+2kj8KyCQiNmA+bnVSvPmZjsktKSgce9
-         OLfmeHshpOWEcUo3NIxQJl8NT802WTfLVCu2qkpV/Yfg096xligFohw5NzCbbeu4Ax
-         DmcNCQ+ngp07g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 924C9C43141;
-        Tue, 20 Sep 2022 01:30:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Tue, 20 Sep 2022 01:45:09 -0400
+X-Greylist: delayed 146 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 19 Sep 2022 22:45:08 PDT
+Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEDF2CCBC
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 22:45:08 -0700 (PDT)
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:52170 helo=webmail.newmedia-net.de)
+        by mail.as201155.net with esmtps  (TLS1) tls TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+        (Exim 4.95)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1oaW1l-00068B-2A;
+        Tue, 20 Sep 2022 07:42:37 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=cSPxfDNULS8335PqZiOl1xMpOB11dQ6WXoJ1j1PJL5Y=;
+        b=uy/m6mQqJVtsVXkHC6lmDz9LI4quYrHKCRxsO7V6QobXqk3RwA34WCr6GDTgTxZ5tolHKTyENWIfoDjJPh0sGfVhPZYWgPuWyWvRStKUxW/g3Cy5zBSy0rmmjN1ZkZBfkreACk2CX0fGoqaxOJ9MdDS5XLM6iEKIzGLFB8eubuQ=;
+Message-ID: <c9904373-7e20-64b6-8900-69d38f2cdef4@newmedia-net.de>
+Date:   Tue, 20 Sep 2022 07:42:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2022-09-19
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <166363741459.2241.16870588734772041578.git-patchwork-notify@kernel.org>
-Date:   Tue, 20 Sep 2022 01:30:14 +0000
-References: <20220919105003.1EAE7C433B5@smtp.kernel.org>
-In-Reply-To: <20220919105003.1EAE7C433B5@smtp.kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101
+ Thunderbird/105.0
+Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory
+ domain"
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Tim Harvey <tharvey@gateworks.com>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Cale Collins <ccollins@gateworks.com>, kvalo@kernel.org,
+        Patrick Steinhardt <ps@pks.im>,
+        ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Stephen McCarthy <stephen.mccarthy@pctel.com>
+References: <20200527165718.129307-1-briannorris@chromium.org>
+ <YmPadTu8CfEARfWs@xps>
+ <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
+ <CAG2Q2vXce2V3Y6MnPhV6obcNWyQzyusMTL=5oCQLRNh2_ffNYA@mail.gmail.com>
+ <CAG2Q2vXFcSVwF4CbU5o3VP1MWwrdqrZjTHgfBj_Q0t3nNipJRw@mail.gmail.com>
+ <CA+ASDXNx30A3=BA9b-tiAQzYHP=nV_eLw1QFpJij=F=JgWZ5sg@mail.gmail.com>
+ <CAJ+vNU38WyC=FFZVgqyKunEnjXid6vXqkorv8a8+ywjJBk_0NA@mail.gmail.com>
+ <CAHNKnsTEBr4m1SpZxnfFPWiSgxBg5HhqYCdWwm=9gp7qHXg=Pg@mail.gmail.com>
+From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
+In-Reply-To: <CAHNKnsTEBr4m1SpZxnfFPWiSgxBg5HhqYCdWwm=9gp7qHXg=Pg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [2003:d4:df03:78ee:bd3f:9dfc:a067:ec5]
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1oaW1l-0007RI-Ev; Tue, 20 Sep 2022 07:42:37 +0200
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Am 20.09.2022 um 01:42 schrieb Sergey Ryazanov:
 
-This pull request was applied to netdev/net.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+> Hello,
+>
+> I would like to add my 2c.
+>
+> On Mon, Sep 19, 2022 at 8:25 PM Tim Harvey <tharvey@gateworks.com> wrote:
+>> I'm not clear if
+>> there are many other cards that have this same issue.
+> The list of cards with unprogrammed regdomain can be extended with
+> several relatively modern models:
+>    * MikroTik R11e-5HacD (QCA9882 based)
+>    * MikroTik R11e-5HacT (QCA9880 based)
+>    * QNAP QWA-AC2600 (QCA9984 based) [1]
+>
+> As you can see these are powerful and massive cards for WISPs. Or at
+> least to run as an AP. I also know a bunch of .11a/b/g/n cards with
+> zero regdomain and the same target audience. Except maybe for the
+> legacy Wistorn CM9, which is a relatively compact card.
+>
+> Also, a huge number of wireless routers and access points have
+> unprogrammed regdomain. But probably this is not the case, since they
+> anyway can not run a stock kernel.
+>
+> 1. https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1895333
+let me add my 2c. the regdomain 0 is very common and defacto a standard 
+for all non oem cards on the market. i have only seen real programmed cards
+as buildin cards in laptops.
+beside of these zero cards there are other special regdomains available 
+for ath cards
 
-On Mon, 19 Sep 2022 10:50:02 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
-
-Here is the summary with links:
-  - pull-request: wireless-2022-09-19
-    https://git.kernel.org/netdev/net/c/094cc3b649e2
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+>
