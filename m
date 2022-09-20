@@ -2,117 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D37B5BD8CA
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 02:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B59095BD92C
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 03:11:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbiITAb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 20:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35320 "EHLO
+        id S229969AbiITBLW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Sep 2022 21:11:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiITAb0 (ORCPT
+        with ESMTP id S229972AbiITBKu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 20:31:26 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5751B27B34
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 17:31:25 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id e5so1225308pfl.2
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 17:31:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=3PNG2GhX9MS6pqBLx1SD4wmDS0vBOFDzpiI8k/Y1NQY=;
-        b=JkkhATs/ylEliOjshIBZv+N9/k5iW7my8lvUE9I1I77Pv5bpmUCxYJeFHFzHm/9C0t
-         d8AF/oT6R3kL4GlNSZuj0/srd5+xF6r+MERfgcMWzbBEdK+Ub7s2WcLu1t/vsdm7T8en
-         h4UihtZ2SZA82JjnbDlOex/X7vF+i1F1XeAGA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=3PNG2GhX9MS6pqBLx1SD4wmDS0vBOFDzpiI8k/Y1NQY=;
-        b=qGAsU+oQfRQhMOuliAfpKxhI5lBZf8rzUo29uaMbrrM9Oiqd61kabSmAARncgmqLf7
-         rDEWuZ+NlD2D5MfVAiRLBwe66AXkTbJRFJ6wQ9C11t3iTNhxRHTFwDVRPUn2nTY5Hjvw
-         WwbvoOyJiuLbNxkRLotX65W0K0KOvZCeAg8Z+5pirfHbRq6YWvxZhBTmrVGCh+QDjiiO
-         +jf1L4Y2wPq5R900xXmE2jUC4iGjDkshw1lcTZSstqhMiCt7IkOMj2haAYCjPXZJvEgw
-         00RnI+wkvSjjGEZRXLw4V5iNzyOTEYd5pP9jxF0P86Oi+q/WKCWmQwuNoTLwJnQ9ncI0
-         BUJw==
-X-Gm-Message-State: ACrzQf1KawVjRfPCrRlQCJSbwKmwYLFymCvFSL1O1gkP8y+z7pyGN1aT
-        3zTHgb8QW6p1Xbq1xhMxQ8hguQ==
-X-Google-Smtp-Source: AMsMyM5GDRcjQxtGAMgNL3Tom47j2MIdBldFkbGeDcXaQTVDfAeG2GO9ll7QI+Ah8reV8QQQMslK+A==
-X-Received: by 2002:a63:fc14:0:b0:430:d1d0:fe33 with SMTP id j20-20020a63fc14000000b00430d1d0fe33mr17757445pgi.328.1663633884836;
-        Mon, 19 Sep 2022 17:31:24 -0700 (PDT)
-Received: from localhost (252.157.168.34.bc.googleusercontent.com. [34.168.157.252])
-        by smtp.gmail.com with UTF8SMTPSA id d2-20020a170902cec200b0015e8d4eb219sm21403855plg.99.2022.09.19.17.31.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 17:31:24 -0700 (PDT)
-From:   Jun Yu <junyuu@chromium.org>
-To:     ath11k@lists.infradead.org, quic_jjohnson@quicinc.com
-Cc:     linux-wireless@vger.kernel.org, Jun Yu <junyuu@chromium.org>
-Subject: [PATCH v3] wifi: ath11k: retrieve MAC address from system firmware if provided
-Date:   Tue, 20 Sep 2022 00:31:17 +0000
-Message-Id: <20220920003117.841442-1-junyuu@chromium.org>
-X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
+        Mon, 19 Sep 2022 21:10:50 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DA9884DB56
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 18:10:31 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28K19s9M2031030, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28K19s9M2031030
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 20 Sep 2022 09:09:54 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 20 Sep 2022 09:10:16 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 20 Sep
+ 2022 09:10:16 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/9] wifi: rtw89: coex: complete BT-coexistence feature for 8852C
+Date:   Tue, 20 Sep 2022 09:09:30 +0800
+Message-ID: <20220920010939.12173-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/20/2022 00:43:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMTkgpFWkyCAwNzowODowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Devices may provide their own MAC address via system firmware (e.g.,
-device tree), especially in the case where the device doesn't have a
-useful EEPROM on which to store its MAC address (e.g., for integrated
-ahb WCN6750).
+This is the last patchset to complete BT-coexistence feature for 8852C, so
+users can smoothly use BT and WiFi simultaneously after this.
 
-Use the generic device helper to retrieve the MAC address, and (if
-present) honor it above the MAC address advertised by the card.
+The former 4 patches in this patchset are to add debug things, and
+remaining patches are to add to improve performance. Since BT-coexsitence
+highly depends on exchange messages of WiFi and BT firmware, the final
+patch is to update BT-coexistence version to help checking dependency
+between them.
 
-Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+Ching-Te Ku (9):
+  wifi: rtw89: coex: add v1 cycle report to parsing Bluetooth A2DP
+    status
+  wifi: rtw89: coex: translate slot ID to readable name
+  wifi: rtw89: coex: add v1 summary info to parse the traffic status
+    from firmware
+  wifi: rtw89: coex: add v1 Wi-Fi firmware steps report
+  wifi: rtw89: coex: add WL_S0 hardware TX/RX mask to allow WL_S0 TX/RX
+    during GNT_BT
+  wifi: rtw89: coex: modify LNA2 setting to avoid BT destroyed Wi-Fi
+    aggregation
+  wifi: rtw89: coex: summarize Wi-Fi to BT scoreboard and inform BT one
+    time a cycle
+  wifi: rtw89: coex: add logic to control BT scan priority
+  wifi: rtw89: coex: update coexistence to 6.3.0
 
-Signed-off-by: Jun Yu <junyuu@chromium.org>
----
-v2 -> v3: add patch changelog
-v1 -> v2: use the updated device_get_mac_address signature
+ drivers/net/wireless/realtek/rtw89/coex.c     | 449 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/core.h     |  18 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  55 ++-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  60 ++-
+ 4 files changed, 527 insertions(+), 55 deletions(-)
 
- drivers/net/wireless/ath/ath11k/mac.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 7e91e347c9ff2..16a238ef713e7 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8967,6 +8967,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
- 	struct ath11k_pdev *pdev;
- 	int i;
- 	int ret;
-+	u8 mac_addr[ETH_ALEN] = {0};
- 
- 	if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
- 		return 0;
-@@ -8979,13 +8980,18 @@ int ath11k_mac_register(struct ath11k_base *ab)
- 	if (ret)
- 		return ret;
- 
-+	device_get_mac_address(ab->dev, mac_addr);
-+
- 	for (i = 0; i < ab->num_radios; i++) {
- 		pdev = &ab->pdevs[i];
- 		ar = pdev->ar;
- 		if (ab->pdevs_macaddr_valid) {
- 			ether_addr_copy(ar->mac_addr, pdev->mac_addr);
- 		} else {
--			ether_addr_copy(ar->mac_addr, ab->mac_addr);
-+			if (is_zero_ether_addr(mac_addr))
-+				ether_addr_copy(ar->mac_addr, ab->mac_addr);
-+			else
-+				ether_addr_copy(ar->mac_addr, mac_addr);
- 			ar->mac_addr[4] += i;
- 		}
- 
 -- 
-2.31.0
+2.25.1
 
