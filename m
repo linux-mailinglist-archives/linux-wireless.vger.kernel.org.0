@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11A4F5BE38C
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 12:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B325BE393
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 12:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbiITKmH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Sep 2022 06:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
+        id S231214AbiITKmI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Sep 2022 06:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231420AbiITKll (ORCPT
+        with ESMTP id S231426AbiITKll (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 20 Sep 2022 06:41:41 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2B2644A
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:40:54 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id az6so1589527wmb.4
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:40:54 -0700 (PDT)
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2DA6447
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:40:55 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id ay7-20020a05600c1e0700b003b49861bf48so799188wmb.0
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:40:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=lCjzjKCaFdTI757gIVvr0E42NHozbsB3zARbd5WgRjw=;
-        b=J9oxrOuo3zTjagn7Pnb5Q1Zlhu1rhk8rjmVz0KjuG6jHevZDpkxVa1fkEHnp7tEIr1
-         wHFQkR3izu8CpMSqWoVQ+KOvRtBDbcO9SYqIEuJRjyQPACYN7A0P9IKOVp+VrYZQetcy
-         UbydPyNQD1jT57/RmnTmWmsl4gtqrXMSzDmw8WpnW8PshYjmPKjidPul2C3vC6VlX8LF
-         +zwPvBPUT+336w5x7ooVQF7gR844IEmJR5grFzmcHvY4f9+gTFlXjTt+by/LYJnHStpQ
-         xqwb6BCnw2RdUsbIFv5PbRN6V+pRQabTDVMDfZdO7HpcAd8a1zhoIKxpypexJ3pza44p
-         N5bg==
+        bh=c5J9I9vY/mPbtTeNVZ3vAl8CHXLB79/s4WJqXsA3snc=;
+        b=iQ0GNeXM5ZyMqZyUnnWVTOMAwLvEbGZTK/eMwwx2MH1WVjwg4k4hd19bQVSNhAuN9m
+         xY78FuunApFmlFkYfsnyBx9aQzPeRorJ1AA8FTHD9CxofV7hdDzdDPmOv2kvuukCqwUg
+         mAsrHA3TviqLWBKKo08v+kE8P3XvozAfMTrkw12FPqSbx/SqE3bCLitNYhcKNgCFTyal
+         04cZAhcBAn6MlKf+aTjxfFtnk3NG/buxYsAu++B8jVRYhj4Bo4+DPAxqT2Zc9UIa6spC
+         VOFLIe/lnfgaaBsFYZlRJGu+xVgDPbBeAb8/UWTCDsSS8oberbKM7iYgZ0/9F7VW8Cnx
+         BGZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=lCjzjKCaFdTI757gIVvr0E42NHozbsB3zARbd5WgRjw=;
-        b=aunVNEMyAAXNvrESIoF30xkvZByFru0ccfbV9UYNEbVRorcdRJJHGRK+qC510bB3at
-         8BmSXYljGc8ugbL5WFCglF4xkIIr6UMoEtqG5N3f+CByOwmxyC8cAGrckPlytWeJZks/
-         3fy6Tu+dwX4C0hV1fUBdvvB0cmqv630w8hn0ZOT+CsUKRp72w2Zwoz5VRa+YthB6YF58
-         405bsLXBK+zfGCNufbxx5HU8ihxILFuzcU2n3NG7VwKXGMopDy70qNfyCYskzwumEJeN
-         1l7jU2GcbDKNiQgU78Z6n8Zk+SPLjz5Dh1AV9KY7Qxb3kOWmE7+XPQhT45U1YoMnxrls
-         s1ug==
-X-Gm-Message-State: ACrzQf2h3hYM0HAGxvdjJRQZUnwojAYivaIpqKTbxCYtrkFC9hIqHdjN
-        EpfeuFfYAZP8uH5d8ppR/xrxx8C2KQbCUw==
-X-Google-Smtp-Source: AMsMyM4LIchiwjh4hNc4OFW2t2QvslwdBauU4x6jxyi7OU3qsplWINvgJAT3MD82B3FwApIb+ZNo7g==
-X-Received: by 2002:a05:600c:35c8:b0:3b4:bf50:f844 with SMTP id r8-20020a05600c35c800b003b4bf50f844mr1959074wmq.192.1663670453162;
-        Tue, 20 Sep 2022 03:40:53 -0700 (PDT)
+        bh=c5J9I9vY/mPbtTeNVZ3vAl8CHXLB79/s4WJqXsA3snc=;
+        b=zzz4leuNYWbwUPPp0Zx4Wzp+Go98Cw8mynUxTT0udzIgoCG0ZT8qEMbzmIj+G3MtTX
+         LbbAbdwl2gVKScRPtkLcGM8pNnnz4RIv0S7EMH0BVpyBkaVTF75PcKvZiT9vN6KugOLX
+         nkjnPm/PoqeuiI8ce8YH/mGVrfaeKQHcfQtWdIe27JlCP6b8ydFXQ0+nEHZeG6ZDbSr3
+         HMwJpjO1GS4yGspBlvWMbqNtgsLmByCfsoM3lyv43QSAtMNzkcwrdw9XRgziwdSRNMJm
+         +z1DVm5MMo7vid6RWoicM2RYFX4js5zUlCon8ouvkTaOo73URHUBF61FclJCf4pm5xky
+         H14Q==
+X-Gm-Message-State: ACrzQf1lG6jxcGvSygFsGXDdzmvV1helu/l5gyBCcsuqHld1dFZs6ngq
+        rMvDNKV942yukhvdM+yuQCallfQ7cFG5HQ==
+X-Google-Smtp-Source: AMsMyM7mLF0th6jZOuTKOC+8BYyMVIIHmMM21h9eFaltc6OHPpy5Ldj7hBB4XSRw6hqFJOlqVFJ25Q==
+X-Received: by 2002:a05:600c:310b:b0:3b4:c618:180d with SMTP id g11-20020a05600c310b00b003b4c618180dmr1860271wmo.25.1663670454146;
+        Tue, 20 Sep 2022 03:40:54 -0700 (PDT)
 Received: from build-server.fritz.box (p200300c56f1d4500880d3dfffedefb04.dip0.t-ipconnect.de. [2003:c5:6f1d:4500:880d:3dff:fede:fb04])
-        by smtp.googlemail.com with ESMTPSA id o2-20020a05600c4fc200b003a5fa79007fsm2182018wmq.7.2022.09.20.03.40.51
+        by smtp.googlemail.com with ESMTPSA id o2-20020a05600c4fc200b003a5fa79007fsm2182018wmq.7.2022.09.20.03.40.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Sep 2022 03:40:52 -0700 (PDT)
+        Tue, 20 Sep 2022 03:40:53 -0700 (PDT)
 From:   Jonas Jelonek <jelonek.jonas@gmail.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net, nbd@nbd.name,
-        Jonas Jelonek <jelonek.jonas@gmail.com>,
-        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
-Subject: [RFC v2 3/6] mac80211: add hardware flags for TPC support
-Date:   Tue, 20 Sep 2022 12:40:29 +0200
-Message-Id: <20220920104032.496697-4-jelonek.jonas@gmail.com>
+        Jonas Jelonek <jelonek.jonas@gmail.com>
+Subject: [RFC v2 4/6] mac80211: add utility function for tx_rate - rate_info conversion
+Date:   Tue, 20 Sep 2022 12:40:30 +0200
+Message-Id: <20220920104032.496697-5-jelonek.jonas@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220920104032.496697-1-jelonek.jonas@gmail.com>
 References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
@@ -72,58 +71,80 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds two hardware flags for drivers to indicate their
-transmit power control (TPC) capabilities: TPC per packet or TPC
-per mrr stage of each data packet. The driver has to register with its
-TPC capabilities when it is registering at the mac80211.
+This patch adds an utility function to mac80211 for conversion between
+ieee80211_tx_rate (mac80211.h) and rate_info (cfg80211.h).
 
-Signed-off-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+struct ieee80211_tx_rate is space limited to annotate rates up to IEEE
+802.11ac. The new struct rate_info is able to annotate IEEE 802.11ax
+rates and beyond. Several drivers internally still use ieee80211_tx_rate
+but mac80211 expects rate_info in struct ieee80211_rate_status. This
+struct is in turn required to allow, e.g., tx-power status report or
+dynamic number of mrr stages.
+
 Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 ---
- include/net/mac80211.h | 9 +++++++++
- net/mac80211/debugfs.c | 2 ++
- 2 files changed, 11 insertions(+)
+ include/net/mac80211.h |  4 ++++
+ net/mac80211/util.c    | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
 
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 67d9087e031f..c4b55c7273ed 100644
+index c4b55c7273ed..f17a03caa361 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2610,6 +2610,13 @@ struct ieee80211_txq {
-  * @IEEE80211_HW_MLO_MCAST_MULTI_LINK_TX: Hardware/driver handles transmitting
-  *	multicast frames on all links, mac80211 should not do that.
+@@ -1051,6 +1051,10 @@ ieee80211_rate_get_vht_nss(const struct ieee80211_tx_rate *rate)
+ 	return (rate->idx >> 4) + 1;
+ }
+ 
++void ieee80211_rate_get_rate_info(const struct ieee80211_tx_rate *rate,
++				  struct wiphy *wiphy, u8 band,
++				  struct rate_info *rate_info);
++
+ /**
+  * struct ieee80211_tx_info - skb transmit information
   *
-+ * @IEEE80211_HW_SUPPORTS_TPC_PER_PACKET: The hardware/driver supports transmit
-+ * 	power control (TPC) with one power level per data packet.
-+ *
-+ * @IEEE80211_HW_SUPPORTS_TPC_PER_MRR: The hardware/driver supports transmit
-+ * 	power control (TPC) with individual power levels for each
-+ * 	multi-rate-retry (mrr) stage per packet.
-+ *
-  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
-  */
- enum ieee80211_hw_flags {
-@@ -2667,6 +2674,8 @@ enum ieee80211_hw_flags {
- 	IEEE80211_HW_SUPPORTS_CONC_MON_RX_DECAP,
- 	IEEE80211_HW_DETECTS_COLOR_COLLISION,
- 	IEEE80211_HW_MLO_MCAST_MULTI_LINK_TX,
-+	IEEE80211_HW_SUPPORTS_TPC_PER_PACKET,
-+	IEEE80211_HW_SUPPORTS_TPC_PER_MRR,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 0ea5d50091dc..c76dc255bec3 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -4867,3 +4867,38 @@ void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos)
  
- 	/* keep last, obviously */
- 	NUM_IEEE80211_HW_FLAGS
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 78c7d60e8667..daeef1e04cb5 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -496,6 +496,8 @@ static const char *hw_flag_names[] = {
- 	FLAG(SUPPORTS_CONC_MON_RX_DECAP),
- 	FLAG(DETECTS_COLOR_COLLISION),
- 	FLAG(MLO_MCAST_MULTI_LINK_TX),
-+	FLAG(SUPPORTS_TPC_PER_PACKET),
-+	FLAG(SUPPORTS_TPC_PER_MRR),
- #undef FLAG
- };
- 
+ 	*len_pos = elem_len;
+ }
++
++
++void ieee80211_rate_get_rate_info(const struct ieee80211_tx_rate *rate,
++				  struct wiphy *wiphy, u8 band,
++				  struct rate_info *rate_info)
++{
++	memset(rate_info, 0, sizeof(struct rate_info));
++
++	if (rate->flags & IEEE80211_TX_RC_MCS) { /* 802.11n */
++		rate_info->flags |= RATE_INFO_FLAGS_MCS;
++		rate_info->mcs = rate->idx;
++	} else if (rate->flags & IEEE80211_TX_RC_VHT_MCS) { /* 802.11ac */
++		rate_info->flags |= RATE_INFO_FLAGS_VHT_MCS;
++		rate_info->mcs = ieee80211_rate_get_vht_mcs(rate);
++		rate_info->nss = ieee80211_rate_get_vht_nss(rate);
++	} else { /* 802.11a/b/g */
++		rate_info->legacy = wiphy->bands[band]->bitrates[rate->idx].bitrate;
++		rate_info->bw = RATE_INFO_BW_20;
++		return;
++	}
++
++	if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
++		rate_info->bw = RATE_INFO_BW_40;
++	else if (rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
++		rate_info->bw = RATE_INFO_BW_80;
++	else if (rate->flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
++		rate_info->bw = RATE_INFO_BW_160;
++	else
++		rate_info->bw = RATE_INFO_BW_20;
++
++	if (rate->flags & IEEE80211_TX_RC_SHORT_GI)
++		rate_info->flags |= RATE_INFO_FLAGS_SHORT_GI;
++
++}
++EXPORT_SYMBOL(ieee80211_rate_get_rate_info);
 -- 
 2.30.2
 
