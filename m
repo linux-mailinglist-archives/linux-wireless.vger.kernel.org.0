@@ -2,104 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E43C5BD85C
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 01:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B0E15BD8A4
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 02:09:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbiISXmg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 19:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41676 "EHLO
+        id S229562AbiITAJx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Sep 2022 20:09:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiISXmf (ORCPT
+        with ESMTP id S229596AbiITAJv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 19:42:35 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04FD1B480;
-        Mon, 19 Sep 2022 16:42:35 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id 138so892698iou.9;
-        Mon, 19 Sep 2022 16:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=H6YHZH+jPDcccemitFjtnmIKNgFF4gCHv4dK5y+d7CU=;
-        b=OgAm/NF5dYygMRvGiDjG6n33euz8Woc60hkRM8MQe7E2MjPXdQszKdbDhJbGl9QSQk
-         gTMThg/eG/Ydm7bMyH8nUBOY6RJ0awx/Thfjg3+gFBM4Ny3riL7SHHCFVXUOWEnfEFGO
-         j/XKOnC81cCwwxTBRGnLYhxtgMdwO5nZXpRGUJGTZHoBA6otbs5iVkF9ClvgojAzzKRR
-         cee2XfiNM6JWHY0Nlgj9UqGTOIUhd60DR8QgShQBHh35zNd6rHU/ZVL3Ep8xX0Z69yvp
-         dRXsjBVaMGrN461k9PcYw/6h8KwVeaT0+QGQ+Uy2BLaK3BprqqSZvU5t6PopgwYF/eZA
-         9AIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=H6YHZH+jPDcccemitFjtnmIKNgFF4gCHv4dK5y+d7CU=;
-        b=dNG4atFrTYw1jNOrNyjMUb9ONB7ecKUl340ldvxiF8mMKfuFzQoZ0duPCSFQBwPCen
-         /V0s9vu37cUmbZQ7Q1H9yyxKDM2WN8MMAslD5OT6zn1RiM/4UbfWQldGPHCma1fQ8FyO
-         npK1+KQKSlqTYRAz3Q43t1+2hAPpiHhvhPGDwAGcv3zzoCXoxWBJyhme78vhBwTfsQJu
-         IeumKPWgCzwejsy2DlqHvQOBeoNjDtx6tvcI1fT1WfJQwfvTQPRFy0JZsot934yZgbXe
-         BYvZFnVgM8X9mog+Xs4qgpW1zIK07T/bOzusocBgTPae305hjacFSzlsEgyZPntkVSyO
-         H59Q==
-X-Gm-Message-State: ACrzQf26A8vgo2lWfvXbkyjPOihssH36KBTf1b/YpggMbl/Rqz1gZBxp
-        rFWpRmdDST8gIxnYDd2OY+jbgHJmux+3WvGarOc=
-X-Google-Smtp-Source: AMsMyM5rQlLxZskd9cq+QRXjkjYUXUxsTLiTx38siVDVmBLHAcYRSX18R8+xAmMyH9khjMfm3rUhfii9rLh750hxDYo=
-X-Received: by 2002:a05:6638:4987:b0:358:448d:ec40 with SMTP id
- cv7-20020a056638498700b00358448dec40mr9419320jab.288.1663630954470; Mon, 19
- Sep 2022 16:42:34 -0700 (PDT)
+        Mon, 19 Sep 2022 20:09:51 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAACB15A13
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 17:09:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663632584; x=1695168584;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Leu/uINyzMF99r0kXDxjqu7CpWw+NxbfQ7IQZUE1piQ=;
+  b=VqvFWgDoyGK9QHAbi5vc6H6X4sT3687L3Hh1Hoo43xHewxfQ0Y7oJsuM
+   WlVxAuBsD/mGPafE7Iv8XXpeqilXkP/4PRXk+DUd81oyEjQF/3VR0zYo1
+   E7M3ZTv6/u77Zqx3vccudIl1/pMq5KUb97AGyQAktcyCRxmzvd6UHD5gh
+   vOjhIQzLAK2fQmMzLhIrretHtipAgLGx3LhdxgOWAGdFf7S/LUGnW1wVz
+   G8o53XvZsLDOG/8a6/VqbOnSQYICn1w14BG65YuX/8AM9S/FqWNBYCdMB
+   SxxYgoWU/fCZziR5S3B6ObN+XEN+DJq3NBx7hknd43oq3vdHniQqGd4Kj
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10475"; a="298279912"
+X-IronPort-AV: E=Sophos;i="5.93,329,1654585200"; 
+   d="scan'208";a="298279912"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2022 17:09:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,329,1654585200"; 
+   d="scan'208";a="596296147"
+Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 19 Sep 2022 17:09:42 -0700
+Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oaQpZ-0002K9-1p;
+        Tue, 20 Sep 2022 00:09:41 +0000
+Date:   Tue, 20 Sep 2022 08:09:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:pending] BUILD SUCCESS
+ 364fbc5708915a48ac26ab226858b925418ac493
+Message-ID: <632904a8.CFR19kdcTYD+9Emj%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200527165718.129307-1-briannorris@chromium.org>
- <YmPadTu8CfEARfWs@xps> <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
- <CAG2Q2vXce2V3Y6MnPhV6obcNWyQzyusMTL=5oCQLRNh2_ffNYA@mail.gmail.com>
- <CAG2Q2vXFcSVwF4CbU5o3VP1MWwrdqrZjTHgfBj_Q0t3nNipJRw@mail.gmail.com>
- <CA+ASDXNx30A3=BA9b-tiAQzYHP=nV_eLw1QFpJij=F=JgWZ5sg@mail.gmail.com> <CAJ+vNU38WyC=FFZVgqyKunEnjXid6vXqkorv8a8+ywjJBk_0NA@mail.gmail.com>
-In-Reply-To: <CAJ+vNU38WyC=FFZVgqyKunEnjXid6vXqkorv8a8+ywjJBk_0NA@mail.gmail.com>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Tue, 20 Sep 2022 02:42:27 +0300
-Message-ID: <CAHNKnsTEBr4m1SpZxnfFPWiSgxBg5HhqYCdWwm=9gp7qHXg=Pg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory domain"
-To:     Tim Harvey <tharvey@gateworks.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Cale Collins <ccollins@gateworks.com>, kvalo@kernel.org,
-        Patrick Steinhardt <ps@pks.im>,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Stephen McCarthy <stephen.mccarthy@pctel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: 364fbc5708915a48ac26ab226858b925418ac493  Merge tag 'mt76-for-kvalo-2022-09-15' of https://github.com/nbd168/wireless into pending
 
-I would like to add my 2c.
+elapsed time: 804m
 
-On Mon, Sep 19, 2022 at 8:25 PM Tim Harvey <tharvey@gateworks.com> wrote:
-> I'm not clear if
-> there are many other cards that have this same issue.
+configs tested: 58
+configs skipped: 2
 
-The list of cards with unprogrammed regdomain can be extended with
-several relatively modern models:
-  * MikroTik R11e-5HacD (QCA9882 based)
-  * MikroTik R11e-5HacT (QCA9880 based)
-  * QNAP QWA-AC2600 (QCA9984 based) [1]
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-As you can see these are powerful and massive cards for WISPs. Or at
-least to run as an AP. I also know a bunch of .11a/b/g/n cards with
-zero regdomain and the same target audience. Except maybe for the
-legacy Wistorn CM9, which is a relatively compact card.
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                                 defconfig
+alpha                               defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+arc                  randconfig-r043-20220919
+s390                 randconfig-r044-20220919
+s390                             allmodconfig
+arc                              allyesconfig
+x86_64               randconfig-a012-20220919
+powerpc                           allnoconfig
+riscv                randconfig-r042-20220919
+i386                 randconfig-a013-20220919
+x86_64               randconfig-a016-20220919
+i386                 randconfig-a012-20220919
+i386                                defconfig
+mips                             allyesconfig
+s390                                defconfig
+x86_64               randconfig-a011-20220919
+i386                 randconfig-a011-20220919
+powerpc                          allmodconfig
+x86_64                          rhel-8.3-func
+alpha                            allyesconfig
+x86_64               randconfig-a014-20220919
+s390                             allyesconfig
+x86_64               randconfig-a015-20220919
+x86_64                         rhel-8.3-kunit
+i386                 randconfig-a014-20220919
+x86_64               randconfig-a013-20220919
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a016-20220919
+x86_64                           rhel-8.3-syz
+i386                 randconfig-a015-20220919
+x86_64                           rhel-8.3-kvm
+sh                               allmodconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+ia64                             allmodconfig
+i386                             allyesconfig
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
 
-Also, a huge number of wireless routers and access points have
-unprogrammed regdomain. But probably this is not the case, since they
-anyway can not run a stock kernel.
-
-1. https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1895333
+clang tested configs:
+hexagon              randconfig-r041-20220919
+x86_64               randconfig-a003-20220919
+hexagon              randconfig-r045-20220919
+x86_64               randconfig-a001-20220919
+i386                 randconfig-a001-20220919
+i386                 randconfig-a006-20220919
+i386                 randconfig-a002-20220919
+x86_64               randconfig-a005-20220919
+x86_64               randconfig-a002-20220919
+i386                 randconfig-a003-20220919
+x86_64               randconfig-a004-20220919
+i386                 randconfig-a004-20220919
+x86_64               randconfig-a006-20220919
+i386                 randconfig-a005-20220919
 
 -- 
-Sergey
+0-DAY CI Kernel Test Service
+https://01.org/lkp
