@@ -2,140 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0E15BD8A4
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 02:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D37B5BD8CA
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 02:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbiITAJx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Sep 2022 20:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
+        id S229709AbiITAb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Sep 2022 20:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbiITAJv (ORCPT
+        with ESMTP id S229505AbiITAb0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Sep 2022 20:09:51 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAACB15A13
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 17:09:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663632584; x=1695168584;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Leu/uINyzMF99r0kXDxjqu7CpWw+NxbfQ7IQZUE1piQ=;
-  b=VqvFWgDoyGK9QHAbi5vc6H6X4sT3687L3Hh1Hoo43xHewxfQ0Y7oJsuM
-   WlVxAuBsD/mGPafE7Iv8XXpeqilXkP/4PRXk+DUd81oyEjQF/3VR0zYo1
-   E7M3ZTv6/u77Zqx3vccudIl1/pMq5KUb97AGyQAktcyCRxmzvd6UHD5gh
-   vOjhIQzLAK2fQmMzLhIrretHtipAgLGx3LhdxgOWAGdFf7S/LUGnW1wVz
-   G8o53XvZsLDOG/8a6/VqbOnSQYICn1w14BG65YuX/8AM9S/FqWNBYCdMB
-   SxxYgoWU/fCZziR5S3B6ObN+XEN+DJq3NBx7hknd43oq3vdHniQqGd4Kj
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10475"; a="298279912"
-X-IronPort-AV: E=Sophos;i="5.93,329,1654585200"; 
-   d="scan'208";a="298279912"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2022 17:09:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,329,1654585200"; 
-   d="scan'208";a="596296147"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 19 Sep 2022 17:09:42 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oaQpZ-0002K9-1p;
-        Tue, 20 Sep 2022 00:09:41 +0000
-Date:   Tue, 20 Sep 2022 08:09:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:pending] BUILD SUCCESS
- 364fbc5708915a48ac26ab226858b925418ac493
-Message-ID: <632904a8.CFR19kdcTYD+9Emj%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Mon, 19 Sep 2022 20:31:26 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5751B27B34
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 17:31:25 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id e5so1225308pfl.2
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Sep 2022 17:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=3PNG2GhX9MS6pqBLx1SD4wmDS0vBOFDzpiI8k/Y1NQY=;
+        b=JkkhATs/ylEliOjshIBZv+N9/k5iW7my8lvUE9I1I77Pv5bpmUCxYJeFHFzHm/9C0t
+         d8AF/oT6R3kL4GlNSZuj0/srd5+xF6r+MERfgcMWzbBEdK+Ub7s2WcLu1t/vsdm7T8en
+         h4UihtZ2SZA82JjnbDlOex/X7vF+i1F1XeAGA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=3PNG2GhX9MS6pqBLx1SD4wmDS0vBOFDzpiI8k/Y1NQY=;
+        b=qGAsU+oQfRQhMOuliAfpKxhI5lBZf8rzUo29uaMbrrM9Oiqd61kabSmAARncgmqLf7
+         rDEWuZ+NlD2D5MfVAiRLBwe66AXkTbJRFJ6wQ9C11t3iTNhxRHTFwDVRPUn2nTY5Hjvw
+         WwbvoOyJiuLbNxkRLotX65W0K0KOvZCeAg8Z+5pirfHbRq6YWvxZhBTmrVGCh+QDjiiO
+         +jf1L4Y2wPq5R900xXmE2jUC4iGjDkshw1lcTZSstqhMiCt7IkOMj2haAYCjPXZJvEgw
+         00RnI+wkvSjjGEZRXLw4V5iNzyOTEYd5pP9jxF0P86Oi+q/WKCWmQwuNoTLwJnQ9ncI0
+         BUJw==
+X-Gm-Message-State: ACrzQf1KawVjRfPCrRlQCJSbwKmwYLFymCvFSL1O1gkP8y+z7pyGN1aT
+        3zTHgb8QW6p1Xbq1xhMxQ8hguQ==
+X-Google-Smtp-Source: AMsMyM5GDRcjQxtGAMgNL3Tom47j2MIdBldFkbGeDcXaQTVDfAeG2GO9ll7QI+Ah8reV8QQQMslK+A==
+X-Received: by 2002:a63:fc14:0:b0:430:d1d0:fe33 with SMTP id j20-20020a63fc14000000b00430d1d0fe33mr17757445pgi.328.1663633884836;
+        Mon, 19 Sep 2022 17:31:24 -0700 (PDT)
+Received: from localhost (252.157.168.34.bc.googleusercontent.com. [34.168.157.252])
+        by smtp.gmail.com with UTF8SMTPSA id d2-20020a170902cec200b0015e8d4eb219sm21403855plg.99.2022.09.19.17.31.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Sep 2022 17:31:24 -0700 (PDT)
+From:   Jun Yu <junyuu@chromium.org>
+To:     ath11k@lists.infradead.org, quic_jjohnson@quicinc.com
+Cc:     linux-wireless@vger.kernel.org, Jun Yu <junyuu@chromium.org>
+Subject: [PATCH v3] wifi: ath11k: retrieve MAC address from system firmware if provided
+Date:   Tue, 20 Sep 2022 00:31:17 +0000
+Message-Id: <20220920003117.841442-1-junyuu@chromium.org>
+X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: 364fbc5708915a48ac26ab226858b925418ac493  Merge tag 'mt76-for-kvalo-2022-09-15' of https://github.com/nbd168/wireless into pending
+Devices may provide their own MAC address via system firmware (e.g.,
+device tree), especially in the case where the device doesn't have a
+useful EEPROM on which to store its MAC address (e.g., for integrated
+ahb WCN6750).
 
-elapsed time: 804m
+Use the generic device helper to retrieve the MAC address, and (if
+present) honor it above the MAC address advertised by the card.
 
-configs tested: 58
-configs skipped: 2
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Jun Yu <junyuu@chromium.org>
+---
+v2 -> v3: add patch changelog
+v1 -> v2: use the updated device_get_mac_address signature
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-alpha                               defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-arc                  randconfig-r043-20220919
-s390                 randconfig-r044-20220919
-s390                             allmodconfig
-arc                              allyesconfig
-x86_64               randconfig-a012-20220919
-powerpc                           allnoconfig
-riscv                randconfig-r042-20220919
-i386                 randconfig-a013-20220919
-x86_64               randconfig-a016-20220919
-i386                 randconfig-a012-20220919
-i386                                defconfig
-mips                             allyesconfig
-s390                                defconfig
-x86_64               randconfig-a011-20220919
-i386                 randconfig-a011-20220919
-powerpc                          allmodconfig
-x86_64                          rhel-8.3-func
-alpha                            allyesconfig
-x86_64               randconfig-a014-20220919
-s390                             allyesconfig
-x86_64               randconfig-a015-20220919
-x86_64                         rhel-8.3-kunit
-i386                 randconfig-a014-20220919
-x86_64               randconfig-a013-20220919
-x86_64                    rhel-8.3-kselftests
-i386                 randconfig-a016-20220919
-x86_64                           rhel-8.3-syz
-i386                 randconfig-a015-20220919
-x86_64                           rhel-8.3-kvm
-sh                               allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-ia64                             allmodconfig
-i386                             allyesconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
+ drivers/net/wireless/ath/ath11k/mac.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-clang tested configs:
-hexagon              randconfig-r041-20220919
-x86_64               randconfig-a003-20220919
-hexagon              randconfig-r045-20220919
-x86_64               randconfig-a001-20220919
-i386                 randconfig-a001-20220919
-i386                 randconfig-a006-20220919
-i386                 randconfig-a002-20220919
-x86_64               randconfig-a005-20220919
-x86_64               randconfig-a002-20220919
-i386                 randconfig-a003-20220919
-x86_64               randconfig-a004-20220919
-i386                 randconfig-a004-20220919
-x86_64               randconfig-a006-20220919
-i386                 randconfig-a005-20220919
-
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 7e91e347c9ff2..16a238ef713e7 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8967,6 +8967,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
+ 	struct ath11k_pdev *pdev;
+ 	int i;
+ 	int ret;
++	u8 mac_addr[ETH_ALEN] = {0};
+ 
+ 	if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
+ 		return 0;
+@@ -8979,13 +8980,18 @@ int ath11k_mac_register(struct ath11k_base *ab)
+ 	if (ret)
+ 		return ret;
+ 
++	device_get_mac_address(ab->dev, mac_addr);
++
+ 	for (i = 0; i < ab->num_radios; i++) {
+ 		pdev = &ab->pdevs[i];
+ 		ar = pdev->ar;
+ 		if (ab->pdevs_macaddr_valid) {
+ 			ether_addr_copy(ar->mac_addr, pdev->mac_addr);
+ 		} else {
+-			ether_addr_copy(ar->mac_addr, ab->mac_addr);
++			if (is_zero_ether_addr(mac_addr))
++				ether_addr_copy(ar->mac_addr, ab->mac_addr);
++			else
++				ether_addr_copy(ar->mac_addr, mac_addr);
+ 			ar->mac_addr[4] += i;
+ 		}
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.31.0
+
