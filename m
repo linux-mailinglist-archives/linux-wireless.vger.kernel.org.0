@@ -2,259 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7760B5BE2AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 12:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0493F5BE38F
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Sep 2022 12:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbiITKHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Sep 2022 06:07:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33550 "EHLO
+        id S231127AbiITKmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Sep 2022 06:42:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230506AbiITKHE (ORCPT
+        with ESMTP id S231418AbiITKlk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Sep 2022 06:07:04 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF4061738
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:07:02 -0700 (PDT)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28K7xcFc023504;
-        Tue, 20 Sep 2022 10:05:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=zoGG73whL65cB+dCMtnJXPjzU/eTvaiJulFQDEVaFg4=;
- b=ZyCT/aH+qGs8VCUW3o9Y7muVsNJ8wA5oHIBYzdWbirKMamxq9M1kkxPtNJt+u7R1Br1k
- OqDazcSZTH136QoYqppZr/BE8QhU9RdOJp1KCt7leEZBY0FA1r8IErMfubdHjHj+lBqG
- RxS6tLRAR1w5Nkj/A8/vQpDCsnkx7uodyr8rPDYCDuh4WuREAensoclC5yxZdgkPG7qB
- m2XFOw0yptBqmkVLR7pKE1uSwqSI+d6IwqszXYXRwI93c+PznfBCXAgJlillBAzd1COY
- VatbCASZIkTkiAATBXuT8LKH+NIhAaWQH/qXQ5Q7wr/53oUmRhTOxp9Q0PZm4YyqXK/S 3A== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jpxaejbgv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Sep 2022 10:05:47 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28KA5lSt004547
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Sep 2022 10:05:47 GMT
-Received: from CDCCSTEX0180100-LIN.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Tue, 20 Sep 2022 03:05:45 -0700
-From:   Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [RFC 4/4] wifi: nl80211: send iface combination to user space in multi-hardware wiphy
-Date:   Tue, 20 Sep 2022 15:35:18 +0530
-Message-ID: <20220920100518.19705-5-quic_vthiagar@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220920100518.19705-1-quic_vthiagar@quicinc.com>
-References: <20220920100518.19705-1-quic_vthiagar@quicinc.com>
+        Tue, 20 Sep 2022 06:41:40 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F20CBE8
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:40:51 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id ay7-20020a05600c1e0700b003b49861bf48so799111wmb.0
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 03:40:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=EZdN8DP0TEBsw0gymjqjo0ReqMrvDok41gT3lMT56+8=;
+        b=FhzpppJP2E8xQNmqRlvSVTEmncLXyb4Imy/Xmrgg85MgU9QDD5jbi341hsPBxTE7g6
+         NCmy/75BvUXUi0oEWE+J8xd4aYTPktLGenUSFsTSpxwXgQQbNe4p/A6CbJcpStrAZfaf
+         a84sk5RYjrrThtIV4swpK+WIXvXTWUdq72UJqKlNqfMwC0HFu+YTbXEH8ys/cuGQHHKp
+         Ag+w/udSkIRxqV6CUujcAnqR/2Pe59qukMY9Z4JqM6jRyFU/LDm1otpqRxGuk9/8yUWR
+         v+K4HxnETf/v7emfoXsvBuDG/IQmtsDGuaLdaSWS4MJTbvYL81e3Xmxd+yyPFeFoTYI8
+         GplA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=EZdN8DP0TEBsw0gymjqjo0ReqMrvDok41gT3lMT56+8=;
+        b=p3ek8S91KBK24Xlw+ofnvy9QvdcvuJyIs0BzB5etNoSe+ULgXhMpIf4sE5+vDgNrG+
+         sskMRnLHJEk5YGyNyj0k5K03P4c7GBUsuXKw+Kt6MOtlIp5AvyRE8uX2OCj8hXkN1eh4
+         tk7DXadX9JSVGlaq2ltcejBHVs0CLE6H21uAeXRs9WTysous7/DUjR32Awu/oDXtCPor
+         KYVKuxEySFFK8oRYr+WLCk4jMde4deQP3YOhBO2OBO3lWZjZtsCcZTKrTLIWRWfyklCd
+         6wgMH0lMfwLotTbcYBE3VfwscPYOpyDtVe2RoHdVBzi/na6Mf9Ksmvzml2VIGFX3fagE
+         KtAA==
+X-Gm-Message-State: ACrzQf0R7xhDeqcW1ZeptlOKGVEkDBjRBdEsAVG5QGHXHIGjvWb5krH0
+        JVwBnb5hxBUf2pNl+8QY4plBDw6PwG/zag==
+X-Google-Smtp-Source: AMsMyM6CCuHQ5vhKbPjDJ4Q9R3opFg6jGLdDJQmfkVHKIJ20H91llmgTbyttO9g+W2+01mckfRZM0A==
+X-Received: by 2002:a7b:c01a:0:b0:3b4:a61c:52d1 with SMTP id c26-20020a7bc01a000000b003b4a61c52d1mr1915663wmb.146.1663670450050;
+        Tue, 20 Sep 2022 03:40:50 -0700 (PDT)
+Received: from build-server.fritz.box (p200300c56f1d4500880d3dfffedefb04.dip0.t-ipconnect.de. [2003:c5:6f1d:4500:880d:3dff:fede:fb04])
+        by smtp.googlemail.com with ESMTPSA id o2-20020a05600c4fc200b003a5fa79007fsm2182018wmq.7.2022.09.20.03.40.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Sep 2022 03:40:49 -0700 (PDT)
+From:   Jonas Jelonek <jelonek.jonas@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, nbd@nbd.name,
+        Jonas Jelonek <jelonek.jonas@gmail.com>,
+        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+Subject: [RFC v2 0/6] mac80211: add TPC support in control path
+Date:   Tue, 20 Sep 2022 12:40:26 +0200
+Message-Id: <20220920104032.496697-1-jelonek.jonas@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 023v3_eOp-ZNsMR85izsJ5WRlI-hMI_m
-X-Proofpoint-ORIG-GUID: 023v3_eOp-ZNsMR85izsJ5WRlI-hMI_m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-20_02,2022-09-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxlogscore=759
- adultscore=0 clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209200061
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A new nested nl attribute is added to the same existing NL command to
-advertise the iface combination capability for each underlying hardware
-when driver groups more than one physical hardware under one wiphy to
-enable MLO among them.
+Transmit power control (TPC) per packet hence per station can be used to
+manage interference and increase overall spatial reuse and therefore
+increases sum throughput in WiFi networks with multiple APs and STAs.
+Although several of today's wifi chips, e.g., from QCA and from Mediatek
+support fine-grained TPC per packet, the Linux mac80211 layer does not
+provide support for this annotation nor control yet.
 
-Signed-off-by: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+This series proposes several changes to introduce TPC support in
+mac80211, in particular to annotate tx-power per packet/per mrr stage in
+the tx control path.
+The patches include new members in the tx control path structs, a
+modified tx-power level support annotation, hardware flags, hwsim
+support, debugfs support in minstrel_ht for fixed TPC and an utility
+function for the convenient use of struct ieee80211_rate_status
+(introduced by 44fa75f207d8a106bc75e6230db61e961fdbf8a8) for tx-power
+status report in drivers.
+An proof-of-concept ath9k support was implemented for testing these
+changes on real ath9k hardware, this implementation is planned to be
+brought upstream later.
+
+Compile-Tested: current wireless-next tree with all flags on
+Tested-on: PCEngines APU with ath9k WiFi device on OpenWrt Linux
+	Kernel 5.15.68, AP<->STA setup with both ath9k and hwsim
+	(used current OpenWrt testing kernel)
+
 ---
- include/uapi/linux/nl80211.h | 50 ++++++++++++++++++++++++-
- net/wireless/nl80211.c       | 71 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 120 insertions(+), 1 deletion(-)
+v2:
+- added exemplary hwsim support
+- added debugfs in minstrel_ht for fixed TPC
+---
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 070b31277402..678da076b122 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -5779,6 +5779,10 @@ enum nl80211_iface_limit_attrs {
-  * @NL80211_IFACE_COMB_BI_MIN_GCD: u32 attribute specifying the minimum GCD of
-  *	different beacon intervals supported by all the interface combinations
-  *	in this group (if not present, all beacon intervals be identical).
-+ * @NL80211_IFACE_COMB_PER_HW_COMB: nested attribute specifying the interface
-+ *	combination for each underlying hardware when multiple hardware are
-+ *	registered under one wiphy,
-+ *	see &enum nl80211_if_comb_per_hw_comb_attrs.
-  * @NUM_NL80211_IFACE_COMB: number of attributes
-  * @MAX_NL80211_IFACE_COMB: highest attribute number
-  *
-@@ -5795,7 +5799,19 @@ enum nl80211_iface_limit_attrs {
-  *	numbers = [ #{STA} <= 1, #{P2P-client,P2P-GO} <= 3 ], max = 4
-  *	=> allows a STA plus three P2P interfaces
-  *
-- * The list of these four possibilities could completely be contained
-+ *	When describing per-hardware combinations in multi-hardware in
-+ *	one wiphy model, the first possibility can further include the finer
-+ *	capabilities like below
-+ *	hw_chan_idx = 0, numbers = [ #{STA} <= 1, #{AP} <= 1 ],
-+ *	channels = 1, max = 2
-+ *	=> allows a STA plus an AP interface on the underlying hardware mac
-+ *	   advertised at index 0 in wiphy @hw_chans array.
-+ *	hw_chan_idx = 1, numbers = [ #{STA} <= 1, #{AP} <= 2 ],
-+ *	channels = 1, max = 3
-+ *	=> allows a STA plus two AP interfaces on the underlying hardware mac
-+ *	   advertised at index 1 in wiphy @hw_chans array.
-+ *
-+ * The list of these five possibilities could completely be contained
-  * within the %NL80211_ATTR_INTERFACE_COMBINATIONS attribute to indicate
-  * that any of these groups must match.
-  *
-@@ -5814,12 +5830,44 @@ enum nl80211_if_combination_attrs {
- 	NL80211_IFACE_COMB_RADAR_DETECT_WIDTHS,
- 	NL80211_IFACE_COMB_RADAR_DETECT_REGIONS,
- 	NL80211_IFACE_COMB_BI_MIN_GCD,
-+	NL80211_IFACE_COMB_PER_HW_COMB,
- 
- 	/* keep last */
- 	NUM_NL80211_IFACE_COMB,
- 	MAX_NL80211_IFACE_COMB = NUM_NL80211_IFACE_COMB - 1
- };
- 
-+/**
-+ * enum nl80211_if_comb_per_hw_comb_attrs - per-hardware iface combination
-+ * attributes with multi-hw radios in one wiphy model
-+ *
-+ * @NL80211_IFACE_COMB_PER_HW_COMB_UNSPEC: (reserved)
-+ * @NL80211_IFACE_COMB_PER_HW_COMB_HW_IDX: u8 attribute specifying the index
-+ *	to the wiphy @hw_chans list for which the iface combination is being
-+ *	described.
-+ * @NL80211_IFACE_COMB_PER_HW_COMB_LIMITS: nested attribute containing the
-+ *	limits for the given interface types, see
-+ *	&enum nl80211_iface_limit_attrs.
-+ * @NL80211_IFACE_COMB_PER_HW_COMB_MAXIMUM: u32 attribute giving the maximum
-+ *	number of interfaces that can be created in this group. This number
-+ *	does not apply to the interfaces purely managed in software.
-+ * @NL80211_IFACE_COMB_PER_HW_COMB_NUM_CHANNELS: u32 attribute specifying the
-+ *	number of different channels that can be used in this group.
-+ * @NUM_NL80211_IFACE_COMB_PER_HW_COMB: number of attributes
-+ * @MAX_NL80211_IFACE_COMB_PER_HW_COMB: highest attribute number
-+ */
-+enum nl80211_if_comb_per_hw_comb_attrs {
-+	NL80211_IFACE_COMB_PER_HW_COMB_UNSPEC,
-+	NL80211_IFACE_COMB_PER_HW_COMB_HW_IDX,
-+	NL80211_IFACE_COMB_PER_HW_COMB_LIMITS,
-+	NL80211_IFACE_COMB_PER_HW_COMB_MAXIMUM,
-+	NL80211_IFACE_COMB_PER_HW_COMB_NUM_CHANNELS,
-+
-+	/* keep last */
-+	NUM_NL80211_IFACE_COMB_PER_HW_COMB,
-+	MAX_NL80211_IFACE_COMB_PER_HW_COMB =
-+			NUM_NL80211_IFACE_COMB_PER_HW_COMB - 1
-+};
- 
- /**
-  * enum nl80211_plink_state - state of a mesh peer link finite state machine
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index b7d466010e81..1f3b79e10697 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1595,6 +1595,74 @@ static int nl80211_put_iftypes(struct sk_buff *msg, u32 attr, u16 ifmodes)
- 	return -ENOBUFS;
- }
- 
-+static int
-+nl80211_put_per_hw_iface_combinations(struct wiphy *wiphy, struct sk_buff *msg,
-+				      const struct ieee80211_iface_combination *c)
-+{
-+	struct nlattr *hw_combis;
-+	int i;
-+
-+	if (!wiphy->num_hw)
-+		return 0;
-+
-+	hw_combis = nla_nest_start(msg, NL80211_IFACE_COMB_PER_HW_COMB);
-+	if (!hw_combis)
-+		return -ENOBUFS;
-+
-+	for (i = 0; i < c->n_hw_list; i++) {
-+		struct nlattr *hw_combi, *limits;
-+		int l;
-+
-+		hw_combi = nla_nest_start(msg, i + 1);
-+		if (!hw_combi)
-+			return -ENOBUFS;
-+
-+		if (nla_put_u8(msg, NL80211_IFACE_COMB_PER_HW_COMB_HW_IDX,
-+			       c->iface_hw_list[i].hw_chans_idx))
-+			return -ENOBUFS;
-+
-+		limits = nla_nest_start(msg,
-+					NL80211_IFACE_COMB_PER_HW_COMB_LIMITS);
-+		if (!limits)
-+			return -ENOBUFS;
-+
-+		for (l = 0; l < c->iface_hw_list->n_limits; l++) {
-+			struct nlattr *limit;
-+
-+			limit = nla_nest_start(msg, l + 1);
-+			if (!limit)
-+				return -ENOBUFS;
-+
-+			if (nla_put_u16(msg, NL80211_IFACE_LIMIT_MAX,
-+					c->iface_hw_list[i].limits[l].max))
-+				return -ENOBUFS;
-+
-+			if (nla_put_u16(msg, NL80211_IFACE_LIMIT_TYPES,
-+					c->iface_hw_list[i].limits[l].types))
-+				return -ENOBUFS;
-+
-+			nla_nest_end(msg, limit);
-+		}
-+		nla_nest_end(msg, limits);
-+
-+		if (nla_put_u32(msg,
-+				NL80211_IFACE_COMB_PER_HW_COMB_NUM_CHANNELS,
-+				c->iface_hw_list[i].num_different_channels))
-+			return -ENOBUFS;
-+
-+		if (nla_put_u16(msg,
-+				NL80211_IFACE_COMB_PER_HW_COMB_MAXIMUM,
-+				c->iface_hw_list[i].max_interfaces))
-+			return -ENOBUFS;
-+
-+		nla_nest_end(msg, hw_combi);
-+	}
-+
-+	nla_nest_end(msg, hw_combis);
-+
-+	return 0;
-+}
-+
- static int nl80211_put_iface_combinations(struct wiphy *wiphy,
- 					  struct sk_buff *msg,
- 					  bool large)
-@@ -1658,6 +1726,9 @@ static int nl80211_put_iface_combinations(struct wiphy *wiphy,
- 				c->beacon_int_min_gcd))
- 			goto nla_put_failure;
- 
-+		if (large && nl80211_put_per_hw_iface_combinations(wiphy, msg, c))
-+			goto nla_put_failure;
-+
- 		nla_nest_end(msg, nl_combi);
- 	}
- 
+Signed-off-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+
+Jonas Jelonek (6):
+  mac80211: modify tx-power level annotation
+  mac80211: add tx-power annotation in control path
+  mac80211: add hardware flags for TPC support
+  mac80211: add utility function for tx_rate - rate_info conversion
+  mac80211_hwsim: add TPC per packet support
+  mac80211: minstrel_ht - add debugfs entry per sta for fixed tx-power
+
+ drivers/net/wireless/mac80211_hwsim.c      | 175 ++++++++++++++++++++-
+ drivers/net/wireless/mac80211_hwsim.h      |   1 +
+ include/net/mac80211.h                     |  66 ++++++--
+ net/mac80211/debugfs.c                     |   2 +
+ net/mac80211/rc80211_minstrel_ht.c         |  14 ++
+ net/mac80211/rc80211_minstrel_ht.h         |  11 ++
+ net/mac80211/rc80211_minstrel_ht_debugfs.c |  11 ++
+ net/mac80211/util.c                        |  35 +++++
+ 8 files changed, 296 insertions(+), 19 deletions(-)
+
 -- 
-2.17.1
+2.30.2
 
