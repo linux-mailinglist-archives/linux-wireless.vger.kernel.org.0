@@ -2,83 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99E845BFA15
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 11:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 201B45BFAB2
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 11:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbiIUJFK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 05:05:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55740 "EHLO
+        id S231607AbiIUJU0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 05:20:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230476AbiIUJFE (ORCPT
+        with ESMTP id S229733AbiIUJUA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Sep 2022 05:05:04 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C244C45047;
-        Wed, 21 Sep 2022 02:05:03 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MXXSh2kq6zlWsV;
-        Wed, 21 Sep 2022 17:00:52 +0800 (CST)
-Received: from cgs.huawei.com (10.244.148.83) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 21 Sep 2022 17:04:58 +0800
-From:   Gaosheng Cui <cuigaosheng1@huawei.com>
-To:     <idosch@nvidia.com>, <petrm@nvidia.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <nbd@nbd.name>, <lorenzo@kernel.org>, <ryder.lee@mediatek.com>,
-        <shayne.chen@mediatek.com>, <sean.wang@mediatek.com>,
-        <kvalo@kernel.org>, <matthias.bgg@gmail.com>, <amcohen@nvidia.com>,
-        <stephen@networkplumber.org>, <cuigaosheng1@huawei.com>
-CC:     <netdev@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 5/5] net: Remove unused inline function dst_hold_and_use()
-Date:   Wed, 21 Sep 2022 17:04:55 +0800
-Message-ID: <20220921090455.752011-6-cuigaosheng1@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220921090455.752011-1-cuigaosheng1@huawei.com>
-References: <20220921090455.752011-1-cuigaosheng1@huawei.com>
+        Wed, 21 Sep 2022 05:20:00 -0400
+Received: from out29-196.mail.aliyun.com (out29-196.mail.aliyun.com [115.124.29.196])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD1B9080E;
+        Wed, 21 Sep 2022 02:19:19 -0700 (PDT)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.190038|-1;BR=01201311R781S98rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0916624-0.0191534-0.889184;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047212;MF=arda@allwinnertech.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.PKrbnBk_1663751956;
+Received: from SunxiBot.allwinnertech.com(mailfrom:arda@allwinnertech.com fp:SMTPD_---.PKrbnBk_1663751956)
+          by smtp.aliyun-inc.com;
+          Wed, 21 Sep 2022 17:19:17 +0800
+From:   Aran Dalton <arda@allwinnertech.com>
+To:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc:     johannes.berg@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] cfg80211: fix dead lock for nl80211_new_interface()
+Date:   Wed, 21 Sep 2022 17:19:12 +0800
+Message-Id: <20220921091913.110749-1-arda@allwinnertech.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.244.148.83]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-All uses of dst_hold_and_use() have
-been removed since commit 1202cdd66531 ("Remove DECnet support
-from kernel"), so remove it.
+Both nl80211_new_interface and cfg80211_netdev_notifier_call hold the
+same wiphy_lock, then cause deadlock.
 
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+The main call stack as bellow:
+
+nl80211_new_interface() takes wiphy_lock
+ -> _nl80211_new_interface:
+  -> rdev_add_virtual_intf
+   -> rdev->ops->add_virtual_intf
+    -> register_netdevice
+     -> call_netdevice_notifiers(NETDEV_REGISTER, dev);
+      -> call_netdevice_notifiers_extack
+       -> call_netdevice_notifiers_info
+        -> raw_notifier_call_chain
+         -> cfg80211_netdev_notifier_call
+          -> wiphy_lock(&rdev->wiphy), cfg80211_register_wdev
+
+Fixes: ea6b2098dd02 ("cfg80211: fix locking in netlink owner interface destruction")
+Signed-off-by: Aran Dalton <arda@allwinnertech.com>
 ---
- include/net/dst.h | 6 ------
- 1 file changed, 6 deletions(-)
+ net/wireless/nl80211.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 6aa252c3fc55..00b479ce6b99 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -239,12 +239,6 @@ static inline void dst_use_noref(struct dst_entry *dst, unsigned long time)
- 	}
- }
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 2705e3ee8fc4..bdacddc3ffa3 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4260,9 +4260,7 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+ 	/* to avoid failing a new interface creation due to pending removal */
+ 	cfg80211_destroy_ifaces(rdev);
  
--static inline void dst_hold_and_use(struct dst_entry *dst, unsigned long time)
--{
--	dst_hold(dst);
--	dst_use_noref(dst, time);
--}
--
- static inline struct dst_entry *dst_clone(struct dst_entry *dst)
- {
- 	if (dst)
+-	wiphy_lock(&rdev->wiphy);
+ 	ret = _nl80211_new_interface(skb, info);
+-	wiphy_unlock(&rdev->wiphy);
+ 
+ 	return ret;
+ }
 -- 
-2.25.1
+2.29.0
 
