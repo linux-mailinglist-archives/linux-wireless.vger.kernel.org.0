@@ -2,145 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E775D5BF1E6
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 02:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C6E5BF33F
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 04:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230325AbiIUAWW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Sep 2022 20:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53528 "EHLO
+        id S231382AbiIUCEq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Sep 2022 22:04:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbiIUAWV (ORCPT
+        with ESMTP id S230466AbiIUCEn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Sep 2022 20:22:21 -0400
-X-Greylist: delayed 340 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 20 Sep 2022 17:22:20 PDT
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB7A2F65A
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 17:22:20 -0700 (PDT)
-Received: from localhost.localdomain (95.49.29.188.neoplus.adsl.tpnet.pl [95.49.29.188])
-        by m-r2.th.seeweb.it (Postfix) with ESMTPA id 4824C3F63D;
-        Wed, 21 Sep 2022 02:16:36 +0200 (CEST)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     ~postmarketos/upstreaming@lists.sr.ht
-Cc:     martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, jamipkettunen@somainline.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hector Martin <marcan@marcan.st>,
-        =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Soontak Lee <soontak.lee@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-Date:   Wed, 21 Sep 2022 02:16:27 +0200
-Message-Id: <20220921001630.56765-1-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.37.3
+        Tue, 20 Sep 2022 22:04:43 -0400
+Received: from smtp12.infineon.com (smtp12.infineon.com [217.10.52.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D4E11A29
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 19:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1663725882; x=1695261882;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=guAvUiYyxUxSo4+uJ/yxHXQaabETbxkWZIEidVuxsEw=;
+  b=m89foYQQkQXAg4YJ0NwWOk5qd1LKC6bhbW4kBAxFNnnSmXCxyMdXrc7W
+   Oe4peODNfLBtZWa+REkZZDC5IPq297Iwug/ukffPsXZwJz8cDxwFBm4CA
+   EJiW4AY3dxT2tHt+Hb3b5O9n9jaSv9zaicGlRDgefLP07RYZYDsqTbbXQ
+   I=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6500,9779,10476"; a="318191312"
+X-IronPort-AV: E=Sophos;i="5.93,332,1654552800"; 
+   d="scan'208";a="318191312"
+Received: from unknown (HELO mucxv002.muc.infineon.com) ([172.23.11.17])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2022 04:04:40 +0200
+Received: from MUCSE812.infineon.com (MUCSE812.infineon.com [172.23.29.38])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mucxv002.muc.infineon.com (Postfix) with ESMTPS
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 04:04:39 +0200 (CEST)
+Received: from MUCSE815.infineon.com (172.23.29.41) by MUCSE812.infineon.com
+ (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 21 Sep
+ 2022 04:04:39 +0200
+Received: from mailrelay-cypress4.infineon.com (172.23.18.56) by
+ SMTP-MailRelay2.infineon.com (172.23.29.9) with Microsoft SMTP Server id
+ 15.2.986.29; Wed, 21 Sep 2022 04:04:39 +0200
+mailrelay-external-outbound: True
+X-IronPort-AV: E=McAfee;i="6500,9779,10476"; a="258959940"
+X-IronPort-AV: E=Sophos;i="5.93,332,1654552800"; 
+   d="scan'208";a="258959940"
+Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
+  by mailrelay-cypress4.infineon.com with ESMTP; 21 Sep 2022 04:04:38 +0200
+Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
+ (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Tue, 20 Sep 2022
+ 21:04:37 -0500
+Received: from iot-wlan-dev-u03.aus.cypress.com (iot-wlan-dev-u03
+ [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id 462CE10038C;
+        Tue, 20 Sep 2022 21:00:35 -0500 (CDT)
+Received: by iot-wlan-dev-u03.aus.cypress.com (Postfix, from userid 27991)      id
+ 3D0C29806AB; Tue, 20 Sep 2022 21:00:35 -0500 (CDT)
+From:   Ian Lin <ian.lin@infineon.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
+        <Double.Lo@infineon.com>, <ian.lin@infineon.com>
+Subject: [PATCH 0/3] brcmfmac: Support DPP feature series
+Date:   Tue, 20 Sep 2022 20:59:48 -0500
+Message-ID: <20220921015951.16178-1-ian.lin@infineon.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support for BCM43596 dual-band AC chip, found in
-SONY Xperia X Performance, XZ and XZs smartphones (and
-*possibly* other devices from other manufacturers).
-The chip doesn't require any special handling and seems to work
-just fine OOTB.
+Support DPP feature and related fix.
 
-PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
+Kurt Lee (3):
+  brcmfmac: Support DPP feature
+  brcmfmac: Fix interoperating DPP and other encryption network access
+  brcmfmac: Fix connecting enterprise AP failure
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
-Changes since v1:
-- rebased the patch against -next
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 152 ++++++++++--------
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |  77 +++++++--
+ .../broadcom/brcm80211/brcmfmac/p2p.h         |   4 +-
+ .../broadcom/brcm80211/include/brcmu_wifi.h   |   5 +
+ 4 files changed, 158 insertions(+), 80 deletions(-)
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 2 ++
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 4 ++++
- drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 4 ++++
- 3 files changed, 10 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 3026166a56c1..6234e7475a1a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -727,6 +727,7 @@ static u32 brcmf_chip_tcm_rambase(struct brcmf_chip_priv *ci)
- 	case BRCM_CC_43666_CHIP_ID:
- 		return 0x200000;
- 	case BRCM_CC_4359_CHIP_ID:
-+	case BRCM_CC_43596_CHIP_ID:
- 		return (ci->pub.chiprev < 9) ? 0x180000 : 0x160000;
- 	case BRCM_CC_4364_CHIP_ID:
- 	case CY_CC_4373_CHIP_ID:
-@@ -1430,6 +1431,7 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
- 		reg = chip->ops->read32(chip->ctx, addr);
- 		return (reg & CC_SR_CTL0_ENABLE_MASK) != 0;
- 	case BRCM_CC_4359_CHIP_ID:
-+	case BRCM_CC_43596_CHIP_ID:
- 	case CY_CC_43752_CHIP_ID:
- 	case CY_CC_43012_CHIP_ID:
- 		addr = CORE_CC_REG(pmu->base, retention_ctl);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index f98641bb1528..2e7fc66adf31 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -81,6 +81,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43570_CHIP_ID, 0xFFFFFFFF, 43570),
- 	BRCMF_FW_ENTRY(BRCM_CC_4358_CHIP_ID, 0xFFFFFFFF, 4358),
- 	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
-+	BRCMF_FW_ENTRY(BRCM_CC_43596_CHIP_ID, 0xFFFFFFFF, 4359),
- 	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFFF, 4364),
- 	BRCMF_FW_ENTRY(BRCM_CC_4365_CHIP_ID, 0x0000000F, 4365B),
- 	BRCMF_FW_ENTRY(BRCM_CC_4365_CHIP_ID, 0xFFFFFFF0, 4365C),
-@@ -2451,6 +2452,9 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_RAW_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4358_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4359_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_2G_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_5G_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_2G_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_5G_DEVICE_ID),
-diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index 1003f123ec25..c9c8701039c5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -44,6 +44,7 @@
- #define BRCM_CC_43570_CHIP_ID		43570
- #define BRCM_CC_4358_CHIP_ID		0x4358
- #define BRCM_CC_4359_CHIP_ID		0x4359
-+#define BRCM_CC_43596_CHIP_ID		43596
- #define BRCM_CC_43602_CHIP_ID		43602
- #define BRCM_CC_4364_CHIP_ID		0x4364
- #define BRCM_CC_4365_CHIP_ID		0x4365
-@@ -77,6 +78,9 @@
- #define BRCM_PCIE_43570_RAW_DEVICE_ID	0xaa31
- #define BRCM_PCIE_4358_DEVICE_ID	0x43e9
- #define BRCM_PCIE_4359_DEVICE_ID	0x43ef
-+#define BRCM_PCIE_43596_DEVICE_ID	0x4415
-+#define BRCM_PCIE_43596_2G_DEVICE_ID	0x4416
-+#define BRCM_PCIE_43596_5G_DEVICE_ID	0x4417
- #define BRCM_PCIE_43602_DEVICE_ID	0x43ba
- #define BRCM_PCIE_43602_2G_DEVICE_ID	0x43bb
- #define BRCM_PCIE_43602_5G_DEVICE_ID	0x43bc
 -- 
-2.37.3
+2.25.0
 
