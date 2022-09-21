@@ -2,60 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD495C0521
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 19:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5E35C054E
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 19:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbiIURLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 13:11:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36484 "EHLO
+        id S229789AbiIURcU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 13:32:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbiIURLL (ORCPT
+        with ESMTP id S229590AbiIURcT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Sep 2022 13:11:11 -0400
+        Wed, 21 Sep 2022 13:32:19 -0400
 Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB9A9AFFA
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 10:11:09 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a26so15148219ejc.4
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 10:11:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D611A1D4D
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 10:32:16 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id sd10so6865116ejc.2
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 10:32:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=58RnSearEc+v+KZegg6ujsTD0xltk9wEWtKJyyCiMw0=;
-        b=BPeCYrNVuraoTxMfDMZbNRPBx95AiKTBa5Ijx5CDURBQU7qNWKZuW1OmTFrIbLF1lm
-         AI5SvJcuH2d7bCagUn9B478JynLfA/ivXbt8XKyDJQd9Loc7PuFs+A0yvuWg8D8Q4HFb
-         2Y9QUvXw17jwHbbepQtafbM6qVCeIC4b+iU7g=
+        bh=VnAeJAvK42eDipj3K88C5//uGtbGsaLzf7QZGTbFoDE=;
+        b=FPsrSvJAb5PNun0J/RPKfvmn/Z4uwuq+D7Y7X8KtaO2fqOxjHwSKaldw0qb2gzlNsl
+         hmH68gHKeioGAsU5eWEZTuSOZ5ang1nsJqO/cqMlzG8ghybKTRvDfzF1Ss6vyFqzsC5r
+         H5sdBcNl5XeddOsjM/4jUI+k/6pKvCzrGHz5k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=58RnSearEc+v+KZegg6ujsTD0xltk9wEWtKJyyCiMw0=;
-        b=V0KDAzFGg2uHDt8Sy84HyVrXd9lJ8gnG28psL9zb3DsW6tbs5ickvI2F3J+sxT83BX
-         w5cMn+p3Zli7X78IlEN/oZVd/aMP3H43wpVCl4Gxn72Qy4JXcnCuV3w46pi0ApUBLT16
-         ATpr19KPaVD6L/RSwG5uM9KrsNKHzjTVyY0gkWmJujB3sx4KNUmln3y4JNUNEi6haKDN
-         7638cVBL2ermXl6raw3aKvVz2tRSwdNW3jts/YXJwH7Jrkao9BHCJXMCkMivO+k0rlYW
-         BdSco493YOWrV/fYPG8oOfc05dvSBKanMlrMHchojnWLer1Q6Ww5j7nDRSSd7BGAwYXP
-         vYwg==
-X-Gm-Message-State: ACrzQf0vge1z8SLzTrDZg50uKaVJ58Im3E/y4DtMc9fI5Br+3D08HTUL
-        xgpXsJYgrB+jyLx58GwIllPNCFflqXFMnQcl8CZVHG3E19klCrXjHDYKhxKCMDHMDsI5LfBVsTQ
-        +tZp8aipQ2J6EAv7VFfxDoyrpXsbOZ9mYpA==
-X-Google-Smtp-Source: AMsMyM7IdhSx4lv3723J1jezlf1t2oHJuoM9rmMBL22xofhXnnSwgmcnJM3V6h2XBAYTP8FibPqiklva6iWLxh54OsY=
+        bh=VnAeJAvK42eDipj3K88C5//uGtbGsaLzf7QZGTbFoDE=;
+        b=z6tKRDi2lOcXZvzizxg7qzZMSEfgwGlYFPK9oeBR8ZKjevTjX8iKM8LYUV/J3nPfE+
+         ufGPvfYn2FT7FF7/8CjLBA9fEzjaUE4Ra+xh5firfSJ+wfllANhw1KXUt1jM/FllYcuV
+         CPDVaFjBaNoTtkQU+gIWhuXywUaexOWlXT0GRWRfPS77ZO6a7g/Q4QYVALjDKUVo+s/A
+         l/PHWgAnAye7Vv2yW6QmgnZCECYEV5BhHOSQs6TywjJe1qcYu/nfbWOZESSHzevOxvQf
+         8VnY1Pp8aox/zixqvwjY2DC7vLu7Ahh/AGTi/LrbuHU3Hg9buPU0Mf1AK0DTmRMZAWwk
+         wxrg==
+X-Gm-Message-State: ACrzQf0q/VVHJnAyMjOuQ6EmLo5JzdQwZV3c1o9yUk+kQLIsfzj9PcbV
+        6KFvofaRjlwKy93/rMrmgnswj+4CFgY/Y4mPO3Z3LAQPRVXMWYflBIKXELE/SZI++01Zvjvi9v8
+        jJSIRIVA0RgLLxO7EdbHqofnsFYMImurNvw==
+X-Google-Smtp-Source: AMsMyM6Dw5VLdfBvfo6ekolWnP07SpoWFIrJh5eKxuKVaME3liRUd2Ym3YntE/auOB0h/NSbkUFd9DZQ7Olm6Hje41w=
 X-Received: by 2002:a17:907:9718:b0:77b:45b6:b047 with SMTP id
- jg24-20020a170907971800b0077b45b6b047mr21631331ejc.479.1663780267975; Wed, 21
- Sep 2022 10:11:07 -0700 (PDT)
+ jg24-20020a170907971800b0077b45b6b047mr21705735ejc.479.1663781534539; Wed, 21
+ Sep 2022 10:32:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220921015951.16178-1-ian.lin@infineon.com> <20220921015951.16178-2-ian.lin@infineon.com>
-In-Reply-To: <20220921015951.16178-2-ian.lin@infineon.com>
+References: <20220921015951.16178-1-ian.lin@infineon.com> <20220921015951.16178-3-ian.lin@infineon.com>
+In-Reply-To: <20220921015951.16178-3-ian.lin@infineon.com>
 From:   Franky Lin <franky.lin@broadcom.com>
-Date:   Wed, 21 Sep 2022 10:10:40 -0700
-Message-ID: <CA+8PC_fN+bqfpmQapYqJMyO3kouS9-u_Dwvo_FH8nGhhDP5V5A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] brcmfmac: Support DPP feature
+Date:   Wed, 21 Sep 2022 10:31:47 -0700
+Message-ID: <CA+8PC_dGtLbh67ecartZA2Hs+66cj+9DQTzCfcCHxqpgrnfa8g@mail.gmail.com>
+Subject: Re: [PATCH 2/3] brcmfmac: Fix interoperating DPP and other encryption
+ network access
 To:     Ian Lin <ian.lin@infineon.com>
 Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com, hante.meuleman@broadcom.com,
-        kvalo@kernel.org, Double.Lo@infineon.com
+        hante.meuleman@broadcom.com, kvalo@kernel.org,
+        Double.Lo@infineon.com
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000e1d40905e93307b5"
+        boundary="0000000000005fd70f05e93353ce"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -65,390 +66,146 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000e1d40905e93307b5
+--0000000000005fd70f05e93353ce
 Content-Type: text/plain; charset="UTF-8"
 
 On Tue, Sep 20, 2022 at 7:04 PM Ian Lin <ian.lin@infineon.com> wrote:
 >
 > From: Kurt Lee <kurt.lee@cypress.com>
 >
-> Let driver parse DPP frames from upper layer and do conresponding
+> 1. If firmware supports 4-way handshake offload but not supports DPP
+> 4-way offload, when user first connects encryption network, driver will
+> set "sup_wpa 1" to firmware, but it will further result in DPP
+> connection failure since firmware won't send EAPOL frame to host.
+>
+> 2. Fix DPP AP mode handling action frames.
+>
+> 3. For some firmware without fwsup support, the join procedure will be
+> skipped due to "sup_wpa" iovar returning not-support. Check the fwsup
+> feature before do such iovar.
 
-corresponding
+It is not a good practice to fix multiple issues in one patch. Please
+break this up.
 
-> configuration to firmware.
-> This change supports DPP handshake based on wpa_supplicant v2.9.
 >
 > Signed-off-by: Kurt Lee <kurt.lee@cypress.com>
+> Signed-off-by: Double Lo <double.lo@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
 > Signed-off-by: Ian Lin <ian.lin@infineon.com>
 > ---
->  .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 85 ++++++++++++-------
->  .../broadcom/brcm80211/brcmfmac/p2p.c         | 72 ++++++++++++----
->  .../broadcom/brcm80211/brcmfmac/p2p.h         |  4 +-
->  .../broadcom/brcm80211/include/brcmu_wifi.h   |  5 ++
->  4 files changed, 117 insertions(+), 49 deletions(-)
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 68 ++++++++++---------
+>  .../broadcom/brcm80211/brcmfmac/p2p.c         |  5 ++
+>  2 files changed, 42 insertions(+), 31 deletions(-)
 >
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 7c72ea26a7d7..4a8aceda8fe8 100644
+> index 4a8aceda8fe8..c0e184db0e5d 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -64,6 +64,9 @@
->  #define RSN_CAP_MFPC_MASK              BIT(7)
->  #define RSN_PMKID_COUNT_LEN            2
->
-> +#define DPP_AKM_SUITE_TYPE             2
-> +#define WLAN_AKM_SUITE_DPP             SUITE(WLAN_OUI_WFA, DPP_AKM_SUITE_TYPE)
-
-Please use WLAN_AKM_SUITE_WFA_DPP.
-
-
-> +
->  #define VNDR_IE_CMD_LEN                        4       /* length of the set command
->                                                  * string :"add", "del" (+ NUL)
->                                                  */
-> @@ -1816,6 +1819,9 @@ brcmf_set_key_mgmt(struct net_device *ndev, struct cfg80211_connect_params *sme)
->                         val = WPA2_AUTH_PSK | WPA2_AUTH_FT;
->                         profile->is_ft = true;
->                         break;
-> +               case WLAN_AKM_SUITE_DPP:
-> +                       val = WFA_AUTH_DPP;
-> +                       break;
->                 default:
->                         bphy_err(drvr, "invalid akm suite (%d)\n",
->                                  sme->crypto.akm_suites[0]);
-> @@ -4144,6 +4150,12 @@ static bool brcmf_valid_wpa_oui(u8 *oui, bool is_rsn_ie)
->         return (memcmp(oui, WPA_OUI, TLV_OUI_LEN) == 0);
->  }
->
-> +static bool brcmf_valid_dpp_suite(u8 *oui)
-> +{
-> +       return (memcmp(oui, WFA_OUI, TLV_OUI_LEN) == 0 &&
-> +               *(oui + TLV_OUI_LEN) == DPP_AKM_SUITE_TYPE);
-> +}
-> +
->  static s32
->  brcmf_configure_wpaie(struct brcmf_if *ifp,
->                       const struct brcmf_vs_tlv *wpa_ie,
-> @@ -4257,42 +4269,47 @@ brcmf_configure_wpaie(struct brcmf_if *ifp,
->                 goto exit;
+> @@ -2128,44 +2128,50 @@ brcmf_cfg80211_connect(struct wiphy *wiphy, struct net_device *ndev,
+>                 goto done;
 >         }
->         for (i = 0; i < count; i++) {
-> -               if (!brcmf_valid_wpa_oui(&data[offset], is_rsn_ie)) {
-> +               if (brcmf_valid_dpp_suite(&data[offset])) {
-> +                       wpa_auth |= WFA_AUTH_DPP;
-> +                       offset += TLV_OUI_LEN;
-> +               } else if (brcmf_valid_wpa_oui(&data[offset], is_rsn_ie)) {
-> +                       offset += TLV_OUI_LEN;
-> +                       switch (data[offset]) {
-> +                       case RSN_AKM_NONE:
-> +                               brcmf_dbg(TRACE, "RSN_AKM_NONE\n");
-> +                               wpa_auth |= WPA_AUTH_NONE;
-> +                               break;
-> +                       case RSN_AKM_UNSPECIFIED:
-> +                               brcmf_dbg(TRACE, "RSN_AKM_UNSPECIFIED\n");
-> +                               is_rsn_ie ?
-> +                                       (wpa_auth |= WPA2_AUTH_UNSPECIFIED) :
-> +                                       (wpa_auth |= WPA_AUTH_UNSPECIFIED);
-> +                               break;
-> +                       case RSN_AKM_PSK:
-> +                               brcmf_dbg(TRACE, "RSN_AKM_PSK\n");
-> +                               is_rsn_ie ? (wpa_auth |= WPA2_AUTH_PSK) :
-> +                                           (wpa_auth |= WPA_AUTH_PSK);
-> +                               break;
-> +                       case RSN_AKM_SHA256_PSK:
-> +                               brcmf_dbg(TRACE, "RSN_AKM_MFP_PSK\n");
-> +                               wpa_auth |= WPA2_AUTH_PSK_SHA256;
-> +                               break;
-> +                       case RSN_AKM_SHA256_1X:
-> +                               brcmf_dbg(TRACE, "RSN_AKM_MFP_1X\n");
-> +                               wpa_auth |= WPA2_AUTH_1X_SHA256;
-> +                               break;
-> +                       case RSN_AKM_SAE:
-> +                               brcmf_dbg(TRACE, "RSN_AKM_SAE\n");
-> +                               wpa_auth |= WPA3_AUTH_SAE_PSK;
-> +                               break;
-> +                       default:
-> +                               bphy_err(drvr, "Invalid key mgmt info\n");
+>
+> -       if (sme->crypto.psk &&
+> -           profile->use_fwsup != BRCMF_PROFILE_FWSUP_SAE) {
+> -               if (WARN_ON(profile->use_fwsup != BRCMF_PROFILE_FWSUP_NONE)) {
+> -                       err = -EINVAL;
+> -                       goto done;
+> +       if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_FWSUP)) {
+> +               if (sme->crypto.psk) {
+> +                       if (profile->use_fwsup != BRCMF_PROFILE_FWSUP_SAE) {
+> +                               if (WARN_ON(profile->use_fwsup !=
+> +                                       BRCMF_PROFILE_FWSUP_NONE)) {
+> +                                       err = -EINVAL;
+> +                                       goto done;
+> +                               }
+> +                               brcmf_dbg(INFO, "using PSK offload\n");
+> +                               profile->use_fwsup = BRCMF_PROFILE_FWSUP_PSK;
 > +                       }
 > +               } else {
-
-Only check for invalid case here
-    if (!brcmf_valid_wpa_oui(&data[offset], is_rsn_ie) &&
-            !brcmf_valid_dpp_suite(&data[offset])) {
-
-And keep the switch below but add a new case for DPP_AKM_SUITE_TYPE.
-
->                         err = -EINVAL;
->                         bphy_err(drvr, "ivalid OUI\n");
->                         goto exit;
+> +                       profile->use_fwsup = BRCMF_PROFILE_FWSUP_NONE;
 >                 }
-> -               offset += TLV_OUI_LEN;
-> -               switch (data[offset]) {
-> -               case RSN_AKM_NONE:
-> -                       brcmf_dbg(TRACE, "RSN_AKM_NONE\n");
-> -                       wpa_auth |= WPA_AUTH_NONE;
-> -                       break;
-> -               case RSN_AKM_UNSPECIFIED:
-> -                       brcmf_dbg(TRACE, "RSN_AKM_UNSPECIFIED\n");
-> -                       is_rsn_ie ? (wpa_auth |= WPA2_AUTH_UNSPECIFIED) :
-> -                                   (wpa_auth |= WPA_AUTH_UNSPECIFIED);
-> -                       break;
-> -               case RSN_AKM_PSK:
-> -                       brcmf_dbg(TRACE, "RSN_AKM_PSK\n");
-> -                       is_rsn_ie ? (wpa_auth |= WPA2_AUTH_PSK) :
-> -                                   (wpa_auth |= WPA_AUTH_PSK);
-> -                       break;
-> -               case RSN_AKM_SHA256_PSK:
-> -                       brcmf_dbg(TRACE, "RSN_AKM_MFP_PSK\n");
-> -                       wpa_auth |= WPA2_AUTH_PSK_SHA256;
-> -                       break;
-> -               case RSN_AKM_SHA256_1X:
-> -                       brcmf_dbg(TRACE, "RSN_AKM_MFP_1X\n");
-> -                       wpa_auth |= WPA2_AUTH_1X_SHA256;
-> -                       break;
-> -               case RSN_AKM_SAE:
-> -                       brcmf_dbg(TRACE, "RSN_AKM_SAE\n");
-> -                       wpa_auth |= WPA3_AUTH_SAE_PSK;
-> -                       break;
-> -               default:
-> -                       bphy_err(drvr, "Invalid key mgmt info\n");
+> -               brcmf_dbg(INFO, "using PSK offload\n");
+> -               profile->use_fwsup = BRCMF_PROFILE_FWSUP_PSK;
+> -       }
+>
+> -       if (profile->use_fwsup != BRCMF_PROFILE_FWSUP_NONE) {
+> -               /* enable firmware supplicant for this interface */
+> -               err = brcmf_fil_iovar_int_set(ifp, "sup_wpa", 1);
+> -               if (err < 0) {
+> -                       bphy_err(drvr, "failed to enable fw supplicant\n");
+> -                       goto done;
+> +               if (profile->use_fwsup != BRCMF_PROFILE_FWSUP_NONE) {
+> +                       /* enable firmware supplicant for this interface */
+> +                       err = brcmf_fil_iovar_int_set(ifp, "sup_wpa", 1);
+> +                       if (err < 0) {
+> +                               bphy_err(drvr, "failed to enable fw supplicant\n");
+> +                               goto done;
+> +                       }
+> +               } else {
+> +                       err = brcmf_fil_iovar_int_set(ifp, "sup_wpa", 0);
+>                 }
+> -       }
+>
+> -       if (profile->use_fwsup == BRCMF_PROFILE_FWSUP_PSK)
+> -               err = brcmf_set_pmk(ifp, sme->crypto.psk,
+> -                                   BRCMF_WSEC_MAX_PSK_LEN);
+> -       else if (profile->use_fwsup == BRCMF_PROFILE_FWSUP_SAE) {
+> -               /* clean up user-space RSNE */
+> -               err = brcmf_fil_iovar_data_set(ifp, "wpaie", NULL, 0);
+> -               if (err) {
+> -                       bphy_err(drvr, "failed to clean up user-space RSNE\n");
+> -                       goto done;
 > -               }
->                 offset++;
+> -               err = brcmf_set_sae_password(ifp, sme->crypto.sae_pwd,
+> -                                            sme->crypto.sae_pwd_len);
+> -               if (!err && sme->crypto.psk)
+> +               if (profile->use_fwsup == BRCMF_PROFILE_FWSUP_PSK)
+>                         err = brcmf_set_pmk(ifp, sme->crypto.psk,
+>                                             BRCMF_WSEC_MAX_PSK_LEN);
+> +               else if (profile->use_fwsup == BRCMF_PROFILE_FWSUP_SAE) {
+> +                       /* clean up user-space RSNE */
+> +                       if (brcmf_fil_iovar_data_set(ifp, "wpaie", NULL, 0)) {
+> +                               bphy_err(drvr, "failed to clean up user-space RSNE\n");
+> +                               goto done;
+> +                       }
+> +                       err = brcmf_set_sae_password(ifp, sme->crypto.sae_pwd,
+> +                                                    sme->crypto.sae_pwd_len);
+> +                       if (!err && sme->crypto.psk)
+> +                               err = brcmf_set_pmk(ifp, sme->crypto.psk,
+> +                                                   BRCMF_WSEC_MAX_PSK_LEN);
+> +               }
+> +               if (err)
+> +                       goto done;
 >         }
->
-> @@ -4312,10 +4329,12 @@ brcmf_configure_wpaie(struct brcmf_if *ifp,
->                                  */
->                                 if (!(wpa_auth & (WPA2_AUTH_PSK_SHA256 |
->                                                   WPA2_AUTH_1X_SHA256 |
-> +                                                 WFA_AUTH_DPP |
->                                                   WPA3_AUTH_SAE_PSK))) {
->                                         err = -EINVAL;
->                                         goto exit;
->                                 }
-> +
->                                 /* Firmware has requirement that WPA2_AUTH_PSK/
->                                  * WPA2_AUTH_UNSPECIFIED be set, if SHA256 OUI
->                                  * is to be included in the rsn ie.
-> @@ -5225,7 +5244,7 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
->                           *cookie, le16_to_cpu(action_frame->len), freq);
->
->                 ack = brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg),
-> -                                                 af_params);
-> +                                                 af_params, vif);
->
->                 cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
->                                         GFP_KERNEL);
+> -       if (err)
+> -               goto done;
+> -
+>         /* Join with specific BSSID and cached SSID
+>          * If SSID is zero join based on BSSID only
+>          */
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> index 479041f070f9..4636fc27e915 100644
+> index 4636fc27e915..3d96ad872593 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> @@ -231,7 +231,35 @@ static bool brcmf_p2p_is_pub_action(void *frame, u32 frame_len)
->         if (pact_frm->category == P2P_PUB_AF_CATEGORY &&
->             pact_frm->action == P2P_PUB_AF_ACTION &&
->             pact_frm->oui_type == P2P_VER &&
-> -           memcmp(pact_frm->oui, P2P_OUI, P2P_OUI_LEN) == 0)
-> +           memcmp(pact_frm->oui, WFA_OUI, P2P_OUI_LEN) == 0)
-
-This change is irrelevant although the two macros are the same. Please
-have a separate patch to clean up P2P_OUI.
-
-> +               return true;
-> +
-> +       return false;
-> +}
-> +
-> +/**
-> + * brcmf_p2p_is_dpp_pub_action() - true if dpp public type frame.
-> + *
-> + * @frame: action frame data.
-> + * @frame_len: length of action frame data.
-> + *
-> + * Determine if action frame is dpp public action type
-> + */
-> +static bool brcmf_p2p_is_dpp_pub_action(void *frame, u32 frame_len)
-> +{
-> +       struct brcmf_p2p_pub_act_frame *pact_frm;
-> +
-> +       if (!frame)
-> +               return false;
-> +
-> +       pact_frm = (struct brcmf_p2p_pub_act_frame *)frame;
-> +       if (frame_len < sizeof(struct brcmf_p2p_pub_act_frame) - 1)
-> +               return false;
-> +
-> +       if (pact_frm->category == WLAN_CATEGORY_PUBLIC &&
-> +           pact_frm->action == WLAN_PUB_ACTION_VENDOR_SPECIFIC &&
-> +           pact_frm->oui_type == DPP_VER &&
-> +           memcmp(pact_frm->oui, WFA_OUI, TLV_OUI_LEN) == 0)
->                 return true;
+> @@ -1318,6 +1318,10 @@ static s32 brcmf_p2p_abort_action_frame(struct brcmf_cfg80211_info *cfg)
+>         brcmf_dbg(TRACE, "Enter\n");
 >
->         return false;
-> @@ -991,6 +1019,8 @@ int brcmf_p2p_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
+>         vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
+> +
+> +       if (!vif)
+> +               vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+> +
+>         err = brcmf_fil_bsscfg_data_set(vif->ifp, "actframe_abort", &int_val,
+>                                         sizeof(s32));
 >         if (err)
->                 goto exit;
->
-> +       p2p->remin_on_channel_wdev = wdev;
-> +
->         memcpy(&p2p->remain_on_channel, channel, sizeof(*channel));
->         *cookie = p2p->remain_on_channel_cookie;
->         cfg80211_ready_on_channel(wdev, *cookie, channel, duration, GFP_KERNEL);
-> @@ -1014,6 +1044,7 @@ int brcmf_p2p_notify_listen_complete(struct brcmf_if *ifp,
->  {
->         struct brcmf_cfg80211_info *cfg = ifp->drvr->config;
->         struct brcmf_p2p_info *p2p = &cfg->p2p;
-> +       struct wireless_dev *wdev = p2p->remin_on_channel_wdev;
->
->         brcmf_dbg(TRACE, "Enter\n");
->         if (test_and_clear_bit(BRCMF_P2P_STATUS_DISCOVER_LISTEN,
-> @@ -1026,10 +1057,16 @@ int brcmf_p2p_notify_listen_complete(struct brcmf_if *ifp,
->                         complete(&p2p->wait_next_af);
->                 }
->
-> -               cfg80211_remain_on_channel_expired(&ifp->vif->wdev,
-> +               wdev = p2p->remin_on_channel_wdev ?
-> +                       p2p->remin_on_channel_wdev :
-> +                       &ifp->vif->wdev;
-> +
-> +               cfg80211_remain_on_channel_expired(wdev,
->                                                    p2p->remain_on_channel_cookie,
->                                                    &p2p->remain_on_channel,
->                                                    GFP_KERNEL);
-> +               p2p->remin_on_channel_wdev = NULL;
-> +
->         }
->         return 0;
->  }
-> @@ -1531,6 +1568,7 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
->   *
->   * @p2p: p2p info struct for vif.
->   * @af_params: action frame data/info.
-> + * @vif: vif to send
->   *
->   * Send an action frame immediately without doing channel synchronization.
->   *
-> @@ -1539,12 +1577,17 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
->   * frame is transmitted.
->   */
->  static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
-> -                                    struct brcmf_fil_af_params_le *af_params)
-> +                                    struct brcmf_fil_af_params_le *af_params,
-> +                                    struct brcmf_cfg80211_vif *vif
-> +                                    )
->  {
->         struct brcmf_pub *drvr = p2p->cfg->pub;
-> -       struct brcmf_cfg80211_vif *vif;
-> -       struct brcmf_p2p_action_frame *p2p_af;
->         s32 err = 0;
-> +       struct brcmf_fil_action_frame_le *action_frame;
-> +       u16 action_frame_len;
-> +
-> +       action_frame = &af_params->action_frame;
-> +       action_frame_len = le16_to_cpu(action_frame->len);
->
->         brcmf_dbg(TRACE, "Enter\n");
->
-> @@ -1552,13 +1595,6 @@ static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
->         clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
->         clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
->
-> -       /* check if it is a p2p_presence response */
-> -       p2p_af = (struct brcmf_p2p_action_frame *)af_params->action_frame.data;
-> -       if (p2p_af->subtype == P2P_AF_PRESENCE_RSP)
-> -               vif = p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif;
-> -       else
-> -               vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
-> -
->         err = brcmf_fil_bsscfg_data_set(vif->ifp, "actframe", af_params,
->                                         sizeof(*af_params));
->         if (err) {
-> @@ -1714,10 +1750,13 @@ static bool brcmf_p2p_check_dwell_overflow(u32 requested_dwell,
->   * @cfg: driver private data for cfg80211 interface.
->   * @ndev: net device to transmit on.
->   * @af_params: configuration data for action frame.
-> + * @vif: virtual interface to send
->   */
->  bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
->                                  struct net_device *ndev,
-> -                                struct brcmf_fil_af_params_le *af_params)
-> +                                struct brcmf_fil_af_params_le *af_params,
-> +                                struct brcmf_cfg80211_vif *vif
-> +                                )
->  {
->         struct brcmf_p2p_info *p2p = &cfg->p2p;
->         struct brcmf_if *ifp = netdev_priv(ndev);
-> @@ -1789,7 +1828,9 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
->                         goto exit;
->                 }
->         } else if (brcmf_p2p_is_p2p_action(action_frame->data,
-> -                                          action_frame_len)) {
-> +                                          action_frame_len) ||
-> +                  brcmf_p2p_is_dpp_pub_action(action_frame->data,
-> +                                              action_frame_len)) {
->                 /* do not configure anything. it will be */
->                 /* sent with a default configuration     */
->         } else {
-> @@ -1857,7 +1898,7 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
->                 if (af_params->channel)
->                         msleep(P2P_AF_RETRY_DELAY_TIME);
->
-> -               ack = !brcmf_p2p_tx_action_frame(p2p, af_params);
-> +               ack = !brcmf_p2p_tx_action_frame(p2p, af_params, vif);
->                 tx_retry++;
->                 dwell_overflow = brcmf_p2p_check_dwell_overflow(requested_dwell,
->                                                                 dwell_jiffies);
-> @@ -2508,6 +2549,7 @@ s32 brcmf_p2p_attach(struct brcmf_cfg80211_info *cfg, bool p2pdev_forced)
->
->         pri_ifp = brcmf_get_ifp(cfg->pub, 0);
->         p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif = pri_ifp->vif;
-> +       init_completion(&p2p->send_af_done);
->
->         if (p2pdev_forced) {
->                 err_ptr = brcmf_p2p_create_p2pdev(p2p, NULL, NULL);
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-> index d2ecee565bf2..bbc455238707 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-> @@ -138,6 +138,7 @@ struct brcmf_p2p_info {
->         bool block_gon_req_tx;
->         bool p2pdev_dynamically;
->         bool wait_for_offchan_complete;
-> +       struct wireless_dev *remin_on_channel_wdev;
-
-Docstring needs update. Also s/remin/remain
-
->  };
->
->  s32 brcmf_p2p_attach(struct brcmf_cfg80211_info *cfg, bool p2pdev_forced);
-> @@ -170,7 +171,8 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
->                                         void *data);
->  bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
->                                  struct net_device *ndev,
-> -                                struct brcmf_fil_af_params_le *af_params);
-> +                                struct brcmf_fil_af_params_le *af_params,
-> +                                struct brcmf_cfg80211_vif *vif);
->  bool brcmf_p2p_scan_finding_common_channel(struct brcmf_cfg80211_info *cfg,
->                                            struct brcmf_bss_info_le *bi);
->  s32 brcmf_p2p_notify_rx_mgmt_p2p_probereq(struct brcmf_if *ifp,
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h b/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h
-> index 7552bdb91991..3a9cad3730b8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h
-> @@ -233,6 +233,11 @@ static inline bool ac_bitmap_tst(u8 bitmap, int prec)
->
->  #define WPA3_AUTH_SAE_PSK      0x40000 /* SAE with 4-way handshake */
->
-> +#define WFA_AUTH_DPP           0x200000 /* WFA DPP AUTH */
-
-This is incompatible with Broadcom's bit definitions. Please use a per
-vendor approach.
-
-> +
-> +#define WFA_OUI                        "\x50\x6F\x9A"  /* WFA OUI */
-> +#define DPP_VER                        0x1A    /* WFA DPP v1.0 */
-> +
->  #define DOT11_DEFAULT_RTS_LEN          2347
->  #define DOT11_DEFAULT_FRAG_LEN         2346
->
+> @@ -1867,6 +1871,7 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+>         /* validate channel and p2p ies */
+>         if (config_af_params.search_channel &&
+>             IS_P2P_SOCIAL_CHANNEL(le32_to_cpu(af_params->channel)) &&
+> +           p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif &&
+>             p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif->saved_ie.probe_req_ie_len) {
+>                 afx_hdl = &p2p->afx_hdl;
+>                 afx_hdl->peer_listen_chan = le32_to_cpu(af_params->channel);
 > --
 > 2.25.0
 >
@@ -466,7 +223,7 @@ this e-mail is strictly prohibited. If you received this e-mail in error,
 please return the e-mail to the sender, delete it from your computer, and 
 destroy any printed copy of it.
 
---000000000000e1d40905e93307b5
+--0000000000005fd70f05e93353ce
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -537,13 +294,13 @@ ATUa+n5ReFZpli4TzcqVHw7i+OaB23TMHCwed4OPFm0H3zcCJgVtgt3z95IPak7bBuYLAGMT2c3K
 Xkdn27MnpydqZw5mnP970DgyUMHXY3Jvj65UAVioJUr4LkNBL7Tsk/6q0FExggJtMIICaQIBATBr
 MFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9i
 YWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxcbvtv+NUbtJoPDWwwDQYJYIZI
-AWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIJUpLwDI6WDhfH66MXAttial+TET2JXXsOgWrlbd
-6l4gMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDkyMTE3MTEw
-OFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
+AWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIG6OP+cCaap9x+TngqCFWWPXLdPQOr8A8XgZokPj
+AJ3UMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDkyMTE3MzIx
+NFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
 AjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkq
-hkiG9w0BAQEFAASCAQBlyarb13fWKtlG5Gv9wKmJNPX8ogT9lraJPoL/MQRGUHQOg1cIdWAE04sh
-KvL1stZmN214oeIFuc/PokiSOqhWES2Hpt/9Nt0tz3oRFmkqeOUnZ6AwsE7Ir68gLPISspyOcuLP
-enzl9WjKHiTukWH7Vb/D5hoT5NAOPNxu2RV1at46bc9ihv84Q9OVsTNUybUbeNqbVl8z5amvx1gj
-bg/IyrAeknHh1ok89CUSZ8vEOM2I8lFnky7vG2pNU9k4UFzq+VBVONTiYlVyaf2tD5yuxkTX8DN0
-RNxRQXIrrXOY8cDpQggzcsQGivxP6jcVZstZq/pmqcTSYT1x/dTq0u8A
---000000000000e1d40905e93307b5--
+hkiG9w0BAQEFAASCAQAq8NOOc5KrWTPF60XLHe2FVswbXD02CVEvRpqUv/xpsCvQDhCDaUHDuC0r
+OD2Q8G+odAUXMgtcQc/ayIsIThxcNPmKzYVcpb7/Iylb833OZd7ryfQXwFrNCeGtvNT3FLgj25kL
+DQUVywxm92fAhP4ho3WJG4Blr8grAqNTB47fJApWyzml1UuEwLpi2z+1ixb4VFvjKjnC6Eudtcgs
+lk5ULtWkWd8/pPoG645MpmxnU081AaAb93hSiVlcDS1U8o/MoTpPTZVmryKzQjNaG4nQ1V3wRvTj
+RgJZ4rvtOW5i6VTbUtL7MJnGVESoSIE1A4kGJymKyEptaNS6PjjbdeGj
+--0000000000005fd70f05e93353ce--
