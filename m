@@ -2,179 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 840C75BF595
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 06:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A891C5BF894
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 10:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbiIUEv2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 00:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58126 "EHLO
+        id S229677AbiIUIF2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 04:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbiIUEvP (ORCPT
+        with ESMTP id S229580AbiIUIF0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Sep 2022 00:51:15 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 943A97D7B5
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Sep 2022 21:51:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663735873; x=1695271873;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tK1G83lpUXpBfuNWxqj1/s9rzFCDfy2sxFXDGRdSRZQ=;
-  b=bxeMPy2gflyTj5kJFP+QRxH0Ll9xpyRqSnO18sNSmbnULqoMpwGEcqyL
-   K7W2NVeLxitjqHT2NEV+PP+1zGoR3TMgV7j9VIwjmKwd/5VYzaxVVAQe9
-   zTiR5Vv6yx1nJo+bhxWSDSdIRbkv/lsbE19cgCrb/d+m7rRGTZvEczyBa
-   YIVm5NagQQTkGgJRzA4Dr6o+Sk3wVHh5XSQDOzI52y+PffYuHmNqVF7pp
-   GCvswJAoW8Nr50Aq/4JpkZiHVYDXfa/uN59dFT4w1ooxIxEnKdFdWuYT4
-   gigTNRF2ZQxt8M6Ej3sGuWgJ0InGoCKSocMxvVVLBUUniQZePHZiAUcKJ
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10476"; a="298617836"
-X-IronPort-AV: E=Sophos;i="5.93,332,1654585200"; 
-   d="scan'208";a="298617836"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2022 21:51:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,332,1654585200"; 
-   d="scan'208";a="619197890"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 20 Sep 2022 21:51:04 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oarhP-0003F3-1c;
-        Wed, 21 Sep 2022 04:51:03 +0000
-Date:   Wed, 21 Sep 2022 12:50:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ian Lin <ian.lin@infineon.com>, linux-wireless@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org,
-        Double.Lo@infineon.com, ian.lin@infineon.com
-Subject: Re: [PATCH 1/3] brcmfmac: Support DPP feature
-Message-ID: <202209211219.PmRhFKDc-lkp@intel.com>
-References: <20220921015951.16178-2-ian.lin@infineon.com>
+        Wed, 21 Sep 2022 04:05:26 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A8D543E6
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 01:05:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:Subject:From
+        :References:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=2A1xnRYbbdPEIiDyZ2vo1w9WQFQRkUmEv9A64dYYr7I=; b=OGLismyjw9AaYJPx79iarTISug
+        9Zg+KpVcm/N5qWZJAJqFda65cBoSFlnd3os+yv6IW0QkBL+9a3ogDqHiKi8WpbnarQ9ZLdY9CyXfl
+        JuscdM8exHBgy9QSPHQ9TctdSdtWNMnbJEXuPvPlbyYQrP9Yd/8IyEZbR50kTg5blm4k=;
+Received: from p200300daa7301d00a986799c2cf5dafb.dip0.t-ipconnect.de ([2003:da:a730:1d00:a986:799c:2cf5:dafb] helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1oaujS-006UCc-U9; Wed, 21 Sep 2022 10:05:23 +0200
+Message-ID: <4040f674-8430-69ba-1b6f-f9fd92da413d@nbd.name>
+Date:   Wed, 21 Sep 2022 10:05:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220921015951.16178-2-ian.lin@infineon.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+Content-Language: en-US
+To:     Venkat Ch <venkatch@gmail.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        Venkat Chimata <venkata@shasta.cloud>
+References: <20220915043527.737133-1-venkatch@gmail.com>
+ <238a21a8-c97b-5a38-6c08-9057055bf73f@nbd.name>
+ <CABHL29H75U-0dBP14d-6ds-xMPt1eqrvQPuMp3oY8qQS8Y3Dbw@mail.gmail.com>
+ <9acc4159-8223-bbca-a83f-d075660ac6db@nbd.name>
+ <CABHL29GB6DCrdu4FzRfBDSj9A7pwqnWE+wgH2xfkBMLjT3bAxA@mail.gmail.com>
+ <f75ad975-8b76-f3e6-151b-6eda552c0431@nbd.name>
+ <CABHL29GUgta4Ke3sxbongMSK__cruTaDYCXe1-yEDL3WA3mO9Q@mail.gmail.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH v2] wifi: mac80211: Fix performance issue with mutex_lock
+In-Reply-To: <CABHL29GUgta4Ke3sxbongMSK__cruTaDYCXe1-yEDL3WA3mO9Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ian,
 
-Thank you for the patch! Perhaps something to improve:
+On 20.09.22 21:23, Venkat Ch wrote:
+> Hi Felix,
+> 
+>   Following is the background of the problem, how I traced to
+> mutex_lock and why I propose rcu locks.
+> 
+> Issue:
+>   On a 10Mbps upload / 50 Mbps download connection, the following issue reported.
+> 
+> Video periodically freezes and/or appears delayed when on Zoom or Teams.
+> 1. Video will freeze for 10 or 15 seconds periodically when on a call,
+> but audio continues and the session doesn't drop.
+> 2. The video  still works but it appears delay (I move, but the video
+> of my movement is noticeably delay by a second or so)
+> 
+> Tracing to mutex_lock(sta_mutex):
+> 
+>   When I investigated, I found that the ucentral agent in openwifi
+> fetches the station list periodically.  Without the station list
+> fetch, the video quality is just fine. I investigated the station list
+> path and found this mutex_lock. I also see that earlier it was
+> rcu_lock which protected the station list in this path. In this
+> commit, https://github.com/torvalds/linux/commit/66572cfc30a4b764150c83ee5d842a3ce17991c9,
+> rcu lock was changed to mutex lock without providing any reason.
+The reason seems clear to me, even though it was not explicitly stated 
+in the commit message: in sta_set_sinfo it introduces a call to a driver 
+op that is allowed to sleep.
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.0-rc6 next-20220920]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> I also saw this comment just above the sta_mutex declaration.
+>          /* Station data */
+>          /*
+>           * The mutex only protects the list, hash table and
+>           * counter, reads are done with RCU.
+>           */
+>          struct mutex sta_mtx;
+> 
+> So I reverted back the mutex_lock with rcu_lock and it just worked
+> fine. We tested for more than 2 weeks before concluding this analysis.
+> 
+> I think the usage of mutex_lock is impacting the tx / rx path
+> somewhere and hence the issue. It is a challenge to trace the exact
+> function though.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ian-Lin/brcmfmac-Support-DPP-feature-series/20220921-101658
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20220921/202209211219.PmRhFKDc-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/a4592ec96782290389bab0b4ca9cd9bc0ae4672a
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Ian-Lin/brcmfmac-Support-DPP-feature-series/20220921-101658
-        git checkout a4592ec96782290389bab0b4ca9cd9bc0ae4672a
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/net/wireless/broadcom/brcm80211/brcmfmac/
+I don't see any critical part in the tx/rx path which depends on the 
+sta_mtx lock. My guess is that for some reason your change is simply 
+accidentally papering over the real bug, which may be somewhere else 
+entirely, maybe even in the driver. A freeze for 10-15 seconds 
+definitely does not sound like simple lock contention on the mutex, 
+since a single station dump will be much faster than that.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c: In function 'brcmf_p2p_tx_action_frame':
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1587:13: warning: variable 'action_frame_len' set but not used [-Wunused-but-set-variable]
-    1587 |         u16 action_frame_len;
-         |             ^~~~~~~~~~~~~~~~
-
-
-vim +/action_frame_len +1587 drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-
-  1564	
-  1565	
-  1566	/**
-  1567	 * brcmf_p2p_tx_action_frame() - send action frame over fil.
-  1568	 *
-  1569	 * @p2p: p2p info struct for vif.
-  1570	 * @af_params: action frame data/info.
-  1571	 * @vif: vif to send
-  1572	 *
-  1573	 * Send an action frame immediately without doing channel synchronization.
-  1574	 *
-  1575	 * This function waits for a completion event before returning.
-  1576	 * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the action
-  1577	 * frame is transmitted.
-  1578	 */
-  1579	static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
-  1580					     struct brcmf_fil_af_params_le *af_params,
-  1581					     struct brcmf_cfg80211_vif *vif
-  1582					     )
-  1583	{
-  1584		struct brcmf_pub *drvr = p2p->cfg->pub;
-  1585		s32 err = 0;
-  1586		struct brcmf_fil_action_frame_le *action_frame;
-> 1587		u16 action_frame_len;
-  1588	
-  1589		action_frame = &af_params->action_frame;
-  1590		action_frame_len = le16_to_cpu(action_frame->len);
-  1591	
-  1592		brcmf_dbg(TRACE, "Enter\n");
-  1593	
-  1594		reinit_completion(&p2p->send_af_done);
-  1595		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
-  1596		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
-  1597	
-  1598		err = brcmf_fil_bsscfg_data_set(vif->ifp, "actframe", af_params,
-  1599						sizeof(*af_params));
-  1600		if (err) {
-  1601			bphy_err(drvr, " sending action frame has failed\n");
-  1602			goto exit;
-  1603		}
-  1604	
-  1605		p2p->af_sent_channel = le32_to_cpu(af_params->channel);
-  1606		p2p->af_tx_sent_jiffies = jiffies;
-  1607	
-  1608		if (test_bit(BRCMF_P2P_STATUS_DISCOVER_LISTEN, &p2p->status) &&
-  1609		    p2p->af_sent_channel ==
-  1610		    ieee80211_frequency_to_channel(p2p->remain_on_channel.center_freq))
-  1611			p2p->wait_for_offchan_complete = false;
-  1612		else
-  1613			p2p->wait_for_offchan_complete = true;
-  1614	
-  1615		brcmf_dbg(TRACE, "Waiting for %s tx completion event\n",
-  1616			  (p2p->wait_for_offchan_complete) ?
-  1617			   "off-channel" : "on-channel");
-  1618	
-  1619		wait_for_completion_timeout(&p2p->send_af_done, P2P_AF_MAX_WAIT_TIME);
-  1620	
-  1621		if (test_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status)) {
-  1622			brcmf_dbg(TRACE, "TX action frame operation is success\n");
-  1623		} else {
-  1624			err = -EIO;
-  1625			brcmf_dbg(TRACE, "TX action frame operation has failed\n");
-  1626		}
-  1627		/* clear status bit for action tx */
-  1628		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
-  1629		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
-  1630	
-  1631	exit:
-  1632		return err;
-  1633	}
-  1634	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+- Felix
