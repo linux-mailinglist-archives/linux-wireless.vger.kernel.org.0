@@ -2,129 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A57365BFED2
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 15:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 479515C0097
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 17:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbiIUNSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 09:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36964 "EHLO
+        id S229788AbiIUPAo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 11:00:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230019AbiIUNSB (ORCPT
+        with ESMTP id S230241AbiIUPAY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Sep 2022 09:18:01 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2054.outbound.protection.outlook.com [40.107.220.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48368B2C6;
-        Wed, 21 Sep 2022 06:17:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TlUu2CmbBTquWlFjbDp1gVlDcVwC0iZbX9su7b4ON3vI9edZtIDN9SK3Z5WHMAWSCh+lE16VC4JYTKqdnbgqHbYWiCRUnQ0VR9+eJw2o3DoAmiDFT/Yp0D0dFNS1VRWW++uuZQRZchLXCwaS11oAAUFBnNYonq5i1GTh7zFBE/rtk8N5D3BHIY6S+gMFDfO+F4iSBBZdLbXR3wWX1U3IrvBYbMr68B8DDqR2JXg/h2GscFqHaJ9yAf1bDIaP192YGBjljmeojfIo6XilZ1JTqTnZsmRySzqYsb3XVwCHpxAQhCmYC2bIw+rwWH2CJ2Q5efnGZY1OQ1teKd7IjPyoQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vOfOEXYGdX5uY53CIqahw8hcTGyHWNgD2E56iH/Z3Gc=;
- b=It9Z/e0RIY2LG2AoEZg6oEfZ477eilHjNWHoPO4WniI8R87g0PMzpSZbfYJyIBffMnalMhBdt9IJIBPJ6PVoTGPhSs0OYZDjTQPgAitdXVAmMqsAfmFfu+XlElYNHyDD7dxzryptq1VduSCTpINT8uIxK55X9ChYasGgZ2/rZMrQimXPQTMeqXAECU5Kqj1LsuM//n0OVElJ+Og/5pYFLJZ4/znrjM4ByTMbz1evUxlBN9TNXgMmgIIpFlZW9bp/76qverfE0o33ZTRhScqNWoTaCtMSP91A6EeK3u4aOGEqHSks/5s1Zl08ECzcAGSc23hD4/XYZa1647f4Tf1lVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lists.infradead.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vOfOEXYGdX5uY53CIqahw8hcTGyHWNgD2E56iH/Z3Gc=;
- b=mFlzvgIhxr3NsdXz6zxdsc6Du0O3+MEcwGrRzjRYAmE7cdhCN6YqJw55DmFab+eW2JlzMJ0usjUmun5BM7uN2d0MVx1ju+QlZSahd9DLtHRDV3JuC3O2jyqoqfCX0Lqevt1k8sRiIE4wny1aV5at0yI0JhqLSaIlwLlgewRY1Vyz0gEI58E+S8Y7aRUNR5yr5XlesuSNyL3uiEKzhBSVmA06KdMWnlcfgjmpffH0PT4djcQctDPD/DQrwdO0meRyikpOo4Gqkmzkx8UiTNCRQAxzN1CnPYkwYKg96KhHmSCWqz5rzOi12dCdKnt0vzaQUoBQiqoCrL4utTUVff9VaQ==
-Received: from DM6PR11CA0010.namprd11.prod.outlook.com (2603:10b6:5:190::23)
- by MW4PR12MB6682.namprd12.prod.outlook.com (2603:10b6:303:1e3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.19; Wed, 21 Sep
- 2022 13:17:56 +0000
-Received: from DM6NAM11FT066.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:190:cafe::b4) by DM6PR11CA0010.outlook.office365.com
- (2603:10b6:5:190::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.14 via Frontend
- Transport; Wed, 21 Sep 2022 13:17:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DM6NAM11FT066.mail.protection.outlook.com (10.13.173.179) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5654.14 via Frontend Transport; Wed, 21 Sep 2022 13:17:55 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.26; Wed, 21 Sep
- 2022 06:17:43 -0700
-Received: from yaviefel (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 21 Sep 2022 11:00:24 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493D74D17D
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 07:59:59 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28LERgQs010092;
+        Wed, 21 Sep 2022 14:59:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=zIVZOxjVRvKF8rXDWuDJiLE18YVUCmm7M5aE1NPXWx4=;
+ b=kjAm2QuOaGdyP6MZKKif9frREtWJ80g0YLUSj13uSMUl2HCIm4120GKz1JSi3BRk0dvV
+ A4vSGgKe1BJhufTCjSKPyMgfuF6TuEr0HdmfCX9sgTDXtif+4K54VMhsUwra7HaLkxLE
+ n0srOuOYsnrRd7zGiqkKjw8A92qKVIZOblqhPF0/39pir9/oZrO732+E8S8II9Z2iV63
+ HbnqDHtwyz4Ye7BXvAAYvyLE1c0zEqYZaKtn1IINL+yRmsR/sQ7wWaQLr7tNPyT0DpJ8
+ ZlTVfPTH0bVsEfG1br+LoBjTP4zPdmzpa8QU5oNXohbcuTYTpbw3MQwFD6ikxa/WfIkN Lg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jq8fw550g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Sep 2022 14:59:43 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28LEsgN5019150
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Sep 2022 14:54:42 GMT
+Received: from [10.110.44.78] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 21 Sep
- 2022 06:17:38 -0700
-References: <20220921090455.752011-1-cuigaosheng1@huawei.com>
- <20220921090455.752011-2-cuigaosheng1@huawei.com>
- <875yhgyijv.fsf@nvidia.com>
-User-agent: mu4e 1.6.6; emacs 28.1
-From:   Petr Machata <petrm@nvidia.com>
-To:     Petr Machata <petrm@nvidia.com>
-CC:     Gaosheng Cui <cuigaosheng1@huawei.com>, <idosch@nvidia.com>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <nbd@nbd.name>, <lorenzo@kernel.org>,
-        <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
-        <sean.wang@mediatek.com>, <kvalo@kernel.org>,
-        <matthias.bgg@gmail.com>, <amcohen@nvidia.com>,
-        <stephen@networkplumber.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 1/5] mlxsw: reg: Remove unused inline function
- mlxsw_reg_sftr2_pack()
-Date:   Wed, 21 Sep 2022 15:17:21 +0200
-In-Reply-To: <875yhgyijv.fsf@nvidia.com>
-Message-ID: <871qs4yihc.fsf@nvidia.com>
+ 2022 07:54:41 -0700
+Message-ID: <2c0b33e9-8690-7a42-3eff-e18b52298357@quicinc.com>
+Date:   Wed, 21 Sep 2022 07:54:41 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.126.231.35]
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT066:EE_|MW4PR12MB6682:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49b3b975-8210-4a84-76df-08da9bd3b278
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: S6AB0g75PaQ59kr66LO2A9TQn155fDwE3lKmq8jvSp3l/dm9C8WW3SYeNgueRx3ybGR51ixvg5ld8Y3+sMrXkHj8r/qqjcWgykUDcRtlWQ9hFEO7lt84fVe9TtH30Iul6ZQixyfQnWwKAtZBueugkbD/OpQ361pdunZfg/50f2HLXLsg1NpI/GEBc6oYjCjUdw0Rn/0PlLMK8SsTLdpKPI8mm6dsY1XKDPL4KSQfJ6HyZG18gUcu1GX1ksEt1H2IDwEBsjj69KmlQasGfW4aAySSSmk2D8Diot9+5KXtwQPHh3tnT7lQgluRsLLCYvBJBM5qTzWBA9gKaj7Q2JmmCtz1eejsr70Ghmva7hq0FLYIU/8D+iaApgdxXM4bn0WJjBr7jNlPPHzj3yie4/qwRB4QIE89EExEBc7ODO4hDNZe1qZ+XDjPkYV/R78YTA0Sh1MR8stDiy/ezVz90gsi5ZkYei7XMGQFJ1IGRPpAK//XtmqarH8b78v/V2PzK4OR8SzWc9xusNbpTGNmbVsJuisaxWiobqjBSkh7KwXnztxRqFnRDm5leVte/ze4UIjQXp/6Iw5xA+sowFeNvGl51HGAuH/vroxuSDpz321lN8WJAGSp711vEFijpGMOejgsMGm0Q/77We3P7uWcQIRznbqeAQpIVKCzFQL6jtkvjcK/vceUyoij1W2kM7TaAQ6452E3EczQd0XQYDANw5nUJas8nffDBMyYJPlm1uoG5PDoftPGWZjyM9Iu2XKxZeMTW4yYXND3AOViQiBII9OOrQ==
-X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230022)(4636009)(346002)(39860400002)(376002)(396003)(136003)(451199015)(36840700001)(40470700004)(46966006)(37006003)(2906002)(40480700001)(6200100001)(82310400005)(4744005)(6666004)(36756003)(86362001)(36860700001)(426003)(47076005)(82740400003)(7416002)(6862004)(5660300002)(70586007)(70206006)(8676002)(4326008)(316002)(8936002)(16526019)(336012)(356005)(186003)(7636003)(2616005)(478600001)(26005)(41300700001)(54906003)(40460700003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2022 13:17:55.9428
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49b3b975-8210-4a84-76df-08da9bd3b278
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT066.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6682
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [RFC v2 1/6] mac80211: modify tx-power level annotation
+Content-Language: en-US
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>,
+        <linux-wireless@vger.kernel.org>
+CC:     <johannes@sipsolutions.net>, <nbd@nbd.name>,
+        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
+ <20220920104032.496697-2-jelonek.jonas@gmail.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220920104032.496697-2-jelonek.jonas@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 4Krzbd7JZ0zBjl-mXIKAolpHOIHvzLHh
+X-Proofpoint-ORIG-GUID: 4Krzbd7JZ0zBjl-mXIKAolpHOIHvzLHh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-21_08,2022-09-20_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1011
+ adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=570 suspectscore=0 phishscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2209210102
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 9/20/2022 3:40 AM, Jonas Jelonek wrote:
+> This patch modifies the annotation of supported tx-power levels for a
+> wifi device in ieee80211_hw. This annotation was introduced with commit
+> 44fa75f207d8a106bc75e6230db61e961fdbf8a8 to be able to operate on power
 
-Petr Machata <petrm@nvidia.com> writes:
+nit: preferred way to reference a commit is 12 characters of hash + subject:
+44fa75f207d8 ("mac80211: extend current rate control tx status API")
 
-> Gaosheng Cui <cuigaosheng1@huawei.com> writes:
->
->> All uses of mlxsw_reg_sftr2_pack() have
->> been removed since commit 77b7f83d5c25 ("mlxsw: Enable unified
->> bridge model"), so remove it.
->>
->> Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
->
-> Reviewed-by: Petr Machata <petrm@nvidia.com>
 
-I missed Ido's reply.
