@@ -2,75 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 479515C0097
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 17:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3085C00A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 17:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbiIUPAo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 11:00:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56746 "EHLO
+        id S229499AbiIUPDX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 11:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230241AbiIUPAY (ORCPT
+        with ESMTP id S229720AbiIUPDU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Sep 2022 11:00:24 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493D74D17D
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 07:59:59 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28LERgQs010092;
-        Wed, 21 Sep 2022 14:59:44 GMT
+        Wed, 21 Sep 2022 11:03:20 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1FDBE03F;
+        Wed, 21 Sep 2022 08:03:19 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28LEmFgF025139;
+        Wed, 21 Sep 2022 15:03:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=zIVZOxjVRvKF8rXDWuDJiLE18YVUCmm7M5aE1NPXWx4=;
- b=kjAm2QuOaGdyP6MZKKif9frREtWJ80g0YLUSj13uSMUl2HCIm4120GKz1JSi3BRk0dvV
- A4vSGgKe1BJhufTCjSKPyMgfuF6TuEr0HdmfCX9sgTDXtif+4K54VMhsUwra7HaLkxLE
- n0srOuOYsnrRd7zGiqkKjw8A92qKVIZOblqhPF0/39pir9/oZrO732+E8S8II9Z2iV63
- HbnqDHtwyz4Ye7BXvAAYvyLE1c0zEqYZaKtn1IINL+yRmsR/sQ7wWaQLr7tNPyT0DpJ8
- ZlTVfPTH0bVsEfG1br+LoBjTP4zPdmzpa8QU5oNXohbcuTYTpbw3MQwFD6ikxa/WfIkN Lg== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jq8fw550g-1
+ bh=Gafwz67+ODpZcuvjE8LnfUXj/jd3U3eu4qIzV4ikTl8=;
+ b=Y0flJkg1IEOVvvY9SH9F1zLH/BY4v31j33Y5xF/ESQHjJCd8wyDTveF9H9XfqkTNo1rB
+ 6YOvAbiVOv84SHbp0f5DaZLWTKmURBKT2wVbGS0cJXTFRkEfspeVdyJ310MdC4z6WBwV
+ TfSaJGBlOBHTzmkU87Dl7nu54kNP8xLAmK4W56VA+7PDLpWCSCuyQaUl0tvyVgdtmwON
+ UgaLYBcWJRQwPqdFS5ONLOIxSChY2292BiAGosz6RX08gHsO3EJX/tWuT41sRfO6vfr6
+ QVfOFq31Abdwob4sw87VLO8lU2avoFaGKQOsgtb94IjllxE7FmKdjbGB9tYdLUwC0Age 7w== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jr4ge027f-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 21 Sep 2022 14:59:43 +0000
+        Wed, 21 Sep 2022 15:03:07 +0000
+Received: from pps.filterd (NALASPPMTA02.qualcomm.com [127.0.0.1])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 28LF36W9017921;
+        Wed, 21 Sep 2022 15:03:06 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 3jnqpvp5q3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Sep 2022 15:03:06 +0000
+Received: from NALASPPMTA02.qualcomm.com (NALASPPMTA02.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28LF2O5n016796;
+        Wed, 21 Sep 2022 15:03:06 GMT
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28LEsgN5019150
+        by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 28LF367s017908
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 21 Sep 2022 14:54:42 GMT
+        Wed, 21 Sep 2022 15:03:06 +0000
 Received: from [10.110.44.78] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 21 Sep
- 2022 07:54:41 -0700
-Message-ID: <2c0b33e9-8690-7a42-3eff-e18b52298357@quicinc.com>
-Date:   Wed, 21 Sep 2022 07:54:41 -0700
+ 2022 08:03:05 -0700
+Message-ID: <f663ce29-72e7-7592-d4ef-d79fda1de102@quicinc.com>
+Date:   Wed, 21 Sep 2022 08:03:04 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.2
-Subject: Re: [RFC v2 1/6] mac80211: modify tx-power level annotation
+Subject: Re: [PATCH 1/2] cfg80211: fix dead lock for nl80211_new_interface()
 Content-Language: en-US
-To:     Jonas Jelonek <jelonek.jonas@gmail.com>,
-        <linux-wireless@vger.kernel.org>
-CC:     <johannes@sipsolutions.net>, <nbd@nbd.name>,
-        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
-References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
- <20220920104032.496697-2-jelonek.jonas@gmail.com>
+To:     Aran Dalton <arda@allwinnertech.com>, <johannes@sipsolutions.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC:     <johannes.berg@intel.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20220921091913.110749-1-arda@allwinnertech.com>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220920104032.496697-2-jelonek.jonas@gmail.com>
+In-Reply-To: <20220921091913.110749-1-arda@allwinnertech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
+X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4Krzbd7JZ0zBjl-mXIKAolpHOIHvzLHh
-X-Proofpoint-ORIG-GUID: 4Krzbd7JZ0zBjl-mXIKAolpHOIHvzLHh
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: FVeE12kYZyXRtIPZWBLFT72VM7Dkuun0
+X-Proofpoint-ORIG-GUID: FVeE12kYZyXRtIPZWBLFT72VM7Dkuun0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-21_08,2022-09-20_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1011
- adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
- bulkscore=0 mlxlogscore=570 suspectscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2209210102
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=874 adultscore=0 suspectscore=0
+ clxscore=1011 mlxscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209210102
 X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -80,12 +92,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/20/2022 3:40 AM, Jonas Jelonek wrote:
-> This patch modifies the annotation of supported tx-power levels for a
-> wifi device in ieee80211_hw. This annotation was introduced with commit
-> 44fa75f207d8a106bc75e6230db61e961fdbf8a8 to be able to operate on power
+On 9/21/2022 2:19 AM, Aran Dalton wrote:
+> Both nl80211_new_interface and cfg80211_netdev_notifier_call hold the
+> same wiphy_lock, then cause deadlock.
+> 
+> The main call stack as bellow:
+> 
+> nl80211_new_interface() takes wiphy_lock
+>   -> _nl80211_new_interface:
+>    -> rdev_add_virtual_intf
+>     -> rdev->ops->add_virtual_intf
+>      -> register_netdevice
+>       -> call_netdevice_notifiers(NETDEV_REGISTER, dev);
+>        -> call_netdevice_notifiers_extack
+>         -> call_netdevice_notifiers_info
+>          -> raw_notifier_call_chain
+>           -> cfg80211_netdev_notifier_call
+>            -> wiphy_lock(&rdev->wiphy), cfg80211_register_wdev
 
-nit: preferred way to reference a commit is 12 characters of hash + subject:
-44fa75f207d8 ("mac80211: extend current rate control tx status API")
+In both of your patches please describe what you are doing in the patch 
+to fix the problem, and in particular describe why your fix is safe.
 
+> 
+> Fixes: ea6b2098dd02 ("cfg80211: fix locking in netlink owner interface destruction")
+> Signed-off-by: Aran Dalton <arda@allwinnertech.com>
+> ---
+>   net/wireless/nl80211.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 2705e3ee8fc4..bdacddc3ffa3 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -4260,9 +4260,7 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+>   	/* to avoid failing a new interface creation due to pending removal */
+>   	cfg80211_destroy_ifaces(rdev);
+>   
+> -	wiphy_lock(&rdev->wiphy);
+>   	ret = _nl80211_new_interface(skb, info);
+> -	wiphy_unlock(&rdev->wiphy);
+>   
+>   	return ret;
+>   }
 
