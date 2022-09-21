@@ -2,63 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3D0D5E552C
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Sep 2022 23:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 709705E561F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 00:11:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230190AbiIUV1M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 17:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56312 "EHLO
+        id S231191AbiIUWLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 18:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbiIUV1D (ORCPT
+        with ESMTP id S231154AbiIUWLI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Sep 2022 17:27:03 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60115A61C8;
-        Wed, 21 Sep 2022 14:27:02 -0700 (PDT)
-Received: from [192.168.1.101] (95.49.29.188.neoplus.adsl.tpnet.pl [95.49.29.188])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9AD6D3F341;
-        Wed, 21 Sep 2022 23:26:58 +0200 (CEST)
-Message-ID: <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
-Date:   Wed, 21 Sep 2022 23:26:57 +0200
+        Wed, 21 Sep 2022 18:11:08 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F504A7AA1
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 15:11:03 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id j7so8276004vsr.13
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 15:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=S4N2t14LaO9r3kjmjtHNWAAQ7SKHk2zZy0Milsgj27g=;
+        b=d3tpnH2K8GfdyI0rrWOsR4Miq6x1LDFNnh2AuhQhxjBXEqGXz1/LEtBBSdBANBDpR1
+         ftKTlr7uiYw0tDETT3Jo1NZSwhd2JcObaOiz48WsXK00qs0NUvhzQs4v7g4wYs6BPVk3
+         60SzCmgS4NFcm72IucPLVHgh830y7xkFnyYe9hCnP94lbgZFF12TFkX4fvS9yyQa2Iy5
+         IZY3Sh0SzX/RzBdGo0Ja+GEaptTE38u2wrr5sI7/T1MPAxlsPOom+5PiPBiKJ+yUvuef
+         QNpZCdE3KXl5xLmRa0i5eejDhpwIfYL5kpGCMBcuAEGDBZ0diEzNK10bCT2d6Ofsujuu
+         FmNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=S4N2t14LaO9r3kjmjtHNWAAQ7SKHk2zZy0Milsgj27g=;
+        b=T5PvgcRYKhQM2jUuwj6XpzNklvU+VzuRTBKYSEB1yMfT22gxfaIaXMjrCmUpr2RgxE
+         frmeEUpzfT+XMh+R9li/sJ4N4R0miaVsgIZ/McFmspQQBBtymWs7AdzZPcKG/IXisV7g
+         jTiGhgKnfMh52YSn8KwYQs+QadWuhvfI9CLjDuYZqNKou8h/LbU1ixkJHGrbtoIgrnRo
+         bRPejGmxZJzarVGSlRRiSIjZCxR2stHP9Dfv39zwjL71HwBFNPNRJDX/BKfNpCL1Bc2/
+         TOIRrcIv3sn5Hbnpv/BRqzqR4Sj+Vul/gwzNyLG3O9w+C6pKR+MqUHbl8TKz67gTjJe8
+         4ORw==
+X-Gm-Message-State: ACrzQf1OIs1Q8XgdmpV/vOfRZSNSykwuXF87Bc3nP7MBZqopsPethsJC
+        /4Xwcot/X1blLAxZfacsCSKF0OQbFJOld3m2nSC+Gypsc8gpgA==
+X-Google-Smtp-Source: AMsMyM4yqgGFH9oB6acU8QlzEwjZhCZuiPqprXJUZBOA1U9nPjFeYMKuPSeC0J3jOAwG0NVVN1mLHf6vlR7So/e3el4=
+X-Received: by 2002:a67:dc98:0:b0:398:c70f:9357 with SMTP id
+ g24-20020a67dc98000000b00398c70f9357mr116933vsk.76.1663798261988; Wed, 21 Sep
+ 2022 15:11:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-Content-Language: en-US
-To:     Hector Martin <marcan@marcan.st>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, jamipkettunen@somainline.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alsi@bang-olufsen.dk>,
-        Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Soontak Lee <soontak.lee@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+References: <20220906044812.7609-1-kieran.frewen@morsemicro.com>
+ <20220906044812.7609-2-kieran.frewen@morsemicro.com> <33a46d12583b540a921f6ce96065c9a177bd044d.camel@sipsolutions.net>
+In-Reply-To: <33a46d12583b540a921f6ce96065c9a177bd044d.camel@sipsolutions.net>
+From:   Kieran Frewen <kieran.frewen@morsemicro.com>
+Date:   Thu, 22 Sep 2022 10:10:51 +1200
+Message-ID: <CAKHj3qTuYn344Z8Lvvc2gOvbrdkXxdy6a2UXjPv9MGbP8n1qKQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/12] cfg80211: regulatory: extend regulatory support
+ for S1G
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
+        kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,56 +67,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Sep 6, 2022 at 9:36 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Tue, 2022-09-06 at 16:48 +1200, Kieran Frewen wrote:
+> > Extend the S1G regulatory information to support all regulatory
+> > domains. An reg_s1g.h file is included containing structs with key
+> > regulatory class information. These structs were required to ensure
+> > the right combination of information was available to a series of
+> > functions which support the mapping between frequencies, bandwidths,
+> > and channels.
+> >
+>
+> Hm. Isn't this type of thing something we'd usually want to keep in the
+> regulatory database to be able to update it? Who says JP will always
+> stick to their restrictive scheme, for example.
+>
+> johannes
 
+Yes I agree that this information would be best stored in the
+regulatory database.
+Especially in respect to maintaining a single up-to-date source of knowledge.
+I have done a bit of investigation into what information we would
+require in order
+to maintain the same level of functionality. I think at the very least
+we would have to
+add the base frequency to what already exists in the regulatory
+database. By adding
+this we would maintain the ability to map from S1G channels to frequencies. We
+would, however, lose the ability to specify exact bandwidths for a
+certain frequency
+as is the current behaviour in reg_rule_to_chan_bw_flags() and would
+likely have to
+change the S1G bandwidth flags to not permit certain bandwidths on a
+channel, e.g.
+ IEEE80211_CHAN_NO_2MHZ as opposed to flagging a single allowed bandwidth.
 
-On 21.09.2022 06:37, Hector Martin wrote:
-> On 21/09/2022 09.16, Konrad Dybcio wrote:
->> Add support for BCM43596 dual-band AC chip, found in
->> SONY Xperia X Performance, XZ and XZs smartphones (and
->> *possibly* other devices from other manufacturers).
->> The chip doesn't require any special handling and seems to work
->> just fine OOTB.
->>
->> PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
->>
->> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
->> ---
->> Changes since v1:
->> - rebased the patch against -next
->>
->>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 2 ++
->>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 4 ++++
->>  drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 4 ++++
->>  3 files changed, 10 insertions(+)
->>
-> [...]
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> index f98641bb1528..2e7fc66adf31 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> @@ -81,6 +81,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->>  	BRCMF_FW_ENTRY(BRCM_CC_43570_CHIP_ID, 0xFFFFFFFF, 43570),
->>  	BRCMF_FW_ENTRY(BRCM_CC_4358_CHIP_ID, 0xFFFFFFFF, 4358),
->>  	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
->> +	BRCMF_FW_ENTRY(BRCM_CC_43596_CHIP_ID, 0xFFFFFFFF, 4359),
-> 
-> So this works with the same firmware as 4359? That sounds a bit off. Is
-> that really the case?
-> 
-> brcmfmac4359-pcie isn't in linux-firmware, but presumably there is
-> *some* semi-canonical firmware you can find for that chip that other
-> people are already using. If that works on 43596 *and* you plan on using
-> that firmware or some other firmware marked 4359, then this is fine. If
-> you are using separate firmware that shipped with a 43596 device and
-> isn't itself marked 4359, please make it a separate firmware entry. We
-> can always symlink the firmwares if it later turns out there is no
-> reason to have different ones for each chip.
-The firmware that SONY originally gave us for the devices that we know use
-this chip seems to be marked 4359 [1]. That said, I have no other info
-about the relation between the two models.
+I do wonder that if we do add a base frequency to the regulatory database are we
+straying from just maintaining information which permits or prevents operation
+in a regulatory domain for a specific frequency and starting to
+include information
+that the kernel is relying on for mapping from one field to another, e.g.
+ieee80211_channel_to_freq_khz().
 
-[1] https://github.com/sonyxperiadev/device-sony-kagura/tree/q-mr1/rootdir/vendor/firmware
-
-Konrad
-> 
-> - Hector
+Kieran
