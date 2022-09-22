@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0288E5E57B6
+	by mail.lfdr.de (Postfix) with ESMTP id 4E2475E57B7
 	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 03:05:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229818AbiIVBFe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Sep 2022 21:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49046 "EHLO
+        id S229788AbiIVBFf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Sep 2022 21:05:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbiIVBFd (ORCPT
+        with ESMTP id S229630AbiIVBFd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 21 Sep 2022 21:05:33 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2E1667757E
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2E2C077E9B
         for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 18:05:29 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28M14qJgA019389, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28M14qJgA019389
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28M14rwuE019395, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28M14rwuE019395
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 22 Sep 2022 09:04:52 +0800
+        Thu, 22 Sep 2022 09:04:54 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 22 Sep 2022 09:05:16 +0800
+ 15.1.2375.31; Thu, 22 Sep 2022 09:05:17 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 22 Sep
- 2022 09:05:15 +0800
+ 2022 09:05:16 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <dian_syuan0116@realtek.com>, <phhuang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 0/5] wifi: rtw89: add P2P support
-Date:   Thu, 22 Sep 2022 09:04:30 +0800
-Message-ID: <20220922010435.12167-1-pkshih@realtek.com>
+Subject: [PATCH 1/5] wifi: rtw89: support P2P
+Date:   Thu, 22 Sep 2022 09:04:31 +0800
+Message-ID: <20220922010435.12167-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220922010435.12167-1-pkshih@realtek.com>
+References: <20220922010435.12167-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -54,10 +56,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMjEgpFWkyCAxMDo1MjowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,34 +68,105 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patchset is to add P2P support including GC power saving, but not
-support GO power saving yet. Currently, it can be single vif only, and
-will extend to support SCC and MCC later.
+From: Po Hao Huang <phhuang@realtek.com>
 
-Dian-Syuan Yang (3):
-  wifi: rtw89: send OFDM rate only in P2P mode
-  wifi: rtw89: support WMM-PS in P2P GO mode
-  wifi: rtw89: support for processing P2P power saving
+To support P2P in driver, we set P2P interface mode to the wiphy
+allocated for 802.11 PHY and add a change interface function to
+switch the interface type to P2P.
 
-Ping-Ke Shih (1):
-  wifi: rtw89: set wifi_role of P2P
+Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.c     |  5 +++-
+ drivers/net/wireless/realtek/rtw89/debug.h    |  1 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 24 +++++++++++++++++++
+ 3 files changed, 29 insertions(+), 1 deletion(-)
 
-Po Hao Huang (1):
-  wifi: rtw89: support P2P
-
- drivers/net/wireless/realtek/rtw89/core.c     |  42 +++++--
- drivers/net/wireless/realtek/rtw89/core.h     |   3 +
- drivers/net/wireless/realtek/rtw89/debug.h    |   1 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 116 +++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/fw.h       |  94 ++++++++++++++
- drivers/net/wireless/realtek/rtw89/mac.c      |   7 ++
- drivers/net/wireless/realtek/rtw89/mac.h      |   1 +
- drivers/net/wireless/realtek/rtw89/mac80211.c |  29 ++++-
- drivers/net/wireless/realtek/rtw89/phy.c      |   9 +-
- drivers/net/wireless/realtek/rtw89/ps.c       |  75 ++++++++++-
- drivers/net/wireless/realtek/rtw89/ps.h       |   3 +-
- 11 files changed, 354 insertions(+), 26 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 8d2cce450241f..79d3182fce5a3 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3224,7 +3224,10 @@ static int rtw89_core_register_hw(struct rtw89_dev *rtwdev)
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 
+ 	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+-				     BIT(NL80211_IFTYPE_AP);
++				     BIT(NL80211_IFTYPE_AP) |
++				     BIT(NL80211_IFTYPE_P2P_CLIENT) |
++				     BIT(NL80211_IFTYPE_P2P_GO);
++
+ 	hw->wiphy->available_antennas_tx = BIT(rtwdev->chip->rf_path_num) - 1;
+ 	hw->wiphy->available_antennas_rx = BIT(rtwdev->chip->rf_path_num) - 1;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.h b/drivers/net/wireless/realtek/rtw89/debug.h
+index 6176152dbf6bf..ee243aadde873 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.h
++++ b/drivers/net/wireless/realtek/rtw89/debug.h
+@@ -25,6 +25,7 @@ enum rtw89_debug_mask {
+ 	RTW89_DBG_BF = BIT(14),
+ 	RTW89_DBG_HW_SCAN = BIT(15),
+ 	RTW89_DBG_SAR = BIT(16),
++	RTW89_DBG_STATE = BIT(17),
+ 
+ 	RTW89_DBG_UNEXP = BIT(31),
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index e82be57f291c0..f9cd98d496157 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -109,6 +109,9 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
+ 	int ret = 0;
+ 
++	rtw89_debug(rtwdev, RTW89_DBG_STATE, "add vif %pM type %d, p2p %d\n",
++		    vif->addr, vif->type, vif->p2p);
++
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtwvif->rtwdev = rtwdev;
+ 	list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
+@@ -151,6 +154,9 @@ static void rtw89_ops_remove_interface(struct ieee80211_hw *hw,
+ 	struct rtw89_dev *rtwdev = hw->priv;
+ 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
+ 
++	rtw89_debug(rtwdev, RTW89_DBG_STATE, "remove vif %pM type %d p2p %d\n",
++		    vif->addr, vif->type, vif->p2p);
++
+ 	cancel_work_sync(&rtwvif->update_beacon_work);
+ 
+ 	mutex_lock(&rtwdev->mutex);
+@@ -162,6 +168,23 @@ static void rtw89_ops_remove_interface(struct ieee80211_hw *hw,
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
++static int rtw89_ops_change_interface(struct ieee80211_hw *hw,
++				      struct ieee80211_vif *vif,
++				      enum nl80211_iftype type, bool p2p)
++{
++	struct rtw89_dev *rtwdev = hw->priv;
++
++	rtw89_debug(rtwdev, RTW89_DBG_STATE, "change vif %pM (%d)->(%d), p2p (%d)->(%d)\n",
++		    vif->addr, vif->type, type, vif->p2p, p2p);
++
++	rtw89_ops_remove_interface(hw, vif);
++
++	vif->type = type;
++	vif->p2p = p2p;
++
++	return rtw89_ops_add_interface(hw, vif);
++}
++
+ static void rtw89_ops_configure_filter(struct ieee80211_hw *hw,
+ 				       unsigned int changed_flags,
+ 				       unsigned int *new_flags,
+@@ -896,6 +919,7 @@ const struct ieee80211_ops rtw89_ops = {
+ 	.stop			= rtw89_ops_stop,
+ 	.config			= rtw89_ops_config,
+ 	.add_interface		= rtw89_ops_add_interface,
++	.change_interface       = rtw89_ops_change_interface,
+ 	.remove_interface	= rtw89_ops_remove_interface,
+ 	.configure_filter	= rtw89_ops_configure_filter,
+ 	.bss_info_changed	= rtw89_ops_bss_info_changed,
 -- 
 2.25.1
 
