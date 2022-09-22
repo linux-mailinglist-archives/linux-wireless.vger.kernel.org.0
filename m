@@ -2,265 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28C5D5E60A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 13:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 036E55E6313
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 15:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231473AbiIVLNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 07:13:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54098 "EHLO
+        id S229448AbiIVNCi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 09:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbiIVLMx (ORCPT
+        with ESMTP id S230472AbiIVNCe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 07:12:53 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CB775CC3;
-        Thu, 22 Sep 2022 04:12:34 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id q15-20020a17090a304f00b002002ac83485so1804462pjl.0;
-        Thu, 22 Sep 2022 04:12:34 -0700 (PDT)
+        Thu, 22 Sep 2022 09:02:34 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3C41E7E30
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 06:02:32 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id lc7so21052391ejb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 06:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=RZ+48UnAa8eecJxdZq6BiMyqwT/Ym9f2NYlp6Dy1smw=;
-        b=G+jaEnK2EsNrSXni7xo2A5prc1siifdzoFue4z79INVmISHoJzmEC9GR9nYFQgsDIb
-         I+dMTg2A+izoX3axTWSo/iYs6MjIzCmcdzB7dXax8chtAJiUZBX99VUNdhdppKGneXWq
-         kYGXC1GYOzs1VjWq4+vqWobAy7LlMsBZFdMkrUYk942Mo7xIHHo97tyiWe9mlgU2Ni4u
-         sX/UfkevtZ8mMh6n5HaMsQp+ivfAaex3bVTBLEN+6BskHMGics2YtdYw6Rq+h1kBbGkY
-         geXieByTrSvc7tahia6awNomWGRXvkXfKN0rMilgYg11CJ2HrHEklB8Oi0KpiF2sgY/f
-         QqoQ==
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=Axq7H5qz5D6MI0EvsspJL8ldneb6DxIs8+NccRlNB8M=;
+        b=dqSSc6KryNasQyX1LZJMFlF7m/rNJUtAffJyAUoMBDimtf0+3cI7dTvSiTiWKWCN0i
+         RlMIMePJSOJfG4D74Nsls8N7Du4yGXGO9bktr8bJSMzNwM83KDdiTFtnYyw6JwPgwQ3/
+         myQVeiSvZ50JEQPpDYZsmxH9907qXs2zENRpJ+oFNgTmwqpc5JBOnuKwjibDsXvhfaM+
+         w78WRl9he5dNTEH9AZZV0DHDxj2GlxOHlRgZ4ZEZOkl2liwgU2SkXRw3IVC/8w3LtsEj
+         /Z0Y4Fd4Xb8HyGDORAO5fm9miCmI2CC71f4AizNxASDwokOQMEyqoaWaLFdhE1Y55xjF
+         1Ckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=RZ+48UnAa8eecJxdZq6BiMyqwT/Ym9f2NYlp6Dy1smw=;
-        b=NylJybG90Qv8xOglTOtx+WPSbBNyCIXbU9gRbjBTPrUmf7AkqGHImkZSe3jryaFhh0
-         Yk7lnODz4uXMNE7xVyDO7ZdvgX7usNZaEjOJcGbceNGQCI28iHdk/Kl6R5ntPb5dGHw7
-         BL2vFkj5bMCv0btE3qtEo10Y5Jg544tYtHtJz96Ok8rOumvS953z/4AuticIGJPyN0RZ
-         WaxJ0DjnrqlzkL/01K8BSlKW69sa7aHarXZI1fN8zDO2u+RmT4dYRDhTF6Z4XwVU/foU
-         N9vr5NZlROodyKingUo+4340frmAuu944QEkW0BmjKM3v5nPUCIDrLHgyetLv8WOzKOU
-         2zLw==
-X-Gm-Message-State: ACrzQf04IIF0dgKFBM9RT7CutuW8K4zPjFkDyI5uv3JS9JePB1j5Ym8G
-        NWGWVZG+NLVwEFZSz+7fL5E=
-X-Google-Smtp-Source: AMsMyM71qTO+0u9YewSNaiOe7OR50cbfyQkUWC6xIKoR/xE2vrqrOeMi/1IfaO5sjL4VCWr3VgDTkw==
-X-Received: by 2002:a17:90a:e513:b0:200:2275:2d27 with SMTP id t19-20020a17090ae51300b0020022752d27mr3211649pjy.162.1663845152925;
-        Thu, 22 Sep 2022 04:12:32 -0700 (PDT)
-Received: from hyeyoo ([114.29.91.56])
-        by smtp.gmail.com with ESMTPSA id p189-20020a62d0c6000000b00541196bd2d9sm4098278pfg.68.2022.09.22.04.12.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 04:12:32 -0700 (PDT)
-Date:   Thu, 22 Sep 2022 20:12:21 +0900
-From:   Hyeonggon Yoo <42.hyeyoo@gmail.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
-        Pekka Enberg <penberg@kernel.org>,
-        Feng Tang <feng.tang@intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=Axq7H5qz5D6MI0EvsspJL8ldneb6DxIs8+NccRlNB8M=;
+        b=loBx4wcmnnXSUTxvGbeXeRrbLRcuQKccBSZb8H895ff/vPH/DBumsB9zAKo6Nkbpb/
+         6Jd0aAWP20fF06rD1uPu5uFKiiwI+Ny8cXKUPE1CJgyxc2fZvVDGYOa0YVTvGmA3h9FC
+         ytvn2TM6gvn1qbueN3JxwWrJCRdFX6/yui2NbDNjS+mBT8BF7EvkkeAhX+mKQqevvVSR
+         RdAtl/VR59Ws87Xzruzz/F9/hF142r0akkNSfBtdoZ1tA9NjrfDRcbZKPBb2sGpTT3O1
+         3kjhOBE2+tv6voOv4mmoIaU6MyR/E4HjtMvRrF+K16IRHdATMywcJVmLhvU5k2/94W4C
+         OPuQ==
+X-Gm-Message-State: ACrzQf00R87ZyXRyangUxld5BPnptGqKeyIxoQdYVizCaCf/ptHCpvt4
+        oTligjOK6hmgvSw7d4K7DD+d86EMUt6Rz8tjjlg60Q==
+X-Google-Smtp-Source: AMsMyM7RkeIoN5xxevDwjYJX0lGxQvtMfhzR0neHfBytZ84vtKjk+/z8r1Kekesvh6EJiuWsJNac81XrXggbBytFgIs=
+X-Received: by 2002:a17:907:7f19:b0:780:375d:61ec with SMTP id
+ qf25-20020a1709077f1900b00780375d61ecmr2712125ejc.203.1663851744518; Thu, 22
+ Sep 2022 06:02:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st> <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+ <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st> <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+In-Reply-To: <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 22 Sep 2022 15:02:12 +0200
+Message-ID: <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     Hector Martin <marcan@marcan.st>,
+        ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, jamipkettunen@somainline.org,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Alex Elder <elder@kernel.org>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Daniel Micay <danielmicay@gmail.com>,
-        Yonghong Song <yhs@fb.com>, Marco Elver <elver@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Jacob Shin <jacob.shin@amd.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, linux-fsdevel@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, dev@openvswitch.org,
-        x86@kernel.org, linux-wireless@vger.kernel.org,
-        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/12] slab: Introduce kmalloc_size_roundup()
-Message-ID: <YyxDFfKmSNNkHBFi@hyeyoo>
-References: <20220922031013.2150682-1-keescook@chromium.org>
- <20220922031013.2150682-2-keescook@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220922031013.2150682-2-keescook@chromium.org>
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Soontak Lee <soontak.lee@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 08:10:02PM -0700, Kees Cook wrote:
-> In the effort to help the compiler reason about buffer sizes, the
-> __alloc_size attribute was added to allocators. This improves the scope
-> of the compiler's ability to apply CONFIG_UBSAN_BOUNDS and (in the near
-> future) CONFIG_FORTIFY_SOURCE. For most allocations, this works well,
-> as the vast majority of callers are not expecting to use more memory
-> than what they asked for.
-> 
-> There is, however, one common exception to this: anticipatory resizing
-> of kmalloc allocations. These cases all use ksize() to determine the
-> actual bucket size of a given allocation (e.g. 128 when 126 was asked
-> for). This comes in two styles in the kernel:
-> 
-> 1) An allocation has been determined to be too small, and needs to be
->    resized. Instead of the caller choosing its own next best size, it
->    wants to minimize the number of calls to krealloc(), so it just uses
->    ksize() plus some additional bytes, forcing the realloc into the next
->    bucket size, from which it can learn how large it is now. For example:
-> 
-> 	data = krealloc(data, ksize(data) + 1, gfp);
-> 	data_len = ksize(data);
-> 
-> 2) The minimum size of an allocation is calculated, but since it may
->    grow in the future, just use all the space available in the chosen
->    bucket immediately, to avoid needing to reallocate later. A good
->    example of this is skbuff's allocators:
-> 
-> 	data = kmalloc_reserve(size, gfp_mask, node, &pfmemalloc);
-> 	...
-> 	/* kmalloc(size) might give us more room than requested.
-> 	 * Put skb_shared_info exactly at the end of allocated zone,
-> 	 * to allow max possible filling before reallocation.
-> 	 */
-> 	osize = ksize(data);
->         size = SKB_WITH_OVERHEAD(osize);
-> 
-> In both cases, the "how large is the allocation?" question is answered
-> _after_ the allocation, where the compiler hinting is not in an easy place
-> to make the association any more. This mismatch between the compiler's
-> view of the buffer length and the code's intention about how much it is
-> going to actually use has already caused problems[1]. It is possible to
-> fix this by reordering the use of the "actual size" information.
-> 
-> We can serve the needs of users of ksize() and still have accurate buffer
-> length hinting for the compiler by doing the bucket size calculation
-> _before_ the allocation. Code can instead ask "how large an allocation
-> would I get for a given size?".
-> 
-> Introduce kmalloc_size_roundup(), to serve this function so we can start
-> replacing the "anticipatory resizing" uses of ksize().
->
+On Thu, Sep 22, 2022 at 12:21 PM Konrad Dybcio
+<konrad.dybcio@somainline.org> wrote:
 
-Cc-ing Feng Tang who may welcome this series ;)
+> Also worth noting is the 'somc' bit, meaning there are probably *some* SONY
+> customizations, but that's also just a guess.
 
-> [1] https://github.com/ClangBuiltLinux/linux/issues/1599
->     https://github.com/KSPP/linux/issues/183
-> 
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Pekka Enberg <penberg@kernel.org>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  include/linux/slab.h | 31 +++++++++++++++++++++++++++++++
->  mm/slab_common.c     | 17 +++++++++++++++++
->  2 files changed, 48 insertions(+)
-> 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index 0fefdf528e0d..4fc41e4ed4a2 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -188,7 +188,21 @@ void * __must_check krealloc(const void *objp, size_t new_size, gfp_t flags) __a
->  void kfree(const void *objp);
->  void kfree_sensitive(const void *objp);
->  size_t __ksize(const void *objp);
-> +
-> +/**
-> + * ksize - Report actual allocation size of associated object
-> + *
-> + * @objp: Pointer returned from a prior kmalloc()-family allocation.
-> + *
-> + * This should not be used for writing beyond the originally requested
-> + * allocation size. Either use krealloc() or round up the allocation size
-> + * with kmalloc_size_roundup() prior to allocation. If this is used to
-> + * access beyond the originally requested allocation size, UBSAN_BOUNDS
-> + * and/or FORTIFY_SOURCE may trip, since they only know about the
-> + * originally allocated size via the __alloc_size attribute.
-> + */
->  size_t ksize(const void *objp);
+What I have seen from BRCM customizations on Samsung phones is that
+the per-device customization of firmware seems to involve the set-up of
+some GPIO and power management pins. For example if integrated with
+an SoC that has autonomous system resume, or if some GPIO line has
+to be pulled to enable an external regulator or PA.
 
-When users call ksize(), slab expects that it may access
-beyond the originally requested allocation size.
+To the best of my knowledge that customization is done by consultants
+from Broadcom when working with the device manufacturer, and
+eventually they roll a unique firmware for the device. Probably because
+the firmware can only be signed for execution by Broadcom?
 
-(i.e. KASAN unpoisons the whole object.)
-Maybe don't let KASAN unpoison to catch such users?
-
-> +
->  #ifdef CONFIG_PRINTK
->  bool kmem_valid_obj(void *object);
->  void kmem_dump_obj(void *object);
-> @@ -779,6 +793,23 @@ extern void kvfree(const void *addr);
->  extern void kvfree_sensitive(const void *addr, size_t len);
->  
->  unsigned int kmem_cache_size(struct kmem_cache *s);
-> +
-> +/**
-> + * kmalloc_size_roundup - Report allocation bucket size for the given size
-> + *
-> + * @size: Number of bytes to round up from.
-> + *
-> + * This returns the number of bytes that would be available in a kmalloc()
-> + * allocation of @size bytes. For example, a 126 byte request would be
-> + * rounded up to the next sized kmalloc bucket, 128 bytes. (This is strictly
-> + * for the general-purpose kmalloc()-based allocations, and is not for the
-> + * pre-sized kmem_cache_alloc()-based allocations.)
-> + *
-> + * Use this to kmalloc() the full bucket size ahead of time instead of using
-> + * ksize() to query the size after an allocation.
-> + */
-> +unsigned int kmalloc_size_roundup(size_t size);
-> +
->  void __init kmem_cache_init_late(void);
->  
->  #if defined(CONFIG_SMP) && defined(CONFIG_SLAB)
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 17996649cfe3..132d91a0f8c7 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -721,6 +721,23 @@ struct kmem_cache *kmalloc_slab(size_t size, gfp_t flags)
->  	return kmalloc_caches[kmalloc_type(flags)][index];
->  }
->  
-> +unsigned int kmalloc_size_roundup(size_t size)
-> +{
-> +	struct kmem_cache *c;
-> +
-> +	/* Short-circuit the 0 size case. */
-> +	if (size == 0)
-> +		return 0;
-> +	/* Above the smaller buckets, size is a multiple of page size. */
-> +	if (size > KMALLOC_MAX_CACHE_SIZE)
-> +		return PAGE_SIZE << get_order(size);
-> +
-> +	/* The flags don't matter since size_index is common to all. */
-> +	c = kmalloc_slab(size, GFP_KERNEL);
-> +	return c ? c->object_size : 0;
-> +}
-> +EXPORT_SYMBOL(kmalloc_size_roundup);
-
-This looks okay.
-
-Thanks!
-
-> +
->  #ifdef CONFIG_ZONE_DMA
->  #define KMALLOC_DMA_NAME(sz)	.name[KMALLOC_DMA] = "dma-kmalloc-" #sz,
->  #else
-> -- 
-> 2.34.1
-> 
-> 
-
--- 
-Thanks,
-Hyeonggon
+Yours,
+Linus Walleij
