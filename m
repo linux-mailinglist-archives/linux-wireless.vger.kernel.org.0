@@ -2,140 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE215E5B2C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 08:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7BD95E5B8B
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 08:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbiIVGQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 02:16:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
+        id S230150AbiIVGki (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 02:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbiIVGQU (ORCPT
+        with ESMTP id S230146AbiIVGkg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 02:16:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40BBEB516D
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 23:16:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Thu, 22 Sep 2022 02:40:36 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD64ACA04;
+        Wed, 21 Sep 2022 23:40:33 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F42162E14
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 06:16:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F8BC433D6;
-        Thu, 22 Sep 2022 06:16:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663827378;
-        bh=tSnCshQpZziIVpsFpKczLAJI+Lu/DgY3WSi9vKZBJ5o=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=sfkHA4PSqcrojKLQRujtiwKdvPsR2LNfJuk8Die8BjXacc8TlVr3dVeYctkCaoS5x
-         H4DAZLPtUlhS7C7hnBs5sgapAipayHg2wOXIPPK4AQvMSxw1ExFZlLAJRo0F9yrVEF
-         zECkT0BSNzwFNDfM0GSP0rrsVcu9hWd/sQ/yMDJNwqP9klOwuTxgqBcnlYpz787ynn
-         9RQzNiQGwCPFV/jm4XbVEOQ2EGt07+XAZ9zpY26dOmqGgbdg80WOsFQP9Akj82Oipi
-         Nb/NWaAcMbcaSMUCPFRD39Bh0IRk8VpReELSeFTf7m3wUr0G+SiDH6zEUm5RC8fHGB
-         nxQ5uXziWpW8g==
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id A8F6A421F5;
+        Thu, 22 Sep 2022 06:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1663828830; bh=RUtAZh/7J9hREx8V838cymaf7DD2ZOmGvoVfMJ8076s=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=AlnToHb5BLNHhdvff9SumZZMkfvnhvQesYbDKVSPPPRSSuip0hezSHHlfH3oeFiKm
+         kCX6w3T1Kh7gj8lalEwr15IpCM9snownzy3zK2CPR8ltVzkAM5Hh7PdmexfbFZvQJM
+         IjZZMQUQ9TQoBGQEN2UK4EFgMOctaofv68orYtnNtnhCGvtwvn3GVyOkRi9BE4PJJ1
+         Bk6+vThOD/gSV60KreK6ObkxXhnwgwEtbDvye3k0J5oh47GMYOQxaRUzT51kCjoZsr
+         5G2R7SuAVHmG3iJJPdX9KAJAh96mzmE1g9ComRCeqDxPx0o3q12PHLU6XhdaT3M5RR
+         bCmwu2cnV2/og==
+Message-ID: <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
+Date:   Thu, 22 Sep 2022 15:40:20 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+Content-Language: es-ES
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, jamipkettunen@somainline.org,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alsi@bang-olufsen.dk>,
+        Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Soontak Lee <soontak.lee@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
+ <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: pull-request: iwlwifi-next 2022-09-18
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <b18b016d911204bdd5c6f4b08d698d679419a204.camel@intel.com>
-References: <b18b016d911204bdd5c6f4b08d698d679419a204.camel@intel.com>
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166382737500.9021.85906663731820397.kvalo@kernel.org>
-Date:   Thu, 22 Sep 2022 06:16:17 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Greenman, Gregory" <gregory.greenman@intel.com> wrote:
+On 22/09/2022 06.26, Konrad Dybcio wrote:
+> 
+> 
+> On 21.09.2022 06:37, Hector Martin wrote:
+>> On 21/09/2022 09.16, Konrad Dybcio wrote:
+>>> Add support for BCM43596 dual-band AC chip, found in
+>>> SONY Xperia X Performance, XZ and XZs smartphones (and
+>>> *possibly* other devices from other manufacturers).
+>>> The chip doesn't require any special handling and seems to work
+>>> just fine OOTB.
+>>>
+>>> PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
+>>>
+>>> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+>>> ---
+>>> Changes since v1:
+>>> - rebased the patch against -next
+>>>
+>>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 2 ++
+>>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 4 ++++
+>>>  drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 4 ++++
+>>>  3 files changed, 10 insertions(+)
+>>>
+>> [...]
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>>> index f98641bb1528..2e7fc66adf31 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>>> @@ -81,6 +81,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
+>>>  	BRCMF_FW_ENTRY(BRCM_CC_43570_CHIP_ID, 0xFFFFFFFF, 43570),
+>>>  	BRCMF_FW_ENTRY(BRCM_CC_4358_CHIP_ID, 0xFFFFFFFF, 4358),
+>>>  	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
+>>> +	BRCMF_FW_ENTRY(BRCM_CC_43596_CHIP_ID, 0xFFFFFFFF, 4359),
+>>
+>> So this works with the same firmware as 4359? That sounds a bit off. Is
+>> that really the case?
+>>
+>> brcmfmac4359-pcie isn't in linux-firmware, but presumably there is
+>> *some* semi-canonical firmware you can find for that chip that other
+>> people are already using. If that works on 43596 *and* you plan on using
+>> that firmware or some other firmware marked 4359, then this is fine. If
+>> you are using separate firmware that shipped with a 43596 device and
+>> isn't itself marked 4359, please make it a separate firmware entry. We
+>> can always symlink the firmwares if it later turns out there is no
+>> reason to have different ones for each chip.
+> The firmware that SONY originally gave us for the devices that we know use
+> this chip seems to be marked 4359 [1]. That said, I have no other info
+> about the relation between the two models.
+> 
+> [1] https://github.com/sonyxperiadev/device-sony-kagura/tree/q-mr1/rootdir/vendor/firmware
 
-> Hi Kalle,
-> 
-> Here's my first pull request for v6.1
-> 
-> It contains the usual development, new features and cleanups.
-> 
-> The changes are:
-> * Refactoring of some wowlan related code
-> * Fixes and cleanups
-> * Adding support for BZ device family
-> 
-> Thanks,
-> Gregory
-> 
-> The following changes since commit d5350756c03cdf18696295c6b11d7acc4dbf825c:
-> 
->   wifi: rtl8xxxu: Remove copy-paste leftover in gen2_update_rate_mask (2022-09-12 14:57:54 +0300)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2022-09-18
-> 
-> for you to fetch changes up to 32fed4706d9aca31c9d575c1efa4a3624a9d5543:
-> 
->   wifi: iwlwifi: mvm: d3: parse keys from wowlan info notification (2022-09-18 14:40:17 +0300)
-> 
-> ----------------------------------------------------------------
-> iwlwifi patches for v6.1
-> 
-> ----------------------------------------------------------------
-> Haim Dreyfuss (5):
->       wifi: iwlwifi: mvm: don't check D0I3 version
->       wifi: iwlwifi: mvm: Add support for wowlan info notification
->       wifi: iwlwifi: mvm: Add support for wowlan wake packet notification
->       wifi: iwlwifi: mvm: Add support for d3 end notification
->       wifi: iwlwifi: mvm: enable resume based on notifications
-> 
-> Haim, Dreyfuss (1):
->       wifi: iwlwifi: mvm: trigger resume flow before wait for notifications
-> 
-> Ilan Peer (1):
->       wifi: iwlwifi: mvm: Add handling for scan offload match info notification
-> 
-> Johannes Berg (5):
->       wifi: iwlwifi: mvm: fix typo in struct iwl_rx_no_data API
->       wifi: iwlwifi: mvm: rxmq: refactor mac80211 rx_status setting
->       wifi: iwlwifi: mvm: rxmq: further unify some VHT/HE code
->       wifi: iwlwifi: mvm: refactor iwl_mvm_set_sta_rate() a bit
->       wifi: iwlwifi: cfg: remove IWL_DEVICE_BZ_COMMON macro
-> 
-> Naftali Goldstein (1):
->       wifi: iwlwifi: mvm: d3: parse keys from wowlan info notification
-> 
-> Yaara Baruch (1):
->       wifi: iwlwifi: pcie: add support for BZ devices
-> 
-> Yedidya Benshimol (1):
->       wifi: iwlwifi: mvm: iterate over interfaces after an assert in d3
-> 
->  drivers/net/wireless/intel/iwlwifi/cfg/22000.c       |  42 ++++++++++--
->  drivers/net/wireless/intel/iwlwifi/fw/api/commands.h |   5 +-
->  drivers/net/wireless/intel/iwlwifi/fw/api/d3.h       |  61 ++++++++++++++++-
->  drivers/net/wireless/intel/iwlwifi/fw/api/offload.h  |  17 ++++-
->  drivers/net/wireless/intel/iwlwifi/fw/api/rx.h       |   4 +-
->  drivers/net/wireless/intel/iwlwifi/fw/api/scan.h     |  20 ++++--
->  drivers/net/wireless/intel/iwlwifi/iwl-config.h      |   3 +
->  drivers/net/wireless/intel/iwlwifi/mvm/d3.c          | 668 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
-> -------------------------------------
->  drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c    |  25 ++++---
->  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h         |   1 -
->  drivers/net/wireless/intel/iwlwifi/mvm/ops.c         |  18 +++--
->  drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c        | 376 ++++++++++++++++++++++++++++++++++++++++++++++------------------------------------------------------
->  drivers/net/wireless/intel/iwlwifi/pcie/drv.c        |  19 +++++-
->  13 files changed, 846 insertions(+), 413 deletions(-)
+That link seems to have the nvram file and Bluetooth firmware, but not
+WLAN firmware. I think if you run `strings` on the WLAN firmware you'll
+get a build ID with the chip name in it, that might be a good indication
+of what the firmware name should be.
 
-Pulled, thanks.
+I would suggest trying to find some other 4359 firmware and testing your
+device with it. If it works, then it's definitely fine to use the same
+firmware name. If it doesn't, then you might need different firmware
+names, or it might just be a case for board-specific firmwares.
 
-aa7a5f946f5b Merge tag 'iwlwifi-next-for-kalle-2022-09-18' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/b18b016d911204bdd5c6f4b08d698d679419a204.camel@intel.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+- Hector
