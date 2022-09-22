@@ -2,86 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 111365E5D92
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 10:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 713DE5E5DCD
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 10:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbiIVIfc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 04:35:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58302 "EHLO
+        id S230271AbiIVIp6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 04:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229944AbiIVIf3 (ORCPT
+        with ESMTP id S230091AbiIVIpN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 04:35:29 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B9A4E853
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 01:35:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 62AA6CE1FCE
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 08:35:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A18C433D7;
-        Thu, 22 Sep 2022 08:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663835722;
-        bh=LzYixJB53o4lrYmnQpu6l9b3KeR5dskhXKC15wJwOW8=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Myb5Zos/+R8NGrvzoedBHSVKxD+/DYQikKtB9TnWTKCPS61BNW7zSR0Y8kyJWSvkB
-         vVZ7JZqwgwbAywZ7xgMQulnZK6Yd6xjC7DoZ4Dvel4bLoXES8K6d0HACdumBn4gKye
-         dbVbQ6uWwwLVrqiNTvFdX5/D2JEMfoSD4mUpckVXD/5hCFiIB9anVgYfMAk3Kp+uyd
-         ZxRStr6X0N8VBu1FJCGVgh0wHa5W+x/K7cz+zRpUbVXMcsumtZLCbIMmX7dHd9Bm5E
-         oQ1sDPeujft/clAmVYPIttfrOS5Af5B3l1YcLdlxOazU958puRgSY4UrVNP9UpGXj2
-         XMMTxNP+op/rA==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 22 Sep 2022 04:45:13 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9CAB4EB7;
+        Thu, 22 Sep 2022 01:45:12 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MY80r2ztkzpVSH;
+        Thu, 22 Sep 2022 16:42:20 +0800 (CST)
+Received: from [10.67.110.176] (10.67.110.176) by
+ kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 22 Sep 2022 16:45:09 +0800
+Subject: Re: [PATCH 2/5] mt76: Remove unused inline function
+ mt76_wcid_mask_test()
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Jakub Kicinski <kuba@kernel.org>
+CC:     <idosch@nvidia.com>, <petrm@nvidia.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <pabeni@redhat.com>, <nbd@nbd.name>,
+        <lorenzo@kernel.org>, <ryder.lee@mediatek.com>,
+        <shayne.chen@mediatek.com>, <sean.wang@mediatek.com>,
+        <kvalo@kernel.org>, <matthias.bgg@gmail.com>, <amcohen@nvidia.com>,
+        <stephen@networkplumber.org>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+References: <20220921090455.752011-1-cuigaosheng1@huawei.com>
+ <20220921090455.752011-3-cuigaosheng1@huawei.com>
+ <20220921061111.6d960cc3@kernel.org>
+ <73a16853-d6fc-8a14-8050-d78c8fcd0e3a@quicinc.com>
+From:   cuigaosheng <cuigaosheng1@huawei.com>
+Message-ID: <cfe96d7e-c7b0-4320-35b4-958190d601ad@huawei.com>
+Date:   Thu, 22 Sep 2022 16:45:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
+In-Reply-To: <73a16853-d6fc-8a14-8050-d78c8fcd0e3a@quicinc.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: fix number of VHT beamformee spatial streams
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220616173947.21901-1-jesus.manzano@galgus.net>
-References: <20220616173947.21901-1-jesus.manzano@galgus.net>
-To:     Jesus Fernandez Manzano <jesus.manzano@galgus.net>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        jesus.manzano@galgus.net
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166383571956.27663.10307320275505026019.kvalo@kernel.org>
-Date:   Thu, 22 Sep 2022 08:35:21 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.67.110.176]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jesus Fernandez Manzano <jesus.manzano@galgus.net> wrote:
 
-> The number of spatial streams used when acting as a beamformee in VHT
-> mode are reported by the firmware as 7 (8 sts - 1) both in IPQ6018 and
-> IPQ8074 which respectively have 2 and 4 sts each. So the firmware should
-> report 1 (2 - 1) and 3 (4 - 1).
-> 
-> Fix this by checking that the number of VHT beamformee sts reported by
-> the firmware is not greater than the number of receiving antennas - 1.
-> The fix is based on the same approach used in this same function for
-> sanitizing the number of sounding dimensions reported by the firmware.
-> 
-> Without this change, acting as a beamformee in VHT mode is not working
-> properly.
-> 
-> Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Jesus Fernandez Manzano <jesus.manzano@galgus.net>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> On 9/21/2022 6:11 AM, Jakub Kicinski wrote:
+>> On Wed, 21 Sep 2022 17:04:52 +0800 Gaosheng Cui wrote:
+>>> All uses of mt76_wcid_mask_test() have
+>>> been removed since commit 8950a62f19c9 ("mt76: get rid of
+>>> mt76_wcid_hw routine"), so remove it.
+>>
+>> This should go via the wireless tree, please take it out of this series
+>> and send it to linux-wireless separately.
+>
+> And when you do that add wifi: prefix to the subject
+> .
 
-Patch applied to ath-next branch of ath.git, thanks.
+Thanks for taking time to review this patch, I have made a patch v2 and 
+submitted it.
 
-55b5ee3357d7 wifi: ath11k: fix number of VHT beamformee spatial streams
+link: 
+https://lore.kernel.org/netdev/20220922074711.1408385-1-cuigaosheng1@huawei.com/
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220616173947.21901-1-jesus.manzano@galgus.net/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
