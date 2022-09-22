@@ -2,126 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE8B5E5AA6
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 07:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42E65E5B14
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 08:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbiIVF0d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 01:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42536 "EHLO
+        id S229701AbiIVGId (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 02:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbiIVF0b (ORCPT
+        with ESMTP id S229598AbiIVGIc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 01:26:31 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715D4A1D28
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 22:26:29 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id l65so8175657pfl.8
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 22:26:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=1AAj0jz/3WOf/ZinmBg4e5WZyKIExnDIP+4ApRXDWXk=;
-        b=E6vw8sjIHY/i68R43dGnMLa/5LLUaNZd7XsoFQWcc3w5wUJdtXNsxsEfsPht7kxdNG
-         JJ1tXBTf3XQqnlgOex/RZ+o0XMhSMgfcjsVoIr6koV6H3KyiaZ1lUXPNyODzP4yferwZ
-         bLRSqfuB8yrx2QNr5YGtL8EgG0hPZHJq7V7xk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=1AAj0jz/3WOf/ZinmBg4e5WZyKIExnDIP+4ApRXDWXk=;
-        b=kjCEeWd7dFNtaeiuxM/AXCADcCHXz/EWKt3KICKyerzQFddOWpTCjEaYlR3jB2JAYk
-         uduHtSEoE01wwR5B9JUTX062NGWnzWtaKlOqp6hJlG+uIMc6Q+SYawf2NgdwGdkp6mPZ
-         ocZBCAhr5dG79SnH3K2pbA2uiW9ntjo3ofzwkhPz0OtxFV2avDO0Fc2kKN+meErxxBrY
-         wLIV+mO7Z+QeEcb1DueCS+/rL8/q/4466nx/QKSDbSg3YNrjDNyOgYaOEh9WT0j+9G6h
-         ufYrUMwkmeosb+baSPHymZkCHGRGedBqjLGU7U6RJZ93AVVDkf6PYBEuwrnO/2kFPgm2
-         3n8Q==
-X-Gm-Message-State: ACrzQf15aIbKa/xGwuVfh8IC/I1y1AxVggP1DUckyppIdkAR82oEgq9H
-        ooU3Gq8dkyyiLKhfGTZAbpYWoQ==
-X-Google-Smtp-Source: AMsMyM4a+GHcnQt0UeqKstHRefYZ2pfi5aegxBG+GRLeLtm77LwF22DDWI605QZJjTDKHxZFsdcd6w==
-X-Received: by 2002:a63:cf56:0:b0:439:41ed:78fc with SMTP id b22-20020a63cf56000000b0043941ed78fcmr1597609pgj.419.1663824388949;
-        Wed, 21 Sep 2022 22:26:28 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l10-20020a170903120a00b0016f196209c9sm3102876plh.123.2022.09.21.22.26.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 22:26:28 -0700 (PDT)
-Date:   Wed, 21 Sep 2022 22:26:27 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Alex Elder <elder@kernel.org>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Daniel Micay <danielmicay@gmail.com>,
-        Yonghong Song <yhs@fb.com>, Marco Elver <elver@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Jacob Shin <jacob.shin@amd.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-btrfs@vger.kernel.org,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, linux-fsdevel@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, dev@openvswitch.org,
-        x86@kernel.org, llvm@lists.linux.dev,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 10/12] iwlwifi: Track scan_cmd allocation size explicitly
-Message-ID: <202209212224.A2F1DB798@keescook>
-References: <20220922031013.2150682-1-keescook@chromium.org>
- <20220922031013.2150682-11-keescook@chromium.org>
- <87fsgk6nys.fsf@kernel.org>
+        Thu, 22 Sep 2022 02:08:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B839B4E9E;
+        Wed, 21 Sep 2022 23:08:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE4266332B;
+        Thu, 22 Sep 2022 06:08:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B58C433C1;
+        Thu, 22 Sep 2022 06:08:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663826911;
+        bh=QTMWKodiFD1OVfN40NEf/oeWD34w3O1mm/VtSDdvc+w=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=A0YEHViZnYsdRv16QyeuYWEBYm38bd8X4lA9yaC6XHPq0poMJ3DrNkZREjGZJkMHI
+         gXELoNiO1s+7lMzaw37KxSw2+ZXJWWpFNzDPojvW5/kvsy/0Nwro9iTZm+6vvjJjlT
+         RmnlG7u6UGiIkgmaxU4nsur52CGVXEXafpocrl6CVathJl1xjojSAFePOdH6GBXCJy
+         uB2cf9sOSgi0sSTsimbUAlYrmeAT5DbUvUX5ysgV+yTnCWLRgQD64KW8eK85YiB16f
+         bymcaJBB14lddhOfUp9xR7F1gQW7E69WRxZaDg/te4+ztM1/VTYJajY7tpdZduPKnG
+         Kx3iVefT2bghw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87fsgk6nys.fsf@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v8 2/2 RESEND] mwifiex: fix sleep in atomic context bugs
+ caused by dev_coredumpv
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <5cfa5c473ff6d069cb67760ffa04a2f84ef450a8.1661252818.git.duoming@zju.edu.cn>
+References: <5cfa5c473ff6d069cb67760ffa04a2f84ef450a8.1661252818.git.duoming@zju.edu.cn>
+To:     Duoming Zhou <duoming@zju.edu.cn>
+Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        briannorris@chromium.org, johannes@sipsolutions.net,
+        rafael@kernel.org, amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Duoming Zhou <duoming@zju.edu.cn>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166382690326.9021.14393283458097744964.kvalo@kernel.org>
+Date:   Thu, 22 Sep 2022 06:08:27 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 07:18:51AM +0300, Kalle Valo wrote:
-> Kees Cook <keescook@chromium.org> writes:
-> 
-> > In preparation for reducing the use of ksize(), explicitly track the
-> > size of scan_cmd allocations. This also allows for noticing if the scan
-> > size changes unexpectedly. Note that using ksize() was already incorrect
-> > here, in the sense that ksize() would not match the actual allocation
-> > size, which would trigger future run-time allocation bounds checking.
-> > (In other words, memset() may know how large scan_cmd was allocated for,
-> > but ksize() will return the upper bounds of the actually allocated memory,
-> > causing a run-time warning about an overflow.)
-> >
-> > Cc: Gregory Greenman <gregory.greenman@intel.com>
-> > Cc: Kalle Valo <kvalo@kernel.org>
-> > Cc: Johannes Berg <johannes.berg@intel.com>
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: netdev@vger.kernel.org
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> 
-> Via which tree is this iwlwifi patch going? Normally via wireless-next
-> or something else?
+Duoming Zhou <duoming@zju.edu.cn> wrote:
 
-This doesn't depend on the kmalloc_size_roundup() helper at all, so I
-would be happy for it to go via wireless-next if the patch seems
-reasonable.
+> There are sleep in atomic context bugs when uploading device dump
+> data in mwifiex. The root cause is that dev_coredumpv could not
+> be used in atomic contexts, because it calls dev_set_name which
+> include operations that may sleep. The call tree shows execution
+> paths that could lead to bugs:
+> 
+>    (Interrupt context)
+> fw_dump_timer_fn
+>   mwifiex_upload_device_dump
+>     dev_coredumpv(..., GFP_KERNEL)
+>       dev_coredumpm()
+>         kzalloc(sizeof(*devcd), gfp); //may sleep
+>         dev_set_name
+>           kobject_set_name_vargs
+>             kvasprintf_const(GFP_KERNEL, ...); //may sleep
+>             kstrdup(s, GFP_KERNEL); //may sleep
+> 
+> The corresponding fail log is shown below:
+> 
+> [  135.275938] usb 1-1: == mwifiex dump information to /sys/class/devcoredump start
+> [  135.281029] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:265
+> ...
+> [  135.293613] Call Trace:
+> [  135.293613]  <IRQ>
+> [  135.293613]  dump_stack_lvl+0x57/0x7d
+> [  135.293613]  __might_resched.cold+0x138/0x173
+> [  135.293613]  ? dev_coredumpm+0xca/0x2e0
+> [  135.293613]  kmem_cache_alloc_trace+0x189/0x1f0
+> [  135.293613]  ? devcd_match_failing+0x30/0x30
+> [  135.293613]  dev_coredumpm+0xca/0x2e0
+> [  135.293613]  ? devcd_freev+0x10/0x10
+> [  135.293613]  dev_coredumpv+0x1c/0x20
+> [  135.293613]  ? devcd_match_failing+0x30/0x30
+> [  135.293613]  mwifiex_upload_device_dump+0x65/0xb0
+> [  135.293613]  ? mwifiex_dnld_fw+0x1b0/0x1b0
+> [  135.293613]  call_timer_fn+0x122/0x3d0
+> [  135.293613]  ? msleep_interruptible+0xb0/0xb0
+> [  135.293613]  ? lock_downgrade+0x3c0/0x3c0
+> [  135.293613]  ? __next_timer_interrupt+0x13c/0x160
+> [  135.293613]  ? lockdep_hardirqs_on_prepare+0xe/0x220
+> [  135.293613]  ? mwifiex_dnld_fw+0x1b0/0x1b0
+> [  135.293613]  __run_timers.part.0+0x3f8/0x540
+> [  135.293613]  ? call_timer_fn+0x3d0/0x3d0
+> [  135.293613]  ? arch_restore_msi_irqs+0x10/0x10
+> [  135.293613]  ? lapic_next_event+0x31/0x40
+> [  135.293613]  run_timer_softirq+0x4f/0xb0
+> [  135.293613]  __do_softirq+0x1c2/0x651
+> ...
+> [  135.293613] RIP: 0010:default_idle+0xb/0x10
+> [  135.293613] RSP: 0018:ffff888006317e68 EFLAGS: 00000246
+> [  135.293613] RAX: ffffffff82ad8d10 RBX: ffff888006301cc0 RCX: ffffffff82ac90e1
+> [  135.293613] RDX: ffffed100d9ff1b4 RSI: ffffffff831ad140 RDI: ffffffff82ad8f20
+> [  135.293613] RBP: 0000000000000003 R08: 0000000000000000 R09: ffff88806cff8d9b
+> [  135.293613] R10: ffffed100d9ff1b3 R11: 0000000000000001 R12: ffffffff84593410
+> [  135.293613] R13: 0000000000000000 R14: 0000000000000000 R15: 1ffff11000c62fd2
+> ...
+> [  135.389205] usb 1-1: == mwifiex dump information to /sys/class/devcoredump end
+> 
+> This patch uses delayed work to replace timer and moves the operations
+> that may sleep into a delayed work in order to mitigate bugs, it was
+> tested on Marvell 88W8801 chip whose port is usb and the firmware is
+> usb8801_uapsta.bin. The following is the result after using delayed
+> work to replace timer.
+> 
+> [  134.936453] usb 1-1: == mwifiex dump information to /sys/class/devcoredump start
+> [  135.043344] usb 1-1: == mwifiex dump information to /sys/class/devcoredump end
+> 
+> As we can see, there is no bug now.
+> 
+> Fixes: f5ecd02a8b20 ("mwifiex: device dump support for usb interface")
+> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Patch applied to wireless-next.git, thanks.
+
+551e4745c7f2 mwifiex: fix sleep in atomic context bugs caused by dev_coredumpv
 
 -- 
-Kees Cook
+https://patchwork.kernel.org/project/linux-wireless/patch/5cfa5c473ff6d069cb67760ffa04a2f84ef450a8.1661252818.git.duoming@zju.edu.cn/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
