@@ -2,186 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721BF5E6D0A
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 22:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3496F5E6D9E
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 23:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbiIVUdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 16:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58900 "EHLO
+        id S230333AbiIVVFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 17:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiIVUdG (ORCPT
+        with ESMTP id S229537AbiIVVFu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 16:33:06 -0400
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C965C109527;
-        Thu, 22 Sep 2022 13:33:04 -0700 (PDT)
-Received: from tr.lan (ip-86-49-12-201.bb.vodafone.cz [86.49.12.201])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        Thu, 22 Sep 2022 17:05:50 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2A310CA5F;
+        Thu, 22 Sep 2022 14:05:49 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 8244284CE6;
-        Thu, 22 Sep 2022 22:33:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1663878782;
-        bh=bXfsTMGZaSNqpJdq4s5fnFzwsg6OYsSk6mibwNOPgWg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=tFOvkq+XJ9sdPRucke8xW3jesXeEg/pMbs1xCc+MCugjUlw056uzVV2OKlOyBZM0e
-         Y6XnH+mP7CHghFhrCTYIpH5/t7qrxWS2MYAmAQpTZsmOBmy9OLYMIxqsg2QqdSIlPj
-         rPHz9FEy9QA9A2MWkKu0MENCHtoE3nLUkx7iRXKfif5eny3K5eQ5Gp1mT112N0GP0S
-         U39Hz4UVo+jyC3M3OQgtkBATx9iPTtGH6VexWcUHIXY2Qig+fYFRTUJXZpONds7xYn
-         sglOe4UnjX4FoP81kkSwADs7fqVVXuJJhQUIGKXVuEcNhDTpymHLzt9gU94oLYmpig
-         461PMbptaZoyw==
-From:   Marek Vasut <marex@denx.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>,
-        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
-Subject: [PATCH] wifi: rsi: Fix handling of 802.3 EAPOL frames sent via control port
-Date:   Thu, 22 Sep 2022 22:32:40 +0200
-Message-Id: <20220922203240.108623-1-marex@denx.de>
-X-Mailer: git-send-email 2.35.1
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 4788F1F8BD;
+        Thu, 22 Sep 2022 21:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1663880748; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XKo+i59z16xYCKZljHHhrwZOK4kULyS2cn+2CLRfUM0=;
+        b=yYZqXMGxzMVH0hLKeYU8DtcEW5z+72E8D8wluVkMB38JNQ6mVtvWYW44sf9Qr+ZQm+We5X
+        ZxoqRMYTP+O1T/rNawICmYwKgqmViLi4WF8AuUeX1BOp9TwGPEwvLg1O9HhwZMa65TkR9W
+        yGHcw9EwWtJmQERB8NRzG2kYdmwST+U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1663880748;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XKo+i59z16xYCKZljHHhrwZOK4kULyS2cn+2CLRfUM0=;
+        b=kaD9JOgsDV+IpQlfyoPslHKu+574Yw//haDJvp79fZBtXqIgPNRCscY2PniCUaAEZMnwWD
+        sPWSH1zmuGYRGABQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B86DF1346B;
+        Thu, 22 Sep 2022 21:05:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id QI4BLCvOLGP2JwAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Thu, 22 Sep 2022 21:05:47 +0000
+Message-ID: <cb38655c-2107-bda6-2fa8-f5e1e97eab14@suse.cz>
+Date:   Thu, 22 Sep 2022 23:05:47 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 00/12] slab: Introduce kmalloc_size_roundup()
+Content-Language: en-US
+To:     Kees Cook <keescook@chromium.org>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+Cc:     Pekka Enberg <penberg@kernel.org>, Feng Tang <feng.tang@intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Alex Elder <elder@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Daniel Micay <danielmicay@gmail.com>,
+        Yonghong Song <yhs@fb.com>, Marco Elver <elver@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-fsdevel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        dev@openvswitch.org, x86@kernel.org,
+        linux-wireless@vger.kernel.org, llvm@lists.linux.dev,
+        linux-hardening@vger.kernel.org,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Feng Tang <feng.tang@intel.com>
+References: <20220922031013.2150682-1-keescook@chromium.org>
+ <673e425d-1692-ef47-052b-0ff2de0d9c1d@amd.com>
+ <202209220845.2F7A050@keescook>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <202209220845.2F7A050@keescook>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.6 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When using wpa_supplicant v2.10, this driver is no longer able to
-associate with any AP and fails in the EAPOL 4-way handshake while
-sending the 2/4 message to the AP. The problem is not present in
-wpa_supplicant v2.9 or older. The problem stems from HostAP commit
-144314eaa ("wpa_supplicant: Send EAPOL frames over nl80211 where available")
-which changes the way EAPOL frames are sent, from them being send
-at L2 frames to them being sent via nl80211 control port.
+On 9/22/22 17:55, Kees Cook wrote:
+> On Thu, Sep 22, 2022 at 09:10:56AM +0200, Christian König wrote:
+>> Am 22.09.22 um 05:10 schrieb Kees Cook:
+>> > Hi,
+>> > 
+>> > This series fixes up the cases where callers of ksize() use it to
+>> > opportunistically grow their buffer sizes, which can run afoul of the
+>> > __alloc_size hinting that CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE
+>> > use to perform dynamic buffer bounds checking.
+>> 
+>> Good cleanup, but one question: What other use cases we have for ksize()
+>> except the opportunistically growth of buffers?
+> 
+> The remaining cases all seem to be using it as a "do we need to resize
+> yet?" check, where they don't actually track the allocation size
+> themselves and want to just depend on the slab cache to answer it. This
+> is most clearly seen in the igp code:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/intel/igb/igb_main.c?h=v6.0-rc6#n1204
+> 
+> My "solution" there kind of side-steps it, and leaves ksize() as-is:
+> https://lore.kernel.org/linux-hardening/20220922031013.2150682-8-keescook@chromium.org/
+> 
+> The more correct solution would be to add per-v_idx size tracking,
+> similar to the other changes I sent:
+> https://lore.kernel.org/linux-hardening/20220922031013.2150682-11-keescook@chromium.org/
+> 
+> I wonder if perhaps I should just migrate some of this code to using
+> something like struct membuf.
+> 
+>> Off hand I can't see any.
+>> 
+>> So when this patch set is about to clean up this use case it should probably
+>> also take care to remove ksize() or at least limit it so that it won't be
+>> used for this use case in the future.
+> 
+> Yeah, my goal would be to eliminate ksize(), and it seems possible if
+> other cases are satisfied with tracking their allocation sizes directly.
 
-An EAPOL frame sent as L2 frame is passed to the WiFi driver with
-skb->protocol ETH_P_PAE, while EAPOL frame sent via nl80211 control
-port has skb->protocol set to ETH_P_802_3 . The later happens in
-ieee80211_tx_control_port(), where the EAPOL frame is encapsulated
-into 802.3 frame.
+I think we could leave ksize() to determine the size without a need for
+external tracking, but from now on forbid callers from using that hint to
+overflow the allocation size they actually requested? Once we remove the
+kasan/kfence hooks in ksize() that make the current kinds of usage possible,
+we should be able to catch any offenders of the new semantics that would appear?
 
-The rsi_91x driver handles ETH_P_PAE EAPOL frames as high-priority
-frames and sends them via highest-priority transmit queue, while
-the ETH_P_802_3 frames are sent as regular frames. The EAPOL 4-way
-handshake frames must be sent as highest-priority, otherwise the
-4-way handshake times out.
-
-Therefore, to fix this problem, inspect the ETH_P_802_3 frames in
-the rsi_91x driver, check the ethertype of the encapsulated frame,
-and in case it is ETH_P_PAE, transmit the frame via high-priority
-queue just like other ETH_P_PAE frames.
-
-Fixes: 0eb42586cf876 ("rsi: data packet descriptor enhancements")
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-NOTE: I am really unsure about the method of finding out the exact
-      place of ethernet header in the encapsulated packet and then
-      extracting the ethertype from it. Is there maybe some sort of
-      helper function for that purpose ?
----
-Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
-Cc: Angus Ainslie <angus@akkea.ca>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Martin Fuzzey <martin.fuzzey@flowbird.group>
-Cc: Martin Kepplinger <martink@posteo.de>
-Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
-Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Siva Rebbagondla <siva8118@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
- drivers/net/wireless/rsi/rsi_91x_core.c | 14 ++++++++++++++
- drivers/net/wireless/rsi/rsi_91x_hal.c  | 15 ++++++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_91x_core.c b/drivers/net/wireless/rsi/rsi_91x_core.c
-index 0f3a80f66b61c..d76c9dc99cafa 100644
---- a/drivers/net/wireless/rsi/rsi_91x_core.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_core.c
-@@ -380,6 +380,9 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
- 	struct ieee80211_vif *vif;
- 	u8 q_num, tid = 0;
- 	struct rsi_sta *rsta = NULL;
-+	struct ethhdr *eth_hdr;
-+	bool tx_eapol = false;
-+	unsigned int hdr_len;
- 
- 	if ((!skb) || (!skb->len)) {
- 		rsi_dbg(ERR_ZONE, "%s: Null skb/zero Length packet\n",
-@@ -466,7 +469,18 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
- 							      tid, 0);
- 			}
- 		}
-+
- 		if (skb->protocol == cpu_to_be16(ETH_P_PAE)) {
-+			tx_eapol = true;
-+		} else if (skb->protocol == cpu_to_be16(ETH_P_802_3)) {
-+			hdr_len = ieee80211_get_hdrlen_from_skb(skb) +
-+				  sizeof(rfc1042_header) - ETH_HLEN + 2;
-+			eth_hdr = (struct ethhdr *)(skb->data + hdr_len);
-+			if (eth_hdr->h_proto == cpu_to_be16(ETH_P_PAE))
-+				tx_eapol = true;
-+		}
-+
-+		if (tx_eapol) {
- 			q_num = MGMT_SOFT_Q;
- 			skb->priority = q_num;
- 		}
-diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
-index c61f83a7333b6..d43754fff287d 100644
---- a/drivers/net/wireless/rsi/rsi_91x_hal.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
-@@ -159,6 +159,9 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
- 	struct rsi_data_desc *data_desc;
- 	struct rsi_xtended_desc *xtend_desc;
- 	u8 ieee80211_size = MIN_802_11_HDR_LEN;
-+	struct ethhdr *eth_hdr;
-+	bool tx_eapol = false;
-+	unsigned int hdr_len;
- 	u8 header_size;
- 	u8 vap_id = 0;
- 	u8 dword_align_bytes;
-@@ -168,6 +171,16 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
- 	vif = info->control.vif;
- 	tx_params = (struct skb_info *)info->driver_data;
- 
-+	if (skb->protocol == cpu_to_be16(ETH_P_PAE)) {
-+		tx_eapol = true;
-+	} else if (skb->protocol == cpu_to_be16(ETH_P_802_3)) {
-+		hdr_len = ieee80211_get_hdrlen_from_skb(skb) +
-+			  sizeof(rfc1042_header) - ETH_HLEN + 2;
-+		eth_hdr = (struct ethhdr *)(skb->data + hdr_len);
-+		if (eth_hdr->h_proto == cpu_to_be16(ETH_P_PAE))
-+			tx_eapol = true;
-+	}
-+
- 	header_size = FRAME_DESC_SZ + sizeof(struct rsi_xtended_desc);
- 	if (header_size > skb_headroom(skb)) {
- 		rsi_dbg(ERR_ZONE, "%s: Unable to send pkt\n", __func__);
-@@ -231,7 +244,7 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
- 		}
- 	}
- 
--	if (skb->protocol == cpu_to_be16(ETH_P_PAE)) {
-+	if (tx_eapol) {
- 		rsi_dbg(INFO_ZONE, "*** Tx EAPOL ***\n");
- 
- 		data_desc->frame_info = cpu_to_le16(RATE_INFO_ENABLE);
--- 
-2.35.1
+> -Kees
+> 
 
