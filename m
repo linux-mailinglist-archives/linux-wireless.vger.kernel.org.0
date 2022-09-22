@@ -2,53 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD935E5C7D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 09:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3E9D5E5CA0
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 09:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230234AbiIVHdp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 03:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33394 "EHLO
+        id S230033AbiIVHrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 03:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbiIVHdn (ORCPT
+        with ESMTP id S230155AbiIVHrP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 03:33:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE90CA0247
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 00:33:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 822B5B834BE
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 07:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CE1C433D6;
-        Thu, 22 Sep 2022 07:33:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663832020;
-        bh=NtUVFVS5gh4WMHKUCifTp8QSCyfeIHcPPtmlPDPG3rk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=GE1T3ylpsFIUxunffMTpo4ZXVMFDqwREAQDJOBIBadBe8YVH2DvUlSSvMaHRCcWqK
-         qghnYDZpPfLMIsfy1/g2BKlPAUJ9ZrKGxtuROucXAEJ0obfQrqnPzWrE5iTchTuMUQ
-         ae6/Fw0DVKWVBUjGa8r997PM73wgdtOp8gIjYSrWppcz3zWOgv3dxZmoVtiZLVSjG3
-         w7JUtv98DRiwLx7Sx8Xa9zB2vrerh3ZniXI9T4Omf90BjJmIQQC03PGU43M+bUJBdU
-         5hMR4rgdKqUK/s5xx83S9W71eaZLgFIE7mfu6YngkHPeqQETB5aauDY8MIolCOjSpz
-         8RcTKp8zIVPbQ==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 22 Sep 2022 03:47:15 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0441ABD7F;
+        Thu, 22 Sep 2022 00:47:14 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MY6hS38qjzlVwB;
+        Thu, 22 Sep 2022 15:43:04 +0800 (CST)
+Received: from cgs.huawei.com (10.244.148.83) by
+ kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 22 Sep 2022 15:47:12 +0800
+From:   Gaosheng Cui <cuigaosheng1@huawei.com>
+To:     <nbd@nbd.name>, <lorenzo@kernel.org>, <ryder.lee@mediatek.com>,
+        <shayne.chen@mediatek.com>, <sean.wang@mediatek.com>,
+        <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <matthias.bgg@gmail.com>,
+        <cuigaosheng1@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2] wifi: mt76: Remove unused inline function mt76_wcid_mask_test()
+Date:   Thu, 22 Sep 2022 15:47:11 +0800
+Message-ID: <20220922074711.1408385-1-cuigaosheng1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] wifi: ath11k: retrieve MAC address from system
- firmware if
- provided
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220920003117.841442-1-junyuu@chromium.org>
-References: <20220920003117.841442-1-junyuu@chromium.org>
-To:     Jun Yu <junyuu@chromium.org>
-Cc:     ath11k@lists.infradead.org, quic_jjohnson@quicinc.com,
-        linux-wireless@vger.kernel.org, Jun Yu <junyuu@chromium.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166383201294.5334.14513414529811662280.kvalo@kernel.org>
-Date:   Thu, 22 Sep 2022 07:33:38 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.244.148.83]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,27 +50,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jun Yu <junyuu@chromium.org> wrote:
+All uses of mt76_wcid_mask_test() have
+been removed since commit 8950a62f19c9 ("mt76: get rid of
+mt76_wcid_hw routine"), so remove it.
 
-> Devices may provide their own MAC address via system firmware (e.g.,
-> device tree), especially in the case where the device doesn't have a
-> useful EEPROM on which to store its MAC address (e.g., for integrated
-> ahb WCN6750).
-> 
-> Use the generic device helper to retrieve the MAC address, and (if
-> present) honor it above the MAC address advertised by the card.
-> 
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
-> 
-> Signed-off-by: Jun Yu <junyuu@chromium.org>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+---
+v2:
+- taking the patch out of the series: "Remove useless inline functions from net".
+- add wifi: prefix to the subject, thanks!
+v1:
+- links: https://patchwork.kernel.org/project/linux-mediatek/patch/20220921090455.752011-3-cuigaosheng1@huawei.com/
+ drivers/net/wireless/mediatek/mt76/util.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-176239a9a2e3 wifi: ath11k: retrieve MAC address from system firmware if provided
-
+diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wireless/mediatek/mt76/util.h
+index 49c52d781f40..260965dde94c 100644
+--- a/drivers/net/wireless/mediatek/mt76/util.h
++++ b/drivers/net/wireless/mediatek/mt76/util.h
+@@ -29,12 +29,6 @@ enum {
+ 
+ int mt76_wcid_alloc(u32 *mask, int size);
+ 
+-static inline bool
+-mt76_wcid_mask_test(u32 *mask, int idx)
+-{
+-	return mask[idx / 32] & BIT(idx % 32);
+-}
+-
+ static inline void
+ mt76_wcid_mask_set(u32 *mask, int idx)
+ {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220920003117.841442-1-junyuu@chromium.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.25.1
 
