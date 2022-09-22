@@ -2,47 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E9D5E5CA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 09:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 936905E5D2A
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 10:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbiIVHrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 03:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48016 "EHLO
+        id S229886AbiIVIOZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 04:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbiIVHrP (ORCPT
+        with ESMTP id S229489AbiIVIOV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 03:47:15 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0441ABD7F;
-        Thu, 22 Sep 2022 00:47:14 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MY6hS38qjzlVwB;
-        Thu, 22 Sep 2022 15:43:04 +0800 (CST)
-Received: from cgs.huawei.com (10.244.148.83) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 22 Sep 2022 15:47:12 +0800
-From:   Gaosheng Cui <cuigaosheng1@huawei.com>
-To:     <nbd@nbd.name>, <lorenzo@kernel.org>, <ryder.lee@mediatek.com>,
-        <shayne.chen@mediatek.com>, <sean.wang@mediatek.com>,
-        <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <matthias.bgg@gmail.com>,
-        <cuigaosheng1@huawei.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v2] wifi: mt76: Remove unused inline function mt76_wcid_mask_test()
-Date:   Thu, 22 Sep 2022 15:47:11 +0800
-Message-ID: <20220922074711.1408385-1-cuigaosheng1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 22 Sep 2022 04:14:21 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD77CD1FD
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 01:14:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6E5F1B834F6
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 08:14:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0925CC433C1;
+        Thu, 22 Sep 2022 08:14:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663834456;
+        bh=MOlPCXwskFQ/i1ybWs2kBQNxkSgAaolnyrvqwJkqiPc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=vMfNQZiW3ju9qqzEjJwLl1pXNkLE2+RFj7PtzTqMI6dCP1PHYm5ZO/VvhS1+sHRgD
+         4ZLnVDEVHIkL517pqzH41s34teA4zfr4dQmind97msIUx8K97MsY0tXpmpipxvaNfs
+         +b7zhFM3w5rL6kya+X7PdsafjmE30YjcffgCjWjNrzG27g+lvv1A01YCo2Xe3VMH8V
+         V7sdLOmJIMYfbie1Qp03U9PWdeU8xX8X6UYGYkCHCOTHfdNWnAsQLOnC6Qyw7QhFXd
+         HtUNW1izNBBajwq67swfgb3kKHfIPQ4EoxDUDNa6x9BijcFxuWHY0PPFcGi5DDpysl
+         6IRy18SC26Pbw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.244.148.83]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath11k: reduce the timeout value back for hw scan
+ from
+ 10 seconds to 1 second
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220919024121.24820-1-quic_wgong@quicinc.com>
+References: <20220919024121.24820-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166383445202.9473.8707216192194973891.kvalo@kernel.org>
+Date:   Thu, 22 Sep 2022 08:14:14 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,37 +56,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-All uses of mt76_wcid_mask_test() have
-been removed since commit 8950a62f19c9 ("mt76: get rid of
-mt76_wcid_hw routine"), so remove it.
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
----
-v2:
-- taking the patch out of the series: "Remove useless inline functions from net".
-- add wifi: prefix to the subject, thanks!
-v1:
-- links: https://patchwork.kernel.org/project/linux-mediatek/patch/20220921090455.752011-3-cuigaosheng1@huawei.com/
- drivers/net/wireless/mediatek/mt76/util.h | 6 ------
- 1 file changed, 6 deletions(-)
+> For 11d scan, commit 9dcf6808b253 ("ath11k: add 11d scan offload support")
+> increased the timeout from one second to max 10 seconds when 11d scan
+> offload enabled and 6 GHz enabled, it is reasonable for the commit, it
+> is because the first 11d scan request is sent to firmware before the
+> first hw scan request after wlan load, then the hw scan started event
+> will reported from firmware after the 11d scan finished, it needs about
+> 6 seconds when 6 GHz enabled, so increased it from one second to 10
+> seconds in the commit to avoid timed out for hw scan started. Then
+> another commit 1f682dc9fb37 ("ath11k: reduce the wait time of 11d scan
+> and hw scan while add interface") change the sequence of the first 11d
+> scan and hw scan, then ath11k will receive the hw scan started event
+> from firmware immediately for the first hw scan, thus ath11k does not
+> need set the timeout value to max 10 seconds again, and this is to set
+> the timeout value back from 10 seconds to 1 second.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wireless/mediatek/mt76/util.h
-index 49c52d781f40..260965dde94c 100644
---- a/drivers/net/wireless/mediatek/mt76/util.h
-+++ b/drivers/net/wireless/mediatek/mt76/util.h
-@@ -29,12 +29,6 @@ enum {
- 
- int mt76_wcid_alloc(u32 *mask, int size);
- 
--static inline bool
--mt76_wcid_mask_test(u32 *mask, int idx)
--{
--	return mask[idx / 32] & BIT(idx % 32);
--}
--
- static inline void
- mt76_wcid_mask_set(u32 *mask, int idx)
- {
+With this patch I started seeing new errors:
+
+[ 1194.815104] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+[ 1196.864157] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+[ 1198.911926] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+
+This seems to happen after my suspend tests, but didn't have time to
+investigate further.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20220919024121.24820-1-quic_wgong@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
