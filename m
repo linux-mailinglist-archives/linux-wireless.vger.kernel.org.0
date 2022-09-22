@@ -2,55 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4D55E5E19
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 11:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FB735E5E74
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 11:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbiIVJDo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 05:03:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41032 "EHLO
+        id S230209AbiIVJYA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 05:24:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbiIVJDn (ORCPT
+        with ESMTP id S229649AbiIVJX6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 05:03:43 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BADB56D1;
-        Thu, 22 Sep 2022 02:03:41 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MY8Nf0QNDzlXNv;
-        Thu, 22 Sep 2022 16:59:30 +0800 (CST)
-Received: from [10.67.110.176] (10.67.110.176) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 22 Sep 2022 17:03:37 +0800
-Subject: Re: [PATCH 1/5] mlxsw: reg: Remove unused inline function
- mlxsw_reg_sftr2_pack()
-To:     Ido Schimmel <idosch@nvidia.com>, <petrm@nvidia.com>
-CC:     <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <nbd@nbd.name>, <lorenzo@kernel.org>,
-        <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
-        <sean.wang@mediatek.com>, <kvalo@kernel.org>,
-        <matthias.bgg@gmail.com>, <amcohen@nvidia.com>,
-        <stephen@networkplumber.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20220921090455.752011-1-cuigaosheng1@huawei.com>
- <20220921090455.752011-2-cuigaosheng1@huawei.com> <YyroqT8a0InvBaaL@shredder>
-From:   cuigaosheng <cuigaosheng1@huawei.com>
-Message-ID: <e5687025-edc2-84d5-f0ce-cc63b6c61e06@huawei.com>
-Date:   Thu, 22 Sep 2022 17:03:37 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Thu, 22 Sep 2022 05:23:58 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248554623D;
+        Thu, 22 Sep 2022 02:23:58 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id v128so7156059ioe.12;
+        Thu, 22 Sep 2022 02:23:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=eq1ulTtXYhBmIV3Hec+MzaFRLDXw1vSRF6+bOMmPhJ4=;
+        b=bE2W6qfxPeZ5hG8th9HBte8uWTQjYuCcr36yI1hhiheOM64/zofTi1amyoUC/YRb+J
+         NgesQGAjTL00GMSehk4Np33KVgoKvpm/Mh3RSzMdF+EkL5Y4k9K6GB3q17DXyKsUm/6E
+         tSUleWEaIUryrEiqLEE56d9SYCS/YFMrs6gU37f7Pqu7tr26K2zmBNy6tAGoGVxQ5f+n
+         DlMD1/oSQBrQp/QHyG7CgFktY+50H+Wm33tTFaH8FxMf0iDQdWTe9OU6Ok7FDH/xYrVm
+         +Y17qm2jbLBl43Ckz4h9g/NlAB7oNcZMDPJUHArvKPR8Jrr0Y7Jjk4kBCdA2lo60DN3B
+         Aphg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=eq1ulTtXYhBmIV3Hec+MzaFRLDXw1vSRF6+bOMmPhJ4=;
+        b=XAbmbADnMx1d4MDhg9mZ+JCOlI8v/mXVbJmgFFJ4Aha0fj2C83T1uAOyMi0keOy7K4
+         KC+ensOGk3/jP4BgR2XdHhNAn93UyKOSIEgMf83cKIZKiE2MNlRG5qPZFsUArLGslWsJ
+         jF9y/EydOKtZLPkyUu3S3t8e9NfvRnbFuKeMjUE9K0SmjdtHhvMtaEmQ64qmYRHfSENC
+         JxESA9v7yr4OtqcwnuPULcp59C6JPo/IoCzGIQerj5Ou60Hvqr8Z9xeZwe9xHPYhI2W6
+         DUHUuEJ5Y8NOmpVQYVd0W7p2/s2dveW4DIEGZEKoIC0PSA05aTSG6RSya1vn2/kU+69Z
+         L75A==
+X-Gm-Message-State: ACrzQf356hDtiQ4/84mEVGMqKbAvLC7HqVZ0tzelr+KA+/rC59b3RnhR
+        cty9X7VDst/qGKH/RjuahRI6dGocnqKY98FaYxs=
+X-Google-Smtp-Source: AMsMyM4VmAwcaT5Lc+Ww++2Y7GpjHXOf8JO1cC9hLR1vHps4lN+vAXggqFNSedolxw1DncuzKFlDGIHvcmXTBzRY/kM=
+X-Received: by 2002:a05:6638:dcc:b0:35a:7ba6:ad51 with SMTP id
+ m12-20020a0566380dcc00b0035a7ba6ad51mr1404409jaj.256.1663838637536; Thu, 22
+ Sep 2022 02:23:57 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YyroqT8a0InvBaaL@shredder>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.110.176]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20220922031013.2150682-1-keescook@chromium.org> <20220922031013.2150682-12-keescook@chromium.org>
+In-Reply-To: <20220922031013.2150682-12-keescook@chromium.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 22 Sep 2022 11:23:46 +0200
+Message-ID: <CANiq72=m9VngFH9jE3s0RV7MpjX0a=ekJN4pZwcDksBkSRR_1w@mail.gmail.com>
+Subject: Re: [PATCH 11/12] slab: Remove __malloc attribute from realloc functions
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Vlastimil Babka <vbabka@suse.cz>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Hao Luo <haoluo@google.com>, Marco Elver <elver@google.com>,
+        linux-mm@kvack.org, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alex Elder <elder@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Daniel Micay <danielmicay@gmail.com>,
+        Yonghong Song <yhs@fb.com>, Miguel Ojeda <ojeda@kernel.org>,
+        Jacob Shin <jacob.shin@amd.com>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, linux-fsdevel@vger.kernel.org,
+        intel-wired-lan@lists.osuosl.org, dev@openvswitch.org,
+        x86@kernel.org, linux-wireless@vger.kernel.org,
+        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,116 +91,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Please rather remove the entire register in v2 [1].
+On Thu, Sep 22, 2022 at 5:10 AM Kees Cook <keescook@chromium.org> wrote:
 >
-> Subject prefix should be "PATCH net-next":
-> https://docs.kernel.org/process/maintainer-netdev.html#how-do-i-indicate-which-tree-net-vs-net-next-my-patch-should-be-in
->
-> Thanks
+> -#ifdef __alloc_size__
+> -# define __alloc_size(x, ...)  __alloc_size__(x, ## __VA_ARGS__) __malloc
+> -#else
+> -# define __alloc_size(x, ...)  __malloc
+> -#endif
+> +#define __alloc_size(x, ...)   __alloc_size__(x, ## __VA_ARGS__) __malloc
+> +#define __realloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__)
 
-Thanks for taking the time to review this patch, I have made a patch v2 and submitted it.
+These look unconditional now, so we could move it to
+`compiler_attributes.h` in a later patch (or an independent series).
 
-Link: https://patchwork.kernel.org/project/netdevbpf/list/?series=679311
-
-> On Wed, Sep 21, 2022 at 05:04:51PM +0800, Gaosheng Cui wrote:
->> All uses of mlxsw_reg_sftr2_pack() have
->> been removed since commit 77b7f83d5c25 ("mlxsw: Enable unified
->> bridge model"), so remove it.
-> Please rather remove the entire register in v2 [1].
->
-> Subject prefix should be "PATCH net-next":
-> https://docs.kernel.org/process/maintainer-netdev.html#how-do-i-indicate-which-tree-net-vs-net-next-my-patch-should-be-in
->
-> Thanks
->
-> [1]
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/reg.h b/drivers/net/ethernet/mellanox/mlxsw/reg.h
-> index b293a154e49f..1cc117c8f230 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/reg.h
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/reg.h
-> @@ -2251,76 +2251,6 @@ static inline void mlxsw_reg_smpe_pack(char *payload, u16 local_port,
->   	mlxsw_reg_smpe_evid_set(payload, evid);
->   }
->   
-> -/* SFTR-V2 - Switch Flooding Table Version 2 Register
-> - * --------------------------------------------------
-> - * The switch flooding table is used for flooding packet replication. The table
-> - * defines a bit mask of ports for packet replication.
-> - */
-> -#define MLXSW_REG_SFTR2_ID 0x202F
-> -#define MLXSW_REG_SFTR2_LEN 0x120
-> -
-> -MLXSW_REG_DEFINE(sftr2, MLXSW_REG_SFTR2_ID, MLXSW_REG_SFTR2_LEN);
-> -
-> -/* reg_sftr2_swid
-> - * Switch partition ID with which to associate the port.
-> - * Access: Index
-> - */
-> -MLXSW_ITEM32(reg, sftr2, swid, 0x00, 24, 8);
-> -
-> -/* reg_sftr2_flood_table
-> - * Flooding table index to associate with the specific type on the specific
-> - * switch partition.
-> - * Access: Index
-> - */
-> -MLXSW_ITEM32(reg, sftr2, flood_table, 0x00, 16, 6);
-> -
-> -/* reg_sftr2_index
-> - * Index. Used as an index into the Flooding Table in case the table is
-> - * configured to use VID / FID or FID Offset.
-> - * Access: Index
-> - */
-> -MLXSW_ITEM32(reg, sftr2, index, 0x00, 0, 16);
-> -
-> -/* reg_sftr2_table_type
-> - * See mlxsw_flood_table_type
-> - * Access: RW
-> - */
-> -MLXSW_ITEM32(reg, sftr2, table_type, 0x04, 16, 3);
-> -
-> -/* reg_sftr2_range
-> - * Range of entries to update
-> - * Access: Index
-> - */
-> -MLXSW_ITEM32(reg, sftr2, range, 0x04, 0, 16);
-> -
-> -/* reg_sftr2_port
-> - * Local port membership (1 bit per port).
-> - * Access: RW
-> - */
-> -MLXSW_ITEM_BIT_ARRAY(reg, sftr2, port, 0x20, 0x80, 1);
-> -
-> -/* reg_sftr2_port_mask
-> - * Local port mask (1 bit per port).
-> - * Access: WO
-> - */
-> -MLXSW_ITEM_BIT_ARRAY(reg, sftr2, port_mask, 0xA0, 0x80, 1);
-> -
-> -static inline void mlxsw_reg_sftr2_pack(char *payload,
-> -					unsigned int flood_table,
-> -					unsigned int index,
-> -					enum mlxsw_flood_table_type table_type,
-> -					unsigned int range, u16 port, bool set)
-> -{
-> -	MLXSW_REG_ZERO(sftr2, payload);
-> -	mlxsw_reg_sftr2_swid_set(payload, 0);
-> -	mlxsw_reg_sftr2_flood_table_set(payload, flood_table);
-> -	mlxsw_reg_sftr2_index_set(payload, index);
-> -	mlxsw_reg_sftr2_table_type_set(payload, table_type);
-> -	mlxsw_reg_sftr2_range_set(payload, range);
-> -	mlxsw_reg_sftr2_port_set(payload, port, set);
-> -	mlxsw_reg_sftr2_port_mask_set(payload, port, 1);
-> -}
-> -
->   /* SMID-V2 - Switch Multicast ID Version 2 Register
->    * ------------------------------------------------
->    * The MID record maps from a MID (Multicast ID), which is a unique identifier
-> @@ -12876,7 +12806,6 @@ static const struct mlxsw_reg_info *mlxsw_reg_infos[] = {
->   	MLXSW_REG(spvc),
->   	MLXSW_REG(spevet),
->   	MLXSW_REG(smpe),
-> -	MLXSW_REG(sftr2),
->   	MLXSW_REG(smid2),
->   	MLXSW_REG(cwtp),
->   	MLXSW_REG(cwtpm),
-> .
+Cheers,
+Miguel
