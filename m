@@ -2,52 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA68F5E5A55
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 06:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7AEC5E5A58
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 06:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbiIVEpA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 00:45:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34428 "EHLO
+        id S229612AbiIVEyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 00:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbiIVEo7 (ORCPT
+        with ESMTP id S229563AbiIVEyg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 00:44:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4B279A45
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 21:44:58 -0700 (PDT)
+        Thu, 22 Sep 2022 00:54:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388B2B93
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Sep 2022 21:54:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BF6E60E1F
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 04:44:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17514C433C1;
-        Thu, 22 Sep 2022 04:44:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC3A662E1C
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 04:54:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EAEC433C1;
+        Thu, 22 Sep 2022 04:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663821897;
-        bh=gbR3u/t/kC/SjT45zLt6naquQjBqychc082YTNWqfXQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bshQxVsuciVWgMQN3v5H10YUeEax9waliNOGLIds9qDuu+O6My+bIX8TLBRa4Qzwk
-         58p9kdZQ/UqP/w2aEGEUzc93OHoswv7PA2JsUnpJ1cn1b7tR8I8t2l6k+u5qPqmgml
-         wiEywMVzpZOzpeSwrzPiJd50tNpuv43ZL7Xdflvt5/xZxQ595yMNlSa5TI4p7gfAij
-         s0vxn3sV6485rzfYi/btbRHW9/fj4vclSRfQ5wf7BTyKheSlr+6daZFus5DkezWdXk
-         2Q25Cwmack495mwwOIqqeNqbaVkQngkncGvjoFbRi1BM8fG+yt89uorYdcM4Warqdz
-         xbfj8hEGoxxGA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ian Lin <ian.lin@infineon.com>
-Cc:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <Double.Lo@infineon.com>
-Subject: Re: [PATCH 4/5] brcmfmac: Update SSID of hidden AP while informing its bss to cfg80211 layer
-References: <20220914033620.12742-1-ian.lin@infineon.com>
-        <20220914033620.12742-5-ian.lin@infineon.com>
-Date:   Thu, 22 Sep 2022 07:44:53 +0300
-In-Reply-To: <20220914033620.12742-5-ian.lin@infineon.com> (Ian Lin's message
-        of "Tue, 13 Sep 2022 22:36:19 -0500")
-Message-ID: <87tu506mre.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1663822469;
+        bh=PZbVwAEHV4iYX5whwNhE0FY0SR4yadNi3eTOUUIy7iI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=gqbwVZNeyPFuCTTR7J4xlhl5e8Pvw3SoK36hrbVEENi2sK3zk1SvivFlXov21tFOr
+         2pUf8MjVagmQ13ZJhujYr3dvM7EdAeIfVh2RF5iwqlnx0BSzXBHiej9fnIoujka+yl
+         6vadUBM+AXfbbHnobQVe6OjTBOrCY0u9cTNautbumdrpsjHolaRSK7/EWGab/W+wVH
+         T4c3Rw1WSliZJqlE9DchMMvwDEb8XTAZhRsfoFC2HnbQVYVG03nlkEiKLj47m7C8eU
+         IRk+/Z7gelrB6U9ad7SjxeVfZiL9I9yM7u2jCejoYzfvH2paRd+PTUomvwRro7eya7
+         sRNtGEP2ho/bg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 02/16] rt2x00: add throughput LED trigger
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <73f5ba4134e621462a26186449400cf0c1ac1730.1663445157.git.daniel@makrotopia.org>
+References: <73f5ba4134e621462a26186449400cf0c1ac1730.1663445157.git.daniel@makrotopia.org>
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166382246328.9021.4194873488972008176.kvalo@kernel.org>
+Date:   Thu, 22 Sep 2022 04:54:26 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,38 +59,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ian Lin <ian.lin@infineon.com> writes:
+Daniel Golle <daniel@makrotopia.org> wrote:
 
-> From: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
->
-> cfg80211 layer on DUT STA is disconnecting ongoing connection attempt after
-> receiving association response, because cfg80211 layer does not have valid
-> AP bss information. On association response event, brcmfmac communicates
-> the AP bss information to cfg80211 layer, but SSID seem to be empty in AP
-> bss information, and cfg80211 layer prints kernel warning and then
-> disconnects the ongoing connection attempt.
->
-> SSID is empty in SSID IE, but 'bi->SSID' contains a valid SSID, so
-> updating the SSID for hidden AP while informing its bss information
-> to cfg80211 layer.
->
-> Signed-off-by: Syed Rafiuddeen <syed.rafiuddeen@infineon.com>
+> From: David Bauer <mail@david-bauer.net>
+> 
+> This adds a (currently missing) throughput LED trigger for the rt2x00
+> driver. Previously, LED triggers had to be assigned to the netdev, which
+> was limited to a single VAP.
+> 
+> Tested-by: Christoph Krapp <achterin@googlemail.com>
+> Signed-off-by: David Bauer <mail@david-bauer.net>
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-Syed's email address in From does not match with s-o-b.
-
-> @@ -3032,6 +3033,12 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
->  	notify_ielen = le32_to_cpu(bi->ie_length);
->  	bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
->  
-> +	ssid = brcmf_parse_tlvs(notify_ie, notify_ielen, WLAN_EID_SSID);
-> +	if (ssid && ssid->data[0] == '\0' && ssid->len == bi->SSID_len) {
-> +		/* Update SSID for hidden AP */
-> +		memcpy((u8 *)ssid->data, bi->SSID, bi->SSID_len);
-> +	}
-
-memcpy() takes a void pointer so the cast is not needed.
+This is missing Daniel's s-o-b.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/73f5ba4134e621462a26186449400cf0c1ac1730.1663445157.git.daniel@makrotopia.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
