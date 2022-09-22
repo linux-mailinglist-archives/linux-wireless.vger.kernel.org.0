@@ -2,135 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2CC45E6452
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 15:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E81C5E67B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Sep 2022 17:55:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231701AbiIVNzS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 09:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47024 "EHLO
+        id S231614AbiIVPza (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 11:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbiIVNzR (ORCPT
+        with ESMTP id S230196AbiIVPzZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 09:55:17 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4AC46BCDE;
-        Thu, 22 Sep 2022 06:55:14 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MYGs42k08z14RgP;
-        Thu, 22 Sep 2022 21:51:04 +0800 (CST)
-Received: from dggpemm100009.china.huawei.com (7.185.36.113) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 22 Sep 2022 21:55:10 +0800
-Received: from huawei.com (10.175.113.32) by dggpemm100009.china.huawei.com
- (7.185.36.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 22 Sep
- 2022 21:55:12 +0800
-From:   Liu Shixin <liushixin2@huawei.com>
-To:     Kalle Valo <kvalo@kernel.org>,
+        Thu, 22 Sep 2022 11:55:25 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3CBAA3DD
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 08:55:21 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id b21so9173788plz.7
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 08:55:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date;
+        bh=5YOa+gv1sIPcp5S2eMDxZrJPz51jsjFGvspNVL+ych0=;
+        b=LEFzWbqksCDh4S4OiJrbR7XAYMyOC2rDNgEzxm4wNn6u+IvIuPSxz7ChVzcXYCA9kN
+         JUv48f4jgPup+CHrzZf6w+AfSyBn13B+QQpM2W85KtMMefowgfzF6SEkXu9wDa88gO2B
+         nN2k3CYK4Hh5e/4TzZfHnbEaM6zaDEwuByIkk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=5YOa+gv1sIPcp5S2eMDxZrJPz51jsjFGvspNVL+ych0=;
+        b=vxregzTcq76LEoWIn+23cdv828ejjZqxkMC0u94oIBLxU1fJ1PNTtEtPEAeJiK4Tz9
+         wC58TqYQHdtIU3tnWW1L2wQ8NmRTYudxNQasj5Pul1YNAGyuvCQ+MJZfcnOrv+i+vSkY
+         t0NE7YryHQow2WSFsOTq5NLnAL4oFtOiTbDYVmejqdPVrE4cLR/tFepxCmH94TkR7+3k
+         hopfr8k+hZFyb+TdgJGN/Yed5/I72g7wI/1t7RAGHpiW78aib4aO3Cg+47aYyV6p8u6J
+         WQhVGz5RINWRY3BOL++kT2nGl2QXeogkP4jjtdtm77URsHpE2rHIBj1plk2rbfVa/flU
+         QJtQ==
+X-Gm-Message-State: ACrzQf1n+wALUoxJGJGw4OFQeFHpSLr8Vtw+eiJKEeOiTI9qAuyEtCXF
+        FlfMdUontUPO/Vu7lzp3tMAcSQ==
+X-Google-Smtp-Source: AMsMyM6pj2YmcAiXg6SonP+gJGRIk20ZQXjacFA/fb+08tqqdtojyBlUHrRZT8F0Z+9OyQ05xLAwxg==
+X-Received: by 2002:a17:90b:3ec9:b0:203:246e:4370 with SMTP id rm9-20020a17090b3ec900b00203246e4370mr15665429pjb.221.1663862121161;
+        Thu, 22 Sep 2022 08:55:21 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id b7-20020a170902650700b001754fa42065sm4270774plk.143.2022.09.22.08.55.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Sep 2022 08:55:20 -0700 (PDT)
+Date:   Thu, 22 Sep 2022 08:55:19 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc:     Vlastimil Babka <vbabka@suse.cz>,
+        Pekka Enberg <penberg@kernel.org>,
+        Feng Tang <feng.tang@intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        Liu Shixin <liushixin2@huawei.com>
-Subject: [PATCH] wifi: wil6210: debugfs: use DEFINE_SHOW_ATTRIBUTE to simplify fw_capabilities/fw_version
-Date:   Thu, 22 Sep 2022 22:28:58 +0800
-Message-ID: <20220922142858.3250469-1-liushixin2@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Paolo Abeni <pabeni@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Alex Elder <elder@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Daniel Micay <danielmicay@gmail.com>,
+        Yonghong Song <yhs@fb.com>, Marco Elver <elver@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-fsdevel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        dev@openvswitch.org, x86@kernel.org,
+        linux-wireless@vger.kernel.org, llvm@lists.linux.dev,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 00/12] slab: Introduce kmalloc_size_roundup()
+Message-ID: <202209220845.2F7A050@keescook>
+References: <20220922031013.2150682-1-keescook@chromium.org>
+ <673e425d-1692-ef47-052b-0ff2de0d9c1d@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.32]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm100009.china.huawei.com (7.185.36.113)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <673e425d-1692-ef47-052b-0ff2de0d9c1d@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use DEFINE_SHOW_ATTRIBUTE helper macro to simplify the code.
-No functional change.
+On Thu, Sep 22, 2022 at 09:10:56AM +0200, Christian König wrote:
+> Am 22.09.22 um 05:10 schrieb Kees Cook:
+> > Hi,
+> > 
+> > This series fixes up the cases where callers of ksize() use it to
+> > opportunistically grow their buffer sizes, which can run afoul of the
+> > __alloc_size hinting that CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE
+> > use to perform dynamic buffer bounds checking.
+> 
+> Good cleanup, but one question: What other use cases we have for ksize()
+> except the opportunistically growth of buffers?
 
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
----
- drivers/net/wireless/ath/wil6210/debugfs.c | 36 ++++------------------
- 1 file changed, 6 insertions(+), 30 deletions(-)
+The remaining cases all seem to be using it as a "do we need to resize
+yet?" check, where they don't actually track the allocation size
+themselves and want to just depend on the slab cache to answer it. This
+is most clearly seen in the igp code:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/intel/igb/igb_main.c?h=v6.0-rc6#n1204
 
-diff --git a/drivers/net/wireless/ath/wil6210/debugfs.c b/drivers/net/wireless/ath/wil6210/debugfs.c
-index 04d1aa0e2d35..c021ebcddee7 100644
---- a/drivers/net/wireless/ath/wil6210/debugfs.c
-+++ b/drivers/net/wireless/ath/wil6210/debugfs.c
-@@ -2154,7 +2154,7 @@ static const struct file_operations fops_led_blink_time = {
- };
- 
- /*---------FW capabilities------------*/
--static int wil_fw_capabilities_debugfs_show(struct seq_file *s, void *data)
-+static int fw_capabilities_show(struct seq_file *s, void *data)
- {
- 	struct wil6210_priv *wil = s->private;
- 
-@@ -2163,22 +2163,10 @@ static int wil_fw_capabilities_debugfs_show(struct seq_file *s, void *data)
- 
- 	return 0;
- }
--
--static int wil_fw_capabilities_seq_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, wil_fw_capabilities_debugfs_show,
--			   inode->i_private);
--}
--
--static const struct file_operations fops_fw_capabilities = {
--	.open		= wil_fw_capabilities_seq_open,
--	.release	= single_release,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--};
-+DEFINE_SHOW_ATTRIBUTE(fw_capabilities);
- 
- /*---------FW version------------*/
--static int wil_fw_version_debugfs_show(struct seq_file *s, void *data)
-+static int fw_version_show(struct seq_file *s, void *data)
- {
- 	struct wil6210_priv *wil = s->private;
- 
-@@ -2189,19 +2177,7 @@ static int wil_fw_version_debugfs_show(struct seq_file *s, void *data)
- 
- 	return 0;
- }
--
--static int wil_fw_version_seq_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, wil_fw_version_debugfs_show,
--			   inode->i_private);
--}
--
--static const struct file_operations fops_fw_version = {
--	.open		= wil_fw_version_seq_open,
--	.release	= single_release,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--};
-+DEFINE_SHOW_ATTRIBUTE(fw_version);
- 
- /*---------suspend_stats---------*/
- static ssize_t wil_write_suspend_stats(struct file *file,
-@@ -2366,8 +2342,8 @@ static const struct {
- 	{"recovery", 0644,		&fops_recovery},
- 	{"led_cfg",	0644,		&fops_led_cfg},
- 	{"led_blink_time",	0644,	&fops_led_blink_time},
--	{"fw_capabilities",	0444,	&fops_fw_capabilities},
--	{"fw_version",	0444,		&fops_fw_version},
-+	{"fw_capabilities",	0444,	&fw_capabilities_fops},
-+	{"fw_version",	0444,		&fw_version_fops},
- 	{"suspend_stats",	0644,	&fops_suspend_stats},
- 	{"compressed_rx_status", 0644,	&fops_compressed_rx_status},
- 	{"srings",	0444,		&srings_fops},
+My "solution" there kind of side-steps it, and leaves ksize() as-is:
+https://lore.kernel.org/linux-hardening/20220922031013.2150682-8-keescook@chromium.org/
+
+The more correct solution would be to add per-v_idx size tracking,
+similar to the other changes I sent:
+https://lore.kernel.org/linux-hardening/20220922031013.2150682-11-keescook@chromium.org/
+
+I wonder if perhaps I should just migrate some of this code to using
+something like struct membuf.
+
+> Off hand I can't see any.
+> 
+> So when this patch set is about to clean up this use case it should probably
+> also take care to remove ksize() or at least limit it so that it won't be
+> used for this use case in the future.
+
+Yeah, my goal would be to eliminate ksize(), and it seems possible if
+other cases are satisfied with tracking their allocation sizes directly.
+
+-Kees
+
 -- 
-2.25.1
-
+Kees Cook
