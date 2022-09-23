@@ -2,212 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C5C5E8024
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 18:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFDA85E8048
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 19:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231281AbiIWQvT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Sep 2022 12:51:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
+        id S230408AbiIWRDB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Sep 2022 13:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231162AbiIWQvT (ORCPT
+        with ESMTP id S229525AbiIWRDA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Sep 2022 12:51:19 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C501EC66
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 09:51:17 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id u24so990687edb.9
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 09:51:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=VZe8NeHXg3FQgKSnM54KwXlT6qC49BZ0mSc+MZ9J/6s=;
-        b=UQRKZY+Pd+ClaIXpCdsblmR5O6ombBEYYAwGX6tEy8D84PuvN5IhmB0zWsCfx+Rx4M
-         cpVO5NR11ZSUm4YKMiLQkuQrwE36AYvNbsPMsrnhHo21pWMNv9pjAvaj6TFsHceMshQu
-         nEOrSADIxRMrx4ma/SxSn2mKDCFzPq/jSVZzQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=VZe8NeHXg3FQgKSnM54KwXlT6qC49BZ0mSc+MZ9J/6s=;
-        b=BV29/fYgTdeQrwKrtwAh1QWiIl27AeZtPe2yWR9tqw4VB/GqJ6oTyh8mke6LMSN0mK
-         GVV6i0Fuz63pxp+hOLXOjTL7cJTMmQpgdsJeDj4Tqt3pXMgqK4fiPLvjZHKBhA8BQMZz
-         Kf0cwrZfb4jLWAloe//kAEp43+q4CXtiXdJT2WrTHPm5G6aJCz/NcVLjB2VqomIqTvHe
-         R7zgth5Nn0/5DtTdjrZCL65qWKhymwdq+yziaAktEuYcOaQoTgVs7zE4qaq4Lkr8Eh3k
-         f95N1Abf3KwX4JiuA3ulQTWzzm5stf40BWM7OOivSiNrRlVjbwQpiyTM/6M8gSMSC/HT
-         iICg==
-X-Gm-Message-State: ACrzQf2jZeILElNuZ99ZUSRJXFmA05kZ/pdPSmY41A45UFfWr0zztbJq
-        d15WSJaXMy7BUaD3U0KWVItup0U0+iQnxD00H3/UGCaLX9i7Ow==
-X-Google-Smtp-Source: AMsMyM5MVHRffaeZeCr6UYyPgWJnJ30PcUkz4/m0ha6F5mHUM0jH9Sn3FPnJSh2ujiwZj3fNI+hUIiWZwPUmOaN+UxE=
-X-Received: by 2002:a05:6402:b85:b0:44e:dad7:3e24 with SMTP id
- cf5-20020a0564020b8500b0044edad73e24mr9632743edb.264.1663951876319; Fri, 23
- Sep 2022 09:51:16 -0700 (PDT)
+        Fri, 23 Sep 2022 13:03:00 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545231280DA
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 10:02:59 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28NGBTAZ029695;
+        Fri, 23 Sep 2022 17:02:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=s/JEjG7pAiSMB9sBc/hxgQqBlK3p9bTRyU2+Lj+BgGI=;
+ b=fi04GkShYElKiBAYJ5lb4Jwb2JE3S1/igSl6nIY4LqEVqJ6tW3cq09C3l7p+0gv+Nsv2
+ m5Q/IVk7iCiexrmtNQmyDpp7FIBnf2Z4P0ufSroA6zYd9kLvaMRyqFvhUamC16ZFnh7G
+ 4HgOX1nyY2JYt//t4xzJMszne0VQI58LpPWby6/YJwyZSVn3mKJM3oyx4MFZXlJJQXev
+ +igMdjimlhvTsTO7/DgN0XYTR+ZxRDe2V1RzgKLO2Qrvney+g0Ewq4oRKA6wOtbihi2m
+ ZwPUvaky9okSNrOIAsBwyl1mMxEyN4tzw4hTLSTdcESv6CGKPwszQ/IRCsKubuI157Kc fA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3js9vusgvd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 23 Sep 2022 17:02:53 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28NH2qmg010911
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 23 Sep 2022 17:02:52 GMT
+Received: from adisi-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Fri, 23 Sep 2022 10:02:50 -0700
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: [PATCH] wifi: ath11k: stop tx queues immediately upon firmware exit
+Date:   Fri, 23 Sep 2022 22:32:35 +0530
+Message-ID: <20220923170235.18873-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20220923093806.3108119-1-ruanjinjie@huawei.com>
-In-Reply-To: <20220923093806.3108119-1-ruanjinjie@huawei.com>
-From:   Franky Lin <franky.lin@broadcom.com>
-Date:   Fri, 23 Sep 2022 09:50:49 -0700
-Message-ID: <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
-Subject: Re: [PATCH -next] wifi: brcmfmac: pcie: add missing
- pci_disable_device() in brcmf_pcie_get_resource()
-To:     ruanjinjie <ruanjinjie@huawei.com>
-Cc:     aspriel@gmail.com, hante.meuleman@broadcom.com, kvalo@kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, marcan@marcan.st, linus.walleij@linaro.org,
-        rmk+kernel@armlinux.org.uk, soontak.lee@cypress.com,
-        linux-wireless@vger.kernel.org, SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000087dedb05e95afc95"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: E7V415q33AT__ERYzlPofA_BxPYNB2RU
+X-Proofpoint-GUID: E7V415q33AT__ERYzlPofA_BxPYNB2RU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-23_06,2022-09-22_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
+ suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=887
+ impostorscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209230110
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000087dedb05e95afc95
-Content-Type: text/plain; charset="UTF-8"
+Currently, recovery flag is set immediately upon firmware
+exit but tx queues are stopped once firmware arrives back
+and is ready which is during ath11k_core_restart. Once
+ieee80211 hw restart is completed, tx queues are resumed.
+If during the time delta between firmware exit and firmware
+ready, mac80211 send packets, currently ath11k will drop it
+since recovery flag will be set. But warning prints will
+come -
+  "ath11k c000000.wifi: failed to transmit frame -108"
 
-On Fri, Sep 23, 2022 at 2:42 AM ruanjinjie <ruanjinjie@huawei.com> wrote:
->
-> Add missing pci_disable_device() if brcmf_pcie_get_resource() fails.
+If more tx packets are there, this could lead to flooding
+of above print.
 
-Did you encounter any issue because of the absensent
-pci_disable_device? A bit more context will be very helpful.
+However, actually tx queues should be stopped immediately
+when firmware leaves. This will prevent packets to get
+dropped when firmware is recovering.
 
->
-> Signed-off-by: ruanjinjie <ruanjinjie@huawei.com>
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index f98641bb1528..25fa69793d86 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -1725,7 +1725,8 @@ static int brcmf_pcie_get_resource(struct brcmf_pciedev_info *devinfo)
->         if ((bar1_size == 0) || (bar1_addr == 0)) {
->                 brcmf_err(bus, "BAR1 Not enabled, device size=%ld, addr=%#016llx\n",
->                           bar1_size, (unsigned long long)bar1_addr);
-> -               return -EINVAL;
-> +               err = -EINVAL;
-> +               goto err_disable;
->         }
->
->         devinfo->regs = ioremap(bar0_addr, BRCMF_PCIE_REG_MAP_SIZE);
-> @@ -1734,7 +1735,8 @@ static int brcmf_pcie_get_resource(struct brcmf_pciedev_info *devinfo)
->         if (!devinfo->regs || !devinfo->tcm) {
->                 brcmf_err(bus, "ioremap() failed (%p,%p)\n", devinfo->regs,
->                           devinfo->tcm);
-> -               return -EINVAL;
-> +               err = -EINVAL;
-> +               goto err_disable;
->         }
->         brcmf_dbg(PCIE, "Phys addr : reg space = %p base addr %#016llx\n",
->                   devinfo->regs, (unsigned long long)bar0_addr);
-> @@ -1743,6 +1745,9 @@ static int brcmf_pcie_get_resource(struct brcmf_pciedev_info *devinfo)
->                   (unsigned int)bar1_size);
->
->         return 0;
-> +err_disable:
-> +       pci_disable_device(pdev);
+Add fix to stop tx queues immediately after firmware exit.
 
-Isn't brcmf_pcie_release_resource() a better choice which also unmap
-the io if any was mapped?
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
 
-Regards,
-- Franky
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 5 +----
+ drivers/net/wireless/ath/ath11k/core.h | 1 +
+ drivers/net/wireless/ath/ath11k/qmi.c  | 3 +++
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-> +       return err;
->  }
->
->
-> --
-> 2.25.1
->
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 9894f908cc35..a50b748473cb 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1634,7 +1634,7 @@ static void ath11k_update_11d(struct work_struct *work)
+ 	}
+ }
+ 
+-static void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab)
++void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab)
+ {
+ 	struct ath11k *ar;
+ 	struct ath11k_pdev *pdev;
+@@ -1723,9 +1723,6 @@ static void ath11k_core_restart(struct work_struct *work)
+ 	struct ath11k_base *ab = container_of(work, struct ath11k_base, restart_work);
+ 	int ret;
+ 
+-	if (!ab->is_reset)
+-		ath11k_core_pre_reconfigure_recovery(ab);
+-
+ 	ret = ath11k_core_reconfigure_on_crash(ab);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to reconfigure driver on crash recovery\n");
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index b6246a2f2496..6c950608bb44 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -1146,6 +1146,7 @@ int ath11k_core_check_smbios(struct ath11k_base *ab);
+ void ath11k_core_halt(struct ath11k *ar);
+ int ath11k_core_resume(struct ath11k_base *ab);
+ int ath11k_core_suspend(struct ath11k_base *ab);
++void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab);
+ 
+ const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
+ 						    const char *filename);
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 51de2208b789..775dfb5eb1a7 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -3158,6 +3158,9 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
+ 		case ATH11K_QMI_EVENT_SERVER_EXIT:
+ 			set_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+ 			set_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags);
++
++			if (!ab->is_reset)
++				ath11k_core_pre_reconfigure_recovery(ab);
+ 			break;
+ 		case ATH11K_QMI_EVENT_REQUEST_MEM:
+ 			ret = ath11k_qmi_event_mem_request(qmi);
 
---00000000000087dedb05e95afc95
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+base-commit: 67552c0328709b82bbfc4b52f1e83354c2d21561
+-- 
+2.17.1
 
-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
-BZrfei1PlO2m9d3AfpeD7Y1pVL1SrZC1yvhXeDO463M8rGKz/l8XZrJY1P6qU8U6QwxjFgXr5o5B
-9N6Yw9IhwXhZI3m6F1pe3mMdZ9cFC3xS3Ke+awIDAQABo4IB2DCCAdQwDgYDVR0PAQH/BAQDAgWg
-MIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEGCCsGAQUFBzABhjVo
-dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMDBNBgNV
-HSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2ln
-bi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6hjhodHRwOi8vY3Js
-Lmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNybDAiBgNVHREEGzAZ
-gRdmcmFua3kubGluQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAW
-gBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU0v383z+6bcUXkukYi4fq7VBiM6swDQYJ
-KoZIhvcNAQELBQADggEBABUIiuJPuLq9vbb6/7d0VJ6LS6osA6kNs0Tph9iEX49TxPQJtvA97oy4
-AgPCjWNiAMLkmu+kNQKlNZG3Vl3S4A+VMOogB6aKtiLlz73Cs0sPgpohw6GSS41TKVt17PrAzo0o
-/xuXczzIbtvrpoi6OnGlsW4aVCqQSOqKUamG8wU8u3/h+iPM1rr4z6ZHdyrllNi+ukH/Z6Dpn6wF
-ATUa+n5ReFZpli4TzcqVHw7i+OaB23TMHCwed4OPFm0H3zcCJgVtgt3z95IPak7bBuYLAGMT2c3K
-Xkdn27MnpydqZw5mnP970DgyUMHXY3Jvj65UAVioJUr4LkNBL7Tsk/6q0FExggJtMIICaQIBATBr
-MFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9i
-YWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxcbvtv+NUbtJoPDWwwDQYJYIZI
-AWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIMqIok+aoYNZ5dfdTIrDWkSUC7DyXu63PobYQiV9
-8+hrMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDkyMzE2NTEx
-NlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
-AjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkq
-hkiG9w0BAQEFAASCAQC/VWfubgjSafqEvZW6B6zAiAiZjv7PpTHNOF0QDyx7ULmwPW/eBJVf9dsE
-RPTqZAExB/XooZ2nyMBMmdq3oD0AWudVS5c7e7GQjN6iTLHm0hoZ8t46KNVPR4EeH8GYyUwBhpcs
-OeyJCmrGvj9TAtY1QFYsxb8nsWWLWHN8FSRgCxrF3oP5GuXZje12trajT2Sw5ZqOb9vTUfvStQDB
-owvrS5ZNXQ0csJlGmYFST3kC8eQZhsFOCJo64DWYKoUG9PZN38RLa7ARP03DhVTpEauQmjk1a2Rm
-zf7sAdcY5fKWcj1oomqfryx+BYpt/QBw/WH+2BrBPVotWwDPYkmsrz7a
---00000000000087dedb05e95afc95--
