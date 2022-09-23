@@ -2,113 +2,233 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6355E7197
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 03:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8FC35E71A5
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 03:56:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbiIWBxu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Sep 2022 21:53:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55334 "EHLO
+        id S231312AbiIWB4A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Sep 2022 21:56:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbiIWBxt (ORCPT
+        with ESMTP id S230042AbiIWBz6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Sep 2022 21:53:49 -0400
-X-Greylist: delayed 63 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 22 Sep 2022 18:53:48 PDT
-Received: from smtp14.infineon.com (smtp14.infineon.com [IPv6:2a00:18f0:1e00:4::6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449C210BB16
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 18:53:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1663898028; x=1695434028;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=56P1Ub0+ik13tMcQKH15COHthy7QBLkDpcZ+w9V1b1I=;
-  b=p1BWkp9VAo7t7SEgSF5lc6/N/qrni5w3WVT0gWGpEchSWmH3EMmdOIYx
-   ed6lB73MbUt85LfqEX/hcx+qt7u6ot8sNYDywQzJ7kNxLvtkOtROgPUiu
-   Ip9jjK1PzeLMt+8ShzfYyJNHsCHfsZaA89F8Wpsqy9MxMAtMuAj4P4fom
-   0=;
-X-SBRS: None
-X-IronPort-AV: E=McAfee;i="6500,9779,10478"; a="142461621"
-X-IronPort-AV: E=Sophos;i="5.93,337,1654552800"; 
-   d="scan'208";a="142461621"
-Received: from unknown (HELO mucxv003.muc.infineon.com) ([172.23.11.20])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 03:52:43 +0200
-Received: from MUCSE819.infineon.com (MUCSE819.infineon.com [172.23.29.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mucxv003.muc.infineon.com (Postfix) with ESMTPS;
-        Fri, 23 Sep 2022 03:52:43 +0200 (CEST)
-Received: from MUCSE835.infineon.com (172.23.7.107) by MUCSE819.infineon.com
- (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 23 Sep
- 2022 03:52:43 +0200
-Received: from [10.234.36.68] (10.234.36.68) by MUCSE835.infineon.com
- (172.23.7.107) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 23 Sep
- 2022 03:52:40 +0200
-Message-ID: <d390462d-1cd2-fc3f-5b0c-bdcd332ed0bc@infineon.com>
-Date:   Fri, 23 Sep 2022 09:52:38 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH 4/5] brcmfmac: Update SSID of hidden AP while informing
- its bss to cfg80211 layer
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <Double.Lo@infineon.com>
-References: <20220914033620.12742-1-ian.lin@infineon.com>
- <20220914033620.12742-5-ian.lin@infineon.com> <87tu506mre.fsf@kernel.org>
-From:   "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com>
-In-Reply-To: <87tu506mre.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.234.36.68]
-X-ClientProxiedBy: MUCSE822.infineon.com (172.23.29.53) To
- MUCSE835.infineon.com (172.23.7.107)
-X-Spam-Status: No, score=-9.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 22 Sep 2022 21:55:58 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F34AD1EAD
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 18:55:57 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-3452b545544so93758857b3.3
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 18:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date;
+        bh=sxnOOJBAwzgFm5fMQp8qgSoOX1cblrvpJPOf5XuKf6w=;
+        b=jNBPxpoFI7X8mM2ukhAI1QnyzA2JjatZpykqv/H43rTeJe3Jk4MsL+1U6oBGYGmUKG
+         dDAL2g27js2wZ/WHdF1iglXf/3EPQt1ET3yYuRTgaTo/+1duTV3fmCwJ3jZhjUqlW+HT
+         IK4D+u5W0O5WOsxxsJxXlzISKeOvlLD5dvVjb8RpymMDGr7b5QtKLvZpsskcDrfGmShm
+         MqNY2utsbPGXpW1qleon9dFCLns7opKsM8GRCrhIQxqi70u+t7YQk2DLF4AJd+PjsdZt
+         xmOBgZ+glf5h0hHR/kK4KXdxCZ+eOlQ1vLKtE/tS6I7lpWssbGQgub5KwleZu4LGtEJ+
+         CXxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=sxnOOJBAwzgFm5fMQp8qgSoOX1cblrvpJPOf5XuKf6w=;
+        b=w6oFw01LUXVAKOhOjuz6KgdGwc6Xbi4GEY+vGJgc76njB4OjKV/KwC7fyAwyWn81TK
+         9XPZ3R0Wt854Eri6DyRWUj9KBFDBOyBT/gfBzJNTECSxroUtu36W/wKXHzI1dfJGTVFV
+         xnVWUJUU4mHRarQQ1p69TRPBkWRJnLfUVZoAJ3uQQ5rjJ4GapOkqMO6B31EljeNk6RqE
+         3uDArkaarIcyhsS8NKfYbwF5IqomJs3e4JaQeOFontA9J5nNvgjMZ10LaHbrHoxSRRIh
+         H+2TfzCWPR7gnOVurw7Q6qMDd+AERdJF8kceU8GN3gVLqkAdmsS5rJNqH6InwAHKp+lh
+         gpPg==
+X-Gm-Message-State: ACrzQf34Y02CYp5cwxiCumOHPO79JANwiidX/2fKyqvaDGM95Oocj//c
+        47kgIEZchWWAMOsTLS8HGyR5z3EY1pU=
+X-Google-Smtp-Source: AMsMyM6v9uFcUjM7N+ddJsu3jAQN7sp9zpYwtuWZ1jVhLQW5GwtBKyVB4hnOJkxp2k7sN7pOD9v0aXLhPA0=
+X-Received: from jaewan.seo.corp.google.com ([2401:fa00:d:11:9163:eba9:8197:7223])
+ (user=jaewan job=sendgmr) by 2002:a25:d47:0:b0:6b0:29ba:fc58 with SMTP id
+ 68-20020a250d47000000b006b029bafc58mr7200050ybn.496.1663898156586; Thu, 22
+ Sep 2022 18:55:56 -0700 (PDT)
+Date:   Fri, 23 Sep 2022 10:55:50 +0900
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.3.998.g577e59143f-goog
+Message-ID: <20220923015550.1292547-1-jaewan@google.com>
+Subject: [PATCH] iw: info: print PMSR capabilities
+From:   Jaewan Kim <jaewan@google.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Jaewan Kim <jaewan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Print PMSR and FTM capabilities if any.
 
+Signed-off-by: Jaewan Kim <jaewan@google.com>
+---
+ info.c |   3 ++
+ iw.h   |   1 +
+ util.c | 118 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 122 insertions(+)
 
-On 9/22/2022 12:44 PM, Kalle Valo wrote:
-> Ian Lin <ian.lin@infineon.com> writes:
->
->> From: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
->>
->> cfg80211 layer on DUT STA is disconnecting ongoing connection attempt after
->> receiving association response, because cfg80211 layer does not have valid
->> AP bss information. On association response event, brcmfmac communicates
->> the AP bss information to cfg80211 layer, but SSID seem to be empty in AP
->> bss information, and cfg80211 layer prints kernel warning and then
->> disconnects the ongoing connection attempt.
->>
->> SSID is empty in SSID IE, but 'bi->SSID' contains a valid SSID, so
->> updating the SSID for hidden AP while informing its bss information
->> to cfg80211 layer.
->>
->> Signed-off-by: Syed Rafiuddeen <syed.rafiuddeen@infineon.com>
-> Syed's email address in From does not match with s-o-b.
->
->> @@ -3032,6 +3033,12 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
->>        notify_ielen = le32_to_cpu(bi->ie_length);
->>        bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
->>
->> +     ssid = brcmf_parse_tlvs(notify_ie, notify_ielen, WLAN_EID_SSID);
->> +     if (ssid && ssid->data[0] == '\0' && ssid->len == bi->SSID_len) {
->> +             /* Update SSID for hidden AP */
->> +             memcpy((u8 *)ssid->data, bi->SSID, bi->SSID_len);
->> +     }
-> memcpy() takes a void pointer so the cast is not needed.
-There should be a type casting since 'ssid' is a const pointer.
-As you saw there will be build warning in PATCH v2 (sorry I didn't 
-notice that locally)
-I will send PATCH v3 to restore type casting, is that ok?
+diff --git a/info.c b/info.c
+index 21ed07b..d13fc16 100644
+--- a/info.c
++++ b/info.c
+@@ -741,6 +741,9 @@ broken_combination:
+ 			pat->max_pattern_len, pat->max_pkt_offset, rule->max_delay);
+ 	}
+ 
++	if (tb_msg[NL80211_ATTR_PEER_MEASUREMENTS])
++		print_pmsr_capabilities(tb_msg[NL80211_ATTR_PEER_MEASUREMENTS]);
++
+ 	if (tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA])
+ 		printf("\tMaximum associated stations in AP mode: %u\n",
+ 		       nla_get_u16(tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA]));
+diff --git a/iw.h b/iw.h
+index e712c59..0707cb4 100644
+--- a/iw.h
++++ b/iw.h
+@@ -221,6 +221,7 @@ void print_vht_info(__u32 capa, const __u8 *mcs);
+ void print_he_capability(const uint8_t *ie, int len);
+ void print_he_info(struct nlattr *nl_iftype);
+ void print_eht_info(struct nlattr *nl_iftype, int band);
++void print_pmsr_capabilities(const struct nlattr *pmsr_capa);
+ 
+ char *channel_width_name(enum nl80211_chan_width width);
+ const char *iftype_name(enum nl80211_iftype iftype);
+diff --git a/util.c b/util.c
+index 8a2ba10..18f6e71 100644
+--- a/util.c
++++ b/util.c
+@@ -1673,6 +1673,124 @@ void print_he_capability(const uint8_t *ie, int len)
+ 	__print_he_capa(mac_cap, phy_cap - 1, mcs_set, mcs_len, NULL, 0, false);
+ }
+ 
++static void __print_ftm_capability(struct nlattr *ftm_capa)
++{
++#define PRINT_FTM_FLAG(T, NAME) \
++	do { \
++		if (T[NL80211_PMSR_FTM_CAPA_ATTR_##NAME]) \
++			printf("\t\t\t" #NAME "\n"); \
++	} while (0)
++
++#define PRINT_FTM_U8(T, NAME) \
++	do { \
++		if (T[NL80211_PMSR_FTM_CAPA_ATTR_##NAME]) \
++			printf("\t\t\t" #NAME "=\n", \
++				nla_get_u8(T[NL80211_PMSR_FTM_CAPA_ATTR_##NAME])); \
++	} while (0)
++
++	struct nlattr *tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1];
++	int ret;
++
++	printf("\t\tFTM (Fine time measurement or Flight time measurement)\n");
++
++	ret = nla_parse_nested(tb, NL80211_PMSR_FTM_CAPA_ATTR_MAX, ftm_capa,
++			       NULL);
++	if (ret)
++		return;
++
++	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES]) {
++#define PRINT_PREAMBLE(P, V) \
++	do { \
++		if (P | NL80211_PREAMBLE_##V) \
++			printf(#V " "); \
++	} while (0)
++
++		uint32_t preambles =
++			nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES]);
++		printf("\t\t\tPreambles=");
++
++		PRINT_PREAMBLE(preambles, LEGACY);
++		PRINT_PREAMBLE(preambles, HT);
++		PRINT_PREAMBLE(preambles, VHT);
++		PRINT_PREAMBLE(preambles, DMG);
++		printf("\n");
++#undef PRINT_PREAMBLE
++	}
++	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS]) {
++#define PRINT_BANDWIDTH(B, V) \
++	do { \
++		if (B | NL80211_CHAN_WIDTH_##V) \
++			printf(#V " "); \
++	} while (0)
++
++		uint32_t bandwidth =
++			nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS]);
++		printf("\t\t\tBandwidth=");
++		PRINT_BANDWIDTH(bandwidth, 20_NOHT);
++		PRINT_BANDWIDTH(bandwidth, 20);
++		PRINT_BANDWIDTH(bandwidth, 40);
++		PRINT_BANDWIDTH(bandwidth, 80);
++		PRINT_BANDWIDTH(bandwidth, 80P80);
++		PRINT_BANDWIDTH(bandwidth, 160);
++		PRINT_BANDWIDTH(bandwidth, 5);
++		PRINT_BANDWIDTH(bandwidth, 10);
++		PRINT_BANDWIDTH(bandwidth, 1);
++		PRINT_BANDWIDTH(bandwidth, 2);
++		PRINT_BANDWIDTH(bandwidth, 4);
++		PRINT_BANDWIDTH(bandwidth, 8);
++		PRINT_BANDWIDTH(bandwidth, 16);
++		PRINT_BANDWIDTH(bandwidth, 320);
++		printf("\n");
++#undef PRINT_BANDWIDTH
++	}
++	PRINT_FTM_U8(tb, MAX_BURSTS_EXPONENT);
++	PRINT_FTM_U8(tb, MAX_FTMS_PER_BURST);
++	PRINT_FTM_FLAG(tb, ASAP);
++	PRINT_FTM_FLAG(tb, NON_ASAP);
++	PRINT_FTM_FLAG(tb, REQ_LCI);
++	PRINT_FTM_FLAG(tb, REQ_CIVICLOC);
++	PRINT_FTM_FLAG(tb, TRIGGER_BASED);
++	PRINT_FTM_FLAG(tb, NON_TRIGGER_BASED);
++
++#undef PRINT_FTM_U8
++#undef PRINT_FTM_FLAG
++}
++
++void print_pmsr_capabilities(struct nlattr *pmsr_capa)
++{
++	struct nlattr *tb[NL80211_PMSR_ATTR_MAX + 1];
++	struct nlattr *nla;
++	int size;
++	int ret;
++
++	printf("\tPeer measurement (PMSR)\n");
++	ret = nla_parse_nested(tb, NL80211_PMSR_ATTR_MAX, pmsr_capa, NULL);
++	if (ret) {
++		printf("\t\tMalformed PMSR\n");
++		return;
++	}
++
++	if (tb[NL80211_PMSR_ATTR_MAX_PEERS])
++		printf("\t\tMax peers=%d\n",
++		       nla_get_u32(tb[NL80211_PMSR_ATTR_MAX_PEERS]));
++	if (tb[NL80211_PMSR_ATTR_REPORT_AP_TSF])
++		printf("\t\tREPORT_AP_TSF\n");
++	if (tb[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR])
++		printf("\t\tRANDOMIZE_MAC_ADDR\n");
++
++	if (tb[NL80211_PMSR_ATTR_TYPE_CAPA]) {
++		nla_for_each_nested(nla, tb[NL80211_PMSR_ATTR_TYPE_CAPA], size) {
++			switch (nla_type(nla)) {
++			case NL80211_PMSR_TYPE_FTM:
++				__print_ftm_capability(nla);
++				break;
++			}
++		}
++	} else {
++		printf("\t\tPMSR type is missing\n");
++	}
++}
++
+ void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
+ {
+ 	size_t i;
+-- 
+2.37.3.998.g577e59143f-goog
 
