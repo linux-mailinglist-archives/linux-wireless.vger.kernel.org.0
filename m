@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 034FF5E7466
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 08:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9217D5E7464
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 08:54:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230074AbiIWGyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Sep 2022 02:54:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56076 "EHLO
+        id S230042AbiIWGyP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Sep 2022 02:54:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229866AbiIWGyN (ORCPT
+        with ESMTP id S229804AbiIWGyN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 23 Sep 2022 02:54:13 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 490C9128A3D
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D73EE128A35
         for <linux-wireless@vger.kernel.org>; Thu, 22 Sep 2022 23:54:07 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28N6rTcF5020779, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28N6rTcF5020779
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28N6rUFa9020785, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28N6rUFa9020785
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 23 Sep 2022 14:53:29 +0800
+        Fri, 23 Sep 2022 14:53:30 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 23 Sep 2022 14:53:52 +0800
+ 15.1.2375.31; Fri, 23 Sep 2022 14:53:54 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 23 Sep
- 2022 14:53:52 +0800
+ 2022 14:53:53 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 0/9] wifi: rtw89: adjust shared code to support 8852BE
-Date:   Fri, 23 Sep 2022 14:53:02 +0800
-Message-ID: <20220923065311.123356-1-pkshih@realtek.com>
+Subject: [PATCH 1/9] wifi: rtw89: pci: mask out unsupported TX channels
+Date:   Fri, 23 Sep 2022 14:53:03 +0800
+Message-ID: <20220923065311.123356-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220923065311.123356-1-pkshih@realtek.com>
+References: <20220923065311.123356-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -53,10 +55,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMjMgpFekyCAwMzozMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,41 +67,165 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-8852BE is a WiFi 6 chip. Its features are similar to 8852AE, but only
-support single one channel context, so mask out unsupported MAC and PCI
-channels for 8852BE. First three patches do this thing.
+8852BE doesn't support some TX channels, so mask them out, or it access
+undefined registers.
 
-The remaining patches are to adjust other specific things for 8852BE.
-
-Ping-Ke Shih (9):
-  wifi: rtw89: pci: mask out unsupported TX channels
-  wifi: rtw89: mac: define DMA channel mask to avoid unsupported
-    channels
-  wifi: rtw89: add DMA busy checking bits to chip info
-  wifi: rtw89: 8852b: implement chip_ops::{enable,disable}_bb_rf
-  wifi: rtw89: pci: add to do PCI auto calibration
-  wifi: rtw89: pci: set power cut closed for 8852be
-  wifi: rtw89: mac: correct register of report IMR
-  wifi: rtw89: check DLE FIFO size with reserved size
-  wifi: rtw89: 8852b: configure DLE mem
-
- drivers/net/wireless/realtek/rtw89/core.c     |  4 +-
- drivers/net/wireless/realtek/rtw89/core.h     |  5 +-
- drivers/net/wireless/realtek/rtw89/mac.c      | 47 ++++++++--
- drivers/net/wireless/realtek/rtw89/mac.h      | 15 ++-
- drivers/net/wireless/realtek/rtw89/pci.c      | 46 +++++++--
- drivers/net/wireless/realtek/rtw89/pci.h      | 13 ++-
- drivers/net/wireless/realtek/rtw89/reg.h      | 11 ++-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  3 +
- .../net/wireless/realtek/rtw89/rtw8852ae.c    |  3 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 94 +++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8852be.c    | 25 +++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  7 +-
- .../net/wireless/realtek/rtw89/rtw8852ce.c    |  3 +-
- 13 files changed, 252 insertions(+), 24 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852b.c
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/pci.c      | 16 ++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/pci.h      |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852be.c    | 19 +++++++++++++++++++
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    |  1 +
+ 5 files changed, 38 insertions(+)
  create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852be.c
 
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 3e8e477d32f79..002d3ce0e35b2 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1093,12 +1093,15 @@ static void __pci_flush_txch(struct rtw89_dev *rtwdev, u8 txch, bool drop)
+ static void __rtw89_pci_ops_flush_txchs(struct rtw89_dev *rtwdev, u32 txchs,
+ 					bool drop)
+ {
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	u8 i;
+ 
+ 	for (i = 0; i < RTW89_TXCH_NUM; i++) {
+ 		/* It may be unnecessary to flush FWCMD queue. */
+ 		if (i == RTW89_TXCH_CH12)
+ 			continue;
++		if (info->tx_dma_ch_mask & BIT(i))
++			continue;
+ 
+ 		if (txchs & BIT(i))
+ 			__pci_flush_txch(rtwdev, i, drop);
+@@ -1377,6 +1380,7 @@ static const struct rtw89_pci_bd_ram bd_ram_table[RTW89_TXCH_NUM] = {
+ static void rtw89_pci_reset_trx_rings(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	struct rtw89_pci_tx_ring *tx_ring;
+ 	struct rtw89_pci_rx_ring *rx_ring;
+ 	struct rtw89_pci_dma_ring *bd_ring;
+@@ -1388,6 +1392,9 @@ static void rtw89_pci_reset_trx_rings(struct rtw89_dev *rtwdev)
+ 	int i;
+ 
+ 	for (i = 0; i < RTW89_TXCH_NUM; i++) {
++		if (info->tx_dma_ch_mask & BIT(i))
++			continue;
++
+ 		tx_ring = &rtwpci->tx_rings[i];
+ 		bd_ring = &tx_ring->bd_ring;
+ 		bd_ram = &bd_ram_table[i];
+@@ -1431,12 +1438,15 @@ static void rtw89_pci_release_tx_ring(struct rtw89_dev *rtwdev,
+ static void rtw89_pci_ops_reset(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	int txch;
+ 
+ 	rtw89_pci_reset_trx_rings(rtwdev);
+ 
+ 	spin_lock_bh(&rtwpci->trx_lock);
+ 	for (txch = 0; txch < RTW89_TXCH_NUM; txch++) {
++		if (info->tx_dma_ch_mask & BIT(txch))
++			continue;
+ 		if (txch == RTW89_TXCH_CH12) {
+ 			rtw89_pci_release_fwcmd(rtwdev, rtwpci,
+ 						skb_queue_len(&rtwpci->h2c_queue), true);
+@@ -2722,10 +2732,13 @@ static void rtw89_pci_free_tx_rings(struct rtw89_dev *rtwdev,
+ 				    struct pci_dev *pdev)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	struct rtw89_pci_tx_ring *tx_ring;
+ 	int i;
+ 
+ 	for (i = 0; i < RTW89_TXCH_NUM; i++) {
++		if (info->tx_dma_ch_mask & BIT(i))
++			continue;
+ 		tx_ring = &rtwpci->tx_rings[i];
+ 		rtw89_pci_free_tx_wd_ring(rtwdev, pdev, tx_ring);
+ 		rtw89_pci_free_tx_ring(rtwdev, pdev, tx_ring);
+@@ -2913,6 +2926,7 @@ static int rtw89_pci_alloc_tx_rings(struct rtw89_dev *rtwdev,
+ 				    struct pci_dev *pdev)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	struct rtw89_pci_tx_ring *tx_ring;
+ 	u32 desc_size;
+ 	u32 len;
+@@ -2920,6 +2934,8 @@ static int rtw89_pci_alloc_tx_rings(struct rtw89_dev *rtwdev,
+ 	int ret;
+ 
+ 	for (i = 0; i < RTW89_TXCH_NUM; i++) {
++		if (info->tx_dma_ch_mask & BIT(i))
++			continue;
+ 		tx_ring = &rtwpci->tx_rings[i];
+ 		desc_size = sizeof(struct rtw89_pci_tx_bd_32);
+ 		len = RTW89_PCI_TXBD_NUM_MAX;
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index af6f6d5c47706..391058de47ec5 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -760,6 +760,7 @@ struct rtw89_pci_info {
+ 
+ 	u32 rpwm_addr;
+ 	u32 cpwm_addr;
++	u32 tx_dma_ch_mask;
+ 	const struct rtw89_pci_bd_idx_addr *bd_idx_addr_low_power;
+ 	const struct rtw89_pci_ch_dma_addr_set *dma_addr_set;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+index d600100db9eb4..48485bd9c149f 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+@@ -41,6 +41,7 @@ static const struct rtw89_pci_info rtw8852a_pci_info = {
+ 
+ 	.rpwm_addr		= R_AX_PCIE_HRPWM,
+ 	.cpwm_addr		= R_AX_CPWM,
++	.tx_dma_ch_mask		= 0,
+ 	.bd_idx_addr_low_power	= NULL,
+ 	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set,
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852be.c b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
+new file mode 100644
+index 0000000000000..4590535841be3
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/* Copyright(c) 2020-2022  Realtek Corporation
++ */
++
++#include <linux/module.h>
++#include <linux/pci.h>
++
++#include "pci.h"
++#include "reg.h"
++
++static const struct rtw89_pci_info rtw8852b_pci_info = {
++	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH4) | BIT(RTW89_TXCH_ACH5) |
++				  BIT(RTW89_TXCH_ACH6) | BIT(RTW89_TXCH_ACH7) |
++				  BIT(RTW89_TXCH_CH10) | BIT(RTW89_TXCH_CH11),
++};
++
++MODULE_AUTHOR("Realtek Corporation");
++MODULE_DESCRIPTION("Realtek 802.11ax wireless 8852BE driver");
++MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+index be6b4e4d64914..c7370f5df8b54 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+@@ -50,6 +50,7 @@ static const struct rtw89_pci_info rtw8852c_pci_info = {
+ 
+ 	.rpwm_addr		= R_AX_PCIE_HRPWM_V1,
+ 	.cpwm_addr		= R_AX_PCIE_CRPWM,
++	.tx_dma_ch_mask		= 0,
+ 	.bd_idx_addr_low_power	= &rtw8852c_bd_idx_addr_low_power,
+ 	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set_v1,
+ 
 -- 
 2.25.1
 
