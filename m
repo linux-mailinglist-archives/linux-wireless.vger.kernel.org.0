@@ -2,139 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DD45E7E66
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 17:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56FE85E7F41
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Sep 2022 18:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232473AbiIWP3t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Sep 2022 11:29:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49662 "EHLO
+        id S232285AbiIWQFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Sep 2022 12:05:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232601AbiIWP3p (ORCPT
+        with ESMTP id S231805AbiIWQFn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Sep 2022 11:29:45 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F6FA23BC9
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 08:29:42 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28NDv06n010009;
-        Fri, 23 Sep 2022 15:29:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=QRYSoXvcppTAlsEtQ+icFMv2LLPQFLzpbaoyE9skujU=;
- b=JpTXzaf5JhgVB87RZ8fe8SDKablcwgWu9Gtcmux7UVbcwc7TUQXvmANP4rEqmWaSFCQI
- +Jy7TsfFaOV0A83vZUUSOX5KebDXUYoj59KlM4euO+r5mKOZUbev7MYGHtY+NotWodj4
- 0FcDOva3VxmTDgKoBOmSJHGxwTpFvF1aL+ysJFa/G3sXxg3mMgY9EMZ0G0ElHoBeGUVu
- dWBteqdGS2irqW5QHq2GjK61+zdCCp+HlsJaFDMvlY6WZb2BXQ9BYDbOT2ecBlZsNtkF
- Mcnh0yJKhHxeRT1NEDu0n/pJx64EDw8ej8DuazAoTPRflYkXge33KHYXK7m8GLP0L9vu zA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3js9vusae9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Sep 2022 15:29:36 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28NFTZCQ031627
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Sep 2022 15:29:35 GMT
-Received: from [10.110.41.101] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 23 Sep
- 2022 08:29:35 -0700
-Message-ID: <ff7e72ae-0431-b568-32fc-7b1cbf250e20@quicinc.com>
-Date:   Fri, 23 Sep 2022 08:29:34 -0700
+        Fri, 23 Sep 2022 12:05:43 -0400
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360D5AE235
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 09:05:41 -0700 (PDT)
+Received: by mail-il1-f197.google.com with SMTP id f4-20020a056e020b4400b002f6681cca5bso509267ilu.14
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 09:05:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=TNsKpikZ1ZBjh21h5HyuhGoaC1RZtRCLwpayxbe9ub8=;
+        b=CUrCaIyVQ2dg946BVk1Cn209hhj+ShPv3LX1C5yE277zpI2SbiB/cB5yRe2ohHIvD7
+         y25pwA6JdiPczm77/91IXcdpXIUiSdvJgmM8eHrrcdZCySleA5q5zssc40tUgCXbcP0j
+         /505Q/bxuP23fSiSlQjRKsfwIw8C+HBea95rwu9BWrdfniaA8k6VwSEUQViVm5B0pUbC
+         Srd//Xuy9UtO01nAgKr8MimvefU9tSESj7U4hpZF/nWLXJW0iz7iav2ToiqqEpi4p7JG
+         yuKyORdew2GQm6sF+NSJt0MW6WDZW09BgIo5sGW2g0YZKr9WtGEnzP4kRqj6Y8kqCxw2
+         d2AQ==
+X-Gm-Message-State: ACrzQf3KbTDOL8nOY4qAg3w4AioM/JxiY7q6tJ1T6pg3AC26yzARwc+f
+        SyWPVneHsuUK2HM4P2T73nj0LZH5Q2xs9evKBPxZF5ojianN
+X-Google-Smtp-Source: AMsMyM5C06VlRfRAIQIzUtiJevoUyui+Rnb+0VRKkrQ6jUfUuOn1evUbPQY6qFZvNdYweJ3XVYoj7ifHxCX/u+zywIjKaayteZGB
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH 4/5] brcmfmac: Update SSID of hidden AP while informing
- its bss to cfg80211 layer
-Content-Language: en-US
-To:     "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <Double.Lo@infineon.com>
-References: <20220914033620.12742-1-ian.lin@infineon.com>
- <20220914033620.12742-5-ian.lin@infineon.com> <87tu506mre.fsf@kernel.org>
- <d390462d-1cd2-fc3f-5b0c-bdcd332ed0bc@infineon.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <d390462d-1cd2-fc3f-5b0c-bdcd332ed0bc@infineon.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: VnIyLQwNVCuhsKaCxrVNeIyQWWYZDMgl
-X-Proofpoint-GUID: VnIyLQwNVCuhsKaCxrVNeIyQWWYZDMgl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-23_04,2022-09-22_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=812
- impostorscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209230100
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6e02:1aa3:b0:2f1:d2a4:c7c3 with SMTP id
+ l3-20020a056e021aa300b002f1d2a4c7c3mr4416624ilv.292.1663949140447; Fri, 23
+ Sep 2022 09:05:40 -0700 (PDT)
+Date:   Fri, 23 Sep 2022 09:05:40 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000070db2005e95a5984@google.com>
+Subject: [syzbot] WARNING in wireless_send_event
+From:   syzbot <syzbot+473754e5af963cf014cf@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/22/2022 6:52 PM, Lin Ian (CSSITB CSS ICW SW WFS / EE) wrote:
-> 
-> 
-> On 9/22/2022 12:44 PM, Kalle Valo wrote:
->> Ian Lin <ian.lin@infineon.com> writes:
->>
->>> From: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
->>>
->>> cfg80211 layer on DUT STA is disconnecting ongoing connection attempt 
->>> after
->>> receiving association response, because cfg80211 layer does not have 
->>> valid
->>> AP bss information. On association response event, brcmfmac communicates
->>> the AP bss information to cfg80211 layer, but SSID seem to be empty 
->>> in AP
->>> bss information, and cfg80211 layer prints kernel warning and then
->>> disconnects the ongoing connection attempt.
->>>
->>> SSID is empty in SSID IE, but 'bi->SSID' contains a valid SSID, so
->>> updating the SSID for hidden AP while informing its bss information
->>> to cfg80211 layer.
->>>
->>> Signed-off-by: Syed Rafiuddeen <syed.rafiuddeen@infineon.com>
->> Syed's email address in From does not match with s-o-b.
->>
->>> @@ -3032,6 +3033,12 @@ static s32 brcmf_inform_single_bss(struct 
->>> brcmf_cfg80211_info *cfg,
->>>        notify_ielen = le32_to_cpu(bi->ie_length);
->>>        bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
->>>
->>> +     ssid = brcmf_parse_tlvs(notify_ie, notify_ielen, WLAN_EID_SSID);
->>> +     if (ssid && ssid->data[0] == '\0' && ssid->len == bi->SSID_len) {
->>> +             /* Update SSID for hidden AP */
->>> +             memcpy((u8 *)ssid->data, bi->SSID, bi->SSID_len);
->>> +     }
->> memcpy() takes a void pointer so the cast is not needed.
-> There should be a type casting since 'ssid' is a const pointer.
-> As you saw there will be build warning in PATCH v2 (sorry I didn't 
-> notice that locally)
-> I will send PATCH v3 to restore type casting, is that ok?
-> 
+Hello,
 
-writing through a const pointer seems broken.
-Should you instead remove the const qualifier from the declaration?
-const struct brcmf_tlv *ssid = NULL;
+syzbot found the following issue on:
 
-if the problem is that brcmf_parse_tlvs() itself returns a const 
-pointer, then I'd typecast during the assignment instead of the memcpy() 
-call.
+HEAD commit:    483fed3b5dc8 Add linux-next specific files for 20220921
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=1154ddd5080000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=849cb9f70f15b1ba
+dashboard link: https://syzkaller.appspot.com/bug?extid=473754e5af963cf014cf
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=157c196f080000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11f12618880000
 
-also note the NULL initializer is unnecessary since it is always 
-overwritten by the call to brcmf_parse_tlvs()
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1cb3f4618323/disk-483fed3b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/cc02cb30b495/vmlinux-483fed3b.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+473754e5af963cf014cf@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+memcpy: detected field-spanning write (size 8) of single field "&compat_event->pointer" at net/wireless/wext-core.c:623 (size 4)
+WARNING: CPU: 0 PID: 3607 at net/wireless/wext-core.c:623 wireless_send_event+0xab5/0xca0 net/wireless/wext-core.c:623
+Modules linked in:
+CPU: 1 PID: 3607 Comm: syz-executor659 Not tainted 6.0.0-rc6-next-20220921-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/16/2022
+RIP: 0010:wireless_send_event+0xab5/0xca0 net/wireless/wext-core.c:623
+Code: fa ff ff e8 cd b9 db f8 b9 04 00 00 00 4c 89 e6 48 c7 c2 e0 56 11 8b 48 c7 c7 20 56 11 8b c6 05 94 8e 2a 05 01 e8 b8 b0 a6 00 <0f> 0b e9 9b fa ff ff e8 6f ef 27 f9 e9 a6 fd ff ff e8 c5 ef 27 f9
+RSP: 0018:ffffc90003b2fbc0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff888021d157c0 RSI: ffffffff81620348 RDI: fffff52000765f6a
+RBP: ffff88801e15c780 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 20676e696e6e6170 R12: 0000000000000008
+R13: ffff888025a72640 R14: ffff8880225d402c R15: ffff8880225d4034
+FS:  0000555556bd9300(0000) GS:ffff8880b9b00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbda677dfb8 CR3: 000000007b976000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ioctl_standard_call+0x155/0x1f0 net/wireless/wext-core.c:1022
+ wireless_process_ioctl+0xc8/0x4c0 net/wireless/wext-core.c:955
+ wext_ioctl_dispatch net/wireless/wext-core.c:988 [inline]
+ wext_ioctl_dispatch net/wireless/wext-core.c:976 [inline]
+ wext_handle_ioctl+0x26b/0x280 net/wireless/wext-core.c:1049
+ sock_ioctl+0x285/0x640 net/socket.c:1220
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fbda6736af9
+Code: 28 c3 e8 2a 14 00 00 66 2e 0f 1f 84 00 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd45e80138 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fbda6736af9
+RDX: 0000000020000000 RSI: 0000000000008b04 RDI: 0000000000000003
+RBP: 00007fbda66faca0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fbda66fad30
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
