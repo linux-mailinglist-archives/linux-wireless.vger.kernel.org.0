@@ -2,92 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0BB5E86C2
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 02:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C4105E86D3
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 02:53:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbiIXAYh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Sep 2022 20:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33354 "EHLO
+        id S231844AbiIXAx3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Sep 2022 20:53:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230495AbiIXAYg (ORCPT
+        with ESMTP id S229556AbiIXAx2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Sep 2022 20:24:36 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD82A389B
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 17:24:32 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.124])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D66B91A0073;
-        Sat, 24 Sep 2022 00:24:30 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id AB5DB940068;
-        Sat, 24 Sep 2022 00:24:30 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 35E6913C2B0;
-        Fri, 23 Sep 2022 17:24:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 35E6913C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1663979070;
-        bh=x89TF8XAFwx6ls3jyjW9Zls45vPros82QHqiL8XYJWU=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=ZWCJPImNo/BokmLTcqCuSoyhRfqQcMjTB1ehU6MSt/vIPE0wH6upRkccDMKl0hj+P
-         U7rFcgrnNiElEswAS9ydSOxIpF3S0pS36UuQK3z3o2mh/xUXjVZSZEGptoFYUVndxn
-         UH7696mjqk+3fB2OwU6VctuCcwlZfjM4ACSX7i34=
+        Fri, 23 Sep 2022 20:53:28 -0400
+Received: from titan5.planetwebservers.net (titan5.planetwebservers.net [51.222.33.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66A58FF3DF
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 17:53:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
+        s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=xjO5YO0q+lcleWzQpyNPM6JCGP1Bl/WRRiRhAvZyAIo=; b=zssGygu1jqh8JRKwkrDbvBvKQl
+        c2ThXMNqnH7jmj1n5fBE3Cinku6e4MYloN9lqOAYxtJ1N0XARVI+DduIpTfeh5CvDqvFxin9uSbwD
+        MH6X8lrF/cybiVWsr667DdgCFpfneBCyBzK82D1de5azODnzAVQUQ+dMWnyGWegKr751VC3IFHqpy
+        uTyn5fpfX/Aip5KvHROOz8GyyRZ8/12OzEVp65TMhePG0c6pG461hxXc2sasxTykwqiDyMw0YCnBn
+        tffMoYUKseSDQPPOtzMYy6ZU/bodPNJZKQJBouO+H38KVNa8HPcF6oA8SxHTBBG7MmCRMsrI6WbOa
+        KmkTKTPg==;
+Received: from [76.75.115.213] (port=37740 helo=[192.168.68.73])
+        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <bjlockie@lockie.ca>)
+        id 1obtQ1-0001B1-Lx;
+        Sat, 24 Sep 2022 10:53:26 +1000
+Message-ID: <d196d238-3340-deb6-b1dd-b6ccf329a8af@lockie.ca>
+Date:   Fri, 23 Sep 2022 20:53:18 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
 Subject: Re: what MediaTek chipset do I have?
-To:     James <bjlockie@lockie.ca>,
+Content-Language: en-US
+To:     Ben Greear <greearb@candelatech.com>,
         linux-wireless <linux-wireless@vger.kernel.org>
 References: <71575c7b-8487-3b12-fe33-3e5e8b2ff9a2@lockie.ca>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <02402e49-653f-509b-a841-b360fd1a62b1@candelatech.com>
-Date:   Fri, 23 Sep 2022 17:24:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-MIME-Version: 1.0
-In-Reply-To: <71575c7b-8487-3b12-fe33-3e5e8b2ff9a2@lockie.ca>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+ <02402e49-653f-509b-a841-b360fd1a62b1@candelatech.com>
+From:   James <bjlockie@lockie.ca>
+In-Reply-To: <02402e49-653f-509b-a841-b360fd1a62b1@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-MDID: 1663979071-XdKt_nCEua8u
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lockie.ca
+X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
+X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-From-Rewrite: unmodified, already matched
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/23/22 4:18 PM, James wrote:
-> I bought a MediaTek PCI card on Amazon that is supposed to be a 7921k chip.
-> I don't have a 6GHz router and the seller says if I did then it will work in 6GHz.
-> The Windows driver is for an AMD RZ608 Wi-Fi 6E 80MHz but the properties there don't say 6GHz.
-> The seller says I can't see 6GHz there unless I have a 6GHz router.
-> I don't believe that  but you guys know better.
-> I bought it for Linux. :-)
-> The only reason I mention Windows is because that is the seller's language.
-> 
-> Here is Linux info:
-> 5.15.0-48-generic #54-Ubuntu SMP x86_64
-> 
-> # lspci -k
-> 04:00.0 Network controller: MEDIATEK Corp. Device 0608
->          Subsystem: MEDIATEK Corp. Device 0608
->          Kernel driver in use: mt7921e
->          Kernel modules: mt7921e
-> 
-> Would I say 7921k if it was?
-> 
+A 0608 device is a 7921k?
 
-That looks like 7921k to me, and it will do 6E, though you might need newer kernel and/or regulatory domain
-to get it working properly.  We've tested it successfully on 6E, on Linux of course.
+What device is a 7921e?
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+On 2022-09-23 20:24, Ben Greear wrote:
+> On 9/23/22 4:18 PM, James wrote:
+>> I bought a MediaTek PCI card on Amazon that is supposed to be a 7921k 
+>> chip.
+>> I don't have a 6GHz router and the seller says if I did then it will 
+>> work in 6GHz.
+>> The Windows driver is for an AMD RZ608 Wi-Fi 6E 80MHz but the 
+>> properties there don't say 6GHz.
+>> The seller says I can't see 6GHz there unless I have a 6GHz router.
+>> I don't believe that  but you guys know better.
+>> I bought it for Linux. :-)
+>> The only reason I mention Windows is because that is the seller's 
+>> language.
+>>
+>> Here is Linux info:
+>> 5.15.0-48-generic #54-Ubuntu SMP x86_64
+>>
+>> # lspci -k
+>> 04:00.0 Network controller: MEDIATEK Corp. Device 0608
+>>          Subsystem: MEDIATEK Corp. Device 0608
+>>          Kernel driver in use: mt7921e
+>>          Kernel modules: mt7921e
+>>
+>> Would I say 7921k if it was?
+>>
+>
+> That looks like 7921k to me, and it will do 6E, though you might need 
+> newer kernel and/or regulatory domain
+> to get it working properly.  We've tested it successfully on 6E, on 
+> Linux of course.
+>
+> Thanks,
+> Ben
+>
