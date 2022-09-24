@@ -2,123 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD355E87C5
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 04:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 594275E880B
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 05:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233189AbiIXCzE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Sep 2022 22:55:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39456 "EHLO
+        id S233212AbiIXDqf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Sep 2022 23:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233093AbiIXCzC (ORCPT
+        with ESMTP id S229479AbiIXDqd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Sep 2022 22:55:02 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0408B2EF1C;
-        Fri, 23 Sep 2022 19:55:00 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MZD6J3FVRz1P6ln;
-        Sat, 24 Sep 2022 10:50:48 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sat, 24 Sep 2022 10:54:58 +0800
-Message-ID: <e8e01508-fe2d-a9f8-c260-fb8c6d7bcdcb@huawei.com>
-Date:   Sat, 24 Sep 2022 10:54:57 +0800
+        Fri, 23 Sep 2022 23:46:33 -0400
+Received: from titan5.planetwebservers.net (titan5.planetwebservers.net [51.222.33.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63D8026C
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Sep 2022 20:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
+        s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:To
+        :From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=SWTT59Ybio+fPOc4eiuZakWo1hb7o1LcP/05vDvhCHE=; b=IERkYVQIijVZC+q1bdg/8h/qRJ
+        SguZmtHAa8cfQbMyhhSFW592v2KtRyvlvrRfSJhEe8w0rX0dJtmmv8qUqL9GjWurx3kgvAQL4tve+
+        t9U+yuraOzQM4PfyJrlwIrnsYxJfSiNkh6T6e2V/NC7v9nj9JDHE/T0kfDajnaM6ZRDNGgvTd+YBm
+        1ohhnvcAZv+0SSJrlFi7k5iVXhGxkecfyQZoeqP+mbPc5f77VOn/Oxe99fn3jOuXYj4sE3i0fHWxt
+        qeRaNRn6jeezyqJQMC3eDK/Jz70LUGfseIamQgT2pSoUL+Bbpgk71RRqI1tu8ng4/h01W/lXRqI8k
+        xePbX1GA==;
+Received: from [76.75.115.213] (port=52638 helo=[192.168.68.80])
+        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <bjlockie@lockie.ca>)
+        id 1obw7W-0001dV-N4
+        for linux-wireless@vger.kernel.org;
+        Sat, 24 Sep 2022 13:46:31 +1000
+Message-ID: <e5554577-f345-c6a5-cc27-53ef50be0d50@lockie.ca>
+Date:   Fri, 23 Sep 2022 23:46:23 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH -next] wifi: brcmfmac: pcie: add missing
- pci_disable_device() in brcmf_pcie_get_resource()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: what MediaTek chipset do I have?
 Content-Language: en-US
-To:     Franky Lin <franky.lin@broadcom.com>
-CC:     <aspriel@gmail.com>, <hante.meuleman@broadcom.com>,
-        <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <marcan@marcan.st>,
-        <linus.walleij@linaro.org>, <rmk+kernel@armlinux.org.uk>,
-        <soontak.lee@cypress.com>, <linux-wireless@vger.kernel.org>,
-        <SHA-cyfmac-dev-list@infineon.com>,
-        <brcm80211-dev-list.pdl@broadcom.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220923093806.3108119-1-ruanjinjie@huawei.com>
- <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
-From:   Ruan Jinjie <ruanjinjie@huawei.com>
-In-Reply-To: <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   James <bjlockie@lockie.ca>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <71575c7b-8487-3b12-fe33-3e5e8b2ff9a2@lockie.ca>
+ <02402e49-653f-509b-a841-b360fd1a62b1@candelatech.com>
+ <d196d238-3340-deb6-b1dd-b6ccf329a8af@lockie.ca>
+In-Reply-To: <d196d238-3340-deb6-b1dd-b6ccf329a8af@lockie.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lockie.ca
+X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
+X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-From-Rewrite: unmodified, already matched
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+That's promising. :-)
+It doesn't support 160MHz wide channels?
+Still way better driver support IMO.
+
+# uname -a
+Linux lubuntu 5.19.0-15-generic #15-Ubuntu SMP PREEMPT_DYNAMIC Tue Aug 2 
+07:35:59 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 
 
-On 2022/9/24 0:50, Franky Lin wrote:
-> On Fri, Sep 23, 2022 at 2:42 AM ruanjinjie <ruanjinjie@huawei.com> wrote:
->>
->> Add missing pci_disable_device() if brcmf_pcie_get_resource() fails.
-> 
-> Did you encounter any issue because of the absensent
-> pci_disable_device? A bit more context will be very helpful.
-> 
->>
->> Signed-off-by: ruanjinjie <ruanjinjie@huawei.com>
->> ---
->>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 9 +++++++--
->>  1 file changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> index f98641bb1528..25fa69793d86 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> @@ -1725,7 +1725,8 @@ static int brcmf_pcie_get_resource(struct brcmf_pciedev_info *devinfo)
->>         if ((bar1_size == 0) || (bar1_addr == 0)) {
->>                 brcmf_err(bus, "BAR1 Not enabled, device size=%ld, addr=%#016llx\n",
->>                           bar1_size, (unsigned long long)bar1_addr);
->> -               return -EINVAL;
->> +               err = -EINVAL;
->> +               goto err_disable;
->>         }
->>
->>         devinfo->regs = ioremap(bar0_addr, BRCMF_PCIE_REG_MAP_SIZE);
->> @@ -1734,7 +1735,8 @@ static int brcmf_pcie_get_resource(struct brcmf_pciedev_info *devinfo)
->>         if (!devinfo->regs || !devinfo->tcm) {
->>                 brcmf_err(bus, "ioremap() failed (%p,%p)\n", devinfo->regs,
->>                           devinfo->tcm);
->> -               return -EINVAL;
->> +               err = -EINVAL;
->> +               goto err_disable;
->>         }
->>         brcmf_dbg(PCIE, "Phys addr : reg space = %p base addr %#016llx\n",
->>                   devinfo->regs, (unsigned long long)bar0_addr);
->> @@ -1743,6 +1745,9 @@ static int brcmf_pcie_get_resource(struct brcmf_pciedev_info *devinfo)
->>                   (unsigned int)bar1_size);
->>
->>         return 0;
->> +err_disable:
->> +       pci_disable_device(pdev);
-> 
-> Isn't brcmf_pcie_release_resource() a better choice which also unmap
-> the io if any was mapped?
-> 
+# lspci
+04:00.0 Network controller: MEDIATEK Corp. MT7921K (RZ608) Wi-Fi 6E 80MHz
 
-That is a better choice to call pci_disable_device() in
-brcmf_pcie_release_resource()!
 
-> Regards,
-> - Franky
-> 
->> +       return err;
->>  }
+On 2022-09-23 20:53, James wrote:
+> A 0608 device is a 7921k?
+>
+> What device is a 7921e?
+>
+> On 2022-09-23 20:24, Ben Greear wrote:
+>> On 9/23/22 4:18 PM, James wrote:
+>>> I bought a MediaTek PCI card on Amazon that is supposed to be a 
+>>> 7921k chip.
+>>> I don't have a 6GHz router and the seller says if I did then it will 
+>>> work in 6GHz.
+>>> The Windows driver is for an AMD RZ608 Wi-Fi 6E 80MHz but the 
+>>> properties there don't say 6GHz.
+>>> The seller says I can't see 6GHz there unless I have a 6GHz router.
+>>> I don't believe that  but you guys know better.
+>>> I bought it for Linux. :-)
+>>> The only reason I mention Windows is because that is the seller's 
+>>> language.
+>>>
+>>> Here is Linux info:
+>>> 5.15.0-48-generic #54-Ubuntu SMP x86_64
+>>>
+>>> # lspci -k
+>>> 04:00.0 Network controller: MEDIATEK Corp. Device 0608
+>>>          Subsystem: MEDIATEK Corp. Device 0608
+>>>          Kernel driver in use: mt7921e
+>>>          Kernel modules: mt7921e
+>>>
+>>> Would I say 7921k if it was?
+>>>
 >>
+>> That looks like 7921k to me, and it will do 6E, though you might need 
+>> newer kernel and/or regulatory domain
+>> to get it working properly.  We've tested it successfully on 6E, on 
+>> Linux of course.
 >>
->> --
->> 2.25.1
+>> Thanks,
+>> Ben
 >>
+
