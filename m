@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 969C85E86DC
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 03:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD355E87C5
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 04:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232553AbiIXBAT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Sep 2022 21:00:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40482 "EHLO
+        id S233189AbiIXCzE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Sep 2022 22:55:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbiIXBAR (ORCPT
+        with ESMTP id S233093AbiIXCzC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Sep 2022 21:00:17 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B9D6CF4A;
-        Fri, 23 Sep 2022 18:00:15 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MZ9Yt5jrKzlXJD;
-        Sat, 24 Sep 2022 08:56:02 +0800 (CST)
+        Fri, 23 Sep 2022 22:55:02 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0408B2EF1C;
+        Fri, 23 Sep 2022 19:55:00 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.53])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MZD6J3FVRz1P6ln;
+        Sat, 24 Sep 2022 10:50:48 +0800 (CST)
 Received: from [10.67.109.254] (10.67.109.254) by
  kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sat, 24 Sep 2022 09:00:12 +0800
-Message-ID: <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com>
-Date:   Sat, 24 Sep 2022 09:00:12 +0800
+ 15.1.2375.31; Sat, 24 Sep 2022 10:54:58 +0800
+Message-ID: <e8e01508-fe2d-a9f8-c260-fb8c6d7bcdcb@huawei.com>
+Date:   Sat, 24 Sep 2022 10:54:57 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.0
@@ -46,7 +46,7 @@ In-Reply-To: <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemi500008.china.huawei.com (7.221.188.139)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
@@ -68,14 +68,6 @@ On 2022/9/24 0:50, Franky Lin wrote:
 > Did you encounter any issue because of the absensent
 > pci_disable_device? A bit more context will be very helpful.
 > 
-
-We use static analysis via coccinelle to find the above issue. The
-command we use is below:
-
-spatch -I include -timeout 60 -very_quiet -sp_file
-pci_disable_device_missing.cocci
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-
 >>
 >> Signed-off-by: ruanjinjie <ruanjinjie@huawei.com>
 >> ---
@@ -116,6 +108,10 @@ drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 > Isn't brcmf_pcie_release_resource() a better choice which also unmap
 > the io if any was mapped?
 > 
+
+That is a better choice to call pci_disable_device() in
+brcmf_pcie_release_resource()!
+
 > Regards,
 > - Franky
 > 
