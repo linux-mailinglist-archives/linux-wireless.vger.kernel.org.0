@@ -2,112 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E48B5E8F64
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Sep 2022 20:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 670595E90A9
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Sep 2022 03:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230048AbiIXSlG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 24 Sep 2022 14:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56458 "EHLO
+        id S229778AbiIYBfY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Sep 2022 21:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbiIXSlD (ORCPT
+        with ESMTP id S229548AbiIYBfX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 24 Sep 2022 14:41:03 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0CC13D58;
-        Sat, 24 Sep 2022 11:41:01 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1280590722dso4416625fac.1;
-        Sat, 24 Sep 2022 11:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=8JOtQBvvLW72XVECmck79YSCsfPdNEq7ykuouwI7PTQ=;
-        b=MSxyC2yaJeJFCrV3/oDu6uv9ePg9BMYRIryj1KMAIrVpi3mTBGxkNUVnBCzgaPf6bQ
-         +/GAysqPfj3fNGaTMTI916aGvO/Kwmj737GqoNXXw7V2s8ebEHLwT57AyPSTBouiZXNX
-         cIkj15f08jmn2QkGa79lkBiIb8bE2WGgK9N9+72jGgo5L2uF2bzet43DfGHA2SHYbzYX
-         3A3MxbO3ys2lktiyS/iQQ1ulZv5lXOjPl39ygxpP6mzK0QXGv1DID2Mi3zjTua7n5ulu
-         D2/fyyEmqJZ7uc6PPC/9/PVJ4rtEbwTd23xTbUoCRrAhBsCj2xQP/qYWNj8C8p0ON/2n
-         YSQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=8JOtQBvvLW72XVECmck79YSCsfPdNEq7ykuouwI7PTQ=;
-        b=1k+EQGgy1H+AlO2qx8ps4Aix/o1asbCQ9xEknxYSxPPm7lErXbal8+R29z1EVFq3Ml
-         eKlSfUWHOmVo2/j+W9mZfTKGg6nslLT4Yhxdhk/1PjHRHOU0hUh7anSmWofYXDsbvNKO
-         CIS+yzQ62vY1g6jW5OxKAGy8zSBynlVYxOvUP9FjqCaY+p7XYR6kAUzDMOv+snHpdbLD
-         lHGMTVV9K9Mb5EdigqWO8zDL5578CI0MclENQd8X59PaZIHfs12HSrL2Osn/i3n8AFDO
-         0Mv0NFmNijzUJOOMQsUCcAOHXVtB65ZCDGLt2Y5aCSlk+3Kf/QSfw/uqVn/IIc7gd/HW
-         x2cg==
-X-Gm-Message-State: ACrzQf2HIjIqivGD4Kq6zQ19l4uAOgiL1fyLQPgHTojZ6RCVGR6774o4
-        GgmM0Uru4DHLfAlxt/zMkVg=
-X-Google-Smtp-Source: AMsMyM7/QppKaCvZ9AfPDnSI2olE5YiSRYcrHUcuFRLuFzHDidrPoBxkEIbi+YYShIqiI6EKekT7vw==
-X-Received: by 2002:a05:6870:c213:b0:127:a748:4aab with SMTP id z19-20020a056870c21300b00127a7484aabmr14139381oae.52.1664044860580;
-        Sat, 24 Sep 2022 11:41:00 -0700 (PDT)
-Received: from macondo.. ([2804:431:e7cc:3499:8fa2:1bc4:de36:509f])
-        by smtp.gmail.com with ESMTPSA id e5-20020a056870c0c500b001275f056133sm6519090oad.51.2022.09.24.11.40.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Sep 2022 11:41:00 -0700 (PDT)
-From:   Rafael Mendonca <rafaelmendsr@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Rafael Mendonca <rafaelmendsr@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: mlme: Fix missing unlock on beacon RX
-Date:   Sat, 24 Sep 2022 15:40:41 -0300
-Message-Id: <20220924184042.778676-1-rafaelmendsr@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sat, 24 Sep 2022 21:35:23 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C052738464
+        for <linux-wireless@vger.kernel.org>; Sat, 24 Sep 2022 18:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664069722; x=1695605722;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eVDmcQkz89yfZzDi5dv/MGYivdAXt+aQJSEuYnSz0vI=;
+  b=GGXl1HbDv6FrNB8Q7QsnEfLAc71uuNybgJEYaSlEXI7bBampWRt9eh7D
+   T5dzzjyaGkm5WdrMB5n0b/dq5kd0Rif3qU7uBrPcetP2P7c7+gSbhXV0N
+   JKKPgLMRyedQb523Pih863YgB0B8i1Yy+uoxq5dnjaqG9P2hTZuTepiB9
+   CdQWUPOeM/XS33smG0fjZy+zI+RDMBrtCEGpNH1vbqyUpO4CAYgBE+9zg
+   ueUdD7GngQ5DEGa7vm6X2YWauJKDu4ofRchXBg3l91H9vB7xTQmuNW4OC
+   GNjBO4dL4c0YtTOas4jvIyIAEgt/8lmR9nNkS1+XjO0/4LGCYvmM4Psw5
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10480"; a="302281315"
+X-IronPort-AV: E=Sophos;i="5.93,343,1654585200"; 
+   d="scan'208";a="302281315"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2022 18:35:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,343,1654585200"; 
+   d="scan'208";a="571800673"
+Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 24 Sep 2022 18:35:20 -0700
+Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ocGYC-0007EQ-0N;
+        Sun, 25 Sep 2022 01:35:20 +0000
+Date:   Sun, 25 Sep 2022 09:35:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ f3d8232331a3f4eaac1ab9a8679e5aedb2c33758
+Message-ID: <632fb054.Pb9s8Z98khSSE+hd%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 98b0b467466c ("wifi: mac80211: mlme: use correct link_sta")
-switched to link station instead of deflink and added some checks to do
-that, which are done with the 'sta_mtx' mutex held. However, the error
-path of these checks does not unlock 'sta_mtx' before returning.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: f3d8232331a3f4eaac1ab9a8679e5aedb2c33758  wifi: rtw89: support for enable/disable MSDU aggregation
 
-Fixes: 98b0b467466c ("wifi: mac80211: mlme: use correct link_sta")
-Signed-off-by: Rafael Mendonca <rafaelmendsr@gmail.com>
----
- net/mac80211/mlme.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+elapsed time: 725m
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 5265d2b6db12..c0fbffd9b153 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5589,12 +5589,16 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 
- 	mutex_lock(&local->sta_mtx);
- 	sta = sta_info_get(sdata, sdata->vif.cfg.ap_addr);
--	if (WARN_ON(!sta))
-+	if (WARN_ON(!sta)) {
-+		mutex_unlock(&local->sta_mtx);
- 		goto free;
-+	}
- 	link_sta = rcu_dereference_protected(sta->link[link->link_id],
- 					     lockdep_is_held(&local->sta_mtx));
--	if (WARN_ON(!link_sta))
-+	if (WARN_ON(!link_sta)) {
-+		mutex_unlock(&local->sta_mtx);
- 		goto free;
-+	}
- 
- 	changed |= ieee80211_recalc_twt_req(link, link_sta, elems);
- 
+configs tested: 63
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                           x86_64_defconfig
+arc                                 defconfig
+um                             i386_defconfig
+i386                                defconfig
+alpha                               defconfig
+s390                                defconfig
+x86_64                        randconfig-a002
+s390                             allmodconfig
+x86_64                              defconfig
+arm                                 defconfig
+x86_64                               rhel-8.3
+x86_64                        randconfig-a004
+m68k                             allyesconfig
+alpha                            allyesconfig
+s390                             allyesconfig
+arc                  randconfig-r043-20220923
+x86_64                           allyesconfig
+x86_64                        randconfig-a013
+s390                 randconfig-r044-20220923
+arc                              allyesconfig
+m68k                             allmodconfig
+x86_64                          rhel-8.3-func
+x86_64                        randconfig-a011
+i386                             allyesconfig
+i386                          randconfig-a001
+x86_64                        randconfig-a006
+i386                          randconfig-a005
+i386                          randconfig-a003
+i386                          randconfig-a014
+x86_64                    rhel-8.3-kselftests
+riscv                randconfig-r042-20220923
+arm64                            allyesconfig
+arm                              allyesconfig
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a016
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+ia64                             allmodconfig
+sh                               allmodconfig
+arc                  randconfig-r043-20220925
+riscv                randconfig-r042-20220925
+s390                 randconfig-r044-20220925
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+
+clang tested configs:
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a013
+hexagon              randconfig-r041-20220923
+hexagon              randconfig-r045-20220923
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+i386                          randconfig-a002
+i386                          randconfig-a011
+i386                          randconfig-a004
+i386                          randconfig-a015
+i386                          randconfig-a006
+x86_64                        randconfig-a014
+hexagon              randconfig-r045-20220925
+hexagon              randconfig-r041-20220925
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
