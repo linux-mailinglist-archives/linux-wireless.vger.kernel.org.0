@@ -2,89 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50DAC5E9BA2
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D1AE5E9BDC
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234170AbiIZIHt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Sep 2022 04:07:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58478 "EHLO
+        id S233361AbiIZIVC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Sep 2022 04:21:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233522AbiIZIH2 (ORCPT
+        with ESMTP id S234302AbiIZIUm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Sep 2022 04:07:28 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958C432BA8;
-        Mon, 26 Sep 2022 01:06:05 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MbZwF64KQzlXVQ;
-        Mon, 26 Sep 2022 16:01:49 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 26 Sep 2022 16:06:02 +0800
-Message-ID: <521bf990-e6aa-ee95-fcfa-1a03d08ee766@huawei.com>
-Date:   Mon, 26 Sep 2022 16:06:02 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH -next] wifi: brcmfmac: pcie: add missing
- pci_disable_device() in brcmf_pcie_get_resource()
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     Franky Lin <franky.lin@broadcom.com>, <aspriel@gmail.com>,
-        <hante.meuleman@broadcom.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <marcan@marcan.st>, <linus.walleij@linaro.org>,
-        <rmk+kernel@armlinux.org.uk>, <soontak.lee@cypress.com>,
-        <linux-wireless@vger.kernel.org>,
+        Mon, 26 Sep 2022 04:20:42 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56777357FC;
+        Mon, 26 Sep 2022 01:20:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 199C3CE1079;
+        Mon, 26 Sep 2022 08:20:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F18C433C1;
+        Mon, 26 Sep 2022 08:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664180426;
+        bh=qE+sUkuGFoPDcFsp8tOmihQKG0t6W0MTW0AZE4mfjB4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=jTSGFn25/qVW5yI5AjsbHw3hxCyQW1eSdqbF8FamhZ+FO7QUTqYsunUQnfFaHqQsh
+         xU8rSvoK+bA67bFBlE5jLvcbZnbF5E70xl3FExoW0OG5hhPeMh0MCjVGZvHZ0g3EEZ
+         nvp8pN4WZgFLEueWXQIUTHML5xQjtgxOxhfZHL8p+/03D1Ja1qV4XryYi03CSRpWdt
+         U39icOTT/H1i94HqXT0A9JnwDWq8EYETVdkJn6GSWSDG35b8oWesjE3CqPTL4W7wqS
+         GrzGV7LQpshTuWsOxW47tZb8g37dVv2dXqwKsVZjFQZMDlOlaJv/WjJ59LFEvTrNuy
+         p/LP3ugRNmhrw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Alvin =?utf-8?Q?=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Hector Martin <marcan@marcan.st>,
+        "~postmarketos\/upstreaming\@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "martin.botka\@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno\@somainline.org" 
+        <angelogioacchino.delregno@somainline.org>,
+        "marijn.suijten\@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen\@somainline.org" <jamipkettunen@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao\, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>,
+        Soon Tak Lee <soontak.lee@cypress.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl\@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list\@infineon.com" 
         <SHA-cyfmac-dev-list@infineon.com>,
-        <brcm80211-dev-list.pdl@broadcom.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220923093806.3108119-1-ruanjinjie@huawei.com>
- <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
- <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com> <878rm64le2.fsf@kernel.org>
-From:   Ruan Jinjie <ruanjinjie@huawei.com>
-In-Reply-To: <878rm64le2.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Stockholm syndrome with Linux wireless?
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+        <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
+        <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+        <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
+        <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+        <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+        <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk>
+        <CACRpkdYwJLO18t08zqu_Y1gaSpZJMc+3MFxRUtQzLkJF2MqmqQ@mail.gmail.com>
+Date:   Mon, 26 Sep 2022 11:20:18 +0300
+In-Reply-To: <CACRpkdYwJLO18t08zqu_Y1gaSpZJMc+3MFxRUtQzLkJF2MqmqQ@mail.gmail.com>
+        (Linus Walleij's message of "Thu, 22 Sep 2022 22:18:34 +0200")
+Message-ID: <87wn9q35tp.fsf_-_@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+(changing the subject as this has nothing to do with brcmfmac)
 
+Linus Walleij <linus.walleij@linaro.org> writes:
 
-On 2022/9/26 15:58, Kalle Valo wrote:
-> Ruan Jinjie <ruanjinjie@huawei.com> writes:
-> 
->> On 2022/9/24 0:50, Franky Lin wrote:
->>> On Fri, Sep 23, 2022 at 2:42 AM ruanjinjie <ruanjinjie@huawei.com> wrote:
->>>>
->>>> Add missing pci_disable_device() if brcmf_pcie_get_resource() fails.
->>>
->>> Did you encounter any issue because of the absensent
->>> pci_disable_device? A bit more context will be very helpful.
->>>
->>
->> We use static analysis via coccinelle to find the above issue. The
->> command we use is below:
->>
->> spatch -I include -timeout 60 -very_quiet -sp_file
->> pci_disable_device_missing.cocci
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> 
-> Please include this information to the commit log, it helps to
-> understand the background of the fix.
+> On Thu, Sep 22, 2022 at 3:31 PM Alvin =C5=A0ipraga <ALSI@bang-olufsen.dk>=
+ wrote:
+>
+>> I would also point out that the BCM4359 is equivalent to the
+>> CYW88359/CYW89359 chipset, which we are using in some of our
+>> products. Note that this is a Cypress chipset (identifiable by the
+>> Version: ... (... CY) tag in the version string). But the FW Konrad is
+>> linking appears to be for a Broadcom chipset.
+>
+> This just makes me think about Peter Robinsons seminar at
+> LPC last week...
+> "All types of wireless in Linux are terrible and why the vendors
+> should feel bad"
+> https://lpc.events/event/16/contributions/1278/attachments/1120/2153/wire=
+less-issues.pdf
 
- Thank you for your suggestion! I'll include this information in the
-future commit log.
+Thanks, this was a good read! I'm always interested about user and
+downstream feedback, both good and bad :) But I didn't get the Stockholm
+syndrome comment in the end, what does he mean with that?
 
-> 
+BTW we have a wireless workshop in netdevconf 0x16, it would be great to
+have there a this kind of session discussing user pain points:
+
+https://netdevconf.info/0x16/session.html?Wireless-Workshop
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
