@@ -2,102 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 687925E9B84
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50DAC5E9BA2
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233324AbiIZIDm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Sep 2022 04:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
+        id S234170AbiIZIHt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Sep 2022 04:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234186AbiIZICn (ORCPT
+        with ESMTP id S233522AbiIZIH2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Sep 2022 04:02:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077C6167C2;
-        Mon, 26 Sep 2022 01:00:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6E967B8191D;
-        Mon, 26 Sep 2022 08:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15004C433C1;
-        Mon, 26 Sep 2022 07:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664179199;
-        bh=BKaJB74cTuefD7ABjII+u7AOgXdfZ6IIrKwYO+YFiwA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Hyc7Yt4JMRaV93ujZXcbA6K75iKsTxLlkmSgCVt36DaZp09gGDnmN4EJbeayeQ/qN
-         3jEp8KLozDsB5an81OOeR7jhTN01D7/6umcHN2nNtowRyX35dtCAQ1JDHTjuEn9ULL
-         oV6buTY/Pjh1znzJxLvS71sf46j3L57ogNSxUesw9iGcpVHQsL42CAtv1Z3RnZbW/b
-         wtR6XNhWhaxNVau5wCZto1o8qodSKDM+Z7JI7nMB1jSI9rSqql3wOZYycygUYlXKZH
-         GQNLjqJ66xRAjmjKK8LN9zfpa2pje/YYTyfFmuy955aTcDQUZ9Q9L5IscH5qYVfdnj
-         yWy6pOoZhiNcw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Ilan Peer <ilan.peer@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Nathan Errera <nathan.errera@intel.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Mike Golant <michael.golant@intel.com>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Avraham Stern <avraham.stern@intel.com>,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2] iwlwifi: Track scan_cmd allocation size explicitly
-References: <20220923220853.3302056-1-keescook@chromium.org>
-Date:   Mon, 26 Sep 2022 10:59:52 +0300
-In-Reply-To: <20220923220853.3302056-1-keescook@chromium.org> (Kees Cook's
-        message of "Fri, 23 Sep 2022 15:08:53 -0700")
-Message-ID: <874jwu4lc7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 26 Sep 2022 04:07:28 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958C432BA8;
+        Mon, 26 Sep 2022 01:06:05 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MbZwF64KQzlXVQ;
+        Mon, 26 Sep 2022 16:01:49 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 26 Sep 2022 16:06:02 +0800
+Message-ID: <521bf990-e6aa-ee95-fcfa-1a03d08ee766@huawei.com>
+Date:   Mon, 26 Sep 2022 16:06:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH -next] wifi: brcmfmac: pcie: add missing
+ pci_disable_device() in brcmf_pcie_get_resource()
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     Franky Lin <franky.lin@broadcom.com>, <aspriel@gmail.com>,
+        <hante.meuleman@broadcom.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <marcan@marcan.st>, <linus.walleij@linaro.org>,
+        <rmk+kernel@armlinux.org.uk>, <soontak.lee@cypress.com>,
+        <linux-wireless@vger.kernel.org>,
+        <SHA-cyfmac-dev-list@infineon.com>,
+        <brcm80211-dev-list.pdl@broadcom.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20220923093806.3108119-1-ruanjinjie@huawei.com>
+ <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
+ <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com> <878rm64le2.fsf@kernel.org>
+From:   Ruan Jinjie <ruanjinjie@huawei.com>
+In-Reply-To: <878rm64le2.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
 
-> In preparation for reducing the use of ksize(), explicitly track the
-> size of scan_cmd allocations. This also allows for noticing if the scan
-> size changes unexpectedly. Note that using ksize() was already incorrect
-> here, in the sense that ksize() would not match the actual allocation
-> size, which would trigger future run-time allocation bounds checking.
-> (In other words, memset() may know how large scan_cmd was allocated for,
-> but ksize() will return the upper bounds of the actually allocated memory,
-> causing a run-time warning about an overflow.)
->
-> Cc: Gregory Greenman <gregory.greenman@intel.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> Cc: Ilan Peer <ilan.peer@intel.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Gregory, can I take this directly to wireless-next?
+On 2022/9/26 15:58, Kalle Valo wrote:
+> Ruan Jinjie <ruanjinjie@huawei.com> writes:
+> 
+>> On 2022/9/24 0:50, Franky Lin wrote:
+>>> On Fri, Sep 23, 2022 at 2:42 AM ruanjinjie <ruanjinjie@huawei.com> wrote:
+>>>>
+>>>> Add missing pci_disable_device() if brcmf_pcie_get_resource() fails.
+>>>
+>>> Did you encounter any issue because of the absensent
+>>> pci_disable_device? A bit more context will be very helpful.
+>>>
+>>
+>> We use static analysis via coccinelle to find the above issue. The
+>> command we use is below:
+>>
+>> spatch -I include -timeout 60 -very_quiet -sp_file
+>> pci_disable_device_missing.cocci
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> 
+> Please include this information to the commit log, it helps to
+> understand the background of the fix.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+ Thank you for your suggestion! I'll include this information in the
+future commit log.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> 
