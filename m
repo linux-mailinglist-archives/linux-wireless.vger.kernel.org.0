@@ -2,55 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97E835E9B74
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 687925E9B84
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234104AbiIZIB6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Sep 2022 04:01:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49940 "EHLO
+        id S233324AbiIZIDm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Sep 2022 04:03:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233727AbiIZIBa (ORCPT
+        with ESMTP id S234186AbiIZICn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Sep 2022 04:01:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02614C27;
-        Mon, 26 Sep 2022 00:58:52 -0700 (PDT)
+        Mon, 26 Sep 2022 04:02:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077C6167C2;
+        Mon, 26 Sep 2022 01:00:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F8A36179F;
-        Mon, 26 Sep 2022 07:58:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85251C433C1;
-        Mon, 26 Sep 2022 07:58:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6E967B8191D;
+        Mon, 26 Sep 2022 08:00:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15004C433C1;
+        Mon, 26 Sep 2022 07:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664179131;
-        bh=jfuwhFd5PczoIXgvji7jNDdS65hU/TTDtOFWvgEpYkI=;
+        s=k20201202; t=1664179199;
+        bh=BKaJB74cTuefD7ABjII+u7AOgXdfZ6IIrKwYO+YFiwA=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=GCIatT1Gc/erxM3rdkI/8g7syX2EzY43d6RY9O+fWQUdcXRuyiUDtbvpnl60m7dE+
-         2hHqu72oyFVsX4ntX4wXxY+UDRxa8AzF24r8pQDDmoqhG/pdyMDuzLPD8O4VauEEUl
-         2XSuoHx8i7aA0x3Uj8Z3QMBfujxRHshTsS1sRVRluCpBkAN3MltLOp8V0a/pNOmEqY
-         vAT7RtTC2bIb0/ClWsmnnclQtV2Im5Dl85mLrfXyuZ0Dbjt+i4BqX/ve4Hd2AbJdJ1
-         0tfGBkzPGfZm8pNH/aTWBqPL4AJ/rT8cq1qQTCqdVHwvl0uR2DQiL0spjUkMyiThdb
-         ZMl452H4brgTQ==
+        b=Hyc7Yt4JMRaV93ujZXcbA6K75iKsTxLlkmSgCVt36DaZp09gGDnmN4EJbeayeQ/qN
+         3jEp8KLozDsB5an81OOeR7jhTN01D7/6umcHN2nNtowRyX35dtCAQ1JDHTjuEn9ULL
+         oV6buTY/Pjh1znzJxLvS71sf46j3L57ogNSxUesw9iGcpVHQsL42CAtv1Z3RnZbW/b
+         wtR6XNhWhaxNVau5wCZto1o8qodSKDM+Z7JI7nMB1jSI9rSqql3wOZYycygUYlXKZH
+         GQNLjqJ66xRAjmjKK8LN9zfpa2pje/YYTyfFmuy955aTcDQUZ9Q9L5IscH5qYVfdnj
+         yWy6pOoZhiNcw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Ruan Jinjie <ruanjinjie@huawei.com>
-Cc:     Franky Lin <franky.lin@broadcom.com>, <aspriel@gmail.com>,
-        <hante.meuleman@broadcom.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <marcan@marcan.st>, <linus.walleij@linaro.org>,
-        <rmk+kernel@armlinux.org.uk>, <soontak.lee@cypress.com>,
-        <linux-wireless@vger.kernel.org>,
-        <SHA-cyfmac-dev-list@infineon.com>,
-        <brcm80211-dev-list.pdl@broadcom.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] wifi: brcmfmac: pcie: add missing pci_disable_device() in brcmf_pcie_get_resource()
-References: <20220923093806.3108119-1-ruanjinjie@huawei.com>
-        <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
-        <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com>
-Date:   Mon, 26 Sep 2022 10:58:45 +0300
-In-Reply-To: <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com> (Ruan Jinjie's
-        message of "Sat, 24 Sep 2022 09:00:12 +0800")
-Message-ID: <878rm64le2.fsf@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Ilan Peer <ilan.peer@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Nathan Errera <nathan.errera@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Mike Golant <michael.golant@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        Avraham Stern <avraham.stern@intel.com>,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2] iwlwifi: Track scan_cmd allocation size explicitly
+References: <20220923220853.3302056-1-keescook@chromium.org>
+Date:   Mon, 26 Sep 2022 10:59:52 +0300
+In-Reply-To: <20220923220853.3302056-1-keescook@chromium.org> (Kees Cook's
+        message of "Fri, 23 Sep 2022 15:08:53 -0700")
+Message-ID: <874jwu4lc7.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,26 +69,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ruan Jinjie <ruanjinjie@huawei.com> writes:
+Kees Cook <keescook@chromium.org> writes:
 
-> On 2022/9/24 0:50, Franky Lin wrote:
->> On Fri, Sep 23, 2022 at 2:42 AM ruanjinjie <ruanjinjie@huawei.com> wrote:
->>>
->>> Add missing pci_disable_device() if brcmf_pcie_get_resource() fails.
->> 
->> Did you encounter any issue because of the absensent
->> pci_disable_device? A bit more context will be very helpful.
->> 
+> In preparation for reducing the use of ksize(), explicitly track the
+> size of scan_cmd allocations. This also allows for noticing if the scan
+> size changes unexpectedly. Note that using ksize() was already incorrect
+> here, in the sense that ksize() would not match the actual allocation
+> size, which would trigger future run-time allocation bounds checking.
+> (In other words, memset() may know how large scan_cmd was allocated for,
+> but ksize() will return the upper bounds of the actually allocated memory,
+> causing a run-time warning about an overflow.)
 >
-> We use static analysis via coccinelle to find the above issue. The
-> command we use is below:
->
-> spatch -I include -timeout 60 -very_quiet -sp_file
-> pci_disable_device_missing.cocci
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> Cc: Gregory Greenman <gregory.greenman@intel.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Luca Coelho <luciano.coelho@intel.com>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> Cc: Ilan Peer <ilan.peer@intel.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Please include this information to the commit log, it helps to
-understand the background of the fix.
+Gregory, can I take this directly to wireless-next?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
