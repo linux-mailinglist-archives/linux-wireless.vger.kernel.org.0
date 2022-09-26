@@ -2,95 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E615EADA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 19:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB4A55EAEFB
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 20:03:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbiIZRIn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Sep 2022 13:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37310 "EHLO
+        id S229830AbiIZSDW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Sep 2022 14:03:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230115AbiIZRIL (ORCPT
+        with ESMTP id S230135AbiIZSCr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Sep 2022 13:08:11 -0400
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A03B22
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 09:14:42 -0700 (PDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-333a4a5d495so73560707b3.10
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 09:14:42 -0700 (PDT)
+        Mon, 26 Sep 2022 14:02:47 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0573C16A
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 10:43:34 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d11so6895442pll.8
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 10:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=Oa22a4endrdosLQtjKEFeFefuX/MjZONJZ0tmRFJeYE=;
-        b=Xcaxd7QgQL2IcEwtg+vNfLwEekd4cHBrZaazpr3DU/38jZEJX1ocaDz1zISiAWAKvC
-         8wxrhE06bC55k0dR1zNntQJE8VcipXgLfhIhp1jl7ykftpCw6oN7OnMJCn5go/Ex04n7
-         yIP7Td6YHKfXXD2NVZzz+EeWQqhBvxHw0mBiXXRDEk3SyvHNbTG0ICfDIaYE59uYbF35
-         AovdLeGuTkhOSON7gfgxC7vcTEgLaOzHfC7ranIKnTeAit/G/C5kFXtxdMwKqg9szIEh
-         QwnKxA5KZy6q6+JmZ1fSrOFRfqv9j/eerkZBqZj7rc0LhZsoWNKWiWi0rwqdTXgSSsaw
-         dJnQ==
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=j1xNXDgfZo4rQCUloSX2OISyyGpj+/52xFO6m1QKoSg=;
+        b=UzOwPftrjvmrZArl4bMMTI91OL+fLzFDzN5udnDK3S6fSIjemJ+l4ZBfgS/EzpOFKe
+         igF64i+JoXrdgCt+MrQ3aVb1pUCu2ZS/nDP+xk8hiCCeqUh7r04yZtVF9xO3CmeVygdU
+         uEEhHPMFUQANOiyvGh+n7RgFbgUV2jMJuNv5o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Oa22a4endrdosLQtjKEFeFefuX/MjZONJZ0tmRFJeYE=;
-        b=urDcHqvBAKgNpM20Xe/gl9asTyzjIAAAIY29fWR5zW7uH/2bD3ovCYUuk2NJkXqnbY
-         n6mmPNfwzUturU7jYkcIPZju7cRXhkYqjyBJf8BGbax0iSbok45Uku76MQa/cSSs02JC
-         l3pVP4J+XcunEW4NrfU13IXrNqVMPrV1T5gthbagQQk4vg4iAbicn1CG8wMiVotLClAP
-         7Pv+bO1Co4l9ZFBZU0z+cpq26S+tTAvvRQvhjXXJHeHU8dW9yH3JmyLYNc8X1ZYHAuoj
-         WJOgZL5/aB/yj39BiVns6qeBbwA0RxNGYY1IBtcdUfrJUjLlct9xdSfDxJnRP6JkhJ6h
-         cP4Q==
-X-Gm-Message-State: ACrzQf1QBsO/3es2a+dmYFaXtvOheocSa4CPyRkXrYBg84/wjafuXgSo
-        fMffxmwUN2QC/bO3e97uG3rmKaNbcJ46I4Z7CHgLmw==
-X-Google-Smtp-Source: AMsMyM7OpsvJSztac/ShiuiEHAZkAj0TrkjdKAI1u/34ICh1qE+XmXzoZDMtkGtQDB4ENnSqBFCdi9T4zixSGEFU5AA=
-X-Received: by 2002:a81:451:0:b0:350:935c:613e with SMTP id
- 78-20020a810451000000b00350935c613emr9977971ywe.55.1664208881510; Mon, 26 Sep
- 2022 09:14:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <00000000000070db2005e95a5984@google.com> <20220926150907.8551-1-yin31149@gmail.com>
-In-Reply-To: <20220926150907.8551-1-yin31149@gmail.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Mon, 26 Sep 2022 09:14:29 -0700
-Message-ID: <CANn89i+vx3MJ8D1zz1jUh2XZbFvPicC1RwzREzYXc_TvAFBVxg@mail.gmail.com>
-Subject: Re: [PATCH] wext: use flex array destination for memcpy()
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=j1xNXDgfZo4rQCUloSX2OISyyGpj+/52xFO6m1QKoSg=;
+        b=i3MEoEGzrI9+C8DedGZUZbh/CadQwf3cVdtvs7WIRf9ZF9/GixOsUTRrJuwZkhU081
+         evGLSKJ4cpwSMbhYRiMh1xHCgZDwit2o5zybSiwX3OnUi+GzRW7G229JE0zp9czLpdRo
+         a4DhRHz4jN82G/0wHloImvLPIQnccCud9c64wUNZkK/VJ/457GynxHmoaiRWw8Vi15uK
+         HkxnLbGBQF1U+rtbuHCWrIhPfqnio6AwwONoZ+9Zi/CCoKloLD2J5luT7yInThaeyst4
+         Qi0BI2xV03O4mPWJeb8CgZEdY0GjQiQ54tEG6CtMYsuuaS/roI++psCqaJ9MplN5/RLM
+         f9Ig==
+X-Gm-Message-State: ACrzQf01OBxeWY9Ah7bh7jvwTA5aACXpdg7fOEpx4rkGBYz6L/0anuqU
+        QOAjXNbujXFHQTwlwNfBEdelDA==
+X-Google-Smtp-Source: AMsMyM5xWLaacP0gCWXU6Vb8l28VC2vEVwQVZZ9/J+o8DtAsSYddgLDFcn/434F8xIdqzAY64Upd4g==
+X-Received: by 2002:a17:90b:384f:b0:202:e1b9:5921 with SMTP id nl15-20020a17090b384f00b00202e1b95921mr38270671pjb.130.1664214213094;
+        Mon, 26 Sep 2022 10:43:33 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id ij14-20020a170902ab4e00b0016c4546fbf9sm11612903plb.128.2022.09.26.10.43.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Sep 2022 10:43:32 -0700 (PDT)
+Date:   Mon, 26 Sep 2022 10:43:31 -0700
+From:   Kees Cook <keescook@chromium.org>
 To:     Hawkins Jiawei <yin31149@gmail.com>
 Cc:     syzbot+473754e5af963cf014cf@syzkaller.appspotmail.com,
         Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        18801353760@163.com, Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com, 18801353760@163.com
+Subject: Re: [PATCH] wext: use flex array destination for memcpy()
+Message-ID: <202209261042.9B401F8D6@keescook>
+References: <00000000000070db2005e95a5984@google.com>
+ <20220926150907.8551-1-yin31149@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220926150907.8551-1-yin31149@gmail.com>
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 26, 2022 at 8:09 AM Hawkins Jiawei <yin31149@gmail.com> wrote:
->
+On Mon, Sep 26, 2022 at 11:09:06PM +0800, Hawkins Jiawei wrote:
 > Syzkaller reports refcount bug as follows:
 
-This has nothing to do with a refcount bug...
+"buffer overflow false positive" instead of "refcount bug"
 
 > ------------[ cut here ]------------
-
-
 > memcpy: detected field-spanning write (size 8) of single field
->         "&compat_event->pointer" at net/wireless/wext-core.c:623 (size 4)
+> 	"&compat_event->pointer" at net/wireless/wext-core.c:623 (size 4)
 > WARNING: CPU: 0 PID: 3607 at net/wireless/wext-core.c:623
->         wireless_send_event+0xab5/0xca0 net/wireless/wext-core.c:623
+> 	wireless_send_event+0xab5/0xca0 net/wireless/wext-core.c:623
 > Modules linked in:
 > CPU: 1 PID: 3607 Comm: syz-executor659 Not tainted
->         6.0.0-rc6-next-20220921-syzkaller #0
+> 	6.0.0-rc6-next-20220921-syzkaller #0
 > [...]
 > Call Trace:
 >  <TASK>
@@ -109,99 +104,32 @@ This has nothing to do with a refcount bug...
 >  entry_SYSCALL_64_after_hwframe+0x63/0xcd
 >  [...]
 >  </TASK>
->
+> 
 > Wireless events will be sent on the appropriate channels in
 > wireless_send_event(). Different wireless events may have different
 > payload structure and size, so kernel uses **len** and **cmd** field
 > in struct __compat_iw_event as wireless event common LCP part, uses
 > **pointer** as a label to mark the position of remaining different part.
->
+> 
 > Yet the problem is that, **pointer** is a compat_caddr_t type, which may
 > be smaller than the relative structure at the same position. So during
 > wireless_send_event() tries to parse the wireless events payload, it may
 > trigger the memcpy() run-time destination buffer bounds checking when the
 > relative structure's data is copied to the position marked by **pointer**.
->
+> 
 > This patch solves it by introducing flexible-array field **ptr_bytes**,
 > to mark the position of the wireless events remaining part next to
 > LCP part. What's more, this patch also adds **ptr_len** variable in
 > wireless_send_event() to improve its maintainability.
->
+> 
 > Reported-and-tested-by: syzbot+473754e5af963cf014cf@syzkaller.appspotmail.com
 > Link: https://lore.kernel.org/all/00000000000070db2005e95a5984@google.com/
 > Suggested-by: Kees Cook <keescook@chromium.org>
 > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
->  include/linux/wireless.h | 10 +++++++++-
->  net/wireless/wext-core.c | 17 ++++++++++-------
->  2 files changed, 19 insertions(+), 8 deletions(-)
->
-> diff --git a/include/linux/wireless.h b/include/linux/wireless.h
-> index 2d1b54556eff..e6e34d74dda0 100644
-> --- a/include/linux/wireless.h
-> +++ b/include/linux/wireless.h
-> @@ -26,7 +26,15 @@ struct compat_iw_point {
->  struct __compat_iw_event {
->         __u16           len;                    /* Real length of this stuff */
->         __u16           cmd;                    /* Wireless IOCTL */
-> -       compat_caddr_t  pointer;
-> +
-> +       union {
-> +               compat_caddr_t  pointer;
-> +
-> +               /* we need ptr_bytes to make memcpy() run-time destination
-> +                * buffer bounds checking happy, nothing special
-> +                */
-> +               DECLARE_FLEX_ARRAY(__u8, ptr_bytes);
-> +       };
->  };
->  #define IW_EV_COMPAT_LCP_LEN offsetof(struct __compat_iw_event, pointer)
->  #define IW_EV_COMPAT_POINT_OFF offsetof(struct compat_iw_point, length)
-> diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-> index 76a80a41615b..fe8765c4075d 100644
-> --- a/net/wireless/wext-core.c
-> +++ b/net/wireless/wext-core.c
-> @@ -468,6 +468,7 @@ void wireless_send_event(struct net_device *        dev,
->         struct __compat_iw_event *compat_event;
->         struct compat_iw_point compat_wrqu;
->         struct sk_buff *compskb;
-> +       int ptr_len;
->  #endif
->
->         /*
-> @@ -582,6 +583,9 @@ void wireless_send_event(struct net_device *        dev,
->         nlmsg_end(skb, nlh);
->  #ifdef CONFIG_COMPAT
->         hdr_len = compat_event_type_size[descr->header_type];
-> +
-> +       /* ptr_len is remaining size in event header apart from LCP */
-> +       ptr_len = hdr_len - IW_EV_COMPAT_LCP_LEN;
->         event_len = hdr_len + extra_len;
->
->         compskb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_ATOMIC);
-> @@ -612,16 +616,15 @@ void wireless_send_event(struct net_device *      dev,
->         if (descr->header_type == IW_HEADER_TYPE_POINT) {
->                 compat_wrqu.length = wrqu->data.length;
->                 compat_wrqu.flags = wrqu->data.flags;
-> -               memcpy(&compat_event->pointer,
-> -                       ((char *) &compat_wrqu) + IW_EV_COMPAT_POINT_OFF,
-> -                       hdr_len - IW_EV_COMPAT_LCP_LEN);
-> +               memcpy(compat_event->ptr_bytes,
-> +                      ((char *)&compat_wrqu) + IW_EV_COMPAT_POINT_OFF,
-> +                       ptr_len);
->                 if (extra_len)
-> -                       memcpy(((char *) compat_event) + hdr_len,
-> -                               extra, extra_len);
-> +                       memcpy(&compat_event->ptr_bytes[ptr_len],
-> +                              extra, extra_len);
->         } else {
->                 /* extra_len must be zero, so no if (extra) needed */
-> -               memcpy(&compat_event->pointer, wrqu,
-> -                       hdr_len - IW_EV_COMPAT_LCP_LEN);
-> +               memcpy(compat_event->ptr_bytes, wrqu, ptr_len);
->         }
->
->         nlmsg_end(compskb, nlh);
-> --
-> 2.25.1
->
+
+Thanks for spinning this and getting it tested!
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
