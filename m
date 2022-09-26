@@ -2,157 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D8D5E978C
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 02:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 020C15E97DE
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 04:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233195AbiIZAmF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 25 Sep 2022 20:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54534 "EHLO
+        id S229881AbiIZCQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Sep 2022 22:16:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233133AbiIZAmB (ORCPT
+        with ESMTP id S231176AbiIZCQ2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 25 Sep 2022 20:42:01 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271172C12F;
-        Sun, 25 Sep 2022 17:42:00 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id fv3so4889216pjb.0;
-        Sun, 25 Sep 2022 17:42:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date;
-        bh=O/gG7i1U+ZjLMbqINX8HTYswuyZSqHXOwjFzg71oSbc=;
-        b=gBsOuNAAAoAP4S+0LTxcEvnQxDsBOmg5v+zlSym7BYtLhxudi9IaC0MSZdC7sDxNkL
-         z/8JcLjpwsiOojNnhwUZE9QrYFnrX8GkMo4DySacVozlP/sk71wEZaemtQ07V3DHiAKF
-         l+4KhslVQOPnarmkF0azDoOHXREkgjsfvN5Q3XBXFcPfACVDhviT5bRisZQec2udEQqo
-         D0497TFdj7IwT4i3XxGOiI4gxyeoNxbNhT2hbF+j3gxWVkLJKXq4kbx0Rc/2DVsPmdKm
-         IHZP6wU8SZIpwwcmbOzZUZIju+EVUWrz2lJYml/JOONXgDM7F0eN38mlF6vW2rHw6wXn
-         Sn0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=O/gG7i1U+ZjLMbqINX8HTYswuyZSqHXOwjFzg71oSbc=;
-        b=vKQDNI20Na3qWQgLeRycdFE/Cs7UO75+kDa2TFme96L4HyYIM+0OENfoYjAokGx3OS
-         hgPQjJzDO1y1zsH6mIQK4K6FRwhpRdfQ6OH1kzlAYj5Hmw6veHKOWEzGQOwszd59MWVt
-         F/VLMuPj7mTY9B9ah51HWLX8PjeBfW/+RnmZOIJ3V16bDyRmTVg/4VukH3+DaekgtSK9
-         X6oe+ppMIZwFgzD62IKhpIVw9AIlxGtLqpAbJLUjMfN+Uc671GgR/T1uU3Rw3OsUBHnr
-         bVBS4jG9c3+zj3UlVcdIb5AEE95+JkDyXmzE8PiEeJiUAPf6QbrXLDEEfrFRzlJHof1m
-         HfFg==
-X-Gm-Message-State: ACrzQf0f8UMmIML9/32twm+bXowllayoHqQSup3sz685yap6jmU0mam5
-        GWLaxBGZcSs+YublUYds34oFdr+UxfFfwRGRXqwHmLNoBbFQOvMt
-X-Google-Smtp-Source: AMsMyM4w9p1kQ5NDTbmVRdfYXhwtUeiQE64dQc4/xIjas0o+fcpA6tkmvto0+cV7tVWdva5ylUS32VWPwnslYreG1hc=
-X-Received: by 2002:a17:902:cecf:b0:178:3b53:ebf5 with SMTP id
- d15-20020a170902cecf00b001783b53ebf5mr19921119plg.122.1664152919181; Sun, 25
- Sep 2022 17:41:59 -0700 (PDT)
+        Sun, 25 Sep 2022 22:16:28 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 853E826489;
+        Sun, 25 Sep 2022 19:16:25 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28Q2FRgO4028838, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28Q2FRgO4028838
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 26 Sep 2022 10:15:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 26 Sep 2022 10:15:52 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 26 Sep
+ 2022 10:15:50 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <Larry.Finger@lwfinger.net>, <stable@vger.kernel.org>,
+        <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v6.0-rc] wifi: rtw89: free unused skb to prevent memory leak
+Date:   Mon, 26 Sep 2022 10:15:13 +0800
+Message-ID: <20220926021513.5029-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date:   Mon, 26 Sep 2022 05:41:47 +0500
-Message-ID: <CABXGCsP0znm9pS-MiKtyxTXR7XiyFVqen0qzNpicGHDZKCzbwg@mail.gmail.com>
-Subject: After commit 44fa75f207d8a106bc75e6230db61e961fdbf8a8 Wi-Fi (mt7921e)
- speed significantly decreased
-To:     jelonek.jonas@gmail.com, johannes.berg@intel.com,
-        lorenzo.bianconi83@gmail.com, sean.wang@mediatek.com
-Cc:     Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/26/2022 01:58:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMjUgpFWkyCAwNzo1MDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+From: Po-Hao Huang <phhuang@realtek.com>
 
-I bisected the issue and found the first bad commit.
+This avoid potential memory leak under power saving mode.
 
-44fa75f207d8a106bc75e6230db61e961fdbf8a8 is the first bad commit
-commit 44fa75f207d8a106bc75e6230db61e961fdbf8a8
-Author: Jonas Jelonek <jelonek.jonas@gmail.com>
-Date:   Mon May 9 19:39:57 2022 +0200
+Fixes: fc5f311fce74 ("rtw89: don't flush hci queues and send h2c if power is off")
+Cc: stable@vger.kernel.org
+Cc: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220916033811.13862-6-pkshih@realtek.com
+---
+Hi Kalle,
 
-    mac80211: extend current rate control tx status API
+We want this patch go to v6.0-rc, because it can fix memleak caused by another
+patch. For users, this driver eats memory and could lead out-of-memory
+finally.
 
-    This patch adds the new struct ieee80211_rate_status and replaces
-    'struct rate_info *rate' in ieee80211_tx_status with pointer and length
-    annotation.
+This patch has been merged into wireless-next, but I forget to add "Fixes"
+tag and Cc stable, so I add them to commit messages. If this works, I will
+prepare another patch for v5.19.
 
-    The struct ieee80211_rate_status allows to:
-    (1)     receive tx power status feedback for transmit power control (TPC)
-            per packet or packet retry
-    (2)     dynamic mapping of wifi chip specific multi-rate retry (mrr)
-            chains with different lengths
-    (3)     increase the limit of annotatable rate indices to support
-            IEEE802.11ac rate sets and beyond
+Ping-Ke
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-    ieee80211_tx_info, control and status buffer, and ieee80211_tx_rate
-    cannot be used to achieve these goals due to fixed size limitations.
-
-    Our new struct contains a struct rate_info to annotate the rate that was
-    used, retry count of the rate and tx power. It is intended for all
-    information related to RC and TPC that needs to be passed from driver to
-    mac80211 and its RC/TPC algorithms like Minstrel_HT. It corresponds to
-    one stage in an mrr. Multiple subsequent instances of this struct can be
-    included in struct ieee80211_tx_status via a pointer and a length variable.
-    Those instances can be allocated on-stack. The former reference to a single
-    instance of struct rate_info is replaced with our new annotation.
-
-    An extension is introduced to struct ieee80211_hw. There are two new
-    members called 'tx_power_levels' and 'max_txpwr_levels_idx' acting as a
-    tx power level table. When a wifi device is registered, the driver shall
-    supply all supported power levels in this list. This allows to support
-    several quirks like differing power steps in power level ranges or
-    alike. TPC can use this for algorithm and thus be designed more abstract
-    instead of handling all possible step widths individually.
-
-    Further mandatory changes in status.c, mt76 and ath11k drivers due to the
-    removal of 'struct rate_info *rate' are also included.
-    status.c already uses the information in ieee80211_tx_status->rate in
-    radiotap, this is now changed to use ieee80211_rate_status->rate_idx.
-    mt76 driver already uses struct rate_info to pass the tx rate to status
-    path. The new members of the ieee80211_tx_status are set to NULL and 0
-    because the previously passed rate is not relevant to rate control and
-    accurate information is passed via tx_info->status.rates.
-    For ath11k, the txrate can be passed via this struct because ath11k uses
-    firmware RC and thus the information does not interfere with software RC.
-
-    Compile-Tested: current wireless-next tree with all flags on
-    Tested-on: Xiaomi 4A Gigabit (MediaTek MT7603E, MT7612E) with OpenWrt
-                    Linux 5.10.113
-
-    Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-    Link: https://lore.kernel.org/r/20220509173958.1398201-2-jelonek.jonas@gmail.com
-    Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
- drivers/net/wireless/ath/ath11k/dp_tx.c |  8 ++-
- drivers/net/wireless/mediatek/mt76/tx.c |  5 +-
- include/net/mac80211.h                  | 33 +++++++++++-
- net/mac80211/status.c                   | 91 +++++++++++++++++++--------------
- 4 files changed, 92 insertions(+), 45 deletions(-)
-
-
-Before 44fa75f207d8a106bc75e6230db61e961fdbf8a8 speed was:
-Idle Latency:     1.86 ms   (jitter: 0.06ms, low: 1.79ms, high: 1.99ms)
-    Download:   834.57 Mbps (data used: 698.7 MB)
-                 25.53 ms   (jitter: 6.82ms, low: 4.79ms, high: 234.55ms)
-      Upload:   818.72 Mbps (data used: 881.9 MB)
-                 17.98 ms   (jitter: 5.49ms, low: 4.66ms, high: 53.61ms)
-
-After 44fa75f207d8a106bc75e6230db61e961fdbf8a8 speed became:
-Idle Latency:     1.86 ms   (jitter: 0.42ms, low: 1.63ms, high: 2.73ms)
-    Download:   546.18 Mbps (data used: 629.1 MB)
-                  5.89 ms   (jitter: 1.62ms, low: 2.64ms, high: 22.30ms)
-      Upload:   171.69 Mbps (data used: 141.0 MB)
-                  3.07 ms   (jitter: 1.06ms, low: 1.79ms, high: 7.98ms)
-
-All measures I made by cli speedtest utility.
-
-Thanks.
-
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 16c74477b3325..e3086bf8f4513 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -847,6 +847,7 @@ int rtw89_h2c_tx(struct rtw89_dev *rtwdev,
+ 		rtw89_debug(rtwdev, RTW89_DBG_FW,
+ 			    "ignore h2c due to power is off with firmware state=%d\n",
+ 			    test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags));
++		dev_kfree_skb(skb);
+ 		return 0;
+ 	}
+ 
 -- 
-Best Regards,
-Mike Gavrilov.
+2.25.1
+
