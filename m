@@ -2,57 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2465E9B56
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 09:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E835E9B74
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Sep 2022 10:02:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234353AbiIZH66 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Sep 2022 03:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41392 "EHLO
+        id S234104AbiIZIB6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Sep 2022 04:01:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234359AbiIZH62 (ORCPT
+        with ESMTP id S233727AbiIZIBa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Sep 2022 03:58:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B3D63C6
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 00:54:40 -0700 (PDT)
+        Mon, 26 Sep 2022 04:01:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02614C27;
+        Mon, 26 Sep 2022 00:58:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5286F61889
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 07:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22A6C433C1;
-        Mon, 26 Sep 2022 07:54:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F8A36179F;
+        Mon, 26 Sep 2022 07:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85251C433C1;
+        Mon, 26 Sep 2022 07:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664178878;
-        bh=3vdqkKP+qds42Ot02GNxi1bWCUHaFRACwUX0EGN0beU=;
+        s=k20201202; t=1664179131;
+        bh=jfuwhFd5PczoIXgvji7jNDdS65hU/TTDtOFWvgEpYkI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nHgnHQZrfxajqt/kfXj2ein3cWxKhoQv+Yyt0MmeJh/JpueFmf09OfzGDWsW+XNIT
-         W+sSHe7qtMVk2qxFr4kyrmz9ApTtqxgmRj8969b2DzrpFXOjg3PdFpjMf1lBesUpLO
-         Pp3xiyWoRCzS+5yT0YgHme1Dyy/GdVBn9126OOjv3Yj3rnOSYG4PjmpIi2EaLzBOdm
-         6MsKS2nflxFmAxyQFSddaNP/YAcXCTNDHXucCpziBpUS3IkgG3BkFS0NQUJLTjnk4i
-         K508on0beBxAThLS5KekW0kiJhV3cPEJSY2gWLhg2VtTxBEAPEs5ZcW7zh36I8D4u/
-         s8f4QN3NmO0Iw==
+        b=GCIatT1Gc/erxM3rdkI/8g7syX2EzY43d6RY9O+fWQUdcXRuyiUDtbvpnl60m7dE+
+         2hHqu72oyFVsX4ntX4wXxY+UDRxa8AzF24r8pQDDmoqhG/pdyMDuzLPD8O4VauEEUl
+         2XSuoHx8i7aA0x3Uj8Z3QMBfujxRHshTsS1sRVRluCpBkAN3MltLOp8V0a/pNOmEqY
+         vAT7RtTC2bIb0/ClWsmnnclQtV2Im5Dl85mLrfXyuZ0Dbjt+i4BqX/ve4Hd2AbJdJ1
+         0tfGBkzPGfZm8pNH/aTWBqPL4AJ/rT8cq1qQTCqdVHwvl0uR2DQiL0spjUkMyiThdb
+         ZMl452H4brgTQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     "Lin Ian \(CSSITB CSS ICW SW WFS \/ EE\)" <ian.lin@infineon.com>,
+To:     Ruan Jinjie <ruanjinjie@huawei.com>
+Cc:     Franky Lin <franky.lin@broadcom.com>, <aspriel@gmail.com>,
+        <hante.meuleman@broadcom.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <marcan@marcan.st>, <linus.walleij@linaro.org>,
+        <rmk+kernel@armlinux.org.uk>, <soontak.lee@cypress.com>,
         <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <Double.Lo@infineon.com>
-Subject: Re: [PATCH 4/5] brcmfmac: Update SSID of hidden AP while informing its bss to cfg80211 layer
-References: <20220914033620.12742-1-ian.lin@infineon.com>
-        <20220914033620.12742-5-ian.lin@infineon.com>
-        <87tu506mre.fsf@kernel.org>
-        <d390462d-1cd2-fc3f-5b0c-bdcd332ed0bc@infineon.com>
-        <ff7e72ae-0431-b568-32fc-7b1cbf250e20@quicinc.com>
-Date:   Mon, 26 Sep 2022 10:54:33 +0300
-In-Reply-To: <ff7e72ae-0431-b568-32fc-7b1cbf250e20@quicinc.com> (Jeff
-        Johnson's message of "Fri, 23 Sep 2022 08:29:34 -0700")
-Message-ID: <87czbi4ll2.fsf@kernel.org>
+        <SHA-cyfmac-dev-list@infineon.com>,
+        <brcm80211-dev-list.pdl@broadcom.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] wifi: brcmfmac: pcie: add missing pci_disable_device() in brcmf_pcie_get_resource()
+References: <20220923093806.3108119-1-ruanjinjie@huawei.com>
+        <CA+8PC_eCwv321DxoCMOrWNLw7NWkT9F0sD-=8GzygEXPJHFWWA@mail.gmail.com>
+        <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com>
+Date:   Mon, 26 Sep 2022 10:58:45 +0300
+In-Reply-To: <b5e39818-2961-ba3d-8552-f618c19f8fe6@huawei.com> (Ruan Jinjie's
+        message of "Sat, 24 Sep 2022 09:00:12 +0800")
+Message-ID: <878rm64le2.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,39 +63,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+Ruan Jinjie <ruanjinjie@huawei.com> writes:
 
->>>> @@ -3032,6 +3033,12 @@ static s32 brcmf_inform_single_bss(struct
->>>> brcmf_cfg80211_info *cfg,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 notify_ielen =3D le32_to_cpu(bi->=
-ie_length);
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bss_data.signal =3D (s16)le16_to_=
-cpu(bi->RSSI) * 100;
->>>>
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0 ssid =3D brcmf_parse_tlvs(notify_ie, notify_=
-ielen, WLAN_EID_SSID);
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0 if (ssid && ssid->data[0] =3D=3D '\0' && ssi=
-d->len =3D=3D bi->SSID_len) {
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 /* Update SSID for hidden AP */
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 memcpy((u8 *)ssid->data, bi->SSID, bi->SSID_len);
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> memcpy() takes a void pointer so the cast is not needed.
->>
->> There should be a type casting since 'ssid' is a const pointer.
->> As you saw there will be build warning in PATCH v2 (sorry I didn't
->> notice that locally)
->> I will send PATCH v3 to restore type casting, is that ok?
->>
+> On 2022/9/24 0:50, Franky Lin wrote:
+>> On Fri, Sep 23, 2022 at 2:42 AM ruanjinjie <ruanjinjie@huawei.com> wrote:
+>>>
+>>> Add missing pci_disable_device() if brcmf_pcie_get_resource() fails.
+>> 
+>> Did you encounter any issue because of the absensent
+>> pci_disable_device? A bit more context will be very helpful.
+>> 
 >
-> writing through a const pointer seems broken.
+> We use static analysis via coccinelle to find the above issue. The
+> command we use is below:
+>
+> spatch -I include -timeout 60 -very_quiet -sp_file
+> pci_disable_device_missing.cocci
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 
-Yeah, this is exactly why I don't like casting. I see so often casts
-removing the const and that can lead to another problems.
+Please include this information to the commit log, it helps to
+understand the background of the fix.
 
---=20
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
