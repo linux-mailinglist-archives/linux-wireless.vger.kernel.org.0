@@ -2,91 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4318C5EB7B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 04:32:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56AE15EB8ED
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 05:41:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbiI0CcB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Sep 2022 22:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33158 "EHLO
+        id S230118AbiI0Dlv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Sep 2022 23:41:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbiI0Cb4 (ORCPT
+        with ESMTP id S229804AbiI0Dlt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Sep 2022 22:31:56 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D9BBE1702
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 19:31:53 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id v4so8162790pgi.10
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 19:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=9ewTPKheQH/VeUeUiLVY8qIwxsi5cTHr9IDNehA24WA=;
-        b=ceUgxe/lC5UBEuGusxsxqzbk90I+VRqqgcguETsJRXfKbyb8zrK1hg9YIE5JlhVEg5
-         URXKy3fH3YnoK1O6XjVEfJj794ySV3BXKo2PBpA0KQEn77s1hAAAJyNvP4CMwZ38c3Ik
-         YGVWmTp6yL9XcrUlmqJy0/z09zMbE9RSNCkHY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=9ewTPKheQH/VeUeUiLVY8qIwxsi5cTHr9IDNehA24WA=;
-        b=rZUH1zlHoht0YXmNgI8MXJiyTQ5GKRSrwXiCCpkhaDe42LRDBbRf0gJ1BJqdNw/fds
-         vEpNLWuKqLJ6PTDLZJIZ24IXO0IL6O+XBg3EO4xSnzooVtqKzyMaIO7XUiT85XcoIPwn
-         7xhwKkG84fnvHq3SCi6f9bV+UGI9Z0w2COtyTahL/sZym102ySOJrWwo4tEJx+EqW2au
-         AZQKbrJ5bmTGhycGTVdXtkPKl1064cFeKlSGMhHbSLXzmc3L/FvxeR7l17ljsmMYdbKc
-         ViaTnLfvoAs/bunZQG2EcRl/3XtwSUNGDq5+ckqnYc9NTvmlbD4/lucLCPxNZ+NggEYP
-         rcRw==
-X-Gm-Message-State: ACrzQf3x8IQ98gEF09v4+6QllCYUWWPecTHb5Hth8uOto+M4LbhFn7Wp
-        EAmMyVExfzogSfsixLbiFpRSLw==
-X-Google-Smtp-Source: AMsMyM5gEWRHn2o1zuyvj0dRXD8PdoFzFHrXCz4JBSPqHHGptBvX5j2Odrepujc2SJSxuBD4q9WI+w==
-X-Received: by 2002:a05:6a00:9a7:b0:54c:27c4:3ad6 with SMTP id u39-20020a056a0009a700b0054c27c43ad6mr27287556pfg.9.1664245913313;
-        Mon, 26 Sep 2022 19:31:53 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id f13-20020a170902684d00b0017872bc9865sm168795pln.63.2022.09.26.19.31.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Sep 2022 19:31:52 -0700 (PDT)
-Date:   Mon, 26 Sep 2022 19:31:51 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] iwlegacy: Replace zero-length arrays with
- DECLARE_FLEX_ARRAY() helper
-Message-ID: <202209261931.EB84C573@keescook>
-References: <YzIvzc0jsYLigO8a@work>
+        Mon, 26 Sep 2022 23:41:49 -0400
+Received: from smtp12.infineon.com (smtp12.infineon.com [217.10.52.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6EFAD991
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 20:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1664250109; x=1695786109;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2ONCkk7OhZzwRGvzxtUynZ1R2RbP19JEi8VWDhjSqaI=;
+  b=QSMrdfrFSRVyJW68l6a2lmdbMFxSG0n5a8/hgJRyoQIhvsM3Pa2tZPTG
+   AjhGdaSLXssEQ3zFRQIYHvvei3pdBR/K8FABD2SYw/Uc0S1dn4q6YecVB
+   WluzvY48c1PJc/K+r+3WVVhf9dXAWR1LyaSIFUduWmPzfAdgMXoU7Dl2S
+   A=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="319072534"
+X-IronPort-AV: E=Sophos;i="5.93,348,1654552800"; 
+   d="scan'208";a="319072534"
+Received: from unknown (HELO mucxv001.muc.infineon.com) ([172.23.11.16])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 05:41:47 +0200
+Received: from MUCSE812.infineon.com (MUCSE812.infineon.com [172.23.29.38])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mucxv001.muc.infineon.com (Postfix) with ESMTPS
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Sep 2022 05:41:46 +0200 (CEST)
+Received: from MUCSE804.infineon.com (172.23.29.30) by MUCSE812.infineon.com
+ (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 27 Sep
+ 2022 05:41:46 +0200
+Received: from mailrelay-cypress4.infineon.com (172.23.18.56) by
+ SMTP-MailRelay1.infineon.com (172.23.29.5) with Microsoft SMTP Server id
+ 15.2.986.29; Tue, 27 Sep 2022 05:41:46 +0200
+mailrelay-external-outbound: True
+X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="260700528"
+X-IronPort-AV: E=Sophos;i="5.93,348,1654552800"; 
+   d="scan'208";a="260700528"
+Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
+  by mailrelay-cypress4.infineon.com with ESMTP; 27 Sep 2022 05:41:46 +0200
+Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
+ (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Mon, 26 Sep 2022
+ 22:41:43 -0500
+Received: from iot-wlan-dev-u03.aus.cypress.com (iot-wlan-dev-u03
+ [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id 831DA10038C;
+        Mon, 26 Sep 2022 22:41:44 -0500 (CDT)
+Received: by iot-wlan-dev-u03.aus.cypress.com (Postfix, from userid 27991)      id
+ 7B5009807FB; Mon, 26 Sep 2022 22:41:44 -0500 (CDT)
+From:   Ian Lin <ian.lin@infineon.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
+        <Double.Lo@infineon.com>, <ian.lin@infineon.com>
+Subject: [PATCH v3 0/5] Fix connect/p2p issue series
+Date:   Mon, 26 Sep 2022 22:41:33 -0500
+Message-ID: <20220927034138.20463-1-ian.lin@infineon.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YzIvzc0jsYLigO8a@work>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 26, 2022 at 06:03:41PM -0500, Gustavo A. R. Silva wrote:
-> Zero-length arrays are deprecated and we are moving towards adopting
-> C99 flexible-array members, instead. So, replace zero-length arrays
-> declarations in anonymous union with the new DECLARE_FLEX_ARRAY()
-> helper macro.
-> 
-> This helper allows for flexible-array members in unions.
-> 
-> Link: https://github.com/KSPP/linux/issues/193
-> Link: https://github.com/KSPP/linux/issues/223
-> Link: https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Fix several connect and p2p issues.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Note: there will be known build warning with commit
+"fix P2P device discovery failure"
+ - warning: parameter ‘vif’ set but not used [-Wunused-but-set-parameter]
+However the purpose is to overwrite the pointer(vif) in function parameter,
+and the pointer will be used ouside the function.
+
+Changes in v3:
+  - do typecast while variable assignment in brcmf_inform_single_bss()
+
+Changes in v2:
+  - fix email address mismatch with s-o-b
+  - remove unnecessary type casting
+
+Brian Henriquez (1):
+  brcmfmac: correctly remove all p2p vif
+
+Chung-Hsien Hsu (1):
+  brcmfmac: fix P2P device discovery failure
+
+Prasanna Kerekoppa (1):
+  brcmfmac: Avoiding Connection delay
+
+Syed Rafiuddeen (1):
+  brcmfmac: Update SSID of hidden AP while informing its bss to cfg80211
+    layer
+
+Wataru Gohda (1):
+  brcmfmac: Fix for when connect request is not success
+
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 32 +++++++++++++++++--
+ .../broadcom/brcm80211/brcmfmac/p2p.c         | 10 ++++--
+ 2 files changed, 37 insertions(+), 5 deletions(-)
 
 -- 
-Kees Cook
+2.25.0
+
