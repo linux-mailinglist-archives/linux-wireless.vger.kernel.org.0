@@ -2,54 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45AA85EBA5A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 08:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91BD35EBA5E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 08:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229821AbiI0GIr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Sep 2022 02:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
+        id S229888AbiI0GJ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Sep 2022 02:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiI0GIq (ORCPT
+        with ESMTP id S229530AbiI0GJY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Sep 2022 02:08:46 -0400
+        Tue, 27 Sep 2022 02:09:24 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B9BA6C3B;
-        Mon, 26 Sep 2022 23:08:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC38A8CF4
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 23:09:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BA358B8198C;
-        Tue, 27 Sep 2022 06:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462F4C433D6;
-        Tue, 27 Sep 2022 06:08:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EDFA3B8198C
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Sep 2022 06:09:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BD5C433C1;
+        Tue, 27 Sep 2022 06:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664258921;
-        bh=w3EvjEl2w444FDkaGcaMBXMqh4XDEqATPXWfLB6KEW0=;
+        s=k20201202; t=1664258961;
+        bh=O7PHhiXl2enc4GeHYdqTfjccGlT2xhKYj9m3Erzp6MI=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=YKKUWOvSvMzWpNaacN2UVJA4PX7oufPHofneTilffSjT4Fj3xUmlNzRxgVHyY48jr
-         hZ5s9JI3Dvor6THtpCV7We5LRWzaR2PGDGxvlUcmwszSC6OVx5euWXmHvjzX8fOdYb
-         fV2xLKOROR0hgvldaacPTH1mzNTSm4Mc92plqZQNg9eFOzlpNL4aY/y+JvKdUWk3RR
-         n/alSKAvdD1V1c5zPdEhITCAacedWPEsnpYs5bD0p82weORCpqJGCPRz3P/cmOYz47
-         QquJiLxjTPYo2ek3kLxyVhkwPUsggi5djOYObxBnkTy4FnvKtwJ37PNsGorTIFOeHq
-         l4GhyMEWXVqMg==
+        b=X2OB48CW5gPKCsyirUUg82YAvkqD6GHyOWelOkSMOi68EwHWYq47treFibtQzVGjz
+         4TVFIYuHI5htCgKGbVggp42Arj3NjYFDJHhcOL3yC564uZz3MZ5LtBTcy6A8Qze1f8
+         ZWKJ+PYEz0AMbVx/fC5LbPbBwvzErgCmbFhfP0GhmZ0FER2K6cr8AAq+GQy0Ca/uPl
+         ISjzbA6zeWRBaL0JWOSq2+6r2jPBGZkD6dy/CePJwHCjFkRl+N4YJQjQTVPmE+4jOs
+         HXHWbs4uTeYf4oZIFHizOnxszdhVdMRZKiejo4jepBePq/iq3rPLTG22iiy5/2LRmi
+         F1lY6m7Wvkm1A==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] cw1200: fix incorrect check to determine if no element
- is
- found in list
+Subject: Re: [PATCH v2 1/4] brcmfmac: increase default max WOWL patterns to 16
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220413091723.17596-1-xiam0nd.tong@gmail.com>
-References: <20220413091723.17596-1-xiam0nd.tong@gmail.com>
-To:     Xiaomeng Tong <xiam0nd.tong@gmail.com>
-Cc:     pizza@shaftnet.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, linville@tuxdriver.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Xiaomeng Tong <xiam0nd.tong@gmail.com>
+In-Reply-To: <20220922104140.11889-2-ian.lin@infineon.com>
+References: <20220922104140.11889-2-ian.lin@infineon.com>
+To:     Ian Lin <ian.lin@infineon.com>
+Cc:     <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <Double.Lo@infineon.com>,
+        <ian.lin@infineon.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166425891751.10854.17954228621330378644.kvalo@kernel.org>
-Date:   Tue, 27 Sep 2022 06:08:39 +0000 (UTC)
+Message-ID: <166425895809.10854.10988463481252010620.kvalo@kernel.org>
+Date:   Tue, 27 Sep 2022 06:09:19 +0000 (UTC)
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,32 +57,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Xiaomeng Tong <xiam0nd.tong@gmail.com> wrote:
+Ian Lin <ian.lin@infineon.com> wrote:
 
-> The bug is here: "} else if (item) {".
+> From: Ryohei Kondo <ryohei.kondo@cypress.com>
 > 
-> The list iterator value will *always* be set and non-NULL by
-> list_for_each_entry(), so it is incorrect to assume that the iterator
-> value will be NULL if the list is empty or no element is found in list.
+> 4373 has support of 16 WOWL patterns thus increasing the default value
 > 
-> Use a new value 'iter' as the list iterator, while use the old value
-> 'item' as a dedicated pointer to point to the found element, which
-> 1. can fix this bug, due to now 'item' is NULL only if it's not found.
-> 2. do not need to change all the uses of 'item' after the loop.
-> 3. can also limit the scope of the list iterator 'iter' *only inside*
->    the traversal loop by simply declaring 'iter' inside the loop in the
->    future, as usage of the iterator outside of the list_for_each_entry
->    is considered harmful. https://lkml.org/lkml/2022/2/17/1032
-> 
-> Fixes: a910e4a94f692 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-> Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+> Signed-off-by: Ryohei Kondo <ryohei.kondo@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+> Signed-off-by: Ian Lin <ian.lin@infineon.com>
 
-Patch applied to wireless-next.git, thanks.
+4 patches applied to wireless-next.git, thanks.
 
-86df5de5c632 cw1200: fix incorrect check to determine if no element is found in list
+459e552bae96 brcmfmac: increase default max WOWL patterns to 16
+dce45ded7619 brcmfmac: Support 89459 pcie
+11eda8f01d6a brcmfmac: increase dcmd maximum buffer size
+a373f38cd1f5 brcmfmac: Remove the call to "dtim_assoc" IOVAR
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220413091723.17596-1-xiam0nd.tong@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220922104140.11889-2-ian.lin@infineon.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
