@@ -2,98 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE21C5ECC22
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 20:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F091F5ECC31
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 20:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231790AbiI0S0a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Sep 2022 14:26:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51594 "EHLO
+        id S231361AbiI0Sfz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Sep 2022 14:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231721AbiI0S01 (ORCPT
+        with ESMTP id S229779AbiI0Sfx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Sep 2022 14:26:27 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365B2DF044;
-        Tue, 27 Sep 2022 11:26:26 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id s14so16365991wro.0;
-        Tue, 27 Sep 2022 11:26:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=T9mgYmd86XdemvaSKD7SCs2XkzuFJtwfsDjs/pRyThA=;
-        b=nOj8AnDIe75AfAO4VchkMKmg5BAMDXNZw2EAsnB4/oF/oZuVIolHIoTC9bOv+rAJuu
-         wHgeMu1Axd94nSUv1sxjX7rrZrtJgiXEyJNrISP5gonPVzxoKZVddanaE/ha+vqv93is
-         /e+WXlShdXf6RT3MCgK93k6HCTZVvYFombEGaFRVto1PQ7I1fY2Y56d7AUNO1hWX9m97
-         lAtIIhVtj15g43IbhUtJtJs5zvOzStnNgsO3fYZpY/xS0DBo13qziLVd5dii6W6praGx
-         TSLg/Rij3llzh/yT7s72Et3AqVb1YTi+HRWiuvgkjY9BppBM/kQJhiEy2NWcE0iJhz6v
-         3qXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=T9mgYmd86XdemvaSKD7SCs2XkzuFJtwfsDjs/pRyThA=;
-        b=6HnCK6uT7grqmbvGhq1ADyeENseOWJD6wzI3dKKTsVUMHG8kgR7ROOc/TR8Cos1d2f
-         GPCItIa8vC3m/b9e9a19gz38WRRu2ILEjD9gx3OT6142iqQZaA1IdywM6TG4FiWMbZ6X
-         5yf4qw62tz3O6qcpOxlI2ADSfPCvWgH3JIF7eumdv1YZXOUWZuBNSJnGIJq76EZuXCUH
-         lxXs/ERFdVUY1OQVhnMWebB2geIIJq0CrBG+Px5Jbw0R0tNHpn9pAXWSO6rjLtlHlSi1
-         mioRezppcuwonXcPkK1RDYvSvlG0yjF94m3rBGAemHDbCBRvai6KBzU8MO7oqyolyLxl
-         nR/w==
-X-Gm-Message-State: ACrzQf2YhQsuhN1TtnDD3xmu0yFqWiB8eZ20np7m+jt0AW0aOD9wikkg
-        e+EMC1GEuoidHBxsbLqj3wzt2bUY85+7fqQB1yY=
-X-Google-Smtp-Source: AMsMyM5DQ8LC2iHP1lq0rf/iklDDElVZoP0loHSEvuVqHRJ8lQjJY6VeRrufLJhs7LICdnseKa1ZDHSLbq9pVF9N34I=
-X-Received: by 2002:a05:6000:1565:b0:22c:8da7:3cf8 with SMTP id
- 5-20020a056000156500b0022c8da73cf8mr12472975wrz.688.1664303184639; Tue, 27
- Sep 2022 11:26:24 -0700 (PDT)
+        Tue, 27 Sep 2022 14:35:53 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CAD218B4BE
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Sep 2022 11:35:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664303752; x=1695839752;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nESJKA7upE+gJjkSiGuLXcDD3g5CMfCTCF/Km4L3qfE=;
+  b=mQ1EJJJQTw4Gvbpu2bGbtsIoEyQ3DmHDDgLsDCpo5uQd3qqSDqIjOIKw
+   ALVtfaGE/66w29J2EleuZe3eZ+bS/15VWk7AGPZTvzll9dmDtRY9UDNNa
+   e36VULMDo74PLSwE6FDGRoJL27c5XjQpFdUzykeQnfNcqe7ZBoWdvHv/S
+   7dnFPxIXIs+G60geqi03SIlqdlkza68jLjnUz3vIMEeF7KvfFdWPP+FvJ
+   GCvte7O0oUYO1lKzVi8ojmJbKabHejIDIGTCesBhJFe/27m6zDMoJrcUj
+   45eQ2B0fwjB0eE9tCVGjS7kA7Iwu1gLO5CTKSv0mr2sjRjw3NzmNrli0T
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="302878074"
+X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
+   d="scan'208";a="302878074"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 11:35:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="621623661"
+X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
+   d="scan'208";a="621623661"
+Received: from lkp-server02.sh.intel.com (HELO dfa2c9fcd321) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 27 Sep 2022 11:35:50 -0700
+Received: from kbuild by dfa2c9fcd321 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1odFQr-0001Sk-2V;
+        Tue, 27 Sep 2022 18:35:49 +0000
+Date:   Wed, 28 Sep 2022 02:35:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 6cf5e9066dd3332cf4c77ea95a116f70e7f9acf7
+Message-ID: <63334277.H54keBTCRSz2cP+t%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220927132753.750069-1-kuba@kernel.org> <CANn89iL4m=aMjZ1XWFNWDyyyDBF1uhNocN0OFqhm2VMm_JQOog@mail.gmail.com>
-In-Reply-To: <CANn89iL4m=aMjZ1XWFNWDyyyDBF1uhNocN0OFqhm2VMm_JQOog@mail.gmail.com>
-From:   Dave Taht <dave.taht@gmail.com>
-Date:   Tue, 27 Sep 2022 11:26:12 -0700
-Message-ID: <CAA93jw7oY+m3c83b0qgoJjxG=rL6ErnrF2_+UZ9hiQ85H9ZSdg@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: drop the weight argument from netif_napi_add
-To:     Eric Dumazet <edumazet@google.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        netdev <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        linux-can@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 27, 2022 at 11:21 AM Eric Dumazet <edumazet@google.com> wrote:
->
-> On Tue, Sep 27, 2022 at 6:28 AM Jakub Kicinski <kuba@kernel.org> wrote:
-> >
-> > We tell driver developers to always pass NAPI_POLL_WEIGHT
-> > as the weight to netif_napi_add(). This may be confusing
-> > to newcomers, drop the weight argument, those who really
-> > need to tweak the weight can use netif_napi_add_weight().
-> >
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->
-> Sure, but this kind of patch makes backports harder.
-> Not sure how confused are newcomers about this NAPI_POLL_WEIGHT....
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 6cf5e9066dd3332cf4c77ea95a116f70e7f9acf7  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-Ironically we've been fiddling with dramatically reducing the
-NAPI_POLL_WEIGHT (8) on
-several multicore arm systems, with good results, especially on ath10k.
+elapsed time: 723m
 
+configs tested: 75
+configs skipped: 2
 
---=20
-FQ World Domination pending: https://blog.cerowrt.org/post/state_of_fq_code=
-l/
-Dave T=C3=A4ht CEO, TekLibre, LLC
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           rhel-8.3-kvm
+x86_64                         rhel-8.3-kunit
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+alpha                               defconfig
+x86_64                    rhel-8.3-kselftests
+powerpc                           allnoconfig
+arc                                 defconfig
+sh                               allmodconfig
+m68k                             allyesconfig
+s390                 randconfig-r044-20220925
+x86_64                              defconfig
+s390                             allmodconfig
+x86_64                               rhel-8.3
+arm                                 defconfig
+s390                                defconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+arc                  randconfig-r043-20220925
+x86_64                        randconfig-a015
+x86_64                           allyesconfig
+x86_64                        randconfig-a013
+riscv                randconfig-r042-20220925
+x86_64                        randconfig-a011
+arc                  randconfig-r043-20220926
+i386                                defconfig
+x86_64               randconfig-a001-20220926
+i386                 randconfig-a001-20220926
+i386                 randconfig-a002-20220926
+i386                          randconfig-a005
+i386                 randconfig-a003-20220926
+s390                             allyesconfig
+i386                 randconfig-a004-20220926
+powerpc                          allmodconfig
+x86_64               randconfig-a003-20220926
+i386                 randconfig-a005-20220926
+x86_64               randconfig-a006-20220926
+x86_64               randconfig-a002-20220926
+alpha                            allyesconfig
+i386                 randconfig-a006-20220926
+mips                             allyesconfig
+x86_64               randconfig-a004-20220926
+x86_64               randconfig-a005-20220926
+arc                              allyesconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+m68k                             allmodconfig
+i386                             allyesconfig
+ia64                             allmodconfig
+
+clang tested configs:
+s390                 randconfig-r044-20220926
+i386                 randconfig-a011-20220926
+i386                          randconfig-a002
+x86_64                        randconfig-a014
+hexagon              randconfig-r045-20220925
+i386                 randconfig-a013-20220926
+hexagon              randconfig-r041-20220926
+i386                 randconfig-a012-20220926
+i386                 randconfig-a015-20220926
+hexagon              randconfig-r045-20220926
+i386                 randconfig-a014-20220926
+hexagon              randconfig-r041-20220925
+i386                 randconfig-a016-20220926
+x86_64                        randconfig-a012
+riscv                randconfig-r042-20220926
+x86_64                        randconfig-a016
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64               randconfig-a014-20220926
+x86_64               randconfig-a013-20220926
+x86_64               randconfig-a011-20220926
+x86_64               randconfig-a012-20220926
+x86_64               randconfig-a016-20220926
+x86_64               randconfig-a015-20220926
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
