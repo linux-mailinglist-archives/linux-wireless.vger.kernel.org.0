@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7785EBA9B
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 08:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 210145EBA9D
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 08:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230055AbiI0G2F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Sep 2022 02:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49758 "EHLO
+        id S230017AbiI0G2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Sep 2022 02:28:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbiI0G2B (ORCPT
+        with ESMTP id S229910AbiI0G2B (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 27 Sep 2022 02:28:01 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 77211855B8
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 23:27:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 73DDB857EF
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Sep 2022 23:27:57 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28R6QgDtA008385, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28R6QgDtA008385
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28R6Qhw06008390, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28R6Qhw06008390
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 27 Sep 2022 14:26:42 +0800
+        Tue, 27 Sep 2022 14:26:44 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 27 Sep 2022 14:27:07 +0800
+ 15.1.2375.31; Tue, 27 Sep 2022 14:27:08 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 27 Sep
- 2022 14:27:07 +0800
+ 2022 14:27:08 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 3/9] wifi: rtw89: add DMA busy checking bits to chip info
-Date:   Tue, 27 Sep 2022 14:26:05 +0800
-Message-ID: <20220927062611.30484-4-pkshih@realtek.com>
+Subject: [PATCH v2 4/9] wifi: rtw89: 8852b: implement chip_ops::{enable,disable}_bb_rf
+Date:   Tue, 27 Sep 2022 14:26:06 +0800
+Message-ID: <20220927062611.30484-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220927062611.30484-1-pkshih@realtek.com>
 References: <20220927062611.30484-1-pkshih@realtek.com>
@@ -55,10 +55,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMjcgpFekyCAwNDo1MzowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,117 +67,245 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-8852B has less DMA channels, so its checking bits are different from other
-chips.
+Implement to power on/off BB and RF via MAC registers.
+
+Add return type of chip_ops::disable_bb_rf, because it could fail to
+disable. Also, correct naming of register 0x0200 used by the ops as well.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c       | 10 +++++-----
- drivers/net/wireless/realtek/rtw89/pci.h       |  9 ++++++++-
- drivers/net/wireless/realtek/rtw89/rtw8852ae.c |  2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852be.c |  6 ++++++
- drivers/net/wireless/realtek/rtw89/rtw8852ce.c |  2 +-
- 5 files changed, 21 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     |  4 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  2 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  8 ++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  8 ++-
+ drivers/net/wireless/realtek/rtw89/reg.h      | 10 +++-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 60 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  4 +-
+ 7 files changed, 84 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 002d3ce0e35b2..957f4e550a7ef 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -2272,19 +2272,19 @@ static int rtw89_poll_txdma_ch_idle_pcie(struct rtw89_dev *rtwdev)
- {
- 	const struct rtw89_pci_info *info = rtwdev->pci_info;
- 	u32 ret, check, dma_busy;
--	u32 dma_busy1 = info->dma_busy1_reg;
-+	u32 dma_busy1 = info->dma_busy1.addr;
- 	u32 dma_busy2 = info->dma_busy2_reg;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 7f75d05c004fb..31c2a7d6bfc2d 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2949,7 +2949,9 @@ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ 	/* efuse process */
  
--	check = B_AX_ACH0_BUSY | B_AX_ACH1_BUSY | B_AX_ACH2_BUSY |
--		B_AX_ACH3_BUSY | B_AX_ACH4_BUSY | B_AX_ACH5_BUSY |
--		B_AX_ACH6_BUSY | B_AX_ACH7_BUSY | B_AX_CH8_BUSY |
--		B_AX_CH9_BUSY | B_AX_CH12_BUSY;
-+	check = info->dma_busy1.mask;
- 
- 	ret = read_poll_timeout(rtw89_read32, dma_busy, (dma_busy & check) == 0,
- 				10, 100, false, rtwdev, dma_busy1);
+ 	/* pre-config BB/RF, BB reset/RFC reset */
+-	rtw89_chip_disable_bb_rf(rtwdev);
++	ret = rtw89_chip_disable_bb_rf(rtwdev);
++	if (ret)
++		return ret;
+ 	ret = rtw89_chip_enable_bb_rf(rtwdev);
  	if (ret)
  		return ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index b8b143c528358..d79e84f436c1a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2292,7 +2292,7 @@ struct rtw89_hci_info {
  
-+	if (!dma_busy2)
-+		return 0;
+ struct rtw89_chip_ops {
+ 	int (*enable_bb_rf)(struct rtw89_dev *rtwdev);
+-	void (*disable_bb_rf)(struct rtw89_dev *rtwdev);
++	int (*disable_bb_rf)(struct rtw89_dev *rtwdev);
+ 	void (*bb_reset)(struct rtw89_dev *rtwdev,
+ 			 enum rtw89_phy_idx phy_idx);
+ 	void (*bb_sethw)(struct rtw89_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 9b75d9645580f..30132c4583d7d 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -1224,8 +1224,8 @@ static int chip_func_en(struct rtw89_dev *rtwdev)
+ {
+ 	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 
+-	if (chip_id == RTL8852A)
+-		rtw89_write32_set(rtwdev, R_AX_SPSLDO_ON_CTRL0,
++	if (chip_id == RTL8852A || chip_id == RTL8852B)
++		rtw89_write32_set(rtwdev, R_AX_SPS_DIG_ON_CTRL0,
+ 				  B_AX_OCP_L1_MASK);
+ 
+ 	return 0;
+@@ -3205,7 +3205,7 @@ int rtw89_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
+ }
+ EXPORT_SYMBOL(rtw89_mac_enable_bb_rf);
+ 
+-void rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
++int rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
+ {
+ 	rtw89_write8_clr(rtwdev, R_AX_SYS_FUNC_EN,
+ 			 B_AX_FEN_BBRSTB | B_AX_FEN_BB_GLB_RSTN);
+@@ -3213,6 +3213,8 @@ void rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
+ 			  B_AX_WLRF1_CTRL_7 | B_AX_WLRF1_CTRL_1 |
+ 			  B_AX_WLRF_CTRL_7 | B_AX_WLRF_CTRL_1);
+ 	rtw89_write8_clr(rtwdev, R_AX_PHYREG_SET, PHYREG_SET_ALL_CYCLE);
 +
- 	check = B_AX_CH10_BUSY | B_AX_CH11_BUSY;
++	return 0;
+ }
+ EXPORT_SYMBOL(rtw89_mac_disable_bb_rf);
  
- 	ret = read_poll_timeout(rtw89_read32, dma_busy, (dma_busy & check) == 0,
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index 391058de47ec5..e49ffc9cf7903 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -468,6 +468,13 @@
- #define B_AX_ACH0_BUSY			BIT(8)
- #define B_AX_RPQ_BUSY			BIT(1)
- #define B_AX_RXQ_BUSY			BIT(0)
-+#define DMA_BUSY1_CHECK		(B_AX_ACH0_BUSY | B_AX_ACH1_BUSY | B_AX_ACH2_BUSY | \
-+				 B_AX_ACH3_BUSY | B_AX_ACH4_BUSY | B_AX_ACH5_BUSY | \
-+				 B_AX_ACH6_BUSY | B_AX_ACH7_BUSY | B_AX_CH8_BUSY | \
-+				 B_AX_CH9_BUSY | B_AX_CH12_BUSY)
-+#define DMA_BUSY1_CHECK_V1	(B_AX_ACH0_BUSY | B_AX_ACH1_BUSY | B_AX_ACH2_BUSY | \
-+				 B_AX_ACH3_BUSY | B_AX_CH8_BUSY | B_AX_CH9_BUSY | \
-+				 B_AX_CH12_BUSY)
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 5d1bb00a0fd2b..c09cc1f56ec1d 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -805,7 +805,7 @@ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 					struct ieee80211_vif *vif);
+ int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
+ int rtw89_mac_enable_bb_rf(struct rtw89_dev *rtwdev);
+-void rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev);
++int rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev);
  
- #define R_AX_PCIE_DMA_BUSY2	0x131C
- #define B_AX_CH11_BUSY			BIT(1)
-@@ -754,7 +761,7 @@ struct rtw89_pci_info {
- 	u32 txbd_rwptr_clr2_reg;
- 	struct rtw89_reg_def dma_stop1;
- 	struct rtw89_reg_def dma_stop2;
--	u32 dma_busy1_reg;
-+	struct rtw89_reg_def dma_busy1;
- 	u32 dma_busy2_reg;
- 	u32 dma_busy3_reg;
+ static inline int rtw89_chip_enable_bb_rf(struct rtw89_dev *rtwdev)
+ {
+@@ -814,11 +814,11 @@ static inline int rtw89_chip_enable_bb_rf(struct rtw89_dev *rtwdev)
+ 	return chip->ops->enable_bb_rf(rtwdev);
+ }
  
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-index 48485bd9c149f..0cd8c0c44d19d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-@@ -35,7 +35,7 @@ static const struct rtw89_pci_info rtw8852a_pci_info = {
- 	.txbd_rwptr_clr2_reg	= R_AX_TXBD_RWPTR_CLR2,
- 	.dma_stop1		= {R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_MASK},
- 	.dma_stop2		= {R_AX_PCIE_DMA_STOP2, B_AX_TX_STOP2_ALL},
--	.dma_busy1_reg		= R_AX_PCIE_DMA_BUSY1,
-+	.dma_busy1		= {R_AX_PCIE_DMA_BUSY1, DMA_BUSY1_CHECK},
- 	.dma_busy2_reg		= R_AX_PCIE_DMA_BUSY2,
- 	.dma_busy3_reg		= R_AX_PCIE_DMA_BUSY1,
+-static inline void rtw89_chip_disable_bb_rf(struct rtw89_dev *rtwdev)
++static inline int rtw89_chip_disable_bb_rf(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
  
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852be.c b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-index 4590535841be3..7bf95c38d3eb2 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-@@ -9,6 +9,12 @@
- #include "reg.h"
+-	chip->ops->disable_bb_rf(rtwdev);
++	return chip->ops->disable_bb_rf(rtwdev);
+ }
  
- static const struct rtw89_pci_info rtw8852b_pci_info = {
-+	.dma_stop1		= {R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_MASK_V1},
-+	.dma_stop2		= {0},
-+	.dma_busy1		= {R_AX_PCIE_DMA_BUSY1, DMA_BUSY1_CHECK_V1},
-+	.dma_busy2_reg		= 0,
-+	.dma_busy3_reg		= R_AX_PCIE_DMA_BUSY1,
+ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev);
+@@ -988,8 +988,10 @@ enum rtw89_mac_xtal_si_offset {
+ #define XTAL_SI_HIGH_ADDR_MASK	GENMASK(2, 0)
+ 	XTAL_SI_READ_VAL = 0x7A,
+ 	XTAL_SI_WL_RFC_S0 = 0x80,
++#define XTAL_SI_RF00S_EN	GENMASK(2, 0)
+ #define XTAL_SI_RF00		BIT(0)
+ 	XTAL_SI_WL_RFC_S1 = 0x81,
++#define XTAL_SI_RF10S_EN	GENMASK(2, 0)
+ #define XTAL_SI_RF10		BIT(0)
+ 	XTAL_SI_ANAPAR_WL = 0x90,
+ #define XTAL_SI_SRAM2RFC	BIT(7)
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 9426b53e663bb..cb81c7eaece8a 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -51,9 +51,6 @@
+ #define B_AX_EF_POR BIT(10)
+ #define B_AX_EF_CELL_SEL_MASK GENMASK(9, 8)
+ 
+-#define R_AX_SPSLDO_ON_CTRL0 0x0200
+-#define B_AX_OCP_L1_MASK GENMASK(15, 13)
+-
+ #define R_AX_EFUSE_CTRL 0x0030
+ #define B_AX_EF_MODE_SEL_MASK GENMASK(31, 30)
+ #define B_AX_EF_RDY BIT(29)
+@@ -203,6 +200,12 @@
+ #define R_AX_UDM2 0x01F8
+ #define R_AX_UDM3 0x01FC
+ 
++#define R_AX_SPS_DIG_ON_CTRL0 0x0200
++#define B_AX_VREFPFM_L_MASK GENMASK(25, 22)
++#define B_AX_REG_ZCDC_H_MASK GENMASK(18, 17)
++#define B_AX_OCP_L1_MASK GENMASK(15, 13)
++#define B_AX_VOL_L1_MASK GENMASK(3, 0)
 +
- 	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH4) | BIT(RTW89_TXCH_ACH5) |
- 				  BIT(RTW89_TXCH_ACH6) | BIT(RTW89_TXCH_ACH7) |
- 				  BIT(RTW89_TXCH_CH10) | BIT(RTW89_TXCH_CH11),
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-index c7370f5df8b54..35901f64d17de 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-@@ -44,7 +44,7 @@ static const struct rtw89_pci_info rtw8852c_pci_info = {
- 	.txbd_rwptr_clr2_reg	= R_AX_TXBD_RWPTR_CLR2_V1,
- 	.dma_stop1		= {R_AX_HAXI_DMA_STOP1, B_AX_TX_STOP1_MASK},
- 	.dma_stop2		= {R_AX_HAXI_DMA_STOP2, B_AX_TX_STOP2_ALL},
--	.dma_busy1_reg		= R_AX_HAXI_DMA_BUSY1,
-+	.dma_busy1		= {R_AX_HAXI_DMA_BUSY1, DMA_BUSY1_CHECK},
- 	.dma_busy2_reg		= R_AX_HAXI_DMA_BUSY2,
- 	.dma_busy3_reg		= R_AX_HAXI_DMA_BUSY3,
+ #define R_AX_LDO_AON_CTRL0 0x0218
+ #define B_AX_PD_REGU_L BIT(16)
  
+@@ -395,6 +398,7 @@
+ 
+ #define R_AX_PHYREG_SET 0x8040
+ #define PHYREG_SET_ALL_CYCLE 0x8
++#define PHYREG_SET_XYN_CYCLE 0xE
+ 
+ #define R_AX_HD0IMR 0x8110
+ #define B_AX_WDT_PTFM_INT_EN BIT(5)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index f951b8f0b5cfc..799da0c9f75ad 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -3,6 +3,66 @@
+  */
+ 
+ #include "core.h"
++#include "mac.h"
++#include "reg.h"
++
++static int rtw8852b_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
++{
++	int ret;
++
++	rtw89_write8_set(rtwdev, R_AX_SYS_FUNC_EN,
++			 B_AX_FEN_BBRSTB | B_AX_FEN_BB_GLB_RSTN);
++	rtw89_write32_mask(rtwdev, R_AX_SPS_DIG_ON_CTRL0, B_AX_REG_ZCDC_H_MASK, 0x1);
++	rtw89_write32_set(rtwdev, R_AX_WLRF_CTRL, B_AX_AFC_AFEDIG);
++	rtw89_write32_clr(rtwdev, R_AX_WLRF_CTRL, B_AX_AFC_AFEDIG);
++	rtw89_write32_set(rtwdev, R_AX_WLRF_CTRL, B_AX_AFC_AFEDIG);
++
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, 0xC7,
++				      FULL_BIT_MASK);
++	if (ret)
++		return ret;
++
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, 0xC7,
++				      FULL_BIT_MASK);
++	if (ret)
++		return ret;
++
++	rtw89_write8(rtwdev, R_AX_PHYREG_SET, PHYREG_SET_XYN_CYCLE);
++
++	return 0;
++}
++
++static int rtw8852b_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
++{
++	u8 wl_rfc_s0;
++	u8 wl_rfc_s1;
++	int ret;
++
++	rtw89_write8_clr(rtwdev, R_AX_SYS_FUNC_EN,
++			 B_AX_FEN_BBRSTB | B_AX_FEN_BB_GLB_RSTN);
++
++	ret = rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, &wl_rfc_s0);
++	if (ret)
++		return ret;
++	wl_rfc_s0 &= ~XTAL_SI_RF00S_EN;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, wl_rfc_s0,
++				      FULL_BIT_MASK);
++	if (ret)
++		return ret;
++
++	ret = rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, &wl_rfc_s1);
++	if (ret)
++		return ret;
++	wl_rfc_s1 &= ~XTAL_SI_RF10S_EN;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, wl_rfc_s1,
++				      FULL_BIT_MASK);
++	return ret;
++}
++
++static const struct rtw89_chip_ops rtw8852b_chip_ops = {
++	.enable_bb_rf		= rtw8852b_mac_enable_bb_rf,
++	.disable_bb_rf		= rtw8852b_mac_disable_bb_rf,
++};
+ 
+ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 	.chip_id		= RTL8852B,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 8c242d21e5fa4..00462c912ec7e 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2976,10 +2976,12 @@ static int rtw8852c_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
+ 
+-static void rtw8852c_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
++static int rtw8852c_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
+ {
+ 	rtw89_write8_clr(rtwdev, R_AX_SYS_FUNC_EN,
+ 			 B_AX_FEN_BBRSTB | B_AX_FEN_BB_GLB_RSTN);
++
++	return 0;
+ }
+ 
+ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
 -- 
 2.25.1
 
