@@ -2,56 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 030685ECC08
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 20:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B8E5ECC1E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 20:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbiI0SSD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Sep 2022 14:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
+        id S231702AbiI0SZ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Sep 2022 14:25:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbiI0SSB (ORCPT
+        with ESMTP id S231167AbiI0SZS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Sep 2022 14:18:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8981FFA63;
-        Tue, 27 Sep 2022 11:18:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7498761B22;
-        Tue, 27 Sep 2022 18:18:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F31C433D7;
-        Tue, 27 Sep 2022 18:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664302679;
-        bh=PhqML3o0FkjVwOp6KVZGd/fjTJC+ahaQOUgedohAt9c=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=O9BF0NWxQG/GX5/1PpsNZRWeA6L4xHy1XnkRwbbUmXr9xkmWhhUT+W+fhniPtI+7Z
-         f7ppcUG0P3Peb4NUShHh6ocbxAJfsN/tdg02OivDUN3f0x7yMgJEqpcluLwJO3xH6D
-         cMoQ2uPO1wTUneae0NqU0AJexW8BeRnDP4+xPWg9dtk1TDKKY+GMndrgemzhPfOHfQ
-         yxT/1GBinvxFhI0OMYcYM2ft4KzqXn95O2ei/qc3bAfEtdzokteRRgFcsh3AqAcsz2
-         346nQTcHsKTs2nMqTQdcOh2szJbXzv5zk0NzlQcJeGGElSh/7DmMat/ZA9WvqUZK+n
-         hc8WEe9ZFcBGg==
-Date:   Tue, 27 Sep 2022 11:17:58 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Eric Dumazet <edumazet@google.com>
-Cc:     David Miller <davem@davemloft.net>,
-        netdev <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        kvalo@kernel.org, Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        linux-can@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>
-Subject: Re: [PATCH net-next] net: drop the weight argument from
- netif_napi_add
-Message-ID: <20220927111758.1d25ea0f@kernel.org>
-In-Reply-To: <CANn89iL4m=aMjZ1XWFNWDyyyDBF1uhNocN0OFqhm2VMm_JQOog@mail.gmail.com>
-References: <20220927132753.750069-1-kuba@kernel.org>
-        <CANn89iL4m=aMjZ1XWFNWDyyyDBF1uhNocN0OFqhm2VMm_JQOog@mail.gmail.com>
+        Tue, 27 Sep 2022 14:25:18 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B59A8CF4A2;
+        Tue, 27 Sep 2022 11:25:17 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1318443dbdfso3026473fac.3;
+        Tue, 27 Sep 2022 11:25:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date;
+        bh=V8AR0AQTHj331AufhAAOfkfNIqY+UnJZGtLIqtaVqTA=;
+        b=W/XvcQy/YQ67MGkoPyNIksQ319UiWaGd54efdpjvkcFlj8zUCL2KauPSY2AOVMQrTR
+         d6dliedIL+KH4foKRbsLPgHp3+9YVxhK79mufaBqexiI99cAJlQhmmV2M+2N7AGarDSq
+         6NJ2x3HuuURKXWJHg7Aot7OWcMk+ZUKzY+N4wqMRiZ7DdpEhMN8HcC9/09o2fJWrqCyF
+         e5tdG0ZIhIfu2hP5Fz53Bfh40WLy0hUcpMIlGN3igymiaw/eq+Aji+/Trj7wfmYlOkt+
+         hZD7KYa6AM+Mr1tAPFross5H7TPhS0chbzHTA92h5NjN6V80SNjtFDmzjvECE/4ZGcEw
+         imrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date;
+        bh=V8AR0AQTHj331AufhAAOfkfNIqY+UnJZGtLIqtaVqTA=;
+        b=qwg8xxEcdZVIK3e3zj31lqaEKdWRytmBVMZ1G2oP19O6/6XcueGllhUoLTHlr4uUe+
+         6M2NZKdKpKH0lrlUJagVZ8wxvBOnYNWr1SfZSQhLrneQPEWWfoA2O8AUNi2G7Af4ytMA
+         ZMQGMYDDFK7zvAJFz4+A9KzUGoCvpI5k7ZRBOmjEkdidnJF+q6caXjrB28YpdQAkqLwI
+         YRFasycMPHCEmWexZti/pLfv9EDSL5eXoZw0IClQMo3uObRrvcBzmCarkvn8O4uW47N3
+         gZKXLjDnQsapTY4rl1zSaXA/IvDlwHEhpwjVi+ztDNPk+s8dNmfpo9zgyWwUGriMKL8K
+         bIFw==
+X-Gm-Message-State: ACrzQf0P3GsWUIF+6tj4zLXeQM+boqeHdzm6jqknlBPsa92AIjaR+5ig
+        PUFDxGupBEFzT/4YXKCazKGibaMRhM4=
+X-Google-Smtp-Source: AMsMyM6hQ+AxwuPg1EcwScCIIHb/Y6g0rVCX9WoO/vj+pqVnVUrv6BP9pgoOuaukvUeLgWEzASvkWA==
+X-Received: by 2002:a05:6870:160c:b0:12b:9663:67ca with SMTP id b12-20020a056870160c00b0012b966367camr3075949oae.36.1664303117085;
+        Tue, 27 Sep 2022 11:25:17 -0700 (PDT)
+Received: from [10.62.118.123] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id y21-20020a056830109500b006391bdbb361sm1005166oto.31.2022.09.27.11.25.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Sep 2022 11:25:16 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <93c93732-70e8-ad8a-bb2e-a5da315742e1@lwfinger.net>
+Date:   Tue, 27 Sep 2022 13:25:15 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: Problem with modprobe
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <6c1ca180-8df7-c4d0-bd9f-d6b70f6c5142@lwfinger.net>
+ <YzM0Z4gXsjZTDkX0@kroah.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <YzM0Z4gXsjZTDkX0@kroah.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,30 +77,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 27 Sep 2022 10:54:49 -0700 Eric Dumazet wrote:
-> On Tue, Sep 27, 2022 at 6:28 AM Jakub Kicinski <kuba@kernel.org> wrote:
-> > We tell driver developers to always pass NAPI_POLL_WEIGHT
-> > as the weight to netif_napi_add(). This may be confusing
-> > to newcomers, drop the weight argument, those who really
-> > need to tweak the weight can use netif_napi_add_weight().
-> >
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>  
+Greg,
+
+On 9/27/22 12:35, Greg KH wrote:
+> I don't think we ever auto-unload dependant modules as we don't know if
+> they are still in use or not (hint, module references is not a
+> representation if the module is in use or not.)
 > 
-> Sure, but this kind of patch makes backports harder.
-> Not sure how confused are newcomers about this NAPI_POLL_WEIGHT....
+> So this is working as intended, right?  And how it's always worked?
 
-I maintained this patch in my tree for a couple of releases (because 
-I was waiting for the _weight() version to propagate to non-netdev
-trees) and the conflicts were minor. Three or so cases of new features
-added to drivers which touched the NAPI calls (WiFi and embedded) and
-the strlcpy -> strscpy patch, and, well, why did we take that in if we
-worry about backports...
+Thanks for the explanation.I will need to document this behavior and explain to 
+the users that it takes two steps to unload. At least the load works correctly.
 
-NAPI weight was already dead when I started hacking on the kernel
-10 years ago. I don't think it's reasonable to keep dead stuff 
-in our APIs for backport's sake. Adding Jiri to CC in case I need
-someone to back me up :)
+Thanks again,
 
-The idea for this patch came because I was reviewing a driver which 
-was trying to do something clever with the weight.
+Larry
 
