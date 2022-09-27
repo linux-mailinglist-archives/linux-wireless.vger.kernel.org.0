@@ -2,89 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1CE5EC8B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 17:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB4A5ECA8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Sep 2022 19:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbiI0Pzd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Sep 2022 11:55:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43836 "EHLO
+        id S232138AbiI0RLa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Sep 2022 13:11:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232616AbiI0PzA (ORCPT
+        with ESMTP id S232105AbiI0RL2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Sep 2022 11:55:00 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEA65422E9;
-        Tue, 27 Sep 2022 08:54:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 561AEB81C4A;
-        Tue, 27 Sep 2022 15:54:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F19C433D7;
-        Tue, 27 Sep 2022 15:54:49 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Kr3veXtE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1664294087;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wXMcknmy52+bmB46p09vHJPvomoJDbcpYQo26BsrWTs=;
-        b=Kr3veXtEIYJhucAcuSAvEshBizlDQXyGGIXGapoKnEC2LiwD88o/LL20ffruaZuN3aDT2Z
-        MQ69gEkiOp64PvBXWN95uRnQMKTsez6G+ECQ15PirKNEyTc+74hFm1mqWJDIs+7m3K2B6K
-        RJ70WqkD4YocCQv9eXTM3l8R4GKmQO8=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 60cf2a05 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Tue, 27 Sep 2022 15:54:47 +0000 (UTC)
-Date:   Tue, 27 Sep 2022 17:54:43 +0200
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, kvalo@kernel.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org, mkl@pengutronix.de,
-        linux-can@vger.kernel.org
-Subject: Re: [PATCH net-next] net: drop the weight argument from
- netif_napi_add
-Message-ID: <YzMcw8S7fuSS9UPw@zx2c4.com>
-References: <20220927132753.750069-1-kuba@kernel.org>
+        Tue, 27 Sep 2022 13:11:28 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9F05FAF8;
+        Tue, 27 Sep 2022 10:11:27 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1280590722dso14137431fac.1;
+        Tue, 27 Sep 2022 10:11:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:subject:to:from:content-language
+         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
+         :date;
+        bh=Eck36fJJTiT+wQiJhQKQnZ4pYEaB1HgCdALV1W29Tz0=;
+        b=WzYYigLu7MMOXaj2JxEb3hLHWYAvdF/4imM1xh01KladdcGNH3UvOmzx5uiQGd0Yl2
+         Ag15zOJ9KY2KCS7afDCxyB54zrt+wo/XIibUZT9mpPjfruD65HvDmUNAuD9fOTGSFZaV
+         wh+SdY0rlJ7m2uY7/Qvx+4CyNSV2BUa7kmZv9+5N/354VzSryHRbfRMaJUQaGoA0rO5a
+         EJONQZr+RKPmA3Kc6VIED1mozoko3EVU6vEBVUx2WaNO32kizmuipXuxSfc5cbxBqWyD
+         M8PAWRpQRYUOyVhI68y9gKMKxeaj0Za+5oU3i4d0HCPc8/C78kqNTI/zZCLumC9Hy4Ni
+         G5qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:subject:to:from:content-language
+         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=Eck36fJJTiT+wQiJhQKQnZ4pYEaB1HgCdALV1W29Tz0=;
+        b=F3c4oqQwiHtXWh+1BmHZ/kknDz2g7Rl4Z7FOnF7YbL6Bc/+js4LzFUYrJIhD3aFcqP
+         U2j4xcN+83Rg9NpefQrdOFLOeJnOnVcueNxlsiC0gwbuBxbqPpxxWuLPVE656Bf80za/
+         Ok+gwMC+OMUmGe950cqhoXlsr3MwXw/HiOL9h9yJX16zG+foS1dDRTYbn2um+kmW3UVd
+         BuyK0TunEwD/y6w+S9rdaS9YrSvc0un5B/muAdyFABH2J7FsdRSZcez+SVLHNriGqKow
+         iIos8qgSdO1Ar3VOGzz1B6i1ESXy1rlfvnjJij5jF+4eBV+KdJJfcMzOzyDu+T3knK9s
+         svFQ==
+X-Gm-Message-State: ACrzQf18NUINPThfEGcLmlkyN6LyyWB5eDo5wYy2H3dnVQ23b3phvBZY
+        MGdDcKhDpj8ollMPDyjsbpjF4pdc918=
+X-Google-Smtp-Source: AMsMyM6GQy9bXO8rgl1ev7N7a+iu/CNgNXTiAiyVAJvYk/6WyjbBvSoJOXhHIC/g3vtVSIC6Qr82Ow==
+X-Received: by 2002:a05:6870:d0c7:b0:127:9860:95b0 with SMTP id k7-20020a056870d0c700b00127986095b0mr2784031oaa.3.1664298686074;
+        Tue, 27 Sep 2022 10:11:26 -0700 (PDT)
+Received: from [10.62.118.123] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id ep41-20020a056870a9a900b0012b2b0b6281sm1094514oab.9.2022.09.27.10.11.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Sep 2022 10:11:25 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <6c1ca180-8df7-c4d0-bd9f-d6b70f6c5142@lwfinger.net>
+Date:   Tue, 27 Sep 2022 12:11:24 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220927132753.750069-1-kuba@kernel.org>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Problem with modprobe
+Cc:     Greg KH <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 27, 2022 at 06:27:53AM -0700, Jakub Kicinski wrote:
-> We tell driver developers to always pass NAPI_POLL_WEIGHT
-> as the weight to netif_napi_add(). This may be confusing
-> to newcomers, drop the weight argument, those who really
-> need to tweak the weight can use netif_napi_add_weight().
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  drivers/net/wireguard/peer.c                  |  3 +--
->
-> diff --git a/drivers/net/wireguard/peer.c b/drivers/net/wireguard/peer.c
-> index 1acd00ab2fbc..1cb502a932e0 100644
-> --- a/drivers/net/wireguard/peer.c
-> +++ b/drivers/net/wireguard/peer.c
-> @@ -54,8 +54,7 @@ struct wg_peer *wg_peer_create(struct wg_device *wg,
->  	skb_queue_head_init(&peer->staged_packet_queue);
->  	wg_noise_reset_last_sent_handshake(&peer->last_sent_handshake);
->  	set_bit(NAPI_STATE_NO_BUSY_POLL, &peer->napi.state);
-> -	netif_napi_add(wg->dev, &peer->napi, wg_packet_rx_poll,
-> -		       NAPI_POLL_WEIGHT);
-> +	netif_napi_add(wg->dev, &peer->napi, wg_packet_rx_poll);
->  	napi_enable(&peer->napi);
->  	list_add_tail(&peer->peer_list, &wg->peer_list);
->  	INIT_LIST_HEAD(&peer->allowedips_list);
+Hi,
 
-For the wireguard part,
+The driver for the Realtek RTL8821CE network card show some asymmetrical 
+behavior between loading and unloading.
 
-   Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Starting from scratch, a load command provides the expected results:
+
+finger@localhost:~/rtw88>sudo modprobe -v rtw88_8821ce
+insmod 
+/lib/modules/6.1.0-rc3-wireless-next-00623-g2bc09edc7fa2-dirty/kernel/drivers/net/wireless/realtek/rtw88/rtw88_core.ko 
+
+insmod 
+/lib/modules/6.1.0-rc3-wireless-next-00623-g2bc09edc7fa2-dirty/kernel/drivers/net/wireless/realtek/rtw88/rtw88_pci.ko 
+
+insmod 
+/lib/modules/6.1.0-rc3-wireless-next-00623-g2bc09edc7fa2-dirty/kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821c.ko 
+
+insmod 
+/lib/modules/6.1.0-rc3-wireless-next-00623-g2bc09edc7fa2-dirty/kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821ce.ko
+
+Unloading produces a different result:
+
+finger@localhost:~/rtw88>sudo modprobe -rv rtw88_8821ce
+rmmod rtw88_8821ce
+rmmod rtw88_pci
+rmmod rtw88_8821c
+
+Note that rtw88_core is still loaded and needs to be unloaded separately:
+
+finger@localhost:~/rtw88>sudo modprobe -rv rtw88_core
+rmmod rtw88_core
+
+The appropriate lines from modules.dep reformatted for clarity are as follows:
+
+kernel/drivers/net/wireless/realtek/rtw88/rtw88_core.ko:
+    kernel/net/mac80211/mac80211.ko
+    kernel/lib/crypto/libarc4.ko
+    kernel/net/wireless/cfg80211.ko
+kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821c.ko:
+    kernel/drivers/net/wireless/realtek/rtw88/rtw88_core.ko
+    kernel/net/mac80211/mac80211.ko
+    kernel/lib/crypto/libarc4.ko
+    kernel/net/wireless/cfg80211.ko
+kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821ce.ko:
+    kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821c.ko
+    kernel/drivers/net/wireless/realtek/rtw88/rtw88_pci.ko
+    kernel/drivers/net/wireless/realtek/rtw88/rtw88_core.ko
+    kernel/net/mac80211/mac80211.ko
+    kernel/lib/crypto/libarc4.ko
+    kernel/net/wireless/cfg80211.ko
+kernel/drivers/net/wireless/realtek/rtw88/rtw88_pci.ko:
+    kernel/drivers/net/wireless/realtek/rtw88/rtw88_core.ko
+    kernel/net/mac80211/mac80211.ko
+    kernel/lib/crypto/libarc4.ko
+    kernel/net/wireless/cfg80211.ko
+
+What is the explanation for the failure to auto-unload rtw88_core?
+
+Thanks,
+
+Larry
