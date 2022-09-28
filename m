@@ -2,119 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 605B75EE277
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Sep 2022 19:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF655EE398
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Sep 2022 19:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234259AbiI1RBP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Sep 2022 13:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37098 "EHLO
+        id S233060AbiI1Ryg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Sep 2022 13:54:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233904AbiI1RBG (ORCPT
+        with ESMTP id S234713AbiI1RyK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Sep 2022 13:01:06 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE9BC83BEB
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 10:01:03 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id g130so16020289oia.13
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 10:01:03 -0700 (PDT)
+        Wed, 28 Sep 2022 13:54:10 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F69FF3DC
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 10:53:41 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id f20so18275780edf.6
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 10:53:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date;
-        bh=rn+ow99BafmPBQGhTIc0d8H/HlzCwL+vr+zqIlMiBHM=;
-        b=qcDYI65NC64nMde1RfhuLIyIxGa3KVV5gZb5YbvoM4XcGUN7KfdPL5eXCWnY8BTNLh
-         YseaQKlkNj/tZqslhx9WPENWWKoitCYxxpZvU+7q9YjdwVMxs9aK/zGHVCVdnW/keJIm
-         RggnOiKXoL1g5P6hVvembz6WpZHUgn89WZsk5jrWmPqQBZVikvVw2NwZuQ0OOtUrLk9G
-         VEifPTYZHKu1aGAKltlXPO9Y/+sqZJjkh3aStwLN74nM9hpVAyFJFXSzVmdLSHIGXcXj
-         vuH02CssNxOjgunA+t//T60+tTZjVfINea/XcUgxWWuCtvYgF98zh8FINJ3DO8e4btXQ
-         TeYQ==
+         :from:to:cc:subject:date;
+        bh=DPorE9KZcNPg4WdfyIukNzavjt8jeCSzabQCG/Z5/sk=;
+        b=jefaBmBek4cjFK7DndB/j04WX2ZC/OF4tI0VSxXs5U+9OFoqF9TAjdQ6qtXr+Is1sc
+         fzHRsZnQUKsyQKVrt7vuQ5KTMB/dU8+P6AFez8UVEu6Lse9KU1TMuxS5/RtvonI0kH++
+         5nInalnD9/sZ+qpT4eZoAQIQsYbHtw5OGjVR6pqKpjNrC2vbetxmGHKn8/FQNt0cRpKX
+         TNlqED2H1Wl1ObwJ8m/NFazGrkTQJDuu/eoDq5TCi3XWk6ibGLiBCGOKCD/MafLLWGcl
+         e5iH24HVf8dpNrME+1aBaULFy7flfsUuoR0xEYjaqfNGeSNXdBu3ncYaF0hU6grlMgvj
+         04Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date;
-        bh=rn+ow99BafmPBQGhTIc0d8H/HlzCwL+vr+zqIlMiBHM=;
-        b=Wyhvi3YdQvwTSi3svOXj4687ynBrKwBjeqqH1s05YbmAj4n0JR+yBkhHGET07s9EdH
-         Twcu2R3JxmkbBn2HOuZz8bLq8va6qS9Ti8qp4B6PX4yIRm9tpJsSS7Ys9RRP7Ppf7DSq
-         sJzVjwrKfOziVMxRyTVUnveJf9zOisKBEOk4QfQqOM+QCMCB2EkzFrURVs5XLotgTQNx
-         L10cDQ5HCN80kILcV9Xoevh960L+3LCc1kBU20QubUIIvLGphQt/bn9Ah12H5yGs8Zx8
-         aepy11+4m6EJmPdvZiOCuDicY4xpoIJoPCJazrWqW26sye66xTjdti6WNV86t/rHqh1o
-         RDuw==
-X-Gm-Message-State: ACrzQf3ajeE1wB76GM2NE6mnykiXHBfY05XAzdv/8S0kuOl8fiJQCNhB
-        Vi71vRwM8FfYD1RfYuh37vmEPcq6Vwc=
-X-Google-Smtp-Source: AMsMyM72Yuq70RXcglpN3F7UEsl2qdiZcOTJAFIQl81z7Hi+DhOLI+qviD8/cVjUafo0SbTxZ2rPVw==
-X-Received: by 2002:a05:6808:1c2:b0:350:2b01:f324 with SMTP id x2-20020a05680801c200b003502b01f324mr4826276oic.56.1664384462678;
-        Wed, 28 Sep 2022 10:01:02 -0700 (PDT)
-Received: from [10.62.118.123] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id i19-20020a4adf13000000b004767df8f231sm2073682oou.39.2022.09.28.10.01.02
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=DPorE9KZcNPg4WdfyIukNzavjt8jeCSzabQCG/Z5/sk=;
+        b=ckrpJ7uvkrY5cJ8CuVfdF2axfUuJu5wtGzlFzS8Zl5NCMyRrJw3cIGvQlDwrb81+kD
+         jHEC0uWEFMUY36wwQWBBKk60WB74hRZ5MAZFMaabMb93+BgugoGoyvbxlO7DYmvN/oQQ
+         oyZadlumGK4ySfnkYRDtxYazCCAuvGowFF7fDJyjlpSaaEtvcL3DdJT3TDMQ0ZpOU5mv
+         USpWewDydmx4YyF+j8aOWKOwPdr2GlArFIGJIWClcOwVn9ZhGwX8+zLbRtOvSaAoQ3HR
+         B+EeVnKqxFInkuUwtreSeNKcKET2rmhlNmyPsXP5jwsDYiVIpnj+GpWCvCf1egaahW5J
+         auZA==
+X-Gm-Message-State: ACrzQf00Gdv/rPYYdLwAMp0s5eIxeTVhQnZX/noOp3nq1wKsQzElk3wq
+        SbxxxYgO15R/BthWT6XbCb8=
+X-Google-Smtp-Source: AMsMyM5g71Mip/bOmQsWGB9lliivZnXiO0MPsDzg2Gykj0UQ+nhcQ5PJpoWGIiARA1ZX9LVL3k70pQ==
+X-Received: by 2002:a05:6402:518e:b0:452:49bc:179f with SMTP id q14-20020a056402518e00b0045249bc179fmr34905025edd.224.1664387619458;
+        Wed, 28 Sep 2022 10:53:39 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.23])
+        by smtp.gmail.com with ESMTPSA id 18-20020a170906219200b0073de0506745sm2694467eju.197.2022.09.28.10.53.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Sep 2022 10:01:02 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <d47effbe-3582-7b26-f0d2-27109caa174e@lwfinger.net>
-Date:   Wed, 28 Sep 2022 12:01:01 -0500
+        Wed, 28 Sep 2022 10:53:38 -0700 (PDT)
+Message-ID: <b8af19f6-564e-d592-0993-6b4c33728ac4@gmail.com>
+Date:   Wed, 28 Sep 2022 20:53:36 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: rtw_8723de Realtek driver issue in Debian 11.5 Bullseye Kernel
- version 5.10.0-18-amd64
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2] wifi: rtl8xxxu: Support new chip RTL8188FU
 Content-Language: en-US
-To:     Mariano Vedovato <marianovedovato@hotmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <SN4PR22MB3271BACF8FD2F57BEDDACC4EAC549@SN4PR22MB3271.namprd22.prod.outlook.com>
- <SN4PR22MB32711526F087B9898CED953DAC549@SN4PR22MB3271.namprd22.prod.outlook.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <SN4PR22MB32711526F087B9898CED953DAC549@SN4PR22MB3271.namprd22.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Jes Sorensen <Jes.Sorensen@gmail.com>, chris.chiu@canonical.com
+References: <dfc6a877-e50a-87a2-08f7-7007c8083386@gmail.com>
+ <87bkr27amy.fsf@kernel.org>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <87bkr27amy.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/28/22 08:46, Mariano Vedovato wrote:
-> Hi,
-> A few months ago I updated the system from Debian 10 to 11. Always in Debian I had to do the Wifi driver installation manually, the last one that did works I downloaded from https://github.com/lwfinger/rtw88.
+On 26/09/2022 12:22, Kalle Valo wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 > 
-> But, a few days ago, I had to do a clean install. So I downloaded Debian 11.5 and again I did the manual installation of the driver.
-> In this case, when I reboot the laptop the operating system loading is stuck in "Started Display Manager".
-> But, if I login in rescue mode, and of course uninstall the driver, the I can logon normally to the system but without WiFi!
+> [...]
 > 
-> I was investigating a lot, but it seems there is a problem with that kernel version and my driver (there is not a new version of the driver for my wifi card rtl8723de) because if I do the installation again, but before rebooting I try what the README of driver says:
+>> +static struct rtl8xxxu_reg8val rtl8188f_mac_init_table[] = {
 > 
-> sudo modprobe -r rtw_8723de         #This unloads the module
-> sudo modprobe -r rtw_core
+> [...]
 > 
-> Due to some pecularities in the modprobe utility, two steps are required.
+>> +static struct rtl8xxxu_reg32val rtl8188fu_phy_init_table[] = {
 > 
-> sudo modprobe rtw_8723de            #This loads the module
+> [...]
 > 
-> Only a single modprobe call is required to load.
+>> +static struct rtl8xxxu_reg32val rtl8188f_agc_table[] = {
 > 
-> I can use Wifi (in fact I am writing right now this email with WiFi working smoothly!), but again in the next reboot the initializing is stuck. No errors I could read in logs.
+> [...]
 > 
-> So, I think that my workaround: "poweroff - poweron, system loading stuck - force poweroff - poweron in rescue mode - uninstall driver - reboot - logon on system - install driver again and use WiFi like a normal person"
-> is not enough efficiently.
+>> +static struct rtl8xxxu_rfregval rtl8188fu_radioa_init_table[] = {
 > 
-> Kindly ask to you (it  indicates from instructions README of driver) if there is a solution for this issue?
+> [...]
 > 
-> BTW, I tried to install Ubuntu 22.04 with Kernel 5.16.xx and the WiFi works fine, but I'm a Debian user since Debian 5 and I don't think to leave it and I have no money to buy another Laptop for the moment!
+>> +static struct rtl8xxxu_rfregval rtl8188fu_cut_b_radioa_init_table[] = {
 > 
-> If you need something from my side to do a deeper investigation, please ask me.
+> Can these arrays be static const?
+> 
+Only if I modify the functions rtl8xxxu_init_phy_regs and
+rtl8xxxu_init_phy_rf, and the struct rtl8xxxu_fileops. Otherwise the
+compiler complains about discarded const. Perhaps in a future patch?
 
-If you want the external driver rather than the one built into the kernel, you 
-need to blacklist the kernel version. The names of the drivers were carefully 
-chosen to allow this.
-
-Search for "Linux blacklist" to see how to do this. By the way, this  sort of 
-question should have been asked in a GitHub issue rather than by way of this 
-mailing list.
-
-Larry
-
-
+I implemented everything else you mentioned.
