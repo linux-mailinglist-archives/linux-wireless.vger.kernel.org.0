@@ -2,118 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 613A05ED97F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Sep 2022 11:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E445ED9D3
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Sep 2022 12:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233331AbiI1Jw4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Sep 2022 05:52:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39718 "EHLO
+        id S232166AbiI1KIF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Sep 2022 06:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232660AbiI1Jwv (ORCPT
+        with ESMTP id S233251AbiI1KIE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Sep 2022 05:52:51 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1DDAA3D0
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 02:52:32 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 23so3647420edw.5
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 02:52:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=dvvSZiZge4VYqu9UqdGhF+OKcZfu+P5LLz8GD/vQ0TE=;
-        b=dUr2xq6AMgqbP/gxypD4QpeIQQ4HAmd6UXZG74HVjvTPBL6wpqUns9NwIJm8z9/nds
-         CAZv/PiUrxC9L/Mlotp03QFUCfmRWIgvx2lRPLhX3+vaXAkbfL/Q7pLZ3LGmC8KmLmGH
-         X9fOn1w7t+7ZnClVuAPn5pU0jG1/Hr265++ZK6oKBtofAfGOR0svsgK90/muxx0z+VaZ
-         dpkfBFrUwkPK1Bobg61y7t9LdBC76/eC0/rjoZMIiOEZnADN/ijhKmLcSimLWqpVxA7X
-         roaaNeKgo0aiA/0dgDxW1DjstrtGMwOdlQX5SyVqJRjGi1exdc8lxR+D9BNBQ3BNBtEy
-         1Y0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=dvvSZiZge4VYqu9UqdGhF+OKcZfu+P5LLz8GD/vQ0TE=;
-        b=Bsp+TBL/8BVous+q6FXE8JEd91xIXkgLlCRYK+farFHR8oaLh/Ozl8AI6CAXKThxZp
-         L4gz/zJw5stedqoxKK0gD0ItSN0xcpb7MjJ387dSSIw4mpNrDkJQOxnAHgDlGSF2G1vk
-         fdS8vDSDcospNTf2ZCIxNLI3WLQbnbO5Z9n4Itj0Crpcn+OPiTu0PEj2ICI2McQM/x7Y
-         slXjcuExbkxiFMtwPD9FwKMRQb1+eXoNcxHtmEy5dtIHrADfBKlONnAb3YlchFTZ27wi
-         6l9hDBiATIpkub5O6ie0QfD3X9msUPDxwVBsLqO5SjwPXkgOVNUpCpJoEH4q5DVfG+Fl
-         5Kvg==
-X-Gm-Message-State: ACrzQf36s7/GJfM+8HMaQ2HeqrSU4Sjr6LnKzdoRjBcT0WvSqEbqHBxS
-        ssz8nk9JcjfTZ7SRFvq/jXU=
-X-Google-Smtp-Source: AMsMyM7e1Jac/gcZieEIdk6LNZmwBhycFJja+0ATwwiz3xMFopdGBLXAh+Bm+wgeQGicgqxXicQYEQ==
-X-Received: by 2002:aa7:db0f:0:b0:457:d595:5f65 with SMTP id t15-20020aa7db0f000000b00457d5955f65mr4689184eds.139.1664358750599;
-        Wed, 28 Sep 2022 02:52:30 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.23])
-        by smtp.gmail.com with ESMTPSA id d14-20020a50fe8e000000b0044e1b4bca41sm3070082edt.79.2022.09.28.02.52.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Sep 2022 02:52:29 -0700 (PDT)
-Message-ID: <25f998e2-20e9-fcb5-2518-8aef1033ecc0@gmail.com>
-Date:   Wed, 28 Sep 2022 12:52:27 +0300
+        Wed, 28 Sep 2022 06:08:04 -0400
+Received: from smtp14.infineon.com (smtp14.infineon.com [IPv6:2a00:18f0:1e00:4::6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17CE4D01D8
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 03:08:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1664359682; x=1695895682;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=toqN2F5RpcVqFyVc2KvkWaakaVicsnXRPm0EL0y1jZU=;
+  b=VjsB/pIid9mVauTYawZSdarAc7fP+KjLh6iKUVO7d+TmAZYL1mbNIhLV
+   4OjxCtCib0/BsCR52FVfujT9XHSxnOcxC4nYhq1DHJTqDotE1txVvsJB/
+   cgaZgIDQaO8Q8rVOlZ2gXxaNXRmnvclNYzO0iId5cU2WjpBVx/x+Oxfcb
+   8=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="143141447"
+X-IronPort-AV: E=Sophos;i="5.93,351,1654552800"; 
+   d="scan'208";a="143141447"
+Received: from unknown (HELO mucxv002.muc.infineon.com) ([172.23.11.17])
+  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2022 12:08:00 +0200
+Received: from MUCSE805.infineon.com (MUCSE805.infineon.com [172.23.29.31])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mucxv002.muc.infineon.com (Postfix) with ESMTPS;
+        Wed, 28 Sep 2022 12:08:00 +0200 (CEST)
+Received: from MUCSE835.infineon.com (172.23.7.107) by MUCSE805.infineon.com
+ (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 28 Sep
+ 2022 12:08:00 +0200
+Received: from [10.234.36.216] (10.234.36.216) by MUCSE835.infineon.com
+ (172.23.7.107) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 28 Sep
+ 2022 12:07:57 +0200
+Message-ID: <4e602611-aed5-dfe7-6ce7-42d1fc7ca53e@infineon.com>
+Date:   Wed, 28 Sep 2022 18:07:54 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 1/4] wifi: rtl8xxxu: gen2: Turn on the rate control
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH v3 4/5] brcmfmac: Update SSID of hidden AP while informing
+ its bss to cfg80211 layer
 Content-Language: en-US
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        linux-wireless@vger.kernel.org, chris.chiu@canonical.com,
-        Barry Day <briselec@gmail.com>
-References: <56712d04-1505-2cbb-b6ac-3af4e73de108@gmail.com>
- <78cec57b-2678-acf3-99b3-271e0f9bdbad@gmail.com>
- <ac73924f-4c52-b8e6-1628-e34fc673a35d@gmail.com>
- <5ba1e0f4-6eda-43bb-d426-e2a9447cd06e@gmail.com> <8735cb7v0c.fsf@kernel.org>
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <8735cb7v0c.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+CC:     <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <Double.Lo@infineon.com>
+References: <20220927034138.20463-1-ian.lin@infineon.com>
+ <20220927034138.20463-5-ian.lin@infineon.com> <874jwsrojr.fsf@kernel.org>
+From:   "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com>
+In-Reply-To: <874jwsrojr.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.234.36.216]
+X-ClientProxiedBy: MUCSE820.infineon.com (172.23.29.46) To
+ MUCSE835.infineon.com (172.23.7.107)
+X-Spam-Status: No, score=-9.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 28/09/2022 11:39, Kalle Valo wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
-> 
->> On 25/09/2022 19:53, Jes Sorensen wrote:
->>> On 9/18/22 08:35, Bitterblue Smith wrote:
->>>> Inform the firmware when connecting to a network. This makes the
->>>> firmware enable the rate control, which makes the upload faster.
->>>>
->>>> Don't inform the firmware when disconnecting from a network, because
->>>> that makes reconnecting impossible for some reason:
->>>
->>> Have you dug through the vendor driver to see what it does here?
->>>
->>> Thanks,
->>> Jes
->>>
->>
->> I hadn't investigated, but since you asked :) I looked into it today.
->>
->> The vendor driver doesn't do anything weird. Our report_connect
->> function *should* work.
->>
->> And it turns out it does work! I restored the original form of the
->> function to test something and reconnecting worked. I couldn't
->> reproduce the problem anymore. Not much has changed in rtl8xxxu since
->> the last time I tried this, so it was easy to find the reason: fixing
->> the queue selection [0] fixed the reconnecting problem. Before, it was
->> sending the auth attempts using queue 0x7 (TXDESC_QUEUE_VO). With the
->> queue selection fix it uses queue 0x12 (TXDESC_QUEUE_MGNT). Perhaps
->> queue 0x7 is not functional when the firmware knows it's not connected
->> to a network?
->>
->> I guess I have to send a different patch for this now.
-> 
-> So what should I do with this patchset? Can I take patches 2-4?
-> 
 
-Yes, please. They're all independent.
+
+On 9/28/2022 2:38 PM, Kalle Valo wrote:
+> Caution: This e-mail originated outside Infineon Technologies. Do not click on links or open attachments unless you validate it is safe<https://intranet-content.infineon.com/explore/aboutinfineon/rules/informationsecurity/ug/SocialEngineering/Pages/SocialEngineeringElements_en.aspx>.
+>
+>
+>
+> Ian Lin <ian.lin@infineon.com> writes:
+>
+>> From: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
+>>
+>> cfg80211 layer on DUT STA is disconnecting ongoing connection attempt after
+>> receiving association response, because cfg80211 layer does not have valid
+>> AP bss information. On association response event, brcmfmac communicates
+>> the AP bss information to cfg80211 layer, but SSID seem to be empty in AP
+>> bss information, and cfg80211 layer prints kernel warning and then
+>> disconnects the ongoing connection attempt.
+>>
+>> SSID is empty in SSID IE, but 'bi->SSID' contains a valid SSID, so
+>> updating the SSID for hidden AP while informing its bss information
+>> to cfg80211 layer.
+>>
+>> Signed-off-by: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
+>> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
+>> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@infineon.com>
+>> Signed-off-by: Ian Lin <ian.lin@infineon.com>
+>> ---
+>>   .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>> index 6c37da42e61b..3560afe0ccfe 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>> @@ -3003,6 +3003,7 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
+>>        u8 *notify_ie;
+>>        size_t notify_ielen;
+>>        struct cfg80211_inform_bss bss_data = {};
+>> +     struct brcmf_tlv *ssid;
+>>
+>>        if (le32_to_cpu(bi->length) > WL_BSS_INFO_MAX) {
+>>                bphy_err(drvr, "Bss info is larger than buffer. Discarding\n");
+>> @@ -3032,6 +3033,13 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
+>>        notify_ielen = le32_to_cpu(bi->ie_length);
+>>        bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
+>>
+>> +     ssid = (struct brcmf_tlv *)
+>> +             brcmf_parse_tlvs(notify_ie, notify_ielen, WLAN_EID_SSID);
+> This still casts away the const. For some reason brcmf_parse_tlvs()
+> takes a const buffer:
+>
+> static const struct brcmf_tlv *brcmf_parse_tlvs(const void *buf, int buflen, uint key)
+>
+> I'm not familiar with brcmfmac internal so I don't know why it does
+> that, but that means the buffer cannot be modified. If you need to
+> modify the ssid should you make a copy of it?
+
+In brcmf_parse_tlvs(const void *buf, int buflen, uint key),
+it will find the key in buf and return the address of this key, as the 
+return pointer.
+This function don't intend caller to modify content of buf in most 
+cases, so it defines a const return pointer.
+But in this case, it just need to do it, so I need the typecast here.
+
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
