@@ -2,119 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 309F45ED2CD
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Sep 2022 03:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71785ED3E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Sep 2022 06:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbiI1BwD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Sep 2022 21:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41748 "EHLO
+        id S230172AbiI1E0Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Sep 2022 00:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230506AbiI1BwC (ORCPT
+        with ESMTP id S229950AbiI1E0X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Sep 2022 21:52:02 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5ED21EF629
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Sep 2022 18:52:00 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28S1pt1B026733;
-        Wed, 28 Sep 2022 01:51:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=KJUysZlmD/3cGhekNZlN4P6ixBct63x1UKyESgdx5So=;
- b=T6njRJ6S1pDvwxvAj/0GMCDe4IoP4GqS+QRdBpVhws++027/E3+mVK2KonzRRZC7G/e1
- g2RqGPUC5ZPGaY7oZQafDWYg7PVdzz9qpPYYW2ZlCrTK/pMMxp0iyHHqHkqAq0S4leYM
- 56nJQCLhuZV8PURe8Rj7mDtjjfWRkn8utiHP2/Vxyt+ehLYcIp4YuYvtDvnLCvFnSn3V
- Q0O0yatHd0Xa0QHSToscSlmXJvrt0raTerQU8YlutDGkQ1ot5WcaKheMJU0+aHzAgK7o
- /9wZzPQyui//ZFgtZL9yA8CnF9YtlnLrQsSHt24FrWx+Qf7deOhCzqFycFDaCLnrAxfG ZA== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jva41gedp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 28 Sep 2022 01:51:54 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28S1pspC018772
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 28 Sep 2022 01:51:54 GMT
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Tue, 27 Sep 2022 18:51:53 -0700
-From:   Baochen Qiang <quic_bqiang@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: ath11k: Don't exit on wakeup failure
-Date:   Wed, 28 Sep 2022 09:51:40 +0800
-Message-ID: <20220928015140.5431-1-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 28 Sep 2022 00:26:23 -0400
+Received: from smtp14.infineon.com (smtp14.infineon.com [IPv6:2a00:18f0:1e00:4::6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6252110E5EC
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Sep 2022 21:26:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1664339182; x=1695875182;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GapK3jCYzSTns9wyR6nd44f+6U1hYYtoHrt43eJR7PM=;
+  b=PJSiXXb9gHmqsF31+u50B8wMVFh43+BlHzX7EzU5vPnQS8aMHIrk2fXO
+   RH4hxbikBbkztQp3Xwgyap0TU5b7yWD8nztTga1RVPgbSCRsP5cek/cc1
+   +y5MIzgQM/qTbnta/jCL+/x25aVMr8cRoSNvEuiR5rn40UMAE0KrPf22r
+   g=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="143095346"
+X-IronPort-AV: E=Sophos;i="5.93,351,1654552800"; 
+   d="scan'208";a="143095346"
+Received: from unknown (HELO mucxv002.muc.infineon.com) ([172.23.11.17])
+  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2022 06:26:19 +0200
+Received: from MUCSE805.infineon.com (MUCSE805.infineon.com [172.23.29.31])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mucxv002.muc.infineon.com (Postfix) with ESMTPS;
+        Wed, 28 Sep 2022 06:26:18 +0200 (CEST)
+Received: from MUCSE835.infineon.com (172.23.7.107) by MUCSE805.infineon.com
+ (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 28 Sep
+ 2022 06:26:18 +0200
+Received: from [10.234.36.216] (10.234.36.216) by MUCSE835.infineon.com
+ (172.23.7.107) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 28 Sep
+ 2022 06:26:16 +0200
+Message-ID: <fad7c4ab-fff2-0bc8-52fe-ab33468f82eb@infineon.com>
+Date:   Wed, 28 Sep 2022 12:26:13 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: zQN-JeF_a1sItzD67Si9OmJw8kcgr1iQ
-X-Proofpoint-ORIG-GUID: zQN-JeF_a1sItzD67Si9OmJw8kcgr1iQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-27_12,2022-09-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 bulkscore=0 phishscore=0 adultscore=0 mlxlogscore=999
- clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209280009
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH 1/3] brcmfmac: Support DPP feature
+Content-Language: en-US
+To:     Franky Lin <franky.lin@broadcom.com>
+CC:     <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <hante.meuleman@broadcom.com>,
+        <kvalo@kernel.org>, <Double.Lo@infineon.com>
+References: <20220921015951.16178-1-ian.lin@infineon.com>
+ <20220921015951.16178-2-ian.lin@infineon.com>
+ <CA+8PC_fN+bqfpmQapYqJMyO3kouS9-u_Dwvo_FH8nGhhDP5V5A@mail.gmail.com>
+ <0b102940-0175-7b66-d3c7-822e41ffa1e8@infineon.com>
+ <CA+8PC_dcK1TkJXcBzunJpjSKds5=iA3mVNxgC3fC_i6opzQDPw@mail.gmail.com>
+From:   "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com>
+In-Reply-To: <CA+8PC_dcK1TkJXcBzunJpjSKds5=iA3mVNxgC3fC_i6opzQDPw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.234.36.216]
+X-ClientProxiedBy: MUCSE807.infineon.com (172.23.29.33) To
+ MUCSE835.infineon.com (172.23.7.107)
+X-Spam-Status: No, score=-9.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently, ath11k_pcic_read() returns an error if wakeup()
-fails, this makes firmware crash debug quite hard because we can
-get nothing.
 
-Change to go ahead on wakeup failure, in that case we still may
-get something valid to check. There should be no mislead due
-to incorrect content because we are aware of the failure with the
-log printed.
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+On 9/24/2022 12:36 AM, Franky Lin wrote:
+>
+>>>>    };
+>>>>
+>>>>    s32 brcmf_p2p_attach(struct brcmf_cfg80211_info *cfg, bool p2pdev_forced);
+>>>> @@ -170,7 +171,8 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
+>>>>                                           void *data);
+>>>>    bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+>>>>                                    struct net_device *ndev,
+>>>> -                                struct brcmf_fil_af_params_le *af_params);
+>>>> +                                struct brcmf_fil_af_params_le *af_params,
+>>>> +                                struct brcmf_cfg80211_vif *vif);
+>>>>    bool brcmf_p2p_scan_finding_common_channel(struct brcmf_cfg80211_info *cfg,
+>>>>                                              struct brcmf_bss_info_le *bi);
+>>>>    s32 brcmf_p2p_notify_rx_mgmt_p2p_probereq(struct brcmf_if *ifp,
+>>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h b/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h
+>>>> index 7552bdb91991..3a9cad3730b8 100644
+>>>> --- a/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h
+>>>> +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcmu_wifi.h
+>>>> @@ -233,6 +233,11 @@ static inline bool ac_bitmap_tst(u8 bitmap, int prec)
+>>>>
+>>>>    #define WPA3_AUTH_SAE_PSK      0x40000 /* SAE with 4-way handshake */
+>>>>
+>>>> +#define WFA_AUTH_DPP           0x200000 /* WFA DPP AUTH */
+>>> This is incompatible with Broadcom's bit definitions. Please use a per
+>>> vendor approach.
+>> We had extended the bit definition.
+>> The authentication mode will be set to our FW so it's FW-dependent.
+>> Do you suggest I change the name? like CY_WFA_AUTH_DPP?
+> Being firmware dependent is exactly the problem here. The user
+> functions of this macro are in common code path so this bit could go
+> to firmware from any vendor. A mechanism should be in place to only
+> set this bit when the driver is working with a infineon/cypress
+> firmware.
+>
+> Regards,
+> - Franky
+>
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/pcic.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+Currently we don't have such mechanism.
+Please abandon this review series.
+Thank you.
 
-diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
-index 3fa1958f8c82..d2f0112e8df0 100644
---- a/drivers/net/wireless/ath/ath11k/pcic.c
-+++ b/drivers/net/wireless/ath/ath11k/pcic.c
-@@ -218,9 +218,16 @@ int ath11k_pcic_read(struct ath11k_base *ab, void *buf, u32 start, u32 end)
- 	if (wakeup_required && ab->pci.ops->wakeup) {
- 		ret = ab->pci.ops->wakeup(ab);
- 		if (ret) {
--			ath11k_warn(ab, "failed to wakeup for read from 0x%x: %d\n",
--				    start, ret);
--			return ret;
-+			ath11k_warn(ab,
-+				    "wakeup failed, data may be invalid: %d",
-+				    ret);
-+			/* Even though wakeup() failed, continue processing rather
-+			 * than returning because some parts of the data may still
-+			 * be valid and useful in some cases, e.g. could give us
-+			 * some clues on firmware crash.
-+			 * Mislead due to invalid data could be avoided because we
-+			 * are aware of the wakeup failure.
-+			 */
- 		}
- 	}
- 
 
-base-commit: 92764e24ac9f6e105b3513f32f70dd94f67437ac
--- 
-2.25.1
+
 
