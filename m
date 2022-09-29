@@ -2,101 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF2D5EE9A8
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 00:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46CF55EEADD
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 03:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234141AbiI1WtR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Sep 2022 18:49:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
+        id S233868AbiI2BZi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Sep 2022 21:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234109AbiI1WtP (ORCPT
+        with ESMTP id S229940AbiI2BZh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Sep 2022 18:49:15 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1058B111DC5
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 15:49:15 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id b23so13734610pfp.9
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 15:49:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=Yrf9VypQmXniiAt1Rrqqdwkj06oR7gkPD9h3efyfcaY=;
-        b=WDGdFfpvzhqU1ZnRxaqxRcJ22foTvQ1gbkCFu6ztXYfIDE+gwTWmn2dRXMgy5jgzjR
-         X909+NKSbCtXbUWLCjL4VocKXEa+Aj896zxXW94FFXGL32h5tOor9oDqI9IuYR3RQFaF
-         c5hCj37MVPF3+xyd42nkXxV42eyPgeWMeG8GCj6pHFA2IqvCJ/skSxUA3j4BdjweEB9Z
-         SVFo++CV+6pIaBHrUIv/2N/OnSwPDDUvheV4ICvicyJf1WDmX//H/tqn2GTU5wDYj8Ed
-         lmrayRBGcXqeltYMlTrAJNUR+ZE12rwnJ4qdSxWvGC00QG4hEpVtassPyx/Ht0sEy+v5
-         4GEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=Yrf9VypQmXniiAt1Rrqqdwkj06oR7gkPD9h3efyfcaY=;
-        b=qXGFiVO5GvKe0Y1nUr7zxII/oEVPTPokxQlj9ZhNVR9UqjqwerSCioFg97ZKQb1UC3
-         Y/8X0UDU1Hu/lYzizrhunsV+Q3Bmb4nbO7V3dDTuHsCdesTCgr4OnOHBc5ybb89jsrsc
-         I2KH/Sur/em+e9VfxiKrXIOD0dJW+vGP3yO0U0ZKxBikZ02Y81TxYWvWJQ6apaBtWfBZ
-         qFyWNPpIEn1Qkabpm9Uwf1jzfqx1muq7eJIeF06+zs77mCpA5s12t9HMMXWPlLnFuaVE
-         R48M25mXDnNEfkt+0yo4Ea1StgsyJDAgH9+ZP+F+EkPvawdYa75f3g8SvjtkvH2jjiDX
-         Fkqw==
-X-Gm-Message-State: ACrzQf0+1VXYhzXiiWQkM6OKH+ik+kotHUhL9nLqa01vuYyf2q854cmF
-        MyZwu9KlVUH/8hNDdA6aLPXJaT3KiJc=
-X-Google-Smtp-Source: AMsMyM4AKteQKMlJKcyAS6FYfSWFaQLlvDl4zljbRZfY/CFWvaE1Dp4hOkfoNkAGMhCpOrSVVvd7xQ==
-X-Received: by 2002:a63:da4b:0:b0:439:14a8:52b with SMTP id l11-20020a63da4b000000b0043914a8052bmr96473pgj.500.1664405354362;
-        Wed, 28 Sep 2022 15:49:14 -0700 (PDT)
-Received: from jprestwo-xps.none ([50.54.173.139])
-        by smtp.gmail.com with ESMTPSA id ob6-20020a17090b390600b001f2fa09786asm643738pjb.19.2022.09.28.15.49.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 15:49:14 -0700 (PDT)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH 1/1] wifi: mac80211: fix probe req HE capabilities access
-Date:   Wed, 28 Sep 2022 15:49:10 -0700
-Message-Id: <20220928224910.453232-2-prestwoj@gmail.com>
-X-Mailer: git-send-email 2.34.3
-In-Reply-To: <20220928224910.453232-1-prestwoj@gmail.com>
-References: <20220928224910.453232-1-prestwoj@gmail.com>
+        Wed, 28 Sep 2022 21:25:37 -0400
+Received: from smtp3.infineon.com (smtp3.infineon.com [217.10.52.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B9D20F72
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 18:25:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1664414736; x=1695950736;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4CQKyZ6vaxFFeGMenzA2UOFjxf6iUdL+/fDeatxf0xY=;
+  b=GQwJg1oR+glGmnBpuUnOIZxVKKVNDLiVp85pTJvZ5MfQYkSt5BE+bvzx
+   /jdNbZL3F8QRajk+cIs0DJaMifnHXDYBQzEeX3oTfBJP/sjuHMT+uAue5
+   47Ue02yVJo2EEdLixmVd/LH4j1t+I3nPB+ciZqxWjlOSxuzS5Be7VGVRu
+   E=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="2355166"
+X-IronPort-AV: E=Sophos;i="5.93,353,1654552800"; 
+   d="scan'208";a="2355166"
+Received: from unknown (HELO mucxv003.muc.infineon.com) ([172.23.11.20])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2022 03:25:34 +0200
+Received: from MUCSE819.infineon.com (MUCSE819.infineon.com [172.23.29.45])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mucxv003.muc.infineon.com (Postfix) with ESMTPS
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Sep 2022 03:25:33 +0200 (CEST)
+Received: from MUCSE824.infineon.com (172.23.29.55) by MUCSE819.infineon.com
+ (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 29 Sep
+ 2022 03:25:33 +0200
+Received: from mailrelay-cypress3.infineon.com (172.23.18.46) by
+ SMTP-MailRelay3.infineon.com (172.23.29.16) with Microsoft SMTP Server id
+ 15.2.986.29; Thu, 29 Sep 2022 03:25:33 +0200
+mailrelay-external-outbound: True
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="264114135"
+X-IronPort-AV: E=Sophos;i="5.93,353,1654552800"; 
+   d="scan'208";a="264114135"
+Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
+  by mailrelay-cypress3.infineon.com with ESMTP; 29 Sep 2022 03:25:33 +0200
+Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
+ (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Wed, 28 Sep 2022
+ 20:25:31 -0500
+Received: from iot-wlan-dev-u03.aus.cypress.com (iot-wlan-dev-u03
+ [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id BB4D410038C;
+        Wed, 28 Sep 2022 20:25:31 -0500 (CDT)
+Received: by iot-wlan-dev-u03.aus.cypress.com (Postfix, from userid 27991)      id
+ B4B50980853; Wed, 28 Sep 2022 20:25:31 -0500 (CDT)
+From:   Ian Lin <ian.lin@infineon.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
+        <Double.Lo@infineon.com>, <ian.lin@infineon.com>
+Subject: [PATCH v3 0/4] brcmfmac: Add dump_survey cfg80211 ops series
+Date:   Wed, 28 Sep 2022 20:25:23 -0500
+Message-ID: <20220929012527.4152-1-ian.lin@infineon.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When building the probe request IEs HE support is checked for
-the 6GHz band (wiphy->bands[NL80211_BAND_6GHZ]). If supported
-the HE capability IE should be included according to the spec.
-The problem is the 16-bit capability is obtained from the
-band object (sband) that was passed in, not the 6GHz band
-object (sband6). If the sband object doesn't support HE it will
-result in a warning.
+Add dump_survey cfg80211 ops for HostApd AutoChannelSelection.
+And fix related bug.
 
-Fixes: 7d29bc50b30e ("mac80211: always include HE 6GHz capability in probe request")
-Signed-off-by: James Prestwood <prestwoj@gmail.com>
----
- net/mac80211/util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v3:
+  - refine error message in brcmf_parse_dump_obss
+  - fix typo in brcmf_cfg80211_dump_survey
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0ea5d50091dc..be69cddaf139 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2046,7 +2046,7 @@ static int ieee80211_build_preq_ies_band(struct ieee80211_sub_if_data *sdata,
- 		if (he_cap) {
- 			enum nl80211_iftype iftype =
- 				ieee80211_vif_type_p2p(&sdata->vif);
--			__le16 cap = ieee80211_get_he_6ghz_capa(sband, iftype);
-+			__le16 cap = ieee80211_get_he_6ghz_capa(sband6, iftype);
- 
- 			pos = ieee80211_write_he_6ghz_cap(pos, cap, end);
- 		}
+Changes in v2:
+  - refine error handling in brcmf_parse_dump_obss
+  - delare variable by using stack memory in brcmf_cfg80211_dump_survey
+  - provide debug message in error case of cfg80211_set_channel
+  - remove unnecessary NULL assignment in brcmf_cfg80211_attach
+
+Double Lo (1):
+  brcmfmac: fix CERT-P2P:5.1.10 failure
+
+Ramesh Rangavittal (1):
+  brcmfmac: Fix authentication latency caused by OBSS stats survey
+
+Wright Feng (2):
+  brcmfmac: Add dump_survey cfg80211 ops for HostApd
+    AutoChannelSelection
+  brcmfmac: fix firmware trap while dumping obss stats
+
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 258 ++++++++++++++++++
+ .../broadcom/brcm80211/brcmfmac/feature.c     |   3 +-
+ .../broadcom/brcm80211/brcmfmac/feature.h     |   4 +-
+ 3 files changed, 263 insertions(+), 2 deletions(-)
+
 -- 
-2.34.3
+2.25.0
 
