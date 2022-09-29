@@ -2,145 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6102A5EEC57
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 05:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D42F55EED03
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 07:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234855AbiI2DKX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Sep 2022 23:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37522 "EHLO
+        id S234757AbiI2FG2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Sep 2022 01:06:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234828AbiI2DKV (ORCPT
+        with ESMTP id S232180AbiI2FG1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Sep 2022 23:10:21 -0400
-Received: from smtp3.infineon.com (smtp3.infineon.com [217.10.52.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2DB58DF6
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 20:10:18 -0700 (PDT)
+        Thu, 29 Sep 2022 01:06:27 -0400
+Received: from smtp12.infineon.com (smtp12.infineon.com [217.10.52.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B79D4CA3D
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 22:06:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1664421020; x=1695957020;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TJDOK4vXU+M/f0J/3WYbdeBU4QkEsiXXJ2ErwyijpPk=;
-  b=Wn4CF/pEMDiIWn3dzTUEr66XNfupDYXT2dVB1rgKNOLWVgZGYoPgDsWt
-   MQl7cDH/1u53oZ7dhlhVpF/vQrzWyItKARnewoaz4boesMWWw8ftiuP6N
-   dCrmrUTdctyBXzJ+j8MK4z9Br88GoCRse7g+9fr3vOqPVYr7Pwu/JhVy2
-   0=;
+  t=1664427984; x=1695963984;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y1HHyhfu4GegXYwQ7rRenm2AZ0qT39s3m5KHDTJjZWA=;
+  b=kghQZSZNhYFEfmX+ihjW/tIIxsSrQc9iL3ofPxUipQ65eLf9y12MkzNa
+   X4+qd59j9xMHIZSuXzluom7A6KlucOsfxyWwwEFKqvM874QTike3LEES/
+   q6OXTaIfMX84jOBpcdvj0sv7Bpv9GPq8R8kKkgvNRJxkZ7Xy5/kaB9B4l
+   E=;
 X-SBRS: None
-X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="2365519"
-X-IronPort-AV: E=Sophos;i="5.93,353,1654552800"; 
-   d="scan'208";a="2365519"
-Received: from unknown (HELO mucxv002.muc.infineon.com) ([172.23.11.17])
-  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2022 05:10:17 +0200
-Received: from MUCSE803.infineon.com (MUCSE803.infineon.com [172.23.29.29])
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="319475401"
+X-IronPort-AV: E=Sophos;i="5.93,354,1654552800"; 
+   d="scan'208";a="319475401"
+Received: from unknown (HELO mucxv003.muc.infineon.com) ([172.23.11.20])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2022 07:06:21 +0200
+Received: from MUCSE819.infineon.com (MUCSE819.infineon.com [172.23.29.45])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mucxv002.muc.infineon.com (Postfix) with ESMTPS
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Sep 2022 05:10:16 +0200 (CEST)
-Received: from MUCSE824.infineon.com (172.23.29.55) by MUCSE803.infineon.com
- (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
+        by mucxv003.muc.infineon.com (Postfix) with ESMTPS
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Sep 2022 07:06:21 +0200 (CEST)
+Received: from MUCSE815.infineon.com (172.23.29.41) by MUCSE819.infineon.com
+ (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 29 Sep
- 2022 05:10:16 +0200
+ 2022 07:06:21 +0200
 Received: from mailrelay-cypress3.infineon.com (172.23.18.46) by
- SMTP-MailRelay3.infineon.com (172.23.29.16) with Microsoft SMTP Server id
- 15.2.986.29; Thu, 29 Sep 2022 05:10:16 +0200
+ SMTP-MailRelay2.infineon.com (172.23.29.9) with Microsoft SMTP Server id
+ 15.2.986.29; Thu, 29 Sep 2022 07:06:20 +0200
 mailrelay-external-outbound: True
-X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="264141879"
-X-IronPort-AV: E=Sophos;i="5.93,353,1654552800"; 
-   d="scan'208";a="264141879"
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="264162883"
+X-IronPort-AV: E=Sophos;i="5.93,354,1654552800"; 
+   d="scan'208";a="264162883"
 Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
-  by mailrelay-cypress3.infineon.com with ESMTP; 29 Sep 2022 05:10:15 +0200
+  by mailrelay-cypress3.infineon.com with ESMTP; 29 Sep 2022 07:06:20 +0200
 Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
- (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Wed, 28 Sep 2022
- 22:10:14 -0500
+ (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Thu, 29 Sep 2022
+ 00:06:19 -0500
 Received: from iot-wlan-dev-u03.aus.cypress.com (iot-wlan-dev-u03
- [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id 6BB8F1004ED;
-        Wed, 28 Sep 2022 22:10:10 -0500 (CDT)
+ [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id 70F3310038C;
+        Thu, 29 Sep 2022 00:06:19 -0500 (CDT)
 Received: by iot-wlan-dev-u03.aus.cypress.com (Postfix, from userid 27991)      id
- 67183980481; Wed, 28 Sep 2022 22:10:10 -0500 (CDT)
+ 40CE89807D1; Thu, 29 Sep 2022 00:06:19 -0500 (CDT)
 From:   Ian Lin <ian.lin@infineon.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <brcm80211-dev-list@broadcom.com>,
         <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
         <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
         <Double.Lo@infineon.com>, <ian.lin@infineon.com>
-Subject: [PATCH 3/3] brcmfmac: dump dongle memory when attaching failed
-Date:   Wed, 28 Sep 2022 22:10:01 -0500
-Message-ID: <20220929031001.9962-4-ian.lin@infineon.com>
+Subject: [PATCH 0/4] brcmfmac: Support multiple station interface series
+Date:   Thu, 29 Sep 2022 00:06:10 -0500
+Message-ID: <20220929050614.31518-1-ian.lin@infineon.com>
 X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20220929031001.9962-1-ian.lin@infineon.com>
-References: <20220929031001.9962-1-ian.lin@infineon.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wright Feng <wright.feng@cypress.com>
+Support create multiple station interface.
+And fix related issues.
 
-To enhance FW debugging, we add dongle memory dump when hitting attaching
-failure with PCIE bus. It can help developer to get more information
-about dongle trap reason and root cause.
+Prasanna Kerekoppa (1):
+  brcmfmac: Fix AP interface delete issue
 
-Signed-off-by: Wright Feng <wright.feng@cypress.com>
-Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
-Signed-off-by: Ian Lin <ian.lin@infineon.com>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/core.c    |  3 ++-
- .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 10 +++++++---
- 2 files changed, 9 insertions(+), 4 deletions(-)
+Ting-Ying Li (1):
+  brcmfmac: revise SoftAP channel setting
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index 595ae3ae561e..d354f79fd0ac 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -1399,7 +1399,8 @@ void brcmf_fw_crashed(struct device *dev)
- 
- 	brcmf_dev_coredump(dev);
- 
--	schedule_work(&drvr->bus_reset);
-+	if (drvr->bus_reset.func)
-+		schedule_work(&drvr->bus_reset);
- }
- 
- void brcmf_detach(struct device *dev)
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 1becd50038ab..cf564adc612a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -2068,13 +2068,14 @@ static void brcmf_pcie_setup(struct device *dev, int ret,
- 	struct brcmf_commonring **flowrings;
- 	u32 i, nvram_len;
- 
-+	bus = dev_get_drvdata(dev);
-+	pcie_bus_dev = bus->bus_priv.pcie;
-+	devinfo = pcie_bus_dev->devinfo;
-+
- 	/* check firmware loading result */
- 	if (ret)
- 		goto fail;
- 
--	bus = dev_get_drvdata(dev);
--	pcie_bus_dev = bus->bus_priv.pcie;
--	devinfo = pcie_bus_dev->devinfo;
- 	brcmf_pcie_attach(devinfo);
- 
- 	fw = fwreq->items[BRCMF_PCIE_FW_CODE].binary;
-@@ -2148,6 +2149,9 @@ static void brcmf_pcie_setup(struct device *dev, int ret,
- 	return;
- 
- fail:
-+	brcmf_err(bus, "Dongle setup failed\n");
-+	brcmf_pcie_bus_console_read(devinfo, true);
-+	brcmf_fw_crashed(dev);
- 	device_release_driver(dev);
- }
- 
+Wright Feng (2):
+  brcmfmac: add creating station interface support
+  brcmfmac: support station interface creation version 1, 2 and 3
+
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 306 ++++++++++++++++--
+ .../broadcom/brcm80211/brcmfmac/core.h        |   1 +
+ 2 files changed, 272 insertions(+), 35 deletions(-)
+
 -- 
 2.25.0
 
