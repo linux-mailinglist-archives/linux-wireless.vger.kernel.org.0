@@ -2,84 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6815EEBA2
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 04:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A09C5EEC54
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 05:10:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234760AbiI2CUb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Sep 2022 22:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40684 "EHLO
+        id S234144AbiI2DKP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Sep 2022 23:10:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234745AbiI2CU0 (ORCPT
+        with ESMTP id S234481AbiI2DKM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Sep 2022 22:20:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0ECA1D26;
-        Wed, 28 Sep 2022 19:20:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        Wed, 28 Sep 2022 23:10:12 -0400
+Received: from smtp12.infineon.com (smtp12.infineon.com [217.10.52.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBC036DF7
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Sep 2022 20:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1664421011; x=1695957011;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7DliypB7SEZybG3wOcfnFTxvu1ujq5jpYP30VJV9rYc=;
+  b=QgBXXKmATbaY46f6J5HwTyVOmp8hVLHmYfO8Li/DZPkaDbjSrghJgN3T
+   H8DtvwenxzEq0WgjRmA7L8aLKhrT4nzDcRjs8WjqsYKw+cKXPOZAXtup/
+   /joaDB0kVj/dw+DqAj1XdUPh+XJyAE7/MoSKPwjM0NFr+n1jb9Ek9bzP/
+   Q=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="319464492"
+X-IronPort-AV: E=Sophos;i="5.93,353,1654552800"; 
+   d="scan'208";a="319464492"
+Received: from unknown (HELO mucxv002.muc.infineon.com) ([172.23.11.17])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2022 05:10:09 +0200
+Received: from MUCSE814.infineon.com (MUCSE814.infineon.com [172.23.29.40])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F3D60B822C8;
-        Thu, 29 Sep 2022 02:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 98557C43142;
-        Thu, 29 Sep 2022 02:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664418021;
-        bh=6cn8FHaQcyYogSt4drg4rG8e23DcP74VAjMxE+GFZRY=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Xm8V1v0fegjtNkLKuaIBk+WlLuu+wCu5irp40airw35khoSBsOZY+XrYmcq+Lsf/5
-         ZDdSWZW1IrzUfpC9syaTdr5VUViCJvsn0DTV7MBjepf6G5RQe9mLCCeP8HDp6l0SLZ
-         JBm1uGNAreAAnbtob8QxGY+ceLNBq0S/uFuTdJol6zV1DA6PndS2D00znxUBo5qmCw
-         h3Z0vafczOG5hM9QbzVBQr+egJOLN0+E8cceRMO6NmNQx3/q8B3JXmKDZ9T5NaWSeu
-         TZxjiN3edPrbaYdG8wLno7FVC5pZ1V+dq+5eB1qC/tj55akUdkDecVjSY4gOI4VUeu
-         yJMuDBsLObT0g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7F2DBE4D023;
-        Thu, 29 Sep 2022 02:20:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        by mucxv002.muc.infineon.com (Postfix) with ESMTPS
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Sep 2022 05:10:08 +0200 (CEST)
+Received: from MUCSE804.infineon.com (172.23.29.30) by MUCSE814.infineon.com
+ (172.23.29.40) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 29 Sep
+ 2022 05:10:08 +0200
+Received: from mailrelay-cypress3.infineon.com (172.23.18.46) by
+ SMTP-MailRelay1.infineon.com (172.23.29.5) with Microsoft SMTP Server id
+ 15.2.986.29; Thu, 29 Sep 2022 05:10:08 +0200
+mailrelay-external-outbound: True
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="264141842"
+X-IronPort-AV: E=Sophos;i="5.93,353,1654552800"; 
+   d="scan'208";a="264141842"
+Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
+  by mailrelay-cypress3.infineon.com with ESMTP; 29 Sep 2022 05:10:08 +0200
+Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
+ (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Wed, 28 Sep 2022
+ 22:10:07 -0500
+Received: from iot-wlan-dev-u03.aus.cypress.com (iot-wlan-dev-u03
+ [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id CB2A510038C;
+        Wed, 28 Sep 2022 22:10:06 -0500 (CDT)
+Received: by iot-wlan-dev-u03.aus.cypress.com (Postfix, from userid 27991)      id
+ BF053980481; Wed, 28 Sep 2022 22:10:06 -0500 (CDT)
+From:   Ian Lin <ian.lin@infineon.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
+        <Double.Lo@infineon.com>, <ian.lin@infineon.com>
+Subject: [PATCH 0/3] brcmfmac: PCIE debug mechanism series
+Date:   Wed, 28 Sep 2022 22:09:58 -0500
+Message-ID: <20220929031001.9962-1-ian.lin@infineon.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: drop the weight argument from netif_napi_add
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <166441802151.18961.15973207341585394668.git-patchwork-notify@kernel.org>
-Date:   Thu, 29 Sep 2022 02:20:21 +0000
-References: <20220927132753.750069-1-kuba@kernel.org>
-In-Reply-To: <20220927132753.750069-1-kuba@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, kvalo@kernel.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org, mkl@pengutronix.de,
-        linux-can@vger.kernel.org
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Add several debug mechanism on PCIE operation.
 
-This patch was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Wright Feng (3):
+  brcmfmac: add a timer to read console periodically in PCIE bus
+  brcmfmac: return error when getting invalid max_flowrings from dongle
+  brcmfmac: dump dongle memory when attaching failed
 
-On Tue, 27 Sep 2022 06:27:53 -0700 you wrote:
-> We tell driver developers to always pass NAPI_POLL_WEIGHT
-> as the weight to netif_napi_add(). This may be confusing
-> to newcomers, drop the weight argument, those who really
-> need to tweak the weight can use netif_napi_add_weight().
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> 
-> [...]
+ .../broadcom/brcm80211/brcmfmac/bus.h         |   6 +
+ .../broadcom/brcm80211/brcmfmac/core.c        |   3 +-
+ .../broadcom/brcm80211/brcmfmac/pcie.c        | 139 +++++++++++++++++-
+ .../broadcom/brcm80211/brcmfmac/sdio.c        |   2 -
+ 4 files changed, 144 insertions(+), 6 deletions(-)
 
-Here is the summary with links:
-  - [net-next] net: drop the weight argument from netif_napi_add
-    https://git.kernel.org/netdev/net-next/c/b48b89f9c189
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.0
 
