@@ -2,66 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC8385EF840
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 17:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 038C95EF874
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Sep 2022 17:15:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234959AbiI2PEw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Sep 2022 11:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36042 "EHLO
+        id S235646AbiI2PPf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Sep 2022 11:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbiI2PEv (ORCPT
+        with ESMTP id S234729AbiI2PPd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Sep 2022 11:04:51 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1029515FD0;
-        Thu, 29 Sep 2022 08:04:49 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id r8-20020a17090a560800b00205eaaba073so1589840pjf.1;
-        Thu, 29 Sep 2022 08:04:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=IgnHi+RcHTXZNmj2VHSJ2SFXpFxGODlDM88DUFhnlCk=;
-        b=gjUKFhvViouLKkhlJrIfKovkfe+bQSw5wSj/UfXX6uvTRu9tcQ/JU0XHYosAnXpHHn
-         xIKYlYrQn2Ru5LKlYZCgt1Q6E24uZov8E299zwgwQ48Bh/4MkyrRgmA9250QX4J7zMVT
-         MdHWq1k6Bnzzorhjd5V6FwJwWgLtwyGAdZfUKwpLAl+zja4xJgNU1b1boWG7xkVCbrmv
-         OXOpJEGii0I6nmK6QDTECuWW9IeIu6p6QPafZf1tVvt3f0UuVkn8kn3rbGjWiHF3fcNF
-         +HllUJaHZhtTONBaCD+gKLK9SnglzMi05W1Nv0gzUWT5cwmrRg/pEXcusA7kaavaRJtE
-         z5+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=IgnHi+RcHTXZNmj2VHSJ2SFXpFxGODlDM88DUFhnlCk=;
-        b=iQPIzUewZeJVVQ4hlPmYAM7LJQ0aFsLiYN2lXg88/q9ljrGRoPv3/1BhoSXKo1+DvC
-         jAFJoirelETsTgGLxh/TTVy3LcD3fA7VEGlGDg4OuJ5JBsd3VHaMR6DsFHfWmj+1zwYm
-         rTZdAKz3X3N3Wspmoi/IclQA3MltfgqSHqpJ/yN6gCB1C1W7hQEFTYLtu9ceHs5PCFqi
-         fSjcWIyWpsLrHUV7/5wQI1JKsYyPVZQorLgklbApKOeS8kI5eWbpSDVDQbI80cq/Yqqo
-         V53CEzMpRjv8Tyfz1tFDXQajVEK8iqoVup/lAIPN3fAH/53EKAIcdhoSRsLvtblaT/X3
-         PcNQ==
-X-Gm-Message-State: ACrzQf3PuuIJ+nYceQHSddnyTtcGJh27rythqspGxnbIcVTXZrWUJj8k
-        PYS7qIwYrLGDDsnPeXToVJs=
-X-Google-Smtp-Source: AMsMyM5s5dW8ez5512q976BZUNSH3Ye55LuUnU26hsQIQQTP5qkGh3Kv0jmERjtEyK8+Fjp/5yxZIg==
-X-Received: by 2002:a17:902:a511:b0:178:9702:7199 with SMTP id s17-20020a170902a51100b0017897027199mr3761615plq.155.1664463888193;
-        Thu, 29 Sep 2022 08:04:48 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:637c:7f23:f348:a9e6])
-        by smtp.gmail.com with ESMTPSA id b12-20020a63d80c000000b00422c003cf78sm5597419pgh.82.2022.09.29.08.04.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Sep 2022 08:04:47 -0700 (PDT)
-Date:   Thu, 29 Sep 2022 08:04:44 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] wifi: wl1251: drop support for platform data
-Message-ID: <YzW0DKogKykrtonb@google.com>
-References: <20220928222210.1922758-1-dmitry.torokhov@gmail.com>
+        Thu, 29 Sep 2022 11:15:33 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560A0F84B4
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Sep 2022 08:15:31 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.64.31])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 915871C0089;
+        Thu, 29 Sep 2022 15:15:28 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 60EB7600087;
+        Thu, 29 Sep 2022 15:15:28 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id CDA1613C2B0;
+        Thu, 29 Sep 2022 08:15:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com CDA1613C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1664464527;
+        bh=1glF0BrCEhCzmG8c+3ww9v+DtRNX8h30UNKqVWPAaGg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ff/Jnmf9SZsk89P4wXlOA0iAdnBx6m1cTP3EOnDdcCkDywMzx70g119aG3XZEelYp
+         dzWB5XdgBRo6lgqglcCtLwKACq0RcDWC7GkcmVQDlebeOsx4PO5PhfRKZoiZXNrZMM
+         ojE243s/wBQLrdG55RyEoCzoeXE+1c2FNfLCwHAU=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     nbd@nbd.name, Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/2] wifi: mt76: mt7915: fix bounds checking for tx-free-done command
+Date:   Thu, 29 Sep 2022 08:15:25 -0700
+Message-Id: <20220929151526.9559-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220928222210.1922758-1-dmitry.torokhov@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MDID: 1664464529-X_Ed7EJ7K0v8
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,21 +53,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 03:22:09PM -0700, Dmitry Torokhov wrote:
-> There are no users of wl1251_platform_data left in the mainline kernel,
-> so let's remove it.
-> 
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> ---
->  .../net/wireless/ti/wilink_platform_data.c    | 35 ---------------
->  drivers/net/wireless/ti/wl1251/sdio.c         |  8 +---
->  drivers/net/wireless/ti/wl1251/spi.c          | 15 ++-----
->  include/linux/wl12xx.h                        | 44 -------------------
+From: Ben Greear <greearb@candelatech.com>
 
-Apparently there are a few places still referencing this header. I will
-resubmit.
+According to the tx-free-done documentation, the DW4 can be repeated,
+so have to be more careful about how we test for walking off the
+end of the array.
 
-Thanks.
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 4e70f5d050ea..bbaa77af387c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1116,14 +1116,16 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 	total = le16_get_bits(free->ctrl, MT_TX_FREE_MSDU_CNT);
+ 	/* NOTE: 'v3' actually is checking for API version 4 */
+ 	v3 = (FIELD_GET(MT_TX_FREE_VER, txd) == 0x4);
+-	if (WARN_ON_ONCE((void *)&tx_info[total >> v3] > end))
+-		return;
+ 
+ 	for (cur_info = tx_info; count < total; cur_info++) {
+-		u32 msdu, info = le32_to_cpu(*cur_info);
++		u32 msdu, info;
+ 		u8 i;
+ 		u32 tx_cnt, tx_status, ampdu;
+ 
++		if (WARN_ON_ONCE((void*)cur_info > end))
++			return;
++
++		info = le32_to_cpu(*cur_info);
+ 		/*
+ 		 * 1'b1: new wcid pair.
+ 		 * 1'b0: msdu_id with the same 'wcid pair' as above.
 -- 
-Dmitry
+2.20.1
+
