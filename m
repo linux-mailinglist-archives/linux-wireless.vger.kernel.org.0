@@ -2,94 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E6F5F07CD
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 11:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8773B5F09E2
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 13:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231444AbiI3Jl6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 05:41:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57316 "EHLO
+        id S232105AbiI3LTh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 07:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231308AbiI3Jl5 (ORCPT
+        with ESMTP id S232023AbiI3LTB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 05:41:57 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF817BC91D
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 02:41:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=x98eaU4yEJxd/BgfiNKV6VqqgLBTgEGKnVS49Daop1M=;
-        t=1664530915; x=1665740515; b=RmyCXJ0Aw7Xb+cI+Oh2K0/UKXfbRnLmCl7LgAYMAVj7p0zG
-        tDhCXM6O3rGuf9QKskCzqtjRBZyfzR1TMZ7GDFULpF61wcK1ZfKz7UNFOKIhIUNXeANGJsyX7Xb6m
-        hWiIefiZXwdt7xT2U3VcLjH2NNUdlIqgGIi+FrDs1+nwZJrp6b9ZoWU1WnYHuI6GZdX6P8pBQ/nBY
-        EC92DPTl1ZBNXGtxSTRARtEEg/PWx4DaXqJtYWGL7C3P3w/m1cN8Hh8M31I1n0QZ2t757HQa8WaPY
-        2IXsZL3SLAVL9wLcL2D9ycI5cFi9bGmRQgPKJ/T8nTVat/KKU5kC+5E6Nk2EyQHw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oeCWn-00BtM7-18;
-        Fri, 30 Sep 2022 11:41:53 +0200
-Message-ID: <98c184b456e0dc1b0bb59f2e479e1739f4dbed79.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: Use internal TX queues for all drivers
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Fri, 30 Sep 2022 07:19:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E744684A
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 04:06:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 615C3B82796
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 11:06:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4ECC433D6;
+        Fri, 30 Sep 2022 11:06:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664535982;
+        bh=RS6u7/s9E3KJmKrDVnrR+reGmDLlBgluzyRRImCz0C0=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=oiKco4+X0ejzBFEzuQqExQSQ9jMy0tzxDYctehdBGuzQG9mF7rfQlqGAxF8FsINyC
+         DYdBt0qClUMGxVq4nMmoxrk5N3+i7kdAp/DH/yEa09ZZ15mnKstza1FYmG0i1sARZQ
+         7Wr27FMZKRF4F1ehHGqVriwuUk9sb/a/RvFD3OTGSoLsaGEmhUDA4/h3/v0a5fyJhU
+         wNrv7l8/GupF4RKBgzE/eY4ig2aSQXjp88+RK8iS48PePcht8NhF71BzEcbDAbIenw
+         wjXhbPWX+qvZmP+iLF/396QiY2kEjY3jszth6AnpYa85ssivtoA8SDI5VxmfeNy8f0
+         rNwHeBMQ2u60Q==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 81A2264E248; Fri, 30 Sep 2022 13:06:19 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
 To:     Alexander Wetzel <alexander@wetzel-home.de>,
         linux-wireless@vger.kernel.org
-Date:   Fri, 30 Sep 2022 11:41:52 +0200
-In-Reply-To: <79161904-1e56-3046-b381-705e4af11e84@wetzel-home.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: Use internal TX queues for all drivers
+In-Reply-To: <4496641c-9f7d-a61e-78af-35e9bb7c3a40@wetzel-home.de>
 References: <20220926161303.13035-1-alexander@wetzel-home.de>
-         <da810136f6cf0608167cc8297ce73d11b83974d6.camel@sipsolutions.net>
-         <79161904-1e56-3046-b381-705e4af11e84@wetzel-home.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+ <87wn9ml0no.fsf@toke.dk>
+ <4496641c-9f7d-a61e-78af-35e9bb7c3a40@wetzel-home.de>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Fri, 30 Sep 2022 13:06:19 +0200
+Message-ID: <87v8p5jf4k.fsf@toke.dk>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-09-30 at 11:08 +0200, Alexander Wetzel wrote:
-> On 29.09.22 22:40, Johannes Berg wrote:
-> > Thanks for doing this!
-> >=20
-> > It's a bit bad timing right now, so I'll only have a chance to look at
-> > this in the next couple of weeks, but that also doesn't matter that muc=
-h
-> > since 6.0 release is imminent (will likely be Sunday).
-> >=20
->=20
-> Thanks for the warning. I'll then send a v2 to correct skb_get_hash()=20
-> handling in the next days.
+Alexander Wetzel <alexander@wetzel-home.de> writes:
 
-I probably won't merge it much before ~2 weeks from now, so take your
-time :)
+> <resend to all, sorry for duplicates >
+>
+> On 29.09.22 16:23, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>
+> [...]
+>>> diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+>>> index 9f4377566c42..cde169038429 100644
+>>> --- a/net/mac80211/trace.h
+>>> +++ b/net/mac80211/trace.h
+>>> @@ -2301,37 +2301,6 @@ TRACE_EVENT(drv_tdls_recv_channel_switch,
+>>>   	)
+>>>   );
+>>>=20=20=20
+>>> -TRACE_EVENT(drv_wake_tx_queue,
+>>> -	TP_PROTO(struct ieee80211_local *local,
+>>> -		 struct ieee80211_sub_if_data *sdata,
+>>> -		 struct txq_info *txq),
+>>> -
+>>> -	TP_ARGS(local, sdata, txq),
+>>> -
+>>> -	TP_STRUCT__entry(
+>>> -		LOCAL_ENTRY
+>>> -		VIF_ENTRY
+>>> -		STA_ENTRY
+>>> -		__field(u8, ac)
+>>> -		__field(u8, tid)
+>>> -	),
+>>> -
+>>> -	TP_fast_assign(
+>>> -		struct ieee80211_sta *sta =3D txq->txq.sta;
+>>> -
+>>> -		LOCAL_ASSIGN;
+>>> -		VIF_ASSIGN;
+>>> -		STA_ASSIGN;
+>>> -		__entry->ac =3D txq->txq.ac;
+>>> -		__entry->tid =3D txq->txq.tid;
+>>> -	),
+>>> -
+>>> -	TP_printk(
+>>> -		LOCAL_PR_FMT  VIF_PR_FMT  STA_PR_FMT " ac:%d tid:%d",
+>>> -		LOCAL_PR_ARG, VIF_PR_ARG, STA_PR_ARG, __entry->ac, __entry->tid
+>>> -	)
+>>> -);
+>>> -
+>>>   TRACE_EVENT(drv_get_ftm_responder_stats,
+>>>   	TP_PROTO(struct ieee80211_local *local,
+>>>   		 struct ieee80211_sub_if_data *sdata,
+>>> @@ -3026,6 +2995,37 @@ TRACE_EVENT(stop_queue,
+>>>   	)
+>>>   );
+>>>=20=20=20
+>>> +TRACE_EVENT(wake_tx_queue,
+>>=20
+>> I know tracepoints are technically not considered API, but that doesn't
+>> mean we *have* to break them if there's no reason to. And since the
+>> actual contents is the same, how about keeping the old name as an alias
+>> for this?
+>>=20
+>
+> I don't understand what we would gain by an alias.
+> For me it looks like an alias would just be confusing and never be used...
+>
+> Or why would anyone want to make additional calls to=20
+> trace[_drv]_wake_tx_queue() on top what we have in the patch?
+>
+> I initially also considered to simply keep trace_drv_wake_tx_queue().=20
+> (But that looked to be misleading.) If there is some reason to keep the=20
+> old name I would just switch back to trace_drv_wake_tx_queue().
 
-> The general plan so far is, to move everything to iTXQ first and then=20
-> see what we an throw out. I'll prepare a patch cleaning up that a bit=20
-> more. Don't think that will be much at this stage, so maybe I just add=
-=20
-> that into the v2 of the patch...
+Well, the tracepoint is something that is read from userspace by
+programs that want to trace the stack. The current one lives in
+/sys/kernel/tracing/events/mac80211/drv_wake_tx_queue/
 
-No, separate patches are fine - was more wondering if you were planning
-to do it, or if I should think about finding someone else ;-)
+So if you rename it, any debug/tracing tooling that uses this will have
+to be updated to use the new name. Which is not an ABI problem per se
+(we exempt tracepoints from that), but it's also annoying if anyone *is*
+actually using that tracepoint, so no reason to break things unless
+there's really a compelling reason to...
 
-> I'm basically working with the plan you outlined some years ago:
-> https://lore.kernel.org/linux-wireless/1507217947.2387.60.camel@sipsoluti=
-ons.net/
+I also thought the tracing subsystem had an alias mechanism built-in to
+handle this sort of thing, but I think I may be misremembering this part.
 
-:)
-I can't even remember it that much, to be honest.
+> But when we are discussing that code anyhow, there is another related iss=
+ue:
+> I was not sure if it's ok to keep the renamed wake_tx_queue trace call=20
+> in the old position. (In the section otherwise only having driver=20
+> calls.) Having a better structured file did seem more desirable than a=20
+> shorter patch, so I moved it.
 
-> It just turned out to be simpler to start with unifying the TX paths.
+I think I would lean towards just keeping it in the old position with
+the old name for the reasons outlined above... This is not an incredibly
+strong opinion, though, so if anyone has stronger opinions in the other
+direction I can probably be convinced ;)
 
-Makes sense.
-
-Thanks!
-
-johannes
+-Toke
