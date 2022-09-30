@@ -2,71 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD265F0628
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 10:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5361D5F0730
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 11:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbiI3ICp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 04:02:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53466 "EHLO
+        id S230324AbiI3JIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 05:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbiI3ICo (ORCPT
+        with ESMTP id S230174AbiI3JIc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 04:02:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B75C4129FC8
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 01:02:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 536C962249
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 08:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAB0C433C1;
-        Fri, 30 Sep 2022 08:02:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664524962;
-        bh=UgG3/p2NNMnEKKo92pDY7qeNTKKfrDousFyPMw+I7i4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dhZZDpIRlDftvZUqJJOm1D33yli985LwzXwoX5GwvdJEe5+wiqyI793mdAkaTUyxF
-         AREIo94ETFWMnJ7SnDPeKM9JTCao8t5QU6LgSwUhI9fKamKN9CcFhzwuTW47+8e8/I
-         R6DvuPubNjwlZ9LquX+tQ2EgJRsmTSrk7+7cooGMAVtk8wcERmpeeFPYgtHJgpBMKY
-         A7wYlZ3vjpj0h5hqi+rnNbdxGn29GKJCGwpwTsWilyk9jH+iSrxd503YzoelM1cvKP
-         J3s45nuR+Eyv0ME0DCYcg8nN8PUPwCK0jsjDg4kYTUXRy4Wu6/f1jsxGIwfRoDtmuM
-         Mh+eRXtjIa+sw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Mariano Vedovato <marianovedovato@hotmail.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: rtw_8723de Realtek driver issue in Debian 11.5 Bullseye Kernel version 5.10.0-18-amd64
-References: <SN4PR22MB3271BACF8FD2F57BEDDACC4EAC549@SN4PR22MB3271.namprd22.prod.outlook.com>
-        <SN4PR22MB32711526F087B9898CED953DAC549@SN4PR22MB3271.namprd22.prod.outlook.com>
-Date:   Fri, 30 Sep 2022 11:02:39 +0300
-In-Reply-To: <SN4PR22MB32711526F087B9898CED953DAC549@SN4PR22MB3271.namprd22.prod.outlook.com>
-        (Mariano Vedovato's message of "Wed, 28 Sep 2022 13:46:24 +0000")
-Message-ID: <87y1u15ly8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 30 Sep 2022 05:08:32 -0400
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D1E9AB7EF
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 02:08:30 -0700 (PDT)
+Message-ID: <79161904-1e56-3046-b381-705e4af11e84@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1664528909;
+        bh=kpQyWe+m1Vw6hDhWHmGqMasYzPTI1KJFR+0mA6QKfA0=;
+        h=Date:Subject:To:References:From:In-Reply-To;
+        b=Pr4rlxKSTU2Pk4NnU0jX7X+iNg/Z6fkjqapw0DsYRaw6RVHjC8jxHPVXw96b1pzyB
+         oBP9gL1h/JcHlRBO1+SaH+jUbDlHmxIYlCdr/AskzCGBtDTb7RbxBVMAgmTqWYniTy
+         9noeuglT4Ed2BkdHiAPaxeDpZ0ahyGimZnMsJa2s=
+Date:   Fri, 30 Sep 2022 11:08:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH] wifi: mac80211: Use internal TX queues for all drivers
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20220926161303.13035-1-alexander@wetzel-home.de>
+ <da810136f6cf0608167cc8297ce73d11b83974d6.camel@sipsolutions.net>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <da810136f6cf0608167cc8297ce73d11b83974d6.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Mariano Vedovato <marianovedovato@hotmail.com> writes:
+On 29.09.22 22:40, Johannes Berg wrote:
+> Thanks for doing this!
+> 
+> It's a bit bad timing right now, so I'll only have a chance to look at
+> this in the next couple of weeks, but that also doesn't matter that much
+> since 6.0 release is imminent (will likely be Sunday).
+> 
 
-> BTW, I tried to install Ubuntu 22.04 with Kernel 5.16.xx and the WiFi
-> works fine, but I'm a Debian user since Debian 5 and I don't think to
-> leave it and I have no money to buy another Laptop for the moment!
+Thanks for the warning. I'll then send a v2 to correct skb_get_hash() 
+handling in the next days.
 
-Do you know Debian backports have packaged more recent kernels which are
-relatively easy to install, Debian 11 (bullseye) backports seems to have
-v5.18 right now. More info here:
+> Just wanted to comment on this one thing for now:
+> 
+> On Mon, 2022-09-26 at 18:13 +0200, Alexander Wetzel wrote:
+>> A short look at the in-tree drivers seems to confirm, that mac80211
+>> drivers are indeed not directly calling netif_stop_queue(). Which is no
+>> longer undesired but outright wrong after this patch.
+>> So I *think* we should be fine on that front, too.
+>>
+> 
+> They really couldn't, they don't have (easy) access to the netdev. There
+> are ways of getting to the netdev, but they're (intentionally) difficult
+> and doing that would've been wrong even previously since mac80211 has
+> its own reasons for stopping netdev queues sometimes.
+> 
+> So unless a driver is already broken, this can't be an issue.
+> 
+>> I did not try very hard to identify now obsolete code fragments and
+>> kept this as simple as possible.
+> 
+> That's nice enough for now, do you want to do follow-ups to clean up
+> more?
+> 
 
-https://backports.debian.org/
+The general plan so far is, to move everything to iTXQ first and then 
+see what we an throw out. I'll prepare a patch cleaning up that a bit 
+more. Don't think that will be much at this stage, so maybe I just add 
+that into the v2 of the patch...
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I'm basically working with the plan you outlined some years ago:
+https://lore.kernel.org/linux-wireless/1507217947.2387.60.camel@sipsolutions.net/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+It just turned out to be simpler to start with unifying the TX paths.
+
+>> I've also have a rough draft to move PS (multicast and unicast) to iTXQ
+>> we should look at later. That seems to be way more invasive than what we
+>> do here. But once PS also has been sorted out moving everything to iTXQ
+>> should be straight forward.
+> 
+> Ohhh! I'm excited about this :-)
+>  > johannes
+
+Alexander
