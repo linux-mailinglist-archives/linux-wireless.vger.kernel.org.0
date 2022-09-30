@@ -2,93 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A6E5F1189
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 20:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 166115F1681
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Oct 2022 01:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231237AbiI3SXN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 14:23:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45200 "EHLO
+        id S231180AbiI3XHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 19:07:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232029AbiI3SW6 (ORCPT
+        with ESMTP id S231157AbiI3XHm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 14:22:58 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB2A124763
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 11:22:56 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id j188so5587249oih.0
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 11:22:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date;
-        bh=MjqoKoFaBPfKtmocAOdmMAAFO/9NLmUcIQd15GCGGHY=;
-        b=U+ctUpyOKcGOXiBrNpALIXCF06eAzB+TCMJNUEkdOg6XGeLcD6o9qrj8Tdg3OZ5Ep+
-         FvUvRmk1sv6kDmgc951AB/tKyM7UWppFRh/L9dM6sIhmhlj7TLWekQXRDPvjKk6+ohhp
-         ECYQ/+V7la57GeBeoUeJstqZUYig5w4Q21TmCYgqvX7VUx+CQn0F6iJEd1NDWYBVUY7G
-         KUgv+EMH3eXdmTL94sYWQn4pAOr9i3CfUwzpwsMa5cwB72CMkVppb8R7QEdeOYLmzzni
-         o6MwX1+PA+2A370rbJxBOOTmvd9JLoMwBZBLmOvwLWoBu1CM2XjKhzNsSfdMJqo/9Kgg
-         wm6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date;
-        bh=MjqoKoFaBPfKtmocAOdmMAAFO/9NLmUcIQd15GCGGHY=;
-        b=IlY0w2RAIM/9X7an4nReBMJfeSp0S87bqi8BatEUbyKiFqrbP7mTOlyfOTfBE7t+6X
-         o2aAw9KYB7bwd6AHg8OLSaYYdyJwVUu4G/qBfqjC2GAZEvbCy+nLXo6YtNjJ5BxraNWD
-         ECJ598EtsMoqPckro8yY6iptGqJbNejnsxmrMuunChjZSxgn2D8fJzupM1uB1JGND4F2
-         0OdZm+gECyyjPo5JMMkCQRpWChsNuoPvwNzYSyiqRyzyOXMmPBvBRonqifKbqgwr7/NN
-         w0dI8mBFABz5F0sAS7xXjZB7PjTCOIpV8q9z6F+OeQuR7+F5UdXCxhmFeEXA7X7K6RL+
-         nOdQ==
-X-Gm-Message-State: ACrzQf1nWRj3H9DBnWetmK+9J+YRHZ1rSoIfELnkbRJoM2etEDRZu6uT
-        o/oGJjhjSvPzOI5Cmd+0Zs1mNqyXbO8=
-X-Google-Smtp-Source: AMsMyM6ENwPl1NK4gTa2yclAIS+77m1ZMAGGwIP3g3S41GkYLyEkEIlMiupostf20F9PFVFaP4MKvw==
-X-Received: by 2002:a05:6808:20a5:b0:34f:63a5:a63b with SMTP id s37-20020a05680820a500b0034f63a5a63bmr4379382oiw.236.1664562175752;
-        Fri, 30 Sep 2022 11:22:55 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id l8-20020a9d7348000000b006393ea22c1csm711259otk.16.2022.09.30.11.22.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Sep 2022 11:22:55 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <bcb91ab3-2f78-d212-f0d0-a76c3d9559e0@lwfinger.net>
-Date:   Fri, 30 Sep 2022 13:22:54 -0500
+        Fri, 30 Sep 2022 19:07:42 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CDF1DBED7
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 16:07:35 -0700 (PDT)
+X-UUID: 4eb112a45cd3418dbf1ccf8bf2e10468-20221001
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ESuS85YGKs22BGzs7UY91ezzOpwdIemOOw147QVtRUg=;
+        b=u4YwqBNFeBuDd9hBu4QYHhnt5gtXds5t+hPp0QU+hd4zPb/sD+E65KgvaW4OY3xl2tlfh089cZxBJArazxXHwxRG63SPbU694FukDDgf8u7ZMU0FFEFMGN0b2lDa9VzqeqmXFmQXs5VrV9BzTqIOQmLl0h7wZfQhNCt37ob2S8Y=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.11,REQID:cfd191b4-f6b5-4aca-b6bc-944366291880,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.11,REQID:cfd191b4-f6b5-4aca-b6bc-944366291880,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:39a5ff1,CLOUDID:db7a9e07-1cee-4c38-b21b-a45f9682fdc0,B
+        ulkID:221001070731YDZ7HB0W,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48|823|
+        824,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,
+        COL:0
+X-UUID: 4eb112a45cd3418dbf1ccf8bf2e10468-20221001
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 553854698; Sat, 01 Oct 2022 07:07:29 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Sat, 1 Oct 2022 07:07:28 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Sat, 1 Oct 2022 07:07:28 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: fix mt7915_mac_set_timing()
+Date:   Sat, 1 Oct 2022 07:07:26 +0800
+Message-ID: <745d9c4b5c4b7395395025a8dcb5ce68cf360383.1664578145.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: wifi driver
-Content-Language: en-US
-To:     =?UTF-8?Q?Oliv=c3=a9r_Koncs=c3=a1r?= <kolynetg@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <5D8A56A3-4169-4FA6-8E54-85F6F018A378@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <5D8A56A3-4169-4FA6-8E54-85F6F018A378@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_CSS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/30/22 10:54, Olivér Koncsár wrote:
-> hi
-> 
-> can you please help me with getting wifi work on rtl. i have lenovo legion 5 notebook.
-> bit urgent i would highly appreciate.
-> i tried to wget the rtl89 but it timed out.
-> thanks!
+Correct mac timiing settings for different hardware generations.
+This improves 40-60Mbps performance.
 
-You need to do a 'git clone https://github.com/lwfinger/rtw89.git', the 'cd 
-rtw89', 'make' and 'sudo make install'. You will probably need to install git 
-and the kernel headers from your distro. Once you have cloned the repo, file 
-README.md will give instructions on how to install the headers for a number of 
-distros.
+Fixes: 9aac2969fe5f ("mt76: mt7915: update mac timing settings")
+Reported-By: Carson Vandegriffe <carson.vandegriffe@candelatech.com>
+Tested-by: Chad Monroe <chad.monroe@smartrg.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-Larry
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index be97dede2634..09f0fab7c958 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1149,7 +1149,7 @@ void mt7915_mac_set_timing(struct mt7915_phy *phy)
+ 		  FIELD_PREP(MT_TIMEOUT_VAL_CCA, 48);
+ 	u32 ofdm = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 60) |
+ 		   FIELD_PREP(MT_TIMEOUT_VAL_CCA, 28);
+-	int offset;
++	int eifs_ofdm = 360, sifs = 10, offset;
+ 	bool a_band = !(phy->mt76->chandef.chan->band == NL80211_BAND_2GHZ);
+ 
+ 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
+@@ -1167,6 +1167,18 @@ void mt7915_mac_set_timing(struct mt7915_phy *phy)
+ 	reg_offset = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, offset) |
+ 		     FIELD_PREP(MT_TIMEOUT_VAL_CCA, offset);
+ 
++	if (!is_mt7915(&dev->mt76)) {
++		if (!a_band) {
++			mt76_wr(dev, MT_TMAC_ICR1(phy->band_idx),
++				FIELD_PREP(MT_IFS_EIFS_CCK, 314));
++			eifs_ofdm = 78;
++		} else {
++			eifs_ofdm = 84;
++		}
++	} else if (a_band) {
++		sifs = 16;
++	}
++
+ 	mt76_wr(dev, MT_TMAC_CDTR(phy->band_idx), cck + reg_offset);
+ 	mt76_wr(dev, MT_TMAC_ODTR(phy->band_idx), ofdm + reg_offset);
+ 	mt76_wr(dev, MT_TMAC_ICR0(phy->band_idx),
+@@ -1175,9 +1187,6 @@ void mt7915_mac_set_timing(struct mt7915_phy *phy)
+ 		FIELD_PREP(MT_IFS_SIFS, 10) |
+ 		FIELD_PREP(MT_IFS_SLOT, phy->slottime));
+ 
+-	mt76_wr(dev, MT_TMAC_ICR1(phy->band_idx),
+-		FIELD_PREP(MT_IFS_EIFS_CCK, 314));
+-
+ 	if (phy->slottime < 20 || a_band)
+ 		val = MT7915_CFEND_RATE_DEFAULT;
+ 	else
+-- 
+2.36.1
 
