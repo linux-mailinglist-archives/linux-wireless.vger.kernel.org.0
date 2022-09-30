@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97EC25F0E80
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 17:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4903D5F0E82
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 17:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231623AbiI3PNq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 11:13:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48230 "EHLO
+        id S231663AbiI3PNs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 11:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231806AbiI3PNj (ORCPT
+        with ESMTP id S231546AbiI3PNp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 11:13:39 -0400
+        Fri, 30 Sep 2022 11:13:45 -0400
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE7B12C69F
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 08:13:37 -0700 (PDT)
-X-UUID: 463705ebde654d1ba54063f16fb7978c-20220930
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2693B129356
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 08:13:44 -0700 (PDT)
+X-UUID: 2addc4eb659f4874be23fc6ee39fb294-20220930
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Fir2BhM41H223iYDuYp4wdkC6rgz1IKz8jiDYFGDqjw=;
-        b=isCfbG/fGbKG2TK7Yzrz7urysIPzyulz1NVMU4Dijg3aBVr9llb8J/eJtGeou0W9xiyMuEaKAAJO6ySyIq7BM8hMuWUy4phYHubG3kBvPZia92A9VxTYgxTmM/N2yVveGOaJ+8kQiXnZ+K7JKMNBVXb3lcEoG1oJX0L650uO6bw=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=OE6tyZuG+MZ1q2ynrqmy+T0hfNIK+mVvOkg5kk2qsRY=;
+        b=o9yJUMRkm2kbo8SwyTuEzASrBw3+fL/7loE3paIqzubWJo1Y0XRllnMI1LW7TKvzkIJOhTT10TzKy05vFEA7d656ujKJEPnh2ohzJ1rvOEcvPS/f6ogvEQre4n9341bjpwd6HSN7UEReQoaaE7VyzrQNzH1xZf5I3fEcFFSZBg4=;
 X-CID-UNFAMILIAR: 1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.11,REQID:e3f130b6-3619-405e-86c0-3d417a9b4d7e,IP:0,U
+X-CID-O-INFO: VERSION:1.1.11,REQID:7ea0c18a-977f-4d18-90ca-1a0173e650a6,IP:0,U
         RL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
         N:release,TS:100
-X-CID-INFO: VERSION:1.1.11,REQID:e3f130b6-3619-405e-86c0-3d417a9b4d7e,IP:0,URL
+X-CID-INFO: VERSION:1.1.11,REQID:7ea0c18a-977f-4d18-90ca-1a0173e650a6,IP:0,URL
         :0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
         N:quarantine,TS:100
-X-CID-META: VersionHash:39a5ff1,CLOUDID:5fc29807-1cee-4c38-b21b-a45f9682fdc0,B
-        ulkID:220930231334FJWYHKBX,BulkQuantity:0,Recheck:0,SF:28|16|19|48|823|824
-        ,TC:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,
-        COL:0
-X-UUID: 463705ebde654d1ba54063f16fb7978c-20220930
+X-CID-META: VersionHash:39a5ff1,CLOUDID:7c4fcde4-87f9-4bb0-97b6-34957dc0fbbe,B
+        ulkID:2209302313402Q2G3WZN,BulkQuantity:0,Recheck:0,SF:28|16|19|48|823|824
+        ,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL
+        :0
+X-UUID: 2addc4eb659f4874be23fc6ee39fb294-20220930
 Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
         (envelope-from <shayne.chen@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1875206049; Fri, 30 Sep 2022 23:13:33 +0800
+        with ESMTP id 620223459; Fri, 30 Sep 2022 23:13:38 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Fri, 30 Sep 2022 23:13:32 +0800
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Fri, 30 Sep 2022 23:13:37 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 30 Sep 2022 23:13:32 +0800
+ 15.2.792.15 via Frontend Transport; Fri, 30 Sep 2022 23:13:37 +0800
 From:   Shayne Chen <shayne.chen@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
 CC:     linux-wireless <linux-wireless@vger.kernel.org>,
@@ -51,11 +51,14 @@ CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         Bo Jiao <Bo.Jiao@mediatek.com>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
         Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 1/6] wifi: mt76: mt7915: rework eeprom tx paths and streams init
-Date:   Fri, 30 Sep 2022 23:13:10 +0800
-Message-ID: <20220930151315.19012-1-shayne.chen@mediatek.com>
+Subject: [PATCH 2/6] wifi: mt76: mt7915: deal with special variant of mt7916
+Date:   Fri, 30 Sep 2022 23:13:11 +0800
+Message-ID: <20220930151315.19012-2-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20220930151315.19012-1-shayne.chen@mediatek.com>
+References: <20220930151315.19012-1-shayne.chen@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -69,118 +72,161 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rework tx paths and streams init part to improve readability, and make
-sure that the available tx streams should be smaller than or equal to
-the available tx paths.
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
+A variant of mt7916 supports up to 3 tx/rx paths but with only
+2 spatial streams. An example usage of the 3rd path is to server as
+an auxiliary for beamforming.
+In order to deal with this case, this patch reworks some parts to
+correctly use paths or streams.
+
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- .../wireless/mediatek/mt76/mt7915/eeprom.c    | 55 +++++++------------
- .../wireless/mediatek/mt76/mt7915/eeprom.h    |  5 --
- 2 files changed, 21 insertions(+), 39 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 37 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  9 +++--
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  2 +-
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 4b1a9811646f..e2482c65d639 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -173,60 +173,47 @@ static void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
- void mt7915_eeprom_parse_hw_cap(struct mt7915_dev *dev,
- 				struct mt7915_phy *phy)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index cc2aac86bcfb..324db5291c85 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -700,13 +700,13 @@ mt7915_init_hardware(struct mt7915_dev *dev, struct mt7915_phy *phy2)
+ 
+ void mt7915_set_stream_vht_txbf_caps(struct mt7915_phy *phy)
  {
--	u8 nss, nss_band, nss_band_max, *eeprom = dev->mt76.eeprom.data;
-+	u8 path, nss, nss_max = 4, *eeprom = dev->mt76.eeprom.data;
- 	struct mt76_phy *mphy = phy->mt76;
--	bool ext_phy = phy != &dev->phy;
+-	int nss;
++	int sts;
+ 	u32 *cap;
  
- 	mt7915_eeprom_parse_band_config(phy);
+ 	if (!phy->mt76->cap.has_5ghz)
+ 		return;
  
--	/* read tx/rx mask from eeprom */
-+	/* read tx/rx path from eeprom */
- 	if (is_mt7915(&dev->mt76)) {
--		nss = FIELD_GET(MT_EE_WIFI_CONF0_TX_PATH,
--				eeprom[MT_EE_WIFI_CONF]);
-+		path = FIELD_GET(MT_EE_WIFI_CONF0_TX_PATH,
-+				 eeprom[MT_EE_WIFI_CONF]);
- 	} else {
--		nss = FIELD_GET(MT_EE_WIFI_CONF0_TX_PATH,
--				eeprom[MT_EE_WIFI_CONF + phy->band_idx]);
-+		path = FIELD_GET(MT_EE_WIFI_CONF0_TX_PATH,
-+				 eeprom[MT_EE_WIFI_CONF + phy->band_idx]);
- 	}
+-	nss = hweight8(phy->mt76->chainmask);
++	sts = hweight8(phy->mt76->chainmask);
+ 	cap = &phy->mt76->sband_5g.sband.vht_cap.cap;
  
--	if (!nss || nss > 4)
--		nss = 4;
-+	if (!path || path > 4)
-+		path = 4;
+ 	*cap |= IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
+@@ -717,28 +717,27 @@ void mt7915_set_stream_vht_txbf_caps(struct mt7915_phy *phy)
+ 		  IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE |
+ 		  IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE);
  
- 	/* read tx/rx stream */
--	nss_band = nss;
--
-+	nss = path;
- 	if (dev->dbdc_support) {
- 		if (is_mt7915(&dev->mt76)) {
--			nss_band = FIELD_GET(MT_EE_WIFI_CONF3_TX_PATH_B0,
--					     eeprom[MT_EE_WIFI_CONF + 3]);
-+			nss = FIELD_GET(MT_EE_WIFI_CONF3_TX_PATH_B0,
-+					eeprom[MT_EE_WIFI_CONF + 3]);
- 			if (phy->band_idx)
--				nss_band = FIELD_GET(MT_EE_WIFI_CONF3_TX_PATH_B1,
--						     eeprom[MT_EE_WIFI_CONF + 3]);
-+				nss = FIELD_GET(MT_EE_WIFI_CONF3_TX_PATH_B1,
-+						eeprom[MT_EE_WIFI_CONF + 3]);
- 		} else {
--			nss_band = FIELD_GET(MT_EE_WIFI_CONF_STREAM_NUM,
--					     eeprom[MT_EE_WIFI_CONF + 2 + phy->band_idx]);
-+			nss = FIELD_GET(MT_EE_WIFI_CONF_STREAM_NUM,
-+					eeprom[MT_EE_WIFI_CONF + 2 + phy->band_idx]);
- 		}
+-	if (nss < 2)
++	if (sts < 2)
+ 		return;
  
--		nss_band_max = is_mt7986(&dev->mt76) ?
--			       MT_EE_NSS_MAX_DBDC_MA7986 : MT_EE_NSS_MAX_DBDC_MA7915;
--	} else {
--		nss_band_max = is_mt7986(&dev->mt76) ?
--			       MT_EE_NSS_MAX_MA7986 : MT_EE_NSS_MAX_MA7915;
-+		if (!is_mt7986(&dev->mt76))
-+			nss_max = 2;
- 	}
- 
--	if (!nss_band || nss_band > nss_band_max)
--		nss_band = nss_band_max;
--
--	if (nss_band > nss) {
--		dev_warn(dev->mt76.dev,
--			 "nss mismatch, nss(%d) nss_band(%d) band(%d) ext_phy(%d)\n",
--			 nss, nss_band, phy->band_idx, ext_phy);
--		nss = nss_band;
--	}
-+	nss = min_t(u8, min_t(u8, nss_max, nss), path);
- 
--	mphy->chainmask = BIT(nss) - 1;
--	if (ext_phy)
-+	mphy->chainmask = BIT(path) - 1;
-+	if (phy->band_idx)
- 		mphy->chainmask <<= dev->chainshift;
--	mphy->antenna_mask = BIT(nss_band) - 1;
-+	mphy->antenna_mask = BIT(nss) - 1;
- 	dev->chainmask |= mphy->chainmask;
- 	dev->chainshift = hweight8(dev->mphy.chainmask);
+ 	*cap |= IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE |
+ 		IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE |
+ 		FIELD_PREP(IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_MASK,
+-			   nss - 1);
++			   sts - 1);
  }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 7578ac6d0be6..f3e56817d36e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -58,11 +58,6 @@ enum mt7915_eeprom_field {
- #define MT_EE_RATE_DELTA_SIGN			BIT(6)
- #define MT_EE_RATE_DELTA_EN			BIT(7)
  
--#define MT_EE_NSS_MAX_MA7915			4
--#define MT_EE_NSS_MAX_DBDC_MA7915		2
--#define MT_EE_NSS_MAX_MA7986			4
--#define MT_EE_NSS_MAX_DBDC_MA7986		4
+ static void
+-mt7915_set_stream_he_txbf_caps(struct mt7915_dev *dev,
+-			       struct ieee80211_sta_he_cap *he_cap,
+-			       int vif, int nss)
++mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
++			       struct ieee80211_sta_he_cap *he_cap, int vif)
+ {
++	struct mt7915_dev *dev = phy->dev;
+ 	struct ieee80211_he_cap_elem *elem = &he_cap->he_cap_elem;
+-	u8 c, nss_160;
++	int sts = hweight8(phy->mt76->chainmask);
++	u8 c, sts_160 = sts;
+ 
+-	/* Can do 1/2 of NSS streams in 160Mhz mode for mt7915 */
++	/* Can do 1/2 of STS in 160Mhz mode for mt7915 */
+ 	if (is_mt7915(&dev->mt76) && !dev->dbdc_support)
+-		nss_160 = nss / 2;
+-	else
+-		nss_160 = nss;
++		sts_160 /= 2;
+ 
+ #ifdef CONFIG_MAC80211_MESH
+ 	if (vif == NL80211_IFTYPE_MESH_POINT)
+@@ -778,11 +777,11 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_dev *dev,
+ 
+ 	elem->phy_cap_info[6] |= c;
+ 
+-	if (nss < 2)
++	if (sts < 2)
+ 		return;
+ 
+ 	/* the maximum cap is 4 x 3, (Nr, Nc) = (3, 2) */
+-	elem->phy_cap_info[7] |= min_t(int, nss - 1, 2) << 3;
++	elem->phy_cap_info[7] |= min_t(int, sts - 1, 2) << 3;
+ 
+ 	if (vif != NL80211_IFTYPE_AP)
+ 		return;
+@@ -791,12 +790,12 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_dev *dev,
+ 	elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
+ 
+ 	/* num_snd_dim
+-	 * for mt7915, max supported nss is 2 for bw > 80MHz
++	 * for mt7915, max supported sts is 2 for bw > 80MHz
+ 	 */
+ 	c = FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK,
+-		       nss - 1) |
++		       sts - 1) |
+ 	    FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK,
+-		       nss_160 - 1);
++		       sts_160 - 1);
+ 	elem->phy_cap_info[5] |= c;
+ 
+ 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB |
+@@ -836,7 +835,7 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 		    struct ieee80211_sband_iftype_data *data)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+-	int i, idx = 0, nss = hweight8(phy->mt76->chainmask);
++	int i, idx = 0, nss = hweight8(phy->mt76->antenna_mask);
+ 	u16 mcs_map = 0;
+ 	u16 mcs_map_160 = 0;
+ 	u8 nss_160;
+@@ -969,7 +968,7 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 		he_mcs->rx_mcs_80p80 = cpu_to_le16(mcs_map_160);
+ 		he_mcs->tx_mcs_80p80 = cpu_to_le16(mcs_map_160);
+ 
+-		mt7915_set_stream_he_txbf_caps(dev, he_cap, i, nss);
++		mt7915_set_stream_he_txbf_caps(phy, he_cap, i);
+ 
+ 		memset(he_cap->ppe_thres, 0, sizeof(he_cap->ppe_thres));
+ 		if (he_cap_elem->phy_cap_info[6] &
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 89b519cfd14c..8379fbbeaaea 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -965,10 +965,11 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 
+ 	phy->mt76->antenna_mask = tx_ant;
+ 
+-	if (ext_phy)
+-		tx_ant <<= dev->chainshift;
 -
- enum mt7915_adie_sku {
- 	MT7976_ONE_ADIE_DBDC = 0x7,
- 	MT7975_ONE_ADIE	= 0x8,
+-	phy->mt76->chainmask = tx_ant;
++	/* handle a variant of mt7916 which has 3T3R but nss2 on 5 GHz band */
++	if (is_mt7916(&dev->mt76) && ext_phy && hweight8(tx_ant) == max_nss)
++		phy->mt76->chainmask = dev->chainmask >> dev->chainshift;
++	else
++		phy->mt76->chainmask = tx_ant << (dev->chainshift * ext_phy);
+ 
+ 	mt76_set_stream_caps(phy->mt76, true);
+ 	mt7915_set_stream_vht_txbf_caps(phy);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 1b9f3da8ae96..6417fe685f17 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -485,7 +485,7 @@ static void
+ mt7915_mcu_bss_ra_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 		      struct mt7915_phy *phy)
+ {
+-	int max_nss = hweight8(phy->mt76->chainmask);
++	int max_nss = hweight8(phy->mt76->antenna_mask);
+ 	struct bss_info_ra *ra;
+ 	struct tlv *tlv;
+ 
 -- 
 2.25.1
 
