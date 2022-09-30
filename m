@@ -2,79 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B96C5F0F57
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 17:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B639D5F10DF
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 19:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231792AbiI3PzC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 11:55:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48722 "EHLO
+        id S232334AbiI3Rax (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 13:30:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231777AbiI3Pyx (ORCPT
+        with ESMTP id S232099AbiI3Ram (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 11:54:53 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4322C1C2F8A
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 08:54:31 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id 13so9948276ejn.3
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 08:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:message-id:subject:date:mime-version:from
-         :content-transfer-encoding:from:to:cc:subject:date;
-        bh=drhE+K5W/TgEiD2BFiYQG+xsgGayw+tyHkiwhS9lW4U=;
-        b=XVgpy8fqmFaGFjeea1DKsblTI9SjD/TuvBKaoLpQlfJDuA1VfcrpNqFVtRXDy9Ixln
-         e721fye5oKGfdpelzz3EyT0/x3QITa6+EGhew6tKB0JOO8kMZcVX+Q5vw+EvTgLE8TpN
-         cPfaE4QxTX5LP1WXXBR65SYCrNKYOykP0UlTpGF1Xg2DqvhKzHlfDLIIwai+Ut9ikh65
-         l3omx/bXpOmTaCXjbn/LGC1E9GkYqPVvehtPuqwOKT6TSRcALsbT4zsMy1QpEoMyv6jX
-         M2RIaEoggwIuws6gbzRuJWy31VO/SHZNfHinGu2tsa8WamWrDatlcr4YJQ+8j/UMLMfz
-         WLlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:message-id:subject:date:mime-version:from
-         :content-transfer-encoding:x-gm-message-state:from:to:cc:subject
-         :date;
-        bh=drhE+K5W/TgEiD2BFiYQG+xsgGayw+tyHkiwhS9lW4U=;
-        b=vVM2ZLViGOwf44EdVXndbGv29jbgLnXO/oM+WBh2ZGsmgpB7+K8F82OaiWnr0Ega8y
-         IL12Oce2DLG3rXFPbGZUSI3oAa1AYLlMte91VNSY5RXG0YRDeutdfc4vPS+0l2vFDfkK
-         0db2ejUb2GE0+pXoEzRNzmluP7gJEuffoaAKhafjsO8rI/NMt5ZRpo1R9r5q8VyCYeRK
-         xSPZUrodBwKW+gpIV1cRfIXCHTZyiFDJqUeNzv37P4obyDXulGNwulTGCC0TmRPxUBTM
-         3O96LKCj+7MN7UPQlWKILsw5SOQFhxIACC/54n6ZzcSD9oiHEVVyxro6dEQK5TFJJm61
-         jUGw==
-X-Gm-Message-State: ACrzQf3RyimdicT9M/BgsDlmLyMtHCPu7vf25jAIItO3Bky/s0xj7gFP
-        MbkQLRD4KH4+Dsv3RABbV/APqvR1V5FlDg==
-X-Google-Smtp-Source: AMsMyM7oqBDqLysPpqSikm76BK4eFs0FapeoHJdz0LcFqK+TNgDSm7YyPItIOWtMvThCa0fN5HJ5Sg==
-X-Received: by 2002:a17:907:1623:b0:787:d4d5:cc61 with SMTP id hb35-20020a170907162300b00787d4d5cc61mr5877275ejc.626.1664553269070;
-        Fri, 30 Sep 2022 08:54:29 -0700 (PDT)
-Received: from smtpclient.apple ([2a02:aa12:e142:6b00:808f:cb60:b4f1:e108])
-        by smtp.gmail.com with ESMTPSA id l9-20020a1709063d2900b0076f0ab594e9sm1384195ejf.73.2022.09.30.08.54.27
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Sep 2022 08:54:28 -0700 (PDT)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From:   =?utf-8?Q?Oliv=C3=A9r_Koncs=C3=A1r?= <kolynetg@gmail.com>
-Mime-Version: 1.0 (1.0)
-Date:   Fri, 30 Sep 2022 17:54:27 +0200
-Subject: wifi driver
-Message-Id: <5D8A56A3-4169-4FA6-8E54-85F6F018A378@gmail.com>
-To:     linux-wireless@vger.kernel.org
-X-Mailer: iPhone Mail (19D52)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Fri, 30 Sep 2022 13:30:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34A1DF067;
+        Fri, 30 Sep 2022 10:30:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97B90623E3;
+        Fri, 30 Sep 2022 17:30:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 02448C433C1;
+        Fri, 30 Sep 2022 17:30:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664559040;
+        bh=YI3fTE+YUPEZHz4M4pjQG4oQDEu6FbpcbEokxBvp8gM=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=lj+eHhVjqNZfwnPo3FNUS8ruoYiJwPyYcKKWAe8GLt91PEeW4MGuOq1h3SrL/snNe
+         un/kIjuVep+g73vahQE9NgoSNvff8eq82N8QEpFn3SpHkUyFQKLpjPqgd4WSi7yOEL
+         VxwN222vJD+06XNn3SEhTjL/bUBuNyh36kIa0DGtAG4VzHj4kj2fQ47vofdVOyCbfT
+         8ztHp/71taNHd4R+Tk7/v1jHk9CsRJ0yFYGua+SwthdXaGqyML8M7ghbq5+O5QxaH7
+         5/qBHOkHliwhqnktNoGEODmCovWXoN2YJVazt1gwnVY2ZwMfCNXQwPNLSBnW8+FWb6
+         eXwO6wrTWh6fA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D2A84E524CC;
+        Fri, 30 Sep 2022 17:30:39 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2022-09-30
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <166455903985.10719.15682843428383635942.git-patchwork-notify@kernel.org>
+Date:   Fri, 30 Sep 2022 17:30:39 +0000
+References: <20220930150413.A7984C433D6@smtp.kernel.org>
+In-Reply-To: <20220930150413.A7984C433D6@smtp.kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-hi
+Hello:
 
-can you please help me with getting wifi work on rtl. i have lenovo legion 5=
- notebook.
-bit urgent i would highly appreciate.=20
-i tried to wget the rtl89 but it timed out.
-thanks!=20
+This pull request was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Oliver=
+On Fri, 30 Sep 2022 15:04:13 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-next-2022-09-30
+    https://git.kernel.org/netdev/net-next/c/915b96c52763
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
