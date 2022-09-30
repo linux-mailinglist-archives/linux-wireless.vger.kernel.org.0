@@ -2,158 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE175F0CAA
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 15:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65ADB5F0D35
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 16:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbiI3Npu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 09:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59822 "EHLO
+        id S231793AbiI3OPT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 10:15:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231533AbiI3Npm (ORCPT
+        with ESMTP id S231776AbiI3OPR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 09:45:42 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DAE263AB09
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 06:45:24 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28UDiWMF1006177, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28UDiWMF1006177
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 30 Sep 2022 21:44:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 30 Sep 2022 21:44:58 +0800
-Received: from localhost (172.16.20.103) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 30 Sep
- 2022 21:44:58 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: add to dump TX FIFO 0/1 for 8852C
-Date:   Fri, 30 Sep 2022 21:44:17 +0800
-Message-ID: <20220930134417.10282-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220930134417.10282-1-pkshih@realtek.com>
-References: <20220930134417.10282-1-pkshih@realtek.com>
+        Fri, 30 Sep 2022 10:15:17 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B89C3AD997
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 07:15:08 -0700 (PDT)
+X-UUID: 6b2f15dd03e4428a976a5f3cdcdd5790-20220930
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=N0vI1OqZfdfsJZl6IwWDIAz3rwTaNgNrLU6ZaDRJutQ=;
+        b=q7uOL9vQCzFY3YaVJtGViPsRo74z0VW2KFaxL5aop9Ls+Mc5OE1TiYxJLV/S1bP6a/fr7hLvHdgqUikQv+DH0wiM6LtYF2Y41xI52Ca1iwwTvP3AnYlRbhc3YaM831+bXalQ7CcjmIARWIjFyOOYvBSM8c9uUCGBYAYqiTXd6ec=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.11,REQID:dfee1097-d4e8-465f-bee5-2bc405feacf0,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:39a5ff1,CLOUDID:3f6bcce4-87f9-4bb0-97b6-34957dc0fbbe,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 6b2f15dd03e4428a976a5f3cdcdd5790-20220930
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1873167069; Fri, 30 Sep 2022 22:15:03 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Fri, 30 Sep 2022 22:15:02 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Fri, 30 Sep 2022 22:15:02 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: reserve 8 bits for the index of rf registers
+Date:   Fri, 30 Sep 2022 22:14:41 +0800
+Message-ID: <20220930141441.16314-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.20.103]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/30/2022 13:31:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMzAgpFekyCAxMToxNDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_CSS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MAC maintains TX FIFO to transmit packets with meta data to BB layer. To
-debug abnormal transmission, we need to dump the content to dig problem.
-Since FIFO of 8852C locates on different address with different size and
-need additional switch to enable read operation, this patch adds the
-changes accordingly.
+From: Evelyn Tsai <evelyn.tsai@mediatek.com>
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+The value of regidx of rf registers is combined with WF selection and
+offset. Extend the WF selection field from 4 to 8 bits since the
+adie index should also be specified.
+
+Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtw89/debug.c | 21 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/mac.c   |  2 ++
- drivers/net/wireless/realtek/rtw89/mac.h   |  4 ++++
- 3 files changed, 27 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 730e83d54257f..89bf4c20d96ce 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -770,13 +770,34 @@ rtw89_debug_priv_mac_mem_dump_get(struct seq_file *m, void *v)
- {
- 	struct rtw89_debugfs_priv *debugfs_priv = m->private;
- 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
-+	bool grant_read = false;
-+
-+	if (debugfs_priv->mac_mem.sel >= RTW89_MAC_MEM_NUM)
-+		return -ENOENT;
-+
-+	if (rtwdev->chip->chip_id == RTL8852C) {
-+		switch (debugfs_priv->mac_mem.sel) {
-+		case RTW89_MAC_MEM_TXD_FIFO_0_V1:
-+		case RTW89_MAC_MEM_TXD_FIFO_1_V1:
-+		case RTW89_MAC_MEM_TXDATA_FIFO_0:
-+		case RTW89_MAC_MEM_TXDATA_FIFO_1:
-+			grant_read = true;
-+			break;
-+		default:
-+			break;
-+		}
-+	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 6ef3431cad64..e1d15394a621 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -963,7 +963,7 @@ mt7915_twt_stats(struct seq_file *s, void *data)
+ }
  
- 	mutex_lock(&rtwdev->mutex);
- 	rtw89_leave_ps_mode(rtwdev);
-+	if (grant_read)
-+		rtw89_write32_set(rtwdev, R_AX_TCR1, B_AX_TCR_FORCE_READ_TXDFIFO);
- 	rtw89_debug_dump_mac_mem(m, rtwdev,
- 				 debugfs_priv->mac_mem.sel,
- 				 debugfs_priv->mac_mem.start,
- 				 debugfs_priv->mac_mem.len);
-+	if (grant_read)
-+		rtw89_write32_clr(rtwdev, R_AX_TCR1, B_AX_TCR_FORCE_READ_TXDFIFO);
- 	mutex_unlock(&rtwdev->mutex);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 0508dfca8edf7..e0bce60db2599 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -31,6 +31,8 @@ const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_NUM] = {
- 	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
- 	[RTW89_MAC_MEM_CPU_LOCAL]	= CPU_LOCAL_BASE_ADDR,
- 	[RTW89_MAC_MEM_BSSID_CAM]	= BSSID_CAM_BASE_ADDR,
-+	[RTW89_MAC_MEM_TXD_FIFO_0_V1]	= TXD_FIFO_0_BASE_ADDR_V1,
-+	[RTW89_MAC_MEM_TXD_FIFO_1_V1]	= TXD_FIFO_1_BASE_ADDR_V1,
- };
- 
- static void rtw89_mac_mem_write(struct rtw89_dev *rtwdev, u32 offset,
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 6f4ada1869a17..a9867ac351da7 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -245,6 +245,8 @@ enum rtw89_mac_dbg_port_sel {
- #define	BCN_IE_CAM1_BASE_ADDR		0x188A0000
- #define	TXD_FIFO_0_BASE_ADDR		0x18856200
- #define	TXD_FIFO_1_BASE_ADDR		0x188A1080
-+#define	TXD_FIFO_0_BASE_ADDR_V1		0x18856400 /* for 8852C */
-+#define	TXD_FIFO_1_BASE_ADDR_V1		0x188A1080 /* for 8852C */
- #define	TXDATA_FIFO_0_BASE_ADDR		0x18856000
- #define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
- #define	CPU_LOCAL_BASE_ADDR		0x18003000
-@@ -271,6 +273,8 @@ enum rtw89_mac_mem_sel {
- 	RTW89_MAC_MEM_TXDATA_FIFO_1,
- 	RTW89_MAC_MEM_CPU_LOCAL,
- 	RTW89_MAC_MEM_BSSID_CAM,
-+	RTW89_MAC_MEM_TXD_FIFO_0_V1,
-+	RTW89_MAC_MEM_TXD_FIFO_1_V1,
- 
- 	/* keep last */
- 	RTW89_MAC_MEM_NUM,
+ /* The index of RF registers use the generic regidx, combined with two parts:
+- * WF selection [31:28] and offset [27:0].
++ * WF selection [31:24] and offset [23:0].
+  */
+ static int
+ mt7915_rf_regval_get(void *data, u64 *val)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 8d297e4aa7d4..1b9f3da8ae96 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3447,8 +3447,8 @@ int mt7915_mcu_rf_regval(struct mt7915_dev *dev, u32 regidx, u32 *val, bool set)
+ 		__le32 ofs;
+ 		__le32 data;
+ 	} __packed req = {
+-		.idx = cpu_to_le32(u32_get_bits(regidx, GENMASK(31, 28))),
+-		.ofs = cpu_to_le32(u32_get_bits(regidx, GENMASK(27, 0))),
++		.idx = cpu_to_le32(u32_get_bits(regidx, GENMASK(31, 24))),
++		.ofs = cpu_to_le32(u32_get_bits(regidx, GENMASK(23, 0))),
+ 		.data = set ? cpu_to_le32(*val) : 0,
+ 	};
+ 	struct sk_buff *skb;
 -- 
 2.25.1
 
