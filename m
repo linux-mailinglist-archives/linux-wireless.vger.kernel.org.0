@@ -2,88 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B795F0AE0
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 13:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B33F5F0C7F
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Sep 2022 15:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbiI3LpV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Sep 2022 07:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53036 "EHLO
+        id S231436AbiI3NeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Sep 2022 09:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231388AbiI3Loq (ORCPT
+        with ESMTP id S230363AbiI3NeX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Sep 2022 07:44:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7F997B0A;
-        Fri, 30 Sep 2022 04:40:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBC1B622F0;
-        Fri, 30 Sep 2022 11:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 545F6C43146;
-        Fri, 30 Sep 2022 11:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664538018;
-        bh=HsvH0qhigQTeALvxiMjsw/7hodkJsvDkmd4/t/Md1So=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=WEq3Mi7F1q2l4m3BKlA+jbpQGE74Pv+uWLMzM/UsDLyOrZWKLfBBzCIDnidhiWYVH
-         r+wTkUsbLI2FSQhq8NPNhLVKHobCI+yMErJFmGPspVAVZ2IJzCA94fF7J12VfGmBJk
-         ZwzgxlT3GwUOykAQw17lbvYwIZAc9ZuGf+nr8IAeJ16xZdbYPIcwuYkltvwYC9Zj0z
-         BwdpL6ZQ9ksPOaS3XKz4dzYOts0LYOpBLocUPs9YdGbaCpDOooO8xAfnOSkDLHgjek
-         xFdbTYsAqGYq+A2rqhc0WHiMeaB9LA9+sAU/V0+lBqVBY5oVTtXAskeUeTINb3mPbz
-         hJCSjp6qhGTUQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3CCE8E49FA9;
-        Fri, 30 Sep 2022 11:40:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Fri, 30 Sep 2022 09:34:23 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 21FEF15FC7A
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Sep 2022 06:34:20 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 28UDXf992027239, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 28UDXf992027239
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 30 Sep 2022 21:33:41 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 30 Sep 2022 21:34:07 +0800
+Received: from localhost (172.16.20.103) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 30 Sep
+ 2022 21:34:06 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 1/2] wifi: rtw89: 8852c: correct set of IQK backup registers
+Date:   Fri, 30 Sep 2022 21:33:17 +0800
+Message-ID: <20220930133318.6335-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net-next: skbuff: refactor pskb_pull
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <166453801824.4225.1578250985659181646.git-patchwork-notify@kernel.org>
-Date:   Fri, 30 Sep 2022 11:40:18 +0000
-References: <20220928125522.GA100793@debian>
-In-Reply-To: <20220928125522.GA100793@debian>
-To:     Richard Gobert <richardbgobert@gmail.com>
-Cc:     davem@davemloft.net, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        johannes@sipsolutions.net, steffen.klassert@secunet.com,
-        herbert@gondor.apana.org.au, imagedong@tencent.com, kafai@fb.com,
-        asml.silence@gmail.com, keescook@chromium.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.20.103]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/30/2022 13:14:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzkvMzAgpFekyCAxMToxNDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+IQK can change the values of this register set, so need to backup and
+restore the values. During we rewrite IQK, the policy is changed. Some
+values are controlled and filled by IQK, and don't need to restore after
+IQK. Therefore, remove this kind of registers from this array.
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Wed, 28 Sep 2022 14:55:31 +0200 you wrote:
-> pskb_may_pull already contains all of the checks performed by
-> pskb_pull.
-> Use pskb_may_pull for validation in pskb_pull, eliminating the
-> duplication and making __pskb_pull obsolete.
-> Replace __pskb_pull with pskb_pull where applicable.
-> 
-> Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - net-next: skbuff: refactor pskb_pull
-    https://git.kernel.org/netdev/net-next/c/d427c8999b07
-
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+index 006c2cf931116..1e67a565a9e0c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+@@ -22,8 +22,7 @@ static const u32 _tssi_de_mcs_5m[RF_PATH_NUM_8852C] = {0x5828, 0x7828};
+ static const u32 _tssi_de_mcs_10m[RF_PATH_NUM_8852C] = {0x5830, 0x7830};
+ 
+ static const u32 rtw8852c_backup_bb_regs[] = {
+-	0x813c, 0x8124, 0x8120, 0xc0d4, 0xc0d8, 0xc0e8, 0x823c, 0x8224, 0x8220,
+-	0xc1d4, 0xc1d8, 0xc1e8
++	0x8120, 0xc0d4, 0xc0d8, 0xc0e8, 0x8220, 0xc1d4, 0xc1d8, 0xc1e8
+ };
+ 
+ static const u32 rtw8852c_backup_rf_regs[] = {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
