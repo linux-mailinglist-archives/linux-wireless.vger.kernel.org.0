@@ -2,104 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1245F2530
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Oct 2022 22:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B9A5F2628
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Oct 2022 00:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbiJBUCk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Oct 2022 16:02:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41684 "EHLO
+        id S230007AbiJBWus (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Oct 2022 18:50:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiJBUCi (ORCPT
+        with ESMTP id S229981AbiJBWuU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Oct 2022 16:02:38 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F4F303F2;
-        Sun,  2 Oct 2022 13:02:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=6Ay8qiGMPx7dDTK6TPzxHoenhV4yP8MRk067A6uT+wM=;
-        t=1664740957; x=1665950557; b=FvatK+jGcMNkt0Bm9lTNk44xem3xUytvPuUoSMAJ+lYhG1D
-        BZhd+L+wczCn3EPZFFhq9l+WUIBq1sPxBzWBoU/J8NaNq6gfry9B5F4s+4R46Q8rO6d1sTBeRB7jG
-        pFAh7A4ayRGKF9GgKiy/W156E8jyhKyq5Dq55+5NSigwsZ/hRGdRucTvXxlF2eC56Ao7iaWMTb32z
-        CPQ0Gwn1yjKn6bHvkxv4oUvtmG9ehmlJgoeNQWkJ6WWPq8fBkaPq5qwEemyVkFCUK/qjwq+xs4rVP
-        J8j2scmP07nNhdJo7H2p9GyvCj8kIUk6d8oHj3AX3WuBUHfkd2HQHQzcwqVL1WPQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1of5AT-00DaVw-2p;
-        Sun, 02 Oct 2022 22:02:29 +0200
-Message-ID: <026ada86847b6f5a9f89cf005b5d75d035ff6a19.camel@sipsolutions.net>
-Subject: Re: [syzbot] WARNING: lock held when returning to user space in
- ieee80211_change_mac
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     syzbot <syzbot+4ef359e6b423499fa4e1@syzkaller.appspotmail.com>,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Date:   Sun, 02 Oct 2022 22:02:28 +0200
-In-Reply-To: <0000000000001850d105e9f9e6de@google.com>
-References: <0000000000001850d105e9f9e6de@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Sun, 2 Oct 2022 18:50:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AF7E12AA9;
+        Sun,  2 Oct 2022 15:49:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8257DB80C81;
+        Sun,  2 Oct 2022 22:49:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1294C433D6;
+        Sun,  2 Oct 2022 22:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664750990;
+        bh=gpOnnvA5lUNI+eY1xaaT6VEeXv2MgeShuAunf5+0rGw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Qewm4/xqfEPtYHsGxPusWl6UpxkBCarRDCbyjPSr3IREhY3GnhoSCabYets85fkeS
+         halHqrygkAtqYagTY/CryDm5kbHi0FMj2lRRO1APMQy5dyEb1t8A0NdWpNBJ+V/hoD
+         d2MqgCEzzngc8oAtlpya2uYlf+M12E4ZtEuPupEVKPpmupnxNxTl0/jkwuG/lcAz5M
+         PLz31NORZCvwzxu+Ozv5vB9+RsTFedZ5T2Jenn7+70BcpseMlXpFRMeNmXu8hSjqsB
+         rbJUb9DgA2Vwmby+v6o5G2HZe1Lep7K2Wg+IjixfFbP20FOdmeYcLjDvwLShh0rcjW
+         r7RdaRxh5fHcQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        gregory.greenman@intel.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        luciano.coelho@intel.com, emmanuel.grumbach@intel.com,
+        miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.19 09/29] wifi: iwlwifi: don't spam logs with NSS>2 messages
+Date:   Sun,  2 Oct 2022 18:49:02 -0400
+Message-Id: <20221002224922.238837-9-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221002224922.238837-1-sashal@kernel.org>
+References: <20221002224922.238837-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SORTED_RECIPS,SPF_HELO_PASS,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2022-10-01 at 07:26 -0700, syzbot wrote:
-> Hello,
->=20
-> syzbot found the following issue on:
->=20
-> HEAD commit:    6627a2074d5c net/smc: Support SO_REUSEPORT
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D10183a7088000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dd4d64087513b5=
-aa1
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3D4ef359e6b423499=
-fa4e1
-> compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binuti=
-ls for Debian) 2.35.2
->=20
-> Unfortunately, I don't have any reproducer for this issue yet.
->=20
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/9ecb75606956/dis=
-k-6627a207.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/1073865fcb40/vmlinu=
-x-6627a207.xz
->=20
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+4ef359e6b423499fa4e1@syzkaller.appspotmail.com
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> WARNING: lock held when returning to user space!
-> 6.0.0-rc6-syzkaller-01407-g6627a2074d5c #0 Not tainted
-> ------------------------------------------------
-> syz-executor.3/10164 is leaving the kernel with locks still held!
-> 1 lock held by syz-executor.3/10164:
->  #0: ffff888147acaa88 (&local->mtx){+.+.}-{3:3}, at: ieee80211_can_powere=
-d_addr_change net/mac80211/iface.c:217 [inline]
->  #0: ffff888147acaa88 (&local->mtx){+.+.}-{3:3}, at: ieee80211_change_mac=
-+0x9b4/0xf40 net/mac80211/iface.c:264
->=20
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-Uh, right. Pretty sure this will fix it once I merge it:
+[ Upstream commit 4d8421f2dd88583cc7a4d6c2a5532c35e816a52a ]
 
-https://patchwork.kernel.org/project/linux-wireless/patch/Yx9LJFA7PDSRmb/M@=
-kili/
+I get a log line like this every 4 seconds when connected to my AP:
 
-johannes
+[15650.221468] iwlwifi 0000:09:00.0: Got NSS = 4 - trimming to 2
+
+Looking at the code, this seems to be related to a hardware limitation,
+and there's nothing to be done. In an effort to keep my dmesg
+manageable, downgrade this error to "debug" rather than "info".
+
+Cc: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220905172246.105383-1-Jason@zx2c4.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index c5626ff83805..640e3786c244 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1833,8 +1833,8 @@ static void iwl_mvm_parse_ppe(struct iwl_mvm *mvm,
+ 	* If nss < MAX: we can set zeros in other streams
+ 	*/
+ 	if (nss > MAX_HE_SUPP_NSS) {
+-		IWL_INFO(mvm, "Got NSS = %d - trimming to %d\n", nss,
+-			 MAX_HE_SUPP_NSS);
++		IWL_DEBUG_INFO(mvm, "Got NSS = %d - trimming to %d\n", nss,
++			       MAX_HE_SUPP_NSS);
+ 		nss = MAX_HE_SUPP_NSS;
+ 	}
+ 
+-- 
+2.35.1
+
