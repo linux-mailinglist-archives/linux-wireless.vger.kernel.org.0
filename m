@@ -2,101 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B9A5F2628
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Oct 2022 00:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D29C75F270F
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Oct 2022 01:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbiJBWus (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Oct 2022 18:50:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
+        id S229599AbiJBXJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Oct 2022 19:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229981AbiJBWuU (ORCPT
+        with ESMTP id S230252AbiJBXIc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Oct 2022 18:50:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AF7E12AA9;
-        Sun,  2 Oct 2022 15:49:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8257DB80C81;
-        Sun,  2 Oct 2022 22:49:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1294C433D6;
-        Sun,  2 Oct 2022 22:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664750990;
-        bh=gpOnnvA5lUNI+eY1xaaT6VEeXv2MgeShuAunf5+0rGw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qewm4/xqfEPtYHsGxPusWl6UpxkBCarRDCbyjPSr3IREhY3GnhoSCabYets85fkeS
-         halHqrygkAtqYagTY/CryDm5kbHi0FMj2lRRO1APMQy5dyEb1t8A0NdWpNBJ+V/hoD
-         d2MqgCEzzngc8oAtlpya2uYlf+M12E4ZtEuPupEVKPpmupnxNxTl0/jkwuG/lcAz5M
-         PLz31NORZCvwzxu+Ozv5vB9+RsTFedZ5T2Jenn7+70BcpseMlXpFRMeNmXu8hSjqsB
-         rbJUb9DgA2Vwmby+v6o5G2HZe1Lep7K2Wg+IjixfFbP20FOdmeYcLjDvwLShh0rcjW
-         r7RdaRxh5fHcQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        gregory.greenman@intel.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        luciano.coelho@intel.com, emmanuel.grumbach@intel.com,
-        miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 09/29] wifi: iwlwifi: don't spam logs with NSS>2 messages
-Date:   Sun,  2 Oct 2022 18:49:02 -0400
-Message-Id: <20221002224922.238837-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221002224922.238837-1-sashal@kernel.org>
-References: <20221002224922.238837-1-sashal@kernel.org>
+        Sun, 2 Oct 2022 19:08:32 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3C563F1C5;
+        Sun,  2 Oct 2022 16:03:44 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id s206so8362217pgs.3;
+        Sun, 02 Oct 2022 16:03:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date;
+        bh=n1ZKaRc7L1J2HOhRbYn9RSi5qC1K6qbvvzoJx4l1wPI=;
+        b=NQrtagJuL/eU9k+3dIZTrXanbh7ZCwRBOsXt30plUPXwV9cnJ5aUSC/Z/7kSPGjNPB
+         w06BVt6WuYLmgiepoGqsH4FUQvhXQOJ1hM0pn5zytkEM25lS2pveUfUPwRrJSRqr3R3c
+         VYL053MeF4TwZ7V3h1ekY+e122fqkv2WnxFMb1C8qyGpAEfjkxTOtvmrCyQmp8M8BjrE
+         IZQh/6AGpIbaGxSdA5GIdlD6P+9QARM9ZKt3JKmWJ/uD45XbMqBBsnI30ziAtN1K78Gq
+         LtIWqfiuX2oRgIAZpxj+hZXFjvsK2/YgrFjpiTW9OCoEVOpL5xer2dx4Vh9J4ZOnbLHc
+         IVmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date;
+        bh=n1ZKaRc7L1J2HOhRbYn9RSi5qC1K6qbvvzoJx4l1wPI=;
+        b=nYdSl1woxhZTc2cDFhFO4JvYPrO2zRhQdGVQ5a5cu+Vc4p6oyySakA7y4z3SgLRrTE
+         SXcGiQXnqpIMAakafTYoQhB5xfs8yR2BeQ6eBOH0aMAlhv9dB3fOqT9RPbF4kTp1DNKE
+         h9dvJU9Ufz1IdYXZ4KH5YchEcpCoTBRowWJo7KFow7nK5O1P7w9QSPJPlqiuV8Z4/zyZ
+         ihyEOm6bM0U6qOHvV+Qk4vMTaAiOV9hh533E0OqoH/l+WMuxywuLqMbLKz5c2u3+k3Pw
+         Ik1k7msJlL4JyWOoSoow1whlzO1l0cjqcopybSoNlU3lpg0Vqn4fueJWCkItFaNq8t2w
+         TV6A==
+X-Gm-Message-State: ACrzQf181/sugW454P0XLvzpCxYYcUhwfx6JZ6rw64QGjOmFu0yBQqco
+        TL8GCz/8ZqOGIuF++0zm9JA=
+X-Google-Smtp-Source: AMsMyM4/g+UHH4GSV1/seyANUGimsPVf59o9/jOSn/Qy82po5YDBirhhImKDBvffmo1Iyrliw2/BQA==
+X-Received: by 2002:a05:6a00:1503:b0:540:e2c7:2387 with SMTP id q3-20020a056a00150300b00540e2c72387mr19857714pfu.48.1664751774537;
+        Sun, 02 Oct 2022 16:02:54 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s17-20020aa78bd1000000b0056160437e88sm1117103pfd.20.2022.10.02.16.02.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Oct 2022 16:02:53 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <035bb415-283f-e540-7c85-ae21103158de@roeck-us.net>
+Date:   Sun, 2 Oct 2022 16:02:52 -0700
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH net-next] net: drop the weight argument from
+ netif_napi_add
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        pabeni@redhat.com, kvalo@kernel.org, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org, mkl@pengutronix.de,
+        linux-can@vger.kernel.org
+References: <20220927132753.750069-1-kuba@kernel.org>
+ <20221002172427.GA3027039@roeck-us.net> <20221002105938.684fec1f@kernel.org>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20221002105938.684fec1f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+On 10/2/22 10:59, Jakub Kicinski wrote:
+> On Sun, 2 Oct 2022 10:24:27 -0700 Guenter Roeck wrote:
+>> On Tue, Sep 27, 2022 at 06:27:53AM -0700, Jakub Kicinski wrote:
+>>> We tell driver developers to always pass NAPI_POLL_WEIGHT
+>>> as the weight to netif_napi_add(). This may be confusing
+>>> to newcomers, drop the weight argument, those who really
+>>> need to tweak the weight can use netif_napi_add_weight().
+>>>
+>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>>
+>> That seems to have missed some (or at least one) file(s).
+>>
+>> Building mips:cavium_octeon_defconfig ... failed
+>> --------------
+>> Error log:
+>> drivers/net/ethernet/cavium/octeon/octeon_mgmt.c: In function 'octeon_mgmt_probe':
+>> drivers/net/ethernet/cavium/octeon/octeon_mgmt.c:1399:9: error: too many arguments to function 'netif_napi_add'
+>>   1399 |         netif_napi_add(netdev, &p->napi, octeon_mgmt_napi_poll,
+>>        |         ^~~~~~~~~~~~~~
+>> In file included from include/linux/etherdevice.h:21,
+>>                   from drivers/net/ethernet/cavium/octeon/octeon_mgmt.c:11:
+>> include/linux/netdevice.h:2562:1: note: declared here
+>>   2562 | netif_napi_add(struct net_device *dev, struct napi_struct *napi,
+> 
+> Fix sent, sorry. I don't see any more problems grepping again now..
 
-[ Upstream commit 4d8421f2dd88583cc7a4d6c2a5532c35e816a52a ]
+I think that was the only one. The following coccinelle script helps.
 
-I get a log line like this every 4 seconds when connected to my AP:
+Guenter
 
-[15650.221468] iwlwifi 0000:09:00.0: Got NSS = 4 - trimming to 2
-
-Looking at the code, this seems to be related to a hardware limitation,
-and there's nothing to be done. In an effort to keep my dmesg
-manageable, downgrade this error to "debug" rather than "info".
-
-Cc: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20220905172246.105383-1-Jason@zx2c4.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+virtual report
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index c5626ff83805..640e3786c244 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1833,8 +1833,8 @@ static void iwl_mvm_parse_ppe(struct iwl_mvm *mvm,
- 	* If nss < MAX: we can set zeros in other streams
- 	*/
- 	if (nss > MAX_HE_SUPP_NSS) {
--		IWL_INFO(mvm, "Got NSS = %d - trimming to %d\n", nss,
--			 MAX_HE_SUPP_NSS);
-+		IWL_DEBUG_INFO(mvm, "Got NSS = %d - trimming to %d\n", nss,
-+			       MAX_HE_SUPP_NSS);
- 		nss = MAX_HE_SUPP_NSS;
- 	}
- 
--- 
-2.35.1
+@s@
+expression a, b, c, d;
+position p;
+@@
 
+   netif_napi_add@p(a, b, c, d);
+
+@script:python depends on report@
+p << s.p;
+@@
+print "Bad netif_napi_add() call at %s:%s" % (p[0].file, p[0].line)
