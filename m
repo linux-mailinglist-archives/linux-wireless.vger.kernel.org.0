@@ -2,108 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D618A5F2E62
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Oct 2022 11:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EEA55F30D7
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Oct 2022 15:12:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbiJCJqU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Oct 2022 05:46:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49056 "EHLO
+        id S230139AbiJCNM0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Oct 2022 09:12:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230063AbiJCJpz (ORCPT
+        with ESMTP id S230055AbiJCNMV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Oct 2022 05:45:55 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7916D52446
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Oct 2022 02:42:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=gsvEW9b4xM7C/0WZ9F58acduG6vrtTO9pEwJqtrYgH0=; b=t3dUFNs+ZP5kXm3/hzNc6rSPEE
-        wltHNYoAi+szpRH3SWX5ZWoGn7QqQaFgEdLCFWfzrpbXcjziWBCVbYhSJcyfwI53Ft6U4MTgcfe2t
-        eScXdeCxY0vdW6xXLcDkd22EFKTeVyFiaD5BfFuJLzK4hJcODfOd1Lxd2yaDjSYDjklk=;
-Received: from p200300daa7301d00d4086823c46c59c0.dip0.t-ipconnect.de ([2003:da:a730:1d00:d408:6823:c46c:59c0] helo=Maecks.lan)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1ofHnz-009qu9-Hn
-        for linux-wireless@vger.kernel.org; Mon, 03 Oct 2022 11:32:07 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 4/4] wifi: mt76: declare netdev support for scatter/gather on 7915e and 7921e
-Date:   Mon,  3 Oct 2022 11:32:06 +0200
-Message-Id: <20221003093206.86323-4-nbd@nbd.name>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20221003093206.86323-1-nbd@nbd.name>
-References: <20221003093206.86323-1-nbd@nbd.name>
+        Mon, 3 Oct 2022 09:12:21 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485944D4FD
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Oct 2022 06:12:11 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id y2so6267683qtv.5
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Oct 2022 06:12:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date;
+        bh=vcAo4Tv8RirNyJ7H+0GJV8Qy6IyumHjkZT29kYTFCLY=;
+        b=HaJlmlBWdtp4Hg7KuX7XgNz4C4g6NhzlMZBIhX895DzQ3xAtG9RGFR+EY/IB4j/tV/
+         Ic27tieC/tEIzSoeZri/nVYjQZR3ItLZSSaxKPA/MWUr+U2B9vFz1zFtw8SzF5vVTzbs
+         I8YMu1STD+xgtnc8yM6F964kIRRX88G7AM2qe0OSyGD2SIFJYHFhuQAK5DyO/lwY5PJN
+         Gf5/n5jgF2DYBosuIiwU5c68/jwBS7A9QNJ0YJ3qy2iDFI8q+N3tuP7MbsYtrQ3rFce8
+         HUTw9N1xUFfP4efgYZ58BCycuhJ8UcjyykEP+ZO9aJSa/r8MwCdECkkBvVC5j9yM3ClW
+         7S7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date;
+        bh=vcAo4Tv8RirNyJ7H+0GJV8Qy6IyumHjkZT29kYTFCLY=;
+        b=hJZTqVhU52T1ien0hU5izgB7lMqkpUnbdXk/daM8YSI8ZXswvyzyG6ONQNnhWGe/iO
+         vMmH5rIbA8teRXzlYjXL9SRW7gFHNdroCo5lieAuSqyApyAAUZsIcEEsYOJLAVXZUyAQ
+         ehp2LQYQ2CAjHBvXh5JhAea6JWUJpMCR3JqrvnB0GGBZy9WbZx1mkvGXPu3jyeDxBpFP
+         KWS3ir3JERsMwr/AuRPOBP6QDySTdaJken5qP3qxcPICS79sDNaR4e+YtOhaUKQAVrFk
+         TTrA7phe6spqqA8NPxrV0JOItOwSokE+iPUNCVw2xC2eieigtR+EutNKDUR+pAWEzKTl
+         kUYQ==
+X-Gm-Message-State: ACrzQf1GL5YwHW6/nYI7Np0/Oz9gMQgLsy4P2kSsWIxdynTaJrBIhtz3
+        mSyzuUEU5PodgU66O++XrQOGXJoqvaw=
+X-Google-Smtp-Source: AMsMyM6y6Sxeanxqx8+TbpJh5FpXXmfbbiZDlqtQk1lH0uzunu6sVsj90rPf37n0Oz40yoP7DefuGg==
+X-Received: by 2002:a05:622a:288:b0:35c:fe52:2e5 with SMTP id z8-20020a05622a028800b0035cfe5202e5mr15555703qtw.59.1664802721465;
+        Mon, 03 Oct 2022 06:12:01 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c0a8:1102::1844? ([2620:10d:c091:480::f61a])
+        by smtp.gmail.com with ESMTPSA id f21-20020a05620a409500b006bbc3724affsm12064261qko.45.2022.10.03.06.12.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Oct 2022 06:12:00 -0700 (PDT)
+From:   Jes Sorensen <jes.sorensen@gmail.com>
+X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+Message-ID: <012874df-59d4-8973-3dee-48f42208f9fc@gmail.com>
+Date:   Mon, 3 Oct 2022 09:12:00 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: rtl8xxxu: Should it support RTL8188EU?
+Content-Language: en-US
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>
+References: <2999b8e8-5706-8bfb-c3a5-5c547ab0a170@gmail.com>
+In-Reply-To: <2999b8e8-5706-8bfb-c3a5-5c547ab0a170@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This helps with locally generated TCP traffic to avoid unnecessary data
-copying. Also bump the maximum number of fragments to the limit imposed
-by the firmware txp struct.
+On 10/1/22 17:42, Bitterblue Smith wrote:
+> Considering there is a driver for RTL8188EU already in staging,
+> which people have been whittling down, should I put any effort
+> into adding support to rtl8xxxu?
+> 
+> It's actually mostly working already [0], but rtl8xxxu doesn't
+> have AP mode, adhoc mode, power saving, etc so it wouldn't be
+> necessarily better than the driver in staging.
+> 
+> [0] https://git.kernel.org/pub/scm/linux/kernel/git/jes/linux.git/log/drivers/net/wireless/realtek/rtl8xxxu?h=rtl8xxxu-8188eu
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 5 +++--
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 4 +++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+The staging driver is based on the vendor driver which is rather
+dreadful. Given the similarity of the chips, it feels really silly to
+have a second driver for just one chip.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index d3011965451d..ff49d3837b9e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -330,7 +330,8 @@ mt7915_init_wiphy(struct ieee80211_hw *hw)
- 	hw->max_rx_aggregation_subframes = IEEE80211_MAX_AMPDU_BUF_HE;
- 	hw->max_tx_aggregation_subframes = IEEE80211_MAX_AMPDU_BUF_HE;
- 	hw->netdev_features = NETIF_F_RXCSUM |
--			      NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-+			      NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
-+			      NETIF_F_SG;
- 
- 	hw->radiotap_timestamp.units_pos =
- 		IEEE80211_RADIOTAP_TIMESTAMP_UNIT_US;
-@@ -368,7 +369,7 @@ mt7915_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
- 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
- 
--	hw->max_tx_fragments = 4;
-+	hw->max_tx_fragments = 6;
- 
- 	if (phy->mt76->cap.has_2ghz) {
- 		phy->mt76->sband_2g.sband.ht_cap.cap |=
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index b607f0a51c68..9543584abfb5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -57,6 +57,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	hw->max_tx_aggregation_subframes = IEEE80211_MAX_AMPDU_BUF_HE;
- 	hw->netdev_features = NETIF_F_RXCSUM |
- 			      NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-+	if (mt76_is_mmio(&dev->mt76))
-+		hw->netdev_features |= NETIF_F_SG;
- 
- 	hw->radiotap_timestamp.units_pos =
- 		IEEE80211_RADIOTAP_TIMESTAMP_UNIT_US;
-@@ -104,7 +106,7 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	if (dev->pm.enable)
- 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
- 
--	hw->max_tx_fragments = 4;
-+	hw->max_tx_fragments = 6;
- 
- 	return 0;
- }
--- 
-2.36.1
+I see no reason to abandon 8188eu support in rtl8xxxu, but given my
+total lack of time, I am also not able to invest in it.
+
+Cheers,
+Jes
 
