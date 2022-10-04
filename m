@@ -2,72 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A36A75F3D19
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Oct 2022 09:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5841C5F3D78
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Oct 2022 09:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbiJDHQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Oct 2022 03:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32982 "EHLO
+        id S229648AbiJDHvN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Oct 2022 03:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbiJDHQp (ORCPT
+        with ESMTP id S229643AbiJDHvM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Oct 2022 03:16:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B914443160;
-        Tue,  4 Oct 2022 00:16:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 648EFB818FC;
-        Tue,  4 Oct 2022 07:16:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694EFC433C1;
-        Tue,  4 Oct 2022 07:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664867801;
-        bh=pubk6XSf4oZayl6xSyPQOx0fVOLaj6FBLng09EACGOo=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=YPr4uCeqFPj1RpgnCAAdHgx9yEdxolnZ8/KpGnL+8gg+Wpn31isZS+Wvp8uP24tjo
-         6njivxcoIdoyadHQcw1uyjOP9GFt5+RA1ML2hqXY0znSbEa7iSenppyanx12/07sYN
-         6GtBdUMW5nFDhqgdc6GThCMKTzHPTs60U1Y2Dm1O2wvSDi9SRdmMXt0hRVOCZEqhQ4
-         TX2+fXX2KNtOBF3XBUQC7v51SJ1dGBPHOfcb0+edCBa3s4mb3jjdxXHZOhQCy0Kr1i
-         uDxgPIOle7z0tUMuFtexF6Ggs5dUNccmcn8Ok7CBkk0d6yjlIEJ+zFBoW5/0zvH2ts
-         8XUlQymXa74fw==
-Content-Type: text/plain; charset="utf-8"
+        Tue, 4 Oct 2022 03:51:12 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A4BA2B624;
+        Tue,  4 Oct 2022 00:51:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=Uf9y1Q5FeZRo3Kn1eduleYE4tdmn/F4uNHOsG12u5R8=;
+        t=1664869871; x=1666079471; b=Ygcy8V3w9RADDTIhY8JdG3s8rA6LhfYERJHjik4A4C3V4U1
+        0OmykRGmP3iKo/YZLoohbTRQI7oQm+KidH4lb3qXKT94BOiPZ5kPLPu/ddvy/CXhH7kMPGHEn6lqE
+        e0WvTe/MEIwvMhEm4go8SIReMCM9mJ3Qb7v6npq9vwvfABWA5Joe6V0AYgIrswvIJsujiokBenZbR
+        z8pU1n8OuBg5WxbsAeneEu1Vy+wLh+NgEfqoC05NP6ZTqRvOBnYDeWz+0y5EGQn1y5LLsRJdAnZHB
+        olGrd+dPjvyZcn1D55MEIX6bYCpdPJ61j+DXhNr7qKzuwIZAcoTHp1bZ07JCVdeQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ofcho-00F5x0-1m;
+        Tue, 04 Oct 2022 09:51:08 +0200
+Message-ID: <62b8bf6f739d1e6e0320864ed0660c9c52b767c4.camel@sipsolutions.net>
+Subject: Re: doc warnings in *80211
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 04 Oct 2022 09:51:07 +0200
+In-Reply-To: <20221003191128.68bfc844@kernel.org>
+References: <20221003191128.68bfc844@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] wireless: wl1251: switch to using gpiod API
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220928222210.1922758-2-dmitry.torokhov@gmail.com>
-References: <20220928222210.1922758-2-dmitry.torokhov@gmail.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166486779765.9318.1005901653195559558.kvalo@kernel.org>
-Date:   Tue,  4 Oct 2022 07:16:40 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
+Hi,
 
-> This switches the driver from legacy gpio API to a newer gpiod API.
-> 
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> doing basic sanity checks before submitting the net-next PR I spotted
+> that we have these warnings when building documentation on net-next:
+>=20
+> Documentation/driver-api/80211/cfg80211:48: ./include/net/cfg80211.h:6960=
+: WARNING: Duplicate C declaration, also defined at driver-api/80211/cfg802=
+11:6924.
+> Declaration is '.. c:function:: void cfg80211_rx_assoc_resp (struct net_d=
+evice *dev, struct cfg80211_rx_assoc_resp *data)'.
 
-I assume you have only compiled tested this? It would be good to mention that
-in the commit log.
+Hmm. That's interesting. I guess it cannot distinguish between the type
+of identifier?
 
-Also the title should be:
+struct cfg80211_rx_assoc_resp vs. cfg80211_rx_assoc_resp()
 
-wifi: wl1251: switch to using gpiod API
+Not sure what do about it - rename one of them?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220928222210.1922758-2-dmitry.torokhov@gmail.com/
+> Documentation/driver-api/80211/mac80211:109: ./include/net/mac80211.h:504=
+6: WARNING: Duplicate C declaration, also defined at driver-api/80211/mac80=
+211:1065.
+> Declaration is '.. c:function:: void ieee80211_tx_status (struct ieee8021=
+1_hw *hw, struct sk_buff *skb)'.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Same here actually!
+
+I don't think either of these is new.
+
+johannes
+
 
