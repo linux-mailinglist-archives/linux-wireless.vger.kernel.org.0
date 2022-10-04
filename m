@@ -2,79 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3055F456F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Oct 2022 16:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1E15F4923
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Oct 2022 20:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbiJDO04 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Oct 2022 10:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49950 "EHLO
+        id S230073AbiJDSTD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Oct 2022 14:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbiJDO0x (ORCPT
+        with ESMTP id S230042AbiJDSTC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Oct 2022 10:26:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C30606AF;
-        Tue,  4 Oct 2022 07:26:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0EEE6146F;
-        Tue,  4 Oct 2022 14:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB85C433D6;
-        Tue,  4 Oct 2022 14:26:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664893607;
-        bh=QZ2653spgHjRMR3e6WKRMxQMSlvQSp9fSLVm9Ed6dxQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bbBTYqnFFFP+dO4enwEkIS+II+AMlCqmZYw1/FCbGBe6WXv6T7M84yS8kkpzcp3b5
-         jD1CPbv61fMxmjVRp14l63Q0eAuQBBH+mtwspfsCf8rtjNAhcUDBDcJdZrX92lDaS9
-         Xxdgt4PAevIrCZr8Se2hMt7c4Afj8IDbd1BWqVrlVa6cuOunXab5w2c9HsmLwRM8eI
-         LgQDDm17ojA0j7ymbyojjZQhPUxTZl1ykYZ7nhCkjZ1HyW2Kc2MER1wclllf9hFnXV
-         X4xazn8WKd3zGjROmQo5EaFUrDdYxMceCmMM9KgnC9CodVCFC+KHr6/NUriOXBr+AQ
-         wrN5GQRhim1Tg==
-Date:   Tue, 4 Oct 2022 07:26:46 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: doc warnings in *80211
-Message-ID: <20221004072646.64ad2c8c@kernel.org>
-In-Reply-To: <62b8bf6f739d1e6e0320864ed0660c9c52b767c4.camel@sipsolutions.net>
-References: <20221003191128.68bfc844@kernel.org>
-        <62b8bf6f739d1e6e0320864ed0660c9c52b767c4.camel@sipsolutions.net>
+        Tue, 4 Oct 2022 14:19:02 -0400
+Received: from mail-oa1-x42.google.com (mail-oa1-x42.google.com [IPv6:2001:4860:4864:20::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 541DE275D1
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Oct 2022 11:19:00 -0700 (PDT)
+Received: by mail-oa1-x42.google.com with SMTP id 586e51a60fabf-131ea99262dso15105322fac.9
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Oct 2022 11:19:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date;
+        bh=J/u7DVEXjJmIG7E07wTucPWE0DEZVNW1Zgg6U1VTcqU=;
+        b=DZucEzQg4rd/R2rQfRYiNG8xzIFGzkQ+xHLY+JeVdNNAMEvuiDRo+WRZ/vr9fFsOVh
+         8gV2V5PttaNSdcQwoEY57/BeiVqrOSxy9iFD8EWqkHrAj3qLIErM79UVC1f2WCUk8x5F
+         uPdeLvfmr0U9NLISaGT4K1PgGuOOFYFBu79qIMWvyRpVp+THbkA5TxJhsqfyuzsoFYQV
+         E+L5KAYa+NuFPbS6FcKLl8mGiRqRqfZ4JUG6/mjuDXtzVhQEGM94B1UB2vRR9N9oMRQ4
+         8CO1DpISaB7U41Wll7EiLSI9kQelMc9LbfLtB8feFnMJvQ/gL9IRN4Z0zJyAS41W5J5b
+         Qgzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=J/u7DVEXjJmIG7E07wTucPWE0DEZVNW1Zgg6U1VTcqU=;
+        b=Ffh4UERXrXh6c0xy3AtXVQdsXbEXDs1xNI8h0hdZzfh6dZ7eo6iuCn27+XyKG8V/r6
+         AhcdQG034Lh9Hl0T1t8+8n5/fmR4oIC2so2ZpKB6lMYBkBkwE4DFa5yRhBrOc2ttBJBk
+         u5lZjsAvBs/Z43ysEkbmk1mVGrRgY3Prk3SDi/mjlyWONd4QIff+MRWre2aOCco6TfJk
+         vBRi7IkGNVIhLp4uDsr8ynOvIRZV0Z4rCb9T0uRCNEvTLRzqOyYSnQ4rmEWujRKljRLu
+         gEEnV+PZHkVwtb6OmwNwDY4Kaz4hcYjvw0dIF9Ljbcp5W5ooZTfmfVlKlr0xMs0QrCi4
+         ffjA==
+X-Gm-Message-State: ACrzQf0sk/8t/I+OtE//poqD05XJsrVXuIAYotJP1FzSsGf3bal58mR4
+        rkwoEO6qQYMM+7SCA74P+d+9KQqzcItHspQ9HV9BMg==
+X-Google-Smtp-Source: AMsMyM5eYgJZ0rdYt1FfA/mNTnuOkQ439BsgHDHgbvv+i3JhcKSs7GCeRJ9scZeaNGCeY0vOQzdoffZxmx0OYeEljes=
+X-Received: by 2002:a05:6870:390b:b0:132:9ca3:8dc1 with SMTP id
+ b11-20020a056870390b00b001329ca38dc1mr590447oap.106.1664907539754; Tue, 04
+ Oct 2022 11:18:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Jamal Hadi Salim <jhs@mojatatu.com>
+Date:   Tue, 4 Oct 2022 14:18:48 -0400
+Message-ID: <CAM0EoMmZy1+VRTvpN0OYkOzdCrJ24hb1h2rz8XdDLXGp3YH81w@mail.gmail.com>
+Subject: netdev conf 0x16 schedule posted
+To:     people <people@netdevconf.info>
+Cc:     Christie Geldart <christie@ambedia.com>,
+        Kimberley Jeffries <kimberleyjeffries@gmail.com>,
+        prog-committee-0x16@netdevconf.info, lwn@lwn.net,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        xdp-hints@xdp-project.net, lartc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 04 Oct 2022 09:51:07 +0200 Johannes Berg wrote:
-> > doing basic sanity checks before submitting the net-next PR I spotted
-> > that we have these warnings when building documentation on net-next:
-> > 
-> > Documentation/driver-api/80211/cfg80211:48: ./include/net/cfg80211.h:6960: WARNING: Duplicate C declaration, also defined at driver-api/80211/cfg80211:6924.
-> > Declaration is '.. c:function:: void cfg80211_rx_assoc_resp (struct net_device *dev, struct cfg80211_rx_assoc_resp *data)'.  
-> 
-> Hmm. That's interesting. I guess it cannot distinguish between the type
-> of identifier?
-> 
-> struct cfg80211_rx_assoc_resp vs. cfg80211_rx_assoc_resp()
-> 
-> Not sure what do about it - rename one of them?
-> 
-> > Documentation/driver-api/80211/mac80211:109: ./include/net/mac80211.h:5046: WARNING: Duplicate C declaration, also defined at driver-api/80211/mac80211:1065.
-> > Declaration is '.. c:function:: void ieee80211_tx_status (struct ieee80211_hw *hw, struct sk_buff *skb)'.  
-> 
-> Same here actually!
-> 
-> I don't think either of these is new.
+The tentative schedule for netdevconf 0x16 is now published,
+See: https://netdevconf.info/0x16/schedule.html
 
-Thanks for checking!
+Last day for Reel cheep early bird registration. You get
+served lunch too with that price ;->
+See: https://netdevconf.info/0x16/registration.html
 
-Adding linux-doc, but I presume Jon & co are aware if this is not new.
+cheers,
+jamal
