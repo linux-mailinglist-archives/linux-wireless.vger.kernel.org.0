@@ -2,156 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EF655F5248
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 12:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD9D55F5282
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 12:22:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbiJEKKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Oct 2022 06:10:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38766 "EHLO
+        id S229551AbiJEKWu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Oct 2022 06:22:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbiJEKKA (ORCPT
+        with ESMTP id S229567AbiJEKWs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Oct 2022 06:10:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98881304
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 03:09:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1664964596;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bCmfb77Gu94ZkcAxubGU7yIzblH73abcjBUc6fLGu9I=;
-        b=jV8x1OqnXSlb1P9PHdeXkacYXhtw6OzHhsxL73ZESElzA/qe45p+Bv4c80zLv5liJTX6DU
-        eVNQGefX8TQEwijI8dtlmA96/c9Xh52fB5NSeYMsNSgQBZPr9pTSyYhmMeOzVBly0wOysl
-        Ao9aP0S4Xos7AmCVZfPRl/qmz1qGP/o=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-37-6q0DVmhyPV6ENxrUpZomSQ-1; Wed, 05 Oct 2022 06:09:55 -0400
-X-MC-Unique: 6q0DVmhyPV6ENxrUpZomSQ-1
-Received: by mail-pj1-f71.google.com with SMTP id pf10-20020a17090b1d8a00b002037c2aad2bso895812pjb.0
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Oct 2022 03:09:55 -0700 (PDT)
+        Wed, 5 Oct 2022 06:22:48 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E71D760FC
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 03:22:47 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id y20so1431755qtv.5
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Oct 2022 03:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=IClrzqheK2yukCaauMB8/wpkGilQ38YAviIRtp8bq2A=;
+        b=FxoAFI/X0cjlMecHe7QNJo2sHdE8fkIJzb6an9mg4jm9oUrheg1UGXBFAmJ5o88dqI
+         cdyeYQEwNETeLx4kocvvFkBHY72Gn6StamhBTcK2VLyb5qioA/4GaphYEsPRAnA139fN
+         4Qi0Cfz+OHec8G/Ye3/HGeUSSxnwiqLJfvOGZZFnjW78T7yvFdTwVRORHyBd2bv+idYR
+         EBcrlFAsq74lxeOYefoK+m8hyWtpqEKUM+LpCkYtL3RI1B2y+PBDnYDvRqT68ZebM0AT
+         chEf52v4gEFVS1Gw9TCskoH9RoQXEAtQvn7UGlgDpZ7P7GrYkmFQ9bal3hZEXizJivaU
+         afAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bCmfb77Gu94ZkcAxubGU7yIzblH73abcjBUc6fLGu9I=;
-        b=AkEJZ4CIlNYrStQL1lXsT4oDmMPLA2wJvrpEfuxoWgUy1MOH2V69e+m+w0AvdybZwH
-         FFP7jZgRFbf50I/RGhk+MjinDGNgWloe98Cl3Ujm8BFEBGfgMZCETh9+rdftYXLSF5Td
-         0dJIeBSsrdhxWPD/fKr3Wu+3U7psEFnv6PvOzO9ScWFQ8YIhO2JBJ4+rifJMpPiZU8qx
-         wBtqGl8E0EQ0bypkUfKkIDwy+IIjb2t6bzwIor+Mg90DxJnytoK6odmAgqGhnhANxKOS
-         X6mZm9XjrZD1mYzKH3cqRvnCd6KTY2+D8muPJH1iuyK4uuExJZ+rMcuDa2c51c6wrSGJ
-         +umQ==
-X-Gm-Message-State: ACrzQf3NWVmxhQAElUu4PEsoEL7wTbkaxrEl4j+t6nee/tDgTlzxKY0W
-        BHDzBcnz3ULiYwhRABgECbDF7pTRg9U6Z7YfeJaGEDrqK7tmAgp4Ht/U7hwWnlqNdPxjLc920C6
-        NhQC04bt5H0sZKlj89TgJkrd0Dp3lyfY7Wn2gfJ7apfQ=
-X-Received: by 2002:a63:86c1:0:b0:458:b8d7:71d3 with SMTP id x184-20020a6386c1000000b00458b8d771d3mr1887399pgd.385.1664964594199;
-        Wed, 05 Oct 2022 03:09:54 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM6wwCmISH7aopwKfVkqB1xrqDh3Ec/Lw0sT9LALNj2t55Oys1IsWRYfvQmKnyjPfS25VCsIh/259EbbMxBF4QY=
-X-Received: by 2002:a63:86c1:0:b0:458:b8d7:71d3 with SMTP id
- x184-20020a6386c1000000b00458b8d771d3mr1887377pgd.385.1664964593909; Wed, 05
- Oct 2022 03:09:53 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=IClrzqheK2yukCaauMB8/wpkGilQ38YAviIRtp8bq2A=;
+        b=bB0V54oI5iINrv3norxdXIQ47fB7p15hZvyJ0sE0VHV2U7D659Jer+gYnM3u/eR8BQ
+         gH8Toep2UFNFED1RsP8v5yx66V0XXZMKH6KszmIeig85eKF0hs6oZB3RIZPnTI5jyiph
+         D/6yBbQ44Fc7yME256UbXookVarszhlqilQRCJYAuSWCHcomhfhwqdvynzumF/jNBpcp
+         9FbWngLaL9oP8ra0fCL/9EfsMOpSTpGbGfv51jwDnbT5JSuJsDkgrHVhLA5Wz6zZ1+Hs
+         mdVAJCcjOWR5mPBzMe3+BtCrewovNoSACgfmBao5VVKEVBD6Ghe3e/NxJk1yhUo67gGg
+         zTYA==
+X-Gm-Message-State: ACrzQf10Im8uVVdRJBsB4Nm2A9kOd55fhi5UJaB97BUSVtRqkedobQfr
+        sNPCWdYSbCbRl+tww/DPEfg=
+X-Google-Smtp-Source: AMsMyM6zQF+Wj6WiI/CxAcBLTHmUui7ibH+qdfKhV7Kl3GbksJo2rPnaw1J3kAI236KGT736my2PWw==
+X-Received: by 2002:ac8:5f0c:0:b0:382:65e1:5ea5 with SMTP id x12-20020ac85f0c000000b0038265e15ea5mr7806209qta.193.1664965366109;
+        Wed, 05 Oct 2022 03:22:46 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id bm8-20020a05620a198800b006cfc7f9eea0sm16364041qkb.122.2022.10.05.03.22.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Oct 2022 03:22:45 -0700 (PDT)
+Message-ID: <9e166687-1d35-4216-5c2c-a0e783ead406@gmail.com>
+Date:   Wed, 5 Oct 2022 12:22:43 +0200
 MIME-Version: 1.0
-References: <CACT4oucG2z14214jWGJj9XZ5cYMnQpw9CACHvPZ09cbL7m9z_g@mail.gmail.com>
- <100b06a944de88a4b80119c5a2024e0e59cf5243.camel@sipsolutions.net>
- <CACT4oufKgUG5n6Ocgi6r-Z=+Nt9vNVK1e5dJDccogmd8h7xM8Q@mail.gmail.com> <5c47143aea07c34dbe95fdb2cab677f2a7a753fb.camel@sipsolutions.net>
-In-Reply-To: <5c47143aea07c34dbe95fdb2cab677f2a7a753fb.camel@sipsolutions.net>
-From:   =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
-Date:   Wed, 5 Oct 2022 12:09:42 +0200
-Message-ID: <CACT4oud9qSQJVUsEBt2dvX__k5JuHVzOOPyYWUy92bURw0AknQ@mail.gmail.com>
-Subject: Re: iwlwifi: AC9560 firmware crash with iwlwifi-QuZ-a0-jf-b0 versions
- above 55
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     gregory.greenman@intel.com, golan.ben.ami@intel.com,
-        jonathan.sade@intel.com,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        linux-bluetooth@vger.kernel.org,
-        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-        Laura Trivelloni <ltrivell@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH v3 4/5] brcmfmac: Update SSID of hidden AP while informing
+ its bss to cfg80211 layer
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        Double.Lo@infineon.com
+References: <20220927034138.20463-1-ian.lin@infineon.com>
+ <20220927034138.20463-5-ian.lin@infineon.com> <874jwsrojr.fsf@kernel.org>
+ <4e602611-aed5-dfe7-6ce7-42d1fc7ca53e@infineon.com>
+ <b43d934d-f3e8-9459-0096-11908df27c15@infineon.com>
+ <87y1tupuqy.fsf@kernel.org>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <87y1tupuqy.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 5, 2022 at 12:07 PM Johannes Berg <johannes@sipsolutions.net> w=
-rote:
->
-> On Wed, 2022-10-05 at 11:50 +0200, =C3=8D=C3=B1igo Huguet wrote:
-> > On Wed, Oct 5, 2022 at 11:35 AM Johannes Berg <johannes@sipsolutions.ne=
-t> wrote:
-> > >
-> > > On Fri, 2022-09-09 at 12:41 +0200, =C3=8D=C3=B1igo Huguet wrote:
-> > > > With an AC9560 installed on a system with Quasar (11th gen processo=
-r,
-> > > > in my case) we're getting a firmware crash as soon as you try to do
-> > > > something with the card. The problem doesn't happen with the card
-> > > > installed in older platforms (8th / 9th gen), and it neither happen=
-s
-> > > > with firmware iwlwifi-QuZ-a0-jf-b0-55 version, but yes with any oth=
-er
-> > > > newer version.
-> > > >
-> > > > I've tried different versions of kernel and firmware, including the
-> > > > latest kernel and linux-firmware available today, and all of them f=
-ail
-> > > > unless I remove all fw files above version 55.
-> > > >
-> > >
-> > > I believe this is a duplicate of
-> > >
-> > > https://bugzilla.kernel.org/show_bug.cgi?id=3D214343
-> > >
-> > > which was supposed to be fixed in firmware, but evidently that fix wa=
-s
-> > > never backported to older images.
-> > >
-> > > Internally, FW commit d8887278 fixed this, so FW version 69 should be
-> > > OK?
-> >
-> > I don't think so, we've reproduced it with iwlwifi-QuZ-a0-jf-b0-71.ucod=
-e
-> >
->
-> Indeed, my git-fu was bad. Looks like 74 only fixes it (or will, since
-> it hasn't been released, apparently).
->
-> We could do some awful workaround like this I guess:
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/w=
-ireless/intel/iwlwifi/fw/acpi.c
-> index 009a4074d062..0c0a28d748f2 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> @@ -1119,6 +1119,11 @@ int iwl_read_ppag_table(struct iwl_fw_runtime *fwr=
-t, union iwl_ppag_table_cmd *c
->          int i, j, num_sub_bands;
->          s8 *gain;
->
-> +       /* many firmware images for JF lie about this */
-> +       if (CSR_HW_RFID_TYPE(fwrt->trans->hw_rf_id) =3D=3D
-> +           CSR_HW_RFID_TYPE(CSR_HW_RF_ID_TYPE_JF))
-> +               return -EOPNOTSUPP;
-> +
->          if (!fw_has_capa(&fwrt->fw->ucode_capa, IWL_UCODE_TLV_CAPA_SET_P=
-PAG)) {
->                  IWL_DEBUG_RADIO(fwrt,
->                                  "PPAG capability not supported by FW, co=
-mmand not sent.\n");
->
->
-> johannes
->
+On 10/5/2022 9:58 AM, Kalle Valo wrote:
+> "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com> writes:
+> 
+>> On 9/28/2022 6:07 PM, Lin Ian (CSSITB CSS ICW SW WFS / EE) wrote:
+>>>
+>>>
+>>> On 9/28/2022 2:38 PM, Kalle Valo wrote:
+>>>> Caution: This e-mail originated outside Infineon Technologies. Do
+>>>> not click on links or open attachments unless you validate it is
+>>>> safe<https://intranet-content.infineon.com/explore/aboutinfineon/rules/informationsecurity/ug/SocialEngineering/Pages/SocialEngineeringElements_en.aspx>.
+>>>>
+>>>>
+>>>>
+>>>> Ian Lin <ian.lin@infineon.com> writes:
+>>>>
+>>>>> From: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
+>>>>>
+>>>>> cfg80211 layer on DUT STA is disconnecting ongoing connection
+>>>>> attempt after
+>>>>> receiving association response, because cfg80211 layer does not
+>>>>> have valid
+>>>>> AP bss information. On association response event, brcmfmac
+>>>>> communicates
+>>>>> the AP bss information to cfg80211 layer, but SSID seem to be
+>>>>> empty in AP
+>>>>> bss information, and cfg80211 layer prints kernel warning and then
+>>>>> disconnects the ongoing connection attempt.
+>>>>>
+>>>>> SSID is empty in SSID IE, but 'bi->SSID' contains a valid SSID, so
+>>>>> updating the SSID for hidden AP while informing its bss information
+>>>>> to cfg80211 layer.
+>>>>>
+>>>>> Signed-off-by: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
+>>>>> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
+>>>>> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@infineon.com>
+>>>>> Signed-off-by: Ian Lin <ian.lin@infineon.com>
+>>>>> ---
+>>>>>    .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8
+>>>>> ++++++++
+>>>>>    1 file changed, 8 insertions(+)
+>>>>>
+>>>>> diff --git
+>>>>> a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>> index 6c37da42e61b..3560afe0ccfe 100644
+>>>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>> @@ -3003,6 +3003,7 @@ static s32 brcmf_inform_single_bss(struct
+>>>>> brcmf_cfg80211_info *cfg,
+>>>>>         u8 *notify_ie;
+>>>>>         size_t notify_ielen;
+>>>>>         struct cfg80211_inform_bss bss_data = {};
+>>>>> +     struct brcmf_tlv *ssid;
+>>>>>
+>>>>>         if (le32_to_cpu(bi->length) > WL_BSS_INFO_MAX) {
+>>>>>                 bphy_err(drvr, "Bss info is larger than buffer.
+>>>>> Discarding\n");
+>>>>> @@ -3032,6 +3033,13 @@ static s32 brcmf_inform_single_bss(struct
+>>>>> brcmf_cfg80211_info *cfg,
+>>>>>         notify_ielen = le32_to_cpu(bi->ie_length);
+>>>>>         bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
+>>>>>
+>>>>> +     ssid = (struct brcmf_tlv *)
+>>>>> +             brcmf_parse_tlvs(notify_ie, notify_ielen, WLAN_EID_SSID);
+>>>> This still casts away the const. For some reason brcmf_parse_tlvs()
+>>>> takes a const buffer:
+>>>>
+>>>> static const struct brcmf_tlv *brcmf_parse_tlvs(const void *buf,
+>>>> int buflen, uint key)
+>>>>
+>>>> I'm not familiar with brcmfmac internal so I don't know why it does
+>>>> that, but that means the buffer cannot be modified. If you need to
+>>>> modify the ssid should you make a copy of it?
+>>>
+>>> In brcmf_parse_tlvs(const void *buf, int buflen, uint key),
+>>> it will find the key in buf and return the address of this key, as
+>>> the return pointer.
+>>> This function don't intend caller to modify content of buf in most
+>>> cases, so it defines a const return pointer.
+>>> But in this case, it just need to do it, so I need the typecast here.
+>>
+>> Do you accept the typecast here?
+> 
+> To me writing a const data is wrong. IIRC it was something like six
+> months ago that rtw89 was also writing a const variable and it caused a
+> crash because the memory was in a read-only area (or something like
+> that).
 
-Thanks, I will give it a try the next days and tell you the result.
+So how should this be solved. The pointer returned by the 
+brcmf_parse_tlvs() function is pointing inside the buffer passed as 
+first argument, ie. notify_ie which is non-const. So it is perfectly 
+safe to do the cast as suggested here. We could do a pointer-arithmetic 
+dance here to avoid the cast, but that only make things more obscure.
 
---=20
-=C3=8D=C3=B1igo Huguet
-
+Regards,
+Arend
