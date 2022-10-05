@@ -2,107 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57FC15F52C0
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 12:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA0735F5432
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 14:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbiJEKmF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Oct 2022 06:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
+        id S229668AbiJEMIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Oct 2022 08:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiJEKmA (ORCPT
+        with ESMTP id S229639AbiJEMIf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Oct 2022 06:42:00 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D8758B51
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 03:41:59 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id au23so13791630ejc.1
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Oct 2022 03:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=7O2jM4fax7A9MnpQXYIg7t0j7nY1aVEQlOSLTYCR6pc=;
-        b=arp7KM/He57MDMzIp7eGxjOgAMKbBhyTVWzqN5GMO/tDLuJn3HKgAhLzS6pDs+bSgc
-         2QiqAsmUgN3d0Tme7Kj6A+t5XP/eAsIAm8FX88rohyVeTt0+1NXHcVIDSQU1gsHDAF6m
-         wA/VYC4DQHC8KW0GhKLoDgcs7b7lluKks3NXKBrv9qX7HalhISW7zfhZKnNTjC9FNM4F
-         JXLididK5f/b/vsuApvThkkgIOBlmzHmCK38tY6PMpanCYvdS9u+sKjfVytNVl9PucuP
-         KZ/0xapVroMVw4abyoQQ5M8R0y3QtN4LnSD4RxtDdrjRw+Cjw0tppRGD8ssvXxpFf7vu
-         EAZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=7O2jM4fax7A9MnpQXYIg7t0j7nY1aVEQlOSLTYCR6pc=;
-        b=bC7vPjHjuhLhc5SFT27tUhpVLPZn7JHq66T9ekmxdzl8AbwlYGbAZo/Hn4aAI5dGwh
-         jUPDH8/uCnNpw5FtIJusuvvKXpz4FqFV4H4PoAcBti65KZG08I3wepS0AleNBrFlztX3
-         2MUEGrC+G/0Te2GB6QP7L91ET3Z9XYNFs8SJqimmzj1C2EG4/n4l/nDZpIHzhr37FVoV
-         IOUe+TxZas/TtfWAm9RRAjpE+27IrSJnddcn6RrRzxZIc5adEugaRt3qEAK0ba3vuw9K
-         +YDHYdZPqGLezk1B3CVWoadeFBYwpHSi4vVpIxod36qQfmXNutL//PVMvePriTP0SkF8
-         bFYg==
-X-Gm-Message-State: ACrzQf07vh9Fv+JOBAfr2CdScjw8NR+QwI5br2zx9b0GonsyXHGEvi6R
-        yK2ylAm/Awdy0RONEISpjTc=
-X-Google-Smtp-Source: AMsMyM760q/c3TjR2XySUEUFkX+Nl4Wv4w5tmXQmvDzmRCvUcL3vKUoC9aMCwQfUF9TY90wlfdl4dQ==
-X-Received: by 2002:a17:907:7284:b0:783:ca4d:1c49 with SMTP id dt4-20020a170907728400b00783ca4d1c49mr23006199ejc.618.1664966517838;
-        Wed, 05 Oct 2022 03:41:57 -0700 (PDT)
-Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id kv3-20020a17090778c300b0074a82932e3bsm5033925ejc.77.2022.10.05.03.41.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Oct 2022 03:41:57 -0700 (PDT)
-Message-ID: <5315f8a6-cd0f-f197-191b-ef0ba90560c6@gmail.com>
-Date:   Wed, 5 Oct 2022 12:41:56 +0200
+        Wed, 5 Oct 2022 08:08:35 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCB22F659
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 05:08:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=VaCAapUZEwzYdSEBPN80QsZ66/q/HO5QkArLNIExocw=;
+        t=1664971711; x=1666181311; b=Mg7cI84Dc7MS668DPUbv9eUNkh3jiGAhVpvLWH8bBHoflx/
+        Inrom9vm5U3SVMCNseNBlrAtVlIcTcSv8r8zY+gNwBPP+5hAaLMZuIo2y7No9i4TJC0MgzV5EC6Ui
+        lqaW63V9dUYmvVCqC5yj6Ib8Q2pYw/i9Wbe33yzh2fCBtV/rvYBbHjASYUR0LK/hez1lzXcKqLFB2
+        aUD9sJU80VTicqXTK1vVm6GhLjDtF9UBf8cVAbMeBaG2yZ9A7UW6nqrMrug7VuTLF/7995J2mFwWs
+        QP6/UKivvEKG21mOyyyaiemoc2ecCfO9KCtvCNXf68K2x73es4r0j96Xh7irv3oQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1og2ka-00G0f6-0t;
+        Wed, 05 Oct 2022 13:39:44 +0200
+Message-ID: <96e9ad692842853cfe92a7e5de18136baf20a492.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: Use internal TX queues for all drivers
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        linux-wireless@vger.kernel.org
+Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@kernel.org>
+Date:   Wed, 05 Oct 2022 13:39:43 +0200
+In-Reply-To: <20220926161303.13035-1-alexander@wetzel-home.de>
+References: <20220926161303.13035-1-alexander@wetzel-home.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH 4/4] brcmfmac: revise SoftAP channel setting
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, Ian Lin <ian.lin@infineon.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, Double.Lo@infineon.com
-References: <20220929050614.31518-5-ian.lin@infineon.com>
- <166495531224.5945.8900458651808305145.kvalo@kernel.org>
-From:   Arend Van Spriel <aspriel@gmail.com>
-In-Reply-To: <166495531224.5945.8900458651808305145.kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/5/2022 9:35 AM, Kalle Valo wrote:
-> Ian Lin <ian.lin@infineon.com> wrote:
-> 
->> From: Ting-Ying Li <tingying.li@cypress.com>
->>
->> We need to update "chanspec" iovar for each SoftAP creation
->> because firmware will update the chanspec to current bsscfg
->> for each bss. If we do not update it then the wrong chanspec
->> will be shown on the result of 'wl -i [interface] status'
->> command. No need to handle channel resource reusing for mbss
->> mode by the host driver, it should be covered by firmware.
->>
->> Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
->> Signed-off-by: Ian Lin <ian.lin@infineon.com>
-> 
-> The term "SoftAP" is a bit confusing. From an upstream driver point of view
-> it's just AP mode, right?
+On Mon, 2022-09-26 at 18:13 +0200, Alexander Wetzel wrote:
 
-It is. If I have understood things the term is used for using AP 
-interface on a non-router platform. To me it always has been a vague term.
+> -	trace_drv_wake_tx_queue(local, sdata, txq);
 
-> What's wl? Is that some proprietary tool or what?
+Technically, I guess we could keep both tracepoints, but it'd be kind of
+pointless since we know statically which driver does which...
 
-Yup. Please avoid such references. Same for the term "current bsscfg".
+> @@ -596,21 +598,18 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdat=
+a,
+> =20
+>  	sta->last_connected =3D ktime_get_seconds();
+> =20
+> -	if (local->ops->wake_tx_queue) {
+> -		void *txq_data;
+> -		int size =3D sizeof(struct txq_info) +
+> -			   ALIGN(hw->txq_data_size, sizeof(void *));
+> +	size =3D sizeof(struct txq_info) +
+> +	       ALIGN(hw->txq_data_size, sizeof(void *));
+> =20
+> -		txq_data =3D kcalloc(ARRAY_SIZE(sta->sta.txq), size, gfp);
+> -		if (!txq_data)
+> -			goto free;
+> +	txq_data =3D kcalloc(ARRAY_SIZE(sta->sta.txq), size, gfp);
+> +	if (!txq_data)
+> +		goto free;
+> =20
+> -		for (i =3D 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
+> -			struct txq_info *txq =3D txq_data + i * size;
+> +	for (i =3D 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
+> +		struct txq_info *txq =3D txq_data + i * size;
+> =20
+> -			/* might not do anything for the bufferable MMPDU TXQ */
+> -			ieee80211_txq_init(sdata, sta, txq, i);
+> -		}
+> +		/* might not do anything for the bufferable MMPDU TXQ */
+> +		ieee80211_txq_init(sdata, sta, txq, i);
 
-I think I will need to take a closer look at this patch.
+Is that comment still true?
 
-Thanks,
-Arend
+> +++ b/net/mac80211/util.c
+> @@ -288,6 +288,64 @@ __le16 ieee80211_ctstoself_duration(struct ieee80211=
+_hw *hw,
+>  }
+>  EXPORT_SYMBOL(ieee80211_ctstoself_duration);
+> =20
+> +static void wake_tx_push_queue(struct ieee80211_local *local,
+> +			       struct ieee80211_sub_if_data *sdata,
+> +			       struct ieee80211_txq *queue)
+> +{
+> +	int q =3D sdata->vif.hw_queue[queue->ac];
+> +	struct ieee80211_tx_control control =3D {};
+> +	struct sk_buff *skb;
+> +	unsigned long flags;
+> +	bool q_stopped;
+> +
+> +	control.sta =3D queue->sta;
+> +
+> +	while (1) {
+> +		spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
+> +		q_stopped =3D local->queue_stop_reasons[q];
+> +		spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
+> +
+> +		if (q_stopped)
+> +			break;
+> +
+> +		skb =3D ieee80211_tx_dequeue(&local->hw, queue);
+> +		if (!skb)
+> +			break;
+> +
+> +		drv_tx(local, &control, skb);
+> +	}
+> +}
+> +
+> +void wake_tx_queue(struct ieee80211_local *local, struct txq_info *txq)
+> +{
+> +	struct ieee80211_sub_if_data *sdata =3D vif_to_sdata(txq->txq.vif);
+> +	struct ieee80211_txq *queue;
+> +
+> +	/* In reconfig don't transmit now, but mark for waking later */
+> +	if (local->in_reconfig) {
+> +		set_bit(IEEE80211_TXQ_STOP_NETIF_TX, &txq->flags);
+> +		return;
+> +	}
+> +
+> +	if (!check_sdata_in_driver(sdata))
+> +		return;
+> +
+> +	trace_wake_tx_queue(local, sdata, txq);
+> +
+> +	if (local->ops->wake_tx_queue) {
+> +		drv_wake_tx_queue(local, txq);
+> +		return;
+> +	}
+> +
+> +	/* Driver has no native support for iTXQ, handle the queues */
+> +	ieee80211_txq_schedule_start(&local->hw, txq->txq.ac);
+> +	while ((queue =3D ieee80211_next_txq(&local->hw, txq->txq.ac))) {
+> +		wake_tx_push_queue(local, sdata, queue);
+> +		ieee80211_return_txq(&local->hw, queue, false);
+> +	}
+> +	ieee80211_txq_schedule_end(&local->hw, txq->txq.ac);
+> +}
+
+Here's another thought:
+
+Since this code is basically all moved from the original
+drv_wake_tx_queue(), except for the "else" portion (after the if/return)
+of it, another thing we could do is to just have an exported function
+that does this:
+
+void ieee80211_handle_wake_tx_queue(struct ieee80211_hw *hw,
+				    struct ieee80211_txq *txq)
+{
+	... *local =3D from_hw(hw);
+	... *sdata =3D from_vif(txq->vif);
+
+	wake_tx_push_queue(local, sdata, txq);
+}
+
+Actually ... I wonder why you'd here - in waking a single TXQ - use
+ieee80211_next_txq() at all, Toke, what do you think?
+
+
+Anyway, then we could require drivers set wake_txq to
+ieee80211_handle_wake_tx_queue and make sure in main.c that
+wake_tx_queue is non-NULL.
+
+That's a bit more churn in drivers, but:
+ * it's not really that hard to do
+ * it avoids an extra function call to then jump to the op
+ * it avoids the tracing changes since now it does look like a driver
+   wake_tx_queue callback
+
+What do you think?
+
+johannes
