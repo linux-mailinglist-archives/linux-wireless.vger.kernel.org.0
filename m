@@ -2,47 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F655F54EF
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 15:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C525F5508
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 15:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230054AbiJENBl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Oct 2022 09:01:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41818 "EHLO
+        id S229747AbiJENIb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Oct 2022 09:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbiJENBA (ORCPT
+        with ESMTP id S229547AbiJENIa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Oct 2022 09:01:00 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6661678598
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 06:00:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=WQSHX7a3BLWpRk6Ls7uz7U33b97yHn8sRUi+9tXhHJU=;
-        t=1664974859; x=1666184459; b=UjzjdBxw+tsQJTZnAuuPyHQ9bfZ6uMW1c2kgzJIYCfWay5t
-        UETDOyIfnf93JZ70p+SHGH4BkF0mHaXrPPbz8YR118xzoekxxLw0nfT+XslGRIgmhN3Q38smc/xEg
-        TOpspt83t8zsjY+40eHczNYIADeBctrjmR/+H6CMvVDueuQX2fJsId2h3HZoC3Vi/I0bP1VEizAXH
-        WBwQDhXMnSAv/rUB9VyzCE2wdY6J2f/oIcE68HjAIX4CbbH3q0px+JE/Lih7ts/GRpMZTk3kHFWUc
-        p2dYCNaIVTN4KSuyltHQrvgt6NiXZWUd3+fE8qh4f4ZvnT7J2/EgjTxJ+YcAyNnw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1og41B-00G2RL-1u;
-        Wed, 05 Oct 2022 15:00:57 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Wed, 5 Oct 2022 09:08:30 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8DC078595
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 06:08:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=ViUzERznmY9U49Nq8HELK7/3YsqE5xhCFUTaS/36kxY=; b=Gqq9DZqMiwmqlIkZnxeKUBPl0m
+        iK6pd5IhPc1yZIyiBt8RHMEd89CS2EBT1BtkNT2GSPt+pke2eaHZTgndEQ78U6evtyOuG/N/UbsAS
+        QeHfaSbPgJ516Ix7YfC25EWuQ3hUkiloMaGlRgVvilI4Iv++/pAFC/uuk6GT1JSJHpYY=;
+Received: from p200300daa7301d005d133ca52e775ee5.dip0.t-ipconnect.de ([2003:da:a730:1d00:5d13:3ca5:2e77:5ee5] helo=localhost.localdomain)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1og48Q-00ANpv-9e; Wed, 05 Oct 2022 15:08:26 +0200
+From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 28/28] wifi: mac80211: fix ifdef symbol name
-Date:   Wed,  5 Oct 2022 15:00:48 +0200
-Message-Id: <20221005145226.32ee46c4bda7.I7205d59557ee48d7b4dc2a72a5295ada426c7ce2@changeid>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221005130048.217341-1-johannes@sipsolutions.net>
-References: <20221005130048.217341-1-johannes@sipsolutions.net>
+Cc:     kvalo@kernel.org, Chad Monroe <chad.monroe@smartrg.com>
+Subject: [PATCH 6.1 1/2] wifi: mt76: fix receiving LLC packets on mt7615/mt7915
+Date:   Wed,  5 Oct 2022 15:08:23 +0200
+Message-Id: <20221005130824.23371-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,30 +47,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+When 802.3 decap offload is enabled, the hardware indicates header translation
+failure, whenever either the LLC-SNAP header was not found, or a VLAN header
+with an unregcognized tag is present.
+In that case, the hardware inserts a 2-byte length fields after the MAC
+addresses. For VLAN packets, this tag needs to be removed. However,
+for 802.3 LLC packets, the length bytes should be preserved, since there
+is no separate ethertype field in the data.
+This fixes an issue where the length field was omitted for LLC frames, causing
+them to be malformed after hardware decap.
 
-This should of course be CONFIG_, not CPTCFG_, which is an
-artifact from working with backports.
-
-Fixes: 9dd1953846c7 ("wifi: nl80211/mac80211: clarify link ID in control port TX")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1eeff0b4c1a6 ("mt76: mt7915: fix decap offload corner case with 4-addr VLAN frames")
+Reported-by: Chad Monroe <chad.monroe@smartrg.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- net/mac80211/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 27c964be102e..d9e7a2ed5d2c 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2971,7 +2971,7 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index d6aae60c440d..cbc6859e38ac 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -610,14 +610,14 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 			 * When header translation failure is indicated,
+ 			 * the hardware will insert an extra 2-byte field
+ 			 * containing the data length after the protocol
+-			 * type field.
++			 * type field. This happens either when the LLC-SNAP
++			 * pattern did not match, or if a VLAN header was
++			 * detected.
+ 			 */
+ 			pad_start = 12;
+ 			if (get_unaligned_be16(skb->data + pad_start) == ETH_P_8021Q)
+ 				pad_start += 4;
+-
+-			if (get_unaligned_be16(skb->data + pad_start) !=
+-			    skb->len - pad_start - 2)
++			else
+ 				pad_start = 0;
+ 		}
  
- 		if (pre_conf_link_id != link_id &&
- 		    link_id != IEEE80211_LINK_UNSPECIFIED) {
--#ifdef CPTCFG_MAC80211_VERBOSE_DEBUG
-+#ifdef CONFIG_MAC80211_VERBOSE_DEBUG
- 			net_info_ratelimited("%s: dropped frame to %pM with bad link ID request (%d vs. %d)\n",
- 					     sdata->name, hdr.addr1,
- 					     pre_conf_link_id, link_id);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 1070838e7e16..ec996a587142 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -446,14 +446,14 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 			 * When header translation failure is indicated,
+ 			 * the hardware will insert an extra 2-byte field
+ 			 * containing the data length after the protocol
+-			 * type field.
++			 * type field. This happens either when the LLC-SNAP
++			 * pattern did not match, or if a VLAN header was
++			 * detected.
+ 			 */
+ 			pad_start = 12;
+ 			if (get_unaligned_be16(skb->data + pad_start) == ETH_P_8021Q)
+ 				pad_start += 4;
+-
+-			if (get_unaligned_be16(skb->data + pad_start) !=
+-			    skb->len - pad_start - 2)
++			else
+ 				pad_start = 0;
+ 		}
+ 
 -- 
-2.37.3
+2.36.1
 
