@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 048B25F54D6
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 15:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEFC45F54D5
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 15:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbiJENBA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Oct 2022 09:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41700 "EHLO
+        id S230087AbiJENA7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Oct 2022 09:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230022AbiJENAz (ORCPT
+        with ESMTP id S229864AbiJENAz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 5 Oct 2022 09:00:55 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DA21EC7D
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DFA1EEC4
         for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 06:00:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=5ymB6A7xS39OjQuLW+i5MLPM3B4tbpT6XSWK7t1XfHs=;
-        t=1664974853; x=1666184453; b=SJCWWhqBtmY5m5UNvRUDj4ns+pxbLMpCw6mOVvBqTPC6LOU
-        4PfTUXn3RX/QWLbZBK4xQgW+gwMGfKCOxniMqWFqGeytnSIVpxJdMbtC+h0H+Dt+1qWmqIMhcmb9j
-        cKNl5v9NSH+W14WzInG/cHlBvX6qXoSg5wR/3JbRCH8d36NlVefVu9SqxybNcxN9sYMFyAhq8fvHp
-        jMsorHi87EGZ5weY7v85PHYPAHea5dkyAIXylK9RLFSzg9n09pbGYFnfMAN76h+ZYGYO8sC0a+NAD
-        y3qRpTuhi0iId5XptnAzAO63lvgunNbbTuY0brxUGLzvxZW0q7AYwAQixV1Cnkjw==;
+        Resent-Cc:Resent-Message-ID; bh=4DrVks/oLCHsvAvq6VmANYpykKV+vXjQxwOHB0WGXzg=;
+        t=1664974853; x=1666184453; b=XfE4+anMungqnaEA2DE56fuQtzea58xeB6pgKAejT+AMt96
+        PUO37qyKXqVUMUnNKhyKvEausT9NbrjmdsyERC4ekWo1u/YUupcpURiboQZFhnWXhy0/FcL8mUNQ0
+        EhFAtkA6iazbQG4HiJ5X91Htr9FsI9omYz1KcCJrIcKAlMwRPpptmfqKXVrUgzU+4SXN9Be04NZ0r
+        91szTlIIb4+ongks8DykFW92fKMuvihPDd47UW4HGMilme/MU4AB6bIm1gebX57xPJngNN+WzgrNk
+        CKBNVXUuGvB5jIsntKWtkctXQeoMHBq4lRQKj0R7kI8i58spBPWuaeFheluwmVyw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1og415-00G2RL-0v;
+        id 1og415-00G2RL-1g;
         Wed, 05 Oct 2022 15:00:51 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH 03/28] wifi: mac80211: include link address in debugfs
-Date:   Wed,  5 Oct 2022 15:00:23 +0200
-Message-Id: <20221005145226.9d247ff3246a.I9685f6eee07aabb880e0b7c50122e1a59031b212@changeid>
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 04/28] wifi: mac80211: recalc station aggregate data during link switch
+Date:   Wed,  5 Oct 2022 15:00:24 +0200
+Message-Id: <20221005145226.0605ef900411.I9354dd019bc87dc98e10b036a03fac844e547ad8@changeid>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221005130048.217341-1-johannes@sipsolutions.net>
 References: <20221005130048.217341-1-johannes@sipsolutions.net>
@@ -50,50 +50,129 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add the link address to the per-link information, but only if we are
-using MLO.
+During link switching, the active links change, so we need to
+recalculate the aggregate data in the stations.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/debugfs_sta.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/mac80211/link.c     | 17 +++++++++++++++++
+ net/mac80211/sta_info.c | 33 ++++++++++++++++++++++++---------
+ net/mac80211/sta_info.h |  2 ++
+ 3 files changed, 43 insertions(+), 9 deletions(-)
 
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 68c07d4b95a5..0d8ff0303028 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -443,6 +443,19 @@ static const struct file_operations link_sta_ ##name## _ops = {		\
- 	.llseek = generic_file_llseek,					\
- }
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index e309708abae8..d1f5a9f7c647 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -357,6 +357,11 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
+ 	list_for_each_entry(sta, &local->sta_list, list) {
+ 		if (sdata != sta->sdata)
+ 			continue;
++
++		/* this is very temporary, but do it anyway */
++		__ieee80211_sta_recalc_aggregates(sta,
++						  old_active | active_links);
++
+ 		ret = drv_change_sta_links(local, sdata, &sta->sta,
+ 					   old_active,
+ 					   old_active | active_links);
+@@ -369,10 +374,22 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
+ 	list_for_each_entry(sta, &local->sta_list, list) {
+ 		if (sdata != sta->sdata)
+ 			continue;
++
++		__ieee80211_sta_recalc_aggregates(sta, active_links);
++
+ 		ret = drv_change_sta_links(local, sdata, &sta->sta,
+ 					   old_active | active_links,
+ 					   active_links);
+ 		WARN_ON_ONCE(ret);
++
++		/*
++		 * Do it again, just in case - the driver might very
++		 * well have called ieee80211_sta_recalc_aggregates()
++		 * from there when filling in the new links, which
++		 * would set it wrong since the vif's active links are
++		 * not switched yet...
++		 */
++		__ieee80211_sta_recalc_aggregates(sta, active_links);
+ 	}
  
-+static ssize_t link_sta_addr_read(struct file *file, char __user *userbuf,
-+				  size_t count, loff_t *ppos)
-+{
-+	struct link_sta_info *link_sta = file->private_data;
-+	u8 mac[3 * ETH_ALEN + 1];
+ 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index e6beaea4075e..2bb6a71c72ef 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2151,22 +2151,30 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
+ }
+ EXPORT_SYMBOL(ieee80211_sta_register_airtime);
+ 
+-void ieee80211_sta_recalc_aggregates(struct ieee80211_sta *pubsta)
++void __ieee80211_sta_recalc_aggregates(struct sta_info *sta, u16 active_links)
+ {
+-	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
+-	struct ieee80211_link_sta *link_sta;
+-	int link_id, i;
+ 	bool first = true;
++	int link_id;
+ 
+-	if (!pubsta->valid_links || !pubsta->mlo) {
+-		pubsta->cur = &pubsta->deflink.agg;
++	if (!sta->sta.valid_links || !sta->sta.mlo) {
++		sta->sta.cur = &sta->sta.deflink.agg;
+ 		return;
+ 	}
+ 
+ 	rcu_read_lock();
+-	for_each_sta_active_link(&sta->sdata->vif, pubsta, link_sta, link_id) {
++	for (link_id = 0; link_id < ARRAY_SIZE((sta)->link); link_id++) {
++		struct ieee80211_link_sta *link_sta;
++		int i;
 +
-+	snprintf(mac, sizeof(mac), "%pM\n", link_sta->pub->addr);
++		if (!(active_links & BIT(link_id)))
++			continue;
 +
-+	return simple_read_from_buffer(userbuf, count, ppos, mac, 3 * ETH_ALEN);
++		link_sta = rcu_dereference(sta->sta.link[link_id]);
++		if (!link_sta)
++			continue;
++
+ 		if (first) {
+-			sta->cur = pubsta->deflink.agg;
++			sta->cur = sta->sta.deflink.agg;
+ 			first = false;
+ 			continue;
+ 		}
+@@ -2185,7 +2193,14 @@ void ieee80211_sta_recalc_aggregates(struct ieee80211_sta *pubsta)
+ 	}
+ 	rcu_read_unlock();
+ 
+-	pubsta->cur = &sta->cur;
++	sta->sta.cur = &sta->cur;
 +}
 +
-+LINK_STA_OPS(addr);
++void ieee80211_sta_recalc_aggregates(struct ieee80211_sta *pubsta)
++{
++	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
 +
- static ssize_t link_sta_ht_capa_read(struct file *file, char __user *userbuf,
- 				     size_t count, loff_t *ppos)
- {
-@@ -1104,6 +1117,8 @@ void ieee80211_link_sta_debugfs_add(struct link_sta_info *link_sta)
- 		link_sta->debugfs_dir =
- 			debugfs_create_dir(link_dir_name,
- 					   link_sta->sta->debugfs_dir);
++	__ieee80211_sta_recalc_aggregates(sta, sta->sdata->vif.active_links);
+ }
+ EXPORT_SYMBOL(ieee80211_sta_recalc_aggregates);
+ 
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 6e672bf9c79d..69820b551668 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -927,6 +927,8 @@ void ieee80211_sta_set_max_amsdu_subframes(struct sta_info *sta,
+ 					   const u8 *ext_capab,
+ 					   unsigned int ext_capab_len);
+ 
++void __ieee80211_sta_recalc_aggregates(struct sta_info *sta, u16 active_links);
 +
-+		DEBUGFS_ADD(addr);
- 	} else {
- 		if (WARN_ON(link_sta != &link_sta->sta->deflink))
- 			return;
+ enum sta_stats_type {
+ 	STA_STATS_RATE_TYPE_INVALID = 0,
+ 	STA_STATS_RATE_TYPE_LEGACY,
 -- 
 2.37.3
 
