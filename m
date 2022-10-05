@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7AD55F54E5
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 15:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9603F5F54E7
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Oct 2022 15:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbiJENBY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Oct 2022 09:01:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41842 "EHLO
+        id S229848AbiJENB1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Oct 2022 09:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230078AbiJENA6 (ORCPT
+        with ESMTP id S230082AbiJENA6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 5 Oct 2022 09:00:58 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E609E2CDDE
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 06:00:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A39A1D0E3
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Oct 2022 06:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=9VSh7S6ZvvOM6di/mKAqKw0yp+jDdDCZUlSwTNXpD30=;
-        t=1664974857; x=1666184457; b=NdltjU8zOYRXcAHcdiIYqEOeqf3/OtyzZwPVlrVflItOvXS
-        NVvGJMAlyPf0K4IrwPNDpYOtzArFbULy1e8jKJoODBIpabBU6ymkocw00aWwNQHi+AkgPQ7jEWAY6
-        9feWCLFUcNmf9rHSdBLqqn+4QY1pffz0xSbFmtYqH/euZ2jP/mOK8ZZ0xbu7bRnbDBflbDQGSVJQz
-        7vvlVGHQHXJdEnoTEkHWLhLtmzFTfZeQDxL+70sa8G4w+DQjFYJipP4E7zZXXSmCjb4gTnl68CAtM
-        Sd6kdcmVJgwdXkVFbqk0/2+S61MgngiSiWqLXz05fs9Q3bZU/k9PRHHjl4kdUEgg==;
+        Resent-Cc:Resent-Message-ID; bh=2TAa8j0qrDw6tMJ6oZmo+IquULME6WO2a+91Cw6lz54=;
+        t=1664974857; x=1666184457; b=bAtjrd6ByCfFMXLd2NOpf3cIuoiatGZhEmq2QYlbjopK6cx
+        S3Pl2Kcs9OHrTJryxwSi2GmDzBJdcC2kIEFuSZw0uzIYSJ+npfJXRXLJFuOApfy90DI4WH9CaS5lH
+        aqqNwnPtNeiMLeZkFn9abdeLwB9GTSWUR4KRjljoedxNVTjcKXisCVvoo/dd8Trvz1oPx2h+fgK6O
+        Yih/Z2kRkomWfFB378lvGXSE2+UuE1IF/nb0Fc4MElbaX9+czBWpvbssXp3OXVVC5uZ2R6hYrpTR8
+        66IGa4qDJimLxrXz40KvjRc3/INEGqT5uDqPKFyPIXNP3ov6W6NEbTH9pvxUpszg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1og419-00G2RL-0H;
+        id 1og419-00G2RL-17;
         Wed, 05 Oct 2022 15:00:55 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 18/28] wifi: mac80211: add RCU _check() link access variants
-Date:   Wed,  5 Oct 2022 15:00:38 +0200
-Message-Id: <20221005145226.be2d0a5f0c99.I6d4abf13505122fca79578bb9da9473214602f13@changeid>
+Subject: [PATCH 19/28] wifi: fix multi-link element subelement iteration
+Date:   Wed,  5 Oct 2022 15:00:39 +0200
+Message-Id: <20221005145226.1c962d927d1b.I0e8ed4861b89687a8d35c093a40e1df2a3436d59@changeid>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221005130048.217341-1-johannes@sipsolutions.net>
 References: <20221005130048.217341-1-johannes@sipsolutions.net>
@@ -52,41 +52,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We might sometimes need to use RCU and locking in the same code
-path, so add the two variants link_conf_dereference_check() and
-link_sta_dereference_check().
+The subelements obviously start after the common data, including
+the common multi-link element structure definition itself. This
+bug was possibly just hidden by the higher bits of the control
+being set to 0, so the iteration just found one bogus element
+and most of the code could continue anyway.
 
+Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/mac80211.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/ieee80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index c413050ec8dd..cda4584dfd51 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1915,6 +1915,10 @@ static inline bool lockdep_vif_mutex_held(struct ieee80211_vif *vif)
- 	rcu_dereference_protected((vif)->link_conf[link_id],	\
- 				  lockdep_vif_mutex_held(vif))
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index f51e939f28f2..6252f02f38b7 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4593,7 +4593,7 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
+ 		return 0;
+ 	}
  
-+#define link_conf_dereference_check(vif, link_id)		\
-+	rcu_dereference_check((vif)->link_conf[link_id],	\
-+			      lockdep_vif_mutex_held(vif))
-+
+-	return common + mle->variable[0];
++	return sizeof(*mle) + common + mle->variable[0];
+ }
+ 
  /**
-  * enum ieee80211_key_flags - key flags
-  *
-@@ -2311,6 +2315,10 @@ static inline bool lockdep_sta_mutex_held(struct ieee80211_sta *pubsta)
- 	rcu_dereference_protected((sta)->link[link_id],		\
- 				  lockdep_sta_mutex_held(sta))
- 
-+#define link_sta_dereference_check(sta, link_id)		\
-+	rcu_dereference_check((sta)->link[link_id],		\
-+			      lockdep_sta_mutex_held(sta))
-+
- #define for_each_sta_active_link(vif, sta, link_sta, link_id)			\
- 	for (link_id = 0; link_id < ARRAY_SIZE((sta)->link); link_id++)		\
- 		if ((!(vif)->active_links ||					\
 -- 
 2.37.3
 
