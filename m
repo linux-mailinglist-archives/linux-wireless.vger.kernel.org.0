@@ -2,210 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE5065F6D9A
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Oct 2022 20:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 277EE5F6E1B
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Oct 2022 21:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbiJFSkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Oct 2022 14:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
+        id S231935AbiJFTVu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Oct 2022 15:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230046AbiJFSkm (ORCPT
+        with ESMTP id S232059AbiJFTU4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Oct 2022 14:40:42 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C597558CC
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Oct 2022 11:40:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665081641; x=1696617641;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Pl25bLdTm1jWp6VTiRz3B0ReF899/o+FkOoQsD0B+Gk=;
-  b=SSZkT75quziBXMRW3f4K9O+flWq45NylZw5+WoPFZ0/el88u6OK55V3c
-   evFADnAguADeRsSd+VmnpKeJqhdEwqgbdY+0AeksVumdP8b7Jzpo2g6JA
-   MxY9VO6my429peA4ml9qR433BpxaMX3gK3TgnAAk3n/n+5j0afiZ/bOzN
-   7LimlGDxP/yJmJJ7nQ6nMRWIQLwVjMnwXzCrTz/7LLGf255ZYtz7h6aXO
-   nzEUgNWDP93YfEZSbSIlK63Osrz1ZMMAsMbH6aoYLYOR24RCC5u1/wo4o
-   qSCTwEcBnKXWNrVhe9aoewmuFYwtVS4hN8YG+V6W2HcF/htwBl7D42tvJ
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="304533020"
-X-IronPort-AV: E=Sophos;i="5.95,164,1661842800"; 
-   d="scan'208";a="304533020"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 11:40:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="953736222"
-X-IronPort-AV: E=Sophos;i="5.95,164,1661842800"; 
-   d="scan'208";a="953736222"
-Received: from lkp-server01.sh.intel.com (HELO 3c15167049b7) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 06 Oct 2022 11:40:39 -0700
-Received: from kbuild by 3c15167049b7 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ogVnS-0000NL-1w;
-        Thu, 06 Oct 2022 18:40:38 +0000
-Date:   Fri, 07 Oct 2022 02:40:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless:for-next] BUILD SUCCESS
- 6b430f72b2bc14fd0ac922dda92eaa51c82e15a4
-Message-ID: <633f2109.2Lfs8Ufri4N/OYsr%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 6 Oct 2022 15:20:56 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93D384E5D
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Oct 2022 12:20:54 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id i7-20020a17090a65c700b0020ad9666a86so5267038pjs.0
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Oct 2022 12:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=itZWwPdDaSKLWFxysGkqkMCHBdnDlLrqJO/idiDOslY=;
+        b=JUsE59scSIqOd3RSs+2ERXty4+RKlbVH8hzJHnoRRXfbL9fbsY7AedyXrqpEYhBjwT
+         PmPPKU5rUEu7JvzYlqV5115l1w/JDWCA42QlLydOFhZtfAF/wuUQ0v7nmCkhWQ3Q8cbr
+         ZguKk4CT2DDUv2zNtUDFc5Cn/taJ9NkOhXS4k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=itZWwPdDaSKLWFxysGkqkMCHBdnDlLrqJO/idiDOslY=;
+        b=unks7xu6nh4kveo75BcF93wIR0XbQvol0IjkI8g/J72p5GNiaCSIWb+LvTDNbkMuoj
+         1shV/Sx5XHyCzMx3fDmM+X0OnqzXm3eeHHzfRLv5VSIgVZbJWhsAGCPiCzp7Zub69FZD
+         7LBbPHZd5DOnE2uoscrUiNZ9AvPEq6WXuKkcK/nIP0DeOl0TeR+PdrPhZhVsUs7nJ/n2
+         OJcvj1dC5M2MpKnUrCMEFqHhfkXLgcumzaQXVavIpu71EfpkqsWw7OXGMjHSLqTvTwr1
+         7p1qamhJ4BcGeF8j9gE/2paayG50KTzFIp60//uldJ7WuYu5OsTj9rkUnR4EqBCOaZEW
+         EHgw==
+X-Gm-Message-State: ACrzQf1KC42TeCXkkwLhuT5YNEBaxfIRASu3vHK/ZNft8/huNnovCIcG
+        hkYBfQXeWU8qZ7DkblNuafZ5Zg==
+X-Google-Smtp-Source: AMsMyM6LjYgbdTj0/rBODYHzW0d0fCW4va1+F14dDNVJxWwaaXNv95GiVv6m9nbEEczNin00+ZXvWg==
+X-Received: by 2002:a17:902:ea06:b0:178:23f7:5a18 with SMTP id s6-20020a170902ea0600b0017823f75a18mr1363172plg.21.1665084054303;
+        Thu, 06 Oct 2022 12:20:54 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id s13-20020a170902ea0d00b0016d72804664sm12690964plg.205.2022.10.06.12.20.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Oct 2022 12:20:53 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Christian Lamparter <chunkeey@googlemail.com>
+Cc:     Kees Cook <keescook@chromium.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Subject: [PATCH] wifi: carl9170: Remove -Warray-bounds exception
+Date:   Thu,  6 Oct 2022 12:20:51 -0700
+Message-Id: <20221006192051.1742930-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 6b430f72b2bc14fd0ac922dda92eaa51c82e15a4  wifi: mt76: fix rate reporting / throughput regression on mt7915 and newer
+GCC-12 emits false positive -Warray-bounds warnings with
+CONFIG_UBSAN_SHIFT (-fsanitize=shift). This is fixed in GCC 13[1],
+and there is top-level Makefile logic to remove -Warray-bounds for
+known-bad GCC versions staring with commit f0be87c42cbd ("gcc-12: disable
+'-Warray-bounds' universally for now").
 
-elapsed time: 723m
+Remove the local work-around.
 
-configs tested: 124
-configs skipped: 4
+[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105679
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/net/wireless/ath/carl9170/Makefile |    5 -----
+ 1 file changed, 5 deletions(-)
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-s390                             allmodconfig
-i386                 randconfig-a016-20221003
-i386                 randconfig-a014-20221003
-alpha                               defconfig
-i386                 randconfig-a011-20221003
-arc                  randconfig-r043-20221006
-x86_64                              defconfig
-i386                 randconfig-a012-20221003
-x86_64                          rhel-8.3-func
-x86_64               randconfig-a011-20221003
-x86_64                    rhel-8.3-kselftests
-i386                 randconfig-a013-20221003
-x86_64               randconfig-a012-20221003
-powerpc                           allnoconfig
-i386                 randconfig-a015-20221003
-i386                                defconfig
-arm                                 defconfig
-s390                                defconfig
-x86_64                           rhel-8.3-syz
-x86_64               randconfig-a015-20221003
-x86_64                         rhel-8.3-kunit
-m68k                             allmodconfig
-arc                  randconfig-r043-20221003
-x86_64                           rhel-8.3-kvm
-s390                             allyesconfig
-x86_64               randconfig-a013-20221003
-arc                              allyesconfig
-x86_64               randconfig-a016-20221003
-s390                 randconfig-r044-20221003
-x86_64               randconfig-a014-20221003
-riscv                randconfig-r042-20221003
-x86_64                               rhel-8.3
-alpha                            allyesconfig
-x86_64                           allyesconfig
-ia64                             allmodconfig
-m68k                             allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-i386                             allyesconfig
-sh                               allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-mips                        bcm47xx_defconfig
-arm                          simpad_defconfig
-arc                        nsim_700_defconfig
-sh                          r7780mp_defconfig
-xtensa                              defconfig
-arc                  randconfig-r043-20221002
-i386                          randconfig-c001
-powerpc                      pcm030_defconfig
-arm                      jornada720_defconfig
-arm                     eseries_pxa_defconfig
-mips                         cobalt_defconfig
-openrisc                            defconfig
-nios2                            alldefconfig
-powerpc                      cm5200_defconfig
-arm                           viper_defconfig
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-arc                           tb10x_defconfig
-um                               alldefconfig
-mips                         bigsur_defconfig
-m68k                            q40_defconfig
-mips                  decstation_64_defconfig
-powerpc                     tqm8548_defconfig
-mips                      loongson3_defconfig
-xtensa                  nommu_kc705_defconfig
-m68k                            mac_defconfig
-powerpc                     taishan_defconfig
-powerpc                       eiger_defconfig
-loongarch                        alldefconfig
-powerpc                 mpc85xx_cds_defconfig
-parisc                generic-64bit_defconfig
-arm                  randconfig-c002-20221002
-x86_64                        randconfig-c001
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-sh                            migor_defconfig
-powerpc                      tqm8xx_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                        warp_defconfig
-powerpc                      makalu_defconfig
-csky                             alldefconfig
-arc                      axs103_smp_defconfig
-mips                            gpr_defconfig
-arm                        clps711x_defconfig
-arm                      integrator_defconfig
-powerpc                     sequoia_defconfig
-
-clang tested configs:
-hexagon              randconfig-r041-20221006
-x86_64               randconfig-a003-20221003
-i386                 randconfig-a005-20221003
-hexagon              randconfig-r045-20221006
-x86_64               randconfig-a002-20221003
-hexagon              randconfig-r045-20221003
-i386                 randconfig-a006-20221003
-s390                 randconfig-r044-20221006
-x86_64               randconfig-a001-20221003
-hexagon              randconfig-r041-20221003
-x86_64               randconfig-a004-20221003
-riscv                randconfig-r042-20221006
-x86_64               randconfig-a006-20221003
-x86_64               randconfig-a005-20221003
-i386                 randconfig-a003-20221003
-i386                 randconfig-a001-20221003
-i386                 randconfig-a002-20221003
-i386                 randconfig-a004-20221003
-powerpc                    mvme5100_defconfig
-powerpc                     ppa8548_defconfig
-x86_64                        randconfig-k001
-powerpc                     powernv_defconfig
-arm                           spitz_defconfig
-i386                             allyesconfig
-powerpc                   bluestone_defconfig
-powerpc                          g5_defconfig
-powerpc                      pmac32_defconfig
-arm                                 defconfig
-powerpc                      ppc44x_defconfig
-
+diff --git a/drivers/net/wireless/ath/carl9170/Makefile b/drivers/net/wireless/ath/carl9170/Makefile
+index 7463baa62fa8..1a81868ce26d 100644
+--- a/drivers/net/wireless/ath/carl9170/Makefile
++++ b/drivers/net/wireless/ath/carl9170/Makefile
+@@ -3,8 +3,3 @@ carl9170-objs := main.o usb.o cmd.o mac.o phy.o led.o fw.o tx.o rx.o
+ carl9170-$(CONFIG_CARL9170_DEBUGFS) += debug.o
+ 
+ obj-$(CONFIG_CARL9170) += carl9170.o
+-
+-# FIXME: temporarily silence -Warray-bounds on non W=1+ builds
+-ifndef KBUILD_EXTRA_WARN
+-CFLAGS_cmd.o += -Wno-array-bounds
+-endif
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.34.1
+
+
