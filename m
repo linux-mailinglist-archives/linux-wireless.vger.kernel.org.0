@@ -2,78 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A60D5F69D5
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Oct 2022 16:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E08DC5F6A69
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Oct 2022 17:17:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231601AbiJFOlH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Oct 2022 10:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
+        id S230498AbiJFPRz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Oct 2022 11:17:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231415AbiJFOlG (ORCPT
+        with ESMTP id S230098AbiJFPRx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Oct 2022 10:41:06 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF3BEAA36E
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Oct 2022 07:41:04 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 296DomuM015125;
-        Thu, 6 Oct 2022 14:41:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Db5btVJDe/SatuCrAfZGfI7N+UArjJmMzaBDzfTo+xM=;
- b=ajKfgCvmFLnHwg4ENP8g+p3PuRQYe5Ven7QgmzxTXR6PrVv0hA2V9YRIWy3i5UD4vhdi
- IsynlmRSUUSgz6/gJROj20R5zQTzCYh2nVTec3+XU39Var2ItfuYC1MT9rzTDqgpcRt+
- jekV7Ra4P+m6UcCpKbliwJvzCHTq+asDDid6cmIZyl3RtsBJSpZk/WbPpVln3lrSLgRD
- lKSfVStGXB6ZknZE8PUwdxEzKppT+xkqYnwkjduw/PGW0lIM3h9VPNlv17ufIodVq3Xy
- +KmGYli6hem2YWsejYKPMMLyY/5yfVJmrak1f//LiU/XcS049za/l6fatXSJOFCli4KA Xg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k1qyksdhp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 06 Oct 2022 14:41:01 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 296Ef1PA018388
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 6 Oct 2022 14:41:01 GMT
-Received: from [10.216.43.141] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 6 Oct 2022
- 07:40:59 -0700
-Message-ID: <d837e231-7704-bdb0-4cc5-89a214d21d3c@quicinc.com>
-Date:   Thu, 6 Oct 2022 20:10:55 +0530
+        Thu, 6 Oct 2022 11:17:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF74DA59A6
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Oct 2022 08:17:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6820B6189D
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Oct 2022 15:17:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3267EC433D7;
+        Thu,  6 Oct 2022 15:17:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665069471;
+        bh=AG5Ac2emcPzRFBBg15HIT6wLr4b0DU2UCLkBxMw6ZLk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NUFdzuX+Ye21uDHHcILeMlbl0RtamHNo9v/T/bwgF9I2Jhac9WE6OI+4kdnXeXCED
+         BPgpsYl6CA5QffNlnrXvGQ7hlUB7l8bJ7xRrOz1XCUbv+9//fwDOmW7VdtbXCSPwUv
+         l2/zNi0kkb4/EurDXZ+h1I1EsW4Srvq5C+O0/Fz7/0aggkAQUKdwTmL4gol06E0d+b
+         H4uduIC958EPVhzPOijs/mgd1DNBUek/cK5MV7DkNVkFtFzcbuf4vfyCuPh/KbeR5G
+         ASBZX7zU2b/aN0SVPTuTewzPwo3Qh2LW+tBxXtoqEjrvmrXJ5dz/tB10F0DidYxyF9
+         U3dk++1QgSGew==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: ath11k: avoid deadlock during regulatory update in ath11k_regd_update()
+Date:   Thu,  6 Oct 2022 18:17:47 +0300
+Message-Id: <20221006151747.13757-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH 05/28] wifi: cfg80211: support reporting failed links
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20221005145226.2224328320e7.I53966b9c7572fe1a08a7dc02ed29be9e1b0467fc@changeid>
- <0e354734-6f6b-8170-b453-e699fc9962e5@quicinc.com>
- <0fd2932c29adcc6be5fe5528d297b7deb0e0617b.camel@sipsolutions.net>
- <13b44ce9-e000-cdcf-c057-b176edb6d31f@quicinc.com>
- <6d0333ef30624ef285c01dc2dd27da76450d613e.camel@sipsolutions.net>
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-In-Reply-To: <6d0333ef30624ef285c01dc2dd27da76450d613e.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: wyP0MSa59xFSYxem4_5hUQX7uwNRJY7x
-X-Proofpoint-GUID: wyP0MSa59xFSYxem4_5hUQX7uwNRJY7x
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-06_03,2022-10-06_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 suspectscore=0 phishscore=0 spamscore=0 priorityscore=1501
- bulkscore=0 mlxscore=0 impostorscore=0 mlxlogscore=562 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210060085
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,29 +50,92 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Wen Gong <quic_wgong@quicinc.com>
 
-On 10/6/2022 4:41 PM, Johannes Berg wrote:
-> Right, but is there a fundamental difference between
->   "hey I roamed to this AP MLD with links 1, 2 and 5"
->   (with the right BSSIDs for the links etc.)
->
-> and
->
->   "hey I roamed to this AP MLD and I tried links 1, 2, 3, 4, 5 but only
-> 1, 2 and 5 were established"
->
-> ?
+Running this test in a loop it is easy to reproduce an rtnl deadlock:
 
-supplicant must validate MLO Link KDEs(includes RSNE and RSNXE) for all 
-the negotiated links but MLO GTK/IGTK/BIGTK only for accepted links 
-while processing 3/4 msg.
+iw reg set FI
+ifconfig wlan0 down
 
-So, during roaming if EAPOL 4HS is offload to supplicant it should know 
-the requested and accepted links information.
+What happens is that thread A (workqueue) tries to update the regulatory:
 
-non-AP MLD needs to select common AKM across all the links. The MLO Link 
-KDEs validation helps to avoid downgrade attacks.
+    try to acquire the rtnl_lock of ar->regd_update_work
 
-- veeru
+    rtnl_lock+0x17/0x20
+    ath11k_regd_update+0x15a/0x260 [ath11k]
+    ath11k_regd_update_work+0x15/0x20 [ath11k]
+    process_one_work+0x228/0x670
+    worker_thread+0x4d/0x440
+    kthread+0x16d/0x1b0
+    ret_from_fork+0x22/0x30
 
+And thread B (ifconfig) tries to stop the interface:
+
+    try to cancel_work_sync(&ar->regd_update_work) in ath11k_mac_op_stop().
+    ifconfig  3109 [003]  2414.232506: probe:
+
+    ath11k_mac_op_stop: (ffffffffc14187a0)
+    drv_stop+0x30 ([mac80211])
+    ieee80211_do_stop+0x5d2 ([mac80211])
+    ieee80211_stop+0x3e ([mac80211])
+    __dev_close_many+0x9e ([kernel.kallsyms])
+    __dev_change_flags+0xbe ([kernel.kallsyms])
+    dev_change_flags+0x23 ([kernel.kallsyms])
+    devinet_ioctl+0x5e3 ([kernel.kallsyms])
+    inet_ioctl+0x197 ([kernel.kallsyms])
+    sock_do_ioctl+0x4d ([kernel.kallsyms])
+    sock_ioctl+0x264 ([kernel.kallsyms])
+    __x64_sys_ioctl+0x92 ([kernel.kallsyms])
+    do_syscall_64+0x3a ([kernel.kallsyms])
+    entry_SYSCALL_64_after_hwframe+0x63 ([kernel.kallsyms])
+    __GI___ioctl+0x7 (/lib/x86_64-linux-gnu/libc-2.23.so)
+
+The sequence of deadlock is:
+
+1. Thread B calls rtnl_lock().
+
+2. Thread A starts to run and calls rtnl_lock() from within
+   ath11k_regd_update_work(), then enters wait state because the lock is owned by
+   thread B.
+
+3. Thread B continues to run and tries to call
+   cancel_work_sync(&ar->regd_update_work), but thread A is in
+   ath11k_regd_update_work() waiting for rtnl_lock(). So cancel_work_sync()
+   forever waits for ath11k_regd_update_work() to finish and we have a deadlock.
+
+Fix this by switching from using regulatory_set_wiphy_regd_sync() to
+regulatory_set_wiphy_regd(). Now cfg80211 will schedule another workqueue which
+handles the locking on it's own. So the ath11k workqueue can simply exit without
+taking any locks, avoiding the deadlock.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+[kvalo: improve commit log]
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/reg.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
+index 7ee3ff69dfc8..6fae4e61ede7 100644
+--- a/drivers/net/wireless/ath/ath11k/reg.c
++++ b/drivers/net/wireless/ath/ath11k/reg.c
+@@ -287,11 +287,7 @@ int ath11k_regd_update(struct ath11k *ar)
+ 		goto err;
+ 	}
+ 
+-	rtnl_lock();
+-	wiphy_lock(ar->hw->wiphy);
+-	ret = regulatory_set_wiphy_regd_sync(ar->hw->wiphy, regd_copy);
+-	wiphy_unlock(ar->hw->wiphy);
+-	rtnl_unlock();
++	ret = regulatory_set_wiphy_regd(ar->hw->wiphy, regd_copy);
+ 
+ 	kfree(regd_copy);
+ 
+
+base-commit: 023baf1318ef21442fab3842bf03883bc81223e0
+-- 
+2.30.2
 
