@@ -2,185 +2,227 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B565F793E
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Oct 2022 15:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9396A5F798A
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Oct 2022 16:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbiJGNup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Oct 2022 09:50:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37938 "EHLO
+        id S229946AbiJGOI0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Oct 2022 10:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229999AbiJGNuo (ORCPT
+        with ESMTP id S229445AbiJGOIU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Oct 2022 09:50:44 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A528C822B
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Oct 2022 06:50:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=MSqOsuBTlPigFAA/oRzEnJhM/dqlXWUPfN4/TDP6vC4=;
-        t=1665150643; x=1666360243; b=MnaoIQJzwlvChDKJOJJf7rpteZUJH8dSnqdOAxDvVrNF7K3
-        IQ4TToFIhqnCInOXKJkQjcc6oLuqW5kMYymKhzB8BTqrgIWBaYnnrN9aCucUhRb+cv6Sf16FZB68B
-        +ZDtDf9dfSEPiEy8ZdwPYTnbtGL7VePVIbwEYYeEshmRoY48Lakf/pfejtFEcLGLI1/lvZhshbzKl
-        JUJ2uFQnSy6W8ehfhcAhiH1AG9EbyzeTn1s05xXX+bS1gkTTZi4PCREneC7IATL3wAJd2UHzC9BWd
-        3HWcGJzPNTBdHb+m/e5ILv1YYN26kLeMQhV2xekRF7hpPeujWPz076xsWYMdt5Fg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ognkP-000OuD-0s;
-        Fri, 07 Oct 2022 15:50:41 +0200
-Message-ID: <e9943adb7c7cea0c2dc46039918e30d857b1ad53.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] cfg80211: modify MLD ID params about RNR element
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Paul Zhang <quic_paulz@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 07 Oct 2022 15:50:40 +0200
-In-Reply-To: <1656991169-25910-1-git-send-email-quic_paulz@quicinc.com>
-References: <1656991169-25910-1-git-send-email-quic_paulz@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Fri, 7 Oct 2022 10:08:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FBC120EE1;
+        Fri,  7 Oct 2022 07:08:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2A6961D16;
+        Fri,  7 Oct 2022 14:08:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E7C433C1;
+        Fri,  7 Oct 2022 14:08:11 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nfYgePI9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1665151688;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GwMExxyHWRhjupCjy80ATuiTjwid+3186g/nbW9UcWo=;
+        b=nfYgePI9KM8BlGnmbR3ouUoTgbqX0bmg+MHxz9qox2mDg1Ao4QNQA34F1ojE6QWVH7lnMZ
+        JCnOmfX2/22xviCjt9MflZdzSKJ6jqjmdSwH6RCVEhuoe4krJ9q8+B6hn4YxZ0DzwoUloS
+        EW51bMUr/eMjeREL5G2BmpFXN0LLrR0=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 7db71c1d (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Fri, 7 Oct 2022 14:08:08 +0000 (UTC)
+Date:   Fri, 7 Oct 2022 08:07:58 -0600
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "patches@lists.linux.dev" <patches@lists.linux.dev>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph =?utf-8?Q?B=C3=B6hmwalder?= 
+        <christoph.boehmwalder@linbit.com>, Christoph Hellwig <hch@lst.de>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Dave Airlie <airlied@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Westphal <fw@strlen.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Hugh Dickins <hughd@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Jan Kara <jack@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        KP Singh <kpsingh@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Marco Elver <elver@google.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Graf <tgraf@suug.ch>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>,
+        Yury Norov <yury.norov@gmail.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH v3 3/5] treewide: use get_random_u32() when possible
+Message-ID: <Y0Ayvov/KQmrIwTS@zx2c4.com>
+References: <20221006165346.73159-1-Jason@zx2c4.com>
+ <20221006165346.73159-4-Jason@zx2c4.com>
+ <848ed24c-13ef-6c38-fd13-639b33809194@csgroup.eu>
+ <CAHmME9raQ4E00r9r8NyWJ17iSXE_KniTG0onCNAfMmfcGar1eg@mail.gmail.com>
+ <f10fcfbf-2da6-cf2d-6027-fbf8b52803e9@csgroup.eu>
+ <6396875c-146a-acf5-dd9e-7f93ba1b4bc3@csgroup.eu>
+ <CAHmME9pE4saqnwxhsAwt-xegYGjsavPOGnHCbZhUXD7kaJ+GAA@mail.gmail.com>
+ <501b0fc3-6c67-657f-781e-25ee0283bc2e@csgroup.eu>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <501b0fc3-6c67-657f-781e-25ee0283bc2e@csgroup.eu>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-07-05 at 11:19 +0800, Paul Zhang wrote:
->=20
-> Signed-off-by: Paul Zhang <quic_paulz@quicinc.com>
-> ---
->  include/linux/ieee80211.h |   9 +++
->  net/wireless/scan.c       | 159 ++++++++++++++++++++++++++++++++++++++++=
-++++--
->  2 files changed, 162 insertions(+), 6 deletions(-)
->=20
-> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-> index 559b6c6..0e547b5 100644
-> --- a/include/linux/ieee80211.h
-> +++ b/include/linux/ieee80211.h
-> @@ -3996,6 +3996,15 @@ static inline bool for_each_element_completed(cons=
-t struct element *element,
->  #define IEEE80211_TBTT_INFO_OFFSET_BSSID_BSS_PARAM		9
->  #define IEEE80211_TBTT_INFO_OFFSET_BSSID_SSSID_BSS_PARAM	13
-> =20
-> +/*
-> + * TBTT Information field, based on Draft P802.11be_D2.0
-> + * section 9.4.2.170.2
-> + */
-> +#define IEEE80211_TBTT_INFO_BSSID_SSID_BSS_PARAM_PSD		13
-> +#define IEEE80211_TBTT_INFO_BSSID_SSID_BSS_PARAM_PSD_MLD_PARAM	16
-> +/* TBTT information header(2) + Operating class(1) + Channel number(1) *=
-/
+On Fri, Oct 07, 2022 at 04:57:24AM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 07/10/2022 à 01:36, Jason A. Donenfeld a écrit :
+> > On 10/6/22, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+> >>
+> >>
+> >> Le 06/10/2022 à 19:31, Christophe Leroy a écrit :
+> >>>
+> >>>
+> >>> Le 06/10/2022 à 19:24, Jason A. Donenfeld a écrit :
+> >>>> Hi Christophe,
+> >>>>
+> >>>> On Thu, Oct 6, 2022 at 11:21 AM Christophe Leroy
+> >>>> <christophe.leroy@csgroup.eu> wrote:
+> >>>>> Le 06/10/2022 à 18:53, Jason A. Donenfeld a écrit :
+> >>>>>> The prandom_u32() function has been a deprecated inline wrapper around
+> >>>>>> get_random_u32() for several releases now, and compiles down to the
+> >>>>>> exact same code. Replace the deprecated wrapper with a direct call to
+> >>>>>> the real function. The same also applies to get_random_int(), which is
+> >>>>>> just a wrapper around get_random_u32().
+> >>>>>>
+> >>>>>> Reviewed-by: Kees Cook <keescook@chromium.org>
+> >>>>>> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk> # for sch_cake
+> >>>>>> Acked-by: Chuck Lever <chuck.lever@oracle.com> # for nfsd
+> >>>>>> Reviewed-by: Jan Kara <jack@suse.cz> # for ext4
+> >>>>>> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> >>>>>> ---
+> >>>>>
+> >>>>>> diff --git a/arch/powerpc/kernel/process.c
+> >>>>>> b/arch/powerpc/kernel/process.c
+> >>>>>> index 0fbda89cd1bb..9c4c15afbbe8 100644
+> >>>>>> --- a/arch/powerpc/kernel/process.c
+> >>>>>> +++ b/arch/powerpc/kernel/process.c
+> >>>>>> @@ -2308,6 +2308,6 @@ void notrace __ppc64_runlatch_off(void)
+> >>>>>>     unsigned long arch_align_stack(unsigned long sp)
+> >>>>>>     {
+> >>>>>>         if (!(current->personality & ADDR_NO_RANDOMIZE) &&
+> >>>>>> randomize_va_space)
+> >>>>>> -             sp -= get_random_int() & ~PAGE_MASK;
+> >>>>>> +             sp -= get_random_u32() & ~PAGE_MASK;
+> >>>>>>         return sp & ~0xf;
+> >>>>>
+> >>>>> Isn't that a candidate for prandom_u32_max() ?
+> >>>>>
+> >>>>> Note that sp is deemed to be 16 bytes aligned at all time.
+> >>>>
+> >>>> Yes, probably. It seemed non-trivial to think about, so I didn't. But
+> >>>> let's see here... maybe it's not too bad:
+> >>>>
+> >>>> If PAGE_MASK is always ~(PAGE_SIZE-1), then ~PAGE_MASK is
+> >>>> (PAGE_SIZE-1), so prandom_u32_max(PAGE_SIZE) should yield the same
+> >>>> thing? Is that accurate? And holds across platforms (this comes up a
+> >>>> few places)? If so, I'll do that for a v4.
+> >>>>
+> >>>
+> >>> On powerpc it is always (from arch/powerpc/include/asm/page.h) :
+> >>>
+> >>> /*
+> >>>    * Subtle: (1 << PAGE_SHIFT) is an int, not an unsigned long. So if we
+> >>>    * assign PAGE_MASK to a larger type it gets extended the way we want
+> >>>    * (i.e. with 1s in the high bits)
+> >>>    */
+> >>> #define PAGE_MASK      (~((1 << PAGE_SHIFT) - 1))
+> >>>
+> >>> #define PAGE_SIZE        (1UL << PAGE_SHIFT)
+> >>>
+> >>>
+> >>> So it would work I guess.
+> >>
+> >> But taking into account that sp must remain 16 bytes aligned, would it
+> >> be better to do something like ?
+> >>
+> >> 	sp -= prandom_u32_max(PAGE_SIZE >> 4) << 4;
+> >>
+> >> 	return sp;
+> > 
+> > Does this assume that sp is already aligned at the beginning of the
+> > function? I'd assume from the function's name that this isn't the
+> > case?
+> 
+> Ah you are right, I overlooked it.
 
-might be easier to have a struct for this, and then
+So I think to stay on the safe side, I'm going to go with
+`prandom_u32_max(PAGE_SIZE)`. Sound good?
 
-> +#define IEEE80211_NBR_AP_INFO_LEN	4
-
-becomes a sizeof()?
-
-This code all makes me nervous again because it's over-the-air parsing
-code I don't understand immediately :-)
-
-> +	memcpy(pos, rnr, 2);
-> +	pos +=3D 2;
-> +	data =3D elem->data;
-> +	while (data + IEEE80211_NBR_AP_INFO_LEN <=3D rnr_end) {
-> +		tbtt_type =3D u8_get_bits(data[0],
-> +					IEEE80211_AP_INFO_TBTT_HDR_TYPE);
-> +		tbtt_count =3D u8_get_bits(data[0],
-> +					 IEEE80211_AP_INFO_TBTT_HDR_COUNT);
-> +		tbtt_len =3D data[1];
-> +
-> +		copy_len =3D tbtt_len * (tbtt_count + 1) +
-> +			   IEEE80211_NBR_AP_INFO_LEN;
-> +		if (data + copy_len > rnr_end)
-> +			break;
-> +
-> +		if (tbtt_len >=3D
-> +		    IEEE80211_TBTT_INFO_BSSID_SSID_BSS_PARAM_PSD_MLD_PARAM)
-> +			mld_pos =3D
-> +			    IEEE80211_TBTT_INFO_BSSID_SSID_BSS_PARAM_PSD;
-> +		else
-> +			mld_pos =3D 0;
-> +		/* If MLD params do not exist, copy this neighbor AP
-> +		 * information field.
-> +		 * Draft P802.11be_D2.0, tbtt_type value 1, 2 and 3
-> +		 * are reserved.
-> +		 */
-> +		if (mld_pos =3D=3D 0 || tbtt_type !=3D 0) {
-> +			memcpy(pos, data, copy_len);
-> +			pos +=3D copy_len;
-> +			data +=3D copy_len;
-> +			continue;
-> +		}
-> +		/* If MLD params exists, copy the 4 bytes fixed field.
-> +		 * tbtt_info_field is used to modify the tbtt_count field later.
-> +		 */
-> +		memcpy(pos, data, IEEE80211_NBR_AP_INFO_LEN);
-> +		tbtt_info_field =3D pos;
-> +		pos +=3D IEEE80211_NBR_AP_INFO_LEN;
-> +		data +=3D IEEE80211_NBR_AP_INFO_LEN;
-> +
-> +		tbtt_info_field_count =3D 0;
-> +		for (i =3D 0; i < tbtt_count + 1; i++) {
-> +			mld_id =3D data[mld_pos];
-> +			/* Refer to Draft P802.11be_D2.0
-> +			 * 9.4.2.170.2 Neighbor AP Information field about
-> +			 * MLD parameters subfield
-> +			 */
-> +			if (mld_id =3D=3D 0) {
-> +				/* Skip this TBTT information since this
-> +				 * reported AP is affiliated with the same MLD
-> +				 * of the reporting AP who sending the frame
-> +				 * carrying this element.
-> +				 */
-> +				tbtt_info_field_len +=3D tbtt_len;
-> +				data +=3D tbtt_len;
-> +				tbtt_info_field_count++;
-> +			} else if (mld_id =3D=3D bssid_index) {
-> +				/* Copy this TBTT information and change MLD
-> +				 * to 0 as this reported AP is affiliated with
-> +				 * the same MLD of the nontransmitted BSSID.
-> +				 */
-> +				memcpy(pos, data, tbtt_len);
-> +				pos[mld_pos] =3D 0;
-> +				data +=3D tbtt_len;
-> +				pos +=3D tbtt_len;
-> +			} else {
-> +				/* Just copy this TBTT information */
-> +				memcpy(pos, data, tbtt_len);
-> +				data +=3D tbtt_len;
-> +				pos +=3D tbtt_len;
-> +			}
-> +		}
-> +		if (tbtt_info_field_count =3D=3D (tbtt_count + 1)) {
-> +			/* If all the TBTT informations are skipped, then also
-> +			 * revert the 4 bytes fixed field which has been copied.
-> +			 */
-> +			pos -=3D IEEE80211_NBR_AP_INFO_LEN;
-> +			tbtt_info_field_len +=3D IEEE80211_NBR_AP_INFO_LEN;
-> +		} else {
-> +			/* Modify the tbtt_count field if some TBTT informations
-> +			 * are skipped.
-> +			 */
-> +			u8p_replace_bits(&tbtt_info_field[0],
-> +					 tbtt_count - tbtt_info_field_count,
-> +					 IEEE80211_AP_INFO_TBTT_HDR_COUNT);
-> +		}
-> +	}
-> +
-> +	/* Sanity check if any parsing issue happens */
-> +	if (data !=3D rnr_end)
-> +		return 0;
-
-That can only happen in the case of the 'break' above, so maybe just
-return 0 immediately there?
-
-johannes
+Jason
