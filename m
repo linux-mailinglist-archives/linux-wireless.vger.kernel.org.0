@@ -2,80 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CE15F76FE
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Oct 2022 12:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4494A5F7806
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Oct 2022 14:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbiJGKkL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Oct 2022 06:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39782 "EHLO
+        id S229538AbiJGMiX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Oct 2022 08:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229652AbiJGKkG (ORCPT
+        with ESMTP id S229452AbiJGMiW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Oct 2022 06:40:06 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0634C13FA4
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Oct 2022 03:39:58 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 297AdLesD001230, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 297AdLesD001230
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 7 Oct 2022 18:39:21 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 7 Oct 2022 18:39:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 7 Oct 2022 18:39:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::402d:f52e:eaf0:28a2]) by
- RTEXMBS04.realtek.com.tw ([fe80::402d:f52e:eaf0:28a2%5]) with mapi id
- 15.01.2375.007; Fri, 7 Oct 2022 18:39:49 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Timlee <timlee@realtek.com>, Kevin Yang <kevin_yang@realtek.com>
-Subject: pull request: rtw89: 8852c: update fw to v0.27.56.1
-Thread-Topic: pull request: rtw89: 8852c: update fw to v0.27.56.1
-Thread-Index: AQHY2jkfiGGzjUawtEacVS1KDuoXZA==
-Date:   Fri, 7 Oct 2022 10:39:49 +0000
-Message-ID: <3e31775b3916b4d9300e6156564dc80f889c4b8b.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.69.151]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzcg5LiK5Y2IIDA0OjU0OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9429BC6822470241B6E003A2AF80F4C2@realtek.com>
-Content-Transfer-Encoding: base64
+        Fri, 7 Oct 2022 08:38:22 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43456D0186
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Oct 2022 05:38:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=oekvfKdZ5+JLCfO7EMXqb2XhL5ocen73EQr15ax3uHg=;
+        t=1665146300; x=1666355900; b=pXu9CGd4ktJTAloltHOYGUwaSNqJKAFRFiLOjL6lPqMliOR
+        rPU2ZoifOX1VEeI3D78Y2OigygfW6qZ6RH8lpRZYrlYlqsUOjBUu214G+VjHQbmSdA+aCn2xvg6+f
+        UX7R2Wx/n8GhxEC2HRsKi5buwN31E/NcCWLLG1KtTTGsS9ezEocWGKjy7FIHeNZoedeqXgqDwCc0/
+        IFH/dtHLiTwUeEJ+kxf5y2HCZuzUkOQmjyy79C0tp4gpm8Zj1q23ERBzb7d7MLl7S2gUCtN/RCoHh
+        KBsortzTefy4T7MLXhLlT3qUEh08bDjWaZDiaeKtk7Zwp2y6RAIwQhX+lOxedeCA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ogmcL-000NMS-0x;
+        Fri, 07 Oct 2022 14:38:17 +0200
+Message-ID: <972da18c889300252656aa53cc8d9e70d1e90174.camel@sipsolutions.net>
+Subject: Re: [PATCH 6.1 1/2] wifi: cfg80211: fix
+ ieee80211_data_to_8023_exthdr handling of small packets
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     Chad Monroe <chad.monroe@smartrg.com>
+Date:   Fri, 07 Oct 2022 14:38:16 +0200
+In-Reply-To: <20221007090509.18503-1-nbd@nbd.name>
+References: <20221007090509.18503-1-nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGksDQoNClVwZGF0ZSA4ODUyYyBmaXJtd2FyZSBvZiBydHc4OSBkcml2ZXIgdG8gdjAuMjcuNTYu
-MQ0KDQpUaGFuayB5b3UNClBpbmctS2UNCg0KLS0tDQpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2lu
-Y2UgY29tbWl0IGQyYWFjNjNiODM4MWMwNjMzZGUwMDQ3NmE3ZjNkOGY0MzZlYTRiYzU6DQoNCiAg
-cnR3ODk6IDg4NTJjOiB1cGRhdGUgZncgdG8gdjAuMjcuNTYuMSAoMjAyMi0xMC0wNyAxODozNTo0
-NyArMDgwMCkNCg0KYXJlIGF2YWlsYWJsZSBpbiB0aGUgR2l0IHJlcG9zaXRvcnkgYXQ6DQoNCiAg
-aHR0cHM6Ly9naXRodWIuY29tL3Brc2hpaC9saW51eC1maXJtd2FyZS5naXQgDQoNCmZvciB5b3Ug
-dG8gZmV0Y2ggY2hhbmdlcyB1cCB0byBkMmFhYzYzYjgzODFjMDYzM2RlMDA0NzZhN2YzZDhmNDM2
-ZWE0YmM1Og0KDQogIHJ0dzg5OiA4ODUyYzogdXBkYXRlIGZ3IHRvIHYwLjI3LjU2LjEgKDIwMjIt
-MTAtMDcgMTg6MzU6NDcgKzA4MDApDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0K
+On Fri, 2022-10-07 at 11:05 +0200, Felix Fietkau wrote:
+> STP topology change notification packets only have a payload of 7 bytes,
+> so they get dropped due to the skb->len < hdrlen + 8 check.
+> Fix this by removing skb->len based checks and instead check the return c=
+ode
+> on the skb_copy_bits calls.
+>=20
+> Fixes: 2d1c304cb2d5 ("cfg80211: add function for 802.3 conversion with se=
+parate output buffer")
+> Reported-by: Chad Monroe <chad.monroe@smartrg.com>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  net/wireless/util.c | 34 +++++++++++++++++-----------------
+>  1 file changed, 17 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/net/wireless/util.c b/net/wireless/util.c
+> index 01493568a21d..35f630c6de11 100644
+> --- a/net/wireless/util.c
+> +++ b/net/wireless/util.c
+> @@ -559,8 +559,6 @@ int ieee80211_data_to_8023_exthdr(struct sk_buff *skb=
+, struct ethhdr *ehdr,
+>  		return -1;
+> =20
+>  	hdrlen =3D ieee80211_hdrlen(hdr->frame_control) + data_offset;
+> -	if (skb->len < hdrlen + 8)
+> -		return -1;
+
+Can't decide if I'm happy with that vs. just dropping the "+ 8" ...
+
+On the one hand, we already assume at least that the header is in the
+linear portion for when we access it, but on the other hand it feels
+safer to keep the check?
+
+> @@ -628,16 +629,15 @@ int ieee80211_data_to_8023_exthdr(struct sk_buff *s=
+kb, struct ethhdr *ehdr,
+>  		break;
+>  	}
+> =20
+> -	skb_copy_bits(skb, hdrlen, &payload, sizeof(payload));
+> -	tmp.h_proto =3D payload.proto;
+> -
+> -	if (likely((!is_amsdu && ether_addr_equal(payload.hdr, rfc1042_header) =
+&&
+> +	if (likely(skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) =3D=3D=
+ 0) &&
+> +	    likely((!is_amsdu && ether_addr_equal(payload.hdr, rfc1042_header) =
+&&
+>  		    tmp.h_proto !=3D htons(ETH_P_AARP) &&
+>  		    tmp.h_proto !=3D htons(ETH_P_IPX)) ||
+>  		   ether_addr_equal(payload.hdr, bridge_tunnel_header))) {
+>  		/* remove RFC1042 or Bridge-Tunnel encapsulation and
+>  		 * replace EtherType */
+>  		hdrlen +=3D ETH_ALEN + 2;
+> +		tmp.h_proto =3D payload.proto;
+
+As you can see on the last line, this is broken.
+
+Double likely() also seems weird.
+
+I think it needs to be
+
++       if (likely(skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) =
+=3D=3D 0 &&
++                  (!is_amsdu && ether_addr_equal(payload.hdr, rfc1042_head=
+er) &&
++                   payload.proto !=3D htons(ETH_P_AARP) &&
++                   payload.proto !=3D htons(ETH_P_IPX)) ||
+
+
+but better if you check and resubmit.
+
+johannes
