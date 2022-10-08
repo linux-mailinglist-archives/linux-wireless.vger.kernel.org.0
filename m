@@ -1,96 +1,188 @@
 Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B695F8149
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 01:39:02 +0200 (CEST)
+Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB965F81E9
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 03:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbiJGXjB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Oct 2022 19:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55002 "EHLO
+        id S229778AbiJHB32 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Oct 2022 21:29:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbiJGXi5 (ORCPT
+        with ESMTP id S229468AbiJHB3Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Oct 2022 19:38:57 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 198599F75A
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Oct 2022 16:38:56 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 297NYud3023951;
-        Fri, 7 Oct 2022 23:38:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=8I1cW7/4yhg0Og0d1xf5jllHlyekKBtaAu9Evb6nFEc=;
- b=WcrTr2eH47McUL74/v2LOhJ/drYDn8LhJ29OGD28/aX+F9bisCE7RxnGCekTp1VjVfoS
- d1a0nEjfhLL84RI3pSjxBNgHyYF3pttqjDOnN1+SGBXM2DJ64Ruqu0AylCC3kB9C1jaM
- mLvyeSlsGIeb8efisT7rC1zHhN8G4FnYmv+iHuu/OWigeLH05WlwvudUCr4jr5o+Km5N
- vvnnpGaiDoegkCGz///ZZfN1fym+X6a+b9v7OY5JLktD3tWAcSINBx7AAPSHj/Hn8XAK
- xxfg16X48YqWzm/a3bAvAWLZHAmv4lYYq/x5XG4y9ACdkfl2syuFI615uRZ/RDvSz3fV Pw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k2a7qta9s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 07 Oct 2022 23:38:51 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 297Nco8R028849
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 7 Oct 2022 23:38:50 GMT
-Received: from [10.110.6.63] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 7 Oct 2022
- 16:38:50 -0700
-Message-ID: <014706d3-9f1b-cf13-5bca-67bfe7dd2207@quicinc.com>
-Date:   Fri, 7 Oct 2022 16:38:49 -0700
+        Fri, 7 Oct 2022 21:29:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDADBC604;
+        Fri,  7 Oct 2022 18:29:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 60D8FB8248E;
+        Sat,  8 Oct 2022 01:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C01C433C1;
+        Sat,  8 Oct 2022 01:29:12 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="F0WFV840"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1665192550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2a2X1YlfkZ0pGgKe1BT3qPauqYJUuDonzfwdbODwUj0=;
+        b=F0WFV8408bfDyb840yWHYb2sS5Uszq0PMkkmtmrVRBUNL2FY49DLuZ3A8VZX01cjH92PRw
+        963/yLDTfSbPjK9v/cSx6ClQtvwOaP31xlyhs5+LtAOzyMXtRqv5atZ8HOk8wnFIOFKYJl
+        weXSG5WPTsM48QIVGdJf4b19sbZPAzo=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 08b122db (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Sat, 8 Oct 2022 01:29:09 +0000 (UTC)
+Date:   Fri, 7 Oct 2022 19:28:59 -0600
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     "Darrick J. Wong" <djwong@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph =?utf-8?Q?B=C3=B6hmwalder?= 
+        <christoph.boehmwalder@linbit.com>, Christoph Hellwig <hch@lst.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Dave Airlie <airlied@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Westphal <fw@strlen.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Hugh Dickins <hughd@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Jan Kara <jack@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        KP Singh <kpsingh@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Marco Elver <elver@google.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Graf <tgraf@suug.ch>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>,
+        Yury Norov <yury.norov@gmail.com>,
+        dri-devel@lists.freedesktop.org, kasan-dev@googlegroups.com,
+        kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mm@kvack.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-nvme@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        loongarch@lists.linux.dev, netdev@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH v4 2/6] treewide: use prandom_u32_max() when possible
+Message-ID: <Y0DSW4AAX/yA3CdI@zx2c4.com>
+References: <20221007180107.216067-1-Jason@zx2c4.com>
+ <20221007180107.216067-3-Jason@zx2c4.com>
+ <Y0CXYjV8qMpJxxBa@magnolia>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH 6/8] wifi: ath11k: initialize hw_ops for IPQ5018
-Content-Language: en-US
-To:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-        <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Sriram R <quic_srirrama@quicinc.com>
-References: <20221006105913.18356-1-quic_kathirve@quicinc.com>
- <20221006105913.18356-7-quic_kathirve@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20221006105913.18356-7-quic_kathirve@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: C6HL-XiCgXwWjUAVdRr5JV9aA0il5TqW
-X-Proofpoint-ORIG-GUID: C6HL-XiCgXwWjUAVdRr5JV9aA0il5TqW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-07_04,2022-10-07_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- mlxscore=0 suspectscore=0 phishscore=0 mlxlogscore=650 clxscore=1015
- spamscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210070140
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y0CXYjV8qMpJxxBa@magnolia>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/6/2022 3:59 AM, Karthikeyan Kathirvel wrote:
-> The ipq5018_ops is intialized for IPQ5018. This is different from
-
-nit: s/intialized /initialized /
-
-> other platforms.
+On Fri, Oct 07, 2022 at 02:17:22PM -0700, Darrick J. Wong wrote:
+> On Fri, Oct 07, 2022 at 12:01:03PM -0600, Jason A. Donenfeld wrote:
+> > Rather than incurring a division or requesting too many random bytes for
+> > the given range, use the prandom_u32_max() function, which only takes
+> > the minimum required bytes from the RNG and avoids divisions.
+> > 
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > Reviewed-by: KP Singh <kpsingh@kernel.org>
+> > Reviewed-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com> # for drbd
+> > Reviewed-by: Jan Kara <jack@suse.cz> # for ext2, ext4, and sbitmap
+> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> > ---
 > 
-> Tested-on : IPQ5018 hw1.0 AHB WLAN.HK.2.5.0.1-01192-QCAHKSWPL_SILICONZ-1 v1
+> <snip, skip to the xfs part>
 > 
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-> ---
+> > diff --git a/fs/xfs/libxfs/xfs_alloc.c b/fs/xfs/libxfs/xfs_alloc.c
+> > index e2bdf089c0a3..6261599bb389 100644
+> > --- a/fs/xfs/libxfs/xfs_alloc.c
+> > +++ b/fs/xfs/libxfs/xfs_alloc.c
+> > @@ -1520,7 +1520,7 @@ xfs_alloc_ag_vextent_lastblock(
+> >  
+> >  #ifdef DEBUG
+> >  	/* Randomly don't execute the first algorithm. */
+> > -	if (prandom_u32() & 1)
+> > +	if (prandom_u32_max(2))
+> 
+> I wonder if these usecases (picking 0 or 1 randomly) ought to have a
+> trivial wrapper to make it more obvious that we want boolean semantics:
+> 
+> static inline bool prandom_bool(void)
+> {
+> 	return prandom_u32_max(2);
+> }
+> 
+> 	if (prandom_bool())
+> 		use_crazy_algorithm(...);
+> 
 
+Yea, I've had a lot of similar ideas there. Part of doing this (initial)
+patchset is to get an intuitive sense of what's actually used and how
+often. On my list for investigation are a get_random_u32_max() to return
+uniform numbers by rejection sampling (prandom_u32_max() doesn't do
+that uniformly) and adding a function for booleans or bits < 8. Possible
+ideas for the latter include:
+
+   bool get_random_bool(void);
+   bool get_random_bool(unsigned int probability);
+   bool get_random_bits(u8 bits_less_than_eight);
+
+With the core of all of those involving the same batching as the current
+get_random_u{8,16,32,64}() functions, but also buffering the latest byte
+and managing how many bits are left in it that haven't been shifted out
+yet.
+
+So API-wise, there are a few ways to go, so hopefully this series will
+start to give a good picture of what's needed.
+
+One thing I've noticed is that most of the prandom_u32_max(2)
+invocations are in debug or test code, so that doesn't need to be
+optimized. But kfence does that too in its hot path, so a
+get_random_bool() function there would in theory lead to an 8x speed-up.
+But I guess I just have to try some things and see.
+
+Anyway, that is a long way to say, I share you curiosity on the matter
+and I'm looking into it.
+
+Jason
