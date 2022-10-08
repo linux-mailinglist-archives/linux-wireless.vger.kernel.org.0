@@ -2,30 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31C775F84E3
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 13:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 933E15F851B
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 13:49:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbiJHLJc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Oct 2022 07:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45346 "EHLO
+        id S229593AbiJHLt4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Oct 2022 07:49:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbiJHLJa (ORCPT
+        with ESMTP id S229379AbiJHLty (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Oct 2022 07:09:30 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5D05481FE;
-        Sat,  8 Oct 2022 04:09:28 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1665227367; bh=lJSY4J+C5oo5opE5ORO0r3nywmHEQiHiYcIaI/WpDGQ=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=S8OT1XLTp0+3zOP/XglmVMZRl7xsVIqBbSO/U+15RUSN3POlJPbTyfiajSLpGRvYM
-         Y4yf0WZCI+CA5HhE6PQDSkq2e0TI1YKWkARInRrkzmhnWFxp677xlapvCmflwD8ap/
-         GbJ+jq8C73j30nVep2IUjiNM1mkcRb3zVZX4EpR4/Skif/5uXKBsDN58/ve6a5IT/t
-         Fsafk/m/F1ldrPZoucarFMhQfIHwtdYHHQb0FAzmsxf5gCKJDwEPtIJGN4g0vxpxyq
-         Ta8LVd6XysP63q+4n+NeO8Zr0CLlHpAn/1Qdk0TyRrDfHOtRsiUoSTlOVNPnXiPMKV
-         0pcPYi3lYwbsQ==
-To:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>
+        Sat, 8 Oct 2022 07:49:54 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A87193FD;
+        Sat,  8 Oct 2022 04:49:53 -0700 (PDT)
+Received: from localhost.localdomain (unknown [46.242.14.200])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 002464077AE4;
+        Sat,  8 Oct 2022 11:49:49 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 002464077AE4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1665229790;
+        bh=eGhQBNtLRT/iMFU1ypAtNfUplajfF0B7mQZ1FqvKb6I=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OmsIvw93BGjxV+uEf5ZUFZFc5MwdQyTTCo+AYcHXk2UF/PRppEVBUidOkzG2sqKPy
+         gWT/IJbrkjOSfe4NGHUF/VNU5W93l1zjr+UmfvevwkdKICcfvlEYDVMrHUI8GQSlcA
+         W6AkJ8cEXeqT94el3yHCbNHMaEBgUW5T+HP21fME=
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>
 Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
@@ -34,81 +37,125 @@ Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v3] ath9k: verify the expected usb_endpoints are present
-In-Reply-To: <20221007212916.267004-1-pchelkin@ispras.ru>
-References: <20221007212916.267004-1-pchelkin@ispras.ru>
-Date:   Sat, 08 Oct 2022 13:09:26 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87v8oushax.fsf@toke.dk>
+        lvc-project@linuxtesting.org
+Subject: [PATCH v2] ath9k: hif_usb: Fix use-after-free in ath9k_hif_usb_reg_in_cb()
+Date:   Sat,  8 Oct 2022 14:49:17 +0300
+Message-Id: <20221008114917.21404-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <87ilkvcys7.fsf@toke.dk>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fedor Pchelkin <pchelkin@ispras.ru> writes:
+It is possible that skb is freed in ath9k_htc_rx_msg(), then
+usb_submit_urb() fails and we try to free skb again. It causes
+use-after-free bug. Moreover, if alloc_skb() fails, urb->context becomes
+NULL but rx_buf is not freed and there can be a memory leak.
 
-> The bug arises when a USB device claims to be an ATH9K but doesn't
-> have the expected endpoints. (In this case there was an interrupt
-> endpoint where the driver expected a bulk endpoint.) The kernel
-> needs to be able to handle such devices without getting an internal error.
->
-> usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-> WARNING: CPU: 3 PID: 500 at drivers/usb/core/urb.c:493 usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
-> Modules linked in:
-> CPU: 3 PID: 500 Comm: kworker/3:2 Not tainted 5.10.135-syzkaller #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-> Workqueue: events request_firmware_work_func
-> RIP: 0010:usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
-> Call Trace:
->  ath9k_hif_usb_alloc_rx_urbs drivers/net/wireless/ath/ath9k/hif_usb.c:908 [inline]
->  ath9k_hif_usb_alloc_urbs+0x75e/0x1010 drivers/net/wireless/ath/ath9k/hif_usb.c:1019
->  ath9k_hif_usb_dev_init drivers/net/wireless/ath/ath9k/hif_usb.c:1109 [inline]
->  ath9k_hif_usb_firmware_cb+0x142/0x530 drivers/net/wireless/ath/ath9k/hif_usb.c:1242
->  request_firmware_work_func+0x12e/0x240 drivers/base/firmware_loader/main.c:1097
->  process_one_work+0x9af/0x1600 kernel/workqueue.c:2279
->  worker_thread+0x61d/0x12f0 kernel/workqueue.c:2425
->  kthread+0x3b4/0x4a0 kernel/kthread.c:313
->  ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:299
->
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
->
-> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-> ---
-> v1->v2: use reverse x-mas tree ordering of the variable definitions
-> v2->v3: fix tab
->
->  drivers/net/wireless/ath/ath9k/hif_usb.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-> index 4d9002a9d082..7bbbeb411056 100644
-> --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-> @@ -1329,10 +1329,24 @@ static int send_eject_command(struct usb_interface *interface)
->  static int ath9k_hif_usb_probe(struct usb_interface *interface,
->  			       const struct usb_device_id *id)
->  {
-> +	struct usb_endpoint_descriptor *bulk_in, *bulk_out, *int_in, *int_out;
->  	struct usb_device *udev = interface_to_usbdev(interface);
-> +	struct usb_host_interface *alt;
->  	struct hif_device_usb *hif_dev;
->  	int ret = 0;
->     
+The patch removes unnecessary nskb and makes skb processing more clear: it
+is supposed that ath9k_htc_rx_msg() either frees old skb or passes its
+managing to another callback function.
 
-Hmm, so your patch has spaces in this empty line which are not in the
-actual source file, which causes 'git am' to choke on the patch... :(
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Not sure what is causing this, but could you please see if you can fix
-it and resend?
+Fixes: 3deff76095c4 ("ath9k_htc: Increase URB count for REG_IN pipe")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+---
+v1->v2: add comment about freeing an skb and remove double blank line
 
--Toke
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 28 +++++++++++++-----------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 4d9002a9d082..401b408cb7a4 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -708,14 +708,13 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+ 	struct rx_buf *rx_buf = (struct rx_buf *)urb->context;
+ 	struct hif_device_usb *hif_dev = rx_buf->hif_dev;
+ 	struct sk_buff *skb = rx_buf->skb;
+-	struct sk_buff *nskb;
+ 	int ret;
+ 
+ 	if (!skb)
+ 		return;
+ 
+ 	if (!hif_dev)
+-		goto free;
++		goto free_skb;
+ 
+ 	switch (urb->status) {
+ 	case 0:
+@@ -724,7 +723,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+ 	case -ECONNRESET:
+ 	case -ENODEV:
+ 	case -ESHUTDOWN:
+-		goto free;
++		goto free_skb;
+ 	default:
+ 		skb_reset_tail_pointer(skb);
+ 		skb_trim(skb, 0);
+@@ -735,25 +734,27 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+ 	if (likely(urb->actual_length != 0)) {
+ 		skb_put(skb, urb->actual_length);
+ 
+-		/* Process the command first */
++		/*
++		 * Process the command first.
++		 * skb is either freed here or passed to be
++		 * managed to another callback function.
++		 */
+ 		ath9k_htc_rx_msg(hif_dev->htc_handle, skb,
+ 				 skb->len, USB_REG_IN_PIPE);
+ 
+-
+-		nskb = alloc_skb(MAX_REG_IN_BUF_SIZE, GFP_ATOMIC);
+-		if (!nskb) {
++		skb = alloc_skb(MAX_REG_IN_BUF_SIZE, GFP_ATOMIC);
++		if (!skb) {
+ 			dev_err(&hif_dev->udev->dev,
+ 				"ath9k_htc: REG_IN memory allocation failure\n");
+-			urb->context = NULL;
+-			return;
++			goto free_rx_buf;
+ 		}
+ 
+-		rx_buf->skb = nskb;
++		rx_buf->skb = skb;
+ 
+ 		usb_fill_int_urb(urb, hif_dev->udev,
+ 				 usb_rcvintpipe(hif_dev->udev,
+ 						 USB_REG_IN_PIPE),
+-				 nskb->data, MAX_REG_IN_BUF_SIZE,
++				 skb->data, MAX_REG_IN_BUF_SIZE,
+ 				 ath9k_hif_usb_reg_in_cb, rx_buf, 1);
+ 	}
+ 
+@@ -762,12 +763,13 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
+ 	if (ret) {
+ 		usb_unanchor_urb(urb);
+-		goto free;
++		goto free_skb;
+ 	}
+ 
+ 	return;
+-free:
++free_skb:
+ 	kfree_skb(skb);
++free_rx_buf:
+ 	kfree(rx_buf);
+ 	urb->context = NULL;
+ }
+-- 
+2.25.1
+
