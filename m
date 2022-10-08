@@ -2,203 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8735C5F820B
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 03:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E28C5F821A
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 03:46:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbiJHBkg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Oct 2022 21:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47434 "EHLO
+        id S229463AbiJHBqW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Oct 2022 21:46:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiJHBkb (ORCPT
+        with ESMTP id S229517AbiJHBqV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Oct 2022 21:40:31 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292553C171;
-        Fri,  7 Oct 2022 18:40:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DE307B8242E;
-        Sat,  8 Oct 2022 01:40:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F81CC433D6;
-        Sat,  8 Oct 2022 01:40:20 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="m7dkF4Qq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1665193218;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vNH2mnpIcj00WUdnQLlhiavniZvHilK6oGwgWIcL7uw=;
-        b=m7dkF4QqvbJypdgEAbc35NBJnnqvQzB21sgNt0EURJQOR1FGkUsyi73yIMXgdPHVIIUlOg
-        5CTO5f2vbWzw/vm/odmtp7dHuxfMwfhY9ZkhyfcncvX8HsEngEbDzs4FmPwfNkPExdyoZz
-        X0uIWOW2Vu+MHRe3zl9le1EOdBfLqFs=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f0b17dc7 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Sat, 8 Oct 2022 01:40:18 +0000 (UTC)
-Date:   Fri, 7 Oct 2022 19:40:07 -0600
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        andreas.noever@gmail.com, akpm@linux-foundation.org,
-        andriy.shevchenko@linux.intel.com, bp@alien8.de,
-        catalin.marinas@arm.com, christoph.boehmwalder@linbit.com,
-        hch@lst.de, christophe.leroy@csgroup.eu, daniel@iogearbox.net,
-        airlied@redhat.com, dave.hansen@linux.intel.com,
-        davem@davemloft.net, edumazet@google.com, fw@strlen.de,
-        gregkh@linuxfoundation.org, hpa@zytor.com, hca@linux.ibm.com,
-        deller@gmx.de, herbert@gondor.apana.org.au, chenhuacai@kernel.org,
-        hughd@google.com, kuba@kernel.org, jejb@linux.ibm.com,
-        jack@suse.com, jgg@ziepe.ca, axboe@kernel.dk,
-        johannes@sipsolutions.net, corbet@lwn.net, kadlec@netfilter.org,
-        kpsingh@kernel.org, keescook@chromium.org, elver@google.com,
-        mchehab@kernel.org, mpe@ellerman.id.au, pablo@netfilter.org,
-        pabeni@redhat.com, peterz@infradead.org, richard@nod.at,
-        linux@armlinux.org.uk, tytso@mit.edu, tsbogend@alpha.franken.de,
-        tglx@linutronix.de, tgraf@suug.ch, ulf.hansson@linaro.org,
-        vigneshr@ti.com, kernel@xen0n.name, will@kernel.org,
-        yury.norov@gmail.com, dri-devel@lists.freedesktop.org,
-        kasan-dev@googlegroups.com, kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        loongarch@lists.linux.dev, netdev@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org, toke@toke.dk,
-        chuck.lever@oracle.com, jack@suse.cz,
-        mika.westerberg@linux.intel.com
-Subject: Re: [PATCH v4 4/6] treewide: use get_random_u32() when possible
-Message-ID: <Y0DU93wMsDwlLmMP@zx2c4.com>
-References: <20221007180107.216067-1-Jason@zx2c4.com>
- <20221007180107.216067-5-Jason@zx2c4.com>
- <3216619.44csPzL39Z@daneel.sf-tec.de>
+        Fri, 7 Oct 2022 21:46:21 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFA3688A5
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Oct 2022 18:46:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665193580; x=1696729580;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y6srmGomOF6BVn1QCE0HA+0P0D/afFz6jH/cqwXEGqA=;
+  b=URLto2KLwbu0uYLG6LQ9bR4/5RX5HWZ7kMT4Q87bvJss6wx0aNr/at96
+   tv5oHTj/TPxlVW32WIBfc09WsARK2j52azzYrDg80R/NdKYLTPab5vYdH
+   S8hH2whBG990a4cClU+yklfc3OoOpRrPowWUE6x/S0vlju0uDKw8N5ysK
+   oWf278Xfm0QjF/6jK6l4ue3eCo766fThtWEHYIWpJItlTl/qZ2lQ/Tu2C
+   rPthM9tKhoeuLIHBIbSxFjS5iLG5F/HyTz1bh0RJWu+xfVKaOuaQVTcL4
+   PfR5HiF0ZAxiKaFfyW1nKsCUmt1W9lHhye9c5f4KMWZoaD3UG4rBHvwPA
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10493"; a="284250764"
+X-IronPort-AV: E=Sophos;i="5.95,168,1661842800"; 
+   d="scan'208";a="284250764"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2022 18:46:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10493"; a="688114212"
+X-IronPort-AV: E=Sophos;i="5.95,168,1661842800"; 
+   d="scan'208";a="688114212"
+Received: from lkp-server01.sh.intel.com (HELO 3c15167049b7) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 07 Oct 2022 18:46:18 -0700
+Received: from kbuild by 3c15167049b7 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ogyuv-0001jN-2n;
+        Sat, 08 Oct 2022 01:46:17 +0000
+Date:   Sat, 08 Oct 2022 09:45:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 10d5ea5a436da8d60cdb5845f454d595accdbce0
+Message-ID: <6340d634.3QUVH3Jv69Sm6LgI%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3216619.44csPzL39Z@daneel.sf-tec.de>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 07, 2022 at 10:34:47PM +0200, Rolf Eike Beer wrote:
-> > diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-> > index 7c37e09c92da..18c4f0e3e906 100644
-> > --- a/arch/parisc/kernel/process.c
-> > +++ b/arch/parisc/kernel/process.c
-> > @@ -288,7 +288,7 @@ __get_wchan(struct task_struct *p)
-> > 
-> >  static inline unsigned long brk_rnd(void)
-> >  {
-> > -	return (get_random_int() & BRK_RND_MASK) << PAGE_SHIFT;
-> > +	return (get_random_u32() & BRK_RND_MASK) << PAGE_SHIFT;
-> >  }
-> 
-> Can't this be
-> 
->   prandom_u32_max(BRK_RND_MASK + 1) << PAGE_SHIFT
-> 
-> ? More similar code with other masks follows below.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 10d5ea5a436da8d60cdb5845f454d595accdbce0  wifi: nl80211: Split memcpy() of struct nl80211_wowlan_tcp_data_token flexible array
 
-I guess it can, because BRK_RND_MASK happens to have all its lower bits
-set. But as a "_MASK" maybe this isn't a given, and I don't want to
-change intended semantics in this patchset. It's also not more
-efficient, because BRK_RND_MASK is actually an expression:
+elapsed time: 722m
 
-    #define BRK_RND_MASK        (is_32bit_task() ? 0x07ffUL : 0x3ffffUL)
+configs tested: 135
+configs skipped: 3
 
-So at compile-time, the compiler can't prove that it's <= U16_MAX, since
-it isn't always the case, so it'll use get_random_u32() anyway.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-[Side note: maybe that compile-time check should become a runtime check,
- but I'll need to do some benchmarking before changing that and
- introducing two added branches to every non-constant invocation, so for
- now it's a compile-time check. Fortunately the vast majority of uses
- are done on inputs the compiler can prove something about.]
+gcc tested configs:
+arc                                 defconfig
+i386                                defconfig
+powerpc                          allmodconfig
+alpha                               defconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+x86_64                              defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+s390                             allyesconfig
+x86_64                               rhel-8.3
+sh                               allmodconfig
+i386                             allyesconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                           allyesconfig
+x86_64                          rhel-8.3-func
+arm                                 defconfig
+x86_64                    rhel-8.3-kselftests
+m68k                             allmodconfig
+alpha                            allyesconfig
+x86_64                        randconfig-a013
+arc                              allyesconfig
+x86_64                        randconfig-a011
+arm64                            allyesconfig
+x86_64                        randconfig-a015
+arm                              allyesconfig
+arm                        clps711x_defconfig
+arm                      integrator_defconfig
+powerpc                     sequoia_defconfig
+m68k                             allyesconfig
+i386                 randconfig-a011-20221003
+i386                 randconfig-a016-20221003
+i386                 randconfig-a012-20221003
+i386                 randconfig-a014-20221003
+i386                 randconfig-a015-20221003
+i386                 randconfig-a013-20221003
+ia64                             allmodconfig
+riscv                randconfig-r042-20221007
+riscv                randconfig-r042-20221003
+arc                  randconfig-r043-20221003
+arc                  randconfig-r043-20221002
+arc                  randconfig-r043-20221007
+s390                 randconfig-r044-20221003
+s390                 randconfig-r044-20221007
+x86_64               randconfig-a011-20221003
+x86_64               randconfig-a016-20221003
+x86_64               randconfig-a014-20221003
+x86_64               randconfig-a013-20221003
+x86_64               randconfig-a012-20221003
+x86_64               randconfig-a015-20221003
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+i386                          randconfig-c001
+powerpc                     ep8248e_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc64                          alldefconfig
+sh                        dreamcast_defconfig
+s390                          debug_defconfig
+powerpc                     asp8347_defconfig
+nios2                            alldefconfig
+um                               alldefconfig
+sh                          kfr2r09_defconfig
+sh                           se7751_defconfig
+mips                         db1xxx_defconfig
+arm                       imx_v6_v7_defconfig
+powerpc                         wii_defconfig
+powerpc                     taishan_defconfig
+sh                          landisk_defconfig
+powerpc                    klondike_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                        warp_defconfig
+arm                           viper_defconfig
+arm                  randconfig-c002-20221002
+x86_64                        randconfig-c001
+arm                        realview_defconfig
+sh                          polaris_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                       maple_defconfig
+arm                           sunxi_defconfig
+sparc                       sparc64_defconfig
+parisc                generic-64bit_defconfig
+arm                             ezx_defconfig
+m68k                          multi_defconfig
+riscv                randconfig-r042-20221005
+arc                  randconfig-r043-20221005
+s390                 randconfig-r044-20221005
+arc                        nsim_700_defconfig
+powerpc                    sam440ep_defconfig
+sh                          rsk7269_defconfig
+parisc                           alldefconfig
+sh                        sh7757lcr_defconfig
+arm                           imxrt_defconfig
+arm                            zeus_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+mips                 randconfig-c004-20221002
+arm                             pxa_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                     redwood_defconfig
+nios2                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
 
-> 
-> > diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c
-> > b/drivers/gpu/drm/i915/i915_gem_gtt.c index 329ff75b80b9..7bd1861ddbdf
-> > 100644
-> > --- a/drivers/gpu/drm/i915/i915_gem_gtt.c
-> > +++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
-> > @@ -137,12 +137,12 @@ static u64 random_offset(u64 start, u64 end, u64 len,
-> > u64 align) range = round_down(end - len, align) - round_up(start, align);
-> >  	if (range) {
-> >  		if (sizeof(unsigned long) == sizeof(u64)) {
-> > -			addr = get_random_long();
-> > +			addr = get_random_u64();
-> >  		} else {
-> > -			addr = get_random_int();
-> > +			addr = get_random_u32();
-> >  			if (range > U32_MAX) {
-> >  				addr <<= 32;
-> > -				addr |= get_random_int();
-> > +				addr |= get_random_u32();
-> >  			}
-> >  		}
-> >  		div64_u64_rem(addr, range, &addr);
-> 
-> How about 
-> 
->  		if (sizeof(unsigned long) == sizeof(u64) || range > 
-> U32_MAX)
-> 			addr = get_random_u64();
->  		else
-> 			addr = get_random_u32();
-> 
+clang tested configs:
+x86_64               randconfig-a006-20221003
+x86_64               randconfig-a005-20221003
+x86_64               randconfig-a002-20221003
+x86_64               randconfig-a001-20221003
+x86_64               randconfig-a003-20221003
+x86_64                        randconfig-a012
+x86_64               randconfig-a004-20221003
+x86_64                        randconfig-a014
+i386                 randconfig-a003-20221003
+i386                 randconfig-a002-20221003
+x86_64                        randconfig-a016
+i386                 randconfig-a001-20221003
+i386                 randconfig-a004-20221003
+i386                 randconfig-a005-20221003
+i386                 randconfig-a006-20221003
+powerpc                        fsp2_defconfig
+powerpc                     tqm8560_defconfig
+arm                          pxa168_defconfig
+x86_64                        randconfig-k001
+powerpc                 mpc832x_mds_defconfig
+mips                          ath25_defconfig
+arm                        mvebu_v5_defconfig
+s390                             alldefconfig
 
-Yes, maybe, probably, indeed... But I don't want to go wild and start
-fixing all the weird algorithms everywhere. My goal is to only make
-changes that are "obviously right". But maybe after this lands this is
-something that you or I can submit to the i915 people as an
-optimization.
-
-> > diff --git a/drivers/infiniband/hw/cxgb4/cm.c
-> > b/drivers/infiniband/hw/cxgb4/cm.c index 14392c942f49..499a425a3379 100644
-> > --- a/drivers/infiniband/hw/cxgb4/cm.c
-> > +++ b/drivers/infiniband/hw/cxgb4/cm.c
-> > @@ -734,7 +734,7 @@ static int send_connect(struct c4iw_ep *ep)
-> >  				   &ep->com.remote_addr;
-> >  	int ret;
-> >  	enum chip_type adapter_type = ep->com.dev->rdev.lldi.adapter_type;
-> > -	u32 isn = (prandom_u32() & ~7UL) - 1;
-> > +	u32 isn = (get_random_u32() & ~7UL) - 1;
-> >  	struct net_device *netdev;
-> >  	u64 params;
-> > 
-> > @@ -2469,7 +2469,7 @@ static int accept_cr(struct c4iw_ep *ep, struct
-> > sk_buff *skb, }
-> > 
-> >  	if (!is_t4(adapter_type)) {
-> > -		u32 isn = (prandom_u32() & ~7UL) - 1;
-> > +		u32 isn = (get_random_u32() & ~7UL) - 1;
-> 
-> u32 isn = get_random_u32() | 0x7;
-
-Again, maybe so, but same rationale as above.
-
-> >  static void ns_do_bit_flips(struct nandsim *ns, int num)
-> >  {
-> > -	if (bitflips && prandom_u32() < (1 << 22)) {
-> > +	if (bitflips && get_random_u32() < (1 << 22)) {
-> 
-> Doing "get_random_u16() < (1 << 6)" should have the same probability with only 
-> 2 bytes of random, no?
-
-That's very clever. (1<<22)/(1<<32) == (1<<6)/(1<<16). But also, same
-rationale as above for not doing that.
-
-Anyway, I realize this is probably disappointing to read. But also, we
-can come back to those optimization cases later pretty easily.
-
-Jason
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
