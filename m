@@ -2,80 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41E385F862A
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 19:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF6B5F8685
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Oct 2022 20:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbiJHRLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Oct 2022 13:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52530 "EHLO
+        id S231134AbiJHSQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Oct 2022 14:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbiJHRK6 (ORCPT
+        with ESMTP id S229916AbiJHSQc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Oct 2022 13:10:58 -0400
-X-Greylist: delayed 244 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 08 Oct 2022 10:10:57 PDT
-Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com [192.185.144.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC7232AA8
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Oct 2022 10:10:57 -0700 (PDT)
-Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
-        by gateway31.websitewelcome.com (Postfix) with ESMTP id 5BD6A1356F
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Oct 2022 12:10:57 -0500 (CDT)
-Received: from rezzo.websitewelcome.com ([192.185.179.144])
-        by cmsmtp with SMTP
-        id hDLloFzuWSQZkhDLloV785; Sat, 08 Oct 2022 12:10:57 -0500
-X-Authority-Reason: nr=8
-Received: from rezzo.websitewelcome.com ([192.185.179.144]:32452)
-        by rezzo.websitewelcome.com with esmtpa (Exim 4.95)
-        (envelope-from <md1327997@gmail.com>)
-        id 1ohDLe-001KkJ-0z;
-        Sat, 08 Oct 2022 12:10:50 -0500
-Received: from [103.192.80.236]
- via [103.192.80.236]
- by webmail.libasinternational.com
- with HTTP (HTTP/1.1 POST); Sat, 08 Oct 2022 12:10:38 -0500
+        Sat, 8 Oct 2022 14:16:32 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 487403A177;
+        Sat,  8 Oct 2022 11:16:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665252991; x=1696788991;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q7YlJwn22ePcF+UsrTEOpg8IcVNJxX9fgtN3uSim9/E=;
+  b=Cy4RrU9t92ztTMzry6jaPaWlZaLIB+yMDteFQq7drWgDpR+tajmRMi64
+   ykD3t070bB43GQAQqvKyud+dBzKSeDr8V9s1IEBmkV0dAcLzqehFOyr7D
+   un7mKVNaVlaMrC5a6GwPw82JHRxcdMaLG+ubeZmMsq+l6ls5ltIZoYNjZ
+   53DwZoCUDNZvtTqD+V3ypiLvmlGZwi67J28TZLHt2ZD7uotZLAc3Az7tf
+   yDSD16lHUMpqwIRCGkVQz2qnC+0rEx1ZaMbO71IBwW04LXG1zegKMQoHN
+   5nZHsTBnhmJHREjKkJp2rp/DM/3J4jmEGia2mk3bRlY0E6RcO+5EIrz0B
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10494"; a="390269218"
+X-IronPort-AV: E=Sophos;i="5.95,170,1661842800"; 
+   d="scan'208";a="390269218"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2022 11:16:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10494"; a="750899918"
+X-IronPort-AV: E=Sophos;i="5.95,170,1661842800"; 
+   d="scan'208";a="750899918"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP; 08 Oct 2022 11:16:23 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ohEN3-0048ft-0Q;
+        Sat, 08 Oct 2022 21:16:21 +0300
+Date:   Sat, 8 Oct 2022 21:16:20 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        dri-devel@lists.freedesktop.org, kasan-dev@googlegroups.com,
+        kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mm@kvack.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-nvme@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        loongarch@lists.linux.dev, netdev@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH v4 2/6] treewide: use prandom_u32_max() when possible
+Message-ID: <Y0G+dP9uGaYHSa9y@smile.fi.intel.com>
+References: <53DD0148-ED15-4294-8496-9E4B4C7AD061@chromium.org>
 MIME-Version: 1.0
-Date:   Sat, 08 Oct 2022 12:10:38 -0500
-From:   Mohamed Diallo <md1327997@gmail.com>
-To:     undisclosed-recipients:;
-Subject: Business Offer
-Reply-To: md1327997@gmail.com
-User-Agent: Roundcube Webmail/1.4.12
-Message-ID: <59af8ffbcc5df84fd80fc811286d9bbe@gmail.com>
-X-Sender: md1327997@gmail.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - rezzo.websitewelcome.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - gmail.com
-X-BWhitelist: no
-X-Source-IP: 192.185.179.144
-X-Source-L: No
-X-Exim-ID: 1ohDLe-001KkJ-0z
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: rezzo.websitewelcome.com [192.185.179.144]:32452
-X-Source-Auth: naseer@libasinternational.com
-X-Email-Count: 180
-X-Source-Cap: bGliYXNpbnQ7ZWFzeXNvbDtyZXp6by53ZWJzaXRld2VsY29tZS5jb20=
-X-Local-Domain: no
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_60,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_SOFTFAIL,SPOOFED_FREEMAIL,
-        SPOOF_GMAIL_MID autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <53DD0148-ED15-4294-8496-9E4B4C7AD061@chromium.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My name is Mohamed, I run a mining company in Africa, I have gold bars 
-for sale and am looking for serious buyers of foreign partners that we 
-can work together as business partners.
+On Fri, Oct 07, 2022 at 08:50:43PM -0700, Kees Cook wrote:
+> On October 7, 2022 7:21:28 PM PDT, "Jason A. Donenfeld" <Jason@zx2c4.com> wrote:
+> >On Fri, Oct 07, 2022 at 03:47:44PM -0700, Kees Cook wrote:
+> >> On Fri, Oct 07, 2022 at 12:01:03PM -0600, Jason A. Donenfeld wrote:
+
+...
+
+> >> These are more fun, but Coccinelle can still do them with a little
+> >> Pythonic help:
+> >> 
+> >> // Find a potential literal
+> >> @literal_mask@
+> >> expression LITERAL;
+> >> identifier randfunc =~ "get_random_int|prandom_u32|get_random_u32";
+> >> position p;
+> >> @@
+> >> 
+> >>         (randfunc()@p & (LITERAL))
+> >> 
+> >> // Add one to the literal.
+> >> @script:python add_one@
+> >> literal << literal_mask.LITERAL;
+> >> RESULT;
+> >> @@
+> >> 
+> >> if literal.startswith('0x'):
+> >>         value = int(literal, 16) + 1
+> >>         coccinelle.RESULT = cocci.make_expr("0x%x" % (value))
+> >> elif literal[0] in '123456789':
+> >>         value = int(literal, 10) + 1
+> >>         coccinelle.RESULT = cocci.make_expr("%d" % (value))
+> >> else:
+> >>         print("I don't know how to handle: %s" % (literal))
+
+Wouldn't Python take care about (known) prefixes itself?
+
+	try:
+		x = int(literal)
+	except ValueError as ex:
+		print(..., ex.error)
+
+> >> // Replace the literal mask with the calculated result.
+> >> @plus_one@
+> >> expression literal_mask.LITERAL;
+> >> position literal_mask.p;
+> >> expression add_one.RESULT;
+> >> identifier FUNC;
+> >> @@
+> >> 
+> >> -       (FUNC()@p & (LITERAL))
+> >> +       prandom_u32_max(RESULT)
+> >
+> >Oh that's pretty cool. I can do the saturation check in python, since
+> >`value` holds the parsed result. Neat.
+> 
+> It is (at least how I have it here) just the string, so YMMV.
+
+...
+
+> >Thanks a bunch for the guidance.
+> 
+> Sure thing! I was pleased to figure out how to do the python bit.
+
+I believe it can be optimized
 
 -- 
-Mohamed Diallo
+With Best Regards,
+Andy Shevchenko
+
+
