@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA0365F8FFF
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428505F9090
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230469AbiJIWT5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 18:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55640 "EHLO
+        id S231940AbiJIW0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 18:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231221AbiJIWSI (ORCPT
+        with ESMTP id S231544AbiJIWYB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 18:18:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FBFA1262D;
-        Sun,  9 Oct 2022 15:15:49 -0700 (PDT)
+        Sun, 9 Oct 2022 18:24:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCEB73C8E9;
+        Sun,  9 Oct 2022 15:18:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD5B360C91;
-        Sun,  9 Oct 2022 22:13:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB43AC433D6;
-        Sun,  9 Oct 2022 22:13:07 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 41915B80DEF;
+        Sun,  9 Oct 2022 22:15:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DF1C433D6;
+        Sun,  9 Oct 2022 22:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665353589;
-        bh=rfhGV7N9C6ZVl3JruPAcA6LKfJ3cyhGgcnuyB098JMM=;
+        s=k20201202; t=1665353701;
+        bh=xtM5s+f3529j7nQlyo4YPIfMABIDOHknGrVRtsueMpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=owkfe16OXvg5CApnG1iXdLuCwscpAqRTDKAsWQsTsGTwM9UgEBijeFplrm9Aa09/p
-         bAMbo6ltgHrhiC3t0x/QCdt1RksEKAt1A4EVwKRS4GDd8quh3ZslA7Fv4/soSeFBuX
-         IyAGETvlo7QpWKvwiJdEwmSvKOlslZPTkXM/PHpg5kbMqITg5LadORjwhBNzdSgpR3
-         CGBu+CvmZOdzecWbzptTvmDpF9vY5MBbeVlr5XkT9k8AXe5AXuj81UwUFyogBB700O
-         W2t9j7azDynHSkoMMYiXGZBoEkaX/KMcqkhBbX6VRrWmYGB31u9w8fXnYuVuDEKo5r
-         Jxufls86G6VvQ==
+        b=QDl7/rtQyd0GqtZr5Lv9GtDCTQGZAfCP/sx3l56Q2GXPxU35C3azHaQdOY/YVSRTU
+         xwZ5GtQ4oxPxI8tuIdeewIBSprfvkikwgvRXjhMI9wa2eGFyD9ptp3Ars4TYQSfgY+
+         IuoUWgDCIa45hbdC+OKPAuevSrVytpJgW4oyzIxx/lMHizDfpK61YhIr8d+c8lI85m
+         fWGBT3Jq19kgCix0bOsjwsaQzwiKcKnZmECBkyuOeHOAVj06hVoezw4um5+Oho4eRT
+         0tCbfdSGacU1qh3adYpsYrCanrhMKfcNUaBCLtotSmFMdFs9SvnP+vHU35avT+w+oF
+         zj02yN6D07wPQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Daniel Golle <daniel@makrotopia.org>,
-        Serge Vasilugin <vasilugin@yandex.ru>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
+Cc:     Zong-Zhe Yang <kevin_yang@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
         Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        helmut.schaa@googlemail.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 66/77] wifi: rt2x00: correctly set BBP register 86 for MT7620
-Date:   Sun,  9 Oct 2022 18:07:43 -0400
-Message-Id: <20221009220754.1214186-66-sashal@kernel.org>
+        tony0620emma@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.19 02/73] wifi: rtw88: phy: fix warning of possible buffer overflow
+Date:   Sun,  9 Oct 2022 18:13:40 -0400
+Message-Id: <20221009221453.1216158-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221009220754.1214186-1-sashal@kernel.org>
-References: <20221009220754.1214186-1-sashal@kernel.org>
+In-Reply-To: <20221009221453.1216158-1-sashal@kernel.org>
+References: <20221009221453.1216158-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,38 +59,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit c9aada64fe6493461127f1522d7e2f01792d2424 ]
+[ Upstream commit 86331c7e0cd819bf0c1d0dcf895e0c90b0aa9a6f ]
 
-Instead of 0 set the correct value for BBP register 86 for MT7620.
+reported by smatch
 
-Reported-by: Serge Vasilugin <vasilugin@yandex.ru>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+phy.c:854 rtw_phy_linear_2_db() error: buffer overflow 'db_invert_table[i]'
+8 <= 8 (assuming for loop doesn't break)
+
+However, it seems to be a false alarm because we prevent it originally via
+       if (linear >= db_invert_table[11][7])
+               return 96; /* maximum 96 dB */
+
+Still, we adjust the code to be more readable and avoid smatch warning.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/257267247ee4fa7ebc6a5d0c4948b3f8119c0d77.1663445157.git.daniel@makrotopia.org
+Link: https://lore.kernel.org/r/20220727065003.28340-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/phy.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index b30b062243bb..1a9e27a6d636 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -4164,7 +4164,10 @@ static void rt2800_config_channel(struct rt2x00_dev *rt2x00dev,
- 		rt2800_bbp_write(rt2x00dev, 62, 0x37 - rt2x00dev->lna_gain);
- 		rt2800_bbp_write(rt2x00dev, 63, 0x37 - rt2x00dev->lna_gain);
- 		rt2800_bbp_write(rt2x00dev, 64, 0x37 - rt2x00dev->lna_gain);
--		rt2800_bbp_write(rt2x00dev, 86, 0);
-+		if (rt2x00_rt(rt2x00dev, RT6352))
-+			rt2800_bbp_write(rt2x00dev, 86, 0x38);
-+		else
-+			rt2800_bbp_write(rt2x00dev, 86, 0);
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index 8982e0c98dac..da1efec0aa85 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -816,23 +816,18 @@ static u8 rtw_phy_linear_2_db(u64 linear)
+ 	u8 j;
+ 	u32 dB;
+ 
+-	if (linear >= db_invert_table[11][7])
+-		return 96; /* maximum 96 dB */
+-
+ 	for (i = 0; i < 12; i++) {
+-		if (i <= 2 && (linear << FRAC_BITS) <= db_invert_table[i][7])
+-			break;
+-		else if (i > 2 && linear <= db_invert_table[i][7])
+-			break;
++		for (j = 0; j < 8; j++) {
++			if (i <= 2 && (linear << FRAC_BITS) <= db_invert_table[i][j])
++				goto cnt;
++			else if (i > 2 && linear <= db_invert_table[i][j])
++				goto cnt;
++		}
  	}
  
- 	if (rf->channel <= 14) {
+-	for (j = 0; j < 8; j++) {
+-		if (i <= 2 && (linear << FRAC_BITS) <= db_invert_table[i][j])
+-			break;
+-		else if (i > 2 && linear <= db_invert_table[i][j])
+-			break;
+-	}
++	return 96; /* maximum 96 dB */
+ 
++cnt:
+ 	if (j == 0 && i == 0)
+ 		goto end;
+ 
 -- 
 2.35.1
 
