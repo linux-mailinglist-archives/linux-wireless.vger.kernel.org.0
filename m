@@ -2,740 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 788375F8C54
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Oct 2022 18:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA7865F8D2B
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Oct 2022 20:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229979AbiJIQa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 12:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
+        id S230293AbiJIScq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 14:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbiJIQa4 (ORCPT
+        with ESMTP id S229716AbiJIScp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 12:30:56 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C3DCB22295
-        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 09:30:52 -0700 (PDT)
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1665333049;
-        bh=b+tMDKKIzccczs3r5izk7FGksaCZP2kPUHlteCNcLzs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=by4XWLUY5XG3qA+K9P17QozFA+HN/O+C4LM1pQpkiJPr/BcTkA1LuWRO23f6lkEdt
-         uL5DHW6Wr5sBS0PCWk5JhBnTSfy+61JYx1s2IBqAcC1FAvL5AuK3rp49XQzBgCg9tR
-         K72pyvEKGuEiIoJL6HKgO7SeP3j5isFfwrV9qpe8=
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net,
-        Alexander Wetzel <alexander@wetzel-home.de>
-Subject: [PATCH v2 3/3] wifi: mac80211: Drop support for TX push path
-Date:   Sun,  9 Oct 2022 18:30:40 +0200
-Message-Id: <20221009163040.25637-3-alexander@wetzel-home.de>
+        Sun, 9 Oct 2022 14:32:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1770192A5
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 11:32:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1665340362;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=hXznQXP5vOjUrkjEnwUIqWLfyHqVdoVCHj9DHnCkya0=;
+        b=f7urvfq4wpWKrCTpq+3+UOow2isK4gJsKgekVBvrasnKyBwM2Q1wBXJxNDt6CaDAcIymFT
+        CwkCgudgNgkTBCA1ZzP7R8Vx6FbViKWKt6/2K8ct6M6TAoH831AkhdsJ+f61Cr+e/ceHea
+        ZeL922ggNgtYCMCJRSFCFDBtHY34eJo=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-322-d3Qmxhs1PxudWIqcQGFQYg-1; Sun, 09 Oct 2022 14:32:41 -0400
+X-MC-Unique: d3Qmxhs1PxudWIqcQGFQYg-1
+Received: by mail-pj1-f70.google.com with SMTP id oo18-20020a17090b1c9200b0020bdba475afso3787954pjb.4
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Oct 2022 11:32:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hXznQXP5vOjUrkjEnwUIqWLfyHqVdoVCHj9DHnCkya0=;
+        b=PRur6hL0Z3auFxdqtaGgSpgGqnJGQ4z+l6Yhz1d50vqbZu6RLuQU5V/qZDdoZ6ZqG1
+         wc7UrT8YCnkdvPCvOdn4hjoZschEtgf2esECP5g059Ljyb/8K9+cj+YbxeZnOBdNIomL
+         1RvvbW1/lGKzQshGg0dN07aVyuO7sXcgMEhlee9uKUNFjd8GAn5jlf0nOjT9FN12OjKf
+         uaCpt67lhnyJkD1VyzXx5tPUE5E40wvOFlGyPrXq+D2e2Yprl20c4P/ErsPCb3rejkh0
+         4bggW9uBWNFv3xfVhFCZUcJH6PSWUdbadCoYVdTXdWyClkST43P/aGEUuhCcIR7b+Hw2
+         blsw==
+X-Gm-Message-State: ACrzQf2zDUpZBQD1YNMOvkU9UvRKzl9AcAqehZCPqrii/G6vFLl4QRXq
+        WsribN/TMEISdGnntU0XcKtnmjSXqWtvbWyQcIXKfOlSRkNY69h1y9O9ZtehSSmh695wPZMHKjC
+        MGPKss3KEWpllAB+NbYjXUYONgS0=
+X-Received: by 2002:a65:4048:0:b0:441:85ee:7a6a with SMTP id h8-20020a654048000000b0044185ee7a6amr13857258pgp.39.1665340360435;
+        Sun, 09 Oct 2022 11:32:40 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM70wJCNapq9lGySt9W9fJBMz00VpBEVfQbGlYMERayDIgx4flpSUdIlH3hrxxbZY56iH/BSLQ==
+X-Received: by 2002:a65:4048:0:b0:441:85ee:7a6a with SMTP id h8-20020a654048000000b0044185ee7a6amr13857233pgp.39.1665340360087;
+        Sun, 09 Oct 2022 11:32:40 -0700 (PDT)
+Received: from xps13.. ([240d:1a:c0d:9f00:4f2f:926a:23dd:8588])
+        by smtp.gmail.com with ESMTPSA id l76-20020a633e4f000000b00460a5c6304dsm2393839pga.67.2022.10.09.11.32.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Oct 2022 11:32:39 -0700 (PDT)
+From:   Shigeru Yoshida <syoshida@redhat.com>
+To:     pontus.fuchs@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com,
+        Shigeru Yoshida <syoshida@redhat.com>,
+        syzbot+95001b1fd6dfcc716c29@syzkaller.appspotmail.com
+Subject: [PATCH] ar5523: Fix use-after-free on ar5523_cmd() timed out
+Date:   Mon, 10 Oct 2022 03:32:23 +0900
+Message-Id: <20221009183223.420015-1-syoshida@redhat.com>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221009163040.25637-1-alexander@wetzel-home.de>
-References: <20221009163040.25637-1-alexander@wetzel-home.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-All drivers are now using mac80211 internal queues (iTXQs).
-Drop mac80211 internal support for the old push path.
+syzkaller reported use-after-free with the stack trace like below [1]:
 
-Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+[   38.960489][    C3] ==================================================================
+[   38.963216][    C3] BUG: KASAN: use-after-free in ar5523_cmd_tx_cb+0x220/0x240
+[   38.964950][    C3] Read of size 8 at addr ffff888048e03450 by task swapper/3/0
+[   38.966363][    C3]
+[   38.967053][    C3] CPU: 3 PID: 0 Comm: swapper/3 Not tainted 6.0.0-09039-ga6afa4199d3d-dirty #18
+[   38.968464][    C3] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-1.fc36 04/01/2014
+[   38.969959][    C3] Call Trace:
+[   38.970841][    C3]  <IRQ>
+[   38.971663][    C3]  dump_stack_lvl+0xfc/0x174
+[   38.972620][    C3]  print_report.cold+0x2c3/0x752
+[   38.973626][    C3]  ? ar5523_cmd_tx_cb+0x220/0x240
+[   38.974644][    C3]  kasan_report+0xb1/0x1d0
+[   38.975720][    C3]  ? ar5523_cmd_tx_cb+0x220/0x240
+[   38.976831][    C3]  ar5523_cmd_tx_cb+0x220/0x240
+[   38.978412][    C3]  __usb_hcd_giveback_urb+0x353/0x5b0
+[   38.979755][    C3]  usb_hcd_giveback_urb+0x385/0x430
+[   38.981266][    C3]  dummy_timer+0x140c/0x34e0
+[   38.982925][    C3]  ? notifier_call_chain+0xb5/0x1e0
+[   38.984761][    C3]  ? rcu_read_lock_sched_held+0xb/0x60
+[   38.986242][    C3]  ? lock_release+0x51c/0x790
+[   38.987323][    C3]  ? _raw_read_unlock_irqrestore+0x37/0x70
+[   38.988483][    C3]  ? __wake_up_common_lock+0xde/0x130
+[   38.989621][    C3]  ? reacquire_held_locks+0x4a0/0x4a0
+[   38.990777][    C3]  ? lock_acquire+0x472/0x550
+[   38.991919][    C3]  ? rcu_read_lock_sched_held+0xb/0x60
+[   38.993138][    C3]  ? lock_acquire+0x472/0x550
+[   38.994890][    C3]  ? dummy_urb_enqueue+0x860/0x860
+[   38.996266][    C3]  ? do_raw_spin_unlock+0x16f/0x230
+[   38.997670][    C3]  ? dummy_urb_enqueue+0x860/0x860
+[   38.999116][    C3]  call_timer_fn+0x1a0/0x6a0
+[   39.000668][    C3]  ? add_timer_on+0x4a0/0x4a0
+[   39.002137][    C3]  ? reacquire_held_locks+0x4a0/0x4a0
+[   39.003809][    C3]  ? __next_timer_interrupt+0x226/0x2a0
+[   39.005509][    C3]  __run_timers.part.0+0x69a/0xac0
+[   39.007025][    C3]  ? dummy_urb_enqueue+0x860/0x860
+[   39.008716][    C3]  ? call_timer_fn+0x6a0/0x6a0
+[   39.010254][    C3]  ? cpuacct_percpu_seq_show+0x10/0x10
+[   39.011795][    C3]  ? kvm_sched_clock_read+0x14/0x40
+[   39.013277][    C3]  ? sched_clock_cpu+0x69/0x2b0
+[   39.014724][    C3]  run_timer_softirq+0xb6/0x1d0
+[   39.016196][    C3]  __do_softirq+0x1d2/0x9be
+[   39.017616][    C3]  __irq_exit_rcu+0xeb/0x190
+[   39.019004][    C3]  irq_exit_rcu+0x5/0x20
+[   39.020361][    C3]  sysvec_apic_timer_interrupt+0x8f/0xb0
+[   39.021965][    C3]  </IRQ>
+[   39.023237][    C3]  <TASK>
+
+In ar5523_probe(), ar5523_host_available() calls ar5523_cmd() as below
+(there are other functions which finally call ar5523_cmd()):
+
+ar5523_probe()
+-> ar5523_host_available()
+   -> ar5523_cmd_read()
+      -> ar5523_cmd()
+
+If ar5523_cmd() timed out, then ar5523_host_available() failed and
+ar5523_probe() freed the device structure.  So, ar5523_cmd_tx_cb()
+might touch the freed structure.
+
+This patch fixes this issue by canceling in-flight tx cmd if submitted
+urb timed out.
+
+Link: https://syzkaller.appspot.com/bug?id=9e12b2d54300842b71bdd18b54971385ff0d0d3a [1]
+Reported-by: syzbot+95001b1fd6dfcc716c29@syzkaller.appspotmail.com
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
 ---
- net/mac80211/cfg.c            |  3 --
- net/mac80211/debugfs.c        |  4 +-
- net/mac80211/debugfs_netdev.c |  3 +-
- net/mac80211/debugfs_sta.c    |  6 +--
- net/mac80211/ieee80211_i.h    |  1 -
- net/mac80211/iface.c          | 69 ++---------------------------------
- net/mac80211/main.c           | 11 ++----
- net/mac80211/rx.c             |  3 --
- net/mac80211/sta_info.c       | 51 ++++++++++----------------
- net/mac80211/tdls.c           |  1 -
- net/mac80211/tx.c             | 28 ++------------
- net/mac80211/util.c           | 53 +++------------------------
- net/mac80211/wme.c            | 63 ++++----------------------------
- net/mac80211/wme.h            |  4 +-
- 14 files changed, 48 insertions(+), 252 deletions(-)
+ drivers/net/wireless/ath/ar5523/ar5523.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 687b4c878d4a..a1e7d3a9b9fb 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4338,9 +4338,6 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
- 	struct ieee80211_sub_if_data *sdata;
- 	int ret = 0;
- 
--	if (!local->ops->wake_tx_queue)
--		return 1;
--
- 	spin_lock_bh(&local->fq.lock);
- 	rcu_read_lock();
- 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 78c7d60e8667..dfb9f55e2685 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -663,9 +663,7 @@ void debugfs_hw_add(struct ieee80211_local *local)
- 	DEBUGFS_ADD_MODE(force_tx_status, 0600);
- 	DEBUGFS_ADD_MODE(aql_enable, 0600);
- 	DEBUGFS_ADD(aql_pending);
--
--	if (local->ops->wake_tx_queue)
--		DEBUGFS_ADD_MODE(aqm, 0600);
-+	DEBUGFS_ADD_MODE(aqm, 0600);
- 
- 	DEBUGFS_ADD_MODE(airtime_flags, 0600);
- 
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index 5b014786fd2d..c87e1137e5da 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -677,8 +677,7 @@ static void add_common_files(struct ieee80211_sub_if_data *sdata)
- 	DEBUGFS_ADD(rc_rateidx_vht_mcs_mask_5ghz);
- 	DEBUGFS_ADD(hw_queues);
- 
--	if (sdata->local->ops->wake_tx_queue &&
--	    sdata->vif.type != NL80211_IFTYPE_P2P_DEVICE &&
-+	if (sdata->vif.type != NL80211_IFTYPE_P2P_DEVICE &&
- 	    sdata->vif.type != NL80211_IFTYPE_NAN)
- 		DEBUGFS_ADD(aqm);
- }
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index d3397c1248d3..53005b09f632 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -1056,10 +1056,8 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
- 	DEBUGFS_ADD_COUNTER(rx_fragments, deflink.rx_stats.fragments);
- 	DEBUGFS_ADD_COUNTER(tx_filtered, deflink.status_stats.filtered);
- 
--	if (local->ops->wake_tx_queue) {
--		DEBUGFS_ADD(aqm);
--		DEBUGFS_ADD(airtime);
--	}
-+	DEBUGFS_ADD(aqm);
-+	DEBUGFS_ADD(airtime);
- 
- 	if (wiphy_ext_feature_isset(local->hw.wiphy,
- 				    NL80211_EXT_FEATURE_AQL))
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 4e1d4c339f2d..0f05f50e741b 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2280,7 +2280,6 @@ void ieee80211_wake_queue_by_reason(struct ieee80211_hw *hw, int queue,
- void ieee80211_stop_queue_by_reason(struct ieee80211_hw *hw, int queue,
- 				    enum queue_stop_reason reason,
- 				    bool refcounted);
--void ieee80211_propagate_queue_wake(struct ieee80211_local *local, int queue);
- void ieee80211_add_pending_skb(struct ieee80211_local *local,
- 			       struct sk_buff *skb);
- void ieee80211_add_pending_skbs(struct ieee80211_local *local,
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 5d7f25ed7a0e..3920e30fe492 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -458,12 +458,6 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	if (cancel_scan)
- 		ieee80211_scan_cancel(local);
- 
--	/*
--	 * Stop TX on this interface first.
--	 */
--	if (!local->ops->wake_tx_queue && sdata->dev)
--		netif_tx_stop_all_queues(sdata->dev);
--
- 	ieee80211_roc_purge(local, sdata);
- 
- 	switch (sdata->vif.type) {
-@@ -811,13 +805,6 @@ static void ieee80211_uninit(struct net_device *dev)
- 	ieee80211_teardown_sdata(IEEE80211_DEV_TO_SUB_IF(dev));
+diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
+index 6f937d2cc126..ce3d613fa36c 100644
+--- a/drivers/net/wireless/ath/ar5523/ar5523.c
++++ b/drivers/net/wireless/ath/ar5523/ar5523.c
+@@ -241,6 +241,11 @@ static void ar5523_cmd_tx_cb(struct urb *urb)
+ 	}
  }
  
--static u16 ieee80211_netdev_select_queue(struct net_device *dev,
--					 struct sk_buff *skb,
--					 struct net_device *sb_dev)
--{
--	return ieee80211_select_queue(IEEE80211_DEV_TO_SUB_IF(dev), skb);
--}
--
- static void
- ieee80211_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
- {
-@@ -831,7 +818,6 @@ static const struct net_device_ops ieee80211_dataif_ops = {
- 	.ndo_start_xmit		= ieee80211_subif_start_xmit,
- 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
- 	.ndo_set_mac_address 	= ieee80211_change_mac,
--	.ndo_select_queue	= ieee80211_netdev_select_queue,
- 	.ndo_get_stats64	= ieee80211_get_stats64,
- };
- 
-@@ -939,7 +925,6 @@ static const struct net_device_ops ieee80211_dataif_8023_ops = {
- 	.ndo_start_xmit		= ieee80211_subif_start_xmit_8023,
- 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
- 	.ndo_set_mac_address	= ieee80211_change_mac,
--	.ndo_select_queue	= ieee80211_netdev_select_queue,
- 	.ndo_get_stats64	= ieee80211_get_stats64,
- 	.ndo_fill_forward_path	= ieee80211_netdev_fill_forward_path,
- };
-@@ -1441,35 +1426,6 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 
- 	ieee80211_recalc_ps(local);
- 
--	if (sdata->vif.type == NL80211_IFTYPE_MONITOR ||
--	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
--	    local->ops->wake_tx_queue) {
--		/* XXX: for AP_VLAN, actually track AP queues */
--		if (dev)
--			netif_tx_start_all_queues(dev);
--	} else if (dev) {
--		unsigned long flags;
--		int n_acs = IEEE80211_NUM_ACS;
--		int ac;
--
--		if (local->hw.queues < IEEE80211_NUM_ACS)
--			n_acs = 1;
--
--		spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
--		if (sdata->vif.cab_queue == IEEE80211_INVAL_HW_QUEUE ||
--		    (local->queue_stop_reasons[sdata->vif.cab_queue] == 0 &&
--		     skb_queue_empty(&local->pending[sdata->vif.cab_queue]))) {
--			for (ac = 0; ac < n_acs; ac++) {
--				int ac_queue = sdata->vif.hw_queue[ac];
--
--				if (local->queue_stop_reasons[ac_queue] == 0 &&
--				    skb_queue_empty(&local->pending[ac_queue]))
--					netif_start_subqueue(dev, ac);
--			}
--		}
--		spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
--	}
--
- 	set_bit(SDATA_STATE_RUNNING, &sdata->state);
- 
- 	return 0;
-@@ -1499,17 +1455,12 @@ static void ieee80211_if_setup(struct net_device *dev)
- {
- 	ether_setup(dev);
- 	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
-+	dev->priv_flags |= IFF_NO_QUEUE;
- 	dev->netdev_ops = &ieee80211_dataif_ops;
- 	dev->needs_free_netdev = true;
- 	dev->priv_destructor = ieee80211_if_free;
- }
- 
--static void ieee80211_if_setup_no_queue(struct net_device *dev)
--{
--	ieee80211_if_setup(dev);
--	dev->priv_flags |= IFF_NO_QUEUE;
--}
--
- static void ieee80211_iface_process_skb(struct ieee80211_local *local,
- 					struct ieee80211_sub_if_data *sdata,
- 					struct sk_buff *skb)
-@@ -2094,9 +2045,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 	struct net_device *ndev = NULL;
- 	struct ieee80211_sub_if_data *sdata = NULL;
- 	struct txq_info *txqi;
--	void (*if_setup)(struct net_device *dev);
- 	int ret, i;
--	int txqs = 1;
- 
- 	ASSERT_RTNL();
- 
-@@ -2119,30 +2068,18 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 				 sizeof(void *));
- 		int txq_size = 0;
- 
--		if (local->ops->wake_tx_queue &&
--		    type != NL80211_IFTYPE_AP_VLAN &&
-+		if (type != NL80211_IFTYPE_AP_VLAN &&
- 		    (type != NL80211_IFTYPE_MONITOR ||
- 		     (params->flags & MONITOR_FLAG_ACTIVE)))
- 			txq_size += sizeof(struct txq_info) +
- 				    local->hw.txq_data_size;
- 
--		if (local->ops->wake_tx_queue) {
--			if_setup = ieee80211_if_setup_no_queue;
--		} else {
--			if_setup = ieee80211_if_setup;
--			if (local->hw.queues >= IEEE80211_NUM_ACS)
--				txqs = IEEE80211_NUM_ACS;
--		}
--
- 		ndev = alloc_netdev_mqs(size + txq_size,
- 					name, name_assign_type,
--					if_setup, txqs, 1);
-+					ieee80211_if_setup, 1, 1);
- 		if (!ndev)
- 			return -ENOMEM;
- 
--		if (!local->ops->wake_tx_queue && local->hw.wiphy->tx_queue_len)
--			ndev->tx_queue_len = local->hw.wiphy->tx_queue_len;
--
- 		dev_net_set(ndev, wiphy_net(local->hw.wiphy));
- 
- 		ndev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 46f3eddc2388..58fe8d3b8fb0 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -630,7 +630,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 
- 	if (WARN_ON(!ops->tx || !ops->start || !ops->stop || !ops->config ||
- 		    !ops->add_interface || !ops->remove_interface ||
--		    !ops->configure_filter))
-+		    !ops->configure_filter || !ops->wake_tx_queue))
- 		return NULL;
- 
- 	if (WARN_ON(ops->sta_state && (ops->sta_add || ops->sta_remove)))
-@@ -719,9 +719,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 	if (!ops->set_key)
- 		wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
- 
--	if (ops->wake_tx_queue)
--		wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_TXQS);
--
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_TXQS);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_RRM);
- 
- 	wiphy->bss_priv_size = sizeof(struct ieee80211_bss);
-@@ -834,10 +832,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 		atomic_set(&local->agg_queue_stop[i], 0);
- 	}
- 	tasklet_setup(&local->tx_pending_tasklet, ieee80211_tx_pending);
--
--	if (ops->wake_tx_queue)
--		tasklet_setup(&local->wake_txqs_tasklet, ieee80211_wake_txqs);
--
-+	tasklet_setup(&local->wake_txqs_tasklet, ieee80211_wake_txqs);
- 	tasklet_setup(&local->tasklet, ieee80211_tasklet_handler);
- 
- 	skb_queue_head_init(&local->skb_queue);
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index bd215fe3c796..cd16e2a43ea9 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1571,9 +1571,6 @@ static void sta_ps_start(struct sta_info *sta)
- 
- 	ieee80211_clear_fast_xmit(sta);
- 
--	if (!sta->sta.txq[0])
--		return;
--
- 	for (tid = 0; tid < IEEE80211_NUM_TIDS; tid++) {
- 		struct ieee80211_txq *txq = sta->sta.txq[tid];
- 		struct txq_info *txqi = to_txq_info(txq);
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index cebfd148bb40..58fd582f674f 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -140,17 +140,15 @@ static void __cleanup_single_sta(struct sta_info *sta)
- 		atomic_dec(&ps->num_sta_ps);
- 	}
- 
--	if (sta->sta.txq[0]) {
--		for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
--			struct txq_info *txqi;
-+	for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
-+		struct txq_info *txqi;
- 
--			if (!sta->sta.txq[i])
--				continue;
-+		if (!sta->sta.txq[i])
-+			continue;
- 
--			txqi = to_txq_info(sta->sta.txq[i]);
-+		txqi = to_txq_info(sta->sta.txq[i]);
- 
--			ieee80211_txq_purge(local, txqi);
--		}
-+		ieee80211_txq_purge(local, txqi);
- 	}
- 
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
-@@ -425,8 +423,7 @@ void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
- 
- 	sta_dbg(sta->sdata, "Destroyed STA %pM\n", sta->sta.addr);
- 
--	if (sta->sta.txq[0])
--		kfree(to_txq_info(sta->sta.txq[0]));
-+	kfree(to_txq_info(sta->sta.txq[0]));
- 	kfree(rcu_dereference_raw(sta->sta.rates));
- #ifdef CONFIG_MAC80211_MESH
- 	kfree(sta->mesh);
-@@ -527,6 +524,8 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_hw *hw = &local->hw;
- 	struct sta_info *sta;
-+	void *txq_data;
-+	int size;
- 	int i;
- 
- 	sta = kzalloc(sizeof(*sta) + hw->sta_data_size, gfp);
-@@ -596,21 +595,18 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdata,
- 
- 	sta->last_connected = ktime_get_seconds();
- 
--	if (local->ops->wake_tx_queue) {
--		void *txq_data;
--		int size = sizeof(struct txq_info) +
--			   ALIGN(hw->txq_data_size, sizeof(void *));
-+	size = sizeof(struct txq_info) +
-+	       ALIGN(hw->txq_data_size, sizeof(void *));
- 
--		txq_data = kcalloc(ARRAY_SIZE(sta->sta.txq), size, gfp);
--		if (!txq_data)
--			goto free;
-+	txq_data = kcalloc(ARRAY_SIZE(sta->sta.txq), size, gfp);
-+	if (!txq_data)
-+		goto free;
- 
--		for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
--			struct txq_info *txq = txq_data + i * size;
-+	for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
-+		struct txq_info *txq = txq_data + i * size;
- 
--			/* might not do anything for the bufferable MMPDU TXQ */
--			ieee80211_txq_init(sdata, sta, txq, i);
--		}
-+		/* might not do anything for the (bufferable) MMPDU TXQ */
-+		ieee80211_txq_init(sdata, sta, txq, i);
- 	}
- 
- 	if (sta_prepare_rate_control(local, sta, gfp))
-@@ -684,8 +680,7 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdata,
- 	return sta;
- 
- free_txq:
--	if (sta->sta.txq[0])
--		kfree(to_txq_info(sta->sta.txq[0]));
-+	kfree(to_txq_info(sta->sta.txq[0]));
- free:
- 	sta_info_free_link(&sta->deflink);
- #ifdef CONFIG_MAC80211_MESH
-@@ -1958,9 +1953,6 @@ ieee80211_sta_ps_deliver_response(struct sta_info *sta,
- 		 * TIM recalculation.
- 		 */
- 
--		if (!sta->sta.txq[0])
--			return;
--
- 		for (tid = 0; tid < ARRAY_SIZE(sta->sta.txq); tid++) {
- 			if (!sta->sta.txq[tid] ||
- 			    !(driver_release_tids & BIT(tid)) ||
-@@ -2445,7 +2437,7 @@ static void sta_set_tidstats(struct sta_info *sta,
- 		tidstats->tx_msdu_failed = sta->deflink.status_stats.msdu_failed[tid];
- 	}
- 
--	if (local->ops->wake_tx_queue && tid < IEEE80211_NUM_TIDS) {
-+	if (tid < IEEE80211_NUM_TIDS) {
- 		spin_lock_bh(&local->fq.lock);
- 		rcu_read_lock();
- 
-@@ -2773,9 +2765,6 @@ unsigned long ieee80211_sta_last_active(struct sta_info *sta)
- 
- static void sta_update_codel_params(struct sta_info *sta, u32 thr)
- {
--	if (!sta->sdata->local->ops->wake_tx_queue)
--		return;
--
- 	if (thr && thr < STA_SLOW_THRESHOLD * sta->local->num_sta) {
- 		sta->cparams.target = MS2TIME(50);
- 		sta->cparams.interval = MS2TIME(300);
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index f4b4d25eef95..b255f3b5bf01 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1016,7 +1016,6 @@ ieee80211_tdls_prep_mgmt_packet(struct wiphy *wiphy, struct net_device *dev,
- 		skb->priority = 256 + 5;
- 		break;
- 	}
--	skb_set_queue_mapping(skb, ieee80211_select_queue(sdata, skb));
- 
- 	/*
- 	 * Set the WLAN_TDLS_TEARDOWN flag to indicate a teardown in progress.
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a364148149f9..ec55159e47a5 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1599,9 +1599,6 @@ int ieee80211_txq_setup_flows(struct ieee80211_local *local)
- 	bool supp_vht = false;
- 	enum nl80211_band band;
- 
--	if (!local->ops->wake_tx_queue)
--		return 0;
--
- 	ret = fq_init(fq, 4096);
- 	if (ret)
- 		return ret;
-@@ -1649,9 +1646,6 @@ void ieee80211_txq_teardown_flows(struct ieee80211_local *local)
- {
- 	struct fq *fq = &local->fq;
- 
--	if (!local->ops->wake_tx_queue)
--		return;
--
- 	kfree(local->cvars);
- 	local->cvars = NULL;
- 
-@@ -1668,8 +1662,7 @@ static bool ieee80211_queue_skb(struct ieee80211_local *local,
- 	struct ieee80211_vif *vif;
- 	struct txq_info *txqi;
- 
--	if (!local->ops->wake_tx_queue ||
--	    sdata->vif.type == NL80211_IFTYPE_MONITOR)
-+	if (sdata->vif.type == NL80211_IFTYPE_MONITOR)
- 		return false;
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
-@@ -4184,12 +4177,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
- 	if (IS_ERR(sta))
- 		sta = NULL;
- 
--	if (local->ops->wake_tx_queue) {
--		u16 queue = __ieee80211_select_queue(sdata, sta, skb);
--		skb_set_queue_mapping(skb, queue);
--		skb_get_hash(skb);
--	}
--
-+	skb_set_queue_mapping(skb, ieee80211_select_queue(sdata, sta, skb));
- 	ieee80211_aggr_check(sdata, sta, skb);
- 
- 	sk_pacing_shift_update(skb->sk, sdata->local->hw.tx_sk_pacing_shift);
-@@ -4495,11 +4483,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
- 	struct tid_ampdu_tx *tid_tx;
- 	u8 tid;
- 
--	if (local->ops->wake_tx_queue) {
--		u16 queue = __ieee80211_select_queue(sdata, sta, skb);
--		skb_set_queue_mapping(skb, queue);
--		skb_get_hash(skb);
--	}
-+	skb_set_queue_mapping(skb, ieee80211_select_queue(sdata, sta, skb));
- 
- 	if (unlikely(test_bit(SCAN_SW_SCANNING, &local->scanning)) &&
- 	    test_bit(SDATA_STATE_OFFCHANNEL, &sdata->state))
-@@ -4753,9 +4737,6 @@ void ieee80211_tx_pending(struct tasklet_struct *t)
- 			if (!txok)
- 				break;
- 		}
--
--		if (skb_queue_empty(&local->pending[i]))
--			ieee80211_propagate_queue_wake(local, i);
- 	}
- 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
- 
-@@ -5948,10 +5929,9 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
- 	}
- 
- 	if (!IS_ERR(sta)) {
--		u16 queue = __ieee80211_select_queue(sdata, sta, skb);
-+		u16 queue = ieee80211_select_queue(sdata, sta, skb);
- 
- 		skb_set_queue_mapping(skb, queue);
--		skb_get_hash(skb);
- 
- 		/*
- 		 * for MLO STA, the SA should be the AP MLD address, but
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index a7f9a2b3e683..0dcf8f20c909 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -446,39 +446,6 @@ void ieee80211_wake_txqs(struct tasklet_struct *t)
- 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
- }
- 
--void ieee80211_propagate_queue_wake(struct ieee80211_local *local, int queue)
--{
--	struct ieee80211_sub_if_data *sdata;
--	int n_acs = IEEE80211_NUM_ACS;
--
--	if (local->ops->wake_tx_queue)
--		return;
--
--	if (local->hw.queues < IEEE80211_NUM_ACS)
--		n_acs = 1;
--
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
--		int ac;
--
--		if (!sdata->dev)
--			continue;
--
--		if (sdata->vif.cab_queue != IEEE80211_INVAL_HW_QUEUE &&
--		    local->queue_stop_reasons[sdata->vif.cab_queue] != 0)
--			continue;
--
--		for (ac = 0; ac < n_acs; ac++) {
--			int ac_queue = sdata->vif.hw_queue[ac];
--
--			if (ac_queue == queue ||
--			    (sdata->vif.cab_queue == queue &&
--			     local->queue_stop_reasons[ac_queue] == 0 &&
--			     skb_queue_empty(&local->pending[ac_queue])))
--				netif_wake_subqueue(sdata->dev, ac);
--		}
--	}
--}
--
- static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
- 				   enum queue_stop_reason reason,
- 				   bool refcounted,
-@@ -509,11 +476,7 @@ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
- 		/* someone still has this queue stopped */
- 		return;
- 
--	if (skb_queue_empty(&local->pending[queue])) {
--		rcu_read_lock();
--		ieee80211_propagate_queue_wake(local, queue);
--		rcu_read_unlock();
--	} else
-+	if (!skb_queue_empty(&local->pending[queue]))
- 		tasklet_schedule(&local->tx_pending_tasklet);
- 
- 	/*
-@@ -523,12 +486,10 @@ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
- 	 * release someone's lock, but it is fine because all the callers of
- 	 * __ieee80211_wake_queue call it right before releasing the lock.
- 	 */
--	if (local->ops->wake_tx_queue) {
--		if (reason == IEEE80211_QUEUE_STOP_REASON_DRIVER)
--			tasklet_schedule(&local->wake_txqs_tasklet);
--		else
--			_ieee80211_wake_txqs(local, flags);
--	}
-+	if (reason == IEEE80211_QUEUE_STOP_REASON_DRIVER)
-+		tasklet_schedule(&local->wake_txqs_tasklet);
-+	else
-+		_ieee80211_wake_txqs(local, flags);
- }
- 
- void ieee80211_wake_queue_by_reason(struct ieee80211_hw *hw, int queue,
-@@ -585,10 +546,6 @@ static void __ieee80211_stop_queue(struct ieee80211_hw *hw, int queue,
- 		for (ac = 0; ac < n_acs; ac++) {
- 			if (sdata->vif.hw_queue[ac] == queue ||
- 			    sdata->vif.cab_queue == queue) {
--				if (!local->ops->wake_tx_queue) {
--					netif_stop_subqueue(sdata->dev, ac);
--					continue;
--				}
- 				spin_lock(&local->fq.lock);
- 				sdata->vif.txqs_stopped[ac] = true;
- 				spin_unlock(&local->fq.lock);
-diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
-index ecc1de2e68a5..a12c63638680 100644
---- a/net/mac80211/wme.c
-+++ b/net/mac80211/wme.c
-@@ -122,6 +122,9 @@ u16 ieee80211_select_queue_80211(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	u8 *p;
- 
-+	/* Ensure hash is set prior to potential SW encryption */
-+	skb_get_hash(skb);
++static void ar5523_cancel_tx_cmd(struct ar5523 *ar)
++{
++	usb_kill_urb(ar->tx_cmd.urb_tx);
++}
 +
- 	if ((info->control.flags & IEEE80211_TX_CTRL_DONT_REORDER) ||
- 	    local->hw.queues < IEEE80211_NUM_ACS)
- 		return 0;
-@@ -141,12 +144,15 @@ u16 ieee80211_select_queue_80211(struct ieee80211_sub_if_data *sdata,
- 	return ieee80211_downgrade_queue(sdata, NULL, skb);
- }
- 
--u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
--			     struct sta_info *sta, struct sk_buff *skb)
-+u16 ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
-+			   struct sta_info *sta, struct sk_buff *skb)
+ static int ar5523_cmd(struct ar5523 *ar, u32 code, const void *idata,
+ 		      int ilen, void *odata, int olen, int flags)
  {
- 	struct mac80211_qos_map *qos_map;
- 	bool qos;
+@@ -280,6 +285,7 @@ static int ar5523_cmd(struct ar5523 *ar, u32 code, const void *idata,
+ 	}
  
-+	/* Ensure hash is set prior to potential SW encryption */
-+	skb_get_hash(skb);
-+
- 	/* all mesh/ocb stations are required to support WME */
- 	if (sta && (sdata->vif.type == NL80211_IFTYPE_MESH_POINT ||
- 		    sdata->vif.type == NL80211_IFTYPE_OCB))
-@@ -176,59 +182,6 @@ u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
- 	return ieee80211_downgrade_queue(sdata, sta, skb);
- }
- 
--
--/* Indicate which queue to use. */
--u16 ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
--			   struct sk_buff *skb)
--{
--	struct ieee80211_local *local = sdata->local;
--	struct sta_info *sta = NULL;
--	const u8 *ra = NULL;
--	u16 ret;
--
--	/* when using iTXQ, we can do this later */
--	if (local->ops->wake_tx_queue)
--		return 0;
--
--	if (local->hw.queues < IEEE80211_NUM_ACS || skb->len < 6) {
--		skb->priority = 0; /* required for correct WPA/11i MIC */
--		return 0;
--	}
--
--	rcu_read_lock();
--	switch (sdata->vif.type) {
--	case NL80211_IFTYPE_AP_VLAN:
--		sta = rcu_dereference(sdata->u.vlan.sta);
--		if (sta)
--			break;
--		fallthrough;
--	case NL80211_IFTYPE_AP:
--		ra = skb->data;
--		break;
--	case NL80211_IFTYPE_STATION:
--		/* might be a TDLS station */
--		sta = sta_info_get(sdata, skb->data);
--		if (sta)
--			break;
--
--		ra = sdata->deflink.u.mgd.bssid;
--		break;
--	case NL80211_IFTYPE_ADHOC:
--		ra = skb->data;
--		break;
--	default:
--		break;
--	}
--
--	if (!sta && ra && !is_multicast_ether_addr(ra))
--		sta = sta_info_get(sdata, ra);
--
--	ret = __ieee80211_select_queue(sdata, sta, skb);
--
--	rcu_read_unlock();
--	return ret;
--}
--
- /**
-  * ieee80211_set_qos_hdr - Fill in the QoS header if there is one.
-  *
-diff --git a/net/mac80211/wme.h b/net/mac80211/wme.h
-index 2e3dec0b6087..81f0039527a9 100644
---- a/net/mac80211/wme.h
-+++ b/net/mac80211/wme.h
-@@ -13,10 +13,8 @@
- u16 ieee80211_select_queue_80211(struct ieee80211_sub_if_data *sdata,
- 				 struct sk_buff *skb,
- 				 struct ieee80211_hdr *hdr);
--u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
--			     struct sta_info *sta, struct sk_buff *skb);
- u16 ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
--			   struct sk_buff *skb);
-+			   struct sta_info *sta, struct sk_buff *skb);
- void ieee80211_set_qos_hdr(struct ieee80211_sub_if_data *sdata,
- 			   struct sk_buff *skb);
- 
+ 	if (!wait_for_completion_timeout(&cmd->done, 2 * HZ)) {
++		ar5523_cancel_tx_cmd(ar);
+ 		cmd->odata = NULL;
+ 		ar5523_err(ar, "timeout waiting for command %02x reply\n",
+ 			   code);
 -- 
 2.37.3
 
