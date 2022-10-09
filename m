@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A4DE5F91F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319925F9062
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231605AbiJIWoW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 18:44:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53152 "EHLO
+        id S231665AbiJIWYI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 18:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232341AbiJIWnP (ORCPT
+        with ESMTP id S231564AbiJIWXc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 18:43:15 -0400
+        Sun, 9 Oct 2022 18:23:32 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E365343143;
-        Sun,  9 Oct 2022 15:22:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDDE3DBC5;
+        Sun,  9 Oct 2022 15:17:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BFBADB80DD4;
-        Sun,  9 Oct 2022 22:11:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4979BC433B5;
-        Sun,  9 Oct 2022 22:11:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E2F73B80DDE;
+        Sun,  9 Oct 2022 22:12:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE59C433D7;
+        Sun,  9 Oct 2022 22:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665353471;
-        bh=44uRYNzLL2dyaeADFwbtAehncvGKf6ItaLtVtAl1DKk=;
+        s=k20201202; t=1665353544;
+        bh=66D2o55xS9JFwuQ8s9rxk5SH4uR49bT6xf7rZNewlQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AyELzpOYBPiIyLeb619upJv3DhurZik9Ax/gMc7/PClxIu1tUCnazqw9ZGbGwzUHn
-         4C3XJpfuBmuEmm7KSZ8evVCKPmbY+ofVRTDKMJI+UjGg68oN1wmr262I4OIZ4bTnbz
-         0qF/9dhWoHU3ez54dQAodLMsbS7fpxvjjmj47FePYgK+HnBA7+BwBqv2LObKKpKjqJ
-         33fccSE8GoZlaZz0B2kd+OUc1Iw4Acp8O/f4QKF8z9mlNbe24U8g7geT0SVsWNNr9R
-         IWY8Wpvex6/Io/ZMYguyGguOJpsK6wPJIFBUtucFptkXATgF9hbmQzfaOHkkCJM6TG
-         wkq+gakWrnjzA==
+        b=OqySeQ1S0lNSWdNLVR8sbW+TPDdTJiK23ebmqne3kGWlzTrIIlm/04T6NTHBjGB3M
+         QqLICgdYAGO78NkRmsZLy6hzEe/B9eQgdphMv/CaagWs2nxDVSW+Eb7dcbAwAMy4vd
+         06GuMqtWk4utV//BIPviAAPlegAyYtR0hIfIvWrVFsFdgRAAcuAhYhBw1Tt8GzQG9u
+         WSG0RxjKgD6YuVVMxHJF94jgq+abaekTxWD8rrgdc4LeYholWZrrT0NUGswWGrJPr4
+         6BLKVl7sMiwXV/Az5W94mIMFlhtPqnG5M533XCLjTLd5C2o+utsCxvAUwQfxtZQ+l9
+         k6J/UfccCew9A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Po-Hao Huang <phhuang@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+Cc:     Wen Gong <quic_wgong@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 43/77] wifi: rtw89: fix rx filter after scan
-Date:   Sun,  9 Oct 2022 18:07:20 -0400
-Message-Id: <20221009220754.1214186-43-sashal@kernel.org>
+        pabeni@redhat.com, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.0 58/77] wifi: ath10k: reset pointer after memory free to avoid potential use-after-free
+Date:   Sun,  9 Oct 2022 18:07:35 -0400
+Message-Id: <20221009220754.1214186-58-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221009220754.1214186-1-sashal@kernel.org>
 References: <20221009220754.1214186-1-sashal@kernel.org>
@@ -59,63 +59,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-[ Upstream commit 812825c2b204c491f1a5586c602e4ac75060493a ]
+[ Upstream commit 1e1cb8e0b73e6f39a9d4a7a15d940b1265387eb5 ]
 
-In monitor mode we should be able to received all packets even if it's not
-destined to us. But after scan, the configuration was wrongly set, so we
-fix it.
+When running suspend test, kernel crash happened in ath10k, and it is
+fixed by commit b72a4aff947b ("ath10k: skip ath10k_halt during suspend
+for driver state RESTARTING").
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20220916033811.13862-7-pkshih@realtek.com
+Currently the crash is fixed, but as a common code style, it is better
+to set the pointer to NULL after memory is free.
+
+This is to address the code style and it will avoid potential bug of
+use-after-free.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20220505092248.787-1-quic_wgong@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 6473015a6b2a..c993fe9cf6b4 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2289,6 +2289,7 @@ void rtw89_hw_scan_start(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- {
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	struct cfg80211_scan_request *req = &scan_req->req;
-+	u32 rx_fltr = rtwdev->hal.rx_fltr;
- 	u8 mac_addr[ETH_ALEN];
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 8a075a711b71..f84f6c4c2a7a 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -301,12 +301,16 @@ void ath10k_htt_rx_free(struct ath10k_htt *htt)
+ 			  ath10k_htt_get_vaddr_ring(htt),
+ 			  htt->rx_ring.base_paddr);
  
- 	rtwdev->scan_info.scanning_vif = vif;
-@@ -2303,13 +2304,13 @@ void rtw89_hw_scan_start(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 		ether_addr_copy(mac_addr, vif->addr);
- 	rtw89_core_scan_start(rtwdev, rtwvif, mac_addr, true);
++	ath10k_htt_config_paddrs_ring(htt, NULL);
++
+ 	dma_free_coherent(htt->ar->dev,
+ 			  sizeof(*htt->rx_ring.alloc_idx.vaddr),
+ 			  htt->rx_ring.alloc_idx.vaddr,
+ 			  htt->rx_ring.alloc_idx.paddr);
++	htt->rx_ring.alloc_idx.vaddr = NULL;
  
--	rtwdev->hal.rx_fltr &= ~B_AX_A_BCN_CHK_EN;
--	rtwdev->hal.rx_fltr &= ~B_AX_A_BC;
--	rtwdev->hal.rx_fltr &= ~B_AX_A_A1_MATCH;
-+	rx_fltr &= ~B_AX_A_BCN_CHK_EN;
-+	rx_fltr &= ~B_AX_A_BC;
-+	rx_fltr &= ~B_AX_A_A1_MATCH;
- 	rtw89_write32_mask(rtwdev,
- 			   rtw89_mac_reg_by_idx(R_AX_RX_FLTR_OPT, RTW89_MAC_0),
- 			   B_AX_RX_FLTR_CFG_MASK,
--			   rtwdev->hal.rx_fltr);
-+			   rx_fltr);
+ 	kfree(htt->rx_ring.netbufs_ring);
++	htt->rx_ring.netbufs_ring = NULL;
  }
  
- void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
-@@ -2323,9 +2324,6 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 	if (!vif)
- 		return;
- 
--	rtwdev->hal.rx_fltr |= B_AX_A_BCN_CHK_EN;
--	rtwdev->hal.rx_fltr |= B_AX_A_BC;
--	rtwdev->hal.rx_fltr |= B_AX_A_A1_MATCH;
- 	rtw89_write32_mask(rtwdev,
- 			   rtw89_mac_reg_by_idx(R_AX_RX_FLTR_OPT, RTW89_MAC_0),
- 			   B_AX_RX_FLTR_CFG_MASK,
+ static inline struct sk_buff *ath10k_htt_rx_netbuf_pop(struct ath10k_htt *htt)
+@@ -846,8 +850,10 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
+ 			  ath10k_htt_get_rx_ring_size(htt),
+ 			  vaddr_ring,
+ 			  htt->rx_ring.base_paddr);
++	ath10k_htt_config_paddrs_ring(htt, NULL);
+ err_dma_ring:
+ 	kfree(htt->rx_ring.netbufs_ring);
++	htt->rx_ring.netbufs_ring = NULL;
+ err_netbuf:
+ 	return -ENOMEM;
+ }
 -- 
 2.35.1
 
