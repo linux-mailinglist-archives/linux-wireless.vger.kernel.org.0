@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E995F8B5F
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Oct 2022 14:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2681F5F8B61
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Oct 2022 14:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbiJIMyu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 08:54:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47618 "EHLO
+        id S230135AbiJIMyw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 08:54:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiJIMyo (ORCPT
+        with ESMTP id S230141AbiJIMyp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 08:54:44 -0400
+        Sun, 9 Oct 2022 08:54:45 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 432D8C38
-        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 05:54:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4359BC4F
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 05:54:39 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 299CruniF029516, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 299CruniF029516
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 299CrvysF029520, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 299CrvysF029520
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Sun, 9 Oct 2022 20:53:56 +0800
+        Sun, 9 Oct 2022 20:53:57 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sun, 9 Oct 2022 20:54:25 +0800
+ 15.1.2375.7; Sun, 9 Oct 2022 20:54:26 +0800
 Received: from localhost (172.16.16.215) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Sun, 9 Oct 2022
- 20:54:25 +0800
+ 20:54:26 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/9] wifi: rtw89: 8852b: add basic baseband chip_ops
-Date:   Sun, 9 Oct 2022 20:53:57 +0800
-Message-ID: <20221009125403.19662-4-pkshih@realtek.com>
+Subject: [PATCH 4/9] wifi: rtw89: 8852b: add chip_ops to get thermal
+Date:   Sun, 9 Oct 2022 20:53:58 +0800
+Message-ID: <20221009125403.19662-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221009125403.19662-1-pkshih@realtek.com>
 References: <20221009125403.19662-1-pkshih@realtek.com>
@@ -55,10 +55,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzkgpFekyCAwOTowNzowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,76 +67,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-chip_ops::bb_reset is to reset baseband state after loading parameters,
-because its state could be unpredictable at that moment. The other is
-chip_ops::bb_sethw that is to set some baseband settings not including in
-parameter tables.
+Thermal value reflects temperature that will affect RF performance, so
+we re-calibrate RF characteristics if delta of thermal over a threshold.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 42 +++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index f54a4ea3c6b53..f13c657f4d68d 100644
+index f13c657f4d68d..09374b92f6617 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -1066,6 +1066,46 @@ static void rtw8852b_bb_reset_en(struct rtw89_dev *rtwdev, enum rtw89_band band,
- 	}
+@@ -1397,6 +1397,23 @@ rtw8852b_init_txpwr_unit(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
+ 	return 0;
  }
  
-+static void rtw8852b_bb_reset(struct rtw89_dev *rtwdev,
-+			      enum rtw89_phy_idx phy_idx)
++static u8 rtw8852b_get_thermal(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path)
 +{
-+	rtw89_phy_write32_set(rtwdev, R_P0_TXPW_RSTB, B_P0_TXPW_RSTB_MANON);
-+	rtw89_phy_write32_set(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_TRK_EN);
-+	rtw89_phy_write32_set(rtwdev, R_P1_TXPW_RSTB, B_P1_TXPW_RSTB_MANON);
-+	rtw89_phy_write32_set(rtwdev, R_P1_TSSI_TRK, B_P1_TSSI_TRK_EN);
-+	rtw8852b_bb_reset_all(rtwdev, phy_idx);
-+	rtw89_phy_write32_clr(rtwdev, R_P0_TXPW_RSTB, B_P0_TXPW_RSTB_MANON);
-+	rtw89_phy_write32_clr(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_TRK_EN);
-+	rtw89_phy_write32_clr(rtwdev, R_P1_TXPW_RSTB, B_P1_TXPW_RSTB_MANON);
-+	rtw89_phy_write32_clr(rtwdev, R_P1_TSSI_TRK, B_P1_TSSI_TRK_EN);
++	if (rtwdev->is_tssi_mode[rf_path]) {
++		u32 addr = 0x1c10 + (rf_path << 13);
++
++		return rtw89_phy_read32_mask(rtwdev, addr, 0x3F000000);
++	}
++
++	rtw89_write_rf(rtwdev, rf_path, RR_TM, RR_TM_TRI, 0x1);
++	rtw89_write_rf(rtwdev, rf_path, RR_TM, RR_TM_TRI, 0x0);
++	rtw89_write_rf(rtwdev, rf_path, RR_TM, RR_TM_TRI, 0x1);
++
++	fsleep(200);
++
++	return rtw89_read_rf(rtwdev, rf_path, RR_TM, RR_TM_VAL);
 +}
 +
-+static void rtw8852b_bb_macid_ctrl_init(struct rtw89_dev *rtwdev,
-+					enum rtw89_phy_idx phy_idx)
-+{
-+	u32 addr;
-+
-+	for (addr = R_AX_PWR_MACID_LMT_TABLE0;
-+	     addr <= R_AX_PWR_MACID_LMT_TABLE127; addr += 4)
-+		rtw89_mac_txpwr_write32(rtwdev, phy_idx, addr, 0);
-+}
-+
-+static void rtw8852b_bb_sethw(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_phy_efuse_gain *gain = &rtwdev->efuse_gain;
-+
-+	rtw89_phy_write32_clr(rtwdev, R_P0_EN_SOUND_WO_NDP, B_P0_EN_SOUND_WO_NDP);
-+	rtw89_phy_write32_clr(rtwdev, R_P1_EN_SOUND_WO_NDP, B_P1_EN_SOUND_WO_NDP);
-+
-+	rtw8852b_bb_macid_ctrl_init(rtwdev, RTW89_PHY_0);
-+
-+	/* read these registers after loading BB parameters */
-+	gain->offset_base[RTW89_PHY_0] =
-+		rtw89_phy_read32_mask(rtwdev, R_P0_RPL1, B_P0_RPL1_BIAS_MASK);
-+	gain->rssi_base[RTW89_PHY_0] =
-+		rtw89_phy_read32_mask(rtwdev, R_P1_RPL1, B_P0_RPL1_BIAS_MASK);
-+}
-+
- static void rtw8852b_set_channel_bb(struct rtw89_dev *rtwdev, const struct rtw89_chan *chan,
- 				    enum rtw89_phy_idx phy_idx)
+ static int rtw8852b_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
  {
-@@ -1413,6 +1453,8 @@ static int rtw8852b_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
- static const struct rtw89_chip_ops rtw8852b_chip_ops = {
- 	.enable_bb_rf		= rtw8852b_mac_enable_bb_rf,
- 	.disable_bb_rf		= rtw8852b_mac_disable_bb_rf,
-+	.bb_reset		= rtw8852b_bb_reset,
-+	.bb_sethw		= rtw8852b_bb_sethw,
- 	.set_channel		= rtw8852b_set_channel,
- 	.set_channel_help	= rtw8852b_set_channel_help,
- 	.read_efuse		= rtw8852b_read_efuse,
+ 	int ret;
+@@ -1463,6 +1480,7 @@ static const struct rtw89_chip_ops rtw8852b_chip_ops = {
+ 	.set_txpwr		= rtw8852b_set_txpwr,
+ 	.set_txpwr_ctrl		= rtw8852b_set_txpwr_ctrl,
+ 	.init_txpwr_unit	= rtw8852b_init_txpwr_unit,
++	.get_thermal		= rtw8852b_get_thermal,
+ 	.pwr_on_func		= rtw8852b_pwr_on_func,
+ 	.pwr_off_func		= rtw8852b_pwr_off_func,
+ };
 -- 
 2.25.1
 
