@@ -2,54 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E4F85F9094
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2E05F90C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231949AbiJIW0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 18:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
+        id S232096AbiJIW1X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 18:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbiJIWYE (ORCPT
+        with ESMTP id S231910AbiJIWZ4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 18:24:04 -0400
+        Sun, 9 Oct 2022 18:25:56 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5993B3DF00;
-        Sun,  9 Oct 2022 15:18:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC8AC3DF18;
+        Sun,  9 Oct 2022 15:18:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DE5D8B80DFE;
-        Sun,  9 Oct 2022 22:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311B3C433D6;
-        Sun,  9 Oct 2022 22:16:01 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1971EB80E00;
+        Sun,  9 Oct 2022 22:16:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835AFC43470;
+        Sun,  9 Oct 2022 22:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665353762;
-        bh=uFZzpqGeI0F+s1iei+vQqMl4q+FdPp2Sji8X1gj9HgQ=;
+        s=k20201202; t=1665353786;
+        bh=PytxVOSr5jFXPJQvawqoj1wVm66oLH6DZCYSKa7TKrc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c2dKMUqNknBWfviTGGAnpichFCkc3nGdkNVCVR7nCfOinl/Nk/p3jWEWuR5VdoK6s
-         AzHsBuEA/6jSKKADn/A9dc18kCVZqohm/ZYMn+EQdVXVYVgKJnuqTCr57StZz1DPhE
-         +Gfap7S3uet37bQE9NYjEhHLpHoblWtCGWNB3jtMo/E9H65kC8y8f8y0sQKDkvgx8e
-         7UAdqcwvCOlA8LWn1YEbkZyKVxDSVjUodwXJ8AZjf3DcM/hztDu2aDgtgUj2AFAIIg
-         ZNjOP3yW/DCQguoOemxnQCiqMHxFYYajzUjEfS5wxM2DavSuW3rK5LKLXtAqzB3il+
-         1mn+z7fmIjazg==
+        b=JniPNqtfYZGR1qnNFSob0OYI4+2u3uX5ZiMHBlZRZx5/FQSC1wBiqRUqsGSB6j874
+         vCrObr+u2Ml/kLy+7URc+XK8+p6NyvV9PipojCXH40TFq+yXohx6m/ySAQIeiXjGpH
+         WGmPUL7Gbk6xNObM+uEYBdomXC8FPP5u9ae0sQnLjd/Toobk2gbFH1cC+e48ZJWrLb
+         rSVPucs5jD4hldfvjUS0fj9NeV+drJxd/8JYCAP1AbPOBUvMNbosgwBMdDD9L8Wq/U
+         BQVhpiWICkeoUJb4oMX6bmZ0Ieit1FyjkWc3J5aJlc/4awfF+On+CVP8VzdCiOhgwI
+         z4y0ppsjVAAOA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        syzbot <syzbot+2ca247c2d60c7023de7f@syzkaller.appspotmail.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+Cc:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
         Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 17/73] wifi: ath9k: avoid uninit memory read in ath9k_htc_rx_msg()
-Date:   Sun,  9 Oct 2022 18:13:55 -0400
-Message-Id: <20221009221453.1216158-17-sashal@kernel.org>
+        pabeni@redhat.com, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.19 23/73] wifi: ath11k: Register shutdown handler for WCN6750
+Date:   Sun,  9 Oct 2022 18:14:01 -0400
+Message-Id: <20221009221453.1216158-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221009221453.1216158-1-sashal@kernel.org>
 References: <20221009221453.1216158-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -62,147 +59,146 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-[ Upstream commit b383e8abed41cc6ff1a3b34de75df9397fa4878c ]
+[ Upstream commit ac41c2b642b136a1e633379fcb87a9db0ee07f5b ]
 
-syzbot is reporting uninit value at ath9k_htc_rx_msg() [1], for
-ioctl(USB_RAW_IOCTL_EP_WRITE) can call ath9k_hif_usb_rx_stream() with
-pkt_len = 0 but ath9k_hif_usb_rx_stream() uses
-__dev_alloc_skb(pkt_len + 32, GFP_ATOMIC) based on an assumption that
-pkt_len is valid. As a result, ath9k_hif_usb_rx_stream() allocates skb
-with uninitialized memory and ath9k_htc_rx_msg() is reading from
-uninitialized memory.
+When the system shuts down, SMMU driver will be stopped and
+will not assist in IOVA translations. SMMU driver expects all
+of its consumers to shutdown before shutting down itself.
+WCN6750 being one of the consumer device should not perform any
+DMA operations after the SMMU has shutdown which will otherwise
+result in SMMU faults.
 
-Since bytes accessed by ath9k_htc_rx_msg() is not known until
-ath9k_htc_rx_msg() is called, it would be difficult to check minimal valid
-pkt_len at "if (pkt_len > 2 * MAX_RX_BUF_SIZE) {" line in
-ath9k_hif_usb_rx_stream().
+SMMU driver will call the shutdown() callback of all its
+consumer devices and the consumers shall stop further DMA
+activity after the invocation of their respective shutdown()
+callbacks.
 
-We have two choices. One is to workaround by adding __GFP_ZERO so that
-ath9k_htc_rx_msg() sees 0 if pkt_len is invalid. The other is to let
-ath9k_htc_rx_msg() validate pkt_len before accessing. This patch chose
-the latter.
+Register the shutdown() callback to the platform core for WCN6750.
+Change will not impact other AHB ath11k devices.
 
-Note that I'm not sure threshold condition is correct, for I can't find
-details on possible packet length used by this protocol.
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
 
-Link: https://syzkaller.appspot.com/bug?extid=2ca247c2d60c7023de7f [1]
-Reported-by: syzbot <syzbot+2ca247c2d60c7023de7f@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/7acfa1be-4b5c-b2ce-de43-95b0593fb3e5@I-love.SAKURA.ne.jp
+Link: https://lore.kernel.org/r/20220720134710.15523-1-quic_mpubbise@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_hst.c | 43 +++++++++++++++---------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath11k/ahb.c  | 58 ++++++++++++++++++++------
+ drivers/net/wireless/ath/ath11k/core.c |  2 +
+ 2 files changed, 47 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
-index 994ec48b2f66..ca05b07a45e6 100644
---- a/drivers/net/wireless/ath/ath9k/htc_hst.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
-@@ -364,33 +364,27 @@ void ath9k_htc_txcompletion_cb(struct htc_target *htc_handle,
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index c47414710138..911eee9646a4 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -1088,20 +1088,10 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
- static void ath9k_htc_fw_panic_report(struct htc_target *htc_handle,
--				      struct sk_buff *skb)
-+				      struct sk_buff *skb, u32 len)
+-static int ath11k_ahb_remove(struct platform_device *pdev)
++static void ath11k_ahb_remove_prepare(struct ath11k_base *ab)
  {
- 	uint32_t *pattern = (uint32_t *)skb->data;
+-	struct ath11k_base *ab = platform_get_drvdata(pdev);
+ 	unsigned long left;
  
--	switch (*pattern) {
--	case 0x33221199:
--		{
-+	if (*pattern == 0x33221199 && len >= sizeof(struct htc_panic_bad_vaddr)) {
- 		struct htc_panic_bad_vaddr *htc_panic;
- 		htc_panic = (struct htc_panic_bad_vaddr *) skb->data;
- 		dev_err(htc_handle->dev, "ath: firmware panic! "
- 			"exccause: 0x%08x; pc: 0x%08x; badvaddr: 0x%08x.\n",
- 			htc_panic->exccause, htc_panic->pc,
- 			htc_panic->badvaddr);
--		break;
--		}
--	case 0x33221299:
--		{
-+		return;
+-	if (test_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags)) {
+-		ath11k_ahb_power_down(ab);
+-		ath11k_debugfs_soc_destroy(ab);
+-		ath11k_qmi_deinit_service(ab);
+-		goto qmi_fail;
+-	}
+-
+-	reinit_completion(&ab->driver_recovery);
+-
+ 	if (test_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags)) {
+ 		left = wait_for_completion_timeout(&ab->driver_recovery,
+ 						   ATH11K_AHB_RECOVERY_TIMEOUT);
+@@ -1111,19 +1101,60 @@ static int ath11k_ahb_remove(struct platform_device *pdev)
+ 
+ 	set_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags);
+ 	cancel_work_sync(&ab->restart_work);
++	cancel_work_sync(&ab->qmi.event_work);
++}
++
++static void ath11k_ahb_free_resources(struct ath11k_base *ab)
++{
++	struct platform_device *pdev = ab->pdev;
+ 
+-	ath11k_core_deinit(ab);
+-qmi_fail:
+ 	ath11k_ahb_free_irq(ab);
+ 	ath11k_hal_srng_deinit(ab);
+ 	ath11k_ahb_fw_resource_deinit(ab);
+ 	ath11k_ce_free_pipes(ab);
+ 	ath11k_core_free(ab);
+ 	platform_set_drvdata(pdev, NULL);
++}
++
++static int ath11k_ahb_remove(struct platform_device *pdev)
++{
++	struct ath11k_base *ab = platform_get_drvdata(pdev);
++
++	if (test_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags)) {
++		ath11k_ahb_power_down(ab);
++		ath11k_debugfs_soc_destroy(ab);
++		ath11k_qmi_deinit_service(ab);
++		goto qmi_fail;
 +	}
-+	if (*pattern == 0x33221299) {
- 		struct htc_panic_bad_epid *htc_panic;
- 		htc_panic = (struct htc_panic_bad_epid *) skb->data;
- 		dev_err(htc_handle->dev, "ath: firmware panic! "
- 			"bad epid: 0x%08x\n", htc_panic->epid);
--		break;
--		}
--	default:
--		dev_err(htc_handle->dev, "ath: unknown panic pattern!\n");
--		break;
-+		return;
- 	}
-+	dev_err(htc_handle->dev, "ath: unknown panic pattern!\n");
++
++	ath11k_ahb_remove_prepare(ab);
++	ath11k_core_deinit(ab);
++
++qmi_fail:
++	ath11k_ahb_free_resources(ab);
+ 
+ 	return 0;
  }
  
- /*
-@@ -411,16 +405,26 @@ void ath9k_htc_rx_msg(struct htc_target *htc_handle,
- 	if (!htc_handle || !skb)
- 		return;
- 
-+	/* A valid message requires len >= 8.
-+	 *
-+	 *   sizeof(struct htc_frame_hdr) == 8
-+	 *   sizeof(struct htc_ready_msg) == 8
-+	 *   sizeof(struct htc_panic_bad_vaddr) == 16
-+	 *   sizeof(struct htc_panic_bad_epid) == 8
++static void ath11k_ahb_shutdown(struct platform_device *pdev)
++{
++	struct ath11k_base *ab = platform_get_drvdata(pdev);
++
++	/* platform shutdown() & remove() are mutually exclusive.
++	 * remove() is invoked during rmmod & shutdown() during
++	 * system reboot/shutdown.
 +	 */
-+	if (unlikely(len < sizeof(struct htc_frame_hdr)))
-+		goto invalid;
- 	htc_hdr = (struct htc_frame_hdr *) skb->data;
- 	epid = htc_hdr->endpoint_id;
++	ath11k_ahb_remove_prepare(ab);
++
++	if (!(test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags)))
++		goto free_resources;
++
++	ath11k_core_deinit(ab);
++
++free_resources:
++	ath11k_ahb_free_resources(ab);
++}
++
+ static struct platform_driver ath11k_ahb_driver = {
+ 	.driver         = {
+ 		.name   = "ath11k",
+@@ -1131,6 +1162,7 @@ static struct platform_driver ath11k_ahb_driver = {
+ 	},
+ 	.probe  = ath11k_ahb_probe,
+ 	.remove = ath11k_ahb_remove,
++	.shutdown = ath11k_ahb_shutdown,
+ };
  
- 	if (epid == 0x99) {
--		ath9k_htc_fw_panic_report(htc_handle, skb);
-+		ath9k_htc_fw_panic_report(htc_handle, skb, len);
- 		kfree_skb(skb);
- 		return;
- 	}
+ static int ath11k_ahb_init(void)
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 6ddc698f4a2d..209345bedd09 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1635,6 +1635,8 @@ static void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab)
  
- 	if (epid < 0 || epid >= ENDPOINT_MAX) {
-+invalid:
- 		if (pipe_id != USB_REG_IN_PIPE)
- 			dev_kfree_skb_any(skb);
- 		else
-@@ -432,21 +436,30 @@ void ath9k_htc_rx_msg(struct htc_target *htc_handle,
+ 	wake_up(&ab->wmi_ab.tx_credits_wq);
+ 	wake_up(&ab->peer_mapping_wq);
++
++	reinit_completion(&ab->driver_recovery);
+ }
  
- 		/* Handle trailer */
- 		if (htc_hdr->flags & HTC_FLAGS_RECV_TRAILER) {
--			if (be32_to_cpu(*(__be32 *) skb->data) == 0x00C60000)
-+			if (be32_to_cpu(*(__be32 *) skb->data) == 0x00C60000) {
- 				/* Move past the Watchdog pattern */
- 				htc_hdr = (struct htc_frame_hdr *)(skb->data + 4);
-+				len -= 4;
-+			}
- 		}
- 
- 		/* Get the message ID */
-+		if (unlikely(len < sizeof(struct htc_frame_hdr) + sizeof(__be16)))
-+			goto invalid;
- 		msg_id = (__be16 *) ((void *) htc_hdr +
- 				     sizeof(struct htc_frame_hdr));
- 
- 		/* Now process HTC messages */
- 		switch (be16_to_cpu(*msg_id)) {
- 		case HTC_MSG_READY_ID:
-+			if (unlikely(len < sizeof(struct htc_ready_msg)))
-+				goto invalid;
- 			htc_process_target_rdy(htc_handle, htc_hdr);
- 			break;
- 		case HTC_MSG_CONNECT_SERVICE_RESPONSE_ID:
-+			if (unlikely(len < sizeof(struct htc_frame_hdr) +
-+				     sizeof(struct htc_conn_svc_rspmsg)))
-+				goto invalid;
- 			htc_process_conn_rsp(htc_handle, htc_hdr);
- 			break;
- 		default:
+ static void ath11k_core_post_reconfigure_recovery(struct ath11k_base *ab)
 -- 
 2.35.1
 
