@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 912C55F91B6
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA185F91FF
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233083AbiJIWkd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 18:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47498 "EHLO
+        id S232300AbiJIWoZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 18:44:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233284AbiJIWjN (ORCPT
+        with ESMTP id S233084AbiJIWnv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 18:39:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CABF40566;
-        Sun,  9 Oct 2022 15:21:38 -0700 (PDT)
+        Sun, 9 Oct 2022 18:43:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA1441D33;
+        Sun,  9 Oct 2022 15:22:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 85CF3B80DE1;
-        Sun,  9 Oct 2022 22:20:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F0BC433D7;
-        Sun,  9 Oct 2022 22:20:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBB4A60CF5;
+        Sun,  9 Oct 2022 22:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1175C433C1;
+        Sun,  9 Oct 2022 22:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665354055;
-        bh=ugQ/thLrGL8YWbf9qKG8TfT/1cbnhLrxAMzqWyDt5pk=;
+        s=k20201202; t=1665354059;
+        bh=3dk4lsVmXc2kcE7gGqoX3o3+0bQ4x9VGpzcSJYn+YW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MeMzQYLQ4/Yn8yWGgt+hVjXpM84K0ckzRa7+bK8ACwV3Cu8cp//CG/XqiQ/tCO9Ln
-         JFWUElETTogmUsFHpFZiSVCF3OuEfpt/Gp3+pJhx1HH6DDmopoh8uu8E0od5ZAa+po
-         3z6pChMF2/kiw3lPIRQaZ2te3MlITQfP8ovF2qselV4s+VOfmEMEBuNNjXx17HIOE+
-         jWSnEgaz+3XcWeJzpV7Mm3bGsru4hF2dYhzVYRzki0QFmufR4K4Wef2c/8J0PS8CdB
-         dRki395KO87LnWcvDK6Qtrz0UaWh8XIZXVwelyzswn7qNBIFpZtulntKkZ9mcrTANA
-         RGJRoRvGg3yEA==
+        b=CPqnJM8McNXNqfU3hMaaaqXvLfFMM6mcNB7B1dYOv4zS5IQQzMqXpZoAQXb1hUmLD
+         B2jY56tfI0dVWtmk1LupcMzvRkS2JgOg3nhiqD+SzmrL1T6+MX9p2ozb/lK+Q+uiFF
+         qv9KhYx7crK14Xm5cvjww5FwXME8c8DVsgDfVQ80cr7p4Y9rqIY+I4ltyftrJ6ySZo
+         /35oXf7KQdvIwgRHL8MI92radd6bcr3PMjSWneToUI8EXM0i6k2N/npWDMmF+peyeE
+         Te35wOUVGyxEMOvFIqXce9vfOKvnZMSmA9gdtaxyKnK1PVTvxnuhTVWHzcUSChwZ7x
+         TPxlyp/xnpoRg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Gong <quic_wgong@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, ath10k@lists.infradead.org,
+Cc:     Daniel Golle <daniel@makrotopia.org>,
+        Serge Vasilugin <vasilugin@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        stf_xl@wp.pl, helmut.schaa@googlemail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 35/46] wifi: ath10k: reset pointer after memory free to avoid potential use-after-free
-Date:   Sun,  9 Oct 2022 18:19:00 -0400
-Message-Id: <20221009221912.1217372-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 37/46] wifi: rt2x00: don't run Rt5592 IQ calibration on MT7620
+Date:   Sun,  9 Oct 2022 18:19:02 -0400
+Message-Id: <20221009221912.1217372-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221009221912.1217372-1-sashal@kernel.org>
 References: <20221009221912.1217372-1-sashal@kernel.org>
@@ -59,61 +59,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 1e1cb8e0b73e6f39a9d4a7a15d940b1265387eb5 ]
+[ Upstream commit d3aad83d05aec0cfd7670cf0028f2ad4b81de92e ]
 
-When running suspend test, kernel crash happened in ath10k, and it is
-fixed by commit b72a4aff947b ("ath10k: skip ath10k_halt during suspend
-for driver state RESTARTING").
+The function rt2800_iq_calibrate is intended for Rt5592 only.
+Don't call it for MT7620 which has it's own calibration functions.
 
-Currently the crash is fixed, but as a common code style, it is better
-to set the pointer to NULL after memory is free.
-
-This is to address the code style and it will avoid potential bug of
-use-after-free.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220505092248.787-1-quic_wgong@quicinc.com
+Reported-by: Serge Vasilugin <vasilugin@yandex.ru>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/31a1c34ddbd296b82f38c18c9ae7339059215fdc.1663445157.git.daniel@makrotopia.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/htt_rx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index adbaeb67eedf..9458540b7dde 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -297,12 +297,16 @@ void ath10k_htt_rx_free(struct ath10k_htt *htt)
- 			  ath10k_htt_get_vaddr_ring(htt),
- 			  htt->rx_ring.base_paddr);
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index deddb0afd312..0a47180f321a 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -4365,7 +4365,8 @@ static void rt2800_config_channel(struct rt2x00_dev *rt2x00dev,
+ 		reg = (rf->channel <= 14 ? 0x1c : 0x24) + 2*rt2x00dev->lna_gain;
+ 		rt2800_bbp_write_with_rx_chain(rt2x00dev, 66, reg);
  
-+	ath10k_htt_config_paddrs_ring(htt, NULL);
-+
- 	dma_free_coherent(htt->ar->dev,
- 			  sizeof(*htt->rx_ring.alloc_idx.vaddr),
- 			  htt->rx_ring.alloc_idx.vaddr,
- 			  htt->rx_ring.alloc_idx.paddr);
-+	htt->rx_ring.alloc_idx.vaddr = NULL;
+-		rt2800_iq_calibrate(rt2x00dev, rf->channel);
++		if (rt2x00_rt(rt2x00dev, RT5592))
++			rt2800_iq_calibrate(rt2x00dev, rf->channel);
+ 	}
  
- 	kfree(htt->rx_ring.netbufs_ring);
-+	htt->rx_ring.netbufs_ring = NULL;
- }
- 
- static inline struct sk_buff *ath10k_htt_rx_netbuf_pop(struct ath10k_htt *htt)
-@@ -823,8 +827,10 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
- 			  ath10k_htt_get_rx_ring_size(htt),
- 			  vaddr_ring,
- 			  htt->rx_ring.base_paddr);
-+	ath10k_htt_config_paddrs_ring(htt, NULL);
- err_dma_ring:
- 	kfree(htt->rx_ring.netbufs_ring);
-+	htt->rx_ring.netbufs_ring = NULL;
- err_netbuf:
- 	return -ENOMEM;
- }
+ 	bbp = rt2800_bbp_read(rt2x00dev, 4);
 -- 
 2.35.1
 
