@@ -2,49 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42E1E5F91B2
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 912C55F91B6
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 00:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232807AbiJIWka (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 18:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
+        id S233083AbiJIWkd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 18:40:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233289AbiJIWjN (ORCPT
+        with ESMTP id S233284AbiJIWjN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 9 Oct 2022 18:39:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32E340E21;
-        Sun,  9 Oct 2022 15:21:30 -0700 (PDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CABF40566;
+        Sun,  9 Oct 2022 15:21:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AB3360C2B;
-        Sun,  9 Oct 2022 22:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74C4C433C1;
-        Sun,  9 Oct 2022 22:20:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 85CF3B80DE1;
+        Sun,  9 Oct 2022 22:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F0BC433D7;
+        Sun,  9 Oct 2022 22:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665354020;
-        bh=5wnxw6C7mEaBmctzT+ji9b0d4mmzMnevfMMXcjoG3Xg=;
+        s=k20201202; t=1665354055;
+        bh=ugQ/thLrGL8YWbf9qKG8TfT/1cbnhLrxAMzqWyDt5pk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bmmg8Pa08vDOskyMYO+KQDnzqVb6fqcYzsF8TB9TIS0i5IRoZMhCj8+lRnholcWro
-         ppmNF3y4uRAAeYesgNkg7L9jMnLQdnuEMHd2p2Co+ahKdHrlh115+fH6xxB6wNkSGv
-         CwzWESI4HJ/0NL9JpZJO0rQ9fylfgHCR6J9wQf/2QN4bqmU0XXy403Wrqmmptdvuwr
-         eWmxGF3z3NfJksqSIbImjW2PwqVpKsVreomeBK+JP31Wzn+LjQjYF7oeaoNhHzaJuo
-         f7DaxqXrOK+o4Vkl3jQFDvFYTJRGlCFf2gd4nj9q1R46wHhXzs/5ZucPJAFI5V30VY
-         9KDPe1n/+WJwQ==
+        b=MeMzQYLQ4/Yn8yWGgt+hVjXpM84K0ckzRa7+bK8ACwV3Cu8cp//CG/XqiQ/tCO9Ln
+         JFWUElETTogmUsFHpFZiSVCF3OuEfpt/Gp3+pJhx1HH6DDmopoh8uu8E0od5ZAa+po
+         3z6pChMF2/kiw3lPIRQaZ2te3MlITQfP8ovF2qselV4s+VOfmEMEBuNNjXx17HIOE+
+         jWSnEgaz+3XcWeJzpV7Mm3bGsru4hF2dYhzVYRzki0QFmufR4K4Wef2c/8J0PS8CdB
+         dRki395KO87LnWcvDK6Qtrz0UaWh8XIZXVwelyzswn7qNBIFpZtulntKkZ9mcrTANA
+         RGJRoRvGg3yEA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sean Wang <sean.wang@mediatek.com>, YN Chen <YN.Chen@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        lorenzo@kernel.org, ryder.lee@mediatek.com, kvalo@kernel.org,
+Cc:     Wen Gong <quic_wgong@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, matthias.bgg@gmail.com, johannes.berg@intel.com,
-        deren.wu@mediatek.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 23/46] wifi: mt76: mt7921: reset msta->airtime_ac while clearing up hw value
-Date:   Sun,  9 Oct 2022 18:18:48 -0400
-Message-Id: <20221009221912.1217372-23-sashal@kernel.org>
+        pabeni@redhat.com, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 35/46] wifi: ath10k: reset pointer after memory free to avoid potential use-after-free
+Date:   Sun,  9 Oct 2022 18:19:00 -0400
+Message-Id: <20221009221912.1217372-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221009221912.1217372-1-sashal@kernel.org>
 References: <20221009221912.1217372-1-sashal@kernel.org>
@@ -61,35 +59,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-[ Upstream commit 1bf66dc31032ff5292f4d5b76436653f269fcfbd ]
+[ Upstream commit 1e1cb8e0b73e6f39a9d4a7a15d940b1265387eb5 ]
 
-We should reset mstat->airtime_ac along with clear up the entries in the
-hardware WLAN table for the Rx and Rx accumulative airtime. Otherwsie, the
-value msta->airtime_ac - [tx, rx]_last may be a negative and that is not
-the actual airtime the device took in the last run.
+When running suspend test, kernel crash happened in ath10k, and it is
+fixed by commit b72a4aff947b ("ath10k: skip ath10k_halt during suspend
+for driver state RESTARTING").
 
-Reported-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Currently the crash is fixed, but as a common code style, it is better
+to set the pointer to NULL after memory is free.
+
+This is to address the code style and it will avoid potential bug of
+use-after-free.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20220505092248.787-1-quic_wgong@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 6cb65391427f..7b48df301079 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -627,6 +627,7 @@ void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index adbaeb67eedf..9458540b7dde 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -297,12 +297,16 @@ void ath10k_htt_rx_free(struct ath10k_htt *htt)
+ 			  ath10k_htt_get_vaddr_ring(htt),
+ 			  htt->rx_ring.base_paddr);
  
- 	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
-+	memset(msta->airtime_ac, 0, sizeof(msta->airtime_ac));
++	ath10k_htt_config_paddrs_ring(htt, NULL);
++
+ 	dma_free_coherent(htt->ar->dev,
+ 			  sizeof(*htt->rx_ring.alloc_idx.vaddr),
+ 			  htt->rx_ring.alloc_idx.vaddr,
+ 			  htt->rx_ring.alloc_idx.paddr);
++	htt->rx_ring.alloc_idx.vaddr = NULL;
  
- 	mt7921_mcu_sta_update(dev, sta, vif, true, MT76_STA_INFO_STATE_ASSOC);
+ 	kfree(htt->rx_ring.netbufs_ring);
++	htt->rx_ring.netbufs_ring = NULL;
+ }
  
+ static inline struct sk_buff *ath10k_htt_rx_netbuf_pop(struct ath10k_htt *htt)
+@@ -823,8 +827,10 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
+ 			  ath10k_htt_get_rx_ring_size(htt),
+ 			  vaddr_ring,
+ 			  htt->rx_ring.base_paddr);
++	ath10k_htt_config_paddrs_ring(htt, NULL);
+ err_dma_ring:
+ 	kfree(htt->rx_ring.netbufs_ring);
++	htt->rx_ring.netbufs_ring = NULL;
+ err_netbuf:
+ 	return -ENOMEM;
+ }
 -- 
 2.35.1
 
