@@ -2,47 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD7B5F98F2
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 09:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA0D5F9A65
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 09:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230497AbiJJHEG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Oct 2022 03:04:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42478 "EHLO
+        id S230253AbiJJHtN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Oct 2022 03:49:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230187AbiJJHEE (ORCPT
+        with ESMTP id S232323AbiJJHsW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Oct 2022 03:04:04 -0400
+        Mon, 10 Oct 2022 03:48:22 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1617A3B713;
-        Mon, 10 Oct 2022 00:04:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288AD6D9FA;
+        Mon, 10 Oct 2022 00:45:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=QYI85im/ZNOIZ4ZdrRL8lHTe3qEFXZyIRzSFCdw6jvc=;
-        t=1665385443; x=1666595043; b=ACoaLAgUhMoRc6lLYNvUVLbq7F4i+yo5eyyFArGQ6QS+KHA
-        ZJZO5sZ9nuuCBda1/qshfEgPOw+S7ie3tm9v/VuKxkjEy9Xu+R1OCzmmLDxkKI5qcSVi1a7tOKqtv
-        WFqOLZtg1D4LD5OGf21SHJtulOIsZNX3qVqQhT1ppfgrHm+XVAfacqy4LOFb/eq3sY9T4bHSXiL8v
-        qiscIKR96QMsk3hmJs/GlPIUSXpD/9t0kKrGGyAqGcpft/lI/lrWIR2GBqtS7jQqZ6Cbitdz8LNXg
-        4Yfo5+waQ6qjpEBxVbpcsPmBulMmidaJqcYNNCWuhr93mndNeIDExFT693fb+ZQw==;
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=513x/yo9r7ERdKoxcYysKwNVDSS4aBdSVdhZlM/nr5M=;
+        t=1665387926; x=1666597526; b=NpZAcOk1gu1HSrx/sH2vW2JBWRrlTUDAXznmYGpyU9f2iFX
+        P1Kqoiiq2bx4u8suzzc2iITyq3JxEd9qniwSm7Kl4wiKWAWh9Bzq01kgJ0FfOT2RrF84cGgvip5Ej
+        6LUTAcR11SljMOICULwt2HKQUAWn0XiFoBLE0HDjkLSJ0h/0AAEuuOv36bDhEFSweRFlaYmyCvnPc
+        YehcvUPRND/rkJmAvvupqyzBdAMNbeE5KKe4MGL/OzANP3SnRisUcgQA/RD5kz9UkTyDJQ+sUCfm+
+        PEUrB/ig+ZaNZcBld4s8BzvlRjm6xxIFlrjVt6+TCiqD5/JfvsInAa4w/teQWflA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ohmpN-002w2R-1J;
-        Mon, 10 Oct 2022 09:03:53 +0200
-Message-ID: <8acb94e9bd6d580f739e81e5f203cb93028adf4e.camel@sipsolutions.net>
-Subject: Re: [PATCH AUTOSEL 6.0 16/77] wifi: mac80211: fix control port
- frame addressing
+        id 1ohnTT-002wgd-0l;
+        Mon, 10 Oct 2022 09:45:19 +0200
+Message-ID: <ad6a722a0caa50c3f369e97b0f03180f62806fa7.camel@sipsolutions.net>
+Subject: Re: [bug][6.1] Enable run-time checking of dynamic memcpy() and
+ memmove() lengths causes warning on every boot at
+ net/wireless/wext-core.c:623 (size 4)
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Mon, 10 Oct 2022 09:03:52 +0200
-In-Reply-To: <20221009220754.1214186-16-sashal@kernel.org>
-References: <20221009220754.1214186-1-sashal@kernel.org>
-         <20221009220754.1214186-16-sashal@kernel.org>
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        linville@tuxdriver.com, Kees Cook <keescook@chromium.org>,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>
+Date:   Mon, 10 Oct 2022 09:45:18 +0200
+In-Reply-To: <CABXGCsMmvxi9kCZ+sUm+Vb_jxaPXE308GAwkUmiduuJXh_o2fg@mail.gmail.com>
+References: <CABXGCsMmvxi9kCZ+sUm+Vb_jxaPXE308GAwkUmiduuJXh_o2fg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -57,18 +56,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2022-10-09 at 18:06 -0400, Sasha Levin wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On Sun, 2022-10-09 at 16:39 +0500, Mikhail Gavrilov wrote:
+> Hi!
+> Enable run-time checking of dynamic memcpy() and memmove() lengths
+> causes warning on every boot:
+> [   19.544552] ------------[ cut here ]------------
+> [   19.545634] memcpy: detected field-spanning write (size 16) of
+> single field "&compat_event->pointer" at net/wireless/wext-core.c:623
+> (size 4)
 >=20
-> [ Upstream commit a6ba64d0b187109dc252969c1fc9e2525868bd49 ]
->=20
-> For an AP interface, when userspace specifieds the link ID to
-> transmit the control port frame on (in particular for the
-> initial 4-way-HS), due to the logic in ieee80211_build_hdr()
-> for a frame transmitted from/to an MLD
 
-FWIW, I don't mind this being backported, but it doesn't make all that
-much sense since the only driver "supporting" all this MLO/MLD/link_id
-stuff upstream is hwsim, and it's not really finished anyway.
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commi=
+t/?id=3De3e6e1d16a4cf7b63159ec71774e822194071954
+
 
 johannes
