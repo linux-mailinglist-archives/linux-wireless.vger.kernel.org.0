@@ -2,104 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5F555F9678
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 03:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB2AB5F9730
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 05:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbiJJBLT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 21:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53312 "EHLO
+        id S230072AbiJJDdB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 23:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230097AbiJJBLS (ORCPT
+        with ESMTP id S229607AbiJJDdA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 21:11:18 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EAEC19C24
-        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 18:11:16 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id c17-20020a4aa4d1000000b0047653e7c5f3so7104125oom.1
-        for <linux-wireless@vger.kernel.org>; Sun, 09 Oct 2022 18:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=WuTDhOoKSUF6ASCrvTob0h6LWV+8ENwHyegd1+7REnw=;
-        b=JBPDC8zGSPGQSvvh7iJmR6H5lGv/Gofioub8+gpkQWb6drS4e1fiirMWDbENGaHPEQ
-         YHfS/RYR/yyF5MuWvsDXBd4cNSDDuHdL9xmWP9+kpu3NJFcthyJ7g5tAs36XhXWD5Ime
-         caJUHLAYRGQ5/eGlEjJKn5zTkMBRijiBrm7qT/PYEQI+v9BKjmi8rlCph4dXtnue4G9X
-         Orw8Jf4IBCdDLE20c3WonkT0J3Nb3Pu6tvRMn/2KcVpySghh2N+FNV9dQ6tdBY2IgUtv
-         pzerk8F5BDcLPPd0H+6pFemhQwm+ulzTb6P3vJ1h7RRZen88RGYrmJLqkWr/ajGvfB+Q
-         C4Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WuTDhOoKSUF6ASCrvTob0h6LWV+8ENwHyegd1+7REnw=;
-        b=7UpWqMieNyBpLzvcsR5SF9DsK5O0BtM3fWUnrkWWi4Hw3KT56dvPXgzWLSUtqc90j2
-         tllLwSv7jA4UAilsu9NxegKjO7p5XzTVhiJBhzJRld/eoweDwWd13hKD7H7LEGfTlNdr
-         WNjs/pIQVl1H+wx6rIOPJ2NNQLtqKSDZBLs6DKWTP74S4NgQJhAvb9cKLf27/uN3ePYb
-         vqPxLs3Re7BnTCTj0bwR2OcLdXxFaANsi2SsOfzJluIyyqr6NNiBihTDHKRmz88keSw4
-         lLqcJTnS1YA3uTtOsuqBSR8B9omg4HI0MhZqnL8JmUrBridhpRXc/DweSuSkkSJpQ3UV
-         wrxA==
-X-Gm-Message-State: ACrzQf1VuOODix+wzzmXUJxVu6PtjOXOVgS9+VcYj2b0QPmJ/ZxdhREB
-        v2KRNYp/borb7pA//yPZwRBy4ym5t6U=
-X-Google-Smtp-Source: AMsMyM5+acEUSlr0+w0hi29/CNdsMu9NKlxAXrGsOy1rRnObWlK/dCshnA18ZiVUGMd6LhhhzjJ3GA==
-X-Received: by 2002:a05:6830:448c:b0:659:d97c:cfab with SMTP id r12-20020a056830448c00b00659d97ccfabmr6868282otv.256.1665364275930;
-        Sun, 09 Oct 2022 18:11:15 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id h4-20020a9d7984000000b00661948e6119sm1418278otm.47.2022.10.09.18.11.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Oct 2022 18:11:15 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <dddc4967-18f8-7d61-a991-264d618dda40@lwfinger.net>
-Date:   Sun, 9 Oct 2022 20:11:14 -0500
+        Sun, 9 Oct 2022 23:33:00 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 100DA1B785
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 20:32:56 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29A3C3nq000533;
+        Mon, 10 Oct 2022 03:32:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Qb8Uz92RvqxoZ/U5HyycwC7Sm1QLXoJ+L6oWadr4khM=;
+ b=DMSse3DLb8N7O/FoQR8kfcMX3y80ASnTVax6S4zc5PzXg+c9hilTugeXwqrr2LmqCbqm
+ y/aGMScejJ/TFx1VePoI8z4LTNfRuG9O5Vr8tHkRNCFUl7pmXOjBzltVG/A2roOnWf7g
+ pDPzF6bsbAnjjupZAalpb+1V7CFTgrwL1BrswZujIuGxR/rj3G4/qp+KeQFkkebgYYmA
+ iqL0gcOgvQLkXvIevcqaQZk+08OLU1c6S+0KeYaSCpiE6KBTVtaF4vQRLlmD4i305Kwr
+ 0vPv2IXYqiG4k1tPu2+WwSmNljC1zRyQAsUpNYrHP91RLYo26WtYQjFvkmy8wtmqq6OA WQ== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k32gek3us-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 Oct 2022 03:32:48 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29A3WlZL018699
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 Oct 2022 03:32:47 GMT
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Sun, 9 Oct 2022 20:32:46 -0700
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: ath11k: Send PME message during wakeup from D3cold
+Date:   Mon, 10 Oct 2022 11:32:37 +0800
+Message-ID: <20221010033237.415478-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: rtl8187 triggers usb device reset on kernel driver disconnect
-To:     David Tomaschik <david@systemoverlord.com>,
-        linux-wireless@vger.kernel.org, herton@canonical.com,
-        htl10@users.sourceforge.net
-References: <CAOy4VzfHRD0cw2jdL=pzukc1QFuXgaC55Zst7uc-dMFPrHr7Yw@mail.gmail.com>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CAOy4VzfHRD0cw2jdL=pzukc1QFuXgaC55Zst7uc-dMFPrHr7Yw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: YOHyZI4rP-KocY1uVukdU862mGBPuHHy
+X-Proofpoint-ORIG-GUID: YOHyZI4rP-KocY1uVukdU862mGBPuHHy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-07_04,2022-10-07_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ malwarescore=0 mlxlogscore=999 clxscore=1011 adultscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210100019
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/7/22 23:33, David Tomaschik wrote:
-> Hi all,
-> 
-> It seems that any time the rtl8187 driver is detached from an rtl8187
-> interface, a USB device reset is triggered.  This is not a problem in
-> the general case, but when working with libusb, calling
-> libusb_detach_kernel_driver
-> (https://libusb.sourceforge.io/api-1.0/group__libusb__dev.html#ga5e0cc1d666097e915748593effdc634a)
-> results in the device reset, which then causes the kernel driver to
-> re-attach to the device.  This prevents, for example, forwarding the
-> device into a VM using QEMU/KVM.  This seems to be due to
-> rtl8187_disconnect calling usb_reset_device.
-> 
-> The 8187 driver seems to be the only realtek driver unconditionally
-> resetting on disconnect -- is this technically necessary?  I'm not
-> sure I would call this a bug, but it's definitely behavior that was
-> very puzzling to me and I only understood after enough debugging to
-> start reading kernel source.
+We are seeing system stuck on some specific platforms due to
+WLAN chip fails to wakeup from D3cold state.
 
-David,
+With this flag, firmware will send PME message during wakeup
+and this issue is gone.
 
-This behavior certainly is a bug. If one tries to attach the RTL8187 to a VM, it 
-crashes. I will be looking into this issue.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 
-Larry
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 84e3abecbdac..145f20a681bd 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -19,6 +19,7 @@
+ #define SLEEP_CLOCK_SELECT_INTERNAL_BIT	0x02
+ #define HOST_CSTATE_BIT			0x04
+ #define PLATFORM_CAP_PCIE_GLOBAL_RESET	0x08
++#define PLATFORM_CAP_PCIE_PME_D3COLD	0x10
+ 
+ #define FW_BUILD_ID_MASK "QC_IMAGE_VERSION_STRING="
+ 
+@@ -1752,6 +1753,8 @@ static int ath11k_qmi_host_cap_send(struct ath11k_base *ab)
+ 	if (ab->hw_params.global_reset)
+ 		req.nm_modem |= PLATFORM_CAP_PCIE_GLOBAL_RESET;
+ 
++	req.nm_modem |= PLATFORM_CAP_PCIE_PME_D3COLD;
++
+ 	ath11k_dbg(ab, ATH11K_DBG_QMI, "qmi host cap request\n");
+ 
+ 	ret = qmi_txn_init(&ab->qmi.handle, &txn,
+
+base-commit: 023baf1318ef21442fab3842bf03883bc81223e0
+-- 
+2.25.1
 
