@@ -2,97 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 953A95FA222
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 18:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5FFA5FA239
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 18:54:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbiJJQpk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Oct 2022 12:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51858 "EHLO
+        id S229838AbiJJQyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Oct 2022 12:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbiJJQpi (ORCPT
+        with ESMTP id S229731AbiJJQyk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Oct 2022 12:45:38 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C678D70E4B
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 09:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=GjYDrYuqUk4qSyT0EJEdKPGfktC9nVTm0zzwdHhlr+4=;
-        t=1665420325; x=1666629925; b=TPpbVrex73JTdf3xHTcZaA6lUhb1KkMme5y1yLscPCF80v3
-        xlNLbTNFnXJ4cikauk5sdCzBcQIRcgQfyYNqfX/dVTvqDWnpUeEjEFhGbm09ySkGau2ZKrcW/05bM
-        ojokAmq6HOBqHBYfvNShknempdGr/04LtNLq8ku5t3WNkAT7+toV5HQfKHFk0LY4/uOlDZUrq7Uvj
-        oc+SJSblrjeybu6Mve0Uo/FVLlhSj++s+4QxBdABG996g8JOn6DsBfnIwR3wzaTt4QEhZjhItBmdv
-        bcl+84nA0X+L1yf95LfOHoubCzCtPMp1PdiYyQOtVXnDv/U7c2n5RBdDuG7b2g/Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ohvu6-00383b-2o;
-        Mon, 10 Oct 2022 18:45:23 +0200
-Message-ID: <35c743cf4468bcf5ebbbefd2bf6e3faae9cdd1cf.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 2/3] wifi: mac80211: add wake_tx_queue callback to
- drivers
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        alexander@wetzel-home.de
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 10 Oct 2022 18:45:21 +0200
-In-Reply-To: <20221010161621.1855515-1-martin.blumenstingl@googlemail.com>
-References: <20221009163040.25637-2-alexander@wetzel-home.de>
-         <20221010161621.1855515-1-martin.blumenstingl@googlemail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Mon, 10 Oct 2022 12:54:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635012AE4;
+        Mon, 10 Oct 2022 09:54:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF72660EF2;
+        Mon, 10 Oct 2022 16:54:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1FEC433D6;
+        Mon, 10 Oct 2022 16:54:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665420875;
+        bh=qPWTNZGEFYJEvDdkwFCY39pduTasoX2MPE4faZjFyb4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=t5l+1qwolo90SbopV9MI+P+M+f7fq6BmW4pX1FJAWtWDWbvPCt430v6pyP3RHQ/Wt
+         WXhBOzZPLGHezZoSxWW4wCcuOMQBy/ShYXEQgQTtDl623KuQO+vtAURfkwzqUtpiK9
+         bJ6f/pKi8qgT3k4u5nfQHdOy6I3521qnJ7S1owY3e3ahcYzRVCEtlpfAN/sAN3Gr4B
+         RK07rqwIMD3qkovObsKN2CVTLqEsNB1seI3uCb5Vx0EyRHmFYOhb9YU01UTSyHS8uL
+         c6yWO8xfCroHNMUKiyn8aM5LpNkk/T4m1iJnGISl1nzNP1cfBm+adbZgIieTkgtDiu
+         mQBMoOT4prXLQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Netdev <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
+        regressions@lists.linux.dev, lkft-triage@lists.linaro.org
+Subject: Re: drivers/net/wireless/ath/ath11k/mac.c:2238:29: warning: 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size 0
+References: <CA+G9fYsZ_qypa=jHY_dJ=tqX4515+qrV9n2SWXVDHve826nF7Q@mail.gmail.com>
+Date:   Mon, 10 Oct 2022 19:54:29 +0300
+In-Reply-To: <CA+G9fYsZ_qypa=jHY_dJ=tqX4515+qrV9n2SWXVDHve826nF7Q@mail.gmail.com>
+        (Naresh Kamboju's message of "Wed, 21 Sep 2022 16:05:39 +0530")
+Message-ID: <87ilkrpqka.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-10-10 at 18:16 +0200, Martin Blumenstingl wrote:
-> [...]
-> > diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/ne=
-t/wireless/realtek/rtw88/mac80211.c
-> > index 07578ccc4bab..bf917ef20e3b 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-> > @@ -896,6 +896,7 @@ static void rtw_ops_sta_rc_update(struct ieee80211_=
-hw *hw,
-> > =20
-> >  const struct ieee80211_ops rtw_ops =3D {
-> >  	.tx			=3D rtw_ops_tx,
-> > +	.wake_tx_queue		=3D ieee80211_handle_wake_tx_queue,
-> >  	.wake_tx_queue		=3D rtw_ops_wake_tx_queue,
-> >  	.start			=3D rtw_ops_start,
-> >  	.stop			=3D rtw_ops_stop,
-> > diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/ne=
-t/wireless/realtek/rtw89/mac80211.c
-> > index a296bfa8188f..91674c63b9f9 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-> > @@ -918,6 +918,7 @@ static int rtw89_ops_set_tid_config(struct ieee8021=
-1_hw *hw,
-> > =20
-> >  const struct ieee80211_ops rtw89_ops =3D {
-> >  	.tx			=3D rtw89_ops_tx,
-> > +	.wake_tx_queue		=3D ieee80211_handle_wake_tx_queue,
-> >  	.wake_tx_queue		=3D rtw89_ops_wake_tx_queue,
-> >  	.start			=3D rtw89_ops_start,
-> >  	.stop			=3D rtw89_ops_stop,
->=20
-> For rtw88 and rtw89 the wake_tx_queue callback is now duplicated.
-> I'm not sure if other drivers are affected as well.
->=20
++ arnd
 
-Ouch. I looked at a whole bunch of them, how did that not cause a
-compiler warning??
+Naresh Kamboju <naresh.kamboju@linaro.org> writes:
 
-I'll check and fix.
+> Following build warnings noticed while building arm64 on Linux next-20220921
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> In function 'ath11k_peer_assoc_h_he',
+>     inlined from 'ath11k_peer_assoc_prepare' at
+> drivers/net/wireless/ath/ath11k/mac.c:2662:2:
+> drivers/net/wireless/ath/ath11k/mac.c:2238:29: warning:
+> 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size
+> 0 [-Wstringop-overread]
+>  2238 |                         v = ath11k_peer_assoc_h_he_limit(v,
+> he_mcs_mask);
+>       |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_prepare':
+> drivers/net/wireless/ath/ath11k/mac.c:2238:29: note: referencing
+> argument 2 of type 'const u16 *' {aka 'const short unsigned int *'}
+> drivers/net/wireless/ath/ath11k/mac.c:2019:12: note: in a call to
+> function 'ath11k_peer_assoc_h_he_limit'
+>  2019 | static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In function 'ath11k_peer_assoc_h_he',
+>     inlined from 'ath11k_peer_assoc_prepare' at
+> drivers/net/wireless/ath/ath11k/mac.c:2662:2:
+> drivers/net/wireless/ath/ath11k/mac.c:2251:21: warning:
+> 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size
+> 0 [-Wstringop-overread]
+>  2251 |                 v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+>       |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_prepare':
+> drivers/net/wireless/ath/ath11k/mac.c:2251:21: note: referencing
+> argument 2 of type 'const u16 *' {aka 'const short unsigned int *'}
+> drivers/net/wireless/ath/ath11k/mac.c:2019:12: note: in a call to
+> function 'ath11k_peer_assoc_h_he_limit'
+>  2019 | static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In function 'ath11k_peer_assoc_h_he',
+>     inlined from 'ath11k_peer_assoc_prepare' at
+> drivers/net/wireless/ath/ath11k/mac.c:2662:2:
+> drivers/net/wireless/ath/ath11k/mac.c:2264:21: warning:
+> 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size
+> 0 [-Wstringop-overread]
+>  2264 |                 v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+>       |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_prepare':
+> drivers/net/wireless/ath/ath11k/mac.c:2264:21: note: referencing
+> argument 2 of type 'const u16 *' {aka 'const short unsigned int *'}
+> drivers/net/wireless/ath/ath11k/mac.c:2019:12: note: in a call to
+> function 'ath11k_peer_assoc_h_he_limit'
+>  2019 | static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In function 'ath11k_peer_assoc_h_he',
+>     inlined from 'ath11k_peer_assoc_prepare' at
+> drivers/net/wireless/ath/ath11k/mac.c:2662:2:
+> drivers/net/wireless/ath/ath11k/mac.c:2264:21: warning:
+> 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size
+> 0 [-Wstringop-overread]
+>  2264 |                 v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+>       |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_prepare':
+> drivers/net/wireless/ath/ath11k/mac.c:2264:21: note: referencing
+> argument 2 of type 'const u16 *' {aka 'const short unsigned int *'}
+> drivers/net/wireless/ath/ath11k/mac.c:2019:12: note: in a call to
+> function 'ath11k_peer_assoc_h_he_limit'
+>  2019 | static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In function 'ath11k_peer_assoc_h_he',
+>     inlined from 'ath11k_peer_assoc_prepare' at
+> drivers/net/wireless/ath/ath11k/mac.c:2662:2:
+> drivers/net/wireless/ath/ath11k/mac.c:2264:21: warning:
+> 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size
+> 0 [-Wstringop-overread]
+>  2264 |                 v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+>       |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_prepare':
+> drivers/net/wireless/ath/ath11k/mac.c:2264:21: note: referencing
+> argument 2 of type 'const u16 *' {aka 'const short unsigned int *'}
+> drivers/net/wireless/ath/ath11k/mac.c:2019:12: note: in a call to
+> function 'ath11k_peer_assoc_h_he_limit'
+>  2019 | static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In function 'ath11k_peer_assoc_h_he',
+>     inlined from 'ath11k_peer_assoc_prepare' at
+> drivers/net/wireless/ath/ath11k/mac.c:2662:2:
+> drivers/net/wireless/ath/ath11k/mac.c:2251:21: warning:
+> 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size
+> 0 [-Wstringop-overread]
+>  2251 |                 v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+>       |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_prepare':
+> drivers/net/wireless/ath/ath11k/mac.c:2251:21: note: referencing
+> argument 2 of type 'const u16 *' {aka 'const short unsigned int *'}
+> drivers/net/wireless/ath/ath11k/mac.c:2019:12: note: in a call to
+> function 'ath11k_peer_assoc_h_he_limit'
+>  2019 | static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Build log: https://builds.tuxbuild.com/2F4W7nZHNx3T88RB0gaCZ9hBX6c/
 
-johannes
+Thanks, I was able to reproduce it now and submitted a patch:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20221010160638.20152-1-kvalo@kernel.org/
+
+But it's strange that nobody else (myself included) didn't see this
+earlier. Nor later for that matter, this is the only report I got about
+this. Arnd, any ideas what could cause this only to happen on GCC 11?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
