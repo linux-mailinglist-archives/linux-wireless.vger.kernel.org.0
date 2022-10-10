@@ -2,67 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C750F5F9DB4
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 13:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1995F9EC0
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 14:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232148AbiJJLhu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Oct 2022 07:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52500 "EHLO
+        id S231513AbiJJMeD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Oct 2022 08:34:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232159AbiJJLhs (ORCPT
+        with ESMTP id S230463AbiJJMeC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Oct 2022 07:37:48 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 70C726EF28
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 04:37:46 -0700 (PDT)
-Message-ID: <3d908846-4795-7020-d573-6450138544f1@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1665401864;
-        bh=450CBCN1kbhVXZLzde71GWFDVe3CGs1mtD9Kj4U4yYA=;
-        h=Date:Subject:To:References:From:In-Reply-To;
-        b=oZ4TL0J9dUeF1XzJ8f7VLKjNtb75O+0obqZmf5lQ4HNxEKhlGxP4F0X9R5Rvvekud
-         MZoabSc1PtF07idpKdIbz9ahZGspGK0F/GR8pws0xD6Hu5rZKmyEgzA5XFFTTdUSmX
-         sSZVyc+ow22eQ/sEKDROkGFKSVPQhTzNSitCDNiQ=
-Date:   Mon, 10 Oct 2022 13:37:42 +0200
+        Mon, 10 Oct 2022 08:34:02 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D12F6161
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 05:34:01 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1321a1e94b3so12321739fac.1
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 05:34:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BCoJGdgEXWgTh9X1IKXUrdb6MFIEOWpxwvdtUJ9BG50=;
+        b=RofXUp24YEN2O3TfPg/vQMAAniNPzPzW2MTeYXYN1qWZjhW7Se0WFkwsE670dsBa7I
+         A+YaDooLlIa5/qcNg1vdczciV2eA0C1M/L61hA/voNFH8pvmqMCUybK24giO7YnE8uCO
+         05I9siy9oODx7c2zmnR+piawl8usQF7RLfwBIDXgR2U/nNdIwvsrf0lgFgEA9tt+Y9No
+         BuRDQW2YqADZEac/i7WgV5jGcepGU+2LvwPCSc6PFk03bbACviJkfQU2oKzw9RiotOcF
+         A1VCQemgZpAujt5r+I93u1PFx1ig2yaqBZuFFj5CHsfF4umf5PY2tC5oQQsQYi1BT2kU
+         FS8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BCoJGdgEXWgTh9X1IKXUrdb6MFIEOWpxwvdtUJ9BG50=;
+        b=k0wTCeAhRrh6OA7ZCiCRGi+9eKeHKN0akaGrq+cG0j+mFRW1kCh2lzjn6ymoVPeITG
+         PQKa5xUDG2PTaSzTe061MJ7jFQoGP5dOUzjDUUxabOrkoJHRJg7zkCd+C6wHSqIzvfNP
+         eFg1IwVd2iAOMimlwD09WpnG4C6PaBfDockioYhSBBbniBIyT3hbxzKTEJaNdNGSN9zv
+         4M7mGcoB9JZdEQFCNY/gjEgXpd6rifdTdyIHT6yrVTQnNhq9twDqXuvJvySrPOQCIXk/
+         wX82a7vCqwlw+u6HGKMAr/mKqxMwqpfzCzJ6mbjiULL4/Otcj1+T6AePkKTsOVit3t8P
+         HTNA==
+X-Gm-Message-State: ACrzQf2x2TZ0erImUcqLpxOpEeGTiRwv1WFO5iMpi+mmDSo3jXesAxJ0
+        G3VYhVipB8eXeO3o+/iZEYear7zF6a9W4ZaKfx8AY0pA5jg=
+X-Google-Smtp-Source: AMsMyM5cf6kPzr7jE5GAUyCfXnqbN5K9xtd8rGsz/qxfIlb5FN7dL+P1uofm4NP2vWG4X1rYw+TGRERCHxDYMMzWFWE=
+X-Received: by 2002:a05:6871:207:b0:132:7706:e74f with SMTP id
+ t7-20020a056871020700b001327706e74fmr15450140oad.8.1665405240348; Mon, 10 Oct
+ 2022 05:34:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH v2 1/3] wifi: mac80211: add internal handler for
- wake_tx_queue
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20221009163040.25637-1-alexander@wetzel-home.de>
- <a510188243f0080e470245ab95bd4976a5b0e923.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <a510188243f0080e470245ab95bd4976a5b0e923.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Sipos Csaba <dchardware@gmail.com>
+Date:   Mon, 10 Oct 2022 14:33:22 +0200
+Message-ID: <CALQr=E--ECWhEGFU1pQ2f093eNgChdJ=gMZDu5ZhZeTRSGj0Sw@mail.gmail.com>
+Subject: ath11k: firmware crash above version 2.5.0.1 _01208 (IPQ8074)
+To:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        robimarko@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10.10.22 10:49, Johannes Berg wrote:
-> On Sun, 2022-10-09 at 18:30 +0200, Alexander Wetzel wrote:
->>
->> While there is obvious something wrong with ieee80211_build_preq_ies() for
->> hwsim, that's unrelated to what we are doing here. (Multiple tests
->> trigger the WARN_ON() in ieee80211_get_he_6ghz_capa().)
->>
-> 
-> Yeah, something is strange there, I never saw that but I feel like I
-> should have?
-> 
-> I _think_ it might be fixed by
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=b650009fcb701ea99aa133bbe18dbfc5305ddf1a
+Dear Kalle,
 
-Yes, that was it. I don't get any warnings with that patch applied.
+I tried the latest firmware available on your github account for
+IPQ8074 on my Xiaomi AX6 router, and it produces a firmware crash
+right after the Q6 processor tries to boot:
 
-Alexander
+[    7.503844] ath11k c000000.wifi: ipq8074 hw2.0
+[    7.504147] remoteproc remoteproc0: powering up cd00000.q6v5_wcss
+[    7.511424] remoteproc remoteproc0: Booting fw image
+IPQ8074/q6_fw.mdt, size 668
+[    8.511575] remoteproc remoteproc0: remote processor
+cd00000.q6v5_wcss is now up
+[    8.517199] kmodloader: done loading kernel modules from /etc/modules.d/*
+[    8.555705] ath11k c000000.wifi: qmi ignore invalid mem req type 3
+[    8.563181] ath11k c000000.wifi: chip_id 0x0 chip_family 0x0
+board_id 0xff soc_id 0xffffffff
+[    8.563231] ath11k c000000.wifi: fw_version 0x270204a5
+fw_build_timestamp 2022-08-04 13:05 fw_build_id
+WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+...................................
+[   13.813010] qcom-q6v5-wcss-pil cd00000.q6v5_wcss: fatal error received:
+[   13.813010] QC Image Version:
+QC_IMAGE_VERSION_STRING=WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+[   13.813010] Image Variant : IMAGE_VARIANT_STRING=8074.wlanfw.eval_v2Q
+[   13.813010]
+[   13.813010]     :Excep  :0 Exception detectedparam0 :zero, param1
+:zero, param2 :zero.
+[   13.813010] Thread ID      : 0x00000069  Thread name    : WLAN RT0
+Process ID     : 0
+[   13.813010] Register:
+[   13.813010] SP : 0x4bfacdc0
+[   13.813010] FP : 0x4bfacdd8
+[   13.813010] PC : 0x4b18d338
+[   13.813010] SSR : 0x00000001
+[   13.813010] BADVA : 0x009c9d7e
+[   13.813010] LR : 0x4b18d2b8
+[   13.813010]
+[   13.813010] Stack Dump
+[   13.813010] from : 0x4bfacdc0
+[   13.813010] to   : 0x4bfad400
+[   13.813010]
+[   13.860940] remoteproc remoteproc0: crash detected in
+cd00000.q6v5_wcss: type fatal error
+[   13.881901] remoteproc remoteproc0: handling crash #1 in cd00000.q6v5_wcss
+[   13.889965] remoteproc remoteproc0: recovering cd00000.q6v5_wcss
+[   13.922662] remoteproc remoteproc0: stopped remote processor
+cd00000.q6v5_wcss
 
+Kernel is 5.15.71
+ath11k is almost up to date (I believe only the last 2 or 3 commits
+are missing compared to 'ath-next')
+
+I also tried with firmware 2.6.0.1-00861, it yields the same firmware crash.
+
+Firmware 2.5.0.1-01208 is the last one that works properly.
+
+There are others who also experience the same firmware crash with the
+same device.
+
+Can you please help us with this?
+
+Regards,
+Csaba
