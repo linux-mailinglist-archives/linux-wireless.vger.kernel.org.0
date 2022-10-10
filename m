@@ -2,60 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8CE45F965C
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 02:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F555F9678
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 03:11:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232049AbiJJAei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Oct 2022 20:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55650 "EHLO
+        id S230100AbiJJBLT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Oct 2022 21:11:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231469AbiJJAdW (ORCPT
+        with ESMTP id S230097AbiJJBLS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Oct 2022 20:33:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FB21DA68;
-        Sun,  9 Oct 2022 17:10:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 81BE1B80DE6;
-        Sun,  9 Oct 2022 22:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687DDC433C1;
-        Sun,  9 Oct 2022 22:25:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665354361;
-        bh=UXuYkRg57IpIdhL+0EpbJonj4qIC8kvPF/3E5EhuwQc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LhiqfPzgXm2DSd+aPh4J+EL3x8K2asawY7nU1p+PfIXszr7+qZ5q7chTKj3sOsInV
-         BC58BXxZDechPBR3ei66NS49q///RbxYU6lognPkj4+5Rz8yBiJv+WJawMOm2n1rh3
-         PccM8BThrr7t21VT+3346IlxJOcaXBMlEadlOciHFix949gxkhh6G7W8AHgotoDpbO
-         Bfo8TzkVCYGjR+Ofwkgh+Q8OyNunN7wS+4wWAdUmRtqBagfzgP6b52ke0AdiH7kfZG
-         42+ajgqTlUVBAZqSt04zOBgCcPdz9OtOpeA0Z6qgNM1ZcsVX3TD2/q1XivmjKmOlLn
-         ek0q4meeSj9Yw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wright Feng <wright.feng@cypress.com>,
-        Chi-hsien Lin <chi-hsien.lin@cypress.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 01/23] wifi: brcmfmac: fix invalid address access when enabling SCAN log level
-Date:   Sun,  9 Oct 2022 18:25:31 -0400
-Message-Id: <20221009222557.1219968-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        Sun, 9 Oct 2022 21:11:18 -0400
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EAEC19C24
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Oct 2022 18:11:16 -0700 (PDT)
+Received: by mail-oo1-xc32.google.com with SMTP id c17-20020a4aa4d1000000b0047653e7c5f3so7104125oom.1
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Oct 2022 18:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=WuTDhOoKSUF6ASCrvTob0h6LWV+8ENwHyegd1+7REnw=;
+        b=JBPDC8zGSPGQSvvh7iJmR6H5lGv/Gofioub8+gpkQWb6drS4e1fiirMWDbENGaHPEQ
+         YHfS/RYR/yyF5MuWvsDXBd4cNSDDuHdL9xmWP9+kpu3NJFcthyJ7g5tAs36XhXWD5Ime
+         caJUHLAYRGQ5/eGlEjJKn5zTkMBRijiBrm7qT/PYEQI+v9BKjmi8rlCph4dXtnue4G9X
+         Orw8Jf4IBCdDLE20c3WonkT0J3Nb3Pu6tvRMn/2KcVpySghh2N+FNV9dQ6tdBY2IgUtv
+         pzerk8F5BDcLPPd0H+6pFemhQwm+ulzTb6P3vJ1h7RRZen88RGYrmJLqkWr/ajGvfB+Q
+         C4Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WuTDhOoKSUF6ASCrvTob0h6LWV+8ENwHyegd1+7REnw=;
+        b=7UpWqMieNyBpLzvcsR5SF9DsK5O0BtM3fWUnrkWWi4Hw3KT56dvPXgzWLSUtqc90j2
+         tllLwSv7jA4UAilsu9NxegKjO7p5XzTVhiJBhzJRld/eoweDwWd13hKD7H7LEGfTlNdr
+         WNjs/pIQVl1H+wx6rIOPJ2NNQLtqKSDZBLs6DKWTP74S4NgQJhAvb9cKLf27/uN3ePYb
+         vqPxLs3Re7BnTCTj0bwR2OcLdXxFaANsi2SsOfzJluIyyqr6NNiBihTDHKRmz88keSw4
+         lLqcJTnS1YA3uTtOsuqBSR8B9omg4HI0MhZqnL8JmUrBridhpRXc/DweSuSkkSJpQ3UV
+         wrxA==
+X-Gm-Message-State: ACrzQf1VuOODix+wzzmXUJxVu6PtjOXOVgS9+VcYj2b0QPmJ/ZxdhREB
+        v2KRNYp/borb7pA//yPZwRBy4ym5t6U=
+X-Google-Smtp-Source: AMsMyM5+acEUSlr0+w0hi29/CNdsMu9NKlxAXrGsOy1rRnObWlK/dCshnA18ZiVUGMd6LhhhzjJ3GA==
+X-Received: by 2002:a05:6830:448c:b0:659:d97c:cfab with SMTP id r12-20020a056830448c00b00659d97ccfabmr6868282otv.256.1665364275930;
+        Sun, 09 Oct 2022 18:11:15 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id h4-20020a9d7984000000b00661948e6119sm1418278otm.47.2022.10.09.18.11.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Oct 2022 18:11:15 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <dddc4967-18f8-7d61-a991-264d618dda40@lwfinger.net>
+Date:   Sun, 9 Oct 2022 20:11:14 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Subject: Re: rtl8187 triggers usb device reset on kernel driver disconnect
+To:     David Tomaschik <david@systemoverlord.com>,
+        linux-wireless@vger.kernel.org, herton@canonical.com,
+        htl10@users.sourceforge.net
+References: <CAOy4VzfHRD0cw2jdL=pzukc1QFuXgaC55Zst7uc-dMFPrHr7Yw@mail.gmail.com>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <CAOy4VzfHRD0cw2jdL=pzukc1QFuXgaC55Zst7uc-dMFPrHr7Yw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,104 +77,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wright Feng <wright.feng@cypress.com>
+On 10/7/22 23:33, David Tomaschik wrote:
+> Hi all,
+> 
+> It seems that any time the rtl8187 driver is detached from an rtl8187
+> interface, a USB device reset is triggered.  This is not a problem in
+> the general case, but when working with libusb, calling
+> libusb_detach_kernel_driver
+> (https://libusb.sourceforge.io/api-1.0/group__libusb__dev.html#ga5e0cc1d666097e915748593effdc634a)
+> results in the device reset, which then causes the kernel driver to
+> re-attach to the device.  This prevents, for example, forwarding the
+> device into a VM using QEMU/KVM.  This seems to be due to
+> rtl8187_disconnect calling usb_reset_device.
+> 
+> The 8187 driver seems to be the only realtek driver unconditionally
+> resetting on disconnect -- is this technically necessary?  I'm not
+> sure I would call this a bug, but it's definitely behavior that was
+> very puzzling to me and I only understood after enough debugging to
+> start reading kernel source.
 
-[ Upstream commit aa666b68e73fc06d83c070d96180b9010cf5a960 ]
+David,
 
-The variable i is changed when setting random MAC address and causes
-invalid address access when printing the value of pi->reqs[i]->reqid.
+This behavior certainly is a bug. If one tries to attach the RTL8187 to a VM, it 
+crashes. I will be looking into this issue.
 
-We replace reqs index with ri to fix the issue.
-
-[  136.726473] Unable to handle kernel access to user memory outside uaccess routines at virtual address 0000000000000000
-[  136.737365] Mem abort info:
-[  136.740172]   ESR = 0x96000004
-[  136.743359]   Exception class = DABT (current EL), IL = 32 bits
-[  136.749294]   SET = 0, FnV = 0
-[  136.752481]   EA = 0, S1PTW = 0
-[  136.755635] Data abort info:
-[  136.758514]   ISV = 0, ISS = 0x00000004
-[  136.762487]   CM = 0, WnR = 0
-[  136.765522] user pgtable: 4k pages, 48-bit VAs, pgdp = 000000005c4e2577
-[  136.772265] [0000000000000000] pgd=0000000000000000
-[  136.777160] Internal error: Oops: 96000004 [#1] PREEMPT SMP
-[  136.782732] Modules linked in: brcmfmac(O) brcmutil(O) cfg80211(O) compat(O)
-[  136.789788] Process wificond (pid: 3175, stack limit = 0x00000000053048fb)
-[  136.796664] CPU: 3 PID: 3175 Comm: wificond Tainted: G           O      4.19.42-00001-g531a5f5 #1
-[  136.805532] Hardware name: Freescale i.MX8MQ EVK (DT)
-[  136.810584] pstate: 60400005 (nZCv daif +PAN -UAO)
-[  136.815429] pc : brcmf_pno_config_sched_scans+0x6cc/0xa80 [brcmfmac]
-[  136.821811] lr : brcmf_pno_config_sched_scans+0x67c/0xa80 [brcmfmac]
-[  136.828162] sp : ffff00000e9a3880
-[  136.831475] x29: ffff00000e9a3890 x28: ffff800020543400
-[  136.836786] x27: ffff8000b1008880 x26: ffff0000012bf6a0
-[  136.842098] x25: ffff80002054345c x24: ffff800088d22400
-[  136.847409] x23: ffff0000012bf638 x22: ffff0000012bf6d8
-[  136.852721] x21: ffff8000aced8fc0 x20: ffff8000ac164400
-[  136.858032] x19: ffff00000e9a3946 x18: 0000000000000000
-[  136.863343] x17: 0000000000000000 x16: 0000000000000000
-[  136.868655] x15: ffff0000093f3b37 x14: 0000000000000050
-[  136.873966] x13: 0000000000003135 x12: 0000000000000000
-[  136.879277] x11: 0000000000000000 x10: ffff000009a61888
-[  136.884589] x9 : 000000000000000f x8 : 0000000000000008
-[  136.889900] x7 : 303a32303d726464 x6 : ffff00000a1f957d
-[  136.895211] x5 : 0000000000000000 x4 : ffff00000e9a3942
-[  136.900523] x3 : 0000000000000000 x2 : ffff0000012cead8
-[  136.905834] x1 : ffff0000012bf6d8 x0 : 0000000000000000
-[  136.911146] Call trace:
-[  136.913623]  brcmf_pno_config_sched_scans+0x6cc/0xa80 [brcmfmac]
-[  136.919658]  brcmf_pno_start_sched_scan+0xa4/0x118 [brcmfmac]
-[  136.925430]  brcmf_cfg80211_sched_scan_start+0x80/0xe0 [brcmfmac]
-[  136.931636]  nl80211_start_sched_scan+0x140/0x308 [cfg80211]
-[  136.937298]  genl_rcv_msg+0x358/0x3f4
-[  136.940960]  netlink_rcv_skb+0xb4/0x118
-[  136.944795]  genl_rcv+0x34/0x48
-[  136.947935]  netlink_unicast+0x264/0x300
-[  136.951856]  netlink_sendmsg+0x2e4/0x33c
-[  136.955781]  __sys_sendto+0x120/0x19c
-
-Signed-off-by: Wright Feng <wright.feng@cypress.com>
-Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20220722115632.620681-4-alvin@pqrs.dk
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/pno.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c
-index ffa243e2e2d0..581a23549ee5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c
-@@ -163,12 +163,12 @@ static int brcmf_pno_set_random(struct brcmf_if *ifp, struct brcmf_pno_info *pi)
- 	struct brcmf_pno_macaddr_le pfn_mac;
- 	u8 *mac_addr = NULL;
- 	u8 *mac_mask = NULL;
--	int err, i;
-+	int err, i, ri;
- 
--	for (i = 0; i < pi->n_reqs; i++)
--		if (pi->reqs[i]->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
--			mac_addr = pi->reqs[i]->mac_addr;
--			mac_mask = pi->reqs[i]->mac_addr_mask;
-+	for (ri = 0; ri < pi->n_reqs; ri++)
-+		if (pi->reqs[ri]->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-+			mac_addr = pi->reqs[ri]->mac_addr;
-+			mac_mask = pi->reqs[ri]->mac_addr_mask;
- 			break;
- 		}
- 
-@@ -190,7 +190,7 @@ static int brcmf_pno_set_random(struct brcmf_if *ifp, struct brcmf_pno_info *pi)
- 	pfn_mac.mac[0] |= 0x02;
- 
- 	brcmf_dbg(SCAN, "enabling random mac: reqid=%llu mac=%pM\n",
--		  pi->reqs[i]->reqid, pfn_mac.mac);
-+		  pi->reqs[ri]->reqid, pfn_mac.mac);
- 	err = brcmf_fil_iovar_data_set(ifp, "pfn_macaddr", &pfn_mac,
- 				       sizeof(pfn_mac));
- 	if (err)
--- 
-2.35.1
+Larry
 
