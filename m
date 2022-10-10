@@ -2,105 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E475F9BBF
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 11:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C495F9BCA
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 11:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231159AbiJJJTQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Oct 2022 05:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
+        id S229851AbiJJJXf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Oct 2022 05:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230201AbiJJJTP (ORCPT
+        with ESMTP id S231673AbiJJJXc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Oct 2022 05:19:15 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEF44A801
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 02:19:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C757FB80D2B
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 09:19:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AED1C433B5;
-        Mon, 10 Oct 2022 09:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665393551;
-        bh=1QXyosa5SWh/8hByl5+x8fW8HWjgC+y2dyZ7k9YzSAw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZlaZeZf86q/1yjuTnpNqGItmeQEZ6LXdc7kOZPG6HY10osL/6IvzLcOykh5vUgrgK
-         Mz9YbTIGw+RPn2t2f65+zJwjuef+ei6JyQYJEbLa4elKBVCFbOMGyGNSJVyGHCvBSv
-         XVG27di3fTYnZTHu8lLW9YAM4ntivcYZoOHC2CHUtHUbvbxmiaQVqO9msbwMGKtWzq
-         Vl3JS3ijQVgBb6GjOrhfVmfjt45ttT8FtrjGJYXARSAKdgBbt5Hx9CGRPfZWhGw+4u
-         LthAeD8sgnhIbm7s69Y3hzk2h6QzF4n66m7QMo3C3wh2/eokgqxKU36lVmlCyAd1Kc
-         a6LmlJiFqd/tA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc:     gregory.greenman@intel.com, linux-wireless@vger.kernel.org,
-        pstourac@redhat.com
-Subject: Re: [PATCH v2] iwlwifi: mvm: fix double list_add at iwl_mvm_mac_wake_tx_queue (other cases)
-References: <20220909121235.575541-1-jtornosm@redhat.com>
-        <20221010081611.145027-1-jtornosm@redhat.com>
-Date:   Mon, 10 Oct 2022 12:19:05 +0300
-In-Reply-To: <20221010081611.145027-1-jtornosm@redhat.com> (Jose Ignacio
-        Tornos Martinez's message of "Mon, 10 Oct 2022 10:16:11 +0200")
-Message-ID: <87pmf0ox2u.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 10 Oct 2022 05:23:32 -0400
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7B284A834
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 02:23:22 -0700 (PDT)
+Received: by mail-qv1-xf30.google.com with SMTP id h10so6785914qvq.7
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 02:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GngJHu84keVFVSxjlICRQPlheGjtxaNHdwIFm3QLoGQ=;
+        b=YEUbTYl98iXu+RPOU306hf8h0+bblN5nwyV3mHuNeqmMZTe/TMPMhna+xpXsvLUOcE
+         xtiHgkZuSw470rYsR+CcbmAE7MBXrLyuum8k9LAGIioV+pjNm5IIh031mfhGBASLBmus
+         lNeQc2sOuiwznhoYWIHcT9MBTbeW+py4CqPQkrzDdksupsrDteJikmBVcl3eMEem1sTp
+         VatF6pAvf08CRuioOwrEPBKEgvwD+n9Ofdr5T+w5FDCRVJfR3cvZpF9yLmeg+TMixI9x
+         xpxTVg1EtiRYFpsdRaEHn625C+k4dBasu3MOkpOBrhBiRvbS+7hsy0/QFFjwZgmhvAK4
+         pRyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GngJHu84keVFVSxjlICRQPlheGjtxaNHdwIFm3QLoGQ=;
+        b=XbDxScgazMraWvk5mamu9oAg6fsikr7LNuPLYvNuw0MQs+OFfpSdaBs4iQSFgwP3uf
+         kvAmMoFNQfRx9tmpY146jNnAmBijtuHbIp2jD58fEbM7IwpaY7YjdxrXzZRWgWTQ6uFa
+         IuqmztFiDqrebGcBlBlvg4U4jiGCciNxz5zKO2Hmtw1DevKspDz5J/O4zwd2z8Kt/My2
+         krklpIG0cy/wbu80DPD9Thc/h7Xgx9DXZTy1vE1T+hUYzIigj7qVUzm6t1ptyWY6QtQf
+         NFS6h961rlyNw/dzfNogvCpNWzjPe+B/rNibPRbjp/m85gtRI1Ed4i5y7SyiQmEtnrio
+         azpg==
+X-Gm-Message-State: ACrzQf2H4NW3tAVcwnLMA0kg9a7wdTqr7vsKhH0h1QlRekmRNgj7Tgnw
+        avSJxGfQOuN8D7dJMcebHW8=
+X-Google-Smtp-Source: AMsMyM6axkWz/sBFqPigulPmM5pioBt2jdeyYlHKtemE5w6qh64I5CWas7fxj6+ztMmtu6uMoIELzw==
+X-Received: by 2002:ad4:5949:0:b0:4b3:cfb6:5ef9 with SMTP id eo9-20020ad45949000000b004b3cfb65ef9mr10468894qvb.103.1665393802027;
+        Mon, 10 Oct 2022 02:23:22 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id i5-20020a37b805000000b006cfc9846594sm9367750qkf.93.2022.10.10.02.23.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Oct 2022 02:23:21 -0700 (PDT)
+Message-ID: <b7518fd9-fcd1-0ddb-e1cc-2bc7687d3ab7@gmail.com>
+Date:   Mon, 10 Oct 2022 11:23:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH v3 4/5] brcmfmac: Update SSID of hidden AP while informing
+ its bss to cfg80211 layer
+Content-Language: en-US
+To:     "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        Double.Lo@infineon.com
+References: <20220927034138.20463-1-ian.lin@infineon.com>
+ <20220927034138.20463-5-ian.lin@infineon.com> <874jwsrojr.fsf@kernel.org>
+ <4e602611-aed5-dfe7-6ce7-42d1fc7ca53e@infineon.com>
+ <b43d934d-f3e8-9459-0096-11908df27c15@infineon.com>
+ <87y1tupuqy.fsf@kernel.org> <9e166687-1d35-4216-5c2c-a0e783ead406@gmail.com>
+ <51236a0c-5210-533b-7755-94145e6c5a1d@infineon.com>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <51236a0c-5210-533b-7755-94145e6c5a1d@infineon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jose Ignacio Tornos Martinez <jtornosm@redhat.com> writes:
+On 10/6/2022 10:34 AM, Lin Ian (CSSITB CSS ICW SW WFS / EE) wrote:
+> 
+> 
+> On 10/5/2022 6:22 PM, Arend Van Spriel wrote:
+>> Caution: This e-mail originated outside Infineon Technologies. Do not 
+>> click on links or open attachments unless you validate it is 
+>> safe<https://intranet-content.infineon.com/explore/aboutinfineon/rules/informationsecurity/ug/SocialEngineering/Pages/SocialEngineeringElements_en.aspx>. 
+>>
+>>
+>>
+>>
+>> On 10/5/2022 9:58 AM, Kalle Valo wrote:
+>>> "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin@infineon.com> writes:
+>>>
+>>>> On 9/28/2022 6:07 PM, Lin Ian (CSSITB CSS ICW SW WFS / EE) wrote:
+>>>>>
+>>>>>
+>>>>> On 9/28/2022 2:38 PM, Kalle Valo wrote:
+>>>>>> Caution: This e-mail originated outside Infineon Technologies. Do
+>>>>>> not click on links or open attachments unless you validate it is
+>>>>>> safe<https://intranet-content.infineon.com/explore/aboutinfineon/rules/informationsecurity/ug/SocialEngineering/Pages/SocialEngineeringElements_en.aspx>. 
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> Ian Lin <ian.lin@infineon.com> writes:
+>>>>>>
+>>>>>>> From: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
+>>>>>>>
+>>>>>>> cfg80211 layer on DUT STA is disconnecting ongoing connection
+>>>>>>> attempt after
+>>>>>>> receiving association response, because cfg80211 layer does not
+>>>>>>> have valid
+>>>>>>> AP bss information. On association response event, brcmfmac
+>>>>>>> communicates
+>>>>>>> the AP bss information to cfg80211 layer, but SSID seem to be
+>>>>>>> empty in AP
+>>>>>>> bss information, and cfg80211 layer prints kernel warning and then
+>>>>>>> disconnects the ongoing connection attempt.
+>>>>>>>
+>>>>>>> SSID is empty in SSID IE, but 'bi->SSID' contains a valid SSID, so
+>>>>>>> updating the SSID for hidden AP while informing its bss information
+>>>>>>> to cfg80211 layer.
+>>>>>>>
+>>>>>>> Signed-off-by: Syed Rafiuddeen <syed.rafiuddeen@cypress.com>
+>>>>>>> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
+>>>>>>> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@infineon.com>
+>>>>>>> Signed-off-by: Ian Lin <ian.lin@infineon.com>
+>>>>>>> ---
+>>>>>>> .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 8
+>>>>>>> ++++++++
+>>>>>>>    1 file changed, 8 insertions(+)
+>>>>>>>
+>>>>>>> diff --git
+>>>>>>> a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>>>> index 6c37da42e61b..3560afe0ccfe 100644
+>>>>>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>>>>>> @@ -3003,6 +3003,7 @@ static s32 brcmf_inform_single_bss(struct
+>>>>>>> brcmf_cfg80211_info *cfg,
+>>>>>>>         u8 *notify_ie;
+>>>>>>>         size_t notify_ielen;
+>>>>>>>         struct cfg80211_inform_bss bss_data = {};
+>>>>>>> +     struct brcmf_tlv *ssid;
+>>>>>>>
+>>>>>>>         if (le32_to_cpu(bi->length) > WL_BSS_INFO_MAX) {
+>>>>>>>                 bphy_err(drvr, "Bss info is larger than buffer.
+>>>>>>> Discarding\n");
+>>>>>>> @@ -3032,6 +3033,13 @@ static s32 brcmf_inform_single_bss(struct
+>>>>>>> brcmf_cfg80211_info *cfg,
+>>>>>>>         notify_ielen = le32_to_cpu(bi->ie_length);
+>>>>>>>         bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
+>>>>>>>
+>>>>>>> +     ssid = (struct brcmf_tlv *)
+>>>>>>> +             brcmf_parse_tlvs(notify_ie, notify_ielen, 
+>>>>>>> WLAN_EID_SSID);
+>>>>>> This still casts away the const. For some reason brcmf_parse_tlvs()
+>>>>>> takes a const buffer:
+>>>>>>
+>>>>>> static const struct brcmf_tlv *brcmf_parse_tlvs(const void *buf,
+>>>>>> int buflen, uint key)
+>>>>>>
+>>>>>> I'm not familiar with brcmfmac internal so I don't know why it does
+>>>>>> that, but that means the buffer cannot be modified. If you need to
+>>>>>> modify the ssid should you make a copy of it?
+>>>>>
+>>>>> In brcmf_parse_tlvs(const void *buf, int buflen, uint key),
+>>>>> it will find the key in buf and return the address of this key, as
+>>>>> the return pointer.
+>>>>> This function don't intend caller to modify content of buf in most
+>>>>> cases, so it defines a const return pointer.
+>>>>> But in this case, it just need to do it, so I need the typecast here.
+>>>>
+>>>> Do you accept the typecast here?
+>>>
+>>> To me writing a const data is wrong. IIRC it was something like six
+>>> months ago that rtw89 was also writing a const variable and it caused a
+>>> crash because the memory was in a read-only area (or something like
+>>> that).
+>>
+>> So how should this be solved. The pointer returned by the
+>> brcmf_parse_tlvs() function is pointing inside the buffer passed as
+>> first argument, ie. notify_ie which is non-const. So it is perfectly
+>> safe to do the cast as suggested here. We could do a pointer-arithmetic
+>> dance here to avoid the cast, but that only make things more obscure.
+>>
+> I may calculate the offset and cast on notify_ie.
+> Than the code will be like this, is that ok?
+> 
+> u8 *notify_ie;
+> int ssid_offset;
+> ssid_offset = brcmf_parse_tlvs(notify_ie, notify_ielen, WLAN_EID_SSID) - 
+> (struct brcmf_tlv *)notify_ie;
+> memcpy(notify_ie + ssid_offset + offsetof(struct brcmf_tlv, data), 
+> bi->SSID, bi->SSID_len);
 
-> BUGs like this are still reproducible:
->
-> [   31.509616] list_add corruption. prev->next should be next (ffff8f8644242300), but was ffff8f86493fd300. (prev=ffff8f86493fd300).
-> [   31.521544] ------------[ cut here ]------------
-> [   31.526248] kernel BUG at lib/list_debug.c:30!
-> [   31.530781] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-> [   31.535831] CPU: 1 PID: 626 Comm: wpa_supplicant Not tainted 6.0.0+ #7
-> [   31.542450] Hardware name: Dell Inc. Inspiron 660s/0478VN       , BIOS A07 08/24/2012
-> [   31.550484] RIP: 0010:__list_add_valid.cold+0x3a/0x5b
-> [   31.555537] Code: f2 4c 89 c1 48 89 fe 48 c7 c7 28 20 69 89 e8 4c e3 fd ff 0f 0b 48 89 d1 4c 89 c6 4c 89 ca 48 c7 c7 d0 1f 69 89 e8 35 e3 fd ff <0f> 0b 4c 89 c1 48 c7 c7 78 1f 69 89 e8 24 e3 fd ff 0f 0b 48 c7 c7
-> [   31.574605] RSP: 0018:ffff9f6f00dc3748 EFLAGS: 00010286
-> [   31.579990] RAX: 0000000000000075 RBX: ffff8f8644242080 RCX: 0000000000000000
-> [   31.587155] RDX: 0000000000000201 RSI: ffffffff8967862d RDI: 00000000ffffffff
-> [   31.594482] RBP: ffff8f86493fd2e8 R08: 0000000000000000 R09: 00000000ffffdfff
-> [   31.601735] R10: ffff9f6f00dc3608 R11: ffffffff89f46128 R12: ffff8f86493fd300
-> [   31.608986] R13: ffff8f86493fd300 R14: ffff8f8644242300 R15: ffff8f8643dd3f2c
-> [   31.616151] FS:  00007f3bb9a707c0(0000) GS:ffff8f865a300000(0000) knlGS:0000000000000000
-> [   31.624447] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   31.630286] CR2: 00007fe3647d5600 CR3: 00000001125a6002 CR4: 00000000000606e0
-> [   31.637539] Call Trace:
-> [   31.639936]  <TASK>
-> [   31.642143]  iwl_mvm_mac_wake_tx_queue+0x71/0x90 [iwlmvm]
-> [   31.647569]  ieee80211_queue_skb+0x4b6/0x720 [mac80211]
-> ...
->
-> So, it is necessary to extend the applied solution with commit 14a3aacf517a9
-> ("iwlwifi: mvm: fix double list_add at iwl_mvm_mac_wake_tx_queue")
-> to all other cases where the station queues are invalidated and the related
-> lists are not emptied. Because, otherwise as before, if some new element is 
-> added later to the list in iwl_mvm_mac_wake_tx_queue, it can match with the 
-> old one and produce the same commented BUG.
->
-> That is, in order to avoid this problem completely, we must also remove the 
-> related lists for the other cases when station queues are invalidated.
->
-> Fixes: cfbc6c4c5b91c ("iwlwifi: mvm: support mac80211 TXQs model")
-> Reported-by: Petr Stourac <pstourac@redhat.com>
-> Tested-by: Petr Stourac <pstourac@redhat.com>
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Hi Ian,
 
-Gregory, can I take this to wireless tree? I already assigned it to me
-on patchwork.
+I am strarting to doubt the entire patch now. The notify_ie contains 
+beacon/proberesp elements in TLV format. So how can this work by simply 
+copying an SSID into the notify_ie buffer. The patch says: "SSID is 
+empty in SSID IE" so I would conclude the element to be two bytes, ie. T 
+= WLAN_EID_SSID and L=0 (no V). If this is true, it means the SSID will 
+overwrite/corrupt the TLVs located after the SSID. Also the length is 
+not corrected. Maybe I am mistaken and the SSID element for the 
+Hidden-SSID scenarion is different. Will check the 802.11 spec.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Regards,
+Arend
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
