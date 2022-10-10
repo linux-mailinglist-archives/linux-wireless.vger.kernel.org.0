@@ -2,101 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 585265FA32C
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 20:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C71905FA685
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Oct 2022 22:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbiJJSJl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Oct 2022 14:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
+        id S230020AbiJJUqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Oct 2022 16:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbiJJSJk (ORCPT
+        with ESMTP id S229597AbiJJUqd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Oct 2022 14:09:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BC82F7
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 11:09:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39AC660BCC
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 18:09:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E186C433B5;
-        Mon, 10 Oct 2022 18:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665425374;
-        bh=RKRZiw0NyczwHRdkeUVJ3EXEp69C4Pd8hlq2i0tQgjs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=kNOxzz4WOuJ+CdKRPbUq4cdn2GCElTBzISphZnEXTh+QOiuvh/E9Aeen5tDB2PRPv
-         kRd2wJbVfjQCSXX0q0mrkIQS+ehvsJJIy7pXuLv6cr1EWeGKUvb368PkMOaTMZHmUI
-         rlOWiszLc+dA5eD91gJUm8D2KMJEx1mqGyPGEY/GpU5ViP63ukrB91ZdHNTqY1ERve
-         k78ZH5tq5RAp9b4A4djiWfCJKtASMaSyWfhmREO0OaYwiLKhLECWly2JuaD2ekSa4o
-         2YaF1zJQHnIpH+ZcRy5/S8Uw9oTgDAK2+DpK4OikmcfgYAAtcXZYpmFjPq6tgKKvDS
-         Mw8Pj9K8EV1zw==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 10 Oct 2022 16:46:33 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E30772846;
+        Mon, 10 Oct 2022 13:46:32 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id l1so11343436pld.13;
+        Mon, 10 Oct 2022 13:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gl/r2XlBZtmovVwTwtEi9D/8Ulu8vofHlm05R8t3sQ8=;
+        b=pOv3CPXqKos+Pw68meIAmxXp/DHXaEWU2T9TZCY5zosET3hv4COttdn+ktanl1I0mn
+         6mLdn56TRj/matP0enlF16iCNO3fcQM61D8tohbgQLKYsqUxhFzs64T8Eywq7ITfz+H7
+         Av3NIP/jkIO8fftYOl9iuTfs5EKqX8KTFhts/J95H5G94aAdOEjTSnwsxqWDjLEvRItd
+         f+SjpyIEjq/avggn2dG1IM4LrC5iUud4Y4lrM4VRHFW9/HavuTMx9YpXTXSAecH5A1bl
+         phkXSxhzsPVcjcxM6zV3EIzTN/tP0i36WVXwMX8wdqk2+Nuot0WwpyHqzQWB4jZPQUqt
+         GRgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gl/r2XlBZtmovVwTwtEi9D/8Ulu8vofHlm05R8t3sQ8=;
+        b=TMT1/OzJBjC+MeXNu43eHzw35NIdt4zw/NMpDQJdU0P0oqTcu1a0RVIBexsM4LRegc
+         rrfEjmfGumIkitlZ+OK3Wjm8hAslWORGFS/nf/3KN1jamr3BOyT447vYD6tsdL8kTRnC
+         9Dxd9bQezWRk8Ei9p5zaL2KbJMaoU9g2TM+HWqRvxk36nNfY+8U30hEu2rmOxGyoekHT
+         CEhkmNS2/Za21uqxm4ssAwdCYygsDWBkTpgOYn4wBTl99kKs3t9SEOJJRkfVF6+kbnXv
+         5as70+Ina999gkCmun71gR6AIjMFgfZch32WDhXCJLMfRo8txnVKrd3RiPPLAl/WCwOG
+         ifqg==
+X-Gm-Message-State: ACrzQf0795Fe0mpYC4Grs3Z5gls3JYsOaNNY3Fd61zkelu0P3DmD95Qd
+        pr6Q9m5qj0W3cU9eorU7Rl61Gg3FnPwWPzhyCl8=
+X-Google-Smtp-Source: AMsMyM57rndDymb+Zd08xP+YZqIzHMNd4xpXeUjxkzXE9wqwVVzVe+XwTi7AnO3WCPardrABeiBficWCJILmvBuWhow=
+X-Received: by 2002:a17:902:8549:b0:178:6399:3e0f with SMTP id
+ d9-20020a170902854900b0017863993e0fmr21276014plo.35.1665434791984; Mon, 10
+ Oct 2022 13:46:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/2] wifi: ath11k: change to set 11d state instead of
- start
- 11d scan while disconnect
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220928081413.27339-2-quic_wgong@quicinc.com>
-References: <20220928081413.27339-2-quic_wgong@quicinc.com>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_wgong@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166542536986.511.1244496445875563981.kvalo@kernel.org>
-Date:   Mon, 10 Oct 2022 18:09:33 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CABXGCsMmvxi9kCZ+sUm+Vb_jxaPXE308GAwkUmiduuJXh_o2fg@mail.gmail.com>
+ <ad6a722a0caa50c3f369e97b0f03180f62806fa7.camel@sipsolutions.net>
+In-Reply-To: <ad6a722a0caa50c3f369e97b0f03180f62806fa7.camel@sipsolutions.net>
+From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date:   Tue, 11 Oct 2022 01:46:20 +0500
+Message-ID: <CABXGCsOceHUhinSO6CwMEfx4akUXiOFiCpdqf9beNpWH82RXZw@mail.gmail.com>
+Subject: Re: [bug][6.1] Enable run-time checking of dynamic memcpy() and
+ memmove() lengths causes warning on every boot at net/wireless/wext-core.c:623
+ (size 4)
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        linville@tuxdriver.com, Kees Cook <keescook@chromium.org>,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> wrote:
+On Mon, Oct 10, 2022 at 12:45 PM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=e3e6e1d16a4cf7b63159ec71774e822194071954
 
-> When switch to connect to a new AP for station which is already connected
-> to an AP, the time cost is too long, it arrives 10 seconds.
-> 
-> The reason is when switch connection, disconnect operation happened on
-> the 1st AP, then 11d scan start command sent to firmware, and then a
-> new hw scan arrived for the 2nd AP. The 11d scan is running at this
-> moment, so the hw scan can not start immediately, it needs to wait
-> the 11d scan finished, it increased the time cost of switch AP and
-> even happened scan fail as log below after apply the incoming patch.
-> 
-> [ 1194.815104] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-> [ 1196.864157] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-> [ 1198.911926] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-> 
-> Change to set 11d state while disconnect, and the 11d scan will be
-> started after the new hw scan in ath11k_mac_op_hw_scan(). Then the
-> time cost of switching AP is small and not happened scan fail.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-> 
-> Fixes: 9dcf6808b253 ("ath11k: add 11d scan offload support")
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-I still see warnings:
-
-[ 3627.691737] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-[ 3715.435608] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-[ 3860.333214] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-[ 4542.000955] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-[ 4604.018451] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-
-2 patches set to Changes Requested.
-
-12991768 [v2,1/2] wifi: ath11k: change to set 11d state instead of start 11d scan while disconnect
-12991769 [v2,2/2] wifi: ath11k: reduce the timeout value back for hw scan from 10 seconds to 1 second
+Thanks, the issue is solved.
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220928081413.27339-2-quic_wgong@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Best Regards,
+Mike Gavrilov.
