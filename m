@@ -2,95 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A8BD5FB273
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 14:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 567555FB2D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 15:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbiJKMb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 08:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
+        id S229900AbiJKNFQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 09:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbiJKMbt (ORCPT
+        with ESMTP id S229910AbiJKNFN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 08:31:49 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47E873C1A
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 05:31:47 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id h8so4618270lja.11
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 05:31:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DiULCP5IK6g6yDAZXxPPFtT8V5DH34gq3DXIhUtgRsc=;
-        b=vmzXWTX+BgRtJRuJTAjwNZUh6ku4MwbsM7Z9B+vynAk6LVmZHO+Ot8/6ym3p7cPB4M
-         F8plgugbMBSyIN9aNip9G7GEM18bXJvAfaozeOx+oNl75Nu5WYHAhzo0td3MoULyCvpC
-         vXcbUVSEa8afY1LQ5/HDqvdWoe7ORt2fWvyGV9z3cYQexwnmhZDr+eSv6bSOF6djEzfB
-         YgXLebPS+CvubF2GO+ntqlcUwMZHZqhXDhfkQyjxgNwkhR7Ti+CEBXSRREkUiZrZzUm4
-         rkHMNfbBBjy+4n0xmcyx0rLB6XpI7nLZSj/bJ7kF8EyqGrQVr7eBvyCRoDZz3tHNvwgC
-         GKkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DiULCP5IK6g6yDAZXxPPFtT8V5DH34gq3DXIhUtgRsc=;
-        b=zZ5xzyZF1i/Z1tDb9csWqZhMf/o7jb0guAYWzzVjf4L93cm7Eo9f52BjXBHly9OSQ6
-         cwPZp98/FS5I9hfzdOqVjN3wBoA/Rberk5C0ply/R4ffICA7cDLUhIPJOani9ETsExgU
-         QiL7ZaS39yb0AmwRwijMndwhVA+lPrW47xeZmF0e452zIfiXwGCyNXKzCjymS7/p7Lhi
-         0WwiYCltUYDQB87fi4efIbI/L/U75tLklbsjk8y3au30khAHbucT5JX2J9MlWgQU1rbz
-         kA8LAA+Em+gBFR+EQYBZ7eDN6sqsQ4OA4S0czfHrLS/huFtBhDYU+HI2M5iDB5MiZDoC
-         5emw==
-X-Gm-Message-State: ACrzQf1YxhKbZLA+vfhFBSZwh+TZet40KJ0FC7dHTlGLNvNm4++tX718
-        zIuc0r7S6ZZqfndZWCLMlXtMNA==
-X-Google-Smtp-Source: AMsMyM5n9T7hr6zrio8ZBnyjdQEUJAhcdiCTmTxOmpEZC1uj/3+QFTA0NpMW6CtM+lg67UrKoADojg==
-X-Received: by 2002:a2e:2c0e:0:b0:26e:9219:fb0b with SMTP id s14-20020a2e2c0e000000b0026e9219fb0bmr5844810ljs.432.1665491506220;
-        Tue, 11 Oct 2022 05:31:46 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id d22-20020a056512369600b00494942bec60sm1854998lfs.17.2022.10.11.05.31.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 05:31:45 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] bcma: support SPROM rev 11
-Date:   Tue, 11 Oct 2022 14:29:41 +0200
-Message-Id: <20221011122941.2053705-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.3
+        Tue, 11 Oct 2022 09:05:13 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D49701FCE6
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 06:05:10 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29BBjKB6019254;
+        Tue, 11 Oct 2022 13:05:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=I1/gCtkfa7CgIRoxO3wfAR33NNRUjl2+/cjtCGvu19w=;
+ b=GQAAUXJQTm37PnX+sDV7uHTfTAiPrabjbO4FEmxjmJ5EczBGpuOUII7vD9AfWfuWHAXq
+ H1Mt2ezRV7BKWwCCv3MFbp7f/6PYoqDlDK17vtZy5FyBkjGlqzsb1vgWfAX8Ytr6zVr4
+ S/8MVrCdQD0QSNgoXwqf3kBwartZwUNVyL1TP8cgsZKbMrxBMyeo3k1SWAiulPT4cwii
+ BJdig0XOEK+6uNx5FwJqIN2oYbxdyXT4vPCchHSJQtI6gs9xzcv2YAEwaxybuZ/EzozZ
+ vCF2G8cN8iIdDfBu2lRLqu0QQ/ZV+fEKJMVoHpd8TdciwnmqKOUJrXZzVyGna+Yl0310 Uw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k4rx4t5da-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Oct 2022 13:05:07 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29BD56x1012919
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Oct 2022 13:05:06 GMT
+Received: from paulz-gv.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Tue, 11 Oct 2022 06:05:05 -0700
+From:   Paul Zhang <quic_paulz@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v1] cfg80211: Fix bitrates overflow issue
+Date:   Tue, 11 Oct 2022 21:04:28 +0800
+Message-ID: <1665493468-24774-1-git-send-email-quic_paulz@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QD1cMWxSzdyJfFD_v-dQu27OxNa9DtpV
+X-Proofpoint-ORIG-GUID: QD1cMWxSzdyJfFD_v-dQu27OxNa9DtpV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-11_07,2022-10-11_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 mlxlogscore=707
+ impostorscore=0 phishscore=0 adultscore=0 clxscore=1011 malwarescore=0
+ bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210110074
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rev 11 works fine for me to set the MAC address of gmac0 and
-gmac1 in the D-Link DWL-8610AP.
+When invoking function cfg80211_calculate_bitrate_eht about
+(320 MHz, EHT-MCS 13, EHT-NSS 2, EHT-GI 0), which means the
+parameters as flags: 0x80, bw: 7, mcs: 13, eht_gi: 0, nss: 2,
+this formula (result * rate->nss) will overflow and causes
+the returned bitrate to be 3959 when it should be 57646.
 
-Cc: Rafał Miłecki <zajec5@gmail.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Here is the explanation:
+ u64 tmp;
+ u32 result;
+ …
+ /* tmp = result = 4 * rates_996[0]
+  *     = 4 * 480388888 = 0x72889c60
+  */
+ tmp = result;
+
+ /* tmp = 0x72889c60 * 6144 = 0xabccea90000 */
+ tmp *= SCALE;
+
+ /* tmp = 0xabccea90000 / mcs_divisors[13]
+  *     = 0xabccea90000 / 5120 = 0x8970bba6
+  */
+ do_div(tmp, mcs_divisors[rate->mcs]);
+
+ /* result = 0x8970bba6 */
+ result = tmp;
+
+ /* normally (result * rate->nss) = 0x8970bba6 * 2 = 0x112e1774c,
+  * but since result is u32, (result * rate->nss) = 0x12e1774c,
+  * overflow happens and it loses the highest bit.
+  * Then result =  0x12e1774c / 8 = 39595753,
+  */
+ result = (result * rate->nss) / 8;
+
+Signed-off-by: Paul Zhang <quic_paulz@quicinc.com>
 ---
- drivers/bcma/sprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/util.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
-index 3da01f173c63..e668ad7963fc 100644
---- a/drivers/bcma/sprom.c
-+++ b/drivers/bcma/sprom.c
-@@ -165,7 +165,7 @@ static int bcma_sprom_valid(struct bcma_bus *bus, const u16 *sprom,
- 		return err;
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index f09d528..59d4947 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1557,10 +1557,12 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
+ 	tmp = result;
+ 	tmp *= SCALE;
+ 	do_div(tmp, mcs_divisors[rate->mcs]);
+-	result = tmp;
  
- 	revision = sprom[words - 1] & SSB_SPROM_REVISION_REV;
--	if (revision != 8 && revision != 9 && revision != 10) {
-+	if (revision < 8 || revision > 11) {
- 		pr_err("Unsupported SPROM revision: %d\n", revision);
- 		return -ENOENT;
- 	}
+ 	/* and take NSS */
+-	result = (result * rate->nss) / 8;
++	tmp *= rate->nss;
++	do_div(tmp, 8);
++
++	result = tmp;
+ 
+ 	return result / 10000;
+ }
 -- 
-2.34.1
+2.7.4
 
