@@ -2,75 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D877A5FAB7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 05:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49FEF5FAB90
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 06:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229472AbiJKD7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Oct 2022 23:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49328 "EHLO
+        id S229677AbiJKEHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 00:07:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiJKD7L (ORCPT
+        with ESMTP id S229608AbiJKEH1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Oct 2022 23:59:11 -0400
+        Tue, 11 Oct 2022 00:07:27 -0400
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA2BC7E81B
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 20:59:10 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29B0w9NI019604;
-        Tue, 11 Oct 2022 03:59:03 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5048680F
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Oct 2022 21:07:14 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29B2hbjr010041;
+        Tue, 11 Oct 2022 04:07:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
+ mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=494NNedELfIMNmPVaonTNe1XkmyugotD6Ma+MQntz7g=;
- b=R0jMW+/rdUpQ3h0o0yavQslsemyQgE/6Aul5werPIctNpOKJmSNZC/xl6qQyW8OYoqos
- X7NDsMZemPp83TdOWRKcZQWFxwCctoGir7l71UCndloH2Wj4QDAlNuJcheo5PFm7VCfo
- e8b5kmio97t8az1AVANrLE7UTcy7jA6VeLTMSsxpculr3d5x/LKgz7jFo1Yhf8gg8CVo
- AXHOIODcmQBiFYgCi/cfgpuTleeT7sE+oQoQ81XPN34hw7UM9KoC8eGsBqOLTYNLOZ6N
- xnkelqS+5lj/W84W9qf6utJOjcO0ZLs1E/TfGsRFs1ovy6IEOyg4dv6gHo8m1mmjVERC wA== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k4rx4h4bb-1
+ bh=CyOg+0MeMnZwIy5vzY+2hxSI6SeP1oI+tUHkpV0tcTI=;
+ b=iROl0KQtQJYBNJRtf9wtvn3dgVhPOs4mJ7W60+tJHXflVJSdpeZveMt7ef1vMCakkXYc
+ 3r0T1zg4YbneCl9EX4WVIBG2xJ3fG9l2GTrcCcGlG//G3qqz8hMG/7lDkdJLV9iPWG2C
+ JCeedzEaaIcuAm3M1YaqyTrr1Dtdqz1LiEAUvUB3990uNxApp8s+nvBl/WpWM1/u7v6x
+ qCMaO67um5RaOvmUp0Mef2ufOBvPkgijVhHbuKUn2eSzdjgH2e5JJUS3Usji1eGQl4lE
+ //feewn5v8Y+yehshXsUHyLJ2k4uerJ232TmLyGItD/x98ZpnrH7m6mBHgRKe64CEYcx 2A== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k4rx194xs-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Oct 2022 03:59:03 +0000
+        Tue, 11 Oct 2022 04:07:04 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29B3x2aG023687
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29B4734A026879
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Oct 2022 03:59:02 GMT
+        Tue, 11 Oct 2022 04:07:03 GMT
 Received: from [10.253.78.175] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Mon, 10 Oct
- 2022 20:59:00 -0700
-Message-ID: <0526d034-2cb9-527e-b338-f73db0ed005b@quicinc.com>
-Date:   Tue, 11 Oct 2022 11:58:58 +0800
+ 2022 21:07:02 -0700
+Message-ID: <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
+Date:   Tue, 11 Oct 2022 12:07:00 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.12.0
-Subject: Re: [PATCH v2 1/2] wifi: ath11k: change to set 11d state instead of
- start 11d scan while disconnect
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
 Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+ <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+ <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+ <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+ <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
+ <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
+ <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
+ <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
+ <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
+ <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
+ <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
 From:   Wen Gong <quic_wgong@quicinc.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20220928081413.27339-2-quic_wgong@quicinc.com>
- <166542536986.511.1244496445875563981.kvalo@kernel.org>
- <f50c94b9-252f-25ab-4650-bed52762bc4d@quicinc.com>
-In-Reply-To: <f50c94b9-252f-25ab-4650-bed52762bc4d@quicinc.com>
+In-Reply-To: <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: SDbHr4xgZWvzsufSngI3VFUnKpwHtzKe
-X-Proofpoint-GUID: SDbHr4xgZWvzsufSngI3VFUnKpwHtzKe
+X-Proofpoint-ORIG-GUID: G6mJZpgelCpIV4uZiAl2jz5sP8PaSONt
+X-Proofpoint-GUID: G6mJZpgelCpIV4uZiAl2jz5sP8PaSONt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-10-11_02,2022-10-10_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- clxscore=1015 phishscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=999 priorityscore=1501 mlxscore=0 impostorscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2210110021
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 mlxlogscore=824 clxscore=1015 impostorscore=0
+ mlxscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210110022
 X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -80,51 +88,15 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/11/2022 11:53 AM, Wen Gong wrote:
-> On 10/11/2022 2:09 AM, Kalle Valo wrote:
->> Wen Gong <quic_wgong@quicinc.com> wrote:
+On 9/28/2022 11:28 PM, Johannes Berg wrote:
+...
+>
+>> May I know some more info/status about the "incoming  new method to let
+>> drivers set the link address"?
 >>
->>> When switch to connect to a new AP for station which is already 
->>> connected
->>> to an AP, the time cost is too long, it arrives 10 seconds.
->>>
->>> The reason is when switch connection, disconnect operation happened on
->>> the 1st AP, then 11d scan start command sent to firmware, and then a
->>> new hw scan arrived for the 2nd AP. The 11d scan is running at this
->>> moment, so the hw scan can not start immediately, it needs to wait
->>> the 11d scan finished, it increased the time cost of switch AP and
->>> even happened scan fail as log below after apply the incoming patch.
->>>
->>> [ 1194.815104] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->>> [ 1196.864157] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->>> [ 1198.911926] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->>>
->>> Change to set 11d state while disconnect, and the 11d scan will be
->>> started after the new hw scan in ath11k_mac_op_hw_scan(). Then the
->>> time cost of switching AP is small and not happened scan fail.
->>>
->>> Tested-on: WCN6855 hw2.0 PCI 
->>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->>>
->>> Fixes: 9dcf6808b253 ("ath11k: add 11d scan offload support")
->>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
->>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->> I still see warnings:
->>
->> [ 3627.691737] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->> [ 3715.435608] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->> [ 3860.333214] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->> [ 4542.000955] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
->> [ 4604.018451] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
-> The failed log is now happened frequently as before, I will change it 
-> again to suppress the failed log.
-change typo.
-The failed log is NOT happened frequently as before, I will change it 
-again to suppress the failed log.
->> 2 patches set to Changes Requested.
->>
->> 12991768 [v2,1/2] wifi: ath11k: change to set 11d state instead of 
->> start 11d scan while disconnect
->> 12991769 [v2,2/2] wifi: ath11k: reduce the timeout value back for hw 
->> scan from 10 seconds to 1 second
->>
+> I wasn't actually planning to work on that myself, FWIW.
+>
+> johannes
+
+OK. So has some body will work for that now?😁
+
