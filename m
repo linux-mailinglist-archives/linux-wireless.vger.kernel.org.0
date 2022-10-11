@@ -2,48 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FF25FADC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 09:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3A9C5FAE23
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 10:13:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbiJKHtX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 03:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46310 "EHLO
+        id S229885AbiJKINI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 04:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbiJKHtW (ORCPT
+        with ESMTP id S229550AbiJKINH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 03:49:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A871688A24
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 00:49:21 -0700 (PDT)
+        Tue, 11 Oct 2022 04:13:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D4A3EA49;
+        Tue, 11 Oct 2022 01:13:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CBF26112E
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 07:49:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84F2C433D6;
-        Tue, 11 Oct 2022 07:49:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2BD73B80AAE;
+        Tue, 11 Oct 2022 08:13:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46790C433C1;
+        Tue, 11 Oct 2022 08:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665474560;
-        bh=1WwSYM23oQxupcqStJLm5dOD3V1ZFzvJPyXZLixzaEI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=gh/oqtMl+fLOoVycmWzsk5oRwgBrOuqrHr3+A9rSH5K2wlxqLqGB1bEXNFvMVFLkz
-         2uDSSwv1wMfXNUvtH7sy2kozNpOIo1QhtRPinVXDFyImWi6gjv7QSfG2rCmxRzw9ah
-         gdv2uaAJJoUuyPnSek095Oh8NJEzhBv4VNgVtSTXxsyXGTpFrmK5f0YSziQ21b3sK5
-         gsIJjTywEmPAkr1TtCD1maSz8zUQNru5NKdrtzGAijCK1v9XXhPyuTG6rOn9ljZ5oU
-         74q7Ax0QYuTjezqBiQqk5nDga0Dkf8n39FCrU0RgpeBaVmRcTvtAT83tYcXOiTxS/M
-         7Abx80/aSaZpg==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: Send PME message during wakeup from D3cold
+        s=k20201202; t=1665475982;
+        bh=hdV/HagkJ26SOAJFvJzmaF51kGu9RxKTWkSj9OFXJ9o=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=BipUaM7W4M0iTTaKjf/MvpWknYY7hihA0mTYx0uxRN29Mp/M0UejN70x+4LkrhLXJ
+         WQUxO/lGsuQo/76gHn00sLWGFuLu/rtVqVdR/7q0w2YaxYfswVpqDcGaDn35fapdCc
+         qI821XfCJXBwFnBC/ITOR9oWR6J3enqSOEZ4Oh+M2SdRxte0MXHeQXXyH89XVXnb5J
+         WQtykTZ9/dMOg/MQNmq/wefEGYBki3JTAorcRujJGa5p+FBO8oVSFUO2aPidwQ0cr1
+         HLz53LFGilK3SEzRKmNIeSP0mFQvy+BqPSaimShSBPYpL2PPOQMUjKR40F3dX+4VoO
+         7sQdaiWbLjD3A==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221010033237.415478-1-quic_bqiang@quicinc.com>
-References: <20221010033237.415478-1-quic_bqiang@quicinc.com>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166547455486.8038.9803492494856020045.kvalo@kernel.org>
-Date:   Tue, 11 Oct 2022 07:49:19 +0000 (UTC)
+To:     "Arnd Bergmann" <arnd@arndb.de>
+Cc:     "Naresh Kamboju" <naresh.kamboju@linaro.org>,
+        Netdev <netdev@vger.kernel.org>,
+        "open list" <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>, ath11k@lists.infradead.org,
+        regressions@lists.linux.dev, lkft-triage@lists.linaro.org
+Subject: Re: drivers/net/wireless/ath/ath11k/mac.c:2238:29: warning: 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size 0
+References: <CA+G9fYsZ_qypa=jHY_dJ=tqX4515+qrV9n2SWXVDHve826nF7Q@mail.gmail.com>
+        <87ilkrpqka.fsf@kernel.org>
+        <158e9f4f-9929-4244-b040-78f2e54bc028@app.fastmail.com>
+Date:   Tue, 11 Oct 2022 11:12:56 +0300
+In-Reply-To: <158e9f4f-9929-4244-b040-78f2e54bc028@app.fastmail.com> (Arnd
+        Bergmann's message of "Mon, 10 Oct 2022 19:52:09 +0200")
+Message-ID: <87tu4aok1j.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,26 +63,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+"Arnd Bergmann" <arnd@arndb.de> writes:
 
-> We are seeing system stuck on some specific platforms due to
-> WLAN chip fails to wakeup from D3cold state.
-> 
-> With this flag, firmware will send PME message during wakeup
-> and this issue is gone.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> On Mon, Oct 10, 2022, at 6:54 PM, Kalle Valo wrote:
+>> Naresh Kamboju <naresh.kamboju@linaro.org> writes:
+>
+>>>
+>>> Build log: https://builds.tuxbuild.com/2F4W7nZHNx3T88RB0gaCZ9hBX6c/
+>>
+>> Thanks, I was able to reproduce it now and submitted a patch:
+>>
+>> https://patchwork.kernel.org/project/linux-wireless/patch/20221010160638.20152-1-kvalo@kernel.org/
+>>
+>> But it's strange that nobody else (myself included) didn't see this
+>> earlier. Nor later for that matter, this is the only report I got about
+>> this. Arnd, any ideas what could cause this only to happen on GCC 11?
+>>
+>> -- 
+>> https://patchwork.kernel.org/project/linux-wireless/list/
+>>
+>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>
+> No idea here, though I have not tried to reproduce it. This looks
+> like a false positive to me, which might be the result of some
+> missed optimization in the compiler when building with certain
+> options. I see in the .config that KASAN is enabled, and this sometimes
+> causes odd behavior like this. If it does not happen without KASAN,
+> maybe report it as a bug against the compiler.
 
-The firmware you are using is old, please update to the latest one:
-
-https://github.com/kvalo/ath11k-firmware/tree/master/WCN6855/hw2.0/1.1/WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
-
-It's very important that the testing happens on latest components.
-
-No need to resend because of this.
+You guessed correctly, disabling KASAN makes the warning go away. So no
+point of reporting this to GCC, thanks for the help!
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221010033237.415478-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
