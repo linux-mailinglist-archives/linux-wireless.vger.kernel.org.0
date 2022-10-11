@@ -2,134 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 567555FB2D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 15:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8563D5FB850
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 18:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbiJKNFQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 09:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
+        id S229830AbiJKQb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 12:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbiJKNFN (ORCPT
+        with ESMTP id S229779AbiJKQb0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 09:05:13 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D49701FCE6
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 06:05:10 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29BBjKB6019254;
-        Tue, 11 Oct 2022 13:05:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=I1/gCtkfa7CgIRoxO3wfAR33NNRUjl2+/cjtCGvu19w=;
- b=GQAAUXJQTm37PnX+sDV7uHTfTAiPrabjbO4FEmxjmJ5EczBGpuOUII7vD9AfWfuWHAXq
- H1Mt2ezRV7BKWwCCv3MFbp7f/6PYoqDlDK17vtZy5FyBkjGlqzsb1vgWfAX8Ytr6zVr4
- S/8MVrCdQD0QSNgoXwqf3kBwartZwUNVyL1TP8cgsZKbMrxBMyeo3k1SWAiulPT4cwii
- BJdig0XOEK+6uNx5FwJqIN2oYbxdyXT4vPCchHSJQtI6gs9xzcv2YAEwaxybuZ/EzozZ
- vCF2G8cN8iIdDfBu2lRLqu0QQ/ZV+fEKJMVoHpd8TdciwnmqKOUJrXZzVyGna+Yl0310 Uw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k4rx4t5da-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Oct 2022 13:05:07 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29BD56x1012919
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Oct 2022 13:05:06 GMT
-Received: from paulz-gv.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Tue, 11 Oct 2022 06:05:05 -0700
-From:   Paul Zhang <quic_paulz@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v1] cfg80211: Fix bitrates overflow issue
-Date:   Tue, 11 Oct 2022 21:04:28 +0800
-Message-ID: <1665493468-24774-1-git-send-email-quic_paulz@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        Tue, 11 Oct 2022 12:31:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DA41402B;
+        Tue, 11 Oct 2022 09:31:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE59B61215;
+        Tue, 11 Oct 2022 16:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A093CC433D6;
+        Tue, 11 Oct 2022 16:31:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665505884;
+        bh=WtjFG99GlAzYUAymxozvg4UBgubwOQ6jODebQwJ6gUo=;
+        h=From:Subject:To:Cc:Date:From;
+        b=MU6Dtk/d1resCxS9YXKlNE7XoliqOSAwT58c2VRyq41al5PsFRJitmm5Bn/7ny4cw
+         C45KvRBhPfGNyWqSQoKQfG4wxsT/AAOdcZsMYmh6TXLqDbNGNcIxX1CK86DPcK5/Pl
+         UQvuHiJO6a2Z9FOhzhbkwLlvwhx0m5mgEtfQyvEzD6Hg8lat0vIdizJt01setIKsco
+         EsZEVGZY0YlTUKBP6wPQTHpUgKrZXyafu9ziSJe85An4zYM17fmeopcr8bzsiU8HbI
+         HjUJtkdJGP6voZrcv1/qg+DlOxI2LfqPYsiU786oiMR2n82moA+13zNNzh8iE2hHFD
+         jzIlBTzAwLJgw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: QD1cMWxSzdyJfFD_v-dQu27OxNa9DtpV
-X-Proofpoint-ORIG-GUID: QD1cMWxSzdyJfFD_v-dQu27OxNa9DtpV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-11_07,2022-10-11_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 spamscore=0 mlxlogscore=707
- impostorscore=0 phishscore=0 adultscore=0 clxscore=1011 malwarescore=0
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210110074
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2022-10-11
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20221011163123.A093CC433D6@smtp.kernel.org>
+Date:   Tue, 11 Oct 2022 16:31:23 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When invoking function cfg80211_calculate_bitrate_eht about
-(320 MHz, EHT-MCS 13, EHT-NSS 2, EHT-GI 0), which means the
-parameters as flags: 0x80, bw: 7, mcs: 13, eht_gi: 0, nss: 2,
-this formula (result * rate->nss) will overflow and causes
-the returned bitrate to be 3959 when it should be 57646.
+Hi,
 
-Here is the explanation:
- u64 tmp;
- u32 result;
- …
- /* tmp = result = 4 * rates_996[0]
-  *     = 4 * 480388888 = 0x72889c60
-  */
- tmp = result;
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
- /* tmp = 0x72889c60 * 6144 = 0xabccea90000 */
- tmp *= SCALE;
+Kalle
 
- /* tmp = 0xabccea90000 / mcs_divisors[13]
-  *     = 0xabccea90000 / 5120 = 0x8970bba6
-  */
- do_div(tmp, mcs_divisors[rate->mcs]);
+The following changes since commit 0326074ff4652329f2a1a9c8685104576bd8d131:
 
- /* result = 0x8970bba6 */
- result = tmp;
+  Merge tag 'net-next-6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next (2022-10-04 13:38:03 -0700)
 
- /* normally (result * rate->nss) = 0x8970bba6 * 2 = 0x112e1774c,
-  * but since result is u32, (result * rate->nss) = 0x12e1774c,
-  * overflow happens and it loses the highest bit.
-  * Then result =  0x12e1774c / 8 = 39595753,
-  */
- result = (result * rate->nss) / 8;
+are available in the Git repository at:
 
-Signed-off-by: Paul Zhang <quic_paulz@quicinc.com>
----
- net/wireless/util.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-10-11
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index f09d528..59d4947 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1557,10 +1557,12 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
- 	tmp = result;
- 	tmp *= SCALE;
- 	do_div(tmp, mcs_divisors[rate->mcs]);
--	result = tmp;
- 
- 	/* and take NSS */
--	result = (result * rate->nss) / 8;
-+	tmp *= rate->nss;
-+	do_div(tmp, 8);
-+
-+	result = tmp;
- 
- 	return result / 10000;
- }
--- 
-2.7.4
+for you to fetch changes up to abf93f369419249ca482a8911039fe1c75a94227:
 
+  wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning (2022-10-11 11:46:31 +0300)
+
+----------------------------------------------------------------
+wireless fixes for v6.1
+
+First set of fixes for v6.1. Quite a lot of fixes in stack but also
+for mt76.
+
+cfg80211/mac80211
+
+* fix locking error in mac80211's hw addr change
+
+* fix TX queue stop for internal TXQs
+
+* handling of very small (e.g. STP TCN) packets
+
+* two memcpy() hardening fixes
+
+* fix probe request 6 GHz capability warning
+
+* fix various connection prints
+
+* fix decapsulation offload for AP VLAN
+
+mt76
+
+* fix rate reporting, LLC packets and receive checksum offload on specific chipsets
+
+iwlwifi
+
+* fix crash due to list corruption
+
+ath11k
+
+* fix a compiler warning with GCC 11 and KASAN
+
+----------------------------------------------------------------
+Alexander Wetzel (1):
+      wifi: mac80211: netdev compatible TX stop for iTXQ drivers
+
+Dan Carpenter (1):
+      wifi: mac80211: unlock on error in ieee80211_can_powered_addr_change()
+
+Felix Fietkau (6):
+      wifi: mt76: fix rate reporting / throughput regression on mt7915 and newer
+      wifi: mac80211: do not drop packets smaller than the LLC-SNAP header on fast-rx
+      wifi: mac80211: fix decap offload for stations on AP_VLAN interfaces
+      wifi: cfg80211: fix ieee80211_data_to_8023_exthdr handling of small packets
+      wifi: mt76: fix receiving LLC packets on mt7615/mt7915
+      wifi: mt76: fix rx checksum offload on mt7615/mt7915/mt7921
+
+Hawkins Jiawei (1):
+      wifi: wext: use flex array destination for memcpy()
+
+James Prestwood (2):
+      wifi: mac80211: fix probe req HE capabilities access
+      wifi: mac80211: remove/avoid misleading prints
+
+Jose Ignacio Tornos Martinez (1):
+      wifi: iwlwifi: mvm: fix double list_add at iwl_mvm_mac_wake_tx_queue (other cases)
+
+Kalle Valo (1):
+      wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning
+
+Kees Cook (1):
+      wifi: nl80211: Split memcpy() of struct nl80211_wowlan_tcp_data_token flexible array
+
+ drivers/net/wireless/ath/ath11k/mac.c           |  5 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c    |  2 ++
+ drivers/net/wireless/mediatek/mt76/dma.c        |  5 +---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 12 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 12 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c |  4 ++-
+ drivers/net/wireless/mediatek/mt76/tx.c         | 10 +++++--
+ include/linux/wireless.h                        | 10 ++++++-
+ net/mac80211/iface.c                            |  8 ++---
+ net/mac80211/mlme.c                             |  7 +++--
+ net/mac80211/rx.c                               |  9 +++---
+ net/mac80211/tx.c                               | 10 ++++---
+ net/mac80211/util.c                             |  2 +-
+ net/wireless/nl80211.c                          |  4 ++-
+ net/wireless/util.c                             | 40 +++++++++++++------------
+ net/wireless/wext-core.c                        | 17 ++++++-----
+ 16 files changed, 94 insertions(+), 63 deletions(-)
