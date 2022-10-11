@@ -2,87 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1B25FAD72
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 09:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5385FAD8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 09:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbiJKH07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 03:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
+        id S229614AbiJKHbw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 03:31:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbiJKH06 (ORCPT
+        with ESMTP id S229606AbiJKHbu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 03:26:58 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4A51E719
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 00:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=wXvmb5jXrcLN6sR1/eCh8edF92ghBU2PeyOgob5hdWY=;
-        t=1665473217; x=1666682817; b=iy5bbqrJ3jOt3k5cRmmfT5Ni2xvvarqBkpaLAVo31z9M/Iy
-        K5ZMKSQQmxsORaXTQGHBGaFLSMdHfLapQp6pgWQuxAkYjbmXiLGvfMwS8gFax7St6wkdbSOb9AVWI
-        JnqDawXXqdgotlBKlKsUa04+G3G0WRTj/ESZngVET56vvVkCMxjAfwnDDDX6CVUWITlk7w2PZ+XPH
-        IO6ZQJRZJtI8Z38eRsHOvhtzTpSbB3vtciraRrW4vHyjQFnDR4+D3vQPGtfZpDOlWLX+3FQVcVNG/
-        38nCNh0rqpg46dDLbkA0sPFWXqewMPl9VsY0V5uQ2JTVy3lj0s6+y0efFJQmXB1A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oi9fC-003s4e-1e;
-        Tue, 11 Oct 2022 09:26:55 +0200
-Message-ID: <37958ca93039114b98909d730ff57dd1d10bb68d.camel@sipsolutions.net>
-Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org
-Date:   Tue, 11 Oct 2022 09:26:53 +0200
-In-Reply-To: <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
-         <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
-         <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
-         <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
-         <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
-         <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
-         <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
-         <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
-         <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
-         <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
-         <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
-         <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Tue, 11 Oct 2022 03:31:50 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C5862ABD
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 00:31:49 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29B6xIrj023988;
+        Tue, 11 Oct 2022 07:31:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=BHBaq3Uuo6QUQVT/cgnzVQ0KYE7RuX9+tzISy8fkgt4=;
+ b=acksfAXfhxgd6GzwnHMJLYfPu9PUyDAsPaoG43Zhs4r2ojL3LSkp9fgt7GXntjSQQNCa
+ wuHvKePYnCrhb7CihIn+ohFUkWfmXBDRBesu3e591KCp1cVQnxq4vXBCbVnB5iYUfpOy
+ ZXbhxfhsQWhHr8XTVdZt0LhlpCs9SaJiVbBsy/+2m5tolLF2hkeGFaViBCo2ueWpt1oB
+ eapfwqUEZzuwtATsvJVxjRTMqzgCnhpgX5qosiRyVvr6zutGSLyQgANu7IaqypY89yIg
+ p1GALz4MngZ4HVRL9eQXi3DOEzjjLgpxsoabJbVe5apxqzio3CWNdQo3Iua16GjVidcC hw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k4rx4hfmp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Oct 2022 07:31:40 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29B7Vd3w011755
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Oct 2022 07:31:39 GMT
+Received: from [10.253.78.175] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 11 Oct
+ 2022 00:31:37 -0700
+Message-ID: <2f37209c-8b40-c06b-1c56-0cb4c27e6f45@quicinc.com>
+Date:   Tue, 11 Oct 2022 15:31:34 +0800
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2 1/2] wifi: ath11k: change to set 11d state instead of
+ start 11d scan while disconnect
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20220928081413.27339-2-quic_wgong@quicinc.com>
+ <166542536986.511.1244496445875563981.kvalo@kernel.org>
+ <f50c94b9-252f-25ab-4650-bed52762bc4d@quicinc.com>
+ <0526d034-2cb9-527e-b338-f73db0ed005b@quicinc.com>
+ <87czazoub5.fsf@kernel.org>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <87czazoub5.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: l0MocCM3syOfAM99-UHW9TAa1KAqJPA6
+X-Proofpoint-GUID: l0MocCM3syOfAM99-UHW9TAa1KAqJPA6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-11_03,2022-10-10_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ clxscore=1015 phishscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 mlxscore=0 impostorscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2210110041
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-10-11 at 12:07 +0800, Wen Gong wrote:
-> On 9/28/2022 11:28 PM, Johannes Berg wrote:
-> ...
-> >=20
-> > > May I know some more info/status about the "incoming=C2=A0 new method=
- to let
-> > > drivers set the link address"?
-> > >=20
-> > I wasn't actually planning to work on that myself, FWIW.
-> >=20
-> > johannes
->=20
-> OK. So has some body will work for that now?=F0=9F=98=81
->=20
-
-Yes, I don't personally have a need for anything other than what we have
-right now.
-
-Btw, I also merged pretty much all the things into wireless-next now, I
-think only maybe some debugfs updates are still not upstream, and a few
-minor bugfixes perhaps.
-
-johannes
+On 10/11/2022 12:31 PM, Kalle Valo wrote:
+> Wen Gong <quic_wgong@quicinc.com> writes:
+>
+>> On 10/11/2022 11:53 AM, Wen Gong wrote:
+>>
+>>> On 10/11/2022 2:09 AM, Kalle Valo wrote:
+>>>> Wen Gong <quic_wgong@quicinc.com> wrote:
+>>>>
+>>>>> When switch to connect to a new AP for station which is already
+>>>>> connected
+>>>>> to an AP, the time cost is too long, it arrives 10 seconds.
+>>>>>
+>>>>> The reason is when switch connection, disconnect operation happened on
+>>>>> the 1st AP, then 11d scan start command sent to firmware, and then a
+>>>>> new hw scan arrived for the 2nd AP. The 11d scan is running at this
+>>>>> moment, so the hw scan can not start immediately, it needs to wait
+>>>>> the 11d scan finished, it increased the time cost of switch AP and
+>>>>> even happened scan fail as log below after apply the incoming patch.
+>>>>>
+>>>>> [ 1194.815104] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>>> [ 1196.864157] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>>> [ 1198.911926] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>>>
+>>>>> Change to set 11d state while disconnect, and the 11d scan will be
+>>>>> started after the new hw scan in ath11k_mac_op_hw_scan(). Then the
+>>>>> time cost of switching AP is small and not happened scan fail.
+>>>>>
+>>>>> Tested-on: WCN6855 hw2.0 PCI
+>>>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+>>>>>
+>>>>> Fixes: 9dcf6808b253 ("ath11k: add 11d scan offload support")
+>>>>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>>>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>>> I still see warnings:
+>>>>
+>>>> [ 3627.691737] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>> [ 3715.435608] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>> [ 3860.333214] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>> [ 4542.000955] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>>> [ 4604.018451] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+>>> The failed log is now happened frequently as before, I will change
+>>> it again to suppress the failed log.
+>> change typo.
+>> The failed log is NOT happened frequently as before, I will change it
+>> again to suppress the failed log.
+> Please think about this more, ignoring errors doesn't sound like a good
+> solution.
+Yes, I have sent v3, it is not ignoring errors directly.
