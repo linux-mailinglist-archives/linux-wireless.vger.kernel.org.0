@@ -2,107 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C46A5FB0CE
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 12:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A8BD5FB273
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 14:32:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbiJKKxa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 06:53:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57670 "EHLO
+        id S229703AbiJKMb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 08:31:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbiJKKx3 (ORCPT
+        with ESMTP id S229623AbiJKMbt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 06:53:29 -0400
-Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5751E37184;
-        Tue, 11 Oct 2022 03:53:27 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id B498C2B066B9;
-        Tue, 11 Oct 2022 06:53:25 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Tue, 11 Oct 2022 06:53:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1665485605; x=1665489205; bh=5bI3YI3TxD
-        wB3OBrM9zXo72ykVPw/KrTh1LKAdTEzQI=; b=wvKNwKMxqrtAUNztuQlpfH9rp1
-        brYdNWsHKjW5fJGmq9KxBMWNgghy92WBf4MC7Df/2iyjxjmhvBS9lfU/852FLQBp
-        cwYxE7DKRf1odZT1cYvYmIOjaFXYHx1v9iQfOZ1r45PpQULyQ73bENRT2VQaF14n
-        YlSUTQWrnjdvMW5/vOFs1RpnahKqADuw8MKEfsOS7DOCiPl8jJUcMj54k+6YL/cP
-        Tldi28IarLCcK31EyloZYKNFdkDjGMo5sgbySgmeTpy7U14eqb6cErLRRWgnPBRL
-        5JF2BDvJFdUGJNEaZehLDR7ifkamlAlDo52ovoiZk8a6s4AnrGC4lGLa7D/Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1665485605; x=1665489205; bh=5bI3YI3TxDwB3OBrM9zXo72ykVPw
-        /KrTh1LKAdTEzQI=; b=QiyfXg4wplRnzHFR+cKAh/LuF+QhtxgGfaKaoB9f8dyO
-        41zuh4OCh3LAMg4AEswO0xUhCGhmzHV8pNpkmkRBcuTeFDIeiBfw464gNOdcqn4I
-        fFFPIYbZCGph4Y1DbFmnVdv7soycxHa2mLCXm1LiV2NLX5Ofs0QiFuHBNtEOyXcM
-        uSFkq7zJo2eoNmSWveue5aUznNqZ04sn7yu2lATDofJ0jSGdfILE6BQEBY2e32qg
-        H0XRSS/QYLFzQYuA4wig9W2u4LP2bAW4VtELDlZbNut75XPUyRQ5DeCUiiHM2elL
-        vp6jgsEcas+IeiCGy2bMpewivf1Zqz3ZMcf30umdXg==
-X-ME-Sender: <xms:JEtFY32lcooBYztdni67Wwmf0LubIg_dQcMQkf3jQrxQ-oDXKtPCUw>
-    <xme:JEtFY2HgsDD9Sbsgfw-Jy2gu8rI3E0Sl9eGDOrmslweQR1ZqSxMeUEs_-Yh-k0Swd
-    mPXzYddL1kPBGVBsoI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeejiedgvdelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:JEtFY34Hs5N1C3qu7St5NaZMRwdLH8GqRYGVSNCkcjMa44U90zOy6Q>
-    <xmx:JEtFY83QAC37vCJ0ovUwIfvJSa_Vo9YEENl-M-JBNfvib88fBVKhGQ>
-    <xmx:JEtFY6HZMGQ9A2HNXL7dS-yvA5FZgAEJlvb5J-il0U7Y-PCW9C3p5A>
-    <xmx:JUtFY9C-zwgQtavNsqAMd3xx1ciDw6jSZur_Rm2SJnHJdxi7sCsWrmxdE6s>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id B75D1B60086; Tue, 11 Oct 2022 06:53:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1015-gaf7d526680-fm-20220929.001-gaf7d5266
-Mime-Version: 1.0
-Message-Id: <e21a4eab-fe4f-4028-a22e-d60a6feb4dac@app.fastmail.com>
-In-Reply-To: <87tu4aok1j.fsf@kernel.org>
-References: <CA+G9fYsZ_qypa=jHY_dJ=tqX4515+qrV9n2SWXVDHve826nF7Q@mail.gmail.com>
- <87ilkrpqka.fsf@kernel.org>
- <158e9f4f-9929-4244-b040-78f2e54bc028@app.fastmail.com>
- <87tu4aok1j.fsf@kernel.org>
-Date:   Tue, 11 Oct 2022 12:53:04 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Kalle Valo" <kvalo@kernel.org>
-Cc:     "Naresh Kamboju" <naresh.kamboju@linaro.org>,
-        Netdev <netdev@vger.kernel.org>,
-        "open list" <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        regressions@lists.linux.dev, lkft-triage@lists.linaro.org
-Subject: Re: drivers/net/wireless/ath/ath11k/mac.c:2238:29: warning:
- 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size 0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 11 Oct 2022 08:31:49 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47E873C1A
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 05:31:47 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id h8so4618270lja.11
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 05:31:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DiULCP5IK6g6yDAZXxPPFtT8V5DH34gq3DXIhUtgRsc=;
+        b=vmzXWTX+BgRtJRuJTAjwNZUh6ku4MwbsM7Z9B+vynAk6LVmZHO+Ot8/6ym3p7cPB4M
+         F8plgugbMBSyIN9aNip9G7GEM18bXJvAfaozeOx+oNl75Nu5WYHAhzo0td3MoULyCvpC
+         vXcbUVSEa8afY1LQ5/HDqvdWoe7ORt2fWvyGV9z3cYQexwnmhZDr+eSv6bSOF6djEzfB
+         YgXLebPS+CvubF2GO+ntqlcUwMZHZqhXDhfkQyjxgNwkhR7Ti+CEBXSRREkUiZrZzUm4
+         rkHMNfbBBjy+4n0xmcyx0rLB6XpI7nLZSj/bJ7kF8EyqGrQVr7eBvyCRoDZz3tHNvwgC
+         GKkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DiULCP5IK6g6yDAZXxPPFtT8V5DH34gq3DXIhUtgRsc=;
+        b=zZ5xzyZF1i/Z1tDb9csWqZhMf/o7jb0guAYWzzVjf4L93cm7Eo9f52BjXBHly9OSQ6
+         cwPZp98/FS5I9hfzdOqVjN3wBoA/Rberk5C0ply/R4ffICA7cDLUhIPJOani9ETsExgU
+         QiL7ZaS39yb0AmwRwijMndwhVA+lPrW47xeZmF0e452zIfiXwGCyNXKzCjymS7/p7Lhi
+         0WwiYCltUYDQB87fi4efIbI/L/U75tLklbsjk8y3au30khAHbucT5JX2J9MlWgQU1rbz
+         kA8LAA+Em+gBFR+EQYBZ7eDN6sqsQ4OA4S0czfHrLS/huFtBhDYU+HI2M5iDB5MiZDoC
+         5emw==
+X-Gm-Message-State: ACrzQf1YxhKbZLA+vfhFBSZwh+TZet40KJ0FC7dHTlGLNvNm4++tX718
+        zIuc0r7S6ZZqfndZWCLMlXtMNA==
+X-Google-Smtp-Source: AMsMyM5n9T7hr6zrio8ZBnyjdQEUJAhcdiCTmTxOmpEZC1uj/3+QFTA0NpMW6CtM+lg67UrKoADojg==
+X-Received: by 2002:a2e:2c0e:0:b0:26e:9219:fb0b with SMTP id s14-20020a2e2c0e000000b0026e9219fb0bmr5844810ljs.432.1665491506220;
+        Tue, 11 Oct 2022 05:31:46 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id d22-20020a056512369600b00494942bec60sm1854998lfs.17.2022.10.11.05.31.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Oct 2022 05:31:45 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] bcma: support SPROM rev 11
+Date:   Tue, 11 Oct 2022 14:29:41 +0200
+Message-Id: <20221011122941.2053705-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.37.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 11, 2022, at 10:12 AM, Kalle Valo wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
+Rev 11 works fine for me to set the MAC address of gmac0 and
+gmac1 in the D-Link DWL-8610AP.
 
->
-> You guessed correctly, disabling KASAN makes the warning go away. So no
-> point of reporting this to GCC, thanks for the help!
+Cc: Rafał Miłecki <zajec5@gmail.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/bcma/sprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-What I meant was that if the problem is specific to KASAN, it might
-be nice to report it in the gcc bug tracker with the KASAN component,
-ideally with some kind of minimized test case or at least preprocessed
-source.
+diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
+index 3da01f173c63..e668ad7963fc 100644
+--- a/drivers/bcma/sprom.c
++++ b/drivers/bcma/sprom.c
+@@ -165,7 +165,7 @@ static int bcma_sprom_valid(struct bcma_bus *bus, const u16 *sprom,
+ 		return err;
+ 
+ 	revision = sprom[words - 1] & SSB_SPROM_REVISION_REV;
+-	if (revision != 8 && revision != 9 && revision != 10) {
++	if (revision < 8 || revision > 11) {
+ 		pr_err("Unsupported SPROM revision: %d\n", revision);
+ 		return -ENOENT;
+ 	}
+-- 
+2.34.1
 
-   Arnd
