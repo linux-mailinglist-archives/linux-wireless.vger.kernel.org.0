@@ -2,45 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8563D5FB850
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 18:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F61E5FB874
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 18:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229830AbiJKQb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 12:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56724 "EHLO
+        id S229508AbiJKQpq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 12:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbiJKQb0 (ORCPT
+        with ESMTP id S229511AbiJKQpp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 12:31:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DA41402B;
-        Tue, 11 Oct 2022 09:31:25 -0700 (PDT)
+        Tue, 11 Oct 2022 12:45:45 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA2AA4BA9
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 09:45:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE59B61215;
-        Tue, 11 Oct 2022 16:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A093CC433D6;
-        Tue, 11 Oct 2022 16:31:23 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C5FAEB81637
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 16:45:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFE9C433B5;
+        Tue, 11 Oct 2022 16:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665505884;
-        bh=WtjFG99GlAzYUAymxozvg4UBgubwOQ6jODebQwJ6gUo=;
-        h=From:Subject:To:Cc:Date:From;
-        b=MU6Dtk/d1resCxS9YXKlNE7XoliqOSAwT58c2VRyq41al5PsFRJitmm5Bn/7ny4cw
-         C45KvRBhPfGNyWqSQoKQfG4wxsT/AAOdcZsMYmh6TXLqDbNGNcIxX1CK86DPcK5/Pl
-         UQvuHiJO6a2Z9FOhzhbkwLlvwhx0m5mgEtfQyvEzD6Hg8lat0vIdizJt01setIKsco
-         EsZEVGZY0YlTUKBP6wPQTHpUgKrZXyafu9ziSJe85An4zYM17fmeopcr8bzsiU8HbI
-         HjUJtkdJGP6voZrcv1/qg+DlOxI2LfqPYsiU786oiMR2n82moA+13zNNzh8iE2hHFD
-         jzIlBTzAwLJgw==
+        s=k20201202; t=1665506742;
+        bh=qusXk171oI0FbmNE9XtEDq3cfUOmV8UqID4PSxKJ+sk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=dawx2R9l4kntaYTSA4WzGuvMHdjNkDxSaUkpB57kBeSvufjTTzNv3pLW5/+0JwcST
+         XEIybMmyD9XlaWjejr7YAcGdK+e1T1DB/CDUarsJjIedS/G7fTAwU8qv2TPivRXPjj
+         U4gbaYWy7UcPRtD2cQkmSpiaADuyurfG+OGPi+MKg/fbc9ssKH1ZkBPhK1fZw+gjB6
+         N+hAACAuPz2Qr+I/FvSonvQJKqRdxiRvXA0z1VVjUKdxz7KhhprZOEXxIT1jIMNYQF
+         f3uX+CGZBNwEDsciyrr/pBKkTsHSjNb8Lv5TWJqIn6cYdSvM1hrnTUtS/yNeDT/crz
+         Zl6snK4TupSWg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/6] wifi: rtw89: coex: move chip_ops::btc_bt_aci_imp to a
+ generic code
 From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-2022-10-11
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20221011163123.A093CC433D6@smtp.kernel.org>
-Date:   Tue, 11 Oct 2022 16:31:23 +0000 (UTC)
+In-Reply-To: <20221005083212.45683-2-pkshih@realtek.com>
+References: <20221005083212.45683-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <ku920601@realtek.com>, <echuang@realtek.com>,
+        <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166550673760.12241.7867852994571114320.kvalo@kernel.org>
+Date:   Tue, 11 Oct 2022 16:45:41 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,104 +55,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+> From: Ching-Te Ku <ku920601@realtek.com>
+> 
+> This chunk is to set fixed BT LNA2 at level5 when WiFi/BT shared BTG RFC
+> to improve BT anti-interference ability from adjacent channel. Since all
+> chips use the same setting, remove chip_ops::btc_bt_aci_imp.
+> 
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Kalle
+6 patches applied to wireless-next.git, thanks.
 
-The following changes since commit 0326074ff4652329f2a1a9c8685104576bd8d131:
+127da1aa6185 wifi: rtw89: coex: move chip_ops::btc_bt_aci_imp to a generic code
+0935bb1527d7 wifi: rtw89: parse PHY status only when PPDU is to_self
+d0c820cc5bcf wifi: rtw89: 8852b: set proper configuration before loading NCTL
+3e870b481733 wifi: rtw89: 8852b: add HFC quota arrays
+6e5125bcbaf8 wifi: rtw89: make generic functions to convert subband gain index
+6b0698984eb0 wifi: rtw89: 8852b: add chip_ops::set_channel
 
-  Merge tag 'net-next-6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next (2022-10-04 13:38:03 -0700)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20221005083212.45683-2-pkshih@realtek.com/
 
-are available in the Git repository at:
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-10-11
-
-for you to fetch changes up to abf93f369419249ca482a8911039fe1c75a94227:
-
-  wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning (2022-10-11 11:46:31 +0300)
-
-----------------------------------------------------------------
-wireless fixes for v6.1
-
-First set of fixes for v6.1. Quite a lot of fixes in stack but also
-for mt76.
-
-cfg80211/mac80211
-
-* fix locking error in mac80211's hw addr change
-
-* fix TX queue stop for internal TXQs
-
-* handling of very small (e.g. STP TCN) packets
-
-* two memcpy() hardening fixes
-
-* fix probe request 6 GHz capability warning
-
-* fix various connection prints
-
-* fix decapsulation offload for AP VLAN
-
-mt76
-
-* fix rate reporting, LLC packets and receive checksum offload on specific chipsets
-
-iwlwifi
-
-* fix crash due to list corruption
-
-ath11k
-
-* fix a compiler warning with GCC 11 and KASAN
-
-----------------------------------------------------------------
-Alexander Wetzel (1):
-      wifi: mac80211: netdev compatible TX stop for iTXQ drivers
-
-Dan Carpenter (1):
-      wifi: mac80211: unlock on error in ieee80211_can_powered_addr_change()
-
-Felix Fietkau (6):
-      wifi: mt76: fix rate reporting / throughput regression on mt7915 and newer
-      wifi: mac80211: do not drop packets smaller than the LLC-SNAP header on fast-rx
-      wifi: mac80211: fix decap offload for stations on AP_VLAN interfaces
-      wifi: cfg80211: fix ieee80211_data_to_8023_exthdr handling of small packets
-      wifi: mt76: fix receiving LLC packets on mt7615/mt7915
-      wifi: mt76: fix rx checksum offload on mt7615/mt7915/mt7921
-
-Hawkins Jiawei (1):
-      wifi: wext: use flex array destination for memcpy()
-
-James Prestwood (2):
-      wifi: mac80211: fix probe req HE capabilities access
-      wifi: mac80211: remove/avoid misleading prints
-
-Jose Ignacio Tornos Martinez (1):
-      wifi: iwlwifi: mvm: fix double list_add at iwl_mvm_mac_wake_tx_queue (other cases)
-
-Kalle Valo (1):
-      wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning
-
-Kees Cook (1):
-      wifi: nl80211: Split memcpy() of struct nl80211_wowlan_tcp_data_token flexible array
-
- drivers/net/wireless/ath/ath11k/mac.c           |  5 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c    |  2 ++
- drivers/net/wireless/mediatek/mt76/dma.c        |  5 +---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 12 ++++----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 12 ++++----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c |  4 ++-
- drivers/net/wireless/mediatek/mt76/tx.c         | 10 +++++--
- include/linux/wireless.h                        | 10 ++++++-
- net/mac80211/iface.c                            |  8 ++---
- net/mac80211/mlme.c                             |  7 +++--
- net/mac80211/rx.c                               |  9 +++---
- net/mac80211/tx.c                               | 10 ++++---
- net/mac80211/util.c                             |  2 +-
- net/wireless/nl80211.c                          |  4 ++-
- net/wireless/util.c                             | 40 +++++++++++++------------
- net/wireless/wext-core.c                        | 17 ++++++-----
- 16 files changed, 94 insertions(+), 63 deletions(-)
