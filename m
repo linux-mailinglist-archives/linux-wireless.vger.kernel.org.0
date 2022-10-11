@@ -2,48 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1D675FAE42
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 10:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0ED65FAE97
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 10:42:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbiJKIQX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 04:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39560 "EHLO
+        id S229868AbiJKImH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 04:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbiJKIQG (ORCPT
+        with ESMTP id S229810AbiJKImF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 04:16:06 -0400
+        Tue, 11 Oct 2022 04:42:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 394F91E716
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 01:15:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 613E174CFB
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 01:42:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F3C061146
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 08:15:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74FFC433D6;
-        Tue, 11 Oct 2022 08:15:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB19E6114D
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 08:42:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74678C433C1;
+        Tue, 11 Oct 2022 08:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665476139;
-        bh=A6wVGA+pwMc+0q/He+Pp+aN/oc/seDRDWRwlQE7tQeQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Q2rQmLTGO1zruL7ldvYdUQDpq8pvO3uGHpd++d7IDx0x94ELM8lLGfWg812wCJ3Bf
-         WssmJYIf+GE3iXYYiVcz6F7LWFNAhQRbhDAKdKpmofUmI4W3EhaFDyQW8FmcGnvv4r
-         S7jnZqN/ewZLcZM0EMb1qU/uvPvre8Z3CTDJbK3tjSflCVu2dIFunDmIRLQtfulWB8
-         0Qioi6gZ3kvWAeaL0FNReXFw/HW/wvp0MwtLUBII2WJjsh8rY5TNt8fNFjOs0aq3MI
-         0UxibB0ICVvBwJ/7BectuM/tEst+ZcWpl1B+4YwfWzqudzJlNc95zd79e11oyQaPZJ
-         bGyu4gtjbxf8Q==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6.1] wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning
-References: <20221010160638.20152-1-kvalo@kernel.org>
-Date:   Tue, 11 Oct 2022 11:15:36 +0300
-In-Reply-To: <20221010160638.20152-1-kvalo@kernel.org> (Kalle Valo's message
-        of "Mon, 10 Oct 2022 19:06:38 +0300")
-Message-ID: <87pmeyojx3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1665477723;
+        bh=OMYmx/26nbOXubts18uFutcbJVA+GFfR3LxpIn/FKTk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=mwgZlUBVLiZsbDVfFEtbwusG/BWOqS0fFeE8PJj2d+q4dVchPgi+zfO8Kka0MDNd8
+         Wq5/pz1M2biD8FBHW+uA1RpMqpGHJn6wz8AnGaAGDL1XpgMA+GLX2iBEG87Y4/VUoM
+         u05PFazy6uY8b189wyyiqQCyWzRvejvTwWFpH32889FlWWJqtti5OCrOoYsC4xH6WO
+         Fb6XPupQX1mo0VBjY+53o0Xm1qHCKkUBr8UEELCUINAVjDkT44o+Ix8NUuDvw33+R3
+         PaMJ8cWh80Gg34RQx6GhEriOwBxAQaySrxWfCr+R34ow0MQGyBChjRqqd40m1EhIH1
+         avxGCcf+kwjnQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 6.1 1/2] wifi: mt76: fix receiving LLC packets on
+ mt7615/mt7915
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20221005130824.23371-1-nbd@nbd.name>
+References: <20221005130824.23371-1-nbd@nbd.name>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org,
+        Chad Monroe <chad.monroe@smartrg.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166547771808.14345.12170744535376568553.kvalo@kernel.org>
+Date:   Tue, 11 Oct 2022 08:42:02 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,29 +55,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Felix Fietkau <nbd@nbd.name> wrote:
 
-> From: Kalle Valo <quic_kvalo@quicinc.com>
->
-> Linaro reported stringop-overread warnings in ath11k (this is one of many):
->
-> drivers/net/wireless/ath/ath11k/mac.c:2238:29: error: 'ath11k_peer_assoc_h_he_limit' reading 16 bytes from a region of size 0 [-Werror=stringop-overread]
->
-> My further investigation showed that these warnings happen on GCC 11.3 but not
-> with GCC 12.2, and with only the kernel config Linaro provided:
->
-> https://builds.tuxbuild.com/2F4W7nZHNx3T88RB0gaCZ9hBX6c/config
->
-> I saw the same warnings both with arm64 and x86_64 builds but couldn't figure
-> out what exactly triggers the warnings, or why I didn't see them earlier.
-> Nobody else has reported this either. This is also why I can't provide a Fixes
-> tag as I don't know what's causing this. The function hasn't been touched for
-> a year.
+> When 802.3 decap offload is enabled, the hardware indicates header translation
+> failure, whenever either the LLC-SNAP header was not found, or a VLAN header
+> with an unregcognized tag is present.
+> In that case, the hardware inserts a 2-byte length fields after the MAC
+> addresses. For VLAN packets, this tag needs to be removed. However,
+> for 802.3 LLC packets, the length bytes should be preserved, since there
+> is no separate ethertype field in the data.
+> This fixes an issue where the length field was omitted for LLC frames, causing
+> them to be malformed after hardware decap.
+> 
+> Fixes: 1eeff0b4c1a6 ("mt76: mt7915: fix decap offload corner case with 4-addr VLAN frames")
+> Reported-by: Chad Monroe <chad.monroe@smartrg.com>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-Thanks to Arnd I found out that KASAN caused this so I'll update the
-commit log in this regard.
+2 patches applied to wireless.git, thanks.
+
+47c44088ac08 wifi: mt76: fix receiving LLC packets on mt7615/mt7915
+443dc85ad13e wifi: mt76: fix rx checksum offload on mt7615/mt7915/mt7921
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221005130824.23371-1-nbd@nbd.name/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
