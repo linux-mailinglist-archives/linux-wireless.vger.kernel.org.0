@@ -2,158 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE29A5FAD67
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 09:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1B25FAD72
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Oct 2022 09:27:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229698AbiJKHZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Oct 2022 03:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54586 "EHLO
+        id S229949AbiJKH07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Oct 2022 03:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbiJKHY5 (ORCPT
+        with ESMTP id S229624AbiJKH06 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Oct 2022 03:24:57 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945A614D15
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 00:24:55 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29B57W1Q009549;
-        Tue, 11 Oct 2022 07:24:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=NV+c7yh9+dNxte2y8pnFAPZby9WUuSB2+BLBmAwJf+4=;
- b=YONgtGvL8C316nY1qc2Dgvw2KbeTaA7idVu2In55HpaUe+5GjdnlnpjFkrK/W3gpi7AN
- hlzfSKl7h6p4N2GKzH9xmsLLL77oHrnvCG8dUQY9K9PeRvMh7DkZ+aIy6efbsJvdgXgY
- IZh3MWiD7Yu1VJ8CrhUsUw5UWgHzBMUkoW2ZYtzEO9PBikjvTlCLmbQYl1eLlxUskt28
- EYeviKT3WBTzsjwEiw/vrt8OOoSA/BDenQXk2GNTOsGoHrL1HCfFVQ9ezdfI1NXSduIH
- OSd8diE7w8Q85aOCqDstnc7XGRVP4cN09DWvBfLXVvV36T+A6pJEya4RHqCumSzuQsUP wg== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k4rx4hf4s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Oct 2022 07:24:46 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29B7OjAo023932
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Oct 2022 07:24:45 GMT
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Tue, 11 Oct 2022 00:24:44 -0700
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v3 2/2] wifi: ath11k: reduce the timeout value back for hw scan from 10 seconds to 1 second
-Date:   Tue, 11 Oct 2022 03:24:08 -0400
-Message-ID: <20221011072408.23731-3-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20221011072408.23731-1-quic_wgong@quicinc.com>
-References: <20221011072408.23731-1-quic_wgong@quicinc.com>
+        Tue, 11 Oct 2022 03:26:58 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4A51E719
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 00:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=wXvmb5jXrcLN6sR1/eCh8edF92ghBU2PeyOgob5hdWY=;
+        t=1665473217; x=1666682817; b=iy5bbqrJ3jOt3k5cRmmfT5Ni2xvvarqBkpaLAVo31z9M/Iy
+        K5ZMKSQQmxsORaXTQGHBGaFLSMdHfLapQp6pgWQuxAkYjbmXiLGvfMwS8gFax7St6wkdbSOb9AVWI
+        JnqDawXXqdgotlBKlKsUa04+G3G0WRTj/ESZngVET56vvVkCMxjAfwnDDDX6CVUWITlk7w2PZ+XPH
+        IO6ZQJRZJtI8Z38eRsHOvhtzTpSbB3vtciraRrW4vHyjQFnDR4+D3vQPGtfZpDOlWLX+3FQVcVNG/
+        38nCNh0rqpg46dDLbkA0sPFWXqewMPl9VsY0V5uQ2JTVy3lj0s6+y0efFJQmXB1A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oi9fC-003s4e-1e;
+        Tue, 11 Oct 2022 09:26:55 +0200
+Message-ID: <37958ca93039114b98909d730ff57dd1d10bb68d.camel@sipsolutions.net>
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org
+Date:   Tue, 11 Oct 2022 09:26:53 +0200
+In-Reply-To: <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+         <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+         <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+         <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+         <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
+         <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
+         <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
+         <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
+         <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
+         <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
+         <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
+         <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: wG0-zPSAo5whnXiydSNJ3Vu2utxkz76e
-X-Proofpoint-GUID: wG0-zPSAo5whnXiydSNJ3Vu2utxkz76e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-11_03,2022-10-10_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- clxscore=1015 phishscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=999 priorityscore=1501 mlxscore=0 impostorscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2210110040
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For 11d scan, commit 9dcf6808b253 ("ath11k: add 11d scan offload support")
-increased the timeout from one second to max 10 seconds when 11d scan
-offload enabled and 6 GHz enabled, it is reasonable for the commit, it
-is because the first 11d scan request is sent to firmware before the
-first hw scan request after wlan load, then the hw scan started event
-will reported from firmware after the 11d scan finished, it needs about
-6 seconds when 6 GHz enabled, so increased it from one second to 10
-seconds in the commit to avoid timed out for hw scan started. Then
-another commit 1f682dc9fb37 ("ath11k: reduce the wait time of 11d scan
-and hw scan while add interface") change the sequence of the first 11d
-scan and hw scan, then ath11k will receive the hw scan started event
-from firmware immediately for the first hw scan, thus ath11k does not
-need set the timeout value to max 10 seconds again, and this is to set
-the timeout value back from 10 seconds to 1 second.
+On Tue, 2022-10-11 at 12:07 +0800, Wen Gong wrote:
+> On 9/28/2022 11:28 PM, Johannes Berg wrote:
+> ...
+> >=20
+> > > May I know some more info/status about the "incoming=C2=A0 new method=
+ to let
+> > > drivers set the link address"?
+> > >=20
+> > I wasn't actually planning to work on that myself, FWIW.
+> >=20
+> > johannes
+>=20
+> OK. So has some body will work for that now?=F0=9F=98=81
+>=20
 
-After the 1st hw scan finished, firmware will start 11d scan immediately,
-and firmware need use some seconds to finish 11d scan, if the 2nd hw
-scan is sent from ath11k to firmware before 11d scan finished, the 2nd
-hw scan will started after 11d scan finished, this will lead timeout to
-wait scan started in ath11k. Treat the timeout as a normal situation if
-11d scan is running and skip report scan fail for this situation.
+Yes, I don't personally have a need for anything other than what we have
+right now.
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+Btw, I also merged pretty much all the things into wireless-next now, I
+think only maybe some debugfs updates are still not upstream, and a few
+minor bugfixes perhaps.
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index b0c3cf258d12..666775a1e2a9 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3560,7 +3560,6 @@ static int ath11k_start_scan(struct ath11k *ar,
- 			     struct scan_req_params *arg)
- {
- 	int ret;
--	unsigned long timeout = 1 * HZ;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
-@@ -3571,19 +3570,15 @@ static int ath11k_start_scan(struct ath11k *ar,
- 	if (ret)
- 		return ret;
- 
--	if (test_bit(WMI_TLV_SERVICE_11D_OFFLOAD, ar->ab->wmi_ab.svc_map)) {
--		timeout = 5 * HZ;
--
--		if (ar->supports_6ghz)
--			timeout += 5 * HZ;
--	}
--
--	ret = wait_for_completion_timeout(&ar->scan.started, timeout);
-+	ret = wait_for_completion_timeout(&ar->scan.started, 1 * HZ);
- 	if (ret == 0) {
- 		ret = ath11k_scan_stop(ar);
- 		if (ret)
- 			ath11k_warn(ar->ab, "failed to stop scan: %d\n", ret);
- 
-+		if (ar->state_11d == ATH11K_11D_RUNNING)
-+			return -EBUSY;
-+
- 		return -ETIMEDOUT;
- 	}
- 
-@@ -3682,7 +3677,12 @@ static int ath11k_mac_op_hw_scan(struct ieee80211_hw *hw,
- 
- 	ret = ath11k_start_scan(ar, &arg);
- 	if (ret) {
--		ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
-+		if (ret == -EBUSY)
-+			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+				   "scan engine is busy 11d state %d\n", ar->state_11d);
-+		else
-+			ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
-+
- 		spin_lock_bh(&ar->data_lock);
- 		ar->scan.state = ATH11K_SCAN_IDLE;
- 		spin_unlock_bh(&ar->data_lock);
--- 
-2.31.1
-
+johannes
