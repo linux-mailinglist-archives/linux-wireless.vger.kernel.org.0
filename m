@@ -2,108 +2,201 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EE85FC5FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 15:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEB535FC6EC
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 16:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbiJLNKl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Oct 2022 09:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
+        id S229875AbiJLODn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Oct 2022 10:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbiJLNKi (ORCPT
+        with ESMTP id S229608AbiJLODl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Oct 2022 09:10:38 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C255422B1B;
-        Wed, 12 Oct 2022 06:10:36 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id r13so26142901wrj.11;
-        Wed, 12 Oct 2022 06:10:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ek9VkJ83quJtUtnSAvpPVFNwZimiNL61Oc75DRl7mjQ=;
-        b=kE6KkQ5D5U5QHf3HKPbSFIOJNTg360tYiAXhJjwvKPj+HTVAUoCKGrqebgQIeAEwk0
-         ZzbCGYllAFLMBsters68mKXJYh8DnRvF5+6AOln7I7XUO/ISyOTIr6aKkyrDZv4YuZvh
-         ec1PnuxxsMZqi1yarFUs9ctI6asVwdBVFyQfbrZLh24Jj/7wZI3NabOYADM4qBbhj+/H
-         rygWdyEmy+SPVyTpyDWY8zakQql/DWSjkyDsGsBWHpz+fMFJK4Q2kinGRd4GAE7ROz6o
-         WMvVPtgfx/t9pzJNL4wPjsk4r2HHOxhiMLxuQy5eyYUePRCreVDopllQh9aaeMoDR0at
-         9sUg==
+        Wed, 12 Oct 2022 10:03:41 -0400
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2DEBB48B6
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 07:03:39 -0700 (PDT)
+Received: by mail-io1-f72.google.com with SMTP id r12-20020a5e8e4c000000b006bc3030624fso5484521ioo.23
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 07:03:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ek9VkJ83quJtUtnSAvpPVFNwZimiNL61Oc75DRl7mjQ=;
-        b=A7GL7tElhGXnJTJrftUpDTLj4yf2E1mopE6HWF6YeNNHRt0e+cwzub2zjmABRukxnF
-         8hxZcdPbg7gJhEQiyibF7NJjR8o0O4zerdIOKYR9oqUh6qUkOyhejliT8tJv4v9PNorB
-         VcN6hQ0I8XiDl9VpV2fCOeAs6lIfGZbfFIIYjE0q5xwnAxtGeegtH5KHgnYG8Hj34TJp
-         VhzG0PSvRHHM85rxkP9X+OJ/IoHelSGL8g0LItY25SuVGB10/emDHWIatzRxTgZMPwgF
-         ETE5vAvjFxLmifTiC6kvcnK8rKS0kZapUKLNS5O5SfrYArEkyQovsWq60vC7d0iII2T0
-         2Ezw==
-X-Gm-Message-State: ACrzQf3DL0y14O/H+Z0U3jEuGJ1DlUng3JHoalI6eDzLNQTP2TlKXcYD
-        Zb0FiLs3x8wlOxAks1TtjQQ=
-X-Google-Smtp-Source: AMsMyM6Ezkylv26MEOzvYnklx7hcQAX4Q1CGcE9Wnn/aLcn79zEse5AsnR4e7c452HNbdCg5yIsA7Q==
-X-Received: by 2002:adf:9dd0:0:b0:22c:d6cc:b387 with SMTP id q16-20020adf9dd0000000b0022cd6ccb387mr19196687wre.353.1665580235258;
-        Wed, 12 Oct 2022 06:10:35 -0700 (PDT)
-Received: from [192.168.0.209] (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.googlemail.com with ESMTPSA id bp4-20020a5d5a84000000b00231893bfdc7sm3820340wrb.2.2022.10.12.06.10.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Oct 2022 06:10:34 -0700 (PDT)
-Message-ID: <11ea25ad-0ad9-7d34-de3f-09ca7d9c4ee2@gmail.com>
-Date:   Wed, 12 Oct 2022 14:10:33 +0100
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ev3L4nDelDy3NY/Rh4HvmX0Boq8wljaMarKq/Tpj6ek=;
+        b=iPKaddQiO6Wk5SNK9jqm8eLw5uQY0kcCJpY/5W7oqkWuXAFFjFG8Mxg/ENOayFzFxq
+         HDPyu5ASfcfLDQhVZkIgPY7YdxjKne72Dh0nWrwBnqYjM9+//zyttdrVNrowgox2atuQ
+         mcmCjTLueksVsw+aRo6EVOcTwmh0oGFimGnI60lci2yPMdn74J3EGWeq4Id2Y5Q/9olf
+         r3v+oAKKBEqsvNX/br0twsCnl0B24Q/k6X9KettsyI4UGsiGZiOl2TbSukdLNB4GyMc7
+         AC6/K5Xs25uMdYzC2snZxeRzjyCDLxpVU54cBGJQnC6BSuvE7vAXIV2W5DH0kDuy1bPt
+         3uBg==
+X-Gm-Message-State: ACrzQf1dgJL0d1UpU0Doy8O0V/WNAGNfS3clOIeq8bJkuM2a/IkQfNcS
+        HhPjG925/P2smSyyFXn7HBsXAS10vlVp/3bqroZIKoEHsPTy
+X-Google-Smtp-Source: AMsMyM7r4SXGSUK8xJtD5EKkq1dAW66dladkwHTNKrNZ0s0WONptAvWSETidV182e3cP1jBNzuM2B70eNn5PionSZ8e4uhidF/iH
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Content-Language: en-US
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From:   "Colin King (gmail)" <colin.i.king@gmail.com>
-Subject: rtlwifi: missing return value in
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6602:13c8:b0:68a:db5d:269d with SMTP id
+ o8-20020a05660213c800b0068adb5d269dmr13715768iov.209.1665583419349; Wed, 12
+ Oct 2022 07:03:39 -0700 (PDT)
+Date:   Wed, 12 Oct 2022 07:03:39 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000000de35905ead6dcc1@google.com>
+Subject: [syzbot] general protection fault in skb_queue_tail (3)
+From:   syzbot <syzbot+160a7250e255d25725eb@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello,
 
-Static analysis with cppcheck has found an issue with a function that 
-returns an int value but there is a code path that does not return a 
-value causing undefined behaviour:
+syzbot found the following issue on:
 
-Source: drivers/net/wireless/realtek/rtlwifi/usb.c function 
-_rtl_rx_get_padding - introduced by commit:
+HEAD commit:    aaa11ce2ffc8 Add linux-next specific files for 20220923
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=16b08124880000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=186d1ff305f10294
+dashboard link: https://syzkaller.appspot.com/bug?extid=160a7250e255d25725eb
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17b4f3d4880000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=160283c0880000
 
-commit 354d0f3c40fb40193213e40f3177ff528798ca8d
-Author: Larry Finger <Larry.Finger@lwfinger.net>
-Date:   Wed Sep 25 12:57:47 2013 -0500
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/95c7bf83c07e/disk-aaa11ce2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b161cd56a7a3/vmlinux-aaa11ce2.xz
 
-     rtlwifi: Fix smatch warnings in usb.c
+Bisection is inconclusive: the issue happens on the oldest tested release.
 
-The issue occurs when NET_IP_ALIGN is zero and when len >= sizeof(*hdr), 
-then the following return is *not* taken:
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=172283c0880000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=14a283c0880000
+console output: https://syzkaller.appspot.com/x/log.txt?x=10a283c0880000
 
-	/* make function no-op when possible */
-         if (NET_IP_ALIGN == 0 || len < sizeof(*hdr))
-                 return 0
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+160a7250e255d25725eb@syzkaller.appspotmail.com
 
-and then execution reaches the end of the function where no return value 
-is returned because the #if NET_IP_ALIGN != 0 is false so the return 
-padding hunk of the code is not compiled in.
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 PID: 3616 Comm: syz-executor849 Not tainted 6.0.0-rc6-next-20220923-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
+RIP: 0010:__skb_insert include/linux/skbuff.h:2158 [inline]
+RIP: 0010:__skb_queue_before include/linux/skbuff.h:2264 [inline]
+RIP: 0010:__skb_queue_tail include/linux/skbuff.h:2297 [inline]
+RIP: 0010:skb_queue_tail+0x9e/0x140 net/core/skbuff.c:3402
+Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 80 00 00 00 4c 89 e2 4c 89 65 08 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 48 89 6b 08 <80> 3c 02 00 75 4f 48 8d 7b 10 49 89 2c 24 48 b8 00 00 00 00 00 fc
+RSP: 0018:ffffc900000079c0 EFLAGS: 00010046
+RAX: dffffc0000000000 RBX: ffff888070c23890 RCX: ffffffff815ffdc0
+RDX: 0000000000000000 RSI: 0000000000000046 RDI: ffff888070c30a08
+RBP: ffff888070c30a00 R08: 0000000000000001 R09: 0000000000000003
+R10: fffff52000000f26 R11: 000000000008c07e R12: 0000000000000000
+R13: ffff888070c238a8 R14: 00000000ffff9c2b R15: ffffffff85186a70
+FS:  000055555691a300(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f5ac5d382e8 CR3: 00000000775ec000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ ath9k_htc_txep+0x287/0x400 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:712
+ ath9k_htc_txcompletion_cb+0x1cd/0x2e0 drivers/net/wireless/ath/ath9k/htc_hst.c:353
+ hif_usb_regout_cb+0x115/0x1c0 drivers/net/wireless/ath/ath9k/hif_usb.c:90
+ __usb_hcd_giveback_urb+0x2b0/0x5c0 drivers/usb/core/hcd.c:1671
+ usb_hcd_giveback_urb+0x380/0x430 drivers/usb/core/hcd.c:1754
+ dummy_timer+0x11ff/0x32c0 drivers/usb/gadget/udc/dummy_hcd.c:1988
+ call_timer_fn+0x1da/0x7c0 kernel/time/timer.c:1474
+ expire_timers kernel/time/timer.c:1519 [inline]
+ __run_timers.part.0+0x6a2/0xaf0 kernel/time/timer.c:1790
+ __run_timers kernel/time/timer.c:1768 [inline]
+ run_timer_softirq+0xb3/0x1d0 kernel/time/timer.c:1803
+ __do_softirq+0x1f7/0xad8 kernel/softirq.c:571
+ invoke_softirq kernel/softirq.c:445 [inline]
+ __irq_exit_rcu+0x123/0x180 kernel/softirq.c:650
+ irq_exit_rcu+0x5/0x20 kernel/softirq.c:662
+ sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1107
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x16/0x20 arch/x86/include/asm/idtentry.h:649
+RIP: 0010:__raw_spin_unlock_irq include/linux/spinlock_api_smp.h:160 [inline]
+RIP: 0010:_raw_spin_unlock_irq+0x25/0x40 kernel/locking/spinlock.c:202
+Code: 0f 1f 44 00 00 55 48 8b 74 24 08 48 89 fd 48 83 c7 18 e8 ee c3 cf f7 48 89 ef e8 36 30 d0 f7 e8 81 46 f3 f7 fb bf 01 00 00 00 <e8> b6 bb c2 f7 65 8b 05 9f 9e 72 76 85 c0 74 02 5d c3 e8 ce a6 70
+RSP: 0018:ffffc90003d0fdc0 EFLAGS: 00000246
+RAX: 0000000000000007 RBX: ffff8880738f9d40 RCX: 1ffffffff1bc50b4
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
+RBP: ffff88807aec5c80 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffed100f5d8b90 R11: 0000000000000001 R12: 0000000000000004
+R13: 0000000008000000 R14: 0000000000000000 R15: ffff8880738fa2a0
+ spin_unlock_irq include/linux/spinlock.h:400 [inline]
+ ptrace_stop.part.0+0x2f1/0x8c0 kernel/signal.c:2281
+ ptrace_stop kernel/signal.c:2233 [inline]
+ ptrace_do_notify+0x215/0x2b0 kernel/signal.c:2345
+ ptrace_notify+0xc4/0x140 kernel/signal.c:2357
+ ptrace_report_syscall include/linux/ptrace.h:420 [inline]
+ ptrace_report_syscall_entry include/linux/ptrace.h:457 [inline]
+ syscall_trace_enter.constprop.0+0xb0/0x250 kernel/entry/common.c:65
+ do_syscall_64+0x16/0xb0 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f5ac5d6dc1b
+Code: 0f 05 48 3d 00 f0 ff ff 77 45 c3 0f 1f 40 00 48 83 ec 18 89 7c 24 0c e8 03 fd ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 35 44 89 c7 89 44 24 0c e8 41 fd ff ff 8b 44
+RSP: 002b:00007ffeb5f65d90 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: ffffffffffffffda RBX: 000000000000001d RCX: 00007f5ac5d6dc1b
+RDX: ffffffffffffffb8 RSI: 0000000000000000 RDI: 000000000000001c
+RBP: 000000000000015e R08: 0000000000000000 R09: 00007ffeb5f65de0
+R10: 0000000000000000 R11: 0000000000000293 R12: 00007f5ac5e3649c
+R13: 000000000000b212 R14: 00007f5ac5e36480 R15: 0000000000000004
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__skb_insert include/linux/skbuff.h:2158 [inline]
+RIP: 0010:__skb_queue_before include/linux/skbuff.h:2264 [inline]
+RIP: 0010:__skb_queue_tail include/linux/skbuff.h:2297 [inline]
+RIP: 0010:skb_queue_tail+0x9e/0x140 net/core/skbuff.c:3402
+Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 80 00 00 00 4c 89 e2 4c 89 65 08 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 48 89 6b 08 <80> 3c 02 00 75 4f 48 8d 7b 10 49 89 2c 24 48 b8 00 00 00 00 00 fc
+RSP: 0018:ffffc900000079c0 EFLAGS: 00010046
+RAX: dffffc0000000000 RBX: ffff888070c23890 RCX: ffffffff815ffdc0
+RDX: 0000000000000000 RSI: 0000000000000046 RDI: ffff888070c30a08
+RBP: ffff888070c30a00 R08: 0000000000000001 R09: 0000000000000003
+R10: fffff52000000f26 R11: 000000000008c07e R12: 0000000000000000
+R13: ffff888070c238a8 R14: 00000000ffff9c2b R15: ffffffff85186a70
+FS:  000055555691a300(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f5ac5d382e8 CR3: 00000000775ec000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	48 89 fa             	mov    %rdi,%rdx
+   3:	48 c1 ea 03          	shr    $0x3,%rdx
+   7:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   b:	0f 85 80 00 00 00    	jne    0x91
+  11:	4c 89 e2             	mov    %r12,%rdx
+  14:	4c 89 65 08          	mov    %r12,0x8(%rbp)
+  18:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  1f:	fc ff df
+  22:	48 c1 ea 03          	shr    $0x3,%rdx
+  26:	48 89 6b 08          	mov    %rbp,0x8(%rbx)
+* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
+  2e:	75 4f                	jne    0x7f
+  30:	48 8d 7b 10          	lea    0x10(%rbx),%rdi
+  34:	49 89 2c 24          	mov    %rbp,(%r12)
+  38:	48                   	rex.W
+  39:	b8 00 00 00 00       	mov    $0x0,%eax
+  3e:	00 fc                	add    %bh,%ah
 
-Colin
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
