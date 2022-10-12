@@ -2,68 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 895C65FC7AE
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 16:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF3C5FC86B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 17:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbiJLOtN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Oct 2022 10:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43674 "EHLO
+        id S229895AbiJLPa5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Oct 2022 11:30:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbiJLOtL (ORCPT
+        with ESMTP id S229839AbiJLPaz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Oct 2022 10:49:11 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B531DCF196;
-        Wed, 12 Oct 2022 07:49:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ZAEoS8mUjnL5VE8t55zy1MwHS8C4pzjpQXMKrzCouUs=;
-        t=1665586150; x=1666795750; b=uOrdDN+MdTLoltn8VHnyzZN5PmsrkWd5wyVGR+f99BknLOb
-        JXwAamMKCMpqChp7kh+KaNXxwdOR7EOE1Rr/bQOL2/LjuV1CIgLP04Kw5NFzRkJcblehDXEcgD5Zb
-        9YTwUiKNeAVhO2joscFiI6yQUWRWUBrCtD8m8V85pdOQfYsP/+1RWQG0+p2SOxjwYmfGO9OEkiLwL
-        /EaK6uQ39mlKFGheZkCQYUqaJ1rpXP1WOO721EZOaVe6dNCglWyVkt4wU0zZzEzBzY9RQSIGAmV74
-        rVD8IBiNxabpk8X1CQyl6BLKT2M93Lh9BV0EXMtgPbPbxIDmmxAnngwPwtBsfI+w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oid2e-004pgo-0k;
-        Wed, 12 Oct 2022 16:49:04 +0200
-Message-ID: <1c64fe906b36438d63a7fc3fc9d0ab010b6db42f.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: ath10k: Delay the unmapping of the buffer
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Youghandhar Chintala <quic_youghand@quicinc.com>,
-        ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Wed, 12 Oct 2022 11:30:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE70CA894;
+        Wed, 12 Oct 2022 08:30:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC8B261556;
+        Wed, 12 Oct 2022 15:30:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED87C433D6;
+        Wed, 12 Oct 2022 15:30:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665588654;
+        bh=XbTyHiZP7iedmm7OWxyWL6XwynJZBsCOZXG5smQEDEY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=h5VkM9g3xva3tcH4oVEQmiSC6yrFLJ6fc30XwacHHqWZNmEcAVOPKAoKaCxAy24Fw
+         kRqYXi9sD80EzZxNB8iDFt8iqFx3TSqAYKqN8/faBZNH3LLCq6y1lNIKZ3WxfnPTmY
+         neGfZbH03nibY1yUoQ3NfVWuFr9r9YPiS7dlGrHs1SwMTSGRo/5WBg/+BRgqaUwv7h
+         Yg5I79txZK6MXHEAq1MvodRBu/wlGsHOtte2WQ6MTC8mNm0Mg2BQfiB1airSknOQaY
+         FUq4jm0qYS2s9H/m6lMggAZOpP+GmDrXAtkRd2ulEP+TxxolnxSoJ5b+QbA1yfb3vg
+         f9CMJXJB6Enkg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Youghandhar Chintala <quic_youghand@quicinc.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Douglas Anderson <dianders@chromium.org>
-Date:   Wed, 12 Oct 2022 16:49:03 +0200
-In-Reply-To: <20221012142733.32420-1-quic_youghand@quicinc.com>
+Subject: Re: [PATCH v2] wifi: ath10k: Delay the unmapping of the buffer
 References: <20221012142733.32420-1-quic_youghand@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        <1c64fe906b36438d63a7fc3fc9d0ab010b6db42f.camel@sipsolutions.net>
+Date:   Wed, 12 Oct 2022 18:30:48 +0300
+In-Reply-To: <1c64fe906b36438d63a7fc3fc9d0ab010b6db42f.camel@sipsolutions.net>
+        (Johannes Berg's message of "Wed, 12 Oct 2022 16:49:03 +0200")
+Message-ID: <87a661njo7.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-10-12 at 19:57 +0530, Youghandhar Chintala wrote:
->=20
-> @@ -418,6 +426,7 @@ static const struct ath10k_hw_params ath10k_hw_params=
-_list[] =3D {
->  		.dynamic_sar_support =3D false,
->  		.hw_restart_disconnect =3D false,
->  		.use_fw_tx_credits =3D true,
-> +		.delay_unmap_buffer =3D false,
->=20
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-All the false are unnecessary and just distract from the content, imho.
+> On Wed, 2022-10-12 at 19:57 +0530, Youghandhar Chintala wrote:
+>> 
+>> @@ -418,6 +426,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>>  		.dynamic_sar_support = false,
+>>  		.hw_restart_disconnect = false,
+>>  		.use_fw_tx_credits = true,
+>> +		.delay_unmap_buffer = false,
+>> 
+>
+> All the false are unnecessary and just distract from the content, imho.
 
-johannes
+In this case I actually prefer having explicitly set false (and zero),
+it makes it easier to maintain the correct order and compare between
+hardware values.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
