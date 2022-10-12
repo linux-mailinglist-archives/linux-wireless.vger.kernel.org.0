@@ -2,48 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 964315FBFEF
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 06:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4DB5FC02A
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 07:43:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbiJLEfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Oct 2022 00:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
+        id S229505AbiJLFnB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Oct 2022 01:43:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbiJLEfq (ORCPT
+        with ESMTP id S229475AbiJLFnA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Oct 2022 00:35:46 -0400
+        Wed, 12 Oct 2022 01:43:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B2B491E9
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 21:35:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D0680F6B
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Oct 2022 22:42:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CC8761374
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 04:35:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2236C433D6;
-        Wed, 12 Oct 2022 04:35:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 38E3061324
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 05:42:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4812C433C1;
+        Wed, 12 Oct 2022 05:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665549335;
-        bh=Yy5Y59PdSPtMuAOIkaDd5PahLtNrQgkolmUyHz5z4TY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Ty3hHc2A92ed+01yFbIs53K44a+r4bqq89uvsdzhC0EXpShKduMVCco9tx4ypvtQO
-         YFTedWGlKTOE7QE5vb8KDIbbTMOmO5+d1h/DYSViqUKpKjk/OofHZfGhqgGyDwKFSW
-         8ijAYhLT76/QD9MTWF8QTV/NAbjPUM4WIaiseX8M9ul2u26fRr4fpxf18/c1zqaMae
-         r2pi/TM9XjE1QHdAib2+IwErXi1IADPqPaQlROVBA6V9SfFHht8awN+8vbzQAPLdp5
-         TJx34kAuMWc/NE/oo2FA7t/Bvozj7bEXEiuf/0zS1RwUe8zNqE3jMQ1XnyAYCpEOeL
-         JAdf/2QzsS3Ag==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/9] wifi: rtw89: 8852b: add chip_ops::set_channel_help
+        s=k20201202; t=1665553378;
+        bh=UD98M449mjm3XrhO6K5pfGmwoVOkbmcwneMWsKdWneg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=IajkvWz6wLode6De8UYaVNcgA5dI0OPPVF2TWlKqLv51G90GHgI6k17f6C5EATBEW
+         uOZK2H8fAxkzdIr6xcirWsPx+g3idn3sMvByl7qaHJNOV2n0ddDVpKVg//1K5jm3I+
+         tUNWyuiaS+iKQ6tkJx5+6LI89SzIvaL9GiI9hY/QS0oEtINd1R/IzAx+Yq4sXj2vlV
+         5wxPKYS9yzRciYdjCp9Ue0ff8o1IVWNLgMYqz2wPTuN44D0IE6yXgvdWXvaIBgHG/B
+         kD3SWqix1RDb++Nb/kZ9+2OuMlih7+hN6mvGGYGZT38KFj0B2N3AqTf1b44A+BD2kS
+         mvNQAHwLWFGOw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221009125403.19662-2-pkshih@realtek.com>
-References: <20221009125403.19662-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166554933285.12621.6198710705660541999.kvalo@kernel.org>
-Date:   Wed, 12 Oct 2022 04:35:34 +0000 (UTC)
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Bo.Jiao@mediatek.com,
+        sujuan.chen@mediatek.com, ryder.Lee@mediatek.com,
+        evelyn.tsai@mediatek.com, daniel@makrotopia.org,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 0/3] wifi: mt76: introduce WED TX support for mt7986 SoC
+References: <cover.1664356281.git.lorenzo@kernel.org>
+Date:   Wed, 12 Oct 2022 08:42:51 +0300
+In-Reply-To: <cover.1664356281.git.lorenzo@kernel.org> (Lorenzo Bianconi's
+        message of "Wed, 28 Sep 2022 11:19:40 +0200")
+Message-ID: <87r0zd4mxw.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,30 +56,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-> This chip_ops is to assist set_channel, because we need setup and restore
-> hardware before and after set_channel.
-> 
-> Before set_channel, we stop transmitting, reset PPDU status, disable TSSI,
-> and disable ADC. After set_channel, do opposite things in reverse order.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Enable WED TX support for mt7915 and mt7986-wmac drivers running on MT7986 SoC.
 
-9 patches applied to wireless-next.git, thanks.
-
-d0a95ef3ed86 wifi: rtw89: 8852b: add chip_ops::set_channel_help
-b23b36efbdac wifi: rtw89: 8852b: add power on/off functions
-a804479839e1 wifi: rtw89: 8852b: add basic baseband chip_ops
-8f88474ce3ec wifi: rtw89: 8852b: add chip_ops to get thermal
-98bf0ddf20fc wifi: rtw89: 8852b: add chip_ops related to BT coexistence
-bf958f76cf97 wifi: rtw89: 8852b: add chip_ops to query PPDU
-8915a256538d wifi: rtw89: 8852b: add chip_ops to configure TX/RX path
-572fd2ab377b wifi: rtw89: 8852b: add functions to control BB to assist RF calibrations
-b8fe87b81685 wifi: rtw89: 8852b: add basic attributes of chip_info
+What's WED TX?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221009125403.19662-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
