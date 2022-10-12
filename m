@@ -2,97 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F735FC306
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 11:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 375885FC406
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Oct 2022 12:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbiJLJZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Oct 2022 05:25:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58152 "EHLO
+        id S229936AbiJLKyp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Oct 2022 06:54:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbiJLJZP (ORCPT
+        with ESMTP id S229934AbiJLKyW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Oct 2022 05:25:15 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6443123178
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 02:25:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 015D6B81996
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 09:25:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F3DC433D7;
-        Wed, 12 Oct 2022 09:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665566709;
-        bh=uiJY5+AkaAMp+NhogWhqvdKPXEcFzAOib0lDS14Z8y0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gde+pLBDezd1Hlldo5PeZMvMerNomZP/VdLolLF50NRihidToOkWg2zMmwkrwkK1F
-         te6Wg4S1Buk4Z4cxI2lvTV3X0YJTkkry/hu7bKbido3W6l27ghd2/oAkftw4SmEnQ1
-         MxnnQSVvBSyMdmC2tF0HSlAueypcf5EOxAX02A5ONo1RXln8Ho8e+qiVa5k3QnoOUs
-         JgwFrW7GX4DUbgPdy7S+XcGSY+DJQydeIBRWrJ2uI9jaKml1QDwkt72AoQG+aADbrx
-         kb7zTJfGqxY/XwlclrNgSZ/AAp79sOYiKssIuCDMGS4juo7+UflJhSFp2LcKpJve6N
-         46yAmI9xq71Lg==
-Date:   Wed, 12 Oct 2022 11:25:05 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Bo.Jiao@mediatek.com,
-        sujuan.chen@mediatek.com, ryder.Lee@mediatek.com,
-        evelyn.tsai@mediatek.com, daniel@makrotopia.org,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 0/3] wifi: mt76: introduce WED TX support for mt7986 SoC
-Message-ID: <Y0aH8T8pTARNWcPE@lore-desk>
-References: <cover.1664356281.git.lorenzo@kernel.org>
- <87r0zd4mxw.fsf@kernel.org>
+        Wed, 12 Oct 2022 06:54:22 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6038C149D
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 03:54:03 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id k3so19571840ybk.9
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 03:54:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5N+aMihLorZXBHcklDfHgYNT/W4ZQvt0cLc1vwY1KVE=;
+        b=IFZQqXKZFuu4ERlIj5mnPUX4TEK9Q30/TnV67vZ7ut6qmrkfIhgvNOK1apQrKhFWRD
+         6TmuTXGRhQru75qBFlOFVZoKX9HhGaVyihmtiN/+/3IcCN+o1xkyyOIfxKkb/8kKyOuC
+         zdVe5mmhIcLQaliXWgRcUqkHMkO3QRGz0h+Tl/3OG39+d5T3kK+GjMHhqPx4E1KtmRqO
+         ruVGf5yc7eWfQmBKWRrF00PAaT1o7Gson+UnzZNh/ls5QBEyP+Lfnerf8HAhzttJ4vYF
+         CVNZ6OCnLTh9i2Vp0qbqJIG9AhmwLg3nIKRhgnnyHSbcqQ/cQPI+O8+55KdXKmDz4pXG
+         6vIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5N+aMihLorZXBHcklDfHgYNT/W4ZQvt0cLc1vwY1KVE=;
+        b=5fPZ3TE0RdXUX1NrgtVVh+ttlkRnTV3xUM5NesjrQdCtIIs/NG+Pq2g5ogcBDEBUrE
+         QYGEZd2Lax7mefzwu45KjwsOKuP/k+kyodPCokCJC78EODthz1AVANb6mR2yrrhkS3NS
+         iPw42DCJfuw9Y9IVjjxpAZYzO5jqxNUbAud9TaepgjUlbaKqWcrisi6Z4ID6IypMM1lV
+         TojzF4tawTTIOdR1YvGmE33TsK0EfPe1gGUyRTHf3lBXNMBzcdwepjJ1yNxl4o2d/uua
+         A7yh+NM2i2ddt0IGOUClVDxn4cuFJdxR77IKXronqX6E0WEKIMXbm94QlddM2/nKrzpB
+         l63w==
+X-Gm-Message-State: ACrzQf3SqDMgOfrKu/8pZJnau0mmM1cE0Az9ZbKBSgWUFYKfvLXo2wRx
+        /2EyGU1SgofBq9QPN5Kx99tvUvVH5kBRc9ib8ws=
+X-Google-Smtp-Source: AMsMyM6fStb7pr3FM08EVwpu8dPCFXrrMrwOIgL/3tjf45R4wpV/gdq5Uf9FKFLT0FPB2WWyUKkgna6DZ/Y9+4z+/zI=
+X-Received: by 2002:a05:6902:13c7:b0:695:84d9:c5da with SMTP id
+ y7-20020a05690213c700b0069584d9c5damr27984624ybu.650.1665572042872; Wed, 12
+ Oct 2022 03:54:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GTbcF8eMCdPYvLM9"
-Content-Disposition: inline
-In-Reply-To: <87r0zd4mxw.fsf@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7000:5a85:b0:3c0:6a39:890a with HTTP; Wed, 12 Oct 2022
+ 03:54:02 -0700 (PDT)
+Reply-To: jennifermbaya036@gmail.com
+From:   "Mrs.Jennifer Mbaya" <issakak65@gmail.com>
+Date:   Wed, 12 Oct 2022 11:54:02 +0100
+Message-ID: <CAMwbs2CDdeNJnMj+hyC2+oR=QsANZDeGuXUAF+8EjEz-iW0=YA@mail.gmail.com>
+Subject: Edunsaaja
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Edunsaaja
 
---GTbcF8eMCdPYvLM9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> > Enable WED TX support for mt7915 and mt7986-wmac drivers running on MT7=
-986 SoC.
->=20
-> What's WED TX?
-
-It is the same as we did for MT7622. It is the capability to offload traffic
-=66rom lan/wan to wlan. I specified "TX" since MT7986 supports even RX
-offloading (I am working on it at the moment).
-
-Regards,
-Lorenzo
-
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
---GTbcF8eMCdPYvLM9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY0aH8QAKCRA6cBh0uS2t
-rAa3AP9n3aPsW3C7quL5gEke3mF4EKMJsdqzGKU+d/Bx2PfZwAD8DQOAz2RLH1dY
-L6F3og0vGJZgBtk3tviFsjtUlOtInwg=
-=Iy2J
------END PGP SIGNATURE-----
-
---GTbcF8eMCdPYvLM9--
+Nimess=C3=A4si on palkinto Yhdistyneilt=C3=A4 Kansakunnilta ja Maailman
+terveysj=C3=A4rjest=C3=B6lt=C3=A4, joka on osa kansainv=C3=A4list=C3=A4 val=
+uuttarahastoa, johon
+s=C3=A4hk=C3=B6postisi, osoite ja raha on luovutettu meille siirtoa varten,
+vahvista yst=C3=A4v=C3=A4llisesti tietosi siirtoa varten.
+Meit=C3=A4 kehotettiin siirt=C3=A4m=C3=A4=C3=A4n kaikki vireill=C3=A4 oleva=
+t tapahtumat
+seuraavien kahden aikana, mutta jos olet vastaanottanut rahasi, j=C3=A4t=C3=
+=A4
+t=C3=A4m=C3=A4 viesti huomioimatta, jos et toimi heti.
+Tarvitsemme kiireellist=C3=A4 vastausta t=C3=A4h=C3=A4n viestiin, t=C3=A4m=
+=C3=A4 ei ole yksi
+niist=C3=A4 Internet-huijareista, se on pandemiaapu.
+Jennifer
