@@ -2,44 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9E745FD794
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 12:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E04DB5FD7A2
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 12:10:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbiJMKFb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 06:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
+        id S229744AbiJMKKq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 06:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiJMKFa (ORCPT
+        with ESMTP id S229745AbiJMKKk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 06:05:30 -0400
+        Thu, 13 Oct 2022 06:10:40 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA28B40EA;
-        Thu, 13 Oct 2022 03:05:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63D7EA6B1
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 03:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=MIv4m4vQ4qvNV4Hb3bgm4q2zBlksVMHOhzFO9UdQ9rs=; t=1665655529; x=1666865129; 
-        b=Blf1jDnD5T1ApDR6KT5Ke4X3wQ0RGyXTMlCxM/bblXMFYc/soTyx885ypsH8ppk7/VlxkR7FNnY
-        UmAgaR6cDm1Irq5W5N90Cu0zM8FPqNCjGA69m9EoBT6W/UZbGmo1arYywLDmFS9M5BVNeBOam7qdZ
-        n/TvDmQXSs/R9E6W5JLeXGS/sfPY/u+SeXeXOU6iRxUWBtIL7uL2oHqoPU9BZ14I7Olis5Nz4kuF0
-        llAY8WbTMirDekTQGicynvqtObcCgQ8uwQkdzlK/9sjLJhqvBNMrZJgkxCjG7Guv0Nh+u3+g48Cg2
-        ziba9wl69oclZmUD+9YVT1LaVRu4uCmfBGlA==;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=k/Xe9KwX5Y4b5mC0pJMb1NN4xvxbcXamSs4YqywcTD0=;
+        t=1665655836; x=1666865436; b=YaTx1VVAqrznPbSpgTZYMdoThCQkQFxEdqHsyWOejeV7DoT
+        7jQbDZtjdg0B9+Ac70eLBbwE+hAhxFPhBJWWYx83OKCwL39gqyt4N5JXD1k2mult9i/2sKvgzAIC5
+        gJpCZfZhK1iZy0YpCuTGKZANLWoTebPvz4Lxc3r8XLTiV4bLzitf6/Em6Wpwgw/d5wbBAYRzaw3vP
+        08L8Zj2Et8OgCe2Cg62iPhMzZjR1MCk/LRl6eAGSZG13/jnsaXxUM9i7AmWNoUFuKFj3GxgP8bxwp
+        cGEZlnameA1eu2Y/UrEsJx0ND8++w5D2VAd48X6l3SAWGcxTLmb2cqJVeh0YygBQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oiv5i-005e80-1q;
-        Thu, 13 Oct 2022 12:05:26 +0200
+        id 1oivAd-005eEw-0G;
+        Thu, 13 Oct 2022 12:10:31 +0200
+Message-ID: <2269de3ebe54777f1b752804df073262f3b4eed4.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/8] wifi: wilc1000: fix incorrect type assignment
+ sparse warning
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2022-10-13
-Date:   Thu, 13 Oct 2022 12:04:51 +0200
-Message-Id: <20221013100522.46346-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.37.3
+To:     Jouni Malinen <j@w1.fi>
+Cc:     Ajay.Kathat@microchip.com, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
+        Sripad.Balwadgi@microchip.com, lkp@intel.com,
+        hostap@lists.infradead.org
+Date:   Thu, 13 Oct 2022 12:10:29 +0200
+In-Reply-To: <20221013094011.GB3862@w1.fi>
+References: <20220720160302.231516-1-ajay.kathat@microchip.com>
+         <87v8rik8vp.fsf@kernel.org>
+         <2b432ae1-48fc-5a70-0afe-2b9f788f14e4@microchip.com>
+         <e677e3cd1b5c34146017a65f28fabdb673a91d23.camel@sipsolutions.net>
+         <20221013094011.GB3862@w1.fi>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -49,77 +60,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Thu, 2022-10-13 at 12:40 +0300, Jouni Malinen wrote:
+> On Thu, Oct 13, 2022 at 09:39:56AM +0200, Johannes Berg wrote:
+> > On Wed, 2022-07-27 at 17:32 +0000, Ajay.Kathat@microchip.com wrote:
+> > > I think, there is an another way to handle this issue. 'key_mgmt_suit=
+e'=20
+> > > element in 'cfg80211_external_auth_params' struct should be converted=
+ to=20
+> > > '__be32' type(like below code snippet) because wpa_s expects the valu=
+e=20
+> > > in big-endian format . After this change, the type case can be avoide=
+d.=20
+> > > Though I am not sure if these changes can have impact on other driver=
+.
+> > >=20
+> >=20
+> > Ugh. I think maybe it would be better to fix wpa_supplicant?
+>=20
+> Assuming you are referring to what sme_external_auth_trigger() does,
+> yes, the use of RSN_SELECTOR_GET() there on an unsigned int variable is
+> clearly wrong.
 
-So as discussed previously, here are the fixes for the
-scan parsing issues. I had to create a merge commit to
-keep the stable commit IDs that we'd already used for
-communication.
+Right, that's what I meant.
 
-Please pull and let me know if there's any problem.
+> As a workaround, it could be modified to accept both the
+> big endian and host byte order since the risk of conflicting with a
+> vendor specific AKM suite here would be very minimal..=C2=A0
 
-Thanks,
+True.
+
+> > Thing is, we use the NL80211_ATTR_AKM_SUITES attribute here for it, and
+> > even wpa_supplicant mostly uses that in host endian:
+>=20
+> By the way, that use of a u32 attribute (or an array of such) in an
+> interface is quite confusing for suite selectors (both AKM and cipher)
+> since a suite selector is really a four octet binary string that starts
+> with three octet OUI that is followed with a single octet integer
+> value. nl80211.h does not seem to provide any documentation on what the
+> exact value is supposed to be.
+
+I guess we should fix the documentation then, but basically, for a
+selector of
+
+ O-U-I:D
+
+we use
+
+ (O << 24) | (U << 16) | (I << 8) | D
+
+for the ID. If we had consistently used be32 then that'd actually at
+least match the four octet binary string and it'd be irrelevant, but ...
+we clearly didn't.
+
+> I can understand use of u32 and native byte order as an implementation
+> internal thing, but it should not really be used in an interface since
+> it is just waiting for this type of issues to show up.
+
+Yeah, can't really disagree with that, though I think it's a bit late
+now, unfortunately.
+
 johannes
-
-
-
-The following changes since commit abf93f369419249ca482a8911039fe1c75a94227:
-
-  wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning (2022-10-11 11:46:31 +0300)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-10-13
-
-for you to fetch changes up to e7ad651c31c5e1289323e6c680be6e582a593b26:
-
-  Merge branch 'cve-fixes-2022-10-13' (2022-10-13 11:59:56 +0200)
-
-----------------------------------------------------------------
-More wireless fixes for 6.1
-
-This has only the fixes for the scan parsing issues.
-
-----------------------------------------------------------------
-Johannes Berg (10):
-      wifi: cfg80211: fix u8 overflow in cfg80211_update_notlisted_nontrans()
-      wifi: cfg80211/mac80211: reject bad MBSSID elements
-      wifi: mac80211: fix MBSSID parsing use-after-free
-      wifi: cfg80211: ensure length byte is present before access
-      wifi: cfg80211: fix BSS refcounting bugs
-      wifi: cfg80211: avoid nontransmitted BSS list corruption
-      wifi: mac80211_hwsim: avoid mac80211 warning on bad rate
-      wifi: mac80211: fix crash in beacon protection for P2P-device
-      wifi: cfg80211: update hidden BSSes to avoid WARN_ON
-      Merge branch 'cve-fixes-2022-10-13'
-
- Documentation/networking/phy.rst                   |  2 +-
- MAINTAINERS                                        |  1 +
- drivers/isdn/hardware/mISDN/hfcpci.c               |  3 +-
- drivers/net/ethernet/adi/adin1110.c                | 13 ++--
- drivers/net/ethernet/broadcom/Makefile             |  5 --
- drivers/net/ethernet/freescale/enetc/enetc_qos.c   |  1 -
- drivers/net/ethernet/marvell/octeontx2/af/mcs.c    |  4 +-
- .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  |  7 +-
- .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |  4 +-
- .../ethernet/marvell/prestera/prestera_matchall.c  |  2 +
- drivers/net/ethernet/mediatek/Makefile             |  5 --
- drivers/net/hyperv/hyperv_net.h                    |  3 +-
- drivers/net/hyperv/netvsc.c                        |  4 ++
- drivers/net/hyperv/netvsc_drv.c                    | 19 ++++++
- drivers/net/macvlan.c                              |  2 +-
- drivers/net/pse-pd/Kconfig                         |  1 +
- drivers/net/wireless/mac80211_hwsim.c              |  2 +
- drivers/ptp/ptp_ocp.c                              |  1 +
- include/net/ieee802154_netdev.h                    | 12 +++-
- net/dsa/port.c                                     |  2 +-
- net/ieee802154/socket.c                            |  7 +-
- net/ipv4/fib_semantics.c                           |  8 +--
- net/mac80211/ieee80211_i.h                         |  8 +++
- net/mac80211/rx.c                                  | 12 ++--
- net/mac80211/util.c                                | 30 +++++----
- net/sched/sch_taprio.c                             |  8 +--
- net/wireless/scan.c                                | 77 ++++++++++++++--------
- tools/testing/selftests/net/fib_nexthops.sh        |  5 ++
- 28 files changed, 160 insertions(+), 88 deletions(-)
-
