@@ -2,122 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85F355FD53A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 08:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6125FD59C
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 09:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbiJMGup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 02:50:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45988 "EHLO
+        id S229548AbiJMHkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 03:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbiJMGuk (ORCPT
+        with ESMTP id S229652AbiJMHkE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 02:50:40 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43DA11463A9
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Oct 2022 23:50:35 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29D6GGxM010972;
-        Thu, 13 Oct 2022 06:50:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=6OIDCA1oxq6p7/yOMy8f8At7MzGN42WTJEdOinTHcQM=;
- b=hA+ExTeuAJt0UKXHtF05jL7oSDiG4hIB3CWpEnyTE7TDEDI41KA37wtUUISNRR2EuDWo
- ygofLqggKhB55id8M5W8wugJMV0ejTDAHvpCuECpzR/6dyIc89ow15uRZHmZF8w2GSIk
- eRKL3W2Ys1Wa3mRKi2bv2/GrKYyfmpJ5tb8W8N5WXjg/kPy1zZrJjiXspeG54zEkEQjB
- JalxebA2xu6fX9rKAPvge7gU8fjpYW6YwCwn/XMVeBhpUUSR4XHjZey6t4DJ1dbosdpK
- umqi0pyiL+CdtFHaGCZR1kfzfQSTgRokHqwgFwddL8wBcRTYNZHE/MP5NNksX9hO7/B8 uA== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k643h1naf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Oct 2022 06:50:28 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29D6oS3W015380
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Oct 2022 06:50:28 GMT
-Received: from [10.110.65.190] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 12 Oct
- 2022 23:50:26 -0700
-Message-ID: <0e4a896d-1d57-166b-9cef-fd551d22464b@quicinc.com>
-Date:   Wed, 12 Oct 2022 23:50:25 -0700
+        Thu, 13 Oct 2022 03:40:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E41343AEE
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 00:40:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=7OEj8OCTcXqSC5HaVHEW9InCKvzAtpPLeuuIHu9gcXo=;
+        t=1665646803; x=1666856403; b=ErtbqFu064yNGkL1nFIlzz0LAFYLDxBk98Mv8mWLon0YKmD
+        tZAy0Y+sLZHzP5w3/j55klW5RXXDb2KtT0fX2Q6VmnW+wJCGKyPeCujxCiH79AV2QliliWmDuGTuA
+        bAns7JpOIV/fwQ3OQpf6SN9Mt7PTumrXMoLBFjaRJRshPJQZGp2O81ah5v+R9F9ZJGncAJ83RLcrp
+        SyFpjQ/XH6Q8WJNIykNDoZ83IURmG1HIUAyQclgOoiiKtgIeEujnwCgjXLeEBQTnnqkwceoq1P4zc
+        ym55qfJAgoJXA5nDRFQdLuUPoXN+C2UzCPXCv4+EG5ZwC4pGGqmh3/9zAuqR8h8w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oisov-005bGt-2P;
+        Thu, 13 Oct 2022 09:39:57 +0200
+Message-ID: <e677e3cd1b5c34146017a65f28fabdb673a91d23.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/8] wifi: wilc1000: fix incorrect type assignment
+ sparse warning
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ajay.Kathat@microchip.com, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
+        Sripad.Balwadgi@microchip.com, lkp@intel.com,
+        hostap@lists.infradead.org, Jouni Malinen <j@w1.fi>,
+        Sunil Dutt <usdutt@codeaurora.org>
+Date:   Thu, 13 Oct 2022 09:39:56 +0200
+In-Reply-To: <2b432ae1-48fc-5a70-0afe-2b9f788f14e4@microchip.com>
+References: <20220720160302.231516-1-ajay.kathat@microchip.com>
+         <87v8rik8vp.fsf@kernel.org>
+         <2b432ae1-48fc-5a70-0afe-2b9f788f14e4@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH 15/50] wifi: ath12k: add dp_rx.c
-Content-Language: en-US
-To:     "Sriram R (QUIC)" <quic_srirrama@quicinc.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-References: <20220812161003.27279-1-kvalo@kernel.org>
- <20220812161003.27279-16-kvalo@kernel.org>
- <b2cd5b02-60ca-c788-af71-9f36f6a8ede3@quicinc.com>
- <SN6PR02MB433498DC221CF70BE3B6CE63F7229@SN6PR02MB4334.namprd02.prod.outlook.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <SN6PR02MB433498DC221CF70BE3B6CE63F7229@SN6PR02MB4334.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ZfZfgKTE4KW6dIJtnrv5LdK_bOkNHupZ
-X-Proofpoint-ORIG-GUID: ZfZfgKTE4KW6dIJtnrv5LdK_bOkNHupZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-13_04,2022-10-12_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- adultscore=0 suspectscore=0 spamscore=0 bulkscore=0 phishscore=0
- impostorscore=0 mlxlogscore=569 clxscore=1015 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210130041
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/12/2022 4:39 PM, Sriram R (QUIC) wrote:
->>> +     elem = kzalloc(sizeof(*elem), GFP_ATOMIC);
->>> +     if (!elem)
->>> +             goto free_desc;
->>> +
->>> +     elem->ts = jiffies;
->>> +     memcpy(&elem->data, rx_tid, sizeof(*rx_tid));
->>> +
->>> +     spin_lock_bh(&dp->reo_cmd_lock);
->>> +     list_add_tail(&elem->list, &dp->reo_cmd_cache_flush_list);
->>> +     dp->reo_cmd_cache_flush_count++;
->>> +
->>> +     /* Flush and invalidate aged REO desc from HW cache */
->>> +     list_for_each_entry_safe(elem, tmp, &dp->reo_cmd_cache_flush_list,
->>> +                              list) {
->>> +             if (dp->reo_cmd_cache_flush_count >
->> ATH12K_DP_RX_REO_DESC_FREE_THRES ||
->>> +                 time_after(jiffies, elem->ts +
->>> +
->> msecs_to_jiffies(ATH12K_DP_RX_REO_DESC_FREE_TIMEOUT_MS))) {
->>> +                     list_del(&elem->list);
->>> +                     dp->reo_cmd_cache_flush_count--;
->>> +                     spin_unlock_bh(&dp->reo_cmd_lock);
->>> +
->>> +                     ath12k_dp_reo_cache_flush(ab, &elem->data);
->>> +                     kfree(elem);
->>> +                     spin_lock_bh(&dp->reo_cmd_lock);
->>
->> is this really a safe iteration if you unlock & lock in the middle?
->> what prevents the tmp node from being deleted during this window?
-> The reo_cmd_cache_flush_list is used in only two contexts, one is this
-> Function called from napi and the other in ath12k_dp_free during
-> core destroy. Before dp_free, the irqs would be disabled and would wait
-> synchronize. Hence there wouldn’t be any race against add or delete
-> to this list. Please let me know if that’s fine.
+On Wed, 2022-07-27 at 17:32 +0000, Ajay.Kathat@microchip.com wrote:
+>=20
+> I think, there is an another way to handle this issue. 'key_mgmt_suite'=
+=20
+> element in 'cfg80211_external_auth_params' struct should be converted to=
+=20
+> '__be32' type(like below code snippet) because wpa_s expects the value=
+=20
+> in big-endian format . After this change, the type case can be avoided.=
+=20
+> Though I am not sure if these changes can have impact on other driver.
+>=20
 
-please add that as a code comment since unlock/do something/lock is a 
-"code smell" so you should justify the smell
+Ugh. I think maybe it would be better to fix wpa_supplicant?
 
+Thing is, we use the NL80211_ATTR_AKM_SUITES attribute here for it, and
+even wpa_supplicant mostly uses that in host endian:
+
+        num_suites =3D wpa_key_mgmt_to_suites(params->key_mgmt_suites,
+                                            suites, ARRAY_SIZE(suites));
+...
+                 nla_put(msg, NL80211_ATTR_AKM_SUITES, num_suites * sizeof(=
+u32),
+                         suites))
+
+with
+
+static int wpa_key_mgmt_to_suites(unsigned int key_mgmt_suites, u32 suites[=
+],
+                                  int max_suites)
+{
+        int num_suites =3D 0;
+
+#define __AKM(a, b) \
+        if (num_suites < max_suites && \
+            (key_mgmt_suites & (WPA_KEY_MGMT_ ## a))) \
+                suites[num_suites++] =3D (RSN_AUTH_KEY_MGMT_ ## b)
+        __AKM(IEEE8021X, UNSPEC_802_1X);
+
+
+
+
+and also
+
+                case WPA_KEY_MGMT_FT_FILS_SHA384:
+                        mgmt =3D RSN_AUTH_KEY_MGMT_FT_FILS_SHA384;
+                        break;
+                case WPA_KEY_MGMT_PSK:
+                default:
+                        mgmt =3D RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X;
+                        break;
+                }
+                wpa_printf(MSG_DEBUG, "  * akm=3D0x%x", mgmt);
+                if (nla_put_u32(msg, NL80211_ATTR_AKM_SUITES, mgmt))
+                        return -1;
+
+
+Now those are all userspace->kernel direction, but also:
+
+
+        wiphy_info_akm_suites(info, tb[NL80211_ATTR_AKM_SUITES]);
+
+which eventually uses
+
+static unsigned int get_akm_suites_info(struct nlattr *tb)
+{
+        int i, num;
+        unsigned int key_mgmt =3D 0;
+        u32 *akms;
+
+        if (!tb)
+                return 0;
+
+        num =3D nla_len(tb) / sizeof(u32);
+        akms =3D nla_data(tb);
+        for (i =3D 0; i < num; i++) {
+                switch (akms[i]) {
+                case RSN_AUTH_KEY_MGMT_UNSPEC_802_1X:
+
+
+so again it's in native endianness.
+
+
+So IMHO
+
+commit 5ff39c1380d9dea794c5102c0b6d11d1b1e23ad0
+Author: Sunil Dutt <usdutt@codeaurora.org>
+Date:   Thu Feb 1 17:01:28 2018 +0530
+
+    SAE: Support external authentication offload for driver-SME cases
+
+
+is the problem there in that it assumed big endian for a value that's
+clearly not meant to be big endian. And what garbage out-of-tree drivers
+do we don't know ...
+
+Even in the kernel, we have
+
+
+static int
+qtnf_event_handle_external_auth(struct qtnf_vif *vif,
+                                const struct qlink_event_external_auth *ev,
+                                u16 len)
+{
+        struct cfg80211_external_auth_params auth =3D {0};
+[...]
+        auth.key_mgmt_suite =3D le32_to_cpu(ev->akm_suite);
+[...]
+        ret =3D cfg80211_external_auth_request(vif->netdev, &auth, GFP_KERN=
+EL);
+
+
+but maybe that was never tested?
+
+johannes
