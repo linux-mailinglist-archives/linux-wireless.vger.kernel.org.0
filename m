@@ -2,106 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E935FDE5B
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 18:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5C05FDF2B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 19:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbiJMQjc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 12:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60920 "EHLO
+        id S229716AbiJMRmC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 13:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbiJMQj3 (ORCPT
+        with ESMTP id S229652AbiJMRmB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 12:39:29 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BFEF14D1E3
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 09:39:28 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.135])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id E92CE1C0081;
-        Thu, 13 Oct 2022 16:39:26 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B85734C0087;
-        Thu, 13 Oct 2022 16:39:26 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 438A013C2B0;
-        Thu, 13 Oct 2022 09:39:26 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 438A013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1665679166;
-        bh=C6t4lYH3bTInql3fMMOn6+e9VojT7UJrqqFO9yyTGWE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=VNkHJBhtJz5La5o1y80C31sO/toL4gf4rhyg+76duPtWVpS43KwNFTnUGpc5f1UUL
-         w1IC4tIJDYaBcFcvkfoxVMXvlsbqw3wjuB/XLMtQdLffuJQyFrvRXwXx+rvoIpwGk8
-         33lLH2T3iqO0ccY8oExrCFf7Zz9pxaEhaCsIBYzE=
-Subject: Re: [PATCH] wifi: iwlwifi: fix double free on tx path.
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     "amol.jawale@candelatech.com" <amol.jawale@candelatech.com>
-References: <20220928193057.16132-1-greearb@candelatech.com>
- <5fc4f28a5fc079d0368f6047db0d2c5fa1ed3ad4.camel@intel.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <22d76af9-79e3-4d7c-12e0-71d57770fc49@candelatech.com>
-Date:   Thu, 13 Oct 2022 09:39:26 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Thu, 13 Oct 2022 13:42:01 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE73DCAC4;
+        Thu, 13 Oct 2022 10:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=x7b71pQCQ6gNjHRAB0+aKfImMlMvzVpRwtk+NdAmaEQ=; t=1665682919; x=1666892519; 
+        b=Fxs/VEsGbdqPIF+AcWnoa/+3ZNMdhI/rxpxQfEwqcSQPq7j4TYPDcXgrbn8u77CNbORg2aReVWo
+        qWwwUsANqSfHo4V4eAdodmlVy+2DaP4144scv+LdXsZL1A+wtBWY37GaYolWzHpkVxy0Hh/ofWfjt
+        Eb22vnKTRxdAxZQb6fISPv0pDZAZVcbsf/A0NHVJdUI6qhTIoEdK13cUP/2rzadPwJmyBA2N3WYtJ
+        0d9aJMK5fuQy3eGgUF3K54CPssOUi2Xaat4MLsifrYaq39yRQcoRxBbzRPguXTYAoOrv0+8dMrEj2
+        7l4nGmh7sSCMZpOoZ1HzIXg6rnsW1XxCgDRw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oj2DT-005luD-2c;
+        Thu, 13 Oct 2022 19:41:55 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: cfg80211: silence a sparse RCU warning
+Date:   Thu, 13 Oct 2022 19:41:51 +0200
+Message-Id: <20221013194149.532913e897bd.I4e49ca6ce4248c0c4a9fa8c78e48ad91ab80c31c@changeid>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-In-Reply-To: <5fc4f28a5fc079d0368f6047db0d2c5fa1ed3ad4.camel@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-MDID: 1665679167-Jv_HoC6LVmTa
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/12/22 7:17 AM, Greenman, Gregory wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
->>          if (WARN_ON_ONCE(!mvmsta))
->>                  return -1;
->> @@ -1238,8 +1239,17 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
->>   
->>                  ret = iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
->>                  if (ret) {
-> 
-> Maybe while on it, add here "if (unlikely(ret)) {"?
+All we're going to do with this pointer is assign it to
+another __rcu pointer, but sparse can't see that, so
+use rcu_access_pointer() to silence the warning here.
 
-I don't think it is worth respinning the patch for that, but could add a follow-on patch.
+Fixes: c90b93b5b782 ("wifi: cfg80211: update hidden BSSes to avoid WARN_ON")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+Sending it now anyway, just in case you might want to
+throw it into the tree before sending a PR to Linus.
+---
+ net/wireless/scan.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
-Ben
-
-> 
->> +                       /* Free skbs created as part of TSO logic that have not yet been dequeued */
->>                          __skb_queue_purge(&mpdus_skbs);
->> -                       return ret;
->> +                       /* skb here is not necessarily same as skb that entered this method,
->> +                        * so free it explicitly.
->> +                        */
->> +                       if (skb == orig_skb)
->> +                               ieee80211_free_txskb(mvm->hw, skb);
->> +                       else
->> +                               kfree_skb(skb);
->> +                       /* there was error, but we consumed skb one way or another, so return 0 */
->> +                       return 0;
->>                  }
->>          }
->>   
-> 
-> Thanks for the fix!
-> Gregory
-> 
-
-
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 806a5f1330ff..da752b0cc752 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1674,7 +1674,9 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 		if (old == rcu_access_pointer(known->pub.ies))
+ 			rcu_assign_pointer(known->pub.ies, new->pub.beacon_ies);
+ 
+-		cfg80211_update_hidden_bsses(known, new->pub.beacon_ies, old);
++		cfg80211_update_hidden_bsses(known,
++					     rcu_access_pointer(new->pub.beacon_ies),
++					     old);
+ 
+ 		if (old)
+ 			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.37.3
 
