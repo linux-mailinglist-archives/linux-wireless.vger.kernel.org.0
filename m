@@ -2,68 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFD05FD5F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 10:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E69065FD670
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 10:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbiJMILW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 04:11:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37192 "EHLO
+        id S229812AbiJMIs2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 04:48:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbiJMILV (ORCPT
+        with ESMTP id S229493AbiJMIs1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 04:11:21 -0400
-Received: from mail.fadrush.pl (mail.fadrush.pl [54.37.225.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C4F1E52CD
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 01:11:20 -0700 (PDT)
-Received: by mail.fadrush.pl (Postfix, from userid 1002)
-        id 2850523BF6; Thu, 13 Oct 2022 08:11:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fadrush.pl; s=mail;
-        t=1665648679; bh=bD6j9gIFU6CLTaCGl0Ow9oeIxtirvTfMeNZSfLEZQ+I=;
-        h=Date:From:To:Subject:From;
-        b=hirrCAkPypP3stUF/4ryxTphJAmuqHQoSvxmsSjaDJkDAMrrP/g7MRuB2Oxni9zqV
-         FJlLtpk99hNBVekP9r54CYcGEc91cTinr+1EvL3cK/1NdO403itfV49mDhYbhhEAt2
-         Cs925euWjEbq/wGmpAkAQmcbFoWSfeE/Weiwd+SNYpCN2XRT47Qg2pc0KzyZbNk2EI
-         6llNFVZ82ktZAEjhT0mWf0LjwKQ4bUbCb5+xPEhihRU4fAOn/CQyACAMgNi18/JHBy
-         LnWdp515S+M2EJq9MS8EK2iKRq/oyvrDwVXYHgWNEC5w7b71Bwi5NeCqrkycwUfaK3
-         1RMoIX6UGylpQ==
-Received: by mail.fadrush.pl for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 08:11:04 GMT
-Message-ID: <20221013064500-0.1.27.lxg2.0.6aln93i5zg@fadrush.pl>
-Date:   Thu, 13 Oct 2022 08:11:04 GMT
-From:   "Jakub Olejniczak" <jakub.olejniczak@fadrush.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?Q?Zwi=C4=99kszenie_p=C5=82ynno=C5=9Bci_finansowej?=
-X-Mailer: mail.fadrush.pl
+        Thu, 13 Oct 2022 04:48:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8608C15E0CC
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 01:48:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E8E1616DB
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 08:48:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0257CC433C1;
+        Thu, 13 Oct 2022 08:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665650901;
+        bh=Db/4zGq9AnUW0anup6bunyNOeO5IJ6uMsV1WWiHKMZE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IEapUYCHB06YXa23vtKTxTyzrtuKKDnXIPmDjxtiyRjGHFAQ+uMd1jDX5sqHMphi2
+         tDLE9WBt/5dpW0D1CinD7As+zXg/q/WjQgZJVorR+XJQbWb5PnYhz+0bE38lFhK1zM
+         j0/rCzYSqoDWxGo2ZrbPexsNTsY3xxH2mgxc6PE5kEH5I59D02MO95Awfhj0E7Tnf0
+         gZ1Rc+oa86H9H05ud0cF4Js06TFtRxTsORS8CPleBODDp3JJ8zW0oMvwE9B0UvY5eg
+         YXZ9RHjwGLyh4c5H8TaaTSLHtVtpF5TC8kz0Tw2ZGDB+roJd43kACGJv1tPXbhgTym
+         Pfgq+IRQugeMQ==
+Date:   Thu, 13 Oct 2022 10:48:17 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Bo.Jiao@mediatek.com,
+        sujuan.chen@mediatek.com, ryder.Lee@mediatek.com,
+        evelyn.tsai@mediatek.com, daniel@makrotopia.org,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 0/3] wifi: mt76: introduce WED TX support for mt7986 SoC
+Message-ID: <Y0fQ0f3uy5p9f2mP@lore-desk>
+References: <cover.1664356281.git.lorenzo@kernel.org>
+ <87r0zd4mxw.fsf@kernel.org>
+ <Y0aH8T8pTARNWcPE@lore-desk>
+ <87zge0memc.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="IZ86U2XJZJKcmdx2"
+Content-Disposition: inline
+In-Reply-To: <87zge0memc.fsf@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
 
-kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, poniewa=C5=BC chcia=C5=82bym za=
-proponowa=C4=87 wygodne rozwi=C4=85zanie, kt=C3=B3re umo=C5=BCliwi Pa=C5=84=
-stwa firmie stabilny rozw=C3=B3j.=20
+--IZ86U2XJZJKcmdx2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Konkurencyjne otoczenie wymaga ci=C4=85g=C5=82ego ulepszania i poszerzeni=
-a oferty, co z kolei wi=C4=85=C5=BCe si=C4=99 z konieczno=C5=9Bci=C4=85 i=
-nwestowania. Brak odpowiedniego kapita=C5=82u powa=C5=BCnie ogranicza tem=
-po rozwoju firmy.
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> >>=20
+> >> > Enable WED TX support for mt7915 and mt7986-wmac drivers running on =
+MT7986 SoC.
+> >>=20
+> >> What's WED TX?
+> >
+> > It is the same as we did for MT7622. It is the capability to offload tr=
+affic
+> > from lan/wan to wlan. I specified "TX" since MT7986 supports even RX
+> > offloading (I am working on it at the moment).
+>=20
+> It would be nice to mention in the commit log that the feature is about
+> offloading traffic from lan/wan to wlan. That way it's stored to to git
+> history and people like me have some clue what the patch is about,
+> otherwise we are totally in dark.
 
-Od wielu lat z powodzeniem pomagam firmom w uzyskaniu najlepszej formy fi=
-nansowania z banku oraz UE. Mam sta=C5=82ych Klient=C3=B3w, kt=C3=B3rzy n=
-adal ch=C4=99tnie korzystaj=C4=85 z moich us=C5=82ug, a tak=C5=BCe poleca=
-j=C4=85 je innym.
+I think Felix has already applied them.
+@Felix: are you taking care of it or do I need to repost?
 
-Czy chcieliby Pa=C5=84stwo skorzysta=C4=87 z pomocy wykwalifikowanego i d=
-o=C5=9Bwiadczonego doradcy finansowego?
+Regards,
+Lorenzo
 
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
-Pozdrawiam
-Jakub Olejniczak
+--IZ86U2XJZJKcmdx2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY0fQ0QAKCRA6cBh0uS2t
+rLI1AQCX4CDrVuzbbjZnQ9FFkNL7JCemSr2XSVdRQMYzw/MY9wEAo10yZAJytWcT
+FIybrAIjDLIqvOH3sbFNwwSL2b+KnQU=
+=6nXc
+-----END PGP SIGNATURE-----
+
+--IZ86U2XJZJKcmdx2--
