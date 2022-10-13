@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 029AE5FDD38
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 17:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 590195FDD3C
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 17:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbiJMPcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 11:32:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56272 "EHLO
+        id S229537AbiJMPdK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 11:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbiJMPcJ (ORCPT
+        with ESMTP id S229502AbiJMPdG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 11:32:09 -0400
+        Thu, 13 Oct 2022 11:33:06 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8CA38681;
-        Thu, 13 Oct 2022 08:32:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7335289CED;
+        Thu, 13 Oct 2022 08:32:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 17C55B81ECC;
-        Thu, 13 Oct 2022 15:32:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F4CC433D6;
-        Thu, 13 Oct 2022 15:32:05 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1B070B81E4F;
+        Thu, 13 Oct 2022 15:32:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98BBC433C1;
+        Thu, 13 Oct 2022 15:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665675125;
-        bh=rHpwPOsp0EIb1Ksg7tMaB49yF9SyZndLpZaM2gxL33g=;
+        s=k20201202; t=1665675175;
+        bh=N9dtBbeid/AQkUHbcP83wLXIrRijx2HgAI5RS58u7Cc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KDh45mWywPWMhlRevvmNR6iv2gac+EvS8IFBNGMnsd9nkmpZYFa4akcWBbJAFkszj
-         uNVNLVPVXOTuuKWuGt4ah9wEV8WGPtcTbrhcxxTJ3GNyw8fpsHx29GYCorIIZ170eR
-         Z4edw3Tk3rdBVSbp7AyHm9uEc8adCUKDGSJRogTuTnGcsHB890jwcAl0tCIOCwiA0J
-         ZuQo6SI1yMORyPDEQKEPcmNtJxaCZcd9cK1byW+gjqkMlrmgiQ2bAGkqIHmWZtFa8A
-         b9Lq8hXVWCf5rXJjqPVYEJbK8iDYI+abp4s1ZSWSPryINhVo4laWOj5pZgj+8pbMzC
-         T3/pR2739oIvg==
-Date:   Thu, 13 Oct 2022 08:32:04 -0700
+        b=SYtt1KflZxR9wMpCim04SVkSYQdU0WbQGen1/vsts/jOhflWO4cD4XlDPoLWt+d5k
+         C9Ms6/bGMWjRa6eB7faz3vyV4lABgRepl9hKcJ2NHUXG9zMfreoP0dgpCbvSPUN8gg
+         drJgBqf9VDZfRQwl12rUbnLE7ZSZwiVYv9JN8UZHcy3zM3k6U7Bs5TgWIElXdm2PXk
+         nleg4EG1IOV+QAHl24XKrFF4bYWPfW8VVKMfBzTrnuo1oJbcGLLPR7DLniHN00ivqh
+         qQ9dtpb49rtx92k8nI8Po9frN+zErp69dB6IFg++BQ94JMwzTrXJ2LEuprgbKjqKDt
+         Adwx/+2vlYIdg==
+Date:   Thu, 13 Oct 2022 08:32:54 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Subject: Re: pull-request: wireless-2022-10-13
-Message-ID: <20221013083204.41c28a6e@kernel.org>
+Message-ID: <20221013083254.5d302a5e@kernel.org>
 In-Reply-To: <20221013100522.46346-1-johannes@sipsolutions.net>
 References: <20221013100522.46346-1-johannes@sipsolutions.net>
 MIME-Version: 1.0
@@ -53,11 +53,10 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Thu, 13 Oct 2022 12:04:51 +0200 Johannes Berg wrote:
-> So as discussed previously, here are the fixes for the
-> scan parsing issues. I had to create a merge commit to
-> keep the stable commit IDs that we'd already used for
-> communication.
-> 
 > Please pull and let me know if there's any problem.
 
-Odd, bot doesn't want to reply. Paolo pulled this a few hours ago FWIW.
+Since you asked if there are any problems... :)
+
+net/wireless/scan.c:1677:61: warning: incorrect type in argument 2 (different address spaces)
+net/wireless/scan.c:1677:61:    expected struct cfg80211_bss_ies const *new_ies
+net/wireless/scan.c:1677:61:    got struct cfg80211_bss_ies const [noderef] __rcu *beacon_ies
