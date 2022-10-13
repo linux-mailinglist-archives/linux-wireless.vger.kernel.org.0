@@ -2,174 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E6125FD59C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 09:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFD05FD5F6
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 10:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbiJMHkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 03:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58006 "EHLO
+        id S229684AbiJMILW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 04:11:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229652AbiJMHkE (ORCPT
+        with ESMTP id S229615AbiJMILV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 03:40:04 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E41343AEE
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 00:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=7OEj8OCTcXqSC5HaVHEW9InCKvzAtpPLeuuIHu9gcXo=;
-        t=1665646803; x=1666856403; b=ErtbqFu064yNGkL1nFIlzz0LAFYLDxBk98Mv8mWLon0YKmD
-        tZAy0Y+sLZHzP5w3/j55klW5RXXDb2KtT0fX2Q6VmnW+wJCGKyPeCujxCiH79AV2QliliWmDuGTuA
-        bAns7JpOIV/fwQ3OQpf6SN9Mt7PTumrXMoLBFjaRJRshPJQZGp2O81ah5v+R9F9ZJGncAJ83RLcrp
-        SyFpjQ/XH6Q8WJNIykNDoZ83IURmG1HIUAyQclgOoiiKtgIeEujnwCgjXLeEBQTnnqkwceoq1P4zc
-        ym55qfJAgoJXA5nDRFQdLuUPoXN+C2UzCPXCv4+EG5ZwC4pGGqmh3/9zAuqR8h8w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oisov-005bGt-2P;
-        Thu, 13 Oct 2022 09:39:57 +0200
-Message-ID: <e677e3cd1b5c34146017a65f28fabdb673a91d23.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/8] wifi: wilc1000: fix incorrect type assignment
- sparse warning
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ajay.Kathat@microchip.com, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
-        Sripad.Balwadgi@microchip.com, lkp@intel.com,
-        hostap@lists.infradead.org, Jouni Malinen <j@w1.fi>,
-        Sunil Dutt <usdutt@codeaurora.org>
-Date:   Thu, 13 Oct 2022 09:39:56 +0200
-In-Reply-To: <2b432ae1-48fc-5a70-0afe-2b9f788f14e4@microchip.com>
-References: <20220720160302.231516-1-ajay.kathat@microchip.com>
-         <87v8rik8vp.fsf@kernel.org>
-         <2b432ae1-48fc-5a70-0afe-2b9f788f14e4@microchip.com>
+        Thu, 13 Oct 2022 04:11:21 -0400
+Received: from mail.fadrush.pl (mail.fadrush.pl [54.37.225.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C4F1E52CD
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 01:11:20 -0700 (PDT)
+Received: by mail.fadrush.pl (Postfix, from userid 1002)
+        id 2850523BF6; Thu, 13 Oct 2022 08:11:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fadrush.pl; s=mail;
+        t=1665648679; bh=bD6j9gIFU6CLTaCGl0Ow9oeIxtirvTfMeNZSfLEZQ+I=;
+        h=Date:From:To:Subject:From;
+        b=hirrCAkPypP3stUF/4ryxTphJAmuqHQoSvxmsSjaDJkDAMrrP/g7MRuB2Oxni9zqV
+         FJlLtpk99hNBVekP9r54CYcGEc91cTinr+1EvL3cK/1NdO403itfV49mDhYbhhEAt2
+         Cs925euWjEbq/wGmpAkAQmcbFoWSfeE/Weiwd+SNYpCN2XRT47Qg2pc0KzyZbNk2EI
+         6llNFVZ82ktZAEjhT0mWf0LjwKQ4bUbCb5+xPEhihRU4fAOn/CQyACAMgNi18/JHBy
+         LnWdp515S+M2EJq9MS8EK2iKRq/oyvrDwVXYHgWNEC5w7b71Bwi5NeCqrkycwUfaK3
+         1RMoIX6UGylpQ==
+Received: by mail.fadrush.pl for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 08:11:04 GMT
+Message-ID: <20221013064500-0.1.27.lxg2.0.6aln93i5zg@fadrush.pl>
+Date:   Thu, 13 Oct 2022 08:11:04 GMT
+From:   "Jakub Olejniczak" <jakub.olejniczak@fadrush.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?Zwi=C4=99kszenie_p=C5=82ynno=C5=9Bci_finansowej?=
+X-Mailer: mail.fadrush.pl
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-07-27 at 17:32 +0000, Ajay.Kathat@microchip.com wrote:
->=20
-> I think, there is an another way to handle this issue. 'key_mgmt_suite'=
-=20
-> element in 'cfg80211_external_auth_params' struct should be converted to=
-=20
-> '__be32' type(like below code snippet) because wpa_s expects the value=
-=20
-> in big-endian format . After this change, the type case can be avoided.=
-=20
-> Though I am not sure if these changes can have impact on other driver.
->=20
+Dzie=C5=84 dobry,
 
-Ugh. I think maybe it would be better to fix wpa_supplicant?
+kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, poniewa=C5=BC chcia=C5=82bym za=
+proponowa=C4=87 wygodne rozwi=C4=85zanie, kt=C3=B3re umo=C5=BCliwi Pa=C5=84=
+stwa firmie stabilny rozw=C3=B3j.=20
 
-Thing is, we use the NL80211_ATTR_AKM_SUITES attribute here for it, and
-even wpa_supplicant mostly uses that in host endian:
+Konkurencyjne otoczenie wymaga ci=C4=85g=C5=82ego ulepszania i poszerzeni=
+a oferty, co z kolei wi=C4=85=C5=BCe si=C4=99 z konieczno=C5=9Bci=C4=85 i=
+nwestowania. Brak odpowiedniego kapita=C5=82u powa=C5=BCnie ogranicza tem=
+po rozwoju firmy.
 
-        num_suites =3D wpa_key_mgmt_to_suites(params->key_mgmt_suites,
-                                            suites, ARRAY_SIZE(suites));
-...
-                 nla_put(msg, NL80211_ATTR_AKM_SUITES, num_suites * sizeof(=
-u32),
-                         suites))
+Od wielu lat z powodzeniem pomagam firmom w uzyskaniu najlepszej formy fi=
+nansowania z banku oraz UE. Mam sta=C5=82ych Klient=C3=B3w, kt=C3=B3rzy n=
+adal ch=C4=99tnie korzystaj=C4=85 z moich us=C5=82ug, a tak=C5=BCe poleca=
+j=C4=85 je innym.
 
-with
-
-static int wpa_key_mgmt_to_suites(unsigned int key_mgmt_suites, u32 suites[=
-],
-                                  int max_suites)
-{
-        int num_suites =3D 0;
-
-#define __AKM(a, b) \
-        if (num_suites < max_suites && \
-            (key_mgmt_suites & (WPA_KEY_MGMT_ ## a))) \
-                suites[num_suites++] =3D (RSN_AUTH_KEY_MGMT_ ## b)
-        __AKM(IEEE8021X, UNSPEC_802_1X);
+Czy chcieliby Pa=C5=84stwo skorzysta=C4=87 z pomocy wykwalifikowanego i d=
+o=C5=9Bwiadczonego doradcy finansowego?
 
 
-
-
-and also
-
-                case WPA_KEY_MGMT_FT_FILS_SHA384:
-                        mgmt =3D RSN_AUTH_KEY_MGMT_FT_FILS_SHA384;
-                        break;
-                case WPA_KEY_MGMT_PSK:
-                default:
-                        mgmt =3D RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X;
-                        break;
-                }
-                wpa_printf(MSG_DEBUG, "  * akm=3D0x%x", mgmt);
-                if (nla_put_u32(msg, NL80211_ATTR_AKM_SUITES, mgmt))
-                        return -1;
-
-
-Now those are all userspace->kernel direction, but also:
-
-
-        wiphy_info_akm_suites(info, tb[NL80211_ATTR_AKM_SUITES]);
-
-which eventually uses
-
-static unsigned int get_akm_suites_info(struct nlattr *tb)
-{
-        int i, num;
-        unsigned int key_mgmt =3D 0;
-        u32 *akms;
-
-        if (!tb)
-                return 0;
-
-        num =3D nla_len(tb) / sizeof(u32);
-        akms =3D nla_data(tb);
-        for (i =3D 0; i < num; i++) {
-                switch (akms[i]) {
-                case RSN_AUTH_KEY_MGMT_UNSPEC_802_1X:
-
-
-so again it's in native endianness.
-
-
-So IMHO
-
-commit 5ff39c1380d9dea794c5102c0b6d11d1b1e23ad0
-Author: Sunil Dutt <usdutt@codeaurora.org>
-Date:   Thu Feb 1 17:01:28 2018 +0530
-
-    SAE: Support external authentication offload for driver-SME cases
-
-
-is the problem there in that it assumed big endian for a value that's
-clearly not meant to be big endian. And what garbage out-of-tree drivers
-do we don't know ...
-
-Even in the kernel, we have
-
-
-static int
-qtnf_event_handle_external_auth(struct qtnf_vif *vif,
-                                const struct qlink_event_external_auth *ev,
-                                u16 len)
-{
-        struct cfg80211_external_auth_params auth =3D {0};
-[...]
-        auth.key_mgmt_suite =3D le32_to_cpu(ev->akm_suite);
-[...]
-        ret =3D cfg80211_external_auth_request(vif->netdev, &auth, GFP_KERN=
-EL);
-
-
-but maybe that was never tested?
-
-johannes
+Pozdrawiam
+Jakub Olejniczak
