@@ -2,69 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0485FD7BB
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 12:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E11795FD7C2
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 12:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbiJMKRH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 06:17:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
+        id S229485AbiJMKVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 06:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbiJMKRD (ORCPT
+        with ESMTP id S229454AbiJMKVk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 06:17:03 -0400
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [IPv6:2a0a:51c0:0:12e:520::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED085F6C22;
-        Thu, 13 Oct 2022 03:17:00 -0700 (PDT)
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-        (envelope-from <fw@strlen.de>)
-        id 1oivGV-00028B-QF; Thu, 13 Oct 2022 12:16:35 +0200
-Date:   Thu, 13 Oct 2022 12:16:35 +0200
-From:   Florian Westphal <fw@strlen.de>
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Westphal <fw@strlen.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Thomas Graf <tgraf@suug.ch>, kasan-dev@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        loongarch@lists.linux.dev, netdev@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v6 5/7] treewide: use get_random_u32() when possible
-Message-ID: <20221013101635.GB11818@breakpoint.cc>
-References: <20221010230613.1076905-1-Jason@zx2c4.com>
- <20221010230613.1076905-6-Jason@zx2c4.com>
- <3026360.ZldQQBzMgz@eto.sf-tec.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3026360.ZldQQBzMgz@eto.sf-tec.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 13 Oct 2022 06:21:40 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C28103DA7
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 03:21:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AEEBBB819F4
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 10:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63615C433D6;
+        Thu, 13 Oct 2022 10:21:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665656495;
+        bh=00vZ1QTD+TeCJ4/tTKKwf+lKsPlccfbdi0lhDgvhHZs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=vJipIHdSl4iEiFL/pSk/5IT/sARoQBnW1X2j/A5UBv8mPRGTyGuLuE/KcIpFFvJDa
+         dS8Cha8EqYJGcf+Klq5zv6qU30gAtRfiIhpYARXBCumxmeQmbwTv03hPZIwtG/9yts
+         YQpe16sb394QUDp7FkbgM0KNmDmt12CllKV9DIOcIayoasKm2IBet8W4tT8DIfQhV0
+         lrM0bqMiabzsLLb6BrhpVphLiUXOO/No6/1fJyWbEx44NaoWRqkv1M0Laed49KktrU
+         CP5W0XsVHzxz+wiHVyQH4O1fLebsBY4KHeNFZuFJ+vBnbxue7CfrR7n+C5IRh5UzPA
+         TlCqBgwOdRePw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1oivLJ-00GHF3-3Q;
+        Thu, 13 Oct 2022 11:21:33 +0100
+Date:   Thu, 13 Oct 2022 11:21:32 +0100
+Message-ID: <86h708f2hf.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH] bcma: gpio: Convert to immutable gpio irqchip
+In-Reply-To: <20221012192348.2234478-1-linus.walleij@linaro.org>
+References: <20221012192348.2234478-1-linus.walleij@linaro.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linus.walleij@linaro.org, zajec5@gmail.com, linux-wireless@vger.kernel.org, brgl@bgdev.pl
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rolf Eike Beer <eike-kernel@sf-tec.de> wrote:
-> Florian, can you comment and maybe fix it?
+On Wed, 12 Oct 2022 20:23:48 +0100,
+Linus Walleij <linus.walleij@linaro.org> wrote:
+>=20
+> This switches the BCMA gpio irqchip to be immutable.
+>=20
+> Tested on the D-Link DWL-6810AP.
+>=20
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+> Cc: Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Can't comment, do not remember -- this was 5 years ago.
+Acked-by: Marc Zyngier <maz@kernel.org>
 
-> Or you wanted to move the variable before the loop and keep the random state
-> between the loops and only reseed when all '1' bits have been consumed.
+	M.
 
-Probably.  No clue, best to NOT change it to not block Jasons series and
-then just simplify this and remove all the useless shifts.
+--=20
+Without deviation from the norm, progress is not possible.
