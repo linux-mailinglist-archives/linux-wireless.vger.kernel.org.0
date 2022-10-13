@@ -2,55 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38B0F5FD751
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 11:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E745FD794
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Oct 2022 12:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbiJMJsw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 05:48:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59194 "EHLO
+        id S229640AbiJMKFb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 06:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229598AbiJMJsu (ORCPT
+        with ESMTP id S229534AbiJMKFa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 05:48:50 -0400
-X-Greylist: delayed 510 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 13 Oct 2022 02:48:47 PDT
-Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA35104531
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 02:48:47 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.w1.fi (Postfix) with ESMTP id 29A4211081;
-        Thu, 13 Oct 2022 09:40:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from mail.w1.fi ([127.0.0.1])
-        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id P4hGrlAu7TeB; Thu, 13 Oct 2022 09:40:13 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Thu, 13 Oct 2022 12:40:11 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
-        t=1665654013; bh=dAY4PuMFxGvl0E5R/dwh6VNQ2jkSDY74WFM6hyO7iug=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=okuhBH3Ed6F0DgR+NFkzQYHqbIRisp5sTsskswS2gGZuaZkpLAwfXr8yvGLRYm04P
-         RHWd/xQtmmJ2ENmeWbBlIMo5F3gGPBtdqpfZy5r3L3QQDIvSb5p9l6pxEF3+tSdkV+
-         T+iUQ2Kl6CgLPo9lug1ionmUY8s6oTiKt3nhuekB1Q/LQyUfwzkjo0Y0noFKbysq8B
-         nLwbnVoQAzjNlsx6M67XIyBZnddD5S3sRcL96yqneSEBxfP1G/QrKoYIQ4Zq0rpKd1
-         lptKBebKpKmVgsB23MBKZsFBCa2MWkHsiJYpx58Hu3LbITAbH1wg5Mo+YQcxKlb79L
-         ACEi1q2Qj33/g==
-Date:   Thu, 13 Oct 2022 12:40:11 +0300
-From:   Jouni Malinen <j@w1.fi>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Ajay.Kathat@microchip.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
-        Sripad.Balwadgi@microchip.com, lkp@intel.com,
-        hostap@lists.infradead.org
-Subject: Re: [PATCH 1/8] wifi: wilc1000: fix incorrect type assignment sparse
- warning
-Message-ID: <20221013094011.GB3862@w1.fi>
-References: <20220720160302.231516-1-ajay.kathat@microchip.com>
- <87v8rik8vp.fsf@kernel.org>
- <2b432ae1-48fc-5a70-0afe-2b9f788f14e4@microchip.com>
- <e677e3cd1b5c34146017a65f28fabdb673a91d23.camel@sipsolutions.net>
+        Thu, 13 Oct 2022 06:05:30 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA28B40EA;
+        Thu, 13 Oct 2022 03:05:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=MIv4m4vQ4qvNV4Hb3bgm4q2zBlksVMHOhzFO9UdQ9rs=; t=1665655529; x=1666865129; 
+        b=Blf1jDnD5T1ApDR6KT5Ke4X3wQ0RGyXTMlCxM/bblXMFYc/soTyx885ypsH8ppk7/VlxkR7FNnY
+        UmAgaR6cDm1Irq5W5N90Cu0zM8FPqNCjGA69m9EoBT6W/UZbGmo1arYywLDmFS9M5BVNeBOam7qdZ
+        n/TvDmQXSs/R9E6W5JLeXGS/sfPY/u+SeXeXOU6iRxUWBtIL7uL2oHqoPU9BZ14I7Olis5Nz4kuF0
+        llAY8WbTMirDekTQGicynvqtObcCgQ8uwQkdzlK/9sjLJhqvBNMrZJgkxCjG7Guv0Nh+u3+g48Cg2
+        ziba9wl69oclZmUD+9YVT1LaVRu4uCmfBGlA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oiv5i-005e80-1q;
+        Thu, 13 Oct 2022 12:05:26 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2022-10-13
+Date:   Thu, 13 Oct 2022 12:04:51 +0200
+Message-Id: <20221013100522.46346-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e677e3cd1b5c34146017a65f28fabdb673a91d23.camel@sipsolutions.net>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -60,43 +49,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 13, 2022 at 09:39:56AM +0200, Johannes Berg wrote:
-> On Wed, 2022-07-27 at 17:32 +0000, Ajay.Kathat@microchip.com wrote:
-> > I think, there is an another way to handle this issue. 'key_mgmt_suite' 
-> > element in 'cfg80211_external_auth_params' struct should be converted to 
-> > '__be32' type(like below code snippet) because wpa_s expects the value 
-> > in big-endian format . After this change, the type case can be avoided. 
-> > Though I am not sure if these changes can have impact on other driver.
-> > 
-> 
-> Ugh. I think maybe it would be better to fix wpa_supplicant?
+Hi,
 
-Assuming you are referring to what sme_external_auth_trigger() does,
-yes, the use of RSN_SELECTOR_GET() there on an unsigned int variable is
-clearly wrong. As a workaround, it could be modified to accept both the
-big endian and host byte order since the risk of conflicting with a
-vendor specific AKM suite here would be very minimal.. Furthermore, it
-looks like this has missed the new RSN_AUTH_KEY_MGMT_SAE_EXT_KEY
-selector update as well.
+So as discussed previously, here are the fixes for the
+scan parsing issues. I had to create a merge commit to
+keep the stable commit IDs that we'd already used for
+communication.
 
-> Thing is, we use the NL80211_ATTR_AKM_SUITES attribute here for it, and
-> even wpa_supplicant mostly uses that in host endian:
+Please pull and let me know if there's any problem.
 
-By the way, that use of a u32 attribute (or an array of such) in an
-interface is quite confusing for suite selectors (both AKM and cipher)
-since a suite selector is really a four octet binary string that starts
-with three octet OUI that is followed with a single octet integer
-value. nl80211.h does not seem to provide any documentation on what the
-exact value is supposed to be.
+Thanks,
+johannes
 
-I can understand use of u32 and native byte order as an implementation
-internal thing, but it should not really be used in an interface since
-it is just waiting for this type of issues to show up. It's always
-confusing to review the driver_nl80211* changes for this area since I
-have to convince myself each time that this really is a native byte
-order u32 value.. That sme_external_auth_trigger() case is outside
-driver_nl80211* so it did not get the same detail of review
-unfortunately.
 
--- 
-Jouni Malinen                                            PGP id EFC895FA
+
+The following changes since commit abf93f369419249ca482a8911039fe1c75a94227:
+
+  wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning (2022-10-11 11:46:31 +0300)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-10-13
+
+for you to fetch changes up to e7ad651c31c5e1289323e6c680be6e582a593b26:
+
+  Merge branch 'cve-fixes-2022-10-13' (2022-10-13 11:59:56 +0200)
+
+----------------------------------------------------------------
+More wireless fixes for 6.1
+
+This has only the fixes for the scan parsing issues.
+
+----------------------------------------------------------------
+Johannes Berg (10):
+      wifi: cfg80211: fix u8 overflow in cfg80211_update_notlisted_nontrans()
+      wifi: cfg80211/mac80211: reject bad MBSSID elements
+      wifi: mac80211: fix MBSSID parsing use-after-free
+      wifi: cfg80211: ensure length byte is present before access
+      wifi: cfg80211: fix BSS refcounting bugs
+      wifi: cfg80211: avoid nontransmitted BSS list corruption
+      wifi: mac80211_hwsim: avoid mac80211 warning on bad rate
+      wifi: mac80211: fix crash in beacon protection for P2P-device
+      wifi: cfg80211: update hidden BSSes to avoid WARN_ON
+      Merge branch 'cve-fixes-2022-10-13'
+
+ Documentation/networking/phy.rst                   |  2 +-
+ MAINTAINERS                                        |  1 +
+ drivers/isdn/hardware/mISDN/hfcpci.c               |  3 +-
+ drivers/net/ethernet/adi/adin1110.c                | 13 ++--
+ drivers/net/ethernet/broadcom/Makefile             |  5 --
+ drivers/net/ethernet/freescale/enetc/enetc_qos.c   |  1 -
+ drivers/net/ethernet/marvell/octeontx2/af/mcs.c    |  4 +-
+ .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  |  7 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |  4 +-
+ .../ethernet/marvell/prestera/prestera_matchall.c  |  2 +
+ drivers/net/ethernet/mediatek/Makefile             |  5 --
+ drivers/net/hyperv/hyperv_net.h                    |  3 +-
+ drivers/net/hyperv/netvsc.c                        |  4 ++
+ drivers/net/hyperv/netvsc_drv.c                    | 19 ++++++
+ drivers/net/macvlan.c                              |  2 +-
+ drivers/net/pse-pd/Kconfig                         |  1 +
+ drivers/net/wireless/mac80211_hwsim.c              |  2 +
+ drivers/ptp/ptp_ocp.c                              |  1 +
+ include/net/ieee802154_netdev.h                    | 12 +++-
+ net/dsa/port.c                                     |  2 +-
+ net/ieee802154/socket.c                            |  7 +-
+ net/ipv4/fib_semantics.c                           |  8 +--
+ net/mac80211/ieee80211_i.h                         |  8 +++
+ net/mac80211/rx.c                                  | 12 ++--
+ net/mac80211/util.c                                | 30 +++++----
+ net/sched/sch_taprio.c                             |  8 +--
+ net/wireless/scan.c                                | 77 ++++++++++++++--------
+ tools/testing/selftests/net/fib_nexthops.sh        |  5 ++
+ 28 files changed, 160 insertions(+), 88 deletions(-)
+
