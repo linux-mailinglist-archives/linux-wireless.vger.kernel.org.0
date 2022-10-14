@@ -2,78 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 058115FF2B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 18:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3984D5FF30A
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 19:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbiJNQ7l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 12:59:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38044 "EHLO
+        id S229739AbiJNRki (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 13:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbiJNQ7j (ORCPT
+        with ESMTP id S229436AbiJNRkh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 12:59:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30901D5874;
-        Fri, 14 Oct 2022 09:59:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=e8QmQj/Zq/UfceewR+AjHaGQieTQyGwcfUHbCnFhFjA=;
-        t=1665766775; x=1666976375; b=UllvAEIr0KvEQSbQywOZTU40OOq3GUyLo2A7S6O5B1CaCpw
-        fURTJzGgbA4zOKEUuZcltrD5eZBlCpM24xPgRa8tkyCqCxNUa3DbKNEToQQ0RUsdTrc+ykdZdr6UT
-        V6p+RH6Nxcqq2N5P8pbdYmBXE7vyDOgyQQJFot/6NqrICCgZny1nMdhqURbt/LGNgA6Wh2UKxwhlU
-        gyegcR981XEJbdiC6B+d7V/Qw/0BoLeirVad8rF0CaS9xF1CUcH2XIAUy+7yRZ8F9aIbtC9cfeO0j
-        8NeB31+XDz/wuQ0j2hYrXusBkdhjE7AT1b/upk8UUVTXNwPfVlgTXwk0XUzfA16A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ojO21-006hEY-0D;
-        Fri, 14 Oct 2022 18:59:34 +0200
-Message-ID: <e879fc034013c4c87431bbfa5f3caad7c2d76527.camel@sipsolutions.net>
-Subject: Re: [RFC v5.4 1/3] mac80211: mlme: find auth challenge directly
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
+        Fri, 14 Oct 2022 13:40:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA13F7096;
+        Fri, 14 Oct 2022 10:40:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B4173B821B9;
+        Fri, 14 Oct 2022 17:40:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0F4C433C1;
+        Fri, 14 Oct 2022 17:40:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1665769234;
+        bh=sZv4tT1NktlJCdklLMSqGglGDp5CEWez0v0Fpf/NyMo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BrgWGgnCQS/SgJEMXRaaTjttVZATbo92FtIQYwxmldwaDBTlSPEIB9bNJ+DAEm3Hc
+         1MYR4rNanXsqhGbXmgWX3ZUfVmkDZYpgXsyjMiQxRduvkWTUV5jN0o1uRu/0WVY6F0
+         sY4UNfpF9Ik7AQLJ7mOkJVP8Dm7TXMZsNXzD2lAs=
+Date:   Fri, 14 Oct 2022 19:41:18 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+        Felix Fietkau <nbd@nbd.name>,
         Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
         Marcus Meissner <meissner@suse.de>,
-        Jiri Kosina <jkosina@suse.de>,
-        Steve deRosier <steve.derosier@gmail.com>
-Date:   Fri, 14 Oct 2022 18:59:18 +0200
-In-Reply-To: <20221014164705.31486-2-johannes@sipsolutions.net>
-References: <20221014164705.31486-1-johannes@sipsolutions.net>
-         <20221014164705.31486-2-johannes@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Jiri Kosina <jkosina@suse.de>
+Subject: Re: [RFC v5.10 0/3] mac80211 use-after-free fix
+Message-ID: <Y0mfPoTQT0QTFPVF@kroah.com>
+References: <20221014163906.23156-1-johannes@sipsolutions.net>
+ <05b245f76948c081ac5384f69d3b993ae24ac950.camel@sipsolutions.net>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <05b245f76948c081ac5384f69d3b993ae24ac950.camel@sipsolutions.net>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-10-14 at 18:47 +0200, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
->=20
-> There's no need to parse all elements etc. just to find the
-> authentication challenge - use cfg80211_find_elem() instead.
-> This also allows us to remove WLAN_EID_CHALLENGE handling
-> from the element parsing entirely.
+On Fri, Oct 14, 2022 at 06:56:44PM +0200, Johannes Berg wrote:
+> Sorry about the duplicate, I'm on a train to Berlin and network was
+> spotty.
 
+No worries!  I'll do a round of stable updates with what we have right
+now tomorrow morning and then will look at these when I return home
+later tomorrow evening.  Thanks for doing them!
 
-
->  	pos =3D mgmt->u.auth.variable;
-> -	ieee802_11_parse_elems(pos, len - (pos - (u8 *)mgmt), false, &elems,
-> -			       mgmt->bssid, auth_data->bss->bssid);
->=20
-
-And, I probably should've said that in the commit message, the multiple
-BSSID element isn't valid in this frame either, so need to try to parse
-it (last argument)
-
-johannes
+greg k-h
