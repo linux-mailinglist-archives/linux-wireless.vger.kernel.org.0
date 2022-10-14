@@ -2,99 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04BD45FF182
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 17:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A01A5FF193
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 17:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbiJNPhb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 11:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53134 "EHLO
+        id S229925AbiJNPmo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 11:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229768AbiJNPha (ORCPT
+        with ESMTP id S230351AbiJNPmm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 11:37:30 -0400
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D3D16C234
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 08:37:29 -0700 (PDT)
-Received: by mail-oo1-xc30.google.com with SMTP id r15-20020a4abf0f000000b004761c7e6be1so1750848oop.9
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 08:37:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDsOTG9zBNarI1Rtok1jWy7gY+RThTmsg9+L0qxJ118=;
-        b=XMt4lo+L2UWezAJPu0vFOnSxSv8G6x49iluNaGqjlRPWU/dtzpTL7ux2JDKVbqjk5V
-         ExEGPHD8pacMIgRZB4EtiwNG3fJJnHXGfjkuhibG2si5Wf35eJqP4CV+6f/OwfOhNz80
-         DVfKzpJhdRgoWRSPCUjosbnwGYZcepgDoMRrcIYDBOwAPIkfRFx6vFcAkzuK5x7ceGWD
-         RlzcmBiRElVGnoA5zMkqSuFkwB3g3qoFS1VGKKWxRTLIcpl8l5S1GgK7d76P7swQbRR9
-         F58II5/Wb5ReM1UUAuK6CtxPrNr8dZFF/5fGNgK+WmMkJBPMqffsBC6H1wVW94YqDV+k
-         mBAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aDsOTG9zBNarI1Rtok1jWy7gY+RThTmsg9+L0qxJ118=;
-        b=1wdb6bPNBjrQOhO58ns583bwYTlquqZdW8OXtgeG/E4PNGHletmeK4l7cTbsjBrdG7
-         TlyRAGJQpRCNo0iX1TsxzbrDWtfZWMWHowiKEELxWN2H5j7Sq8Ph1/mDjer/cHpTPbfC
-         I7J2T0OpImQr9JUerDKdxx9qvktZhxtHLJDrTYp9zpu6n02TVa6O+xktFbmhBf3ZRmJE
-         dyRSBWKLC5AOFkm2wTHIhkvlzvF2EcB6rpyNFfwHWita1FrOutlDZb2p7eBcSvmFN8Fk
-         kLGc+N+NWFKWhQNGGz6FAhz576n2uSJ1P+M0bPFCyPDlEuvRgj/xaM9oJ+8FHctg4iN/
-         RpFw==
-X-Gm-Message-State: ACrzQf2GRc5ciNQu4FLdcz8Tuweak5LX2hSBXFMxKPRE9S/tbmgt1tAV
-        d51jDm2AMMmzswEDC1iIarLgP7NPwbs=
-X-Google-Smtp-Source: AMsMyM5UsgZteKhgh3jORyj0dck2brCmamqSkmGu+46JQTzhDeTxW0yY9sUhDYxcKEUI373xhNai4g==
-X-Received: by 2002:a4a:aa4b:0:b0:47f:7ce6:5b29 with SMTP id y11-20020a4aaa4b000000b0047f7ce65b29mr2194335oom.17.1665761849047;
-        Fri, 14 Oct 2022 08:37:29 -0700 (PDT)
-Received: from [192.168.0.158] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id a10-20020a05680804ca00b003544822f725sm1258036oie.8.2022.10.14.08.37.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Oct 2022 08:37:28 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <54d3afcb-3333-ef9d-df68-446618f09040@lwfinger.net>
-Date:   Fri, 14 Oct 2022 10:37:27 -0500
+        Fri, 14 Oct 2022 11:42:42 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B9E1CB53F
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 08:42:40 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29EEteqG016479;
+        Fri, 14 Oct 2022 15:42:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=4tzYF922QtOZ9HWF2MUcwCmnjM0kWhjntW7t/8P2NOk=;
+ b=UXnSCzxjLAhszEbfyybx53Ous/RY+nzT4l+xL2nIOZBRu5YQvR9pKKPnzleTHpq222on
+ BHsNBE36ujFULmwzDydrxSTL1perMLYdlMRxMMVoqVLXzte0bU7rwQm/BYxYQGkZiGzq
+ +DzHnfbHP4oSJiHXdQqyp8+muZF4U3TY0bqzGy0Z6IRyw1I6ak+RmsCcIJLUZOmzuKta
+ VPKOHcdJWNrbdejnvyDtqymtdG7ESUKUwZzkriObJLEaAB3LF47Uxnynu9zpgUv95cl/
+ r+s0Llzo+qbtZEo470XhY/mwHV/GSvmhzPLTHCKvDX/sA6bZ9A/+12w/dKXgyasOMhIj 4w== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k74ech6tr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Oct 2022 15:42:32 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29EFgVht003870
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Oct 2022 15:42:31 GMT
+Received: from nmaran-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Fri, 14 Oct 2022 08:42:30 -0700
+From:   Nagarajan Maran <quic_nmaran@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Nagarajan Maran <quic_nmaran@quicinc.com>
+Subject: [PATCH] ath11k: fix monitor vdev creation with firmware recovery
+Date:   Fri, 14 Oct 2022 21:12:16 +0530
+Message-ID: <20221014154216.4262-1-quic_nmaran@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH 0/4] wifi: rtw89: 8852b: add RF calibration part 2 and
- enable 8852BE
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <20221014060237.29050-1-pkshih@realtek.com>
- <87ilkmn1ud.fsf@kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <87ilkmn1ud.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: KSOr6z2wb6968Xn1968n4EwKId0xSna0
+X-Proofpoint-ORIG-GUID: KSOr6z2wb6968Xn1968n4EwKId0xSna0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-14_09,2022-10-14_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=988 mlxscore=0
+ impostorscore=0 clxscore=1011 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210140086
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/14/22 05:20, Kalle Valo wrote:
-> Ping-Ke Shih <pkshih@realtek.com> writes:
-> 
->> After this patchset, 8852BE is ready, so add 8852BE to Kconfig and
->> Makefile. With firmware v0.27.32.0, STA, AP and monitor can work well.
-> 
-> Awesome! From my point of view adding 8852BE support went really
-> smoothly, thanks for that. Very much appreciated.
+During firmware recovery, the monitor interface is not
+getting created in the driver and firmware since
+the respective flags are not updated properly.
 
-I agree. I have been testing the wireless-next code for about a week with no 
-drops and with a code change in today's patches, very little has been logged.
+So after firmware recovery is successful, when monitor
+interface is brought down manually, firmware assertion
+is observed, since we are trying to bring down the
+interface which is not yet created in the firmware.
 
-After applying today's updates, my RTW8852BE gets a little over 700 Mbps up and 
-down when using a local speedtest server and a D-Link AX1500 router in the 5G band.
+Fix this by updating the monitor flags properly per
+phy#, during firmware recovery.
 
-Kudos to the Realtek group.
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
 
-Larry
+Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 35a5de3a0a8a..0ab2f190f1ec 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1677,6 +1677,10 @@ void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab)
+ 			     ath11k_mac_tx_mgmt_pending_free, ar);
+ 		idr_destroy(&ar->txmgmt_idr);
+ 		wake_up(&ar->txmgmt_empty_waitq);
++
++		ar->monitor_vdev_id = -1;
++		clear_bit(ATH11K_FLAG_MONITOR_STARTED, &ar->monitor_flags);
++		clear_bit(ATH11K_FLAG_MONITOR_VDEV_CREATED, &ar->monitor_flags);
+ 	}
+ 
+ 	wake_up(&ab->wmi_ab.tx_credits_wq);
+-- 
+2.17.1
 
