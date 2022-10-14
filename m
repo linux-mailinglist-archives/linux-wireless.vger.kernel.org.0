@@ -2,78 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF715FE9D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 09:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F76B5FEA34
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 10:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbiJNHt0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 03:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
+        id S229635AbiJNILc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 04:11:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbiJNHtZ (ORCPT
+        with ESMTP id S230070AbiJNIL1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 03:49:25 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086C5167270
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 00:49:24 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29E4jVjo004104;
-        Fri, 14 Oct 2022 07:49:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : cc : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=8r2oo2A2ixBsNsErHkai2QpmPWppB6Numquw4jhaWNQ=;
- b=AGIVItbQtZXuDZAO+U5EEFkNY8o65BRjbHPDgAjUB6INMg4zJD3JJ4p/0KUmh+UBpSLs
- 30nXCu6lGq2AVKWynQENQPmPcz4ZpQo5Z5nIYXcZQzUZ16OkMJMi5P0G6xhQy4ljwzrB
- sF+hyiKSdiEJr6LEOp8HtXc4kkWdCXCn6mzx1L6o1lxoeb+YP0IVZ1dpiUAc/vGcIacA
- 7U+4ibeZqR+7sVt5Tke621aXevrbiqFbhddxtU19mIiGk5Kgl362r+qlSnpanBKJeBHn
- m0oGZ2GO1QTIXeK7KOFNxyT7F8i3jTN0J/u52g9NTVFRggAVTVdmOYegmCX9yBV7Ujoj Qw== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k6smp1e0n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Oct 2022 07:49:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29E7nHh4018764
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Oct 2022 07:49:17 GMT
-Received: from [10.50.44.21] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 14 Oct
- 2022 00:49:16 -0700
-Message-ID: <83fe4c4e-c8e2-c873-b4af-42d1bd6787f4@quicinc.com>
-Date:   Fri, 14 Oct 2022 13:19:12 +0530
+        Fri, 14 Oct 2022 04:11:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF551C1163
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 01:11:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A3FF619D0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 08:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126B7C433C1;
+        Fri, 14 Oct 2022 08:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665735082;
+        bh=/2YzZDSriZZP47ugqgBa+WOk7JL//L8icKVDiTA4OCQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T3sRhDq8W6s+mPky9BkcvaCU+3EGDA5zhXsBnTRfsaF0QQuplogIf5pwg9iv1jnl8
+         C3rxZx1kF0qvJMWzGS0ya8etmdQaUaylMcIGNuvT0spD+SJNuOesHYbr4UTvaRaUO5
+         rjryV0+LiSXWT8OXuQIMccnbU9sTzvX/ncmR/yTu38/yjhPrMNHfyw1DcXTmOs8Eud
+         6IDrjgCT6gFw4rPuSgEvD303tIWG84LBEvRMkd5G8TD78mzvl2umB+ZscM5NnMFK8w
+         zTmrGcqtNwDVk2MbQxQjnBTTjYJB7bGAFrqZk7bAMECK7q2nNQmnKsBkdDDGsr939P
+         VZsGentG9E/kQ==
+Date:   Fri, 14 Oct 2022 10:11:18 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [bug report] mt76: implement functions to get the response skb
+ for MCU calls
+Message-ID: <Y0kZph3yi1Kd2Ljc@lore-desk>
+References: <20211008130007.GA23161@kili>
+ <9298fd82e4b49b965e9f26957510b9e968e8b691.camel@sipsolutions.net>
+ <20211008142734.GI2083@kadam>
+ <Y0gM2jeo/X5Vq+lq@kadam>
+ <Y0g8Ev4hE7m/kP3H@lore-desk>
+ <Y0kP/WOjnCexAPCy@kadam>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH 17/50] wifi: ath12k: add dp_tx.c
-Content-Language: en-US
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
-References: <20220812161003.27279-1-kvalo@kernel.org>
- <20220812161003.27279-18-kvalo@kernel.org>
- <de6d5e1a-0ff4-a303-ed25-508816a39a0d@quicinc.com>
- <CH0PR02MB821206158809DF78955A0EC8F6249@CH0PR02MB8212.namprd02.prod.outlook.com>
-CC:     <ath12k@lists.infradead.org>
-From:   Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-In-Reply-To: <CH0PR02MB821206158809DF78955A0EC8F6249@CH0PR02MB8212.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: GruA0i3NTKFf4O-p2T1b6pTGFuKq7vbM
-X-Proofpoint-GUID: GruA0i3NTKFf4O-p2T1b6pTGFuKq7vbM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-14_03,2022-10-13_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=892
- malwarescore=0 phishscore=0 adultscore=0 clxscore=1015 impostorscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210140045
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5pLxOw79BPeYd/sX"
+Content-Disposition: inline
+In-Reply-To: <Y0kP/WOjnCexAPCy@kadam>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,14 +62,103 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-> snip
->
->> +int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar,
->> +bool reset) {
->> +     struct ath12k_base *ab = ar->ab;
->> +     struct ath12k_dp *dp = &ab->dp;
->> +     struct htt_rx_ring_tlv_filter tlv_filter = {0};
->> +     int ret = 0, ring_id = 0;
-> nit: both initializers always overwritten
-Thanks Jeff.. I will address all comments in next revision.
+--5pLxOw79BPeYd/sX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+> On Thu, Oct 13, 2022 at 06:25:54PM +0200, Lorenzo Bianconi wrote:
+> > > I would like to revisit this question.  Last time I complained about
+> > > this Johannes responded but he misread what mt76_mcu_send_and_get_msg=
+()
+> > > does.  I have looked at it as well and I also cannot explain what is
+> > > going on in that function.
+> > >=20
+> > > I have looked at the callers and my first instinct is that maybe this
+> > > is dead stub code?  But then when I look at mt76x02u_mcu_send_msg() I
+> > > think "No, this is not stub code.  This should be returning the newly
+> > > allocated skb to the caller."
+> > >=20
+> > > But then I think, surely at some point someone tested this code???  It
+> > > must be stub code.
+> > >=20
+> > > Could we get some clarity on this?
+> >=20
+> > for mt76x2 and mt76x0 we do not care of ret_skb (in fact we do not run
+> > mt76_mcu_send_and_get_msg() directly but we rely on mt76_mcu_send_msg()=
+).
+> > For mt7921 we set mcu_skb_send_msg function pointer and not mcu_send_ms=
+g.
+>=20
+> Ah thanks...  It's easy enough to silence the warning in Smatch but I
+> was never sure if it wasn't a bug.
+>=20
+> > Moreover mt7921_mcu_get_eeprom() has been remove a while back.
+> > Am I missing something?
+>=20
+> There are 12 callers for mt76_mcu_send_and_get_msg() and 11 of them
+> assume that the "ret_skb" is initialized (i.e. they assume that
+> the ->mcu_send_msg op is not used) so I get 11 Smatch warnings from
+> this...
+>=20
+> Why not just do something like below?  It moves the ->mcu_send_msg()
+> call to the only place where it won't cause a crash.
+>=20
+> regards,
+> dan carpenter
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wirel=
+ess/mediatek/mt76/mcu.c
+> index a8cafa39a56d..6bf0b7d8daee 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mcu.c
+> @@ -58,9 +58,6 @@ int mt76_mcu_send_and_get_msg(struct mt76_dev *dev, int=
+ cmd, const void *data,
+>  {
+>  	struct sk_buff *skb;
+> =20
+> -	if (dev->mcu_ops->mcu_send_msg)
+> -		return dev->mcu_ops->mcu_send_msg(dev, cmd, data, len, wait_resp);
+> -
+>  	skb =3D mt76_mcu_msg_alloc(dev, data, len);
+>  	if (!skb)
+>  		return -ENOMEM;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 87db9498dea4..99f931c08da9 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -1383,6 +1383,9 @@ static inline int
+>  mt76_mcu_send_msg(struct mt76_dev *dev, int cmd, const void *data, int l=
+en,
+>  		  bool wait_resp)
+>  {
+> +	if (dev->mcu_ops->mcu_send_msg)
+> +		return dev->mcu_ops->mcu_send_msg(dev, cmd, data, len, wait_resp);
+> +
+>  	return mt76_mcu_send_and_get_msg(dev, cmd, data, len, wait_resp, NULL);
+>  }
+> =20
+
+This patch seems correct since we run mcu_send_msg just for mt76x0 and mt76=
+x2.
+@Felix: what do you think?
+
+Regards,
+Lorenzo
+
+>=20
+>=20
+
+--5pLxOw79BPeYd/sX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY0kZpgAKCRA6cBh0uS2t
+rMHVAQCNa78vrYtzPu+jYUzOdqNamrK6pERLMwr//WqW6yD/DgD/aawfF0nuNZbF
++GL/u7xR+aqtjBLhw4zMhCAoHrPdPAM=
+=sjpR
+-----END PGP SIGNATURE-----
+
+--5pLxOw79BPeYd/sX--
