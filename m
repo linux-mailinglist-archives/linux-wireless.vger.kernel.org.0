@@ -2,87 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 186695FEB51
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 11:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FF1E5FEB53
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 11:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbiJNJF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 05:05:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34120 "EHLO
+        id S229920AbiJNJIh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 05:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbiJNJF6 (ORCPT
+        with ESMTP id S229997AbiJNJId (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 05:05:58 -0400
-Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62CBB17653B
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 02:05:56 -0700 (PDT)
-Received: by mail-vs1-xe2f.google.com with SMTP id v68so4264646vsb.1
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 02:05:56 -0700 (PDT)
+        Fri, 14 Oct 2022 05:08:33 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00B92B25B
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 02:08:32 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id a13so6044224edj.0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 02:08:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        d=linaro.org; s=google;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HBIqq1Xi5W93aDTnMJKZQ4LXQmr3ZVtqfHaXUwd4JvE=;
-        b=GiP693ulKhVPTgYIG3pDfYmrMwjYAzME8RFvm1ZoJzRz9Xv8h5qXZ4LZpBnUaA9pFe
-         RNoN81pSDaEEQO1WvE0/KS83SvDBZ16rcAJuHH3PhlaBs95TbTpoBfQsif9hGO+5FI/j
-         mqQu+UM838nSbIqAyi3T8p9v7Kv2mLlGegf6BiOorhycRtFHNoePLZuArqJKah5LV+GB
-         kmvFX51vZa9AmwVwxFnIKOj/72V+4R77oE9M7vS8M73wr12jhTzCVg1O60ClMJRHGgnd
-         zwoHgk28+nb6dt+VXV7S95934oqfR3fceWUU7Do4Jd/q8VYVwjyuAX9ayrVQlc/eyRN1
-         DWPQ==
+        bh=7IqumXCEVYuWRkK7x4wtTFGNl141XgbbmIdAjil0lpk=;
+        b=cZh/DaKe3WD0cQs4mMURaAfCOM3fzh4r0PsoYF7ztIvMuxT/Y4QYSKFVoQX8dOmkhW
+         afrpC2MYjYCXhtObmCqpmaoogXJBxnbeIvJZlW0/Uam5h4sp92wu//hQVabDc9c8P5P1
+         hl6dkn4YqBuG168xK+8nHXiBMmBnl+3aiIDTBeEGZgHujxUZGiZeFkWOrTC2g8/7kq/H
+         OhMN5EOVQADyVFjcYNqVUcyBT2BnDpxN3O1FJUEfzjmq5ttxMFmDzzE20SJ4QO0TJxbX
+         LVDQMtHVnMPoGi9geTJqmakkMD4fy5tKKaUHK4pKXcf3w1J+dnsS7fT1QyBBTrgBUqD+
+         FOUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HBIqq1Xi5W93aDTnMJKZQ4LXQmr3ZVtqfHaXUwd4JvE=;
-        b=nBZsos8pv5AViGZysdOWP67ZsemgnjlIIYFJ/vXpNTSWs/BF4T7w5IXKv/pX/eXkiZ
-         L2GIw+igCJjZWCAJcbNSAB/sdym66BkCnJa61+506CCaactygPOBRykTHEc1sSkIPe/I
-         wJQa6fxcRB+I0RgiqSE3GdUP4VuT1rmC3VB0V1fFU9qcUNUDG15D471ELpfG/Na+FF3J
-         rpe5m0YGAwWleB4BfNqTCCn9bKvAnXLJYJzHlhWbgha44hjGCgcrvnAYdRkrf7/n/gUu
-         Sz6DChNN0jyFeczrEOzMhTpmO2JAFxGobcFSoyvwSFXJtWbY3L2JVev7iDjp2d9dHf5o
-         6WBA==
-X-Gm-Message-State: ACrzQf2z3IFGoGvZpTlW/TiRQpPbnu+eQEtP/Gbex86MN8cgjNR3DXQl
-        akSUck27OUY4sFpuGTnKozcyQB1UaCjxUmIPWXBoyQ==
-X-Google-Smtp-Source: AMsMyM7sriPSD4G5SD+wg9iy4SXUJgoayiZNOAEIsu1uhEU4o3lZO/+qnm8wqMM2Ne1qoLAhQOYN1SdyJHqc03/4Y3w=
-X-Received: by 2002:a67:ac09:0:b0:39a:eab8:a3a6 with SMTP id
- v9-20020a67ac09000000b0039aeab8a3a6mr1915129vse.9.1665738355453; Fri, 14 Oct
- 2022 02:05:55 -0700 (PDT)
+        bh=7IqumXCEVYuWRkK7x4wtTFGNl141XgbbmIdAjil0lpk=;
+        b=wL3Jran3xhkx8eO2158rW6kr0hOVwrAIy/kX4LunujNdLFq3igdH0qpCviLmZYrIEV
+         ZqN2bViTML8ySPTy3f3hqx+cHMEN8fEnLG5u41Ry0S/LlEfe7uYgfIpe2woIoAoT8/ie
+         PE+NC6vw5XvOzheUA4q48MxM0TqXRo0yLPDFs0LARmYgw8pCm2y0h/dKCefTOaNleOFN
+         NV3Urr0urp1zSZfI2tcFqQ8HqUyZkQqc5IUx4mh0doiJqX3i0anQnQyLQRk2mxPAOuPp
+         y3TbarsHTc+cTbDAurJ4IyGzDacjzq4e2f5GAcR5yX4sR/ZevrHRpmR1Bf6wAuJmAk2w
+         FW8Q==
+X-Gm-Message-State: ACrzQf2Zd9UBNsM4URwAYUAmg1DFa7ecXUEHTrLrL88l8ckp1Vky4eMa
+        VxuFIjKtdFgBRh7MGeOMpuzDieI/ftzLw4wW7WwyFbTfno0=
+X-Google-Smtp-Source: AMsMyM5hALvc9CQ8utY4epgcSwHtPjVZpfV+UTVs1Ks+wkYsDznhn/7pGwhngqmIP8sPCFYZYImZTuz2N3Xi4YjLJ4s=
+X-Received: by 2002:aa7:cd4f:0:b0:458:6077:c3ac with SMTP id
+ v15-20020aa7cd4f000000b004586077c3acmr3499746edw.32.1665738511439; Fri, 14
+ Oct 2022 02:08:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221012192348.2234478-1-linus.walleij@linaro.org>
-In-Reply-To: <20221012192348.2234478-1-linus.walleij@linaro.org>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 14 Oct 2022 11:05:44 +0200
-Message-ID: <CAMRc=MdY38HKaH3i8UjQF7xc7PAOnY0_8tgLaVj_MhPe0byg4g@mail.gmail.com>
+References: <20221012192348.2234478-1-linus.walleij@linaro.org> <CAMRc=MdY38HKaH3i8UjQF7xc7PAOnY0_8tgLaVj_MhPe0byg4g@mail.gmail.com>
+In-Reply-To: <CAMRc=MdY38HKaH3i8UjQF7xc7PAOnY0_8tgLaVj_MhPe0byg4g@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 14 Oct 2022 11:08:20 +0200
+Message-ID: <CACRpkdZuBJbHrAmvM=DFwfseFvcCLbmxcwowdQ3HyhZC+b_PRg@mail.gmail.com>
 Subject: Re: [PATCH] bcma: gpio: Convert to immutable gpio irqchip
-To:     Linus Walleij <linus.walleij@linaro.org>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
         linux-wireless@vger.kernel.org, Marc Zyngier <maz@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 12, 2022 at 9:25 PM Linus Walleij <linus.walleij@linaro.org> wr=
-ote:
+On Fri, Oct 14, 2022 at 11:05 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> On Wed, Oct 12, 2022 at 9:25 PM Linus Walleij <linus.walleij@linaro.org> =
+wrote:
+> >
+> > This switches the BCMA gpio irqchip to be immutable.
+> >
+> > Tested on the D-Link DWL-6810AP.
+> >
+> > Cc: Marc Zyngier <maz@kernel.org>
+> > Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+> > Cc: Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com>
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> > ---
 >
-> This switches the BCMA gpio irqchip to be immutable.
+> Reviewed-by: Bartosz Golaszewski <brgl@bgdev.pl>
 >
-> Tested on the D-Link DWL-6810AP.
->
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
+> Why is this here and not in drivers/gpio/?
 
-Reviewed-by: Bartosz Golaszewski <brgl@bgdev.pl>
+I don't remember exactly but I think it was that it would needlessly
+expose all of the gory BCMA details into a global header so it was
+the lesser evil.
 
-Why is this here and not in drivers/gpio/?
-
-Bart
+Yours,
+Linus Walleij
