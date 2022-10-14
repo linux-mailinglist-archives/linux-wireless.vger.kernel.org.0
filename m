@@ -2,42 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51A55FF2B0
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 18:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 058115FF2B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 18:59:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbiJNQ6M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 12:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36254 "EHLO
+        id S230020AbiJNQ7l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 12:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbiJNQ6L (ORCPT
+        with ESMTP id S229583AbiJNQ7j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 12:58:11 -0400
+        Fri, 14 Oct 2022 12:59:39 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFC61D587E
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 09:58:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30901D5874;
+        Fri, 14 Oct 2022 09:59:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+wWAKSwF3ux1y99cey98mf6LN5wafcQICJXODUhXrQw=;
-        t=1665766690; x=1666976290; b=tBE+39GeJv1U/nfELJryxvNtXXmhYEeRUJptEYkOva89akk
-        FvXfy8aVLetgcPxQujQzjFPadvsUneENB7f7iOyaTmdLZ08XBR1LfAiWgBjIK1R4ZQstXJGrj2KkU
-        +Q5ZSapckapx5bKMNCtb2oxNeLMY+rN0uumjw1wzJYr7sYzmNEJGfB9/PN3d+YFZnhUDGLOyHy//z
-        PR0skyItNSQGdWltnhIZlqPqUtFW46WmQdqutcKFLhN4JsQg7qeU/tB9kRgrpyj1SKs61EW05gkZ1
-        W54NKKhtEsmKS/F5FiC0PDCU8wbsdrUtlu3vrkwvcdtCP0bjw9Jldw0dPuzfvxJg==;
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=e8QmQj/Zq/UfceewR+AjHaGQieTQyGwcfUHbCnFhFjA=;
+        t=1665766775; x=1666976375; b=UllvAEIr0KvEQSbQywOZTU40OOq3GUyLo2A7S6O5B1CaCpw
+        fURTJzGgbA4zOKEUuZcltrD5eZBlCpM24xPgRa8tkyCqCxNUa3DbKNEToQQ0RUsdTrc+ykdZdr6UT
+        V6p+RH6Nxcqq2N5P8pbdYmBXE7vyDOgyQQJFot/6NqrICCgZny1nMdhqURbt/LGNgA6Wh2UKxwhlU
+        gyegcR981XEJbdiC6B+d7V/Qw/0BoLeirVad8rF0CaS9xF1CUcH2XIAUy+7yRZ8F9aIbtC9cfeO0j
+        8NeB31+XDz/wuQ0j2hYrXusBkdhjE7AT1b/upk8UUVTXNwPfVlgTXwk0XUzfA16A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ojO0d-006hDC-1j;
-        Fri, 14 Oct 2022 18:58:08 +0200
-Message-ID: <5da63402ee109ab6df3e0cdbaab3ddaa2156ab8c.camel@sipsolutions.net>
-Subject: Re: Splat from net/wireless/wext-core.c
+        id 1ojO21-006hEY-0D;
+        Fri, 14 Oct 2022 18:59:34 +0200
+Message-ID: <e879fc034013c4c87431bbfa5f3caad7c2d76527.camel@sipsolutions.net>
+Subject: Re: [RFC v5.4 1/3] mac80211: mlme: find auth challenge directly
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Fri, 14 Oct 2022 18:57:54 +0200
-In-Reply-To: <988d4c5c-a9a4-2f16-aa3c-e15778c04d46@lwfinger.net>
-References: <988d4c5c-a9a4-2f16-aa3c-e15778c04d46@lwfinger.net>
+To:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+        Marcus Meissner <meissner@suse.de>,
+        Jiri Kosina <jkosina@suse.de>,
+        Steve deRosier <steve.derosier@gmail.com>
+Date:   Fri, 14 Oct 2022 18:59:18 +0200
+In-Reply-To: <20221014164705.31486-2-johannes@sipsolutions.net>
+References: <20221014164705.31486-1-johannes@sipsolutions.net>
+         <20221014164705.31486-2-johannes@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -52,19 +57,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-10-14 at 11:49 -0500, Larry Finger wrote:
-> Hi,
+On Fri, 2022-10-14 at 18:47 +0200, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 >=20
-> With a recent pull from kernel mainline, I am getting a log splat shown b=
-elow:
->=20
-> [   29.369446] ------------[ cut here ]------------
-> [   29.369447] memcpy: detected field-spanning write (size 16) of single =
-field=20
-> "&compat_event->pointer" at net/wireless/wext-core.c:623 (size 4)
+> There's no need to parse all elements etc. just to find the
+> authentication challenge - use cfg80211_find_elem() instead.
+> This also allows us to remove WLAN_EID_CHALLENGE handling
+> from the element parsing entirely.
 
 
-Yeah fixed by commit e3e6e1d16a4c ("wifi: wext: use flex array
-destination for memcpy()") I think?
+
+>  	pos =3D mgmt->u.auth.variable;
+> -	ieee802_11_parse_elems(pos, len - (pos - (u8 *)mgmt), false, &elems,
+> -			       mgmt->bssid, auth_data->bss->bssid);
+>=20
+
+And, I probably should've said that in the commit message, the multiple
+BSSID element isn't valid in this frame either, so need to try to parse
+it (last argument)
 
 johannes
