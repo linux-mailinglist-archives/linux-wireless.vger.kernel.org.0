@@ -2,142 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA3E5FF423
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 21:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14CF5FF46E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 22:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231327AbiJNThi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 15:37:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32836 "EHLO
+        id S231362AbiJNUQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 16:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbiJNThh (ORCPT
+        with ESMTP id S231463AbiJNUQS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 15:37:37 -0400
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7680F1C5E3E
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 12:37:36 -0700 (PDT)
-Received: by mail-il1-f197.google.com with SMTP id i4-20020a056e02152400b002fa876e95b3so4580046ilu.17
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 12:37:36 -0700 (PDT)
+        Fri, 14 Oct 2022 16:16:18 -0400
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8080AE77BB
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 13:16:13 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id n130so6204359oia.6
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 13:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:sender:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TITCHpO8o8C79rIpo9L5QYUhST5Z8U6+wfGjl8SgYss=;
+        b=MtOfK4soEqXH4dnrJP1chF3L+fp1y7uayALUZg1VOWPP9zWBJpBnRCkFbS6VTXXWFq
+         zCyG/SoVBaAPnDt0Hy9h3mIAp5j/1nAUEknN7Gy4i9hFC6oNJ1FFFiEbHZnWNqMQ35Q/
+         sUC1Ps1p3n1gRtbkcsKhPV8rktyOwzzTzQSX4HNyWxaRIxNhPfW7jC11gHPZYAleXxca
+         PiW+ecqDCI0ZOuCyFTgngCD7sXHf5B3S5HKp0JRH5BwBdF3iPvaGXkQbkPUJ9ZmqBvkZ
+         4AzwfbUCWCZaLONen22GlNoWeok3NUzjyk69U89YirMkLlKihxDbU2+UmxKNe/DgkKYL
+         YbEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rX/AbI3L9evs+/oSuEXoC2wLpzx4WySJz83LC24vFuo=;
-        b=VNTxOoNarEpGwGXLtDTBby/jpF05XPbThC+fGfEWTQFN1AH1U6WW6yU11q+Q32c6+p
-         N5HurNbaiR+I+Whv+B4eq4tElnWB9M4VrzF08mRcFhmycc8/reH7tpp4jiOO1gl/s7O1
-         5qj4IJ30HOHZ4HDIjFfqCT4nVljCnmIROmICGo8KXjiypnYYgo3GyR82XsFilWcuTn/Q
-         GRcXXW19zu9jgh0sZYwz65karZwe7ypy+hcbePgxgloXBp9c3jB+Xp0RC9zuEmaKq0wS
-         aLlS52oktkQiwzVL29sb+uMbXtU3eZUFLSJpwsn3a09+eeGLSXBUVc86Biqe+iXkaAJm
-         aMMg==
-X-Gm-Message-State: ACrzQf3JYrN8K/fZtPnx4r5N3+6fD6FuHQXqXDC+pVcGwoaSSihSIlpQ
-        49F09PPyYTuA0CknCFEoKihgyWK/VLCh5+LDEwvVbovkPBG9
-X-Google-Smtp-Source: AMsMyM5NoSc6CvLYIBk7FYOQdzxNu5HK3T8IwaQn9Lik5mN8eb54I6qQIsyC1XwBROSTqXdEBU/LteIrrdlOZpLXfglgPtiTXWba
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TITCHpO8o8C79rIpo9L5QYUhST5Z8U6+wfGjl8SgYss=;
+        b=MFYmWV56UgCK6HX5s0cP8sWZ2YbQDieQAYy1uQidIBs/TO/IY2WSTVPPumxV07UJmX
+         MxF2SRi/0Gwi7ePZvRrBAZvNeZeNjAJaAlIKDUr8CrgkKkAGNHrqBFeH7oaLa2eT17rh
+         zGvrIxs0X1HTkb8OVI9V5r+49HPeMQzAv3XDGXR8ePIBnwKi+UlFnSHsY4Pt4hsixXGk
+         jtbE+shpAYRqdnkd5FRQIGWSzZMTPi56i7jAgSjkO1YYFIBTmhXRnYodfImXkl3MsN6i
+         wHFPQjTCjeqI5LbslKEirRNmisUFgPniMuhnrIXL/Weo3pVkVy4D1O0nMb3AJPnTnOKV
+         4nDg==
+X-Gm-Message-State: ACrzQf0Vqog/jcd/MEYWB5aO1bYx/tUBx9jJVPlV0PNoPeRxpodMCG3t
+        xCZxwI2Tx24p9vpUoO5LeJ6P5xQ7c8k=
+X-Google-Smtp-Source: AMsMyM5DwGgJXa9APM3R7xSarh78io8y2tpueWtA/rM3cTXy5edypC+dh0K7Ha/elEkGLeWtTfYEvA==
+X-Received: by 2002:a54:4815:0:b0:354:cbd2:4dec with SMTP id j21-20020a544815000000b00354cbd24decmr3205990oij.289.1665778572794;
+        Fri, 14 Oct 2022 13:16:12 -0700 (PDT)
+Received: from [192.168.0.158] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id l10-20020a4a434a000000b004768f725b7csm1351714ooj.23.2022.10.14.13.16.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Oct 2022 13:16:12 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <41d85c23-2735-ed7a-21b9-36b9f7be5439@lwfinger.net>
+Date:   Fri, 14 Oct 2022 15:16:11 -0500
 MIME-Version: 1.0
-X-Received: by 2002:a5d:9452:0:b0:6a3:4fab:d98e with SMTP id
- x18-20020a5d9452000000b006a34fabd98emr2950724ior.185.1665776255682; Fri, 14
- Oct 2022 12:37:35 -0700 (PDT)
-Date:   Fri, 14 Oct 2022 12:37:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000fecefc05eb03c144@google.com>
-Subject: [syzbot] WARNING: ODEBUG bug in ieee80211_led_exit
-From:   syzbot <syzbot+25842f13c5ac135060f4@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: Splat from net/wireless/wext-core.c
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <988d4c5c-a9a4-2f16-aa3c-e15778c04d46@lwfinger.net>
+ <5da63402ee109ab6df3e0cdbaab3ddaa2156ab8c.camel@sipsolutions.net>
+Content-Language: en-US
+In-Reply-To: <5da63402ee109ab6df3e0cdbaab3ddaa2156ab8c.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 10/14/22 11:57, Johannes Berg wrote:
+> On Fri, 2022-10-14 at 11:49 -0500, Larry Finger wrote:
+>> Hi,
+>>
+>> With a recent pull from kernel mainline, I am getting a log splat shown below:
+>>
+>> [   29.369446] ------------[ cut here ]------------
+>> [   29.369447] memcpy: detected field-spanning write (size 16) of single field
+>> "&compat_event->pointer" at net/wireless/wext-core.c:623 (size 4)
+> 
+> 
+> Yeah fixed by commit e3e6e1d16a4c ("wifi: wext: use flex array
+> destination for memcpy()") I think?
 
-syzbot found the following issue on:
+Johannes,
 
-HEAD commit:    a6afa4199d3d Merge tag 'mailbox-v6.1' of git://git.linaro...
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=158ad462880000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9e5376a2f09d6389
-dashboard link: https://syzkaller.appspot.com/bug?extid=25842f13c5ac135060f4
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=122c5d1a880000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1154e478880000
+Sorry for the noise. That commit was merged when I did a new pull on mainline. 
+My log is clean now.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/ee555c567c15/disk-a6afa419.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2124bd57845b/vmlinux-a6afa419.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+25842f13c5ac135060f4@syzkaller.appspotmail.com
-
-usb 2-1: USB disconnect, device number 13
-------------[ cut here ]------------
-ODEBUG: free active (active state 0) object type: timer_list hint: tpt_trig_timer+0x0/0x3c0 net/mac80211/led.c:145
-WARNING: CPU: 1 PID: 1297 at lib/debugobjects.c:502 debug_print_object+0x16e/0x250 lib/debugobjects.c:502
-Modules linked in:
-CPU: 1 PID: 1297 Comm: kworker/1:0 Not tainted 6.0.0-syzkaller-09039-ga6afa4199d3d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:debug_print_object+0x16e/0x250 lib/debugobjects.c:502
-Code: ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 af 00 00 00 48 8b 14 dd 80 dd 62 86 4c 89 ee 48 c7 c7 20 d1 62 86 e8 51 e1 af 03 <0f> 0b 83 05 c5 24 ca 06 01 48 83 c4 18 5b 5d 41 5c 41 5d 41 5e c3
-RSP: 0018:ffffc90001457638 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
-RDX: ffff888108e8b900 RSI: ffffffff812c9988 RDI: fffff5200028aeb9
-RBP: 0000000000000001 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff8649fc20
-R13: ffffffff8662d640 R14: ffffffff81357820 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8881f6900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055a3505dc950 CR3: 000000010ed33000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __debug_check_no_obj_freed lib/debugobjects.c:989 [inline]
- debug_check_no_obj_freed+0x301/0x420 lib/debugobjects.c:1020
- slab_free_hook mm/slub.c:1734 [inline]
- slab_free_freelist_hook mm/slub.c:1785 [inline]
- slab_free mm/slub.c:3539 [inline]
- kfree+0x104/0x5c0 mm/slub.c:4567
- ieee80211_led_exit+0x15e/0x1b0 net/mac80211/led.c:210
- ieee80211_unregister_hw+0x192/0x1f0 net/mac80211/main.c:1491
- rt2x00lib_remove_hw drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1084 [inline]
- rt2x00lib_remove_dev+0x42b/0x600 drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1546
- rt2x00usb_disconnect+0x6d/0x240 drivers/net/wireless/ralink/rt2x00/rt2x00usb.c:874
- usb_unbind_interface+0x1d8/0x8e0 drivers/usb/core/driver.c:458
- device_remove drivers/base/dd.c:550 [inline]
- device_remove+0x11f/0x170 drivers/base/dd.c:542
- __device_release_driver drivers/base/dd.c:1249 [inline]
- device_release_driver_internal+0x4a1/0x700 drivers/base/dd.c:1275
- bus_remove_device+0x2e3/0x590 drivers/base/bus.c:529
- device_del+0x4f3/0xc80 drivers/base/core.c:3704
- usb_disable_device+0x356/0x7a0 drivers/usb/core/message.c:1419
- usb_disconnect.cold+0x259/0x6ed drivers/usb/core/hub.c:2235
- hub_port_connect drivers/usb/core/hub.c:5197 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
- port_event drivers/usb/core/hub.c:5653 [inline]
- hub_event+0x1f86/0x45e0 drivers/usb/core/hub.c:5735
- process_one_work+0x991/0x1610 kernel/workqueue.c:2289
- process_scheduled_works kernel/workqueue.c:2352 [inline]
- worker_thread+0x854/0x1080 kernel/workqueue.c:2438
- kthread+0x2ea/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
- </TASK>
+Larry
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
