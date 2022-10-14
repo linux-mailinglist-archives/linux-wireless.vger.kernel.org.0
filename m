@@ -2,66 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 614BA5FEC72
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 12:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9F55FEC77
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 12:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbiJNKUg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Oct 2022 06:20:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52010 "EHLO
+        id S229666AbiJNKVQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Oct 2022 06:21:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbiJNKUf (ORCPT
+        with ESMTP id S229713AbiJNKVP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Oct 2022 06:20:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7405A74BBD
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 03:20:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 31769B82295
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 10:20:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44928C433C1;
-        Fri, 14 Oct 2022 10:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665742831;
-        bh=WBVoWqIHhpDdtti5MAm2b0aWm+iB4vH4iE+u6/FFPls=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZklRrSttenpi3PUHVECpfdgfmVNHVAVH1GxyVMbxlKK/3JEKjgcYLWx+kX3I0bpn/
-         eekboG99HdR/lDgXAwzJfp88HwMuNujy6iCGkdu6aA3a0QZXSW0V54nyqakrSmtHpa
-         I062VSjw/Z4BK9atW7oXKIXOJh3z5b2AvRWD+iBOtS3Da5hAYIBm1PYqcmyYTGRiUe
-         LMv7fM6rAD/q51KdzbeSFSTBB5UYaRcG+AesblzrUKHb/rftj9QQda+olGtWYlfc/i
-         nzDonGHQrEy0BdHBkJ3FZSuI5WyxMmo1GEddT3EM+1lY+tMQLWT+lxhedIEiIQgyl7
-         7pZyvlsvDAgdg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 0/4] wifi: rtw89: 8852b: add RF calibration part 2 and enable 8852BE
-References: <20221014060237.29050-1-pkshih@realtek.com>
-Date:   Fri, 14 Oct 2022 13:20:26 +0300
-In-Reply-To: <20221014060237.29050-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 14 Oct 2022 14:02:33 +0800")
-Message-ID: <87ilkmn1ud.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 14 Oct 2022 06:21:15 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3DB1B94E0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 03:21:13 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id o20-20020a05600c4fd400b003b4a516c479so3205336wmq.1
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Oct 2022 03:21:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dDU1EHry5n+XrvnahgNgah2Rjg065mq9PJm7gjM4LqY=;
+        b=weBpi7OT8CMZrlbpSnhba0XK7AN7li0KVaeNIC9WLH5il+FoUOWOHgPjMa3T2BLRFU
+         2JGX09gQtSGRZX5Mi1lO6g5KAuDbwwH1Atfg4qdGPoerf8g2ACU3nnJRIRdfWqY2C2aT
+         mMk08B6uAB4oYiaVBZEf4KgHaZfe+3XwOzVkCIpGq9W+uE2qVmcA6U2xajbUhH4K+z5v
+         FA/qF6pJbowGLw3i3s90YdZHizscizbVuMwnF/pJxMjzygUWSekeWhH8uR5ViLxfcvw6
+         I54tnjAKsZwvUVnfljwK5CoAHvHkZKmI9y1G8BGBxIQU3CnYVSuCBJHJ+R+DSLRaQ2u+
+         nILA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dDU1EHry5n+XrvnahgNgah2Rjg065mq9PJm7gjM4LqY=;
+        b=Svf1SAnG5LKa5ddRe9EIsUa09xCoxWL55hk7Xi9DvpcQrATowC0cTypIPgf2VBB0ca
+         h1yLwFACeFw9ZyNqPbr03mUqOqaR4Cpj9RQnLEFczq9A6nD8JL0XfyyU2C1VEMiaX9AX
+         dYxkHLjhkiWZMWFQnDM4r9YoyYBC5V1TNgFIBwKpr1SslZMJv2RcrtoTsTAwb+OVamHT
+         2v6QHALXKQ061YQgrBIJfhRQGMCNXWUuNVqZqDBUoxfA9lU4ADKu0wTpasnXpcbQ/ObQ
+         ItgnYJuIJG77IJnvkE3TqPgDCtHDQY3YUNcySPIUra4s2sGjQMkv6wpX8J7q4D3uao71
+         iFNA==
+X-Gm-Message-State: ACrzQf0IxbV7aZI4953MeQk5IoeSzOwjyLtXEIPa1GUrodvtoa7p99eu
+        OxOC/emekPsdDDejO6f17HHP2w==
+X-Google-Smtp-Source: AMsMyM4hwqGQBIpE+BIeCKNhNjdJTVXdfNcXvl3ImrKVug9wu7yYYNOc/LK8urWEJtHZ5ZgSMDmCoA==
+X-Received: by 2002:a1c:f008:0:b0:3b4:fd2e:3ede with SMTP id a8-20020a1cf008000000b003b4fd2e3edemr9737880wmb.133.1665742872213;
+        Fri, 14 Oct 2022 03:21:12 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:b460:17f0:186d:9d2e? ([2a05:6e02:1041:c10:b460:17f0:186d:9d2e])
+        by smtp.googlemail.com with ESMTPSA id n17-20020a05600c465100b003c65c9a36dfsm1633633wmo.48.2022.10.14.03.21.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Oct 2022 03:21:11 -0700 (PDT)
+Message-ID: <f327dfc4-cd67-930c-a011-8cc2c58d7668@linaro.org>
+Date:   Fri, 14 Oct 2022 12:21:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 1/2] thermal/drivers/iwlwifi: Use generic
+ thermal_zone_get_trip() function
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Nathan Errera <nathan.errera@intel.com>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+References: <20221014073253.3719911-1-daniel.lezcano@linaro.org>
+ <87mt9yn22w.fsf@kernel.org>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <87mt9yn22w.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+On 14/10/2022 12:15, Kalle Valo wrote:
+> Daniel Lezcano <daniel.lezcano@linaro.org> writes:
+> 
+>> The thermal framework gives the possibility to register the trip
+>> points with the thermal zone. When that is done, no get_trip_* ops are
+>> needed and they can be removed.
+>>
+>> The get_trip_temp, get_trip_hyst and get_trip_type are handled by the
+>> get_trip_point().
+>>
+>> The set_trip_temp() generic function does some checks which are no
+>> longer needed in the set_trip_point() ops.
+>>
+>> Convert ops content logic into generic trip points and register them
+>> with the thermal zone.
+>>
+>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>> ---
+>>   drivers/net/wireless/intel/iwlwifi/mvm/mvm.h |  2 +-
+>>   drivers/net/wireless/intel/iwlwifi/mvm/tt.c  | 71 ++++----------------
+>>   2 files changed, 13 insertions(+), 60 deletions(-)
+> 
+> The subject should begin with "wifi: iwlwifi: ".
+> 
+> I don't see patch 2. Via which tree is the plan for this patch?
 
-> After this patchset, 8852BE is ready, so add 8852BE to Kconfig and
-> Makefile. With firmware v0.27.32.0, STA, AP and monitor can work well. 
+patch 2 are similar changes but related to the mellanox driver.
 
-Awesome! From my point of view adding 8852BE support went really
-smoothly, thanks for that. Very much appreciated.
+This is the continuation of the trip point rework:
+
+https://lore.kernel.org/netdev/20221003092602.1323944-22-daniel.lezcano@linaro.org/t/
+
+This patch is planned to go through the thermal tree
+
+Sorry I should have mentioned that.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
