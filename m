@@ -2,281 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A4975FE72F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 04:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BB9F5FE736
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Oct 2022 05:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229830AbiJNC6A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Oct 2022 22:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
+        id S229511AbiJNDBc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Oct 2022 23:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbiJNC6A (ORCPT
+        with ESMTP id S229713AbiJNDB2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Oct 2022 22:58:00 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B180415F918
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 19:57:58 -0700 (PDT)
-X-UUID: 23621e676de04d7f84656a67b1c5382a-20221014
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=6vh4IJCOfQjz3JMDhYQ0n9jKVIGYVFgFR+YTYI8YBhA=;
-        b=nUQsXWeNyishVvxiE8iPQTnx5iRSOS9wLyJuUkB8bqt8EB4QBVPEdJ9TnuTcSpKcJF380L2ZdaVClbj6FIth0Yp04r0BzD71oZZu7bc2F2mxgM5L5/joRab0O7OfrbJv/o82uoSt80ZaY59fcK+q1Xy1+3LvE5/QzZBZ0Pngbwk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.11,REQID:32f069fe-b944-48df-b429-6d9207a42ef3,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-META: VersionHash:39a5ff1,CLOUDID:be6f3eff-ee8c-4ff7-afe9-644435e96625,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 23621e676de04d7f84656a67b1c5382a-20221014
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1321940223; Fri, 14 Oct 2022 10:57:54 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Fri, 14 Oct 2022 10:57:53 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 14 Oct 2022 10:57:53 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7915: add ack signal support
-Date:   Fri, 14 Oct 2022 10:57:48 +0800
-Message-ID: <167355984a4e8ab4fe4330af7d10c02184b563ee.1665714480.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <98348bffc688f4c1416981f72528eebcc01faee3.1665714480.git.ryder.lee@mediatek.com>
-References: <98348bffc688f4c1416981f72528eebcc01faee3.1665714480.git.ryder.lee@mediatek.com>
+        Thu, 13 Oct 2022 23:01:28 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F162B17D850
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Oct 2022 20:01:26 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29E2v3Lt027444;
+        Fri, 14 Oct 2022 03:01:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=qcppdkim1;
+ bh=EwdNqJ7d1h+tPuacklE1UsariNMEzy/b/E7p/wIcW3s=;
+ b=ohqQQLLXZsFNIS7nR7k3oi6P9z5pg8t/t0a5gkHpm++J797OX8MeY74lsfgd9ne3C6Bf
+ Fvks6n7xTnpL8pQGfTS0Ev8dkBMuROXt4cm+c2+mduIHRKDH6woQFKqd6vI9yLiqTk3g
+ xJfMKG1UTW04E3y6TXwjR4Zqu3ZtLQHtbx836vsrlsSzXz3uzhz6uRm1NXIEklA0gRFX
+ YIPxY9J2qeDlhg50Qp5f0/Wu9tK8stqzvmgBW2jqZ0YU3rqAARpXw9Tg4/OjNrtt+Cls
+ toto+c8GiMa976LsQG9YVMWPvHsuq2BkCl6nxHvXqDdo/WjElZu83JSopjzKbLv00nVl Lw== 
+Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2177.outbound.protection.outlook.com [104.47.73.177])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k6pg4h5f9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Oct 2022 03:01:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Kifh5O2QosKl/ab19T9a+z2zqHZmoX2IABuTkjnlgzqM3ClWwi3FpgeJI7jJPMS4oyf5DJiZZPdBDobMk23jTU9a7Q8fi+XZ2gI5RGEZfdTQpjOFzFW59PYOT5O6P5jKBpxakzhO1gBqyA7siN6veBlb6pprQoPBPmZw6BCKnfNiTR+kNEEaQhd9L1yut+ahpqyw/2X9w0/jvA84pgVZXHNL7iuFAN1Wy8280f1fWvqEmdx7/k1IZPG2qWKYZTqzfTOkhFFUu/t9PAEJV44IzKceamYTWI6JIm5ZRzSAPUqiCmVLB+ENcgP5vCYGTrgrwEX2HZSkFgs/Yb7UfpC6yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EwdNqJ7d1h+tPuacklE1UsariNMEzy/b/E7p/wIcW3s=;
+ b=TX888AViQzmHRxTZT6TpSmLNxtHZ1kiJVbCm/uEOB1baF6R2a1HQZ6dN4qH6Dxn5wEbxSPjmApnDog6jLdwhcjnaOyPXdbUwFmPyxzO1XqPHTinN41a8ZrNcMqB8haoQsDcFp1ql47U65qxVucPHfSt6qIXVNl7ChKgn5uFb3fFxLfMATDlST1iauGRw0Hgdb3si0kUxnhyTXsemwao4JSLytltNZMIxzTJrVh1gD97dluS27XLQoaedq5k8UCJc8C0CGeCE7n9dnYre0icGrVgwdssTSiMxlSlrNdKcgq8CXfe0FDIoaW5KPD5FdFD4UknZNLXvP/sILT4VODmAlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
+ dkim=pass header.d=quicinc.com; arc=none
+Received: from SN6PR02MB4334.namprd02.prod.outlook.com (2603:10b6:805:ac::20)
+ by CO6PR02MB7682.namprd02.prod.outlook.com (2603:10b6:303:aa::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.21; Fri, 14 Oct
+ 2022 03:01:16 +0000
+Received: from SN6PR02MB4334.namprd02.prod.outlook.com
+ ([fe80::8bd9:bdd5:901e:3afc]) by SN6PR02MB4334.namprd02.prod.outlook.com
+ ([fe80::8bd9:bdd5:901e:3afc%2]) with mapi id 15.20.5709.021; Fri, 14 Oct 2022
+ 03:01:16 +0000
+From:   "Sriram R (QUIC)" <quic_srirrama@quicinc.com>
+To:     "Jeff Johnson (QUIC)" <quic_jjohnson@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
+Subject: RE: [PATCH 15/50] wifi: ath12k: add dp_rx.c
+Thread-Topic: [PATCH 15/50] wifi: ath12k: add dp_rx.c
+Thread-Index: AQHYrmYbHK9N0DA8vkGURLObKZSNEa2yRiIAgFtLm8A=
+Date:   Fri, 14 Oct 2022 03:01:16 +0000
+Message-ID: <SN6PR02MB43343C4EE7BBA09592CF8CDDF7249@SN6PR02MB4334.namprd02.prod.outlook.com>
+References: <20220812161003.27279-1-kvalo@kernel.org>
+ <20220812161003.27279-16-kvalo@kernel.org>
+ <576a0720-fe45-36bd-abd1-b772dbe380b0@quicinc.com>
+In-Reply-To: <576a0720-fe45-36bd-abd1-b772dbe380b0@quicinc.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4334:EE_|CO6PR02MB7682:EE_
+x-ms-office365-filtering-correlation-id: 97820398-fecd-45b3-bd2c-08daad905caf
+x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 6qiqcgda7JyrsMdBq7epEngic3/moAzEMay6xt8ui1DuuSIqYu9q7psuuAM5aa+WjDzXuKHGi3gIXlYzNhKo4AB8scqcc6xQNn2fz+WN7yfX5+uXhtEHqFMFaXNfrxXFsKQJOPohMIrqdoayZ4v+EGeLcEgJ1pWxuapKYvssuS5gxqNbLWQXebZHTxJWBINaaAICZucsU+a5vDhTrJ9AZ0LRXq1YVeT2QWZmbiCIG8CwHCUTy6eu+FO3EElw6SSvncDzglCqBCV24BwDRx3qMa4cOA/OEtT/ZX9UFLqWM7nyzH58VGbesNLEOngT9VgCkCC7cEvQGjhomL/VcU5w1hvJPMCNekyEE7J08FCmgVm5u63vXd018x+fmS+B2arRH52wMqfN8blzkcW5jh0h1qMFwudOsDoGtalrOfIBT2cNvqNDAV1dJ+p8ZISr6P+XVEZSdCQJkiT/V+Z9hGWT93+N7PwSB2ptibbmpbo4MJp/g5eHdBvRpiv9cpo2z+HW7khPcjWamx605rRR3Wob/OnrEM4I+Od1L6PqSzHD8MmE7gi3Z9/hcbumyG2nbgbIEg7hEjv8QSHr/vE4cNaVm2+Tml02TrqS2wqtE6aE7ExaVXp7yDu4CdQ02AVovmYHnoYU3Eqe7gpsBYvOooalq7vfr2gXnC3YYftPczZFLLrKyOl5nZNG6r/nyZYbRQyADJAL3tLQfUPD0cVpZH/xR9L5xLotS1iMV+/142PJXjQ7S4FcrWcJ09fLMAAqsgXUwjILIaK6tR2UTpisjoxFkw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR02MB4334.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(376002)(39860400002)(346002)(366004)(396003)(451199015)(7696005)(6506007)(52536014)(5660300002)(8936002)(41300700001)(55016003)(66446008)(66476007)(66946007)(76116006)(66556008)(38100700002)(64756008)(8676002)(26005)(4326008)(38070700005)(9686003)(86362001)(122000001)(2906002)(33656002)(4744005)(186003)(71200400001)(316002)(110136005)(478600001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?b2dBRU1udWhGT1Y0akhkcWZhTTVvY2dXUVhOWkdUb0IzZjFyd0pPaTEwYlRz?=
+ =?utf-8?B?bG1Zb29hV1lZdzdHVEp0VHVpdXA5L0txRk8raEt1aXFLNU9QckpGYnVYVU5Z?=
+ =?utf-8?B?SXpjdm9QM3poUFNOTVZ0MmMyalBCRnFwRDZsZWxmNTg2aDVqSUc4V0pjaFFl?=
+ =?utf-8?B?S3gxT1J2VHdKb2ZHRi9WSE9aWUwrdENpZ2pZVHBGaDhUWXhTYkZ4a0s4bHEr?=
+ =?utf-8?B?ZkN3aW9wOWFBMkxVOUoxT2xHZmhYS25sNm5tTUVwZG9NYlQzMkZjVDN1aDJE?=
+ =?utf-8?B?Qk1RMWpPb1drQmk1cmpUWnp4YTJocVBQY3llQWdpVjI2VjdHby9ibjdxbW9F?=
+ =?utf-8?B?MmcydHp2V2xUNUdkYWE4SEJ6NkREWFFjbTV3MjhPVnBNN3NEaUwwUWR6YkQ4?=
+ =?utf-8?B?ZlJtSDUvUGczazBCR2hOZ0tEc0xNOTBYWDZVTWNXMzN5Rk1ERlNRS2ZYc250?=
+ =?utf-8?B?Ni8wN1V1ZHJKb0ZmSVVrNGlIaC9kdWR2Rm1YSkw4MVlHcXYzODJlMzQ5NGdp?=
+ =?utf-8?B?dDZSU1Btb0xGa2k2c2wrSy9uZS9zYW12b244SVNFTVRzS0NYUFEraCtEaUFs?=
+ =?utf-8?B?eWlrM01wSDFHanF4N2paR25tM1IyMFZXMVZlZURNVWZZR09KY1RiRW5KTzll?=
+ =?utf-8?B?OHRHRTFzc3ZLSVc3QTJUdWVkSENJMERkaTBUWlJybTZ4N0ZlcngxQU1OUnRE?=
+ =?utf-8?B?eUdIRTlxNlJBZWtjYzhJNDJ3ZlRweWJ4SFVXUUVIc2I0cHFRZHFzUHZJbzRa?=
+ =?utf-8?B?eXo0UFJ1U0ppM2pyUWxtQWlYaVhtcDFUTk1uZndkWCtHeWh1Y01scmpmcnBC?=
+ =?utf-8?B?eXcyOEZvRUFYaW8rTWVLYmYyWXBMOHVIdDBiVVJHNEV0NXFOYlBUT2NXa21G?=
+ =?utf-8?B?T0J2Y01TZmJVRjV0bUdUM2tBNEY0V0FtTVllVEtmd1NScG1LZlc2a0JuWWNy?=
+ =?utf-8?B?dEVEaTUxUC9WQWZjYnZ5VzJ3NTRsZS84T24xKzZJakMvSDQwaXczaGI2cksz?=
+ =?utf-8?B?a09SaGVlQlNlQjNzNkpwRzIxYm8xN2VTSTdlYmc0ZUcvT0VOSERFUFg1Rld6?=
+ =?utf-8?B?MjRIY0xUNmdRdFVwNkxpYzZ1cGllblVqNjBmQ3E3aXdhMmoyT0R6M1NseTcv?=
+ =?utf-8?B?QWdaYXhiN3EwYnkraWM0QlhaWUs0TlRmWWczOC9FSkRxQWxnTnBCNkE5VERG?=
+ =?utf-8?B?a01oZHBDMW43VTBweEhxd251UWVSSUNVMVo1N29JeUV5dHBFS1JiVGtzdW1k?=
+ =?utf-8?B?YXhSYlBFRzhkNjJTckdiVThaUnFqbkNDTjloU1UvaE0vR2NlUnVGMTdIR2Vm?=
+ =?utf-8?B?UE9pUnVBUHZJbHpGTWthRnUzSllaZHNYQ1ZiZEFiMHlNWWtwNVpjdGtkZGlX?=
+ =?utf-8?B?ZGNwVWE1WVhUbW4vdUJCY2szcVZvVzUvK3NFaHJzWktaelluV3M2SHV2Sys1?=
+ =?utf-8?B?QjhoNkliRzlxcGFkdCtLMkg5RHJ0aDByQ3VvU3M0b09xbzliTmo0VjZkcVFO?=
+ =?utf-8?B?a0xjYjRXL29CekdDWWVwY1RkNlQ0U290eS9QRlZNSjBzOW5lNnNzblkrbkF6?=
+ =?utf-8?B?VFdxbmlnNW0xdW9scEVmWS8wenhlU3FXU1FJSVpnbitpWFhRb3lsajhCVDhC?=
+ =?utf-8?B?bzhpOGdUcCtkWHh2NlpDV3dUdUpxc1dYVEtjTWtBY2FsUlBkQXNrNHBFV3Ju?=
+ =?utf-8?B?cUpsQ1pSeUVseUZOZmxUMDZXRDIyNFRzSVFSU2dVYkJLSmYxYy96MS9UN2do?=
+ =?utf-8?B?a0gxTkdnSWo4VnkyL0JFYTA2c1ZNMWhNU2FEdVFxRWJIbkNxamtxS2pmWXlh?=
+ =?utf-8?B?QXFmQm5GZFZ6aE5jaXhIaXdIVTVFVy9DQzRVOFpRSit0eUR4ckd0SDc0WWpG?=
+ =?utf-8?B?SDVUNG9OREpHditpa2N6WUpXV0xzc3BvbjJpT1Nzb3ZsSmFrSVdLNjh4N0lu?=
+ =?utf-8?B?QjVwRUlsT0dxUWZrQnlzN3A2MnBTMnpDV0g4QTVhb010cWw0aTVGNTJNZG95?=
+ =?utf-8?B?OW95anJ4V3ZyNDQ1V1VSamdpZFBZWmdWT0ZSN2tJK2dMM2FoSm56TStxd3FI?=
+ =?utf-8?B?cWkzKzA1ZmppdEdVTnF2OTZqYzZRbzEzYXFiSTNrN2RwRHBxSkEvaVp4RlNa?=
+ =?utf-8?Q?ShnfWtWqA/F89+QWmddm3U9FJ?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+X-OriginatorOrg: quicinc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4334.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97820398-fecd-45b3-bd2c-08daad905caf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2022 03:01:16.8107
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kx2FzyL2bIIyAQC5GMbIA/0Ci2sR0eLde2oVAInprMC2UgwKdNvjOm6g4+54zlL8NaJp24ae/lSa7sthZtgQdAxuEY7ZsJTY5KTWL6FFeOc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB7682
+X-Proofpoint-ORIG-GUID: stUUrrMdR1s-7Y90VibTJsJGwMq42NGV
+X-Proofpoint-GUID: stUUrrMdR1s-7Y90VibTJsJGwMq42NGV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-14_01,2022-10-13_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=401
+ suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 mlxscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210140015
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reports signal strength of ACK packets from the peer as measured
-at each interface.
-
-Tested-by: Shurong Wen <shurong.wen@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c |  9 ++++-----
- drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  7 +++++++
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 19 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  8 ++++++++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  6 +++++-
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  8 ++++++++
- 7 files changed, 51 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 4bdbfd0f6233..c59d12004459 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -951,14 +951,12 @@ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
- }
- EXPORT_SYMBOL(mt76_wcid_key_setup);
- 
--static int
--mt76_rx_signal(struct mt76_rx_status *status)
-+int mt76_rx_signal(u8 chain_mask, s8 *chain_signal)
- {
--	s8 *chain_signal = status->chain_signal;
- 	int signal = -128;
- 	u8 chains;
- 
--	for (chains = status->chains; chains; chains >>= 1, chain_signal++) {
-+	for (chains = chain_mask; chains; chains >>= 1, chain_signal++) {
- 		int cur, diff;
- 
- 		cur = *chain_signal;
-@@ -980,6 +978,7 @@ mt76_rx_signal(struct mt76_rx_status *status)
- 
- 	return signal;
- }
-+EXPORT_SYMBOL(mt76_rx_signal);
- 
- static void
- mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
-@@ -1009,7 +1008,7 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
- 	status->ampdu_reference = mstat.ampdu_ref;
- 	status->device_timestamp = mstat.timestamp;
- 	status->mactime = mstat.timestamp;
--	status->signal = mt76_rx_signal(&mstat);
-+	status->signal = mt76_rx_signal(mstat.chains, mstat.chain_signal);
- 	if (status->signal <= -128)
- 		status->flag |= RX_FLAG_NO_SIGNAL_VAL;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index f9bdf16fc6c4..c91fb9bde632 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1149,6 +1149,7 @@ void mt76_update_survey(struct mt76_phy *phy);
- void mt76_update_survey_active_time(struct mt76_phy *phy, ktime_t time);
- int mt76_get_survey(struct ieee80211_hw *hw, int idx,
- 		    struct survey_info *survey);
-+int mt76_rx_signal(u8 chain_mask, s8 *chain_signal);
- void mt76_set_stream_caps(struct mt76_phy *phy, bool vht);
- 
- int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tid,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 7173ed964519..0e7d065afe29 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -353,6 +353,7 @@ mt7915_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HE);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_FILS_DISCOVERY);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT);
- 
- 	if (!mdev->dev->of_node ||
- 	    !of_property_read_bool(mdev->dev->of_node,
-@@ -461,6 +462,12 @@ mt7915_mac_init_band(struct mt7915_dev *dev, u8 band)
- 	set = FIELD_PREP(MT_WF_RMAC_MIB_OBSS_BACKOFF, 0) |
- 	      FIELD_PREP(MT_WF_RMAC_MIB_ED_OFFSET, 4);
- 	mt76_rmw(dev, MT_WF_RMAC_MIB_AIRTIME0(band), mask, set);
-+
-+	/* filter out non-resp frames and get instanstaeous signal reporting */
-+	mask = MT_WTBLOFF_TOP_RSCR_RCPI_MODE | MT_WTBLOFF_TOP_RSCR_RCPI_PARAM;
-+	set = FIELD_PREP(MT_WTBLOFF_TOP_RSCR_RCPI_MODE, 0) |
-+	      FIELD_PREP(MT_WTBLOFF_TOP_RSCR_RCPI_PARAM, 0x3);
-+	mt76_rmw(dev, MT_WTBLOFF_TOP_RSCR(band), mask, set);
- }
- 
- static void mt7915_mac_init(struct mt7915_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 34a50d594372..1ce2b91353e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -9,7 +9,7 @@
- #include "mac.h"
- #include "mcu.h"
- 
--#define to_rssi(field, rxv)	((FIELD_GET(field, rxv) - 220) / 2)
-+#define to_rssi(field, rcpi)	((FIELD_GET(field, rcpi) - 220) / 2)
- 
- static const struct mt7915_dfs_radar_spec etsi_radar_specs = {
- 	.pulse_th = { 110, -10, -80, 40, 5200, 128, 5200 },
-@@ -119,6 +119,7 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 		bool clear = false;
- 		u32 addr, val;
- 		u16 idx;
-+		s8 rssi[4];
- 		u8 bw;
- 
- 		spin_lock_bh(&dev->sta_poll_lock);
-@@ -132,6 +133,8 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 		spin_unlock_bh(&dev->sta_poll_lock);
- 
- 		idx = msta->wcid.idx;
-+
-+		/* refresh peer's airtime reporting */
- 		addr = mt7915_mac_wtbl_lmac_addr(dev, idx, 20);
- 
- 		for (i = 0; i < IEEE80211_NUM_ACS; i++) {
-@@ -210,6 +213,20 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 			else
- 				rate->flags &= ~RATE_INFO_FLAGS_SHORT_GI;
- 		}
-+
-+		/* get signal strength of resp frames (CTS/BA/ACK) */
-+		addr = mt7915_mac_wtbl_lmac_addr(dev, idx, 30);
-+		val = mt76_rr(dev, addr);
-+
-+		rssi[0] = to_rssi(GENMASK(7, 0), val);
-+		rssi[1] = to_rssi(GENMASK(15, 8), val);
-+		rssi[2] = to_rssi(GENMASK(23, 16), val);
-+		rssi[3] = to_rssi(GENMASK(31, 14), val);
-+
-+		msta->ack_signal =
-+			mt76_rx_signal(msta->vif->phy->mt76->antenna_mask, rssi);
-+
-+		ewma_avg_signal_add(&msta->avg_ack_signal, -msta->ack_signal);
- 	}
- 
- 	rcu_read_unlock();
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 6de49b93387e..ac320182c2ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -665,6 +665,8 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	msta->jiffies = jiffies;
- 
-+	ewma_avg_signal_init(&msta->avg_ack_signal);
-+
- 	mt7915_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 
-@@ -1025,6 +1027,12 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
- 		sinfo->tx_retries = msta->wcid.stats.tx_retries;
- 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
- 	}
-+
-+	sinfo->ack_signal = (s8)msta->ack_signal;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
-+
-+	sinfo->avg_ack_signal = -(s8)ewma_avg_signal_read(&msta->avg_ack_signal);
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL_AVG);
- }
- 
- static void mt7915_sta_rc_work(void *data, struct ieee80211_sta *sta)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 5e95f5c77933..b0b57ee1e00f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -114,6 +114,8 @@ struct mt7915_twt_flow {
- 	u8 sched:1;
- };
- 
-+DECLARE_EWMA(avg_signal, 10, 8)
-+
- struct mt7915_sta {
- 	struct mt76_wcid wcid; /* must be first */
- 
-@@ -123,10 +125,12 @@ struct mt7915_sta {
- 	struct list_head rc_list;
- 	u32 airtime_ac[8];
- 
-+	int ack_signal;
-+	struct ewma_avg_signal avg_ack_signal;
-+
- 	unsigned long changed;
- 	unsigned long jiffies;
- 	unsigned long ampdu_state;
--
- 	struct mt76_connac_sta_key_conf bip;
- 
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 7db809671230..9924271d8e36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -226,6 +226,14 @@ enum offs_rev {
- #define MT_DMA_DCR0_MAX_RX_LEN		GENMASK(15, 3)
- #define MT_DMA_DCR0_RXD_G5_EN		BIT(23)
- 
-+/* WTBLOFF TOP: band 0(0x820e9000),band 1(0x820f9000) */
-+#define MT_WTBLOFF_TOP_BASE(_band)	((_band) ? 0x820f9000 : 0x820e9000)
-+#define MT_WTBLOFF_TOP(_band, ofs)	(MT_WTBLOFF_TOP_BASE(_band) + (ofs))
-+
-+#define MT_WTBLOFF_TOP_RSCR(_band)	MT_WTBLOFF_TOP(_band, 0x008)
-+#define MT_WTBLOFF_TOP_RSCR_RCPI_MODE	GENMASK(31, 30)
-+#define MT_WTBLOFF_TOP_RSCR_RCPI_PARAM	GENMASK(25, 24)
-+
- /* ETBF: band 0(0x820ea000), band 1(0x820fa000) */
- #define MT_WF_ETBF_BASE(_band)		((_band) ? 0x820fa000 : 0x820ea000)
- #define MT_WF_ETBF(_band, ofs)		(MT_WF_ETBF_BASE(_band) + (ofs))
--- 
-2.36.1
-
+Pj4gKyAgICAgICAgICAgICBwYWRkciA9IGRtYV9tYXBfc2luZ2xlKGFiLT5kZXYsIHNrYi0+ZGF0
+YSwNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBza2ItPmxlbiArIHNr
+Yl90YWlscm9vbShza2IpLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IERNQV9GUk9NX0RFVklDRSk7DQo+PiArICAgICAgICAgICAgIGlmIChkbWFfbWFwcGluZ19lcnJv
+cihhYi0+ZGV2LCBwYWRkcikpDQo+PiArICAgICAgICAgICAgICAgICAgICAgZ290byBmYWlsX2Zy
+ZWVfc2tiOw0KPj4gKw0KPj4gKyAgICAgICAgICAgICBpZiAoaHdfY2MpIHsNCj4NCj5od19jYyBp
+cyBhIHZlcnkgY3J5cHRpYyBuYW1lLiBpcyB0aGVyZSBhIGJldHRlciBuYW1lIGZvciB0aGlzPw0K
+PnByZXN1bWFibHkgdGhpcyBoYXMgc29tZXRoaW5nIHRvIGRvIHdpdGggaGFyZHdhcmUgZ2l2aW5n
+IHVzIHVuaXF1ZQ0KPmNvb2tpZXMgc28gd2UgZG9uJ3QgaGF2ZSBpZHIgb3ZlcmhlYWQ/DQpUaGUg
+aHdfY2MgaW5kaWNhdGVzIEh3IGNvb2tpZSBjb252ZXJzaW9uLCB3aGljaCBjb252ZXJ0cyB0aGUN
+CmNvb2tpZSBwYXNzZWQgaW4gdGhlIHJ4ZG1hIGRlc2NyaXB0b3IgdG8gYSBjb3JyZXNwb25kaW5n
+IFNXIGRlc2NyaXB0b3IgdmFkZHINCih3aGljaCB3YXMgYWxsb2NhdGVkIG1hcHBlZCBkdXJpbmcg
+aW5pdCB0aW1lIGluIGF0aDEya19kcF9jY19pbml0KCkpDQphbmQgcGFzc2VzIGJhY2sgdGhlIGFk
+ZHIgZGlyZWN0bHkgZHVyaW5nIG1zZHUgcnggcmF0aGVyIHRoYW4gaGF2aW5nDQp0aGUgaWRyIG92
+ZXJoZWFkLg0KU2luY2UgJ2NjJyB3YXMgdXNlZCBhY3Jvc3MgdGhlIGRyaXZlciB0byBpbmRpY2F0
+ZSB0aGlzIGZlYXR1cmUsIHdlIHVzZWQgaXQgc2ltaWxhcmx5DQpoZXJlIGFzIHdlbGwuDQoNClRo
+YW5rcywNClNyaXJhbS5SDQo=
