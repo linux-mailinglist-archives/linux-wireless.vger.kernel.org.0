@@ -2,114 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D47602920
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 12:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 150B06029E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 13:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbiJRKLF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Oct 2022 06:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38558 "EHLO
+        id S229777AbiJRLKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Oct 2022 07:10:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbiJRKKm (ORCPT
+        with ESMTP id S229619AbiJRLK2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Oct 2022 06:10:42 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6833B3B1A
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 03:10:38 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29I7r2M7009310;
-        Tue, 18 Oct 2022 10:10:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=QHuIq1vgVmjuGXdr/qI9gfCBLvs4mMLFNVhWxyub4xo=;
- b=HsnigEyilReLPbEoMkRBlAnKI+7Dubmhwx39nIbrQAhvc2RghhGGL0E5gIi4vSpgE+kF
- oiP/ktuN1eO6E8K6umIczAwUGqaONcvEOzJyxg4YzWF8X9XFlLiPVg8DUjE8C4jF1Wdo
- SGM9mXANyetyPcuucYIg6v9Muk2Us85ahukUFS0P5mz9d8lKeDUxLqhA60njXHJJgCNX
- cGu7CNzEe29lzMJCwhWLdve6adEsDllqMFc85LZMjKf5har17i33l474yFQGkS9nawr/
- TRSJtRyZlt5kSIfBP7pbWRE1mv05RfkcDqDwN7b4lm1jVONar/V7AdwFMMvRnReBnBIJ kA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k9jjms5xc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Oct 2022 10:10:32 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29IAAVn2015151
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Oct 2022 10:10:31 GMT
-Received: from [10.253.75.92] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 18 Oct
- 2022 03:10:30 -0700
-Message-ID: <95a1604c-f323-0fea-46a8-bf554da28fca@quicinc.com>
-Date:   Tue, 18 Oct 2022 18:10:28 +0800
+        Tue, 18 Oct 2022 07:10:28 -0400
+Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17534D14C;
+        Tue, 18 Oct 2022 04:10:26 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.west.internal (Postfix) with ESMTP id 1A3E52B06811;
+        Tue, 18 Oct 2022 07:10:23 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Tue, 18 Oct 2022 07:10:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm3; t=1666091422; x=1666098622; bh=U8wpPQWEh5
+        8ZbN0yR3/VZpUrmJoyEuxzqpuZ/EhtzXw=; b=FPpwZhiUWWOv/PCuTy9vUJC9m2
+        y4kcMr1P+uImmYjI46Xv92ahLFs8sL+43+uu+mQQDAlnwN++4Z+jlgv2JE+Tdnth
+        57MgL3yzSKmTpdrCOe3jGSD3n64UuzXsEFVEKpcDvrG00w4TAwUgVcJ7bz11U99n
+        zlqng7wZxojKWmfeXk5m4x+xN/F9eTr1Rsj4L1vDLAdTtYWIdCNhN6Yj8GvLQzWa
+        Js/GfNKvRDpYwXt60W+bRsT4F6giIhIjBl/qd1mVKd2fVB9B1Q0GDdPfV+L+U50c
+        42QWmLlXK4yZqL6D4C63EQySC/MN1RO+yRLB153bwyNjfT+coTICwFV913Dg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; t=1666091422; x=1666098622; bh=U8wpPQWEh58ZbN0yR3/VZpUrmJoy
+        EuxzqpuZ/EhtzXw=; b=VZd/2vakzilt25m9+TVR49pb6cHZGnpEUDgXmg/uKH1S
+        ezkNAa1xc4jfe0EASTLeFN8LavMgRgOrFcp4ivE4UY1AxI8uXwE+YmQYJM5FdQJA
+        0zn5bXRIdgELqCXxEu20ZfhNbYNWZ4M88Zl4sep9w1bkK+nsJ5tMDLwlqhlHr+y+
+        mZ7tkc8KlOh6K2Kj0yhRwrj5NDBi5mDBBGCs4cVz4SgLA9hTqO2Rp/gusFDrlhPA
+        /I+TV1yfX1XB9e3jLg22edufBn+N1oYVBaNYW21KAz736Ggv/lsn3D1WPHst3aKc
+        zLFAne1x3g83NLEU3ul7qdnZglOLV397AqYkLKQLTw==
+X-ME-Sender: <xms:nolOY0F7JerDoGIsAmBfxKtLGb2lMYPC8nuTgwVtSpgIyIdWVp59gw>
+    <xme:nolOY9X8k6RJyT4e6Clli2fd7AsGSmz6s25Uu96PNyJGwXUds0Uq8-kR6oYYFNb2X
+    VQvr-s0ZgUGTA>
+X-ME-Received: <xmr:nolOY-Jc5skPz9_8BOH24AnoMMaj-sQw6trDVGMo_8X6m7GJSj16ygWNJvrRtEf-GMdO4WzJONzJ9cbzhomnNNOhiUYL7odu>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeelvddgtdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:nolOY2EExM93ZvaD_0AIHeIYbHSXWgXx7dG8BzN2Vndw_Su6Wr6ktw>
+    <xmx:nolOY6XHFPaCYLD01gF-rJ6vByk2WR_7xZfjErZEyEWN1zyRCldPww>
+    <xmx:nolOY5PbORWxwcMFXp5ILYkgl8d0QxAiVBRNsZl_L75-yHIfg-29wg>
+    <xmx:nolOY9rhQTer_LEwQrjfdRJwEsx99Y8oYxhepeYW1Ft3NYnZOY-DWHbBtAM>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 18 Oct 2022 07:10:22 -0400 (EDT)
+Date:   Tue, 18 Oct 2022 13:10:18 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Wen Gong <quic_wgong@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>, kvalo@kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.19 16/25] wifi: ath10k: reset pointer after
+ memory free to avoid potential use-after-free
+Message-ID: <Y06JmkTYlD1qSkvz@kroah.com>
+References: <20221009222436.1219411-1-sashal@kernel.org>
+ <20221009222436.1219411-16-sashal@kernel.org>
+ <20221018095356.GH1264@duo.ucw.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 01/15] mac80211: split bss_info_changed method
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
-References: <20220601073958.8345-1-johannes@sipsolutions.net>
- <20220601093922.347d47c279fe.I15937cfe8405999084f164ddf57390f8b8d2bc61@changeid>
- <c38b4da8-488b-2d09-631a-1bb6c07440a6@quicinc.com>
- <3483d05c1d5a39b9243b54d9f28450344a897655.camel@sipsolutions.net>
- <bd6545a8-57a3-5849-52d5-c1a449ab1712@quicinc.com>
- <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
- <7e72034a-497a-000c-d7bf-3ec974af9e1c@quicinc.com>
- <f210cf2a6e3f62156ae6a9d6c7de20e16bd4d6e6.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <f210cf2a6e3f62156ae6a9d6c7de20e16bd4d6e6.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3h-MauTJnnZfK5fVkQc8QiZ7JUaAFwbW
-X-Proofpoint-ORIG-GUID: 3h-MauTJnnZfK5fVkQc8QiZ7JUaAFwbW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-18_03,2022-10-17_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- adultscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 mlxlogscore=829 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2210180058
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221018095356.GH1264@duo.ucw.cz>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/18/2022 5:51 PM, Johannes Berg wrote:
-> On Tue, 2022-10-18 at 17:50 +0800, Wen Gong wrote:
->>> https://p.sipsolutions.net/0652bbbbe350b126.txt
->> Conflict happened while run "git am" the patch.
->>
->> Because missing the  "changed |= BSS_CHANGED_EHT_PUNCTURING;" in my
->> local code,
->>
->> also it is missing in
->> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/tree/net/mac80211/util.c
->>
->> Maybe "changed |= BSS_CHANGED_EHT_PUNCTURING;" is only existed in your
->> local code?
->>
-> Ah yes, we didn't upstream that because there's still this discussion
-> about handling puncturing. But you can probably apply around that.
->
-> johannes
+On Tue, Oct 18, 2022 at 11:53:56AM +0200, Pavel Machek wrote:
+> Hi!
+> 
+> > From: Wen Gong <quic_wgong@quicinc.com>
+> > 
+> > [ Upstream commit 1e1cb8e0b73e6f39a9d4a7a15d940b1265387eb5 ]
+> > 
+> > When running suspend test, kernel crash happened in ath10k, and it is
+> > fixed by commit b72a4aff947b ("ath10k: skip ath10k_halt during suspend
+> > for driver state RESTARTING").
+> > 
+> > Currently the crash is fixed, but as a common code style, it is better
+> > to set the pointer to NULL after memory is free.
+> > 
+> > This is to address the code style and it will avoid potential bug of
+> > use-after-free.
+> 
+> We don't have this patch in 4.19:
+> 
+> b72a4aff947b ("ath10k: skip ath10k_halt during suspend for driver state RESTARTING").
+> 
+> We probably should take that one, as this may depend on it. On the
+> other hand, we don't need this one as it is just a cleanup...
 
-Yes, after apply it.
+I've dropped this from all queues now, thanks.
 
-and apply "commit 3d901102922723eedce6ef10ebd03315a7abb8a5 wifi: 
-mac80211: implement link switching" to
-
-fix build error because my local code is not latest.
-
-it is built success, I will try it later.
-
+greg k-h
