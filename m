@@ -2,132 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7D39602886
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 11:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A276028C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 11:51:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230133AbiJRJjg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Oct 2022 05:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
+        id S230200AbiJRJvG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Oct 2022 05:51:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbiJRJjc (ORCPT
+        with ESMTP id S230192AbiJRJvD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Oct 2022 05:39:32 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA29FB;
-        Tue, 18 Oct 2022 02:39:24 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 7B0FE1C09D9; Tue, 18 Oct 2022 11:39:22 +0200 (CEST)
-Date:   Tue, 18 Oct 2022 11:39:21 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Zong-Zhe Yang <kevin_yang@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, tony0620emma@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 01/34] wifi: rtw88: phy: fix warning of
- possible buffer overflow
-Message-ID: <20221018093921.GD1264@duo.ucw.cz>
-References: <20221009222129.1218277-1-sashal@kernel.org>
+        Tue, 18 Oct 2022 05:51:03 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DCFB0B2D
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 02:50:55 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29I8JHAL011807;
+        Tue, 18 Oct 2022 09:50:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=swtDZcSOjcRU1/N/5VrVyp60bjkmh7JSO6Cdb5BBVYc=;
+ b=Inr3qq5KFJt+U3iBZyjhvbWrY/1YxTSnE0Af61xV0gAqkhg2rNVtHyIsVawb5OHWtVVf
+ l8QlfpSYwBFWRkAP7gwyTUlOvB+064XYOA+oFt2J+ZTJtvRsrJrrxWDy9tO0TdqpRdjw
+ TdF8jpYOZb7Py4dz0DKdAWGd9W7uMkT8o0vUtyL92GnTTLl7KiuhwJj4iNFyV/4tvCrV
+ Vgl40DhQ4cAr68t7KZD0VavzLwfqKTVAKo4aieovBoY6Gfm8ROI9/YwOJcadTDJ6LRdy
+ O5C0ngNku6+NkUtXD06tO2eVAzdKP7Il9q8SICdtD36mKocSqEdIxN0FmDuNL1vL8w/A Ng== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k9jjms4d4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 18 Oct 2022 09:50:47 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29I9okWV016599
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 18 Oct 2022 09:50:46 GMT
+Received: from [10.253.75.92] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 18 Oct
+ 2022 02:50:45 -0700
+Message-ID: <7e72034a-497a-000c-d7bf-3ec974af9e1c@quicinc.com>
+Date:   Tue, 18 Oct 2022 17:50:43 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="+KJYzRxRHjYqLGl5"
-Content-Disposition: inline
-In-Reply-To: <20221009222129.1218277-1-sashal@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NEUTRAL autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 01/15] mac80211: split bss_info_changed method
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
+References: <20220601073958.8345-1-johannes@sipsolutions.net>
+ <20220601093922.347d47c279fe.I15937cfe8405999084f164ddf57390f8b8d2bc61@changeid>
+ <c38b4da8-488b-2d09-631a-1bb6c07440a6@quicinc.com>
+ <3483d05c1d5a39b9243b54d9f28450344a897655.camel@sipsolutions.net>
+ <bd6545a8-57a3-5849-52d5-c1a449ab1712@quicinc.com>
+ <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 7U9IFpEUqW8WtnXJq_8-eoIfqmU1VeRz
+X-Proofpoint-ORIG-GUID: 7U9IFpEUqW8WtnXJq_8-eoIfqmU1VeRz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-18_03,2022-10-17_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ adultscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
+ phishscore=0 priorityscore=1501 mlxlogscore=605 malwarescore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2210180056
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 10/18/2022 4:53 PM, Johannes Berg wrote:
+> On Tue, 2022-10-18 at 16:52 +0800, Wen Gong wrote:
+>> On 10/18/2022 4:50 PM, Johannes Berg wrote:
+>>> On Tue, 2022-10-18 at 16:47 +0800, Wen Gong wrote:
+>>>>> +	if (changed & ~BSS_CHANGED_VIF_CFG_FLAGS) {
+>>>>> +		/* FIXME: should be for each link */
+>>>>> +		trace_drv_link_info_changed(local, sdata, 0, changed);
+>>>>> +		if (local->ops->link_info_changed)
+>>>>> +			local->ops->link_info_changed(&local->hw, &sdata->vif,
+>>>>> +						      0, changed);
+>>>> I think you/someone will change here later for the "/* FIXME: should be
+>>>> for each link */", right?
+>>> Maybe. I'm not actually sure it's really needed, it depends how we use
+>>> this in the future.
+>>>
+>>>> It lead error/kernel crash as below while reconfig single MLO link which
+>>>> link id is 2.
+>>>> When test with single MLO link which link id is 0, not found
+>>>> error/kernel crash.
+>>> I'm not surprised, I just worked on fixing reconfig in the last few
+>>> days, will post it after some more review/testing.
+>> Thanks.
+>>> So I think that might not need changes *here*, but rather a proper FW
+>>> restart. Which I haven't tested in AP mode though -- was the crash in AP
+>>> mode?
+>> It is crash in station mode.
+> try this?
+>
+> https://p.sipsolutions.net/0652bbbbe350b126.txt
+>
+> johannes
 
---+KJYzRxRHjYqLGl5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Conflict happened while run "git am" the patch.
 
-Hi!
+Because missing the  "changed |= BSS_CHANGED_EHT_PUNCTURING;" in my 
+local code,
 
-> [ Upstream commit 86331c7e0cd819bf0c1d0dcf895e0c90b0aa9a6f ]
->=20
-> reported by smatch
->=20
-> phy.c:854 rtw_phy_linear_2_db() error: buffer overflow 'db_invert_table[i=
-]'
-> 8 <=3D 8 (assuming for loop doesn't break)
->=20
-> However, it seems to be a false alarm because we prevent it originally via
->        if (linear >=3D db_invert_table[11][7])
->                return 96; /* maximum 96 dB */
->=20
-> Still, we adjust the code to be more readable and avoid smatch warning.
+also it is missing in 
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/tree/net/mac80211/util.c
 
-There's no bug, it is just smatch that is confused. We should not take
-this to 5.10.
+Maybe "changed |= BSS_CHANGED_EHT_PUNCTURING;" is only existed in your 
+local code?
 
-Best regards,
-									Pavel
-
->  drivers/net/wireless/realtek/rtw88/phy.c | 21 ++++++++-------------
->  1 file changed, 8 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wirel=
-ess/realtek/rtw88/phy.c
-> index af8b703d11d4..0fc5a893c395 100644
-> --- a/drivers/net/wireless/realtek/rtw88/phy.c
-> +++ b/drivers/net/wireless/realtek/rtw88/phy.c
-> @@ -604,23 +604,18 @@ static u8 rtw_phy_linear_2_db(u64 linear)
->  	u8 j;
->  	u32 dB;
-> =20
-> -	if (linear >=3D db_invert_table[11][7])
-> -		return 96; /* maximum 96 dB */
-> -
->  	for (i =3D 0; i < 12; i++) {
-> -		if (i <=3D 2 && (linear << FRAC_BITS) <=3D db_invert_table[i][7])
-> -			break;
-> -		else if (i > 2 && linear <=3D db_invert_table[i][7])
-> -			break;
-> +		for (j =3D 0; j < 8; j++) {
-> +			if (i <=3D 2 && (linear << FRAC_BITS) <=3D db_invert_table[i][j])
-> +				goto cnt;
-> +			else if (i > 2 && linear <=3D db_invert_table[i][j])
-> +				goto cnt;
-> +		}
->  	}
-> =20
-> -	for (j =3D 0; j < 8; j++) {
-> -		if (i <=3D 2 && (linear << FRAC_BITS) <=3D db_invert_table[i][j])
-> -			break;
-> -		else if (i > 2 && linear <=3D db_invert_table[i][j])
-> -			break;
-> -	}
-> +	return 96; /* maximum 96 dB */
-> =20
-> +cnt:
->  	if (j =3D=3D 0 && i =3D=3D 0)
->  		goto end;
-> =20
-> --=20
-> 2.35.1
-
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---+KJYzRxRHjYqLGl5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCY050SQAKCRAw5/Bqldv6
-8lrCAKCqLZ4CYw9fH/ZQp/IlGS8zEkWo8wCeKeb2tTImRaifOr2l700RqY9l7y4=
-=lnek
------END PGP SIGNATURE-----
-
---+KJYzRxRHjYqLGl5--
