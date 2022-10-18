@@ -2,127 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A276028C1
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 11:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9079E6028C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 11:52:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230200AbiJRJvG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Oct 2022 05:51:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47782 "EHLO
+        id S229587AbiJRJwB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Oct 2022 05:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230192AbiJRJvD (ORCPT
+        with ESMTP id S229990AbiJRJwA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Oct 2022 05:51:03 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DCFB0B2D
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 02:50:55 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29I8JHAL011807;
-        Tue, 18 Oct 2022 09:50:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=swtDZcSOjcRU1/N/5VrVyp60bjkmh7JSO6Cdb5BBVYc=;
- b=Inr3qq5KFJt+U3iBZyjhvbWrY/1YxTSnE0Af61xV0gAqkhg2rNVtHyIsVawb5OHWtVVf
- l8QlfpSYwBFWRkAP7gwyTUlOvB+064XYOA+oFt2J+ZTJtvRsrJrrxWDy9tO0TdqpRdjw
- TdF8jpYOZb7Py4dz0DKdAWGd9W7uMkT8o0vUtyL92GnTTLl7KiuhwJj4iNFyV/4tvCrV
- Vgl40DhQ4cAr68t7KZD0VavzLwfqKTVAKo4aieovBoY6Gfm8ROI9/YwOJcadTDJ6LRdy
- O5C0ngNku6+NkUtXD06tO2eVAzdKP7Il9q8SICdtD36mKocSqEdIxN0FmDuNL1vL8w/A Ng== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k9jjms4d4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Oct 2022 09:50:47 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29I9okWV016599
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Oct 2022 09:50:46 GMT
-Received: from [10.253.75.92] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 18 Oct
- 2022 02:50:45 -0700
-Message-ID: <7e72034a-497a-000c-d7bf-3ec974af9e1c@quicinc.com>
-Date:   Tue, 18 Oct 2022 17:50:43 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
+        Tue, 18 Oct 2022 05:52:00 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9238517A86
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 02:51:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=3wbT9fC4VXzzYQ3W/AWIk9fua5zDcBDlenKizE7+J/k=;
+        t=1666086719; x=1667296319; b=q6GypChdsl9SD8Po+hNCGFhlh2ZS8wWepR9Wf5XL9zn5C5c
+        PW0pUktUify5UlO6x/FRZXRDAkfiX+R3nv1jPkd0uQpYvQAeUch83hpqX5SRj4X3/TxVIro9pfj49
+        afunYs1HvvIbhQnATRn84ZgLoE3JioneQ6FoFo88qPviGqH9vn6webOqZToBWZvLfTsQ8Vo/iwlti
+        4stBBNIuecIBmeQT0C/sET4ByEnaB2VfHzUBSKUmzuIcqJhwe6c3juExLVXHCSCNkY8nXTN8LoJPM
+        +3SXvRtYOkJc4GShwZ16mBNLwihawleVRVqBFkrLvFtVEnp2I4XeFcy+Rcw0m2Sg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1okjGO-00A7HN-2M;
+        Tue, 18 Oct 2022 11:51:56 +0200
+Message-ID: <f210cf2a6e3f62156ae6a9d6c7de20e16bd4d6e6.camel@sipsolutions.net>
 Subject: Re: [PATCH 01/15] mac80211: split bss_info_changed method
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org, ath12k@lists.infradead.org
+Date:   Tue, 18 Oct 2022 11:51:55 +0200
+In-Reply-To: <7e72034a-497a-000c-d7bf-3ec974af9e1c@quicinc.com>
 References: <20220601073958.8345-1-johannes@sipsolutions.net>
- <20220601093922.347d47c279fe.I15937cfe8405999084f164ddf57390f8b8d2bc61@changeid>
- <c38b4da8-488b-2d09-631a-1bb6c07440a6@quicinc.com>
- <3483d05c1d5a39b9243b54d9f28450344a897655.camel@sipsolutions.net>
- <bd6545a8-57a3-5849-52d5-c1a449ab1712@quicinc.com>
- <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 7U9IFpEUqW8WtnXJq_8-eoIfqmU1VeRz
-X-Proofpoint-ORIG-GUID: 7U9IFpEUqW8WtnXJq_8-eoIfqmU1VeRz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-18_03,2022-10-17_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- adultscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 mlxlogscore=605 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2210180056
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+         <20220601093922.347d47c279fe.I15937cfe8405999084f164ddf57390f8b8d2bc61@changeid>
+         <c38b4da8-488b-2d09-631a-1bb6c07440a6@quicinc.com>
+         <3483d05c1d5a39b9243b54d9f28450344a897655.camel@sipsolutions.net>
+         <bd6545a8-57a3-5849-52d5-c1a449ab1712@quicinc.com>
+         <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
+         <7e72034a-497a-000c-d7bf-3ec974af9e1c@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/18/2022 4:53 PM, Johannes Berg wrote:
-> On Tue, 2022-10-18 at 16:52 +0800, Wen Gong wrote:
->> On 10/18/2022 4:50 PM, Johannes Berg wrote:
->>> On Tue, 2022-10-18 at 16:47 +0800, Wen Gong wrote:
->>>>> +	if (changed & ~BSS_CHANGED_VIF_CFG_FLAGS) {
->>>>> +		/* FIXME: should be for each link */
->>>>> +		trace_drv_link_info_changed(local, sdata, 0, changed);
->>>>> +		if (local->ops->link_info_changed)
->>>>> +			local->ops->link_info_changed(&local->hw, &sdata->vif,
->>>>> +						      0, changed);
->>>> I think you/someone will change here later for the "/* FIXME: should be
->>>> for each link */", right?
->>> Maybe. I'm not actually sure it's really needed, it depends how we use
->>> this in the future.
->>>
->>>> It lead error/kernel crash as below while reconfig single MLO link which
->>>> link id is 2.
->>>> When test with single MLO link which link id is 0, not found
->>>> error/kernel crash.
->>> I'm not surprised, I just worked on fixing reconfig in the last few
->>> days, will post it after some more review/testing.
->> Thanks.
->>> So I think that might not need changes *here*, but rather a proper FW
->>> restart. Which I haven't tested in AP mode though -- was the crash in AP
->>> mode?
->> It is crash in station mode.
-> try this?
->
-> https://p.sipsolutions.net/0652bbbbe350b126.txt
->
-> johannes
+On Tue, 2022-10-18 at 17:50 +0800, Wen Gong wrote:
+> >=20
+> > https://p.sipsolutions.net/0652bbbbe350b126.txt
+>=20
+> Conflict happened while run "git am" the patch.
+>=20
+> Because missing the=C2=A0 "changed |=3D BSS_CHANGED_EHT_PUNCTURING;" in m=
+y=20
+> local code,
+>=20
+> also it is missing in=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.gi=
+t/tree/net/mac80211/util.c
+>=20
+> Maybe "changed |=3D BSS_CHANGED_EHT_PUNCTURING;" is only existed in your=
+=20
+> local code?
+>=20
 
-Conflict happened while run "git am" the patch.
+Ah yes, we didn't upstream that because there's still this discussion
+about handling puncturing. But you can probably apply around that.
 
-Because missing the  "changed |= BSS_CHANGED_EHT_PUNCTURING;" in my 
-local code,
-
-also it is missing in 
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/tree/net/mac80211/util.c
-
-Maybe "changed |= BSS_CHANGED_EHT_PUNCTURING;" is only existed in your 
-local code?
-
+johannes
