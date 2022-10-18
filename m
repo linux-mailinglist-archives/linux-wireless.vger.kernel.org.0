@@ -2,66 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6F7603165
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 19:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71D95603361
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Oct 2022 21:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbiJRRNs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Oct 2022 13:13:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52272 "EHLO
+        id S229832AbiJRTdG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Oct 2022 15:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbiJRRNr (ORCPT
+        with ESMTP id S229665AbiJRTdF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Oct 2022 13:13:47 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B3EED984
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 10:13:45 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id cl1so14518152pjb.1
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 10:13:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:date:to:from
-         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pzpkUJ189ntl/UdbbVsn40VnhyPZPxCM/e526VHiq/A=;
-        b=mk5TI2ZlH2P0M0mdG8nwOe93STGB496CxHCJatUxDbGwNQwk1jLycKFLzAbVwoRSf2
-         N1UPt14UYZIF1FJ29GeLgQjRSIxIXHh7hhBoB7otUWuRvrCD3w/QufzGc2PqOid9vR7x
-         kdnZsCmq7pgoEW1OOUcBA+fQfeNsL4phCA7xm1Uttq74Fn4TtXF6GnkCbryE+M69vnqT
-         Q6w4hu69W+VzhNua8T3L+QtbXIRe8VyG1iOlTFJkYRscudjPrQHO0z9PVEobDmov4Ant
-         adn6sbHfkd/Gx9u3cPABRZjVqT5P78JjY27pyQBIlosMUp90D4TuCJNkY+d2wOWqxmzw
-         wmoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:date:to:from
-         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pzpkUJ189ntl/UdbbVsn40VnhyPZPxCM/e526VHiq/A=;
-        b=3fZKk7k7r4eOOIMgMWe24LifI/fG0USWZQsKyum6r4FIRbLRlZCz1ANMg25LdfVfRf
-         3h385oeJ/GS42gNe/xspSMrjOcu6xZdVqj/3hFgHIGPFcB9/dClpGDMgI1ZJBo3MQnjs
-         916DS9ityxnyU3p7UQra7wYNefWht+PQkZKIjba4as2TU4sYQkKauAyGJ5i9bqzYHI9k
-         X2+RpoZvIgUNJDdB3Dg3kZAOFHS8pbj6ahZVYk0zgM8Q77xwjuiDMirIdo35JhD5+kF1
-         o44MVi9upA7BOcbNWCmq8j5Ek5zSSHcjvzGtwxUTMF7F64KT31mgAcDjKBdr+AOEeu5J
-         P5wQ==
-X-Gm-Message-State: ACrzQf3bXnUSD8MAbMAr+5bN4fbPJD2nQ7PQZFX6eLpM6J9hH567KAam
-        Y9j1yHjh6A15Lgf0ISFclF4UjYavxso=
-X-Google-Smtp-Source: AMsMyM5n7EJDFiAMfsc3boN93ZPelGgMLJSZoD5SgLnhwSxZeBjAslURxFqjcMbN96NTmYUanja56g==
-X-Received: by 2002:a17:903:2307:b0:181:e618:b4c5 with SMTP id d7-20020a170903230700b00181e618b4c5mr4085765plh.172.1666113224822;
-        Tue, 18 Oct 2022 10:13:44 -0700 (PDT)
-Received: from [192.168.254.15] ([50.39.160.234])
-        by smtp.gmail.com with ESMTPSA id h12-20020a170902680c00b00178bd916c64sm8896362plk.265.2022.10.18.10.13.43
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Oct 2022 10:13:44 -0700 (PDT)
-Message-ID: <52d15e34cf20ddb372b2791c18776405f57d2516.camel@gmail.com>
-Subject: Reassociation is broken via CMD_CONNECT
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Date:   Tue, 18 Oct 2022 10:13:43 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-5.fc34) 
+        Tue, 18 Oct 2022 15:33:05 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 18 Oct 2022 12:33:02 PDT
+Received: from omta033.useast.a.cloudfilter.net (omta033.useast.a.cloudfilter.net [44.202.169.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1477971717
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 12:33:01 -0700 (PDT)
+Received: from eig-obgw-5007a.ext.cloudfilter.net ([10.0.29.141])
+        by cmsmtp with ESMTP
+        id kdeko4ldRh3t8ksJGoQKkg; Tue, 18 Oct 2022 19:31:30 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTP
+        id ksJ5oFVOoAnjUksJ5opQ6m; Tue, 18 Oct 2022 19:31:20 +0000
+X-Authority-Analysis: v=2.4 cv=LsWBd1Rc c=1 sm=1 tr=0 ts=634eff08
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=VLn1U4HDsV/kFU42pi1uTw==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=Qawa6l4ZSaYA:10
+ a=wYkD_t78qR0A:10 a=cak1eodxRRWiubympP0A:9 a=QEXdDO2ut3YA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=B8sItrIzPT1FhGdQ0ENveK914e997Na/QHZvsstLhtM=; b=EtFXKgE3/C7QhFoXgAIqcn+mHq
+        n0jpJ1yc89SZFk3QRIYWQbQFlkZdKqHQVNmC25NtWS58DqjR9hP8X7VDgpmbZ5z9sPBo78pcP7MAk
+        lTqwTU8S2sLegbh6wRASDikI9wq5d5HT/2cXKFlzchDXxggEfq6ayJ5Ilamr1vBho8EU0ef/ogJKM
+        YBMxKWwKUop1rMOwjLtEFiD+UVGKYS2AwP+8ex28C0DBva22ITFJsYwS3LH59OxtuaMrUIgVfpCrx
+        iWHsqSFZKD3WenFiqyFkTrKo3lMyMEXfdNeKKlDBWZrd9FWi4zDzBNtc+T6o3Kz1deV1SN+Xh7ImB
+        mfQVRQ2Q==;
+Received: from [187.184.159.238] (port=8860 helo=[192.168.0.24])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1oksJ4-0006S8-1O;
+        Tue, 18 Oct 2022 14:31:18 -0500
+Message-ID: <71935a08-e9d3-5f9e-5b9a-7847bd38b756@embeddedor.com>
+Date:   Tue, 18 Oct 2022 14:31:12 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 2/6][next] cfg80211: Avoid clashing function prototypes
+Content-Language: en-US
+To:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+References: <cover.1666038048.git.gustavoars@kernel.org>
+ <291de76bc7cd5c21dc2f2471382ab0caaf625b22.1666038048.git.gustavoars@kernel.org>
+ <202210171939.61FFBE79A7@keescook>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <202210171939.61FFBE79A7@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.184.159.238
+X-Source-L: No
+X-Exim-ID: 1oksJ4-0006S8-1O
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.24]) [187.184.159.238]:8860
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfI7uNThUirW+hTbTdcZo3N2rBKaYGlpWsaJJf2295NHMYDQ9rVHsoc0ClfOqzFBi1WEhtToMgqBQwzVZktYvwcwQ/4RAcXvfWqd8U40EyS5efhv7nz9F
+ eua+/k7PbzrRDNzQ8yI/beU+r8TNA7tndI3zu/56NP8wzOTIyFpkI2gKCMB81gQBN3RUBgS6h7R4h5kY/4ejljpsbFFUswQe9bXGBiNBDAPMWUip3CYquy+l
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,28 +98,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-Based on the documentation for PREV_BSSID:
-
-"previous BSSID, to be used in ASSOCIATE and CONNECT commands to
-specify a request to reassociate within an ESS, i.e., to use
-Reassociate Request frame"
-
-But this actually isn't true when using CMD_CONNECT. The kernel does a
-full re-connect if PREV_BSSID is provided (easily verified by kernel
-logs which show an Authenticate frame being sent).
-
-This is due to, in part, cfg80211_sme_connect() calling
-cfg80211_get_conn_bss() which sets the connection state to
-CFG80211_CONN_AUTHENTICATE_NEXT.
-
-I tried hacking this to set it to CFG80211_CONN_ASSOCIATE_NEXT if
-prev_bssid was set, but was unable to reassociate. I think the
-CMD_CONNECT path just needs to call rdev_assoc directly if PREV_BSSID
-is included? or some other modifications to cfg80211_sme_connect()?
-
-Thanks,
-James
 
 
+On 10/17/22 21:41, Kees Cook wrote:
+
+>>   
+>>   static const iw_handler	orinoco_handler[] = {
+>>   	IW_HANDLER(SIOCSIWCOMMIT,	orinoco_ioctl_commit),
+>> -	IW_HANDLER(SIOCGIWNAME,		(iw_handler)cfg80211_wext_giwname),
+>> +	IW_HANDLER(SIOCGIWNAME,		cfg80211_wext_giwname),
+> 
+> This hunk should be in the orinoco patch, I think?
+
+I just didn't want to have this huge patch touching multiple
+different files. That's why I decided to split it up into three
+separate patches.
+
+But yeah; now it seems like a good idea to merge patches 1 to 3
+into just a single patch.
+
+> 
+> 
+>> [...]
+>> +	[IW_IOCTL_IDX(SIOCGIWRETRY)]    = cfg80211_wext_giwretry,
+> 
+> The common practice seems to be to use IW_HANDLER instead of open-coding
+> it like this.
+> 
+> 	IW_HANDLER(SIOCGIWRETRY,	cfg80211_wext_giwretry),
+
+Yeah; I forget this after reverting Sami's changes:
+
+32fc4a9ad56f ("cfg80211: fix callback type mismatches in wext-compat")
+
+I'll fix it up. :)
+
+Thanks for the feedback!
+--
+Gustavo
