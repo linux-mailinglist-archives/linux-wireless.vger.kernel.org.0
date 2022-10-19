@@ -2,142 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D174660397D
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 08:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0524F603982
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 08:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229973AbiJSGDn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 02:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40520 "EHLO
+        id S229967AbiJSGEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 02:04:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbiJSGDg (ORCPT
+        with ESMTP id S229933AbiJSGE3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 02:03:36 -0400
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3C435BC2F
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 23:03:34 -0700 (PDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-35befab86a4so158001547b3.8
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 23:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=s5DB7EnWinUCVvHnFkWiifLYJ7ZYVSrywNKSXQZJdFI=;
-        b=zVYtNmW6565ZCEXxTkDChTvQvHXVZBJgGadsGALKU3QKMGV7PrXldFeksaQiPFFwos
-         gOa5LHUXC9ENeji5ixZomlslrjXs7gRNn5sa4/rC/7oX9vcohhS7XlO8sDMJLXWscr+q
-         bF06XsYuYWzUbcYRDjzfQO7njw5hC0lUkvvqRBtzHG+VCf+kO0dojSk2HwepiWXgSYBP
-         78G6I41n+j4b5oQ86dSQb0agTuBmkZQLAXpLW2ShZuHRDidswcSNmuHVA4Q/JlRHChj1
-         CVLKFFo1MbwWbp2VHMZdc2bMjhHGPyCYYpL8L1H7itzUSN66IyZ5++j9CAcdb550Y7AK
-         nt/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s5DB7EnWinUCVvHnFkWiifLYJ7ZYVSrywNKSXQZJdFI=;
-        b=EMLeOfDfY9fpyEy9tsBT6vzyb+C6Z/p4VdKZ6eXo9HvXXY3YVwbQz+UybU6AsAF5f/
-         h2CvcyGQuhDX80bGQJIMOmD8bHvqGDkFLfX6q6FxNrD31gxATK478JEuGOK1hX9Z3DmO
-         5AN/1cjOGGI8CDatBiVQvqofyZJbpLZQ34Dk0NZ0plSL341F8YU8fDf3jxVdsOn7VgeW
-         AMPMFej6cy+1lmqM9i+Qu6M+AW9IWs0KCACsinFJGB1drhgrsUkZxAHrI1bMjWxilKwj
-         MCqxlnnb9dMMehMOb1FdSFdkagdOpyZPIXvDTkAjuo6AMDUN7ZKGfaJszF++wpCRm5Gm
-         D0EQ==
-X-Gm-Message-State: ACrzQf15tP855hIejP/9tEdr5vahVYFWQBv+lCv6UieVkX4v/0j9m8ki
-        f3yngjqBoo+TwV0Q7VNbJsJjFlrqt9FIzohUt3Q3TQ==
-X-Google-Smtp-Source: AMsMyM6pJW+QkixNplXOsyqax6puLF7anBgDILMTra0UqNAILCFqM+RlWPnUCA7ntqHj/xXFKBs5j8LsVWWer2PZbHY=
-X-Received: by 2002:a81:4881:0:b0:361:5080:91fe with SMTP id
- v123-20020a814881000000b00361508091femr5409889ywa.485.1666159413839; Tue, 18
- Oct 2022 23:03:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org> <Y0hr9XTGAg8Q6K6y@google.com>
-In-Reply-To: <Y0hr9XTGAg8Q6K6y@google.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 19 Oct 2022 09:03:22 +0300
-Message-ID: <CAA8EJppuGbDGb1D-yf2WL77U1bqx1QQStQeDArWmGFCUiOtnww@mail.gmail.com>
-Subject: Re: [PATCH v1 00/15] create power sequencing subsystem
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Wed, 19 Oct 2022 02:04:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3456CAE5C;
+        Tue, 18 Oct 2022 23:04:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C50416177E;
+        Wed, 19 Oct 2022 06:04:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9ABC433D6;
+        Wed, 19 Oct 2022 06:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666159466;
+        bh=GoNOcTQRihsxSULDlcIct8Lz22S4CPpgq7KawTBDN6A=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ZBt8FacKXn5rb4huB9HM70ploZTOfCUG5Qa1Vc5E3rJ8uTrM/i3faUw2emwM4cUfg
+         EFhJ5N/uXl3iHgsKyEiCkBw+BJv0W2gef00+fLJFOXvzHdlZWRLmM7s0Kq3ezbqEJe
+         76pURUV9D7j2F6HvL2ek3vtifUU97O0+XTX3yA2f1YDqhI3/gbXyOHB9TlYJQWhMcx
+         Kkbu1eZ7hkhnH9nMnsCTd48dPc1035XA9ihE+A1FUguawgCnjfr/cQvV9Uq9/ehG9U
+         RWXLfZbvkO2NQ6YZtUvjU8Tv9YL3vIwD2j6EaBYKzgwp5U2cO+zAaa58cz2GNOTQYD
+         vcXvbnQL/fTVw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Nathan Errera <nathan.errera@intel.com>,
+        "open list\:INTEL WIRELESS WIFI LINK \(iwlwifi\)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 1/2] thermal/drivers/iwlwifi: Use generic thermal_zone_get_trip() function
+References: <20221014073253.3719911-1-daniel.lezcano@linaro.org>
+        <87mt9yn22w.fsf@kernel.org>
+        <f327dfc4-cd67-930c-a011-8cc2c58d7668@linaro.org>
+Date:   Wed, 19 Oct 2022 09:04:19 +0300
+In-Reply-To: <f327dfc4-cd67-930c-a011-8cc2c58d7668@linaro.org> (Daniel
+        Lezcano's message of "Fri, 14 Oct 2022 12:21:09 +0200")
+Message-ID: <87y1tcl57g.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ho,
+Daniel Lezcano <daniel.lezcano@linaro.org> writes:
 
-On Thu, 13 Oct 2022 at 22:50, Matthias Kaehlcke <mka@chromium.org> wrote:
-> Do you still plan to refresh this series?
+> On 14/10/2022 12:15, Kalle Valo wrote:
 >
-> I know there have been multiple attempts to get something similar
-> landed in the past 10 year or so. Your series didn't seem to get
-> much pushback from maintainers, might be worth sending a refresh :)
+>> Daniel Lezcano <daniel.lezcano@linaro.org> writes:
+>>
+>>> The thermal framework gives the possibility to register the trip
+>>> points with the thermal zone. When that is done, no get_trip_* ops are
+>>> needed and they can be removed.
+>>>
+>>> The get_trip_temp, get_trip_hyst and get_trip_type are handled by the
+>>> get_trip_point().
+>>>
+>>> The set_trip_temp() generic function does some checks which are no
+>>> longer needed in the set_trip_point() ops.
+>>>
+>>> Convert ops content logic into generic trip points and register them
+>>> with the thermal zone.
+>>>
+>>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>>> ---
+>>>   drivers/net/wireless/intel/iwlwifi/mvm/mvm.h |  2 +-
+>>>   drivers/net/wireless/intel/iwlwifi/mvm/tt.c  | 71 ++++----------------
+>>>   2 files changed, 13 insertions(+), 60 deletions(-)
+>>
+>> The subject should begin with "wifi: iwlwifi: ".
+>>
+>> I don't see patch 2. Via which tree is the plan for this patch?
+>
+> patch 2 are similar changes but related to the mellanox driver.
+>
+> This is the continuation of the trip point rework:
+>
+> https://lore.kernel.org/netdev/20221003092602.1323944-22-daniel.lezcano@linaro.org/t/
+>
+> This patch is planned to go through the thermal tree
 
-Yes, I hope to return to it eventually. I just had no time for it lately.
+Ok, feel free to take this via the thermal tree:
 
-> On Wed, Oct 06, 2021 at 06:53:52AM +0300, Dmitry Baryshkov wrote:
-> > This is a proposed power sequencer subsystem. This is a
-> > generification of the MMC pwrseq code. The subsystem tries to abstract
-> > the idea of complex power-up/power-down/reset of the devices.
-> >
-> > The primary set of devices that promted me to create this patchset is
-> > the Qualcomm BT+WiFi family of chips. They reside on serial+platform
-> > or serial + SDIO interfaces (older generations) or on serial+PCIe (newer
-> > generations).  They require a set of external voltage regulators to be
-> > powered on and (some of them) have separate WiFi and Bluetooth enable
-> > GPIOs.
-> >
-> > The major drawback for now is the lack of proper PCIe integration
-> > At this moment support for PCIe is hacked up to be able to test the
-> > PCIe part of qca6390. Proper PCIe support would require automatically
-> > powering up the devices before the scan basing on the proper device
-> > structure in the device tree. This two last patches are noted as WIP and
-> > are included into the patchset for the purpose of testing WiFi on newer
-> > chips (like qca6390/qca6391).
-> >
-> > Changes since RFC v2:
-> >  - Add documentation for the pwrseq code. Document data structures,
-> >    macros and exported functions.
-> >  - Export of_pwrseq_xlate_onecell()
-> >  - Add separate pwrseq_set_drvdata() function to follow the typical API
-> >    design
-> >  - Remove pwrseq_get_optional()/devm_pwrseq_get_optional()
-> >  - Moved code to handle old mmc-pwrseq binding to the MMC patch
-> >  - Split of_pwrseq_xlate_onecell() support to a separate patch
-> >
-> > Changes since RFC v1:
-> >  - Provider pwrseq fallback support
-> >  - Implement fallback support in pwrseq_qca.
-> >  - Mmove susclk handling to pwrseq_qca.
-> >  - Significantly simplify hci_qca.c changes, by dropping all legacy
-> >    code. Now hci_qca uses only pwrseq calls to power up/down bluetooth
-> >    parts of the chip.
-> >
-> >
-> >
-> >
-> > _______________________________________________
-> > ath10k mailing list
-> > ath10k@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/ath10k
-
-
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
 -- 
-With best wishes
-Dmitry
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
