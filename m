@@ -2,96 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 700FF6043D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 13:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE46B604570
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 14:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230417AbiJSLtq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 07:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S231515AbiJSMga (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 08:36:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231952AbiJSLs5 (ORCPT
+        with ESMTP id S231184AbiJSMgC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 07:48:57 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 627CC169128;
-        Wed, 19 Oct 2022 04:27:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666178873; x=1697714873;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Gq6k+2v0sgUYQcVJmhpXsMbxRry1yR7Pv/R1hXeZor8=;
-  b=I+mhUoiIMYuVRx4JNxu2Qa6Y8W+rLA9k8JiI3FI6+5Lbj42CLFzYkqXE
-   GkEhe5L6dE9rHGA23P/19VwSojheUfO0HJQFew/HuERc2pYFftJv3xK1Y
-   bMjVb5ojQz//ppzwdPe4+p15SQHAfMZW0cn0UebTV82GnSI0BKsRC2LMx
-   VYoFeo0+Viy5oWB/58e0ybcLO0AoENBRAMHFvSzZ8aNhc6dwugQw6DEyL
-   jiohEeP8KyewS6+1SlXdJJS6WuON5slNMS1fIxnespt2wz+dsz7YKOfIx
-   KuaKok5QQm8emuZU2r2AmbmhYDQq6sSUAKI3ikUZOM5dduTWYiWC3CryL
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10504"; a="392679241"
-X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="392679241"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 04:05:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10504"; a="629204413"
-X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="629204413"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 19 Oct 2022 04:04:59 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ol6sb-009p1H-1r;
-        Wed, 19 Oct 2022 14:04:57 +0300
-Date:   Wed, 19 Oct 2022 14:04:57 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Stanislaw Gruszka <stf_xl@wp.pl>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH] wifi: rt2x00: use explicitly signed type for clamping
-Message-ID: <Y0/Z2aHKYVPsiWa5@smile.fi.intel.com>
-References: <202210190108.ESC3pc3D-lkp@intel.com>
- <20221018202734.140489-1-Jason@zx2c4.com>
- <20221019085219.GA81503@wp.pl>
+        Wed, 19 Oct 2022 08:36:02 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 440E313ECD3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 05:15:54 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29J9W97N027977;
+        Wed, 19 Oct 2022 10:04:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=IzyciU5Q8WUy5W2mpOACpQv7Au32S3s5cLbd5S+lbkw=;
+ b=l42mvld7gbpqFti/7Ip5N359FHFzdAXT1NyYSAfdn6riam9qFfSNLVZAWcvhl9ECqNTp
+ EpGPjujmINBKKVZeKn4kN6J0EoTsg1DKyVJKTN0D4kRFOTR6Pfhjzt1mLKI1i5Ad2Bob
+ jn73dpAK8dSU27zkjfi6cPgaterT6w64zAu2JgW49pjYp7aI+takeizQ0WUgvE2xgQHr
+ TZsKD5zk7CsBc76WDOR/F+Rn3pGURlwUjNv+zD1zSCJYwaruO10Hu/haSsLuzC3ZO1QX
+ cK54efNFMd1dfsU/jUsGrKzzGknhEi7vbUdvzJUfeFT+e0jz+4kJT8vmmPWLgT/hBTM6 UA== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k9qwp36sj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 10:04:46 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29JA4jLv007051
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 10:04:45 GMT
+Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 19 Oct
+ 2022 03:04:43 -0700
+Message-ID: <de54f4e0-810b-70a0-7629-39a2957ecd3d@quicinc.com>
+Date:   Wed, 19 Oct 2022 18:04:41 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221019085219.GA81503@wp.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: wifi: hostapd:/wpa_supplicant MLO Re: [PATCH 00/27] another set of
+ MLO patches
+Content-Language: en-US
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     "Otcheretianski, Andrei" <andrei.otcheretianski@intel.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Peer, Ilan" <ilan.peer@intel.com>
+CC:     <ath11k@lists.infradead.org>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+ <6175bc95-201c-cfab-2ae6-9ba77e830394@quicinc.com>
+ <09556b33ad998ad243cf75dbc230f3b07349a87e.camel@sipsolutions.net>
+ <935ef9e9-2092-e3f0-0edd-4aa29f4fa775@quicinc.com>
+ <e01e75013f71ede7b29f2751238935e7147796f2.camel@sipsolutions.net>
+ <f3afceb8-8120-12c7-74b9-caa3abce5cb8@quicinc.com>
+ <DM6PR11MB3897D1A4E13419D9F938F559F5449@DM6PR11MB3897.namprd11.prod.outlook.com>
+ <96bcc467-c530-46de-8f91-c5eb0af7a368@quicinc.com>
+ <776991f3-384e-f487-83b7-e1fbfd40cc4f@quicinc.com>
+In-Reply-To: <776991f3-384e-f487-83b7-e1fbfd40cc4f@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hmIvF4Sm6AnoYiJEyxXFsqY_92wzy8em
+X-Proofpoint-ORIG-GUID: hmIvF4Sm6AnoYiJEyxXFsqY_92wzy8em
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-19_06,2022-10-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ phishscore=0 bulkscore=0 mlxlogscore=968 malwarescore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210190055
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 10:52:19AM +0200, Stanislaw Gruszka wrote:
-> On Tue, Oct 18, 2022 at 02:27:34PM -0600, Jason A. Donenfeld wrote:
-> > On some platforms, `char` is unsigned, which makes casting -7 to char
-> > overflow, which in turn makes the clamping operation bogus. Instead,
-> > deal with an explicit `s8` type, so that the comparison is always
-> > signed, and return an s8 result from the function as well. Note that
-> > this function's result is assigned to a `short`, which is always signed.
-> > 
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: Stanislaw Gruszka <stf_xl@wp.pl>
-> > Cc: Helmut Schaa <helmut.schaa@googlemail.com>
-> > Cc: Kalle Valo <kvalo@kernel.org>
-> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> 
-> I prefer s8 just because is shorter name than short :-)
+Hi Ilan/Andrei,
 
-Shouldn't the corresponding data structure type be fixed accordingly?
+Will you send your patches of wpa_supplicant for MLO to upstream?😁
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+On 10/11/2022 10:28 AM, Wen Gong wrote:
+> Hi Ilan/Andrei,
+>
+> Will you send your patches of wpa_supplicant to upstream?😁
+>
+> On 9/28/2022 11:12 PM, Wen Gong wrote:
+>> On 9/12/2022 9:17 PM, Otcheretianski, Andrei wrote:
+>>>>> Well, OK, you obviously are adjusting the supplicant to work with MLO
+>>>>> (otherwise you wouldn't get an MLO connection in the first place), so
+>>>>> yeah, this is part of the adjustments needed.
+>>>>>
+>>>>> Ilan/Andrei have all of this working, maybe we can share the patches
+>>>>> even before rebase etc.
+>>> Hi,
+>>> Our implementation is based on our internal tree, so it will take 
+>>> some time to cleanup and port it for upstream.
+>>> Hopefully I will have some time to work on it this and next week and 
+>>> maybe we will be able to share something initial.
+>> May I get your patches?
+>>>
+>>> Andrei
+>>>>> johannes
+>>>> Thanks.
+>>>>
+>>>> It is good to share me the wpa_supplicant patches ASAP.
+>>>>
+>>>> And I have another question:
+>>>>
+>>>> When mac80211 use the MLD addr in authentication/assoc request,
+>>>>
+>>>> finally, it should be replaced with one link's address in air port, 
+>>>> right?
+>>>>
+>>>> It means the MLD addr will never exist in mac80211 header of packet 
+>>>> in the
+>>>> air port, right?
