@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 682176053E0
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 01:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CC8C60543A
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 01:53:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231742AbiJSXXa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 19:23:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59290 "EHLO
+        id S230127AbiJSXxC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 19:53:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231731AbiJSXX2 (ORCPT
+        with ESMTP id S229736AbiJSXxB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 19:23:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D47A157F63;
-        Wed, 19 Oct 2022 16:23:27 -0700 (PDT)
+        Wed, 19 Oct 2022 19:53:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3FF017534F;
+        Wed, 19 Oct 2022 16:53:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C737D601C3;
-        Wed, 19 Oct 2022 23:23:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAC7C433D6;
-        Wed, 19 Oct 2022 23:23:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FE4061342;
+        Wed, 19 Oct 2022 23:53:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69912C433C1;
+        Wed, 19 Oct 2022 23:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666221806;
-        bh=X48XrQw65DNcOVu2462NouGJs7xrBBJ/pVCEccoAvnE=;
+        s=k20201202; t=1666223579;
+        bh=6kyUB5tKFDB5XUjFi6QCd6MkTS2oO8t5uING/AE0Fjw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TDmNJzGT2nxlSvbcsbTQGlwK/446bfChwnahMF3ppVgL6TzUsww6AGpsPhyyod8ll
-         UY60JoH7bmJwe00mW7DjE9N2K6wgHCuUDp79Hxj/r0gtygum+aA+jFSjW0sn6F35cv
-         +GtjxIwqdVDAuHBJFgeA8NAk/5wY7LYKMU7lVecwYfPnKGhiYowN6lz6DeE6Ra/jZC
-         rsXQZKExrHu/+ohun0Rsy8p+go2q3UFvV6kO5uFRa3hk39k6Gpl0T2Kyp5LlWpfAOE
-         hlj1neX/uVAqDW8iGopA5jxEK8aABFiUFxNPjEzsCn7dNC6Es9ckicwmPOjMMjr6yB
-         3/QRTN+2gRHlw==
-Date:   Wed, 19 Oct 2022 16:23:24 -0700
+        b=qBPIclqEN6ga3sptd0OAkLER6swsxHPJec6x1ajyDUojN8Haz1Rs8MFew5rbT+TbE
+         ltLtcAX3exTMIe6KMxj88RYDRQxNEsIom2ddEXEDrkMvGfYVJCgkZX1vovlYfjk1XW
+         oV9cUMpG7TlfoXkZ3c9JxpZ9Y17cWj3utqWNtWBPRI2ZSN+oF+JhDHSjWO9T00KJgi
+         Jhk/WgOEnpqEGBAMDGWCcHzz1RhSCK5c1uz8WvyeBPuudQa+cJIO9tSpuCGvAWefNd
+         /hXaiwj+PspiN+PGUVbe1pCODmjhL1veuwgeqOUOe/RXab4vpP5n0eAbCo8xkkMkYo
+         p7YRLTpM5O3CA==
+Date:   Wed, 19 Oct 2022 16:52:58 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
         Johannes Berg <johannes@sipsolutions.net>,
         Wireless <linux-wireless@vger.kernel.org>,
         David Miller <davem@davemloft.net>,
@@ -45,9 +45,11 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         Linux Next Mailing List <linux-next@vger.kernel.org>
 Subject: Re: linux-next: manual merge of the wireless-next tree with Linus'
  tree
-Message-ID: <20221019162324.2baaa7e8@kernel.org>
-In-Reply-To: <20221020032340.5cf101c0@canb.auug.org.au>
+Message-ID: <20221019165258.1ea6daa6@kernel.org>
+In-Reply-To: <20221020041440.3f6c1e46@canb.auug.org.au>
 References: <20221020032340.5cf101c0@canb.auug.org.au>
+        <20221019162324.2baaa7e8@kernel.org>
+        <20221020041440.3f6c1e46@canb.auug.org.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -60,24 +62,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 20 Oct 2022 03:23:40 +1100 Stephen Rothwell wrote:
-> Today's linux-next merge of the wireless-next tree got a conflict in:
+On Thu, 20 Oct 2022 04:14:40 +1100 Stephen Rothwell wrote:
+> > Dunno if this is a glitch or real problem. But it reminds me - I see
+> > there is direct wireless -> wireless-next merge without going via
+> > Linus's tree. I think you may have mentioned it to us, but not sure
+> > if I said this clearly - let's try to avoid such merges. Linus certainly
+> > doesn't like when we do net -> net-next merges without sending net to
+> > him first and forwarding. I'm not 100% sure why (maybe Steven knows)
+> > - whether it's an aesthetic thing or avoiding real issues thing, but
+> > either way it's _a_ thing :S  
 > 
->   net/mac80211/util.c
-> 
-> between commit:
-> 
->   ff05d4b45dd8 ("wifi: mac80211: fix MBSSID parsing use-after-free")
-> 
-> from the origin tree and commit:
-> 
->   ff05d4b45dd8 ("wifi: mac80211: fix MBSSID parsing use-after-free")
+> Has Linus really complained about you merging the net tree into the
+> net-next tree?
 
-Dunno if this is a glitch or real problem. But it reminds me - I see
-there is direct wireless -> wireless-next merge without going via
-Linus's tree. I think you may have mentioned it to us, but not sure
-if I said this clearly - let's try to avoid such merges. Linus certainly
-doesn't like when we do net -> net-next merges without sending net to
-him first and forwarding. I'm not 100% sure why (maybe Steven knows)
-- whether it's an aesthetic thing or avoiding real issues thing, but
-either way it's _a_ thing :S
+I can't find that exchange right now. Maybe it was about merging
+back his tree into ours without submitting a PR. Hm.
