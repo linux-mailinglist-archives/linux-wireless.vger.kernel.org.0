@@ -2,83 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F246038E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 06:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5038E603956
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 07:44:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbiJSEcw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 00:32:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
+        id S229896AbiJSFou (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 01:44:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbiJSEcv (ORCPT
+        with ESMTP id S229670AbiJSFos (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 00:32:51 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAFFD37FAF
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 21:32:49 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29J4LOBA011802;
-        Wed, 19 Oct 2022 04:32:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=IlrRhRmv95as1oiId1b1PHApl1MGh3RyfzRf2DVSV4Q=;
- b=H4q6AYfUmQE0UqNWnvImWE629DEk2RMnLvYUkn/L4MClvHg1wxPDGNDEHxz7zbxRB5D2
- 6nQp5jWfh8wzupg8EKR/v3iJ9v2BCz/p8CYEdNUOSTpmijTRXu4tiZywcJyz1MYA2o8y
- NYmKj4FCAbtZ9M2daCxlbjGg5dk8K6sXLP4i+/ll5zxrJJdHlWaYQdlaJ/XzTYudYbkr
- IVUugGeLwsWdfrPka374tmEk1oJcRKXqfCXpJKy/DkueNMwWFxomX71WfDOXvFB7gNFO
- QjVY0NW6HY3cDSL8VMmwdtTUPYW9GZyvNRd1T5fLN2bSly+R5WC9bLVo+E0KsxxcLWJK 8A== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k9yq1hg0f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Oct 2022 04:32:39 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29J4WcdJ031790
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Oct 2022 04:32:38 GMT
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 18 Oct
- 2022 21:32:37 -0700
-Message-ID: <92fc96e7-6305-ca2f-7f13-5d26d704c7f0@quicinc.com>
-Date:   Wed, 19 Oct 2022 12:32:34 +0800
+        Wed, 19 Oct 2022 01:44:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC3727CCC;
+        Tue, 18 Oct 2022 22:44:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 584186158B;
+        Wed, 19 Oct 2022 05:44:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9F7C433D7;
+        Wed, 19 Oct 2022 05:44:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666158285;
+        bh=E8UeC0WUnxsuYD3yKW5jYAZL9kBreTcaaWUL/RKE5Mc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Tm5M5aZeCspKAgAE40+Z7Eonk0w7qN17zV3XqKPpQWOQGLKM7rzHYw15e1nNtNnKq
+         ZeryNqk31iy9TKufis/saWf0Ye1HDevE4231iZ96WhnPyUmHrBKdaRSepHUya01eKi
+         8S2XsZXLiFsj4wi8iyxjQymFLKspZ3pd5lbwOzJU0HdaCLYLt/kYuavq+SXMrovYcP
+         uRl3lxgN5fnr3aw/wd04bZvwkXY/YybNjG5Gre/eEJuF0yFz4UYfotpkc/A/P90age
+         8Q/cfzYQ2RBl9Qr41mgu/+MMl5t3x9wkQqOfA3feyMKwUjt5laiBlTmY41l1RVYLIw
+         n/h57mAiRkxOw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 01/15] mac80211: split bss_info_changed method
-Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
-References: <20220601073958.8345-1-johannes@sipsolutions.net>
- <20220601093922.347d47c279fe.I15937cfe8405999084f164ddf57390f8b8d2bc61@changeid>
- <c38b4da8-488b-2d09-631a-1bb6c07440a6@quicinc.com>
- <3483d05c1d5a39b9243b54d9f28450344a897655.camel@sipsolutions.net>
- <bd6545a8-57a3-5849-52d5-c1a449ab1712@quicinc.com>
- <d0994456d3a9ea00b5cc472df7822d53d189399e.camel@sipsolutions.net>
- <7e72034a-497a-000c-d7bf-3ec974af9e1c@quicinc.com>
- <f210cf2a6e3f62156ae6a9d6c7de20e16bd4d6e6.camel@sipsolutions.net>
- <95a1604c-f323-0fea-46a8-bf554da28fca@quicinc.com>
-In-Reply-To: <95a1604c-f323-0fea-46a8-bf554da28fca@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: FcSl4CE342er6I5hcsvR87ljdseoEVFK
-X-Proofpoint-GUID: FcSl4CE342er6I5hcsvR87ljdseoEVFK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-19_01,2022-10-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 impostorscore=0 phishscore=0 spamscore=0
- mlxlogscore=817 bulkscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210190024
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: ath10k: Delay the unmapping of the buffer
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20221012142733.32420-1-quic_youghand@quicinc.com>
+References: <20221012142733.32420-1-quic_youghand@quicinc.com>
+To:     Youghandhar Chintala <quic_youghand@quicinc.com>
+Cc:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>,
+        Douglas Anderson <dianders@chromium.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166615828224.31701.17876502388354120236.kvalo@kernel.org>
+Date:   Wed, 19 Oct 2022 05:44:44 +0000 (UTC)
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,38 +56,98 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/18/2022 6:10 PM, Wen Gong wrote:
-> On 10/18/2022 5:51 PM, Johannes Berg wrote:
->> On Tue, 2022-10-18 at 17:50 +0800, Wen Gong wrote:
->>>> https://p.sipsolutions.net/0652bbbbe350b126.txt
->>> Conflict happened while run "git am" the patch.
->>>
->>> Because missing the  "changed |= BSS_CHANGED_EHT_PUNCTURING;" in my
->>> local code,
->>>
->>> also it is missing in
->>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/tree/net/mac80211/util.c 
->>>
->>>
->>> Maybe "changed |= BSS_CHANGED_EHT_PUNCTURING;" is only existed in your
->>> local code?
->>>
->> Ah yes, we didn't upstream that because there's still this discussion
->> about handling puncturing. But you can probably apply around that.
->>
->> johannes
->
-> Yes, after apply it.
->
-> and apply "commit 3d901102922723eedce6ef10ebd03315a7abb8a5 wifi: 
-> mac80211: implement link switching" to
->
-> fix build error because my local code is not latest.
->
-> it is built success, I will try it later.
->
-Hi johannes,
+Youghandhar Chintala <quic_youghand@quicinc.com> wrote:
 
-After above change, no error/kernel crash happened while reconfig single 
-MLO link which link id is 2.
+> On WCN3990, we are seeing a rare scenario where copy engine hardware is
+> sending a copy complete interrupt to the host driver while still
+> processing the buffer that the driver has sent, this is leading into an
+> SMMU fault triggering kernel panic. This is happening on copy engine
+> channel 3 (CE3) where the driver normally enqueues WMI commands to the
+> firmware. Upon receiving a copy complete interrupt, host driver will
+> immediately unmap and frees the buffer presuming that hardware has
+> processed the buffer. In the issue case, upon receiving copy complete
+> interrupt, host driver will unmap and free the buffer but since hardware
+> is still accessing the buffer (which in this case got unmapped in
+> parallel), SMMU hardware will trigger an SMMU fault resulting in a
+> kernel panic.
+> 
+> In order to avoid this, as a work around, add a delay before unmapping
+> the copy engine source DMA buffer. This is conditionally done for
+> WCN3990 and only for the CE3 channel where issue is seen.
+> 
+> Below is the crash signature:
+> 
+> wifi smmu error: kernel: [ 10.120965] arm-smmu 15000000.iommu: Unhandled
+> context fault: fsr=0x402, iova=0x7fdfd8ac0,
+> fsynr=0x500003,cbfrsynra=0xc1, cb=6 arm-smmu 15000000.iommu: Unhandled
+> context fault:fsr=0x402, iova=0x7fe06fdc0, fsynr=0x710003,
+> cbfrsynra=0xc1, cb=6 qcom-q6v5-mss 4080000.remoteproc: fatal error
+> received: err_qdi.c:1040:EF:wlan_process:0x1:WLAN RT:0x2091:
+> cmnos_thread.c:3998:Asserted in copy_engine.c:AXI_ERROR_DETECTED:2149
+> remoteproc remoteproc0: crash detected in
+> 4080000.remoteproc: type fatal error <3> remoteproc remoteproc0:
+> handling crash #1 in 4080000.remoteproc
+> 
+> pc : __arm_lpae_unmap+0x500/0x514
+> lr : __arm_lpae_unmap+0x4bc/0x514
+> sp : ffffffc011ffb530
+> x29: ffffffc011ffb590 x28: 0000000000000000
+> x27: 0000000000000000 x26: 0000000000000004
+> x25: 0000000000000003 x24: ffffffc011ffb890
+> x23: ffffffa762ef9be0 x22: ffffffa77244ef00
+> x21: 0000000000000009 x20: 00000007fff7c000
+> x19: 0000000000000003 x18: 0000000000000000
+> x17: 0000000000000004 x16: ffffffd7a357d9f0
+> x15: 0000000000000000 x14: 00fd5d4fa7ffffff
+> x13: 000000000000000e x12: 0000000000000000
+> x11: 00000000ffffffff x10: 00000000fffffe00
+> x9 : 000000000000017c x8 : 000000000000000c
+> x7 : 0000000000000000 x6 : ffffffa762ef9000
+> x5 : 0000000000000003 x4 : 0000000000000004
+> x3 : 0000000000001000 x2 : 00000007fff7c000
+> x1 : ffffffc011ffb890 x0 : 0000000000000000 Call trace:
+> __arm_lpae_unmap+0x500/0x514
+> __arm_lpae_unmap+0x4bc/0x514
+> __arm_lpae_unmap+0x4bc/0x514
+> arm_lpae_unmap_pages+0x78/0xa4
+> arm_smmu_unmap_pages+0x78/0x104
+> __iommu_unmap+0xc8/0x1e4
+> iommu_unmap_fast+0x38/0x48
+> __iommu_dma_unmap+0x84/0x104
+> iommu_dma_free+0x34/0x50
+> dma_free_attrs+0xa4/0xd0
+> ath10k_htt_rx_free+0xc4/0xf4 [ath10k_core] ath10k_core_stop+0x64/0x7c
+> [ath10k_core]
+> ath10k_halt+0x11c/0x180 [ath10k_core]
+> ath10k_stop+0x54/0x94 [ath10k_core]
+> drv_stop+0x48/0x1c8 [mac80211]
+> ieee80211_do_open+0x638/0x77c [mac80211] ieee80211_open+0x48/0x5c
+> [mac80211]
+> __dev_open+0xb4/0x174
+> __dev_change_flags+0xc4/0x1dc
+> dev_change_flags+0x3c/0x7c
+> devinet_ioctl+0x2b4/0x580
+> inet_ioctl+0xb0/0x1b4
+> sock_do_ioctl+0x4c/0x16c
+> compat_ifreq_ioctl+0x1cc/0x35c
+> compat_sock_ioctl+0x110/0x2ac
+> __arm64_compat_sys_ioctl+0xf4/0x3e0
+> el0_svc_common+0xb4/0x17c
+> el0_svc_compat_handler+0x2c/0x58
+> el0_svc_compat+0x8/0x2c
+> 
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
+> 
+> Tested-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+acd4324e5f1f wifi: ath10k: Delay the unmapping of the buffer
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20221012142733.32420-1-quic_youghand@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
