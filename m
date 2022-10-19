@@ -2,138 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39FE603B3C
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 10:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D376040B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 12:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbiJSIPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 04:15:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44836 "EHLO
+        id S231512AbiJSKLu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 06:11:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbiJSIPw (ORCPT
+        with ESMTP id S231623AbiJSKLd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 04:15:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E722C748DE;
-        Wed, 19 Oct 2022 01:15:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85ECC6178F;
-        Wed, 19 Oct 2022 08:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6536C4347C;
-        Wed, 19 Oct 2022 08:15:49 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="D+ZvL1k/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1666167346;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=nAmr2UAHuPsXegfCTI97bmAUTMlBsKIt74vgLb/46NU=;
-        b=D+ZvL1k/WanrhMOeR+CGRXuPU/IX9UV+tXpP0nBmAVeKqBZq0aZV7xPZfPG2OiONIW0mx0
-        xAkhMgP84/WjI9ijS4Wnf95X8rq3fF0LQJLvQkv8gUa2x29/gdGw9MUIgvDJ/9hk12uHjs
-        0LuPLiRK3yUgkt+hfZRwt1lYiSItt8c=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 0df47019 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Wed, 19 Oct 2022 08:15:46 +0000 (UTC)
-Received: by mail-vs1-f50.google.com with SMTP id a2so16976788vsc.13;
-        Wed, 19 Oct 2022 01:15:45 -0700 (PDT)
-X-Gm-Message-State: ACrzQf2h1lD+Y/wK7jmgNLtwWP2tbpd+1Qi4zhxbrhBlpzVr3uWlWFYG
-        JcZ3cjzW7jWmoFK1nV0KgSoDdkRUA7qXD50M1D0=
-X-Google-Smtp-Source: AMsMyM67WQuIFDSYsk+FN+WbsP3JkTTE10px/GF5LeSzwj0Zm8Srjifse7EFqjgFDwdSBmVrlKmmcEzev2nVJIhpyHY=
-X-Received: by 2002:a67:c297:0:b0:3a7:5f0c:54c4 with SMTP id
- k23-20020a67c297000000b003a75f0c54c4mr3705224vsj.76.1666167344375; Wed, 19
- Oct 2022 01:15:44 -0700 (PDT)
+        Wed, 19 Oct 2022 06:11:33 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F72FC1DA
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 02:50:52 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29J9CR79030520;
+        Wed, 19 Oct 2022 09:35:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=N4XbolfPRYP6yQS3rO7PdXpeLrCTZh1nx3CX/lYi56E=;
+ b=GpIJWE3MLDHRl12ADGK9hyT275NToi8bvKU2ccktXKcnpT6+DgTivOYK9ITS4bXTUSxW
+ JKBm9p+hR7p3EJPwSp1SErKHk0XbFsZAB0TlnniL9JstiH50YPW2dJpQDjYc0he4AjvI
+ xqvvCec75stNFJrf8zGP5iAnUrC7KznoHqDkM03iWJLwku7l0bz52Rhmpjrcd4kBV3e7
+ p6GaqyhaE6eRxuzmHzPyALC2QNSMiq3y3F3WszjF7SVdkK773+YQMKMGFYBxxgxzyR+M
+ vUecUSQ/VgGEOdwuMbOXKwNZw0xVhUCWlE/GJ0TYdigPXZzwmZbvpZcfmbQpYgpQrOJn 5w== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kaed8r4ek-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 09:35:55 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29J9ZtJL019075
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 09:35:55 GMT
+Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 19 Oct
+ 2022 02:35:53 -0700
+Message-ID: <9fe7c0f2-e02f-e87f-dced-90e973c8992f@quicinc.com>
+Date:   Wed, 19 Oct 2022 17:35:51 +0800
 MIME-Version: 1.0
-References: <202210191553.vO9rtKe5-lkp@intel.com> <87pmeol020.fsf@kernel.org>
- <CAHmME9qFKMLJiZa=pg9bnBWHSfbgP-+yimteL_t4sxuepQ6bAg@mail.gmail.com> <CAHmME9ocXJMTmCQfi1NY+zOw-r5VCe_Z48q5VJCZxR4Hj=1oZA@mail.gmail.com>
-In-Reply-To: <CAHmME9ocXJMTmCQfi1NY+zOw-r5VCe_Z48q5VJCZxR4Hj=1oZA@mail.gmail.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Wed, 19 Oct 2022 02:15:33 -0600
-X-Gmail-Original-Message-ID: <CAHmME9oeHMPjg5aCdv4d5pY_ue9ufgaS4FQkYRRWAX_E0zFtfw@mail.gmail.com>
-Message-ID: <CAHmME9oeHMPjg5aCdv4d5pY_ue9ufgaS4FQkYRRWAX_E0zFtfw@mail.gmail.com>
-Subject: Re: drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9439:15: warning:
- result of comparison of constant -7 with expression of type 'char' is always false
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     kernel test robot <lkp@intel.com>,
-        =?UTF-8?Q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-kernel@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: wifi: mac80211: Re: unicast probe response bssid changed by "wifi:
+ mac80211: do link->MLD address translation on RX"
+Content-Language: en-US
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
+References: <e1c5fbac-7e6e-c643-f24d-32cec779f2d3@quicinc.com>
+In-Reply-To: <e1c5fbac-7e6e-c643-f24d-32cec779f2d3@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: BR9fgVrzolWHlHCFTY3NnqECkUqnFIDI
+X-Proofpoint-GUID: BR9fgVrzolWHlHCFTY3NnqECkUqnFIDI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-19_06,2022-10-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0 phishscore=0
+ mlxlogscore=912 spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210190052
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 2:02 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+On 9/14/2022 11:13 AM, Wen Gong wrote:
+> Hi Johannes,
 >
-> On Wed, Oct 19, 2022 at 1:59 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
-> >
-> > On Wed, Oct 19, 2022 at 1:55 AM Kalle Valo <kvalo@kernel.org> wrote:
-> > >
-> > > + jason, linux-wireless
-> > >
-> > > kernel test robot <lkp@intel.com> writes:
-> > >
-> > > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> > > > head:   aae703b02f92bde9264366c545e87cec451de471
-> > > > commit: dab902fe1d29dc0fa1dccc8d13dc89ffbf633881 wifi: rt2x00: add TX
-> > > > LOFT calibration for MT7620
-> > > > date:   4 weeks ago
-> > > > config: arm64-allmodconfig
-> > > > compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project
-> > > > 791a7ae1ba3efd6bca96338e10ffde557ba83920)
-> > > > reproduce (this is a W=1 build):
-> > > >         wget
-> > > > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
-> > > > -O ~/bin/make.cross
-> > > >         chmod +x ~/bin/make.cross
-> > > >         # install arm64 cross compiling tool for clang build
-> > > >         # apt-get install binutils-aarch64-linux-gnu
-> > > >         #
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dab902fe1d29dc0fa1dccc8d13dc89ffbf633881
-> > > >         git remote add linus
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> > > >         git fetch --no-tags linus master
-> > > >         git checkout dab902fe1d29dc0fa1dccc8d13dc89ffbf633881
-> > > >         # save the config file
-> > > >         mkdir build_dir && cp config build_dir/.config
-> > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1
-> > > > O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/gpu/drm/amd/amdgpu/
-> > > > drivers/net/wireless/ralink/rt2x00/ drivers/staging/media/
-> > > >
-> > > > If you fix the issue, kindly add following tag where applicable
-> > > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > >
-> > > > All warnings (new ones prefixed by >>):
-> > > >
-> > > >>> drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9439:15: warning:
-> > > >> result of comparison of constant -7 with expression of type 'char'
-> > > >> is always false [-Wtautological-constant-out-of-range-compare]
-> > > >            gerr = (gerr < -0x07) ? -0x07 : (gerr > 0x05) ? 0x05 : gerr;
-> > > >                    ~~~~ ^ ~~~~~
-> > > >    drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9443:15: warning: result of comparison of constant -31 with expression of type 'char' is always false [-Wtautological-constant-out-of-range-compare]
-> > > >            perr = (perr < -0x1f) ? -0x1f : (perr > 0x1d) ? 0x1d : perr;
-> > > >                    ~~~~ ^ ~~~~~
-> > > >    2 warnings generated.
-> > >
-> > > I believe this patch should fix it:
-> > >
-> > > https://patchwork.kernel.org/project/linux-wireless/patch/20221018202734.140489-1-Jason@zx2c4.com/
-> > >
-> > > Jason, is my understanding correct?
-> >
-> > That's a different bug caused by the same pitfall: assuming char is
-> > signed. I'll send a patch for that function too.
+> The mac addr of unicast rx packet all changed to the MLD address by 
+> below patch.
+> Now the probe presponse which is unicast packet is also changed mac 
+> address here.
+> I found bssid which is the MLD address of my test AP in 
+> cfg80211_get_bss().
+> For example, if the AP has 2 mlo links, link 1 is 5 GHz band, link 2 
+> is 2.4 GHz band,
+> then the 2 probe reponse will be changed to a same one.
+> seems we should skip probe presponse for the mac address change here, 
+> right?
 >
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?id=42fb9148c078004d07b4c39bd7b1086b6165780c 
 >
-> Actually, maybe I should fix the whole file? Patch incoming.
+> wifi: mac80211: do link->MLD address translation on RX
+>
+Hi Johannes,
 
-Okay here's a v2 that handles it driver-wide:
-https://lore.kernel.org/linux-wireless/20221019081417.3402284-1-Jason@zx2c4.com/
-(Might take a few minutes to hit lore.)
+May I get your comment about this?
+
+I did below change in my local test to workaround the issue.
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index a57811372027..eaff5353520a 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4858,7 +4858,8 @@ static bool ieee80211_prepare_and_rx_handle(struct 
+ieee80211_rx_data *rx,
+          shwt->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
+      }
+
+-    if (unlikely(link_sta)) {
++    if (unlikely(link_sta) &&
++        !(ieee80211_is_probe_resp(hdr->frame_control))) {
+          /* translate to MLD addresses */
+          if (ether_addr_equal(link->conf->addr, hdr->addr1))
+              ether_addr_copy(hdr->addr1, rx->sdata->vif.addr);
+
