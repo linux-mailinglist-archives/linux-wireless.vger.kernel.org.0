@@ -2,130 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE46B604570
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 14:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC726044A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 14:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231515AbiJSMga (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 08:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
+        id S232754AbiJSMLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 08:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231184AbiJSMgC (ORCPT
+        with ESMTP id S233104AbiJSMJ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 08:36:02 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 440E313ECD3
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 05:15:54 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29J9W97N027977;
-        Wed, 19 Oct 2022 10:04:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=IzyciU5Q8WUy5W2mpOACpQv7Au32S3s5cLbd5S+lbkw=;
- b=l42mvld7gbpqFti/7Ip5N359FHFzdAXT1NyYSAfdn6riam9qFfSNLVZAWcvhl9ECqNTp
- EpGPjujmINBKKVZeKn4kN6J0EoTsg1DKyVJKTN0D4kRFOTR6Pfhjzt1mLKI1i5Ad2Bob
- jn73dpAK8dSU27zkjfi6cPgaterT6w64zAu2JgW49pjYp7aI+takeizQ0WUgvE2xgQHr
- TZsKD5zk7CsBc76WDOR/F+Rn3pGURlwUjNv+zD1zSCJYwaruO10Hu/haSsLuzC3ZO1QX
- cK54efNFMd1dfsU/jUsGrKzzGknhEi7vbUdvzJUfeFT+e0jz+4kJT8vmmPWLgT/hBTM6 UA== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k9qwp36sj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Oct 2022 10:04:46 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29JA4jLv007051
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Oct 2022 10:04:45 GMT
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 19 Oct
- 2022 03:04:43 -0700
-Message-ID: <de54f4e0-810b-70a0-7629-39a2957ecd3d@quicinc.com>
-Date:   Wed, 19 Oct 2022 18:04:41 +0800
+        Wed, 19 Oct 2022 08:09:27 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 120C2107A85
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 04:45:18 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id b2so39306963eja.6
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 04:45:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:mime-version:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LWXy3ixXhBh6Q+ZuZgHETSGEk5KoziqbQ5MQxqx+wbs=;
+        b=CaPw3qHT3TySqMmiNuwPFH+mLC2ACNuwLziAPyH7O4nkzf72qzK3ynkIwY6SGfClq9
+         5QaupJng8/SEmYdiXlpNVSq4kqDNO9rkcztr+gBSWXfxZbuJlSwcBEuEQrBlQtT+49sI
+         E4QPybDNIjiEoLzI8NVa+kdtKP0IZlLax7NAih98SAUV0UUl8Jokv30R8sopdHB0n5DG
+         45f3iRasdqvDuHYcPKEO7GGpbA2vf9BWIZJq8UNAYFPyc+4gTYNyqsTG61mIB1sChxnq
+         XN9U8MGT5tU/PtbHqgCZc8d0v4YwGdygb7tYGjMxLL8Kf6TUEQ49/PILKIb3rQqjtFtB
+         sXmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:mime-version:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LWXy3ixXhBh6Q+ZuZgHETSGEk5KoziqbQ5MQxqx+wbs=;
+        b=cQUWIKNZdKPALGUeYDz6tH/Z208q56GeiJv5jf80aLIEVcJ/G+rHXQl5pOumiXtm49
+         JOMmE0N6eis7gjx8acSn9EjyfHz2RrOwhDadUjFKGb7jCL/RsmJ7CNbJV49vcvR83siF
+         ENAOeZtEK3Bo0rD8es1XdRW7iXyLEoCGo5YZ3XpTYgLSGln0KUq+JV/kX3tHvZhxrsBv
+         AbmgPT9TF5nry8eN/JPL6cy5rXKzU9rjWNXRcUvoAbwVUNQHRtyroUatuxXv/8C5xWTC
+         3HClREilgbT4SV2jDLhbNnC2RSDkONbn+2LVetKhU0Pn8pd134ErbvAGXcjNlgqn9Faa
+         1lag==
+X-Gm-Message-State: ACrzQf3IrzudawDzpfeafoVW2TMf7a40HMAtcNWWZBHq3kRWRiKMkl0/
+        ZeHdNxwdWYeGWSQlgVrBed8hkpS5UCGsOMUZqCY=
+X-Google-Smtp-Source: AMsMyM5oI5I0yd2b5CwmclYuxYoHEpi9ntL6DXvukcvbQPvk9E8McK5XVJJ+vvZJzrhVgAEtJtJR7C2+ar+MmPSgIMA=
+X-Received: by 2002:a17:907:7621:b0:741:6656:bd14 with SMTP id
+ jy1-20020a170907762100b007416656bd14mr6318806ejc.298.1666179859287; Wed, 19
+ Oct 2022 04:44:19 -0700 (PDT)
+Received: from 35650733073 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 19 Oct 2022 04:44:18 -0700
+From:   Arend van Spriel <aspriel@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: wifi: hostapd:/wpa_supplicant MLO Re: [PATCH 00/27] another set of
- MLO patches
-Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     "Otcheretianski, Andrei" <andrei.otcheretianski@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Peer, Ilan" <ilan.peer@intel.com>
-CC:     <ath11k@lists.infradead.org>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <6175bc95-201c-cfab-2ae6-9ba77e830394@quicinc.com>
- <09556b33ad998ad243cf75dbc230f3b07349a87e.camel@sipsolutions.net>
- <935ef9e9-2092-e3f0-0edd-4aa29f4fa775@quicinc.com>
- <e01e75013f71ede7b29f2751238935e7147796f2.camel@sipsolutions.net>
- <f3afceb8-8120-12c7-74b9-caa3abce5cb8@quicinc.com>
- <DM6PR11MB3897D1A4E13419D9F938F559F5449@DM6PR11MB3897.namprd11.prod.outlook.com>
- <96bcc467-c530-46de-8f91-c5eb0af7a368@quicinc.com>
- <776991f3-384e-f487-83b7-e1fbfd40cc4f@quicinc.com>
-In-Reply-To: <776991f3-384e-f487-83b7-e1fbfd40cc4f@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: hmIvF4Sm6AnoYiJEyxXFsqY_92wzy8em
-X-Proofpoint-ORIG-GUID: hmIvF4Sm6AnoYiJEyxXFsqY_92wzy8em
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-19_06,2022-10-19_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- phishscore=0 bulkscore=0 mlxlogscore=968 malwarescore=0 adultscore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210190055
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Date:   Wed, 19 Oct 2022 04:44:18 -0700
+Message-ID: <CAJ65rDzroYUFnPuzH54dFB1fAYPynDrTZYy-fF72E=Y_bFER-g@mail.gmail.com>
+Subject: [PATCH] wifi: cfg80211: fix memory leak in query_regdb_file()
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        arend.vanspriel@broadcom.com
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <aspriel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ilan/Andrei,
+In the function query_regdb_file() the alpha2 parameter is duplicated
+using kmemdup() and subsequently freed in regdb_fw_cb(). However,
+request_firmware_nowait() can fail without calling regdb_fw_cb() and
+thus leak memory.
 
-Will you send your patches of wpa_supplicant for MLO to upstream?😁
+Fixes: 007f6c5e6eb4 ("cfg80211: support loading regulatory database as
+firmware file")
+Signed-off-by: Arend van Spriel <aspriel@gmail.com>
+---
+ net/wireless/reg.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-On 10/11/2022 10:28 AM, Wen Gong wrote:
-> Hi Ilan/Andrei,
->
-> Will you send your patches of wpa_supplicant to upstream?😁
->
-> On 9/28/2022 11:12 PM, Wen Gong wrote:
->> On 9/12/2022 9:17 PM, Otcheretianski, Andrei wrote:
->>>>> Well, OK, you obviously are adjusting the supplicant to work with MLO
->>>>> (otherwise you wouldn't get an MLO connection in the first place), so
->>>>> yeah, this is part of the adjustments needed.
->>>>>
->>>>> Ilan/Andrei have all of this working, maybe we can share the patches
->>>>> even before rebase etc.
->>> Hi,
->>> Our implementation is based on our internal tree, so it will take 
->>> some time to cleanup and port it for upstream.
->>> Hopefully I will have some time to work on it this and next week and 
->>> maybe we will be able to share something initial.
->> May I get your patches?
->>>
->>> Andrei
->>>>> johannes
->>>> Thanks.
->>>>
->>>> It is good to share me the wpa_supplicant patches ASAP.
->>>>
->>>> And I have another question:
->>>>
->>>> When mac80211 use the MLD addr in authentication/assoc request,
->>>>
->>>> finally, it should be replaced with one link's address in air port, 
->>>> right?
->>>>
->>>> It means the MLD addr will never exist in mac80211 header of packet 
->>>> in the
->>>> air port, right?
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index ec25924a1c26..f629c2e15fea 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -1080,6 +1080,8 @@ static void regdb_fw_cb(const struct firmware
+*fw, void *context)
+
+ static int query_regdb_file(const char *alpha2)
+ {
++	int err;
++
+ 	ASSERT_RTNL();
+
+ 	if (regdb)
+@@ -1089,9 +1091,13 @@ static int query_regdb_file(const char *alpha2)
+ 	if (!alpha2)
+ 		return -ENOMEM;
+
+-	return request_firmware_nowait(THIS_MODULE, true, "regulatory.db",
+-				       &reg_pdev->dev, GFP_KERNEL,
+-				       (void *)alpha2, regdb_fw_cb);
++	err = request_firmware_nowait(THIS_MODULE, true, "regulatory.db",
++				      &reg_pdev->dev, GFP_KERNEL,
++				      (void *)alpha2, regdb_fw_cb);
++	if (err)
++		kfree(alpha2);
++
++	return err;
+ }
+
+ int reg_reload_regdb(void)
+-- 
+2.35.1
