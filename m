@@ -2,83 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D5E603989
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 08:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1742603AD8
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 09:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbiJSGE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 02:04:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43966 "EHLO
+        id S229675AbiJSHm2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 03:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbiJSGEy (ORCPT
+        with ESMTP id S229685AbiJSHm1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 02:04:54 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B63D23170
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Oct 2022 23:04:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 135B7CE1FC8
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 06:04:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6263AC433D6;
-        Wed, 19 Oct 2022 06:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666159488;
-        bh=aQRs+/IRtJHrswbGzIT9ohc09v4w/jmxfdJX50vDM50=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ioRbakc9zhTJBn8cgPEe3Xyix7wyuJfaGncggZSI8T2GjI5PCLOHJloxtxEN6iO9n
-         L58aUY07eThyxjsXkn2m/c258DOhlOpNES+H8Z9SOEH3tcq3hYCBFoTnKt8Jfeast7
-         Xo4nJxrvRnUKAO2+NjZULPmERQ0H3OLgMhjLbLCVhCzPIJ93hYK5A5dIGwsEjTkfr8
-         5/IGugiOs8AUJV215hgxh2ZVshx8NHrd75dABmVGMIrymhGMOPhae20wti8xwOQSwv
-         oxQ2i5VWjapAclYclH+JEby2J6ktuFHL7Q4UmHnkENUyaSFdSk8LCQAkMNR4hA23n9
-         zE5pA4SyhhUnA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        =?utf-8?Q?Rafa=C5=82_Mi?= =?utf-8?Q?=C5=82ecki?= 
-        <zajec5@gmail.com>, linux-wireless@vger.kernel.org,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH] bcma: gpio: Convert to immutable gpio irqchip
-References: <20221012192348.2234478-1-linus.walleij@linaro.org>
-        <878rlh4rm2.fsf@kernel.org> <86bkqdflts.wl-maz@kernel.org>
-Date:   Wed, 19 Oct 2022 09:04:45 +0300
-In-Reply-To: <86bkqdflts.wl-maz@kernel.org> (Marc Zyngier's message of "Sat,
-        15 Oct 2022 11:00:31 +0100")
-Message-ID: <87tu40l56q.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 19 Oct 2022 03:42:27 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E0E5FAD2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 00:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=sr4uNjhD4A9/LGABpcIyC5VAFPcKwgRbzM9hQzdkQRE=;
+        t=1666165346; x=1667374946; b=G+wgZoqF93QudB5RyBkpNdnVFKox3pYe1d31Cldp1cBcNfw
+        iclAbCC9bR7OcbbRN4Xqqt6FZSGuk+U5t3adpK7biGkrD+PHSw3oAO4sPF82Un4p3kKE+vV7Z7RL9
+        WgfJ2gSnmQ45rxSIW+Vsu7RyNI8igIwFn5po2kKEYpM62bo9UI+qRHqgyNOFulBCtIj8+mUBjJCfS
+        REhtVhebEcM2Eo3y31CnaZYT4Av3vrCpYejgisNAxbce68jw7bHvNVtme+1Y6fUrI0FGM5HCZpFQF
+        2U9shTQ7wgapczTVelJ48Rs9ZheS5QgQxxQZISZg7omGU/0KxDuJGK07caOdhwCg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ol3iZ-00B0vS-1K;
+        Wed, 19 Oct 2022 09:42:23 +0200
+Message-ID: <a47bf10273caff11c638ffbbfd7960fc84dbe0b9.camel@sipsolutions.net>
+Subject: Re: [PATCH 4/7] cfg80211: add NL command to set 6 GHz power mode
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        linux-wireless@vger.kernel.org
+Date:   Wed, 19 Oct 2022 09:42:22 +0200
+In-Reply-To: <df0b368c-3b84-653e-6ef8-5446b75ce797@quicinc.com>
+References: <20220704102341.5692-1-quic_adisi@quicinc.com>
+         <20220704102341.5692-5-quic_adisi@quicinc.com>
+         <b36799bc1129baebbb64032deeaae72e4ca1af7b.camel@sipsolutions.net>
+         <df0b368c-3b84-653e-6ef8-5446b75ce797@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Marc Zyngier <maz@kernel.org> writes:
+On Wed, 2022-10-19 at 09:54 +0530, Aditya Kumar Singh wrote:
+> On 9/6/2022 16:35, Johannes Berg wrote:
+> > On Mon, 2022-07-04 at 15:53 +0530, Aditya Kumar Singh wrote:
+> > >=20
+> > > + * @NL80211_ATTR_6GHZ_REG_AP_POWER_MODE: Configure 6 GHz regulatory =
+power mode
+> > > + *	for access points. Referenced from &enum ieee80211_ap_reg_power.
+> > > + *
+> > > + * @NL80211_ATTR_6GHZ_REG_CLIENT_POWER_MODE: Configure 6 GHz regulat=
+ory power
+> > > + *	mode for clients. Referenced from &enum ieee80211_client_reg_powe=
+r.
+> >=20
+> > I don't really see a good reason to have two attributes for this, rathe=
+r
+> > than validating their value based on the iftype?
+> >=20
+> The policy for each varies. For AP power mode, it can vary from 0 to 2=
+=20
+> (total 3 power modes currently), and for clients 0 to 1 (total 2 power=
+=20
+> modes). So, if we have just 1 NL_ATTR, while parsing obviously we can do=
+=20
+> based on iftype but in NL_ATTR policy validation, for clients it will=20
+> pass value 2 where actually it should not. Will that be fine?
 
-> On Sat, 15 Oct 2022 05:51:01 +0100,
-> Kalle Valo <kvalo@kernel.org> wrote:
->> 
->> Linus Walleij <linus.walleij@linaro.org> writes:
->> 
->> > This switches the BCMA gpio irqchip to be immutable.
->> >
->> > Tested on the D-Link DWL-6810AP.
->> 
->> I'm not familiar with the gpio system, what's the benefit from this? I
->> can add that to the commit log.
->
-> TL;DR: the GPIO subsystem plays dirty tricks on the irqchip
-> structures, and we're fixing it one driver at a time.
->
-> See merge commit 4bde53ab3370 for all the details.
+Yeah, I dunno. That just means we'd have to validate it in the code
+rather than the policy. Not really sure which is better.
 
-Thanks, I included this to the commit log.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
