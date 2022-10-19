@@ -2,73 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5EB3605078
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Oct 2022 21:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48DC3605384
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 00:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbiJSTdI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 15:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50036 "EHLO
+        id S230341AbiJSW5f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 18:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbiJSTdH (ORCPT
+        with ESMTP id S230120AbiJSW5d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 15:33:07 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4F217C57B
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 12:33:06 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id j21so11403072qkk.9
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 12:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zJ2NTFSuwbgn1shPsMG7t3f98JKsP5lqwb6cWvxUrKw=;
-        b=e3LAO5ot+HYIuwH0oRwF1V2m7tObsRqAmwWJKj2lV+5X7rJpebsfPCuW/9q+0LHvaG
-         fo+htkvCP8vFQ/xzXPEpiAYcsQTpcJNyZ4D4yNlR0xqWgnIVvdVDA5oxZjUTDwz7Tk78
-         FmPvPGChc5JmiBovjyfeDpm6jvUuWq5r5r/ncUmKE/kptrKnR19LQ7etW3sjLZa8tkw7
-         GRO0MBwyV94L57OtHqaMqElvHabz6pJ/+pUA2XK69+8tvORro+jx64sAjJrqABf+sPmo
-         AMS78x78tgqL6ypMK6yEbTwAwXOtPSk7JX511PaQrr+M4oUeubeP6hd2utb3+NND36Tx
-         qtZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zJ2NTFSuwbgn1shPsMG7t3f98JKsP5lqwb6cWvxUrKw=;
-        b=AasYSrqy//TnQBJABLQ8CDkOB3LJ96ntf46n8RRmq358exsimH67YPqvGxU9dp/jQW
-         ixa7hC6uR1cwwrjwrRsHN0+I1cSCcVOu9EfHnjhGwENKdny6f5hvyM4vGQQP9wmfj4KM
-         YW+aTGP8CTXrMkHWiuC1qHVGWmc8QrPOOxS2FAHNh3noZn2Cddcdvo18H1g45FMY8IGw
-         LDr4DH59ljWdeyaILdm1Z0ZESbFO2WWuPEXmMiu8aljMYPeWcQKsT0mLnDxOA0rg9F+E
-         6ZNa3rWKmuMt8dTjjKfVgkPh/3TBCW9Xor5HGv8acIUkByu6aDPdA53iGy8IVDAe4E2s
-         SuUg==
-X-Gm-Message-State: ACrzQf0ZfglmBpHS6wW6pfWvBiMl7w6hDAA8skcx4pUw5S7eIv2v9ira
-        IB36gJ5WZU5m2JepDT8cQara0batoFCPpMWrLW4=
-X-Google-Smtp-Source: AMsMyM76YvQyTs9c4i7CSg9irdFoy3BQcM2tm7UFaoxshsz/JrrHP89BBPvpUbgzwBe3AzU5Z4yAYWdTVqzsqPM/chI=
-X-Received: by 2002:a37:c11:0:b0:6ee:b25a:2573 with SMTP id
- 17-20020a370c11000000b006eeb25a2573mr6609942qkm.297.1666207985290; Wed, 19
- Oct 2022 12:33:05 -0700 (PDT)
+        Wed, 19 Oct 2022 18:57:33 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0FE1C39C4;
+        Wed, 19 Oct 2022 15:57:30 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mt5j146jXz4xGQ;
+        Thu, 20 Oct 2022 09:57:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1666220248;
+        bh=bE8FsV7P/1dHPlwdOCqJYtJ+w6dJbFF/0a+T7QYskUo=;
+        h=Date:From:To:Cc:Subject:From;
+        b=sa4bbByjkwl667rQ6I35JPts4O6Lff8gBAbOY0fOLMSM9AH736fVbXcXj3Pjow6Qh
+         pyX7RsBIhNPTzCTojuNyzi8wX/lOJkLCp/22L+KnfB2Qeg4lJS1FgVfaIiJII+CFUZ
+         x4R5f8OZ5AcpeGPa0YsWPhYuNkTFzyVCEHRxqw/JcNkI1FUn4rahYi3FNwYwym/fpV
+         Iz4x09Hd0K1wu3QkRB0JX0gkq3BX0CHmKRhJ5ZeaycTjdZYHmbJv0gePNo9ncukF3E
+         7oT/y8Od7KEJjQLp0B2Izbx3L7IcDg9GITsHpstJnDjN6sXhnYpo02aswX9M0preUN
+         ImJi8nMSkqzKg==
+Date:   Thu, 20 Oct 2022 03:23:40 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ilan Peer <ilan.peer@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the wireless-next tree with Linus' tree
+Message-ID: <20221020032340.5cf101c0@canb.auug.org.au>
 MIME-Version: 1.0
-Received: by 2002:a05:620a:31a7:0:0:0:0 with HTTP; Wed, 19 Oct 2022 12:33:04
- -0700 (PDT)
-Reply-To: mr.rwilson11@gmail.com
-From:   Richard Wilson <wilson1247richard@gmail.com>
-Date:   Wed, 19 Oct 2022 19:33:04 +0000
-Message-ID: <CAPMufH7-iDUH96COV2SuEXjShBUHQdhL8CoFU_Zp564OA3TOnA@mail.gmail.com>
-Subject: Deposit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: multipart/signed; boundary="Sig_/QPch7.CbFCOkhnPOVW._2io";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Dear
-I am contacting you to assist retrieve his huge deposit Mr. Alexander
-left in the bank before its get confiscated by the bank. Get back to
-me for more detail's
-Barr's Richard Wilson
+--Sig_/QPch7.CbFCOkhnPOVW._2io
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+FIXME: Add owner of second tree to To:
+       Add author(s)/SOB of conflicting commits.
+
+Today's linux-next merge of the wireless-next tree got a conflict in:
+
+  net/mac80211/util.c
+
+between commit:
+
+  ff05d4b45dd8 ("wifi: mac80211: fix MBSSID parsing use-after-free")
+
+from the origin tree and commit:
+
+  ff05d4b45dd8 ("wifi: mac80211: fix MBSSID parsing use-after-free")
+
+from the wireless-next tree.
+
+I fixed it up (I just used the latter version) and can carry the fix as
+necessary. This is now fixed as far as linux-next is concerned, but any
+non trivial conflicts should be mentioned to your upstream maintainer
+when your tree is submitted for merging.  You may also want to consider
+cooperating with the maintainer of the conflicting tree to minimise any
+particularly complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/QPch7.CbFCOkhnPOVW._2io
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmNQJIwACgkQAVBC80lX
+0GxAlAf/aHM3on2G4e5RKXL4lH05joPGVAbUVxATSIVImtY4deYQEQng/x32Z/bC
+avmlu2lCwUTtLaCp94cPwmHu6cjmCCFythOz3w053z16/CO7Uy/Kdjpwdug+J1z5
+V9MLMXlFFisDx4aYaJiq0daYJW1yggdqkZpdn34N1c7cw8kvLTeMDmOGEjlERe4Z
+Uu5M0EskEgncOljFcwjBmoTe6dNfF3wyXUuj9urIV64MHF68gCsjE6r946trlynH
+FkFDqFBgO8B1YsXLWam5snGldbrjGfApd9ky5fhpoi+PejQ+F3+4hz2+XuqZ616Z
+6FztdQoZDMH10HHJphQFh9L+s6mtGA==
+=fsIU
+-----END PGP SIGNATURE-----
+
+--Sig_/QPch7.CbFCOkhnPOVW._2io--
