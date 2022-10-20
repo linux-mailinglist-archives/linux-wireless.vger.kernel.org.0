@@ -2,196 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D5260561B
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 05:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C76B6056BF
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 07:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbiJTDvJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 23:51:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
+        id S229935AbiJTF0Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 01:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiJTDvD (ORCPT
+        with ESMTP id S229894AbiJTF0W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 23:51:03 -0400
+        Thu, 20 Oct 2022 01:26:22 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1901415B127
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 20:50:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5C310191D5E
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 22:26:18 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K3o6dwD026130, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (mapi.realtek.com[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K3o6dwD026130
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K5PYkT4025012, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K5PYkT4025012
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 20 Oct 2022 11:50:06 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+        Thu, 20 Oct 2022 13:25:34 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Thu, 20 Oct 2022 11:50:38 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 20 Oct 2022 11:50:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Thu, 20 Oct 2022 11:50:38 +0800
+ 15.1.2507.9; Thu, 20 Oct 2022 13:26:06 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 20 Oct
+ 2022 13:26:05 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     James Hilliard <james.hilliard1@gmail.com>
-CC:     Josh Boyer <jwboyer@kernel.org>,
-        "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <jes.sorensen@gmail.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
-Thread-Topic: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
-Thread-Index: AQHY39DGlvsa0sCTgkyhHB1F58c9da4VIasAgAAWe4CAAT0qAP//gkgAgAC1djA=
-Date:   Thu, 20 Oct 2022 03:50:38 +0000
-Message-ID: <776730747faf44fb8b786e9339c16b90@realtek.com>
-References: <20221014132729.2107129-1-james.hilliard1@gmail.com>
- <CA+5PVA5gLBAxbR4qUSUu3vs+nunM+igokVxd=oAQ7OMD2oGiWg@mail.gmail.com>
- <CADvTj4pF_DqwYofL-PU5os7Dco=XyWJ3fY3C1Wxq35pSe=QqFQ@mail.gmail.com>
- <f4f48fa5df844d9d8d270fb4310e9ff1@realtek.com>
- <CADvTj4poSjtCP9iRZNJHf=qLPHBmNQzhcc0Ff_jT-q5jjgTZnw@mail.gmail.com>
-In-Reply-To: <CADvTj4poSjtCP9iRZNJHf=qLPHBmNQzhcc0Ff_jT-q5jjgTZnw@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzIwIOS4iuWNiCAwMTo0MDowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: fw: adapt to new firmware format of dynamic header
+Date:   Thu, 20 Oct 2022 13:25:49 +0800
+Message-ID: <20221020052549.33783-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/20/2022 04:59:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzIwIKRXpMggMDM6Mzg6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmFtZXMgSGlsbGlhcmQg
-PGphbWVzLmhpbGxpYXJkMUBnbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDIw
-LCAyMDIyIDg6NTYgQU0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0K
-PiBDYzogSm9zaCBCb3llciA8andib3llckBrZXJuZWwub3JnPjsgbGludXgtZmlybXdhcmVAa2Vy
-bmVsLm9yZzsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBKZXMNCj4gU29yZW5zZW4g
-PGplcy5zb3JlbnNlbkBnbWFpbC5jb20+OyBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUy
-QGdtYWlsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gcnRsd2lmaTogdXBkYXRlIGZpcm13
-YXJlIGZvciBydGw4MTkyZXUgdG8gdjM1LjcNCj4gDQo+IE9uIFdlZCwgT2N0IDE5LCAyMDIyIGF0
-IDg6MzkgUE0gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiA+DQo+
-ID4NCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IEph
-bWVzIEhpbGxpYXJkIDxqYW1lcy5oaWxsaWFyZDFAZ21haWwuY29tPg0KPiA+ID4gU2VudDogV2Vk
-bmVzZGF5LCBPY3RvYmVyIDE5LCAyMDIyIDk6MzAgUE0NCj4gPiA+IFRvOiBKb3NoIEJveWVyIDxq
-d2JveWVyQGtlcm5lbC5vcmc+DQo+ID4gPiBDYzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRl
-ay5jb20+OyBsaW51eC1maXJtd2FyZUBrZXJuZWwub3JnOyBsaW51eC13aXJlbGVzc0B2Z2VyLmtl
-cm5lbC5vcmc7IEplcw0KPiA+ID4gU29yZW5zZW4gPGplcy5zb3JlbnNlbkBnbWFpbC5jb20+OyBC
-aXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gPiA+IFN1YmplY3Q6
-IFJlOiBbUEFUQ0hdIHJ0bHdpZmk6IHVwZGF0ZSBmaXJtd2FyZSBmb3IgcnRsODE5MmV1IHRvIHYz
-NS43DQo+ID4gPg0KPiA+ID4gT24gV2VkLCBPY3QgMTksIDIwMjIgYXQgODoxMCBBTSBKb3NoIEJv
-eWVyIDxqd2JveWVyQGtlcm5lbC5vcmc+IHdyb3RlOg0KPiA+ID4gPg0KPiA+ID4gPiBPbiBGcmks
-IE9jdCAxNCwgMjAyMiBhdCA5OjI3IEFNIEphbWVzIEhpbGxpYXJkDQo+ID4gPiA+IDxqYW1lcy5o
-aWxsaWFyZDFAZ21haWwuY29tPiB3cm90ZToNCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFRoaXMgaXMg
-djM1LjcgZmlybXdhcmUgZm9yIHRoZSBydGw4MTkyZXUuDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBU
-aGlzIGFkZHMgMiBuZXcgZmlybXdhcmUgdmFyaWFudHMgZXh0cmFjdGVkIGZyb20gdmVuZG9yIGRy
-aXZlcnMgdGhhdA0KPiA+ID4gPiA+IHdlcmUgbm90IHByZXZpb3VzbHkgcHJlc2VudDoNCj4gPiA+
-ID4gPiBydGw4MTkyZXVfYXAuYmluDQo+ID4gPiA+ID4gcnRsODE5MmV1X25pY19zZXR1cGJveC5i
-aW4NCj4gPg0KPiA+IEkgdGhpbmsgdGhlc2UgdHdvIGFyZSBub3Qgc3VpdGFibGUgdG8gcnRsOHh4
-eHUsIHNvIEkgc3VnZ2VzdCB0byBpZ25vcmUgdGhlbS4NCj4gDQo+IFRoYXQncyBjb3JyZWN0LCBh
-bmQgYWN0dWFsbHkgb25seSBydGw4MTkyZXVfbmljLmJpbiBzZWVtcyB0byBiZSB1c2VkIGJ5DQo+
-IHJ0bDh4eHh1IGF0IHRoZSBtb21lbnQsIEkganVzdCBleHRyYWN0ZWQgYWxsIHZhcmlhbnRzIGZv
-ciBjb25zaXN0ZW5jeSwgdGhpcw0KPiBhcHBlYXJzIHRvIGJlIHdoYXQgd2FzIGRvbmUgd2hlbiB0
-aGVzZSBmaWxlcyB3ZXJlIG9yaWdpbmFsbHkgYWRkZWQuDQo+IA0KPiA+DQo+ID4gPiA+ID4NCj4g
-PiA+ID4gPiBUaGVzZSBmaXJtd2FyZSBmaWxlcyBvY2N1cnMgYXMgZGF0YSBzdGF0ZW1lbnRzIGlu
-IHRoZSBsYXRlc3QgUmVhbHRlaw0KPiA+ID4gPiA+IHZlbmRvciBkcml2ZXIgSSBmb3VuZCBmb3Ig
-dGhlIHJ0bDgxOTJldSBpbiBhZGRpdGlvbiB0byBzb21lIG9sZGVyDQo+ID4gPiA+ID4gdmVuZG9y
-IGRyaXZlciByZWxlYXNlczoNCj4gPiA+ID4gPiBydGw4MTkyRVVfV2lGaV9saW51eF92NS4xMS4y
-LjEtMTgtZzhlN2RmOTEyYi4yMDIxMDUyN19DT0VYMjAxNzExMTMtMDA0Nw0KPiA+ID4gPg0KPiA+
-ID4gPiBJIGhhdmUgbm8gaWRlYSB3aGF0IHRoaXMgaXMsIG5vciBpcyB0aGVyZSBhbnkgaW5kaWNh
-dGlvbiB0aGF0IFJlYWx0ZWsNCj4gPiA+ID4gd2FudHMgdGhlc2UgcHVibGlzaGVkIHRvIHRoZSBs
-aW51eC1maXJtd2FyZSByZXBvIHVuZGVyIHJlZGlzdHJpYnV0YWJsZQ0KPiA+ID4gPiBsaWNlbnNl
-IHRlcm1zLiAgWW91J3ZlIGV4dHJhY3RlZCBmaXJtd2FyZSBmcm9tIGVsc2V3aGVyZSBhbmQgYXJl
-DQo+ID4gPiA+IGFzc3VtaW5nIGl0IGlzIGxpY2Vuc2VkIHVuZGVyIHRoZSBleGlzdGluZyBsaWNl
-bnNlLCBidXQgdGhlcmUncyBubw0KPiA+ID4gPiBpbmRpY2F0aW9uIHRoYXQncyBhY3R1YWxseSB0
-aGUgY2FzZS4gIFRoZSBwcm92ZW5hbmNlIG9mIHRoaXMgZmlybXdhcmUNCj4gPiA+ID4gaXMgcXVl
-c3Rpb25hYmxlLg0KPiA+ID4NCj4gPiA+IEkganVzdCBleHRyYWN0ZWQgdGhlbSBmcm9tIHRoZSB2
-ZW5kb3IgZHJpdmVyIHNhbWUgYXMgbGFzdCB0aW1lOg0KPiA+ID4NCj4gaHR0cHM6Ly9naXQua2Vy
-bmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvZmlybXdhcmUvbGludXgtZmlybXdhcmUu
-Z2l0L2NvbW1pdC9ydGx3aWZpL3J0bDgxOTJldV9uDQo+ID4gPiBpYy5iaW4/aWQ9OTFkNWRkMTM2
-MTUzZTBhMTk5ZDdiZjMwZmQwMzc2M2Q4MzU4NmI3Mw0KPiA+ID4NCj4gPiA+IFRoZSB2ZW5kb3Ig
-ZmlsZSBsaWNlbnNlIGp1c3Qgc2F5cyBHUEx2MjoNCj4gPiA+IGh0dHBzOi8vZ2l0aHViLmNvbS9j
-bG5odWIvcnRsODE5MmV1LWxpbnV4L2Jsb2IvNS4xMS4yLjEvaGFsL3J0bDgxOTJlL2hhbDgxOTJl
-X2Z3LmMNCj4gPiA+DQo+ID4NCj4gPiBJJ20gbm90IGEgbGF3eWVyLCBubyBpZGVhIGFib3V0IHRo
-aXMuIEkgaG9wZSBzb21lb25lIGNhbiBjb21tZW50IHRoaXMuDQo+ID4NCj4gPiA+ID4NCj4gPiA+
-ID4gSSd2ZSBjb3BpZWQgUGluZy1LZSBTaGloIGluIGNhc2UgdGhleSBoYXZlIHNvbWUgaW5zaWdo
-dCBoZXJlLCBidXQgSQ0KPiA+ID4gPiBjYW4ndCByZWFsbHkgdGFrZSB0aGlzIHBhdGNoIGFzIGl0
-IGlzIGJhc2VkIG9uIHdoYXQgaXMgcmVwcmVzZW50ZWQNCj4gPiA+ID4gaGVyZS4gIEFuIGFjayBv
-ciBTaWduZWQtb2ZmLWJ5IGZyb20gc29tZW9uZSBhdCBSZWFsdGVrIHdvdWxkIGdvIGEgbG9uZw0K
-PiA+ID4gPiB3YXkuDQo+ID4NCj4gPiBJIHRoaW5rIEkgY2FuIHRha2UgcGF0Y2hlcyByZWxhdGVk
-IHRvIFJlYWx0ZWsgZmlybXdhcmUgdG8gbXkgZ2l0aHViIHRyZWUsDQo+ID4gYW5kIHNlbmQgb3V0
-IHB1bGwtcmVxdWVzdCBhZnRlciBjaGVja2luZyBjb250ZW50IG9mIGZpcm13YXJlIHBhdGNoLg0K
-PiA+IERvZXMgaXQgd29yayB0byB5b3UsIEpvc2g/DQo+IA0KPiBJZiBwb3NzaWJsZSBjb3VsZCB5
-b3UgY2hlY2sgaWYgdjM1LjcgaXMgdGhlIG5ld2VzdCBhdmFpbGFibGUgZmlybXdhcmUgdmVyc2lv
-bg0KPiBmb3IgdGhlIHJ0bDgxOTJldT8NCj4gDQo+IFRoZSB2MzUuNyB3YXMgdGhlIG5ld2VzdCBJ
-IGZvdW5kIGluIHZlbmRvciBkcml2ZXJzIGZvciB0aGUgcnRsODE5MmV1LCBmb3INCj4gZXhhbXBs
-ZSBpbiB0aGlzIGRsaW5rIHJlbGVhc2UodjM1Ljcgd2FzIGFsc28gaW4gYSBmZXcgZWFybGllciBy
-ZXZpc2lvbnMpOg0KPiBodHRwczovL3N1cHBvcnQuZGxpbmsuY29tL3Jlc291cmNlL1NFQ1VSSVRZ
-X0FEVklTRU1FTlRTL0RXQS0xMzEvUkVWRS9EV0EtMTMxX1JFVkVfRFJJVkVSX3Y1LjExLjIuMS0x
-OF8NCj4gSE9URklYX0xJTlVYLnppcA0KDQpUaGUgdjM1LjcgaXMgdGhlIG5ld2VzdCwgYnV0IEkg
-dGhpbmsgdGhlICJuZXdlc3QiIGlzIG5vdCBhbHdheXMgaW1wb3J0YW50IHRvDQp5b3UsIGJlY2F1
-c2UgbmV3ZXIgZmlybXdhcmUgY291bGQgcG9zc2libHkgYWRkIG5ldyBmZWF0dXJlIGNvbGxhYm9y
-YXRlZCB3aXRoDQpuZXdlciBkcml2ZXIuIElmIHYzNS43IGNhbiBydW4gc3RhYmx5IHdpdGggcnRs
-OHh4eHUsIHdlIGRvbid0IG5lZWQgbmV3ZXIgb25lLg0KDQo+IA0KPiA+DQo+ID4gPiA+DQo+ID4g
-PiA+IGpvc2gNCj4gPiA+ID4NCj4gPiA+ID4gPiBOb3RlIHRoYXQgdGhlIGV4aXN0aW5nIHJ0bDgx
-OTJldV9hcF93b3dsYW4uYmluIGZpcm13YXJlIGhlYWRlcg0KPiA+ID4gPiA+IGluZGljYXRlcyBp
-dCBpcyBhY3R1YWxseSB2MTguMCBhbmQgbm90IHYxOS4wIGFzIGluZGljYXRlZCBieSB0aGUNCj4g
-PiA+ID4gPiBjb21taXQgdGhhdCBpbnRyb2R1Y2VkIGl0IDkxZDVkZDEzNjE1M2UwYTE5OWQ3YmYz
-MGZkMDM3NjNkODM1ODZiNzMsDQo+ID4gPiA+ID4gYXMgc3VjaCBpdCBpcyBtYXJrZWQgYXMgdmVy
-c2lvbiAxOC4wLg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gU28gZmFyIEkgaGF2ZSBtYW5hZ2VkIHRv
-IGZpbmQgdGhlIGZvbGxvd2luZyBmaXJtd2FyZSB2ZXJzaW9ucyBmb3IgdGhlDQo+ID4gPiA+ID4g
-cnRsODE5MmV1IGluIHZhcmlvdXMgdmVuZG9yIGRyaXZlciByZWxlYXNlczoNCj4gPiA+ID4gPiB2
-MTguMA0KPiA+ID4gPiA+IHYxOS4wDQo+ID4gPiA+ID4gdjI3LjANCj4gPiA+ID4gPiB2MzUuNw0K
-PiA+ID4gPiA+DQo+ID4gPiA+ID4gVGhlIHJ0bDgxOTJldV9hcF93b3dsYW4uYmluIGZpcm13YXJl
-IGRvZXMgbm90IGFwcGVhciB0byBoYXZlIHJlY2VpdmVkDQo+ID4gPiA+ID4gYW55IHVwZGF0ZXMg
-dW5saWtlIHRoZSBvdGhlciBydGw4MTkyZXUgZmlybXdhcmUgdmFyaWFudHMuDQo+ID4gPiA+ID4N
-Cj4gPiA+ID4gPiBQcmV2aW91cyBmaXJtd2FyZSBsb2FkIGluIHJ0bDh4eHh1Og0KPiA+ID4gPiA+
-IHJ0bDh4eHh1OiBMb2FkaW5nIGZpcm13YXJlIHJ0bHdpZmkvcnRsODE5MmV1X25pYy5iaW4NCj4g
-PiA+ID4gPiBGaXJtd2FyZSByZXZpc2lvbiAxOS4wIChzaWduYXR1cmUgMHg5MmUxKQ0KPiA+ID4g
-PiA+DQo+ID4gPiA+ID4gVXBkYXRlZCBmaXJtd2FyZSBsb2FkIGluIHJ0bDh4eHh1Og0KPiA+ID4g
-PiA+IHJ0bDh4eHh1OiBMb2FkaW5nIGZpcm13YXJlIHJ0bHdpZmkvcnRsODE5MmV1X25pYy5iaW4N
-Cj4gPiA+ID4gPiBGaXJtd2FyZSByZXZpc2lvbiAzNS43IChzaWduYXR1cmUgMHg5MmUxKQ0KPiA+
-ID4gPiA+DQo+ID4gPiA+ID4gQ2M6IEplcyBTb3JlbnNlbiA8amVzLnNvcmVuc2VuQGdtYWlsLmNv
-bT4NCj4gPiA+ID4gPiBDYzogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5j
-b20+DQo+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogSmFtZXMgSGlsbGlhcmQgPGphbWVzLmhpbGxp
-YXJkMUBnbWFpbC5jb20+DQo+ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4gIFdIRU5DRSAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgIDkgKysrKysrKystDQo+ID4gPiA+ID4gIHJ0bHdpZmkv
-cnRsODE5MmV1X2FwLmJpbiAgICAgICAgICAgfCBCaW4gMCAtPiAyNTgxNiBieXRlcw0KPiA+ID4g
-PiA+ICBydGx3aWZpL3J0bDgxOTJldV9uaWMuYmluICAgICAgICAgIHwgQmluIDMxODE4IC0+IDMy
-Mjg2IGJ5dGVzDQo+ID4gPiA+ID4gIHJ0bHdpZmkvcnRsODE5MmV1X25pY19zZXR1cGJveC5iaW4g
-fCBCaW4gMCAtPiAyODU1NCBieXRlcw0KPiA+ID4gPiA+ICBydGx3aWZpL3J0bDgxOTJldV93b3ds
-YW4uYmluICAgICAgIHwgQmluIDI1ODc4IC0+IDI5MDA4IGJ5dGVzDQo+ID4gPiA+ID4gIDUgZmls
-ZXMgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4gPiA+ID4gIGNy
-ZWF0ZSBtb2RlIDEwMDY0NCBydGx3aWZpL3J0bDgxOTJldV9hcC5iaW4NCj4gPiA+ID4gPiAgY3Jl
-YXRlIG1vZGUgMTAwNjQ0IHJ0bHdpZmkvcnRsODE5MmV1X25pY19zZXR1cGJveC5iaW4NCj4gPiA+
-ID4gPg0KPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9XSEVOQ0UgYi9XSEVOQ0UNCj4gPiA+ID4gPiBp
-bmRleCA4MTZjZjdjLi5lN2FlNzhhIDEwMDY0NA0KPiA+ID4gPiA+IC0tLSBhL1dIRU5DRQ0KPiA+
-ID4gPiA+ICsrKyBiL1dIRU5DRQ0KPiA+ID4gPiA+IEBAIC0zMjU3LDEyICszMjU3LDE5IEBAIEZp
-bGU6IHJ0bHdpZmkvcnRsODcyM2J1X3dvd2xhbi5iaW4NCj4gPiA+ID4gPiAgRmlsZTogcnRsd2lm
-aS9ydGw4NzIzYnVfYXBfd293bGFuLmJpbg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gIEluZm86IHJ0
-bDgxOTJldSB0YWtlbiBmcm9tIFJlYWx0ZWsgZHJpdmVyDQo+ID4gPiA+ID4gLSAgICAgIHJ0bDgx
-OTJFVV9saW51eF92NC4zLjEuMV8xMTMyMC4yMDE0MDUwNQ0KPiA+ID4gPiA+ICsgICAgICBydGw4
-MTkyRVVfV2lGaV9saW51eF92NS4xMS4yLjEtMTgtZzhlN2RmOTEyYi4yMDIxMDUyN19DT0VYMjAx
-NzExMTMtMDA0Nw0KPiA+ID4gPiA+ICAgICAgICBGaXJtd2FyZSBpcyBlbWJlZGRlZCBpbiB0aGUg
-ZHJpdmVyIGFzIGRhdGEgc3RhdGVtZW50cy4gVGhpcyBpbmZvDQo+ID4gPiA+ID4gICAgICAgIGhh
-cyBiZWVuIGV4dHJhY3RlZCBpbnRvIGEgYmluYXJ5IGZpbGUuDQo+ID4gPiA+ID4gIEZpbGU6IHJ0
-bHdpZmkvcnRsODE5MmV1X25pYy5iaW4NCj4gPiA+ID4gPiArVmVyc2lvbjogMzUuNw0KPiA+ID4g
-PiA+ICtGaWxlOiBydGx3aWZpL3J0bDgxOTJldV9uaWNfc2V0dXBib3guYmluDQo+ID4gPiA+ID4g
-K1ZlcnNpb246IDM1LjcNCj4gPiA+ID4gPiAgRmlsZTogcnRsd2lmaS9ydGw4MTkyZXVfd293bGFu
-LmJpbg0KPiA+ID4gPiA+ICtWZXJzaW9uOiAzNS43DQo+ID4gPiA+ID4gK0ZpbGU6IHJ0bHdpZmkv
-cnRsODE5MmV1X2FwLmJpbg0KPiA+ID4gPiA+ICtWZXJzaW9uOiAzNS43DQo+ID4gPiA+ID4gIEZp
-bGU6IHJ0bHdpZmkvcnRsODE5MmV1X2FwX3dvd2xhbi5iaW4NCj4gPiA+ID4gPiArVmVyc2lvbjog
-MTguMA0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gIExpY2VuY2U6IFJlZGlzdHJpYnV0YWJsZS4gU2Vl
-IExJQ0VOQ0UucnRsd2lmaV9maXJtd2FyZS50eHQgZm9yIGRldGFpbHMuDQo+ID4gPiA+ID4NCj4g
-Pg0KPiA+IFsuLi5dDQo+ID4NCj4gDQo+IC0tLS0tLVBsZWFzZSBjb25zaWRlciB0aGUgZW52aXJv
-bm1lbnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1tYWlsLg0K
+Since firmware size is limited, we create variant firmwares for variant
+application areas. To help driver to know firmware's capabilities, firmware
+dynamic header is introduced to have more information, such as firmware
+features and firmware compile flags.
+
+Since this driver rtw89 only uses single one specific firmware at runtime,
+this patch is just to ignore this dynamic header, not actually use the
+content.
+
+This patch can be backward compatible, and no this kind of firmware is
+added to linux-firmware yet, so I can prepare this in advance.
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/fw.c | 22 +++++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/fw.h | 12 ++++++++++++
+ 2 files changed, 31 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index d21f87e25ae1f..548b772eccfe3 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -85,15 +85,31 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
+ {
+ 	struct rtw89_fw_hdr_section_info *section_info;
+ 	const u8 *fw_end = fw + len;
++	const u8 *fwdynhdr;
+ 	const u8 *bin;
++	u32 base_hdr_len;
+ 	u32 i;
+ 
+ 	if (!info)
+ 		return -EINVAL;
+ 
+ 	info->section_num = GET_FW_HDR_SEC_NUM(fw);
+-	info->hdr_len = RTW89_FW_HDR_SIZE +
+-			info->section_num * RTW89_FW_SECTION_HDR_SIZE;
++	base_hdr_len = RTW89_FW_HDR_SIZE +
++		       info->section_num * RTW89_FW_SECTION_HDR_SIZE;
++	info->dynamic_hdr_en = GET_FW_HDR_DYN_HDR(fw);
++
++	if (info->dynamic_hdr_en) {
++		info->hdr_len = GET_FW_HDR_LEN(fw);
++		info->dynamic_hdr_len = info->hdr_len - base_hdr_len;
++		fwdynhdr = fw + base_hdr_len;
++		if (GET_FW_DYNHDR_LEN(fwdynhdr) != info->dynamic_hdr_len) {
++			rtw89_err(rtwdev, "[ERR]invalid fw dynamic header len\n");
++			return -EINVAL;
++		}
++	} else {
++		info->hdr_len = base_hdr_len;
++		info->dynamic_hdr_len = 0;
++	}
+ 
+ 	bin = fw + info->hdr_len;
+ 
+@@ -534,7 +550,7 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
+ 		goto fwdl_err;
+ 	}
+ 
+-	ret = rtw89_fw_download_hdr(rtwdev, fw, info.hdr_len);
++	ret = rtw89_fw_download_hdr(rtwdev, fw, info.hdr_len - info.dynamic_hdr_len);
+ 	if (ret) {
+ 		ret = -EBUSY;
+ 		goto fwdl_err;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 6ef392ef9c6fb..8563efa5f6411 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -176,6 +176,8 @@ struct rtw89_fw_hdr_section_info {
+ struct rtw89_fw_bin_info {
+ 	u8 section_num;
+ 	u32 hdr_len;
++	bool dynamic_hdr_en;
++	u32 dynamic_hdr_len;
+ 	struct rtw89_fw_hdr_section_info section_info[FWDL_SECTION_MAX_NUM];
+ };
+ 
+@@ -495,6 +497,8 @@ static inline void RTW89_SET_EDCA_PARAM(void *cmd, u32 val)
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(23, 16))
+ #define GET_FW_HDR_SUBINDEX(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(31, 24))
++#define GET_FW_HDR_LEN(fwhdr)	\
++	le32_get_bits(*((const __le32 *)(fwhdr) + 3), GENMASK(23, 16))
+ #define GET_FW_HDR_MONTH(fwhdr)		\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 4), GENMASK(7, 0))
+ #define GET_FW_HDR_DATE(fwhdr)		\
+@@ -507,8 +511,16 @@ static inline void RTW89_SET_EDCA_PARAM(void *cmd, u32 val)
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 5), GENMASK(31, 0))
+ #define GET_FW_HDR_SEC_NUM(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 6), GENMASK(15, 8))
++#define GET_FW_HDR_DYN_HDR(fwhdr)	\
++	le32_get_bits(*((const __le32 *)(fwhdr) + 7), BIT(16))
+ #define GET_FW_HDR_CMD_VERSERION(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 7), GENMASK(31, 24))
++
++#define GET_FW_DYNHDR_LEN(fwdynhdr)	\
++	le32_get_bits(*((const __le32 *)(fwdynhdr)), GENMASK(31, 0))
++#define GET_FW_DYNHDR_COUNT(fwdynhdr)	\
++	le32_get_bits(*((const __le32 *)(fwdynhdr) + 1), GENMASK(31, 0))
++
+ static inline void SET_FW_HDR_PART_SIZE(void *fwhdr, u32 val)
+ {
+ 	le32p_replace_bits((__le32 *)fwhdr + 7, val, GENMASK(15, 0));
+-- 
+2.25.1
+
