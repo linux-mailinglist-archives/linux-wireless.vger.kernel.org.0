@@ -2,164 +2,212 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B739E605489
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 02:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 152B960549B
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 02:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230229AbiJTAju (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 20:39:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53486 "EHLO
+        id S229921AbiJTAzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 20:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbiJTAjn (ORCPT
+        with ESMTP id S229722AbiJTAzy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 20:39:43 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 68D672B63B
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 17:39:36 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K0crlO7016200, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (ews2016.realtek.com[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K0crlO7016200
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 20 Oct 2022 08:38:53 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 20 Oct 2022 08:39:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 20 Oct 2022 08:39:24 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Thu, 20 Oct 2022 08:39:24 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     James Hilliard <james.hilliard1@gmail.com>,
-        Josh Boyer <jwboyer@kernel.org>
-CC:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Jes Sorensen" <jes.sorensen@gmail.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
-Thread-Topic: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
-Thread-Index: AQHY39DGlvsa0sCTgkyhHB1F58c9da4VIasAgAAWe4CAAT0qAA==
-Date:   Thu, 20 Oct 2022 00:39:24 +0000
-Message-ID: <f4f48fa5df844d9d8d270fb4310e9ff1@realtek.com>
+        Wed, 19 Oct 2022 20:55:54 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20214160EE0
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 17:55:51 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id h12so18407435pjk.0
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 17:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DunVneNoNh+dN8MZSey5HPV8TWJRC19vfrvMZI8e5ss=;
+        b=TV/sxBFZIWHrw4Oy/hoj94CyRxpEqAj650tQCpC4Dl0p0mS/PBcdRWHcOsJA1qDkbh
+         EKbRk3nqDK9V8Qavms5T5+VhSBd+gg/hmpV+ehpwFuqyi0k5CHMkZkYs/Nj1/ekrGMV2
+         zkrDupy8WuVY9jdVexjM2RoRBv8SPBtnq8cPCfv8HAzEtdtI1d5iXoE760+7c1Z1wuiI
+         74veGmXWjB1f5QWEmssWq2iVzdhCHv+WCojpv8+tjpREZpuNMbit3t3rJEtcPaZNxqCf
+         gSD2++mJwO7CfsFkq2iu+flQo5gh4OL/r0UhiOjgVD/CruZQ5/a8AEwmyzsB4ceHu+2l
+         dvsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DunVneNoNh+dN8MZSey5HPV8TWJRC19vfrvMZI8e5ss=;
+        b=o/AtKtnJBVyG02uyWjjLWso6JaTVMyWZLf86r1seKy1oYjIxoAQb2C1o5LASuudejs
+         e/xZXfesIrmNQHkG540a3DSYxaIxapymU0nQdFsxX0J3tVjkK55q4BJ4Mm0DBEQdeed/
+         /RaddA7n6jrOo31oYVGvCHQ2q7wQTE0EGfsgUAjIQJKlstMEC/vurbDCee/HXyfuz2kI
+         Elp8PQFbC8xo5giPzGcyEYWvfig/wI1upynVhb8vv79nP11Ez1V2ZtLC3tGSC8TXxDzC
+         qfeDWH+vXhqlyOslKksTvfVtUrn1NACOlfbO29LyoTa9mjCi8o4naml1uDq+3rV6C5Tp
+         1MIQ==
+X-Gm-Message-State: ACrzQf0gqLp8FmVcYHzHCZu0YEunDCheze3azLXw2oSpQKcNXVKSbh6w
+        GLaUvSxcu7BvoOUP80eDVLVIMS3/UZeVgTyvHQo=
+X-Google-Smtp-Source: AMsMyM5OxrATuGv9JeqtEV9UPDzUkisrXLRtTV8l9YHxYH7+CMlGosqZ8wiasNsE9xPoTTb/rydkhESVNAZt0hCKflQ=
+X-Received: by 2002:a17:902:e552:b0:179:e795:71c5 with SMTP id
+ n18-20020a170902e55200b00179e79571c5mr11182756plf.57.1666227350540; Wed, 19
+ Oct 2022 17:55:50 -0700 (PDT)
+MIME-Version: 1.0
 References: <20221014132729.2107129-1-james.hilliard1@gmail.com>
  <CA+5PVA5gLBAxbR4qUSUu3vs+nunM+igokVxd=oAQ7OMD2oGiWg@mail.gmail.com>
- <CADvTj4pF_DqwYofL-PU5os7Dco=XyWJ3fY3C1Wxq35pSe=QqFQ@mail.gmail.com>
-In-Reply-To: <CADvTj4pF_DqwYofL-PU5os7Dco=XyWJ3fY3C1Wxq35pSe=QqFQ@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzE5IOS4i+WNiCAwNjo0NTowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ <CADvTj4pF_DqwYofL-PU5os7Dco=XyWJ3fY3C1Wxq35pSe=QqFQ@mail.gmail.com> <f4f48fa5df844d9d8d270fb4310e9ff1@realtek.com>
+In-Reply-To: <f4f48fa5df844d9d8d270fb4310e9ff1@realtek.com>
+From:   James Hilliard <james.hilliard1@gmail.com>
+Date:   Wed, 19 Oct 2022 20:55:38 -0400
+Message-ID: <CADvTj4poSjtCP9iRZNJHf=qLPHBmNQzhcc0Ff_jT-q5jjgTZnw@mail.gmail.com>
+Subject: Re: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Josh Boyer <jwboyer@kernel.org>,
+        "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jes Sorensen <jes.sorensen@gmail.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmFtZXMgSGlsbGlhcmQg
-PGphbWVzLmhpbGxpYXJkMUBnbWFpbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgT2N0b2JlciAx
-OSwgMjAyMiA5OjMwIFBNDQo+IFRvOiBKb3NoIEJveWVyIDxqd2JveWVyQGtlcm5lbC5vcmc+DQo+
-IENjOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IGxpbnV4LWZpcm13YXJlQGtl
-cm5lbC5vcmc7IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsgSmVzDQo+IFNvcmVuc2Vu
-IDxqZXMuc29yZW5zZW5AZ21haWwuY29tPjsgQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZl
-MkBnbWFpbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIHJ0bHdpZmk6IHVwZGF0ZSBmaXJt
-d2FyZSBmb3IgcnRsODE5MmV1IHRvIHYzNS43DQo+IA0KPiBPbiBXZWQsIE9jdCAxOSwgMjAyMiBh
-dCA4OjEwIEFNIEpvc2ggQm95ZXIgPGp3Ym95ZXJAa2VybmVsLm9yZz4gd3JvdGU6DQo+ID4NCj4g
-PiBPbiBGcmksIE9jdCAxNCwgMjAyMiBhdCA5OjI3IEFNIEphbWVzIEhpbGxpYXJkDQo+ID4gPGph
-bWVzLmhpbGxpYXJkMUBnbWFpbC5jb20+IHdyb3RlOg0KPiA+ID4NCj4gPiA+IFRoaXMgaXMgdjM1
-LjcgZmlybXdhcmUgZm9yIHRoZSBydGw4MTkyZXUuDQo+ID4gPg0KPiA+ID4gVGhpcyBhZGRzIDIg
-bmV3IGZpcm13YXJlIHZhcmlhbnRzIGV4dHJhY3RlZCBmcm9tIHZlbmRvciBkcml2ZXJzIHRoYXQN
-Cj4gPiA+IHdlcmUgbm90IHByZXZpb3VzbHkgcHJlc2VudDoNCj4gPiA+IHJ0bDgxOTJldV9hcC5i
-aW4NCj4gPiA+IHJ0bDgxOTJldV9uaWNfc2V0dXBib3guYmluDQoNCkkgdGhpbmsgdGhlc2UgdHdv
-IGFyZSBub3Qgc3VpdGFibGUgdG8gcnRsOHh4eHUsIHNvIEkgc3VnZ2VzdCB0byBpZ25vcmUgdGhl
-bS4NCg0KPiA+ID4NCj4gPiA+IFRoZXNlIGZpcm13YXJlIGZpbGVzIG9jY3VycyBhcyBkYXRhIHN0
-YXRlbWVudHMgaW4gdGhlIGxhdGVzdCBSZWFsdGVrDQo+ID4gPiB2ZW5kb3IgZHJpdmVyIEkgZm91
-bmQgZm9yIHRoZSBydGw4MTkyZXUgaW4gYWRkaXRpb24gdG8gc29tZSBvbGRlcg0KPiA+ID4gdmVu
-ZG9yIGRyaXZlciByZWxlYXNlczoNCj4gPiA+IHJ0bDgxOTJFVV9XaUZpX2xpbnV4X3Y1LjExLjIu
-MS0xOC1nOGU3ZGY5MTJiLjIwMjEwNTI3X0NPRVgyMDE3MTExMy0wMDQ3DQo+ID4NCj4gPiBJIGhh
-dmUgbm8gaWRlYSB3aGF0IHRoaXMgaXMsIG5vciBpcyB0aGVyZSBhbnkgaW5kaWNhdGlvbiB0aGF0
-IFJlYWx0ZWsNCj4gPiB3YW50cyB0aGVzZSBwdWJsaXNoZWQgdG8gdGhlIGxpbnV4LWZpcm13YXJl
-IHJlcG8gdW5kZXIgcmVkaXN0cmlidXRhYmxlDQo+ID4gbGljZW5zZSB0ZXJtcy4gIFlvdSd2ZSBl
-eHRyYWN0ZWQgZmlybXdhcmUgZnJvbSBlbHNld2hlcmUgYW5kIGFyZQ0KPiA+IGFzc3VtaW5nIGl0
-IGlzIGxpY2Vuc2VkIHVuZGVyIHRoZSBleGlzdGluZyBsaWNlbnNlLCBidXQgdGhlcmUncyBubw0K
-PiA+IGluZGljYXRpb24gdGhhdCdzIGFjdHVhbGx5IHRoZSBjYXNlLiAgVGhlIHByb3ZlbmFuY2Ug
-b2YgdGhpcyBmaXJtd2FyZQ0KPiA+IGlzIHF1ZXN0aW9uYWJsZS4NCj4gDQo+IEkganVzdCBleHRy
-YWN0ZWQgdGhlbSBmcm9tIHRoZSB2ZW5kb3IgZHJpdmVyIHNhbWUgYXMgbGFzdCB0aW1lOg0KPiBo
-dHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC9maXJtd2FyZS9s
-aW51eC1maXJtd2FyZS5naXQvY29tbWl0L3J0bHdpZmkvcnRsODE5MmV1X24NCj4gaWMuYmluP2lk
-PTkxZDVkZDEzNjE1M2UwYTE5OWQ3YmYzMGZkMDM3NjNkODM1ODZiNzMNCj4gDQo+IFRoZSB2ZW5k
-b3IgZmlsZSBsaWNlbnNlIGp1c3Qgc2F5cyBHUEx2MjoNCj4gaHR0cHM6Ly9naXRodWIuY29tL2Ns
-bmh1Yi9ydGw4MTkyZXUtbGludXgvYmxvYi81LjExLjIuMS9oYWwvcnRsODE5MmUvaGFsODE5MmVf
-ZncuYw0KPiANCg0KSSdtIG5vdCBhIGxhd3llciwgbm8gaWRlYSBhYm91dCB0aGlzLiBJIGhvcGUg
-c29tZW9uZSBjYW4gY29tbWVudCB0aGlzLiANCg0KPiA+DQo+ID4gSSd2ZSBjb3BpZWQgUGluZy1L
-ZSBTaGloIGluIGNhc2UgdGhleSBoYXZlIHNvbWUgaW5zaWdodCBoZXJlLCBidXQgSQ0KPiA+IGNh
-bid0IHJlYWxseSB0YWtlIHRoaXMgcGF0Y2ggYXMgaXQgaXMgYmFzZWQgb24gd2hhdCBpcyByZXBy
-ZXNlbnRlZA0KPiA+IGhlcmUuICBBbiBhY2sgb3IgU2lnbmVkLW9mZi1ieSBmcm9tIHNvbWVvbmUg
-YXQgUmVhbHRlayB3b3VsZCBnbyBhIGxvbmcNCj4gPiB3YXkuDQoNCkkgdGhpbmsgSSBjYW4gdGFr
-ZSBwYXRjaGVzIHJlbGF0ZWQgdG8gUmVhbHRlayBmaXJtd2FyZSB0byBteSBnaXRodWIgdHJlZSwN
-CmFuZCBzZW5kIG91dCBwdWxsLXJlcXVlc3QgYWZ0ZXIgY2hlY2tpbmcgY29udGVudCBvZiBmaXJt
-d2FyZSBwYXRjaC4NCkRvZXMgaXQgd29yayB0byB5b3UsIEpvc2g/DQoNCj4gPg0KPiA+IGpvc2gN
-Cj4gPg0KPiA+ID4gTm90ZSB0aGF0IHRoZSBleGlzdGluZyBydGw4MTkyZXVfYXBfd293bGFuLmJp
-biBmaXJtd2FyZSBoZWFkZXINCj4gPiA+IGluZGljYXRlcyBpdCBpcyBhY3R1YWxseSB2MTguMCBh
-bmQgbm90IHYxOS4wIGFzIGluZGljYXRlZCBieSB0aGUNCj4gPiA+IGNvbW1pdCB0aGF0IGludHJv
-ZHVjZWQgaXQgOTFkNWRkMTM2MTUzZTBhMTk5ZDdiZjMwZmQwMzc2M2Q4MzU4NmI3MywNCj4gPiA+
-IGFzIHN1Y2ggaXQgaXMgbWFya2VkIGFzIHZlcnNpb24gMTguMC4NCj4gPiA+DQo+ID4gPiBTbyBm
-YXIgSSBoYXZlIG1hbmFnZWQgdG8gZmluZCB0aGUgZm9sbG93aW5nIGZpcm13YXJlIHZlcnNpb25z
-IGZvciB0aGUNCj4gPiA+IHJ0bDgxOTJldSBpbiB2YXJpb3VzIHZlbmRvciBkcml2ZXIgcmVsZWFz
-ZXM6DQo+ID4gPiB2MTguMA0KPiA+ID4gdjE5LjANCj4gPiA+IHYyNy4wDQo+ID4gPiB2MzUuNw0K
-PiA+ID4NCj4gPiA+IFRoZSBydGw4MTkyZXVfYXBfd293bGFuLmJpbiBmaXJtd2FyZSBkb2VzIG5v
-dCBhcHBlYXIgdG8gaGF2ZSByZWNlaXZlZA0KPiA+ID4gYW55IHVwZGF0ZXMgdW5saWtlIHRoZSBv
-dGhlciBydGw4MTkyZXUgZmlybXdhcmUgdmFyaWFudHMuDQo+ID4gPg0KPiA+ID4gUHJldmlvdXMg
-ZmlybXdhcmUgbG9hZCBpbiBydGw4eHh4dToNCj4gPiA+IHJ0bDh4eHh1OiBMb2FkaW5nIGZpcm13
-YXJlIHJ0bHdpZmkvcnRsODE5MmV1X25pYy5iaW4NCj4gPiA+IEZpcm13YXJlIHJldmlzaW9uIDE5
-LjAgKHNpZ25hdHVyZSAweDkyZTEpDQo+ID4gPg0KPiA+ID4gVXBkYXRlZCBmaXJtd2FyZSBsb2Fk
-IGluIHJ0bDh4eHh1Og0KPiA+ID4gcnRsOHh4eHU6IExvYWRpbmcgZmlybXdhcmUgcnRsd2lmaS9y
-dGw4MTkyZXVfbmljLmJpbg0KPiA+ID4gRmlybXdhcmUgcmV2aXNpb24gMzUuNyAoc2lnbmF0dXJl
-IDB4OTJlMSkNCj4gPiA+DQo+ID4gPiBDYzogSmVzIFNvcmVuc2VuIDxqZXMuc29yZW5zZW5AZ21h
-aWwuY29tPg0KPiA+ID4gQ2M6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwu
-Y29tPg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogSmFtZXMgSGlsbGlhcmQgPGphbWVzLmhpbGxpYXJk
-MUBnbWFpbC5jb20+DQo+ID4gPiAtLS0NCj4gPiA+ICBXSEVOQ0UgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgICA5ICsrKysrKysrLQ0KPiA+ID4gIHJ0bHdpZmkvcnRsODE5MmV1X2FwLmJp
-biAgICAgICAgICAgfCBCaW4gMCAtPiAyNTgxNiBieXRlcw0KPiA+ID4gIHJ0bHdpZmkvcnRsODE5
-MmV1X25pYy5iaW4gICAgICAgICAgfCBCaW4gMzE4MTggLT4gMzIyODYgYnl0ZXMNCj4gPiA+ICBy
-dGx3aWZpL3J0bDgxOTJldV9uaWNfc2V0dXBib3guYmluIHwgQmluIDAgLT4gMjg1NTQgYnl0ZXMN
-Cj4gPiA+ICBydGx3aWZpL3J0bDgxOTJldV93b3dsYW4uYmluICAgICAgIHwgQmluIDI1ODc4IC0+
-IDI5MDA4IGJ5dGVzDQo+ID4gPiAgNSBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDEg
-ZGVsZXRpb24oLSkNCj4gPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgcnRsd2lmaS9ydGw4MTkyZXVf
-YXAuYmluDQo+ID4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHJ0bHdpZmkvcnRsODE5MmV1X25pY19z
-ZXR1cGJveC5iaW4NCj4gPiA+DQo+ID4gPiBkaWZmIC0tZ2l0IGEvV0hFTkNFIGIvV0hFTkNFDQo+
-ID4gPiBpbmRleCA4MTZjZjdjLi5lN2FlNzhhIDEwMDY0NA0KPiA+ID4gLS0tIGEvV0hFTkNFDQo+
-ID4gPiArKysgYi9XSEVOQ0UNCj4gPiA+IEBAIC0zMjU3LDEyICszMjU3LDE5IEBAIEZpbGU6IHJ0
-bHdpZmkvcnRsODcyM2J1X3dvd2xhbi5iaW4NCj4gPiA+ICBGaWxlOiBydGx3aWZpL3J0bDg3MjNi
-dV9hcF93b3dsYW4uYmluDQo+ID4gPg0KPiA+ID4gIEluZm86IHJ0bDgxOTJldSB0YWtlbiBmcm9t
-IFJlYWx0ZWsgZHJpdmVyDQo+ID4gPiAtICAgICAgcnRsODE5MkVVX2xpbnV4X3Y0LjMuMS4xXzEx
-MzIwLjIwMTQwNTA1DQo+ID4gPiArICAgICAgcnRsODE5MkVVX1dpRmlfbGludXhfdjUuMTEuMi4x
-LTE4LWc4ZTdkZjkxMmIuMjAyMTA1MjdfQ09FWDIwMTcxMTEzLTAwNDcNCj4gPiA+ICAgICAgICBG
-aXJtd2FyZSBpcyBlbWJlZGRlZCBpbiB0aGUgZHJpdmVyIGFzIGRhdGEgc3RhdGVtZW50cy4gVGhp
-cyBpbmZvDQo+ID4gPiAgICAgICAgaGFzIGJlZW4gZXh0cmFjdGVkIGludG8gYSBiaW5hcnkgZmls
-ZS4NCj4gPiA+ICBGaWxlOiBydGx3aWZpL3J0bDgxOTJldV9uaWMuYmluDQo+ID4gPiArVmVyc2lv
-bjogMzUuNw0KPiA+ID4gK0ZpbGU6IHJ0bHdpZmkvcnRsODE5MmV1X25pY19zZXR1cGJveC5iaW4N
-Cj4gPiA+ICtWZXJzaW9uOiAzNS43DQo+ID4gPiAgRmlsZTogcnRsd2lmaS9ydGw4MTkyZXVfd293
-bGFuLmJpbg0KPiA+ID4gK1ZlcnNpb246IDM1LjcNCj4gPiA+ICtGaWxlOiBydGx3aWZpL3J0bDgx
-OTJldV9hcC5iaW4NCj4gPiA+ICtWZXJzaW9uOiAzNS43DQo+ID4gPiAgRmlsZTogcnRsd2lmaS9y
-dGw4MTkyZXVfYXBfd293bGFuLmJpbg0KPiA+ID4gK1ZlcnNpb246IDE4LjANCj4gPiA+DQo+ID4g
-PiAgTGljZW5jZTogUmVkaXN0cmlidXRhYmxlLiBTZWUgTElDRU5DRS5ydGx3aWZpX2Zpcm13YXJl
-LnR4dCBmb3IgZGV0YWlscy4NCj4gPiA+DQoNClsuLi5dDQoNCg==
+On Wed, Oct 19, 2022 at 8:39 PM Ping-Ke Shih <pkshih@realtek.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: James Hilliard <james.hilliard1@gmail.com>
+> > Sent: Wednesday, October 19, 2022 9:30 PM
+> > To: Josh Boyer <jwboyer@kernel.org>
+> > Cc: Ping-Ke Shih <pkshih@realtek.com>; linux-firmware@kernel.org; linux-wireless@vger.kernel.org; Jes
+> > Sorensen <jes.sorensen@gmail.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> > Subject: Re: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
+> >
+> > On Wed, Oct 19, 2022 at 8:10 AM Josh Boyer <jwboyer@kernel.org> wrote:
+> > >
+> > > On Fri, Oct 14, 2022 at 9:27 AM James Hilliard
+> > > <james.hilliard1@gmail.com> wrote:
+> > > >
+> > > > This is v35.7 firmware for the rtl8192eu.
+> > > >
+> > > > This adds 2 new firmware variants extracted from vendor drivers that
+> > > > were not previously present:
+> > > > rtl8192eu_ap.bin
+> > > > rtl8192eu_nic_setupbox.bin
+>
+> I think these two are not suitable to rtl8xxxu, so I suggest to ignore them.
+
+That's correct, and actually only rtl8192eu_nic.bin seems to be used by
+rtl8xxxu at the moment, I just extracted all variants for consistency, this
+appears to be what was done when these files were originally added.
+
+>
+> > > >
+> > > > These firmware files occurs as data statements in the latest Realtek
+> > > > vendor driver I found for the rtl8192eu in addition to some older
+> > > > vendor driver releases:
+> > > > rtl8192EU_WiFi_linux_v5.11.2.1-18-g8e7df912b.20210527_COEX20171113-0047
+> > >
+> > > I have no idea what this is, nor is there any indication that Realtek
+> > > wants these published to the linux-firmware repo under redistributable
+> > > license terms.  You've extracted firmware from elsewhere and are
+> > > assuming it is licensed under the existing license, but there's no
+> > > indication that's actually the case.  The provenance of this firmware
+> > > is questionable.
+> >
+> > I just extracted them from the vendor driver same as last time:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/rtlwifi/rtl8192eu_n
+> > ic.bin?id=91d5dd136153e0a199d7bf30fd03763d83586b73
+> >
+> > The vendor file license just says GPLv2:
+> > https://github.com/clnhub/rtl8192eu-linux/blob/5.11.2.1/hal/rtl8192e/hal8192e_fw.c
+> >
+>
+> I'm not a lawyer, no idea about this. I hope someone can comment this.
+>
+> > >
+> > > I've copied Ping-Ke Shih in case they have some insight here, but I
+> > > can't really take this patch as it is based on what is represented
+> > > here.  An ack or Signed-off-by from someone at Realtek would go a long
+> > > way.
+>
+> I think I can take patches related to Realtek firmware to my github tree,
+> and send out pull-request after checking content of firmware patch.
+> Does it work to you, Josh?
+
+If possible could you check if v35.7 is the newest available firmware version
+for the rtl8192eu?
+
+The v35.7 was the newest I found in vendor drivers for the rtl8192eu, for
+example in this dlink release(v35.7 was also in a few earlier revisions):
+https://support.dlink.com/resource/SECURITY_ADVISEMENTS/DWA-131/REVE/DWA-131_REVE_DRIVER_v5.11.2.1-18_HOTFIX_LINUX.zip
+
+>
+> > >
+> > > josh
+> > >
+> > > > Note that the existing rtl8192eu_ap_wowlan.bin firmware header
+> > > > indicates it is actually v18.0 and not v19.0 as indicated by the
+> > > > commit that introduced it 91d5dd136153e0a199d7bf30fd03763d83586b73,
+> > > > as such it is marked as version 18.0.
+> > > >
+> > > > So far I have managed to find the following firmware versions for the
+> > > > rtl8192eu in various vendor driver releases:
+> > > > v18.0
+> > > > v19.0
+> > > > v27.0
+> > > > v35.7
+> > > >
+> > > > The rtl8192eu_ap_wowlan.bin firmware does not appear to have received
+> > > > any updates unlike the other rtl8192eu firmware variants.
+> > > >
+> > > > Previous firmware load in rtl8xxxu:
+> > > > rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
+> > > > Firmware revision 19.0 (signature 0x92e1)
+> > > >
+> > > > Updated firmware load in rtl8xxxu:
+> > > > rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
+> > > > Firmware revision 35.7 (signature 0x92e1)
+> > > >
+> > > > Cc: Jes Sorensen <jes.sorensen@gmail.com>
+> > > > Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> > > > Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> > > > ---
+> > > >  WHENCE                             |   9 ++++++++-
+> > > >  rtlwifi/rtl8192eu_ap.bin           | Bin 0 -> 25816 bytes
+> > > >  rtlwifi/rtl8192eu_nic.bin          | Bin 31818 -> 32286 bytes
+> > > >  rtlwifi/rtl8192eu_nic_setupbox.bin | Bin 0 -> 28554 bytes
+> > > >  rtlwifi/rtl8192eu_wowlan.bin       | Bin 25878 -> 29008 bytes
+> > > >  5 files changed, 8 insertions(+), 1 deletion(-)
+> > > >  create mode 100644 rtlwifi/rtl8192eu_ap.bin
+> > > >  create mode 100644 rtlwifi/rtl8192eu_nic_setupbox.bin
+> > > >
+> > > > diff --git a/WHENCE b/WHENCE
+> > > > index 816cf7c..e7ae78a 100644
+> > > > --- a/WHENCE
+> > > > +++ b/WHENCE
+> > > > @@ -3257,12 +3257,19 @@ File: rtlwifi/rtl8723bu_wowlan.bin
+> > > >  File: rtlwifi/rtl8723bu_ap_wowlan.bin
+> > > >
+> > > >  Info: rtl8192eu taken from Realtek driver
+> > > > -      rtl8192EU_linux_v4.3.1.1_11320.20140505
+> > > > +      rtl8192EU_WiFi_linux_v5.11.2.1-18-g8e7df912b.20210527_COEX20171113-0047
+> > > >        Firmware is embedded in the driver as data statements. This info
+> > > >        has been extracted into a binary file.
+> > > >  File: rtlwifi/rtl8192eu_nic.bin
+> > > > +Version: 35.7
+> > > > +File: rtlwifi/rtl8192eu_nic_setupbox.bin
+> > > > +Version: 35.7
+> > > >  File: rtlwifi/rtl8192eu_wowlan.bin
+> > > > +Version: 35.7
+> > > > +File: rtlwifi/rtl8192eu_ap.bin
+> > > > +Version: 35.7
+> > > >  File: rtlwifi/rtl8192eu_ap_wowlan.bin
+> > > > +Version: 18.0
+> > > >
+> > > >  Licence: Redistributable. See LICENCE.rtlwifi_firmware.txt for details.
+> > > >
+>
+> [...]
+>
