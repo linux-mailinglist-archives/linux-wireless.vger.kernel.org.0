@@ -2,65 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF64C60627E
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 16:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8696960636C
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 16:44:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229997AbiJTOJx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 10:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
+        id S230199AbiJTOog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 10:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbiJTOJv (ORCPT
+        with ESMTP id S230227AbiJTOoc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Oct 2022 10:09:51 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDC2357F6
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 07:09:49 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id bj12so47635226ejb.13
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 07:09:49 -0700 (PDT)
+        Thu, 20 Oct 2022 10:44:32 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 533C82722;
+        Thu, 20 Oct 2022 07:44:23 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id c7-20020a05600c0ac700b003c6cad86f38so2533729wmr.2;
+        Thu, 20 Oct 2022 07:44:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F3gY5O7nKoCue4aUObD2Ry9zxDVljyutT9lJm/4wu1g=;
-        b=RCtBERtGUuobnAig7pYIgKtjL97Ydq440F1TN34SgOXAeHIXDgKO8YhCEKzzMKOKSY
-         63TAFHK+MXjtmWzbMroow/OlgioAP62vgFECpS4BNXpJPQmGfLJGW7o7+Jqjm3P+Ck1F
-         MxDtNLVl5EUCeS/qvElRbrPGx6q/rI+rGzrYh+QCIF9qneeMQ/G6+VQ3kO8GsI8oQqGv
-         IOX4gDgACU24WSU7ljxEG1j+R4UgwCAY/LxnHkT3qy22D38B+qnPCfAyNxmh4Gzj11OU
-         Wz/hcsraIcxuHotP5h50Xu3GGhz6DArbCZ5AnuEBnbTh5C/LopZgiCSgm1rtHgvIvQ+c
-         IYOw==
+        bh=I2aGTNVe1qeic4UHRXjmYB1c+NLXbE7qDaWKF7l796o=;
+        b=eOeKfm8jDAnYe115ZExdtX0xVMbgIu/+zJRFN4KvZEBokogWjM8Qkq2tBf+H4l/Gh0
+         Bnlv78rbaQ8OH0qxTJiSV0iZH7dIDAJSeP2b7fPZGS2+2sOixWVH+8e3DqM4ocWSdKnW
+         cRMkVuJ8macQxLJP//ZLzMp/9E0TrT06TBV9SNUNJ1RCRWUjVN6zSKVK2q/OxNB/Ec2P
+         9GohpcMb/vkm7niCe3mJ3X2Z6i33p1JQuw6iWKrsbBYarHwxqVHGp7c1XCPyYcYRsNWi
+         3bzKwsnEilwMy+EV1Qt1vIcgMRqPU7CRRyafsbz9IEu/bbm/870udhgyGCB2oEvufhg1
+         XytQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F3gY5O7nKoCue4aUObD2Ry9zxDVljyutT9lJm/4wu1g=;
-        b=PhbOdMy03LOEs0wwDwTqo7vsr2d8Pbbvu5YM/p/+KwS1HmM0JOGv+B4lrEJZTCWlPw
-         JjpOSRdzVCuWWwhsPQSSGciix9ESJxyEhf8Q6nSMUulha9gSRf5S1NtB7+fUBLv1QWVb
-         KTHO5AUX7FLPzOKF3kEjQzvlaX3Qm9nYS6yT+chZnF3yueBhbbA2wtpKbFBWNwdoYcSc
-         XOS9stK1cjp+bbW9CKeCkPH/v0GxOYb7CUJwjWx6twukYsMNJshkDpKIxFdIMyTPdRqf
-         iT/+jPzaXMMsa+LqmuCJEg+rqm4Vd6XZhSGjj3d8NVBpv7WqEOScsh5noqcVZWbx0R6g
-         vIYw==
-X-Gm-Message-State: ACrzQf0MQJWgsO9wveG4vuIAMZsP6SOB9OJDoD5FLmhYtA3JRhQleqXX
-        tNNXKv16pok5Gv7YWp3My/9Ek++F/g3CVwQH2cYq7Q==
-X-Google-Smtp-Source: AMsMyM7SGZ0XTtcSaYBLs9xPt4lvZ0m0MEYlP1BnZUi2dNpFH7IdPCCnnPLUKv4K6bQ9BC2uET83RJAVoSdiDcgHB90=
-X-Received: by 2002:a17:907:16aa:b0:6fe:91d5:18d2 with SMTP id
- hc42-20020a17090716aa00b006fe91d518d2mr11464143ejc.190.1666274987831; Thu, 20
- Oct 2022 07:09:47 -0700 (PDT)
+        bh=I2aGTNVe1qeic4UHRXjmYB1c+NLXbE7qDaWKF7l796o=;
+        b=DbNeOIuhvkaQD1/52mOkYiGu3L02bsG/3r0Zdn5Pi+m9T1Rr4GwNwb29MNtGBZ78A2
+         xZaG/ZecHqM115EjlrBGSit5d9FSMnNQ5tvdlKF45lAkyoiR1gdwvLA0pJk2baFI7sWy
+         +yA5dM3emHppIdswUtai2wCf1bzFK2E2abSpt1soxgKd40JGKwALIT1TmpZ/qalYIt/O
+         7VpgjBDdFAXWeXx2k9VMDtSn7feoL70PkAYCm6pNiTc4B2QYtaGuQ393xrRhvNdcVP3k
+         Kn84mDJiE7bWJKL07kqOzDILyJdN41iXGTLCkMHEahQ9bNntxxlesGgGFdABoFtXoNh0
+         RWDQ==
+X-Gm-Message-State: ACrzQf3PMOfUTBseQdNIzIGDVrJLH2zpCvrcBSqmnosQLBLZC7RCIG5Y
+        FKE9RAQxT4Z/ppc4b4jUj9cykzbtwg7tUFhZztV+m/te
+X-Google-Smtp-Source: AMsMyM7tR2b5yivaNKJO3l2Li3CyzRJpaXg3AroQfwSEWWlB1bHo4dnRufA0llhvfs/LEs0jt9h8+t1voF+9PnwfaDs=
+X-Received: by 2002:a05:600c:1906:b0:3c6:f83e:d15f with SMTP id
+ j6-20020a05600c190600b003c6f83ed15fmr14320246wmq.205.1666277062387; Thu, 20
+ Oct 2022 07:44:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
  <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st> <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
  <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st> <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
  <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
  <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <CACRpkdYwJLO18t08zqu_Y1gaSpZJMc+3MFxRUtQzLkJF2MqmqQ@mail.gmail.com>
- <87wn9q35tp.fsf_-_@kernel.org>
-In-Reply-To: <87wn9q35tp.fsf_-_@kernel.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 20 Oct 2022 16:09:36 +0200
-Message-ID: <CACRpkdYmXDCADH6-5KvdTZFFgTLRsw5U7zO2EtK-cN4E2BgOYw@mail.gmail.com>
+ <87wn9q35tp.fsf_-_@kernel.org> <CACRpkdYmXDCADH6-5KvdTZFFgTLRsw5U7zO2EtK-cN4E2BgOYw@mail.gmail.com>
+In-Reply-To: <CACRpkdYmXDCADH6-5KvdTZFFgTLRsw5U7zO2EtK-cN4E2BgOYw@mail.gmail.com>
+From:   Dave Taht <dave.taht@gmail.com>
+Date:   Thu, 20 Oct 2022 07:44:10 -0700
+Message-ID: <CAA93jw5ntj-V075Gwm=UzML5VcQo9Tb2T+9jtV69=Grf9hieHw@mail.gmail.com>
 Subject: Re: Stockholm syndrome with Linux wireless?
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Hector Martin <marcan@marcan.st>,
         "~postmarketos/upstreaming@lists.sr.ht" 
@@ -89,56 +90,100 @@ Cc:     =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 26, 2022 at 10:20 AM Kalle Valo <kvalo@kernel.org> wrote:
-> Linus Walleij <linus.walleij@linaro.org> writes:
-> > On Thu, Sep 22, 2022 at 3:31 PM Alvin =C5=A0ipraga <ALSI@bang-olufsen.d=
-k> wrote:
-> >
-> >> I would also point out that the BCM4359 is equivalent to the
-> >> CYW88359/CYW89359 chipset, which we are using in some of our
-> >> products. Note that this is a Cypress chipset (identifiable by the
-> >> Version: ... (... CY) tag in the version string). But the FW Konrad is
-> >> linking appears to be for a Broadcom chipset.
-> >
-> > This just makes me think about Peter Robinsons seminar at
-> > LPC last week...
-> > "All types of wireless in Linux are terrible and why the vendors
-> > should feel bad"
-> > https://lpc.events/event/16/contributions/1278/attachments/1120/2153/wi=
-reless-issues.pdf
+On Thu, Oct 20, 2022 at 7:34 AM Linus Walleij <linus.walleij@linaro.org> wr=
+ote:
 >
-> Thanks, this was a good read! I'm always interested about user and
-> downstream feedback, both good and bad :) But I didn't get the Stockholm
-> syndrome comment in the end, what does he mean with that?
+> On Mon, Sep 26, 2022 at 10:20 AM Kalle Valo <kvalo@kernel.org> wrote:
+> > Linus Walleij <linus.walleij@linaro.org> writes:
+> > > On Thu, Sep 22, 2022 at 3:31 PM Alvin =C5=A0ipraga <ALSI@bang-olufsen=
+.dk> wrote:
+> > >
+> > >> I would also point out that the BCM4359 is equivalent to the
+> > >> CYW88359/CYW89359 chipset, which we are using in some of our
+> > >> products. Note that this is a Cypress chipset (identifiable by the
+> > >> Version: ... (... CY) tag in the version string). But the FW Konrad =
+is
+> > >> linking appears to be for a Broadcom chipset.
+> > >
+> > > This just makes me think about Peter Robinsons seminar at
+> > > LPC last week...
+> > > "All types of wireless in Linux are terrible and why the vendors
+> > > should feel bad"
+> > > https://lpc.events/event/16/contributions/1278/attachments/1120/2153/=
+wireless-issues.pdf
+> >
+> > Thanks, this was a good read! I'm always interested about user and
+> > downstream feedback, both good and bad :) But I didn't get the Stockhol=
+m
+> > syndrome comment in the end, what does he mean with that?
+> >
+> > BTW we have a wireless workshop in netdevconf 0x16, it would be great t=
+o
+> > have there a this kind of session discussing user pain points:
 >
-> BTW we have a wireless workshop in netdevconf 0x16, it would be great to
-> have there a this kind of session discussing user pain points:
+> I can't go to Lisbon, but my personal pain points are all this:
+> https://openwrt.org/meta/infobox/broadcom_wifi
+> and I think I'm not alone, but I can't speak for OpenWrt.
+>
+> The lack of support in b43 for modern phys such as AC, i.e. the gap
+> between b43 and brcmfmac, is extremely annoying and turning perfectly
+> fine aftermarket devices into paperweights because there isn't even
+> a way to make Broadcoms old proprietary blob work with contemporary
+> kernels.
 
-I can't go to Lisbon, but my personal pain points are all this:
-https://openwrt.org/meta/infobox/broadcom_wifi
-and I think I'm not alone, but I can't speak for OpenWrt.
++10. I'm a big believer in coping with the present day supply problems with
+modern software on perfectly good old routers. To heck with planned
+obsolescence.
 
-The lack of support in b43 for modern phys such as AC, i.e. the gap
-between b43 and brcmfmac, is extremely annoying and turning perfectly
-fine aftermarket devices into paperweights because there isn't even
-a way to make Broadcoms old proprietary blob work with contemporary
-kernels.
+There are 5.2 billion cellphones turning into e-waste this year, also. The =
+wifi
+situation there is also a mess.
 
-If Broadcom could be convinced to either add support for the late b43
-variants or at least release documentation for the aftermarket that
-would be great.
+>
+> If Broadcom could be convinced to either add support for the late b43
+> variants or at least release documentation for the aftermarket that
+> would be great.
+>
+> I suppose they might be coming to the conference so give them my best
+> regards with a "please fix" tag attached.
 
-I suppose they might be coming to the conference so give them my best
-regards with a "please fix" tag attached.
+Please! A symbol of a rotting raspberry, on their badges, or some
+other gentle poke, might work wonders.
 
-Yours,
-Linus Walleij
+I too cannot make it to lisbon. I just burned 9 months of my life
+(unpaid, mostly, but a huge thanks to NLNET for covering
+half my costs) on helping fix a ton of regressions in the ath10k,
+mt76, and ath9k, instead of making forward progress with new stuff.
+
+I can call out the ax210 chips as being especially terrible still.
+It's hard to test APs when the client chips
+are as bad as that.
+
+I'm very tempted to just buy a one-way ticket to lisbon, join this
+wireless emotional support group there, and then find a beach to
+retire on, and never think about this part of our field again.
+
+It seems far saner to quit working on wifi and seek out something more
+rewarding. Maybe there's some bright light on the horizon for less
+binary blobs in wifi7?
+
+>
+> Yours,
+> Linus Walleij
+
+
+
+--=20
+This song goes out to all the folk that thought Stadia would work:
+https://www.linkedin.com/posts/dtaht_the-mushroom-song-activity-69813666656=
+07352320-FXtz
+Dave T=C3=A4ht CEO, TekLibre, LLC
