@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDC06056C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 07:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 250136056C5
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 07:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbiJTF1f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 01:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39516 "EHLO
+        id S229945AbiJTF1g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 01:27:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiJTF1e (ORCPT
+        with ESMTP id S229573AbiJTF1e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 20 Oct 2022 01:27:34 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 296BC191D71
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9114B192989
         for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 22:27:33 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K5QrV02031917, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K5QrV02031917
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K5Qsp96032275, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K5Qsp96032275
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 20 Oct 2022 13:26:53 +0800
+        Thu, 20 Oct 2022 13:26:54 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 20 Oct 2022 13:27:25 +0800
+ 15.1.2507.9; Thu, 20 Oct 2022 13:27:26 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 20 Oct
- 2022 13:27:25 +0800
+ 2022 13:27:26 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 1/2] wifi: rtw89: declare support bands with const
-Date:   Thu, 20 Oct 2022 13:27:01 +0800
-Message-ID: <20221020052702.33988-1-pkshih@realtek.com>
+Subject: [PATCH 2/2] wifi: rtw89: 8852c: make table of RU mask constant
+Date:   Thu, 20 Oct 2022 13:27:02 +0800
+Message-ID: <20221020052702.33988-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221020052702.33988-1-pkshih@realtek.com>
+References: <20221020052702.33988-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -53,10 +55,6 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzIwIKRXpMggMDM6Mzg6MDA=?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,49 +63,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+This table must be constant, so change it as expectation.
 
-They are just default declarations and we won't modify them directly.
-Instead, we actually do moification on their memdup now. So, they
-should be declared with const.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index a0fa9639b5097..6d8243ee184c3 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -171,7 +171,7 @@ bool rtw89_ra_report_to_bitrate(struct rtw89_dev *rtwdev, u8 rpt_rate, u16 *bitr
- 	return true;
- }
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index f6bcac8268166..7e208a8fdf4bb 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -1683,12 +1683,12 @@ static void rtw8852c_set_channel_bb(struct rtw89_dev *rtwdev,
+ 				    const struct rtw89_chan *chan,
+ 				    enum rtw89_phy_idx phy_idx)
+ {
++	static const u32 ru_alloc_msk[2] = {B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY0,
++					    B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY1};
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 	bool cck_en = chan->band_type == RTW89_BAND_2G;
+ 	u8 pri_ch_idx = chan->pri_ch_idx;
+ 	u32 mask, reg;
+-	u32 ru_alloc_msk[2] = {B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY0,
+-			       B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY1};
+ 	u8 ntx_path;
  
--static struct ieee80211_supported_band rtw89_sband_2ghz = {
-+static const struct ieee80211_supported_band rtw89_sband_2ghz = {
- 	.band		= NL80211_BAND_2GHZ,
- 	.channels	= rtw89_channels_2ghz,
- 	.n_channels	= ARRAY_SIZE(rtw89_channels_2ghz),
-@@ -181,7 +181,7 @@ static struct ieee80211_supported_band rtw89_sband_2ghz = {
- 	.vht_cap	= {0},
- };
- 
--static struct ieee80211_supported_band rtw89_sband_5ghz = {
-+static const struct ieee80211_supported_band rtw89_sband_5ghz = {
- 	.band		= NL80211_BAND_5GHZ,
- 	.channels	= rtw89_channels_5ghz,
- 	.n_channels	= ARRAY_SIZE(rtw89_channels_5ghz),
-@@ -193,7 +193,7 @@ static struct ieee80211_supported_band rtw89_sband_5ghz = {
- 	.vht_cap	= {0},
- };
- 
--static struct ieee80211_supported_band rtw89_sband_6ghz = {
-+static const struct ieee80211_supported_band rtw89_sband_6ghz = {
- 	.band		= NL80211_BAND_6GHZ,
- 	.channels	= rtw89_channels_6ghz,
- 	.n_channels	= ARRAY_SIZE(rtw89_channels_6ghz),
+ 	if (chan->band_type == RTW89_BAND_2G)
 -- 
 2.25.1
 
