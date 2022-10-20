@@ -2,169 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C76B6056BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 07:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA896056C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 07:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbiJTF0Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 01:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38706 "EHLO
+        id S229836AbiJTF0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 01:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbiJTF0W (ORCPT
+        with ESMTP id S229519AbiJTF0x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Oct 2022 01:26:22 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5C310191D5E
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 22:26:18 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K5PYkT4025012, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K5PYkT4025012
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 20 Oct 2022 13:25:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Thu, 20 Oct 2022 13:26:06 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 20 Oct
- 2022 13:26:05 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: fw: adapt to new firmware format of dynamic header
-Date:   Thu, 20 Oct 2022 13:25:49 +0800
-Message-ID: <20221020052549.33783-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 20 Oct 2022 01:26:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDE91911D8;
+        Wed, 19 Oct 2022 22:26:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BC76CB82671;
+        Thu, 20 Oct 2022 05:26:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D077FC433C1;
+        Thu, 20 Oct 2022 05:26:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666243607;
+        bh=vAZmXggjSCZpIcGU5wkrL2Ub6Nof/q/Qn9/o5p8l1ZA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=acXmbVM7o1Fp6FBk33RSXnCufre5ha3eZfjfq9gJOhnuGQF6qB9oWHBgvT1HZZZcq
+         byGruFKcw4Sx7fe2rhjxmuBhB0Ejy7L4aB2d0LtarcwWWIhiPA6dBcv7lB31Mq6G/u
+         tozJjODOQ0RK1pdsnTn/EtV1DLJMd4/iovNgv4eDR4MQJ2JJlo7B61/lyno7xoWdgL
+         upC5qjiUJ4PQCOpI/GWCgpY9mqk3o1jAUfeKcAUY4TmoRrI0ox1OpHzsiLBxqmpmuw
+         PPzoiJG+IAvPVLVNqnzSxEQp+hzjolIJPM9ASHK4I9WvJM/yrwOXTsySLA9f7J4IMY
+         VnGZLLULxjrlA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     kernel test robot <lkp@intel.com>,
+        Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>,
+        llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-kernel@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9439:15: warning: result of comparison of constant -7 with expression of type 'char' is always false
+References: <202210191553.vO9rtKe5-lkp@intel.com> <87pmeol020.fsf@kernel.org>
+        <CAHmME9qFKMLJiZa=pg9bnBWHSfbgP-+yimteL_t4sxuepQ6bAg@mail.gmail.com>
+        <CAHmME9ocXJMTmCQfi1NY+zOw-r5VCe_Z48q5VJCZxR4Hj=1oZA@mail.gmail.com>
+        <CAHmME9oeHMPjg5aCdv4d5pY_ue9ufgaS4FQkYRRWAX_E0zFtfw@mail.gmail.com>
+Date:   Thu, 20 Oct 2022 08:26:40 +0300
+In-Reply-To: <CAHmME9oeHMPjg5aCdv4d5pY_ue9ufgaS4FQkYRRWAX_E0zFtfw@mail.gmail.com>
+        (Jason A. Donenfeld's message of "Wed, 19 Oct 2022 02:15:33 -0600")
+Message-ID: <87lepb2hgv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/20/2022 04:59:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzIwIKRXpMggMDM6Mzg6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since firmware size is limited, we create variant firmwares for variant
-application areas. To help driver to know firmware's capabilities, firmware
-dynamic header is introduced to have more information, such as firmware
-features and firmware compile flags.
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
 
-Since this driver rtw89 only uses single one specific firmware at runtime,
-this patch is just to ignore this dynamic header, not actually use the
-content.
+> On Wed, Oct 19, 2022 at 2:02 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>>
+>> On Wed, Oct 19, 2022 at 1:59 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>> >
+>> > On Wed, Oct 19, 2022 at 1:55 AM Kalle Valo <kvalo@kernel.org> wrote:
+>> > >
+>> > > + jason, linux-wireless
+>> > >
+>> > > kernel test robot <lkp@intel.com> writes:
+>> > >
+>> > > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>> > > > head:   aae703b02f92bde9264366c545e87cec451de471
+>> > > > commit: dab902fe1d29dc0fa1dccc8d13dc89ffbf633881 wifi: rt2x00: add TX
+>> > > > LOFT calibration for MT7620
+>> > > > date:   4 weeks ago
+>> > > > config: arm64-allmodconfig
+>> > > > compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project
+>> > > > 791a7ae1ba3efd6bca96338e10ffde557ba83920)
+>> > > > reproduce (this is a W=1 build):
+>> > > >         wget
+>> > > > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
+>> > > > -O ~/bin/make.cross
+>> > > >         chmod +x ~/bin/make.cross
+>> > > >         # install arm64 cross compiling tool for clang build
+>> > > >         # apt-get install binutils-aarch64-linux-gnu
+>> > > >         #
+>> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dab902fe1d29dc0fa1dccc8d13dc89ffbf633881
+>> > > >         git remote add linus
+>> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>> > > >         git fetch --no-tags linus master
+>> > > >         git checkout dab902fe1d29dc0fa1dccc8d13dc89ffbf633881
+>> > > >         # save the config file
+>> > > >         mkdir build_dir && cp config build_dir/.config
+>> > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1
+>> > > > O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/gpu/drm/amd/amdgpu/
+>> > > > drivers/net/wireless/ralink/rt2x00/ drivers/staging/media/
+>> > > >
+>> > > > If you fix the issue, kindly add following tag where applicable
+>> > > > | Reported-by: kernel test robot <lkp@intel.com>
+>> > > >
+>> > > > All warnings (new ones prefixed by >>):
+>> > > >
+>> > > >>> drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9439:15: warning:
+>> > > >> result of comparison of constant -7 with expression of type 'char'
+>> > > >> is always false [-Wtautological-constant-out-of-range-compare]
+>> > > >            gerr = (gerr < -0x07) ? -0x07 : (gerr > 0x05) ? 0x05 : gerr;
+>> > > >                    ~~~~ ^ ~~~~~
+>> > > >    drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9443:15: warning: result of comparison of constant -31 with expression of type 'char' is always false [-Wtautological-constant-out-of-range-compare]
+>> > > >            perr = (perr < -0x1f) ? -0x1f : (perr > 0x1d) ? 0x1d : perr;
+>> > > >                    ~~~~ ^ ~~~~~
+>> > > >    2 warnings generated.
+>> > >
+>> > > I believe this patch should fix it:
+>> > >
+>> > > https://patchwork.kernel.org/project/linux-wireless/patch/20221018202734.140489-1-Jason@zx2c4.com/
+>> > >
+>> > > Jason, is my understanding correct?
+>> >
+>> > That's a different bug caused by the same pitfall: assuming char is
+>> > signed. I'll send a patch for that function too.
+>>
+>>
+>> Actually, maybe I should fix the whole file? Patch incoming.
+>
+> Okay here's a v2 that handles it driver-wide:
+> https://lore.kernel.org/linux-wireless/20221019081417.3402284-1-Jason@zx2c4.com/
+> (Might take a few minutes to hit lore.)
 
-This patch can be backward compatible, and no this kind of firmware is
-added to linux-firmware yet, so I can prepare this in advance.
+Great, thanks Jason.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 22 +++++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/fw.h | 12 ++++++++++++
- 2 files changed, 31 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index d21f87e25ae1f..548b772eccfe3 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -85,15 +85,31 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
- {
- 	struct rtw89_fw_hdr_section_info *section_info;
- 	const u8 *fw_end = fw + len;
-+	const u8 *fwdynhdr;
- 	const u8 *bin;
-+	u32 base_hdr_len;
- 	u32 i;
- 
- 	if (!info)
- 		return -EINVAL;
- 
- 	info->section_num = GET_FW_HDR_SEC_NUM(fw);
--	info->hdr_len = RTW89_FW_HDR_SIZE +
--			info->section_num * RTW89_FW_SECTION_HDR_SIZE;
-+	base_hdr_len = RTW89_FW_HDR_SIZE +
-+		       info->section_num * RTW89_FW_SECTION_HDR_SIZE;
-+	info->dynamic_hdr_en = GET_FW_HDR_DYN_HDR(fw);
-+
-+	if (info->dynamic_hdr_en) {
-+		info->hdr_len = GET_FW_HDR_LEN(fw);
-+		info->dynamic_hdr_len = info->hdr_len - base_hdr_len;
-+		fwdynhdr = fw + base_hdr_len;
-+		if (GET_FW_DYNHDR_LEN(fwdynhdr) != info->dynamic_hdr_len) {
-+			rtw89_err(rtwdev, "[ERR]invalid fw dynamic header len\n");
-+			return -EINVAL;
-+		}
-+	} else {
-+		info->hdr_len = base_hdr_len;
-+		info->dynamic_hdr_len = 0;
-+	}
- 
- 	bin = fw + info->hdr_len;
- 
-@@ -534,7 +550,7 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
- 		goto fwdl_err;
- 	}
- 
--	ret = rtw89_fw_download_hdr(rtwdev, fw, info.hdr_len);
-+	ret = rtw89_fw_download_hdr(rtwdev, fw, info.hdr_len - info.dynamic_hdr_len);
- 	if (ret) {
- 		ret = -EBUSY;
- 		goto fwdl_err;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 6ef392ef9c6fb..8563efa5f6411 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -176,6 +176,8 @@ struct rtw89_fw_hdr_section_info {
- struct rtw89_fw_bin_info {
- 	u8 section_num;
- 	u32 hdr_len;
-+	bool dynamic_hdr_en;
-+	u32 dynamic_hdr_len;
- 	struct rtw89_fw_hdr_section_info section_info[FWDL_SECTION_MAX_NUM];
- };
- 
-@@ -495,6 +497,8 @@ static inline void RTW89_SET_EDCA_PARAM(void *cmd, u32 val)
- 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(23, 16))
- #define GET_FW_HDR_SUBINDEX(fwhdr)	\
- 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(31, 24))
-+#define GET_FW_HDR_LEN(fwhdr)	\
-+	le32_get_bits(*((const __le32 *)(fwhdr) + 3), GENMASK(23, 16))
- #define GET_FW_HDR_MONTH(fwhdr)		\
- 	le32_get_bits(*((const __le32 *)(fwhdr) + 4), GENMASK(7, 0))
- #define GET_FW_HDR_DATE(fwhdr)		\
-@@ -507,8 +511,16 @@ static inline void RTW89_SET_EDCA_PARAM(void *cmd, u32 val)
- 	le32_get_bits(*((const __le32 *)(fwhdr) + 5), GENMASK(31, 0))
- #define GET_FW_HDR_SEC_NUM(fwhdr)	\
- 	le32_get_bits(*((const __le32 *)(fwhdr) + 6), GENMASK(15, 8))
-+#define GET_FW_HDR_DYN_HDR(fwhdr)	\
-+	le32_get_bits(*((const __le32 *)(fwhdr) + 7), BIT(16))
- #define GET_FW_HDR_CMD_VERSERION(fwhdr)	\
- 	le32_get_bits(*((const __le32 *)(fwhdr) + 7), GENMASK(31, 24))
-+
-+#define GET_FW_DYNHDR_LEN(fwdynhdr)	\
-+	le32_get_bits(*((const __le32 *)(fwdynhdr)), GENMASK(31, 0))
-+#define GET_FW_DYNHDR_COUNT(fwdynhdr)	\
-+	le32_get_bits(*((const __le32 *)(fwdynhdr) + 1), GENMASK(31, 0))
-+
- static inline void SET_FW_HDR_PART_SIZE(void *fwhdr, u32 val)
- {
- 	le32p_replace_bits((__le32 *)fwhdr + 7, val, GENMASK(15, 0));
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
