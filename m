@@ -2,124 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F326C606250
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 15:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF64C60627E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 16:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230005AbiJTN5O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 09:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51660 "EHLO
+        id S229997AbiJTOJx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 10:09:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbiJTN5N (ORCPT
+        with ESMTP id S229736AbiJTOJv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Oct 2022 09:57:13 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C3FD199899;
-        Thu, 20 Oct 2022 06:57:11 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id bu30so34620536wrb.8;
-        Thu, 20 Oct 2022 06:57:11 -0700 (PDT)
+        Thu, 20 Oct 2022 10:09:51 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDC2357F6
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 07:09:49 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id bj12so47635226ejb.13
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 07:09:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ngGq9Gbtxzl0gmyIAkOWNorog708VikOB0/w/Kr3k+M=;
-        b=GvZOhSM4dyj0Ur+6JcRLUu7kAl/nazFe9/kEDysRlOLpRoV34NDReQ5nX8oKe/ZuwB
-         z2tsPC+jPAHOoTVno7frIBHRPVIudDakN2pOyYURUJUoUVr0jAQaTlvRmkirq8zpwGJw
-         8g+vYjpe3KwG6YXavJlCKCYHSIWArEl9n4tL5AjGACDGZ7WSPL6hr7GWz1wF6RX5QvQJ
-         KtMFj893scPfwqyLNW7w9VTVpYRIXZIWusu6icbXfxDuZKp5cr8RRmFPxTfbeP6k9tQZ
-         SUmBcfUPDzUGVA5OEn3/3Xdq3wSjGYJ2jWZaDIiwAj8WDUXjpV/1k3f01lSGXJvhNGGi
-         6aJg==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F3gY5O7nKoCue4aUObD2Ry9zxDVljyutT9lJm/4wu1g=;
+        b=RCtBERtGUuobnAig7pYIgKtjL97Ydq440F1TN34SgOXAeHIXDgKO8YhCEKzzMKOKSY
+         63TAFHK+MXjtmWzbMroow/OlgioAP62vgFECpS4BNXpJPQmGfLJGW7o7+Jqjm3P+Ck1F
+         MxDtNLVl5EUCeS/qvElRbrPGx6q/rI+rGzrYh+QCIF9qneeMQ/G6+VQ3kO8GsI8oQqGv
+         IOX4gDgACU24WSU7ljxEG1j+R4UgwCAY/LxnHkT3qy22D38B+qnPCfAyNxmh4Gzj11OU
+         Wz/hcsraIcxuHotP5h50Xu3GGhz6DArbCZ5AnuEBnbTh5C/LopZgiCSgm1rtHgvIvQ+c
+         IYOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ngGq9Gbtxzl0gmyIAkOWNorog708VikOB0/w/Kr3k+M=;
-        b=1UEfpKDfH3j5O6yke1En/nw2u+6QFjql3UinARBgG+vEeSVU68eRWAiNJWhU9F1jXU
-         5uuw/kQWDmP9Jt3X5ysooreVJ1NkqI7lxXSPe+wpYk5o4QTTS6ZBOC76uvEeMGX0yEWJ
-         5C/E1blZE6mv/SzwInH2Yh/muk407fQBJI3r9wwUtKkC3+4Hav2W+t18Aq5VSqrnXZ6B
-         Dv118cSLjG5IFksb3NnnTW+ukFacqP2PxX5wFXc35dPxSvoxoWahqWK2w8v88M97Uq6O
-         bTlS0SokaAn+n994RpybHLDBg/vOnbFoBpH8TccjeZnIxRrS2H2eezWKk7H/syt91VT3
-         CuqA==
-X-Gm-Message-State: ACrzQf2MQlg0N2R61C08r9xtba9F3PdiY9J/nl6gptPOqQFJx2eoXKFU
-        h6ae6FZntdE5frsmwIyCaaQ=
-X-Google-Smtp-Source: AMsMyM4IAwcg6WE4zL5H1BMmTbtTZ4v+KdVe4eFEF2c6NK3H128evLdH86rC8yer9I50a+yYE3Jdcw==
-X-Received: by 2002:adf:e10f:0:b0:22a:43e8:969f with SMTP id t15-20020adfe10f000000b0022a43e8969fmr9310147wrz.292.1666274230099;
-        Thu, 20 Oct 2022 06:57:10 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id i9-20020a05600c354900b003c6f3e5ba42sm2986018wmq.46.2022.10.20.06.57.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 06:57:09 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F3gY5O7nKoCue4aUObD2Ry9zxDVljyutT9lJm/4wu1g=;
+        b=PhbOdMy03LOEs0wwDwTqo7vsr2d8Pbbvu5YM/p/+KwS1HmM0JOGv+B4lrEJZTCWlPw
+         JjpOSRdzVCuWWwhsPQSSGciix9ESJxyEhf8Q6nSMUulha9gSRf5S1NtB7+fUBLv1QWVb
+         KTHO5AUX7FLPzOKF3kEjQzvlaX3Qm9nYS6yT+chZnF3yueBhbbA2wtpKbFBWNwdoYcSc
+         XOS9stK1cjp+bbW9CKeCkPH/v0GxOYb7CUJwjWx6twukYsMNJshkDpKIxFdIMyTPdRqf
+         iT/+jPzaXMMsa+LqmuCJEg+rqm4Vd6XZhSGjj3d8NVBpv7WqEOScsh5noqcVZWbx0R6g
+         vIYw==
+X-Gm-Message-State: ACrzQf0MQJWgsO9wveG4vuIAMZsP6SOB9OJDoD5FLmhYtA3JRhQleqXX
+        tNNXKv16pok5Gv7YWp3My/9Ek++F/g3CVwQH2cYq7Q==
+X-Google-Smtp-Source: AMsMyM7SGZ0XTtcSaYBLs9xPt4lvZ0m0MEYlP1BnZUi2dNpFH7IdPCCnnPLUKv4K6bQ9BC2uET83RJAVoSdiDcgHB90=
+X-Received: by 2002:a17:907:16aa:b0:6fe:91d5:18d2 with SMTP id
+ hc42-20020a17090716aa00b006fe91d518d2mr11464143ejc.190.1666274987831; Thu, 20
+ Oct 2022 07:09:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st> <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+ <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st> <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+ <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+ <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <CACRpkdYwJLO18t08zqu_Y1gaSpZJMc+3MFxRUtQzLkJF2MqmqQ@mail.gmail.com>
+ <87wn9q35tp.fsf_-_@kernel.org>
+In-Reply-To: <87wn9q35tp.fsf_-_@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 20 Oct 2022 16:09:36 +0200
+Message-ID: <CACRpkdYmXDCADH6-5KvdTZFFgTLRsw5U7zO2EtK-cN4E2BgOYw@mail.gmail.com>
+Subject: Re: Stockholm syndrome with Linux wireless?
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Hector Martin <marcan@marcan.st>,
+        "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "martin.botka@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno@somainline.org" 
+        <angelogioacchino.delregno@somainline.org>,
+        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] wifi: rtl8xxxu: Fix reads of uninitialized variables hw_ctrl_s1, sw_ctrl_s1
-Date:   Thu, 20 Oct 2022 14:57:09 +0100
-Message-Id: <20221020135709.1549086-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.37.3
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Soon Tak Lee <soontak.lee@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variables hw_ctrl_s1 and sw_ctrl_s1 are not being initialized and
-potentially can contain any garbage value. Currently there is an if
-statement that sets one or the other of these variables, followed
-by an if statement that checks if any of these variables have been
-set to a non-zero value. In the case where they may contain
-uninitialized non-zero values, the latter if statement may be
-taken as true when it was not expected to.
+On Mon, Sep 26, 2022 at 10:20 AM Kalle Valo <kvalo@kernel.org> wrote:
+> Linus Walleij <linus.walleij@linaro.org> writes:
+> > On Thu, Sep 22, 2022 at 3:31 PM Alvin =C5=A0ipraga <ALSI@bang-olufsen.d=
+k> wrote:
+> >
+> >> I would also point out that the BCM4359 is equivalent to the
+> >> CYW88359/CYW89359 chipset, which we are using in some of our
+> >> products. Note that this is a Cypress chipset (identifiable by the
+> >> Version: ... (... CY) tag in the version string). But the FW Konrad is
+> >> linking appears to be for a Broadcom chipset.
+> >
+> > This just makes me think about Peter Robinsons seminar at
+> > LPC last week...
+> > "All types of wireless in Linux are terrible and why the vendors
+> > should feel bad"
+> > https://lpc.events/event/16/contributions/1278/attachments/1120/2153/wi=
+reless-issues.pdf
+>
+> Thanks, this was a good read! I'm always interested about user and
+> downstream feedback, both good and bad :) But I didn't get the Stockholm
+> syndrome comment in the end, what does he mean with that?
+>
+> BTW we have a wireless workshop in netdevconf 0x16, it would be great to
+> have there a this kind of session discussing user pain points:
 
-Fix this by ensuring hw_ctrl_s1 and sw_ctrl_s1 are initialized.
+I can't go to Lisbon, but my personal pain points are all this:
+https://openwrt.org/meta/infobox/broadcom_wifi
+and I think I'm not alone, but I can't speak for OpenWrt.
 
-Cleans up clang warning:
-drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c:432:7: warning:
-variable 'hw_ctrl_s1' is used uninitialized whenever 'if' condition is
-false [-Wsometimes-uninitialized]
-                if (hw_ctrl) {
-                    ^~~~~~~
-drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c:440:7: note: uninitialized
-use occurs here
-                if (hw_ctrl_s1 || sw_ctrl_s1) {
-                    ^~~~~~~~~~
-drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c:432:3: note: remove the 'if'
-if its condition is always true
-                if (hw_ctrl) {
-                ^~~~~~~~~~~~~
+The lack of support in b43 for modern phys such as AC, i.e. the gap
+between b43 and brcmfmac, is extremely annoying and turning perfectly
+fine aftermarket devices into paperweights because there isn't even
+a way to make Broadcoms old proprietary blob work with contemporary
+kernels.
 
-Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If Broadcom could be convinced to either add support for the late b43
+variants or at least release documentation for the aftermarket that
+would be great.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-index 99610bb2afd5..0025bb32538d 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-@@ -412,7 +412,7 @@ static void rtl8188f_spur_calibration(struct rtl8xxxu_priv *priv, u8 channel)
- 	};
- 
- 	const u8 threshold = 0x16;
--	bool do_notch, hw_ctrl, sw_ctrl, hw_ctrl_s1, sw_ctrl_s1;
-+	bool do_notch, hw_ctrl, sw_ctrl, hw_ctrl_s1 = 0, sw_ctrl_s1 = 0;
- 	u32 val32, initial_gain, reg948;
- 
- 	val32 = rtl8xxxu_read32(priv, REG_OFDM0_RX_D_SYNC_PATH);
--- 
-2.37.3
+I suppose they might be coming to the conference so give them my best
+regards with a "please fix" tag attached.
 
+Yours,
+Linus Walleij
