@@ -2,212 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 152B960549B
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 02:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486CE60552D
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 03:49:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbiJTAzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Oct 2022 20:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
+        id S231324AbiJTBtQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Oct 2022 21:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbiJTAzy (ORCPT
+        with ESMTP id S229774AbiJTBtO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Oct 2022 20:55:54 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20214160EE0
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 17:55:51 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id h12so18407435pjk.0
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 17:55:51 -0700 (PDT)
+        Wed, 19 Oct 2022 21:49:14 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA22B1D2985
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 18:49:12 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id y191so18940029pfb.2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Oct 2022 18:49:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DunVneNoNh+dN8MZSey5HPV8TWJRC19vfrvMZI8e5ss=;
-        b=TV/sxBFZIWHrw4Oy/hoj94CyRxpEqAj650tQCpC4Dl0p0mS/PBcdRWHcOsJA1qDkbh
-         EKbRk3nqDK9V8Qavms5T5+VhSBd+gg/hmpV+ehpwFuqyi0k5CHMkZkYs/Nj1/ekrGMV2
-         zkrDupy8WuVY9jdVexjM2RoRBv8SPBtnq8cPCfv8HAzEtdtI1d5iXoE760+7c1Z1wuiI
-         74veGmXWjB1f5QWEmssWq2iVzdhCHv+WCojpv8+tjpREZpuNMbit3t3rJEtcPaZNxqCf
-         gSD2++mJwO7CfsFkq2iu+flQo5gh4OL/r0UhiOjgVD/CruZQ5/a8AEwmyzsB4ceHu+2l
-         dvsw==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5nmHSvHQDMtAL2AOSYcWXUKkW2yXG3QfLswGnstPfn0=;
+        b=qNomfsGJ7Dj7yJ8rhDiyoAIsIQ/nc5ZMtypsNaL5tNmiAGYb3/M857R+07zJUjUTdE
+         fN731TmYP8y+fOz0nbhWA527/4A5dCCMkgWyFW/rxrTCMWpno+oC30fCx2p9OEfbdpiJ
+         B2FGxkp2P1XsVIumx5QLm+Ez1m6JfmU1i6g8yh/fwdveojcR5B3DrhYQ2p1jO2m1jXS3
+         1F29wnY8QHyuCoEOTh7PYPLnd2eWztHLIAwKJ+3eySyDBD4movOVlGUg2KQEEGUnPwr8
+         brchQsMsFVOUBTi6qxz06UAlySHvUuAH2AU/TowLpF8+o7v4DJjrPh6yDe9Bt8+znAGX
+         7LWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DunVneNoNh+dN8MZSey5HPV8TWJRC19vfrvMZI8e5ss=;
-        b=o/AtKtnJBVyG02uyWjjLWso6JaTVMyWZLf86r1seKy1oYjIxoAQb2C1o5LASuudejs
-         e/xZXfesIrmNQHkG540a3DSYxaIxapymU0nQdFsxX0J3tVjkK55q4BJ4Mm0DBEQdeed/
-         /RaddA7n6jrOo31oYVGvCHQ2q7wQTE0EGfsgUAjIQJKlstMEC/vurbDCee/HXyfuz2kI
-         Elp8PQFbC8xo5giPzGcyEYWvfig/wI1upynVhb8vv79nP11Ez1V2ZtLC3tGSC8TXxDzC
-         qfeDWH+vXhqlyOslKksTvfVtUrn1NACOlfbO29LyoTa9mjCi8o4naml1uDq+3rV6C5Tp
-         1MIQ==
-X-Gm-Message-State: ACrzQf0gqLp8FmVcYHzHCZu0YEunDCheze3azLXw2oSpQKcNXVKSbh6w
-        GLaUvSxcu7BvoOUP80eDVLVIMS3/UZeVgTyvHQo=
-X-Google-Smtp-Source: AMsMyM5OxrATuGv9JeqtEV9UPDzUkisrXLRtTV8l9YHxYH7+CMlGosqZ8wiasNsE9xPoTTb/rydkhESVNAZt0hCKflQ=
-X-Received: by 2002:a17:902:e552:b0:179:e795:71c5 with SMTP id
- n18-20020a170902e55200b00179e79571c5mr11182756plf.57.1666227350540; Wed, 19
- Oct 2022 17:55:50 -0700 (PDT)
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5nmHSvHQDMtAL2AOSYcWXUKkW2yXG3QfLswGnstPfn0=;
+        b=AnDjf3btztrSJf6XcYZc7okwKIL6s6hdqyC3PF4NO3gWxS2VTzUBx0IJ6zbVYmzqFk
+         bnJMtKApHfL8CM5IAgZiNMGsIyxvOx1z8wV56BbvwskpZUoexBKWmEINcIP+b09vEbmM
+         4Z6mHrPbQAbCss5Svcp5sziZY3mEmxllLxNNIU87TNQSOOBxZPXln6p9Rihob7y2Yjvc
+         Ye3qd6G6hfYiPNeoCgbWdpuHh2iYOaXR5bwgyYUPQ4/fHFnKP5M2Rywr8S0t+WtuFQuv
+         NswkiH6UwMrA/CBGwYjCiiq5GajoCyhxPnth42GonkMCGk63J/B7feYqtDkbXtaghuuZ
+         +2vw==
+X-Gm-Message-State: ACrzQf20Y7+1rRhgHH4xotGbJOj8XGbL4xXDFQQ5TXwXdyBbz099Fsgs
+        SWqLU6nUIgdcrBpVuSHVQ2lxzoIoV3I=
+X-Google-Smtp-Source: AMsMyM6kF6mT9mDhvjmeCKr/SJuVqJRaeKsG23+QvT607DZ9/tXkUfPEG2CocumHIJifVYfsX2e5fA==
+X-Received: by 2002:a63:8549:0:b0:46e:99b8:4b36 with SMTP id u70-20020a638549000000b0046e99b84b36mr1007232pgd.138.1666230551604;
+        Wed, 19 Oct 2022 18:49:11 -0700 (PDT)
+Received: from laguna ([165.132.118.110])
+        by smtp.gmail.com with ESMTPSA id q15-20020a65684f000000b0044ba7b39c2asm10499653pgt.60.2022.10.19.18.49.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Oct 2022 18:49:10 -0700 (PDT)
+Date:   Thu, 20 Oct 2022 10:49:07 +0900
+From:   Dokyung Song <dokyung.song@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Subject: [PATCH] brcmfmac: Fixes potential buffer overflow in
+ 'brcmf_fweh_event_worker'
+Message-ID: <20221020014907.GA338234@laguna>
 MIME-Version: 1.0
-References: <20221014132729.2107129-1-james.hilliard1@gmail.com>
- <CA+5PVA5gLBAxbR4qUSUu3vs+nunM+igokVxd=oAQ7OMD2oGiWg@mail.gmail.com>
- <CADvTj4pF_DqwYofL-PU5os7Dco=XyWJ3fY3C1Wxq35pSe=QqFQ@mail.gmail.com> <f4f48fa5df844d9d8d270fb4310e9ff1@realtek.com>
-In-Reply-To: <f4f48fa5df844d9d8d270fb4310e9ff1@realtek.com>
-From:   James Hilliard <james.hilliard1@gmail.com>
-Date:   Wed, 19 Oct 2022 20:55:38 -0400
-Message-ID: <CADvTj4poSjtCP9iRZNJHf=qLPHBmNQzhcc0Ff_jT-q5jjgTZnw@mail.gmail.com>
-Subject: Re: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Josh Boyer <jwboyer@kernel.org>,
-        "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <jes.sorensen@gmail.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 8:39 PM Ping-Ke Shih <pkshih@realtek.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: James Hilliard <james.hilliard1@gmail.com>
-> > Sent: Wednesday, October 19, 2022 9:30 PM
-> > To: Josh Boyer <jwboyer@kernel.org>
-> > Cc: Ping-Ke Shih <pkshih@realtek.com>; linux-firmware@kernel.org; linux-wireless@vger.kernel.org; Jes
-> > Sorensen <jes.sorensen@gmail.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> > Subject: Re: [PATCH] rtlwifi: update firmware for rtl8192eu to v35.7
-> >
-> > On Wed, Oct 19, 2022 at 8:10 AM Josh Boyer <jwboyer@kernel.org> wrote:
-> > >
-> > > On Fri, Oct 14, 2022 at 9:27 AM James Hilliard
-> > > <james.hilliard1@gmail.com> wrote:
-> > > >
-> > > > This is v35.7 firmware for the rtl8192eu.
-> > > >
-> > > > This adds 2 new firmware variants extracted from vendor drivers that
-> > > > were not previously present:
-> > > > rtl8192eu_ap.bin
-> > > > rtl8192eu_nic_setupbox.bin
->
-> I think these two are not suitable to rtl8xxxu, so I suggest to ignore them.
+This patch fixes an intra-object buffer overflow in brcmfmac that occurs
+when the device provides a 'bsscfgidx' equal to or greater than the
+buffer size. The patch adds a check that leads to a safe failure if that
+is the case.
 
-That's correct, and actually only rtl8192eu_nic.bin seems to be used by
-rtl8xxxu at the moment, I just extracted all variants for consistency, this
-appears to be what was done when these files were originally added.
+Found by a modified version of syzkaller.
 
->
-> > > >
-> > > > These firmware files occurs as data statements in the latest Realtek
-> > > > vendor driver I found for the rtl8192eu in addition to some older
-> > > > vendor driver releases:
-> > > > rtl8192EU_WiFi_linux_v5.11.2.1-18-g8e7df912b.20210527_COEX20171113-0047
-> > >
-> > > I have no idea what this is, nor is there any indication that Realtek
-> > > wants these published to the linux-firmware repo under redistributable
-> > > license terms.  You've extracted firmware from elsewhere and are
-> > > assuming it is licensed under the existing license, but there's no
-> > > indication that's actually the case.  The provenance of this firmware
-> > > is questionable.
-> >
-> > I just extracted them from the vendor driver same as last time:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/rtlwifi/rtl8192eu_n
-> > ic.bin?id=91d5dd136153e0a199d7bf30fd03763d83586b73
-> >
-> > The vendor file license just says GPLv2:
-> > https://github.com/clnhub/rtl8192eu-linux/blob/5.11.2.1/hal/rtl8192e/hal8192e_fw.c
-> >
->
-> I'm not a lawyer, no idea about this. I hope someone can comment this.
->
-> > >
-> > > I've copied Ping-Ke Shih in case they have some insight here, but I
-> > > can't really take this patch as it is based on what is represented
-> > > here.  An ack or Signed-off-by from someone at Realtek would go a long
-> > > way.
->
-> I think I can take patches related to Realtek firmware to my github tree,
-> and send out pull-request after checking content of firmware patch.
-> Does it work to you, Josh?
+UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+index 52 is out of range for type 'brcmf_if *[16]'
+CPU: 0 PID: 1898 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+Workqueue: events brcmf_fweh_event_worker
+Call Trace:
+ dump_stack_lvl+0x57/0x7d
+ ubsan_epilogue+0x5/0x40
+ __ubsan_handle_out_of_bounds+0x69/0x80
+ ? memcpy+0x39/0x60
+ brcmf_fweh_event_worker+0xae1/0xc00
+ ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
+ ? rcu_read_lock_sched_held+0xa1/0xd0
+ ? rcu_read_lock_bh_held+0xb0/0xb0
+ ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+ process_one_work+0x873/0x13e0
+ ? lock_release+0x640/0x640
+ ? pwq_dec_nr_in_flight+0x320/0x320
+ ? rwlock_bug.part.0+0x90/0x90
+ worker_thread+0x8b/0xd10
+ ? __kthread_parkme+0xd9/0x1d0
+ ? process_one_work+0x13e0/0x13e0
+ kthread+0x379/0x450
+ ? _raw_spin_unlock_irq+0x24/0x30
+ ? set_kthread_struct+0x100/0x100
+ ret_from_fork+0x1f/0x30
+================================================================================
+general protection fault, probably for non-canonical address 0xe5601c0020023fff: 0000 [#1] SMP KASAN
+KASAN: maybe wild-memory-access in range [0x2b0100010011fff8-0x2b0100010011ffff]
+CPU: 0 PID: 1898 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+Workqueue: events brcmf_fweh_event_worker
+RIP: 0010:brcmf_fweh_call_event_handler.isra.0+0x42/0x100
+Code: 89 f5 53 48 89 fb 48 83 ec 08 e8 79 0b 38 fe 48 85 ed 74 7e e8 6f 0b 38 fe 48 89 ea 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 8b 00 00 00 4c 8b 7d 00 44 89 e0 48 ba 00 00 00
+RSP: 0018:ffffc9000259fbd8 EFLAGS: 00010207
+RAX: dffffc0000000000 RBX: ffff888115d8cd50 RCX: 0000000000000000
+RDX: 0560200020023fff RSI: ffffffff8304bc91 RDI: ffff888115d8cd50
+RBP: 2b0100010011ffff R08: ffff888112340050 R09: ffffed1023549809
+R10: ffff88811aa4c047 R11: ffffed1023549808 R12: 0000000000000045
+R13: ffffc9000259fca0 R14: ffff888112340050 R15: ffff888112340000
+FS:  0000000000000000(0000) GS:ffff88811aa00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000004053ccc0 CR3: 0000000112740000 CR4: 0000000000750ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ brcmf_fweh_event_worker+0x117/0xc00
+ ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
+ ? rcu_read_lock_sched_held+0xa1/0xd0
+ ? rcu_read_lock_bh_held+0xb0/0xb0
+ ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+ process_one_work+0x873/0x13e0
+ ? lock_release+0x640/0x640
+ ? pwq_dec_nr_in_flight+0x320/0x320
+ ? rwlock_bug.part.0+0x90/0x90
+ worker_thread+0x8b/0xd10
+ ? __kthread_parkme+0xd9/0x1d0
+ ? process_one_work+0x13e0/0x13e0
+ kthread+0x379/0x450
+ ? _raw_spin_unlock_irq+0x24/0x30
+ ? set_kthread_struct+0x100/0x100
+ ret_from_fork+0x1f/0x30
+Modules linked in: 88XXau(O) 88x2bu(O)
+---[ end trace 41d302138f3ff55a ]---
+RIP: 0010:brcmf_fweh_call_event_handler.isra.0+0x42/0x100
+Code: 89 f5 53 48 89 fb 48 83 ec 08 e8 79 0b 38 fe 48 85 ed 74 7e e8 6f 0b 38 fe 48 89 ea 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 8b 00 00 00 4c 8b 7d 00 44 89 e0 48 ba 00 00 00
+RSP: 0018:ffffc9000259fbd8 EFLAGS: 00010207
+RAX: dffffc0000000000 RBX: ffff888115d8cd50 RCX: 0000000000000000
+RDX: 0560200020023fff RSI: ffffffff8304bc91 RDI: ffff888115d8cd50
+RBP: 2b0100010011ffff R08: ffff888112340050 R09: ffffed1023549809
+R10: ffff88811aa4c047 R11: ffffed1023549808 R12: 0000000000000045
+R13: ffffc9000259fca0 R14: ffff888112340050 R15: ffff888112340000
+FS:  0000000000000000(0000) GS:ffff88811aa00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000004053ccc0 CR3: 0000000112740000 CR4: 0000000000750ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Kernel panic - not syncing: Fatal exception
 
-If possible could you check if v35.7 is the newest available firmware version
-for the rtl8192eu?
+Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Signed-off-by: Dokyung Song <dokyung.song@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-The v35.7 was the newest I found in vendor drivers for the rtl8192eu, for
-example in this dlink release(v35.7 was also in a few earlier revisions):
-https://support.dlink.com/resource/SECURITY_ADVISEMENTS/DWA-131/REVE/DWA-131_REVE_DRIVER_v5.11.2.1-18_HOTFIX_LINUX.zip
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+index bc3f4e4edcdf..e035e9c5a1fa 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+@@ -255,10 +255,15 @@ static void brcmf_fweh_event_worker(struct work_struct *work)
+ 			goto event_free;
+ 		}
+ 
+-		if (event->code == BRCMF_E_TDLS_PEER_EVENT)
++		if (event->code == BRCMF_E_TDLS_PEER_EVENT) {
+ 			ifp = drvr->iflist[0];
+-		else
++		} else {
++			if (emsg.bsscfgidx >= BRCMF_MAX_IFS) {
++				bphy_err(drvr, "invalid bsscfg index: %u\n", emsg.bsscfgidx);
++				goto event_free;
++			}
+ 			ifp = drvr->iflist[emsg.bsscfgidx];
++		}
+ 		err = brcmf_fweh_call_event_handler(drvr, ifp, event->code,
+ 						    &emsg, event->data);
+ 		if (err) {
+-- 
+2.25.1
 
->
-> > >
-> > > josh
-> > >
-> > > > Note that the existing rtl8192eu_ap_wowlan.bin firmware header
-> > > > indicates it is actually v18.0 and not v19.0 as indicated by the
-> > > > commit that introduced it 91d5dd136153e0a199d7bf30fd03763d83586b73,
-> > > > as such it is marked as version 18.0.
-> > > >
-> > > > So far I have managed to find the following firmware versions for the
-> > > > rtl8192eu in various vendor driver releases:
-> > > > v18.0
-> > > > v19.0
-> > > > v27.0
-> > > > v35.7
-> > > >
-> > > > The rtl8192eu_ap_wowlan.bin firmware does not appear to have received
-> > > > any updates unlike the other rtl8192eu firmware variants.
-> > > >
-> > > > Previous firmware load in rtl8xxxu:
-> > > > rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
-> > > > Firmware revision 19.0 (signature 0x92e1)
-> > > >
-> > > > Updated firmware load in rtl8xxxu:
-> > > > rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
-> > > > Firmware revision 35.7 (signature 0x92e1)
-> > > >
-> > > > Cc: Jes Sorensen <jes.sorensen@gmail.com>
-> > > > Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> > > > Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> > > > ---
-> > > >  WHENCE                             |   9 ++++++++-
-> > > >  rtlwifi/rtl8192eu_ap.bin           | Bin 0 -> 25816 bytes
-> > > >  rtlwifi/rtl8192eu_nic.bin          | Bin 31818 -> 32286 bytes
-> > > >  rtlwifi/rtl8192eu_nic_setupbox.bin | Bin 0 -> 28554 bytes
-> > > >  rtlwifi/rtl8192eu_wowlan.bin       | Bin 25878 -> 29008 bytes
-> > > >  5 files changed, 8 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 rtlwifi/rtl8192eu_ap.bin
-> > > >  create mode 100644 rtlwifi/rtl8192eu_nic_setupbox.bin
-> > > >
-> > > > diff --git a/WHENCE b/WHENCE
-> > > > index 816cf7c..e7ae78a 100644
-> > > > --- a/WHENCE
-> > > > +++ b/WHENCE
-> > > > @@ -3257,12 +3257,19 @@ File: rtlwifi/rtl8723bu_wowlan.bin
-> > > >  File: rtlwifi/rtl8723bu_ap_wowlan.bin
-> > > >
-> > > >  Info: rtl8192eu taken from Realtek driver
-> > > > -      rtl8192EU_linux_v4.3.1.1_11320.20140505
-> > > > +      rtl8192EU_WiFi_linux_v5.11.2.1-18-g8e7df912b.20210527_COEX20171113-0047
-> > > >        Firmware is embedded in the driver as data statements. This info
-> > > >        has been extracted into a binary file.
-> > > >  File: rtlwifi/rtl8192eu_nic.bin
-> > > > +Version: 35.7
-> > > > +File: rtlwifi/rtl8192eu_nic_setupbox.bin
-> > > > +Version: 35.7
-> > > >  File: rtlwifi/rtl8192eu_wowlan.bin
-> > > > +Version: 35.7
-> > > > +File: rtlwifi/rtl8192eu_ap.bin
-> > > > +Version: 35.7
-> > > >  File: rtlwifi/rtl8192eu_ap_wowlan.bin
-> > > > +Version: 18.0
-> > > >
-> > > >  Licence: Redistributable. See LICENCE.rtlwifi_firmware.txt for details.
-> > > >
->
-> [...]
->
