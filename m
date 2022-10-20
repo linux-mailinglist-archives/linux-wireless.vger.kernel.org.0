@@ -2,102 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5196059AF
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 10:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A69F4605A09
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 10:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbiJTI0M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 04:26:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48728 "EHLO
+        id S230082AbiJTIjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 04:39:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229909AbiJTI0L (ORCPT
+        with ESMTP id S229794AbiJTIjT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Oct 2022 04:26:11 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 78AE5BC61F;
-        Thu, 20 Oct 2022 01:26:07 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29K8P8KM0007657, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29K8P8KM0007657
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 20 Oct 2022 16:25:08 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Thu, 20 Oct 2022 16:25:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 20 Oct 2022 16:25:39 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Thu, 20 Oct 2022 16:25:39 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Colin Ian King <colin.i.king@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next] wifi: rtw89: 8852b: Fix spelling mistake KIP_RESOTRE -> KIP_RESTORE
-Thread-Topic: [PATCH][next] wifi: rtw89: 8852b: Fix spelling mistake
- KIP_RESOTRE -> KIP_RESTORE
-Thread-Index: AQHY5FVYzEwt5nqXEUGEagTPXukM1q4W8X9g
-Date:   Thu, 20 Oct 2022 08:25:39 +0000
-Message-ID: <bef9e90fb8bd44eb8fc3acb26103314a@realtek.com>
-References: <20221020072646.1513307-1-colin.i.king@gmail.com>
-In-Reply-To: <20221020072646.1513307-1-colin.i.king@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzIwIOS4iuWNiCAwNjozNjowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 20 Oct 2022 04:39:19 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A41E818C96B
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 01:39:17 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id b4so33133227wrs.1
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 01:39:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MYiaRsw3d498ajPipBA6kI+35MHXcbys3QG+Erur9Ew=;
+        b=LUK6bvoalZarG4/10cYHOZVvkyeNt2lEqUWhowXbLcD+qkR3buH7JhF5yXgOoCVdBp
+         O7OXVaFRdd4eOy/68sUTshux6qDWvyS/aGhCNkl/WOh4rmEr5KUVje9avyZkK125rG+V
+         9Z8Gg27p8EeCJWVHvOfGNHxCqvRTKbPJvx+jT1y1f5nFBiw0s8vHuw+cS+2jturqdUpq
+         qcA5aUtiWY/6Mv67KNy8Xnxo27MpcB5VavrSk0QmUPf3LiWtAng66627xFQD9+lDAZVu
+         s7TsegWqJoTM17tKQ1enaiBmypeI52CwuresDKCbQBbTv/NyLCzn3CzLtV+QUJnl03oB
+         pfuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MYiaRsw3d498ajPipBA6kI+35MHXcbys3QG+Erur9Ew=;
+        b=bLRhTsjRUae82mZtuag4D64XwI9b9AVUFbIyA6pTihMN3AzojBUd8QydRLAjwWuqxs
+         FOZBI3cUs8eTaCTEcMhq1kImCj4mLCXbwu6cHDNei+pI+TpqPuTQTwT4bxvi5xJ6/5Ef
+         URJpqZfA5lwNLPQb3Ge1O9bKzwE7vspEUnvlNEQ6wUsT6rXKD9WcHrW9rPz5T+ZFS4hF
+         sMSOYJXyG1+axJg5t1OVBvQLDXzSF+pNXftcpwr9t7G7fNW/zh+Ue1c9k0lyi+52qrF3
+         jRx2aYFnal16iTxJ//lRpzU+OT5uhOcTJueEK4r2rE85Fqm+t5Z9sPSdNB2p5YKCzSKN
+         906A==
+X-Gm-Message-State: ACrzQf13dyeK5KQWfMVcjIPNr2JF/yVRp9eZIIGTHW5c6fKGXugoZZhl
+        ivEj6weQvA6kLpH+xIn4D4XkbfXWfyqAoUXb
+X-Google-Smtp-Source: AMsMyM7jZWw7vWX/+/eoA9x8P2bxtDrEuqS7UMYLzznoyZoJS7iPnhqACqXDq+aEm8Hrq04fjOECIw==
+X-Received: by 2002:adf:c601:0:b0:230:7cfa:b3fe with SMTP id n1-20020adfc601000000b002307cfab3femr7725303wrg.344.1666255155871;
+        Thu, 20 Oct 2022 01:39:15 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id q10-20020adff94a000000b00225307f43fbsm15987886wrr.44.2022.10.20.01.39.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Oct 2022 01:39:15 -0700 (PDT)
+Message-ID: <649de84e-6f9a-5c6b-9a94-a7c6462abd1f@gmail.com>
+Date:   Thu, 20 Oct 2022 10:39:14 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH] brcmfmac: Fixes potential buffer overflow in
+ 'brcmf_fweh_event_worker'
+Content-Language: en-US
+To:     Dokyung Song <dokyung.song@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+References: <20221020014907.GA338234@laguna>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <20221020014907.GA338234@laguna>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENvbGluIElhbiBLaW5nIDxj
-b2xpbi5pLmtpbmdAZ21haWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgT2N0b2JlciAyMCwgMjAy
-MiAzOjI3IFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IEthbGxl
-IFZhbG8gPGt2YWxvQGtlcm5lbC5vcmc+OyBEYXZpZCBTIC4gTWlsbGVyDQo+IDxkYXZlbUBkYXZl
-bWxvZnQubmV0PjsgRXJpYyBEdW1hemV0IDxlZHVtYXpldEBnb29nbGUuY29tPjsgSmFrdWIgS2lj
-aW5za2kgPGt1YmFAa2VybmVsLm9yZz47IFBhb2xvIEFiZW5pDQo+IDxwYWJlbmlAcmVkaGF0LmNv
-bT47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsgbmV0ZGV2QHZnZXIua2VybmVsLm9y
-Zw0KPiBDYzoga2VybmVsLWphbml0b3JzQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZn
-ZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0hdW25leHRdIHdpZmk6IHJ0dzg5OiA4ODUy
-YjogRml4IHNwZWxsaW5nIG1pc3Rha2UgS0lQX1JFU09UUkUgLT4gS0lQX1JFU1RPUkUNCj4gDQo+
-IFRoZXIgaXMgYSBzcGVsbGluZyBtaXN0YWtlIGluIGEgcnR3ODlfZGVidWcgbWVzc2FnZS4gRml4
-IGl0Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmkua2luZ0Bn
-bWFpbC5jb20+DQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4N
-Cg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODg1MmJf
-cmZrLmMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRp
-b24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg5L3J0dzg4NTJiX3Jmay5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OS9ydHc4ODUyYl9yZmsuYw0KPiBpbmRleCA4ZmQwMTUwMmFjNWIuLjcyMmFlMzRiMDljMSAxMDA2
-NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYl9y
-ZmsuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJi
-X3Jmay5jDQo+IEBAIC0xNzU0LDcgKzE3NTQsNyBAQCBzdGF0aWMgdm9pZCBfZHBrX29uZV9zaG90
-KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgZW51bSBydHc4OV9waHlfaWR4IHBoeSwNCj4gIAkJ
-ICAgIGlkID09IDB4MTQgPyAiUFdSX0NBTCIgOg0KPiAgCQkgICAgaWQgPT0gMHgxNSA/ICJEUEtf
-UlhBR0MiIDoNCj4gIAkJICAgIGlkID09IDB4MTYgPyAiS0lQX1BSRVNFVCIgOg0KPiAtCQkgICAg
-aWQgPT0gMHgxNyA/ICJLSVBfUkVTT1RSRSIgOiAiRFBLX1RYQUdDIiwNCj4gKwkJICAgIGlkID09
-IDB4MTcgPyAiS0lQX1JFU1RPUkUiIDogIkRQS19UWEFHQyIsDQo+ICAJCSAgICBkcGtfY21kKTsN
-Cj4gIH0NCj4gDQo+IC0tDQo+IDIuMzcuMw0KPiANCj4gDQo+IC0tLS0tLVBsZWFzZSBjb25zaWRl
-ciB0aGUgZW52aXJvbm1lbnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1tYWlsLg0K
+On 10/20/2022 3:49 AM, Dokyung Song wrote:
+> This patch fixes an intra-object buffer overflow in brcmfmac that occurs
+> when the device provides a 'bsscfgidx' equal to or greater than the
+> buffer size. The patch adds a check that leads to a safe failure if that
+> is the case.
+> 
+> Found by a modified version of syzkaller.
+> 
+> UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> index 52 is out of range for type 'brcmf_if *[16]'
+> CPU: 0 PID: 1898 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
+
+[...]
+
+> Kernel panic - not syncing: Fatal exception
+> 
+> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+
+Not sure what the rules are for using 'Reported-by' tag, but it looks a 
+bit odd. I leave it to the wireless maintainer.
+
+Reviewed-by: Arend van Spriel <aspriel@gmail.com>
+> Signed-off-by: Dokyung Song <dokyung.song@gmail.com>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> index bc3f4e4edcdf..e035e9c5a1fa 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> @@ -255,10 +255,15 @@ static void brcmf_fweh_event_worker(struct work_struct *work)
+>   			goto event_free;
+>   		}
+>   
+> -		if (event->code == BRCMF_E_TDLS_PEER_EVENT)
+> +		if (event->code == BRCMF_E_TDLS_PEER_EVENT) {
+>   			ifp = drvr->iflist[0];
+> -		else
+> +		} else {
+> +			if (emsg.bsscfgidx >= BRCMF_MAX_IFS) {
+> +				bphy_err(drvr, "invalid bsscfg index: %u\n", emsg.bsscfgidx);
+> +				goto event_free;
+> +			}
+
+probably better to do the validation before any other handling. So right 
+after converting the event message at line 245
+
+https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c#L245
+
+>   			ifp = drvr->iflist[emsg.bsscfgidx];
+> +		}
+>   		err = brcmf_fweh_call_event_handler(drvr, ifp, event->code,
+>   						    &emsg, event->data);
+>   		if (err) {
