@@ -2,101 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D93605B87
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 11:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72036605C48
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 12:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbiJTJv5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 05:51:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55486 "EHLO
+        id S229935AbiJTK3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 06:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229718AbiJTJvz (ORCPT
+        with ESMTP id S229484AbiJTK3b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Oct 2022 05:51:55 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9CE12B366
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 02:51:53 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id d18-20020a05683025d200b00661c6f1b6a4so11079668otu.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 02:51:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dbpyx+08KYdYeE8bMSeJWR+hSg6Oxt5p1wv31GmIIqo=;
-        b=N4mJtkFjhfPnq+G5qYUDpzmozEOm8Yrr9P/QOkTAFHlFmG9uNCVnGmiu4xyizFpUvf
-         CnoIDxbE/Ez5XgL3fQxCoXNTGVoAOKyw7moO01AMjNNU19N6lJ7wKtZVDS2zzO6+urlx
-         Jhv0V8ek9I6Es+i89S8UtQj9b7r8h2Pk1FSgGpbgE7zoOzDwNzhcUanq7J2o1r06OFV2
-         XtoDlLY3agDCykbxNOvWeGQSRN8UtHap0ISmse8KEEej4iaGNXu3ArTsrWMsx6iswLuJ
-         1KV910H5ls0rU4HNHFpulRddYpnKBZ3jugn3sM47h42yJIC1dWi/tyCLOCTT/i+7OGWa
-         DIcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dbpyx+08KYdYeE8bMSeJWR+hSg6Oxt5p1wv31GmIIqo=;
-        b=LfNkVTLCTIRxn83PDODXg7OMAkK4qMqo9tWbtqqrzvnr6tJzgc3ZnfTMzexir1AyfN
-         wuynp7ohIaFWGkbEDrJ8V14yDwqfRrF4v/Jo2gLmO74lgQ6wF2HXxKc0fpgQt5/sLBmp
-         ek+wzDRhOeUQK5CqNV5UzAGE+sn2YT6TfwCClfdoDu0Ix2AGZKz+MhUFdb/YU3jw3XNo
-         4s+iplWP/5NK0M8tVp4NvSP4RChkAkE95N42WEe3+cLophx5Ca0BaJ1W3noR76k8bCaH
-         qcwg0Np1DHkgWRigSiokIpESQZgyht1b6UaBsryQ6J3q2E2DePpxTl2cj+qdeEg8v915
-         AOpQ==
-X-Gm-Message-State: ACrzQf2zI29zdlnXb+sNYgbr+KXQTictKfV14X/Tur8TFvD6ge8P/mw5
-        I4hmcBe3SsojoYpU/gPEEJyb1gM2yzIMjcpTlvA=
-X-Google-Smtp-Source: AMsMyM6eJu2yc9xxGYANojjQ1f1PuvSNc/ka8EMyXvU1H+GzC5WBjKrdrkb+U7OyzMEsFcD+QyGdU7lXJ1E7GwYigtM=
-X-Received: by 2002:a05:6830:2789:b0:661:9c8d:9d1a with SMTP id
- x9-20020a056830278900b006619c8d9d1amr6729066otu.249.1666259512042; Thu, 20
- Oct 2022 02:51:52 -0700 (PDT)
+        Thu, 20 Oct 2022 06:29:31 -0400
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594DA1131
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Oct 2022 03:29:23 -0700 (PDT)
+Received: (wp-smtpd smtp.wp.pl 7365 invoked from network); 20 Oct 2022 12:29:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1666261761; bh=QP5lyw9wMaG0rx9I3puF3cDmA4+/kDxY9RqpTzTK17w=;
+          h=From:To:Cc:Subject;
+          b=l+EqhWtshcWHJJWaA0cP8FrgbWHj8Jir/v/Fi7AoIZ5tqgHuoMqKPMBf7VAEmc+Dd
+           nrNzbJkzavN6zn51gnJk88oGLcMAO+kLnRI0fs08t89EuPgj9ggS7nl8KbsXi2n72Q
+           DfkavDJu4FmOj6+5+nrJUoEXtA1i6I171rUPNPm0=
+Received: from 89-64-7-202.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.7.202])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <Jason@zx2c4.com>; 20 Oct 2022 12:29:20 +0200
+Date:   Thu, 20 Oct 2022 12:29:20 +0200
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH v3] wifi: rt2x00: use explicitly signed or unsigned types
+Message-ID: <20221020102920.GA95289@wp.pl>
+References: <CAHmME9r61Njar8tGDT+utWdPiQ3KtxKJHQd0JQGSHsdXenaW6Q@mail.gmail.com>
+ <20221019155541.3410813-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6358:c07:b0:cb:a6e1:efb7 with HTTP; Thu, 20 Oct 2022
- 02:51:51 -0700 (PDT)
-Reply-To: nikkifenton770@gmail.com
-From:   Nikki Fenton <jjdriif@gmail.com>
-Date:   Thu, 20 Oct 2022 11:51:51 +0200
-Message-ID: <CAGfKr0Y1ARnLGFFgfN2T58fo_5tdjgMXnhP0owb-RNasOsTZ7A@mail.gmail.com>
-Subject: Kindly Reply Back urgently
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:341 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4997]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [jjdriif[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [nikkifenton770[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221019155541.3410813-1-Jason@zx2c4.com>
+X-WP-MailID: 346509f71554380dbf7e61fed8b55964
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [sQN0]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good Day To You,
-I hope my message meets you well. I'm contacting you regarding a
-proposal that has something in common with you, kindly reply back on
-my private email: nikkifenton770@gmail.com for more details for your
-perusal,
+On Wed, Oct 19, 2022 at 09:55:41AM -0600, Jason A. Donenfeld wrote:
+> On some platforms, `char` is unsigned, but this driver, for the most
+> part, assumed it was signed. In other places, it uses `char` to mean an
+> unsigned number, but only in cases when the values are small. And in
+> still other places, `char` is used as a boolean. Put an end to this
+> confusion by declaring explicit types, depending on the context.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Stanislaw Gruszka <stf_xl@wp.pl>
+> Cc: Helmut Schaa <helmut.schaa@googlemail.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Regard
-Nikki Fenton
-nikkifenton770@gmail.com
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
