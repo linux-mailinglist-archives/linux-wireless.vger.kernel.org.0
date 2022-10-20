@@ -2,74 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E093F606212
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 15:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F326C606250
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Oct 2022 15:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbiJTNpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Oct 2022 09:45:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
+        id S230005AbiJTN5O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Oct 2022 09:57:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229777AbiJTNpa (ORCPT
+        with ESMTP id S229936AbiJTN5N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Oct 2022 09:45:30 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B432F88A39;
-        Thu, 20 Oct 2022 06:45:25 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 186-20020a1c02c3000000b003c6c154d528so2361772wmc.4;
-        Thu, 20 Oct 2022 06:45:25 -0700 (PDT)
+        Thu, 20 Oct 2022 09:57:13 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C3FD199899;
+        Thu, 20 Oct 2022 06:57:11 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id bu30so34620536wrb.8;
+        Thu, 20 Oct 2022 06:57:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6To4dqhauA/lNuhZyK3fZtVSZbHxlKTu7B0L5LEK/Yo=;
-        b=CzlLc1mjdc+QchcuDhLaaelFcrROLlu4x7FS9NFybcqcK8EAFZrjWi+DWHJDza4G1H
-         TrPzzWUKo19v67l4zT/DWiI0XmYlpYMtvQ267/VC+YcLsrHYOWFMN+c+AEr8X4sgdlj9
-         1cRPsuBYg8n80NtO+MHCXVFk+Rt4mZTVpn6WwjXmmIVFYPDmmAzraV69k4NuhpUXlxIz
-         3jDaU9QZypNNSM4/mZ5N0NYcEdE1wPjYWfG48XNJCe8tEJFW/CpK840/X4+AXfJCNEDc
-         OjIELKUFc3GprMUa5OeukbxTWzQeCE9DT+A+sMaj2o/7ip3hHcDMieTwC9dG3eRLRpMJ
-         ZIvQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ngGq9Gbtxzl0gmyIAkOWNorog708VikOB0/w/Kr3k+M=;
+        b=GvZOhSM4dyj0Ur+6JcRLUu7kAl/nazFe9/kEDysRlOLpRoV34NDReQ5nX8oKe/ZuwB
+         z2tsPC+jPAHOoTVno7frIBHRPVIudDakN2pOyYURUJUoUVr0jAQaTlvRmkirq8zpwGJw
+         8g+vYjpe3KwG6YXavJlCKCYHSIWArEl9n4tL5AjGACDGZ7WSPL6hr7GWz1wF6RX5QvQJ
+         KtMFj893scPfwqyLNW7w9VTVpYRIXZIWusu6icbXfxDuZKp5cr8RRmFPxTfbeP6k9tQZ
+         SUmBcfUPDzUGVA5OEn3/3Xdq3wSjGYJ2jWZaDIiwAj8WDUXjpV/1k3f01lSGXJvhNGGi
+         6aJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6To4dqhauA/lNuhZyK3fZtVSZbHxlKTu7B0L5LEK/Yo=;
-        b=bhoo2i3HpNjWk4Eaa+Bt+Mb40NMWK2sISpetQJDBgYwGQLfMNkP+19KKhgjsQYLMLS
-         Cn6v9M09Kl5+Z4UA9ZNkwk5wKdgXMsdS/6eM//aLkQr0rdjIAvX21JyCUCF/IElWgO0n
-         7GZIwCE7BeeWfBuRFC52jX5hsuLvDQEEZ647dsfS4ECHf/bU8pIV8LOO/aAjAfMeDjfp
-         WuhifzaSOUJ4L8ZCmJmFLUNGSpci1yKUC7/sOqBGVqUKcDsCw8CAFd6omstDRi3QlR4l
-         htjf0/xRlIHl43ADuJUDfcdd3N2cikgGB5mWF3Pmwo2bnlwJjC7wQRMZZpM8fzEhr98J
-         ElXw==
-X-Gm-Message-State: ACrzQf1fOH7l+kYwjvFzmrYtEH+GVqPMlR/6cYrV7rmr1PT1aphUm+si
-        W93m/qbY5XwA2/bS4dB3SSM=
-X-Google-Smtp-Source: AMsMyM76T/qopuD0DaE6ZJN9tzIHPuUatWBeKmIGrdkD0rnWEouWSaE+JVHoBokPUiZ7yvTzg/L6Zw==
-X-Received: by 2002:a1c:2743:0:b0:3b3:4066:fa61 with SMTP id n64-20020a1c2743000000b003b34066fa61mr31145675wmn.79.1666273524099;
-        Thu, 20 Oct 2022 06:45:24 -0700 (PDT)
-Received: from [192.168.0.210] (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.googlemail.com with ESMTPSA id k33-20020a05600c1ca100b003c6cd82596esm3110001wms.43.2022.10.20.06.45.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Oct 2022 06:45:23 -0700 (PDT)
-Message-ID: <01410678-ab7d-1733-8d5a-e06d1a4b6c9e@gmail.com>
-Date:   Thu, 20 Oct 2022 14:45:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Content-Language: en-US
-To:     =?UTF-8?Q?Tomislav_Po=c5=beega?= <pozega.tomislav@gmail.com>
-Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ngGq9Gbtxzl0gmyIAkOWNorog708VikOB0/w/Kr3k+M=;
+        b=1UEfpKDfH3j5O6yke1En/nw2u+6QFjql3UinARBgG+vEeSVU68eRWAiNJWhU9F1jXU
+         5uuw/kQWDmP9Jt3X5ysooreVJ1NkqI7lxXSPe+wpYk5o4QTTS6ZBOC76uvEeMGX0yEWJ
+         5C/E1blZE6mv/SzwInH2Yh/muk407fQBJI3r9wwUtKkC3+4Hav2W+t18Aq5VSqrnXZ6B
+         Dv118cSLjG5IFksb3NnnTW+ukFacqP2PxX5wFXc35dPxSvoxoWahqWK2w8v88M97Uq6O
+         bTlS0SokaAn+n994RpybHLDBg/vOnbFoBpH8TccjeZnIxRrS2H2eezWKk7H/syt91VT3
+         CuqA==
+X-Gm-Message-State: ACrzQf2MQlg0N2R61C08r9xtba9F3PdiY9J/nl6gptPOqQFJx2eoXKFU
+        h6ae6FZntdE5frsmwIyCaaQ=
+X-Google-Smtp-Source: AMsMyM4IAwcg6WE4zL5H1BMmTbtTZ4v+KdVe4eFEF2c6NK3H128evLdH86rC8yer9I50a+yYE3Jdcw==
+X-Received: by 2002:adf:e10f:0:b0:22a:43e8:969f with SMTP id t15-20020adfe10f000000b0022a43e8969fmr9310147wrz.292.1666274230099;
+        Thu, 20 Oct 2022 06:57:10 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id i9-20020a05600c354900b003c6f3e5ba42sm2986018wmq.46.2022.10.20.06.57.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Oct 2022 06:57:09 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
         Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From:   "Colin King (gmail)" <colin.i.king@gmail.com>
-Subject: re: wifi: rt2x00: add TX LOFT calibration for MT7620
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wifi: rtl8xxxu: Fix reads of uninitialized variables hw_ctrl_s1, sw_ctrl_s1
+Date:   Thu, 20 Oct 2022 14:57:09 +0100
+Message-Id: <20221020135709.1549086-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.37.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -81,35 +76,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Variables hw_ctrl_s1 and sw_ctrl_s1 are not being initialized and
+potentially can contain any garbage value. Currently there is an if
+statement that sets one or the other of these variables, followed
+by an if statement that checks if any of these variables have been
+set to a non-zero value. In the case where they may contain
+uninitialized non-zero values, the latter if statement may be
+taken as true when it was not expected to.
 
-I noticed a signed / unsigned comparison warning when building 
-linux-next with clang. I believe it was introduced in the following commit:
+Fix this by ensuring hw_ctrl_s1 and sw_ctrl_s1 are initialized.
 
-commit dab902fe1d29dc0fa1dccc8d13dc89ffbf633881
-Author: Tomislav Požega <pozega.tomislav@gmail.com>
-Date:   Sat Sep 17 21:28:43 2022 +0100
+Cleans up clang warning:
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c:432:7: warning:
+variable 'hw_ctrl_s1' is used uninitialized whenever 'if' condition is
+false [-Wsometimes-uninitialized]
+                if (hw_ctrl) {
+                    ^~~~~~~
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c:440:7: note: uninitialized
+use occurs here
+                if (hw_ctrl_s1 || sw_ctrl_s1) {
+                    ^~~~~~~~~~
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c:432:3: note: remove the 'if'
+if its condition is always true
+                if (hw_ctrl) {
+                ^~~~~~~~~~~~~
 
-     wifi: rt2x00: add TX LOFT calibration for MT7620
+Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index 99610bb2afd5..0025bb32538d 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -412,7 +412,7 @@ static void rtl8188f_spur_calibration(struct rtl8xxxu_priv *priv, u8 channel)
+ 	};
+ 
+ 	const u8 threshold = 0x16;
+-	bool do_notch, hw_ctrl, sw_ctrl, hw_ctrl_s1, sw_ctrl_s1;
++	bool do_notch, hw_ctrl, sw_ctrl, hw_ctrl_s1 = 0, sw_ctrl_s1 = 0;
+ 	u32 val32, initial_gain, reg948;
+ 
+ 	val32 = rtl8xxxu_read32(priv, REG_OFDM0_RX_D_SYNC_PATH);
+-- 
+2.37.3
 
-The warning is as follows:
-
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9472:15: warning: result 
-of comparison of constant -7 with expression of type 'char' is always 
-false [-Wtautological-constant-out-of-range-compare]
-         gerr = (gerr < -0x07) ? -0x07 : (gerr > 0x05) ? 0x05 : gerr;
-                 ~~~~ ^ ~~~~~
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9476:15: warning: result 
-of comparison of constant -31 with expression of type 'char' is always 
-false [-Wtautological-constant-out-of-range-compare]
-         perr = (perr < -0x1f) ? -0x1f : (perr > 0x1d) ? 0x1d : perr;
-                 ~~~~ ^ ~~~~~
-
-The variables gerr and perr are declared as a char, which in this case 
-seems to be defaulting to signed on the clang build for x86-64 and hence 
-this warning. I suspect making it signed char will do the trick, but I 
-wanted to flag this up in-case there were some other issues with making 
-them signed.
-
-Colin
