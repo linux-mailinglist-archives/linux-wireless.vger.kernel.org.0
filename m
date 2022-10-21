@@ -2,125 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A537760728B
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 10:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C8A60732B
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 11:01:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbiJUIih (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Oct 2022 04:38:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49988 "EHLO
+        id S230338AbiJUJBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Oct 2022 05:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230221AbiJUIid (ORCPT
+        with ESMTP id S230235AbiJUJBx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Oct 2022 04:38:33 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4024F246C2F
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 01:38:24 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id e15so1260685qvo.4
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 01:38:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jbhtGgr0al6txR5T93Lfw5fuVs7gPv85CNB0re4+Lgs=;
-        b=KrvxsvTZzo1qtxuTwxziMWr+eDR0z2w3HHgE5I4Tj1YfyeLadeOAiNgJ6KMDaKyfdH
-         zO8tNGKcv5lLAqTzTxMAPMKVSJFW98SNQ0vKrFyGdLcj3G0lPgmmKyD3m4oMFFojDD/c
-         l10+arcGUE1fBhD0Am8uzTF4M8pzRXr+hPgBGmBWy0y7rgjpwBoOpYYoAmyL4/sxd9w/
-         FRO6jyVhal/d54hD8U6+Q++g4wbqXpy+BBizvsSynZMF8l+WhTZRjo1u6BuAiE93qbM4
-         +ZvMTOmhCXr1MCYCpVgjENKIRLeDf6zzExNK/lr8i70KWdguUabrdxwQl339Azf99RfE
-         JWxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jbhtGgr0al6txR5T93Lfw5fuVs7gPv85CNB0re4+Lgs=;
-        b=hvBVC4Nin4vuwaBoRgTPAtRk2jBhxVYiwpLcKwyP4H4tXoiOEuIfqj/liuE7mA3vUp
-         TgBSOb+WRnrdSjAst4pVRtNL6/4LZ2j/OjXeNgxttbFUy/17Pk6Pfs6cEdLGAU84y+xA
-         J1g5UsJIGW69EM0XOqFvceyUylnaj12TdwD1ZM9cenMWLM4SeYy13iCiXEozO1eP4aO2
-         PRaFD3SflSyyf2Nf0w9LaDNax+UHFT+4+PC/3HrFhS2xIGUKhUVTiwZlZKYriU4qzYhi
-         BVQBxo0xsRAkvWRNOF2QuJ0dV8U8GFQXp1YzMllKG9WD1e/NgYzRiczytgQpD946ljk4
-         +eEg==
-X-Gm-Message-State: ACrzQf3Pq0h87qOhNExrouh5TqrnB60uXStEk9zkynA31sAKSCZTp8JN
-        jlDqas1QMGnCLZw2Gdv3nFM=
-X-Google-Smtp-Source: AMsMyM7Kr2z3dYWzzE2/k1tMq73IPMKD+Ns1c56G53dbWNmO1BYjyKhfoq9aclghqzr/jIjD1+qY5w==
-X-Received: by 2002:a05:6214:d04:b0:4b3:fcfb:6464 with SMTP id 4-20020a0562140d0400b004b3fcfb6464mr15858407qvh.52.1666341503018;
-        Fri, 21 Oct 2022 01:38:23 -0700 (PDT)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id y21-20020a37e315000000b006ecb3694163sm8872267qki.95.2022.10.21.01.38.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Oct 2022 01:38:22 -0700 (PDT)
-Message-ID: <10230673-8dbe-bf67-ba76-9f8cdc35faf3@gmail.com>
-Date:   Fri, 21 Oct 2022 10:38:20 +0200
+        Fri, 21 Oct 2022 05:01:53 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D96250EE7
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 02:01:49 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29L784gN000629;
+        Fri, 21 Oct 2022 09:01:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=nx+bgSZzf59VKx7qmt+78u2THS80DFLehXCuYuBTseM=;
+ b=jpFyuOQv4yA78a4wCCGiFLR4UCDIC5VFdioUhaRA1iqNLjAJiLnFj2Vju46mGkOJj5o1
+ Tv8fx9poG1fBrFJJ2XNmqDRvmXRb2a7EHDULFSO1bOIGjXtvHcYJzInfdgMNbMsYlTCj
+ X3LQTorgQrGSPL47feJJ9fsqhdMoOYp/pks3qImLtK2D+Jif792TvXf39eNQLaj7tfaI
+ 67yoSajaK5+ePtoN713rgt/6xbzTExHPwLuoubK0jRDiMj3XOvz8pDQSKn3AwJpXRQ41
+ 9VEysEDrvm/Xp0mBL29xYxdgSQI5GD4QxfOT9IC6E4yoWI25TZeNpsKqsKTXNYkR25rD Hw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kb2c635tn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Oct 2022 09:01:40 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29L91eHg003840
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Oct 2022 09:01:40 GMT
+Received: from rbhattac-linux.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Fri, 21 Oct 2022 02:01:38 -0700
+From:   Rahul Bhattacharjee <quic_rbhattac@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Rahul Bhattacharjee <quic_rbhattac@quicinc.com>
+Subject: [PATCH] wifi: ath11k: Fix qmi_msg_handler data structure initialization
+Date:   Fri, 21 Oct 2022 14:31:26 +0530
+Message-ID: <20221021090126.28626-1-quic_rbhattac@quicinc.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH v3] wifi: Fix potential buffer overflow in
- 'brcmf_fweh_event_worker'
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>,
-        Dokyung Song <dokyung.song@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-References: <20221021061359.GA550858@laguna> <87v8od1x69.fsf@kernel.org>
-From:   Arend Van Spriel <aspriel@gmail.com>
-In-Reply-To: <87v8od1x69.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Qi_AnLDNa6awUOAZVQAu1qEecr0iBYcD
+X-Proofpoint-ORIG-GUID: Qi_AnLDNa6awUOAZVQAu1qEecr0iBYcD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-21_03,2022-10-20_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 mlxlogscore=941
+ phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210210052
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/21/2022 8:57 AM, Kalle Valo wrote:
-> Dokyung Song <dokyung.song@gmail.com> writes:
-> 
->> This patch fixes an intra-object buffer overflow in brcmfmac that occurs
->> when the device provides a 'bsscfgidx' equal to or greater than the
->> buffer size. The patch adds a check that leads to a safe failure if that
->> is the case.
->>
->> This fixes CVE-2022-3628.
->>
->> UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
->> index 52 is out of range for type 'brcmf_if *[16]'
+qmi_msg_handler is required to be null terminated by QMI module.
+There might be a case where a handler for a msg id is not present in the
+handlers array which can lead to infinite loop while searching the handler
+and therefore out of bound access in qmi_invoke_handler().
+Hence update the initialization in qmi_msg_handler data structure.
 
-[...]
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
 
->> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
->> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
->> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
->> Reviewed-by: Arend van Spriel <aspriel@gmail.com>
->> Signed-off-by: Dokyung Song <dokyung.song@gmail.com>
->> ---
->> v1->v2: Addressed review comments
->> v2->v3: The subject now begins with 'wifi:' and add a reference to a CVE number
->>
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 4 ++++
->>   1 file changed, 4 insertions(+)
-> 
-> Please include the driver name in the subject. And we prefer use
-> parenthesis with function names. So the subject should be:
-> 
-> wifi: brcmfmac: Fix potential buffer overflow in brcmf_fweh_event_worker()
-> 
-> I can fix that during commit.
-> 
-> Should I queue this to v6.1?
+Signed-off-by: Rahul Bhattacharjee <quic_rbhattac@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Please do. Probably good to add Cc: for stable. Should apply to older 
-kernels as is.
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 145f20a681bd..bda4921208cc 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -3090,6 +3090,7 @@ static const struct qmi_msg_handler ath11k_qmi_msg_handlers[] = {
+ 			sizeof(struct qmi_wlfw_fw_init_done_ind_msg_v01),
+ 		.fn = ath11k_qmi_msg_fw_init_done_cb,
+ 	},
++	{/* end of list */}
+ };
+ 
+ static int ath11k_qmi_ops_new_server(struct qmi_handle *qmi_hdl,
 
-btw. is there any formal way to reference CVE. There probably isn't as 
-generally we don't require a CVE in kernel tree [1].
+base-commit: 087c436cbc8b1bf3d3bc7ea94d6757d74ea2f470
+-- 
+2.38.0
 
-Regards,
-Arend
-
-[1] https://docs.kernel.org/admin-guide/security-bugs.html
