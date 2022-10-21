@@ -2,92 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F6E60725E
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 10:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A537760728B
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 10:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbiJUIdn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Oct 2022 04:33:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33748 "EHLO
+        id S230184AbiJUIih (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Oct 2022 04:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiJUIdm (ORCPT
+        with ESMTP id S230221AbiJUIid (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Oct 2022 04:33:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 331DD5B9E6
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 01:33:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDAEB61DD7
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 08:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72460C433D6;
-        Fri, 21 Oct 2022 08:32:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666341129;
-        bh=DmHWC++gP2rCYs1bP6ciQXbsn2q9U2LCgCYB8RYFUf4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=uizwqBAyMda1rf1B2MSz3uBAbKJSInfjWkC3A5tvTy4jgBeRtNQ1tkbCeS4K3j1t+
-         OtmNr4y9ddCqP5HFsTkMZrjnhBff4Vx4vG2sVGwb4di2NHn92XL5mhko/sjPZYuRfL
-         80olcipls/UyGzRtMYDEIOyMUyjDpuzVTHEyW1N/EPk7Z0OLv68kj/iiP2U1Y8DwEo
-         HUAp8JAe2GTYMxTDNttbYvf7lXmIJJVz1/v+wW7TwVInCaBKu+GFMcseX3R+NNMmCP
-         atTy0ymIPEC1cMc4r1wdVYu3SLrOcVCXfCi99rKVL1eBl4DCO8uA8aJ3C8ly4l1x2U
-         cjNG7Lt+N1UnA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath12k\@lists.infradead.org" <ath12k@lists.infradead.org>
-Subject: Re: [PATCH 05/50] wifi: ath12k: add core.c
-References: <20220812161003.27279-1-kvalo@kernel.org>
-        <20220812161003.27279-6-kvalo@kernel.org>
-        <6cce0974d5bb40c2a2a40b4abeb41e74@realtek.com>
-Date:   Fri, 21 Oct 2022 11:32:04 +0300
-In-Reply-To: <6cce0974d5bb40c2a2a40b4abeb41e74@realtek.com> (Ping-Ke Shih's
-        message of "Tue, 13 Sep 2022 06:18:01 +0000")
-Message-ID: <87a65plgqj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 21 Oct 2022 04:38:33 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4024F246C2F
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 01:38:24 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id e15so1260685qvo.4
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 01:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jbhtGgr0al6txR5T93Lfw5fuVs7gPv85CNB0re4+Lgs=;
+        b=KrvxsvTZzo1qtxuTwxziMWr+eDR0z2w3HHgE5I4Tj1YfyeLadeOAiNgJ6KMDaKyfdH
+         zO8tNGKcv5lLAqTzTxMAPMKVSJFW98SNQ0vKrFyGdLcj3G0lPgmmKyD3m4oMFFojDD/c
+         l10+arcGUE1fBhD0Am8uzTF4M8pzRXr+hPgBGmBWy0y7rgjpwBoOpYYoAmyL4/sxd9w/
+         FRO6jyVhal/d54hD8U6+Q++g4wbqXpy+BBizvsSynZMF8l+WhTZRjo1u6BuAiE93qbM4
+         +ZvMTOmhCXr1MCYCpVgjENKIRLeDf6zzExNK/lr8i70KWdguUabrdxwQl339Azf99RfE
+         JWxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbhtGgr0al6txR5T93Lfw5fuVs7gPv85CNB0re4+Lgs=;
+        b=hvBVC4Nin4vuwaBoRgTPAtRk2jBhxVYiwpLcKwyP4H4tXoiOEuIfqj/liuE7mA3vUp
+         TgBSOb+WRnrdSjAst4pVRtNL6/4LZ2j/OjXeNgxttbFUy/17Pk6Pfs6cEdLGAU84y+xA
+         J1g5UsJIGW69EM0XOqFvceyUylnaj12TdwD1ZM9cenMWLM4SeYy13iCiXEozO1eP4aO2
+         PRaFD3SflSyyf2Nf0w9LaDNax+UHFT+4+PC/3HrFhS2xIGUKhUVTiwZlZKYriU4qzYhi
+         BVQBxo0xsRAkvWRNOF2QuJ0dV8U8GFQXp1YzMllKG9WD1e/NgYzRiczytgQpD946ljk4
+         +eEg==
+X-Gm-Message-State: ACrzQf3Pq0h87qOhNExrouh5TqrnB60uXStEk9zkynA31sAKSCZTp8JN
+        jlDqas1QMGnCLZw2Gdv3nFM=
+X-Google-Smtp-Source: AMsMyM7Kr2z3dYWzzE2/k1tMq73IPMKD+Ns1c56G53dbWNmO1BYjyKhfoq9aclghqzr/jIjD1+qY5w==
+X-Received: by 2002:a05:6214:d04:b0:4b3:fcfb:6464 with SMTP id 4-20020a0562140d0400b004b3fcfb6464mr15858407qvh.52.1666341503018;
+        Fri, 21 Oct 2022 01:38:23 -0700 (PDT)
+Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id y21-20020a37e315000000b006ecb3694163sm8872267qki.95.2022.10.21.01.38.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Oct 2022 01:38:22 -0700 (PDT)
+Message-ID: <10230673-8dbe-bf67-ba76-9f8cdc35faf3@gmail.com>
+Date:   Fri, 21 Oct 2022 10:38:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH v3] wifi: Fix potential buffer overflow in
+ 'brcmf_fweh_event_worker'
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        Dokyung Song <dokyung.song@gmail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+References: <20221021061359.GA550858@laguna> <87v8od1x69.fsf@kernel.org>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <87v8od1x69.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
-
->> -----Original Message-----
->> From: Kalle Valo <kvalo@kernel.org>
->> Sent: Saturday, August 13, 2022 12:09 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: ath12k@lists.infradead.org
->> Subject: [PATCH 05/50] wifi: ath12k: add core.c
->> 
->> From: Kalle Valo <quic_kvalo@quicinc.com>
->> 
->> (Patches split into one patch per file for easier review, but the final
->> commit will be one big patch. See the cover letter for more info.)
->> 
->> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+On 10/21/2022 8:57 AM, Kalle Valo wrote:
+> Dokyung Song <dokyung.song@gmail.com> writes:
+> 
+>> This patch fixes an intra-object buffer overflow in brcmfmac that occurs
+>> when the device provides a 'bsscfgidx' equal to or greater than the
+>> buffer size. The patch adds a check that leads to a safe failure if that
+>> is the case.
+>>
+>> This fixes CVE-2022-3628.
+>>
+>> UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+>> index 52 is out of range for type 'brcmf_if *[16]'
 
 [...]
 
->> +MODULE_DESCRIPTION("Core module for Qualcomm Atheros 802.11be
->> wireless LAN cards.");
->> +MODULE_LICENSE("Dual BSD/GPL");
->
-> // SPDX-License-Identifier: BSD-3-Clause-Clear
->
-> Out of curiosity, SPDX license and MODULE_LICENSE() are different. 
-> Could I know the rules?
+>> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+>> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+>> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+>> Reviewed-by: Arend van Spriel <aspriel@gmail.com>
+>> Signed-off-by: Dokyung Song <dokyung.song@gmail.com>
+>> ---
+>> v1->v2: Addressed review comments
+>> v2->v3: The subject now begins with 'wifi:' and add a reference to a CVE number
+>>
+>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+> 
+> Please include the driver name in the subject. And we prefer use
+> parenthesis with function names. So the subject should be:
+> 
+> wifi: brcmfmac: Fix potential buffer overflow in brcmf_fweh_event_worker()
+> 
+> I can fix that during commit.
+> 
+> Should I queue this to v6.1?
 
-The rules are in linux/module.h:
+Please do. Probably good to add Cc: for stable. Should apply to older 
+kernels as is.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/module.h#n185
+btw. is there any formal way to reference CVE. There probably isn't as 
+generally we don't require a CVE in kernel tree [1].
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Regards,
+Arend
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+[1] https://docs.kernel.org/admin-guide/security-bugs.html
