@@ -2,45 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 314D5607775
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 15:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C87626077DE
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 15:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbiJUNB5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Oct 2022 09:01:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33382 "EHLO
+        id S230207AbiJUNJZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Oct 2022 09:09:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229987AbiJUNBy (ORCPT
+        with ESMTP id S230143AbiJUNJS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Oct 2022 09:01:54 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7FF26C1BB;
-        Fri, 21 Oct 2022 06:01:52 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Mv4Kn1tcrzJn1n;
-        Fri, 21 Oct 2022 20:59:09 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 21 Oct 2022 21:01:50 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 21 Oct
- 2022 21:01:50 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-CC:     <johannes@sipsolutions.net>
-Subject: [PATCH -next] rfkill: remove BUG_ON() in core.c
-Date:   Fri, 21 Oct 2022 21:01:04 +0800
-Message-ID: <20221021130104.469966-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 21 Oct 2022 09:09:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CBF26C1BC
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 06:09:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7FEADB82BCD
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 13:08:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A75C433C1;
+        Fri, 21 Oct 2022 13:08:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666357682;
+        bh=tKKxs7kbtMVrIJ25VRA8AnRI7kBpz/GZtojXw0IasK8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=U+E+90G+6vXZ3J168+f0JOK6bvHTv4NZIyVeh9nNe97XIvCoTzKliduMT45WRLSH+
+         pXNPFZjEHZzfF3eZrn7DgXbTBoiJQ9NKDzUyekOtls5ugjU8O4p8g5yJBptIvDkOG2
+         dpZN30uzlra3qDAxjAdFJBrDhiaxzJnFJ4/sQKHpwhRvwvejO+IR7XKq9vVIp3G/qV
+         v7gUy+qkpGaMb24yNBUAsLWohw9h0nkFyvWEerJf9qH1/3y+NPd53B9/+waHfkqCKD
+         PdUf4e7bT5f0qoD5KNKNaxtmyFF/yvS6ubgnKeXn6gZr0fEli7nUOCuaEvhcva00XA
+         yLIUlb8Sq0bsQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
+Subject: Re: [PATCH 13/50] wifi: ath12k: add dp_mon.c
+References: <20220812161003.27279-1-kvalo@kernel.org>
+        <20220812161003.27279-14-kvalo@kernel.org>
+        <e4c2c436-82e2-bf15-a635-e8f4e566d8d2@quicinc.com>
+Date:   Fri, 21 Oct 2022 16:07:58 +0300
+In-Reply-To: <e4c2c436-82e2-bf15-a635-e8f4e566d8d2@quicinc.com> (Jeff
+        Johnson's message of "Tue, 16 Aug 2022 13:13:46 -0700")
+Message-ID: <87y1t9iatt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,102 +55,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Replace BUG_ON() with pointer check to handle fault more gracefully.
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- net/rfkill/core.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+> On 8/12/2022 9:09 AM, Kalle Valo wrote:
+>
+>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>>
+>> (Patches split into one patch per file for easier review, but the final
+>> commit will be one big patch. See the cover letter for more info.)
+>>
+>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>> ---
+>>   drivers/net/wireless/ath/ath12k/dp_mon.c | 2598 ++++++++++++++++++++++++++++++
+>>   1 file changed, 2598 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c
+>> b/drivers/net/wireless/ath/ath12k/dp_mon.c
+>> new file mode 100644
+>> index 000000000000..479be0e441d8
+>> --- /dev/null
+>> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+>> @@ -0,0 +1,2598 @@
+>> +// SPDX-License-Identifier: BSD-3-Clause-Clear
+>> +/*
+>> + * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
+>> + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
+>> + */
+>> +
+>> +#include "dp_mon.h"
+>> +#include "debug.h"
+>> +#include "dp_rx.h"
+>> +#include "dp_tx.h"
+>> +#include "peer.h"
+>> +
+>> +static void ath12k_dp_mon_rx_handle_ofdma_info(void *rx_tlv,
+>> + struct hal_rx_user_status *rx_user_status)
+>> +{
+>> +	struct hal_rx_ppdu_end_user_stats *ppdu_end_user =
+>> +				(struct hal_rx_ppdu_end_user_stats *)rx_tlv;
+>> +
+>> +	rx_user_status->ul_ofdma_user_v0_word0 = __le32_to_cpu(ppdu_end_user->info6);
+>> + rx_user_status->ul_ofdma_user_v0_word1 =
+>> __le32_to_cpu(ppdu_end_user->rsvd2[10]);
+>
+> this violates the convention that info* is used for fields that are
+> accessed while rsvd* is used for fields that are not accessed. in
+> addition, use of magic number offsets is also not nice.
 
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index dac4fdc7488a..5fc96fa24eda 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -150,9 +150,8 @@ EXPORT_SYMBOL(rfkill_get_led_trigger_name);
- 
- void rfkill_set_led_trigger_name(struct rfkill *rfkill, const char *name)
- {
--	BUG_ON(!rfkill);
--
--	rfkill->ledtrigname = name;
-+	if (rfkill)
-+		rfkill->ledtrigname = name;
- }
- EXPORT_SYMBOL(rfkill_set_led_trigger_name);
- 
-@@ -532,7 +531,8 @@ bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
- 	unsigned long flags;
- 	bool ret, prev;
- 
--	BUG_ON(!rfkill);
-+	if (!rfkill)
-+		return blocked;
- 
- 	if (WARN(reason &
- 	    ~(RFKILL_HARD_BLOCK_SIGNAL | RFKILL_HARD_BLOCK_NOT_OWNER),
-@@ -581,7 +581,8 @@ bool rfkill_set_sw_state(struct rfkill *rfkill, bool blocked)
- 	unsigned long flags;
- 	bool prev, hwblock;
- 
--	BUG_ON(!rfkill);
-+	if (!rfkill)
-+		return blocked;
- 
- 	spin_lock_irqsave(&rfkill->lock, flags);
- 	prev = !!(rfkill->state & RFKILL_BLOCK_SW);
-@@ -607,8 +608,8 @@ void rfkill_init_sw_state(struct rfkill *rfkill, bool blocked)
- {
- 	unsigned long flags;
- 
--	BUG_ON(!rfkill);
--	BUG_ON(rfkill->registered);
-+	if (!rfkill || rfkill->registered)
-+		return;
- 
- 	spin_lock_irqsave(&rfkill->lock, flags);
- 	__rfkill_set_sw_state(rfkill, blocked);
-@@ -622,7 +623,8 @@ void rfkill_set_states(struct rfkill *rfkill, bool sw, bool hw)
- 	unsigned long flags;
- 	bool swprev, hwprev;
- 
--	BUG_ON(!rfkill);
-+	if (!rfkill)
-+		return;
- 
- 	spin_lock_irqsave(&rfkill->lock, flags);
- 
-@@ -860,9 +862,7 @@ static int rfkill_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
- 
- void rfkill_pause_polling(struct rfkill *rfkill)
- {
--	BUG_ON(!rfkill);
--
--	if (!rfkill->ops->poll)
-+	if (!rfkill || !rfkill->ops->poll)
- 		return;
- 
- 	rfkill->polling_paused = true;
-@@ -872,9 +872,7 @@ EXPORT_SYMBOL(rfkill_pause_polling);
- 
- void rfkill_resume_polling(struct rfkill *rfkill)
- {
--	BUG_ON(!rfkill);
--
--	if (!rfkill->ops->poll)
-+	if (!rfkill || !rfkill->ops->poll)
- 		return;
- 
- 	rfkill->polling_paused = false;
-@@ -1115,7 +1113,8 @@ EXPORT_SYMBOL(rfkill_register);
- 
- void rfkill_unregister(struct rfkill *rfkill)
- {
--	BUG_ON(!rfkill);
-+	if (!rfkill)
-+		return;
- 
- 	if (rfkill->ops->poll)
- 		cancel_delayed_work_sync(&rfkill->poll_work);
+P Praneesh fixed this:
+
+b290b591dbdd ath12k: remove magic number offset in rx_user_status struct
+
+> imo what would improve this code is to have accessor macros/inline
+> functions defined co-resident with the struct so that all the magic
+> numbers and magic fields are contained within the acessors, and the
+> actual code here looks really readable.
+
+Yeah, in general that would be good. But in this case it would also help
+if struct hal_rx_user_status word0 and word1 fields would be renamed to
+better reflect what they actually are:
+
+	u32 ul_ofdma_user_v0_word0;
+	u32 ul_ofdma_user_v0_word1;
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
