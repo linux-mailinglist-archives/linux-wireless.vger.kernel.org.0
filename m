@@ -2,111 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35CEC608446
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Oct 2022 06:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10682608474
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Oct 2022 07:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbiJVE1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Oct 2022 00:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
+        id S229542AbiJVFQC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Oct 2022 01:16:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiJVE1W (ORCPT
+        with ESMTP id S229497AbiJVFQB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Oct 2022 00:27:22 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58F12A5699;
-        Fri, 21 Oct 2022 21:27:21 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id h10so3160931qvq.7;
-        Fri, 21 Oct 2022 21:27:21 -0700 (PDT)
+        Sat, 22 Oct 2022 01:16:01 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377F429B8A7
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 22:15:59 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id q10-20020a17090a304a00b0020b1d5f6975so4876091pjl.0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 22:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IHBmQcvSONp1skndlop+2zNlLfEhZ9bZQFsTspZ9/YM=;
-        b=dsuAqmmKrNx2KZNnpyKAM2O3haJys8sggQelTM8E66lsLPDTL15aJpuLat3P9yA9ib
-         7tzTAOkTBi6L8dz4CLbm21v8Ne2z6czqj4P0sZM1xrvPNaLJFMHpylL+xe6za33Pc+JP
-         I5kcinzg2BeVMClilZ04I+bts32JnAsjipup6AOQpe6hMQ9yWB3fnaWW8DwX/pmU2Q+p
-         ZlmAArD0HoRPy0J0fxIOvmrjsCRIMQLicSc+ugcqsT0cI5VAgMcTBGOAQdRtgM2d0zJZ
-         +wsdRRK0wcsRs0u6OgqDPV0Depg8D8XGhGW1oAxQ2PtePhR9ZiEnGeAGI+mbjLdhDIai
-         LnHA==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UN4R7aan0TFMWstrrKsDuG9HVGJJPIMOBUhXuvvb92w=;
+        b=My+ELWetjMbws+T8dsw8yMCpKzsFA9KZyeYMl9OSoD+XTUDDMeyRWjveA0ukQcNUjY
+         Ard5Zk6nonUzGcHFsKVPuvrmMtZwIgXWIlJrpLGKnq7Sgm0g8cIA9inABbx7Jx2E+LJA
+         n3NWlG87SOjZ6OcgLz6F1thcKs8rCEJlIPgbTViZQ+H+aeoxXHjbHLGHxhwDISLtEu93
+         ArlfzicznbMGwF/CD081oM5zkF+0V3TBfYTzcYNLf4gKGRR6MXWLqe1930TgRE1vojru
+         TGZ9p2kVLxYh3KVQb9YWyus/GAiUWeRTfMmtk/oj7kyKUjBiXgbI7O1sBgV8ZeFgbFrb
+         LLxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IHBmQcvSONp1skndlop+2zNlLfEhZ9bZQFsTspZ9/YM=;
-        b=eoGGKn8FSMTAYjaoewpmIaUSm72hGXKZHQ1pMb0l9aWTp+tIjaIia7xU8EGIeNmKtf
-         q8Z8LeehOaScXFr1FlYuGWLAk86x0B2D+Q+sIQT9b58tQoy74vIe6sJt9wtyCreNfVk7
-         DXrUUnUXzJxAERQnlUNfU06rbnUoXx6aPj7b10fMRxw39RL+PuXGBIxUQK6/Li+pnrvT
-         NzJmZWj6Kkbxp8e1cKpRblbi4Z3oBIZPNfWLnQt0L6a50gD1yxihD7gVtfJ/TQi7G/1r
-         F8sqrVN/+wBLQDs893Fa7BOTQbL7v2bMWcVn+PXuYiYiItFRaYvuiduRkF3AmlPn4P5X
-         9h9A==
-X-Gm-Message-State: ACrzQf0F4jgHB+h6oORmdSqQD6TdV3esMqbM8yaiYJh1vn79SYS2JqW9
-        Ii0kwSN23xzbQyr9+gKjjkU=
-X-Google-Smtp-Source: AMsMyM47/wrt+mpOghumH6l58S+MyIEdVkmrP+cqy4Oyr5XtY3JcbauDeH4fb0CuhlVVOHmJpcQ4ug==
-X-Received: by 2002:a0c:b295:0:b0:4ba:b9b4:5159 with SMTP id r21-20020a0cb295000000b004bab9b45159mr6290441qve.19.1666412840868;
-        Fri, 21 Oct 2022 21:27:20 -0700 (PDT)
-Received: from luigi.ops.stachecki.net (pool-98-113-41-201.nycmny.fios.verizon.net. [98.113.41.201])
-        by smtp.gmail.com with ESMTPSA id s3-20020a05620a29c300b006d1d8fdea8asm11234988qkp.85.2022.10.21.21.27.20
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UN4R7aan0TFMWstrrKsDuG9HVGJJPIMOBUhXuvvb92w=;
+        b=aMqv/7mj2L2w/yj17dPWzwBmyJxT7AXmfipwnkJNS9FWUrJlh8ZsBQGhjRMoZpJI+A
+         BUypzE/3JhXJVxQ71ipBquovkECeZhxojxf8fWQuwDsf0BLGdLkQwraPzq48DJ9ifsfJ
+         jutbQhQEboURrmnolwGPGM8rkzThYDuOkqbEw+Vbsy+mWlnCP3H3iI6PdAX32EgLaKzR
+         ZNY2ZnPESM91/MF6isMVH4rqPWft7OcazChPD/VLl+7AbnQYDdBcUkxmsb2uLF3Vjbmq
+         iACeHHrzBdyhqFQ1dE74SdOnY/t0F9aIIYPu6DubWYsuXQcZjpgGbjNJJA/J614F3qLM
+         4fUA==
+X-Gm-Message-State: ACrzQf1VNV7oNSHU9IPbCFOsi3JWnNii2d6iOxQVvhbaz3tk9NmhiMcY
+        nND19icbjPJy0RSrFaoKo5I=
+X-Google-Smtp-Source: AMsMyM7D7325vPg09cycrQQPbvIuRwapPyDDn8Z3wiBpvUP1H86YMccxButb+KKsOeQwvDN0c3o2TQ==
+X-Received: by 2002:a17:90b:17c9:b0:20d:b4ee:aec2 with SMTP id me9-20020a17090b17c900b0020db4eeaec2mr51699450pjb.234.1666415758427;
+        Fri, 21 Oct 2022 22:15:58 -0700 (PDT)
+Received: from laguna ([165.132.118.110])
+        by smtp.gmail.com with ESMTPSA id u189-20020a6260c6000000b005627d995a36sm16161274pfb.44.2022.10.21.22.15.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Oct 2022 21:27:20 -0700 (PDT)
-From:   "Tyler J. Stachecki" <stachecki.tyler@gmail.com>
-Cc:     "Tyler J. Stachecki" <stachecki.tyler@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        ath11k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH11K WIRELESS
-        DRIVER),
-        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] ath11k: Fix QCN9074 firmware boot on x86
-Date:   Sat, 22 Oct 2022 00:27:28 -0400
-Message-Id: <20221022042728.43015-1-stachecki.tyler@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Fri, 21 Oct 2022 22:15:57 -0700 (PDT)
+Date:   Sat, 22 Oct 2022 14:15:53 +0900
+From:   Dokyung Song <dokyung.song@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Arend Van Spriel <aspriel@gmail.com>,
+        Dokyung Song <dokyung.song@gmail.com>,
+        linux-wireless@vger.kernel.org,
+        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Subject: Re: [PATCH v3] wifi: Fix potential buffer overflow in
+ 'brcmf_fweh_event_worker'
+Message-ID: <20221022051553.GA633896@laguna>
+References: <20221021061359.GA550858@laguna>
+ <87v8od1x69.fsf@kernel.org>
+ <10230673-8dbe-bf67-ba76-9f8cdc35faf3@gmail.com>
+ <87czali5x9.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87czali5x9.fsf@kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The 2.7.0 series of QCN9074's firmware requests 5 segments
-of memory instead of 3 (as in the 2.5.0 series).
+On Fri, Oct 21, 2022 at 05:53:54PM +0300, Kalle Valo wrote:
+> Arend Van Spriel <aspriel@gmail.com> writes:
+> 
+> > On 10/21/2022 8:57 AM, Kalle Valo wrote:
+> >> Dokyung Song <dokyung.song@gmail.com> writes:
+> >>
+> >>> This patch fixes an intra-object buffer overflow in brcmfmac that occurs
+> >>> when the device provides a 'bsscfgidx' equal to or greater than the
+> >>> buffer size. The patch adds a check that leads to a safe failure if that
+> >>> is the case.
+> >>>
+> >>> This fixes CVE-2022-3628.
+> >>>
+> >>> UBSAN: array-index-out-of-bounds in
+> >>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> >>> index 52 is out of range for type 'brcmf_if *[16]'
+> >
+> > [...]
+> >
+> >>> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+> >>> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+> >>> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+> >>> Reviewed-by: Arend van Spriel <aspriel@gmail.com>
+> >>> Signed-off-by: Dokyung Song <dokyung.song@gmail.com>
+> >>> ---
+> >>> v1->v2: Addressed review comments
+> >>> v2->v3: The subject now begins with 'wifi:' and add a reference to a CVE number
+> >>>
+> >>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 4 ++++
+> >>>   1 file changed, 4 insertions(+)
+> >>
+> >> Please include the driver name in the subject. And we prefer use
+> >> parenthesis with function names. So the subject should be:
+> >>
+> >> wifi: brcmfmac: Fix potential buffer overflow in brcmf_fweh_event_worker()
+> >>
+> >> I can fix that during commit.
 
-The first segment (11M) is too large to be kalloc'd in one
-go on x86 and requires piecemeal 1MB allocations, as was
-the case with the prior public firmware (2.5.0, 15M).
+That would be greatly appreciated. Let me know if anything further needs fixing.
 
-Since f6f92968e1e5, ath11k will break the memory requests,
-but only if there were fewer than 3 segments requested by
-the firmware. It seems that 5 segments works fine and
-allows QCN9074 to boot on x86 with firmware 2.7.0, so
-change things accordingly.
+> >>
+> >> Should I queue this to v6.1?
+> >
+> > Please do. Probably good to add Cc: for stable. Should apply to older
+> > kernels as is.
+> 
+> Ok, I'll add that as well.
+> 
+> > btw. is there any formal way to reference CVE. There probably isn't as
+> > generally we don't require a CVE in kernel tree [1].
+> 
+> I'm not aware of any formal way to mark CVEs. If there are, please let
+> me know :)
 
-Signed-off-by: Tyler J. Stachecki <stachecki.tyler@gmail.com>
----
- drivers/net/wireless/ath/ath11k/qmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I am not aware of any either. I looked at other commits and followed recent practice.
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index 2ec56a34fa81..0909d53cefeb 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -27,7 +27,7 @@
- #define ATH11K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	52
- #define ATH11K_QMI_CALDB_SIZE			0x480000
- #define ATH11K_QMI_BDF_EXT_STR_LENGTH		0x20
--#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	3
-+#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	5
- 
- #define QMI_WLFW_REQUEST_MEM_IND_V01		0x0035
- #define QMI_WLFW_FW_MEM_READY_IND_V01		0x0037
--- 
-2.30.2
-
+> 
+> -- 
+> https://patchwork.kernel.org/project/linux-wireless/list/
+> 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
