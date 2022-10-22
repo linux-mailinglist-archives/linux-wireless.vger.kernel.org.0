@@ -2,180 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87FCB6083D0
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Oct 2022 05:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35CEC608446
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Oct 2022 06:27:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbiJVDWA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Oct 2022 23:22:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
+        id S229906AbiJVE1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Oct 2022 00:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbiJVDV6 (ORCPT
+        with ESMTP id S229449AbiJVE1W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Oct 2022 23:21:58 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88CF1270D11
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 20:21:49 -0700 (PDT)
-X-UUID: 4d027578ba284ef28c97e4361b5e2908-20221022
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=BIXoU9wDrHq2lnlqdcGGlcZYQhKTdhujkyo9PoidRpc=;
-        b=Q6J1ChtxeSsh2uLz7kDqik3CX/CsGu6w4f1bK82lO3jc2+c5sAifLjwJjrP7JURfRahjU8DuDCPLhU18Q+vcSVcWBetoSLNuZFQLHXpK8cmAJPy0eixDIx5mCEHh9nWvoxqPPWq45m6DEO5sWiHvj1ydeL5ywljzO/KIxRXfnvM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.12,REQID:09a3dc1c-459c-45d8-b8b7-e95428e7937f,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.12,REQID:09a3dc1c-459c-45d8-b8b7-e95428e7937f,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:62cd327,CLOUDID:1b5dbd6c-89d3-4bfa-baad-dc632a24bca3,B
-        ulkID:221022112145PABC7IKK,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 4d027578ba284ef28c97e4361b5e2908-20221022
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2141278742; Sat, 22 Oct 2022 11:21:44 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Sat, 22 Oct 2022 11:21:44 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sat, 22 Oct 2022 11:21:44 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: fix bandwidth 80MHz link fail in 6GHz band
-Date:   Sat, 22 Oct 2022 11:21:19 +0800
-Message-ID: <7f10cced1976b40f0aeafc281ead0652a54ec718.1666408187.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sat, 22 Oct 2022 00:27:22 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58F12A5699;
+        Fri, 21 Oct 2022 21:27:21 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id h10so3160931qvq.7;
+        Fri, 21 Oct 2022 21:27:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IHBmQcvSONp1skndlop+2zNlLfEhZ9bZQFsTspZ9/YM=;
+        b=dsuAqmmKrNx2KZNnpyKAM2O3haJys8sggQelTM8E66lsLPDTL15aJpuLat3P9yA9ib
+         7tzTAOkTBi6L8dz4CLbm21v8Ne2z6czqj4P0sZM1xrvPNaLJFMHpylL+xe6za33Pc+JP
+         I5kcinzg2BeVMClilZ04I+bts32JnAsjipup6AOQpe6hMQ9yWB3fnaWW8DwX/pmU2Q+p
+         ZlmAArD0HoRPy0J0fxIOvmrjsCRIMQLicSc+ugcqsT0cI5VAgMcTBGOAQdRtgM2d0zJZ
+         +wsdRRK0wcsRs0u6OgqDPV0Depg8D8XGhGW1oAxQ2PtePhR9ZiEnGeAGI+mbjLdhDIai
+         LnHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IHBmQcvSONp1skndlop+2zNlLfEhZ9bZQFsTspZ9/YM=;
+        b=eoGGKn8FSMTAYjaoewpmIaUSm72hGXKZHQ1pMb0l9aWTp+tIjaIia7xU8EGIeNmKtf
+         q8Z8LeehOaScXFr1FlYuGWLAk86x0B2D+Q+sIQT9b58tQoy74vIe6sJt9wtyCreNfVk7
+         DXrUUnUXzJxAERQnlUNfU06rbnUoXx6aPj7b10fMRxw39RL+PuXGBIxUQK6/Li+pnrvT
+         NzJmZWj6Kkbxp8e1cKpRblbi4Z3oBIZPNfWLnQt0L6a50gD1yxihD7gVtfJ/TQi7G/1r
+         F8sqrVN/+wBLQDs893Fa7BOTQbL7v2bMWcVn+PXuYiYiItFRaYvuiduRkF3AmlPn4P5X
+         9h9A==
+X-Gm-Message-State: ACrzQf0F4jgHB+h6oORmdSqQD6TdV3esMqbM8yaiYJh1vn79SYS2JqW9
+        Ii0kwSN23xzbQyr9+gKjjkU=
+X-Google-Smtp-Source: AMsMyM47/wrt+mpOghumH6l58S+MyIEdVkmrP+cqy4Oyr5XtY3JcbauDeH4fb0CuhlVVOHmJpcQ4ug==
+X-Received: by 2002:a0c:b295:0:b0:4ba:b9b4:5159 with SMTP id r21-20020a0cb295000000b004bab9b45159mr6290441qve.19.1666412840868;
+        Fri, 21 Oct 2022 21:27:20 -0700 (PDT)
+Received: from luigi.ops.stachecki.net (pool-98-113-41-201.nycmny.fios.verizon.net. [98.113.41.201])
+        by smtp.gmail.com with ESMTPSA id s3-20020a05620a29c300b006d1d8fdea8asm11234988qkp.85.2022.10.21.21.27.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Oct 2022 21:27:20 -0700 (PDT)
+From:   "Tyler J. Stachecki" <stachecki.tyler@gmail.com>
+Cc:     "Tyler J. Stachecki" <stachecki.tyler@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ath11k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH11K WIRELESS
+        DRIVER),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] ath11k: Fix QCN9074 firmware boot on x86
+Date:   Sat, 22 Oct 2022 00:27:28 -0400
+Message-Id: <20221022042728.43015-1-stachecki.tyler@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+The 2.7.0 series of QCN9074's firmware requests 5 segments
+of memory instead of 3 (as in the 2.5.0 series).
 
-Due to information missing, the firmware may be fail on bandwidth
-related settings in mt7921/mt7922. Add new cmd STA_REC_HE_V2 to apply
-additional capabilities in 6GHz band.
+The first segment (11M) is too large to be kalloc'd in one
+go on x86 and requires piecemeal 1MB allocations, as was
+the case with the prior public firmware (2.5.0, 15M).
 
-Tested-by: Ben Greear <greearb@candelatech.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Since f6f92968e1e5, ath11k will break the memory requests,
+but only if there were fewer than 3 segments requested by
+the firmware. It seems that 5 segments works fine and
+allows QCN9074 to boot on x86 with firmware 2.7.0, so
+change things accordingly.
+
+Signed-off-by: Tyler J. Stachecki <stachecki.tyler@gmail.com>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 38 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 11 ++++++
- 2 files changed, 49 insertions(+)
+ drivers/net/wireless/ath/ath11k/qmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 011fc9729b38..cdfc0b0da823 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -744,6 +744,43 @@ mt76_connac_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
- 	he->pkt_ext = 2;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
+index 2ec56a34fa81..0909d53cefeb 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.h
++++ b/drivers/net/wireless/ath/ath11k/qmi.h
+@@ -27,7 +27,7 @@
+ #define ATH11K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	52
+ #define ATH11K_QMI_CALDB_SIZE			0x480000
+ #define ATH11K_QMI_BDF_EXT_STR_LENGTH		0x20
+-#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	3
++#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	5
  
-+static void
-+mt76_connac_mcu_sta_he_tlv_v2(struct sk_buff *skb, struct ieee80211_sta *sta)
-+{
-+	struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
-+	struct ieee80211_he_cap_elem *elem = &he_cap->he_cap_elem;
-+	struct sta_rec_he_v2 *he;
-+	struct tlv *tlv;
-+	int i;
-+
-+	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_HE_V2, sizeof(*he));
-+
-+	he = (struct sta_rec_he_v2 *)tlv;
-+	for (i = 0; i < ARRAY_SIZE(he->he_phy_cap); i++)
-+		he->he_phy_cap[i] = cpu_to_le16(elem->phy_cap_info[i]);
-+
-+	for (i = 0; i < ARRAY_SIZE(he->he_mac_cap); i++)
-+		he->he_mac_cap[i] = cpu_to_le16(elem->mac_cap_info[i]);
-+
-+	switch (sta->deflink.bandwidth) {
-+	case IEEE80211_STA_RX_BW_160:
-+		if (elem->phy_cap_info[0] &
-+		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
-+			he->max_nss_mcs[CMD_HE_MCS_BW8080] =
-+				he_cap->he_mcs_nss_supp.rx_mcs_80p80;
-+
-+		he->max_nss_mcs[CMD_HE_MCS_BW160] =
-+				he_cap->he_mcs_nss_supp.rx_mcs_160;
-+		fallthrough;
-+	default:
-+		he->max_nss_mcs[CMD_HE_MCS_BW80] =
-+				he_cap->he_mcs_nss_supp.rx_mcs_80;
-+		break;
-+	}
-+
-+	he->pkt_ext = IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US;
-+}
-+
- static u8
- mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 			    enum nl80211_band band, struct ieee80211_sta *sta)
-@@ -838,6 +875,7 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
- 	/* starec he */
- 	if (sta->deflink.he_cap.has_he) {
- 		mt76_connac_mcu_sta_he_tlv(skb, sta);
-+		mt76_connac_mcu_sta_he_tlv_v2(skb, sta);
- 		if (band == NL80211_BAND_6GHZ &&
- 		    sta_state == MT76_STA_INFO_STATE_ASSOC) {
- 			struct sta_rec_he_6g_capa *he_6g_capa;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index cf4ce3b1fc21..8166722d4717 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -354,6 +354,16 @@ struct sta_rec_he {
- 	u8 rsv2[2];
- } __packed;
- 
-+struct sta_rec_he_v2 {
-+	__le16 tag;
-+	__le16 len;
-+	u8 he_mac_cap[6];
-+	u8 he_phy_cap[11];
-+	u8 pkt_ext;
-+	/* 0: BW80, 1: BW160, 2: BW8080 */
-+	__le16 max_nss_mcs[CMD_HE_MCS_BW_NUM];
-+} __packed;
-+
- struct sta_rec_amsdu {
- 	__le16 tag;
- 	__le16 len;
-@@ -779,6 +789,7 @@ enum {
- 	STA_REC_BFEE,
- 	STA_REC_PHY = 0x15,
- 	STA_REC_HE_6G = 0x17,
-+	STA_REC_HE_V2 = 0x19,
- 	STA_REC_MAX_NUM
- };
- 
+ #define QMI_WLFW_REQUEST_MEM_IND_V01		0x0035
+ #define QMI_WLFW_FW_MEM_READY_IND_V01		0x0037
 -- 
-2.18.0
+2.30.2
 
