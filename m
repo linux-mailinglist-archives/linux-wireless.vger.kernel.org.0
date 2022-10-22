@@ -2,91 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F6D607F9B
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Oct 2022 22:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D53E16082FE
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Oct 2022 02:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbiJUUWU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Oct 2022 16:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
+        id S229634AbiJVAx1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Oct 2022 20:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229728AbiJUUWS (ORCPT
+        with ESMTP id S229478AbiJVAx0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Oct 2022 16:22:18 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C86A26FF87
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 13:22:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=JTG4Q7hNZgI2Zu6WLoPHJtGWuNChJ1sTMBguvEFn3iM=;
-        t=1666383738; x=1667593338; b=paRn6uMepQd4Nv7umNMIJkfXYL1NHy4zhte1EHzf+K7l6BV
-        S6EMixsTAUlSoTqeg/DMbl6TMPKsq9EFXjMBPZEJnRn+xIx3O7BFc7krUmv4O9nw3zJjVIgB/BcqO
-        uNnZ6Srcnr1UkvuAPOBJVow16PUMADJlqoY/RdEVsh9rVS3yGG9cyczNw2Bk/s3YDBA8hVk8UsSEV
-        EedapfTYJE17z4fhQBof+gkgWcP8fwtJJd8t8PSDI+k3dt6+E6eYFEjchiIs5JB5wOGHmW6hmUAcN
-        oOLoZo2vAlcRo+zPgvajon40KsEk3xJSrqFj2KThFpYU2Xss3PKnNJK4+kd014zA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1olyX1-00D0CH-2c;
-        Fri, 21 Oct 2022 22:22:15 +0200
-Message-ID: <d23613213568545ec808599a33c04a2e77ac7889.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/5] wifi: rtl8xxxu: Add central frequency offset
- tracking
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Date:   Fri, 21 Oct 2022 22:22:14 +0200
-In-Reply-To: <c3540f87-b124-2642-f53e-aa15704a54e8@gmail.com>
-References: <2b29b6d9-c17e-76d6-c32f-630f24b407b7@gmail.com>
-         <6a91fd1b8d5e4bf3910366121ed92f3b@realtek.com>
-         <c3540f87-b124-2642-f53e-aa15704a54e8@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Fri, 21 Oct 2022 20:53:26 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A582ACBD3
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Oct 2022 17:53:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666400005; x=1697936005;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=imCjon54ZP4y3sIZJgRBB1ufmQHKk2E2GSW2MLqrrZU=;
+  b=Lyu49K2JzNC6jnR21RjEXd1YvkDTNtFbk0Xf4TNwEw+MqmSpJ1lzoWCp
+   7f3vjc02nbMbvJp9ItRErO1OV0A7fHaV4cMU9uAqFgj+pYjfvEbth5ZGg
+   28IqxId36tuqQ1efdJXVsRglUyoHlntkG1F4qCi4Iup6Gig+ArXNgX1ji
+   ANRIhpBq1QUT3OQEZ++gkcUa0s3fXHfUL/EDhzUGRgzGBQeaNxltuoEmM
+   iPoS/P7dJd0nYauTnzbhJigBfb36myYkVmwiz477jbNd15CFSvSC+jl5k
+   zNjB0CEw1HU8JNq/SO2Z7R+X9RwqCvYM9PtgOz443d3zY+gUwoJWzqMhR
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10507"; a="308823011"
+X-IronPort-AV: E=Sophos;i="5.95,203,1661842800"; 
+   d="scan'208";a="308823011"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2022 17:53:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10507"; a="630695963"
+X-IronPort-AV: E=Sophos;i="5.95,203,1661842800"; 
+   d="scan'208";a="630695963"
+Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 21 Oct 2022 17:53:23 -0700
+Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1om2lO-00037L-38;
+        Sat, 22 Oct 2022 00:53:22 +0000
+Date:   Sat, 22 Oct 2022 08:53:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 69188df5f6e4cecc6b76b958979ba363cd5240e8
+Message-ID: <63533efc.mz4UQzhRZr1i9ZY5%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-10-21 at 21:32 +0300, Bitterblue Smith wrote:
-> >=20
-> > #define XTAL1 GENMASK(22, 17)
-> > #define XTAL0 GENMASK(16, 11)
-> >=20
-> > val32 &=3D ~(XTAL1 | XTAL2)
-> > val32 |=3D FIELD_PREP(XTAL1, crystal_cap) |
-> >          FIELD_PREP(XTAL0, crystal_cap);
-> >=20
->=20
-> Ah, so that's what FIELD_PREP does.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 69188df5f6e4cecc6b76b958979ba363cd5240e8  wifi: mac80211_hwsim: fix debugfs attribute ps with rc table support
 
-FWIW, personally, I've come to prefer u32_encode_bits() and friends, or,
-in this case perhaps
+elapsed time: 726m
 
-	u32p_replace_bits(&val32, crystal_cap, XTAL0);
-	u32p_replace_bits(&val32, crystal_cap, XTAL1);
+configs tested: 135
+configs skipped: 2
 
-or maybe writing that as
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-val32 &=3D ~(XTAL0 | XTAL1);
-val32 |=3D u32_encode_bits(crystal_cap, XTAL0);
-val32 |=3D u32_encode_bits(crystal_cap, XTAL1);
+gcc tested configs:
+um                           x86_64_defconfig
+um                             i386_defconfig
+arc                                 defconfig
+alpha                               defconfig
+s390                             allmodconfig
+x86_64                          rhel-8.3-func
+s390                                defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                              defconfig
+s390                             allyesconfig
+arc                  randconfig-r043-20221019
+x86_64                               rhel-8.3
+arc                  randconfig-r043-20221020
+x86_64                           allyesconfig
+s390                 randconfig-r044-20221020
+powerpc                           allnoconfig
+x86_64                           rhel-8.3-kvm
+powerpc                          allmodconfig
+m68k                             allmodconfig
+riscv                randconfig-r042-20221020
+i386                             allyesconfig
+i386                                defconfig
+arc                              allyesconfig
+x86_64                        randconfig-a015
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+sh                               allmodconfig
+mips                             allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+arm                        oxnas_v6_defconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+openrisc                         alldefconfig
+powerpc                       holly_defconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arm                        multi_v7_defconfig
+sh                           se7721_defconfig
+powerpc                         ps3_defconfig
+m68k                           virt_defconfig
+i386                          randconfig-c001
+sparc                       sparc32_defconfig
+sh                          sdk7786_defconfig
+parisc                           alldefconfig
+mips                      fuloong2e_defconfig
+arc                           tb10x_defconfig
+sh                            titan_defconfig
+powerpc                     pq2fads_defconfig
+arm                         nhk8815_defconfig
+arm                       omap2plus_defconfig
+arm                        clps711x_defconfig
+powerpc                 linkstation_defconfig
+arc                            hsdk_defconfig
+openrisc                 simple_smp_defconfig
+ia64                          tiger_defconfig
+arm                        mvebu_v7_defconfig
+mips                    maltaup_xpa_defconfig
+arc                              alldefconfig
+m68k                          atari_defconfig
+powerpc                     tqm8548_defconfig
+arm                          lpd270_defconfig
+arc                  randconfig-r043-20221018
+s390                 randconfig-r044-20221018
+riscv                randconfig-r042-20221018
+arm                          exynos_defconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+arm                           u8500_defconfig
+csky                                defconfig
+parisc                generic-64bit_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+sh                           se7722_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20221019
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+loongarch                           defconfig
+loongarch                         allnoconfig
+loongarch                        allmodconfig
+arc                  randconfig-r043-20221022
+s390                 randconfig-r044-20221022
+riscv                randconfig-r042-20221022
 
-instead.
+clang tested configs:
+x86_64                        randconfig-a012
+hexagon              randconfig-r041-20221020
+hexagon              randconfig-r045-20221020
+hexagon              randconfig-r045-20221019
+hexagon              randconfig-r041-20221019
+s390                 randconfig-r044-20221019
+riscv                randconfig-r042-20221019
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+powerpc                    gamecube_defconfig
+hexagon              randconfig-r045-20221018
+hexagon              randconfig-r041-20221018
+i386                 randconfig-a013-20221017
+i386                 randconfig-a015-20221017
+i386                 randconfig-a016-20221017
+i386                 randconfig-a011-20221017
+i386                 randconfig-a014-20221017
+i386                 randconfig-a012-20221017
+x86_64                        randconfig-k001
+arm                        magician_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+arm                      pxa255-idp_defconfig
+mips                          ath79_defconfig
+powerpc                      acadia_defconfig
+arm                             mxs_defconfig
+arm                       netwinder_defconfig
+mips                        maltaup_defconfig
+powerpc                 mpc8560_ads_defconfig
+arm                        vexpress_defconfig
+mips                       rbtx49xx_defconfig
+arm                           spitz_defconfig
+powerpc                   microwatt_defconfig
+arm                         orion5x_defconfig
+powerpc                      obs600_defconfig
 
-That's partially because there are also le32 variants of it etc. that
-are simpler to use with endian-fixed firmware interfaces or similar.
-
-
-But YMMV (as might that of the maintainers of this driver) :-)
-
-johannes
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
