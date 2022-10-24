@@ -2,103 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB10F60BB1F
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 22:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA0860BBD0
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 23:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234776AbiJXUrJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 16:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58780 "EHLO
+        id S229905AbiJXVOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 17:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235158AbiJXUqf (ORCPT
+        with ESMTP id S233894AbiJXVNn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 16:46:35 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3DDBAA3E3
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 11:54:20 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id bn35so5248314ljb.5
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 11:54:20 -0700 (PDT)
+        Mon, 24 Oct 2022 17:13:43 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8960EE39
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 12:19:19 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id m15so33120517edb.13
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 12:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=or3xRrS/INQDHm4S2zfA+0UvMFona79sQpSwL68Z0rc=;
-        b=USVTtrhqQZuzQsVZ5mLE6SMOvrua3JPub/J3hyAgi9HqkkpwSZSNNQBS+CKNoiLtzQ
-         8ozworIpMysY54gJ5pA7K241EYa5iqcMrZ8L/z2BpdoLHEhnjmdnSGClpumGhouXg0I2
-         uPE10Yftztjmk7B/zhkX+79H4sYD2GGTbeDc+i24UeOapsvghmxjcpualMiNaE3o76Yo
-         PudUlBcqPeTPS7G9pHIxvHEso3pGTtHw20YJsqymoxCVvGaIKjI40Y/JXxXqqUcuARak
-         RKxRLChO1OY820/BSNiRIoL0FXdrmo7sn71QBAWPKAU07QWeiQ8+qEVJ/wC5F+wVlu0l
-         IJlA==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dMlBZRsiHONUkMZWk7c4+laypsMYs6eGQdEg5/gU8XU=;
+        b=SvyGMCGOkYMRW6BHqhHMOAnujkohpZnJQ3kJ24DRIN4kdrRBt6Kd6jF9el6DXr+RuR
+         wD0BWai2x4Nv+L/sCh3KiCv7V09Boc8ywOvDjdeSBG/BHmPK8QVDH1X4C2xV4qoXtlvO
+         fJyIVAi3ro6LO+B4Bv1jXA/A1AgED7S2q2ioy6rotijHiAyRFizomLXh8SLk+JUIRxMr
+         AL9zbY9ZXHStYtf7gMi7/sW36WB7x1vmCn7wp5ZD6yHJ3745uYP3D7WwxNLiJpRfXqST
+         +5+AMAQrR8eDJO59FaTN6w860tWW9gLX4cijEitcpQ679OVnjdaLu6EziwreowQSW2Zq
+         Wm0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=or3xRrS/INQDHm4S2zfA+0UvMFona79sQpSwL68Z0rc=;
-        b=y4mry0OIluGROljy87HLWYJONF2HHZL9DkiGdHN7HPWPLav1UQEY6FmaolUpAf/b9A
-         5Kg7OcfdWlmw+dzkqIrPH1Ki8gDgpIBth0MjvQTQPHS+Bs/3/ghm5HkftpF7HryH8TQ2
-         z91XHAVKblj6iJ5ClHLaUv7DxPu/y0qlSWuWij9Xw6VEzvQk7belU2VifNtyjhysbIBC
-         2VGQLOh4mMU2HTu9utQdo9uSSYvk7Lnton6aKFm8v4EHfEOocNqH3gSdTyI2or43MXS8
-         6aTcKzcCMa6wkrhTQo2In5GOsG/i+1MMRKCHHm4pbAFgoHeFskTYE2OCyZbGuABbscyz
-         irSA==
-X-Gm-Message-State: ACrzQf3E6i9rK9GPDRAdYxgA21BNjJ+HRAV+WItcatphPgcgBgu7layu
-        8RYX3VY3ETaxPD3N18/xiDc/ECjoZr9cag==
-X-Google-Smtp-Source: AMsMyM78vZ/hqXj9mE115d8nESz6DHO56RCkfNSPTDwMgQrsqjagHJX5ZR6BYMnNB2BwTg7iLMW5sw==
-X-Received: by 2002:a19:dc48:0:b0:4a8:d24b:d78 with SMTP id f8-20020a19dc48000000b004a8d24b0d78mr4738500lfj.351.1666615207646;
-        Mon, 24 Oct 2022 05:40:07 -0700 (PDT)
-Received: from fedora.. ([85.235.10.72])
-        by smtp.gmail.com with ESMTPSA id a19-20020ac25e73000000b00492ce573726sm4515158lfr.47.2022.10.24.05.40.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 05:40:06 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] brcm80211: brcmsmac: Drop BMCMA consistency check
-Date:   Mon, 24 Oct 2022 14:40:02 +0200
-Message-Id: <20221024124002.10120-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.3
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dMlBZRsiHONUkMZWk7c4+laypsMYs6eGQdEg5/gU8XU=;
+        b=18qcDKA7BUp6GwqbT4oKQM325uSTptGoC9UArE3TCTRHl1UP4zGTBYmySMu0WfVuyM
+         iz6jRYOEmaRBevKRzN6BY5V8tek2O1RT4BsjxdMXNya4Ytt+bf8Ck/J61bL7XDv6+vp3
+         5Aj7rH5VvGouKoNVWQ5HDt6+rHrbP0iQNTkqWkO+EyIZI+7x5OQQL+jDArt+e+Z7NANv
+         YGkv+zBQ5Q7crouepf1sl68u8v0Y4SdEAQDWjDx3HJq+ml8xmmwD95TcUlyTp0iUqeXc
+         naG83QZm6/wDiJjvTdnsr2MJDpl+B417me2wk+kCyE27WBbbYb7lpS05l7dbBycfijqn
+         8ftA==
+X-Gm-Message-State: ACrzQf3IfBIPx20uhQmhh9vh8JT+1FXUHNZ2VHm++6VnwlTyc4O4s6YS
+        kdtjKIDR9vmKPYU+dD0QYs9DgeuI6jo=
+X-Google-Smtp-Source: AMsMyM4zwL12dK0aPe9gXv3DU/OG6rhmRvwNBiGXDXy2f+E+RBWuNEX9kWE5xoBPciAG1meKMhQOBA==
+X-Received: by 2002:a17:907:703:b0:78e:25be:5455 with SMTP id xb3-20020a170907070300b0078e25be5455mr27381699ejb.630.1666621497917;
+        Mon, 24 Oct 2022 07:24:57 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.23])
+        by smtp.gmail.com with ESMTPSA id u9-20020a1709061da900b0078e0973d1f5sm14674680ejh.0.2022.10.24.07.24.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Oct 2022 07:24:57 -0700 (PDT)
+Message-ID: <92d01e81-9d40-a9a2-1a8e-1207ccf33755@gmail.com>
+Date:   Mon, 24 Oct 2022 17:24:56 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: How to use the rate control in mac80211?
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <b80eae6f-8369-c98d-ffc4-3ee5b5b4eb22@gmail.com>
+ <efd11380ad344257a8f674b1cff0d080@realtek.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <efd11380ad344257a8f674b1cff0d080@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver looks up the BCMA parent GPIO driver and checks that
-this succeeds, but then it goes on to use the deprecated GPIO
-call gpio_is_valid() to check the consistency of the .base
-member of the BCMA GPIO struct. Surely this belongs in the
-BCMA driver: we cannot have all drivers performing cosistency
-checks on the internals of things they are passed.
+On 24/10/2022 05:13, Ping-Ke Shih wrote:
+> 
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Sunday, October 23, 2022 5:24 AM
+>> To: linux-wireless@vger.kernel.org
+>> Subject: How to use the rate control in mac80211?
+>>
+>> Hi!
+>>
+>> What does a driver (rtl8xxxu) need to do to make the rate control work?
+>>
+>> I thought it's like this:
+>> 1) don't set HAS_RATE_CONTROL
+>> 2) tell the chip to use the rate from tx_info->control.rates[0]
+>> 3) report if the frame was acked or not
+>>
+>> But it's not that easy. I'm always getting MCS0. Currently rtl8xxxu
+>> doesn't ask the chip for TX reports and always sets IEEE80211_TX_STAT_ACK.
+>> I thought this would get me MCS7 for all data frames, but it doesn't.
+> 
+> I don't dig rate control of mac80211, but I think it is hard to support this
+> by Realtek chip, because the item 3 you listed.
+> 
+> Realtek WiFi chip only reports TX status for specific packets, because bus
+> bandwidth is limited, so reduce these reports to have better performance.
+> And, firmware has implemented rate control called rate adaptive (RA), and
+> using firmware RA is expected.
+> 
+> If you really want to control rate by driver, you can refer to implementation
+> of management frame below:
+> 
+> 	if (ieee80211_is_mgmt(hdr->frame_control)) {
+> 		tx_desc->txdw5 = cpu_to_le32(rate);
+> 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_USE_DRIVER_RATE);
+> 		tx_desc->txdw5 |= cpu_to_le32(6 << TXDESC32_RETRY_LIMIT_SHIFT);
+> 		tx_desc->txdw5 |= cpu_to_le32(TXDESC32_RETRY_LIMIT_ENABLE);
+> 	}
+> 
+> Another thing is that retry rate is decided by hardware by another register
+> settings, but I'm not familiar with them, because I always use RA mentioned
+> above. Maybe, you still can use *default* settings of retry rate that could
+> work but not always good in all situations.
+> 
+> Ping-Ke
+> 
+Normally, we use the firmware rate control, but RTL8188EU doesn't have it:
+https://github.com/lwfinger/rtl8188eu/blob/c4908ca4caf861d858c4d9e8452a2ad5c88cf2ba/rtl8188eu_xmit.c#L349
+https://github.com/lwfinger/rtl8188eu/blob/c4908ca4caf861d858c4d9e8452a2ad5c88cf2ba/hal8188erateadaptive.c
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+(I guess they used the space in the firmware on the IOL stuff and the rate
+control code didn't fit?)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
-index c1b9ac692d26..1cce92c5780f 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
-@@ -63,7 +63,7 @@ int brcms_led_register(struct brcms_info *wl)
- 	int hwnum = -1;
- 	enum gpio_lookup_flags lflags = GPIO_ACTIVE_HIGH;
- 
--	if (!bcma_gpio || !gpio_is_valid(bcma_gpio->base))
-+	if (!bcma_gpio)
- 		return -ENODEV;
- 
- 	/* find radio enabled LED */
--- 
-2.34.1
-
+Maybe we don't need to ask for TX reports for every data frame?
