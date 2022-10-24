@@ -2,116 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADA2660B643
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 20:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB10F60BB1F
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 22:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbiJXSxH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 14:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52082 "EHLO
+        id S234776AbiJXUrJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 16:47:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232727AbiJXSwh (ORCPT
+        with ESMTP id S235158AbiJXUqf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 14:52:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC20224A90;
-        Mon, 24 Oct 2022 10:34:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28E5661500;
-        Mon, 24 Oct 2022 17:17:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2964C433B5;
-        Mon, 24 Oct 2022 17:17:43 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="W4OnCup5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1666631860;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0joR9m5MfF36iKnJOfK3TU4JQ6XnOTGKpE1xroKpqN0=;
-        b=W4OnCup5gOPU0F9sVbRAhDz1YfbDgcVtsT5zZm8fxkWFH8QlP4LKuTC6ARb/4ATDp8w/1W
-        CCDuos+lBAaTbcSwhdf/q9N8iqY1xl/kWWbeSWwm/vEu50CwFDzYa1ofruMc1cxK9QzNmf
-        t+vcDeOf7nOyQGTvT2VGAme4/SxiP2I=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id a8144f99 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Mon, 24 Oct 2022 17:17:39 +0000 (UTC)
-Received: by mail-vk1-f173.google.com with SMTP id h16so2250291vkn.4;
-        Mon, 24 Oct 2022 10:17:38 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0qLIXypCUMqGeOiOukf248s+qYN28YnkOm4IFEsYD0QnGvPn0i
-        3ownY4C99S5qa4SB4MrJ07YjDagFH3QeUSOKPik=
-X-Google-Smtp-Source: AMsMyM7gGYX+0RDafH1G0b5Of2Pu4zvYtbj8eQ2m/vAdjPgpIYTB6R/Y9WoDz6ojgWA81toPxKKw5ZiS4OOZZEag660=
-X-Received: by 2002:a1f:ecc6:0:b0:3aa:a785:5e2f with SMTP id
- k189-20020a1fecc6000000b003aaa7855e2fmr18797456vkh.6.1666631857723; Mon, 24
- Oct 2022 10:17:37 -0700 (PDT)
+        Mon, 24 Oct 2022 16:46:35 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3DDBAA3E3
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 11:54:20 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id bn35so5248314ljb.5
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 11:54:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=or3xRrS/INQDHm4S2zfA+0UvMFona79sQpSwL68Z0rc=;
+        b=USVTtrhqQZuzQsVZ5mLE6SMOvrua3JPub/J3hyAgi9HqkkpwSZSNNQBS+CKNoiLtzQ
+         8ozworIpMysY54gJ5pA7K241EYa5iqcMrZ8L/z2BpdoLHEhnjmdnSGClpumGhouXg0I2
+         uPE10Yftztjmk7B/zhkX+79H4sYD2GGTbeDc+i24UeOapsvghmxjcpualMiNaE3o76Yo
+         PudUlBcqPeTPS7G9pHIxvHEso3pGTtHw20YJsqymoxCVvGaIKjI40Y/JXxXqqUcuARak
+         RKxRLChO1OY820/BSNiRIoL0FXdrmo7sn71QBAWPKAU07QWeiQ8+qEVJ/wC5F+wVlu0l
+         IJlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=or3xRrS/INQDHm4S2zfA+0UvMFona79sQpSwL68Z0rc=;
+        b=y4mry0OIluGROljy87HLWYJONF2HHZL9DkiGdHN7HPWPLav1UQEY6FmaolUpAf/b9A
+         5Kg7OcfdWlmw+dzkqIrPH1Ki8gDgpIBth0MjvQTQPHS+Bs/3/ghm5HkftpF7HryH8TQ2
+         z91XHAVKblj6iJ5ClHLaUv7DxPu/y0qlSWuWij9Xw6VEzvQk7belU2VifNtyjhysbIBC
+         2VGQLOh4mMU2HTu9utQdo9uSSYvk7Lnton6aKFm8v4EHfEOocNqH3gSdTyI2or43MXS8
+         6aTcKzcCMa6wkrhTQo2In5GOsG/i+1MMRKCHHm4pbAFgoHeFskTYE2OCyZbGuABbscyz
+         irSA==
+X-Gm-Message-State: ACrzQf3E6i9rK9GPDRAdYxgA21BNjJ+HRAV+WItcatphPgcgBgu7layu
+        8RYX3VY3ETaxPD3N18/xiDc/ECjoZr9cag==
+X-Google-Smtp-Source: AMsMyM78vZ/hqXj9mE115d8nESz6DHO56RCkfNSPTDwMgQrsqjagHJX5ZR6BYMnNB2BwTg7iLMW5sw==
+X-Received: by 2002:a19:dc48:0:b0:4a8:d24b:d78 with SMTP id f8-20020a19dc48000000b004a8d24b0d78mr4738500lfj.351.1666615207646;
+        Mon, 24 Oct 2022 05:40:07 -0700 (PDT)
+Received: from fedora.. ([85.235.10.72])
+        by smtp.gmail.com with ESMTPSA id a19-20020ac25e73000000b00492ce573726sm4515158lfr.47.2022.10.24.05.40.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Oct 2022 05:40:06 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] brcm80211: brcmsmac: Drop BMCMA consistency check
+Date:   Mon, 24 Oct 2022 14:40:02 +0200
+Message-Id: <20221024124002.10120-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-References: <Y1BcpXAjR4tmV6RQ@zx2c4.com> <20221019203034.3795710-1-Jason@zx2c4.com>
- <Y1ZZyP4ZRBIbv+Kg@kili> <Y1ZbI4IzAOaNwhoD@kadam> <Y1a+cHkFt54gJv54@zx2c4.com> <CAHk-=wgK3Vs+7Kor-SisRHJYzV1tXD+=D4+W1XkfHOV2KN_OGw@mail.gmail.com>
-In-Reply-To: <CAHk-=wgK3Vs+7Kor-SisRHJYzV1tXD+=D4+W1XkfHOV2KN_OGw@mail.gmail.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Mon, 24 Oct 2022 19:17:25 +0200
-X-Gmail-Original-Message-ID: <CAHmME9ox7JNqOOZHEHCgaS95rsn-dVr4QOnN1mfmFEn=i9_jvw@mail.gmail.com>
-Message-ID: <CAHmME9ox7JNqOOZHEHCgaS95rsn-dVr4QOnN1mfmFEn=i9_jvw@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: treat char as always unsigned
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-toolchains@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>, mikem@ring3k.org,
-        wlanfae@realtek.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Linus,
+The driver looks up the BCMA parent GPIO driver and checks that
+this succeeds, but then it goes on to use the deprecated GPIO
+call gpio_is_valid() to check the consistency of the .base
+member of the BCMA GPIO struct. Surely this belongs in the
+BCMA driver: we cannot have all drivers performing cosistency
+checks on the internals of things they are passed.
 
-On Mon, Oct 24, 2022 at 7:11 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-> IOW, I don't think these are 6.1 material as some kind of obvious
-> fixes, at least not without driver author acks.
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Right, these are posted to the authors and maintainers to look at.
-Maybe they punt them until 6.2 which would be fine too.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
+index c1b9ac692d26..1cce92c5780f 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
+@@ -63,7 +63,7 @@ int brcms_led_register(struct brcms_info *wl)
+ 	int hwnum = -1;
+ 	enum gpio_lookup_flags lflags = GPIO_ACTIVE_HIGH;
+ 
+-	if (!bcma_gpio || !gpio_is_valid(bcma_gpio->base))
++	if (!bcma_gpio)
+ 		return -ENODEV;
+ 
+ 	/* find radio enabled LED */
+-- 
+2.34.1
 
-> On Mon, Oct 24, 2022 at 9:34 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
-> Some of those may need more thought. For example, that first one:
->
-> > https://lore.kernel.org/all/20221024163005.536097-1-Jason@zx2c4.com
->
-> looks just *strange*. As far as I can tell, no other wireless drivers
-> do any sign checks at all.
->
-> Now, I didn't really look around a lot, but looking at a few other
-> SIOCSIWESSID users, most don't even seem to treat it as a string at
-> all, but as just a byte dump (so memcpy() instead of strncpy())
->
-> As far as I know, there are no actual rules for SSID character sets,
-> and while using utf-8 or something else might cause interoperability
-> problems, this driver seems to be just confused. If you want to check
-> for "printable characters", that check is still wrong.
->
-> So I don't think this is a "assume char is signed" issue. I think this
-> is a "driver is confused" issue.
-
-Yea I had a few versions of this. In one of them, I changed `char
-*extra` throughout the wireless stack into `s8 *extra` and in another
-`u8 *extra`, after realizing they're mostly just bags of bits. But
-that seemed pretty invasive when, indeed, this staging driver is just
-a little screwy.
-
-So perhaps the right fix is to just kill that whole snippet? Kalle - opinions?
-
-Jason
