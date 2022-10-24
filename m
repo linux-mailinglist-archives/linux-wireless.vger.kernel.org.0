@@ -2,96 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFDCA6097F3
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 03:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D97106097FF
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 03:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229631AbiJXBsU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Oct 2022 21:48:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57714 "EHLO
+        id S229908AbiJXB7F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Oct 2022 21:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbiJXBsS (ORCPT
+        with ESMTP id S229839AbiJXB7D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Oct 2022 21:48:18 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 307556E88E
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Oct 2022 18:48:15 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29O1laelF005988, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29O1laelF005988
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 24 Oct 2022 09:47:36 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Sun, 23 Oct 2022 21:59:03 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2BA6E2EC;
+        Sun, 23 Oct 2022 18:59:03 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MwdRF2m0bzVj44;
+        Mon, 24 Oct 2022 09:54:17 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 24 Oct 2022 09:48:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ 15.1.2375.31; Mon, 24 Oct 2022 09:59:01 +0800
+Received: from [10.174.178.174] (10.174.178.174) by
+ dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 24 Oct 2022 09:48:09 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Mon, 24 Oct 2022 09:48:09 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH 1/5] wifi: rtl8xxxu: Add central frequency offset tracking
-Thread-Topic: [PATCH 1/5] wifi: rtl8xxxu: Add central frequency offset
- tracking
-Thread-Index: AQHY4YSZLQ/A6qXBgEyoHcMrhYlOea4YWosggABTMYCABCIbIA==
-Date:   Mon, 24 Oct 2022 01:48:09 +0000
-Message-ID: <6a57d98b53334f419539a9ea80ff3d74@realtek.com>
-References: <2b29b6d9-c17e-76d6-c32f-630f24b407b7@gmail.com>
- <6a91fd1b8d5e4bf3910366121ed92f3b@realtek.com>
- <c3540f87-b124-2642-f53e-aa15704a54e8@gmail.com>
-In-Reply-To: <c3540f87-b124-2642-f53e-aa15704a54e8@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzIzIOS4i+WNiCAxMDowMDowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.1.2375.31; Mon, 24 Oct 2022 09:59:00 +0800
+Subject: Re: [PATCH -next] rfkill: replace BUG_ON() with WARN_ON() in core.c
+To:     Leon Romanovsky <leon@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>
+References: <20221021135738.524370-1-yangyingliang@huawei.com>
+ <Y1T4aWIbueaf4jYM@unreal>
+From:   Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <ab635939-6763-42c1-0410-79e6c65b4568@huawei.com>
+Date:   Mon, 24 Oct 2022 09:58:59 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y1T4aWIbueaf4jYM@unreal>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.174.178.174]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJpdHRlcmJsdWUgU21pdGgg
-PHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiBTZW50OiBTYXR1cmRheSwgT2N0b2JlciAyMiwg
-MjAyMiAyOjMyIEFNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IGxp
-bnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogSmVzIFNvcmVuc2VuIDxKZXMuU29y
-ZW5zZW5AZ21haWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEvNV0gd2lmaTogcnRsOHh4
-eHU6IEFkZCBjZW50cmFsIGZyZXF1ZW5jeSBvZmZzZXQgdHJhY2tpbmcNCj4gDQo+IE9uIDIxLzEw
-LzIwMjIgMDg6NDcsIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPg0KPiA+DQo+ID4+IC0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFj
-ZXJmZTJAZ21haWwuY29tPg0KPiA+PiBTZW50OiBNb25kYXksIE9jdG9iZXIgMTcsIDIwMjIgMToy
-NyBBTQ0KPiBbLi4uXQ0KPiA+PiArCQkJaWYgKHByaXYtPmNmb190cmFja2luZy5wYWNrZXRfY291
-bnQgPT0gMHhmZmZmZmZmZikNCj4gPj4gKwkJCQlwcml2LT5jZm9fdHJhY2tpbmcucGFja2V0X2Nv
-dW50ID0gMDsNCj4gPj4gKwkJCWVsc2UNCj4gPj4gKwkJCQlwcml2LT5jZm9fdHJhY2tpbmcucGFj
-a2V0X2NvdW50Kys7DQo+ID4NCj4gPiAncGFja2V0X2NvdW50JyBpcyB1MzIsIHNvIDB4ZmZmZmZm
-ZmYgKyAxIHdpbGwgYmVjb21lIDAuIFRoZW4sIGp1c3QNCj4gPg0KPiA+ICAgIHByaXYtPmNmb190
-cmFja2luZy5wYWNrZXRfY291bnQrKzsNCj4gPg0KPiANCj4gSSB0aG91Z2h0IHNvLCBidXQgSSdt
-IG5vdCAqdGhhdCogZmFtaWxpYXIgd2l0aCB0aGUgQyBzdGFuZGFyZCwNCj4gc28gSSBsZWZ0IGl0
-IGhvdyBJIGZvdW5kIGl0IGluIG9uZSBvZiB0aGUgUmVhbHRlayBkcml2ZXJzLg0KDQoncGFja2V0
-X2NvdW50JyBpcyB1c2VkIGFzIGEgc2VxdWVuY2UgbnVtYmVyIHRvIGluZGljYXRlIG51bWJlciBv
-ZiByZWNlaXZlZA0KcGFja2V0cyBpcyBjaGFuZ2VkLCBhbmQgdGhlbiBpdCBjYW4gcmUtY2FsY3Vs
-YXRlIENGTy4gU28sIGRvbid0IHdvcnJ5IHRvDQpkbyBwYWNrZXRfY291bnQrKywgbm90IGp1c3Qg
-bGVmdCBjb2RlIGZyb20gUmVhbHRlayB2ZW5kb3IgZHJpdmVyLiBUaGlzIGlzDQpvbmUgcmVhc29u
-IHRoYXQgd2UgbmVlZCB0byByZXdyaXRlIHRoZSBkcml2ZXIgZm9yIExpbnV4IHVwc3RyZWFtLg0K
-DQpQaW5nLUtlDQoNCg==
+
+On 2022/10/23 16:16, Leon Romanovsky wrote:
+> On Fri, Oct 21, 2022 at 09:57:38PM +0800, Yang Yingliang wrote:
+>> Replace BUG_ON() with WARN_ON() to handle fault more gracefully.
+>>
+>> Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>> ---
+>>   net/rfkill/core.c | 25 ++++++++++++++++---------
+>>   1 file changed, 16 insertions(+), 9 deletions(-)
+> Please add changelog and version numbers when you set your series.
+>
+> The same comment as https://lore.kernel.org/all/Y1T3a1y/pWdbt2ow@unreal
+The link is unreachable.
+> or you should delete BUG_ONs completely or simply replace them with WARN_ONs.
+>
+> There is no need in all these if (...).
+If remove BUG_ONs or not use if (...), it may lead null-ptr-deref, it's 
+same as
+using BUG_ON(), which leads system crash.
+
+Thanks,
+Yang
+>
+> Thanks
+> .
