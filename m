@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C6F60BD81
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 00:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53D9460BD87
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 00:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231368AbiJXWf4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 18:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
+        id S230162AbiJXWhD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 18:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231802AbiJXWfW (ORCPT
+        with ESMTP id S231587AbiJXWgn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 18:35:22 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8713E9638E
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 13:58:31 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id c7-20020a05600c0ac700b003c6cad86f38so10502925wmr.2
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 13:58:31 -0700 (PDT)
+        Mon, 24 Oct 2022 18:36:43 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6594B4AD
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 13:59:24 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id x2so6225327edd.2
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 13:59:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=302KGUriB18bOlCw7uWI8DGaJWWMh7Gj1UrQAJeI57c=;
-        b=QHNKQvqY1KPdm5w9bCtltSV7u6Rnjw8QsjYHtAv7Xjvzt7uZPMNqR6aknD0LrzdW0Y
-         Uulpzndkxt/H/jl3jLFu8pTnw5SYKVVqsB5r9UlYA2NTxCLX+6m2iKLKQuG8OEJnX5d+
-         ZLEhKo+u4wXmn/Ke+meeeEEW5s35kEg7FTWgruPs15fGPNkteG5wnxH6zTqN/ReCnRbv
-         2hqnRGOFW3m4REzSzX7Ks6x010GzKP98DaSxwZldClzaEFV9SU8wprmKkkC3YaFxnpJS
-         KqKTbfBAwwi438uuX0RoqeuFKgl7w2HNwyMToJ8zbvFFjTpi7V7DBlt+2Uydkcpq4SD0
-         JQXw==
+        bh=C+HorgRdrODfDYUGY+yxjc+8GNMUFjJj7dpFTHYT7wk=;
+        b=M5hzDjWcXZoob3z9DPHKcnnOgfmMCK0q3u8rPHmMRghEhjx7W5U/mWN7oMqi7Om72B
+         5lN5h72TatdSdiO3F5Yj1bZKgXG9ywTsmZgDyTXfuIvEYydGgD59mIzqmHT12/GCjoRK
+         Dq20etdBwAmXx2zVxcu2q5OrA3Jjt99PofjxhzycNJySiq5Hub4QPnJZ3WKcLc0KphbD
+         q7OgItwhDd+M8g2MX3kYtsQSANXKIrQ175B4dmidcnof8/7QKDBYov7ol2TKx3PJs0xh
+         VbJPDIKG8al4gjmyUVchtsAmN7R+gjYr+HeYwAwEYTgW+tUhslhmt4ikVN8qbAh+xmFx
+         5zFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=302KGUriB18bOlCw7uWI8DGaJWWMh7Gj1UrQAJeI57c=;
-        b=BS+nyv1snNPNjyZSIju4MHmXfFW0q/00HPxbRUfwCiI4Hj8TmndIqxa6O1GZimz69t
-         RVWvPpw2px3yawaJT0cOxmUjFSgoSSof1o1OrBF6CvaFN0dFNZuaUGSXlJFRPMNfTamF
-         0wK6XByVdOTfx4aRsUsgsSUo5kjm87D8QPMTJGI9TJtoTKLs6WBw7LDrmrCZVxiMMcyz
-         mKFWgNer85s+2I0iMF4g/VGsmtOaIjVozreRBFdv+SaiH8ZBIRVVcmn3UVRqxKPT4Q0j
-         QeS+8oSK+9wKzRSXICfXZHEjpMUXtXK9JV/C6/3YrwXNTMqvszDYyG80yuNyvWvf7EXw
-         Ohyw==
-X-Gm-Message-State: ACrzQf3wVm5fQ23gPoV4575HvazddyGXTNMVL6vwv40V6+R06eLKLJ4M
-        toFkzi1jRxCn2NBAS4ZG9zh3acAJVS4=
-X-Google-Smtp-Source: AMsMyM6LrW/bPjsWs1PPc36zz5ItktBjxYW1vFu7PIf3ynQLJ3SyFPBoetteqnnc069BAXMcL9G/Iw==
-X-Received: by 2002:a05:600c:654f:b0:3c3:b5b7:43a9 with SMTP id dn15-20020a05600c654f00b003c3b5b743a9mr45530303wmb.201.1666645014215;
-        Mon, 24 Oct 2022 13:56:54 -0700 (PDT)
+        bh=C+HorgRdrODfDYUGY+yxjc+8GNMUFjJj7dpFTHYT7wk=;
+        b=J8Bv5tnL8ZzS8hUUJ7CHD7D5aJz+5QcTpJHiC3OQ9kfclGDf4fni1vzzWIg9C66vJl
+         xIwD9pKQxl6H+o4MNVeIoekUOlZBEOZWxyFwXXnDOYqzbgfdJSyhfSx3LaD8LovYxMVh
+         UOIzoP+u5YunNHqd5kXirR0SWuOyynAgctPTfiJUzaJee5Fn3qnDpKCXRbEn2cnbBZ/C
+         5OKt0WYeRUrTBL4WZuAvocI64hBjfgXEL09gwXkVhOCyXjU09A/c8nrfIePAweLD0dRV
+         l3k3EkPIlph9RZUbTkuKE+Os8SvG6B4an5X/yd6aQr2RjnvTGHfLIHOmN/M2yp3Tmu+I
+         JrYg==
+X-Gm-Message-State: ACrzQf1cQ4fi5l9zP/An/6A7dI0RDYTGEtl/c4IPsb64LxI1hN0+NIH2
+        jSxeHwb/p9WTrKnZPkGa45/aKNRl9qc=
+X-Google-Smtp-Source: AMsMyM4T0GsTjzncveb8k4zkW7oxcjpGA0HUi5r7ibQp7bEk1jmvHqxWZdfUueS+C+MKC7u+oVIkMg==
+X-Received: by 2002:a05:6402:2486:b0:460:8f86:1fca with SMTP id q6-20020a056402248600b004608f861fcamr22281586eda.70.1666645069144;
+        Mon, 24 Oct 2022 13:57:49 -0700 (PDT)
 Received: from [192.168.1.50] ([81.196.40.23])
-        by smtp.gmail.com with ESMTPSA id g12-20020a05600c4ecc00b003c6f8d30e40sm9859375wmq.31.2022.10.24.13.56.53
+        by smtp.gmail.com with ESMTPSA id b9-20020a17090630c900b00780982d77d1sm355982ejb.154.2022.10.24.13.57.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 13:56:53 -0700 (PDT)
-Message-ID: <92f365c5-ff7c-33b0-60c9-f2c1492fba0a@gmail.com>
-Date:   Mon, 24 Oct 2022 23:56:52 +0300
+        Mon, 24 Oct 2022 13:57:48 -0700 (PDT)
+Message-ID: <0dd519e3-45f7-de43-3e09-29c3d63af1f8@gmail.com>
+Date:   Mon, 24 Oct 2022 23:57:48 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.3
-Subject: [PATCH v2 3/5] wifi: rtl8xxxu: Recognise all possible chip cuts
+Subject: [PATCH v2 4/5] wifi: rtl8xxxu: Set IEEE80211_HW_SUPPORT_FAST_XMIT
 Content-Language: en-US
 From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -74,58 +74,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The chip cut, also known as the chip version, is a letter from A (0)
-to P (15). Recognise them all instead of printing "unknown" when it's
-greater than E.
+According to commit 60d7900dcb98 ("wlcore: enable
+IEEE80211_HW_SUPPORT_FAST_XMIT"), we can use this because all the chips
+have hardware rate control.
+
+This is one of the things mac80211 requires before it will handle MSDU
+aggregation for us.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v2:
- - Suggestion from Ping-Ke Shih:
-   - Don't use array of letters.
+ - No change.
 ---
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 26 ++++---------------
- 1 file changed, 5 insertions(+), 21 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 7023f6accda7..7c587b5d554e 100644
+index 7c587b5d554e..8bab7247460d 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1574,30 +1574,14 @@ rtl8xxxu_set_spec_sifs(struct rtl8xxxu_priv *priv, u16 cck, u16 ofdm)
- static void rtl8xxxu_print_chipinfo(struct rtl8xxxu_priv *priv)
- {
- 	struct device *dev = &priv->udev->dev;
--	char *cut;
-+	char cut = '?';
+@@ -7005,6 +7005,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	 * The firmware handles rate control
+ 	 */
+ 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
++	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
  
--	switch (priv->chip_cut) {
--	case 0:
--		cut = "A";
--		break;
--	case 1:
--		cut = "B";
--		break;
--	case 2:
--		cut = "C";
--		break;
--	case 3:
--		cut = "D";
--		break;
--	case 4:
--		cut = "E";
--		break;
--	default:
--		cut = "unknown";
--	}
-+	/* Currently always true: chip_cut is 4 bits. */
-+	if (priv->chip_cut <= 15)
-+		cut = 'A' + priv->chip_cut;
- 
- 	dev_info(dev,
--		 "RTL%s rev %s (%s) %iT%iR, TX queues %i, WiFi=%i, BT=%i, GPS=%i, HI PA=%i\n",
-+		 "RTL%s rev %c (%s) %iT%iR, TX queues %i, WiFi=%i, BT=%i, GPS=%i, HI PA=%i\n",
- 		 priv->chip_name, cut, priv->chip_vendor, priv->tx_paths,
- 		 priv->rx_paths, priv->ep_tx_count, priv->has_wifi,
- 		 priv->has_bluetooth, priv->has_gps, priv->hi_pa);
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
 -- 
 2.38.0
