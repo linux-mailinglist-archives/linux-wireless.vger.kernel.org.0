@@ -2,113 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A9860BD89
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 00:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6462860BF9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 02:33:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231665AbiJXWh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 18:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
+        id S231156AbiJYAdd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 20:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbiJXWhj (ORCPT
+        with ESMTP id S230381AbiJYAdJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 18:37:39 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C7531DC27
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 14:00:44 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id fy4so7867184ejc.5
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 14:00:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RSqvEurDGrNTOd41O70DcnlgCGXPOUXGDiIWdQ4SdVI=;
-        b=amO0paG0Zmv5vmbhOrwzrPTS2QzXKyKr27pE8F5t08m0WNR8lnmgqAZ02uXj+WIHXU
-         QgB6wC12I6zJp7gY4LFw3OJwOAjYQyI27oiKyMzK8c3UWSTPlLxDRlcABCXVUZCOD2Jc
-         k9RgrSEibvM4fWqVT0riYWWc5wqRmQXtWyLDX/jSyf+Rodu4IQhYd3UJ/tbHH0n3iMe8
-         nh8/mMYehyBCGDzQJufsthmI0axe603RoKnFckzZ84Igl3Z4HA0iMD+vKoc5+PpJLAl8
-         +HZCA+y0vrrnfSFNdGKC1wccxDZ3eDKe4XBoY/kupOS65tBjAZm5aX6VXHWSWCPXc58z
-         0tTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSqvEurDGrNTOd41O70DcnlgCGXPOUXGDiIWdQ4SdVI=;
-        b=oqakn1NdlQ7IlIwoozzjH26/yXjruRPz+zjpoiEbn9Y4nqRNQwzqasgaJeXwg2Xyxn
-         h6u98xORB03SryJVcANp8XTIiA67ZnFqbfXDvkK4mrGDOW1Br5tnx3AJNuNAjy79CUM8
-         9KRQeGOFiHNIsUsXgQROShrd4+p9/PouVC245IfyRM8NU6onIcMBpcfwLqmcVyZ1YcQB
-         uITM2kXoGiogQV329KjAIQ8bFU8yyoA+OISZpyubZ/q7ZFkPZGWJVY7jwfnEKOTdxXlc
-         ntIKlgyK8Pk+3FV/pU3PLodmN4tgJPSfBUI0eaESDUmK/+UBDLw157nMzUJDDPE00m1M
-         sUwg==
-X-Gm-Message-State: ACrzQf1KHwrRuknL7edRYAnOSnc+slrgiLAhcLrNPqGOMyyeDxXuep/l
-        8WezkSQEg9WV/+xtTNG7vmviDwU8QxU=
-X-Google-Smtp-Source: AMsMyM6tpjDYMbDzFX+1pNTdcyY4PE5Ded7AmGHYToagl0LLxIQd1lvaYyZ+wsmq8wVZGQzlNJS/Dw==
-X-Received: by 2002:a17:906:c14f:b0:793:30e1:96be with SMTP id dp15-20020a170906c14f00b0079330e196bemr24312165ejc.447.1666645129941;
-        Mon, 24 Oct 2022 13:58:49 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.23])
-        by smtp.gmail.com with ESMTPSA id u10-20020aa7d54a000000b0045920b019a9sm395402edr.95.2022.10.24.13.58.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 13:58:49 -0700 (PDT)
-Message-ID: <fb69614a-a06a-ab59-fae2-9443e96e249b@gmail.com>
-Date:   Mon, 24 Oct 2022 23:58:48 +0300
+        Mon, 24 Oct 2022 20:33:09 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3060820347;
+        Mon, 24 Oct 2022 15:57:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666652281; x=1698188281;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/QFYcqzzhog465CEp7hJCINJC63rwNPJ/l0XxVVSM6g=;
+  b=IphW3CK6tjTAbqJpyvEU5yD+tVjeukfE0aGA9BR5AnSK/KieuDcM1yT8
+   5ebACnvzZEQ4A4odoBErIgAmiIuTzSLVj6oF28kClfGeOrIX39sYggBeZ
+   tIP/09DEy6WgTrX29qzOIEi1GXRNgnP2x9u0ypx24JpCdddvoyhEfz9SJ
+   MQ/Nc30R4B4Vz/x6Jfw8o1DtKcZvFGmLhrO7GmJNXdIVs8ugOpUy2ZZ+j
+   pHTSvedNCrVFEYZ3yLIi2hXt/0dmT4SxE3L5dLyHxerecemflRhzJDEk5
+   yjyDN6y4zwx7NzCftQUKAmVhb6f2IJfmpSfw9HgPmj9Y8ca7OrLfHtxOR
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="308633271"
+X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
+   d="scan'208";a="308633271"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 15:57:56 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="609363400"
+X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
+   d="scan'208";a="609363400"
+Received: from pkearns-mobl1.amr.corp.intel.com (HELO guptapa-desk.intel.com) ([10.252.131.64])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 15:57:55 -0700
+From:   Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
+        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        antonio.gomez.iglesias@linux.intel.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
+Subject: [RFC PATCH 0/2] Branch Target Injection (BTI) gadget in minstrel
+Date:   Mon, 24 Oct 2022 15:57:45 -0700
+Message-Id: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+X-Mailer: git-send-email 2.37.3
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: [PATCH v2 5/5] wifi: rtl8xxxu: Use dev_info instead of pr_info
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
-References: <1edda764-94ca-2123-0ba6-6b04a1b01709@gmail.com>
-In-Reply-To: <1edda764-94ca-2123-0ba6-6b04a1b01709@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Replace two instances of bare pr_info with dev_info.
+Hi,
 
-Also make their messages a little more informative.
+There is a theoretical possibility of using
+minstrel_ht_get_expected_throughput() as a disclosure gadget for Branch
+History Injection (BHI)/Intra-mode Branch Target Injection (IMBTI) [1].
+Requesting feedback on the couple of patches that mitigates this.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v2:
- - No change.
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+First patch adds a generic speculation barrier. Second patch uses the
+speculation barrier to mitigate BHI/IMBTI.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 8bab7247460d..9d5ae83dad70 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -2015,7 +2015,8 @@ static int rtl8xxxu_download_firmware(struct rtl8xxxu_priv *priv)
- 
- 	val8 = rtl8xxxu_read8(priv, REG_MCU_FW_DL);
- 	if (val8 & MCU_FW_RAM_SEL) {
--		pr_info("do the RAM reset\n");
-+		dev_info(&priv->udev->dev,
-+			 "Firmware is already running, resetting the MCU.\n");
- 		rtl8xxxu_write8(priv, REG_MCU_FW_DL, 0x00);
- 		priv->fops->reset_8051(priv);
- 	}
-@@ -5420,7 +5421,8 @@ static void rtl8xxxu_rx_urb_work(struct work_struct *work)
- 			rtl8xxxu_queue_rx_urb(priv, rx_urb);
- 			break;
- 		default:
--			pr_info("failed to requeue urb %i\n", ret);
-+			dev_info(&priv->udev->dev,
-+				 "failed to requeue urb with error %i\n", ret);
- 			skb = (struct sk_buff *)rx_urb->urb.context;
- 			dev_kfree_skb(skb);
- 			usb_free_urb(&rx_urb->urb);
+The other goal of this series is to start a discussion on whether such
+hard to exploit, but theoretical possible attacks deems to be mitigated.
+
+In general Branch Target Injection class of attacks involves an adversary
+controlling an indirect branch target to misspeculate to a disclosure gadget.
+For a successful attack an adversary also needs to control the register
+contents used by the disclosure gadget.
+
+Assuming preconditions are met, a disclosure gadget would transiently do
+below:
+
+  1. Loads an attacker chosen data from memory.
+  2. Based on the data, modifies cache state that is observable by an attacker.
+
+Although both these operations are architecturally invisible, the cache state
+changes could be used to infer the data.
+
+Disclosure gadget is mitigated by adding a speculation barrier.
+
+Thanks,
+Pawan
+
+[1] https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/branch-history-injection.html
+
+Pawan Gupta (2):
+  nospec: Add a generic barrier_nospec()
+  minstrel_ht: Mitigate BTI gadget minstrel_ht_get_expected_throughput()
+
+ include/linux/nospec.h             | 4 ++++
+ net/mac80211/rc80211_minstrel_ht.c | 9 +++++++++
+ 2 files changed, 13 insertions(+)
+
 -- 
-2.38.0
+2.37.3
+
