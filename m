@@ -2,118 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F600609D2F
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 10:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3987609E51
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Oct 2022 11:50:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbiJXIww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 04:52:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46556 "EHLO
+        id S230216AbiJXJuC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 05:50:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbiJXIws (ORCPT
+        with ESMTP id S229544AbiJXJuA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 04:52:48 -0400
-Received: from smtp12.infineon.com (smtp12.infineon.com [217.10.52.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9389467CB1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 01:52:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1666601564; x=1698137564;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1P7U4J/slV1stj9O0lzUAI6AcH2QRxCsFGfKUmChIuA=;
-  b=TrXnkqvcWWik5Jo73vgMazNAMPwWJf97nQJirDaO4sZZ3fE3p56cq6Mv
-   Y52P82J+0YbEfQFELR+/i4WC9EU+9RioxyhGCGvHTPUkIcevntk2dE87Y
-   EPiswU+HAs2B1/A++VVfFv8pcAKBCVL4W+kJVby/migvczoVE/Jv1OIQl
-   Q=;
-X-SBRS: None
-X-IronPort-AV: E=McAfee;i="6500,9779,10509"; a="323260646"
-X-IronPort-AV: E=Sophos;i="5.95,207,1661810400"; 
-   d="scan'208";a="323260646"
-Received: from unknown (HELO mucxv001.muc.infineon.com) ([172.23.11.16])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 10:52:42 +0200
-Received: from MUCSE803.infineon.com (MUCSE803.infineon.com [172.23.29.29])
+        Mon, 24 Oct 2022 05:50:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70122495B
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 02:49:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mucxv001.muc.infineon.com (Postfix) with ESMTPS
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 10:52:42 +0200 (CEST)
-Received: from MUCSE815.infineon.com (172.23.29.41) by MUCSE803.infineon.com
- (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.30; Mon, 24 Oct
- 2022 10:52:41 +0200
-Received: from mailrelay-cypress4.infineon.com (172.23.18.56) by
- SMTP-MailRelay2.infineon.com (172.23.29.9) with Microsoft SMTP Server id
- 15.2.986.30; Mon, 24 Oct 2022 10:52:41 +0200
-mailrelay-external-outbound: True
-X-IronPort-AV: E=McAfee;i="6500,9779,10509"; a="268146235"
-X-IronPort-AV: E=Sophos;i="5.95,207,1661810400"; 
-   d="scan'208";a="268146235"
-Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
-  by mailrelay-cypress4.infineon.com with ESMTP; 24 Oct 2022 10:52:41 +0200
-Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
- (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Mon, 24 Oct 2022
- 03:52:38 -0500
-Received: from iot-wlan-dev-u03.aus.cypress.com (iot-wlan-dev-u03
- [10.248.81.193])       by inf2.aus.cypress.com (Postfix) with ESMTP id 807521004E1;
-        Mon, 24 Oct 2022 03:52:39 -0500 (CDT)
-Received: by iot-wlan-dev-u03.aus.cypress.com (Postfix, from userid 27991)      id
- 7E55C9807CC; Mon, 24 Oct 2022 03:52:39 -0500 (CDT)
-From:   Ian Lin <ian.lin@infineon.com>
-To:     <linux-wireless@vger.kernel.org>
-CC:     <brcm80211-dev-list@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
-        <Double.Lo@infineon.com>, <ian.lin@infineon.com>
-Subject: [PATCH v4 3/3] wifi: brcmfmac: Avoiding Connection delay
-Date:   Mon, 24 Oct 2022 03:52:15 -0500
-Message-ID: <20221024085215.27616-4-ian.lin@infineon.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20221024085215.27616-1-ian.lin@infineon.com>
-References: <20221024085215.27616-1-ian.lin@infineon.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66BC861128
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 09:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD785C433D6;
+        Mon, 24 Oct 2022 09:49:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666604997;
+        bh=fXposAJhPgxOUojoYHaqgEPPCjMMbUFD/bBUECimKMQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=acsZYmBtohqETJ94FXuV07V/GEUDhc29Yu36Dmk9PcmLV3+UeftXxr4rONA36oo7y
+         IT9Gh145VMkyRTyYKKoCvhSyax/NTHmNO0UlAJpyIMc/4RHMB8Cz5ASPiai0Iaj92v
+         TX4BjlN29Kx42s04kQoKWWBTHeg/Hu9GftuXZBZ+seb6FT8V48MwUcqAbBMHY5hMDU
+         0W8LqKd9mIITCB+wR//xYn+iphC6iv1CJB3vH5vShCDCTCrHfQ2WJLW3B+0/Q7cs2m
+         H1U2X+TrlUK8/EUKFBj4I36jA0YBmRkA6BlQmyWjXUKS6uw3LDR4N3CQQAIyTY6Tw0
+         4LlS+AfA2k/bw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Arend van Spriel <aspriel@gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: cfg80211: fix memory leak in query_regdb_file()
+References: <CAJ65rDzroYUFnPuzH54dFB1fAYPynDrTZYy-fF72E=Y_bFER-g@mail.gmail.com>
+Date:   Mon, 24 Oct 2022 12:49:50 +0300
+In-Reply-To: <CAJ65rDzroYUFnPuzH54dFB1fAYPynDrTZYy-fF72E=Y_bFER-g@mail.gmail.com>
+        (Arend van Spriel's message of "Wed, 19 Oct 2022 04:44:18 -0700")
+Message-ID: <87v8o9zh35.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>
+Arend van Spriel <aspriel@gmail.com> writes:
 
-Channel info passed by supplicant is not given to firmware. This causes
-delay (about 3seconds) due to full scan. Supplicant already provides the
-channel info for the specific SSID. channel_hint carries this channel
-info for the connect call back.
+> In the function query_regdb_file() the alpha2 parameter is duplicated
+> using kmemdup() and subsequently freed in regdb_fw_cb(). However,
+> request_firmware_nowait() can fail without calling regdb_fw_cb() and
+> thus leak memory.
+>
+> Fixes: 007f6c5e6eb4 ("cfg80211: support loading regulatory database as
+> firmware file")
 
-Patch has been verified on 43012 and 43455.
+The fixes tag should be in one line.
 
-Signed-off-by: Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>
-Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
-Signed-off-by: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-Signed-off-by: Ian Lin <ian.lin@infineon.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 14cbc30a3229..ae9507dec74a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -2315,6 +2315,12 @@ brcmf_cfg80211_connect(struct wiphy *wiphy, struct net_device *ndev,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (sme->channel_hint)
-+		chan = sme->channel_hint;
-+
-+	if (sme->bssid_hint)
-+		sme->bssid = sme->bssid_hint;
-+
- 	if (ifp->vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif) {
- 		/* A normal (non P2P) connection request setup. */
- 		ie = NULL;
 -- 
-2.25.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
