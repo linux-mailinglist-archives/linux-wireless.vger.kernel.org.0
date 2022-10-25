@@ -2,114 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F7260C258
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 05:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B79D60C562
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 09:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbiJYDrE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 23:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51308 "EHLO
+        id S231804AbiJYHgX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 03:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbiJYDrC (ORCPT
+        with ESMTP id S231863AbiJYHgJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 23:47:02 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4638F18E1F
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 20:46:55 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29P3kHllD024662, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29P3kHllD024662
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 25 Oct 2022 11:46:17 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Tue, 25 Oct 2022 11:46:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 25 Oct 2022 11:46:50 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Tue, 25 Oct 2022 11:46:50 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH v2 2/5] wifi: rtl8xxxu: Fix the CCK RSSI calculation
-Thread-Topic: [PATCH v2 2/5] wifi: rtl8xxxu: Fix the CCK RSSI calculation
-Thread-Index: AQHY5/ldtY14MVvhyEyBDz2twsUjo64eeFTQ
-Date:   Tue, 25 Oct 2022 03:46:50 +0000
-Message-ID: <7040619d7d5c4b198b320812093d33f9@realtek.com>
-References: <1edda764-94ca-2123-0ba6-6b04a1b01709@gmail.com>
- <25b7381d-178c-d909-015e-1acf7698ec13@gmail.com>
-In-Reply-To: <25b7381d-178c-d909-015e-1acf7698ec13@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzI0IOS4i+WNiCAxMTozMTowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 25 Oct 2022 03:36:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5175437E2;
+        Tue, 25 Oct 2022 00:36:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F957617B5;
+        Tue, 25 Oct 2022 07:36:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1850DC433D6;
+        Tue, 25 Oct 2022 07:36:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1666683364;
+        bh=csTN+if518gFOuGYlWzyn01/ZqMgQMJaa5htwhFMhvs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=1P49JiLnbXMLkKWKAQwcLZSo8ZsuUxg5HcnhKUedNDsS3qKT+ioTwHCavQnQKDUPm
+         6sVKW3qpzs37cHjAbypmHHF7m55VNF9UbtUMtdSBlLZmHONqN/YM5+QUuIdBoppNe6
+         zreakjbjrhh+S+9VCh+jN2DZ5RubOBlCBwspCH8w=
+Date:   Tue, 25 Oct 2022 09:36:56 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
+        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        antonio.gomez.iglesias@linux.intel.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] minstrel_ht: Mitigate BTI gadget
+ minstrel_ht_get_expected_throughput()
+Message-ID: <Y1eSGK5vylNmBbVp@kroah.com>
+References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+ <ceb2bcdc79f1494151e85734fa7bdc639df275bb.1666651511.git.pawan.kumar.gupta@linux.intel.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ceb2bcdc79f1494151e85734fa7bdc639df275bb.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIE9jdG9iZXIgMjUs
-IDIwMjIgNDo1NSBBTQ0KPiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IENj
-OiBKZXMgU29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+DQo+IFN1YmplY3Q6IFtQQVRD
-SCB2MiAyLzVdIHdpZmk6IHJ0bDh4eHh1OiBGaXggdGhlIENDSyBSU1NJIGNhbGN1bGF0aW9uDQo+
-IA0KPiBUaGUgQ0NLIFJTU0kgY2FsY3VsYXRpb24gaXMgaW5jb3JyZWN0IGZvciB0aGUgUlRMODcy
-M0JVLCBSVEw4MTkyRVUsDQo+IGFuZCBSVEw4MTg4RlUuIEFkZCBuZXcgZnVuY3Rpb25zIGZvciB0
-aGVzZSBjaGlwcyB3aXRoIGNvZGUgY29waWVkIGZyb20NCj4gdGhlaXIgdmVuZG9yIGRyaXZlcnMu
-IFVzZSB0aGUgb2xkIGNvZGUgb25seSBmb3IgdGhlIFJUTDg3MjNBVSBhbmQNCj4gUlRMODE5MkNV
-Lg0KPiANCj4gSSBkaWRuJ3Qgbm90aWNlIGFueSBkaWZmZXJlbmNlIGluIHRoZSByZXBvcnRlZCBz
-aWduYWwgc3RyZW5ndGggd2l0aCBteQ0KPiBSVEw4MTg4RlUsIGJ1dCBJIGRpZG4ndCBsb29rIHZl
-cnkgaGFyZCBlaXRoZXIuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxy
-dGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gLS0tDQo+IHYyOg0KPiAgLSBObyBjaGFuZ2UuDQo+
-IC0tLQ0KPiAgLi4uL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1LmggIHwg
-IDMgKysNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1XzgxODhmLmMgICAgICAgICB8
-IDMyICsrKysrKysrKysrKysrKysNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1Xzgx
-OTJjLmMgICAgICAgICB8ICAxICsNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1Xzgx
-OTJlLmMgICAgICAgICB8IDIzICsrKysrKysrKysrDQo+ICAuLi4vcmVhbHRlay9ydGw4eHh4dS9y
-dGw4eHh4dV84NzIzYS5jICAgICAgICAgfCAyMyArKysrKysrKysrKw0KPiAgLi4uL3JlYWx0ZWsv
-cnRsOHh4eHUvcnRsOHh4eHVfODcyM2IuYyAgICAgICAgIHwgMjkgKysrKysrKysrKysrKysNCj4g
-IC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYyB8IDM4ICsrKysr
-KysrKysrKy0tLS0tLS0NCj4gIDcgZmlsZXMgY2hhbmdlZCwgMTM1IGluc2VydGlvbnMoKyksIDE0
-IGRlbGV0aW9ucygtKQ0KPiANCg0KWy4uLl0NCg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYw0KPiBpbmRleCA4NmEz
-NDU3ZmQ5NTEuLjcwMjNmNmFjY2RhNyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gKysrIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gQEAgLTQzMjUsNiAr
-NDMyNSwyOSBAQCBzdGF0aWMgaW50IHJ0bDh4eHh1X2luaXRfZGV2aWNlKHN0cnVjdCBpZWVlODAy
-MTFfaHcgKmh3KQ0KPiAgCQl2YWwzMiAmPSAweGZmZjAwZmZmOw0KPiAgCQl2YWwzMiB8PSAweDAw
-MDdlMDAwOw0KPiAgCQlydGw4eHh4dV93cml0ZTMyKHByaXYsIFJFR19BRkVfTUlTQywgdmFsMzIp
-Ow0KPiArDQo+ICsJCS8qDQo+ICsJCSAqIDB4ODI0WzldID0gMHg4MkNbOV0gPSAweEE4MFs3XSB0
-aG9zZSByZWdpc3RlcnMgc2V0dGluZw0KPiArCQkgKiBzaG91bGQgYmUgZXF1YWwgb3IgQ0NLIFJT
-U0kgcmVwb3J0IG1heSBiZSBpbmNvcnJlY3QNCj4gKwkJICovDQo+ICsJCXZhbDMyID0gcnRsOHh4
-eHVfcmVhZDMyKHByaXYsIFJFR19GUEdBMF9YQV9IU1NJX1BBUk0yKTsNCj4gKwkJcHJpdi0+Y2Nr
-X2FnY19yZXBvcnRfdHlwZSA9IHZhbDMyICYgRlBHQTBfSFNTSV9QQVJNMl9DQ0tfSElHSF9QV1I7
-DQo+ICsNCj4gKwkJdmFsMzIgPSBydGw4eHh4dV9yZWFkMzIocHJpdiwgUkVHX0ZQR0EwX1hCX0hT
-U0lfUEFSTTIpOw0KPiArCQlpZiAocHJpdi0+Y2NrX2FnY19yZXBvcnRfdHlwZSAhPSAoYm9vbCko
-dmFsMzIgJiBGUEdBMF9IU1NJX1BBUk0yX0NDS19ISUdIX1BXUikpIHsNCj4gKwkJCWlmIChwcml2
-LT5jY2tfYWdjX3JlcG9ydF90eXBlKQ0KPiArCQkJCXZhbDMyIHw9IEZQR0EwX0hTU0lfUEFSTTJf
-Q0NLX0hJR0hfUFdSOw0KPiArCQkJZWxzZQ0KPiArCQkJCXZhbDMyICY9IH5GUEdBMF9IU1NJX1BB
-Uk0yX0NDS19ISUdIX1BXUjsNCj4gKwkJCXJ0bDh4eHh1X3dyaXRlMzIocHJpdiwgUkVHX0ZQR0Ew
-X1hCX0hTU0lfUEFSTTIsIHZhbDMyKTsNCj4gKwkJfQ0KPiArDQo+ICsJCXZhbDMyID0gcnRsOHh4
-eHVfcmVhZDMyKHByaXYsIDB4YTgwKTsNCj4gKwkJaWYgKHByaXYtPmNja19hZ2NfcmVwb3J0X3R5
-cGUpDQo+ICsJCQl2YWwzMiB8PSBCSVQoNyk7DQo+ICsJCWVsc2UNCj4gKwkJCXZhbDMyICY9IH5C
-SVQoNyk7DQoNCldlIGNhbiBnaXZlIGEgbmFtZSB0byAweEE4MFs3XTogDQoNCiNkZWZpbmUgUkVH
-X0FHQ19SUFQgMHgwYTgwDQojZGVmaW5lIEFHQ19SVFBfQ0NLIEJJVCg3KQ0KDQoNCg==
+On Mon, Oct 24, 2022 at 03:57:47PM -0700, Pawan Gupta wrote:
+> Static analysis indicate that indirect target
+> minstrel_ht_get_expected_throughput() could be used as a disclosure
+> gadget for Intra-mode Branch Target Injection (IMBTI) and Branch History
+> Injection (BHI).
+
+You define these new TLAs here, but the code comment below does not,
+making this code now impossible to understand :(
+
+> ASM generated by compilers indicate a construct of a typical disclosure
+> gadget, where an adversary-controlled register contents can be used to
+> transiently access an arbitrary memory location.
+
+If you have an "adveraray-controlled register contents", why would you
+waste that on a mere speculation attack and not do something better,
+like get root instead?
+
+> Although there are no known ways to exploit this, but to be on safer
+> side mitigate it by adding a speculation barrier.
+> 
+> Reported-by: Scott D. Constable <scott.d.constable@intel.com>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> ---
+>  net/mac80211/rc80211_minstrel_ht.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+> index 3d91b98db099..7cf90666a865 100644
+> --- a/net/mac80211/rc80211_minstrel_ht.c
+> +++ b/net/mac80211/rc80211_minstrel_ht.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/moduleparam.h>
+>  #include <linux/ieee80211.h>
+>  #include <linux/minmax.h>
+> +#include <linux/nospec.h>
+>  #include <net/mac80211.h>
+>  #include "rate.h"
+>  #include "sta_info.h"
+> @@ -1999,6 +2000,14 @@ static u32 minstrel_ht_get_expected_throughput(void *priv_sta)
+>  	struct minstrel_ht_sta *mi = priv_sta;
+>  	int i, j, prob, tp_avg;
+>  
+> +	/*
+> +	 * Protect against IMBTI/BHI.
+
+This makes no sense here, right?
+
+And you are NOT following the proper networking comment style, didn't
+checkpatch complain about this?
+
+> +	 *
+> +	 * Transiently executing this function with an adversary controlled
+> +	 * argument may disclose secrets. Speculation barrier prevents that.
+> +	 */
+> +	barrier_nospec();
+
+So how much did you just slow down the normal use of the system?
+
+> +
+>  	i = MI_RATE_GROUP(mi->max_tp_rate[0]);
+>  	j = MI_RATE_IDX(mi->max_tp_rate[0]);
+
+These are all internal structures, can't you just bounds-prevent the
+speculation instead of the hard barrier?
+
+thanks,
+
+greg k-h
