@@ -2,86 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9208060D587
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 22:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2729260D598
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 22:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232334AbiJYUbX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 16:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49630 "EHLO
+        id S230522AbiJYUe4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 16:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbiJYUbW (ORCPT
+        with ESMTP id S230057AbiJYUev (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 16:31:22 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DC93C8DB;
-        Tue, 25 Oct 2022 13:31:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Kn41KvvRKURQXqaXHScfb81l81NkFHEbTZZ1F3tjXuQ=; b=MQLhrqp6VPmz5S+1m+8JNo3SMD
-        BHl1ZU327KqsKiuCoyvfVJ1FJJitl8o7sf0nOfjM8qxUNdIOzMOegIy5iEiDiKkDW5Tq9ZE0z6zxW
-        gXqCDn+Z2AQsqz1+4EdiNMQbuB39jGrFgR9/i9PJTzIYc49c1CGd8Pm/ZloAOH4cIGRouCsVV/IjA
-        e+VRIyXxPpCRVhLLwudwIdfOJWIbqpSDwOrRxxSA1soLqGHZIv0m2Eu+v2PbSx3Px3q0C7sxhd6rH
-        P6veK71gMreI9ehae64mDUu6HaIhHBbcLwPARRg/9NvlbkyJ8sJYWlTUxWDdypmP3rAqSpCRpR2Er
-        SKuXgfbA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1onQZi-006ObR-4W; Tue, 25 Oct 2022 20:31:02 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3E3C030017F;
-        Tue, 25 Oct 2022 22:31:01 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id DD30D2C450331; Tue, 25 Oct 2022 22:31:00 +0200 (CEST)
-Date:   Tue, 25 Oct 2022 22:31:00 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
-        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        antonio.gomez.iglesias@linux.intel.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] Branch Target Injection (BTI) gadget in minstrel
-Message-ID: <Y1hHhMczQlqi4DxD@hirez.programming.kicks-ass.net>
-References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
- <Y1fDiJtxTe8mtBF8@hirez.programming.kicks-ass.net>
- <20221025193845.z7obsqotxi2yiwli@desk>
+        Tue, 25 Oct 2022 16:34:51 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AED431359
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 13:34:48 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id q71so12665392pgq.8
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 13:34:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K4idpmkzDBgIbVIVOkIoDw91xN0C1Ri4v3+lvv9+Gd0=;
+        b=SsdGHf7mcgc0mw3x0Nxou+jWD7Yzfr/8TN70eljMThtqGt1SAMy+sbeY3wMbaG4/h/
+         ARsQXXdkdYTnu+Sgp+7m8qsaqpJFjU1xgWPlppE6HcE2QtYMLGGR3tcGtazSDj6aRvbP
+         BfluYK1sm0jk7MpBezhrmEqNto2FzBtk34SY5Pd83/77dxkbygOSoMwJhpu+w9xj4gi3
+         H6drvb4o/IangNxKBRQGxZx5+qpJOnOEh7N0+F+lnu0Ex9Kd0QGYUXmIGBG5M5uSm8XX
+         mswW4fPsFp42YshmohHMTq05QqL6v7jwGTOyIEtnZEEaWTDRakfGt749ILBwIEZcmizL
+         b1rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K4idpmkzDBgIbVIVOkIoDw91xN0C1Ri4v3+lvv9+Gd0=;
+        b=5czSpXSR9r2O0gdxYUAtBz4ZJKhZc6hQVWqyMLv8wPrScA3yJ0bkDGBL84YYMqb9+l
+         IGmeMzMfoY+dZpHRz8qi6x9DjmwSTcVdXxFEbkrZdoQr9UbigFG5szNV4b/lzH//5/Be
+         5CzYjpBYNnqSvG83MVLUL11I9tNjysbVtrCXNj44SfpSaAr9TLJhgSYEMVtqD/37OsAh
+         jjZH9NAxaT2ChhMQTHTHmsMH57iCAXWrrudFXtIoL0a2a3uCLswJ38Gx4Y4PwldMPnQV
+         FihY/c5EgoNidnzGiOVBYpnCvLWReTRKrUcOMPu9oXRn9nRMGlJZQWX/QZxhaE1akNld
+         Sy+g==
+X-Gm-Message-State: ACrzQf0xF+W6gE1T/bZhmKRnPmTGXKPHuZQCujG4Of+8kKre6kzTnx/U
+        xQMRMMk11wuSOx3Hs66uJDoCgjYqiXo=
+X-Google-Smtp-Source: AMsMyM77EwmHdy0cPNAGH8xE4Wq1vwkn7JYpz6Hc2Bjm6/STJytbNhnz374okBALGgKFQBAWNiksBg==
+X-Received: by 2002:a63:5511:0:b0:439:12f6:fb9a with SMTP id j17-20020a635511000000b0043912f6fb9amr35025644pgb.197.1666730087628;
+        Tue, 25 Oct 2022 13:34:47 -0700 (PDT)
+Received: from jprestwo-xps.none ([50.39.160.234])
+        by smtp.gmail.com with ESMTPSA id n22-20020a17090a161600b0020dd9382124sm5514731pja.57.2022.10.25.13.34.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Oct 2022 13:34:47 -0700 (PDT)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH 0/1] Fix __ieee80211_disconnect when not associated
+Date:   Tue, 25 Oct 2022 13:34:42 -0700
+Message-Id: <20221025203443.410121-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.34.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221025193845.z7obsqotxi2yiwli@desk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 12:38:45PM -0700, Pawan Gupta wrote:
+A user reported some behavior where IWD hangs expecting another event
+to come and it never does. This was due to the firmware (iwlwifi)
+timing out after authentication and calling __ieee80211_disconnect
+which essentially does nothing if not associated. The problem here
+is userspace expects some event to come after authenticating whether
+it be an association, disconnect, death etc.
 
-> > I think the focus should be on finding the source sites, not protecting
-> > the target sites. Where can an attacker control the register content and
-> > have an indirect jump/call.
-> 
-> That is an interesting approach. I am wondering what mitigation can
-> be applied at source?
+This my attempt at fixing the problem. Note that the real issue
+here is iwlwifi. The user can reliably reproduce this problem which
+points to a firmware issue since a connection loss should be quite
+rare I assume. Regardless, any bad driver/firmware could cause this
+behavior since __ieee80211_disconnect only handles being associated.
 
-Limiting the value ranges for example. Or straight up killing the values
-if they go unused -- like how we clear the registers in entry.
+I personally cannot test this, so I hacked mac80211 to call
+__ieee80211_disconnect immediately after sending the authenticate
+event. This effectively causes the same behavior and indeed this
+patch causes a disconnect which is the behavior I would expect.
 
-> LFENCE before an indirect branch can greatly
-> reduce the speculation window, but will not completely eliminate it.
+I asked about this a week ago with no response so hopefully this
+gets more attention and at least gets the conversation going, even
+if I went about the fix wrong.
 
-Depends on the part; there's a whole bunch of parts where LFENCE is
-sufficient.
+James Prestwood (1):
+  wifi: mac80211: handle connection loss in __ieee80211_disconnect
 
+ net/mac80211/mlme.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+-- 
+2.34.3
 
