@@ -2,148 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A88A60CF61
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 16:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E1D60D212
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 18:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232265AbiJYOmZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 10:42:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60486 "EHLO
+        id S232038AbiJYQ4Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 12:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232630AbiJYOmV (ORCPT
+        with ESMTP id S232243AbiJYQz6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 10:42:21 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 41AD917D879
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 07:42:18 -0700 (PDT)
-Message-ID: <a54581e8-792a-0f54-e886-bca3d1d1063e@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1666708934;
-        bh=pvZvWzjCJT9uqVogpxiNJDc4fo+HVrkaM7QPvG6nolU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=hbSgDeB/zzWcssq/NYbqiPnwXx4vAG2rJav00L0DIRZd5x4nfgOrQDraOyRUIejt1
-         ktDePBHh5g7FZFtnB0wFMUGYlfXtNpOfEbgbB37H+uGV/Ba+Gb3q4y5Ed21ohzlpch
-         toF9kRQg0MX48tNFXuNzdZL3g9L0Fz+k55gpzYEA=
-Date:   Tue, 25 Oct 2022 16:42:10 +0200
+        Tue, 25 Oct 2022 12:55:58 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261ECDDA36;
+        Tue, 25 Oct 2022 09:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666716957; x=1698252957;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=njjboqv4Bsu1ZVUFPFBzTeovN/+xYByVQGTT3Ez9mqw=;
+  b=MYK6PFQLigSfzfRwipCeDiLAM9UvirtynRiVlhRXkCPl9gYtddRGEk8F
+   Gn+udxTwQZyl5i0mzMi5JVwUkCdj0FsdEnfTHayLPLFX7qrsC9eGQKHin
+   Um+DWaOv8ksr/+yifJZE61QGG6ur8OVKnHT3QgHBjw2al1i+yeVmBwXYV
+   LdGqdVd8Ach9Ztd/4PuXCb49nn0UMByK0xIVq5+/qkesq+EWXj9JyN3KT
+   6p6tK9ZPAKOYz253c3MNSAmvkGHuXJ/jXsyKQlzp/4DpqassITl1QezAe
+   CCuffwMQMFV/B2FFr3eqhgImBQqlWPFetnf72CK6C7mIxRxSTUAAlfcRM
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="394045966"
+X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
+   d="scan'208";a="394045966"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 09:55:56 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="631699786"
+X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
+   d="scan'208";a="631699786"
+Received: from swatthag-mobl1.amr.corp.intel.com (HELO desk) ([10.209.27.104])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 09:55:55 -0700
+Date:   Tue, 25 Oct 2022 09:55:54 -0700
+From:   Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
+        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        antonio.gomez.iglesias@linux.intel.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] minstrel_ht: Mitigate BTI gadget
+ minstrel_ht_get_expected_throughput()
+Message-ID: <20221025165554.7zfykwejjyv2olcc@desk>
+References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+ <ceb2bcdc79f1494151e85734fa7bdc639df275bb.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+ <Y1eSGK5vylNmBbVp@kroah.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH] wifi: mac80211: fix general-protection-fault in
- ieee80211_subif_start_xmit()
-Content-Language: en-US
-To:     Zhengchao Shao <shaozhengchao@huawei.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     weiyongjun1@huawei.com, yuehaibing@huawei.com
-References: <20221025123250.143952-1-shaozhengchao@huawei.com>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <20221025123250.143952-1-shaozhengchao@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <Y1eSGK5vylNmBbVp@kroah.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25.10.22 14:32, Zhengchao Shao wrote:
-> When device is running and the interface status is changed, the gpf issue
-> is triggered. The problem triggering process is as follows:
-> Thread A:                           Thread B
-> ieee80211_runtime_change_iftype()   process_one_work()
->      ...                                 ...
->      ieee80211_do_stop()                 ...
->      ...                                 ...
->          sdata->bss = NULL               ...
->          ...                             ieee80211_subif_start_xmit()
->                                              ieee80211_multicast_to_unicast
->                                      //!sdata->bss->multicast_to_unicast
->                                        cause gpf issue
-> 
-> When the interface status is changed, the sending queue continues to send
-> packets. After the bss is set to NULL, the bss is accessed. As a result,
-> this causes a general-protection-fault issue.
-> 
-> The following is the stack information:
-> general protection fault, probably for non-canonical address
-> 0xdffffc000000002f: 0000 [#1] PREEMPT SMP KASAN
-> KASAN: null-ptr-deref in range [0x0000000000000178-0x000000000000017f]
-> Workqueue: mld mld_ifc_work
-> RIP: 0010:ieee80211_subif_start_xmit+0x25b/0x1310
-> Call Trace:
-> <TASK>
-> dev_hard_start_xmit+0x1be/0x990
-> __dev_queue_xmit+0x2c9a/0x3b60
-> ip6_finish_output2+0xf92/0x1520
-> ip6_finish_output+0x6af/0x11e0
-> ip6_output+0x1ed/0x540
-> mld_sendpack+0xa09/0xe70
-> mld_ifc_work+0x71c/0xdb0
-> process_one_work+0x9bf/0x1710
-> worker_thread+0x665/0x1080
-> kthread+0x2e4/0x3a0
-> ret_from_fork+0x1f/0x30
-> </TASK>
-> 
-> Fixes: 107395f9cf44 ("wifi: mac80211: Drop support for TX push path")
+On Tue, Oct 25, 2022 at 09:36:56AM +0200, Greg KH wrote:
+>On Mon, Oct 24, 2022 at 03:57:47PM -0700, Pawan Gupta wrote:
+>> Static analysis indicate that indirect target
+>> minstrel_ht_get_expected_throughput() could be used as a disclosure
+>> gadget for Intra-mode Branch Target Injection (IMBTI) and Branch History
+>> Injection (BHI).
+>
+>You define these new TLAs here, but the code comment below does not,
+>making this code now impossible to understand :(
 
-Don't think this patch fixes an issue introduced with the patch you 
-refer to. This patch changed nothing from a flow perspective and is just 
-cleaning up unused code.
-It still may still make sense to refer to the series: It next to be sure 
-triggered the issue for at least one driver (I assume it was hwsim here.)
+I will expand the TLAs in the comment.
 
-That said this seems to be more related to whatever caused this bug:
-f856373e2f31 ("wifi: mac80211: do not wake queues on a vif that is being 
-stopped")
+>> ASM generated by compilers indicate a construct of a typical disclosure
+>> gadget, where an adversary-controlled register contents can be used to
+>> transiently access an arbitrary memory location.
+>
+>If you have an "adveraray-controlled register contents", why would you
+>waste that on a mere speculation attack and not do something better,
+>like get root instead?
 
+In the non-transient path those registers can contain system call
+arguments that are checked for illegal accesses, thus are harmless. But
+when executing transiently those registers could be interpreted as
+(completely unrelated) arguments of a disclosure gadget.
 
-> Reported-by: syzbot+c6e8fca81c294fd5620a@syzkaller.appspotmail.com
-> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-> ---
->   net/mac80211/iface.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index dd9ac1f7d2ea..5a924459bfd1 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
-> @@ -1900,6 +1900,9 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
->   				  IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
->   	synchronize_net();
->   
-> +	if (sdata->dev)
-> +		netif_tx_stop_all_queues(sdata->dev);
+>> Although there are no known ways to exploit this, but to be on safer
+>> side mitigate it by adding a speculation barrier.
+>>
+>> Reported-by: Scott D. Constable <scott.d.constable@intel.com>
+>> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+>> ---
+>>  net/mac80211/rc80211_minstrel_ht.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+>> index 3d91b98db099..7cf90666a865 100644
+>> --- a/net/mac80211/rc80211_minstrel_ht.c
+>> +++ b/net/mac80211/rc80211_minstrel_ht.c
+>> @@ -11,6 +11,7 @@
+>>  #include <linux/moduleparam.h>
+>>  #include <linux/ieee80211.h>
+>>  #include <linux/minmax.h>
+>> +#include <linux/nospec.h>
+>>  #include <net/mac80211.h>
+>>  #include "rate.h"
+>>  #include "sta_info.h"
+>> @@ -1999,6 +2000,14 @@ static u32 minstrel_ht_get_expected_throughput(void *priv_sta)
+>>  	struct minstrel_ht_sta *mi = priv_sta;
+>>  	int i, j, prob, tp_avg;
+>>
+>> +	/*
+>> +	 * Protect against IMBTI/BHI.
+>
+>This makes no sense here, right?
 
-All mac80211 interfaces are now non-queuing interfaces.
-When you stop the netif queues for a non-queuing interface netdev will 
-warn about that.
+I will expand those and add some more explanation.
 
-To avoid that you have to replace the netif call with
-	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+>And you are NOT following the proper networking comment style, didn't
+>checkpatch complain about this?
 
-Should just work the same for you here.
-> +
->   	ieee80211_do_stop(sdata, false);
->   
->   	ieee80211_teardown_sdata(sdata);
-> @@ -1922,6 +1925,9 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
->   	err = ieee80211_do_open(&sdata->wdev, false);
->   	WARN(err, "type change: do_open returned %d", err);
->   
-> +	if (sdata->dev)
-> +		netif_tx_start_all_queues(sdata->dev);
+checkpatch did complain, but I noticed that this file is following
+regular commenting style everywhere. I can changed that to networking
+style but it will differ from the rest of the file.
 
-That must then be of course
-	set_bit(SDATA_STATE_RUNNING, &sdata->state);
+>> +	 *
+>> +	 * Transiently executing this function with an adversary controlled
+>> +	 * argument may disclose secrets. Speculation barrier prevents that.
+>> +	 */
+>> +	barrier_nospec();
+>
+>So how much did you just slow down the normal use of the system?
 
+I don't have data for this. As I understand this function is not called
+frequently, so perf impact is not expected to be significant.
 
-> +
->   	ieee80211_wake_vif_queues(local, sdata,
->   				  IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
->   	return ret;
+>> +
+>>  	i = MI_RATE_GROUP(mi->max_tp_rate[0]);
+>>  	j = MI_RATE_IDX(mi->max_tp_rate[0]);
+>
+>These are all internal structures, can't you just bounds-prevent the
+>speculation instead of the hard barrier?
 
-Alexander
+The valid bound in this case is large enough (bits 15:6 IIRC) to still
+pose a risk. As this function is not called frequently adding a
+speculation barrier looks to be the best choice.
