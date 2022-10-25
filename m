@@ -2,155 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36E1D60D212
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 18:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9617E60D290
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 19:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbiJYQ4Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 12:56:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46320 "EHLO
+        id S230388AbiJYRfP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 13:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbiJYQz6 (ORCPT
+        with ESMTP id S230025AbiJYRfN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 12:55:58 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261ECDDA36;
-        Tue, 25 Oct 2022 09:55:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666716957; x=1698252957;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=njjboqv4Bsu1ZVUFPFBzTeovN/+xYByVQGTT3Ez9mqw=;
-  b=MYK6PFQLigSfzfRwipCeDiLAM9UvirtynRiVlhRXkCPl9gYtddRGEk8F
-   Gn+udxTwQZyl5i0mzMi5JVwUkCdj0FsdEnfTHayLPLFX7qrsC9eGQKHin
-   Um+DWaOv8ksr/+yifJZE61QGG6ur8OVKnHT3QgHBjw2al1i+yeVmBwXYV
-   LdGqdVd8Ach9Ztd/4PuXCb49nn0UMByK0xIVq5+/qkesq+EWXj9JyN3KT
-   6p6tK9ZPAKOYz253c3MNSAmvkGHuXJ/jXsyKQlzp/4DpqassITl1QezAe
-   CCuffwMQMFV/B2FFr3eqhgImBQqlWPFetnf72CK6C7mIxRxSTUAAlfcRM
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="394045966"
-X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
-   d="scan'208";a="394045966"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 09:55:56 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="631699786"
-X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
-   d="scan'208";a="631699786"
-Received: from swatthag-mobl1.amr.corp.intel.com (HELO desk) ([10.209.27.104])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 09:55:55 -0700
-Date:   Tue, 25 Oct 2022 09:55:54 -0700
-From:   Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
-        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        antonio.gomez.iglesias@linux.intel.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] minstrel_ht: Mitigate BTI gadget
- minstrel_ht_get_expected_throughput()
-Message-ID: <20221025165554.7zfykwejjyv2olcc@desk>
-References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
- <ceb2bcdc79f1494151e85734fa7bdc639df275bb.1666651511.git.pawan.kumar.gupta@linux.intel.com>
- <Y1eSGK5vylNmBbVp@kroah.com>
+        Tue, 25 Oct 2022 13:35:13 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464312DFE;
+        Tue, 25 Oct 2022 10:35:11 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id f27so3923263eje.1;
+        Tue, 25 Oct 2022 10:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=d1cd8/NWjgbm6/tO2cUdBfWpIFFstc01MVYIyopAQQU=;
+        b=LXCSVnzlNDZDIRsuW9DaO/y+bV1tFbC7e6MHKoPhCmSHCvCroOUvnoqvwP8nCWH2wf
+         Nls62CGMpz3RKZFTlNf87EOaHDJTNp4C2+BG8Tg3dzDMPdgLrmUM0F3tabl4wCHV7Xgz
+         GA7LhUMR7krQ04F8XYWr/gOvtT2VpTDoMSyG8b+YKz9cSCELb3mlzHTkah67+w1gAJEb
+         mVvADdTFs7oy6d8ULCQIhbItnOw4fbuhDT8ArMC4uOz91Lwmu6QhsWEFf7oEKouyr8QM
+         ui7qN5XHWiWYtZobDqzCy7ghobQkMR+ygdh+O3Eg6uqs+m/75SPwNVU7kHsBQmjhz/7j
+         4Z7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d1cd8/NWjgbm6/tO2cUdBfWpIFFstc01MVYIyopAQQU=;
+        b=IsxyuuTL70jCM5DnZTrgLKfq77eAqaqwZSCCbIoFrFAJBoLh6d44Q2Ju9LJ5gM83VG
+         mvLuS88d40Sa3hroR5n82Hid7JqUJzKsPslWNFOUgT4uAOW9ZEMxEhQMiZZIudTI8DGG
+         jvIwQd9aaldaj4jhkG6EqW/3plzVUkQlNGasK8vcY79adqGTza5ONrA7p5IvRsG1Ya8s
+         GbHFY4TBFlzDSGYxjXM6Oa2UoxM4ntFVE8ug60kmWCoi8PetOyVIcMy39/cyP27FiLrp
+         y7qABGsUYkGZsm850ZsT+zFG/JCdV0CInmSOWZOggYW/ssh4n4eYSYrsfIKYCCm281DR
+         rKsg==
+X-Gm-Message-State: ACrzQf1GDlTfk79+wddUQkvVxvFpbATEtyQMv4r0nBU67ZKsmMlfvo7q
+        jAzQjqo7VnRSVygR2GzkTkI=
+X-Google-Smtp-Source: AMsMyM5kPNRY8ehQaII4UakT7mDg5cwoCSVLgCFvxHnyTdolB4Iqai/E90rZd0klrt6sPGfLIdP61A==
+X-Received: by 2002:a17:907:2cf1:b0:78d:cafc:caba with SMTP id hz17-20020a1709072cf100b0078dcafccabamr33887607ejc.154.1666719309845;
+        Tue, 25 Oct 2022 10:35:09 -0700 (PDT)
+Received: from [192.168.1.100] (p57935738.dip0.t-ipconnect.de. [87.147.87.56])
+        by smtp.gmail.com with ESMTPSA id eq9-20020a056402298900b0045b4b67156fsm1975141edb.45.2022.10.25.10.35.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Oct 2022 10:35:09 -0700 (PDT)
+Message-ID: <f0b755d2-6d73-5b04-e013-59f622e143da@gmail.com>
+Date:   Tue, 25 Oct 2022 19:35:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Y1eSGK5vylNmBbVp@kroah.com>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2] staging: rtl8192e: remove bogus ssid character sign
+ test
+Content-Language: en-US
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        dan.carpenter@oracle.com, gregkh@linuxfoundation.org,
+        kvalo@kernel.org, linux-wireless@vger.kernel.org
+References: <Y1e+SmS3O2ZaPVoe@kroah.com>
+ <20221025122150.583617-1-Jason@zx2c4.com>
+From:   Philipp Hortmann <philipp.g.hortmann@gmail.com>
+In-Reply-To: <20221025122150.583617-1-Jason@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 09:36:56AM +0200, Greg KH wrote:
->On Mon, Oct 24, 2022 at 03:57:47PM -0700, Pawan Gupta wrote:
->> Static analysis indicate that indirect target
->> minstrel_ht_get_expected_throughput() could be used as a disclosure
->> gadget for Intra-mode Branch Target Injection (IMBTI) and Branch History
->> Injection (BHI).
->
->You define these new TLAs here, but the code comment below does not,
->making this code now impossible to understand :(
+On 10/25/22 14:21, Jason A. Donenfeld wrote:
+> This error triggers on some architectures with unsigned `char` types:
+> 
+> drivers/staging/rtl8192e/rtllib_softmac_wx.c:459 rtllib_wx_set_essid() warn: impossible condition '(extra[i] < 0) => (0-255 < 0)'
+> 
+> But actually, the entire test is bogus, as ssids don't have any sign
+> validity rules like that. So just remove this check look all together.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-staging@lists.linux.dev
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+> Changes v1->v2:
+> - Remove ssid sign test entirely rather than casting to `s8 *`.
+> 
+>   drivers/staging/rtl8192e/rtllib_softmac_wx.c | 9 +--------
+>   1 file changed, 1 insertion(+), 8 deletions(-)
+> 
+> diff --git a/drivers/staging/rtl8192e/rtllib_softmac_wx.c b/drivers/staging/rtl8192e/rtllib_softmac_wx.c
+> index f9589c5b62ba..1e5ad3b476ef 100644
+> --- a/drivers/staging/rtl8192e/rtllib_softmac_wx.c
+> +++ b/drivers/staging/rtl8192e/rtllib_softmac_wx.c
+> @@ -439,7 +439,7 @@ int rtllib_wx_set_essid(struct rtllib_device *ieee,
+>   			union iwreq_data *wrqu, char *extra)
+>   {
+>   
+> -	int ret = 0, len, i;
+> +	int ret = 0, len;
+>   	short proto_started;
+>   	unsigned long flags;
+>   
+> @@ -455,13 +455,6 @@ int rtllib_wx_set_essid(struct rtllib_device *ieee,
+>   		goto out;
+>   	}
+>   
+> -	for (i = 0; i < len; i++) {
+> -		if (extra[i] < 0) {
+> -			ret = -1;
+> -			goto out;
+> -		}
+> -	}
+> -
+>   	if (proto_started)
+>   		rtllib_stop_protocol(ieee, true);
 
-I will expand the TLAs in the comment.
+This patch cannot be applied on:
+[PATCH] staging: rtl8192e: use explicitly signed char
+On 10/24/22 18:30, Jason A. Donenfeld
+As line 456 was changed.
 
->> ASM generated by compilers indicate a construct of a typical disclosure
->> gadget, where an adversary-controlled register contents can be used to
->> transiently access an arbitrary memory location.
->
->If you have an "adveraray-controlled register contents", why would you
->waste that on a mere speculation attack and not do something better,
->like get root instead?
+Bye Philipp
 
-In the non-transient path those registers can contain system call
-arguments that are checked for illegal accesses, thus are harmless. But
-when executing transiently those registers could be interpreted as
-(completely unrelated) arguments of a disclosure gadget.
+>   
 
->> Although there are no known ways to exploit this, but to be on safer
->> side mitigate it by adding a speculation barrier.
->>
->> Reported-by: Scott D. Constable <scott.d.constable@intel.com>
->> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
->> ---
->>  net/mac80211/rc80211_minstrel_ht.c | 9 +++++++++
->>  1 file changed, 9 insertions(+)
->>
->> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
->> index 3d91b98db099..7cf90666a865 100644
->> --- a/net/mac80211/rc80211_minstrel_ht.c
->> +++ b/net/mac80211/rc80211_minstrel_ht.c
->> @@ -11,6 +11,7 @@
->>  #include <linux/moduleparam.h>
->>  #include <linux/ieee80211.h>
->>  #include <linux/minmax.h>
->> +#include <linux/nospec.h>
->>  #include <net/mac80211.h>
->>  #include "rate.h"
->>  #include "sta_info.h"
->> @@ -1999,6 +2000,14 @@ static u32 minstrel_ht_get_expected_throughput(void *priv_sta)
->>  	struct minstrel_ht_sta *mi = priv_sta;
->>  	int i, j, prob, tp_avg;
->>
->> +	/*
->> +	 * Protect against IMBTI/BHI.
->
->This makes no sense here, right?
 
-I will expand those and add some more explanation.
-
->And you are NOT following the proper networking comment style, didn't
->checkpatch complain about this?
-
-checkpatch did complain, but I noticed that this file is following
-regular commenting style everywhere. I can changed that to networking
-style but it will differ from the rest of the file.
-
->> +	 *
->> +	 * Transiently executing this function with an adversary controlled
->> +	 * argument may disclose secrets. Speculation barrier prevents that.
->> +	 */
->> +	barrier_nospec();
->
->So how much did you just slow down the normal use of the system?
-
-I don't have data for this. As I understand this function is not called
-frequently, so perf impact is not expected to be significant.
-
->> +
->>  	i = MI_RATE_GROUP(mi->max_tp_rate[0]);
->>  	j = MI_RATE_IDX(mi->max_tp_rate[0]);
->
->These are all internal structures, can't you just bounds-prevent the
->speculation instead of the hard barrier?
-
-The valid bound in this case is large enough (bits 15:6 IIRC) to still
-pose a risk. As this function is not called frequently adding a
-speculation barrier looks to be the best choice.
