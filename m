@@ -2,157 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A59960C0EB
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 03:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B8160C0F9
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 03:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbiJYBWZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 21:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43440 "EHLO
+        id S231587AbiJYB07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 21:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231481AbiJYBWJ (ORCPT
+        with ESMTP id S231508AbiJYB0e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 21:22:09 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966C751A17;
-        Mon, 24 Oct 2022 17:49:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666658987; x=1698194987;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=zHGjl5+fq8Hm5PhqDVUfsGIFrV7NvXdcbmgRNAqSgqM=;
-  b=AjduT+M/IjzyyTKwQlJcPfsEK3sWOMlZpcqhnyeI+oluB9E/Lepwr4hv
-   DHL4BlplMXcOV/5hHiWePpu80N1kfWct3FtqolmnIKgqf2OMaij3baqxL
-   T/mZRvWMAhCm/d/2b4gnl1xeOSBdeDmuCpi8TezSkOCXMCZvzlQ7i7Jtm
-   RdWYT44syzaXF24gGxVWbW635esNcOsre5ziy/IWR0GdPlULSd2ztJb/T
-   0FhV5TcE0lreiJgXqgNSc/cgmTZpULb1uVs+ClWHTKeopmMGhYg4OwIEF
-   NI0d+dIiqC8uU78jQ6rAkcf2Yfs0pONMLiclLnjWuw7r8ygFKmrrosEjS
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="287275725"
-X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
-   d="scan'208";a="287275725"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 17:49:45 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="626249275"
-X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
-   d="scan'208";a="626249275"
-Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.254.208.181]) ([10.254.208.181])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 17:49:43 -0700
-Subject: Re: [kbuild-all] Re: include/trace/trace_events.h:261:16: error:
- function 'trace_event_get_offsets_iwlwifi_dbg' might be a candidate for
- 'gnu_printf' format attribute
-To:     Steven Rostedt <rostedt@goodmis.org>
+        Mon, 24 Oct 2022 21:26:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB6F12761;
+        Mon, 24 Oct 2022 18:00:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3983616D5;
+        Tue, 25 Oct 2022 01:00:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8835AC433D6;
+        Tue, 25 Oct 2022 01:00:20 +0000 (UTC)
+Date:   Mon, 24 Oct 2022 21:00:31 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     "Chen, Rong A" <rong.a.chen@intel.com>
 Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
         linux-kernel@vger.kernel.org,
         Gregory Greenman <gregory.greenman@intel.com>,
         linux-wireless@vger.kernel.org
+Subject: Re: [kbuild-all] Re: include/trace/trace_events.h:261:16: error:
+ function 'trace_event_get_offsets_iwlwifi_dbg' might be a candidate for
+ 'gnu_printf' format attribute
+Message-ID: <20221024210031.3747fe18@gandalf.local.home>
+In-Reply-To: <b612432e-7f21-4c79-5553-35ad7bdc6fd2@intel.com>
 References: <202210212134.QTpb11ug-lkp@intel.com>
- <20221021101026.1708a426@gandalf.local.home>
- <ed665ca3-fa87-fee6-7284-9aed257264e4@intel.com>
- <20221024103524.43e13ab3@gandalf.local.home>
-From:   "Chen, Rong A" <rong.a.chen@intel.com>
-Message-ID: <b612432e-7f21-4c79-5553-35ad7bdc6fd2@intel.com>
-Date:   Tue, 25 Oct 2022 08:49:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.12.0
+        <20221021101026.1708a426@gandalf.local.home>
+        <ed665ca3-fa87-fee6-7284-9aed257264e4@intel.com>
+        <20221024103524.43e13ab3@gandalf.local.home>
+        <b612432e-7f21-4c79-5553-35ad7bdc6fd2@intel.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20221024103524.43e13ab3@gandalf.local.home>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 25 Oct 2022 08:49:41 +0800
+"Chen, Rong A" <rong.a.chen@intel.com> wrote:
 
+> > For any build that fails on warnings, that specific warning needs to be
+> > silenced.
+> > 
+> > I mean, "-Werror=suggest-attribute=format", really?  
+> 
+> yes, it's compiled with -Werror if using 'W=1' option:
+> 
+>  >>>>>> include/trace/trace_events.h:261:16: error: function   
+> 'trace_event_get_offsets_iwlwifi_dbg' might be a candidate for 
+> 'gnu_printf' format attribute [-Werror=suggest-attribute=format]
 
-On 10/24/2022 10:35 PM, Steven Rostedt wrote:
-> On Mon, 24 Oct 2022 15:26:00 +0800
-> "Chen, Rong A" <rong.a.chen@intel.com> wrote:
-> 
->> On 10/21/2022 10:10 PM, Steven Rostedt wrote:
->>> On Fri, 21 Oct 2022 22:07:17 +0800
->>> kernel test robot <lkp@intel.com> wrote:
->>>    
->>>> Hi Steven,
->>>>
->>>> FYI, the error/warning still remains.
->>>
->>>     WONT FIX
->>>
->>> I thought we already discussed getting rid of this warning?
->>
->> Hi Steve,
->>
->> Sorry for the noise, the bot doesn't ignore this warning with prefix
->> 'error:', we will fix it.
-> 
-> Ug. Let me guess, is this compiled with -Werror?
-> 
-> Because a warning about a macro that may or may not create printf
-> formatting, where gcc thinks it needs a gcc printf attribute and warns
-> about it, is not something to fail the build on.
-> 
-> For any build that fails on warnings, that specific warning needs to be
-> silenced.
-> 
-> I mean, "-Werror=suggest-attribute=format", really?
+Is there a way we can silent this particular error when W=1?
 
-yes, it's compiled with -Werror if using 'W=1' option:
+Ooh! Doing a search of this I found:
 
- >>>>>> include/trace/trace_events.h:261:16: error: function 
-'trace_event_get_offsets_iwlwifi_dbg' might be a candidate for 
-'gnu_printf' format attribute [-Werror=suggest-attribute=format]
+include/trace/events/qla.h:#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
 
-Best Regards,
-Rong Chen
+Perhaps I should just make that part of trace_events.h ?
 
-> 
-> -- Steve
-> 
->>>    
->>>>
->>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
->>>> head:   e35184f321518acadb681928a016da21a9a20c13
->>>> commit: c7c37bb87590886e08d24dec53089f74b89f5fbb tracing/iwlwifi: Use the new __vstring() helper
->>>> date:   3 months ago
->>>> config: x86_64-sof-customedconfig-edison-defconfig
->>>> compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
->>>> reproduce (this is a W=1 build):
->>>>           # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c7c37bb87590886e08d24dec53089f74b89f5fbb
->>>>           git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
->>>>           git fetch --no-tags linus master
->>>>           git checkout c7c37bb87590886e08d24dec53089f74b89f5fbb
->>>>           # save the config file
->>>>           mkdir build_dir && cp config build_dir/.config
->>>>           make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/net/wireless/intel/iwlwifi/
->>>>
->>>> If you fix the issue, kindly add following tag where applicable
->>>> | Reported-by: kernel test robot <lkp@intel.com>
->>>>
->>>> All errors (new ones prefixed by >>):
->>>>
->>>>      In file included from include/trace/define_trace.h:102,
->>>>                       from drivers/net/wireless/intel/iwlwifi/iwl-devtrace-msg.h:71,
->>>>                       from drivers/net/wireless/intel/iwlwifi/iwl-devtrace.h:91,
->>>>                       from drivers/net/wireless/intel/iwlwifi/iwl-devtrace.c:15:
->>>>      drivers/net/wireless/intel/iwlwifi/./iwl-devtrace-msg.h: In function 'trace_event_get_offsets_iwlwifi_dbg':
->>>>>> include/trace/trace_events.h:261:16: error: function 'trace_event_get_offsets_iwlwifi_dbg' might be a candidate for 'gnu_printf' format attribute [-Werror=suggest-attribute=format]
->>>>        261 |         struct trace_event_raw_##call __maybe_unused *entry;            \
->>>>            |                ^~~~~~~~~~~~~~~~
->>>>      include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->>>>         40 |         DECLARE_EVENT_CLASS(name,                              \
->>>>            |         ^~~~~~~~~~~~~~~~~~~
->>>>      drivers/net/wireless/intel/iwlwifi/./iwl-devtrace-msg.h:49:1: note: in expansion of macro 'TRACE_EVENT'
->>>>         49 | TRACE_EVENT(iwlwifi_dbg,
->>>>            | ^~~~~~~~~~~
-> _______________________________________________
-> kbuild-all mailing list -- kbuild-all@lists.01.org
-> To unsubscribe send an email to kbuild-all-leave@lists.01.org
-> 
+-- Steve
+
+(untested)
+
+diff --git a/include/trace/trace_events.h b/include/trace/trace_events.h
+index c2f9cabf154d..63db95559647 100644
+--- a/include/trace/trace_events.h
++++ b/include/trace/trace_events.h
+@@ -18,6 +18,11 @@
+  * in the structure.
+  */
+ 
++#pragma GCC diagnostic push
++#ifndef __clang__
++#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
++#endif
++
+ #include <linux/trace_events.h>
+ 
+ #ifndef TRACE_SYSTEM_VAR
+@@ -467,3 +472,5 @@ static struct trace_event_call __used					\
+ __section("_ftrace_events") *__event_##call = &event_##call
+ 
+ #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
++
++#pragma GCC diagnostic pop
