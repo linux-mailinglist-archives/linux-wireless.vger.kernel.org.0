@@ -2,115 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E69F60BFA4
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 02:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E370C60C0BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 03:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbiJYAdr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Oct 2022 20:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57756 "EHLO
+        id S230428AbiJYBPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Oct 2022 21:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbiJYAdO (ORCPT
+        with ESMTP id S231346AbiJYBOf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Oct 2022 20:33:14 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9082BB1E;
-        Mon, 24 Oct 2022 15:58:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666652294; x=1698188294;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Dg022xT9wrRgqUOEQj0+Hywo+Hdp+CKqSuOIoBjxANA=;
-  b=C22EG5XcyJX2f9Ys6Grt+UBMZlGLH/lCGgd7tZ1gN1686+UC7ougWr99
-   aIrHkzfS74BbWWuz0Ch+Fdb+qBXcqD2O1oHy+0BMpHJl9ZaYRYZwz16Pt
-   /IBNuH/SgBPSY7gxkAm+dO19oVm9ev8d+Mr0Texj/K9+28FugoE/Kf0mr
-   JFXCkeOWuAlqGL0L87ToRM0OzVfrlqdHNIwYED8UGTK+tI3PwDgi3t+3g
-   xSciMN9ruUD6oYTfGDUSXspM1IbIYMZ3GrZCpQ3BQynOshUa7SnLsxUG/
-   lPZFlnO4LglySCyrzjRs5lXame45ywF+xnPOe50wc30nNrQlui1ugoyp3
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="308633276"
-X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
-   d="scan'208";a="308633276"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 15:57:56 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="609363407"
-X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
-   d="scan'208";a="609363407"
-Received: from pkearns-mobl1.amr.corp.intel.com (HELO guptapa-desk.intel.com) ([10.252.131.64])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 15:57:56 -0700
-From:   Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
-        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        antonio.gomez.iglesias@linux.intel.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
-Subject: [RFC PATCH 2/2] minstrel_ht: Mitigate BTI gadget minstrel_ht_get_expected_throughput()
-Date:   Mon, 24 Oct 2022 15:57:47 -0700
-Message-Id: <ceb2bcdc79f1494151e85734fa7bdc639df275bb.1666651511.git.pawan.kumar.gupta@linux.intel.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
-References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+        Mon, 24 Oct 2022 21:14:35 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABEFE12D39
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Oct 2022 17:31:09 -0700 (PDT)
+X-UUID: 2237ceaf7ce74651baf6b271c570f5d6-20221025
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=S60QWh2u+ENNyc/oOBO8S02pSM05EoJivJ9ovxNPLIw=;
+        b=LqimzUeMGIU4VpifX/QzUXOkXD9eeqgpHDoViIj8sJjtUu19H10TCfU0Uryft7+tw29lEGmmFjoLiDWn07cwkhfyDG3KAVHkTDB9I4p4nJP3cnyrF/zvXVTGu3/cCTuCuqd6DqxPb5Il+XDAXSYS5aYQoEpMsRuypoAdYPViz10=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.12,REQID:0e50cdd1-0237-4cad-a1f0-7059da7095a7,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:62cd327,CLOUDID:8992f56c-89d3-4bfa-baad-dc632a24bca3,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 2237ceaf7ce74651baf6b271c570f5d6-20221025
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 631811380; Tue, 25 Oct 2022 08:31:03 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Tue, 25 Oct 2022 08:31:02 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Tue, 25 Oct 2022 08:31:02 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] wifi: mt76: mt7915: enable use_cts_prot support
+Date:   Tue, 25 Oct 2022 08:31:00 +0800
+Message-ID: <f13c8c4ae61eb1374ca65e92b03e908c21073917.1666657715.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
+        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Static analysis indicate that indirect target
-minstrel_ht_get_expected_throughput() could be used as a disclosure
-gadget for Intra-mode Branch Target Injection (IMBTI) and Branch History
-Injection (BHI).
+This adds selectable RTC/CTS enablement for each interface.
 
-ASM generated by compilers indicate a construct of a typical disclosure
-gadget, where an adversary-controlled register contents can be used to
-transiently access an arbitrary memory location.
-
-Although there are no known ways to exploit this, but to be on safer
-side mitigate it by adding a speculation barrier.
-
-Reported-by: Scott D. Constable <scott.d.constable@intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Change-Id: I5eb7851b513d4140d879676154e2abe769969c01
 ---
- net/mac80211/rc80211_minstrel_ht.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 13 +++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c   |  3 +++
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h |  2 ++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index 3d91b98db099..7cf90666a865 100644
---- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -11,6 +11,7 @@
- #include <linux/moduleparam.h>
- #include <linux/ieee80211.h>
- #include <linux/minmax.h>
-+#include <linux/nospec.h>
- #include <net/mac80211.h>
- #include "rate.h"
- #include "sta_info.h"
-@@ -1999,6 +2000,14 @@ static u32 minstrel_ht_get_expected_throughput(void *priv_sta)
- 	struct minstrel_ht_sta *mi = priv_sta;
- 	int i, j, prob, tp_avg;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 1ce2b91353e7..8b637dfe81fc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -232,6 +232,19 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
+ 	rcu_read_unlock();
+ }
  
-+	/*
-+	 * Protect against IMBTI/BHI.
-+	 *
-+	 * Transiently executing this function with an adversary controlled
-+	 * argument may disclose secrets. Speculation barrier prevents that.
-+	 */
-+	barrier_nospec();
++void mt7915_mac_enable_rtscts(struct mt7915_dev *dev,
++			      struct ieee80211_vif *vif, bool enable)
++{
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	u32 addr;
 +
- 	i = MI_RATE_GROUP(mi->max_tp_rate[0]);
- 	j = MI_RATE_IDX(mi->max_tp_rate[0]);
- 	prob = mi->groups[i].rates[j].prob_avg;
++	addr = mt7915_mac_wtbl_lmac_addr(dev, mvif->sta.wcid.idx, 5);
++	if (enable)
++		mt76_set(dev, addr, BIT(5));
++	else
++		mt76_clear(dev, addr, BIT(5));
++}
++
+ static int
+ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index ac320182c2ce..1eb50811f4b0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -598,6 +598,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 		mt7915_mcu_add_obss_spr(dev, vif, info->he_obss_pd.enable);
+ 	}
+ 
++	if (changed & BSS_CHANGED_ERP_CTS_PROT)
++		mt7915_mac_enable_rtscts(dev, vif, info->use_cts_prot);
++
+ 	if (changed & BSS_CHANGED_ERP_SLOT) {
+ 		int slottime = info->use_short_slot ? 9 : 20;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index b0b57ee1e00f..ff5b01b279b8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -554,6 +554,8 @@ bool mt7915_mac_wtbl_update(struct mt7915_dev *dev, int idx, u32 mask);
+ void mt7915_mac_reset_counters(struct mt7915_phy *phy);
+ void mt7915_mac_cca_stats_reset(struct mt7915_phy *phy);
+ void mt7915_mac_enable_nf(struct mt7915_dev *dev, bool ext_phy);
++void mt7915_mac_enable_rtscts(struct mt7915_dev *dev,
++			      struct ieee80211_vif *vif, bool enable);
+ void mt7915_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid, int pid,
+ 			   struct ieee80211_key_conf *key,
 -- 
-2.37.3
+2.36.1
 
