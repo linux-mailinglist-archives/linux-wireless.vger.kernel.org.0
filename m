@@ -2,87 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6DE160D510
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 21:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 894C260D53F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 22:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232546AbiJYT5I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 15:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40610 "EHLO
+        id S230428AbiJYUJi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 16:09:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232334AbiJYT5H (ORCPT
+        with ESMTP id S229544AbiJYUJg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 15:57:07 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202EE5B122;
-        Tue, 25 Oct 2022 12:57:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=25qw2GDUdBjXNVN2llD3TiYv8fWu8bz2tfuYAi1Rx70=;
-        t=1666727826; x=1667937426; b=K9qM46o25/YYEqGSqIIsxc2LOF1atygdWZtg2cw2yN07eod
-        +pS3FRAbPRb5ITMtiClVp6kchZmkBBCQYB42SLdZ8iLRMN4bHKh3t/WiCMpk3wscsbYhxAfYhulho
-        NZG9lQ7FpJQ4RHUvN5d4juP4Q2zLs5STqpSnZ7q5WIvgKhbFG33q6MTrQCEyjvTZYeMm3h5KUBa75
-        0qvvcO/8dr13sA4bSo2WEEM8nWktbFUVTyraapzn6qCh2MVpaLTeBhWSwgApE71WsE/wQJoDfv/1A
-        tK3aVpZ4GlloWm/Z7MU3S1XsWdVTBUIveJtqmSXFDEaTYfVoveyNK0aamyWS9/Kg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1onQ2B-00GR5Q-1J;
-        Tue, 25 Oct 2022 21:56:23 +0200
-Message-ID: <c27de92c10d05891bc804fe0b955c7428ec534dd.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH 0/2] Branch Target Injection (BTI) gadget in minstrel
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
-        Jakub Kicinski <kuba@kernel.org>, dave.hansen@intel.com,
-        Paolo Abeni <pabeni@redhat.com>,
-        antonio.gomez.iglesias@linux.intel.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
-Date:   Tue, 25 Oct 2022 21:56:21 +0200
-In-Reply-To: <20221025193845.z7obsqotxi2yiwli@desk>
-References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
-         <Y1fDiJtxTe8mtBF8@hirez.programming.kicks-ass.net>
-         <20221025193845.z7obsqotxi2yiwli@desk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Tue, 25 Oct 2022 16:09:36 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C32ADD8
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 13:09:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 46B32B81EAC
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 20:09:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183E2C433C1;
+        Tue, 25 Oct 2022 20:09:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666728567;
+        bh=cwe9wFJMPffYEDWB/0g1DlQTTxY9z46bTTGMhYOtXtQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Ha6TWGROqDD6VRM4JXTg+RQqZMlFPp6pQbasrjJmknnEjmWNJYSUduASb2nINp2Zv
+         Ezyg6cr9Chw/BEX8Rs82Ry4LzCEhsyNuQ33L/axxYPn9o78N0jbRzilMXR9OXP7/SJ
+         dIfwJ6L0cQSqR0DsU+0BrU1mh4usFJjfoyejsACx8pXgClNp8sVycMP2ZYBaSg9gmX
+         p/KK43+GNt/PW1HqLJJNC6TuuozznL1n2Qs1GaCwfQkbWcEH08H4rrX7yhmiu0rcpi
+         P+i9fEmAW66Zob8PRf94adA9aKym1z7HbmqTtTd/VPbxi5VMXFUmd4fhPKrOZser5j
+         zd7oEL6cnYFqg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "Chi-Hsien Lin" <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>
+Subject: Re: [PATCH] brcm80211: brcmsmac: Drop BMCMA consistency check
+References: <20221024124002.10120-1-linus.walleij@linaro.org>
+        <1840a6374e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Date:   Tue, 25 Oct 2022 23:09:23 +0300
+In-Reply-To: <1840a6374e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        (Arend Van Spriel's message of "Mon, 24 Oct 2022 16:26:42 +0200")
+Message-ID: <87wn8ny8b0.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-10-25 at 12:38 -0700, Pawan Gupta wrote:
->=20
-> > And how is sprinking random LFENCEs around better than running with
-> > spectre_v2=3Deibrs,retpoline which is the current recommended mitigatio=
-n
-> > against all this IIRC (or even eibrs,lfence for lesser values of
-> > paranoia).
->=20
-> Its a trade-off between performance and spot fixing (hopefully handful
-> of) gadgets. Even the gadget in question here is not demonstrated to be
-> exploitable. If this scenario changes, polluting the kernel all over is
-> definitely not the right approach.
->=20
-Btw, now I'm wondering - you were detecting these with the compiler
-based something, could there be a compiler pass to insert appropriate
-things, perhaps as a gcc plugin or something?
+Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
 
-Now honestly I have no idea if it's feasible, but since you're detecting
-it that way, and presumably then we'd have to maintain the detection and
-run it regularly to make sure that (a) things didn't bitrot and the
-gadget is still there, and (b) no new places show up ... perhaps the
-better way would be to combine both?
+> On October 24, 2022 2:40:08 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+>> The driver looks up the BCMA parent GPIO driver and checks that
+>> this succeeds, but then it goes on to use the deprecated GPIO
+>> call gpio_is_valid() to check the consistency of the .base
+>> member of the BCMA GPIO struct. Surely this belongs in the
+>> BCMA driver: we cannot have all drivers performing cosistency
+>
+> Should be: consistency
+>
+>>
+>> checks on the internals of things they are passed.
+>
+> Apart from the typo in the subject and missing wifi: prefix (replace
+> 'brcm80211' by 'wifi')...
 
-johannes
+I can fix those.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
