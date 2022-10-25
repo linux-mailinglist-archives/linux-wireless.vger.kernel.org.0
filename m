@@ -2,151 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5206A60CB7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 14:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F63060CB8F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 14:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231357AbiJYMFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 08:05:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58200 "EHLO
+        id S231313AbiJYMMw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 08:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbiJYME5 (ORCPT
+        with ESMTP id S231324AbiJYMMv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 08:04:57 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FCE937B2
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 05:04:55 -0700 (PDT)
+        Tue, 25 Oct 2022 08:12:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F1510B7AC;
+        Tue, 25 Oct 2022 05:12:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 8D60ACE1D21
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Oct 2022 12:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7752DC433C1;
-        Tue, 25 Oct 2022 12:04:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666699492;
-        bh=imPbkygKCePq1i3EyArChYjYSEwf0BNJm1sKgppu4aA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dblssCwT7xEDT3+yhnXZazozanPhhtSA/qTKwLthMAUHTCWL41LHSSFMB+TRISU69
-         SEPEN4iUT8iCs9DZCZigypa3AzG2YioBKbuVDxESBHxHXyQp+2MEOzeAQPG6ZLPe6Y
-         IgKDBREQBglLVlVT9yPV/gCoNUVlVspui+FGxX+jafFp7+h08j6c09dfp7X3ULAoDw
-         fD1bx+6tdzhLv8or4464HLskB0792slh8nmq8w487nfoD+HKccm5CIlXOzSbweufKg
-         LrImQu4jEH7QbDIyNMVS18xyYzgKaHFwVN2D4GcC25SDbtjzJqEKIEaG3PWvupGThq
-         dmaEty5LBqJfw==
-Date:   Tue, 25 Oct 2022 14:04:48 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Deren Wu <deren.wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: Re: [PATCH v2] wifi: mt76: fix bandwidth 80MHz link fail in 6GHz band
-Message-ID: <Y1fQ4BuvyTujs3sK@lore-desk>
-References: <85b5e8374fc9b86fb955060c1840f3b2a1d187e4.1666614616.git.deren.wu@mediatek.com>
- <Y1efUIq4aCFO7V6j@lore-desk>
- <8db3eb8a72da2d478780782a54305e3cf1b5b50a.camel@mediatek.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68087618F8;
+        Tue, 25 Oct 2022 12:12:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46757C433C1;
+        Tue, 25 Oct 2022 12:12:48 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="osx4zi68"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1666699966;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=z8qjzZkK8c3Es/HwytaaCio3kn0QdSSBQEAuIzcBPNc=;
+        b=osx4zi68YC6Zf24Vq+JIB/bxSDK2ECgUM2SOmfWHBbcpuSXwDXaC4QH7biAzF2JzHha5iz
+        hyxtd04490dnfuTNxHEukgNMfrABpX2OLzXO6uJqEM/E+L9dHGuGIus24lZkBEJkbw416V
+        7JxVbj6DxUinba/HBGM2dhJA1KNLJK4=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d7021f8b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Tue, 25 Oct 2022 12:12:46 +0000 (UTC)
+Date:   Tue, 25 Oct 2022 14:12:42 +0200
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: cisco: do not assign -1 to unsigned char
+Message-ID: <Y1fSuq4I9BBQ4o+J@zx2c4.com>
+References: <20221024162843.535921-1-Jason@zx2c4.com>
+ <6a1652ab408d4c5d8ba754f35680e792@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iRIreIuW1ejbPkiI"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8db3eb8a72da2d478780782a54305e3cf1b5b50a.camel@mediatek.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <6a1652ab408d4c5d8ba754f35680e792@AcuMS.aculab.com>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Oct 25, 2022 at 10:11:44AM +0000, David Laight wrote:
+> From: Jason A. Donenfeld
+> > Sent: 24 October 2022 17:29
+> > 
+> > With char becoming unsigned by default, and with `char` alone being
+> > ambiguous and based on architecture, we get a warning when assigning the
+> > unchecked output of hex_to_bin() to that unsigned char. Mark `key` as a
+> > `u8`, which matches the struct's type, and then check each call to
+> > hex_to_bin() before casting.
+> > 
+> > Cc: Kalle Valo <kvalo@kernel.org>
+> > Cc: linux-wireless@vger.kernel.org
+> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> > ---
+> >  drivers/net/wireless/cisco/airo.c | 18 ++++++++++++++----
+> >  1 file changed, 14 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+> > index 10daef81c355..fb2c35bd73bb 100644
+> > --- a/drivers/net/wireless/cisco/airo.c
+> > +++ b/drivers/net/wireless/cisco/airo.c
+> > @@ -5232,7 +5232,7 @@ static int get_wep_tx_idx(struct airo_info *ai)
+> >  	return -1;
+> >  }
+> > 
+> > -static int set_wep_key(struct airo_info *ai, u16 index, const char *key,
+> > +static int set_wep_key(struct airo_info *ai, u16 index, const u8 *key,
+> >  		       u16 keylen, int perm, int lock)
+> >  {
+> >  	static const unsigned char macaddr[ETH_ALEN] = { 0x01, 0, 0, 0, 0, 0 };
+> > @@ -5283,7 +5283,7 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
+> >  	struct net_device *dev = pde_data(inode);
+> >  	struct airo_info *ai = dev->ml_priv;
+> >  	int i, rc;
+> > -	char key[16];
+> > +	u8 key[16];
+> >  	u16 index = 0;
+> >  	int j = 0;
+> > 
+> > @@ -5311,12 +5311,22 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
+> >  	}
+> > 
+> >  	for (i = 0; i < 16*3 && data->wbuffer[i+j]; i++) {
+> > +		int val;
+> > +
+> > +		if (i % 3 == 2)
+> > +			continue;
+> > +
+> > +		val = hex_to_bin(data->wbuffer[i+j]);
+> > +		if (val < 0) {
+> > +			airo_print_err(ai->dev->name, "WebKey passed invalid key hex");
+> > +			return;
+> > +		}
+> >  		switch(i%3) {
+> >  		case 0:
+> > -			key[i/3] = hex_to_bin(data->wbuffer[i+j])<<4;
+> > +			key[i/3] = (u8)val << 4;
+> >  			break;
+> >  		case 1:
+> > -			key[i/3] |= hex_to_bin(data->wbuffer[i+j]);
+> > +			key[i/3] |= (u8)val;
+> >  			break;
+> >  		}
+> >  	}
+> 
+> That is about the crappiest loop I've seen.
+> I was just going to point out that the (u8) casts aren't needed.
+> Something like:
+> 	for (i = 0, buf = data->wbuffer + j; i < 16; i++, buf += 3) {
+> 		int val;
+> 		if (!buf[0] || !buf[1])
+> 			break;
+> 		val = hex_to_bin(buf[0]) | hex_to_bin(buf[1]) << 8;
+> 		if (val < 0) {
+> 			airo_print_err(ai->dev->name, "WebKey passed invalid key hex");
+> 			return;
+> 		}
+> 		key[i] = val;
+> 		if (!buf[2])
+> 			break;
+> 	}
+> 
+> Although there should be a check for buf[2] being valid.
+> Any I worry about exactly what happens if there aren't 16 full bytes.
 
---iRIreIuW1ejbPkiI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+buf[2] isn't checked. Presumably it's a space or something. Your <<8
+also isn't right; this is a hex char. Anyway, I think I'd rather
+minimize this delta and leave this patch as-is.
 
-> Hi Lorenzo,
->=20
-> On Tue, 2022-10-25 at 10:33 +0200, Lorenzo Bianconi wrote:
-> > > From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > >=20
-> > > Due to information missing, the firmware may be fail on bandwidth
-> > > related settings in mt7921/mt7922. Add new cmd STA_REC_HE_V2 to
-> > > apply
-> > > additional capabilities in 6GHz band.
-> > >=20
-> > > Tested-by: Ben Greear <greearb@candelatech.com>
-> > > Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-> > > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> > > Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > > ---
-> > > v2: Fix le16/cpu type problem, reported by kernel test robot <
-> > > lkp@intel.com>
-> > > ---
-> > >  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 34
-> > > +++++++++++++++++++
-> > >  .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 11 ++++++
-> > >  2 files changed, 45 insertions(+)
-> > >=20
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > index 011fc9729b38..9bba18d24c71 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > @@ -744,6 +744,39 @@ mt76_connac_mcu_sta_he_tlv(struct sk_buff
-> > > *skb, struct ieee80211_sta *sta)
-> > >  	he->pkt_ext =3D 2;
-> > >  }
-> > > =20
-> > > +static void
-> > > +mt76_connac_mcu_sta_he_tlv_v2(struct sk_buff *skb, struct
-> > > ieee80211_sta *sta)
-> >=20
-> > Is this tlv available just for 7921 fw? If so I guess we should add
-> > it just for
-> > it since mt76_connac_mcu_sta_tlv is used even by other chipsets.
-> >=20
-> > Regards,
-> > Lorenzo
-> >=20
->=20
-> For now, mt76_connac_mcu_sta_he_tlv_v2() would be used for mt7921 only,
-> not for other chips. However, it would be used for all next-generation
-> chipsets. I propose to put it here and we will take this API in new
-> chip porting.
-
-I am fine with it, I was thinking just to not introduce regression on previ=
-ous
-chips.
-
-Regards,
-Lorenzo
-
->=20
-> Regards,
-> Deren
->=20
->=20
-
---iRIreIuW1ejbPkiI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY1fQ4AAKCRA6cBh0uS2t
-rGfKAPwN7ys9uKwavwjvGyG5Vul14eDtXcZ2sQgm9lg/cb8JfAEApZ8nG9PMe7CW
-FyqrzcLcc3daLfqCU/Vz8UUX+vKn+gk=
-=srUi
------END PGP SIGNATURE-----
-
---iRIreIuW1ejbPkiI--
+Jason
