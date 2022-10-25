@@ -2,106 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FC360CBAF
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 14:22:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C754A60CBB5
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 14:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbiJYMWF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 08:22:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59430 "EHLO
+        id S231611AbiJYMZV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 08:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbiJYMWD (ORCPT
+        with ESMTP id S231586AbiJYMZQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 08:22:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE6D17A959;
-        Tue, 25 Oct 2022 05:22:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 633C3618F6;
-        Tue, 25 Oct 2022 12:22:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14463C433D6;
-        Tue, 25 Oct 2022 12:22:00 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="WO1e5oJR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1666700519;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KZKJWuEIeuKvDUZQNV7Smz75T6WROuu6Yr001YKXCbo=;
-        b=WO1e5oJROkFlQEDo4omTNY1UKBt7//EgstbWIjEpSV7b7Mvf3s5U/yAGhB84jeo0QDl699
-        jQgzD0XB6RKgkOff4bTSHpB+dz//GusPzz50WqYg+JBH78qH6ePZiDfAdXliafi5uk/RKn
-        q3or7vKA/mdYQBKkK1HeeWGk2Nas1NM=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ba7e1585 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Tue, 25 Oct 2022 12:21:58 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        dan.carpenter@oracle.com, gregkh@linuxfoundation.org,
-        kvalo@kernel.org, linux-wireless@vger.kernel.org
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH v2] staging: rtl8192e: remove bogus ssid character sign test
-Date:   Tue, 25 Oct 2022 14:21:50 +0200
-Message-Id: <20221025122150.583617-1-Jason@zx2c4.com>
-In-Reply-To: <Y1e+SmS3O2ZaPVoe@kroah.com>
-References: <Y1e+SmS3O2ZaPVoe@kroah.com>
+        Tue, 25 Oct 2022 08:25:16 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 652D2CF85F;
+        Tue, 25 Oct 2022 05:25:14 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MxWNX1DrqzHv52;
+        Tue, 25 Oct 2022 20:25:00 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 25 Oct
+ 2022 20:25:11 +0800
+From:   Zhengchao Shao <shaozhengchao@huawei.com>
+To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <alexander@wetzel-home.de>, <weiyongjun1@huawei.com>,
+        <yuehaibing@huawei.com>, <shaozhengchao@huawei.com>
+Subject: [PATCH] wifi: mac80211: fix general-protection-fault in ieee80211_subif_start_xmit()
+Date:   Tue, 25 Oct 2022 20:32:50 +0800
+Message-ID: <20221025123250.143952-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This error triggers on some architectures with unsigned `char` types:
+When device is running and the interface status is changed, the gpf issue
+is triggered. The problem triggering process is as follows:
+Thread A:                           Thread B
+ieee80211_runtime_change_iftype()   process_one_work()
+    ...                                 ...
+    ieee80211_do_stop()                 ...
+    ...                                 ...
+        sdata->bss = NULL               ...
+        ...                             ieee80211_subif_start_xmit()
+                                            ieee80211_multicast_to_unicast
+                                    //!sdata->bss->multicast_to_unicast
+                                      cause gpf issue
 
-drivers/staging/rtl8192e/rtllib_softmac_wx.c:459 rtllib_wx_set_essid() warn: impossible condition '(extra[i] < 0) => (0-255 < 0)'
+When the interface status is changed, the sending queue continues to send
+packets. After the bss is set to NULL, the bss is accessed. As a result,
+this causes a general-protection-fault issue.
 
-But actually, the entire test is bogus, as ssids don't have any sign
-validity rules like that. So just remove this check look all together.
+The following is the stack information:
+general protection fault, probably for non-canonical address
+0xdffffc000000002f: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000178-0x000000000000017f]
+Workqueue: mld mld_ifc_work
+RIP: 0010:ieee80211_subif_start_xmit+0x25b/0x1310
+Call Trace:
+<TASK>
+dev_hard_start_xmit+0x1be/0x990
+__dev_queue_xmit+0x2c9a/0x3b60
+ip6_finish_output2+0xf92/0x1520
+ip6_finish_output+0x6af/0x11e0
+ip6_output+0x1ed/0x540
+mld_sendpack+0xa09/0xe70
+mld_ifc_work+0x71c/0xdb0
+process_one_work+0x9bf/0x1710
+worker_thread+0x665/0x1080
+kthread+0x2e4/0x3a0
+ret_from_fork+0x1f/0x30
+</TASK>
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-staging@lists.linux.dev
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Fixes: 107395f9cf44 ("wifi: mac80211: Drop support for TX push path")
+Reported-by: syzbot+c6e8fca81c294fd5620a@syzkaller.appspotmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
 ---
-Changes v1->v2:
-- Remove ssid sign test entirely rather than casting to `s8 *`.
+ net/mac80211/iface.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- drivers/staging/rtl8192e/rtllib_softmac_wx.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/drivers/staging/rtl8192e/rtllib_softmac_wx.c b/drivers/staging/rtl8192e/rtllib_softmac_wx.c
-index f9589c5b62ba..1e5ad3b476ef 100644
---- a/drivers/staging/rtl8192e/rtllib_softmac_wx.c
-+++ b/drivers/staging/rtl8192e/rtllib_softmac_wx.c
-@@ -439,7 +439,7 @@ int rtllib_wx_set_essid(struct rtllib_device *ieee,
- 			union iwreq_data *wrqu, char *extra)
- {
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index dd9ac1f7d2ea..5a924459bfd1 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1900,6 +1900,9 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+ 				  IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
+ 	synchronize_net();
  
--	int ret = 0, len, i;
-+	int ret = 0, len;
- 	short proto_started;
- 	unsigned long flags;
++	if (sdata->dev)
++		netif_tx_stop_all_queues(sdata->dev);
++
+ 	ieee80211_do_stop(sdata, false);
  
-@@ -455,13 +455,6 @@ int rtllib_wx_set_essid(struct rtllib_device *ieee,
- 		goto out;
- 	}
+ 	ieee80211_teardown_sdata(sdata);
+@@ -1922,6 +1925,9 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+ 	err = ieee80211_do_open(&sdata->wdev, false);
+ 	WARN(err, "type change: do_open returned %d", err);
  
--	for (i = 0; i < len; i++) {
--		if (extra[i] < 0) {
--			ret = -1;
--			goto out;
--		}
--	}
--
- 	if (proto_started)
- 		rtllib_stop_protocol(ieee, true);
- 
++	if (sdata->dev)
++		netif_tx_start_all_queues(sdata->dev);
++
+ 	ieee80211_wake_vif_queues(local, sdata,
+ 				  IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
+ 	return ret;
 -- 
-2.38.1
+2.17.1
 
