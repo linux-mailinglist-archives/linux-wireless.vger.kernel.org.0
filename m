@@ -2,124 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC4D60D2AC
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 19:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC3260D4A2
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Oct 2022 21:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232214AbiJYRnv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 13:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
+        id S231847AbiJYTXA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 15:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231449AbiJYRnt (ORCPT
+        with ESMTP id S230345AbiJYTWt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 13:43:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0214517C54F;
-        Tue, 25 Oct 2022 10:43:49 -0700 (PDT)
+        Tue, 25 Oct 2022 15:22:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB62B1B81;
+        Tue, 25 Oct 2022 12:22:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9361D61A8A;
-        Tue, 25 Oct 2022 17:43:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6EBC433B5;
-        Tue, 25 Oct 2022 17:43:47 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="bCMiDkUU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1666719822;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+vJqwIUPfAcqJps/uK/0x+HfmEw2EsJ0Z503zsGHjAE=;
-        b=bCMiDkUUCC9d0WnRGLv1xiyGLAPwaxUYFEiqt0HcJk/a3H+WAYOroflUSHjPKuiMdNJUSv
-        GQ4lsCGq31J4mvc3stEmjpUdFocQNRafbJZ+GiM1YWb4kxNCvfEnwu9TeeMofiW9kbL2W3
-        vA17yh7AvPbrRPLEoA07WQXHSNWgy3E=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 9f21ff14 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Tue, 25 Oct 2022 17:43:42 +0000 (UTC)
-Received: by mail-vk1-f171.google.com with SMTP id t85so5786450vkb.7;
-        Tue, 25 Oct 2022 10:43:41 -0700 (PDT)
-X-Gm-Message-State: ACrzQf3IPD+BkUHO7dS8h26hsqvX+bmkt+5DdL5NDnLDzAgYN7Yp/Gj1
-        +bcvFK30K1GQ5IjkloeYDWA/1in74PoAYP2nDPo=
-X-Google-Smtp-Source: AMsMyM5qRoXEj10ln68EWm1iDs0305P0ItRfe9qXZRx216ECvrCrHFVc0+8to77AuLgBULeSrnvQP+ivi0pdqsViRZ4=
-X-Received: by 2002:a05:6122:317:b0:3b7:6590:daa1 with SMTP id
- c23-20020a056122031700b003b76590daa1mr5369383vko.37.1666719821023; Tue, 25
- Oct 2022 10:43:41 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C10361AF5;
+        Tue, 25 Oct 2022 19:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7FDC433C1;
+        Tue, 25 Oct 2022 19:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666725767;
+        bh=ftFE81qWKNF97F1+cBxFeqLoApotXUldU+KauLM18kg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=UwqgP6us0tlufLoD0tWGWtVkoYygJXXt0/XrmsC3fpjKUm5EDIq/AkzAvEWDEpmfU
+         8YaD/C/pqjsmcpVeKkc+ywUp5xVqklZnGGgwMNP89V6tb0cJMmjy4OL8Nkl57B/xsb
+         G6oVYLvuqgDV00UyUWobFEcQX4IgNlLQ4oTShMff68u3VkYGSVwd2RrMXI7pqPfOCK
+         6JBrvkrTMM/dRgG9FRzIIxOHMNE0qe6sSZIcKGPfFWpt/Mnjgqeqm59MGqn1tBB/VT
+         Gq2yM6aH6tQNyXps4PJ0CqAXES6QhqSZcpm6aufPVJmub1it3NDXFsx0e9XOb0UN+I
+         AsskWC4Sg1ScA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-toolchains@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>, mikem@ring3k.org,
+        wlanfae@realtek.com
+Subject: Re: [PATCH v2] kbuild: treat char as always unsigned
+References: <Y1BcpXAjR4tmV6RQ@zx2c4.com>
+        <20221019203034.3795710-1-Jason@zx2c4.com> <Y1ZZyP4ZRBIbv+Kg@kili>
+        <Y1ZbI4IzAOaNwhoD@kadam> <Y1a+cHkFt54gJv54@zx2c4.com>
+        <CAHk-=wgK3Vs+7Kor-SisRHJYzV1tXD+=D4+W1XkfHOV2KN_OGw@mail.gmail.com>
+        <CAHmME9ox7JNqOOZHEHCgaS95rsn-dVr4QOnN1mfmFEn=i9_jvw@mail.gmail.com>
+Date:   Tue, 25 Oct 2022 22:22:41 +0300
+In-Reply-To: <CAHmME9ox7JNqOOZHEHCgaS95rsn-dVr4QOnN1mfmFEn=i9_jvw@mail.gmail.com>
+        (Jason A. Donenfeld's message of "Mon, 24 Oct 2022 19:17:25 +0200")
+Message-ID: <874jvrzp1a.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <Y1e+SmS3O2ZaPVoe@kroah.com> <20221025122150.583617-1-Jason@zx2c4.com>
- <f0b755d2-6d73-5b04-e013-59f622e143da@gmail.com>
-In-Reply-To: <f0b755d2-6d73-5b04-e013-59f622e143da@gmail.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Tue, 25 Oct 2022 19:43:29 +0200
-X-Gmail-Original-Message-ID: <CAHmME9oOtdQkC_UVwiEJOcY7chz5RMuys20B+fZ9gOEz7z5zhg@mail.gmail.com>
-Message-ID: <CAHmME9oOtdQkC_UVwiEJOcY7chz5RMuys20B+fZ9gOEz7z5zhg@mail.gmail.com>
-Subject: Re: [PATCH v2] staging: rtl8192e: remove bogus ssid character sign test
-To:     Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        dan.carpenter@oracle.com, gregkh@linuxfoundation.org,
-        kvalo@kernel.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 7:35 PM Philipp Hortmann
-<philipp.g.hortmann@gmail.com> wrote:
->
-> On 10/25/22 14:21, Jason A. Donenfeld wrote:
-> > This error triggers on some architectures with unsigned `char` types:
-> >
-> > drivers/staging/rtl8192e/rtllib_softmac_wx.c:459 rtllib_wx_set_essid() warn: impossible condition '(extra[i] < 0) => (0-255 < 0)'
-> >
-> > But actually, the entire test is bogus, as ssids don't have any sign
-> > validity rules like that. So just remove this check look all together.
-> >
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: linux-staging@lists.linux.dev
-> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> > ---
-> > Changes v1->v2:
-> > - Remove ssid sign test entirely rather than casting to `s8 *`.
-> >
-> >   drivers/staging/rtl8192e/rtllib_softmac_wx.c | 9 +--------
-> >   1 file changed, 1 insertion(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/staging/rtl8192e/rtllib_softmac_wx.c b/drivers/staging/rtl8192e/rtllib_softmac_wx.c
-> > index f9589c5b62ba..1e5ad3b476ef 100644
-> > --- a/drivers/staging/rtl8192e/rtllib_softmac_wx.c
-> > +++ b/drivers/staging/rtl8192e/rtllib_softmac_wx.c
-> > @@ -439,7 +439,7 @@ int rtllib_wx_set_essid(struct rtllib_device *ieee,
-> >                       union iwreq_data *wrqu, char *extra)
-> >   {
-> >
-> > -     int ret = 0, len, i;
-> > +     int ret = 0, len;
-> >       short proto_started;
-> >       unsigned long flags;
-> >
-> > @@ -455,13 +455,6 @@ int rtllib_wx_set_essid(struct rtllib_device *ieee,
-> >               goto out;
-> >       }
-> >
-> > -     for (i = 0; i < len; i++) {
-> > -             if (extra[i] < 0) {
-> > -                     ret = -1;
-> > -                     goto out;
-> > -             }
-> > -     }
-> > -
-> >       if (proto_started)
-> >               rtllib_stop_protocol(ieee, true);
->
-> This patch cannot be applied on:
-> [PATCH] staging: rtl8192e: use explicitly signed char
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
 
-They're mutually exclusive, which is why this one here was marked as a
-v2 and sent in reply to that one. Greg picked up the v2 and all is
-well.
+> Hi Linus,
+>
+> On Mon, Oct 24, 2022 at 7:11 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+>> IOW, I don't think these are 6.1 material as some kind of obvious
+>> fixes, at least not without driver author acks.
+>
+> Right, these are posted to the authors and maintainers to look at.
+> Maybe they punt them until 6.2 which would be fine too.
+>
+>> On Mon, Oct 24, 2022 at 9:34 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>> Some of those may need more thought. For example, that first one:
+>>
+>> > https://lore.kernel.org/all/20221024163005.536097-1-Jason@zx2c4.com
+>>
+>> looks just *strange*. As far as I can tell, no other wireless drivers
+>> do any sign checks at all.
+>>
+>> Now, I didn't really look around a lot, but looking at a few other
+>> SIOCSIWESSID users, most don't even seem to treat it as a string at
+>> all, but as just a byte dump (so memcpy() instead of strncpy())
 
-Jason
+Yes, SSID should be handled as a byte array with a specified length.
+Back in the day some badly written code treated it as string but luckily
+it's rare now.
+
+>> As far as I know, there are no actual rules for SSID character sets,
+>> and while using utf-8 or something else might cause interoperability
+>> problems, this driver seems to be just confused. If you want to check
+>> for "printable characters", that check is still wrong.
+>>
+>> So I don't think this is a "assume char is signed" issue. I think this
+>> is a "driver is confused" issue.
+>
+> Yea I had a few versions of this. In one of them, I changed `char
+> *extra` throughout the wireless stack into `s8 *extra` and in another
+> `u8 *extra`, after realizing they're mostly just bags of bits. But
+> that seemed pretty invasive when, indeed, this staging driver is just
+> a little screwy.
+>
+> So perhaps the right fix is to just kill that whole snippet? Kalle - opinions?
+
+I would also remove the whole 'extra[i] < 0', seems like a pointless
+check to me. And I see that you already submitted v2, good.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
