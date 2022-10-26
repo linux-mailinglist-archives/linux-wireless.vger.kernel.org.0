@@ -2,170 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C00460DD92
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 10:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83DBA60DED0
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 12:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232963AbiJZIye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Oct 2022 04:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39614 "EHLO
+        id S233296AbiJZKX3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Oct 2022 06:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231751AbiJZIyd (ORCPT
+        with ESMTP id S230025AbiJZKX2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Oct 2022 04:54:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C775EB1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 01:54:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 231E8B82142
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 08:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4F7C433D7;
-        Wed, 26 Oct 2022 08:54:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666774463;
-        bh=/qYpe6VsL4mFLuYpO4O25L46bgg9KOjxUaOHpY0nglI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sw81+F7IchG5aBJFhqDvcoIGDrMVb3rCarZtGBq47PcH74uGzX0L1Mumw5BOeXFKK
-         u+XFpv9VKjjbgvsUqM1BLn9JLJm16HMHFPy4KAwiK4lTStt1Ep4rOL2tYf7Zv72AAi
-         I+9upcXgUgceEYO68SmWpE8LqASc0R/nVsg/XOdp7+mNn78isQwCpyACT9sZqeb2jl
-         twMXvhWQcIVFxMlW0mMo9ScMICFU1s6Jr0SWG1wgsa6ErI4AvuBfIXnwT0p9wWWSmx
-         9KjOj8yb4xFiL4XEJS7zcoaa2h7zKIoAtPiHfnop5NXyWSIDhCkgkKiK6TTocBFWYr
-         /oxhdOFxzQ8qg==
-Date:   Wed, 26 Oct 2022 10:54:15 +0200
-From:   Michael Walle <mwalle@kernel.org>
-To:     Ajay.Kathat@microchip.com
-Cc:     Claudiu.Beznea@microchip.com, linux-wireless@vger.kernel.org,
-        kvalo@kernel.org
-Subject: Re: wilc1000 kernel crash
-Message-ID: <20221026085415.6jgwrhq4sunqaypm@0002.3ffe.de>
-References: <20221024135407.7udo3dwl3mqyv2yj@0002.3ffe.de>
- <6d022f41-85bb-cde2-0b3d-feef0a0711f2@microchip.com>
+        Wed, 26 Oct 2022 06:23:28 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F5EA89ADF;
+        Wed, 26 Oct 2022 03:23:27 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29QABTN8020474;
+        Wed, 26 Oct 2022 10:23:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Bhn5uKSIGqfgXgcbX5tTZcEKSxbaiKo2K12VdbAd00I=;
+ b=Xe3w3Yk6fnk2KSc/pGc0fJEkEuUsL7ayPJQevF6HEn/RQjTHV64IgthBh3g64ZYwUCcy
+ Rxp1kR6JEzf5m+L3VuV5LMXFFxLZ4h18w85+iXxXKW60KByqX66ZM++ZE9kdi/HB/bLh
+ pg1CbxqEC86rF0yWPvCavLtr8WkMz+ksH4+YjIe7w8NvGy9Uz3fGXD/Eh8J0BGJTbkRX
+ F/zT/2Lv7t4ddY4rfCpL07QA64NWz8zVp+9EufX0WdMDluTb9Fpxi2gL1ltdcZLH+1Ek
+ oFmmln81bxYu65cpIYUZTrvIDl3scml3+ZPBvLnbHkTvkNAQMceiEmFWe/EBDiKicepn 4g== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kebkdjyb4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Oct 2022 10:23:21 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29QANKQl015663
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Oct 2022 10:23:20 GMT
+Received: from youghand-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Wed, 26 Oct 2022 03:23:18 -0700
+From:   Youghandhar Chintala <quic_youghand@quicinc.com>
+To:     <ath10k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>
+Subject: [PATCH] wifi: ath10k: Add WLAN firmware image version info into smem
+Date:   Wed, 26 Oct 2022 15:52:57 +0530
+Message-ID: <20221026102257.19919-1-quic_youghand@quicinc.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6d022f41-85bb-cde2-0b3d-feef0a0711f2@microchip.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: vG8EtwYAp2uOXlm1qTZ-L2AnEdDsC6aE
+X-Proofpoint-ORIG-GUID: vG8EtwYAp2uOXlm1qTZ-L2AnEdDsC6aE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-26_05,2022-10-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2210260058
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ajay,
+In a SoC based solution, it would be useful to know the versions of the
+various binary firmware blobs the system is running on. On a QCOM based
+SoC, this info can be obtained from socinfo debugfs infrastructure. For
+this to work, respective subsystem drivers have to export the firmware
+version information to an SMEM based version information table.
 
-On 22/10/25 08:26, Ajay.Kathat@microchip.com wrote:
-> > In handle_rcvd_ntwrk_info() scan_req->scan_result isn't valid anymore,
-> > although it doesn't contain NULL. Thus the driver is calling into a
-> > bogus function pointer. There seems to be no locking between the
-> > asynchronous calls within the workqueue (wilc_enqueue_work()) and when
-> > the interface is disabled (wilc_deinit()). wilc_deinit() will free the
-> > host_if_drv object which might still be used within the workqueue
-> > context.
-> 
-> 
-> Please try the below code changes with your test setup environment.
+Having firmware version information at one place will help quickly
+figure out the firmware versions of various subsystems on the device
+instead of going through builds/logs in an event of a system crash.
 
-The workqueue handling and wilc_deinit() run in parallel, correct? ..
+Fill WLAN firmware version information in SMEM version table to be
+printed as part of socinfo debugfs infrastructure on a Qualcomm based
+SoC.
 
-> --- a/drivers/net/wireless/microchip/wilc1000/hif.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-> @@ -495,12 +495,18 @@ static void handle_rcvd_ntwrk_info(struct 
-> work_struct *work)
->   {
->          struct host_if_msg *msg = container_of(work, struct 
-> host_if_msg, work);
->          struct wilc_rcvd_net_info *rcvd_info = &msg->body.net_info;
-> -       struct wilc_user_scan_req *scan_req = 
-> &msg->vif->hif_drv->usr_scan_req;
-> +       struct host_if_drv *hif_drv = msg->vif->hif_drv;
-> +       struct wilc_user_scan_req *scan_req;
->          const u8 *ch_elm;
->          u8 *ies;
->          int ies_len;
->          size_t offset;
-> 
-> +       if (!hif_drv || !hif_drv->usr_scan_req.scan_result)
-> +               goto done;
+This change is applicable only for WCN399X targets.
 
-.. So what if hif_drv will be set to NULL right after this check?
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
 
-I don't think you'll get around using proper locking here.
+Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
+---
+ drivers/net/wireless/ath/ath10k/qmi.c | 28 +++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-> +
-> +       scan_req = &hif_drv->usr_scan_req;
-> +
->          if (ieee80211_is_probe_resp(rcvd_info->mgmt->frame_control))
->                  offset = offsetof(struct ieee80211_mgmt, 
-> u.probe_resp.variable);
->          else if (ieee80211_is_beacon(rcvd_info->mgmt->frame_control))
-> @@ -1574,6 +1580,9 @@ void wilc_network_info_received(struct wilc *wilc, 
-> u8 *buffer, u32 length)
->                  return;
->          }
-> 
-> +       if (!hif_drv->usr_scan_req.scan_result)
-> +               return;
-> +
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index 66cb7a1e628a..e88bcfd96859 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -14,6 +14,7 @@
+ #include <linux/net.h>
+ #include <linux/platform_device.h>
+ #include <linux/qcom_scm.h>
++#include <linux/soc/qcom/smem.h>
+ #include <linux/string.h>
+ #include <net/sock.h>
+ 
+@@ -22,6 +23,8 @@
+ 
+ #define ATH10K_QMI_CLIENT_ID		0x4b4e454c
+ #define ATH10K_QMI_TIMEOUT		30
++#define ATH10K_SMEM_IMAGE_VERSION_TABLE       469
++#define ATH10K_SMEM_IMAGE_TABLE_CNSS_INDEX     13
+ 
+ static int ath10k_qmi_map_msa_permission(struct ath10k_qmi *qmi,
+ 					 struct ath10k_msa_mem_info *mem_info)
+@@ -536,6 +539,29 @@ int ath10k_qmi_wlan_disable(struct ath10k *ar)
+ 	return ath10k_qmi_mode_send_sync_msg(ar, QMI_WLFW_OFF_V01);
+ }
+ 
++static void ath10k_qmi_add_wlan_ver_smem(struct ath10k *ar, char *fw_build_id)
++{
++	u8 *smem_table_ptr;
++	size_t smem_block_size;
++	const u32 version_string_size = 128;
++	const u32 smem_img_idx_wlan = ATH10K_SMEM_IMAGE_TABLE_CNSS_INDEX * 128;
++
++	smem_table_ptr = qcom_smem_get(QCOM_SMEM_HOST_ANY,
++				       ATH10K_SMEM_IMAGE_VERSION_TABLE,
++				       &smem_block_size);
++	if (IS_ERR(smem_table_ptr)) {
++		ath10k_dbg(ar, ATH10K_DBG_QMI, "smem image version table not found");
++		return;
++	}
++	if (smem_img_idx_wlan + version_string_size > smem_block_size) {
++		ath10k_dbg(ar, ATH10K_DBG_QMI, "smem block size too small: %i",
++			   smem_block_size);
++		return;
++	}
++	memcpy(smem_table_ptr + smem_img_idx_wlan, fw_build_id,
++	       version_string_size);
++}
++
+ static int ath10k_qmi_cap_send_sync_msg(struct ath10k_qmi *qmi)
+ {
+ 	struct wlfw_cap_resp_msg_v01 *resp;
+@@ -606,6 +632,8 @@ static int ath10k_qmi_cap_send_sync_msg(struct ath10k_qmi *qmi)
+ 			    qmi->fw_version, qmi->fw_build_timestamp, qmi->fw_build_id);
+ 	}
+ 
++	ath10k_qmi_add_wlan_ver_smem(ar, qmi->fw_build_id);
++
+ 	kfree(resp);
+ 	return 0;
+ 
+-- 
+2.38.0
 
-This is also racy. What if scan_result is cleared right after this
-check? Then the work item will still get added to the work queue.
-
-Here is the call tree:
-
-isr_bh_routine() [interrupt thread ctx]
-  wilc_handle_isr()
-    mutex_lock(hif_cs)
-    wilc_wlan_handle_isr_ext()
-	  wilc_wlan_handle_rxq()
-	    wilc_wlan_handle_rx_buff()
-          wilc_wlan_cfg_indicate_rx()
-            wilc_network_info_received()
-			  wilc_enqueue_work(handle_rcvd_ntwrk_info)
-    mutex_unlock(hif_cs)
-
-handle_rcvd_ntwrk_info [hif_workqueue ctx]
-  if (scan_result)
-    scan_result()
-
-wilc_mac_close() [ioctl ctx?]
-  wilc_deinit_host_int()
-    wilc_deinit()
-	mutex_lock(deinit_lock)
-	if (scan_result)
-	  scan_result()
-	  scan_result = NULL
-	kfree(hif_drv)
-	hif_drv = NULL
-	mutex_unlock(deinit_lock)
-
-I don't see any synchronization mechanisms, between these threads.
-
->          msg = wilc_alloc_work(vif, handle_rcvd_ntwrk_info, false);
->          if (IS_ERR(msg))
->                  return;
-> 
-> The above changes should avoid the kernel crash exception.
-
-As mentioned above, I think this will just decrease the chance that
-it is happening. Nonetheless, I've tried your changes but it doesn't
-fix the crash.
-
-> > BTW, ignore the "FW not repsonding" for now, that seems to be a
-> > different problem.
-> 
-> "FW not responding" log indicates the chip sleep command failure from 
-> Host to the FW. It's a temporary failure log for specific command. 
-> During the de-init process, this logs is often observed. IIRC, there was 
-> a change in the latest driver that reduced its frequency but I am unable 
-> to recall the exact change.
-
-So what is a "temporary failure"? It is a pr_warn() and customers
-(rightfully) complains about them. Apart from that, it only happens on
-the second "ifconfig wlan0 up". There are no messages during the first
-one. So I suspect there is still something fishy.
-
--michael
