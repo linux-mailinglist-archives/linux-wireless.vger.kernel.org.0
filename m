@@ -2,77 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8BF360E620
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 19:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A72D60E659
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 19:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233764AbiJZREj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Oct 2022 13:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37664 "EHLO
+        id S233905AbiJZRWQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Oct 2022 13:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234098AbiJZREh (ORCPT
+        with ESMTP id S233775AbiJZRWO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Oct 2022 13:04:37 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AC9E101D2
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:04:35 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id l22-20020a17090a3f1600b00212fbbcfb78so3205324pjc.3
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:04:35 -0700 (PDT)
+        Wed, 26 Oct 2022 13:22:14 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F4B9A2B0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:22:11 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id l9so8555790qkk.11
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:22:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/UZW3bFvb0DZzGaICsRWknazNXDYn0D2kpH6r7gdx2g=;
-        b=b7dE1f8Ias+Y8p7Wem9D+ZrhTUBNMGVFusYLY4XYS3X98++3GoWaZb+Eers22PGg9t
-         kZtRqYf9IpVCf8bSTxyWfR3Toxwbx52EmSB4I3KnuI2gzLjpzuPDwjtQ+203tDIgjGc0
-         FZF81Sy72RlUaLHyy2EaPiSrCVQtSZEeEzvJ2VrBcLmmyCmaSOF1frbtSfuNVmC3M9/t
-         2PPznCPZC7LzvPlCCDBvVhn72ojggwGdxGCQh3Vu87MzyBlOqmn2z/P0kmi6ZiDbV9Gt
-         VH6yngh7JHCiyR00wVzHaLehdUiWI0RtPKs5Sp35hojPgzT1B6NVvszW0w2Fr5BETFRv
-         kaEA==
+        bh=oLlW1kscCZqIaTOlPcJH/jgt0YbKOWqVS01M6qgp7Uw=;
+        b=w/j7e/fNOCN2iVFnKD8fD8BvhEM2bJk4xOdewSXDEFnHOZGff4bZ5IRRwFooNK/vjC
+         RLiABqYXJAOzFl9nB1Ripgvl6j73RDhtXxtZxKy1HUQjPS3roj9630mO1NdwfExyW2+d
+         HXxquLZV361r+bxmEtPw3jUC5jkvTL0RwdZfeF/BIEMyFD2OGfDjeVP8ynKMTEyvvx+F
+         hHREYvY8RKqLJB1wC9fMSMlldzP0FJ6airbjaRnek0EUrBeMRv08K247pG/GijAS5za6
+         K8+QAhtZhWb5xN/OVXIvTs3nJOuGnDqodc1MNQjfwsDZeWnnHRUSNK5VNxWL/P4yUdAd
+         3sLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/UZW3bFvb0DZzGaICsRWknazNXDYn0D2kpH6r7gdx2g=;
-        b=8KrNn2YN9gQz/V37tyJBd6EQHJm6V9ERRztQ5Z5BspkJin70Qt1ppe4WO7J+x350Ju
-         6UsyIDObXmadtkTWNK34ZU4NK+Rc/mVMfkt2dcT6hdzrvG2iVp89MwIiS4f6zfQbnUSP
-         bFMcb/NdEsKU88rSY9bUHiFswZztVTAeWIOFYh0I1jjVvOqgo4t/DFs97mNXOVqJD7Vw
-         XvqPaU37DXzi920gwHacOLetiv4mPFhBpSHWQgZfcD/Q42n9PAJDqCg/ryRmExjSWZ67
-         SPLS5MujcoMIMs4AOPaUCuEqocHzelZ/ymOEoCXaOYcQSVdQBHa/BXhNHar7gGM7fYsj
-         XlUA==
-X-Gm-Message-State: ACrzQf0zEt8tsjFgamh6I64Yu5QhxIX8pXYn/8xWq6nu/eLWu3bCkOwg
-        cQpDTi43WWfYAw2J5b0c4x50eWvWndE=
-X-Google-Smtp-Source: AMsMyM5HnpgcdoIuZRa3lrY9uRcU/C+TnFgZmX2qd70Ho8jiLc25IijZyLKl+vunChOsUe3OMJ6f5Q==
-X-Received: by 2002:a17:90b:224c:b0:213:5ccc:9733 with SMTP id hk12-20020a17090b224c00b002135ccc9733mr3349611pjb.110.1666803875188;
-        Wed, 26 Oct 2022 10:04:35 -0700 (PDT)
-Received: from ?IPV6:2600:8802:b00:4a48:1c5e:eaed:5c17:c765? ([2600:8802:b00:4a48:1c5e:eaed:5c17:c765])
-        by smtp.gmail.com with ESMTPSA id j8-20020a632308000000b0043941566481sm3054115pgj.39.2022.10.26.10.04.34
+        bh=oLlW1kscCZqIaTOlPcJH/jgt0YbKOWqVS01M6qgp7Uw=;
+        b=ZtGTDb72cSQmbRd0+8HDHUnR/XX4uaaIm5J2LdeRMoBqBnpxnC8Mq1qgEavhzb0KN/
+         5A3ymVut9UI07e0WIYoPTfLzjBDbyEpcF8KHsXRTJ8aTSAOOMh6pLCBIPbxMMOCisMW0
+         LijnC6SSnQnnqRXoMw8KBdxceZCjTQB1lCWa8aTLbkvbjiMM5+mA91W6yxCd4H8the3V
+         +t7jNZ2W5ktf3qwgI773oG2VtUhtvjS3Djxw032n+eskfHllf0weHCEmRJAyse46Mjcr
+         dkueW4A5yRf8cPLUdahTUDDlAIwq68XJmphGAkjqkHlgeS+NV0F8Qm4ndobacAqn56Iu
+         37eA==
+X-Gm-Message-State: ACrzQf0a24lvIpGJMrIFQV/wtpI3QULhNYyRhB7vEHkGazRtQicqj3Fd
+        lUWMQ9i00V0ln3r4suKX8HTMTw==
+X-Google-Smtp-Source: AMsMyM6Kf2jYy3iJqZeqVyXShFrqXF8kTcxCcGJu4mG93deokS9fXIamGA2nuPqOdQnS49zUo6CUpQ==
+X-Received: by 2002:ae9:dd04:0:b0:6e0:ae86:b4 with SMTP id r4-20020ae9dd04000000b006e0ae8600b4mr31724032qkf.146.1666804930281;
+        Wed, 26 Oct 2022 10:22:10 -0700 (PDT)
+Received: from [192.168.1.11] ([64.57.193.93])
+        by smtp.gmail.com with ESMTPSA id x22-20020a05620a0ed600b006b61b2cb1d2sm4130569qkm.46.2022.10.26.10.22.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Oct 2022 10:04:34 -0700 (PDT)
-Message-ID: <cba07be4-1afc-649f-a172-19f76d726232@gmail.com>
-Date:   Wed, 26 Oct 2022 10:04:33 -0700
+        Wed, 26 Oct 2022 10:22:09 -0700 (PDT)
+Message-ID: <fe9b34f9-68f8-0d5d-4085-33a227b7c363@linaro.org>
+Date:   Wed, 26 Oct 2022 13:22:07 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.0
-Subject: Re: iwlwifi: intel ax210: module fail load firmware: Failed to start
- RT ucode: -110
+Subject: Re: [RFC 5/5] bluetooth: hci_mrvl: allow waiting for firmware load
+ using notify-device
 Content-Language: en-US
-To:     Florian Schmidt <florian@fls.name>,
-        Greenman Gregory <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <91cad7f52fe275bf567cf5aa7aa6f7c0@mail.infomaniak.com>
- <28dfa897c38286b1cf9ae30631fb7438@mail.infomaniak.com>
- <59fe5bdc361fed71103ee159cdb5ab64@mail.infomaniak.com>
- <f351b0a31b536e7a29d63937a242d5de7e2552ca.camel@intel.com>
- <4077a7705bb86501a9cbbce86fe1ea8c@mail.infomaniak.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <4077a7705bb86501a9cbbce86fe1ea8c@mail.infomaniak.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux@ew.tq-group.com
+References: <cover.1666786471.git.matthias.schiffer@ew.tq-group.com>
+ <fa9cdbe5906fdcfcb37dbe682f3f46ce4b2e1b73.1666786471.git.matthias.schiffer@ew.tq-group.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <fa9cdbe5906fdcfcb37dbe682f3f46ce4b2e1b73.1666786471.git.matthias.schiffer@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,22 +94,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 10/26/2022 8:56 AM, Florian Schmidt wrote:
-> Hi Gregory,
+On 26/10/2022 09:15, Matthias Schiffer wrote:
+> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> ---
+>  drivers/bluetooth/hci_mrvl.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
-> Thank you for having a look at this. The .pnvm file was present in my test as shown by my original message:
->> md5sum /lib/firmware/*
->> 787381c60d907f81a3ddadc5c990a82b ./iwlwifi-ty-a0-gf-a0-71.ucode
->> d93cbdcc4bb5be69aac128e2fe291359 ./iwlwifi-ty-a0-gf-a0.pnvm
->> 33d13d236512466e71c81257209a356f ./regulatory.db
-> 
-> I just ran the test again, ensuring I have the .pnvm you mention and the result is indeed the same.
-> 
-> Any other ideas to solve this are welcome.
+> diff --git a/drivers/bluetooth/hci_mrvl.c b/drivers/bluetooth/hci_mrvl.c
+> index b7d764e6010f..dc55053574a9 100644
+> --- a/drivers/bluetooth/hci_mrvl.c
+> +++ b/drivers/bluetooth/hci_mrvl.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/skbuff.h>
+>  #include <linux/firmware.h>
+>  #include <linux/module.h>
+> +#include <linux/notify-device.h>
+>  #include <linux/tty.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+> @@ -433,9 +434,25 @@ static int mrvl_serdev_probe(struct serdev_device *serdev)
+>  		return -ENOMEM;
+>  
+>  	if (IS_ENABLED(CONFIG_OF)) {
+> +		struct device_node *firmware_ready_node;
+> +		struct device *firmware_ready;
+> +
+>  		mrvldev->info = of_device_get_match_data(&serdev->dev);
+>  		if (!mrvldev->info)
+>  			return -ENODEV;
+> +
+> +		firmware_ready_node = of_parse_phandle(serdev->dev.of_node,
+> +						       "firmware-ready", 0);
 
-The driver indicated it wanted to load iwlwifi-ty-a0-gf-a0-72.ucode, 
-which you do seem to have based upon the listing above?
--- 
-Florian
+So you want us to go through five patches, find properties and OF-code,
+create in our minds bindings you think about and comment on that
+imaginary bindings.
+
+I think it should work otherwise - send bindings for all of your DT
+properties.
+
+Best regards,
+Krzysztof
+
