@@ -2,98 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A847760DC21
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 09:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF5B60DC8F
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 09:52:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232988AbiJZHcV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Oct 2022 03:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42938 "EHLO
+        id S232528AbiJZHw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Oct 2022 03:52:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229904AbiJZHcU (ORCPT
+        with ESMTP id S232944AbiJZHw4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Oct 2022 03:32:20 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F96DFD31;
-        Wed, 26 Oct 2022 00:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=a3GBx/1SEU4nlgFOr1WH1Nhc3cu82Haw2GQSxs/IRPE=; b=N3xz1IF1GuT5qIXni60fN5NV/M
-        DY2iml2OichCv/namBi8VhhKAqZTHW7QI/g5LSozDIBop3cQLqO+9Zcv1bKSK4p/eFRaBBj0iQUX7
-        e7M5aYv0R96rJLCz7PVdjhZv05dduKUYgRoUQp82kMz/BU1TvwZA1VPnikPvPnEJlL6sk3pTTjieO
-        NUUyR8oGIYf/xFcIFtCz9H49Mr48YLOgoR7odEJa1R8/ThJ/RmBH+SGr9OBUjWFM5VqRkes7IpKXu
-        T9fo75aNFNE3+hm0F/yGjutnn1PTdpvvzXSLcJj+x9yXKzZkCdLrcZx1eIslmycVcmQSPKy8E1JD6
-        ufR+feQg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1onasu-006Wd7-Lb; Wed, 26 Oct 2022 07:31:34 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 99B323000DD;
-        Wed, 26 Oct 2022 09:31:31 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 475ED2C259E96; Wed, 26 Oct 2022 09:31:31 +0200 (CEST)
-Date:   Wed, 26 Oct 2022 09:31:31 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        antonio.gomez.iglesias@linux.intel.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] Branch Target Injection (BTI) gadget in minstrel
-Message-ID: <Y1jiUzw8QbXUW/+V@hirez.programming.kicks-ass.net>
-References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
- <Y1fDiJtxTe8mtBF8@hirez.programming.kicks-ass.net>
- <b4a64b97-32d2-d83d-9146-ebc9a4cc9ff6@intel.com>
+        Wed, 26 Oct 2022 03:52:56 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5699B72EE1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 00:52:55 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id x2so12873887edd.2
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 00:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=H0pXDkr8BhWuSRbn+U4cGpySXMm0X5XzRPdb1+ze0UI=;
+        b=ysNEiNxSBNApvffAHHOuO/eLyhjgNAk6LoDjFG4pZg841xspBM6xBJuT+ZdIO8jCJk
+         mzUS4EizDacexZPQ6dZsTclm8ndwV75C4cO4mPS1p7TvEg3A+K2sNYgV2c3c5tBWPHjm
+         uGQK2Raw3ytixExP8b7Y/nOidOrSVtOeYxQ4KeIod4F2YkjHe87vtoztRLqD9ka+F/lI
+         NyMRQ4AtrJqNU1+SqzHplhGy7M7TYnuYl/x+85EH8IbAvzpot+oJ1Y26EGQSLfqneLFC
+         QISOjFEY/K0lwgSsLfUNnQDQ4ILdV/5EH3bDhTburYV0TIvhSRR591xI2J2u3awNV7RZ
+         t4iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H0pXDkr8BhWuSRbn+U4cGpySXMm0X5XzRPdb1+ze0UI=;
+        b=tQ0SD3doDgxw59HoSHKeZn6CxJpDilSMk1NBRs6kHhxqy/lii7x4I4rbJuxgeRjr/I
+         tzLnWXYrcjqtDVpB8OjIQco6cEaybvCQKUM5JsyIqp35NI69ghbc2W8jZUhi9ZzUEH3W
+         8Se3EKA+WvFkigoZsUEcFj70D+w0GiawO16oMg1EnbUR9E5IqK8xnHDNlVUZH5CEShoS
+         iAxXqw0gw7sUMJspRPs2wZdOwmez3vTd/zRGnIPtUA+Gjn8PBRRFwTszq9b31dn0+uAg
+         4Gmh403wFXTDvhqlTzLBZVxMwNgi2hlk1Xjznd6MU+bh0pmXwR+odd74B1mNTV0IT5+y
+         M8Ug==
+X-Gm-Message-State: ACrzQf1jZMHsTSgnclU9uaHRZ2w2NaH3bhv8vGgDCUq/5487FQr2/PWX
+        wyYGzAc4tFsI/3ltdHaKY/DF/6N7Sp6ylejvyKeHOA==
+X-Google-Smtp-Source: AMsMyM4esl6Z6DPDzYZB12DjzU8xJpOyAu80URHioxerGWeLfWa7dyApBy5IUjqjg+fMQWivyFKYc9TXJT/Aa0wiMAw=
+X-Received: by 2002:a05:6402:1d55:b0:45f:c87f:c753 with SMTP id
+ dz21-20020a0564021d5500b0045fc87fc753mr31887330edb.32.1666770773908; Wed, 26
+ Oct 2022 00:52:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b4a64b97-32d2-d83d-9146-ebc9a4cc9ff6@intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20221024124002.10120-1-linus.walleij@linaro.org>
+ <1840a6374e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <87wn8ny8b0.fsf@kernel.org>
+In-Reply-To: <87wn8ny8b0.fsf@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 26 Oct 2022 09:52:42 +0200
+Message-ID: <CACRpkdbdziYcMpBij22ryTvAX776ShXFkzD1_WfXq5fUiwVSVQ@mail.gmail.com>
+Subject: Re: [PATCH] brcm80211: brcmsmac: Drop BMCMA consistency check
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 03:00:35PM -0700, Dave Hansen wrote:
-> On 10/25/22 04:07, Peter Zijlstra wrote:
-> > I think the focus should be on finding the source sites, not protecting
-> > the target sites. Where can an attacker control the register content and
-> > have an indirect jump/call.
-> 
-> How would this work with something like 'struct file_operations' which
-> provide a rich set of indirect calls that frequently have fully
-> user-controlled values in registers?
-> 
-> It certainly wouldn't *hurt* to be zeroing out the registers that are
-> unused at indirect call sites.  But, the majority of gadgets in this
-> case used rdi and rsi, which are the least likely to be able to be
-> zapped at call sites.
+On Tue, Oct 25, 2022 at 10:09 PM Kalle Valo <kvalo@kernel.org> wrote:
 
-Right; so FineIBT will limit the targets to the right set of functions,
-and those functions must already assume the values are user controlled
-and take appropriate measures.
+> Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+>
+> > On October 24, 2022 2:40:08 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+> >
+> >> The driver looks up the BCMA parent GPIO driver and checks that
+> >> this succeeds, but then it goes on to use the deprecated GPIO
+> >> call gpio_is_valid() to check the consistency of the .base
+> >> member of the BCMA GPIO struct. Surely this belongs in the
+> >> BCMA driver: we cannot have all drivers performing cosistency
+> >
+> > Should be: consistency
+> >
+> >>
+> >> checks on the internals of things they are passed.
+> >
+> > Apart from the typo in the subject and missing wifi: prefix (replace
+> > 'brcm80211' by 'wifi')...
+>
+> I can fix those.
 
-If you really truly care about the old hardware, then one solution would
-be to de-virtualize the call using LTO or something (yes, it will need
-some compiler work and you might need to annotate the code a bit and
-even have a fixed/predetermined set of loadable modules, but meh).
+I am sending a combined patch with this and the other bcma patch
+because they happen to depend on each other. Dunno how to tag
+a patch that affects bcma and brcn80211 at the same time so you
+will probably have to edit it anyway.
 
-Barring that, you could perhaps put {min,max} range information next to
-the function pointer such that you can impose value ranges before doing
-the indirect call.
-
-But given this is all theoretical and FineIBT solves a lot of it I can't
-find myself to care too much.
+Yours,
+Linus Walleij
