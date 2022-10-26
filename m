@@ -2,137 +2,372 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A72D60E659
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 19:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B27D660E6A4
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 19:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233905AbiJZRWQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Oct 2022 13:22:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56580 "EHLO
+        id S234071AbiJZRhb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Oct 2022 13:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233775AbiJZRWO (ORCPT
+        with ESMTP id S233672AbiJZRh3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Oct 2022 13:22:14 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F4B9A2B0
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:22:11 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id l9so8555790qkk.11
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:22:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oLlW1kscCZqIaTOlPcJH/jgt0YbKOWqVS01M6qgp7Uw=;
-        b=w/j7e/fNOCN2iVFnKD8fD8BvhEM2bJk4xOdewSXDEFnHOZGff4bZ5IRRwFooNK/vjC
-         RLiABqYXJAOzFl9nB1Ripgvl6j73RDhtXxtZxKy1HUQjPS3roj9630mO1NdwfExyW2+d
-         HXxquLZV361r+bxmEtPw3jUC5jkvTL0RwdZfeF/BIEMyFD2OGfDjeVP8ynKMTEyvvx+F
-         hHREYvY8RKqLJB1wC9fMSMlldzP0FJ6airbjaRnek0EUrBeMRv08K247pG/GijAS5za6
-         K8+QAhtZhWb5xN/OVXIvTs3nJOuGnDqodc1MNQjfwsDZeWnnHRUSNK5VNxWL/P4yUdAd
-         3sLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oLlW1kscCZqIaTOlPcJH/jgt0YbKOWqVS01M6qgp7Uw=;
-        b=ZtGTDb72cSQmbRd0+8HDHUnR/XX4uaaIm5J2LdeRMoBqBnpxnC8Mq1qgEavhzb0KN/
-         5A3ymVut9UI07e0WIYoPTfLzjBDbyEpcF8KHsXRTJ8aTSAOOMh6pLCBIPbxMMOCisMW0
-         LijnC6SSnQnnqRXoMw8KBdxceZCjTQB1lCWa8aTLbkvbjiMM5+mA91W6yxCd4H8the3V
-         +t7jNZ2W5ktf3qwgI773oG2VtUhtvjS3Djxw032n+eskfHllf0weHCEmRJAyse46Mjcr
-         dkueW4A5yRf8cPLUdahTUDDlAIwq68XJmphGAkjqkHlgeS+NV0F8Qm4ndobacAqn56Iu
-         37eA==
-X-Gm-Message-State: ACrzQf0a24lvIpGJMrIFQV/wtpI3QULhNYyRhB7vEHkGazRtQicqj3Fd
-        lUWMQ9i00V0ln3r4suKX8HTMTw==
-X-Google-Smtp-Source: AMsMyM6Kf2jYy3iJqZeqVyXShFrqXF8kTcxCcGJu4mG93deokS9fXIamGA2nuPqOdQnS49zUo6CUpQ==
-X-Received: by 2002:ae9:dd04:0:b0:6e0:ae86:b4 with SMTP id r4-20020ae9dd04000000b006e0ae8600b4mr31724032qkf.146.1666804930281;
-        Wed, 26 Oct 2022 10:22:10 -0700 (PDT)
-Received: from [192.168.1.11] ([64.57.193.93])
-        by smtp.gmail.com with ESMTPSA id x22-20020a05620a0ed600b006b61b2cb1d2sm4130569qkm.46.2022.10.26.10.22.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Oct 2022 10:22:09 -0700 (PDT)
-Message-ID: <fe9b34f9-68f8-0d5d-4085-33a227b7c363@linaro.org>
-Date:   Wed, 26 Oct 2022 13:22:07 -0400
+        Wed, 26 Oct 2022 13:37:29 -0400
+Received: from smtp-42ab.mail.infomaniak.ch (smtp-42ab.mail.infomaniak.ch [IPv6:2001:1600:3:17::42ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C3A336870
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 10:37:26 -0700 (PDT)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4MyGGX4lgszMqFt4;
+        Wed, 26 Oct 2022 19:37:24 +0200 (CEST)
+Received: from [127.0.0.1] (unknown [10.92.209.149])
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4MyGGX2XmgzxL;
+        Wed, 26 Oct 2022 19:37:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fls.name; s=20200831;
+        t=1666805844; bh=NBO15QEKnGxMsn4nRbL72WCvOJlop5myta5GZDCyP4I=;
+        h=Date:Subject:From:Reply-To:To:References:In-Reply-To:From;
+        b=TWfmIaK/b6sehVQ96sDhiUiSe3pAymljiqnQjhuKOa3uh7GAOyf5YI+VWcgaX8Nbi
+         BXmhuSmXLOF2vPdeBB9NRLaXHsxCRLcKBCBrns8hqU67d/9POciiMN2rBr4ZejQ5G2
+         syhLcJOgbj6yX75v39E0hJJDk0TukGietmkarSU8=
+Message-ID: <79d2434a0160d0c9b677b8144459beca@mail.infomaniak.com>
+Date:   Wed, 26 Oct 2022 19:37:24 +0200
+Subject: Re: iwlwifi: intel ax210: module fail load firmware: Failed to start
+ RT ucode: -110
+From:   Florian Schmidt <florian@fls.name>
+Reply-To: Florian Schmidt <florian@fls.name>
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        Greenman Gregory <gregory.greenman@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [RFC 5/5] bluetooth: hci_mrvl: allow waiting for firmware load
- using notify-device
-Content-Language: en-US
-To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux@ew.tq-group.com
-References: <cover.1666786471.git.matthias.schiffer@ew.tq-group.com>
- <fa9cdbe5906fdcfcb37dbe682f3f46ce4b2e1b73.1666786471.git.matthias.schiffer@ew.tq-group.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <fa9cdbe5906fdcfcb37dbe682f3f46ce4b2e1b73.1666786471.git.matthias.schiffer@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-WS-User-Origin: eyJpdiI6IkhKNEZFUStJWUp1NzhJOUVyU0dNaVE9PSIsInZhbHVlIjoiME1KbGtXWUY5ZllrcWNvZnJJdXY3QT09IiwibWFjIjoiZTM5ZjdmMGY3MDAxNWJjODNjOTNiNWYyYmMwMmFkN2FjZWM4MmZhYTc1NDYyOTBkODllOTI1YTY1ZmI5Yjk5MSIsInRhZyI6IiJ9
+X-WS-User-Mbox: eyJpdiI6Im9rdWFRL1lFUWY0azNvWWFOSStiUXc9PSIsInZhbHVlIjoiajBtYkJWNmdBU3ZhaUl2MEN0c1hwZz09IiwibWFjIjoiMWQ3MjFkNWI3M2Q2NzM5NTRlMzQ4ZWYwMTliNDhlMWZlNDlkYjEyZGNkYmVmZTViMzUxNGY4ZDk0NDQ1NTQzNiIsInRhZyI6IiJ9
+X-WS-Location: eJxzKUpMKykGAAfpAmU-
+X-Mailer: Infomaniak Workspace (1.3.388)
+References: <91cad7f52fe275bf567cf5aa7aa6f7c0@mail.infomaniak.com>
+ <28dfa897c38286b1cf9ae30631fb7438@mail.infomaniak.com>
+ <59fe5bdc361fed71103ee159cdb5ab64@mail.infomaniak.com>
+ <f351b0a31b536e7a29d63937a242d5de7e2552ca.camel@intel.com>
+ <4077a7705bb86501a9cbbce86fe1ea8c@mail.infomaniak.com>
+ <cba07be4-1afc-649f-a172-19f76d726232@gmail.com>
+In-Reply-To: <cba07be4-1afc-649f-a172-19f76d726232@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 26/10/2022 09:15, Matthias Schiffer wrote:
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> ---
->  drivers/bluetooth/hci_mrvl.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/drivers/bluetooth/hci_mrvl.c b/drivers/bluetooth/hci_mrvl.c
-> index b7d764e6010f..dc55053574a9 100644
-> --- a/drivers/bluetooth/hci_mrvl.c
-> +++ b/drivers/bluetooth/hci_mrvl.c
-> @@ -12,6 +12,7 @@
->  #include <linux/skbuff.h>
->  #include <linux/firmware.h>
->  #include <linux/module.h>
-> +#include <linux/notify-device.h>
->  #include <linux/tty.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
-> @@ -433,9 +434,25 @@ static int mrvl_serdev_probe(struct serdev_device *serdev)
->  		return -ENOMEM;
->  
->  	if (IS_ENABLED(CONFIG_OF)) {
-> +		struct device_node *firmware_ready_node;
-> +		struct device *firmware_ready;
-> +
->  		mrvldev->info = of_device_get_match_data(&serdev->dev);
->  		if (!mrvldev->info)
->  			return -ENODEV;
-> +
-> +		firmware_ready_node = of_parse_phandle(serdev->dev.of_node,
-> +						       "firmware-ready", 0);
+On 2022-10-26T18:04:33.000+01:00, Florian Fainelli <f.fainelli@gmail.com> w=
+rote:
 
-So you want us to go through five patches, find properties and OF-code,
-create in our minds bindings you think about and comment on that
-imaginary bindings.
+>  On 10/26/2022 8:56 AM, Florian Schmidt wrote:
+>=20
+> >    Hi Gregory,
+> > =20
+> >  Thank you for having a look at this. The .pnvm file was present in my =
+test as shown by my original message:
+> >=20
+> > >    md5sum /lib/firmware/*
+> > >  787381c60d907f81a3ddadc5c990a82b ./iwlwifi-ty-a0-gf-a0-71.ucode
+> > >  d93cbdcc4bb5be69aac128e2fe291359 ./iwlwifi-ty-a0-gf-a0.pnvm
+> > >  33d13d236512466e71c81257209a356f ./regulatory.db
+> >  =20
+> >  I just ran the test again, ensuring I have the .pnvm you mention and t=
+he result is indeed the same.
+> > =20
+> >  Any other ideas to solve this are welcome.
+> =20
+> The driver indicated it wanted to load iwlwifi-ty-a0-gf-a0-72.ucode,=20
+> which you do seem to have based upon the listing above?
+> --=20
+> Florian
 
-I think it should work otherwise - send bindings for all of your DT
-properties.
+Hi Florian,
 
-Best regards,
-Krzysztof
+Indeed, my first log seems to load -72.ucode when my dump show a -71 file, =
+that's strange. I must have mismatched some test, sorry for the confusion. =
+During my tests, I've actually tried with many different firmwares (I think=
+ I've done all the compatible firmware I could find), tested both with and =
+without the pnvm file and many kernel versions, it always seems to fail. Th=
+e suspicious thing to me is that during my tests, I've confirmed several ti=
+mes that the same sets of wifi card, kernel and firmware work well on my in=
+tel desktop.
 
+Below are the logs from my latest test today with firmware -71 and the .pnv=
+m from git.
+
+I'd be happy to help debug more, but I have zero visibility on the firmware=
+ so those register dumps just mean nothing to me. Let me know how I can ass=
+ist with this.
+
+Florian
+-------
+
+root@BV1-27109:/lib/firmware# md5sum /lib/firmware/*
+787381c60d907f81a3ddadc5c990a82b  /lib/firmware/iwlwifi-ty-a0-gf-a0-71.ucod=
+e
+d93cbdcc4bb5be69aac128e2fe291359  /lib/firmware/iwlwifi-ty-a0-gf-a0.pnvm
+33d13d236512466e71c81257209a356f  /lib/firmware/regulatory.db
+
+Linux BV1-27109 6.0.1-xilinx #1 SMP PREEMPT Wed Oct 12 09:15:44 UTC 2022 ar=
+mv7l GNU/Linux
+
+pci 0000:01:00.0: [8086:2725] type 00 class 0x028000
+pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x00003fff 64bit]
+pci 0000:01:00.0: PME# supported from D0 D3hot D3cold
+pci 0000:00:00.0: BAR 8: assigned [mem 0x80000000-0x800fffff]
+pci 0000:01:00.0: BAR 0: assigned [mem 0x80000000-0x80003fff 64bit]
+pci 0000:00:00.0: PCI bridge to [bus 01]
+pci 0000:00:00.0:   bridge window [mem 0x80000000-0x800fffff]
+Intel(R) Wireless WiFi driver for Linux
+pci 0000:00:00.0: enabling device (0140 -> 0142)
+iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
+iwlwifi 0000:01:00.0: Direct firmware load for iwlwifi-ty-a0-gf-a0-72.ucode=
+ failed with error -2
+iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
+iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 0.0.2.36
+iwlwifi 0000:01:00.0: loaded firmware version 71.058653f6.0 ty-a0-gf-a0-71.=
+ucode  op_mode iwlmvm
+iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=3D0x420
+thermal thermal_zone0: failed to read out thermal zone (-61)
+iwlwifi 0000:01:00.0: loaded PNVM version a982b33e
+iwlwifi 0000:01:00.0: Timeout waiting for PNVM load!
+iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
+iwlwifi 0000:01:00.0: WRT: Collecting data: ini trigger 13 fired (delay=3D0=
+ms).
+iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 6
+iwlwifi 0000:01:00.0: Loaded firmware version: 71.058653f6.0 ty-a0-gf-a0-71=
+.ucode
+iwlwifi 0000:01:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN
+iwlwifi 0000:01:00.0: 0x002002F0 | trm_hw_status0
+iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:01:00.0: 0x004DAEA2 | branchlink2
+iwlwifi 0000:01:00.0: 0x004D1336 | interruptlink1
+iwlwifi 0000:01:00.0: 0x004D1336 | interruptlink2
+iwlwifi 0000:01:00.0: 0x004D9C78 | data1
+iwlwifi 0000:01:00.0: 0x01000000 | data2
+iwlwifi 0000:01:00.0: 0x00000000 | data3
+iwlwifi 0000:01:00.0: 0x00000000 | beacon time
+iwlwifi 0000:01:00.0: 0x00052ADD | tsf low
+iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
+iwlwifi 0000:01:00.0: 0x00000000 | time gp1
+iwlwifi 0000:01:00.0: 0x00066975 | time gp2
+iwlwifi 0000:01:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:01:00.0: 0x00000047 | uCode version major
+iwlwifi 0000:01:00.0: 0x058653F6 | uCode version minor
+iwlwifi 0000:01:00.0: 0x00000420 | hw version
+iwlwifi 0000:01:00.0: 0x00489002 | board version
+iwlwifi 0000:01:00.0: 0x8004FC12 | hcmd
+iwlwifi 0000:01:00.0: 0x00020000 | isr0
+iwlwifi 0000:01:00.0: 0x00000000 | isr1
+iwlwifi 0000:01:00.0: 0x48F00002 | isr2
+iwlwifi 0000:01:00.0: 0x00C0000C | isr3
+iwlwifi 0000:01:00.0: 0x00000000 | isr4
+iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
+iwlwifi 0000:01:00.0: 0x004D9C78 | wait_event
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_duration
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:01:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:01:00.0: 0x00000000 | timestamp
+iwlwifi 0000:01:00.0: 0x00000020 | flow_handler
+iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 7
+iwlwifi 0000:01:00.0: 0x20000066 | NMI_INTERRUPT_HOST
+iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:01:00.0: 0x8045EFDC | umac branchlink2
+iwlwifi 0000:01:00.0: 0x8047E792 | umac interruptlink1
+iwlwifi 0000:01:00.0: 0x804792D6 | umac interruptlink2
+iwlwifi 0000:01:00.0: 0x01000000 | umac data1
+iwlwifi 0000:01:00.0: 0x804792D6 | umac data2
+iwlwifi 0000:01:00.0: 0x00000000 | umac data3
+iwlwifi 0000:01:00.0: 0x00000047 | umac major
+iwlwifi 0000:01:00.0: 0x058653F6 | umac minor
+iwlwifi 0000:01:00.0: 0x00066ABB | frame pointer
+iwlwifi 0000:01:00.0: 0xC0886244 | stack pointer
+iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
+iwlwifi 0000:01:00.0: 0x00000400 | isr status reg
+iwlwifi 0000:01:00.0: IML/ROM dump:
+iwlwifi 0000:01:00.0: 0x00000B03 | IML/ROM error/state
+iwlwifi 0000:01:00.0: 0x000080F1 | IML/ROM data1
+iwlwifi 0000:01:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+iwlwifi 0000:01:00.0: Fseq Registers:
+iwlwifi 0000:01:00.0: 0x20000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:01:00.0: 0x80440005 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
+iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
+iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:01:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:01:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRR=
+OR
+iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
+iwlwifi 0000:01:00.0: retry init count 0
+iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=3D0x420
+thermal thermal_zone0: failed to read out thermal zone (-61)
+iwlwifi 0000:01:00.0: Timeout waiting for PNVM load!
+iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
+iwlwifi 0000:01:00.0: WRT: Collecting data: ini trigger 13 fired (delay=3D0=
+ms).
+iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 6
+iwlwifi 0000:01:00.0: Loaded firmware version: 71.058653f6.0 ty-a0-gf-a0-71=
+.ucode
+iwlwifi 0000:01:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN
+iwlwifi 0000:01:00.0: 0x002002F0 | trm_hw_status0
+iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:01:00.0: 0x004DAEA2 | branchlink2
+iwlwifi 0000:01:00.0: 0x004D1336 | interruptlink1
+iwlwifi 0000:01:00.0: 0x004D1336 | interruptlink2
+iwlwifi 0000:01:00.0: 0x004D9C78 | data1
+iwlwifi 0000:01:00.0: 0x01000000 | data2
+iwlwifi 0000:01:00.0: 0x00000000 | data3
+iwlwifi 0000:01:00.0: 0x00000000 | beacon time
+iwlwifi 0000:01:00.0: 0x00053473 | tsf low
+iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
+iwlwifi 0000:01:00.0: 0x00000000 | time gp1
+iwlwifi 0000:01:00.0: 0x0006722F | time gp2
+iwlwifi 0000:01:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:01:00.0: 0x00000047 | uCode version major
+iwlwifi 0000:01:00.0: 0x058653F6 | uCode version minor
+iwlwifi 0000:01:00.0: 0x00000420 | hw version
+iwlwifi 0000:01:00.0: 0x18489002 | board version
+iwlwifi 0000:01:00.0: 0x8004FC12 | hcmd
+iwlwifi 0000:01:00.0: 0x00020000 | isr0
+iwlwifi 0000:01:00.0: 0x00000000 | isr1
+iwlwifi 0000:01:00.0: 0x48F00002 | isr2
+iwlwifi 0000:01:00.0: 0x00C0000C | isr3
+iwlwifi 0000:01:00.0: 0x00000000 | isr4
+iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
+iwlwifi 0000:01:00.0: 0x004D9C78 | wait_event
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_duration
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:01:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:01:00.0: 0x00000000 | timestamp
+iwlwifi 0000:01:00.0: 0x00000020 | flow_handler
+iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 7
+iwlwifi 0000:01:00.0: 0x20000066 | NMI_INTERRUPT_HOST
+iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:01:00.0: 0x8045EFDC | umac branchlink2
+iwlwifi 0000:01:00.0: 0x8047E792 | umac interruptlink1
+iwlwifi 0000:01:00.0: 0x8047E792 | umac interruptlink2
+iwlwifi 0000:01:00.0: 0x01000000 | umac data1
+iwlwifi 0000:01:00.0: 0x8047E792 | umac data2
+iwlwifi 0000:01:00.0: 0x00000000 | umac data3
+iwlwifi 0000:01:00.0: 0x00000047 | umac major
+iwlwifi 0000:01:00.0: 0x058653F6 | umac minor
+iwlwifi 0000:01:00.0: 0x00067375 | frame pointer
+iwlwifi 0000:01:00.0: 0xC088625C | stack pointer
+iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
+iwlwifi 0000:01:00.0: 0x00000400 | isr status reg
+iwlwifi 0000:01:00.0: IML/ROM dump:
+iwlwifi 0000:01:00.0: 0x00000B03 | IML/ROM error/state
+iwlwifi 0000:01:00.0: 0x000080EF | IML/ROM data1
+iwlwifi 0000:01:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+iwlwifi 0000:01:00.0: Fseq Registers:
+iwlwifi 0000:01:00.0: 0x60000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:01:00.0: 0x80440005 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
+iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
+iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:01:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:01:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRR=
+OR
+iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
+iwlwifi 0000:01:00.0: retry init count 1
+iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=3D0x420
+thermal thermal_zone0: failed to read out thermal zone (-61)
+iwlwifi 0000:01:00.0: Timeout waiting for PNVM load!
+iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
+iwlwifi 0000:01:00.0: WRT: Collecting data: ini trigger 13 fired (delay=3D0=
+ms).
+iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 6
+iwlwifi 0000:01:00.0: Loaded firmware version: 71.058653f6.0 ty-a0-gf-a0-71=
+.ucode
+iwlwifi 0000:01:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN
+iwlwifi 0000:01:00.0: 0x002002F0 | trm_hw_status0
+iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:01:00.0: 0x004DAEA2 | branchlink2
+iwlwifi 0000:01:00.0: 0x004D1336 | interruptlink1
+iwlwifi 0000:01:00.0: 0x004D1336 | interruptlink2
+iwlwifi 0000:01:00.0: 0x004D9C78 | data1
+iwlwifi 0000:01:00.0: 0x01000000 | data2
+iwlwifi 0000:01:00.0: 0x00000000 | data3
+iwlwifi 0000:01:00.0: 0x00000000 | beacon time
+iwlwifi 0000:01:00.0: 0x00050982 | tsf low
+iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
+iwlwifi 0000:01:00.0: 0x00000000 | time gp1
+iwlwifi 0000:01:00.0: 0x00064743 | time gp2
+iwlwifi 0000:01:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:01:00.0: 0x00000047 | uCode version major
+iwlwifi 0000:01:00.0: 0x058653F6 | uCode version minor
+iwlwifi 0000:01:00.0: 0x00000420 | hw version
+iwlwifi 0000:01:00.0: 0x18489002 | board version
+iwlwifi 0000:01:00.0: 0x8004FC12 | hcmd
+iwlwifi 0000:01:00.0: 0x00020000 | isr0
+iwlwifi 0000:01:00.0: 0x00000000 | isr1
+iwlwifi 0000:01:00.0: 0x48F00002 | isr2
+iwlwifi 0000:01:00.0: 0x00C0000C | isr3
+iwlwifi 0000:01:00.0: 0x00000000 | isr4
+iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
+iwlwifi 0000:01:00.0: 0x004D9C78 | wait_event
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_duration
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
+iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:01:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:01:00.0: 0x00000000 | timestamp
+iwlwifi 0000:01:00.0: 0x00000020 | flow_handler
+iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 7
+iwlwifi 0000:01:00.0: 0x20000066 | NMI_INTERRUPT_HOST
+iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:01:00.0: 0x8045EFDC | umac branchlink2
+iwlwifi 0000:01:00.0: 0x8047E792 | umac interruptlink1
+iwlwifi 0000:01:00.0: 0x804792E6 | umac interruptlink2
+iwlwifi 0000:01:00.0: 0x01000000 | umac data1
+iwlwifi 0000:01:00.0: 0x804792E6 | umac data2
+iwlwifi 0000:01:00.0: 0x00000000 | umac data3
+iwlwifi 0000:01:00.0: 0x00000047 | umac major
+iwlwifi 0000:01:00.0: 0x058653F6 | umac minor
+iwlwifi 0000:01:00.0: 0x0006488D | frame pointer
+iwlwifi 0000:01:00.0: 0xC0886244 | stack pointer
+iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
+iwlwifi 0000:01:00.0: 0x00000400 | isr status reg
+iwlwifi 0000:01:00.0: IML/ROM dump:
+iwlwifi 0000:01:00.0: 0x00000B03 | IML/ROM error/state
+iwlwifi 0000:01:00.0: 0x000080F3 | IML/ROM data1
+iwlwifi 0000:01:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+iwlwifi 0000:01:00.0: Fseq Registers:
+iwlwifi 0000:01:00.0: 0x60000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:01:00.0: 0x80440005 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
+iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
+iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:01:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:01:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRR=
+OR
+iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
+iwlwifi 0000:01:00.0: retry init count 2
