@@ -2,94 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA72F60D867
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 02:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4712360D8A5
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 02:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232589AbiJZASC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Oct 2022 20:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55226 "EHLO
+        id S231801AbiJZA6N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Oct 2022 20:58:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231681AbiJZASA (ORCPT
+        with ESMTP id S231861AbiJZA6K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Oct 2022 20:18:00 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3EADCACC;
-        Tue, 25 Oct 2022 17:17:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666743479; x=1698279479;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oyd+l1GsSKxcb098K/jTmL5mtspj4j9mcqRnV2H/Ptg=;
-  b=ICUFGGbvv6/CFGyei97UBWZ61Vllisdosb7t3dnw0ClzbhA6VnkiCOhn
-   lQPRs4ehG/OuRC5EyxeVwxE9nNF2qkXo5UpB93JAofIgwBJt6EU6+yjKU
-   lIYVl1nkuxXQS5pI5rHhnIhpqoICtgJd/kiRSoT5rjw28tfo+xqpr4ATW
-   qXCZ6Rnxt9At9s2Ss7vtZZY09gLZmQ1eWeKVqU+i++0WjZuSUXTKYv2cH
-   kyl7FzLaEl1QDypst3lQi+rC87a0gONL/0KO2AkUYZUmea0m6AGhPbeuT
-   JDb8QiAaTmC0iNXbJRL4/0CsT1PvW3NKOzNGvXOjWxRqjn8yGge5EyY01
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="295228483"
-X-IronPort-AV: E=Sophos;i="5.95,213,1661842800"; 
-   d="scan'208";a="295228483"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 17:17:59 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="609764421"
-X-IronPort-AV: E=Sophos;i="5.95,213,1661842800"; 
-   d="scan'208";a="609764421"
-Received: from swatthag-mobl1.amr.corp.intel.com (HELO desk) ([10.209.27.104])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 17:17:58 -0700
-Date:   Tue, 25 Oct 2022 17:17:57 -0700
-From:   Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Peter Zijlstra <peterz@infradead.org>, scott.d.constable@intel.com,
-        daniel.sneddon@linux.intel.com, Jakub Kicinski <kuba@kernel.org>,
-        dave.hansen@intel.com, Paolo Abeni <pabeni@redhat.com>,
-        antonio.gomez.iglesias@linux.intel.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] Branch Target Injection (BTI) gadget in minstrel
-Message-ID: <20221026001757.gyjzcwe5wznu6drj@desk>
-References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
- <Y1fDiJtxTe8mtBF8@hirez.programming.kicks-ass.net>
- <20221025193845.z7obsqotxi2yiwli@desk>
- <c27de92c10d05891bc804fe0b955c7428ec534dd.camel@sipsolutions.net>
+        Tue, 25 Oct 2022 20:58:10 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BEAB8C25;
+        Tue, 25 Oct 2022 17:58:09 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Mxr003hHZzVjBQ;
+        Wed, 26 Oct 2022 08:53:20 +0800 (CST)
+Received: from [10.174.178.66] (10.174.178.66) by
+ dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 26 Oct 2022 08:58:06 +0800
+Message-ID: <91f72e36-794e-016f-32c4-2df6653e00bc@huawei.com>
+Date:   Wed, 26 Oct 2022 08:58:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <c27de92c10d05891bc804fe0b955c7428ec534dd.camel@sipsolutions.net>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.2
+Subject: Re: [PATCH] wifi: mac80211: fix general-protection-fault in
+ ieee80211_subif_start_xmit()
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>
+References: <20221025123250.143952-1-shaozhengchao@huawei.com>
+ <a54581e8-792a-0f54-e886-bca3d1d1063e@wetzel-home.de>
+From:   shaozhengchao <shaozhengchao@huawei.com>
+In-Reply-To: <a54581e8-792a-0f54-e886-bca3d1d1063e@wetzel-home.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.66]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 09:56:21PM +0200, Johannes Berg wrote:
->On Tue, 2022-10-25 at 12:38 -0700, Pawan Gupta wrote:
->>
->> > And how is sprinking random LFENCEs around better than running with
->> > spectre_v2=eibrs,retpoline which is the current recommended mitigation
->> > against all this IIRC (or even eibrs,lfence for lesser values of
->> > paranoia).
->>
->> Its a trade-off between performance and spot fixing (hopefully handful
->> of) gadgets. Even the gadget in question here is not demonstrated to be
->> exploitable. If this scenario changes, polluting the kernel all over is
->> definitely not the right approach.
->>
->Btw, now I'm wondering - you were detecting these with the compiler
->based something, could there be a compiler pass to insert appropriate
->things, perhaps as a gcc plugin or something?
 
-I hear it could be a lot of work for gcc. I am not sure if its worth
-especially when we can't establish the exploitability of these gadgets.
-There are some other challenges like, hot-path sites would prefer to
-mask the indexes instead of using a speculation barrier for performance
-reasons. I assume adding this intelligence to compilers would be
-extremely hard. Also hardware controls and features in newer processors
-will make the software mitigations redundant.
+
+On 2022/10/25 22:42, Alexander Wetzel wrote:
+> On 25.10.22 14:32, Zhengchao Shao wrote:
+>> When device is running and the interface status is changed, the gpf issue
+>> is triggered. The problem triggering process is as follows:
+>> Thread A:                           Thread B
+>> ieee80211_runtime_change_iftype()   process_one_work()
+>>      ...                                 ...
+>>      ieee80211_do_stop()                 ...
+>>      ...                                 ...
+>>          sdata->bss = NULL               ...
+>>          ...                             ieee80211_subif_start_xmit()
+>>                                              
+>> ieee80211_multicast_to_unicast
+>>                                      //!sdata->bss->multicast_to_unicast
+>>                                        cause gpf issue
+>>
+>> When the interface status is changed, the sending queue continues to send
+>> packets. After the bss is set to NULL, the bss is accessed. As a result,
+>> this causes a general-protection-fault issue.
+>>
+>> The following is the stack information:
+>> general protection fault, probably for non-canonical address
+>> 0xdffffc000000002f: 0000 [#1] PREEMPT SMP KASAN
+>> KASAN: null-ptr-deref in range [0x0000000000000178-0x000000000000017f]
+>> Workqueue: mld mld_ifc_work
+>> RIP: 0010:ieee80211_subif_start_xmit+0x25b/0x1310
+>> Call Trace:
+>> <TASK>
+>> dev_hard_start_xmit+0x1be/0x990
+>> __dev_queue_xmit+0x2c9a/0x3b60
+>> ip6_finish_output2+0xf92/0x1520
+>> ip6_finish_output+0x6af/0x11e0
+>> ip6_output+0x1ed/0x540
+>> mld_sendpack+0xa09/0xe70
+>> mld_ifc_work+0x71c/0xdb0
+>> process_one_work+0x9bf/0x1710
+>> worker_thread+0x665/0x1080
+>> kthread+0x2e4/0x3a0
+>> ret_from_fork+0x1f/0x30
+>> </TASK>
+>>
+>> Fixes: 107395f9cf44 ("wifi: mac80211: Drop support for TX push path")
+> 
+> Don't think this patch fixes an issue introduced with the patch you 
+> refer to. This patch changed nothing from a flow perspective and is just 
+> cleaning up unused code.
+> It still may still make sense to refer to the series: It next to be sure 
+> triggered the issue for at least one driver (I assume it was hwsim here.)
+> 
+> That said this seems to be more related to whatever caused this bug:
+> f856373e2f31 ("wifi: mac80211: do not wake queues on a vif that is being 
+> stopped")
+> 
+> 
+>> Reported-by: syzbot+c6e8fca81c294fd5620a@syzkaller.appspotmail.com
+>> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+>> ---
+>>   net/mac80211/iface.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+>> index dd9ac1f7d2ea..5a924459bfd1 100644
+>> --- a/net/mac80211/iface.c
+>> +++ b/net/mac80211/iface.c
+>> @@ -1900,6 +1900,9 @@ static int 
+>> ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+>>                     IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
+>>       synchronize_net();
+>> +    if (sdata->dev)
+>> +        netif_tx_stop_all_queues(sdata->dev);
+> 
+> All mac80211 interfaces are now non-queuing interfaces.
+> When you stop the netif queues for a non-queuing interface netdev will 
+> warn about that.
+> 
+> To avoid that you have to replace the netif call with
+>      clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+> 
+> Should just work the same for you here.
+>> +
+>>       ieee80211_do_stop(sdata, false);
+>>       ieee80211_teardown_sdata(sdata);
+>> @@ -1922,6 +1925,9 @@ static int 
+>> ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+>>       err = ieee80211_do_open(&sdata->wdev, false);
+>>       WARN(err, "type change: do_open returned %d", err);
+>> +    if (sdata->dev)
+>> +        netif_tx_start_all_queues(sdata->dev);
+> 
+> That must then be of course
+>      set_bit(SDATA_STATE_RUNNING, &sdata->state);
+> 
+> 
+>> +
+>>       ieee80211_wake_vif_queues(local, sdata,
+>>                     IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
+>>       return ret;
+> 
+> Alexander
+Hi Alexander:
+	Thank you for your review. I will fix them in V2.
+
+Zhengchao Shao
