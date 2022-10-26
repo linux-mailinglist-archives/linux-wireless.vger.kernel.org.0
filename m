@@ -2,103 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFF5760E10D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 14:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E254260E1BD
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 15:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233959AbiJZMlS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Oct 2022 08:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54608 "EHLO
+        id S233973AbiJZNQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Oct 2022 09:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233958AbiJZMkw (ORCPT
+        with ESMTP id S233390AbiJZNQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Oct 2022 08:40:52 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCD777E9E;
-        Wed, 26 Oct 2022 05:40:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AB505B82246;
-        Wed, 26 Oct 2022 12:40:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8B7C433C1;
-        Wed, 26 Oct 2022 12:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666788012;
-        bh=FJ31cqAnQKzd03R5Ig4+m6Igv2FCyJA6gs796fBnpJw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=AdcL4NB52XVTG7zzBcAt94N/c5iYpT3VAq0rLiUPRW8tfIlS2DQyf6RTNcHKboz/G
-         rWWDtZaAiADHOPCEJGjdQZt7bapnt5f4Z4H68Fcs9Z2u0taHoUSYKU1cmll+H/ejLA
-         p+LPiBlCReuCVo9Zk9des+ij8jmCKAx6jBzaz8npFntyOt5dYAau9qzeAU97k8oLZj
-         0mcPMTIqBs5QwvOD3oscCxoF0UIL6Bqc/vpHqUvL0ov5Beh3YPW1Ra82phOUqsdk0U
-         j9U0BJiBGdV88iKQoKhl65zHJDxUoBhIWH//IWx5MKxAcCNAP1UbDmnZv38V/flD+2
-         VZK1jp1l60n2g==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Ilan Peer <ilan.peer@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the wireless-next tree with Linus' tree
-References: <20221020032340.5cf101c0@canb.auug.org.au>
-        <20221019162324.2baaa7e8@kernel.org>
-        <20221020041440.3f6c1e46@canb.auug.org.au>
-        <20221019165258.1ea6daa6@kernel.org>
-Date:   Wed, 26 Oct 2022 15:40:03 +0300
-In-Reply-To: <20221019165258.1ea6daa6@kernel.org> (Jakub Kicinski's message of
-        "Wed, 19 Oct 2022 16:52:58 -0700")
-Message-ID: <87pmeeyd0c.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 26 Oct 2022 09:16:35 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AA4A99D5;
+        Wed, 26 Oct 2022 06:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1666790194; x=1698326194;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mjFPBPmpLWz/562nklZTla4ladz+0IGVjIOFuv2LArA=;
+  b=g2Yh5SKETTVgbyXjbhuqHF8wiqtjMF3HD/VnrHDKwvzXNmYOJDKFQxw/
+   3u4XyEyUFqjIzr9LsK68QWeHA1zswcujuWJ5/ALwhaaqvcWdeqxVY3pE5
+   1S0ZcUXDUtrKbdf9EfaNk4dAN4tkZe5ch89w0J4F4DeCGExBBX5vyDmcf
+   V2+b5DSxKMaJ9phlsHoyAC+D7mTjnzt/QzDHpweZbj+1UxWhBXBWjgt3A
+   EEL8Sweo/izH6dickrdNPA1t2ng/I78+hLL0y4aIz/v3knfSAimXt6Bj+
+   FJJJVGRn6pu+pJnmZs0clvlRzh3eDVJHl3UTuGJxtwTWbTURlmaEL4wTj
+   g==;
+X-IronPort-AV: E=Sophos;i="5.95,214,1661810400"; 
+   d="scan'208";a="26988467"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 26 Oct 2022 15:16:31 +0200
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Wed, 26 Oct 2022 15:16:31 +0200
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Wed, 26 Oct 2022 15:16:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1666790191; x=1698326191;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mjFPBPmpLWz/562nklZTla4ladz+0IGVjIOFuv2LArA=;
+  b=VkLkxiFpxIRXSvtH9mdheulw/zvTruyrS/vc9L0P69NBK8JYa8AMRgYJ
+   hEHrAkXwDGTMCnRVT3yX3frv80r/tPy4dAIfcw4LCm38awoH0Vhb8HOH7
+   YWwetleT4ujenU/RvxoXQ2C85ybsZxE9caxuoY89vpapB+JyO7UZ1W99U
+   PtlWKjo/aWDCmUwiVMye0cDfpowfV51SzGDFO0X55SBjdxO9w/SHuDvJV
+   M1RBKlZ/FcnataEHlp2nlFDAKxqKcuATaVjAdDKZ0HTFh4LAjsqvh6DQL
+   RlQz/n1KCzIVoVXfO6kMdVolcnzFfap1Mu/4efFQ76vsoduJJfNx5J87C
+   w==;
+X-IronPort-AV: E=Sophos;i="5.95,214,1661810400"; 
+   d="scan'208";a="26988466"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 26 Oct 2022 15:16:31 +0200
+Received: from localhost.localdomain (SCHIFFERM-M2.tq-net.de [10.121.49.14])
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id BFB01280056;
+        Wed, 26 Oct 2022 15:16:29 +0200 (CEST)
+From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux@ew.tq-group.com,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Subject: [RFC 0/5] "notify-device" for cross-driver readiness notification
+Date:   Wed, 26 Oct 2022 15:15:29 +0200
+Message-Id: <cover.1666786471.git.matthias.schiffer@ew.tq-group.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+This patch series is obviously missing documentation, MAINTAINERS
+entries, etc., but I'd like to solicit some basic feedback on whether
+this approach makes sense at all before I proceed. If it does, the
+naming is also very much open for bikeshedding - I'm not too happy with
+"notify-device".
 
-> On Thu, 20 Oct 2022 04:14:40 +1100 Stephen Rothwell wrote:
->> > Dunno if this is a glitch or real problem. But it reminds me - I see
->> > there is direct wireless -> wireless-next merge without going via
->> > Linus's tree. I think you may have mentioned it to us, but not sure
->> > if I said this clearly - let's try to avoid such merges. Linus certainly
->> > doesn't like when we do net -> net-next merges without sending net to
->> > him first and forwarding. I'm not 100% sure why (maybe Steven knows)
->> > - whether it's an aesthetic thing or avoiding real issues thing, but
->> > either way it's _a_ thing :S  
->> 
->> Has Linus really complained about you merging the net tree into the
->> net-next tree?
->
-> I can't find that exchange right now. Maybe it was about merging
-> back his tree into ours without submitting a PR. Hm.
+The basic problem that the notify-device tries to solve is the
+synchronization of firmware loading readiness between the Marvell/NXP
+WLAN and Bluetooth drivers, but it may also be applicable to other
+drivers.
 
-So yes, we merged wireless into wireless-next in commit dfd2d876b3fd
-("Merge remote-tracking branch 'wireless/main' into wireless-next"). But
-that's only in wireless-next right now, we will send a pull request to
-net-next soon.
+The WLAN and Bluetooth adapters are handled by separate drivers, and may
+be connected to the CPU using different interfaces (for example SDIO for
+WLAN and UART for Bluetooth). However, both adapters share a single
+firmware that may be uploaded via either interface.
 
-My understanding is that Linus does not like excessive or pointless
-merge requests, and his recent email[1] says similar. But in our case I
-think the merge is justified, otherwise we would have conflicts between
-trees, which means more work for everyone involved with tree merges and
-most likely even bugs if the merge resolutions are difficult.
+For the SDIO+UART case, uploading the firmware via SDIO is usually
+preferable, but even when the interface doesn't matter, it seems like a
+good idea to clearly define which driver should handle it. To avoid
+making the Bluetooth driver more complicated than necessary in this case,
+we'd like to defer the probing of the driver until the firmware is ready.
 
-And we were not planning to do this often, maybe something like once per
-cycle and only then there's a strong reason for the merge. Naturally we
-would document that in the merge, just like Linus prefers. Thoughts?
+For this purpose, we are introducing a notify-device, with the following
+properties:
 
-[1] https://lore.kernel.org/all/CAHk-=wgb42XG1c_rtwupJMD9QXbJsE6k_TBKYC4YvZ8bkATcVg@mail.gmail.com/
+- The device is created by a driver as soon as some "readiness
+  condition" is satisfied
+- Creating the device also binds a stub driver, so deferred probes are
+  triggered
+- Looking up the notify device is possible via OF node / phandle reference
+
+This approach avoids a hard dependency between the WLAN and Bluetooth
+driver, and works regardless of the driver load order.
+
+The first patch implementes the notify-device driver itself, and the
+rest shows how the device could be hooked up to the mwifiex and hci_mrvl
+drivers. A device tree making use of the notify-device could look like
+the following:
+
+    &sdhci1 {
+        wifi@1 {
+            compatible = "marvell,sd8987";
+            reg = <1>;
+    
+            wifi_firmware: firmware-notifier {};
+        };
+    };
+
+    &main_uart3 {
+        bluetooth {
+            compatible = "marvell,sd8987-bt";
+            firmware-ready = <&wifi_firmware>;
+        };
+    };
+
+
+Matthias Schiffer (5):
+  misc: introduce notify-device driver
+  wireless: mwifiex: signal firmware readiness using notify-device
+  bluetooth: hci_mrvl: select firmwares to load by match data
+  bluetooth: hci_mrvl: add support for SD8987
+  bluetooth: hci_mrvl: allow waiting for firmware load using
+    notify-device
+
+ drivers/bluetooth/hci_mrvl.c                |  77 ++++++++++++--
+ drivers/misc/Kconfig                        |   4 +
+ drivers/misc/Makefile                       |   1 +
+ drivers/misc/notify-device.c                | 109 ++++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/main.c |  14 +++
+ drivers/net/wireless/marvell/mwifiex/main.h |   1 +
+ include/linux/notify-device.h               |  33 ++++++
+ 7 files changed, 228 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/misc/notify-device.c
+ create mode 100644 include/linux/notify-device.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
