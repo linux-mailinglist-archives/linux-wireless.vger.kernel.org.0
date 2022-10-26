@@ -2,115 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5735560DB4F
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 08:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A847760DC21
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Oct 2022 09:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232654AbiJZGc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Oct 2022 02:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
+        id S232988AbiJZHcV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Oct 2022 03:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiJZGc2 (ORCPT
+        with ESMTP id S229904AbiJZHcU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Oct 2022 02:32:28 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF4CA8791;
-        Tue, 25 Oct 2022 23:32:27 -0700 (PDT)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MxzS32rRgzJnGD;
-        Wed, 26 Oct 2022 14:29:39 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
- (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 26 Oct
- 2022 14:32:23 +0800
-From:   Zhengchao Shao <shaozhengchao@huawei.com>
-To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC:     <toke@kernel.org>, <alexander@wetzel-home.de>, <nbd@nbd.name>,
-        <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
-        <shaozhengchao@huawei.com>
-Subject: [PATCH net,v3] wifi: mac80211: fix general-protection-fault in ieee80211_subif_start_xmit()
-Date:   Wed, 26 Oct 2022 14:39:59 +0800
-Message-ID: <20221026063959.177813-1-shaozhengchao@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 26 Oct 2022 03:32:20 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F96DFD31;
+        Wed, 26 Oct 2022 00:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=a3GBx/1SEU4nlgFOr1WH1Nhc3cu82Haw2GQSxs/IRPE=; b=N3xz1IF1GuT5qIXni60fN5NV/M
+        DY2iml2OichCv/namBi8VhhKAqZTHW7QI/g5LSozDIBop3cQLqO+9Zcv1bKSK4p/eFRaBBj0iQUX7
+        e7M5aYv0R96rJLCz7PVdjhZv05dduKUYgRoUQp82kMz/BU1TvwZA1VPnikPvPnEJlL6sk3pTTjieO
+        NUUyR8oGIYf/xFcIFtCz9H49Mr48YLOgoR7odEJa1R8/ThJ/RmBH+SGr9OBUjWFM5VqRkes7IpKXu
+        T9fo75aNFNE3+hm0F/yGjutnn1PTdpvvzXSLcJj+x9yXKzZkCdLrcZx1eIslmycVcmQSPKy8E1JD6
+        ufR+feQg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1onasu-006Wd7-Lb; Wed, 26 Oct 2022 07:31:34 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 99B323000DD;
+        Wed, 26 Oct 2022 09:31:31 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 475ED2C259E96; Wed, 26 Oct 2022 09:31:31 +0200 (CEST)
+Date:   Wed, 26 Oct 2022 09:31:31 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        scott.d.constable@intel.com, daniel.sneddon@linux.intel.com,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        antonio.gomez.iglesias@linux.intel.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, gregkh@linuxfoundation.org, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] Branch Target Injection (BTI) gadget in minstrel
+Message-ID: <Y1jiUzw8QbXUW/+V@hirez.programming.kicks-ass.net>
+References: <cover.1666651511.git.pawan.kumar.gupta@linux.intel.com>
+ <Y1fDiJtxTe8mtBF8@hirez.programming.kicks-ass.net>
+ <b4a64b97-32d2-d83d-9146-ebc9a4cc9ff6@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500026.china.huawei.com (7.185.36.106)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b4a64b97-32d2-d83d-9146-ebc9a4cc9ff6@intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When device is running and the interface status is changed, the gpf issue
-is triggered. The problem triggering process is as follows:
-Thread A:                           Thread B
-ieee80211_runtime_change_iftype()   process_one_work()
-    ...                                 ...
-    ieee80211_do_stop()                 ...
-    ...                                 ...
-        sdata->bss = NULL               ...
-        ...                             ieee80211_subif_start_xmit()
-                                            ieee80211_multicast_to_unicast
-                                    //!sdata->bss->multicast_to_unicast
-                                      cause gpf issue
+On Tue, Oct 25, 2022 at 03:00:35PM -0700, Dave Hansen wrote:
+> On 10/25/22 04:07, Peter Zijlstra wrote:
+> > I think the focus should be on finding the source sites, not protecting
+> > the target sites. Where can an attacker control the register content and
+> > have an indirect jump/call.
+> 
+> How would this work with something like 'struct file_operations' which
+> provide a rich set of indirect calls that frequently have fully
+> user-controlled values in registers?
+> 
+> It certainly wouldn't *hurt* to be zeroing out the registers that are
+> unused at indirect call sites.  But, the majority of gadgets in this
+> case used rdi and rsi, which are the least likely to be able to be
+> zapped at call sites.
 
-When the interface status is changed, the sending queue continues to send
-packets. After the bss is set to NULL, the bss is accessed. As a result,
-this causes a general-protection-fault issue.
+Right; so FineIBT will limit the targets to the right set of functions,
+and those functions must already assume the values are user controlled
+and take appropriate measures.
 
-The following is the stack information:
-general protection fault, probably for non-canonical address
-0xdffffc000000002f: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000178-0x000000000000017f]
-Workqueue: mld mld_ifc_work
-RIP: 0010:ieee80211_subif_start_xmit+0x25b/0x1310
-Call Trace:
-<TASK>
-dev_hard_start_xmit+0x1be/0x990
-__dev_queue_xmit+0x2c9a/0x3b60
-ip6_finish_output2+0xf92/0x1520
-ip6_finish_output+0x6af/0x11e0
-ip6_output+0x1ed/0x540
-mld_sendpack+0xa09/0xe70
-mld_ifc_work+0x71c/0xdb0
-process_one_work+0x9bf/0x1710
-worker_thread+0x665/0x1080
-kthread+0x2e4/0x3a0
-ret_from_fork+0x1f/0x30
-</TASK>
+If you really truly care about the old hardware, then one solution would
+be to de-virtualize the call using LTO or something (yes, it will need
+some compiler work and you might need to annotate the code a bit and
+even have a fixed/predetermined set of loadable modules, but meh).
 
-Fixes: f856373e2f31 ("wifi: mac80211: do not wake queues on a vif that is being stopped")
-Reported-by: syzbot+c6e8fca81c294fd5620a@syzkaller.appspotmail.com
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
----
-v3: revise format
-v2: replace the netif call with test_bit()
----
- net/mac80211/tx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Barring that, you could perhaps put {min,max} range information next to
+the function pointer such that you can impose value ranges before doing
+the indirect call.
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a364148149f9..874f2a4d831d 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4418,6 +4418,11 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
- 	if (likely(!is_multicast_ether_addr(eth->h_dest)))
- 		goto normal;
- 
-+	if (unlikely(!ieee80211_sdata_running(sdata))) {
-+		kfree_skb(skb);
-+		return NETDEV_TX_OK;
-+	}
-+
- 	if (unlikely(ieee80211_multicast_to_unicast(skb, dev))) {
- 		struct sk_buff_head queue;
- 
--- 
-2.17.1
-
+But given this is all theoretical and FineIBT solves a lot of it I can't
+find myself to care too much.
