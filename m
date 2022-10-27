@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3730560EF7C
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Oct 2022 07:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09C0C60EF7D
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Oct 2022 07:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234036AbiJ0F2D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Oct 2022 01:28:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32848 "EHLO
+        id S234093AbiJ0F2K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Oct 2022 01:28:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233800AbiJ0F1z (ORCPT
+        with ESMTP id S233626AbiJ0F1z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 27 Oct 2022 01:27:55 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A026515A8D5
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 22:27:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF68E15A8E7
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Oct 2022 22:27:51 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29R5R9NN0019478, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29R5R9NN0019478
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 29R5RAbvC019480, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 29R5RAbvC019480
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 27 Oct 2022 13:27:09 +0800
+        Thu, 27 Oct 2022 13:27:10 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 27 Oct 2022 13:27:43 +0800
+ 15.1.2507.9; Thu, 27 Oct 2022 13:27:44 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 27 Oct
- 2022 13:27:42 +0800
+ 2022 13:27:44 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <gary.chang@realtek.com>, <timlee@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 2/7] wifi: rtw89: move enable_cpu/disable_cpu into fw_download
-Date:   Thu, 27 Oct 2022 13:27:02 +0800
-Message-ID: <20221027052707.14605-3-pkshih@realtek.com>
+Subject: [PATCH v2 3/7] wifi: rtw89: add function to adjust and restore PLE quota
+Date:   Thu, 27 Oct 2022 13:27:03 +0800
+Message-ID: <20221027052707.14605-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221027052707.14605-1-pkshih@realtek.com>
 References: <20221027052707.14605-1-pkshih@realtek.com>
@@ -56,10 +56,6 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzI2IKRVpMggMTE6MzI6MDA=?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,83 +66,116 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chih-Kang Chang <gary.chang@realtek.com>
 
-For WoWLAN mode, we need to download WoWLAN firmware by calling
-fw_download(). Another, to disable/enable WiFi CPU is needed before
-calling fw_download. Since Firmware runs on WiFi CPU, it is intuitive
-to combine enable_cpu/disable_cpu functions into fw_download.
+PLE RX quota, which is the setting of RX buffer, is needed to be adjusted
+dynamically for WoWLAN mode, and restored when back to normal mode.
+The action is not needed for rtw8852c chip.
 
 Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c  |  5 +++++
- drivers/net/wireless/realtek/rtw89/mac.c | 10 ++--------
- drivers/net/wireless/realtek/rtw89/mac.h |  2 ++
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  1 +
+ drivers/net/wireless/realtek/rtw89/mac.c      | 32 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.h      |  2 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  4 +++
+ 4 files changed, 39 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index d21f87e25ae1f..df0af5e0d49a5 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -515,6 +515,11 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
- 	u8 val;
- 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 90bf7bdb60628..10ccb047d6a06 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2389,6 +2389,7 @@ enum rtw89_dma_ch {
+ enum rtw89_qta_mode {
+ 	RTW89_QTA_SCC,
+ 	RTW89_QTA_DLFW,
++	RTW89_QTA_WOW,
  
-+	rtw89_mac_disable_cpu(rtwdev);
-+	ret = rtw89_mac_enable_cpu(rtwdev, 0, true);
-+	if (ret)
-+		return ret;
-+
- 	if (!fw || !len) {
- 		rtw89_err(rtwdev, "fw type %d isn't recognized\n", type);
- 		return -ENOENT;
+ 	/* keep last */
+ 	RTW89_QTA_INVALID,
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 3531a859d6c8f..de9708eb97260 100644
+index de9708eb97260..061244a28f4b4 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3116,7 +3116,7 @@ static void rtw89_disable_fw_watchdog(struct rtw89_dev *rtwdev)
- 	rtw89_mac_mem_write(rtwdev, R_AX_WDT_STATUS, val32, RTW89_MAC_MEM_CPU_LOCAL);
+@@ -1306,6 +1306,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
+ 	.ple_qt47 = {525, 0, 32, 20, 1034, 13, 1199, 0, 1053, 62, 160, 1037,},
+ 	/* PCIE 64 */
+ 	.ple_qt58 = {147, 0, 16, 20, 157, 13, 229, 0, 172, 14, 24, 0,},
++	/* 8852A PCIE WOW */
++	.ple_qt_52a_wow = {264, 0, 32, 20, 64, 13, 1005, 0, 64, 128, 120,},
+ };
+ EXPORT_SYMBOL(rtw89_mac_size);
+ 
+@@ -1478,6 +1480,36 @@ static void ple_quota_cfg(struct rtw89_dev *rtwdev,
+ 		SET_QUOTA(tx_rpt, PLE, 11);
  }
  
--static void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
-+void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
- {
- 	clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
++int rtw89_mac_resize_ple_rx_quota(struct rtw89_dev *rtwdev, bool wow)
++{
++	const struct rtw89_ple_quota *min_cfg, *max_cfg;
++	const struct rtw89_dle_mem *cfg;
++	u32 val;
++
++	if (rtwdev->chip->chip_id == RTL8852C)
++		return 0;
++
++	if (rtwdev->mac.qta_mode != RTW89_QTA_SCC) {
++		rtw89_err(rtwdev, "[ERR]support SCC mode only\n");
++		return -EINVAL;
++	}
++
++	if (wow)
++		cfg = get_dle_mem_cfg(rtwdev, RTW89_QTA_WOW);
++	else
++		cfg = get_dle_mem_cfg(rtwdev, RTW89_QTA_SCC);
++	if (!cfg) {
++		rtw89_err(rtwdev, "[ERR]get_dle_mem_cfg\n");
++		return -EINVAL;
++	}
++
++	min_cfg = cfg->ple_min_qt;
++	max_cfg = cfg->ple_max_qt;
++	SET_QUOTA(cma0_dma, PLE, 6);
++	SET_QUOTA(cma1_dma, PLE, 7);
++
++	return 0;
++}
+ #undef SET_QUOTA
  
-@@ -3131,8 +3131,7 @@ static void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
- 	rtw89_write32_set(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_PLATFORM_EN);
- }
- 
--static int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason,
--				bool dlfw)
-+int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw)
- {
- 	u32 val;
- 	int ret;
-@@ -3271,11 +3270,6 @@ int rtw89_mac_partial_init(struct rtw89_dev *rtwdev)
- 			return ret;
- 	}
- 
--	rtw89_mac_disable_cpu(rtwdev);
--	ret = rtw89_mac_enable_cpu(rtwdev, 0, true);
--	if (ret)
--		return ret;
--
- 	ret = rtw89_fw_download(rtwdev, RTW89_FW_NORMAL);
- 	if (ret)
- 		return ret;
+ static void dle_quota_cfg(struct rtw89_dev *rtwdev,
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index a6cbafb75a2b8..6e03f5e4ae246 100644
+index 6e03f5e4ae246..20211c4e62db5 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.h
 +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -815,6 +815,8 @@ int rtw89_mac_port_update(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
- void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
- 					struct ieee80211_vif *vif);
- int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
-+void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev);
-+int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw);
- int rtw89_mac_enable_bb_rf(struct rtw89_dev *rtwdev);
- int rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev);
+@@ -719,6 +719,7 @@ struct rtw89_mac_size_set {
+ 	const struct rtw89_ple_quota ple_qt46;
+ 	const struct rtw89_ple_quota ple_qt47;
+ 	const struct rtw89_ple_quota ple_qt58;
++	const struct rtw89_ple_quota ple_qt_52a_wow;
+ };
  
+ extern const struct rtw89_mac_size_set rtw89_mac_size;
+@@ -1026,5 +1027,6 @@ void rtw89_mac_pkt_drop_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
+ u16 rtw89_mac_dle_buf_req(struct rtw89_dev *rtwdev, u16 buf_len, bool wd);
+ int rtw89_mac_set_cpuio(struct rtw89_dev *rtwdev,
+ 			struct rtw89_cpuio_ctrl *ctrl_para, bool wd);
++int rtw89_mac_resize_ple_rx_quota(struct rtw89_dev *rtwdev, bool wow);
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index b5aa8697a0982..375e84f5fe5c1 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -48,6 +48,10 @@ static const struct rtw89_dle_mem rtw8852a_dle_mem_pcie[] = {
+ 			   &rtw89_mac_size.ple_size0, &rtw89_mac_size.wde_qt0,
+ 			   &rtw89_mac_size.wde_qt0, &rtw89_mac_size.ple_qt4,
+ 			   &rtw89_mac_size.ple_qt5},
++	[RTW89_QTA_WOW] = {RTW89_QTA_WOW, &rtw89_mac_size.wde_size0,
++			   &rtw89_mac_size.ple_size0, &rtw89_mac_size.wde_qt0,
++			   &rtw89_mac_size.wde_qt0, &rtw89_mac_size.ple_qt4,
++			   &rtw89_mac_size.ple_qt_52a_wow},
+ 	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size4,
+ 			    &rtw89_mac_size.ple_size4, &rtw89_mac_size.wde_qt4,
+ 			    &rtw89_mac_size.wde_qt4, &rtw89_mac_size.ple_qt13,
 -- 
 2.25.1
 
