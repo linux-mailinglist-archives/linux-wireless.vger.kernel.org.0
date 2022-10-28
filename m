@@ -2,100 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 143A26115AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 17:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3513C611786
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 18:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbiJ1PQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Oct 2022 11:16:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40386 "EHLO
+        id S229932AbiJ1Qar (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Oct 2022 12:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230339AbiJ1PQc (ORCPT
+        with ESMTP id S230293AbiJ1Qaq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Oct 2022 11:16:32 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D07AF209FBE;
-        Fri, 28 Oct 2022 08:16:31 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id r187so6433063oia.8;
-        Fri, 28 Oct 2022 08:16:31 -0700 (PDT)
+        Fri, 28 Oct 2022 12:30:46 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06EC6191D40
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 09:30:43 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id i21so8618642edj.10
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 09:30:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+dn3LvliggqMwu/IM8leC7rc7cJb8gzlcVAfQFIHk4A=;
-        b=h1quau0gp/0GF4+bcmlKCzuKxivWRlPioezIkKjWkC8nElVhrOfUCr7ucyKuhfk6WE
-         HTsqjpSaeLVTZZapEdzrMPciuXJu4uHQdhiaqY+5OLds249yg06F4sxMJ0OOy5CTZTEG
-         1rzXzHCxAaesLgoD16vX8bgYoSsuF6vq2zy7p/XJLFPUT98Ippf4US0Qxf8CvgydU5aZ
-         lbdUx2TtTmrI7GSONljaq3U2QH4THWpE2ZwljGtMuaEGdSGlFSj09K3XiXQppa7JglZ7
-         vziqn1tVJFMgeXyOduiKTsiByBdfPGqF+p+AerBxXmi9Gt1VBL3YUhBBR/6OqX2ezkTR
-         Wsgw==
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5u74h0LeMKQmNu7Rx+9WPf1HyeM/JhlEtnkQPCdagjA=;
+        b=Un2l5uC/3N/RZ0AE9Upw4jhJA6X9f2mdtXHSeYTZXBpVhgMsa5ITjjpxBXYC7Bj55l
+         QqIXhiwS3GAp9u4iEQygzu4CAexL3jb3g0xjHBXeA5edI3wVht47EUKYU30oyBOMgXq3
+         MaNjLPgmm9IplXi8eCI2Mj6gCLPz2H9FuLxQscn1ntRqHkAV7KTpECQd8P1Dgf5Ead8c
+         lqZdQqiD9vX2N4d/vY4nc8Ibm0ZY7OhDnIFybACWqpd7hFFjwPwi7IvK6kB7fZOtGWE6
+         BdMrbGKwBua1NpBM9ofFQsjN1dsyK2uZiV0mBdxhdtMfWyC4xNkx3kc64dv8xozPSOWl
+         DwVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+dn3LvliggqMwu/IM8leC7rc7cJb8gzlcVAfQFIHk4A=;
-        b=IcEAAvyWEQ8zLNuounegCMuRQYsqC9gUZnlTP8yNAtg+PE31svqsz7pAQPH1RgW1SO
-         43gJorQAgcFK7sHOFtNHr4KrEcFWokcnC7frwbkERtyunmt17NPM1h4MMQ6/qiSVBxhl
-         odcHW5qHYjGzoZQd99wNgToTOpJB8jVyfHpRdz32LI5so217i7oJnFhjZvu9ZmhGbzRF
-         gG9G1N4GgNufVQuGkEUShTK7rsi8rMZWrCviCQjld7bPA1xF0NUcatE5VOkgmqNBoVT0
-         6mWOkP1fCLjvm5eTemJfXqQNAn0sKvBKSufecE5pqb/bDL7X1ZbhLwgzyQH8vLgNQ0wu
-         dSwg==
-X-Gm-Message-State: ACrzQf1OVh8cbLyRPxKskGPlB0wNhAdvbnx33IzAVRvEuhCUzEgRbOu6
-        2zfSayCKILhM7dhX2gh4rn0=
-X-Google-Smtp-Source: AMsMyM5cwAs/ShR6qmIwoZgvBqbKWpziGl3MqG4MeW+pmPBZ2NNmgpvYAkZaU5rvq3DgN3FmYZ43+A==
-X-Received: by 2002:a05:6808:308c:b0:354:99ec:bbb7 with SMTP id bl12-20020a056808308c00b0035499ecbbb7mr48262oib.68.1666970191098;
-        Fri, 28 Oct 2022 08:16:31 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 125-20020a4a1483000000b0047f8ceca22bsm1655725ood.15.2022.10.28.08.16.28
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5u74h0LeMKQmNu7Rx+9WPf1HyeM/JhlEtnkQPCdagjA=;
+        b=m6unSFK1pk75d9vRNDlFsCGHgTXlph/KGcFVMhgcxArGKC8tGFGRbg1p7mjvOhmQWa
+         cPSwMPryzt6SqWLA46o5C2p8+TTtZzLldJgOVWLNe5NwlDRf3cFIOQUFlbXvKszTnPRH
+         eccT8OdL/F4hMPXd4PbV9pfkMMF0oTtGGkaSq08MW6hfk4W38Nq/IJj7Iz0+8eqq0T/w
+         24mIVbKjYNWVIICZZwLGgM3MGIZ9u6J22t4rBAEjcbZ9V2mu4aaNyAgP8a+gGrjxBQRQ
+         LvKBqoGu+PrlxY484xEZDKQrTjVYdy1r5gZmikVXebgCiMB1S/XgsWZF8qsRXiAq0qfh
+         DTcw==
+X-Gm-Message-State: ACrzQf3OOePJGo15j91R2lYf8ZzulFYPQ3vqKaVo2vLh9+b7EbZXWmvj
+        jo95QVSZxTV6pcXVACvuUc5HTSiZSs4=
+X-Google-Smtp-Source: AMsMyM6pqp4XSew4LmlDKsFs7bBfrcEyC5RlqGNJWKi/cNA1DkO7Sc6gV628eArgd4nAc4WUPeXzSA==
+X-Received: by 2002:a50:871a:0:b0:461:52a9:1da6 with SMTP id i26-20020a50871a000000b0046152a91da6mr280208edb.94.1666974642241;
+        Fri, 28 Oct 2022 09:30:42 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.23])
+        by smtp.gmail.com with ESMTPSA id q1-20020a17090676c100b007a97a616f3fsm2310633ejn.196.2022.10.28.09.30.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Oct 2022 08:16:30 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <d8185ff7-d1a2-0d74-30d0-03392e630280@roeck-us.net>
-Date:   Fri, 28 Oct 2022 08:16:27 -0700
+        Fri, 28 Oct 2022 09:30:41 -0700 (PDT)
+Message-ID: <d1cfc9ef-dfc1-b3dc-c471-fe18aee8962e@gmail.com>
+Date:   Fri, 28 Oct 2022 19:30:40 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [RFC][PATCH v2 19/31] timers: net: Use del_timer_shutdown()
- before freeing timer
+ Thunderbird/102.3.3
 Content-Language: en-US
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Menglong Dong <imagedong@tencent.com>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net
-References: <20221027150525.753064657@goodmis.org>
- <20221027150928.780676863@goodmis.org>
- <20221027155513.60b211e2@gandalf.local.home>
- <CAHk-=wjAjW2P5To82+CAM0Rx8RexQBHPTVZBWBPHyEPGm37oFA@mail.gmail.com>
- <20221027163453.383bbf8e@gandalf.local.home>
- <20221027170755.40ee4059@gandalf.local.home>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20221027170755.40ee4059@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v3 1/5] wifi: rtl8xxxu: Add central frequency offset tracking
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -103,136 +72,509 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/27/22 14:07, Steven Rostedt wrote:
-> On Thu, 27 Oct 2022 16:34:53 -0400
-> Steven Rostedt <rostedt@goodmis.org> wrote:
-> 
->> What about del_timer_try_shutdown(), that if it removes the timer, it sets
->> the function to NULL (making it equivalent to a successful shutdown),
->> otherwise it does nothing. Allowing the the timer to be rearmed.
->>
->> I think this would work in this case.
-> 
-> Guenter,
-> 
-> Can you apply this patch on top of the series, and see if it makes the
-> warning go away?
-> 
+According to Realtek programmers, "to adjust oscillator to align
+central frequency of connected AP. Then, it can yield better
+performance." From commit fb8517f4fade ("rtw88: 8822c: add CFO
+tracking").
 
-That patch not only helps, it also fixes the crash seen with openrisc.
-For that crash, I was able to collect some useful data; see the log below.
+The RTL8192CU and a version of RTL8723AU apparently don't have the
+ability to adjust the oscillator, so this doesn't apply to them.
 
-Thanks,
-Guenter
+This also doesn't apply to the wifi + bluetooth combo chips (RTL8723AU
+and RTL8723BU) because the CFO tracking should only be done when
+bluetooth is disabled, and determining that looked complicated.
 
+That leaves only the RTL8192EU and RTL8188FU chips. I tested this with
+the latter.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
-WARNING: CPU: 0 PID: 7 at lib/debugobjects.c:502 debug_print_object+0xc0/0xe8
-ODEBUG: free active (active state 0) object type: timer_list hint: rcu_lock_map+0x0/0x14
-Modules linked in:
-CPU: 0 PID: 7 Comm: ksoftirqd/0 Not tainted 6.1.0-rc2-00145-g2c4e85e9ac93 #1
-Call trace:
-[<048ecc8e>] dump_stack_lvl+0x44/0x80
-[<c6a7029c>] dump_stack+0x1c/0x2c
-[<b225e4eb>] __warn+0xdc/0x118
-[<1070b766>] ? debug_print_object+0xc0/0xe8
-[<57923a76>] warn_slowpath_fmt+0x78/0x90
-[<1070b766>] debug_print_object+0xc0/0xe8
-[<b3abbcb0>] __debug_check_no_obj_freed+0x230/0x2b8
-[<508d9b5a>] ? delayed_put_task_struct+0x0/0x84
-[<30f5a2a0>] ? _s_kernel_ro+0x0/0x200
-[<403ab082>] debug_check_no_obj_freed+0x30/0x40
-[<82702c56>] free_pcp_prepare+0xc4/0x2b0
-[<508d9b5a>] ? delayed_put_task_struct+0x0/0x84
-[<7798b190>] free_unref_page+0x44/0x210
-[<d73717e5>] __free_pages+0x108/0x124
-[<a32de4eb>] slob_free_pages+0x9c/0xac
-[<bd51c171>] slob_free+0x40c/0x62c
-[<a2d26e0e>] ? thread_stack_free_rcu+0x0/0x44
-[<24b2df6c>] ? rcu_process_callbacks+0x114/0x224
-[<24b2df6c>] ? rcu_process_callbacks+0x114/0x224
-[<7794ec75>] ? rcu_process_callbacks+0xdc/0x224
-[<7794ec75>] ? rcu_process_callbacks+0xdc/0x224
-[<d76fe88f>] kmem_cache_free+0x64/0xa0
-[<46d25dac>] free_task+0x7c/0xe0
-[<2df25813>] __put_task_struct+0xe8/0x194
-[<64f9675b>] delayed_put_task_struct+0x58/0x84
-[<8755437e>] rcu_process_callbacks+0xf0/0x224
-[<24b2df6c>] ? rcu_process_callbacks+0x114/0x224
-[<020db442>] ? rcu_process_callbacks+0x178/0x224
-[<87626af4>] __do_softirq+0x11c/0x2f8
-[<c3f89a50>] ? smpboot_thread_fn+0x4c/0x304
-[<c3f89a50>] ? smpboot_thread_fn+0x4c/0x304
-[<021b0175>] ? smpboot_thread_fn+0x188/0x304
-[<f2e79ebd>] ? smpboot_thread_fn+0x158/0x304
-[<966be0e6>] run_ksoftirqd+0x4c/0x80
-[<4bf65f60>] smpboot_thread_fn+0x180/0x304
-[<3f914d93>] ? _raw_spin_unlock_irqrestore+0x50/0x84
-[<bef37779>] ? __kthread_parkme+0x60/0xdc
-[<b0798e10>] ? smpboot_thread_fn+0x0/0x304
-[<c463cd92>] kthread+0x11c/0x144
-[<3eaef0b7>] ? kthread+0x0/0x144
-[<ef2f6228>] ret_from_fork+0x1c/0x84
----[ end trace 0000000000000000 ]---
-Unable to handle kernel access
-  at virtual address 0xbd6ed6a4
+v3:
+ - No change.
+ 
+v2:
+ - Suggestions from Ping-Ke Shih:
+   - Use FIELD_PREP().
+   - Let packet_count wrap around.
+   - Use clamp().
+---
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  21 ++-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  39 ++++-
+ .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         |   4 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8723a.c         |  38 ++++-
+ .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |   4 +-
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 137 ++++++++++++++++--
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   1 +
+ 7 files changed, 212 insertions(+), 32 deletions(-)
 
-Oops#: 0000
-CPU #: 0
-    PC: c0056c78    SR: 00008679    SP: c1027c24
-GPR00: 00000000 GPR01: c1027c24 GPR02: c1027c78 GPR03: 00008279
-GPR04: 00000000 GPR05: 00000000 GPR06: 00000000 GPR07: 00000001
-GPR08: 00000000 GPR09: c0056c64 GPR10: c1026000 GPR11: 00000000
-GPR12: 00000000 GPR13: 00000001 GPR14: c05c0000 GPR15: 00000000
-GPR16: 00000001 GPR17: bd6ed6a4 GPR18: ff4517b0 GPR19: fd145f00
-GPR20: 00000000 GPR21: 00000000 GPR22: 00000000 GPR23: c0760000
-GPR24: c10232a0 GPR25: 00000003 GPR26: 00000000 GPR27: 00000000
-GPR28: c1a00458 GPR29: 00000000 GPR30: c0790000 GPR31: 00000000
-   RES: 00000000 oGPR11: ffffffff
-Process ksoftirqd/0 (pid: 7, stackpage=c10232a0)
-
-Stack:
-Call trace:
-[<6ce5cfad>] __lock_acquire.constprop.0+0xa8/0x914
-[<4bc14e12>] ? __del_timer_sync+0x0/0x128
-[<da915c87>] lock_acquire.part.0.isra.0+0xd4/0x1ac
-[<4bc14e12>] ? __del_timer_sync+0x0/0x128
-[<9b341df3>] lock_acquire+0x2c/0x44
-[<233b5cbc>] __del_timer_sync+0x64/0x128
-[<4bc14e12>] ? __del_timer_sync+0x0/0x128
-[<05cd2741>] timer_fixup_free+0x34/0x5c
-[<3fa496ad>] __debug_check_no_obj_freed+0x250/0x2b8
-[<508d9b5a>] ? delayed_put_task_struct+0x0/0x84
-[<30f5a2a0>] ? _s_kernel_ro+0x0/0x200
-[<403ab082>] debug_check_no_obj_freed+0x30/0x40
-[<82702c56>] free_pcp_prepare+0xc4/0x2b0
-[<508d9b5a>] ? delayed_put_task_struct+0x0/0x84
-[<7798b190>] free_unref_page+0x44/0x210
-[<d73717e5>] __free_pages+0x108/0x124
-[<a32de4eb>] slob_free_pages+0x9c/0xac
-[<bd51c171>] slob_free+0x40c/0x62c
-[<a2d26e0e>] ? thread_stack_free_rcu+0x0/0x44
-[<24b2df6c>] ? rcu_process_callbacks+0x114/0x224
-[<24b2df6c>] ? rcu_process_callbacks+0x114/0x224
-[<7794ec75>] ? rcu_process_callbacks+0xdc/0x224
-[<7794ec75>] ? rcu_process_callbacks+0xdc/0x224
-[<d76fe88f>] kmem_cache_free+0x64/0xa0
-[<46d25dac>] free_task+0x7c/0xe0
-[<2df25813>] __put_task_struct+0xe8/0x194
-[<64f9675b>] delayed_put_task_struct+0x58/0x84
-[<8755437e>] rcu_process_callbacks+0xf0/0x224
-[<24b2df6c>] ? rcu_process_callbacks+0x114/0x224
-[<020db442>] ? rcu_process_callbacks+0x178/0x224
-[<87626af4>] __do_softirq+0x11c/0x2f8
-[<c3f89a50>] ? smpboot_thread_fn+0x4c/0x304
-[<c3f89a50>] ? smpboot_thread_fn+0x4c/0x304
-[<021b0175>] ? smpboot_thread_fn+0x188/0x304
-[<f2e79ebd>] ? smpboot_thread_fn+0x158/0x304
-[<966be0e6>] run_ksoftirqd+0x4c/0x80
-[<4bf65f60>] smpboot_thread_fn+0x180/0x304
-[<3f914d93>] ? _raw_spin_unlock_irqrestore+0x50/0x84
-[<bef37779>] ? __kthread_parkme+0x60/0xdc
-[<b0798e10>] ? smpboot_thread_fn+0x0/0x304
-[<c463cd92>] kthread+0x11c/0x144
-[<3eaef0b7>] ? kthread+0x0/0x144
-[<ef2f6228>] ret_from_fork+0x1c/0x84
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 1b9da71dc38d..14f0b3224553 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -570,7 +570,7 @@ struct rtl8723au_phy_stats {
+ 	u8	cck_rpt_b_ofdm_cfosho_b;
+ 	u8	reserved_1;
+ 	u8	noise_power_db_msb;
+-	u8	path_cfotail[RTL8723A_MAX_RF_PATHS];
++	s8	path_cfotail[RTL8723A_MAX_RF_PATHS];
+ 	u8	pcts_mask[RTL8723A_MAX_RF_PATHS];
+ 	s8	stream_rxevm[RTL8723A_MAX_RF_PATHS];
+ 	u8	path_rxsnr[RTL8723A_MAX_RF_PATHS];
+@@ -1323,6 +1323,19 @@ struct rtl8xxxu_ra_report {
+ 	u8 desc_rate;
+ };
+ 
++#define CFO_TH_XTAL_HIGH	20 /* kHz */
++#define CFO_TH_XTAL_LOW	10 /* kHz */
++#define CFO_TH_ATC		80 /* kHz */
++
++struct rtl8xxxu_cfo_tracking {
++	bool adjust;
++	bool atc_status;
++	int cfo_tail[2];
++	u8 crystal_cap;
++	u32 packet_count;
++	u32 packet_count_pre;
++};
++
+ struct rtl8xxxu_priv {
+ 	struct ieee80211_hw *hw;
+ 	struct usb_device *udev;
+@@ -1381,9 +1394,8 @@ struct rtl8xxxu_priv {
+ 	u32 ep_tx_high_queue:1;
+ 	u32 ep_tx_normal_queue:1;
+ 	u32 ep_tx_low_queue:1;
+-	u32 has_xtalk:1;
+ 	u32 rx_buf_aggregation:1;
+-	u8 xtalk;
++	u8 default_crystal_cap;
+ 	unsigned int pipe_interrupt;
+ 	unsigned int pipe_in;
+ 	unsigned int pipe_out[TXDESC_QUEUE_MAX];
+@@ -1441,6 +1453,7 @@ struct rtl8xxxu_priv {
+ 	struct sk_buff_head c2hcmd_queue;
+ 	struct rtl8xxxu_btcoex bt_coex;
+ 	struct rtl8xxxu_ra_report ra_report;
++	struct rtl8xxxu_cfo_tracking cfo_tracking;
+ };
+ 
+ struct rtl8xxxu_rx_urb {
+@@ -1486,6 +1499,7 @@ struct rtl8xxxu_fileops {
+ 			     struct rtl8xxxu_txdesc32 *tx_desc, bool sgi,
+ 			     bool short_preamble, bool ampdu_enable,
+ 			     u32 rts_rate);
++	void (*set_crystal_cap) (struct rtl8xxxu_priv *priv, u8 crystal_cap);
+ 	int writeN_block_size;
+ 	int rx_agg_buf_size;
+ 	char tx_desc_size;
+@@ -1596,6 +1610,7 @@ void rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ void rtl8723bu_set_ps_tdma(struct rtl8xxxu_priv *priv,
+ 			   u8 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5);
+ void rtl8723bu_phy_init_antenna_selection(struct rtl8xxxu_priv *priv);
++void rtl8723a_set_crystal_cap(struct rtl8xxxu_priv *priv, u8 crystal_cap);
+ 
+ extern struct rtl8xxxu_fileops rtl8188fu_fops;
+ extern struct rtl8xxxu_fileops rtl8192cu_fops;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index bb88bab7c72a..371dc4a68404 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -703,7 +703,7 @@ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	priv->ofdm_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.a;
+ 	priv->ht20_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.b;
+ 
+-	priv->xtalk = efuse->xtal_k & 0x3f;
++	priv->default_crystal_cap = efuse->xtal_k & 0x3f;
+ 
+ 	dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
+ 	dev_info(&priv->udev->dev, "Product: %.7s\n", efuse->device_name);
+@@ -737,7 +737,6 @@ static void rtl8188fu_init_phy_bb(struct rtl8xxxu_priv *priv)
+ {
+ 	u8 val8;
+ 	u16 val16;
+-	u32 val32;
+ 
+ 	/* Enable BB and RF */
+ 	val16 = rtl8xxxu_read16(priv, REG_SYS_FUNC);
+@@ -759,12 +758,6 @@ static void rtl8188fu_init_phy_bb(struct rtl8xxxu_priv *priv)
+ 
+ 	rtl8xxxu_init_phy_regs(priv, rtl8188fu_phy_init_table);
+ 	rtl8xxxu_init_phy_regs(priv, rtl8188f_agc_table);
+-
+-	val32 = rtl8xxxu_read32(priv, REG_AFE_XTAL_CTRL);
+-	val8 = priv->xtalk;
+-	val32 &= ~0x007FF800;
+-	val32 |= ((val8 | (val8 << 6)) << 11);
+-	rtl8xxxu_write32(priv, REG_AFE_XTAL_CTRL, val32);
+ }
+ 
+ static int rtl8188fu_init_phy_rf(struct rtl8xxxu_priv *priv)
+@@ -1636,6 +1629,35 @@ static void rtl8188f_usb_quirks(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_write32(priv, REG_TXDMA_OFFSET_CHK, val32);
+ }
+ 
++#define XTAL1	GENMASK(22, 17)
++#define XTAL0	GENMASK(16, 11)
++
++static void rtl8188f_set_crystal_cap(struct rtl8xxxu_priv *priv, u8 crystal_cap)
++{
++	struct rtl8xxxu_cfo_tracking *cfo = &priv->cfo_tracking;
++	u32 val32;
++
++	if (crystal_cap == cfo->crystal_cap)
++		return;
++
++	val32 = rtl8xxxu_read32(priv, REG_AFE_XTAL_CTRL);
++
++	dev_dbg(&priv->udev->dev,
++	        "%s: Adjusting crystal cap from 0x%x (actually 0x%lx 0x%lx) to 0x%x\n",
++	        __func__,
++	        cfo->crystal_cap,
++	        FIELD_GET(XTAL1, val32),
++	        FIELD_GET(XTAL0, val32),
++	        crystal_cap);
++
++	val32 &= ~(XTAL1 | XTAL0);
++	val32 |= FIELD_PREP(XTAL1, crystal_cap) |
++		 FIELD_PREP(XTAL0, crystal_cap);
++	rtl8xxxu_write32(priv, REG_AFE_XTAL_CTRL, val32);
++
++	cfo->crystal_cap = crystal_cap;
++}
++
+ struct rtl8xxxu_fileops rtl8188fu_fops = {
+ 	.parse_efuse = rtl8188fu_parse_efuse,
+ 	.load_firmware = rtl8188fu_load_firmware,
+@@ -1660,6 +1682,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+ 	.update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+ 	.report_connect = rtl8xxxu_gen2_report_connect,
+ 	.fill_txdesc = rtl8xxxu_fill_txdesc_v2,
++	.set_crystal_cap = rtl8188f_set_crystal_cap,
+ 	.writeN_block_size = 128,
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc40),
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index 3a94fef4ca57..20924bafcb50 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -635,8 +635,7 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 			efuse->tx_power_index_B.pwr_diff[i - 1].ht40;
+ 	}
+ 
+-	priv->has_xtalk = 1;
+-	priv->xtalk = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
++	priv->default_crystal_cap = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
+ 
+ 	/*
+ 	 * device_info section seems to be laid out as records
+@@ -1711,6 +1710,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops = {
+ 	.update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+ 	.report_connect = rtl8xxxu_gen2_report_connect,
+ 	.fill_txdesc = rtl8xxxu_fill_txdesc_v2,
++	.set_crystal_cap = rtl8723a_set_crystal_cap,
+ 	.writeN_block_size = 128,
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc40),
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+index 44565bf4c1c2..552763a2215c 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+@@ -166,10 +166,10 @@ static int rtl8723au_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	       efuse->ht20_max_power_offset,
+ 	       sizeof(efuse->ht20_max_power_offset));
+ 
+-	if (priv->efuse_wifi.efuse8723.version >= 0x01) {
+-		priv->has_xtalk = 1;
+-		priv->xtalk = priv->efuse_wifi.efuse8723.xtal_k & 0x3f;
+-	}
++	if (priv->efuse_wifi.efuse8723.version >= 0x01)
++		priv->default_crystal_cap = priv->efuse_wifi.efuse8723.xtal_k & 0x3f;
++	else
++		priv->fops->set_crystal_cap = NULL;
+ 
+ 	priv->power_base = &rtl8723a_power_base;
+ 
+@@ -357,6 +357,35 @@ static int rtl8723au_power_on(struct rtl8xxxu_priv *priv)
+ 	return ret;
+ }
+ 
++#define XTAL1	GENMASK(23, 18)
++#define XTAL0	GENMASK(17, 12)
++
++void rtl8723a_set_crystal_cap(struct rtl8xxxu_priv *priv, u8 crystal_cap)
++{
++	struct rtl8xxxu_cfo_tracking *cfo = &priv->cfo_tracking;
++	u32 val32;
++
++	if (crystal_cap == cfo->crystal_cap)
++		return;
++
++	val32 = rtl8xxxu_read32(priv, REG_MAC_PHY_CTRL);
++
++	dev_dbg(&priv->udev->dev,
++	        "%s: Adjusting crystal cap from 0x%x (actually 0x%lx 0x%lx) to 0x%x\n",
++	        __func__,
++	        cfo->crystal_cap,
++	        FIELD_GET(XTAL1, val32),
++	        FIELD_GET(XTAL0, val32),
++	        crystal_cap);
++
++	val32 &= ~(XTAL1 | XTAL0);
++	val32 |= FIELD_PREP(XTAL1, crystal_cap) |
++		 FIELD_PREP(XTAL0, crystal_cap);
++	rtl8xxxu_write32(priv, REG_MAC_PHY_CTRL, val32);
++
++	cfo->crystal_cap = crystal_cap;
++}
++
+ struct rtl8xxxu_fileops rtl8723au_fops = {
+ 	.parse_efuse = rtl8723au_parse_efuse,
+ 	.load_firmware = rtl8723au_load_firmware,
+@@ -378,6 +407,7 @@ struct rtl8xxxu_fileops rtl8723au_fops = {
+ 	.update_rate_mask = rtl8xxxu_update_rate_mask,
+ 	.report_connect = rtl8xxxu_gen1_report_connect,
+ 	.fill_txdesc = rtl8xxxu_fill_txdesc_v1,
++	.set_crystal_cap = rtl8723a_set_crystal_cap,
+ 	.writeN_block_size = 1024,
+ 	.rx_agg_buf_size = 16000,
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc32),
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+index de5da6e51da7..ead2ff5edad1 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+@@ -445,8 +445,7 @@ static int rtl8723bu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 			efuse->tx_power_index_B.pwr_diff[i - 1].ht40;
+ 	}
+ 
+-	priv->has_xtalk = 1;
+-	priv->xtalk = priv->efuse_wifi.efuse8723bu.xtal_k & 0x3f;
++	priv->default_crystal_cap = priv->efuse_wifi.efuse8723bu.xtal_k & 0x3f;
+ 
+ 	dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
+ 	dev_info(&priv->udev->dev, "Product: %.41s\n", efuse->device_name);
+@@ -1664,6 +1663,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+ 	.update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+ 	.report_connect = rtl8xxxu_gen2_report_connect,
+ 	.fill_txdesc = rtl8xxxu_fill_txdesc_v2,
++	.set_crystal_cap = rtl8723a_set_crystal_cap,
+ 	.writeN_block_size = 1024,
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc40),
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 33a8ee545113..86a3457fd951 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -2286,7 +2286,6 @@ void rtl8xxxu_gen1_init_phy_bb(struct rtl8xxxu_priv *priv)
+  */
+ static int rtl8xxxu_init_phy_bb(struct rtl8xxxu_priv *priv)
+ {
+-	u8 val8;
+ 	u32 val32;
+ 
+ 	priv->fops->init_phy_bb(priv);
+@@ -2351,15 +2350,8 @@ static int rtl8xxxu_init_phy_bb(struct rtl8xxxu_priv *priv)
+ 		rtl8xxxu_write32(priv, REG_TX_TO_TX, val32);
+ 	}
+ 
+-	if (priv->has_xtalk) {
+-		val32 = rtl8xxxu_read32(priv, REG_MAC_PHY_CTRL);
+-
+-		val8 = priv->xtalk;
+-		val32 &= 0xff000fff;
+-		val32 |= ((val8 | (val8 << 6)) << 12);
+-
+-		rtl8xxxu_write32(priv, REG_MAC_PHY_CTRL, val32);
+-	}
++	if (priv->fops->set_crystal_cap)
++		priv->fops->set_crystal_cap(priv, priv->default_crystal_cap);
+ 
+ 	if (priv->rtl_chip == RTL8192E)
+ 		rtl8xxxu_write32(priv, REG_AFE_XTAL_CTRL, 0x000f81fb);
+@@ -4334,6 +4326,15 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 		val32 |= 0x0007e000;
+ 		rtl8xxxu_write32(priv, REG_AFE_MISC, val32);
+ 	}
++
++	/* Initialise the center frequency offset tracking */
++	if (priv->fops->set_crystal_cap) {
++		val32 = rtl8xxxu_read32(priv, REG_OFDM1_CFO_TRACKING);
++		priv->cfo_tracking.atc_status = val32 & CFO_TRACKING_ATC_STATUS;
++		priv->cfo_tracking.adjust = true;
++		priv->cfo_tracking.crystal_cap = priv->default_crystal_cap;
++	}
++
+ exit:
+ 	return ret;
+ }
+@@ -5301,7 +5302,8 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+ static void rtl8xxxu_rx_parse_phystats(struct rtl8xxxu_priv *priv,
+ 				       struct ieee80211_rx_status *rx_status,
+ 				       struct rtl8723au_phy_stats *phy_stats,
+-				       u32 rxmcs)
++				       u32 rxmcs, struct ieee80211_hdr *hdr,
++				       bool crc_icv_err)
+ {
+ 	if (phy_stats->sgi_en)
+ 		rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
+@@ -5327,6 +5329,21 @@ static void rtl8xxxu_rx_parse_phystats(struct rtl8xxxu_priv *priv,
+ 			break;
+ 		}
+ 	} else {
++		bool parse_cfo = priv->fops->set_crystal_cap &&
++				 priv->vif &&
++				 priv->vif->type == NL80211_IFTYPE_STATION &&
++				 priv->vif->cfg.assoc &&
++				 !crc_icv_err &&
++				 !ieee80211_is_ctl(hdr->frame_control) &&
++				 ether_addr_equal(priv->vif->bss_conf.bssid, hdr->addr2);
++
++		if (parse_cfo) {
++			priv->cfo_tracking.cfo_tail[0] = phy_stats->path_cfotail[0];
++			priv->cfo_tracking.cfo_tail[1] = phy_stats->path_cfotail[1];
++
++			priv->cfo_tracking.packet_count++;
++		}
++
+ 		rx_status->signal =
+ 			(phy_stats->cck_sig_qual_ofdm_pwdb_all >> 1) - 110;
+ 	}
+@@ -5809,7 +5826,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 
+ 		if (rx_desc->phy_stats)
+ 			rtl8xxxu_rx_parse_phystats(priv, rx_status, phy_stats,
+-						   rx_desc->rxmcs);
++						   rx_desc->rxmcs, (struct ieee80211_hdr *)skb->data,
++						   rx_desc->crc32 || rx_desc->icverr);
+ 
+ 		rx_status->mactime = rx_desc->tsfl;
+ 		rx_status->flag |= RX_FLAG_MACTIME_START;
+@@ -5880,7 +5898,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 
+ 	if (rx_desc->phy_stats)
+ 		rtl8xxxu_rx_parse_phystats(priv, rx_status, phy_stats,
+-					   rx_desc->rxmcs);
++					   rx_desc->rxmcs, (struct ieee80211_hdr *)skb->data,
++					   rx_desc->crc32 || rx_desc->icverr);
+ 
+ 	rx_status->mactime = rx_desc->tsfl;
+ 	rx_status->flag |= RX_FLAG_MACTIME_START;
+@@ -6495,6 +6514,94 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+ 	}
+ }
+ 
++static void rtl8xxxu_set_atc_status(struct rtl8xxxu_priv *priv, bool atc_status)
++{
++	struct rtl8xxxu_cfo_tracking *cfo = &priv->cfo_tracking;
++	u32 val32;
++
++	if (atc_status == cfo->atc_status)
++		return;
++
++	cfo->atc_status = atc_status;
++
++	val32 = rtl8xxxu_read32(priv, REG_OFDM1_CFO_TRACKING);
++	if (atc_status)
++		val32 |= CFO_TRACKING_ATC_STATUS;
++	else
++		val32 &= ~CFO_TRACKING_ATC_STATUS;
++	rtl8xxxu_write32(priv, REG_OFDM1_CFO_TRACKING, val32);
++}
++
++/* Central frequency offset correction */
++static void rtl8xxxu_track_cfo(struct rtl8xxxu_priv *priv)
++{
++	struct rtl8xxxu_cfo_tracking *cfo = &priv->cfo_tracking;
++	int cfo_khz_a, cfo_khz_b, cfo_average;
++	int crystal_cap;
++
++	if (!priv->vif || !priv->vif->cfg.assoc) {
++		/* Reset */
++		cfo->adjust = true;
++
++		if (cfo->crystal_cap > priv->default_crystal_cap)
++			priv->fops->set_crystal_cap(priv, cfo->crystal_cap - 1);
++		else if (cfo->crystal_cap < priv->default_crystal_cap)
++			priv->fops->set_crystal_cap(priv, cfo->crystal_cap + 1);
++
++		rtl8xxxu_set_atc_status(priv, true);
++
++		return;
++	}
++
++	if (cfo->packet_count == cfo->packet_count_pre)
++		/* No new information. */
++		return;
++
++	cfo->packet_count_pre = cfo->packet_count;
++
++	/* CFO_tail[1:0] is S(8,7), (num_subcarrier>>7) x 312.5K = CFO value(K Hz) */
++	cfo_khz_a = (int)((cfo->cfo_tail[0] * 3125) / 10) >> 7;
++	cfo_khz_b = (int)((cfo->cfo_tail[1] * 3125) / 10) >> 7;
++
++	if (priv->tx_paths == 1)
++		cfo_average = cfo_khz_a;
++	else
++		cfo_average = (cfo_khz_a + cfo_khz_b) / 2;
++
++	dev_dbg(&priv->udev->dev, "cfo_average: %d\n", cfo_average);
++
++	if (cfo->adjust) {
++		if (abs(cfo_average) < CFO_TH_XTAL_LOW)
++			cfo->adjust = false;
++	} else {
++		if (abs(cfo_average) > CFO_TH_XTAL_HIGH)
++			cfo->adjust = true;
++	}
++
++	/*
++	 * TODO: We should return here only if bluetooth is enabled.
++	 * See the vendor drivers for how to determine that.
++	 */
++	if (priv->has_bluetooth)
++		return;
++
++	if (!cfo->adjust)
++		return;
++
++	crystal_cap = cfo->crystal_cap;
++
++	if (cfo_average > CFO_TH_XTAL_LOW)
++		crystal_cap++;
++	else if (cfo_average < -CFO_TH_XTAL_LOW)
++		crystal_cap--;
++
++	crystal_cap = clamp(crystal_cap, 0, 0x3f);
++
++	priv->fops->set_crystal_cap(priv, crystal_cap);
++
++	rtl8xxxu_set_atc_status(priv, abs(cfo_average) >= CFO_TH_ATC);
++}
++
+ static void rtl8xxxu_watchdog_callback(struct work_struct *work)
+ {
+ 	struct ieee80211_vif *vif;
+@@ -6519,6 +6626,10 @@ static void rtl8xxxu_watchdog_callback(struct work_struct *work)
+ 		rcu_read_unlock();
+ 
+ 		signal = ieee80211_ave_rssi(vif);
++
++		if (priv->fops->set_crystal_cap)
++			rtl8xxxu_track_cfo(priv);
++
+ 		rtl8xxxu_refresh_rate_mask(priv, signal, sta);
+ 	}
+ 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+index 35bde1404793..190bc0e8dc33 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+@@ -1027,6 +1027,7 @@
+ 
+ #define REG_OFDM1_TRX_PATH_ENABLE	0x0d04
+ #define REG_OFDM1_CFO_TRACKING		0x0d2c
++#define  CFO_TRACKING_ATC_STATUS	BIT(11)
+ #define REG_OFDM1_CSI_FIX_MASK1		0x0d40
+ #define REG_OFDM1_CSI_FIX_MASK2		0x0d44
+ 
+-- 
+2.38.0
