@@ -2,51 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A77F6610C1C
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 10:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21627610CBF
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 11:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbiJ1IXB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Oct 2022 04:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38784 "EHLO
+        id S229940AbiJ1JJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Oct 2022 05:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbiJ1IW7 (ORCPT
+        with ESMTP id S229906AbiJ1JJt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Oct 2022 04:22:59 -0400
+        Fri, 28 Oct 2022 05:09:49 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4744B1A20A6;
-        Fri, 28 Oct 2022 01:22:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F2331274A
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 02:09:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=awrmdL6Drv/Ct65LQwals/2KrYxC2xB9ldKz7KnqNFM=;
-        t=1666945378; x=1668154978; b=Yb8jlFZHwyg5u4daTfTHZPEQAxqTXj85CG1Q2fA9HURdYLp
-        zz9ncZdQ9qoDfw+BNKQyIC//IiGSgE8WsPQdPExFDD/nqRhBdt6cwy3oDI0om57ydsoBNQT164lzJ
-        ovOqqqvQrHQ0ibZTolvJa0ONcvRTAkI6nyU0P1cOKLwnunIiewinhvG8lAV0JBr+8bSIZWpn7JFyT
-        SLyAebS/Lg96YwBxL6icEBfahe0z211TknYbI4GgNrwV35xMjPeE0MxSrgX83/SP/nFJ9vcYSWrYn
-        NpmS1KWDZ2VAFGvCbrubdsbG4+FuMA4XqwhDbuSiilvIlYX3yzywNA2QDr/9CZlw==;
+        Resent-Cc:Resent-Message-ID; bh=ibWBru5Dt8J5i4ipz9z6rQ2sTn075x9p4L+SeJ4yZbU=;
+        t=1666948189; x=1668157789; b=XjVr3d4z5B62GgrwwSyU+xH8i2FdgdQzBSydFUNE7xy3HIo
+        Z6ZKByuSHISUHT+OVN+8c3MKrHRcFJ7UpSh9BS39iK9FQKeLnLFx6Y8ht35orFRy9G/xZj6IF/NtY
+        /JDp/9O+i9nKOT5wr1myptKht5W+MXDy1JmrGNMe3HadWRi1SZEA7WlYJbQo6HV63bRalFiPrlr09
+        AguoEwE3nlMlZUoQ7EafeqZl9cpPdw0CT3TmnqwCIscltJvY4278aPa26KrPk3sR8RNc1VQa2VYNS
+        WXEJeBc0l9mcB8/ggX17mU9ZPN2WFa5p5N9fVe1k8XMFy5XHCgtfKuWv38VlEMYA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ooKdc-001HRW-1H;
-        Fri, 28 Oct 2022 10:22:48 +0200
-Message-ID: <a92ffa8db8228b5cb41939dc37d6ee677aef0619.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/6] cfg80211: Avoid clashing function prototypes
+        id 1ooLN4-001IEH-2w;
+        Fri, 28 Oct 2022 11:09:47 +0200
+Message-ID: <10227c7575951aed46d1970da8b0922757d47bce.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: bcma/brcm80211: Use the proper include
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        linux-hardening@vger.kernel.org
-Date:   Fri, 28 Oct 2022 10:22:47 +0200
-In-Reply-To: <c8239f5813dec6e5cfb554ca92b1783a18ac5537.1666894751.git.gustavoars@kernel.org>
-References: <cover.1666894751.git.gustavoars@kernel.org>
-         <c8239f5813dec6e5cfb554ca92b1783a18ac5537.1666894751.git.gustavoars@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Date:   Fri, 28 Oct 2022 11:09:45 +0200
+In-Reply-To: <20221026075653.105387-1-linus.walleij@linaro.org>
+References: <20221026075653.105387-1-linus.walleij@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -61,37 +55,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hm.
+On Wed, 2022-10-26 at 09:56 +0200, Linus Walleij wrote:
+> Surely this belongs in the
+> BCMA driver: we cannot have all drivers performing cosistency
+> checks on the internals of things they are passed.
+>=20
 
-If you're splitting out per driver,
-
-> +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-> @@ -9870,7 +9870,7 @@ static int ipw_wx_sw_reset(struct net_device *dev,
-> =20
->  /* Rebase the WE IOCTLs to zero for the handler array */
->  static iw_handler ipw_wx_handlers[] =3D {
-> -	IW_HANDLER(SIOCGIWNAME, (iw_handler)cfg80211_wext_giwname),
-> +	IW_HANDLER(SIOCGIWNAME, cfg80211_wext_giwname),
-
-I can see how this (and similar) still belongs into this patch since
-it's related to the cfg80211 change, but
-
-> +++ b/drivers/net/wireless/intersil/orinoco/wext.c
-> @@ -154,9 +154,10 @@ static struct iw_statistics *orinoco_get_wireless_st=
-ats(struct net_device *dev)
-> =20
->  static int orinoco_ioctl_setwap(struct net_device *dev,
->  				struct iw_request_info *info,
-> -				struct sockaddr *ap_addr,
-> +				union iwreq_data *wrqu,
->  				char *extra)
->  {
-> +	struct sockaddr *ap_addr =3D &wrqu->ap_addr;
-
-why this (and similar) too?
-
-The same changes in hostap, zd1201 and airo you did split out?
+"Surely this doesn't belong"?
 
 johannes
-
-
