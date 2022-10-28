@@ -2,188 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA42F610641
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 01:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A77F6610C1C
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 10:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235321AbiJ0XOJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Oct 2022 19:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
+        id S230017AbiJ1IXB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Oct 2022 04:23:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbiJ0XN7 (ORCPT
+        with ESMTP id S229489AbiJ1IW7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Oct 2022 19:13:59 -0400
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F101DB56D1;
-        Thu, 27 Oct 2022 16:13:57 -0700 (PDT)
-Received: by mail-ot1-x335.google.com with SMTP id br15-20020a056830390f00b0061c9d73b8bdso2079113otb.6;
-        Thu, 27 Oct 2022 16:13:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=P41rwxhUMczs6ljwzqKYGCdlQ+dI/irnsNJUBE737lw=;
-        b=nUs4BQ4QHj5upmui25ZlamsxDTY94q2eK6CXv3krB1huVK8iXo01EW8k7VAhNVROHi
-         PjYBf8CwASEYPGf6SwTYwp/ZxxL+hu+oIEzBD66Gszc4ROJ0le1pA55DFqSM51JsTFZU
-         gU5Wpx+bws1qVVFzHCN4FW/OY3wOMqGAS29n07JnNPwk7gWEJ4JAX/hseDkT64kYN3wQ
-         XrXoWl/xM7zG/HuTEiKdr1MfmR0ifM6cjZrdxqnY+bg/ra9Xu38mR+BX7nY3UrahaCWD
-         AC2+gJVoU576iIFXXsgNFhmCCUiwKUFb0hh6k9uqPefGAva3wPgPVGU4KfkgNYVbwaAx
-         djyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P41rwxhUMczs6ljwzqKYGCdlQ+dI/irnsNJUBE737lw=;
-        b=edFcRlntpKMMw2WjGExM2UT3ExiyoBPfZwa2yX3XKkNxZYIydnUjlzNp2MzsRMG7wM
-         EWDj6WG0w7Z/GSyEUzKMGvpBl3iCclMbDX2ql5xXe4E6nfrW352ZNQ+xYuMQymB4d4D5
-         YjNOjmLIdBEq4fPIlwCIwaOrez8awUWUIZLcrtNyAzSOhb1wFdHGoKHjXdWbiFAB2R3h
-         VNrMoKeY3JhjgdekKOuQ0BRnACdXwnv+5DYFiR4q9Q9QkeocVi69kKeMc8QOdaWlywiu
-         AKx7v0+5VlZdXh1JlF4zWL1sCTNyfSsWQUhit+/p19I8l3b891hDcbvShW12qsugqJcO
-         OAbw==
-X-Gm-Message-State: ACrzQf1/H9UZg1Hb9Oq4Y8ATcXrhyILzKZ/tqmSwiLGd5qkORJygijUi
-        ZPOjGUWdWhzjPJdUc+yvKEg=
-X-Google-Smtp-Source: AMsMyM5XO1l19DXXjtSxPrs4BROdbXynUNf2PKVD7EXor9oaUSYhVr2U5NCfT8ANE9SAPyn1InBLAA==
-X-Received: by 2002:a05:6830:6611:b0:662:2725:d309 with SMTP id cp17-20020a056830661100b006622725d309mr16302188otb.293.1666912437226;
-        Thu, 27 Oct 2022 16:13:57 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f1-20020a4a8f41000000b0049602fb9b4csm943193ool.46.2022.10.27.16.13.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Oct 2022 16:13:56 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Thu, 27 Oct 2022 16:13:55 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Fri, 28 Oct 2022 04:22:59 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4744B1A20A6;
+        Fri, 28 Oct 2022 01:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=awrmdL6Drv/Ct65LQwals/2KrYxC2xB9ldKz7KnqNFM=;
+        t=1666945378; x=1668154978; b=Yb8jlFZHwyg5u4daTfTHZPEQAxqTXj85CG1Q2fA9HURdYLp
+        zz9ncZdQ9qoDfw+BNKQyIC//IiGSgE8WsPQdPExFDD/nqRhBdt6cwy3oDI0om57ydsoBNQT164lzJ
+        ovOqqqvQrHQ0ibZTolvJa0ONcvRTAkI6nyU0P1cOKLwnunIiewinhvG8lAV0JBr+8bSIZWpn7JFyT
+        SLyAebS/Lg96YwBxL6icEBfahe0z211TknYbI4GgNrwV35xMjPeE0MxSrgX83/SP/nFJ9vcYSWrYn
+        NpmS1KWDZ2VAFGvCbrubdsbG4+FuMA4XqwhDbuSiilvIlYX3yzywNA2QDr/9CZlw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ooKdc-001HRW-1H;
+        Fri, 28 Oct 2022 10:22:48 +0200
+Message-ID: <a92ffa8db8228b5cb41939dc37d6ee677aef0619.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/6] cfg80211: Avoid clashing function prototypes
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Menglong Dong <imagedong@tencent.com>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net
-Subject: Re: [RFC][PATCH v2 19/31] timers: net: Use del_timer_shutdown()
- before freeing timer
-Message-ID: <20221027231355.GA279418@roeck-us.net>
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        linux-hardening@vger.kernel.org
+Date:   Fri, 28 Oct 2022 10:22:47 +0200
+In-Reply-To: <c8239f5813dec6e5cfb554ca92b1783a18ac5537.1666894751.git.gustavoars@kernel.org>
+References: <cover.1666894751.git.gustavoars@kernel.org>
+         <c8239f5813dec6e5cfb554ca92b1783a18ac5537.1666894751.git.gustavoars@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 27, 2022 at 05:07:55PM -0400, Steven Rostedt wrote:
-> On Thu, 27 Oct 2022 16:34:53 -0400
-> Steven Rostedt <rostedt@goodmis.org> wrote:
-> 
-> > What about del_timer_try_shutdown(), that if it removes the timer, it sets
-> > the function to NULL (making it equivalent to a successful shutdown),
-> > otherwise it does nothing. Allowing the the timer to be rearmed.
-> > 
-> > I think this would work in this case.
-> 
-> Guenter,
-> 
-> Can you apply this patch on top of the series, and see if it makes the
-> warning go away?
+Hm.
 
-Applied, and started testing.
+If you're splitting out per driver,
 
-Please let me know if I am missing some other patch(es) to apply.
+> +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+> @@ -9870,7 +9870,7 @@ static int ipw_wx_sw_reset(struct net_device *dev,
+> =20
+>  /* Rebase the WE IOCTLs to zero for the handler array */
+>  static iw_handler ipw_wx_handlers[] =3D {
+> -	IW_HANDLER(SIOCGIWNAME, (iw_handler)cfg80211_wext_giwname),
+> +	IW_HANDLER(SIOCGIWNAME, cfg80211_wext_giwname),
 
-Thanks,
-Guenter
+I can see how this (and similar) still belongs into this patch since
+it's related to the cfg80211 change, but
 
-> 
-> diff --git a/include/linux/timer.h b/include/linux/timer.h
-> index d4d90149d015..e3c5f4bdd526 100644
-> --- a/include/linux/timer.h
-> +++ b/include/linux/timer.h
-> @@ -184,12 +184,23 @@ static inline int timer_pending(const struct timer_list * timer)
->  	return !hlist_unhashed_lockless(&timer->entry);
->  }
->  
-> +extern int __del_timer(struct timer_list * timer, bool free);
-> +
->  extern void add_timer_on(struct timer_list *timer, int cpu);
-> -extern int del_timer(struct timer_list * timer);
->  extern int mod_timer(struct timer_list *timer, unsigned long expires);
->  extern int mod_timer_pending(struct timer_list *timer, unsigned long expires);
->  extern int timer_reduce(struct timer_list *timer, unsigned long expires);
->  
-> +static inline int del_timer_try_shutdown(struct timer_list *timer)
-> +{
-> +	return __del_timer(timer, true);
-> +}
-> +
-> +static inline int del_timer(struct timer_list *timer)
-> +{
-> +	return __del_timer(timer, false);
-> +}
-> +
->  /*
->   * The jiffies value which is added to now, when there is no timer
->   * in the timer wheel:
-> diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-> index 7305c65ad0eb..073031cb3bb9 100644
-> --- a/kernel/time/timer.c
-> +++ b/kernel/time/timer.c
-> @@ -1255,7 +1255,7 @@ EXPORT_SYMBOL_GPL(add_timer_on);
->   * (ie. del_timer() of an inactive timer returns 0, del_timer() of an
->   * active timer returns 1.)
->   */
-> -int del_timer(struct timer_list *timer)
-> +int __del_timer(struct timer_list *timer, bool free)
+> +++ b/drivers/net/wireless/intersil/orinoco/wext.c
+> @@ -154,9 +154,10 @@ static struct iw_statistics *orinoco_get_wireless_st=
+ats(struct net_device *dev)
+> =20
+>  static int orinoco_ioctl_setwap(struct net_device *dev,
+>  				struct iw_request_info *info,
+> -				struct sockaddr *ap_addr,
+> +				union iwreq_data *wrqu,
+>  				char *extra)
 >  {
->  	struct timer_base *base;
->  	unsigned long flags;
-> @@ -1266,12 +1266,16 @@ int del_timer(struct timer_list *timer)
->  	if (timer_pending(timer)) {
->  		base = lock_timer_base(timer, &flags);
->  		ret = detach_if_pending(timer, base, true);
-> +		if (free && ret) {
-> +			timer->function = NULL;
-> +			debug_timer_deactivate(timer);
-> +		}
->  		raw_spin_unlock_irqrestore(&base->lock, flags);
->  	}
->  
->  	return ret;
->  }
-> -EXPORT_SYMBOL(del_timer);
-> +EXPORT_SYMBOL(__del_timer);
->  
->  static int __try_to_del_timer_sync(struct timer_list *timer, bool free)
->  {
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 10cc84379d75..23a97442a0a6 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -3345,7 +3345,7 @@ EXPORT_SYMBOL(sk_reset_timer);
->  
->  void sk_stop_timer(struct sock *sk, struct timer_list* timer)
->  {
-> -	if (del_timer(timer))
-> +	if (del_timer_try_shutdown(timer))
->  		__sock_put(sk);
->  }
->  EXPORT_SYMBOL(sk_stop_timer);
+> +	struct sockaddr *ap_addr =3D &wrqu->ap_addr;
+
+why this (and similar) too?
+
+The same changes in hostap, zd1201 and airo you did split out?
+
+johannes
+
+
