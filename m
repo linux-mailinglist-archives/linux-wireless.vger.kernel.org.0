@@ -2,52 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93007610EE5
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 12:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD22D610EF9
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Oct 2022 12:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230496AbiJ1KoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Oct 2022 06:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
+        id S230497AbiJ1Ktw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Oct 2022 06:49:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbiJ1KoP (ORCPT
+        with ESMTP id S230469AbiJ1Ktv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Oct 2022 06:44:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD5CB66840
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 03:44:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6970A6278C
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 10:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B6AC433C1;
-        Fri, 28 Oct 2022 10:44:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666953853;
-        bh=LJCkbzRzJmPUdZS/GDD0YyCyaxK7rKIIYQdaVBpaOqc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=T9gyet1NUd1GrRtG7/msbRq0LdOanY+tMp/ds9BTOvICFHP9YgjjcfJP1sO1GWg1G
-         QD9Yk28kct+sUJCw0ihrUALK3W3JBdY33IZb/BUlMZn0+fdCYIGKDHDomRELb6Sfbk
-         Lyo8r2FVZR+TsDExZ147gKmV5zU4AFmlpLLTDoIdI/3Ess7mmOaxz41cRMi2OG7lL3
-         QQSPFZjeZ0SF+LiX5ZPmlejjUFi0c+cnoDY5jz2WzUJz9BfG/NzelotAH/16ZytuhI
-         zxFlpyagGs4t/Crh1gdKMJ4Q4rGCTMa8hvBrvNOoLmQ6zq3U9EBGw1LHrnu5a4qX9X
-         zcMncQxVGKQFw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     "Joseph S. Barrera III" <joebar@chromium.org>
-Cc:     Rahul Bhattacharjee <quic_rbhattac@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath11k: Fix qmi_msg_handler data structure initialization
-References: <20221021090126.28626-1-quic_rbhattac@quicinc.com>
-        <11e005c2-2363-d63f-9f3f-3ca811737231@chromium.org>
-Date:   Fri, 28 Oct 2022 13:44:09 +0300
-In-Reply-To: <11e005c2-2363-d63f-9f3f-3ca811737231@chromium.org> (Joseph S.
-        Barrera, III's message of "Wed, 26 Oct 2022 12:46:56 -0700")
-Message-ID: <87pmecgrd2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 28 Oct 2022 06:49:51 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A663D1262E
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 03:49:44 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29S2vX6A023698;
+        Fri, 28 Oct 2022 10:49:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=ki/HDFBEbGCIzidKvmwtO++x//ZgFLhXULCVRCmMbP4=;
+ b=k4aXG4JJMmtq3KoiZmtTtb1nJEkTLynwD7utSLfOs6li+CjcJX6/A5HCDCuSUn0CR0lV
+ gG+N6SQs9fsMsM53E8zh2Eij5iO4C5P+NBC84yRD7JPU4wwydrZYSqKCn609uq3baEt8
+ t5hOh7k3vrRntmt6AaGyWNRSATqpMhoAIXhwH7om7u32VOITrkvecjXxHemM5Bm0JXGA
+ q52zwmdo5kWu6Jsa3Y71l7DJEmAEniSyUb3tjXDjC2mbA4ktKVxyN1gBD4FYXA1bUUdA
+ Ssft39KZ10AhIpbtXD3dYLPnP968weBGuRwIqX2Qd7EPsTYhBxx/alP030jYbZTDDIve lg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kg0wmt1rs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 28 Oct 2022 10:49:35 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29SAnYXB019185
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 28 Oct 2022 10:49:34 GMT
+Received: from [10.242.243.152] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 28 Oct
+ 2022 03:49:32 -0700
+Message-ID: <bc7b8787-f7a6-501f-4740-3a9a06cdad9a@quicinc.com>
+Date:   Fri, 28 Oct 2022 16:19:29 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH] wifi: ath11k: Fix qmi_msg_handler data structure
+ initialization
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        "Joseph S. Barrera III" <joebar@chromium.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20221021090126.28626-1-quic_rbhattac@quicinc.com>
+ <11e005c2-2363-d63f-9f3f-3ca811737231@chromium.org>
+ <87pmecgrd2.fsf@kernel.org>
+From:   Rahul Bhattacharjee <quic_rbhattac@quicinc.com>
+In-Reply-To: <87pmecgrd2.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: JUB4RRJKF_f52IxC370-jEPMNCOCk_v2
+X-Proofpoint-GUID: JUB4RRJKF_f52IxC370-jEPMNCOCk_v2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-28_05,2022-10-27_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=972 spamscore=0 phishscore=0 mlxscore=0
+ adultscore=0 malwarescore=0 bulkscore=0 clxscore=1011 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2210280067
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,34 +81,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Joseph S. Barrera III" <joebar@chromium.org> writes:
 
-> On 10/21/22 2:01 AM, Rahul Bhattacharjee wrote:
+On 10/28/2022 4:14 PM, Kalle Valo wrote:
+> "Joseph S. Barrera III" <joebar@chromium.org> writes:
 >
->>   	},
->> +	{/* end of list */}
->>   };
+>> On 10/21/22 2:01 AM, Rahul Bhattacharjee wrote:
+>>
+>>>    	},
+>>> +	{/* end of list */}
+>>>    };
+>> Do you want to add a comma after that last list element?
+> I can add that in the pending branch.
 >
-> Do you want to add a comma after that last list element?
-
-I can add that in the pending branch.
-
+>> Actually, I normally see the last list element simply being
+>>
+>>> +	{},
+>> ... with no comment necessary.
+> I would prefer to have a comment to make it more visible that an empty
+> element is needed at the end, but I would add that outside of braces?
 >
-> Actually, I normally see the last list element simply being
+> /* end of list */
+> {},
 >
->> +	{},
->
-> ... with no comment necessary.
+> Thoughts? I can change this in the pending branch.
 
-I would prefer to have a comment to make it more visible that an empty
-element is needed at the end, but I would add that outside of braces?
-
-/* end of list */
-{},
-
-Thoughts? I can change this in the pending branch.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+LGTM!
