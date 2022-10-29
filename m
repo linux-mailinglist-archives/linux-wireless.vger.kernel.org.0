@@ -2,125 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA75611D81
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Oct 2022 00:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 853DE611EB4
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Oct 2022 02:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229928AbiJ1WqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Oct 2022 18:46:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53364 "EHLO
+        id S229556AbiJ2AZj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Oct 2022 20:25:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiJ1WqX (ORCPT
+        with ESMTP id S229491AbiJ2AZi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Oct 2022 18:46:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 093201D3473;
-        Fri, 28 Oct 2022 15:46:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C0F56B82AA2;
-        Fri, 28 Oct 2022 22:46:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82950C433D6;
-        Fri, 28 Oct 2022 22:46:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666997179;
-        bh=s26jHyd1kGfu++KNYnyX//dTrAoWFdZ+ZNmo3nKnJss=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VxGwJ9O9yotsrKvlxcwXmQ0Fk4p3v9D5+DlTte1u/b8zE1L6oWXtT1okcCGymzc+F
-         uUzTBz6nnK6iiPp7ONuOcluxciyA+H2AWZrZubpDNsGXF9Il1djnbo/LR4hvlZPj9A
-         0kcsvnbXvyZm70ZgqLxx8R3a5VvJzOLCGoXRet/I+ti1hMmQnBvu+tjrjCIr4vv2w6
-         OEFoGL6xEvwVAQA3kmozlS8z6UFzjyJceJxRPFqcAUpN8icgdMmKp9Kauc4XA3OBaI
-         M/O249pRehQLwqy4hrrgyuAQ8mLrPOQJg4gBTCW/3paQdOBy2HRsGcOdxhzSitZK13
-         YSSld8uxG8jGQ==
-Date:   Fri, 28 Oct 2022 15:46:17 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Menglong Dong <imagedong@tencent.com>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net
-Subject: Re: [RFC][PATCH v2 19/31] timers: net: Use del_timer_shutdown()
- before freeing timer
-Message-ID: <20221028154617.3c63ba68@kernel.org>
-In-Reply-To: <20221028183149.2882a29b@gandalf.local.home>
-References: <20221027150525.753064657@goodmis.org>
-        <20221027150928.780676863@goodmis.org>
-        <20221027155513.60b211e2@gandalf.local.home>
-        <CAHk-=wjAjW2P5To82+CAM0Rx8RexQBHPTVZBWBPHyEPGm37oFA@mail.gmail.com>
-        <20221027163453.383bbf8e@gandalf.local.home>
-        <CAHk-=whoS+krLU7JNe=hMp2VOcwdcCdTXhdV8qqKoViwzzJWfA@mail.gmail.com>
-        <20221027170720.31497319@gandalf.local.home>
-        <20221027183511.66b058c4@gandalf.local.home>
-        <20221028183149.2882a29b@gandalf.local.home>
+        Fri, 28 Oct 2022 20:25:38 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250E06D86B
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 17:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667003137; x=1698539137;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BtVn+cHMQ0XkuedQueFqs/pKErIVKa4WvE8oquUolsE=;
+  b=MAPaiqrxJpR+EHCd+FGjuYWS5MhtFqWCyrHxRaFpEFKURK6LrhYqSebu
+   GF6sE8F/YlUKrRxKfJcUCx/bXVBfOMaRJwwSEAzHognMcmSdgyWZDayp1
+   OeaRgi2sP626eAfoNmew8FyVd/P9WmGthufJOIfzpdJyx44nwHRZ7HI7m
+   7GCf/VnwGfrcdNuYazAc5ZQA/U9VhzRfBOzAqV9f7dw74GAl4aDSrGVvF
+   Uzz+PMAMe2sg6APjqdWns3H2zhdh9WLmMUwrFXYiudpZPScHi/XI73YUL
+   CQMD9fdjegeBM6NpoSvQNE+xBRl8iqx8905dIKH9PEMY5TmRgG7sYJK9L
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10514"; a="394934990"
+X-IronPort-AV: E=Sophos;i="5.95,222,1661842800"; 
+   d="scan'208";a="394934990"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2022 17:25:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10514"; a="584103411"
+X-IronPort-AV: E=Sophos;i="5.95,222,1661842800"; 
+   d="scan'208";a="584103411"
+Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 28 Oct 2022 17:25:34 -0700
+Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ooZfJ-000AMZ-2b;
+        Sat, 29 Oct 2022 00:25:33 +0000
+Date:   Sat, 29 Oct 2022 08:25:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:pending] BUILD SUCCESS
+ 0879f594289e36546974c17f10bf587d9303e724
+Message-ID: <635c72e3.57occxR3Kri0TQKU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 28 Oct 2022 18:31:49 -0400 Steven Rostedt wrote:
-> Could someone from networking confirm (or deny) that the timer being
-> removed in sk_stop_timer() will no longer be used even if del_timer()
-> returns false?
-> 
-> net/core/sock.c:
-> 
-> void sk_stop_timer(struct sock *sk, struct timer_list* timer)
-> {
-> 	if (del_timer(timer))
-> 		__sock_put(sk);
-> }
-> 
-> If this is the case, then I'll add the following interface:
-> 
->    del_timer_sync_shutdown() // the common case which syncs
-> 
->    del_timer_shutdown() // the uncommon case, that returns immediately
->                         // used for those cases that add extra code to
->                         // handle it, like sk_stop_timer()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: 0879f594289e36546974c17f10bf587d9303e724  Merge branch 'main' into test
 
-Sorry too many bugs at once :)
+elapsed time: 736m
 
-FWIW Paolo was saying privately earlier today that he spotted some cases
-of reuse, he gave an example of ccid2_hc_tx_packet_recv()
+configs tested: 52
+configs skipped: 2
 
-So we can't convert all cases of sk_stop_timer() in one fell swoop :(
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> Which has the same semantics as del_timer_sync() and del_timer()
-> respectively, but will prevent the timer from being rearmed again.
-> 
-> This way we can convert the sk_stop_timer() to:
-> 
-> void sk_stop_timer(struct sock *sk, struct timer_list* timer)
-> {
-> 	if (del_timer_shutdown(timer))
-> 		__sock_put(sk);
-> }
-> 
-> 
-> We can also add the del_timer_shutdown() to other locations that need to
-> put a timer into a shutdown state before freeing, and where it's in a
-> context that can not call del_timer_sync_shutdown().
+gcc tested configs:
+i386                                defconfig
+x86_64                              defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+powerpc                           allnoconfig
+x86_64                               rhel-8.3
+i386                             allyesconfig
+arc                                 defconfig
+alpha                               defconfig
+x86_64                           allyesconfig
+s390                             allmodconfig
+s390                                defconfig
+ia64                             allmodconfig
+arc                              allyesconfig
+sh                               allmodconfig
+alpha                            allyesconfig
+i386                          randconfig-a001
+powerpc                          allmodconfig
+i386                          randconfig-a003
+mips                             allyesconfig
+i386                          randconfig-a005
+s390                             allyesconfig
+arc                  randconfig-r043-20221028
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+m68k                             allyesconfig
+i386                          randconfig-a012
+m68k                             allmodconfig
+riscv                randconfig-r042-20221028
+i386                          randconfig-a016
+s390                 randconfig-r044-20221028
+x86_64                        randconfig-a004
+i386                          randconfig-a014
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+x86_64                           rhel-8.3-kvm
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-syz
+
+clang tested configs:
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+hexagon              randconfig-r041-20221028
+x86_64                        randconfig-a001
+i386                          randconfig-a011
+hexagon              randconfig-r045-20221028
+x86_64                        randconfig-a003
+i386                          randconfig-a015
+x86_64                        randconfig-a005
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
