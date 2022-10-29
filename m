@@ -2,135 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 853DE611EB4
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Oct 2022 02:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BD5B611F1C
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Oct 2022 03:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiJ2AZj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Oct 2022 20:25:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46014 "EHLO
+        id S229473AbiJ2Bey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Oct 2022 21:34:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiJ2AZi (ORCPT
+        with ESMTP id S229450AbiJ2Bew (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Oct 2022 20:25:38 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250E06D86B
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Oct 2022 17:25:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667003137; x=1698539137;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BtVn+cHMQ0XkuedQueFqs/pKErIVKa4WvE8oquUolsE=;
-  b=MAPaiqrxJpR+EHCd+FGjuYWS5MhtFqWCyrHxRaFpEFKURK6LrhYqSebu
-   GF6sE8F/YlUKrRxKfJcUCx/bXVBfOMaRJwwSEAzHognMcmSdgyWZDayp1
-   OeaRgi2sP626eAfoNmew8FyVd/P9WmGthufJOIfzpdJyx44nwHRZ7HI7m
-   7GCf/VnwGfrcdNuYazAc5ZQA/U9VhzRfBOzAqV9f7dw74GAl4aDSrGVvF
-   Uzz+PMAMe2sg6APjqdWns3H2zhdh9WLmMUwrFXYiudpZPScHi/XI73YUL
-   CQMD9fdjegeBM6NpoSvQNE+xBRl8iqx8905dIKH9PEMY5TmRgG7sYJK9L
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10514"; a="394934990"
-X-IronPort-AV: E=Sophos;i="5.95,222,1661842800"; 
-   d="scan'208";a="394934990"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2022 17:25:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10514"; a="584103411"
-X-IronPort-AV: E=Sophos;i="5.95,222,1661842800"; 
-   d="scan'208";a="584103411"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 28 Oct 2022 17:25:34 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ooZfJ-000AMZ-2b;
-        Sat, 29 Oct 2022 00:25:33 +0000
-Date:   Sat, 29 Oct 2022 08:25:07 +0800
-From:   kernel test robot <lkp@intel.com>
+        Fri, 28 Oct 2022 21:34:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01354248F9;
+        Fri, 28 Oct 2022 18:34:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 23A0BB82DF6;
+        Sat, 29 Oct 2022 01:34:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9881EC433C1;
+        Sat, 29 Oct 2022 01:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667007286;
+        bh=NjzGX7GUqetG1uZRkrz2Aw9KKvTjknXH+PfNtLqjF0E=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=avDaI+sJLUEuJUcz7mPGMl7YjLc3fR6u4MetdBv8ch9cLy5Mh4Je3sGTXMRF4ujuw
+         NoANQx1Q2DTl8jWpCcJjuazfqXm+RmT89XdFbrrAJt63YsyKFHA6HyLHUQ0G9iHF1Y
+         vKv274fWxX/meC2bSDkI+dkNV50QKp50yRN6n1E+41iAM1FIaBDMlBcoILxdqCVZxl
+         ZbfaUBUfLIBkAAFDJos03efcBnHpv377pyMmrp+PBE+C6L9jpAtBR1qK16ksypzHmL
+         EbVFPalYdcqSXoOjOpIak89FjlHpIIxwEYZ85IFvYpe9DorcnYvI7g1l+li3nLmpmY
+         xfFvdOtrCzxVw==
+Date:   Fri, 28 Oct 2022 18:34:45 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:pending] BUILD SUCCESS
- 0879f594289e36546974c17f10bf587d9303e724
-Message-ID: <635c72e3.57occxR3Kri0TQKU%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-next-2022-10-28
+Message-ID: <20221028183439.2ff16027@kicinski-fedora-PC1C0HJN>
+In-Reply-To: <20221028132943.304ECC433B5@smtp.kernel.org>
+References: <20221028132943.304ECC433B5@smtp.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: 0879f594289e36546974c17f10bf587d9303e724  Merge branch 'main' into test
+On Fri, 28 Oct 2022 13:29:43 +0000 (UTC) Kalle Valo wrote:
+> Note: wireless tree was merged[1] to wireless-next to avoid some
+> conflicts with mac80211 patches between the trees. Unfortunately there
+> are still two smaller conflicts in net/mac80211/util.c which Stephen
+> also reported[2]. In the first conflict initialise scratch_len to
+> "params->scratch_len ?: 3 * params->len" (note number 3, not 2!) and
+> in the second conflict take the version which uses elems->scratch_pos.
+> 
+> Git diff output should like this:
+> 
+> --- a/net/mac80211/util.c
+> +++ b/net/mac80211/util.c
+> @@@ -1506,7 -1648,7 +1650,7 @@@ ieee802_11_parse_elems_full(struct ieee
+>         const struct element *non_inherit = NULL;
+>         u8 *nontransmitted_profile;
+>         int nontransmitted_profile_len = 0;
+> -       size_t scratch_len = params->len;
+>  -      size_t scratch_len = params->scratch_len ?: 2 * params->len;
+> ++      size_t scratch_len = params->scratch_len ?: 3 * params->len;
+> 
+>         elems = kzalloc(sizeof(*elems) + scratch_len, GFP_ATOMIC);
+>         if (!elems)
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=dfd2d876b3fda1790bc0239ba4c6967e25d16e91
+> [2] https://lore.kernel.org/all/20221020032340.5cf101c0@canb.auug.org.au/
 
-elapsed time: 736m
-
-configs tested: 52
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-i386                                defconfig
-x86_64                              defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-powerpc                           allnoconfig
-x86_64                               rhel-8.3
-i386                             allyesconfig
-arc                                 defconfig
-alpha                               defconfig
-x86_64                           allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-ia64                             allmodconfig
-arc                              allyesconfig
-sh                               allmodconfig
-alpha                            allyesconfig
-i386                          randconfig-a001
-powerpc                          allmodconfig
-i386                          randconfig-a003
-mips                             allyesconfig
-i386                          randconfig-a005
-s390                             allyesconfig
-arc                  randconfig-r043-20221028
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-m68k                             allyesconfig
-i386                          randconfig-a012
-m68k                             allmodconfig
-riscv                randconfig-r042-20221028
-i386                          randconfig-a016
-s390                 randconfig-r044-20221028
-x86_64                        randconfig-a004
-i386                          randconfig-a014
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-x86_64                           rhel-8.3-kvm
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-syz
-
-clang tested configs:
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-i386                          randconfig-a013
-hexagon              randconfig-r041-20221028
-x86_64                        randconfig-a001
-i386                          randconfig-a011
-hexagon              randconfig-r045-20221028
-x86_64                        randconfig-a003
-i386                          randconfig-a015
-x86_64                        randconfig-a005
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Thanks! I only saw one conflict FWIW
