@@ -2,81 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FCA2612556
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Oct 2022 22:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD90612796
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Oct 2022 06:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbiJ2Uyq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Oct 2022 16:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33082 "EHLO
+        id S229619AbiJ3FlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Oct 2022 01:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbiJ2Uyp (ORCPT
+        with ESMTP id S229552AbiJ3FlS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Oct 2022 16:54:45 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19C312A99;
-        Sat, 29 Oct 2022 13:54:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=CNjyzWt288CCW6R/x1OIEnm0pp7lSqIe3AQITuIYZAI=;
-        t=1667076882; x=1668286482; b=YNodu80fxKT6g/wTkEsDPtr3DiBzSZkgaxQMtQuaIClB9Sl
-        Yo9J6ElI16mGDFUV66bhiONyBdAay7TD363fxsnTVPBKD5/cvFZ2VtPA1sQYDyXw1Do76zjGLIBZ6
-        byLPFdpXq/o2Pe01N+XDHCOq9uLhqLaAPIM5u+nt5cWtqTUuqNCIq3RW54BVrxaGoloZxk0bR+ils
-        Sgh0p2tAQS3Z6lqUDMXLwNtc2B57O70mfMaV8sJ6gK31tvRLsUWsWy7b7D0Le+YdOdFFG35Rjx8K4
-        wB1DRW8lmpxI3GyrPTgMchM//70Nr8VIggDlzhg7bWNEJgj4YhqtutQg9oIb5kUA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oosql-002VYh-2y;
-        Sat, 29 Oct 2022 22:54:40 +0200
-Message-ID: <7193d1bcfcff1ea5eb83558923ada5530c8d3c9f.camel@sipsolutions.net>
-Subject: Re: pull-request: wireless-next-2022-10-28
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Date:   Sat, 29 Oct 2022 22:54:39 +0200
-In-Reply-To: <20221028183439.2ff16027@kicinski-fedora-PC1C0HJN>
-References: <20221028132943.304ECC433B5@smtp.kernel.org>
-         <20221028183439.2ff16027@kicinski-fedora-PC1C0HJN>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Sun, 30 Oct 2022 01:41:18 -0400
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2CB2124C
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Oct 2022 22:41:16 -0700 (PDT)
+Received: by mail-il1-f200.google.com with SMTP id i19-20020a056e020d9300b00300a736ecfeso87048ilj.0
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Oct 2022 22:41:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LMH67DLr37XpWQPukqCW0d3TMkMjMRPPe5mLQsfeTPc=;
+        b=ctqnEOBHWRwudyT7l66PbJVmXtIeiPvqvFnzTky8WlmyE2FX6SC70y5OtyOihnxZTs
+         8rSLNyBpiMXkiHy3kpmeN6zZZnVoKrcRLtsuJXeTQvrsJzB8K5Hq5GJJGCBQap63FGns
+         vpBfcq0+7UHQ2eX1KSe0qB8B26Tv5KEYnhiuzykBtF4lqUeWRDFP2i/3XKrrS/CZTUvv
+         UW7ahPjUj9mgJSJPrLtsmVqasRq88MSKgBiVJI7m2ckxocijJunpf/jG2BUgEhCysMw1
+         eSjhzk9lnTyXwNgHV4hOGDz/ORKMeAbM6RPsyvFqDgYOq1LyuxVZrb93y/LnKocX08QC
+         NRiw==
+X-Gm-Message-State: ACrzQf2a6M09ZHb1I7R4GGl7mp1g5xRY3eFug6Svisx/++ekwm9NVocP
+        WiKR+QuMwYyWA5Emasq9xEb08S9qXzqeiqbuZ/ozh4OHGdbX
+X-Google-Smtp-Source: AMsMyM4Vg/JTXGJ2tlZP/1A9x78LOefhNVYfz+G7wXL5hIJJt/uRM82/OoOhLIQgR8TJN+TmbJzpKwZG0EGK+pa1VLm4ypUCJ96p
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a5d:8913:0:b0:6a4:71b5:8036 with SMTP id
+ b19-20020a5d8913000000b006a471b58036mr3521632ion.171.1667108475731; Sat, 29
+ Oct 2022 22:41:15 -0700 (PDT)
+Date:   Sat, 29 Oct 2022 22:41:15 -0700
+In-Reply-To: <20221029161418.2709-1-yin31149@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007fa5c805ec39f00a@google.com>
+Subject: Re: [syzbot] memory leak in regulatory_hint_core
+From:   syzbot <syzbot+232ebdbd36706c965ebf@syzkaller.appspotmail.com>
+To:     18801353760@163.com, davem@davemloft.net, edumazet@google.com,
+        jhs@mojatatu.com, jiri@resnulli.us, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
+        xiyou.wangcong@gmail.com, yin31149@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-10-28 at 18:34 -0700, Jakub Kicinski wrote:
-> >=20
-> > --- a/net/mac80211/util.c
-> > +++ b/net/mac80211/util.c
-> > @@@ -1506,7 -1648,7 +1650,7 @@@ ieee802_11_parse_elems_full(struct ieee
-> >         const struct element *non_inherit =3D NULL;
-> >         u8 *nontransmitted_profile;
-> >         int nontransmitted_profile_len =3D 0;
-> > -       size_t scratch_len =3D params->len;
-> >  -      size_t scratch_len =3D params->scratch_len ?: 2 * params->len;
-> > ++      size_t scratch_len =3D params->scratch_len ?: 3 * params->len;
-> >=20
-> >         elems =3D kzalloc(sizeof(*elems) + scratch_len, GFP_ATOMIC);
-> >         if (!elems)
-> >=20
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-n=
-ext.git/commit/?id=3Ddfd2d876b3fda1790bc0239ba4c6967e25d16e91
-> > [2] https://lore.kernel.org/all/20221020032340.5cf101c0@canb.auug.org.a=
-u/
->=20
-> Thanks! I only saw one conflict FWIW
->=20
+Hello,
 
-Hah. Me too, when I tried this to see what the resolution should be. Git
-versions or something?
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+SYZFATAL: executor failed NUM times: executor NUM: exit status NUM
 
-johannes
+2022/10/30 05:33:05 SYZFATAL: executor failed 11 times: executor 0: exit status 67
+SYZFAIL: wrong response packet
+ (errno 16: Device or resource busy)
+loop exited with status 67
+
+SYZFAIL: wrong response packet
+ (errno 16: Device or resource busy)
+loop exited with status 67
+
+
+Tested on:
+
+commit:         aae703b0 Merge tag 'for-6.1-rc1-tag' of git://git.kern..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=12e3a3e2880000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d2f454d7d3b63980
+dashboard link: https://syzkaller.appspot.com/bug?extid=232ebdbd36706c965ebf
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=10eb44b6880000
+
