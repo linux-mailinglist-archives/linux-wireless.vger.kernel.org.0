@@ -2,85 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAD90612796
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Oct 2022 06:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66826612A48
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Oct 2022 12:06:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbiJ3FlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Oct 2022 01:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54022 "EHLO
+        id S229956AbiJ3LGZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Oct 2022 07:06:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbiJ3FlS (ORCPT
+        with ESMTP id S229945AbiJ3LGY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Oct 2022 01:41:18 -0400
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2CB2124C
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Oct 2022 22:41:16 -0700 (PDT)
-Received: by mail-il1-f200.google.com with SMTP id i19-20020a056e020d9300b00300a736ecfeso87048ilj.0
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Oct 2022 22:41:16 -0700 (PDT)
+        Sun, 30 Oct 2022 07:06:24 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4D61031
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Oct 2022 04:06:22 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id d59-20020a17090a6f4100b00213202d77e1so13619951pjk.2
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Oct 2022 04:06:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/J6k02TVORFNXB/Iha8H3DzOddnGAfqUw1Md3lKKnLo=;
+        b=qtMGzOnm/UKmznDAjA7+mmgiwpPUtRT2LB/OU6bHDXdrulr/2Aei0oVOEmScqCb6Dp
+         rlHQ2VyjzLQkR8cJL0zuCt/Vh6qIgYxoQv8zyTpq6ThMdjNAYGoJU+tSosdVPXM0AXO6
+         8ms0uspPWxhzZCKr8+Q7O+sSi+bEv9eaWtBEzD08TziGbhGN2wU72krBKcNtbqKSuPBT
+         EGnYCs6uTL+D8a2Ypnu6xNUQBC6hjWDlkO9Yc5L8yVVD+YrNA2+G7yoeooqxOArftV6S
+         vQDZ0yl0Ilbnp1wnzucYXDFPQh6cbZrUnBxuVBw9Rne2Z8sXEJaaZBE53NXdXXZApCof
+         sC9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LMH67DLr37XpWQPukqCW0d3TMkMjMRPPe5mLQsfeTPc=;
-        b=ctqnEOBHWRwudyT7l66PbJVmXtIeiPvqvFnzTky8WlmyE2FX6SC70y5OtyOihnxZTs
-         8rSLNyBpiMXkiHy3kpmeN6zZZnVoKrcRLtsuJXeTQvrsJzB8K5Hq5GJJGCBQap63FGns
-         vpBfcq0+7UHQ2eX1KSe0qB8B26Tv5KEYnhiuzykBtF4lqUeWRDFP2i/3XKrrS/CZTUvv
-         UW7ahPjUj9mgJSJPrLtsmVqasRq88MSKgBiVJI7m2ckxocijJunpf/jG2BUgEhCysMw1
-         eSjhzk9lnTyXwNgHV4hOGDz/ORKMeAbM6RPsyvFqDgYOq1LyuxVZrb93y/LnKocX08QC
-         NRiw==
-X-Gm-Message-State: ACrzQf2a6M09ZHb1I7R4GGl7mp1g5xRY3eFug6Svisx/++ekwm9NVocP
-        WiKR+QuMwYyWA5Emasq9xEb08S9qXzqeiqbuZ/ozh4OHGdbX
-X-Google-Smtp-Source: AMsMyM4Vg/JTXGJ2tlZP/1A9x78LOefhNVYfz+G7wXL5hIJJt/uRM82/OoOhLIQgR8TJN+TmbJzpKwZG0EGK+pa1VLm4ypUCJ96p
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/J6k02TVORFNXB/Iha8H3DzOddnGAfqUw1Md3lKKnLo=;
+        b=J5ifCA1r++EdYPKvz346ag3KvHA2lx3xKlaV1AhLvTex5OHvTNdutoqEjbO92cn8So
+         WAR7m5QmpkW9LYFRpTqT+p8VeyfDSpdA+zzX8g8ZAYUudOGfmiD9GoIgDrvBF2wLnhIR
+         w2ubNN1ec7JrmSpHoVyIi/OAQpryEUdf5tYk2sRomw/Gvm/3e1Vh2OL7sF/kfwApWFfR
+         eaSE0StxboUziZG7Ao4f2CKNCO8vkMcxy6W/sZgfbENgFWOhXP3gVPsF7KlBIUF8Z7O7
+         lRMdeG0uikZMIl+QkmUdoFB4F9DCJI+PqIGZuIY7GRbyYTT1FOGkKm1Toyyl1hn1p+tZ
+         98tw==
+X-Gm-Message-State: ACrzQf3Ep9mfG0jgEv9NLM4jK80xlP3AOGeckHpiqXwOeVnbXbYfyiK5
+        bgb7M4ncFrXno8tBonPUbSo=
+X-Google-Smtp-Source: AMsMyM6NhuElBfqS68HCPZuzFC92G/2tnu9F2J5xR5pP1YVCiOCRDTBFkIiVuVfY6vIuSny4b3bXJg==
+X-Received: by 2002:a17:90a:1a43:b0:20a:ea98:b962 with SMTP id 3-20020a17090a1a4300b0020aea98b962mr26528826pjl.118.1667127981990;
+        Sun, 30 Oct 2022 04:06:21 -0700 (PDT)
+Received: from nuc11atkpe.. (113x34x39x75.ap113.ftth.ucom.ne.jp. [113.34.39.75])
+        by smtp.gmail.com with ESMTPSA id a19-20020aa79713000000b0056bc1a41209sm2461980pfg.33.2022.10.30.04.06.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Oct 2022 04:06:21 -0700 (PDT)
+From:   CaffeeLake <pascalcoffeelake@gmail.com>
+X-Google-Original-From: CaffeeLake <PascalCoffeeLake@gmail.com>
+To:     sforshee@kernel.org
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        CaffeeLake <PascalCoffeeLake@gmail.com>
+Subject: wireless-regdb: Update regulatory rules for Japan (JP) on 6GHz
+Date:   Sun, 30 Oct 2022 20:05:10 +0900
+Message-Id: <20221030110510.752996-1-PascalCoffeeLake@gmail.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-X-Received: by 2002:a5d:8913:0:b0:6a4:71b5:8036 with SMTP id
- b19-20020a5d8913000000b006a471b58036mr3521632ion.171.1667108475731; Sat, 29
- Oct 2022 22:41:15 -0700 (PDT)
-Date:   Sat, 29 Oct 2022 22:41:15 -0700
-In-Reply-To: <20221029161418.2709-1-yin31149@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000007fa5c805ec39f00a@google.com>
-Subject: Re: [syzbot] memory leak in regulatory_hint_core
-From:   syzbot <syzbot+232ebdbd36706c965ebf@syzkaller.appspotmail.com>
-To:     18801353760@163.com, davem@davemloft.net, edumazet@google.com,
-        jhs@mojatatu.com, jiri@resnulli.us, johannes@sipsolutions.net,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
-        xiyou.wangcong@gmail.com, yin31149@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Support 6GHz for JP Region.
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-SYZFATAL: executor failed NUM times: executor NUM: exit status NUM
+The Ministry of Internal Affairs and Communications has approved 6GHz (5925 - 6425 MHz) in Japan.
 
-2022/10/30 05:33:05 SYZFATAL: executor failed 11 times: executor 0: exit status 67
-SYZFAIL: wrong response packet
- (errno 16: Device or resource busy)
-loop exited with status 67
+Source: https://www.soumu.go.jp/main_content/000833682.pdf
 
-SYZFAIL: wrong response packet
- (errno 16: Device or resource busy)
-loop exited with status 67
+Signed-off-by: CaffeeLake <PascalCoffeeLake@gmail.com>
+---
+ db.txt | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/db.txt b/db.txt
+index 012824f..96527c9 100644
+--- a/db.txt
++++ b/db.txt
+@@ -907,6 +907,8 @@ country JO: DFS-JP
+ 	(5170 - 5250 @ 80), (23)
+ 	(5735 - 5835 @ 80), (23)
 
-Tested on:
-
-commit:         aae703b0 Merge tag 'for-6.1-rc1-tag' of git://git.kern..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=12e3a3e2880000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d2f454d7d3b63980
-dashboard link: https://syzkaller.appspot.com/bug?extid=232ebdbd36706c965ebf
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=10eb44b6880000
++# Source:
++# https://www.soumu.go.jp/main_content/000833682.pdf
+ country JP: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+ 	(2474 - 2494 @ 20), (20), NO-OFDM
+@@ -914,6 +916,7 @@ country JP: DFS-JP
+ 	(5170 - 5250 @ 80), (20), AUTO-BW
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (23), DFS
++	(5925 - 6425 @ 160), (200 mW), NO-OUTDOOR
+ 	# 60 GHz band channels 2-4 at 10mW,
+ 	# ref: http://www.arib.or.jp/english/html/overview/doc/1-STD-T74v1_1.pdf
+ 	(57000 - 66000 @ 2160), (10 mW)
+--
+2.37.3
 
