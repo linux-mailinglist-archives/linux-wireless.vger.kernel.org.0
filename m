@@ -2,52 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 975AA612BC3
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Oct 2022 18:18:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80403612BC4
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Oct 2022 18:18:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbiJ3RSL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Oct 2022 13:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51816 "EHLO
+        id S229787AbiJ3RS1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Oct 2022 13:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiJ3RSK (ORCPT
+        with ESMTP id S229718AbiJ3RSZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Oct 2022 13:18:10 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30452B1E8
-        for <linux-wireless@vger.kernel.org>; Sun, 30 Oct 2022 10:18:10 -0700 (PDT)
+        Sun, 30 Oct 2022 13:18:25 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50931A0
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Oct 2022 10:18:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667150290; x=1698686290;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=klOtJdlIIW2sAtHhwYJBpab9hnAz0fbCKG8nOtWNpgY=;
-  b=Ao15qUWZmMtEgdxV3OnkzLEG/unEnUpMKbWL/FoNiTUoou3YATwVvlWi
-   v0Mk8ZI9iliTwzRQ+qhZB6kH8wx+d51qNzrp+7eYOJ3oGiKRKNeWFMOJ0
-   6FHevQocXn9/+mCHidsgHajODfmDhlAcI75cfgHaTkIOQvQ/G99pxKWwV
-   JVW+yJYCZWVMRfjMZkhTFEVi3PnWiq8TJzlfl2TmlCe2i53L72gyN7sXL
-   EEjcRaTpphFpM8yPgOwxJEOh3SQZ8+ubSgQKKyV3W7i+pi5j2i4b3u8oH
-   TbHlytSYqQ1lvWO8e//9Go79O8/F1WDdb28WLxKmVkFlXjSk7ozWuY+GX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10516"; a="310458254"
+  t=1667150301; x=1698686301;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xrFHSrUtdCf/zRSKM10z3jUmosPd32dBe54zXsN5lFk=;
+  b=dyGUr3jwxAsyR/eOHzovNzmkVpo0ZepTIFXPifx8bJhorWmdN7ctrG+4
+   wNKfQHVFQWl2+YWzIbzsYFlCnO8fVzZuAUI3XYLtgVeXk4KvedbCaJa22
+   fI7Jt7FSVSdxDv2i/PRX9rETqeYKuOFiM3aXXaELATItQloYi2GDIYmWR
+   30eZSi867AzuncyPgvR3BGMiZ5VgV48IwFEPgWCL6Pg7RkLHGprZw/flT
+   kyvjEIZmFbypzZ8T+XDt0QxUA0jM+mS3nXxK2Z6O6KzpR5oRLeEUUR1uL
+   +t3tkJxTDr3BzginP9TyYdfVSIbTW1BSqZtihctAvmfkqvejWqsvJyebW
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10516"; a="372973220"
 X-IronPort-AV: E=Sophos;i="5.95,226,1661842800"; 
-   d="scan'208";a="310458254"
+   d="scan'208";a="372973220"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2022 10:18:09 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10516"; a="633290155"
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2022 10:18:21 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10516"; a="633290211"
 X-IronPort-AV: E=Sophos;i="5.95,226,1661842800"; 
-   d="scan'208";a="633290155"
+   d="scan'208";a="633290211"
 Received: from gustyuzh-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.83.75])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2022 10:18:07 -0700
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2022 10:18:19 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Avraham Stern <avraham.stern@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 0/6] iwlwifi: updates intended for v6.2 2022-10-30 
-Date:   Sun, 30 Oct 2022 19:17:39 +0200
-Message-Id: <20221030171745.132081-1-gregory.greenman@intel.com>
+Subject: [PATCH 1/6] wifi: iwlwifi: mvm: send TKIP connection status to csme
+Date:   Sun, 30 Oct 2022 19:17:40 +0200
+Message-Id: <20221030191011.cea63e4a355c.If6cdfa52529a79b923191c89dad7ed871d2ad2c6@changeid>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20221030171745.132081-1-gregory.greenman@intel.com>
+References: <20221030171745.132081-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -58,46 +60,80 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-Hi,
+Notify csme when associated with TKIP cipher. TKIP is supported
+by csme.
 
-Here's the first set of patches intended for v6.2. It contains
-some fixes for IWLMEI. There will be more fixes, so it still depends
-on BROKEN.
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h  | 2 ++
+ drivers/net/wireless/intel/iwlwifi/mei/sap.h      | 4 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-As usual, I'm pushing this to a pending branch, for kbuild bot,
-and will send a pull-request later.
-
-Please review.
-
-Thanks,
-Gregory
-
-Avraham Stern (3):
-  wifi: iwlwifi: mvm: send TKIP connection status to csme
-  wifi: iwlwifi: mei: make sure ownership confirmed message is sent
-  wifi: iwlwifi: mei: avoid blocking sap messages handling due to rtnl
-    lock
-
-Emmanuel Grumbach (2):
-  wifi: iwlwifi: mei: don't send SAP commands if AMT is disabled
-  wifi: iwlwifi: mei: fix tx DHCP packet for devices with new Tx API
-
-Johannes Berg (1):
-  wifi: iwlwifi: mei: fix potential NULL-ptr deref after clone
-
- .../net/wireless/intel/iwlwifi/mei/iwl-mei.h  |   9 +-
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 172 ++++++++++--------
- drivers/net/wireless/intel/iwlwifi/mei/net.c  |  10 +-
- drivers/net/wireless/intel/iwlwifi/mei/sap.h  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   2 +
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   3 +
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   8 +-
- 9 files changed, 132 insertions(+), 82 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h b/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
+index 67122cfa2292..bea61c8fb526 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
++++ b/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
+@@ -220,6 +220,7 @@ struct iwl_mei_nvm {
+ /**
+  * enum iwl_mei_pairwise_cipher - cipher for UCAST key
+  * @IWL_MEI_CIPHER_NONE: none
++ * @IWL_MEI_CIPHER_TKIP: tkip
+  * @IWL_MEI_CIPHER_CCMP: ccmp
+  * @IWL_MEI_CIPHER_GCMP: gcmp
+  * @IWL_MEI_CIPHER_GCMP_256: gcmp 256
+@@ -228,6 +229,7 @@ struct iwl_mei_nvm {
+  */
+ enum iwl_mei_pairwise_cipher {
+ 	IWL_MEI_CIPHER_NONE	= 0,
++	IWL_MEI_CIPHER_TKIP	= 2,
+ 	IWL_MEI_CIPHER_CCMP	= 4,
+ 	IWL_MEI_CIPHER_GCMP	= 8,
+ 	IWL_MEI_CIPHER_GCMP_256 = 9,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mei/sap.h b/drivers/net/wireless/intel/iwlwifi/mei/sap.h
+index be1456dea484..ef2664589fc1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mei/sap.h
++++ b/drivers/net/wireless/intel/iwlwifi/mei/sap.h
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (C) 2021 Intel Corporation
++ * Copyright (C) 2021 - 2022 Intel Corporation
+  */
+ 
+ #ifndef __sap_h__
+@@ -334,12 +334,14 @@ enum iwl_sap_wifi_auth_type {
+ /**
+  * enum iwl_sap_wifi_cipher_alg
+  * @SAP_WIFI_CIPHER_ALG_NONE: TBD
++ * @SAP_WIFI_CIPHER_ALG_TKIP: TBD
+  * @SAP_WIFI_CIPHER_ALG_CCMP: TBD
+  * @SAP_WIFI_CIPHER_ALG_GCMP: TBD
+  * @SAP_WIFI_CIPHER_ALG_GCMP_256: TBD
+  */
+ enum iwl_sap_wifi_cipher_alg {
+ 	SAP_WIFI_CIPHER_ALG_NONE	= IWL_MEI_CIPHER_NONE,
++	SAP_WIFI_CIPHER_ALG_TKIP	= IWL_MEI_CIPHER_TKIP,
+ 	SAP_WIFI_CIPHER_ALG_CCMP	= IWL_MEI_CIPHER_CCMP,
+ 	SAP_WIFI_CIPHER_ALG_GCMP	= IWL_MEI_CIPHER_GCMP,
+ 	SAP_WIFI_CIPHER_ALG_GCMP_256	= IWL_MEI_CIPHER_GCMP_256,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 8464c9b7baf1..156283237e2a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3059,6 +3059,9 @@ static void iwl_mvm_mei_host_associated(struct iwl_mvm *mvm,
+ 		return;
+ 
+ 	switch (mvm_sta->pairwise_cipher) {
++	case WLAN_CIPHER_SUITE_TKIP:
++		conn_info.pairwise_cipher = IWL_MEI_CIPHER_TKIP;
++		break;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		conn_info.pairwise_cipher = IWL_MEI_CIPHER_CCMP;
+ 		break;
 -- 
 2.35.3
 
