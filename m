@@ -2,122 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94B016144C0
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 07:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F30361451A
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 08:36:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbiKAGld (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Nov 2022 02:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60238 "EHLO
+        id S229767AbiKAHgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 03:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229714AbiKAGlc (ORCPT
+        with ESMTP id S229452AbiKAHgT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Nov 2022 02:41:32 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 48EF0FD10;
-        Mon, 31 Oct 2022 23:41:30 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A16eP5o9016308, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A16eP5o9016308
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 1 Nov 2022 14:40:25 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Tue, 1 Nov 2022 14:41:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 1 Nov 2022 14:41:00 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Tue, 1 Nov 2022 14:41:00 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Colin Ian King <colin.i.king@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
+        Tue, 1 Nov 2022 03:36:19 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCD2387;
+        Tue,  1 Nov 2022 00:36:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 77748B81BEC;
+        Tue,  1 Nov 2022 07:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B90C433D6;
+        Tue,  1 Nov 2022 07:36:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667288176;
+        bh=fmjVprX/yVT+hTtirqtZpN4JtdPtp3Z5c1IFu/BGPj4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=M5y6Q/0nObWxmxtiBz2xRJRQLyqzRrZNLNkX0Fz6A1CcY9dAQGuN+4sgi7zVnJ9u1
+         x9s7qWJtaKJzIeNrsfmYYppmd8dAen2rKfa/08o80gjTAKUsq4jwXDHQc3RJmBOmFx
+         iVKiL5UiwzmMjivQxmcgYnrv4jdSjj2ZdJmKZhHZUGMbOGsWN8pxQW/Fbz5h4c2VF7
+         qnIZZyK3F6mVCAmuR7nNlu3W/Zil5v5Qfbg+ZtYBwQH7+sqcqDqQVQCeq4p9xx8ZbV
+         +4Fl5nMRzMJOoYY/AvUznZtGwl6hCibKgmXxSQmjcPJ7SFw06QI6J1GAXgIKsq7ibq
+         YTRieg5E4F3aQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] rtlwifi: rtl8192ee: remove static variable stop_report_cnt
-Thread-Topic: [PATCH] rtlwifi: rtl8192ee: remove static variable
- stop_report_cnt
-Thread-Index: AQHY7UFi7CO5kegy5EyHq0HjTYwI4a4pNVXQgABpbtA=
-Date:   Tue, 1 Nov 2022 06:41:00 +0000
-Message-ID: <8c501b46825a4579a88ff16f53e9bcc4@realtek.com>
-References: <20221031155637.871164-1-colin.i.king@gmail.com> 
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzEg5LiK5Y2IIDA0OjU5OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors\@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rtlwifi: rtl8192ee: remove static variable stop_report_cnt
+In-Reply-To: <8c501b46825a4579a88ff16f53e9bcc4@realtek.com> (Ping-Ke Shih's
+        message of "Tue, 1 Nov 2022 06:41:00 +0000")
+References: <20221031155637.871164-1-colin.i.king@gmail.com>
+        <8c501b46825a4579a88ff16f53e9bcc4@realtek.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Tue, 01 Nov 2022 09:36:08 +0200
+Message-ID: <87fsf3gm8n.fsf@kernel.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFBpbmctS2UgU2hpaA0KPiBT
-ZW50OiBUdWVzZGF5LCBOb3ZlbWJlciAxLCAyMDIyIDg6MjIgQU0NCj4gVG86ICdDb2xpbiBJYW4g
-S2luZycgPGNvbGluLmkua2luZ0BnbWFpbC5jb20+OyBLYWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwu
-b3JnPjsgRGF2aWQgUyAuIE1pbGxlcg0KPiA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47IEVyaWMgRHVt
-YXpldCA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT47IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5v
-cmc+OyBQYW9sbyBBYmVuaQ0KPiA8cGFiZW5pQHJlZGhhdC5jb20+OyBsaW51eC13aXJlbGVzc0B2
-Z2VyLmtlcm5lbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IGtlcm5lbC1qYW5p
-dG9yc0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3Vi
-amVjdDogUkU6IFtQQVRDSF0gcnRsd2lmaTogcnRsODE5MmVlOiByZW1vdmUgc3RhdGljIHZhcmlh
-YmxlIHN0b3BfcmVwb3J0X2NudA0KPiANCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
-LS0NCj4gPiBGcm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4uaS5raW5nQGdtYWlsLmNvbT4NCj4g
-PiBTZW50OiBNb25kYXksIE9jdG9iZXIgMzEsIDIwMjIgMTE6NTcgUE0NCj4gPiBUbzogUGluZy1L
-ZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBLYWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3Jn
-PjsgRGF2aWQgUyAuIE1pbGxlcg0KPiA+IDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgRXJpYyBEdW1h
-emV0IDxlZHVtYXpldEBnb29nbGUuY29tPjsgSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9y
-Zz47IFBhb2xvIEFiZW5pDQo+ID4gPHBhYmVuaUByZWRoYXQuY29tPjsgbGludXgtd2lyZWxlc3NA
-dmdlci5rZXJuZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnDQo+ID4gQ2M6IGtlcm5lbC1q
-YW5pdG9yc0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4g
-PiBTdWJqZWN0OiBbUEFUQ0hdIHJ0bHdpZmk6IHJ0bDgxOTJlZTogcmVtb3ZlIHN0YXRpYyB2YXJp
-YWJsZSBzdG9wX3JlcG9ydF9jbnQNCg0KU3ViamVjdCBwcmVmaXggc2hvdWxkIGJlICJ3aWZpOiBy
-dGx3aWZpOiAuLi4iDQoNCkknbSBub3Qgc3VyZSBpZiBLYWxsZSBjYW4gaGVscCB0aGlzLCBvciB5
-b3UgY2FuIHNlbmQgdjIgdG8gYWRkIHByZWZpeC4NCg0KPiA+DQo+ID4gVmFyaWFibGUgc3RvcF9y
-ZXBvcnRfY250IGlzIGJlaW5nIHNldCBvciBpbmNyZW1lbnRlZCBidXQgaXMgbmV2ZXINCj4gPiBi
-ZWluZyB1c2VkIGZvciBhbnl0aGluZyBtZWFuaW5nZnVsLiBUaGUgdmFyaWFibGUgYW5kIGNvZGUg
-cmVsYXRpbmcNCj4gPiB0byBpdCdzIHVzZSBpcyByZWR1bmRhbnQgYW5kIGNhbiBiZSByZW1vdmVk
-Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmkua2luZ0Bn
-bWFpbC5jb20+DQo+IA0KPiBBY2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5j
-b20+DQo+IA0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdp
-ZmkvcnRsODE5MmVlL3RyeC5jIHwgOCAtLS0tLS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgOCBk
-ZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0bHdpZmkvcnRsODE5MmVlL3RyeC5jDQo+ID4gYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmVlL3RyeC5jDQo+ID4gaW5kZXggODA0M2Q4MTlmYjg1
-Li5hMTgyY2RlYjU4ZTIgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3J0bDgxOTJlZS90cnguYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZWUvdHJ4LmMNCj4gPiBAQCAtOTk3LDcgKzk5Nyw2
-IEBAIGJvb2wgcnRsOTJlZV9pc190eF9kZXNjX2Nsb3NlZChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpo
-dywgdTggaHdfcXVldWUsIHUxNiBpbmRleCkNCj4gPiAgCXN0cnVjdCBydGxfcHJpdiAqcnRscHJp
-diA9IHJ0bF9wcml2KGh3KTsNCj4gPiAgCXUxNiByZWFkX3BvaW50LCB3cml0ZV9wb2ludDsNCj4g
-PiAgCWJvb2wgcmV0ID0gZmFsc2U7DQo+ID4gLQlzdGF0aWMgdTggc3RvcF9yZXBvcnRfY250Ow0K
-PiA+ICAJc3RydWN0IHJ0bDgxOTJfdHhfcmluZyAqcmluZyA9ICZydGxwY2ktPnR4X3JpbmdbaHdf
-cXVldWVdOw0KPiA+DQo+ID4gIAl7DQo+ID4gQEAgLTEwMzgsMTMgKzEwMzcsNiBAQCBib29sIHJ0
-bDkyZWVfaXNfdHhfZGVzY19jbG9zZWQoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsIHU4IGh3X3F1
-ZXVlLCB1MTYgaW5kZXgpDQo+ID4gIAkgICAgcnRscHJpdi0+cHNjLnJmb2ZmX3JlYXNvbiA+IFJG
-X0NIQU5HRV9CWV9QUykNCj4gPiAgCQlyZXQgPSB0cnVlOw0KPiA+DQo+ID4gLQlpZiAoaHdfcXVl
-dWUgPCBCRUFDT05fUVVFVUUpIHsNCj4gPiAtCQlpZiAoIXJldCkNCj4gPiAtCQkJc3RvcF9yZXBv
-cnRfY250Kys7DQo+ID4gLQkJZWxzZQ0KPiA+IC0JCQlzdG9wX3JlcG9ydF9jbnQgPSAwOw0KPiA+
-IC0JfQ0KPiA+IC0NCj4gPiAgCXJldHVybiByZXQ7DQo+ID4gIH0NCj4gPg0KPiA+IC0tDQo+ID4g
-Mi4zNy4zDQo+ID4NCj4gPg0KPiA+IC0tLS0tLVBsZWFzZSBjb25zaWRlciB0aGUgZW52aXJvbm1l
-bnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1tYWlsLg0K
+Ping-Ke Shih <pkshih@realtek.com> writes:
+
+>> -----Original Message-----
+>> From: Ping-Ke Shih
+>> Sent: Tuesday, November 1, 2022 8:22 AM
+>> To: 'Colin Ian King' <colin.i.king@gmail.com>; Kalle Valo
+>> <kvalo@kernel.org>; David S . Miller
+>> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+>> Kicinski <kuba@kernel.org>; Paolo Abeni
+>> <pabeni@redhat.com>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org
+>> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+>> Subject: RE: [PATCH] rtlwifi: rtl8192ee: remove static variable stop_report_cnt
+>> 
+>> 
+>> > -----Original Message-----
+>> > From: Colin Ian King <colin.i.king@gmail.com>
+>> > Sent: Monday, October 31, 2022 11:57 PM
+>> > To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo
+>> > <kvalo@kernel.org>; David S . Miller
+>> > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+>> > Kicinski <kuba@kernel.org>; Paolo Abeni
+>> > <pabeni@redhat.com>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org
+>> > Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+>> > Subject: [PATCH] rtlwifi: rtl8192ee: remove static variable stop_report_cnt
+>
+> Subject prefix should be "wifi: rtlwifi: ..."
+>
+> I'm not sure if Kalle can help this, or you can send v2 to add prefix.
+
+Yeah, I can fix that during commit.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
