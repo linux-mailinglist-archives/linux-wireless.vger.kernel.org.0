@@ -2,55 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C72306146E0
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 10:38:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E6F3614799
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 11:20:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230387AbiKAJiy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Nov 2022 05:38:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40728 "EHLO
+        id S229756AbiKAKUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 06:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230342AbiKAJiY (ORCPT
+        with ESMTP id S229516AbiKAKUo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Nov 2022 05:38:24 -0400
+        Tue, 1 Nov 2022 06:20:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E17F1B1DB;
-        Tue,  1 Nov 2022 02:36:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7625260FA;
+        Tue,  1 Nov 2022 03:20:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4D0961552;
-        Tue,  1 Nov 2022 09:36:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D667C43470;
-        Tue,  1 Nov 2022 09:36:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16E2561547;
+        Tue,  1 Nov 2022 10:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25199C433D6;
+        Tue,  1 Nov 2022 10:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667295382;
-        bh=g33U7xA0K22xKmt+wrUahIeZScTw24v+60/5Vp+UUpA=;
+        s=k20201202; t=1667298042;
+        bh=1I05wtll6/CHogEqtDf9neeBlDMZ+tVZTPcLDXFJg5A=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=MtlZH/biXGj9c2yyviamR6q25nQqoOp+Uew5Me+Zg43zO+UQm7z7ohQexO5Kz9lt1
-         WOo4ayIvTG/niq+rtN9RtAkdKcUl/BhPAvyZBVfeilFO8GETmGY+mKTWxAvvvw1qwu
-         qjHS3U2tbBGyeRtTg6arXLA1b6rqjs/CsgY7MRq//+ZUXfmQ2CBSqUYNWUcfyI7Apt
-         wIFJwdg0W6UzBsEkzZjUvp1gLNRkqZMXJVf4k6aGhVDXq1K5vZDDwFXVjvN2MRK9UQ
-         opHB+3Y1LQyzNrjCspg1vvcrLNQ0rQ1lO+vJBviqXeuK7OxMqsHhY96ofZO5Wd9AYd
-         SXP0DPpoRFxdA==
+        b=Q8332Lxw3nymtZFCxYxGvTYBTpAKzVnuxnoFk1hY4nVNbrLXW5wXIBrBLAs863ZZ6
+         H9RuaGg551NAl0e/5rhBsNFDa1Cjn7r3LO4lrZlFGfH0USx53Yzjcbia/4ZmBTfvGg
+         lr+Z/rHQQnTkIBZExbC6VKFhZecDDGFfd8pQNVVJ8l+UAs7ADPhJX6kS6sKe2gtvNa
+         Gmy6jRPf5hKZ1QO6FBIOzmMXqPXoS4H2e2Htm5xmzY2dcbZSnX8O7R0PcvcH4FXplL
+         mIK/ct9Tp3WHQxXgzvVVH6ufQAIdxU4yUEbe+NWnusEtbocCq6Mw1966O2tfO9zc3m
+         eCl02SYziXL/g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 2/6] hostap: Avoid clashing function prototypes
+Subject: Re: wifi: ipw2200: Remove the unused function ipw_alive()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <8388b5ed9e729eb9dadec875a7576219e6d61223.1666894751.git.gustavoars@kernel.org>
-References: <8388b5ed9e729eb9dadec875a7576219e6d61223.1666894751.git.gustavoars@kernel.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Jouni Malinen <j@w1.fi>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
+In-Reply-To: <20221017071746.118685-1-jiapeng.chong@linux.alibaba.com>
+References: <20221017071746.118685-1-jiapeng.chong@linux.alibaba.com>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166729537521.21401.10713096825251730903.kvalo@kernel.org>
-Date:   Tue,  1 Nov 2022 09:36:19 +0000 (UTC)
+Message-ID: <166729803673.21401.16710194192988626348.kvalo@kernel.org>
+Date:   Tue,  1 Nov 2022 10:20:39 +0000 (UTC)
 X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -60,34 +57,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
 
-> When built with Control Flow Integrity, function prototypes between
-> caller and function declaration must match. These mismatches are visible
-> at compile time with the new -Wcast-function-type-strict in Clang[1].
+> The function ipw_alive() is defined in the ipw2200.c file, but not called
+> elsewhere, so delete this unused function.
 > 
-> Fix a total of 42 warnings like these:
+> drivers/net/wireless/intel/ipw2x00/ipw2200.c:3007:19: warning: unused function 'ipw_alive'.
 > 
-> ../drivers/net/wireless/intersil/hostap/hostap_ioctl.c:3868:2: warning: cast from 'int (*)(struct net_device *, struct iw_request_info *, char *, char *)' to 'iw_handler' (aka 'int (*)(struct net_device *, struct iw_request_info *, union iwreq_data *, char *)') converts to incompatible function type [-Wcast-function-type-strict]
->         (iw_handler) prism2_get_name,                   /* SIOCGIWNAME */
->         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> The hostap Wireless Extension handler callbacks (iw_handler) use a
-> union for the data argument. Actually use the union and perform explicit
-> member selection in the function body instead of having a function
-> prototype mismatch. There are no resulting binary differences
-> before/after changes.
-> 
-> Link: https://github.com/KSPP/linux/issues/235
-> Link: https://reviews.llvm.org/D134831 [1]
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=2410
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-Please add "wifi: " to all wireless patches, for example this one should be:
+Patch applied to wireless-next.git, thanks.
 
-wifi: hostap: Avoid clashing function prototypes
+7bb09fb8f577 wifi: ipw2200: Remove the unused function ipw_alive()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/8388b5ed9e729eb9dadec875a7576219e6d61223.1666894751.git.gustavoars@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221017071746.118685-1-jiapeng.chong@linux.alibaba.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
