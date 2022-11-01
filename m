@@ -2,110 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 432E4614236
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 01:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49EA061446A
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 06:49:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbiKAAWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Oct 2022 20:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53208 "EHLO
+        id S229674AbiKAFta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 01:49:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiKAAWk (ORCPT
+        with ESMTP id S229511AbiKAFt3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Oct 2022 20:22:40 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 726426340;
-        Mon, 31 Oct 2022 17:22:37 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A10LUaX4006352, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A10LUaX4006352
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 1 Nov 2022 08:21:30 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Tue, 1 Nov 2022 08:22:06 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 1 Nov 2022 08:22:05 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb]) by
- RTEXMBS04.realtek.com.tw ([fe80::add3:284:fd3d:8adb%5]) with mapi id
- 15.01.2375.007; Tue, 1 Nov 2022 08:22:05 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Colin Ian King <colin.i.king@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        Tue, 1 Nov 2022 01:49:29 -0400
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B93B513EA8;
+        Mon, 31 Oct 2022 22:49:28 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id ay14-20020a05600c1e0e00b003cf6ab34b61so2809389wmb.2;
+        Mon, 31 Oct 2022 22:49:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sFiJ1Xl5U/Q9kIWUJyg3ATXUzyGX+xpzIsnQgrcyPqQ=;
+        b=tFK9mkK3gniaO/JeNjMrTt49uv1LYAZio5vps3JcglvunpbpkZJRwoMkxBPOM9f5Vt
+         knwt82eTLzuL6FFmdFLk8u1n0JlAfFPVyVff5AcDvsoChBsPtXtahDg14Mfstmge61uv
+         7QPqj5400eNwmXRoyIf0JAgMW6niJuw+NCTABoakPiNuzd5UWzHzXZMiPQMusy101Heo
+         RmU7P3g6ovkpH2nxCGTE9t1gD7anCqMHZxNqXOw2Ylf6FInUTKhV2CeCcf5gkR2DPAYO
+         nTuE40iaRxs390/zOgRpdj6CL+cAiNBKHJWydEWSDKe5f+keDCAiHwdOUzT4Z5x/JZ9Z
+         hWlw==
+X-Gm-Message-State: ACrzQf2ylfK4j2TM6eRcVk5Ihfpske4O4DvFlpwV2Xr/fFFbnePdPynh
+        yzyGPQIAxnnCLwI4nYzF6iA=
+X-Google-Smtp-Source: AMsMyM78+gzC+G4r0hw11WY5fFkvvC3bal3WJWhhwtOLtGcIGj1F43LHVUwke1fflbbAJ+GtTzEUyQ==
+X-Received: by 2002:a05:600c:3b1a:b0:3c7:132f:eb7f with SMTP id m26-20020a05600c3b1a00b003c7132feb7fmr20478963wms.49.1667281767330;
+        Mon, 31 Oct 2022 22:49:27 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
+        by smtp.gmail.com with ESMTPSA id y2-20020adffa42000000b0022e3538d305sm10350826wrr.117.2022.10.31.22.49.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Oct 2022 22:49:26 -0700 (PDT)
+Message-ID: <833c7f2f-c140-5a0b-1efc-b858348206ec@kernel.org>
+Date:   Tue, 1 Nov 2022 06:49:25 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH] ath11k (gcc13): synchronize
+ ath11k_mac_he_gi_to_nl80211_he_gi()'s return type
+Content-Language: en-US
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>, kvalo@kernel.org
+Cc:     linux-kernel@vger.kernel.org, Martin Liska <mliska@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] rtlwifi: rtl8192ee: remove static variable stop_report_cnt
-Thread-Topic: [PATCH] rtlwifi: rtl8192ee: remove static variable
- stop_report_cnt
-Thread-Index: AQHY7UFi7CO5kegy5EyHq0HjTYwI4a4pNVXQ
-Date:   Tue, 1 Nov 2022 00:22:05 +0000
-Message-ID: <8d7c8373432747cb9a2a9c698d1cc581@realtek.com>
-References: <20221031155637.871164-1-colin.i.king@gmail.com>
-In-Reply-To: <20221031155637.871164-1-colin.i.king@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEwLzMxIOS4i+WNiCAxMDowMDowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20221031114341.10377-1-jirislaby@kernel.org>
+ <55c4d139-0f22-e7ba-398a-e3e0d8919220@quicinc.com>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <55c4d139-0f22-e7ba-398a-e3e0d8919220@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENvbGluIElhbiBLaW5nIDxj
-b2xpbi5pLmtpbmdAZ21haWwuY29tPg0KPiBTZW50OiBNb25kYXksIE9jdG9iZXIgMzEsIDIwMjIg
-MTE6NTcgUE0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgS2FsbGUg
-VmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IERhdmlkIFMgLiBNaWxsZXINCj4gPGRhdmVtQGRhdmVt
-bG9mdC5uZXQ+OyBFcmljIER1bWF6ZXQgPGVkdW1hemV0QGdvb2dsZS5jb20+OyBKYWt1YiBLaWNp
-bnNraSA8a3ViYUBrZXJuZWwub3JnPjsgUGFvbG8gQWJlbmkNCj4gPHBhYmVuaUByZWRoYXQuY29t
-PjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3Jn
-DQo+IENjOiBrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdl
-ci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFtQQVRDSF0gcnRsd2lmaTogcnRsODE5MmVlOiByZW1v
-dmUgc3RhdGljIHZhcmlhYmxlIHN0b3BfcmVwb3J0X2NudA0KPiANCj4gVmFyaWFibGUgc3RvcF9y
-ZXBvcnRfY250IGlzIGJlaW5nIHNldCBvciBpbmNyZW1lbnRlZCBidXQgaXMgbmV2ZXINCj4gYmVp
-bmcgdXNlZCBmb3IgYW55dGhpbmcgbWVhbmluZ2Z1bC4gVGhlIHZhcmlhYmxlIGFuZCBjb2RlIHJl
-bGF0aW5nDQo+IHRvIGl0J3MgdXNlIGlzIHJlZHVuZGFudCBhbmQgY2FuIGJlIHJlbW92ZWQuDQo+
-IA0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2luZyA8Y29saW4uaS5raW5nQGdtYWlsLmNv
-bT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQo+IC0t
-LQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJlZS90cngu
-YyB8IDggLS0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA4IGRlbGV0aW9ucygtKQ0KPiANCj4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTky
-ZWUvdHJ4LmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
-MmVlL3RyeC5jDQo+IGluZGV4IDgwNDNkODE5ZmI4NS4uYTE4MmNkZWI1OGUyIDEwMDY0NA0KPiAt
-LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmVlL3RyeC5j
-DQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZWUv
-dHJ4LmMNCj4gQEAgLTk5Nyw3ICs5OTcsNiBAQCBib29sIHJ0bDkyZWVfaXNfdHhfZGVzY19jbG9z
-ZWQoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsIHU4IGh3X3F1ZXVlLCB1MTYgaW5kZXgpDQo+ICAJ
-c3RydWN0IHJ0bF9wcml2ICpydGxwcml2ID0gcnRsX3ByaXYoaHcpOw0KPiAgCXUxNiByZWFkX3Bv
-aW50LCB3cml0ZV9wb2ludDsNCj4gIAlib29sIHJldCA9IGZhbHNlOw0KPiAtCXN0YXRpYyB1OCBz
-dG9wX3JlcG9ydF9jbnQ7DQo+ICAJc3RydWN0IHJ0bDgxOTJfdHhfcmluZyAqcmluZyA9ICZydGxw
-Y2ktPnR4X3JpbmdbaHdfcXVldWVdOw0KPiANCj4gIAl7DQo+IEBAIC0xMDM4LDEzICsxMDM3LDYg
-QEAgYm9vbCBydGw5MmVlX2lzX3R4X2Rlc2NfY2xvc2VkKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3
-LCB1OCBod19xdWV1ZSwgdTE2IGluZGV4KQ0KPiAgCSAgICBydGxwcml2LT5wc2MucmZvZmZfcmVh
-c29uID4gUkZfQ0hBTkdFX0JZX1BTKQ0KPiAgCQlyZXQgPSB0cnVlOw0KPiANCj4gLQlpZiAoaHdf
-cXVldWUgPCBCRUFDT05fUVVFVUUpIHsNCj4gLQkJaWYgKCFyZXQpDQo+IC0JCQlzdG9wX3JlcG9y
-dF9jbnQrKzsNCj4gLQkJZWxzZQ0KPiAtCQkJc3RvcF9yZXBvcnRfY250ID0gMDsNCj4gLQl9DQo+
-IC0NCj4gIAlyZXR1cm4gcmV0Ow0KPiAgfQ0KPiANCj4gLS0NCj4gMi4zNy4zDQo+IA0KPiANCj4g
-LS0tLS0tUGxlYXNlIGNvbnNpZGVyIHRoZSBlbnZpcm9ubWVudCBiZWZvcmUgcHJpbnRpbmcgdGhp
-cyBlLW1haWwuDQo=
+On 31. 10. 22, 22:16, Jeff Johnson wrote:
+> On 10/31/2022 4:43 AM, Jiri Slaby (SUSE) wrote:
+>> ath11k_mac_he_gi_to_nl80211_he_gi() generates a valid warning with 
+>> gcc-13:
+>>    drivers/net/wireless/ath/ath11k/mac.c:321:20: error: conflicting 
+>> types for 'ath11k_mac_he_gi_to_nl80211_he_gi' due to enum/integer 
+>> mismatch; have 'enum nl80211_he_gi(u8)'
+>>    drivers/net/wireless/ath/ath11k/mac.h:166:5: note: previous 
+>> declaration of 'ath11k_mac_he_gi_to_nl80211_he_gi' with type 'u32(u8)'
+>>
+>> I.e. the type of the return value ath11k_mac_he_gi_to_nl80211_he_gi() in
+>> the declaration is u32, while the definition spells enum nl80211_he_gi.
+>> Synchronize them to the latter.
+>>
+>> Cc: Martin Liska <mliska@suse.cz>
+>> Cc: Kalle Valo <kvalo@kernel.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Eric Dumazet <edumazet@google.com>
+>> Cc: Jakub Kicinski <kuba@kernel.org>
+>> Cc: Paolo Abeni <pabeni@redhat.com>
+>> Cc: ath11k@lists.infradead.org
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: netdev@vger.kernel.org
+>> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+> 
+> Suggest the subject should be
+> wifi: ath11k: synchronize ath11k_mac_he_gi_to_nl80211_he_gi()'s return type
+
+FWIW I copied from:
+$ git log --format=%s  drivers/net/wireless/ath/ath11k/mac.h
+ath11k: Handle keepalive during WoWLAN suspend and resume
+ath11k: reduce the wait time of 11d scan and hw scan while add interface
+ath11k: Add basic WoW functionalities
+ath11k: add support for hardware rfkill for QCA6390
+ath11k: report tx bitrate for iw wlan station dump
+ath11k: add 11d scan offload support
+ath11k: fix read fail for htt_stats and htt_peer_stats for single pdev
+ath11k: add support for BSS color change
+ath11k: add support for 80P80 and 160 MHz bandwidth
+ath11k: Add support for STA to handle beacon miss
+ath11k: add support to configure spatial reuse parameter set
+ath11k: remove "ath11k_mac_get_ar_vdev_stop_status" references
+ath11k: Perform per-msdu rx processing
+ath11k: fix incorrect peer stats counters update
+ath11k: Move mac80211 hw allocation before wmi_init command
+ath11k: fix missed bw conversion in tx completion
+ath11k: driver for Qualcomm IEEE 802.11ax devices
+
+> The reference to gcc in the description should be sufficient.
+> 
+> Kalle can update this when he merges
+
+OK, thanks.
+
+> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> 
+>> ---
+>>   drivers/net/wireless/ath/ath11k/mac.h | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath11k/mac.h 
+>> b/drivers/net/wireless/ath/ath11k/mac.h
+>> index 2a0d3afb0c99..0231783ad754 100644
+>> --- a/drivers/net/wireless/ath/ath11k/mac.h
+>> +++ b/drivers/net/wireless/ath/ath11k/mac.h
+>> @@ -163,7 +163,7 @@ void ath11k_mac_drain_tx(struct ath11k *ar);
+>>   void ath11k_mac_peer_cleanup_all(struct ath11k *ar);
+>>   int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
+>>   u8 ath11k_mac_bw_to_mac80211_bw(u8 bw);
+>> -u32 ath11k_mac_he_gi_to_nl80211_he_gi(u8 sgi);
+>> +enum nl80211_he_gi ath11k_mac_he_gi_to_nl80211_he_gi(u8 sgi);
+>>   enum nl80211_he_ru_alloc 
+>> ath11k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy);
+>>   enum nl80211_he_ru_alloc 
+>> ath11k_mac_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones);
+>>   enum ath11k_supported_bw ath11k_mac_mac80211_bw_to_ath11k_bw(enum 
+>> rate_info_bw bw);
+> 
+
+-- 
+js
+suse labs
+
