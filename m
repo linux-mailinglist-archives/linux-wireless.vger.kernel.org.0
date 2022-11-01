@@ -2,53 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CDC6145EE
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 09:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3CD761461F
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 10:01:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230126AbiKAIq0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Nov 2022 04:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33944 "EHLO
+        id S229812AbiKAJBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 05:01:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229891AbiKAIqX (ORCPT
+        with ESMTP id S229601AbiKAJBl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Nov 2022 04:46:23 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98DFE186DB;
-        Tue,  1 Nov 2022 01:46:08 -0700 (PDT)
+        Tue, 1 Nov 2022 05:01:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C77186DD;
+        Tue,  1 Nov 2022 02:01:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 85038CE1AE5;
-        Tue,  1 Nov 2022 08:46:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D0CC433B5;
-        Tue,  1 Nov 2022 08:46:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E74961568;
+        Tue,  1 Nov 2022 09:01:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E47C433D6;
+        Tue,  1 Nov 2022 09:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667292363;
-        bh=FpS71S38hnMEG7b0x8rTpo/7NG3z6UPDtnm8A5gut/c=;
+        s=k20201202; t=1667293299;
+        bh=/l6xjH9YE6k/qmD9L/3uehZBNhad2DOqg7fgrAKNHes=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=KAiXBG6nPHNt2pYgB6pV6ZYv+3QBPsPPCJaZWFdELNuii6ARso75uFKAlFKhBn9jp
-         En3G6T0mWzAC/cgwp5wLX3IytGYqgI+WiXbfyuAb2mLsJRcUcHTeDVbas8fmfYU6+r
-         I+vcQ0IGqnHEoFlOyOqtf1H3su+Ln2t8JvvPSgrYBCvgGg27+fx7jBw8jVqLsYqx+L
-         XKl3LjksH8ZGGob2SNT6Y4/X6qvsBy05G6ZjBurjU7cGketff8ls40XvrPjFPfqHoC
-         mvwTMr2+/m63uOd8kfdBkdsqNgSSzFaIg0m1/KWHDRAKZ+2OjfVwj4troQWknS95XC
-         6Mln+zkrIX8xA==
+        b=oH9+lEVJoHcPuZ/xMdwHYURN084RwbfeXBo2dLwSuB1bHDM81jNR+0wEzeDZitIpd
+         gvAe0vpoQZdaESgqg/zmTjyXC7Hyfo8RpUiglv+hFXFthORBhFocHMij17j5+vD8ex
+         2sZIIYn0acKObxwkhBh7a78eBoPYWCmiGRgMasK19Q5CFnZutjyZbQzVsJiSGozUWq
+         ++nv0I/P3A6BIdGTNZPXGQgCWQTVvkogj17IWimmlBVbzuMNCz/O3/jNAdl5L6UgX5
+         IDU63aPLQ2lbFJMVrjRhSQPLvDOyPBNP+Lvdy128Gh2lscuqCUi5/e2HlpJ6gxUspB
+         bvQdNPJokczYA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jiri Slaby <jirislaby@kernel.org>
+To:     "Youghandhar Chintala \(Temp\)" <quic_youghand@quicinc.com>
 Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-kernel@vger.kernel.org, Martin Liska <mliska@suse.cz>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] ath11k (gcc13): synchronize ath11k_mac_he_gi_to_nl80211_he_gi()'s return type
-References: <20221031114341.10377-1-jirislaby@kernel.org>
-        <55c4d139-0f22-e7ba-398a-e3e0d8919220@quicinc.com>
-        <833c7f2f-c140-5a0b-1efc-b858348206ec@kernel.org>
-Date:   Tue, 01 Nov 2022 10:45:56 +0200
-In-Reply-To: <833c7f2f-c140-5a0b-1efc-b858348206ec@kernel.org> (Jiri Slaby's
-        message of "Tue, 1 Nov 2022 06:49:25 +0100")
-Message-ID: <87bkprgj0b.fsf@kernel.org>
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath10k: Add WLAN firmware image version info into smem
+References: <20221026102257.19919-1-quic_youghand@quicinc.com>
+        <b55ef95f-f400-9ef6-a427-525ae529d673@quicinc.com>
+        <fd45187c-739c-cd5d-4d4b-ae6abad03a94@quicinc.com>
+Date:   Tue, 01 Nov 2022 11:01:33 +0200
+In-Reply-To: <fd45187c-739c-cd5d-4d4b-ae6abad03a94@quicinc.com> (Youghandhar
+        Chintala's message of "Mon, 31 Oct 2022 12:24:43 +0530")
+Message-ID: <877d0fgiaa.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -62,62 +58,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiri Slaby <jirislaby@kernel.org> writes:
+(fixing quotation)
 
-> On 31. 10. 22, 22:16, Jeff Johnson wrote:
+"Youghandhar Chintala (Temp)" <quic_youghand@quicinc.com> writes:
+
+> On 10/28/2022 12:19 AM, Jeff Johnson wrote:
 >
->> On 10/31/2022 4:43 AM, Jiri Slaby (SUSE) wrote:
->>> ath11k_mac_he_gi_to_nl80211_he_gi() generates a valid warning with
->>> gcc-13:
->>> =C2=A0=C2=A0 drivers/net/wireless/ath/ath11k/mac.c:321:20: error: confl=
-icting
->>> types for 'ath11k_mac_he_gi_to_nl80211_he_gi' due to enum/integer
->>> mismatch; have 'enum nl80211_he_gi(u8)'
->>> =C2=A0=C2=A0 drivers/net/wireless/ath/ath11k/mac.h:166:5: note: previous
->>> declaration of 'ath11k_mac_he_gi_to_nl80211_he_gi' with type
->>> 'u32(u8)'
->>>
->>> I.e. the type of the return value ath11k_mac_he_gi_to_nl80211_he_gi() in
->>> the declaration is u32, while the definition spells enum nl80211_he_gi.
->>> Synchronize them to the latter.
->>>
->>> Cc: Martin Liska <mliska@suse.cz>
->>> Cc: Kalle Valo <kvalo@kernel.org>
->>> Cc: "David S. Miller" <davem@davemloft.net>
->>> Cc: Eric Dumazet <edumazet@google.com>
->>> Cc: Jakub Kicinski <kuba@kernel.org>
->>> Cc: Paolo Abeni <pabeni@redhat.com>
->>> Cc: ath11k@lists.infradead.org
->>> Cc: linux-wireless@vger.kernel.org
->>> Cc: netdev@vger.kernel.org
->>> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+>> On 10/26/2022 3:22 AM, Youghandhar Chintala wrote:
+
+>>> =C2=A0 +static void ath10k_qmi_add_wlan_ver_smem(struct ath10k *ar, char
+>>> *fw_build_id)
 >>
->> Suggest the subject should be
->> wifi: ath11k: synchronize ath11k_mac_he_gi_to_nl80211_he_gi()'s return t=
-ype
+>> const char *fw_build_id?
+>>
+>>> +{
+>>> +=C2=A0=C2=A0=C2=A0 u8 *smem_table_ptr;
+>>> +=C2=A0=C2=A0=C2=A0 size_t smem_block_size;
+>>> +=C2=A0=C2=A0=C2=A0 const u32 version_string_size =3D 128;
+>>
+>> should you s/128/MAX_BUILD_ID_LEN/ since that is what is used to
+>> size qmi->fw_build_id?
+>>
+>> or alternately have the caller pass fw_build_id length as a separate
+>> param?
 >
-> FWIW I copied from:
-> $ git log --format=3D%s  drivers/net/wireless/ath/ath11k/mac.h
-> ath11k: Handle keepalive during WoWLAN suspend and resume
-> ath11k: reduce the wait time of 11d scan and hw scan while add interface
-> ath11k: Add basic WoW functionalities
-> ath11k: add support for hardware rfkill for QCA6390
-> ath11k: report tx bitrate for iw wlan station dump
-> ath11k: add 11d scan offload support
-> ath11k: fix read fail for htt_stats and htt_peer_stats for single pdev
-> ath11k: add support for BSS color change
-> ath11k: add support for 80P80 and 160 MHz bandwidth
-> ath11k: Add support for STA to handle beacon miss
-> ath11k: add support to configure spatial reuse parameter set
-> ath11k: remove "ath11k_mac_get_ar_vdev_stop_status" references
-> ath11k: Perform per-msdu rx processing
-> ath11k: fix incorrect peer stats counters update
-> ath11k: Move mac80211 hw allocation before wmi_init command
-> ath11k: fix missed bw conversion in tx completion
-> ath11k: driver for Qualcomm IEEE 802.11ax devices
+> Sure Jeff. Will address it in next version of patch.
 
-Yeah, using "wifi:" is a new prefix we started using with wireless
-patches this year.
+BTW Youghandhar, your quotes were broken in this mail so your reply was
+difficult to find. See here:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20221026102257.19=
+919-1-quic_youghand@quicinc.com/
+
+If you are using Outlook, I recommend switching to an application which
+respects standards more :) For example, some people seem to be happy
+with Thunderbird.
 
 --=20
 https://patchwork.kernel.org/project/linux-wireless/list/
