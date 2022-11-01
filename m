@@ -2,56 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD8FD614836
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 12:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 800E561483B
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 12:09:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbiKALHz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Nov 2022 07:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45664 "EHLO
+        id S229812AbiKALJd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 07:09:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiKALHx (ORCPT
+        with ESMTP id S230209AbiKALJ2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Nov 2022 07:07:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4A719027;
-        Tue,  1 Nov 2022 04:07:53 -0700 (PDT)
+        Tue, 1 Nov 2022 07:09:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FAE19C35
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Nov 2022 04:09:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B5EE4B81C6E;
-        Tue,  1 Nov 2022 11:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BC3C433C1;
-        Tue,  1 Nov 2022 11:07:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 30F3AB81C58
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Nov 2022 11:09:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E308C433D7;
+        Tue,  1 Nov 2022 11:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667300870;
-        bh=DQIRA6FEZkpo5HH+L+soeSfMq90M3xQzxc4Lot0+jd0=;
+        s=k20201202; t=1667300963;
+        bh=CRg23w0o9EwYbGL0iiaaoNzEtRSFnkVV7PX1PjpSmOo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=N3EZtqTG68jOjfQwQhAUqB75r1hjKRJzprhtVtLSTrG3kCx3I6o37EaXtFFEH2yMr
-         eWJi6D9Qo0Z5AN+Qmu+q5LP4Zt5C3MAkiyrvJZx/KCRaXShY1M4p/cr9BCJY4HkZK+
-         bE127+MpiTdWUjCbWshlZFLCAMqbonwhAbicu8RpSOsnG4uyMBvGvrDaF/PWysV5Jt
-         0/AFSzSPzxGhY7XpGR4sKqDmRZovuBSgnVnUFVDyfN2LvLPE6CLBmMZX3IqNDP0nFa
-         j70QDomjKF3MY252I7vdwFuwhzSw5/gCcaFYwe8BQdMnlgvoQLKyFBkTiCno0v2Wjp
-         x5iT9cR2/YUHQ==
+        b=GiqQaB5I2tBz+t5dcjUmJqx62XKwiVpPNEzkcia2I46IWG2zUoc8kbpmCs2FdEZEt
+         S+dglmK6gA/KdNfLCzBPYciVS2HvphFtXVSc2ZoAR91eGwwT6fcswk4elvD+iDmR0q
+         tjEdm21RSFfWippWkyttntt7BZTyOomZ2/HahKoB2J7oBsSr3mLjelgMQfwjZyp9PA
+         6w+6i9lynIZXIt95Y7iGyE7wWWqolELDRxUQFWdF/9G79E99dCdeWNGTUzrISkzMic
+         tBBN5FXQc7uOSnzlOuQ0EXNgjqf+xL3MMLJbibsXzXL0tC3pDHw/FqVE2UsjTcehHy
+         sHOs5nfedtCOQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: wilc1000: sdio: fix module autoloading
+Subject: Re: [PATCH v3 1/5] wifi: rtl8xxxu: Add central frequency offset
+ tracking
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221027171221.491937-1-michael@walle.cc>
-References: <20221027171221.491937-1-michael@walle.cc>
-To:     Michael Walle <michael@walle.cc>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Michael Walle <michael@walle.cc>,
-        stable@vger.kernel.org
+In-Reply-To: <d1cfc9ef-dfc1-b3dc-c471-fe18aee8962e@gmail.com>
+References: <d1cfc9ef-dfc1-b3dc-c471-fe18aee8962e@gmail.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166730086353.21401.9805927122982212508.kvalo@kernel.org>
-Date:   Tue,  1 Nov 2022 11:07:47 +0000 (UTC)
+Message-ID: <166730096092.21401.15624908511546380756.kvalo@kernel.org>
+Date:   Tue,  1 Nov 2022 11:09:22 +0000 (UTC)
 X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,20 +55,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Michael Walle <michael@walle.cc> wrote:
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> There are no SDIO module aliases included in the driver, therefore,
-> module autoloading isn't working. Add the proper MODULE_DEVICE_TABLE().
+> According to Realtek programmers, "to adjust oscillator to align
+> central frequency of connected AP. Then, it can yield better
+> performance." From commit fb8517f4fade ("rtw88: 8822c: add CFO
+> tracking").
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael Walle <michael@walle.cc>
+> The RTL8192CU and a version of RTL8723AU apparently don't have the
+> ability to adjust the oscillator, so this doesn't apply to them.
+> 
+> This also doesn't apply to the wifi + bluetooth combo chips (RTL8723AU
+> and RTL8723BU) because the CFO tracking should only be done when
+> bluetooth is disabled, and determining that looked complicated.
+> 
+> That leaves only the RTL8192EU and RTL8188FU chips. I tested this with
+> the latter.
+> 
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+Failed to apply, please rebase on top of latest wireless-next.
 
-57d545b5a3d6 wifi: wilc1000: sdio: fix module autoloading
+error: sha1 information is lacking or useless (drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h).
+error: could not build fake ancestor
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+Applying: wifi: rtl8xxxu: Fix the CCK RSSI calculation
+Patch failed at 0001 wifi: rtl8xxxu: Fix the CCK RSSI calculation
+
+5 patches set to Changes Requested.
+
+13023979 [v3,1/5] wifi: rtl8xxxu: Add central frequency offset tracking
+13023981 [v3,2/5] wifi: rtl8xxxu: Fix the CCK RSSI calculation
+13023982 [v3,3/5] wifi: rtl8xxxu: Recognise all possible chip cuts
+13023983 [v3,4/5] wifi: rtl8xxxu: Set IEEE80211_HW_SUPPORT_FAST_XMIT
+13023984 [v3,5/5] wifi: rtl8xxxu: Use dev_info instead of pr_info
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221027171221.491937-1-michael@walle.cc/
+https://patchwork.kernel.org/project/linux-wireless/patch/d1cfc9ef-dfc1-b3dc-c471-fe18aee8962e@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
