@@ -2,48 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF5E614695
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 10:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4430661469E
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 10:27:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230073AbiKAJ0F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Nov 2022 05:26:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35588 "EHLO
+        id S230083AbiKAJ1l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 05:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbiKAJ0E (ORCPT
+        with ESMTP id S229967AbiKAJ1d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Nov 2022 05:26:04 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26432183A7
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Nov 2022 02:26:03 -0700 (PDT)
+        Tue, 1 Nov 2022 05:27:33 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F31F18E25
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Nov 2022 02:27:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 0D803CE1939
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Nov 2022 09:26:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5D6C433D7;
-        Tue,  1 Nov 2022 09:25:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 25EF1B81C53
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Nov 2022 09:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB60C433C1;
+        Tue,  1 Nov 2022 09:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667294758;
-        bh=piDfUYcTSPFG+8NXoxpzPe2VMFyn71wc8s1HndhnTrQ=;
+        s=k20201202; t=1667294849;
+        bh=gBa2eeLib7J7toQORdcJMYtL/Ftae+yNjWtOmuuWTZM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=aMeRUVwortMMkqP3xgA7zfddYbJiLu3ljO3fFMgixmKdYZVDIZ1Gi6pJQSdPT6BqM
-         446zdiXh1sw3RTPosy4yXB1WPs5BRX6Dbq7SoC1wnYOe8P15bsPYo0MqxKKVkFM7ah
-         v3QzrsaPGCxVbfwaobtlYHKQtHfdXuPte9TlCXbDdBcqsaSbdn2oS0irLDPwvcHWQf
-         sCJYx9ASVC7mSn+epykuLzIByz3mqymmFqOZmw9LWAH4KUGo/FI9BbJmz37I+0biIX
-         5nTHhAcYf5ZP6LWylJpSabL+ud9g4p1MlgDfZv0i0WXhV/GV0VairsMp28m9cdsvzg
-         QATMf+/eO2vgg==
+        b=kCGAQ0frArTu/LNNwFJInR+vMdMuHDV43TOtNBVamLxMwj/CXsXpCYFoyBgM9YLiA
+         AbtEBrMewSKr10P7a6XIf8vQDJNiuCIhSHnh2o00YhM1loSOvcnWm9SJJW/6dYqxvq
+         EcWebHrKMkDV0rQsRL2x8v0osR2LWt1y0MNghdB70bW61znShZ45ORxwGS9vvdEUIP
+         7koSS1KOmoj8CrlImEVEtFNTwP7/BDlxpemGy1SCQHzpeYJ7kBfJZHQNV3SNwOLI3G
+         GT7y/doqisEyTKwbwE2VqAI3amFaNx0xT6G/e/WZXm0UBHSZoThw5T9LG4UP/M1JXG
+         A8Ng8seXPpw5g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtw89: check if sta's mac_id is valid under AP/TDLS
+Subject: Re: [PATCH v2 1/7] wifi: rtw89: collect and send RF parameters to
+ firmware for WoWLAN
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221021091828.40157-1-pkshih@realtek.com>
-References: <20221021091828.40157-1-pkshih@realtek.com>
+In-Reply-To: <20221027052707.14605-2-pkshih@realtek.com>
+References: <20221027052707.14605-2-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Cc:     <gary.chang@realtek.com>, <timlee@realtek.com>,
+        <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166729475593.21401.11061116132311676756.kvalo@kernel.org>
-Date:   Tue,  1 Nov 2022 09:25:57 +0000 (UTC)
+Message-ID: <166729484702.21401.10931969945077529002.kvalo@kernel.org>
+Date:   Tue,  1 Nov 2022 09:27:28 +0000 (UTC)
 X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,20 +57,26 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> From: Chih-Kang Chang <gary.chang@realtek.com>
 > 
-> Add boundary check of mac_id when adding sta under AP/TDLS.
-> And, return -ENOSPC if the acquired mac_id is invalid.
+> For WoWLAN mode, we only collect and send RF parameters to Firmware
+> without writing RF registers. So we add one function to practice it.
 > 
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+7 patches applied to wireless-next.git, thanks.
 
-46245bc42aff wifi: rtw89: check if sta's mac_id is valid under AP/TDLS
+d9112042d994 wifi: rtw89: collect and send RF parameters to firmware for WoWLAN
+5f05bdb0a770 wifi: rtw89: move enable_cpu/disable_cpu into fw_download
+7a68ec3da79e wifi: rtw89: add function to adjust and restore PLE quota
+41d567699283 wifi: rtw89: add drop tx packet function
+ee88d748f1ac wifi: rtw89: add related H2C for WoWLAN mode
+19e28c7fcc74 wifi: rtw89: add WoWLAN function support
+d2b68e95b5bc wifi: rtw89: add WoWLAN pattern match support
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221021091828.40157-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221027052707.14605-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
