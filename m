@@ -2,52 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6F3614799
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 11:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86044614813
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Nov 2022 12:00:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbiKAKUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Nov 2022 06:20:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51836 "EHLO
+        id S229993AbiKALAC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Nov 2022 07:00:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbiKAKUo (ORCPT
+        with ESMTP id S229877AbiKALAA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Nov 2022 06:20:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7625260FA;
-        Tue,  1 Nov 2022 03:20:43 -0700 (PDT)
+        Tue, 1 Nov 2022 07:00:00 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF7E178BC;
+        Tue,  1 Nov 2022 03:59:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16E2561547;
-        Tue,  1 Nov 2022 10:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25199C433D6;
-        Tue,  1 Nov 2022 10:20:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A48B4B81B0F;
+        Tue,  1 Nov 2022 10:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9B7C433D6;
+        Tue,  1 Nov 2022 10:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667298042;
-        bh=1I05wtll6/CHogEqtDf9neeBlDMZ+tVZTPcLDXFJg5A=;
+        s=k20201202; t=1667300397;
+        bh=dKEuaYyyAw0/iFBymiu6NLIfDXb4VFkaxpP0t9sFQn0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Q8332Lxw3nymtZFCxYxGvTYBTpAKzVnuxnoFk1hY4nVNbrLXW5wXIBrBLAs863ZZ6
-         H9RuaGg551NAl0e/5rhBsNFDa1Cjn7r3LO4lrZlFGfH0USx53Yzjcbia/4ZmBTfvGg
-         lr+Z/rHQQnTkIBZExbC6VKFhZecDDGFfd8pQNVVJ8l+UAs7ADPhJX6kS6sKe2gtvNa
-         Gmy6jRPf5hKZ1QO6FBIOzmMXqPXoS4H2e2Htm5xmzY2dcbZSnX8O7R0PcvcH4FXplL
-         mIK/ct9Tp3WHQxXgzvVVH6ufQAIdxU4yUEbe+NWnusEtbocCq6Mw1966O2tfO9zc3m
-         eCl02SYziXL/g==
+        b=YDcgPJMnCwXLtF5ZBJ3e1vZ/8v2eo7+N0HdsMyBc+vncFG3OJjUegJDLOw5agKDC6
+         1PbS+8y7XUGCrZq2OEylHUwrkPxiot5IQSbbHxOLN5A5yiNy5AP6A3Ybhe/rzB9nSe
+         mVHPDaYWrZbdn/zEpk4w9fay9MbCjrhimbME64d3n/T0DpvUScGkjbGICgaKX7YInb
+         aCsGQ0Be3hl5+REJpUwAN90sH8PM1aaxhQLnJ39aTMMCQLY0VdQfxv/oQX+WzdYdmF
+         cL5T8VBwE7XNQ4mfexmuTJMuPORfqpwTjLu5dvUKISvMFgBp5BRNB+Tb5kd9ZgE005
+         9lv1AEyuofzAA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: ipw2200: Remove the unused function ipw_alive()
+Subject: Re: [next] wifi: atmel: Fix atmel_private_handler array size
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221017071746.118685-1-jiapeng.chong@linux.alibaba.com>
-References: <20221017071746.118685-1-jiapeng.chong@linux.alibaba.com>
-To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
+In-Reply-To: <20221018023732.never.700-kees@kernel.org>
+References: <20221018023732.never.700-kees@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Simon Kelley <simon@thekelleys.org.uk>,
+        Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166729803673.21401.16710194192988626348.kvalo@kernel.org>
-Date:   Tue,  1 Nov 2022 10:20:39 +0000 (UTC)
+Message-ID: <166730039237.21401.8200103649620545525.kvalo@kernel.org>
+Date:   Tue,  1 Nov 2022 10:59:54 +0000 (UTC)
 X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,23 +60,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
+Kees Cook <keescook@chromium.org> wrote:
 
-> The function ipw_alive() is defined in the ipw2200.c file, but not called
-> elsewhere, so delete this unused function.
+> Fix the atmel_private_handler to correctly sized (1 element) again. (I
+> should have checked the data segment for differences.) This had no
+> behavioral impact (no private callbacks), but it made a very large
+> zero-filled array.
 > 
-> drivers/net/wireless/intel/ipw2x00/ipw2200.c:3007:19: warning: unused function 'ipw_alive'.
-> 
-> Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=2410
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> Cc: Simon Kelley <simon@thekelleys.org.uk>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Fixes: 8af9d4068e86 ("wifi: atmel: Avoid clashing function prototypes")
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
 Patch applied to wireless-next.git, thanks.
 
-7bb09fb8f577 wifi: ipw2200: Remove the unused function ipw_alive()
+8b860466b137 wifi: atmel: Fix atmel_private_handler array size
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221017071746.118685-1-jiapeng.chong@linux.alibaba.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221018023732.never.700-kees@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
