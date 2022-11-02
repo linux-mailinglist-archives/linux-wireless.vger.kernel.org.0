@@ -2,43 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E54B66170AA
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 23:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 547066170AB
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 23:29:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbiKBW3b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 18:29:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40412 "EHLO
+        id S231441AbiKBW3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 18:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230175AbiKBW33 (ORCPT
+        with ESMTP id S230175AbiKBW3c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 18:29:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6782BD0
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 15:29:28 -0700 (PDT)
+        Wed, 2 Nov 2022 18:29:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F2A6584
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 15:29:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0A794B82528
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 22:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592ABC433D6;
-        Wed,  2 Nov 2022 22:29:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25F5561BC5
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 22:29:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D9CC433C1;
+        Wed,  2 Nov 2022 22:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667428165;
-        bh=afZJpjssqhN+myESqpJIzgINiOVj1pLDmg+9flUgKHs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TSh4dUoU22A7buFnEltcN9zZ7Fg3kwnFtOQ5QiMwx4VADgThA/xov5WZCfSTPQrAA
-         r6nkv/r70fZmdM1sIg8tkrKD4gp027+7qOVVenMh5LxhoOGBQ8zveX+QvZF+2RuHZO
-         fIyTZOvoFsAoYIGVH7kyfXYV97SU1VUt+fOVGRvzz2SXiFHGvQ3o2tPQFzgOKbFIFu
-         blv96cuncfN4oDp677NKtpnvGNauyeNu4MeOX4SwEiLyyNsENnOUXBaimo0mSlnIbj
-         UST3Bo19b98+Fn+g7pPcIyGApMxSd39LarKjsIkyNT4rosUm9Lq6Rjt5hytEA5UhYe
-         HTDB7nu9RFcyA==
+        s=k20201202; t=1667428169;
+        bh=h7x7JNvtwU3kqFiLlHTf5XVyqgYU/LagZg1od2ZFB+E=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JzmQhd8Gyp5i+HYBUjNKj02/qSW8gMV7je7TkCN6c9RIxEHKpxZpEGP8l9e+IeVMG
+         sCMFmp8ItzqqJAgrzGjUuBlTzTBN+wyApNHX5yQyf/TwHh0YCYkCnrMRkup8MvPaGz
+         fsBddNKxQrkCs+Tefn0hX80Q2mJ4svd9hWx5bguR7x+vsoHe8/6yfmN99pgrW6MIf4
+         wmAlrV25VPAGqESVtk1rDAkWMBr5RgFLZNmWDcssfC7BXmQVn1pamE8jTtkIRgSyDT
+         QZucRTLdCrgjyA+PaKUSRwH8KKGC+Ukg+g0pjsXJ0dG6HRfySc6fw+X+nnF6qme2QB
+         YOe7zee07I3JA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH 0/2] mt76: move aggr_stats array in mt76_phy
-Date:   Wed,  2 Nov 2022 23:29:13 +0100
-Message-Id: <cover.1667427944.git.lorenzo@kernel.org>
+Subject: [PATCH 1/2] wifi: mt76: mt7615: rely on mt7615_phy in mt7615_mac_reset_counters
+Date:   Wed,  2 Nov 2022 23:29:14 +0100
+Message-Id: <18a4a52db5da53e73c10ac64ac6be89ab568e237.1667427944.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <cover.1667427944.git.lorenzo@kernel.org>
+References: <cover.1667427944.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -50,33 +52,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series is based on the following patches:
-- wifi: mt76: mt7915: fix reporting of TX AGGR histogram
-  https://patchwork.kernel.org/project/linux-wireless/patch/33a05d9d25e43fbb880bea5e1ad52c92f1ad2e27.1667392073.git.lorenzo@kernel.org/
-- wifi: mt76: mt7921: fix reporting of TX AGGR histogram
-  https://patchwork.kernel.org/project/linux-wireless/patch/74cf11c228e9174c5d7fd794af8967d5ce9e5de7.1667393153.git.lorenzo@kernel.org/
+This is a preliminary patch to move aggr_stats array in mt76_phy
+structure.
 
-Lorenzo Bianconi (2):
-  wifi: mt76: mt7615: rely on mt7615_phy in mt7615_mac_reset_counters
-  wifi: mt76: move aggr_stats array in mt76_phy
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c    | 8 +++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c   | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h | 2 +-
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
- drivers/net/wireless/mediatek/mt76/mt76.h     |  4 ++--
- .../wireless/mediatek/mt76/mt7603/debugfs.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7603/mac.c   |  6 +++---
- .../wireless/mediatek/mt76/mt7615/debugfs.c   |  6 ++----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 17 +++++++--------
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  4 ++--
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 +-
- .../wireless/mediatek/mt76/mt76x02_debugfs.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  6 +++---
- .../wireless/mediatek/mt76/mt7915/debugfs.c   |  5 ++---
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 21 +++++++------------
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  5 ++---
- .../wireless/mediatek/mt76/mt7921/debugfs.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 10 ++++-----
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
- 15 files changed, 41 insertions(+), 53 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 2ce1705c0f43..7bda801581ea 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -107,9 +107,9 @@ static struct mt76_wcid *mt7615_rx_get_wcid(struct mt7615_dev *dev,
+ 	return &sta->vif->sta.wcid;
+ }
+ 
+-void mt7615_mac_reset_counters(struct mt7615_dev *dev)
++void mt7615_mac_reset_counters(struct mt7615_phy *phy)
+ {
+-	struct mt76_phy *mphy_ext = dev->mt76.phys[MT_BAND1];
++	struct mt7615_dev *dev = phy->dev;
+ 	int i;
+ 
+ 	for (i = 0; i < 4; i++) {
+@@ -118,9 +118,7 @@ void mt7615_mac_reset_counters(struct mt7615_dev *dev)
+ 	}
+ 
+ 	memset(dev->mt76.aggr_stats, 0, sizeof(dev->mt76.aggr_stats));
+-	dev->mt76.phy.survey_time = ktime_get_boottime();
+-	if (mphy_ext)
+-		mphy_ext->survey_time = ktime_get_boottime();
++	phy->mt76->survey_time = ktime_get_boottime();
+ 
+ 	/* reset airtime counters */
+ 	mt76_rr(dev, MT_MIB_SDR9(0));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 8d4733f87cda..24865a6f679c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -83,7 +83,7 @@ static int mt7615_start(struct ieee80211_hw *hw)
+ 	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work, timeout);
+ 
+ 	if (!running)
+-		mt7615_mac_reset_counters(dev);
++		mt7615_mac_reset_counters(phy);
+ 
+ out:
+ 	mt7615_mutex_release(dev);
+@@ -320,7 +320,7 @@ int mt7615_set_channel(struct mt7615_phy *phy)
+ 	if (ret)
+ 		goto out;
+ 
+-	mt7615_mac_reset_counters(dev);
++	mt7615_mac_reset_counters(phy);
+ 	phy->noise = 0;
+ 	phy->chfreq = mt76_rr(dev, MT_CHFREQ(ext_phy));
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 060d52c81d9e..98f19476f385 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -469,7 +469,7 @@ void mt7615_init_work(struct mt7615_dev *dev);
+ int mt7615_mcu_restart(struct mt76_dev *dev);
+ void mt7615_update_channel(struct mt76_phy *mphy);
+ bool mt7615_mac_wtbl_update(struct mt7615_dev *dev, int idx, u32 mask);
+-void mt7615_mac_reset_counters(struct mt7615_dev *dev);
++void mt7615_mac_reset_counters(struct mt7615_phy *phy);
+ void mt7615_mac_cca_stats_reset(struct mt7615_phy *phy);
+ void mt7615_mac_set_scs(struct mt7615_phy *phy, bool enable);
+ void mt7615_mac_enable_nf(struct mt7615_dev *dev, bool ext_phy);
 -- 
 2.38.1
 
