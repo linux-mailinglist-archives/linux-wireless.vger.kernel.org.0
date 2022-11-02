@@ -2,76 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0402A616300
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 13:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9FF6616574
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:00:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231124AbiKBMsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 08:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54562 "EHLO
+        id S230046AbiKBPAn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 11:00:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230522AbiKBMr7 (ORCPT
+        with ESMTP id S229823AbiKBPAm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 08:47:59 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E182A424
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 05:47:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 36076B82277
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 12:47:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDEBC433C1;
-        Wed,  2 Nov 2022 12:47:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667393274;
-        bh=DjaYv1Iu/TnU9Zu0Qtxjp4xmU9j2hcik4DFQyWu6rxI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=KJ1v++AUk7gpJJ/rHOtbGGTCP07GdoupqabFKxTKJlrrwbgz+9gWWTm0B+j4h5ht4
-         rRK0AaMi19DKR2xzuxFwc4uEPq8m/fBfNFZdythdsmUP+MFSaPtCTqNOtnj+VwY/QJ
-         B1oBLf92Dj0G2XnkHncYVpqyjG1bMRgjdUG8JDGrnUS06YcnsTkgGGBeCZ3Qm3MFEf
-         exflGIyiKajCSSvDt2dIuuhLjn454Rql/s8m14PC0ZO914OKkOb26pEq2iTgjD9zI9
-         tjlIx3ky13oAMtimiDxY06ULOISgOtXFY3LLWqQpAHRHkJfob3VsBHt85ulgGtz269
-         Ft/E7wtL5HgKg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] wifi: mt76: mt7921: fix reporting of TX AGGR histogram
-Date:   Wed,  2 Nov 2022 13:46:50 +0100
-Message-Id: <74cf11c228e9174c5d7fd794af8967d5ce9e5de7.1667393153.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.38.1
+        Wed, 2 Nov 2022 11:00:42 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E352FE
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:00:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667401240; x=1698937240;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qV/ftOs8ILXXP4qgdKVd56dEYKNSwuXnZ0inSUEFhOw=;
+  b=hi2M9bxGlCVH365ZB3Wa8mJ8v9T3Q+kIKcs8C8nIeqTAaw3Xbe664jvz
+   r3+x0EuS+tbYSL1SZ7HMTpQwCl7PPTveBrVdlzjavwd+mLK038MNByPfa
+   OoDNmn8jTPV1wsjpCWnG9uaBbQqjYQIaAFGdvBErpFA8pTHHMiVYbypYM
+   C0WHRYUPM5Uqy2QsRk1RgJX4olXyqXXoIKFjjAWDtHs+GXJvFKj4x8/Ir
+   2BKYYdNiQCsyMi0WrDYuBaw87AcQzx47Mkh29Dk4GpIiwqP8oZxRV3ZWm
+   eH4eITT+YCSoZGsD3qavbqd79Mlbe8h0Hp8HTY06sEy00fb3VJIjotjm3
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523353"
+X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
+   d="scan'208";a="371523353"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:26 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810373"
+X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
+   d="scan'208";a="636810373"
+Received: from apetrush-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.180.25])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:24 -0700
+From:   gregory.greenman@intel.com
+To:     kvalo@kernel.org, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/11] iwlwifi: updates intended for v6.2 2022-11-02 
+Date:   Wed,  2 Nov 2022 16:59:47 +0200
+Message-Id: <20221102145958.342864-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to mt7915, fix stats clash between bins [4-7] in 802.11 tx
-aggregation histogram.
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Fixes: 163f4d22c118d ("mt76: mt7921: add MAC support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 6860468ed191..1c0d8cf19b8e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -984,7 +984,7 @@ void mt7921_mac_update_mib_stats(struct mt7921_phy *phy)
- 		mib->tx_amsdu_cnt += val;
- 	}
- 
--	for (i = 0, aggr1 = aggr0 + 4; i < 4; i++) {
-+	for (i = 0, aggr1 = aggr0 + 8; i < 4; i++) {
- 		u32 val2;
- 
- 		val = mt76_rr(dev, MT_TX_AGG_CNT(0, i));
+Here's the second set of patches intended for v6.2.
+It contains some small new features, cleanups and bugfixes.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Thanks,
+Gregory
+
+Avraham Stern (4):
+  wifi: iwlwifi: mei: implement PLDR flow
+  wifi: iwlwifi: mei: use wait_event_timeout() return value
+  wifi: iwlwifi: iwlmei: report disconnection as temporary
+  wifi: iwlwifi: mei: wait for the mac to stop on suspend
+
+Ilan Peer (1):
+  wifi: iwlwifi: mvm: Fix getting the lowest rate
+
+Johannes Berg (2):
+  wifi: iwlwifi: mvm: use old checksum for Bz A-step
+  wifi: iwlwifi: mvm: support new key API
+
+Luca Coelho (2):
+  wifi: iwlwifi: cfg: disable STBC for BL step A devices
+  wifi: iwlwifi: mvm: print an error instead of a warning on invalid
+    rate
+
+Rotem Saado (2):
+  wifi: iwlwifi: dbg: add support for DBGC4 on BZ family and above
+  wifi: iwlwifi: dbg: use bit of DRAM alloc ID to store failed allocs
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  36 ++-
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  79 ++++++
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |   7 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |   4 +
+ .../net/wireless/intel/iwlwifi/mei/iwl-mei.h  |  21 ++
+ drivers/net/wireless/intel/iwlwifi/mei/main.c | 130 ++++++++--
+ drivers/net/wireless/intel/iwlwifi/mei/sap.h  |  51 ++++
+ .../net/wireless/intel/iwlwifi/mvm/Makefile   |   1 +
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   7 +
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  60 ++++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  20 +-
+ .../net/wireless/intel/iwlwifi/mvm/mld-key.c  | 226 ++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  15 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   7 +-
+ 18 files changed, 641 insertions(+), 39 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+
 -- 
-2.38.1
+2.35.3
 
