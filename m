@@ -2,50 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F006169F1
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 18:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15DBE616A5A
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 18:15:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231223AbiKBRCF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 13:02:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60130 "EHLO
+        id S231197AbiKBRP3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 13:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbiKBRCD (ORCPT
+        with ESMTP id S230500AbiKBRPU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 13:02:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8406ABC24;
-        Wed,  2 Nov 2022 10:02:02 -0700 (PDT)
+        Wed, 2 Nov 2022 13:15:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69241091;
+        Wed,  2 Nov 2022 10:15:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22D5B61ABA;
-        Wed,  2 Nov 2022 17:02:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37701C433C1;
-        Wed,  2 Nov 2022 17:02:00 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 965CBB823F6;
+        Wed,  2 Nov 2022 17:15:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B682C433C1;
+        Wed,  2 Nov 2022 17:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667408521;
-        bh=hjt4xmcq6xQSV0fwgwWJCPwgRnFiT04TEVb3VklGpT8=;
+        s=k20201202; t=1667409316;
+        bh=qK3bx7QoAh9fwPJHJizhUKV9fbdiG40FN0gZzQ2hwIg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=rGHF6JkvkSHmUhGxg9iyKD6gGW7ZHOkh4FOW0kQ295ScCdcu1cu6MvuP19atMBUmq
-         no1zY+fvK30Lmh2G0zkujQW+wXwtsNfp22wUtFeH9j8KxRzWXa2lxK+eWbepiaqSZV
-         /SS6Xsu7MeJLeR+yizeER2V6P1vmOGxJyCHGe+GAIpvK3UpVtfrQEwtEzrxQc8sTUT
-         xP/ayyI6rRn27odCmwYbsXAn7+xdp4/nm0eWC/c98sGTPVTKHGAqtRROYFAkW+siRg
-         kwRs+R/RHMkYWTW4ha56PpVFL7tIQqJKV5tIKgdBbKg7FhzlRyUtrBkGVnoL/KEzFn
-         2xfwT/nnGuRRQ==
+        b=n03OxBc7g3UloZP5Z04sZpbPDxEhvFkRIXuQ0rcShfJ0CirVAxiXaKK6TJEJpUQZw
+         JKU0gfhRV03o/QSNwHlTKskHaW7Zeg3jGsvarI1i1naMUOLbus8RMTLOD23ulMuD26
+         FKcz82vtDP50uvekdh1h2tCM7PcWq3Rf+m5EajFQ1eYdHYpLmnpS1qKgE3BYyJvQ4E
+         pMurRK7lH/3wAE+N6SQBdtXsT25zauiLT53iw89YJ2hYVeyzg2rsyJFNcv8l2kQPcs
+         guppyO8qQUwq5UqxHF9MppL02VvMqW1H/vJ0enJ6mFjUALAdhmd1SKug5oY0fQo3Hu
+         24jkyAkKAGxGA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: Trigger sta disconnect on hardware restart
+Subject: Re: [PATCH] ath11k: Fix QCN9074 firmware boot on x86
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221102061423.1032-1-quic_youghand@quicinc.com>
-References: <20221102061423.1032-1-quic_youghand@quicinc.com>
-To:     Youghandhar Chintala <quic_youghand@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_mpubbise@quicinc.com>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>
+In-Reply-To: <20221022042728.43015-1-stachecki.tyler@gmail.com>
+References: <20221022042728.43015-1-stachecki.tyler@gmail.com>
+To:     "Tyler J. Stachecki" <stachecki.tyler@gmail.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        "Tyler J. Stachecki" <stachecki.tyler@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ath11k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH11K WIRELESS
+        DRIVER),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)"Tyler J. Stachecki" <stachecki.tyler@gmail.com>
+                                                                     ^-missing end of address
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166740851734.26077.10462970085577578665.kvalo@kernel.org>
-Date:   Wed,  2 Nov 2022 17:02:00 +0000 (UTC)
+Message-ID: <166740930971.12704.12404773753216417373.kvalo@kernel.org>
+Date:   Wed,  2 Nov 2022 17:15:13 +0000 (UTC)
 X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,121 +65,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Youghandhar Chintala <quic_youghand@quicinc.com> wrote:
+"Tyler J. Stachecki" <stachecki.tyler@gmail.com> wrote:
 
-> Currently after the hardware restart triggered from the driver, the
-> station interface connection remains intact, since a disconnect trigger
-> is not sent to userspace. This can lead to a problem in targets where
-> the wifi mac sequence is added by the firmware.
+> The 2.7.0 series of QCN9074's firmware requests 5 segments
+> of memory instead of 3 (as in the 2.5.0 series).
 > 
-> After the target restart, its wifi mac sequence number gets reset to
-> zero. Hence AP to which our device is connected will receive frames with
-> a  wifi mac sequence number jump to the past, thereby resulting in the
-> AP dropping all these frames, until the frame arrives with a wifi mac
-> sequence number which AP was expecting.
+> The first segment (11M) is too large to be kalloc'd in one
+> go on x86 and requires piecemeal 1MB allocations, as was
+> the case with the prior public firmware (2.5.0, 15M).
 > 
-> To avoid such frame drops, its better to trigger a station disconnect
-> upon target hardware restart which can be done with API
-> ieee80211_reconfig_disconnect exposed to mac80211.
+> Since f6f92968e1e5, ath11k will break the memory requests,
+> but only if there were fewer than 3 segments requested by
+> the firmware. It seems that 5 segments works fine and
+> allows QCN9074 to boot on x86 with firmware 2.7.0, so
+> change things accordingly.
 > 
-> The other targets are not affected by this change, since the hardware
-> params flag is not set.
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
 > 
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
-> 
-> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
+> Signed-off-by: Tyler J. Stachecki <stachecki.tyler@gmail.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Fails to compile:
+Patch applied to ath-current branch of ath.git, thanks.
 
-In file included from ./include/linux/wait.h:7,
-                 from ./include/linux/wait_bit.h:8,
-                 from ./include/linux/fs.h:6,
-                 from ./include/linux/highmem.h:5,
-                 from ./include/linux/bvec.h:10,
-                 from ./include/linux/skbuff.h:17,
-                 from ./include/linux/if_ether.h:19,
-                 from ./include/net/mac80211.h:18,
-                 from drivers/net/wireless/ath/ath11k/mac.c:7:
-drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_op_reconfig_complete':
-drivers/net/wireless/ath/ath11k/mac.c:8049:45: error: 'arvif' undeclared (first use in this function)
- 8049 |                         list_for_each_entry(arvif, &ar->arvifs, list) {
-      |                                             ^~~~~
-./include/linux/list.h:674:14: note: in definition of macro 'list_for_each_entry'
-  674 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
-      |              ^~~
-drivers/net/wireless/ath/ath11k/mac.c:8049:45: note: each undeclared identifier is reported only once for each function it appears in
- 8049 |                         list_for_each_entry(arvif, &ar->arvifs, list) {
-      |                                             ^~~~~
-./include/linux/list.h:674:14: note: in definition of macro 'list_for_each_entry'
-  674 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
-      |              ^~~
-In file included from ./include/linux/bits.h:22,
-                 from ./include/linux/ratelimit_types.h:5,
-                 from ./include/linux/printk.h:9,
-                 from ./include/asm-generic/bug.h:22,
-                 from ./arch/x86/include/asm/bug.h:87,
-                 from ./include/linux/bug.h:5,
-                 from ./include/net/mac80211.h:16:
-././include/linux/compiler_types.h:298:27: error: expression in static assertion is not an integer
-  298 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-      |                                                        ^~~~
-./include/linux/container_of.h:19:9: note: in expansion of macro 'static_assert'
-   19 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-      |         ^~~~~~~~~~~~~
-./include/linux/container_of.h:19:23: note: in expansion of macro '__same_type'
-   19 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-      |                       ^~~~~~~~~~~
-./include/linux/list.h:520:9: note: in expansion of macro 'container_of'
-  520 |         container_of(ptr, type, member)
-      |         ^~~~~~~~~~~~
-./include/linux/list.h:531:9: note: in expansion of macro 'list_entry'
-  531 |         list_entry((ptr)->next, type, member)
-      |         ^~~~~~~~~~
-./include/linux/list.h:674:20: note: in expansion of macro 'list_first_entry'
-  674 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
-      |                    ^~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath11k/mac.c:8049:25: note: in expansion of macro 'list_for_each_entry'
- 8049 |                         list_for_each_entry(arvif, &ar->arvifs, list) {
-      |                         ^~~~~~~~~~~~~~~~~~~
-././include/linux/compiler_types.h:298:27: error: expression in static assertion is not an integer
-  298 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-      |                                                        ^~~~
-./include/linux/container_of.h:19:9: note: in expansion of macro 'static_assert'
-   19 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-      |         ^~~~~~~~~~~~~
-./include/linux/container_of.h:19:23: note: in expansion of macro '__same_type'
-   19 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-      |                       ^~~~~~~~~~~
-./include/linux/list.h:520:9: note: in expansion of macro 'container_of'
-  520 |         container_of(ptr, type, member)
-      |         ^~~~~~~~~~~~
-./include/linux/list.h:564:9: note: in expansion of macro 'list_entry'
-  564 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-      |         ^~~~~~~~~~
-./include/linux/list.h:676:20: note: in expansion of macro 'list_next_entry'
-  676 |              pos = list_next_entry(pos, member))
-      |                    ^~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath11k/mac.c:8049:25: note: in expansion of macro 'list_for_each_entry'
- 8049 |                         list_for_each_entry(arvif, &ar->arvifs, list) {
-      |                         ^~~~~~~~~~~~~~~~~~~
-make[6]: *** [scripts/Makefile.build:250: drivers/net/wireless/ath/ath11k/mac.o] Error 1
-make[5]: *** [scripts/Makefile.build:500: drivers/net/wireless/ath/ath11k] Error 2
-make[4]: *** [scripts/Makefile.build:500: drivers/net/wireless/ath] Error 2
-make[3]: *** [scripts/Makefile.build:500: drivers/net/wireless] Error 2
-make[2]: *** [scripts/Makefile.build:500: drivers/net] Error 2
-make[1]: *** [scripts/Makefile.build:500: drivers] Error 2
-make: *** [Makefile:1992: .] Error 2
-
-Patch set to Changes Requested.
+3a89b6dec992 wifi: ath11k: Fix QCN9074 firmware boot on x86
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221102061423.1032-1-quic_youghand@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221022042728.43015-1-stachecki.tyler@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
