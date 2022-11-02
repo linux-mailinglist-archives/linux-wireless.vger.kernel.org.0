@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFABC61657E
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C914861657F
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:01:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230241AbiKBPBM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 11:01:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44478 "EHLO
+        id S230261AbiKBPBR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 11:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230254AbiKBPBJ (ORCPT
+        with ESMTP id S230244AbiKBPBP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 11:01:09 -0400
+        Wed, 2 Nov 2022 11:01:15 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3BEE2A974
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:01:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D201F2A974
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:01:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667401268; x=1698937268;
+  t=1667401272; x=1698937272;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=t52MlG452EomOIcuvqgpmKPAVzIKYRvDLfN++Xk9CL0=;
-  b=YYpj4b977awRPvNlP8x4Fz+vPtxoIPEkfH1uBsTFKxrTlc0P5DEln+Yc
-   mKjgTyJQy7qAbEpFARRJ83SJh33+dpChVxDL30jq/eAdc9Bwnjt546AHs
-   YKy3V5/MPTJpApH4pxsxsQIhFz7By4AyM5eWIsgeRk3Jsjxk8BK9594BQ
-   BO0yXurK6kgT08Kalo2mHr1MGooBRKz5Veysb1sK+CB0WN3Tn+DM04DuP
-   SkHHI4lWKZFV2jT2TEzm77CZaQ6pIAyLGK796yEY7iz2BmUpSjNNBDYCY
-   sNFEFa7wIlSDTowOEKnZMSUvE7n0y3I2KpXGpBD+UIrU44tNM3TQ3dVA6
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523574"
+  bh=3ujq1o3vuZTDNTB4gcu1aJxu/TTs3rto43eqWGXMRkI=;
+  b=ZZ78WaH9O8i6VUTkLHgb/so3XSNbaOpwWho6qbbAqjY0/q43uzD3HjpQ
+   fb2zFwvOiWxCYbIdSB6qDof61JfC6WRoHXeZlzOJbdG73S1WB2c0EfMut
+   QWU57+4GOQGEPPKc9rJkFgbdfodMMZYDtpDL0J0Duzl0bo/5DmHoZB9kN
+   YlCoBEJBXsCcOpm1zeHa07MDwdqPfUd24PMhaS03XalGV4EEBU/vHfuN/
+   HnKGtUZa5To1Barz4Ah6cVqg9hFdO+qaHvBKAqP00TKnNG1AzXjQwagHq
+   Vrt7X8GZsAUYT8S7MK8adLPpQfSjA+h10yAjQIcAewUdFVC31L1hhXFfI
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523607"
 X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
-   d="scan'208";a="371523574"
+   d="scan'208";a="371523607"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:59 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810685"
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:01:01 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810727"
 X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
-   d="scan'208";a="636810685"
+   d="scan'208";a="636810727"
 Received: from apetrush-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.180.25])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:56 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:59 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Avraham Stern <avraham.stern@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 09/11] wifi: iwlwifi: mei: use wait_event_timeout() return value
-Date:   Wed,  2 Nov 2022 16:59:56 +0200
-Message-Id: <20221102165239.33159054626f.Ief9e2dc42f96f8044c197d32172003a5ead0f8d3@changeid>
+Subject: [PATCH 10/11] wifi: iwlwifi: iwlmei: report disconnection as temporary
+Date:   Wed,  2 Nov 2022 16:59:57 +0200
+Message-Id: <20221102165239.401665457652.Ie5de9eacc5a51cf0965a08c202caf3fbc3a91ec4@changeid>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20221102145958.342864-1-gregory.greenman@intel.com>
 References: <20221102145958.342864-1-gregory.greenman@intel.com>
@@ -62,48 +62,32 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Avraham Stern <avraham.stern@intel.com>
 
-wait_event_timeout() return value indicates whether the condition
-evaluated to true or not, so no need to re-take the lock and
-check the got_ownership flag.
+Disconnections are reported to CSME as long link down. As a result,
+CSME will take ownership right away so the host doesn't have a
+chance to reconnect, although in many cases it could quickly reconnect
+and preserve host connectivity.
+Report disconnections as temporary so CSME will give the host some
+grace time to reconnect.
 
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 21 +------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mei/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index a467da8b2aed..ef5d2938deb5 100644
+index ef5d2938deb5..9a49361cd059 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -1447,26 +1447,7 @@ int iwl_mei_get_ownership(void)
+@@ -1535,7 +1535,7 @@ void iwl_mei_host_disassociated(void)
+ 	struct iwl_sap_notif_host_link_down msg = {
+ 		.hdr.type = cpu_to_le16(SAP_MSG_NOTIF_HOST_LINK_DOWN),
+ 		.hdr.len = cpu_to_le16(sizeof(msg) - sizeof(msg.hdr)),
+-		.type = HOST_LINK_DOWN_TYPE_LONG,
++		.type = HOST_LINK_DOWN_TYPE_TEMPORARY,
+ 	};
  
- 	ret = wait_event_timeout(mei->get_ownership_wq,
- 				 mei->got_ownership, HZ / 2);
--	if (!ret)
--		return -ETIMEDOUT;
--
--	mutex_lock(&iwl_mei_mutex);
--
--	/* In case we didn't have a bind */
--	if (!iwl_mei_is_connected()) {
--		ret = 0;
--		goto out;
--	}
--
--	mei = mei_cldev_get_drvdata(iwl_mei_global_cldev);
--
--	if (!mei) {
--		ret = -ENODEV;
--		goto out;
--	}
--
--	ret = !mei->got_ownership;
--
-+	return (!ret) ? -ETIMEDOUT : 0;
- out:
- 	mutex_unlock(&iwl_mei_mutex);
- 	return ret;
+ 	mutex_lock(&iwl_mei_mutex);
 -- 
 2.35.3
 
