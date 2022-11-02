@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29671616577
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E388616578
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbiKBPAx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S230087AbiKBPAx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 2 Nov 2022 11:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44268 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbiKBPAv (ORCPT
+        with ESMTP id S230089AbiKBPAw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 11:00:51 -0400
+        Wed, 2 Nov 2022 11:00:52 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D56DE6572
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:00:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC2D2A978
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:00:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667401249; x=1698937249;
+  t=1667401251; x=1698937251;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FGP6Ugmo4+uAUz7JWJ3PnSNkq1HeAIAZAVJehR44NWY=;
-  b=SNGWBmf8OOxV9acJdCaLBC+XcGi+uW7hAlPdqSx4zrMqXNZkF4vOxs4u
-   676QtPHIWLoa4+a+LWbQw3gdJQTVASLA2rXm91VCqZJVv1aEReHMTyQXK
-   utDNF3xj0rWRTwl6Xbit/n6krZbmScMghK8WmKE87NvRIZMkqUxkefmOK
-   av9ao0SK9LfLWmEu5gx7tuvDpbFW7jq5JdGGAYRkdIwktahOOqX9lOAWE
-   FWgOEpawvE+kV+rmeigM0eDvF38m/xiTfa/4lzYwZHG/MpAGBgVD7H+vX
-   3e3yoKz7wfxFEm/fyoVUmFUwh9t7nL3fwdUKo5cuI6v67ExPvMqOdA668
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523433"
+  bh=m40JF2x0IcWXRtfj0vv789mMRvkLMEdorFPLeLDxt6o=;
+  b=Zst9OwVGCp0x3ZveL84HgLu7mP8yND8c3pKOJu1mpBXcnHsECo6HBUzh
+   7eORiKqoGzJ0DtKXXyS7CUTfe4sSX9/oWu6R5/QZspg6ame+1oiYRaqXP
+   oQEB6aTjCooRLHiG6YtjUT4B94R8i6e65RX1zltzC7h3sxAAGI1SaBMg6
+   g8rlVu5wfkKF49U+vTl5bNL8CxWtURGS7BBG41TQchu1O2MjPpACMIXwb
+   uROB/QEXO1Y8MziODyYe9Y39w27KVHiABrbyRnDNoK3UbXBh8idPeJIVs
+   6sW/2dkrHg3MXk3OBSo40qGa9zQPE3s1bd9XW53DB11Kbq3xtN8NdrFEL
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523446"
 X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
-   d="scan'208";a="371523433"
+   d="scan'208";a="371523446"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:38 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810454"
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:41 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810471"
 X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
-   d="scan'208";a="636810454"
+   d="scan'208";a="636810471"
 Received: from apetrush-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.180.25])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:36 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:39 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Luca Coelho <luciano.coelho@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 03/11] wifi: iwlwifi: cfg: disable STBC for BL step A devices
-Date:   Wed,  2 Nov 2022 16:59:50 +0200
-Message-Id: <20221102165239.806dbfa53f40.I4b14a8be30795bdcd73686bd1f9222e7ab93b505@changeid>
+Subject: [PATCH 04/11] wifi: iwlwifi: mvm: print an error instead of a warning on invalid rate
+Date:   Wed,  2 Nov 2022 16:59:51 +0200
+Message-Id: <20221102165239.3d3673c70556.I13464b11d405fd6021618b0a32404cecb7e9ac51@changeid>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20221102145958.342864-1-gregory.greenman@intel.com>
 References: <20221102145958.342864-1-gregory.greenman@intel.com>
@@ -62,77 +62,38 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Luca Coelho <luciano.coelho@intel.com>
 
-The A step of BL devices doesn't support STBC, so we need to disable
-it.
-
-Create new HT params and a macro to use specifically with BL A-step
-devices where STBC is disabled.
+In some rare occasions, the firmware may let some frames with invalid
+rates, such as CCK rates on the high band, come through.  This causes
+the driver to issue a warning, but since this is a possible issue and
+it's not really a bug in the driver, convert the warning into an
+error.
 
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 20 ++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index b46f65b6d595..ec6198f1b38c 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -172,6 +172,13 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 		      BIT(NL80211_BAND_6GHZ),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 1aadccd8841f..5f782ca1e254 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1747,10 +1747,12 @@ static void iwl_mvm_rx_fill_status(struct iwl_mvm *mvm,
  
-+static const struct iwl_ht_params iwl_gl_a_ht_params = {
-+	.stbc = false, /* we explicitly disable STBC for GL step A */
-+	.ldpc = true,
-+	.ht40_bands = BIT(NL80211_BAND_2GHZ) | BIT(NL80211_BAND_5GHZ) |
-+		      BIT(NL80211_BAND_6GHZ),
-+};
+ 		rx_status->rate_idx = rate;
+ 
+-		if (WARN_ONCE(rate < 0 || rate > 0xFF,
+-			      "Invalid rate flags 0x%x, band %d,\n",
+-			      rate_n_flags, rx_status->band))
++		if ((rate < 0 || rate > 0xFF) && net_ratelimit()) {
++			IWL_ERR(mvm, "Invalid rate flags 0x%x, band %d,\n",
++				rate_n_flags, rx_status->band);
+ 			rx_status->rate_idx = 0;
++		}
 +
- #define IWL_DEVICE_22000_COMMON						\
- 	.ucode_api_max = IWL_22000_UCODE_API_MAX,			\
- 	.ucode_api_min = IWL_22000_UCODE_API_MIN,			\
-@@ -249,7 +256,7 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 		},							\
+ 		break;
+ 		}
  	}
- 
--#define IWL_DEVICE_BZ							\
-+#define IWL_DEVICE_BZ_COMMON						\
- 	.ucode_api_max = IWL_22000_UCODE_API_MAX,			\
- 	.ucode_api_min = IWL_22000_UCODE_API_MIN,			\
- 	.led_mode = IWL_LED_RF_STATE,					\
-@@ -265,7 +272,6 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 	.trans.mq_rx_supported = true,					\
- 	.vht_mu_mimo_supported = true,					\
- 	.mac_addr_from_csr = 0x30,					\
--	.ht_params = &iwl_22000_ht_params,				\
- 	.nvm_ver = IWL_22000_NVM_VERSION,				\
- 	.trans.use_tfh = true,						\
- 	.trans.rf_id = true,						\
-@@ -312,6 +318,14 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 		},							\
- 	}
- 
-+#define IWL_DEVICE_BZ							\
-+	IWL_DEVICE_BZ_COMMON,						\
-+	.ht_params = &iwl_22000_ht_params
-+
-+#define IWL_DEVICE_GL_A							\
-+	IWL_DEVICE_BZ_COMMON,						\
-+	.ht_params = &iwl_gl_a_ht_params
-+
- const struct iwl_cfg_trans_params iwl_qnj_trans_cfg = {
- 	.mq_rx_supported = true,
- 	.use_tfh = true,
-@@ -947,7 +961,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_fm4_a0 = {
- const struct iwl_cfg iwl_cfg_gl_a0_fm_a0 = {
- 	.fw_name_pre = IWL_GL_A_FM_A_FW_PRE,
- 	.uhb_supported = true,
--	IWL_DEVICE_BZ,
-+	IWL_DEVICE_GL_A,
- 	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
- 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
- };
 -- 
 2.35.3
 
