@@ -2,89 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD27F615C23
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 07:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FB6615E3B
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 09:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230002AbiKBGSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 02:18:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
+        id S230526AbiKBIr5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 04:47:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbiKBGSE (ORCPT
+        with ESMTP id S231129AbiKBIrz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 02:18:04 -0400
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD15225C64;
-        Tue,  1 Nov 2022 23:18:03 -0700 (PDT)
-Received: by mail-wr1-f44.google.com with SMTP id cl5so11362498wrb.9;
-        Tue, 01 Nov 2022 23:18:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TyoiXD+lZAYyIq5A3unxJbUvSr0umu7gv7mLSuqlSJ4=;
-        b=I/Zy5t0JCiZ7ddN+RFSrntl9sEe/07pscujEFvTKoQS5ZFv6NA456HRmg0+JR/INL0
-         FU1VXyFUa6ngvXRo+jE6p49cr0KSvqWOKWyhYGhhQyiLGBIjMlDyk1iOKEwHeCpqBagy
-         RuwJYCHHjU90z3O/6B2G4j5MnDLvMcqRqQWjrRrR3b635SBD4AYtnXFeok7Fy+M7yeK7
-         pQNFJQUKdpLCs/sZSGlpMa768rhRFlGTKSEPzEaATD0tX8r7m0hVKrxogzILEAXBNzt1
-         /BhuNGPuphqSZvj+pZRrc0z3hMHxFtY1epsy3K+df9O/j+HBngCfzZMBXk+b+rLHmrbA
-         Kkiw==
-X-Gm-Message-State: ACrzQf2tZTi4rMHWSiEXKeaoNcNk5l08D0yy1RkvowyOw0pQxjX6YPHA
-        RRBP1IE0yslf/b8vj/bN23k=
-X-Google-Smtp-Source: AMsMyM6NJ/87OZvYBlrVbXokU9DQLIfp/f10lKRDGr1BCob0gnkUi2pHO6BeN0qKMkHIYSEF8xWWvw==
-X-Received: by 2002:a05:6000:3c3:b0:236:b2ce:593e with SMTP id b3-20020a05600003c300b00236b2ce593emr12638679wrg.580.1667369882322;
-        Tue, 01 Nov 2022 23:18:02 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id 7-20020a056000154700b00236644228besm12830609wry.40.2022.11.01.23.18.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Nov 2022 23:18:01 -0700 (PDT)
-Message-ID: <eeac01aa-5c3d-da4f-3acb-0698de23b2b4@kernel.org>
-Date:   Wed, 2 Nov 2022 07:18:00 +0100
+        Wed, 2 Nov 2022 04:47:55 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A3A27CDB
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 01:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=WtzuflQzpAaUGRSeebqLu+Ce5AotuenfQLU6EhNgbwQ=; t=1667378874; x=1668588474; 
+        b=N7s2WxgiNCKXLF1G7cqXywKce77sc3fXgDsXJ4Hp1Afb0Ud8HrJ1P6DJhEgfz6GKo/m6t7b3RSQ
+        rzEyFFKL7OZNi/g557qZc7nwgFhmdmxlr2qSwI5wdQ04ZLYJppgFxKkXjOMSwjI7VFevLaHBz5/K2
+        MWDaNhnhsN9KAZn+fAgs075Xb31KrEUW5DZo7wmMjdj9xMY/dZJznY/aGObc18ifCt+bsULHJ8aXJ
+        W1vOUOW/WSAxhRe+Uif5UgQXTCFlnxtnW94dzOjLPm/5P7g99X6NXMrJpP9qZ+Am2l3JdCONaW7qp
+        gMj9qDryks40oCbf7HQ5jvxrn7UNnsndNEIA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oq9PZ-006ykr-1G;
+        Wed, 02 Nov 2022 09:47:49 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: remove unnecessary synchronize_net()
+Date:   Wed,  2 Nov 2022 09:47:47 +0100
+Message-Id: <20221102094746.a4247dff6312.Idef07809e46e74dfd5e82e2951ee16b5a8978db1@changeid>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH] ath11k (gcc13): synchronize
- ath11k_mac_he_gi_to_nl80211_he_gi()'s return type
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-kernel@vger.kernel.org, Martin Liska <mliska@suse.cz>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20221031114341.10377-1-jirislaby@kernel.org>
- <55c4d139-0f22-e7ba-398a-e3e0d8919220@quicinc.com>
- <833c7f2f-c140-5a0b-1efc-b858348206ec@kernel.org> <87bkprgj0b.fsf@kernel.org>
- <503a3b36-2256-a9ce-cffe-5c0ed51f6f62@infradead.org>
- <87tu3ifv8z.fsf@kernel.org>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <87tu3ifv8z.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 01. 11. 22, 18:19, Kalle Valo wrote:
-> I did assume it will take at least a year or two before people get used
-> to the new prefix, but my patchwork script has a check for this and it's
-> trivial to fix the subject before I commit the patch. So hopefully the
-> switch goes smoothly.
+From: Johannes Berg <johannes.berg@intel.com>
 
-I think so. It will take some turnarounds for you before this starts 
-appearing in git log output for every wireless driver. Then, people will 
-start picking the prefix up from there ;).
+The call to ieee80211_do_stop() right after will also do
+synchronize_rcu() to ensure the SDATA_STATE_RUNNING bit
+is cleared, so we don't need to synchronize_net() here.
 
-thanks,
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/iface.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index dd9ac1f7d2ea..02b71b4e094b 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1898,8 +1898,7 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+ 
+ 	ieee80211_stop_vif_queues(local, sdata,
+ 				  IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
+-	synchronize_net();
+-
++	/* do_stop will synchronize_rcu() first thing */
+ 	ieee80211_do_stop(sdata, false);
+ 
+ 	ieee80211_teardown_sdata(sdata);
 -- 
-js
-suse labs
+2.38.1
 
