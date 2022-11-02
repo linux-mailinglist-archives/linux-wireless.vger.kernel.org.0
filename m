@@ -2,78 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30FB6615E3B
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 09:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA1C616104
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 11:38:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbiKBIr5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 04:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
+        id S231210AbiKBKiC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 06:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbiKBIrz (ORCPT
+        with ESMTP id S231192AbiKBKhZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 04:47:55 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A3A27CDB
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 01:47:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=WtzuflQzpAaUGRSeebqLu+Ce5AotuenfQLU6EhNgbwQ=; t=1667378874; x=1668588474; 
-        b=N7s2WxgiNCKXLF1G7cqXywKce77sc3fXgDsXJ4Hp1Afb0Ud8HrJ1P6DJhEgfz6GKo/m6t7b3RSQ
-        rzEyFFKL7OZNi/g557qZc7nwgFhmdmxlr2qSwI5wdQ04ZLYJppgFxKkXjOMSwjI7VFevLaHBz5/K2
-        MWDaNhnhsN9KAZn+fAgs075Xb31KrEUW5DZo7wmMjdj9xMY/dZJznY/aGObc18ifCt+bsULHJ8aXJ
-        W1vOUOW/WSAxhRe+Uif5UgQXTCFlnxtnW94dzOjLPm/5P7g99X6NXMrJpP9qZ+Am2l3JdCONaW7qp
-        gMj9qDryks40oCbf7HQ5jvxrn7UNnsndNEIA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oq9PZ-006ykr-1G;
-        Wed, 02 Nov 2022 09:47:49 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: remove unnecessary synchronize_net()
-Date:   Wed,  2 Nov 2022 09:47:47 +0100
-Message-Id: <20221102094746.a4247dff6312.Idef07809e46e74dfd5e82e2951ee16b5a8978db1@changeid>
-X-Mailer: git-send-email 2.38.1
+        Wed, 2 Nov 2022 06:37:25 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4C62936F;
+        Wed,  2 Nov 2022 03:37:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 593E0B82078;
+        Wed,  2 Nov 2022 10:37:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5FCC433C1;
+        Wed,  2 Nov 2022 10:37:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667385436;
+        bh=e2Pf5tH9e17qtvqUbk6y6qwTol1CmGJDuVLGWQfNJnk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HIxbx8DHYPho2RHu1Xsl9LnJcKqCx5XP7a590YE6XgcTl2oSfpmTlRvuQV+C8/QXT
+         DvNKTMOZXc9I1SRY4APGau56HT9JI43hbRJWksUZqhV4r7HFJeuHZx65pomTierPhw
+         re6VR15yDCDStv/evTW0BOALRJZ9Pgwc1/2TtwDwQAfaUdX7VRWqiPSH95VlS/hDrr
+         xbd1j48WS7hSflxkq145uKYVD6lLR3nDykLZ/n2v2f3PqbH0z3zHa7vpJ6ISg372Lc
+         aigBXpnYowkCCVIZ3JT96A2ecIP7KvaNAJGhlx6cbp+HbwK7TqVKdGXWHwgrObhk4m
+         yMAtfN/Gw4u2A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Tyler Stachecki <stachecki.tyler@gmail.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list\:QUALCOMM ATHEROS ATH11K WIRELESS DRIVER" 
+        <ath11k@lists.infradead.org>,
+        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath11k: Fix QCN9074 firmware boot on x86
+References: <20221022042728.43015-1-stachecki.tyler@gmail.com>
+        <87y1sug2bl.fsf@kernel.org>
+        <CAC6wqPXjtkiP8pZ_nTXdZva6JnQLWbW7p+ukyAZO6scF5CR7Rw@mail.gmail.com>
+        <87edulvrj0.fsf@kernel.org>
+Date:   Wed, 02 Nov 2022 12:37:09 +0200
+In-Reply-To: <87edulvrj0.fsf@kernel.org> (Kalle Valo's message of "Wed, 02 Nov
+        2022 07:45:07 +0200")
+Message-ID: <87pme5fxre.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Kalle Valo <kvalo@kernel.org> writes:
 
-The call to ieee80211_do_stop() right after will also do
-synchronize_rcu() to ensure the SDATA_STATE_RUNNING bit
-is cleared, so we don't need to synchronize_net() here.
+> Tyler Stachecki <stachecki.tyler@gmail.com> writes:
+>
+>> On Tue, Nov 1, 2022 at 10:46 AM Kalle Valo <kvalo@kernel.org> wrote:
+>>>
+>>> "Tyler J. Stachecki" <stachecki.tyler@gmail.com> writes:
+>>>
+>>> > The 2.7.0 series of QCN9074's firmware requests 5 segments
+>>> > of memory instead of 3 (as in the 2.5.0 series).
+>>> >
+>>> > The first segment (11M) is too large to be kalloc'd in one
+>>> > go on x86 and requires piecemeal 1MB allocations, as was
+>>> > the case with the prior public firmware (2.5.0, 15M).
+>>> >
+>>> > Since f6f92968e1e5, ath11k will break the memory requests,
+>>> > but only if there were fewer than 3 segments requested by
+>>> > the firmware. It seems that 5 segments works fine and
+>>> > allows QCN9074 to boot on x86 with firmware 2.7.0, so
+>>> > change things accordingly.
+>>> >
+>>> > Signed-off-by: Tyler J. Stachecki <stachecki.tyler@gmail.com>
+>>>
+>>> Ouch, that's pretty bad. Thanks for fixing this!
+>>>
+>>> Does the 2.5.0.1 firmware branch still work with this patch? It's
+>>> important that we don't break the old firmware.
+>>>
+>>> --
+>>> https://patchwork.kernel.org/project/linux-wireless/list/
+>>>
+>>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>>
+>> Yep, tested the patch with all 3 combinations, below:
+>>
+>> QCN9074:
+>> WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>> WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+>>
+>> WCN6855:
+>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
+>
+> Excellent, I'll add Tested-on tags for these. Thank you again.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/iface.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I'll think I'll queue this to v6.1, it's an important fix to have.
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index dd9ac1f7d2ea..02b71b4e094b 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1898,8 +1898,7 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
- 
- 	ieee80211_stop_vif_queues(local, sdata,
- 				  IEEE80211_QUEUE_STOP_REASON_IFTYPE_CHANGE);
--	synchronize_net();
--
-+	/* do_stop will synchronize_rcu() first thing */
- 	ieee80211_do_stop(sdata, false);
- 
- 	ieee80211_teardown_sdata(sdata);
 -- 
-2.38.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
