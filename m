@@ -2,50 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9FF6616574
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:00:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6CCB616575
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Nov 2022 16:00:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbiKBPAn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Nov 2022 11:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44200 "EHLO
+        id S230121AbiKBPAt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Nov 2022 11:00:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbiKBPAm (ORCPT
+        with ESMTP id S229591AbiKBPAr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Nov 2022 11:00:42 -0400
+        Wed, 2 Nov 2022 11:00:47 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E352FE
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:00:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61AE76572
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Nov 2022 08:00:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667401240; x=1698937240;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qV/ftOs8ILXXP4qgdKVd56dEYKNSwuXnZ0inSUEFhOw=;
-  b=hi2M9bxGlCVH365ZB3Wa8mJ8v9T3Q+kIKcs8C8nIeqTAaw3Xbe664jvz
-   r3+x0EuS+tbYSL1SZ7HMTpQwCl7PPTveBrVdlzjavwd+mLK038MNByPfa
-   OoDNmn8jTPV1wsjpCWnG9uaBbQqjYQIaAFGdvBErpFA8pTHHMiVYbypYM
-   C0WHRYUPM5Uqy2QsRk1RgJX4olXyqXXoIKFjjAWDtHs+GXJvFKj4x8/Ir
-   2BKYYdNiQCsyMi0WrDYuBaw87AcQzx47Mkh29Dk4GpIiwqP8oZxRV3ZWm
-   eH4eITT+YCSoZGsD3qavbqd79Mlbe8h0Hp8HTY06sEy00fb3VJIjotjm3
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523353"
+  t=1667401246; x=1698937246;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AzZXdXt0WvIt8nCyTXtw971F+APvNwF4yzfzfBBYdL0=;
+  b=gDkSCrbNQWCRugRwe3i8KzWLal3rRAE+cC9zT8wMKMRIbXMEFpRYrQCz
+   Ux2eCTGciJ/W/xzleGDj3uG/z1PpCBrOiZYCIq0p4gRiE25bNiJvGw1XI
+   KGFoyfmImX4gRmrx/IxKV2BcLi91PeXJp5CYpn8V7t6XOkVG9yhwyjfBY
+   //KqzSOoJQ4xIFLevnbwDRCkt4TUTVel6xKZlTtHXefYr8fhEXpZlnnXf
+   omvcHOMPxe4KdLFtjX0qXmMVH7OpIDkk2Rf+4oMY1OT8/2yOND827d/K2
+   P7eaoimB2OmOdDyDJTBV6lTdZV7LNzNZ1dPyT50BVRoSa8CNOzwHQ9Ojc
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="371523382"
 X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
-   d="scan'208";a="371523353"
+   d="scan'208";a="371523382"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:26 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810373"
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:30 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="636810395"
 X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
-   d="scan'208";a="636810373"
+   d="scan'208";a="636810395"
 Received: from apetrush-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.180.25])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:24 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 08:00:28 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 00/11] iwlwifi: updates intended for v6.2 2022-11-02 
-Date:   Wed,  2 Nov 2022 16:59:47 +0200
-Message-Id: <20221102145958.342864-1-gregory.greenman@intel.com>
+Subject: [PATCH 01/11] wifi: iwlwifi: mvm: use old checksum for Bz A-step
+Date:   Wed,  2 Nov 2022 16:59:48 +0200
+Message-Id: <20221102165239.6bc379f1b0b1.I204223f1b1c2fe26f414aea6679ef7fce681c33a@changeid>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20221102145958.342864-1-gregory.greenman@intel.com>
+References: <20221102145958.342864-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,64 +60,176 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Hi,
+For Bz A-step hardware, the checksum offload is broken and
+we need to use the old way, which is still there. Do that,
+which requires taking the checksum capability bits out of
+the IWL_DEVICE_BZ macro and listing them individually.
 
-Here's the second set of patches intended for v6.2.
-It contains some small new features, cleanups and bugfixes.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 16 +++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c    |  7 +++++--
+ 2 files changed, 20 insertions(+), 3 deletions(-)
 
-As usual, I'm pushing this to a pending branch, for kbuild bot, and
-will send a pull-request later.
-
-Please review.
-
-Thanks,
-Gregory
-
-Avraham Stern (4):
-  wifi: iwlwifi: mei: implement PLDR flow
-  wifi: iwlwifi: mei: use wait_event_timeout() return value
-  wifi: iwlwifi: iwlmei: report disconnection as temporary
-  wifi: iwlwifi: mei: wait for the mac to stop on suspend
-
-Ilan Peer (1):
-  wifi: iwlwifi: mvm: Fix getting the lowest rate
-
-Johannes Berg (2):
-  wifi: iwlwifi: mvm: use old checksum for Bz A-step
-  wifi: iwlwifi: mvm: support new key API
-
-Luca Coelho (2):
-  wifi: iwlwifi: cfg: disable STBC for BL step A devices
-  wifi: iwlwifi: mvm: print an error instead of a warning on invalid
-    rate
-
-Rotem Saado (2):
-  wifi: iwlwifi: dbg: add support for DBGC4 on BZ family and above
-  wifi: iwlwifi: dbg: use bit of DRAM alloc ID to store failed allocs
-
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  36 ++-
- .../wireless/intel/iwlwifi/fw/api/datapath.h  |  79 ++++++
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |   7 +-
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |   4 +
- .../net/wireless/intel/iwlwifi/mei/iwl-mei.h  |  21 ++
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 130 ++++++++--
- drivers/net/wireless/intel/iwlwifi/mei/sap.h  |  51 ++++
- .../net/wireless/intel/iwlwifi/mvm/Makefile   |   1 +
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   7 +
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  60 ++++-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  20 +-
- .../net/wireless/intel/iwlwifi/mvm/mld-key.c  | 226 ++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  15 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   1 +
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   3 +
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   7 +-
- 18 files changed, 641 insertions(+), 39 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index 110fda65bd21..b46f65b6d595 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -261,7 +261,6 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
+ 	.dccm2_len = IWL_22000_DCCM2_LEN,				\
+ 	.smem_offset = IWL_22000_SMEM_OFFSET,				\
+ 	.smem_len = IWL_22000_SMEM_LEN,					\
+-	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,	\
+ 	.apmg_not_supported = true,					\
+ 	.trans.mq_rx_supported = true,					\
+ 	.vht_mu_mimo_supported = true,					\
+@@ -901,6 +900,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_hr_b0 = {
+ 	.fw_name_pre = IWL_BZ_A_HR_B_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -908,6 +908,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_gf_a0 = {
+ 	.fw_name_pre = IWL_BZ_A_GF_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -915,6 +916,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_gf4_a0 = {
+ 	.fw_name_pre = IWL_BZ_A_GF4_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -922,6 +924,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_mr_a0 = {
+ 	.fw_name_pre = IWL_BZ_A_MR_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -929,6 +932,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_fm_a0 = {
+ 	.fw_name_pre = IWL_BZ_A_FM_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -936,6 +940,7 @@ const struct iwl_cfg iwl_cfg_bz_a0_fm4_a0 = {
+ 	.fw_name_pre = IWL_BZ_A_FM4_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -943,6 +948,7 @@ const struct iwl_cfg iwl_cfg_gl_a0_fm_a0 = {
+ 	.fw_name_pre = IWL_GL_A_FM_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -950,6 +956,7 @@ const struct iwl_cfg iwl_cfg_gl_b0_fm_b0 = {
+ 	.fw_name_pre = IWL_GL_B_FM_B_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -957,6 +964,7 @@ const struct iwl_cfg iwl_cfg_bz_z0_gf_a0 = {
+ 	.fw_name_pre = IWL_BZ_Z_GF_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -964,6 +972,7 @@ const struct iwl_cfg iwl_cfg_bnj_a0_fm_a0 = {
+ 	.fw_name_pre = IWL_BNJ_A_FM_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -971,6 +980,7 @@ const struct iwl_cfg iwl_cfg_bnj_a0_fm4_a0 = {
+ 	.fw_name_pre = IWL_BNJ_A_FM4_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -978,6 +988,7 @@ const struct iwl_cfg iwl_cfg_bnj_a0_gf_a0 = {
+ 	.fw_name_pre = IWL_BNJ_A_GF_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -985,6 +996,7 @@ const struct iwl_cfg iwl_cfg_bnj_a0_gf4_a0 = {
+ 	.fw_name_pre = IWL_BNJ_A_GF4_A_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -992,6 +1004,7 @@ const struct iwl_cfg iwl_cfg_bnj_a0_hr_b0 = {
+ 	.fw_name_pre = IWL_BNJ_A_HR_B_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ 
+@@ -999,6 +1012,7 @@ const struct iwl_cfg iwl_cfg_bnj_b0_fm_b0 = {
+ 	.fw_name_pre = IWL_BNJ_B_FM_B_FW_PRE,
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
++	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
+ };
+ MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index ba335f57771c..f460332333a7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -183,7 +183,10 @@ static u32 iwl_mvm_tx_csum(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 			   struct ieee80211_tx_info *info,
+ 			   bool amsdu)
+ {
+-	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ)
++	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ ||
++	    (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_BZ &&
++	     CSR_HW_REV_TYPE(mvm->trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
++	     mvm->trans->hw_rev_step == SILICON_A_STEP))
+ 		return iwl_mvm_tx_csum_pre_bz(mvm, skb, info, amsdu);
+ 	return iwl_mvm_tx_csum_bz(mvm, skb, amsdu);
+ }
 -- 
 2.35.3
 
