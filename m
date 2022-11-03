@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACA361779D
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 08:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E3B76177A2
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 08:26:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbiKCHZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Nov 2022 03:25:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58016 "EHLO
+        id S231290AbiKCH0I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Nov 2022 03:26:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbiKCHZJ (ORCPT
+        with ESMTP id S231180AbiKCH0G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Nov 2022 03:25:09 -0400
+        Thu, 3 Nov 2022 03:26:06 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 57E775FC8
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Nov 2022 00:25:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8859D103B
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Nov 2022 00:26:01 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A37OC6Y0008487, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A37P85h8008697, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A37OC6Y0008487
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A37P85h8008697
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 3 Nov 2022 15:24:12 +0800
+        Thu, 3 Nov 2022 15:25:08 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 3 Nov 2022 15:24:48 +0800
+ 15.1.2375.32; Thu, 3 Nov 2022 15:25:45 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 3 Nov 2022
- 15:24:48 +0800
+ 15:25:44 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: use FIELD_PREP to fill MAC quota value
-Date:   Thu, 3 Nov 2022 15:24:20 +0800
-Message-ID: <20221103072420.15161-1-pkshih@realtek.com>
+Subject: [PATCH] wifi: rtw89: 8852b: change debug mask of message of no TX resource
+Date:   Thu, 3 Nov 2022 15:25:17 +0800
+Message-ID: <20221103072517.15284-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -65,43 +65,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Coverity reported shift 16 bits could cause sign extension and might get
-an unexpected value. Since the input values are predefined and no this
-kind of case, original code is safe so far. But, still changing them to
-use FIELD_PREP() will be more clear and prevent mistakes in the future.
+8852B has smaller TX FIFO than others in WiFi chip, so it would be buffer
+full frequently, but it doesn't affect TX performance. However, it shows
+verbose debug messages with RTW89_DBG_UNEXP mask that is to show up
+abnormal behavior, so change debug mask to RTW89_DBG_TXRX for 8852B.
 
-The original message of Coverity is:
-  Suspicious implicit sign extension: "max_cfg->cma0_dma" with type "u16"
-  (16 bits, unsigned) is promoted in "max_cfg->cma0_dma << 16" to type
-  "int" (32 bits, signed), then sign-extended to type "unsigned long"
-  (64 bits, unsigned).  If "max_cfg->cma0_dma << 16" is greater than
-  0x7FFFFFFF, the upper bits of the result will all be 1."
-
-Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
-Addresses-Coverity-ID: 1527095 ("Integer handling issues")
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index bb49033b587d2..11081dfdfb172 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1487,10 +1487,8 @@ static int dle_mix_cfg(struct rtw89_dev *rtwdev, const struct rtw89_dle_mem *cfg
- #define INVALID_QT_WCPU U16_MAX
- #define SET_QUOTA_VAL(_min_x, _max_x, _module, _idx)			\
- 	do {								\
--		val = ((_min_x) &					\
--		       B_AX_ ## _module ## _MIN_SIZE_MASK) |		\
--		      (((_max_x) << 16) &				\
--		       B_AX_ ## _module ## _MAX_SIZE_MASK);		\
-+		val = FIELD_PREP(B_AX_ ## _module ## _MIN_SIZE_MASK, _min_x) | \
-+		      FIELD_PREP(B_AX_ ## _module ## _MAX_SIZE_MASK, _max_x);  \
- 		rtw89_write32(rtwdev,					\
- 			      R_AX_ ## _module ## _QTA ## _idx ## _CFG,	\
- 			      val);					\
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 07a2e23759f0b..99a254d7ba5ed 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -971,8 +971,10 @@ static u32 __rtw89_pci_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
+ 	struct rtw89_pci_tx_ring *tx_ring = &rtwpci->tx_rings[txch];
+ 	struct rtw89_pci_tx_wd_ring *wd_ring = &tx_ring->wd_ring;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	u32 bd_cnt, wd_cnt, min_cnt = 0;
+ 	struct rtw89_pci_rx_ring *rx_ring;
++	enum rtw89_debug_mask debug_mask;
+ 	u32 cnt;
+ 
+ 	rx_ring = &rtwpci->rx_rings[RTW89_RXCH_RPQ];
+@@ -996,10 +998,16 @@ static u32 __rtw89_pci_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
+ 	bd_cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
+ 	wd_cnt = wd_ring->curr_num;
+ 	min_cnt = min(bd_cnt, wd_cnt);
+-	if (min_cnt == 0)
+-		rtw89_debug(rtwdev, rtwpci->low_power ? RTW89_DBG_TXRX : RTW89_DBG_UNEXP,
++	if (min_cnt == 0) {
++		if (rtwpci->low_power || chip->chip_id == RTL8852B)
++			debug_mask = RTW89_DBG_TXRX;
++		else
++			debug_mask = RTW89_DBG_UNEXP;
++
++		rtw89_debug(rtwdev, debug_mask,
+ 			    "still no tx resource after reclaim: wd_cnt=%d bd_cnt=%d\n",
+ 			    wd_cnt, bd_cnt);
++	}
+ 
+ out_unlock:
+ 	spin_unlock_bh(&rtwpci->trx_lock);
 -- 
 2.25.1
 
