@@ -2,147 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB811618AD3
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 22:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7518618AFE
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 23:01:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231260AbiKCVv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Nov 2022 17:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56902 "EHLO
+        id S231499AbiKCWB2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Nov 2022 18:01:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbiKCVv2 (ORCPT
+        with ESMTP id S231555AbiKCWBN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Nov 2022 17:51:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4605C28;
-        Thu,  3 Nov 2022 14:51:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51FC962015;
-        Thu,  3 Nov 2022 21:51:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C6C433D6;
-        Thu,  3 Nov 2022 21:51:24 +0000 (UTC)
-Date:   Thu, 3 Nov 2022 17:51:23 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Paolo Abeni <pabeni@redhat.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Menglong Dong <imagedong@tencent.com>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net
-Subject: Re: [RFC][PATCH v2 19/31] timers: net: Use del_timer_shutdown()
- before freeing timer
-Message-ID: <20221103175123.744d0f37@rorschach.local.home>
-In-Reply-To: <27a6a587fee5e9172e41acd16ae1bc1f556fdbd7.camel@redhat.com>
-References: <20221027150525.753064657@goodmis.org>
-        <20221027150928.780676863@goodmis.org>
-        <20221027155513.60b211e2@gandalf.local.home>
-        <CAHk-=wjAjW2P5To82+CAM0Rx8RexQBHPTVZBWBPHyEPGm37oFA@mail.gmail.com>
-        <20221027163453.383bbf8e@gandalf.local.home>
-        <CAHk-=whoS+krLU7JNe=hMp2VOcwdcCdTXhdV8qqKoViwzzJWfA@mail.gmail.com>
-        <20221027170720.31497319@gandalf.local.home>
-        <20221027183511.66b058c4@gandalf.local.home>
-        <20221028183149.2882a29b@gandalf.local.home>
-        <20221028154617.3c63ba68@kernel.org>
-        <27a6a587fee5e9172e41acd16ae1bc1f556fdbd7.camel@redhat.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Thu, 3 Nov 2022 18:01:13 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E0822528;
+        Thu,  3 Nov 2022 15:01:10 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id p13-20020a05600c468d00b003cf8859ed1bso2111648wmo.1;
+        Thu, 03 Nov 2022 15:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u+myOUTcxqEfQMThAIiz8SuyliK2/UIGrMCMSymFxCE=;
+        b=AmdVWJTMGlB+aeXO5lJVwIXZbrQi9HxoRtizfLu5L2hcXfWEBlSHTSM3KJryGovgTY
+         CKNPJI7J6RHgpO4EsaSDF0LooJw/O8HIYszvadGs8HkW9Wr65whqcIkC4MPiJIx6Mfju
+         PDQZJASGe93huPUApG4ofiZ8J/A5aXlOufac4y5CzUvlP4njBeoK4Funt8HQndQM62TK
+         3bxqG6ZXeGq2YDpJATgc5hGLWe42soNzB8kgffvCRowAi/qjPMyeIf7giSqdocMNoe4u
+         JuOskU9FiwQkpjEwy+PanOhiMIv2XCiLxRST+wRuFiw0rgkSvYx/7T7Gf1DTB/JtM6+f
+         1zhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u+myOUTcxqEfQMThAIiz8SuyliK2/UIGrMCMSymFxCE=;
+        b=rooCfQqlhVb2wt/lWPl0m8QEs9qHxcy5dm5MMbStGAlqR295jtHBaC+esxoZ3I2IAq
+         EV229NBTqPGoAQpgj+t1VvPPVpZkoImZzvenGBfaY7hv4qRRyYkmTWM3jgGKRoOhHosS
+         u3KvUaM2eE7f2EqeuxhpjK0JWzynx3Y97iFn/+H0qneEfXM/hkq5VQN7I5B5Q6XT7Q7M
+         wCB0veltBAowKYVAelTe5AoU45ZnZ713fYgnwhnLHDFX4AVMHlgENoVpcWyuIi1rpke1
+         KmyofVwuhbfncJfr6HF9b0oJWFOia3gr0ANKaKUm8cQabaxzKQfbLAYiKA9zjT3gVdyd
+         VFSw==
+X-Gm-Message-State: ACrzQf1NgpAOnB0U03UbKdUe02CoYTZ/GyyebRFnBzWlij7CAC3b/Z7b
+        QO3GF6W/Ohf2cvO+egC65Xc=
+X-Google-Smtp-Source: AMsMyM70OsXMXIK4GT9TB+3XvT3T7jZvU99hqANplgZXzTxldVCV+1dR9wX9tarA3BzewNNPJVkbyg==
+X-Received: by 2002:a1c:f311:0:b0:3b5:18ca:fc5e with SMTP id q17-20020a1cf311000000b003b518cafc5emr21477669wmq.70.1667512869173;
+        Thu, 03 Nov 2022 15:01:09 -0700 (PDT)
+Received: from [192.168.1.102] (p54a07888.dip0.t-ipconnect.de. [84.160.120.136])
+        by smtp.gmail.com with ESMTPSA id x5-20020a5d4905000000b0023655e51c14sm1821127wrq.32.2022.11.03.15.01.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Nov 2022 15:01:08 -0700 (PDT)
+Message-ID: <2c51855b-cd74-5701-d9fc-ad75818e7c28@gmail.com>
+Date:   Thu, 3 Nov 2022 23:01:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] staging: rtl8192e: Fix divide fault when calculating
+ beacon age
+Content-Language: en-US
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        gregkh@linuxfoundation.org
+Cc:     phil@philpotter.co.uk, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>
+References: <20221103200507.14304-1-Larry.Finger@lwfinger.net>
+From:   Philipp Hortmann <philipp.g.hortmann@gmail.com>
+In-Reply-To: <20221103200507.14304-1-Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 30 Oct 2022 18:22:03 +0100
-Paolo Abeni <pabeni@redhat.com> wrote:
+On 11/3/22 21:05, Larry Finger wrote:
+> When the configuration parameter CONFIG_HZ is less that 100, the compiler
+> generates an error as follows:
+> 
+> ../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtl819x_translate_scan':
+> ../drivers/staging/rtl8192e/rtllib_wx.c:220:57: warning: division by zero [-Wdiv-by-zero]
+>    220 |                       (jiffies - network->last_scanned) / (HZ / 100));
+>        |                                                         ^
+> In file included from ../include/linux/skbuff.h:45,
+>                   from ../include/linux/if_ether.h:19,
+>                   from ../include/linux/etherdevice.h:20,
+>                   from ../drivers/staging/rtl8192e/rtllib_wx.c:18:
+> ../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtllib_wx_get_scan':
+> ../drivers/staging/rtl8192e/rtllib_wx.c:261:70: warning: division by zero [-Wdiv-by-zero]
+>    261 |                                    (jiffies - network->last_scanned) /
+>        |
+> 
+> In fact, is HZ is not a multiple of 100, the calculation will be wrong, but it
+> will compile correctly.
+> 
+> The fix is to get rid of the (HZ / 100) portion. To decrease any round-off
+> errors, the compiler is forced to perform the 100 * jiffies-difference before
+> dividing by HX. This patch is only compile tested.
+> 
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> ---
+>   drivers/staging/rtl8192e/rtllib_wx.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/staging/rtl8192e/rtllib_wx.c b/drivers/staging/rtl8192e/rtllib_wx.c
+> index da2c41c9b92f..7013425102dd 100644
+> --- a/drivers/staging/rtl8192e/rtllib_wx.c
+> +++ b/drivers/staging/rtl8192e/rtllib_wx.c
+> @@ -217,7 +217,7 @@ static inline char *rtl819x_translate_scan(struct rtllib_device *ieee,
+>   	p = custom;
+>   	p += scnprintf(p, MAX_CUSTOM_LEN - (p - custom),
+>   		      " Last beacon: %lums ago",
+> -		      (jiffies - network->last_scanned) / (HZ / 100));
+> +		      (100 *(jiffies - network->last_scanned)) / HZ);
+>   	iwe.u.data.length = p - custom;
+>   	if (iwe.u.data.length)
+>   		start = iwe_stream_add_point_rsl(info, start, stop,
+> @@ -258,8 +258,8 @@ int rtllib_wx_get_scan(struct rtllib_device *ieee,
+>   				   escape_essid(network->ssid,
+>   						network->ssid_len),
+>   				   network->bssid,
+> -				   (jiffies - network->last_scanned) /
+> -				   (HZ / 100));
+> +				   (100 * (jiffies - network->last_scanned)) /
+> +				   HZ);
+>   	}
+>   
+>   	spin_unlock_irqrestore(&ieee->lock, flags);
 
-> On the positive side, I think converting the sk_stop_timer in 
-> inet_csk_clear_xmit_timers() should be safe and should cover the issue
-> reported by Guenter
+Line length of the description is to long.
 
-Would something like this be OK? 
-
-[ Note, talking with Thomas Gleixner, we agreed that we are changing the
-  name to: time_shutdown_sync() and timer_shutdown() (no wait version).
-  I'll be posting new patches soon. ]
-
--- Steve
-
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 22f8bab583dd..0ef58697d4e5 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2439,6 +2439,8 @@ void sk_stop_timer(struct sock *sk, struct timer_list *timer);
- 
- void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer);
- 
-+void sk_shutdown_timer(struct sock *sk, struct timer_list *timer);
-+
- int __sk_queue_drop_skb(struct sock *sk, struct sk_buff_head *sk_queue,
- 			struct sk_buff *skb, unsigned int flags,
- 			void (*destructor)(struct sock *sk,
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a3ba0358c77c..82124862b594 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3357,6 +3357,13 @@ void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer)
- }
- EXPORT_SYMBOL(sk_stop_timer_sync);
- 
-+void sk_shutdown_timer(struct sock *sk, struct timer_list* timer)
-+{
-+	if (timer_shutdown(timer))
-+		__sock_put(sk);
-+}
-+EXPORT_SYMBOL(sk_shutdown_timer);
-+
- void sock_init_data(struct socket *sock, struct sock *sk)
- {
- 	sk_init_common(sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 5e70228c5ae9..71f398f51958 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -722,15 +722,15 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
- 
- 	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
- 
--	sk_stop_timer(sk, &icsk->icsk_retransmit_timer);
--	sk_stop_timer(sk, &icsk->icsk_delack_timer);
--	sk_stop_timer(sk, &sk->sk_timer);
-+	sk_shutdown_timer(sk, &icsk->icsk_retransmit_timer);
-+	sk_shutdown_timer(sk, &icsk->icsk_delack_timer);
-+	sk_shutdown_timer(sk, &sk->sk_timer);
- }
- EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
- 
- void inet_csk_delete_keepalive_timer(struct sock *sk)
- {
--	sk_stop_timer(sk, &sk->sk_timer);
-+	sk_shutdown_timer(sk, &sk->sk_timer);
- }
- EXPORT_SYMBOL(inet_csk_delete_keepalive_timer);
- 
-
+Tested-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
 
