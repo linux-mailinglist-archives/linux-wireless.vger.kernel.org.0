@@ -2,107 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B67FF6176B0
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 07:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ACA361779D
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 08:25:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230262AbiKCGVJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Nov 2022 02:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51582 "EHLO
+        id S231215AbiKCHZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Nov 2022 03:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiKCGVH (ORCPT
+        with ESMTP id S229551AbiKCHZJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Nov 2022 02:21:07 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D811611A13;
-        Wed,  2 Nov 2022 23:21:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=O6247AfvaUgQ4rTBCdd6tE2mIQfoQgtQipevCW2V8Gc=; b=b9/Cvzcw/DDnuJJ9vN3ipvsaju
-        4oQ6egvCVXOHGrJRyzLcqIzr62msYSqb1p31F4mewQMUowUDW1oPtTP/W4KtsPEukjnatcZjSgmqW
-        QpCKUK4mTlZt78BA9EjdLA6Z+MrJnq/kgPRMV54ZG5TW3gsHYN75WpJLs4jwNhJpRQFSKy31eLa/6
-        xZUR6N76Myq+Oc2qCEZBmn4VKAsUxIr8nvjHIYHCaQ0w6UQRt3ymgvpMlLcphCw7mNSHDQOwCpHE1
-        gAyTHnTsV+mg9hyv7w9yaGXLqEKQ7exlT381hJeOB1vMpuQElWndJ5yjZCF9mN+MKrQ0qLj8bN+Nh
-        y9a1WwiQ==;
-Received: from [2601:1c2:d80:3110:e65e:37ff:febd:ee53]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oqTb6-00GHKc-C8; Thu, 03 Nov 2022 06:21:04 +0000
-Message-ID: <3efd119a-6814-7f39-3c7c-c17490adc876@infradead.org>
-Date:   Wed, 2 Nov 2022 23:21:03 -0700
+        Thu, 3 Nov 2022 03:25:09 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 57E775FC8
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Nov 2022 00:25:07 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A37OC6Y0008487, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A37OC6Y0008487
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 3 Nov 2022 15:24:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 3 Nov 2022 15:24:48 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 3 Nov 2022
+ 15:24:48 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: use FIELD_PREP to fill MAC quota value
+Date:   Thu, 3 Nov 2022 15:24:20 +0800
+Message-ID: <20221103072420.15161-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH] ath11k (gcc13): synchronize
- ath11k_mac_he_gi_to_nl80211_he_gi()'s return type
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-kernel@vger.kernel.org, Martin Liska <mliska@suse.cz>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20221031114341.10377-1-jirislaby@kernel.org>
- <55c4d139-0f22-e7ba-398a-e3e0d8919220@quicinc.com>
- <833c7f2f-c140-5a0b-1efc-b858348206ec@kernel.org> <87bkprgj0b.fsf@kernel.org>
- <503a3b36-2256-a9ce-cffe-5c0ed51f6f62@infradead.org>
- <87tu3ifv8z.fsf@kernel.org>
- <1041acdb-2978-7413-5567-ae9c14471605@infradead.org>
- <87cza4ftkf.fsf@kernel.org>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <87cza4ftkf.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/03/2022 06:59:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzMgpFekyCAwNjowMDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Coverity reported shift 16 bits could cause sign extension and might get
+an unexpected value. Since the input values are predefined and no this
+kind of case, original code is safe so far. But, still changing them to
+use FIELD_PREP() will be more clear and prevent mistakes in the future.
 
+The original message of Coverity is:
+  Suspicious implicit sign extension: "max_cfg->cma0_dma" with type "u16"
+  (16 bits, unsigned) is promoted in "max_cfg->cma0_dma << 16" to type
+  "int" (32 bits, signed), then sign-extended to type "unsigned long"
+  (64 bits, unsigned).  If "max_cfg->cma0_dma << 16" is greater than
+  0x7FFFFFFF, the upper bits of the result will all be 1."
 
-On 11/2/22 23:20, Kalle Valo wrote:
-> Randy Dunlap <rdunlap@infradead.org> writes:
-> 
->>>>> Yeah, using "wifi:" is a new prefix we started using with wireless
->>>>> patches this year.
->>>>>
->>>>
->>>> It would be nice if that was documented somewhere...
->>>
->>> It is mentioned on our wiki but I doubt anyone reads it :)
->>
->> I think that you are correct. ;)
->>
->>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#subject
->>>
->>> Do let me know if there are other places which should have this info.
->>
->> Ideally it would be in the subsystem's profile document as described in the
->> MAINTAINERS file:
->>
->> 	P: Subsystem Profile document for more details submitting
->> 	   patches to the given subsystem. This is either an in-tree file,
->> 	   or a URI. See Documentation/maintainer/maintainer-entry-profile.rst
->> 	   for details.
->>
->> although that seems to be overkill IMHO just to add a prefix: setting.
->>
->> You could just clone some other maintainer's Profile document and then modify it
->> to anything that you would like to have in it as far as Maintaining and patching
->> are concerned.
-> 
-> Ah, we should add that doc for wireless. Thanks for the idea, I added
-> that to my todo list.
-> 
+Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
+Addresses-Coverity-ID: 1527095 ("Integer handling issues")
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/mac.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Thank you. :)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index bb49033b587d2..11081dfdfb172 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -1487,10 +1487,8 @@ static int dle_mix_cfg(struct rtw89_dev *rtwdev, const struct rtw89_dle_mem *cfg
+ #define INVALID_QT_WCPU U16_MAX
+ #define SET_QUOTA_VAL(_min_x, _max_x, _module, _idx)			\
+ 	do {								\
+-		val = ((_min_x) &					\
+-		       B_AX_ ## _module ## _MIN_SIZE_MASK) |		\
+-		      (((_max_x) << 16) &				\
+-		       B_AX_ ## _module ## _MAX_SIZE_MASK);		\
++		val = FIELD_PREP(B_AX_ ## _module ## _MIN_SIZE_MASK, _min_x) | \
++		      FIELD_PREP(B_AX_ ## _module ## _MAX_SIZE_MASK, _max_x);  \
+ 		rtw89_write32(rtwdev,					\
+ 			      R_AX_ ## _module ## _QTA ## _idx ## _CFG,	\
+ 			      val);					\
 -- 
-~Randy
+2.25.1
+
