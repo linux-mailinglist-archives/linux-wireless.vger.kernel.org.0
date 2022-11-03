@@ -2,142 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D28617D16
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 13:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42C5A61872C
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Nov 2022 19:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbiKCMxV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Nov 2022 08:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38392 "EHLO
+        id S229764AbiKCSOP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Nov 2022 14:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbiKCMxT (ORCPT
+        with ESMTP id S229643AbiKCSOO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Nov 2022 08:53:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6411114A;
-        Thu,  3 Nov 2022 05:53:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DFBDDB82794;
-        Thu,  3 Nov 2022 12:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E57C433C1;
-        Thu,  3 Nov 2022 12:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667479995;
-        bh=kGkvPP1Oiw9lyfhEG8t/I1qotsbLvKyyALEQlCZqTuk=;
-        h=From:Subject:To:Cc:Date:From;
-        b=deiNDLE6mvtPNgRIvdy3cOobzhUoOz1UFWgqGsQrJ3QNrrJSTft1Y47QBIkmm9IJI
-         4VeowszWxVPuNdpWmX4Wwtnkh9xzw85JrXX+6cyfHdNN6/++YZmTSgjfczi+b26Uj7
-         tliMpxRci/MS2q+TERiknenO2nuNu6tEyeyrB4LZmi+JyQfGiyLQ3xLrTjaGcr3uuQ
-         AIdryw31XU1nEkFj1sj4iRpXTDNJ4lH/NpMlEg1l+kwdhNzm9wn7zJzTuiNljhQAQR
-         nmHraE29vci4JPWHcX5dL6uJpE9JDfC1e14j6FzKtK1fIidKYGYQi6KIfvx8dREeOJ
-         Se8WMigitJ/uQ==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 3 Nov 2022 14:14:14 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B19617E
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Nov 2022 11:14:13 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id 13so7562746ejn.3
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Nov 2022 11:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mKRyVq3jWaP14YWZcClYu6XYBWVcn2RISKb36PLazJM=;
+        b=G6NWYo1fteBiqY205dFbJ0Osu4vi9zwNPjaySeQbTI7gaTxWgJrM/F+l4w091mB4cX
+         iXFP6yVOdx9KtAwC5V8i5/l6CpP7MhIA/AIJ1mWACoO3LhsCmxatKp97Z+ELAlU3Tu1T
+         iatv8Np4uKD1Yf2FafwKmWF3WcT5RQaS+JF9T4PYJYq7SxO2Rgto2T18AG2IyLOHSSLH
+         t1iruLHozanhDu3zN2m7EN3rrwHg/PRPDhKe1FkO/B58OjKxslbHWVaqPolwSLd12RSQ
+         X4CDM722RG7PtVVyteSKKBfBKDMg286t++5ZmtYYYrEAznfJXx4xXTk+5aQ1zPVzYZlT
+         eRLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mKRyVq3jWaP14YWZcClYu6XYBWVcn2RISKb36PLazJM=;
+        b=aS2W+OgXPYj82MOOF1LhXGRy12WzBKzz/4vYpCq+kjLS4wwLzmAyS7b9tiFrUX4I+0
+         4DztIcr19LN21f3dBwl/6cdM0LsINJ6r72kDjtuDRasw8Q7zolQGrtwsJIjtiaVoCOSA
+         f+amhRMJNSRdEC6jpB1iYIJ6Ojzwkj9u/h9C/50HuuREf0aehW1UqGUc/gZ7JWu7yvgf
+         X4z4Kf3sky2WzHRRwlzTDHNqjmcnqJL0yAY5IJoJ7uYynkL8+gdyeqTDZJcRJ/B9xsqL
+         3ABmqCqKQzKOBpdINmBjYLcAF6WnzFHdUbqH/DaCkbuIZt+azBplU8mnukK94Dw3rDE6
+         CEDg==
+X-Gm-Message-State: ACrzQf3o9GToJYChPf/RB192twDoGQIlhgOTgkunna4s5LBFi8emCwsL
+        7bjXMm9i6LD+8F9NrzNJDa5y+1IZqzj397e/Si8=
+X-Google-Smtp-Source: AMsMyM7TSh2A587HHuKSQhGpZsHKDAy5i2A/1YbpLF2VWSmHKQthJbW/a/m5TlDSlaBP3jfGgilcvfTr8Syd0jKTxd4=
+X-Received: by 2002:a17:906:7304:b0:6ff:a76:5b09 with SMTP id
+ di4-20020a170906730400b006ff0a765b09mr29899342ejc.193.1667499251469; Thu, 03
+ Nov 2022 11:14:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-2022-11-03
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20221103125315.04E57C433C1@smtp.kernel.org>
-Date:   Thu,  3 Nov 2022 12:53:14 +0000 (UTC)
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Sender: ndersontheresa.24@gmail.com
+Received: by 2002:a05:7208:56a9:b0:5c:ee1f:14be with HTTP; Thu, 3 Nov 2022
+ 11:14:10 -0700 (PDT)
+From:   "Doris.David" <mrs.doris.david02@gmail.com>
+Date:   Thu, 3 Nov 2022 11:14:10 -0700
+X-Google-Sender-Auth: XhhfB7EXbySMFoTDL3zceYAqWvU
+Message-ID: <CAEJT=xD+1NBiNtWUW+8QnMX+bu4kpZULgV_p+xjujxo+KE6rEA@mail.gmail.com>
+Subject: Re: Greetings My Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:631 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5001]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrs.doris.david02[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ndersontheresa.24[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  3.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Greetings,
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+I sent this mail praying it will find you in a good condition, since I
+myself am in a very critical health condition in which I sleep every
+night  without knowing if I may be alive to see the next day. I am
+mrs.doris david,a widow suffering from a long time illness. I have
+some funds I  inherited from my late husband, the sum of
+($11,000,000,00) my Doctor told me recently that I have serious
+sickness which is a cancer problem. What disturbs me most is my stroke
+sickness. Having known my condition, I decided to donate this fund to
+a good person that will utilize it the way I am going to instruct
+herein. I need a very Honest God.
 
-Kalle
+fearing a person who can claim this money and use it for Charity
+works, for orphanages, widows and also build schools for less
+privileges that will be named after my late husband if possible and to
+promote the word of God and the effort that the house of God is
+maintained.I do not want a situation where this money will be used in
+an ungodly manner. That's why I'making this decision.I'm not afraid of
+death so I know where I'm going. I accept this decision because I do
+not have any child who will inherit this money after I die. Please I
+want your sincere and urgent answer to know if you will be able to
+execute this project, and I will give you more information on how
+thunder will be transferred to your bank account.I am waiting for your
+reply.
 
-The following changes since commit 6d36c728bc2e2d632f4b0dea00df5532e20dfdab:
-
-  Merge tag 'net-6.1-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2022-10-20 17:24:59 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-11-03
-
-for you to fetch changes up to f45cb6b29cd36514e13f7519770873d8c0457008:
-
-  wifi: ath11k: avoid deadlock during regulatory update in ath11k_regd_update() (2022-11-02 19:16:45 +0200)
-
-----------------------------------------------------------------
-wireless fixes for v6.1
-
-Second set of fixes for v6.1. Some fixes to char type usage in
-drivers, memory leaks in the stack and also functionality fixes. The
-rt2x00 char type fix is a larger (but still simple) commit, otherwise
-the fixes are small in size.
-
-----------------------------------------------------------------
-Arend van Spriel (1):
-      wifi: cfg80211: fix memory leak in query_regdb_file()
-
-Dokyung Song (1):
-      wifi: brcmfmac: Fix potential buffer overflow in brcmf_fweh_event_worker()
-
-Howard Hsu (1):
-      wifi: mac80211: Set TWT Information Frame Disabled bit as 1
-
-Jason A. Donenfeld (2):
-      wifi: rt2x00: use explicitly signed or unsigned types
-      wifi: airo: do not assign -1 to unsigned char
-
-Johannes Berg (1):
-      wifi: cfg80211: silence a sparse RCU warning
-
-Jonas Jelonek (1):
-      wifi: mac80211_hwsim: fix debugfs attribute ps with rc table support
-
-Nicolas Cavallari (1):
-      wifi: mac80211: Fix ack frame idr leak when mesh has no route
-
-Paul Zhang (1):
-      wifi: cfg80211: Fix bitrates overflow issue
-
-Tyler J. Stachecki (1):
-      wifi: ath11k: Fix QCN9074 firmware boot on x86
-
-Wen Gong (1):
-      wifi: ath11k: avoid deadlock during regulatory update in ath11k_regd_update()
-
-Zhengchao Shao (1):
-      wifi: mac80211: fix general-protection-fault in ieee80211_subif_start_xmit()
-
-taozhang (1):
-      wifi: mac80211: fix memory free error when registering wiphy fail
-
- drivers/net/wireless/ath/ath11k/qmi.h              |  2 +-
- drivers/net/wireless/ath/ath11k/reg.c              |  6 +--
- .../wireless/broadcom/brcm80211/brcmfmac/fweh.c    |  4 ++
- drivers/net/wireless/cisco/airo.c                  | 18 +++++--
- drivers/net/wireless/mac80211_hwsim.c              |  5 ++
- drivers/net/wireless/ralink/rt2x00/rt2400pci.c     |  8 +--
- drivers/net/wireless/ralink/rt2x00/rt2400pci.h     |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt2500pci.c     |  8 +--
- drivers/net/wireless/ralink/rt2x00/rt2500pci.h     |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt2500usb.c     |  8 +--
- drivers/net/wireless/ralink/rt2x00/rt2500usb.h     |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c     | 60 +++++++++++-----------
- drivers/net/wireless/ralink/rt2x00/rt2800lib.h     |  8 +--
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |  6 +--
- drivers/net/wireless/ralink/rt2x00/rt61pci.c       |  4 +-
- drivers/net/wireless/ralink/rt2x00/rt61pci.h       |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt73usb.c       |  4 +-
- drivers/net/wireless/ralink/rt2x00/rt73usb.h       |  2 +-
- net/mac80211/main.c                                |  8 ++-
- net/mac80211/mesh_pathtbl.c                        |  2 +-
- net/mac80211/s1g.c                                 |  3 ++
- net/mac80211/tx.c                                  |  5 ++
- net/wireless/reg.c                                 | 12 +++--
- net/wireless/scan.c                                |  4 +-
- net/wireless/util.c                                |  6 ++-
- 25 files changed, 114 insertions(+), 77 deletions(-)
+may God Bless you,
+mrs.doris david,
