@@ -2,180 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB74618D10
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 01:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86D37618D9D
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 02:28:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbiKDAAg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Nov 2022 20:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38108 "EHLO
+        id S230254AbiKDB2A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Nov 2022 21:28:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbiKDAAf (ORCPT
+        with ESMTP id S229461AbiKDB16 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Nov 2022 20:00:35 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228102229C
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Nov 2022 17:00:33 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-3691e040abaso30261397b3.9
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Nov 2022 17:00:33 -0700 (PDT)
+        Thu, 3 Nov 2022 21:27:58 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5385423392;
+        Thu,  3 Nov 2022 18:27:57 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-12c8312131fso4172088fac.4;
+        Thu, 03 Nov 2022 18:27:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIWN7urgPvg7gWQ/2jmCuNIcCwluarihUklEPGyHjcg=;
-        b=WfZQ7T5J19AGsPaNUJuOsP0Km5Ixqe3g2OjzWlZ48O9n++G6HOElr/NHRpLA9fDnwr
-         zjRaF+oN7J52K4Hkt1QfKpCQB5Wz5OV6RrsZAgAUs0tkU6h0aV7cYd6yEHz8xOWTUUaE
-         nTwx3sfZXExTHFKflgZ0kHbhOyWH5xYa/4o8baHcab29Hq9pAX7cOlT1SrWXDbt87QYk
-         qqJgjVZVqEHQO2qDmqBHDnF4n6wAmtRz5tmd/UsTP0SD10mD6uXXRAlwFdt5yYXaLs84
-         Q6NGteraqshFTYF08psP5WYnjWqJg/XADvug0NuClQLOveJFe7i203jnVfhv2iws1QsI
-         5poA==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=aUilUaHJkRjMTuKpx9KuulcmPnQFwe0ZTOEMgpM9EUs=;
+        b=Qiuj1zxH72t4rljyyB3fSEkfn0epewXXoN357R0R6Usp3EKlWrx8iU6hpHUzfKpX1N
+         jWUvsrLP7T+/T1HTqFmsPXuwFA3OhGOVpq/6hknV2wHSHf8vxvD0SjqSU9ikQYMusbVh
+         Ibvt/VUaZO27SjIcQQsqhhHansMDWkRhoZJ25wlaEJFLerIHLY9Z6gt6gBWracbEq52v
+         WyLK4J9IOWlBKdFWafyeUCtKH3Grw4/GJa2RKMtb5uDabXtgzXtRP9PcMO11bAgO+rcE
+         8vVYN3Y5hRUttjbnXz/13kwYZdkqigq9lG1nsPlZIePUhTXp23fp7wrjIrx9Cim5/XWG
+         SHNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OIWN7urgPvg7gWQ/2jmCuNIcCwluarihUklEPGyHjcg=;
-        b=bhDCffbHt1Ne4Mr7MKvYi77WQJsIeh5W1kbT3GpEoczIFM6FnDXdIUQwUtsgB7uruN
-         vxmB+KCP6oLDuVGGkiE4LSlOKx9X/F6bb3+glLEN7nJeiiJ66z1gtKHPSOmxvMZ12d1W
-         G8y8dbemDC03ogFKaxIfMw2ARVR/qLIvvPcdK1nDYjUAykL84zfQGnp25uFx25Qf7bXP
-         DAkjzIF2+xmpdBiBMCympKmsXbh8TRnfDaej/FK1S4ESjOyZXlMIeVKlOz8rWZQe2yZP
-         rlXaXM91+4c2WfcOs/H0KPkLQzprNBxXZB+y5R22ds6lRFElmG9RJcQbQxGxt3L1qKnN
-         dG9g==
-X-Gm-Message-State: ACrzQf1FYDbCGuHTR7LQG0iFUYA3eTlEjBkq494wwL4eUpMoeYZY+gjP
-        PQwd50neHR2/1THhA+BEp5I1UWhBtZihtcaiXkZevw==
-X-Google-Smtp-Source: AMsMyM4aPgSxRkszwf78hhXzMH4nUQ/6+7Nmf1bkd3EgAr4pZAmAEnobR0Kbs5o4qTyfKdYLFWynOitqShpFiKJNAxo=
-X-Received: by 2002:a81:6084:0:b0:370:10fa:c4ff with SMTP id
- u126-20020a816084000000b0037010fac4ffmr32397029ywb.255.1667520032026; Thu, 03
- Nov 2022 17:00:32 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aUilUaHJkRjMTuKpx9KuulcmPnQFwe0ZTOEMgpM9EUs=;
+        b=cFiQjEvUumk5ghW4GWmY+37rM48BwHcDg8M2BNAClxyUxVo3wjuXkw2x+MRS8bOKgD
+         wUcOU/gKupzfEc9gaVEkEZ2nnw6vYJUHZq6PlMGI9vuwroVobBtl2FbH/Mu8uv9PGTe5
+         tnuv4rXrxOMezr/l1FtHTwZwr3wtcZqHv6OanqkyTC1N1VsVJhnoxY0nveJMnm2ZONZK
+         zeoWl9WlLkdpoQWI0uH7E93yEcxScziMAz67+hgOyR+xfHVQFfUB8cV76AUPMe2VHTaD
+         LqOBcFNpnBNpeWpN7YIMnCODbpdq79p6DH6VsfldU/mXGDZQEOgn/Ah5GbzNHUi3tA7K
+         9Row==
+X-Gm-Message-State: ACrzQf3FeyRszoUeUQ6DM8M0Zh/RidMcxTk8v5GBFLPUwffAfWQnoNQD
+        8lxaEga3lngW+qkMsECFl1U=
+X-Google-Smtp-Source: AMsMyM7mnS5ut6p2YgNYUONLq0d80He/REUIRQ+G4m7m1O1dcQUT/Jn8NnVdFxbGwgr+wi1xKLrmPg==
+X-Received: by 2002:a05:6870:3414:b0:13c:787e:15ba with SMTP id g20-20020a056870341400b0013c787e15bamr19114631oah.164.1667525276643;
+        Thu, 03 Nov 2022 18:27:56 -0700 (PDT)
+Received: from localhost.localdomain ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id b6-20020a9d6b86000000b0066c75a2643asm924675otq.66.2022.11.03.18.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Nov 2022 18:27:56 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     gregkh@linuxfoundation.org
+Cc:     phil@philpotter.co.uk, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v2] staging: rtl8192e: Fix divide fault when calculating beacon age
+Date:   Thu,  3 Nov 2022 20:27:50 -0500
+Message-Id: <20221104012750.2076-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-References: <20221027150525.753064657@goodmis.org> <20221027150928.780676863@goodmis.org>
- <20221027155513.60b211e2@gandalf.local.home> <CAHk-=wjAjW2P5To82+CAM0Rx8RexQBHPTVZBWBPHyEPGm37oFA@mail.gmail.com>
- <20221027163453.383bbf8e@gandalf.local.home> <CAHk-=whoS+krLU7JNe=hMp2VOcwdcCdTXhdV8qqKoViwzzJWfA@mail.gmail.com>
- <20221027170720.31497319@gandalf.local.home> <20221027183511.66b058c4@gandalf.local.home>
- <20221028183149.2882a29b@gandalf.local.home> <20221028154617.3c63ba68@kernel.org>
- <27a6a587fee5e9172e41acd16ae1bc1f556fdbd7.camel@redhat.com> <20221103175123.744d0f37@rorschach.local.home>
-In-Reply-To: <20221103175123.744d0f37@rorschach.local.home>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Thu, 3 Nov 2022 17:00:20 -0700
-Message-ID: <CANn89iLv9cak6_vXJG5t=Kq+eiMPdMxF8w4AAuAuFB5sOsy2zg@mail.gmail.com>
-Subject: Re: [RFC][PATCH v2 19/31] timers: net: Use del_timer_shutdown()
- before freeing timer
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Menglong Dong <imagedong@tencent.com>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 3, 2022 at 2:51 PM Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> On Sun, 30 Oct 2022 18:22:03 +0100
-> Paolo Abeni <pabeni@redhat.com> wrote:
->
-> > On the positive side, I think converting the sk_stop_timer in
-> > inet_csk_clear_xmit_timers() should be safe and should cover the issue
-> > reported by Guenter
->
-> Would something like this be OK?
->
-> [ Note, talking with Thomas Gleixner, we agreed that we are changing the
->   name to: time_shutdown_sync() and timer_shutdown() (no wait version).
->   I'll be posting new patches soon. ]
->
-> -- Steve
->
-> diff --git a/include/net/sock.h b/include/net/sock.h
-> index 22f8bab583dd..0ef58697d4e5 100644
-> --- a/include/net/sock.h
-> +++ b/include/net/sock.h
-> @@ -2439,6 +2439,8 @@ void sk_stop_timer(struct sock *sk, struct timer_list *timer);
->
->  void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer);
->
-> +void sk_shutdown_timer(struct sock *sk, struct timer_list *timer);
-> +
->  int __sk_queue_drop_skb(struct sock *sk, struct sk_buff_head *sk_queue,
->                         struct sk_buff *skb, unsigned int flags,
->                         void (*destructor)(struct sock *sk,
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index a3ba0358c77c..82124862b594 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -3357,6 +3357,13 @@ void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer)
->  }
->  EXPORT_SYMBOL(sk_stop_timer_sync);
->
-> +void sk_shutdown_timer(struct sock *sk, struct timer_list* timer)
-> +{
-> +       if (timer_shutdown(timer))
-> +               __sock_put(sk);
-> +}
-> +EXPORT_SYMBOL(sk_shutdown_timer);
-> +
->  void sock_init_data(struct socket *sock, struct sock *sk)
->  {
->         sk_init_common(sk);
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> index 5e70228c5ae9..71f398f51958 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
-> @@ -722,15 +722,15 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
->
->         icsk->icsk_pending = icsk->icsk_ack.pending = 0;
->
-> -       sk_stop_timer(sk, &icsk->icsk_retransmit_timer);
-> -       sk_stop_timer(sk, &icsk->icsk_delack_timer);
-> -       sk_stop_timer(sk, &sk->sk_timer);
-> +       sk_shutdown_timer(sk, &icsk->icsk_retransmit_timer);
-> +       sk_shutdown_timer(sk, &icsk->icsk_delack_timer);
-> +       sk_shutdown_timer(sk, &sk->sk_timer);
->  }
->  EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
+When the configuration parameter CONFIG_HZ is less that 100, the compiler
+generates an error as follows:
 
- inet_csk_clear_xmit_timers() can be called multiple times during TCP
-socket lifetime.
+../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtl819x_translate_scan':
+../drivers/staging/rtl8192e/rtllib_wx.c:220:57: warning: division by zero [-Wdiv-by-zero]
+  220 |      (jiffies - network->last_scanned) / (HZ / 100));
+      |                                                         ^
+In file included from ../include/linux/skbuff.h:45,
+                 from ../include/linux/if_ether.h:19,
+                 from ../include/linux/etherdevice.h:20,
+                 from ../drivers/staging/rtl8192e/rtllib_wx.c:18:
+../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtllib_wx_get_scan':
+../drivers/staging/rtl8192e/rtllib_wx.c:261:70: warning: division by zero [-Wdiv-by-zero]
+  261 |      (jiffies - network->last_scanned) /
+      |
 
-(See tcp_disconnect(), which can be followed by another connect() ... and loop)
+In fact, is HZ is not a multiple of 100, the calculation will be wrong,
+but it will compile correctly.
 
-Maybe add a second parameter, or add a new
-inet_csk_shutdown_xmit_timers() only called from tcp_v4_destroy_sock() ?
+The fix is to get rid of the (HZ / 100) portion. To decrease any round-off
+errors, the compiler is forced to perform the 100 * jiffies-difference
+before dividing by HZ. This patch is only compile tested.
 
->
->  void inet_csk_delete_keepalive_timer(struct sock *sk)
->  {
-> -       sk_stop_timer(sk, &sk->sk_timer);
-> +       sk_shutdown_timer(sk, &sk->sk_timer);
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+v2 - some commit log lines are shortened
+   - add space after * operator
+---
+ drivers/staging/rtl8192e/rtllib_wx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-SO_KEEPALIVE can be called multiple times in a TCP socket lifetime,
-on/off/on/off/...
+diff --git a/drivers/staging/rtl8192e/rtllib_wx.c b/drivers/staging/rtl8192e/rtllib_wx.c
+index da2c41c9b92f..217426ee2e92 100644
+--- a/drivers/staging/rtl8192e/rtllib_wx.c
++++ b/drivers/staging/rtl8192e/rtllib_wx.c
+@@ -217,7 +217,7 @@ static inline char *rtl819x_translate_scan(struct rtllib_device *ieee,
+ 	p = custom;
+ 	p += scnprintf(p, MAX_CUSTOM_LEN - (p - custom),
+ 		      " Last beacon: %lums ago",
+-		      (jiffies - network->last_scanned) / (HZ / 100));
++		      (100 * (jiffies - network->last_scanned)) / HZ);
+ 	iwe.u.data.length = p - custom;
+ 	if (iwe.u.data.length)
+ 		start = iwe_stream_add_point_rsl(info, start, stop,
+@@ -258,8 +258,8 @@ int rtllib_wx_get_scan(struct rtllib_device *ieee,
+ 				   escape_essid(network->ssid,
+ 						network->ssid_len),
+ 				   network->bssid,
+-				   (jiffies - network->last_scanned) /
+-				   (HZ / 100));
++				   (100 * (jiffies - network->last_scanned)) /
++				   HZ);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&ieee->lock, flags);
+-- 
+2.38.0
 
-I suggest leaving sk_stop_timer() here.
-
-Eventually  inet_csk_clear_xmit_timers( sk, destroy=true) (or
-inet_csk_shutdown_xmit_timers(())
-   will  be called before the socket is destroyed.
