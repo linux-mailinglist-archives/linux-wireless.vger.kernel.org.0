@@ -2,88 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01333619D22
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 17:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEE8A619D57
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 17:33:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231309AbiKDQZ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Nov 2022 12:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52096 "EHLO
+        id S231146AbiKDQd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Nov 2022 12:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbiKDQZZ (ORCPT
+        with ESMTP id S230005AbiKDQd5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Nov 2022 12:25:25 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E844F10;
-        Fri,  4 Nov 2022 09:25:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=mueebaL38FcUSyeQjIobsTZF1EWJPQVH0pYABKEMbSQ=;
-        t=1667579123; x=1668788723; b=ULmpVSbtjPRgyR1XU6rdZFqUGovGHTjTIIopU0I4qrXHe7X
-        WaAJEnOzPNvw8W4wQ7D2hgN4L0E+pDlaSd32FuHmV/FOeMsdlrIKW3BpoXFtl86y2B3aRs2HZeeJq
-        QsBisjVVpVx3N/WErDbyrNNkYrZDoyVx4M49wKXN8l63wN1vqyP5pFyNp/Im61515BTwJgahiytPO
-        TImgySX6hY43mCsbdsnN0I2oTdC6FMb/4ROXSrVuI9RSceyAvMAA4X7mQtJ7pzemxhGAvGQJJK7Kl
-        JaFAaFRVSMny9xtoP1n1RbYY4eviO4promqjDWMsxUEnS0islwXBgE8bk5Y2/xQg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oqzVG-008utM-2M;
-        Fri, 04 Nov 2022 17:25:10 +0100
-Message-ID: <f3b0adccfff86b687bf2e9fd3e3f9657444bfdf0.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] wifi: rsi: Fix handling of 802.3 EAPOL frames sent
- via control port
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
-Cc:     Angus Ainslie <angus@akkea.ca>, Jakub Kicinski <kuba@kernel.org>,
+        Fri, 4 Nov 2022 12:33:57 -0400
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30FB72715B;
+        Fri,  4 Nov 2022 09:33:55 -0700 (PDT)
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id A759F85255;
+        Fri,  4 Nov 2022 17:33:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1667579633;
+        bh=qtep8Eq+FCsp4JjBidQAgnyXf/LI5Ei8jICPLyoJA9s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=G42l8/2yXPYqFYjUUwm0F8giIKjoZFzVfD1cm/9R0C4FGEHh5YvNrqh4WTrZs0X69
+         188nTDtq8TQL3Oc+ksQXkZ593ednSsuLhsZyBUcdfeJ3KK1WSZ8FZepv81O6Kp885I
+         ASR/NU/okssUYCOBTk6ypgpv3+PYnETAHlI+Q+mGBYRuolnKXblsf7BW3qhsYkG7dA
+         asrdEeumBP/f2RpDpJ3BBIyXXD7BRaWww8P6bvzpmaULrqyrxmTAGBW1n/Tkl7ccFw
+         hJ2HZy33IC66k0JSzsUahh2FRfzsgyZ9BZOdjE53gJBa47/zj9AI9JaoC3JWC5dgRp
+         V/iWu0I8Spx4Q==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>,
+        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
         Kalle Valo <kvalo@kernel.org>,
         Martin Fuzzey <martin.fuzzey@flowbird.group>,
         Martin Kepplinger <martink@posteo.de>,
         Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
         Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
         Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
-Date:   Fri, 04 Nov 2022 17:25:09 +0100
-In-Reply-To: <d6c8594159368034d47a169ccdd50bc65a1ad894.camel@sipsolutions.net>
-References: <20221104155841.213387-1-marex@denx.de>
-         <cf7da8e9a135fee1a9ac0e8f768a2a13bbba058d.camel@sipsolutions.net>
-         <a3ef782d-9c85-d752-52b5-589d5e1f1bd5@denx.de>
-         <d6c8594159368034d47a169ccdd50bc65a1ad894.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+Subject: [PATCH v5] wifi: rsi: Fix handling of 802.3 EAPOL frames sent via control port
+Date:   Fri,  4 Nov 2022 17:33:39 +0100
+Message-Id: <20221104163339.227432-1-marex@denx.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.6 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(removing Amitkumar Karwar <amit.karwar@redpinesignals.com> as that
-keeps bouncing)
+When using wpa_supplicant v2.10, this driver is no longer able to
+associate with any AP and fails in the EAPOL 4-way handshake while
+sending the 2/4 message to the AP. The problem is not present in
+wpa_supplicant v2.9 or older. The problem stems from HostAP commit
+144314eaa ("wpa_supplicant: Send EAPOL frames over nl80211 where available")
+which changes the way EAPOL frames are sent, from them being send
+at L2 frames to them being sent via nl80211 control port.
 
-On Fri, 2022-11-04 at 17:23 +0100, Johannes Berg wrote:
-> On Fri, 2022-11-04 at 17:09 +0100, Marek Vasut wrote:
-> >=20
-> > In V2 it was suggested I deduplicate this into a separate function,=20
-> > since the test is done in multiple places. I would like to keep it=20
-> > deduplicated.
->=20
-> Well, it's now a lot simpler, so one might argue that it's not needed.
->=20
-> But anyway you're touching the hot-path of this driver, and making it an
-> inline still keeps it de-duplicated, so not sure why you wouldn't just
-> move the rsi_is_tx_eapol into the header file as static inline?
->=20
+An EAPOL frame sent as L2 frame is passed to the WiFi driver with
+skb->protocol ETH_P_PAE, while EAPOL frame sent via nl80211 control
+port has skb->protocol set to ETH_P_802_3 . The later happens in
+ieee80211_tx_control_port(), where the EAPOL frame is encapsulated
+into 802.3 frame.
 
-Though honestly, if we thought it was worth deduplicating a simple bit
-check like that, we could define an inline helper in mac80211.h. I'm not
-really convinced it is :)
+The rsi_91x driver handles ETH_P_PAE EAPOL frames as high-priority
+frames and sends them via highest-priority transmit queue, while
+the ETH_P_802_3 frames are sent as regular frames. The EAPOL 4-way
+handshake frames must be sent as highest-priority, otherwise the
+4-way handshake times out.
 
-But hey, that's not my driver, so ultimately I don't _really_ care so
-much.
+Therefore, to fix this problem, inspect the skb control flags and
+if flag IEEE80211_TX_CTRL_PORT_CTRL_PROTO is set, assume this is
+an EAPOL frame and transmit the frame via high-priority queue just
+like other ETH_P_PAE frames.
 
-johannes
+Fixes: 0eb42586cf87 ("rsi: data packet descriptor enhancements")
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+NOTE: I am really unsure about the method of finding out the exact
+      place of ethernet header in the encapsulated packet and then
+      extracting the ethertype from it. Is there maybe some sort of
+      helper function for that purpose ?
+---
+V2: - Turn the duplicated code into common function
+V3: - Simplify the TX EAPOL detection (Johannes)
+V4: - Drop the double !!() from test
+    - Update commit message
+V5: - Inline the rsi_is_tx_eapol() again, undoes V2 change completely
+---
+Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
+Cc: Angus Ainslie <angus@akkea.ca>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Cc: Martin Kepplinger <martink@posteo.de>
+Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
+Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Cc: Siva Rebbagondla <siva8118@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/wireless/rsi/rsi_91x_core.c | 4 +++-
+ drivers/net/wireless/rsi/rsi_91x_hal.c  | 6 +++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/rsi/rsi_91x_core.c b/drivers/net/wireless/rsi/rsi_91x_core.c
+index 0f3a80f66b61c..ead4d4e043280 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_core.c
++++ b/drivers/net/wireless/rsi/rsi_91x_core.c
+@@ -466,7 +466,9 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
+ 							      tid, 0);
+ 			}
+ 		}
+-		if (skb->protocol == cpu_to_be16(ETH_P_PAE)) {
++
++		if (IEEE80211_SKB_CB(skb)->control.flags &
++		    IEEE80211_TX_CTRL_PORT_CTRL_PROTO) {
+ 			q_num = MGMT_SOFT_Q;
+ 			skb->priority = q_num;
+ 		}
+diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
+index c61f83a7333b6..c7460fbba0142 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_hal.c
++++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
+@@ -162,12 +162,16 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
+ 	u8 header_size;
+ 	u8 vap_id = 0;
+ 	u8 dword_align_bytes;
++	bool tx_eapol;
+ 	u16 seq_num;
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+ 	vif = info->control.vif;
+ 	tx_params = (struct skb_info *)info->driver_data;
+ 
++	tx_eapol = IEEE80211_SKB_CB(skb)->control.flags &
++		   IEEE80211_TX_CTRL_PORT_CTRL_PROTO;
++
+ 	header_size = FRAME_DESC_SZ + sizeof(struct rsi_xtended_desc);
+ 	if (header_size > skb_headroom(skb)) {
+ 		rsi_dbg(ERR_ZONE, "%s: Unable to send pkt\n", __func__);
+@@ -231,7 +235,7 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	if (skb->protocol == cpu_to_be16(ETH_P_PAE)) {
++	if (tx_eapol) {
+ 		rsi_dbg(INFO_ZONE, "*** Tx EAPOL ***\n");
+ 
+ 		data_desc->frame_info = cpu_to_le16(RATE_INFO_ENABLE);
+-- 
+2.35.1
+
