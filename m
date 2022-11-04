@@ -2,52 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FFDB61950F
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 12:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2A1661950E
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 12:02:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231796AbiKDLCZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Nov 2022 07:02:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39424 "EHLO
+        id S231406AbiKDLCU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Nov 2022 07:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231927AbiKDLBz (ORCPT
+        with ESMTP id S231665AbiKDLBu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Nov 2022 07:01:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713C72CDD2
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Nov 2022 04:01:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E59E6213C
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Nov 2022 11:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1151C433B5;
-        Fri,  4 Nov 2022 11:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667559712;
-        bh=Go9ZPS1D7b5vhLir1KiMzmsxIwAedkfzRsChBg5iZNA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ZgVNuzMQLuGBnqcpBD5xqPYA9VZKD2c287btfU+Ka0IZY4lq/N9nvpbu/37ARrUMt
-         P4VfLlmsrPMl7gFsXWQLinyE/nL5XlMtBacd0RJWOaFnp56t/4jUunGU6a5VEit7xh
-         ZBAQUr7rKRs3PwbuJxqF/FNh5QngtQmHasb/aej2WbGwTyMikDiCGzYc4xbwaLABDY
-         Rrlow2x7Wxi9vt6Tc7HBIWws7HpT2WYYBCKH2ICmkJfpLhWWd2qRDqgbfZo5N7cPgl
-         61Ix3k2ZkLskeb/eSZwwl8m2GsxLFh7XgMyLimORjorFyKbhEfKPMOB9CEhb0Mnt5L
-         0y8CcVzLjedEA==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 4 Nov 2022 07:01:50 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0BDC2CC98;
+        Fri,  4 Nov 2022 04:01:48 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N3d3n0z11z15MJP;
+        Fri,  4 Nov 2022 19:01:41 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 4 Nov
+ 2022 19:01:46 +0800
+From:   Zhengchao Shao <shaozhengchao@huawei.com>
+To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
+        <shaozhengchao@huawei.com>
+Subject: [PATCH net] wifi: mac80211: fix WARNING in ieee80211_link_info_change_notify()
+Date:   Fri, 4 Nov 2022 19:08:56 +0800
+Message-ID: <20221104110856.364410-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 1/5] wifi: rtl8xxxu: Add central frequency offset
- tracking
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <80aba428-0aff-f4b2-dea5-35d1425982b6@gmail.com>
-References: <80aba428-0aff-f4b2-dea5-35d1425982b6@gmail.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166755970986.3283.8272687655557599604.kvalo@kernel.org>
-Date:   Fri,  4 Nov 2022 11:01:51 +0000 (UTC)
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,35 +46,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+Syz reports the following WARNING:
+wlan0: Failed check-sdata-in-driver check, flags: 0x0
+WARNING: CPU: 3 PID: 5384 at net/mac80211/main.c:287
+ieee80211_link_info_change_notify+0x1c2/0x230
+Modules linked in:
+RIP: 0010:ieee80211_link_info_change_notify+0x1c2/0x230
+Call Trace:
+<TASK>
+ieee80211_set_mcast_rate+0x3e/0x50
+nl80211_set_mcast_rate+0x316/0x650
+genl_family_rcv_msg_doit+0x20b/0x300
+genl_rcv_msg+0x39f/0x6a0
+netlink_rcv_skb+0x13b/0x3b0
+genl_rcv+0x24/0x40
+netlink_unicast+0x4a2/0x740
+netlink_sendmsg+0x83e/0xce0
+sock_sendmsg+0xc5/0x100
+____sys_sendmsg+0x583/0x690
+___sys_sendmsg+0xe8/0x160
+__sys_sendmsg+0xbf/0x160
+do_syscall_64+0x35/0x80
+entry_SYSCALL_64_after_hwframe+0x46/0xb0
+</TASK>
 
-> According to Realtek programmers, "to adjust oscillator to align
-> central frequency of connected AP. Then, it can yield better
-> performance." From commit fb8517f4fade ("rtw88: 8822c: add CFO
-> tracking").
-> 
-> The RTL8192CU and a version of RTL8723AU apparently don't have the
-> ability to adjust the oscillator, so this doesn't apply to them.
-> 
-> This also doesn't apply to the wifi + bluetooth combo chips (RTL8723AU
-> and RTL8723BU) because the CFO tracking should only be done when
-> bluetooth is disabled, and determining that looked complicated.
-> 
-> That leaves only the RTL8192EU and RTL8188FU chips. I tested this with
-> the latter.
-> 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+The execution process is as follows:
+Thread A:
+ieee80211_open()
+    ieee80211_do_open()
+        drv_add_interface()     //set IEEE80211_SDATA_IN_DRIVER flag
+...
+cfg80211_shutdown_all_interfaces()
+    ...
+    ieee80211_stop()
+        ieee80211_do_stop()
+            drv_remove_interface() //clear flag
+...
+nl80211_set_mcast_rate()
+    ieee80211_set_mcast_rate()
+        ieee80211_link_info_change_notify()
+            check_sdata_in_driver() //WARNING because flag is cleared
 
-5 patches applied to wireless-next.git, thanks.
+When the wlan device stops, the IEEE80211_SDATA_IN_ DRIVER flag is cleared
+after the interface is removed. And then after the set mcast rate command
+is executed, a WARNING is generated because the flag bit is cleared.
 
-57b328bc7996 wifi: rtl8xxxu: Add central frequency offset tracking
-2ad2a813b803 wifi: rtl8xxxu: Fix the CCK RSSI calculation
-7b0ac469e331 wifi: rtl8xxxu: Recognise all possible chip cuts
-e952deaa95ba wifi: rtl8xxxu: Set IEEE80211_HW_SUPPORT_FAST_XMIT
-bd954a7e4aa0 wifi: rtl8xxxu: Use dev_* instead of pr_info
+Fixes: 591e73ee3f73 ("wifi: mac80211: properly skip link info driver update")
+Reported-by: syzbot+bce2ca140cc00578ed07@syzkaller.appspotmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+---
+ net/mac80211/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 46f3eddc2388..8a727b532f77 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -284,6 +284,9 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		return;
+ 
++	if (!ieee80211_sdata_running(sdata))
++		return;
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return;
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/80aba428-0aff-f4b2-dea5-35d1425982b6@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
 
