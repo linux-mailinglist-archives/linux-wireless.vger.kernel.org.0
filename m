@@ -2,151 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3473619CCE
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 17:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B98B8619D16
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 17:24:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231888AbiKDQOx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Nov 2022 12:14:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
+        id S230342AbiKDQX5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Nov 2022 12:23:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231401AbiKDQOt (ORCPT
+        with ESMTP id S230194AbiKDQXx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Nov 2022 12:14:49 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0469B9C;
-        Fri,  4 Nov 2022 09:14:48 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id v81so5651447oie.5;
-        Fri, 04 Nov 2022 09:14:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vkBGgKFgg4QPXCpHtMi6j0J3ZcIgUdwyTJWClmiO8n8=;
-        b=ZXT4b7xGHkwhtyRx7V1geQfUresoJ3Ad36AKxZcA+hYEkLlZTMmJdsg3FLF6RZb4Bm
-         /Th2KOsiFM+wv4AFPnrljoJs2GpR7KNawydYt2C5cew9YFo+qW0UidzKrk4BDuG1u7w+
-         m3w563eSaiPwL3l4sGKZaD+ak6hpgQhlR7eGCpJqdUtIM7CX7IVrS9HVCezWAA8wIfI4
-         tbWxHgw8jm41jK3k3dRhGJKkPfEdX95COskXHfzG/e/VIoBDLovAFvOX7zEd4Utr1gQo
-         7jv8BY+ymXeC+5KaWJgeXULPlc8QwCY2a+1Wc4m/cSjP0OKV+9XQ8V5888RvdMmc7n4q
-         obpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vkBGgKFgg4QPXCpHtMi6j0J3ZcIgUdwyTJWClmiO8n8=;
-        b=d8eBCYZinmkIS92p4B1dmXTy21acZvhKMOQ7ejoPvtcF8qtvkPPxJmi6VPwBt4EZhe
-         XsrPPvZsO/KH+viUNwFr5Gj2ZkCyTLvBX/t1V9Z0WVI7F4Uwak/4kJCg4Bj6blyewcq2
-         KTmaxQytYsyfDS9bQKMO5V3cUSeHLRy2DOrjz5+oU+YOkMjy1SU8wdbW8aOTv0dd5ZsW
-         tuq7fDqirJeAkdSPGC1Tj8qSt0+2Bh1IrtZ0mTMRd4pvgdvvcNu5ns1pi5S0SLFkqA8/
-         blDFVxMNv4aGQXpOpEM5wAHkwmYO2mkAV2voDDECHQFn6tXWjAzjgABjRbptPtyEyHwe
-         gTuQ==
-X-Gm-Message-State: ACrzQf3mtVO+xYSFFG0ZlR16/Z4nvI/TM1qoC4xZ6cTZfmu60g2gSJJe
-        4PXn7gu2O4hEojPBUD4E0pY=
-X-Google-Smtp-Source: AMsMyM7iFweEsB11T8MsAxnRkCeRKLOBdX0O0x9jUekHKEg87JfqIXfJu5mpVtFVdszEhc175Hq8Tw==
-X-Received: by 2002:aca:d841:0:b0:35a:5959:590d with SMTP id p62-20020acad841000000b0035a5959590dmr2855416oig.120.1667578488108;
-        Fri, 04 Nov 2022 09:14:48 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id p36-20020a05687056a400b0013b1301ce42sm1894684oao.47.2022.11.04.09.14.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 09:14:47 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 4 Nov 2022 09:14:45 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        Fri, 4 Nov 2022 12:23:53 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 214E3267B;
+        Fri,  4 Nov 2022 09:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=QPfTEW1yEsUmv2SnsC8Z/iqqatNA8YdvlM9LwrrznSE=;
+        t=1667579033; x=1668788633; b=wFm8vAEfwSC93OcWSskboyN2Bkn107w4oC4lMLI8lI2XSxX
+        yeHnsyXy+j8mKPHZWk45hXassq9y4gDTkKkFkHxIGROiDsG5U35+2s3juuzmZ0FYYeSU5fBUxgTaB
+        EZ7Bv8rZIeHxCW4HuH1SqEPW8J1/uOAJUKVP9asdit9Xc0MXt/KjPlbZzhrLKqhyl/aNh0T3XAg1L
+        XYTcV/Dr6jHN1Nth6Lk068o7BvucvEsh2keuKJztvj9/W31hlFXKHj9x4zBYRPpbWUQTqbrlfFt+C
+        LgvwNqdhqn0cJkfplMbEc5CD6M9sTe7Fw0GGPYvMoGrhBqEhHOlRynbQXhjJwAEg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1oqzTp-008uqO-2L;
+        Fri, 04 Nov 2022 17:23:42 +0100
+Message-ID: <d6c8594159368034d47a169ccdd50bc65a1ad894.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: rsi: Fix handling of 802.3 EAPOL frames sent
+ via control port
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc:     Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Angus Ainslie <angus@akkea.ca>,
         Jakub Kicinski <kuba@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Menglong Dong <imagedong@tencent.com>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net
-Subject: Re: [RFC][PATCH v2 19/31] timers: net: Use del_timer_shutdown()
- before freeing timer
-Message-ID: <20221104161445.GA1866159@roeck-us.net>
-References: <20221027163453.383bbf8e@gandalf.local.home>
- <CAHk-=whoS+krLU7JNe=hMp2VOcwdcCdTXhdV8qqKoViwzzJWfA@mail.gmail.com>
- <20221027170720.31497319@gandalf.local.home>
- <20221027183511.66b058c4@gandalf.local.home>
- <20221028183149.2882a29b@gandalf.local.home>
- <20221028154617.3c63ba68@kernel.org>
- <27a6a587fee5e9172e41acd16ae1bc1f556fdbd7.camel@redhat.com>
- <20221103175123.744d0f37@rorschach.local.home>
- <CANn89iLv9cak6_vXJG5t=Kq+eiMPdMxF8w4AAuAuFB5sOsy2zg@mail.gmail.com>
- <20221104015139.58f17730@rorschach.local.home>
+        Kalle Valo <kvalo@kernel.org>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
+Date:   Fri, 04 Nov 2022 17:23:40 +0100
+In-Reply-To: <a3ef782d-9c85-d752-52b5-589d5e1f1bd5@denx.de>
+References: <20221104155841.213387-1-marex@denx.de>
+         <cf7da8e9a135fee1a9ac0e8f768a2a13bbba058d.camel@sipsolutions.net>
+         <a3ef782d-9c85-d752-52b5-589d5e1f1bd5@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221104015139.58f17730@rorschach.local.home>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 04, 2022 at 01:51:39AM -0400, Steven Rostedt wrote:
-> On Thu, 3 Nov 2022 17:00:20 -0700
-> Eric Dumazet <edumazet@google.com> wrote:
-> 
-> >  inet_csk_clear_xmit_timers() can be called multiple times during TCP
-> > socket lifetime.
-> > 
-> > (See tcp_disconnect(), which can be followed by another connect() ... and loop)
-> > 
-> > Maybe add a second parameter, or add a new
-> > inet_csk_shutdown_xmit_timers() only called from tcp_v4_destroy_sock() ?
-> > 
-> 
-> I guess.
-> 
-> > >
-> > >  void inet_csk_delete_keepalive_timer(struct sock *sk)
-> > >  {
-> > > -       sk_stop_timer(sk, &sk->sk_timer);
-> > > +       sk_shutdown_timer(sk, &sk->sk_timer);  
-> > 
-> > SO_KEEPALIVE can be called multiple times in a TCP socket lifetime,
-> > on/off/on/off/...
-> > 
-> > I suggest leaving sk_stop_timer() here.
-> > 
-> > Eventually  inet_csk_clear_xmit_timers( sk, destroy=true) (or
-> > inet_csk_shutdown_xmit_timers(())
-> >    will  be called before the socket is destroyed.
-> 
-> OK. 
-> 
-> Guenter,
-> 
-> I posted a new series, but did not include this change. If you want to
-> test that other series, I would suggest to at least add the first part
-> of this patch, otherwise it will trigger. But we want to see if there's
-> other locations of issue that we should care about.
-> 
+On Fri, 2022-11-04 at 17:09 +0100, Marek Vasut wrote:
+>=20
+> In V2 it was suggested I deduplicate this into a separate function,=20
+> since the test is done in multiple places. I would like to keep it=20
+> deduplicated.
 
-I'll run a test on the other series without change first. We'll see what
-happens. If necessary I'll add [parts of] this patch and re-test, but
-before doing that I would like to get a sense for the status of your
-series as-is.
+Well, it's now a lot simpler, so one might argue that it's not needed.
 
-Thanks,
-Guenter
+But anyway you're touching the hot-path of this driver, and making it an
+inline still keeps it de-duplicated, so not sure why you wouldn't just
+move the rsi_is_tx_eapol into the header file as static inline?
+
+johannes
