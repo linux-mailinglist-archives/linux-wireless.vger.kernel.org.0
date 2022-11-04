@@ -2,122 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4D761A297
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 21:43:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D25DA61A3E8
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 23:09:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230115AbiKDUm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Nov 2022 16:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41206 "EHLO
+        id S230100AbiKDWJt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Nov 2022 18:09:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiKDUmy (ORCPT
+        with ESMTP id S230022AbiKDWJq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Nov 2022 16:42:54 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D132F43AF0;
-        Fri,  4 Nov 2022 13:42:53 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id c129so6419916oia.0;
-        Fri, 04 Nov 2022 13:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jQ4gXr1turouEQ95+x3UakyDrVi4g3dT0y7NpfH0qPs=;
-        b=lSF8e6DLqbKKv+/YhmRhAK/T1efgb2O636TOXNjLfcC0viXP62NhHdxomxLJWtIe7d
-         2JndYje5nsRNFlqIXElcBPkKCNEcFme9PlK3C7Q1VMpYaqUkgV/gQHQcIxtcw2fILMZW
-         OKJ4E8wSXhLBL3J9S3NnNPs9rdwe6KKkDhBPqcY/XDJgpqSUigUMcqCvapDa55nrN05q
-         GmtiLLrP+Y0lcIHCsefgW4EhiR9DSJnDXwmLBbW8A31Y89yswej4P9L3XtJNKO8bMaw7
-         4czQwKTd2lx34+qzGmcV/Exm8IIRhuHeavJKESaaJd5m9cQQb9K2fLTxromO6yhuwk2D
-         Ci4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jQ4gXr1turouEQ95+x3UakyDrVi4g3dT0y7NpfH0qPs=;
-        b=qIaki2KujX4tp/iQcD41IFYZafJq9mMbxWPCQzRiRI6pgVKHolk7EecU6P7Yq6OFcy
-         mcOf6qRXn2Hegeexyjj/J1v2sTzrzOZdJYcKAmBYg+FzfXDxdca/AXl7vNAVxrH1ws54
-         L8c65V6q1TPDdiMXABem8Rfud6yV7r/jp+LCH0dXZbWDUFM7DdbXj7GKKUWXlXDbGixT
-         RJKBgdOwqOdtZ/bvwQ95ajqH2tmOq0ypMEAuMNAp0vV5oLcR0ZxB9ax5J1A3L12ARLyU
-         TNtI14geIOBj/voUEg6r2/QDcHC6YeHfLwAsrEktoTP7qQReCYIsa/yPP/ytWg2/rMCh
-         qSxQ==
-X-Gm-Message-State: ACrzQf30tAcckecIsxC4FpMH/usI2jg7GviEFiGLyX5EMfJyJ8PWbKV+
-        MuBj4mzxlROIXyKD3k2UqBY=
-X-Google-Smtp-Source: AMsMyM6uhfbCXJb2q3AkwRuMO9Mjf9xHTKiSSXkljdTFDkgQ9gIWK1vZZlSecO9utfeB4MFPxnhffw==
-X-Received: by 2002:a54:4587:0:b0:359:c737:b2e8 with SMTP id z7-20020a544587000000b00359c737b2e8mr20212921oib.234.1667594573223;
-        Fri, 04 Nov 2022 13:42:53 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f1-20020a056830204100b006619483182csm162608otp.18.2022.11.04.13.42.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 13:42:52 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 4 Nov 2022 13:42:51 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-edac@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, drbd-dev@lists.linbit.com,
-        linux-bluetooth@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-leds@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: Re: [RFC][PATCH v3 00/33] timers: Use timer_shutdown*() before
- freeing timers
-Message-ID: <20221104204251.GB506794@roeck-us.net>
-References: <20221104054053.431922658@goodmis.org>
- <20221104192232.GA2520396@roeck-us.net>
- <20221104154209.21b26782@rorschach.local.home>
- <20221104154355.578ab689@rorschach.local.home>
+        Fri, 4 Nov 2022 18:09:46 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB982E686
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Nov 2022 15:09:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667599783; x=1699135783;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xwcAxZowSfO1x3OVQHacvKvIUg1BUYdtm15o9rLdowQ=;
+  b=nKT8lB8ihIpD5PdQ42Ep/5b+TUB7gfgFNjW4aUF4WpK3c5nKii2ODIKX
+   W6K14Ffwpf/ESxE7sRNQueC8tBrwqGiwQBCIuqHuqHEUEv7Rg05k2Fnr3
+   1RJo3aMqPMX3X9prTZRy6oJdPqGhwI3AzwUOOK20VsfC2ofL6m6YGwdR7
+   Xlvck8nIi0/LR9F8yNcI4xwOO9MHns12UAdauIZiYl3IwMjkEd8+stUnt
+   ETwQFTe/Zz456s/6rM7GwhgiFteVHtdWHSwtiyamP2Ee+j9HWGvcdbl6D
+   m2jzKrE9vlaH7+ibO9bSVTH2326+Sobrn+btodV0zS3H7ambagw89A071
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10521"; a="310085928"
+X-IronPort-AV: E=Sophos;i="5.96,138,1665471600"; 
+   d="scan'208";a="310085928"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2022 15:09:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10521"; a="964499065"
+X-IronPort-AV: E=Sophos;i="5.96,138,1665471600"; 
+   d="scan'208";a="964499065"
+Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 04 Nov 2022 15:09:42 -0700
+Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1or4sf-000HNJ-1W;
+        Fri, 04 Nov 2022 22:09:41 +0000
+Date:   Sat, 05 Nov 2022 06:08:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 91018bbcc664b6c9410ddccacd2239a4acadcfc9
+Message-ID: <63658d76.VqMFHw2C+jhUjI0q%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221104154355.578ab689@rorschach.local.home>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 04, 2022 at 04:38:34PM -0400, Steven Rostedt wrote:
-> On Fri, 4 Nov 2022 15:42:09 -0400
-> Steven Rostedt <rostedt@goodmis.org> wrote:
-> 
-[ ... ]
-> 
-> > drivers/clocksource/timer-fttmr010.c:   fttmr010->timer_shutdown(evt);
-> > drivers/clocksource/timer-fttmr010.c:   fttmr010->timer_shutdown(evt);
-> > drivers/clocksource/timer-fttmr010.c:   fttmr010->timer_shutdown(evt);
-> > drivers/clocksource/timer-fttmr010.c:           fttmr010->timer_shutdown = ast2600_timer_shutdown;
-> > drivers/clocksource/timer-fttmr010.c:           fttmr010->timer_shutdown = fttmr010_timer_shutdown;
-> > drivers/clocksource/timer-fttmr010.c:   fttmr010->clkevt.set_state_shutdown = fttmr010->timer_shutdown;
-> > drivers/clocksource/timer-fttmr010.c:   fttmr010->clkevt.tick_resume = fttmr010->timer_shutdown;
-> 
-> I won't touch structure fields though.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 91018bbcc664b6c9410ddccacd2239a4acadcfc9  Merge tag 'wireless-2022-11-03' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless
 
-Agreed, same here.
+elapsed time: 1049m
 
-Guenter
+configs tested: 56
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+mips                             allyesconfig
+alpha                               defconfig
+powerpc                          allmodconfig
+arc                                 defconfig
+s390                                defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+x86_64                        randconfig-a013
+i386                          randconfig-a001
+x86_64                        randconfig-a011
+i386                          randconfig-a003
+s390                 randconfig-r044-20221104
+x86_64                        randconfig-a004
+x86_64                              defconfig
+x86_64                        randconfig-a015
+i386                                defconfig
+i386                          randconfig-a005
+x86_64                        randconfig-a006
+x86_64                           rhel-8.3-syz
+i386                          randconfig-a016
+ia64                             allmodconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           allyesconfig
+x86_64                        randconfig-a002
+x86_64                    rhel-8.3-kselftests
+i386                             allyesconfig
+i386                          randconfig-a014
+x86_64                           rhel-8.3-kvm
+x86_64                         rhel-8.3-kunit
+i386                          randconfig-a012
+arm                                 defconfig
+m68k                             allyesconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+m68k                             allmodconfig
+riscv                randconfig-r042-20221104
+arc                  randconfig-r043-20221104
+
+clang tested configs:
+x86_64                        randconfig-a014
+i386                          randconfig-a002
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+x86_64                        randconfig-a005
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a001
+i386                          randconfig-a013
+x86_64                        randconfig-a003
+i386                          randconfig-a011
+i386                          randconfig-a015
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
