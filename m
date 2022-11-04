@@ -2,52 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B67376192BB
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 09:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 979896192FC
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 09:55:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbiKDIaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Nov 2022 04:30:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50236 "EHLO
+        id S231349AbiKDIzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Nov 2022 04:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230297AbiKDIaJ (ORCPT
+        with ESMTP id S231309AbiKDIzL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Nov 2022 04:30:09 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D431D26ACC
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Nov 2022 01:30:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 87565B82C3C
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Nov 2022 08:30:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26B1C433C1;
-        Fri,  4 Nov 2022 08:30:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667550605;
-        bh=IN2cjiX2KuA9gGT2Jt5Adbt60ZHudH5BEFpF27utiEo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TuzacKW43OCg/d7jQgHsym2e/ZEe0AqtqsoCc5cfETfrXNchJ8wDbakNuapQ4tF/h
-         3M61k7VxiM7IsR46OHAtu8caru7s2QfbdDhB5qnpdMBfgjVYdF9x71qj/1rccQG7KX
-         ts1X+3JhIw0xNLkj6nLGC6mIFYpxXkiaBISdC6Ph8+q0THgywNKIiXajEbCcIym0XX
-         Y+gPCLmpzLt9/0LJ75PsHreWfVT6JEWx7Qct4w+00wGkh+eos0S8IQ/VhAmudNGJJh
-         K6dbbMRpaZA6TJGBTDXMWTbb4fIpZc34TOyM6lHvU9NCOLdPrmdb0D4q/WY4OK4a6/
-         ksfNdJQPlXcog==
-Date:   Fri, 4 Nov 2022 09:30:01 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org, kvalo@kernel.org,
-        dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr
-Subject: Re: [RFC PATCH] wifi: mt76: Fix potential NULL pointer dereference
- in status work
-Message-ID: <Y2TNibghqT9fnR3j@lore-desk>
-References: <20221103100556.48288-1-linuxlovemin@yonsei.ac.kr>
+        Fri, 4 Nov 2022 04:55:11 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 782CF27B00;
+        Fri,  4 Nov 2022 01:54:58 -0700 (PDT)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2A48TCU4007256;
+        Fri, 4 Nov 2022 08:54:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Q3ivjPfhefs5FmtsQkMYD0t2R+VeUMRe8emnV2rOpL0=;
+ b=mUTwq12nkeKXiDYYLcZIUjhd8Mv+rxsryug9+deYATaasdkMy4hZBKK8gl+4Cuqfiydz
+ zkxZYqfPfb9bDJ/Uu9h3mQ4wCuT/150OtZU5aUCCb0UdnjbC/efTHlzYInG9Wnt9RYR9
+ 9NTBsXWI6GhP5Y84HYSJoxb3xuyBPW4OTaOeQ5flccsRW/wqYHUmJlRbCryHppi2MEKQ
+ b8S41JWU8SZst1pUrAd1pi0YvZEMoCKOkaKp1djlxS0t6jUqQ0JAMp9c+lfOpxVfY76g
+ YEeR+PHL8uWy4gW1pOmapNQLx3fpurH5hP4KBEuDUm732/KfNGVA3mLpoUbJkKJEeCiD Zw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kmvk90cvp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Nov 2022 08:54:28 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2A48sR7s026294
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 4 Nov 2022 08:54:27 GMT
+Received: from youghand-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Fri, 4 Nov 2022 01:54:25 -0700
+From:   Youghandhar Chintala <quic_youghand@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v2] wifi: ath11k: Trigger sta disconnect on hardware restart
+Date:   Fri, 4 Nov 2022 14:24:03 +0530
+Message-ID: <20221104085403.11025-1-quic_youghand@quicinc.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TuFfe+pg11grwmCE"
-Content-Disposition: inline
-In-Reply-To: <20221103100556.48288-1-linuxlovemin@yonsei.ac.kr>
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: V30OoK6WFme0V4BW0prj2MM9tIkvTDFk
+X-Proofpoint-ORIG-GUID: V30OoK6WFme0V4BW0prj2MM9tIkvTDFk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-04_02,2022-11-03_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 phishscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211040057
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,176 +75,129 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Currently after the hardware restart triggered from the driver, the
+station interface connection remains intact, since a disconnect trigger
+is not sent to userspace. This can lead to a problem in targets where
+the wifi mac sequence is added by the firmware.
 
---TuFfe+pg11grwmCE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+After the target restart, its wifi mac sequence number gets reset to
+zero. Hence AP to which our device is connected will receive frames with
+a  wifi mac sequence number jump to the past, thereby resulting in the
+AP dropping all these frames, until the frame arrives with a wifi mac
+sequence number which AP was expecting.
 
-> This patch fixes a NULL pointer dereference in mt76 that occurs when a
-> status work like mt76u_tx_status_data() queued from mt76u_status_worker()
-> is called in worker thread while the device initialization failed.
-> Pointers dereferenced in the work that should have been initialized
-> during the device registration in mt76_register_device(),
-> 'dev->mphy.chandef.chan' in mt76x02_mac_fill_tx_status(), for example,
-> may be NULL if the initialization failed. The patch adds a check that
-> safely terminates the function if that is the case.
->=20
-> Found by a modified version of syzkaller.
->=20
-> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-> CPU: 0 PID: 98 Comm: kworker/u2:2 Not tainted 5.14.0+ #78
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-=
-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-> Workqueue: mt76 mt76u_tx_status_data
-> RIP: 0010:mt76x02_mac_fill_tx_status.isra.0+0x82c/0x9e0
-> Code: c5 48 b8 00 00 00 00 00 fc ff df 80 3c 02 00 0f 85 94 01 00 00 48 b=
-8 00 00 00 00 00 fc ff df 4d 8b 34 24 4c 89 f2 48 c1 ea 03 <0f> b6 04 02 84=
- c0 74 08 3c 03 0f 8e 89 01 00 00 41 8b 16 41 0f b7
-> RSP: 0018:ffffc900005af988 EFLAGS: 00010246
-> RAX: dffffc0000000000 RBX: ffffc900005afae8 RCX: 0000000000000000
-> RDX: 0000000000000000 RSI: ffffffff832fc661 RDI: ffffc900005afc2a
-> RBP: ffffc900005afae0 R08: 0000000000000001 R09: fffff520000b5f3c
-> R10: 0000000000000003 R11: fffff520000b5f3b R12: ffff88810b6132d8
-> R13: 000000000000ffff R14: 0000000000000000 R15: ffffc900005afc28
-> FS:  0000000000000000(0000) GS:ffff88811aa00000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007fa0eda6a000 CR3: 0000000118f17000 CR4: 0000000000750ef0
-> PKRU: 55555554
-> Call Trace:
->  ? do_raw_spin_lock+0x125/0x2e0
->  ? mt76x02_mac_write_txwi+0xdc0/0xdc0
->  ? rwlock_bug.part.0+0x90/0x90
->  ? __dev_printk+0x1d6/0x1fe
->  mt76x02_send_tx_status+0x1d2/0xeb0
->  ? usleep_range+0xb3/0x170
->  ? mt76x02_mac_load_tx_status+0x4b0/0x4b0
->  ? rcu_read_lock_sched_held+0xa1/0xd0
->  ? rcu_read_lock_bh_held+0xb0/0xb0
->  ? mt76u_rr+0x3c/0x50
->  mt76x02_tx_status_data+0x8e/0xd0
->  ? mt76x02_tx_set_txpwr_auto+0x330/0x330
->  mt76u_tx_status_data+0xe1/0x240
->  ? mt76u_read_copy_ext+0x180/0x180
->  ? rcu_read_lock_sched_held+0x81/0xd0
->  ? rcu_read_lock_bh_held+0xb0/0xb0
->  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
->  process_one_work+0x92b/0x1460
->  ? pwq_dec_nr_in_flight+0x330/0x330
->  ? rwlock_bug.part.0+0x90/0x90
->  worker_thread+0x95/0xe00
->  ? __kthread_parkme+0x115/0x1e0
->  ? process_one_work+0x1460/0x1460
->  kthread+0x3a1/0x480
->  ? set_kthread_struct+0x120/0x120
->  ret_from_fork+0x1f/0x30
-> Modules linked in:
-> ---[ end trace 8df5d20fc5040f65 ]---
-> RIP: 0010:mt76x02_mac_fill_tx_status.isra.0+0x82c/0x9e0
-> Code: c5 48 b8 00 00 00 00 00 fc ff df 80 3c 02 00 0f 85 94 01 00 00 48 b=
-8 00 00 00 00 00 fc ff df 4d 8b 34 24 4c 89 f2 48 c1 ea 03 <0f> b6 04 02 84=
- c0 74 08 3c 03 0f 8e 89 01 00 00 41 8b 16 41 0f b7
-> RSP: 0018:ffffc900005af988 EFLAGS: 00010246
-> RAX: dffffc0000000000 RBX: ffffc900005afae8 RCX: 0000000000000000
-> RDX: 0000000000000000 RSI: ffffffff832fc661 RDI: ffffc900005afc2a
-> RBP: ffffc900005afae0 R08: 0000000000000001 R09: fffff520000b5f3c
-> R10: 0000000000000003 R11: fffff520000b5f3b R12: ffff88810b6132d8
-> R13: 000000000000ffff R14: 0000000000000000 R15: ffffc900005afc28
-> FS:  0000000000000000(0000) GS:ffff88811aa00000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007fa0eda6a000 CR3: 0000000118f17000 CR4: 0000000000750ef0
-> PKRU: 55555554
->=20
-> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-> Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-> ---
->=20
-> The crash we found occurs when the initialization failed in
-> mt76x0u_register_device() and mt76u_stop_tx() is called via
-> mt76u_queues_deinit() as an error handling. mt76u_stop_tx()
-> enables a kthread with mt76_worker_enable() and this
-> make 'dev->mphy.chandef.chan', which is NULL, be dereferenced
-> in mt76x02_mac_fill_tx_status(), called in the worker.
->=20
-> I think that calling mt76_worker_enable() in mt76u_stop_tx()
-> may be a fundamental problem in this crash. What I found
-> is that mt76u_stop_tx() is invoked twice by mt76x0u_stop()
-> and mt76x0u_cleanup() from mt76x0_disconnect() when
-> disconnecting the device. In this situation, enabling
-> kthreads in mt76u_stop_tx() after disabling them will prevents
-> them from being repeatedly parked, which will return -EBUSY.
->=20
-> If invoking mt76u_stop_tx() in both mt76x0u_stop() and
-> mt76x0u_cleanup() is unnecessary, and preventing kthreads
-> from being continuously parked is the only reason of
-> mt76_worker_enable() in mt76u_stop_tx(), I think we can
-> make a solution that fundamentally prevent the work from
-> being called when initialization is failed, instead of
-> checking the state after the work is called.
-> ---
->  drivers/net/wireless/mediatek/mt76/sdio.c | 3 ++-
->  drivers/net/wireless/mediatek/mt76/usb.c  | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wire=
-less/mediatek/mt76/sdio.c
-> index 0ec308f99af5..464d1c713554 100644
-> --- a/drivers/net/wireless/mediatek/mt76/sdio.c
-> +++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-> @@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct work_struct *=
-work)
->  	dev =3D container_of(sdio, struct mt76_dev, sdio);
-> =20
->  	while (true) {
-> -		if (test_bit(MT76_REMOVED, &dev->phy.state))
-> +		if (test_bit(MT76_REMOVED, &dev->phy.state) ||
-> +		    !test_bit(MT76_STATE_INITIALIZED, &dev->phy.state))
->  			break;
-> =20
->  		if (!dev->drv->tx_status_data(dev, &update))
-> diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wirel=
-ess/mediatek/mt76/usb.c
-> index 4c4033bb1bb3..6cfdaa9d09d1 100644
-> --- a/drivers/net/wireless/mediatek/mt76/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-> @@ -803,7 +803,8 @@ static void mt76u_tx_status_data(struct work_struct *=
-work)
->  	dev =3D container_of(usb, struct mt76_dev, usb);
-> =20
->  	while (true) {
-> -		if (test_bit(MT76_REMOVED, &dev->phy.state))
-> +		if (test_bit(MT76_REMOVED, &dev->phy.state) ||
-> +		    !test_bit(MT76_STATE_INITIALIZED, &dev->phy.state))
->  			break;
-> =20
->  		if (!dev->drv->tx_status_data(dev, &update))
+To avoid such frame drops, its better to trigger a station disconnect
+upon target hardware restart which can be done with API
+ieee80211_reconfig_disconnect exposed to mac80211.
 
-Hi,
+The other targets are not affected by this change, since the hardware
+params flag is not set.
 
-I have already posted a fix for this issue:
-https://patchwork.kernel.org/project/linux-wireless/patch/42b98060e60849f4e=
-3116a725004a6396cef08c1.1665687951.git.lorenzo@kernel.org/
+Reported-by: kernel test robot <lkp@intel.com>
 
-Regards,
-Lorenzo
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
 
-> --=20
-> 2.25.1
->=20
+Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
 
---TuFfe+pg11grwmCE
-Content-Type: application/pgp-signature; name="signature.asc"
+---
+Changes from v1:
+- Added arvif declaration
+---
+ drivers/net/wireless/ath/ath11k/core.c | 6 ++++++
+ drivers/net/wireless/ath/ath11k/hw.h   | 1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 8 ++++++++
+ 3 files changed, 15 insertions(+)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 0ab2f190f1ec..edf78df9b12f 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -195,6 +195,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tcl_ring_retry = true,
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
+ 		.smp2p_wow_exit = false,
++		.support_fw_mac_sequence = false,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -277,6 +278,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tcl_ring_retry = true,
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
+ 		.smp2p_wow_exit = false,
++		.support_fw_mac_sequence = true,
+ 	},
+ 	{
+ 		.name = "qcn9074 hw1.0",
+@@ -356,6 +358,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tcl_ring_retry = true,
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
+ 		.smp2p_wow_exit = false,
++		.support_fw_mac_sequence = false,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.0",
+@@ -438,6 +441,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tcl_ring_retry = true,
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
+ 		.smp2p_wow_exit = false,
++		.support_fw_mac_sequence = true,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.1",
+@@ -519,6 +523,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tcl_ring_retry = true,
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
+ 		.smp2p_wow_exit = false,
++		.support_fw_mac_sequence = true,
+ 	},
+ 	{
+ 		.name = "wcn6750 hw1.0",
+@@ -597,6 +602,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tcl_ring_retry = false,
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE_WCN6750,
+ 		.smp2p_wow_exit = true,
++		.support_fw_mac_sequence = true,
+ 	},
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 8a3f24862edc..0c5ef8a526d8 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -219,6 +219,7 @@ struct ath11k_hw_params {
+ 	bool tcl_ring_retry;
+ 	u32 tx_ring_size;
+ 	bool smp2p_wow_exit;
++	bool support_fw_mac_sequence;
+ };
+ 
+ struct ath11k_hw_ops {
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 6426a38f8961..d0ba05e7e879 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8010,6 +8010,7 @@ ath11k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ 	struct ath11k *ar = hw->priv;
+ 	struct ath11k_base *ab = ar->ab;
+ 	int recovery_count;
++	struct ath11k_vif *arvif;
+ 
+ 	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
+ 		return;
+@@ -8045,6 +8046,13 @@ ath11k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ 				ath11k_dbg(ab, ATH11K_DBG_BOOT, "reset success\n");
+ 			}
+ 		}
++		if (ar->ab->hw_params.support_fw_mac_sequence) {
++			list_for_each_entry(arvif, &ar->arvifs, list) {
++				if (arvif->is_up && arvif->vdev_type == WMI_VDEV_TYPE_STA)
++					ieee80211_hw_restart_disconnect(arvif->vif);
++			}
++		}
++
+ 	}
+ 
+ 	mutex_unlock(&ar->conf_mutex);
+-- 
+2.38.0
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY2TNiQAKCRA6cBh0uS2t
-rKZAAQC9MuH9aIFuBANVvZTNt0vNYiptnRT18WB5CUkd2jxVGQD+PtxV0w6jkb2V
-S1Yt4Ul+isAEc7iJwOXjsMaBuJaIhAI=
-=G2Vg
------END PGP SIGNATURE-----
-
---TuFfe+pg11grwmCE--
