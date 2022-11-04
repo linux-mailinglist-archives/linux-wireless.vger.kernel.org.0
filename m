@@ -2,133 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D37618D9D
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 02:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892DB618DA4
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Nov 2022 02:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbiKDB2A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Nov 2022 21:28:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35038 "EHLO
+        id S230187AbiKDB3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Nov 2022 21:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbiKDB16 (ORCPT
+        with ESMTP id S231228AbiKDB3D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Nov 2022 21:27:58 -0400
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5385423392;
-        Thu,  3 Nov 2022 18:27:57 -0700 (PDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-12c8312131fso4172088fac.4;
-        Thu, 03 Nov 2022 18:27:57 -0700 (PDT)
+        Thu, 3 Nov 2022 21:29:03 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA7023BC0;
+        Thu,  3 Nov 2022 18:29:02 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id k59-20020a9d19c1000000b0066c45cdfca5so1943880otk.10;
+        Thu, 03 Nov 2022 18:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=aUilUaHJkRjMTuKpx9KuulcmPnQFwe0ZTOEMgpM9EUs=;
-        b=Qiuj1zxH72t4rljyyB3fSEkfn0epewXXoN357R0R6Usp3EKlWrx8iU6hpHUzfKpX1N
-         jWUvsrLP7T+/T1HTqFmsPXuwFA3OhGOVpq/6hknV2wHSHf8vxvD0SjqSU9ikQYMusbVh
-         Ibvt/VUaZO27SjIcQQsqhhHansMDWkRhoZJ25wlaEJFLerIHLY9Z6gt6gBWracbEq52v
-         WyLK4J9IOWlBKdFWafyeUCtKH3Grw4/GJa2RKMtb5uDabXtgzXtRP9PcMO11bAgO+rcE
-         8vVYN3Y5hRUttjbnXz/13kwYZdkqigq9lG1nsPlZIePUhTXp23fp7wrjIrx9Cim5/XWG
-         SHNQ==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=hEBcm7p0xk0vESKY5HMmcIQ1ZPd78U69LjZYilp5ZvY=;
+        b=Pb2zE5wb9T8ZmbLdpFiq0pbJ6TqqWlXl6LfNuGToF7QPZIAM9F6PFT1kNz5mKEaz7m
+         /7fpuEZncuNyDVN6Mz7ZF2u/AGExF8gTTpB+pBJwMvjj8zPGzF4aztARjLH9/v1vD6xg
+         n3b6c7PbLwLElQf9fmOv3INGXzysh7XYO6M92aLB20UWsmJ4dTRB1j/r8r9Z8YxE7ZvM
+         h0FkzdTMRWq/gPtbed5yanW8kC/fyIkx5IUL7EGoG2KpvBYgMo8LH0QdbfgaS8Gry4kC
+         GYlAtQia/T94X/SPPTq41EovaASXT6aHThCRo+4jFH1gh4nGZWAvVmep8zerT5bwEoWJ
+         G0nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aUilUaHJkRjMTuKpx9KuulcmPnQFwe0ZTOEMgpM9EUs=;
-        b=cFiQjEvUumk5ghW4GWmY+37rM48BwHcDg8M2BNAClxyUxVo3wjuXkw2x+MRS8bOKgD
-         wUcOU/gKupzfEc9gaVEkEZ2nnw6vYJUHZq6PlMGI9vuwroVobBtl2FbH/Mu8uv9PGTe5
-         tnuv4rXrxOMezr/l1FtHTwZwr3wtcZqHv6OanqkyTC1N1VsVJhnoxY0nveJMnm2ZONZK
-         zeoWl9WlLkdpoQWI0uH7E93yEcxScziMAz67+hgOyR+xfHVQFfUB8cV76AUPMe2VHTaD
-         LqOBcFNpnBNpeWpN7YIMnCODbpdq79p6DH6VsfldU/mXGDZQEOgn/Ah5GbzNHUi3tA7K
-         9Row==
-X-Gm-Message-State: ACrzQf3FeyRszoUeUQ6DM8M0Zh/RidMcxTk8v5GBFLPUwffAfWQnoNQD
-        8lxaEga3lngW+qkMsECFl1U=
-X-Google-Smtp-Source: AMsMyM7mnS5ut6p2YgNYUONLq0d80He/REUIRQ+G4m7m1O1dcQUT/Jn8NnVdFxbGwgr+wi1xKLrmPg==
-X-Received: by 2002:a05:6870:3414:b0:13c:787e:15ba with SMTP id g20-20020a056870341400b0013c787e15bamr19114631oah.164.1667525276643;
-        Thu, 03 Nov 2022 18:27:56 -0700 (PDT)
-Received: from localhost.localdomain ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id b6-20020a9d6b86000000b0066c75a2643asm924675otq.66.2022.11.03.18.27.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Nov 2022 18:27:56 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hEBcm7p0xk0vESKY5HMmcIQ1ZPd78U69LjZYilp5ZvY=;
+        b=qE/Gf6/JxowdUb3KRG/i/OjT2mDK2RcwGKI5jCxNpKdfaUImzFqgQ5wssvZebPWZ/l
+         IKDv+zFFU+POS6HfuSGQyIdfSNxUDa3sVkwybjK95yPKQYh+w41ketyu7ldyzlkRrnxw
+         3jcNa/eBIdFurcIRMF9YqkcTIP32Q03Dq8j6KrMRUyVIsNHWaDhOwfzxsoapGkhCtE/x
+         sMAOwuHR0c37JFIr2a8oI9BopvU1ki8zctS6T5q4iwriYNVx1ewgFnjibMZUDg9dBu55
+         +3hCRe4Yo9wSVCLn89h6HhFg6s8EwbgPeoCz7ngp4X2kCo4WdJFG3fC2tT6T2RqAoZ55
+         uPwQ==
+X-Gm-Message-State: ACrzQf0Kxt6NQIlEf6k/4XKvPAl69nOGV/5xE55voTtsK2rX54GKZUpF
+        YqyKlXC6NxJTiISwLJuTMKMMCleAz1U=
+X-Google-Smtp-Source: AMsMyM6y5GVnuXfGrm2metk15WUXK1msAbHLxndz4/CLs+lK3Plzi6VEJdfvsMXRCeJudqxqzmAJpA==
+X-Received: by 2002:a05:6830:1605:b0:66c:55c2:8780 with SMTP id g5-20020a056830160500b0066c55c28780mr12107516otr.378.1667525341519;
+        Thu, 03 Nov 2022 18:29:01 -0700 (PDT)
+Received: from [192.168.0.158] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id r69-20020acaa848000000b003509cc4ad4esm977548oie.39.2022.11.03.18.28.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Nov 2022 18:29:01 -0700 (PDT)
 Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     gregkh@linuxfoundation.org
+Message-ID: <0c0773ed-8a16-3082-0b13-38ed37058f44@lwfinger.net>
+Date:   Thu, 3 Nov 2022 20:28:58 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH] staging: rtl8192e: Fix divide fault when calculating
+ beacon age
+Content-Language: en-US
+To:     Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        gregkh@linuxfoundation.org
 Cc:     phil@philpotter.co.uk, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
         Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v2] staging: rtl8192e: Fix divide fault when calculating beacon age
-Date:   Thu,  3 Nov 2022 20:27:50 -0500
-Message-Id: <20221104012750.2076-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.38.0
-MIME-Version: 1.0
+References: <20221103200507.14304-1-Larry.Finger@lwfinger.net>
+ <2c51855b-cd74-5701-d9fc-ad75818e7c28@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <2c51855b-cd74-5701-d9fc-ad75818e7c28@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the configuration parameter CONFIG_HZ is less that 100, the compiler
-generates an error as follows:
+On 11/3/22 17:01, Philipp Hortmann wrote:
+> On 11/3/22 21:05, Larry Finger wrote:
+>> When the configuration parameter CONFIG_HZ is less that 100, the compiler
+>> generates an error as follows:
+>>
+>> ../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtl819x_translate_scan':
+>> ../drivers/staging/rtl8192e/rtllib_wx.c:220:57: warning: division by zero 
+>> [-Wdiv-by-zero]
+>>    220 |                       (jiffies - network->last_scanned) / (HZ / 100));
+>>        |                                                         ^
+>> In file included from ../include/linux/skbuff.h:45,
+>>                   from ../include/linux/if_ether.h:19,
+>>                   from ../include/linux/etherdevice.h:20,
+>>                   from ../drivers/staging/rtl8192e/rtllib_wx.c:18:
+>> ../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtllib_wx_get_scan':
+>> ../drivers/staging/rtl8192e/rtllib_wx.c:261:70: warning: division by zero 
+>> [-Wdiv-by-zero]
+>>    261 |                                    (jiffies - network->last_scanned) /
+>>        |
+>>
+>> In fact, is HZ is not a multiple of 100, the calculation will be wrong, but it
+>> will compile correctly.
+>>
+>> The fix is to get rid of the (HZ / 100) portion. To decrease any round-off
+>> errors, the compiler is forced to perform the 100 * jiffies-difference before
+>> dividing by HX. This patch is only compile tested.
+>>
+>> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+>> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+>> ---
+>>   drivers/staging/rtl8192e/rtllib_wx.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/staging/rtl8192e/rtllib_wx.c 
+>> b/drivers/staging/rtl8192e/rtllib_wx.c
+>> index da2c41c9b92f..7013425102dd 100644
+>> --- a/drivers/staging/rtl8192e/rtllib_wx.c
+>> +++ b/drivers/staging/rtl8192e/rtllib_wx.c
+>> @@ -217,7 +217,7 @@ static inline char *rtl819x_translate_scan(struct 
+>> rtllib_device *ieee,
+>>       p = custom;
+>>       p += scnprintf(p, MAX_CUSTOM_LEN - (p - custom),
+>>                 " Last beacon: %lums ago",
+>> -              (jiffies - network->last_scanned) / (HZ / 100));
+>> +              (100 *(jiffies - network->last_scanned)) / HZ);
+>>       iwe.u.data.length = p - custom;
+>>       if (iwe.u.data.length)
+>>           start = iwe_stream_add_point_rsl(info, start, stop,
+>> @@ -258,8 +258,8 @@ int rtllib_wx_get_scan(struct rtllib_device *ieee,
+>>                      escape_essid(network->ssid,
+>>                           network->ssid_len),
+>>                      network->bssid,
+>> -                   (jiffies - network->last_scanned) /
+>> -                   (HZ / 100));
+>> +                   (100 * (jiffies - network->last_scanned)) /
+>> +                   HZ);
+>>       }
+>>       spin_unlock_irqrestore(&ieee->lock, flags);
+> 
+> Line length of the description is to long.
 
-../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtl819x_translate_scan':
-../drivers/staging/rtl8192e/rtllib_wx.c:220:57: warning: division by zero [-Wdiv-by-zero]
-  220 |      (jiffies - network->last_scanned) / (HZ / 100));
-      |                                                         ^
-In file included from ../include/linux/skbuff.h:45,
-                 from ../include/linux/if_ether.h:19,
-                 from ../include/linux/etherdevice.h:20,
-                 from ../drivers/staging/rtl8192e/rtllib_wx.c:18:
-../drivers/staging/rtl8192e/rtllib_wx.c: In function 'rtllib_wx_get_scan':
-../drivers/staging/rtl8192e/rtllib_wx.c:261:70: warning: division by zero [-Wdiv-by-zero]
-  261 |      (jiffies - network->last_scanned) /
-      |
+Addressed in v2.
 
-In fact, is HZ is not a multiple of 100, the calculation will be wrong,
-but it will compile correctly.
-
-The fix is to get rid of the (HZ / 100) portion. To decrease any round-off
-errors, the compiler is forced to perform the 100 * jiffies-difference
-before dividing by HZ. This patch is only compile tested.
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
-v2 - some commit log lines are shortened
-   - add space after * operator
----
- drivers/staging/rtl8192e/rtllib_wx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/rtl8192e/rtllib_wx.c b/drivers/staging/rtl8192e/rtllib_wx.c
-index da2c41c9b92f..217426ee2e92 100644
---- a/drivers/staging/rtl8192e/rtllib_wx.c
-+++ b/drivers/staging/rtl8192e/rtllib_wx.c
-@@ -217,7 +217,7 @@ static inline char *rtl819x_translate_scan(struct rtllib_device *ieee,
- 	p = custom;
- 	p += scnprintf(p, MAX_CUSTOM_LEN - (p - custom),
- 		      " Last beacon: %lums ago",
--		      (jiffies - network->last_scanned) / (HZ / 100));
-+		      (100 * (jiffies - network->last_scanned)) / HZ);
- 	iwe.u.data.length = p - custom;
- 	if (iwe.u.data.length)
- 		start = iwe_stream_add_point_rsl(info, start, stop,
-@@ -258,8 +258,8 @@ int rtllib_wx_get_scan(struct rtllib_device *ieee,
- 				   escape_essid(network->ssid,
- 						network->ssid_len),
- 				   network->bssid,
--				   (jiffies - network->last_scanned) /
--				   (HZ / 100));
-+				   (100 * (jiffies - network->last_scanned)) /
-+				   HZ);
- 	}
- 
- 	spin_unlock_irqrestore(&ieee->lock, flags);
--- 
-2.38.0
+Larry
 
