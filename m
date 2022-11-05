@@ -2,94 +2,241 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2282B61DEF6
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Nov 2022 22:48:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAE161DF30
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Nov 2022 23:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbiKEVsJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Nov 2022 17:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39598 "EHLO
+        id S229851AbiKEWx3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Nov 2022 18:53:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiKEVsD (ORCPT
+        with ESMTP id S229789AbiKEWx2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Nov 2022 17:48:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB6F13CCD;
-        Sat,  5 Nov 2022 14:48:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 264E6B801BF;
-        Sat,  5 Nov 2022 21:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37383C433D6;
-        Sat,  5 Nov 2022 21:47:58 +0000 (UTC)
-Date:   Sat, 5 Nov 2022 17:47:56 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-edac@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, drbd-dev@lists.linbit.com,
-        linux-bluetooth@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-leds@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: Re: [PATCH v4a 00/38] timers: Use timer_shutdown*() before freeing
- timers
-Message-ID: <20221105174756.38062fce@rorschach.local.home>
-In-Reply-To: <CAHk-=wjkkomrdcrAxxFijs-Lih6vHze+A2TgM+v7-Z7ZkXT+WA@mail.gmail.com>
-References: <20221105060024.598488967@goodmis.org>
-        <CAHk-=wi95dGkg7DiuOZ27gGW+mxJipn9ykB6LHB-HrbbLG6OMQ@mail.gmail.com>
-        <20221105123642.596371c7@rorschach.local.home>
-        <Y2bPlllkHo5DUmLY@zx2c4.com>
-        <CAHk-=wjkkomrdcrAxxFijs-Lih6vHze+A2TgM+v7-Z7ZkXT+WA@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Sat, 5 Nov 2022 18:53:28 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70AAA6424
+        for <linux-wireless@vger.kernel.org>; Sat,  5 Nov 2022 15:53:26 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id ud5so21668922ejc.4
+        for <linux-wireless@vger.kernel.org>; Sat, 05 Nov 2022 15:53:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aCJUzNSkLxRfPYmiowUlL3rsYMLW8WwUJrdMxX0uC1w=;
+        b=BaELn+xC5t22B45t33+5Xd4ZlbZEmtWjzoB5hIhUlRCZ0//uYB9ts9ntC4zJ/i95h9
+         b9xCr3HHLHTHyDnEWY6Dxh2ykz6PPeaQty0qKqou7QxBfUTy2jKexbaYDObgIkjG6oHb
+         p7mYe27obfOhs709UOMXKLUyP3+joP0rRYuD8t9WlgbSvE50g/gkYHElkvNhCU1BiX7v
+         6borQKNqkiZ3pINDRynLI/ITjryNaYqPEDiU3o8AXW4wc508vPiOVOcKA65Cdeyq3cIO
+         tVyBREdzyTVwf/UH+tFRzBo1G6ErYqb1qiSqOlXeFFE5ivNwD5fL/0eWFREnWLdloZEf
+         y9pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aCJUzNSkLxRfPYmiowUlL3rsYMLW8WwUJrdMxX0uC1w=;
+        b=fDBucPmlT9Qp4pIupXkhe/Niu9QFAbhqEG4nalmjzcDvb1w1lh4p2sKmJPNrfGNSSx
+         VVpPgM5b7yJ6z3Bo+7KE/KOYCPRlihLrn08VxygUu9ZcruL0yvHAJdMobbKNrrfsz2Ao
+         O/ATRsgQQCewb0+QRyPknSq+utZ12rS+q/EFImjyCzSPAvwLufIss3Anlr3KHlZvu+KA
+         SRAl5XQoQVmNhaVBsiwSMCUCMxTlxiE0Z9RThTvQ+B6tiqe96KYH44ETgsiOg5Eyjoqs
+         WaczA58hAyVYCXlRcdEtB+jk0JKRCFw66loGZEBZogrdXCCm32hYWENSzDxB1l5omZXB
+         +5qQ==
+X-Gm-Message-State: ACrzQf16bxnnUASoemQumqNYk71XP5dZCRM1DGuK93LUu/m7aFaksi7Q
+        2GGhlUDB+qv3P67KGelTozZ5GD28PKc=
+X-Google-Smtp-Source: AMsMyM60KJ6joAlaMdqX+He+9MaADLZ/7PF6kAkdgpuFTvUWzh94x6FgZ4+eb2uW4lT3ONCo0hC8ag==
+X-Received: by 2002:a17:906:66ce:b0:7ad:d178:c252 with SMTP id k14-20020a17090666ce00b007add178c252mr32841821ejp.158.1667688804822;
+        Sat, 05 Nov 2022 15:53:24 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.23])
+        by smtp.gmail.com with ESMTPSA id lc24-20020a170906dff800b0078d4e39d87esm1421420ejc.225.2022.11.05.15.53.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Nov 2022 15:53:24 -0700 (PDT)
+Message-ID: <bef90bf8-716f-c92f-9403-12ef2bfefc15@gmail.com>
+Date:   Sun, 6 Nov 2022 00:53:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Content-Language: en-US
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v2 1/3] wifi: rtl8xxxu: Move burst init to a function
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 5 Nov 2022 14:13:14 -0700
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+No changes to functionality, just moving code to make
+rtl8xxxu_init_device look nicer.
 
-> (Comparing output is also fun because the ordering of the patches is
-> random, so consecutive runs with the same rule will give different
-> patches. I assume that it's just because it's done in parallel, but it
-> doesn't help the "try to see what changes when you change the script"
-> ;)
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+v2:
+ - No change.
+---
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  2 +
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  1 +
+ .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |  1 +
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 89 ++++++++++---------
+ 4 files changed, 52 insertions(+), 41 deletions(-)
 
-What I do to compare is:
-
- patch -p1 < cocci1.patch
- git commit -a
- git show | patch -p1 -R
- patch -p1 < cocci2.patch
- git diff
-
-Then I see how things changed. This is how I was able to show you the
-tweaks I made.
-
--- Steve
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 6ff554ba0250..9f8b23160ed0 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1485,6 +1485,7 @@ struct rtl8xxxu_fileops {
+ 	int (*parse_rx_desc) (struct rtl8xxxu_priv *priv, struct sk_buff *skb);
+ 	void (*init_aggregation) (struct rtl8xxxu_priv *priv);
+ 	void (*init_statistics) (struct rtl8xxxu_priv *priv);
++	void (*init_burst) (struct rtl8xxxu_priv *priv);
+ 	void (*enable_rf) (struct rtl8xxxu_priv *priv);
+ 	void (*disable_rf) (struct rtl8xxxu_priv *priv);
+ 	void (*usb_quirks) (struct rtl8xxxu_priv *priv);
+@@ -1592,6 +1593,7 @@ void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv);
+ void rtl8xxxu_gen1_enable_rf(struct rtl8xxxu_priv *priv);
+ void rtl8xxxu_gen1_disable_rf(struct rtl8xxxu_priv *priv);
+ void rtl8xxxu_gen2_disable_rf(struct rtl8xxxu_priv *priv);
++void rtl8xxxu_init_burst(struct rtl8xxxu_priv *priv);
+ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb);
+ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb);
+ int rtl8xxxu_gen2_channel_to_group(int channel);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index 5a5b7fa4283c..5eadeb02a762 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -1705,6 +1705,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+ 	.parse_rx_desc = rtl8xxxu_parse_rxdesc24,
+ 	.init_aggregation = rtl8188fu_init_aggregation,
+ 	.init_statistics = rtl8188fu_init_statistics,
++	.init_burst = rtl8xxxu_init_burst,
+ 	.enable_rf = rtl8188f_enable_rf,
+ 	.disable_rf = rtl8188f_disable_rf,
+ 	.usb_quirks = rtl8188f_usb_quirks,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+index 9214c1d3b644..27df8805cb18 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+@@ -1683,6 +1683,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+ 	.parse_rx_desc = rtl8xxxu_parse_rxdesc24,
+ 	.init_aggregation = rtl8723bu_init_aggregation,
+ 	.init_statistics = rtl8723bu_init_statistics,
++	.init_burst = rtl8xxxu_init_burst,
+ 	.enable_rf = rtl8723b_enable_rf,
+ 	.disable_rf = rtl8xxxu_gen2_disable_rf,
+ 	.usb_quirks = rtl8xxxu_gen2_usb_quirks,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 019f8ddd418b..282ad8a9b73d 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -3886,6 +3886,52 @@ static void rtl8xxxu_init_queue_reserved_page(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_write32(priv, REG_RQPN, val32);
+ }
+ 
++void rtl8xxxu_init_burst(struct rtl8xxxu_priv *priv)
++{
++	u8 val8;
++
++	/*
++	 * For USB high speed set 512B packets
++	 */
++	val8 = rtl8xxxu_read8(priv, REG_RXDMA_PRO_8723B);
++	val8 &= ~(BIT(4) | BIT(5));
++	val8 |= BIT(4);
++	val8 |= BIT(1) | BIT(2) | BIT(3);
++	rtl8xxxu_write8(priv, REG_RXDMA_PRO_8723B, val8);
++
++	/*
++	 * Enable single packet AMPDU
++	 */
++	val8 = rtl8xxxu_read8(priv, REG_HT_SINGLE_AMPDU_8723B);
++	val8 |= BIT(7);
++	rtl8xxxu_write8(priv, REG_HT_SINGLE_AMPDU_8723B, val8);
++
++	rtl8xxxu_write16(priv, REG_MAX_AGGR_NUM, 0x0c14);
++	if (priv->rtl_chip == RTL8723B)
++		val8 = 0x5e;
++	else if (priv->rtl_chip == RTL8188F)
++		val8 = 0x70; /* 0x5e would make it very slow */
++	rtl8xxxu_write8(priv, REG_AMPDU_MAX_TIME_8723B, val8);
++	rtl8xxxu_write32(priv, REG_AGGLEN_LMT, 0xffffffff);
++	rtl8xxxu_write8(priv, REG_RX_PKT_LIMIT, 0x18);
++	rtl8xxxu_write8(priv, REG_PIFS, 0x00);
++	if (priv->rtl_chip == RTL8188F) {
++		rtl8xxxu_write8(priv, REG_FWHW_TXQ_CTRL, FWHW_TXQ_CTRL_AMPDU_RETRY);
++		rtl8xxxu_write32(priv, REG_FAST_EDCA_CTRL, 0x03086666);
++	}
++	if (priv->rtl_chip == RTL8723B)
++		val8 = 0x50;
++	else if (priv->rtl_chip == RTL8188F)
++		val8 = 0x28; /* 0x50 would make the upload slow */
++	rtl8xxxu_write8(priv, REG_USTIME_TSF_8723B, val8);
++	rtl8xxxu_write8(priv, REG_USTIME_EDCA, val8);
++
++	/* to prevent mac is reseted by bus. */
++	val8 = rtl8xxxu_read8(priv, REG_RSV_CTRL);
++	val8 |= BIT(5) | BIT(6);
++	rtl8xxxu_write8(priv, REG_RSV_CTRL, val8);
++}
++
+ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ {
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+@@ -4139,48 +4185,9 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 	/*
+ 	 * Initialize burst parameters
+ 	 */
+-	if (priv->rtl_chip == RTL8723B || priv->rtl_chip == RTL8188F) {
+-		/*
+-		 * For USB high speed set 512B packets
+-		 */
+-		val8 = rtl8xxxu_read8(priv, REG_RXDMA_PRO_8723B);
+-		val8 &= ~(BIT(4) | BIT(5));
+-		val8 |= BIT(4);
+-		val8 |= BIT(1) | BIT(2) | BIT(3);
+-		rtl8xxxu_write8(priv, REG_RXDMA_PRO_8723B, val8);
+ 
+-		/*
+-		 * For USB high speed set 512B packets
+-		 */
+-		val8 = rtl8xxxu_read8(priv, REG_HT_SINGLE_AMPDU_8723B);
+-		val8 |= BIT(7);
+-		rtl8xxxu_write8(priv, REG_HT_SINGLE_AMPDU_8723B, val8);
+-
+-		rtl8xxxu_write16(priv, REG_MAX_AGGR_NUM, 0x0c14);
+-		if (priv->rtl_chip == RTL8723B)
+-			val8 = 0x5e;
+-		else if (priv->rtl_chip == RTL8188F)
+-			val8 = 0x70; /* 0x5e would make it very slow */
+-		rtl8xxxu_write8(priv, REG_AMPDU_MAX_TIME_8723B, val8);
+-		rtl8xxxu_write32(priv, REG_AGGLEN_LMT, 0xffffffff);
+-		rtl8xxxu_write8(priv, REG_RX_PKT_LIMIT, 0x18);
+-		rtl8xxxu_write8(priv, REG_PIFS, 0x00);
+-		if (priv->rtl_chip == RTL8188F) {
+-			rtl8xxxu_write8(priv, REG_FWHW_TXQ_CTRL, FWHW_TXQ_CTRL_AMPDU_RETRY);
+-			rtl8xxxu_write32(priv, REG_FAST_EDCA_CTRL, 0x03086666);
+-		}
+-		if (priv->rtl_chip == RTL8723B)
+-			val8 = 0x50;
+-		else if (priv->rtl_chip == RTL8188F)
+-			val8 = 0x28; /* 0x50 would make the upload slow */
+-		rtl8xxxu_write8(priv, REG_USTIME_TSF_8723B, val8);
+-		rtl8xxxu_write8(priv, REG_USTIME_EDCA, val8);
+-
+-		/* to prevent mac is reseted by bus. */
+-		val8 = rtl8xxxu_read8(priv, REG_RSV_CTRL);
+-		val8 |= BIT(5) | BIT(6);
+-		rtl8xxxu_write8(priv, REG_RSV_CTRL, val8);
+-	}
++	if (priv->fops->init_burst)
++		priv->fops->init_burst(priv);
+ 
+ 	if (fops->init_aggregation)
+ 		fops->init_aggregation(priv);
+-- 
+2.38.0
