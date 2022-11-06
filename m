@@ -2,171 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A659B61E68C
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Nov 2022 22:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2026961E6D2
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Nov 2022 23:16:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbiKFV0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Nov 2022 16:26:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
+        id S230137AbiKFWQO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Nov 2022 17:16:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229973AbiKFV0d (ORCPT
+        with ESMTP id S229669AbiKFWQN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Nov 2022 16:26:33 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9383A7648;
-        Sun,  6 Nov 2022 13:26:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21D3660DC7;
-        Sun,  6 Nov 2022 21:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C35DC433C1;
-        Sun,  6 Nov 2022 21:26:31 +0000 (UTC)
-Received: from rostedt by gandalf.local.home with local (Exim 4.96)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1ornAT-008Cga-2Z;
-        Sun, 06 Nov 2022 16:27:01 -0500
-Message-ID: <20221106212427.739928660@goodmis.org>
-User-Agent: quilt/0.66
-Date:   Sun, 06 Nov 2022 16:24:27 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        drbd-dev@lists.linbit.com, linux-bluetooth@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: [PATCH v6a 0/5] timers: Use timer_shutdown*() before freeing timers
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Sun, 6 Nov 2022 17:16:13 -0500
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 650FDDFC3
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Nov 2022 14:16:11 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id i3so8997558pfc.11
+        for <linux-wireless@vger.kernel.org>; Sun, 06 Nov 2022 14:16:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dA0A2mS1zZRzZ7Q/qYp11n/Ay7A+Rsz4JSiBN+wojww=;
+        b=fOp7H9XFZm/TtBG8jneitttsCEoDpcbawxTHV8TnTMxDptzZqklBsAX1ncRk68V5wg
+         obVglUvY7DFageMkgQvMmYqUWHO8tg0ZR2353FOZYyYbS/Pc66SpA9gcUzGQSxkRBcrI
+         GbmVH74xLZBt3/YTVI876W9MDo0f8oYfEzeNQpB0gu/P1ag2VyGKeNkRYGHdF9ttHtaq
+         oi3ia9JvdWtu+C82lA4RFOxtr49A5qbcKe/c7codC54vIFGi3H6cmclvOjr3km3RYi2G
+         yE88KFzCNZNqLbO9Nx1YJeweLWxmglk58VFWbkIVt8EDD2ZsSnHT0X59SUNHR/Xff5Ih
+         AVaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dA0A2mS1zZRzZ7Q/qYp11n/Ay7A+Rsz4JSiBN+wojww=;
+        b=SKytZE/X0uZOVb1GEfw3SFDgf9z2I2k4Ydyygvrs0GGSqpm7cmydh9FFjcRTc6iDDS
+         I/gNb2fYHqS6vxvIeCzEC83aDkPqUVvct+8JQOP4j7ilcmwNagWTDvRvZzreRdqunPaF
+         XDanuXzkZ9/bm6092Bw5algXRUkHJEkyxXPGSVBaMbw6E84DNf4+/eFpl1MY5KjTJ4gy
+         qOT+jI2db436jX2js+Ntu9KQzYuY5D0kSkpM7m5Hjfxc0sj3Z95v52kqAlICbuV10sAB
+         0OKNSN4TxrRJ2nfovyTSpE/INfTCVljhUSsrE+67w5YIxHZchf8XIWHXBZ5suPt6Nuwp
+         KRJA==
+X-Gm-Message-State: ACrzQf3+C4mg6oZLJ1PeMkuq/16Rl+vayPl8knd0CxDRpx84pTB6/IlW
+        MICJsMyd++c9Im+1jlGFb03PAA==
+X-Google-Smtp-Source: AMsMyM6xvPWEf8iqSp9hTCZxA4G+WflDjaADTy8DkSBYTt+ONJGOhZB8Pdh8WP1utWaFn0kJqUvhBw==
+X-Received: by 2002:a63:8942:0:b0:46e:c02e:2eb5 with SMTP id v63-20020a638942000000b0046ec02e2eb5mr40392674pgd.141.1667772970960;
+        Sun, 06 Nov 2022 14:16:10 -0800 (PST)
+Received: from virs-pc-014.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
+        by smtp.gmail.com with ESMTPSA id j4-20020a170903028400b00176b84eb29asm3520629plr.301.2022.11.06.14.16.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Nov 2022 14:16:10 -0800 (PST)
+From:   Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
+        Kieran Frewen <kieran.frewen@morsemicro.com>,
+        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+Subject: [PATCH] wifi: mac80211: update TIM for S1G specification changes
+Date:   Mon,  7 Nov 2022 11:16:02 +1300
+Message-Id: <20221106221602.25714-1-gilad.itzkovitch@morsemicro.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-del_timer_sync() is often called before the object that owns the timer is
-freed. But sometimes there's a race that enables the timer again before it is
-freed and causes a use after free when that timer triggers. This patch set
-adds a new "shutdown" timer state, which is set on the new timer_shutdown()
-API. Once a timer is in this state, it can not be re-armed and if it is, it
-will warn.
+From: Kieran Frewen <kieran.frewen@morsemicro.com>
 
-The first three patches change existing timer_shutdown() functions used
-locally in ARM and some drivers to better namespace names.
+Updates to the TIM information element to match changes made in the
+IEEE Std 802.11ah-2020.
 
-The fourth patch implements the new API.
+Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
+Co-developed-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+---
+ net/mac80211/tx.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-The fifth patch is now a treewide patch that uses a coccinelle script to
-convert the trivial locations where a del_timer*() is called on a timer of an
-object that is freed immediately afterward (or at least in the same function).
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index bb2e54610101..383e0242e95f 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4769,9 +4769,9 @@ static void __ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
+ 			ps->dtim_count--;
+ 	}
+ 
+-	tim = pos = skb_put(skb, 6);
++	tim = pos = skb_put(skb, 5);
+ 	*pos++ = WLAN_EID_TIM;
+-	*pos++ = 4;
++	*pos++ = 3;
+ 	*pos++ = ps->dtim_count;
+ 	*pos++ = link_conf->dtim_period;
+ 
+@@ -4802,13 +4802,18 @@ static void __ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
+ 		/* Bitmap control */
+ 		*pos++ = n1 | aid0;
+ 		/* Part Virt Bitmap */
+-		skb_put(skb, n2 - n1);
++		skb_put(skb, n2 - n1 + 1);
+ 		memcpy(pos, ps->tim + n1, n2 - n1 + 1);
+ 
+ 		tim[1] = n2 - n1 + 4;
+ 	} else {
+ 		*pos++ = aid0; /* Bitmap control */
+-		*pos++ = 0; /* Part Virt Bitmap */
++
++		if (ieee80211_get_link_sband(link)->band != NL80211_BAND_S1GHZ) {
++			skb_put(skb, 1);
++			tim[1] = 4;
++			*pos++ = 0; /* Part Virt Bitmap */
++		}
+ 	}
+ }
+ 
+-- 
+2.34.1
 
-Changes since v5a: https://lore.kernel.org/all/20221106054535.709068702@goodmis.org/
-
- - Updated the script to make ptr and slab into expressions instead of
-   using identifiers (Julia Lawall and Linus Torvalds)
-
-Steven Rostedt (Google) (5):
-      ARM: spear: Do not use timer namespace for timer_shutdown() function
-      clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
-      clocksource/drivers/sp804: Do not use timer namespace for timer_shutdown() function
-      timers: Add timer_shutdown_sync() and timer_shutdown() to be called before freeing timers
-      treewide: Convert del_timer*() to timer_shutdown*()
-
-----
- .../RCU/Design/Requirements/Requirements.rst       |  2 +-
- Documentation/core-api/local_ops.rst               |  2 +-
- Documentation/kernel-hacking/locking.rst           |  5 ++
- arch/arm/mach-spear/time.c                         |  8 +--
- arch/sh/drivers/push-switch.c                      |  2 +-
- block/blk-iocost.c                                 |  2 +-
- block/blk-iolatency.c                              |  2 +-
- block/kyber-iosched.c                              |  2 +-
- drivers/acpi/apei/ghes.c                           |  2 +-
- drivers/atm/idt77252.c                             |  6 +-
- drivers/block/drbd/drbd_main.c                     |  2 +-
- drivers/block/loop.c                               |  2 +-
- drivers/bluetooth/hci_bcsp.c                       |  2 +-
- drivers/bluetooth/hci_qca.c                        |  4 +-
- drivers/clocksource/arm_arch_timer.c               | 12 ++--
- drivers/clocksource/timer-sp804.c                  |  6 +-
- drivers/gpu/drm/i915/i915_sw_fence.c               |  2 +-
- drivers/hid/hid-wiimote-core.c                     |  2 +-
- drivers/input/keyboard/locomokbd.c                 |  2 +-
- drivers/input/keyboard/omap-keypad.c               |  2 +-
- drivers/input/mouse/alps.c                         |  2 +-
- drivers/isdn/mISDN/l1oip_core.c                    |  4 +-
- drivers/isdn/mISDN/timerdev.c                      |  4 +-
- drivers/leds/trigger/ledtrig-activity.c            |  2 +-
- drivers/leds/trigger/ledtrig-heartbeat.c           |  2 +-
- drivers/leds/trigger/ledtrig-pattern.c             |  2 +-
- drivers/leds/trigger/ledtrig-transient.c           |  2 +-
- drivers/media/pci/ivtv/ivtv-driver.c               |  2 +-
- drivers/media/usb/pvrusb2/pvrusb2-hdw.c            | 16 +++---
- drivers/media/usb/s2255/s2255drv.c                 |  4 +-
- drivers/net/ethernet/intel/i40e/i40e_main.c        |  6 +-
- drivers/net/ethernet/marvell/sky2.c                |  2 +-
- drivers/net/ethernet/sun/sunvnet.c                 |  2 +-
- drivers/net/usb/sierra_net.c                       |  2 +-
- .../wireless/broadcom/brcm80211/brcmfmac/btcoex.c  |  2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |  2 +-
- drivers/net/wireless/intersil/hostap/hostap_ap.c   |  2 +-
- drivers/net/wireless/marvell/mwifiex/main.c        |  2 +-
- drivers/net/wireless/microchip/wilc1000/hif.c      |  6 +-
- drivers/nfc/pn533/pn533.c                          |  2 +-
- drivers/nfc/pn533/uart.c                           |  2 +-
- drivers/pcmcia/bcm63xx_pcmcia.c                    |  2 +-
- drivers/pcmcia/electra_cf.c                        |  2 +-
- drivers/pcmcia/omap_cf.c                           |  2 +-
- drivers/pcmcia/pd6729.c                            |  4 +-
- drivers/pcmcia/yenta_socket.c                      |  4 +-
- drivers/scsi/qla2xxx/qla_edif.c                    |  4 +-
- drivers/staging/media/atomisp/i2c/atomisp-lm3554.c |  2 +-
- drivers/tty/n_gsm.c                                |  2 +-
- drivers/tty/sysrq.c                                |  2 +-
- drivers/usb/gadget/udc/m66592-udc.c                |  2 +-
- drivers/usb/serial/garmin_gps.c                    |  2 +-
- drivers/usb/serial/mos7840.c                       |  4 +-
- fs/ext4/super.c                                    |  2 +-
- fs/nilfs2/segment.c                                |  2 +-
- include/linux/timer.h                              | 62 +++++++++++++++++++--
- kernel/time/timer.c                                | 64 ++++++++++++----------
- net/802/garp.c                                     |  2 +-
- net/802/mrp.c                                      |  4 +-
- net/bridge/br_multicast.c                          |  8 +--
- net/bridge/br_multicast_eht.c                      |  4 +-
- net/core/gen_estimator.c                           |  2 +-
- net/ipv4/ipmr.c                                    |  2 +-
- net/ipv6/ip6mr.c                                   |  2 +-
- net/mac80211/mesh_pathtbl.c                        |  2 +-
- net/netfilter/ipset/ip_set_list_set.c              |  2 +-
- net/netfilter/ipvs/ip_vs_lblc.c                    |  2 +-
- net/netfilter/ipvs/ip_vs_lblcr.c                   |  2 +-
- net/netfilter/xt_IDLETIMER.c                       |  4 +-
- net/netfilter/xt_LED.c                             |  2 +-
- net/rxrpc/conn_object.c                            |  2 +-
- net/sched/cls_flow.c                               |  2 +-
- net/sunrpc/svc.c                                   |  2 +-
- net/tipc/discover.c                                |  2 +-
- net/tipc/monitor.c                                 |  2 +-
- sound/i2c/other/ak4117.c                           |  2 +-
- sound/synth/emux/emux.c                            |  2 +-
- 78 files changed, 207 insertions(+), 148 deletions(-)
