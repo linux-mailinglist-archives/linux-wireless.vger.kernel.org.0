@@ -2,83 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 275A361F4A8
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 14:55:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A2461F4C8
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 14:59:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbiKGNzG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Nov 2022 08:55:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        id S231989AbiKGN7v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Nov 2022 08:59:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231563AbiKGNzE (ORCPT
+        with ESMTP id S231124AbiKGN7s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Nov 2022 08:55:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4D281CFCC;
-        Mon,  7 Nov 2022 05:55:02 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6CF42B811B8;
-        Mon,  7 Nov 2022 13:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B33C433C1;
-        Mon,  7 Nov 2022 13:54:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667829300;
-        bh=YmHzZ1me/URX0OErpUUTrYtcYN0+M7i/wabiD4jO+zY=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=paW98QAcHGYOPQmIhc64P4PCa5Sd8UrU7apa81sMI2p3j4IB1/m5Kn07yeFTYaR2Y
-         07LZzTNfjivsKCo40T4Dpj9xORW+XR1jcm5Fghz9xBVLWWJ264M7Yu3pUD63MP8cdV
-         8Ij40TVjHSDoKG8vTf8jiWTFRgD7jqtcqPI04lxGzC8aEnevsSZbTD8iD0DnrLzbwH
-         Amcs1WyhO+vEkkRhkbuRnQPyOUGE1PxL1YmCIuSVCWZfcIJ9QYXXSHz3JADDaEwanV
-         iVkjjIzHf1SG2F8lPYioBOs9mowphmSzVFcv/hXpsGYnXQ6h4A9/EFsTh+Pi5wbB/L
-         Dco7mCfq9GxEw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v5] wifi: rsi: Fix handling of 802.3 EAPOL frames sent via control port
-In-Reply-To: <7a3b6d5c-1d73-1d31-434f-00703c250dd6@denx.de> (Marek Vasut's
-        message of "Mon, 7 Nov 2022 14:23:37 +0100")
-References: <20221104163339.227432-1-marex@denx.de>
-        <87o7tjszyg.fsf@kernel.org>
-        <7a3b6d5c-1d73-1d31-434f-00703c250dd6@denx.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 07 Nov 2022 15:54:52 +0200
-Message-ID: <877d06g98z.fsf@kernel.org>
+        Mon, 7 Nov 2022 08:59:48 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6C3B23
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 05:59:47 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id j15so16343987wrq.3
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Nov 2022 05:59:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WLRE2IBTL6tXQElQll3pK2nkKzxcUu8aFfReYTDtJOA=;
+        b=FERxbpSxvJWObig+KC/olDuIrKt66020ifjSl9RS1RTy8qNPia6NSLrMFFn9sCtm8w
+         kqcgOm287QqXZ8NhD5QBi09/SagXXxcspAI0N77LpkwD4YthSbEFBLUrS58VF0tBEjst
+         1AE+o5nuPNdL7zUPAodJSvaLrAjK/cA53eWCc5LGEcrBEh3JIPTEeXMB5CqT4q2dUPB8
+         Q/bgOTj4Vd4nJjjTAR4rgqN9QmDWwP05zHFXLiCc/A+v1QPMeuxb0hXlmGtbVCg6OcYN
+         Ql+NhKNOmY4Ol61xwpIh9FUrWgop5s3tIQwmTfGJ/2mINF+u00orQQw6xz03AY5NwUKq
+         zmhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WLRE2IBTL6tXQElQll3pK2nkKzxcUu8aFfReYTDtJOA=;
+        b=Xmb29VrbrYVCU7Ab63ExZ7ojDyql+AAiEOphpDuHn2aZMSjI+iyIzliMSDDiaCmPYt
+         KsCuWqHtJKSOaRx3zOKJvYq0Ss1SI5a+ppqTkpkLWEbmtW01x85hzTvTwn2FeX7YMP+Y
+         59cTh6ixVxieZLGFYG8Pz2PMzLow7d8Zs4BG+t56AZSflKaZDa7CfiTH9NdxgpZKLGJQ
+         d3WlJi37m+xO5T7V7oedneEWX4gUp4zLDppso5UVV0hEKgfYML2vTxEPG+M72GFtL07K
+         scaF85n5X9iNgnSiriIWf83Ltoa7j4Xdx0kKj1NkMLCl9+nlZfGhzgweSrjqH9q377ko
+         G9Bg==
+X-Gm-Message-State: ACrzQf2pC6jQD09tm0ITnHJii+rgSwPDGkN03I2kd8/0wyaNFqKF9HV4
+        SzAUX8qzAWgV4HzCgR5UzOE=
+X-Google-Smtp-Source: AMsMyM5meQNZVUELxa5jjGDahXbbpyEf8m2laiYNEGWKezJ6ex4ZxyyDXhvWeEf+mbYds/VWKUSD0Q==
+X-Received: by 2002:a5d:49d0:0:b0:236:ba53:ec39 with SMTP id t16-20020a5d49d0000000b00236ba53ec39mr30217611wrs.412.1667829586269;
+        Mon, 07 Nov 2022 05:59:46 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id s25-20020adfa299000000b00236b2804d79sm7809977wra.2.2022.11.07.05.59.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Nov 2022 05:59:45 -0800 (PST)
+Date:   Mon, 7 Nov 2022 16:59:26 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Alexander Wetzel <alexander@wetzel-home.de>
+Cc:     oe-kbuild@lists.linux.dev, linux-wireless@vger.kernel.org,
+        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: convert PS buffering into iTXQ
+Message-ID: <Y2kPPn7qmao4VL5y@kadam>
+References: <202211060817.mqDPz8T7-lkp@intel.com>
+ <08af0517-fb5f-cfd1-e92b-18306603144f@wetzel-home.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08af0517-fb5f-cfd1-e92b-18306603144f@wetzel-home.de>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Marek Vasut <marex@denx.de> writes:
+On Mon, Nov 07, 2022 at 02:52:55PM +0100, Alexander Wetzel wrote:
+> Hi,
+> 
+> On 07.11.22 09:00, Dan Carpenter wrote:
+> > Hi Alexander,
+> > 
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > 
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Wetzel/wifi-mac80211-convert-PS-buffering-into-iTXQ/20221101-100832
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+> > patch link:    https://lore.kernel.org/r/20221031211815.6666-1-alexander%40wetzel-home.de
+> > patch subject: [PATCH] wifi: mac80211: convert PS buffering into iTXQ
+> > config: openrisc-randconfig-m041-20221106
+> > compiler: or1k-linux-gcc (GCC) 12.1.0
+> > 
+> > If you fix the issue, kindly add following tag where applicable
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Reported-by: Dan Carpenter <error27@gmail.com>
+> > 
+> > New smatch warnings:
+> > net/mac80211/tx.c:1145 ieee80211_get_txq() warn: variable dereferenced before check 'vif' (see line 1112)
+> 
+> vif can't be null here, the existing null check is not needed.
+> 
+> ieee80211_get_txq() is only used in ieee80211_queue_skb(). Which already
+> access sdata->vif.type and sets vif to &sdata->vif prior of calling
+> ieee80211_get_txq();
+> 
+> Would dropping the null check in line 1145 be an acceptable solution to get
+> rid of this warning?
+> 
+> I'll then would do that in the next revision (v3) of the patch and send that
+> out after either Johannes has reviewed v2 or serious issues are discovered
+> by anyone.
+> 
 
->> BTW did you test this on a real device?
->
-> Yes, SDIO RS9116 on next-20221104 and 5.10.153 .
+You should probably delete the NULL check in a separate patch (I say
+without looking at any of your patches).
 
-Very good, thanks.
+This is a Smatch warning and not a GCC warning so it's not like the NULL
+check hurts anything besides readability.
 
-> What prompts this question ?
+regards,
+dan carpenter
 
-I get too much "fixes" which have been nowhere near real hardware and
-can break the driver instead of fixing anything, especially syzbot
-patches have been notorious. So I have become cautious.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
