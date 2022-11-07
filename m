@@ -2,124 +2,189 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC5D61E8A3
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 03:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE12B61E9B6
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 04:33:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbiKGCkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Nov 2022 21:40:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
+        id S231128AbiKGDdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Nov 2022 22:33:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiKGCko (ORCPT
+        with ESMTP id S230265AbiKGDdC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Nov 2022 21:40:44 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8FA15634D
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Nov 2022 18:40:41 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A72dxcdF019933, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A72dxcdF019933
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 7 Nov 2022 10:39:59 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Mon, 7 Nov 2022 10:40:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 7 Nov 2022 10:40:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Mon, 7 Nov 2022 10:40:36 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH v2 1/3] wifi: rtl8xxxu: Move burst init to a function
-Thread-Topic: [PATCH v2 1/3] wifi: rtl8xxxu: Move burst init to a function
-Thread-Index: AQHY8WlwVTok+UG34kSwmrVhoOozL64ytz5Q
-Date:   Mon, 7 Nov 2022 02:40:36 +0000
-Message-ID: <9c3088fb5e904415b5886852fe828827@realtek.com>
-References: <bef90bf8-716f-c92f-9403-12ef2bfefc15@gmail.com>
-In-Reply-To: <bef90bf8-716f-c92f-9403-12ef2bfefc15@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzYg5LiL5Y2IIDEwOjA2OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Sun, 6 Nov 2022 22:33:02 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D587D9FCC;
+        Sun,  6 Nov 2022 19:33:00 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6628D60EA7;
+        Mon,  7 Nov 2022 03:33:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780BFC433C1;
+        Mon,  7 Nov 2022 03:32:58 +0000 (UTC)
+Date:   Sun, 6 Nov 2022 22:32:56 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Anna-Maria Gleixner <anna-maria@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        drbd-dev@lists.linbit.com, linux-bluetooth@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
+        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
+        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
+Subject: [GIT PULL] treewide: timers: Use timer_shutdown*() before freeing
+ timers
+Message-ID: <20221106223256.4bbdb018@rorschach.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFN1bmRheSwgTm92ZW1iZXIgNiwg
-MjAyMiA2OjUzIEFNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6
-IEplcyBTb3JlbnNlbiA8SmVzLlNvcmVuc2VuQGdtYWlsLmNvbT4NCj4gU3ViamVjdDogW1BBVENI
-IHYyIDEvM10gd2lmaTogcnRsOHh4eHU6IE1vdmUgYnVyc3QgaW5pdCB0byBhIGZ1bmN0aW9uDQo+
-IA0KPiBObyBjaGFuZ2VzIHRvIGZ1bmN0aW9uYWxpdHksIGp1c3QgbW92aW5nIGNvZGUgdG8gbWFr
-ZQ0KPiBydGw4eHh4dV9pbml0X2RldmljZSBsb29rIG5pY2VyLg0KPiANCj4gU2lnbmVkLW9mZi1i
-eTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IC0tLQ0KPiB2
-MjoNCj4gIC0gTm8gY2hhbmdlLg0KPiAtLS0NCj4gIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dGw4eHh4dS9ydGw4eHh4dS5oICB8ICAyICsNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4
-eHh1XzgxODhmLmMgICAgICAgICB8ICAxICsNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4
-eHh1Xzg3MjNiLmMgICAgICAgICB8ICAxICsNCj4gIC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bDh4
-eHh1L3J0bDh4eHh1X2NvcmUuYyB8IDg5ICsrKysrKysrKystLS0tLS0tLS0NCj4gIDQgZmlsZXMg
-Y2hhbmdlZCwgNTIgaW5zZXJ0aW9ucygrKSwgNDEgZGVsZXRpb25zKC0pDQo+IA0KDQpbLi4uXQ0K
-DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0
-bDh4eHh1X2NvcmUuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUv
-cnRsOHh4eHVfY29yZS5jDQo+IGluZGV4IDAxOWY4ZGRkNDE4Yi4uMjgyYWQ4YTliNzNkIDEwMDY0
-NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1
-X2NvcmUuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0
-bDh4eHh1X2NvcmUuYw0KPiBAQCAtMzg4Niw2ICszODg2LDUyIEBAIHN0YXRpYyB2b2lkIHJ0bDh4
-eHh1X2luaXRfcXVldWVfcmVzZXJ2ZWRfcGFnZShzdHJ1Y3QgcnRsOHh4eHVfcHJpdiAqcHJpdikN
-Cj4gIAlydGw4eHh4dV93cml0ZTMyKHByaXYsIFJFR19SUVBOLCB2YWwzMik7DQo+ICB9DQo+IA0K
-PiArdm9pZCBydGw4eHh4dV9pbml0X2J1cnN0KHN0cnVjdCBydGw4eHh4dV9wcml2ICpwcml2KQ0K
-PiArew0KPiArCXU4IHZhbDg7DQo+ICsNCj4gKwkvKg0KPiArCSAqIEZvciBVU0IgaGlnaCBzcGVl
-ZCBzZXQgNTEyQiBwYWNrZXRzDQo+ICsJICovDQo+ICsJdmFsOCA9IHJ0bDh4eHh1X3JlYWQ4KHBy
-aXYsIFJFR19SWERNQV9QUk9fODcyM0IpOw0KPiArCXZhbDggJj0gfihCSVQoNCkgfCBCSVQoNSkp
-Ow0KPiArCXZhbDggfD0gQklUKDQpOw0KPiArCXZhbDggfD0gQklUKDEpIHwgQklUKDIpIHwgQklU
-KDMpOw0KDQpJIHRoaW5rIHdlIGNhbiBmaXggdGhlc2UgbWFnaWMgbnVtYmVycyBhbG9uZyB3aXRo
-IHlvdXIgcGF0Y2guDQoNCiNkZWZpbmUgRE1BX01PREUgQklUKDEpICAvLyBzZXQgMHgxDQojZGVm
-aW5lIERNQV9CVVJTVF9DTlQgR0VOTUFTSygzLCAyKSAvLyBzZXQgMHgzDQojZGVmaW5lIERNQV9C
-VVJTVF9TSVpFIEdFTk1BU0soNSwgNCkgLy8gc2V0IDB4MQ0KDQoNCj4gKwlydGw4eHh4dV93cml0
-ZTgocHJpdiwgUkVHX1JYRE1BX1BST184NzIzQiwgdmFsOCk7DQo+ICsNCj4gKwkvKg0KPiArCSAq
-IEVuYWJsZSBzaW5nbGUgcGFja2V0IEFNUERVDQo+ICsJICovDQo+ICsJdmFsOCA9IHJ0bDh4eHh1
-X3JlYWQ4KHByaXYsIFJFR19IVF9TSU5HTEVfQU1QRFVfODcyM0IpOw0KPiArCXZhbDggfD0gQklU
-KDcpOw0KDQojZGVmaW5lIEVOX1NJTkdMRV9BTVBEVSBCSVQoNykNCg0KPiArCXJ0bDh4eHh1X3dy
-aXRlOChwcml2LCBSRUdfSFRfU0lOR0xFX0FNUERVXzg3MjNCLCB2YWw4KTsNCj4gKw0KPiArCXJ0
-bDh4eHh1X3dyaXRlMTYocHJpdiwgUkVHX01BWF9BR0dSX05VTSwgMHgwYzE0KTsNCj4gKwlpZiAo
-cHJpdi0+cnRsX2NoaXAgPT0gUlRMODcyM0IpDQo+ICsJCXZhbDggPSAweDVlOw0KPiArCWVsc2Ug
-aWYgKHByaXYtPnJ0bF9jaGlwID09IFJUTDgxODhGKQ0KPiArCQl2YWw4ID0gMHg3MDsgLyogMHg1
-ZSB3b3VsZCBtYWtlIGl0IHZlcnkgc2xvdyAqLw0KPiArCXJ0bDh4eHh1X3dyaXRlOChwcml2LCBS
-RUdfQU1QRFVfTUFYX1RJTUVfODcyM0IsIHZhbDgpOw0KPiArCXJ0bDh4eHh1X3dyaXRlMzIocHJp
-diwgUkVHX0FHR0xFTl9MTVQsIDB4ZmZmZmZmZmYpOw0KPiArCXJ0bDh4eHh1X3dyaXRlOChwcml2
-LCBSRUdfUlhfUEtUX0xJTUlULCAweDE4KTsNCj4gKwlydGw4eHh4dV93cml0ZTgocHJpdiwgUkVH
-X1BJRlMsIDB4MDApOw0KPiArCWlmIChwcml2LT5ydGxfY2hpcCA9PSBSVEw4MTg4Rikgew0KPiAr
-CQlydGw4eHh4dV93cml0ZTgocHJpdiwgUkVHX0ZXSFdfVFhRX0NUUkwsIEZXSFdfVFhRX0NUUkxf
-QU1QRFVfUkVUUlkpOw0KPiArCQlydGw4eHh4dV93cml0ZTMyKHByaXYsIFJFR19GQVNUX0VEQ0Ff
-Q1RSTCwgMHgwMzA4NjY2Nik7DQo+ICsJfQ0KPiArCWlmIChwcml2LT5ydGxfY2hpcCA9PSBSVEw4
-NzIzQikNCj4gKwkJdmFsOCA9IDB4NTA7DQo+ICsJZWxzZSBpZiAocHJpdi0+cnRsX2NoaXAgPT0g
-UlRMODE4OEYpDQo+ICsJCXZhbDggPSAweDI4OyAvKiAweDUwIHdvdWxkIG1ha2UgdGhlIHVwbG9h
-ZCBzbG93ICovDQo+ICsJcnRsOHh4eHVfd3JpdGU4KHByaXYsIFJFR19VU1RJTUVfVFNGXzg3MjNC
-LCB2YWw4KTsNCj4gKwlydGw4eHh4dV93cml0ZTgocHJpdiwgUkVHX1VTVElNRV9FRENBLCB2YWw4
-KTsNCj4gKw0KPiArCS8qIHRvIHByZXZlbnQgbWFjIGlzIHJlc2V0ZWQgYnkgYnVzLiAqLw0KPiAr
-CXZhbDggPSBydGw4eHh4dV9yZWFkOChwcml2LCBSRUdfUlNWX0NUUkwpOw0KPiArCXZhbDggfD0g
-QklUKDUpIHwgQklUKDYpOw0KDQojZGVmaW5lIFdMT0NLXzFDIEJJVCg1KQ0KI2RlZmluZSBESVNf
-UFJTVCBCSVQoNikNCg0KPiArCXJ0bDh4eHh1X3dyaXRlOChwcml2LCBSRUdfUlNWX0NUUkwsIHZh
-bDgpOw0KPiArfQ0KPiArDQoNClsuLi5dDQoNCkkgZmluZCBzb21lIGJpdCBkZWZpbml0aW9ucywg
-c28gd2UgY2FuIGhhdmUgdGhlbSBtZWFuaW5nZnVsIG5hbWVzLCBhbmQNCnBsZWFzZSBhZGQgcHJv
-cGVyIHByZWZpeCBpZiBuZWVkLg0KDQpQaW5nLUtlDQoNCg==
+
+
+Linus,
+
+As discussed here:
+
+  https://lore.kernel.org/all/20221106212427.739928660@goodmis.org/
+
+Add a "shutdown" state for timers. This is performed by the new
+timer_shutdown_sync() and timer_shutdown() function calls. When this is
+called on a timer, it will no longer be able to be re-armed. This should
+be called before a timer is freed to prevent it from being re-armed after
+being removed from the timer queue and then causing a crash in the timer
+code when the timer triggers.
+
+This required renaming some functions that were using the name
+timer_shutdown() statically to something more appropriate.
+
+Then a coccinelle script was executed on the entire kernel tree to find
+the trivial locations that remove the timer and then frees the object that
+the timer exists on.
+
+These changes are not enough to solve all the locations where timers may
+be of an issue. But by adding the shutdown infrastructure and the obvious
+cases, the more complex cases can be added after they have been reviewed
+more closely.
+
+
+Please pull the following tree, which can be found at:
+
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace.git
+add-timer-shutdown
+
+Tag SHA1: 7685328352dfd2908e23048f563e328dbd3526e9
+Head SHA1: 870556da63870e01ade9bb8418ac5a21862f2f10
+
+
+Steven Rostedt (Google) (5):
+      ARM: spear: Do not use timer namespace for timer_shutdown() function
+      clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
+      clocksource/drivers/sp804: Do not use timer namespace for timer_shutdown() function
+      timers: Add timer_shutdown_sync() and timer_shutdown() to be called before freeing timers
+      treewide: Convert del_timer*() to timer_shutdown*()
+
+----
+ .../RCU/Design/Requirements/Requirements.rst       |  2 +-
+ Documentation/core-api/local_ops.rst               |  2 +-
+ Documentation/kernel-hacking/locking.rst           |  5 ++
+ arch/arm/mach-spear/time.c                         |  8 +--
+ arch/sh/drivers/push-switch.c                      |  2 +-
+ block/blk-iocost.c                                 |  2 +-
+ block/blk-iolatency.c                              |  2 +-
+ block/kyber-iosched.c                              |  2 +-
+ drivers/acpi/apei/ghes.c                           |  2 +-
+ drivers/atm/idt77252.c                             |  6 +-
+ drivers/block/drbd/drbd_main.c                     |  2 +-
+ drivers/block/loop.c                               |  2 +-
+ drivers/bluetooth/hci_bcsp.c                       |  2 +-
+ drivers/bluetooth/hci_qca.c                        |  4 +-
+ drivers/clocksource/arm_arch_timer.c               | 12 ++--
+ drivers/clocksource/timer-sp804.c                  |  6 +-
+ drivers/gpu/drm/i915/i915_sw_fence.c               |  2 +-
+ drivers/hid/hid-wiimote-core.c                     |  2 +-
+ drivers/input/keyboard/locomokbd.c                 |  2 +-
+ drivers/input/keyboard/omap-keypad.c               |  2 +-
+ drivers/input/mouse/alps.c                         |  2 +-
+ drivers/isdn/mISDN/l1oip_core.c                    |  4 +-
+ drivers/isdn/mISDN/timerdev.c                      |  4 +-
+ drivers/leds/trigger/ledtrig-activity.c            |  2 +-
+ drivers/leds/trigger/ledtrig-heartbeat.c           |  2 +-
+ drivers/leds/trigger/ledtrig-pattern.c             |  2 +-
+ drivers/leds/trigger/ledtrig-transient.c           |  2 +-
+ drivers/media/pci/ivtv/ivtv-driver.c               |  2 +-
+ drivers/media/usb/pvrusb2/pvrusb2-hdw.c            | 16 +++---
+ drivers/media/usb/s2255/s2255drv.c                 |  4 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c        |  6 +-
+ drivers/net/ethernet/marvell/sky2.c                |  2 +-
+ drivers/net/ethernet/sun/sunvnet.c                 |  2 +-
+ drivers/net/usb/sierra_net.c                       |  2 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/btcoex.c  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |  2 +-
+ drivers/net/wireless/intersil/hostap/hostap_ap.c   |  2 +-
+ drivers/net/wireless/marvell/mwifiex/main.c        |  2 +-
+ drivers/net/wireless/microchip/wilc1000/hif.c      |  6 +-
+ drivers/nfc/pn533/pn533.c                          |  2 +-
+ drivers/nfc/pn533/uart.c                           |  2 +-
+ drivers/pcmcia/bcm63xx_pcmcia.c                    |  2 +-
+ drivers/pcmcia/electra_cf.c                        |  2 +-
+ drivers/pcmcia/omap_cf.c                           |  2 +-
+ drivers/pcmcia/pd6729.c                            |  4 +-
+ drivers/pcmcia/yenta_socket.c                      |  4 +-
+ drivers/scsi/qla2xxx/qla_edif.c                    |  4 +-
+ drivers/staging/media/atomisp/i2c/atomisp-lm3554.c |  2 +-
+ drivers/tty/n_gsm.c                                |  2 +-
+ drivers/tty/sysrq.c                                |  2 +-
+ drivers/usb/gadget/udc/m66592-udc.c                |  2 +-
+ drivers/usb/serial/garmin_gps.c                    |  2 +-
+ drivers/usb/serial/mos7840.c                       |  4 +-
+ fs/ext4/super.c                                    |  2 +-
+ fs/nilfs2/segment.c                                |  2 +-
+ include/linux/timer.h                              | 62 +++++++++++++++++++--
+ kernel/time/timer.c                                | 64 ++++++++++++----------
+ net/802/garp.c                                     |  2 +-
+ net/802/mrp.c                                      |  4 +-
+ net/bridge/br_multicast.c                          |  8 +--
+ net/bridge/br_multicast_eht.c                      |  4 +-
+ net/core/gen_estimator.c                           |  2 +-
+ net/ipv4/ipmr.c                                    |  2 +-
+ net/ipv6/ip6mr.c                                   |  2 +-
+ net/mac80211/mesh_pathtbl.c                        |  2 +-
+ net/netfilter/ipset/ip_set_list_set.c              |  2 +-
+ net/netfilter/ipvs/ip_vs_lblc.c                    |  2 +-
+ net/netfilter/ipvs/ip_vs_lblcr.c                   |  2 +-
+ net/netfilter/xt_IDLETIMER.c                       |  4 +-
+ net/netfilter/xt_LED.c                             |  2 +-
+ net/rxrpc/conn_object.c                            |  2 +-
+ net/sched/cls_flow.c                               |  2 +-
+ net/sunrpc/svc.c                                   |  2 +-
+ net/tipc/discover.c                                |  2 +-
+ net/tipc/monitor.c                                 |  2 +-
+ sound/i2c/other/ak4117.c                           |  2 +-
+ sound/synth/emux/emux.c                            |  2 +-
+ 78 files changed, 207 insertions(+), 148 deletions(-)
+---------------------------
