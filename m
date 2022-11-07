@@ -2,88 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A960461F111
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 11:47:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D1361F1D5
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 12:28:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231773AbiKGKrL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Nov 2022 05:47:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50418 "EHLO
+        id S231812AbiKGL2W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Nov 2022 06:28:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231616AbiKGKrG (ORCPT
+        with ESMTP id S231808AbiKGL2Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Nov 2022 05:47:06 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3172F17E33;
-        Mon,  7 Nov 2022 02:47:06 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667818024;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=qnhu/C4/dTNGh+9YxTAUPF0AHXOgpdZiA4TofS1TDao=;
-        b=m8gFAB2FYV5B4BIkkbSCrPl5kngI1vwmC89wOqBJ/q73+RRLDUvN8153YBd0ancpYaUudU
-        +fTzmJoLwRrrXw9ulhVtc41yRIMLNrOmB9kVLUOAn2xwOs861TQYPTmwfVqoXOpGOLsPn5
-        hNBacxD9XN6Mi6tXS/NIbwjqzso2C6oqm6/L/mt2cpmfqfHELnCL8o8Pn38Ir7+eD8OVqk
-        Lj3kRr5Ls1MIF7+wsJc3Ym/BQIZf8UhWrd8aE7FpoY/qhjIfIvELeoa8/ZXUqY5eKhjinO
-        ZF4FT08X0F8jeyihKYji9kBCreFY8X9nEznXEcECfWmIcYVRm4zXH9JmYOmiiQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667818024;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=qnhu/C4/dTNGh+9YxTAUPF0AHXOgpdZiA4TofS1TDao=;
-        b=bzVvnuX1mysTSSrkmkIGsLumN3FZV+biUwiIDeLZdScudMhEXojJ3c4U7ytkUdHNPdLCjD
-        NbhAMzPLE4OU4lBA==
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        drbd-dev@lists.linbit.com, linux-bluetooth@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: Re: [GIT PULL] treewide: timers: Use timer_shutdown*() before
- freeing timers
-In-Reply-To: <20221106223256.4bbdb018@rorschach.local.home>
-References: <20221106223256.4bbdb018@rorschach.local.home>
-Date:   Mon, 07 Nov 2022 11:47:04 +0100
-Message-ID: <87pmdzvy6v.ffs@tglx>
+        Mon, 7 Nov 2022 06:28:16 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CC91A3AE;
+        Mon,  7 Nov 2022 03:28:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8C1EFB80F9F;
+        Mon,  7 Nov 2022 11:28:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586B4C433D6;
+        Mon,  7 Nov 2022 11:28:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667820490;
+        bh=gX0czMPTs+259vGom9QGdlIGR+c8u6kSHEipAFI8adA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cvTLkC3VKRS9PtAELzxSU8KvwKLl0f7r4w9dHgMyB6a/OXsiruhEGzQN0QcVuBg+Z
+         /PaoGMX43mD9PbvRm5DdocDSs3I7JFdPC8rDGJ1fP+UF3eC4G32sdRpgAml8IeiORp
+         xvIrH8jnQofutAF5rio2BDGUbuH9pBOkiDGF1JiiaWVptKA9S/VmtXJq4b8a92Ln7F
+         uEMnU8pZPFeXVtvSgBdCv2v3GwhppLvhl7t8aFHDKWPMKxszmZClEn2kKBIuGsCOVX
+         lqU+DD6OEiC16RcBT5bmOuNtRUV6SL2ChUfq/xLPon/SrCMaEmbc+gOelhv3qbkA+Y
+         G4JoRFRAf/i0g==
+Date:   Mon, 7 Nov 2022 16:57:56 +0530
+From:   Manivannan Sadhasivam <mani@kernel.org>
+To:     Robert Marko <robimarko@gmail.com>
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, gregkh@linuxfoundation.org,
+        elder@linaro.org, hemantk@codeaurora.org, quic_jhugo@quicinc.com,
+        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
+        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, ansuelsmth@gmail.com
+Subject: Re: [PATCH 1/2] bus: mhi: core: add SBL state callback
+Message-ID: <20221107112756.GB2220@thinkpad>
+References: <20221105194943.826847-1-robimarko@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221105194943.826847-1-robimarko@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Linus,
+On Sat, Nov 05, 2022 at 08:49:42PM +0100, Robert Marko wrote:
+> Add support for SBL state callback in MHI core.
+> 
+> It is required for ath11k MHI devices in order to be able to set QRTR
+> instance ID in the SBL state so that QRTR instance ID-s dont conflict in
+> case of multiple PCI/MHI cards or AHB + PCI/MHI card.
+> Setting QRTR instance ID is only possible in SBL state and there is
+> currently no way to ensure that we are in that state, so provide a
+> callback that the controller can trigger off.
+> 
 
-On Sun, Nov 06 2022 at 22:32, Steven Rostedt wrote:
-> As discussed here:
->
->   https://lore.kernel.org/all/20221106212427.739928660@goodmis.org/
-
-Please hold off. It's only nits, but tip has documented rules and random
-pull requests are not making them go away.
+Where can I find the corresponding ath11k patch that makes use of this
+callback?
 
 Thanks,
+Mani
 
-        tglx
+> Signed-off-by: Robert Marko <robimarko@gmail.com>
+> ---
+>  drivers/bus/mhi/host/main.c | 1 +
+>  include/linux/mhi.h         | 2 ++
+>  2 files changed, 3 insertions(+)
+> 
+> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+> index df0fbfee7b78..8b03dd1f0cb8 100644
+> --- a/drivers/bus/mhi/host/main.c
+> +++ b/drivers/bus/mhi/host/main.c
+> @@ -900,6 +900,7 @@ int mhi_process_ctrl_ev_ring(struct mhi_controller *mhi_cntrl,
+>  			switch (event) {
+>  			case MHI_EE_SBL:
+>  				st = DEV_ST_TRANSITION_SBL;
+> +				mhi_cntrl->status_cb(mhi_cntrl, MHI_CB_EE_SBL_MODE);
+>  				break;
+>  			case MHI_EE_WFW:
+>  			case MHI_EE_AMSS:
+> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
+> index a5441ad33c74..beffe102dd19 100644
+> --- a/include/linux/mhi.h
+> +++ b/include/linux/mhi.h
+> @@ -34,6 +34,7 @@ struct mhi_buf_info;
+>   * @MHI_CB_SYS_ERROR: MHI device entered error state (may recover)
+>   * @MHI_CB_FATAL_ERROR: MHI device entered fatal error state
+>   * @MHI_CB_BW_REQ: Received a bandwidth switch request from device
+> + * @MHI_CB_EE_SBL_MODE: MHI device entered SBL mode
+>   */
+>  enum mhi_callback {
+>  	MHI_CB_IDLE,
+> @@ -45,6 +46,7 @@ enum mhi_callback {
+>  	MHI_CB_SYS_ERROR,
+>  	MHI_CB_FATAL_ERROR,
+>  	MHI_CB_BW_REQ,
+> +	MHI_CB_EE_SBL_MODE,
+>  };
+>  
+>  /**
+> -- 
+> 2.38.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
