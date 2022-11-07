@@ -2,45 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13EC461F358
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 13:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEC361F371
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 13:37:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232153AbiKGMcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Nov 2022 07:32:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56196 "EHLO
+        id S232235AbiKGMhV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Nov 2022 07:37:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232154AbiKGMcu (ORCPT
+        with ESMTP id S231476AbiKGMhT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Nov 2022 07:32:50 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B45B25
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 04:32:48 -0800 (PST)
+        Mon, 7 Nov 2022 07:37:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A887CEE36;
+        Mon,  7 Nov 2022 04:37:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AB3BCB80DF3
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 12:32:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2773C433C1;
-        Mon,  7 Nov 2022 12:32:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 469B061029;
+        Mon,  7 Nov 2022 12:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B75C433D7;
+        Mon,  7 Nov 2022 12:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667824366;
-        bh=79z7VoNd4Ba4clf3ncIBp248alVCCQPhzogLRI4L9XY=;
+        s=k20201202; t=1667824637;
+        bh=xA25/VVL0qYxxCrpXdz6ciSZ4H10xYZeAAxjaaCmrEI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cB5bK+ge9ODWcEmNQX+D01bEp3q1Y/300EqiN4836yRQ1prl9mfy8s5RX3Y6RhYNu
-         u//pCRpLtv3VEHWn6k3Y1pbThgUlURWv1Tco86IEGZVnB/dSFF6Bbpe7gyP40Ydwnx
-         VPTWj6pqTwMUBNmFctBY8g1JFx/QjM9ca/7DFXgGDbcln5b2Ef9yUsyCn96zctERJW
-         AlkeuRjWBvlkeFt3eVnWXuY8xlS6IYvs+F/Cd102jPSX6wZ9tYQkPQq4i2+rGv0h23
-         34xKvCStTPVqEkzS0+4hujV+PfgSOk6a0lffDqs65C4eYr3iXORf8xZwKbnZQKaqkM
-         ++vXVbIBRYvDw==
+        b=FelJuhxKtxMgkWwOtuD4O9C9g/JPZHUktOM114X1HRUVv98gp8F2qEXJLzqcX4A6h
+         fwHrGmXP1i6tEiA0hY85NmeY5u+2/Bf5WWNdq4YHD7a/pRDkIgrnyu+9Cx8tIDwCZh
+         ifCFujL5/KYf9Z+briHwSM8WT/U+Up++nM6eOeCvYjP4ALrEXx95DLeGXwkYn54lS/
+         iNRz9AiH8nUEW9UD/3s44T1dgf8gJoysmxUvA1Q1HRrJlSfLFn1Vv4rOU48fE76Qgn
+         xz8tbu0UhB/NSRuEPLbBcqq2QUL2bX5NWTiV8I69u9JOqU6Ui0gHS/315jwtTAVYrZ
+         bP9Fvl2Sr1TmQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtw89: 8852b: change debug mask of message of no TX resource
-References: <20221103072517.15284-1-pkshih@realtek.com>
-Date:   Mon, 07 Nov 2022 14:32:43 +0200
-In-Reply-To: <20221103072517.15284-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Thu, 3 Nov 2022 15:25:17 +0800")
-Message-ID: <87sfivt05w.fsf@kernel.org>
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-wireless@vger.kernel.org,
+        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v5] wifi: rsi: Fix handling of 802.3 EAPOL frames sent via control port
+References: <20221104163339.227432-1-marex@denx.de>
+Date:   Mon, 07 Nov 2022 14:37:11 +0200
+In-Reply-To: <20221104163339.227432-1-marex@denx.de> (Marek Vasut's message of
+        "Fri, 4 Nov 2022 17:33:39 +0100")
+Message-ID: <87o7tjszyg.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -53,53 +62,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Marek Vasut <marex@denx.de> writes:
 
-> 8852B has smaller TX FIFO than others in WiFi chip, so it would be buffer
-> full frequently, but it doesn't affect TX performance. However, it shows
-> verbose debug messages with RTW89_DBG_UNEXP mask that is to show up
-> abnormal behavior, so change debug mask to RTW89_DBG_TXRX for 8852B.
+> When using wpa_supplicant v2.10, this driver is no longer able to
+> associate with any AP and fails in the EAPOL 4-way handshake while
+> sending the 2/4 message to the AP. The problem is not present in
+> wpa_supplicant v2.9 or older. The problem stems from HostAP commit
+> 144314eaa ("wpa_supplicant: Send EAPOL frames over nl80211 where available")
+> which changes the way EAPOL frames are sent, from them being send
+> at L2 frames to them being sent via nl80211 control port.
 >
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> An EAPOL frame sent as L2 frame is passed to the WiFi driver with
+> skb->protocol ETH_P_PAE, while EAPOL frame sent via nl80211 control
+> port has skb->protocol set to ETH_P_802_3 . The later happens in
+> ieee80211_tx_control_port(), where the EAPOL frame is encapsulated
+> into 802.3 frame.
+>
+> The rsi_91x driver handles ETH_P_PAE EAPOL frames as high-priority
+> frames and sends them via highest-priority transmit queue, while
+> the ETH_P_802_3 frames are sent as regular frames. The EAPOL 4-way
+> handshake frames must be sent as highest-priority, otherwise the
+> 4-way handshake times out.
+>
+> Therefore, to fix this problem, inspect the skb control flags and
+> if flag IEEE80211_TX_CTRL_PORT_CTRL_PROTO is set, assume this is
+> an EAPOL frame and transmit the frame via high-priority queue just
+> like other ETH_P_PAE frames.
+>
+> Fixes: 0eb42586cf87 ("rsi: data packet descriptor enhancements")
+> Signed-off-by: Marek Vasut <marex@denx.de>
 > ---
->  drivers/net/wireless/realtek/rtw89/pci.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-> index 07a2e23759f0b..99a254d7ba5ed 100644
-> --- a/drivers/net/wireless/realtek/rtw89/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-> @@ -971,8 +971,10 @@ static u32 __rtw89_pci_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
->  	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
->  	struct rtw89_pci_tx_ring *tx_ring = &rtwpci->tx_rings[txch];
->  	struct rtw89_pci_tx_wd_ring *wd_ring = &tx_ring->wd_ring;
-> +	const struct rtw89_chip_info *chip = rtwdev->chip;
->  	u32 bd_cnt, wd_cnt, min_cnt = 0;
->  	struct rtw89_pci_rx_ring *rx_ring;
-> +	enum rtw89_debug_mask debug_mask;
->  	u32 cnt;
->  
->  	rx_ring = &rtwpci->rx_rings[RTW89_RXCH_RPQ];
-> @@ -996,10 +998,16 @@ static u32 __rtw89_pci_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
->  	bd_cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
->  	wd_cnt = wd_ring->curr_num;
->  	min_cnt = min(bd_cnt, wd_cnt);
-> -	if (min_cnt == 0)
-> -		rtw89_debug(rtwdev, rtwpci->low_power ? RTW89_DBG_TXRX : RTW89_DBG_UNEXP,
-> +	if (min_cnt == 0) {
-> +		if (rtwpci->low_power || chip->chip_id == RTL8852B)
-> +			debug_mask = RTW89_DBG_TXRX;
-> +		else
-> +			debug_mask = RTW89_DBG_UNEXP;
-> +
-> +		rtw89_debug(rtwdev, debug_mask,
->  			    "still no tx resource after reclaim: wd_cnt=%d bd_cnt=%d\n",
->  			    wd_cnt, bd_cnt);
-> +	}
+> NOTE: I am really unsure about the method of finding out the exact
+>       place of ethernet header in the encapsulated packet and then
+>       extracting the ethertype from it. Is there maybe some sort of
+>       helper function for that purpose ?
+> ---
+> V2: - Turn the duplicated code into common function
+> V3: - Simplify the TX EAPOL detection (Johannes)
+> V4: - Drop the double !!() from test
+>     - Update commit message
+> V5: - Inline the rsi_is_tx_eapol() again, undoes V2 change completely
 
-Changing the debug mask like this looks a bit weird to me. At least it
-would be good to have a comment in the code explainin why this is done
-like this.
+BTW did you test this on a real device?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
