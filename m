@@ -2,119 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56A2461F4C8
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 14:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FA561F676
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 15:45:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231989AbiKGN7v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Nov 2022 08:59:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47530 "EHLO
+        id S231618AbiKGOpC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Nov 2022 09:45:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231124AbiKGN7s (ORCPT
+        with ESMTP id S231418AbiKGOpA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Nov 2022 08:59:48 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6C3B23
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 05:59:47 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id j15so16343987wrq.3
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Nov 2022 05:59:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WLRE2IBTL6tXQElQll3pK2nkKzxcUu8aFfReYTDtJOA=;
-        b=FERxbpSxvJWObig+KC/olDuIrKt66020ifjSl9RS1RTy8qNPia6NSLrMFFn9sCtm8w
-         kqcgOm287QqXZ8NhD5QBi09/SagXXxcspAI0N77LpkwD4YthSbEFBLUrS58VF0tBEjst
-         1AE+o5nuPNdL7zUPAodJSvaLrAjK/cA53eWCc5LGEcrBEh3JIPTEeXMB5CqT4q2dUPB8
-         Q/bgOTj4Vd4nJjjTAR4rgqN9QmDWwP05zHFXLiCc/A+v1QPMeuxb0hXlmGtbVCg6OcYN
-         Ql+NhKNOmY4Ol61xwpIh9FUrWgop5s3tIQwmTfGJ/2mINF+u00orQQw6xz03AY5NwUKq
-         zmhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WLRE2IBTL6tXQElQll3pK2nkKzxcUu8aFfReYTDtJOA=;
-        b=Xmb29VrbrYVCU7Ab63ExZ7ojDyql+AAiEOphpDuHn2aZMSjI+iyIzliMSDDiaCmPYt
-         KsCuWqHtJKSOaRx3zOKJvYq0Ss1SI5a+ppqTkpkLWEbmtW01x85hzTvTwn2FeX7YMP+Y
-         59cTh6ixVxieZLGFYG8Pz2PMzLow7d8Zs4BG+t56AZSflKaZDa7CfiTH9NdxgpZKLGJQ
-         d3WlJi37m+xO5T7V7oedneEWX4gUp4zLDppso5UVV0hEKgfYML2vTxEPG+M72GFtL07K
-         scaF85n5X9iNgnSiriIWf83Ltoa7j4Xdx0kKj1NkMLCl9+nlZfGhzgweSrjqH9q377ko
-         G9Bg==
-X-Gm-Message-State: ACrzQf2pC6jQD09tm0ITnHJii+rgSwPDGkN03I2kd8/0wyaNFqKF9HV4
-        SzAUX8qzAWgV4HzCgR5UzOE=
-X-Google-Smtp-Source: AMsMyM5meQNZVUELxa5jjGDahXbbpyEf8m2laiYNEGWKezJ6ex4ZxyyDXhvWeEf+mbYds/VWKUSD0Q==
-X-Received: by 2002:a5d:49d0:0:b0:236:ba53:ec39 with SMTP id t16-20020a5d49d0000000b00236ba53ec39mr30217611wrs.412.1667829586269;
-        Mon, 07 Nov 2022 05:59:46 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id s25-20020adfa299000000b00236b2804d79sm7809977wra.2.2022.11.07.05.59.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Nov 2022 05:59:45 -0800 (PST)
-Date:   Mon, 7 Nov 2022 16:59:26 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Alexander Wetzel <alexander@wetzel-home.de>
-Cc:     oe-kbuild@lists.linux.dev, linux-wireless@vger.kernel.org,
-        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: convert PS buffering into iTXQ
-Message-ID: <Y2kPPn7qmao4VL5y@kadam>
-References: <202211060817.mqDPz8T7-lkp@intel.com>
- <08af0517-fb5f-cfd1-e92b-18306603144f@wetzel-home.de>
+        Mon, 7 Nov 2022 09:45:00 -0500
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D20F85FFF;
+        Mon,  7 Nov 2022 06:44:59 -0800 (PST)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 60456806C6;
+        Mon,  7 Nov 2022 15:44:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1667832297;
+        bh=SNJYWow8yT2A29q1fg1MhJIJvy9RbdnL9zRiMJeMeF4=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=nzat5P3zIri+/5nPLVaOFxXdDgI4F3ROeupq29w80x+ajdMxWP/eIrKSWshLeHBir
+         WLLoa5FBxIvSSCl85INxEZ8nJRGtVYmUocDL4iXZXHDUAnFejYrTFOMBYWzp7GdTEm
+         eHyPMtVbv33+HCMXiq82R7Pbha2s9BIH0HJmEx6O4HrkZQq1kzGtvrPfJOGibsQxZf
+         lw5+I7o3wEEHDYMbPIrBF1YtCHg6aI3KBNxN7J2jZJnHlHtCmcwC1B7qR3+yntkh0L
+         Xw/UQYQ07kYBWbEaB/E/c6geMLjVWtOd+HCut1M/33BD0RTecw+OwIQFxhAvUy96o7
+         cl9xgXeLDiDSQ==
+Message-ID: <afe318c6-9a55-1df2-68b4-d554d4cecd5a@denx.de>
+Date:   Mon, 7 Nov 2022 15:44:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <08af0517-fb5f-cfd1-e92b-18306603144f@wetzel-home.de>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH v5] wifi: rsi: Fix handling of 802.3 EAPOL frames sent via
+ control port
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Angus Ainslie <angus@akkea.ca>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
+References: <20221104163339.227432-1-marex@denx.de>
+ <87o7tjszyg.fsf@kernel.org> <7a3b6d5c-1d73-1d31-434f-00703c250dd6@denx.de>
+ <877d06g98z.fsf@kernel.org>
+From:   Marek Vasut <marex@denx.de>
+In-Reply-To: <877d06g98z.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.6 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 02:52:55PM +0100, Alexander Wetzel wrote:
-> Hi,
+On 11/7/22 14:54, Kalle Valo wrote:
+> Marek Vasut <marex@denx.de> writes:
 > 
-> On 07.11.22 09:00, Dan Carpenter wrote:
-> > Hi Alexander,
-> > 
-> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Wetzel/wifi-mac80211-convert-PS-buffering-into-iTXQ/20221101-100832
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-> > patch link:    https://lore.kernel.org/r/20221031211815.6666-1-alexander%40wetzel-home.de
-> > patch subject: [PATCH] wifi: mac80211: convert PS buffering into iTXQ
-> > config: openrisc-randconfig-m041-20221106
-> > compiler: or1k-linux-gcc (GCC) 12.1.0
-> > 
-> > If you fix the issue, kindly add following tag where applicable
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Reported-by: Dan Carpenter <error27@gmail.com>
-> > 
-> > New smatch warnings:
-> > net/mac80211/tx.c:1145 ieee80211_get_txq() warn: variable dereferenced before check 'vif' (see line 1112)
+>>> BTW did you test this on a real device?
+>>
+>> Yes, SDIO RS9116 on next-20221104 and 5.10.153 .
 > 
-> vif can't be null here, the existing null check is not needed.
+> Very good, thanks.
 > 
-> ieee80211_get_txq() is only used in ieee80211_queue_skb(). Which already
-> access sdata->vif.type and sets vif to &sdata->vif prior of calling
-> ieee80211_get_txq();
+>> What prompts this question ?
 > 
-> Would dropping the null check in line 1145 be an acceptable solution to get
-> rid of this warning?
-> 
-> I'll then would do that in the next revision (v3) of the patch and send that
-> out after either Johannes has reviewed v2 or serious issues are discovered
-> by anyone.
-> 
+> I get too much "fixes" which have been nowhere near real hardware and
+> can break the driver instead of fixing anything, especially syzbot
+> patches have been notorious. So I have become cautious.
 
-You should probably delete the NULL check in a separate patch (I say
-without looking at any of your patches).
+Ah, this is a real problem right here.
 
-This is a Smatch warning and not a GCC warning so it's not like the NULL
-check hurts anything besides readability.
+wpa-supplicant 2.9 from OE dunfell 3.1 works.
+wpa-supplicant 2.10 from OE kirkstone 4.0 fails.
 
-regards,
-dan carpenter
+That's how I ran into this initially. My subsequent tests were with 
+debian wpa-supplicant 2.9 and 2.10 packages, since that was easier, they 
+(2.10 does, 2.9 does not) trigger the problem all the same.
 
+I'm afraid this RSI driver is so poorly maintained and has so many bugs, 
+that, there is little that can make it worse. The dealing I had with RSI 
+has been ... long ... and very depressing. I tried to get documentation 
+or anything which would help us fix the problems we have with this RSI 
+driver ourselves, but RSI refused it all and suggested we instead use 
+their downstream driver (I won't go into the quality of that). It seems 
+RSI has little interest in maintaining the upstream driver, pity.
+
+I've been tempted to flag this driver as BROKEN for a while, to prevent 
+others from suffering with it. Until I send such a patch, you can expect 
+real fixes coming from my end at least.
