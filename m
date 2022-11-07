@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D017A62010B
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 22:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2ED762010C
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Nov 2022 22:25:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232211AbiKGVZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Nov 2022 16:25:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46982 "EHLO
+        id S233167AbiKGVZF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Nov 2022 16:25:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233220AbiKGVYk (ORCPT
+        with ESMTP id S233328AbiKGVYn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Nov 2022 16:24:40 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7A422F66F
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 13:24:08 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id s196so11608517pgs.3
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Nov 2022 13:24:08 -0800 (PST)
+        Mon, 7 Nov 2022 16:24:43 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A9EAE4D
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 13:24:11 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id v28so11857298pfi.12
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Nov 2022 13:24:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RM0lG+fj9X9NdzLvFBZpi+eiE8A7unHNU+MJkajS6is=;
-        b=LTE6w12NwcenpNfXEb/h4ANwTdEzlgHhDcqQTle1FA5aKFsVaKvkOUcl2lsq0hEkRT
-         3UaVTXLtzeLeD0SQEpucI069xNGhO1/QkpXdaLSe9t3czGbdqXvM9GbceaD3XBe+Bzjt
-         P6DBNN1pTIkBeXQwigXiPfN+PhsM2pg9v4zH1FWbokxHrpWms8ufCOe01xypKaWctBKr
-         MftSiP7jR+cS5b8igKc0p5lIh6uC5cDtIlDhQLSl7BRDfifLvULfrKePMY/49ALik7/8
-         TL9eL/EyeD+Bcc4w8MDrHp7m3WYf+C18OHsHbdDDpeg7hzTCHkzjA0UXixVHnJ6ollOv
-         i6jg==
+        bh=4qOLqzDQ0leWDK0S599u/0XvplBF43BD27gReNL8w/k=;
+        b=eVy9tN1mditTF7Lve1iz7Hf+79NFNNEcVf6Ykvm6+8RmZupOX0jIaOzyq2Cw4WlMoU
+         n0kYvkThuSO1qwEKqwyDzOZW4zOrVM+ftJOQRKU3EloDd8mTawgL09jrdypY2NaTmGTz
+         It6ZZOfBl3bW5gB/GIBwa5J/Fo1XGMZZFBup40gKoGYuOjNKvAZKqYZv7aLMGMvaVARX
+         kK8nJbOsxXq2S9qHpIPiFL3KNNF3t0Fjglo8tuoEq8sYOTV4vqPgIIu5bgq8t6lJTPTN
+         /DY5R8GPTo1Tm6NBqKb0QS8yU6JffsY96a7Iy0t4Vy+vfaxzA3r2HMjIu7nVAB+9xSuq
+         SC/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RM0lG+fj9X9NdzLvFBZpi+eiE8A7unHNU+MJkajS6is=;
-        b=hyJPHhv1eYYEUG12diiBHbTaCXSNv+3ofQnDV0L5dRl4QQzDTxzC9eXxSZiJq6GFPw
-         InODZfMT37a9uAMyh3Q8Cn/PGkyprgYYOmk4VKKv4eUipfOkXG/QMA8r0nMBYlYKSwUW
-         pI44Ahxv0QxqfrL9V0WOnU6KHYo/Qs1aGRYT1VOi65FecmJOJeo6aa+ptCqNWL7p+GQS
-         HaZCUqnV0IDZutXbwEemPIicKhBP3+P0CyhYjbNSoB0Tgibc4EZ4AQVNnxQdBmRFae6m
-         rbf/98b/ZrlDqjwmZDFYPVp5PguLlgA4ujCqEd0dCPNmvnFNbXzDvGIMxpasoSVEQq7A
-         NrJA==
-X-Gm-Message-State: ACrzQf0VNmL4RlbLrGtB4H6cTBgq+0HylBpDxZG4YqZgaDv6SVoTjGZN
-        RP7hsbsAaubb8R31RS47nIkM6g==
-X-Google-Smtp-Source: AMsMyM4TUpJldZzymfR8O2K2LJG/LzDQiXK8C7orgciqZzgmt2OqXGiYe7EHbNPCVWhYdD7Vod+Hiw==
-X-Received: by 2002:a05:6a00:2193:b0:56c:ea4c:6947 with SMTP id h19-20020a056a00219300b0056cea4c6947mr52646696pfi.27.1667856248206;
-        Mon, 07 Nov 2022 13:24:08 -0800 (PST)
+        bh=4qOLqzDQ0leWDK0S599u/0XvplBF43BD27gReNL8w/k=;
+        b=VyI+zpjrXSYZWG03tff2rFkmTVCHKCYZcvtGBSbk18NeJpPNzWWg8dmEuaB9iM+JUR
+         gifHpDyFdowbvnRoiWrzvvSYYyNWCZEzcnr4wj4hC9PJxyw1/eWnSlAnDS4L4rOKtkod
+         Oz9cz9cN/tf3MING2nYy5+hUHRynlBViILf8V69N6brrCyWlTImWBkWYLYgCvCyibBqH
+         RUULME1F1tH3/QsURyzFiZoj6Wuxi6y8PV14MMcv857kf4BhqYWjaw3aBY5EymUPY1zL
+         cGvetL2PZZEF7RAs9Q/7kMyS+/yJhBRyD88eGKx16PxqgBDVeMv83qVXV+n3f41sZDxr
+         SS/A==
+X-Gm-Message-State: ACrzQf08Q9Ch1o2gyfqCBSSrhXsi8hsk0v7b77cVhNmMezQ4hq32eAzi
+        fALB8wAw6un0XQYLCKYvi5wMLA==
+X-Google-Smtp-Source: AMsMyM5yI8gzGSz9QQYsCZcYzkHasuI2MZSlTS18aYp9v1YwoBouabEOOrb/QLlJPhluGEx9RxQR/Q==
+X-Received: by 2002:a65:6b8f:0:b0:46f:c6e0:e259 with SMTP id d15-20020a656b8f000000b0046fc6e0e259mr35518288pgw.521.1667856251451;
+        Mon, 07 Nov 2022 13:24:11 -0800 (PST)
 Received: from virs-pc-014.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id z10-20020aa79f8a000000b00560bb4a57f7sm5102356pfr.179.2022.11.07.13.24.05
+        by smtp.gmail.com with ESMTPSA id z10-20020aa79f8a000000b00560bb4a57f7sm5102356pfr.179.2022.11.07.13.24.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Nov 2022 13:24:07 -0800 (PST)
+        Mon, 07 Nov 2022 13:24:10 -0800 (PST)
 From:   Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
         Kieran Frewen <kieran.frewen@morsemicro.com>,
         Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Subject: [PATCH 2/4] wifi: mac80211: S1G beacon/short beacon support
-Date:   Tue,  8 Nov 2022 10:23:56 +1300
-Message-Id: <20221107212358.272070-2-gilad.itzkovitch@morsemicro.com>
+Subject: [PATCH 3/4] wifi: nl80211: update attributes netlink for S1G short beacon
+Date:   Tue,  8 Nov 2022 10:23:57 +1300
+Message-Id: <20221107212358.272070-3-gilad.itzkovitch@morsemicro.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221107212358.272070-1-gilad.itzkovitch@morsemicro.com>
 References: <20221107212358.272070-1-gilad.itzkovitch@morsemicro.com>
@@ -74,87 +74,97 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Kieran Frewen <kieran.frewen@morsemicro.com>
 
-If configured, use the S1G short beacon format. The S1G short beacon
-format includes a limited set of information elements.
+Add short beacon period and tail attributes for user configuration
 
 Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
 Co-developed-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
 Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
 ---
- include/net/mac80211.h     |  1 +
- net/mac80211/cfg.c         |  1 +
- net/mac80211/ieee80211_i.h |  1 +
- net/mac80211/tx.c          | 14 +++++++++++++-
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ include/uapi/linux/nl80211.h |  9 +++++++++
+ net/wireless/nl80211.c       | 15 +++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 721c450a9ccd..39faafde109a 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -674,6 +674,7 @@ struct ieee80211_bss_conf {
- 	bool enable_beacon;
- 	u8 dtim_period;
- 	u16 beacon_int;
-+	u8 short_beacon_period;
- 	u16 assoc_capability;
- 	u64 sync_tsf;
- 	u32 sync_device_ts;
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c848fe04dd44..a42abaa25273 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1308,6 +1308,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	}
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index c14a91bbca7c..ef6318012965 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2751,6 +2751,10 @@ enum nl80211_commands {
+  *	the incoming frame RX timestamp.
+  * @NL80211_ATTR_TD_BITMAP: Transition Disable bitmap, for subsequent
+  *	(re)associations.
++ *
++ * @NL80211_ATTR_SHORT_BEACON_PERIOD: S1G short beacon period in TUs.
++ * @NL80211_ATTR_SHORT_BEACON_TAIL: portion of the short beacon after the TIM.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3280,6 +3284,9 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_RX_HW_TIMESTAMP,
+ 	NL80211_ATTR_TD_BITMAP,
  
- 	link_conf->dtim_period = params->dtim_period;
-+	link_conf->short_beacon_period = params->short_beacon_period;
- 	link_conf->enable_beacon = true;
- 	link_conf->allow_p2p_go_ps = sdata->vif.p2p;
- 	link_conf->twt_responder = params->twt_responder;
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 63ff0d2524b6..2e1d829c548a 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -268,6 +268,7 @@ struct beacon_data {
- 	struct ieee80211_meshconf_ie *meshconf;
- 	u16 cntdwn_counter_offsets[IEEE80211_MAX_CNTDWN_COUNTERS_NUM];
- 	u8 cntdwn_current_counter;
-+	u8 long_beacon_count;
- 	struct cfg80211_mbssid_elems *mbssid_ies;
- 	struct rcu_head rcu_head;
- };
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 383e0242e95f..ff5ea7ab271b 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5121,6 +5121,18 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 	struct sk_buff *skb = NULL;
- 	u16 csa_off_base = 0;
- 	int mbssid_len;
-+	bool is_short = false;
++	NL80211_ATTR_SHORT_BEACON_PERIOD,
++	NL80211_ATTR_SHORT_BEACON_TAIL,
 +
-+	if (vif->cfg.s1g) {
-+		if (beacon->long_beacon_count == 0) {
-+			is_short = false;
-+			beacon->long_beacon_count =
-+				vif->bss_conf.short_beacon_period - 1;
-+		} else {
-+			is_short = true;
-+			beacon->long_beacon_count--;
-+		}
-+	}
+ 	/* add attributes here, update the policy in nl80211.c */
  
- 	if (beacon->cntdwn_counter_offsets[0]) {
- 		if (!is_template)
-@@ -5158,7 +5170,7 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 		csa_off_base = skb->len;
+ 	__NL80211_ATTR_AFTER_LAST,
+@@ -4963,6 +4970,7 @@ enum nl80211_bss_scan_width {
+  * @NL80211_BSS_FREQUENCY_OFFSET: frequency offset in KHz
+  * @NL80211_BSS_MLO_LINK_ID: MLO link ID of the BSS (u8).
+  * @NL80211_BSS_MLD_ADDR: MLD address of this BSS if connected to it.
++ * @NL80211_BSS_SHORT_BEACON_PERIOD: S1G short beacon period in TUs
+  * @__NL80211_BSS_AFTER_LAST: internal
+  * @NL80211_BSS_MAX: highest BSS attribute
+  */
+@@ -4990,6 +4998,7 @@ enum nl80211_bss {
+ 	NL80211_BSS_FREQUENCY_OFFSET,
+ 	NL80211_BSS_MLO_LINK_ID,
+ 	NL80211_BSS_MLD_ADDR,
++	NL80211_BSS_SHORT_BEACON_PERIOD,
+ 
+ 	/* keep last */
+ 	__NL80211_BSS_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 148f66edb015..6a8b1e935d58 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -805,6 +805,11 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+ 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
++	[NL80211_ATTR_SHORT_BEACON_PERIOD] = { .type = NLA_U16 },
++	[NL80211_ATTR_SHORT_BEACON_TAIL] =
++		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_ie_attr,
++				       IEEE80211_MAX_DATA_LEN),
++
+ };
+ 
+ /* policy for the key attributes */
+@@ -5440,6 +5445,12 @@ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+ 		haveinfo = true;
  	}
  
--	if (beacon->tail)
-+	if (beacon->tail && !is_short)
- 		skb_put_data(skb, beacon->tail, beacon->tail_len);
++	if (attrs[NL80211_ATTR_SHORT_BEACON_TAIL]) {
++		bcn->short_tail = nla_data(attrs[NL80211_ATTR_SHORT_BEACON_TAIL]);
++		bcn->short_tail_len = nla_len(attrs[NL80211_ATTR_SHORT_BEACON_TAIL]);
++		haveinfo = true;
++	}
++
+ 	if (!haveinfo)
+ 		return -EINVAL;
  
- 	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
+@@ -5804,6 +5815,10 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 		nla_get_u32(info->attrs[NL80211_ATTR_BEACON_INTERVAL]);
+ 	params->dtim_period =
+ 		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
++	if (info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD])
++		params->short_beacon_period =
++			nla_get_u32(info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD]) == 0 ?
++				1 : nla_get_u32(info->attrs[NL80211_ATTR_SHORT_BEACON_PERIOD]);
+ 
+ 	err = cfg80211_validate_beacon_int(rdev, dev->ieee80211_ptr->iftype,
+ 					   params->beacon_interval);
 -- 
 2.34.1
 
