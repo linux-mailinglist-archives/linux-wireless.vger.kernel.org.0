@@ -2,52 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7731621266
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 14:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B41D6212CF
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 14:43:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233912AbiKHN1s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 08:27:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33178 "EHLO
+        id S234466AbiKHNnD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 08:43:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234189AbiKHN1n (ORCPT
+        with ESMTP id S234337AbiKHNnB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 08:27:43 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB2853EEA
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 05:27:43 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 74C10CE1B6C
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 13:27:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA72C433D6;
-        Tue,  8 Nov 2022 13:27:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667914059;
-        bh=uDaE4OLVOMECMlR7iVxh8/EBgnAsH1SSuitfLpP/q4k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=K2TxuRhu2zOV4fqONOj6ofTM2OuXyxqUirQZgG3ZyCE69UEPTDtcNMe4FeP2pzqri
-         cx/fRf55vrA7KpPD/ULgQuAPr0LYrPv2msh9u2NNbZauTn49HsA0zgIaL97vTfr8DP
-         At/7mD3yPcvflN5POnDvvTvRjp0J5+7seasJnbr3ZmysBgxpQ0dmFp6igRE3jTHjuD
-         p2aIoZjGklwhAEvp/EKEcXg1SY5z8UVFFxBe0QesE84NOvRFL4kFGG/ad49SvNVLDk
-         G4BnL/BTP4et2Ee2TNlOXoC0kJPFDvnJO243zkw/u8BSAy4Vdpkvvrpole6s6E27pP
-         UMmTuG8vAVJLQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
-Subject: Re: [PATCH 30/50] wifi: ath12k: add hw.h
-References: <20220812161003.27279-1-kvalo@kernel.org>
-        <20220812161003.27279-31-kvalo@kernel.org>
-        <9038589b-f2e6-18e5-29f2-f88f19d34a68@quicinc.com>
-Date:   Tue, 08 Nov 2022 15:27:34 +0200
-In-Reply-To: <9038589b-f2e6-18e5-29f2-f88f19d34a68@quicinc.com> (Jeff
-        Johnson's message of "Thu, 18 Aug 2022 15:30:13 -0700")
-Message-ID: <87r0ydefuh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 8 Nov 2022 08:43:01 -0500
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5663207B;
+        Tue,  8 Nov 2022 05:43:01 -0800 (PST)
+Received: from dggpeml500023.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N68Rb3L0jzHvg3;
+        Tue,  8 Nov 2022 21:42:35 +0800 (CST)
+Received: from ubuntu1804.huawei.com (10.67.174.58) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 8 Nov 2022 21:42:52 +0800
+From:   Xiu Jianfeng <xiujianfeng@huawei.com>
+To:     <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <rmani@qti.qualcomm.com>
+CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] wifi: ath10k: Fix resource leak in ath10k_pci_init()
+Date:   Tue, 8 Nov 2022 21:38:58 +0800
+Message-ID: <20221108133858.53308-1-xiujianfeng@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Originating-IP: [10.67.174.58]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500023.china.huawei.com (7.185.36.114)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,25 +45,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+When ath10k_ahb_init() fails, it does not unregister ath10k_pci_driver,
+which will cause a resource leak issue, call pci_unregister_driver() in
+the error path to fix this issue.
 
-> On 8/12/2022 9:09 AM, Kalle Valo wrote:
->> From: Kalle Valo <quic_kvalo@quicinc.com>
->>
->> (Patches split into one patch per file for easier review, but the final
->> commit will be one big patch. See the cover letter for more info.)
->>
->> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Fixes: 0b523ced9a3c ("ath10k: add basic skeleton to support ahb")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+---
+ drivers/net/wireless/ath/ath10k/pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-[...]
-
->> +	struct mhi_controller_config *mhi_config;
->
-> imo based upon mhi.c review this should be const
-
-I added this to the todo list.
-
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index e56c6a6b1379..22f8f8b20762 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -3800,8 +3800,10 @@ static int __init ath10k_pci_init(void)
+ 		       ret);
+ 
+ 	ret = ath10k_ahb_init();
+-	if (ret)
++	if (ret) {
+ 		printk(KERN_ERR "ahb init failed: %d\n", ret);
++		pci_unregister_driver(&ath10k_pci_driver);
++	}
+ 
+ 	return ret;
+ }
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.17.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
