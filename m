@@ -2,39 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA808621163
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 13:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BACB621211
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 14:14:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233803AbiKHMto (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 07:49:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36720 "EHLO
+        id S234352AbiKHNO3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 08:14:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233683AbiKHMtn (ORCPT
+        with ESMTP id S233751AbiKHNO1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 07:49:43 -0500
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56879C54
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 04:49:41 -0800 (PST)
-Received: from [141.14.220.45] (g45.guest.molgen.mpg.de [141.14.220.45])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Tue, 8 Nov 2022 08:14:27 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E301218A
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 05:14:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5828961EA1929;
-        Tue,  8 Nov 2022 13:49:38 +0100 (CET)
-Message-ID: <eb1885f2-abd9-1f1f-1c3e-c879372d8db0@molgen.mpg.de>
-Date:   Tue, 8 Nov 2022 13:49:38 +0100
+        by sin.source.kernel.org (Postfix) with ESMTPS id 7A3A5CE1B7A
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 13:14:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5445C433C1;
+        Tue,  8 Nov 2022 13:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667913262;
+        bh=HHRinKYYN9c17xVJWvh42OWBaiHiv4AidfQy3vA2TIE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Z6z0ADsP3hEHQ2B4UhqnhGOfq5RZv1yeQY6/MiQu4uy/Dr/Jz5+hD/RrySvkQrEPe
+         BmFSihbthIHOhLN1xOwDWauqlL254odz/J3xzmX6o9P15bbUrOG0wYq2shV08jyYHO
+         HIzLqJELkA7Rgd0Bnjaa+VWWO7hkripim3WjycalNqOglHaG7Gs+UBOwCr2txe46xI
+         Yw86HaD/mEs4e1WuiJ7wJupIBEqBvkfQ48452/aT5ytxY0jCVrbbMmWFTlZA81PaUv
+         RUR/a9rSt0y/HF8PzpWj75NBJX9oQCZ9w6IW8ODAFm4LPYobWTCwbs9ie+wmz/Hyx1
+         qUHiwWUdp7tFg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
+Subject: Re: [PATCH 17/50] wifi: ath12k: add dp_tx.c
+References: <20220812161003.27279-1-kvalo@kernel.org>
+        <20220812161003.27279-18-kvalo@kernel.org>
+        <de6d5e1a-0ff4-a303-ed25-508816a39a0d@quicinc.com>
+Date:   Tue, 08 Nov 2022 15:14:18 +0200
+In-Reply-To: <de6d5e1a-0ff4-a303-ed25-508816a39a0d@quicinc.com> (Jeff
+        Johnson's message of "Wed, 17 Aug 2022 16:35:27 -0700")
+Message-ID: <87v8npeggl.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: rtlwifi: RTL8188EE: Unable to connect to Wifi network
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless@vger.kernel.org, it+linux-wireless@molgen.mpg.de
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,143 +55,90 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Linux folks,
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
+> On 8/12/2022 9:09 AM, Kalle Valo wrote:
+>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>>
+>> (Patches split into one patch per file for easier review, but the final
+>> commit will be one big patch. See the cover letter for more info.)
+>>
+>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>> ---
+>>   drivers/net/wireless/ath/ath12k/dp_tx.c | 1206 +++++++++++++++++++++++++++++++
+>>   1 file changed, 1206 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c
+>> b/drivers/net/wireless/ath/ath12k/dp_tx.c
+>
+> snip
+>
+>> +static struct ath12k_tx_desc_info *ath12k_dp_tx_assign_buffer(struct ath12k_dp *dp,
+>> +							      u8 pool_id)
+>> +{
+>> +	struct ath12k_tx_desc_info *desc = NULL;
+>
+> nit: initializer always overwritten
 
-Using Debian sid/unstable with Linux 6.1-rc3 [1] on an Intel Haswell 
-Haier laptop with a RTL8188EE, I am unable to connect to a wireless network.
+Now fixed.
 
-     $ sudo lspci -k -s 08:00.0
-     08:00.0 Network controller: Realtek Semiconductor Co., Ltd. 
-RTL8188EE Wireless Network Adapter (rev 01)
-     	Subsystem: AzureWave RTL8188EE Wireless Network Adapter
-     	Kernel driver in use: rtl8188ee
-     	Kernel modules: rtl8188ee
+>> +int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
+>> +		 struct sk_buff *skb)
+>> +{
+>> +	struct ath12k_base *ab = ar->ab;
+>> +	struct ath12k_dp *dp = &ab->dp;
+>> +	struct hal_tx_info ti = {0};
+>> +	struct ath12k_tx_desc_info *tx_desc = NULL;
+>> +	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+>> +	struct ath12k_skb_cb *skb_cb = ATH12K_SKB_CB(skb);
+>> +	struct hal_tcl_data_cmd *hal_tcl_desc;
+>> +	struct hal_tx_msdu_ext_desc *msg;
+>> +	struct sk_buff *skb_ext_desc;
+>> +	struct hal_srng *tcl_ring;
+>> +	struct ieee80211_hdr *hdr = (void *)skb->data;
+>> +	struct dp_tx_ring *tx_ring;
+>> +	u8 pool_id;
+>> +	u8 hal_ring_id;
+>> +	int ret;
+>> +	u8 ring_selector = 0, ring_map = 0;
+>
+> nit: ring_selector initializer always overwritten
 
-```
-[  262.822320] wlp8s0: authenticate with 6c:f3:7f:10:ae:12
-[  262.822341] wlp8s0: 80 MHz not supported, disabling VHT
-[  262.832384] wlp8s0: send auth to 6c:f3:7f:10:ae:12 (try 1/3)
-[  262.835124] wlp8s0: authenticated
-[  262.839046] wlp8s0: associate with 6c:f3:7f:10:ae:12 (try 1/3)
-[  262.850099] wlp8s0: RX AssocResp from 6c:f3:7f:10:ae:12 (capab=0x421 
-status=0 aid=1)
-[  262.850331] wlp8s0: associated
-[  262.850925] IPv6: ADDRCONF(NETDEV_CHANGE): wlp8s0: link becomes ready
-[…]
-[  307.618423] wlp8s0: deauthenticating from 6c:f3:7f:10:ae:12 by local 
-choice (Reason: 3=DEAUTH_LEAVING)
-```
+Fixed.
 
-wpa_supplicant 2:2.10-9+b2 logs:
+>> +int ath12k_dp_tx_htt_monitor_mode_ring_config(struct ath12k *ar, bool reset)
+>> +{
+>> +	struct ath12k_base *ab = ar->ab;
+>> +	int ret = 0;
+>
+> nit: initializer always overwritten
 
-```
-Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: SME: Trying to 
-authenticate with 6c:f3:7f:10:ae:12 (SSID='MPI Guest' freq=2437 MHz)
-Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: Trying to associate 
-with 6c:f3:7f:10:ae:12 (SSID='MPI Guest' freq=2437 MHz)
-Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: Associated with 
-6c:f3:7f:10:ae:12
-Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: CTRL-EVENT-CONNECTED 
-- Connection to 6c:f3:7f:10:ae:12 completed [id=0 id_str=]
-Nov 08 13:29:35 brecht wpa_supplicant[612]: bgscan simple: Failed to 
-enable signal strength monitoring
-Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: 
-CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
-Nov 08 13:30:20 brecht wpa_supplicant[612]: wlp8s0: 
-CTRL-EVENT-DISCONNECTED bssid=6c:f3:7f:10:ae:12 reason=3 locally_generated=1
-```
+Fixed.
 
-With more debugging verbosity (`-d`) it shows:
+>> +int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar, bool reset)
+>> +{
+>> +	struct ath12k_base *ab = ar->ab;
+>> +	struct ath12k_dp *dp = &ab->dp;
+>> +	struct htt_rx_ring_tlv_filter tlv_filter = {0};
+>> +	int ret = 0, ring_id = 0;
+>
+> nit: both initializers always overwritten
 
-```
-[…]
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: State: ASSOCIATED 
--> COMPLETED
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Radio work 
-'sme-connect'@0x556b491b5a80 done in 0.026679 seconds
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: 
-radio_work_free('sme-connect'@0x556b491b5a80): num_active_works --> 0
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: 
-CTRL-EVENT-CONNECTED - Connection to 6c:f3:7f:10:ae:12 completed [id=0 
-id_str=]
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Set wlp8s0 
-operstate 0->1 (UP)
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: netlink: Operstate: 
-ifindex=3 linkmode=-1 (no change), operstate=6 (IF_OPER_UP)
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: Signal 
-strength threshold -70  Short bgscan interval 30  Long bgscan interval 86400
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Signal monitor 
-threshold=-70 hysteresis=4
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: Failed to 
-enable signal strength monitoring
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: Init scan 
-interval: 86400
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan: Initialized module 
-'simple' with parameters '30:-70:86400'
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Received scan 
-results (19 BSSes)
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Scan results 
-indicate BSS status with 6c:f3:7f:10:ae:12 as associated
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: BSS: Start scan 
-result update 5
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: scan result 
-notification
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Determining shared 
-radio frequencies (max len 1)
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Shared frequencies 
-(len=1): completed iteration
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: freq[0]: 2437, 
-flags=0x1
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: Add operating class 81
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: Channels - 
-hexdump(len=13): 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: Update channel list
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: channels: 
-81:1,2,3,4,5,6,7,8,9,10,11,12,13
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: cli_channels:
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Cancelling scan request
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: WMM AC: AC mandatory: 
-AC_BE=0 AC_BK=0 AC_VI=0 AC_VO=0
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: WMM AC: U-APSD queues=0x0
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: WMM AC: Valid WMM 
-association, WMM AC is enabled
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: 
-CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: RTM_NEWLINK: ifi_index=3 
-ifname=wlp8s0 operstate=6 linkmode=1 ifi_family=0 ifi_flags=0x11043 
-([UP][RUNNING][LOWER_UP])
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Drv Event 46 
-(NL80211_CMD_CONNECT) received for wlp8s0
-Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Ignore connect 
-event (cmd=46) when using userspace SME
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Drv Event 20 
-(NL80211_CMD_DEL_STATION) received for wlp8s0
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Delete station 
-6c:f3:7f:10:ae:12
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Drv Event 39 
-(NL80211_CMD_DEAUTHENTICATE) received for wlp8s0
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Deauthenticate event
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0: Event DEAUTH (11) 
-received
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0: Deauthentication 
-notification
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0:  * reason 3 
-(DEAUTH_LEAVING) locally_generated=1
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0:  * address 
-6c:f3:7f:10:ae:12
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: Deauthentication frame 
-IE(s) - hexdump(len=0): [NULL]
-Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0: 
-CTRL-EVENT-DISCONNECTED bssid=6c:f3:7f:10:ae:12 reason=3 locally_generated=1
-```
+Both fixed.
 
-It’d be really great to get WLAN working on the device.
+>> +int ath12k_dp_tx_htt_tx_monitor_mode_ring_config(struct ath12k *ar, bool reset)
+>> +{
+>> +	struct ath12k_base *ab = ar->ab;
+>> +	struct ath12k_dp *dp = &ab->dp;
+>> +	struct htt_tx_ring_tlv_filter tlv_filter = {0};
+>> +	int ret = 0, ring_id = 0;
+>
+> nit: ring_id initializer always overwritten
 
+ring_id initialisation fixed now, but also ret is not initialised
+anymore.
 
-Kind regards,
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Paul
-
-
-[1]: https://packages.debian.org/experimental/linux-image-6.1.0-0-amd64
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
