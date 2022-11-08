@@ -2,93 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F39F620D48
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 11:30:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB90E620EE7
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 12:24:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233696AbiKHKaP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 05:30:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54730 "EHLO
+        id S233879AbiKHLYX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 06:24:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233659AbiKHKaO (ORCPT
+        with ESMTP id S233897AbiKHLYO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 05:30:14 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3F9614A;
-        Tue,  8 Nov 2022 02:30:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7420E614F1;
-        Tue,  8 Nov 2022 10:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1302AC433D7;
-        Tue,  8 Nov 2022 10:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667903411;
-        bh=QScj0SPWiAoUuCjvCzfGcgNluCdjviFFK4yyG9xTUTA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=YWeCvuNtkh38gLaCWRbJiHi7ors2Xznh8Ga26ofr+FraGaVxfBYsDBaFTWDbuOo8k
-         2eNP5PJ7pwpEfqgrbLNUolY3p57MfQ3f1T3h4UFrcA4lsgYqVSVV9NlhceHCYwgD4r
-         i2fOC7cHZI1+JyDnF67KKQ/L4tgOdcWgtoABweRdmENvYqzw8BaI+guMHTkKipBUcI
-         +Y/dZ1KUDzYJgymyRBPkWNMALOF2RQd7+z6ixvxZ6xCMbHfFTdPnGG2C3fhntxQiol
-         nixHjzeEXJg4GpJUmvH4MVQ9FPXipQ5zLMvVaseRspuf60ltx6tattvs76SPbEsvo9
-         IZknsBhAuvLUg==
-Content-Type: text/plain; charset="utf-8"
+        Tue, 8 Nov 2022 06:24:14 -0500
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CE9849B7F
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 03:24:14 -0800 (PST)
+Received: by mail-il1-x132.google.com with SMTP id d3so5280006ils.1
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Nov 2022 03:24:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5B7dfi7xVJ3OslQ0ALi00lhJojz9IHhiYsVHA/RHqOE=;
+        b=LXzLwEfFEIjs9nRQ/0D9sK0UdFF/hcYD1/7lPcxtKxGf+ipiOyxIUkG9FxWjTQwnxI
+         D0k1pcJ4r9HbGweGR8VttiL8E2qc4lcsz3jC3X1z+Myzw30J2a8GCz5AS/bkRvOOAlHD
+         E+tAU65cwh01zP65Dht/AwghXmg8POvqM5wMW+NclASoJJ1M+p89BgFOSDch5BgQ0Avc
+         9JiZIkvYkz5qbwJiVyZnhn8aEs4dsNPEV6aJ60VBa1B1c4nkJvkSo/q1xUjbvGvnQsI2
+         YCKRfjADZRvavXIhrgWVqvohpAMKlTCL5cT3Ex4YqBvyGRv/IX591YGJ8Vqkx1vqKbDZ
+         WAQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5B7dfi7xVJ3OslQ0ALi00lhJojz9IHhiYsVHA/RHqOE=;
+        b=jV+c7HujBDcP5oGZV26lQNs8CoQNh5jJOKZKq/N0kEM+0h05mC19x9ep25pFGcn+ys
+         ISO+PIDVycAlkWKERXvAzF5fN3Zq95SoJBo3AiHK3PwuVQgX04kdUfIleNY7C5kykgsw
+         w5+m8P8gBc3EOzhmM5dFTKTwUr5WdQNCtI53f51Xd6sIR486fAbHNN+NeIphL/GtZJf4
+         eQH0XRjBZfIzDKCWwJq2mRVkwJLEIsYTJ1F4QLTK2EaLOHu+3oXelht+gQVEs+TSm4v3
+         YmuCBvsJdflMP+dsDR219z1rVvrMYuA6hK915AENi5VxHd5pN8gpZIjy8dzmle1Nn1xZ
+         Qbng==
+X-Gm-Message-State: ACrzQf371HJ8t4DPcqmM+uugmwZW9nYk/xKgVQcG2lUguz9AMw3VjPCI
+        oFG79cy/IzXDAi504r8W20wIbqo67mfZtqLabew=
+X-Google-Smtp-Source: AMsMyM7l9664LpWj9QcPDmFBWC92J2k8lgTtaMBq0d8Kn2LaY6/WvjL6jmQ58ep7k3CUc1mU0tvXdcs9IQAedNtHTSY=
+X-Received: by 2002:a92:bf0e:0:b0:300:cc8e:fe07 with SMTP id
+ z14-20020a92bf0e000000b00300cc8efe07mr18642833ilh.184.1667906653482; Tue, 08
+ Nov 2022 03:24:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath10k: Add WLAN firmware image version info
- into
- smem
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221104082828.14386-1-quic_youghand@quicinc.com>
-References: <20221104082828.14386-1-quic_youghand@quicinc.com>
-To:     Youghandhar Chintala <quic_youghand@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_mpubbise@quicinc.com>,
-        <linux-arm-msm@vger.kernel.org>,
-        "Youghandhar Chintala" <quic_youghand@quicinc.com>,
-        kernel test robot <lkp@intel.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166790340662.9633.4549756749859911615.kvalo@kernel.org>
-Date:   Tue,  8 Nov 2022 10:30:09 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6638:1921:0:0:0:0 with HTTP; Tue, 8 Nov 2022 03:24:13
+ -0800 (PST)
+Reply-To: mrinvest1010@gmail.com
+From:   "K. A. Mr. Kairi" <ctocik10@gmail.com>
+Date:   Tue, 8 Nov 2022 03:24:13 -0800
+Message-ID: <CAEbPynvxfjzGLRVVaaVB9fasgmGPWiH+Ceaj9c3oE5eqT5_+0Q@mail.gmail.com>
+Subject: Re: My Response..
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:132 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrinvest1010[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ctocik10[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ctocik10[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Youghandhar Chintala <quic_youghand@quicinc.com> wrote:
-
-> In a SoC based solution, it would be useful to know the versions of the
-> various binary firmware blobs the system is running on. On a QCOM based
-> SoC, this info can be obtained from socinfo debugfs infrastructure. For
-> this to work, respective subsystem drivers have to export the firmware
-> version information to an SMEM based version information table.
-> 
-> Having firmware version information at one place will help quickly
-> figure out the firmware versions of various subsystems on the device
-> instead of going through builds/logs in an event of a system crash.
-> 
-> Fill WLAN firmware version information in SMEM version table to be
-> printed as part of socinfo debugfs infrastructure on a Qualcomm based
-> SoC.
-> 
-> This change is applicable only for WCN399X targets.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-> 
-> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-This doesn't compile unless QCOM_SMEM is enabled in Kconfig. So should we add
-"select QCOM_SMEM" in Kconfig for ATH10K_SNOC?
-
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221104082828.14386-1-quic_youghand@quicinc.com/
+Dear
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+How are you, I have a serious client, whom will be interested to
+invest in your country, I got your Details through the Investment
+Network and world Global Business directory.
 
+Let me know if you are interested for more details.....
+
+Sincerely,
+Mr. Kairi Andrew
