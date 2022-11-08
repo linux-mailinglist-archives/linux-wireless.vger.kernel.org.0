@@ -2,50 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6E86217A6
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 16:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1DD66217F3
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 16:20:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234325AbiKHPG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 10:06:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
+        id S234401AbiKHPUV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 10:20:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234451AbiKHPG4 (ORCPT
+        with ESMTP id S234527AbiKHPUG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 10:06:56 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D994B1834F
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 07:06:55 -0800 (PST)
+        Tue, 8 Nov 2022 10:20:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 276A3EA3
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 07:19:49 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 96032B81B1B
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 15:06:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7256BC433D6;
-        Tue,  8 Nov 2022 15:06:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D5F4CB81B24
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 15:19:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE31C433D6;
+        Tue,  8 Nov 2022 15:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667920013;
-        bh=u1C3QwRl3T4Sh0lHCyPvLvwdjoMtrYW+/j3HiFizy9s=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=OcXhl2Ng0t1yvwqkf76jvkYSjXvqAyu0/LiVmN3CSGmUiWVG+SyeIKebeuXvBUL2J
-         3u6Jc8xP1ysPhjdQJLY6TqzC3fr2cqZtbwirtKhpexEu2CG/TEn5W7b/Bn8wR8C0ik
-         HPVWYQ9Zti4JoOkrqcKVFxs0xvhqAhRGmAjOSjrp01QPNTFAeRXyFu5ObxuN/9G1y8
-         eSkKZL8LqDx2Rv7uLai5NYXed3idmKV8aqw8AqyENYNEQTG2dT8q1crWumaEARk7ae
-         3HRpznqZ4qgHT5Kd4QbUXsjVeU4xEIrc2tc228+Re5HIC1XUsONmG36rDI75dbiplS
-         g56P4MM84jWhg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
-Subject: Re: [PATCH 40/50] wifi: ath12k: add qmi.h
-References: <20220812161003.27279-1-kvalo@kernel.org>
-        <20220812161003.27279-41-kvalo@kernel.org>
-        <f6e2c694-4803-be69-ec05-08541b718b8f@quicinc.com>
-Date:   Tue, 08 Nov 2022 17:06:48 +0200
-In-Reply-To: <f6e2c694-4803-be69-ec05-08541b718b8f@quicinc.com> (Jeff
-        Johnson's message of "Thu, 18 Aug 2022 17:25:42 -0700")
-Message-ID: <87r0ydcwon.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1667920786;
+        bh=rwQEXypN3h6kIbRyCrhWeIMhaVUwtzJxBfMeH9JViyg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZZw3tlynlbJeOpqD+rboaoMw9FJZzOzvLdoYjx5AJvSpVHodF9900aN5M1HqFzKFo
+         Sqwr9IBQaU373ODdUS7nesaDD9fpl8KIbMyFHOcrUqa6IUgN3a2PXlXu81od7aAbHo
+         dTMYaggeLxziT406/Wxo856wEBqq+XLPfFqOFZ9rk1aa7EiJvhJbOe/st2Nl3/Bhtl
+         MvELyc0/Vlz7EWDtjeJ354BKX8hvpiQKFOILKPDctQDNo49TTU2v7T5znhdr/laMFF
+         u8aWQrB9KR8SbvQAGZv/COO1wkgUP8sK9y+Key4C8uPCIh7D89xncjdMhR2vMrHxrg
+         5wbin5BD0DoeQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     bjlockie@lockie.ca, toke@toke.dk, johannes@sipsolutions.net,
+        nbd@nbd.name, lorenzo.bianconi@redhat.com
+Subject: [PATCH v2 wireless] wifi: mac8021: fix possible oob access in ieee80211_get_rate_duration
+Date:   Tue,  8 Nov 2022 16:19:26 +0100
+Message-Id: <8d0116580f2c5eafaea29acb2cbbc348ff853f5b.1667920478.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,54 +51,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+Fix possible out-of-bound access in ieee80211_get_rate_duration routine
+as reported by the following UBSAN report:
 
-> On 8/12/2022 9:09 AM, Kalle Valo wrote:
->> From: Kalle Valo <quic_kvalo@quicinc.com>
->>
->> (Patches split into one patch per file for easier review, but the final
->> commit will be one big patch. See the cover letter for more info.)
->>
->> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/qmi.h | 610 ++++++++++++++++++++++++++++++++++
-> [...]
->> +struct qmi_wlanfw_ce_tgt_pipe_cfg_s_v01 {
->> +	__le32 pipe_num;
->> +	__le32 pipe_dir;
->> +	__le32 nentries;
->> +	__le32 nbytes_max;
->> +	__le32 flags;
->> +};
->> +
->> +struct qmi_wlanfw_ce_svc_pipe_cfg_s_v01 {
->> +	__le32 service_id;
->> +	__le32 pipe_dir;
->> +	__le32 pipe_num;
->> +};
->
-> curious why the above two structs use __le32 definitions but none of
-> the others do. I thought the QMI interface would use the qmi_elem_info
-> to properly encode/decode in host order on both sides of the pipe and
-> hence we should expect host order on both sides
+UBSAN: array-index-out-of-bounds in net/mac80211/airtime.c:455:47
+index 15 is out of range for type 'u16 [12]'
+CPU: 2 PID: 217 Comm: kworker/u32:10 Not tainted 6.1.0-060100rc3-generic
+Hardware name: Acer Aspire TC-281/Aspire TC-281, BIOS R01-A2 07/18/2017
+Workqueue: mt76 mt76u_tx_status_data [mt76_usb]
+Call Trace:
+ <TASK>
+ show_stack+0x4e/0x61
+ dump_stack_lvl+0x4a/0x6f
+ dump_stack+0x10/0x18
+ ubsan_epilogue+0x9/0x43
+ __ubsan_handle_out_of_bounds.cold+0x42/0x47
+ieee80211_get_rate_duration.constprop.0+0x22f/0x2a0 [mac80211]
+ ? ieee80211_tx_status_ext+0x32e/0x640 [mac80211]
+ ieee80211_calc_rx_airtime+0xda/0x120 [mac80211]
+ ieee80211_calc_tx_airtime+0xb4/0x100 [mac80211]
+ mt76x02_send_tx_status+0x266/0x480 [mt76x02_lib]
+ mt76x02_tx_status_data+0x52/0x80 [mt76x02_lib]
+ mt76u_tx_status_data+0x67/0xd0 [mt76_usb]
+ process_one_work+0x225/0x400
+ worker_thread+0x50/0x3e0
+ ? process_one_work+0x400/0x400
+ kthread+0xe9/0x110
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x22/0x30
 
-That is a good question, I was also expecting QMI to be in host order.
-In ce.h I see this:
+Fixes: db3e1c40cf2f ("mac80211: Import airtime calculation code from mt76")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- drop WARN_ON_ONCE
+---
+ net/mac80211/airtime.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-/* Establish a mapping between a service/direction and a pipe.
- * Configuration information for a Copy Engine pipe and services.
- * Passed from Host to Target through QMI message and must be in
- * little endian format.
- */
-struct service_to_pipe {
-	__le32 service_id;
-	__le32 pipedir;
-	__le32 pipenum;
-};
-
-But I'm not convinced about that comments. Thoughts?
-
+diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
+index 2e66598fac79..e8ebd343e2bf 100644
+--- a/net/mac80211/airtime.c
++++ b/net/mac80211/airtime.c
+@@ -452,6 +452,9 @@ static u32 ieee80211_get_rate_duration(struct ieee80211_hw *hw,
+ 			 (status->encoding == RX_ENC_HE && streams > 8)))
+ 		return 0;
+ 
++	if (idx >= MCS_GROUP_RATES)
++		return 0;
++
+ 	duration = airtime_mcs_groups[group].duration[idx];
+ 	duration <<= airtime_mcs_groups[group].shift;
+ 	*overhead = 36 + (streams << 2);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.38.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
