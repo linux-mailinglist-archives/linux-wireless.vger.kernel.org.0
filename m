@@ -2,222 +2,724 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE94621D98
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 21:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A32F621D9D
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 21:25:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229837AbiKHUZE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 15:25:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41198 "EHLO
+        id S229849AbiKHUZn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 15:25:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbiKHUZD (ORCPT
+        with ESMTP id S229508AbiKHUZm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 15:25:03 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C7C220CA
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 12:25:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667939102; x=1699475102;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=TRKA4RJgxybCHx/ZV0czQEhkDCzkeRfCdvBr5wZVEq4=;
-  b=cABelzLivqaHb+fFNmukTM3ak6gr9Adk5CHn15EqgClzRdu+yinMHscy
-   Gchlond+cqPlHjEQquqYJ67k/4IYBWAMb4W8ZFqz32uMYEOge2SoStWxO
-   EgA0iAEkP48kB5RXvkvVFGPkXlBC2hrl0YUcOiv+mXbqs2pMnQ0LC6XTO
-   YxZOEJE75qBjZR0OPwbd9igKoNcjFTxnCn/OLhykSuxxMUO8l7Q6PZ93g
-   PFiHIQrs6R7xMnPMQ77MHAfdZW6NSi0nCC9qcAlgnJulFdUZeKDN5jzc3
-   Bnn6J89k7E6GzVul/sHppDeZiM1ySY8QOR6qfGTnO+Y8pcurTWOaVUfsB
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="312591656"
-X-IronPort-AV: E=Sophos;i="5.96,148,1665471600"; 
-   d="scan'208";a="312591656"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 12:25:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="779061382"
-X-IronPort-AV: E=Sophos;i="5.96,148,1665471600"; 
-   d="scan'208";a="779061382"
-Received: from lkp-server01.sh.intel.com (HELO e783503266e8) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 08 Nov 2022 12:25:00 -0800
-Received: from kbuild by e783503266e8 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1osV9X-0000aR-2S;
-        Tue, 08 Nov 2022 20:24:59 +0000
-Date:   Wed, 09 Nov 2022 04:24:18 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- b8f6efccbb9dc0ff5dee7e20d69a4747298ee603
-Message-ID: <636abaf2.dpx7blpDBFD3SCAJ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Tue, 8 Nov 2022 15:25:42 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1ABA220D9;
+        Tue,  8 Nov 2022 12:25:39 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 68084B81C4B;
+        Tue,  8 Nov 2022 20:25:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A764DC433D6;
+        Tue,  8 Nov 2022 20:25:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667939137;
+        bh=7E5WpkV7bJOKnftNe7kk4BdET30s73+3WiKthxbINCc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=S2bQM5N8jAaItipzbcwFZWkpoPT+Q/L9HDq8LDB3pwOQ6cNwupV99fB41IkRhLp0K
+         Ilv2gr8BjlTn8FXqHwDcaa3kwtpHtoVH/KfazqED1Jk1t3nd1QxV0ZulZTH0Qpo7Ed
+         kNOMBBp2BrEaYTh4/L68CLyJQwIKfAg7fojaTGAy9aZtPronwEKm9QLwrl5Y2rp+Nd
+         Avs1ZvXkpDD8MUL+RZLC/VWw+GUjA9KyWK8alZi8kQ0Wv2IQuSbehP47/d6o2UsOux
+         V2PFHVeuFSyixdVe9R1Abcx7lCo2XGlR+5Q1/rEgtKWbLV7gy5hjdIkEumLWoEZtKJ
+         K24m/N5cri3kg==
+Date:   Tue, 8 Nov 2022 14:25:17 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Jouni Malinen <j@w1.fi>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH v3 3/7] wifi: hostap: Avoid clashing function prototypes
+Message-ID: <e480e7713f1a4909ae011068c8d793cc4a638fbd.1667934775.git.gustavoars@kernel.org>
+References: <cover.1667934775.git.gustavoars@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <cover.1667934775.git.gustavoars@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: b8f6efccbb9dc0ff5dee7e20d69a4747298ee603  wifi: rsi: Fix handling of 802.3 EAPOL frames sent via control port
+When built with Control Flow Integrity, function prototypes between
+caller and function declaration must match. These mismatches are visible
+at compile time with the new -Wcast-function-type-strict in Clang[1].
 
-elapsed time: 728m
+Fix a total of 42 warnings like these:
 
-configs tested: 138
-configs skipped: 7
+../drivers/net/wireless/intersil/hostap/hostap_ioctl.c:3868:2: warning: cast from 'int (*)(struct net_device *, struct iw_request_info *, char *, char *)' to 'iw_handler' (aka 'int (*)(struct net_device *, struct iw_request_info *, union iwreq_data *, char *)') converts to incompatible function type [-Wcast-function-type-strict]
+        (iw_handler) prism2_get_name,                   /* SIOCGIWNAME */
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The hostap Wireless Extension handler callbacks (iw_handler) use a
+union for the data argument. Actually use the union and perform explicit
+member selection in the function body instead of having a function
+prototype mismatch. There are no resulting binary differences
+before/after changes.
 
-gcc tested configs:
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-x86_64                            allnoconfig
-s390                                defconfig
-s390                             allmodconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allyesconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-ia64                             allmodconfig
-arm                      footbridge_defconfig
-arm                           tegra_defconfig
-sh                           sh2007_defconfig
-arc                    vdk_hs38_smp_defconfig
-sparc                            alldefconfig
-i386                             allyesconfig
-i386                          randconfig-a016
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                 randconfig-a001-20221107
-i386                 randconfig-a006-20221107
-i386                 randconfig-a003-20221107
-i386                 randconfig-a002-20221107
-i386                 randconfig-a005-20221107
-i386                 randconfig-a004-20221107
-powerpc                        warp_defconfig
-microblaze                          defconfig
-m68k                        stmark2_defconfig
-powerpc                      pasemi_defconfig
-i386                                defconfig
-x86_64               randconfig-a006-20221107
-x86_64               randconfig-a001-20221107
-x86_64               randconfig-a004-20221107
-x86_64               randconfig-a003-20221107
-x86_64               randconfig-a005-20221107
-x86_64               randconfig-a002-20221107
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-powerpc                         ps3_defconfig
-arm                           viper_defconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a012
-i386                          randconfig-a014
-openrisc                    or1ksim_defconfig
-powerpc                      ppc40x_defconfig
-alpha                            alldefconfig
-mips                        vocore2_defconfig
-sh                             sh03_defconfig
-powerpc                     rainier_defconfig
-arm                           sama5_defconfig
-sh                     sh7710voipgw_defconfig
-arm                             pxa_defconfig
-sh                            titan_defconfig
-mips                  decstation_64_defconfig
-powerpc                mpc7448_hpc2_defconfig
-nios2                               defconfig
-sh                          rsk7203_defconfig
-powerpc                     asp8347_defconfig
-nios2                            alldefconfig
-powerpc                    sam440ep_defconfig
-arm                             ezx_defconfig
-sh                        edosk7705_defconfig
-i386                          randconfig-c001
-arc                              alldefconfig
-sh                           se7751_defconfig
-powerpc                 linkstation_defconfig
-sh                           se7206_defconfig
-ia64                         bigsur_defconfig
-sh                          rsk7269_defconfig
-arm                        shmobile_defconfig
-arm                         at91_dt_defconfig
-mips                      loongson3_defconfig
-sh                  sh7785lcr_32bit_defconfig
-powerpc                     sequoia_defconfig
-powerpc                     mpc83xx_defconfig
-powerpc                       holly_defconfig
-sparc                       sparc32_defconfig
-arm                          exynos_defconfig
-mips                          rb532_defconfig
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-arm                             rpc_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-arm                        cerfcube_defconfig
-arm                       aspeed_g5_defconfig
-parisc                generic-32bit_defconfig
-mips                           xway_defconfig
-csky                             alldefconfig
-sh                           se7712_defconfig
-arm                        trizeps4_defconfig
-arm                           sunxi_defconfig
+These changes were made partly manually and partly with the help of
+Coccinelle.
 
-clang tested configs:
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-hexagon              randconfig-r041-20221108
-hexagon              randconfig-r045-20221108
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-powerpc                     tqm8560_defconfig
-arm                           omap1_defconfig
-mips                     cu1000-neo_defconfig
-x86_64                        randconfig-k001
-arm64                            allyesconfig
-riscv                randconfig-r042-20221107
-hexagon              randconfig-r041-20221107
-hexagon              randconfig-r045-20221107
-s390                 randconfig-r044-20221107
+Link: https://github.com/KSPP/linux/issues/235
+Link: https://reviews.llvm.org/D134831 [1]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+Changes in v3:
+ - Remove unnecessary iw_handler casts from prism2_private_handler[].
+ - Update subject line: add prefix 'wifi: '.
+ - Update changelog text.
 
+Changes in v2:
+ - Revert changes in prism2_private_handler[].
+ - Link: https://lore.kernel.org/linux-hardening/8388b5ed9e729eb9dadec875a7576219e6d61223.1666894751.git.gustavoars@kernel.org/
+
+v1:
+ - Link: https://lore.kernel.org/linux-hardening/099d191c65efdf2f5f7b40a87a7eb3aabcae3e04.1666038048.git.gustavoars@kernel.org/
+
+ .../wireless/intersil/hostap/hostap_ioctl.c   | 244 ++++++++++--------
+ 1 file changed, 133 insertions(+), 111 deletions(-)
+
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_ioctl.c b/drivers/net/wireless/intersil/hostap/hostap_ioctl.c
+index 4e0a0c881697..26287b129d18 100644
+--- a/drivers/net/wireless/intersil/hostap/hostap_ioctl.c
++++ b/drivers/net/wireless/intersil/hostap/hostap_ioctl.c
+@@ -91,7 +91,7 @@ static int prism2_get_datarates(struct net_device *dev, u8 *rates)
+ 
+ static int prism2_get_name(struct net_device *dev,
+ 			   struct iw_request_info *info,
+-			   char *name, char *extra)
++			   union iwreq_data *wrqu, char *extra)
+ {
+ 	u8 rates[10];
+ 	int len, i, over2 = 0;
+@@ -105,7 +105,7 @@ static int prism2_get_name(struct net_device *dev,
+ 		}
+ 	}
+ 
+-	strcpy(name, over2 ? "IEEE 802.11b" : "IEEE 802.11-DS");
++	strcpy(wrqu->name, over2 ? "IEEE 802.11b" : "IEEE 802.11-DS");
+ 
+ 	return 0;
+ }
+@@ -113,8 +113,9 @@ static int prism2_get_name(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwencode(struct net_device *dev,
+ 				  struct iw_request_info *info,
+-				  struct iw_point *erq, char *keybuf)
++				  union iwreq_data *wrqu, char *keybuf)
+ {
++	struct iw_point *erq = &wrqu->encoding;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int i;
+@@ -215,8 +216,9 @@ static int prism2_ioctl_siwencode(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwencode(struct net_device *dev,
+ 				  struct iw_request_info *info,
+-				  struct iw_point *erq, char *key)
++				  union iwreq_data *wrqu, char *key)
+ {
++	struct iw_point *erq = &wrqu->encoding;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int i, len;
+@@ -321,8 +323,9 @@ static int hostap_set_rate(struct net_device *dev)
+ 
+ static int prism2_ioctl_siwrate(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *rrq, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rrq = &wrqu->bitrate;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -381,8 +384,9 @@ static int prism2_ioctl_siwrate(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwrate(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *rrq, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rrq = &wrqu->bitrate;
+ 	u16 val;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+@@ -440,8 +444,9 @@ static int prism2_ioctl_giwrate(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwsens(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *sens, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *sens = &wrqu->sens;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -461,8 +466,9 @@ static int prism2_ioctl_siwsens(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwsens(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *sens, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *sens = &wrqu->sens;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	__le16 val;
+@@ -485,8 +491,9 @@ static int prism2_ioctl_giwsens(struct net_device *dev,
+ /* Deprecated in new wireless extension API */
+ static int prism2_ioctl_giwaplist(struct net_device *dev,
+ 				  struct iw_request_info *info,
+-				  struct iw_point *data, char *extra)
++				  union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	struct sockaddr *addr;
+@@ -526,8 +533,9 @@ static int prism2_ioctl_giwaplist(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwrts(struct net_device *dev,
+ 			       struct iw_request_info *info,
+-			       struct iw_param *rts, char *extra)
++			       union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rts = &wrqu->rts;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	__le16 val;
+@@ -553,8 +561,9 @@ static int prism2_ioctl_siwrts(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwrts(struct net_device *dev,
+ 			       struct iw_request_info *info,
+-			       struct iw_param *rts, char *extra)
++			       union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rts = &wrqu->rts;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	__le16 val;
+@@ -576,8 +585,9 @@ static int prism2_ioctl_giwrts(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwfrag(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *rts, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rts = &wrqu->rts;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	__le16 val;
+@@ -603,8 +613,9 @@ static int prism2_ioctl_siwfrag(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwfrag(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *rts, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rts = &wrqu->rts;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	__le16 val;
+@@ -669,8 +680,9 @@ static int hostap_join_ap(struct net_device *dev)
+ 
+ static int prism2_ioctl_siwap(struct net_device *dev,
+ 			      struct iw_request_info *info,
+-			      struct sockaddr *ap_addr, char *extra)
++			      union iwreq_data *wrqu, char *extra)
+ {
++	struct sockaddr *ap_addr = &wrqu->ap_addr;
+ #ifdef PRISM2_NO_STATION_MODES
+ 	return -EOPNOTSUPP;
+ #else /* PRISM2_NO_STATION_MODES */
+@@ -709,8 +721,9 @@ static int prism2_ioctl_siwap(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwap(struct net_device *dev,
+ 			      struct iw_request_info *info,
+-			      struct sockaddr *ap_addr, char *extra)
++			      union iwreq_data *wrqu, char *extra)
+ {
++	struct sockaddr *ap_addr = &wrqu->ap_addr;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -745,8 +758,9 @@ static int prism2_ioctl_giwap(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwnickn(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *nickname)
++				 union iwreq_data *wrqu, char *nickname)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -766,8 +780,9 @@ static int prism2_ioctl_siwnickn(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwnickn(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *nickname)
++				 union iwreq_data *wrqu, char *nickname)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int len;
+@@ -793,8 +808,9 @@ static int prism2_ioctl_giwnickn(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwfreq(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_freq *freq, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_freq *freq = &wrqu->freq;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -830,8 +846,9 @@ static int prism2_ioctl_siwfreq(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwfreq(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_freq *freq, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_freq *freq = &wrqu->freq;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	u16 val;
+@@ -874,8 +891,9 @@ static void hostap_monitor_set_type(local_info_t *local)
+ 
+ static int prism2_ioctl_siwessid(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *ssid)
++				 union iwreq_data *wrqu, char *ssid)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -910,8 +928,9 @@ static int prism2_ioctl_siwessid(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwessid(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *essid)
++				 union iwreq_data *wrqu, char *essid)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	u16 val;
+@@ -946,8 +965,9 @@ static int prism2_ioctl_giwessid(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwrange(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	struct iw_range *range = (struct iw_range *) extra;
+@@ -1121,8 +1141,9 @@ static int hostap_monitor_mode_disable(local_info_t *local)
+ 
+ static int prism2_ioctl_siwmode(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				__u32 *mode, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	__u32 *mode = &wrqu->mode;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int double_reset = 0;
+@@ -1197,8 +1218,9 @@ static int prism2_ioctl_siwmode(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwmode(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				__u32 *mode, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	__u32 *mode = &wrqu->mode;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -1222,8 +1244,9 @@ static int prism2_ioctl_giwmode(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwpower(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_param *wrq, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *wrq = &wrqu->power;
+ #ifdef PRISM2_NO_STATION_MODES
+ 	return -EOPNOTSUPP;
+ #else /* PRISM2_NO_STATION_MODES */
+@@ -1281,8 +1304,9 @@ static int prism2_ioctl_siwpower(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwpower(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_param *rrq, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rrq = &wrqu->power;
+ #ifdef PRISM2_NO_STATION_MODES
+ 	return -EOPNOTSUPP;
+ #else /* PRISM2_NO_STATION_MODES */
+@@ -1339,8 +1363,9 @@ static int prism2_ioctl_giwpower(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwretry(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_param *rrq, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rrq = &wrqu->retry;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 
+@@ -1400,8 +1425,9 @@ static int prism2_ioctl_siwretry(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwretry(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_param *rrq, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rrq = &wrqu->retry;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	__le16 shortretry, longretry, lifetime, altretry;
+@@ -1494,8 +1520,9 @@ static u16 prism2_txpower_dBm_to_hfa386x(int val)
+ 
+ static int prism2_ioctl_siwtxpow(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_param *rrq, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *rrq = &wrqu->txpower;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ #ifdef RAW_TXPOWER_SETTING
+@@ -1575,9 +1602,10 @@ static int prism2_ioctl_siwtxpow(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwtxpow(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_param *rrq, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
+ #ifdef RAW_TXPOWER_SETTING
++	struct iw_param *rrq = &wrqu->txpower;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	u16 resp0;
+@@ -1710,8 +1738,9 @@ static inline int prism2_request_scan(struct net_device *dev)
+ 
+ static int prism2_ioctl_siwscan(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_point *data, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int ret;
+@@ -2057,8 +2086,9 @@ static inline int prism2_ioctl_giwscan_sta(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwscan(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_point *data, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int res;
+@@ -2303,7 +2333,7 @@ static int prism2_ioctl_priv_inquire(struct net_device *dev, int *i)
+ 
+ static int prism2_ioctl_priv_prism2_param(struct net_device *dev,
+ 					  struct iw_request_info *info,
+-					  void *wrqu, char *extra)
++					  union iwreq_data *uwrq, char *extra)
+ {
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+@@ -2654,7 +2684,7 @@ static int prism2_ioctl_priv_prism2_param(struct net_device *dev,
+ 
+ static int prism2_ioctl_priv_get_prism2_param(struct net_device *dev,
+ 					      struct iw_request_info *info,
+-					      void *wrqu, char *extra)
++					      union iwreq_data *wrqu, char *extra)
+ {
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+@@ -2841,7 +2871,7 @@ static int prism2_ioctl_priv_get_prism2_param(struct net_device *dev,
+ 
+ static int prism2_ioctl_priv_readmif(struct net_device *dev,
+ 				     struct iw_request_info *info,
+-				     void *wrqu, char *extra)
++				     union iwreq_data *wrqu, char *extra)
+ {
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+@@ -2862,7 +2892,7 @@ static int prism2_ioctl_priv_readmif(struct net_device *dev,
+ 
+ static int prism2_ioctl_priv_writemif(struct net_device *dev,
+ 				      struct iw_request_info *info,
+-				      void *wrqu, char *extra)
++				      union iwreq_data *wrqu, char *extra)
+ {
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+@@ -2885,7 +2915,7 @@ static int prism2_ioctl_priv_monitor(struct net_device *dev, int *i)
+ 	struct hostap_interface *iface;
+ 	local_info_t *local;
+ 	int ret = 0;
+-	u32 mode;
++	union iwreq_data wrqu;
+ 
+ 	iface = netdev_priv(dev);
+ 	local = iface->local;
+@@ -2899,8 +2929,8 @@ static int prism2_ioctl_priv_monitor(struct net_device *dev, int *i)
+ 	if (*i == 0) {
+ 		/* Disable monitor mode - old mode was not saved, so go to
+ 		 * Master mode */
+-		mode = IW_MODE_MASTER;
+-		ret = prism2_ioctl_siwmode(dev, NULL, &mode, NULL);
++		wrqu.mode = IW_MODE_MASTER;
++		ret = prism2_ioctl_siwmode(dev, NULL, &wrqu, NULL);
+ 	} else if (*i == 1) {
+ 		/* netlink socket mode is not supported anymore since it did
+ 		 * not separate different devices from each other and was not
+@@ -2916,8 +2946,8 @@ static int prism2_ioctl_priv_monitor(struct net_device *dev, int *i)
+ 			local->monitor_type = PRISM2_MONITOR_PRISM;
+ 			break;
+ 		}
+-		mode = IW_MODE_MONITOR;
+-		ret = prism2_ioctl_siwmode(dev, NULL, &mode, NULL);
++		wrqu.mode = IW_MODE_MONITOR;
++		ret = prism2_ioctl_siwmode(dev, NULL, &wrqu, NULL);
+ 		hostap_monitor_mode_enable(local);
+ 	} else
+ 		ret = -EINVAL;
+@@ -3079,8 +3109,9 @@ static int prism2_set_genericelement(struct net_device *dev, u8 *elem,
+ 
+ static int prism2_ioctl_siwauth(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *data, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *data = &wrqu->param;
+ 	struct hostap_interface *iface = netdev_priv(dev);
+ 	local_info_t *local = iface->local;
+ 
+@@ -3145,8 +3176,9 @@ static int prism2_ioctl_siwauth(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwauth(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_param *data, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_param *data = &wrqu->param;
+ 	struct hostap_interface *iface = netdev_priv(dev);
+ 	local_info_t *local = iface->local;
+ 
+@@ -3184,8 +3216,9 @@ static int prism2_ioctl_giwauth(struct net_device *dev,
+ 
+ static int prism2_ioctl_siwencodeext(struct net_device *dev,
+ 				     struct iw_request_info *info,
+-				     struct iw_point *erq, char *extra)
++				     union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *erq = &wrqu->encoding;
+ 	struct hostap_interface *iface = netdev_priv(dev);
+ 	local_info_t *local = iface->local;
+ 	struct iw_encode_ext *ext = (struct iw_encode_ext *) extra;
+@@ -3358,8 +3391,9 @@ static int prism2_ioctl_siwencodeext(struct net_device *dev,
+ 
+ static int prism2_ioctl_giwencodeext(struct net_device *dev,
+ 				     struct iw_request_info *info,
+-				     struct iw_point *erq, char *extra)
++				     union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *erq = &wrqu->encoding;
+ 	struct hostap_interface *iface = netdev_priv(dev);
+ 	local_info_t *local = iface->local;
+ 	struct lib80211_crypt_data **crypt;
+@@ -3666,16 +3700,18 @@ static int prism2_ioctl_set_assoc_ap_addr(local_info_t *local,
+ 
+ static int prism2_ioctl_siwgenie(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	return prism2_set_genericelement(dev, extra, data->length);
+ }
+ 
+ 
+ static int prism2_ioctl_giwgenie(struct net_device *dev,
+ 				 struct iw_request_info *info,
+-				 struct iw_point *data, char *extra)
++				 union iwreq_data *wrqu, char *extra)
+ {
++	struct iw_point *data = &wrqu->data;
+ 	struct hostap_interface *iface = netdev_priv(dev);
+ 	local_info_t *local = iface->local;
+ 	int len = local->generic_elem_len - 2;
+@@ -3713,7 +3749,7 @@ static int prism2_ioctl_set_generic_element(local_info_t *local,
+ 
+ static int prism2_ioctl_siwmlme(struct net_device *dev,
+ 				struct iw_request_info *info,
+-				struct iw_point *data, char *extra)
++				union iwreq_data *wrqu, char *extra)
+ {
+ 	struct hostap_interface *iface = netdev_priv(dev);
+ 	local_info_t *local = iface->local;
+@@ -3864,70 +3900,56 @@ const struct ethtool_ops prism2_ethtool_ops = {
+ 
+ static const iw_handler prism2_handler[] =
+ {
+-	(iw_handler) NULL,				/* SIOCSIWCOMMIT */
+-	(iw_handler) prism2_get_name,			/* SIOCGIWNAME */
+-	(iw_handler) NULL,				/* SIOCSIWNWID */
+-	(iw_handler) NULL,				/* SIOCGIWNWID */
+-	(iw_handler) prism2_ioctl_siwfreq,		/* SIOCSIWFREQ */
+-	(iw_handler) prism2_ioctl_giwfreq,		/* SIOCGIWFREQ */
+-	(iw_handler) prism2_ioctl_siwmode,		/* SIOCSIWMODE */
+-	(iw_handler) prism2_ioctl_giwmode,		/* SIOCGIWMODE */
+-	(iw_handler) prism2_ioctl_siwsens,		/* SIOCSIWSENS */
+-	(iw_handler) prism2_ioctl_giwsens,		/* SIOCGIWSENS */
+-	(iw_handler) NULL /* not used */,		/* SIOCSIWRANGE */
+-	(iw_handler) prism2_ioctl_giwrange,		/* SIOCGIWRANGE */
+-	(iw_handler) NULL /* not used */,		/* SIOCSIWPRIV */
+-	(iw_handler) NULL /* kernel code */,		/* SIOCGIWPRIV */
+-	(iw_handler) NULL /* not used */,		/* SIOCSIWSTATS */
+-	(iw_handler) NULL /* kernel code */,		/* SIOCGIWSTATS */
+-	iw_handler_set_spy,				/* SIOCSIWSPY */
+-	iw_handler_get_spy,				/* SIOCGIWSPY */
+-	iw_handler_set_thrspy,				/* SIOCSIWTHRSPY */
+-	iw_handler_get_thrspy,				/* SIOCGIWTHRSPY */
+-	(iw_handler) prism2_ioctl_siwap,		/* SIOCSIWAP */
+-	(iw_handler) prism2_ioctl_giwap,		/* SIOCGIWAP */
+-	(iw_handler) prism2_ioctl_siwmlme,		/* SIOCSIWMLME */
+-	(iw_handler) prism2_ioctl_giwaplist,		/* SIOCGIWAPLIST */
+-	(iw_handler) prism2_ioctl_siwscan,		/* SIOCSIWSCAN */
+-	(iw_handler) prism2_ioctl_giwscan,		/* SIOCGIWSCAN */
+-	(iw_handler) prism2_ioctl_siwessid,		/* SIOCSIWESSID */
+-	(iw_handler) prism2_ioctl_giwessid,		/* SIOCGIWESSID */
+-	(iw_handler) prism2_ioctl_siwnickn,		/* SIOCSIWNICKN */
+-	(iw_handler) prism2_ioctl_giwnickn,		/* SIOCGIWNICKN */
+-	(iw_handler) NULL,				/* -- hole -- */
+-	(iw_handler) NULL,				/* -- hole -- */
+-	(iw_handler) prism2_ioctl_siwrate,		/* SIOCSIWRATE */
+-	(iw_handler) prism2_ioctl_giwrate,		/* SIOCGIWRATE */
+-	(iw_handler) prism2_ioctl_siwrts,		/* SIOCSIWRTS */
+-	(iw_handler) prism2_ioctl_giwrts,		/* SIOCGIWRTS */
+-	(iw_handler) prism2_ioctl_siwfrag,		/* SIOCSIWFRAG */
+-	(iw_handler) prism2_ioctl_giwfrag,		/* SIOCGIWFRAG */
+-	(iw_handler) prism2_ioctl_siwtxpow,		/* SIOCSIWTXPOW */
+-	(iw_handler) prism2_ioctl_giwtxpow,		/* SIOCGIWTXPOW */
+-	(iw_handler) prism2_ioctl_siwretry,		/* SIOCSIWRETRY */
+-	(iw_handler) prism2_ioctl_giwretry,		/* SIOCGIWRETRY */
+-	(iw_handler) prism2_ioctl_siwencode,		/* SIOCSIWENCODE */
+-	(iw_handler) prism2_ioctl_giwencode,		/* SIOCGIWENCODE */
+-	(iw_handler) prism2_ioctl_siwpower,		/* SIOCSIWPOWER */
+-	(iw_handler) prism2_ioctl_giwpower,		/* SIOCGIWPOWER */
+-	(iw_handler) NULL,				/* -- hole -- */
+-	(iw_handler) NULL,				/* -- hole -- */
+-	(iw_handler) prism2_ioctl_siwgenie,		/* SIOCSIWGENIE */
+-	(iw_handler) prism2_ioctl_giwgenie,		/* SIOCGIWGENIE */
+-	(iw_handler) prism2_ioctl_siwauth,		/* SIOCSIWAUTH */
+-	(iw_handler) prism2_ioctl_giwauth,		/* SIOCGIWAUTH */
+-	(iw_handler) prism2_ioctl_siwencodeext,		/* SIOCSIWENCODEEXT */
+-	(iw_handler) prism2_ioctl_giwencodeext,		/* SIOCGIWENCODEEXT */
+-	(iw_handler) NULL,				/* SIOCSIWPMKSA */
+-	(iw_handler) NULL,				/* -- hole -- */
++	IW_HANDLER(SIOCGIWNAME,		prism2_get_name),
++	IW_HANDLER(SIOCSIWFREQ,		prism2_ioctl_siwfreq),
++	IW_HANDLER(SIOCGIWFREQ,		prism2_ioctl_giwfreq),
++	IW_HANDLER(SIOCSIWMODE,		prism2_ioctl_siwmode),
++	IW_HANDLER(SIOCGIWMODE,		prism2_ioctl_giwmode),
++	IW_HANDLER(SIOCSIWSENS,		prism2_ioctl_siwsens),
++	IW_HANDLER(SIOCGIWSENS,		prism2_ioctl_giwsens),
++	IW_HANDLER(SIOCGIWRANGE,	prism2_ioctl_giwrange),
++	IW_HANDLER(SIOCSIWSPY,		iw_handler_set_spy),
++	IW_HANDLER(SIOCGIWSPY,		iw_handler_get_spy),
++	IW_HANDLER(SIOCSIWTHRSPY,	iw_handler_set_thrspy),
++	IW_HANDLER(SIOCGIWTHRSPY,	iw_handler_get_thrspy),
++	IW_HANDLER(SIOCSIWAP,		prism2_ioctl_siwap),
++	IW_HANDLER(SIOCGIWAP,		prism2_ioctl_giwap),
++	IW_HANDLER(SIOCSIWMLME,		prism2_ioctl_siwmlme),
++	IW_HANDLER(SIOCGIWAPLIST,       prism2_ioctl_giwaplist),
++	IW_HANDLER(SIOCSIWSCAN,		prism2_ioctl_siwscan),
++	IW_HANDLER(SIOCGIWSCAN,		prism2_ioctl_giwscan),
++	IW_HANDLER(SIOCSIWESSID,        prism2_ioctl_siwessid),
++	IW_HANDLER(SIOCGIWESSID,        prism2_ioctl_giwessid),
++	IW_HANDLER(SIOCSIWNICKN,        prism2_ioctl_siwnickn),
++	IW_HANDLER(SIOCGIWNICKN,        prism2_ioctl_giwnickn),
++	IW_HANDLER(SIOCSIWRATE,		prism2_ioctl_siwrate),
++	IW_HANDLER(SIOCGIWRATE,		prism2_ioctl_giwrate),
++	IW_HANDLER(SIOCSIWRTS,		prism2_ioctl_siwrts),
++	IW_HANDLER(SIOCGIWRTS,		prism2_ioctl_giwrts),
++	IW_HANDLER(SIOCSIWFRAG,		prism2_ioctl_siwfrag),
++	IW_HANDLER(SIOCGIWFRAG,		prism2_ioctl_giwfrag),
++	IW_HANDLER(SIOCSIWTXPOW,        prism2_ioctl_siwtxpow),
++	IW_HANDLER(SIOCGIWTXPOW,        prism2_ioctl_giwtxpow),
++	IW_HANDLER(SIOCSIWRETRY,        prism2_ioctl_siwretry),
++	IW_HANDLER(SIOCGIWRETRY,        prism2_ioctl_giwretry),
++	IW_HANDLER(SIOCSIWENCODE,       prism2_ioctl_siwencode),
++	IW_HANDLER(SIOCGIWENCODE,       prism2_ioctl_giwencode),
++	IW_HANDLER(SIOCSIWPOWER,        prism2_ioctl_siwpower),
++	IW_HANDLER(SIOCGIWPOWER,        prism2_ioctl_giwpower),
++	IW_HANDLER(SIOCSIWGENIE,        prism2_ioctl_siwgenie),
++	IW_HANDLER(SIOCGIWGENIE,        prism2_ioctl_giwgenie),
++	IW_HANDLER(SIOCSIWAUTH,		prism2_ioctl_siwauth),
++	IW_HANDLER(SIOCGIWAUTH,		prism2_ioctl_giwauth),
++	IW_HANDLER(SIOCSIWENCODEEXT,    prism2_ioctl_siwencodeext),
++	IW_HANDLER(SIOCGIWENCODEEXT,    prism2_ioctl_giwencodeext),
+ };
+ 
+ static const iw_handler prism2_private_handler[] =
+-{							/* SIOCIWFIRSTPRIV + */
+-	(iw_handler) prism2_ioctl_priv_prism2_param,	/* 0 */
+-	(iw_handler) prism2_ioctl_priv_get_prism2_param, /* 1 */
+-	(iw_handler) prism2_ioctl_priv_writemif,	/* 2 */
+-	(iw_handler) prism2_ioctl_priv_readmif,		/* 3 */
++{						/* SIOCIWFIRSTPRIV + */
++	prism2_ioctl_priv_prism2_param,		/* 0 */
++	prism2_ioctl_priv_get_prism2_param,	/* 1 */
++	prism2_ioctl_priv_writemif,		/* 2 */
++	prism2_ioctl_priv_readmif,		/* 3 */
+ };
+ 
+ const struct iw_handler_def hostap_iw_handler_def =
+@@ -3935,8 +3957,8 @@ const struct iw_handler_def hostap_iw_handler_def =
+ 	.num_standard	= ARRAY_SIZE(prism2_handler),
+ 	.num_private	= ARRAY_SIZE(prism2_private_handler),
+ 	.num_private_args = ARRAY_SIZE(prism2_priv),
+-	.standard	= (iw_handler *) prism2_handler,
+-	.private	= (iw_handler *) prism2_private_handler,
++	.standard	= prism2_handler,
++	.private	= prism2_private_handler,
+ 	.private_args	= (struct iw_priv_args *) prism2_priv,
+ 	.get_wireless_stats = hostap_get_wireless_stats,
+ };
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.34.1
+
