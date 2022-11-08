@@ -2,437 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B9A621DB0
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 21:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6A7621F63
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 23:36:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbiKHUcD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 15:32:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44698 "EHLO
+        id S229509AbiKHWgm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 17:36:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbiKHUcA (ORCPT
+        with ESMTP id S229488AbiKHWgk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 15:32:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB58524BD5;
-        Tue,  8 Nov 2022 12:31:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 88077B81C5A;
-        Tue,  8 Nov 2022 20:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9753C433D6;
-        Tue,  8 Nov 2022 20:31:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667939516;
-        bh=LLZlNY0zjaDsGTlmgnqAmB99ge87p7NhvFd8eFe+iVY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EkmpAW5ivrXt29fA8d/yaeQs5x2dX1nrzrBwBeYwFDXjNqV32p2N85iutXjLAJKz8
-         yujQC6t9DySsbuO912EolhFHECYsMEeXGX+C6rb2UXVHa/BVB/2OPJsb0d0i1e97A6
-         CvLiEMH5ZlizCC2BUaaRbYecN8GGGArlpD1zy23kL6iUphYk6fF6/DIZmEZG8Z1WEf
-         s0mULcVIzCHmwTuQIyPiB4Zjgqx1BUlBnkxiYVmtWZ/RvltWF98wWGaRXddcJRA+VW
-         QEwJn7kSOuYEbcG4C8pTUP9bbqYvZhpIUr3tBp5fV+LLtJsbKq1Hra3hyCbBhKVscR
-         amtkWniJyOzCg==
-Date:   Tue, 8 Nov 2022 14:31:36 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Sudarsana Kalluru <skalluru@marvell.com>,
-        GR-Linux-NIC-Dev@marvell.com, Rasesh Mody <rmody@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH v3 6/7] bna: Avoid clashing function prototypes
-Message-ID: <f813f239cd75c341e26909f59f153cb9b72b1267.1667934775.git.gustavoars@kernel.org>
-References: <cover.1667934775.git.gustavoars@kernel.org>
+        Tue, 8 Nov 2022 17:36:40 -0500
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22EDB51C3C
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 14:36:39 -0800 (PST)
+Received: by mail-ot1-x32c.google.com with SMTP id p8-20020a056830130800b0066bb73cf3bcso9175372otq.11
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Nov 2022 14:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=NG++oP1x5QjFaPhyGFGUkXXMsErrIoKg1NlTP7YuHOw=;
+        b=qYgNjad6HSAqH0XF2ue3Ywqxba8o6Y6+5pE5odi8d7gxIrL1J9FAJ/2RTqMJkj/WFu
+         UOxa8RWmcz35iMpIDterDWyzrkt/6QeEwe0ow1WW0TNEW75fXZtshm9vWZ8FK17rsmn5
+         CYxejjkgQvkZf980a5W8yVVvhEfXhzRhNSMFWCwlW8k/rf5Mkg2Xw0lZZTavWE5qXLur
+         kCavhgXEMA2H/uKibdKDTb90VoxH+Mw9xaxQFkJXcuBaYBujUW/QxkRFbKMClYymTQDe
+         5kk/MPqf+a+csLBXP53IoseNKEzthVANFf6jI+rw0vk8bE8WHTm6R94dnNFKiGauVwUg
+         DtXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NG++oP1x5QjFaPhyGFGUkXXMsErrIoKg1NlTP7YuHOw=;
+        b=rN349EJ2g2qFJEE26LP9DWvnZIxT4AMr0uiF/usJORk98jT0ANA8FjyloRcBX6IN8S
+         H4/ODb3O6uZATQuzDh0azqavhkc4F2sDHM2nQhfVICJGE0KciVumB9iJ4X12nnnigKeK
+         SkGMkUR4CQpaaIy199p3gFHiPVXUqq12GEZOaayfdTffLmVBqAVM2h5jYDCdOGLPNxer
+         Liqh3xKRGDdGAFySnHGJOsTzyLcum9Sp5XaKcIw94/NtrmKN8KVoYXKmqzygsufkKztl
+         AULsp/Bqz4yH3Su8p8iiKjSU/NjcXc+3Bjlq1QkL1vs2U8DPLDFCww3JtXxUkDZIjKYS
+         +83Q==
+X-Gm-Message-State: ACrzQf3BFQy4GPkvJaP20TAsAujZVUesxdudNTZ4WXTLcRfTOUPgajdx
+        9oxpD/U/AX5UPp2A3Dug1Z7hzY4TNbg=
+X-Google-Smtp-Source: AMsMyM4bulsh4Kq+MZTFWqXpQzmbh/yFwalbAdtZuKX7owjK8n+EDMmXiHaleGl42WO9PSU5XF18qA==
+X-Received: by 2002:a9d:68cf:0:b0:66c:7459:de7 with SMTP id i15-20020a9d68cf000000b0066c74590de7mr18372088oto.156.1667946998393;
+        Tue, 08 Nov 2022 14:36:38 -0800 (PST)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id z26-20020a056808065a00b003544822f725sm3996782oih.8.2022.11.08.14.36.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Nov 2022 14:36:37 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <fd317fc1-70e3-44bd-912a-07ce9aec0b86@lwfinger.net>
+Date:   Tue, 8 Nov 2022 16:36:37 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1667934775.git.gustavoars@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: rtlwifi: RTL8188EE: Unable to connect to Wifi network
+Content-Language: en-US
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org, it+linux-wireless@molgen.mpg.de
+References: <eb1885f2-abd9-1f1f-1c3e-c879372d8db0@molgen.mpg.de>
+ <4899c9d3-acad-6cc0-e1ec-ab4b27754ecb@molgen.mpg.de>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <4899c9d3-acad-6cc0-e1ec-ab4b27754ecb@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When built with Control Flow Integrity, function prototypes between
-caller and function declaration must match. These mismatches are visible
-at compile time with the new -Wcast-function-type-strict in Clang[1].
+On 11/8/22 10:18, Paul Menzel wrote:
+> Dear Linux folks,
+> 
+> 
+> Am 08.11.22 um 13:49 schrieb Paul Menzel:
+> 
+>> Using Debian sid/unstable with Linux 6.1-rc3 [1] on an Intel Haswell Haier 
+>> laptop with a RTL8188EE, I am unable to connect to a wireless network.
+>>
+>>      $ sudo lspci -k -s 08:00.0
+>>      08:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8188EE 
+>> Wireless Network Adapter (rev 01)
+>>          Subsystem: AzureWave RTL8188EE Wireless Network Adapter
+>>          Kernel driver in use: rtl8188ee
+>>          Kernel modules: rtl8188ee
+>>
+>> ```
+>> [  262.822320] wlp8s0: authenticate with 6c:f3:7f:10:ae:12
+>> [  262.822341] wlp8s0: 80 MHz not supported, disabling VHT
+>> [  262.832384] wlp8s0: send auth to 6c:f3:7f:10:ae:12 (try 1/3)
+>> [  262.835124] wlp8s0: authenticated
+>> [  262.839046] wlp8s0: associate with 6c:f3:7f:10:ae:12 (try 1/3)
+>> [  262.850099] wlp8s0: RX AssocResp from 6c:f3:7f:10:ae:12 (capab=0x421 
+>> status=0 aid=1)
+>> [  262.850331] wlp8s0: associated
+>> [  262.850925] IPv6: ADDRCONF(NETDEV_CHANGE): wlp8s0: link becomes ready
+>> […]
+>> [  307.618423] wlp8s0: deauthenticating from 6c:f3:7f:10:ae:12 by local choice 
+>> (Reason: 3=DEAUTH_LEAVING)
+>> ```
+>>
+>> wpa_supplicant 2:2.10-9+b2 logs:
+>>
+>> ```
+>> Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: SME: Trying to 
+>> authenticate with 6c:f3:7f:10:ae:12 (SSID='MPI Guest' freq=2437 MHz)
+>> Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: Trying to associate with 
+>> 6c:f3:7f:10:ae:12 (SSID='MPI Guest' freq=2437 MHz)
+>> Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: Associated with 
+>> 6c:f3:7f:10:ae:12
+>> Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: CTRL-EVENT-CONNECTED - 
+>> Connection to 6c:f3:7f:10:ae:12 completed [id=0 id_str=]
+>> Nov 08 13:29:35 brecht wpa_supplicant[612]: bgscan simple: Failed to enable 
+>> signal strength monitoring
+>> Nov 08 13:29:35 brecht wpa_supplicant[612]: wlp8s0: 
+>> CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+>> Nov 08 13:30:20 brecht wpa_supplicant[612]: wlp8s0: CTRL-EVENT-DISCONNECTED 
+>> bssid=6c:f3:7f:10:ae:12 reason=3  locally_generated=1
+>> ```
+>>
+>> With more debugging verbosity (`-d`) it shows:
+>>
+>> ```
+>> […]
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: State: ASSOCIATED -> 
+>> COMPLETED
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Radio work 
+>> 'sme-connect'@0x556b491b5a80 done in 0.026679 seconds
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: 
+>> radio_work_free('sme-connect'@0x556b491b5a80): num_active_works --> 0
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: CTRL-EVENT-CONNECTED - 
+>> Connection to 6c:f3:7f:10:ae:12 completed [id=0 id_str=]
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Set wlp8s0 operstate 
+>> 0->1 (UP)
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: netlink: Operstate: ifindex=3 
+>> linkmode=-1 (no change), operstate=6 (IF_OPER_UP)
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: Signal strength 
+>> threshold -70  Short bgscan interval 30  Long bgscan interval 86400
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Signal monitor 
+>> threshold=-70 hysteresis=4
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: Failed to enable 
+>> signal strength monitoring
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: Init scan 
+>> interval: 86400
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan: Initialized module 
+>> 'simple' with parameters '30:-70:86400'
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Received scan results 
+>> (19 BSSes)
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Scan results indicate 
+>> BSS status with 6c:f3:7f:10:ae:12 as associated
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: BSS: Start scan result 
+>> update 5
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: bgscan simple: scan result 
+>> notification
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Determining shared radio 
+>> frequencies (max len 1)
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Shared frequencies 
+>> (len=1): completed iteration
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: freq[0]: 2437, flags=0x1
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: Add operating class 81
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: Channels - hexdump(len=13): 
+>> 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: Update channel list
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: channels: 
+>> 81:1,2,3,4,5,6,7,8,9,10,11,12,13
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: P2P: cli_channels:
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: Cancelling scan request
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: WMM AC: AC mandatory: AC_BE=0 
+>> AC_BK=0 AC_VI=0 AC_VO=0
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: WMM AC: U-APSD queues=0x0
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: WMM AC: Valid WMM association, 
+>> WMM AC is enabled
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: wlp8s0: 
+>> CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: RTM_NEWLINK: ifi_index=3 
+>> ifname=wlp8s0 operstate=6 linkmode=1 ifi_family=0 ifi_flags=0x11043 
+>> ([UP][RUNNING][LOWER_UP])
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Drv Event 46 
+>> (NL80211_CMD_CONNECT) received for wlp8s0
+>> Nov 08 13:42:13 brecht wpa_supplicant[3547]: nl80211: Ignore connect event 
+>> (cmd=46) when using userspace SME
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Drv Event 20 
+>> (NL80211_CMD_DEL_STATION) received for wlp8s0
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Delete station 
+>> 6c:f3:7f:10:ae:12
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Drv Event 39 
+>> (NL80211_CMD_DEAUTHENTICATE) received for wlp8s0
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: nl80211: Deauthenticate event
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0: Event DEAUTH (11) received
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0: Deauthentication 
+>> notification
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0:  * reason 3 
+>> (DEAUTH_LEAVING) locally_generated=1
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0:  * address 6c:f3:7f:10:ae:12
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: Deauthentication frame IE(s) - 
+>> hexdump(len=0): [NULL]
+>> Nov 08 13:42:58 brecht wpa_supplicant[3547]: wlp8s0: CTRL-EVENT-DISCONNECTED 
+>> bssid=6c:f3:7f:10:ae:12 reason=3 locally_generated=1
+>> ```
+>>
+>> It’d be really great to get WLAN working on the device.
+> 
+> I tested Debian 11 Live ISO with Linux 5.10 and wpa_supplicant 2.9, and it has 
+> the same problem. I configured iwd, and ran iwmon, which got a trace [2] (where 
+> I unplugged the Ethernet cable during the trace).
 
-Fix a total of 227 warnings like these:
+I cannot duplicate your problem. When I installed the RTL8188EE chip in my 
+computer, wifi connected immediately, even before I connected an external antenna.
 
-drivers/net/ethernet/brocade/bna/bna_enet.c:519:3: warning: cast from 'void (*)(struct bna_ethport *, enum bna_ethport_event)' to 'bfa_fsm_t' (aka 'void (*)(void *, int)') converts to incompatible function type [-Wcast-function-type-strict]
-                bfa_fsm_set_state(ethport, bna_ethport_sm_down);
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+My configuration is openSUSE Tumbleweed running a 6.1-rc4 kernel. The network is 
+controlled by NetworkManager v1.40.2 with wpa_supplicant v2.10-4.
 
-The bna state machine code heavily overloads its state machine functions,
-so these have been separated into their own sets of structs, enums,
-typedefs, and helper functions. There are almost zero binary code changes,
-all seem to be related to header file line numbers changing, or the
-addition of the new stats helper.
-
-Important to mention is that while I was manually implementing this changes
-I was staring at this[2] patch from Kees Cook. Thanks, Kees. :)
-
-[1] https://reviews.llvm.org/D134831
-[2] https://lore.kernel.org/linux-hardening/20220929230334.2109344-1-keescook@chromium.org/
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-Changes in v3:
- - Add RB tag from Kees.
- - Update changelog text.
-
-Changes in v2:
- - None. This patch is new in the series.
- - Link: https://lore.kernel.org/linux-hardening/2812afc0de278b97413a142d39d939a08ac74025.1666894751.git.gustavoars@kernel.org/
-
- drivers/net/ethernet/brocade/bna/bfa_cs.h    | 60 +++++++++++++-------
- drivers/net/ethernet/brocade/bna/bfa_ioc.c   | 10 ++--
- drivers/net/ethernet/brocade/bna/bfa_ioc.h   |  8 ++-
- drivers/net/ethernet/brocade/bna/bfa_msgq.h  |  8 ++-
- drivers/net/ethernet/brocade/bna/bna_enet.c  |  6 +-
- drivers/net/ethernet/brocade/bna/bna_tx_rx.c |  6 +-
- drivers/net/ethernet/brocade/bna/bna_types.h | 27 +++++++--
- 7 files changed, 82 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/net/ethernet/brocade/bna/bfa_cs.h b/drivers/net/ethernet/brocade/bna/bfa_cs.h
-index 8f0ac7b99973..858c92129451 100644
---- a/drivers/net/ethernet/brocade/bna/bfa_cs.h
-+++ b/drivers/net/ethernet/brocade/bna/bfa_cs.h
-@@ -18,15 +18,43 @@
- 
- /* BFA state machine interfaces */
- 
--typedef void (*bfa_sm_t)(void *sm, int event);
--
- /* For converting from state machine function to state encoding. */
--struct bfa_sm_table {
--	bfa_sm_t	sm;	/*!< state machine function	*/
--	int		state;	/*!< state machine encoding	*/
--	char		*name;	/*!< state name for display	*/
--};
--#define BFA_SM(_sm)		((bfa_sm_t)(_sm))
-+#define BFA_SM_TABLE(n, s, e, t)				\
-+struct s;							\
-+enum e;								\
-+typedef void (*t)(struct s *, enum e);				\
-+								\
-+struct n ## _sm_table_s {					\
-+	t		sm;	/* state machine function */	\
-+	int		state;	/* state machine encoding */	\
-+	char		*name;	/* state name for display */	\
-+};								\
-+								\
-+static inline int						\
-+n ## _sm_to_state(struct n ## _sm_table_s *smt, t sm)		\
-+{								\
-+	int	i = 0;						\
-+								\
-+	while (smt[i].sm && smt[i].sm != sm)			\
-+		i++;						\
-+	return smt[i].state;					\
-+}
-+
-+BFA_SM_TABLE(iocpf,	bfa_iocpf,	iocpf_event,	bfa_fsm_iocpf_t)
-+BFA_SM_TABLE(ioc,	bfa_ioc,	ioc_event,	bfa_fsm_ioc_t)
-+BFA_SM_TABLE(cmdq,	bfa_msgq_cmdq,	cmdq_event,	bfa_fsm_msgq_cmdq_t)
-+BFA_SM_TABLE(rspq,	bfa_msgq_rspq,	rspq_event,	bfa_fsm_msgq_rspq_t)
-+
-+BFA_SM_TABLE(ioceth,	bna_ioceth,	bna_ioceth_event, bna_fsm_ioceth_t)
-+BFA_SM_TABLE(enet,	bna_enet,	bna_enet_event, bna_fsm_enet_t)
-+BFA_SM_TABLE(ethport,	bna_ethport,	bna_ethport_event, bna_fsm_ethport_t)
-+BFA_SM_TABLE(tx,	bna_tx,		bna_tx_event,	bna_fsm_tx_t)
-+BFA_SM_TABLE(rxf,	bna_rxf,	bna_rxf_event, bna_fsm_rxf_t)
-+BFA_SM_TABLE(rx,	bna_rx,		bna_rx_event,	bna_fsm_rx_t)
-+
-+#undef BFA_SM_TABLE
-+
-+#define BFA_SM(_sm)	(_sm)
- 
- /* State machine with entry actions. */
- typedef void (*bfa_fsm_t)(void *fsm, int event);
-@@ -41,24 +69,12 @@ typedef void (*bfa_fsm_t)(void *fsm, int event);
- 	static void oc ## _sm_ ## st ## _entry(otype * fsm)
- 
- #define bfa_fsm_set_state(_fsm, _state) do {				\
--	(_fsm)->fsm = (bfa_fsm_t)(_state);				\
-+	(_fsm)->fsm = (_state);						\
- 	_state ## _entry(_fsm);						\
- } while (0)
- 
- #define bfa_fsm_send_event(_fsm, _event)	((_fsm)->fsm((_fsm), (_event)))
--#define bfa_fsm_cmp_state(_fsm, _state)					\
--	((_fsm)->fsm == (bfa_fsm_t)(_state))
--
--static inline int
--bfa_sm_to_state(const struct bfa_sm_table *smt, bfa_sm_t sm)
--{
--	int	i = 0;
--
--	while (smt[i].sm && smt[i].sm != sm)
--		i++;
--	return smt[i].state;
--}
--
-+#define bfa_fsm_cmp_state(_fsm, _state)		((_fsm)->fsm == (_state))
- /* Generic wait counter. */
- 
- typedef void (*bfa_wc_resume_t) (void *cbarg);
-diff --git a/drivers/net/ethernet/brocade/bna/bfa_ioc.c b/drivers/net/ethernet/brocade/bna/bfa_ioc.c
-index cd933817a0b8..b07522ac3e74 100644
---- a/drivers/net/ethernet/brocade/bna/bfa_ioc.c
-+++ b/drivers/net/ethernet/brocade/bna/bfa_ioc.c
-@@ -114,7 +114,7 @@ bfa_fsm_state_decl(bfa_ioc, disabling, struct bfa_ioc, enum ioc_event);
- bfa_fsm_state_decl(bfa_ioc, disabled, struct bfa_ioc, enum ioc_event);
- bfa_fsm_state_decl(bfa_ioc, hwfail, struct bfa_ioc, enum ioc_event);
- 
--static struct bfa_sm_table ioc_sm_table[] = {
-+static struct ioc_sm_table_s ioc_sm_table[] = {
- 	{BFA_SM(bfa_ioc_sm_uninit), BFA_IOC_UNINIT},
- 	{BFA_SM(bfa_ioc_sm_reset), BFA_IOC_RESET},
- 	{BFA_SM(bfa_ioc_sm_enabling), BFA_IOC_ENABLING},
-@@ -183,7 +183,7 @@ bfa_fsm_state_decl(bfa_iocpf, disabling_sync, struct bfa_iocpf,
- 						enum iocpf_event);
- bfa_fsm_state_decl(bfa_iocpf, disabled, struct bfa_iocpf, enum iocpf_event);
- 
--static struct bfa_sm_table iocpf_sm_table[] = {
-+static struct iocpf_sm_table_s iocpf_sm_table[] = {
- 	{BFA_SM(bfa_iocpf_sm_reset), BFA_IOCPF_RESET},
- 	{BFA_SM(bfa_iocpf_sm_fwcheck), BFA_IOCPF_FWMISMATCH},
- 	{BFA_SM(bfa_iocpf_sm_mismatch), BFA_IOCPF_FWMISMATCH},
-@@ -2860,12 +2860,12 @@ static enum bfa_ioc_state
- bfa_ioc_get_state(struct bfa_ioc *ioc)
- {
- 	enum bfa_iocpf_state iocpf_st;
--	enum bfa_ioc_state ioc_st = bfa_sm_to_state(ioc_sm_table, ioc->fsm);
-+	enum bfa_ioc_state ioc_st = ioc_sm_to_state(ioc_sm_table, ioc->fsm);
- 
- 	if (ioc_st == BFA_IOC_ENABLING ||
- 		ioc_st == BFA_IOC_FAIL || ioc_st == BFA_IOC_INITFAIL) {
- 
--		iocpf_st = bfa_sm_to_state(iocpf_sm_table, ioc->iocpf.fsm);
-+		iocpf_st = iocpf_sm_to_state(iocpf_sm_table, ioc->iocpf.fsm);
- 
- 		switch (iocpf_st) {
- 		case BFA_IOCPF_SEMWAIT:
-@@ -2983,7 +2983,7 @@ bfa_nw_iocpf_timeout(struct bfa_ioc *ioc)
- {
- 	enum bfa_iocpf_state iocpf_st;
- 
--	iocpf_st = bfa_sm_to_state(iocpf_sm_table, ioc->iocpf.fsm);
-+	iocpf_st = iocpf_sm_to_state(iocpf_sm_table, ioc->iocpf.fsm);
- 
- 	if (iocpf_st == BFA_IOCPF_HWINIT)
- 		bfa_ioc_poll_fwinit(ioc);
-diff --git a/drivers/net/ethernet/brocade/bna/bfa_ioc.h b/drivers/net/ethernet/brocade/bna/bfa_ioc.h
-index edd0ed5b5332..f30d06ec4ffe 100644
---- a/drivers/net/ethernet/brocade/bna/bfa_ioc.h
-+++ b/drivers/net/ethernet/brocade/bna/bfa_ioc.h
-@@ -147,16 +147,20 @@ struct bfa_ioc_notify {
- 	(__notify)->cbarg = (__cbarg);				\
- } while (0)
- 
-+enum iocpf_event;
-+
- struct bfa_iocpf {
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bfa_iocpf *s, enum iocpf_event e);
- 	struct bfa_ioc		*ioc;
- 	bool			fw_mismatch_notified;
- 	bool			auto_recover;
- 	u32			poll_time;
- };
- 
-+enum ioc_event;
-+
- struct bfa_ioc {
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bfa_ioc *s, enum ioc_event e);
- 	struct bfa		*bfa;
- 	struct bfa_pcidev	pcidev;
- 	struct timer_list	ioc_timer;
-diff --git a/drivers/net/ethernet/brocade/bna/bfa_msgq.h b/drivers/net/ethernet/brocade/bna/bfa_msgq.h
-index 75343b535798..170a4b4bed96 100644
---- a/drivers/net/ethernet/brocade/bna/bfa_msgq.h
-+++ b/drivers/net/ethernet/brocade/bna/bfa_msgq.h
-@@ -55,8 +55,10 @@ enum bfa_msgq_cmdq_flags {
- 	BFA_MSGQ_CMDQ_F_DB_UPDATE	= 1,
- };
- 
-+enum cmdq_event;
-+
- struct bfa_msgq_cmdq {
--	bfa_fsm_t			fsm;
-+	void (*fsm)(struct bfa_msgq_cmdq *s, enum cmdq_event e);
- 	enum bfa_msgq_cmdq_flags flags;
- 
- 	u16			producer_index;
-@@ -81,8 +83,10 @@ enum bfa_msgq_rspq_flags {
- 
- typedef void (*bfa_msgq_mcfunc_t)(void *cbarg, struct bfi_msgq_mhdr *mhdr);
- 
-+enum rspq_event;
-+
- struct bfa_msgq_rspq {
--	bfa_fsm_t			fsm;
-+	void (*fsm)(struct bfa_msgq_rspq *s, enum rspq_event e);
- 	enum bfa_msgq_rspq_flags flags;
- 
- 	u16			producer_index;
-diff --git a/drivers/net/ethernet/brocade/bna/bna_enet.c b/drivers/net/ethernet/brocade/bna/bna_enet.c
-index a2c983f56b00..883de0ac8de4 100644
---- a/drivers/net/ethernet/brocade/bna/bna_enet.c
-+++ b/drivers/net/ethernet/brocade/bna/bna_enet.c
-@@ -1257,7 +1257,7 @@ bna_enet_mtu_get(struct bna_enet *enet)
- void
- bna_enet_enable(struct bna_enet *enet)
- {
--	if (enet->fsm != (bfa_sm_t)bna_enet_sm_stopped)
-+	if (enet->fsm != bna_enet_sm_stopped)
- 		return;
- 
- 	enet->flags |= BNA_ENET_F_ENABLED;
-@@ -1751,12 +1751,12 @@ bna_ioceth_uninit(struct bna_ioceth *ioceth)
- void
- bna_ioceth_enable(struct bna_ioceth *ioceth)
- {
--	if (ioceth->fsm == (bfa_fsm_t)bna_ioceth_sm_ready) {
-+	if (ioceth->fsm == bna_ioceth_sm_ready) {
- 		bnad_cb_ioceth_ready(ioceth->bna->bnad);
- 		return;
- 	}
- 
--	if (ioceth->fsm == (bfa_fsm_t)bna_ioceth_sm_stopped)
-+	if (ioceth->fsm == bna_ioceth_sm_stopped)
- 		bfa_fsm_send_event(ioceth, IOCETH_E_ENABLE);
- }
- 
-diff --git a/drivers/net/ethernet/brocade/bna/bna_tx_rx.c b/drivers/net/ethernet/brocade/bna/bna_tx_rx.c
-index 2623a0da4682..c05dc7a1c4a1 100644
---- a/drivers/net/ethernet/brocade/bna/bna_tx_rx.c
-+++ b/drivers/net/ethernet/brocade/bna/bna_tx_rx.c
-@@ -1956,7 +1956,7 @@ static void
- bna_rx_stop(struct bna_rx *rx)
- {
- 	rx->rx_flags &= ~BNA_RX_F_ENET_STARTED;
--	if (rx->fsm == (bfa_fsm_t) bna_rx_sm_stopped)
-+	if (rx->fsm == bna_rx_sm_stopped)
- 		bna_rx_mod_cb_rx_stopped(&rx->bna->rx_mod, rx);
- 	else {
- 		rx->stop_cbfn = bna_rx_mod_cb_rx_stopped;
-@@ -2535,7 +2535,7 @@ bna_rx_destroy(struct bna_rx *rx)
- void
- bna_rx_enable(struct bna_rx *rx)
- {
--	if (rx->fsm != (bfa_sm_t)bna_rx_sm_stopped)
-+	if (rx->fsm != bna_rx_sm_stopped)
- 		return;
- 
- 	rx->rx_flags |= BNA_RX_F_ENABLED;
-@@ -3523,7 +3523,7 @@ bna_tx_destroy(struct bna_tx *tx)
- void
- bna_tx_enable(struct bna_tx *tx)
- {
--	if (tx->fsm != (bfa_sm_t)bna_tx_sm_stopped)
-+	if (tx->fsm != bna_tx_sm_stopped)
- 		return;
- 
- 	tx->flags |= BNA_TX_F_ENABLED;
-diff --git a/drivers/net/ethernet/brocade/bna/bna_types.h b/drivers/net/ethernet/brocade/bna/bna_types.h
-index 666b6922e24d..a5ebd7110e07 100644
---- a/drivers/net/ethernet/brocade/bna/bna_types.h
-+++ b/drivers/net/ethernet/brocade/bna/bna_types.h
-@@ -312,8 +312,10 @@ struct bna_attr {
- 
- /* IOCEth */
- 
-+enum bna_ioceth_event;
-+
- struct bna_ioceth {
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bna_ioceth *s, enum bna_ioceth_event e);
- 	struct bfa_ioc ioc;
- 
- 	struct bna_attr attr;
-@@ -334,8 +336,10 @@ struct bna_pause_config {
- 	enum bna_status rx_pause;
- };
- 
-+enum bna_enet_event;
-+
- struct bna_enet {
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bna_enet *s, enum bna_enet_event e);
- 	enum bna_enet_flags flags;
- 
- 	enum bna_enet_type type;
-@@ -360,8 +364,10 @@ struct bna_enet {
- 
- /* Ethport */
- 
-+enum bna_ethport_event;
-+
- struct bna_ethport {
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bna_ethport *s, enum bna_ethport_event e);
- 	enum bna_ethport_flags flags;
- 
- 	enum bna_link_status link_status;
-@@ -454,13 +460,16 @@ struct bna_txq {
- };
- 
- /* Tx object */
-+
-+enum bna_tx_event;
-+
- struct bna_tx {
- 	/* This should be the first one */
- 	struct list_head			qe;
- 	int			rid;
- 	int			hw_id;
- 
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bna_tx *s, enum bna_tx_event e);
- 	enum bna_tx_flags flags;
- 
- 	enum bna_tx_type type;
-@@ -698,8 +707,11 @@ struct bna_rxp {
- };
- 
- /* RxF structure (hardware Rx Function) */
-+
-+enum bna_rxf_event;
-+
- struct bna_rxf {
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bna_rxf *s, enum bna_rxf_event e);
- 
- 	struct bfa_msgq_cmd_entry msgq_cmd;
- 	union {
-@@ -769,13 +781,16 @@ struct bna_rxf {
- };
- 
- /* Rx object */
-+
-+enum bna_rx_event;
-+
- struct bna_rx {
- 	/* This should be the first one */
- 	struct list_head			qe;
- 	int			rid;
- 	int			hw_id;
- 
--	bfa_fsm_t		fsm;
-+	void (*fsm)(struct bna_rx *s, enum bna_rx_event e);
- 
- 	enum bna_rx_type type;
- 
--- 
-2.34.1
+Larry
 
