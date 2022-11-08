@@ -2,212 +2,325 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F8B621C94
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 19:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4980A621CA0
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 20:02:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbiKHS6T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 13:58:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50018 "EHLO
+        id S229666AbiKHTC0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 14:02:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbiKHS6P (ORCPT
+        with ESMTP id S229587AbiKHTCY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 13:58:15 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B702C6A686
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 10:58:13 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id s12so14315551edd.5
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Nov 2022 10:58:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cMgDfV1BgAP7xkSv/7TgtM9Ajy04yiwJ9uwBrlYeE4k=;
-        b=Yy0lzuy8VfKf34xbHGNgaNfOobob2FhjMEdGPtN9udt83piVBILbAEWYfkUUhiLI8B
-         yycT0SK88r1cZaqsIgR1oRJ0qc/6/mgpFnw41i/ktJLLlHE0Hs+89vaSkXsITQC90th1
-         dQpQdmXRc9C3zqXvWwSNoCqR3TMunikeCapoTxXfvaDvOzaUv09tPcGzIYcOIGz0vKT1
-         IsindWhQESFtKbrtTjFdzwp+uMb1/cKMYfN0aVhb+JjnL7sHqIPZHEEL6R70gA2xo2cX
-         zPPDIUZV6lL3hw4OraZbp/vN4pY/KAui8mu5FDGJsJH+7S5dkMbsNYz0csj6gTcTTcdR
-         RVyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cMgDfV1BgAP7xkSv/7TgtM9Ajy04yiwJ9uwBrlYeE4k=;
-        b=YPcaXZJ6bSsvXK7BOfcRbdWp3lY/SEJpyWA/94nW39vVhW2iXP1B7p118NhoBccBmO
-         o2waACKJBzNe5RyfJKNhC7g7H+j9FV4X6eS2HACrqHJbZGyCdwWFzYMc/iwo5bPsRxly
-         zCU+vRWrv04ZiwDC/y7h2e1M3KC6hCLBIVbol8XAmLj5UMqafrrCYp7zMA0QFeX9D5Ct
-         SZskDovLVtVcs62/V9kD2SwrlUrwxNTMkuS3sbJfVs9iddCF3wNHqcV69k5Sgb/cXzOu
-         oy8t5Ddos59wy0drc0WqBN7AHXvRsAGJyo+L+VESIrpybLd26CI8RQ8NRV+CnwPmBjWg
-         vdgQ==
-X-Gm-Message-State: ACrzQf08QcswLsXFIrZj0646eKSP362u6Zdq3aEBAn/NA9C9Eu0R/aJK
-        OoPXXBMxxuAR8RkRqJ5KMt9TpSpsC6I=
-X-Google-Smtp-Source: AMsMyM5Jbm1a8d7vSTbq1wrRWGMzpLFoKZBfChhQcrkzYo+5DaRl4pwN661qduvHH0ip69OFkooKoA==
-X-Received: by 2002:a50:ccc2:0:b0:460:4db2:5006 with SMTP id b2-20020a50ccc2000000b004604db25006mr57097968edj.369.1667933892227;
-        Tue, 08 Nov 2022 10:58:12 -0800 (PST)
-Received: from [192.168.1.50] ([81.196.40.23])
-        by smtp.gmail.com with ESMTPSA id ky14-20020a170907778e00b0073c8d4c9f38sm5014044ejc.177.2022.11.08.10.58.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Nov 2022 10:58:11 -0800 (PST)
-Message-ID: <0b053ab0-0760-485f-47df-1ab1705a011c@gmail.com>
-Date:   Tue, 8 Nov 2022 20:58:10 +0200
+        Tue, 8 Nov 2022 14:02:24 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59DD778316
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 11:02:19 -0800 (PST)
+X-UUID: b77d41905b9e42b7b2909aaa6b6acf30-20221109
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=6ucZf4pwP7m0anh+9GOUZcIcP5stJ6/e+bu+Jc7CdKc=;
+        b=Q7uFt5K4CvRahs3XGyqr8pKmoLtwA8LN+KW3er/cCzq5m3Lu+jUlU17Vf+U6/sO0euCRoGM3uUFAF6pnSbzdl0YmZyg0HTmaPeF4RdSILllqUWPLbNtgPSC9g7SV+pagwyZTgO2VNH56lxjKC/h+Tm1CfLf6k4512HS4WvbN+hE=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.12,REQID:fd9de641-9573-45c5-aa99-738705c24430,IP:0,U
+        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:70
+X-CID-INFO: VERSION:1.1.12,REQID:fd9de641-9573-45c5-aa99-738705c24430,IP:0,URL
+        :0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
+        ON:quarantine,TS:70
+X-CID-META: VersionHash:62cd327,CLOUDID:d606fa90-1a78-4832-bd08-74b1519dcfbf,B
+        ulkID:2211090302142BZOUAOF,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: b77d41905b9e42b7b2909aaa6b6acf30-20221109
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 803278814; Wed, 09 Nov 2022 03:02:12 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Wed, 9 Nov 2022 03:02:11 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Wed, 9 Nov 2022 03:02:11 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <bo.jiao@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH 1/4] wifi: mt76: mt7915: rework mt7915_dma_reset()
+Date:   Wed, 9 Nov 2022 03:02:07 +0800
+Message-ID: <26aefa69d1002616412c4b00bf2e779f71ca3289.1667929344.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: [PATCH 3/3] wifi: rtl8xxxu: Use u32_get_bits in *_identify_chip
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <91f59414-86f7-f0ed-a138-19f0ab63bb0b@gmail.com>
-In-Reply-To: <91f59414-86f7-f0ed-a138-19f0ab63bb0b@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It simplifies the code a bit.
+From: Bo Jiao <bo.jiao@mediatek.com>
 
-Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-This patch should be applied after my older patch:
-"[PATCH v2 2/3] wifi: rtl8xxxu: Split up rtl8xxxu_identify_chip"
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 3 +--
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c | 5 ++---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 5 ++---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c | 5 ++---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 5 ++---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h  | 1 -
- 6 files changed, 9 insertions(+), 15 deletions(-)
+Reuse mt7915_dma_disable() to reduce duplicated code.
+This is a preliminary patch to enable full system reset.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-index ef38891ddbd1..2c4f403ba68f 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-@@ -335,8 +335,7 @@ static int rtl8188fu_identify_chip(struct rtl8xxxu_priv *priv)
- 	priv->has_wifi = 1;
+Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/dma.c   | 110 ++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |  69 +----------
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |   1 +
+ 3 files changed, 91 insertions(+), 89 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+index e4fa240834d8..5b27093f618b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+@@ -50,23 +50,37 @@ static void mt7915_dma_config(struct mt7915_dev *dev)
+ #define TXQ_CONFIG(q, wfdma, int, id)	Q_CONFIG(__TXQ(q), (wfdma), (int), (id))
  
- 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
--	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
--		SYS_CFG_CHIP_VERSION_SHIFT;
-+	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
- 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
- 		dev_info(dev, "Unsupported test chip\n");
- 		ret = -ENOTSUPP;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-index 6c443e4822d8..e7190cb2e5a3 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-@@ -333,8 +333,7 @@ int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
- 	int ret = 0;
+ 	if (is_mt7915(&dev->mt76)) {
+-		RXQ_CONFIG(MT_RXQ_MAIN, WFDMA0, MT_INT_RX_DONE_BAND0, MT7915_RXQ_BAND0);
+-		RXQ_CONFIG(MT_RXQ_MCU, WFDMA1, MT_INT_RX_DONE_WM, MT7915_RXQ_MCU_WM);
+-		RXQ_CONFIG(MT_RXQ_MCU_WA, WFDMA1, MT_INT_RX_DONE_WA, MT7915_RXQ_MCU_WA);
+-		RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0, MT_INT_RX_DONE_BAND1, MT7915_RXQ_BAND1);
+-		RXQ_CONFIG(MT_RXQ_BAND1_WA, WFDMA1, MT_INT_RX_DONE_WA_EXT, MT7915_RXQ_MCU_WA_EXT);
+-		RXQ_CONFIG(MT_RXQ_MAIN_WA, WFDMA1, MT_INT_RX_DONE_WA_MAIN, MT7915_RXQ_MCU_WA);
++		RXQ_CONFIG(MT_RXQ_MAIN, WFDMA0, MT_INT_RX_DONE_BAND0,
++			   MT7915_RXQ_BAND0);
++		RXQ_CONFIG(MT_RXQ_MCU, WFDMA1, MT_INT_RX_DONE_WM,
++			   MT7915_RXQ_MCU_WM);
++		RXQ_CONFIG(MT_RXQ_MCU_WA, WFDMA1, MT_INT_RX_DONE_WA,
++			   MT7915_RXQ_MCU_WA);
++		RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0, MT_INT_RX_DONE_BAND1,
++			   MT7915_RXQ_BAND1);
++		RXQ_CONFIG(MT_RXQ_BAND1_WA, WFDMA1, MT_INT_RX_DONE_WA_EXT,
++			   MT7915_RXQ_MCU_WA_EXT);
++		RXQ_CONFIG(MT_RXQ_MAIN_WA, WFDMA1, MT_INT_RX_DONE_WA_MAIN,
++			   MT7915_RXQ_MCU_WA);
+ 		TXQ_CONFIG(0, WFDMA1, MT_INT_TX_DONE_BAND0, MT7915_TXQ_BAND0);
+ 		TXQ_CONFIG(1, WFDMA1, MT_INT_TX_DONE_BAND1, MT7915_TXQ_BAND1);
+-		MCUQ_CONFIG(MT_MCUQ_WM, WFDMA1, MT_INT_TX_DONE_MCU_WM, MT7915_TXQ_MCU_WM);
+-		MCUQ_CONFIG(MT_MCUQ_WA, WFDMA1, MT_INT_TX_DONE_MCU_WA, MT7915_TXQ_MCU_WA);
+-		MCUQ_CONFIG(MT_MCUQ_FWDL, WFDMA1, MT_INT_TX_DONE_FWDL, MT7915_TXQ_FWDL);
++		MCUQ_CONFIG(MT_MCUQ_WM, WFDMA1, MT_INT_TX_DONE_MCU_WM,
++			    MT7915_TXQ_MCU_WM);
++		MCUQ_CONFIG(MT_MCUQ_WA, WFDMA1, MT_INT_TX_DONE_MCU_WA,
++			    MT7915_TXQ_MCU_WA);
++		MCUQ_CONFIG(MT_MCUQ_FWDL, WFDMA1, MT_INT_TX_DONE_FWDL,
++			    MT7915_TXQ_FWDL);
+ 	} else {
+-		RXQ_CONFIG(MT_RXQ_MCU, WFDMA0, MT_INT_RX_DONE_WM, MT7916_RXQ_MCU_WM);
+-		RXQ_CONFIG(MT_RXQ_BAND1_WA, WFDMA0, MT_INT_RX_DONE_WA_EXT_MT7916, MT7916_RXQ_MCU_WA_EXT);
+-		MCUQ_CONFIG(MT_MCUQ_WM, WFDMA0, MT_INT_TX_DONE_MCU_WM, MT7915_TXQ_MCU_WM);
+-		MCUQ_CONFIG(MT_MCUQ_WA, WFDMA0, MT_INT_TX_DONE_MCU_WA_MT7916, MT7915_TXQ_MCU_WA);
+-		MCUQ_CONFIG(MT_MCUQ_FWDL, WFDMA0, MT_INT_TX_DONE_FWDL, MT7915_TXQ_FWDL);
++		RXQ_CONFIG(MT_RXQ_MCU, WFDMA0, MT_INT_RX_DONE_WM,
++			   MT7916_RXQ_MCU_WM);
++		RXQ_CONFIG(MT_RXQ_BAND1_WA, WFDMA0, MT_INT_RX_DONE_WA_EXT_MT7916,
++			   MT7916_RXQ_MCU_WA_EXT);
++		MCUQ_CONFIG(MT_MCUQ_WM, WFDMA0, MT_INT_TX_DONE_MCU_WM,
++			    MT7915_TXQ_MCU_WM);
++		MCUQ_CONFIG(MT_MCUQ_WA, WFDMA0, MT_INT_TX_DONE_MCU_WA_MT7916,
++			    MT7915_TXQ_MCU_WA);
++		MCUQ_CONFIG(MT_MCUQ_FWDL, WFDMA0, MT_INT_TX_DONE_FWDL,
++			    MT7915_TXQ_FWDL);
  
- 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
--	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
--		SYS_CFG_CHIP_VERSION_SHIFT;
-+	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
- 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
- 		dev_info(dev, "Unsupported test chip\n");
- 		ret = -ENOTSUPP;
-@@ -371,7 +370,7 @@ int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_identify_vendor_1bit(priv, vendor);
+ 		if (is_mt7916(&dev->mt76) && mtk_wed_device_active(&dev->mt76.mmio.wed)) {
+ 			RXQ_CONFIG(MT_RXQ_MAIN, WFDMA0, MT_INT_WED_RX_DONE_BAND0_MT7916,
+@@ -77,16 +91,23 @@ static void mt7915_dma_config(struct mt7915_dev *dev)
+ 				   MT7916_RXQ_BAND1);
+ 			RXQ_CONFIG(MT_RXQ_MAIN_WA, WFDMA0, MT_INT_WED_RX_DONE_WA_MAIN_MT7916,
+ 				   MT7916_RXQ_MCU_WA_MAIN);
+-			TXQ_CONFIG(0, WFDMA0, MT_INT_WED_TX_DONE_BAND0, MT7915_TXQ_BAND0);
+-			TXQ_CONFIG(1, WFDMA0, MT_INT_WED_TX_DONE_BAND1, MT7915_TXQ_BAND1);
++			TXQ_CONFIG(0, WFDMA0, MT_INT_WED_TX_DONE_BAND0,
++				   MT7915_TXQ_BAND0);
++			TXQ_CONFIG(1, WFDMA0, MT_INT_WED_TX_DONE_BAND1,
++				   MT7915_TXQ_BAND1);
+ 		} else {
+-			RXQ_CONFIG(MT_RXQ_MAIN, WFDMA0, MT_INT_RX_DONE_BAND0_MT7916, MT7916_RXQ_BAND0);
+-			RXQ_CONFIG(MT_RXQ_MCU_WA, WFDMA0, MT_INT_RX_DONE_WA, MT7916_RXQ_MCU_WA);
+-			RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0, MT_INT_RX_DONE_BAND1_MT7916, MT7916_RXQ_BAND1);
++			RXQ_CONFIG(MT_RXQ_MAIN, WFDMA0, MT_INT_RX_DONE_BAND0_MT7916,
++				   MT7916_RXQ_BAND0);
++			RXQ_CONFIG(MT_RXQ_MCU_WA, WFDMA0, MT_INT_RX_DONE_WA,
++				   MT7916_RXQ_MCU_WA);
++			RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0, MT_INT_RX_DONE_BAND1_MT7916,
++				   MT7916_RXQ_BAND1);
+ 			RXQ_CONFIG(MT_RXQ_MAIN_WA, WFDMA0, MT_INT_RX_DONE_WA_MAIN_MT7916,
+ 				   MT7916_RXQ_MCU_WA_MAIN);
+-			TXQ_CONFIG(0, WFDMA0, MT_INT_TX_DONE_BAND0, MT7915_TXQ_BAND0);
+-			TXQ_CONFIG(1, WFDMA0, MT_INT_TX_DONE_BAND1, MT7915_TXQ_BAND1);
++			TXQ_CONFIG(0, WFDMA0, MT_INT_TX_DONE_BAND0,
++				   MT7915_TXQ_BAND0);
++			TXQ_CONFIG(1, WFDMA0, MT_INT_TX_DONE_BAND1,
++				   MT7915_TXQ_BAND1);
+ 		}
+ 	}
+ }
+@@ -514,6 +535,53 @@ int mt7915_dma_init(struct mt7915_dev *dev, struct mt7915_phy *phy2)
+ 	return 0;
+ }
  
- 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
--	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
-+	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
++int mt7915_dma_reset(struct mt7915_dev *dev, bool force)
++{
++	struct mt76_phy *mphy_ext = dev->mt76.phys[MT_BAND1];
++	int i;
++
++	/* clean up hw queues */
++	for (i = 0; i < ARRAY_SIZE(dev->mt76.phy.q_tx); i++) {
++		mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[i], true);
++		if (mphy_ext)
++			mt76_queue_tx_cleanup(dev, mphy_ext->q_tx[i], true);
++	}
++
++	for (i = 0; i < ARRAY_SIZE(dev->mt76.q_mcu); i++)
++		mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[i], true);
++
++	mt76_for_each_q_rx(&dev->mt76, i)
++		mt76_queue_rx_cleanup(dev, &dev->mt76.q_rx[i]);
++
++	/* reset wfsys */
++	if (force)
++		mt7915_wfsys_reset(dev);
++
++	mt7915_dma_disable(dev, force);
++
++	/* reset hw queues */
++	for (i = 0; i < __MT_TXQ_MAX; i++) {
++		mt76_queue_reset(dev, dev->mphy.q_tx[i]);
++		if (mphy_ext)
++			mt76_queue_reset(dev, mphy_ext->q_tx[i]);
++	}
++
++	for (i = 0; i < __MT_MCUQ_MAX; i++)
++		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
++
++	mt76_for_each_q_rx(&dev->mt76, i)
++			mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
++
++	mt76_tx_status_check(&dev->mt76, true);
++
++	mt7915_dma_enable(dev);
++
++	mt76_for_each_q_rx(&dev->mt76, i)
++		mt76_queue_rx_reset(dev, i);
++
++	return 0;
++}
++
+ void mt7915_dma_cleanup(struct mt7915_dev *dev)
+ {
+ 	mt7915_dma_disable(dev, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 324f0f58572b..3b1259f14de6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1306,73 +1306,6 @@ mt7915_update_beacons(struct mt7915_dev *dev)
+ 		mt7915_update_vif_beacon, mphy_ext->hw);
+ }
  
- 	rtl8xxxu_config_endpoints_sie(priv);
+-static void
+-mt7915_dma_reset(struct mt7915_dev *dev)
+-{
+-	struct mt76_phy *mphy_ext = dev->mt76.phys[MT_BAND1];
+-	u32 hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
+-	int i;
+-
+-	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
+-		   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
+-		   MT_WFDMA0_GLO_CFG_RX_DMA_EN);
+-
+-	if (is_mt7915(&dev->mt76))
+-		mt76_clear(dev, MT_WFDMA1_GLO_CFG,
+-			   MT_WFDMA1_GLO_CFG_TX_DMA_EN |
+-			   MT_WFDMA1_GLO_CFG_RX_DMA_EN);
+-	if (dev->hif2) {
+-		mt76_clear(dev, MT_WFDMA0_GLO_CFG + hif1_ofs,
+-			   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
+-			   MT_WFDMA0_GLO_CFG_RX_DMA_EN);
+-
+-		if (is_mt7915(&dev->mt76))
+-			mt76_clear(dev, MT_WFDMA1_GLO_CFG + hif1_ofs,
+-				   MT_WFDMA1_GLO_CFG_TX_DMA_EN |
+-				   MT_WFDMA1_GLO_CFG_RX_DMA_EN);
+-	}
+-
+-	usleep_range(1000, 2000);
+-
+-	for (i = 0; i < __MT_TXQ_MAX; i++) {
+-		mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[i], true);
+-		if (mphy_ext)
+-			mt76_queue_tx_cleanup(dev, mphy_ext->q_tx[i], true);
+-	}
+-
+-	for (i = 0; i < __MT_MCUQ_MAX; i++)
+-		mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[i], true);
+-
+-	mt76_for_each_q_rx(&dev->mt76, i)
+-		mt76_queue_rx_reset(dev, i);
+-
+-	mt76_tx_status_check(&dev->mt76, true);
+-
+-	/* re-init prefetch settings after reset */
+-	mt7915_dma_prefetch(dev);
+-
+-	mt76_set(dev, MT_WFDMA0_GLO_CFG,
+-		 MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN);
+-	if (is_mt7915(&dev->mt76))
+-		mt76_set(dev, MT_WFDMA1_GLO_CFG,
+-			 MT_WFDMA1_GLO_CFG_TX_DMA_EN |
+-			 MT_WFDMA1_GLO_CFG_RX_DMA_EN |
+-			 MT_WFDMA1_GLO_CFG_OMIT_TX_INFO |
+-			 MT_WFDMA1_GLO_CFG_OMIT_RX_INFO);
+-	if (dev->hif2) {
+-		mt76_set(dev, MT_WFDMA0_GLO_CFG + hif1_ofs,
+-			 MT_WFDMA0_GLO_CFG_TX_DMA_EN |
+-			 MT_WFDMA0_GLO_CFG_RX_DMA_EN);
+-
+-		if (is_mt7915(&dev->mt76))
+-			mt76_set(dev, MT_WFDMA1_GLO_CFG + hif1_ofs,
+-				 MT_WFDMA1_GLO_CFG_TX_DMA_EN |
+-				 MT_WFDMA1_GLO_CFG_RX_DMA_EN |
+-				 MT_WFDMA1_GLO_CFG_OMIT_TX_INFO |
+-				 MT_WFDMA1_GLO_CFG_OMIT_RX_INFO);
+-	}
+-}
+-
+ void mt7915_tx_token_put(struct mt7915_dev *dev)
+ {
+ 	struct mt76_txwi_cache *txwi;
+@@ -1424,7 +1357,7 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_STOPPED);
  
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-index fc3336f18892..bdb79dc18f06 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -485,8 +485,7 @@ int rtl8192eu_identify_chip(struct rtl8xxxu_priv *priv)
- 	int ret = 0;
+ 	if (mt7915_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
+-		mt7915_dma_reset(dev);
++		mt7915_dma_reset(dev, false);
  
- 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
--	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
--		SYS_CFG_CHIP_VERSION_SHIFT;
-+	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
- 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
- 		dev_info(dev, "Unsupported test chip\n");
- 		ret = -ENOTSUPP;
-@@ -512,7 +511,7 @@ int rtl8192eu_identify_chip(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_identify_vendor_2bits(priv, vendor);
- 
- 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
--	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
-+	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
- 
- 	rtl8xxxu_config_endpoints_sie(priv);
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-index c8ab71ed4ff4..707ac48ecc83 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-@@ -136,8 +136,7 @@ static int rtl8723au_identify_chip(struct rtl8xxxu_priv *priv)
- 	int ret = 0;
- 
- 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
--	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
--		SYS_CFG_CHIP_VERSION_SHIFT;
-+	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
- 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
- 		dev_info(dev, "Unsupported test chip\n");
- 		ret = -ENOTSUPP;
-@@ -165,7 +164,7 @@ static int rtl8723au_identify_chip(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_identify_vendor_1bit(priv, vendor);
- 
- 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
--	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
-+	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
- 
- 	rtl8xxxu_config_endpoints_sie(priv);
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-index ece82e613bf0..a0ec895b61a4 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-@@ -311,8 +311,7 @@ static int rtl8723bu_identify_chip(struct rtl8xxxu_priv *priv)
- 	int ret = 0;
- 
- 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
--	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
--		SYS_CFG_CHIP_VERSION_SHIFT;
-+	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
- 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
- 		dev_info(dev, "Unsupported test chip\n");
- 		ret = -ENOTSUPP;
-@@ -338,7 +337,7 @@ static int rtl8723bu_identify_chip(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_identify_vendor_2bits(priv, vendor);
- 
- 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
--	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
-+	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
- 
- 	rtl8xxxu_config_endpoints_sie(priv);
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-index 5d4cac4f4c06..3e79efdfb4c2 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-@@ -315,7 +315,6 @@
- #define  SYS_CFG_SPS_SEL		BIT(24) /*  1:LDO regulator mode;
- 						    0:Switching regulator mode*/
- #define  SYS_CFG_CHIP_VERSION_MASK	0xf000	/* Bit 12 - 15 */
--#define  SYS_CFG_CHIP_VERSION_SHIFT	12
- 
- #define REG_GPIO_OUTSTS			0x00f4	/*  For RTL8723 only. */
- #define  GPIO_EFS_HCI_SEL		(BIT(0) | BIT(1))
+ 		mt7915_tx_token_put(dev);
+ 		idr_init(&dev->mt76.token);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index fe6a6d3b0a32..5af26e60e902 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -443,6 +443,7 @@ s8 mt7915_eeprom_get_power_delta(struct mt7915_dev *dev, int band);
+ int mt7915_dma_init(struct mt7915_dev *dev, struct mt7915_phy *phy2);
+ void mt7915_dma_prefetch(struct mt7915_dev *dev);
+ void mt7915_dma_cleanup(struct mt7915_dev *dev);
++int mt7915_dma_reset(struct mt7915_dev *dev, bool force);
+ int mt7915_mcu_init(struct mt7915_dev *dev);
+ int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
+ 			       struct mt7915_vif *mvif,
 -- 
-2.38.0
+2.36.1
+
