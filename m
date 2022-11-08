@@ -2,45 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8E8622057
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 00:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A8B622058
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 00:30:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229918AbiKHXaF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 18:30:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39504 "EHLO
+        id S229971AbiKHXaH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 18:30:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbiKHXaC (ORCPT
+        with ESMTP id S229969AbiKHXaF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 18:30:02 -0500
+        Tue, 8 Nov 2022 18:30:05 -0500
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE674E02
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE849BF63
         for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 15:30:00 -0800 (PST)
-X-UUID: b0db58b586644eb9b49726cc692a26d3-20221109
+X-UUID: 28a6d7ece9d84ba897ad0f98ac2f040f-20221109
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Cm6aeQXtOIew7s/6XKyXKoAR6/e/hUbX5UAYzfJ20yc=;
-        b=FK+ZVnYqxrnkyxPIs9NF3h+liBXpb5oUCKWCIpu0HFNB+H3hSbwwPU6Uu6zUudbPDi9Ec4Ty6Jav8ovUicpJEMbzSUDMpduppThitOPuhADjx7HJq12mESGTm7jqC4LjwZa5aSntHAlF8BfiTjV4rcDdF9M7DHHehBAZ4VUd7Zw=;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=P8e55r60yL8b3MDHe2FUZdktnmdfVIU8b+P0EU+Kx0c=;
+        b=u7KqR053HmYSDH+bZ6U/TbDLonhFJaW5+wNkZ0FlJucEwQKEcWV5P2N2k1cK+etprIYCA2tQiDJqOqqOPe242OE0CTxdDY5IRGUtprm9W1e1pNZBrCf7jHjvtF03ZhQ7HhwkX35XWABubVY9BV8qcpy8JI18IVwjXmbX+FcL9ag=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.12,REQID:20184d8f-2e00-4c31-ab1d-57f82ba6e07b,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:90
-X-CID-INFO: VERSION:1.1.12,REQID:20184d8f-2e00-4c31-ab1d-57f82ba6e07b,IP:0,URL
-        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
-        N:quarantine,TS:90
-X-CID-META: VersionHash:62cd327,CLOUDID:882f11f4-a19e-4b45-8bfe-6a73c93611e9,B
-        ulkID:22110907295458MXR5Z5,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: b0db58b586644eb9b49726cc692a26d3-20221109
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+X-CID-O-INFO: VERSION:1.1.12,REQID:5e6262f6-0dff-4fcd-99b1-73a0cc837bea,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:-30,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:-35
+X-CID-META: VersionHash:62cd327,CLOUDID:2462d5eb-84ac-4628-a416-bc50d5503da6,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:2,IP:nil,UR
+        L:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 28a6d7ece9d84ba897ad0f98ac2f040f-20221109
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1495026887; Wed, 09 Nov 2022 07:29:51 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1561082631; Wed, 09 Nov 2022 07:29:52 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Wed, 9 Nov 2022 07:29:50 +0800
+ 15.2.792.15; Wed, 9 Nov 2022 07:29:51 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 9 Nov 2022 07:29:50 +0800
+ 15.2.792.15 via Frontend Transport; Wed, 9 Nov 2022 07:29:51 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -48,14 +45,15 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         <linux-mediatek@lists.infradead.org>,
         Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 3/4] wifi: mt76: mt7915: add full system reset into debugfs
-Date:   Wed, 9 Nov 2022 07:29:43 +0800
-Message-ID: <186725198fc5d409928ef15058fa6a26e54ce13f.1667949443.git.ryder.lee@mediatek.com>
+Subject: [PATCH v2 4/4] wifi: mt76: mt7915: enable coredump support
+Date:   Wed, 9 Nov 2022 07:29:44 +0800
+Message-ID: <be7fbdcc459504c5e9c2e3f23184fe328f5bbabd.1667949443.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <26aefa69d1002616412c4b00bf2e779f71ca3289.1667949443.git.ryder.lee@mediatek.com>
 References: <26aefa69d1002616412c4b00bf2e779f71ca3289.1667949443.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-MTK:  N
 X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
@@ -67,235 +65,951 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Trigger firmware crash and enable full system recovery through debugfs.
-This also renames knob "fw_ser" to a clear-cut name "sys_recovery".
+Host triggered and catastrophic event triggered firmware core dumping
+for basic firmware issues triage, including state reporting, task/irq
+info, function calltrace and MCU memory dump.
 
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-change since v2 - print out the text for what the various values that can be written to this debugfs file do.
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 81 +++++++++++++++----
- .../net/wireless/mediatek/mt76/mt7915/mac.c   |  5 ++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  2 +
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  4 +
- 5 files changed, 80 insertions(+), 14 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/Kconfig |   1 +
+ .../wireless/mediatek/mt76/mt7915/Makefile    |   3 +-
+ .../wireless/mediatek/mt76/mt7915/coredump.c  | 409 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7915/coredump.h  | 136 ++++++
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  12 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |  72 ++-
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  59 ++-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  22 +
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  |  34 +-
+ 9 files changed, 740 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index e1d15394a621..10af98ea5ea8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -46,8 +46,8 @@ DEFINE_DEBUGFS_ATTRIBUTE(fops_implicit_txbf, mt7915_implicit_txbf_get,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig
+index f21282cea845..d710726d47bf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig
+@@ -2,6 +2,7 @@
+ config MT7915E
+ 	tristate "MediaTek MT7915E (PCIe) support"
+ 	select MT76_CONNAC_LIB
++	select WANT_DEV_COREDUMP
+ 	depends on MAC80211
+ 	depends on PCI
+ 	select RELAY
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/Makefile b/drivers/net/wireless/mediatek/mt76/mt7915/Makefile
+index b794ceb79c37..797ae49805c3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/Makefile
+@@ -6,4 +6,5 @@ mt7915e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
+ 	     debugfs.o mmio.o
  
- /* test knob of system error recovery */
- static ssize_t
--mt7915_fw_ser_set(struct file *file, const char __user *user_buf,
--		  size_t count, loff_t *ppos)
-+mt7915_sys_recovery_set(struct file *file, const char __user *user_buf,
-+			size_t count, loff_t *ppos)
- {
- 	struct mt7915_phy *phy = file->private_data;
- 	struct mt7915_dev *dev = phy->dev;
-@@ -71,8 +71,18 @@ mt7915_fw_ser_set(struct file *file, const char __user *user_buf,
- 		return -EINVAL;
- 
- 	switch (val) {
-+	/*
-+	 * 0: grab firmware current SER state.
-+	 * 1: trigger & enable system error L1 recovery.
-+	 * 2: trigger & enable system error L2 recovery.
-+	 * 3: trigger & enable system error L3 rx abort.
-+	 * 4: trigger & enable system error L3 tx abort
-+	 * 5: trigger & enable system error L3 tx disable.
-+	 * 6: trigger & enable system error L3 bf recovery.
-+	 * 7: trigger & enable system error full recovery.
-+	 * 8: trigger firmware crash.
+ mt7915e-$(CONFIG_NL80211_TESTMODE) += testmode.o
+-mt7915e-$(CONFIG_MT7986_WMAC) += soc.o
+\ No newline at end of file
++mt7915e-$(CONFIG_MT7986_WMAC) += soc.o
++mt7915e-$(CONFIG_DEV_COREDUMP) += coredump.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
+new file mode 100644
+index 000000000000..bb4b70401af5
+--- /dev/null
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
+@@ -0,0 +1,409 @@
++// SPDX-License-Identifier: ISC
++/* Copyright (C) 2022 MediaTek Inc. */
++
++#include <linux/devcoredump.h>
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/utsname.h>
++#include "coredump.h"
++
++static bool coredump_memdump;
++module_param(coredump_memdump, bool, 0644);
++
++static const struct mt7915_mem_region mt7915_mem_regions[] = {
++	{
++		.start = 0xe003b400,
++		.len = 0x00003bff,
++		.name = "CRAM",
++	},
++};
++
++static const struct mt7915_mem_region mt7916_mem_regions[] = {
++	{
++		.start = 0x00800000,
++		.len = 0x0005ffff,
++		.name = "ROM",
++	},
++	{
++		.start = 0x00900000,
++		.len = 0x00013fff,
++		.name = "ULM1",
++	},
++	{
++		.start = 0x02200000,
++		.len = 0x0004ffff,
++		.name = "ULM2",
++	},
++	{
++		.start = 0x02300000,
++		.len = 0x0004ffff,
++		.name = "ULM3",
++	},
++	{
++		.start = 0x00400000,
++		.len = 0x00027fff,
++		.name = "SRAM",
++	},
++	{
++		.start = 0xe0000000,
++		.len = 0x00157fff,
++		.name = "CRAM",
++	},
++};
++
++static const struct mt7915_mem_region mt7986_mem_regions[] = {
++	{
++		.start = 0x00800000,
++		.len = 0x0005ffff,
++		.name = "ROM",
++	},
++	{
++		.start = 0x00900000,
++		.len = 0x0000ffff,
++		.name = "ULM1",
++	},
++	{
++		.start = 0x02200000,
++		.len = 0x0004ffff,
++		.name = "ULM2",
++	},
++	{
++		.start = 0x02300000,
++		.len = 0x0004ffff,
++		.name = "ULM3",
++	},
++	{
++		.start = 0x00400000,
++		.len = 0x00017fff,
++		.name = "SRAM",
++	},
++	{
++		.start = 0xe0000000,
++		.len = 0x00113fff,
++		.name = "CRAM",
++	},
++};
++
++const struct mt7915_mem_region*
++mt7915_coredump_get_mem_layout(struct mt7915_dev *dev, u32 *num)
++{
++	switch (mt76_chip(&dev->mt76)) {
++	case 0x7915:
++		*num = ARRAY_SIZE(mt7915_mem_regions);
++		return &mt7915_mem_regions[0];
++	case 0x7986:
++		*num = ARRAY_SIZE(mt7986_mem_regions);
++		return &mt7986_mem_regions[0];
++	case 0x7916:
++		*num = ARRAY_SIZE(mt7916_mem_regions);
++		return &mt7916_mem_regions[0];
++	default:
++		return NULL;
++	}
++}
++
++static int mt7915_coredump_get_mem_size(struct mt7915_dev *dev)
++{
++	const struct mt7915_mem_region *mem_region;
++	size_t size = 0;
++	u32 num;
++	int i;
++
++	mem_region = mt7915_coredump_get_mem_layout(dev, &num);
++	if (!mem_region)
++		return 0;
++
++	for (i = 0; i < num; i++) {
++		size += mem_region->len;
++		mem_region++;
++	}
++
++	/* reserve space for the headers */
++	size += num * sizeof(struct mt7915_mem_hdr);
++	/* make sure it is aligned 4 bytes for debug message print out */
++	size = ALIGN(size, 4);
++
++	return size;
++}
++
++struct mt7915_crash_data *mt7915_coredump_new(struct mt7915_dev *dev)
++{
++	struct mt7915_crash_data *crash_data = dev->coredump.crash_data;
++
++	lockdep_assert_held(&dev->dump_mutex);
++
++	guid_gen(&crash_data->guid);
++	ktime_get_real_ts64(&crash_data->timestamp);
++
++	return crash_data;
++}
++
++static void
++mt7915_coredump_fw_state(struct mt7915_dev *dev, struct mt7915_coredump *dump,
++			 bool *exception)
++{
++	u32 state, count, type;
++
++	type = (u32)mt76_get_field(dev, MT_FW_EXCEPT_TYPE, GENMASK(7, 0));
++	state = (u32)mt76_get_field(dev, MT_FW_ASSERT_STAT, GENMASK(7, 0));
++	count = is_mt7915(&dev->mt76) ?
++		(u32)mt76_get_field(dev, MT_FW_EXCEPT_COUNT, GENMASK(15, 8)) :
++		(u32)mt76_get_field(dev, MT_FW_EXCEPT_COUNT, GENMASK(7, 0));
++
++	/* normal mode: driver can manually trigger assert for detail info */
++	if (!count)
++		strscpy(dump->fw_state, "normal", sizeof(dump->fw_state));
++	else if (state > 1 && (count == 1) && type == 5)
++		strscpy(dump->fw_state, "assert", sizeof(dump->fw_state));
++	else if ((state > 1 && count == 1) || count > 1)
++		strscpy(dump->fw_state, "exception", sizeof(dump->fw_state));
++
++	*exception = !!count;
++}
++
++static void
++mt7915_coredump_fw_trace(struct mt7915_dev *dev, struct mt7915_coredump *dump,
++			 bool exception)
++{
++	u32 n, irq, sch, base = MT_FW_EINT_INFO;
++
++	/* trap or run? */
++	dump->last_msg_id = mt76_rr(dev, MT_FW_LAST_MSG_ID);
++
++	n = is_mt7915(&dev->mt76) ?
++	    (u32)mt76_get_field(dev, base, GENMASK(7, 0)) :
++	    (u32)mt76_get_field(dev, base, GENMASK(15, 8));
++	dump->eint_info_idx = n;
++
++	irq = mt76_rr(dev, base + 0x8);
++	n = is_mt7915(&dev->mt76) ?
++	    FIELD_GET(GENMASK(7, 0), irq) : FIELD_GET(GENMASK(23, 16), irq);
++	dump->irq_info_idx = n;
++
++	sch = mt76_rr(dev, MT_FW_SCHED_INFO);
++	n = is_mt7915(&dev->mt76) ?
++	    FIELD_GET(GENMASK(7, 0), sch) : FIELD_GET(GENMASK(15, 8), sch);
++	dump->sched_info_idx = n;
++
++	if (exception) {
++		u32 i, y;
++
++		/* sched trace */
++		n = is_mt7915(&dev->mt76) ?
++		    FIELD_GET(GENMASK(15, 8), sch) : FIELD_GET(GENMASK(7, 0), sch);
++		n = n > 60 ? 60 : n;
++
++		strscpy(dump->trace_sched, "(sched_info) id, time",
++			sizeof(dump->trace_sched));
++
++		for (y = dump->sched_info_idx, i = 0; i < n; i++, y++) {
++			mt7915_memcpy_fromio(dev, dump->sched, base + 0xc + y * 12,
++					     sizeof(dump->sched));
++			y = y >= n ? 0 : y;
++		}
++
++		/* irq trace */
++		n = is_mt7915(&dev->mt76) ?
++		    FIELD_GET(GENMASK(15, 8), irq) : FIELD_GET(GENMASK(7, 0), irq);
++		n = n > 60 ? 60 : n;
++
++		strscpy(dump->trace_irq, "(irq_info) id, time",
++			sizeof(dump->trace_irq));
++
++		for (y = dump->irq_info_idx, i = 0; i < n; i++, y++) {
++			mt7915_memcpy_fromio(dev, dump->irq, base + 0x4 + y * 16,
++					     sizeof(dump->irq));
++			y = y >= n ? 0 : y;
++		}
++	}
++}
++
++static void
++mt7915_coredump_fw_stack(struct mt7915_dev *dev, struct mt7915_coredump *dump,
++			 bool exception)
++{
++	u32 oldest, i, idx;
++
++	/* stop call stack record */
++	if (!exception)
++		mt76_clear(dev, 0x89050200, BIT(0));
++
++	oldest = (u32)mt76_get_field(dev, 0x89050200, GENMASK(20, 16)) + 2;
++	for (i = 0; i < 16; i++) {
++		idx = ((oldest + 2 * i + 1) % 32);
++		dump->call_stack[i] = mt76_rr(dev, 0x89050204 + idx * 4);
++	}
++
++	/* start call stack record */
++	if (!exception)
++		mt76_set(dev, 0x89050200, BIT(0));
++}
++
++static void
++mt7915_coredump_fw_task(struct mt7915_dev *dev, struct mt7915_coredump *dump)
++{
++	u32 offs = is_mt7915(&dev->mt76) ? 0xe0 : 0x170;
++
++	strscpy(dump->task_qid, "(task queue id) read, write",
++		sizeof(dump->task_qid));
++
++	dump->taskq[0].read = mt76_rr(dev, MT_FW_TASK_QID1);
++	dump->taskq[0].write = mt76_rr(dev, MT_FW_TASK_QID1 - 4);
++	dump->taskq[1].read = mt76_rr(dev, MT_FW_TASK_QID2);
++	dump->taskq[1].write = mt76_rr(dev, MT_FW_TASK_QID2 - 4);
++
++	strscpy(dump->task_info, "(task stack) start, end, size",
++		sizeof(dump->task_info));
++
++	dump->taski[0].start = mt76_rr(dev, MT_FW_TASK_START);
++	dump->taski[0].end = mt76_rr(dev, MT_FW_TASK_END);
++	dump->taski[0].size = mt76_rr(dev, MT_FW_TASK_SIZE);
++	dump->taski[1].start = mt76_rr(dev, MT_FW_TASK_START + offs);
++	dump->taski[1].end = mt76_rr(dev, MT_FW_TASK_END + offs);
++	dump->taski[1].size = mt76_rr(dev, MT_FW_TASK_SIZE + offs);
++}
++
++static void
++mt7915_coredump_fw_context(struct mt7915_dev *dev, struct mt7915_coredump *dump)
++{
++	u32 count, idx, id;
++
++	count = mt76_rr(dev, MT_FW_CIRQ_COUNT);
++
++	/* current context */
++	if (!count) {
++		strscpy(dump->fw_context, "(context) interrupt",
++			sizeof(dump->fw_context));
++
++		idx = is_mt7915(&dev->mt76) ?
++		      (u32)mt76_get_field(dev, MT_FW_CIRQ_IDX, GENMASK(31, 16)) :
++		      (u32)mt76_get_field(dev, MT_FW_CIRQ_IDX, GENMASK(15, 0));
++		dump->context.idx = idx;
++		dump->context.handler = mt76_rr(dev, MT_FW_CIRQ_LISR);
++	} else {
++		idx = mt76_rr(dev, MT_FW_TASK_IDX);
++		id = mt76_rr(dev, MT_FW_TASK_ID);
++
++		if (!id && idx == 3) {
++			strscpy(dump->fw_context, "(context) idle",
++				sizeof(dump->fw_context));
++		} else if (id && idx != 3) {
++			strscpy(dump->fw_context, "(context) task",
++				sizeof(dump->fw_context));
++
++			dump->context.idx = idx;
++			dump->context.handler = id;
++		}
++	}
++}
++
++static struct mt7915_coredump *mt7915_coredump_build(struct mt7915_dev *dev)
++{
++	struct mt7915_crash_data *crash_data = dev->coredump.crash_data;
++	struct mt7915_coredump *dump;
++	struct mt7915_coredump_mem *dump_mem;
++	size_t len, sofar = 0, hdr_len = sizeof(*dump);
++	unsigned char *buf;
++	bool exception;
++
++	len = hdr_len;
++
++	if (coredump_memdump && crash_data->memdump_buf_len)
++		len += sizeof(*dump_mem) + crash_data->memdump_buf_len;
++
++	sofar += hdr_len;
++
++	/* this is going to get big when we start dumping memory and such,
++	 * so go ahead and use vmalloc.
 +	 */
- 	case SER_QUERY:
--		/* grab firmware SER stats */
- 		ret = mt7915_mcu_set_ser(dev, 0, 0, ext_phy);
- 		break;
- 	case SER_SET_RECOVER_L1:
-@@ -87,6 +97,23 @@ mt7915_fw_ser_set(struct file *file, const char __user *user_buf,
++	buf = vzalloc(len);
++	if (!buf)
++		return NULL;
++
++	mutex_lock(&dev->dump_mutex);
++
++	dump = (struct mt7915_coredump *)(buf);
++	dump->len = len;
++
++	/* plain text */
++	strscpy(dump->magic, "mt76-crash-dump", sizeof(dump->magic));
++	strscpy(dump->kernel, init_utsname()->release, sizeof(dump->kernel));
++	strscpy(dump->fw_ver, dev->mt76.hw->wiphy->fw_version,
++		sizeof(dump->fw_ver));
++
++	guid_copy(&dump->guid, &crash_data->guid);
++	dump->tv_sec = crash_data->timestamp.tv_sec;
++	dump->tv_nsec = crash_data->timestamp.tv_nsec;
++	dump->device_id = mt76_chip(&dev->mt76);
++
++	mt7915_coredump_fw_state(dev, dump, &exception);
++	mt7915_coredump_fw_trace(dev, dump, exception);
++	mt7915_coredump_fw_task(dev, dump);
++	mt7915_coredump_fw_context(dev, dump);
++	mt7915_coredump_fw_stack(dev, dump, exception);
++
++	/* gather memory content */
++	dump_mem = (struct mt7915_coredump_mem *)(buf + sofar);
++	dump_mem->len = crash_data->memdump_buf_len;
++	if (coredump_memdump && crash_data->memdump_buf_len)
++		memcpy(dump_mem->data, crash_data->memdump_buf,
++		       crash_data->memdump_buf_len);
++
++	mutex_unlock(&dev->dump_mutex);
++
++	return dump;
++}
++
++int mt7915_coredump_submit(struct mt7915_dev *dev)
++{
++	struct mt7915_coredump *dump;
++
++	dump = mt7915_coredump_build(dev);
++	if (!dump) {
++		dev_warn(dev->mt76.dev, "no crash dump data found\n");
++		return -ENODATA;
++	}
++
++	dev_coredumpv(dev->mt76.dev, dump, dump->len, GFP_KERNEL);
++
++	return 0;
++}
++
++int mt7915_coredump_register(struct mt7915_dev *dev)
++{
++	struct mt7915_crash_data *crash_data;
++
++	crash_data = vzalloc(sizeof(*dev->coredump.crash_data));
++	if (!crash_data)
++		return -ENOMEM;
++
++	dev->coredump.crash_data = crash_data;
++
++	if (coredump_memdump) {
++		crash_data->memdump_buf_len = mt7915_coredump_get_mem_size(dev);
++		if (!crash_data->memdump_buf_len)
++			/* no memory content */
++			return 0;
++
++		crash_data->memdump_buf = vzalloc(crash_data->memdump_buf_len);
++		if (!crash_data->memdump_buf) {
++			vfree(crash_data);
++			return -ENOMEM;
++		}
++	}
++
++	return 0;
++}
++
++void mt7915_coredump_unregister(struct mt7915_dev *dev)
++{
++	if (dev->coredump.crash_data->memdump_buf) {
++		vfree(dev->coredump.crash_data->memdump_buf);
++		dev->coredump.crash_data->memdump_buf = NULL;
++		dev->coredump.crash_data->memdump_buf_len = 0;
++	}
++
++	vfree(dev->coredump.crash_data);
++	dev->coredump.crash_data = NULL;
++}
++
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
+new file mode 100644
+index 000000000000..1db326d208d0
+--- /dev/null
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
+@@ -0,0 +1,136 @@
++/* SPDX-License-Identifier: ISC */
++/* Copyright (C) 2022 MediaTek Inc. */
++
++#ifndef _COREDUMP_H_
++#define _COREDUMP_H_
++
++#include "mt7915.h"
++
++struct trace {
++	u32 id;
++	u32 timestamp;
++};
++
++struct mt7915_coredump {
++	char magic[16];
++
++	u32 len;
++
++	guid_t guid;
++
++	/* time-of-day stamp */
++	u64 tv_sec;
++	/* time-of-day stamp, nano-seconds */
++	u64 tv_nsec;
++	/* kernel version */
++	char kernel[64];
++	/* firmware version */
++	char fw_ver[ETHTOOL_FWVERS_LEN];
++
++	u32 device_id;
++
++	/* exception state */
++	char fw_state[12];
++
++	u32 last_msg_id;
++	u32 eint_info_idx;
++	u32 irq_info_idx;
++	u32 sched_info_idx;
++
++	/* schedule info */
++	char trace_sched[32];
++	struct {
++		struct trace t;
++		u32 pc;
++	} sched[60];
++
++	/* irq info */
++	char trace_irq[32];
++	struct trace irq[60];
++
++	/* task queue status */
++	char task_qid[32];
++	struct {
++		u32 read;
++		u32 write;
++	} taskq[2];
++
++	/* task stack info */
++	char task_info[32];
++	struct {
++		u32 start;
++		u32 end;
++		u32 size;
++	} taski[2];
++
++	/* firmware context */
++	char fw_context[24];
++	struct {
++		u32 idx;
++		u32 handler;
++	} context;
++
++	/* link registers calltrace */
++	u32 call_stack[16];
++
++	/* memory content */
++	u8 data[];
++} __packed;
++
++struct mt7915_coredump_mem {
++	u32 len;
++	u8 data[];
++} __packed;
++
++struct mt7915_mem_hdr {
++	u32 start;
++	u32 len;
++	u8 data[];
++};
++
++struct mt7915_mem_region {
++	u32 start;
++	size_t len;
++
++	const char *name;
++};
++
++#ifdef CONFIG_DEV_COREDUMP
++
++const struct mt7915_mem_region *
++mt7915_coredump_get_mem_layout(struct mt7915_dev *dev, u32 *num);
++struct mt7915_crash_data *mt7915_coredump_new(struct mt7915_dev *dev);
++int mt7915_coredump_submit(struct mt7915_dev *dev);
++int mt7915_coredump_register(struct mt7915_dev *dev);
++void mt7915_coredump_unregister(struct mt7915_dev *dev);
++
++#else /* CONFIG_DEV_COREDUMP */
++
++static inline const struct mt7915_mem_region*
++mt7915_coredump_get_mem_layout(struct mt7915_dev *dev)
++{
++	return NULL;
++}
++
++static inline int mt7915_coredump_submit(struct mt7915_dev *dev)
++{
++	return 0;
++}
++
++struct mt7915_crash_data *mt7915_coredump_new(struct mt7915_dev *dev)
++{
++	return NULL;
++}
++
++static inline int mt7915_coredump_register(struct mt7915_dev *dev)
++{
++	return 0;
++}
++
++static inline void mt7915_coredump_unregister(struct mt7915_dev *dev)
++{
++}
++
++#endif /* CONFIG_DEV_COREDUMP */
++
++#endif /* _COREDUMP_H_ */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 1f39aa3e3f3d..db581742994c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -8,6 +8,7 @@
+ #include "mt7915.h"
+ #include "mac.h"
+ #include "mcu.h"
++#include "coredump.h"
+ #include "eeprom.h"
  
- 		ret = mt7915_mcu_set_ser(dev, SER_RECOVER, val, ext_phy);
- 		break;
-+
-+	/* enable full chip reset */
-+	case SER_SET_RECOVER_FULL:
-+		mt76_set(dev, MT_WFDMA0_MCU_HOST_INT_ENA, MT_MCU_CMD_WDT_MASK);
-+		ret = mt7915_mcu_set_ser(dev, 1, 3, ext_phy);
-+		if (ret)
-+			return ret;
-+
-+		dev->recovery.state |= MT_MCU_CMD_WDT_MASK;
-+		mt7915_reset(dev);
-+		break;
-+
-+	/* WARNING: trigger firmware crash */
-+	case SER_SET_SYSTEM_ASSERT:
-+		mt76_wr(dev, MT_MCU_WM_CIRQ_EINT_MASK_CLR_ADDR, BIT(18));
-+		mt76_wr(dev, MT_MCU_WM_CIRQ_EINT_SOFT_ADDR, BIT(18));
-+		break;
- 	default:
- 		break;
- 	}
-@@ -95,20 +122,45 @@ mt7915_fw_ser_set(struct file *file, const char __user *user_buf,
- }
+ static const struct ieee80211_iface_limit if_limits[] = {
+@@ -1076,6 +1077,8 @@ int mt7915_register_device(struct mt7915_dev *dev)
  
- static ssize_t
--mt7915_fw_ser_get(struct file *file, char __user *user_buf,
--		  size_t count, loff_t *ppos)
-+mt7915_sys_recovery_get(struct file *file, char __user *user_buf,
-+			size_t count, loff_t *ppos)
+ 	init_waitqueue_head(&dev->reset_wait);
+ 	INIT_WORK(&dev->reset_work, mt7915_mac_reset_work);
++	INIT_WORK(&dev->dump_work, mt7915_mac_dump_work);
++	mutex_init(&dev->dump_mutex);
+ 
+ 	dev->dbdc_support = mt7915_band_config(dev);
+ 
+@@ -1118,7 +1121,13 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 
+ 	dev->recovery.hw_init_done = true;
+ 
+-	mt7915_init_debugfs(&dev->phy);
++	ret = mt7915_init_debugfs(&dev->phy);
++	if (ret)
++		goto unreg_thermal;
++
++	ret = mt7915_coredump_register(dev);
++	if (ret)
++		goto unreg_thermal;
+ 
+ 	return 0;
+ 
+@@ -1137,6 +1146,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ void mt7915_unregister_device(struct mt7915_dev *dev)
  {
- 	struct mt7915_phy *phy = file->private_data;
- 	struct mt7915_dev *dev = phy->dev;
- 	char *buff;
- 	int desc = 0;
- 	ssize_t ret;
--	static const size_t bufsz = 400;
-+	static const size_t bufsz = 1024;
- 
- 	buff = kmalloc(bufsz, GFP_KERNEL);
- 	if (!buff)
- 		return -ENOMEM;
- 
-+	/* HELP */
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "Please echo the correct value ...\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "0: grab firmware transient SER state\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "1: trigger system error L1 recovery\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "2: trigger system error L2 recovery\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "3: trigger system error L3 rx abort\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "4: trigger system error L3 tx abort\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "5: trigger system error L3 tx disable\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "6: trigger system error L3 bf recovery\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "7: trigger system error full recovery\n");
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "8: trigger firmware crash\n");
-+
-+	/* SER statistics */
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "\nlet's dump firmware SER statistics...\n");
- 	desc += scnprintf(buff + desc, bufsz - desc,
- 			  "::E  R , SER_STATUS        = 0x%08x\n",
- 			  mt76_rr(dev, MT_SWDEF_SER_STATS));
-@@ -139,15 +191,19 @@ mt7915_fw_ser_get(struct file *file, char __user *user_buf,
- 	desc += scnprintf(buff + desc, bufsz - desc,
- 			  "::E  R , SER_LMAC_WISR7_B1 = 0x%08x\n",
- 			  mt76_rr(dev, MT_SWDEF_LAMC_WISR7_BN1_STATS));
-+	desc += scnprintf(buff + desc, bufsz - desc,
-+			  "\nSYS_RESET_COUNT: WM %d, WA %d\n",
-+			  dev->recovery.wm_reset_count,
-+			  dev->recovery.wa_reset_count);
- 
- 	ret = simple_read_from_buffer(user_buf, count, ppos, buff, desc);
- 	kfree(buff);
- 	return ret;
- }
- 
--static const struct file_operations mt7915_fw_ser_ops = {
--	.write = mt7915_fw_ser_set,
--	.read = mt7915_fw_ser_get,
-+static const struct file_operations mt7915_sys_recovery_ops = {
-+	.write = mt7915_sys_recovery_set,
-+	.read = mt7915_sys_recovery_get,
- 	.open = simple_open,
- 	.llseek = default_llseek,
- };
-@@ -598,10 +654,6 @@ mt7915_fw_util_wm_show(struct seq_file *file, void *data)
- 	struct mt7915_dev *dev = file->private;
- 
- 	seq_printf(file, "Program counter: 0x%x\n", mt76_rr(dev, MT_WM_MCU_PC));
--	seq_printf(file, "Exception state: 0x%x\n",
--		   is_mt7915(&dev->mt76) ?
--		   (u32)mt76_get_field(dev, MT_FW_EXCEPTION, GENMASK(15, 8)) :
--		   (u32)mt76_get_field(dev, MT_FW_EXCEPTION, GENMASK(7, 0)));
- 
- 	if (dev->fw.debug_wm) {
- 		seq_printf(file, "Busy: %u%%  Peak busy: %u%%\n",
-@@ -1010,7 +1062,8 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
- 	debugfs_create_file("xmit-queues", 0400, dir, phy,
- 			    &mt7915_xmit_queues_fops);
- 	debugfs_create_file("tx_stats", 0400, dir, phy, &mt7915_tx_stats_fops);
--	debugfs_create_file("fw_ser", 0600, dir, phy, &mt7915_fw_ser_ops);
-+	debugfs_create_file("sys_recovery", 0600, dir, phy,
-+			    &mt7915_sys_recovery_ops);
- 	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
- 	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
- 	debugfs_create_file("fw_debug_bin", 0600, dir, dev, &fops_fw_debug_bin);
+ 	mt7915_unregister_ext_phy(dev);
++	mt7915_coredump_unregister(dev);
+ 	mt7915_unregister_thermal(&dev->phy);
+ 	mt76_unregister_device(&dev->mt76);
+ 	mt7915_stop_hardware(dev);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 69ce3b39aa53..c8e69644c552 100644
+index c8e69644c552..ccabe492075e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1503,6 +1503,11 @@ void mt7915_mac_reset_work(struct work_struct *work)
- 		mt76_clear(dev, MT_WFDMA0_MCU_HOST_INT_ENA,
- 			   MT_MCU_CMD_WDT_MASK);
+@@ -3,6 +3,7 @@
  
-+		if (READ_ONCE(dev->recovery.state) & MT_MCU_CMD_WA_WDT)
-+			dev->recovery.wa_reset_count++;
-+		else
-+			dev->recovery.wm_reset_count++;
+ #include <linux/etherdevice.h>
+ #include <linux/timekeeping.h>
++#include "coredump.h"
+ #include "mt7915.h"
+ #include "../dma.h"
+ #include "mac.h"
+@@ -1597,6 +1598,75 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 					     MT7915_WATCHDOG_TIME);
+ }
+ 
++/* firmware coredump */
++void mt7915_mac_dump_work(struct work_struct *work)
++{
++	const struct mt7915_mem_region *mem_region;
++	struct mt7915_crash_data *crash_data;
++	struct mt7915_dev *dev;
++	struct mt7915_mem_hdr *hdr;
++	size_t buf_len;
++	int i;
++	u32 num;
++	u8 *buf;
 +
- 		mt7915_mac_full_reset(dev);
++	dev = container_of(work, struct mt7915_dev, dump_work);
++
++	mutex_lock(&dev->dump_mutex);
++
++	crash_data = mt7915_coredump_new(dev);
++	if (!crash_data) {
++		mutex_unlock(&dev->dump_mutex);
++		goto skip_coredump;
++	}
++
++	mem_region = mt7915_coredump_get_mem_layout(dev, &num);
++	if (!mem_region || !crash_data->memdump_buf_len) {
++		mutex_unlock(&dev->dump_mutex);
++		goto skip_memdump;
++	}
++
++	buf = crash_data->memdump_buf;
++	buf_len = crash_data->memdump_buf_len;
++
++	/* dumping memory content... */
++	memset(buf, 0, buf_len);
++	for (i = 0; i < num; i++) {
++		if (mem_region->len > buf_len) {
++			dev_warn(dev->mt76.dev, "%s len %lu is too large\n",
++				 mem_region->name, mem_region->len);
++			break;
++		}
++
++		/* reserve space for the header */
++		hdr = (void *)buf;
++		buf += sizeof(*hdr);
++		buf_len -= sizeof(*hdr);
++
++		mt7915_memcpy_fromio(dev, buf, mem_region->start,
++				     mem_region->len);
++
++		hdr->start = mem_region->start;
++		hdr->len = mem_region->len;
++
++		if (!mem_region->len)
++			/* note: the header remains, just with zero length */
++			break;
++
++		buf += mem_region->len;
++		buf_len -= mem_region->len;
++
++		mem_region++;
++	}
++
++	mutex_unlock(&dev->dump_mutex);
++
++skip_memdump:
++	mt7915_coredump_submit(dev);
++skip_coredump:
++	queue_work(dev->mt76.wq, &dev->reset_work);
++}
++
+ void mt7915_reset(struct mt7915_dev *dev)
+ {
+ 	if (!dev->recovery.hw_init_done)
+@@ -1613,7 +1683,7 @@ void mt7915_reset(struct mt7915_dev *dev)
+ 			 wiphy_name(dev->mt76.hw->wiphy));
  
- 		/* enable mcu irq */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 87cd1bfff3e6..5a8c57a1421f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -448,6 +448,8 @@ enum {
- 	SER_SET_RECOVER_L3_TX_ABORT,
- 	SER_SET_RECOVER_L3_TX_DISABLE,
- 	SER_SET_RECOVER_L3_BF,
-+	SER_SET_RECOVER_FULL,
-+	SER_SET_SYSTEM_ASSERT,
- 	/* action */
- 	SER_ENABLE = 2,
- 	SER_RECOVER
+ 		mt7915_irq_disable(dev, MT_INT_MCU_CMD);
+-		queue_work(dev->mt76.wq, &dev->reset_work);
++		queue_work(dev->mt76.wq, &dev->dump_work);
+ 		return;
+ 	}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 032af46289af..3c840853a2c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -25,7 +25,22 @@ static const u32 mt7915_reg[] = {
+ 	[WFDMA_EXT_CSR_ADDR]	= 0xd7000,
+ 	[CBTOP1_PHY_END]	= 0x77ffffff,
+ 	[INFRA_MCU_ADDR_END]	= 0x7c3fffff,
+-	[FW_EXCEPTION_ADDR]	= 0x219848,
++	[FW_ASSERT_STAT_ADDR]	= 0x219848,
++	[FW_EXCEPT_TYPE_ADDR]	= 0x21987c,
++	[FW_EXCEPT_COUNT_ADDR]	= 0x219848,
++	[FW_CIRQ_COUNT_ADDR]	= 0x216f94,
++	[FW_CIRQ_IDX_ADDR]	= 0x216ef8,
++	[FW_CIRQ_LISR_ADDR]	= 0x2170ac,
++	[FW_TASK_ID_ADDR]	= 0x216f90,
++	[FW_TASK_IDX_ADDR]	= 0x216f9c,
++	[FW_TASK_QID1_ADDR]	= 0x219680,
++	[FW_TASK_QID2_ADDR]	= 0x219760,
++	[FW_TASK_START_ADDR]	= 0x219558,
++	[FW_TASK_END_ADDR]	= 0x219554,
++	[FW_TASK_SIZE_ADDR]	= 0x219560,
++	[FW_LAST_MSG_ID_ADDR]	= 0x216f70,
++	[FW_EINT_INFO_ADDR]	= 0x219818,
++	[FW_SCHED_INFO_ADDR]	= 0x219828,
+ 	[SWDEF_BASE_ADDR]	= 0x41f200,
+ 	[TXQ_WED_RING_BASE]	= 0xd7300,
+ 	[RXQ_WED_RING_BASE]	= 0xd7410,
+@@ -43,7 +58,22 @@ static const u32 mt7916_reg[] = {
+ 	[WFDMA_EXT_CSR_ADDR]	= 0xd7000,
+ 	[CBTOP1_PHY_END]	= 0x7fffffff,
+ 	[INFRA_MCU_ADDR_END]	= 0x7c085fff,
+-	[FW_EXCEPTION_ADDR]	= 0x022050bc,
++	[FW_ASSERT_STAT_ADDR]	= 0x02204c14,
++	[FW_EXCEPT_TYPE_ADDR]	= 0x022051a4,
++	[FW_EXCEPT_COUNT_ADDR]	= 0x022050bc,
++	[FW_CIRQ_COUNT_ADDR]	= 0x022001ac,
++	[FW_CIRQ_IDX_ADDR]	= 0x02204f84,
++	[FW_CIRQ_LISR_ADDR]	= 0x022050d0,
++	[FW_TASK_ID_ADDR]	= 0x0220406c,
++	[FW_TASK_IDX_ADDR]	= 0x0220500c,
++	[FW_TASK_QID1_ADDR]	= 0x022028c8,
++	[FW_TASK_QID2_ADDR]	= 0x02202a38,
++	[FW_TASK_START_ADDR]	= 0x0220286c,
++	[FW_TASK_END_ADDR]	= 0x02202870,
++	[FW_TASK_SIZE_ADDR]	= 0x02202878,
++	[FW_LAST_MSG_ID_ADDR]	= 0x02204fe8,
++	[FW_EINT_INFO_ADDR]	= 0x0220525c,
++	[FW_SCHED_INFO_ADDR]	= 0x0220516c,
+ 	[SWDEF_BASE_ADDR]	= 0x411400,
+ 	[TXQ_WED_RING_BASE]	= 0xd7300,
+ 	[RXQ_WED_RING_BASE]	= 0xd7410,
+@@ -61,7 +91,22 @@ static const u32 mt7986_reg[] = {
+ 	[WFDMA_EXT_CSR_ADDR]	= 0x27000,
+ 	[CBTOP1_PHY_END]	= 0x7fffffff,
+ 	[INFRA_MCU_ADDR_END]	= 0x7c085fff,
+-	[FW_EXCEPTION_ADDR]	= 0x02204ffc,
++	[FW_ASSERT_STAT_ADDR]	= 0x02204b54,
++	[FW_EXCEPT_TYPE_ADDR]	= 0x022050dc,
++	[FW_EXCEPT_COUNT_ADDR]	= 0x02204ffc,
++	[FW_CIRQ_COUNT_ADDR]	= 0x022001ac,
++	[FW_CIRQ_IDX_ADDR]	= 0x02204ec4,
++	[FW_CIRQ_LISR_ADDR]	= 0x02205010,
++	[FW_TASK_ID_ADDR]	= 0x02204fac,
++	[FW_TASK_IDX_ADDR]	= 0x02204f4c,
++	[FW_TASK_QID1_ADDR]	= 0x02202814,
++	[FW_TASK_QID2_ADDR]	= 0x02202984,
++	[FW_TASK_START_ADDR]	= 0x022027b8,
++	[FW_TASK_END_ADDR]	= 0x022027bc,
++	[FW_TASK_SIZE_ADDR]	= 0x022027c4,
++	[FW_LAST_MSG_ID_ADDR]	= 0x02204f28,
++	[FW_EINT_INFO_ADDR]	= 0x02205194,
++	[FW_SCHED_INFO_ADDR]	= 0x022051a4,
+ 	[SWDEF_BASE_ADDR]	= 0x411400,
+ 	[TXQ_WED_RING_BASE]	= 0x24420,
+ 	[RXQ_WED_RING_BASE]	= 0x24520,
+@@ -457,6 +502,14 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
+ 	return mt7915_reg_map_l2(dev, addr);
+ }
+ 
++void mt7915_memcpy_fromio(struct mt7915_dev *dev, void *buf, u32 offset,
++			  size_t len)
++{
++	u32 addr = __mt7915_reg_addr(dev, offset);
++
++	memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
++}
++
+ static u32 mt7915_rr(struct mt76_dev *mdev, u32 offset)
+ {
+ 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 49caf7b21a20..96ef06511552 100644
+index 96ef06511552..e647ba26e6ef 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -306,6 +306,8 @@ struct mt7915_dev {
+@@ -220,6 +220,15 @@ struct mib_stats {
+ 	u32 tx_amsdu_cnt;
+ };
  
- 	struct {
- 		u32 state;
-+		u32 wa_reset_count;
-+		u32 wm_reset_count;
- 		bool hw_full_reset:1;
- 		bool hw_init_done:1;
++/* crash-dump */
++struct mt7915_crash_data {
++	guid_t guid;
++	struct timespec64 timestamp;
++
++	u8 *memdump_buf;
++	size_t memdump_buf_len;
++};
++
+ struct mt7915_hif {
+ 	struct list_head list;
+ 
+@@ -301,6 +310,7 @@ struct mt7915_dev {
+ 
+ 	struct work_struct init_work;
+ 	struct work_struct rc_work;
++	struct work_struct dump_work;
+ 	struct work_struct reset_work;
+ 	wait_queue_head_t reset_wait;
+ 
+@@ -313,6 +323,14 @@ struct mt7915_dev {
  		bool restart:1;
+ 	} recovery;
+ 
++	/* protects coredump data */
++	struct mutex dump_mutex;
++#ifdef CONFIG_DEV_COREDUMP
++	struct {
++		struct mt7915_crash_data *crash_data;
++	} coredump;
++#endif
++
+ 	struct list_head sta_rc_list;
+ 	struct list_head sta_poll_list;
+ 	struct list_head twt_list;
+@@ -558,6 +576,9 @@ static inline void mt7915_irq_disable(struct mt7915_dev *dev, u32 mask)
+ 		mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, mask, 0);
+ }
+ 
++void mt7915_memcpy_fromio(struct mt7915_dev *dev, void *buf, u32 offset,
++			  size_t len);
++
+ void mt7915_mac_init(struct mt7915_dev *dev);
+ u32 mt7915_mac_wtbl_lmac_addr(struct mt7915_dev *dev, u16 wcid, u8 dw);
+ bool mt7915_mac_wtbl_update(struct mt7915_dev *dev, int idx, u32 mask);
+@@ -575,6 +596,7 @@ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta);
+ void mt7915_mac_work(struct work_struct *work);
+ void mt7915_mac_reset_work(struct work_struct *work);
++void mt7915_mac_dump_work(struct work_struct *work);
+ void mt7915_mac_sta_rc_work(struct work_struct *work);
+ void mt7915_mac_update_stats(struct mt7915_phy *phy);
+ void mt7915_mac_twt_teardown_flow(struct mt7915_dev *dev,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 9120380d74c6..d7756cb0d29b 100644
+index d7756cb0d29b..3509abaf2b82 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -711,6 +711,8 @@ enum offs_rev {
- #define MT_MCU_CMD_NORMAL_STATE		BIT(5)
- #define MT_MCU_CMD_ERROR_MASK		GENMASK(5, 1)
+@@ -24,7 +24,22 @@ enum reg_rev {
+ 	WFDMA_EXT_CSR_ADDR,
+ 	CBTOP1_PHY_END,
+ 	INFRA_MCU_ADDR_END,
+-	FW_EXCEPTION_ADDR,
++	FW_ASSERT_STAT_ADDR,
++	FW_EXCEPT_TYPE_ADDR,
++	FW_EXCEPT_COUNT_ADDR,
++	FW_CIRQ_COUNT_ADDR,
++	FW_CIRQ_IDX_ADDR,
++	FW_CIRQ_LISR_ADDR,
++	FW_TASK_ID_ADDR,
++	FW_TASK_IDX_ADDR,
++	FW_TASK_QID1_ADDR,
++	FW_TASK_QID2_ADDR,
++	FW_TASK_START_ADDR,
++	FW_TASK_END_ADDR,
++	FW_TASK_SIZE_ADDR,
++	FW_LAST_MSG_ID_ADDR,
++	FW_EINT_INFO_ADDR,
++	FW_SCHED_INFO_ADDR,
+ 	SWDEF_BASE_ADDR,
+ 	TXQ_WED_RING_BASE,
+ 	RXQ_WED_RING_BASE,
+@@ -957,7 +972,22 @@ enum offs_rev {
+ #define MT_ADIE_TYPE_MASK		BIT(1)
  
-+#define MT_MCU_CMD_WA_WDT		BIT(31)
-+#define MT_MCU_CMD_WM_WDT		BIT(30)
- #define MT_MCU_CMD_WDT_MASK		GENMASK(31, 30)
+ /* FW MODE SYNC */
+-#define MT_FW_EXCEPTION			__REG(FW_EXCEPTION_ADDR)
++#define MT_FW_ASSERT_STAT		__REG(FW_ASSERT_STAT_ADDR)
++#define MT_FW_EXCEPT_TYPE		__REG(FW_EXCEPT_TYPE_ADDR)
++#define MT_FW_EXCEPT_COUNT		__REG(FW_EXCEPT_COUNT_ADDR)
++#define MT_FW_CIRQ_COUNT		__REG(FW_CIRQ_COUNT_ADDR)
++#define MT_FW_CIRQ_IDX			__REG(FW_CIRQ_IDX_ADDR)
++#define MT_FW_CIRQ_LISR			__REG(FW_CIRQ_LISR_ADDR)
++#define MT_FW_TASK_ID			__REG(FW_TASK_ID_ADDR)
++#define MT_FW_TASK_IDX			__REG(FW_TASK_IDX_ADDR)
++#define MT_FW_TASK_QID1			__REG(FW_TASK_QID1_ADDR)
++#define MT_FW_TASK_QID2			__REG(FW_TASK_QID2_ADDR)
++#define MT_FW_TASK_START		__REG(FW_TASK_START_ADDR)
++#define MT_FW_TASK_END			__REG(FW_TASK_END_ADDR)
++#define MT_FW_TASK_SIZE			__REG(FW_TASK_SIZE_ADDR)
++#define MT_FW_LAST_MSG_ID		__REG(FW_LAST_MSG_ID_ADDR)
++#define MT_FW_EINT_INFO			__REG(FW_EINT_INFO_ADDR)
++#define MT_FW_SCHED_INFO		__REG(FW_SCHED_INFO_ADDR)
  
- /* TOP RGU */
-@@ -1129,5 +1131,7 @@ enum offs_rev {
- #define MT_MCU_WM_CIRQ(ofs)			(MT_MCU_WM_CIRQ_BASE + (ofs))
- #define MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR	MT_MCU_WM_CIRQ(0x80)
- #define MT_MCU_WM_CIRQ_IRQ_SOFT_ADDR		MT_MCU_WM_CIRQ(0xc0)
-+#define MT_MCU_WM_CIRQ_EINT_MASK_CLR_ADDR	MT_MCU_WM_CIRQ(0x108)
-+#define MT_MCU_WM_CIRQ_EINT_SOFT_ADDR		MT_MCU_WM_CIRQ(0x118)
+ #define MT_SWDEF_BASE			__REG(SWDEF_BASE_ADDR)
  
- #endif
 -- 
 2.36.1
 
