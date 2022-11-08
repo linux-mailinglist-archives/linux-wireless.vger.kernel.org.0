@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E676621C8E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 19:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F8B621C94
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 19:58:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbiKHS4b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 13:56:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49784 "EHLO
+        id S229562AbiKHS6T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 13:58:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiKHS4a (ORCPT
+        with ESMTP id S229551AbiKHS6P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 13:56:30 -0500
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524816A682
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 10:56:29 -0800 (PST)
-Received: by mail-ej1-x636.google.com with SMTP id t25so41006907ejb.8
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Nov 2022 10:56:29 -0800 (PST)
+        Tue, 8 Nov 2022 13:58:15 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B702C6A686
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 10:58:13 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id s12so14315551edd.5
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Nov 2022 10:58:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2btLF8jbiCminjKUScT17x40EjHZF8d0H12GZhCjv6A=;
-        b=mGveFu752j7HsymORU4PtaGhhqd6y7vQzXXOk6sEO/0cEbv8Kw9E9D8eMPSQM1J9y5
-         GMobLGO3DuQ0Yag37bCviVTyFTyVyeqK/zo+t/1AuPUQKlk0MBggwIoxs50Ik8wB8RCQ
-         D65Lk0KTq4tSrAyyyufyEWQFnvdWM4wHFIN0ScA34FHg1Zz46wJ13CXtuSNLVV4SwUs0
-         vIGPuhzkdJTfgHKPg4hIMa9xHQxPLbrXpvYTSDZA3abrIDKOTxZ010oaQclXL/QJvXgk
-         +ZGJ09xlT4PRqJgQySM2Y1RbGJNtA6cRi2LkM+ZEfvqMkcKtmqjQJ/r9Qsi42chdvbKl
-         lG7A==
+        bh=cMgDfV1BgAP7xkSv/7TgtM9Ajy04yiwJ9uwBrlYeE4k=;
+        b=Yy0lzuy8VfKf34xbHGNgaNfOobob2FhjMEdGPtN9udt83piVBILbAEWYfkUUhiLI8B
+         yycT0SK88r1cZaqsIgR1oRJ0qc/6/mgpFnw41i/ktJLLlHE0Hs+89vaSkXsITQC90th1
+         dQpQdmXRc9C3zqXvWwSNoCqR3TMunikeCapoTxXfvaDvOzaUv09tPcGzIYcOIGz0vKT1
+         IsindWhQESFtKbrtTjFdzwp+uMb1/cKMYfN0aVhb+JjnL7sHqIPZHEEL6R70gA2xo2cX
+         zPPDIUZV6lL3hw4OraZbp/vN4pY/KAui8mu5FDGJsJH+7S5dkMbsNYz0csj6gTcTTcdR
+         RVyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2btLF8jbiCminjKUScT17x40EjHZF8d0H12GZhCjv6A=;
-        b=GSIHJtU2ji76VoPH2XmMmwTljRgXkWiAM4OJOWR3ILbk6D7U6NQ9sPqk8uPaXeUb7T
-         IS9D+t9Vfs56QoqZgFEqGdn5dCVWWMGkZ3TBM/ctA+TA1G5xf17tJHu0Oy0YNSSGnmwL
-         VmSFhAlnasl41A/3IBPSyjn+N3L7Gngd+zg5TaBV0D8fFTjaL/ICgkBu/REYeWlgo7TC
-         rH535RcVRbsWsbKFfBLEh2t0gN+iAPYoCmWvjle+npA7XZPsBXsl1/P4oY8s+iXLuaSs
-         BsUf11cFPchbb7BOxtdkekflQTfrOm5gQuoIfU2ji3/nZdnAgEzpV3xKrIR1irMaef50
-         x5Ew==
-X-Gm-Message-State: ACrzQf3tZdqNxwcl4C2H6dhUPqoV+gatWMkIIVbO4P77qQmKT9Z/ut7E
-        tp45rOwvZwzskb1TizLeoO04GVvOVzc=
-X-Google-Smtp-Source: AA0mqf6TCjDMBFpbg6PBxH1LMdWZ/nbrgA1s4VevI7KlIulUjSwdPpmLUmDNFpWWkDjggYaUN73oVw==
-X-Received: by 2002:a17:907:162b:b0:7ae:4ed4:1503 with SMTP id hb43-20020a170907162b00b007ae4ed41503mr17539688ejc.485.1667933787709;
-        Tue, 08 Nov 2022 10:56:27 -0800 (PST)
+        bh=cMgDfV1BgAP7xkSv/7TgtM9Ajy04yiwJ9uwBrlYeE4k=;
+        b=YPcaXZJ6bSsvXK7BOfcRbdWp3lY/SEJpyWA/94nW39vVhW2iXP1B7p118NhoBccBmO
+         o2waACKJBzNe5RyfJKNhC7g7H+j9FV4X6eS2HACrqHJbZGyCdwWFzYMc/iwo5bPsRxly
+         zCU+vRWrv04ZiwDC/y7h2e1M3KC6hCLBIVbol8XAmLj5UMqafrrCYp7zMA0QFeX9D5Ct
+         SZskDovLVtVcs62/V9kD2SwrlUrwxNTMkuS3sbJfVs9iddCF3wNHqcV69k5Sgb/cXzOu
+         oy8t5Ddos59wy0drc0WqBN7AHXvRsAGJyo+L+VESIrpybLd26CI8RQ8NRV+CnwPmBjWg
+         vdgQ==
+X-Gm-Message-State: ACrzQf08QcswLsXFIrZj0646eKSP362u6Zdq3aEBAn/NA9C9Eu0R/aJK
+        OoPXXBMxxuAR8RkRqJ5KMt9TpSpsC6I=
+X-Google-Smtp-Source: AMsMyM5Jbm1a8d7vSTbq1wrRWGMzpLFoKZBfChhQcrkzYo+5DaRl4pwN661qduvHH0ip69OFkooKoA==
+X-Received: by 2002:a50:ccc2:0:b0:460:4db2:5006 with SMTP id b2-20020a50ccc2000000b004604db25006mr57097968edj.369.1667933892227;
+        Tue, 08 Nov 2022 10:58:12 -0800 (PST)
 Received: from [192.168.1.50] ([81.196.40.23])
-        by smtp.gmail.com with ESMTPSA id la24-20020a170907781800b00770812e2394sm4950487ejc.160.2022.11.08.10.56.26
+        by smtp.gmail.com with ESMTPSA id ky14-20020a170907778e00b0073c8d4c9f38sm5014044ejc.177.2022.11.08.10.58.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Nov 2022 10:56:27 -0800 (PST)
-Message-ID: <1db11152-efc1-2027-565a-a0373cccd117@gmail.com>
-Date:   Tue, 8 Nov 2022 20:56:26 +0200
+        Tue, 08 Nov 2022 10:58:11 -0800 (PST)
+Message-ID: <0b053ab0-0760-485f-47df-1ab1705a011c@gmail.com>
+Date:   Tue, 8 Nov 2022 20:58:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.3
-Subject: [PATCH 2/3] wifi: rtl8xxxu: Use strscpy instead of sprintf
+Subject: [PATCH 3/3] wifi: rtl8xxxu: Use u32_get_bits in *_identify_chip
 Content-Language: en-US
 From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -75,9 +75,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fill priv->chip_name and priv->chip_vendor with strscpy instead of
-sprintf. This is just to prevent future bugs in case the name of a
-chip/vendor becomes longer than the size of chip_name/chip_vendor.
+It simplifies the code a bit.
 
 Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
@@ -85,147 +83,131 @@ Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 This patch should be applied after my older patch:
 "[PATCH v2 2/3] wifi: rtl8xxxu: Split up rtl8xxxu_identify_chip"
 ---
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c   |  2 +-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c   |  8 ++++----
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c   |  4 ++--
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c   |  2 +-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c   |  2 +-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 12 ++++++------
- 6 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 3 +--
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c | 5 ++---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 5 ++---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c | 5 ++---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 5 ++---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h  | 1 -
+ 6 files changed, 9 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-index 0f77312dd0ca..ef38891ddbd1 100644
+index ef38891ddbd1..2c4f403ba68f 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-@@ -327,7 +327,7 @@ static int rtl8188fu_identify_chip(struct rtl8xxxu_priv *priv)
- 	u32 sys_cfg, vendor;
- 	int ret = 0;
+@@ -335,8 +335,7 @@ static int rtl8188fu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	priv->has_wifi = 1;
  
--	sprintf(priv->chip_name, "8188FU");
-+	strscpy(priv->chip_name, "8188FU", sizeof(priv->chip_name));
- 	priv->rtl_chip = RTL8188F;
- 	priv->rf_paths = 1;
- 	priv->rx_paths = 1;
+ 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
+-	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
+-		SYS_CFG_CHIP_VERSION_SHIFT;
++	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
+ 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
+ 		dev_info(dev, "Unsupported test chip\n");
+ 		ret = -ENOTSUPP;
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-index 815c1e278e4e..6c443e4822d8 100644
+index 6c443e4822d8..e7190cb2e5a3 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-@@ -345,12 +345,12 @@ int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
- 		bonding = rtl8xxxu_read32(priv, REG_HPON_FSM);
- 		bonding &= HPON_FSM_BONDING_MASK;
- 		if (bonding == HPON_FSM_BONDING_1T2R) {
--			sprintf(priv->chip_name, "8191CU");
-+			strscpy(priv->chip_name, "8191CU", sizeof(priv->chip_name));
- 			priv->tx_paths = 1;
- 			priv->usb_interrupts = 1;
- 			priv->rtl_chip = RTL8191C;
- 		} else {
--			sprintf(priv->chip_name, "8192CU");
-+			strscpy(priv->chip_name, "8192CU", sizeof(priv->chip_name));
- 			priv->tx_paths = 2;
- 			priv->usb_interrupts = 0;
- 			priv->rtl_chip = RTL8192C;
-@@ -358,7 +358,7 @@ int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
- 		priv->rf_paths = 2;
- 		priv->rx_paths = 2;
- 	} else {
--		sprintf(priv->chip_name, "8188CU");
-+		strscpy(priv->chip_name, "8188CU", sizeof(priv->chip_name));
- 		priv->rf_paths = 1;
- 		priv->rx_paths = 1;
- 		priv->tx_paths = 1;
-@@ -451,7 +451,7 @@ static int rtl8192cu_parse_efuse(struct rtl8xxxu_priv *priv)
- 	priv->power_base = &rtl8192c_power_base;
+@@ -333,8 +333,7 @@ int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	int ret = 0;
  
- 	if (efuse->rf_regulatory & 0x20) {
--		sprintf(priv->chip_name, "8188RU");
-+		strscpy(priv->chip_name, "8188RU", sizeof(priv->chip_name));
- 		priv->rtl_chip = RTL8188R;
- 		priv->hi_pa = 1;
- 		priv->no_pape = 1;
+ 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
+-	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
+-		SYS_CFG_CHIP_VERSION_SHIFT;
++	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
+ 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
+ 		dev_info(dev, "Unsupported test chip\n");
+ 		ret = -ENOTSUPP;
+@@ -371,7 +370,7 @@ int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_identify_vendor_1bit(priv, vendor);
+ 
+ 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
+-	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
++	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
+ 
+ 	rtl8xxxu_config_endpoints_sie(priv);
+ 
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-index 7a182073832b..fc3336f18892 100644
+index fc3336f18892..bdb79dc18f06 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -496,11 +496,11 @@ int rtl8192eu_identify_chip(struct rtl8xxxu_priv *priv)
- 	bonding = rtl8xxxu_read32(priv, REG_HPON_FSM);
- 	bonding &= HPON_FSM_BONDING_MASK;
- 	if (bonding == HPON_FSM_BONDING_1T2R) {
--		sprintf(priv->chip_name, "8191EU");
-+		strscpy(priv->chip_name, "8191EU", sizeof(priv->chip_name));
- 		priv->tx_paths = 1;
- 		priv->rtl_chip = RTL8191E;
- 	} else {
--		sprintf(priv->chip_name, "8192EU");
-+		strscpy(priv->chip_name, "8192EU", sizeof(priv->chip_name));
- 		priv->tx_paths = 2;
- 		priv->rtl_chip = RTL8192E;
- 	}
+@@ -485,8 +485,7 @@ int rtl8192eu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	int ret = 0;
+ 
+ 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
+-	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
+-		SYS_CFG_CHIP_VERSION_SHIFT;
++	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
+ 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
+ 		dev_info(dev, "Unsupported test chip\n");
+ 		ret = -ENOTSUPP;
+@@ -512,7 +511,7 @@ int rtl8192eu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_identify_vendor_2bits(priv, vendor);
+ 
+ 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
+-	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
++	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
+ 
+ 	rtl8xxxu_config_endpoints_sie(priv);
+ 
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-index 33a1114a5853..c8ab71ed4ff4 100644
+index c8ab71ed4ff4..707ac48ecc83 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-@@ -144,7 +144,7 @@ static int rtl8723au_identify_chip(struct rtl8xxxu_priv *priv)
- 		goto out;
- 	}
+@@ -136,8 +136,7 @@ static int rtl8723au_identify_chip(struct rtl8xxxu_priv *priv)
+ 	int ret = 0;
  
--	sprintf(priv->chip_name, "8723AU");
-+	strscpy(priv->chip_name, "8723AU", sizeof(priv->chip_name));
- 	priv->usb_interrupts = 1;
- 	priv->rtl_chip = RTL8723A;
+ 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
+-	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
+-		SYS_CFG_CHIP_VERSION_SHIFT;
++	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
+ 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
+ 		dev_info(dev, "Unsupported test chip\n");
+ 		ret = -ENOTSUPP;
+@@ -165,7 +164,7 @@ static int rtl8723au_identify_chip(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_identify_vendor_1bit(priv, vendor);
+ 
+ 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
+-	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
++	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
+ 
+ 	rtl8xxxu_config_endpoints_sie(priv);
  
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-index 558572bdd2c8..ece82e613bf0 100644
+index ece82e613bf0..a0ec895b61a4 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-@@ -319,7 +319,7 @@ static int rtl8723bu_identify_chip(struct rtl8xxxu_priv *priv)
- 		goto out;
- 	}
+@@ -311,8 +311,7 @@ static int rtl8723bu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	int ret = 0;
  
--	sprintf(priv->chip_name, "8723BU");
-+	strscpy(priv->chip_name, "8723BU", sizeof(priv->chip_name));
- 	priv->rtl_chip = RTL8723B;
- 	priv->rf_paths = 1;
- 	priv->rx_paths = 1;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index e4eb17d03cd7..e8fcd531c437 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1592,10 +1592,10 @@ static void rtl8xxxu_print_chipinfo(struct rtl8xxxu_priv *priv)
- void rtl8xxxu_identify_vendor_1bit(struct rtl8xxxu_priv *priv, u32 vendor)
- {
- 	if (vendor) {
--		sprintf(priv->chip_vendor, "UMC");
-+		strscpy(priv->chip_vendor, "UMC", sizeof(priv->chip_vendor));
- 		priv->vendor_umc = 1;
- 	} else {
--		sprintf(priv->chip_vendor, "TSMC");
-+		strscpy(priv->chip_vendor, "TSMC", sizeof(priv->chip_vendor));
- 	}
- }
+ 	sys_cfg = rtl8xxxu_read32(priv, REG_SYS_CFG);
+-	priv->chip_cut = (sys_cfg & SYS_CFG_CHIP_VERSION_MASK) >>
+-		SYS_CFG_CHIP_VERSION_SHIFT;
++	priv->chip_cut = u32_get_bits(sys_cfg, SYS_CFG_CHIP_VERSION_MASK);
+ 	if (sys_cfg & SYS_CFG_TRP_VAUX_EN) {
+ 		dev_info(dev, "Unsupported test chip\n");
+ 		ret = -ENOTSUPP;
+@@ -338,7 +337,7 @@ static int rtl8723bu_identify_chip(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_identify_vendor_2bits(priv, vendor);
  
-@@ -1603,18 +1603,18 @@ void rtl8xxxu_identify_vendor_2bits(struct rtl8xxxu_priv *priv, u32 vendor)
- {
- 	switch (vendor) {
- 	case SYS_CFG_VENDOR_ID_TSMC:
--		sprintf(priv->chip_vendor, "TSMC");
-+		strscpy(priv->chip_vendor, "TSMC", sizeof(priv->chip_vendor));
- 		break;
- 	case SYS_CFG_VENDOR_ID_SMIC:
--		sprintf(priv->chip_vendor, "SMIC");
-+		strscpy(priv->chip_vendor, "SMIC", sizeof(priv->chip_vendor));
- 		priv->vendor_smic = 1;
- 		break;
- 	case SYS_CFG_VENDOR_ID_UMC:
--		sprintf(priv->chip_vendor, "UMC");
-+		strscpy(priv->chip_vendor, "UMC", sizeof(priv->chip_vendor));
- 		priv->vendor_umc = 1;
- 		break;
- 	default:
--		sprintf(priv->chip_vendor, "unknown");
-+		strscpy(priv->chip_vendor, "unknown", sizeof(priv->chip_vendor));
- 	}
- }
+ 	val32 = rtl8xxxu_read32(priv, REG_GPIO_OUTSTS);
+-	priv->rom_rev = (val32 & GPIO_RF_RL_ID) >> 28;
++	priv->rom_rev = u32_get_bits(val32, GPIO_RF_RL_ID);
  
+ 	rtl8xxxu_config_endpoints_sie(priv);
+ 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+index 5d4cac4f4c06..3e79efdfb4c2 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+@@ -315,7 +315,6 @@
+ #define  SYS_CFG_SPS_SEL		BIT(24) /*  1:LDO regulator mode;
+ 						    0:Switching regulator mode*/
+ #define  SYS_CFG_CHIP_VERSION_MASK	0xf000	/* Bit 12 - 15 */
+-#define  SYS_CFG_CHIP_VERSION_SHIFT	12
+ 
+ #define REG_GPIO_OUTSTS			0x00f4	/*  For RTL8723 only. */
+ #define  GPIO_EFS_HCI_SEL		(BIT(0) | BIT(1))
 -- 
 2.38.0
