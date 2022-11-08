@@ -2,139 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E8B620654
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 02:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6D4462085E
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Nov 2022 05:42:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232391AbiKHBvp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Nov 2022 20:51:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39270 "EHLO
+        id S232940AbiKHEmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Nov 2022 23:42:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbiKHBvo (ORCPT
+        with ESMTP id S232932AbiKHEmg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Nov 2022 20:51:44 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8E51D1D66D
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 17:51:43 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A81oxvK7027538, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A81oxvK7027538
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 8 Nov 2022 09:50:59 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 8 Nov 2022 09:51:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 8 Nov 2022 09:51:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Tue, 8 Nov 2022 09:51:36 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v2] wifi: rtw89: 8852b: change debug mask of message of no TX resource
-Thread-Topic: [PATCH v2] wifi: rtw89: 8852b: change debug mask of message of
- no TX resource
-Thread-Index: AQHY8xN6CWZUdm/fEkimHHP3Z4ZYnq40Qsww
-Date:   Tue, 8 Nov 2022 01:51:36 +0000
-Message-ID: <fc1f2b8dbaab427e85eede5c7783be5e@realtek.com>
-References: <20221108014230.11068-1-pkshih@realtek.com>
-In-Reply-To: <20221108014230.11068-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/7_=3F=3F_10:50:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 7 Nov 2022 23:42:36 -0500
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A78A2EF3C
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Nov 2022 20:42:34 -0800 (PST)
+Received: by mail-pj1-x102e.google.com with SMTP id z5-20020a17090a8b8500b00210a3a2364fso788691pjn.0
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Nov 2022 20:42:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+VoC5O6h7ZfIBAy9yt0jFTh5sWdzWSPpFHMVA1UnB6o=;
+        b=Amgys6yR9ThhrGUWgN0xwAeQVN11/9ieXyMbX53skvp+611RG7k7wb0w0vSOJ3j9s9
+         XtkeQ2dDiGvKdp9oPkWiZ86JTtcRE8BNcRAmdLSkzuHwcx/QOOplsvuIJVx9LECxSSLN
+         YvS5X40w6psbnkn7hSZM32LWh728Fdq/ep6JZS3rjgHQuKFXc8YaBPq3xHAkEQKxKcuz
+         1f4JJMfy+xjUeeJZLZ5S0nLKU2/44tr09WDzvIY4bsstdpbH+ACIM+FcZ5zucOBwGLEm
+         g5W5NuZQbt6erB3C5OG47Wa+SPRDsGknZJNCregml6WMAY4rhYbouwhjEl51e0Q41NWv
+         hVmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+VoC5O6h7ZfIBAy9yt0jFTh5sWdzWSPpFHMVA1UnB6o=;
+        b=F7IQDawm4G2MGfhGCq+pQClqZu/sgYCd/uPM5I5jQ8fGqF+b1jwbTW0yklstuLSK6G
+         Z62LOuu3C/xKFU2oL32YzjYnd4VtdUqS96XYC3Gv08Q9oRiCg20SmNpygf1HJzeudtCt
+         IBtbljWZQl8Y5DZxgnOHyrszRula+gtnm6NaGwxphP0ZE0XVTToRL8Hsh0M0Z11XuTOd
+         ff8K0VDJO4UIaxoCrXlsNhmv1qVzMRsXhnYk3y0yliiMfmy0EkapCaz5TJG6rf2hVIBo
+         pp1VNswYaTnE1Wm2156iuSwIvAKc7KG5y3xr3UuTN4V9c46UJ6YEXb92wIKfjUCmh3Gr
+         b/kw==
+X-Gm-Message-State: ACrzQf3kXXcWxAv5bGL0AsgTlwMVTb+m4Sx69DZiugE1v0iBMTLwoYWE
+        dqFvGfVQ5eR7c+CAMu56vcyS3VQ62qeizY6/EYY=
+X-Google-Smtp-Source: AMsMyM6Kq3rk40ALl/YgkZXlUCq9NxAtWqN3do0TiYDNdcGLIfZ/Z/Hz1l3Zx0dndk5ZiHl0FiobuSJHCnWiwk+xMn4=
+X-Received: by 2002:a17:902:dac5:b0:186:a687:e082 with SMTP id
+ q5-20020a170902dac500b00186a687e082mr55171671plx.84.1667882553684; Mon, 07
+ Nov 2022 20:42:33 -0800 (PST)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:522:8e11:b0:472:3709:5064 with HTTP; Mon, 7 Nov 2022
+ 20:42:33 -0800 (PST)
+Reply-To: mrstheresaheidi8@gmail.com
+From:   "Ms. Theresa Heidi" <rev.johnpatrick1@gmail.com>
+Date:   Mon, 7 Nov 2022 20:42:33 -0800
+Message-ID: <CAMiB5XggM2hEnjNkoM+PXcTy4kQE1Jdpw4p-WtpeWs8rd4KUog@mail.gmail.com>
+Subject: =?UTF-8?B?56eB44KS5Yqp44GR44Gm44GP44Gg44GV44GE?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: Yes, score=7.9 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:102e listed in]
+        [list.dnswl.org]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [rev.johnpatrick1[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [rev.johnpatrick1[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrstheresaheidi8[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Ping-Ke Shih <pkshih@realtek.com>
-> Sent: Tuesday, November 8, 2022 9:43 AM
-> To: kvalo@kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Subject: [PATCH v2] wifi: rtw89: 8852b: change debug mask of message of no TX resource
-> 
-> 8852B has smaller TX FIFO than others in WiFi chip, so it would be buffer
-> full frequently, but it doesn't affect TX performance. However, it shows
-> verbose debug messages with RTW89_DBG_UNEXP mask that is used to indicate
-> abnormal behavior, so change debug mask to RTW89_DBG_TXRX for 8852B.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-
-Sorry, I forget to add changelog of v2.
-
-v2: add comment to explain why we change debug mask for certain situations.
-
-> ---
->  drivers/net/wireless/realtek/rtw89/pci.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-> index 07a2e23759f0b..7aa0af18cdd50 100644
-> --- a/drivers/net/wireless/realtek/rtw89/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-> @@ -971,8 +971,10 @@ static u32 __rtw89_pci_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
->  	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
->  	struct rtw89_pci_tx_ring *tx_ring = &rtwpci->tx_rings[txch];
->  	struct rtw89_pci_tx_wd_ring *wd_ring = &tx_ring->wd_ring;
-> +	const struct rtw89_chip_info *chip = rtwdev->chip;
->  	u32 bd_cnt, wd_cnt, min_cnt = 0;
->  	struct rtw89_pci_rx_ring *rx_ring;
-> +	enum rtw89_debug_mask debug_mask;
->  	u32 cnt;
-> 
->  	rx_ring = &rtwpci->rx_rings[RTW89_RXCH_RPQ];
-> @@ -996,10 +998,20 @@ static u32 __rtw89_pci_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
->  	bd_cnt = rtw89_pci_get_avail_txbd_num(tx_ring);
->  	wd_cnt = wd_ring->curr_num;
->  	min_cnt = min(bd_cnt, wd_cnt);
-> -	if (min_cnt == 0)
-> -		rtw89_debug(rtwdev, rtwpci->low_power ? RTW89_DBG_TXRX : RTW89_DBG_UNEXP,
-> +	if (min_cnt == 0) {
-> +		/* This message can be frequently shown in low power mode or
-> +		 * high traffic with 8852B, and we have recognized it as normal
-> +		 * behavior, so print with mask RTW89_DBG_TXRX in these situations.
-> +		 */
-> +		if (rtwpci->low_power || chip->chip_id == RTL8852B)
-> +			debug_mask = RTW89_DBG_TXRX;
-> +		else
-> +			debug_mask = RTW89_DBG_UNEXP;
-> +
-> +		rtw89_debug(rtwdev, debug_mask,
->  			    "still no tx resource after reclaim: wd_cnt=%d bd_cnt=%d\n",
->  			    wd_cnt, bd_cnt);
-> +	}
-> 
->  out_unlock:
->  	spin_unlock_bh(&rtwpci->trx_lock);
-> --
-> 2.25.1
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
+5oWI5ZaE5a+E5LuY77yBDQoNCuazqOaEj+a3seOBj+OBiuiqreOBv+OBj+OBoOOBleOBhOOAguOB
+k+OBruaJi+e0meOBjOOBguOBquOBn+OBq+OCteODl+ODqeOCpOOCuuOBqOOBl+OBpuWxiuOBj+OB
+i+OCguOBl+OCjOOBquOBhOOBk+OBqOOBr+S6i+Wun+OBp+OBmeOAguOBguOBquOBn+OBruWKqeOB
+keOBjOW/heimgeOBquOBqOOBjeOBq+OAgeODl+ODqeOCpOODmeODvOODiOaknOe0ouOBp+OBguOB
+quOBn+OBrumbu+WtkOODoeODvOODq+mAo+e1oeWFiOOBq+WHuuS8muOBhOOBvuOBl+OBn+OAguen
+geOBr+W/g+OBruS4reOBp+OBk+OBruODoeODvOODq+OCkuabuOOBhOOBpuOBhOOBvuOBmeOBjOOA
+geOCpOODs+OCv+ODvOODjeODg+ODiOOBr+S+neeEtuOBqOOBl+OBpuacgOmAn+OBrumAmuS/oeaJ
+i+auteOBp+OBguOCi+OBn+OCgeOAgeOCpOODs+OCv+ODvOODjeODg+ODiOOCkuS7i+OBl+OBpuOB
+guOBquOBn+OBq+mAo+e1oeOBmeOCi+OBk+OBqOOCkumBuOaKnuOBl+OBvuOBl+OBn+OAgg0KDQrn
+p4Hjga/nj77lnKjjgIHogrrjgYzjgpPjga7jgZ/jgoHjgqTjgrnjg6njgqjjg6vjga7np4Hnq4vn
+l4XpmaLjgavlhaXpmaLjgZfjgabjgYTjgosgNjINCuats+OBruODhuODrOOCteODj+OCpOOCuOWk
+q+S6uuOBp+OBmeOAguengeOBrzTlubTliY3jgIHjgZnjgbnjgabjgpLmrovjgZfjgabjgY/jgozj
+gZ/lpKvjgYzkuqHjgY/jgarjgaPjgZ/nm7TlvozjgavogrrjgYzjgpPjgajoqLrmlq3jgZXjgozj
+gb7jgZfjgZ/jgILnp4Hjga/jgIHogrrjgYzjgpPjga7msrvnmYLjgpLlj5fjgZHjgabjgYTjgovn
+l4XpmaLjgafjg6njg4Pjg5fjg4jjg4Pjg5fjgpLmjIHjgaPjgabjgYTjgb7jgZnjgIINCg0K56eB
+44Gv5Lqh44GP44Gq44Gj44Gf5aSr44GL44KJ5Y+X44GR57aZ44GE44Gg6LOH6YeR44KS5oyB44Gj
+44Gm44GE44G+44GZ44CC44Gd44Gu57eP6aGN44Gv44Gf44Gj44Gf44GuIDEyMCDkuIfjg4njg6sN
+CigxMuWEhOexs+ODieODqynjgafjgZnjgILku4rjgIHnp4HjgYzkurrnlJ/jga7mnIDlvozjga7m
+l6Xjgavov5HjgaXjgYTjgabjgYTjgovjgZPjgajjga/mmI7jgonjgYvjgafjgZnjgILjgZPjga7j
+gYrph5Hjga/jgoLjgYblv4XopoHjgarjgYTjgajmgJ3jgYTjgb7jgZnjgIIu56eB44Gu5Li75rK7
+5Yy744Gv44CB56eB44GM6IK644GM44KT44Gu5ZWP6aGM44Gu44Gf44KB44GrDQoxIOW5tOmWk+OB
+r+eUn+OBjeOCieOCjOOBquOBhOOBk+OBqOOCkueQhuino+OBleOBm+OBvuOBl+OBn+OAgg0KDQrj
+gZPjga7jgYrph5Hjga/jgb7jgaDlpJblm73jga7pioDooYzjgavkv53nrqHjgZXjgozjgabjgYrj
+gorjgIHntYzllrbpmaPjga/jgIHnp4HjgYznl4XmsJfjga7jgZ/jgoHjgavmnaXjgovjgZPjgajj
+gYzjgafjgY3jgarjgYTjga7jgafjgIHjgYrph5HjgpLlj5fjgZHlj5bjgovjgZ/jgoHjgavliY3j
+gavmnaXjgovjgYvjgIHku6Pjgo/jgorjgavoqrDjgYvjgavjgYrph5HjgpLlj5fjgZHlj5bjgovj
+gZ/jgoHjga7mib/oqo3mm7jjgpLnmbrooYzjgZnjgovjgojjgYbjgavjgIHnnJ/jga7miYDmnIno
+gIXjgajjgZfjgabnp4HjgavmiYvntJnjgpLmm7jjgY3jgb7jgZfjgZ/jgIIu6YqA6KGM44Gu6KGM
+5YuV44KS5oCg44KL44Go44CB6LOH6YeR44KS6ZW35pyf6ZaT5L+d566h44GX44Gf44Gf44KB44Gr
+6LOH6YeR44GM5rKh5Y+O44GV44KM44KL5Y+v6IO95oCn44GM44GC44KK44G+44GZ44CCDQoNCuOB
+k+OBruOBiumHkeOCkuWkluWbveOBrumKgOihjOOBi+OCieW8leOBjeWHuuOBl+OBpuOAgeaBteOB
+vuOCjOOBquOBhOS6uuOAheOCkuWKqeOBkeOCi+ODgeODo+ODquODhuOCo+ODvOa0u+WLleOBq+iz
+h+mHkeOCkuS9v+eUqOOBmeOCi+OBruOCkuaJi+S8neOBo+OBpuOBj+OCjOOCi+OBi+OBqeOBhuOB
+i+OAgeOBneOBl+OBpuiIiOWRs+OBjOOBguOCi+OBquOCieOAgeengeOBr+OBguOBquOBn+OBq+mA
+o+e1oeOBmeOCi+OBk+OBqOOBq+axuuOCgeOBvuOBl+OBny7np4HjgavkvZXjgYvjgYzotbfjgZPj
+govliY3jgavjgIHjgZPjgozjgonjga7kv6HoqJfln7rph5HjgpLoqqDlrp/jgavlh6bnkIbjgZfj
+gabjgbvjgZfjgYQu44GT44KM44Gv55uX44G+44KM44Gf44GK6YeR44Gn44Gv44Gq44GP44CB5a6M
+5YWo44Gq5rOV55qE6Ki85oug44GM44GC44KK44CBMTAwJQ0K44Oq44K544Kv44GM44Gq44GP44CB
+5Y2x6Zm644Gv44GC44KK44G+44Gb44KT44CCDQoNCuOBiumHkeOBriA1NSUg44Gv5oWI5ZaE5rS7
+5YuV44Gr5L2/44KP44KM44CB5ZCI6KiI6YeR6aGN44GuIDQ1JQ0K44Gv44GC44Gq44Gf44Gu5YCL
+5Lq655qE44Gq5L2/55So44Gu44Gf44KB44Gr5Y+W44Gj44Gm44G744GX44GELuengeOBr+engeOB
+ruacgOW+jOOBrumhmOOBhOOCkuWNsemZuuOBq+OBleOCieOBmeOCiOOBhuOBquOBk+OBqOOBr+S9
+leOCguacm+OCk+OBp+OBhOOBquOBhOOBruOBp+OAgeengeOBruW/g+OBi+OCieOBrumhmOOBhOOC
+kumBlOaIkOOBmeOCi+OBn+OCgeOBq+OAgeOBguOBquOBn+OBruacgOWkp+mZkOOBruS/oemgvOOB
+qOenmOWvhuS/neaMgeOBq+aEn+isneOBl+OBvuOBmS7jgZPjga7miYvntJnjgpLov7fmg5Hjg6Hj
+g7zjg6vjgaflj5fjgZHlj5bjgaPjgZ/loLTlkIjjga/jgIHnlLPjgZfoqLPjgYLjgorjgb7jgZvj
+gpPjgYzjgIHjgZPjgozjga/jgZPjga7lm73jgafjga7mnIDov5Hjga7mjqXntprjgqjjg6njg7zj
+gavjgojjgovjgoLjga7jgafjgZnjgIINCg0K44GC44Gq44Gf44Gu5pyA5oSb44Gu5aa544CCDQrj
+g4bjg6zjgrXjg7vjg4/jgqTjgrjlpKvkuroNCg==
