@@ -2,182 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59BE76221EB
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 03:26:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7823C622293
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 04:28:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229903AbiKIC0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 21:26:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56590 "EHLO
+        id S229571AbiKID2j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 22:28:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbiKIC0g (ORCPT
+        with ESMTP id S229499AbiKID2i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 21:26:36 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0715526113
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 18:26:32 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A92PWRg8000590, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A92PWRg8000590
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 9 Nov 2022 10:25:32 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Tue, 8 Nov 2022 22:28:38 -0500
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5074322BD6;
+        Tue,  8 Nov 2022 19:28:37 -0800 (PST)
+Received: from canpemm500002.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N6VmT0xhhzRp5v;
+        Wed,  9 Nov 2022 11:28:25 +0800 (CST)
+Received: from [10.174.179.211] (10.174.179.211) by
+ canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 9 Nov 2022 10:26:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 9 Nov 2022 10:26:10 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Wed, 9 Nov 2022 10:26:10 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "it+linux-wireless@molgen.mpg.de" <it+linux-wireless@molgen.mpg.de>
-Subject: RE: rtlwifi: RTL8188EE: Unable to connect to Wifi network
-Thread-Topic: rtlwifi: RTL8188EE: Unable to connect to Wifi network
-Thread-Index: AQHY83CXuPZvQJXpY0OWuHZCLRjdK640rmaAgAEdyvA=
-Date:   Wed, 9 Nov 2022 02:26:10 +0000
-Message-ID: <0366e0efc09e42c681720c0881331356@realtek.com>
-References: <eb1885f2-abd9-1f1f-1c3e-c879372d8db0@molgen.mpg.de>
- <4899c9d3-acad-6cc0-e1ec-ab4b27754ecb@molgen.mpg.de>
-In-Reply-To: <4899c9d3-acad-6cc0-e1ec-ab4b27754ecb@molgen.mpg.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzgg5LiL5Y2IIDEwOjI4OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.1.2375.31; Wed, 9 Nov 2022 11:28:33 +0800
+Message-ID: <3c99ca30-dd89-03e9-481c-95310b562702@huawei.com>
+Date:   Wed, 9 Nov 2022 11:28:32 +0800
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.2
+Subject: Re: [PATCH v1 0/3] rtlwifi: Correct inconsistent header guard
+To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "huawei.libin@huawei.com" <huawei.libin@huawei.com>
+References: <20221108093447.3588889-1-liwei391@huawei.com>
+ <cc8f8393ab5e45f895fda98e6b42d1d3@realtek.com>
+From:   "liwei (GF)" <liwei391@huawei.com>
+In-Reply-To: <cc8f8393ab5e45f895fda98e6b42d1d3@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.211]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ canpemm500002.china.huawei.com (7.192.104.244)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFBhdWwgTWVuemVsIDxwbWVu
-emVsQG1vbGdlbi5tcGcuZGU+DQo+IFNlbnQ6IFdlZG5lc2RheSwgTm92ZW1iZXIgOSwgMjAyMiAx
-MjoxOCBBTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiBs
-aW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IGl0K2xpbnV4LXdpcmVsZXNzQG1vbGdlbi5t
-cGcuZGUNCj4gU3ViamVjdDogUmU6IHJ0bHdpZmk6IFJUTDgxODhFRTogVW5hYmxlIHRvIGNvbm5l
-Y3QgdG8gV2lmaSBuZXR3b3JrDQo+IA0KPiBEZWFyIExpbnV4IGZvbGtzLA0KPiANCj4gDQo+IEFt
-IDA4LjExLjIyIHVtIDEzOjQ5IHNjaHJpZWIgUGF1bCBNZW56ZWw6DQo+IA0KPiA+IFVzaW5nIERl
-YmlhbiBzaWQvdW5zdGFibGUgd2l0aCBMaW51eCA2LjEtcmMzIFsxXSBvbiBhbiBJbnRlbCBIYXN3
-ZWxsDQo+ID4gSGFpZXIgbGFwdG9wIHdpdGggYSBSVEw4MTg4RUUsIEkgYW0gdW5hYmxlIHRvIGNv
-bm5lY3QgdG8gYSB3aXJlbGVzcw0KPiA+IG5ldHdvcmsuDQo+ID4NCj4gPiAgwqDCoMKgICQgc3Vk
-byBsc3BjaSAtayAtcyAwODowMC4wDQo+ID4gIMKgwqDCoCAwODowMC4wIE5ldHdvcmsgY29udHJv
-bGxlcjogUmVhbHRlayBTZW1pY29uZHVjdG9yIENvLiwgTHRkLiBSVEw4MTg4RUUgV2lyZWxlc3Mg
-TmV0d29yayBBZGFwdGVyIChyZXYNCj4gMDEpDQo+ID4gIMKgwqDCoMKgwqDCoMKgIFN1YnN5c3Rl
-bTogQXp1cmVXYXZlIFJUTDgxODhFRSBXaXJlbGVzcyBOZXR3b3JrIEFkYXB0ZXINCj4gPiAgwqDC
-oMKgwqDCoMKgwqAgS2VybmVsIGRyaXZlciBpbiB1c2U6IHJ0bDgxODhlZQ0KPiA+ICDCoMKgwqDC
-oMKgwqDCoCBLZXJuZWwgbW9kdWxlczogcnRsODE4OGVlDQo+ID4NCj4gPiBgYGANCj4gPiBbwqAg
-MjYyLjgyMjMyMF0gd2xwOHMwOiBhdXRoZW50aWNhdGUgd2l0aCA2YzpmMzo3ZjoxMDphZToxMg0K
-PiA+IFvCoCAyNjIuODIyMzQxXSB3bHA4czA6IDgwIE1IeiBub3Qgc3VwcG9ydGVkLCBkaXNhYmxp
-bmcgVkhUDQo+ID4gW8KgIDI2Mi44MzIzODRdIHdscDhzMDogc2VuZCBhdXRoIHRvIDZjOmYzOjdm
-OjEwOmFlOjEyICh0cnkgMS8zKQ0KPiA+IFvCoCAyNjIuODM1MTI0XSB3bHA4czA6IGF1dGhlbnRp
-Y2F0ZWQNCj4gPiBbwqAgMjYyLjgzOTA0Nl0gd2xwOHMwOiBhc3NvY2lhdGUgd2l0aCA2YzpmMzo3
-ZjoxMDphZToxMiAodHJ5IDEvMykNCj4gPiBbwqAgMjYyLjg1MDA5OV0gd2xwOHMwOiBSWCBBc3Nv
-Y1Jlc3AgZnJvbSA2YzpmMzo3ZjoxMDphZToxMiAoY2FwYWI9MHg0MjEgc3RhdHVzPTAgYWlkPTEp
-DQo+ID4gW8KgIDI2Mi44NTAzMzFdIHdscDhzMDogYXNzb2NpYXRlZA0KPiA+IFvCoCAyNjIuODUw
-OTI1XSBJUHY2OiBBRERSQ09ORihORVRERVZfQ0hBTkdFKTogd2xwOHMwOiBsaW5rIGJlY29tZXMg
-cmVhZHkNCj4gPiBb4oCmXQ0KPiA+IFvCoCAzMDcuNjE4NDIzXSB3bHA4czA6IGRlYXV0aGVudGlj
-YXRpbmcgZnJvbSA2YzpmMzo3ZjoxMDphZToxMiBieSBsb2NhbCBjaG9pY2UgKFJlYXNvbjogMz1E
-RUFVVEhfTEVBVklORykNCj4gPiBgYGANCj4gPg0KPiA+IHdwYV9zdXBwbGljYW50IDI6Mi4xMC05
-K2IyIGxvZ3M6DQo+ID4NCj4gPiBgYGANCj4gPiBOb3YgMDggMTM6Mjk6MzUgYnJlY2h0IHdwYV9z
-dXBwbGljYW50WzYxMl06IHdscDhzMDogU01FOiBUcnlpbmcgdG8gYXV0aGVudGljYXRlIHdpdGgg
-NmM6ZjM6N2Y6MTA6YWU6MTINCj4gKFNTSUQ9J01QSSBHdWVzdCcgZnJlcT0yNDM3IE1IeikNCj4g
-PiBOb3YgMDggMTM6Mjk6MzUgYnJlY2h0IHdwYV9zdXBwbGljYW50WzYxMl06IHdscDhzMDogVHJ5
-aW5nIHRvIGFzc29jaWF0ZSB3aXRoIDZjOmYzOjdmOjEwOmFlOjEyIChTU0lEPSdNUEkNCj4gR3Vl
-c3QnIGZyZXE9MjQzNyBNSHopDQo+ID4gTm92IDA4IDEzOjI5OjM1IGJyZWNodCB3cGFfc3VwcGxp
-Y2FudFs2MTJdOiB3bHA4czA6IEFzc29jaWF0ZWQgd2l0aCA2YzpmMzo3ZjoxMDphZToxMg0KPiA+
-IE5vdiAwOCAxMzoyOTozNSBicmVjaHQgd3BhX3N1cHBsaWNhbnRbNjEyXTogd2xwOHMwOiBDVFJM
-LUVWRU5ULUNPTk5FQ1RFRCAtIENvbm5lY3Rpb24gdG8NCj4gNmM6ZjM6N2Y6MTA6YWU6MTIgY29t
-cGxldGVkIFtpZD0wIGlkX3N0cj1dDQo+ID4gTm92IDA4IDEzOjI5OjM1IGJyZWNodCB3cGFfc3Vw
-cGxpY2FudFs2MTJdOiBiZ3NjYW4gc2ltcGxlOiBGYWlsZWQgdG8gZW5hYmxlIHNpZ25hbCBzdHJl
-bmd0aCBtb25pdG9yaW5nDQo+ID4gTm92IDA4IDEzOjI5OjM1IGJyZWNodCB3cGFfc3VwcGxpY2Fu
-dFs2MTJdOiB3bHA4czA6IENUUkwtRVZFTlQtU1VCTkVULVNUQVRVUy1VUERBVEUgc3RhdHVzPTAN
-Cj4gPiBOb3YgMDggMTM6MzA6MjAgYnJlY2h0IHdwYV9zdXBwbGljYW50WzYxMl06IHdscDhzMDog
-Q1RSTC1FVkVOVC1ESVNDT05ORUNURUQgYnNzaWQ9NmM6ZjM6N2Y6MTA6YWU6MTINCj4gcmVhc29u
-PTMgIGxvY2FsbHlfZ2VuZXJhdGVkPTENCj4gPiBgYGANCj4gPg0KPiA+IFdpdGggbW9yZSBkZWJ1
-Z2dpbmcgdmVyYm9zaXR5IChgLWRgKSBpdCBzaG93czoNCj4gPg0KPiA+IGBgYA0KPiA+IFvigKZd
-DQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3XTogd2xwOHMw
-OiBTdGF0ZTogQVNTT0NJQVRFRCAtPiBDT01QTEVURUQNCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJl
-Y2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiB3bHA4czA6IFJhZGlvIHdvcmsgJ3NtZS1jb25uZWN0
-J0AweDU1NmI0OTFiNWE4MCBkb25lIGluDQo+IDAuMDI2Njc5IHNlY29uZHMNCj4gPiBOb3YgMDgg
-MTM6NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiB3bHA4czA6IHJhZGlvX3dvcmtf
-ZnJlZSgnc21lLWNvbm5lY3QnQDB4NTU2YjQ5MWI1YTgwKToNCj4gbnVtX2FjdGl2ZV93b3JrcyAt
-LT4gMA0KPiA+IE5vdiAwOCAxMzo0MjoxMyBicmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IHds
-cDhzMDogQ1RSTC1FVkVOVC1DT05ORUNURUQgLSBDb25uZWN0aW9uIHRvDQo+IDZjOmYzOjdmOjEw
-OmFlOjEyIGNvbXBsZXRlZCBbaWQ9MA0KPiA+IGlkX3N0cj1dDQo+ID4gTm92IDA4IDEzOjQyOjEz
-IGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3XTogbmw4MDIxMTogU2V0IHdscDhzMCBvcGVyc3Rh
-dGUgMC0+MSAoVVApDQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxpY2FudFsz
-NTQ3XTogbmV0bGluazogT3BlcnN0YXRlOiBpZmluZGV4PTMgbGlua21vZGU9LTEgKG5vIGNoYW5n
-ZSksDQo+IG9wZXJzdGF0ZT02IChJRl9PUEVSX1VQKQ0KPiA+IE5vdiAwOCAxMzo0MjoxMyBicmVj
-aHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IGJnc2NhbiBzaW1wbGU6IFNpZ25hbCBzdHJlbmd0aCB0
-aHJlc2hvbGQgLTcwwqAgU2hvcnQgYmdzY2FuDQo+IGludGVydmFsIDMwwqAgTG9uZyBiZ3NjYW4g
-aW50ZXJ2YWwgODY0MDANCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50
-WzM1NDddOiBubDgwMjExOiBTaWduYWwgbW9uaXRvciB0aHJlc2hvbGQ9LTcwIGh5c3RlcmVzaXM9
-NA0KPiA+IE5vdiAwOCAxMzo0MjoxMyBicmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IGJnc2Nh
-biBzaW1wbGU6IEZhaWxlZCB0byBlbmFibGUgc2lnbmFsIHN0cmVuZ3RoIG1vbml0b3JpbmcNCj4g
-PiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiBiZ3NjYW4gc2lt
-cGxlOiBJbml0IHNjYW4gaW50ZXJ2YWw6IDg2NDAwDQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNo
-dCB3cGFfc3VwcGxpY2FudFszNTQ3XTogYmdzY2FuOiBJbml0aWFsaXplZCBtb2R1bGUgJ3NpbXBs
-ZScgd2l0aCBwYXJhbWV0ZXJzDQo+ICczMDotNzA6ODY0MDAnDQo+ID4gTm92IDA4IDEzOjQyOjEz
-IGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3XTogbmw4MDIxMTogUmVjZWl2ZWQgc2NhbiByZXN1
-bHRzICgxOSBCU1NlcykNCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50
-WzM1NDddOiBubDgwMjExOiBTY2FuIHJlc3VsdHMgaW5kaWNhdGUgQlNTIHN0YXR1cyB3aXRoDQo+
-IDZjOmYzOjdmOjEwOmFlOjEyIGFzIGFzc29jaWF0ZWQNCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJl
-Y2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiB3bHA4czA6IEJTUzogU3RhcnQgc2NhbiByZXN1bHQg
-dXBkYXRlIDUNCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50WzM1NDdd
-OiBiZ3NjYW4gc2ltcGxlOiBzY2FuIHJlc3VsdCBub3RpZmljYXRpb24NCj4gPiBOb3YgMDggMTM6
-NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiB3bHA4czA6IERldGVybWluaW5nIHNo
-YXJlZCByYWRpbyBmcmVxdWVuY2llcyAobWF4IGxlbiAxKQ0KPiA+IE5vdiAwOCAxMzo0MjoxMyBi
-cmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IHdscDhzMDogU2hhcmVkIGZyZXF1ZW5jaWVzIChs
-ZW49MSk6IGNvbXBsZXRlZCBpdGVyYXRpb24NCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0IHdw
-YV9zdXBwbGljYW50WzM1NDddOiB3bHA4czA6IGZyZXFbMF06IDI0MzcsIGZsYWdzPTB4MQ0KPiA+
-IE5vdiAwOCAxMzo0MjoxMyBicmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IFAyUDogQWRkIG9w
-ZXJhdGluZyBjbGFzcyA4MQ0KPiA+IE5vdiAwOCAxMzo0MjoxMyBicmVjaHQgd3BhX3N1cHBsaWNh
-bnRbMzU0N106IFAyUDogQ2hhbm5lbHMgLSBoZXhkdW1wKGxlbj0xMyk6IDAxIDAyIDAzIDA0IDA1
-IDA2IDA3IDA4DQo+IDA5IDBhIDBiIDBjIDBkDQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNodCB3
-cGFfc3VwcGxpY2FudFszNTQ3XTogUDJQOiBVcGRhdGUgY2hhbm5lbCBsaXN0DQo+ID4gTm92IDA4
-IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3XTogUDJQOiBjaGFubmVsczogODE6
-MSwyLDMsNCw1LDYsNyw4LDksMTAsMTEsMTIsMTMNCj4gPiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0
-IHdwYV9zdXBwbGljYW50WzM1NDddOiBQMlA6IGNsaV9jaGFubmVsczoNCj4gPiBOb3YgMDggMTM6
-NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiB3bHA4czA6IENhbmNlbGxpbmcgc2Nh
-biByZXF1ZXN0DQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3
-XTogV01NIEFDOiBBQyBtYW5kYXRvcnk6IEFDX0JFPTAgQUNfQks9MCBBQ19WST0wIEFDX1ZPPTAN
-Cj4gPiBOb3YgMDggMTM6NDI6MTMgYnJlY2h0IHdwYV9zdXBwbGljYW50WzM1NDddOiBXTU0gQUM6
-IFUtQVBTRCBxdWV1ZXM9MHgwDQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxp
-Y2FudFszNTQ3XTogV01NIEFDOiBWYWxpZCBXTU0gYXNzb2NpYXRpb24sIFdNTSBBQyBpcyBlbmFi
-bGVkDQo+ID4gTm92IDA4IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3XTogd2xw
-OHMwOiBDVFJMLUVWRU5ULVNVQk5FVC1TVEFUVVMtVVBEQVRFIHN0YXR1cz0wDQo+ID4gTm92IDA4
-IDEzOjQyOjEzIGJyZWNodCB3cGFfc3VwcGxpY2FudFszNTQ3XTogUlRNX05FV0xJTks6IGlmaV9p
-bmRleD0zIGlmbmFtZT13bHA4czAgb3BlcnN0YXRlPTYNCj4gbGlua21vZGU9MSBpZmlfZmFtaWx5
-PTAgaWZpX2ZsYWdzPTB4MTEwNDMgKFtVUF1bUlVOTklOR11bTE9XRVJfVVBdKQ0KPiA+IE5vdiAw
-OCAxMzo0MjoxMyBicmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IG5sODAyMTE6IERydiBFdmVu
-dCA0NiAoTkw4MDIxMV9DTURfQ09OTkVDVCkgcmVjZWl2ZWQgZm9yDQo+IHdscDhzMA0KPiA+IE5v
-diAwOCAxMzo0MjoxMyBicmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IG5sODAyMTE6IElnbm9y
-ZSBjb25uZWN0IGV2ZW50IChjbWQ9NDYpIHdoZW4gdXNpbmcgdXNlcnNwYWNlDQo+IFNNRQ0KPiA+
-IE5vdiAwOCAxMzo0Mjo1OCBicmVjaHQgd3BhX3N1cHBsaWNhbnRbMzU0N106IG5sODAyMTE6IERy
-diBFdmVudCAyMCAoTkw4MDIxMV9DTURfREVMX1NUQVRJT04pIHJlY2VpdmVkDQoNCk5vIGJlYWNv
-biBsb3NzIG1lc3NhZ2VzIGJldHdlZW4gTkw4MDIxMV9DTURfQ09OTkVDVCBhbmQgTkw4MDIxMV9D
-TURfREVMX1NUQVRJT04sIHNvDQo4MTg4ZWUgc2VlbXMgdG8gcmVjZWl2ZSBwYWNrZXRzIHdlbGwu
-DQoNClBsZWFzZSBjaGVjayBpZiB5b3UgaGF2ZSBtb3JlIHRoYW4gb25lIGRhZW1vbiB3b3JraW5n
-IGF0IHRoZSBzYW1lIHRpbWUuDQpBIHdheSBpcyB0byB0dXJuIG9mZiBXaUZpIGZyb20gR1VJLCBh
-bmQgdXNlICdpdyBjb25uZWN0JyB0byBjb25uZWN0IGFuDQpBUCB3aXRob3V0IHNlY3VyaXR5Lg0K
-DQpQaW5nLUtlDQoNCg==
+
+
+On 2022/11/9 8:32, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Wei Li <liwei391@huawei.com>
+>> Sent: Tuesday, November 8, 2022 5:35 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller <davem@davemloft.net>;
+>> Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>
+>> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; huawei.libin@huawei.com
+>> Subject: [PATCH v1 0/3] rtlwifi: Correct inconsistent header guard
+> 
+> Subject prefix should be "wifi: rtlwifi: ..."
+>>
+>> This patch set fixes some inconsistent header guards in module
+>> rtl8188ee/rtl8723ae/rtl8192de, that may be copied but missing update.
+>>
+>> Wei Li (3):
+>>   rtlwifi: rtl8188ee: Correct the header guard of rtl8188ee/*.h
+>>   rtlwifi: rtl8723ae: Correct the header guard of
+>>     rtl8723ae/{fw,led,phy}.h
+>>   rtlwifi: rtl8192de: Correct the header guard of rtl8192de/{dm,led}.h
+>>
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h     | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h     | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h     | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h     | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h  | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h     | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h     | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h    | 4 ++--
+>>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h    | 4 ++--
+>>  16 files changed, 32 insertions(+), 32 deletions(-)
+> 
+> The changes aren't too much and commit contents/messages are very similar,
+> so I would like to squash 3 patches into single one.
+
+OK, I will combine this series in one patch, and fix the prefix in v2,
+thanks for your suggestion.
+
+Thanks,
+Wei
