@@ -2,59 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1CF62300D
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 17:21:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D74623025
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 17:27:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbiKIQVJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 11:21:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36610 "EHLO
+        id S230194AbiKIQ1S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 11:27:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbiKIQVI (ORCPT
+        with ESMTP id S229550AbiKIQ1R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 11:21:08 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B84167E3;
-        Wed,  9 Nov 2022 08:21:06 -0800 (PST)
+        Wed, 9 Nov 2022 11:27:17 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C22BC1A048
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 08:27:15 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7734AB81F38;
-        Wed,  9 Nov 2022 16:21:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F4BC433C1;
-        Wed,  9 Nov 2022 16:21:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 453ED61BB8
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 16:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796EAC433C1;
+        Wed,  9 Nov 2022 16:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668010864;
-        bh=bHR3akRUdQF87PGyjO5R1BzAS7isamo5fFrvDl8bd50=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NN03LOwuihuwO3U2kE5FyxnI0xVn36SyCyISiEs6Du9U25VZR9LvS8QGUo+jh2PiL
-         7bH35XwQ+SWJclX3Gdcp/p9DyviZONc6Den9VRg/zwNYL8kfGIewZ0Wo6Et9/eEHRV
-         AdJAZQyBKfmy9M9o+qxy1ig+vBgncNWG3h9i3OE0UuO5kubRCf1pcWdpm865cr4ZwC
-         g8bmSNlSqt2F6kqfA/gcKwlBMPBT0CC+4pLfoI0RQqgM6XD/Fl8de/0QZHnzgB8Ckr
-         kHQalu3hnYlQC41AbIWkSPukxWegudVzIrNy2eu2uU6EDbFRyFK4HY7fgba5kYHuqv
-         bM+AZpFaBDNbg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-wireless@vger.kernel.org, Angus Ainslie <angus@akkea.ca>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v5] wifi: rsi: Fix handling of 802.3 EAPOL frames sent via control port
-References: <20221104163339.227432-1-marex@denx.de>
-        <87o7tjszyg.fsf@kernel.org>
-        <7a3b6d5c-1d73-1d31-434f-00703c250dd6@denx.de>
-        <877d06g98z.fsf@kernel.org>
-        <afe318c6-9a55-1df2-68b4-d554d4cecd5a@denx.de>
-Date:   Wed, 09 Nov 2022 18:20:57 +0200
-In-Reply-To: <afe318c6-9a55-1df2-68b4-d554d4cecd5a@denx.de> (Marek Vasut's
-        message of "Mon, 7 Nov 2022 15:44:55 +0100")
-Message-ID: <871qqccd5i.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1668011234;
+        bh=Kf1Uav0Jvf3kL1HMfC7BCUlGrQ5MIRxDnA+H66XQ/5s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TjTCYw+/Wyumyf0w26Wt7kXnhlh1kW5HbGJv1r8KFJc57mq3910Qbi+GHJ0FDgoKB
+         wCiKuxJZsKxna1qxv+dIA0jlAkV5C7hsXQL1c7Ynflo/UeG/JoeFc1VkwETxt1Xwtb
+         bcfXyS+7EE5odUQy2PiKJ92UVq/y6uZG9dygROwEINrS/fOE9ZzF+WlxCDSdQLvEof
+         1kbSxE+r4Qkdr1PZgG2V3eTj4n8xJQjRWDbpv+SOcxJx6PZYUd2ch9iDn3U/punK7Z
+         qTDFBLSIqDt2pdQLAo+2QzR+w9VMDU9GBZx++TO0nkZ4G8PRYPxXD1ca3mIZzfY8Uj
+         sEwyqTTEkr40A==
+Date:   Wed, 9 Nov 2022 10:27:13 -0600
+From:   Seth Forshee <sforshee@kernel.org>
+To:     CaffeeLake <pascalcoffeelake@gmail.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: wireless-regdb: Update regulatory rules for Japan (JP) on 6GHz
+Message-ID: <Y2vU4YAs5wmibcGF@ubuntu-x1>
+References: <20221030110510.752996-1-PascalCoffeeLake@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221030110510.752996-1-PascalCoffeeLake@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -64,56 +52,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Marek Vasut <marex@denx.de> writes:
+On Sun, Oct 30, 2022 at 08:05:10PM +0900, CaffeeLake wrote:
+> Support 6GHz for JP Region.
+> 
+> The Ministry of Internal Affairs and Communications has approved 6GHz (5925 - 6425 MHz) in Japan.
+> 
+> Source: https://www.soumu.go.jp/main_content/000833682.pdf
+> 
+> Signed-off-by: CaffeeLake <PascalCoffeeLake@gmail.com>
 
-> On 11/7/22 14:54, Kalle Valo wrote:
->> Marek Vasut <marex@denx.de> writes:
->>
->>>> BTW did you test this on a real device?
->>>
->>> Yes, SDIO RS9116 on next-20221104 and 5.10.153 .
->>
->> Very good, thanks.
->>
->>> What prompts this question ?
->>
->> I get too much "fixes" which have been nowhere near real hardware and
->> can break the driver instead of fixing anything, especially syzbot
->> patches have been notorious. So I have become cautious.
->
-> Ah, this is a real problem right here.
->
-> wpa-supplicant 2.9 from OE dunfell 3.1 works.
-> wpa-supplicant 2.10 from OE kirkstone 4.0 fails.
->
-> That's how I ran into this initially. My subsequent tests were with
-> debian wpa-supplicant 2.9 and 2.10 packages, since that was easier,
-> they (2.10 does, 2.9 does not) trigger the problem all the same.
->
-> I'm afraid this RSI driver is so poorly maintained and has so many
-> bugs, that, there is little that can make it worse. The dealing I had
-> with RSI has been ... long ... and very depressing. I tried to get
-> documentation or anything which would help us fix the problems we have
-> with this RSI driver ourselves, but RSI refused it all and suggested
-> we instead use their downstream driver (I won't go into the quality of
-> that). It seems RSI has little interest in maintaining the upstream
-> driver, pity.
->
-> I've been tempted to flag this driver as BROKEN for a while, to
-> prevent others from suffering with it.
+Sorry for the slow response on your patches.
 
-That's a pity indeed. Should we at least mark the driver as orphaned in
-MAINTAINERS?
+This patch conflicts with the other patch you sent for 5 GHz. I can
+easily reconcile the conflict in the rules, but I cannot read the linked
+documents (and machine translations is not proving very helpful). I
+can't tell if the link in this patch supersedes the link from the other
+patch, or if they are complimentary and should both be kept in the
+database. Can you clarify, or else resend both as a series with the
+second patch based off of the modifications from the first?
 
-Or even better if you Marek would be willing to step up as the
-maintainer? :)
+Thanks,
+Seth
 
-> Until I send such a patch, you can expect real fixes coming from my
-> end at least.
-
-Great, thank you.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> ---
+>  db.txt | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/db.txt b/db.txt
+> index 012824f..96527c9 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -907,6 +907,8 @@ country JO: DFS-JP
+>  	(5170 - 5250 @ 80), (23)
+>  	(5735 - 5835 @ 80), (23)
+> 
+> +# Source:
+> +# https://www.soumu.go.jp/main_content/000833682.pdf
+>  country JP: DFS-JP
+>  	(2402 - 2482 @ 40), (20)
+>  	(2474 - 2494 @ 20), (20), NO-OFDM
+> @@ -914,6 +916,7 @@ country JP: DFS-JP
+>  	(5170 - 5250 @ 80), (20), AUTO-BW
+>  	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+>  	(5490 - 5710 @ 160), (23), DFS
+> +	(5925 - 6425 @ 160), (200 mW), NO-OUTDOOR
+>  	# 60 GHz band channels 2-4 at 10mW,
+>  	# ref: http://www.arib.or.jp/english/html/overview/doc/1-STD-T74v1_1.pdf
+>  	(57000 - 66000 @ 2160), (10 mW)
+> --
+> 2.37.3
+> 
