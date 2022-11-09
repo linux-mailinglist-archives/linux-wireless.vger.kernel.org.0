@@ -2,106 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7823C622293
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 04:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E513B6222E0
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 04:55:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbiKID2j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Nov 2022 22:28:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46892 "EHLO
+        id S230013AbiKIDza (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Nov 2022 22:55:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbiKID2i (ORCPT
+        with ESMTP id S229795AbiKIDz3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Nov 2022 22:28:38 -0500
+        Tue, 8 Nov 2022 22:55:29 -0500
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5074322BD6;
-        Tue,  8 Nov 2022 19:28:37 -0800 (PST)
-Received: from canpemm500002.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N6VmT0xhhzRp5v;
-        Wed,  9 Nov 2022 11:28:25 +0800 (CST)
-Received: from [10.174.179.211] (10.174.179.211) by
- canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50B38175B4;
+        Tue,  8 Nov 2022 19:55:28 -0800 (PST)
+Received: from dggpeml500023.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N6WMT4pJKzRp1R;
+        Wed,  9 Nov 2022 11:55:17 +0800 (CST)
+Received: from ubuntu1804.huawei.com (10.67.174.58) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 9 Nov 2022 11:28:33 +0800
-Message-ID: <3c99ca30-dd89-03e9-481c-95310b562702@huawei.com>
-Date:   Wed, 9 Nov 2022 11:28:32 +0800
+ 15.1.2375.31; Wed, 9 Nov 2022 11:55:26 +0800
+From:   Xiu Jianfeng <xiujianfeng@huawei.com>
+To:     <gregory.greenman@intel.com>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <luciano.coelho@intel.com>,
+        <johannes.berg@intel.com>, <haim.dreyfuss@intel.com>,
+        <mordechay.goodstein@intel.com>, <emmanuel.grumbach@intel.com>,
+        <michael.golant@intel.com>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
+Date:   Wed, 9 Nov 2022 11:52:13 +0800
+Message-ID: <20221109035213.570-1-xiujianfeng@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0.2
-Subject: Re: [PATCH v1 0/3] rtlwifi: Correct inconsistent header guard
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "huawei.libin@huawei.com" <huawei.libin@huawei.com>
-References: <20221108093447.3588889-1-liwei391@huawei.com>
- <cc8f8393ab5e45f895fda98e6b42d1d3@realtek.com>
-From:   "liwei (GF)" <liwei391@huawei.com>
-In-Reply-To: <cc8f8393ab5e45f895fda98e6b42d1d3@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.211]
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.58]
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- canpemm500002.china.huawei.com (7.192.104.244)
+ dggpeml500023.china.huawei.com (7.185.36.114)
 X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When iwl_opmode_register() fails, it does not unregster rate control,
+which will cause a memory leak issue, this patch fixes it.
 
+Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 2022/11/9 8:32, Ping-Ke Shih wrote:
-> 
-> 
->> -----Original Message-----
->> From: Wei Li <liwei391@huawei.com>
->> Sent: Tuesday, November 8, 2022 5:35 PM
->> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller <davem@davemloft.net>;
->> Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>
->> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; huawei.libin@huawei.com
->> Subject: [PATCH v1 0/3] rtlwifi: Correct inconsistent header guard
-> 
-> Subject prefix should be "wifi: rtlwifi: ..."
->>
->> This patch set fixes some inconsistent header guards in module
->> rtl8188ee/rtl8723ae/rtl8192de, that may be copied but missing update.
->>
->> Wei Li (3):
->>   rtlwifi: rtl8188ee: Correct the header guard of rtl8188ee/*.h
->>   rtlwifi: rtl8723ae: Correct the header guard of
->>     rtl8723ae/{fw,led,phy}.h
->>   rtlwifi: rtl8192de: Correct the header guard of rtl8192de/{dm,led}.h
->>
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h     | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h     | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h     | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h     | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h  | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h     | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h     | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h    | 4 ++--
->>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h    | 4 ++--
->>  16 files changed, 32 insertions(+), 32 deletions(-)
-> 
-> The changes aren't too much and commit contents/messages are very similar,
-> so I would like to squash 3 patches into single one.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index d2d42cd48af2..8374c2c3d31b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -64,8 +64,10 @@ static int __init iwl_mvm_init(void)
+ 	}
+ 
+ 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
+-	if (ret)
++	if (ret) {
+ 		pr_err("Unable to register MVM op_mode: %d\n", ret);
++		iwl_mvm_rate_control_unregister();
++	}
+ 
+ 	return ret;
+ }
+-- 
+2.17.1
 
-OK, I will combine this series in one patch, and fix the prefix in v2,
-thanks for your suggestion.
-
-Thanks,
-Wei
