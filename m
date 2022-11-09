@@ -2,65 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D9C62268B
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 10:15:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3869D622B16
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 13:03:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbiKIJPE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 04:15:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49718 "EHLO
+        id S229550AbiKIMD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 07:03:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229973AbiKIJO3 (ORCPT
+        with ESMTP id S229447AbiKIMD4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 04:14:29 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0004E20F56
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 01:13:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=E4XIvI6HutdINK1zcDVLKyXPwQOek2tqyBkxs4VpZqw=;
-        t=1667985195; x=1669194795; b=s5bYCvs5jlVInflBBAjsp1amjpPcLsp5LyOkbsnf97HCWLd
-        RaHxwZNfJWvhCC+l2nbWqt6tTkcQYAZtvpL1r75k5Ea8Hoy82vhzFrRRvKS/sLtIi4A0/yqcn1c9T
-        FZ4JzCY0tiJHR+LNz1UdBxMJ8FGSLR8RAEr8TT6+bzi4Xl7IGVtgRbdckAlF0/+inXNm1k7GZMLbV
-        /SEMZjc2by6ErGVF6SYYM+kXwmZGtv+g+N/jIvDr+Dqzb/5vRJ/T7T8pKgk7bHFGXQesGA8RLMDDx
-        CkxXZQegO3lsaXIdC5f9uX8i7OX9/GJxT9SB/9mKxg+DCr0hkFnnn8bXI6IecSTw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1osh8x-00D4jy-2A;
-        Wed, 09 Nov 2022 10:13:12 +0100
-Message-ID: <45be33863c53edc5be261950b2592a777690a353.camel@sipsolutions.net>
-Subject: Re: Classification of BSS with different frequencies in KHz
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     JUN-KYU SHIN <jk.shin@newratek.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 09 Nov 2022 10:13:10 +0100
-In-Reply-To: <20221109061532.GA13554@DESKTOP-7BCE18E.localdomain>
-References: <20221109061532.GA13554@DESKTOP-7BCE18E.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Wed, 9 Nov 2022 07:03:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59242AC78
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 04:03:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75FE76187F
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 12:03:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF823C433C1;
+        Wed,  9 Nov 2022 12:03:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667995434;
+        bh=NJ5GVcvGeMR/bawxbaeebqLkYeMabe8bNBhIIG7od8w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FGPowr6k0l3Uh6VRLu4qXFdovu90YOb0M7cXRFg7nOZTbW2zshBedhLR6Aojse7LK
+         juwDK0aXlpMq4I5+RYm0a8yfGF5ViB/xGQZxT4ll8DnmkdCuhj1Yg9Jo1hxtEyZjrv
+         COV+u8D/WypzWy9Cjk69ZzAfEF6UbVs6OOGHDQO37apBfpZqE3vkJMdFwPswRcvb79
+         Dpf0yuA/X587wCwhYlsjYijk9Fdw9/SlCFIw+t6mFeGozw4woM1l2OemkimnGX8bok
+         Low4/WcAiwypBTnIx9zf83Pk+Y83JdsjbQJQRGlYSoWbqASEY3y11Mf5Of53H1YYwY
+         mThMixSm0aQvw==
+Date:   Wed, 9 Nov 2022 13:03:50 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Shayne Chen <shayne.chen@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 08/10] wifi: mt76: connac: add more starec command tags
+Message-ID: <Y2uXJh5rFm9uocvz@localhost.localdomain>
+References: <20221031164000.17063-1-shayne.chen@mediatek.com>
+ <20221031164000.17063-9-shayne.chen@mediatek.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gT3vqYmmKO2wHLuj"
+Content-Disposition: inline
+In-Reply-To: <20221031164000.17063-9-shayne.chen@mediatek.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-11-09 at 15:15 +0900, JUN-KYU SHIN wrote:
-> "freq_offset" also needs to be compared on S1G Band.
-> If freq_offset comparison is omitted in cmp_bss, other bss cannot be dist=
-inguished in units of khz.
 
+--gT3vqYmmKO2wHLuj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-please don't send patches as attachments.
+> Add starec tags which will be used in new chipset.
+> This is a preliminary patch to add mt7996 chipset support.
+>=20
+> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drive=
+rs/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> index ed1d24822c37..336c20fcc8dc 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> @@ -791,6 +791,8 @@ enum {
+>  	STA_REC_PHY =3D 0x15,
+>  	STA_REC_HE_6G =3D 0x17,
+>  	STA_REC_HE_V2 =3D 0x19,
+> +	STA_REC_HDRT =3D 0x28,
+> +	STA_REC_HDR_TRANS =3D 0x2B,
+>  	STA_REC_MAX_NUM
+>  };
 
-The patch looks wrong, the freq offset is in different units, so this
-could cause bad =3D=3D comparisons?
+I guess this patch does not apply cleanly.
 
-johannes
+Regards,
+Lorenzo
+
+> =20
+> --=20
+> 2.25.1
+>=20
+
+--gT3vqYmmKO2wHLuj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY2uXIgAKCRA6cBh0uS2t
+rIDMAPsE3oby14vVQSHX2fTS4hhlkEtnCaTSTymIorjldcYNtQD/WadNMgazZTTg
+KV5JGHuWZzPzgbCa49tzU5mBIP3NvQA=
+=wk8x
+-----END PGP SIGNATURE-----
+
+--gT3vqYmmKO2wHLuj--
