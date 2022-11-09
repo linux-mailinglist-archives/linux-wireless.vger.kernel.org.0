@@ -2,51 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC335622467
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 08:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B34E9622636
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 10:05:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbiKIHFw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 02:05:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58148 "EHLO
+        id S230247AbiKIJF5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 04:05:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbiKIHFv (ORCPT
+        with ESMTP id S230245AbiKIJFz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 02:05:51 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BBB1DF00
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Nov 2022 23:05:50 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5482261783
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 07:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C707EC433D6;
-        Wed,  9 Nov 2022 07:05:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667977549;
-        bh=Pr7Nlg8rzM5DMQTnGQUaJ0OFZ8L5YL7zgieimDIg8Ac=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Z48EDSAhGIzO9GoFiVNVW3TcU7Q4DUPzzzYyzhKrS2aETzancleDdohim883xUFoI
-         JohA8B+/tVz0cOhzzkKnHjuhUuvFoifan/tNijWb1zoYT/5WHvDdITqCXElngoglWW
-         LqotSoiBI2qz9aFh+zjaB/tEQhY34oGOR39KVXcSTapxP9JLSon6gKvklkWekxdVdL
-         cCg7Ly4ql7qYqzQHnJppYLiGV7Le53zB03dRP0/GWq0qErtUoHFrvi9eYDTJHWCep3
-         fVo3MqdgJOhVwiU33XYS3/0v7x8qj6w89yNdOMvn6dU+sZJUYJz6oMZPtdIi0xWche
-         fGTmTqEfVg0rw==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 9 Nov 2022 04:05:55 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25901E3D8;
+        Wed,  9 Nov 2022 01:05:53 -0800 (PST)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N6fFb6fzvz15MTS;
+        Wed,  9 Nov 2022 17:05:39 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 9 Nov 2022 17:05:52 +0800
+Received: from ubuntu1804.huawei.com (10.67.175.36) by
+ dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 9 Nov 2022 17:05:51 +0800
+From:   Chen Zhongjin <chenzhongjin@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <chenzhongjin@huawei.com>
+Subject: [PATCH] wifi: cfg80211: Fix not unregister reg_pdev when load_builtin_regdb_keys() fails
+Date:   Wed, 9 Nov 2022 17:02:37 +0800
+Message-ID: <20221109090237.214127-1-chenzhongjin@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath10k: Use macro for seq_ctrl conversion
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221106162227.1119-1-hujy652@gmail.com>
-References: <20221106162227.1119-1-hujy652@gmail.com>
-To:     Zhi-Jun You <hujy652@gmail.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Zhi-Jun You <hujy652@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166797754658.13342.14024033967389199102.kvalo@kernel.org>
-Date:   Wed,  9 Nov 2022 07:05:48 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.36]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,20 +50,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zhi-Jun You <hujy652@gmail.com> wrote:
+In regulatory_init_db(), when it's going to return a error, reg_pdev
+should be unregistered. When load_builtin_regdb_keys() fails it doesn't
+do it and makes cfg80211 can't be reload with report:
 
-> Use IEEE80211_SEQ_TO_SN() macro to convert seq_ctrl to sn for better
-> readability.
-> 
-> Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+sysfs: cannot create duplicate filename '/devices/platform/regulatory.0'
+ ...
+ <TASK>
+ dump_stack_lvl+0x79/0x9b
+ sysfs_warn_dup.cold+0x1c/0x29
+ sysfs_create_dir_ns+0x22d/0x290
+ kobject_add_internal+0x247/0x800
+ kobject_add+0x135/0x1b0
+ device_add+0x389/0x1be0
+ platform_device_add+0x28f/0x790
+ platform_device_register_full+0x376/0x4b0
+ regulatory_init+0x9a/0x4b2 [cfg80211]
+ cfg80211_init+0x84/0x113 [cfg80211]
+ ...
 
-Patch applied to ath-next branch of ath.git, thanks.
+Fixes: 90a53e4432b1 ("cfg80211: implement regdb signature checking")
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+---
+ net/wireless/reg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-a60c04017298 wifi: ath10k: Use IEEE80211_SEQ_TO_SN() for seq_ctrl conversion
-
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index d5c7a5aa6853..da0cb5abc20f 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -4305,8 +4305,10 @@ static int __init regulatory_init_db(void)
+ 		return -EINVAL;
+ 
+ 	err = load_builtin_regdb_keys();
+-	if (err)
++	if (err) {
++		platform_device_unregister(reg_pdev);
+ 		return err;
++	}
+ 
+ 	/* We always try to get an update for the static regdomain */
+ 	err = regulatory_hint_core(cfg80211_world_regdom->alpha2);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221106162227.1119-1-hujy652@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
 
