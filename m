@@ -2,47 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B34E9622636
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 10:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E87B622689
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 10:14:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbiKIJF5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 04:05:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
+        id S229619AbiKIJOy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 04:14:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbiKIJFz (ORCPT
+        with ESMTP id S229931AbiKIJOS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 04:05:55 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25901E3D8;
-        Wed,  9 Nov 2022 01:05:53 -0800 (PST)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N6fFb6fzvz15MTS;
-        Wed,  9 Nov 2022 17:05:39 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 9 Nov 2022 17:05:52 +0800
-Received: from ubuntu1804.huawei.com (10.67.175.36) by
- dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 9 Nov 2022 17:05:51 +0800
-From:   Chen Zhongjin <chenzhongjin@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-CC:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <chenzhongjin@huawei.com>
-Subject: [PATCH] wifi: cfg80211: Fix not unregister reg_pdev when load_builtin_regdb_keys() fails
-Date:   Wed, 9 Nov 2022 17:02:37 +0800
-Message-ID: <20221109090237.214127-1-chenzhongjin@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 9 Nov 2022 04:14:18 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318CB2251F
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 01:12:39 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CC8F3B81D51
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 09:12:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A42C433D6;
+        Wed,  9 Nov 2022 09:12:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667985156;
+        bh=8NzWCPjkAoa+RpKYFyCspWjzDZCZhOrqsXKUEyReREI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=jxENUgkLMCrH+diHRalJM9zwlo1NtzJfbaJ/1jMOUs8/JJy2XGqkeYs4sW2BUePT9
+         xfaHrMuhz+re/ox/2oFEtwhB6WpgrQjVdRDfMspviA54mZnZLaWNJszq2i8CNGK6jd
+         BmXeTUzRAElHl0sGlnkJvhI5usiqj+EPk+XI5+m0cQZ98gRHJ898w3dCdh4EBN6kA/
+         b4ejIVJRbggvR8bAcxB1Ex/gJ7sHc0/o+XkDyMBS6c6jQa7HXvU0wtkALHRAu0LBzV
+         GCN3763QQ0N5vyvrnWOUH3kfvft/eALwSYId8wIGkH4ECZCqdIpj/t/KbuFo7r87VG
+         dYCiWx4IeKkmg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
+Subject: Re: [PATCH 07/50] wifi: ath12k: add dbring.c
+References: <20220812161003.27279-1-kvalo@kernel.org>
+        <20220812161003.27279-8-kvalo@kernel.org>
+        <d9403714-d7ef-3a7c-0448-e5b2b0a60c34@quicinc.com>
+        <87v8odjv1f.fsf@kernel.org>
+Date:   Wed, 09 Nov 2022 11:12:32 +0200
+In-Reply-To: <87v8odjv1f.fsf@kernel.org> (Kalle Valo's message of "Fri, 21 Oct
+        2022 14:06:04 +0300")
+Message-ID: <875yfocwzj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.67.175.36]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,47 +56,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In regulatory_init_db(), when it's going to return a error, reg_pdev
-should be unregistered. When load_builtin_regdb_keys() fails it doesn't
-do it and makes cfg80211 can't be reload with report:
+Kalle Valo <kvalo@kernel.org> writes:
 
-sysfs: cannot create duplicate filename '/devices/platform/regulatory.0'
- ...
- <TASK>
- dump_stack_lvl+0x79/0x9b
- sysfs_warn_dup.cold+0x1c/0x29
- sysfs_create_dir_ns+0x22d/0x290
- kobject_add_internal+0x247/0x800
- kobject_add+0x135/0x1b0
- device_add+0x389/0x1be0
- platform_device_add+0x28f/0x790
- platform_device_register_full+0x376/0x4b0
- regulatory_init+0x9a/0x4b2 [cfg80211]
- cfg80211_init+0x84/0x113 [cfg80211]
- ...
+>>> +int ath12k_dbring_buf_setup(struct ath12k *ar,
+>>> +			    struct ath12k_dbring *ring,
+>>> +			    struct ath12k_dbring_cap *db_cap)
+>>> +{
+>>> +	struct ath12k_base *ab = ar->ab;
+>>> +	struct hal_srng *srng;
+>>> +	int ret;
+>>> +
+>>> +	srng = &ab->hal.srng_list[ring->refill_srng.ring_id];
+>>> +	ring->bufs_max = ring->refill_srng.size /
+>>> +		ath12k_hal_srng_get_entrysize(ab, HAL_RXDMA_DIR_BUF);
+>>> +
+>>> +	ring->buf_sz = db_cap->min_buf_sz;
+>>> +	ring->buf_align = db_cap->min_buf_align;
+>>> +	ring->pdev_id = db_cap->pdev_id;
+>>> +	ring->hp_addr = ath12k_hal_srng_get_hp_addr(ar->ab, srng);
+>>> +	ring->tp_addr = ath12k_hal_srng_get_tp_addr(ar->ab, srng);
+>>
+>> s/ar->ab/ab/ in both of the above since you already have ab = ar->ab
+>
+> This is still not fixed.
 
-Fixes: 90a53e4432b1 ("cfg80211: implement regdb signature checking")
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
----
- net/wireless/reg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This is now fixed.
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index d5c7a5aa6853..da0cb5abc20f 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -4305,8 +4305,10 @@ static int __init regulatory_init_db(void)
- 		return -EINVAL;
- 
- 	err = load_builtin_regdb_keys();
--	if (err)
-+	if (err) {
-+		platform_device_unregister(reg_pdev);
- 		return err;
-+	}
- 
- 	/* We always try to get an update for the static regdomain */
- 	err = regulatory_hint_core(cfg80211_world_regdom->alpha2);
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
