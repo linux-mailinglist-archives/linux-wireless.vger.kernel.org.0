@@ -2,134 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED75623609
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 22:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6262C6236B3
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 23:43:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbiKIVri (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 16:47:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48208 "EHLO
+        id S232137AbiKIWm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 17:42:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbiKIVrf (ORCPT
+        with ESMTP id S229516AbiKIWm6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 16:47:35 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AB32FFD9
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 13:47:34 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2A9IqRNI025960;
-        Wed, 9 Nov 2022 21:47:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=T4kka6uK5TK0gPTGoTZjgWje6/qWZa8rq2lVfToWzq8=;
- b=femi/Fhd+tBjBfDAS/4Xci5ASmPDgBh/fv7c6EW8A5/T5c03Dfo7nNmLHaTAQYBoibMc
- AQCCWo3JcEgC6rim9ntCZTrUGeSHVvAkBbr6ld2+6fpDeCI1S97uA3RsV7tLAOcXtz6W
- 4BRP4kcrpt35w+KMuwEbctCkdHLVOwNxa4QmMbD4RMVUo+5CFUQj5ytKvgfhS9ON/jmg
- CkqFsQ91gM7k1EfkLeBqjAb5BHnTaI4pvYcnSziUJPXnN4quay4ZInnp1zJ1KfjwIbA8
- 1Ek+V3hvbKnTpeaiRXLjxNRZhW8R69d7EZcSFl9JfVF6hu29m36hV4WtrW/O4TlJI+lJ bw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3krfrprug7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Nov 2022 21:47:31 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2A9LlV0G029046
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 9 Nov 2022 21:47:31 GMT
-Received: from alokad-linux.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Wed, 9 Nov 2022 13:47:30 -0800
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH v7 3/3] mac80211: additional processing in ieee80211_change_beacon
-Date:   Wed, 9 Nov 2022 13:47:20 -0800
-Message-ID: <20221109214720.6097-4-quic_alokad@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221109214720.6097-1-quic_alokad@quicinc.com>
-References: <20221109214720.6097-1-quic_alokad@quicinc.com>
+        Wed, 9 Nov 2022 17:42:58 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6827D13D;
+        Wed,  9 Nov 2022 14:42:55 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d20so30560plr.10;
+        Wed, 09 Nov 2022 14:42:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1ssYymsxkXdmTSFU0hvcEkwkIoh7xAypCTM5P5Govko=;
+        b=Gnns+h8o5AhIOXBqLaKWICAXOgSZMznymYnrEBDzfZviX7IPTd82rZRJap6bkYZ65Q
+         nf7zqCUUYfKYgb8vUHJ1SE4HYKUtGTYttvHkM4Uv4Tc+WQN3hJWTE4UyzQ8hCR7jFPvN
+         AYWmjq1oQWfKCK4dhHu0xypt5weHNbO6m0O8yz8BkAxv6Yzt2+8winicehFZLNYw05En
+         oIFA/LFH4a2keePJIVF0oOOYZYYGLcwFXHeMLozOxOmhy+ozzosYisx24NouFVVXb+Ro
+         yorzilL0AouMTZlrbzQToS56O+cH9/dQv8mbv23td9kWJqNkw8u7EQ3WTeqyeJgENyn4
+         1Qew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1ssYymsxkXdmTSFU0hvcEkwkIoh7xAypCTM5P5Govko=;
+        b=R5O2ZI5XQkCR9SR375uzpPwcV5AXTvRMtzmePzEzxrUGY8lkyI6czVqDT8pLSzTHVh
+         tMUHl3hNgOE85bMKraT+gTn/+z6c4ZFsvmkVY2FhD6GcFeKBrGC9Obp4xRtllH+4AyZY
+         qUTQmq9jb8OSdc3qVogY1UBMnRNoOVI2Y0tH/Ro/9wayS1V7D2lBsRu+Wg8k7uHPf0QN
+         q05O4gSgs1ZBY82h3wOZII/M6QpDywheKhDhpMB8h4OxgLXmPUs1XeQUy15nhG4+YzFH
+         VZEUXh7S5bT6xprYdWKyb6UDkToC0KWfIWIZSPtcueZTQ5xOkz6tb9oIStuaBKNY9VxP
+         PILw==
+X-Gm-Message-State: ACrzQf0o9mdBjYGE0IBsFaYwbIBQAX9Eq3+Sg9nLW0VIcqXy63WIGwW4
+        Lvx++1fCM2uOa0qLmbpS5fA=
+X-Google-Smtp-Source: AMsMyM4lnjqdKeMAabw8PP9V3uvyuKnpItq35VaTgS9zjxq/kTTRw3EEUlakeQXrm3m+QjSq8LwjyA==
+X-Received: by 2002:a17:902:cf42:b0:182:bccf:619f with SMTP id e2-20020a170902cf4200b00182bccf619fmr1272698plg.9.1668033775073;
+        Wed, 09 Nov 2022 14:42:55 -0800 (PST)
+Received: from dtor-ws.mtv.corp.google.com ([2620:15c:9d:2:6af4:9e55:5482:c0de])
+        by smtp.gmail.com with ESMTPSA id k17-20020a63ff11000000b0046f9f4a2de6sm7995042pgi.74.2022.11.09.14.42.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Nov 2022 14:42:54 -0800 (PST)
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>, Tony Lindgren <tony@atomide.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v2 1/3] ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
+Date:   Wed,  9 Nov 2022 14:42:48 -0800
+Message-Id: <20221109224250.2885119-1-dmitry.torokhov@gmail.com>
+X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: WTe1k7qXIrgiDmPGzQ6BJEkW2V5G3Snv
-X-Proofpoint-GUID: WTe1k7qXIrgiDmPGzQ6BJEkW2V5G3Snv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-09_06,2022-11-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 bulkscore=0 phishscore=0
- adultscore=0 mlxlogscore=875 malwarescore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211090164
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Process FILS discovery and unsolicited broadcast probe response
-transmission configurations in ieee80211_change_beacon().
+As of commit 2398c41d6432 ("omap: pdata-quirks: remove openpandora
+quirks for mmc3 and wl1251") the code no longer creates an instance of
+wl1251_platform_data, so there is no need for including this header.
 
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- net/mac80211/cfg.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index feb54b5e6ebd..3e8e74d01dc9 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1405,6 +1405,7 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
- 	struct cfg80211_beacon_data *beacon = &params->beacon;
- 	struct beacon_data *old;
- 	int err;
-+	u32 changed;
- 	struct ieee80211_bss_conf *link_conf;
- 
- 	sdata_assert_lock(sdata);
-@@ -1429,13 +1430,33 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
- 	if (err < 0)
- 		return err;
- 
-+	changed = err;
-+
-+	if (params->fils_discovery.max_interval) {
-+		err = ieee80211_set_fils_discovery(sdata,
-+						   &params->fils_discovery,
-+						   link, link_conf);
-+		if (err < 0)
-+			return err;
-+		changed |= BSS_CHANGED_FILS_DISCOVERY;
-+	}
-+
-+	if (params->unsol_bcast_probe_resp.interval) {
-+		err = ieee80211_set_unsol_bcast_probe_resp(sdata,
-+							   &params->unsol_bcast_probe_resp,
-+							   link, link_conf);
-+		if (err < 0)
-+			return err;
-+		changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
-+	}
-+
- 	if (beacon->he_bss_color_valid &&
- 	    beacon->he_bss_color.enabled != link_conf->he_bss_color.enabled) {
- 		link_conf->he_bss_color.enabled = beacon->he_bss_color.enabled;
--		err |= BSS_CHANGED_HE_BSS_COLOR;
-+		changed |= BSS_CHANGED_HE_BSS_COLOR;
- 	}
- 
--	ieee80211_link_info_change_notify(sdata, link, err);
-+	ieee80211_link_info_change_notify(sdata, link, changed);
- 	return 0;
- }
- 
+Changes in v2: added fix to arch/arm/mach-omap2/pdata-quirks.c
+Note this series was only compile-tested.
+
+ arch/arm/mach-omap2/pdata-quirks.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
+index 9deba798cc91..baba73fd6f11 100644
+--- a/arch/arm/mach-omap2/pdata-quirks.c
++++ b/arch/arm/mach-omap2/pdata-quirks.c
+@@ -10,7 +10,6 @@
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/of_platform.h>
+-#include <linux/wl12xx.h>
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/host.h>
+ #include <linux/power/smartreflex.h>
 -- 
-2.17.1
+2.38.1.431.g37b22c650d-goog
 
