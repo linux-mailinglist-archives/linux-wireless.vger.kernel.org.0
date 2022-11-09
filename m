@@ -2,150 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 917E9623045
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 17:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8422623053
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Nov 2022 17:40:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232016AbiKIQgA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 11:36:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42666 "EHLO
+        id S229975AbiKIQkN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 11:40:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232049AbiKIQfT (ORCPT
+        with ESMTP id S230318AbiKIQkJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 11:35:19 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB032494F;
-        Wed,  9 Nov 2022 08:35:08 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2A9GTqLE028995;
-        Wed, 9 Nov 2022 16:34:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=RntDMw5xqUv2PusgpyxEjzB7JxSqBHT4WmfZXV2PjDE=;
- b=iAasq3X3Fkm9dsexjIzY2UkVn0+LS9v4gqxUWlD42p/tK8OOs3MD2rTG+wOAd5x7dsS5
- CnCGLDDescuyZKqRHkfpgvsJ4zoXMg50MaEwghJCTIn/PBFwSa4cQVHT+TlZsDzAV1IJ
- Rbglz5z2aCYGEx4yHasFJvPmaNTi/deTQ6vNSq9XuwGhEZb/DZdgdHRHDekrT9sRixT3
- lIfzSi5/KH3VlawETVesJ1xk7t28b/Nqa9aHbiQBekhlfJdUOdaEJ9tm/wvaiZYMe+rz
- j7TgD/DDmx2Fi2rzmZ0NryD0ixVKdCKRpA/nLZKId6+OBPk+PBEeFpnyTbwPwNQDIFDN uQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3krfrpr0jj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Nov 2022 16:34:54 +0000
-Received: from pps.filterd (NALASPPMTA02.qualcomm.com [127.0.0.1])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 2A9GUQVp025176;
-        Wed, 9 Nov 2022 16:34:54 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 3kngwm0ytu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Nov 2022 16:34:54 +0000
-Received: from NALASPPMTA02.qualcomm.com (NALASPPMTA02.qualcomm.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A9GYrim028490;
-        Wed, 9 Nov 2022 16:34:53 GMT
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 2A9GYrLn028489
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Nov 2022 16:34:53 +0000
-Received: from [10.110.45.55] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 9 Nov 2022
- 08:34:52 -0800
-Message-ID: <4e81efea-23f1-e52c-b0b4-abf445ed5f15@quicinc.com>
-Date:   Wed, 9 Nov 2022 08:34:51 -0800
+        Wed, 9 Nov 2022 11:40:09 -0500
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C1B1AF0C
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 08:40:08 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id b2so48279060eja.6
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Nov 2022 08:40:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZKQQLbeg7eAQAwz5t2sIdkNfAdER2CbXB5FfXfdjF94=;
+        b=Ox0nG4VLf7gchvOEt1bHyxZM1/cPWv9ihfY5Uh8PFlrjKaL+b2njR0Js41JBl2W6Pu
+         SWnkTRIJgYcIQ5brigi/hQc81X7sADJ+0NHHqAG9SaThlJ2IaGS7/St1CYBS/GGYcLz8
+         IqCBmvAdahsaiMZSngNrxv4zM2448jn1ixTfHdyjx7DsMndbzrPDI+7BR34VmRQtHhyU
+         VNSHw6rJxx29DpE36lIkqVfMCiEl7yNZ2qghRZ7hPNaycPgxLWYFPp6Iesa9xZh5YuFp
+         0grrEfLjuN8LJReLT6DVNoUms2VhnOcxYvVrSDLy5Gu/h45EgaApqIpVhMGZ2n2Kd3sL
+         srQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZKQQLbeg7eAQAwz5t2sIdkNfAdER2CbXB5FfXfdjF94=;
+        b=g3fNXJOjcVHNlGCh5bxNst1XhGXYgakG2c0t9ExGQ+G+PxJiokM3wQlDEScu4JFEP2
+         DcIXPKB4whWinm/rA2NvNYtvxel8B2ta5023C7C2O9UGqKwwhKs4Oug6lkGyaBqpoN5q
+         9UIHFMzds3RXGVdTFzg1Q5NOp9h8aO/AEjTWzu0K9qbM106WBaH4WIPXV3FeT86/SJ+k
+         lM4/FVplqTPxxHqDtoudcHWQZy4gCkLlU+DVeT9JvFXqWlwUUZ/NNpPekvmsMpmLZ9+4
+         3/jQn8iGrkhEeyEXECOnM/OPbf9FcOzkGiKRzQCn5E/DTV9ipiWRrw3VnpEDU6RaN9Tp
+         z9/w==
+X-Gm-Message-State: ACrzQf0L+fXEgcO3MEXJa8gWz4q6Ln5ii0XvT55dLF4OQ/0rVaMOcULW
+        KEn5bqSIj6gw9dnfW9U/NRE=
+X-Google-Smtp-Source: AMsMyM7iL0Q66TYUJH6wERpewULJ0Dvpelio5QnmSd/ukKz+0TN5TC3lYR2Qy+Cfy2+A5+YREaNyFw==
+X-Received: by 2002:a17:907:2bd9:b0:7ad:c301:a799 with SMTP id gv25-20020a1709072bd900b007adc301a799mr53060105ejc.713.1668012007326;
+        Wed, 09 Nov 2022 08:40:07 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.23])
+        by smtp.gmail.com with ESMTPSA id eg23-20020a056402289700b00461aca1c7b6sm7259478edb.6.2022.11.09.08.40.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Nov 2022 08:40:07 -0800 (PST)
+Message-ID: <55da7e44-b93a-c24f-0c52-d8ea6deb5e39@gmail.com>
+Date:   Wed, 9 Nov 2022 18:40:05 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] wifi: ath10k: Fix resource leak in ath10k_pci_init()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 1/3] wifi: rtl8xxxu: Name some bits used in burst init
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
+References: <91f59414-86f7-f0ed-a138-19f0ab63bb0b@gmail.com>
+ <c357973fd0e547e69c03a8d7cfc092d2@realtek.com>
 Content-Language: en-US
-To:     Xiu Jianfeng <xiujianfeng@huawei.com>, <kvalo@kernel.org>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <rmani@qti.qualcomm.com>
-CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20221108133858.53308-1-xiujianfeng@huawei.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20221108133858.53308-1-xiujianfeng@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <c357973fd0e547e69c03a8d7cfc092d2@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Ohkn7-XpSZ17OwMxEJ7nooLsjNdfRHkF
-X-Proofpoint-GUID: Ohkn7-XpSZ17OwMxEJ7nooLsjNdfRHkF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-09_06,2022-11-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 clxscore=1011 mlxscore=0 bulkscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211090125
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/8/2022 5:38 AM, Xiu Jianfeng wrote:
-> When ath10k_ahb_init() fails, it does not unregister ath10k_pci_driver,
-> which will cause a resource leak issue, call pci_unregister_driver() in
-> the error path to fix this issue.
+On 09/11/2022 02:41, Ping-Ke Shih wrote:
 > 
-> Fixes: 0b523ced9a3c ("ath10k: add basic skeleton to support ahb")
-> Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-> ---
->   drivers/net/wireless/ath/ath10k/pci.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Wednesday, November 9, 2022 2:54 AM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>
+>> Subject: [PATCH 1/3] wifi: rtl8xxxu: Name some bits used in burst init
+>>
+>> Names provided by Ping-Ke Shih.
 > 
-> diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> index e56c6a6b1379..22f8f8b20762 100644
-> --- a/drivers/net/wireless/ath/ath10k/pci.c
-> +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> @@ -3800,8 +3800,10 @@ static int __init ath10k_pci_init(void)
->   		       ret);
->   
->   	ret = ath10k_ahb_init();
-> -	if (ret)
-> +	if (ret) {
->   		printk(KERN_ERR "ahb init failed: %d\n", ret);
-> +		pci_unregister_driver(&ath10k_pci_driver);
-> +	}
->   
->   	return ret;
->   }
-
-imo neither the existing code nor the modified code is correct.
-
-the driver is attempting to register to support two different buses.
-
-if either of these is successful then ath10k_pci_init() should return 0 
-so that hardware attached to the successful bus can be probed and supported.
-
-only if both of these are unsuccessful should ath10k_pci_init() return 
-an errno.
-
-so I suggest
-	int ret1, ret2;
-
-	ret1 = pci_register_driver(&ath10k_pci_driver);
-	if (ret1)
-		printk(KERN_ERR "failed to register ath10k pci driver: %d\n",
-		       ret1);
-
-	ret2 = ath10k_ahb_init();
-	if (ret2)
-		printk(KERN_ERR "ahb init failed: %d\n", ret2);
-
-	if (ret1 && ret2)
-		return ret1;
-
-	/* registered to at least one bus */
-	return 0;
-}
+> Ha. That looks weird to see my name in commit message. Could you say
+> "use descriptive names instead of magic number" or something like that?
+> 
+Of course, I'll change that.
 
