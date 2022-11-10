@@ -2,188 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5747762464E
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Nov 2022 16:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 091486246EE
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Nov 2022 17:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231674AbiKJPr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Nov 2022 10:47:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32822 "EHLO
+        id S231741AbiKJQ3Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Nov 2022 11:29:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231681AbiKJPrZ (ORCPT
+        with ESMTP id S231727AbiKJQ3W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Nov 2022 10:47:25 -0500
-X-Greylist: delayed 309 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 10 Nov 2022 07:47:24 PST
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43C793E0A6
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Nov 2022 07:47:24 -0800 (PST)
-Received: from evilbit.green-communications.fr ([92.154.77.116]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis)
- id 1MZk5x-1oWQ1N2sFD-00Wms6; Thu, 10 Nov 2022 16:42:02 +0100
-From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH 4/4] wifi: mt76: mt7915: don't claim 160MHz support with mt7915 DBDC
-Date:   Thu, 10 Nov 2022 16:39:53 +0100
-Message-Id: <20221110153953.22562-5-nicolas.cavallari@green-communications.fr>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221110153953.22562-1-nicolas.cavallari@green-communications.fr>
-References: <20221110153953.22562-1-nicolas.cavallari@green-communications.fr>
+        Thu, 10 Nov 2022 11:29:22 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5482FFDD
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Nov 2022 08:29:21 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id y4so1812123plb.2
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Nov 2022 08:29:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qnovQdeIx+egc+wctWL+zO6cHJ44FnQ3qczpXh6b5Rc=;
+        b=Gwp1kDX1FCipY1yoLpoRT+LKjTgivm7wfhgwGSd+RxZ9DNE5AG3m9vlIgq9mLbP0Mv
+         nQbd8Jt8mHZgthGzGyDe8BU1HvPhBk04H663rBtsiO7WgszATd/0LdyYYXz/0Gpdb7it
+         FEhrmO0m4dENT3TwGhnrL3hBp/C7TXrZIQVZQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qnovQdeIx+egc+wctWL+zO6cHJ44FnQ3qczpXh6b5Rc=;
+        b=R8ZO3iLThgrTHp8+d1TYBM+ULWmwzxzHDhHVBwWwDUrpCnFOgSgsSgd3813i9nDjRN
+         L9CyuN/6Wb9OlLj2D0tS4iLoHBqgH35vQLxLJXM0y3hibH2eqbJp+53j1okt8g/5LXt1
+         wGXDr7g9pHxXmzT3Bafy+cClCavxYbn6BKhvzretxA8MjZhoutnqvBNr+dwbf2OfR/Vs
+         bUahmNhWKOr5AgO0WYqXFGIoaopcNFYw7tMNdsHZ7rQpaq7ghdO6KUxAtoxFLSoqU+Y9
+         3ypLaHSWhiqhJVt1XdlhaLTTvzzzD3OWlq/BIRYp4mybbayCTveJvJLyViB902ufP9Tm
+         nnzw==
+X-Gm-Message-State: ANoB5plpHvFM5/LnYPqVpAvYV6kEDh/s7RwFZIdm1nx1zmLY8dJVANHE
+        NU3alHEfThk5YJ3Jqa8fCqk5hJvyzKeqRg==
+X-Google-Smtp-Source: AA0mqf4OAxg/aPEkLol3W9r99Ywjc2Hkx53s92PFLJXoZPdWyG8E6OPkaKwZNdmxaRGyPJxvqOAU9Q==
+X-Received: by 2002:a17:902:ca0d:b0:188:9806:2e05 with SMTP id w13-20020a170902ca0d00b0018898062e05mr4228345pld.112.1668097760798;
+        Thu, 10 Nov 2022 08:29:20 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id nn14-20020a17090b38ce00b00213d28a6dedsm3315459pjb.13.2022.11.10.08.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Nov 2022 08:29:20 -0800 (PST)
+From:   coverity-bot <keescook@chromium.org>
+X-Google-Original-From: coverity-bot <keescook+coverity-bot@chromium.org>
+Date:   Thu, 10 Nov 2022 08:29:19 -0800
+To:     Daniel Drake <dsd@laptop.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-next@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Coverity: if_sdio_reset_card_worker(): Error handling issues
+Message-ID: <202211100829.34D7E6894@keescook>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:hdCc4p4xDDbyDoUyNOU2iJp595S2wa6epFe7YT97gG+3hfHs7JO
- RPZx7M/aK9vpAPCLMvIn1Sy1LasekiWPcxP/2bG5bSnsgdp28q4KaI7viWckSF9jqIXKSSB
- GL57mjgg8y/ySNI8yCgiS2zkezcjxTWkRwNldNY2eMcMrAryzqu2TONd2wHkGICGytrs3Qb
- FTDKG8ybVgcHDBsPzVsog==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:p0mUQi40ceA=:hhxUmzbH1Mo4D2NaqQltHT
- +9pS1xRnOGGdY1uHFWyGr8JReNYmivd/adferQk1qIcWwmdHdw67wlri1rDCj5g7tbbnVeSIY
- H4ew5Msr1QNzOIdABfs2cLyxCbJD64fxq6m7NRiEwgb6efuUfxEZ+UTb5XVz9i0CWwaIxOH0t
- ltCfhukZL9e5ZzwqPbAFhyoXT+JOvEY786IwDz3we+ZOFq0tkCKYRe1e024ofi42HFodhj/kY
- 05E4zOEmNVdejYxopND4QEBE2B5qGAMKpQH/BeXojmyooy6RJWN1O3oTq2WhpTYpYcIHs8otc
- CcxbYeMChBMg9DsG4E1XIPB6Xm30ltHgvqyNzoO7Fz7MH0zOxniCoitWo4pDTe2AObtK4/XDJ
- GbqtwpYZWjlyEOFLDd9O+b9VpTsOG3pHOcWqWsMx+pjbNye82whGtvVX9pIKJ+gR1rFp1zmaX
- 1JM1guQTohM428p7gbC07GiCumeXb5W36FOl2mI9a5NgaWK/cWamSgRkZ3cYR/PXLsWSC1xhe
- 3YXp5FUR9kYkkalZYNq7ARFfMD4sDSDFWXnsb/MvZbzl6LYoAtwMvJbEFE90ur51rag2Q/+oO
- NySDfuwRXKwkaVijdvYUvGiS/x8OVV8Tgg3ABtSv8GqctduoqjkxfOgUu8ELh5aO3yz8nKX0R
- NPkhaAXkc/yFYYveGFwq7JnzOZIzHPkuxCAxsdHqWun0bSkuqP9AezPzsMv9pi69rmsVv3KTE
- Rn60WgaRY/fpolO1z/f2DZUtYY5m2V4GGNuXhI57dhs/xKhWCe0HxUS/5GxH2MFpKw724Ynen
- Nk2xpdNhf1xVlfhW0wGxnE4Wx+O3snfJNNZoNhAxrd4lKFA0ZKAPts+4F58Ixb2pWZF3ZbTlU
- uvepUpcQQ66aAq3sSXRSjl8h/GBw77g4KO+UNpFM8798bxqe/p1GenDVFdYHth1WOxUKjGkOR
- mZl0c+p4P/NTzU+EX/klWPjMKJ3YryXcUh9WynJYT0xG/aBLjsqXy9OIq1EO5IRSGTenjuV02
- LGe2VrXLzUmH5uZDp0yxuDw0erMufc/0qN+0Wlpgu6sDkEWq+wBnKHWQuRiMLcbUAntgEkfiI
- wBxfx+3QnbekoFW4hHaRLTHKnALRs1CL/Y5nZj+jrK8b2Cc4dgedkaLuanRcUom/ZZQ60zORp
- dXjZjOX6LDHhsrgH28Y7TLcPXF8RWX1hTqOeC0ZTBEqzwp9NpcUBgrqHEmPPVQiGTcJJ7FeHe
- yRZX5eeh32e3eOWomJB9XYOV8I245UCdc1CLV5alOhWe48s+BF2VP2dyt9y/Qzd82tYNb4tAR
- 7C7hfB+8VUO5LSQldv9JkibjXU6SB8jR8oSgTu6lhrKfJlyzbvs=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The hardware simply does not support this in DBDC mode.  Remove it from
-the HE capabilities.
+Hello!
 
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
----
- .../net/wireless/mediatek/mt76/mt7915/init.c  | 47 ++++++++++++-------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+This is an experimental semi-automated report about issues detected by
+Coverity from a scan of next-20221110 as part of the linux-next scan project:
+https://scan.coverity.com/projects/linux-next-weekly-scan
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index f2707115b5f3..e257b031400f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -737,8 +737,12 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
- 	u8 c, sts_160 = sts;
- 
- 	/* Can do 1/2 of STS in 160Mhz mode for mt7915 */
--	if (is_mt7915(&dev->mt76) && !dev->dbdc_support)
--		sts_160 /= 2;
-+	if (is_mt7915(&dev->mt76)) {
-+		if (!dev->dbdc_support)
-+			sts_160 /= 2;
-+		else
-+			sts_160 = 0;
-+	}
- 
- #ifdef CONFIG_MAC80211_MESH
- 	if (vif == NL80211_IFTYPE_MESH_POINT)
-@@ -748,8 +752,9 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
- 	elem->phy_cap_info[3] &= ~IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER;
- 	elem->phy_cap_info[4] &= ~IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
- 
--	c = IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK |
--	    IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK;
-+	c = IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK;
-+	if (sts_160)
-+		c |= IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK;
- 	elem->phy_cap_info[5] &= ~c;
- 
- 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB |
-@@ -765,8 +770,9 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
- 	elem->phy_cap_info[2] |= c;
- 
- 	c = IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE |
--	    IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_4 |
--	    IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4;
-+	    IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_4;
-+	if (sts_160)
-+		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4;
- 	elem->phy_cap_info[4] |= c;
- 
- 	/* do not support NG16 due to spec D4.0 changes subcarrier idx */
-@@ -791,12 +797,13 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
- 	elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
- 
- 	/* num_snd_dim
--	 * for mt7915, max supported sts is 2 for bw > 80MHz
-+	 * for mt7915, max supported sts is 2 for bw > 80MHz and 0 if dbdc
- 	 */
- 	c = FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK,
--		       sts - 1) |
--	    FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK,
--		       sts_160 - 1);
-+		       sts - 1);
-+	if (sts_160)
-+		c |= FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK,
-+				sts_160 - 1);
- 	elem->phy_cap_info[5] |= c;
- 
- 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB |
-@@ -841,11 +848,14 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 	u16 mcs_map_160 = 0;
- 	u8 nss_160;
- 
--	/* Can do 1/2 of NSS streams in 160Mhz mode for mt7915 */
--	if (is_mt7915(&dev->mt76) && !dev->dbdc_support)
-+	if (!is_mt7915(&dev->mt76))
-+		nss_160 = nss;
-+	else if (!dev->dbdc_support)
-+		/* Can do 1/2 of NSS streams in 160Mhz mode for mt7915 */
- 		nss_160 = nss / 2;
- 	else
--		nss_160 = nss;
-+		/* Can't do 160MHz with mt7915 dbdc */
-+		nss_160 = 0;
- 
- 	for (i = 0; i < 8; i++) {
- 		if (i < nss)
-@@ -891,11 +901,14 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 		if (band == NL80211_BAND_2GHZ)
- 			he_cap_elem->phy_cap_info[0] =
- 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G;
--		else
-+		else if (nss_160)
- 			he_cap_elem->phy_cap_info[0] =
- 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
- 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
- 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G;
-+		else
-+			he_cap_elem->phy_cap_info[0] =
-+				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
- 
- 		he_cap_elem->phy_cap_info[1] =
- 			IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD;
-@@ -949,9 +962,11 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 				IEEE80211_HE_PHY_CAP7_HE_SU_MU_PPDU_4XLTF_AND_08_US_GI;
- 			he_cap_elem->phy_cap_info[8] |=
- 				IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
--				IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
--				IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU |
- 				IEEE80211_HE_PHY_CAP8_DCM_MAX_RU_484;
-+			if (nss_160)
-+				he_cap_elem->phy_cap_info[8] |=
-+					IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
-+					IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
- 			he_cap_elem->phy_cap_info[9] |=
- 				IEEE80211_HE_PHY_CAP9_LONGER_THAN_16_SIGB_OFDM_SYM |
- 				IEEE80211_HE_PHY_CAP9_NON_TRIGGERED_CQI_FEEDBACK |
+You're getting this email because you were associated with the identified
+lines of code (noted below) that were touched by commits:
+
+  Fri Jun 10 14:57:47 2011 -0400
+    9a821f5d0fc3 ("libertas: add sd8686 reset_card support")
+
+Coverity reported the following:
+
+*** CID 1527255:  Error handling issues  (CHECKED_RETURN)
+drivers/net/wireless/marvell/libertas/if_sdio.c:1048 in if_sdio_reset_card_worker()
+1042     	 * We run it in a workqueue totally independent from the if_sdio_card
+1043     	 * instance for that reason.
+1044     	 */
+1045
+1046     	pr_info("Resetting card...");
+1047     	mmc_remove_host(reset_host);
+vvv     CID 1527255:  Error handling issues  (CHECKED_RETURN)
+vvv     Calling "mmc_add_host" without checking return value (as is done elsewhere 27 out of 32 times).
+1048     	mmc_add_host(reset_host);
+1049     }
+1050     static DECLARE_WORK(card_reset_work, if_sdio_reset_card_worker);
+1051
+1052     static void if_sdio_reset_card(struct lbs_private *priv)
+1053     {
+
+If this is a false positive, please let us know so we can mark it as
+such, or teach the Coverity rules to be smarter. If not, please make
+sure fixes get into linux-next. :) For patches fixing this, please
+include these lines (but double-check the "Fixes" first):
+
+Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
+Addresses-Coverity-ID: 1527255 ("Error handling issues")
+Fixes: 9a821f5d0fc3 ("libertas: add sd8686 reset_card support")
+
+Thanks for your attention!
+
 -- 
-2.38.1
-
+Coverity-bot
