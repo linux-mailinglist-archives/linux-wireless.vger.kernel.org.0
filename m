@@ -2,383 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D146238C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Nov 2022 02:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 321806238F4
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Nov 2022 02:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232181AbiKJBYP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Nov 2022 20:24:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
+        id S232375AbiKJBh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Nov 2022 20:37:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229802AbiKJBYP (ORCPT
+        with ESMTP id S232331AbiKJBhY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Nov 2022 20:24:15 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BF88C186D6;
-        Wed,  9 Nov 2022 17:24:11 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AA1MBeW4002649, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AA1MBeW4002649
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 10 Nov 2022 09:22:11 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Thu, 10 Nov 2022 09:22:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 10 Nov 2022 09:22:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Thu, 10 Nov 2022 09:22:49 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Wei Li <liwei391@huawei.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "huawei.libin@huawei.com" <huawei.libin@huawei.com>
-Subject: RE: [PATCH v2] wifi: rtlwifi: Correct header guards of rtl8188ee/rtl8723ae/rtl8192de
-Thread-Topic: [PATCH v2] wifi: rtlwifi: Correct header guards of
- rtl8188ee/rtl8723ae/rtl8192de
-Thread-Index: AQHY9DlHGYaJ/TWn8067GSJWx7N/Fa43XI/A
-Date:   Thu, 10 Nov 2022 01:22:49 +0000
-Message-ID: <53fc2d55a61e4ea7a4760e349e6b3f78@realtek.com>
-References: <20221109124445.3246937-1-liwei391@huawei.com>
-In-Reply-To: <20221109124445.3246937-1-liwei391@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/9_=3F=3F_11:44:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 9 Nov 2022 20:37:24 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FAA2201A0
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Nov 2022 17:37:19 -0800 (PST)
+X-UUID: 9448f9a5e0d24f6f932ccd484211528f-20221110
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=t/3cMdplP6bvfk49doZdF/4hC0mH6rLs2Pb0c5MFHbc=;
+        b=KdYJbhI/zKdVnDf7M5MufOE5fZmVgkME6R77/qIGGKR+n1mV5Ys3zKoOc11U32m7Pp8mk1ndFiGBBHwLdeJBaxBLehjSY9vPWj9fUIk8yb/kG3iUdGmgiyS5vaqmAe/c3Ekwel8G0aAVijP5vT62NwDa08GUEyEsYhK5jOZEUos=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.12,REQID:7bfdc15b-b660-40cc-9075-f9ea146ce1c1,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:62cd327,CLOUDID:848ad950-b7af-492d-8b40-b1032f90ce11,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 9448f9a5e0d24f6f932ccd484211528f-20221110
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
+        (envelope-from <howard-yh.hsu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1853231720; Thu, 10 Nov 2022 09:37:13 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Thu, 10 Nov 2022 09:37:12 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Thu, 10 Nov 2022 09:37:12 +0800
+From:   Howard Hsu <howard-yh.hsu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.Lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Howard Hsu <howard-yh.hsu@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: fix incorrect tx path number configuration
+Date:   Thu, 10 Nov 2022 09:37:01 +0800
+Message-ID: <20221110013701.14790-1-howard-yh.hsu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
+        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+For a variant of mt7916, it supports up to 3 tx/rx paths but only 2
+spatial streams. This implies that it has one more path to support
+beamform. The correct tx/rx path number shall be configured to make sure
+beamform works properly.
 
-> -----Original Message-----
-> From: Wei Li <liwei391@huawei.com>
-> Sent: Wednesday, November 9, 2022 8:45 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller <davem@davemloft.net>;
-> Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>
-> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; huawei.libin@huawei.com
-> Subject: [PATCH v2] wifi: rtlwifi: Correct header guards of rtl8188ee/rtl8723ae/rtl8192de
-> 
-> The header guards of rtl8188ee/rtl8723ae/rtl8192de are promiscuous
-> currently. Rename them to be consistent with their module names.
-> 
-> Fixes: f0eb856e0b6c ("rtlwifi: rtl8188ee: Add new driver")
-> Fixes: c592e631bcec ("rtlwifi: rtl8723ae: Add new driver")
-> Fixes: 4f01358e5b8a ("rtlwifi: rtl8192de: Merge dynamic management routines")
-> Signed-off-by: Wei Li <liwei391@huawei.com>
-> ---
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h     | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h     | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h     | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h     | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h  | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h     | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h     | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h    | 4 ++--
->  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h    | 4 ++--
->  16 files changed, 32 insertions(+), 32 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-> index edcca42c7464..2f88a6faf535 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C_DEF_H__
-> -#define __RTL92C_DEF_H__
-> +#ifndef __RTL88EE_DEF_H__
-> +#define __RTL88EE_DEF_H__
-> 
->  #define HAL_PRIME_CHNL_OFFSET_DONT_CARE			0
->  #define HAL_PRIME_CHNL_OFFSET_LOWER			1
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h
-> index eb8090caeec2..1573d277a920 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef	__RTL88E_DM_H__
-> -#define __RTL88E_DM_H__
-> +#ifndef	__RTL88EE_DM_H__
+Fixes: 66065073177b ("wifi: mt76: mt7915: deal with special variant of mt7916")
+Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-Use a space instead.
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c |  8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  | 16 ++++++++--------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-> +#define __RTL88EE_DM_H__
-> 
->  #define	MAIN_ANT					0
->  #define	AUX_ANT						1
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h
-> index 79f095e47d71..863ddcd98202 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C__FW__H__
-> -#define __RTL92C__FW__H__
-> +#ifndef __RTL88EE__FW__H__
-> +#define __RTL88EE__FW__H__
-> 
->  #define FW_8192C_SIZE				0x8000
->  #define FW_8192C_START_ADDRESS			0x1000
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h
-> index fd09b0712d17..3140b6938ffd 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92CE_HW_H__
-> -#define __RTL92CE_HW_H__
-> +#ifndef __RTL88EE_HW_H__
-> +#define __RTL88EE_HW_H__
-> 
->  void rtl88ee_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
->  void rtl88ee_read_eeprom_info(struct ieee80211_hw *hw);
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h
-> index 67d3dc389ba0..da8a1af3606d 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/led.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92CE_LED_H__
-> -#define __RTL92CE_LED_H__
-> +#ifndef __RTL88EE_LED_H__
-> +#define __RTL88EE_LED_H__
-> 
->  void rtl88ee_init_sw_leds(struct ieee80211_hw *hw);
->  void rtl88ee_sw_led_on(struct ieee80211_hw *hw, struct rtl_led *pled);
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h
-> index 8157ef419eeb..1fa9fd0d472a 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C_PHY_H__
-> -#define __RTL92C_PHY_H__
-> +#ifndef __RTL88EE_PHY_H__
-> +#define __RTL88EE_PHY_H__
-> 
->  /* MAX_TX_COUNT must always set to 4, otherwise read efuse
->   * table secquence will be wrong.
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h
-> index 42e222c1795f..e1d6df65c5c4 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/pwrseq.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL8723E_PWRSEQ_H__
-> -#define __RTL8723E_PWRSEQ_H__
-> +#ifndef __RTL88EE_PWRSEQ_H__
-> +#define __RTL88EE_PWRSEQ_H__
-> 
->  #include "../pwrseqcmd.h"
->  /* Check document WM-20110607-Paul-RTL8188EE_Power_Architecture-R02.vsd
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h
-> index 0fc8db8916fa..6392f2e24ac1 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/reg.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C_REG_H__
-> -#define __RTL92C_REG_H__
-> +#ifndef __RTL88EE_REG_H__
-> +#define __RTL88EE_REG_H__
-> 
->  #define TXPKT_BUF_SELECT				0x69
->  #define RXPKT_BUF_SELECT				0xA5
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h
-> index 05e27b40b2a9..76cb4cd2b5a2 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rf.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C_RF_H__
-> -#define __RTL92C_RF_H__
-> +#ifndef __RTL88EE_RF_H__
-> +#define __RTL88EE_RF_H__
-> 
->  #define RF6052_MAX_TX_PWR		0x3F
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h
-> index df6065602401..dd4eee147b4c 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/table.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92CE_TABLE__H_
-> -#define __RTL92CE_TABLE__H_
-> +#ifndef __RTL88EE_TABLE__H_
-> +#define __RTL88EE_TABLE__H_
-> 
->  #include <linux/types.h>
->  #define  RTL8188EEPHY_REG_1TARRAYLEN	382
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-> index e17f70b4d199..025087026068 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2013  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92CE_TRX_H__
-> -#define __RTL92CE_TRX_H__
-> +#ifndef __RTL88EE_TRX_H__
-> +#define __RTL88EE_TRX_H__
-> 
->  #define TX_DESC_SIZE					64
->  #define TX_DESC_AGGR_SUBFRAME_SIZE		32
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h
-> index 939cc45bfebd..9cd9070a0281 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2012  Realtek Corporation.*/
-> 
-> -#ifndef	__RTL92C_DM_H__
-> -#define __RTL92C_DM_H__
-> +#ifndef	__RTL92D_DM_H__
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 6de49b93387e..0ebaed174d5d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -953,7 +953,7 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+ 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+ 	int max_nss = hweight8(hw->wiphy->available_antennas_tx);
+-	bool ext_phy = phy != &dev->phy;
++	u8 chainshift = dev->chainshift;
+ 
+ 	if (!tx_ant || tx_ant != rx_ant || ffs(tx_ant) > max_nss)
+ 		return -EINVAL;
+@@ -963,10 +963,10 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 	phy->mt76->antenna_mask = tx_ant;
+ 
+ 	/* handle a variant of mt7916 which has 3T3R but nss2 on 5 GHz band */
+-	if (is_mt7916(&dev->mt76) && ext_phy && hweight8(tx_ant) == max_nss)
+-		phy->mt76->chainmask = dev->chainmask >> dev->chainshift;
++	if (is_mt7916(&dev->mt76) && phy->band_idx && hweight8(tx_ant) == max_nss)
++		phy->mt76->chainmask = (dev->chainmask >> chainshift) << chainshift;
+ 	else
+-		phy->mt76->chainmask = tx_ant << (dev->chainshift * ext_phy);
++		phy->mt76->chainmask = tx_ant << (chainshift * phy->band_idx);
+ 
+ 	mt76_set_stream_caps(phy->mt76, true);
+ 	mt7915_set_stream_vht_txbf_caps(phy);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 65ae959859e7..790d690fabc3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2632,8 +2632,8 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
+ 		u8 control_ch;
+ 		u8 center_ch;
+ 		u8 bw;
+-		u8 tx_streams_num;
+-		u8 rx_streams;	/* mask or num */
++		u8 tx_path_num;
++		u8 rx_path;	/* mask or num */
+ 		u8 switch_reason;
+ 		u8 band_idx;
+ 		u8 center_ch2;	/* for 80+80 only */
+@@ -2649,8 +2649,8 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
+ 		.control_ch = chandef->chan->hw_value,
+ 		.center_ch = ieee80211_frequency_to_channel(freq1),
+ 		.bw = mt76_connac_chan_bw(chandef),
+-		.tx_streams_num = hweight8(phy->mt76->antenna_mask),
+-		.rx_streams = phy->mt76->antenna_mask,
++		.tx_path_num = hweight16(phy->mt76->chainmask),
++		.rx_path = phy->mt76->chainmask >> (dev->chainshift * phy->band_idx),
+ 		.band_idx = phy->band_idx,
+ 		.channel_band = ch_band[chandef->chan->band],
+ 	};
+@@ -2658,13 +2658,13 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
+ #ifdef CONFIG_NL80211_TESTMODE
+ 	if (phy->mt76->test.tx_antenna_mask &&
+ 	    mt76_testmode_enabled(phy->mt76)) {
+-		req.tx_streams_num = fls(phy->mt76->test.tx_antenna_mask);
+-		req.rx_streams = phy->mt76->test.tx_antenna_mask;
++		req.tx_path_num = fls(phy->mt76->test.tx_antenna_mask);
++		req.rx_path = phy->mt76->test.tx_antenna_mask;
+ 	}
+ #endif
+ 
+ 	if (mt76_connac_spe_idx(phy->mt76->antenna_mask))
+-		req.tx_streams_num = fls(phy->mt76->antenna_mask);
++		req.tx_path_num = fls(phy->mt76->antenna_mask);
+ 
+ 	if (cmd == MCU_EXT_CMD(SET_RX_PATH) ||
+ 	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
+@@ -2678,7 +2678,7 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
+ 		req.switch_reason = CH_SWITCH_NORMAL;
+ 
+ 	if (cmd == MCU_EXT_CMD(CHANNEL_SWITCH))
+-		req.rx_streams = hweight8(req.rx_streams);
++		req.rx_path = hweight8(req.rx_path);
+ 
+ 	if (chandef->width == NL80211_CHAN_WIDTH_80P80) {
+ 		int freq2 = chandef->center_freq2;
+-- 
+2.18.0
 
-use a space instead.
-
-> +#define __RTL92D_DM_H__
-> 
->  #define HAL_DM_DIG_DISABLE			BIT(0)
->  #define HAL_DM_HIPWR_DISABLE			BIT(1)
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h
-> index 7599c7e5ecc3..71239a24f2c7 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2012  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92CE_LED_H__
-> -#define __RTL92CE_LED_H__
-> +#ifndef __RTL92DE_LED_H__
-> +#define __RTL92DE_LED_H__
-> 
->  void rtl92de_init_sw_leds(struct ieee80211_hw *hw);
->  void rtl92de_sw_led_on(struct ieee80211_hw *hw, struct rtl_led *pled);
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h
-> index 3f9ed9b4428e..3ab4a7389012 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/fw.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2012  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C__FW__H__
-> -#define __RTL92C__FW__H__
-> +#ifndef __RTL8723E__FW__H__
-> +#define __RTL8723E__FW__H__
-
-23AE
-
-> 
->  #define FW_8192C_SIZE					0x3000
->  #define FW_8192C_START_ADDRESS			0x1000
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h
-> index 9f85845d23cd..372f02409dda 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/led.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2012  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92CE_LED_H__
-> -#define __RTL92CE_LED_H__
-> +#ifndef __RTL8723E_LED_H__
-> +#define __RTL8723E_LED_H__
-
-23AE
-
-> 
->  void rtl8723e_init_sw_leds(struct ieee80211_hw *hw);
->  void rtl8723e_sw_led_on(struct ieee80211_hw *hw, struct rtl_led *pled);
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h
-> index 98bfe02f66d5..40c89095fd57 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.h
-> @@ -1,8 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* Copyright(c) 2009-2012  Realtek Corporation.*/
-> 
-> -#ifndef __RTL92C_PHY_H__
-> -#define __RTL92C_PHY_H__
-> +#ifndef __RTL8723E_PHY_H__
-> +#define __RTL8723E_PHY_H__
-
-23AE
-
-> 
->  #define MAX_PRECMD_CNT				16
->  #define MAX_RFDEPENDCMD_CNT			16
-> --
-> 2.25.1
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
