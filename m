@@ -2,195 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 625756259AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Nov 2022 12:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD29E6259B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Nov 2022 12:44:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233119AbiKKLnN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Nov 2022 06:43:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48532 "EHLO
+        id S232979AbiKKLoa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Nov 2022 06:44:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233267AbiKKLnE (ORCPT
+        with ESMTP id S232004AbiKKLo1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Nov 2022 06:43:04 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA0CE45ECF;
-        Fri, 11 Nov 2022 03:43:02 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ABAt9kZ025079;
-        Fri, 11 Nov 2022 11:42:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=seBFUaRp3ouDX4be0OELujUijoj4Q03BoNVadg0/LK4=;
- b=oVitbTaMdAuM7waoylsi39KLcq28CejbgAl/pb+ujA7f78qkVkD0+774T9TRPwDhxz26
- Vzo8MkcDofre/6lm2Cbng98/C98GDb4t9ZkLmy6UjuRoNMDvHCUK7n9o7xJpKt1jP14N
- /VNhtcx8lC8vXuCUjLVPkyptYqTgmuBrv+1od+YUBSS9li6Q+o0bvwWfrWyTEsxYeeRx
- 7q0Nj5nk7Au+a2DOO9SIPltuGl6GDDtoT6GEGemn8ZDrkHJayH4PWnJPpZ2nm9i/nk/q
- HDD+MS65+iR8kd3cQ/nEJIj35Z4vofYmph0g9YXzCY8uE4DWoNrMsoIlKFyFnSx9a8y0 fw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ksada1t6k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Nov 2022 11:42:57 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2ABBgu7J010956
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Nov 2022 11:42:56 GMT
-Received: from youghand-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Fri, 11 Nov 2022 03:42:54 -0800
-From:   Youghandhar Chintala <quic_youghand@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_mpubbise@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        "Youghandhar Chintala" <quic_youghand@quicinc.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v3] wifi: ath10k: Add WLAN firmware image version info into smem
-Date:   Fri, 11 Nov 2022 17:12:35 +0530
-Message-ID: <20221111114235.10287-1-quic_youghand@quicinc.com>
-X-Mailer: git-send-email 2.38.0
+        Fri, 11 Nov 2022 06:44:27 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A88013F4D
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Nov 2022 03:44:26 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id a11-20020a05600c2d4b00b003cf6f5fd9f1so2991197wmg.2
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Nov 2022 03:44:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Jg6ZLD8fiw3RZ0xzdplxIP2yMm5V3QqfNz4akGU+S0k=;
+        b=R0rdNYyR9W619Eg52+zca0AA7HJC99RUj08rcCogsOmlHr5vPsILltUCRquQjtUTFJ
+         SBVaFgEwVzRSehdR7ssQWegtRPx6iT7Lg+AfchLl9ZGvxd/F25cvxVBwxg7GIsHGv8Va
+         LjpZQD98XbrQh0qBn5hBTMUXgQjnEzhcZo1RbqO21vhc8ejIEeOeC2X7iT4pcdcpxFrV
+         rowwwkUa3rKQdykuE0XANcVZvdj+yrDgJLPkH+Z0wZl4c8J/ruHaX+0drwW7oer0w7Xj
+         PRSYsiAFIrvQ1fVbKjhPTh32r99nSWsb2QHSN7VWJhbop9y8OS6+gJuMEJeJYzlYVZuC
+         EQxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jg6ZLD8fiw3RZ0xzdplxIP2yMm5V3QqfNz4akGU+S0k=;
+        b=Eu+icsUpmbeRUvtgNlhufLyPD6Oj88bx09eQRLVi2NVe+VXb/fg9nWrcBf6IkvjV70
+         E4NIH2otXDuhLMwpFN8j/wAXCF2EjNsnnWmtUk2wPWr+6oFr6n4KfABSv5+jvGvH/Eq4
+         0SnLOVSu5vW0HMmq2h+ms7Ck2HMKTDAOB0YLW31h6diHsZk25nLpnV06xYVLknxZ//rM
+         oEnGA1Vr9CYYLAKBQelRSOB7ImI7ieww+LOyNJzDBt8udcv1NrPilMpRVXgAPddzb4Kj
+         Mdqc+BszxWx5kgz8odLTbXYns8QlG8U5+lZgaXflHMpiLm/SG/UNbXbEYzinnVblm8qv
+         1HJA==
+X-Gm-Message-State: ANoB5pmbm8rbNG2xwVyj0NB0EZYkhYr+w9jEVaKN7wWsOqCF49Ufxkz/
+        QiNvis1jVwf1VPKegyELdaj7Mq2+tjc=
+X-Google-Smtp-Source: AA0mqf4yU16bc+usGSOKxsokofsc2IrmWL3cTiRgtoRZg3WC4f3bilQsyAvVtrABrHxpBZML74xqjA==
+X-Received: by 2002:a05:600c:602a:b0:3cf:b2b1:3c7 with SMTP id az42-20020a05600c602a00b003cfb2b103c7mr948923wmb.176.1668167064926;
+        Fri, 11 Nov 2022 03:44:24 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.23])
+        by smtp.gmail.com with ESMTPSA id z11-20020a5d4d0b000000b0022e6178bd84sm1718581wrt.8.2022.11.11.03.44.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Nov 2022 03:44:24 -0800 (PST)
+Message-ID: <7e035479-0508-f349-1d6b-6754b428fba9@gmail.com>
+Date:   Fri, 11 Nov 2022 13:44:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: pn7p2lM7IEusjRFCpMHEAhgXTRTm8JN8
-X-Proofpoint-GUID: pn7p2lM7IEusjRFCpMHEAhgXTRTm8JN8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-11_06,2022-11-11_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- mlxscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211110078
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH v2 1/3] wifi: rtl8xxxu: Name some bits used in burst init
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+References: <e7d05bd9-e096-8361-f1b4-3c8b8599a7eb@gmail.com>
+Content-Language: en-US
+In-Reply-To: <e7d05bd9-e096-8361-f1b4-3c8b8599a7eb@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In a SoC based solution, it would be useful to know the versions of the
-various binary firmware blobs the system is running on. On a QCOM based
-SoC, this info can be obtained from socinfo debugfs infrastructure. For
-this to work, respective subsystem drivers have to export the firmware
-version information to an SMEM based version information table.
+On 10/11/2022 15:58, Bitterblue Smith wrote:
+> Use descriptive names instead of magic numbers.
+> 
+> Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> ---
+> v2:
+>  - Change the commit message.
+> ---
 
-Having firmware version information at one place will help quickly
-figure out the firmware versions of various subsystems on the device
-instead of going through builds/logs in an event of a system crash.
-
-Fill WLAN firmware version information in SMEM version table to be
-printed as part of socinfo debugfs infrastructure on a Qualcomm based
-SoC.
-
-This change is applicable only for WCN399X targets.
-
-Example:
-cat /sys/kernel/debug/qcom_socinfo/cnss/name
-QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-
-Reported-by: kernel test robot <lkp@intel.com>
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-
-Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
----
-Changes from v2:
- - Removed blank line between trailers
- - Changed memcpy to strscpy
- - Removed version_string_size
- - Added new condition fw_build_id against max length
- - Added depends on QCOM_SMEM for ath10k_snoc
----
- drivers/net/wireless/ath/ath10k/Kconfig |  1 +
- drivers/net/wireless/ath/ath10k/qmi.c   | 34 +++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-index ca007b800f75..e6ea884cafc1 100644
---- a/drivers/net/wireless/ath/ath10k/Kconfig
-+++ b/drivers/net/wireless/ath/ath10k/Kconfig
-@@ -44,6 +44,7 @@ config ATH10K_SNOC
- 	tristate "Qualcomm ath10k SNOC support"
- 	depends on ATH10K
- 	depends on ARCH_QCOM || COMPILE_TEST
-+	depends on QCOM_SMEM
- 	select QCOM_SCM
- 	select QCOM_QMI_HELPERS
- 	help
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 66cb7a1e628a..6c3ddad26417 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -14,6 +14,7 @@
- #include <linux/net.h>
- #include <linux/platform_device.h>
- #include <linux/qcom_scm.h>
-+#include <linux/soc/qcom/smem.h>
- #include <linux/string.h>
- #include <net/sock.h>
- 
-@@ -22,6 +23,8 @@
- 
- #define ATH10K_QMI_CLIENT_ID		0x4b4e454c
- #define ATH10K_QMI_TIMEOUT		30
-+#define ATH10K_SMEM_IMAGE_VERSION_TABLE       469
-+#define ATH10K_SMEM_IMAGE_TABLE_CNSS_INDEX     13
- 
- static int ath10k_qmi_map_msa_permission(struct ath10k_qmi *qmi,
- 					 struct ath10k_msa_mem_info *mem_info)
-@@ -536,6 +539,35 @@ int ath10k_qmi_wlan_disable(struct ath10k *ar)
- 	return ath10k_qmi_mode_send_sync_msg(ar, QMI_WLFW_OFF_V01);
- }
- 
-+static void ath10k_qmi_add_wlan_ver_smem(struct ath10k *ar, const char *fw_build_id)
-+{
-+	u8 *smem_table_ptr;
-+	size_t smem_block_size;
-+	const u32 smem_img_idx_wlan = ATH10K_SMEM_IMAGE_TABLE_CNSS_INDEX * 128;
-+
-+	smem_table_ptr = qcom_smem_get(QCOM_SMEM_HOST_ANY,
-+				       ATH10K_SMEM_IMAGE_VERSION_TABLE,
-+				       &smem_block_size);
-+	if (IS_ERR(smem_table_ptr)) {
-+		ath10k_dbg(ar, ATH10K_DBG_QMI,
-+			   "smem image version table not found\n");
-+		return;
-+	}
-+
-+	if (smem_img_idx_wlan + MAX_BUILD_ID_LEN > smem_block_size) {
-+		ath10k_dbg(ar, ATH10K_DBG_QMI, "smem block size too small: %zu\n",
-+			   smem_block_size);
-+		return;
-+	}
-+
-+	if (strlen(fw_build_id) > MAX_BUILD_ID_LEN) {
-+		ath10k_dbg(ar, ATH10K_DBG_QMI, "fw_build_id length more than max length\n");
-+		return;
-+	}
-+
-+	strscpy(smem_table_ptr + smem_img_idx_wlan, fw_build_id, MAX_BUILD_ID_LEN);
-+}
-+
- static int ath10k_qmi_cap_send_sync_msg(struct ath10k_qmi *qmi)
- {
- 	struct wlfw_cap_resp_msg_v01 *resp;
-@@ -606,6 +638,8 @@ static int ath10k_qmi_cap_send_sync_msg(struct ath10k_qmi *qmi)
- 			    qmi->fw_version, qmi->fw_build_timestamp, qmi->fw_build_id);
- 	}
- 
-+	ath10k_qmi_add_wlan_ver_smem(ar, qmi->fw_build_id);
-+
- 	kfree(resp);
- 	return 0;
- 
--- 
-2.38.0
+I forgot to say that these patches should be applied after my other patches:
+"[PATCH v2 1/3] wifi: rtl8xxxu: Move burst init to a function"
 
