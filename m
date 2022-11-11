@@ -2,91 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E399C62542E
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Nov 2022 07:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31DD6625479
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Nov 2022 08:36:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233093AbiKKG6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Nov 2022 01:58:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
+        id S233033AbiKKHg2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Nov 2022 02:36:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232823AbiKKG6e (ORCPT
+        with ESMTP id S230198AbiKKHg0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Nov 2022 01:58:34 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1ECD465840
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Nov 2022 22:58:32 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AB6vorsF014472, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AB6vorsF014472
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 11 Nov 2022 14:57:50 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 11 Nov 2022 14:58:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 11 Nov 2022 14:58:29 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Fri, 11 Nov 2022 14:58:29 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH v2 3/3] wifi: rtl8xxxu: Use u32_get_bits in *_identify_chip
-Thread-Topic: [PATCH v2 3/3] wifi: rtl8xxxu: Use u32_get_bits in
- *_identify_chip
-Thread-Index: AQHY9Qztn9V8ncNpcUmx2zhqFCQAma45S8tg
-Date:   Fri, 11 Nov 2022 06:58:29 +0000
-Message-ID: <6a7a92dd39cd4206ab1911083517c3a1@realtek.com>
-References: <e7d05bd9-e096-8361-f1b4-3c8b8599a7eb@gmail.com>
- <68f94284-3728-7b75-2b7b-64fae8af6bc5@gmail.com>
-In-Reply-To: <68f94284-3728-7b75-2b7b-64fae8af6bc5@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzExIOS4iuWNiCAwMjoxMDowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Fri, 11 Nov 2022 02:36:26 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B152BC14
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Nov 2022 23:36:21 -0800 (PST)
+X-UUID: 411b14f236ca4e89a47293c71972efb6-20221111
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=TL1DUTNfvzaTDC5V59A/ZBBk1n7wWZR3gc8cGOLQ5D4=;
+        b=euRNAwOzB8yEiRwTM3nZe5E2XO7WcRKyHzROM78uNIVY6350LfBM4lGJkAmyAf5mAfb7VynW/HN+ck/t1+J3GsCtlTX8SHQg44wo77xXeWYixeiMthS6qsSuvlskJZn/4AyC033v6RKd8edur/HyGbK1Dd43d0UKEcsknUoR4dc=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.13,REQID:cfd32e8c-432a-4ea1-80e7-59d78b194fa0,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:d12e911,CLOUDID:37fdfe85-088c-4756-8f76-577be701e693,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 411b14f236ca4e89a47293c71972efb6-20221111
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <evelyn.tsai@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1711142073; Fri, 11 Nov 2022 15:36:17 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Fri, 11 Nov 2022 15:36:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Fri, 11 Nov 2022 15:36:16 +0800
+From:   Evelyn Tsai <evelyn.tsai@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.Lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH] wifi: mt76: connac: update nss calculation in txs
+Date:   Fri, 11 Nov 2022 15:36:15 +0800
+Message-ID: <20221111073615.25666-1-evelyn.tsai@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBOb3ZlbWJlciAx
-MCwgMjAyMiAxMDowMSBQTQ0KPiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+
-IENjOiBKZXMgU29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+OyBQaW5nLUtlIFNoaWgg
-PHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIHYyIDMvM10gd2lmaTogcnRs
-OHh4eHU6IFVzZSB1MzJfZ2V0X2JpdHMgaW4gKl9pZGVudGlmeV9jaGlwDQo+IA0KPiBJdCBzaW1w
-bGlmaWVzIHRoZSBjb2RlIGEgYml0Lg0KPiANCj4gU3VnZ2VzdGVkLWJ5OiBQaW5nLUtlIFNoaWgg
-PHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8
-cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQoNClJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBr
-c2hpaEByZWFsdGVrLmNvbT4NCg0KPiAtLS0NCj4gdjI6DQo+ICAtIE5vIGNoYW5nZS4NCj4gLS0t
-DQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1XzgxODhm
-LmMgfCAzICstLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4
-eHh4dV84MTkyYy5jIHwgNSArKy0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dGw4eHh4dS9ydGw4eHh4dV84MTkyZS5jIHwgNSArKy0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV84NzIzYS5jIHwgNSArKy0tLQ0KPiAgZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV84NzIzYi5jIHwgNSArKy0t
-LQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9yZWdz
-LmggIHwgMSAtDQo+ICA2IGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMTUgZGVsZXRp
-b25zKC0pDQo+IA0KDQpbLi4uXQ0KDQo=
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index 8b7ec64abc95..fd60123fb284 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -567,7 +567,7 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 	struct mt76_phy *mphy;
+ 	struct rate_info rate = {};
+ 	bool cck = false;
+-	u32 txrate, txs, mode;
++	u32 txrate, txs, mode, stbc;
+ 
+ 	txs = le32_to_cpu(txs_data[0]);
+ 
+@@ -587,6 +587,10 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 
+ 	rate.mcs = FIELD_GET(MT_TX_RATE_IDX, txrate);
+ 	rate.nss = FIELD_GET(MT_TX_RATE_NSS, txrate) + 1;
++	stbc = FIELD_GET(MT_TX_RATE_STBC, txrate);
++
++	if (stbc && rate.nss > 1)
++		rate.nss >>= 1;
+ 
+ 	if (rate.nss - 1 < ARRAY_SIZE(stats->tx_nss))
+ 		stats->tx_nss[rate.nss - 1]++;
+-- 
+2.18.0
+
