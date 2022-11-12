@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8719626A4C
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Nov 2022 16:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B7A626A4E
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Nov 2022 16:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235064AbiKLPlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Nov 2022 10:41:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        id S235054AbiKLPlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Nov 2022 10:41:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235054AbiKLPlK (ORCPT
+        with ESMTP id S234905AbiKLPlR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Nov 2022 10:41:10 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36D81ADB4
-        for <linux-wireless@vger.kernel.org>; Sat, 12 Nov 2022 07:41:08 -0800 (PST)
+        Sat, 12 Nov 2022 10:41:17 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933FB1AF23
+        for <linux-wireless@vger.kernel.org>; Sat, 12 Nov 2022 07:41:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80D6460919
-        for <linux-wireless@vger.kernel.org>; Sat, 12 Nov 2022 15:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B98C433D6;
-        Sat, 12 Nov 2022 15:41:07 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4F1DCB80939
+        for <linux-wireless@vger.kernel.org>; Sat, 12 Nov 2022 15:41:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDFEC433C1;
+        Sat, 12 Nov 2022 15:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668267667;
-        bh=2W8dB4G4rj+P3Odb2j4AHt3Q5R66DR0+LP9A5vYp4is=;
+        s=k20201202; t=1668267672;
+        bh=Fihg4p2BFTjsqbeeU15jY7smfP+B7WaXMpa+VG00LQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eMrCfwiScu8m1cUq3HBdvcaU7iupg4kwe/y2Ds+r35XUMEbb06bb9I3QbScz4TDPc
-         KvvZJnCVIXEylVH/CQIAswYpD740KiGbCvUOjJqQYr6ujA0nMwtMzIICsgLx7qYCji
-         x+PkZ1yofPu9hwSFy3azJ6pnOLqM9Oon8w3Ts0QiukeqH3w1QgBefCA4954WhkwR8O
-         +q/7t42oiKDl9AAl2u4tT2JVRAqB6O7WoVzmdvF0/gfR9M8yYXTxmMooMqlXFWMJFS
-         kibGmNSvoeZMbmERCZbKidwptTc+b1m3UzyTzBzQOa2HWa3ddkkbo3xfsxYdH2S+tO
-         BdtPFG2oo0waQ==
+        b=cW+iUruVx4hvuqM2XDmxQufyaWEnDB+4fGLowdwYUygX/Wzeye7Gyg/jSHd+8y+Bs
+         Xm4/9fbDZYLkIpRGW/9XzVy/5KFLq6JvBZhdRF/q6yCbRPeAGfa4bzxhHZZD8zyArd
+         eQs/EvoQASdCyotVs0eCGazqtOwNruaMECc3B4dUdWYdlJSUYhOFmwmQQ+aTD6mwwK
+         RXxJcs50CHcFDghrTk3w92hOgctwxmBxAu3n08C3r21n6WkOaNfFqm9Hjr8nmLQ0rl
+         Md+ZfJmw4CwiEhKp0LdX/j7mH49nQSpGxbaU5RCdf3U831pvPpOw1VzAu9V1Y7CjRM
+         s+8PftYSD8u4w==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         Bo.Jiao@mediatek.com, sujuan.chen@mediatek.com,
         ryder.Lee@mediatek.com, evelyn.tsai@mediatek.com
-Subject: [PATCH 1/8] wifi: mt76: introduce rxwi and rx token utility routines
-Date:   Sat, 12 Nov 2022 16:40:34 +0100
-Message-Id: <730e835d387107911b93a40c578ac5c6583c580b.1668267241.git.lorenzo@kernel.org>
+Subject: [PATCH 2/8] wifi: mt76: add WED RX support to mt76_dma_{add,get}_buf
+Date:   Sat, 12 Nov 2022 16:40:35 +0100
+Message-Id: <8d45b937b799d37ae5f306320212070388548999.1668267241.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <cover.1668267241.git.lorenzo@kernel.org>
 References: <cover.1668267241.git.lorenzo@kernel.org>
@@ -54,288 +54,237 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sujuan Chen <sujuan.chen@mediatek.com>
-
-This is a preliminary patch to introduce WED RX support for mt7915.
+Introduce the capability to configure RX WED in mt76_dma_{add,get}_buf
+utility routines.
 
 Tested-by: Daniel Golle <daniel@makrotopia.org>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
 Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c      | 68 +++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/dma.h      |  8 +++
- drivers/net/wireless/mediatek/mt76/mac80211.c |  5 ++
- drivers/net/wireless/mediatek/mt76/mt76.h     | 16 ++++-
- drivers/net/wireless/mediatek/mt76/tx.c       | 30 ++++++++
- 5 files changed, 126 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/dma.c  | 125 +++++++++++++++-------
+ drivers/net/wireless/mediatek/mt76/mt76.h |   2 +
+ 2 files changed, 88 insertions(+), 39 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 7378c4d1e156..d316bde01c6b 100644
+index d316bde01c6b..4239adde4cca 100644
 --- a/drivers/net/wireless/mediatek/mt76/dma.c
 +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -59,6 +59,19 @@ mt76_alloc_txwi(struct mt76_dev *dev)
- 	return t;
- }
+@@ -215,11 +215,6 @@ mt76_dma_add_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ 	u32 ctrl;
+ 	int i, idx = -1;
  
-+static struct mt76_txwi_cache *
-+mt76_alloc_rxwi(struct mt76_dev *dev)
-+{
-+	struct mt76_txwi_cache *t;
-+
-+	t = kzalloc(L1_CACHE_ALIGN(sizeof(*t)), GFP_ATOMIC);
-+	if (!t)
-+		return NULL;
-+
-+	t->ptr = NULL;
-+	return t;
-+}
-+
- static struct mt76_txwi_cache *
- __mt76_get_txwi(struct mt76_dev *dev)
- {
-@@ -75,6 +88,22 @@ __mt76_get_txwi(struct mt76_dev *dev)
- 	return t;
- }
+-	if (txwi) {
+-		q->entry[q->head].txwi = DMA_DUMMY_DATA;
+-		q->entry[q->head].skip_buf0 = true;
+-	}
+-
+ 	for (i = 0; i < nbufs; i += 2, buf += 2) {
+ 		u32 buf0 = buf[0].addr, buf1 = 0;
  
-+static struct mt76_txwi_cache *
-+__mt76_get_rxwi(struct mt76_dev *dev)
-+{
-+	struct mt76_txwi_cache *t = NULL;
-+
-+	spin_lock(&dev->wed_lock);
-+	if (!list_empty(&dev->rxwi_cache)) {
-+		t = list_first_entry(&dev->rxwi_cache, struct mt76_txwi_cache,
-+				     list);
-+		list_del(&t->list);
-+	}
-+	spin_unlock(&dev->wed_lock);
-+
-+	return t;
-+}
-+
- static struct mt76_txwi_cache *
- mt76_get_txwi(struct mt76_dev *dev)
- {
-@@ -86,6 +115,18 @@ mt76_get_txwi(struct mt76_dev *dev)
- 	return mt76_alloc_txwi(dev);
- }
+@@ -229,28 +224,48 @@ mt76_dma_add_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ 		desc = &q->desc[idx];
+ 		entry = &q->entry[idx];
  
-+struct mt76_txwi_cache *
-+mt76_get_rxwi(struct mt76_dev *dev)
-+{
-+	struct mt76_txwi_cache *t = __mt76_get_rxwi(dev);
+-		if (buf[0].skip_unmap)
+-			entry->skip_buf0 = true;
+-		entry->skip_buf1 = i == nbufs - 1;
+-
+-		entry->dma_addr[0] = buf[0].addr;
+-		entry->dma_len[0] = buf[0].len;
+-
+-		ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
+-		if (i < nbufs - 1) {
+-			entry->dma_addr[1] = buf[1].addr;
+-			entry->dma_len[1] = buf[1].len;
+-			buf1 = buf[1].addr;
+-			ctrl |= FIELD_PREP(MT_DMA_CTL_SD_LEN1, buf[1].len);
+-			if (buf[1].skip_unmap)
+-				entry->skip_buf1 = true;
++		if ((q->flags & MT_QFLAG_WED) &&
++		    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
++			struct mt76_txwi_cache *t = txwi;
++			int rx_token;
 +
-+	if (t)
-+		return t;
++			if (!t)
++				return -ENOMEM;
 +
-+	return mt76_alloc_rxwi(dev);
-+}
-+EXPORT_SYMBOL_GPL(mt76_get_rxwi);
++			rx_token = mt76_rx_token_consume(dev, (void *)skb, t,
++							 buf[0].addr);
++			buf1 |= FIELD_PREP(MT_DMA_CTL_TOKEN, rx_token);
++			ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len) |
++			       MT_DMA_CTL_TO_HOST;
++		} else {
++			if (txwi) {
++				q->entry[q->head].txwi = DMA_DUMMY_DATA;
++				q->entry[q->head].skip_buf0 = true;
++			}
 +
- void
- mt76_put_txwi(struct mt76_dev *dev, struct mt76_txwi_cache *t)
- {
-@@ -98,6 +139,18 @@ mt76_put_txwi(struct mt76_dev *dev, struct mt76_txwi_cache *t)
- }
- EXPORT_SYMBOL_GPL(mt76_put_txwi);
++			if (buf[0].skip_unmap)
++				entry->skip_buf0 = true;
++			entry->skip_buf1 = i == nbufs - 1;
++
++			entry->dma_addr[0] = buf[0].addr;
++			entry->dma_len[0] = buf[0].len;
++
++			ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
++			if (i < nbufs - 1) {
++				entry->dma_addr[1] = buf[1].addr;
++				entry->dma_len[1] = buf[1].len;
++				buf1 = buf[1].addr;
++				ctrl |= FIELD_PREP(MT_DMA_CTL_SD_LEN1, buf[1].len);
++				if (buf[1].skip_unmap)
++					entry->skip_buf1 = true;
++			}
++
++			if (i == nbufs - 1)
++				ctrl |= MT_DMA_CTL_LAST_SEC0;
++			else if (i == nbufs - 2)
++				ctrl |= MT_DMA_CTL_LAST_SEC1;
+ 		}
  
-+void
-+mt76_put_rxwi(struct mt76_dev *dev, struct mt76_txwi_cache *t)
-+{
-+	if (!t)
-+		return;
-+
-+	spin_lock(&dev->wed_lock);
-+	list_add(&t->list, &dev->rxwi_cache);
-+	spin_unlock(&dev->wed_lock);
-+}
-+EXPORT_SYMBOL_GPL(mt76_put_rxwi);
-+
- static void
- mt76_free_pending_txwi(struct mt76_dev *dev)
- {
-@@ -112,6 +165,20 @@ mt76_free_pending_txwi(struct mt76_dev *dev)
- 	local_bh_enable();
- }
+-		if (i == nbufs - 1)
+-			ctrl |= MT_DMA_CTL_LAST_SEC0;
+-		else if (i == nbufs - 2)
+-			ctrl |= MT_DMA_CTL_LAST_SEC1;
+-
+ 		WRITE_ONCE(desc->buf0, cpu_to_le32(buf0));
+ 		WRITE_ONCE(desc->buf1, cpu_to_le32(buf1));
+ 		WRITE_ONCE(desc->info, cpu_to_le32(info));
+@@ -339,33 +354,60 @@ mt76_dma_tx_cleanup(struct mt76_dev *dev, struct mt76_queue *q, bool flush)
  
-+static void
-+mt76_free_pending_rxwi(struct mt76_dev *dev)
-+{
-+	struct mt76_txwi_cache *t;
-+
-+	local_bh_disable();
-+	while ((t = __mt76_get_rxwi(dev)) != NULL) {
-+		if (t->ptr)
-+			skb_free_frag(t->ptr);
-+		kfree(t);
-+	}
-+	local_bh_enable();
-+}
-+
- static void
- mt76_dma_sync_idx(struct mt76_dev *dev, struct mt76_queue *q)
+ static void *
+ mt76_dma_get_buf(struct mt76_dev *dev, struct mt76_queue *q, int idx,
+-		 int *len, u32 *info, bool *more)
++		 int *len, u32 *info, bool *more, bool *drop)
  {
-@@ -808,6 +875,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+ 	struct mt76_queue_entry *e = &q->entry[idx];
+ 	struct mt76_desc *desc = &q->desc[idx];
+-	dma_addr_t buf_addr;
+-	void *buf = e->buf;
+-	int buf_len = SKB_WITH_OVERHEAD(q->buf_size);
++	void *buf;
+ 
+-	buf_addr = e->dma_addr[0];
+ 	if (len) {
+-		u32 ctl = le32_to_cpu(READ_ONCE(desc->ctrl));
+-		*len = FIELD_GET(MT_DMA_CTL_SD_LEN0, ctl);
+-		*more = !(ctl & MT_DMA_CTL_LAST_SEC0);
++		u32 ctrl = le32_to_cpu(READ_ONCE(desc->ctrl));
++		*len = FIELD_GET(MT_DMA_CTL_SD_LEN0, ctrl);
++		*more = !(ctrl & MT_DMA_CTL_LAST_SEC0);
  	}
  
- 	mt76_free_pending_txwi(dev);
-+	mt76_free_pending_rxwi(dev);
+ 	if (info)
+ 		*info = le32_to_cpu(desc->info);
  
- 	if (mtk_wed_device_active(&dev->mmio.wed))
- 		mtk_wed_device_detach(&dev->mmio.wed);
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
-index fdf786f975ea..53c6ce2528b2 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.h
-+++ b/drivers/net/wireless/mediatek/mt76/dma.h
-@@ -15,6 +15,14 @@
- #define MT_DMA_CTL_SD_LEN0		GENMASK(29, 16)
- #define MT_DMA_CTL_LAST_SEC0		BIT(30)
- #define MT_DMA_CTL_DMA_DONE		BIT(31)
-+#define MT_DMA_CTL_TO_HOST		BIT(8)
-+#define MT_DMA_CTL_TO_HOST_A		BIT(12)
-+#define MT_DMA_CTL_DROP			BIT(14)
-+#define MT_DMA_CTL_TOKEN		GENMASK(31, 16)
+-	dma_unmap_single(dev->dma_dev, buf_addr, buf_len, DMA_FROM_DEVICE);
+-	e->buf = NULL;
++	if ((q->flags & MT_QFLAG_WED) &&
++	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
++		u32 token = FIELD_GET(MT_DMA_CTL_TOKEN,
++				      le32_to_cpu(desc->buf1));
++		struct mt76_txwi_cache *t = mt76_rx_token_release(dev, token);
 +
-+#define MT_DMA_PPE_CPU_REASON		GENMASK(15, 11)
-+#define MT_DMA_PPE_ENTRY		GENMASK(30, 16)
-+#define MT_DMA_INFO_PPE_VLD		BIT(31)
- 
- #define MT_DMA_HDR_LEN			4
- #define MT_RX_INFO_LEN			4
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index c59d12004459..3cd37a013dcc 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -572,6 +572,7 @@ mt76_alloc_device(struct device *pdev, unsigned int size,
- 	spin_lock_init(&dev->lock);
- 	spin_lock_init(&dev->cc_lock);
- 	spin_lock_init(&dev->status_lock);
-+	spin_lock_init(&dev->wed_lock);
- 	mutex_init(&dev->mutex);
- 	init_waitqueue_head(&dev->tx_wait);
- 
-@@ -594,9 +595,13 @@ mt76_alloc_device(struct device *pdev, unsigned int size,
- 	spin_lock_init(&dev->token_lock);
- 	idr_init(&dev->token);
- 
-+	spin_lock_init(&dev->rx_token_lock);
-+	idr_init(&dev->rx_token);
++		if (!t)
++			return NULL;
 +
- 	INIT_LIST_HEAD(&dev->wcid_list);
++		dma_unmap_single(dev->dma_dev, t->dma_addr,
++				 SKB_WITH_OVERHEAD(q->buf_size),
++				 DMA_FROM_DEVICE);
++
++		buf = t->ptr;
++		t->dma_addr = 0;
++		t->ptr = NULL;
++
++		mt76_put_rxwi(dev, t);
++
++		if (drop) {
++			u32 ctrl = le32_to_cpu(READ_ONCE(desc->ctrl));
++
++			*drop = !!(ctrl & (MT_DMA_CTL_TO_HOST_A |
++					   MT_DMA_CTL_DROP));
++		}
++	} else {
++		buf = e->buf;
++		e->buf = NULL;
++		dma_unmap_single(dev->dma_dev, e->dma_addr[0],
++				 SKB_WITH_OVERHEAD(q->buf_size),
++				 DMA_FROM_DEVICE);
++	}
  
- 	INIT_LIST_HEAD(&dev->txwi_cache);
-+	INIT_LIST_HEAD(&dev->rxwi_cache);
- 	dev->token_size = dev->drv->token_size;
+ 	return buf;
+ }
  
- 	for (i = 0; i < ARRAY_SIZE(dev->q_rx); i++)
+ static void *
+ mt76_dma_dequeue(struct mt76_dev *dev, struct mt76_queue *q, bool flush,
+-		 int *len, u32 *info, bool *more)
++		 int *len, u32 *info, bool *more, bool *drop)
+ {
+ 	int idx = q->tail;
+ 
+@@ -381,7 +423,7 @@ mt76_dma_dequeue(struct mt76_dev *dev, struct mt76_queue *q, bool flush,
+ 	q->tail = (q->tail + 1) % q->ndesc;
+ 	q->queued--;
+ 
+-	return mt76_dma_get_buf(dev, q, idx, len, info, more);
++	return mt76_dma_get_buf(dev, q, idx, len, info, more, drop);
+ }
+ 
+ static int
+@@ -641,7 +683,7 @@ mt76_dma_rx_cleanup(struct mt76_dev *dev, struct mt76_queue *q)
+ 
+ 	spin_lock_bh(&q->lock);
+ 	do {
+-		buf = mt76_dma_dequeue(dev, q, true, NULL, NULL, &more);
++		buf = mt76_dma_dequeue(dev, q, true, NULL, NULL, &more, NULL);
+ 		if (!buf)
+ 			break;
+ 
+@@ -723,6 +765,7 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
+ 	}
+ 
+ 	while (done < budget) {
++		bool drop = false;
+ 		u32 info;
+ 
+ 		if (check_ddone) {
+@@ -733,10 +776,14 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
+ 				break;
+ 		}
+ 
+-		data = mt76_dma_dequeue(dev, q, false, &len, &info, &more);
++		data = mt76_dma_dequeue(dev, q, false, &len, &info, &more,
++					&drop);
+ 		if (!data)
+ 			break;
+ 
++		if (drop)
++			goto free_frag;
++
+ 		if (q->rx_head)
+ 			data_len = q->buf_size;
+ 		else
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index a2bccf6b6c54..149dc6eb7eb9 100644
+index 149dc6eb7eb9..738fb22d9198 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -339,7 +339,10 @@ struct mt76_txwi_cache {
- 	struct list_head list;
- 	dma_addr_t dma_addr;
+@@ -35,6 +35,7 @@
+ 				 FIELD_PREP(MT_QFLAG_WED_TYPE, _type) | \
+ 				 FIELD_PREP(MT_QFLAG_WED_RING, _n))
+ #define MT_WED_Q_TX(_n)		__MT_WED_Q(MT76_WED_Q_TX, _n)
++#define MT_WED_Q_RX(_n)		__MT_WED_Q(MT76_WED_Q_RX, _n)
+ #define MT_WED_Q_TXFREE		__MT_WED_Q(MT76_WED_Q_TXFREE, 0)
  
--	struct sk_buff *skb;
-+	union {
-+		struct sk_buff *skb;
-+		void *ptr;
-+	};
+ struct mt76_dev;
+@@ -56,6 +57,7 @@ enum mt76_bus_type {
+ enum mt76_wed_type {
+ 	MT76_WED_Q_TX,
+ 	MT76_WED_Q_TXFREE,
++	MT76_WED_Q_RX,
  };
  
- struct mt76_rx_tid {
-@@ -728,6 +731,7 @@ struct mt76_dev {
- 
- 	struct ieee80211_hw *hw;
- 
-+	spinlock_t wed_lock;
- 	spinlock_t lock;
- 	spinlock_t cc_lock;
- 
-@@ -754,6 +758,7 @@ struct mt76_dev {
- 	struct sk_buff_head rx_skb[__MT_RXQ_MAX];
- 
- 	struct list_head txwi_cache;
-+	struct list_head rxwi_cache;
- 	struct mt76_queue *q_mcu[__MT_MCUQ_MAX];
- 	struct mt76_queue q_rx[__MT_RXQ_MAX];
- 	const struct mt76_queue_ops *queue_ops;
-@@ -768,6 +773,10 @@ struct mt76_dev {
- 	u16 token_count;
- 	u16 token_size;
- 
-+	spinlock_t rx_token_lock;
-+	struct idr rx_token;
-+	u16 rx_token_size;
-+
- 	wait_queue_head_t tx_wait;
- 	/* spinclock used to protect wcid pktid linked list */
- 	spinlock_t status_lock;
-@@ -1247,6 +1256,8 @@ mt76_tx_status_get_hw(struct mt76_dev *dev, struct sk_buff *skb)
- }
- 
- void mt76_put_txwi(struct mt76_dev *dev, struct mt76_txwi_cache *t);
-+void mt76_put_rxwi(struct mt76_dev *dev, struct mt76_txwi_cache *t);
-+struct mt76_txwi_cache *mt76_get_rxwi(struct mt76_dev *dev);
- void mt76_rx_complete(struct mt76_dev *dev, struct sk_buff_head *frames,
- 		      struct napi_struct *napi);
- void mt76_rx_poll_complete(struct mt76_dev *dev, enum mt76_rxq_id q,
-@@ -1391,6 +1402,9 @@ struct mt76_txwi_cache *
- mt76_token_release(struct mt76_dev *dev, int token, bool *wake);
- int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi);
- void __mt76_set_tx_blocked(struct mt76_dev *dev, bool blocked);
-+struct mt76_txwi_cache *mt76_rx_token_release(struct mt76_dev *dev, int token);
-+int mt76_rx_token_consume(struct mt76_dev *dev, void *ptr,
-+			  struct mt76_txwi_cache *r, dma_addr_t phys);
- 
- static inline void mt76_set_tx_blocked(struct mt76_dev *dev, bool blocked)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 6c054850363f..24568b98ed9d 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -756,6 +756,23 @@ int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi)
- }
- EXPORT_SYMBOL_GPL(mt76_token_consume);
- 
-+int mt76_rx_token_consume(struct mt76_dev *dev, void *ptr,
-+			  struct mt76_txwi_cache *t, dma_addr_t phys)
-+{
-+	int token;
-+
-+	spin_lock_bh(&dev->rx_token_lock);
-+	token = idr_alloc(&dev->rx_token, t, 0, dev->rx_token_size,
-+			  GFP_ATOMIC);
-+	spin_unlock_bh(&dev->rx_token_lock);
-+
-+	t->ptr = ptr;
-+	t->dma_addr = phys;
-+
-+	return token;
-+}
-+EXPORT_SYMBOL_GPL(mt76_rx_token_consume);
-+
- struct mt76_txwi_cache *
- mt76_token_release(struct mt76_dev *dev, int token, bool *wake)
- {
-@@ -784,3 +801,16 @@ mt76_token_release(struct mt76_dev *dev, int token, bool *wake)
- 	return txwi;
- }
- EXPORT_SYMBOL_GPL(mt76_token_release);
-+
-+struct mt76_txwi_cache *
-+mt76_rx_token_release(struct mt76_dev *dev, int token)
-+{
-+	struct mt76_txwi_cache *t;
-+
-+	spin_lock_bh(&dev->rx_token_lock);
-+	t = idr_remove(&dev->rx_token, token);
-+	spin_unlock_bh(&dev->rx_token_lock);
-+
-+	return t;
-+}
-+EXPORT_SYMBOL_GPL(mt76_rx_token_release);
+ struct mt76_bus_ops {
 -- 
 2.38.1
 
