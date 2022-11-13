@@ -2,277 +2,207 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0886E626EDC
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Nov 2022 11:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88A7A626F11
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Nov 2022 11:56:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235231AbiKMKFJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Nov 2022 05:05:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34346 "EHLO
+        id S235174AbiKMK4U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Nov 2022 05:56:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbiKMKFH (ORCPT
+        with ESMTP id S233797AbiKMK4T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Nov 2022 05:05:07 -0500
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2067.outbound.protection.outlook.com [40.92.98.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE84E0D8
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Nov 2022 02:05:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JWwSgPjF6qpC9uy0Kg3pzHNCzYni09L31vK68JaZyuRw4kEZPL8Ozu6qNrjBsLc5WZjfdjqkd2lNSROS++vNl83u7h/dC89OleMkNl4uO3Llxi6QX7p4ZScJDx6Jg9DLl1m5bJfHs/adL4EelDD0B2t4LN6vXn1uerRIStdbT2jQ4HVNxnL/v8nM3/CcRcJfoP+o/d+B5VGdBxleKGqLzRIju8pQGbwhVQRmr/7CmXFEv6SFy5RdDZoGsD7ZO9MJFAtpZR77oMjjXQiP4CarCIB8/bfySXl9KFg7fWGAHfyYLJUqBjX0KGV3+B905GydAOtx1HoWmkax3czBT+Iq/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lWoaZN4dPxHqJfb+EDCpqhB716IR0wj02QXQP92vIAg=;
- b=FoYgvtDWUGBfzgjFsuf3cq19WUUgcVHuhIB2HI70k/vT8HDtK4sBr02pTadKn9B6W+hNtFBiEheEeuveetVuiwf8sYjbSzypAMXJ2aKKoyFKpvSIo+TzdH2Mwqn2yN5o5nHJaIFrWIqKTAaImcMVd+7Rv2rnrecaeIjOwGQlfHsxx90FOWYE8USQwKlgWr0GxoQ4EepKrg17LceAD49MA+YwvWfrAZyuFDywFv4JYxJ4WKj0na28jIBajRuZ3FOAnTYA0BGjX526CxHlKHQucOp4kQDKQOL6QcbXLi/ZRS8HUaVj8gWAZCa/cWxJo1JCecYxWOoriXurt+wqr6UbdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lWoaZN4dPxHqJfb+EDCpqhB716IR0wj02QXQP92vIAg=;
- b=iZ+WrJ3vCaG5clkmj3LUGVfaP+gQJoJrWollZ2KedviAKtduJ6SqkHkaubW0h/YJMwqCotQqEMqWGlOnFOEll/kik1fY5wf1kfx2DDbrzTPtXhNe1KpVm7SfVFNuHGCRfMzzA+EGtaaL8jPBlx1j18QfDFQttsxJO+DyvzG+94DqNdS5SkCFGzR5J/zGvwvqYC53C4GBLfSyVHymptbkhJaNXJnGu/jkmrKD9rQkfGQGZaaH48AlSobnXT4NXYu1QpkwMH9PD660Db5B9tjpddFL4P3dZL44DOAwSpetKViEK8SGnyltXyD7lixXPYVsj54H6iwoN76nocLiFXcukA==
-Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:252::12)
- by OSZP286MB1848.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:165::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.16; Sun, 13 Nov
- 2022 10:05:03 +0000
-Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
- ([fe80::38d3:c4eb:fa2c:3953]) by TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
- ([fe80::38d3:c4eb:fa2c:3953%7]) with mapi id 15.20.5813.017; Sun, 13 Nov 2022
- 10:05:03 +0000
-Date:   Sun, 13 Nov 2022 18:04:57 +0800
-From:   Shengyu Qu <wiagn233@outlook.com>
-To:     Andy Green <andy@warmcat.com>, arend.vanspriel@broadcom.com
-CC:     franky.lin@broadcom.com, linux-wireless@vger.kernel.org
+        Sun, 13 Nov 2022 05:56:19 -0500
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC942DF77
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Nov 2022 02:56:18 -0800 (PST)
+Received: by mail-qk1-x734.google.com with SMTP id p18so5880780qkg.2
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Nov 2022 02:56:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RPqtVX/+cvCH/2sGwhMrdA/jOO6mc/fG2U4E6ZEjFxs=;
+        b=Y6D8+SABLTAwlbq+AWwfnpYI9h6YKhzdIKmXWtH/8Z/h0VOByFu0Zv5tgf3v0+1eNb
+         BRSZ5cUlv7TAy51RO9+vG4cAIroXUBj8dTH1kaKnIp9ILk8KEBCPYzE8sYSChAqkGfPH
+         y8QPt3dKv+50twrasMYdLZqP66SlEGW7Sy82c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RPqtVX/+cvCH/2sGwhMrdA/jOO6mc/fG2U4E6ZEjFxs=;
+        b=TpHvQwdC+/th1g5OJv7CJgH4mZjGYOix0GfGysqWo/Pm4/X6DyZ3ODUS97KFriwQMp
+         7N+GSaZSAnISnJevpRz7WVdIpR/mb1iSBx5IBVjZJGPsD7dEM2sBYc+qdsAn9ip3fXDU
+         WswoS3vhRDwb97a9PnumWxHBX73ZoAukc7bRgJRRgfH54xrq5UBDAthZi8+aj9PYwJOi
+         d+quN+UgvVg+t8PFi2vJYlkGpMfyYyJGGRQZ2x9UUkJ2LYuG0NZ729l+iBmpcbr7ASqy
+         1tHdvYMxkACKI5Ne4a5MZNGAoyi8Gf5OGLOIjqBbumzE24LDUuxTQHkyTKb8UhYkriL4
+         hHOA==
+X-Gm-Message-State: ANoB5pmh1QTQEvPQ4bO/EumrFlaZi6NQXRvVTG663GTA92MPN3vjmEeH
+        N9HLBVa/ByxAZdYBS5Tovv9XZQ==
+X-Google-Smtp-Source: AA0mqf5+lMeNXwMMPvhRDl7TIGCetVVJQ0JH1+GaavGnktraE0YfQhN4KeazH6WZKKMP90I+I1yUpQ==
+X-Received: by 2002:ae9:f804:0:b0:6fa:3b1b:9c80 with SMTP id x4-20020ae9f804000000b006fa3b1b9c80mr7402605qkh.722.1668336977413;
+        Sun, 13 Nov 2022 02:56:17 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id d16-20020a05622a15d000b003a540320070sm4155838qty.6.2022.11.13.02.56.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 13 Nov 2022 02:56:16 -0800 (PST)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Andy Green <andy@warmcat.com>, Shengyu Qu <wiagn233@outlook.com>
+CC:     <franky.lin@broadcom.com>, <linux-wireless@vger.kernel.org>
+Date:   Sun, 13 Nov 2022 11:56:11 +0100
+Message-ID: <18470a1e910.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <08416710-655a-c87c-a599-3fe2563f7de4@warmcat.com>
+References: <TY3P286MB26114DD461F50814980453E598029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <08416710-655a-c87c-a599-3fe2563f7de4@warmcat.com>
+User-Agent: AquaMail/1.40.0 (build: 104000219)
 Subject: Re: AP6275 / bcm43752 pcie on mainline brcmf
-In-Reply-To: <de7f4df1-54b0-db2e-3d40-3caeda020924@warmcat.com>
-References: <TY3P286MB26114DD461F50814980453E598029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM> <08416710-655a-c87c-a599-3fe2563f7de4@warmcat.com> <TY3P286MB26116261C165BD4B0B249EB098029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM> <de7f4df1-54b0-db2e-3d40-3caeda020924@warmcat.com>
-Message-ID: <TY3P286MB2611977F6E1611A06DAC6D9A98029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TMN:  [ekPuW8bywfD7aL8N3g6ldf4ogqZcyLJ6wRSkeyRvhHrwvQ3XhAo+nRSCLVyoGG+171qP+3EdTnQ=]
-X-ClientProxiedBy: TYBP286CA0005.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:404:ce::17) To TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:252::12)
-X-Microsoft-Original-Message-ID: <7532746A-5AB3-49F3-848D-C59DDAD4720F@outlook.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY3P286MB2611:EE_|OSZP286MB1848:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8bb616fa-29e2-493d-8988-08dac55e8758
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z7tIwcEsD+xnUyvKveQ8HpYCpqx9D+uUnZhbFl9fTw9ff24od4XU1K5vYRFLIzRKpn+7AtI/E8IWm4CDR7KkMz9GVxMs9zlkDZF2kc/nRCOyRZGEKhQ9XekRySdIuftg1T1K8gImZWtFUDwhrdGdaTIFUG0jszM2Ek2dft5Aca5iK+tx6m8Lc0pwkyuxOFXzxcmMa1vuPV/nEGY7e4CoXoQFzJAUd9z5Bbel/Aq6z8rWrYKb/SaU6T24HidXWCwmRyJuxj6oaJgqFrSX1d/3lzW/kOuHYi6iaPf8obyZqebOojxZXJosgt5qXY6MdgjcL0cgKZqaK1ZOu8kEydYEPxppG+5n2YYUnOA1+gLQEkQFkeLlWuSSheuKx0Q/P0IMFTrYT9r+H226WtczqsEWVvc71OhOrW+c91teGgNUJTcjQfB/XGR16JRSU6uxInIuO/YpIpVweSfakrUaOtceDjfFaaA006RvPr9cjH6YdoTQr9nvQb8btBEMEt5s9wUwEVwXsA22TZfnZV6/yK4/utbeY1M20caUZFMp9bCU1Hxz3VLtn3mWC9S7sRd3wh6sjUvlNnCwz5wwo7qwW1r3S1wmApyOsqs+qN/dOl5kM3buW3HtYvD1JdbrGVuEdElSQTkfDUeELEhZyvbWTooWYmTcpkB6WxEC9Glo0wRP8KW7HxmE9VKi0zcyJbBHKW8H
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VXZYbEFTNExKaDFXUlJ5WE1Eelp5ZklnSTZuK2NsK2dXenRLbCtqMmhuSkpC?=
- =?utf-8?B?ZlphZzBBL2JuZ3dHaGkvSUk0L0hyS1NPN0FTMlJQZWVBaWI2THhNczFRcWJ4?=
- =?utf-8?B?MXY1dHQ1N0ozcUZNbVlFV3hRUjVwc2ZPYjVKVGxOQnJoWmw3eVZYKzEyejlQ?=
- =?utf-8?B?STRCbXltWVZ4TitXSlBaMTVzc0tqdzllWEZ0dFFQY2R5UityZVduK0NIcE5R?=
- =?utf-8?B?Q1hhOVVWOXVlRHA3K0VPSWQxS0VKOUh1K2ZoVG1ieEliQUh3cnl3cUIvV2ty?=
- =?utf-8?B?VnViR0l1dlZIRzZuOE9nN092UEhEZUhZYXIzbjk1dEs2RzR6TUNwZzF2QXJN?=
- =?utf-8?B?Qjh4eTJSNURvaFZTQk51a2R2TzQveU53aWNPUjNsdDJqb2FqL0hYcFZ6TmI0?=
- =?utf-8?B?WHFqVzVVWjFQdG8xUDNNZzRxZzVESUJHOFZYdFQ0aHBtbldsaWMyUDQ2TU5o?=
- =?utf-8?B?TVBwT3NNY3EzZGVCYm40Ris4UFB2ZHdVNUUrd3VSNlUyME1YWkovUnFzbkVs?=
- =?utf-8?B?TFlNMmQ2SzdhaVd6ZzdyU2VoeENCQUpuN0o0ckhvMlZNSXJBMEd0MjZGa2Vn?=
- =?utf-8?B?K3JlaTVEbkZWNi9VelJ1YUMxOUpaUUl6OTNiSEh0aEFTWVBmRzBHalJROHJs?=
- =?utf-8?B?TEpINnpjMDFFRUJLUGw4dzFCK0wzdlNQdjlUcVRCM0Q3SG9xV2lCKzZzbmY0?=
- =?utf-8?B?aEcwUm9VUFRVdUd1WURpK0JpWkJ3RzQ3SVkyb0NURjBrYzdTTEx6QWdWQWdq?=
- =?utf-8?B?K09TVEo2TVFqTDhPc2cvaHhya21qSDdHNUI2V0tZZ0swMVhWVFBzWXdhOEZD?=
- =?utf-8?B?WWVZZnlka096RXhPNEtvNlZxSnBVU05EMlBFMUtqdWVJUGt4cnJBa3lhS2FX?=
- =?utf-8?B?Umw4OWZmM2xiWUNKbU13dllaWmVTK0d0Vm5wSEV0M2ZOTjYyQ1AxN1BsL2tD?=
- =?utf-8?B?Qzc5cVBLN2FCVWFnSXE3OHNqY2tJNHltalJBT1h3cEVwaWZ4RDRjSERrVzhG?=
- =?utf-8?B?T1EySm5rcldkZzZsYXlmeDFGc29VZXMwTnFiQjV0OEp0WkxKZWJTYkEwYUVD?=
- =?utf-8?B?UzZjSGpMTm5uNVFRZ2hsSWV4VGRPOGJvbGlkZC81RytqRWU1bm54MCtoRkc1?=
- =?utf-8?B?WkwrTXk4RnhldFhyV09acEdhV0x2Tm1iS0MxeVl6SUtWNWh4WDI1WksvRHJh?=
- =?utf-8?B?MTFRKy9ueWV4Tlk5b3I3Vkk3REpqZjdNNVJ2WHNYR3VjS2xsUkR5UmpjaWlX?=
- =?utf-8?B?TUY0TUVnamVqcHNJSlBQaTJsYVhhK1VVdERZMm5iVWFaMlRHeFpBa3FqMXFm?=
- =?utf-8?B?N3lMMEtsN2dLb2lCV20ycU85czhBQy9LZDRmdE51akNDUVZTdlpmQUhBeHFl?=
- =?utf-8?B?Ylhjb0hiZDdjajdzaFlydjFQUDQvTHFBK09RUkNUNmpNRCtFRjR3K2Y2VWJo?=
- =?utf-8?B?WlVJRUI4b2dDb2F1WlhxU2pRTDFOVzlTOHJWN2FBdGFmaVdxSHhDT25lUnpJ?=
- =?utf-8?B?ODZNL0xLZHlsQkp2bHExaEh3emNZVVZvS2M4SmxuZGU2K05ENVpraW56dGx0?=
- =?utf-8?B?eFZTaGhoOGVXUkR6OFlocTRYQ0pkeXZVYzBMYWNHKzBGYXNRRjdXcW9BTk9W?=
- =?utf-8?B?R005WTZDZlhWSjVSTXJwSzRRVFNqeWk0OE1tM04vRWs4aEV1b2N4WGNuMXF4?=
- =?utf-8?B?N0J3cVdYdzlYTHJxaytrUXlteHRYWFI0QzFQM0I2ZDVBenE3UDdxMnR5Q1pT?=
- =?utf-8?B?Uk9xcnFka2xZd09TZE1LTkp5NEVNbmRVQWVyWEVRUlQyRTcrbHNLd1FUN0Uw?=
- =?utf-8?B?bERXT2RUaDhLcExBZ0RkUT09?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bb616fa-29e2-493d-8988-08dac55e8758
-X-MS-Exchange-CrossTenant-AuthSource: TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2022 10:05:03.5595
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZP286MB1848
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000eb944105ed57f86c"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Almost same, except I'm using sdio driver (radxa rock 3a+their a6 module (A=
-P6275S)). And I'm using mainline 5.19.8(self-compiled armbian edge) while I=
- was testing.
+--000000000000eb944105ed57f86c
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Shengyu=20
+On November 13, 2022 10:03:11 AM Andy Green <andy@warmcat.com> wrote:
 
-=E4=BA=8E 2022=E5=B9=B411=E6=9C=8813=E6=97=A5 GMT+08:00 =E4=B8=8B=E5=8D=885=
-:41:19, Andy Green <andy@warmcat.com> =E5=86=99=E5=88=B0:
+> On 11/13/22 08:26, Shengyu Qu wrote:
 >
+>> Hello, I'm facing the same problem on sdio version of AP6275 module in 
+>> mainline kernel. But I found a very old version from here could work with 
+>> mainline brcmfmac driver.
+>> Link: https://bbs.t-firefly.com/forum.php?mod=viewthread&tid=3107
 >
->On 11/13/22 09:10, Shengyu Qu wrote:
->> Actually you can use any other clm info blob with this firmware as I tri=
-ed. I also uploaded this to armbian's firmware repo. Hope we could get the =
-proper firmware uploaded by Broadcom soon.
+> Thanks for the info.
 >
->Thank, I tried this, it did accept to download the clm part from the Rockc=
-hip SDK firmware.
+> The firmware on the firefly thread doesn't seem to have a CLM blob that
+> the mainline driver wants, just two types of the ~900KB main firmware
+> for AP mode support or not.
+
+A separate CLM blob may not be necessary when it is built-in in firmware 
+which can be overloaded by separate blob, but in that case it is optional.
+
+> It also doesn't have _sdio or _pcie in the filenames... I tried it but
+> although it's different in what it read after downloading NVRAM
 >
-># ls -l /lib/firmware/brcm
->-rw-r--r-- 1 root root  30993 Oct  3 08:40 clm_bcm43752a2_pcie_ag.blob
->-rw-r--r-- 1 root root 743607 Nov 13 08:45 fw_bcm43752a2_ag.bin
->lrwxrwxrwx 1 root root     46 Nov 13 09:19 fw_bcm43752a2_pcie.clm_blob -> =
-/lib/firmware/brcm/clm_bcm43752a2_pcie_ag.blob
->lrwxrwxrwx 1 root root     20 Nov 13 08:38 fw_bcm43752a2_pcie.rockchip,rk3=
-588-evb1-v10.bin -> fw_bcm43752a2_ag.bin
->lrwxrwxrwx 1 root root     36 Nov 13 08:47 fw_bcm43752a2_pcie.txt -> /lib/=
-firmware/brcm/nvram_ap6275s.txt
->-rw-r--r-- 1 root root   8709 Nov 13 08:44 nvram_ap6275s.txt
+> [    3.775602] brcmfmac: brcmf_pcie_download_fw_nvram: sharedram_addr
+> 0xfa2c05d3
 >
->But it's no happier after the NVRAM download part.
+> (the rockchip SDK firmware says 0xfa1a05e5)
 >
-># dmesg | grep brcm
->[    3.530116] brcmfmac: brcmfmac_module_init No platform data available.
->[    3.530303] brcmfmac 0002:21:00.0: enabling device (0000 -> 0002)
->[    3.530362] brcmfmac: brcmf_chip_recognition found AXI chip: BCM43752/2
->[    3.531325] brcmfmac: brcmf_chip_cores_check  [1 ] core 0x800:65 base 0=
-x18000000 wrap 0x18100000
->[    3.531329] brcmfmac: brcmf_chip_cores_check  [2 ] core 0x812:82 base 0=
-x18001000 wrap 0x18101000
->[    3.531334] brcmfmac: brcmf_chip_cores_check  [3 ] core 0x83e:16 base 0=
-x18002000 wrap 0x18102000
->[    3.531338] brcmfmac: brcmf_chip_cores_check  [4 ] core 0x83c:65 base 0=
-x18003000 wrap 0x18103000
->[    3.531342] brcmfmac: brcmf_chip_cores_check  [5 ] core 0x829:26 base 0=
-x18004000 wrap 0x18104000
->[    3.531346] brcmfmac: brcmf_chip_cores_check  [6 ] core 0x844:2 base 0x=
-18005000 wrap 0x18105000
->[    3.531350] brcmfmac: brcmf_chip_cores_check  [7 ] core 0x840:15 base 0=
-x18010000 wrap 0x00000000
->[    3.531354] brcmfmac: brcmf_chip_cores_check  [8 ] core 0x827:35 base 0=
-x18012000 wrap 0x00000000
->[    3.531358] brcmfmac: brcmf_chip_cores_check  [9 ] core 0x240:0 base 0x=
-00000000 wrap 0x1810a000
->[    3.531362] brcmfmac: brcmf_chip_cores_check  [10] core 0x135:0 base 0x=
-00000000 wrap 0x18112000
->[    3.531365] brcmfmac: brcmf_chip_cores_check  [11] core 0x135:0 base 0x=
-00000000 wrap 0x18113000
->[    3.531369] brcmfmac: brcmf_chip_set_passive Enter
->[    3.641635] brcmfmac: brcmf_chip_set_passive Enter
->[    3.642156] brcmfmac: brcmf_chip_tcm_rambase: 43752 OK
->[    3.642159] brcmfmac: brcmf_chip_get_raminfo RAM: base=3D0x170000 size=
-=3D1310720 (0x140000) sr=3D0 (0x0)
->[    3.642187] brcmfmac: brcmf_chip_setup ccrev=3D65, pmurev=3D35, pmucaps=
-=3D0x84565f23
->[    3.642193] brcmfmac: brcmf_get_module_param Enter, bus=3D2, chip=3D437=
-52, rev=3D2
->[    3.642207] brcmfmac: brcmf_alloc Enter
->[    3.642231] brcmfmac: brcmf_fw_alloc_request: using brcm/fw_bcm43752a2_=
-pcie for chip BCM43752/2
->[    3.642235] brcmfmac: brcmf_fw_get_firmwares enter: dev=3D0002:21:00.0
->[    3.642241] brcmfmac: brcm_alt_fw_path FW alt path: brcm/fw_bcm43752a2_=
-pcie.rockchip,rk3588-evb1-v10.bin
->[    3.646995] brcmfmac: brcmf_fw_complete_request firmware brcm/fw_bcm437=
-52a2_pcie.bin found
->[    3.647006] brcmfmac: brcm_alt_fw_path FW alt path: brcm/fw_bcm43752a2_=
-pcie.rockchip,rk3588-evb1-v10.txt
->[    3.647308] brcmfmac: brcmf_fw_complete_request firmware brcm/fw_bcm437=
-52a2_pcie.txt found
->[    3.647312] brcmfmac: brcmf_fw_request_nvram_done enter: dev=3D0002:21:=
-00.0
->[    3.647484] brcmfmac: brcmf_fw_request_nvram_done nvram 00000000c4269a3=
-0 len 5968
->[    3.647491] brcmfmac: brcm_alt_fw_path FW alt path: brcm/fw_bcm43752a2_=
-pcie.rockchip,rk3588-evb1-v10.clm_blob
->[    3.647911] brcmfmac: brcmf_fw_complete_request firmware brcm/fw_bcm437=
-52a2_pcie.clm_blob found
->[    3.648197] brcmfmac: brcmf_chip_tcm_rambase: 43752 OK
->[    3.648200] brcmfmac: brcmf_chip_get_raminfo RAM: base=3D0x170000 size=
-=3D1310720 (0x140000) sr=3D0 (0x0)
->[    3.723260] brcmfmac: Download NVRAM brcm/fw_bcm43752a2_pcie.txt
->[    3.723895] brcmfmac: brcmf_pcie_download_fw_nvram: sharedram_addr 0xfa=
-2c05d3
->[    3.723899] brcmfmac: brcmf_chip_set_active Enter
->[    9.721628] brcmfmac 0002:21:00.0: brcmf_pcie_download_fw_nvram: FW fai=
-led to initialize: 0xfa2c05d3
->[    9.721657] brcmfmac: brcmf_detach Enter
->[    9.745615] brcmfmac: brcmf_bus_change_state 0 -> 0
->[    9.745623] brcmfmac: brcmf_proto_detach Enter
+> it still times it out a few seconds later as unresponsive after the fw
+> load... maybe it is for SDIO only, or the lack of CLM, present in the
+> Rockchip fw, means it won't get anywhere.
+
+That sharedram_addr looks wrong. Probably the firmware is not booting for 
+some reason. Can you provide a URL where I can download the rockchip 
+firmware? My internet search skills are lacking.
+
 >
->CONFIG_BRCMUTIL=3Dm
-># CONFIG_BRCMSMAC is not set
->CONFIG_BRCMFMAC=3Dm
-># CONFIG_BRCMFMAC_PROTO_MSGBUF is not set
-># CONFIG_BRCMFMAC_SDIO is not set
-># CONFIG_BRCMFMAC_USB is not set
->CONFIG_BRCMFMAC_PCIE=3Dy
->CONFIG_BRCM_TRACING=3Dy
->CONFIG_BRCMDBG=3Dy
+>> Besides who I should ask to make proper firmware for it into linux-firmware 
+>> repo?
 >
->I have the AP6275 module EN signal with the gpio wired to it as an "always=
--on" gpio regulator in DT, and don't use the hacky rfkill thing the rockchi=
-p SDK came with.
->
->It's on top of 6.1.0-rc4.
->
->Does your setup differ from this?
->
->-Andy
->
->> Shengyu
->>=20
->> =E4=BA=8E 2022=E5=B9=B411=E6=9C=8813=E6=97=A5 GMT+08:00 =E4=B8=8B=E5=8D=
-=885:03:06, Andy Green <andy@warmcat.com> =E5=86=99=E5=88=B0:
->>>=20
->>>=20
->>> On 11/13/22 08:26, Shengyu Qu wrote:
->>>=20
->>>> Hello, I'm facing the same problem on sdio version of AP6275 module in=
- mainline kernel. But I found a very old version from here could work with =
-mainline brcmfmac driver.
->>>> Link: https://bbs.t-firefly.com/forum.php?mod=3Dviewthread&tid=3D3107
->>>=20
->>> Thanks for the info.
->>>=20
->>> The firmware on the firefly thread doesn't seem to have a CLM blob that=
- the mainline driver wants, just two types of the ~900KB main firmware for =
-AP mode support or not.
->>>=20
->>> It also doesn't have _sdio or _pcie in the filenames... I tried it but =
-although it's different in what it read after downloading NVRAM
->>>=20
->>> [    3.775602] brcmfmac: brcmf_pcie_download_fw_nvram: sharedram_addr 0=
-xfa2c05d3
->>>=20
->>> (the rockchip SDK firmware says 0xfa1a05e5)
->>>=20
->>> it still times it out a few seconds later as unresponsive after the fw =
-load... maybe it is for SDIO only, or the lack of CLM, present in the Rockc=
-hip fw, means it won't get anywhere.
->>>=20
->>>> Besides who I should ask to make proper firmware for it into linux-fir=
-mware repo?
->>>=20
->>> It would also be great to hear if the PCIe firmware from Rockchip aimed=
- at the OOT driver was definitively incompatible with the mainline driver a=
-nd we have to find a solution for that from Broadcom, or it is expected to =
-basically work.  I realize it might not be easy to get an answer internally=
- but this chipset is likely to appear in more RK3588 SBCs soon since it's t=
-he one on the evb.
->>>=20
->>> -Andy
->>>=20
->>>> Shengyu
+> It would also be great to hear if the PCIe firmware from Rockchip aimed
+> at the OOT driver was definitively incompatible with the mainline driver
+> and we have to find a solution for that from Broadcom, or it is expected
+> to basically work.  I realize it might not be easy to get an answer
+> internally but this chipset is likely to appear in more RK3588 SBCs soon
+> since it's the one on the evb.
+
+Right now I don't have enough information to comment on this.
+
+Regards,
+Arend
+
+
+
+--000000000000eb944105ed57f86c
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCAL3/IN0JhvGytCrqn
+BTSJZfAtJIMPcWF+yV1QTWbaQzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjExMTMxMDU2MTdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAs7e9Xqva5V35wLY0L0YJGMoKvfgh9feHr8SG
+pZt9DteWUjs2j1DMxmgBlRVPhvJpNnaOEjA9UzpMcNbKPgF3nNzkQbnWH2OHozKGtBxeaaQMNjFb
+1L4ew/fUpIHWb4zeTmGfKq7U9VB0OFYWvS+SEy0ytuAkVkId5ScftlD+sRkc1YXkjQGoEU7+Rmsg
+VkVdFYAgwdCewiZGZIuKxEHs+G27cCVoBzny0yRxx2NwYA5d5tQOrnedVrJJpCjezLeWLrbOdwwQ
+ds7aW+140XzS4k6H2cwLxBkpJhwHJygroUjgP0ORCIref8tyAvnrH5QqpUHO33MmFPmyQeLYVjWg
+9Q==
+--000000000000eb944105ed57f86c--
