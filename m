@@ -2,96 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E01C628A04
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Nov 2022 21:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5275628A52
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Nov 2022 21:19:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236612AbiKNUBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Nov 2022 15:01:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60016 "EHLO
+        id S237514AbiKNUT2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Nov 2022 15:19:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235782AbiKNUBk (ORCPT
+        with ESMTP id S237459AbiKNUTZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Nov 2022 15:01:40 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A75A3AC;
-        Mon, 14 Nov 2022 12:01:39 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id x2so18928432edd.2;
-        Mon, 14 Nov 2022 12:01:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qgEFTpfru0TP5dduWNUns3KhyePG9T+scnEKT6I0Amc=;
-        b=URiV4ZMYsyZIoIFgJQfs3EqLUBBwdL7swXYQoOgnzFIg2HwSAcpGsACYIIFmilbJ96
-         V9SSVAH4iY2rLmDbHYxBtJoiysDFYi8b9/OEo/s2v2W5iYPK1rG2kzLNaShQEFHNcqCt
-         9EKejsS4VdHJ7K9iJgvHABGJ9QjKid3y2gLfzzf9nD0zHJVmRSXNsRysW6q6RsAkHcFx
-         4wIoW0Vaax3A+s9q7SzkbvcmpaAGF+UO2+JQ2J0tMZ895n+VgReYKWkIIblnTIZ8mchT
-         pELMOfcpolEwIgTdV/+/Fqu7lcyJ3zGwYfr1m77sAi+GA46D5ZkfEI7KfPHNj4GRr+Ua
-         79iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qgEFTpfru0TP5dduWNUns3KhyePG9T+scnEKT6I0Amc=;
-        b=4ufi8ASmWTD3ybmID12t/42hT0loQU9neqdQdOSU2+fJn3n7+r3ETZcHYrWdhifBFp
-         Xi5owz3Kp0oM7hC0c/2j6PoyQvDT4gEmVnrc6C2yHOfKumXX301Dbde7EtYD+ZYz3yMD
-         0rX1J5rxcq80FwuaMJY4i4FReyjSwOb8Ej3gh6zydKPkCvKUJGArAoP9DCa6kWi/7UPH
-         Ai+SS3/lj6BXSUj5HejZrK/UFhKmk5SYck5okepOqipt3fPVmIaNrkQLVhEB1vivJfOi
-         5OxYf8n/r/K7SdraD/4hDga2cFKZ/UmgFTwEySj3K0Cp91fX32QL8TdFC6k2rU/Xr3t3
-         SyhA==
-X-Gm-Message-State: ANoB5pm3cpnDp2kBgLhP5Zs2cmiEXT7k88zjSrNgs/nE6HeeXJZPPnT/
-        fEZUvuorW6Su2s4f2SaLff0=
-X-Google-Smtp-Source: AA0mqf4tC3PSryKYZC57AtnHN6m7iP2oh1sOfw5r0hp/1+Crl85nfK7ZvfbvOnbGLMkv6RlGMoms/g==
-X-Received: by 2002:aa7:cf07:0:b0:461:f1c6:1f22 with SMTP id a7-20020aa7cf07000000b00461f1c61f22mr12863520edy.95.1668456097647;
-        Mon, 14 Nov 2022 12:01:37 -0800 (PST)
-Received: from matrix-ESPRIMO-P710 (p54a07888.dip0.t-ipconnect.de. [84.160.120.136])
-        by smtp.gmail.com with ESMTPSA id p9-20020a05640243c900b0046447e4e903sm5217776edc.32.2022.11.14.12.01.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 12:01:37 -0800 (PST)
-Date:   Mon, 14 Nov 2022 21:01:35 +0100
-From:   Philipp Hortmann <philipp.g.hortmann@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: Correct example of ieee80211_iface_limit
-Message-ID: <20221114200135.GA100176@matrix-ESPRIMO-P710>
+        Mon, 14 Nov 2022 15:19:25 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E71ACF7
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Nov 2022 12:19:25 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AEHQE5F022027;
+        Mon, 14 Nov 2022 20:19:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : subject
+ : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=5leXdxAFfvB/GoG0Kak9Zli7VQ6QQKfXbYUkGYPS12s=;
+ b=XDubkmcF3ma+qxUDCk8VUG3fww5PmA6MYEY1YK0AZdvxejmg0azsf/Xl67wv/CfrilMc
+ chKwJ/T2p0a8JftHcnLSK8etu+wli9hyJiAL/d2weSBhkJoNRoX8Nhwc7DREYtsdFWe9
+ SVSGYtUVygi5QDv2ntPGLilGI/0ASEjsk6Nr9O04VOKRnjWMYmBXTLYzt6UYLUmW+Onx
+ tYbfNbBz7NbBHfXO3sLqdI82T2awfjOsnYVhZCG7A0hqOSLnWQNCzN/toDome6Y/rbZX
+ k/Jx35gFCrmI/2e9zibnNMCnkSWFrdaYzNvJfaqA+QrlQZDz10G+qxpyr8aGPPoTyUXs 3g== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kut23gghr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Nov 2022 20:19:22 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AEKJL00025510
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Nov 2022 20:19:21 GMT
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Mon, 14 Nov 2022 12:19:21 -0800
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 00/10] MBSSID and EMA support in AP mode
+Date:   Mon, 14 Nov 2022 12:19:02 -0800
+Message-ID: <20221114201912.22893-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Bgnj7mRAQL91YbS2U0paw2q3A4WQ-BLe
+X-Proofpoint-ORIG-GUID: Bgnj7mRAQL91YbS2U0paw2q3A4WQ-BLe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-14_13,2022-11-11_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ impostorscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211140143
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Correct wrong closing bracket.
+Add support for enhanced multiple BSSID (EMA AP) in MAC80211 and
+ath11k driver.
 
-Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
----
- include/net/cfg80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+All patches in this version are based on wireless-next tree.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index e09ff87146c1..ba45a49c8c84 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4740,7 +4740,7 @@ struct ieee80211_iface_limit {
-  *
-  *	struct ieee80211_iface_limit limits1[] = {
-  *		{ .max = 1, .types = BIT(NL80211_IFTYPE_STATION), },
-- *		{ .max = 1, .types = BIT(NL80211_IFTYPE_AP}, },
-+ *		{ .max = 1, .types = BIT(NL80211_IFTYPE_AP), },
-  *	};
-  *	struct ieee80211_iface_combination combination1 = {
-  *		.limits = limits1,
+Aloka Dixit (10):
+  mac80211: generate EMA beacons in AP mode
+  ath11k: add WMI resource config for EMA
+  ath11k: set MBSSID and EMA driver capabilities
+  ath11k: MBSSID configuration during vdev create/start
+  ath11k: create a structure for WMI vdev up parameters
+  ath11k: rename struct wmi_vdev_up_cmd members
+  ath11k: configure MBSSID device parameters
+  ath11k: move vif parameter setting in a different function
+  ath11k: EMA beacon support
+  ath11k: configure WPA and RSN parameters for nontransmitting interface
+
+ drivers/net/wireless/ath/ath11k/core.h |   2 +
+ drivers/net/wireless/ath/ath11k/hw.c   |   3 +
+ drivers/net/wireless/ath/ath11k/hw.h   |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 361 ++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/wmi.c  |  34 ++-
+ drivers/net/wireless/ath/ath11k/wmi.h  |  66 ++++-
+ include/net/mac80211.h                 |  68 +++++
+ net/mac80211/cfg.c                     |   7 +-
+ net/mac80211/ieee80211_i.h             |  10 +-
+ net/mac80211/tx.c                      | 134 ++++++++-
+ 10 files changed, 621 insertions(+), 65 deletions(-)
+
+
+base-commit: 901c247f9687b5aecc950a931a3b0e1930d02bfd
 -- 
-2.37.3
+2.17.1
 
