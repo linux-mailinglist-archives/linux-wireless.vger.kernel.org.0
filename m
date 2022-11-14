@@ -2,61 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F50F628CE6
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Nov 2022 00:02:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C24628D2C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Nov 2022 00:07:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237823AbiKNXC3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Nov 2022 18:02:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51062 "EHLO
+        id S236635AbiKNXHz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Nov 2022 18:07:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236787AbiKNXCZ (ORCPT
+        with ESMTP id S238095AbiKNXHb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Nov 2022 18:02:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677301AD95;
-        Mon, 14 Nov 2022 15:02:24 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0341461496;
-        Mon, 14 Nov 2022 23:02:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DE1C43470;
-        Mon, 14 Nov 2022 23:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668466943;
-        bh=atvqHdQO4CQz5dyA9Aq/ZbZb/2LT5b1pm3IB1f6BEtc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=h1RAO+mYJIKOiqI9PduVuH5ox7UFRxuY8OrEa3EcVGGJGjUlJfcX1lSB/nCVt1ao+
-         HKeDoFnSR22leKuODBTvqMFdBEaRizKnHXvS+ZQYRoIVaynfBGK48r70/MGDo+9deS
-         SYNTdXVP9Yr7pnn/Zf+xEpcvFUmDVGU2c1GQAGHg9+6kxh5WKOSju7ANg2c64i0KJB
-         thUfF+9r2zxlZ+cDb058lle+BnPgzYJHFg5R6WTe//2CSV9/N4RI2ARQh+CMHrQp08
-         99Ul7qUWHWQPrDYNM7G3AvDWz9zQkWAH+c/E29bKc/Y1E+ANkShpNYgf5sgg8HRX6L
-         Bhf/lknvkid6Q==
-Date:   Mon, 14 Nov 2022 17:02:06 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH 2/2][next] wifi: brcmfmac: Use struct_size() and array_size()
- in code ralated to struct brcmf_gscan_config
-Message-ID: <de0226a549c8d000d8974e207ede786220a3df1a.1668466470.git.gustavoars@kernel.org>
-References: <cover.1668466470.git.gustavoars@kernel.org>
+        Mon, 14 Nov 2022 18:07:31 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DAED1CB1E
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Nov 2022 15:04:50 -0800 (PST)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AELkQCf023750;
+        Mon, 14 Nov 2022 23:04:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : subject
+ : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=QRToJZdZVKUhRTQV5e7EgrEA8RrSB1JXv6E57i5sALw=;
+ b=GWPQ3atioQHsfY1RA8DvjV3qdp21wwiaN/bKa2mX+P/DYaz/o8I1g+2XFVgGluCaITFP
+ 5C8IALHRrgfPugqfK/j+D+JRXepIKFlTlwUHiOxTQHt1AAFTulKwAN+z5enSOgTUH2NK
+ qIFMvFt0h5uM1Sc39qJbJAgudc5BnetNju5C1njcoHGNE8eAu/xGVxNjUg/t5/UBI/2u
+ WfLA4TbRU+fyudmZdG0CljTWZ7alBz4dV0KEvU0Yk/NbAV1VOT1qYuzYlqDaKu19MlfR
+ XCo159buAAuS0BxLei41zXpSUPX6/ZtaA2TvdCXQkBU1jHgAi+6DkYZI5mN+Jtc0Jjxh IQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kusm28w45-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Nov 2022 23:04:26 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AEN4Pt7000475
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Nov 2022 23:04:25 GMT
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.29; Mon, 14 Nov 2022 15:04:25 -0800
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/2] RNR for EMA AP 
+Date:   Mon, 14 Nov 2022 15:04:14 -0800
+Message-ID: <20221114230416.20192-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1668466470.git.gustavoars@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IIeB2SJDZDKsHtWNrZA4z2XnSU2Apg6s
+X-Proofpoint-GUID: IIeB2SJDZDKsHtWNrZA4z2XnSU2Apg6s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-14_15,2022-11-11_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=539 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211140162
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,45 +70,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Prefer struct_size() over open-coded versions of idiom:
+Prerequisite patch:
+https://patchwork.kernel.org/project/linux-wireless/patch/20221114201912.22893-2-quic_alokad@quicinc.com/
 
-sizeof(struct-with-flex-array) + sizeof(typeof-flex-array-elements) * count
+As per IEEE Std 802.11ax-2021, 11.1.3.8.3 Discovery of a nontransmitted
+BSSID profile, an EMA AP that transmits a Beacon frame carrying
+a partial list of nontransmitted BSSID profiles should include in
+the frame a Reduced Neighbor Report element carrying information for
+at least the nontransmitted BSSIDs that are not present in
+the Multiple BSSID element carried in that frame.
 
-where count is the max number of items the flexible array is supposed to
-contain.
+Add new attribute NL80211_ATTR_EMA_RNR_ELEMS to support the above.
+Number of RNR elements must be more than or equal to the number of
+MBSSID elements. This attribute can be used only when EMA is enabled.
+Userspace is responsible for splitting the RNR into multiple elements
+such that each element excludes the non-transmitting profiles already
+included in the MBSSID element (%NL80211_ATTR_MBSSID_ELEMS) at
+the same index.
 
-Also, use array_size() in call to memcpy().
+MAC80211 will generate EMA beacons by adding MBSSID and RNR elements
+at the same index. If the userspace provides more RNR elements than the
+number of MBSSID elements then these will be added in every EMA beacon.
 
-Link: https://github.com/KSPP/linux/issues/160
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Aloka Dixit (2):
+  cfg80211: support RNR for EMA AP
+  mac80211: support RNR for EMA AP
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c
-index 7c5da506637f..05f66ab13bed 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pno.c
-@@ -405,7 +405,7 @@ static int brcmf_pno_config_sched_scans(struct brcmf_if *ifp)
- 	if (n_buckets < 0)
- 		return n_buckets;
- 
--	gsz = sizeof(*gscan_cfg) + n_buckets * sizeof(*buckets);
-+	gsz = struct_size(gscan_cfg, bucket, n_buckets);
- 	gscan_cfg = kzalloc(gsz, GFP_KERNEL);
- 	if (!gscan_cfg) {
- 		err = -ENOMEM;
-@@ -434,8 +434,8 @@ static int brcmf_pno_config_sched_scans(struct brcmf_if *ifp)
- 	gscan_cfg->flags = BRCMF_GSCAN_CFG_ALL_BUCKETS_IN_1ST_SCAN;
- 
- 	gscan_cfg->count_of_channel_buckets = n_buckets;
--	memcpy(&gscan_cfg->bucket[0], buckets,
--	       n_buckets * sizeof(*buckets));
-+	memcpy(gscan_cfg->bucket, buckets,
-+	       array_size(n_buckets, sizeof(*buckets)));
- 
- 	err = brcmf_fil_iovar_data_set(ifp, "pfn_gscan_cfg", gscan_cfg, gsz);
- 
+ include/net/cfg80211.h       | 19 +++++++++++
+ include/uapi/linux/nl80211.h | 13 ++++++++
+ net/mac80211/cfg.c           | 63 +++++++++++++++++++++++++++++++++---
+ net/mac80211/ieee80211_i.h   | 21 ++++++++++--
+ net/mac80211/tx.c            | 10 ++++++
+ net/wireless/nl80211.c       | 50 ++++++++++++++++++++++++++++
+ 6 files changed, 168 insertions(+), 8 deletions(-)
+
+
+base-commit: 901c247f9687b5aecc950a931a3b0e1930d02bfd
+prerequisite-patch-id: ee07532847cf9c473ca00649746ad1cf737c6bf6
 -- 
-2.34.1
+2.17.1
 
