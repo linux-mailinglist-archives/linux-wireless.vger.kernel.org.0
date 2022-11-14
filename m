@@ -2,50 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E921627F77
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Nov 2022 13:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A616281F3
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Nov 2022 15:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237626AbiKNM7k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Nov 2022 07:59:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53118 "EHLO
+        id S236540AbiKNOHQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Nov 2022 09:07:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237623AbiKNM7j (ORCPT
+        with ESMTP id S236314AbiKNOHK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Nov 2022 07:59:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730C52610C;
-        Mon, 14 Nov 2022 04:59:38 -0800 (PST)
+        Mon, 14 Nov 2022 09:07:10 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F9D2B277
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Nov 2022 06:07:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12DBB6117F;
-        Mon, 14 Nov 2022 12:59:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BDEC433D7;
-        Mon, 14 Nov 2022 12:59:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 15D4DB80EBB
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Nov 2022 14:07:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640A2C433D6;
+        Mon, 14 Nov 2022 14:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668430777;
-        bh=Bqo8VHEKOh4b2/t4IKtYamnmb4QITdYQ/EJfORddcJk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ciRd/Wku/AsQYh4opphPAa7JXWu1GgVorWniVQ5/xseSsNCWOywBbKqe6RMF+ZPFt
-         G4XLEvA51Th350+mE1g8JFpdBaJXwUGEt01zv2OcHVQQgsMNeyw8bIyyEyxHE9MgK8
-         x7mNGyK+z7+4rb+YiMtLx8krXVUDApP2wfoflnXYB/htCwTaNkLzxeBd7g4PtJcgMH
-         Ojkt0QuIKGoatmlSquzA742Q6lIzXRaB2+gj18z+4/LAOdUm10WWBHSXboOWk2arW0
-         Bvn6RNUvNce4bquYp1QfM/8t7WzgBzoLL3FElrcoqN6pGlw5u7joVgbfghgHP0jszW
-         6SoZY3rPqi1Ig==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Youghandhar Chintala <quic_youghand@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_mpubbise@quicinc.com>,
-        <linux-arm-msm@vger.kernel.org>, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v3] wifi: ath10k: Add WLAN firmware image version info into smem
-References: <20221111114235.10287-1-quic_youghand@quicinc.com>
-Date:   Mon, 14 Nov 2022 14:59:31 +0200
-In-Reply-To: <20221111114235.10287-1-quic_youghand@quicinc.com> (Youghandhar
-        Chintala's message of "Fri, 11 Nov 2022 17:12:35 +0530")
-Message-ID: <87edu5bsjw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1668434826;
+        bh=gzP/liO4RJ471LAuAoem22dSFdFH7q8+7B4M+VM6JHQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DLvpYP0ddEqyK1rtp6aGPzF9EmSkXUIQ4Qe/eQDL6YVqPnUaFY1Nw+pNh2jtVgwpz
+         ySZAHBydtet8nZA6xrfRBck8HvDybv5fYI/VK7A+g3JROzXCS3CeCUAUMEs1GHB5SW
+         SEA6wbdhmlFkKS6+LxWYbqtri2hZj3FU+hQWMybeSSp6Sbkza+IUiMBIr90Ne/731a
+         1AfaORDg55Y7c5jC5YhHLtc0l98DCWX48nZlrJqcXF+vzwgDy7YX66jreikVoA8nSj
+         fdp6KNUTrChyvN3f3w1sdVMDoXbjwdbusmmlbAyxIk3mAOlX0Cr5k7P+1SOV8po5IW
+         UtrdffTBcHv4g==
+Date:   Mon, 14 Nov 2022 15:07:03 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Ray Jantz <ray.jantz@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [BUG REPORT] mt76: LED not working on ASUS AC51 USB (mt7610U)
+Message-ID: <Y3JLhx3jfCF8zL3a@lore-desk>
+References: <ba072331-b7db-edc3-de77-4496d402f497@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2VUFC7saVm+CVx5e"
+Content-Disposition: inline
+In-Reply-To: <ba072331-b7db-edc3-de77-4496d402f497@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,63 +53,69 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Youghandhar Chintala <quic_youghand@quicinc.com> writes:
 
-> In a SoC based solution, it would be useful to know the versions of the
-> various binary firmware blobs the system is running on. On a QCOM based
-> SoC, this info can be obtained from socinfo debugfs infrastructure. For
-> this to work, respective subsystem drivers have to export the firmware
-> version information to an SMEM based version information table.
->
-> Having firmware version information at one place will help quickly
-> figure out the firmware versions of various subsystems on the device
-> instead of going through builds/logs in an event of a system crash.
->
-> Fill WLAN firmware version information in SMEM version table to be
-> printed as part of socinfo debugfs infrastructure on a Qualcomm based
-> SoC.
->
-> This change is applicable only for WCN399X targets.
->
-> Example:
-> cat /sys/kernel/debug/qcom_socinfo/cnss/name
-> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->
-> Reported-by: kernel test robot <lkp@intel.com>
->
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->
-> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
-> ---
-> Changes from v2:
->  - Removed blank line between trailers
->  - Changed memcpy to strscpy
->  - Removed version_string_size
->  - Added new condition fw_build_id against max length
->  - Added depends on QCOM_SMEM for ath10k_snoc
-> ---
->  drivers/net/wireless/ath/ath10k/Kconfig |  1 +
->  drivers/net/wireless/ath/ath10k/qmi.c   | 34 +++++++++++++++++++++++++
->  2 files changed, 35 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-> index ca007b800f75..e6ea884cafc1 100644
-> --- a/drivers/net/wireless/ath/ath10k/Kconfig
-> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
-> @@ -44,6 +44,7 @@ config ATH10K_SNOC
->  	tristate "Qualcomm ath10k SNOC support"
->  	depends on ATH10K
->  	depends on ARCH_QCOM || COMPILE_TEST
-> +	depends on QCOM_SMEM
->  	select QCOM_SCM
->  	select QCOM_QMI_HELPERS
+--2VUFC7saVm+CVx5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Is there a reason why you used "depends on"? Other QCOM dependencies
-used "select", so I'm wondering if QCOM_SMEM should also use select?
+> Hi,
+> Below is a bug I submitted on Suse bugzilla - they said I should it submit
+> it to linux-wireless.
+>=20
+> LED not working on ASUS AC51 wireless USB adapter (MT7610U chipset) using
+> Mediatek driver
+>=20
+> The activity LED on my ASUS AC51 wireless USB adapter does not flash when=
+ there is link activity. Everything else works - the adapter connects to wi=
+reless networks, but the LED never flashes.  The LED works fine in Windows =
+10.
+>=20
+> Reproducible: Always
+>=20
+> Steps to Reproduce:
+> 1. Plug ASUS AC51 adapter into a USB port.
+> 2. No need to install a driver (driver is in-kernel)
+> 3.(Optional) reboot
+> 4. Connect to wireless network.
+> 5. Open a browser and bring up a web page.
+> Actual Results:
+> The activity LED on the AC51 never flashes even though there is network a=
+ctivity.
+>=20
+> Expected Results:
+> The activity LED on the AC51 should flash when there is network activity.
+>=20
+> The OS is Opensuse Tumbleweed 6.0.5-1-default.
+>=20
+> The info from lsusb is:
+>=20
+> ASUSTek Computer, Inc. AC51 802.11a/b/g/n/ac Wireless Adapter [Mediatek M=
+T7610U]
+>=20
+> Bus 001 Device 003: ID 0b05:17d1 ASUSTek Computer, Inc. AC51 802.11a/b/g/=
+n/ac Wireless Adapter [Mediatek MT7610U]
+>=20
+> I have checked the kernel config file and  CONFIG_MT76_LEDS=3Dy is set.
+>=20
 
-Please also use ath10k list for ath10k patches, not ath11k.
+In the current codebase mt76_leds is only supported for mmio devices since
+afaik mac80211 requires the driver led callbacks to be atomic while usb
+configuration path can't run in atomic context.
+I will work on a solution to overcome this problem.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Regards,
+Lorenzo
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--2VUFC7saVm+CVx5e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY3JLhgAKCRA6cBh0uS2t
+rJL0AQDOelTL6S/EFAOL8GtotfMk4a39/mn304PtWZ18XrqqWAEA+WQGr9woxpgg
+OAsn1IvBYkWpZ6eCkkGFBitydhkcuQ0=
+=AG0G
+-----END PGP SIGNATURE-----
+
+--2VUFC7saVm+CVx5e--
