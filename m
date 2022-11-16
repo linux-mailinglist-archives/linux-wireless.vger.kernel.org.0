@@ -2,45 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 139DB62B1B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 04:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E05DF62B20B
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 05:07:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231883AbiKPDLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Nov 2022 22:11:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37780 "EHLO
+        id S230288AbiKPEHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Nov 2022 23:07:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiKPDLR (ORCPT
+        with ESMTP id S229560AbiKPEHS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Nov 2022 22:11:17 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29F2E26127
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Nov 2022 19:11:11 -0800 (PST)
-X-UUID: 4a3a84b2eac04e84b7ed03031618d987-20221116
+        Tue, 15 Nov 2022 23:07:18 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4FBD1C133
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Nov 2022 20:07:13 -0800 (PST)
+X-UUID: 6ec93e852c894489a57b6c990e895ed7-20221116
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=VzDz/+70YbgE00/1Gai8ilawJ6uOuWm7ra01FRi9P2I=;
-        b=AQs/mrTIXtIUK45oe93rVSKFfoxWt5Gf28r6NpLltqTD9G4SZZ4Y6+kvHxwDSIY+jTSyEw3e1mBsz5ogR40xIiCCwDi/Pe/v3D0gIlHbtlxoStkROaTaR8cj+QFzZv9t/qDKuJB2/EzfAw+O+7bNUctkzw/VldEOOv5emf0uJlk=;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=+ZtGWy5OlTS7BVIaJTCUlCxEvUNtV4jJl10SUtieZZA=;
+        b=XKsxZM0UTyv8KUs5IJJmnGrfDyw74RwhQvEkibjW8iR7TPf8zilAJKi5cbd38im4t84+WvUJgRGs4oRJPIqmJ8luQ8Qme0LQBUvIXspc0TcHkzwHeXTa8fX3UeT/BiESRAVoyLAyvc0ZrffzBjk730Ub8Ib1C28vwWcx7udzHUE=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.12,REQID:9c18bd78-8898-4f6a-8967-d2606b3d6303,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:90
-X-CID-INFO: VERSION:1.1.12,REQID:9c18bd78-8898-4f6a-8967-d2606b3d6303,IP:0,URL
-        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
-        N:quarantine,TS:90
-X-CID-META: VersionHash:62cd327,CLOUDID:804a9df3-9094-45e8-b6eb-26f09041f731,B
-        ulkID:2211161111039UZAMFZV,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 4a3a84b2eac04e84b7ed03031618d987-20221116
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+X-CID-O-INFO: VERSION:1.1.13,REQID:7006d8d4-bd1f-4921-b56e-acbf9b05dc20,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:-5
+X-CID-META: VersionHash:d12e911,CLOUDID:74564928-7328-4d53-af97-37d3ca89e562,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 6ec93e852c894489a57b6c990e895ed7-20221116
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 611673214; Wed, 16 Nov 2022 11:11:02 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1985776299; Wed, 16 Nov 2022 12:07:07 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Wed, 16 Nov 2022 11:11:01 +0800
+ 15.2.792.15; Wed, 16 Nov 2022 12:07:06 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 16 Nov 2022 11:11:00 +0800
+ 15.2.792.15 via Frontend Transport; Wed, 16 Nov 2022 12:07:06 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -48,17 +45,17 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         <linux-mediatek@lists.infradead.org>,
         Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7915: add support to configure spatial reuse parameter set
-Date:   Wed, 16 Nov 2022 11:10:59 +0800
-Message-ID: <d621ab20b71d57bb0ca829c51a30b88fe4ce1837.1668566645.git.ryder.lee@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt7915: add support to configure spatial reuse parameter set
+Date:   Wed, 16 Nov 2022 12:07:02 +0800
+Message-ID: <46d16c8c5a265a68fae2f380fbd38a9c07e0f86c.1668571383.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
-        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -73,11 +70,13 @@ User can disable firmware SR algorithms by turning sr_scene_detect off.
 
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
+change since v2 - update default values to align SPEC
+---
  .../net/wireless/mediatek/mt76/mt7915/main.c  |   6 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 196 ++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 195 ++++++++++++++++--
  .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  22 ++
  .../wireless/mediatek/mt76/mt7915/mt7915.h    |   4 +-
- 4 files changed, 207 insertions(+), 21 deletions(-)
+ 4 files changed, 206 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
 index 3933f4f2d71d..a29cbdb47801 100644
@@ -105,7 +104,7 @@ index 3933f4f2d71d..a29cbdb47801 100644
  	if (changed & BSS_CHANGED_HE_BSS_COLOR)
  		mt7915_update_bss_color(hw, vif, &info->he_bss_color);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 8b903a7636a8..b54453b5ee5e 100644
+index 8b903a7636a8..7eee9a616218 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 @@ -32,6 +32,9 @@
@@ -118,7 +117,7 @@ index 8b903a7636a8..b54453b5ee5e 100644
  static u8
  mt7915_mcu_get_sta_nss(u16 mcs_map)
  {
-@@ -3270,31 +3273,194 @@ int mt7915_mcu_set_txbf(struct mt7915_dev *dev, u8 action)
+@@ -3270,31 +3273,193 @@ int mt7915_mcu_set_txbf(struct mt7915_dev *dev, u8 action)
  				 sizeof(req), true);
  }
  
@@ -151,11 +150,8 @@ index 8b903a7636a8..b54453b5ee5e 100644
 +			u8 pd_th_srg;
 +			u8 period_offs;
 +			u8 rcpi_src;
-+
-+			/* for firmware PD algorithm */
 +			__le16 obss_pd_min;
 +			__le16 obss_pd_min_srg;
-+
 +			u8 resp_txpwr_mode;
 +			u8 txpwr_restrict_mode;
 +			u8 txpwr_ref;
@@ -187,8 +183,10 @@ index 8b903a7636a8..b54453b5ee5e 100644
 +	if (he_obss_pd->sr_ctrl & IEEE80211_HE_SPR_SRG_INFORMATION_PRESENT)
 +		req.param.pd_th_srg = max_th - he_obss_pd->max_offset;
 +
-+	req.param.txpwr_restrict_mode = 0x2;
-+	req.param.txpwr_ref = 0x2a;
++	req.param.obss_pd_min = 82;
++	req.param.obss_pd_min_srg = 82;
++	req.param.txpwr_restrict_mode = 2;
++	req.param.txpwr_ref = 21;
 +
 +	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_SPR), &req,
 +				 sizeof(req), true);
