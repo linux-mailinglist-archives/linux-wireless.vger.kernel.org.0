@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E6F062C516
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 17:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0EE62C517
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 17:44:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234776AbiKPQoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 11:44:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53408 "EHLO
+        id S238735AbiKPQoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 11:44:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238082AbiKPQn2 (ORCPT
+        with ESMTP id S238109AbiKPQn2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 16 Nov 2022 11:43:28 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA5B167EE
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 08:39:39 -0800 (PST)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D761E703
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 08:39:40 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDE4161EE5
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 16:39:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B453FC43470;
-        Wed, 16 Nov 2022 16:39:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 013C461EE3
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 16:39:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF18CC4347C;
+        Wed, 16 Nov 2022 16:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668616778;
-        bh=vEwQcPrJQ/6ptpeZ4FzqZHQkBw5rRMxc92h4cq30MJU=;
+        s=k20201202; t=1668616779;
+        bh=cn+A+aylJXF4OaJzk23WZu0lga0QcZMm9eDAR7zNZ8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kdsQ/CwAii6zoVAum8DWf1dkU2n1VFIIjMvKyeLah9KX2g4V8wUO8iLK9wZrhAGZ4
-         ZIsptDeQ5Bkk/E/+a8Vjpf/9rHL7thNkM52bwhRhjGAn5l9PCSxtYakb/DDnWATxbd
-         EfItqZ5qtxN/pW032/duEh0fetGbvwHvPcP9+5mCBNK+2gLADM6V26FkjtroM+f5Uw
-         9OMAinG8ykvfwRslbNvKMNcOebGfPv9skTte2gUxjgCCNRs/08oi4HWrxDUDqLuk2w
-         K17qFF+rSm4GMCwZag4GWjecCsSYT4kYVzXPV4SI9EDzCvuLcqC21T7YAv+VJ7qkvd
-         C9BotR3q88tYA==
+        b=EWUNtHPylpUYu2AsPhOvjXuX9vFBXrFJ4j+albbhhyeySJTwUdjyQsiEEjcsW3K89
+         H7TT01vwQ40Hod0Yd9AZFtT02tTxGcb6lcixkYojya9dJwfTtGkMu5HtN3JmlhWxxL
+         BO0D8DfzDBnI3VamMFeX7VagqHUtgxBOCaFBrzrDXFhxsUdlDxLXpl6NNhgiwaalz6
+         Lfw4uXE0yI1NhJb/MVyqc5Nm26XrxfAgJXSBUW/oX/GqnEdDMfrXzFNIhWjNy72haM
+         fwCyZjKucxmYTIdiuYolGsfCQdMTN0oFwxccFkU7KVIDJvaOfLKVrOJHIbyZsJUWZK
+         UKI7S0tREAG9w==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath12k@lists.infradead.org
-Subject: [PATCH v2 29/50] wifi: ath12k: add hw.c
-Date:   Wed, 16 Nov 2022 18:38:41 +0200
-Message-Id: <20221116163902.24996-30-kvalo@kernel.org>
+Subject: [PATCH v2 30/50] wifi: ath12k: add hw.h
+Date:   Wed, 16 Nov 2022 18:38:42 +0200
+Message-Id: <20221116163902.24996-31-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221116163902.24996-1-kvalo@kernel.org>
 References: <20221116163902.24996-1-kvalo@kernel.org>
@@ -59,1054 +59,325 @@ commit will be one big patch. See the cover letter for more info.)
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/hw.c | 1041 ++++++++++++++++++++++++++++++++++
- 1 file changed, 1041 insertions(+)
+ drivers/net/wireless/ath/ath12k/hw.h | 312 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 312 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
 new file mode 100644
-index 000000000000..91d576fd4b0f
+index 000000000000..e3461004188b
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -0,0 +1,1041 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
++++ b/drivers/net/wireless/ath/ath12k/hw.h
+@@ -0,0 +1,312 @@
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
 +/*
 + * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
 + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
 + */
 +
-+#include <linux/types.h>
-+#include <linux/bitops.h>
-+#include <linux/bitfield.h>
++#ifndef ATH12K_HW_H
++#define ATH12K_HW_H
 +
-+#include "debug.h"
-+#include "core.h"
-+#include "ce.h"
-+#include "hw.h"
-+#include "mhi.h"
-+#include "dp_rx.h"
++#include <linux/mhi.h>
 +
-+static u8 ath12k_hw_qcn9274_mac_from_pdev_id(int pdev_idx)
++#include "wmi.h"
++#include "hal.h"
++
++/* Target configuration defines */
++
++/* Num VDEVS per radio */
++#define TARGET_NUM_VDEVS	(16 + 1)
++
++#define TARGET_NUM_PEERS_PDEV	(512 + TARGET_NUM_VDEVS)
++
++/* Num of peers for Single Radio mode */
++#define TARGET_NUM_PEERS_SINGLE		(TARGET_NUM_PEERS_PDEV)
++
++/* Num of peers for DBS */
++#define TARGET_NUM_PEERS_DBS		(2 * TARGET_NUM_PEERS_PDEV)
++
++/* Num of peers for DBS_SBS */
++#define TARGET_NUM_PEERS_DBS_SBS	(3 * TARGET_NUM_PEERS_PDEV)
++
++/* Max num of stations (per radio) */
++#define TARGET_NUM_STATIONS	512
++
++#define TARGET_NUM_PEERS(x)	TARGET_NUM_PEERS_##x
++#define TARGET_NUM_PEER_KEYS	2
++#define TARGET_NUM_TIDS(x)	(2 * TARGET_NUM_PEERS(x) + \
++				 4 * TARGET_NUM_VDEVS + 8)
++
++#define TARGET_AST_SKID_LIMIT	16
++#define TARGET_NUM_OFFLD_PEERS	4
++#define TARGET_NUM_OFFLD_REORDER_BUFFS 4
++
++#define TARGET_TX_CHAIN_MASK	(BIT(0) | BIT(1) | BIT(2) | BIT(4))
++#define TARGET_RX_CHAIN_MASK	(BIT(0) | BIT(1) | BIT(2) | BIT(4))
++#define TARGET_RX_TIMEOUT_LO_PRI	100
++#define TARGET_RX_TIMEOUT_HI_PRI	40
++
++#define TARGET_DECAP_MODE_RAW		0
++#define TARGET_DECAP_MODE_NATIVE_WIFI	1
++#define TARGET_DECAP_MODE_ETH		2
++
++#define TARGET_SCAN_MAX_PENDING_REQS	4
++#define TARGET_BMISS_OFFLOAD_MAX_VDEV	3
++#define TARGET_ROAM_OFFLOAD_MAX_VDEV	3
++#define TARGET_ROAM_OFFLOAD_MAX_AP_PROFILES	8
++#define TARGET_GTK_OFFLOAD_MAX_VDEV	3
++#define TARGET_NUM_MCAST_GROUPS		12
++#define TARGET_NUM_MCAST_TABLE_ELEMS	64
++#define TARGET_MCAST2UCAST_MODE		2
++#define TARGET_TX_DBG_LOG_SIZE		1024
++#define TARGET_RX_SKIP_DEFRAG_TIMEOUT_DUP_DETECTION_CHECK 1
++#define TARGET_VOW_CONFIG		0
++#define TARGET_NUM_MSDU_DESC		(2500)
++#define TARGET_MAX_FRAG_ENTRIES		6
++#define TARGET_MAX_BCN_OFFLD		16
++#define TARGET_NUM_WDS_ENTRIES		32
++#define TARGET_DMA_BURST_SIZE		1
++#define TARGET_RX_BATCHMODE		1
++
++#define ATH12K_HW_MAX_QUEUES		4
++#define ATH12K_QUEUE_LEN		4096
++
++#define ATH12K_HW_RATECODE_CCK_SHORT_PREAM_MASK  0x4
++
++#define ATH12K_FW_DIR			"ath12k"
++
++#define ATH12K_BOARD_MAGIC		"QCA-ATH12K-BOARD"
++#define ATH12K_BOARD_API2_FILE		"board-2.bin"
++#define ATH12K_DEFAULT_BOARD_FILE	"board.bin"
++#define ATH12K_DEFAULT_CAL_FILE		"caldata.bin"
++#define ATH12K_AMSS_FILE		"amss.bin"
++#define ATH12K_M3_FILE			"m3.bin"
++#define ATH12K_REGDB_FILE_NAME		"regdb.bin"
++
++enum ath12k_hw_rate_cck {
++	ATH12K_HW_RATE_CCK_LP_11M = 0,
++	ATH12K_HW_RATE_CCK_LP_5_5M,
++	ATH12K_HW_RATE_CCK_LP_2M,
++	ATH12K_HW_RATE_CCK_LP_1M,
++	ATH12K_HW_RATE_CCK_SP_11M,
++	ATH12K_HW_RATE_CCK_SP_5_5M,
++	ATH12K_HW_RATE_CCK_SP_2M,
++};
++
++enum ath12k_hw_rate_ofdm {
++	ATH12K_HW_RATE_OFDM_48M = 0,
++	ATH12K_HW_RATE_OFDM_24M,
++	ATH12K_HW_RATE_OFDM_12M,
++	ATH12K_HW_RATE_OFDM_6M,
++	ATH12K_HW_RATE_OFDM_54M,
++	ATH12K_HW_RATE_OFDM_36M,
++	ATH12K_HW_RATE_OFDM_18M,
++	ATH12K_HW_RATE_OFDM_9M,
++};
++
++enum ath12k_bus {
++	ATH12K_BUS_PCI,
++};
++
++#define ATH12K_EXT_IRQ_GRP_NUM_MAX 11
++
++struct hal_rx_desc;
++struct hal_tcl_data_cmd;
++struct htt_rx_ring_tlv_filter;
++enum hal_encrypt_type;
++
++struct ath12k_hw_ring_mask {
++	u8 tx[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 rx_mon_dest[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 rx[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 rx_err[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 rx_wbm_rel[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 reo_status[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 host2rxdma[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++	u8 tx_mon_dest[ATH12K_EXT_IRQ_GRP_NUM_MAX];
++};
++
++struct ath12k_hw_hal_params {
++	enum hal_rx_buf_return_buf_manager rx_buf_rbm;
++	u32	  wbm2sw_cc_enable;
++};
++
++struct ath12k_hw_params {
++	const char *name;
++	u16 hw_rev;
++
++	struct {
++		const char *dir;
++		size_t board_size;
++		size_t cal_offset;
++	} fw;
++
++	u8 max_radios;
++	bool single_pdev_only:1;
++	u32 qmi_service_ins_id;
++	bool internal_sleep_clock:1;
++
++	const struct ath12k_hw_ops *hw_ops;
++	const struct ath12k_hw_ring_mask *ring_mask;
++	const struct ath12k_hw_regs *regs;
++
++	const struct ce_attr *host_ce_config;
++	u32 ce_count;
++	const struct ce_pipe_config *target_ce_config;
++	u32 target_ce_count;
++	const struct service_to_pipe *svc_to_ce_map;
++	u32 svc_to_ce_map_len;
++
++	const struct ath12k_hw_hal_params *hal_params;
++
++	bool rxdma1_enable:1;
++	int num_rxmda_per_pdev;
++	int num_rxdma_dst_ring;
++	bool rx_mac_buf_ring:1;
++	bool vdev_start_delay:1;
++
++	u16 interface_modes;
++	bool supports_monitor:1;
++
++	bool idle_ps:1;
++	bool download_calib:1;
++	bool supports_suspend:1;
++	bool tcl_ring_retry:1;
++	bool reoq_lut_support:1;
++	bool supports_shadow_regs:1;
++
++	u32 hal_desc_sz;
++	u32 num_tcl_banks;
++	u32 max_tx_ring;
++
++	const struct mhi_controller_config *mhi_config;
++
++	void (*wmi_init)(struct ath12k_base *ab,
++			 struct ath12k_wmi_resource_config_arg *config);
++
++	const struct hal_ops *hal_ops;
++};
++
++struct ath12k_hw_ops {
++	u8 (*get_hw_mac_from_pdev_id)(int pdev_id);
++	int (*mac_id_to_pdev_id)(const struct ath12k_hw_params *hw, int mac_id);
++	int (*mac_id_to_srng_id)(const struct ath12k_hw_params *hw, int mac_id);
++	int (*rxdma_ring_sel_config)(struct ath12k_base *ab);
++	u8 (*get_ring_selector)(struct sk_buff *skb);
++	bool (*dp_srng_is_tx_comp_ring)(int ring_num);
++};
++
++static inline
++int ath12k_hw_get_mac_from_pdev_id(const struct ath12k_hw_params *hw,
++				   int pdev_idx)
 +{
-+	return pdev_idx;
-+}
++	if (hw->hw_ops->get_hw_mac_from_pdev_id)
++		return hw->hw_ops->get_hw_mac_from_pdev_id(pdev_idx);
 +
-+static int ath12k_hw_mac_id_to_pdev_id_qcn9274(const struct ath12k_hw_params *hw,
-+					       int mac_id)
-+{
-+	return mac_id;
-+}
-+
-+static int ath12k_hw_mac_id_to_srng_id_qcn9274(const struct ath12k_hw_params *hw,
-+					       int mac_id)
-+{
 +	return 0;
 +}
 +
-+static u8 ath12k_hw_get_ring_selector_qcn9274(struct sk_buff *skb)
++static inline int ath12k_hw_mac_id_to_pdev_id(const struct ath12k_hw_params *hw,
++					      int mac_id)
 +{
-+	return smp_processor_id();
-+}
++	if (hw->hw_ops->mac_id_to_pdev_id)
++		return hw->hw_ops->mac_id_to_pdev_id(hw, mac_id);
 +
-+static bool ath12k_dp_srng_is_comp_ring_qcn9274(int ring_num)
-+{
-+	if (ring_num < 3 || ring_num == 4)
-+		return true;
-+
-+	return false;
-+}
-+
-+static int ath12k_hw_mac_id_to_pdev_id_wcn7850(const struct ath12k_hw_params *hw,
-+					       int mac_id)
-+{
 +	return 0;
 +}
 +
-+static int ath12k_hw_mac_id_to_srng_id_wcn7850(const struct ath12k_hw_params *hw,
-+					       int mac_id)
++static inline int ath12k_hw_mac_id_to_srng_id(const struct ath12k_hw_params *hw,
++					      int mac_id)
 +{
-+	return mac_id;
-+}
-+
-+static u8 ath12k_hw_get_ring_selector_wcn7850(struct sk_buff *skb)
-+{
-+	return skb_get_queue_mapping(skb);
-+}
-+
-+static bool ath12k_dp_srng_is_comp_ring_wcn7850(int ring_num)
-+{
-+	if (ring_num == 0 || ring_num == 2 || ring_num == 4)
-+		return true;
-+
-+	return false;
-+}
-+
-+static const struct ath12k_hw_ops qcn9274_ops = {
-+	.get_hw_mac_from_pdev_id = ath12k_hw_qcn9274_mac_from_pdev_id,
-+	.mac_id_to_pdev_id = ath12k_hw_mac_id_to_pdev_id_qcn9274,
-+	.mac_id_to_srng_id = ath12k_hw_mac_id_to_srng_id_qcn9274,
-+	.rxdma_ring_sel_config = ath12k_dp_rxdma_ring_sel_config_qcn9274,
-+	.get_ring_selector = ath12k_hw_get_ring_selector_qcn9274,
-+	.dp_srng_is_tx_comp_ring = ath12k_dp_srng_is_comp_ring_qcn9274,
-+};
-+
-+static const struct ath12k_hw_ops wcn7850_ops = {
-+	.get_hw_mac_from_pdev_id = ath12k_hw_qcn9274_mac_from_pdev_id,
-+	.mac_id_to_pdev_id = ath12k_hw_mac_id_to_pdev_id_wcn7850,
-+	.mac_id_to_srng_id = ath12k_hw_mac_id_to_srng_id_wcn7850,
-+	.rxdma_ring_sel_config = ath12k_dp_rxdma_ring_sel_config_wcn7850,
-+	.get_ring_selector = ath12k_hw_get_ring_selector_wcn7850,
-+	.dp_srng_is_tx_comp_ring = ath12k_dp_srng_is_comp_ring_wcn7850,
-+};
-+
-+#define ATH12K_TX_RING_MASK_0 0x1
-+#define ATH12K_TX_RING_MASK_1 0x2
-+#define ATH12K_TX_RING_MASK_2 0x4
-+#define ATH12K_TX_RING_MASK_3 0x8
-+#define ATH12K_TX_RING_MASK_4 0x10
-+
-+#define ATH12K_RX_RING_MASK_0 0x1
-+#define ATH12K_RX_RING_MASK_1 0x2
-+#define ATH12K_RX_RING_MASK_2 0x4
-+#define ATH12K_RX_RING_MASK_3 0x8
-+
-+#define ATH12K_RX_ERR_RING_MASK_0 0x1
-+
-+#define ATH12K_RX_WBM_REL_RING_MASK_0 0x1
-+
-+#define ATH12K_REO_STATUS_RING_MASK_0 0x1
-+
-+#define ATH12K_HOST2RXDMA_RING_MASK_0 0x1
-+
-+#define ATH12K_RX_MON_RING_MASK_0 0x1
-+#define ATH12K_RX_MON_RING_MASK_1 0x2
-+#define ATH12K_RX_MON_RING_MASK_2 0x4
-+
-+#define ATH12K_TX_MON_RING_MASK_0 0x1
-+#define ATH12K_TX_MON_RING_MASK_1 0x2
-+
-+/* Target firmware's Copy Engine configuration. */
-+static const struct ce_pipe_config ath12k_target_ce_config_wlan_qcn9274[] = {
-+	/* CE0: host->target HTC control and raw streams */
-+	{
-+		.pipenum = __cpu_to_le32(0),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE1: target->host HTT + HTC control */
-+	{
-+		.pipenum = __cpu_to_le32(1),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE2: target->host WMI */
-+	{
-+		.pipenum = __cpu_to_le32(2),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE3: host->target WMI (mac0) */
-+	{
-+		.pipenum = __cpu_to_le32(3),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE4: host->target HTT */
-+	{
-+		.pipenum = __cpu_to_le32(4),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(256),
-+		.nbytes_max = __cpu_to_le32(256),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE5: target->host Pktlog */
-+	{
-+		.pipenum = __cpu_to_le32(5),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE6: Reserved for target autonomous hif_memcpy */
-+	{
-+		.pipenum = __cpu_to_le32(6),
-+		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(16384),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE7: host->target WMI (mac1) */
-+	{
-+		.pipenum = __cpu_to_le32(7),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE8: Reserved for target autonomous hif_memcpy */
-+	{
-+		.pipenum = __cpu_to_le32(8),
-+		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(16384),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE9, 10 and 11: Reserved for MHI */
-+
-+	/* CE12: Target CV prefetch */
-+	{
-+		.pipenum = __cpu_to_le32(12),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE13: Target CV prefetch */
-+	{
-+		.pipenum = __cpu_to_le32(13),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE14: WMI logging/CFR/Spectral/Radar */
-+	{
-+		.pipenum = __cpu_to_le32(14),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE15: Reserved */
-+};
-+
-+/* Target firmware's Copy Engine configuration. */
-+static const struct ce_pipe_config ath12k_target_ce_config_wlan_wcn7850[] = {
-+	/* CE0: host->target HTC control and raw streams */
-+	{
-+		.pipenum = __cpu_to_le32(0),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE1: target->host HTT + HTC control */
-+	{
-+		.pipenum = __cpu_to_le32(1),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE2: target->host WMI */
-+	{
-+		.pipenum = __cpu_to_le32(2),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE3: host->target WMI */
-+	{
-+		.pipenum = __cpu_to_le32(3),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE4: host->target HTT */
-+	{
-+		.pipenum = __cpu_to_le32(4),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
-+		.nentries = __cpu_to_le32(256),
-+		.nbytes_max = __cpu_to_le32(256),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE5: target->host Pktlog */
-+	{
-+		.pipenum = __cpu_to_le32(5),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(2048),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE6: Reserved for target autonomous hif_memcpy */
-+	{
-+		.pipenum = __cpu_to_le32(6),
-+		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(16384),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE7 used only by Host */
-+	{
-+		.pipenum = __cpu_to_le32(7),
-+		.pipedir = __cpu_to_le32(PIPEDIR_INOUT_H2H),
-+		.nentries = __cpu_to_le32(0),
-+		.nbytes_max = __cpu_to_le32(0),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+
-+	/* CE8 target->host used only by IPA */
-+	{
-+		.pipenum = __cpu_to_le32(8),
-+		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
-+		.nentries = __cpu_to_le32(32),
-+		.nbytes_max = __cpu_to_le32(16384),
-+		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
-+		.reserved = __cpu_to_le32(0),
-+	},
-+	/* CE 9, 10, 11 are used by MHI driver */
-+};
-+
-+/* Map from service/endpoint to Copy Engine.
-+ * This table is derived from the CE_PCI TABLE, above.
-+ * It is passed to the Target at startup for use by firmware.
-+ */
-+static const struct service_to_pipe ath12k_target_service_to_ce_map_wlan_qcn9274[] = {
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(0),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(1),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_TEST_RAW_STREAMS),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(0),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_TEST_RAW_STREAMS),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(1),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(4),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(1),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL_MAC1),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(7),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL_MAC1),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_PKT_LOG),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(5),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL_DIAG),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(14),
-+	},
-+
-+	/* (Additions here) */
-+
-+	{ /* must be last */
-+		__cpu_to_le32(0),
-+		__cpu_to_le32(0),
-+		__cpu_to_le32(0),
-+	},
-+};
-+
-+static const struct service_to_pipe ath12k_target_service_to_ce_map_wlan_wcn7850[] = {
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VO),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BK),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_BE),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_DATA_VI),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(3),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_WMI_CONTROL),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(0),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_RSVD_CTRL),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(2),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
-+		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		__cpu_to_le32(4),
-+	},
-+	{
-+		__cpu_to_le32(ATH12K_HTC_SVC_ID_HTT_DATA_MSG),
-+		__cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		__cpu_to_le32(1),
-+	},
-+
-+	/* (Additions here) */
-+
-+	{ /* must be last */
-+		__cpu_to_le32(0),
-+		__cpu_to_le32(0),
-+		__cpu_to_le32(0),
-+	},
-+};
-+
-+static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_qcn9274 = {
-+	.tx  = {
-+		ATH12K_TX_RING_MASK_0,
-+		ATH12K_TX_RING_MASK_1,
-+		ATH12K_TX_RING_MASK_2,
-+		ATH12K_TX_RING_MASK_3,
-+	},
-+	.rx_mon_dest = {
-+		0, 0, 0,
-+		ATH12K_RX_MON_RING_MASK_0,
-+		ATH12K_RX_MON_RING_MASK_1,
-+		ATH12K_RX_MON_RING_MASK_2,
-+	},
-+	.rx = {
-+		0, 0, 0, 0,
-+		ATH12K_RX_RING_MASK_0,
-+		ATH12K_RX_RING_MASK_1,
-+		ATH12K_RX_RING_MASK_2,
-+		ATH12K_RX_RING_MASK_3,
-+	},
-+	.rx_err = {
-+		0, 0, 0,
-+		ATH12K_RX_ERR_RING_MASK_0,
-+	},
-+	.rx_wbm_rel = {
-+		0, 0, 0,
-+		ATH12K_RX_WBM_REL_RING_MASK_0,
-+	},
-+	.reo_status = {
-+		0, 0, 0,
-+		ATH12K_REO_STATUS_RING_MASK_0,
-+	},
-+	.host2rxdma = {
-+		0, 0, 0,
-+		ATH12K_HOST2RXDMA_RING_MASK_0,
-+	},
-+	.tx_mon_dest = {
-+		ATH12K_TX_MON_RING_MASK_0,
-+		ATH12K_TX_MON_RING_MASK_1,
-+	},
-+};
-+
-+static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_wcn7850 = {
-+	.tx  = {
-+		ATH12K_TX_RING_MASK_0,
-+		ATH12K_TX_RING_MASK_2,
-+		ATH12K_TX_RING_MASK_4,
-+	},
-+	.rx_mon_dest = {
-+	},
-+	.rx = {
-+		0, 0, 0,
-+		ATH12K_RX_RING_MASK_0,
-+		ATH12K_RX_RING_MASK_1,
-+		ATH12K_RX_RING_MASK_2,
-+		ATH12K_RX_RING_MASK_3,
-+	},
-+	.rx_err = {
-+		ATH12K_RX_ERR_RING_MASK_0,
-+	},
-+	.rx_wbm_rel = {
-+		ATH12K_RX_WBM_REL_RING_MASK_0,
-+	},
-+	.reo_status = {
-+		ATH12K_REO_STATUS_RING_MASK_0,
-+	},
-+	.host2rxdma = {
-+	},
-+	.tx_mon_dest = {
-+	},
-+};
-+
-+static const struct ath12k_hw_regs qcn9274_v1_regs = {
-+	/* SW2TCL(x) R0 ring configuration address */
-+	.hal_tcl1_ring_id = 0x00000908,
-+	.hal_tcl1_ring_misc = 0x00000910,
-+	.hal_tcl1_ring_tp_addr_lsb = 0x0000091c,
-+	.hal_tcl1_ring_tp_addr_msb = 0x00000920,
-+	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x00000930,
-+	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x00000934,
-+	.hal_tcl1_ring_msi1_base_lsb = 0x00000948,
-+	.hal_tcl1_ring_msi1_base_msb = 0x0000094c,
-+	.hal_tcl1_ring_msi1_data = 0x00000950,
-+	.hal_tcl_ring_base_lsb = 0x00000b58,
-+
-+	/* TCL STATUS ring address */
-+	.hal_tcl_status_ring_base_lsb = 0x00000d38,
-+
-+	.hal_wbm_idle_ring_base_lsb = 0x00000d0c,
-+	.hal_wbm_idle_ring_misc_addr = 0x00000d1c,
-+	.hal_wbm_r0_idle_list_cntl_addr = 0x00000210,
-+	.hal_wbm_r0_idle_list_size_addr = 0x00000214,
-+	.hal_wbm_scattered_ring_base_lsb = 0x00000220,
-+	.hal_wbm_scattered_ring_base_msb = 0x00000224,
-+	.hal_wbm_scattered_desc_head_info_ix0 = 0x00000230,
-+	.hal_wbm_scattered_desc_head_info_ix1 = 0x00000234,
-+	.hal_wbm_scattered_desc_tail_info_ix0 = 0x00000240,
-+	.hal_wbm_scattered_desc_tail_info_ix1 = 0x00000244,
-+	.hal_wbm_scattered_desc_ptr_hp_addr = 0x0000024c,
-+
-+	.hal_wbm_sw_release_ring_base_lsb = 0x0000034c,
-+	.hal_wbm_sw1_release_ring_base_lsb = 0x000003c4,
-+	.hal_wbm0_release_ring_base_lsb = 0x00000dd8,
-+	.hal_wbm1_release_ring_base_lsb = 0x00000e50,
-+
-+	/* PCIe base address */
-+	.pcie_qserdes_sysclk_en_sel = 0x01e0c0a8,
-+	.pcie_pcs_osc_dtct_config_base = 0x01e0d45c,
-+
-+	/* PPE release ring address */
-+	.hal_ppe_rel_ring_base = 0x0000043c,
-+
-+	/* REO DEST ring address */
-+	.hal_reo2_ring_base = 0x0000055c,
-+	.hal_reo1_misc_ctrl_addr = 0x00000b7c,
-+	.hal_reo1_sw_cookie_cfg0 = 0x00000050,
-+	.hal_reo1_sw_cookie_cfg1 = 0x00000054,
-+	.hal_reo1_qdesc_lut_base0 = 0x00000058,
-+	.hal_reo1_qdesc_lut_base1 = 0x0000005c,
-+	.hal_reo1_ring_base_lsb = 0x000004e4,
-+	.hal_reo1_ring_base_msb = 0x000004e8,
-+	.hal_reo1_ring_id = 0x000004ec,
-+	.hal_reo1_ring_misc = 0x000004f4,
-+	.hal_reo1_ring_hp_addr_lsb = 0x000004f8,
-+	.hal_reo1_ring_hp_addr_msb = 0x000004fc,
-+	.hal_reo1_ring_producer_int_setup = 0x00000508,
-+	.hal_reo1_ring_msi1_base_lsb = 0x0000052C,
-+	.hal_reo1_ring_msi1_base_msb = 0x00000530,
-+	.hal_reo1_ring_msi1_data = 0x00000534,
-+	.hal_reo1_aging_thres_ix0 = 0x00000b08,
-+	.hal_reo1_aging_thres_ix1 = 0x00000b0c,
-+	.hal_reo1_aging_thres_ix2 = 0x00000b10,
-+	.hal_reo1_aging_thres_ix3 = 0x00000b14,
-+
-+	/* REO Exception ring address */
-+	.hal_reo2_sw0_ring_base = 0x000008a4,
-+
-+	/* REO Reinject ring address */
-+	.hal_sw2reo_ring_base = 0x00000304,
-+	.hal_sw2reo1_ring_base = 0x0000037c,
-+
-+	/* REO cmd ring address */
-+	.hal_reo_cmd_ring_base = 0x0000028c,
-+
-+	/* REO status ring address */
-+	.hal_reo_status_ring_base = 0x00000a84,
-+};
-+
-+static const struct ath12k_hw_regs qcn9274_v2_regs = {
-+	/* SW2TCL(x) R0 ring configuration address */
-+	.hal_tcl1_ring_id = 0x00000908,
-+	.hal_tcl1_ring_misc = 0x00000910,
-+	.hal_tcl1_ring_tp_addr_lsb = 0x0000091c,
-+	.hal_tcl1_ring_tp_addr_msb = 0x00000920,
-+	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x00000930,
-+	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x00000934,
-+	.hal_tcl1_ring_msi1_base_lsb = 0x00000948,
-+	.hal_tcl1_ring_msi1_base_msb = 0x0000094c,
-+	.hal_tcl1_ring_msi1_data = 0x00000950,
-+	.hal_tcl_ring_base_lsb = 0x00000b58,
-+
-+	/* TCL STATUS ring address */
-+	.hal_tcl_status_ring_base_lsb = 0x00000d38,
-+
-+	/* WBM idle link ring address */
-+	.hal_wbm_idle_ring_base_lsb = 0x00000d3c,
-+	.hal_wbm_idle_ring_misc_addr = 0x00000d4c,
-+	.hal_wbm_r0_idle_list_cntl_addr = 0x00000240,
-+	.hal_wbm_r0_idle_list_size_addr = 0x00000244,
-+	.hal_wbm_scattered_ring_base_lsb = 0x00000250,
-+	.hal_wbm_scattered_ring_base_msb = 0x00000254,
-+	.hal_wbm_scattered_desc_head_info_ix0 = 0x00000260,
-+	.hal_wbm_scattered_desc_head_info_ix1 = 0x00000264,
-+	.hal_wbm_scattered_desc_tail_info_ix0 = 0x00000270,
-+	.hal_wbm_scattered_desc_tail_info_ix1 = 0x00000274,
-+	.hal_wbm_scattered_desc_ptr_hp_addr = 0x0000027c,
-+
-+	/* SW2WBM release ring address */
-+	.hal_wbm_sw_release_ring_base_lsb = 0x0000037c,
-+	.hal_wbm_sw1_release_ring_base_lsb = 0x000003f4,
-+
-+	/* WBM2SW release ring address */
-+	.hal_wbm0_release_ring_base_lsb = 0x00000e08,
-+	.hal_wbm1_release_ring_base_lsb = 0x00000e80,
-+
-+	/* PCIe base address */
-+	.pcie_qserdes_sysclk_en_sel = 0x01e0c0a8,
-+	.pcie_pcs_osc_dtct_config_base = 0x01e0d45c,
-+
-+	/* PPE release ring address */
-+	.hal_ppe_rel_ring_base = 0x0000046c,
-+
-+	/* REO DEST ring address */
-+	.hal_reo2_ring_base = 0x00000578,
-+	.hal_reo1_misc_ctrl_addr = 0x00000b9c,
-+	.hal_reo1_sw_cookie_cfg0 = 0x0000006c,
-+	.hal_reo1_sw_cookie_cfg1 = 0x00000070,
-+	.hal_reo1_qdesc_lut_base0 = 0x00000074,
-+	.hal_reo1_qdesc_lut_base1 = 0x00000078,
-+	.hal_reo1_ring_base_lsb = 0x00000500,
-+	.hal_reo1_ring_base_msb = 0x00000504,
-+	.hal_reo1_ring_id = 0x00000508,
-+	.hal_reo1_ring_misc = 0x00000510,
-+	.hal_reo1_ring_hp_addr_lsb = 0x00000514,
-+	.hal_reo1_ring_hp_addr_msb = 0x00000518,
-+	.hal_reo1_ring_producer_int_setup = 0x00000524,
-+	.hal_reo1_ring_msi1_base_lsb = 0x00000548,
-+	.hal_reo1_ring_msi1_base_msb = 0x0000054C,
-+	.hal_reo1_ring_msi1_data = 0x00000550,
-+	.hal_reo1_aging_thres_ix0 = 0x00000B28,
-+	.hal_reo1_aging_thres_ix1 = 0x00000B2C,
-+	.hal_reo1_aging_thres_ix2 = 0x00000B30,
-+	.hal_reo1_aging_thres_ix3 = 0x00000B34,
-+
-+	/* REO Exception ring address */
-+	.hal_reo2_sw0_ring_base = 0x000008c0,
-+
-+	/* REO Reinject ring address */
-+	.hal_sw2reo_ring_base = 0x00000320,
-+	.hal_sw2reo1_ring_base = 0x00000398,
-+
-+	/* REO cmd ring address */
-+	.hal_reo_cmd_ring_base = 0x000002A8,
-+
-+	/* REO status ring address */
-+	.hal_reo_status_ring_base = 0x00000aa0,
-+};
-+
-+static const struct ath12k_hw_regs wcn7850_regs = {
-+	/* SW2TCL(x) R0 ring configuration address */
-+	.hal_tcl1_ring_id = 0x00000908,
-+	.hal_tcl1_ring_misc = 0x00000910,
-+	.hal_tcl1_ring_tp_addr_lsb = 0x0000091c,
-+	.hal_tcl1_ring_tp_addr_msb = 0x00000920,
-+	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x00000930,
-+	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x00000934,
-+	.hal_tcl1_ring_msi1_base_lsb = 0x00000948,
-+	.hal_tcl1_ring_msi1_base_msb = 0x0000094c,
-+	.hal_tcl1_ring_msi1_data = 0x00000950,
-+	.hal_tcl_ring_base_lsb = 0x00000b58,
-+
-+	/* TCL STATUS ring address */
-+	.hal_tcl_status_ring_base_lsb = 0x00000d38,
-+
-+	.hal_wbm_idle_ring_base_lsb = 0x00000d3c,
-+	.hal_wbm_idle_ring_misc_addr = 0x00000d4c,
-+	.hal_wbm_r0_idle_list_cntl_addr = 0x00000240,
-+	.hal_wbm_r0_idle_list_size_addr = 0x00000244,
-+	.hal_wbm_scattered_ring_base_lsb = 0x00000250,
-+	.hal_wbm_scattered_ring_base_msb = 0x00000254,
-+	.hal_wbm_scattered_desc_head_info_ix0 = 0x00000260,
-+	.hal_wbm_scattered_desc_head_info_ix1 = 0x00000264,
-+	.hal_wbm_scattered_desc_tail_info_ix0 = 0x00000270,
-+	.hal_wbm_scattered_desc_tail_info_ix1 = 0x00000274,
-+	.hal_wbm_scattered_desc_ptr_hp_addr = 0x00000027c,
-+
-+	.hal_wbm_sw_release_ring_base_lsb = 0x0000037c,
-+	.hal_wbm_sw1_release_ring_base_lsb = 0x00000284,
-+	.hal_wbm0_release_ring_base_lsb = 0x00000e08,
-+	.hal_wbm1_release_ring_base_lsb = 0x00000e80,
-+
-+	/* PCIe base address */
-+	.pcie_qserdes_sysclk_en_sel = 0x01e0e0a8,
-+	.pcie_pcs_osc_dtct_config_base = 0x01e0f45c,
-+
-+	/* PPE release ring address */
-+	.hal_ppe_rel_ring_base = 0x0000043c,
-+
-+	/* REO DEST ring address */
-+	.hal_reo2_ring_base = 0x0000055c,
-+	.hal_reo1_misc_ctrl_addr = 0x00000b7c,
-+	.hal_reo1_sw_cookie_cfg0 = 0x00000050,
-+	.hal_reo1_sw_cookie_cfg1 = 0x00000054,
-+	.hal_reo1_qdesc_lut_base0 = 0x00000058,
-+	.hal_reo1_qdesc_lut_base1 = 0x0000005c,
-+	.hal_reo1_ring_base_lsb = 0x000004e4,
-+	.hal_reo1_ring_base_msb = 0x000004e8,
-+	.hal_reo1_ring_id = 0x000004ec,
-+	.hal_reo1_ring_misc = 0x000004f4,
-+	.hal_reo1_ring_hp_addr_lsb = 0x000004f8,
-+	.hal_reo1_ring_hp_addr_msb = 0x000004fc,
-+	.hal_reo1_ring_producer_int_setup = 0x00000508,
-+	.hal_reo1_ring_msi1_base_lsb = 0x0000052C,
-+	.hal_reo1_ring_msi1_base_msb = 0x00000530,
-+	.hal_reo1_ring_msi1_data = 0x00000534,
-+	.hal_reo1_aging_thres_ix0 = 0x00000b08,
-+	.hal_reo1_aging_thres_ix1 = 0x00000b0c,
-+	.hal_reo1_aging_thres_ix2 = 0x00000b10,
-+	.hal_reo1_aging_thres_ix3 = 0x00000b14,
-+
-+	/* REO Exception ring address */
-+	.hal_reo2_sw0_ring_base = 0x000008a4,
-+
-+	/* REO Reinject ring address */
-+	.hal_sw2reo_ring_base = 0x00000304,
-+	.hal_sw2reo1_ring_base = 0x0000037c,
-+
-+	/* REO cmd ring address */
-+	.hal_reo_cmd_ring_base = 0x0000028c,
-+
-+	/* REO status ring address */
-+	.hal_reo_status_ring_base = 0x00000a84,
-+};
-+
-+static const struct ath12k_hw_hal_params ath12k_hw_hal_params_qcn9274 = {
-+	.rx_buf_rbm = HAL_RX_BUF_RBM_SW3_BM,
-+	.wbm2sw_cc_enable = HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW0_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW1_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW2_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW3_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW4_EN,
-+};
-+
-+static const struct ath12k_hw_hal_params ath12k_hw_hal_params_wcn7850 = {
-+	.rx_buf_rbm = HAL_RX_BUF_RBM_SW1_BM,
-+	.wbm2sw_cc_enable = HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW0_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW2_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW3_EN |
-+			    HAL_WBM_SW_COOKIE_CONV_CFG_WBM2SW4_EN,
-+};
-+
-+static const struct ath12k_hw_params ath12k_hw_params[] = {
-+	{
-+		.name = "qcn9274 hw1.0",
-+		.hw_rev = ATH12K_HW_QCN9274_HW10,
-+		.fw = {
-+			.dir = "QCN9274/hw1.0",
-+			.board_size = 256 * 1024,
-+			.cal_offset = 128 * 1024,
-+		},
-+		.max_radios = 1,
-+		.single_pdev_only = false,
-+		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_QCN9274,
-+		.internal_sleep_clock = false,
-+
-+		.hw_ops = &qcn9274_ops,
-+		.ring_mask = &ath12k_hw_ring_mask_qcn9274,
-+		.regs = &qcn9274_v1_regs,
-+
-+		.host_ce_config = ath12k_host_ce_config_qcn9274,
-+		.ce_count = 16,
-+		.target_ce_config = ath12k_target_ce_config_wlan_qcn9274,
-+		.target_ce_count = 12,
-+		.svc_to_ce_map = ath12k_target_service_to_ce_map_wlan_qcn9274,
-+		.svc_to_ce_map_len = 18,
-+
-+		.hal_params = &ath12k_hw_hal_params_qcn9274,
-+
-+		.rxdma1_enable = false,
-+		.num_rxmda_per_pdev = 1,
-+		.num_rxdma_dst_ring = 0,
-+		.rx_mac_buf_ring = false,
-+		.vdev_start_delay = false,
-+
-+		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
-+					BIT(NL80211_IFTYPE_AP),
-+		.supports_monitor = false,
-+
-+		.idle_ps = false,
-+		.download_calib = true,
-+		.supports_suspend = false,
-+		.tcl_ring_retry = true,
-+		.reoq_lut_support = false,
-+		.supports_shadow_regs = false,
-+
-+		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9274),
-+		.num_tcl_banks = 48,
-+		.max_tx_ring = 4,
-+
-+		.mhi_config = &ath12k_mhi_config_qcn9274,
-+
-+		.wmi_init = ath12k_wmi_init_qcn9274,
-+
-+		.hal_ops = &hal_qcn9274_ops,
-+
-+	},
-+	{
-+		.name = "wcn7850 hw2.0",
-+		.hw_rev = ATH12K_HW_WCN7850_HW20,
-+
-+		.fw = {
-+			.dir = "WCN7850/hw2.0",
-+			.board_size = 256 * 1024,
-+			.cal_offset = 256 * 1024,
-+		},
-+
-+		.max_radios = 1,
-+		.single_pdev_only = true,
-+		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_WCN7850,
-+		.internal_sleep_clock = true,
-+
-+		.hw_ops = &wcn7850_ops,
-+		.ring_mask = &ath12k_hw_ring_mask_wcn7850,
-+		.regs = &wcn7850_regs,
-+
-+		.host_ce_config = ath12k_host_ce_config_wcn7850,
-+		.ce_count = 9,
-+		.target_ce_config = ath12k_target_ce_config_wlan_wcn7850,
-+		.target_ce_count = 9,
-+		.svc_to_ce_map = ath12k_target_service_to_ce_map_wlan_wcn7850,
-+		.svc_to_ce_map_len = 14,
-+
-+		.hal_params = &ath12k_hw_hal_params_wcn7850,
-+
-+		.rxdma1_enable = false,
-+		.num_rxmda_per_pdev = 2,
-+		.num_rxdma_dst_ring = 1,
-+		.rx_mac_buf_ring = true,
-+		.vdev_start_delay = true,
-+
-+		.interface_modes = BIT(NL80211_IFTYPE_STATION),
-+		.supports_monitor = false,
-+
-+		.idle_ps = false,
-+		.download_calib = false,
-+		.supports_suspend = false,
-+		.tcl_ring_retry = false,
-+		.reoq_lut_support = false,
-+		.supports_shadow_regs = true,
-+
-+		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn7850),
-+		.num_tcl_banks = 7,
-+		.max_tx_ring = 3,
-+
-+		.mhi_config = &ath12k_mhi_config_wcn7850,
-+
-+		.wmi_init = ath12k_wmi_init_wcn7850,
-+
-+		.hal_ops = &hal_wcn7850_ops,
-+	},
-+	{
-+		.name = "qcn9274 hw2.0",
-+		.hw_rev = ATH12K_HW_QCN9274_HW20,
-+		.fw = {
-+			.dir = "QCN9274/hw2.0",
-+			.board_size = 256 * 1024,
-+			.cal_offset = 128 * 1024,
-+		},
-+		.max_radios = 1,
-+		.single_pdev_only = false,
-+		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_QCN9274,
-+		.internal_sleep_clock = false,
-+
-+		.hw_ops = &qcn9274_ops,
-+		.ring_mask = &ath12k_hw_ring_mask_qcn9274,
-+		.regs = &qcn9274_v2_regs,
-+
-+		.host_ce_config = ath12k_host_ce_config_qcn9274,
-+		.ce_count = 16,
-+		.target_ce_config = ath12k_target_ce_config_wlan_qcn9274,
-+		.target_ce_count = 12,
-+		.svc_to_ce_map = ath12k_target_service_to_ce_map_wlan_qcn9274,
-+		.svc_to_ce_map_len = 18,
-+
-+		.hal_params = &ath12k_hw_hal_params_qcn9274,
-+
-+		.rxdma1_enable = false,
-+		.num_rxmda_per_pdev = 1,
-+		.num_rxdma_dst_ring = 0,
-+		.rx_mac_buf_ring = false,
-+		.vdev_start_delay = false,
-+
-+		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
-+					BIT(NL80211_IFTYPE_AP),
-+		.supports_monitor = false,
-+
-+		.idle_ps = false,
-+		.download_calib = true,
-+		.supports_suspend = false,
-+		.tcl_ring_retry = true,
-+		.reoq_lut_support = false,
-+		.supports_shadow_regs = false,
-+
-+		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9274),
-+		.num_tcl_banks = 48,
-+		.max_tx_ring = 4,
-+
-+		.mhi_config = &ath12k_mhi_config_qcn9274,
-+
-+		.wmi_init = ath12k_wmi_init_qcn9274,
-+
-+		.hal_ops = &hal_qcn9274_ops,
-+	},
-+};
-+
-+int ath12k_hw_init(struct ath12k_base *ab)
-+{
-+	const struct ath12k_hw_params *hw_params = NULL;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ath12k_hw_params); i++) {
-+		hw_params = &ath12k_hw_params[i];
-+
-+		if (hw_params->hw_rev == ab->hw_rev)
-+			break;
-+	}
-+
-+	if (i == ARRAY_SIZE(ath12k_hw_params)) {
-+		ath12k_err(ab, "Unsupported hardware version: 0x%x\n", ab->hw_rev);
-+		return -EINVAL;
-+	}
-+
-+	ab->hw_params = hw_params;
-+
-+	ath12k_info(ab, "Hardware name: %s\n", ab->hw_params->name);
++	if (hw->hw_ops->mac_id_to_srng_id)
++		return hw->hw_ops->mac_id_to_srng_id(hw, mac_id);
 +
 +	return 0;
 +}
++
++struct ath12k_fw_ie {
++	__le32 id;
++	__le32 len;
++	u8 data[];
++};
++
++enum ath12k_bd_ie_board_type {
++	ATH12K_BD_IE_BOARD_NAME = 0,
++	ATH12K_BD_IE_BOARD_DATA = 1,
++};
++
++enum ath12k_bd_ie_type {
++	/* contains sub IEs of enum ath12k_bd_ie_board_type */
++	ATH12K_BD_IE_BOARD = 0,
++	ATH12K_BD_IE_BOARD_EXT = 1,
++};
++
++struct ath12k_hw_regs {
++	u32 hal_tcl1_ring_id;
++	u32 hal_tcl1_ring_misc;
++	u32 hal_tcl1_ring_tp_addr_lsb;
++	u32 hal_tcl1_ring_tp_addr_msb;
++	u32 hal_tcl1_ring_consumer_int_setup_ix0;
++	u32 hal_tcl1_ring_consumer_int_setup_ix1;
++	u32 hal_tcl1_ring_msi1_base_lsb;
++	u32 hal_tcl1_ring_msi1_base_msb;
++	u32 hal_tcl1_ring_msi1_data;
++	u32 hal_tcl_ring_base_lsb;
++
++	u32 hal_tcl_status_ring_base_lsb;
++
++	u32 hal_wbm_idle_ring_base_lsb;
++	u32 hal_wbm_idle_ring_misc_addr;
++	u32 hal_wbm_r0_idle_list_cntl_addr;
++	u32 hal_wbm_r0_idle_list_size_addr;
++	u32 hal_wbm_scattered_ring_base_lsb;
++	u32 hal_wbm_scattered_ring_base_msb;
++	u32 hal_wbm_scattered_desc_head_info_ix0;
++	u32 hal_wbm_scattered_desc_head_info_ix1;
++	u32 hal_wbm_scattered_desc_tail_info_ix0;
++	u32 hal_wbm_scattered_desc_tail_info_ix1;
++	u32 hal_wbm_scattered_desc_ptr_hp_addr;
++
++	u32 hal_wbm_sw_release_ring_base_lsb;
++	u32 hal_wbm_sw1_release_ring_base_lsb;
++	u32 hal_wbm0_release_ring_base_lsb;
++	u32 hal_wbm1_release_ring_base_lsb;
++
++	u32 pcie_qserdes_sysclk_en_sel;
++	u32 pcie_pcs_osc_dtct_config_base;
++
++	u32 hal_ppe_rel_ring_base;
++
++	u32 hal_reo2_ring_base;
++	u32 hal_reo1_misc_ctrl_addr;
++	u32 hal_reo1_sw_cookie_cfg0;
++	u32 hal_reo1_sw_cookie_cfg1;
++	u32 hal_reo1_qdesc_lut_base0;
++	u32 hal_reo1_qdesc_lut_base1;
++	u32 hal_reo1_ring_base_lsb;
++	u32 hal_reo1_ring_base_msb;
++	u32 hal_reo1_ring_id;
++	u32 hal_reo1_ring_misc;
++	u32 hal_reo1_ring_hp_addr_lsb;
++	u32 hal_reo1_ring_hp_addr_msb;
++	u32 hal_reo1_ring_producer_int_setup;
++	u32 hal_reo1_ring_msi1_base_lsb;
++	u32 hal_reo1_ring_msi1_base_msb;
++	u32 hal_reo1_ring_msi1_data;
++	u32 hal_reo1_aging_thres_ix0;
++	u32 hal_reo1_aging_thres_ix1;
++	u32 hal_reo1_aging_thres_ix2;
++	u32 hal_reo1_aging_thres_ix3;
++
++	u32 hal_reo2_sw0_ring_base;
++
++	u32 hal_sw2reo_ring_base;
++	u32 hal_sw2reo1_ring_base;
++
++	u32 hal_reo_cmd_ring_base;
++
++	u32 hal_reo_status_ring_base;
++};
++
++int ath12k_hw_init(struct ath12k_base *ab);
++
++#endif
 
