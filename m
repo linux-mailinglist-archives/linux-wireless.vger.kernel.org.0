@@ -2,67 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A83B862BC3A
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 12:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 278F662BD04
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 13:06:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233109AbiKPLlk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 06:41:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58060 "EHLO
+        id S233110AbiKPMGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 07:06:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238631AbiKPLlF (ORCPT
+        with ESMTP id S229536AbiKPMFr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 06:41:05 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F9349B4A
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 03:27:29 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id v7so11684339wmn.0
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 03:27:29 -0800 (PST)
+        Wed, 16 Nov 2022 07:05:47 -0500
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E81C21BC
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 03:58:33 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id io19so16199292plb.8
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 03:58:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=kjhHpb9gtIBf6B9VO54IRKzXm+XONNsNUcyoZA57EII=;
-        b=Ix2MEZ32aGFnH8rgDp5ZJGIqGDxtMQGAI5Zj8ydulwCw5shienQjQPdFsMeqAwRiLt
-         J/hrnezFDOz8L5HaAUgCCoTcnq2RGliAzItg9HV62Ed7zHQOyiCt6P74IKEtsmxDY1Vj
-         YYNYxQ1b+VFCPLm0vIR0hhfuarBi0z8oRnnPA=
+        bh=wAEVeFdxDBO/Rsem4CsGzHXwZNtEBQnGixsdwYd9zJ4=;
+        b=exOs+ydacJtTtrwrhsYlOc3WssEXqvq19hUz0nXJI5ctdqiwq1fBI/BZzU9xfF9aLu
+         n1eZir6Z+pOI3fyunRfUxdPm11pgv3hw6/yIITGDS19JVAHgFrwkUNuZUHey+0erCY8g
+         11yVGgVvUAsZFQi9glCnKvXhPA623ptLK5Lbk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kjhHpb9gtIBf6B9VO54IRKzXm+XONNsNUcyoZA57EII=;
-        b=R5cIk3xAig90PESiFhF6C0/rEmZmO9ZRuHQZlfuBCNvZqhdVhH3ztOkXFoAPBl9nL7
-         /Ws0oLdHxPp7pFfPzYQvFpZmHGodfB1azVlPEEjtfnQsx926jQl///3m5DOo5dMslmTe
-         xZmJgROkKCuCFHQe9QZD115d7KREFO5pr/DmRDt81Mq6CeZCSzVLzuluCGNTvYI9Qiz4
-         tGL2BfdqUVFadSpjNriYpxkjLW9ZOch+abnGYEnxeuWc9lf095BgmGcrZBRXHhffJa2K
-         bwJFGwp/XrhZ5U5wUF4JfiTnp87Wqm5Cr5yFH2Rhjy/ewHtmPgCWI2srH6ooUpuQpR/f
-         b8nQ==
-X-Gm-Message-State: ANoB5pnWvXT0IGnlkNTTVHM6GLKYiTaAWExmjDR6aSkBTEehQX7VDpCF
-        5/ddTMZbrlg8QXYKvz94dZJW5w==
-X-Google-Smtp-Source: AA0mqf7VqOi6jZPV7x/3w85TZP2OcSuzdUW4+xd+wR+9jfhgxOa22jGN3mY5yqCXwA0sFWvKdM51DQ==
-X-Received: by 2002:a1c:f703:0:b0:3cf:6c05:809e with SMTP id v3-20020a1cf703000000b003cf6c05809emr1851188wmh.74.1668598047804;
-        Wed, 16 Nov 2022 03:27:27 -0800 (PST)
+        bh=wAEVeFdxDBO/Rsem4CsGzHXwZNtEBQnGixsdwYd9zJ4=;
+        b=7uGLCKahtfdcvoNaxDa59xt5cS7fyo2lpy8kNT1KgSGar7Kfwy1U7sqJOCgA5Lct+6
+         zQplLJSO4hTs1lHSFAqoQMi+qHlslzGkm7rvzRvtUSTxtRDns9F6WO3auOVuuD+C3yw7
+         6p4i6CbhB+UWdu1NFK9AMdc0BKONlSKV+7U8fKmnQsPWcazXe81MPj8AQ43Ln51BKBQv
+         sWeT7Rv4QO81OGwgFdVYRCOz9S52AeBWoCUKyIeGtlPAckAyFPs2iGnjgemrEU9p7Bul
+         8vFiu1Tpv/SiRXoK6jSp49PjE7v7jqUzHvfUrEbtwRbjKcj4JllYYTmK1l2ZfjK/nMvw
+         tKXg==
+X-Gm-Message-State: ANoB5pm3bq/Q05mh6SASJlkxh7mi8fuqSSqhBZH2fM1W/2f2j/nh2b45
+        YwS/e6NBlpkNx9501LiI2bxnjw==
+X-Google-Smtp-Source: AA0mqf5g6Wzvs7fFTJFHUQN5hGn6swTFzZ3Q9MLj2ToyZmDwX7sho0K6ZjmNE87tIyPH2YYUn1GUSg==
+X-Received: by 2002:a17:90a:e606:b0:218:f09:8759 with SMTP id j6-20020a17090ae60600b002180f098759mr3466377pjy.133.1668599912628;
+        Wed, 16 Nov 2022 03:58:32 -0800 (PST)
 Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id r11-20020a5d694b000000b0023691d62cffsm14551762wrw.70.2022.11.16.03.27.26
+        by smtp.gmail.com with ESMTPSA id o17-20020a170902d4d100b0017305e99f00sm12032115plg.107.2022.11.16.03.58.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Nov 2022 03:27:26 -0800 (PST)
-Message-ID: <7a566a14-9e33-5307-0ccb-051368f5f169@broadcom.com>
-Date:   Wed, 16 Nov 2022 12:27:25 +0100
+        Wed, 16 Nov 2022 03:58:31 -0800 (PST)
+Message-ID: <176dd1b5-ee12-fa05-0aa6-e3e031087d6f@broadcom.com>
+Date:   Wed, 16 Nov 2022 12:58:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.1
 Subject: Re: [PATCH] wifi: brcmfmac: Check the count value of channel spec to
  prevent out-of-bounds reads
-To:     Kalle Valo <kvalo@kernel.org>,
-        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Cc:     linux-wireless@vger.kernel.org, aspriel@gmail.com,
-        dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr
+To:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+        linux-wireless@vger.kernel.org, aspriel@gmail.com
+Cc:     dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr
 References: <20221111075346.136376-1-linuxlovemin@yonsei.ac.kr>
- <166859062890.16887.3852526152218508056.kvalo@kernel.org>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <166859062890.16887.3852526152218508056.kvalo@kernel.org>
+In-Reply-To: <20221111075346.136376-1-linuxlovemin@yonsei.ac.kr>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000ee3b5b05ed94c1c0"
+        boundary="000000000000147e4905ed95311b"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -73,220 +71,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000ee3b5b05ed94c1c0
+--000000000000147e4905ed95311b
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11/16/2022 10:23 AM, Kalle Valo wrote:
-> Minsuk Kang <linuxlovemin@yonsei.ac.kr> wrote:
+On 11/11/2022 8:53 AM, Minsuk Kang wrote:
+> This patch fixes slab-out-of-bounds reads in brcmfmac that occur in
+> brcmf_construct_chaninfo() and brcmf_enable_bw40_2g() when the count
+> value of channel specifications provided by the device is greater than
+> the length of 'list->element[]', decided by the size of the 'list'
+> allocated with kzalloc(). The patch adds checks that make the functions
+> free the buffer and return -EINVAL if that is the case. Note that the
+> negative return is handled by the caller, brcmf_setup_wiphybands() or
+> brcmf_cfg80211_attach().
 > 
->> This patch fixes slab-out-of-bounds reads in brcmfmac that occur in
->> brcmf_construct_chaninfo() and brcmf_enable_bw40_2g() when the count
->> value of channel specifications provided by the device is greater than
->> the length of 'list->element[]', decided by the size of the 'list'
->> allocated with kzalloc(). The patch adds checks that make the functions
->> free the buffer and return -EINVAL if that is the case. Note that the
->> negative return is handled by the caller, brcmf_setup_wiphybands() or
->> brcmf_cfg80211_attach().
->>
->> Found by a modified version of syzkaller.
->>
->> Crash Report from brcmf_construct_chaninfo():
->> ==================================================================
->> BUG: KASAN: slab-out-of-bounds in brcmf_setup_wiphybands+0x1238/0x1430
->> Read of size 4 at addr ffff888115f24600 by task kworker/0:2/1896
->>
->> CPU: 0 PID: 1896 Comm: kworker/0:2 Tainted: G        W  O      5.14.0+ #132
->> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
->> Workqueue: usb_hub_wq hub_event
->> Call Trace:
->>   dump_stack_lvl+0x57/0x7d
->>   print_address_description.constprop.0.cold+0x93/0x334
->>   kasan_report.cold+0x83/0xdf
->>   brcmf_setup_wiphybands+0x1238/0x1430
->>   brcmf_cfg80211_attach+0x2118/0x3fd0
->>   brcmf_attach+0x389/0xd40
->>   brcmf_usb_probe+0x12de/0x1690
->>   usb_probe_interface+0x25f/0x710
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_set_configuration+0x984/0x1770
->>   usb_generic_driver_probe+0x69/0x90
->>   usb_probe_device+0x9c/0x220
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_new_device.cold+0x463/0xf66
->>   hub_event+0x10d5/0x3330
->>   process_one_work+0x873/0x13e0
->>   worker_thread+0x8b/0xd10
->>   kthread+0x379/0x450
->>   ret_from_fork+0x1f/0x30
->>
->> Allocated by task 1896:
->>   kasan_save_stack+0x1b/0x40
->>   __kasan_kmalloc+0x7c/0x90
->>   kmem_cache_alloc_trace+0x19e/0x330
->>   brcmf_setup_wiphybands+0x290/0x1430
->>   brcmf_cfg80211_attach+0x2118/0x3fd0
->>   brcmf_attach+0x389/0xd40
->>   brcmf_usb_probe+0x12de/0x1690
->>   usb_probe_interface+0x25f/0x710
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_set_configuration+0x984/0x1770
->>   usb_generic_driver_probe+0x69/0x90
->>   usb_probe_device+0x9c/0x220
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_new_device.cold+0x463/0xf66
->>   hub_event+0x10d5/0x3330
->>   process_one_work+0x873/0x13e0
->>   worker_thread+0x8b/0xd10
->>   kthread+0x379/0x450
->>   ret_from_fork+0x1f/0x30
->>
->> The buggy address belongs to the object at ffff888115f24000
->>   which belongs to the cache kmalloc-2k of size 2048
->> The buggy address is located 1536 bytes inside of
->>   2048-byte region [ffff888115f24000, ffff888115f24800)
->>
->> Memory state around the buggy address:
->>   ffff888115f24500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->>   ffff888115f24580: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->>> ffff888115f24600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->>                     ^
->>   ffff888115f24680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->>   ffff888115f24700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->> ==================================================================
->>
->> Crash Report from brcmf_enable_bw40_2g():
->> ==================================================================
->> BUG: KASAN: slab-out-of-bounds in brcmf_cfg80211_attach+0x3d11/0x3fd0
->> Read of size 4 at addr ffff888103787600 by task kworker/0:2/1896
->>
->> CPU: 0 PID: 1896 Comm: kworker/0:2 Tainted: G        W  O      5.14.0+ #132
->> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
->> Workqueue: usb_hub_wq hub_event
->> Call Trace:
->>   dump_stack_lvl+0x57/0x7d
->>   print_address_description.constprop.0.cold+0x93/0x334
->>   kasan_report.cold+0x83/0xdf
->>   brcmf_cfg80211_attach+0x3d11/0x3fd0
->>   brcmf_attach+0x389/0xd40
->>   brcmf_usb_probe+0x12de/0x1690
->>   usb_probe_interface+0x25f/0x710
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_set_configuration+0x984/0x1770
->>   usb_generic_driver_probe+0x69/0x90
->>   usb_probe_device+0x9c/0x220
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_new_device.cold+0x463/0xf66
->>   hub_event+0x10d5/0x3330
->>   process_one_work+0x873/0x13e0
->>   worker_thread+0x8b/0xd10
->>   kthread+0x379/0x450
->>   ret_from_fork+0x1f/0x30
->>
->> Allocated by task 1896:
->>   kasan_save_stack+0x1b/0x40
->>   __kasan_kmalloc+0x7c/0x90
->>   kmem_cache_alloc_trace+0x19e/0x330
->>   brcmf_cfg80211_attach+0x3302/0x3fd0
->>   brcmf_attach+0x389/0xd40
->>   brcmf_usb_probe+0x12de/0x1690
->>   usb_probe_interface+0x25f/0x710
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_set_configuration+0x984/0x1770
->>   usb_generic_driver_probe+0x69/0x90
->>   usb_probe_device+0x9c/0x220
->>   really_probe+0x1be/0xa90
->>   __driver_probe_device+0x2ab/0x460
->>   driver_probe_device+0x49/0x120
->>   __device_attach_driver+0x18a/0x250
->>   bus_for_each_drv+0x123/0x1a0
->>   __device_attach+0x207/0x330
->>   bus_probe_device+0x1a2/0x260
->>   device_add+0xa61/0x1ce0
->>   usb_new_device.cold+0x463/0xf66
->>   hub_event+0x10d5/0x3330
->>   process_one_work+0x873/0x13e0
->>   worker_thread+0x8b/0xd10
->>   kthread+0x379/0x450
->>   ret_from_fork+0x1f/0x30
->>
->> The buggy address belongs to the object at ffff888103787000
->>   which belongs to the cache kmalloc-2k of size 2048
->> The buggy address is located 1536 bytes inside of
->>   2048-byte region [ffff888103787000, ffff888103787800)
->>
->> Memory state around the buggy address:
->>   ffff888103787500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->>   ffff888103787580: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->>> ffff888103787600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->>                     ^
->>   ffff888103787680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->>   ffff888103787700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->> ==================================================================
->>
->> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
->> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
->> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
->> Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+> Found by a modified version of syzkaller.
+
+[snip]
+
+> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+> Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
 > 
-> Can someone review this, please?
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index ae9507dec74a..3a1c0743e19c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -6840,6 +6840,13 @@ static int brcmf_construct_chaninfo(struct brcmf_cfg80211_info *cfg,
+>   			band->channels[i].flags = IEEE80211_CHAN_DISABLED;
+>   
+>   	total = le32_to_cpu(list->count);
+> +	if (total > BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1) {
 
-Missed this one, but I will have a look now.
+Please add and use macro definition here:
 
-Regards,
-Arend
+#define BRCMF_MAX_CHANSPEC_LIST		(BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1)
 
---000000000000ee3b5b05ed94c1c0
+> +		bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
+> +			 total);
+> +		err = -EINVAL;
+> +		goto fail_pbuf;
+> +	}
+> +
+>   	for (i = 0; i < total; i++) {
+>   		ch.chspec = (u16)le32_to_cpu(list->element[i]);
+>   		cfg->d11inf.decchspec(&ch);
+> @@ -6985,6 +6992,13 @@ static int brcmf_enable_bw40_2g(struct brcmf_cfg80211_info *cfg)
+>   		band = cfg_to_wiphy(cfg)->bands[NL80211_BAND_2GHZ];
+>   		list = (struct brcmf_chanspec_list *)pbuf;
+>   		num_chan = le32_to_cpu(list->count);
+> +		if (num_chan > BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1) {
+
+...and here.
+
+> +			bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
+> +				 num_chan);
+> +			kfree(pbuf);
+> +			return -EINVAL;
+> +		}
+> +
+>   		for (i = 0; i < num_chan; i++) {
+>   			ch.chspec = (u16)le32_to_cpu(list->element[i]);
+>   			cfg->d11inf.decchspec(&ch);
+
+--000000000000147e4905ed95311b
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -357,14 +210,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCfOGwzSUHfeZMsNvwh
-4H8AUFYxBBhwlFy2APKniTgMZjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjExMTYxMTI3MjhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCChT8h4he1yKBwQCfDi
+zo19LLJeb/QqBLs6GjqVlZYnzTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjExMTYxMTU4MzJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAlllqrRsrkaIwI8lFWHVRX/3DfIqn5MCLesa2
-F15fSRKyTuk4KAIQHjsJh3kkYIb/uW3QLE9AYjBwVDI0rc7O+1YIYCakMlOtf6n3h9qFbRZ5EOfz
-O6hnmKSctz3XL5ofYc9+QtHkoZKtDTEIZjKsnSg3w9KuSNFk88ZHOjgexQJS9U+USJ8yuxYlvqrJ
-/2r1JWGefmsZITvBNSoEPl2+M3p67ZoQjyx7bIXT4OBUx0c1OZD0DEwrcKRElvMxYtHLO9Y8PNac
-b6H4nnenNEU9ngboivZBUA8GbxVP5KHAW+Tpp4IzbMx+uJpEImx/gcKHAb/Al9nFq5hkDuGtT2aC
-JA==
---000000000000ee3b5b05ed94c1c0--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAXhndF11nnqvXO5IUSqk4KhkmtNzCMvdNMR+i
+jx5E22ri1gLQSq43MGyxWdkaj/Pco/smKlWU3VMiD3FDs7iIFC12Hfbe5Q450AEReCKegeUU3ihb
+o3Y1LVmxmlOCsBwNofY19IxuJQa7nV47U2MS5JW7n5HmRUvA/hCIPx7FrVKeieiPIPiUWP+cNsw9
+UPjO2AD7u6VPC0caXs9PBYXsqheN9Vul+r+N7ctr64zMxWKJopgDQRs58B1m3na/QAKeJXMIQBhI
+EchCTXywkgUyumr+Mk+QAX+XJ8NZ6ejoM6YnUe7dF0pTBWF7OvPQi4H44QT9mVVGYFxmq1Zj6yCO
+Gw==
+--000000000000147e4905ed95311b--
