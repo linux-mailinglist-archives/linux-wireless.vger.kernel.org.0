@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72CE462C522
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 17:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E73E262C524
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 17:44:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239081AbiKPQom (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 11:44:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
+        id S233592AbiKPQop (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 11:44:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233652AbiKPQnj (ORCPT
+        with ESMTP id S234126AbiKPQnk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 11:43:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B31855984E
+        Wed, 16 Nov 2022 11:43:40 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0258858BCB
         for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 08:39:52 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 38A93B81DFA
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 856FE61EC4
         for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 16:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD3C433D7;
-        Wed, 16 Nov 2022 16:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9F5C433D6;
+        Wed, 16 Nov 2022 16:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668616789;
-        bh=nFXy9P2wtpXgRUnLWPpUGE7kLVmN6gfnlKW+MWGe6jQ=;
+        s=k20201202; t=1668616791;
+        bh=QKa8RYa36A8wmj6F+CjEmfOj91FQm0VR5sYv4dES3Xo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bzzss42l8oLdWBCSldNRBDgQMXALryZGRtSJKaOswlwkXuRCldOyg6SxkoipyYCqi
-         rcQi8EzIl4K7QntHP2hLG5K218iR3UamTVZiaGJIWJY8wC4b5/TdIOSjCDgI28IZ8v
-         FMxfwqKGl8+PlSDduopvLqG+DrMSLQivVFla11AMZStYH4o8GtvUEaJ41yYBFvfQ4g
-         ftmUO7aCr/gfYgiLylotAWXBOtSHiO+ud48B8QzjO4vG2A4vR5HwYi7CvBR6jXPCm3
-         azAo48J7SOJXr2X6xRZoJ42ifk/jsJ3IC7ZqIV0CHP47ac5UfWDp591Vu4LZwwviKc
-         +MbT6eW0dPJ4A==
+        b=RnATn3DYKMLOQD1nwuDBj30metjK/5taCM/7meLGIZuIAp+h0PaC28EJr0UVsI1EI
+         16qRlwydnqfYRhy8s+sfFjVO+8iVe3b3Av4ADG16etkzdgV7ZSXe2gwL0EEJajdmai
+         zCiBFRI21Lv2S88VRR8pkVjE2LiAOAxxL5UPK0e9D6M5houe5DJfi12+XStBE42k6h
+         4VwYrVTbBZjRqhdF37Sv6ZfKjARP/QBR+xHcOgPR8q8rQXiQCS1Z1upmP0HighRxbX
+         Zri0QCQAjBgeTLqyh0OpwFqUIh64rLM4bzSmGXptJ4pIAjD86GL30Q1XvCrhxD3Gwl
+         cEhR/XhmCBnGQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath12k@lists.infradead.org
-Subject: [PATCH v2 40/50] wifi: ath12k: add qmi.h
-Date:   Wed, 16 Nov 2022 18:38:52 +0200
-Message-Id: <20221116163902.24996-41-kvalo@kernel.org>
+Subject: [PATCH v2 41/50] wifi: ath12k: add reg.c
+Date:   Wed, 16 Nov 2022 18:38:53 +0200
+Message-Id: <20221116163902.24996-42-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221116163902.24996-1-kvalo@kernel.org>
 References: <20221116163902.24996-1-kvalo@kernel.org>
@@ -59,581 +59,745 @@ commit will be one big patch. See the cover letter for more info.)
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/qmi.h | 568 ++++++++++++++++++++++++++++++++++
- 1 file changed, 568 insertions(+)
+ drivers/net/wireless/ath/ath12k/reg.c | 732 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 732 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
+diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
 new file mode 100644
-index 000000000000..adbdaf727051
+index 000000000000..6ede91ebc8e1
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -0,0 +1,568 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
++++ b/drivers/net/wireless/ath/ath12k/reg.c
+@@ -0,0 +1,732 @@
++// SPDX-License-Identifier: BSD-3-Clause-Clear
 +/*
 + * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
 + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
 + */
++#include <linux/rtnetlink.h>
++#include "core.h"
++#include "debug.h"
 +
-+#ifndef ATH12K_QMI_H
-+#define ATH12K_QMI_H
++/* World regdom to be used in case default regd from fw is unavailable */
++#define ATH12K_2GHZ_CH01_11      REG_RULE(2412 - 10, 2462 + 10, 40, 0, 20, 0)
++#define ATH12K_5GHZ_5150_5350    REG_RULE(5150 - 10, 5350 + 10, 80, 0, 30,\
++					  NL80211_RRF_NO_IR)
++#define ATH12K_5GHZ_5725_5850    REG_RULE(5725 - 10, 5850 + 10, 80, 0, 30,\
++					  NL80211_RRF_NO_IR)
 +
-+#include <linux/mutex.h>
-+#include <linux/soc/qcom/qmi.h>
++#define ETSI_WEATHER_RADAR_BAND_LOW		5590
++#define ETSI_WEATHER_RADAR_BAND_HIGH		5650
++#define ETSI_WEATHER_RADAR_BAND_CAC_TIMEOUT	600000
 +
-+#define ATH12K_HOST_VERSION_STRING		"WIN"
-+#define ATH12K_QMI_WLANFW_TIMEOUT_MS		10000
-+#define ATH12K_QMI_MAX_BDF_FILE_NAME_SIZE	64
-+#define ATH12K_QMI_CALDB_ADDRESS		0x4BA00000
-+#define ATH12K_QMI_WLANFW_MAX_BUILD_ID_LEN_V01	128
-+#define ATH12K_QMI_WLFW_NODE_ID_BASE		0x07
-+#define ATH12K_QMI_WLFW_SERVICE_ID_V01		0x45
-+#define ATH12K_QMI_WLFW_SERVICE_VERS_V01	0x01
-+#define ATH12K_QMI_WLFW_SERVICE_INS_ID_V01	0x02
-+#define ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_WCN7850 0x1
-+
-+#define ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_QCN9274	0x07
-+#define ATH12K_QMI_WLANFW_MAX_TIMESTAMP_LEN_V01	32
-+#define ATH12K_QMI_RESP_LEN_MAX			8192
-+#define ATH12K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	52
-+#define ATH12K_QMI_CALDB_SIZE			0x480000
-+#define ATH12K_QMI_BDF_EXT_STR_LENGTH		0x20
-+#define ATH12K_QMI_FW_MEM_REQ_SEGMENT_CNT	3
-+#define ATH12K_QMI_WLFW_MAX_DEV_MEM_NUM_V01 4
-+#define ATH12K_QMI_DEVMEM_CMEM_INDEX	0
-+
-+#define QMI_WLFW_REQUEST_MEM_IND_V01		0x0035
-+#define QMI_WLFW_FW_MEM_READY_IND_V01		0x0037
-+#define QMI_WLFW_FW_READY_IND_V01		0x0038
-+
-+#define QMI_WLANFW_MAX_DATA_SIZE_V01		6144
-+#define ATH12K_FIRMWARE_MODE_OFF		4
-+#define ATH12K_QMI_TARGET_MEM_MODE_DEFAULT	0
-+
-+#define ATH12K_BOARD_ID_DEFAULT	0xFF
-+
-+struct ath12k_base;
-+
-+enum ath12k_qmi_file_type {
-+	ATH12K_QMI_FILE_TYPE_BDF_GOLDEN,
-+	ATH12K_QMI_FILE_TYPE_CALDATA,
-+	ATH12K_QMI_FILE_TYPE_EEPROM,
-+	ATH12K_QMI_MAX_FILE_TYPE,
++static const struct ieee80211_regdomain ath12k_world_regd = {
++	.n_reg_rules = 3,
++	.alpha2 = "00",
++	.reg_rules = {
++		ATH12K_2GHZ_CH01_11,
++		ATH12K_5GHZ_5150_5350,
++		ATH12K_5GHZ_5725_5850,
++	}
 +};
 +
-+enum ath12k_qmi_bdf_type {
-+	ATH12K_QMI_BDF_TYPE_BIN			= 0,
-+	ATH12K_QMI_BDF_TYPE_ELF			= 1,
-+	ATH12K_QMI_BDF_TYPE_REGDB		= 4,
-+};
++static bool ath12k_regdom_changes(struct ath12k *ar, char *alpha2)
++{
++	const struct ieee80211_regdomain *regd;
 +
-+enum ath12k_qmi_event_type {
-+	ATH12K_QMI_EVENT_SERVER_ARRIVE,
-+	ATH12K_QMI_EVENT_SERVER_EXIT,
-+	ATH12K_QMI_EVENT_REQUEST_MEM,
-+	ATH12K_QMI_EVENT_FW_MEM_READY,
-+	ATH12K_QMI_EVENT_FW_READY,
-+	ATH12K_QMI_EVENT_REGISTER_DRIVER,
-+	ATH12K_QMI_EVENT_UNREGISTER_DRIVER,
-+	ATH12K_QMI_EVENT_RECOVERY,
-+	ATH12K_QMI_EVENT_FORCE_FW_ASSERT,
-+	ATH12K_QMI_EVENT_POWER_UP,
-+	ATH12K_QMI_EVENT_POWER_DOWN,
-+	ATH12K_QMI_EVENT_MAX,
-+};
++	regd = rcu_dereference_rtnl(ar->hw->wiphy->regd);
++	/* This can happen during wiphy registration where the previous
++	 * user request is received before we update the regd received
++	 * from firmware.
++	 */
++	if (!regd)
++		return true;
 +
-+struct ath12k_qmi_driver_event {
-+	struct list_head list;
-+	enum ath12k_qmi_event_type type;
-+	void *data;
-+};
++	return memcmp(regd->alpha2, alpha2, 2) != 0;
++}
 +
-+struct ath12k_qmi_ce_cfg {
-+	const struct ce_pipe_config *tgt_ce;
-+	int tgt_ce_len;
-+	const struct service_to_pipe *svc_to_ce_map;
-+	int svc_to_ce_map_len;
-+	const u8 *shadow_reg;
-+	int shadow_reg_len;
-+	u32 *shadow_reg_v3;
-+	int shadow_reg_v3_len;
-+};
++static void
++ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
++{
++	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
++	struct ath12k_wmi_init_country_arg arg;
++	struct ath12k *ar = hw->priv;
++	int ret;
 +
-+struct ath12k_qmi_event_msg {
-+	struct list_head list;
-+	enum ath12k_qmi_event_type type;
-+};
++	ath12k_dbg(ar->ab, ATH12K_DBG_REG,
++		   "Regulatory Notification received for %s\n", wiphy_name(wiphy));
 +
-+struct target_mem_chunk {
-+	u32 size;
-+	u32 type;
-+	dma_addr_t paddr;
-+	union {
-+		void __iomem *ioaddr;
-+		void *addr;
-+	} v;
-+};
++	/* Currently supporting only General User Hints. Cell base user
++	 * hints to be handled later.
++	 * Hints from other sources like Core, Beacons are not expected for
++	 * self managed wiphy's
++	 */
++	if (!(request->initiator == NL80211_REGDOM_SET_BY_USER &&
++	      request->user_reg_hint_type == NL80211_USER_REG_HINT_USER)) {
++		ath12k_warn(ar->ab, "Unexpected Regulatory event for this wiphy\n");
++		return;
++	}
 +
-+struct target_info {
-+	u32 chip_id;
-+	u32 chip_family;
-+	u32 board_id;
-+	u32 soc_id;
-+	u32 fw_version;
-+	u32 eeprom_caldata;
-+	char fw_build_timestamp[ATH12K_QMI_WLANFW_MAX_TIMESTAMP_LEN_V01 + 1];
-+	char fw_build_id[ATH12K_QMI_WLANFW_MAX_BUILD_ID_LEN_V01 + 1];
-+	char bdf_ext[ATH12K_QMI_BDF_EXT_STR_LENGTH];
-+};
++	if (!IS_ENABLED(CONFIG_ATH_REG_DYNAMIC_USER_REG_HINTS)) {
++		ath12k_dbg(ar->ab, ATH12K_DBG_REG,
++			   "Country Setting is not allowed\n");
++		return;
++	}
 +
-+struct m3_mem_region {
-+	u32 size;
-+	dma_addr_t paddr;
-+	void *vaddr;
-+};
++	if (!ath12k_regdom_changes(ar, request->alpha2)) {
++		ath12k_dbg(ar->ab, ATH12K_DBG_REG, "Country is already set\n");
++		return;
++	}
 +
-+struct dev_mem_info {
-+	u64 start;
-+	u64 size;
-+};
++	/* Set the country code to the firmware and wait for
++	 * the WMI_REG_CHAN_LIST_CC EVENT for updating the
++	 * reg info
++	 */
++	arg.flags = ALPHA_IS_SET;
++	memcpy(&arg.cc_info.alpha2, request->alpha2, 2);
++	arg.cc_info.alpha2[2] = 0;
 +
-+struct ath12k_qmi {
++	ret = ath12k_wmi_send_init_country_cmd(ar, &arg);
++	if (ret)
++		ath12k_warn(ar->ab,
++			    "INIT Country code set to fw failed : %d\n", ret);
++}
++
++int ath12k_reg_update_chan_list(struct ath12k *ar)
++{
++	struct ieee80211_supported_band **bands;
++	struct ath12k_wmi_scan_chan_list_arg *arg;
++	struct ieee80211_channel *channel;
++	struct ieee80211_hw *hw = ar->hw;
++	struct ath12k_wmi_channel_arg *ch;
++	enum nl80211_band band;
++	int num_channels = 0;
++	int i, ret;
++
++	bands = hw->wiphy->bands;
++	for (band = 0; band < NUM_NL80211_BANDS; band++) {
++		if (!bands[band])
++			continue;
++
++		for (i = 0; i < bands[band]->n_channels; i++) {
++			if (bands[band]->channels[i].flags &
++			    IEEE80211_CHAN_DISABLED)
++				continue;
++
++			num_channels++;
++		}
++	}
++
++	if (WARN_ON(!num_channels))
++		return -EINVAL;
++
++	arg = kzalloc(struct_size(arg, channel, num_channels), GFP_KERNEL);
++
++	if (!arg)
++		return -ENOMEM;
++
++	arg->pdev_id = ar->pdev->pdev_id;
++	arg->nallchans = num_channels;
++
++	ch = arg->channel;
++
++	for (band = 0; band < NUM_NL80211_BANDS; band++) {
++		if (!bands[band])
++			continue;
++
++		for (i = 0; i < bands[band]->n_channels; i++) {
++			channel = &bands[band]->channels[i];
++
++			if (channel->flags & IEEE80211_CHAN_DISABLED)
++				continue;
++
++			/* TODO: Set to true/false based on some condition? */
++			ch->allow_ht = true;
++			ch->allow_vht = true;
++			ch->allow_he = true;
++
++			ch->dfs_set =
++				!!(channel->flags & IEEE80211_CHAN_RADAR);
++			ch->is_chan_passive = !!(channel->flags &
++						IEEE80211_CHAN_NO_IR);
++			ch->is_chan_passive |= ch->dfs_set;
++			ch->mhz = channel->center_freq;
++			ch->cfreq1 = channel->center_freq;
++			ch->minpower = 0;
++			ch->maxpower = channel->max_power * 2;
++			ch->maxregpower = channel->max_reg_power * 2;
++			ch->antennamax = channel->max_antenna_gain * 2;
++
++			/* TODO: Use appropriate phymodes */
++			if (channel->band == NL80211_BAND_2GHZ)
++				ch->phy_mode = MODE_11G;
++			else
++				ch->phy_mode = MODE_11A;
++
++			if (channel->band == NL80211_BAND_6GHZ &&
++			    cfg80211_channel_is_psc(channel))
++				ch->psc_channel = true;
++
++			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++				   "mac channel [%d/%d] freq %d maxpower %d regpower %d antenna %d mode %d\n",
++				   i, arg->nallchans,
++				   ch->mhz, ch->maxpower, ch->maxregpower,
++				   ch->antennamax, ch->phy_mode);
++
++			ch++;
++			/* TODO: use quarrter/half rate, cfreq12, dfs_cfreq2
++			 * set_agile, reg_class_idx
++			 */
++		}
++	}
++
++	ret = ath12k_wmi_send_scan_chan_list_cmd(ar, arg);
++	kfree(arg);
++
++	return ret;
++}
++
++static void ath12k_copy_regd(struct ieee80211_regdomain *regd_orig,
++			     struct ieee80211_regdomain *regd_copy)
++{
++	u8 i;
++
++	/* The caller should have checked error conditions */
++	memcpy(regd_copy, regd_orig, sizeof(*regd_orig));
++
++	for (i = 0; i < regd_orig->n_reg_rules; i++)
++		memcpy(&regd_copy->reg_rules[i], &regd_orig->reg_rules[i],
++		       sizeof(struct ieee80211_reg_rule));
++}
++
++int ath12k_regd_update(struct ath12k *ar, bool init)
++{
++	struct ieee80211_regdomain *regd, *regd_copy = NULL;
++	int ret, regd_len, pdev_id;
 +	struct ath12k_base *ab;
-+	struct qmi_handle handle;
-+	struct sockaddr_qrtr sq;
-+	struct work_struct event_work;
-+	struct workqueue_struct *event_wq;
-+	struct list_head event_list;
-+	spinlock_t event_lock; /* spinlock for qmi event list */
-+	struct ath12k_qmi_ce_cfg ce_cfg;
-+	struct target_mem_chunk target_mem[ATH12K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01];
-+	u32 mem_seg_count;
-+	u32 target_mem_mode;
-+	bool target_mem_delayed;
-+	u8 cal_done;
-+	struct target_info target;
-+	struct m3_mem_region m3_mem;
-+	unsigned int service_ins_id;
-+	struct dev_mem_info dev_mem[ATH12K_QMI_WLFW_MAX_DEV_MEM_NUM_V01];
-+};
 +
-+#define QMI_WLANFW_HOST_CAP_REQ_MSG_V01_MAX_LEN		261
-+#define QMI_WLANFW_HOST_CAP_REQ_V01			0x0034
-+#define QMI_WLANFW_HOST_CAP_RESP_MSG_V01_MAX_LEN	7
-+#define QMI_WLFW_HOST_CAP_RESP_V01			0x0034
-+#define QMI_WLFW_MAX_NUM_GPIO_V01			32
-+#define QMI_WLANFW_MAX_PLATFORM_NAME_LEN_V01		64
-+#define QMI_WLANFW_MAX_HOST_DDR_RANGE_SIZE_V01		3
++	ab = ar->ab;
++	pdev_id = ar->pdev_idx;
 +
-+struct qmi_wlanfw_host_ddr_range {
-+	u64 start;
-+	u64 size;
-+};
++	spin_lock_bh(&ab->base_lock);
 +
-+enum ath12k_qmi_target_mem {
-+	HOST_DDR_REGION_TYPE = 0x1,
-+	BDF_MEM_REGION_TYPE = 0x2,
-+	M3_DUMP_REGION_TYPE = 0x3,
-+	CALDB_MEM_REGION_TYPE = 0x4,
-+	PAGEABLE_MEM_REGION_TYPE = 0x9,
-+};
++	if (init) {
++		/* Apply the regd received during init through
++		 * WMI_REG_CHAN_LIST_CC event. In case of failure to
++		 * receive the regd, initialize with a default world
++		 * regulatory.
++		 */
++		if (ab->default_regd[pdev_id]) {
++			regd = ab->default_regd[pdev_id];
++		} else {
++			ath12k_warn(ab,
++				    "failed to receive default regd during init\n");
++			regd = (struct ieee80211_regdomain *)&ath12k_world_regd;
++		}
++	} else {
++		regd = ab->new_regd[pdev_id];
++	}
 +
-+enum qmi_wlanfw_host_build_type {
-+	WLANFW_HOST_BUILD_TYPE_ENUM_MIN_VAL_V01 = INT_MIN,
-+	QMI_WLANFW_HOST_BUILD_TYPE_UNSPECIFIED_V01 = 0,
-+	QMI_WLANFW_HOST_BUILD_TYPE_PRIMARY_V01 = 1,
-+	QMI_WLANFW_HOST_BUILD_TYPE_SECONDARY_V01 = 2,
-+	WLANFW_HOST_BUILD_TYPE_ENUM_MAX_VAL_V01 = INT_MAX,
-+};
++	if (!regd) {
++		ret = -EINVAL;
++		spin_unlock_bh(&ab->base_lock);
++		goto err;
++	}
 +
-+#define QMI_WLFW_MAX_NUM_MLO_CHIPS_V01 3
-+#define QMI_WLFW_MAX_NUM_MLO_LINKS_PER_CHIP_V01 2
++	regd_len = sizeof(*regd) + (regd->n_reg_rules *
++		sizeof(struct ieee80211_reg_rule));
 +
-+struct wlfw_host_mlo_chip_info_s_v01 {
-+	u8 chip_id;
-+	u8 num_local_links;
-+	u8 hw_link_id[QMI_WLFW_MAX_NUM_MLO_LINKS_PER_CHIP_V01];
-+	u8 valid_mlo_link_id[QMI_WLFW_MAX_NUM_MLO_LINKS_PER_CHIP_V01];
-+};
++	regd_copy = kzalloc(regd_len, GFP_ATOMIC);
++	if (regd_copy)
++		ath12k_copy_regd(regd, regd_copy);
 +
-+enum ath12k_qmi_cnss_feature {
-+	CNSS_FEATURE_MIN_ENUM_VAL_V01 = INT_MIN,
-+	CNSS_QDSS_CFG_MISS_V01 = 3,
-+	CNSS_MAX_FEATURE_V01 = 64,
-+	CNSS_FEATURE_MAX_ENUM_VAL_V01 = INT_MAX,
-+};
++	spin_unlock_bh(&ab->base_lock);
 +
-+struct qmi_wlanfw_host_cap_req_msg_v01 {
-+	u8 num_clients_valid;
-+	u32 num_clients;
-+	u8 wake_msi_valid;
-+	u32 wake_msi;
-+	u8 gpios_valid;
-+	u32 gpios_len;
-+	u32 gpios[QMI_WLFW_MAX_NUM_GPIO_V01];
-+	u8 nm_modem_valid;
-+	u8 nm_modem;
-+	u8 bdf_support_valid;
-+	u8 bdf_support;
-+	u8 bdf_cache_support_valid;
-+	u8 bdf_cache_support;
-+	u8 m3_support_valid;
-+	u8 m3_support;
-+	u8 m3_cache_support_valid;
-+	u8 m3_cache_support;
-+	u8 cal_filesys_support_valid;
-+	u8 cal_filesys_support;
-+	u8 cal_cache_support_valid;
-+	u8 cal_cache_support;
-+	u8 cal_done_valid;
-+	u8 cal_done;
-+	u8 mem_bucket_valid;
-+	u32 mem_bucket;
-+	u8 mem_cfg_mode_valid;
-+	u8 mem_cfg_mode;
-+	u8 cal_duration_valid;
-+	u16 cal_duraiton;
-+	u8 platform_name_valid;
-+	char platform_name[QMI_WLANFW_MAX_PLATFORM_NAME_LEN_V01 + 1];
-+	u8 ddr_range_valid;
-+	struct qmi_wlanfw_host_ddr_range ddr_range[QMI_WLANFW_MAX_HOST_DDR_RANGE_SIZE_V01];
-+	u8 host_build_type_valid;
-+	enum qmi_wlanfw_host_build_type host_build_type;
-+	u8 mlo_capable_valid;
-+	u8 mlo_capable;
-+	u8 mlo_chip_id_valid;
-+	u16 mlo_chip_id;
-+	u8 mlo_group_id_valid;
-+	u8 mlo_group_id;
-+	u8 max_mlo_peer_valid;
-+	u16 max_mlo_peer;
-+	u8 mlo_num_chips_valid;
-+	u8 mlo_num_chips;
-+	u8 mlo_chip_info_valid;
-+	struct wlfw_host_mlo_chip_info_s_v01 mlo_chip_info[QMI_WLFW_MAX_NUM_MLO_CHIPS_V01];
-+	u8 feature_list_valid;
-+	u64 feature_list;
++	if (!regd_copy) {
++		ret = -ENOMEM;
++		goto err;
++	}
 +
-+};
++	rtnl_lock();
++	wiphy_lock(ar->hw->wiphy);
++	ret = regulatory_set_wiphy_regd_sync(ar->hw->wiphy, regd_copy);
++	wiphy_unlock(ar->hw->wiphy);
++	rtnl_unlock();
 +
-+struct qmi_wlanfw_host_cap_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
++	kfree(regd_copy);
 +
-+#define QMI_WLANFW_IND_REGISTER_REQ_MSG_V01_MAX_LEN		54
-+#define QMI_WLANFW_IND_REGISTER_REQ_V01				0x0020
-+#define QMI_WLANFW_IND_REGISTER_RESP_MSG_V01_MAX_LEN		18
-+#define QMI_WLANFW_IND_REGISTER_RESP_V01			0x0020
-+#define QMI_WLANFW_CLIENT_ID					0x4b4e454c
++	if (ret)
++		goto err;
 +
-+struct qmi_wlanfw_ind_register_req_msg_v01 {
-+	u8 fw_ready_enable_valid;
-+	u8 fw_ready_enable;
-+	u8 initiate_cal_download_enable_valid;
-+	u8 initiate_cal_download_enable;
-+	u8 initiate_cal_update_enable_valid;
-+	u8 initiate_cal_update_enable;
-+	u8 msa_ready_enable_valid;
-+	u8 msa_ready_enable;
-+	u8 pin_connect_result_enable_valid;
-+	u8 pin_connect_result_enable;
-+	u8 client_id_valid;
-+	u32 client_id;
-+	u8 request_mem_enable_valid;
-+	u8 request_mem_enable;
-+	u8 fw_mem_ready_enable_valid;
-+	u8 fw_mem_ready_enable;
-+	u8 fw_init_done_enable_valid;
-+	u8 fw_init_done_enable;
-+	u8 rejuvenate_enable_valid;
-+	u32 rejuvenate_enable;
-+	u8 xo_cal_enable_valid;
-+	u8 xo_cal_enable;
-+	u8 cal_done_enable_valid;
-+	u8 cal_done_enable;
-+};
++	if (ar->state == ATH12K_STATE_ON) {
++		ret = ath12k_reg_update_chan_list(ar);
++		if (ret)
++			goto err;
++	}
 +
-+struct qmi_wlanfw_ind_register_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+	u8 fw_status_valid;
-+	u64 fw_status;
-+};
++	return 0;
++err:
++	ath12k_warn(ab, "failed to perform regd update : %d\n", ret);
++	return ret;
++}
 +
-+#define QMI_WLANFW_REQUEST_MEM_IND_MSG_V01_MAX_LEN	1824
-+#define QMI_WLANFW_RESPOND_MEM_REQ_MSG_V01_MAX_LEN	888
-+#define QMI_WLANFW_RESPOND_MEM_RESP_MSG_V01_MAX_LEN	7
-+#define QMI_WLANFW_REQUEST_MEM_IND_V01			0x0035
-+#define QMI_WLANFW_RESPOND_MEM_REQ_V01			0x0036
-+#define QMI_WLANFW_RESPOND_MEM_RESP_V01			0x0036
-+#define QMI_WLANFW_MAX_NUM_MEM_CFG_V01			2
-+#define QMI_WLANFW_MAX_STR_LEN_V01                      16
++static enum nl80211_dfs_regions
++ath12k_map_fw_dfs_region(enum ath12k_dfs_region dfs_region)
++{
++	switch (dfs_region) {
++	case ATH12K_DFS_REG_FCC:
++	case ATH12K_DFS_REG_CN:
++		return NL80211_DFS_FCC;
++	case ATH12K_DFS_REG_ETSI:
++	case ATH12K_DFS_REG_KR:
++		return NL80211_DFS_ETSI;
++	case ATH12K_DFS_REG_MKK:
++	case ATH12K_DFS_REG_MKK_N:
++		return NL80211_DFS_JP;
++	default:
++		return NL80211_DFS_UNSET;
++	}
++}
 +
-+struct qmi_wlanfw_mem_cfg_s_v01 {
-+	u64 offset;
-+	u32 size;
-+	u8 secure_flag;
-+};
++static u32 ath12k_map_fw_reg_flags(u16 reg_flags)
++{
++	u32 flags = 0;
 +
-+enum qmi_wlanfw_mem_type_enum_v01 {
-+	WLANFW_MEM_TYPE_ENUM_MIN_VAL_V01 = INT_MIN,
-+	QMI_WLANFW_MEM_TYPE_MSA_V01 = 0,
-+	QMI_WLANFW_MEM_TYPE_DDR_V01 = 1,
-+	QMI_WLANFW_MEM_BDF_V01 = 2,
-+	QMI_WLANFW_MEM_M3_V01 = 3,
-+	QMI_WLANFW_MEM_CAL_V01 = 4,
-+	QMI_WLANFW_MEM_DPD_V01 = 5,
-+	WLANFW_MEM_TYPE_ENUM_MAX_VAL_V01 = INT_MAX,
-+};
++	if (reg_flags & REGULATORY_CHAN_NO_IR)
++		flags = NL80211_RRF_NO_IR;
 +
-+struct qmi_wlanfw_mem_seg_s_v01 {
-+	u32 size;
-+	enum qmi_wlanfw_mem_type_enum_v01 type;
-+	u32 mem_cfg_len;
-+	struct qmi_wlanfw_mem_cfg_s_v01 mem_cfg[QMI_WLANFW_MAX_NUM_MEM_CFG_V01];
-+};
++	if (reg_flags & REGULATORY_CHAN_RADAR)
++		flags |= NL80211_RRF_DFS;
 +
-+struct qmi_wlanfw_request_mem_ind_msg_v01 {
-+	u32 mem_seg_len;
-+	struct qmi_wlanfw_mem_seg_s_v01 mem_seg[ATH12K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01];
-+};
++	if (reg_flags & REGULATORY_CHAN_NO_OFDM)
++		flags |= NL80211_RRF_NO_OFDM;
 +
-+struct qmi_wlanfw_mem_seg_resp_s_v01 {
-+	u64 addr;
-+	u32 size;
-+	enum qmi_wlanfw_mem_type_enum_v01 type;
-+	u8 restore;
-+};
++	if (reg_flags & REGULATORY_CHAN_INDOOR_ONLY)
++		flags |= NL80211_RRF_NO_OUTDOOR;
 +
-+struct qmi_wlanfw_respond_mem_req_msg_v01 {
-+	u32 mem_seg_len;
-+	struct qmi_wlanfw_mem_seg_resp_s_v01 mem_seg[ATH12K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01];
-+};
++	if (reg_flags & REGULATORY_CHAN_NO_HT40)
++		flags |= NL80211_RRF_NO_HT40;
 +
-+struct qmi_wlanfw_respond_mem_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
++	if (reg_flags & REGULATORY_CHAN_NO_80MHZ)
++		flags |= NL80211_RRF_NO_80MHZ;
 +
-+struct qmi_wlanfw_fw_mem_ready_ind_msg_v01 {
-+	char placeholder;
-+};
++	if (reg_flags & REGULATORY_CHAN_NO_160MHZ)
++		flags |= NL80211_RRF_NO_160MHZ;
 +
-+struct qmi_wlanfw_fw_ready_ind_msg_v01 {
-+	char placeholder;
-+};
++	return flags;
++}
 +
-+#define QMI_WLANFW_CAP_REQ_MSG_V01_MAX_LEN	0
-+#define QMI_WLANFW_CAP_RESP_MSG_V01_MAX_LEN	207
-+#define QMI_WLANFW_CAP_REQ_V01			0x0024
-+#define QMI_WLANFW_CAP_RESP_V01			0x0024
++static bool
++ath12k_reg_can_intersect(struct ieee80211_reg_rule *rule1,
++			 struct ieee80211_reg_rule *rule2)
++{
++	u32 start_freq1, end_freq1;
++	u32 start_freq2, end_freq2;
 +
-+enum qmi_wlanfw_pipedir_enum_v01 {
-+	QMI_WLFW_PIPEDIR_NONE_V01 = 0,
-+	QMI_WLFW_PIPEDIR_IN_V01 = 1,
-+	QMI_WLFW_PIPEDIR_OUT_V01 = 2,
-+	QMI_WLFW_PIPEDIR_INOUT_V01 = 3,
-+};
++	start_freq1 = rule1->freq_range.start_freq_khz;
++	start_freq2 = rule2->freq_range.start_freq_khz;
 +
-+struct qmi_wlanfw_ce_tgt_pipe_cfg_s_v01 {
-+	__le32 pipe_num;
-+	__le32 pipe_dir;
-+	__le32 nentries;
-+	__le32 nbytes_max;
-+	__le32 flags;
-+};
++	end_freq1 = rule1->freq_range.end_freq_khz;
++	end_freq2 = rule2->freq_range.end_freq_khz;
 +
-+struct qmi_wlanfw_ce_svc_pipe_cfg_s_v01 {
-+	__le32 service_id;
-+	__le32 pipe_dir;
-+	__le32 pipe_num;
-+};
++	if ((start_freq1 >= start_freq2 &&
++	     start_freq1 < end_freq2) ||
++	    (start_freq2 > start_freq1 &&
++	     start_freq2 < end_freq1))
++		return true;
 +
-+struct qmi_wlanfw_shadow_reg_cfg_s_v01 {
-+	u16 id;
-+	u16 offset;
-+};
++	/* TODO: Should we restrict intersection feasibility
++	 *  based on min bandwidth of the intersected region also,
++	 *  say the intersected rule should have a  min bandwidth
++	 * of 20MHz?
++	 */
 +
-+struct qmi_wlanfw_shadow_reg_v3_cfg_s_v01 {
-+	u32 addr;
-+};
++	return false;
++}
 +
-+struct qmi_wlanfw_memory_region_info_s_v01 {
-+	u64 region_addr;
-+	u32 size;
-+	u8 secure_flag;
-+};
++static void ath12k_reg_intersect_rules(struct ieee80211_reg_rule *rule1,
++				       struct ieee80211_reg_rule *rule2,
++				       struct ieee80211_reg_rule *new_rule)
++{
++	u32 start_freq1, end_freq1;
++	u32 start_freq2, end_freq2;
++	u32 freq_diff, max_bw;
 +
-+struct qmi_wlanfw_rf_chip_info_s_v01 {
-+	u32 chip_id;
-+	u32 chip_family;
-+};
++	start_freq1 = rule1->freq_range.start_freq_khz;
++	start_freq2 = rule2->freq_range.start_freq_khz;
 +
-+struct qmi_wlanfw_rf_board_info_s_v01 {
-+	u32 board_id;
-+};
++	end_freq1 = rule1->freq_range.end_freq_khz;
++	end_freq2 = rule2->freq_range.end_freq_khz;
 +
-+struct qmi_wlanfw_soc_info_s_v01 {
-+	u32 soc_id;
-+};
++	new_rule->freq_range.start_freq_khz = max_t(u32, start_freq1,
++						    start_freq2);
++	new_rule->freq_range.end_freq_khz = min_t(u32, end_freq1, end_freq2);
 +
-+struct qmi_wlanfw_fw_version_info_s_v01 {
-+	u32 fw_version;
-+	char fw_build_timestamp[ATH12K_QMI_WLANFW_MAX_TIMESTAMP_LEN_V01 + 1];
-+};
++	freq_diff = new_rule->freq_range.end_freq_khz -
++			new_rule->freq_range.start_freq_khz;
++	max_bw = min_t(u32, rule1->freq_range.max_bandwidth_khz,
++		       rule2->freq_range.max_bandwidth_khz);
++	new_rule->freq_range.max_bandwidth_khz = min_t(u32, max_bw, freq_diff);
 +
-+struct qmi_wlanfw_dev_mem_info_s_v01 {
-+	u64 start;
-+	u64 size;
-+};
++	new_rule->power_rule.max_antenna_gain =
++		min_t(u32, rule1->power_rule.max_antenna_gain,
++		      rule2->power_rule.max_antenna_gain);
 +
-+enum qmi_wlanfw_cal_temp_id_enum_v01 {
-+	QMI_WLANFW_CAL_TEMP_IDX_0_V01 = 0,
-+	QMI_WLANFW_CAL_TEMP_IDX_1_V01 = 1,
-+	QMI_WLANFW_CAL_TEMP_IDX_2_V01 = 2,
-+	QMI_WLANFW_CAL_TEMP_IDX_3_V01 = 3,
-+	QMI_WLANFW_CAL_TEMP_IDX_4_V01 = 4,
-+	QMI_WLANFW_CAL_TEMP_ID_MAX_V01 = 0xFF,
-+};
++	new_rule->power_rule.max_eirp = min_t(u32, rule1->power_rule.max_eirp,
++					      rule2->power_rule.max_eirp);
 +
-+enum qmi_wlanfw_rd_card_chain_cap_v01 {
-+	WLFW_RD_CARD_CHAIN_CAP_MIN_VAL_V01 = INT_MIN,
-+	WLFW_RD_CARD_CHAIN_CAP_UNSPECIFIED_V01 = 0,
-+	WLFW_RD_CARD_CHAIN_CAP_1x1_V01 = 1,
-+	WLFW_RD_CARD_CHAIN_CAP_2x2_V01 = 2,
-+	WLFW_RD_CARD_CHAIN_CAP_MAX_VAL_V01 = INT_MAX,
-+};
++	/* Use the flags of both the rules */
++	new_rule->flags = rule1->flags | rule2->flags;
 +
-+struct qmi_wlanfw_cap_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+	u8 chip_info_valid;
-+	struct qmi_wlanfw_rf_chip_info_s_v01 chip_info;
-+	u8 board_info_valid;
-+	struct qmi_wlanfw_rf_board_info_s_v01 board_info;
-+	u8 soc_info_valid;
-+	struct qmi_wlanfw_soc_info_s_v01 soc_info;
-+	u8 fw_version_info_valid;
-+	struct qmi_wlanfw_fw_version_info_s_v01 fw_version_info;
-+	u8 fw_build_id_valid;
-+	char fw_build_id[ATH12K_QMI_WLANFW_MAX_BUILD_ID_LEN_V01 + 1];
-+	u8 num_macs_valid;
-+	u8 num_macs;
-+	u8 voltage_mv_valid;
-+	u32 voltage_mv;
-+	u8 time_freq_hz_valid;
-+	u32 time_freq_hz;
-+	u8 otp_version_valid;
-+	u32 otp_version;
-+	u8 eeprom_caldata_read_timeout_valid;
-+	u32 eeprom_caldata_read_timeout;
-+	u8 fw_caps_valid;
-+	u64 fw_caps;
-+	u8 rd_card_chain_cap_valid;
-+	enum qmi_wlanfw_rd_card_chain_cap_v01 rd_card_chain_cap;
-+	u8 dev_mem_info_valid;
-+	struct qmi_wlanfw_dev_mem_info_s_v01 dev_mem[ATH12K_QMI_WLFW_MAX_DEV_MEM_NUM_V01];
-+};
++	/* To be safe, lts use the max cac timeout of both rules */
++	new_rule->dfs_cac_ms = max_t(u32, rule1->dfs_cac_ms,
++				     rule2->dfs_cac_ms);
++}
 +
-+struct qmi_wlanfw_cap_req_msg_v01 {
-+	char placeholder;
-+};
++static struct ieee80211_regdomain *
++ath12k_regd_intersect(struct ieee80211_regdomain *default_regd,
++		      struct ieee80211_regdomain *curr_regd)
++{
++	u8 num_old_regd_rules, num_curr_regd_rules, num_new_regd_rules;
++	struct ieee80211_reg_rule *old_rule, *curr_rule, *new_rule;
++	struct ieee80211_regdomain *new_regd = NULL;
++	u8 i, j, k;
 +
-+#define QMI_WLANFW_BDF_DOWNLOAD_REQ_MSG_V01_MAX_LEN	6182
-+#define QMI_WLANFW_BDF_DOWNLOAD_RESP_MSG_V01_MAX_LEN	7
-+#define QMI_WLANFW_BDF_DOWNLOAD_RESP_V01		0x0025
-+#define QMI_WLANFW_BDF_DOWNLOAD_REQ_V01			0x0025
-+/* TODO: Need to check with MCL and FW team that data can be pointer and
-+ * can be last element in structure
-+ */
-+struct qmi_wlanfw_bdf_download_req_msg_v01 {
-+	u8 valid;
-+	u8 file_id_valid;
-+	enum qmi_wlanfw_cal_temp_id_enum_v01 file_id;
-+	u8 total_size_valid;
-+	u32 total_size;
-+	u8 seg_id_valid;
-+	u32 seg_id;
-+	u8 data_valid;
-+	u32 data_len;
-+	u8 data[QMI_WLANFW_MAX_DATA_SIZE_V01];
-+	u8 end_valid;
-+	u8 end;
-+	u8 bdf_type_valid;
-+	u8 bdf_type;
++	num_old_regd_rules = default_regd->n_reg_rules;
++	num_curr_regd_rules = curr_regd->n_reg_rules;
++	num_new_regd_rules = 0;
 +
-+};
++	/* Find the number of intersecting rules to allocate new regd memory */
++	for (i = 0; i < num_old_regd_rules; i++) {
++		old_rule = default_regd->reg_rules + i;
++		for (j = 0; j < num_curr_regd_rules; j++) {
++			curr_rule = curr_regd->reg_rules + j;
 +
-+struct qmi_wlanfw_bdf_download_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
++			if (ath12k_reg_can_intersect(old_rule, curr_rule))
++				num_new_regd_rules++;
++		}
++	}
 +
-+#define QMI_WLANFW_M3_INFO_REQ_MSG_V01_MAX_MSG_LEN	18
-+#define QMI_WLANFW_M3_INFO_RESP_MSG_V01_MAX_MSG_LEN	7
-+#define QMI_WLANFW_M3_INFO_RESP_V01		0x003C
-+#define QMI_WLANFW_M3_INFO_REQ_V01		0x003C
++	if (!num_new_regd_rules)
++		return NULL;
 +
-+struct qmi_wlanfw_m3_info_req_msg_v01 {
-+	u64 addr;
-+	u32 size;
-+};
++	new_regd = kzalloc(sizeof(*new_regd) + (num_new_regd_rules *
++			sizeof(struct ieee80211_reg_rule)),
++			GFP_ATOMIC);
 +
-+struct qmi_wlanfw_m3_info_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
++	if (!new_regd)
++		return NULL;
 +
-+#define QMI_WLANFW_WLAN_MODE_REQ_MSG_V01_MAX_LEN	11
-+#define QMI_WLANFW_WLAN_MODE_RESP_MSG_V01_MAX_LEN	7
-+#define QMI_WLANFW_WLAN_CFG_REQ_MSG_V01_MAX_LEN		803
-+#define QMI_WLANFW_WLAN_CFG_RESP_MSG_V01_MAX_LEN	7
-+#define QMI_WLANFW_WLAN_MODE_REQ_V01			0x0022
-+#define QMI_WLANFW_WLAN_MODE_RESP_V01			0x0022
-+#define QMI_WLANFW_WLAN_CFG_REQ_V01			0x0023
-+#define QMI_WLANFW_WLAN_CFG_RESP_V01			0x0023
-+#define QMI_WLANFW_MAX_STR_LEN_V01			16
-+#define QMI_WLANFW_MAX_NUM_CE_V01			12
-+#define QMI_WLANFW_MAX_NUM_SVC_V01			24
-+#define QMI_WLANFW_MAX_NUM_SHADOW_REG_V01		24
-+#define QMI_WLANFW_MAX_NUM_SHADOW_REG_V3_V01		60
++	/* We set the new country and dfs region directly and only trim
++	 * the freq, power, antenna gain by intersecting with the
++	 * default regdomain. Also MAX of the dfs cac timeout is selected.
++	 */
++	new_regd->n_reg_rules = num_new_regd_rules;
++	memcpy(new_regd->alpha2, curr_regd->alpha2, sizeof(new_regd->alpha2));
++	new_regd->dfs_region = curr_regd->dfs_region;
++	new_rule = new_regd->reg_rules;
 +
-+struct qmi_wlanfw_wlan_mode_req_msg_v01 {
-+	u32 mode;
-+	u8 hw_debug_valid;
-+	u8 hw_debug;
-+};
++	for (i = 0, k = 0; i < num_old_regd_rules; i++) {
++		old_rule = default_regd->reg_rules + i;
++		for (j = 0; j < num_curr_regd_rules; j++) {
++			curr_rule = curr_regd->reg_rules + j;
 +
-+struct qmi_wlanfw_wlan_mode_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
++			if (ath12k_reg_can_intersect(old_rule, curr_rule))
++				ath12k_reg_intersect_rules(old_rule, curr_rule,
++							   (new_rule + k++));
++		}
++	}
++	return new_regd;
++}
 +
-+struct qmi_wlanfw_wlan_cfg_req_msg_v01 {
-+	u8 host_version_valid;
-+	char host_version[QMI_WLANFW_MAX_STR_LEN_V01 + 1];
-+	u8  tgt_cfg_valid;
-+	u32  tgt_cfg_len;
-+	struct qmi_wlanfw_ce_tgt_pipe_cfg_s_v01
-+			tgt_cfg[QMI_WLANFW_MAX_NUM_CE_V01];
-+	u8  svc_cfg_valid;
-+	u32 svc_cfg_len;
-+	struct qmi_wlanfw_ce_svc_pipe_cfg_s_v01
-+			svc_cfg[QMI_WLANFW_MAX_NUM_SVC_V01];
-+	u8 shadow_reg_valid;
-+	u32 shadow_reg_len;
-+	struct qmi_wlanfw_shadow_reg_cfg_s_v01
-+		shadow_reg[QMI_WLANFW_MAX_NUM_SHADOW_REG_V01];
-+	u8 shadow_reg_v3_valid;
-+	u32 shadow_reg_v3_len;
-+	struct qmi_wlanfw_shadow_reg_v3_cfg_s_v01
-+		shadow_reg_v3[QMI_WLANFW_MAX_NUM_SHADOW_REG_V3_V01];
-+};
++static const char *
++ath12k_reg_get_regdom_str(enum nl80211_dfs_regions dfs_region)
++{
++	switch (dfs_region) {
++	case NL80211_DFS_FCC:
++		return "FCC";
++	case NL80211_DFS_ETSI:
++		return "ETSI";
++	case NL80211_DFS_JP:
++		return "JP";
++	default:
++		return "UNSET";
++	}
++}
 +
-+struct qmi_wlanfw_wlan_cfg_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
++static u16
++ath12k_reg_adjust_bw(u16 start_freq, u16 end_freq, u16 max_bw)
++{
++	u16 bw;
 +
-+int ath12k_qmi_firmware_start(struct ath12k_base *ab,
-+			      u32 mode);
-+void ath12k_qmi_firmware_stop(struct ath12k_base *ab);
-+void ath12k_qmi_event_work(struct work_struct *work);
-+void ath12k_qmi_msg_recv_work(struct work_struct *work);
-+void ath12k_qmi_deinit_service(struct ath12k_base *ab);
-+int ath12k_qmi_init_service(struct ath12k_base *ab);
++	bw = end_freq - start_freq;
++	bw = min_t(u16, bw, max_bw);
 +
-+#endif
++	if (bw >= 80 && bw < 160)
++		bw = 80;
++	else if (bw >= 40 && bw < 80)
++		bw = 40;
++	else if (bw < 40)
++		bw = 20;
++
++	return bw;
++}
++
++static void
++ath12k_reg_update_rule(struct ieee80211_reg_rule *reg_rule, u32 start_freq,
++		       u32 end_freq, u32 bw, u32 ant_gain, u32 reg_pwr,
++		       u32 reg_flags)
++{
++	reg_rule->freq_range.start_freq_khz = MHZ_TO_KHZ(start_freq);
++	reg_rule->freq_range.end_freq_khz = MHZ_TO_KHZ(end_freq);
++	reg_rule->freq_range.max_bandwidth_khz = MHZ_TO_KHZ(bw);
++	reg_rule->power_rule.max_antenna_gain = DBI_TO_MBI(ant_gain);
++	reg_rule->power_rule.max_eirp = DBM_TO_MBM(reg_pwr);
++	reg_rule->flags = reg_flags;
++}
++
++static void
++ath12k_reg_update_weather_radar_band(struct ath12k_base *ab,
++				     struct ieee80211_regdomain *regd,
++				     struct ath12k_reg_rule *reg_rule,
++				     u8 *rule_idx, u32 flags, u16 max_bw)
++{
++	u32 end_freq;
++	u16 bw;
++	u8 i;
++
++	i = *rule_idx;
++
++	bw = ath12k_reg_adjust_bw(reg_rule->start_freq,
++				  ETSI_WEATHER_RADAR_BAND_LOW, max_bw);
++
++	ath12k_reg_update_rule(regd->reg_rules + i, reg_rule->start_freq,
++			       ETSI_WEATHER_RADAR_BAND_LOW, bw,
++			       reg_rule->ant_gain, reg_rule->reg_power,
++			       flags);
++
++	ath12k_dbg(ab, ATH12K_DBG_REG,
++		   "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d)\n",
++		   i + 1, reg_rule->start_freq, ETSI_WEATHER_RADAR_BAND_LOW,
++		   bw, reg_rule->ant_gain, reg_rule->reg_power,
++		   regd->reg_rules[i].dfs_cac_ms,
++		   flags);
++
++	if (reg_rule->end_freq > ETSI_WEATHER_RADAR_BAND_HIGH)
++		end_freq = ETSI_WEATHER_RADAR_BAND_HIGH;
++	else
++		end_freq = reg_rule->end_freq;
++
++	bw = ath12k_reg_adjust_bw(ETSI_WEATHER_RADAR_BAND_LOW, end_freq,
++				  max_bw);
++
++	i++;
++
++	ath12k_reg_update_rule(regd->reg_rules + i,
++			       ETSI_WEATHER_RADAR_BAND_LOW, end_freq, bw,
++			       reg_rule->ant_gain, reg_rule->reg_power,
++			       flags);
++
++	regd->reg_rules[i].dfs_cac_ms = ETSI_WEATHER_RADAR_BAND_CAC_TIMEOUT;
++
++	ath12k_dbg(ab, ATH12K_DBG_REG,
++		   "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d)\n",
++		   i + 1, ETSI_WEATHER_RADAR_BAND_LOW, end_freq,
++		   bw, reg_rule->ant_gain, reg_rule->reg_power,
++		   regd->reg_rules[i].dfs_cac_ms,
++		   flags);
++
++	if (end_freq == reg_rule->end_freq) {
++		regd->n_reg_rules--;
++		*rule_idx = i;
++		return;
++	}
++
++	bw = ath12k_reg_adjust_bw(ETSI_WEATHER_RADAR_BAND_HIGH,
++				  reg_rule->end_freq, max_bw);
++
++	i++;
++
++	ath12k_reg_update_rule(regd->reg_rules + i, ETSI_WEATHER_RADAR_BAND_HIGH,
++			       reg_rule->end_freq, bw,
++			       reg_rule->ant_gain, reg_rule->reg_power,
++			       flags);
++
++	ath12k_dbg(ab, ATH12K_DBG_REG,
++		   "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d)\n",
++		   i + 1, ETSI_WEATHER_RADAR_BAND_HIGH, reg_rule->end_freq,
++		   bw, reg_rule->ant_gain, reg_rule->reg_power,
++		   regd->reg_rules[i].dfs_cac_ms,
++		   flags);
++
++	*rule_idx = i;
++}
++
++struct ieee80211_regdomain *
++ath12k_reg_build_regd(struct ath12k_base *ab,
++		      struct ath12k_reg_info *reg_info, bool intersect)
++{
++	struct ieee80211_regdomain *tmp_regd, *default_regd, *new_regd = NULL;
++	struct ath12k_reg_rule *reg_rule;
++	u8 i = 0, j = 0, k = 0;
++	u8 num_rules;
++	u16 max_bw;
++	u32 flags;
++	char alpha2[3];
++
++	num_rules = reg_info->num_5g_reg_rules + reg_info->num_2g_reg_rules;
++
++	/* FIXME: Currently taking reg rules for 6G only from Indoor AP mode list.
++	 * This can be updated to choose the combination dynamically based on AP
++	 * type and client type, after complete 6G regulatory support is added.
++	 */
++	if (reg_info->is_ext_reg_event)
++		num_rules += reg_info->num_6g_reg_rules_ap[WMI_REG_INDOOR_AP];
++
++	if (!num_rules)
++		goto ret;
++
++	/* Add max additional rules to accommodate weather radar band */
++	if (reg_info->dfs_region == ATH12K_DFS_REG_ETSI)
++		num_rules += 2;
++
++	tmp_regd = kzalloc(sizeof(*tmp_regd) +
++			   (num_rules * sizeof(struct ieee80211_reg_rule)),
++			   GFP_ATOMIC);
++	if (!tmp_regd)
++		goto ret;
++
++	memcpy(tmp_regd->alpha2, reg_info->alpha2, REG_ALPHA2_LEN + 1);
++	memcpy(alpha2, reg_info->alpha2, REG_ALPHA2_LEN + 1);
++	alpha2[2] = '\0';
++	tmp_regd->dfs_region = ath12k_map_fw_dfs_region(reg_info->dfs_region);
++
++	ath12k_dbg(ab, ATH12K_DBG_REG,
++		   "\r\nCountry %s, CFG Regdomain %s FW Regdomain %d, num_reg_rules %d\n",
++		   alpha2, ath12k_reg_get_regdom_str(tmp_regd->dfs_region),
++		   reg_info->dfs_region, num_rules);
++	/* Update reg_rules[] below. Firmware is expected to
++	 * send these rules in order(2G rules first and then 5G)
++	 */
++	for (; i < num_rules; i++) {
++		if (reg_info->num_2g_reg_rules &&
++		    (i < reg_info->num_2g_reg_rules)) {
++			reg_rule = reg_info->reg_rules_2g_ptr + i;
++			max_bw = min_t(u16, reg_rule->max_bw,
++				       reg_info->max_bw_2g);
++			flags = 0;
++		} else if (reg_info->num_5g_reg_rules &&
++			   (j < reg_info->num_5g_reg_rules)) {
++			reg_rule = reg_info->reg_rules_5g_ptr + j++;
++			max_bw = min_t(u16, reg_rule->max_bw,
++				       reg_info->max_bw_5g);
++
++			/* FW doesn't pass NL80211_RRF_AUTO_BW flag for
++			 * BW Auto correction, we can enable this by default
++			 * for all 5G rules here. The regulatory core performs
++			 * BW correction if required and applies flags as
++			 * per other BW rule flags we pass from here
++			 */
++			flags = NL80211_RRF_AUTO_BW;
++		} else if (reg_info->is_ext_reg_event &&
++			   reg_info->num_6g_reg_rules_ap[WMI_REG_INDOOR_AP] &&
++			(k < reg_info->num_6g_reg_rules_ap[WMI_REG_INDOOR_AP])) {
++			reg_rule = reg_info->reg_rules_6g_ap_ptr[WMI_REG_INDOOR_AP] + k++;
++			max_bw = min_t(u16, reg_rule->max_bw,
++				       reg_info->max_bw_6g_ap[WMI_REG_INDOOR_AP]);
++			flags = NL80211_RRF_AUTO_BW;
++		} else {
++			break;
++		}
++
++		flags |= ath12k_map_fw_reg_flags(reg_rule->flags);
++
++		ath12k_reg_update_rule(tmp_regd->reg_rules + i,
++				       reg_rule->start_freq,
++				       reg_rule->end_freq, max_bw,
++				       reg_rule->ant_gain, reg_rule->reg_power,
++				       flags);
++
++		/* Update dfs cac timeout if the dfs domain is ETSI and the
++		 * new rule covers weather radar band.
++		 * Default value of '0' corresponds to 60s timeout, so no
++		 * need to update that for other rules.
++		 */
++		if (flags & NL80211_RRF_DFS &&
++		    reg_info->dfs_region == ATH12K_DFS_REG_ETSI &&
++		    (reg_rule->end_freq > ETSI_WEATHER_RADAR_BAND_LOW &&
++		    reg_rule->start_freq < ETSI_WEATHER_RADAR_BAND_HIGH)){
++			ath12k_reg_update_weather_radar_band(ab, tmp_regd,
++							     reg_rule, &i,
++							     flags, max_bw);
++			continue;
++		}
++
++		if (reg_info->is_ext_reg_event) {
++			ath12k_dbg(ab, ATH12K_DBG_REG, "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d) (%d, %d)\n",
++				   i + 1, reg_rule->start_freq, reg_rule->end_freq,
++				   max_bw, reg_rule->ant_gain, reg_rule->reg_power,
++				   tmp_regd->reg_rules[i].dfs_cac_ms,
++				   flags, reg_rule->psd_flag, reg_rule->psd_eirp);
++		} else {
++			ath12k_dbg(ab, ATH12K_DBG_REG,
++				   "\t%d. (%d - %d @ %d) (%d, %d) (%d ms) (FLAGS %d)\n",
++				   i + 1, reg_rule->start_freq, reg_rule->end_freq,
++				   max_bw, reg_rule->ant_gain, reg_rule->reg_power,
++				   tmp_regd->reg_rules[i].dfs_cac_ms,
++				   flags);
++		}
++	}
++
++	tmp_regd->n_reg_rules = i;
++
++	if (intersect) {
++		default_regd = ab->default_regd[reg_info->phy_id];
++
++		/* Get a new regd by intersecting the received regd with
++		 * our default regd.
++		 */
++		new_regd = ath12k_regd_intersect(default_regd, tmp_regd);
++		kfree(tmp_regd);
++		if (!new_regd) {
++			ath12k_warn(ab, "Unable to create intersected regdomain\n");
++			goto ret;
++		}
++	} else {
++		new_regd = tmp_regd;
++	}
++
++ret:
++	return new_regd;
++}
++
++void ath12k_regd_update_work(struct work_struct *work)
++{
++	struct ath12k *ar = container_of(work, struct ath12k,
++					 regd_update_work);
++	int ret;
++
++	ret = ath12k_regd_update(ar, false);
++	if (ret) {
++		/* Firmware has already moved to the new regd. We need
++		 * to maintain channel consistency across FW, Host driver
++		 * and userspace. Hence as a fallback mechanism we can set
++		 * the prev or default country code to the firmware.
++		 */
++		/* TODO: Implement Fallback Mechanism */
++	}
++}
++
++void ath12k_reg_init(struct ath12k *ar)
++{
++	ar->hw->wiphy->regulatory_flags = REGULATORY_WIPHY_SELF_MANAGED;
++	ar->hw->wiphy->reg_notifier = ath12k_reg_notifier;
++}
++
++void ath12k_reg_free(struct ath12k_base *ab)
++{
++	int i;
++
++	for (i = 0; i < ab->hw_params->max_radios; i++) {
++		kfree(ab->default_regd[i]);
++		kfree(ab->new_regd[i]);
++	}
++}
 
