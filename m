@@ -2,199 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 838B962B6F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 10:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 921D562BA4E
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 11:55:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbiKPJy3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 04:54:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37656 "EHLO
+        id S232707AbiKPKzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 05:55:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230113AbiKPJyU (ORCPT
+        with ESMTP id S238949AbiKPKyd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 04:54:20 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE2C1BF
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 01:54:13 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id l22-20020a17090a3f1600b00212fbbcfb78so1779954pjc.3
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 01:54:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=yonsei-ac-kr.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBxEOrfwQt5bX60pxvlzCG2VvV3QgdPMkgl6WhCOa+0=;
-        b=ZzYDNxkGJ3DPOU52Ye4ycgfZFoj8Zh8vCEjZGTxwOHVv7+E17VXifmuujpRkqLYPs2
-         Vko8n6bvK4IOfyiy3BRlXGh3VnzWd7goETopMJTS7Q5haWgTvRqxp0RZReIEI+YiP/Kb
-         ugeGZ7ZOEWIMejbFVbRmf8Z8cw4TVR6aILDo5yXiAawIomHxgdkLzj5n/BCCY7CewXPd
-         xfR6E7XzQO5XALLcMap1gAiaYS/IgsasWD9foS+ZLlQqxINNZukaUIRJFAsS6awtbUMQ
-         6os5dsOGRFIZhEojqDG2axvcJnxgTMj6iCKsQdzJ2W7mN/beYW06N1q9mj/n9B998EIQ
-         jb6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SBxEOrfwQt5bX60pxvlzCG2VvV3QgdPMkgl6WhCOa+0=;
-        b=Z9PFopoT5fuLYpAOmwysfecQtoeaGJYTU5QzF/onLclsYis0xauHzNBVmxN/nKgRLY
-         /5NPAAhW6XKqYiipaamaUKfr7nrq/1gR1WNH06ZEJciyAFcQU/3LPwJ+C5lkrgVVDHxK
-         7cNve5675yhcBhn14f94V2ilgIMXy86/KNQgK3hyw8zy9wW+iQeTRwAH/6EUG9u8giLT
-         8VIHvNatnJlO4JdqgA8Ae+qk38+c+KzWehH49DJmbhHWRsqCOf5w+6CXwxMbFbvxMPmK
-         rhWFY6fh10pCwHBdpPbBks6B7qi9ONEDSY4Y9bRDGsw4if195LRoTJuQOlB7zDk9TsZA
-         sdoQ==
-X-Gm-Message-State: ANoB5pmDbS/Ydfj2DER1nG3chTmpkfZHIWFLv0T6B8uQirfrNJkIDZdi
-        zKwVVzVPgrCa9G2pxmUTTTT994Xl5J3DpIM6
-X-Google-Smtp-Source: AA0mqf5nX3baEa/b5R1sMG8VBakKSZXckr4SuMHPI5hXpbz339RZ484hYitvlgtZqPEtkbaCz4UN5Q==
-X-Received: by 2002:a17:902:c60a:b0:188:77a7:eb5 with SMTP id r10-20020a170902c60a00b0018877a70eb5mr8251825plr.6.1668592452619;
-        Wed, 16 Nov 2022 01:54:12 -0800 (PST)
-Received: from localhost.localdomain ([165.132.118.52])
-        by smtp.gmail.com with ESMTPSA id o1-20020aa79781000000b0056ba02feda1sm10658202pfp.94.2022.11.16.01.54.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Nov 2022 01:54:12 -0800 (PST)
-From:   Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-To:     linux-wireless@vger.kernel.org, aspriel@gmail.com
-Cc:     dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr,
-        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Subject: [PATCH] wifi: brcmfmac: Fix potential slab-out-of-bounds read in brcmf_inform_single_bss()
-Date:   Wed, 16 Nov 2022 18:53:48 +0900
-Message-Id: <20221116095348.494518-1-linuxlovemin@yonsei.ac.kr>
-X-Mailer: git-send-email 2.25.1
+        Wed, 16 Nov 2022 05:54:33 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEFC10D7
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 02:43:23 -0800 (PST)
+X-UUID: a7c81315aefc489e9b3b95146e7205d6-20221116
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=DYZzixU+G9Z13P/mjEXm5tqsN/MuV+82bQqD6HGEpiU=;
+        b=t0pDbap9nkrC1JRWRXSf69A39HMTlv6c/R7jMl2caHhooM0wo/7+aWn18+6HUeCInimkch2jwoiZ8CZZSbt5Ud2T9L5Z/rc2UkXjlkT4WYPeQLw5y50cJc0oj/0vl2TAkZiiQIsSavJ6xWWa+WZgtqCKW94vSmuJQ6Nu2hWSkAg=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.13,REQID:59f145fe-9081-495b-8364-eb912e4838f2,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:-5
+X-CID-META: VersionHash:d12e911,CLOUDID:91585528-7328-4d53-af97-37d3ca89e562,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: a7c81315aefc489e9b3b95146e7205d6-20221116
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1289238884; Wed, 16 Nov 2022 18:43:19 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Wed, 16 Nov 2022 18:43:17 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 16 Nov 2022 18:43:17 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7996: fix gcc warnings with sparc options
+Date:   Wed, 16 Nov 2022 18:42:26 +0800
+Message-ID: <20221116104226.4174-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch fixes a slab-out-of-bounds read in brcmfmac that occurs in
-cfg80211_find_elem_match() called from brcmf_inform_single_bss() when
-the offset and length values of information elements provided by the
-device exceed the boundary of the escan buffer that contains information
-elements. The patch adds a check that makes the function return -EINVAL
-if that is the case. Note that the negative return is handled by the
-caller, brcmf_inform_bss().
+Fix the following warnings:
 
-Found by a modified version of syzkaller.
+>> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:2377:5: warning: no previous prototype for 'mt7996_mcu_restart' [-Wmissing-prototypes]
+    2377 | int mt7996_mcu_restart(struct mt76_dev *dev)
+         |     ^~~~~~~~~~~~~~~~~~
+   In file included from include/linux/byteorder/big_endian.h:5,
+                    from arch/sparc/include/uapi/asm/byteorder.h:5,
+                    from include/asm-generic/qrwlock_types.h:6,
+                    from arch/sparc/include/asm/spinlock_types.h:17,
+                    from include/linux/spinlock_types_raw.h:7,
+                    from include/linux/ratelimit_types.h:7,
+                    from include/linux/printk.h:9,
+                    from include/asm-generic/bug.h:22,
+                    from arch/sparc/include/asm/bug.h:25,
+                    from include/linux/bug.h:5,
+                    from include/linux/thread_info.h:13,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/sparc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:78,
+                    from include/linux/spinlock.h:56,
+                    from include/linux/mmzone.h:8,
+                    from include/linux/gfp.h:7,
+                    from include/linux/firmware.h:7,
+                    from drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:6:
+   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c: In function 'mt7996_mcu_set_tx':
+>> include/uapi/linux/byteorder/big_endian.h:36:26: warning: conversion from 'short unsigned int' to 'u8' {aka 'unsigned char'} changes value from '2560' to '0' [-Woverflow]
+      36 | #define __cpu_to_le16(x) ((__force __le16)__swab16((x)))
+         |                          ^
+   include/linux/byteorder/generic.h:90:21: note: in expansion of macro '__cpu_to_le16'
+      90 | #define cpu_to_le16 __cpu_to_le16
+         |                     ^~~~~~~~~~~~~
+   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:2546:37: note: in expansion of macro 'cpu_to_le16'
+    2546 |                         e->cw_max = cpu_to_le16(10);
+         |                                     ^~~~~~~~~~~
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in cfg80211_find_elem_match+0x164/0x180
-Read of size 1 at addr ffff888018f0fde9 by task kworker/0:2/1896
-
-CPU: 0 PID: 1896 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #139
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-Workqueue: events brcmf_fweh_event_worker
-Call Trace:
- dump_stack_lvl+0x8e/0xd1
- print_address_description.constprop.0.cold+0x93/0x334
- ? cfg80211_find_elem_match+0x164/0x180
- kasan_report.cold+0x79/0xd5
- ? cfg80211_find_elem_match+0x164/0x180
- cfg80211_find_elem_match+0x164/0x180
- cfg80211_get_bss_channel+0x69/0x320
- cfg80211_inform_single_bss_data+0x1a6/0x1060
- ? cfg80211_bss_update+0x1e20/0x1e20
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? find_held_lock+0x2d/0x110
- ? cfg80211_inform_bss_data+0xcb/0x160
- cfg80211_inform_bss_data+0xcb/0x160
- ? cfg80211_parse_mbssid_data+0x1540/0x1540
- ? kvm_clock_get_cycles+0x14/0x20
- ? ktime_get_with_offset+0x2b9/0x450
- brcmf_inform_single_bss+0x36d/0x4d0
- ? brcmf_notify_mic_status+0xb0/0xb0
- ? __lock_acquire+0x181f/0x5790
- ? brcmf_p2p_cancel_remain_on_channel+0x30/0x30
- brcmf_inform_bss+0x131/0x210
- brcmf_cfg80211_escan_handler+0x779/0xd20
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lock_acquire+0x19d/0x4e0
- ? find_held_lock+0x2d/0x110
- ? brcmf_cfg80211_escan_timeout_worker+0x60/0x60
- ? brcmf_fweh_event_worker+0x249/0xc00
- ? mark_held_locks+0x9f/0xe0
- ? lockdep_hardirqs_on_prepare+0x3e0/0x3e0
- ? brcmf_cfg80211_escan_timeout_worker+0x60/0x60
- brcmf_fweh_call_event_handler.isra.0+0x90/0x100
- brcmf_fweh_event_worker+0x117/0xc00
- ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- process_one_work+0x92b/0x1460
- ? pwq_dec_nr_in_flight+0x330/0x330
- ? rwlock_bug.part.0+0x90/0x90
- worker_thread+0x95/0xe00
- ? __kthread_parkme+0x115/0x1e0
- ? process_one_work+0x1460/0x1460
- kthread+0x3a1/0x480
- ? set_kthread_struct+0x120/0x120
- ret_from_fork+0x1f/0x30
-
-The buggy address belongs to the page:
-page:ffffea000063c000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x18f00
-head:ffffea000063c000 order:4 compound_mapcount:0 compound_pincount:0
-flags: 0x100000000010000(head|node=0|zone=1)
-raw: 0100000000010000 0000000000000000 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 4, migratetype Unmovable, gfp_mask 0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO), pid 1896, ts 44510886600, free_ts 0
- prep_new_page+0x1aa/0x240
- get_page_from_freelist+0x159a/0x27c0
- __alloc_pages+0x2da/0x6a0
- alloc_pages+0xec/0x1e0
- kmalloc_order+0x39/0xf0
- kmalloc_order_trace+0x19/0x120
- brcmf_cfg80211_attach+0x5c9/0x3fd0
- brcmf_attach+0x389/0xd40
- brcmf_usb_probe+0x12de/0x1690
- usb_probe_interface+0x2aa/0x760
- really_probe+0x205/0xb70
- __driver_probe_device+0x311/0x4b0
- driver_probe_device+0x4e/0x150
- __device_attach_driver+0x1cc/0x2a0
- bus_for_each_drv+0x156/0x1d0
- __device_attach+0x23f/0x3a0
-page_owner free stack trace missing
-
-Memory state around the buggy address:
- ffff888018f0fc80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff888018f0fd00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff888018f0fd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 fe fe fe
-                                                          ^
- ffff888018f0fe00: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
- ffff888018f0fe80: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-==================================================================
-
-Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Fixes: 23c307666f69 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 7 +++++++
- 1 file changed, 7 insertions(+)
+@Felix, could you please help to fold this patch? Thanks.
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index ae9507dec74a..8390274a8ab1 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3298,6 +3298,13 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
- 	notify_ielen = le32_to_cpu(bi->ie_length);
- 	bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index adc80b9930bd..bf83d0862988 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2373,7 +2373,8 @@ mt7996_mcu_init_rx_airtime(struct mt7996_dev *dev)
+ 				     MCU_WM_UNI_CMD(VOW), true);
+ }
  
-+	if ((unsigned long)notify_ie + notify_ielen -
-+		(unsigned long)cfg->escan_info.escan_buf > BRCMF_ESCAN_BUF_SIZE) {
-+		bphy_err(drvr, "Invalid information element offset: %u, length: %lu\n",
-+			 le16_to_cpu(bi->ie_offset), notify_ielen);
-+		return -EINVAL;
-+	}
+-int mt7996_mcu_restart(struct mt76_dev *dev)
++static int
++mt7996_mcu_restart(struct mt76_dev *dev)
+ {
+ 	struct {
+ 		u8 __rsv1[4];
+@@ -2540,10 +2541,11 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif)
+ 			e->cw_min = 5;
+ 
+ 		if (q->cw_max)
+-			e->cw_max = cpu_to_le16(fls(q->cw_max));
++			e->cw_max = fls(q->cw_max);
+ 		else
+-			e->cw_max = cpu_to_le16(10);
++			e->cw_max = 10;
+ 	}
 +
- 	brcmf_dbg(CONN, "bssid: %pM\n", bi->BSSID);
- 	brcmf_dbg(CONN, "Channel: %d(%d)\n", channel, freq);
- 	brcmf_dbg(CONN, "Capability: %X\n", notify_capability);
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 				     MCU_WM_UNI_CMD(EDCA_UPDATE), true);
+ }
 -- 
 2.25.1
 
