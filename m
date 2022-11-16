@@ -2,68 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 278F662BD04
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 13:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 098C462BDC9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 13:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233110AbiKPMGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 07:06:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48448 "EHLO
+        id S233200AbiKPM2f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 07:28:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbiKPMFr (ORCPT
+        with ESMTP id S233212AbiKPM2S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 07:05:47 -0500
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E81C21BC
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 03:58:33 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id io19so16199292plb.8
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 03:58:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wAEVeFdxDBO/Rsem4CsGzHXwZNtEBQnGixsdwYd9zJ4=;
-        b=exOs+ydacJtTtrwrhsYlOc3WssEXqvq19hUz0nXJI5ctdqiwq1fBI/BZzU9xfF9aLu
-         n1eZir6Z+pOI3fyunRfUxdPm11pgv3hw6/yIITGDS19JVAHgFrwkUNuZUHey+0erCY8g
-         11yVGgVvUAsZFQi9glCnKvXhPA623ptLK5Lbk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wAEVeFdxDBO/Rsem4CsGzHXwZNtEBQnGixsdwYd9zJ4=;
-        b=7uGLCKahtfdcvoNaxDa59xt5cS7fyo2lpy8kNT1KgSGar7Kfwy1U7sqJOCgA5Lct+6
-         zQplLJSO4hTs1lHSFAqoQMi+qHlslzGkm7rvzRvtUSTxtRDns9F6WO3auOVuuD+C3yw7
-         6p4i6CbhB+UWdu1NFK9AMdc0BKONlSKV+7U8fKmnQsPWcazXe81MPj8AQ43Ln51BKBQv
-         sWeT7Rv4QO81OGwgFdVYRCOz9S52AeBWoCUKyIeGtlPAckAyFPs2iGnjgemrEU9p7Bul
-         8vFiu1Tpv/SiRXoK6jSp49PjE7v7jqUzHvfUrEbtwRbjKcj4JllYYTmK1l2ZfjK/nMvw
-         tKXg==
-X-Gm-Message-State: ANoB5pm3bq/Q05mh6SASJlkxh7mi8fuqSSqhBZH2fM1W/2f2j/nh2b45
-        YwS/e6NBlpkNx9501LiI2bxnjw==
-X-Google-Smtp-Source: AA0mqf5g6Wzvs7fFTJFHUQN5hGn6swTFzZ3Q9MLj2ToyZmDwX7sho0K6ZjmNE87tIyPH2YYUn1GUSg==
-X-Received: by 2002:a17:90a:e606:b0:218:f09:8759 with SMTP id j6-20020a17090ae60600b002180f098759mr3466377pjy.133.1668599912628;
-        Wed, 16 Nov 2022 03:58:32 -0800 (PST)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id o17-20020a170902d4d100b0017305e99f00sm12032115plg.107.2022.11.16.03.58.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Nov 2022 03:58:31 -0800 (PST)
-Message-ID: <176dd1b5-ee12-fa05-0aa6-e3e031087d6f@broadcom.com>
-Date:   Wed, 16 Nov 2022 12:58:28 +0100
+        Wed, 16 Nov 2022 07:28:18 -0500
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2051.outbound.protection.outlook.com [40.92.98.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6955CE6D
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 04:25:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=H9xKVxT1gF6/iCHc5daZGUW6mzhsXhrZgDrtd8a+i6Q+0EPI4Zscb0IYLV2Mo1S1libfuL9aqTvx317l06+HZPM2pJYDz/juYUSSLjEEsu/wmehUaduM5r/aiM797WRXO7YB0yQ/qSkrS5FIulNgEl16csruMnLVc2VP1zLd+8M4LMlBQKWcxEJM+WlBYv2s+8xvPK2/beqUJ4fdBK6bD7xw0z5grCg6jKbpVEM1Op9h0JHF/lLmV38nDfrjD83L1L+26WFAtnKJ6tiLvYP2ExLtssGzG2DEoZNn47X+2XKkMaborENbtVQuEln56wxHwu9fSCiI7ASweNmG5sXWkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5DrLnmigtP3X1N+LNP6YjfgCfsspn0URFf12+JcUQCg=;
+ b=YBfPYDtciflXN6323NNu8ls0lLbl2bPxEjhyxUT3bcybZslFJH6bzMroMp3O/p2mQLyNAYaBuUHWzODSTQ8mikjviRx6smXTlPiFgr9FAre8sFtNsuxvVTkGwQUdGCpjmatDrDcKl4tD+2jnqtlZiYr4LACRdQ6IBk+oQi+9YFCbNhKUkFbm9peey1GSwF7sfajPDUnwY9jyFqnBT3gZDD03Uc15/RurdBjOPIvCrI2P1PXC2UjjG5OAM/nOenKfxKgL4221VqCFo1sMIwRiWwzVjTbgEf8yNyOk0bE1Kq/JsKi/SXWxZBl0ppurc+CMsNcCXLN0VUb49OG/2bw3VA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5DrLnmigtP3X1N+LNP6YjfgCfsspn0URFf12+JcUQCg=;
+ b=jNs1Y498SIzVJ5rX+T8hMTcFM8NsNhUtKHO5n2TDQr74veLPksMDThGzi5Qge+M15K9bw9CJR0lg8DJdqfcHpNHY2V67By/uTlpLAsGAYVYgNNCK7EO2WVb52dpMiI3BjSLtALWuRFSqfHUwUkpSU4SQdXB9WINQzABOWUfyVjRDZLvYKCixpZO3g91XXVPOqxVFSkeHgB7FYrkmv3EWzd8mxxFtnDKIx3e326HwE9ECZ8RMZvyTOHTzrnma4qHIL00EVGxW3FDWwQYAAU0TyCiP6JGvECeEonRIOJfHLqtcLCUfs0h42D3cCp3ewd7yfiBDu7x6ABNvkt5po0Sgyw==
+Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:252::12)
+ by TYCP286MB1537.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:17a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.17; Wed, 16 Nov
+ 2022 12:25:23 +0000
+Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::38d3:c4eb:fa2c:3953]) by TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::38d3:c4eb:fa2c:3953%7]) with mapi id 15.20.5813.017; Wed, 16 Nov 2022
+ 12:25:23 +0000
+Date:   Wed, 16 Nov 2022 20:25:16 +0800
+From:   Shengyu Qu <wiagn233@outlook.com>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Andy Green <andy@warmcat.com>
+CC:     franky.lin@broadcom.com, linux-wireless@vger.kernel.org
+Subject: Re: AP6275 / bcm43752 pcie on mainline brcmf
+In-Reply-To: <184720fc920.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+References: <TY3P286MB26114DD461F50814980453E598029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM> <08416710-655a-c87c-a599-3fe2563f7de4@warmcat.com> <18470a1e910.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <TY3P286MB26115A58795F264893CCB40198029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM> <184720fc920.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Message-ID: <TY3P286MB26118BD94839F752CADCCF5298079@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TMN:  [vWHOnCCP9XuRrhPqRNjBwebJzTy9fheTx+05it0VVrQ=]
+X-ClientProxiedBy: SG2PR02CA0126.apcprd02.prod.outlook.com
+ (2603:1096:4:188::11) To TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:252::12)
+X-Microsoft-Original-Message-ID: <A97B84E0-8872-40D0-A7CD-5F314531E3B4@outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH] wifi: brcmfmac: Check the count value of channel spec to
- prevent out-of-bounds reads
-To:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-        linux-wireless@vger.kernel.org, aspriel@gmail.com
-Cc:     dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr
-References: <20221111075346.136376-1-linuxlovemin@yonsei.ac.kr>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20221111075346.136376-1-linuxlovemin@yonsei.ac.kr>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000147e4905ed95311b"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY3P286MB2611:EE_|TYCP286MB1537:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9af34022-eb50-496d-6e20-08dac7cda21a
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: t2hvKMW0NPSk5PPdNaQ3BQB1BYazhk6020MCJ2kxYjR04oEZusqNRZ40kZ7QfakB3y631PzwhwQhz97ijxlvKEZInXxu1lyLlNrl7K4zR4HQPmjagUX19yYQSG5CmVYgQ2RmpgXo50j6yNSjkPzFKctufOfKJQo0T5BECTllHsF7v1XRG5cnBxp9IgD517T0vlgr6XwFtiJWj0HVCftEUnPiQbZzDH30uOyue0ph+g7f2X8SV3KqFk0I85Avuexg4EAxgVNPgtL76sGUC4K5vAIEMjKNRjcGCODykn9Eg5NHaW/0KFtMkBIesOMH8U32FmgjIWVXZntT1KvqIbQNReAgqEb2lcfhlVsPpH3xJtmJ521KrpLhKbjFSn/h0vv1H0VTSYHbSGQvYKEKYpyw1IwurjC03t4+wtF2huilGvOAmGULB+f1H4GinyLQsPNt8yz+PpYSNACcdVC2TFnAjC9eF4E3tRTnjSNCHeYEB46oZz2QjqYb8VB3POooAsY3sNf2MAqNrsl5RZP2OWVz4HipYba9VZ0YIRGtUe5frVYcwP3ZJ3aMyBcF4M3C0760uSpevTYM1N1qapjYlDi7GeKZTZQwCa7aC3kp6UfaCgVVYFw8N4WG8qfEG2qyg/cDsAzE2hnf/5Fs4vH1pLYLl0ZphpvshFBYsiAC0RHKSe1GNyHkF1PwqEC6oBMXnYPI
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RERLY0Q3dnplQnkwK2pCSEZSZW55ZWpyVkhlNVdNVFB1YjNENGRWRHdxNWpO?=
+ =?utf-8?B?S2EyTWRUemJwdVRYbkkyd1ZITjl2Z2ovb3VadkVEYVdxNG5hcG5CZCtJS3Ba?=
+ =?utf-8?B?aE5RaGtXUDFaL3c5M1BIUlVUNUpNbk5SRWt1Vk9BN3J1bkFiQXMxRlBlNitE?=
+ =?utf-8?B?eFpJdExDQUx2QzBrWlpyeFFhRllDVDRGQ1pmRUpZVnp5NXlPck1BUEJlK01J?=
+ =?utf-8?B?THBlWnltMy9HckVtK1RVZjhYNkZIWGJvNzVQa3VrTU8wTW5FWERpODcyazB4?=
+ =?utf-8?B?Wit2K0xwRTdnbGdnckh5UjFFc1F0TGpFZ1NzRnpha29rRzdYYm14K0p1QXh1?=
+ =?utf-8?B?bDl3RFp0blpmMkhGbUc5eXZuaFgzZ3V2Umx0a0xuSmRveTZVaEl1UTJvS1BP?=
+ =?utf-8?B?Skk4VGxmSy9OSFJXejNCUFJ4WkNxbEJrRVlwdzNoQkg5WnJZNnJhdyt5NStq?=
+ =?utf-8?B?c3JXK0xpbDBPdXVhQTh2Y2ZQZU5NdHVlNHl5NkQzUDhlZlBqaEphSjNETUlo?=
+ =?utf-8?B?cElvMHAwQ0N1Rk9lemZQb1NrZWdjb1lvazJ4M3lJSlh3MmJSRHY4SFp4SkJ1?=
+ =?utf-8?B?YTNFdS9XaXRWS0NiOWh2QlMyOG1EcGF0VGMrTCtxZDUwMzI3VElmZ1h5MDJq?=
+ =?utf-8?B?bFRwVnVUcjB0OXlxUnlBNFhHOTFRVTJtd2M1R3Q0T2VBdzlndFAzbjFJUmdT?=
+ =?utf-8?B?MTU3b2tOVEFJRzBNUVJpeUJjNThmclRFa1NZYnJoaitqVjFiNGM2cmRkTmlD?=
+ =?utf-8?B?aktWRFhUZERRalNCTHRsUFR2QktFZW5kaVlMUWxEdWpMd0xuSVY0YitoNENE?=
+ =?utf-8?B?V0o1TmtLZTlwUTE5bE9zclN4aGFWUllISW5yOU40dEl3L1hCa0YzWTlwZ1Fm?=
+ =?utf-8?B?T0tmNnRRbVRHeXRHVUFkOW5yR2E4ajkzN0JKUVV6bFpSSGdSTXBUY3J3WjZ5?=
+ =?utf-8?B?cis2ejBEdDRMZjF2Y2dFOUNYRjBkMHUvZjVLeFM0eHFMTS9zMUttckovN3d4?=
+ =?utf-8?B?NlhQUEo3UFkrYWpYUmdXVklSOXpuZmE0OFc4WDhGVGIvNHljUTBHa0h2RjZi?=
+ =?utf-8?B?S3N1VTNIczUzaml2UnptRnl4cStQNnB1N2Vtby9LTTBOUXdybzFqUFZhL0sv?=
+ =?utf-8?B?NVUrV01lUEtaWS9SUDlEMEJhTXhoS1UrR0VNV0JGRmZqbXVKLzd3YjZNTkg3?=
+ =?utf-8?B?RlVnM2REeFR2bGQwYnlQOGtkOVZ2TDAxeFJOQkFzb1ZBQnV6N044dUFSazlw?=
+ =?utf-8?B?VFBEV3I1eXBOWjJ5bzB2MjU0SmpnekZIQ08zZjhlZmNNSzhHMU1sRnBWdmZu?=
+ =?utf-8?B?MEZkYWR5WnBMQUhTRTdCRTh0Z29idTB4dm9uS1lTTEdveG5iQkozNCtoajVz?=
+ =?utf-8?B?Qk1TSUhSRUtDenJiV3ZTZjFwdEl4dFBvZ2l5dU1USFNPcEN1bDlqRTFReERh?=
+ =?utf-8?B?TjhqbGFsck1MZjRmbVNXQWoxdFArRDh5c1JxK1VQZWE2TVdaMjVaT3RXZGVV?=
+ =?utf-8?B?Z3J4dFkvOFd6WGI4bjYxdStGSlowRWFMMkZLTmhBdU4wQmc4MDBUQ0lNcGlx?=
+ =?utf-8?B?QXlaUU9DczFvWnZzdzB0STFtcTJYOWxNbnZubWdncUdDaHpVK3pEelFiUFdP?=
+ =?utf-8?B?TU1MZXpBc1FMeTlSbWNqbWZIN0thOUFRcEtZejZEU1k3eGVJb042RzJtb1Q1?=
+ =?utf-8?B?d3JkaEwwSzNMVkZ2enV5SXRjVzVjeU5YQXJTZzdEMVJkSi9PUDBwVm53PT0=?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9af34022-eb50-496d-6e20-08dac7cda21a
+X-MS-Exchange-CrossTenant-AuthSource: TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2022 12:25:23.2128
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB1537
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,153 +112,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000147e4905ed95311b
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Got a new version of downstream driver and firmware here: https://gitlab.co=
+m/rk3588_linux/linux/external/rkwifibt/-/tree/linux-5.10-gen-rkr3.4
 
-On 11/11/2022 8:53 AM, Minsuk Kang wrote:
-> This patch fixes slab-out-of-bounds reads in brcmfmac that occur in
-> brcmf_construct_chaninfo() and brcmf_enable_bw40_2g() when the count
-> value of channel specifications provided by the device is greater than
-> the length of 'list->element[]', decided by the size of the 'list'
-> allocated with kzalloc(). The patch adds checks that make the functions
-> free the buffer and return -EINVAL if that is the case. Note that the
-> negative return is handled by the caller, brcmf_setup_wiphybands() or
-> brcmf_cfg80211_attach().
-> 
-> Found by a modified version of syzkaller.
-
-[snip]
-
-> Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-> Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-> Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-> Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-> ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index ae9507dec74a..3a1c0743e19c 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -6840,6 +6840,13 @@ static int brcmf_construct_chaninfo(struct brcmf_cfg80211_info *cfg,
->   			band->channels[i].flags = IEEE80211_CHAN_DISABLED;
->   
->   	total = le32_to_cpu(list->count);
-> +	if (total > BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1) {
-
-Please add and use macro definition here:
-
-#define BRCMF_MAX_CHANSPEC_LIST		(BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1)
-
-> +		bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
-> +			 total);
-> +		err = -EINVAL;
-> +		goto fail_pbuf;
-> +	}
-> +
->   	for (i = 0; i < total; i++) {
->   		ch.chspec = (u16)le32_to_cpu(list->element[i]);
->   		cfg->d11inf.decchspec(&ch);
-> @@ -6985,6 +6992,13 @@ static int brcmf_enable_bw40_2g(struct brcmf_cfg80211_info *cfg)
->   		band = cfg_to_wiphy(cfg)->bands[NL80211_BAND_2GHZ];
->   		list = (struct brcmf_chanspec_list *)pbuf;
->   		num_chan = le32_to_cpu(list->count);
-> +		if (num_chan > BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1) {
-
-...and here.
-
-> +			bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
-> +				 num_chan);
-> +			kfree(pbuf);
-> +			return -EINVAL;
-> +		}
-> +
->   		for (i = 0; i < num_chan; i++) {
->   			ch.chspec = (u16)le32_to_cpu(list->element[i]);
->   			cfg->d11inf.decchspec(&ch);
-
---000000000000147e4905ed95311b
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCChT8h4he1yKBwQCfDi
-zo19LLJeb/QqBLs6GjqVlZYnzTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjExMTYxMTU4MzJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAXhndF11nnqvXO5IUSqk4KhkmtNzCMvdNMR+i
-jx5E22ri1gLQSq43MGyxWdkaj/Pco/smKlWU3VMiD3FDs7iIFC12Hfbe5Q450AEReCKegeUU3ihb
-o3Y1LVmxmlOCsBwNofY19IxuJQa7nV47U2MS5JW7n5HmRUvA/hCIPx7FrVKeieiPIPiUWP+cNsw9
-UPjO2AD7u6VPC0caXs9PBYXsqheN9Vul+r+N7ctr64zMxWKJopgDQRs58B1m3na/QAKeJXMIQBhI
-EchCTXywkgUyumr+Mk+QAX+XJ8NZ6ejoM6YnUe7dF0pTBWF7OvPQi4H44QT9mVVGYFxmq1Zj6yCO
-Gw==
---000000000000147e4905ed95311b--
+=E4=BA=8E 2022=E5=B9=B411=E6=9C=8814=E6=97=A5 GMT+08:00 =E4=B8=8A=E5=8D=881=
+:35:49, Arend Van Spriel <arend.vanspriel@broadcom.com> =E5=86=99=E5=88=B0:
+>On November 13, 2022 4:52:45 PM Shengyu Qu <wiagn233@outlook.com> wrote:
+>
+>> =E5=9C=A8 2022/11/13 18:56, Arend Van Spriel =E5=86=99=E9=81=93:
+>
+>[snip]
+>
+>>=20
+>>=20
+>>>>=20
+>>>>> Besides who I should ask to make proper firmware for it into
+>>>>> linux-firmware repo?
+>>>>=20
+>>>> It would also be great to hear if the PCIe firmware from Rockchip aime=
+d
+>>>> at the OOT driver was definitively incompatible with the mainline driv=
+er
+>>>> and we have to find a solution for that from Broadcom, or it is expect=
+ed
+>>>> to basically work.  I realize it might not be easy to get an answer
+>>>> internally but this chipset is likely to appear in more RK3588 SBCs so=
+on
+>>>> since it's the one on the evb.
+>>>=20
+>>> Right now I don't have enough information to comment on this.
+>> Besides, could you upload the firmware that works with mainline driver
+>> to linux-firmware repo?
+>
+>I honestly don't know what entity provides the ampak wifi module. I guess =
+it is coming from Synaptics, but I am not sure. I rather fix the mainline d=
+river to make it work with the firmware (if possible) instead of releasing =
+a specific firmware for mainline.
+>
+>Regards,
+>Arend
+>
+>
+>
