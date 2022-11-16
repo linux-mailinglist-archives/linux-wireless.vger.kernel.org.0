@@ -2,56 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DE8562B69E
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 10:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE88462B6A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 10:38:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233569AbiKPJd4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 04:33:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
+        id S233620AbiKPJiF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 04:38:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231985AbiKPJdr (ORCPT
+        with ESMTP id S232614AbiKPJiE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 04:33:47 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28D425FD;
-        Wed, 16 Nov 2022 01:33:46 -0800 (PST)
+        Wed, 16 Nov 2022 04:38:04 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCA3D13B;
+        Wed, 16 Nov 2022 01:38:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7A414B81C21;
-        Wed, 16 Nov 2022 09:33:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED18C433D6;
-        Wed, 16 Nov 2022 09:33:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82B1661B3C;
+        Wed, 16 Nov 2022 09:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC770C433C1;
+        Wed, 16 Nov 2022 09:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668591224;
-        bh=LJFi6Ma1wzYiDa5KLD8RjmUBaaBhQpd9Xx8w7okLL/0=;
+        s=k20201202; t=1668591482;
+        bh=jq4Sq7lYxlLmxmVfQimbqudfPqziyGm+FvZJ7JxXJPk=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=EJiPSar9fvYC8gxWIGNiU+SsZZ4gALbqU+ctlrwbqFlvFTAg49j5d5rebYCOq7eMh
-         gHL2BUnvPCavqP+szIAv9HWDFrFGby4a35IKJ89s9lrBLLUOagDLTxbxbZ5LD5oe1y
-         xvJ+DA+yWSohkqAM0Hv6H2gRr6RoBOmkSnb5aV5HpIkCGN5O03cA1DaazSNJZwds4m
-         /2QMLb7ywnQtlXMLoLjH2jCCnzUMD5ORDn8ytoMHr1h42COptFk9Q1ap5XVY50G3Rh
-         tZcW7hE3wOHMav2vqPQcIfVyXCHn3Zpwij88EGFveOGfPbe0uQM84U98TcfpFsy1/k
-         5PaEB2i1656AA==
+        b=KqHMfkzskEESogcbsk1/87DM90Ae/VvO7LsB/sjJ5f6xpLRdgYoJ/QB+OyNJux2MM
+         4imwQBOLj817FtgWEVMyPoFyiFINfdFP7DrUr6txzphU40ZFPjhVW/IZ6V7lGP7vd4
+         25mFE40bst9zU6OSj42i59jIYXGa01an9G5aKDsEOie6pqbHKA/+koRnFU3NQR/bpT
+         lAWqYBRHoXtrn1Demz8FVK9YI/02trDns7hcEJPb/zHv1tSLovnCoxwfElri6jUpSS
+         jCq7V/W8hjmRIAFw/byd+m0REIJ/0FYatzlLLhASWvQO1BARoChKfXt/9eioL/hEkt
+         Z0dOtfi/u7MMg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtw89: Fix some error handling path in
- rtw89_core_sta_assoc()
+Subject: Re: [PATCH v2 1/3] ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <7b1d82594635e4406d3438f33d8da29eaa056c5a.1668354547.git.christophe.jaillet@wanadoo.fr>
-References: <7b1d82594635e4406d3438f33d8da29eaa056c5a.1668354547.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <20221109224250.2885119-1-dmitry.torokhov@gmail.com>
+References: <20221109224250.2885119-1-dmitry.torokhov@gmail.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166859121959.16887.13694175362892729527.kvalo@kernel.org>
-Date:   Wed, 16 Nov 2022 09:33:41 +0000 (UTC)
+Message-ID: <166859147683.17701.10193347639724464036.kvalo@kernel.org>
+Date:   Wed, 16 Nov 2022 09:38:01 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,23 +54,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
 
-> 'ret' is not updated after a function call in rtw89_core_sta_assoc().
-> This prevent error handling from working.
+> As of commit 2398c41d6432 ("omap: pdata-quirks: remove openpandora
+> quirks for mmc3 and wl1251") the code no longer creates an instance of
+> wl1251_platform_data, so there is no need for including this header.
 > 
-> Add the missing assignment.
-> 
-> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Acked-by: Tony Lindgren <tony@atomide.com>
 
-Patch applied to wireless-next.git, thanks.
+3 patches applied to wireless-next.git, thanks.
 
-81c0b8928437 wifi: rtw89: Fix some error handling path in rtw89_core_sta_assoc()
+e14e4c933e00 ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
+06463f6e98df wifi: wl1251: drop support for platform data
+a1d0b9535cd8 wifi: wl1251: switch to using gpiod API
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/7b1d82594635e4406d3438f33d8da29eaa056c5a.1668354547.git.christophe.jaillet@wanadoo.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221109224250.2885119-1-dmitry.torokhov@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
