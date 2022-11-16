@@ -2,132 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CAAE62C136
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 15:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B499062C1AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 16:00:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbiKPOns (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 09:43:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37530 "EHLO
+        id S233992AbiKPPAP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 10:00:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230459AbiKPOno (ORCPT
+        with ESMTP id S234008AbiKPO7w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 09:43:44 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CE510B51
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 06:43:37 -0800 (PST)
-X-UUID: 5cb6d564fa0948a991fc483178b0ae76-20221116
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=7oiKZywyB41Vswo/EeSoC8nLldb6/iwDPmCeozDplTY=;
-        b=ashpAhDqgwCupMMdGqJBbdJvBRfdiTlYFbrAol25ljjdXZaTSEipUCc/VM1FRyfZnp9g5uHa+71fzS0trbkl8AehgQPyHm28hki9jDbe6VBK5gq7eiAvEWTuA2DjDn7N/RpNfIlumv0lLPEayr+2bBjlCQHfV1g+hSJ7v0kYOuo=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.13,REQID:42731d80-a405-4f13-a801-81659ca0e8cb,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:d12e911,CLOUDID:e407aff3-9094-45e8-b6eb-26f09041f731,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 5cb6d564fa0948a991fc483178b0ae76-20221116
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1056875307; Wed, 16 Nov 2022 22:43:32 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Wed, 16 Nov 2022 22:43:31 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 16 Nov 2022 22:43:31 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921: fix wrong power after multiple SAR set
-Date:   Wed, 16 Nov 2022 22:43:02 +0800
-Message-ID: <33ea63656f19f30d73ce51045c46e9813a9532b5.1668608804.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 16 Nov 2022 09:59:52 -0500
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C3E2A955
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 06:58:54 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id z26so17715037pff.1
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 06:58:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=yonsei-ac-kr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ad2A2hFXN1uQyJwE/8f6ZJiNXp0QN42x1D4UKZjZKTE=;
+        b=2vxEcTnxD4S9bAadC1SMSAR2PAuWLuAOMDl6y/mirJWDVH63uvlNFjpR2dHPZz7540
+         sgOLBWXW3sNxaaCt0PhKB6WTDfZYn62neQewD5/BLtga7gmNHO1EtKGEQABW5OHC2w9r
+         y4JrMb2F/55Rd3lleVsRGYtmodb/3yKLamEtQUtjdlCtUO8xHl+P3om/hSJIIl7+Eeas
+         2tufNQZOQjXP49YC1eQXPCq15gtsikImDfCc0maPzWiQD6YP68plh/fHkXXkpkDTruNu
+         5vmrDembZ0HjTU3/w5y4ndpMJ+/3cTZ+K9vh/GYdbQszfONWGGeRoqDpWPNIYGzI6Ku+
+         j3Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ad2A2hFXN1uQyJwE/8f6ZJiNXp0QN42x1D4UKZjZKTE=;
+        b=7SLnxBDAUG2RlsezDHWw0cDlTQkZOABNJC6czIbBaIhhFGr+ByAbor0eu7ZN4mOsKs
+         tsiDLGCsQcJRbhQ0XCu3CkyFb4T/r90iiZr22gcOGlsypffTNu9xYNF/I4dCuPEqP5A5
+         UEQjCyYc/0CydPMaAnyfs4S7LSy5yra+QnrZ25IPoU7Gq9FBmcaCKbb/9dC2RUz9SKvK
+         omaZ7L4dq0DR2rp/Xzhq/m2uDCXmRi/FAc3vcYGj5qTneFiGYZIvB7FrdgV19wtc2QEo
+         8jprVaK4vtYYbx+GMkTsoFoGvSEuWRcb/wEwJa+hPjaT1hlw2TYVAt6mkigeMUevusFF
+         FsYA==
+X-Gm-Message-State: ANoB5pnjWKyms/b6YAPg6F4ALdmBB3Nb6QIvQSi4RB/tZz0dR5UcPYKC
+        gE0VaBeKHVlNHt2IoU4ViILlBRnGCD+iS95y
+X-Google-Smtp-Source: AA0mqf6FJcILQCaxmfCNhfqJnSw51U604dZNKr0STY9Upxn9Gx43qTYJNpMQm9iICwOn8lXQCMW0OQ==
+X-Received: by 2002:a63:f1a:0:b0:476:e3bb:2340 with SMTP id e26-20020a630f1a000000b00476e3bb2340mr3917290pgl.530.1668610733877;
+        Wed, 16 Nov 2022 06:58:53 -0800 (PST)
+Received: from localhost.localdomain ([165.132.118.52])
+        by smtp.gmail.com with ESMTPSA id 13-20020a170902c10d00b00186b04776b0sm12290234pli.118.2022.11.16.06.58.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Nov 2022 06:58:53 -0800 (PST)
+From:   Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+To:     linux-wireless@vger.kernel.org
+Cc:     arend.vanspriel@broadcom.com, dokyungs@yonsei.ac.kr,
+        jisoo.jang@yonsei.ac.kr, Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v2] wifi: brcmfmac: Fix potential slab-out-of-bounds read in brcmf_inform_single_bss()
+Date:   Wed, 16 Nov 2022 23:58:21 +0900
+Message-Id: <20221116145821.544266-1-linuxlovemin@yonsei.ac.kr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,
-        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: YN Chen <YN.Chen@mediatek.com>
+This patch fixes a slab-out-of-bounds read in brcmfmac that occurs in
+cfg80211_find_elem_match() called from brcmf_inform_single_bss() when
+the offset and length values of information elements provided by the
+device exceed the boundary of the escan buffer that contains information
+elements. The patch adds a check that makes the function return -EINVAL
+if that is the case. Note that the negative return is handled by the
+caller, brcmf_inform_bss().
 
-We should update CLC config before SAR set to synchronize all
-related settings.
+Found by a modified version of syzkaller.
 
-Fixes: 23bdc5d8cadf ("wifi: mt76: mt7921: introduce Country Location Control support")
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+==================================================================
+BUG: KASAN: slab-out-of-bounds in cfg80211_find_elem_match+0x164/0x180
+Read of size 1 at addr ffff888018f0fde9 by task kworker/0:2/1896
+
+CPU: 0 PID: 1896 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #139
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+Workqueue: events brcmf_fweh_event_worker
+Call Trace:
+ dump_stack_lvl+0x8e/0xd1
+ print_address_description.constprop.0.cold+0x93/0x334
+ ? cfg80211_find_elem_match+0x164/0x180
+ kasan_report.cold+0x79/0xd5
+ ? cfg80211_find_elem_match+0x164/0x180
+ cfg80211_find_elem_match+0x164/0x180
+ cfg80211_get_bss_channel+0x69/0x320
+ cfg80211_inform_single_bss_data+0x1a6/0x1060
+ ? cfg80211_bss_update+0x1e20/0x1e20
+ ? rcu_read_lock_sched_held+0xa1/0xd0
+ ? rcu_read_lock_bh_held+0xb0/0xb0
+ ? find_held_lock+0x2d/0x110
+ ? cfg80211_inform_bss_data+0xcb/0x160
+ cfg80211_inform_bss_data+0xcb/0x160
+ ? cfg80211_parse_mbssid_data+0x1540/0x1540
+ ? kvm_clock_get_cycles+0x14/0x20
+ ? ktime_get_with_offset+0x2b9/0x450
+ brcmf_inform_single_bss+0x36d/0x4d0
+ ? brcmf_notify_mic_status+0xb0/0xb0
+ ? __lock_acquire+0x181f/0x5790
+ ? brcmf_p2p_cancel_remain_on_channel+0x30/0x30
+ brcmf_inform_bss+0x131/0x210
+ brcmf_cfg80211_escan_handler+0x779/0xd20
+ ? rcu_read_lock_bh_held+0xb0/0xb0
+ ? lock_acquire+0x19d/0x4e0
+ ? find_held_lock+0x2d/0x110
+ ? brcmf_cfg80211_escan_timeout_worker+0x60/0x60
+ ? brcmf_fweh_event_worker+0x249/0xc00
+ ? mark_held_locks+0x9f/0xe0
+ ? lockdep_hardirqs_on_prepare+0x3e0/0x3e0
+ ? brcmf_cfg80211_escan_timeout_worker+0x60/0x60
+ brcmf_fweh_call_event_handler.isra.0+0x90/0x100
+ brcmf_fweh_event_worker+0x117/0xc00
+ ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
+ ? rcu_read_lock_sched_held+0xa1/0xd0
+ ? rcu_read_lock_bh_held+0xb0/0xb0
+ ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+ process_one_work+0x92b/0x1460
+ ? pwq_dec_nr_in_flight+0x330/0x330
+ ? rwlock_bug.part.0+0x90/0x90
+ worker_thread+0x95/0xe00
+ ? __kthread_parkme+0x115/0x1e0
+ ? process_one_work+0x1460/0x1460
+ kthread+0x3a1/0x480
+ ? set_kthread_struct+0x120/0x120
+ ret_from_fork+0x1f/0x30
+
+The buggy address belongs to the page:
+page:ffffea000063c000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x18f00
+head:ffffea000063c000 order:4 compound_mapcount:0 compound_pincount:0
+flags: 0x100000000010000(head|node=0|zone=1)
+raw: 0100000000010000 0000000000000000 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 4, migratetype Unmovable, gfp_mask 0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO), pid 1896, ts 44510886600, free_ts 0
+ prep_new_page+0x1aa/0x240
+ get_page_from_freelist+0x159a/0x27c0
+ __alloc_pages+0x2da/0x6a0
+ alloc_pages+0xec/0x1e0
+ kmalloc_order+0x39/0xf0
+ kmalloc_order_trace+0x19/0x120
+ brcmf_cfg80211_attach+0x5c9/0x3fd0
+ brcmf_attach+0x389/0xd40
+ brcmf_usb_probe+0x12de/0x1690
+ usb_probe_interface+0x2aa/0x760
+ really_probe+0x205/0xb70
+ __driver_probe_device+0x311/0x4b0
+ driver_probe_device+0x4e/0x150
+ __device_attach_driver+0x1cc/0x2a0
+ bus_for_each_drv+0x156/0x1d0
+ __device_attach+0x23f/0x3a0
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff888018f0fc80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888018f0fd00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff888018f0fd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 fe fe fe
+                                                          ^
+ ffff888018f0fe00: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
+ ffff888018f0fe80: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
+==================================================================
+
+Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c   | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/main.c   | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 2 ++
- 3 files changed, 9 insertions(+)
+v1->v2: Use the correct format for size_t in bphy_err()
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 79b8055ce4c4..3abda4fbe5fb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -59,6 +59,7 @@ mt7921_regd_notifier(struct wiphy *wiphy,
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index ae9507dec74a..2148027eb42b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -3298,6 +3298,13 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
+ 	notify_ielen = le32_to_cpu(bi->ie_length);
+ 	bss_data.signal = (s16)le16_to_cpu(bi->RSSI) * 100;
  
- 	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
- 	dev->mt76.region = request->dfs_region;
-+	dev->country_ie_env  = request->country_ie_env;
- 
- 	mt7921_mutex_acquire(dev);
- 	mt7921_mcu_set_clc(dev, request->alpha2, request->country_ie_env);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 41df17efdb3a..76ac5069638f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1615,7 +1615,13 @@ static int mt7921_set_sar_specs(struct ieee80211_hw *hw,
- 	int err;
- 
- 	mt7921_mutex_acquire(dev);
-+	err = mt7921_mcu_set_clc(dev, dev->mt76.alpha2,
-+				 dev->country_ie_env);
-+	if (err < 0)
-+		goto out;
++	if ((unsigned long)notify_ie + notify_ielen -
++		(unsigned long)cfg->escan_info.escan_buf > BRCMF_ESCAN_BUF_SIZE) {
++		bphy_err(drvr, "Invalid information element offset: %u, length: %zu\n",
++			 le16_to_cpu(bi->ie_offset), notify_ielen);
++		return -EINVAL;
++	}
 +
- 	err = mt7921_set_tx_sar_pwr(hw, sar);
-+out:
- 	mt7921_mutex_release(dev);
- 
- 	return err;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index ac70a978dbed..2398c6fd0b39 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -304,6 +304,8 @@ struct mt7921_dev {
- 	struct work_struct ipv6_ns_work;
- 	/* IPv6 addresses for WoWLAN */
- 	struct sk_buff_head ipv6_ns_list;
-+
-+	enum environment_cap country_ie_env;
- };
- 
- enum {
+ 	brcmf_dbg(CONN, "bssid: %pM\n", bi->BSSID);
+ 	brcmf_dbg(CONN, "Channel: %d(%d)\n", channel, freq);
+ 	brcmf_dbg(CONN, "Capability: %X\n", notify_capability);
 -- 
-2.18.0
+2.25.1
 
