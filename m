@@ -2,141 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC10062CE25
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Nov 2022 23:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFAAB62D14A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Nov 2022 03:53:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234020AbiKPW61 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 17:58:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
+        id S238978AbiKQCx0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Nov 2022 21:53:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231231AbiKPW60 (ORCPT
+        with ESMTP id S238988AbiKQCxV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 17:58:26 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43B91B0
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 14:58:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668639503; x=1700175503;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=B9r57ltMm8GN9gxcEMw/UujW9RtVWf2lti63miQev7Q=;
-  b=SG5OFgc8q0tj5dmMqowSpAASyrqFSjzBOVqOwINskUxzAZMdXMKlaHEI
-   8a2fe4S+C0sESgJcARswvJIiKpRwlzYgMeaD+zdY53f8c0Xpvl+civYpD
-   pQMxa3PIVxLyqPJ89GkfKWtc2deaZ7ckAyirOyJY92eg3nKaW+2n7QAKw
-   glhjZ0nwv4JcGq6kjqBtU/yP6WlXSFQuOeX5NiEAWV79Kb+H6BK5YQsuO
-   SlGDyrjdvaomiFC7VyK1JYpbs6lQU5sYecnLopgtzzlDLjgE7ib+aSsbZ
-   GNb3lVAqjZmyrEGRnkP8NRA4uSYYpn+WSVXNzWVRJahOwoGfsd9v9TWLs
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10533"; a="310320204"
-X-IronPort-AV: E=Sophos;i="5.96,169,1665471600"; 
-   d="scan'208";a="310320204"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2022 14:58:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10533"; a="814265456"
-X-IronPort-AV: E=Sophos;i="5.96,169,1665471600"; 
-   d="scan'208";a="814265456"
-Received: from lkp-server01.sh.intel.com (HELO ebd99836cbe0) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 16 Nov 2022 14:58:21 -0800
-Received: from kbuild by ebd99836cbe0 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ovRML-0002oP-0y;
-        Wed, 16 Nov 2022 22:58:21 +0000
-Date:   Thu, 17 Nov 2022 06:57:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- a1d0b9535cd8ce6f6c6870fcac1760cbaafc0f48
-Message-ID: <63756aeb.JD6Lrym3eKTO6Zij%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 16 Nov 2022 21:53:21 -0500
+Received: from omta035.useast.a.cloudfilter.net (omta035.useast.a.cloudfilter.net [44.202.169.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF95243AD6;
+        Wed, 16 Nov 2022 18:53:19 -0800 (PST)
+Received: from eig-obgw-5007a.ext.cloudfilter.net ([10.0.29.141])
+        by cmsmtp with ESMTP
+        id vUhcoS2B8XLQOvV1jo4gcx; Thu, 17 Nov 2022 02:53:19 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTP
+        id vV1ho1mSMnOb9vV1iomTTM; Thu, 17 Nov 2022 02:53:18 +0000
+X-Authority-Analysis: v=2.4 cv=FaMkeby6 c=1 sm=1 tr=0 ts=6375a21e
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=wTog8WU66it3cfrESHnF4A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=9xFQ1JgjjksA:10
+ a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=cm27Pg_UAAAA:8
+ a=Oz70HW-ix1QoszwUlecA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=xmb-EsYY8bH0VWELuYED:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=YIJybe7+LxLFiC77zqCyEKPoKaSBRm10qrdRa86ipds=; b=ZCEPuDyt/NayeF12PJcrr0qHu4
+        q1OVCGRP9cDrkUOyUZhSOfu/GAagNToqoxQ8kI3XXVI3BqV7V6z/mqcjR3TQloGqlybfIbOTXCInu
+        YHPiOLowob0O/yAuPBTch/1Ph/pvabQBVATxXfWrtKoatg2kUwNh8xAr5T2z7SUKY1QLOTkEm1CmN
+        qAhROs1zdGTCzPa6Mkrzs/DHL1skPRUR0sdFLlWxy981ialg2LjInEiQK81rWqXJRyBCsDqCWp+mD
+        iCpmxAdRPWPHwkOaCxSc5BYZr6kG73wnJFGRkTfcpGLJ3/jgggrLs653RXwzu7WvxsuBqkfCZgc8Z
+        wwNquQSg==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:60960 helo=[192.168.15.7])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1ovTMM-001Ria-NT;
+        Wed, 16 Nov 2022 19:06:30 -0600
+Message-ID: <ec1bd4b0-6ef1-1673-edaa-8d2abc3e6957@embeddedor.com>
+Date:   Wed, 16 Nov 2022 19:06:16 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 2/2][next] wifi: brcmfmac: Use struct_size() in code
+ ralated to struct brcmf_dload_data_le
+Content-Language: en-US
+To:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Hante Meuleman <hante.meuleman@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+References: <cover.1668548907.git.gustavoars@kernel.org>
+ <41845ad3660ed4375f0c03fd36a67b2e12fafed5.1668548907.git.gustavoars@kernel.org>
+ <202211161423.2531CADA73@keescook>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <202211161423.2531CADA73@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1ovTMM-001Ria-NT
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.7]) [187.162.31.110]:60960
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 0
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfANhfVq5PPKVf+YioRGkY6QNckHLtxBi9wXqc37JAuY5bYhIr1Dx1ptLxitCPhMqJ5x+mmUF/OsyUs3K2e3XZuYVVXPXG2bXhJIZZbSDuOVpB0We6qIS
+ A68pgMzya3FElcszOzQcZeZ9UzfyIgWVZm7gH62YMpmLaJSjw/7kyQ0We8PfzPtg09oce/d8SqvD7O5F25u/PxmZLKXcoKNRTmz7EwwAuiVG8EMufR7e9PCu
+ kE/4hBgTAGFHpUxlK2+cxSgjybUsLKy66LZ6IBDDi9392pUa6gRdZBiph8LSSbDnZRAGCgQ1xCEiNjQT7T1WlGX9ZQzPbfu8HAYqZTQ4IhUVkh8ESxtqIrXB
+ 5OugMOne
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: a1d0b9535cd8ce6f6c6870fcac1760cbaafc0f48  wifi: wl1251: switch to using gpiod API
 
-elapsed time: 726m
 
-configs tested: 58
-configs skipped: 2
+On 11/16/22 16:23, Kees Cook wrote:
+> On Tue, Nov 15, 2022 at 03:55:34PM -0600, Gustavo A. R. Silva wrote:
+>> Prefer struct_size() over open-coded versions of idiom:
+>>
+>> sizeof(struct-with-flex-array) + sizeof(typeof-flex-array-elements) * count
+>>
+>> where count is the max number of items the flexible array is supposed to
+>> contain.
+>>
+>> In this particular case, in the open-coded version sizeof(typeof-flex-array-elements)
+>> is implicit in _count_ because the type of the flex array data is u8:
+>>
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h:941:
+>>   941 struct brcmf_dload_data_le {
+>>   942         __le16 flag;
+>>   943         __le16 dload_type;
+>>   944         __le32 len;
+>>   945         __le32 crc;
+>>   946         u8 data[];
+>>   947 };
+>>
+>> Link: https://github.com/KSPP/linux/issues/160
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks for the reviews! :)
 
-gcc tested configs:
-alpha                               defconfig
-arc                                 defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-s390                             allmodconfig
-s390                                defconfig
-sh                               allmodconfig
-powerpc                           allnoconfig
-m68k                             allmodconfig
-alpha                            allyesconfig
-arc                              allyesconfig
-m68k                             allyesconfig
-x86_64                              defconfig
-s390                             allyesconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-ia64                             allmodconfig
-i386                                defconfig
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a001
-i386                          randconfig-a014
-i386                          randconfig-a003
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-arc                  randconfig-r043-20221116
-x86_64                           rhel-8.3-kvm
-i386                          randconfig-a016
-i386                          randconfig-a005
-x86_64                        randconfig-a004
-arm                                 defconfig
-x86_64                        randconfig-a002
-i386                          randconfig-a012
-x86_64                        randconfig-a006
-x86_64                        randconfig-a011
-arm64                            allyesconfig
-arm                              allyesconfig
-i386                             allyesconfig
-
-clang tested configs:
-i386                          randconfig-a013
-i386                          randconfig-a015
-x86_64                        randconfig-a014
-i386                          randconfig-a002
-i386                          randconfig-a004
-hexagon              randconfig-r041-20221116
-hexagon              randconfig-r045-20221116
-x86_64                        randconfig-a001
-i386                          randconfig-a006
-riscv                randconfig-r042-20221116
-x86_64                        randconfig-a003
-i386                          randconfig-a011
-x86_64                        randconfig-a005
-s390                 randconfig-r044-20221116
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--
+Gustavo
