@@ -2,85 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1C062D1BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Nov 2022 04:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDE462D361
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Nov 2022 07:19:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbiKQDhW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Nov 2022 22:37:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S238829AbiKQGT2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Nov 2022 01:19:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232905AbiKQDhV (ORCPT
+        with ESMTP id S232139AbiKQGT1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Nov 2022 22:37:21 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1F0E1D;
-        Wed, 16 Nov 2022 19:37:20 -0800 (PST)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4NCQZd5xY3zRpGD;
-        Thu, 17 Nov 2022 11:36:57 +0800 (CST)
-Received: from dggpeml500006.china.huawei.com (7.185.36.76) by
- dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
+        Thu, 17 Nov 2022 01:19:27 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4ADDA22500
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Nov 2022 22:19:24 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AH6IZkrC008775, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AH6IZkrC008775
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 17 Nov 2022 14:18:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 17 Nov 2022 11:37:18 +0800
-Received: from localhost.localdomain (10.175.112.70) by
- dggpeml500006.china.huawei.com (7.185.36.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 17 Nov 2022 11:37:17 +0800
-From:   Zhang Changzhong <zhangchangzhong@huawei.com>
-To:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johnny Kim <johnny.kim@atmel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Chris Park <chris.park@atmel.com>,
-        Rachel Kim <rachel.kim@atmel.com>,
-        "Nicolas Ferre" <nicolas.ferre@microchip.com>
-CC:     Zhang Changzhong <zhangchangzhong@huawei.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH wireless] wilc1000: fix potential memory leak in wilc_mac_xmit()
-Date:   Thu, 17 Nov 2022 11:56:58 +0800
-Message-ID: <1668657419-29240-1-git-send-email-zhangchangzhong@huawei.com>
-X-Mailer: git-send-email 1.8.3.1
+ 15.1.2375.32; Thu, 17 Nov 2022 14:19:16 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 17 Nov
+ 2022 14:19:15 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: 8852b: correct TX power controlled by BT-coexistence
+Date:   Thu, 17 Nov 2022 14:18:32 +0800
+Message-ID: <20221117061832.42057-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.70]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500006.china.huawei.com (7.185.36.76)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/17/2022 06:00:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzE3IKRXpMggMDM6MzM6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wilc_mac_xmit() returns NETDEV_TX_OK without freeing skb, add
-dev_kfree_skb() to fix it.
+When coexistence mechanism is under free-run mode, it could adjust WiFi
+and BT TX power to avoid interference with each other. For other cases,
+it should keep original TX power from regular predefined tables, so
+set correct values to 255 for these cases.
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/microchip/wilc1000/netdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 30 +++++++++----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 9b319a4..6f3ae0d 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -730,6 +730,7 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 0df044b1c392a..85dfc1ebb0d97 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -318,27 +318,27 @@ static const struct rtw89_dig_regs rtw8852b_dig_regs = {
+ };
  
- 	if (skb->dev != ndev) {
- 		netdev_err(ndev, "Packet not destined to this device\n");
-+		dev_kfree_skb(skb);
- 		return NETDEV_TX_OK;
- 	}
+ static const struct rtw89_btc_rf_trx_para rtw89_btc_8852b_rf_ul[] = {
+-	{15, 0, 0, 7}, /* 0 -> original */
+-	{15, 2, 0, 7}, /* 1 -> for BT-connected ACI issue && BTG co-rx */
+-	{15, 0, 0, 7}, /* 2 ->reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* 3- >reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* 4 ->reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* the below id is for non-shared-antenna free-run */
++	{255, 0, 0, 7}, /* 0 -> original */
++	{255, 2, 0, 7}, /* 1 -> for BT-connected ACI issue && BTG co-rx */
++	{255, 0, 0, 7}, /* 2 ->reserved for shared-antenna */
++	{255, 0, 0, 7}, /* 3- >reserved for shared-antenna */
++	{255, 0, 0, 7}, /* 4 ->reserved for shared-antenna */
++	{255, 0, 0, 7}, /* the below id is for non-shared-antenna free-run */
+ 	{6, 1, 0, 7},
+ 	{13, 1, 0, 7},
+ 	{13, 1, 0, 7}
+ };
  
+ static const struct rtw89_btc_rf_trx_para rtw89_btc_8852b_rf_dl[] = {
+-	{15, 0, 0, 7}, /* 0 -> original */
+-	{15, 2, 0, 7}, /* 1 -> reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* 2 ->reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* 3- >reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* 4 ->reserved for shared-antenna */
+-	{15, 0, 0, 7}, /* the below id is for non-shared-antenna free-run */
+-	{15, 1, 0, 7},
+-	{15, 1, 0, 7},
+-	{15, 1, 0, 7}
++	{255, 0, 0, 7}, /* 0 -> original */
++	{255, 2, 0, 7}, /* 1 -> reserved for shared-antenna */
++	{255, 0, 0, 7}, /* 2 ->reserved for shared-antenna */
++	{255, 0, 0, 7}, /* 3- >reserved for shared-antenna */
++	{255, 0, 0, 7}, /* 4 ->reserved for shared-antenna */
++	{255, 0, 0, 7}, /* the below id is for non-shared-antenna free-run */
++	{255, 1, 0, 7},
++	{255, 1, 0, 7},
++	{255, 1, 0, 7}
+ };
+ 
+ static const struct rtw89_btc_fbtc_mreg rtw89_btc_8852b_mon_reg[] = {
 -- 
-2.9.5
+2.25.1
 
