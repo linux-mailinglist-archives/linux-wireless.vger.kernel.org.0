@@ -2,392 +2,256 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8742162E29B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Nov 2022 18:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AD4762E38D
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Nov 2022 18:55:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240589AbiKQRKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Nov 2022 12:10:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40626 "EHLO
+        id S234851AbiKQRzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Nov 2022 12:55:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240562AbiKQRKB (ORCPT
+        with ESMTP id S234545AbiKQRyv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Nov 2022 12:10:01 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C0B5D6A6
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Nov 2022 09:09:59 -0800 (PST)
-X-UUID: 4b2ce11b02444feb957788462811db5c-20221118
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Pqp/wK/+vGC4EtTGiQYRxNPcj0/vA0/E/G4HSmPoR98=;
-        b=ekoe/5I1b3FL6TcM1LOh/Qd0rvLLx7ny4ijIQoMPdvjaSkXlXW5W7n7zbjJL5ec8d09dsmbY/UvQoKvmjFyzoBvy46AyJsL3OIiHHCODtUtJczt2gBwiCYY5ZKhVau8GILFEA+ZRHdmX50JadvNCLBWKUruX5jnlzmcKfR43fdw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.12,REQID:215f5344-1239-407d-98b8-f4f0da2c8536,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:90
-X-CID-INFO: VERSION:1.1.12,REQID:215f5344-1239-407d-98b8-f4f0da2c8536,IP:0,URL
-        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
-        N:quarantine,TS:90
-X-CID-META: VersionHash:62cd327,CLOUDID:6d3e7fdb-6ad4-42ff-91f3-18e0272db660,B
-        ulkID:221118010956F0IWV2GA,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 4b2ce11b02444feb957788462811db5c-20221118
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 425831188; Fri, 18 Nov 2022 01:09:54 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 18 Nov 2022 01:09:53 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 18 Nov 2022 01:09:52 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v3] wifi: mt76: mt7915: add support to configure spatial reuse parameter set
-Date:   Fri, 18 Nov 2022 01:09:47 +0800
-Message-ID: <cd9854c682abff3f3a636764e51a592ae21c775f.1668704526.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <02bd118d5ffff286c080d27fd7669095064cb75e.1668704608.git.ryder.lee@mediatek.com>
-References: <02bd118d5ffff286c080d27fd7669095064cb75e.1668704608.git.ryder.lee@mediatek.com>
+        Thu, 17 Nov 2022 12:54:51 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514DE13D7C;
+        Thu, 17 Nov 2022 09:54:50 -0800 (PST)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AHHqWJa002066;
+        Thu, 17 Nov 2022 17:54:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=dmHG/a6iT5M+Wlk/pJMeQSjTn+VMW2+OXLY/p6k654c=;
+ b=fTc42uJJy1aYogAwR0sW6eXzN27XWDSqXsrkiA0Y3WWFhCxRNnKMBYhkGNNMUqjrosDB
+ kKmHYGTDBunn2zJE0RdFA5id65BZ6btgdVNShp8eV97VSlgaAarSrVTbgvNZ5oVWNvM1
+ VjQlkYgXhmrHkLNhFyklThg6lS2t80Of3INWyRb80GcM/gFq9ekqvpAEpyPaowuheXqE
+ seAtSxO8uDK6rj/g+t5kKY61zfkRPNCjBxSZPBmdr+CsPeeg+XKoAmVaa6hSyUE+0CPr
+ XcPHZqNeXeLFK48pYtxSM+DvTRru3Owfq7VlwXFyj7/5AJphcA43oqwCOM1hP16N7tWu 1w== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kwrwb0952-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Nov 2022 17:54:37 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AHHsanv018990
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Nov 2022 17:54:36 GMT
+Received: from [10.216.15.99] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Thu, 17 Nov
+ 2022 09:54:34 -0800
+Message-ID: <5d6c1894-5037-2267-eac6-8c6974ea3b51@quicinc.com>
+Date:   Thu, 17 Nov 2022 23:24:31 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH v3] wifi: ath10k: Add WLAN firmware image version info
+ into smem
+To:     Bjorn Andersson <andersson@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_mpubbise@quicinc.com>, <ath10k@lists.infradead.org>
+References: <20221111114235.10287-1-quic_youghand@quicinc.com>
+ <20221111202302.nbzu53hir2azdb4o@builder.lan>
+Content-Language: en-US
+From:   "Youghandhar Chintala (Temp)" <quic_youghand@quicinc.com>
+In-Reply-To: <20221111202302.nbzu53hir2azdb4o@builder.lan>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: vu3VxZdZJTK0m89o-74DPwGcy2p_7WMG
+X-Proofpoint-GUID: vu3VxZdZJTK0m89o-74DPwGcy2p_7WMG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-17_06,2022-11-17_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211170129
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The SPR parameter set comprises OBSS PD threshold for SRG and
-non SRG and Bitmap of BSS color and partial BSSID. This adds
-support to configure fields of SPR element to firmware.
 
-User can disable firmware SR algorithms by turning sr_scene_detect off.
+On 11/12/2022 1:53 AM, Bjorn Andersson wrote:
+> On Fri, Nov 11, 2022 at 05:12:35PM +0530, Youghandhar Chintala wrote:
+>
+> Can you please change the subject to:
+> wifi: ath10k: Store WLAN firmware version in SMEM image table
+>
+>> In a SoC based solution, it would be useful to know the versions of the
+>> various binary firmware blobs the system is running on. On a QCOM based
+>> SoC, this info can be obtained from socinfo debugfs infrastructure. For
+>> this to work, respective subsystem drivers have to export the firmware
+>> version information to an SMEM based version information table.
+>>
+>> Having firmware version information at one place will help quickly
+>> figure out the firmware versions of various subsystems on the device
+>> instead of going through builds/logs in an event of a system crash.
+>>
+>> Fill WLAN firmware version information in SMEM version table to be
+>> printed as part of socinfo debugfs infrastructure on a Qualcomm based
+>> SoC.
+>>
+>> This change is applicable only for WCN399X targets.
+>>
+> Why is this restricted to WCN399X? Is it not the case that it only
+> relates to the SNOC/QMI-based implementation? Perhaps that's the same
+> thing, but if so I think the comment could be improved.
+>
+>> Example:
+>> cat /sys/kernel/debug/qcom_socinfo/cnss/name
+>> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+> I don't think that kernel test robot reported the lack of this feature.
+>
+>> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+>>
+>> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
+>> ---
+>> Changes from v2:
+>>   - Removed blank line between trailers
+>>   - Changed memcpy to strscpy
+>>   - Removed version_string_size
+>>   - Added new condition fw_build_id against max length
+>>   - Added depends on QCOM_SMEM for ath10k_snoc
+>> ---
+>>   drivers/net/wireless/ath/ath10k/Kconfig |  1 +
+>>   drivers/net/wireless/ath/ath10k/qmi.c   | 34 +++++++++++++++++++++++++
+>>   2 files changed, 35 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
+>> index ca007b800f75..e6ea884cafc1 100644
+>> --- a/drivers/net/wireless/ath/ath10k/Kconfig
+>> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
+>> @@ -44,6 +44,7 @@ config ATH10K_SNOC
+>>   	tristate "Qualcomm ath10k SNOC support"
+>>   	depends on ATH10K
+>>   	depends on ARCH_QCOM || COMPILE_TEST
+>> +	depends on QCOM_SMEM
+>>   	select QCOM_SCM
+>>   	select QCOM_QMI_HELPERS
+>>   	help
+>> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+>> index 66cb7a1e628a..6c3ddad26417 100644
+>> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+>> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+>> @@ -14,6 +14,7 @@
+>>   #include <linux/net.h>
+>>   #include <linux/platform_device.h>
+>>   #include <linux/qcom_scm.h>
+>> +#include <linux/soc/qcom/smem.h>
+>>   #include <linux/string.h>
+>>   #include <net/sock.h>
+>>   
+>> @@ -22,6 +23,8 @@
+>>   
+>>   #define ATH10K_QMI_CLIENT_ID		0x4b4e454c
+>>   #define ATH10K_QMI_TIMEOUT		30
+>> +#define ATH10K_SMEM_IMAGE_VERSION_TABLE       469
+> This isn't the ATH10K SMEM_IMAGE_VERSION_TABLE, it's the one and only
+> SMEM_IMAGE_VERSION_TABLE. As that is defined in socinfo.c, you can
+> use the same define here.
+>
+>> +#define ATH10K_SMEM_IMAGE_TABLE_CNSS_INDEX     13
+> SMEM_IMAGE_TABLE_CNSS_INDEX
+>
+>>   
+>>   static int ath10k_qmi_map_msa_permission(struct ath10k_qmi *qmi,
+>>   					 struct ath10k_msa_mem_info *mem_info)
+>> @@ -536,6 +539,35 @@ int ath10k_qmi_wlan_disable(struct ath10k *ar)
+>>   	return ath10k_qmi_mode_send_sync_msg(ar, QMI_WLFW_OFF_V01);
+>>   }
+>>   
+>> +static void ath10k_qmi_add_wlan_ver_smem(struct ath10k *ar, const char *fw_build_id)
+>> +{
+>> +	u8 *smem_table_ptr;
+> I don't think "smem" or "ptr" adds any value in this variable name.
+> "table" should be sufficient.
+>
+>> +	size_t smem_block_size;
+> This is the "smem_item_size".
+>
+>> +	const u32 smem_img_idx_wlan = ATH10K_SMEM_IMAGE_TABLE_CNSS_INDEX * 128;
+> Why not just "offset"?
+>
+> #define SMEM_IMAGE_VERSION_ENTRY_SIZE 128
+>
+> Instead of writing 128 here and abusing MAX_BUILD_ID_LEN below.
+>
+>> +
+>> +	smem_table_ptr = qcom_smem_get(QCOM_SMEM_HOST_ANY,
+>> +				       ATH10K_SMEM_IMAGE_VERSION_TABLE,
+>> +				       &smem_block_size);
+>> +	if (IS_ERR(smem_table_ptr)) {
+>> +		ath10k_dbg(ar, ATH10K_DBG_QMI,
+>> +			   "smem image version table not found\n");
+>> +		return;
+>> +	}
+>> +
+>> +	if (smem_img_idx_wlan + MAX_BUILD_ID_LEN > smem_block_size) {
+>> +		ath10k_dbg(ar, ATH10K_DBG_QMI, "smem block size too small: %zu\n",
+>> +			   smem_block_size);
+> You found a IMAGE_VERSION_TABLE, but it's smaller than expected. That
+> sounds like an ath10k_err() to me.
+>
+>> +		return;
+>> +	}
+>> +
+>> +	if (strlen(fw_build_id) > MAX_BUILD_ID_LEN) {
+> Is this really a concern, if the string is too long strscpy() below will
+> truncate it.
+>
+>> +		ath10k_dbg(ar, ATH10K_DBG_QMI, "fw_build_id length more than max length\n");
+>> +		return;
+>> +	}
+>> +
+>> +	strscpy(smem_table_ptr + smem_img_idx_wlan, fw_build_id, MAX_BUILD_ID_LEN);
+> MAX_BUILD_ID_LEN is the length of fw_build_id, which is 128.
+>
+> But the memory you're writing to is defined as:
+>
+> struct smem_image_version {
+> 	char name[SMEM_IMAGE_VERSION_NAME_SIZE];
+> 	char variant[SMEM_IMAGE_VERSION_VARIANT_SIZE];
+> 	char pad;
+> 	char oem[SMEM_IMAGE_VERSION_OEM_SIZE];
+> };
+>
+> With SMEM_IMAGE_VERSION_NAME_SIZE being 75.
+>
+>> +}
+>> +
+>>   static int ath10k_qmi_cap_send_sync_msg(struct ath10k_qmi *qmi)
+>>   {
+>>   	struct wlfw_cap_resp_msg_v01 *resp;
+>> @@ -606,6 +638,8 @@ static int ath10k_qmi_cap_send_sync_msg(struct ath10k_qmi *qmi)
+>>   			    qmi->fw_version, qmi->fw_build_timestamp, qmi->fw_build_id);
+>>   	}
+>>   
+>> +	ath10k_qmi_add_wlan_ver_smem(ar, qmi->fw_build_id);
+> qmi->fw_build_id is only valid if resp->fw_build_id_valid is set...
+>
+> Regards,
+> Bjorn
+>
+>> +
+>>   	kfree(resp);
+>>   	return 0;
+>>   
+>> -- 
+>> 2.38.0
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-change since v3 - add a missing MODULE_PARM_DESC.
-change since v2 - update default values to align SPEC.
----
- .../net/wireless/mediatek/mt76/mt7915/main.c  |   6 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 196 ++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  22 ++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |   4 +-
- 4 files changed, 207 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 3933f4f2d71d..a29cbdb47801 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -601,10 +601,8 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 		mt7915_mcu_add_sta(dev, vif, NULL, join);
- 	}
- 
--	if (changed & BSS_CHANGED_ASSOC) {
-+	if (changed & BSS_CHANGED_ASSOC)
- 		mt7915_mcu_add_bss_info(phy, vif, vif->cfg.assoc);
--		mt7915_mcu_add_obss_spr(dev, vif, info->he_obss_pd.enable);
--	}
- 
- 	if (changed & BSS_CHANGED_ERP_CTS_PROT)
- 		mt7915_mac_enable_rtscts(dev, vif, info->use_cts_prot);
-@@ -628,7 +626,7 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 		mt7915_mcu_set_tx(dev, vif);
- 
- 	if (changed & BSS_CHANGED_HE_OBSS_PD)
--		mt7915_mcu_add_obss_spr(dev, vif, info->he_obss_pd.enable);
-+		mt7915_mcu_add_obss_spr(phy, vif, &info->he_obss_pd);
- 
- 	if (changed & BSS_CHANGED_HE_BSS_COLOR)
- 		mt7915_update_bss_color(hw, vif, &info->he_bss_color);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 8b903a7636a8..3a0d97dad96f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -32,6 +32,10 @@
- #define HE_PHY(p, c)			u8_get_bits(c, IEEE80211_HE_PHY_##p)
- #define HE_MAC(m, c)			u8_get_bits(c, IEEE80211_HE_MAC_##m)
- 
-+static bool sr_scene_detect = true;
-+module_param(sr_scene_detect, bool, 0644);
-+MODULE_PARM_DESC(sr_scene_detect, "Enable firmware scene detection algorithm");
-+
- static u8
- mt7915_mcu_get_sta_nss(u16 mcs_map)
- {
-@@ -3270,31 +3274,193 @@ int mt7915_mcu_set_txbf(struct mt7915_dev *dev, u8 action)
- 				 sizeof(req), true);
- }
- 
--int mt7915_mcu_add_obss_spr(struct mt7915_dev *dev, struct ieee80211_vif *vif,
--			    bool enable)
-+static int
-+mt7915_mcu_enable_obss_spr(struct mt7915_phy *phy, u8 action, u8 val)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	struct mt7915_mcu_sr_ctrl req = {
-+		.action = action,
-+		.argnum = 1,
-+		.band_idx = phy != &dev->phy,
-+		.val = cpu_to_le32(val),
-+	};
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_SPR), &req,
-+				 sizeof(req), true);
-+}
-+
-+static int
-+mt7915_mcu_set_obss_spr_pd(struct mt7915_phy *phy,
-+			   struct ieee80211_he_obss_pd *he_obss_pd)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	struct {
-+		struct mt7915_mcu_sr_ctrl ctrl;
-+		struct {
-+			u8 pd_th_non_srg;
-+			u8 pd_th_srg;
-+			u8 period_offs;
-+			u8 rcpi_src;
-+			__le16 obss_pd_min;
-+			__le16 obss_pd_min_srg;
-+			u8 resp_txpwr_mode;
-+			u8 txpwr_restrict_mode;
-+			u8 txpwr_ref;
-+			u8 rsv[3];
-+		} __packed param;
-+	} __packed req = {
-+		.ctrl = {
-+			.action = SPR_SET_PARAM,
-+			.argnum = 9,
-+			.band_idx = phy != &dev->phy,
-+		},
-+	};
-+	int ret;
-+	u8 max_th = 82, non_srg_max_th = 62;
-+
-+	/* disable firmware dynamical PD asjustment */
-+	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE_DPD, false);
-+	if (ret)
-+		return ret;
-+
-+	if (he_obss_pd->sr_ctrl &
-+	    IEEE80211_HE_SPR_NON_SRG_OBSS_PD_SR_DISALLOWED)
-+		req.param.pd_th_non_srg = max_th;
-+	else if (he_obss_pd->sr_ctrl & IEEE80211_HE_SPR_NON_SRG_OFFSET_PRESENT)
-+		req.param.pd_th_non_srg  = max_th - he_obss_pd->non_srg_max_offset;
-+	else
-+		req.param.pd_th_non_srg  = non_srg_max_th;
-+
-+	if (he_obss_pd->sr_ctrl & IEEE80211_HE_SPR_SRG_INFORMATION_PRESENT)
-+		req.param.pd_th_srg = max_th - he_obss_pd->max_offset;
-+
-+	req.param.obss_pd_min = 82;
-+	req.param.obss_pd_min_srg = 82;
-+	req.param.txpwr_restrict_mode = 2;
-+	req.param.txpwr_ref = 21;
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_SPR), &req,
-+				 sizeof(req), true);
-+}
-+
-+static int
-+mt7915_mcu_set_obss_spr_siga(struct mt7915_phy *phy, struct ieee80211_vif *vif,
-+			     struct ieee80211_he_obss_pd *he_obss_pd)
- {
--#define MT_SPR_ENABLE		1
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
-+	struct mt7915_dev *dev = phy->dev;
-+	u8 omac = mvif->mt76.omac_idx;
- 	struct {
--		u8 action;
--		u8 arg_num;
--		u8 band_idx;
--		u8 status;
--		u8 drop_tx_idx;
--		u8 sta_idx;	/* 256 sta */
--		u8 rsv[2];
--		__le32 val;
-+		struct mt7915_mcu_sr_ctrl ctrl;
-+		struct {
-+			u8 omac;
-+			u8 rsv[3];
-+			u8 flag[20];
-+		} __packed siga;
-+	} __packed req = {
-+		.ctrl = {
-+			.action = SPR_SET_SIGA,
-+			.argnum = 1,
-+			.band_idx = phy != &dev->phy,
-+		},
-+		.siga = {
-+			.omac = omac > HW_BSSID_MAX ? omac - 12 : omac,
-+		},
-+	};
-+	int ret;
-+
-+	if (he_obss_pd->sr_ctrl & IEEE80211_HE_SPR_HESIGA_SR_VAL15_ALLOWED)
-+		req.siga.flag[req.siga.omac] = 0xf;
-+	else
-+		return 0;
-+
-+	/* switch to normal AP mode */
-+	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE_MODE, 0);
-+	if (ret)
-+		return ret;
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_SPR), &req,
-+				 sizeof(req), true);
-+}
-+
-+static int
-+mt7915_mcu_set_obss_spr_bitmap(struct mt7915_phy *phy,
-+			       struct ieee80211_he_obss_pd *he_obss_pd)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	struct {
-+		struct mt7915_mcu_sr_ctrl ctrl;
-+		struct {
-+			__le32 color_l[2];
-+			__le32 color_h[2];
-+			__le32 bssid_l[2];
-+			__le32 bssid_h[2];
-+		} __packed bitmap;
- 	} __packed req = {
--		.action = MT_SPR_ENABLE,
--		.arg_num = 1,
--		.band_idx = mvif->mt76.band_idx,
--		.val = cpu_to_le32(enable),
-+		.ctrl = {
-+			.action = SPR_SET_SRG_BITMAP,
-+			.argnum = 4,
-+			.band_idx = phy != &dev->phy,
-+		},
- 	};
-+	u32 bitmap;
-+
-+	memcpy(&bitmap, he_obss_pd->bss_color_bitmap, sizeof(bitmap));
-+	req.bitmap.color_l[req.ctrl.band_idx] = cpu_to_le32(bitmap);
-+
-+	memcpy(&bitmap, he_obss_pd->bss_color_bitmap + 4, sizeof(bitmap));
-+	req.bitmap.color_h[req.ctrl.band_idx] = cpu_to_le32(bitmap);
-+
-+	memcpy(&bitmap, he_obss_pd->partial_bssid_bitmap, sizeof(bitmap));
-+	req.bitmap.bssid_l[req.ctrl.band_idx] = cpu_to_le32(bitmap);
-+
-+	memcpy(&bitmap, he_obss_pd->partial_bssid_bitmap + 4, sizeof(bitmap));
-+	req.bitmap.bssid_h[req.ctrl.band_idx] = cpu_to_le32(bitmap);
- 
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_SPR), &req,
- 				 sizeof(req), true);
- }
- 
-+int mt7915_mcu_add_obss_spr(struct mt7915_phy *phy, struct ieee80211_vif *vif,
-+			    struct ieee80211_he_obss_pd *he_obss_pd)
-+{
-+	int ret;
-+
-+	/* enable firmware scene detection algorithms */
-+	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE_SD, sr_scene_detect);
-+	if (ret)
-+		return ret;
-+
-+	/* enable spatial reuse */
-+	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE, he_obss_pd->enable);
-+	if (ret)
-+		return ret;
-+
-+	if (!he_obss_pd->enable)
-+		return 0;
-+
-+	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE_TX, true);
-+	if (ret)
-+		return ret;
-+
-+	/* firmware dynamically adjusts PD threshold so skip manual control */
-+	if (sr_scene_detect)
-+		return 0;
-+
-+	/* set SRG/non-SRG OBSS PD threshold */
-+	ret = mt7915_mcu_set_obss_spr_pd(phy, he_obss_pd);
-+	if (ret)
-+		return ret;
-+
-+	/* Set SR prohibit */
-+	ret = mt7915_mcu_set_obss_spr_siga(phy, vif, he_obss_pd);
-+	if (ret)
-+		return ret;
-+
-+	/* set SRG BSS color/BSSID bitmap */
-+	return mt7915_mcu_set_obss_spr_bitmap(phy, he_obss_pd);
-+}
-+
- int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta, struct rate_info *rate)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index c19b5d66c0e1..2fc09fd53777 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -129,6 +129,17 @@ struct mt7915_mcu_background_chain_ctrl {
- 	u8 rsv[2];
- } __packed;
- 
-+struct mt7915_mcu_sr_ctrl {
-+	u8 action;
-+	u8 argnum;
-+	u8 band_idx;
-+	u8 status;
-+	u8 drop_ta_idx;
-+	u8 sta_idx;	/* 256 sta */
-+	u8 rsv[2];
-+	__le32 val;
-+} __packed;
-+
- struct mt7915_mcu_eeprom {
- 	u8 buffer_mode;
- 	u8 format;
-@@ -408,6 +419,17 @@ enum {
- #define RATE_CFG_PHY_TYPE		GENMASK(27, 24)
- #define RATE_CFG_HE_LTF			GENMASK(31, 28)
- 
-+enum {
-+	SPR_ENABLE = 0x1,
-+	SPR_ENABLE_SD = 0x3,
-+	SPR_ENABLE_MODE = 0x5,
-+	SPR_ENABLE_DPD = 0x23,
-+	SPR_ENABLE_TX = 0x25,
-+	SPR_SET_SRG_BITMAP = 0x80,
-+	SPR_SET_PARAM = 0xc2,
-+	SPR_SET_SIGA = 0xdc,
-+};
-+
- enum {
- 	THERMAL_PROTECT_PARAMETER_CTRL,
- 	THERMAL_PROTECT_BASIC_INFO,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 9cb680e7f223..0bad78cf32c7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -501,8 +501,8 @@ int mt7915_mcu_update_bss_color(struct mt7915_dev *dev, struct ieee80211_vif *vi
- 				struct cfg80211_he_bss_color *he_bss_color);
- int mt7915_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  int enable, u32 changed);
--int mt7915_mcu_add_obss_spr(struct mt7915_dev *dev, struct ieee80211_vif *vif,
--                            bool enable);
-+int mt7915_mcu_add_obss_spr(struct mt7915_phy *phy, struct ieee80211_vif *vif,
-+			    struct ieee80211_he_obss_pd *he_obss_pd);
- int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 			     struct ieee80211_sta *sta, bool changed);
- int mt7915_mcu_add_smps(struct mt7915_dev *dev, struct ieee80211_vif *vif,
--- 
-2.36.1
+Thank you Andersson. I will address all your comments in my next version 
+of patch.
 
