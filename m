@@ -2,106 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF3762ED3F
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 06:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C9FE62F290
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 11:29:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240819AbiKRFlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 00:41:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
+        id S241493AbiKRK3o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 05:29:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235063AbiKRFlm (ORCPT
+        with ESMTP id S241736AbiKRK3l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 00:41:42 -0500
-Received: from mog.warmcat.com (mog.warmcat.com [178.170.10.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D9F6319008
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Nov 2022 21:41:40 -0800 (PST)
-Received: from mx.warmcat.com (host31-53-12-215.range31-53.btcentralplus.com [31.53.12.215])
-        by mog.warmcat.com (Postfix) with ESMTPSA id 93D5913562B;
-        Fri, 18 Nov 2022 05:41:39 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mog.warmcat.com 93D5913562B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=warmcat.com;
-        s=default; t=1668750099;
-        bh=8lzjj/iK/2JCh1w3wY2gfsTZakaw3H1rYuxjYSt2i1o=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=FxQJv/5/R7e4rqcmsTEc5xduyHkfjfxPjiemCqbHgXdgAW68eqHAWU7NvrPmb0yhX
-         TeTadfuAAU4sLQlCMLp/PQsp9JYzhZlK+clMSKZEEjgSFm2n/kD8TOPEAJ01nfBjg1
-         OyxgnV6djaNFv50y6gGIyqFqn12u+EH3QdCjqtCo=
-Received: from [192.168.4.115] (unknown [192.168.4.115])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by mx.warmcat.com (Postfix) with ESMTPSA id C164C2A0069;
-        Fri, 18 Nov 2022 05:41:38 +0000 (GMT)
-Message-ID: <3a562a50-0cef-4879-3691-3258596f5213@warmcat.com>
-Date:   Fri, 18 Nov 2022 05:41:37 +0000
+        Fri, 18 Nov 2022 05:29:41 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA4852716F
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 02:29:35 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI9uI9h031832;
+        Fri, 18 Nov 2022 10:29:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=GiHEF5dV2KVSqC69lRuMtCY71E0Dcp9oocwYhqMtKdE=;
+ b=R1W9wfd32nR5fIfbaY4rE5J+EFs6zcWd754uqBgzlEPGdZ/qekCHRgwOCd/4Fn8rpOw+
+ AV26FVQGx/ilZvHjsiQvfSOwhQg7V3XGpqssJjwLDL2qbMe6PuCABh/aho9HpK/QPKuy
+ Cdc5Qbl8DNHx+kqQMyNi4fMZGQpphn2xA969kE7SOaP1v3tarzadyXOfL6XHJ+XxIeik
+ u5RK5MLaIYHAVmPbeTT0BOgZsUJZHmLz6TA7fKwyXvgOHBcAkyAuKJ3gAM/XVhdnf63e
+ hLtRFJyDMZp8k1Iz6DxHyo9VnwGYjvdtYZp4dOldAolxyhk+VzWCqEf26yZLzvZBhGaq tw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kx0ra9bdd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Nov 2022 10:29:26 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AIATQQB028950
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Nov 2022 10:29:26 GMT
+Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 18 Nov
+ 2022 02:29:25 -0800
+Message-ID: <cd96eea8-dce0-bcb9-e8ce-05fa0e0f22fb@quicinc.com>
+Date:   Fri, 18 Nov 2022 18:29:22 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: AP6275 / bcm43752 pcie on mainline brcmf
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 2/2] wifi: ath11k: reduce the timeout value back for hw
+ scan from 10 seconds to 1 second
 Content-Language: en-US
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Shengyu Qu <wiagn233@outlook.com>
-Cc:     franky.lin@broadcom.com, linux-wireless@vger.kernel.org
-References: <TY3P286MB26114DD461F50814980453E598029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <08416710-655a-c87c-a599-3fe2563f7de4@warmcat.com>
- <18470a1e910.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <TY3P286MB26115A58795F264893CCB40198029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <184720fc920.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <TY3P286MB26118BD94839F752CADCCF5298079@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <625f1d5d-e137-7ad7-96b9-92035e87df8b@broadcom.com>
- <638afa8e-a393-410c-3182-0d8e9b6da17d@warmcat.com>
- <1848793db88.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From:   Andy Green <andy@warmcat.com>
-In-Reply-To: <1848793db88.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20221011072408.23731-1-quic_wgong@quicinc.com>
+ <20221011072408.23731-3-quic_wgong@quicinc.com> <8735atg335.fsf@kernel.org>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <8735atg335.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: KQh0TAfKxqRp9oqshfrI3S-_DLHSQojH
+X-Proofpoint-GUID: KQh0TAfKxqRp9oqshfrI3S-_DLHSQojH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-17_06,2022-11-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 clxscore=1011 priorityscore=1501 mlxlogscore=999
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211180062
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 11/8/2022 6:20 PM, Kalle Valo wrote:
+> Wen Gong <quic_wgong@quicinc.com> writes:
+>
+...
+> [...]
+>
+>> @@ -3682,7 +3677,12 @@ static int ath11k_mac_op_hw_scan(struct ieee80211_hw *hw,
+>>   
+>>   	ret = ath11k_start_scan(ar, &arg);
+>>   	if (ret) {
+>> -		ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
+>> +		if (ret == -EBUSY)
+>> +			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
+>> +				   "scan engine is busy 11d state %d\n", ar->state_11d);
+>> +		else
+>> +			ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
+>> +
+>>   		spin_lock_bh(&ar->data_lock);
+>>   		ar->scan.state = ATH11K_SCAN_IDLE;
+>>   		spin_unlock_bh(&ar->data_lock);
+> This feels like a hack to me, for example will these failed scans now
+> cause delays is connection establishment? IMHO it's crucial from user's
+> point of view that we don't delay that in any way.
+It will not delay connection.
+After wlan load, the 1st hw scan will arrived to ath11k, and then 11d
+scan will be sent to firmware after the 1st hw scan. It means the hw
+scan for connection is run before 11d scan, and then connection could
+be started immediately after the 1st hw scan finished. It means no
+delay for connection.
+> I would rather fix the root cause, do we know what's causing this?
+In firmware, hw scan and 11d scan are all running in the same queue,
+they can not be run parallel.
 
-
-On 11/17/22 21:52, Arend Van Spriel wrote:
-
-> I see. So could you load bcmdhd and provide log. Preferably with higher 
-> debug level. It also has a module parameter for it. I think it is called 
-> dhd_msg_level and please set it to 0x817.
-
-It's here:
-
-https://warmcat.com/ap6275p-dhd-log1.txt
-
-after boot he shows a wlan0
-
-wlan0: flags=-28669<UP,BROADCAST,MULTICAST,DYNAMIC>  mtu 1500
-         inet6 fe80::d69c:ddff:fef5:bf7e  prefixlen 64  scopeid 0x20<link>
-         ether d4:9c:dd:f5:bf:7e  txqueuelen 1000  (Ethernet)
-         RX packets 0  bytes 0 (0.0 B)
-         RX errors 0  dropped 0  overruns 0  frame 0
-         TX packets 11  bytes 866 (866.0 B)
-         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-The dhd OOT driver comes with a rockchip-hacked rfkill driver which has 
-all sorts of things in it related to wakelocks I removed, I built that 
-too and rfkill reports
-
-# rfkill
-ID TYPE DEVICE           SOFT      HARD
-  0 wlan phy0          blocked unblocked
-  1 wlan brcmfmac-wifi blocked unblocked
-
-"brcmfmac-wifi" is a literal in the dhd driver sources, confusingly. 
-Mainline brcmfmac is not built or inserted as a module for this test.
-
-# rfkill unblock
-
-shows everything unblocked, but connmanctl can start scans but never get 
-any results.  But it's happy with the firmware after hacking it to use 
-updated apis.
-
--Andy
+When 6 GHz enabled, the 1st hw scan cost about 7s and finished, and
+then 11d scan cost the next 7s. After the 14s, the each hw scan arrived
+to ath11k will be run immediately. If the 2nd hw scan arrived before
+the 11d scan finished, for example, it arrived 7.1 seconds after the
+1st hw scan, at this moment, the 11d scan is still running in firmware,
+then the 2nd hw scan will not receive scan started event untill the 11d
+scan finished, and meanwhile, the 2nd hw scan is holding the ar->conf_mutex
+in ath11k_mac_op_hw_scan(), it is not good to hold a lock for some
+seconds because ar->conf_mutex is widely used. So reduce the 10s to 1s
+to avoid holding ar->conf_mutex for long time.
