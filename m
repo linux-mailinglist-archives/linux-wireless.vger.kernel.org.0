@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B25462ED13
+	by mail.lfdr.de (Postfix) with ESMTP id D388962ED15
 	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 06:12:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235088AbiKRFLw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 00:11:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46074 "EHLO
+        id S239518AbiKRFLy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 00:11:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235098AbiKRFLp (ORCPT
+        with ESMTP id S235131AbiKRFLr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 00:11:45 -0500
+        Fri, 18 Nov 2022 00:11:47 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 69C876C73F
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Nov 2022 21:11:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EACBD6E540
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Nov 2022 21:11:45 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AI5AuJxA003110, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AI5AuJxA003110
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AI5AvdS6003114, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AI5AvdS6003114
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 18 Nov 2022 13:10:56 +0800
+        Fri, 18 Nov 2022 13:10:57 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 18 Nov 2022 13:11:38 +0800
+ 15.1.2507.9; Fri, 18 Nov 2022 13:11:39 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 18 Nov
- 2022 13:11:37 +0800
+ 2022 13:11:38 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/6] wifi: rtw89: mac: process MCC related C2H
-Date:   Fri, 18 Nov 2022 13:10:40 +0800
-Message-ID: <20221118051042.29968-5-pkshih@realtek.com>
+Subject: [PATCH 5/6] wifi: rtw89: fw: implement MCC related H2C
+Date:   Fri, 18 Nov 2022 13:10:41 +0800
+Message-ID: <20221118051042.29968-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221118051042.29968-1-pkshih@realtek.com>
 References: <20221118051042.29968-1-pkshih@realtek.com>
@@ -55,10 +55,6 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzE3IKRVpMggMTA6MDA6MDA=?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,389 +65,744 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Process C2H(s) related to MCC (multi-channel concurrency). These handling,
-which either call rtw89_complete_cond() or show message in debug mode, can
-be considered atomic/lock-free. So, they should be safe to be processed
-directly after C2H pre-check in previous patch.
+These MCC H2C(s) require to wait for MCC C2H to determine if the
+execution is successful. Through rtw89_wait_for_cond(), we make
+them wait for either a completion with data from MCC C2H handlers,
+which calls rtw89_complete_cond(), or timeout.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |   2 +
- drivers/net/wireless/realtek/rtw89/core.h |   5 +
- drivers/net/wireless/realtek/rtw89/fw.h   |  66 +++++++++
- drivers/net/wireless/realtek/rtw89/mac.c  | 171 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/mac.h  |  34 +++++
- 5 files changed, 278 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 329 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.h | 369 +++++++++++++++++++++++-
+ 2 files changed, 697 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index e0b044a33207a..d7f80751eee3a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3097,6 +3097,8 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
- 	mutex_init(&rtwdev->rf_mutex);
- 	rtwdev->total_sta_assoc = 0;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 544f6d4b68735..c469fd1322803 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -3263,3 +3263,332 @@ int rtw89_fw_wow_cam_update(struct rtw89_dev *rtwdev,
  
-+	rtw89_init_wait(&rtwdev->mcc.wait);
+ 	return ret;
+ }
 +
- 	INIT_WORK(&rtwdev->c2h_work, rtw89_fw_c2h_work);
- 	INIT_WORK(&rtwdev->ips_work, rtw89_ips_work);
- 	skb_queue_head_init(&rtwdev->c2h_queue);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 5a7d5514bba9a..cbcbf09dbb273 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3542,6 +3542,10 @@ struct rtw89_wow_param {
- 	struct list_head pkt_list;
- };
- 
-+struct rtw89_mcc_info {
-+	struct rtw89_wait_info wait;
-+};
++static int rtw89_h2c_tx_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
++				 struct rtw89_wait_info *wait, unsigned int cond)
++{
++	int ret;
 +
- struct rtw89_dev {
- 	struct ieee80211_hw *hw;
- 	struct device *dev;
-@@ -3552,6 +3556,7 @@ struct rtw89_dev {
- 	const struct rtw89_chip_info *chip;
- 	const struct rtw89_pci_info *pci_info;
- 	struct rtw89_hal hal;
-+	struct rtw89_mcc_info mcc;
- 	struct rtw89_mac_info mac;
- 	struct rtw89_fw_info fw;
- 	struct rtw89_hci_info hci;
++	ret = rtw89_h2c_tx(rtwdev, skb, false);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to send h2c\n");
++		dev_kfree_skb_any(skb);
++		return -EBUSY;
++	}
++
++	return rtw89_wait_for_cond(wait, cond);
++}
++
++#define H2C_ADD_MCC_LEN 16
++int rtw89_fw_h2c_add_mcc(struct rtw89_dev *rtwdev,
++			 const struct rtw89_fw_mcc_add_req *p)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_ADD_MCC_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for add mcc\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_ADD_MCC_LEN);
++	RTW89_SET_FWCMD_ADD_MCC_MACID(skb->data, p->macid);
++	RTW89_SET_FWCMD_ADD_MCC_CENTRAL_CH_SEG0(skb->data, p->central_ch_seg0);
++	RTW89_SET_FWCMD_ADD_MCC_CENTRAL_CH_SEG1(skb->data, p->central_ch_seg1);
++	RTW89_SET_FWCMD_ADD_MCC_PRIMARY_CH(skb->data, p->primary_ch);
++	RTW89_SET_FWCMD_ADD_MCC_BANDWIDTH(skb->data, p->bandwidth);
++	RTW89_SET_FWCMD_ADD_MCC_GROUP(skb->data, p->group);
++	RTW89_SET_FWCMD_ADD_MCC_C2H_RPT(skb->data, p->c2h_rpt);
++	RTW89_SET_FWCMD_ADD_MCC_DIS_TX_NULL(skb->data, p->dis_tx_null);
++	RTW89_SET_FWCMD_ADD_MCC_DIS_SW_RETRY(skb->data, p->dis_sw_retry);
++	RTW89_SET_FWCMD_ADD_MCC_IN_CURR_CH(skb->data, p->in_curr_ch);
++	RTW89_SET_FWCMD_ADD_MCC_SW_RETRY_COUNT(skb->data, p->sw_retry_count);
++	RTW89_SET_FWCMD_ADD_MCC_TX_NULL_EARLY(skb->data, p->tx_null_early);
++	RTW89_SET_FWCMD_ADD_MCC_BTC_IN_2G(skb->data, p->btc_in_2g);
++	RTW89_SET_FWCMD_ADD_MCC_PTA_EN(skb->data, p->pta_en);
++	RTW89_SET_FWCMD_ADD_MCC_RFK_BY_PASS(skb->data, p->rfk_by_pass);
++	RTW89_SET_FWCMD_ADD_MCC_CH_BAND_TYPE(skb->data, p->ch_band_type);
++	RTW89_SET_FWCMD_ADD_MCC_DURATION(skb->data, p->duration);
++	RTW89_SET_FWCMD_ADD_MCC_COURTESY_EN(skb->data, p->courtesy_en);
++	RTW89_SET_FWCMD_ADD_MCC_COURTESY_NUM(skb->data, p->courtesy_num);
++	RTW89_SET_FWCMD_ADD_MCC_COURTESY_TARGET(skb->data, p->courtesy_target);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_ADD_MCC, 0, 0,
++			      H2C_ADD_MCC_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(p->group, H2C_FUNC_ADD_MCC);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_START_MCC_LEN 12
++int rtw89_fw_h2c_start_mcc(struct rtw89_dev *rtwdev,
++			   const struct rtw89_fw_mcc_start_req *p)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_START_MCC_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for start mcc\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_START_MCC_LEN);
++	RTW89_SET_FWCMD_START_MCC_GROUP(skb->data, p->group);
++	RTW89_SET_FWCMD_START_MCC_BTC_IN_GROUP(skb->data, p->btc_in_group);
++	RTW89_SET_FWCMD_START_MCC_OLD_GROUP_ACTION(skb->data, p->old_group_action);
++	RTW89_SET_FWCMD_START_MCC_OLD_GROUP(skb->data, p->old_group);
++	RTW89_SET_FWCMD_START_MCC_NOTIFY_CNT(skb->data, p->notify_cnt);
++	RTW89_SET_FWCMD_START_MCC_NOTIFY_RXDBG_EN(skb->data, p->notify_rxdbg_en);
++	RTW89_SET_FWCMD_START_MCC_MACID(skb->data, p->macid);
++	RTW89_SET_FWCMD_START_MCC_TSF_LOW(skb->data, p->tsf_low);
++	RTW89_SET_FWCMD_START_MCC_TSF_HIGH(skb->data, p->tsf_high);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_START_MCC, 0, 0,
++			      H2C_START_MCC_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(p->group, H2C_FUNC_START_MCC);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_STOP_MCC_LEN 4
++int rtw89_fw_h2c_stop_mcc(struct rtw89_dev *rtwdev, u8 group, u8 macid,
++			  bool prev_groups)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_STOP_MCC_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for stop mcc\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_STOP_MCC_LEN);
++	RTW89_SET_FWCMD_STOP_MCC_MACID(skb->data, macid);
++	RTW89_SET_FWCMD_STOP_MCC_GROUP(skb->data, group);
++	RTW89_SET_FWCMD_STOP_MCC_PREV_GROUPS(skb->data, prev_groups);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_STOP_MCC, 0, 0,
++			      H2C_STOP_MCC_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(group, H2C_FUNC_STOP_MCC);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_DEL_MCC_GROUP_LEN 4
++int rtw89_fw_h2c_del_mcc_group(struct rtw89_dev *rtwdev, u8 group,
++			       bool prev_groups)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_DEL_MCC_GROUP_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for del mcc group\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_DEL_MCC_GROUP_LEN);
++	RTW89_SET_FWCMD_DEL_MCC_GROUP_GROUP(skb->data, group);
++	RTW89_SET_FWCMD_DEL_MCC_GROUP_PREV_GROUPS(skb->data, prev_groups);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_DEL_MCC_GROUP, 0, 0,
++			      H2C_DEL_MCC_GROUP_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(group, H2C_FUNC_DEL_MCC_GROUP);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_RESET_MCC_GROUP_LEN 4
++int rtw89_fw_h2c_reset_mcc_group(struct rtw89_dev *rtwdev, u8 group)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_RESET_MCC_GROUP_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for reset mcc group\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_RESET_MCC_GROUP_LEN);
++	RTW89_SET_FWCMD_RESET_MCC_GROUP_GROUP(skb->data, group);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_RESET_MCC_GROUP, 0, 0,
++			      H2C_RESET_MCC_GROUP_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(group, H2C_FUNC_RESET_MCC_GROUP);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_MCC_REQ_TSF_LEN 4
++int rtw89_fw_h2c_mcc_req_tsf(struct rtw89_dev *rtwdev,
++			     const struct rtw89_fw_mcc_tsf_req *req,
++			     struct rtw89_mac_mcc_tsf_rpt *rpt)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct rtw89_mac_mcc_tsf_rpt *tmp;
++	struct sk_buff *skb;
++	unsigned int cond;
++	int ret;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_MCC_REQ_TSF_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for mcc req tsf\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_MCC_REQ_TSF_LEN);
++	RTW89_SET_FWCMD_MCC_REQ_TSF_GROUP(skb->data, req->group);
++	RTW89_SET_FWCMD_MCC_REQ_TSF_MACID_X(skb->data, req->macid_x);
++	RTW89_SET_FWCMD_MCC_REQ_TSF_MACID_Y(skb->data, req->macid_y);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_MCC_REQ_TSF, 0, 0,
++			      H2C_MCC_REQ_TSF_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(req->group, H2C_FUNC_MCC_REQ_TSF);
++	ret = rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++	if (ret)
++		return ret;
++
++	tmp = rtw89_completion_cast(&wait->data, rpt);
++	*rpt = *tmp;
++
++	return 0;
++}
++
++#define H2C_MCC_MACID_BITMAP_DSC_LEN 4
++int rtw89_fw_h2c_mcc_macid_bitamp(struct rtw89_dev *rtwdev, u8 group, u8 macid,
++				  u8 *bitmap)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++	u8 map_len;
++	u8 h2c_len;
++
++	BUILD_BUG_ON(RTW89_MAX_MAC_ID_NUM % 8);
++	map_len = RTW89_MAX_MAC_ID_NUM / 8;
++	h2c_len = H2C_MCC_MACID_BITMAP_DSC_LEN + map_len;
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, h2c_len);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for mcc macid bitmap\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, h2c_len);
++	RTW89_SET_FWCMD_MCC_MACID_BITMAP_GROUP(skb->data, group);
++	RTW89_SET_FWCMD_MCC_MACID_BITMAP_MACID(skb->data, macid);
++	RTW89_SET_FWCMD_MCC_MACID_BITMAP_BITMAP_LENGTH(skb->data, map_len);
++	RTW89_SET_FWCMD_MCC_MACID_BITMAP_BITMAP(skb->data, bitmap, map_len);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_MCC_MACID_BITMAP, 0, 0,
++			      h2c_len);
++
++	cond = RTW89_MCC_WAIT_COND(group, H2C_FUNC_MCC_MACID_BITMAP);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_MCC_SYNC_LEN 4
++int rtw89_fw_h2c_mcc_sync(struct rtw89_dev *rtwdev, u8 group, u8 source,
++			  u8 target, u8 offset)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_MCC_SYNC_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for mcc sync\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_MCC_SYNC_LEN);
++	RTW89_SET_FWCMD_MCC_SYNC_GROUP(skb->data, group);
++	RTW89_SET_FWCMD_MCC_SYNC_MACID_SOURCE(skb->data, source);
++	RTW89_SET_FWCMD_MCC_SYNC_MACID_TARGET(skb->data, target);
++	RTW89_SET_FWCMD_MCC_SYNC_SYNC_OFFSET(skb->data, offset);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_MCC_SYNC, 0, 0,
++			      H2C_MCC_SYNC_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(group, H2C_FUNC_MCC_SYNC);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
++
++#define H2C_MCC_SET_DURATION_LEN 20
++int rtw89_fw_h2c_mcc_set_duration(struct rtw89_dev *rtwdev,
++				  const struct rtw89_fw_mcc_duration *p)
++{
++	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
++	struct sk_buff *skb;
++	unsigned int cond;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_MCC_SET_DURATION_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev,
++			  "failed to alloc skb for mcc set duration\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, H2C_MCC_SET_DURATION_LEN);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_GROUP(skb->data, p->group);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_BTC_IN_GROUP(skb->data, p->btc_in_group);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_START_MACID(skb->data, p->start_macid);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_MACID_X(skb->data, p->macid_x);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_MACID_Y(skb->data, p->macid_y);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_START_TSF_LOW(skb->data,
++						       p->start_tsf_low);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_START_TSF_HIGH(skb->data,
++							p->start_tsf_high);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_DURATION_X(skb->data, p->duration_x);
++	RTW89_SET_FWCMD_MCC_SET_DURATION_DURATION_Y(skb->data, p->duration_y);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MCC,
++			      H2C_FUNC_MCC_SET_DURATION, 0, 0,
++			      H2C_MCC_SET_DURATION_LEN);
++
++	cond = RTW89_MCC_WAIT_COND(p->group, H2C_FUNC_MCC_SET_DURATION);
++	return rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
++}
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index d76d0c80f0256..6d9c3dc58f037 100644
+index 6d9c3dc58f037..6d53d1a6c907c 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.h
 +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -2859,6 +2859,53 @@ static inline struct rtw89_fw_c2h_attr *RTW89_SKB_C2H_CB(struct sk_buff *skb)
- #define RTW89_GET_MAC_C2H_SCANOFLD_BAND(c2h) \
- 	le32_get_bits(*((const __le32 *)(c2h) + 5), GENMASK(25, 24))
- 
-+#define RTW89_GET_MAC_C2H_MCC_RCV_ACK_GROUP(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(1, 0))
-+#define RTW89_GET_MAC_C2H_MCC_RCV_ACK_H2C_FUNC(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(15, 8))
-+
-+#define RTW89_GET_MAC_C2H_MCC_REQ_ACK_GROUP(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(1, 0))
-+#define RTW89_GET_MAC_C2H_MCC_REQ_ACK_H2C_RETURN(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(7, 2))
-+#define RTW89_GET_MAC_C2H_MCC_REQ_ACK_H2C_FUNC(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(15, 8))
-+
-+struct rtw89_mac_mcc_tsf_rpt {
-+	u32 macid_x;
-+	u32 macid_y;
-+	u32 tsf_x_low;
-+	u32 tsf_x_high;
-+	u32 tsf_y_low;
-+	u32 tsf_y_high;
-+};
-+
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_MACID_X(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(7, 0))
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_MACID_Y(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(15, 8))
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_GROUP(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(17, 16))
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_LOW_X(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h) + 1), GENMASK(31, 0))
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_HIGH_X(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(31, 0))
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_LOW_Y(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h) + 3), GENMASK(31, 0))
-+#define RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_HIGH_Y(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h) + 4), GENMASK(31, 0))
-+
-+#define RTW89_GET_MAC_C2H_MCC_STATUS_RPT_STATUS(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(5, 0))
-+#define RTW89_GET_MAC_C2H_MCC_STATUS_RPT_GROUP(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(7, 6))
-+#define RTW89_GET_MAC_C2H_MCC_STATUS_RPT_MACID(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h)), GENMASK(15, 8))
-+#define RTW89_GET_MAC_C2H_MCC_STATUS_RPT_TSF_LOW(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h) + 1), GENMASK(31, 0))
-+#define RTW89_GET_MAC_C2H_MCC_STATUS_RPT_TSF_HIGH(c2h) \
-+	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(31, 0))
-+
- #define RTW89_FW_HDR_SIZE 32
- #define RTW89_FW_SECTION_HDR_SIZE 16
- 
-@@ -2980,6 +3027,25 @@ struct rtw89_fw_h2c_rf_reg_info {
- #define H2C_CL_BA_CAM			0xc
- #define H2C_FUNC_MAC_BA_CAM		0x0
- 
-+/* CLASS 14 - MCC */
-+#define H2C_CL_MCC			0xe
-+enum rtw89_mcc_h2c_func {
-+	H2C_FUNC_ADD_MCC		= 0x0,
-+	H2C_FUNC_START_MCC		= 0x1,
-+	H2C_FUNC_STOP_MCC		= 0x2,
-+	H2C_FUNC_DEL_MCC_GROUP		= 0x3,
-+	H2C_FUNC_RESET_MCC_GROUP	= 0x4,
-+	H2C_FUNC_MCC_REQ_TSF		= 0x5,
-+	H2C_FUNC_MCC_MACID_BITMAP	= 0x6,
-+	H2C_FUNC_MCC_SYNC		= 0x7,
-+	H2C_FUNC_MCC_SET_DURATION	= 0x8,
-+
-+	NUM_OF_RTW89_MCC_H2C_FUNC,
-+};
-+
-+#define RTW89_MCC_WAIT_COND(group, func) \
-+	((group) * NUM_OF_RTW89_MCC_H2C_FUNC + (func))
-+
- #define H2C_CAT_OUTSRC			0x2
- 
- #define H2C_CL_OUTSRC_RA		0x1
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index df83d1bebe543..6395c28f3d8ac 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -4180,6 +4180,164 @@ rtw89_mac_c2h_tsf32_toggle_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
- {
+@@ -2767,6 +2767,355 @@ static inline void RTW89_SET_FWCMD_TSF32_TOGL_EARLY(void *cmd, u32 val)
+ 	le32p_replace_bits((__le32 *)cmd, val, GENMASK(31, 16));
  }
  
-+static void
-+rtw89_mac_c2h_mcc_rcv_ack(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++enum rtw89_fw_mcc_c2h_rpt_cfg {
++	RTW89_FW_MCC_C2H_RPT_OFF	= 0,
++	RTW89_FW_MCC_C2H_RPT_FAIL_ONLY	= 1,
++	RTW89_FW_MCC_C2H_RPT_ALL	= 2,
++};
++
++struct rtw89_fw_mcc_add_req {
++	u8 macid;
++	u8 central_ch_seg0;
++	u8 central_ch_seg1;
++	u8 primary_ch;
++	enum rtw89_bandwidth bandwidth: 4;
++	u32 group: 2;
++	u32 c2h_rpt: 2;
++	u32 dis_tx_null: 1;
++	u32 dis_sw_retry: 1;
++	u32 in_curr_ch: 1;
++	u32 sw_retry_count: 3;
++	u32 tx_null_early: 4;
++	u32 btc_in_2g: 1;
++	u32 pta_en: 1;
++	u32 rfk_by_pass: 1;
++	u32 ch_band_type: 2;
++	u32 rsvd0: 9;
++	u32 duration;
++	u8 courtesy_en;
++	u8 courtesy_num;
++	u8 courtesy_target;
++	u8 rsvd1;
++};
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_MACID(void *cmd, u32 val)
 +{
-+	u8 group = RTW89_GET_MAC_C2H_MCC_RCV_ACK_GROUP(c2h->data);
-+	u8 func = RTW89_GET_MAC_C2H_MCC_RCV_ACK_H2C_FUNC(c2h->data);
-+
-+	switch (func) {
-+	case H2C_FUNC_ADD_MCC:
-+	case H2C_FUNC_START_MCC:
-+	case H2C_FUNC_STOP_MCC:
-+	case H2C_FUNC_DEL_MCC_GROUP:
-+	case H2C_FUNC_RESET_MCC_GROUP:
-+	case H2C_FUNC_MCC_REQ_TSF:
-+	case H2C_FUNC_MCC_MACID_BITMAP:
-+	case H2C_FUNC_MCC_SYNC:
-+	case H2C_FUNC_MCC_SET_DURATION:
-+		break;
-+	default:
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "invalid MCC C2H RCV ACK: func %d\n", func);
-+		return;
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_FW,
-+		    "MCC C2H RCV ACK: group %d, func %d\n", group, func);
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(7, 0));
 +}
 +
-+static void
-+rtw89_mac_c2h_mcc_req_ack(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++static inline void RTW89_SET_FWCMD_ADD_MCC_CENTRAL_CH_SEG0(void *cmd, u32 val)
 +{
-+	u8 group = RTW89_GET_MAC_C2H_MCC_REQ_ACK_GROUP(c2h->data);
-+	u8 func = RTW89_GET_MAC_C2H_MCC_REQ_ACK_H2C_FUNC(c2h->data);
-+	u8 retcode = RTW89_GET_MAC_C2H_MCC_REQ_ACK_H2C_RETURN(c2h->data);
-+	struct rtw89_completion_data data = {};
-+	unsigned int cond;
-+	bool next = false;
-+
-+	switch (func) {
-+	case H2C_FUNC_MCC_REQ_TSF:
-+		next = true;
-+		break;
-+	case H2C_FUNC_MCC_MACID_BITMAP:
-+	case H2C_FUNC_MCC_SYNC:
-+	case H2C_FUNC_MCC_SET_DURATION:
-+		break;
-+	case H2C_FUNC_ADD_MCC:
-+	case H2C_FUNC_START_MCC:
-+	case H2C_FUNC_STOP_MCC:
-+	case H2C_FUNC_DEL_MCC_GROUP:
-+	case H2C_FUNC_RESET_MCC_GROUP:
-+	default:
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "invalid MCC C2H REQ ACK: func %d\n", func);
-+		return;
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_FW,
-+		    "MCC C2H REQ ACK: group %d, func %d, return code %d\n",
-+		    group, func, retcode);
-+
-+	if (!retcode && next)
-+		return;
-+
-+	data.err = !!retcode;
-+	cond = RTW89_MCC_WAIT_COND(group, func);
-+	rtw89_complete_cond(&rtwdev->mcc.wait, cond, &data);
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(15, 8));
 +}
 +
-+static void
-+rtw89_mac_c2h_mcc_tsf_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++static inline void RTW89_SET_FWCMD_ADD_MCC_CENTRAL_CH_SEG1(void *cmd, u32 val)
 +{
-+	u8 group = RTW89_GET_MAC_C2H_MCC_TSF_RPT_GROUP(c2h->data);
-+	struct rtw89_completion_data data = {};
-+	struct rtw89_mac_mcc_tsf_rpt *rpt;
-+	unsigned int cond;
-+
-+	rpt = rtw89_completion_cast(&data, rpt);
-+	rpt->macid_x = RTW89_GET_MAC_C2H_MCC_TSF_RPT_MACID_X(c2h->data);
-+	rpt->macid_y = RTW89_GET_MAC_C2H_MCC_TSF_RPT_MACID_Y(c2h->data);
-+	rpt->tsf_x_low = RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_LOW_X(c2h->data);
-+	rpt->tsf_x_high = RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_HIGH_X(c2h->data);
-+	rpt->tsf_y_low = RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_LOW_Y(c2h->data);
-+	rpt->tsf_y_high = RTW89_GET_MAC_C2H_MCC_TSF_RPT_TSF_HIGH_Y(c2h->data);
-+
-+	cond = RTW89_MCC_WAIT_COND(group, H2C_FUNC_MCC_REQ_TSF);
-+	rtw89_complete_cond(&rtwdev->mcc.wait, cond, &data);
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(23, 16));
 +}
 +
-+static void
-+rtw89_mac_c2h_mcc_status_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++static inline void RTW89_SET_FWCMD_ADD_MCC_PRIMARY_CH(void *cmd, u32 val)
 +{
-+	u8 group = RTW89_GET_MAC_C2H_MCC_STATUS_RPT_GROUP(c2h->data);
-+	u8 macid = RTW89_GET_MAC_C2H_MCC_STATUS_RPT_MACID(c2h->data);
-+	u8 status = RTW89_GET_MAC_C2H_MCC_STATUS_RPT_STATUS(c2h->data);
-+	u32 tsf_low = RTW89_GET_MAC_C2H_MCC_STATUS_RPT_TSF_LOW(c2h->data);
-+	u32 tsf_high = RTW89_GET_MAC_C2H_MCC_STATUS_RPT_TSF_HIGH(c2h->data);
-+	struct rtw89_completion_data data = {};
-+	unsigned int cond;
-+	bool rsp = true;
-+	bool err;
-+	u8 func;
-+
-+	switch (status) {
-+	case RTW89_MAC_MCC_ADD_ROLE_OK:
-+	case RTW89_MAC_MCC_ADD_ROLE_FAIL:
-+		func = H2C_FUNC_ADD_MCC;
-+		err = status == RTW89_MAC_MCC_ADD_ROLE_FAIL;
-+		break;
-+	case RTW89_MAC_MCC_START_GROUP_OK:
-+	case RTW89_MAC_MCC_START_GROUP_FAIL:
-+		func = H2C_FUNC_START_MCC;
-+		err = status == RTW89_MAC_MCC_START_GROUP_FAIL;
-+		break;
-+	case RTW89_MAC_MCC_STOP_GROUP_OK:
-+	case RTW89_MAC_MCC_STOP_GROUP_FAIL:
-+		func = H2C_FUNC_STOP_MCC;
-+		err = status == RTW89_MAC_MCC_STOP_GROUP_FAIL;
-+		break;
-+	case RTW89_MAC_MCC_DEL_GROUP_OK:
-+	case RTW89_MAC_MCC_DEL_GROUP_FAIL:
-+		func = H2C_FUNC_DEL_MCC_GROUP;
-+		err = status == RTW89_MAC_MCC_DEL_GROUP_FAIL;
-+		break;
-+	case RTW89_MAC_MCC_RESET_GROUP_OK:
-+	case RTW89_MAC_MCC_RESET_GROUP_FAIL:
-+		func = H2C_FUNC_RESET_MCC_GROUP;
-+		err = status == RTW89_MAC_MCC_RESET_GROUP_FAIL;
-+		break;
-+	case RTW89_MAC_MCC_SWITCH_CH_OK:
-+	case RTW89_MAC_MCC_SWITCH_CH_FAIL:
-+	case RTW89_MAC_MCC_TXNULL0_OK:
-+	case RTW89_MAC_MCC_TXNULL0_FAIL:
-+	case RTW89_MAC_MCC_TXNULL1_OK:
-+	case RTW89_MAC_MCC_TXNULL1_FAIL:
-+	case RTW89_MAC_MCC_SWITCH_EARLY:
-+	case RTW89_MAC_MCC_TBTT:
-+	case RTW89_MAC_MCC_DURATION_START:
-+	case RTW89_MAC_MCC_DURATION_END:
-+		rsp = false;
-+		break;
-+	default:
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "invalid MCC C2H STS RPT: status %d\n", status);
-+		return;
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_FW,
-+		    "MCC C2H STS RPT: group %d, macid %d, status %d, tsf {%d, %d}\n",
-+		     group, macid, status, tsf_low, tsf_high);
-+
-+	if (!rsp)
-+		return;
-+
-+	data.err = err;
-+	cond = RTW89_MCC_WAIT_COND(group, func);
-+	rtw89_complete_cond(&rtwdev->mcc.wait, cond, &data);
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(31, 24));
 +}
 +
- static
- void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
- 					    struct sk_buff *c2h, u32 len) = {
-@@ -4201,6 +4359,15 @@ void (* const rtw89_mac_c2h_info_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_MAC_C2H_FUNC_BCN_CNT] = rtw89_mac_c2h_bcn_cnt,
- };
- 
++static inline void RTW89_SET_FWCMD_ADD_MCC_BANDWIDTH(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(3, 0));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(5, 4));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_C2H_RPT(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(7, 6));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_DIS_TX_NULL(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, BIT(8));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_DIS_SW_RETRY(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, BIT(9));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_IN_CURR_CH(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, BIT(10));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_SW_RETRY_COUNT(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(13, 11));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_TX_NULL_EARLY(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(17, 14));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_BTC_IN_2G(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, BIT(18));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_PTA_EN(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, BIT(19));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_RFK_BY_PASS(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, BIT(20));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_CH_BAND_TYPE(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(22, 21));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_DURATION(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 2, val, GENMASK(31, 0));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_COURTESY_EN(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 3, val, BIT(0));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_COURTESY_NUM(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 3, val, GENMASK(15, 8));
++}
++
++static inline void RTW89_SET_FWCMD_ADD_MCC_COURTESY_TARGET(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 3, val, GENMASK(23, 16));
++}
++
++struct rtw89_fw_mcc_start_req {
++	u32 group: 2;
++	u32 btc_in_group: 1;
++	u32 old_group_action: 2;
++	u32 old_group: 2;
++	u32 rsvd0: 9;
++	u32 notify_cnt: 3;
++	u32 rsvd1: 2;
++	u32 notify_rxdbg_en: 1;
++	u32 rsvd2: 2;
++	u32 macid: 8;
++	u32 tsf_low;
++	u32 tsf_high;
++};
++
++static inline void RTW89_SET_FWCMD_START_MCC_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_BTC_IN_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, BIT(2));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_OLD_GROUP_ACTION(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(4, 3));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_OLD_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(6, 5));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_NOTIFY_CNT(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(18, 16));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_NOTIFY_RXDBG_EN(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, BIT(21));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_MACID(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(31, 24));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_TSF_LOW(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(31, 0));
++}
++
++static inline void RTW89_SET_FWCMD_START_MCC_TSF_HIGH(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 2, val, GENMASK(31, 0));
++}
++
++static inline void RTW89_SET_FWCMD_STOP_MCC_MACID(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(7, 0));
++}
++
++static inline void RTW89_SET_FWCMD_STOP_MCC_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(9, 8));
++}
++
++static inline void RTW89_SET_FWCMD_STOP_MCC_PREV_GROUPS(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, BIT(10));
++}
++
++static inline void RTW89_SET_FWCMD_DEL_MCC_GROUP_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
++static inline void RTW89_SET_FWCMD_DEL_MCC_GROUP_PREV_GROUPS(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, BIT(2));
++}
++
++static inline void RTW89_SET_FWCMD_RESET_MCC_GROUP_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
++struct rtw89_fw_mcc_tsf_req {
++	u8 group: 2;
++	u8 rsvd0: 6;
++	u8 macid_x;
++	u8 macid_y;
++	u8 rsvd1;
++};
++
++static inline void RTW89_SET_FWCMD_MCC_REQ_TSF_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_REQ_TSF_MACID_X(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(15, 8));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_REQ_TSF_MACID_Y(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(23, 16));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_MACID_BITMAP_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_MACID_BITMAP_MACID(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(15, 8));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_MACID_BITMAP_BITMAP_LENGTH(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(23, 16));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_MACID_BITMAP_BITMAP(void *cmd,
++							   u8 *bitmap, u8 len)
++{
++	memcpy((__le32 *)cmd + 1, bitmap, len);
++}
++
++static inline void RTW89_SET_FWCMD_MCC_SYNC_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_SYNC_MACID_SOURCE(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(15, 8));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_SYNC_MACID_TARGET(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(23, 16));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_SYNC_SYNC_OFFSET(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(31, 24));
++}
++
++struct rtw89_fw_mcc_duration {
++	u32 group: 2;
++	u32 btc_in_group: 1;
++	u32 rsvd0: 5;
++	u32 start_macid: 8;
++	u32 macid_x: 8;
++	u32 macid_y: 8;
++	u32 start_tsf_low;
++	u32 start_tsf_high;
++	u32 duration_x;
++	u32 duration_y;
++};
++
++static inline void RTW89_SET_FWCMD_MCC_SET_DURATION_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(1, 0));
++}
++
 +static
-+void (* const rtw89_mac_c2h_mcc_handler[])(struct rtw89_dev *rtwdev,
-+					   struct sk_buff *c2h, u32 len) = {
-+	[RTW89_MAC_C2H_FUNC_MCC_RCV_ACK] = rtw89_mac_c2h_mcc_rcv_ack,
-+	[RTW89_MAC_C2H_FUNC_MCC_REQ_ACK] = rtw89_mac_c2h_mcc_req_ack,
-+	[RTW89_MAC_C2H_FUNC_MCC_TSF_RPT] = rtw89_mac_c2h_mcc_tsf_rpt,
-+	[RTW89_MAC_C2H_FUNC_MCC_STATUS_RPT] = rtw89_mac_c2h_mcc_status_rpt,
-+};
++inline void RTW89_SET_FWCMD_MCC_SET_DURATION_BTC_IN_GROUP(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, BIT(2));
++}
 +
- bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func)
++static
++inline void RTW89_SET_FWCMD_MCC_SET_DURATION_START_MACID(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(15, 8));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_SET_DURATION_MACID_X(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(23, 16));
++}
++
++static inline void RTW89_SET_FWCMD_MCC_SET_DURATION_MACID_Y(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd, val, GENMASK(31, 24));
++}
++
++static
++inline void RTW89_SET_FWCMD_MCC_SET_DURATION_START_TSF_LOW(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 1, val, GENMASK(31, 0));
++}
++
++static
++inline void RTW89_SET_FWCMD_MCC_SET_DURATION_START_TSF_HIGH(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 2, val, GENMASK(31, 0));
++}
++
++static
++inline void RTW89_SET_FWCMD_MCC_SET_DURATION_DURATION_X(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 3, val, GENMASK(31, 0));
++}
++
++static
++inline void RTW89_SET_FWCMD_MCC_SET_DURATION_DURATION_Y(void *cmd, u32 val)
++{
++	le32p_replace_bits((__le32 *)cmd + 4, val, GENMASK(31, 0));
++}
++
+ #define RTW89_C2H_HEADER_LEN 8
+ 
+ #define RTW89_GET_C2H_CATEGORY(c2h) \
+@@ -3183,9 +3532,27 @@ int rtw89_fw_h2c_wow_global(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 			    bool enable);
+ int rtw89_fw_h2c_wow_wakeup_ctrl(struct rtw89_dev *rtwdev,
+ 				 struct rtw89_vif *rtwvif, bool enable);
+-
+ int rtw89_fw_wow_cam_update(struct rtw89_dev *rtwdev,
+ 			    struct rtw89_wow_cam_info *cam_info);
++int rtw89_fw_h2c_add_mcc(struct rtw89_dev *rtwdev,
++			 const struct rtw89_fw_mcc_add_req *p);
++int rtw89_fw_h2c_start_mcc(struct rtw89_dev *rtwdev,
++			   const struct rtw89_fw_mcc_start_req *p);
++int rtw89_fw_h2c_stop_mcc(struct rtw89_dev *rtwdev, u8 group, u8 macid,
++			  bool prev_groups);
++int rtw89_fw_h2c_del_mcc_group(struct rtw89_dev *rtwdev, u8 group,
++			       bool prev_groups);
++int rtw89_fw_h2c_reset_mcc_group(struct rtw89_dev *rtwdev, u8 group);
++int rtw89_fw_h2c_mcc_req_tsf(struct rtw89_dev *rtwdev,
++			     const struct rtw89_fw_mcc_tsf_req *req,
++			     struct rtw89_mac_mcc_tsf_rpt *rpt);
++int rtw89_fw_h2c_mcc_macid_bitamp(struct rtw89_dev *rtwdev, u8 group, u8 macid,
++				  u8 *bitmap);
++int rtw89_fw_h2c_mcc_sync(struct rtw89_dev *rtwdev, u8 group, u8 source,
++			  u8 target, u8 offset);
++int rtw89_fw_h2c_mcc_set_duration(struct rtw89_dev *rtwdev,
++				  const struct rtw89_fw_mcc_duration *p);
++
+ static inline void rtw89_fw_h2c_init_ba_cam(struct rtw89_dev *rtwdev)
  {
- 	switch (class) {
-@@ -4226,6 +4393,10 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 		if (func < RTW89_MAC_C2H_FUNC_OFLD_MAX)
- 			handler = rtw89_mac_c2h_ofld_handler[func];
- 		break;
-+	case RTW89_MAC_C2H_CLASS_MCC:
-+		if (func < NUM_OF_RTW89_MAC_C2H_FUNC_MCC)
-+			handler = rtw89_mac_c2h_mcc_handler[func];
-+		break;
- 	case RTW89_MAC_C2H_CLASS_FWDBG:
- 		return;
- 	default:
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 82b9e81fe4744..adb0c86a98d3e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -368,6 +368,15 @@ enum rtw89_mac_c2h_info_func {
- 	RTW89_MAC_C2H_FUNC_INFO_MAX,
- };
- 
-+enum rtw89_mac_c2h_mcc_func {
-+	RTW89_MAC_C2H_FUNC_MCC_RCV_ACK = 0,
-+	RTW89_MAC_C2H_FUNC_MCC_REQ_ACK = 1,
-+	RTW89_MAC_C2H_FUNC_MCC_TSF_RPT = 2,
-+	RTW89_MAC_C2H_FUNC_MCC_STATUS_RPT = 3,
-+
-+	NUM_OF_RTW89_MAC_C2H_FUNC_MCC,
-+};
-+
- enum rtw89_mac_c2h_class {
- 	RTW89_MAC_C2H_CLASS_INFO,
- 	RTW89_MAC_C2H_CLASS_OFLD,
-@@ -378,6 +387,31 @@ enum rtw89_mac_c2h_class {
- 	RTW89_MAC_C2H_CLASS_MAX,
- };
- 
-+enum rtw89_mac_mcc_status {
-+	RTW89_MAC_MCC_ADD_ROLE_OK = 0,
-+	RTW89_MAC_MCC_START_GROUP_OK = 1,
-+	RTW89_MAC_MCC_STOP_GROUP_OK = 2,
-+	RTW89_MAC_MCC_DEL_GROUP_OK = 3,
-+	RTW89_MAC_MCC_RESET_GROUP_OK = 4,
-+	RTW89_MAC_MCC_SWITCH_CH_OK = 5,
-+	RTW89_MAC_MCC_TXNULL0_OK = 6,
-+	RTW89_MAC_MCC_TXNULL1_OK = 7,
-+
-+	RTW89_MAC_MCC_SWITCH_EARLY = 10,
-+	RTW89_MAC_MCC_TBTT = 11,
-+	RTW89_MAC_MCC_DURATION_START = 12,
-+	RTW89_MAC_MCC_DURATION_END = 13,
-+
-+	RTW89_MAC_MCC_ADD_ROLE_FAIL = 20,
-+	RTW89_MAC_MCC_START_GROUP_FAIL = 21,
-+	RTW89_MAC_MCC_STOP_GROUP_FAIL = 22,
-+	RTW89_MAC_MCC_DEL_GROUP_FAIL = 23,
-+	RTW89_MAC_MCC_RESET_GROUP_FAIL = 24,
-+	RTW89_MAC_MCC_SWITCH_CH_FAIL = 25,
-+	RTW89_MAC_MCC_TXNULL0_FAIL = 26,
-+	RTW89_MAC_MCC_TXNULL1_FAIL = 27,
-+};
-+
- struct rtw89_mac_ax_coex {
- #define RTW89_MAC_AX_COEX_RTK_MODE 0
- #define RTW89_MAC_AX_COEX_CSR_MODE 1
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
 -- 
 2.25.1
 
