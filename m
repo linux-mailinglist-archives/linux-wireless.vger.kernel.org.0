@@ -2,157 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B198262FAB6
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 17:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10CAB62FADE
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 17:55:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242200AbiKRQrT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 11:47:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33724 "EHLO
+        id S242360AbiKRQy6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 11:54:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241423AbiKRQrR (ORCPT
+        with ESMTP id S241367AbiKRQy5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 11:47:17 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E99BE04
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 08:47:16 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id j16so9065619lfe.12
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 08:47:16 -0800 (PST)
+        Fri, 18 Nov 2022 11:54:57 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82ACF6A764
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 08:54:56 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id z26so5422697pff.1
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 08:54:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JjS4gImtGAJJbWB/0EDokdPSqW8A0zuYR+TtXk+h7bA=;
-        b=kDciKdVGHdmiJlolrTF6PbQo6D/1op1CjAitUOm47eVwIp7q548L2ZgzwK/JRH9H9O
-         OACMJe6gV1S5iJy+Y3XmYIrM/4lFBav6Qjr0Nam47w2I3MN7RarUKS5ZhpPE1zHO6JWn
-         576QQkfZaQBkIpZZBdoL788i3/OUPIGmtG8dFq1+SVDBpPLJ8OBiZHMAw4WLOYbyQnFu
-         f13d2BBVSQZUTgzXg3ac6cDQJgUVVnGZInsmPH4WQwdEG54ufYeWBkK/pU5wMkvArKUF
-         ReR2F6BHOYDKcWMclEOGGT3rWIxXgYZHKf2C2e16VU5kFHmNW57/ZMxy+Qfzc+qCpc89
-         eANg==
+        d=chromium.org; s=google;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qkJ6eq/fIahCF8o8UiVfnfFhlL7awmXBJQtRWOpGmqU=;
+        b=UogA1CMJuDCS5kW93n44fMAJHDPCoXm/kKTw86eNm8lbL18uCLPvJ8jJQvRyaBwV0J
+         zshx3ls6pm30x5NULXL6Q1ZA+b+N2IWs6NECGAVbA0AHECidbuzdgxX/N6kVG1BHqHPo
+         OKRH2/o0DU7FlwYadK4GvZBUV4OycoXpPrhcs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JjS4gImtGAJJbWB/0EDokdPSqW8A0zuYR+TtXk+h7bA=;
-        b=1buC8+NRtIohhh9hx6SlWji7qZkvQl8XKXVGGBwaPrQ7WWHLpKrey3tP09RNQAN/N2
-         /FffK7Garcw62LbqHsGliJ0l3p/LcHVovSUGcOw4kidiREqp50z/2b0FeFWy2xF6V8mY
-         SydS9v+gDOBErZtklOZdu5fw2/V0dsAatCEiJMYV7dePh+Q6TsWLtlgIzF8Kvl+vuE/5
-         icMb7RM3jv0/hFXFM3L6NU6FKDjjMHsnbycWiy0DEshy/x8iWkVxVMsnd+gm7gDR/zcs
-         ZihljhzIm6Yk7hEUNy3MlekoWJo8u+slZTUd9iqQuTRpT1gHlSAu/+2CLpCY837z5CAO
-         eP3g==
-X-Gm-Message-State: ANoB5pnyZnfcJhPyfkMBFnPcpmFN2k9UuGiWgt/OGayB/qNW0Po7cX+k
-        HzMhze6GmP96+a0nFqKd9DYLJA==
-X-Google-Smtp-Source: AA0mqf64S2QnERSJTTT5QfDNrtKoGh+bzu+VoYTnFpf/BrzC3hbdxo8BS7xLLf52YaQigOAu/EHglg==
-X-Received: by 2002:ac2:4e0a:0:b0:4a2:2aab:5460 with SMTP id e10-20020ac24e0a000000b004a22aab5460mr2546386lfr.62.1668790035078;
-        Fri, 18 Nov 2022 08:47:15 -0800 (PST)
-Received: from [192.168.31.208] ([194.29.137.22])
-        by smtp.gmail.com with ESMTPSA id v20-20020a2e9614000000b0026dced9840dsm693266ljh.61.2022.11.18.08.47.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Nov 2022 08:47:14 -0800 (PST)
-Message-ID: <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
-Date:   Fri, 18 Nov 2022 17:47:12 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.4.2
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Hector Martin <marcan@marcan.st>,
-        "~postmarketos/upstreaming@lists.sr.ht" 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        "martin.botka@somainline.org" <martin.botka@somainline.org>,
-        "angelogioacchino.delregno@somainline.org" 
-        <angelogioacchino.delregno@somainline.org>,
-        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
-        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qkJ6eq/fIahCF8o8UiVfnfFhlL7awmXBJQtRWOpGmqU=;
+        b=S75d+zvAE7lc96QRGk6dxv4Ln3ZGiAnA4NnyOeeZdCkA16P5PHf29cpX/jyjM8TRPV
+         ALSoZcTkEMDxQBSs+tEPpNC/zhIOYUS4t/pcjYFQSAKsW2aPH8vV35MszTO/h2lhsk1M
+         szpua80FLY4pudfiUSkUHAFOfcrmxrt/PrbLEZfKH54oaY2F7iL6+I608+0si6zu2+pQ
+         C7ciYZgwRIU6/uVitX8me1bgMVj0wlKdBjQX7Hwq9n9cI7xBmNSqIfk5hwdPMjTi+UhQ
+         wnoRm3Gccsb0vUdo8DVoNsfUQEuDdha8u2lB2ShgLiihKPHuwRzHNuYATe6Jcf0rFL8+
+         cV3Q==
+X-Gm-Message-State: ANoB5pnlGDuKVaEGhGkiJ164k/2GAi115reNdDMx2olU2ZOYwmJzvlw2
+        hSGz+horLpR76FbUm8tl+sqRCT86sZ3R2Q==
+X-Google-Smtp-Source: AA0mqf4TdqgLeKRagwwALD8Gxu+PQC0hD+r1aGZbWUB3kl2trIcaAzvMBP0naIGIsuzPtEcUTtpH4Q==
+X-Received: by 2002:a63:1c66:0:b0:476:c782:e5d1 with SMTP id c38-20020a631c66000000b00476c782e5d1mr7298165pgm.261.1668790496027;
+        Fri, 18 Nov 2022 08:54:56 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id f7-20020a625107000000b0056b818142a2sm3391659pfb.109.2022.11.18.08.54.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Nov 2022 08:54:55 -0800 (PST)
+From:   coverity-bot <keescook@chromium.org>
+X-Google-Original-From: coverity-bot <keescook+coverity-bot@chromium.org>
+Date:   Fri, 18 Nov 2022 08:54:54 -0800
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Petr Stourac <pstourac@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Soon Tak Lee <soontak.lee@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
- <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
- <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
- <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
- <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
- <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <87sfke32pc.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Eric Dumazet <edumazet@google.com>,
+        Nathan Errera <nathan.errera@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
+        netdev@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Abhishek Naik <abhishek.naik@intel.com>,
+        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        Sriram R <quic_srirrama@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Mike Golant <michael.golant@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-next@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Coverity: iwl_mvm_sec_key_add(): Memory - corruptions
+Message-ID: <202211180854.CD96D54D36@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello!
 
+This is an experimental semi-automated report about issues detected by
+Coverity from a scan of next-20221118 as part of the linux-next scan project:
+https://scan.coverity.com/projects/linux-next-weekly-scan
 
-On 26/09/2022 11:27, Kalle Valo wrote:
-> Alvin Šipraga <ALSI@bang-olufsen.dk> writes:
-> 
->> On Thu, Sep 22, 2022 at 03:02:12PM +0200, Linus Walleij wrote:
->>> On Thu, Sep 22, 2022 at 12:21 PM Konrad Dybcio
->>> <konrad.dybcio@somainline.org> wrote:
->>>
->>>> Also worth noting is the 'somc' bit, meaning there are probably *some* SONY
->>>> customizations, but that's also just a guess.
->>>
->>> What I have seen from BRCM customizations on Samsung phones is that
->>> the per-device customization of firmware seems to involve the set-up of
->>> some GPIO and power management pins. For example if integrated with
->>> an SoC that has autonomous system resume, or if some GPIO line has
->>> to be pulled to enable an external regulator or PA.
->>
->> At least with Infineon (formerly Cypress), as a customer you might get a
->> private firmware and this will be maintained internally by them on a
->> separate customer branch. Any subsequent bugfixes or feature requests
->> will usually be applied to that customer branch and a new firmware built
->> from it. I think their internal "mainline" branch might get merged into
->> the customer branches from time to time, but this seems to be done on an
->> ad-hoc basis. This is our experience at least.
->>
->> I would also point out that the BCM4359 is equivalent to the
->> CYW88359/CYW89359 chipset, which we are using in some of our
->> products. Note that this is a Cypress chipset (identifiable by the
->> Version: ... (... CY) tag in the version string). But the FW Konrad is
->> linking appears to be for a Broadcom chipset.
->>
->> FYI, here's a publicly available set of firmware files for the '4359:
->>
->> https://github.com/NXP/imx-firmware/tree/master/cyw-wifi-bt/1FD_CYW4359
->>
->> Anyway, I would second Hector's suggestion and make this a separate FW.
-> 
-> I also recommend having a separate firmware filename. Like Hector said,
-> it's easy to have a symlink in userspace if same binary can be used.
-So, I dusted off this patch and tried to change the fw name, only to 
-discover that the BRCM_PCIE_43596_DEVICE_ID is equal to 
-CY_PCIE_89459_DEVICE_ID, (which btw uses 4355/89459 fw), but then it 
-makes the driver expect 4359/9 based on rev matching, so... the 43596 
-chip ID may be a lie? Or at least for the one used in my particular 
-device? I'm beyond confused now..
+You're getting this email because you were associated with the identified
+lines of code (noted below) that were touched by commits:
 
-I can think of a couple of hacky ways to force use of 43596 fw, but I 
-don't think any would be really upstreamable..
+  Thu Nov 10 13:26:51 2022 +0200
+    5c75a208c244 ("wifi: iwlwifi: mvm: support new key API")
 
-Any thoughts?
+Coverity reported the following:
 
-Konrad
+*** CID 1527370:  Memory - corruptions  (OVERRUN)
+drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c:123 in iwl_mvm_sec_key_add()
+117
+118     	if (WARN_ON(keyconf->keylen > sizeof(cmd.u.add.key)))
+119     		return -EINVAL;
+120
+121     	if (keyconf->cipher == WLAN_CIPHER_SUITE_WEP40 ||
+122     	    keyconf->cipher == WLAN_CIPHER_SUITE_WEP104)
+vvv     CID 1527370:  Memory - corruptions  (OVERRUN)
+vvv     Overrunning buffer pointed to by "cmd.u.add.key + 3" of 32 bytes by passing it to a function which accesses it at byte offset 34 using argument "keyconf->keylen" (which evaluates to 32). [Note: The source code implementation of the function has been overridden by a builtin model.]
+123     		memcpy(cmd.u.add.key + IWL_SEC_WEP_KEY_OFFSET, keyconf->key,
+124     		       keyconf->keylen);
+125     	else
+126     		memcpy(cmd.u.add.key, keyconf->key, keyconf->keylen);
+127
+128     	if (keyconf->cipher == WLAN_CIPHER_SUITE_TKIP) {
+
+If this is a false positive, please let us know so we can mark it as
+such, or teach the Coverity rules to be smarter. If not, please make
+sure fixes get into linux-next. :) For patches fixing this, please
+include these lines (but double-check the "Fixes" first):
+
+Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
+Addresses-Coverity-ID: 1527370 ("Memory - corruptions")
+Fixes: 5c75a208c244 ("wifi: iwlwifi: mvm: support new key API")
+
+keyconf->keylen is only bounds-checked against sizeof(cmd.u.add.key),
+but the memcpy() is starting a write at key + 3.
+
+Thanks for your attention!
+
+-- 
+Coverity-bot
