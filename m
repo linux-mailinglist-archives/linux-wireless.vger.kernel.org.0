@@ -2,117 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C9AD62FF26
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 22:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 376E762FF30
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 22:11:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbiKRVHg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 16:07:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54742 "EHLO
+        id S230131AbiKRVLy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 16:11:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbiKRVHe (ORCPT
+        with ESMTP id S229900AbiKRVLv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 16:07:34 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CCE99E9D
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 13:07:32 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id f18so16000602ejz.5
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 13:07:32 -0800 (PST)
+        Fri, 18 Nov 2022 16:11:51 -0500
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1055F7C452
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 13:11:50 -0800 (PST)
+Received: by mail-pj1-x1030.google.com with SMTP id k2-20020a17090a4c8200b002187cce2f92so4186512pjh.2
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Nov 2022 13:11:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hsBFF6CLvSGQgYqfBGsSga8xVozq3EjdMhoiericRrs=;
-        b=AZklXBj9DgKOkIGjby5yhfkVjiFid17RotWzbMveFTCLgaybzB5SMrilTd6/agcpqH
-         3tdxg+t8L+IHXwZIYqScZiTQiRPtN+48WcplIT/NRdisdVuLTCD783/l1xiBzs6KyfUG
-         AHtfGyyEZ4hVwagRNvRD0yCNWitzit7COab9a/tZRNofjSFTXU9fBd0Qu0chf64s8uwe
-         XPZg69+TziaJbkFPMEUL8CBkvpu/F7rfdCpOZQLu0j/tKAxveHrds79tiE4pKH9fbQvs
-         UceXeVW2Qxnq3oqSlBiA/Plqn8/h6vXucIQvS5qe0vuyjNzRPvZo/FMaxVGxzQsgEfGh
-         lCFg==
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HS164PT1thWPX3+gJIUevbDgvzJj6XIx86U2ombNC6E=;
+        b=V/10M61BAwjqfgwtW4m6+OLQQQVNW5qdkveInE2+NDix/ZB0ARQlpjaAePjf5krNjS
+         MfLKsZzwmVtauIFxprl09NW9We65OAoxeJWj7HCzZ/aVDrFkBYTHh1dkZ6nuM9dC16uU
+         ucPcJeE0B3y0t2RAv5Of1RObH4YoSyPsD1+cQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hsBFF6CLvSGQgYqfBGsSga8xVozq3EjdMhoiericRrs=;
-        b=qRcabDKIKVnq4KxZSov284ORMw9EVMiiiJemFCmxVbdTghGto1N1yCWYL/TEOyoaVR
-         hTX39JAkmibKrl+sbEyxCCLg7uaxAIgpM6/7DMwLtu0cho050eFsVgy3hJtMi0bJV42Y
-         9mQ8KhqrFDyQkF1Ih2caFNsgcD28I/BeFiDwYCPV2YhRquVXdxt1NZ9Mbwrf3+18w/4R
-         DeKh9HiBtLCl7Uu5P9a3ShebD0WZKlVU532Fd44jdFaxFsSJXdUcnUv+T/pZ4DlciKy2
-         xcPn16OSf2HDCsyOnGV8q5KIU/wdF/0Kz7mFXcXT1ioDvxG5h+zmFeFvn6YR8nlsqeNO
-         wzpw==
-X-Gm-Message-State: ANoB5pkHZ0/Z8Aae6tshfxU7lMFoKBnTt0o6UZW7dHf55/tn9V43f1q4
-        anvHH/7UHzjhz8t+XdKG998PH4cuvcLS3vKENh/V4PrWKNo=
-X-Google-Smtp-Source: AA0mqf7ZA42ig6JwbYHZFzFQMa6lnO9rZ8ZjXmCC5LCogfE6h6OpW9JKf4dLhltcgzpce7RBcO7jnm4XgMJ8qMGrWFE=
-X-Received: by 2002:a17:906:cc8f:b0:78b:8ce7:fe3c with SMTP id
- oq15-20020a170906cc8f00b0078b8ce7fe3cmr7407002ejb.557.1668805650564; Fri, 18
- Nov 2022 13:07:30 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HS164PT1thWPX3+gJIUevbDgvzJj6XIx86U2ombNC6E=;
+        b=1Be9apxGPP74n4gHA4bG6BgBcKcVJWi2RSO4+E94ZZfFzCKCxatBf2c0xiVTXZCgRo
+         a7ALkY5wCb3SuEeenvxmpIMzlXiou4TQJZFe3BPVvjXf4Z3hadYMZOmZov7Ybm4dM/7j
+         +mFl8C/7JqZsoUcxVBCW/Ekz9nNCBm/ewPc3HsebPh5LioZvUNglIjeExJVIB516ZcHn
+         Tbbqz0byWkT7Xbcqo4HpeWgVwekDObEq8JEDBF3CMURHkTGQlZGSUbiUByMOoKQHJLDB
+         ISuAQpXM4pypdrXWdx5ErJdM030T/cHVyiCa1NnIV4dJicfsPaZgep7vTWj3L6EtlIci
+         yp8A==
+X-Gm-Message-State: ANoB5pkRrgIUs/dcAlH9iTKb4dbN06yPBf8RmlVVxt8LbBdeyXuAI+T4
+        Ilits2Ku7b7j3mNq5FmgLNuLQg==
+X-Google-Smtp-Source: AA0mqf4/MwFX1Iqiu6FlU+9aTkJHZtAuq3pA/aTFngJdcgaTXnpd6zMAORQYE38fec5SPq+7DuJKbA==
+X-Received: by 2002:a17:902:e385:b0:178:7040:9917 with SMTP id g5-20020a170902e38500b0017870409917mr1179204ple.109.1668805909571;
+        Fri, 18 Nov 2022 13:11:49 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id c6-20020a170902d48600b001782aab6318sm4262797plg.68.2022.11.18.13.11.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Nov 2022 13:11:49 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Christian Lamparter <chunkeey@googlemail.com>
+Cc:     Kees Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH] carl9170: Replace zero-length array of trailing structs with flex-array
+Date:   Fri, 18 Nov 2022 13:11:47 -0800
+Message-Id: <20221118211146.never.395-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CAKf6xpuJgj2TPGZsUw7JXvMkpv-wzgPq13ySzMaz0R2Ti9WQ4A@mail.gmail.com>
-In-Reply-To: <CAKf6xpuJgj2TPGZsUw7JXvMkpv-wzgPq13ySzMaz0R2Ti9WQ4A@mail.gmail.com>
-From:   Jason Andryuk <jandryuk@gmail.com>
-Date:   Fri, 18 Nov 2022 16:07:18 -0500
-Message-ID: <CAKf6xpuKGp6HSB--xNKqKXMAY2Jj13Zzeg8=8G=-YJOsN2UvAg@mail.gmail.com>
-Subject: Re: iwlwifi write to PCI_CFG_RETRY_TIMEOUT
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1483; h=from:subject:message-id; bh=9oKJHA3pSUUlk2XRtoon41DyXm9EC5lRgSnJeNNG7Nk=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBjd/USLIkMsbwjhdEbLcOY3U5QPGKPBFNJ6YbZMJoZ 0ZDGQQyJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCY3f1EgAKCRCJcvTf3G3AJpHOD/ wKY0GQZ2A8TAEq1UQ7FG9SLArIMDJDDT3g0EpAw5ve8vW+sMh1nv5jJPGd8MQerkzsujTsSPrh2G0c iPQbn+HlI6aQaDOuiuSEdMKJGqqOc/1WP87GGY3OOXa5shhaD6q8AQkfHE6oyrEuK33xeOmJVICKgY Av32wZ2kSTKy2HDZi+GdBlSzpoqkUFdB9AcQgajJ2V+ZbLWqvvWgQCUoU74qjujZDjsXqYuZJcBYdl CdsXdbJ7sYziQAXJB4p8ssHBg1rEfjeVaCx1066DHscGXgYa/if5SgIsCF5IE9pDxAKsUUEOGTYQPc ZsR+njBItdiDY8DYJSUCrstNR6hEmyJpA0u4cUsgH2uakYnt8hL43yIF4DTsNOpTqWDWUpoZpN14dh O4EHhbIrbHblUcz5TeFZgsg22MghgJlJMpsvW11AbpPtSH5rIwy5r7djol/fdNUeybVldBD5ZKVXCj 38UdKomgY//3Q+0O0D0SRKiTDgz3BJSRXrBAjSlu87cdhpNwXUvqoDeYsEcHi09tMwV8+46jUCZsEg SbDJFy4ZTezHATrffDLbWweDBK+LQo2UkP+WZVkah2C5E/Lj9wTIsoY1SXjbp1Bfv1U84zLoXOdpx8 fUksnNUWfZKOxTivJKSp1hVpry3W82obZcOz5rsCc6xdn67sycGb5AKyWgHw==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 17, 2022 at 2:33 PM Jason Andryuk <jandryuk@gmail.com> wrote:
->
-> Hi,
->
-> I was looking at iwlwifi under Xen PCI passthrough and I noticed a
-> curious PCI config space write:
->
-> https://github.com/torvalds/linux/blob/master/drivers/net/wireless/intel/iwlwifi/pcie/drv.c#L1721
-> /*
-> * We disable the RETRY_TIMEOUT register (0x41) to keep
-> * PCI Tx retries from interfering with C3 CPU state.
-> */
-> pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
->
-> With 00:14.3 Network controller: Intel Corporation Cannon Point-LP
-> CNVi [Wireless-AC] (rev 30)
-> register 0x41 in the PCI config space is the next cap pointer for
-> "Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00".
->
-> On baremetal, the write seems to be dropped since `hexdump -C
-> /sys/bus/pci/devices/0000\:00\:14.3/config` still shows 0x80 (in my
-> case).  Though I suppose the device could be acting on it even if the
-> value doesn't change.
->
-> With Xen PCI passthrough, QEMU seems to honor emulating the write and
-> it breaks lspci traversing the capabilities so MSI-X is no longer
-> shown.
->
-> Is the write to RETRY_TIMEOUT at 0x41 correct?  It seems to be really
-> old.  Here it references being copied from ipw2100:
+Zero-length arrays are deprecated[1] and are being replaced with
+flexible array members in support of the ongoing efforts to tighten the
+FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
+with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
 
-It seems like lots of drivers copied the write from ipw2100.  And it
-seems like no one knows exactly why it is there.  But it does do
-something for some devices which is why ath9k kept it.
+Replace zero-length array with flexible-array member.
 
-These are some interesting and relevant emails:
-https://lore.kernel.org/linux-wireless/43e72e890912192251r4de4a3c3idb5e4c3723ef87aa@mail.gmail.com/
+This results in no differences in binary output.
 
-https://lore.kernel.org/linux-wireless/20090616151258.GA22849@jm.kir.nu/
+[1] https://github.com/KSPP/linux/issues/78
 
->> I seem to remember the provenance of this code was copy-paste from
->> an intel driver, so while it does "something," the comment may not
->> match the code, 0x41 being vendor-defined.
->
-> The exact story behind this has been a bit more than trivial task to
-> figure out ;-). I would assume this comment is referring to a madwifi
-> changeset: http://madwifi-project.org/changeset/584
+Cc: Christian Lamparter <chunkeey@googlemail.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/net/wireless/ath/carl9170/fwcmd.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Unfortunately, that link seems to be dead and archive.org doesn't have it.
+diff --git a/drivers/net/wireless/ath/carl9170/fwcmd.h b/drivers/net/wireless/ath/carl9170/fwcmd.h
+index 4a500095555c..ff4b3b50250c 100644
+--- a/drivers/net/wireless/ath/carl9170/fwcmd.h
++++ b/drivers/net/wireless/ath/carl9170/fwcmd.h
+@@ -118,10 +118,10 @@ struct carl9170_reg_list {
+ } __packed;
+ 
+ struct carl9170_write_reg {
+-	struct {
++	DECLARE_FLEX_ARRAY(struct {
+ 		__le32		addr;
+ 		__le32		val;
+-	} regs[0] __packed;
++	} __packed, regs);
+ } __packed;
+ 
+ struct carl9170_write_reg_byte {
+-- 
+2.34.1
 
-Regards,
-Jason
