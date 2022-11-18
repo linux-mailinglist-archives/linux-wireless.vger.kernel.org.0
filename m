@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA12E62ED11
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 06:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3684A62ED12
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Nov 2022 06:11:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235127AbiKRFLr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 00:11:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46064 "EHLO
+        id S235132AbiKRFLt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 00:11:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235042AbiKRFLn (ORCPT
+        with ESMTP id S235088AbiKRFLn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 18 Nov 2022 00:11:43 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2BEF76CA1C
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF4356BDDA
         for <linux-wireless@vger.kernel.org>; Thu, 17 Nov 2022 21:11:42 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AI5AsXtA003102, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AI5AsXtA003102
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AI5AtwH6003106, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AI5AtwH6003106
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 18 Nov 2022 13:10:54 +0800
+        Fri, 18 Nov 2022 13:10:55 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 18 Nov 2022 13:11:35 +0800
+ 15.1.2507.9; Fri, 18 Nov 2022 13:11:36 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 18 Nov
- 2022 13:11:35 +0800
+ 2022 13:11:36 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/6] wifi: rtw89: check if atomic before queuing c2h
-Date:   Fri, 18 Nov 2022 13:10:38 +0800
-Message-ID: <20221118051042.29968-3-pkshih@realtek.com>
+Subject: [PATCH 3/6] wifi: rtw89: introduce helpers to wait/complete on condition
+Date:   Fri, 18 Nov 2022 13:10:39 +0800
+Message-ID: <20221118051042.29968-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221118051042.29968-1-pkshih@realtek.com>
 References: <20221118051042.29968-1-pkshih@realtek.com>
@@ -55,10 +55,6 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzE3IKRVpMggMTA6MDA6MDA=?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,153 +65,144 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Before queuing C2H work, we check atomicity of the C2H's handler first now.
-If atomic or lock-free, handle it directly; otherwise, handle it with mutex
-in work as previous. This prepares for MAC MCC C2Hs which require to be
-processed directly. And, their handlers will be functions which can be
-considered atomic.
+MCC (multi-channel concurrency) related H2Cs require to wait for C2H
+responses to judge the execution result and data. We introduce helpers
+to assist this process. Besides, we would like the helpers to be generic
+for use in driver even outside of MCC H2C/C2H, so we make a independent
+patch for them.
+
+In the following, I describe the things first.
+```
+(A)	C2H is generated by FW, and then transferred upto driver. Hence,
+	driver cannot get it immediately without a bit waitting/blocking.
+	For this, we choose to use wait_for_completion_*() instead of
+	busy polling.
+(B)	From the driver management perspective, a scenario, e.g. MCC,
+	may have mulitple kind of H2C functions requiring this process
+	to wait for corresponding C2Hs. But, the driver management flow
+	uses mutex to protect each behavior. So, one scenario triggers
+	one H2C function at one time. To avoid rampant instances of
+	struct completion for each H2C function, we choose to use one
+	struct completion with one condition flag for one scenario.
+(C)	C2Hs, which H2Cs will be waitting for, cannot be ordered with
+	driver management flow, i.e. cannot enqueue work to the same
+	ordered workqueue and cannot lock by the same mutex, to prevent
+	H2C side from getting no C2H responses. So, those C2Hs are parsed
+	in interrupt context directly as done in previous commit.
+(D)	Following (C), the above underline H2Cs and C2Hs will be handled
+	in different contexts without sync. So, we use atomic_cmpxchg()
+	to compare and change the condition in atomic.
+```
+
+So, we introduce struct rtw89_wait_info which combines struct completion
+and atomic_t. Then, the below are the descriptions for helper functions.
+* rtw89_wait_for_cond() to wait for a completion based on a condition.
+* rtw89_complete_cond() to complete a given condition and carry data.
+Each rtw89_wait_info instance independently determines the meaning of
+its waitting conditions. But, RTW89_WAIT_COND_IDLE (UINT_MAX) is reserved.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c  | 47 ++++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/fw.h  | 14 +++++++
- drivers/net/wireless/realtek/rtw89/mac.c | 10 +++++
- drivers/net/wireless/realtek/rtw89/mac.h |  1 +
- 4 files changed, 68 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 35 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h | 31 ++++++++++++++++++++
+ 2 files changed, 66 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 3d7b99e15967e..544f6d4b68735 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -11,6 +11,9 @@
- #include "phy.h"
- #include "reg.h"
- 
-+static void rtw89_fw_c2h_cmd_handle(struct rtw89_dev *rtwdev,
-+				    struct sk_buff *skb);
-+
- static struct sk_buff *rtw89_fw_h2c_alloc_skb(struct rtw89_dev *rtwdev, u32 len,
- 					      bool header)
- {
-@@ -2382,8 +2385,43 @@ void rtw89_fw_free_all_early_h2c(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index f30aadc41f2be..e0b044a33207a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2941,6 +2941,41 @@ void rtw89_core_update_beacon_work(struct work_struct *work)
  	mutex_unlock(&rtwdev->mutex);
  }
  
-+static void rtw89_fw_c2h_parse_attr(struct sk_buff *c2h)
++int rtw89_wait_for_cond(struct rtw89_wait_info *wait, unsigned int cond)
 +{
-+	struct rtw89_fw_c2h_attr *attr = RTW89_SKB_C2H_CB(c2h);
++	struct completion *cmpl = &wait->completion;
++	unsigned long timeout;
++	unsigned int cur;
 +
-+	attr->category = RTW89_GET_C2H_CATEGORY(c2h->data);
-+	attr->class = RTW89_GET_C2H_CLASS(c2h->data);
-+	attr->func = RTW89_GET_C2H_FUNC(c2h->data);
-+	attr->len = RTW89_GET_C2H_LEN(c2h->data);
-+}
++	cur = atomic_cmpxchg(&wait->cond, RTW89_WAIT_COND_IDLE, cond);
++	if (cur != RTW89_WAIT_COND_IDLE)
++		return -EBUSY;
 +
-+static bool rtw89_fw_c2h_chk_atomic(struct rtw89_dev *rtwdev,
-+				    struct sk_buff *c2h)
-+{
-+	struct rtw89_fw_c2h_attr *attr = RTW89_SKB_C2H_CB(c2h);
-+	u8 category = attr->category;
-+	u8 class = attr->class;
-+	u8 func = attr->func;
-+
-+	switch (category) {
-+	default:
-+		return false;
-+	case RTW89_C2H_CAT_MAC:
-+		return rtw89_mac_c2h_chk_atomic(rtwdev, class, func);
++	timeout = wait_for_completion_timeout(cmpl, RTW89_WAIT_FOR_COND_TIMEOUT);
++	if (timeout == 0) {
++		atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
++		return -ETIMEDOUT;
 +	}
++
++	if (wait->data.err)
++		return -EFAULT;
++
++	return 0;
 +}
 +
- void rtw89_fw_c2h_irqsafe(struct rtw89_dev *rtwdev, struct sk_buff *c2h)
- {
-+	rtw89_fw_c2h_parse_attr(c2h);
-+	if (!rtw89_fw_c2h_chk_atomic(rtwdev, c2h))
-+		goto enqueue;
-+
-+	rtw89_fw_c2h_cmd_handle(rtwdev, c2h);
-+	dev_kfree_skb_any(c2h);
-+	return;
-+
-+enqueue:
- 	skb_queue_tail(&rtwdev->c2h_queue, c2h);
- 	ieee80211_queue_work(rtwdev->hw, &rtwdev->c2h_work);
- }
-@@ -2391,10 +2429,11 @@ void rtw89_fw_c2h_irqsafe(struct rtw89_dev *rtwdev, struct sk_buff *c2h)
- static void rtw89_fw_c2h_cmd_handle(struct rtw89_dev *rtwdev,
- 				    struct sk_buff *skb)
- {
--	u8 category = RTW89_GET_C2H_CATEGORY(skb->data);
--	u8 class = RTW89_GET_C2H_CLASS(skb->data);
--	u8 func = RTW89_GET_C2H_FUNC(skb->data);
--	u16 len = RTW89_GET_C2H_LEN(skb->data);
-+	struct rtw89_fw_c2h_attr *attr = RTW89_SKB_C2H_CB(skb);
-+	u8 category = attr->category;
-+	u8 class = attr->class;
-+	u8 func = attr->func;
-+	u16 len = attr->len;
- 	bool dump = true;
- 
- 	if (!test_bit(RTW89_FLAG_RUNNING, rtwdev->flags))
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 509a3eac5ffe3..d76d0c80f0256 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -2778,6 +2778,20 @@ static inline void RTW89_SET_FWCMD_TSF32_TOGL_EARLY(void *cmd, u32 val)
- #define RTW89_GET_C2H_LEN(c2h) \
- 	le32_get_bits(*((const __le32 *)(c2h) + 1), GENMASK(13, 0))
- 
-+struct rtw89_fw_c2h_attr {
-+	u8 category;
-+	u8 class;
-+	u8 func;
-+	u16 len;
-+};
-+
-+static inline struct rtw89_fw_c2h_attr *RTW89_SKB_C2H_CB(struct sk_buff *skb)
++void rtw89_complete_cond(struct rtw89_wait_info *wait, unsigned int cond,
++			 const struct rtw89_completion_data *data)
 +{
-+	static_assert(sizeof(skb->cb) >= sizeof(struct rtw89_fw_c2h_attr));
++	unsigned int cur;
 +
-+	return (struct rtw89_fw_c2h_attr *)skb->cb;
++	cur = atomic_cmpxchg(&wait->cond, cond, RTW89_WAIT_COND_IDLE);
++	if (cur != cond)
++		return;
++
++	wait->data = *data;
++	complete(&wait->completion);
 +}
 +
- #define RTW89_GET_C2H_LOG_SRT_PRT(c2h) (char *)((__le32 *)(c2h) + 2)
- #define RTW89_GET_C2H_LOG_LEN(len) ((len) - RTW89_C2H_HEADER_LEN)
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index ecd603a881345..df83d1bebe543 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -4201,6 +4201,16 @@ void (* const rtw89_mac_c2h_info_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_MAC_C2H_FUNC_BCN_CNT] = rtw89_mac_c2h_bcn_cnt,
+ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ {
+ 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 3fff666c0e84a..5a7d5514bba9a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2802,6 +2802,34 @@ struct rtw89_mac_info {
+ 	u8 cpwm_seq_num;
  };
  
-+bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func)
++struct rtw89_completion_data {
++	bool err;
++#define RTW89_COMPLETION_BUF_SIZE 24
++	u8 buf[RTW89_COMPLETION_BUF_SIZE];
++};
++
++#define rtw89_completion_cast(cmpl_data, ptr)				\
++({									\
++	typecheck(struct rtw89_completion_data *, cmpl_data);		\
++	BUILD_BUG_ON(sizeof(*(ptr)) > RTW89_COMPLETION_BUF_SIZE);	\
++	(typeof(ptr))(cmpl_data)->buf;					\
++})
++
++struct rtw89_wait_info {
++#define RTW89_WAIT_COND_IDLE UINT_MAX
++	atomic_t cond;
++	struct completion completion;
++	struct rtw89_completion_data data;
++};
++
++#define RTW89_WAIT_FOR_COND_TIMEOUT msecs_to_jiffies(100)
++
++static inline void rtw89_init_wait(struct rtw89_wait_info *wait)
 +{
-+	switch (class) {
-+	default:
-+		return false;
-+	case RTW89_MAC_C2H_CLASS_MCC:
-+		return true;
-+	}
++	init_completion(&wait->completion);
++	atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
 +}
 +
- void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			  u32 len, u8 class, u8 func)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 045e8ec61a41e..82b9e81fe4744 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -894,6 +894,7 @@ static inline int rtw89_chip_disable_bb_rf(struct rtw89_dev *rtwdev)
- 
- u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev);
- int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err);
-+bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func);
- void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			  u32 len, u8 class, u8 func);
- int rtw89_mac_setup_phycap(struct rtw89_dev *rtwdev);
+ enum rtw89_fw_type {
+ 	RTW89_FW_NORMAL = 1,
+ 	RTW89_FW_WOWLAN = 3,
+@@ -4440,6 +4468,9 @@ int rtw89_regd_init(struct rtw89_dev *rtwdev,
+ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request);
+ void rtw89_traffic_stats_init(struct rtw89_dev *rtwdev,
+ 			      struct rtw89_traffic_stats *stats);
++int rtw89_wait_for_cond(struct rtw89_wait_info *wait, unsigned int cond);
++void rtw89_complete_cond(struct rtw89_wait_info *wait, unsigned int cond,
++			 const struct rtw89_completion_data *data);
+ int rtw89_core_start(struct rtw89_dev *rtwdev);
+ void rtw89_core_stop(struct rtw89_dev *rtwdev);
+ void rtw89_core_update_beacon_work(struct work_struct *work);
 -- 
 2.25.1
 
