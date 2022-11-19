@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F6B63093E
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 03:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA51663094F
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 03:12:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233772AbiKSCMR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 21:12:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45170 "EHLO
+        id S234165AbiKSCMx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 21:12:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbiKSCMD (ORCPT
+        with ESMTP id S231656AbiKSCMK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 21:12:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 244405E3E1;
-        Fri, 18 Nov 2022 18:11:46 -0800 (PST)
+        Fri, 18 Nov 2022 21:12:10 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064566DFF3;
+        Fri, 18 Nov 2022 18:11:51 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B37A162838;
-        Sat, 19 Nov 2022 02:11:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D39C433D7;
-        Sat, 19 Nov 2022 02:11:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A6977B82675;
+        Sat, 19 Nov 2022 02:11:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218F9C433D6;
+        Sat, 19 Nov 2022 02:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668823905;
-        bh=S+z5YfB3i4OEKPPY2KBWgFeIQbit3Q3Tk4lqP7UErRQ=;
+        s=k20201202; t=1668823908;
+        bh=MlbvOiMIzJGCXboIDtutu175+4WxBuENiY1GhJnkDZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HaZQWWNY9z7WuDdKBdFdLVYZOOFOiFV4P1myp2bIoWlJBYzAyTvvRUCD8S7d0kEsW
-         tZERMJ9wGKoVOHiXoQSrKMGo5y69uddgWONDWYtCS3JqhgIp2IBr1T/UtMvAEBWBc/
-         2SF0OyNUcWvoVxf4LKGaR4Jc4wlmqLNLMZplqymvjFT4ZsYy+ZtuF97X+o2i/YEg0n
-         DZUVBgfveAF+5HtmDXWkIPyA/tbgVhjJQrYaHpxmp/Ub67FguE2xd10IDgT1hjSTtS
-         fPbzKFTu/GcNx5TS8++oQ64CiLQK3/f0XerpYd28ERTPLfF/UIiVZbGEbuX5QGau9B
-         sH3ZVpFDkJ4hA==
+        b=Wh2MdlZHjiBMPeR/gIIUiIJ4FZuwq2WGLD/ngAk4vb7E12EWPKEDvLjlvF+bkQLyX
+         cqrQfZM90kjWpNI16b68VVgkTTKSsjigVBiJ18qZy0R2YfSFY4NyKS7FyozNf+hhEM
+         e2zsgDMcklKVT0oJK2aamjTUL1rjDR7JsOTpv36l6UvNx7Gb2aAdgTIKwASmHAQkxX
+         q/8xCy9K2iVVyGDim038YMMJrN3pwIVCwTrxv3pq6q0FZZJfv866wzHn56UOqet+dF
+         +4tOAhFJJ7rXilkyfMKQzJWl4MZiwQEJdlO0W1yvxKnGlHQUaWmCSgqd9BpxKARi0S
+         ckByuHzek6dww==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+Cc:     "Tyler J. Stachecki" <stachecki.tyler@gmail.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 08/44] wifi: mac80211: Fix ack frame idr leak when mesh has no route
-Date:   Fri, 18 Nov 2022 21:10:48 -0500
-Message-Id: <20221119021124.1773699-8-sashal@kernel.org>
+        pabeni@redhat.com, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.0 10/44] wifi: ath11k: Fix QCN9074 firmware boot on x86
+Date:   Fri, 18 Nov 2022 21:10:50 -0500
+Message-Id: <20221119021124.1773699-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221119021124.1773699-1-sashal@kernel.org>
 References: <20221119021124.1773699-1-sashal@kernel.org>
@@ -59,40 +59,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+From: "Tyler J. Stachecki" <stachecki.tyler@gmail.com>
 
-[ Upstream commit 39e7b5de9853bd92ddbfa4b14165babacd7da0ba ]
+[ Upstream commit 3a89b6dec9920026eaa90fe8457f4348d3388a98 ]
 
-When trying to transmit an data frame with tx_status to a destination
-that have no route in the mesh, then it is dropped without recrediting
-the ack_status_frames idr.
+The 2.7.0 series of QCN9074's firmware requests 5 segments
+of memory instead of 3 (as in the 2.5.0 series).
 
-Once it is exhausted, wpa_supplicant starts failing to do SAE with
-NL80211_CMD_FRAME and logs "nl80211: Frame command failed".
+The first segment (11M) is too large to be kalloc'd in one
+go on x86 and requires piecemeal 1MB allocations, as was
+the case with the prior public firmware (2.5.0, 15M).
 
-Use ieee80211_free_txskb() instead of kfree_skb() to fix it.
+Since f6f92968e1e5, ath11k will break the memory requests,
+but only if there were fewer than 3 segments requested by
+the firmware. It seems that 5 segments works fine and
+allows QCN9074 to boot on x86 with firmware 2.7.0, so
+change things accordingly.
 
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://lore.kernel.org/r/20221027140133.1504-1-nicolas.cavallari@green-communications.fr
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
+
+Signed-off-by: Tyler J. Stachecki <stachecki.tyler@gmail.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20221022042728.43015-1-stachecki.tyler@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_pathtbl.c | 2 +-
+ drivers/net/wireless/ath/ath11k/qmi.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index acc1c299f1ae..69d5e1ec6ede 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -710,7 +710,7 @@ int mesh_path_send_to_gates(struct mesh_path *mpath)
- void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
- 			     struct sk_buff *skb)
- {
--	kfree_skb(skb);
-+	ieee80211_free_txskb(&sdata->local->hw, skb);
- 	sdata->u.mesh.mshstats.dropped_frames_no_route++;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
+index 2ec56a34fa81..0909d53cefeb 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.h
++++ b/drivers/net/wireless/ath/ath11k/qmi.h
+@@ -27,7 +27,7 @@
+ #define ATH11K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	52
+ #define ATH11K_QMI_CALDB_SIZE			0x480000
+ #define ATH11K_QMI_BDF_EXT_STR_LENGTH		0x20
+-#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	3
++#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	5
  
+ #define QMI_WLFW_REQUEST_MEM_IND_V01		0x0035
+ #define QMI_WLFW_FW_MEM_READY_IND_V01		0x0037
 -- 
 2.35.1
 
