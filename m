@@ -2,56 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1CA630AB9
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 03:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAFA630C0A
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 06:19:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236172AbiKSCak (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 21:30:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53246 "EHLO
+        id S231566AbiKSFTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Nov 2022 00:19:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235870AbiKSC3e (ORCPT
+        with ESMTP id S229592AbiKSFTJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 21:29:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C9CC846B;
-        Fri, 18 Nov 2022 18:16:51 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6276281D;
-        Sat, 19 Nov 2022 02:16:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA232C433D6;
-        Sat, 19 Nov 2022 02:16:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668824210;
-        bh=2529DVPoIVbu5ClHjkKmG0Cv3rWy7zn2UNULc+K9M48=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U6NjL0rpViLaHoj432jDPyzGfCy+iyTKvFc2a62Z3uK5G1p+nkNd/FSTmsYWvY1KT
-         bla1IQzDnqP+6bA8m5KNJOc1vfcz0Iabb/afzNBCAIpbT/1TnsO1kewwDJ3ynu3WI/
-         d9MwzGc2qIsNrv9HV+dt4gnFaLI5YRVnUDokzgAdfAByDJaPxPa+vW0ZhXTf9+Eq4J
-         cjdFVBUmxuJN2LmPB6Cc80SJRgq0r+q70/C1hZR44m+lps0dIIZdXJqxGEZ41AcpV+
-         UBw3Zil77r+0tz8qzBWlYRI82gnHms+lUbKzkcRYdK6yLyGwkAy0LxnX4eHnlW42QV
-         dbulRwRng0XqA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 3/4] wifi: mac80211: Fix ack frame idr leak when mesh has no route
-Date:   Fri, 18 Nov 2022 21:16:44 -0500
-Message-Id: <20221119021645.1775682-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221119021645.1775682-1-sashal@kernel.org>
-References: <20221119021645.1775682-1-sashal@kernel.org>
+        Sat, 19 Nov 2022 00:19:09 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBB86D491;
+        Fri, 18 Nov 2022 21:19:07 -0800 (PST)
+Received: from canpemm500006.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NDhgs2spmzFqQ8;
+        Sat, 19 Nov 2022 13:15:53 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.82) by
+ canpemm500006.china.huawei.com (7.192.105.130) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 19 Nov 2022 13:19:04 +0800
+From:   Ziyang Xuan <william.xuanziyang@huawei.com>
+To:     <srini.raju@purelifi.com>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>
+Subject: [PATCH net] wifi: plfxlc: fix potential memory leak in __lf_x_usb_enable_rx()
+Date:   Sat, 19 Nov 2022 13:19:00 +0800
+Message-ID: <20221119051900.1192401-1-william.xuanziyang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.82]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500006.china.huawei.com (7.192.105.130)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,40 +47,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+urbs does not be freed in exception paths in __lf_x_usb_enable_rx().
+That will trigger memory leak. To fix it, add kfree() for urbs within
+"error" label. Compile tested only.
 
-[ Upstream commit 39e7b5de9853bd92ddbfa4b14165babacd7da0ba ]
-
-When trying to transmit an data frame with tx_status to a destination
-that have no route in the mesh, then it is dropped without recrediting
-the ack_status_frames idr.
-
-Once it is exhausted, wpa_supplicant starts failing to do SAE with
-NL80211_CMD_FRAME and logs "nl80211: Frame command failed".
-
-Use ieee80211_free_txskb() instead of kfree_skb() to fix it.
-
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://lore.kernel.org/r/20221027140133.1504-1-nicolas.cavallari@green-communications.fr
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
 ---
- net/mac80211/mesh_pathtbl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/purelifi/plfxlc/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 30a95a2ff196..78945dc9dcd7 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -794,7 +794,7 @@ int mesh_path_send_to_gates(struct mesh_path *mpath)
- void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
- 			     struct sk_buff *skb)
- {
--	kfree_skb(skb);
-+	ieee80211_free_txskb(&sdata->local->hw, skb);
- 	sdata->u.mesh.mshstats.dropped_frames_no_route++;
+diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
+index 39e54b3787d6..76d0a778636a 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/usb.c
++++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
+@@ -247,6 +247,7 @@ static int __lf_x_usb_enable_rx(struct plfxlc_usb *usb)
+ 		for (i = 0; i < RX_URBS_COUNT; i++)
+ 			free_rx_urb(urbs[i]);
+ 	}
++	kfree(urbs);
+ 	return r;
  }
  
 -- 
-2.35.1
+2.25.1
 
