@@ -2,50 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B909E630A3C
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 03:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFAC630A6B
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 03:26:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235810AbiKSCYY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Nov 2022 21:24:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
+        id S236018AbiKSC0m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Nov 2022 21:26:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236141AbiKSCWu (ORCPT
+        with ESMTP id S235694AbiKSCYy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Nov 2022 21:22:50 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63430C7228;
-        Fri, 18 Nov 2022 18:15:17 -0800 (PST)
+        Fri, 18 Nov 2022 21:24:54 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81C8C75A6;
+        Fri, 18 Nov 2022 18:15:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3E6662837;
-        Sat, 19 Nov 2022 02:15:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41484C43147;
-        Sat, 19 Nov 2022 02:15:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9C6D1B82676;
+        Sat, 19 Nov 2022 02:15:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3101CC433C1;
+        Sat, 19 Nov 2022 02:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668824114;
-        bh=hfMegzL/zjsoVf6PqGS/2uoBSVp/9SGCkpzQUO1mGLo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bt8RkaZ95lBkAUn95oJRvPThrN0M5dopP3tm7/CenJmX1VvZQeIIbNmkbF1zSsyX3
-         fm2MdoQIc8JQ4Ha8yrTWB5TFT+5H1sCrzC/71uFAaMfbtt9B7yoYQ9gouVnAzqqZ56
-         PtWS9ObD2fMQ65xUHz+kR6utwdtyTyqVbRpgJ7v7mKmDEx1h6UuSH1+pwMmq/t5ePi
-         g7oWzeQacfOldQ6FJ/Ow6LiWmr9tQ34qRdoad8hUqWqLhCa1/AbsYkVYR2NG7Sab4q
-         lORPg8NskT4EOPQ9JntfSEPHaKiz359h/a8qqbOw2fOxDgUAKJHAhKhVsvJw+w3/+u
-         zjfrK+68HJPLg==
+        s=k20201202; t=1668824146;
+        bh=Ozq4YijtQR1i493lILMjhtixt579srGVeKDDIqRh5xc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WOGch68keh07hPGHWq1Qe1c8qCBywtR1vKcVb0s8W3BWdTX3xDnnltViUHyXVwn6c
+         fjIO7cv8clyd7OnnODZ1toJznnTqH/9mexEkmkHxugG5TJwhisJkIvyaDQllpWC+fo
+         B5nE+1KiYpXLpVjq0Y/IXQXpXPnqWile0ZLKSzun96c2L/ripSDh8gOTxS7RuVbo2J
+         VMuhyGb5RTa+uUCF+/VFde5xCz9hf+WpEsBQ7HZo3UEavL7K3JDWl23q0KPcdGuc0P
+         0WPcEx8E7+OH/y4mN6St5gASkNhbfFPSOGSs/vIXx4b4IKZLO0BSSOrC7MHjf1vKeo
+         +3xKhphoVOM4Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+Cc:     taozhang <taozhang@bestechnic.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 06/18] wifi: mac80211: Fix ack frame idr leak when mesh has no route
-Date:   Fri, 18 Nov 2022 21:14:47 -0500
-Message-Id: <20221119021459.1775052-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 01/11] wifi: mac80211: fix memory free error when registering wiphy fail
+Date:   Fri, 18 Nov 2022 21:15:33 -0500
+Message-Id: <20221119021543.1775315-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221119021459.1775052-1-sashal@kernel.org>
-References: <20221119021459.1775052-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,40 +57,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+From: taozhang <taozhang@bestechnic.com>
 
-[ Upstream commit 39e7b5de9853bd92ddbfa4b14165babacd7da0ba ]
+[ Upstream commit 50b2e8711462409cd368c41067405aa446dfa2af ]
 
-When trying to transmit an data frame with tx_status to a destination
-that have no route in the mesh, then it is dropped without recrediting
-the ack_status_frames idr.
+ieee80211_register_hw free the allocated cipher suites when
+registering wiphy fail, and ieee80211_free_hw will re-free it.
 
-Once it is exhausted, wpa_supplicant starts failing to do SAE with
-NL80211_CMD_FRAME and logs "nl80211: Frame command failed".
+set wiphy_ciphers_allocated to false after freeing allocated
+cipher suites.
 
-Use ieee80211_free_txskb() instead of kfree_skb() to fix it.
-
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://lore.kernel.org/r/20221027140133.1504-1-nicolas.cavallari@green-communications.fr
+Signed-off-by: taozhang <taozhang@bestechnic.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_pathtbl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 870c8eafef92..c2b051e0610a 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -718,7 +718,7 @@ int mesh_path_send_to_gates(struct mesh_path *mpath)
- void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
- 			     struct sk_buff *skb)
- {
--	kfree_skb(skb);
-+	ieee80211_free_txskb(&sdata->local->hw, skb);
- 	sdata->u.mesh.mshstats.dropped_frames_no_route++;
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index f215218a88c9..fa2ac02063cf 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1315,8 +1315,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	ieee80211_led_exit(local);
+ 	destroy_workqueue(local->workqueue);
+  fail_workqueue:
+-	if (local->wiphy_ciphers_allocated)
++	if (local->wiphy_ciphers_allocated) {
+ 		kfree(local->hw.wiphy->cipher_suites);
++		local->wiphy_ciphers_allocated = false;
++	}
+ 	kfree(local->int_scan_req);
+ 	return result;
  }
+@@ -1386,8 +1388,10 @@ void ieee80211_free_hw(struct ieee80211_hw *hw)
+ 	mutex_destroy(&local->iflist_mtx);
+ 	mutex_destroy(&local->mtx);
  
+-	if (local->wiphy_ciphers_allocated)
++	if (local->wiphy_ciphers_allocated) {
+ 		kfree(local->hw.wiphy->cipher_suites);
++		local->wiphy_ciphers_allocated = false;
++	}
+ 
+ 	idr_for_each(&local->ack_status_frames,
+ 		     ieee80211_free_ack_frame, NULL);
 -- 
 2.35.1
 
