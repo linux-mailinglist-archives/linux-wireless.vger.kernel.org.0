@@ -2,64 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C487363160F
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Nov 2022 20:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE46631611
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Nov 2022 20:51:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbiKTTvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Nov 2022 14:51:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48566 "EHLO
+        id S229723AbiKTTvr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Nov 2022 14:51:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbiKTTun (ORCPT
+        with ESMTP id S229635AbiKTTvp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Nov 2022 14:50:43 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F9C450BE
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Nov 2022 11:50:10 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id ud5so24316440ejc.4
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Nov 2022 11:50:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8LaHKmq7OFJnIyMctlCwRLI+i+Iq0pi+JZ2iY5cq02g=;
-        b=AN9rStZCtMgLQUv9/49V7YhZAwRm+PNwNReA0n5gVRkWkdm8EppkQHCh6QfYmbAz19
-         nGJx969XrtxRL75oXJIT6O5lutVJn79Z0ZE6S1cOpJcK059OpNDnHAp9V0Z7eqE7Hfs3
-         Pq+G1Eg8XcgIwk8HX9ZN+QR/sFd3ln2kak9Gqsnb4wpoxvZNCBL694BDuOy/UHRniyL0
-         r1UxjNYXQv/ii4DIYNoRJYVC75SNcjFVpe8TqOtK87CJ4WDOrfirVUlaiB81RVWeM58u
-         jpSTDP41uj8SxgB+ObYoDoFRNks6vK6p2GQy3zsznfNqUxXMSuUhoNQbU6qOWNPJTB47
-         k4Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8LaHKmq7OFJnIyMctlCwRLI+i+Iq0pi+JZ2iY5cq02g=;
-        b=rVzTuIwm5fubhAMHGfpl2QGo6hOe4jC7RJSgITxlNe4ns3xpAYaVbP5kGzG0UYrkdi
-         1WLbHkSRvSILu8PXoKK2E/YQxEmv+VBGgA1gdhOFh0d0Pz74P9T/S+XmqKZdj5VI5LFf
-         CdpKDA143uRk1HumzvkNvRVYGgSIf005snwlOUcYuylC4DA6kJRfTZXwb6EuBEnv/eXb
-         uPx3UsJQM2KG0chIL9c39mH4lnjna0qE+MEWoyQ51ZteTphNvVc9nIKsoon8QzewzAI/
-         SoeMM5xmDx1WqQ7dDqvFyt1COz7kFogHwbVUWT9sY/VeYiTIo8BodjEFfskZTVEo4xnH
-         6MHQ==
-X-Gm-Message-State: ANoB5pkt5Nh93LqkVRamOCrQqfcF6Jc+876cGm4nHVPP/zsHk9JHUpOU
-        nUyogM3DZIjUxcTdc6lWChc00gIVMWjwG0HzODqeP+LI
-X-Google-Smtp-Source: AA0mqf5vnTsEtQ4B7Zfkj0WpHo7Db21kB3jusileqnwVejhEjw/O43dzXMhXDsBkoJaFHOVv2M94Gqxmt6lwgfQWnHs=
-X-Received: by 2002:a17:906:d785:b0:7ad:a3c6:6797 with SMTP id
- pj5-20020a170906d78500b007ada3c66797mr13487063ejb.665.1668973808804; Sun, 20
- Nov 2022 11:50:08 -0800 (PST)
+        Sun, 20 Nov 2022 14:51:45 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2ED2ED43
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Nov 2022 11:51:41 -0800 (PST)
+X-UUID: 31a48c5c4e3341bb85737d7fe5f737c8-20221121
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=0OVfeHC4EQB12+w5a2/NZH9YZPufCTe/TK7F6rvOOMw=;
+        b=KnxT/3vqiJ1fA5+qKWbsvJnqavZCSCue9Gj7995xfMlU3MNNyc407NrSu8Zfybv/J/eUMetvCprE47fRL2Cum1eKCibEBRWUBi2LB+G9z1OsLgU/X5XX45n+x6dBgyEfrA6fuTvcVxZSlEV/fLYXMKYzeQq+Ad4EXOi+TkTcITw=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.12,REQID:2730e156-6f24-44a6-ba25-c9ac3c930eeb,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.12,REQID:2730e156-6f24-44a6-ba25-c9ac3c930eeb,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:62cd327,CLOUDID:7f134a2f-2938-482e-aafd-98d66723b8a9,B
+        ulkID:221121035133A9G5QKKU,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 31a48c5c4e3341bb85737d7fe5f737c8-20221121
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1549334039; Mon, 21 Nov 2022 03:51:32 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Mon, 21 Nov 2022 03:51:31 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Mon, 21 Nov 2022 03:51:31 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/3] wifi: mt76: mt7915: add basedband Txpower info into debugfs
+Date:   Mon, 21 Nov 2022 03:51:28 +0800
+Message-ID: <c73db8d9bb03efe8cb403434aeedad25d958e258.1668973479.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <CAKf6xpuJgj2TPGZsUw7JXvMkpv-wzgPq13ySzMaz0R2Ti9WQ4A@mail.gmail.com>
- <CAKf6xpuKGp6HSB--xNKqKXMAY2Jj13Zzeg8=8G=-YJOsN2UvAg@mail.gmail.com>
-In-Reply-To: <CAKf6xpuKGp6HSB--xNKqKXMAY2Jj13Zzeg8=8G=-YJOsN2UvAg@mail.gmail.com>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Sun, 20 Nov 2022 21:49:57 +0200
-Message-ID: <CANUX_P0tXpmcia=djC8yzyY0OCS2UNOZjSAuxRjeBfgQqyUrtQ@mail.gmail.com>
-Subject: Re: iwlwifi write to PCI_CFG_RETRY_TIMEOUT
-To:     Jason Andryuk <jandryuk@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
+        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,64 +65,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 18, 2022 at 11:13 PM Jason Andryuk <jandryuk@gmail.com> wrote:
->
-> On Thu, Nov 17, 2022 at 2:33 PM Jason Andryuk <jandryuk@gmail.com> wrote:
-> >
-> > Hi,
-> >
-> > I was looking at iwlwifi under Xen PCI passthrough and I noticed a
-> > curious PCI config space write:
-> >
-> > https://github.com/torvalds/linux/blob/master/drivers/net/wireless/intel/iwlwifi/pcie/drv.c#L1721
-> > /*
-> > * We disable the RETRY_TIMEOUT register (0x41) to keep
-> > * PCI Tx retries from interfering with C3 CPU state.
-> > */
-> > pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
-> >
-> > With 00:14.3 Network controller: Intel Corporation Cannon Point-LP
-> > CNVi [Wireless-AC] (rev 30)
-> > register 0x41 in the PCI config space is the next cap pointer for
-> > "Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00".
-> >
-> > On baremetal, the write seems to be dropped since `hexdump -C
-> > /sys/bus/pci/devices/0000\:00\:14.3/config` still shows 0x80 (in my
-> > case).  Though I suppose the device could be acting on it even if the
-> > value doesn't change.
-> >
-> > With Xen PCI passthrough, QEMU seems to honor emulating the write and
-> > it breaks lspci traversing the capabilities so MSI-X is no longer
-> > shown.
-> >
-> > Is the write to RETRY_TIMEOUT at 0x41 correct?  It seems to be really
-> > old.  Here it references being copied from ipw2100:
->
-> It seems like lots of drivers copied the write from ipw2100.  And it
-> seems like no one knows exactly why it is there.  But it does do
-> something for some devices which is why ath9k kept it.
->
-> These are some interesting and relevant emails:
-> https://lore.kernel.org/linux-wireless/43e72e890912192251r4de4a3c3idb5e4c3723ef87aa@mail.gmail.com/
->
-> https://lore.kernel.org/linux-wireless/20090616151258.GA22849@jm.kir.nu/
->
-> >> I seem to remember the provenance of this code was copy-paste from
-> >> an intel driver, so while it does "something," the comment may not
-> >> match the code, 0x41 being vendor-defined.
-> >
-> > The exact story behind this has been a bit more than trivial task to
-> > figure out ;-). I would assume this comment is referring to a madwifi
-> > changeset: http://madwifi-project.org/changeset/584
->
-> Unfortunately, that link seems to be dead and archive.org doesn't have it.
->
+This helps user to debug Txpower propagation path easily.
 
-I asked internally and unfortunately I couldn't get any clear answer.
-Looks like this setting
-has been there for many many years (~15) and nobody really understands
-why. It has been
-removed for our newest device in another (close source) driver and I
-guess we'll do the
-same in Linux. I am not sure what we'll do with legacy devices though...
-We could remove it and risk a regression, or just ... leave it..
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/debugfs.c  | 16 +++++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt7915/regs.h |  3 +++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 096cb8a4db3d..1244f5c4172b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -967,11 +967,16 @@ mt7915_rate_txpower_show(struct seq_file *file, void *data)
+ 		"RU484/SU40", "RU996/SU80", "RU2x996/SU160"
+ 	};
+ 	struct mt7915_phy *phy = file->private;
++	struct mt7915_dev *dev = phy->dev;
+ 	s8 txpower[MT7915_SKU_RATE_NUM], *buf;
+-	int i;
++	int i, ret;
++
++	ret = mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower));
++	if (ret)
++		return ret;
++
++	seq_printf(file, "\nPhy %d\n", phy != &dev->phy);
+ 
+-	seq_printf(file, "\nBand %d\n", phy != &phy->dev->phy);
+-	mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower));
+ 	for (i = 0, buf = txpower; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
+ 		u8 mcs_num = mt7915_sku_group_len[i];
+ 
+@@ -982,6 +987,11 @@ mt7915_rate_txpower_show(struct seq_file *file, void *data)
+ 		buf += mt7915_sku_group_len[i];
+ 	}
+ 
++	/* Txpower propagation path: TMAC -> TXV -> BBP */
++	seq_printf(file, "\nBaseband transmit power %ld\n",
++		   mt76_get_field(dev, MT_WF_PHY_TPC_CTRL_STAT(phy->band_idx),
++				  MT_WF_PHY_TPC_POWER));
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index 0c61f1256f3b..00fc31cb7e82 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -1179,6 +1179,9 @@ enum offs_rev {
+ #define MT_WF_PHY_RXTD12_IRPI_SW_CLR_ONLY	BIT(18)
+ #define MT_WF_PHY_RXTD12_IRPI_SW_CLR		BIT(29)
+ 
++#define MT_WF_PHY_TPC_CTRL_STAT(_phy)	MT_WF_PHY(0xe7a0 + ((_phy) << 16))
++#define MT_WF_PHY_TPC_POWER		GENMASK(15, 8)
++
+ #define MT_MCU_WM_CIRQ_BASE			0x89010000
+ #define MT_MCU_WM_CIRQ(ofs)			(MT_MCU_WM_CIRQ_BASE + (ofs))
+ #define MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR	MT_MCU_WM_CIRQ(0x80)
+-- 
+2.36.1
+
