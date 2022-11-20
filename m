@@ -2,51 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5937630DBE
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Nov 2022 10:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23ED863135F
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Nov 2022 11:41:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232849AbiKSJU0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Nov 2022 04:20:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
+        id S229662AbiKTKlC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Nov 2022 05:41:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbiKSJUZ (ORCPT
+        with ESMTP id S229518AbiKTKlB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Nov 2022 04:20:25 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EBDC74602;
-        Sat, 19 Nov 2022 01:20:24 -0800 (PST)
-Received: from canpemm500006.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NDp5S53hXzmVt9;
-        Sat, 19 Nov 2022 17:19:56 +0800 (CST)
-Received: from [10.174.179.200] (10.174.179.200) by
- canpemm500006.china.huawei.com (7.192.105.130) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sat, 19 Nov 2022 17:20:22 +0800
-Subject: Re: [PATCH net] wifi: plfxlc: fix potential memory leak in
- __lf_x_usb_enable_rx()
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <srini.raju@purelifi.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20221119051900.1192401-1-william.xuanziyang@huawei.com>
- <87v8nbphrr.fsf@kernel.org>
-From:   "Ziyang Xuan (William)" <william.xuanziyang@huawei.com>
-Message-ID: <215ec3cc-88ad-3f68-6dc3-c1aed2a17c76@huawei.com>
-Date:   Sat, 19 Nov 2022 17:20:21 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Sun, 20 Nov 2022 05:41:01 -0500
+Received: from mail-m974.mail.163.com (mail-m974.mail.163.com [123.126.97.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4A93A776DD;
+        Sun, 20 Nov 2022 02:40:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=aXgL1
+        lM3sRYeyi04GakbtXwdv/WkYeER8Uv5v5dvzsc=; b=V9ZXqJJvq44eyTwmWcYMf
+        bv17EezQT6z4Pdh+v4xCo8/DINXeH9jl/QnZyHjcoi4oGN5u3Jfkc/VLnrCHX52Q
+        hzON8I7Q6e25QNkk7Y0xOHCgc/DNHW9GLiNC5QcmyVFFJJ09vc5D498BUn3M1uhB
+        a7RQqsIqAJEtI2Yr90M+SY=
+Received: from localhost.localdomain (unknown [36.112.3.106])
+        by smtp4 (Coremail) with SMTP id HNxpCgBHnueRA3pjuzJ6tA--.22005S4;
+        Sun, 20 Nov 2022 18:38:16 +0800 (CST)
+From:   Jianglei Nie <niejianglei2021@163.com>
+To:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alsi@bang-olufsen.dk, rmk+kernel@armlinux.org.uk,
+        linus.walleij@linaro.org, marcan@marcan.st
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jianglei Nie <niejianglei2021@163.com>
+Subject: [PATCH] net: brcmfmac: fix potential resource leak in brcmf_usb_probe_phase2()
+Date:   Sun, 20 Nov 2022 18:38:07 +0800
+Message-Id: <20221120103807.7588-1-niejianglei2021@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <87v8nbphrr.fsf@kernel.org>
-Content-Type: text/plain; charset="gbk"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.200]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500006.china.huawei.com (7.192.105.130)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: HNxpCgBHnueRA3pjuzJ6tA--.22005S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jr1fGr4DKFW3JF4fXF43KFg_yoWkGwc_ZF
+        48uFnrJr1FqwnY934jvFya9rsYk3Wqq397GrsxtFWfZw48XFWUCrykZFs3Gw17GrsFqFn8
+        urnxJ3WUC3W0vjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRE1xR3UUUUU==
+X-Originating-IP: [36.112.3.106]
+X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbiQxy-jFc7cQ3QaAAAsE
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,21 +58,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Ziyang Xuan <william.xuanziyang@huawei.com> writes:
-> 
->> urbs does not be freed in exception paths in __lf_x_usb_enable_rx().
->> That will trigger memory leak. To fix it, add kfree() for urbs within
->> "error" label. Compile tested only.
->>
->> Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
->> Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
->> ---
->>  drivers/net/wireless/purelifi/plfxlc/usb.c | 1 +
->>  1 file changed, 1 insertion(+)
-> 
-> plfxlc patches go to wireless tree, not net. But I think I'll take this
-> to wireless-next actually.
+brcmf_usb_probe_phase2() allocates resource for dev with brcmf_alloc().
+The related resource should be released when the function gets some error.
+But when brcmf_attach() fails, relevant resource is not released, which
+will lead to resource leak.
 
-OK, thanks.
+Fix it by calling brcmf_free() when brcmf_attach() fails.
 
-> 
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 85e18fb9c497..5d8c12b2c4d7 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -1215,6 +1215,7 @@ static void brcmf_usb_probe_phase2(struct device *dev, int ret,
+ 	return;
+ error:
+ 	brcmf_dbg(TRACE, "failed: dev=%s, err=%d\n", dev_name(dev), ret);
++	brcmf_free(devinfo->dev);
+ 	complete(&devinfo->dev_init_done);
+ 	device_release_driver(dev);
+ }
+-- 
+2.25.1
+
