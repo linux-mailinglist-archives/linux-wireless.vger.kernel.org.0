@@ -2,47 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41AA96328FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Nov 2022 17:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43FD263293E
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Nov 2022 17:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231460AbiKUQIA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Nov 2022 11:08:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39296 "EHLO
+        id S230370AbiKUQRr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Nov 2022 11:17:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229831AbiKUQH7 (ORCPT
+        with ESMTP id S230256AbiKUQRj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Nov 2022 11:07:59 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC1282870F
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 08:07:58 -0800 (PST)
+        Mon, 21 Nov 2022 11:17:39 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DFB17417
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 08:17:34 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 458C6611FB
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 16:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE0BC433D6;
-        Mon, 21 Nov 2022 16:07:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 094FC61300
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 16:17:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A526EC433C1;
+        Mon, 21 Nov 2022 16:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669046877;
-        bh=67GCw5OPzotwvypM8EHVRxELHO+KAiuQ9DGkcTfK7K0=;
+        s=k20201202; t=1669047453;
+        bh=yQGbbm63/8Za4tULD4tZDuctTenWp7KiB2LGcuQYF2c=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QXfNKKOpy9RerLTwb5tVhId3YqDmbhGmWOfY4MVrss963JGqs+c//Y0U+Q/WJZ1JZ
-         cOTpg78tEa/s5+Q04MmNtiO3bpBQp9i0bIcqu1My/ecJXE59cGgjxGCU0AdDtaEoQo
-         XEVkpO3ldrM74mEb9Zv2EHC7/sJ3qZwKWUJ8ABKQE82Na0WrKoPynWpuiolMWoKhmo
-         w5h57bUuKhXnplqHFzNTNhdkEBCMNBKqC1dFE5PVxR83jCwobKlVdTe+ZGNK9wRiG7
-         wPzkNWxLJbtH0HllHxnA7yZxPfS6KSoHSHZOwOmzQe9NY7o/88YGscyURDPR3KuFwK
-         y30OmvtcWE92A==
+        b=b9JhLlNvcmpedn/Yyqyj/qQF+NVjOrVwJv7OIUtZNDli+ucNsoZ3TnPpIRlQCu1v6
+         ek7IlFTCSLmMdQSRrDRGLfoTBlu/jh/HRZ9+8F0XyIlbQCCjrnozS3Ogm+F+mlzhLw
+         hJnjWS/uPoEwZD6CtJrtaDqYl/CpKbyS+rxUo4aJ+PlWYbmAJXJPn+7Fp1WhTWf5pP
+         9pwhJbGEWP75wp1f29A08cwoTqNiX13IfVhNVO9ltwqC35ngY3MlWo2IGvsoF+aVOP
+         X/Ci4i+M34X1hHhju2hbqZCRn8gvy86paoaF5Si3xU1cpEVEE+0znqP37BepPGeipm
+         rVDEhmLFFryCw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     gregory.greenman@intel.com
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>
-Subject: Re: [PATCH 4/9] wifi: iwlwifi: mvm: add support for EHT 1K aggregation size
-References: <20221120170039.1788067-1-gregory.greenman@intel.com>
-        <20221120185147.d82e3d7bf651.Ie4d90c376c822694f4523ff0fb5731f20004c24d@changeid>
-Date:   Mon, 21 Nov 2022 18:07:52 +0200
-In-Reply-To: <20221120185147.d82e3d7bf651.Ie4d90c376c822694f4523ff0fb5731f20004c24d@changeid>
-        (gregory greenman's message of "Sun, 20 Nov 2022 19:00:34 +0200")
-Message-ID: <87sfic8f53.fsf@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 0/3] Enable low power mode when WLAN is not active
+References: <20221121110359.4652-1-quic_mpubbise@quicinc.com>
+Date:   Mon, 21 Nov 2022 18:17:30 +0200
+In-Reply-To: <20221121110359.4652-1-quic_mpubbise@quicinc.com> (Manikanta
+        Pubbisetty's message of "Mon, 21 Nov 2022 16:33:56 +0530")
+Message-ID: <87h6ys8ep1.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -55,31 +53,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-gregory.greenman@intel.com writes:
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-> From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+> Currently, WLAN chip is powered once during driver probe and is kept
+> ON (powered) always even when WLAN is not active; keeping the chip
+> powered ON all the time will consume extra power which is not
+> desirable for battery operated devices. Same is the case with non-WoW
+> suspend, chip will not be put into low power mode when the system is
+> suspended resulting in higher battery drain.
 >
-> In 11be we can receive 1K aggregation size so update our max HW rx
-> aggregation for mac80211 usage.
+> Send QMI MODE OFF command to firmware during WiFi OFF to put device
+> into low power mode.
 >
-> Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
 >
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-> index 9699433137bc..310eb3fde386 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-> @@ -1077,6 +1077,8 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
->  	static const u8 no_reclaim_cmds[] = {
->  		TX_CMD,
->  	};
-> +	u32 max_agg = trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ ?
-> +			   IEEE80211_MAX_AMPDU_BUF_EHT : IEEE80211_MAX_AMPDU_BUF_HE;
+> Manikanta Pubbisetty (3):
+>   ath11k: Fix double free issue during SRNG deinit
+>   ath11k: Move hardware initialization logic to start()
+>   ath11k: Enable low power mode when WLAN is not active
 
-IMHO a proper if statement is cleaner than this.
+Nowadays we use "wifi:" prefix, but I can add it.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
