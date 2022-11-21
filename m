@@ -2,67 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD8F63295E
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Nov 2022 17:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AA06329B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Nov 2022 17:37:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbiKUQ1h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Nov 2022 11:27:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
+        id S230156AbiKUQh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Nov 2022 11:37:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbiKUQ1e (ORCPT
+        with ESMTP id S230143AbiKUQhH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Nov 2022 11:27:34 -0500
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83DD2700
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 08:27:32 -0800 (PST)
-Received: from [192.168.0.66] ([92.154.77.116]) by mrelayeu.kundenserver.de
- (mreue012 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MxYT3-1p7pu93MN7-00xwMo; Mon, 21 Nov 2022 17:27:16 +0100
-Message-ID: <daf6b5bc-fde6-d0a8-84eb-61e16a3fe69c@green-communications.fr>
-Date:   Mon, 21 Nov 2022 17:27:14 +0100
+        Mon, 21 Nov 2022 11:37:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C77BBD53B4
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 08:35:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1669048535;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uey9BFIixQm3jWN0lqHsZfoFIxzEui2/+ljprIZsSVk=;
+        b=euZoWVfKAIy70rx9X9u3kMhxNpBAkse78PxeTLd4MVJTu5E4p5Pxa+HN4GicAHKLdLuStc
+        27iX+5dP4VDMO+WUf8UvxVfVOxGsbiCeRo3vCxL5QSLRr1y/umcV8qL4/R4250QgiwQgsX
+        mx80/R841V9B2mc19szu6vbpZt/+eTI=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-590-5YS2s6JpOlqeERe2Z70ADg-1; Mon, 21 Nov 2022 11:35:33 -0500
+X-MC-Unique: 5YS2s6JpOlqeERe2Z70ADg-1
+Received: by mail-pl1-f197.google.com with SMTP id a6-20020a170902ecc600b00186f035ed74so9721468plh.12
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 08:35:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uey9BFIixQm3jWN0lqHsZfoFIxzEui2/+ljprIZsSVk=;
+        b=UqaXANW5EZyWd55+/qWdXYnERpimb6ion8qMNQIzZNf60fS/nyPGp1x3vqZ1aSHYp5
+         OSdlo+C/iMlJ51NogZ4i99zGvSGjSP1ySW1e00ZIjkCL22bns7SBZk7H+tkjai0DVrtc
+         EK/9kik3RATlU5Lz7jic5NX7RKtCu3ZvaeHlKpoK6F7nylyaVLSZBpB657SORL2N0yMR
+         qDCdwL4mXs5IPfrj4VzptAbD9HHhFe7ZrUENpzDUuTm7EKuDcLZkXFoyYyUUnxXDvivh
+         8ykYz0kqtI97F7Qs1E7E+W8eDq3mf9Jppf4NvRg6pzIFxi4gT5dJDf0bqz4c/q/j6Ryy
+         Jwtw==
+X-Gm-Message-State: ANoB5pknRLVkfGCLxk4TTvRwz6eXSqVTUHNDWWlAOum7V8xCBKpOJgwR
+        4MhQJDkVcWwkdsFqFQGr6ZjwQlWbiW4+YfsxfzjmqRhu8tgeff/BupNOftQjWjlzVDv+BPy5E1Z
+        nLBNlK1/9toloeueDkOeVvAUaneQc9YisBy+j4+ikCaM=
+X-Received: by 2002:a63:4b24:0:b0:476:e640:d016 with SMTP id y36-20020a634b24000000b00476e640d016mr18242048pga.205.1669048532469;
+        Mon, 21 Nov 2022 08:35:32 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf7A3cpC0Y768q6n1BR2+cjhQQLfduwmt/qipZb46MWH2KWTEDz0/0nve5ZsdnK6jxmJPLAACt67UFW/baEpj4U=
+X-Received: by 2002:a63:4b24:0:b0:476:e640:d016 with SMTP id
+ y36-20020a634b24000000b00476e640d016mr18242036pga.205.1669048532227; Mon, 21
+ Nov 2022 08:35:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Cc:     ath12k@lists.infradead.org
-References: <20221116163902.24996-1-kvalo@kernel.org>
- <20221116163902.24996-42-kvalo@kernel.org>
-From:   Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
-Subject: Re: [PATCH v2 41/50] wifi: ath12k: add reg.c
-In-Reply-To: <20221116163902.24996-42-kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:nQn9gpfcW5AQeiFw39JfTVAYYfZPpyII66MLrA78IZfMQ4aKIxr
- 9Z37Sks4Wzcm99lyCilXiAe+X0n+MZo8obfNlJSTCrc/tTkVJYfUMLvi/G3WWA1KuTiWw/P
- ShzgEHQfYE4meLrIqFsWvJzMYV2SO08ptsW63bfC+Giwx5FnkemmOhKcd6C0JIAh4W+eneh
- 9DT10SVMCp0ok72pEWbsw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:pu0v6hIDJ14=:05Ojmu/x0ASu1M8qRtMmoc
- QcBsQ5yqfkOlq6HsLk3Xa1TbuqG7DYDDBdko0InQrqfDodMamz0j9WVu13W0QubnRiX97WOmu
- lWfK3RNfIc9iFaCl9WkEtqq1E9PqhEXyNXPVlZhdAoUw8EHl44ta8wSTVAuU2br4xoh65to/W
- J2Wy/6ZEk8143Wcvk/5SRAmAAuH+5tZH1vF0oUSn3ZeJKKtX5gMKeY1KPruycKA4odmYY2oo3
- eLg3u1yK2Ls3LoTJczTyxsosGzhNYO81BCG4llhT5Lhs3tWDQbfZZ++u444uyIPD87X03yqdx
- GNFDuigT04lfrvySdGc/cIrqOOjGnWKXbnUXE3UruRO8Dv6ihs4G6Vl0cL6NhLl1giqr+xdQy
- eLqjCctRbAJjy4dsnRKClKgXCNEe2X+C/SOsxEGltoWQGlqgoF+K1xiJDBmpgV65tlSkFjSN/
- e/KGbZ2aw4wyBI1RfL6qTUqiQgAeEJN2kmtMgZ05TBAms6gwJjphpun1tnGhITHz+J85m4hWj
- JqdyA0oRW/vs0p/PF6nIi2GYIknOTfMLmoRvScKnAnWhrmzaOHJ7H76xkojzFhtAg2UCuDGIx
- qKU6iGeT0ER3L1YYPuUozs9kRrQ3gP2Q3wZu1ZyNrPE1XZDNxVjslbUOkNheDL+czrxY+I8Sj
- ikIaJM11dcmDTAbC/UXE4hgR5scZTL02Wu6Oaa+pPfEq5YxZWq1tVaojQx8BP5fPbvoopsLzC
- 0INjy2C03x7wXIHcQps08Whid3GhQUkJU3rVVEDrQJNIiGa+LSvMaqXwMTjd38uRWh5iR4lH0
- qE+f6DLe/w1BH2bzt1C2pYehlEMYfxtSglKTXQDs+0Hkb3K4As=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <CACT4oucG2z14214jWGJj9XZ5cYMnQpw9CACHvPZ09cbL7m9z_g@mail.gmail.com>
+ <100b06a944de88a4b80119c5a2024e0e59cf5243.camel@sipsolutions.net>
+ <CACT4oufKgUG5n6Ocgi6r-Z=+Nt9vNVK1e5dJDccogmd8h7xM8Q@mail.gmail.com>
+ <5c47143aea07c34dbe95fdb2cab677f2a7a753fb.camel@sipsolutions.net>
+ <CACT4ouduybj2Xn_=cgZynf7kF_7tx4cjydkWoTrCAg2=ujR2Tg@mail.gmail.com>
+ <122752227576c059d2b1660934d57e991e7d33c8.camel@sipsolutions.net> <CACT4oufZpLToemYLHcnQ+hAa=SAbhJT0QxKYjs9fNWV8frsMtg@mail.gmail.com>
+In-Reply-To: <CACT4oufZpLToemYLHcnQ+hAa=SAbhJT0QxKYjs9fNWV8frsMtg@mail.gmail.com>
+From:   =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
+Date:   Mon, 21 Nov 2022 17:35:20 +0100
+Message-ID: <CACT4ouf8vDzhXkFAOh-LAbi1GKYp66YNMG_5VrkW0CqnxVBt0g@mail.gmail.com>
+Subject: Re: iwlwifi: AC9560 firmware crash with iwlwifi-QuZ-a0-jf-b0 versions
+ above 55
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     gregory.greenman@intel.com, golan.ben.ami@intel.com,
+        jonathan.sade@intel.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        linux-bluetooth@vger.kernel.org,
+        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+        Laura Trivelloni <ltrivell@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16/11/2022 17:38, Kalle Valo wrote:
-> +#define ETSI_WEATHER_RADAR_BAND_LOW		5590
-> +#define ETSI_WEATHER_RADAR_BAND_HIGH		5650
-> +#define ETSI_WEATHER_RADAR_BAND_CAC_TIMEOUT	600000
+On Mon, Nov 21, 2022 at 12:08 PM =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com=
+> wrote:
+> > the fw 74 seems to be a different issue - could you post more info abou=
+t
+> > separately?
 
-OT, but maybe cfg80211 should be taught these rules ? it is apparently unaware 
-of the harsh ETSI rules in 5600-5650 MHz and this affects all drivers.
+This was my fault: I was checking many different things, and I checked
+this with an outdated kernel. With latest wireless tree and fw-74 it
+works fine, both with the patch from this thread and without it. Sorry
+for the noise.
+
+So I will wait  for this patch to be posted so I can backport it to
+RHEL, but using fw-74 also fixes the issue, as you said.
+
+Thanks
+
+--=20
+=C3=8D=C3=B1igo Huguet
+
