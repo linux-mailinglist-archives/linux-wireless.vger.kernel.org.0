@@ -2,46 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 313CD6328C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Nov 2022 16:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA48B6328D9
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Nov 2022 16:59:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230474AbiKUP5L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Nov 2022 10:57:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57518 "EHLO
+        id S231553AbiKUP7W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Nov 2022 10:59:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230378AbiKUP5K (ORCPT
+        with ESMTP id S230083AbiKUP7V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Nov 2022 10:57:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75FD4CB966
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 07:57:09 -0800 (PST)
+        Mon, 21 Nov 2022 10:59:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B62D14FA;
+        Mon, 21 Nov 2022 07:59:20 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 315D5B810E5
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Nov 2022 15:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47687C433D6;
-        Mon, 21 Nov 2022 15:57:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D1DF8B810E5;
+        Mon, 21 Nov 2022 15:59:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5D0C433D6;
+        Mon, 21 Nov 2022 15:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669046226;
-        bh=VA/Ub/T6G0dvtPxPA4A+MYTinZfP6nxhETy8kou7t98=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=YaC1Zo/DgdB1BbgNZg4N8EzqLIEOtU0kGlUuWA+1C6nbXMWG3EzgusaGnpvneXIi6
-         0E1Lv41oGZCcWrz2S5ol1RYzzvGdsBfZm12VKSUTPVuXggj9E75yIevYK5ePHJCb4N
-         9v7WeMjJjXmEa/y1qlUa4uTon4nGDc19FByJSrmnsTOvbS3WfHwGVfm97z0VuHAA0w
-         TROcfyDMLznkKhT2BRV0qIQAHkF6BliTsmN4nsguvoyJo5GG1RXVJXqfszhlkyLTFJ
-         RUjrPSfMiOc4byQQmg7didVKoFuLuPPSn7z5fzw2fRkuIlC/SNkF9Qkii6DO/1KZj+
-         YbBrnxlQBIdtQ==
+        s=k20201202; t=1669046357;
+        bh=NiniSOPGKqhdfVPafjU8CKNZvdS31QSh/55JMb9zJes=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=a/XuarW4mNIbqbd7XBC2KEovRFbFI0Cn8HGxor9WCskdjYW9wP+i33fR3L/YbBAdb
+         JBToPIO95id5D7gCvcI1UKdABittIPylI7B5C0y6Hje4bNLMt0kknKdWy+buSze5G9
+         QliJMfMVSnIQdSgDXwmkUS1hM13R1DgRGSb+XUj/7hFPpXMWf9akqhod1iCCCvar9d
+         wf8EVZWfUEKSZ3v+87b0ziwJPN4WP4ebWZBKxIyPpXNFnImRFbkEQT0yCxzrkgux89
+         +tVaefxhLXHps+kJrZqFWY9j4ZnjMk7f5mdKV3dvCGelrv9EcVOXYoH0jcZWaIcjDq
+         x5hT8nHQsCNNg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     ath12k@lists.infradead.org
-Subject: Re: [PATCH v2 00/50] wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices
-In-Reply-To: <20221116163902.24996-1-kvalo@kernel.org> (Kalle Valo's message
-        of "Wed, 16 Nov 2022 18:38:12 +0200")
-References: <20221116163902.24996-1-kvalo@kernel.org>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        "Srivatsa Vaddagiri" <quic_svaddagi@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>
+Subject: Re: [PATCH v7 18/20] firmware: qcom_scm: Use fixed width src vm bitmap
+References: <20221121140009.2353512-1-quic_eberman@quicinc.com>
+        <20221121140009.2353512-19-quic_eberman@quicinc.com>
+Date:   Mon, 21 Nov 2022 17:59:07 +0200
+In-Reply-To: <20221121140009.2353512-19-quic_eberman@quicinc.com> (Elliot
+        Berman's message of "Mon, 21 Nov 2022 06:00:07 -0800")
+Message-ID: <874jus9u44.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 21 Nov 2022 17:57:00 +0200
-Message-ID: <878rk49u7n.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -53,25 +87,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Elliot Berman <quic_eberman@quicinc.com> writes:
 
-> ath12k is a new mac80211 driver for Qualcomm Wi-Fi 7 devices, first
-> supporting QCN9274 and WCN7850 PCI devices.  QCN9274 supports both AP
-> and station; WCN7850 supports only station mode. Monitor mode is not
-> (yet) supported. Only PCI bus devices are supported.
+> The maximum VMID for assign_mem is 63. Use a u64 to represent this
+> bitmap instead of architecture-dependent "unsigned int" which varies in
+> size on 32-bit and 64-bit platforms.
 >
+> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> ---
+>
+> Note this will have build conflicts with
+> https://lore.kernel.org/all/20221114-narmstrong-sm8550-upstream-mpss_dsm-v2-2-f7c65d6f0e55@linaro.org/
+> which would also need an "unsigned int" -> "u64" in struct qcom_mpss_dsm_mem:perms.
+>
+>  drivers/firmware/qcom_scm.c           | 12 +++++++-----
+>  drivers/misc/fastrpc.c                |  6 ++++--
+>  drivers/net/wireless/ath/ath10k/qmi.c |  4 ++--
 
-[...]
+For ath10k:
 
-> Unfortunately the firmware images are not yet available but they will be soon, the
-> plan is to publish them any day now.
-
-The firmware for WCN7850 hw2.0 is temporarily available here:
-
-https://github.com/kvalo/ath11k-firmware/tree/master/ath12k-testing/WCN7850/hw2.0
-
-Later I will create a proper place for ath12k firmware images. And
-naturally submit them also to linux-firmware.
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
