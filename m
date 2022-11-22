@@ -2,47 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 595606341C6
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 17:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE8D6341CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 17:46:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234089AbiKVQoV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 11:44:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
+        id S234102AbiKVQqu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 11:46:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234334AbiKVQoE (ORCPT
+        with ESMTP id S234113AbiKVQqr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 11:44:04 -0500
+        Tue, 22 Nov 2022 11:46:47 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7873D725E0
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 08:43:51 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8233C697CA;
+        Tue, 22 Nov 2022 08:46:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=8Lc0u507HrdvqGzH6arePQyMKi1cqvhnv7saDo8AjMc=;
-        t=1669135431; x=1670345031; b=UXpb/GGxO+Ggcp1l2PkQBxamay/QgrerNe8ax6rtrjckcNp
-        SBFzY3AiFYfIkFh2cxkBM8uXGRiJQwjcjSzKg6lGvHOa+WVHIjEBK8KXxTkZgzq0WZc9bAwtg88Jz
-        W6JnSDYLDQHGbPZvRhMoIyhVHl9TUbdMRf/4hmzm5I8h7WhUrpJEXbVyo7rarK0Qdbl+HXeoFJ6eP
-        AX6r+TMqmLGjkqBQO5Egk9fxZgE6xWlrKRVpHLnFaeb5OSVWHnrnjS23y+33FrBfiMQeA7Fka6GjN
-        0IoMQN+ZasgLu6mOCFtGkmQxag5v7qbTiCstxtM9hkDIsw5nTz/ChJsAjmoCN66w==;
+        Resent-Cc:Resent-Message-ID; bh=cfCEpsHVZR+VbInAoPMp32ekOw5sXB2mwaZRbX/GjM0=;
+        t=1669135605; x=1670345205; b=wBpYOUVpun4OcoDQh56MgJLB6Vonb0MoWY0iAxmiJ3s35eh
+        OtZ7qG4WKZC3Vz5KzAA5uyLFpEAgcHDjKZeaSfY0LrcG+t+RQoaQLHvxmdxbMPQFd43k63t81XJjp
+        kiDB9XlCfdXh5UUUiLpgv4lGc5J79x5L90v80KWf2RWryYpKO1Nv3z01HtQYf1MYI2pJDADZeKaTM
+        bWSZ7WZHJsy5eXgR5rrMSz3nnJSXG0CWt546zo/zpJb+hk1sc6syBMvoIjkjRVQSr9v5VYz/BtI+r
+        i5bMStm7akVf1xDQRHPxw04uPEVJlYdEeVwj0qCBsscf0nBsu0Q0ijIQoNS4b5WQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oxWN8-006PNE-2o;
-        Tue, 22 Nov 2022 17:43:46 +0100
-Message-ID: <95ad4207e62b4990476d867bd240fef3ede31369.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH] mac80211: mlme: Handle Puncturing information
- received from the AP
+        id 1oxWPS-006PQd-38;
+        Tue, 22 Nov 2022 17:46:11 +0100
+Message-ID: <1d3a2fafcc14de7406fd689029277fd74ed3ce87.camel@sipsolutions.net>
+Subject: Re: Coverity: iwl_mvm_sec_key_add(): Memory - corruptions
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kang Yang <quic_kangyang@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Aloka Dixit <quic_alokad@quicinc.com>,
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        "Carl Huang (QUIC)" <quic_cjhuang@quicinc.com>
-Date:   Tue, 22 Nov 2022 17:43:45 +0100
-In-Reply-To: <e4db49e4-6363-0c8d-10dd-a1a564da2542@quicinc.com>
-References: <20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
-         <e4db49e4-6363-0c8d-10dd-a1a564da2542@quicinc.com>
+        Petr Stourac <pstourac@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Nathan Errera <nathan.errera@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
+        netdev@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Abhishek Naik <abhishek.naik@intel.com>,
+        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        Sriram R <quic_srirrama@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Mike Golant <michael.golant@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-next@vger.kernel.org, linux-hardening@vger.kernel.org
+Date:   Tue, 22 Nov 2022 17:46:09 +0100
+In-Reply-To: <202211181424.794FCAD@keescook>
+References: <202211180854.CD96D54D36@keescook>
+         <d4c07fa45de290f32611420e2f116d8a6e32d22a.camel@sipsolutions.net>
+         <202211181424.794FCAD@keescook>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -57,111 +77,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-11-21 at 15:29 +0800, Kang Yang wrote:
-> Hi:
-> 	1.Do you have any new version about this RFC patch?
-
-Not really, no.
-
-
-> 	2.I have some questions about this patch:
-
-(a couple of blank lines and some trimming of the context really would
-help ... please try next time)
-
-> > +static u16
-> > +ieee80211_extract_dis_subch_bmap(const struct ieee80211_eht_operation =
-*eht_oper,
-> > +				 struct cfg80211_chan_def *chandef, u16 bitmap)
-> > +{
-> > +	int sta_center_freq =3D ieee80211_channel_to_frequency(eht_oper->ccfs=
+On Fri, 2022-11-18 at 14:25 -0800, Kees Cook wrote:
+> On Fri, Nov 18, 2022 at 10:04:38PM +0100, Johannes Berg wrote:
+> > On Fri, 2022-11-18 at 08:54 -0800, coverity-bot wrote:
+> > >=20
+> > > *** CID 1527370:  Memory - corruptions  (OVERRUN)
+> > > drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c:123 in iwl_mvm_sec_k=
+ey_add()
+> > > 117
+> > > 118     	if (WARN_ON(keyconf->keylen > sizeof(cmd.u.add.key)))
+> > > 119     		return -EINVAL;
+> > > 120
+> > > 121     	if (keyconf->cipher =3D=3D WLAN_CIPHER_SUITE_WEP40 ||
+> > > 122     	    keyconf->cipher =3D=3D WLAN_CIPHER_SUITE_WEP104)
+> > > vvv     CID 1527370:  Memory - corruptions  (OVERRUN)
+> > > vvv     Overrunning buffer pointed to by "cmd.u.add.key + 3" of 32 by=
+tes by passing it to a function which accesses it at byte offset 34 using a=
+rgument "keyconf->keylen" (which evaluates to 32). [Note: The source code i=
+mplementation of the function has been overridden by a builtin model.]
+> > > 123     		memcpy(cmd.u.add.key + IWL_SEC_WEP_KEY_OFFSET, keyconf->key=
 ,
-> > +							     chandef->chan->band);
-> > +	u32 center_freq =3D chandef->chan->center_freq;
-> The shift is calculated by the difference of old and new channel center
-> frequency.The new channel center frequency should be=20
-> "chandef->center_freq1" after BW negotitaion.
-> "chandef->chan->center_freq" is the primary channel frequency.
+> > > 124     		       keyconf->keylen);
+> > > 125     	else
+> > > 126     		memcpy(cmd.u.add.key, keyconf->key, keyconf->keylen);
+> > > 127
+> > > 128     	if (keyconf->cipher =3D=3D WLAN_CIPHER_SUITE_TKIP) {
+> > >=20
+> > > If this is a false positive, please let us know so we can mark it as
+> > > such, or teach the Coverity rules to be smarter. If not, please make
+> > > sure fixes get into linux-next. :) For patches fixing this, please
+> > > include these lines (but double-check the "Fixes" first):
+> > >=20
+> >=20
+> > Well, I don't think you can teach coverity this easily, but the
+> > WARN_ON() check there is not really meant to protect this - WEP keys
+> > must have a length of either 5 or 13 bytes (40 or 104 bits!).
+> >=20
+> > So there's no issue here, but I'm not surprised that coverity wouldn't
+> > be able to figure that out through the stack.
+>=20
+> Gotcha. And some other layer is doing the verification that cipher and
+> keylen are correctly matched?
 
 
-Yeah I think we did fix a couple of bugs in this area later.
-
-> > +	u8 sta_bw =3D 20 * BIT(u8_get_bits(eht_oper->chan_width,
-> > +					 IEEE80211_EHT_OPER_CHAN_WIDTH));
-> > +	u8 bw =3D 20 * BIT(ieee80211_chan_width_to_rx_bw(chandef->width));
-> > +	int sta_start_freq =3D sta_center_freq - sta_bw / 2;
-> > +	int start_freq =3D center_freq - bw / 2;
-> > +	u16 shift =3D (start_freq - sta_start_freq) / 20;
-> > +	u16 mask =3D BIT(sta_bw / 20) - 1;
-> The mask is used to extra the valid bit according to the new BW,
-> but current algorithm is using the old bandwidth.
-
-
-:)
-
-> > +	while (chandef->width > NL80211_CHAN_WIDTH_40) {
-> > +		extracted =3D
-> > +			ieee80211_extract_dis_subch_bmap(eht_oper, chandef,
-> > +							 bitmap);
-> > +
-> > +		if (ieee80211_valid_disable_subchannel_bitmap(&bitmap,
-> > +							      chandef->width))
-> Here extract the bitmap according new negotiated BW. After extracting,=
-=20
-> check whether it is valid.
-> I think you should use "&extracted"  instead of "&bitmap"
-
-Yeah I guess that makes sense.
-
-I don't know what fixes we have and what version of this patch this is.
-
-> > +static bool ieee80211_config_puncturing(struct ieee80211_sub_if_data *=
-sdata,
-> > +					const struct ieee80211_eht_operation *eht_oper,
-> > +					u64 *changed)
-> > +{
-> > +	u16 bitmap, extracted;
-> > +	u8 bw;
-> > +
-> > +	if (!u8_get_bits(eht_oper->present_bm,
-> > +			 IEEE80211_EHT_OPER_DISABLED_SUBCHANNEL_BITMAP_PRESENT))
-> > +		bitmap =3D 0;
-> > +	else
-> > +		bitmap =3D get_unaligned_le16(eht_oper->disable_subchannel_bitmap);
-> > +
-> Should check initial bitmap here.
-
-
-What do you mean by "initial" here?
-
-> > +	extracted =3D ieee80211_extract_dis_subch_bmap(eht_oper,
-> > +						     &sdata->vif.bss_conf.chandef,
-> > +						     bitmap);
-> > +
-> > +	/* accept if there are no changes */
-> > +	if (!(*changed & BSS_CHANGED_BANDWIDTH) &&
-> > +	    extracted =3D=3D sdata->vif.bss_conf.eht_puncturing)
-> > +		return true;
-> > +
-> > +	bw =3D u8_get_bits(eht_oper->chan_width, IEEE80211_EHT_OPER_CHAN_WIDT=
-H);
-> > +
-> > +	if (!ieee80211_valid_disable_subchannel_bitmap(&bitmap, bw)) {
-> > +		sdata_info(sdata,
-> > +			   "Got an invalid disable subchannel bitmap from AP %pM: bitmap =
-=3D 0x%x, bw =3D 0x%x. disconnect\n",
-> > +			    sdata->u.mgd.associated->bssid, bitmap, bw);
-> > +		return false;
-> > +	}
-> The initial bitmap received from the AP is checked here.
-> I think it should be carried out before the extraction above.
-
-Ah, yes I guess that makes sense.
-
-
-Anyway the more fundamental thing we have to figure out here (and thanks
-for bringing this back) is how we treat the puncturing - QCOM's AP-side
-puncturing patch treated it as part of the chandef, but that's not
-working well for client side ...
+Yes, the key must come through cfg80211_validate_key_settings() at some
+point.
 
 johannes
