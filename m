@@ -2,44 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C1C6337E2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 10:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80EF7633832
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 10:19:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233060AbiKVJFe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 04:05:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
+        id S233311AbiKVJTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 04:19:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232986AbiKVJFd (ORCPT
+        with ESMTP id S233312AbiKVJSg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 04:05:33 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3AFED2D2;
-        Tue, 22 Nov 2022 01:05:31 -0800 (PST)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NGdXg6h3lzqScN;
-        Tue, 22 Nov 2022 17:01:23 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
- (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 22 Nov
- 2022 17:05:17 +0800
-From:   Zhengchao Shao <shaozhengchao@huawei.com>
-To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC:     <sara.sharon@intel.com>, <luciano.coelho@intel.com>,
-        <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
-        <shaozhengchao@huawei.com>
-Subject: [PATCH] wifi: mac80211: fix memory leak in ieee80211_register_hw()
-Date:   Tue, 22 Nov 2022 17:11:42 +0800
-Message-ID: <20221122091142.261354-1-shaozhengchao@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        Tue, 22 Nov 2022 04:18:36 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B21A049B4F;
+        Tue, 22 Nov 2022 01:18:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41FF2615B1;
+        Tue, 22 Nov 2022 09:18:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DDEC433C1;
+        Tue, 22 Nov 2022 09:18:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669108714;
+        bh=j9speDymTYbUPsP1fOy8bbC9qMHtxNbRU0XlKQO9gww=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=TOB+dzstBVseFxp1lggAMCRNz9fLnNifrR62pam7JAqtqyIEeAFvsiuC3wQw7B9gZ
+         UOaLWruuYlFRpj1goSOogbU+I+7Q9ViTohU4R0gtOhUIwPoWZnmnRL0Pja0o0xRSlS
+         wHdIFiiVBfQFzrjUmQ54t7oHJriq1L/m/EUWy/rCNanjRnIa8P58iqyHSDI7vEVwgd
+         9Q12a+/rornNH9gUxFMkdKEqoXWXyqlgIP+76lyygnslZNIEVwIYVf0rtnnOrqgY+d
+         PZL9FWLxAIrFHXNZiFg+ilbr5SKaiG1Q18DBMajvO5QnSJbNGizdBiXdsvwxNUAmAK
+         6QenHfl9HLtUA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500026.china.huawei.com (7.185.36.106)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: rsi: Mark driver as orphan
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20221113185838.11643-1-marex@denx.de>
+References: <20221113185838.11643-1-marex@denx.de>
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-wireless@vger.kernel.org, Marek Vasut <marex@denx.de>,
+        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <166910870966.6391.12194362025928207561.kvalo@kernel.org>
+Date:   Tue, 22 Nov 2022 09:18:31 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,67 +63,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When ieee80211_init_rate_ctrl_alg() failed in ieee80211_register_hw(),
-it doesn't release local->fq. The memory leakage information is as
-follows:
-unreferenced object 0xffff888109cad400 (size 512):
-  comm "insmod", pid 15145, jiffies 4295005736 (age 3670.100s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<00000000d1eb4a9f>] __kmalloc+0x3e/0xb0
-    [<00000000befc3e34>] ieee80211_txq_setup_flows+0x1fe/0xa10
-    [<00000000b13f1457>] ieee80211_register_hw+0x1b64/0x3950
-    [<00000000ba9f4e99>] 0xffffffffa02214db
-    [<00000000833435c0>] 0xffffffffa024048d
-    [<00000000a4ddd6ef>] do_one_initcall+0x10f/0x630
-    [<0000000068f29e16>] do_init_module+0x19f/0x5e0
-    [<00000000f52609b6>] load_module+0x64b7/0x6eb0
-    [<00000000b628a5b3>] __do_sys_finit_module+0x140/0x200
-    [<00000000c7f35d15>] do_syscall_64+0x35/0x80
-    [<0000000044d8d0fd>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
+Marek Vasut <marex@denx.de> wrote:
 
-Fixes: a50e5fb8db83 ("mac80211: fix a kernel panic when TXing after TXQ teardown")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
----
- net/mac80211/iface.c | 2 --
- net/mac80211/main.c  | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+> Neither Redpine Signals nor Silicon Labs seem to care about proper
+> maintenance of this driver, nor is there any help, documentation or
+> feedback on patches. The driver suffers from various problems and
+> subtle bugs. Mark it as orphaned.
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 46f08ec5ed76..cec6dd577241 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -2326,8 +2326,6 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
- 	WARN(local->open_count, "%s: open count remains %d\n",
- 	     wiphy_name(local->hw.wiphy), local->open_count);
- 
--	ieee80211_txq_teardown_flows(local);
--
- 	mutex_lock(&local->iflist_mtx);
- 	list_for_each_entry_safe(sdata, tmp, &local->interfaces, list) {
- 		list_del(&sdata->list);
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 02b5abc7326b..b6620c5fd9e0 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1435,6 +1435,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	ieee80211_remove_interfaces(local);
- 	rtnl_unlock();
-  fail_rate:
-+	ieee80211_txq_teardown_flows(local);
-  fail_flows:
- 	ieee80211_led_exit(local);
- 	destroy_workqueue(local->workqueue);
-@@ -1469,6 +1470,7 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
- 	 * because the driver cannot be handing us frames any
- 	 * more and the tasklet is killed.
- 	 */
-+	ieee80211_txq_teardown_flows(local);
- 	ieee80211_remove_interfaces(local);
- 
- 	rtnl_unlock();
+This is really unfortunate but I don't see any other option. I hope that in
+the future the companies would change their minds and start contributing to
+upstream again. 
+
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20221113185838.11643-1-marex@denx.de/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
