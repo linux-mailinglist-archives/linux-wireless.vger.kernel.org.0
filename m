@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AE79633D7B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 14:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2B0633D7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 14:22:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233777AbiKVNWe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 08:22:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51276 "EHLO
+        id S233679AbiKVNWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 08:22:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233775AbiKVNWW (ORCPT
+        with ESMTP id S233721AbiKVNWX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 08:22:22 -0500
+        Tue, 22 Nov 2022 08:22:23 -0500
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24B364A24
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 05:22:19 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AMAOMYJ018839;
-        Tue, 22 Nov 2022 13:22:18 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013D96454C
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 05:22:21 -0800 (PST)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AMBmdb6010501;
+        Tue, 22 Nov 2022 13:22:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=qcppdkim1;
- bh=L6ki+d0+cmZeklLEy30eOLFCcr1D5TxK8CFZ2vR5ejk=;
- b=gv2thdkgQGK4x5wSsiibrNE1HuPA2oIg6b/nNqEpiZBmM1ndDdr8hnKXvUCUG91QsGTW
- xLf7wOEOmRM1jd91xkc90AsWwM6j693GgCD4MsQwPJmEa/smXi2mUI11JyFru4WnNFAm
- 9jC9BNO3RLrCqlOx/gIHepASbyNg1fJ+OzfZVZuOpx0y9RXeXu9rw25zZm8K8l4bvcFc
- KBxPnouVXzEgj03tX9HDdlgo8tPeRgOYGz1hR5n8mY9L9/M0+MId+unupF365Z/5yS7i
- NlW7Gb0lKdicKUyLeMyWyWIaLKH0oHp+cf1gaxPY86+eK0/i28VbhOlbBgsGo5+qBzL8 pQ== 
+ bh=J12QCtSDhxpemVQ8EUqgMXVE7xBnjGNzgHG/deKJvMc=;
+ b=J74ec4QOj60wR5llfkrO4FMtz6pCFlbNJbc+UE5xmo4VlYlt0Og41Ep9+vcD4bCgsq18
+ trnwKn2ugLAF4XWYHL9uXALClBcDFpR0X0eI5/te9sWq7567s2a2h8DugRITIsV8e6aW
+ 5eEuwrvRjkl0lmEJPFjX1f4MKCpCpCeXS7sr7XpP4tNCPRu0u5Cyvk3rqQVtF5IPn++T
+ Dv73uW+nZmGr7toQjepyI6dKC8j2lRORrHybUplfxuDojAIWQ69uWtPxIgQUR3Es/Ko1
+ Nz+FY6S/LDVxW8lv4Ytx6tj6fSRiNvikjLyizuDT8RQzaedPUT/BcXe34wfK+08hgppQ RA== 
 Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m0vmw0asm-1
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m0hwp9ntn-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Nov 2022 13:22:17 +0000
+        Tue, 22 Nov 2022 13:22:19 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AMDMHQ5004037
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AMDMJhi004050
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Nov 2022 13:22:17 GMT
+        Tue, 22 Nov 2022 13:22:19 GMT
 Received: from kathirve-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Tue, 22 Nov 2022 05:22:15 -0800
+ 15.2.986.36; Tue, 22 Nov 2022 05:22:17 -0800
 From:   Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>,
         Sriram R <quic_srirrama@quicinc.com>,
         Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Subject: [PATCHv2 5/8] wifi: ath11k: update hal srng regs for IPQ5018
-Date:   Tue, 22 Nov 2022 18:51:49 +0530
-Message-ID: <20221122132152.17771-6-quic_kathirve@quicinc.com>
+Subject: [PATCHv2 6/8] wifi: ath11k: initialize hw_ops for IPQ5018
+Date:   Tue, 22 Nov 2022 18:51:50 +0530
+Message-ID: <20221122132152.17771-7-quic_kathirve@quicinc.com>
 X-Mailer: git-send-email 2.38.0
 In-Reply-To: <20221122132152.17771-1-quic_kathirve@quicinc.com>
 References: <20221122132152.17771-1-quic_kathirve@quicinc.com>
@@ -58,16 +58,16 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: xQ_h0ReoZ5pQidjGSNxND4XoJ17uuEJw
-X-Proofpoint-GUID: xQ_h0ReoZ5pQidjGSNxND4XoJ17uuEJw
+X-Proofpoint-GUID: yiT_f-r283Dnv-SSihaZvC-zxDxA-Tlr
+X-Proofpoint-ORIG-GUID: yiT_f-r283Dnv-SSihaZvC-zxDxA-Tlr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-22_06,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- spamscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
- suspectscore=0 phishscore=0 impostorscore=0 adultscore=1 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211220098
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ malwarescore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 phishscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211220098
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -79,9 +79,8 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sriram R <quic_srirrama@quicinc.com>
 
-IPQ5018 hal srng register address & offsets are not
-similar to IPQ8074/IPQ6018/QCN9074, hence define a
-new set of srng register group data for IPQ5018.
+The ipq5018_ops is initialized for IPQ5018. This is different from
+other platforms.
 
 Tested-on : IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
 
@@ -90,124 +89,85 @@ Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 ---
  drivers/net/wireless/ath/ath11k/core.c |  1 +
- drivers/net/wireless/ath/ath11k/hw.c   | 79 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hw.c   | 40 ++++++++++++++++++++++++++
  drivers/net/wireless/ath/ath11k/hw.h   |  1 +
- 3 files changed, 81 insertions(+)
+ 3 files changed, 42 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index c6a5a95f60f1..127d7317ac69 100644
+index 127d7317ac69..25cda5044a06 100644
 --- a/drivers/net/wireless/ath/ath11k/core.c
 +++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -634,6 +634,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 			.max_fft_bins = 1024,
+@@ -635,6 +635,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
  		},
  		.internal_sleep_clock = false,
-+		.regs = &ipq5018_regs,
+ 		.regs = &ipq5018_regs,
++		.hw_ops = &ipq5018_ops,
  		.host_ce_config = ath11k_host_ce_config_qcn9074,
  		.ce_count = CE_CNT_5018,
  		.target_ce_config = ath11k_target_ce_config_wlan_ipq5018,
 diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index 6b009dfc554d..ce62e26df70c 100644
+index ce62e26df70c..39a97a779b61 100644
 --- a/drivers/net/wireless/ath/ath11k/hw.c
 +++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -2645,6 +2645,85 @@ static const struct ath11k_hw_tcl2wbm_rbm_map ath11k_hw_tcl2wbm_rbm_map_wcn6750[
- 	},
+@@ -1084,6 +1084,46 @@ const struct ath11k_hw_ops wcn6750_ops = {
+ 	.get_ring_selector = ath11k_hw_wcn6750_get_tcl_ring_selector,
  };
  
-+const struct ath11k_hw_regs ipq5018_regs = {
-+	/* SW2TCL(x) R0 ring configuration address */
-+	.hal_tcl1_ring_base_lsb = 0x00000694,
-+	.hal_tcl1_ring_base_msb = 0x00000698,
-+	.hal_tcl1_ring_id =	0x0000069c,
-+	.hal_tcl1_ring_misc = 0x000006a4,
-+	.hal_tcl1_ring_tp_addr_lsb = 0x000006b0,
-+	.hal_tcl1_ring_tp_addr_msb = 0x000006b4,
-+	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x000006c4,
-+	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x000006c8,
-+	.hal_tcl1_ring_msi1_base_lsb = 0x000006dc,
-+	.hal_tcl1_ring_msi1_base_msb = 0x000006e0,
-+	.hal_tcl1_ring_msi1_data = 0x000006e4,
-+	.hal_tcl2_ring_base_lsb = 0x000006ec,
-+	.hal_tcl_ring_base_lsb = 0x0000079c,
++/* IPQ5018 hw ops is similar to QCN9074 except for the dest ring remap */
++const struct ath11k_hw_ops ipq5018_ops = {
++	.get_hw_mac_from_pdev_id = ath11k_hw_ipq6018_mac_from_pdev_id,
++	.wmi_init_config = ath11k_init_wmi_config_ipq8074,
++	.mac_id_to_pdev_id = ath11k_hw_mac_id_to_pdev_id_ipq8074,
++	.mac_id_to_srng_id = ath11k_hw_mac_id_to_srng_id_ipq8074,
++	.tx_mesh_enable = ath11k_hw_qcn9074_tx_mesh_enable,
++	.rx_desc_get_first_msdu = ath11k_hw_qcn9074_rx_desc_get_first_msdu,
++	.rx_desc_get_last_msdu = ath11k_hw_qcn9074_rx_desc_get_last_msdu,
++	.rx_desc_get_l3_pad_bytes = ath11k_hw_qcn9074_rx_desc_get_l3_pad_bytes,
++	.rx_desc_get_hdr_status = ath11k_hw_qcn9074_rx_desc_get_hdr_status,
++	.rx_desc_encrypt_valid = ath11k_hw_qcn9074_rx_desc_encrypt_valid,
++	.rx_desc_get_encrypt_type = ath11k_hw_qcn9074_rx_desc_get_encrypt_type,
++	.rx_desc_get_decap_type = ath11k_hw_qcn9074_rx_desc_get_decap_type,
++	.rx_desc_get_mesh_ctl = ath11k_hw_qcn9074_rx_desc_get_mesh_ctl,
++	.rx_desc_get_ldpc_support = ath11k_hw_qcn9074_rx_desc_get_ldpc_support,
++	.rx_desc_get_mpdu_seq_ctl_vld = ath11k_hw_qcn9074_rx_desc_get_mpdu_seq_ctl_vld,
++	.rx_desc_get_mpdu_fc_valid = ath11k_hw_qcn9074_rx_desc_get_mpdu_fc_valid,
++	.rx_desc_get_mpdu_start_seq_no = ath11k_hw_qcn9074_rx_desc_get_mpdu_start_seq_no,
++	.rx_desc_get_msdu_len = ath11k_hw_qcn9074_rx_desc_get_msdu_len,
++	.rx_desc_get_msdu_sgi = ath11k_hw_qcn9074_rx_desc_get_msdu_sgi,
++	.rx_desc_get_msdu_rate_mcs = ath11k_hw_qcn9074_rx_desc_get_msdu_rate_mcs,
++	.rx_desc_get_msdu_rx_bw = ath11k_hw_qcn9074_rx_desc_get_msdu_rx_bw,
++	.rx_desc_get_msdu_freq = ath11k_hw_qcn9074_rx_desc_get_msdu_freq,
++	.rx_desc_get_msdu_pkt_type = ath11k_hw_qcn9074_rx_desc_get_msdu_pkt_type,
++	.rx_desc_get_msdu_nss = ath11k_hw_qcn9074_rx_desc_get_msdu_nss,
++	.rx_desc_get_mpdu_tid = ath11k_hw_qcn9074_rx_desc_get_mpdu_tid,
++	.rx_desc_get_mpdu_peer_id = ath11k_hw_qcn9074_rx_desc_get_mpdu_peer_id,
++	.rx_desc_copy_attn_end_tlv = ath11k_hw_qcn9074_rx_desc_copy_attn_end,
++	.rx_desc_get_mpdu_start_tag = ath11k_hw_qcn9074_rx_desc_get_mpdu_start_tag,
++	.rx_desc_get_mpdu_ppdu_id = ath11k_hw_qcn9074_rx_desc_get_mpdu_ppdu_id,
++	.rx_desc_set_msdu_len = ath11k_hw_qcn9074_rx_desc_set_msdu_len,
++	.rx_desc_get_attention = ath11k_hw_qcn9074_rx_desc_get_attention,
++	.rx_desc_get_msdu_payload = ath11k_hw_qcn9074_rx_desc_get_msdu_payload,
++	.mpdu_info_get_peerid = ath11k_hw_ipq8074_mpdu_info_get_peerid,
++	.rx_desc_mac_addr2_valid = ath11k_hw_ipq9074_rx_desc_mac_addr2_valid,
++	.rx_desc_mpdu_start_addr2 = ath11k_hw_ipq9074_rx_desc_mpdu_start_addr2,
 +
-+	/* TCL STATUS ring address */
-+	.hal_tcl_status_ring_base_lsb = 0x000008a4,
-+
-+	/* REO2SW(x) R0 ring configuration address */
-+	.hal_reo1_ring_base_lsb = 0x000001ec,
-+	.hal_reo1_ring_base_msb = 0x000001f0,
-+	.hal_reo1_ring_id = 0x000001f4,
-+	.hal_reo1_ring_misc = 0x000001fc,
-+	.hal_reo1_ring_hp_addr_lsb = 0x00000200,
-+	.hal_reo1_ring_hp_addr_msb = 0x00000204,
-+	.hal_reo1_ring_producer_int_setup = 0x00000210,
-+	.hal_reo1_ring_msi1_base_lsb = 0x00000234,
-+	.hal_reo1_ring_msi1_base_msb = 0x00000238,
-+	.hal_reo1_ring_msi1_data = 0x0000023c,
-+	.hal_reo2_ring_base_lsb = 0x00000244,
-+	.hal_reo1_aging_thresh_ix_0 = 0x00000564,
-+	.hal_reo1_aging_thresh_ix_1 = 0x00000568,
-+	.hal_reo1_aging_thresh_ix_2 = 0x0000056c,
-+	.hal_reo1_aging_thresh_ix_3 = 0x00000570,
-+
-+	/* REO2SW(x) R2 ring pointers (head/tail) address */
-+	.hal_reo1_ring_hp = 0x00003028,
-+	.hal_reo1_ring_tp = 0x0000302c,
-+	.hal_reo2_ring_hp = 0x00003030,
-+
-+	/* REO2TCL R0 ring configuration address */
-+	.hal_reo_tcl_ring_base_lsb = 0x000003fc,
-+	.hal_reo_tcl_ring_hp = 0x00003058,
-+
-+	/* SW2REO ring address */
-+	.hal_sw2reo_ring_base_lsb = 0x0000013c,
-+	.hal_sw2reo_ring_hp = 0x00003018,
-+
-+	/* REO CMD ring address */
-+	.hal_reo_cmd_ring_base_lsb = 0x000000e4,
-+	.hal_reo_cmd_ring_hp = 0x00003010,
-+
-+	/* REO status address */
-+	.hal_reo_status_ring_base_lsb = 0x00000504,
-+	.hal_reo_status_hp = 0x00003070,
-+
-+	/* WCSS relative address */
-+	.hal_seq_wcss_umac_ce0_src_reg = 0x08400000
-+		- HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.hal_seq_wcss_umac_ce0_dst_reg = 0x08401000
-+		- HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.hal_seq_wcss_umac_ce1_src_reg = 0x08402000
-+		- HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.hal_seq_wcss_umac_ce1_dst_reg = 0x08403000
-+		- HAL_IPQ5018_CE_WFSS_REG_BASE,
-+
-+	/* WBM Idle address */
-+	.hal_wbm_idle_link_ring_base_lsb = 0x00000874,
-+	.hal_wbm_idle_link_ring_misc = 0x00000884,
-+
-+	/* SW2WBM release address */
-+	.hal_wbm_release_ring_base_lsb = 0x000001ec,
-+
-+	/* WBM2SW release address */
-+	.hal_wbm0_release_ring_base_lsb = 0x00000924,
-+	.hal_wbm1_release_ring_base_lsb = 0x0000097c,
 +};
 +
- const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074 = {
- 	.rx_buf_rbm = HAL_RX_BUF_RBM_SW3_BM,
- 	.tcl2wbm_rbm_map = ath11k_hw_tcl2wbm_rbm_map_ipq8074,
+ #define ATH11K_TX_RING_MASK_0 BIT(0)
+ #define ATH11K_TX_RING_MASK_1 BIT(1)
+ #define ATH11K_TX_RING_MASK_2 BIT(2)
 diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index e2ed5d047743..b8afd51d0c1e 100644
+index b8afd51d0c1e..9f45d061d826 100644
 --- a/drivers/net/wireless/ath/ath11k/hw.h
 +++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -415,6 +415,7 @@ extern const struct ath11k_hw_regs qca6390_regs;
- extern const struct ath11k_hw_regs qcn9074_regs;
- extern const struct ath11k_hw_regs wcn6855_regs;
- extern const struct ath11k_hw_regs wcn6750_regs;
-+extern const struct ath11k_hw_regs ipq5018_regs;
+@@ -275,6 +275,7 @@ extern const struct ath11k_hw_ops qca6390_ops;
+ extern const struct ath11k_hw_ops qcn9074_ops;
+ extern const struct ath11k_hw_ops wcn6855_ops;
+ extern const struct ath11k_hw_ops wcn6750_ops;
++extern const struct ath11k_hw_ops ipq5018_ops;
  
- static inline const char *ath11k_bd_ie_type_str(enum ath11k_bd_ie_type type)
- {
+ extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_ipq8074;
+ extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_qca6390;
 -- 
 2.17.1
 
