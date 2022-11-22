@@ -2,45 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5B0763493B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 22:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE0C63496E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 22:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235021AbiKVV0p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 16:26:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
+        id S235117AbiKVVgG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 16:36:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235023AbiKVV0m (ORCPT
+        with ESMTP id S235109AbiKVVgD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 16:26:42 -0500
+        Tue, 22 Nov 2022 16:36:03 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BBBAFE65
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 13:26:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F30CC6057;
+        Tue, 22 Nov 2022 13:36:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=JJNvVTKTT/JhZLdK/PTxKn69J5i7SnKTEfCOxoKDQrU=;
-        t=1669152401; x=1670362001; b=sU/LVTlcwqGbw2fPkhRz8wD8oVoeMdxnOeP8//1OG1dK6rh
-        DID+AuV+i72aFM75ljL2OhraTdPjOPXAbdvk8vHQVJLvARCRKDF8e98CSNgt2PZdo1yKlwB73iQe7
-        S8OE2rjnEbaun49/9Hnwj4QxAe7LS4/PuKfZIAMzpSVCxXKXlnT2+sjl3SOcXLuNmZQZBuPVU2158
-        ACrwtRxY0r4LWjWVJPkBtlqyT53NpQG3Jllji4B1xMGh//98BQdCpK6ZBPwwAeffU/2QsavMwsxS8
-        Fy4nFlPbGiTKRx4jpqUO8nhsEVV1tt8xi7bfuSqsNkq7Wjdk2l/V6KVhdLe2bqSw==;
+        Resent-Cc:Resent-Message-ID; bh=REnOO6pdZKaSYowgojxsI/6VyW5I6orQgYoQL3HrlV0=;
+        t=1669152962; x=1670362562; b=MiDXpUhnbIbyBE9t9sy2tBOfAiynpq4c4NljKBx/4xbx8dm
+        FE1PANNZPhQsL6ss7+CA5dsbuPRwGXB0EZQ/BwHZfNPIVGjyNZW85j41I8nYeyjY3dF1D4QTZgKvU
+        Ii5N4oFDGWVlVgwcbiL0fHRgzi2C6KE9rBUkD0T8+g76JgHuGSh/rpSenaIHOVPsojJzhHCpvkQBf
+        e5i5vzPHPVTXTI56Nwax7AHc7RT7/4Zg3lD5Y+1bwU7y2/o2tTV/vk7EN/BGJMvt0t8IWAvJaWcvM
+        nVw6ZYgSOdLOY0Nlx5lV0UfpMk3Ivq9ckru9JwQyfl2u+lmcJUUZApBV/4lqlzuA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1oxamo-006Trn-0O;
-        Tue, 22 Nov 2022 22:26:34 +0100
-Message-ID: <b5765f802e836641f41ff45f778d6901f4054050.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: Add 802.11h CSA support
+        id 1oxavq-006Twm-0z;
+        Tue, 22 Nov 2022 22:35:54 +0100
+Message-ID: <379c3360c8e675532e48d7f2e6cc99f4f98c0fbe.camel@sipsolutions.net>
+Subject: Re: Variables being modified but not used in
+ net/wireless/lib80211_crypt_tkip.c
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>,
-        Sujith <Sujith.Manoharan@atheros.com>, linville@tuxdriver.com
-Cc:     linux-wireless@vger.kernel.org, Jouni.Malinen@Atheros.com,
-        ath11k@lists.infradead.org
-Date:   Tue, 22 Nov 2022 22:26:33 +0100
-In-Reply-To: <04ad44c0-4012-50a4-f24a-64723a1c0a4f@quicinc.com>
-References: <18786.55021.734826.472061@gargle.gargle.HOWL>
-         <04ad44c0-4012-50a4-f24a-64723a1c0a4f@quicinc.com>
+To:     "Colin King (gmail)" <colin.i.king@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Tue, 22 Nov 2022 22:35:53 +0100
+In-Reply-To: <aeec15d5-6f7a-2c4f-0f90-72c52d082ce8@gmail.com>
+References: <aeec15d5-6f7a-2c4f-0f90-72c52d082ce8@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -55,53 +59,57 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-11-02 at 11:26 +0800, Wen Gong wrote:
-> On 1/6/2009 11:58 AM, Sujith wrote:
-> > Move to the advertised channel on reception of
-> > a CSA element. This is needed for 802.11h compliance.
-> >=20
-> > Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
-> > ---
-> > v2
-> > --
-> > * Add a new variable to hold the CSA channel
-> > * Use msecs_to_jiffies for calculating expiration time
-> > * Add a check to drop beacons in case of a frequency mismatch
-> >=20
-> > v3
-> > --
-> > * Add a BSSID check when handling CSA action frame
-> >=20
-> >   net/mac80211/ieee80211_i.h |   11 ++++++-
-> >   net/mac80211/iface.c       |    2 +
-> >   net/mac80211/mlme.c        |   13 +++++++
-> >   net/mac80211/rx.c          |   20 +++++++++++
-> >   net/mac80211/spectmgmt.c   |   77 +++++++++++++++++++++++++++++++++++=
-+++++++++
-> >   5 files changed, 122 insertions(+), 1 deletions(-)
-> >=20
-> > ...
-> > +void ieee80211_process_chanswitch(struct ieee80211_sub_if_data *sdata,
-> > +				  struct ieee80211_channel_sw_ie *sw_elem,
-> > +				  struct ieee80211_bss *bss)
-> > +{
-> > +	struct ieee80211_channel *new_ch;
-> > +	struct ieee80211_if_sta *ifsta =3D &sdata->u.sta;
-> > +	int new_freq =3D ieee80211_channel_to_frequency(sw_elem->new_ch_num);
-> > +
-> > +	/* FIXME: Handle ADHOC later */
-> > +	if (sdata->vif.type !=3D NL80211_IFTYPE_STATION)
-> > +		return;
-> > +
-> > +	if (ifsta->state !=3D IEEE80211_STA_MLME_ASSOCIATED)
-> > +		return;
-> > +
-> > +	if (sdata->local->sw_scanning || sdata->local->hw_scanning)
-> > +		return;
-> > +
-> May I know why channel switch should not go ahead while it is doing scan?
+Hi,
 
-I don't remember, sorry.
+Sorry it took me so long to get to this ...
+
+This is ancient code, FWIW, and likely almost never used :-)
+
+> I was reviewing some clang scan build static analysis results and found=
+=20
+> an interesting warning:
+>=20
+> Source: net/wireless/lib80211_crypt_tkip.c
+>=20
+> net/wireless/lib80211_crypt_tkip.c:667:7: warning: variable 'iv32' set=
+=20
+> but not used [-Wunused-but-set-variable]
+>                  u32 iv32 =3D tkey->tx_iv32;
+>=20
+> The variables iv32 and iv16 are being decremented, but are not=20
+> referenced after that. The seq[] array is being updated with the=20
+> pre-decremented values. Is that correct?
+>=20
+>          if (seq) {
+>                  /* Return the sequence number of the last transmitted=
+=20
+> frame. */
+>                  u16 iv16 =3D tkey->tx_iv16;
+>                  u32 iv32 =3D tkey->tx_iv32;
+>                  if (iv16 =3D=3D 0)
+>                          iv32--;
+>                  iv16--;
+>                  seq[0] =3D tkey->tx_iv16;
+>                  seq[1] =3D tkey->tx_iv16 >> 8;
+>                  seq[2] =3D tkey->tx_iv32;
+>                  seq[3] =3D tkey->tx_iv32 >> 8;
+>                  seq[4] =3D tkey->tx_iv32 >> 16;
+>                  seq[5] =3D tkey->tx_iv32 >> 24;
+>          }
+>=20
+
+By the comment, that's not correct, and should use iv16/iv32 in the
+seq[] assignments, since lib80211_tkip_hdr() increments tx_iv16/32
+*after* setting it in the frame.
+
+That said only some really ancient ioctls can even reach this
+(prism2_ioctl_giwencodeext, prism2_ioctl_get_encryption) and then it
+will be used by hostapd only in AP mode (also likely less used than
+client mode) to send the seqno of the GTK on GTK rekeying to the client,
+and then the client will (hopefully) use it to drop replays ...
+
+So looks like worst case the client would drop a single frame because of
+this, unless of course that frame was anyway already transmitted while
+the whole rekeying was in progress...
 
 johannes
-
