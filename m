@@ -2,65 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4500F633D42
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 14:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A56FD633D6C
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 14:20:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233495AbiKVNNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 08:13:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42176 "EHLO
+        id S233459AbiKVNUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 08:20:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233322AbiKVNNL (ORCPT
+        with ESMTP id S232404AbiKVNUH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 08:13:11 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A4129C81;
-        Tue, 22 Nov 2022 05:13:09 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id z63so1545746ede.1;
-        Tue, 22 Nov 2022 05:13:09 -0800 (PST)
+        Tue, 22 Nov 2022 08:20:07 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 956E863CD8
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 05:20:06 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id s5so20544492edc.12
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 05:20:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=skymem-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8y8Hrci7gEBpK8ypTuE+fYD+XXvaKAxlJq93rw+OoIc=;
-        b=IyO6TpaYxflFJhaxYOV2PfGkRAwSZO3j+wxYnACuQZtZ47AAlMVq7mtJetf6M2SLn4
-         VlgBL5d5/82zp+sqUpl67AbeQfBs2fLSvZ4myCkMtzX+sBWBeAzAvJRA9b24MjOIbS1O
-         wD7XRoszDCFtQJHIHgNeniYHJsczpZPFTAK0i5gh9MX8cWPoXMZcUAWzje8wPLcEWDUi
-         JBUnisSTdn7jGG3Y9M5sn0/REyHc3tgkhogNJHb9j3LBYsW4y4BhNIJD/LQHd6HTOqoC
-         u1YyEfc24LkSSpO3fmjSaOvNgHxJyK0a7r83wYi1IWICrF7SKs4v5n/tihujwiJGBhBu
-         wbgg==
+        bh=OOzIbrFIOKeJXJT4ID/MUCczRZmmy/MUgRjL2diXaTc=;
+        b=exKArqMppRWvzwf3ELZJ+WIimhqTiI0eQUPBRXmFBulCFmneBcH9Du2QIac/RFgtB0
+         ykN9/Me7ltc8TFWhmNzPiQ3qYQlvB1977JR+h9ccv4Lc6MXyLPV7gModyDCR2xukjiIf
+         F9nSWGWjCA7aYQVANWKilM4s//f5IpoT8mTc6UZy8pKVGi+SjIufo3LoYBNsT8PLqBYO
+         VA81jm9pDN0AZj2/68Zb88mPhJYrEiIS3D7ZXF2FqxLSrsPcxbW/088aIm8ubbbXiz4Y
+         dTGGnv5rUGkfowZVNtCbk/5HsZzuvL9bnDmQ224JipcbMZrK7a0ze8FzosN5yb+e6zGt
+         6yiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8y8Hrci7gEBpK8ypTuE+fYD+XXvaKAxlJq93rw+OoIc=;
-        b=J6f/Vt7pC2QU4OTG6ZpUtFw6cPhvg4l4VphkeObMFDnh3ek7Q7X64sk2Ewl0UsVHJG
-         VO1CioXI4oAK7+K7kwU9DcdW4WJvWeLVUEl917lVQuCIUk4sCWe4+X3DJnvEen8gxvef
-         +vlwUx5oichxv2F6ZNuN/+RMCLQIBVNF0VOGd8A+U6yt6jq8A4hzQWCQElCqpeonRIj2
-         HeS7t3IrU0KBH5ptcOOMhwp7QxCCThH48EE+6irKhpIQUd5i2HC+4mZj5EJUu8TeBQyn
-         Hx/pA7mkiZ65w7OXpT4VVnNcnWkaI8cdtRRTxOvfVpO84T6sslJbKUd8su/dgM78GMXg
-         D7Gw==
-X-Gm-Message-State: ANoB5plAF0FV0US0C5VZGlPj7WWMDmY9No2DDThrzvu3Mol7nBqdOnxm
-        GmTZnkzeupnypdXw3Wmw8+/ToPWEQtg=
-X-Google-Smtp-Source: AA0mqf7TQImuxqzpm8QfnBN7SZmV3h7LqqStygAGln0CurVZbkJJHbTc5h85jMQbWbfutDxzZCMC7g==
-X-Received: by 2002:a05:6402:4512:b0:461:4c59:12d6 with SMTP id ez18-20020a056402451200b004614c5912d6mr20960202edb.250.1669122787880;
-        Tue, 22 Nov 2022 05:13:07 -0800 (PST)
-Received: from felia.fritz.box (200116b8267b3700c41d4e99e424db57.dip.versatel-1u1.de. [2001:16b8:267b:3700:c41d:4e99:e424:db57])
-        by smtp.gmail.com with ESMTPSA id j7-20020a17090643c700b0079dbf06d558sm6033234ejn.184.2022.11.22.05.13.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Nov 2022 05:13:05 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        bh=OOzIbrFIOKeJXJT4ID/MUCczRZmmy/MUgRjL2diXaTc=;
+        b=7Brqmlob4jo1HSRavV9MFb7eS/1r8ZccWTvfihNrlgaqxuqonyUedYHeX1OD0fd3zP
+         qqTjhoLuoMa74DSLW4Y80gqz9GxuNN3xST66vVzBP6qu8XZRinNvekS8AXi/m/4FMfZZ
+         MjC2LZ6KaO/vw/KLuqvU+ixL4USldPN99u8GWNy0+Qa5uLlfAkAgM6f3tyoRkSdpPF1l
+         OXlPE3dOd+eyBs+Ov/O/zqxfRemjt3ygOqltIFb1DZAal/je7aeEREV/dlv6hv9irrgK
+         6VF90oAEBSu3UpwQA/hIFuWAhlHmK9SdNjwBz9HEhbv1o+GJjUmewAsD2JqBvhKqZCj5
+         A56g==
+X-Gm-Message-State: ANoB5pkCZhhxOvIn4BauqYEpj+Xfi9QEq8cKITkFFThq/LmjE8iNTSZX
+        Ml0A4A2T6zB8znmpq3p7SpzoIM9ZR1qI5RjKPcPprlwVAfl3Ga69
+X-Google-Smtp-Source: AA0mqf6RIQN3NAIPq8n53brtdf2c7RBwC0dm3F1Hg3vcuzZA+yL7BZxfmN50fae3ZbC8cj8CDbzO4XEicnkv+Bo+9Ew=
+X-Received: by 2002:a05:6402:5d5:b0:464:fa1:9ece with SMTP id
+ n21-20020a05640205d500b004640fa19ecemr21917763edx.262.1669123205084; Tue, 22
+ Nov 2022 05:20:05 -0800 (PST)
+MIME-Version: 1.0
+References: <20221122131248.23738-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20221122131248.23738-1-lukas.bulwahn@gmail.com>
+From:   Info Skymem <info@skymem.com>
+Date:   Tue, 22 Nov 2022 14:19:54 +0100
+Message-ID: <CAKvd=_ivRY1kDZYqygm2ZQCrcWV4f7RJjTdgw2i27gW9aUjCVA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: b43: remove reference to removed config B43_PCMCIA
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
         Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        b43-dev@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] wifi: b43: remove reference to removed config B43_PCMCIA
-Date:   Tue, 22 Nov 2022 14:12:48 +0100
-Message-Id: <20221122131248.23738-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        b43-dev@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,50 +70,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 399500da18f7 ("ssb: pick PCMCIA host code support from b43 driver")
-removes the config B43_PCMCIA.
+Hi,
+thank you for your information.
 
-Clean up the last reference to this removed config B43_PCMCIA in the
-b43_print_driverinfo() function.
+On our website you can find email addresses of companies and people.
+https://www.skymem.info
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- drivers/net/wireless/broadcom/b43/main.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+In short, it=E2=80=99s like Google for emails.
 
-diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
-index 298febbdffc0..92ca0b2ca286 100644
---- a/drivers/net/wireless/broadcom/b43/main.c
-+++ b/drivers/net/wireless/broadcom/b43/main.c
-@@ -5784,15 +5784,12 @@ void b43_controller_restart(struct b43_wldev *dev, const char *reason)
- 
- static void b43_print_driverinfo(void)
- {
--	const char *feat_pci = "", *feat_pcmcia = "", *feat_nphy = "",
-+	const char *feat_pci = "", *feat_nphy = "",
- 		   *feat_leds = "", *feat_sdio = "";
- 
- #ifdef CONFIG_B43_PCI_AUTOSELECT
- 	feat_pci = "P";
- #endif
--#ifdef CONFIG_B43_PCMCIA
--	feat_pcmcia = "M";
--#endif
- #ifdef CONFIG_B43_PHY_N
- 	feat_nphy = "N";
- #endif
-@@ -5803,9 +5800,8 @@ static void b43_print_driverinfo(void)
- 	feat_sdio = "S";
- #endif
- 	printk(KERN_INFO "Broadcom 43xx driver loaded "
--	       "[ Features: %s%s%s%s%s ]\n",
--	       feat_pci, feat_pcmcia, feat_nphy,
--	       feat_leds, feat_sdio);
-+	       "[ Features: %s%s%s%s ]\n",
-+	       feat_pci, feat_nphy, feat_leds, feat_sdio);
- }
- 
- static int __init b43_init(void)
--- 
-2.17.1
+Best regards,
+Robert,
+Skymem team
 
+On Tue, Nov 22, 2022 at 2:15 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wro=
+te:
+>
+> Commit 399500da18f7 ("ssb: pick PCMCIA host code support from b43 driver"=
+)
+> removes the config B43_PCMCIA.
+>
+> Clean up the last reference to this removed config B43_PCMCIA in the
+> b43_print_driverinfo() function.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  drivers/net/wireless/broadcom/b43/main.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wirel=
+ess/broadcom/b43/main.c
+> index 298febbdffc0..92ca0b2ca286 100644
+> --- a/drivers/net/wireless/broadcom/b43/main.c
+> +++ b/drivers/net/wireless/broadcom/b43/main.c
+> @@ -5784,15 +5784,12 @@ void b43_controller_restart(struct b43_wldev *dev=
+, const char *reason)
+>
+>  static void b43_print_driverinfo(void)
+>  {
+> -       const char *feat_pci =3D "", *feat_pcmcia =3D "", *feat_nphy =3D =
+"",
+> +       const char *feat_pci =3D "", *feat_nphy =3D "",
+>                    *feat_leds =3D "", *feat_sdio =3D "";
+>
+>  #ifdef CONFIG_B43_PCI_AUTOSELECT
+>         feat_pci =3D "P";
+>  #endif
+> -#ifdef CONFIG_B43_PCMCIA
+> -       feat_pcmcia =3D "M";
+> -#endif
+>  #ifdef CONFIG_B43_PHY_N
+>         feat_nphy =3D "N";
+>  #endif
+> @@ -5803,9 +5800,8 @@ static void b43_print_driverinfo(void)
+>         feat_sdio =3D "S";
+>  #endif
+>         printk(KERN_INFO "Broadcom 43xx driver loaded "
+> -              "[ Features: %s%s%s%s%s ]\n",
+> -              feat_pci, feat_pcmcia, feat_nphy,
+> -              feat_leds, feat_sdio);
+> +              "[ Features: %s%s%s%s ]\n",
+> +              feat_pci, feat_nphy, feat_leds, feat_sdio);
+>  }
+>
+>  static int __init b43_init(void)
+> --
+> 2.17.1
+>
+>
+> _______________________________________________
+> b43-dev mailing list
+> b43-dev@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/b43-dev
