@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 654CC634542
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 21:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B684D634544
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 21:11:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234498AbiKVULT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 15:11:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52066 "EHLO
+        id S234642AbiKVULX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 15:11:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbiKVULR (ORCPT
+        with ESMTP id S234632AbiKVULV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 15:11:17 -0500
+        Tue, 22 Nov 2022 15:11:21 -0500
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70039AEA6B
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 12:11:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574F0AEA4D
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 12:11:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669147876; x=1700683876;
+  t=1669147880; x=1700683880;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eb0F30ElrhPf5Y2G3KQkiKqVtDAYedXmwrHyyR+SYlU=;
-  b=mQS4grZRuVidbz3kfUUezFyGinnfSrj2AF/jv/rWy8VFMw1MTXJjjRZu
-   FzMvIMz7uZOetsYfDyQu2UNFslpF/7ZVSWCyE/6Yx/qBsBkJnPg/XRyjK
-   7LKMSjM1apNzEU9dkQG8MmQlJ4M57zDCgvQOB92Qr3D4UKTeTa5Tk8JZ+
-   feTD1dEs0OtqzoTCmbFSy56Yx1/bdCIq8SsSbezUYuLiKkahZsqAoACod
-   thgITL4s39c6oXPRWwV9pTg2eMnpOActR1SGDdS9vNeo6KmRZmj+i16YS
-   +JZDSzHgtChDrPlmig8uM1xTLweQRtfihJuoDUErXoLM9kWb8aPlxCqZM
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="313938086"
+  bh=fg6CkdJYVmXB8bqGx/i+3uTbsPpbPsUI6TvAyxPSNhE=;
+  b=UaIYgWXnHFjgXsnGALF4Q2jr5tlZdaXvdH9BGbOxc36q/DoK6M0scuiu
+   lCEw5EOTH6zEw/TR/0R0H2buUOybRuMQ35fnHviscz2UqlZ/jSVDI9Kig
+   NaoGMZ6lt7Wlm5Zke16Z82GpVwBDylSRu97eGLWt3gqtliFl0NEo8Oa1y
+   4q8AvizHSNcJTREozjjcyZbBXCnX4RWcJekTSNHyjG5sJwRzANCNphHgG
+   SqXOU4bFrA3HCHOL4RcWbylN+AQmLIJIV94T6+r98kH5qgCAE9252Fzja
+   m11Ty7iW5NgyiR5veuW1XgsppEu8EpfRsZB8Vo8zFNU7cD/CxS/88Nk1d
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="313938108"
 X-IronPort-AV: E=Sophos;i="5.96,185,1665471600"; 
-   d="scan'208";a="313938086"
+   d="scan'208";a="313938108"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:16 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="747486934"
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:20 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="747486948"
 X-IronPort-AV: E=Sophos;i="5.96,185,1665471600"; 
-   d="scan'208";a="747486934"
+   d="scan'208";a="747486948"
 Received: from mkoshili-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.209.62])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:14 -0800
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:18 -0800
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>,
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH v2 1/9] wifi: iwlwifi: mvm: Advertise EHT capabilities
-Date:   Tue, 22 Nov 2022 22:10:32 +0200
-Message-Id: <20221122220713.6bc00d851794.I214005645f3da21d8f2458a70355deeca04a19e8@changeid>
+Subject: [PATCH v2 2/9] wifi: iwlwifi: mvm: support 320 MHz PHY configuration
+Date:   Tue, 22 Nov 2022 22:10:33 +0200
+Message-Id: <20221122220713.964db911b733.If56c94a9bf20c050f35d2421b680e400a9f4aeb8@changeid>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20221122201040.2618863-1-gregory.greenman@intel.com>
 References: <20221122201040.2618863-1-gregory.greenman@intel.com>
@@ -59,307 +60,168 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add support for advertising EHT capabilities if supported by
-device SKU and not disabled by module parameters.
+Support 320 MHz PHY configuration and while doing so rewrite
+the code since we'd otherwise double the number of cases in
+the switch statement.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   3 +
- .../wireless/intel/iwlwifi/iwl-eeprom-parse.h |   3 +-
- .../wireless/intel/iwlwifi/iwl-modparams.h    |   1 +
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 178 ++++++++++++++++--
- 4 files changed, 167 insertions(+), 18 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/phy-ctxt.h  | 33 ++++++------
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 54 +++++++++----------
+ 3 files changed, 44 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index a2203f661321..ab7065c93826 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1971,3 +1971,6 @@ MODULE_PARM_DESC(remove_when_gone,
- module_param_named(disable_11ax, iwlwifi_mod_params.disable_11ax, bool,
- 		   S_IRUGO);
- MODULE_PARM_DESC(disable_11ax, "Disable HE capabilities (default: false)");
-+
-+module_param_named(disable_11be, iwlwifi_mod_params.disable_11be, bool, 0444);
-+MODULE_PARM_DESC(disable_11be, "Disable EHT capabilities (default: false)");
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h
-index 0efffb6eeb1e..baa643386018 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h b/drivers/net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h
+index e66f77924f83..2f7d8558becd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h
+@@ -13,10 +13,12 @@
+ #define PHY_BAND_6 (2)
+ 
+ /* Supported channel width, vary if there is VHT support */
+-#define PHY_VHT_CHANNEL_MODE20	(0x0)
+-#define PHY_VHT_CHANNEL_MODE40	(0x1)
+-#define PHY_VHT_CHANNEL_MODE80	(0x2)
+-#define PHY_VHT_CHANNEL_MODE160	(0x3)
++#define IWL_PHY_CHANNEL_MODE20	0x0
++#define IWL_PHY_CHANNEL_MODE40	0x1
++#define IWL_PHY_CHANNEL_MODE80	0x2
++#define IWL_PHY_CHANNEL_MODE160	0x3
++/* and 320 MHz for EHT */
++#define IWL_PHY_CHANNEL_MODE320	0x4
+ 
  /*
-- * Copyright (C) 2005-2014, 2018 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018, 2020-2022 Intel Corporation
-  * Copyright (C) 2015 Intel Mobile Communications GmbH
+  * Control channel position:
+@@ -24,20 +26,17 @@
+  * For VHT - bit-2 marks if the control is lower/upper relative to center-freq
+  *   bits-1:0 mark the distance from the center freq. for 20Mhz, offset is 0.
+  *                                   center_freq
+- *                                        |
+- * 40Mhz                          |_______|_______|
+- * 80Mhz                  |_______|_______|_______|_______|
+- * 160Mhz |_______|_______|_______|_______|_______|_______|_______|_______|
+- * code      011     010     001     000  |  100     101     110    111
++ * For EHT - bit-3 is used for extended distance
++ *                                                |
++ * 40Mhz                                     |____|____|
++ * 80Mhz                                |____|____|____|____|
++ * 160Mhz                     |____|____|____|____|____|____|____|____|
++ * 320MHz |____|____|____|____|____|____|____|____|____|____|____|____|____|____|____|____|
++ * code    1011 1010 1001 1000 0011 0010 0001 0000 0100 0101 0110 0111 1100 1101 1110 1111
   */
- #ifndef __iwl_eeprom_parse_h__
-@@ -31,6 +31,7 @@ struct iwl_nvm_data {
- 	bool sku_cap_amt_enable;
- 	bool sku_cap_ipan_enable;
- 	bool sku_cap_mimo_disabled;
-+	bool sku_cap_11be_enable;
+-#define PHY_VHT_CTRL_POS_1_BELOW  (0x0)
+-#define PHY_VHT_CTRL_POS_2_BELOW  (0x1)
+-#define PHY_VHT_CTRL_POS_3_BELOW  (0x2)
+-#define PHY_VHT_CTRL_POS_4_BELOW  (0x3)
+-#define PHY_VHT_CTRL_POS_1_ABOVE  (0x4)
+-#define PHY_VHT_CTRL_POS_2_ABOVE  (0x5)
+-#define PHY_VHT_CTRL_POS_3_ABOVE  (0x6)
+-#define PHY_VHT_CTRL_POS_4_ABOVE  (0x7)
++#define IWL_PHY_CTRL_POS_ABOVE		0x4
++#define IWL_PHY_CTRL_POS_OFFS_EXT	0x8
++#define IWL_PHY_CTRL_POS_OFFS_MSK	0x3
  
- 	u16 radio_cfg_type;
- 	u8 radio_cfg_step;
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h b/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
-index d0b4d02bdab9..1cf26ab4f488 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
-@@ -62,6 +62,7 @@ enum iwl_uapsd_disable {
-  * @disable_11ac: disable VHT capabilities, default = false.
-  * @remove_when_gone: remove an inaccessible device from the PCIe bus.
-  * @enable_ini: enable new FW debug infratructure (INI TLVs)
-+ * @disable_11be: disable EHT capabilities, default = false.
+ /*
+  * struct iwl_fw_channel_info_v1 - channel information
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index a81dd488caa8..57aa10466637 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3777,7 +3777,7 @@ static int iwl_mvm_send_aux_roc_cmd(struct iwl_mvm *mvm,
+ 	/* Set the channel info data */
+ 	iwl_mvm_set_chan_info(mvm, &aux_roc_req.channel_info, channel->hw_value,
+ 			      iwl_mvm_phy_band_from_nl80211(channel->band),
+-			      PHY_VHT_CHANNEL_MODE20,
++			      IWL_PHY_CHANNEL_MODE20,
+ 			      0);
+ 
+ 	/* Set the time and duration */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
+index a3cefbc43e80..06f4203fb989 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
+@@ -14,16 +14,18 @@ u8 iwl_mvm_get_channel_width(struct cfg80211_chan_def *chandef)
+ 	switch (chandef->width) {
+ 	case NL80211_CHAN_WIDTH_20_NOHT:
+ 	case NL80211_CHAN_WIDTH_20:
+-		return PHY_VHT_CHANNEL_MODE20;
++		return IWL_PHY_CHANNEL_MODE20;
+ 	case NL80211_CHAN_WIDTH_40:
+-		return PHY_VHT_CHANNEL_MODE40;
++		return IWL_PHY_CHANNEL_MODE40;
+ 	case NL80211_CHAN_WIDTH_80:
+-		return PHY_VHT_CHANNEL_MODE80;
++		return IWL_PHY_CHANNEL_MODE80;
+ 	case NL80211_CHAN_WIDTH_160:
+-		return PHY_VHT_CHANNEL_MODE160;
++		return IWL_PHY_CHANNEL_MODE160;
++	case NL80211_CHAN_WIDTH_320:
++		return IWL_PHY_CHANNEL_MODE320;
+ 	default:
+ 		WARN(1, "Invalid channel width=%u", chandef->width);
+-		return PHY_VHT_CHANNEL_MODE20;
++		return IWL_PHY_CHANNEL_MODE20;
+ 	}
+ }
+ 
+@@ -33,34 +35,32 @@ u8 iwl_mvm_get_channel_width(struct cfg80211_chan_def *chandef)
   */
- struct iwl_mod_params {
- 	int swcrypto;
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 9040da3dcce3..2b43fff4d3f9 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -546,7 +546,7 @@ static const u8 iwl_vendor_caps[] = {
- 	0x00
- };
- 
--static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
-+static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
- 	{
- 		.types_mask = BIT(NL80211_IFTYPE_STATION),
- 		.he_cap = {
-@@ -631,6 +631,78 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
- 			 */
- 			.ppe_thres = {0x61, 0x1c, 0xc7, 0x71},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE |
-+					IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ_MASK,
-+				.phy_cap_info[1] =
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK  |
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK,
-+
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
-+					IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP,
-+				.phy_cap_info[8] =
-+					IEEE80211_EHT_PHY_CAP8_RX_1024QAM_WIDER_BW_DL_OFDMA |
-+					IEEE80211_EHT_PHY_CAP8_RX_4096QAM_WIDER_BW_DL_OFDMA,
-+			},
-+
-+			/* For all MCS and bandwidth, set 2 NSS for both Tx and
-+			 * Rx - note we don't set the only_20mhz, but due to this
-+			 * being a union, it gets set correctly anyway.
-+			 */
-+			.eht_mcs_nss_supp = {
-+				.bw._80 = {
-+					.rx_tx_mcs9_max_nss = 0x22,
-+					.rx_tx_mcs11_max_nss = 0x22,
-+					.rx_tx_mcs13_max_nss = 0x22,
-+				},
-+				.bw._160 = {
-+					.rx_tx_mcs9_max_nss = 0x22,
-+					.rx_tx_mcs11_max_nss = 0x22,
-+					.rx_tx_mcs13_max_nss = 0x22,
-+				},
-+				.bw._320 = {
-+					.rx_tx_mcs9_max_nss = 0x22,
-+					.rx_tx_mcs11_max_nss = 0x22,
-+					.rx_tx_mcs13_max_nss = 0x22,
-+				},
-+			},
-+
-+			/*
-+			 * PPE thresholds for NSS = 2, and RU index bitmap set
-+			 * to 0xc.
-+			 */
-+			.eht_ppe_thres = {0xc1, 0x0e, 0xe0 }
-+		},
- 	},
- 	{
- 		.types_mask = BIT(NL80211_IFTYPE_AP),
-@@ -687,6 +759,49 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
- 			 */
- 			.ppe_thres = {0x61, 0x1c, 0xc7, 0x71},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT,
-+			},
-+
-+			/* For all MCS and bandwidth, set 2 NSS for both Tx and
-+			 * Rx - note we don't set the only_20mhz, but due to this
-+			 * being a union, it gets set correctly anyway.
-+			 */
-+			.eht_mcs_nss_supp = {
-+				.bw._80 = {
-+					.rx_tx_mcs9_max_nss = 0x22,
-+					.rx_tx_mcs11_max_nss = 0x22,
-+					.rx_tx_mcs13_max_nss = 0x22,
-+				},
-+				.bw._160 = {
-+					.rx_tx_mcs9_max_nss = 0x22,
-+					.rx_tx_mcs11_max_nss = 0x22,
-+					.rx_tx_mcs13_max_nss = 0x22,
-+				},
-+				.bw._320 = {
-+					.rx_tx_mcs9_max_nss = 0x22,
-+					.rx_tx_mcs11_max_nss = 0x22,
-+					.rx_tx_mcs13_max_nss = 0x22,
-+				},
-+			},
-+
-+			/*
-+			 * PPE thresholds for NSS = 2, and RU index bitmap set
-+			 * to 0xc.
-+			 */
-+			.eht_ppe_thres = {0xc1, 0x0e, 0xe0 }
-+		},
- 	},
- };
- 
-@@ -738,6 +853,7 @@ static void iwl_init_he_6ghz_capa(struct iwl_trans *trans,
- 
- static void
- iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
-+			 struct iwl_nvm_data *data,
- 			 struct ieee80211_supported_band *sband,
- 			 struct ieee80211_sband_iftype_data *iftype_data,
- 			 u8 tx_chains, u8 rx_chains,
-@@ -745,6 +861,9 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ u8 iwl_mvm_get_ctrl_pos(struct cfg80211_chan_def *chandef)
  {
- 	bool is_ap = iftype_data->types_mask & BIT(NL80211_IFTYPE_AP);
- 
-+	if (!data->sku_cap_11be_enable || iwlwifi_mod_params.disable_11be)
-+		iftype_data->eht_cap.has_eht = false;
+-	switch (chandef->chan->center_freq - chandef->center_freq1) {
+-	case -70:
+-		return PHY_VHT_CTRL_POS_4_BELOW;
+-	case -50:
+-		return PHY_VHT_CTRL_POS_3_BELOW;
+-	case -30:
+-		return PHY_VHT_CTRL_POS_2_BELOW;
+-	case -10:
+-		return PHY_VHT_CTRL_POS_1_BELOW;
+-	case  10:
+-		return PHY_VHT_CTRL_POS_1_ABOVE;
+-	case  30:
+-		return PHY_VHT_CTRL_POS_2_ABOVE;
+-	case  50:
+-		return PHY_VHT_CTRL_POS_3_ABOVE;
+-	case  70:
+-		return PHY_VHT_CTRL_POS_4_ABOVE;
+-	default:
+-		WARN(1, "Invalid channel definition");
+-		fallthrough;
+-	case 0:
++	int offs = chandef->chan->center_freq - chandef->center_freq1;
++	int abs_offs = abs(offs);
++	u8 ret;
 +
- 	/* Advertise an A-MPDU exponent extension based on
- 	 * operating band
- 	 */
-@@ -765,19 +884,44 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 		iftype_data->he_cap.he_cap_elem.phy_cap_info[5] |=
- 			IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_2 |
- 			IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_2;
--		if (!is_ap)
-+		if (!is_ap) {
- 			iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
- 				IEEE80211_HE_PHY_CAP7_MAX_NC_2;
--	} else if (!is_ap) {
--		/* If not 2x2, we need to indicate 1x1 in the
--		 * Midamble RX Max NSTS - but not for AP mode
--		 */
--		iftype_data->he_cap.he_cap_elem.phy_cap_info[1] &=
--			~IEEE80211_HE_PHY_CAP1_MIDAMBLE_RX_TX_MAX_NSTS;
--		iftype_data->he_cap.he_cap_elem.phy_cap_info[2] &=
--			~IEEE80211_HE_PHY_CAP2_MIDAMBLE_RX_TX_MAX_NSTS;
--		iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
--			IEEE80211_HE_PHY_CAP7_MAX_NC_1;
-+
-+			if (iftype_data->eht_cap.has_eht) {
-+				/*
-+				 * Set the number of sounding dimensions for each
-+				 * bandwidth to 1 to indicate the maximal supported
-+				 * value of TXVECTOR parameter NUM_STS of 2
-+				 */
-+				iftype_data->eht_cap.eht_cap_elem.phy_cap_info[2] |= 0x49;
-+
-+				/*
-+				 * Set the MAX NC to 1 to indicate sounding feedback of
-+				 * 2 supported by the beamfomee.
-+				 */
-+				iftype_data->eht_cap.eht_cap_elem.phy_cap_info[4] |= 0x10;
-+			}
-+		}
-+	} else {
-+		if (iftype_data->eht_cap.has_eht) {
-+			struct ieee80211_eht_mcs_nss_supp *mcs_nss =
-+				&iftype_data->eht_cap.eht_mcs_nss_supp;
-+
-+			memset(mcs_nss, 0x11, sizeof(*mcs_nss));
-+		}
-+
-+		if (!is_ap) {
-+			/* If not 2x2, we need to indicate 1x1 in the
-+			 * Midamble RX Max NSTS - but not for AP mode
-+			 */
-+			iftype_data->he_cap.he_cap_elem.phy_cap_info[1] &=
-+				~IEEE80211_HE_PHY_CAP1_MIDAMBLE_RX_TX_MAX_NSTS;
-+			iftype_data->he_cap.he_cap_elem.phy_cap_info[2] &=
-+				~IEEE80211_HE_PHY_CAP2_MIDAMBLE_RX_TX_MAX_NSTS;
-+			iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
-+				IEEE80211_HE_PHY_CAP7_MAX_NC_1;
-+		}
++	if (offs == 0) {
+ 		/*
+ 		 * The FW is expected to check the control channel position only
+ 		 * when in HT/VHT and the channel width is not 20MHz. Return
+ 		 * this value as the default one.
+ 		 */
+-		return PHY_VHT_CTRL_POS_1_BELOW;
++		return 0;
  	}
++
++	/* this results in a value 0-7, i.e. fitting into 0b0111 */
++	ret = (abs_offs - 10) / 20;
++	/*
++	 * But we need the value to be in 0b1011 because 0b0100 is
++	 * IWL_PHY_CTRL_POS_ABOVE, so shift bit 2 up to land in
++	 * IWL_PHY_CTRL_POS_OFFS_EXT (0b1000)
++	 */
++	ret = (ret & IWL_PHY_CTRL_POS_OFFS_MSK) |
++	      ((ret & BIT(2)) << 1);
++	/* and add the above bit */
++	ret |= (offs > 0) * IWL_PHY_CTRL_POS_ABOVE;
++
++	return ret;
+ }
  
- 	switch (CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
-@@ -816,8 +960,8 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
- 	if (WARN_ON(sband->iftype_data))
- 		return;
- 
--	BUILD_BUG_ON(sizeof(data->iftd.low) != sizeof(iwl_he_capa));
--	BUILD_BUG_ON(sizeof(data->iftd.high) != sizeof(iwl_he_capa));
-+	BUILD_BUG_ON(sizeof(data->iftd.low) != sizeof(iwl_he_eht_capa));
-+	BUILD_BUG_ON(sizeof(data->iftd.high) != sizeof(iwl_he_eht_capa));
- 
- 	switch (sband->band) {
- 	case NL80211_BAND_2GHZ:
-@@ -832,13 +976,13 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
- 		return;
- 	}
- 
--	memcpy(iftype_data, iwl_he_capa, sizeof(iwl_he_capa));
-+	memcpy(iftype_data, iwl_he_eht_capa, sizeof(iwl_he_eht_capa));
- 
- 	sband->iftype_data = iftype_data;
--	sband->n_iftype_data = ARRAY_SIZE(iwl_he_capa);
-+	sband->n_iftype_data = ARRAY_SIZE(iwl_he_eht_capa);
- 
- 	for (i = 0; i < sband->n_iftype_data; i++)
--		iwl_nvm_fixup_sband_iftd(trans, sband, &iftype_data[i],
-+		iwl_nvm_fixup_sband_iftd(trans, data, sband, &iftype_data[i],
- 					 tx_chains, rx_chains, fw);
- 
- 	iwl_init_he_6ghz_capa(trans, data, sband, tx_chains, rx_chains);
+ /*
 -- 
 2.35.3
 
