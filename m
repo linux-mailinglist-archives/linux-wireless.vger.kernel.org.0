@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D08F1634540
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 21:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 654CC634542
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 21:11:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232645AbiKVULO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 15:11:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
+        id S234498AbiKVULT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 15:11:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbiKVULN (ORCPT
+        with ESMTP id S229628AbiKVULR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 15:11:13 -0500
+        Tue, 22 Nov 2022 15:11:17 -0500
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF464A84E6
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 12:11:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70039AEA6B
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 12:11:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669147872; x=1700683872;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4smjbYO8NuspzAfBppJOJf6T3kJkBGUVlKuLhSfbRc0=;
-  b=QFQAfjT6XdTV9ydraKpAIA2DdNTWgrSbMhF2IgvAbAF9NuHbXAFdKt3x
-   g2H4EW//JJ4KnWPcYTDqjtC9x/Gruc3ZU09qfmBeLht1W1zlCml6DQPUw
-   +CDq4wV10ykO+1QqZiLsICw50Z3XVp3kPCeabcLJLtpYmacrrsbaVFCv2
-   YRbpwZp7VSJweBVYkpxvdzYxoHxu9q4uDw8c2F2p5d5gINnBHAcXqQNn3
-   mrtSE6EEZnWoir/y54bBlUg1lYUj8v8einUjzeHYtVwnjaxZUB1DwKYbT
-   bIsHATY0j531SpJgfyKiDGtD9WB0zqnxn2Wr2K0GASYZ4e9zuoUmnw/06
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="313938072"
+  t=1669147876; x=1700683876;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=eb0F30ElrhPf5Y2G3KQkiKqVtDAYedXmwrHyyR+SYlU=;
+  b=mQS4grZRuVidbz3kfUUezFyGinnfSrj2AF/jv/rWy8VFMw1MTXJjjRZu
+   FzMvIMz7uZOetsYfDyQu2UNFslpF/7ZVSWCyE/6Yx/qBsBkJnPg/XRyjK
+   7LKMSjM1apNzEU9dkQG8MmQlJ4M57zDCgvQOB92Qr3D4UKTeTa5Tk8JZ+
+   feTD1dEs0OtqzoTCmbFSy56Yx1/bdCIq8SsSbezUYuLiKkahZsqAoACod
+   thgITL4s39c6oXPRWwV9pTg2eMnpOActR1SGDdS9vNeo6KmRZmj+i16YS
+   +JZDSzHgtChDrPlmig8uM1xTLweQRtfihJuoDUErXoLM9kWb8aPlxCqZM
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="313938086"
 X-IronPort-AV: E=Sophos;i="5.96,185,1665471600"; 
-   d="scan'208";a="313938072"
+   d="scan'208";a="313938086"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:12 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="747486920"
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:16 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="747486934"
 X-IronPort-AV: E=Sophos;i="5.96,185,1665471600"; 
-   d="scan'208";a="747486920"
+   d="scan'208";a="747486934"
 Received: from mkoshili-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.209.62])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:10 -0800
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 12:11:14 -0800
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
+Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH v2 0/9] wifi: iwlwifi: updates intended for v6.2 2022-11-22 
-Date:   Tue, 22 Nov 2022 22:10:31 +0200
-Message-Id: <20221122201040.2618863-1-gregory.greenman@intel.com>
+Subject: [PATCH v2 1/9] wifi: iwlwifi: mvm: Advertise EHT capabilities
+Date:   Tue, 22 Nov 2022 22:10:32 +0200
+Message-Id: <20221122220713.6bc00d851794.I214005645f3da21d8f2458a70355deeca04a19e8@changeid>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20221122201040.2618863-1-gregory.greenman@intel.com>
+References: <20221122201040.2618863-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,59 +59,307 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-Hi,
+Add support for advertising EHT capabilities if supported by
+device SKU and not disabled by module parameters.
 
-Here's the third set of patches intended for v6.2, with the fixes.
-Resending all the patches since I think it'll make the review easier.
-The fixes are only for two patches (1 and 4), the rest are unchanged.
-
-It contains EHT adjustments for iwlwifi. It contains only iwlwifi
-changes, all the required mac80211/cfg80211 changes are already merged
-upstream.
-
-As usual, I'm pushing this to a pending branch, for kbuild bot,
-and will send a pull-request later.
-
-Please review.
-
-Thanks,
-Gregory.
-
-Abhishek Naik (1):
-  wifi: iwlwifi: nvm: Update EHT capabilities for GL device
-
-Ilan Peer (1):
-  wifi: iwlwifi: mvm: Advertise EHT capabilities
-
-Johannes Berg (4):
-  wifi: iwlwifi: mvm: support 320 MHz PHY configuration
-  wifi: iwlwifi: mvm: set HE PHY bandwidth according to band
-  wifi: iwlwifi: mvm: advertise 320 MHz in 6 GHz only conditionally
-  wifi: iwlwifi: nvm-parse: support A-MPDU in EHT 2.4 GHz
-
-Miri Korenblit (1):
-  wifi: iwlwifi: mvm: support PPE Thresholds for EHT
-
-Mordechay Goodstein (2):
-  wifi: iwlwifi: rs: add support for parsing max MCS per NSS/BW in 11be
-  wifi: iwlwifi: mvm: add support for EHT 1K aggregation size
-
- .../net/wireless/intel/iwlwifi/fw/api/mac.h   |   6 +-
- .../wireless/intel/iwlwifi/fw/api/phy-ctxt.h  |  33 ++-
- .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  10 +-
- drivers/net/wireless/intel/iwlwifi/fw/rs.c    |   2 +
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
  drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   3 +
  .../wireless/intel/iwlwifi/iwl-eeprom-parse.h |   3 +-
  .../wireless/intel/iwlwifi/iwl-modparams.h    |   1 +
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 235 ++++++++++++++++--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 179 ++++++++++---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  10 +-
- .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  54 ++--
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 125 +++++++++-
- 12 files changed, 548 insertions(+), 113 deletions(-)
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 178 ++++++++++++++++--
+ 4 files changed, 167 insertions(+), 18 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index a2203f661321..ab7065c93826 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1971,3 +1971,6 @@ MODULE_PARM_DESC(remove_when_gone,
+ module_param_named(disable_11ax, iwlwifi_mod_params.disable_11ax, bool,
+ 		   S_IRUGO);
+ MODULE_PARM_DESC(disable_11ax, "Disable HE capabilities (default: false)");
++
++module_param_named(disable_11be, iwlwifi_mod_params.disable_11be, bool, 0444);
++MODULE_PARM_DESC(disable_11be, "Disable EHT capabilities (default: false)");
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h
+index 0efffb6eeb1e..baa643386018 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2018 Intel Corporation
++ * Copyright (C) 2005-2014, 2018, 2020-2022 Intel Corporation
+  * Copyright (C) 2015 Intel Mobile Communications GmbH
+  */
+ #ifndef __iwl_eeprom_parse_h__
+@@ -31,6 +31,7 @@ struct iwl_nvm_data {
+ 	bool sku_cap_amt_enable;
+ 	bool sku_cap_ipan_enable;
+ 	bool sku_cap_mimo_disabled;
++	bool sku_cap_11be_enable;
+ 
+ 	u16 radio_cfg_type;
+ 	u8 radio_cfg_step;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h b/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
+index d0b4d02bdab9..1cf26ab4f488 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
+@@ -62,6 +62,7 @@ enum iwl_uapsd_disable {
+  * @disable_11ac: disable VHT capabilities, default = false.
+  * @remove_when_gone: remove an inaccessible device from the PCIe bus.
+  * @enable_ini: enable new FW debug infratructure (INI TLVs)
++ * @disable_11be: disable EHT capabilities, default = false.
+  */
+ struct iwl_mod_params {
+ 	int swcrypto;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 9040da3dcce3..2b43fff4d3f9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -546,7 +546,7 @@ static const u8 iwl_vendor_caps[] = {
+ 	0x00
+ };
+ 
+-static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
++static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 	{
+ 		.types_mask = BIT(NL80211_IFTYPE_STATION),
+ 		.he_cap = {
+@@ -631,6 +631,78 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
+ 			 */
+ 			.ppe_thres = {0x61, 0x1c, 0xc7, 0x71},
+ 		},
++		.eht_cap = {
++			.has_eht = true,
++			.eht_cap_elem = {
++				.mac_cap_info[0] =
++					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
++					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
++					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
++					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2,
++				.phy_cap_info[0] =
++					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
++					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
++					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
++					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE |
++					IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ_MASK,
++				.phy_cap_info[1] =
++					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK  |
++					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK |
++					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK,
++				.phy_cap_info[3] =
++					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
++					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
++					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
++					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
++					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
++					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
++					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK,
++
++				.phy_cap_info[4] =
++					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
++					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP |
++					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI,
++				.phy_cap_info[5] =
++					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
++					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
++					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
++					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT,
++				.phy_cap_info[6] =
++					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
++					IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP,
++				.phy_cap_info[8] =
++					IEEE80211_EHT_PHY_CAP8_RX_1024QAM_WIDER_BW_DL_OFDMA |
++					IEEE80211_EHT_PHY_CAP8_RX_4096QAM_WIDER_BW_DL_OFDMA,
++			},
++
++			/* For all MCS and bandwidth, set 2 NSS for both Tx and
++			 * Rx - note we don't set the only_20mhz, but due to this
++			 * being a union, it gets set correctly anyway.
++			 */
++			.eht_mcs_nss_supp = {
++				.bw._80 = {
++					.rx_tx_mcs9_max_nss = 0x22,
++					.rx_tx_mcs11_max_nss = 0x22,
++					.rx_tx_mcs13_max_nss = 0x22,
++				},
++				.bw._160 = {
++					.rx_tx_mcs9_max_nss = 0x22,
++					.rx_tx_mcs11_max_nss = 0x22,
++					.rx_tx_mcs13_max_nss = 0x22,
++				},
++				.bw._320 = {
++					.rx_tx_mcs9_max_nss = 0x22,
++					.rx_tx_mcs11_max_nss = 0x22,
++					.rx_tx_mcs13_max_nss = 0x22,
++				},
++			},
++
++			/*
++			 * PPE thresholds for NSS = 2, and RU index bitmap set
++			 * to 0xc.
++			 */
++			.eht_ppe_thres = {0xc1, 0x0e, 0xe0 }
++		},
+ 	},
+ 	{
+ 		.types_mask = BIT(NL80211_IFTYPE_AP),
+@@ -687,6 +759,49 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
+ 			 */
+ 			.ppe_thres = {0x61, 0x1c, 0xc7, 0x71},
+ 		},
++		.eht_cap = {
++			.has_eht = true,
++			.eht_cap_elem = {
++				.mac_cap_info[0] =
++					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
++					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
++					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
++					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2,
++				.phy_cap_info[0] =
++					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
++					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI,
++				.phy_cap_info[5] =
++					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT,
++			},
++
++			/* For all MCS and bandwidth, set 2 NSS for both Tx and
++			 * Rx - note we don't set the only_20mhz, but due to this
++			 * being a union, it gets set correctly anyway.
++			 */
++			.eht_mcs_nss_supp = {
++				.bw._80 = {
++					.rx_tx_mcs9_max_nss = 0x22,
++					.rx_tx_mcs11_max_nss = 0x22,
++					.rx_tx_mcs13_max_nss = 0x22,
++				},
++				.bw._160 = {
++					.rx_tx_mcs9_max_nss = 0x22,
++					.rx_tx_mcs11_max_nss = 0x22,
++					.rx_tx_mcs13_max_nss = 0x22,
++				},
++				.bw._320 = {
++					.rx_tx_mcs9_max_nss = 0x22,
++					.rx_tx_mcs11_max_nss = 0x22,
++					.rx_tx_mcs13_max_nss = 0x22,
++				},
++			},
++
++			/*
++			 * PPE thresholds for NSS = 2, and RU index bitmap set
++			 * to 0xc.
++			 */
++			.eht_ppe_thres = {0xc1, 0x0e, 0xe0 }
++		},
+ 	},
+ };
+ 
+@@ -738,6 +853,7 @@ static void iwl_init_he_6ghz_capa(struct iwl_trans *trans,
+ 
+ static void
+ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
++			 struct iwl_nvm_data *data,
+ 			 struct ieee80211_supported_band *sband,
+ 			 struct ieee80211_sband_iftype_data *iftype_data,
+ 			 u8 tx_chains, u8 rx_chains,
+@@ -745,6 +861,9 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ {
+ 	bool is_ap = iftype_data->types_mask & BIT(NL80211_IFTYPE_AP);
+ 
++	if (!data->sku_cap_11be_enable || iwlwifi_mod_params.disable_11be)
++		iftype_data->eht_cap.has_eht = false;
++
+ 	/* Advertise an A-MPDU exponent extension based on
+ 	 * operating band
+ 	 */
+@@ -765,19 +884,44 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 		iftype_data->he_cap.he_cap_elem.phy_cap_info[5] |=
+ 			IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_2 |
+ 			IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_2;
+-		if (!is_ap)
++		if (!is_ap) {
+ 			iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
+ 				IEEE80211_HE_PHY_CAP7_MAX_NC_2;
+-	} else if (!is_ap) {
+-		/* If not 2x2, we need to indicate 1x1 in the
+-		 * Midamble RX Max NSTS - but not for AP mode
+-		 */
+-		iftype_data->he_cap.he_cap_elem.phy_cap_info[1] &=
+-			~IEEE80211_HE_PHY_CAP1_MIDAMBLE_RX_TX_MAX_NSTS;
+-		iftype_data->he_cap.he_cap_elem.phy_cap_info[2] &=
+-			~IEEE80211_HE_PHY_CAP2_MIDAMBLE_RX_TX_MAX_NSTS;
+-		iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
+-			IEEE80211_HE_PHY_CAP7_MAX_NC_1;
++
++			if (iftype_data->eht_cap.has_eht) {
++				/*
++				 * Set the number of sounding dimensions for each
++				 * bandwidth to 1 to indicate the maximal supported
++				 * value of TXVECTOR parameter NUM_STS of 2
++				 */
++				iftype_data->eht_cap.eht_cap_elem.phy_cap_info[2] |= 0x49;
++
++				/*
++				 * Set the MAX NC to 1 to indicate sounding feedback of
++				 * 2 supported by the beamfomee.
++				 */
++				iftype_data->eht_cap.eht_cap_elem.phy_cap_info[4] |= 0x10;
++			}
++		}
++	} else {
++		if (iftype_data->eht_cap.has_eht) {
++			struct ieee80211_eht_mcs_nss_supp *mcs_nss =
++				&iftype_data->eht_cap.eht_mcs_nss_supp;
++
++			memset(mcs_nss, 0x11, sizeof(*mcs_nss));
++		}
++
++		if (!is_ap) {
++			/* If not 2x2, we need to indicate 1x1 in the
++			 * Midamble RX Max NSTS - but not for AP mode
++			 */
++			iftype_data->he_cap.he_cap_elem.phy_cap_info[1] &=
++				~IEEE80211_HE_PHY_CAP1_MIDAMBLE_RX_TX_MAX_NSTS;
++			iftype_data->he_cap.he_cap_elem.phy_cap_info[2] &=
++				~IEEE80211_HE_PHY_CAP2_MIDAMBLE_RX_TX_MAX_NSTS;
++			iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
++				IEEE80211_HE_PHY_CAP7_MAX_NC_1;
++		}
+ 	}
+ 
+ 	switch (CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
+@@ -816,8 +960,8 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
+ 	if (WARN_ON(sband->iftype_data))
+ 		return;
+ 
+-	BUILD_BUG_ON(sizeof(data->iftd.low) != sizeof(iwl_he_capa));
+-	BUILD_BUG_ON(sizeof(data->iftd.high) != sizeof(iwl_he_capa));
++	BUILD_BUG_ON(sizeof(data->iftd.low) != sizeof(iwl_he_eht_capa));
++	BUILD_BUG_ON(sizeof(data->iftd.high) != sizeof(iwl_he_eht_capa));
+ 
+ 	switch (sband->band) {
+ 	case NL80211_BAND_2GHZ:
+@@ -832,13 +976,13 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
+ 		return;
+ 	}
+ 
+-	memcpy(iftype_data, iwl_he_capa, sizeof(iwl_he_capa));
++	memcpy(iftype_data, iwl_he_eht_capa, sizeof(iwl_he_eht_capa));
+ 
+ 	sband->iftype_data = iftype_data;
+-	sband->n_iftype_data = ARRAY_SIZE(iwl_he_capa);
++	sband->n_iftype_data = ARRAY_SIZE(iwl_he_eht_capa);
+ 
+ 	for (i = 0; i < sband->n_iftype_data; i++)
+-		iwl_nvm_fixup_sband_iftd(trans, sband, &iftype_data[i],
++		iwl_nvm_fixup_sband_iftd(trans, data, sband, &iftype_data[i],
+ 					 tx_chains, rx_chains, fw);
+ 
+ 	iwl_init_he_6ghz_capa(trans, data, sband, tx_chains, rx_chains);
 -- 
 2.35.3
 
