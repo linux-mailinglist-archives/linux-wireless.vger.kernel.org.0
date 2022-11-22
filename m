@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A746339A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 11:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2D0633B6A
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 12:32:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233514AbiKVKSB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 05:18:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43756 "EHLO
+        id S232827AbiKVLcg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 06:32:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232893AbiKVKR3 (ORCPT
+        with ESMTP id S232740AbiKVLbg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 05:17:29 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 490D1310;
-        Tue, 22 Nov 2022 02:17:25 -0800 (PST)
+        Tue, 22 Nov 2022 06:31:36 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A521860E8A;
+        Tue, 22 Nov 2022 03:26:31 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8267615F8;
-        Tue, 22 Nov 2022 10:17:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF07EC433D6;
-        Tue, 22 Nov 2022 10:17:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 311F661671;
+        Tue, 22 Nov 2022 11:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8711C433D7;
+        Tue, 22 Nov 2022 11:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669112244;
-        bh=ND68hnkjba0GVllvUV/YBAXJHbUnHdXUBGD+ZZqUcVA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Sg0xRnhDkewhctADJ2YcEwpuio9UuuifRlZdEcijAZusFgThJwApWXvVRFw/8OLEA
-         9Qp6mH4xH4H0sWI2IXiTwZtFoL5wvU0a/52IO6S2c/uEk5fjSvvAaLGSYvER0tx/nU
-         TyK7N31zvzmcmKqaKYjgHaJv59yyxhqyVrr2e8nT+bQBxg1QxaUCGuPXbqL7UHbgr7
-         ZciK0CH8ZddhyQLAsRgCWLXaQnw26ekJsRsRvGHvwWSU70AAd1xZnSV/YwAop+6ith
-         oFxfv+6C8EujDzRVMNK3WUMT51pIFzJSd46BrWo8+eniSS2EdrIHcCKbz1N7Kl0vQ8
-         3bTbdJvYOpt8Q==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [v2] wifi: p54: Replace zero-length array of trailing structs
- with flex-array
+        s=k20201202; t=1669116390;
+        bh=wpFinb0IMYn50p3PDwUFVzoQbgbhxdX0aMO0iiEe7wY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=kOoeyjcwSPnSu0LZeG5wzcHO5zKGyJ3SjPV3ItIN/Efm99PtC+mE7dmmDcdVfJmFF
+         U56/XJgtp6mg3MyLONRIkKKMqZU4OAqXyO9uQDVL7POSIdpPQ/5TSOAPhNItlTgn6J
+         qhsX7hrBbsicZ3b2hCii8e2tIdaqes+DNf8BsXkDS3Z0Vvo9NUbjwOM57rniqnzS2z
+         XCz9yxHnppwPFrBIEiBKeYufojxwZ8TKF+Grp47c80qqLkTRjVnOqVmpPNAgKKx9zh
+         UKmh3sWnOWow86WOxV1TLv49k4nSX5lH1pEcD20ZQ2FcJBeIouRQ/qWUWCTdsjYyEv
+         3UtCKpsE7uW2Q==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221118234240.gonna.369-kees@kernel.org>
-References: <20221118234240.gonna.369-kees@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Christian Lamparter <chunkeey@googlemail.com>,
-        Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166911223826.12832.1582733446998520230.kvalo@kernel.org>
-Date:   Tue, 22 Nov 2022 10:17:21 +0000 (UTC)
+To:     Manivannan Sadhasivam <mani@kernel.org>
+Cc:     Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        gregkh@linuxfoundation.org, elder@linaro.org,
+        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
+        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
+        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, ansuelsmth@gmail.com
+Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
+References: <20221105194943.826847-1-robimarko@gmail.com>
+        <20221105194943.826847-2-robimarko@gmail.com>
+        <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
+Date:   Tue, 22 Nov 2022 13:26:24 +0200
+In-Reply-To: <87cz9xcqbd.fsf@kernel.org> (Kalle Valo's message of "Tue, 08 Nov
+        2022 19:24:22 +0200")
+Message-ID: <877czn8c2n.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,39 +62,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> wrote:
+Kalle Valo <kvalo@kernel.org> writes:
 
-> Zero-length arrays are deprecated[1] and are being replaced with
-> flexible array members in support of the ongoing efforts to tighten the
-> FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
-> with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
-> 
-> Replace zero-length array with flexible-array member.
-> 
-> This results in no differences in binary output (most especially because
-> struct pda_antenna_gain is unused). The struct is kept for future
-> reference.
-> 
-> [1] https://github.com/KSPP/linux/issues/78
-> 
-> Cc: Christian Lamparter <chunkeey@googlemail.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+> Manivannan Sadhasivam <mani@kernel.org> writes:
+>
+>> On Sat, Nov 05, 2022 at 08:49:43PM +0100, Robert Marko wrote:
+>>> Currently, trying to use AHB + PCI/MHI cards or multiple PCI/MHI cards
+>>> will cause a clash in the QRTR instance node ID and prevent the driver
+>>> from talking via QMI to the card and thus initializing it with:
+>>> [    9.836329] ath11k c000000.wifi: host capability request failed: 1 90
+>>> [    9.842047] ath11k c000000.wifi: failed to send qmi host cap: -22
+>>> 
+>>
+>> There is still an outstanding issue where you cannot connect two WLAN modules
+>> with same node id.
+>>
+>>> So, in order to allow for this combination of cards, especially AHB + PCI
+>>> cards like IPQ8074 + QCN9074 (Used by me and tested on) set the desired
+>>> QRTR instance ID offset by calculating a unique one based on PCI domain
+>>> and bus ID-s and writing it to bits 7-0 of BHI_ERRDBG2 MHI register by
+>>> using the SBL state callback that is added as part of the series.
+>>> We also have to make sure that new QRTR offset is added on top of the
+>>> default QRTR instance ID-s that are currently used in the driver.
+>>> 
+>>
+>> Register BHI_ERRDBG2 is listed as Read only from Host as per the BHI spec.
+>> So I'm not sure if this solution is going to work on all ath11k supported
+>> chipsets.
+>>
+>> Kalle, can you confirm?
+>
+> I can't look at this in detail right now, but hopefully in few days.
+> I'll get back to you.
 
-Patch applied to wireless-next.git, thanks.
+The solution we have been thinking internally would not use
+MHI_CB_EE_SBL_MODE at all, it's not clear for me yet why the mode was
+not needed in our solution. Maybe there are firmware modifications? I
+think it's best that we submit our proposal as well, then we can then
+compare implementations and see what is the best course of action.
 
-3b79d4bad3a0 wifi: p54: Replace zero-length array of trailing structs with flex-array
+But it looks that not all ath11k hardware and firmware releases support
+this feature, we would need meta data information from the firmware to
+detect it. I am working on adding firmware meta data support[1] to
+ath11k, will post patches for that "soon".
+
+[1] similar to firmware-N.bin support ath10k has
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221118234240.gonna.369-kees@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
