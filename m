@@ -2,113 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE2D0633B6A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 12:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4500F633D42
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 14:13:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232827AbiKVLcg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 06:32:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50042 "EHLO
+        id S233495AbiKVNNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 08:13:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232740AbiKVLbg (ORCPT
+        with ESMTP id S233322AbiKVNNL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 06:31:36 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A521860E8A;
-        Tue, 22 Nov 2022 03:26:31 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 311F661671;
-        Tue, 22 Nov 2022 11:26:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8711C433D7;
-        Tue, 22 Nov 2022 11:26:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669116390;
-        bh=wpFinb0IMYn50p3PDwUFVzoQbgbhxdX0aMO0iiEe7wY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=kOoeyjcwSPnSu0LZeG5wzcHO5zKGyJ3SjPV3ItIN/Efm99PtC+mE7dmmDcdVfJmFF
-         U56/XJgtp6mg3MyLONRIkKKMqZU4OAqXyO9uQDVL7POSIdpPQ/5TSOAPhNItlTgn6J
-         qhsX7hrBbsicZ3b2hCii8e2tIdaqes+DNf8BsXkDS3Z0Vvo9NUbjwOM57rniqnzS2z
-         XCz9yxHnppwPFrBIEiBKeYufojxwZ8TKF+Grp47c80qqLkTRjVnOqVmpPNAgKKx9zh
-         UKmh3sWnOWow86WOxV1TLv49k4nSX5lH1pEcD20ZQ2FcJBeIouRQ/qWUWCTdsjYyEv
-         3UtCKpsE7uW2Q==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manivannan Sadhasivam <mani@kernel.org>
-Cc:     Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        gregkh@linuxfoundation.org, elder@linaro.org,
-        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
-        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
-        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, ansuelsmth@gmail.com
-Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
-References: <20221105194943.826847-1-robimarko@gmail.com>
-        <20221105194943.826847-2-robimarko@gmail.com>
-        <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
-Date:   Tue, 22 Nov 2022 13:26:24 +0200
-In-Reply-To: <87cz9xcqbd.fsf@kernel.org> (Kalle Valo's message of "Tue, 08 Nov
-        2022 19:24:22 +0200")
-Message-ID: <877czn8c2n.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 22 Nov 2022 08:13:11 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A4129C81;
+        Tue, 22 Nov 2022 05:13:09 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id z63so1545746ede.1;
+        Tue, 22 Nov 2022 05:13:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8y8Hrci7gEBpK8ypTuE+fYD+XXvaKAxlJq93rw+OoIc=;
+        b=IyO6TpaYxflFJhaxYOV2PfGkRAwSZO3j+wxYnACuQZtZ47AAlMVq7mtJetf6M2SLn4
+         VlgBL5d5/82zp+sqUpl67AbeQfBs2fLSvZ4myCkMtzX+sBWBeAzAvJRA9b24MjOIbS1O
+         wD7XRoszDCFtQJHIHgNeniYHJsczpZPFTAK0i5gh9MX8cWPoXMZcUAWzje8wPLcEWDUi
+         JBUnisSTdn7jGG3Y9M5sn0/REyHc3tgkhogNJHb9j3LBYsW4y4BhNIJD/LQHd6HTOqoC
+         u1YyEfc24LkSSpO3fmjSaOvNgHxJyK0a7r83wYi1IWICrF7SKs4v5n/tihujwiJGBhBu
+         wbgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8y8Hrci7gEBpK8ypTuE+fYD+XXvaKAxlJq93rw+OoIc=;
+        b=J6f/Vt7pC2QU4OTG6ZpUtFw6cPhvg4l4VphkeObMFDnh3ek7Q7X64sk2Ewl0UsVHJG
+         VO1CioXI4oAK7+K7kwU9DcdW4WJvWeLVUEl917lVQuCIUk4sCWe4+X3DJnvEen8gxvef
+         +vlwUx5oichxv2F6ZNuN/+RMCLQIBVNF0VOGd8A+U6yt6jq8A4hzQWCQElCqpeonRIj2
+         HeS7t3IrU0KBH5ptcOOMhwp7QxCCThH48EE+6irKhpIQUd5i2HC+4mZj5EJUu8TeBQyn
+         Hx/pA7mkiZ65w7OXpT4VVnNcnWkaI8cdtRRTxOvfVpO84T6sslJbKUd8su/dgM78GMXg
+         D7Gw==
+X-Gm-Message-State: ANoB5plAF0FV0US0C5VZGlPj7WWMDmY9No2DDThrzvu3Mol7nBqdOnxm
+        GmTZnkzeupnypdXw3Wmw8+/ToPWEQtg=
+X-Google-Smtp-Source: AA0mqf7TQImuxqzpm8QfnBN7SZmV3h7LqqStygAGln0CurVZbkJJHbTc5h85jMQbWbfutDxzZCMC7g==
+X-Received: by 2002:a05:6402:4512:b0:461:4c59:12d6 with SMTP id ez18-20020a056402451200b004614c5912d6mr20960202edb.250.1669122787880;
+        Tue, 22 Nov 2022 05:13:07 -0800 (PST)
+Received: from felia.fritz.box (200116b8267b3700c41d4e99e424db57.dip.versatel-1u1.de. [2001:16b8:267b:3700:c41d:4e99:e424:db57])
+        by smtp.gmail.com with ESMTPSA id j7-20020a17090643c700b0079dbf06d558sm6033234ejn.184.2022.11.22.05.13.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Nov 2022 05:13:05 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        b43-dev@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] wifi: b43: remove reference to removed config B43_PCMCIA
+Date:   Tue, 22 Nov 2022 14:12:48 +0100
+Message-Id: <20221122131248.23738-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Commit 399500da18f7 ("ssb: pick PCMCIA host code support from b43 driver")
+removes the config B43_PCMCIA.
 
-> Manivannan Sadhasivam <mani@kernel.org> writes:
->
->> On Sat, Nov 05, 2022 at 08:49:43PM +0100, Robert Marko wrote:
->>> Currently, trying to use AHB + PCI/MHI cards or multiple PCI/MHI cards
->>> will cause a clash in the QRTR instance node ID and prevent the driver
->>> from talking via QMI to the card and thus initializing it with:
->>> [    9.836329] ath11k c000000.wifi: host capability request failed: 1 90
->>> [    9.842047] ath11k c000000.wifi: failed to send qmi host cap: -22
->>> 
->>
->> There is still an outstanding issue where you cannot connect two WLAN modules
->> with same node id.
->>
->>> So, in order to allow for this combination of cards, especially AHB + PCI
->>> cards like IPQ8074 + QCN9074 (Used by me and tested on) set the desired
->>> QRTR instance ID offset by calculating a unique one based on PCI domain
->>> and bus ID-s and writing it to bits 7-0 of BHI_ERRDBG2 MHI register by
->>> using the SBL state callback that is added as part of the series.
->>> We also have to make sure that new QRTR offset is added on top of the
->>> default QRTR instance ID-s that are currently used in the driver.
->>> 
->>
->> Register BHI_ERRDBG2 is listed as Read only from Host as per the BHI spec.
->> So I'm not sure if this solution is going to work on all ath11k supported
->> chipsets.
->>
->> Kalle, can you confirm?
->
-> I can't look at this in detail right now, but hopefully in few days.
-> I'll get back to you.
+Clean up the last reference to this removed config B43_PCMCIA in the
+b43_print_driverinfo() function.
 
-The solution we have been thinking internally would not use
-MHI_CB_EE_SBL_MODE at all, it's not clear for me yet why the mode was
-not needed in our solution. Maybe there are firmware modifications? I
-think it's best that we submit our proposal as well, then we can then
-compare implementations and see what is the best course of action.
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+ drivers/net/wireless/broadcom/b43/main.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-But it looks that not all ath11k hardware and firmware releases support
-this feature, we would need meta data information from the firmware to
-detect it. I am working on adding firmware meta data support[1] to
-ath11k, will post patches for that "soon".
-
-[1] similar to firmware-N.bin support ath10k has
-
+diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
+index 298febbdffc0..92ca0b2ca286 100644
+--- a/drivers/net/wireless/broadcom/b43/main.c
++++ b/drivers/net/wireless/broadcom/b43/main.c
+@@ -5784,15 +5784,12 @@ void b43_controller_restart(struct b43_wldev *dev, const char *reason)
+ 
+ static void b43_print_driverinfo(void)
+ {
+-	const char *feat_pci = "", *feat_pcmcia = "", *feat_nphy = "",
++	const char *feat_pci = "", *feat_nphy = "",
+ 		   *feat_leds = "", *feat_sdio = "";
+ 
+ #ifdef CONFIG_B43_PCI_AUTOSELECT
+ 	feat_pci = "P";
+ #endif
+-#ifdef CONFIG_B43_PCMCIA
+-	feat_pcmcia = "M";
+-#endif
+ #ifdef CONFIG_B43_PHY_N
+ 	feat_nphy = "N";
+ #endif
+@@ -5803,9 +5800,8 @@ static void b43_print_driverinfo(void)
+ 	feat_sdio = "S";
+ #endif
+ 	printk(KERN_INFO "Broadcom 43xx driver loaded "
+-	       "[ Features: %s%s%s%s%s ]\n",
+-	       feat_pci, feat_pcmcia, feat_nphy,
+-	       feat_leds, feat_sdio);
++	       "[ Features: %s%s%s%s ]\n",
++	       feat_pci, feat_nphy, feat_leds, feat_sdio);
+ }
+ 
+ static int __init b43_init(void)
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.17.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
