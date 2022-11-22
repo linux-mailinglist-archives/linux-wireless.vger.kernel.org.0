@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C03B5633982
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 11:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE733633986
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Nov 2022 11:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232301AbiKVKPr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 05:15:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42578 "EHLO
+        id S232585AbiKVKQN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Nov 2022 05:16:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232254AbiKVKPp (ORCPT
+        with ESMTP id S232660AbiKVKQI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 05:15:45 -0500
+        Tue, 22 Nov 2022 05:16:08 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1A163FBB6
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 02:15:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187513FBB6
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 02:16:08 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9D2F2B8190B
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 10:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE0DC433D6;
-        Tue, 22 Nov 2022 10:15:41 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AFF1DB81604
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 10:16:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDDAC433C1;
+        Tue, 22 Nov 2022 10:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669112142;
-        bh=vRL6mnc0M5kWDm1GDmBdVSIv11EbYkwIYS7acbd7oaU=;
+        s=k20201202; t=1669112165;
+        bh=3o0dDTAitOz4ci3/6xXtJFTXjMpKFaAFwKBXxeRjpao=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lBQrrFS70k2SWLSlBXhxYbT8oXB5NIAbjcPdsKsdlIRjLb3AcpdI6lZWQfgxdIeUG
-         kI6VaSE3aPtkQ7Y3H9MIimkgocALxfWymfGS/3E2dBYSOXrTH0BbViQ24whKeZS1av
-         xpSiciB+Euiw8Eo9FCFjgoqE7CLunNS5L5Wac3iEA3mhDtB+moiAKTtVRnTDW5oY6B
-         wfJKoyRR4w6/5xkKvCRuZH3yiHm2UU+PZu5VeOLefjjl1cms7jICV+zV1elnB/oifV
-         q2Wq48r6+mPYpIGlLsuymSa/EL0XhdRAj5Ki4QzOE5AXYy/Xha/XGEX90wDkEeuS9K
-         CCPrwOzJ2Lm8g==
+        b=h/+cVmNidYrwO8blOYLqomb/xZyHhfSTyszk+kt4AmaBmX+ohu+TZWLX92sqxDIBh
+         hXDsVRQ08L6MOq2WCHaAyb8lcIs8wH2HdnjT3qscaB63HUHEIkezFPTKivcLuIgF/6
+         CKJTwNapnDO28EguViBE2ARowDbhpqLUQmBFttxlBzb7/VSE6akfGxEnLAoNe9qVVL
+         slr6hcZbpNJ19i72IW2eHw4LWiRWMvtFXS6ZeJmsnJ15EYNIoXwemDg0Uik/l3aGYf
+         tRZyNLxg5fONr1ImrdMb6kj3jV6naf+//EKQIhr7HHaeIhyQ8jtRttA5dNMhuGijbL
+         MzuiRC2GanYrw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: rtw89: read CFO from FD or preamble CFO field
- of
- phy status ie_type 1 accordingly
+Subject: Re: [PATCH] wifi: rtw89: avoid inaccessible IO operations during
+ doing
+ change_interface()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221117063001.42967-2-pkshih@realtek.com>
-References: <20221117063001.42967-2-pkshih@realtek.com>
+In-Reply-To: <20221117085235.53777-1-pkshih@realtek.com>
+References: <20221117085235.53777-1-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <echuang@realtek.com>, <linux-wireless@vger.kernel.org>
+Cc:     <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <166911213988.12832.7181558520625829680.kvalo@kernel.org>
-Date:   Tue, 22 Nov 2022 10:15:41 +0000 (UTC)
+Message-ID: <166911216314.12832.10530952554489139997.kvalo@kernel.org>
+Date:   Tue, 22 Nov 2022 10:16:04 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,24 +57,19 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Eric Huang <echuang@realtek.com>
+> During doing change_interface(), hardware is power-off, so some components
+> are inaccessible and return error. This causes things unexpected, and we
+> don't have a warning message for that. So, ignore some IO operations in
+> this situation, and add a warning message to indicate something wrong.
 > 
-> Add macro to get FD(frequency domain) CFO field from ie_type 1, and correct
-> the naming for preamble CFO field. Each IC could assign the CFO source to
-> either FD CFO or preamble CFO in chip_info. Based on the suggestion from HW
-> designer, rtw8852b and its derived versions will have better CFO tracking
-> performance with FD CFO.
-> 
-> Signed-off-by: Eric Huang <echuang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-2 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-10cd4092f67e wifi: rtw89: read CFO from FD or preamble CFO field of phy status ie_type 1 accordingly
-29136c95fdc5 wifi: rtw89: switch BANDEDGE and TX_SHAPE based on OFDMA trigger frame
+ac3a9f1838d8 wifi: rtw89: avoid inaccessible IO operations during doing change_interface()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221117063001.42967-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221117085235.53777-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
