@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062A6636BD8
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 22:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 106D9636BDF
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 22:04:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236405AbiKWVDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 16:03:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56592 "EHLO
+        id S237836AbiKWVE2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 16:04:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236305AbiKWVDq (ORCPT
+        with ESMTP id S237248AbiKWVER (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 16:03:46 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB0E2A430
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 13:03:45 -0800 (PST)
+        Wed, 23 Nov 2022 16:04:17 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4322097AB8
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 13:04:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669237425; x=1700773425;
+  t=1669237451; x=1700773451;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XsRfvtHw83TyeAovhHBCkK0QB7JBS/HTPjWckuSFKJY=;
-  b=OMstc52+WZ3AnY/0fKzb6mqja21RF9D5ShQQvC2KOEpqBF7h5/9mFnZy
-   BWwOyYQumCcfyWAfIWEmVuGc0LCFLob7htHxTiZ/FpkWnD4ZEYYqKT6kW
-   T3ffdk01gqJ5tgjxnbuhLQydyJFOP0njYzMmckI+7eofOSlmyFKMhpATt
-   ZxBrLb38GF/bRAiOWFuei6/anD+u4glGiYj5rW5yc0K3yifUjbtytaCx6
-   7iTtPCa8k7McygdkRJafU3CuVSLwJTinc7JtnacUtburkrBPBtLcR4iqP
-   dlrX9uOYe1mN5J/bypI1lKaMwNChpo093WWp2noT/PErGS58zZ7/UkLci
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="294546408"
+  bh=ZdJTgjmWHHRVNkK4dmvxGnI1Uwpo4hptlUUrZzcEv64=;
+  b=WCl6gC16WVO3Y4FpZPCf2o9FH3O5Oq5HG0k9o2taAOXqhYB4mBzM8Ahs
+   klCxNlOIiDF4IUgryL9T77P6T0kilcV1A2Dt9PveXDx6tTKYEsGWkF0cB
+   16pSAL24QcslLi7OBgUolnBYmF+eHlFprhYcE/6V/VwitKU3X6yY9RLdG
+   Kbd6PL0davl4R/SQkHmKYxUDnLo65m3TKHFw46hBJVJYcYiB8wQa0oOEs
+   EJGlf02jy5YvZcsE0dRS+mbPLoqOF0m8OCZUUmFfsx7zgkPOqZWzRjIMB
+   qICBY7s3IRpqIet/rq6LlwcCU4MRahF7GcGmEhmIdLWw+RqBsSCWer3Y0
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="293864702"
 X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
-   d="scan'208";a="294546408"
+   d="scan'208";a="293864702"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:03:45 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="619761629"
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:04:10 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="619761685"
 X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
-   d="scan'208";a="619761629"
+   d="scan'208";a="619761685"
 Received: from stopaz-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.194.175])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:03:42 -0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:04:08 -0800
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Ben Greear <greearb@candelatech.com>,
-        Amol Jawale <amol.jawale@candelatech.com>,
+        Avraham Stern <avraham.stern@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 2/5] wifi: iwlwifi: mvm: fix double free on tx path.
-Date:   Wed, 23 Nov 2022 23:02:06 +0200
-Message-Id: <20221123225313.21b1ee31d666.I3b3ba184433dd2a544d91eeeda29b467021824ae@changeid>
+Subject: [PATCH 3/5] wifi: iwlwifi: mvm: trigger PCI re-enumeration in case of PLDR sync
+Date:   Wed, 23 Nov 2022 23:02:07 +0200
+Message-Id: <20221123225313.9ae77968961e.Ie06e886cef4b5921b65dacb7724db1276bed38cb@changeid>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20221123210209.2941641-1-gregory.greenman@intel.com>
 References: <20221123210209.2941641-1-gregory.greenman@intel.com>
@@ -54,216 +53,278 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-We see kernel crashes and lockups and KASAN errors related to ax210
-firmware crashes.  One of the KASAN dumps pointed at the tx path,
-and it appears there is indeed a way to double-free an skb.
+When doing the PLDR flow, the fw goes through a re-read and needs
+PCI re-enumeration in order to recover. In this case, skip the mac
+start retry and fw dumps as all the fw and registers are invalid
+until the PCI re-enumeration.
 
-If iwl_mvm_tx_skb_sta returns non-zero, then the 'skb' sent into the
-method will be freed.  But, in case where we build TSO skb buffer,
-the skb may also be freed in error case.  So, return 0 in that particular
-error case and do cleanup manually.
+In addition, print the register that shows the re-read counter
+when loading the fw.
 
-BUG: KASAN: use-after-free in __list_del_entry_valid+0x12/0x90
-iwlwifi 0000:06:00.0: 0x00000000 | tsf hi
-Read of size 8 at addr ffff88813cfa4ba0 by task btserver/9650
-
-CPU: 4 PID: 9650 Comm: btserver Tainted: G        W         5.19.8+ #5
-iwlwifi 0000:06:00.0: 0x00000000 | time gp1
-Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/19/2019
-Call Trace:
- <TASK>
- dump_stack_lvl+0x55/0x6d
- print_report.cold.12+0xf2/0x684
-iwlwifi 0000:06:00.0: 0x1D0915A8 | time gp2
- ? __list_del_entry_valid+0x12/0x90
- kasan_report+0x8b/0x180
-iwlwifi 0000:06:00.0: 0x00000001 | uCode revision type
- ? __list_del_entry_valid+0x12/0x90
- __list_del_entry_valid+0x12/0x90
-iwlwifi 0000:06:00.0: 0x00000048 | uCode version major
- tcp_update_skb_after_send+0x5d/0x170
- __tcp_transmit_skb+0xb61/0x15c0
-iwlwifi 0000:06:00.0: 0xDAA05125 | uCode version minor
- ? __tcp_select_window+0x490/0x490
-iwlwifi 0000:06:00.0: 0x00000420 | hw version
- ? trace_kmalloc_node+0x29/0xd0
- ? __kmalloc_node_track_caller+0x12a/0x260
- ? memset+0x1f/0x40
- ? __build_skb_around+0x125/0x150
- ? __alloc_skb+0x1d4/0x220
- ? skb_zerocopy_clone+0x55/0x230
-iwlwifi 0000:06:00.0: 0x00489002 | board version
- ? kmalloc_reserve+0x80/0x80
- ? rcu_read_lock_bh_held+0x60/0xb0
- tcp_write_xmit+0x3f1/0x24d0
-iwlwifi 0000:06:00.0: 0x034E001C | hcmd
- ? __check_object_size+0x180/0x350
-iwlwifi 0000:06:00.0: 0x24020000 | isr0
- tcp_sendmsg_locked+0x8a9/0x1520
-iwlwifi 0000:06:00.0: 0x01400000 | isr1
- ? tcp_sendpage+0x50/0x50
-iwlwifi 0000:06:00.0: 0x48F0000A | isr2
- ? lock_release+0xb9/0x400
- ? tcp_sendmsg+0x14/0x40
-iwlwifi 0000:06:00.0: 0x00C3080C | isr3
- ? lock_downgrade+0x390/0x390
- ? do_raw_spin_lock+0x114/0x1d0
-iwlwifi 0000:06:00.0: 0x00200000 | isr4
- ? rwlock_bug.part.2+0x50/0x50
-iwlwifi 0000:06:00.0: 0x034A001C | last cmd Id
- ? rwlock_bug.part.2+0x50/0x50
- ? lockdep_hardirqs_on_prepare+0xe/0x200
-iwlwifi 0000:06:00.0: 0x0000C2F0 | wait_event
- ? __local_bh_enable_ip+0x87/0xe0
- ? inet_send_prepare+0x220/0x220
-iwlwifi 0000:06:00.0: 0x000000C4 | l2p_control
- tcp_sendmsg+0x22/0x40
- sock_sendmsg+0x5f/0x70
-iwlwifi 0000:06:00.0: 0x00010034 | l2p_duration
- __sys_sendto+0x19d/0x250
-iwlwifi 0000:06:00.0: 0x00000007 | l2p_mhvalid
- ? __ia32_sys_getpeername+0x40/0x40
-iwlwifi 0000:06:00.0: 0x00000000 | l2p_addr_match
- ? rcu_read_lock_held_common+0x12/0x50
- ? rcu_read_lock_sched_held+0x5a/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? rcu_read_lock_sched_held+0x5a/0xd0
- ? rcu_read_lock_sched_held+0x5a/0xd0
- ? lock_release+0xb9/0x400
- ? lock_downgrade+0x390/0x390
- ? ktime_get+0x64/0x130
- ? ktime_get+0x8d/0x130
- ? rcu_read_lock_held_common+0x12/0x50
- ? rcu_read_lock_sched_held+0x5a/0xd0
- ? rcu_read_lock_held_common+0x12/0x50
- ? rcu_read_lock_sched_held+0x5a/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- __x64_sys_sendto+0x6f/0x80
- do_syscall_64+0x34/0xb0
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-RIP: 0033:0x7f1d126e4531
-Code: 00 00 00 00 0f 1f 44 00 00 f3 0f 1e fa 48 8d 05 35 80 0c 00 41 89 ca 8b 00 85 c0 75 1c 45 31 c9 45 31 c0 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 67 c3 66 0f 1f 44 00 00 55 48 83 ec 20 48 89
-RSP: 002b:00007ffe21a679d8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 000000000000ffdc RCX: 00007f1d126e4531
-RDX: 0000000000010000 RSI: 000000000374acf0 RDI: 0000000000000014
-RBP: 00007ffe21a67ac0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000010
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000000
- </TASK>
-
-Allocated by task 9650:
- kasan_save_stack+0x1c/0x40
- __kasan_slab_alloc+0x6d/0x90
- kmem_cache_alloc_node+0xf3/0x2b0
- __alloc_skb+0x191/0x220
- tcp_stream_alloc_skb+0x3f/0x330
- tcp_sendmsg_locked+0x67c/0x1520
- tcp_sendmsg+0x22/0x40
- sock_sendmsg+0x5f/0x70
- __sys_sendto+0x19d/0x250
- __x64_sys_sendto+0x6f/0x80
- do_syscall_64+0x34/0xb0
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-
-Freed by task 9650:
- kasan_save_stack+0x1c/0x40
- kasan_set_track+0x21/0x30
- kasan_set_free_info+0x20/0x30
- __kasan_slab_free+0x102/0x170
- kmem_cache_free+0xc8/0x3e0
- iwl_mvm_mac_itxq_xmit+0x124/0x270 [iwlmvm]
- ieee80211_queue_skb+0x874/0xd10 [mac80211]
- ieee80211_xmit_fast+0xf80/0x1180 [mac80211]
- __ieee80211_subif_start_xmit+0x287/0x680 [mac80211]
- ieee80211_subif_start_xmit+0xcd/0x730 [mac80211]
- dev_hard_start_xmit+0xf6/0x420
- __dev_queue_xmit+0x165b/0x1b50
- ip_finish_output2+0x66e/0xfb0
- __ip_finish_output+0x487/0x6d0
- ip_output+0x11c/0x350
- __ip_queue_xmit+0x36b/0x9d0
- __tcp_transmit_skb+0xb35/0x15c0
- tcp_write_xmit+0x3f1/0x24d0
- tcp_sendmsg_locked+0x8a9/0x1520
- tcp_sendmsg+0x22/0x40
- sock_sendmsg+0x5f/0x70
- __sys_sendto+0x19d/0x250
- __x64_sys_sendto+0x6f/0x80
- do_syscall_64+0x34/0xb0
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-
-The buggy address belongs to the object at ffff88813cfa4b40
- which belongs to the cache skbuff_fclone_cache of size 472
-The buggy address is located 96 bytes inside of
- 472-byte region [ffff88813cfa4b40, ffff88813cfa4d18)
-
-The buggy address belongs to the physical page:
-page:ffffea0004f3e900 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88813cfa6c40 pfn:0x13cfa4
-head:ffffea0004f3e900 order:2 compound_mapcount:0 compound_pincount:0
-flags: 0x5fff8000010200(slab|head|node=0|zone=2|lastcpupid=0x3fff)
-raw: 005fff8000010200 ffffea0004656b08 ffffea0008e8cf08 ffff8881081a5240
-raw: ffff88813cfa6c40 0000000000170015 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88813cfa4a80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88813cfa4b00: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
->ffff88813cfa4b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                               ^
- ffff88813cfa4c00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88813cfa4c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-Fixes: 08f7d8b69aaf ("iwlwifi: mvm: bring back mvm GSO code")
-Link: https://lore.kernel.org/linux-wireless/20220928193057.16132-1-greearb@candelatech.com/
-Tested-by: Amol Jawale <amol.jawale@candelatech.com>
-Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  1 +
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 12 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  3 +
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 85 ++++++++++---------
+ 7 files changed, 73 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index f460332333a7..fadaa683a416 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1215,6 +1215,7 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	struct sk_buff_head mpdus_skbs;
- 	unsigned int payload_len;
- 	int ret;
-+	struct sk_buff *orig_skb = skb;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+index 82cf904e0b6d..62ce116d3783 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+@@ -368,6 +368,7 @@ enum {
+ #define CNVR_AUX_MISC_CHIP				0xA2B800
+ #define CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM		0xA29890
+ #define CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR	0xA29938
++#define CNVI_SCU_SEQ_DATA_DW9				0xA27488
  
- 	if (WARN_ON_ONCE(!mvmsta))
- 		return -1;
-@@ -1247,8 +1248,17 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
+ #define PREG_AUX_BUS_WPROT_0		0xA04CC0
  
- 		ret = iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
- 		if (ret) {
-+			/* Free skbs created as part of TSO logic that have not yet been dequeued */
- 			__skb_queue_purge(&mpdus_skbs);
--			return ret;
-+			/* skb here is not necessarily same as skb that entered this method,
-+			 * so free it explicitly.
-+			 */
-+			if (skb == orig_skb)
-+				ieee80211_free_txskb(mvm->hw, skb);
-+			else
-+				kfree_skb(skb);
-+			/* there was error, but we consumed skb one way or another, so return 0 */
-+			return 0;
- 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index d659ccd065f7..32bd7f19f1d5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -1542,5 +1542,6 @@ void iwl_trans_free(struct iwl_trans *trans);
+ ******************************************************/
+ int __must_check iwl_pci_register_driver(void);
+ void iwl_pci_unregister_driver(void);
++void iwl_trans_pcie_remove(struct iwl_trans *trans, bool rescan);
+ 
+ #endif /* __iwl_trans_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index b3101d12a0a1..74354d044db9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -364,6 +364,8 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 			 iwl_read_umac_prph(mvm->trans, WFPM_LMAC2_PD_NOTIFICATION));
+ 		IWL_INFO(mvm, "WFPM_AUTH_KEY_0: 0x%x\n",
+ 			 iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG));
++		IWL_INFO(mvm, "CNVI_SCU_SEQ_DATA_DW9: 0x%x\n",
++			 iwl_read_prph(mvm->trans, CNVI_SCU_SEQ_DATA_DW9));
  	}
  
+ 	if (ret) {
+@@ -402,7 +404,7 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 						UREG_LMAC2_CURRENT_PC));
+ 		}
+ 
+-		if (ret == -ETIMEDOUT)
++		if (ret == -ETIMEDOUT && !mvm->pldr_sync)
+ 			iwl_fw_dbg_error_collect(&mvm->fwrt,
+ 						 FW_DBG_TRIGGER_ALIVE_TIMEOUT);
+ 
+@@ -1479,18 +1481,22 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
+ 		return ret;
+ 
+ 	sb_cfg = iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG);
+-	if (!(sb_cfg & SB_CFG_RESIDES_IN_OTP_MASK) && iwl_mei_pldr_req())
++	mvm->pldr_sync = !(sb_cfg & SB_CFG_RESIDES_IN_OTP_MASK);
++	if (mvm->pldr_sync && iwl_mei_pldr_req())
+ 		return ret;
+ 
+ 	ret = iwl_mvm_load_rt_fw(mvm);
+ 	if (ret) {
+ 		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
+-		if (ret != -ERFKILL)
++		if (ret != -ERFKILL && !mvm->pldr_sync)
+ 			iwl_fw_dbg_error_collect(&mvm->fwrt,
+ 						 FW_DBG_TRIGGER_DRIVER);
+ 		goto error;
+ 	}
+ 
++	/* FW loaded successfully */
++	mvm->pldr_sync = false;
++
+ 	iwl_get_shared_mem_conf(&mvm->fwrt);
+ 
+ 	ret = iwl_mvm_sf_update(mvm, NULL, false);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 3fba69554f83..5273ade71117 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1068,6 +1068,16 @@ static int iwl_mvm_mac_start(struct ieee80211_hw *hw)
+ 		if (!ret)
+ 			break;
+ 
++		/*
++		 * In PLDR sync PCI re-enumeration is needed. no point to retry
++		 * mac start before that.
++		 */
++		if (mvm->pldr_sync) {
++			iwl_mei_alive_notif(false);
++			iwl_trans_pcie_remove(mvm->trans, true);
++			break;
++		}
++
+ 		IWL_ERR(mvm, "mac start retry %d\n", retry);
+ 	}
+ 	clear_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 962e304fc2b1..ce6b701f3f4c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1105,6 +1105,8 @@ struct iwl_mvm {
+ 	unsigned long last_reset_or_resume_time_jiffies;
+ 
+ 	bool sta_remove_requires_queue_remove;
++
++	bool pldr_sync;
+ };
+ 
+ /* Extract MVM priv from op_mode and _hw */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 2a4db13c9dcf..e78f5beaa2d0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1888,6 +1888,9 @@ static void iwl_mvm_nic_error(struct iwl_op_mode *op_mode, bool sync)
+ {
+ 	struct iwl_mvm *mvm = IWL_OP_MODE_GET_MVM(op_mode);
+ 
++	if (mvm->pldr_sync)
++		return;
++
+ 	if (!test_bit(STATUS_TRANS_DEAD, &mvm->trans->status) &&
+ 	    !test_and_clear_bit(IWL_MVM_STATUS_SUPPRESS_ERROR_LOG_ONCE,
+ 				&mvm->status))
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index bd50f52a1aad..0a9af1ad1f20 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2052,6 +2052,7 @@ static void iwl_trans_pcie_set_pmi(struct iwl_trans *trans, bool state)
+ struct iwl_trans_pcie_removal {
+ 	struct pci_dev *pdev;
+ 	struct work_struct work;
++	bool rescan;
+ };
+ 
+ static void iwl_trans_pcie_removal_wk(struct work_struct *wk)
+@@ -2060,18 +2061,61 @@ static void iwl_trans_pcie_removal_wk(struct work_struct *wk)
+ 		container_of(wk, struct iwl_trans_pcie_removal, work);
+ 	struct pci_dev *pdev = removal->pdev;
+ 	static char *prop[] = {"EVENT=INACCESSIBLE", NULL};
++	struct pci_bus *bus = pdev->bus;
+ 
+ 	dev_err(&pdev->dev, "Device gone - attempting removal\n");
+ 	kobject_uevent_env(&pdev->dev.kobj, KOBJ_CHANGE, prop);
+ 	pci_lock_rescan_remove();
+ 	pci_dev_put(pdev);
+ 	pci_stop_and_remove_bus_device(pdev);
++	if (removal->rescan)
++		pci_rescan_bus(bus->parent);
+ 	pci_unlock_rescan_remove();
+ 
+ 	kfree(removal);
+ 	module_put(THIS_MODULE);
+ }
+ 
++void iwl_trans_pcie_remove(struct iwl_trans *trans, bool rescan)
++{
++	struct iwl_trans_pcie_removal *removal;
++
++	if (test_bit(STATUS_TRANS_DEAD, &trans->status))
++		return;
++
++	IWL_ERR(trans, "Device gone - scheduling removal!\n");
++
++	/*
++	 * get a module reference to avoid doing this
++	 * while unloading anyway and to avoid
++	 * scheduling a work with code that's being
++	 * removed.
++	 */
++	if (!try_module_get(THIS_MODULE)) {
++		IWL_ERR(trans,
++			"Module is being unloaded - abort\n");
++		return;
++	}
++
++	removal = kzalloc(sizeof(*removal), GFP_ATOMIC);
++	if (!removal) {
++		module_put(THIS_MODULE);
++		return;
++	}
++	/*
++	 * we don't need to clear this flag, because
++	 * the trans will be freed and reallocated.
++	 */
++	set_bit(STATUS_TRANS_DEAD, &trans->status);
++
++	removal->pdev = to_pci_dev(trans->dev);
++	removal->rescan = rescan;
++	INIT_WORK(&removal->work, iwl_trans_pcie_removal_wk);
++	pci_dev_get(removal->pdev);
++	schedule_work(&removal->work);
++}
++EXPORT_SYMBOL(iwl_trans_pcie_remove);
++
+ /*
+  * This version doesn't disable BHs but rather assumes they're
+  * already disabled.
+@@ -2131,47 +2175,12 @@ bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 
+ 		iwl_trans_pcie_dump_regs(trans);
+ 
+-		if (iwlwifi_mod_params.remove_when_gone && cntrl == ~0U) {
+-			struct iwl_trans_pcie_removal *removal;
+-
+-			if (test_bit(STATUS_TRANS_DEAD, &trans->status))
+-				goto err;
+-
+-			IWL_ERR(trans, "Device gone - scheduling removal!\n");
+-
+-			/*
+-			 * get a module reference to avoid doing this
+-			 * while unloading anyway and to avoid
+-			 * scheduling a work with code that's being
+-			 * removed.
+-			 */
+-			if (!try_module_get(THIS_MODULE)) {
+-				IWL_ERR(trans,
+-					"Module is being unloaded - abort\n");
+-				goto err;
+-			}
+-
+-			removal = kzalloc(sizeof(*removal), GFP_ATOMIC);
+-			if (!removal) {
+-				module_put(THIS_MODULE);
+-				goto err;
+-			}
+-			/*
+-			 * we don't need to clear this flag, because
+-			 * the trans will be freed and reallocated.
+-			*/
+-			set_bit(STATUS_TRANS_DEAD, &trans->status);
+-
+-			removal->pdev = to_pci_dev(trans->dev);
+-			INIT_WORK(&removal->work, iwl_trans_pcie_removal_wk);
+-			pci_dev_get(removal->pdev);
+-			schedule_work(&removal->work);
+-		} else {
++		if (iwlwifi_mod_params.remove_when_gone && cntrl == ~0U)
++			iwl_trans_pcie_remove(trans, false);
++		else
+ 			iwl_write32(trans, CSR_RESET,
+ 				    CSR_RESET_REG_FLAG_FORCE_NMI);
+-		}
+ 
+-err:
+ 		spin_unlock(&trans_pcie->reg_lock);
+ 		return false;
+ 	}
 -- 
 2.35.3
 
