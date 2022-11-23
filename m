@@ -2,164 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C61576353A6
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 09:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3595635819
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 10:50:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236763AbiKWI5T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 03:57:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60010 "EHLO
+        id S237116AbiKWJum (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 04:50:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236874AbiKWI5F (ORCPT
+        with ESMTP id S237138AbiKWJt4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 03:57:05 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A411FDD8F
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 00:57:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=1XEi+6J+BzArOO+SOJsrvu5K7v4LoKwRET7+3GPTPKQ=;
-        t=1669193823; x=1670403423; b=DY/GCXoJ6ezOpKqQiiN65EC+0R9NAIspgyjycLN/ub3ogXo
-        ps6rwYMjaEDYuA1pE1AMAuNuUTMSVd0I6F9GhYAmNEc6SqpmnV7FVF+EMRuNkLYgkfe9fCkBR2m/k
-        lHzYcOVLr310mwXj8JV/K0v/ar+1xRx8X14xNZNF/PQtlAsMpVxl6QCt4dt3fdn0WF17g1FwFyct+
-        m3lXuBcVzCKvlsGLiXjsbSkzBD0b6+bwuFn0eJ2Oe62jkGibvNBzLowS2LIj5I1/lYznpgSB4b+3+
-        n3egp8bYseY41cQVmI4QUAH1NbLfIIo1AVzr1cc2Zf9g5XS21cxImU/p0X0G7bJw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oxlYx-00780E-2u;
-        Wed, 23 Nov 2022 09:56:59 +0100
-Message-ID: <5729983cd02a82d36fed42dcd133e7713fe3aa53.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH] mac80211: mlme: Handle Puncturing information
- received from the AP
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kang Yang <quic_kangyang@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Aloka Dixit <quic_alokad@quicinc.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        "Carl Huang (QUIC)" <quic_cjhuang@quicinc.com>,
-        Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
-Date:   Wed, 23 Nov 2022 09:56:58 +0100
-In-Reply-To: <76266a0b-d371-53c1-9ad0-fbff7a506d0c@quicinc.com>
-References: <20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
-         <e4db49e4-6363-0c8d-10dd-a1a564da2542@quicinc.com>
-         <95ad4207e62b4990476d867bd240fef3ede31369.camel@sipsolutions.net>
-         <76266a0b-d371-53c1-9ad0-fbff7a506d0c@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Wed, 23 Nov 2022 04:49:56 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC42111604A
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 01:47:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669196829; x=1700732829;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=I4Uef0SVvsdwl3Yv9/XqoPqad6+Ci2CuVycq8pow9Mo=;
+  b=FXl0zjWm53zZ+IDRQgNNIenniY/xiYtTY7EeD9ybqWHGencsvc1KZ7DT
+   8EyEntM3GLgNbtj7l/6/sKK8DaE+bdg3BzvTKPW9c0f8o/UUiW+pVsy1V
+   LTr+2kWJdnuifVe1XTh4Y6aM3rvq1eplAcEFKyaDp5ffyLIiZ9NRbjkn8
+   DrCGZgaO/JX4gnH/HjtJvWOSIeCg4jXijWmlJC5NHCEsef21PuP7x22ch
+   JU914dxJmcPr4ENqH/jpyUzosvj7P6SVOP8iy15NLyOaaG86tTJCDzXB5
+   QSon2h3kRIujJnuo0H2k9ztWSNAenPRTIX6QoVwIxcdaqOnZHbRe14Ryj
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="311656977"
+X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
+   d="scan'208";a="311656977"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 01:47:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="705296894"
+X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
+   d="scan'208";a="705296894"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 23 Nov 2022 01:47:08 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oxmLT-0002al-2L;
+        Wed, 23 Nov 2022 09:47:07 +0000
+Date:   Wed, 23 Nov 2022 17:46:34 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 2d0b08c157434eebf0b6393c570089666dacf2aa
+Message-ID: <637debfa.qvFe6AlZLSqtR9gH%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 2d0b08c157434eebf0b6393c570089666dacf2aa  MAINTAINERS: mark rsi wifi driver as orphan
 
-> > > > +static bool ieee80211_config_puncturing(struct ieee80211_sub_if_da=
-ta *sdata,
-> > > > +					const struct ieee80211_eht_operation *eht_oper,
-> > > > +					u64 *changed)
-> > > > +{
-> > > > +	u16 bitmap, extracted;
-> > > > +	u8 bw;
-> > > > +
-> > > > +	if (!u8_get_bits(eht_oper->present_bm,
-> > > > +			 IEEE80211_EHT_OPER_DISABLED_SUBCHANNEL_BITMAP_PRESENT))
-> > > > +		bitmap =3D 0;
-> > > > +	else
-> > > > +		bitmap =3D get_unaligned_le16(eht_oper->disable_subchannel_bitma=
-p);
-> > > > +
-> > > Should check initial bitmap here.
-> >=20
-> >=20
-> > What do you mean by "initial" here?
->=20
->=20
-> "Initial bitmap" is the original bitmap that AP send in beacon . STA=20
-> will extract it according to the negotiated BW. So i call it "Initial=20
-> bitmap".
+elapsed time: 1389m
 
+configs tested: 147
+configs skipped: 3
 
-Ah, that was referring to the below comment, got it.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> > Anyway the more fundamental thing we have to figure out here (and thank=
-s
-> > for bringing this back) is how we treat the puncturing - QCOM's AP-side
-> > puncturing patch treated it as part of the chandef, but that's not
-> > working well for client side ...
-> >=20
->=20
->=20
-> Yes, to my understanding, I think it's more appropriate to define it=20
-> like you in "ieee80211_bss_conf".
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+s390                             allmodconfig
+s390                                defconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+s390                             allyesconfig
+ia64                             allmodconfig
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+i386                 randconfig-a011-20221121
+i386                 randconfig-a013-20221121
+i386                 randconfig-a012-20221121
+x86_64                           rhel-8.3-syz
+i386                 randconfig-a014-20221121
+i386                 randconfig-a016-20221121
+i386                 randconfig-a015-20221121
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                             allyesconfig
+i386                                defconfig
+x86_64                            allnoconfig
+x86_64               randconfig-a011-20221121
+x86_64               randconfig-a014-20221121
+x86_64               randconfig-a012-20221121
+x86_64               randconfig-a013-20221121
+x86_64               randconfig-a016-20221121
+x86_64               randconfig-a015-20221121
+arm                      footbridge_defconfig
+powerpc                       eiger_defconfig
+sparc                       sparc32_defconfig
+powerpc                    sam440ep_defconfig
+sparc                            alldefconfig
+sh                           se7705_defconfig
+m68k                        stmark2_defconfig
+arc                              allyesconfig
+s390                 randconfig-r044-20221121
+riscv                randconfig-r042-20221121
+arc                  randconfig-r043-20221120
+arc                  randconfig-r043-20221121
+i386                          randconfig-c001
+arm                        trizeps4_defconfig
+m68k                       m5275evb_defconfig
+arc                          axs103_defconfig
+arm                                 defconfig
+arm                              allyesconfig
+sh                              ul2_defconfig
+sh                           se7780_defconfig
+sh                          sdk7780_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+arm                          simpad_defconfig
+powerpc                  iss476-smp_defconfig
+sh                             espt_defconfig
+m68k                       m5208evb_defconfig
+arm                          gemini_defconfig
+arm                            pleb_defconfig
+parisc                generic-64bit_defconfig
+sh                     sh7710voipgw_defconfig
+m68k                             allyesconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+powerpc                      pcm030_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arc                         haps_hs_defconfig
+arc                      axs103_smp_defconfig
+loongarch                         allnoconfig
+riscv                    nommu_virt_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+m68k                                defconfig
+powerpc                      makalu_defconfig
+ia64                      gensparse_defconfig
+xtensa                          iss_defconfig
+riscv                          rv32_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+sh                   rts7751r2dplus_defconfig
+m68k                        m5307c3_defconfig
+openrisc                    or1ksim_defconfig
+loongarch                           defconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+arm                           sunxi_defconfig
+sh                         ap325rxa_defconfig
+sparc                               defconfig
+csky                                defconfig
+x86_64                                  kexec
+arc                    vdk_hs38_smp_defconfig
+arm                              allmodconfig
+loongarch                        allmodconfig
+arm64                            allyesconfig
+nios2                            allyesconfig
+parisc                           allyesconfig
 
-:-)
+clang tested configs:
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
+powerpc                    mvme5100_defconfig
+arm                         bcm2835_defconfig
+arm                         lpc32xx_defconfig
+i386                 randconfig-a001-20221121
+i386                 randconfig-a005-20221121
+i386                 randconfig-a006-20221121
+i386                 randconfig-a004-20221121
+i386                 randconfig-a003-20221121
+i386                 randconfig-a002-20221121
+x86_64                        randconfig-k001
+x86_64               randconfig-a002-20221121
+x86_64               randconfig-a001-20221121
+x86_64               randconfig-a004-20221121
+x86_64               randconfig-a006-20221121
+x86_64               randconfig-a005-20221121
+x86_64               randconfig-a003-20221121
+powerpc                   bluestone_defconfig
+arm                          moxart_defconfig
+hexagon                             defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+powerpc                    gamecube_defconfig
+powerpc                 mpc832x_rdb_defconfig
+mips                     cu1000-neo_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+s390                 randconfig-r044-20221122
+hexagon              randconfig-r041-20221122
+riscv                randconfig-r042-20221122
+hexagon              randconfig-r045-20221122
 
-Forgot to say: thanks for the review.
-
-> But this should be discussed by people like you. I'm just responsible=20
-> for developing according to these definitions.
-
-Heh :)
-
-Well Aloka is back - Aloka maybe you have some comments?
-
-Adding Maha too.
-
-
-I suppose I could post a new patch with bugs fixed, but not sure that'll
-get us anywhere on the semantic discussion.
-
-
-I can somewhat understand why you might want puncturing to be part of
-the chandef for an AP, especially for configuration, though I'm honestly
-not sure what the use cases are; perhaps some other use for that
-bandwidth (perhaps cellular?), but then does that really mean we should
-refuse configurations that aren't in line with it?
-
-If we put puncturing into the chandef that might not even mean we
-*refuse* configurations, it would initially just mean we need another
-channel context (if supported, otherwise refused) when we add two.
-
-
-But given that the primary use case seems to be different use for the
-part of the spectrum that's being punctured - maybe we should set it up
-in a wholly different way and have some way of "carving out" reserved
-spectrum?
-
-So you could, say, reserve channel 40, and then to have an 80 MHz AP on
-channels 36-48 you'd have to puncture 40 there. We wouldn't have to
-store it as part of the chandef/chanctx because the validation is now
-done against the reservation; or we could even store it as part of the
-chandef/chanctx but say it only applies to beaconing modes or such, and
-not handle it as part of the chandef equality comparison.
-
-And really that's the thing that matters to the client here, the client
-never has a choice, so if it's part of the equality comparison on the
-client, then the client might not be able to simultaneously connect to
-two BSSes (or need two chanctxs to do it) if both have 80 MHz on channel
-36, but one has puncturing and the other doesn't. That doesn't really
-make sense IMHO.
-
-If we treat the puncturing as a more global "reserved spectrum" case,
-then we can still put the puncturing into the chandef, say it applies to
-beaconing modes only (I suppose AP is the only relevant one, perhaps
-someone will care about mesh in the future?), not have it as part of the
-=3D=3D comparison. All APs would have to adhere to that.
-
-That still leaves a corner case of concurrent client + AP functionality
-which can only be handled if hardware can deal with different puncturing
-settings per interface? Which again argues for *not* storing it as part
-of the chandef, I'd say.
-
-Any other thoughts?
-
-johannes
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
