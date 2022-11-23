@@ -2,77 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94063634E76
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 04:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2660E635122
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 08:37:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235320AbiKWDln (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Nov 2022 22:41:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53064 "EHLO
+        id S236160AbiKWHgO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 02:36:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234329AbiKWDlm (ORCPT
+        with ESMTP id S235984AbiKWHgN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Nov 2022 22:41:42 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E056E6EFB
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 19:41:41 -0800 (PST)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AN2fMBe023623;
-        Wed, 23 Nov 2022 03:41:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=eGzzukjTuIWTfYBwo3GDLtYJqd+V27Mca1HLgoxlagU=;
- b=U4lPgne755B0ClR7iLDAsdcJneEyStjLsd/VgoJV7L2ITCpOuKqkldSUM7TozfAZAs9x
- xgQft0mXxbaH/v0cPP6y/7TFApp0j81wfqmZjxvzO7LOd87trutpjzM7V2JL3NszYT0n
- 9lyMWsaW2JhNfSnVVXsRCHh1ZBtaOeIebiCHCBT4pbnZFD0LnzFL4OBHGcFZ2gCORkvr
- G+rXB0t2AaMHvCSbuGDQ0BRUJQ8aXFR8o0agCcGkvG0R7Jg+EqMVS7IxtXYWwWV95oEu
- v+tQFQiS2BIU/5LVp2hmLt3bbWy49rLhpnPrU8CRO8gGRSLT0tEUpftnAcGW7aU2wGvN Ug== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m0q6xb6bw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Nov 2022 03:41:29 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AN3fSF8012423
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Nov 2022 03:41:28 GMT
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 22 Nov
- 2022 19:41:27 -0800
-Message-ID: <e7e34c3d-8b73-f7d5-9ce8-5ed346ca9d28@quicinc.com>
-Date:   Wed, 23 Nov 2022 11:41:25 +0800
+        Wed, 23 Nov 2022 02:36:13 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD75F802A
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 23:36:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0519DB81ECD
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:36:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31603C433D6;
+        Wed, 23 Nov 2022 07:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669188969;
+        bh=2Edqw+R1WvvZibkeH4SiWhA8NwRq/LvyT6/U9T28yKE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=G4GGmdRi5LxNwVMYU5xZ5/0ehUE0K4sdIoN7SPv/bm9jP3DYvVLdxwsZKPRPIs8JF
+         AVY07aNTfreeE8ii4xndgwZ/2indDAt8dWn+PrhrradmIGN+dUr24CTeCl2v3jXCxf
+         oCwPHEhbGCx/nCZOA6puwSv2TV9ZNYTTwBklTDriwLter1UdpSux1JR+XxprNHOQzJ
+         YaxybbcCmshbp7Gtc8QFdIBghtqshAdA2jcAvJ7RrS0MnO/3g5hmZR/Ur+m0U3tQCx
+         RoaquKYi3d/UCXO8CIzpLvoFd3ib7zHwvhO1dNfsgY6reWwDs94HMSu/1bXjL2c24J
+         U55FwDv9wtsYg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ryder Lee <Ryder.Lee@mediatek.com>
+Cc:     =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= 
+        <Shayne.Chen@mediatek.com>,
+        =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
+        <Evelyn.Tsai@mediatek.com>,
+        "linux-mediatek\@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        =?utf-8?Q?Howard-YH_Hsu_=28?=
+         =?utf-8?Q?=E8=A8=B1=E8=82=B2=E8=B1=AA=29?= 
+        <Howard-YH.Hsu@mediatek.com>,
+        =?utf-8?B?TWVpQ2hpYSBDaGl1ICjpgrHnvo7lmIkp?= 
+        <MeiChia.Chiu@mediatek.com>,
+        =?utf-8?B?TW9uZXkgV2FuZyAo546L5L+h5a6JKQ==?= 
+        <Money.Wang@mediatek.com>, "nbd\@nbd.name" <nbd@nbd.name>,
+        =?utf-8?Q?StanleyYP_Wang_=28=E7=8E=8B?=
+         =?utf-8?Q?=E4=BE=91=E9=82=A6=29?= <StanleyYP.Wang@mediatek.com>,
+        "lorenzo\@kernel.org" <lorenzo@kernel.org>,
+        =?utf-8?Q?Chui-hao_Chiu_=28?=
+         =?utf-8?Q?=E9=82=B1=E5=9E=82=E6=B5=A9=29?= 
+        <Chui-hao.Chiu@mediatek.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        =?utf-8?B?Qm8gSmlhbyAo54Sm5rOiKQ==?= <Bo.Jiao@mediatek.com>
+Subject: Re: [PATCH v2 9/9] wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices
+References: <20221110093525.29649-1-shayne.chen@mediatek.com>
+        <20221110093525.29649-10-shayne.chen@mediatek.com>
+        <87ilj8pcqr.fsf@kernel.org>
+        <0285ab6ac5d3edfdd513ff3888481f0764b2e38b.camel@mediatek.com>
+Date:   Wed, 23 Nov 2022 09:36:04 +0200
+In-Reply-To: <0285ab6ac5d3edfdd513ff3888481f0764b2e38b.camel@mediatek.com>
+        (Ryder Lee's message of "Mon, 21 Nov 2022 19:45:14 +0000")
+Message-ID: <875yf6p1gb.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 2/2] wifi: ath11k: reduce the timeout value back for hw
- scan from 10 seconds to 1 second
-Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20221011072408.23731-1-quic_wgong@quicinc.com>
- <20221011072408.23731-3-quic_wgong@quicinc.com> <8735atg335.fsf@kernel.org>
- <cd96eea8-dce0-bcb9-e8ce-05fa0e0f22fb@quicinc.com>
-In-Reply-To: <cd96eea8-dce0-bcb9-e8ce-05fa0e0f22fb@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: K1TxHWZRUqRdZXTmHehE4lQs2w_uPGwD
-X-Proofpoint-ORIG-GUID: K1TxHWZRUqRdZXTmHehE4lQs2w_uPGwD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-22_13,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 spamscore=0 impostorscore=0
- priorityscore=1501 bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211230026
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,54 +76,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/18/2022 6:29 PM, Wen Gong wrote:
-> On 11/8/2022 6:20 PM, Kalle Valo wrote:
->> Wen Gong <quic_wgong@quicinc.com> writes:
->>
-> ...
->> [...]
->>
->>> @@ -3682,7 +3677,12 @@ static int ath11k_mac_op_hw_scan(struct 
->>> ieee80211_hw *hw,
->>>         ret = ath11k_start_scan(ar, &arg);
->>>       if (ret) {
->>> -        ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
->>> +        if (ret == -EBUSY)
->>> +            ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
->>> +                   "scan engine is busy 11d state %d\n", 
->>> ar->state_11d);
->>> +        else
->>> +            ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
->>> +
->>>           spin_lock_bh(&ar->data_lock);
->>>           ar->scan.state = ATH11K_SCAN_IDLE;
->>>           spin_unlock_bh(&ar->data_lock);
->> This feels like a hack to me, for example will these failed scans now
->> cause delays is connection establishment? IMHO it's crucial from user's
->> point of view that we don't delay that in any way.
-> It will not delay connection.
-> After wlan load, the 1st hw scan will arrived to ath11k, and then 11d
-> scan will be sent to firmware after the 1st hw scan. It means the hw
-> scan for connection is run before 11d scan, and then connection could
-> be started immediately after the 1st hw scan finished. It means no
-> delay for connection.
->> I would rather fix the root cause, do we know what's causing this?
-> In firmware, hw scan and 11d scan are all running in the same queue,
-> they can not be run parallel.
+Ryder Lee <Ryder.Lee@mediatek.com> writes:
+
+> On Mon, 2022-11-21 at 17:07 +0200, Kalle Valo wrote:
+>> Shayne Chen <shayne.chen@mediatek.com> writes:
+>> 
+>> > Add MediaTek new mac80211 driver mt7996 for Wi-Fi 7 (802.11be)
+>> > devices.
+>> > The driver first supports Filogic 680 PCI device, which is a Wi-Fi
+>> > 7
+>> > chipset supporting concurrent tri-band operation at 6 GHz, 5 GHz,
+>> > and
+>> > 2.4 GHz with 4x4 antennas on each band.
+>> > 
+>> > Currently, mt7996 only supports tri-band HE or older mode.
+>> > EHT mode and more variants of Filogic 680 support will be
+>> > introduced
+>> > in further patches.
+>> > 
+>> > Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+>> > Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+>> > Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+>> > Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
+>> > Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+>> > Co-developed-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+>> > Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+>> > Co-developed-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+>> > Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+>> > Co-developed-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+>> > Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+>> > Co-developed-by: Money Wang <Money.Wang@mediatek.com>
+>> > Signed-off-by: Money Wang <Money.Wang@mediatek.com>
+>> > Co-developed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+>> > Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+>> > Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+>> > ---
+>> >  drivers/net/wireless/mediatek/mt76/Kconfig    |    1 +
+>> >  drivers/net/wireless/mediatek/mt76/Makefile   |    1 +
+>> >  .../net/wireless/mediatek/mt76/mt7996/Kconfig |   12 +
+>> >  .../wireless/mediatek/mt76/mt7996/Makefile    |    6 +
+>> >  .../wireless/mediatek/mt76/mt7996/debugfs.c   |  851 ++++
+>> >  .../net/wireless/mediatek/mt76/mt7996/dma.c   |  360 ++
+>> >  .../wireless/mediatek/mt76/mt7996/eeprom.c    |  229 ++
+>> >  .../wireless/mediatek/mt76/mt7996/eeprom.h    |   75 +
+>> >  .../net/wireless/mediatek/mt76/mt7996/init.c  |  816 ++++
+>> >  .../net/wireless/mediatek/mt76/mt7996/mac.c   | 2468 ++++++++++++
+>> >  .../net/wireless/mediatek/mt76/mt7996/mac.h   |  398 ++
+>> >  .../net/wireless/mediatek/mt76/mt7996/main.c  | 1325 +++++++
+>> >  .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 3428
+>> > +++++++++++++++++
+>> >  .../net/wireless/mediatek/mt76/mt7996/mcu.h   |  662 ++++
+>> >  .../net/wireless/mediatek/mt76/mt7996/mmio.c  |  385 ++
+>> >  .../wireless/mediatek/mt76/mt7996/mt7996.h    |  516 +++
+>> >  .../net/wireless/mediatek/mt76/mt7996/pci.c   |  222 ++
+>> >  .../net/wireless/mediatek/mt76/mt7996/regs.h  |  533 +++
+>> >  18 files changed, 12288 insertions(+)
+>> 
+>> This patch is too big, please split it. One patch per file is a good
+>> rule of thumb.
+>> 
 >
-> When 6 GHz enabled, the 1st hw scan cost about 7s and finished, and
-> then 11d scan cost the next 7s. After the 14s, the each hw scan arrived
-> to ath11k will be run immediately. If the 2nd hw scan arrived before
-> the 11d scan finished, for example, it arrived 7.1 seconds after the
-> 1st hw scan, at this moment, the 11d scan is still running in firmware,
-> then the 2nd hw scan will not receive scan started event untill the 11d
-> scan finished, and meanwhile, the 2nd hw scan is holding the 
-> ar->conf_mutex
-> in ath11k_mac_op_hw_scan(), it is not good to hold a lock for some
-> seconds because ar->conf_mutex is widely used. So reduce the 10s to 1s
-> to avoid holding ar->conf_mutex for long time.
+> Hi Kalle,
+>
+> Thanks for comments.
+>
+> It's a bit hard to adjugement to us actually. We'd prefer to keeping
+> one topic (wifi7 thing support for this case) one patch. I guess add
+> code that is nor used or does not compile could get other complaints.
 
-Hi Kalle,
+Applying it to the git tree as one big commit is fine, but for reviews I
+always recommend splitting new drivers to one file per patch. I tried to
+review this huge patch and gave up, it was just too difficult.
 
-Should I change commit log with above explanation and send v4?
+> Given that the series has been merged to Felix's tree (and couple
+> patches are being applied on top of his tree)... but we will take care
+> of this part next time and split the series by functionality as much as
+> we can. What do you think?
 
+One option is to send followup patches to handle the issues found during
+review.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
