@@ -2,66 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 737F9635123
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 08:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5218635140
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 08:47:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236263AbiKWHhN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 02:37:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
+        id S236043AbiKWHq4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 02:46:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236261AbiKWHhM (ORCPT
+        with ESMTP id S236297AbiKWHqw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 02:37:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23EDCF8864
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 23:37:11 -0800 (PST)
+        Wed, 23 Nov 2022 02:46:52 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFBBF8864
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Nov 2022 23:46:50 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D072EB81ECD
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:37:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C77C433D6;
-        Wed, 23 Nov 2022 07:37:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C904B61AC9
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:46:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C257C433D7;
+        Wed, 23 Nov 2022 07:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669189028;
-        bh=DkMxWFiG8y7zqTgwJQjsxzyy9YxJGvEU4ofwChdGo24=;
+        s=k20201202; t=1669189609;
+        bh=QFYYq1BW8zc3/rrWH+u8oRxcb1K+RV7FJGJqixx8u/s=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=d1h+bYJHsowHzhPgWLTRj8v6FjJ2pUpZ2NLH+6g1Fh73B5OLNBdkXQZYtyfPpgngg
-         ipBRG85vzD+QDjp04UzDRh8Q4dDpT0W3IHTm7gKMhA6Smo+QqRJNKtcl9Jaw9OGCIj
-         lUiNIzF2rGikvUPZW7Uw4NQz9muhwY2EPMmsU7NMkbE+tyb2BWa5sRAZHhmv+tBSuN
-         Zf9+H2P9iQeXbMa+AObglzC7rmt8OlHmT6BtkSmtBD7afuFn4QC4r5+za2oDSioQKE
-         RZ0pebMX1/QaBcWHlM+45khL0KEqr3L60/M3USuOHGHzdEMfoaQ+hnmrtXczcH5ZK5
-         WXhkrfYy84OIQ==
+        b=r5mRzW/xfr3A/Td17XhAJS5l+8NNpK9Yc20lrBoQxXArxooNRwWNcqSCA7MtTwlJ6
+         pVjaGdNMrLjBSfPQsAo+kZeg8benBYSE8xubLDaT/Lc6BT8T3u6lxViNUCJ48VV8QE
+         ll+zGT68MlCMH5cSzncUJq99SVdXMqMPM92wV/NEinptvV3Qm+f8GacY76kXijWirG
+         AROwYdsn1ZsiIueXhGI5boKRnkJbihvfAa2xQFU2v099I20h7D4uyWSgB+W6gUvdMq
+         X2MA+22kg2WVe+4Dw21GSZr6V+RhH6oMi0d5li9Uf2hchnPz1vQrM1wfW4DpntSUpI
+         t2a599Rt9wEiQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     shayne.chen@mediatek.com
-Cc:     =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
-        <Evelyn.Tsai@mediatek.com>,
-        "linux-mediatek\@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        =?utf-8?Q?Howard-YH_Hsu_=28?=
-         =?utf-8?Q?=E8=A8=B1=E8=82=B2=E8=B1=AA=29?= 
-        <Howard-YH.Hsu@mediatek.com>,
-        =?utf-8?B?TWVpQ2hpYSBDaGl1ICjpgrHnvo7lmIkp?= 
-        <MeiChia.Chiu@mediatek.com>,
-        =?utf-8?B?TW9uZXkgV2FuZyAo546L5L+h5a6JKQ==?= 
-        <Money.Wang@mediatek.com>, "nbd\@nbd.name" <nbd@nbd.name>,
-        =?utf-8?Q?StanleyYP_Wang_=28=E7=8E=8B?=
-         =?utf-8?Q?=E4=BE=91=E9=82=A6=29?= <StanleyYP.Wang@mediatek.com>,
-        "lorenzo\@kernel.org" <lorenzo@kernel.org>,
-        =?utf-8?Q?Chui-hao_Chiu_=28?=
-         =?utf-8?Q?=E9=82=B1=E5=9E=82=E6=B5=A9=29?= 
-        <Chui-hao.Chiu@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        =?utf-8?B?Qm8gSmlhbyAo54Sm5rOiKQ==?= <Bo.Jiao@mediatek.com>
-Subject: Re: [PATCH v2 9/9] wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices
-References: <20221110093525.29649-1-shayne.chen@mediatek.com>
-        <20221110093525.29649-10-shayne.chen@mediatek.com>
-        <87ilj8pcqr.fsf@kernel.org>
-        <83f60433f893331337012a6ce8ed920db67639c4.camel@mediatek.com>
-Date:   Wed, 23 Nov 2022 09:37:04 +0200
-In-Reply-To: <83f60433f893331337012a6ce8ed920db67639c4.camel@mediatek.com>
-        (shayne chen's message of "Tue, 22 Nov 2022 09:04:30 +0000")
-Message-ID: <871qpup1en.fsf@kernel.org>
+To:     gregory.greenman@intel.com
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 0/9] wifi: iwlwifi: updates intended for v6.2 2022-11-22
+References: <20221122201040.2618863-1-gregory.greenman@intel.com>
+Date:   Wed, 23 Nov 2022 09:46:46 +0200
+In-Reply-To: <20221122201040.2618863-1-gregory.greenman@intel.com> (gregory
+        greenman's message of "Tue, 22 Nov 2022 22:10:31 +0200")
+Message-ID: <87wn7mnme1.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -74,22 +53,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-shayne.chen@mediatek.com writes:
+gregory.greenman@intel.com writes:
 
->> >  18 files changed, 12288 insertions(+)
->> 
->> This patch is too big, please split it. One patch per file is a good
->> rule of thumb.
->> 
->> I did see some suspicious static variables in pci.c, but otherwise I
->> basically skipped everything.
+> From: Gregory Greenman <gregory.greenman@intel.com>
 >
-> Thanks for your reminder.
+> Hi,
 >
-> I've splitted the big patch into smaller patches by functionality for
-> easier review.
+> Here's the third set of patches intended for v6.2, with the fixes.
+> Resending all the patches since I think it'll make the review easier.
+> The fixes are only for two patches (1 and 4), the rest are unchanged.
+>
+> It contains EHT adjustments for iwlwifi. It contains only iwlwifi
+> changes, all the required mac80211/cfg80211 changes are already merged
+> upstream.
+>
+> As usual, I'm pushing this to a pending branch, for kbuild bot,
+> and will send a pull-request later.
+>
+> Please review.
 
-Nice, thanks Shayne.
+No need to resend because of this but there's no changelog to list the
+changes since v1. Usually we do something like this (I'm making up the
+content, I don't know what you actually changed):
+
+v2
+
+* patch 1: fix a typo in the commit log
+
+* patch 5: add missing mutex_unlock() in error handling
+
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
