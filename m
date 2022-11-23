@@ -2,97 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF656367B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 18:54:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7D3C6368CF
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 19:29:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239249AbiKWRyP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 12:54:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45980 "EHLO
+        id S238799AbiKWS3a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 13:29:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237243AbiKWRyO (ORCPT
+        with ESMTP id S238742AbiKWS3Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 12:54:14 -0500
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED11E64A2C;
-        Wed, 23 Nov 2022 09:54:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1669226051; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/1O/qeaT6DVSGwZFjj+0GGqQHqMGAQ6aVICj9N+I6Cg=;
-        b=Qnm9cqwIvObrA3v4tAAwNgmzQbzkZzabJqwXqmDpJFvOAzwd2O/CdZThHBItyqSpSZjve/
-        J1QiEi1pM1bowLIAfqvBUibaGk1tdapCYUMc38UtlQwCF9hlQgHYV60KaNpV1m/ralLTR3
-        KErJ9EQaa9STUoYl5kypSx8yM4Dsu6o=
-Date:   Wed, 23 Nov 2022 17:54:00 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: Please bump brcm/bcm4330-sdio.bin firmware
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-mips@vger.kernel.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Artur Rojek <contact@artur-rojek.eu>
-Message-Id: <02BTLR.2900VTVOISJZ@crapouillou.net>
-In-Reply-To: <fa5b46e2-f13e-547e-8df9-70c65f191957@broadcom.com>
-References: <L70QLR.XAGB8X2431341@crapouillou.net>
-        <fa5b46e2-f13e-547e-8df9-70c65f191957@broadcom.com>
+        Wed, 23 Nov 2022 13:29:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B88D2AE6;
+        Wed, 23 Nov 2022 10:29:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44A1861E50;
+        Wed, 23 Nov 2022 18:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1319CC433B5;
+        Wed, 23 Nov 2022 18:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669228154;
+        bh=hzJueNzbO/9Acji4eb9royz8LgQfKzYqzYDs+LWuxAA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rhEjkxqLultIdTJdkgy4Gy0NqEm2qx0gSzqX6INOvcxiHJw5frx3Xcf1CFqYawpBg
+         haAjqeBAO0TDYqlrgq6AvOpkPysOgcxAgZzbxmjYkQ6pp+qjj0024rYn2bdGt6WrZd
+         kTPEhnOIndGB9bndrvQ2rBNIkMX0jWIwa5nQUvowq/AuSXExmjqT5okmKcnx3aUMnz
+         FkyQv7HuYG9WuDOOzdPydpfgvPSY4LEFNUo/78aQUd4qmxj5uf2QDloNCeF3KG1Td4
+         vHG2ZZhYs1kKjvvmXy+n/EEH0mvRiMho4ThJlHzdymI866huhY7rOOTiQb7Vzv1iQY
+         5d0Y93gN3heug==
+Date:   Wed, 23 Nov 2022 10:29:13 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Maciej =?UTF-8?B?xbtlbmN6eWtvd3NraQ==?= <maze@google.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        =?UTF-8?B?xYF1a2Fzeg==?= Stelmach <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Ilja Van Sprundel <ivansprundel@ioactive.com>,
+        Joseph Tartaro <joseph.tartaro@ioactive.com>
+Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
+Message-ID: <20221123102913.20108617@kernel.org>
+In-Reply-To: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
+References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
+On Wed, 23 Nov 2022 13:46:20 +0100 Greg Kroah-Hartman wrote:
+> I can take this through the USB tree if the networking maintainers have
+> no objection.
 
-Le mar. 22 nov. 2022 =E0 20:35:41 +0100, Arend van Spriel=20
-<arend.vanspriel@broadcom.com> a =E9crit :
-> On 11/22/2022 12:06 AM, Paul Cercueil wrote:
->> Hello,
->>=20
->> As a week-end project I got the BCM4330 chip to work with the=20
->> mainline =7FLinux kernel on the MIPS CI20 board. One of the problems I=20
->> was facing =7Fwas the firmware crashing, resulting in timeout errors=20
->> in the brcmfmac =7Fdriver.
->>=20
->> It turns out the bcm4330-sdio.bin firmware that's currently in=20
->> =7Flinux-firmware is not the latest one. Running "strings" on the blob=20
->> =7Fpoints out to a version 5.90.125.104 dated 2011-10-25. The firmware=20
->> that =7Foriginally came on the CI20 is version 5.90.195.26 dated=20
->> 2012-05-09, and =7Fthe version found in Android [1] is 5.90.195.114=20
->> dated 2013-01-23. Only =7Fthe last two will work on the CI20 board.
->>=20
->> My question then, could we bump the firmware available in=20
->> linux-firmware =7Fto the latest version? Or is there a valid reason=20
->> why an older firmware =7Fis kept in the tree?
->=20
-> We "Broadcom" could. The linux-firmware repo provides all firmware=20
-> that linux distro can freely redistribute. The license info is listed=20
-> in the README in the repo as are the applicable firmware license=20
-> documents. So releasing the firmware to linux-firmware under the=20
-> given license can only be done by anyone owning it, not by people=20
-> licensed to use it.
-
-I actually did not know this.
-
-> The bcm4330 chip was one of the first chips that brcmfmac supported=20
-> and Broadcom has EOL-ed that chip a long time ago hence no newer=20
-> firmware was considered for release to linux-firmware. In the past we=20
-> often re-released what was available in Android so we probably can do=20
-> that again for this and other chips.
-
-This would be great.
-
-Cheers,
--Paul
-
-
+Acked-by: Jakub Kicinski <kuba@kernel.org>
