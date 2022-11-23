@@ -2,58 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA1F6369F4
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 20:38:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0F09636A3E
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 20:56:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237016AbiKWTiH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 14:38:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33444 "EHLO
+        id S238686AbiKWT4p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 14:56:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240032AbiKWTiD (ORCPT
+        with ESMTP id S237583AbiKWT4X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 14:38:03 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EDA45D695
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 11:37:58 -0800 (PST)
-X-UUID: 50dda0d66b3d4d5f8cff29e3a3af203a-20221124
+        Wed, 23 Nov 2022 14:56:23 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E4ECB57
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 11:55:48 -0800 (PST)
+X-UUID: e5e406f8dc744721abdc7fa7aacfebde-20221124
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=h9z6F0TId3N8H9Cd+JiK9egkiQFAYweBetwqXATPNo8=;
-        b=dB7JCsjhIDcWzrr3Ra/+vA1gON/SmijyXRvDNjp2L460oKVGIr++3TOWWQJKQCo5ZMqyoy8sQA63ov1xpQ0hUs6ceHu4Cf3XpSFml1e7A6pxxAa1128AknDoEc5wNepF2I4mtv736U+24VGi5jjDTpe/jWdoYbVkCU3FdROUTjQ=;
+        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=Z1vO7+yR2dCvjLwUYYuKxEqOFGRLD1T3T9s8Ns77kvg=;
+        b=jKplH1QffC4/xNYDSoOV/tJtnUsdi8YirYxG+YVQdfNgzVQFsLN75EdicI4DPv5+EFMhaKVTxonJnjm0U+mrFnhHp6gVzNAOPWQwZ8eg0EyWOGFBMZ3r/vp+W+6TJh9Oz0iKp+Uy2HLxWMXft0cpv7llOmZtrO9oHJgxcKW7dRk=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.12,REQID:b4a78242-027c-45c4-ba1b-0e64ac4a02d1,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+X-CID-O-INFO: VERSION:1.1.13,REQID:ee0419d6-1ec8-41e3-aa43-540d4a44d832,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
         :release,TS:-5
-X-CID-META: VersionHash:62cd327,CLOUDID:90a70ddc-6ad4-42ff-91f3-18e0272db660,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 50dda0d66b3d4d5f8cff29e3a3af203a-20221124
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+X-CID-INFO: VERSION:1.1.13,REQID:ee0419d6-1ec8-41e3-aa43-540d4a44d832,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+        elease,TS:-5
+X-CID-META: VersionHash:d12e911,CLOUDID:4dc80ddc-6ad4-42ff-91f3-18e0272db660,B
+        ulkID:2211240355453SW3I21X,BulkQuantity:0,Recheck:0,SF:38|17|19|102,TC:nil
+        ,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: e5e406f8dc744721abdc7fa7aacfebde-20221124
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1745216225; Thu, 24 Nov 2022 03:37:52 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Thu, 24 Nov 2022 03:37:51 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Thu, 24 Nov 2022 03:37:51 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 836283677; Thu, 24 Nov 2022 03:55:44 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Thu, 24 Nov 2022 03:55:43 +0800
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (172.21.101.239)
+ by mtkmbs10n1.mediatek.com (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Thu, 24 Nov 2022 03:55:42 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iAtmxNulQGB3DdBVRFoRqE6L7Gwqplq4AYu8kxFpKjokP9mWtxCuB2uDKYuzVoKEeextIwyIAQXiMpXPQ53V6NkkMtZYerZMyp6JhSr2SqB0Tn9rVoR8pmIxByoGE1G3GKZJtJ/9OSG4mHTxeXGSgokdhm6nLOW3LuOYfWYrDcOEN62yYbaw58WlRlOsdVeRu8JbKQzq/EHeiU70ZFjoAfKyuzLqIpnWjLpybId5IM1oNh4yGn3FKwAQdMQ4428x98lAFL0eWNvNWQU7Y8DTl1o3HUswGTPPIu8L5c2tqCPv3ze4QfqIPIPaeZiRwJYQvT3OCKq13Y1EAc06Mp0ldQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z1vO7+yR2dCvjLwUYYuKxEqOFGRLD1T3T9s8Ns77kvg=;
+ b=BZP/8wD091X5/i3FvvEGm19VTrx7tjB1edgx1a88VkfZ2HLq1dFyIMLBJ88RzR/cRQxu/hjkylHAkp7OQjD5M92pZdnDT/WbbjGEV+DLcs3P/ly2Fxt/TdrEIJJ0A/JJC5s9XZ2Zzi+yox1xWtpKjU8h2klzq86Wj6QTJa0KybFxE4hQIEvtRw9ST95Nl12hI/Iw4MBh0pjVY+W0Y8wdVoKHBX7OtdSUjd1sBvl7Uix8PW8dst+AVeXNW5OkPPSd5hs99maDznbPC/RGjv6QxzJXokc2OB9GJ8XsDcNFg3G7ZjgFsKd/knKG0FOLtfImqPVY9QIV5ksUKBOl4QSjow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z1vO7+yR2dCvjLwUYYuKxEqOFGRLD1T3T9s8Ns77kvg=;
+ b=lgZXjUqDk0m6d+trbjylsn9keZ+uUrlkmNvHtmFHOQ9IpB+vkCiDU3KQsK4m3i0ysQMfJ8r+NE0oXuKE7N+AwuddXb69wYrc+i3V+qUIK9ov9wI2P8z3nHO/1Ulzu5GehsVGfdzOUUiuDJ5vEPde5BcJgxNUqlA27z2uJv2rSHU=
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com (2603:1096:400:14a::9)
+ by SI2PR03MB5803.apcprd03.prod.outlook.com (2603:1096:4:143::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5834.15; Wed, 23 Nov
+ 2022 19:55:38 +0000
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::3c4f:5697:636e:56e6]) by TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::3c4f:5697:636e:56e6%3]) with mapi id 15.20.5857.018; Wed, 23 Nov 2022
+ 19:55:38 +0000
+From:   Ryder Lee <Ryder.Lee@mediatek.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "nbd@nbd.name" <nbd@nbd.name>
+CC:     "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>,
+        =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= 
+        <Shayne.Chen@mediatek.com>,
+        "linux-mediatek@lists.infradead.org" 
         <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7915: enable per bandwidth power limit support
-Date:   Thu, 24 Nov 2022 03:37:18 +0800
-Message-ID: <cd182c0f1234bae73a103889357bb84402fa8007.1669229848.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <9a67f1617249be2c73bb5900d2df971b682f8772.1669229848.git.ryder.lee@mediatek.com>
+        =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
+        <Evelyn.Tsai@mediatek.com>
+Subject: Re: [PATCH 2/2] wifi: mt76: mt7915: enable per bandwidth power limit
+ support
+Thread-Topic: [PATCH 2/2] wifi: mt76: mt7915: enable per bandwidth power limit
+ support
+Thread-Index: AQHY/3MU1MYnNywkV0icsCSeOCoQDa5M7DUA
+Date:   Wed, 23 Nov 2022 19:55:38 +0000
+Message-ID: <66734e5e335cb54eddda1eadee727c352b595486.camel@mediatek.com>
 References: <9a67f1617249be2c73bb5900d2df971b682f8772.1669229848.git.ryder.lee@mediatek.com>
+         <cd182c0f1234bae73a103889357bb84402fa8007.1669229848.git.ryder.lee@mediatek.com>
+In-Reply-To: <cd182c0f1234bae73a103889357bb84402fa8007.1669229848.git.ryder.lee@mediatek.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY0PR03MB6354:EE_|SI2PR03MB5803:EE_
+x-ms-office365-filtering-correlation-id: e49c0ce8-f110-49f3-57f2-08dacd8cb1a8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: XtHlJZrHBU6GlcmsCxmoRrmTHiaqyz/jHow+cvACFcFvmDLARniRVwNjrTygPvryUBwwvpTxT3ZqngaozEO4kOqwbjqXzgqnKhu/9sSeKc0zCbVEQ4rJuxJHkAEgBpxAsfWTV2qXwmpLZMXPeI+eYz3JOU9CG7O39rf6ltNuJvFJfH/219Oss+ZCxyw9S1SDzVoV5yZ4jz6KmbbpcB0iRGr3md/CI/Pl8x1ARBhYxlEajIfV7btIjC+Jl2TG5lvOu5+KIM9YCg2HK+hpmlu8viIOBEdR6dHRJX3erq7BqVDu+0e9ZrXh8RtwMRLIUKsJWir/bjkDpUKLZjG9ccEqlCP8IdwsJhnR/jqpqzeEEGWTFnbPTwhrT6QLyHQjO5UEEr3rTbbs7jISPld6JNzJ3b68XjwXQ9NUV4WMKskKszkoFyn3whB4hIj2/2I8WjDdwUi8HN6gJLAZBvPlypSE+iGAUMMRr4lsAA2eqVEx8PhHLakCs3SIp5mcCu/C6iRmqWReBGLhbPiK7uhty/VU7uQpSC6XWSrDSDwldJ9h7lquzcaXdFyw6wEV456irwIz5+ku5r7GRg7InvKFHh+ilrsjf311bCRip1nS3Cn1Fdxf1hYUebwtVesYfmLK3O380uXiT/w6k2j/vubEEX1LRbv99aV2c53iE26yVBXkk6DG9w1IW/q4RgnVBhMN0WgHb2doObgwEfpKYkyIkpwiRg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY0PR03MB6354.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(366004)(39860400002)(346002)(396003)(376002)(451199015)(2906002)(8936002)(4001150100001)(4744005)(2616005)(66946007)(41300700001)(54906003)(316002)(110136005)(83380400001)(66556008)(4326008)(66446008)(6486002)(66476007)(36756003)(76116006)(478600001)(8676002)(64756008)(26005)(186003)(6512007)(6506007)(91956017)(71200400001)(86362001)(5660300002)(107886003)(38100700002)(38070700005)(122000001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bTM1anFRYTRicGZIdTBZSy9xSHIxb3kvbDMzL3NjNG43MENDQXhuTUpkNHI4?=
+ =?utf-8?B?QmpVRUJKSVU3SzRNRXFqL2xacEU1TEVxc09DbXVMN0hJUS8vSTJiQnhDZFNR?=
+ =?utf-8?B?SnlXa3J5ei9QeGdWVngvZzlQZlFBcWdqaUZOL3RZcXFNTC8zYUxLVDJTQ1hE?=
+ =?utf-8?B?ZU05K3hBRmtTamhQRytnc0J0RWtVa3R2S0xiYVZEdm9SVzV6TFNuMkcvenFi?=
+ =?utf-8?B?aEVOVFhEWEdWSjg1Q3RSdXpaV1JXN1FGUmY5U2xDYlBoaHZrUDl1OTh2NjMx?=
+ =?utf-8?B?Vm1YdTVTaEN3dmhicXN0Z2RmSU4wUzNHbXBZTW8yZlVybkxyakdCVkQ2Ri9o?=
+ =?utf-8?B?NnRDbTdYcnBaQ24rZ1NaYk44UUpLVlVBTmEvR1JzV2tETW9jNjVFcE1zMFlx?=
+ =?utf-8?B?VXlWWkkwWGhSdHZkZ3ZxMGVYQzdhaHZUalpiYUttcGhDQUVYSk1IM3h3VWkv?=
+ =?utf-8?B?VHRNcERBbjk5N3Z6OEVtSkRUY0JaTlJyZkVjUCtmZkFQM3FjZXlYaWRUcHIw?=
+ =?utf-8?B?amdzOWY2b1BXNTcvd0M5dCs2LzVSb3d5ZERSME9CZlZmL1dMNEFSV2NSZTFp?=
+ =?utf-8?B?SXdHWitwZFdEZ2V6K0xmRWt6dFVNMlhNRkdwU2Y1QllxSWwzSG05WExGSGl1?=
+ =?utf-8?B?R3VmVmZRRHd4RndMUEk0NlJCZzRTUTFaY2kzVnVpNTMxV0ZKc25jbG1RMGta?=
+ =?utf-8?B?cXp1WlZiRm1TOVBtdGRZZDhjSUh2STFqeTk1R2ZWVWV4UnA0RTB0V2RaK3Vm?=
+ =?utf-8?B?dGFmSFNKL3FvV2xiUzdrckVjbWRZckxEeG9kWlBuKys5N3oya3RKZ1JjamJE?=
+ =?utf-8?B?K3hTOWpoUnVaVnhGU1N1VG81ZmFMMFZiazNRL2liSzRqd2pqWjBROHZ4UXJZ?=
+ =?utf-8?B?TGgyRXBEbXN3YnYra1ZpM1JoRXMxSHg2bEVnaVljL1dXYUJ2eG96VThJZlhz?=
+ =?utf-8?B?WGs2T2xqK1dPR0xvN1JTSW5FWkdZOTdUK1luYzlQRkJ5OXp6amp6NVBIdTZr?=
+ =?utf-8?B?TE9mNGxmSnNFZHo5YlJTVnl3cHVyMkZseEU0Q0doeVpaUTVwY3UrMFRUT2Zs?=
+ =?utf-8?B?MUdrVldJRmJqdCswVG1oalVuZFBWVTBUT1JJUFRSSE1IWXpMZzhZZ213Tlhy?=
+ =?utf-8?B?RmQ2VldPc3IvUVZLUURnSHRxeGlxTFRpem9lK1gydTlOSlAwVFlsQ2FiYzdk?=
+ =?utf-8?B?RUNxdFhyNnFJRllMNW0rcnRXeXJPODBFcUo2SENTSXBUek10dzVTN2tGblF1?=
+ =?utf-8?B?RUs0dUdCcVVya2ZEMUwydTMxZHZDRlphc24rc1dhSDBoaElyUHd2MDEwdnA1?=
+ =?utf-8?B?ZGN5UmxuTmZEV245QnhOTi9NTVRVd25XWnFHSmpOS2JmOHB5QzQ1RmFOUjFE?=
+ =?utf-8?B?TThPYjcvZS8xblpiNVJMQVp4NFVGdThoTzB4YTJXaVFtV2Q1NkZFdXNzOW1K?=
+ =?utf-8?B?NmhSOStvRlRyVkFkRE5xMlFFeDFJQkczRFpUUGlHVUxSd3YyM2xoSVhpaWlj?=
+ =?utf-8?B?NGVvTFlwQ1JOSFRFNTg2bGFJK2pRQkhud3pUWmRFYTNvUUs2MWdwNlZuaFhP?=
+ =?utf-8?B?cjdzdGZpRm5JaE9tdGh4aUxVd25GY3ljaTJ3alQxOWVQRGxTYzlob2NFcGI1?=
+ =?utf-8?B?Tnk1c0ZRbktoVmdhcFUrY3hIM3VFWFJxQWdBOTVObVlFWVp6bTBvWUVYdGRy?=
+ =?utf-8?B?b0JsZ2xydzhxSDgydVJ4UUdEd0l2STFvbEduM0dSbE5KSm5ueGhidUJZbFlu?=
+ =?utf-8?B?Y01sU3NrUTlmTVJCc1FZNDcyeHgreStOSjFSMjVWME5PRXNsd1Z4NUF1RHRU?=
+ =?utf-8?B?K3hvdHNxemhJdytjNWJZNk4yL00wbGwzMS9jNWxWemdRczBHNWxUY2s4cmZu?=
+ =?utf-8?B?c016UHZhakx4QldVd2x6RkgwNUVtQW9Sa3V0ckx1RzAxcFNOQnJjMVFTRFhz?=
+ =?utf-8?B?bWdTbWVSR2EvempXR0QzRUxaNGxCVllwZlZ1TnI1ejJEaVQ4dHlrTzB0c0dU?=
+ =?utf-8?B?YlN0bGpxWlhwZ2VPVWtTNWxTei9WdzFzNlNJZ3NRdDJvSmNCd1l1d0dIRGc0?=
+ =?utf-8?B?aG1zS0FGOW10SCtYK296S0dYODB5UW82OVVaZCtGcUdudWp5R0ptZkF6WXkz?=
+ =?utf-8?B?V2JTSzhleGQyQkVYUG05ZVhxanNNUW0xR0h1MEZSTklBenAzc3FjbUhCOFN6?=
+ =?utf-8?B?TUE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9064C5311CB6904BAD9017C51F70D90A@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY0PR03MB6354.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e49c0ce8-f110-49f3-57f2-08dacd8cb1a8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2022 19:55:38.5749
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pTMOMAf3+2/cx9zxohKMMIUAM62wDyemN4IHCyAO5K01lEe3dCRObiE+aA2q4+txmjtjOr3pgcXbRXYWaiX+PQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR03MB5803
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
         SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
@@ -64,288 +161,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This power should override the per bandwidth max power that the
-device emits.
-
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 199 +++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |   9 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |   7 +
- 3 files changed, 183 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index fef0ec83185b..197bcacd813e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -957,48 +957,197 @@ mt7915_xmit_queues_show(struct seq_file *file, void *data)
- 
- DEFINE_SHOW_ATTRIBUTE(mt7915_xmit_queues);
- 
--static int
--mt7915_rate_txpower_show(struct seq_file *file, void *data)
-+#define mt7915_txpower_puts(prefix, rate)					\
-+({										\
-+	len += scnprintf(buf + len, sz - len, "%-16s:", #prefix " (tmac)");	\
-+	for (i = 0; i < mt7915_sku_group_len[rate]; i++, offs++)		\
-+		len += scnprintf(buf + len, sz - len, " %6d", txpwr[offs]);	\
-+	len += scnprintf(buf + len, sz - len, "\n");				\
-+})
-+
-+#define mt7915_txpower_sets(rate, pwr, flag)			\
-+({								\
-+	offs += len;						\
-+	len = mt7915_sku_group_len[rate];			\
-+	if (mode == flag) {					\
-+		for (i = 0; i < len; i++)			\
-+			req.txpower_sku[offs + i] = pwr;	\
-+	}							\
-+})
-+
-+static ssize_t
-+mt7915_rate_txpower_get(struct file *file, char __user *user_buf,
-+			size_t count, loff_t *ppos)
- {
--	static const char * const sku_group_name[] = {
--		"CCK", "OFDM", "HT20", "HT40",
--		"VHT20", "VHT40", "VHT80", "VHT160",
--		"RU26", "RU52", "RU106", "RU242/SU20",
--		"RU484/SU40", "RU996/SU80", "RU2x996/SU160"
--	};
--	struct mt7915_phy *phy = file->private;
-+	struct mt7915_phy *phy = file->private_data;
- 	struct mt7915_dev *dev = phy->dev;
--	s8 txpower[MT7915_SKU_RATE_NUM], *buf;
-+	static const size_t sz = 2048;
-+	int i, offs = 0, len = 0;
-+	ssize_t ret;
-+	char *buf;
-+	s8 txpwr[MT7915_SKU_RATE_NUM];
- 	u32 reg;
--	int i, ret;
- 
--	ret = mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower));
-+	buf = kzalloc(sz, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr));
- 	if (ret)
- 		return ret;
- 
- 	/* Txpower propagation path: TMAC -> TXV -> BBP */
--	seq_printf(file, "\nPhy %d\n", phy != &dev->phy);
-+	len += scnprintf(buf + len, sz - len,
-+			 "\nPhy%d Tx power table (channel %d)\n",
-+			 phy != &dev->phy, phy->mt76->chandef.chan->hw_value);
-+	len += scnprintf(buf + len, sz - len, "%-16s  %6s %6s %6s %6s\n",
-+			 " ", "1m", "2m", "5m", "11m");
-+	mt7915_txpower_puts(CCK, SKU_CCK);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "6m", "9m", "12m", "18m", "24m", "36m", "48m",
-+			 "54m");
-+	mt7915_txpower_puts(OFDM, SKU_OFDM);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4",
-+			 "mcs5", "mcs6", "mcs7");
-+	mt7915_txpower_puts(HT20, SKU_HT_BW20);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+			 "mcs6", "mcs7", "mcs32");
-+	mt7915_txpower_puts(HT40, SKU_HT_BW40);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+			 "mcs6", "mcs7", "mcs8", "mcs9", "mcs10", "mcs11");
-+	mt7915_txpower_puts(VHT20, SKU_VHT_BW20);
-+	mt7915_txpower_puts(VHT40, SKU_VHT_BW40);
-+	mt7915_txpower_puts(VHT80, SKU_VHT_BW80);
-+	mt7915_txpower_puts(VHT160, SKU_VHT_BW160);
-+	mt7915_txpower_puts(HE26, SKU_HE_RU26);
-+	mt7915_txpower_puts(HE52, SKU_HE_RU52);
-+	mt7915_txpower_puts(HE106, SKU_HE_RU106);
-+	mt7915_txpower_puts(HE242, SKU_HE_RU242);
-+	mt7915_txpower_puts(HE484, SKU_HE_RU484);
-+	mt7915_txpower_puts(HE996, SKU_HE_RU996);
-+	mt7915_txpower_puts(HE996x2, SKU_HE_RU2x996);
-+
-+	reg = is_mt7915(&dev->mt76) ? MT_WF_PHY_TPC_CTRL_STAT(phy->band_idx) :
-+	      MT_WF_PHY_TPC_CTRL_STAT_MT7916(phy->band_idx);
-+
-+	len += scnprintf(buf + len, sz - len, "\nTx power (bbp)  : %6ld\n",
-+			 mt76_get_field(dev, reg, MT_WF_PHY_TPC_POWER));
-+
-+	ret = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+	kfree(buf);
-+	return ret;
-+}
-+
-+static ssize_t
-+mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
-+			size_t count, loff_t *ppos)
-+{
-+	struct mt7915_phy *phy = file->private_data;
-+	struct mt7915_dev *dev = phy->dev;
-+	struct mt76_phy *mphy = phy->mt76;
-+	struct mt7915_mcu_txpower_sku req = {
-+		.format_id = TX_POWER_LIMIT_TABLE,
-+		.band_idx = phy->band_idx,
-+	};
-+	char buf[100];
-+	int i, ret, pwr160 = 0, pwr80 = 0, pwr40 = 0, pwr20 = 0;
-+	enum mac80211_rx_encoding mode;
-+	u32 offs = 0, len = 0;
-+
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
- 
--	for (i = 0, buf = txpower; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
--		u8 mcs_num = mt7915_sku_group_len[i];
-+	if (copy_from_user(buf, user_buf, count))
-+		return -EFAULT;
- 
--		if (i >= SKU_VHT_BW20 && i <= SKU_VHT_BW160)
--			mcs_num = 10;
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
- 
--		mt76_seq_puts_array(file, sku_group_name[i], buf, mcs_num);
--		buf += mt7915_sku_group_len[i];
-+	if (sscanf(buf, "%u %u %u %u %u",
-+		   &mode, &pwr160, &pwr80, &pwr40, &pwr20) != 5) {
-+		dev_warn(dev->mt76.dev,
-+			 "per bandwidth power limit: Mode BW160 BW80 BW40 BW20");
-+		return -EINVAL;
- 	}
- 
--	reg = is_mt7915(&dev->mt76) ? MT_WF_PHY_TPC_CTRL_STAT(phy->band_idx) :
--	      MT_WF_PHY_TPC_CTRL_STAT_MT7916(phy->band_idx);
-+	if (mode > RX_ENC_HE)
-+		return -EINVAL;
- 
--	seq_printf(file, "\nBaseband transmit power %ld\n",
--		   mt76_get_field(dev, reg, MT_WF_PHY_TPC_POWER));
-+	if (pwr160)
-+		pwr160 = mt7915_get_power_bound(phy, pwr160);
-+	if (pwr80)
-+		pwr80 = mt7915_get_power_bound(phy, pwr80);
-+	if (pwr40)
-+		pwr40 = mt7915_get_power_bound(phy, pwr40);
-+	if (pwr20)
-+		pwr20 = mt7915_get_power_bound(phy, pwr20);
- 
--	return 0;
-+	if (pwr160 < 0 || pwr80 < 0 || pwr40 < 0 || pwr20 < 0)
-+		return -EINVAL;
-+
-+	ret = mt7915_mcu_get_txpower_sku(phy, req.txpower_sku,
-+					 sizeof(req.txpower_sku));
-+	if (ret)
-+		goto out;
-+
-+	mt7915_txpower_sets(SKU_CCK, pwr20, RX_ENC_LEGACY);
-+	mt7915_txpower_sets(SKU_OFDM, pwr20, RX_ENC_LEGACY);
-+	if (mode == RX_ENC_LEGACY)
-+		goto skip;
-+
-+	mt7915_txpower_sets(SKU_HT_BW20, pwr20, RX_ENC_HT);
-+	mt7915_txpower_sets(SKU_HT_BW40, pwr40, RX_ENC_HT);
-+	if (mode == RX_ENC_HT)
-+		goto skip;
-+
-+	mt7915_txpower_sets(SKU_VHT_BW20, pwr20, RX_ENC_VHT);
-+	mt7915_txpower_sets(SKU_VHT_BW40, pwr40, RX_ENC_VHT);
-+	mt7915_txpower_sets(SKU_VHT_BW80, pwr80, RX_ENC_VHT);
-+	mt7915_txpower_sets(SKU_VHT_BW160, pwr160, RX_ENC_VHT);
-+	if (mode == RX_ENC_VHT)
-+		goto skip;
-+
-+	mt7915_txpower_sets(SKU_HE_RU26, pwr20, RX_ENC_HE + 1);
-+	mt7915_txpower_sets(SKU_HE_RU52, pwr20, RX_ENC_HE + 1);
-+	mt7915_txpower_sets(SKU_HE_RU106, pwr20, RX_ENC_HE + 1);
-+	mt7915_txpower_sets(SKU_HE_RU242, pwr20, RX_ENC_HE);
-+	mt7915_txpower_sets(SKU_HE_RU484, pwr40, RX_ENC_HE);
-+	mt7915_txpower_sets(SKU_HE_RU996, pwr80, RX_ENC_HE);
-+	mt7915_txpower_sets(SKU_HE_RU2x996, pwr160, RX_ENC_HE);
-+skip:
-+	ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(TX_POWER_FEATURE_CTRL),
-+				&req, sizeof(req), true);
-+	if (ret)
-+		goto out;
-+
-+	mphy->txpower_cur = max(mphy->txpower_cur,
-+				max(pwr160, max(pwr80, max(pwr40, pwr20))));
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret ? ret : count;
- }
- 
--DEFINE_SHOW_ATTRIBUTE(mt7915_rate_txpower);
-+static const struct file_operations mt7915_rate_txpower_fops = {
-+	.write = mt7915_rate_txpower_set,
-+	.read = mt7915_rate_txpower_get,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
- 
- static int
- mt7915_twt_stats(struct seq_file *s, void *data)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 8a2546699c3b..d8389bc8ee82 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3170,12 +3170,7 @@ int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt76_phy *mphy = phy->mt76;
- 	struct ieee80211_hw *hw = mphy->hw;
--	struct mt7915_sku_val {
--		u8 format_id;
--		u8 limit_type;
--		u8 band_idx;
--		s8 val[MT7915_SKU_RATE_NUM];
--	} __packed req = {
-+	struct mt7915_mcu_txpower_sku req = {
- 		.format_id = TX_POWER_LIMIT_TABLE,
- 		.band_idx = phy->band_idx,
- 	};
-@@ -3203,7 +3198,7 @@ int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- 		}
- 
- 		for (j = 0; j < min_t(u8, mcs_num, len); j++)
--			req.val[idx + j] = la[j];
-+			req.txpower_sku[idx + j] = la[j];
- 
- 		la += mcs_num;
- 		idx += len;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 382dcbda50bb..29b5434bfdb8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -184,6 +184,13 @@ enum mt7915_chan_mib_offs {
- 	MIB_NON_WIFI_TIME_V2
- };
- 
-+struct mt7915_mcu_txpower_sku {
-+	u8 format_id;
-+	u8 limit_type;
-+	u8 band_idx;
-+	s8 txpower_sku[MT7915_SKU_RATE_NUM];
-+} __packed;
-+
- struct edca {
- 	u8 queue;
- 	u8 set;
--- 
-2.36.1
-
+T24gVGh1LCAyMDIyLTExLTI0IGF0IDAzOjM3ICswODAwLCBSeWRlciBMZWUgd3JvdGU6DQo+IFRo
+aXMgcG93ZXIgc2hvdWxkIG92ZXJyaWRlIHRoZSBwZXIgYmFuZHdpZHRoIG1heCBwb3dlciB0aGF0
+IHRoZQ0KPiBkZXZpY2UgZW1pdHMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5
+ZGVyLmxlZUBtZWRpYXRlay5jb20+DQo+IC0tLQ0KPiAgLi4uL3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L2RlYnVnZnMuYyAgIHwgMTk5ICsrKysrKysrKysrKysrKy0NCj4gLS0NCj4gIC4u
+Li9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMgICB8ICAgOSArLQ0KPiAg
+Li4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuaCAgIHwgICA3ICsNCj4g
+IDMgZmlsZXMgY2hhbmdlZCwgMTgzIGluc2VydGlvbnMoKyksIDMyIGRlbGV0aW9ucygtKQ0KDQpQ
+bGVhc2UgaWdub3JlIHRoaXMgb25lIGFzIEkgYWNjaWRlbnRhbGx5IHNlbnQgaXQgb3V0LiBXaWxs
+IHBvc3QgYSB2Mi4NCg0KUnlkZXINCg==
