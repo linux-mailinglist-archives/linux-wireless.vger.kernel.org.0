@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A830F636BEB
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 22:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04325636BEC
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 22:04:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237704AbiKWVEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 16:04:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
+        id S237248AbiKWVEf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 16:04:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237688AbiKWVEW (ORCPT
+        with ESMTP id S237774AbiKWVE1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 16:04:22 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8636C976D3
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 13:04:18 -0800 (PST)
+        Wed, 23 Nov 2022 16:04:27 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4C7942C3
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 13:04:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669237458; x=1700773458;
+  t=1669237465; x=1700773465;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8OrHqzkF2OLUlDXE0/n3azvIfN5Tv6UiZCT0XvuM44E=;
-  b=d7KeBst501JE/moh3xqLZkYpQqD88j+O6ODlAUecLz/wkYtTX8gF8Atx
-   TETdisceWLiLTFifi+l34xC+V/yUtT2mpt7SRUx7NWi24ZOVul26lJGYO
-   6ZmfnPFl2i6CKr1pynM7m1kwqi8+uzRCuGavDdrBUKZFDgG3K7AcDNOv4
-   Ll+ozCxFyjgJcf+UGVZtCSMRj0ktWykkL6vPD6/9u87D6es0fBiK6C/0f
-   hJ9clCgMJoubsImJHSCyAG39Huz5rLQMfN5D9OrhZBN5D+oMuA6clccke
-   fPE8b6kxTJXN4vWfAWCFiTRY1PPN+1xkCMDun+6MrahsgrCk5tsBFjgNW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="312857391"
+  bh=UeNpFjsiwxMxVHoRyyJ0/446Wcdz6wPlsmRbLv5yre0=;
+  b=DLi/RfxgkwYmYngeSpq2wBYAnJkXXOZWZYYCa55yAyUrdAjfr/pKAfxw
+   7Q8X4VU5AmJ+xy2EYCpl6iFp2JOHJz4zC/31tqtlG1+SFXCDn0ve0dpqq
+   mrHesOJcY6ROWj8adaZm8pjwWX3cUzGZGUoaXZcLSrMVDWaVzgX4n2Lk+
+   zjfLUFqXxOFZ+JVrmGu9UNg059qUm8/ozNC1sgTjhRfzxI5bkMQdTIyN/
+   eYUysDQg2IsTjUXWrNVtajfL+m7kQ5z5F9vK2z4FB+DRxwfS6o/26Zbhm
+   iAL8Amtp44EARH5B1TFg1+XsllAkAdOgDz9rO3ycyb8gjj8KSmrkxoKnQ
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="293864731"
 X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
-   d="scan'208";a="312857391"
+   d="scan'208";a="293864731"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:04:18 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="619761718"
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:04:25 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="619761793"
 X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
-   d="scan'208";a="619761718"
+   d="scan'208";a="619761793"
 Received: from stopaz-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.194.175])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:04:15 -0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 13:04:23 -0800
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Avraham Stern <avraham.stern@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 4/5] wifi: iwlwifi: mvm: return error value in case PLDR sync failed
-Date:   Wed, 23 Nov 2022 23:02:08 +0200
-Message-Id: <20221123225313.08b345123f83.I13bfacc2f6da7de8ada90127fe7108d1bb73af92@changeid>
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Dan Carpenter <error27@gmail.com>
+Subject: [PATCH 5/5] wifi: iwlwifi: mei: fix parameter passing to iwl_mei_alive_notif()
+Date:   Wed, 23 Nov 2022 23:02:09 +0200
+Message-Id: <20221123225313.83c2251055c1.Ia028357e7ab36dfc2abf85106a5926ee7893a408@changeid>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20221123210209.2941641-1-gregory.greenman@intel.com>
 References: <20221123210209.2941641-1-gregory.greenman@intel.com>
@@ -54,39 +53,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-In case PLDR sync is required but iwlmei failed to get a response
-from CSME, the device cannot be brought up, so return an error
-value.
+Pass true explicitly to iwl_mei_alive_notif() when we can be
+sure that Alive notification was received. The issue was discovered
+by Smatch.
 
 Reported-by: Dan Carpenter <error27@gmail.com>
 Link: https://lore.kernel.org/all/Y3uYUEFnMiBY2ABQ@kili/
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 74354d044db9..2f4c9e653e99 100644
+index 2f4c9e653e99..0a41cd0ab243 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1483,7 +1483,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	sb_cfg = iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG);
- 	mvm->pldr_sync = !(sb_cfg & SB_CFG_RESIDES_IN_OTP_MASK);
- 	if (mvm->pldr_sync && iwl_mei_pldr_req())
--		return ret;
-+		return -EBUSY;
+@@ -418,7 +418,8 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 		return -EIO;
+ 	}
  
- 	ret = iwl_mvm_load_rt_fw(mvm);
+-	iwl_mei_alive_notif(!ret);
++	/* if reached this point, Alive notification was received */
++	iwl_mei_alive_notif(true);
+ 
+ 	ret = iwl_pnvm_load(mvm->trans, &mvm->notif_wait);
  	if (ret) {
 -- 
 2.35.3
