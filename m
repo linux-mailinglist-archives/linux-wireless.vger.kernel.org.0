@@ -2,129 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7959E6363D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 16:36:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55A0763642B
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 16:41:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238250AbiKWPgA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 10:36:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S238655AbiKWPls (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 10:41:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238042AbiKWPf7 (ORCPT
+        with ESMTP id S238621AbiKWPlY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 10:35:59 -0500
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7440473B8F
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:35:58 -0800 (PST)
-Received: by mail-qt1-x82a.google.com with SMTP id s4so11431915qtx.6
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:35:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=github.com; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iSfnO0oLUvR/YHRda4SUn9qpHU5N545eEU/vyWcDNSs=;
-        b=IlDj/ixSzEJ7qI4m70X7ywNtqUijdynODGQNoDHpdHsQSmUm6IibulgOqhx759hfRc
-         sgSrp+r+zd4DCCkWjFB/Vkc+YMKx+3yOVb+kzP8gE+ZPnOsAS4o7WRzuQN28tJGAI3cY
-         1W17x3r9gfraWtFirC+ITMytn3OCwio/4uV3sNhcAcW5+IWEQopYi2Ja//Qnhr3lqtW3
-         TVlTFzr5l7X71GWGscGEkKWsVw5wrU9MheWr/odcG9RO1zsheBRvo9KU8ROo+v2EPswG
-         j3HqorxenMDaGKyclRj2kMSq2tdwEcTgY3shXOR17m/nspYoQN5dyHjaj8LGrF+CxpE6
-         zCEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iSfnO0oLUvR/YHRda4SUn9qpHU5N545eEU/vyWcDNSs=;
-        b=chPU52ntAH33Csr3QMFkxuVrbFwJRA945V31l0LGFW0uyGRhoEWZ88CgllcgPyxyI/
-         c9PEjJQqVpS3mc6Wx2QHSzrBZvE2CIi7Wp0cjUfq3ajCGhUa4b2s+ALnAWJ4uDDT+t7d
-         skW5Hlyb9fSgYrAivFrnROO7tLRW6CFBhZCOzAgc2oE48wMIVqO7DFav17UXgKA6xAqe
-         81DK/Pjy/+qCNLfgZgEQApdwr9XXtKgzJ0rOBC+W58X31fJFq1XxOZWo6Hxjk0ycRWGw
-         r0x2uwpcgi6S8sYj+n0PJB0JwEEV0Ybd9Uwp52ihYn3B/4agyGbpLMxpXzuOgA9ULPQX
-         PbuA==
-X-Gm-Message-State: ANoB5pncGCttxkfxms6wNKgMyge5JNnmE6+7pEGSj3rMp3WDC1mdUEPU
-        rzprwF3w8hCbPdP5KbbsoKY8gqVgPDr3h453XsffMuRtQ0g5TualeJdtQUYNoen7y2GM9U+XTz4
-        mjUxmRyh7xpl3ua4gjkxH2C6LNNF3xd6nicWnBHOE6Alh3zqopD84v3XQyUtXbDc7cd9wSVkYEN
-        BghHeJYKvm7fA=
-X-Google-Smtp-Source: AA0mqf755Mojwkr0Kqso5W1wkXlf1OICk3ws3kZY270zJrI4TKozzyDg1Btns+2hgdMpjt7vY4AitQ==
-X-Received: by 2002:ac8:7343:0:b0:3a4:c30b:c640 with SMTP id q3-20020ac87343000000b003a4c30bc640mr8314182qtp.25.1669217757151;
-        Wed, 23 Nov 2022 07:35:57 -0800 (PST)
-Received: from localhost.localdomain (c-73-218-151-107.hsd1.ct.comcast.net. [73.218.151.107])
-        by smtp.gmail.com with ESMTPSA id u12-20020a37ab0c000000b006bb29d932e1sm11990296qke.105.2022.11.23.07.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 07:35:56 -0800 (PST)
-From:   Phil Turnbull <philipturnbull@github.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     ajay.kathat@microchip.com, claudiu.beznea@microchip.com,
-        kvalo@kernel.org, Phil Turnbull <philipturnbull@github.com>
-Subject: [PATCH 4/4] wifi: wilc1000: validate number of channels
-Date:   Wed, 23 Nov 2022 10:35:43 -0500
-Message-Id: <20221123153543.8568-5-philipturnbull@github.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221123153543.8568-1-philipturnbull@github.com>
-References: <20221123153543.8568-1-philipturnbull@github.com>
+        Wed, 23 Nov 2022 10:41:24 -0500
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC14970AA;
+        Wed, 23 Nov 2022 07:41:22 -0800 (PST)
+Received: from [192.168.0.203] ([151.127.53.97]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MVe5c-1oWOrt2qF2-00RWCH; Wed, 23 Nov 2022 16:40:57 +0100
+Message-ID: <04ea37cc-d97a-3e00-8a99-135ab38860f2@green-communications.fr>
+Date:   Wed, 23 Nov 2022 16:40:33 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        =?UTF-8?Q?Maciej_=c5=bbenczykowski?= <maze@google.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Ilja Van Sprundel <ivansprundel@ioactive.com>,
+        Joseph Tartaro <joseph.tartaro@ioactive.com>
+Content-Language: fr, en-US
+From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:pYmZKIjhwEar5+zrSn8EoxJrueGNr0TSCBf+WtXkAd8BvNef9B/
+ OHCKLrJsAjusLNEWTW5K3zYIvPXLKkK3ysJLxZ4ZsTdcy8zcz5be09kjSZM5EkCIPDAiLiR
+ YqrAqAbJftFEh4Pobn9RNqTAc9U49IAHZIiDhnI1i4EHK8Z5b9cF6vUn+Hkjp2JG9cvgMoC
+ 4kNZJnJZN07XQVk8+aYiQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1iTK9Mme8R0=:x5r7JV6cEEzk0QklHUaWhl
+ U2yVwM1TcjlTm4kedfmfCqsnflLKj7JhV/9Xv/ERlfLEDD9ez6gcX27nQI91ZWxm9HXHwh9ou
+ frnQS2fY4MsLsXkK6LPYyzNo8BILMGz2WUpAgZcMH8NEcVpI762/xjdSSA+YhmR6q5j6zGd80
+ q8+a2h23HCYuPIUODbk0b8aUnOzLU6gLEN+OCrOAycztx3h73Ky7pmvr0ayhUG8I1H5OJrQ6q
+ cVfo2mTNnmQ64VKesrsDldFetT9Tk2HBEgp76d92frvqsXUcbopg3XpVR43xYHG6CiFUNNA7y
+ tD65EEG+Re1AB7jCiAuAP7GEUZ0jYIHSIXNtdKrdvptkb3mkVDL8eDpwb9jySLKGwLmFxP40I
+ 6VIBp6cY4DlqdtEeWRApYlwss8QIeUw40EBl4Tzkb//oMJvggojRV+B2cgDt/aFyYyZD32P1e
+ tj+VZp/8LLEo7dgAqesx0fPjPSw8MG2Fw1eYYLn6+7zyJosQFAig1A+XaZSSRy4YRzs5Q1oWn
+ ZIU+XSo1i1gmOYocclwsk6DjBSXLSXSp4tlqjHOfDoUYsFibEpirK7VQ8EFtTuZ4ULv0vhhrx
+ j0AKcYhK0hCDdbWDtidBKtZsACHtBRKxtgYJhuINhYpXrtMRLInoDsczyZVRDrBpaDfZ9EuDv
+ WWrwr5J08QFmJfWR89P+QRFUMfIRTtgEzXy+3GEXvPQZiCisTqhslH08ZR0+lIiZdT3yO46+v
+ Z+CgcsU0dZAM1IItB4lrzrnVVZyMie6gB00bUhZHC/gZiQ0IHn7Sxk/KOOzGWObxwXq1tWRTI
+ r4xR253irs4i81AzdKp0l8+h8JEP+rmrlJR7uZyVtW7wMCUCJo=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is no validation of 'e->no_of_channels' which can trigger an
-out-of-bounds write in the following 'memset' call. Validate that the
-number of channels does not extends beyond the size of the channel list
-element.
+On 23/11/2022 13:46, Greg Kroah-Hartman wrote:
+> The Microsoft RNDIS protocol is, as designed, insecure and vulnerable on
+> any system that uses it with untrusted hosts or devices.  Because the
+> protocol is impossible to make secure, just disable all rndis drivers to
+> prevent anyone from using them again.
+> 
+> Windows only needed this for XP and newer systems, Windows systems older
+> than that can use the normal USB class protocols instead, which do not
+> have these problems.
+> 
+> Android has had this disabled for many years so there should not be any
+> real systems that still need this.
 
-Signed-off-by: Phil Turnbull <philipturnbull@github.com>
-Tested-by: Ajay Kathat <ajay.kathat@microchip.com>
-Acked-by: Ajay Kathat <ajay.kathat@microchip.com>
----
- .../wireless/microchip/wilc1000/cfg80211.c    | 22 ++++++++++++++-----
- 1 file changed, 16 insertions(+), 6 deletions(-)
+I kind of disagree here. I have seen plenty of android devices that only 
+support rndis for connection sharing, including my android 11 phone 
+released in Q3 2020. I suspect the qualcomm's BSP still enable it by 
+default.
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index c4d5a272ccc0..b545d93c6e37 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -981,19 +981,29 @@ static inline void wilc_wfi_cfg_parse_ch_attr(u8 *buf, u32 len, u8 sta_ch)
- 	}
- 
- 	if (ch_list_idx) {
--		u16 attr_size;
--		struct wilc_ch_list_elem *e;
--		int i;
-+		u16 elem_size;
- 
- 		ch_list = (struct wilc_attr_ch_list *)&buf[ch_list_idx];
--		attr_size = le16_to_cpu(ch_list->attr_len);
--		for (i = 0; i < attr_size;) {
-+		/* the number of bytes following the final 'elem' member */
-+		elem_size = le16_to_cpu(ch_list->attr_len) -
-+			(sizeof(*ch_list) - sizeof(struct wilc_attr_entry));
-+		for (unsigned int i = 0; i < elem_size;) {
-+			struct wilc_ch_list_elem *e;
-+
- 			e = (struct wilc_ch_list_elem *)(ch_list->elem + i);
-+
-+			i += sizeof(*e);
-+			if (i > elem_size)
-+				break;
-+
-+			i += e->no_of_channels;
-+			if (i > elem_size)
-+				break;
-+
- 			if (e->op_class == WILC_WLAN_OPERATING_CLASS_2_4GHZ) {
- 				memset(e->ch_list, sta_ch, e->no_of_channels);
- 				break;
- 			}
--			i += e->no_of_channels;
- 		}
- 	}
- 
--- 
-2.34.1
+There are also probably cellular dongles that uses rndis by default. 
+Maybe ask the ModemManager people ?
 
+I'm also curious if reimplementing it in userspace would solve the 
+security problem.
