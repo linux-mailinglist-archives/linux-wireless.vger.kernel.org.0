@@ -2,356 +2,274 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04245636A5F
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 21:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A0B636B43
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 21:33:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239646AbiKWUAO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 15:00:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52280 "EHLO
+        id S238741AbiKWUcH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 15:32:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239555AbiKWT7z (ORCPT
+        with ESMTP id S239629AbiKWUbN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 14:59:55 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010B77AF75
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 11:59:21 -0800 (PST)
-X-UUID: 094f7dc56f5c4a89a2f47b4c881df1e4-20221124
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=8MqiZGksT3UxUWNd4zRXhvcbQhKNqIPwNaE5Rb34cnk=;
-        b=Pk76BrZQyaRyGYF0JmN1T0EQgyXFKoeBkD7icV4tZtyClX7c/BeL/KdNKP2RlzB6r2B7rsZaSGXb62e8fCpur1TZBxZVNtYvVR2TybItFAt1xEorlHlvsVQe7NT4VzgPFNIxTDbd+akFKV76uBQiWyfnJyqtd70Lipon9CJZ5UQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.12,REQID:247e57fa-f757-4337-8835-2a1a486a5146,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:90
-X-CID-INFO: VERSION:1.1.12,REQID:247e57fa-f757-4337-8835-2a1a486a5146,IP:0,URL
-        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
-        N:quarantine,TS:90
-X-CID-META: VersionHash:62cd327,CLOUDID:1b4a1ff9-3a34-4838-abcf-dfedf9dd068e,B
-        ulkID:221124035916S8LDS8ZQ,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 094f7dc56f5c4a89a2f47b4c881df1e4-20221124
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1518888270; Thu, 24 Nov 2022 03:59:15 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Thu, 24 Nov 2022 03:59:13 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Thu, 24 Nov 2022 03:59:13 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 2/2] wifi: mt76: mt7915: enable per bandwidth power limit support
-Date:   Thu, 24 Nov 2022 03:59:11 +0800
-Message-ID: <0ad3220cfe7c61480379d571700e202832d4372c.1669232969.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <9a67f1617249be2c73bb5900d2df971b682f8772.1669232969.git.ryder.lee@mediatek.com>
-References: <9a67f1617249be2c73bb5900d2df971b682f8772.1669232969.git.ryder.lee@mediatek.com>
+        Wed, 23 Nov 2022 15:31:13 -0500
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4570C24942
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 12:27:50 -0800 (PST)
+Received: by mail-il1-x131.google.com with SMTP id h2so8364384ile.11
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 12:27:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zjgLfIgymxMMYmWuqWPWGKjG2YLyiLx1k/rybg/+Fog=;
+        b=emU5TDI2MbojzF3Rj6h9/mvm8hyJXNIpA51tkz1gHiTfQayAEsPBQ8c57EjdSVqccs
+         Xpq979Mpem08d0+/EvxAUPsR+Td15FmnKynt9RhYPWjx0E7slJCcosYZi9ctJgx1ibhP
+         +fMSCtofTjP2GUS0UXEl/zFIlGfM9kvYGhVlAgeRCcT6GbRqa94SKJY+IVClsHzo+JQk
+         KcKif6hEWTbot7A42BaIG/7YCGRlXEulSixW6AIArWBoMfkUCAVTT2s0WHP6oYcLE1co
+         Sx7qud7gmKaHb/Yo7syu7hcKZAeY1zbeghQZqWoP5OT3X6K7Y/N1m0yKn6JPrWrLUWe+
+         M9Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zjgLfIgymxMMYmWuqWPWGKjG2YLyiLx1k/rybg/+Fog=;
+        b=B5AEgatYfrUFSOez4qj+rO/OOYIAOsXmhM3nk4FawOuT1bw8TLtH8oaikqeOOXvS2h
+         GUuoCRklm8o9r2O0LxL10xwFZuYtdhaNZZTPu+jGuc4Q+JU4JBgS4Za0FG5teOqT+hrq
+         zyRJ1RAG5Lt6ifZAhP0zuZ5GiC5FSgakksRNXyyZPCxrfJk3CBh3kyfC2mKG2UJrDNFe
+         ozHfEBiqh3pvevELHAnOVDfPlrCYA8cNMbhpySHRhlnI9gqzOTdeA0tEWvlWypp1r1mL
+         A50PFxNq9giGcHfzseXs+5gyZPntkUBpbgkiWHkMKXzNQWtHBsQ/kSjCBrTbyeDBmOQd
+         61Dg==
+X-Gm-Message-State: ANoB5pmmvmUFdfdVs8QaZon3Bl0CssJ1rC4JbUByUq+ksRLQQb1MaVgI
+        YF5XNJq/rdjLNZimDB/Ut7y23CU7DdejpUZvjnPrRA==
+X-Google-Smtp-Source: AA0mqf59ynR8eDMr2FuXqeoM+2l8U8kyRTbLAClnQcYWMsZbsIH+WSZbh22svAe6rVnxi/kOupIIjWA5LwI+w3yB+ts=
+X-Received: by 2002:a92:6e07:0:b0:300:1f82:73e5 with SMTP id
+ j7-20020a926e07000000b003001f8273e5mr4494601ilc.85.1669235269478; Wed, 23 Nov
+ 2022 12:27:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
+In-Reply-To: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
+From:   =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date:   Wed, 23 Nov 2022 12:27:37 -0800
+Message-ID: <CANP3RGcno+UOsNTzqQ7XXjeOEQM+wseFramNNQyZ6U3bzc1yww@mail.gmail.com>
+Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Ilja Van Sprundel <ivansprundel@ioactive.com>,
+        Joseph Tartaro <joseph.tartaro@ioactive.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This power should override the per bandwidth max power that the
-device emits.
+On Wed, Nov 23, 2022 at 4:46 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> The Microsoft RNDIS protocol is, as designed, insecure and vulnerable on
+> any system that uses it with untrusted hosts or devices.  Because the
+> protocol is impossible to make secure, just disable all rndis drivers to
+> prevent anyone from using them again.
+>
+> Windows only needed this for XP and newer systems, Windows systems older
+> than that can use the normal USB class protocols instead, which do not
+> have these problems.
+>
+> Android has had this disabled for many years so there should not be any
+> real systems that still need this.
+>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Oleksij Rempel <linux@rempel-privat.de>
+> Cc: "Maciej =C5=BBenczykowski" <maze@google.com>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
+> Cc: Jacopo Mondi <jacopo@jmondi.org>
+> Cc: "=C5=81ukasz Stelmach" <l.stelmach@samsung.com>
+> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Cc: linux-usb@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-wireless@vger.kernel.org
+> Reported-by: Ilja Van Sprundel <ivansprundel@ioactive.com>
+> Reported-by: Joseph Tartaro <joseph.tartaro@ioactive.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+> Note, I'll submit patches removing the individual drivers for later, but
+> that is more complex as unwinding the interaction between the CDC
+> networking and RNDIS drivers is tricky.  For now, let's just disable all
+> of this code as it is not secure.
+>
+> I can take this through the USB tree if the networking maintainers have
+> no objection.  I thought I had done this months ago, when the last round
+> of "there are bugs in the protocol!" reports happened at the end of
+> 2021, but forgot to do so, my fault.
+>
+>  drivers/net/usb/Kconfig           | 1 +
+>  drivers/net/wireless/Kconfig      | 1 +
+>  drivers/usb/gadget/Kconfig        | 4 +---
+>  drivers/usb/gadget/legacy/Kconfig | 3 +++
+>  4 files changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
+> index 4402eedb3d1a..83f9c0632642 100644
+> --- a/drivers/net/usb/Kconfig
+> +++ b/drivers/net/usb/Kconfig
+> @@ -401,6 +401,7 @@ config USB_NET_MCS7830
+>  config USB_NET_RNDIS_HOST
+>         tristate "Host for RNDIS and ActiveSync devices"
+>         depends on USB_USBNET
+> +       depends on BROKEN
+>         select USB_NET_CDCETHER
+>         help
+>           This option enables hosting "Remote NDIS" USB networking links,
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-change since v2 - add a missing lock
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 200 +++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |   9 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |   7 +
- 3 files changed, 184 insertions(+), 32 deletions(-)
+NACK.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index fef0ec83185b..5c15233b1595 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -957,48 +957,198 @@ mt7915_xmit_queues_show(struct seq_file *file, void *data)
- 
- DEFINE_SHOW_ATTRIBUTE(mt7915_xmit_queues);
- 
--static int
--mt7915_rate_txpower_show(struct seq_file *file, void *data)
-+#define mt7915_txpower_puts(prefix, rate)					\
-+({										\
-+	len += scnprintf(buf + len, sz - len, "%-16s:", #prefix " (tmac)");	\
-+	for (i = 0; i < mt7915_sku_group_len[rate]; i++, offs++)		\
-+		len += scnprintf(buf + len, sz - len, " %6d", txpwr[offs]);	\
-+	len += scnprintf(buf + len, sz - len, "\n");				\
-+})
-+
-+#define mt7915_txpower_sets(rate, pwr, flag)			\
-+({								\
-+	offs += len;						\
-+	len = mt7915_sku_group_len[rate];			\
-+	if (mode == flag) {					\
-+		for (i = 0; i < len; i++)			\
-+			req.txpower_sku[offs + i] = pwr;	\
-+	}							\
-+})
-+
-+static ssize_t
-+mt7915_rate_txpower_get(struct file *file, char __user *user_buf,
-+			size_t count, loff_t *ppos)
- {
--	static const char * const sku_group_name[] = {
--		"CCK", "OFDM", "HT20", "HT40",
--		"VHT20", "VHT40", "VHT80", "VHT160",
--		"RU26", "RU52", "RU106", "RU242/SU20",
--		"RU484/SU40", "RU996/SU80", "RU2x996/SU160"
--	};
--	struct mt7915_phy *phy = file->private;
-+	struct mt7915_phy *phy = file->private_data;
- 	struct mt7915_dev *dev = phy->dev;
--	s8 txpower[MT7915_SKU_RATE_NUM], *buf;
-+	static const size_t sz = 2048;
-+	int i, offs = 0, len = 0;
-+	ssize_t ret;
-+	char *buf;
-+	s8 txpwr[MT7915_SKU_RATE_NUM];
- 	u32 reg;
--	int i, ret;
- 
--	ret = mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower));
-+	buf = kzalloc(sz, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr));
- 	if (ret)
- 		return ret;
- 
- 	/* Txpower propagation path: TMAC -> TXV -> BBP */
--	seq_printf(file, "\nPhy %d\n", phy != &dev->phy);
-+	len += scnprintf(buf + len, sz - len,
-+			 "\nPhy%d Tx power table (channel %d)\n",
-+			 phy != &dev->phy, phy->mt76->chandef.chan->hw_value);
-+	len += scnprintf(buf + len, sz - len, "%-16s  %6s %6s %6s %6s\n",
-+			 " ", "1m", "2m", "5m", "11m");
-+	mt7915_txpower_puts(CCK, SKU_CCK);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "6m", "9m", "12m", "18m", "24m", "36m", "48m",
-+			 "54m");
-+	mt7915_txpower_puts(OFDM, SKU_OFDM);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4",
-+			 "mcs5", "mcs6", "mcs7");
-+	mt7915_txpower_puts(HT20, SKU_HT_BW20);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+			 "mcs6", "mcs7", "mcs32");
-+	mt7915_txpower_puts(HT40, SKU_HT_BW40);
-+
-+	len += scnprintf(buf + len, sz - len,
-+			 "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+			 " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+			 "mcs6", "mcs7", "mcs8", "mcs9", "mcs10", "mcs11");
-+	mt7915_txpower_puts(VHT20, SKU_VHT_BW20);
-+	mt7915_txpower_puts(VHT40, SKU_VHT_BW40);
-+	mt7915_txpower_puts(VHT80, SKU_VHT_BW80);
-+	mt7915_txpower_puts(VHT160, SKU_VHT_BW160);
-+	mt7915_txpower_puts(HE26, SKU_HE_RU26);
-+	mt7915_txpower_puts(HE52, SKU_HE_RU52);
-+	mt7915_txpower_puts(HE106, SKU_HE_RU106);
-+	mt7915_txpower_puts(HE242, SKU_HE_RU242);
-+	mt7915_txpower_puts(HE484, SKU_HE_RU484);
-+	mt7915_txpower_puts(HE996, SKU_HE_RU996);
-+	mt7915_txpower_puts(HE996x2, SKU_HE_RU2x996);
- 
--	for (i = 0, buf = txpower; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
--		u8 mcs_num = mt7915_sku_group_len[i];
-+	reg = is_mt7915(&dev->mt76) ? MT_WF_PHY_TPC_CTRL_STAT(phy->band_idx) :
-+	      MT_WF_PHY_TPC_CTRL_STAT_MT7916(phy->band_idx);
- 
--		if (i >= SKU_VHT_BW20 && i <= SKU_VHT_BW160)
--			mcs_num = 10;
-+	len += scnprintf(buf + len, sz - len, "\nTx power (bbp)  : %6ld\n",
-+			 mt76_get_field(dev, reg, MT_WF_PHY_TPC_POWER));
-+
-+	ret = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+	kfree(buf);
-+	return ret;
-+}
-+
-+static ssize_t
-+mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
-+			size_t count, loff_t *ppos)
-+{
-+	struct mt7915_phy *phy = file->private_data;
-+	struct mt7915_dev *dev = phy->dev;
-+	struct mt76_phy *mphy = phy->mt76;
-+	struct mt7915_mcu_txpower_sku req = {
-+		.format_id = TX_POWER_LIMIT_TABLE,
-+		.band_idx = phy->band_idx,
-+	};
-+	char buf[100];
-+	int i, ret, pwr160 = 0, pwr80 = 0, pwr40 = 0, pwr20 = 0;
-+	enum mac80211_rx_encoding mode;
-+	u32 offs = 0, len = 0;
-+
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
-+
-+	if (copy_from_user(buf, user_buf, count))
-+		return -EFAULT;
- 
--		mt76_seq_puts_array(file, sku_group_name[i], buf, mcs_num);
--		buf += mt7915_sku_group_len[i];
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
-+
-+	if (sscanf(buf, "%u %u %u %u %u",
-+		   &mode, &pwr160, &pwr80, &pwr40, &pwr20) != 5) {
-+		dev_warn(dev->mt76.dev,
-+			 "per bandwidth power limit: Mode BW160 BW80 BW40 BW20");
-+		return -EINVAL;
- 	}
- 
--	reg = is_mt7915(&dev->mt76) ? MT_WF_PHY_TPC_CTRL_STAT(phy->band_idx) :
--	      MT_WF_PHY_TPC_CTRL_STAT_MT7916(phy->band_idx);
-+	if (mode > RX_ENC_HE)
-+		return -EINVAL;
- 
--	seq_printf(file, "\nBaseband transmit power %ld\n",
--		   mt76_get_field(dev, reg, MT_WF_PHY_TPC_POWER));
-+	if (pwr160)
-+		pwr160 = mt7915_get_power_bound(phy, pwr160);
-+	if (pwr80)
-+		pwr80 = mt7915_get_power_bound(phy, pwr80);
-+	if (pwr40)
-+		pwr40 = mt7915_get_power_bound(phy, pwr40);
-+	if (pwr20)
-+		pwr20 = mt7915_get_power_bound(phy, pwr20);
- 
--	return 0;
-+	if (pwr160 < 0 || pwr80 < 0 || pwr40 < 0 || pwr20 < 0)
-+		return -EINVAL;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+	ret = mt7915_mcu_get_txpower_sku(phy, req.txpower_sku,
-+					 sizeof(req.txpower_sku));
-+	if (ret)
-+		goto out;
-+
-+	mt7915_txpower_sets(SKU_CCK, pwr20, RX_ENC_LEGACY);
-+	mt7915_txpower_sets(SKU_OFDM, pwr20, RX_ENC_LEGACY);
-+	if (mode == RX_ENC_LEGACY)
-+		goto skip;
-+
-+	mt7915_txpower_sets(SKU_HT_BW20, pwr20, RX_ENC_HT);
-+	mt7915_txpower_sets(SKU_HT_BW40, pwr40, RX_ENC_HT);
-+	if (mode == RX_ENC_HT)
-+		goto skip;
-+
-+	mt7915_txpower_sets(SKU_VHT_BW20, pwr20, RX_ENC_VHT);
-+	mt7915_txpower_sets(SKU_VHT_BW40, pwr40, RX_ENC_VHT);
-+	mt7915_txpower_sets(SKU_VHT_BW80, pwr80, RX_ENC_VHT);
-+	mt7915_txpower_sets(SKU_VHT_BW160, pwr160, RX_ENC_VHT);
-+	if (mode == RX_ENC_VHT)
-+		goto skip;
-+
-+	mt7915_txpower_sets(SKU_HE_RU26, pwr20, RX_ENC_HE + 1);
-+	mt7915_txpower_sets(SKU_HE_RU52, pwr20, RX_ENC_HE + 1);
-+	mt7915_txpower_sets(SKU_HE_RU106, pwr20, RX_ENC_HE + 1);
-+	mt7915_txpower_sets(SKU_HE_RU242, pwr20, RX_ENC_HE);
-+	mt7915_txpower_sets(SKU_HE_RU484, pwr40, RX_ENC_HE);
-+	mt7915_txpower_sets(SKU_HE_RU996, pwr80, RX_ENC_HE);
-+	mt7915_txpower_sets(SKU_HE_RU2x996, pwr160, RX_ENC_HE);
-+skip:
-+	ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(TX_POWER_FEATURE_CTRL),
-+				&req, sizeof(req), true);
-+	if (ret)
-+		goto out;
-+
-+	mphy->txpower_cur = max(mphy->txpower_cur,
-+				max(pwr160, max(pwr80, max(pwr40, pwr20))));
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret ? ret : count;
- }
- 
--DEFINE_SHOW_ATTRIBUTE(mt7915_rate_txpower);
-+static const struct file_operations mt7915_rate_txpower_fops = {
-+	.write = mt7915_rate_txpower_set,
-+	.read = mt7915_rate_txpower_get,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
- 
- static int
- mt7915_twt_stats(struct seq_file *s, void *data)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 8a2546699c3b..d8389bc8ee82 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3170,12 +3170,7 @@ int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt76_phy *mphy = phy->mt76;
- 	struct ieee80211_hw *hw = mphy->hw;
--	struct mt7915_sku_val {
--		u8 format_id;
--		u8 limit_type;
--		u8 band_idx;
--		s8 val[MT7915_SKU_RATE_NUM];
--	} __packed req = {
-+	struct mt7915_mcu_txpower_sku req = {
- 		.format_id = TX_POWER_LIMIT_TABLE,
- 		.band_idx = phy->band_idx,
- 	};
-@@ -3203,7 +3198,7 @@ int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- 		}
- 
- 		for (j = 0; j < min_t(u8, mcs_num, len); j++)
--			req.val[idx + j] = la[j];
-+			req.txpower_sku[idx + j] = la[j];
- 
- 		la += mcs_num;
- 		idx += len;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 382dcbda50bb..29b5434bfdb8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -184,6 +184,13 @@ enum mt7915_chan_mib_offs {
- 	MIB_NON_WIFI_TIME_V2
- };
- 
-+struct mt7915_mcu_txpower_sku {
-+	u8 format_id;
-+	u8 limit_type;
-+	u8 band_idx;
-+	s8 txpower_sku[MT7915_SKU_RATE_NUM];
-+} __packed;
-+
- struct edca {
- 	u8 queue;
- 	u8 set;
--- 
-2.36.1
+I'm perfectly okay with disabling the gadget (guest/client/device)
+side rndis drivers.
+New devices (ie. phones) moving to newer kernels should simply be
+switching to the NCM gadget drivers.
+Especially since AFAICT this won't land until 6.2 and thus will
+presumably not be in the 6.1 LTS and thus won't even end up in next
+year's Android 14/U,
+and instead will only be present on the absolutely freshest Android
+15/V devices launching near the end of 2024 (or really in early 2025).
+Additionally the gadget side upstream RNDIS implementation simply
+isn't used by some chipset vendors - like Qualcomm (which AFAIK uses
+an out of tree driver to provide rndis gadget with IPA hardware
+offload acceleration).
 
+However, AFAICT this patch is also disabling *HOST* side RNDIS driver suppo=
+rt.
+
+ie. the RNDIS driver you'd use on a Linux laptop to usb tether off of
+an Android phone.
+
+AFAICT this will break usb tethering off of the *vast* majority of
+Android phones - likely including most of those currently being
+manufactured and sold.
+
+The only Android phones I'm actually aware of that have switched to
+NCM instead of RNDIS for usb tethering are Google Pixel 6+ (ie.
+6/6pro/6a/7/7pro).
+Though it's possible there might be some relatively new hardware from
+other phone vendors that also uses NCM - I don't track this that
+closely...
+I do know Android 13/T doesn't require phones to use NCM for
+tethering, and I've not heard of any plans to change that with Android
+14/U either...
+
+Note that NCM isn't natively supported by Windows <10 and it required
+a fair bit of 'guts' on our side to drop support for usb tethering
+Windows 8.1 devices prior to Win 8.1 EOL (which is only this coming
+January).
+
+Yes, AFAICT, this patch as currently written will break usb tethering
+off of a Google Pixel ../3/4/5,
+and I'd assume any and all qualcomm chipset derived devices, etc...
+
+ie. most likely the first of these two and possibly the second are required=
+:
+CONFIG_USB_NET_RNDIS_HOST=3Dm
+CONFIG_USB_NET_RNDIS_WLAN=3Dm
+
+(AFAIK the rndis host side driver is also used by various cell dongles
+and portable cell hotspots)
+
+[I also don't understand the commit description where it talks about
+Windows XP - how is XP relevant? AFAIK the issue is with Win<10 not
+WinXP]
+
+> diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
+> index cb1c15012dd0..f162b25123d7 100644
+> --- a/drivers/net/wireless/Kconfig
+> +++ b/drivers/net/wireless/Kconfig
+> @@ -81,6 +81,7 @@ config USB_NET_RNDIS_WLAN
+>         tristate "Wireless RNDIS USB support"
+>         depends on USB
+>         depends on CFG80211
+> +       depends on BROKEN
+>         select USB_NET_DRIVERS
+>         select USB_USBNET
+>         select USB_NET_CDCETHER
+> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+> index 4fa2ddf322b4..2c99d4313064 100644
+> --- a/drivers/usb/gadget/Kconfig
+> +++ b/drivers/usb/gadget/Kconfig
+> @@ -183,9 +183,6 @@ config USB_F_EEM
+>  config USB_F_SUBSET
+>         tristate
+>
+> -config USB_F_RNDIS
+> -       tristate
+> -
+>  config USB_F_MASS_STORAGE
+>         tristate
+>
+> @@ -297,6 +294,7 @@ config USB_CONFIGFS_RNDIS
+>         bool "RNDIS"
+>         depends on USB_CONFIGFS
+>         depends on NET
+> +       depends on BROKEN
+>         select USB_U_ETHER
+>         select USB_F_RNDIS
+>         help
+> diff --git a/drivers/usb/gadget/legacy/Kconfig b/drivers/usb/gadget/legac=
+y/Kconfig
+> index 0a7b382fbe27..03d6da63edf7 100644
+> --- a/drivers/usb/gadget/legacy/Kconfig
+> +++ b/drivers/usb/gadget/legacy/Kconfig
+> @@ -153,6 +153,7 @@ config USB_ETH
+>  config USB_ETH_RNDIS
+>         bool "RNDIS support"
+>         depends on USB_ETH
+> +       depends on BROKEN
+>         select USB_LIBCOMPOSITE
+>         select USB_F_RNDIS
+>         default y
+> @@ -247,6 +248,7 @@ config USB_FUNCTIONFS_ETH
+>  config USB_FUNCTIONFS_RNDIS
+>         bool "Include configuration with RNDIS (Ethernet)"
+>         depends on USB_FUNCTIONFS && NET
+> +       depends on BROKEN
+>         select USB_U_ETHER
+>         select USB_F_RNDIS
+>         help
+> @@ -427,6 +429,7 @@ config USB_G_MULTI
+>  config USB_G_MULTI_RNDIS
+>         bool "RNDIS + CDC Serial + Storage configuration"
+>         depends on USB_G_MULTI
+> +       depends on BROKEN
+>         select USB_F_RNDIS
+>         default y
+>         help
+> --
+> 2.38.1
+>
+Maciej =C5=BBenczykowski, Kernel Networking Developer @ Google
