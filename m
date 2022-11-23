@@ -2,65 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA0556365CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 17:28:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF656367B3
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 18:54:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239121AbiKWQ2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 11:28:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53312 "EHLO
+        id S239249AbiKWRyP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 12:54:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239112AbiKWQ1r (ORCPT
+        with ESMTP id S237243AbiKWRyO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 11:27:47 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2A319022;
-        Wed, 23 Nov 2022 08:27:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=aoAeMEdmL2MvS8jsSZitNEibkl3qtsPxiMd3aeqhHUA=;
-        t=1669220866; x=1670430466; b=s/OgaVQksgPM11mqnSsPiDaP/NHFjYR7vVz5JDzgEBnWuA7
-        Hp44u74sLT+yntwaTD8CCxLn+EZTANA5GdKOcye2SxWUbq4U5b6Rh1bzt73N7q4ni8gSfDVQogkVL
-        L1pYiIpeL5Qe0u+g3RJD1Cv0Zg3s+ryE82iNpqd8TYcOtPdPg/dTM1sjTzlmsn21oT33L/WEkf8pn
-        TUC88MYM+pg548J0DDcYfyV/2mB8iBHrUElcnFWJo43dndQATe9LNBFOitONGNla9llEz8SFbIhdO
-        Slkry0S1Wb8g28ZmEnhTdIhidJ+OA7QayG+EWpeAk4uqOWmRr7xAtmrBkUQ0gjPQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oxsay-007Fjd-0F;
-        Wed, 23 Nov 2022 17:27:32 +0100
-Message-ID: <d397e09df8bfd1286ed3e652fbba37ec7fe02f32.camel@sipsolutions.net>
-Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Maciej =?UTF-8?Q?=C5=BBenczykowski?= <maze@google.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        =?UTF-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Ilja Van Sprundel <ivansprundel@ioactive.com>,
-        Joseph Tartaro <joseph.tartaro@ioactive.com>
-Date:   Wed, 23 Nov 2022 17:27:30 +0100
-In-Reply-To: <Y342oUJu9CFHNmlW@kroah.com>
-References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
-         <9b78783297db1ebb1a7cd922be7eef0bf33b75b9.camel@sipsolutions.net>
-         <Y342oUJu9CFHNmlW@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Wed, 23 Nov 2022 12:54:14 -0500
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED11E64A2C;
+        Wed, 23 Nov 2022 09:54:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1669226051; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/1O/qeaT6DVSGwZFjj+0GGqQHqMGAQ6aVICj9N+I6Cg=;
+        b=Qnm9cqwIvObrA3v4tAAwNgmzQbzkZzabJqwXqmDpJFvOAzwd2O/CdZThHBItyqSpSZjve/
+        J1QiEi1pM1bowLIAfqvBUibaGk1tdapCYUMc38UtlQwCF9hlQgHYV60KaNpV1m/ralLTR3
+        KErJ9EQaa9STUoYl5kypSx8yM4Dsu6o=
+Date:   Wed, 23 Nov 2022 17:54:00 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: Please bump brcm/bcm4330-sdio.bin firmware
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-mips@vger.kernel.org,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Artur Rojek <contact@artur-rojek.eu>
+Message-Id: <02BTLR.2900VTVOISJZ@crapouillou.net>
+In-Reply-To: <fa5b46e2-f13e-547e-8df9-70c65f191957@broadcom.com>
+References: <L70QLR.XAGB8X2431341@crapouillou.net>
+        <fa5b46e2-f13e-547e-8df9-70c65f191957@broadcom.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -70,55 +52,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-11-23 at 16:05 +0100, Greg Kroah-Hartman wrote:
-> On Wed, Nov 23, 2022 at 03:20:36PM +0100, Johannes Berg wrote:
-> > On Wed, 2022-11-23 at 13:46 +0100, Greg Kroah-Hartman wrote:
-> > > The Microsoft RNDIS protocol is, as designed, insecure and vulnerable=
- on
-> > > any system that uses it with untrusted hosts or devices.  Because the
-> > > protocol is impossible to make secure, just disable all rndis drivers=
- to
-> > > prevent anyone from using them again.
-> > >=20
-> >=20
-> > Not that I mind disabling these, but is there any more detail available
-> > on this pretty broad claim? :)
+Hi Arend,
+
+Le mar. 22 nov. 2022 =E0 20:35:41 +0100, Arend van Spriel=20
+<arend.vanspriel@broadcom.com> a =E9crit :
+> On 11/22/2022 12:06 AM, Paul Cercueil wrote:
+>> Hello,
+>>=20
+>> As a week-end project I got the BCM4330 chip to work with the=20
+>> mainline =7FLinux kernel on the MIPS CI20 board. One of the problems I=20
+>> was facing =7Fwas the firmware crashing, resulting in timeout errors=20
+>> in the brcmfmac =7Fdriver.
+>>=20
+>> It turns out the bcm4330-sdio.bin firmware that's currently in=20
+>> =7Flinux-firmware is not the latest one. Running "strings" on the blob=20
+>> =7Fpoints out to a version 5.90.125.104 dated 2011-10-25. The firmware=20
+>> that =7Foriginally came on the CI20 is version 5.90.195.26 dated=20
+>> 2012-05-09, and =7Fthe version found in Android [1] is 5.90.195.114=20
+>> dated 2013-01-23. Only =7Fthe last two will work on the CI20 board.
+>>=20
+>> My question then, could we bump the firmware available in=20
+>> linux-firmware =7Fto the latest version? Or is there a valid reason=20
+>> why an older firmware =7Fis kept in the tree?
 >=20
-> I don't want to get into specifics in public any more than the above.
+> We "Broadcom" could. The linux-firmware repo provides all firmware=20
+> that linux distro can freely redistribute. The license info is listed=20
+> in the README in the repo as are the applicable firmware license=20
+> documents. So releasing the firmware to linux-firmware under the=20
+> given license can only be done by anyone owning it, not by people=20
+> licensed to use it.
 
-Fair.
+I actually did not know this.
 
-> The protocol was never designed to be used with untrusted devices.  It
-> was created, and we implemented support for it, when we trusted USB
-> devices that we plugged into our systems, AND we trusted the systems we
-> plugged our USB devices into.  So at the time, it kind of made sense to
-> create this, and the USB protocol class support that replaced it had not
-> yet been released.
->=20
-> As designed, it really can not work at all if you do not trust either
-> the host or the device, due to the way the protocol works.  And I can't
-> see how it could be fixed if you wish to remain compliant with the
-> protocol (i.e. still work with Windows XP systems.)
+> The bcm4330 chip was one of the first chips that brcmfmac supported=20
+> and Broadcom has EOL-ed that chip a long time ago hence no newer=20
+> firmware was considered for release to linux-firmware. In the past we=20
+> often re-released what was available in Android so we probably can do=20
+> that again for this and other chips.
 
-I guess I just don't see how a USB-based protocol can be fundamentally
-insecure (to the host), when the host is always in control over messages
-and parses their content etc.?
+This would be great.
 
-I can see this with e.g. firewire which must allow DMA access, and now
-with Thunderbolt we have the same and ended up with boltd, but USB?
+Cheers,
+-Paul
 
-> Today, with untrusted hosts and devices, it's time to just retire this
-> protcol.  As I mentioned in the patch comments, Android disabled this
-> many years ago in their devices, with no loss of functionality.
 
-I'm not sure Android counts that much, FWIW, at least for WiFi there
-really is no good reason to plug in a USB WiFi dongle into an Android
-phone, and quick googling shows that e.g. Android TV may - depending on
-build - support/permit RNDIS Ethernet?
-
-Anyway, there was probably exactly one RNDIS WiFi dongle from Broadcom
-(for some kind of console IIRC), so it's not a huge loss. Just having
-issues with the blanket statement that a USB protocol can be designed as
-inscure :)
-
-johannes
