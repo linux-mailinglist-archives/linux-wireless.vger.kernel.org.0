@@ -2,130 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81469636341
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 16:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1906363D2
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Nov 2022 16:35:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238401AbiKWPVv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 10:21:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58062 "EHLO
+        id S237163AbiKWPfv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 10:35:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238772AbiKWPVc (ORCPT
+        with ESMTP id S236541AbiKWPfu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 10:21:32 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A98C920AB;
-        Wed, 23 Nov 2022 07:21:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 84969B820DD;
-        Wed, 23 Nov 2022 15:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CACC433C1;
-        Wed, 23 Nov 2022 15:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669216867;
-        bh=XQZ/g+Sw4U+xIS3JiKRjNmg5QYe4GG7CLFMNcWE+7dg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Xp+Pc2frUVEZdshdbKf7x6iMGbOpkBFfpY28RhPayp1ot+dsTqVpETaB/8g7/9X0M
-         1iSwoJBLwa8h/vIhH2Zb9YfpoeNF1QjyT8xs6fdfPeH2s2LxcGl8CUuiO9li8x7ce2
-         FcA/1M+uHvUp820PhCldzR4cOjtaRks1R+EW6aRscTIajm9EBwDFTK71YvBescokKt
-         +9WYLWtiTlBCsXUfWq/sNqf4dKjr0LyB8yVaqeZ2gND1Dh4pwJes9qIct1t0a8VRX1
-         66bMDwWlnBBlVKorhQyIdHUTPy0sowjK1lQXKve+7+KXqmY1hJ8Q1e8Awz1x53w0Sd
-         iJljBQ6lqT2jg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Maciej =?utf-8?Q?=C5=BBenczykowski?= <maze@google.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Ilja Van Sprundel <ivansprundel@ioactive.com>,
-        Joseph Tartaro <joseph.tartaro@ioactive.com>
-Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
-References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
-Date:   Wed, 23 Nov 2022 17:21:01 +0200
-In-Reply-To: <20221123124620.1387499-1-gregkh@linuxfoundation.org> (Greg
-        Kroah-Hartman's message of "Wed, 23 Nov 2022 13:46:20 +0100")
-Message-ID: <87o7sxofxe.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 23 Nov 2022 10:35:50 -0500
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FCA468689
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:35:49 -0800 (PST)
+Received: by mail-qt1-x833.google.com with SMTP id cg5so11409254qtb.12
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 07:35:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=github.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ymXQJsm3Ibt6edPNV641PBoTil2ZrzP/k9aAa3+Ioig=;
+        b=JZR04Gsql0iD+ilsmiRKt76uoSOADRXL1BgwE8sO0X98eW+WT5KnBAOgofSse38HBy
+         kOeOj7tIjWpcrvEED989A8oNUDr04n+WgW2r2EU02oSddIM8u8MjpaAOyUV3B8yfK0Z8
+         6uRRKsgcLor6BzHaHsA+pH0il2Zqx/RIrZDlRrzONoHJO1iROXoKMMVvCt+2zPg1vVRJ
+         790uvuBU6jgoHqNC6GnZ89y0a73OWKZbgYbadJwlW6MKYETAYtBBO+tmh1d9ZY4Qi6z3
+         bW5A4Cmp6GqQzI1tf3lB6GAYuIzGERVE6cRcIUIP60/4g2F4ca0QDrL5M910N+ugF8bk
+         ZF0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ymXQJsm3Ibt6edPNV641PBoTil2ZrzP/k9aAa3+Ioig=;
+        b=xCpdo7ooMidOZ7V4/W24M90HPYlIV+QdMoZ10G+VQ/STMhGBFIpi63erQXT0bADAVc
+         AZYEnMFLSWGtTLe6R4+ygg2/XkaaJU9ZRDEFlsx31/aq/i2rA8+RW8khBw5TJeMmI0ox
+         hPJQPd0pgAkTrDJboehCNfRibjBEXagemWUTXrljNw2VAcgE8/pUBW1NX3Wvo/ka/rqo
+         lG3bFshBw2sEJJf/oFNtwvlct17fS3aGqfCUMF4exyQSIwg5/arfA2WP7HWg6MKYpxrz
+         Ly3K9t0cbXTQs0CbrEUzHUPaVmm5DZQVFJAGIovK/Ob5Bnj8CWjgajqhmVLW7gfWMbo7
+         ktzw==
+X-Gm-Message-State: ANoB5pl8M6ecDnHfhmLQKcZqEILS7o4iLGjsmLc85F0/qxPae1lEQjQH
+        Wz3WepakClh9/ZAPKFibkekVLM+oSIHEih0oMuW1y4Hvx23/vw1aqoFmhR+Q8F/uqBtgRdSgJOi
+        eRFfvgBhFWDb/LdehbB7p9o+G1fvEff1cmOokzrW3vP//LYP8IqJt66VOl9hsYSoeT/uPgRbOL/
+        YbU2T8WxkoK3M=
+X-Google-Smtp-Source: AA0mqf5/KPbJqYkg0nAEB1iaYaZOJepoc8v1P8JT/KuAiSqJ9u4UL1pwqEHdk44fBGd2RNU8kuY3JQ==
+X-Received: by 2002:ac8:67d0:0:b0:399:acab:ed6d with SMTP id r16-20020ac867d0000000b00399acabed6dmr27327870qtp.101.1669217748077;
+        Wed, 23 Nov 2022 07:35:48 -0800 (PST)
+Received: from localhost.localdomain (c-73-218-151-107.hsd1.ct.comcast.net. [73.218.151.107])
+        by smtp.gmail.com with ESMTPSA id u12-20020a37ab0c000000b006bb29d932e1sm11990296qke.105.2022.11.23.07.35.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Nov 2022 07:35:47 -0800 (PST)
+From:   Phil Turnbull <philipturnbull@github.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     ajay.kathat@microchip.com, claudiu.beznea@microchip.com,
+        kvalo@kernel.org, Phil Turnbull <philipturnbull@github.com>
+Subject: [PATCH 0/4] wilc1000: Improve RSN and attribute parsing
+Date:   Wed, 23 Nov 2022 10:35:39 -0500
+Message-Id: <20221123153543.8568-1-philipturnbull@github.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+This patch series improves RSN and attribute parsing in the WILC1000
+driver to prevent several out of bound reads and writes.
 
-> The Microsoft RNDIS protocol is, as designed, insecure and vulnerable on
-> any system that uses it with untrusted hosts or devices.  Because the
-> protocol is impossible to make secure, just disable all rndis drivers to
-> prevent anyone from using them again.
->
-> Windows only needed this for XP and newer systems, Windows systems older
-> than that can use the normal USB class protocols instead, which do not
-> have these problems.
->
-> Android has had this disabled for many years so there should not be any
-> real systems that still need this.
->
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Oleksij Rempel <linux@rempel-privat.de>
-> Cc: "Maciej =C5=BBenczykowski" <maze@google.com>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
-> Cc: Jacopo Mondi <jacopo@jmondi.org>
-> Cc: "=C5=81ukasz Stelmach" <l.stelmach@samsung.com>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: linux-usb@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Reported-by: Ilja Van Sprundel <ivansprundel@ioactive.com>
-> Reported-by: Joseph Tartaro <joseph.tartaro@ioactive.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
-> Note, I'll submit patches removing the individual drivers for later, but
-> that is more complex as unwinding the interaction between the CDC
-> networking and RNDIS drivers is tricky.  For now, let's just disable all
-> of this code as it is not secure.
->
-> I can take this through the USB tree if the networking maintainers have
-> no objection.  I thought I had done this months ago, when the last round
-> of "there are bugs in the protocol!" reports happened at the end of
-> 2021, but forgot to do so, my fault.
->
->  drivers/net/usb/Kconfig           | 1 +
->  drivers/net/wireless/Kconfig      | 1 +
+Phil Turnbull (4):
+  wifi: wilc1000: validate pairwise and authentication suite offsets
+  wifi: wilc1000: validate length of IEEE80211_P2P_ATTR_OPER_CHANNEL
+    attribute
+  wifi: wilc1000: validate length of IEEE80211_P2P_ATTR_CHANNEL_LIST
+    attribute
+  wifi: wilc1000: validate number of channels
 
-For wireless:
+ .../wireless/microchip/wilc1000/cfg80211.c    | 39 ++++++++++++++-----
+ drivers/net/wireless/microchip/wilc1000/hif.c | 21 +++++++---
+ 2 files changed, 46 insertions(+), 14 deletions(-)
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+-- 
+2.34.1
 
-Feel free to take this via your tree.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
