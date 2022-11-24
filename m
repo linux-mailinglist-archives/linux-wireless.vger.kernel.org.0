@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69BDD6378FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 13:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17F22637926
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 13:44:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbiKXMim (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Nov 2022 07:38:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50770 "EHLO
+        id S229802AbiKXMoM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Nov 2022 07:44:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbiKXMik (ORCPT
+        with ESMTP id S229727AbiKXMoL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Nov 2022 07:38:40 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBF6429A2
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 04:38:40 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id j12so1372534plj.5
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 04:38:40 -0800 (PST)
+        Thu, 24 Nov 2022 07:44:11 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78116DE99
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 04:44:10 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id n7so2291533wrr.13
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 04:44:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=mZjsQcc/1FaVVJqVBBCzb2qa8VOmQLhwoUpaa2jGtVU=;
-        b=V/bXs+UyQENLmuPzrj2HTnvso5q+B6pTqVLt44hys+0hPZkejAq5aCT0whpwXOg11U
-         /XBIe3l0iY/p/twzRyTjfTJ4XTQyVjUCgC0h1yIr/fd4SkihLXg6Xz0SHFJtzMFWInin
-         GXvPCbES7MCQvt5lMuwLbwYZmOH4nIsRNXZik=
+        bh=SfLGqZZ4mNzbFii70V2iOfvtRe6uBWAxfa75ZJeLD2k=;
+        b=ByeGLA2KrtVNHJCF9r7jySvb3/WHuxNnCNRjmq13c4WYWrP3UIO5ouOcHM7Ny3LWZ4
+         yKh89be6pN+XArgITY4hUR2UQnPL40O5TP0VPFRYaHea2ZL6Fl4yaFnSeO5TOCzEZFIB
+         70Qu0en6b/fU7q8JkBVyGfQwxOqNH57WrSnYo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mZjsQcc/1FaVVJqVBBCzb2qa8VOmQLhwoUpaa2jGtVU=;
-        b=esvuxbCY2MEXbCmlI/TejvidRIdSXGL9xMHn7MQ9CXUpaoDxKOeieYZm/hghhKIHzo
-         6tPWDxMPgdxYEbqqYR2jWgHtkI1aQ+yrvHzyTygq81dtEZjbtaV4HbIZChdPTXQ+fofE
-         c8uRgGEm4YRQOvekORwWyuup45h0JQwud7uV5kBqzZl1B5Bwnx7+RwKTVBrVwxYNfApA
-         sAPSl4XsaCe8CMFRLU5l0mEhSdVOmuSG5+EphldureM7o2Z0HO4BWmzfNo5N/xpN5C6j
-         RxV2SjAPEFg+IqQu6J05q36I7N3Bi1fePbWor0zxZV3HXQgcjef4K6ozrjXAUKOuTO3n
-         NNUw==
-X-Gm-Message-State: ANoB5pnT4lOJfNAKKg6LNQbErYmEa+dfe5anlU/9hXQwYf1nHx5Co6Qs
-        x+7lQjM7y4rJBtLMJ0c2pDkD6l6oWStWKxn8JCQ=
-X-Google-Smtp-Source: AA0mqf48li7SvltS1G8Zi+FPJQseFm3NYhzTliB7uvZr3dFj0fF6xxinjDbWERU7A+r0HaGc1zDC6A==
-X-Received: by 2002:a17:90a:5317:b0:213:34f7:fb14 with SMTP id x23-20020a17090a531700b0021334f7fb14mr40119115pjh.25.1669293519560;
-        Thu, 24 Nov 2022 04:38:39 -0800 (PST)
+        bh=SfLGqZZ4mNzbFii70V2iOfvtRe6uBWAxfa75ZJeLD2k=;
+        b=4RnFASRgOAUHlsGqfi/WCvbv4Sanqro+soCwui6DPlepbW47Q5yeS2b3SsyeKtuBNN
+         9vkGyCsjNxGnhTE3myWpZZvbrbBexnbJgnPlKnOmIVKj12wNrvChMBiMFjpoeVcJu+ks
+         yvaUkOmYxQqb/1TmgFHOe2YX150ivWqDdvIBnuTta4ujMKLFrbCSu+OaCyc4OAkqA62d
+         zluu6zgMcs78R/HsH1XhdNDwz9h5vJKwFWvaMtj44IWzubs6as31XnkP+nVLVvBAzq3S
+         GuIAqKmal8NJ8TnuCQ87n0nPnQUDKbMUHdY8un5KXJboc7QMChBk4/w5fG6aptUWTL6V
+         gTLg==
+X-Gm-Message-State: ANoB5pmvJkxhBLeh+Bxuytwt0kRb5s3/xoPm5gZ6t5yWy3LCLD3KEmWL
+        GY3/lTyuWXP9mjzR8RldCO/hqw==
+X-Google-Smtp-Source: AA0mqf7w7v7XHjrF/ozmmCu/nBir8s0W5IPhNdEXvOpTdOWG54GyDff//Bpn09LpJefI1+GomdNM8A==
+X-Received: by 2002:adf:fc50:0:b0:241:d2de:b11e with SMTP id e16-20020adffc50000000b00241d2deb11emr12327537wrs.347.1669293848982;
+        Thu, 24 Nov 2022 04:44:08 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id l6-20020a170903120600b0018157b415dbsm1235792plh.63.2022.11.24.04.38.37
+        by smtp.gmail.com with ESMTPSA id ay27-20020a05600c1e1b00b003b95ed78275sm1692482wmb.20.2022.11.24.04.44.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Nov 2022 04:38:38 -0800 (PST)
-Message-ID: <fcc0536d-c2f8-9412-87bf-68843c172eee@broadcom.com>
-Date:   Thu, 24 Nov 2022 13:38:35 +0100
+        Thu, 24 Nov 2022 04:44:07 -0800 (PST)
+Message-ID: <56fbcc03-b5dc-34b2-f15a-13c46447ffa0@broadcom.com>
+Date:   Thu, 24 Nov 2022 13:44:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.0
 Subject: Re: AP6275 / bcm43752 pcie on mainline brcmf
-To:     Shengyu Qu <wiagn233@outlook.com>, Andy Green <andy@warmcat.com>
+To:     Andy Green <andy@warmcat.com>, Shengyu Qu <wiagn233@outlook.com>
 Cc:     franky.lin@broadcom.com, linux-wireless@vger.kernel.org
 References: <TY3P286MB26114DD461F50814980453E598029@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
  <08416710-655a-c87c-a599-3fe2563f7de4@warmcat.com>
@@ -68,11 +68,10 @@ References: <TY3P286MB26114DD461F50814980453E598029@TY3P286MB2611.JPNP286.PROD.O
  <6c3f592e-3e20-edef-ce7a-cde8988eef2d@warmcat.com>
  <9fe8caec-453a-28c1-04d3-5966200b8db1@broadcom.com>
  <f80c4a64-d987-0f59-418d-adf419fcb054@warmcat.com>
- <TY3P286MB2611EE62F08BAD5BE66BB284980F9@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <TY3P286MB2611EE62F08BAD5BE66BB284980F9@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+In-Reply-To: <f80c4a64-d987-0f59-418d-adf419fcb054@warmcat.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000048288305ee36af8b"
+        boundary="000000000000e8995505ee36c2a2"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -83,23 +82,86 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000048288305ee36af8b
+--000000000000e8995505ee36c2a2
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/24/2022 1:35 PM, Shengyu Qu wrote:
-> Seems SDIO variant load firmware correctly without any modification, but also reports this -52 error while scanning.
-> Shengyu
+On 11/24/2022 1:26 PM, Andy Green wrote:
+> 
+> 
+> On 11/24/22 12:22, Arend van Spriel wrote:
+>> On 11/24/2022 1:14 PM, Andy Green wrote:
+>>>
+>>>
+>>> On 11/24/22 09:42, Arend van Spriel wrote:
+>>>> On 11/18/2022 6:41 AM, Andy Green wrote:
+>>>>>
+>>>>>
+>>>>> On 11/17/22 21:52, Arend Van Spriel wrote:
+>>>>>
+>>>>>> I see. So could you load bcmdhd and provide log. Preferably with 
+>>>>>> higher debug level. It also has a module parameter for it. I think 
+>>>>>> it is called dhd_msg_level and please set it to 0x817.
+>>>>>
+>>>>> It's here:
+>>>>>
+>>>>> https://warmcat.com/ap6275p-dhd-log1.txt
+>>>>
+>>>> Hi Andy,
+>>>>
+>>>> Thanks for the log. Together with the dhd driver sources I could 
+>>>> make some sense of it. Perhaps you can try the following hack and 
+>>>> see if we make it over the first hurdle.
+>>>
+>>> OH!  I found that the line below should be count, not sizeof(count).
+>>
+>> Good job! I was testing you obviously. You passed. Nah, I just feel 
+>> stupid.
+> 
+> No it's great, the point is it directly identified the root cause 
+> without access to the platform, it's not so easy.
+> 
+>>> ... any way, good job!
+>>
+>> Thanks. Will clean it up and formally submit it. I also had a quick 
+>> look at the SDIO variant, but not seeing anything obvious there in 
+>> terms of firmware loading.
+> 
+> I only have the pcie module not the SDIO one.
+> 
+> For the scan situation, he understands what is being asked via 
+> connmanctl "enable wifi", but he feels something wrong
+> 
+> connmanctl> enable wifi
+> 
+> connmanctl>
+> Enabled wifi
+> connmanctl> [  272.174946] ieee80211 phy0: brcmf_run_escan: error (-52)
+> [  272.174956] ieee80211 phy0: brcmf_cfg80211_scan: scan error (-52)
+> 
+> 
+> connmanctl> [  275.133157] ieee80211 phy0: brcmf_run_escan: error (-52)
+> [  275.133166] ieee80211 phy0: brcmf_cfg80211_scan: scan error (-52)
+> 
+> 
+> connmanctl> [  284.138852] ieee80211 phy0: brcmf_run_escan: error (-52)
+> [  284.138856] ieee80211 phy0: brcmf_cfg80211_scan: scan error (-52)
+> 
+> 52 is EBADE, I recall you mentioned that the scan api had been changed 
+> recently... is this possibly related to that?  Grepping around for EBADE 
+> near the function it mentions, it tries to take evasive action if it 
+> sees one in some places already.
 
-Thanks for letting me know. So we can focus on scanning. I will reply to 
-Andy about that.
+EBADE is a generic error message indicating something went wrong 
+communicating with firmware. Not very informative. Were you using any 
+debug level? Anyway, please load the driver with module parameter 
+debug=0x5416 and try scanning using iw utility.
 
 Regards,
 Arend
 
-
---00000000000048288305ee36af8b
+--000000000000e8995505ee36c2a2
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -170,14 +232,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB3RVB3kTWMH68L4TC7
-wptoYQwGcIq+yE3TndKy9vmP4zAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjExMjQxMjM4MzlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB/LObYeJm98eZ5frYz
+fDUuMLp9soc+n7q9bbfxBXgWfjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjExMjQxMjQ0MDlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAfqcsk08VmhKe1ZLkRbBmJvBT08WolJO/dXme
-XmRVJzLikjR9RtiAYeovA3DAtZP/nplgYmOypN9upcDfd+LeyG9KiNs2gGXHNyC/6DGOR+GFoVdX
-U3lsYIXh80Zhq7h2bD7G7Y3ewKrysrhkUBMyCC08sghsmuU5PGSZf5QhrSsg8vSmengbF28GpldN
-bVbmuzVMyYkwB6YNDTSR2naajsrgymOJtofzR11Pk+vw8bfXVlYHYYbMCtGRGZrEWbw0RNOBKTJ+
-wv1bSVmnJiLUJRTa3+XLqg+uFE6J9LHn0Tji3m8AGakONK8lML/r8QnBd8exsfWBAjXMmV1Kp0ym
-6w==
---00000000000048288305ee36af8b--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEATr/Uq/rsWG47AxizK0JHisVkvfoIPjQapf4I
+y+djPt/8903O73egXicICz8gEyiS7cwk1UsybzyfR9uJQ8VNUXI0/kcTeGAx9ATga2rEoP71wiPi
++BiHMv3d+KJuGShiGNo++1TA5qXG4SEjv9fxS8gDbG7NH4ICW87r3vZj9XZHc8mg9aZcrcVj7Xst
+QT00qcuQwUvNO06E0VQ52xBrIpQiWXoNHWOnYjrTZ2aWXK5SngVTIkSmkhJCW5AYv73BLD3tCM0Q
+ziGdrBY7lPwYzosDZCoYvokSFHeUAIySEtqR+cULbGuhjNfemWqbSCOQqUwNX21MyhLQ7OFfFFCk
+Kg==
+--000000000000e8995505ee36c2a2--
