@@ -2,174 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6815C63726A
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 07:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5FD63727D
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 07:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229576AbiKXGhd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Nov 2022 01:37:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43832 "EHLO
+        id S229452AbiKXGpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Nov 2022 01:45:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbiKXGhb (ORCPT
+        with ESMTP id S229448AbiKXGpq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Nov 2022 01:37:31 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B097DEAD6
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 22:37:22 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AO4n8XA032604;
-        Thu, 24 Nov 2022 06:37:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=mXexrJEw2bptGf83p7kX6EVbTxiuwKnQaYQNpat7EOg=;
- b=JXNWYMCWsbDLd3lc0+isL7qQbys3UVCpLe+QmqIL4ymV67V5oscltTRg3EkohSbPkRgL
- ZZ/UJ9HJlGSMGgL4M46eJ3YaEce2ilSuBcZlflCV4wGKoynaTvox5hnpaj/HyKmwnPJS
- IqSk4adksZAAnGIgGd6LtyvNV7qCv9+4DzU6CQns6JXNS9gyl/2PZRj32mWZrMSxphmh
- 31UEY5Q/k3orMD3iV63uk4qANH/3X8wKi+1I5nBad8bNCRxhodMRARJfNkDhdbmGWwVf
- EQiPc2vrL+QOiO6CAat4WQ97NyyXLWLn4/LMFIxYqjV0nl4AkoSm3yTcdoysQIJ2F+je 0w== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m0nsjem79-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Nov 2022 06:37:17 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AO6bGPl010232
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Nov 2022 06:37:16 GMT
-Received: from kathirve-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Wed, 23 Nov 2022 22:37:14 -0800
-From:   Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-        Govindaraj Saminathan <quic_gsaminat@quicinc.com>
-Subject: [PATCH] wifi: ath11k: Fix race condition with htt_ppdu_stats_info
-Date:   Thu, 24 Nov 2022 12:06:57 +0530
-Message-ID: <20221124063657.2841-1-quic_kathirve@quicinc.com>
-X-Mailer: git-send-email 2.38.0
+        Thu, 24 Nov 2022 01:45:46 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F2B35EE2A
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 22:45:44 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AO6ijpZ7000339, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AO6ijpZ7000339
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 24 Nov 2022 14:44:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 24 Nov 2022 14:45:28 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 24 Nov
+ 2022 14:45:28 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <neo_jou@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw88: fix race condition when doing H2C command
+Date:   Thu, 24 Nov 2022 14:44:42 +0800
+Message-ID: <20221124064442.28042-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: -1xiDxMMPpACTjF6WbqUc_XvpCwTGZLg
-X-Proofpoint-ORIG-GUID: -1xiDxMMPpACTjF6WbqUc_XvpCwTGZLg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-24_04,2022-11-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 mlxscore=0 adultscore=0
- impostorscore=0 bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211240050
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/24/2022 06:09:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzI0IKRXpMggMDQ6NDY6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The below crash happens when running the traffic with multiple clients
+From: Ji-Pin Jou <neo_jou@realtek.com>
 
-Crash Signature : Unable to handle kernel paging request at
-virtual address ffffffd700970918 During the crash, PC points to
-"ieee80211_tx_rate_update+0x30/0x68 [mac80211]"
-LR points to "ath11k_dp_htt_htc_t2h_msg_handler+0x5a8/0x8a0 [ath11k]".
+For SDIO/USB interface, since the tranferring speed is slower than
+that in PCIE, it may have race condition when the driver sets down
+H2C command to the FW.
 
-ppdu_stats_info is allocated and accessed from event callback via copy
-engine tasklet, this has a problem when freeing it from ath11k_mac_op_stop.
+In the function rtw_fw_send_h2c_command, before the patch, box_reg
+is written first, then box_ex_reg is written. FW starts to work and
+fetch the value of box_ex_reg,  when the most significant byte of
+box_reg(4 bytes) is written. Meanwhile, for SDIO/USB interface,
+since the transferring speed is slow, the driver is still in writing
+the new value of box_ex_reg through the bus, and FW may get the
+wrong value of box_ex_reg at the moment.
 
-Add spin lock to protect htt_ppdu_stats_info and to avoid race condition
-when accessing it from ath11k_mac_op_stop.
+To prevent the above driver/FW racing situation, box_ex_reg is
+written first then box_reg. Furthermore, it is written in 4 bytes at
+a time, instead of written in one byte one by one. It can increase
+the speed for SDIO/USB interface.
 
-Tested-on : IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
-Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Ji-Pin Jou <neo_jou@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/wireless/realtek/rtw88/fw.c | 8 +++-----
+ drivers/net/wireless/realtek/rtw88/fw.h | 5 +++++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index c5a4c34d7749..2384c8c3c55c 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1535,11 +1535,11 @@ struct htt_ppdu_stats_info *ath11k_dp_htt_get_ppdu_desc(struct ath11k *ar,
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 0b5f903c0f366..b290811d75e1c 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -311,10 +311,10 @@ EXPORT_SYMBOL(rtw_fw_c2h_cmd_isr);
+ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
+ 				    u8 *h2c)
  {
- 	struct htt_ppdu_stats_info *ppdu_info;
++	struct rtw_h2c_cmd *h2c_cmd = (struct rtw_h2c_cmd *)h2c;
+ 	u8 box;
+ 	u8 box_state;
+ 	u32 box_reg, box_ex_reg;
+-	int idx;
+ 	int ret;
  
--	spin_lock_bh(&ar->data_lock);
-+	lockdep_assert_held(&ar->data_lock);
+ 	rtw_dbg(rtwdev, RTW_DBG_FW,
+@@ -356,10 +356,8 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
+ 		goto out;
+ 	}
+ 
+-	for (idx = 0; idx < 4; idx++)
+-		rtw_write8(rtwdev, box_reg + idx, h2c[idx]);
+-	for (idx = 0; idx < 4; idx++)
+-		rtw_write8(rtwdev, box_ex_reg + idx, h2c[idx + 4]);
++	rtw_write32(rtwdev, box_ex_reg, le32_to_cpu(h2c_cmd->msg_ext));
++	rtw_write32(rtwdev, box_reg, le32_to_cpu(h2c_cmd->msg));
+ 
+ 	if (++rtwdev->h2c.last_box_num >= 4)
+ 		rtwdev->h2c.last_box_num = 0;
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index a5a965803a3cc..bca610dc99ab7 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -81,6 +81,11 @@ struct rtw_c2h_adaptivity {
+ 	u8 option;
+ } __packed;
+ 
++struct rtw_h2c_cmd {
++	__le32 msg;
++	__le32 msg_ext;
++} __packed;
 +
- 	if (!list_empty(&ar->ppdu_stats_info)) {
- 		list_for_each_entry(ppdu_info, &ar->ppdu_stats_info, list) {
- 			if (ppdu_info->ppdu_id == ppdu_id) {
--				spin_unlock_bh(&ar->data_lock);
- 				return ppdu_info;
- 			}
- 		}
-@@ -1553,16 +1553,13 @@ struct htt_ppdu_stats_info *ath11k_dp_htt_get_ppdu_desc(struct ath11k *ar,
- 			kfree(ppdu_info);
- 		}
- 	}
--	spin_unlock_bh(&ar->data_lock);
- 
- 	ppdu_info = kzalloc(sizeof(*ppdu_info), GFP_ATOMIC);
- 	if (!ppdu_info)
- 		return NULL;
- 
--	spin_lock_bh(&ar->data_lock);
- 	list_add_tail(&ppdu_info->list, &ar->ppdu_stats_info);
- 	ar->ppdu_stat_list_depth++;
--	spin_unlock_bh(&ar->data_lock);
- 
- 	return ppdu_info;
- }
-@@ -1586,16 +1583,17 @@ static int ath11k_htt_pull_ppdu_stats(struct ath11k_base *ab,
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
- 	if (!ar) {
- 		ret = -EINVAL;
--		goto exit;
-+		goto out;
- 	}
- 
- 	if (ath11k_debugfs_is_pktlog_lite_mode_enabled(ar))
- 		trace_ath11k_htt_ppdu_stats(ar, skb->data, len);
- 
-+	spin_lock_bh(&ar->data_lock);
- 	ppdu_info = ath11k_dp_htt_get_ppdu_desc(ar, ppdu_id);
- 	if (!ppdu_info) {
- 		ret = -EINVAL;
--		goto exit;
-+		goto out_unlock_data;
- 	}
- 
- 	ppdu_info->ppdu_id = ppdu_id;
-@@ -1604,10 +1602,13 @@ static int ath11k_htt_pull_ppdu_stats(struct ath11k_base *ab,
- 				     (void *)ppdu_info);
- 	if (ret) {
- 		ath11k_warn(ab, "Failed to parse tlv %d\n", ret);
--		goto exit;
-+		goto out_unlock_data;
- 	}
- 
--exit:
-+out_unlock_data:
-+	spin_unlock_bh(&ar->data_lock);
-+
-+out:
- 	rcu_read_unlock();
- 
- 	return ret;
-
-base-commit: 007979876af42db35d793765c72d665bd812d919
+ enum rtw_rsvd_packet_type {
+ 	RSVD_BEACON,
+ 	RSVD_DUMMY,
 -- 
-2.38.0
+2.25.1
 
