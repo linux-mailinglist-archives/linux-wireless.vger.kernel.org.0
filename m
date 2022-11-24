@@ -2,200 +2,235 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EED81637FCD
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 20:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9104B6380BF
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 22:53:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbiKXTwl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Nov 2022 14:52:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52894 "EHLO
+        id S229670AbiKXVxr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Nov 2022 16:53:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbiKXTwk (ORCPT
+        with ESMTP id S229504AbiKXVxq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Nov 2022 14:52:40 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD3418B28
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:52:37 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id g7so3897617lfv.5
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:52:37 -0800 (PST)
+        Thu, 24 Nov 2022 16:53:46 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3220C7D29E
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 13:53:45 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id b12so4258015wrn.2
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 13:53:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=weBqc2Kg74EU61STcbu0lKP4lCVzmfJVUu3+MSgOqpc=;
-        b=H7XPelrY1P4jWSlAfy00GmiFrrsPhLpgHvg8hRa4a9lvGFx9/7hWx0z0MFc+zMbCWO
-         IgeUiFE+b8hi1MhXoMc52rAccGn8sMpqDKpKrDqOv6ZM+VGGCWjfSW/fqSfRXcIIO+5O
-         RqdcZZAZKezRfJXAKXvdYvuUfwMHBo674aEq8MkCg7yIBo7Q0yM07CuPA6jZ/fL7jWBa
-         ngLBLW7x+s/hYlY3nFKJciO7BT8aHesmXjHjP0ztEO2CpiLR183FrhX5XzvMgekEa0O1
-         nqUej/nBP/KiZj0NoBCvTxdtO4LLsrOIeLbYVQONEnk2/Nzc2S5YknM9pD5TB4t0xLpO
-         AscA==
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ngu1CIQFG0i6NVFieICuM3EKBCgKRhaAt6rvXknyjFg=;
+        b=IGXOmMjYA2aXICEhmQEAfD2EInR1AlIMIYtJnJyTPH4boatb2fgaX4wiNSWTBtC1HV
+         q2HT+TLbdD8znCo1OauKUlOP87a9k8GZADH04CVaIne9K+RLXNvVhZ0x0SbZHj6U6iS8
+         Ks6Ng2GHrUs5EtyJCtq3j/70fpx7cuhAjmuExRoTimNunIz2aTKfBmY88UdsFxeICfg6
+         rhzAymTdV0ZQtOvuqO4n0FdS18AJ1Ty+4IaHlaeOW8Ddh24OwnD2CKuCHYG6ad+5IdR1
+         que/4NpxMymFnQEJRA4CFKHHgPEjllaycdXG5J9Co/fvGH/WPV664rTj94gFVS9jZM8f
+         YMJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=weBqc2Kg74EU61STcbu0lKP4lCVzmfJVUu3+MSgOqpc=;
-        b=T2OyEklXV3OpxvHnGHXnOW4MSFHEAkg3a9DmAenYP6vkRb205fg/XXdVwhXGsksfpx
-         Rwcbp98jGDeXXbTgEKi5FzYVsGOdxHPYKG5MOmgK+XnfVb/QdjeciAKSIDrITnorze6X
-         gOsCkGLxfy1iITufCIyfLuizVWS5NwKjQbnVRj+G3qOmtGKCKTD8Ld8MBepZvHhc9rbn
-         6yuJyQ9BCmRTieYZkl0p+zIyBDp0CTnfaaHsF0ssKbLBKKvdlCWLlGdemEU+BeEAfAAL
-         RI5ZthXRDkH3e7jBzxePByaPiW0nk0ssyNWtW4wyX+zX9EqVo59Bm0iQVRJX/vF9ZCZr
-         Xkfw==
-X-Gm-Message-State: ANoB5pk/8ZLNUE3EqE/hizx7pqjP2HPn9yB0DQZx/77AJaxJIvn3aMWg
-        kJdGvpR6RSm/5H/Xjie3vWWoWVYjtVTcq71Z/iSy5mu+ReOu9A==
-X-Google-Smtp-Source: AA0mqf4t1VazmnMhwB655Gx5KxZ41qRWj2pRX3Tq5rOnlFm4hewGzrKsfuUbi2P1FDNDixluYLz7mwBGdNlk0SytxYw=
-X-Received: by 2002:a05:6512:4c8:b0:4a2:7d11:80e8 with SMTP id
- w8-20020a05651204c800b004a27d1180e8mr10891661lfq.464.1669319555971; Thu, 24
- Nov 2022 11:52:35 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ngu1CIQFG0i6NVFieICuM3EKBCgKRhaAt6rvXknyjFg=;
+        b=NuEsEgTvMpwl/XdyBF6F5mKmrs8eerYmN976PCh4ZFDuDZ1KZh1xp/SkAG9GRiVC1+
+         sGFEf3VmO36u/ksrXjseW46fxFt+Yk6haBeHFQw0yi9kyQwMjp+X4x2i2Sgl61GU+/a2
+         v4wfDncVw7dQyvA2Y7e7DEyYKIhds9CEzT780Ga0DTDfbDL8r4a1ZEBmZtJW3XGlJqXZ
+         oEDERSJ+3eWngBkEWlQcFJhl0/Rjsi6g/4tqDvRzqGBs+FErYVHFysPEJaAEJUtHHJos
+         WWB3wnC/hpsTP0b6WbWVrHDavUPeh8mi1KqxgbutRlbDPu8za1dO4QbC03BtmsMT9XHj
+         6a9A==
+X-Gm-Message-State: ANoB5pkoNBiM2QMGxFkQNpjNLiVy+sLYtaJJned1Nwiaezi5GXDEJT5W
+        BB+pwuD9tM9+3xahBrSrybk=
+X-Google-Smtp-Source: AA0mqf7lLS82mhVa7jJV00VLF4uLIxpgEyDK7JzYUNLvW5oL5a3yf2OVPuCt6TS8zGiVE1qXjIfY4Q==
+X-Received: by 2002:adf:e5c4:0:b0:236:9701:97d2 with SMTP id a4-20020adfe5c4000000b00236970197d2mr14948143wrn.185.1669326823510;
+        Thu, 24 Nov 2022 13:53:43 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.254])
+        by smtp.gmail.com with ESMTPSA id h3-20020a05600c2ca300b003cff309807esm7235477wmc.23.2022.11.24.13.53.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Nov 2022 13:53:43 -0800 (PST)
+Message-ID: <f1775b71-97fc-8b23-6ae1-319aa26c414a@gmail.com>
+Date:   Thu, 24 Nov 2022 23:53:41 +0200
 MIME-Version: 1.0
-From:   Ioannis Barkas <jnyb.de@gmail.com>
-Date:   Fri, 25 Nov 2022 21:51:25 +0200
-Message-ID: <CADUzMVaTb3WUuFO-NjAgrnHzEa5-7WvSkROcLwWF1MuM2wJQ6A@mail.gmail.com>
-Subject: BCM4352 Broadcom support
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: TL-WN823N Realtek WPA3 SSID connection problem #9
+To:     Ioannis Barkas <jnyb.de@gmail.com>, linux-wireless@vger.kernel.org
+References: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 25/11/2022 21:40, Ioannis Barkas wrote:
+> Hello,
+> 
+> I have tested various USB devices and all worked except the TL-WN823N.
+> This device has never worked and we have 2 of them.
+> 
+> On Ubuntu boot I get:
+> [ 1208.638541] usb 1-1: RTL8192EU rev B (SMIC) 2T2R, TX queues 3,
+> WiFi=1, BT=0, GPS=0, HI PA=0
+> [ 1208.638553] usb 1-1: RTL8192EU MAC: d4:6e:0e:**:**:**
+> [ 1208.638560] usb 1-1: rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
+> [ 1208.641483] usb 1-1: Firmware revision 19.0 (signature 0x92e1)
+> [ 1209.735452] usbcore: registered new interface driver rtl8xxxu
+> 
+> When I attempt to connect at a 2,4GHz WPA3 SSID this is what I get:
+> [ 1502.319954] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1502.332105] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1502.476159] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1502.476181] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1502.587356] wlxd46e0eeba0f4: authenticated
+> [ 1502.589113] wlxd46e0eeba0f4: associate with c6:27:28:**:**:** (try 1/3)
+> [ 1502.593773] wlxd46e0eeba0f4: RX AssocResp from c6:27:28:**:**:**
+> (capab=0x1431 status=0 aid=16)
+> [ 1502.595559] usb 1-1: rtl8xxxu_bss_info_changed: HT supported
+> [ 1502.597222] wlxd46e0eeba0f4: associated
+> [ 1502.743847] wlxd46e0eeba0f4: deauthenticating from
+> c6:27:28:**:**:** by local choice (Reason: 1=UNSPECIFIED)
+> 
+> To make things worse, I accidentally inserted it in a USB 1.1 port on
+> my AMD test PC and it could not even connect to a combo 2,4GHz WPA2,3
+> SSID:
+> [ 1001.681485] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1001.703190] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1001.904265] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
+> [ 1002.108231] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
+> [ 1002.312262] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
+> [ 1013.501401] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1013.523483] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1013.724276] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
+> [ 1013.928271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
+> [ 1014.132282] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
+> [ 1027.230375] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1027.242103] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1027.444258] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
+> [ 1027.648271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
+> [ 1027.852237] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
+> 
+> On USB 2.0 port the problem with WPA2,3 SSID was resolved. Is it
+> possible to set a flag so that the driver will bail out if the device
+> is on a USB 1.1 port? The truth is that the maximum speed it reached
+> was way below the 12Mb of USB 1.1 so it should not have a problem but
+> in practise it does...
 
-I have tested a hybrid laptop device which is actually a tablet(YOGA 3
-Pro-1370) and has a BCM Wi-Fi.
+I believe the authentication failure is not related to USB 1.1. I get
+that even with USB 2.0. It's probably intermittent, the best kind of
+failure. Because of this and other problems, the standard advice on
+various internet forums is "blacklist rtl8xxxu, install
+Mange/rtl8192eu-linux-driver". I will look into it someday soon (ish).
 
-On Ubuntu boot I get:
-[    2.294215] bcma-pci-bridge 0000:01:00.0: bus0: Found chip with id
-0x4352, rev 0x03 and package 0x00
-[    2.294263] bcma-pci-bridge 0000:01:00.0: bus0: Core 0 found:
-ChipCommon (manuf 0x4BF, id 0x800, rev 0x2B, class 0x0)
-[    2.294290] bcma-pci-bridge 0000:01:00.0: bus0: Core 1 found: IEEE
-802.11 (manuf 0x4BF, id 0x812, rev 0x2A, class 0x0)
-[    2.294348] bcma-pci-bridge 0000:01:00.0: bus0: Core 2 found: ARM
-CR4 (manuf 0x4BF, id 0x83E, rev 0x02, class 0x0)
-[    2.294398] bcma-pci-bridge 0000:01:00.0: bus0: Core 3 found: PCIe
-Gen2 (manuf 0x4BF, id 0x83C, rev 0x01, class 0x0)
-[    2.294424] bcma-pci-bridge 0000:01:00.0: bus0: Core 4 found: USB
-2.0 Device (manuf 0x4BF, id 0x81A, rev 0x11, class 0x0)
-[    2.332079] cryptd: max_cpu_qlen set to 1000
-[    2.350696] bcma: Unsupported SPROM revision: 11
-[    2.350760] bcma-pci-bridge 0000:01:00.0: bus0: Invalid SPROM read
-from the PCIe card, trying to use fallback SPROM
-[    2.350764] bcma-pci-bridge 0000:01:00.0: bus0: Using fallback
-SPROM failed (err -2)
-[    2.350767] bcma-pci-bridge 0000:01:00.0: bus0: No SPROM available
-[    2.353785] bcma-pci-bridge 0000:01:00.0: bus0: Bus registered
-[   34.766808] b43-phy0: Broadcom 4352 WLAN found (core revision 42)
-[   34.787320] bcma-pci-bridge 0000:01:00.0: bus0: HT force timeout
-[   34.930930] bcma-pci-bridge 0000:01:00.0: bus0: PLL enable timeout
-[   34.930980] b43-phy0 ERROR: FOUND UNSUPPORTED PHY (Analog 12, Type
-11 (AC), Revision 1)
-[   34.931036] b43: probe of bcma0:1 failed with error -95
-[   34.931136] Broadcom 43xx driver loaded [ Features: PNL ]
+> 
+>  This is the device:
+> Device Descriptor:
+>   bLength                18
+>   bDescriptorType         1
+>   bcdUSB               2.10
+>   bDeviceClass            0
+>   bDeviceSubClass         0
+>   bDeviceProtocol         0
+>   bMaxPacketSize0        64
+>   idVendor           0x2357 TP-Link
+>   idProduct          0x0109 TL-WN823N v2/v3 [Realtek RTL8192EU]
+>   bcdDevice            2.00
+>   iManufacturer           1 Realtek
+>   iProduct                2 802.11n NIC
+>   iSerial                 3 00**********
+>   bNumConfigurations      1
+>   Configuration Descriptor:
+>     bLength                 9
+>     bDescriptorType         2
+>     wTotalLength       0x0035
+>     bNumInterfaces          1
+>     bConfigurationValue     1
+>     iConfiguration          0
+>     bmAttributes         0xe0
+>       Self Powered
+>       Remote Wakeup
+>     MaxPower              500mA
+>     Interface Descriptor:
+>       bLength                 9
+>       bDescriptorType         4
+>       bInterfaceNumber        0
+>       bAlternateSetting       0
+>       bNumEndpoints           5
+>       bInterfaceClass       255 Vendor Specific Class
+>       bInterfaceSubClass    255 Vendor Specific Subclass
+>       bInterfaceProtocol    255 Vendor Specific Protocol
+>       iInterface              2 802.11n NIC
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x84  EP 4 IN
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x05  EP 5 OUT
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x06  EP 6 OUT
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x87  EP 7 IN
+>         bmAttributes            3
+>           Transfer Type            Interrupt
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0040  1x 64 bytes
+>         bInterval               3
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x08  EP 8 OUT
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+> Binary Object Store Descriptor:
+>   bLength                 5
+>   bDescriptorType        15
+>   wTotalLength       0x000c
+>   bNumDeviceCaps          1
+>   USB 2.0 Extension Device Capability:
+>     bLength                 7
+>     bDescriptorType        16
+>     bDevCapabilityType      2
+>     bmAttributes   0x00000002
+>       HIRD Link Power Management (LPM) Supported
+> Device Status:     0x0001
+>   Self Powered
 
-This is the device:
-01:00.0 Network controller [0280]: Broadcom Inc. and subsidiaries
-BCM4352 802.11ac Wireless Network Adapter [14e4:43b1] (rev 03)
-    Subsystem: Lenovo BCM4352 802.11ac Wireless Network Adapter [17aa:0623]
-    Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
-ParErr- Stepping- SERR- FastB2B- DisINTx-
-    Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-    Latency: 0, Cache Line Size: 64 bytes
-    Interrupt: pin A routed to IRQ 18
-    Region 0: Memory at c1200000 (64-bit, non-prefetchable) [size=32K]
-    Region 2: Memory at c1000000 (64-bit, non-prefetchable) [size=2M]
-    Capabilities: [48] Power Management version 3
-        Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=0mA
-PME(D0+,D1+,D2+,D3hot+,D3cold+)
-        Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=2 PME-
-    Capabilities: [58] MSI: Enable- Count=1/1 Maskable- 64bit+
-        Address: 0000000000000000  Data: 0000
-    Capabilities: [68] Vendor Specific Information: Len=44 <?>
-    Capabilities: [ac] Express (v2) Endpoint, MSI 00
-        DevCap:    MaxPayload 256 bytes, PhantFunc 0, Latency L0s
-<4us, L1 unlimited
-            ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- SlotPowerLimit 10W
-        DevCtl:    CorrErr- NonFatalErr- FatalErr- UnsupReq-
-            RlxdOrd+ ExtTag- PhantFunc- AuxPwr+ NoSnoop+
-            MaxPayload 128 bytes, MaxReadReq 512 bytes
-        DevSta:    CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
-        LnkCap:    Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1, Exit
-Latency L0s <2us, L1 <32us
-            ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp+
-        LnkCtl:    ASPM L0s L1 Enabled; RCB 64 bytes, Disabled- CommClk+
-            ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-        LnkSta:    Speed 2.5GT/s, Width x1
-            TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
-        DevCap2: Completion Timeout: Range ABCD, TimeoutDis+ NROPrPrP- LTR-
-             10BitTagComp- 10BitTagReq- OBFF Via WAKE#, ExtFmt- EETLPPrefix-
-             EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
-             FRS- TPHComp- ExtTPHComp-
-             AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-        DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis- LTR-
-10BitTagReq- OBFF Disabled,
-             AtomicOpsCtl: ReqEn-
-        LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
-             Transmit Margin: Normal Operating Range,
-EnterModifiedCompliance- ComplianceSOS-
-             Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
-        LnkSta2: Current De-emphasis Level: -3.5dB,
-EqualizationComplete- EqualizationPhase1-
-             EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
-             Retimer- 2Retimers- CrosslinkRes: unsupported
-    Capabilities: [100 v1] Advanced Error Reporting
-        UESta:    DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt-
-RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-        UEMsk:    DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt-
-RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-        UESvrt:    DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt-
-RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
-        CESta:    RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr-
-        CEMsk:    RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr+
-        AERCap:    First Error Pointer: 00, ECRCGenCap+ ECRCGenEn-
-ECRCChkCap+ ECRCChkEn-
-            MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
-        HeaderLog: 00000000 00000000 00000000 00000000
-    Capabilities: [13c v0] Device Serial Number ac-d1-00-ff-**-**-**-**
-    Capabilities: [150 v1] Power Budgeting <?>
-    Capabilities: [160 v1] Virtual Channel
-        Caps:    LPEVC=0 RefClk=100ns PATEntryBits=1
-        Arb:    Fixed- WRR32- WRR64- WRR128-
-        Ctrl:    ArbSelect=Fixed
-        Status:    InProgress-
-        VC0:    Caps:    PATOffset=00 MaxTimeSlots=1 RejSnoopTrans-
-            Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR256-
-            Ctrl:    Enable+ ID=0 ArbSelect=Fixed TC/VC=ff
-            Status:    NegoPending- InProgress-
-    Kernel driver in use: bcma-pci-bridge
-    Kernel modules: bcma
-00: e4 14 b1 43 06 00 10 00 03 00 80 02 10 00 00 00
-10: 04 00 20 c1 00 00 00 00 04 00 00 c1 00 00 00 00
-20: 00 00 00 00 00 00 00 00 00 00 00 00 aa 17 23 06
-30: 00 00 00 00 48 00 00 00 00 00 00 00 ff 01 00 00
-40: 00 00 00 00 00 00 00 00 01 58 03 fe 08 40 00 00
-50: 00 00 00 00 00 00 00 00 05 68 80 00 00 00 00 00
-60: 00 00 00 00 00 00 00 00 09 ac 44 00 01 01 00 00
-70: 00 10 10 18 00 00 00 00 00 00 00 00 00 00 00 00
-80: 00 10 00 18 00 00 00 00 00 00 00 00 00 00 00 00
-90: 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 00
-a0: 00 00 00 00 00 00 00 00 40 00 05 00 10 00 02 00
-b0: 81 8f 90 05 10 2c 10 00 11 dc 46 00 43 01 11 10
-c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-d0: 1f 00 08 00 00 00 00 00 00 00 00 00 01 00 01 00
-e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-100: 01 00 c1 13 00 00 00 00 00 00 00 00 30 20 06 00
-110: 00 00 00 00 00 20 00 00 a0 00 00 00 00 00 00 00
-120: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-130: 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 15
-
-As it says UNSUPPORTED PHY and 43b1 is not supported with no
-alternative as can be seen[1], can this device be used? What is the
-SPROM issue about?
-
-[1]https://wireless.wiki.kernel.org/en/users/Drivers/b43
