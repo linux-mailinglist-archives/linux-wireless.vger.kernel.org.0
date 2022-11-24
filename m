@@ -2,103 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E3F636F87
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 01:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 765CF63717D
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 05:27:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbiKXA7F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Nov 2022 19:59:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57728 "EHLO
+        id S229743AbiKXE07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Nov 2022 23:26:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiKXA7E (ORCPT
+        with ESMTP id S229673AbiKXE05 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Nov 2022 19:59:04 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF10786D2;
-        Wed, 23 Nov 2022 16:59:03 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id x13-20020a17090a46cd00b00218f611b6e9so248257pjg.1;
-        Wed, 23 Nov 2022 16:59:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wNgqx4nOvBacXRcfWNIQEwnOw2cT8o68pm9m7IwR/gg=;
-        b=X3BErgYpy3+uysZbtcDsNZ7XGMi6VDJ4M2UpEJYTm2ZIcAzzgdUC31pzHYDnTPm5hl
-         xa+LgejTMwdOrl77sTGNP1dKTS7ltBeMIH2JfPfx36d0ToxxDblWx8abnihFZH4tGIyB
-         9vOcAavA+bj2hLk+vQG/JmsWoFwMIawmWdh6Ieu/+vfctje3iQhwdHGadmXzWxI6dmnK
-         pwBsMIzYxOMSCcZb2QTykFPIdahII9cFshRZFCmPfo5Ab+Vu2MFcC0rD3dYZdGoinLXL
-         vc7Emew/hGDDJN/jGoia7AnARhpwR5maKxMJ2ObUKvej1siq+om/ymzlZZRxFyti6hAO
-         hP7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wNgqx4nOvBacXRcfWNIQEwnOw2cT8o68pm9m7IwR/gg=;
-        b=G9lA+4wO/kZgTv59waDAGXf8C/ZaFRr8CO7hMi+c3PS1VYhn2u236L3CMjFgnh6nQh
-         8sryjP0nvqDuLi1mjsNXVzgU8qbZdKEzGavHSe0E7zP8+BEAT5XEIMZJL1zZtl4kYkl/
-         zTSSwqxldaltQzzE7DwoiNKE4mA28phBO40x9rnRpp5hZCy0gRJfbL61+qR2z2JXsver
-         2VF2szWbWyjKk7RxGt4xG98b1vL5aQXhfc/GoyZV6TRCVreCtbLV1Csq3x5VcHyeiDb3
-         2oZf6rXSxdpXl6oQ/HBnYbj2PPIiHG9llXemRJD4KrfcKu66X/ip/9b2TMkSsFMBYRC7
-         jk4A==
-X-Gm-Message-State: ANoB5pk3GydgTR0rn+i+BEbFGHEA2umduVoJf9uBGmuwkFMsqmKcOJ83
-        BnfxGRzy6I3GAqg7ZjaGosE=
-X-Google-Smtp-Source: AA0mqf4daN8aZClSbe8nBcobYR0Zu0b8N4WjefmWi2EiezYKHFju1/+LYi14eFnabt/fV8Egy3TuZA==
-X-Received: by 2002:a17:90b:3944:b0:214:1df0:fe53 with SMTP id oe4-20020a17090b394400b002141df0fe53mr38368187pjb.214.1669251543001;
-        Wed, 23 Nov 2022 16:59:03 -0800 (PST)
-Received: from [192.168.1.5] ([159.192.254.122])
-        by smtp.googlemail.com with ESMTPSA id d7-20020a17090abf8700b00218e5959bfbsm1897336pjs.20.2022.11.23.16.58.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Nov 2022 16:59:02 -0800 (PST)
-Message-ID: <360394e3-91c0-9a47-4046-1f7635ebf312@gmail.com>
-Date:   Thu, 24 Nov 2022 07:58:54 +0700
+        Wed, 23 Nov 2022 23:26:57 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35992C8CB9
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Nov 2022 20:26:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669264017; x=1700800017;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KFg1SnHHIGANoLyO9ie5lMMQnDV2fYKj3llJsgTrX1M=;
+  b=jv1zKkVAqc0S4iDKRE01cjO46U1Ldksi/C4jjsBN6aNNDKxldygyKdAC
+   exTktMlILbAP7QrmIroOmwU9oOvz+TwBalzFqIkwgFNbgXqdxRYR4FcF+
+   mE/00Z/GhIe8lFMU1Cp6EQ+kw41la07+V6TlPh4cnw2Nd4CVO1cZE9b1Y
+   MWOEC25sZcmNRfyFhHHBifvSASlXMr8mwrVq/9AhBRVOKYXPHKT6UGWW+
+   oxmYN++2AlB98xPpGYDDFBpmAwFVRzQDQ8gsza84I/2oB+rOjVVEqfYUg
+   e5XVXeuqdgAoWixl73Bu7Tz58mY0qly12PBvejH/giR7TY9NYzk1puM3i
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="376357366"
+X-IronPort-AV: E=Sophos;i="5.96,189,1665471600"; 
+   d="scan'208";a="376357366"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 20:26:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="673103167"
+X-IronPort-AV: E=Sophos;i="5.96,189,1665471600"; 
+   d="scan'208";a="673103167"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 23 Nov 2022 20:26:55 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oy3p8-0003VZ-2C;
+        Thu, 24 Nov 2022 04:26:54 +0000
+Date:   Thu, 24 Nov 2022 12:26:33 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless:pending] BUILD SUCCESS
+ c959453853cd967602cbcff0e10bd7071532ab98
+Message-ID: <637ef279.PLQLBnwANIw19Lw8%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
-To:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        =?UTF-8?Q?Maciej_=c5=bbenczykowski?= <maze@google.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Ilja Van Sprundel <ivansprundel@ioactive.com>,
-        Joseph Tartaro <joseph.tartaro@ioactive.com>
-References: <04ea37cc-d97a-3e00-8a99-135ab38860f2@green-communications.fr>
-Content-Language: en-US
-From:   Lars Melin <larsm17@gmail.com>
-In-Reply-To: <04ea37cc-d97a-3e00-8a99-135ab38860f2@green-communications.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/23/2022 22:40, Nicolas Cavallari wrote:
-> There are also probably cellular dongles that uses rndis by default.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git pending
+branch HEAD: c959453853cd967602cbcff0e10bd7071532ab98  wifi: wilc1000: validate number of channels
 
-Yes, there is a whole bunch of them and new ones are still coming out.
-Some USB dongle mfgr prefer to implement RNDIS instead of MBIM because 
-the same dongle can then be used for both old and new WIN versions.
-I do agree that the RNDIS protocol is crap but removing RNDIS_HOST will 
-be a regression for many linux users.
+elapsed time: 726m
 
-/Lars
+configs tested: 88
+configs skipped: 3
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+s390                                defconfig
+powerpc                           allnoconfig
+s390                             allmodconfig
+sh                               allmodconfig
+s390                             allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+x86_64                            allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64               randconfig-a011-20221121
+x86_64               randconfig-a014-20221121
+x86_64               randconfig-a012-20221121
+x86_64               randconfig-a013-20221121
+x86_64               randconfig-a016-20221121
+x86_64               randconfig-a015-20221121
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+ia64                             allmodconfig
+sparc                             allnoconfig
+sh                            hp6xx_defconfig
+sh                         ecovec24_defconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+arm                            hisi_defconfig
+csky                                defconfig
+mips                     loongson1b_defconfig
+arm                        clps711x_defconfig
+xtensa                  audio_kc705_defconfig
+mips                           gcw0_defconfig
+xtensa                generic_kc705_defconfig
+arm                      jornada720_defconfig
+s390                 randconfig-r044-20221121
+riscv                randconfig-r042-20221121
+arc                  randconfig-r043-20221120
+arc                  randconfig-r043-20221121
+arc                        nsim_700_defconfig
+sh                           se7722_defconfig
+arc                     haps_hs_smp_defconfig
+openrisc                       virt_defconfig
+powerpc                    klondike_defconfig
+arm                           viper_defconfig
+m68k                          hp300_defconfig
+riscv                               defconfig
+microblaze                          defconfig
+sh                           se7780_defconfig
+i386                 randconfig-a014-20221121
+i386                 randconfig-a011-20221121
+i386                 randconfig-a013-20221121
+i386                 randconfig-a016-20221121
+i386                 randconfig-a012-20221121
+i386                 randconfig-a015-20221121
+i386                          randconfig-c001
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+
+clang tested configs:
+x86_64               randconfig-a002-20221121
+x86_64               randconfig-a001-20221121
+x86_64               randconfig-a004-20221121
+x86_64               randconfig-a006-20221121
+x86_64               randconfig-a005-20221121
+x86_64               randconfig-a003-20221121
+x86_64                        randconfig-k001
+i386                 randconfig-a001-20221121
+i386                 randconfig-a005-20221121
+i386                 randconfig-a006-20221121
+i386                 randconfig-a004-20221121
+i386                 randconfig-a003-20221121
+i386                 randconfig-a002-20221121
+mips                      malta_kvm_defconfig
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
