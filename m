@@ -2,61 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D8B63734C
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 09:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 728296373CB
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 09:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbiKXIGo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Nov 2022 03:06:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52776 "EHLO
+        id S229555AbiKXIWN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Nov 2022 03:22:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbiKXIGo (ORCPT
+        with ESMTP id S229984AbiKXIWL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Nov 2022 03:06:44 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D24CBE868
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 00:06:43 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E55276201D
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 08:06:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DEDC433C1;
-        Thu, 24 Nov 2022 08:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669277202;
-        bh=+hdVqNbGzl+XUzfQ1p3+T+Rghb2DWU3+wt8Ww6Qy7jU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=j55+x6av7TgZLYbiVh3pJoDs0aKnvGLNyVdNT5zborUjYzts+yQnJ0kz02D5BNhqO
-         dHyTGXnZLxY+LIC+hBFi5h9sdlTQS0hZFtyU2jHPOzeS9Ivwz6ktKmnxD3WaA3FAYg
-         JWpRTu+li9J9nnaVLXgJlDOjP1llGvrsLWO2u9HRcwvaNM4CSExop2K3T9smYrOhzQ
-         mp6IgDVSmFf0I8FWrIl8V8k2Reg+mdPu11UAJIRbLyifZ4cCMDd04xnTSw3Wziv5ZZ
-         JmOPE+wjZkH+jW6TG6FVASt5ldQYC6M2ztI15KqqdNtX122LXGosHgQhxfaL893ons
-         WuOBlHwEkotCA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Shayne Chen <shayne.chen@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Howard Hsu <howard-yh.hsu@mediatek.com>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>,
-        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>
-Subject: Re: [PATCH 0/9] wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices
-References: <20221122084554.9494-1-shayne.chen@mediatek.com>
-Date:   Thu, 24 Nov 2022 10:06:33 +0200
-In-Reply-To: <20221122084554.9494-1-shayne.chen@mediatek.com> (Shayne Chen's
-        message of "Tue, 22 Nov 2022 16:45:45 +0800")
-Message-ID: <87k03kojxy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 24 Nov 2022 03:22:11 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0559D532F9
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 00:22:09 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1oy7Ue-0006Qm-Na; Thu, 24 Nov 2022 09:22:00 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1oy7Uc-0005xp-CG; Thu, 24 Nov 2022 09:21:58 +0100
+Date:   Thu, 24 Nov 2022 09:21:58 +0100
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Neo Jou <neojou@gmail.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Alexander Hochbaum <alex@appudo.com>,
+        Da Xue <da@libre.computer>
+Subject: Re: [PATCH v3 00/11] RTW88: Add support for USB variants
+Message-ID: <20221124082158.GE29978@pengutronix.de>
+References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
+ <20221122145527.GA29978@pengutronix.de>
+ <015051d9a5b94bbca5135c58d2cfebf3@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <015051d9a5b94bbca5135c58d2cfebf3@realtek.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,50 +66,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shayne Chen <shayne.chen@mediatek.com> writes:
+On Thu, Nov 24, 2022 at 06:48:23AM +0000, Ping-Ke Shih wrote:
+> 
+> > -----Original Message-----
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Tuesday, November 22, 2022 10:55 PM
+> > To: Bernie Huang <phhuang@realtek.com>
+> > Cc: linux-wireless@vger.kernel.org; Ping-Ke Shih <pkshih@realtek.com>; Hans Ulli Kroll
+> > <linux@ulli-kroll.de>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>; netdev@vger.kernel.org;
+> > Kalle Valo <kvalo@kernel.org>; Yan-Hsuan Chuang <tony0620emma@gmail.com>; linux-kernel@vger.kernel.org;
+> > Viktor Petrenko <g0000ga@gmail.com>; Neo Jou <neojou@gmail.com>; Bernie Huang <phhuang@realtek.com>;
+> > kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
+> > Da Xue <da@libre.computer>
+> > Subject: Re: [PATCH v3 00/11] RTW88: Add support for USB variants
+> > 
+> > On Tue, Nov 22, 2022 at 03:52:15PM +0100, Sascha Hauer wrote:
+> > > This is the third round of adding support for the USB variants to the
+> > > RTW88 driver. There are a few changes to the last version which make it
+> > > worth looking at this version.
+> > >
+> > > First of all RTL8723du and RTL8821cu are tested working now. The issue
+> > > here was that the txdesc checksum calculation was wrong. I found the
+> > > correct calculation in various downstream drivers found on github.
+> > >
+> > > The second big issue was that TX packet aggregation was wrong. When
+> > > aggregating packets each packet start has to be aligned to eight bytes.
+> > > The necessary alignment was added to the total URB length before
+> > > checking if there is another packet to aggregate, so the URB length
+> > > included that padding after the last packet, which is wrong.  Fixing
+> > > this makes the driver work much more reliably.
+> > >
+> > > I added all people to Cc: who showed interest in this driver and I want
+> > > to welcome you for testing and reviewing.
+> > 
+> > There still is a problem with the RTL8822cu chipset I have here.  When
+> > using NetworkManager I immediately lose the connection to the AP after
+> > it has been connected:
+> > 
+> > [  376.213846] wlan0: authenticate with 76:83:c2:ce:81:b1
+> > [  380.085463] wlan0: send auth to 76:83:c2:ce:81:b1 (try 1/3)
+> > [  380.091446] wlan0: authenticated
+> > [  380.108864] wlan0: associate with 76:83:c2:ce:81:b1 (try 1/3)
+> > [  380.136448] wlan0: RX AssocResp from 76:83:c2:ce:81:b1 (capab=0x1411 status=0 aid=2)
+> > [  380.202955] wlan0: associated
+> > [  380.268140] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+> > [  380.275328] wlan0: Connection to AP 76:83:c2:ce:81:b1 lost
+> > 
+> > That doesn't happen when using plain wpa_supplicant. This seems to go
+> > down to cd96e22bc1da ("rtw88: add beacon filter support"). After being
+> > connected I get a BCN_FILTER_CONNECTION_LOSS beacon. Plain
+> > wpa_supplicant seems to go another code patch and doesn't activate
+> > connection quality monitoring.
+> > 
+> > The connection to the AP works fluently also with NetworkManager though
+> > when I just ignore the BCN_FILTER_CONNECTION_LOSS beacon.
+> > 
+> > Any idea what may be wrong here?
+> > 
+> 
+> Please reference to below patch to see if it can work to you.
+> 
+> https://lore.kernel.org/linux-wireless/20221124064442.28042-1-pkshih@realtek.com/T/#u
 
-> Add MediaTek new mac80211 driver mt7996 for Wi-Fi 7 (802.11be) devices.
-> The driver first supports Filogic 680 PCI device, which is a Wi-Fi 7
-> chipset supporting concurrent tri-band operation at 6 GHz, 5 GHz, and
-> 2.4 GHz with 4x4 antennas on each band.
->
-> Currently, mt7996 only supports tri-band HE or older mode.
-> EHT mode and more variants of Filogic 680 support will be introduced
-> in further patches.
->
-> Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-> Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-> Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
-> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-> Co-developed-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-> Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-> Co-developed-by: MeiChia Chiu <meichia.chiu@mediatek.com>
-> Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
-> Co-developed-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-> Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-> Co-developed-by: Money Wang <Money.Wang@mediatek.com>
-> Signed-off-by: Money Wang <Money.Wang@mediatek.com>
-> Co-developed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-> Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
->
-> ----------------[commit message cut here]----------------
->
-> This series is based on the following series with fixes folded:
-> - https://patchwork.kernel.org/project/linux-wireless/cover/20221110093525.29649-1-shayne.chen@mediatek.com/
->
-> For easier review, the big patch has been splitted into multiple patches
-> per functionality. These patches will be folded into a single patch in
-> the final version.
+Great! That solves this issue \o/
 
-I wish you had split the patches per file like I asked, it makes
-reviewing a new driver so much easier. Reviewing is hard, please always
-take us reviewers into consideration when submitting patches.
-
-No need to resend because of this, but I am grumpy.
+Sascha
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
