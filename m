@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B412637FAF
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 20:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC03A637FB0
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 20:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbiKXTdl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Nov 2022 14:33:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43362 "EHLO
+        id S229613AbiKXTfp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Nov 2022 14:35:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbiKXTdl (ORCPT
+        with ESMTP id S229553AbiKXTfn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Nov 2022 14:33:41 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258F182235
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:33:40 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id b3so3856903lfv.2
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:33:40 -0800 (PST)
+        Thu, 24 Nov 2022 14:35:43 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA07A827D4
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:35:42 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id j4so3894925lfk.0
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:35:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=JetEHbxEPqJhb0ETp/fgJQYlCPaT7pyzcFLrucFD4zw=;
-        b=HvB/WHI/rk5sDad/bKSvNHr9W3WbqMO+Y216wb8+nVnlpI35+Xr5aHKvDpkel7NKvn
-         aImgVkCae+2o5E9B1rC+9zzhIxUvtZgdVE+mPZNnUIB5QW+LITfwh3zZFRNPZtEzOIVK
-         rAxh89NB1S0GdsaCxODRW4HbLN2Fqkf/YBbAmlMDj5TH39S/yypvJ+XE6oFX+kIVDVSr
-         yzqTQC4GcTBMypdA6VlKcmam+vS//zq1ZkMmc8sfP0ULBCaDiVUsnZsQ1BV0K/8C9lfG
-         ksACjwaMWPKdQ4yZWMuy065vEEd1n82oXi8khy3t6p3qwx4AbS1Jbp8Xg9MHfNrtJ7Af
-         RIBQ==
+        bh=jWkUaNoHrSPKQOkBRg0F/kgVQTBoHdztu+sCWJWV2+Y=;
+        b=cbb9+vf1nV/BoIefRcjmx1rmTyEEyBEg+0ydPdS6EbhepBARkojOgvVpXj487EfUqD
+         JkLnX4Wi6OeGuWg4WVOxl0bJBLpGaObS4sjdR4YV9DojmRfY47FsRKVd4IlfWU/Wbjt4
+         a3jWbYGGT87T3l/DVz3ggJ+/qeOYiEfXkgvumTpoverQvXd+Tq0kyALZ5Ro26PkwYUWo
+         e5rePJ2Vp9ubl55jEdbqIOsZCAfav1KbXdJ9q6CiH8NA69gwvqIAhyGdghbLlTnwYMbt
+         YqdT9TxCgGWnUeWN0bDOF0501O0lLnIIqnuLmAEEdZn/sDxu/2RAFQQyBjUxTb1aq43U
+         KjhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JetEHbxEPqJhb0ETp/fgJQYlCPaT7pyzcFLrucFD4zw=;
-        b=VgK74TCFrASqhsM08bzDogZ0fkCdruP8ClkOoCApl9A/TxCiWU0xAlWBHZpOCTA7hD
-         D5lnt339fYOO/VqM4vz/uepcShhIh0mvCXnb/NiDqEcRc3DXgL3FjkNYg/b8Qpc9Zknt
-         MA6YE3mri6DY3y8n1gZuU/B2DJfW/nUDpLIHUkaclAJ5EwAESkzFJRrHfIerI/1T5R0x
-         +lj47a7BikJnCnvpLEXqE05n7hKyzVzXFzxq4OVEesb9uhXYjuvgNt4yKaWrnE271keG
-         cHHxgnWNlr0IHQWFIut/EWxA0e0Pomsoh/S9MgOd7OVX50G+JYdLRXIfqzgR2tCVp3zH
-         niWg==
-X-Gm-Message-State: ANoB5pnLd8+S80YdOr8r8+mppW+LYCTmQK4jkJ99x2eFWvALWNqrMDAr
-        ekavv4jVS+6vU4/AWOKPUYsdCQekXhGSUXEcWlIR1q1DSp/6Gg==
-X-Google-Smtp-Source: AA0mqf6YQnfLhtt+9ZK12w7M1chlWwomTRxUrlgjLhLZGxCdf13cIPD1gtxQ2i39CgiyVvFYWgPj3zxCcD8DiTDym4A=
-X-Received: by 2002:a19:6a02:0:b0:4a2:9853:b89d with SMTP id
- u2-20020a196a02000000b004a29853b89dmr10860357lfu.105.1669318418489; Thu, 24
- Nov 2022 11:33:38 -0800 (PST)
+        bh=jWkUaNoHrSPKQOkBRg0F/kgVQTBoHdztu+sCWJWV2+Y=;
+        b=C2TUipuH/qPUgzGY8VmDtvT6SPWHr9FIBpxUHGI5GQIyS/CNValCqRBso/rYoQxVKW
+         lcEOmONp3Hn89hPaUx9DDR3CWZZ/M7Eek6RE3sE0gB77stQN6ctYBg7/Eyf+XQriSDf2
+         0uKISRGeamQ/Rt43FKcg5+ZC+/jpVYxQhh2/8JuYINBudmDtBfRdmN6BYoDWGbZ+GglH
+         rECYAmhbixrLEExnsAU/R85Ba6dNHxg98d3anuHHjHhCI2QWeNnAUhLqrVga+GUN7Fwe
+         PzRstWvJka9hLg4i3V30BqmrVDP7X59fKkuoBoo+AcFSSiu9oBJRtCHq8W0d6+lD5rVk
+         y73A==
+X-Gm-Message-State: ANoB5pmZqiARFDv6iUIjIyDygo5CbQ5G7bI5zmDKwRkhLRuEp2PKkmLV
+        KIG7La60qJlY80dzDRdQHwK7phJ+FRDI6CFk/bjczOVqdwOikA==
+X-Google-Smtp-Source: AA0mqf68iLoyQHTA3EcjheDdTIe88NRz/BW7RZO+JDcNntI/aGOVyi3x+AryJAwhfvTa7GsnHenGonTmH/Da1T9vL0M=
+X-Received: by 2002:a05:6512:4c8:b0:4a2:7d11:80e8 with SMTP id
+ w8-20020a05651204c800b004a27d1180e8mr10879387lfq.464.1669318541058; Thu, 24
+ Nov 2022 11:35:41 -0800 (PST)
 MIME-Version: 1.0
 From:   Ioannis Barkas <jnyb.de@gmail.com>
-Date:   Fri, 25 Nov 2022 21:32:28 +0200
-Message-ID: <CADUzMVZu-6W88MyR6+Vi5FvJUPxxrRUYKkNftCWy6ZvfMUK9nA@mail.gmail.com>
-Subject: TL-WN551G Atheros WPA3 SSID connection problem #6
+Date:   Fri, 25 Nov 2022 21:34:30 +0200
+Message-ID: <CADUzMVaETr=hwh8=ZouQvF1BCGDifwMcp1k8zDtCt_vVWoe=7w@mail.gmail.com>
+Subject: BCM4313 Broadcom WPA3 SSID connection problem #7
 To:     linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
@@ -65,140 +65,69 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello,
 
-Moving on to my PCI devices, this is seen on Ubuntu boot:
-[   60.950274] ath5k 0000:05:06.0: registered as 'phy0'
-[   61.559799] ath: EEPROM regdomain: 0x809c
-[   61.559805] ath: EEPROM indicates we should expect a country code
-[   61.559806] ath: doing EEPROM country->regdmn map search
-[   61.559807] ath: country maps to regdmn code: 0x52
-[   61.559808] ath: Country alpha2 being used: CN
-[   61.559809] ath: Regpair used: 0x52
-[   61.559833] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-[   61.560201] ath5k: phy0: Atheros AR2413 chip found (MAC: 0x78, PHY: 0x45)
-[   63.069976] ath5k 0000:05:06.0 wlp5s6: renamed from wlan0
+Moving to the next mPCIe device, on Ubuntu boot I get:
+[   58.342128] Support for cores revisions 0x17 and 0x18 disabled by
+module param allhwsupport=0. Try b43.allhwsupport=1
+[   58.342140] b43: probe of bcma0:1 failed with error -524
+[   58.342185] Broadcom 43xx driver loaded [ Features: PNL ]
+[   58.460434] brcmsmac bcma0:1: mfg 4bf core 812 rev 24 class 0 irq 16
+[   58.461372] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
+[   58.461941] ieee80211 phy0: registered radio enabled led device:
+brcmsmac-phy0:radio
+[   58.466916] brcmsmac bcma0:1 wlp2s0b1: renamed from wlan0
 
-Do not know why it has chosen CN, I am at EU! Maybe wrong value in
-serial EEPROM.
-
-It was able to connect to the 2,4GHz WPA3 SSID:
-[  665.113370] wlp5s6: authenticate with c6:27:28:**:**:**
-[  665.113421] wlp5s6: 80 MHz not supported, disabling VHT
-[  665.118229] wlp5s6: send auth to c6:27:28:**:**:** (try 1/3)
-[  665.119872] wlp5s6: authenticated
-[  665.124467] wlp5s6: associate with c6:27:28:**:**:** (try 1/3)
-[  665.128611] wlp5s6: RX AssocResp from c6:27:28:**:**:**
+Here is what I get on WPA3 SSID connection attempt:
+[  314.562750] wlp2s0b1: authenticate with c6:27:28:**:**:**
+[  314.562799] wlp2s0b1: 80 MHz not supported, disabling VHT
+[  314.564600] wlp2s0b1: send auth to c6:27:28:**:**:** (try 1/3)
+[  314.753466] wlp2s0b1: authenticate with c6:27:28:**:**:**
+[  314.753485] wlp2s0b1: send auth to c6:27:28:**:**:** (try 1/3)
+[  314.859120] wlp2s0b1: authenticated
+[  314.863380] wlp2s0b1: associate with c6:27:28:**:**:** (try 1/3)
+[  314.869543] wlp2s0b1: RX AssocResp from c6:27:28:**:**:**
 (capab=0x1431 status=0 aid=16)
-[  665.128787] wlp5s6: associated
-[  665.160040] wlp5s6: Limiting TX power to 30 (30 - 0) dBm as
+[  314.870070] brcmsmac bcma0:1: brcmsmac: brcms_ops_bss_info_changed:
+associated
+[  314.870086] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
+enabled: true (implement)
+[  314.870114] wlp2s0b1: associated
+[  314.946507] wlp2s0b1: Limiting TX power to 30 (30 - 0) dBm as
 advertised by c6:27:28:**:**:**
-[  665.375713] IPv6: ADDRCONF(NETDEV_CHANGE): wlp5s6: link becomes ready
-[  669.398074] systemd-journald[969]: Time jumped backwards, rotating.
-[  711.862557] wlp5s6: deauthenticating from c6:27:28:**:**:** by
-local choice (Reason: 3=DEAUTH_LEAVING)
-[  712.115085] wlp5s6: authenticate with c6:27:28:**:**:**
-[  712.115115] wlp5s6: 80 MHz not supported, disabling VHT
-[  712.120467] wlp5s6: send auth to c6:27:28:**:**:** (try 1/3)
-[  712.122050] wlp5s6: authenticated
-[  712.122999] wlp5s6: associate with c6:27:28:**:**:** (try 1/3)
-[  712.126066] wlp5s6: RX AssocResp from c6:27:28:**:**:**
+[  314.946534] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
+enabled: true (implement)
+[  314.966486] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
+exceeded phylen 168/256 dur 1850/1504
+[  314.997892] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
+exceeded phylen 137/256 dur 1602/1504
+[  315.067741] wlp2s0b1: deauthenticating from c6:27:28:**:**:** by
+local choice (Reason: 1=UNSPECIFIED)
+[  315.115601] brcmsmac bcma0:1: brcmsmac: brcms_ops_bss_info_changed:
+disassociated
+[  315.115627] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
+enabled: false (implement)
+[  316.169090] wlp2s0b1: authenticate with c6:27:28:**:**:**
+[  316.169143] wlp2s0b1: 80 MHz not supported, disabling VHT
+[  316.169326] wlp2s0b1: send auth to c6:27:28:**:**:** (try 1/3)
+[  316.178750] wlp2s0b1: authenticated
+[  316.183370] wlp2s0b1: associate with c6:27:28:**:**:** (try 1/3)
+[  316.191260] wlp2s0b1: RX AssocResp from c6:27:28:**:**:**
 (capab=0x1431 status=0 aid=16)
-[  712.126181] wlp5s6: associated
-[  712.162838] wlp5s6: Limiting TX power to 30 (30 - 0) dBm as
+[  316.191778] brcmsmac bcma0:1: brcmsmac: brcms_ops_bss_info_changed:
+associated
+[  316.191794] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
+enabled: true (implement)
+[  316.191824] wlp2s0b1: associated
+[  316.277762] wlp2s0b1: Limiting TX power to 30 (30 - 0) dBm as
 advertised by c6:27:28:**:**:**
-[  712.231286] IPv6: ADDRCONF(NETDEV_CHANGE): wlp5s6: link becomes ready
-[  722.209998] ath5k: ath5k_hw_get_isr: ISR: 0x00000400 IMR: 0x00000000
+[  316.277794] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
+enabled: true (implement)
+[  316.296526] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
+exceeded phylen 184/256 dur 1978/1504
+[  316.301724] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
+exceeded phylen 137/256 dur 1602/1504
+[  316.332056] wlp2s0b1: deauthenticating from c6:27:28:**:**:** by
+local choice (Reason: 1=UNSPECIFIED)
 
-But moments before disconnecting from it, I got:
-[  929.701994] ================================================================================
-[  929.702005] UBSAN: array-index-out-of-bounds in
-/build/linux-JDy9aa/linux-5.19.0/drivers/net/wireless/ath/ath5k/base.c:1741:20
-[  929.702009] index 4 is out of range for type 'ieee80211_tx_rate [4]'
-[  929.702012] CPU: 5 PID: 0 Comm: swapper/5 Tainted: P           O
-  5.19.0-21-generic #21-Ubuntu
-[  929.702015] Hardware name: Gigabyte Technology Co., Ltd.
-GA-880GMA-USB3/GA-880GMA-USB3, BIOS F4e 05/24/2012
-[  929.702017] Call Trace:
-[  929.702019]  <IRQ>
-[  929.702022]  show_stack+0x4e/0x61
-[  929.702029]  dump_stack_lvl+0x4a/0x6d
-[  929.702036]  dump_stack+0x10/0x18
-[  929.702038]  ubsan_epilogue+0x9/0x43
-[  929.702041]  __ubsan_handle_out_of_bounds.cold+0x42/0x47
-[  929.702044]  ath5k_tx_frame_completed.constprop.0+0x28f/0x2e0 [ath5k]
-[  929.702055]  ath5k_tx_processq+0xb2/0x1d0 [ath5k]
-[  929.702062]  ath5k_tasklet_tx+0x80/0xf0 [ath5k]
-[  929.702067]  tasklet_action_common.constprop.0+0xbc/0x100
-[  929.702072]  tasklet_action+0x22/0x30
-[  929.702074]  __do_softirq+0xdb/0x34f
-[  929.702078]  __irq_exit_rcu+0x87/0xc0
-[  929.702081]  irq_exit_rcu+0xe/0x20
-[  929.702083]  common_interrupt+0xa4/0xb0
-[  929.702086]  </IRQ>
-[  929.702087]  <TASK>
-[  929.702088]  asm_common_interrupt+0x27/0x40
-[  929.702092] RIP: 0010:native_safe_halt+0xb/0x10
-[  929.702095] Code: cc cc cc 4c 89 ee 48 c7 c7 e0 4f 25 98 e8 8d 8f
-84 ff eb c4 cc cc cc cc cc cc cc cc cc cc cc eb 07 0f 00 2d b9 46 4e
-00 fb f4 <c3> cc cc cc cc eb 07 0f 00 2d a9 46 4e 00 f4 c3 cc cc cc cc
-cc 0f
-[  929.702097] RSP: 0018:ffffbf91800cfdc0 EFLAGS: 00000246
-[  929.702100] RAX: 0000000000004000 RBX: ffff9d0e41270064 RCX: 0000000000000000
-[  929.702102] RDX: 0000000000000001 RSI: ffff9d0e41270000 RDI: 0000000000000001
-[  929.702103] RBP: ffffbf91800cfdd0 R08: 0000000000000000 R09: 0000000000000000
-[  929.702104] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9d0e41270064
-[  929.702105] R13: 0000000000000005 R14: ffffffff984c5220 R15: ffff9d1160540000
-[  929.702108]  ? acpi_idle_do_entry+0x79/0xc0
-[  929.702111]  acpi_idle_enter+0xbb/0x180
-[  929.702114]  cpuidle_enter_state+0x9a/0x650
-[  929.702117]  ? native_load_gs_index+0x19/0x40
-[  929.702121]  ? raw_spin_rq_unlock+0x10/0x40
-[  929.702125]  cpuidle_enter+0x2e/0x50
-[  929.702127]  call_cpuidle+0x23/0x50
-[  929.702130]  cpuidle_idle_call+0x11b/0x190
-[  929.702132]  do_idle+0x82/0x100
-[  929.702134]  cpu_startup_entry+0x1d/0x20
-[  929.702136]  start_secondary+0x122/0x160
-[  929.702139]  secondary_startup_64_no_verify+0xe5/0xeb
-[  929.702143]  </TASK>
-[  929.702144] ================================================================================
-[  978.737790] ath5k: ath5k_hw_get_isr: ISR: 0x00000001 IMR: 0x00000000
-[ 1137.988980] wlp5s6: deauthenticating from c6:27:28:**:**:** by
-local choice (Reason: 3=DEAUTH_LEAVING)
-
-Is it something harmless?
-
-Here is the device:
-05:06.0 Ethernet controller [0200]: Qualcomm Atheros AR2413/AR2414
-Wireless Network Adapter [AR5005G(S) 802.11bg] [168c:001a] (rev 01)
-    Subsystem: Qualcomm Atheros Compex Wireless 802.11 b/g  MiniPCI
-Adapter, Rev A1 [WLM54G] [168c:2052]
-    Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
-ParErr- Stepping- SERR- FastB2B- DisINTx-
-    Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort-
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-    Latency: 168 (2500ns min, 7000ns max), Cache Line Size: 4 bytes
-    Interrupt: pin A routed to IRQ 20
-    NUMA node: 0
-    Region 0: Memory at fdbf0000 (32-bit, non-prefetchable) [size=64K]
-    Capabilities: [44] Power Management version 2
-        Flags: PMEClk- DSI- D1- D2- AuxCurrent=375mA
-PME(D0-,D1-,D2-,D3hot-,D3cold-)
-        Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=2 PME-
-    Kernel driver in use: ath5k
-    Kernel modules: ath5k
-00: 8c 16 1a 00 06 00 90 02 01 00 00 02 01 a8 00 00
-10: 00 00 bf fd 00 00 00 00 00 00 00 00 00 00 00 00
-20: 00 00 00 00 00 00 00 00 01 50 00 00 8c 16 52 20
-30: 00 00 00 00 44 00 00 00 00 00 00 00 05 01 0a 1c
-40: 00 00 00 00 01 00 c2 01 00 40 00 c6 00 00 00 00
-50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+and later on can't connect even to the WPA2,3 2,4GHz SSID. It worked
+only after a reboot and was dead slow so what needs to be done here?
+Use the b43.allhwsupport=1 parameter or try wl as well?
