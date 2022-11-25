@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC03A637FB0
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 20:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12C23637FB6
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Nov 2022 20:38:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbiKXTfp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Nov 2022 14:35:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43744 "EHLO
+        id S229481AbiKXTij (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Nov 2022 14:38:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbiKXTfn (ORCPT
+        with ESMTP id S229472AbiKXTih (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Nov 2022 14:35:43 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA07A827D4
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:35:42 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id j4so3894925lfk.0
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:35:42 -0800 (PST)
+        Thu, 24 Nov 2022 14:38:37 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 219084A9D2
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:38:36 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id l8so2945805ljh.13
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 11:38:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=jWkUaNoHrSPKQOkBRg0F/kgVQTBoHdztu+sCWJWV2+Y=;
-        b=cbb9+vf1nV/BoIefRcjmx1rmTyEEyBEg+0ydPdS6EbhepBARkojOgvVpXj487EfUqD
-         JkLnX4Wi6OeGuWg4WVOxl0bJBLpGaObS4sjdR4YV9DojmRfY47FsRKVd4IlfWU/Wbjt4
-         a3jWbYGGT87T3l/DVz3ggJ+/qeOYiEfXkgvumTpoverQvXd+Tq0kyALZ5Ro26PkwYUWo
-         e5rePJ2Vp9ubl55jEdbqIOsZCAfav1KbXdJ9q6CiH8NA69gwvqIAhyGdghbLlTnwYMbt
-         YqdT9TxCgGWnUeWN0bDOF0501O0lLnIIqnuLmAEEdZn/sDxu/2RAFQQyBjUxTb1aq43U
-         KjhQ==
+        bh=MvDRofuMuZ5pMPBbYZEO6AJ4QXjmBpHA1AzlqmxDiQI=;
+        b=Z/2EXZ1TMpQoFw7AiaXIS8yo+Xjf+3rQeV/byVMFGY/kkeFX1b+ywIB3Tq+oh4iQKY
+         4Y3pvygNltCqntEK8W0YSlr/r7dW3DzPaS8gIiZdBgAJ1rhdc5ufcQUXIzuMoGtz6Il6
+         lG9klJqsvAeJJnboyZRdwQmKA9IWvX04Rn2/YHKEJ5MFmCwu+a1R6V1k3ZXD7LFOYrZc
+         iT1iRW14wss+0rLNOKQJVvEZMuRLu+JKIDDeFbpwkLA5hO9mkAr0EqwO5OAG+7nWst7x
+         y8B/dBJat/5uRpWIOCIRP7OeHfucyDz3WMQ8+eKfCPVsTqReDnk+AO9QyWIv2lRIXof8
+         56NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jWkUaNoHrSPKQOkBRg0F/kgVQTBoHdztu+sCWJWV2+Y=;
-        b=C2TUipuH/qPUgzGY8VmDtvT6SPWHr9FIBpxUHGI5GQIyS/CNValCqRBso/rYoQxVKW
-         lcEOmONp3Hn89hPaUx9DDR3CWZZ/M7Eek6RE3sE0gB77stQN6ctYBg7/Eyf+XQriSDf2
-         0uKISRGeamQ/Rt43FKcg5+ZC+/jpVYxQhh2/8JuYINBudmDtBfRdmN6BYoDWGbZ+GglH
-         rECYAmhbixrLEExnsAU/R85Ba6dNHxg98d3anuHHjHhCI2QWeNnAUhLqrVga+GUN7Fwe
-         PzRstWvJka9hLg4i3V30BqmrVDP7X59fKkuoBoo+AcFSSiu9oBJRtCHq8W0d6+lD5rVk
-         y73A==
-X-Gm-Message-State: ANoB5pmZqiARFDv6iUIjIyDygo5CbQ5G7bI5zmDKwRkhLRuEp2PKkmLV
-        KIG7La60qJlY80dzDRdQHwK7phJ+FRDI6CFk/bjczOVqdwOikA==
-X-Google-Smtp-Source: AA0mqf68iLoyQHTA3EcjheDdTIe88NRz/BW7RZO+JDcNntI/aGOVyi3x+AryJAwhfvTa7GsnHenGonTmH/Da1T9vL0M=
-X-Received: by 2002:a05:6512:4c8:b0:4a2:7d11:80e8 with SMTP id
- w8-20020a05651204c800b004a27d1180e8mr10879387lfq.464.1669318541058; Thu, 24
- Nov 2022 11:35:41 -0800 (PST)
+        bh=MvDRofuMuZ5pMPBbYZEO6AJ4QXjmBpHA1AzlqmxDiQI=;
+        b=XbLdB0Gj12Ju5CkORUx/oeh6LmXr9ZJ5ygSeG2Got3th9wGdPckShafzaaogQp0AwJ
+         bkERMGw5K7zlIohgndk6HFn4YJfQWjkB9i+Y9FgfGeQKtzsDNtqSe86FMRqAM/z9w7Zo
+         p6HZB6x0jhSHk40PQgVZm0BmYGt0+6rpP2SMpkIUVXRNTXUOQ0vubmkSG6UlxJiTc7p7
+         i933O+pyuLHj6hC8cOGXch5epLrdbVKf4kLh+JF5BmK/19aSTdy7yu0myCyjP4MzD4pV
+         lQY12Hs7gias+J5fK1mp61U62zLnn86YXUGjF4s9SJ5PdWeqT1f/VzmenQHzogOdT8xt
+         oLRg==
+X-Gm-Message-State: ANoB5pkfjxxSywoGbALGA4DiscpinP9SyeFkEz6lOTz4fL2CMp2bZntc
+        9b9f/5LbnnS1oDN5LpatMDVgOJEy+2cJHzDl1dP2Bs+hSv63UA==
+X-Google-Smtp-Source: AA0mqf7QugNwKII9c8kd+rXNpzpU6qY7saInSAeIyJuBJzGTtkEwllvsXc6mBA5aV0NF+jPyGl2RjZNKqzEyvy8wieA=
+X-Received: by 2002:a2e:894f:0:b0:279:7c42:9240 with SMTP id
+ b15-20020a2e894f000000b002797c429240mr2546302ljk.54.1669318714203; Thu, 24
+ Nov 2022 11:38:34 -0800 (PST)
 MIME-Version: 1.0
 From:   Ioannis Barkas <jnyb.de@gmail.com>
-Date:   Fri, 25 Nov 2022 21:34:30 +0200
-Message-ID: <CADUzMVaETr=hwh8=ZouQvF1BCGDifwMcp1k8zDtCt_vVWoe=7w@mail.gmail.com>
-Subject: BCM4313 Broadcom WPA3 SSID connection problem #7
+Date:   Fri, 25 Nov 2022 21:37:23 +0200
+Message-ID: <CADUzMVbUXjKrNjEXwrkYy6QWNcYudmi9ia5=hjA0pxgM5TDE8g@mail.gmail.com>
+Subject: RT2561 Ralink WPA3 SSID connection problem #8
 To:     linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
@@ -65,69 +65,175 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello,
 
-Moving to the next mPCIe device, on Ubuntu boot I get:
-[   58.342128] Support for cores revisions 0x17 and 0x18 disabled by
-module param allhwsupport=0. Try b43.allhwsupport=1
-[   58.342140] b43: probe of bcma0:1 failed with error -524
-[   58.342185] Broadcom 43xx driver loaded [ Features: PNL ]
-[   58.460434] brcmsmac bcma0:1: mfg 4bf core 812 rev 24 class 0 irq 16
-[   58.461372] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-[   58.461941] ieee80211 phy0: registered radio enabled led device:
-brcmsmac-phy0:radio
-[   58.466916] brcmsmac bcma0:1 wlp2s0b1: renamed from wlan0
+Moving to the next Cardbus device, I installed a Ricoh based PCI to
+Cardbus adapter and on Ubuntu boot I get:
 
-Here is what I get on WPA3 SSID connection attempt:
-[  314.562750] wlp2s0b1: authenticate with c6:27:28:**:**:**
-[  314.562799] wlp2s0b1: 80 MHz not supported, disabling VHT
-[  314.564600] wlp2s0b1: send auth to c6:27:28:**:**:** (try 1/3)
-[  314.753466] wlp2s0b1: authenticate with c6:27:28:**:**:**
-[  314.753485] wlp2s0b1: send auth to c6:27:28:**:**:** (try 1/3)
-[  314.859120] wlp2s0b1: authenticated
-[  314.863380] wlp2s0b1: associate with c6:27:28:**:**:** (try 1/3)
-[  314.869543] wlp2s0b1: RX AssocResp from c6:27:28:**:**:**
+[  330.143963] pcmcia_socket pcmcia_socket0: pccard: CardBus card
+inserted into slot 0
+[  330.144016] pci 0000:06:00.0: [1814:0302] type 00 class 0x028000
+[  330.144053] pci 0000:06:00.0: reg 0x10: [mem 0xffff8000-0xffffffff]
+[  330.144442] pci 0000:06:00.0: BAR 0: assigned [mem 0xf4000000-0xf4007fff]
+[  330.239066] cfg80211: Loading compiled-in X.509 certificates for
+regulatory database
+[  330.239831] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[  330.350656] rt61pci 0000:06:00.0: enabling device (0000 -> 0002)
+[  330.359333] ieee80211 phy0: rt2x00_set_chip: Info - Chipset
+detected - rt: 2561, rf: 0003, rev: 000c
+[  330.359352] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
+[  330.370262] rt61pci 0000:06:00.0 wlp6s0: renamed from wlan0
+[  330.409545] ieee80211 phy0: rt2x00lib_request_firmware: Info -
+Loading firmware file 'rt2561.bin'
+[  330.412828] ieee80211 phy0: rt2x00lib_request_firmware: Info -
+Firmware detected - version: 0.8
+
+It could not connect to a 2,4GHz WPA3 SSID:
+[  648.448124] wlp6s0: authenticate with c6:27:28:**:**:**
+[  648.460096] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[  648.601699] wlp6s0: authenticate with c6:27:28:**:**:**
+[  648.601718] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[  648.705982] wlp6s0: authenticated
+[  648.707959] wlp6s0: associate with c6:27:28:**:**:** (try 1/3)
+[  648.711251] wlp6s0: RX AssocResp from c6:27:28:**:**:**
 (capab=0x1431 status=0 aid=16)
-[  314.870070] brcmsmac bcma0:1: brcmsmac: brcms_ops_bss_info_changed:
-associated
-[  314.870086] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
-enabled: true (implement)
-[  314.870114] wlp2s0b1: associated
-[  314.946507] wlp2s0b1: Limiting TX power to 30 (30 - 0) dBm as
+[  648.711390] wlp6s0: associated
+[  648.803854] wlp6s0: Limiting TX power to 30 (30 - 0) dBm as
 advertised by c6:27:28:**:**:**
-[  314.946534] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
-enabled: true (implement)
-[  314.966486] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
-exceeded phylen 168/256 dur 1850/1504
-[  314.997892] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
-exceeded phylen 137/256 dur 1602/1504
-[  315.067741] wlp2s0b1: deauthenticating from c6:27:28:**:**:** by
+[  648.876363] wlp6s0: deauthenticating from c6:27:28:**:**:** by
 local choice (Reason: 1=UNSPECIFIED)
-[  315.115601] brcmsmac bcma0:1: brcmsmac: brcms_ops_bss_info_changed:
-disassociated
-[  315.115627] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
-enabled: false (implement)
-[  316.169090] wlp2s0b1: authenticate with c6:27:28:**:**:**
-[  316.169143] wlp2s0b1: 80 MHz not supported, disabling VHT
-[  316.169326] wlp2s0b1: send auth to c6:27:28:**:**:** (try 1/3)
-[  316.178750] wlp2s0b1: authenticated
-[  316.183370] wlp2s0b1: associate with c6:27:28:**:**:** (try 1/3)
-[  316.191260] wlp2s0b1: RX AssocResp from c6:27:28:**:**:**
+[  650.345116] wlp6s0: authenticate with c6:27:28:**:**:**
+[  650.368159] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[  650.369802] wlp6s0: authenticated
+[  650.372061] wlp6s0: associate with c6:27:28:**:**:** (try 1/3)
+[  650.375392] wlp6s0: RX AssocResp from c6:27:28:**:**:**
 (capab=0x1431 status=0 aid=16)
-[  316.191778] brcmsmac bcma0:1: brcmsmac: brcms_ops_bss_info_changed:
-associated
-[  316.191794] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
-enabled: true (implement)
-[  316.191824] wlp2s0b1: associated
-[  316.277762] wlp2s0b1: Limiting TX power to 30 (30 - 0) dBm as
+[  650.375524] wlp6s0: associated
+[  650.442245] wlp6s0: Limiting TX power to 30 (30 - 0) dBm as
 advertised by c6:27:28:**:**:**
-[  316.277794] brcmsmac bcma0:1: brcms_ops_bss_info_changed: qos
-enabled: true (implement)
-[  316.296526] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
-exceeded phylen 184/256 dur 1978/1504
-[  316.301724] brcmsmac bcma0:1: wl0: brcms_c_d11hdrs_mac80211:  txop
-exceeded phylen 137/256 dur 1602/1504
-[  316.332056] wlp2s0b1: deauthenticating from c6:27:28:**:**:** by
+[  650.500529] wlp6s0: deauthenticating from c6:27:28:**:**:** by
+local choice (Reason: 1=UNSPECIFIED)
+[  651.949104] wlp6s0: authenticate with c6:27:28:**:**:**
+[  651.972117] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[  651.978953] wlp6s0: authenticated
+[  651.979924] wlp6s0: associate with c6:27:28:**:**:** (try 1/3)
+[  651.983302] wlp6s0: RX AssocResp from c6:27:28:**:**:**
+(capab=0x1431 status=0 aid=16)
+[  651.983431] wlp6s0: associated
+[  652.090904] wlp6s0: Limiting TX power to 30 (30 - 0) dBm as
+advertised by c6:27:28:**:**:**
+[  652.116629] wlp6s0: deauthenticating from c6:27:28:**:**:** by
+local choice (Reason: 1=UNSPECIFIED)
+[  653.549078] wlp6s0: authenticate with c6:27:28:**:**:**
+[  653.572136] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[  653.573791] wlp6s0: authenticated
+[  653.579965] wlp6s0: associate with c6:27:28:**:**:** (try 1/3)
+[  653.583372] wlp6s0: RX AssocResp from c6:27:28:**:**:**
+(capab=0x1431 status=0 aid=16)
+[  653.583505] wlp6s0: associated
+[  653.616722] wlp6s0: Limiting TX power to 30 (30 - 0) dBm as
+advertised by c6:27:28:**:**:**
+[  653.712584] wlp6s0: deauthenticating from c6:27:28:**:**:** by
+local choice (Reason: 1=UNSPECIFIED)
+[  664.365020] wlp6s0: authenticate with c6:27:28:**:**:**
+[  664.388108] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[  664.389743] wlp6s0: authenticated
+[  664.391973] wlp6s0: associate with c6:27:28:**:**:** (try 1/3)
+[  664.395319] wlp6s0: RX AssocResp from c6:27:28:**:**:**
+(capab=0x1431 status=0 aid=16)
+[  664.395453] wlp6s0: associated
+[  664.471295] wlp6s0: Limiting TX power to 30 (30 - 0) dBm as
+advertised by c6:27:28:**:**:**
+[  664.540564] wlp6s0: deauthenticating from c6:27:28:**:**:** by
 local choice (Reason: 1=UNSPECIFIED)
 
-and later on can't connect even to the WPA2,3 2,4GHz SSID. It worked
-only after a reboot and was dead slow so what needs to be done here?
-Use the b43.allhwsupport=1 parameter or try wl as well?
+So I attempted connection to the 2,4GHz WPA2,3 SSID but I got really
+slow speed and then it died:
+[  816.674070] rt2x00mmio_regbusy_read() Indirect register access
+failed: offset=0x0000308c, value=0x0001cd11
+[ 1136.270434] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 2 failed to flush
+[ 1136.970398] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 2 failed to flush
+[ 1137.574381] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 2 failed to flush
+[ 1138.808101] wlp6s0: authenticate with c6:27:28:**:**:**
+[ 1138.834586] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[ 1139.038341] wlp6s0: send auth to c6:27:28:**:**:** (try 2/3)
+[ 1139.242287] wlp6s0: send auth to c6:27:28:**:**:** (try 3/3)
+[ 1139.446254] wlp6s0: authentication with c6:27:28:**:**:** timed out
+[ 1140.078257] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1141.186228] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1141.790174] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1143.051366] wlp6s0: authenticate with c6:27:28:**:**:**
+[ 1143.078356] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[ 1143.078487] wlp6s0: authenticated
+[ 1143.086115] wlp6s0: associate with c6:27:28:**:**:** (try 1/3)
+[ 1143.294124] wlp6s0: associate with c6:27:28:**:**:** (try 2/3)
+[ 1143.498073] wlp6s0: associate with c6:27:28:**:**:** (try 3/3)
+[ 1143.702112] wlp6s0: association with c6:27:28:**:**:** timed out
+[ 1144.358048] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1145.973952] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1146.589994] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1147.839176] wlp6s0: authenticate with c6:27:28:**:**:**
+[ 1147.866065] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[ 1148.073908] wlp6s0: send auth to c6:27:28:**:**:** (try 2/3)
+[ 1148.277888] wlp6s0: send auth to c6:27:28:**:**:** (try 3/3)
+[ 1148.481888] wlp6s0: authentication with c6:27:28:**:**:** timed out
+[ 1149.125886] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1152.621769] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1153.225787] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1154.532380] wlp6s0: authenticate with c6:27:28:**:**:**
+[ 1154.545935] wlp6s0: send auth to c6:27:28:**:**:** (try 1/3)
+[ 1154.749745] wlp6s0: send auth to c6:27:28:**:**:** (try 2/3)
+[ 1154.953698] wlp6s0: send auth to c6:27:28:**:**:** (try 3/3)
+[ 1155.157712] wlp6s0: authentication with c6:27:28:**:**:** timed out
+[ 1155.805705] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1166.429459] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+[ 1167.033457] ieee80211 phy0: rt2x00queue_flush_queue: Warning -
+Queue 0 failed to flush
+
+This is the device:
+06:00.0 Network controller [0280]: Ralink corp. RT2561/RT61 rev B
+802.11g [1814:0302]
+    Subsystem: D-Link System Inc AirPlus G DWL-G630 Wireless Cardbus
+Adapter (rev.E2) [1186:3c08]
+    Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV+ VGASnoop-
+ParErr- Stepping- SERR- FastB2B- DisINTx-
+    Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=slow >TAbort-
+<TAbort- <MAbort- >SERR- <PERR+ INTx-
+    Latency: 64, Cache Line Size: 4 bytes
+    Interrupt: pin A routed to IRQ 20
+    NUMA node: 0
+    Region 0: Memory at f4000000 (32-bit, non-prefetchable) [size=32K]
+    Capabilities: [40] Power Management version 2
+        Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA
+PME(D0-,D1-,D2-,D3hot-,D3cold-)
+        Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
+    Kernel driver in use: rt61pci
+    Kernel modules: rt61pci
+00: 14 18 02 03 16 00 10 84 00 00 80 02 01 40 00 00
+10: 00 00 00 f4 00 00 00 00 00 00 00 00 00 00 00 00
+20: 00 00 00 00 00 00 00 00 01 06 00 00 86 11 08 3c
+30: 00 00 00 00 40 00 00 00 00 00 00 00 14 01 00 00
+40: 01 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00
+50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
