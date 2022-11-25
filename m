@@ -2,71 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC916388F8
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 12:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB90263891E
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 12:53:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbiKYLmm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Nov 2022 06:42:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40068 "EHLO
+        id S229802AbiKYLxz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Nov 2022 06:53:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbiKYLmg (ORCPT
+        with ESMTP id S229580AbiKYLxy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Nov 2022 06:42:36 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B2F271B
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 03:42:34 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id b3so6501428lfv.2
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 03:42:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HuPscf/chfZUucxqeK0O8KtSwVLAMHyTryFfC0BnouI=;
-        b=cRBJ1zIlVB87Nh4EHVcPOxoezUvVbm14AjUgY4f08Iy8TfC87vMcKJDo6glZPhWH7Z
-         GwT8aTsLmweIygCJ/gUv3Vykf6eM7OeiH3i8V8Zy5GD+xPul5w495P7qrsOrnyDaOxLl
-         11Yooh4D6KhfExQlcIjJp9pTmDEK/TrsXc1fkt2A+jNggyrcvkalMMV+LsSc+eKTBBl8
-         aO/wg7tP+nsnZtL5r2c+Dib0cy3zswaht6L8po9wdwGFjhxB6EsSMDCMhj1aL8jVoU+r
-         8Z+oahw4aQc+fkVoYQ8MpgIkXCKKc68nGnW00/rrfWqCGMvqKERweUhcQpK3NBZgJ2Uf
-         I9uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HuPscf/chfZUucxqeK0O8KtSwVLAMHyTryFfC0BnouI=;
-        b=JqZBXFiVg+ycczkWn0Hfv5zbqx51LvTAkfaif7RD+94YD/ZgXvSUpE3mngZYP2RcDt
-         H1Hz8OdW6zuWpSCO4VB2nio2sv01SxPYhyeKQbFd71xbh5xyWD/UFCJoubtLiIi4NT2j
-         yGiljkfkCOu9QQQo0xE8JwNc2txnlt6Pk/w3DJzMkwG1MGIV2fIqL3Vt29ZLxt/r8UcK
-         U4jj6YCVivE5yekudMshct1DY0KIUqniDjyRIDYkjTFLUDnk4cWpp3qmwBbTVJ+6/JaX
-         aNO6Nup0AWnwpYKa+howvkNUlrxIb2HpoFlFGprSnGzUNvOWhHemJCHlzIvWukdcNAjt
-         PAsg==
-X-Gm-Message-State: ANoB5pnktvISbXtm/4WdnRdgHLPdQ9tvWisyQSmX7X3f2wk1iKOypxWC
-        z8DJE8scib0MRZGcvQMyagD2yA==
-X-Google-Smtp-Source: AA0mqf69KgZUaBuDg3MrXss7tf94wwuwhowHtIdO7QNFzCE8H2TyG926JtAx4Z6Md29+4m7ZV17tMw==
-X-Received: by 2002:a19:760b:0:b0:4b1:ebdb:be43 with SMTP id c11-20020a19760b000000b004b1ebdbbe43mr7257355lff.176.1669376552426;
-        Fri, 25 Nov 2022 03:42:32 -0800 (PST)
-Received: from [192.168.1.101] (95.49.32.48.neoplus.adsl.tpnet.pl. [95.49.32.48])
-        by smtp.gmail.com with ESMTPSA id o7-20020a05651205c700b004a2550db9ddsm494684lfo.245.2022.11.25.03.42.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Nov 2022 03:42:31 -0800 (PST)
-Message-ID: <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org>
-Date:   Fri, 25 Nov 2022 12:42:29 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
-        Hector Martin <marcan@marcan.st>,
-        "~postmarketos/upstreaming@lists.sr.ht" 
+        Fri, 25 Nov 2022 06:53:54 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B24E2C11D;
+        Fri, 25 Nov 2022 03:53:53 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2283162371;
+        Fri, 25 Nov 2022 11:53:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E041C433C1;
+        Fri, 25 Nov 2022 11:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669377232;
+        bh=GJUGKKMFeuENkwBge1jb0Mdf5GIp2DPpvfvOPbbp7iw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GQQihBilK2RZaxGRLnomolcNP5U3RCj+AOVFaIQsIDVaiQoZm2uipr73zZ549jroy
+         wLQ9pcyDXfakozCgBda/OPBv7kYn4YQoBLL9FqugcpPizWGWRtHYTJ2APimsaRS6Xc
+         fRYxvTaU9vacBQddeSATsVI9/kjShokM/FYD5EbQKy34vV2gfuAEoqkFvsum6osOQN
+         qOgEXpBHE3y3b/rvmd0G1ufuTTprLvvQZ0XNt+F34q28LElHnC/8WtE2/OsBenxKo0
+         XX/sKoPfjyj6Ocg4HzTmgfuTdC6TZ2mdKtd6CZQ2URmrAp6XAxoTqyWGCHSVjmcyVn
+         FLvT/MLY5v4TA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Alvin =?utf-8?Q?=C5=A0iprag?= =?utf-8?Q?a?= 
+        <ALSI@bang-olufsen.dk>, Hector Martin <marcan@marcan.st>,
+        "~postmarketos\/upstreaming\@lists.sr.ht" 
         <~postmarketos/upstreaming@lists.sr.ht>,
-        "martin.botka@somainline.org" <martin.botka@somainline.org>,
-        "angelogioacchino.delregno@somainline.org" 
+        "martin.botka\@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno\@somainline.org" 
         <angelogioacchino.delregno@somainline.org>,
-        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
-        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
+        "marijn.suijten\@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen\@somainline.org" <jamipkettunen@somainline.org>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
@@ -74,31 +51,37 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "Zhao\, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>,
         Soon Tak Lee <soontak.lee@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl\@broadcom.com" 
         <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        "SHA-cyfmac-dev-list\@infineon.com" 
+        <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
 References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
- <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
- <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
- <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
- <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
- <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
- <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
- <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
-Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
+        <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+        <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
+        <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+        <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+        <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk>
+        <87sfke32pc.fsf@kernel.org>
+        <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
+        <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
+        <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org>
+Date:   Fri, 25 Nov 2022 13:53:43 +0200
+In-Reply-To: <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> (Konrad
+        Dybcio's message of "Fri, 25 Nov 2022 12:42:29 +0100")
+Message-ID: <87fse76yig.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -106,34 +89,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Konrad Dybcio <konrad.dybcio@linaro.org> writes:
 
+> On 21.11.2022 14:56, Linus Walleij wrote:
+>> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
+>> 
+>>> I can think of a couple of hacky ways to force use of 43596 fw, but I
+>>> don't think any would be really upstreamable..
+>> 
+>> If it is only known to affect the Sony Xperias mentioned then
+>> a thing such as:
+>> 
+>> if (of_machine_is_compatible("sony,xyz") ||
+>>     of_machine_is_compatible("sony,zzz")... ) {
+>>    // Enforce FW version
+>> }
+>> 
+>> would be completely acceptable in my book. It hammers the
+>> problem from the top instead of trying to figure out itsy witsy
+>> details about firmware revisions.
+>> 
+>> Yours,
+>> Linus Walleij
+>
+> Actually, I think I came up with a better approach by pulling a page
+> out of Asahi folks' book - please take a look and tell me what you
+> think about this:
+>
+> [1]
+> https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
+> [2]
+> https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
 
-On 21.11.2022 14:56, Linus Walleij wrote:
-> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
-> 
->> I can think of a couple of hacky ways to force use of 43596 fw, but I
->> don't think any would be really upstreamable..
-> 
-> If it is only known to affect the Sony Xperias mentioned then
-> a thing such as:
-> 
-> if (of_machine_is_compatible("sony,xyz") ||
->     of_machine_is_compatible("sony,zzz")... ) {
->    // Enforce FW version
-> }
-> 
-> would be completely acceptable in my book. It hammers the
-> problem from the top instead of trying to figure out itsy witsy
-> details about firmware revisions.
-> 
-> Yours,
-> Linus Walleij
-Actually, I think I came up with a better approach by pulling a page
-out of Asahi folks' book - please take a look and tell me what you
-think about this:
+Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
+just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
+have directory names in Device Tree.
 
-[1] https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
-[2] https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-Konrad
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
