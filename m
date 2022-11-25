@@ -2,160 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5F1638481
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 08:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECA86384EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 09:04:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiKYHgx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Nov 2022 02:36:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55784 "EHLO
+        id S229695AbiKYIEt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Nov 2022 03:04:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiKYHgw (ORCPT
+        with ESMTP id S229575AbiKYIEs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Nov 2022 02:36:52 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E3C264BF
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Nov 2022 23:36:46 -0800 (PST)
-X-UUID: 65eb905388454e5c96cf3dc6b9d690ce-20221125
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=7OfNukSIJCfSvdmDLdM4fonmtezX9J+mk1ntbpFnZ7M=;
-        b=DcTOISLexRWAtT4I8V/oIPsa1AW2kvH8Ts91KtuDL7PSHtXH+WZuEH732wZBU/Typ5oen+gxxSZyxhCzqKER6zM2QWTETu3o8LhaWnHBSG0qRn6P66ONzc0ncJOZ4/uytZ61OKHmt2IKxWrO7AFMLZoJn5Jic6IKijGC3fh13GI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:d62941e8-2613-43f2-9159-d64db94a0cb7,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:dcaaed0,CLOUDID:3a6d39dc-6ad4-42ff-91f3-18e0272db660,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 65eb905388454e5c96cf3dc6b9d690ce-20221125
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 510169411; Fri, 25 Nov 2022 15:36:41 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 25 Nov 2022 15:36:40 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 25 Nov 2022 15:36:40 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921e: introduce reboot notifier support
-Date:   Fri, 25 Nov 2022 15:36:00 +0800
-Message-ID: <28482de35c4f1589dcf96b662a48bc558fe46e8f.1669361180.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Fri, 25 Nov 2022 03:04:48 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B8BF0218AC
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 00:04:47 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AP840Cg8018856, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AP840Cg8018856
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 25 Nov 2022 16:04:00 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Fri, 25 Nov 2022 16:04:43 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 25 Nov 2022 16:04:43 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Fri, 25 Nov 2022 16:04:43 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: RE: [PATCH 1/2] wifi: rtl8xxxu: Fix the channel width reporting
+Thread-Topic: [PATCH 1/2] wifi: rtl8xxxu: Fix the channel width reporting
+Thread-Index: AQHY/4LYAwFnH2Rc4ECh6z0I+CxFRa5PSOhw
+Date:   Fri, 25 Nov 2022 08:04:43 +0000
+Message-ID: <5992feea33944726b62d63951f118e7e@realtek.com>
+References: <00489244-ba7c-797a-28f0-8788a40f7974@gmail.com>
+In-Reply-To: <00489244-ba7c-797a-28f0-8788a40f7974@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzI1IOS4iuWNiCAwNjowMDowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_CSS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Leon Yen <Leon.Yen@mediatek.com>
-
-Some combinations of hosts cannnot detect mt7921e after reboot. The
-interoperability issue is caused by the status mismatch between host
-and chip fw. In such cases, the driver should stop chip activities
-and reset chip to default state before reboot.
-
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
----
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7921/pci.c   | 25 +++++++++++++++++++
- 2 files changed, 26 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 6fc04ed34ec3..64156d32b62d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -306,6 +306,7 @@ struct mt7921_dev {
- 	struct sk_buff_head ipv6_ns_list;
- 
- 	enum environment_cap country_ie_env;
-+	struct notifier_block reboot_nb;
- };
- 
- enum {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 28342ec940f0..6d20b3ed5db1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -6,6 +6,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/reboot.h>
- 
- #include "mt7921.h"
- #include "mac.h"
-@@ -110,6 +111,7 @@ static void mt7921e_unregister_device(struct mt7921_dev *dev)
- 	struct mt76_connac_pm *pm = &dev->pm;
- 
- 	cancel_work_sync(&dev->init_work);
-+	unregister_reboot_notifier(&dev->reboot_nb);
- 	mt76_unregister_device(&dev->mt76);
- 	mt76_for_each_q_rx(&dev->mt76, i)
- 		napi_disable(&dev->mt76.napi[i]);
-@@ -226,6 +228,24 @@ static u32 mt7921_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- 	return dev->bus_ops->rmw(mdev, addr, mask, val);
- }
- 
-+static int mt7921e_reboot_notifier(struct notifier_block *nb,
-+				   unsigned long code, void *unused)
-+{
-+	struct mt7921_dev *dev = container_of(nb, struct mt7921_dev,
-+					      reboot_nb);
-+	struct mt76_connac_pm *pm = &dev->pm;
-+
-+	cancel_delayed_work_sync(&pm->ps_work);
-+	cancel_work_sync(&pm->wake_work);
-+
-+	/* chip cleanup before reboot */
-+	mt7921_mcu_drv_pmctrl(dev);
-+	mt7921_dma_cleanup(dev);
-+	mt7921_wfsys_reset(dev);
-+
-+	return NOTIFY_DONE;
-+}
-+
- static int mt7921_pci_probe(struct pci_dev *pdev,
- 			    const struct pci_device_id *id)
- {
-@@ -361,6 +381,11 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 	if (ret)
- 		goto err_free_irq;
- 
-+	dev->reboot_nb.notifier_call = mt7921e_reboot_notifier;
-+	ret = register_reboot_notifier(&dev->reboot_nb);
-+	if (ret)
-+		goto err_free_irq;
-+
- 	return 0;
- 
- err_free_irq:
--- 
-2.18.0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBOb3ZlbWJlciAy
+NCwgMjAyMiA1OjMxIEFNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4g
+Q2M6IEplcyBTb3JlbnNlbiA8SmVzLlNvcmVuc2VuQGdtYWlsLmNvbT47IFBpbmctS2UgU2hpaCA8
+cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0ggMS8yXSB3aWZpOiBydGw4eHh4
+dTogRml4IHRoZSBjaGFubmVsIHdpZHRoIHJlcG9ydGluZw0KPiANCj4gVGhlIGdlbiAyIGNoaXBz
+IFJUTDgxOTJFVSBhbmQgUlRMODE4OEZVIHBlcmlvZGljYWxseSBzZW5kIHRoZSBkcml2ZXINCj4g
+cmVwb3J0cyBhYm91dCB0aGUgVFggcmF0ZSwgYW5kIHRoZSBkcml2ZXIgcGFzc2VzIHRoZXNlIHJl
+cG9ydHMgdG8NCj4gc3RhX3N0YXRpc3RpY3MuIFRoZSByZXBvcnRzIGZyb20gUlRMODE5MkVVIG1h
+eSBvciBtYXkgbm90IGluY2x1ZGUgdGhlDQo+IGNoYW5uZWwgd2lkdGguIFRoZSByZXBvcnRzIGZy
+b20gUlRMODE4OEZVIGRvIG5vdCBpbmNsdWRlIGl0Lg0KPiANCj4gT25seSBhY2Nlc3MgdGhlIGMy
+aC0+cmFfcmVwb3J0LmJ3IGZpZWxkIGlmIHRoZSByZXBvcnQgKHNrYikgaXMgYmlnDQo+IGVub3Vn
+aC4NCj4gDQo+IFRoZSBvdGhlciBwcm9ibGVtIGZpeGVkIGhlcmUgaXMgdGhhdCB0aGUgY29kZSB3
+YXMgYWN0dWFsbHkgbmV2ZXINCj4gY2hhbmdpbmcgdGhlIGNoYW5uZWwgd2lkdGggaW5pdGlhbGx5
+IHJlcG9ydGVkIGJ5DQo+IHJ0bDh4eHh1X2Jzc19pbmZvX2NoYW5nZWQgYmVjYXVzZSB0aGUgdmFs
+dWUgb2YgUkFURV9JTkZPX0JXXzIwIGlzIDAuDQo+IA0KPiBGaXhlczogMDk4NWQzYTQxMGFjICgi
+cnRsOHh4eHU6IEZlZWQgY3VycmVudCB0eHJhdGUgaW5mb3JtYXRpb24gZm9yIG1hYzgwMjExIikN
+Cj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5j
+b20+DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4
+eHh4dV9jb3JlLmMgfCAxMCArKysrKysrLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRp
+b25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5jDQo+IGIvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gaW5kZXggMjhmMTM2
+MDY0Mjk3Li4xYzI5ZDBiZjA5ZTIgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5jDQo+IEBAIC01NTY5LDcgKzU1
+NjksNiBAQCBzdGF0aWMgdm9pZCBydGw4eHh4dV9jMmhjbWRfY2FsbGJhY2soc3RydWN0IHdvcmtf
+c3RydWN0ICp3b3JrKQ0KPiAgCQkJcmFycHQtPnR4cmF0ZS5mbGFncyA9IDA7DQo+ICAJCQlyYXRl
+ID0gYzJoLT5yYV9yZXBvcnQucmF0ZTsNCj4gIAkJCXNnaSA9IGMyaC0+cmFfcmVwb3J0LnNnaTsN
+Cj4gLQkJCWJ3ID0gYzJoLT5yYV9yZXBvcnQuYnc7DQo+IA0KPiAgCQkJaWYgKHJhdGUgPCBERVND
+X1JBVEVfTUNTMCkgew0KPiAgCQkJCXJhcnB0LT50eHJhdGUubGVnYWN5ID0NCj4gQEAgLTU1ODYs
+OCArNTU4NSwxMyBAQCBzdGF0aWMgdm9pZCBydGw4eHh4dV9jMmhjbWRfY2FsbGJhY2soc3RydWN0
+IHdvcmtfc3RydWN0ICp3b3JrKQ0KPiAgCQkJCQkJUkFURV9JTkZPX0ZMQUdTX1NIT1JUX0dJOw0K
+PiAgCQkJCX0NCj4gDQo+IC0JCQkJaWYgKGJ3ID09IFJBVEVfSU5GT19CV18yMCkNCj4gLQkJCQkJ
+cmFycHQtPnR4cmF0ZS5idyB8PSBSQVRFX0lORk9fQldfMjA7DQo+ICsJCQkJaWYgKHNrYi0+bGVu
+ID49IDIgKyA3KSB7DQoNCkkgdGhpbmsgMiBpcyBoZWFkZXIgbGVuZ3RoIG9mIEMySCwgYW5kIDcg
+aXMgc2l6ZW9mKGMyaC0+cmFfcmVwb3J0KSwgc28gd2UgY2FuDQpoYXZlOg0KI2RlZmluZSBSVEw4
+WFhYVV9DMkhfSERSX0xFTiAyDQoNClRoZW4sIHJlcGxhY2UgdGhpcyBzdGF0ZW1lbnQgd2l0aA0K
+DQppZiAoc2tiLT5sZW4gPj0gUlRMOFhYWFVfQzJIX0hEUl9MRU4gKyBzaXplb2YoYzJoLT5yYV9y
+ZXBvcnQpKQ0KDQpCeSB0aGUgd2F5LCBJIGZvdW5kICdzdHJ1Y3QgcnRsODcyM2J1X2MyaCcgbWlz
+cyAnX19wYWNrZWQnLg0KDQotLQ0KUGluZy1LZQ0KDQo=
