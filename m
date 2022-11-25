@@ -2,111 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C7B63865B
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 10:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6A1638842
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 12:06:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbiKYJfd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Nov 2022 04:35:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52314 "EHLO
+        id S230342AbiKYLGs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Nov 2022 06:06:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiKYJfc (ORCPT
+        with ESMTP id S230053AbiKYLGp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Nov 2022 04:35:32 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7158C27FC0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 01:35:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Aa7Ti6qDDUxCyl6kPQ5pglUYqGOHdSvpDB7Y9K2Y1+g=;
-        t=1669368931; x=1670578531; b=Vdjs47l6NqX/5nPlbe0GU6xGU3YWO00K5bJeGgv7vnuYoTF
-        bm0Q04kHyb2Kcj2VE/u9FZHvzDDWXRoSMdXLFPIIn/0taENTqVxi5S3HpOh6MyJ6xB4GVyk1AzVPe
-        PgW/ibT70BSf36noeHFIplpbKDvxonyJLHG9fKPT5fh8ZPKyXD5yWl/9qjv4oAdQkidqgNRTUDcoK
-        e8TX5B0AIOIlwCCqCaIqTeg8iPv/j3clXqCXuXxHHckoCZXeq3VXj3CeQhFPxowk3qQwrANXXwgrl
-        0YikwF9K7JSdWbdC3SKHu/9XjWzdTVhkytoaefhd3kaQEnFXGS4g4iQt/2t9fC2A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1oyV7J-008oKY-2m;
-        Fri, 25 Nov 2022 10:35:29 +0100
-Message-ID: <ce7eadda8c1fe68d23f67315e31d6249b36c7563.camel@sipsolutions.net>
-Subject: Re: PRO/Wireless 2200BG Intel WPA3 SSID connection problem #1
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ioannis Barkas <jnyb.de@gmail.com>, linux-wireless@vger.kernel.org
-Date:   Fri, 25 Nov 2022 10:35:28 +0100
-In-Reply-To: <CADUzMVbL0ujvdRDCcQS0uBxruVYW3XV335wAz27AA80x5q9kOQ@mail.gmail.com>
-References: <CADUzMVbL0ujvdRDCcQS0uBxruVYW3XV335wAz27AA80x5q9kOQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Fri, 25 Nov 2022 06:06:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89F54D5E3
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 03:06:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51B8D6231B
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 11:06:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EE9C433C1;
+        Fri, 25 Nov 2022 11:06:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669374400;
+        bh=VBJ0FDdCVqNKDtZqIQxJiumzJp90FsIpeDmAlcn94N4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=QOQEJq5BBu5eCmcfLlTjAvoOflN7N0XMPpeCEa1UatpFfnYGExkrF0cNUUiM/iKOL
+         gbllaKonFZzDouy5HBTwvPZV60aTETozPtSL4XBhphfQfTMT+jG4eu5JnTgxA/+weu
+         BIf1ktTXM/z+kekF5h6tQu3aC8/B52AZpMuRi10NfUZMQTnlZcYz+bdVOVd4g9AkjI
+         KdIxm4ORbN2c1GCBN/hWXMT4bVoRAj3y85s9A8cJFYrFrgRHePIo4F4foz8xp5Dupu
+         CE6TOni+eC2bK3d8kujQvPCK4Zd5fE2ov8LWIRV7PCDUGgcilngm46IdZJdqWp4gBL
+         ADWB2wTX/ZLHg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     ath12k@lists.infradead.org
+Subject: Re: [PATCH v2 00/50] wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices
+References: <20221116163902.24996-1-kvalo@kernel.org>
+        <878rk49u7n.fsf@kernel.org>
+Date:   Fri, 25 Nov 2022 13:06:36 +0200
+In-Reply-To: <878rk49u7n.fsf@kernel.org> (Kalle Valo's message of "Mon, 21 Nov
+        2022 17:57:00 +0200")
+Message-ID: <87k03j70oz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Kalle Valo <kvalo@kernel.org> writes:
 
-> This period I have been dealing with WLANs as I have added a new WPA3
-> SSID and fell on some trouble and limitations(more messages will
-> follow on this).
->=20
+> Kalle Valo <kvalo@kernel.org> writes:
+>
+>> ath12k is a new mac80211 driver for Qualcomm Wi-Fi 7 devices, first
+>> supporting QCN9274 and WCN7850 PCI devices.  QCN9274 supports both AP
+>> and station; WCN7850 supports only station mode. Monitor mode is not
+>> (yet) supported. Only PCI bus devices are supported.
+>>
+>
+> [...]
+>
+>> Unfortunately the firmware images are not yet available but they will be soon, the
+>> plan is to publish them any day now.
+>
+> The firmware for WCN7850 hw2.0 is temporarily available here:
+>
+> https://github.com/kvalo/ath11k-firmware/tree/master/ath12k-testing/WCN7850/hw2.0
 
-Well, keep in mind that WPA3 requires all kinds of new things, and the
-*most recent* NIC you tried is already ~11 years old afaict.
+Now QCN9274 hw2.0 firmware is also temporarily on the same repo:
 
-> Long story short, some WLAN cards do not work and
-> some Android based mobile phones do not work(like my Android 12 based
-> SAMSUNG M31 which is not detecting such SSIDs at all!). On one hand,
-> vendors like Atheros have done a good job. As a result, all cards were
-> able to connect successfully at SSID using the WPA3 encryption. This
-> includes miniPCI, PCI, miniPCIe, Cardbus and USB adapters.
->=20
+https://github.com/kvalo/ath11k-firmware/tree/master/ath12k-testing/QCN9274/hw2.0
 
-This probably means they use SW crypto for everything.
+As the final big patch is too big to submit to the mailing list, here's
+a link to the commit in my pending branch:
 
-> On the
-> other hand vendors like Intel haven't done a really good job. miniPCI
-> cards from Intel are out of question due to legacy driver and custom
-> 802.11 implementation. Initial miniPCIe cards like 4965 series do not
-> support it similar to many iwlwifi cards. I believe that all iwlwifi
-> supported cards should be able to use WPA3.
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=e9d30f354584f7094e56e6f91bf428f7c0981602
 
-What makes you believe that?
+The idea is that I'll take this commit to ath-next branch and then queue
+to v6.3.
 
-> My 2006 Atheros cards
-> connect successfully so I expect the same for intel cards launched a
-> decade after the old Atheros cards otherwise we should blacklist such
-> devices to save lots of noise from bug reports about undetected
-> networks.=C2=A0
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Umm, no? Why would we break NICs that work well with most existing
-networks, just not WPA3 ones?
-
-> Hopefully the Intel team will fix everything so that noone
-> will not need to switch cards on laptops.=C2=A0
->=20
-
-Unlikely. The newest Intel NIC in your list was 6205, which was released
-in 2011.
-
-Without wpa_supplicant logs I'm not even sure why it's broken, but
-likely the reason is that it doesn't advertise management frame
-protection support since the firmware handles certain management frames,
-and there was no hardware offload for those at the time.
-
-(This might be a difference to Atheros NICs.)
->=20
-
-> It can't connect to WPA3 2,4GHz SSID and I got no logs.
-
-Well, you should look at wpa_supplicant logs.
-
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
