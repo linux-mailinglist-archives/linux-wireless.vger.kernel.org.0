@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B5F6638535
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 09:30:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31558638582
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Nov 2022 09:51:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229853AbiKYIaI convert rfc822-to-8bit (ORCPT
+        id S229790AbiKYIv0 convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Nov 2022 03:30:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47636 "EHLO
+        Fri, 25 Nov 2022 03:51:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbiKYIaG (ORCPT
+        with ESMTP id S229510AbiKYIv0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Nov 2022 03:30:06 -0500
+        Fri, 25 Nov 2022 03:51:26 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6F30731210;
-        Fri, 25 Nov 2022 00:30:05 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4232427903;
+        Fri, 25 Nov 2022 00:51:25 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AP8StpE6006039, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AP8StpE6006039
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AP8o2LN1013351, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AP8o2LN1013351
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 25 Nov 2022 16:28:55 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Fri, 25 Nov 2022 16:50:02 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 25 Nov 2022 16:29:38 +0800
+ 15.1.2507.9; Fri, 25 Nov 2022 16:50:45 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 25 Nov 2022 16:29:38 +0800
+ 15.1.2375.7; Fri, 25 Nov 2022 16:50:45 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
  RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Fri, 25 Nov 2022 16:29:38 +0800
+ 15.01.2375.007; Fri, 25 Nov 2022 16:50:45 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     Sascha Hauer <s.hauer@pengutronix.de>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -48,20 +48,20 @@ CC:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
         Da Xue <da@libre.computer>,
         "Bernie Huang" <phhuang@realtek.com>,
         Viktor Petrenko <g0000ga@gmail.com>
-Subject: RE: [PATCH v3 03/11] rtw88: Drop rf_lock
-Thread-Topic: [PATCH v3 03/11] rtw88: Drop rf_lock
-Thread-Index: AQHY/oIygBK3Wh67DEaTX45BCElsma5PUv2Q
-Date:   Fri, 25 Nov 2022 08:29:38 +0000
-Message-ID: <71f8444cb3bf4859843339614f61a6e8@realtek.com>
+Subject: RE: [PATCH v3 06/11] rtw88: iterate over vif/sta list non-atomically
+Thread-Topic: [PATCH v3 06/11] rtw88: iterate over vif/sta list non-atomically
+Thread-Index: AQHY/oIuKuRZgKSqcE2cjQtXkytLTa5PVioQ
+Date:   Fri, 25 Nov 2022 08:50:45 +0000
+Message-ID: <b915078edbc1427384719c0b77b37fda@realtek.com>
 References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
- <20221122145226.4065843-4-s.hauer@pengutronix.de>
-In-Reply-To: <20221122145226.4065843-4-s.hauer@pengutronix.de>
+ <20221122145226.4065843-7-s.hauer@pengutronix.de>
+In-Reply-To: <20221122145226.4065843-7-s.hauer@pengutronix.de>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
 x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
 x-kse-antivirus-interceptor-info: scan successful
@@ -70,10 +70,6 @@ x-kse-bulkmessagesfiltering-scan-result: protection disabled
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -94,18 +90,24 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
 > Da Xue <da@libre.computer>; Bernie Huang <phhuang@realtek.com>; Viktor Petrenko <g0000ga@gmail.com>;
 > Sascha Hauer <s.hauer@pengutronix.de>
-> Subject: [PATCH v3 03/11] rtw88: Drop rf_lock
+> Subject: [PATCH v3 06/11] rtw88: iterate over vif/sta list non-atomically
 > 
-> The rtwdev->rf_lock spinlock protects the rf register accesses in
-> rtw_read_rf() and rtw_write_rf(). Most callers of these functions hold
-> rtwdev->mutex already with the exception of the callsites in the debugfs
-> code. The debugfs code doesn't justify an extra lock, so acquire the mutex
-> there as well before calling rf register accessors and drop the now
-> unnecessary spinlock.
+> The driver uses ieee80211_iterate_active_interfaces_atomic()
+> and ieee80211_iterate_stations_atomic() in several places and does
+> register accesses in the iterators. This doesn't cope with upcoming
+> USB support as registers can only be accessed non-atomically.
+> 
+> Split these into a two stage process: First use the atomic iterator
+> functions to collect all active interfaces or stations on a list, then
+> iterate over the list non-atomically and call the iterator on each
+> entry.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Suggested-by: Pkshih <pkshih@realtek.com>
 
+Please correct my full name. The old setting of my mailer is improper.
+
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
 Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-[...]
 
