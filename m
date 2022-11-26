@@ -2,150 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F33863982D
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Nov 2022 20:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D52C63984C
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Nov 2022 22:45:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbiKZTzB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Nov 2022 14:55:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44040 "EHLO
+        id S229526AbiKZVps (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Nov 2022 16:45:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbiKZTzA (ORCPT
+        with ESMTP id S229506AbiKZVpr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Nov 2022 14:55:00 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B7D23E
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Nov 2022 11:54:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669492497; x=1701028497;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mNIpcM6y8s3UxkfoZggmYXqItSKnOKKhfiwTmJGAkos=;
-  b=MJrEKWDCYWjYId90ZTDkm6C+Woa5vGpoCNrfpNLFsITQ+jreNW/e1G/b
-   6duJfm+uahbeplDavZFywLMs/TtZs/aJfoPvgvA2C0RLuubzCs6vxR/JD
-   tKiQVn4Hg7dxiXlVcVdueUnA46Myyig+0ysTLenfXR1QumNkGPDbjHkA/
-   BG2aDeIKp1FbfzT9bY1G1XEwcPe6TA9BcedRIjWnzpo57ldvWOsINL66t
-   YSXHVZEIMj6cCXuJeo5J2zz6CLUZdhqw8rn++xjEGAIj2RH5KCTtwZS6F
-   Ypswp9aB5hFpcwVCiIVHWQVccjVRueheq4aYAcWta28/AX28Gj8avDvtk
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10543"; a="314655630"
-X-IronPort-AV: E=Sophos;i="5.96,196,1665471600"; 
-   d="scan'208";a="314655630"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2022 11:54:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10543"; a="642976192"
-X-IronPort-AV: E=Sophos;i="5.96,196,1665471600"; 
-   d="scan'208";a="642976192"
-Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 26 Nov 2022 11:54:55 -0800
-Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oz1GI-0006ZB-2E;
-        Sat, 26 Nov 2022 19:54:54 +0000
-Date:   Sun, 27 Nov 2022 03:54:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless:for-next] BUILD SUCCESS
- 3e8f7abcc3473bc9603323803aeaed4ffcc3a2ab
-Message-ID: <63826eed.Yo/Brar8e/rmtSjO%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sat, 26 Nov 2022 16:45:47 -0500
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D74B113EA6
+        for <linux-wireless@vger.kernel.org>; Sat, 26 Nov 2022 13:45:45 -0800 (PST)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3c090251d59so16078027b3.4
+        for <linux-wireless@vger.kernel.org>; Sat, 26 Nov 2022 13:45:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pRxq+j1N3NePxiJ2JT2MTJet9Uql84OySQTRJfr9N3I=;
+        b=vqK+8wvDlVZobG46JZZmctmyGzHXZF93PNREcIr7XM953PhGW6Pq5q6apgGRbjzUI8
+         CzaRBcn0sdl+eJzgNeXrm+36UHmK0k4tgJ4ki4PWAsVYJ/AVJXuxokoF9TBU5Y3kWqA3
+         09FUtIStJCxfbU1zQgC6yOelHFtrD+0k7REJWLcCMnb93N7FeN3odr5ud4EybrvkfoRF
+         P2mtjCMYwCXifoc75QGHoKsXy9RoeybAj8A2Va5e3j/Mo+ZeupJU+EPd9XbjZkYj0Wf7
+         5IR5FIzDPW1LSzIBCMslfDCMK1uCrfB8K6ktO8Lv3L2LzdeMXrk4MyN/7QbTlyTddCBd
+         8Suw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pRxq+j1N3NePxiJ2JT2MTJet9Uql84OySQTRJfr9N3I=;
+        b=bVeMfx4FvUK5Ekx68+qSWb+c6pyzLoTh2sXBXryvvsYap+TIMhY4eVAgG5nZnIiYd7
+         MfMWaHv3udeu6NdfAFoizhXcNMGLF2OOxzz9kmlBunrHJr/RHfa3w+eHHMGeOgQCiDtF
+         vC/6sz0It1NFMi+AulKSRAieUEfMHsnNG1ln7G7pOcMuzdHFCTmZp9Uv4jjJW+RKGWgc
+         hFkzUKUyPPiPOQKQz9tI+xjn+JD2HTo/Riv7zeycZycEtBHDHdLOBM4W9YfBYMTTdSDF
+         xFXpZgY/JuFWr2tekDLKZ+a4i7EftoBySSi+WBW5Qi39FM5WL0cJRHicsKzrO5CcAEIC
+         3SWw==
+X-Gm-Message-State: ANoB5pm43HhDoEdS3l1rGbiiHDCD4BlI3eWtfJriKq9bENhVVjIeLnbx
+        SaTrS7S2KmZKz1NPGpRS4+TQvKfAukiJuk2SAZbBZw==
+X-Google-Smtp-Source: AA0mqf43EmhH/k7KEVgca9O5pYenGVMwt1/G9lr9Kr07O2rgGeziMSyprL3K1L17O8T6R019ZTuW5TwbvWWK86rYXQ4=
+X-Received: by 2002:a81:65c1:0:b0:376:f7e2:4b12 with SMTP id
+ z184-20020a8165c1000000b00376f7e24b12mr25287377ywb.0.1669499144991; Sat, 26
+ Nov 2022 13:45:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st> <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+ <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st> <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+ <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+ <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
+ <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org> <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
+ <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
+ <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
+In-Reply-To: <87bkov6x1q.fsf@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 26 Nov 2022 22:45:33 +0100
+Message-ID: <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+        Hector Martin <marcan@marcan.st>,
+        "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "martin.botka@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno@somainline.org" 
+        <angelogioacchino.delregno@somainline.org>,
+        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Soon Tak Lee <soontak.lee@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 3e8f7abcc3473bc9603323803aeaed4ffcc3a2ab  wifi: mac8021: fix possible oob access in ieee80211_get_rate_duration
+On Fri, Nov 25, 2022 at 1:25 PM Kalle Valo <kvalo@kernel.org> wrote:
+> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
+>
+> > On 25.11.2022 12:53, Kalle Valo wrote:
+> >> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
+> >>
+> >>> On 21.11.2022 14:56, Linus Walleij wrote:
+> >>>> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
+> >>>>
+> >>>>> I can think of a couple of hacky ways to force use of 43596 fw, but I
+> >>>>> don't think any would be really upstreamable..
+> >>>>
+> >>>> If it is only known to affect the Sony Xperias mentioned then
+> >>>> a thing such as:
+> >>>>
+> >>>> if (of_machine_is_compatible("sony,xyz") ||
+> >>>>     of_machine_is_compatible("sony,zzz")... ) {
+> >>>>    // Enforce FW version
+> >>>> }
+> >>>>
+> >>>> would be completely acceptable in my book. It hammers the
+> >>>> problem from the top instead of trying to figure out itsy witsy
+> >>>> details about firmware revisions.
+> >>>>
+> >>>> Yours,
+> >>>> Linus Walleij
+> >>>
+> >>> Actually, I think I came up with a better approach by pulling a page
+> >>> out of Asahi folks' book - please take a look and tell me what you
+> >>> think about this:
+> >>>
+> >>> [1]
+> >>> https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
+> >>> [2]
+> >>> https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
 
-elapsed time: 1829m
+Something in this direction works too.
 
-configs tested: 68
-configs skipped: 2
+The upside is that it tells all operating systems how to deal
+with the firmware for this hardware.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> >> Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
+> >> just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
+> >> have directory names in Device Tree.
+> >
+> > I think it's common practice to include a full $FIRMWARE_DIR-relative
+> > path when specifying firmware in DT, though here I left out the board
+> > name bit as that's assigned dynamically anyway. That said, if you don't
+> > like it, I can change it.
+>
+> It's just that I have understood that Device Tree is supposed to
+> describe hardware and to me a firmware directory "brcm/" is a software
+> property, not a hardware property. But this is really for the Device
+> Tree maintainers to decide, they know this best :)
 
-gcc tested configs:
-arc                  randconfig-r043-20221124
-arc                                 defconfig
-alpha                               defconfig
-um                             i386_defconfig
-arc                  randconfig-r043-20221125
-um                           x86_64_defconfig
-s390                 randconfig-r044-20221125
-riscv                randconfig-r042-20221125
-s390                                defconfig
-s390                             allmodconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-s390                             allyesconfig
-ia64                             allmodconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-arc                              allyesconfig
-sh                               allmodconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                        randconfig-a015
-x86_64                           allyesconfig
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-i386                          randconfig-a005
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                                defconfig
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-i386                             allyesconfig
-x86_64                            allnoconfig
-i386                          randconfig-c001
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
+I would personally just minimize the amount of information
+put into the device tree to be exactly what is needed to find
+the right firmware.
 
-clang tested configs:
-riscv                randconfig-r042-20221124
-hexagon              randconfig-r041-20221124
-hexagon              randconfig-r045-20221124
-s390                 randconfig-r044-20221124
-hexagon              randconfig-r045-20221125
-hexagon              randconfig-r041-20221125
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a004
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-k001
-arm                        mvebu_v5_defconfig
-powerpc                     akebono_defconfig
+brcm,firmware-compatible = "43596";
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+since the code already knows how to conjure the rest of the string.
+
+But check with Rob/Krzysztof.
+
+Yours,
+Linus Walleij
