@@ -2,76 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B001639369
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Nov 2022 03:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A75AD639489
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Nov 2022 09:14:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230166AbiKZCaF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Nov 2022 21:30:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58470 "EHLO
+        id S229487AbiKZIOt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Nov 2022 03:14:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiKZCaD (ORCPT
+        with ESMTP id S229450AbiKZIOs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Nov 2022 21:30:03 -0500
-X-Greylist: delayed 1043 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Nov 2022 18:30:01 PST
-Received: from mail.rrk.ir (mail.rrk.ir [46.209.19.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE393136D;
-        Fri, 25 Nov 2022 18:30:01 -0800 (PST)
-Received: from localhost (mail.rrk.ir [127.0.0.1])
-        by mail.rrk.ir (Postfix) with ESMTP id EA9C439713E;
-        Sat, 26 Nov 2022 05:42:33 +0330 (+0330)
-X-Virus-Scanned: Debian amavisd-new at mail.rrk.ir
-Received: from mail.rrk.ir ([127.0.0.1])
-        by localhost (mail.rrk.ir [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id IzeIoOj2fku4; Sat, 26 Nov 2022 05:42:24 +0330 (+0330)
-Content-Type: text/plain; charset="iso-8859-1"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=rrk.ir; s=rrk;
-        t=1669401265; bh=Tek/QbFshVvW3DxuEJIWlwCvxszEYuMod+HhVGwXvdw=;
-        h=Subject:To:From:Date:Reply-To:From;
-        b=XsaGpSI2+BPsPsnjXM4yFUsvvZtG2D3G4mu7WrXewlWGtdJtiw/lhxot1OPNVFGVf
-         KfOjnF6/wtoPXS4GV7gMJGL7wUBB61LKZzEz3ekcgyUmTkcWAb6+q2MbfNaI8W7y8D
-         FAhONqYUnRm167ahaXs6fewXFePk7acVbtylF5Z4=
+        Sat, 26 Nov 2022 03:14:48 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B2F226571;
+        Sat, 26 Nov 2022 00:14:46 -0800 (PST)
+Received: from dggpeml500023.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NK4JJ4tqnzmW5Q;
+        Sat, 26 Nov 2022 16:14:08 +0800 (CST)
+Received: from [10.174.176.83] (10.174.176.83) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 26 Nov 2022 16:14:43 +0800
+Message-ID: <88650c25-5358-1f03-dc96-fb7fc550fb18@huawei.com>
+Date:   Sat, 26 Nov 2022 16:14:43 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re: Liaison Officer Needed In Your State...  
-To:     Recipients <firewall@rrk.ir>
-From:   "Ms. Kelvin Lin " <firewall@rrk.ir>
-Date:   Fri, 25 Nov 2022 10:34:12 -0800
-Reply-To: mail@gukaimail.com
-Message-Id: <20221126021233.EA9C439713E@mail.rrk.ir>
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_99,BAYES_999,
-        DATE_IN_PAST_06_12,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  1.5 DATE_IN_PAST_06_12 Date: is 6 to 12 hours before Received: date
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH wireless] wifi: wilc1000: Fix UAF in wilc_netdev_cleanup()
+ when iterator the RCU list
+To:     <Ajay.Kathat@microchip.com>
+References: <20221124151349.2386077-1-zhangxiaoxu5@huawei.com>
+ <a6d8f548-bcf4-4a02-df25-3a06aa8f2b42@microchip.com>
+From:   "zhangxiaoxu (A)" <zhangxiaoxu5@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>,
+        <Claudiu.Beznea@microchip.com>
+In-Reply-To: <a6d8f548-bcf4-4a02-df25-3a06aa8f2b42@microchip.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.176.83]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500023.china.huawei.com (7.185.36.114)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
 
 
-A reputable pharmaceutical company from Vietnam is in need of a reliable in=
-dividual or corporate entity in your state to act as their Liaison; this wi=
-ll not affect your current job or business operations in anyway.  If intere=
-sted, reply for more information.
+On 2022/11/26 0:17, Ajay.Kathat@microchip.com wrote:
+> 
+> On 24/11/22 20:43, Zhang Xiaoxu wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+>>
+>> There is a UAF read when remove the wilc1000_spi module:
+>>
+>>   BUG: KASAN: use-after-free in wilc_netdev_cleanup.cold+0xc4/0xe0 [wilc1000]
+>>   Read of size 8 at addr ffff888116846900 by task rmmod/386
+>>
+>>   CPU: 2 PID: 386 Comm: rmmod Tainted: G                 N 6.1.0-rc6+ #8
+>>   Call Trace:
+>>    dump_stack_lvl+0x68/0x85
+>>    print_report+0x16c/0x4a3
+>>    kasan_report+0x95/0x190
+>>    wilc_netdev_cleanup.cold+0xc4/0xe0
+>>    wilc_bus_remove+0x52/0x60
+>>    spi_remove+0x46/0x60
+>>    device_remove+0x73/0xc0
+>>    device_release_driver_internal+0x12d/0x210
+>>    driver_detach+0x84/0x100
+>>    bus_remove_driver+0x90/0x120
+>>    driver_unregister+0x4f/0x80
+>>    __x64_sys_delete_module+0x2fc/0x440
+>>    do_syscall_64+0x38/0x90
+>>    entry_SYSCALL_64_after_hwframe+0x63/0xcd
+>>
+>> Since set 'needs_free_netdev=true' when initialize the net device, the
+>> net device will be freed when unregister, then use the freed 'vif' to
+>> find the next will UAF read.
+> 
+> 
+> Did you test this behaviour on the real device. I am seeing a kernel crash when the module is unloaded after the connection with an AP.
+Thanks Ajay,
+I have no real device, what kind of crash about your scenario?
+> As I see, "vif_list" is used to maintain the interface list, so even when one interface is removed, another element is fetched from the "vif_list", not using the freed "vif"
+For example if the "vif_list" has device A and device B, just like:
+   A->next = &B
+   B->prev = &A
 
+When iterator on the vif_list,
+   1st: Got A and unregister A, A will be freed since needs_free_netdev=true
+   2nd: Try get B from A->next, A already freed in the first step, UAF occurred.
 
-Sincerely,
-Ms. Kelvin Lin
-CC
+rcu list no implement the interface like "list_for_each_entry_safe".
+> 
+> Regards,
+> Ajay
+> 
