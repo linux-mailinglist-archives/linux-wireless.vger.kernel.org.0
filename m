@@ -2,122 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F06D7639272
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Nov 2022 00:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EBF6392EC
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Nov 2022 01:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbiKYXvU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Nov 2022 18:51:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42350 "EHLO
+        id S230036AbiKZA5Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Nov 2022 19:57:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiKYXvS (ORCPT
+        with ESMTP id S229960AbiKZA5X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Nov 2022 18:51:18 -0500
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8895E18E;
-        Fri, 25 Nov 2022 15:51:17 -0800 (PST)
-Received: by mail-pj1-f43.google.com with SMTP id k2-20020a17090a4c8200b002187cce2f92so8907494pjh.2;
-        Fri, 25 Nov 2022 15:51:17 -0800 (PST)
+        Fri, 25 Nov 2022 19:57:23 -0500
+Received: from mail-yw1-x1141.google.com (mail-yw1-x1141.google.com [IPv6:2607:f8b0:4864:20::1141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A17705985F
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 16:57:20 -0800 (PST)
+Received: by mail-yw1-x1141.google.com with SMTP id 00721157ae682-3bf4ade3364so5056977b3.3
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Nov 2022 16:57:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=q5grRhzDgJlRek3REBN4Xq7JrHQXLu+Ef9bolVS8SjU=;
+        b=pE0EE204QfApPu07hlxe/IrT+Gm/y11be9zBrZdOYSL+bBqM1erl7U5oS71+H35vu2
+         eXRyT0ojbcq2Bg4rRLEcIySXE9tb/2nC3ei/G0Tf+rk0GPWJlUve1vVvJ94nNaGJlSPQ
+         HZjWYwaMNZXUOOQJHfTOdp9nqTC+8jR3CvHZTwE6r9sPmygjUhd8H+NvRqNgHWugZAU5
+         LSnWqs0An87WicfBt40uqu+nFq+xug2ymSnj5sxUswWKt740EFlc5QxlK/U7PwJK/8J7
+         hsXM1FD9iCXzAdQQtMPY5BxaogktlP9UPn0kFOhP6YfHOHgE2fogq175p+TO16CjMqiu
+         hHdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UBCy9qp7TSwSwGwI/krp6oqH0EI9xTeC+ExI/AlQHzg=;
-        b=1OQZpXZ9Ed1f3U724rkw+MtCYUcdJtTOkQ3OJ37kYyDX/+ASIHd6vmK9sV2RyiKbDR
-         ffkPd2ZaEPqioDrIqq60oCchjlF1lDAjF6VQHiegOBVIjzBfg9O5LIsr17MGXVrhfHJ1
-         EpSV4AkvHA61ahLrikQ2SE8nCgoDrWzsdzSJlEvmLg0VS+Mfjt+DoY/n7vJxRMSDT0yY
-         M+5bSNwfcAKFZcSNTjEgcGXAitcGRLhVqwn8PT38U/J8WQuqXeGpHSbYU7jTEST9os7J
-         lhcWIDCR0gTByg9ebWcdcGzslqg1QCVb16SGCkSxfiJymBuUdmuTNnhxFpy5HCr5kqjH
-         8B4w==
-X-Gm-Message-State: ANoB5pmSedKMG6RkTCcAwZoIvPyhtzK5azH+FU+4AfjKzrZo/Eipmx+E
-        RQuM+oZM4QaEN5RqE01/84Q=
-X-Google-Smtp-Source: AA0mqf40CELg5Cd4cKADSnuQ7zDvszL+QjMGY2dYDbM8qR4FVWtlF2gM/wXRLECZg2wkT9gOazTizw==
-X-Received: by 2002:a17:90a:b88c:b0:218:e1c1:b4f3 with SMTP id o12-20020a17090ab88c00b00218e1c1b4f3mr15351878pjr.201.1669420276891;
-        Fri, 25 Nov 2022 15:51:16 -0800 (PST)
-Received: from [192.168.3.219] ([98.51.102.78])
-        by smtp.gmail.com with ESMTPSA id q6-20020a17090311c600b001865c298588sm3937409plh.258.2022.11.25.15.51.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Nov 2022 15:51:15 -0800 (PST)
-Message-ID: <d448b944-708a-32d4-37d7-0be16ee5f73c@acm.org>
-Date:   Fri, 25 Nov 2022 15:51:11 -0800
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q5grRhzDgJlRek3REBN4Xq7JrHQXLu+Ef9bolVS8SjU=;
+        b=zeNfAnYKzRVkFEGJOusoqj+A4ZaT2DxMUMCYZxLA4Uodu/5Ix1j4gQbPxEyYTLkMC1
+         HF7lwNHDBGq69wGG3SIRsJheV/IeqrEgfEL6EpBdOtZCHSFidGsJ294ElkOy3OpEOPco
+         sRyWw2xtA02napzoPJbkdGqK4Xh4o8pMeK/mpXTxNo5cZAfZtDfVBDt5zsODihAJGCQh
+         6hU5uHkNQp37O8wjuyNQxYhdly+IwT/8t9gX+9UsbKMMKp80+I+FTk1RmflMxiCnoYfy
+         SVyvNTPYY2tTSBBZtZE6uh6KD4JsdLiomCK+sQ9zMMAtjf2lTClz0CmAhaoCRbAOjHM4
+         /NaQ==
+X-Gm-Message-State: ANoB5pkfqjz3UcQwJtX3dDPER+cbyvqVTFWIm+70R/hirL+WeOGc+KPo
+        KJvRE9EMx7kO5lA8MKW+gd6TvGOiYSKnCSn9YrQ=
+X-Google-Smtp-Source: AA0mqf6519474Zb6Fw0+w/vk47jdpLurX7zacFH9X6nEc11h8MTVafeCt4mmLkr8bCbehMaJTQGk24GKYx4ygMQIAh4=
+X-Received: by 2002:a81:1915:0:b0:3bf:9e45:1139 with SMTP id
+ 21-20020a811915000000b003bf9e451139mr693756ywz.267.1669424239908; Fri, 25 Nov
+ 2022 16:57:19 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 1/5] driver core: make struct class.dev_uevent() take a
- const *
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     Jens Axboe <axboe@kernel.dk>, Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Johan Hovold <johan@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Raed Salem <raeds@nvidia.com>,
-        Chen Zhongjin <chenzhongjin@huawei.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Avihai Horon <avihaih@nvidia.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        Antoine Tenart <atenart@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Wang Yufen <wangyufen@huawei.com>, linux-block@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-nvme@lists.infradead.org,
-        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6918:6b07:b0:ef:f5dc:12ae with HTTP; Fri, 25 Nov 2022
+ 16:57:19 -0800 (PST)
+Reply-To: samsonvichisunday@gmail.com
+From:   Pastor Experience <experiencepastor@gmail.com>
+Date:   Sat, 26 Nov 2022 01:57:19 +0100
+Message-ID: <CAKLjfSGQ0EQCCdF7YKPN=G1xXQ8ihhntG9V=HG0d9wOOz++DMQ@mail.gmail.com>
+Subject: INVITATION TO THE GREAT ILLUMINATI SOCIETY.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
+        FILL_THIS_FORM_LONG,FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_FILL_THIS_FORM_LOAN,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1141 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5005]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [experiencepastor[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  2.0 FILL_THIS_FORM_LONG Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/23/22 04:25, Greg Kroah-Hartman wrote:
-> diff --git a/include/linux/mISDNif.h b/include/linux/mISDNif.h
-> index 7dd1f01ec4f9..7aab4a769736 100644
-> --- a/include/linux/mISDNif.h
-> +++ b/include/linux/mISDNif.h
-> @@ -586,7 +586,7 @@ extern struct mISDNclock *mISDN_register_clock(char *, int, clockctl_func_t *,
->   						void *);
->   extern void	mISDN_unregister_clock(struct mISDNclock *);
->   
-> -static inline struct mISDNdevice *dev_to_mISDN(struct device *dev)
-> +static inline struct mISDNdevice *dev_to_mISDN(const struct device *dev)
->   {
->   	if (dev)
->   		return dev_get_drvdata(dev);
-
-Why does the dev_to_mISDN() function drop constness? I haven't found an 
-explanation for this in the cover letter.
-
-Thanks,
-
-Bart.
-
+--=20
+INVITATION TO THE GREAT ILLUMINATI SOCIETY
+CONGRATULATIONS TO YOU....
+You have been chosen among the people given the opportunity this
+November to become rich and popular by joining the Great ILLUMINATI.
+This is an open invitation for you to become part of the world's
+biggest conglomerate and reach the peak of your career. a worthy goal
+and motivation to reach those upper layers of the pyramid to become
+one among the most Successful, Richest, Famous, Celebrated, Powerful
+and most decorated Personalities in the World???
+If you are interested, please respond to this message now with =E2=80=9CI
+ACCEPT" and fill the below details to get the step to join the
+Illuminati.
+KINDLY FILL BELOW DETAILS AND RETURN NOW.....
+Full names: ....................
+Your Country: .................
+State/ City: .............
+Age: ....................
+Marital status: ....................
+Occupation: ....................
+Monthly income: ....................
+WhatsApp Number: ......
+Postal Code: .....
+Home / House Address: .....
+For direct Whats-App Messages : + 356 7795 1054
+Email : samsonvichisunday@gmail.com
+NOTE: That you are not forced to join us, it is on your decision to
+become part of the world's biggest conglomerate and reach the peak of
+your career.
+Distance is not a barrier.
