@@ -2,59 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0972639BCB
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Nov 2022 17:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 724F7639C9A
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Nov 2022 20:41:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbiK0Qig (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Nov 2022 11:38:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38552 "EHLO
+        id S229526AbiK0TjJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Nov 2022 14:39:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbiK0Qif (ORCPT
+        with ESMTP id S229518AbiK0TjI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Nov 2022 11:38:35 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68ADD64CF
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Nov 2022 08:38:34 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id bn5so10619106ljb.2
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Nov 2022 08:38:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=R0ztbnlEqsovxLoYASQwi8PpP7MOv63WaNyedox2/S8=;
-        b=EtHKkX7HJCLqukbsC/UR/VnDrhrJlyUhw1jS9Pj7QTp5dWQlc769kf8XbIr3WBiO07
-         T6Vp+IRVauSSNwpKXnDtPUJ6NKm4BPwnFvo38zbEUFhhjc6NKlptNA8Z2QUqyFlk+3Um
-         ZFXhVnzAIA4IUswbe4RNzUkYPoFaBmpWDN9myoE+5f2hbhawaNgimLwP16oHUfHJNHJ8
-         Thp+pOf3of1Qub50OoaUvmaArVH8qCVGBrvF9gr40FuJOtQlx4L4UWlNnDPx6eMaIJdi
-         Pt058ssXgkW508oxF3gYl40119LB5DYf7hJ85IkvUygtrHi9582bkJGqfm3Z5Dq5mfkR
-         KFKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R0ztbnlEqsovxLoYASQwi8PpP7MOv63WaNyedox2/S8=;
-        b=azb9K56Ey4UxqDnp+C4QsW/TmEwGlygE1hxmspzyFGzwQOekC9ILQ9fJZ1CLHVuXxU
-         OQ5ZnEvnCW3jQUag6cKKaHbovjDJYdn/Agbo76rRCpKDeNIH6ywHt3sDULHGOAakz2wQ
-         +R/tyQPTtjpOMYaUc2NqZVCUvWQXSFnn7801cnQkeCR0z+CCoXB9lDZHgXsg2/a3BUlq
-         Wq25WChkqSxxt4IqnIzOhizYaA2Ap3KYV0VaqdcD8S3Fo8bh06b8DQ94cfgXPiLGzIWk
-         ej0YlIb+no70fuOPfFCcbNXWqGkJ3bTN9Fa9VYIo0Mr0duViuA2Im2TB1t7fv2A/QFIZ
-         aIZg==
-X-Gm-Message-State: ANoB5pmUUSdBeq7GXGyDe7t9qJjMAmc01UuzQjs6ZyrIKXptQHnVqdh8
-        Gbc1KoCJYmKY0rZyVTfPJz5wnVVshX/tuM+7cyt219Q2Lic=
-X-Google-Smtp-Source: AA0mqf4NbFeTlovzVOyjya2LYoozyozZkpsEQfJu075xLWqKbaMoq3cQDvmySztSRH+bQX38clpUBMpaxlz8mBjKe6c=
-X-Received: by 2002:a2e:97d7:0:b0:278:f437:9c43 with SMTP id
- m23-20020a2e97d7000000b00278f4379c43mr14132860ljj.342.1669567112818; Sun, 27
- Nov 2022 08:38:32 -0800 (PST)
+        Sun, 27 Nov 2022 14:39:08 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE7CDF01;
+        Sun, 27 Nov 2022 11:39:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 29C5AB80B2F;
+        Sun, 27 Nov 2022 19:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B1FC433D6;
+        Sun, 27 Nov 2022 19:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669577944;
+        bh=yPaWCE6V8i4bhYQI3SgB7sBQSTx+DEFIGJ44+YgM6b8=;
+        h=Date:Subject:To:References:From:In-Reply-To:From;
+        b=r8/wbQ1n4XvPIbzzS+iiJfFAkhu0+GlzQTmQ8epk0YHiqj++L3+DFT8ght0lQMO48
+         YMSfVqBpHbRMzWNnFM4MicpH8hSW3U2KU+SjMDqc+T7V0vtYIQsJICjchcwDfu52pu
+         2V0QT4CAPEK1gV2yFvDtzUytxoTIkrnBs1VdHbEixuKzNhFR4TApYcUuNoKcXT6/FC
+         vnou81zgrKpqiSzzclxxFzNz4U40lY++3KS4LpFCBUn+bfaVoXoMsGg0jFzvCGz5Ya
+         L9I9MKi2k/yDbWmJljQpzctgxvcpDDIOOgRUpxxd66YU5WhbOe9QQ3QwsBNLUBDodK
+         /mzLe/zR3mp9A==
+Message-ID: <d3eb1d37-fcbc-e3d7-30d4-3e97aa20696b@kernel.org>
+Date:   Sun, 27 Nov 2022 12:39:03 -0700
 MIME-Version: 1.0
-From:   Ioannis Barkas <jnyb.de@gmail.com>
-Date:   Sun, 27 Nov 2022 20:38:22 +0200
-Message-ID: <CADUzMVbatt5T41VW2WJr6PzXU3Y5Pyp1YvwPqW2QWitWRRQgzQ@mail.gmail.com>
-Subject: Re: PRO/Wireless 4965 Intel WPA2,3 SSID connection problem #1
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.1
+Subject: Re: [PATCH 1/2] udp_tunnel: Add checks for nla_nest_start() in
+ __udp_tunnel_nic_dump_write()
+Content-Language: en-US
+To:     Yuan Can <yuancan@huawei.com>, johannes@sipsolutions.net,
+        davem@davemloft.net, yoshfuji@linux-ipv6.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <20221126100634.106887-1-yuancan@huawei.com>
+ <20221126100634.106887-2-yuancan@huawei.com>
+From:   David Ahern <dsahern@kernel.org>
+In-Reply-To: <20221126100634.106887-2-yuancan@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,18 +60,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Stanislaw,
+On 11/26/22 3:06 AM, Yuan Can wrote:
+> As the nla_nest_start() may fail with NULL returned, the return value needs
+> to be checked.
+> 
+> Fixes: c7d759eb7b12 ("ethtool: add tunnel info interface")
+> Signed-off-by: Yuan Can <yuancan@huawei.com>
+> ---
+>  net/ipv4/udp_tunnel_nic.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
+> index bc3a043a5d5c..75a0caa4aebe 100644
+> --- a/net/ipv4/udp_tunnel_nic.c
+> +++ b/net/ipv4/udp_tunnel_nic.c
+> @@ -624,6 +624,8 @@ __udp_tunnel_nic_dump_write(struct net_device *dev, unsigned int table,
+>  			continue;
+>  
+>  		nest = nla_nest_start(skb, ETHTOOL_A_TUNNEL_UDP_TABLE_ENTRY);
+> +		if (!nest)
+> +			goto err_cancel;
 
-Thank you for looking into this!
+no need to call nla_nest_cancel if nest_start fails.
 
-I will try to test it today though I am facing some issues with my
-custom 6.0 kernel at Debian 11 last days as it works on my 64bit
-compiling PC but it freezes at my 64bit test PC having PCI as soon as
-I log into it without leaving any traces while with 5.10 it works
-smoothly. Made lots of changes to my custom kernel without finding the
-root cause so I switched to MX Linux. I will stick to 6.0 and if it
-continues to make problems I will use 5.10 at MX or 5.19 at Ubuntu. As
-soon as I have a working kernel, I will reply back here with the
-results.
+>  
+>  		if (nla_put_be16(skb, ETHTOOL_A_TUNNEL_UDP_ENTRY_PORT,
+>  				 utn->entries[table][j].port) ||
 
-Take care.
