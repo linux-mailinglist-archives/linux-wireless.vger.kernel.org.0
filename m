@@ -2,73 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C40C163A0E9
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 06:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8D6163A1C0
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 08:05:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbiK1Ftm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 00:49:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50364 "EHLO
+        id S229713AbiK1HFQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 02:05:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiK1Ftl (ORCPT
+        with ESMTP id S229759AbiK1HFP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 00:49:41 -0500
-X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 27 Nov 2022 21:49:33 PST
-Received: from feh.colobox.com (feh.colobox.com [IPv6:2607:f188:0:20::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB406B853;
-        Sun, 27 Nov 2022 21:49:33 -0800 (PST)
-Received: from [IPV6:2600:6c51:483f:c100:f0c5:c187:a91c:cebb] (unknown [IPv6:2600:6c51:483f:c100:f0c5:c187:a91c:cebb])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by feh.colobox.com (Postfix) with ESMTPSA id 4638B761F26;
-        Mon, 28 Nov 2022 05:39:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=finnie.org; s=mail;
-        t=1669613973; bh=zx+ut35DVq/7ZsKQ3zxcMjVSrpDd86XtF0rFa+b4jKU=;
-        h=Date:To:Cc:References:Subject:From:In-Reply-To:From;
-        b=EalYKxseawCGL2KKSXACWzL65JfNAyfc/wGr4iD6uDP4zebnBfQt9abb9xHEdIR/e
-         5Kk3OtCgReYZRLf25pH8UeLWh2WTazgwQU3ByrArWM6ljI6gU2ORS+h2fqSdIHCA//
-         Et9fVuAMmF7Rpr2jQLsN69QSGhS/CvsrmvrPiOiQzh/VBLn0ywMeLb8DUzsZAL9lOB
-         ZJp7PEc1cfMaLrV8dwkS26AoBvTJWQkXoevJRffCs3AYe2D55OuVuO0l1DpyOrHVdI
-         1X0fZ+g2ao66dEvT76LFyCSpo2aSN9jvSclkFitk7sWP9e6NkXLoejL4VnJdTL5il2
-         OGus7HH8RM1kQ==
-Message-ID: <2e833d1a-e1d1-cf32-3dea-c4ef2995e452@finnie.org>
-Date:   Sun, 27 Nov 2022 21:39:32 -0800
+        Mon, 28 Nov 2022 02:05:15 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A4412D07
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Nov 2022 23:05:14 -0800 (PST)
+X-UUID: 5466bb1b63b944b79998794eb1b0d102-20221128
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Sy0Jic1K5VgHl1u0yikgnqy04/Pvcv8bFLTccHuhyQM=;
+        b=dK4hf0JClqiDV9cp/y2bn5ws3Igx9pYHo8pWMJli3DBVhgDPcMySwEUtNn5NNi0BLDbHmWomDBISMmjya5h8SBtt/veUotffpn8a2EE0tG4yzWF4YKeYoSnEgsIozyzBWtzjZgKI5HuLqmV7xKonHYMBjYbZ05xi6xNFuSiL8ig=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:8baa3e28-7993-4404-878f-8578343fb8ce,IP:0,U
+        RL:0,TC:0,Content:100,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:100
+X-CID-META: VersionHash:dcaaed0,CLOUDID:b79e7b1e-5e1d-4ab5-ab8e-3e04efc02b30,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:801|102,TC:nil,Content:3,EDM:-3,IP:n
+        il,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 5466bb1b63b944b79998794eb1b0d102-20221128
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 277305565; Mon, 28 Nov 2022 15:05:08 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Mon, 28 Nov 2022 15:05:07 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Mon, 28 Nov 2022 15:05:07 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        "Ryder Lee" <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7921: Add missing __packed annotation of struct mt7921_clc
+Date:   Mon, 28 Nov 2022 15:04:21 +0800
+Message-ID: <f69bcbaa2eb9c848964c8187495031ee4539d337.1669618694.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-To:     s.hauer@pengutronix.de
-Cc:     alex@appudo.com, da@libre.computer, g0000ga@gmail.com,
-        johannes@sipsolutions.net, kernel@pengutronix.de, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux@ulli-kroll.de, martin.blumenstingl@googlemail.com,
-        neojou@gmail.com, netdev@vger.kernel.org, phhuang@realtek.com,
-        pkshih@realtek.com, tony0620emma@gmail.com
-References: <20221122145226.4065843-10-s.hauer@pengutronix.de>
-Subject: Re: [PATCH v3 09/11] rtw88: Add rtw8822bu chipset support
-Content-Language: en-US
-From:   Ryan Finnie <ryan@finnie.org>
-In-Reply-To: <20221122145226.4065843-10-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.6 at feh
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x012e, 0xff, 0xff, 0xff),
-> +	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* TP-LINK */
+From: Deren Wu <deren.wu@mediatek.com>
 
-This device is confirmed in the wild as "TP-LINK Archer T3U Nano", and
-is a miniaturized version of 0x012d.
+Add __packed annotation to avoid potential CLC parsing error
 
-(I have not personally tested this patchset, but have verified against
-the DKMS tree at https://github.com/cilynx/rtl88x2bu with 0x012e added.)
+Fixes: 23bdc5d8cadf ("wifi: mt76: mt7921: introduce Country Location Control support")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you,
-Ryan Finnie
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 6fc04ed34ec3..15d6b7fe1c6c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -224,7 +224,7 @@ struct mt7921_clc {
+ 	u8 type;
+ 	u8 rsv[8];
+ 	u8 data[];
+-};
++} __packed;
+ 
+ struct mt7921_phy {
+ 	struct mt76_phy *mt76;
+-- 
+2.18.0
+
