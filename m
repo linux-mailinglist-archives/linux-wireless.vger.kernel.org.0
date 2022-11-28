@@ -2,244 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75C7B63B250
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 20:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71AAA63B2B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 21:03:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233689AbiK1TcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 14:32:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
+        id S231420AbiK1UDn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 15:03:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234002AbiK1TcD (ORCPT
+        with ESMTP id S230454AbiK1UDm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 14:32:03 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7C52CE3A
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 11:31:53 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id e27so28427796ejc.12
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 11:31:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QPtWop0zQR7b6iubkYm91IKzEzaXliBDnDgM8lzYTmY=;
-        b=kFU1lXRi65sTHjc8JlvI/dOGg/S5nfnzcFHjYrMeB8mlBytAW48Yk24Ab3UIYHxl+5
-         UyRxmV/8u/L1RvaOC5/OhAAf3ZUAkr3hCDn20Mkpk/8QVZiqfKYOBgNiqKlJ+bRTso2V
-         RoTZlBmyy5EYUVSfCWG9IbO7e0P60mIweuWozmj6/xOJKB1UTuqerxgcO7jdTY4SEcqs
-         oZEo4rQOcvI9tjHmKmCvBqWqiBKjU08bPNb8gYiP5dUJ331J32TL+A8cjW3rYTjoXKdD
-         L+vqKuF+TuRNs9uh9pULyng8blIgfyjtKzFWlZUESJsaFtE3Tslmd7XMi3CFRoT7Zyym
-         Psdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QPtWop0zQR7b6iubkYm91IKzEzaXliBDnDgM8lzYTmY=;
-        b=ZWims/PLo4QleWnAzB+T4tS8QNbMpUMKoR4iobpBn05fDYhkdXil29TxaDHJOshHNJ
-         3hh7fxESCab8I7CMQ/8Hl2SAz9alOY82vQtvv5Tp/N6+LLm1ycbfq3e4brTqClUNS+Ua
-         WRx+MDKziAQkBPVXdxuxkVN9EwQRdhb3S5usLtEKarJjYY1TOTxjJbtGyeA7lO5PO0Oc
-         aF/pSjCc07i1OLXaqRcGguOYt0e6e2TjbvTH6C1RbC5F1Nz1U00MBXtQT3ROpAj6UcYo
-         BV6wIXLIUnk7cjLja5qHoT/oh46i9H5D0JcBD42fen8EZSM6wIj3z4B8Vpua4FbI1Kje
-         sp0w==
-X-Gm-Message-State: ANoB5pk2enZTHVXHPbNj3GunuD46uU0kNvqd2fzhQdxt/D7RhKewJuuL
-        h1oWfRMakhEMzFqDoXSkOiMwz2zaM/w=
-X-Google-Smtp-Source: AA0mqf5Gf/PQ4qylFcOqmNzTNlzKgw9o/Sq5CrG827TVAWRLEl4ACDfAPAMDJZGs0adnUvCeWVyJbQ==
-X-Received: by 2002:a17:906:81cd:b0:7ad:beb3:91b6 with SMTP id e13-20020a17090681cd00b007adbeb391b6mr29215468ejx.159.1669663911900;
-        Mon, 28 Nov 2022 11:31:51 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.254])
-        by smtp.gmail.com with ESMTPSA id hz13-20020a1709072ced00b007c00323cc23sm1571112ejc.27.2022.11.28.11.31.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Nov 2022 11:31:51 -0800 (PST)
-Message-ID: <7d6ac89d-0144-1508-439a-bc8ff35c086f@gmail.com>
-Date:   Mon, 28 Nov 2022 21:31:50 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: [PATCH v2 3/3] wifi: rtl8xxxu: Introduce rtl8xxxu_update_ra_report
+        Mon, 28 Nov 2022 15:03:42 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78D462DB
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 12:03:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669665821; x=1701201821;
+  h=from:to:cc:subject:date:message-id:content-id:
+   content-transfer-encoding:mime-version;
+  bh=dzWgPnI2WXvvR+tPyTCvzndvVf7FxWyzKa8pqjnmxp0=;
+  b=e+r95EjB/dyhepW2heRM3nvsdSCKU/rQOvJ9ikf1ctkqXTwZhLfWuxJX
+   l/uTPMQXy2dxSoSbaaGK/vEeM2LrpeNUAxyr4yyFXevudLq79QN4cTrn6
+   A2I5oqsb7/W8qdM4MSU3dSm0suAkEgKEfE2QaevtX37S5xs3xJdyba1mA
+   6jhccqZa8vy/yhGOz1/yY+ysuoEXRmSY03dyzDIrwaHGaEzdQB2V8iBXL
+   GEFtVACVDs9MOxsDGORf2CovILvWt3aQFwejkDSK0wEVyI2VTzAr8cvEO
+   VNv3rEc42PPjYpVoTwferw9W6eEcMZ8IQ9nXM1hUwB3bYgF9hgJi8w1pR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10545"; a="341852077"
+X-IronPort-AV: E=Sophos;i="5.96,201,1665471600"; 
+   d="scan'208";a="341852077"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2022 12:03:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10545"; a="785768600"
+X-IronPort-AV: E=Sophos;i="5.96,201,1665471600"; 
+   d="scan'208";a="785768600"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Nov 2022 12:03:41 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Mon, 28 Nov 2022 12:03:41 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Mon, 28 Nov 2022 12:03:41 -0800
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.40) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Mon, 28 Nov 2022 12:03:40 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gF4BfHS7E4VjqBKW8AyB2kRZle9P+owLR/wcJLGsAL9KZv40GT62R6whGQkaEYQ3LQnu11PXf0qw+gyU/mQCGKy5ms8LuGM32vHgzwj9PgFJESzQ0TdOx5LKfsh77xL9AO7Xa2DsILzBLUqjF7apBjKS73cZHBb63gELwB/zSlftkuKM0IVtTB+jj0+0QrBA+NbayTlmz+Ia/uKC/IZ8F1DE2e9XGwa9wX0UZlivERrBNb87dhs96b+febe/ZKOWG4BpvbuAgy8gBdejZLYPdhxKwVV7qv7HXT8McqiOuox2Qj9hk+bN2jWzmPL6Tv1GlTFG8xx+M6tMIRgIcxDPQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dzWgPnI2WXvvR+tPyTCvzndvVf7FxWyzKa8pqjnmxp0=;
+ b=nMFnmlPRoXFSjMCrLSJIULaXoZFibnKNO21HhtbJTS43GLdXt8qvx7lzs68yLVs0eMqkYNlfbpeQKChEebJt/UERaTOudc8/ufxmXTMCFmetVTy60pxbkrJft6VyU62btzQvUrM2ohhFcVl2+iF4IUVh4iZ/NUW8a2zItsmnk61WQBUvNHQnNJ4sTFXnsq3FJ5J5TFDRMT+mKoySokctJ41Vjf0rKZU8lMQJemTOgAFymSpgSLdwIuiKckhMdLPGuYIe15F/vAH6KShLwPAuV0MueJf7sbYd9M0Zpoyo44cf1fvyCKM9AnazHN5M2F/mQ7m/QWWQ4/LDRkRcrjU1mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5987.namprd11.prod.outlook.com (2603:10b6:208:372::8)
+ by PH8PR11MB6612.namprd11.prod.outlook.com (2603:10b6:510:1cf::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.23; Mon, 28 Nov
+ 2022 20:03:38 +0000
+Received: from MN0PR11MB5987.namprd11.prod.outlook.com
+ ([fe80::28fb:a1de:6842:d70a]) by MN0PR11MB5987.namprd11.prod.outlook.com
+ ([fe80::28fb:a1de:6842:d70a%9]) with mapi id 15.20.5857.018; Mon, 28 Nov 2022
+ 20:03:38 +0000
+From:   "Greenman, Gregory" <gregory.greenman@intel.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: pull-request: iwlwifi-next-for-kalle-2022-11-28
+Thread-Topic: pull-request: iwlwifi-next-for-kalle-2022-11-28
+Thread-Index: AQHZA2SB5oTR+JsBG0a9m4D6sMqv5w==
+Date:   Mon, 28 Nov 2022 20:03:38 +0000
+Message-ID: <b194da07d6f2617e6f273d204712d360be79f634.camel@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <d3018e30-92c6-1e73-3b63-311fc472a41f@gmail.com>
-In-Reply-To: <d3018e30-92c6-1e73-3b63-311fc472a41f@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5987:EE_|PH8PR11MB6612:EE_
+x-ms-office365-filtering-correlation-id: ffd93f85-e914-4434-2c15-08dad17ba38e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: znFQQDV/6RE+kYay75dyaaD1lCfZgn5tm7YiA1Lw9fOnbjMvWGu4B9i7zjLeDKet6k7DU6nZ+1JlA1yjugCos9nCtEI6EEYL+d5lhyzPsGaaUv6ylKljLekJOZnGHb9mNS/UBK8KwruQefP8mOuSUkfpfb/njFaY53KLMIbxkt3Zd8/gYP9pYK7yY5Ks/jckoBU8qx5f+N2tw6viXbQyGlF8xmQEpQE7I5ONngyZU1Yx9zrrSVDC9va/IG4socIU+E9RPdWZEfQuekyXipUBZmIiXmN70IvqWrIhkThrbwmH472jCIgtBROV0yOyT2jLhrr+nn6RvioODIho7qZzw0DtBedDHDNonEq6Azab0JpSfg4vx7tmiE+W/JkN1F0oEwpJvgntplC06tWpPFnrbQbJ7+on47bRwcEqvjwchDX8/7gWQiTuw82v86VgPGAQtSIk0FbydJMD2CcFSekxeVHQeqDjig0vUDOAC7TO9jENmD54s4RRWB2gtjq8jQbs5FaVzej7CIXMLBVcDU/OR2kKK7d4ApRgtuyAeuiqjnTMpg1KvtJyk4DAVKfyp13JQ13Rdn3Lg54ebH1kbh5w4srM1Y0BwRrrlBfcEKeUa8+rumwfGkpWG1vf/N63JU2Yzn4QChOcP0LoBtoiC7XroYq7w+/r44w9NslX8FxBFGnxYcmhnyslaPk55Uw7+VZGvoUeGvKXXxTv6mfQ5W2LZojw9dqdzcNR9m9p5rPK/0g=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5987.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(366004)(39860400002)(376002)(136003)(396003)(346002)(451199015)(4326008)(8676002)(5660300002)(66476007)(8936002)(41300700001)(66556008)(66446008)(64756008)(71200400001)(2906002)(4001150100001)(76116006)(316002)(6486002)(478600001)(966005)(66946007)(6916009)(36756003)(91956017)(86362001)(26005)(6512007)(6506007)(186003)(38070700005)(2616005)(83380400001)(38100700002)(82960400001)(122000001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R3p6MGR6eUREOTRIMDV3SEtJYnhHRis0K250Y2RvS1hZNXZqSm9vWEgwK1c0?=
+ =?utf-8?B?NWZJRmZoeTA0TU1uVUJNbUNJbUtodmRaZ3ZvOHUrVFd2R3h2Qzc2bEFkVnNU?=
+ =?utf-8?B?VUtheldjOWpnR1MrUDcwbVRDeWFUUEs3Q2FMN1RwQ0poTTBCbkZzMFlIcTZ6?=
+ =?utf-8?B?Qk11ZkswSmZMc2F2WHdtc3kvanA5SzBIdXZvMW80Y2VvaHZmcmMwL3Jxa1dW?=
+ =?utf-8?B?M0doS1dwaGQ0aFBZUmlTemU3ZjUxQ2lEMm5jWjVMcm9CeHdBVk9TenM2YWJB?=
+ =?utf-8?B?L2x2dloyTUdKK0hjSm9ENmlPT0JNV0JlWmZpQVVDT1NUVEFRWjVRN2VqNVhW?=
+ =?utf-8?B?YTdpNXd3K3ZVUGNITUdCdFo2dktQSDVoZllnY3RabEhoTXJjSUUvTWUvNTdz?=
+ =?utf-8?B?Y0RtUkpHR1dkZU5kUGJnOGRZT1JpWEFUYjczbHRZTW9HRzJ6elNNbWFPTnpm?=
+ =?utf-8?B?Y29OZCtib005RlowY3dLdDV1aEpiWnEySHVnRVJZaFJRRkNkTHovM2NwZXY5?=
+ =?utf-8?B?KzBjWkhEbHplYXZ3WVBZV2tDZFM4cGRyNkJUT3Bpek9wWWNiOXVSZldRaktU?=
+ =?utf-8?B?dmdEbUZKOENSbkxvQUZIOW9HNGlRK1ZwMGoxdHgwaXlTRTR6M0hKTjJ1TStG?=
+ =?utf-8?B?UTVnOCtISVh4aHhkL0xialJCVitOa2FtOVlDRERqUjNWdHZMbnZNSG0rSDNE?=
+ =?utf-8?B?ZVVBZ1BRcStGNFZlV0NDZDdMQkFjMjFTbHROc2RxZkk2YlJDc0FvajgyOVhS?=
+ =?utf-8?B?YVJud3ltL2p5Q1ZwT0JISTdVa0VWakNwa3dCVTVPa3ZZRlVYeUlKYVVnU3pG?=
+ =?utf-8?B?RkJSejN2U1RVMkQvSjhkb3JmQjBUWEdEUHlraXNqUDNiS3Y2YjVGQVdSZzRS?=
+ =?utf-8?B?Nk5EdE9Za3I5N0RzN29MSVhhZU1Fdk5Pa0dPekVXRUpRbHg2U1FWdVQ0WUVk?=
+ =?utf-8?B?aE9oZWY4UmJIWGhsNXgrSUlTeW00QWtzSFB6cHFoUXR0S0ZUUUkyOVNBd2lN?=
+ =?utf-8?B?cldRK013N1NGd3orUWtuREltZy8rVXRPcjVhTyszTi9GbzNNNUY1Y0tkQUxL?=
+ =?utf-8?B?djgvMHlTNUU5YU9zZGZPbTlZTlVGVk5tTWFPdkNpRldBTndVMkE0THhIcVVi?=
+ =?utf-8?B?ZzB2bnhCdVdyc3JNdTNCa3dPV0E3bnI0Z29INlVTOWdkLzQ0Smc4MGJkRkUy?=
+ =?utf-8?B?N0JQa0hUb2YvUW1HRnRST0JUSU1VT2F2cGExT2lGWVF5R1l0dTIwV05RQXJ4?=
+ =?utf-8?B?RDlCLzA0TlU0ODdVWm02bHpxcWt4MmRSMXV2aGNzQUEzVlZLM1haMzMrVkR1?=
+ =?utf-8?B?elhwTU1tdHlLUmVNdTFXb01yNGpWdzIzWCtpWVI5RzRETHI4dVh6Q2NuTWl4?=
+ =?utf-8?B?bUJlanlrMXcwa1p3RjJEY25nL0NWSmdsUGM2aXF1SGFGWlRhZFhsdGJxajkw?=
+ =?utf-8?B?WllEMHRhVGowM3F2NUJSU3NJa3prOWFWSFNFeU9Cdmw4Y1R1eVhUUDVzcWg4?=
+ =?utf-8?B?OU9wQ3Q2Snd0MEhBYWVwV1J4QmRBclVPSUp2eVVtS1ZaZTEwclpGWEJOdEo1?=
+ =?utf-8?B?T0xWMm5mVW9sU2xNZncySWxTcU9Ba2FQaHVRWVpRVDdmS1hVdnVYeHZxSHQ5?=
+ =?utf-8?B?eGtLeEpIemRTQmpIZVQ0YVVtZFNRVVpzS2pyUmhZVUlQVGMrR3FMOUZ4clBD?=
+ =?utf-8?B?SmxiL0o4R3FVMTF1N29IZjVCUE5Rb3VoSWtjWjFraUg5dUgzaUVrWWN6V3Rp?=
+ =?utf-8?B?NEw5aGZxU25lUzdpMUphTno1MmpRMEVRRk0yT1dGRFRxM0N3NzR6TWtVSmNL?=
+ =?utf-8?B?d1RndDZweWZ6cVpuNFFrenUxakVkRCtHcUZtMlNmNE90RlJKd3hLV2lnMy8z?=
+ =?utf-8?B?SHJVZ2ZuZkljTURQVlllLy9OazlmNks1WllsWkViWnRRc1dGekJNQTU3OTFz?=
+ =?utf-8?B?VG0zamRkc1FQazQ4UmNlUzRsWHFtaGU0NGlCbEsvTkJ3WU8yTVc1My84Tzdn?=
+ =?utf-8?B?b3Ixakl3ZGhnODhjTzVXQUZmeHM2b3Fhd0FMMlhjSnVtZEFqZjU5TmNHdE1K?=
+ =?utf-8?B?anA2Q3JPc1pHNThIaEZpQ2dmUXI2bWRXMmVYRDc2bUViUS9ibXlZTlN3dWtW?=
+ =?utf-8?B?K0xxM0pWRmlsSk5HTUJZcXhaYTYyUzZ3akdFNzlQOEl1bTB4Y0tDd0RzbmtI?=
+ =?utf-8?Q?9Z3sIQkZusMUhOasXpw3ArA=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E7D0EA31D3F6E34E8EFE4A9A1369DF2E@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5987.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffd93f85-e914-4434-2c15-08dad17ba38e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2022 20:03:38.1064
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rgf23kcFjS+T4+g6wIz66AgE0YhZilzsXvd3hBPUfJ7uyEYDjQO735oCWnEfITWdr2ALJTQbnoEAvX2CqOvK7glu9I2BoiwjiausZAz/y2E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6612
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ra_report struct is used for reporting the TX rate via
-sta_statistics. The code which fills it out is duplicated in two
-places, and the RTL8188EU will need it in a third place. Move this
-code into a new function rtl8xxxu_update_ra_report.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v2:
- - Compare against DESC_RATE_54M instead of DESC_RATE_MCS0.
----
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 107 ++++++++----------
- 1 file changed, 46 insertions(+), 61 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 352779fe4b78..4d067e9b9c8a 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4598,6 +4598,32 @@ static void rtl8xxxu_set_aifs(struct rtl8xxxu_priv *priv, u8 slot_time)
- 	}
- }
- 
-+static void rtl8xxxu_update_ra_report(struct rtl8xxxu_ra_report *rarpt,
-+				      u8 rate, u8 sgi, u8 bw)
-+{
-+	u8 mcs, nss;
-+
-+	rarpt->txrate.flags = 0;
-+
-+	if (rate <= DESC_RATE_54M) {
-+		rarpt->txrate.legacy = rtl8xxxu_legacy_ratetable[rate].bitrate;
-+	} else {
-+		rtl8xxxu_desc_to_mcsrate(rate, &mcs, &nss);
-+		rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
-+
-+		rarpt->txrate.mcs = mcs;
-+		rarpt->txrate.nss = nss;
-+
-+		if (sgi)
-+			rarpt->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+
-+		rarpt->txrate.bw = bw;
-+	}
-+
-+	rarpt->bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
-+	rarpt->desc_rate = rate;
-+}
-+
- static void
- rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  struct ieee80211_bss_conf *bss_conf, u64 changed)
-@@ -4620,9 +4646,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			u32 ramask;
- 			int sgi = 0;
- 			u8 highest_rate;
--			u8 mcs = 0, nss = 0;
--			u32 bit_rate;
--
-+			u8 bw;
- 
- 			rcu_read_lock();
- 			sta = ieee80211_find_sta(vif, bss_conf->bssid);
-@@ -4647,37 +4671,19 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 				sgi = 1;
- 
- 			highest_rate = fls(ramask) - 1;
--			if (highest_rate < DESC_RATE_MCS0) {
--				rarpt->txrate.legacy =
--				rtl8xxxu_legacy_ratetable[highest_rate].bitrate;
--			} else {
--				rtl8xxxu_desc_to_mcsrate(highest_rate,
--							 &mcs, &nss);
--				rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
--
--				rarpt->txrate.mcs = mcs;
--				rarpt->txrate.nss = nss;
--
--				if (sgi) {
--					rarpt->txrate.flags |=
--						RATE_INFO_FLAGS_SHORT_GI;
--				}
--
--				if (rtl8xxxu_ht40_2g &&
--				    (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40))
--					rarpt->txrate.bw = RATE_INFO_BW_40;
--				else
--					rarpt->txrate.bw = RATE_INFO_BW_20;
--			}
-+			if (rtl8xxxu_ht40_2g &&
-+			    (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40))
-+				bw = RATE_INFO_BW_40;
-+			else
-+				bw = RATE_INFO_BW_20;
- 			rcu_read_unlock();
--			bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
--			rarpt->bit_rate = bit_rate;
--			rarpt->desc_rate = highest_rate;
-+
-+			rtl8xxxu_update_ra_report(rarpt, highest_rate, sgi, bw);
- 
- 			priv->vif = vif;
- 			priv->rssi_level = RTL8XXXU_RATR_STA_INIT;
- 
--			priv->fops->update_rate_mask(priv, ramask, 0, sgi, rarpt->txrate.bw == RATE_INFO_BW_40);
-+			priv->fops->update_rate_mask(priv, ramask, 0, sgi, bw == RATE_INFO_BW_40);
- 
- 			rtl8xxxu_write8(priv, REG_BCN_MAX_ERR, 0xff);
- 
-@@ -5538,9 +5544,7 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
- 	u8 bt_info = 0;
- 	struct rtl8xxxu_btcoex *btcoex;
- 	struct rtl8xxxu_ra_report *rarpt;
--	u8 rate, sgi, bw;
--	u32 bit_rate;
--	u8 mcs = 0, nss = 0;
-+	u8 bw;
- 
- 	priv = container_of(work, struct rtl8xxxu_priv, c2hcmd_work);
- 	btcoex = &priv->bt_coex;
-@@ -5566,37 +5570,18 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
- 			rtl8723bu_handle_bt_info(priv);
- 			break;
- 		case C2H_8723B_RA_REPORT:
--			rarpt->txrate.flags = 0;
--			rate = c2h->ra_report.rate;
--			sgi = c2h->ra_report.sgi;
--
--			if (rate < DESC_RATE_MCS0) {
--				rarpt->txrate.legacy =
--					rtl8xxxu_legacy_ratetable[rate].bitrate;
--			} else {
--				rtl8xxxu_desc_to_mcsrate(rate, &mcs, &nss);
--				rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
-+			bw = rarpt->txrate.bw;
- 
--				rarpt->txrate.mcs = mcs;
--				rarpt->txrate.nss = nss;
--
--				if (sgi) {
--					rarpt->txrate.flags |=
--						RATE_INFO_FLAGS_SHORT_GI;
--				}
--
--				if (skb->len > RTL8XXXU_C2H_HDR_LEN +
--					       offsetof(typeof(c2h->ra_report), bw)) {
--					if (c2h->ra_report.bw == RTL8XXXU_CHANNEL_WIDTH_40)
--						bw = RATE_INFO_BW_40;
--					else
--						bw = RATE_INFO_BW_20;
--					rarpt->txrate.bw = bw;
--				}
-+			if (skb->len > RTL8XXXU_C2H_HDR_LEN +
-+				       offsetof(typeof(c2h->ra_report), bw)) {
-+				if (c2h->ra_report.bw == RTL8XXXU_CHANNEL_WIDTH_40)
-+					bw = RATE_INFO_BW_40;
-+				else
-+					bw = RATE_INFO_BW_20;
- 			}
--			bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
--			rarpt->bit_rate = bit_rate;
--			rarpt->desc_rate = rate;
-+
-+			rtl8xxxu_update_ra_report(rarpt, c2h->ra_report.rate,
-+						  c2h->ra_report.sgi, bw);
- 			break;
- 		default:
- 			break;
--- 
-2.38.0
+SGkgS2FsbGUsDQoNCkhlcmUncyB0aGUgc2Vjb25kIHB1bGwgcmVxdWVzdCBmb3IgdjYuMiB3aXRo
+IHRoZSBsYXN0IHR3byBwYXRjaHNldHMgSSBzZW50Lg0KDQpJdCBjb250YWlucyBFSFQgYWRqdXN0
+bWVudHMgYW5kIHNvbWUgYnVnZml4ZXMgKGl3bG1laSBhbmQgb25lIG9sZCBidWcgaW4gdHggcGF0
+aCkuDQoNClBsZWFzZSBsZXQgbWUga25vdyBpZiB0aGVyZSBhcmUgYW55IGlzc3Vlcy4NCg0KVGhh
+bmtzLA0KR3JlZ29yeQ0KDQpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2luY2UgY29tbWl0IGVjZWIw
+MjRlZTNlZWQxYmFjYjVjMzJhNDg0NzI2OWYyNjg1ZTJlYTQ6DQoNCiAgTWVyZ2UgYXRoLW5leHQg
+ZnJvbSBnaXQ6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQva3ZhbG8v
+YXRoLmdpdCAoMjAyMi0xMS0yOCAxNjo1ODoyOCArMDIwMCkNCg0KYXJlIGF2YWlsYWJsZSBpbiB0
+aGUgR2l0IHJlcG9zaXRvcnkgYXQ6DQoNCiAgaHR0cDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20v
+bGludXgva2VybmVsL2dpdC9pd2x3aWZpL2l3bHdpZmktbmV4dC5naXQgdGFncy9pd2x3aWZpLW5l
+eHQtZm9yLWthbGxlLTIwMjItMTEtMjgNCg0KZm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRv
+IGYzMWY3Y2Q5ODc1YzJhYjc0NDAwNmJkMmFkMjU2NDFkYjUzZjA3OWQ6DQoNCiAgd2lmaTogaXds
+d2lmaTogbWVpOiBmaXggcGFyYW1ldGVyIHBhc3NpbmcgdG8gaXdsX21laV9hbGl2ZV9ub3RpZigp
+ICgyMDIyLTExLTI4IDE3OjU0OjA5ICswMjAwKQ0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpUaGlzIGlzIHRoZSBzZWNv
+bmQgcHVsbCByZXF1ZXN0IGludGVuZGVkIGZvciB2Ni4yDQoNCkl0IGNvbnRhaW5zIHR3byBwYXRj
+aC1zZXRzIHNlbnQgYmVmb3JlIHdpdGggdGhlIGZvbGxvd2luZyBjb250ZW50Og0KKiBpd2x3aWZp
+IEVIVCBhZGp1c3RtZW50cw0KKiBkb3VibGUtZnJlZSBmaXggaW4gdHggcGF0aA0KKiBpd2xtZWkg
+UExEUiBmbG93IGZpeGVzDQoqIGl3bG1laSBzbWF0Y2ggZml4ZXMNCiogYSBsb2dnaW5nIGRhdGEg
+aW1wcm92ZW1lbnQNCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KQWJoaXNoZWsgTmFpayAoMSk6DQogICAgICB3aWZpOiBp
+d2x3aWZpOiBudm06IFVwZGF0ZSBFSFQgY2FwYWJpbGl0aWVzIGZvciBHTCBkZXZpY2UNCg0KQXZy
+YWhhbSBTdGVybiAoMik6DQogICAgICB3aWZpOiBpd2x3aWZpOiBtdm06IHRyaWdnZXIgUENJIHJl
+LWVudW1lcmF0aW9uIGluIGNhc2Ugb2YgUExEUiBzeW5jDQogICAgICB3aWZpOiBpd2x3aWZpOiBt
+dm06IHJldHVybiBlcnJvciB2YWx1ZSBpbiBjYXNlIFBMRFIgc3luYyBmYWlsZWQNCg0KQmVuIEdy
+ZWVhciAoMSk6DQogICAgICB3aWZpOiBpd2x3aWZpOiBtdm06IGZpeCBkb3VibGUgZnJlZSBvbiB0
+eCBwYXRoLg0KDQpEYW5pZWwgR2FiYXkgKDEpOg0KICAgICAgd2lmaTogaXdsd2lmaTogbXZtOiBw
+cmludCBPVFAgaW5mbyBhZnRlciBhbGl2ZQ0KDQpHcmVnb3J5IEdyZWVubWFuICgxKToNCiAgICAg
+IHdpZmk6IGl3bHdpZmk6IG1laTogZml4IHBhcmFtZXRlciBwYXNzaW5nIHRvIGl3bF9tZWlfYWxp
+dmVfbm90aWYoKQ0KDQpJbGFuIFBlZXIgKDEpOg0KICAgICAgd2lmaTogaXdsd2lmaTogbXZtOiBB
+ZHZlcnRpc2UgRUhUIGNhcGFiaWxpdGllcw0KDQpKb2hhbm5lcyBCZXJnICg0KToNCiAgICAgIHdp
+Zmk6IGl3bHdpZmk6IG12bTogc3VwcG9ydCAzMjAgTUh6IFBIWSBjb25maWd1cmF0aW9uDQogICAg
+ICB3aWZpOiBpd2x3aWZpOiBtdm06IHNldCBIRSBQSFkgYmFuZHdpZHRoIGFjY29yZGluZyB0byBi
+YW5kDQogICAgICB3aWZpOiBpd2x3aWZpOiBtdm06IGFkdmVydGlzZSAzMjAgTUh6IGluIDYgR0h6
+IG9ubHkgY29uZGl0aW9uYWxseQ0KICAgICAgd2lmaTogaXdsd2lmaTogbnZtLXBhcnNlOiBzdXBw
+b3J0IEEtTVBEVSBpbiBFSFQgMi40IEdIeg0KDQpNaXJpIEtvcmVuYmxpdCAoMSk6DQogICAgICB3
+aWZpOiBpd2x3aWZpOiBtdm06IHN1cHBvcnQgUFBFIFRocmVzaG9sZHMgZm9yIEVIVA0KDQpNb3Jk
+ZWNoYXkgR29vZHN0ZWluICgyKToNCiAgICAgIHdpZmk6IGl3bHdpZmk6IHJzOiBhZGQgc3VwcG9y
+dCBmb3IgcGFyc2luZyBtYXggTUNTIHBlciBOU1MvQlcgaW4gMTFiZQ0KICAgICAgd2lmaTogaXds
+d2lmaTogbXZtOiBhZGQgc3VwcG9ydCBmb3IgRUhUIDFLIGFnZ3JlZ2F0aW9uIHNpemUNCg0KIGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvZncvYXBpL21hYy5oICAgICAgIHwgICA2
+ICsrLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9mdy9hcGkvcGh5LWN0
+eHQuaCAgfCAgMzMgKysrKysrKysrKysrLS0tLS0tLS0tLS0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL2ludGVsL2l3bHdpZmkvZncvYXBpL3JzLmggICAgICAgIHwgIDEwICsrKy0tLS0tDQogZHJp
+dmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9mdy9ycy5jICAgICAgICAgICAgfCAgIDIg
+KysNCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL2l3bC1kcnYuYyAgICAgICAg
+ICB8ICAgMyArKysNCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL2l3bC1lZXBy
+b20tcGFyc2UuaCB8ICAgMyArKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZp
+L2l3bC1tb2RwYXJhbXMuaCAgICB8ICAgMSArDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwv
+aXdsd2lmaS9pd2wtbnZtLXBhcnNlLmMgICAgfCAyMzUNCisrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQogZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvaW50ZWwvaXdsd2lmaS9pd2wtcHJwaC5oICAgICAgICAgfCAgIDEgKw0KIGRyaXZlcnMv
+bmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvaXdsLXRyYW5zLmggICAgICAgIHwgICAxICsNCiBk
+cml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9mdy5jICAgICAgICAgICB8ICAy
+OSArKysrKysrKysrKysrKysrKystLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXds
+d2lmaS9tdm0vbWFjODAyMTEuYyAgICAgfCAxODkgKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLQ0K
+LS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9tdm0uaCAgICAgICAg
+ICB8ICAgMiArKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbXZtL29wcy5j
+ICAgICAgICAgIHwgIDEzICsrKysrKysrLS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9p
+d2x3aWZpL212bS9waHktY3R4dC5jICAgICB8ICA1NCArKysrKysrKysrKysrKysrKysrKy0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbXZt
+L3JzLWZ3LmMgICAgICAgIHwgMTI1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+LS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS90eC5jICAgICAgICAg
+ICB8ICAxMiArKysrKysrKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL3Bj
+aWUvdHJhbnMuYyAgICAgICB8ICA4NSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+Ky0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQogMTggZmlsZXMgY2hhbmdlZCwgNjQ3IGlu
+c2VydGlvbnMoKyksIDE1NyBkZWxldGlvbnMoLSkNCg==
