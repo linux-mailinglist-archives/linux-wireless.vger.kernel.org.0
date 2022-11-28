@@ -2,208 +2,402 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0040639CB0
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Nov 2022 20:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E8F639F2D
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 03:02:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbiK0T7w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Nov 2022 14:59:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34128 "EHLO
+        id S229661AbiK1CB7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Nov 2022 21:01:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbiK0T7q (ORCPT
+        with ESMTP id S229504AbiK1CB6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Nov 2022 14:59:46 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D0FDFA7
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Nov 2022 11:59:45 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id d6so14450014lfs.10
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Nov 2022 11:59:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TlRiF6aZCfX1I8078z7gmuqiRiY4G3xRWnUp+va4z90=;
-        b=G3u/NtRIXCWXIMt7uEp2b9soKrK1tpFjIeGqvtW1qYY9FK/Doczzr5S/f7+setEkOd
-         v80WnNnQSABuNlkv9nTdblK7vBYoyCRJVTQHF+BQ65em7uhMtGDJVmJ35s3q2Sugvqdc
-         vamMFVZ2wmkzjEcV5wmX0NJ9m6JEEYVn7TtFirPg/W42ajeE5zMDkPWqSbJRTUxI4uqG
-         wxwnZhEBIMdddNx0LisyPNUOeOKfLYMGVRE0IZz8YXZvLaEIBsARZZZOP0m4mjqWLJjE
-         xDz1KTQZb+ZuRiIw5tMOgNOmMwc6cpgakOaaoVRHpaI+TTMtAq7XIfTxRJzlOARbShAV
-         nQWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TlRiF6aZCfX1I8078z7gmuqiRiY4G3xRWnUp+va4z90=;
-        b=QxdkpZL/oOyAYIF1JpQlkusfuaGHzITba/wFe2BsEEhyPVwIaeMEbnUhBEHKwVuRFJ
-         ZMt/yisGDj6TqF77Mum5KBIgzVuFmhF840x1GgYyAU4RFCmBS/HfgS0BKrgTDhM88wx2
-         OIoQbT9AxKY+fsQLU/hHZi68y1nvdiRHZ5yfw1VP9vNXNw/CobN1YCOETgBLVo63G/jf
-         zahX3Y6D8HQn2qmBIfH7Zs0+k+i7O23iMkqDbJFyDUS/06iGG9Q1jVGscAJSG5GvI+8X
-         cCeoLf4bwEJHEE4CnT3zX8FHCqTguOPMbdOkUQks7VCzhPXchu7mH26J5JSTDT84wyJz
-         G51g==
-X-Gm-Message-State: ANoB5plILP1wM3rpHeqvNh+O4/TXtQ2fYvd+n2vUb5nZKb4XL2LybwO/
-        aBCGYPFH8Bs8UBqMtjUnBO8wnBrNMnT/y+1X
-X-Google-Smtp-Source: AA0mqf721Lrp5FeAg5pIrd5iP/RBSqnecSIatIkMMHkZSkKLd/ScWaGRXqba4JediJaNQL23q2iGQw==
-X-Received: by 2002:a19:5e02:0:b0:4a2:61ca:318a with SMTP id s2-20020a195e02000000b004a261ca318amr18277951lfb.199.1669579178992;
-        Sun, 27 Nov 2022 11:59:38 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id c19-20020a056512325300b004998d9ccb62sm1397991lfr.99.2022.11.27.11.59.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Nov 2022 11:59:38 -0800 (PST)
-Message-ID: <0ee688ac-5c34-1592-23d3-fe100cadc570@linaro.org>
-Date:   Sun, 27 Nov 2022 20:59:37 +0100
+        Sun, 27 Nov 2022 21:01:58 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1484FD2F9;
+        Sun, 27 Nov 2022 18:01:53 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AS20BzQ4022829, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AS20BzQ4022829
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 28 Nov 2022 10:00:11 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 28 Nov 2022 10:00:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 28 Nov 2022 10:00:55 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Mon, 28 Nov 2022 10:00:55 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Alexander Hochbaum <alex@appudo.com>,
+        Da Xue <da@libre.computer>,
+        "Bernie Huang" <phhuang@realtek.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        neo_jou <neo_jou@realtek.com>
+Subject: RE: [PATCH v3 07/11] rtw88: Add common USB chip support
+Thread-Topic: [PATCH v3 07/11] rtw88: Add common USB chip support
+Thread-Index: AQHY/oI8ptr99hEq8k+LqRAzoG392a5PWSHw
+Date:   Mon, 28 Nov 2022 02:00:54 +0000
+Message-ID: <1f7aa964766c4f65b836f7e1d716a1e3@realtek.com>
+References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
+ <20221122145226.4065843-8-s.hauer@pengutronix.de>
+In-Reply-To: <20221122145226.4065843-8-s.hauer@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/27_=3F=3F_10:48:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [syzbot] KASAN: use-after-free Read in rfkill_blocked
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        syzbot <syzbot+0299462c067009827b2a@syzkaller.appspotmail.com>,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-References: <000000000000790da005ee3175a8@google.com>
- <26b9771db88198ff982476e3e24f411277cd213b.camel@sipsolutions.net>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <26b9771db88198ff982476e3e24f411277cd213b.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25/11/2022 10:09, Johannes Berg wrote:
-> Looks like an NFC issue to me, Krzysztof?
-> 
-> I mean, rfkill got allocated by nfc_register_device(), freed by
-> nfc_unregister_device(), and then used by nfc_dev_up(). Seems like the
-> last bit shouldn't be possible after nfc_unregister_device()?
-> 
-> johannes
-> 
-> On Wed, 2022-11-23 at 22:24 -0800, syzbot wrote:
->> Hello,
->>
->> syzbot found the following issue on:
->>
->> HEAD commit:    0966d385830d riscv: Fix auipc+jalr relocation range checks
->> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git fixes
->> console output: https://syzkaller.appspot.com/x/log.txt?x=11196d0d880000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=6295d67591064921
->> dashboard link: https://syzkaller.appspot.com/bug?extid=0299462c067009827b2a
->> compiler:       riscv64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
->> userspace arch: riscv64
->>
->> Unfortunately, I don't have any reproducer for this issue yet.
->>
->> IMPORTANT: if you fix the issue, please add the following tag to the commit:
->> Reported-by: syzbot+0299462c067009827b2a@syzkaller.appspotmail.com
->>
->> ==================================================================
->> BUG: KASAN: use-after-free in __lock_acquire+0x8ee/0x333e kernel/locking/lockdep.c:4897
->> Read of size 8 at addr ffffaf8024249018 by task syz-executor.0/7946
->>
->> CPU: 0 PID: 7946 Comm: syz-executor.0 Not tainted 5.17.0-rc1-syzkaller-00002-g0966d385830d #0
->> Hardware name: riscv-virtio,qemu (DT)
->> Call Trace:
->> [<ffffffff8000a228>] dump_backtrace+0x2e/0x3c arch/riscv/kernel/stacktrace.c:113
->> [<ffffffff831668cc>] show_stack+0x34/0x40 arch/riscv/kernel/stacktrace.c:119
->> [<ffffffff831756ba>] __dump_stack lib/dump_stack.c:88 [inline]
->> [<ffffffff831756ba>] dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:106
->> [<ffffffff8047479e>] print_address_description.constprop.0+0x2a/0x330 mm/kasan/report.c:255
->> [<ffffffff80474d4c>] __kasan_report mm/kasan/report.c:442 [inline]
->> [<ffffffff80474d4c>] kasan_report+0x184/0x1e0 mm/kasan/report.c:459
->> [<ffffffff80475b20>] check_region_inline mm/kasan/generic.c:183 [inline]
->> [<ffffffff80475b20>] __asan_load8+0x6e/0x96 mm/kasan/generic.c:256
->> [<ffffffff80112b70>] __lock_acquire+0x8ee/0x333e kernel/locking/lockdep.c:4897
->> [<ffffffff80116582>] lock_acquire.part.0+0x1d0/0x424 kernel/locking/lockdep.c:5639
->> [<ffffffff8011682a>] lock_acquire+0x54/0x6a kernel/locking/lockdep.c:5612
->> [<ffffffff831afa2c>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
->> [<ffffffff831afa2c>] _raw_spin_lock_irqsave+0x3e/0x62 kernel/locking/spinlock.c:162
->> [<ffffffff83034f0a>] rfkill_blocked+0x22/0x62 net/rfkill/core.c:941
->> [<ffffffff830b8862>] nfc_dev_up+0x8e/0x26c net/nfc/core.c:102
->> [<ffffffff830bb742>] nfc_genl_dev_up+0x5e/0x8a net/nfc/netlink.c:770
->> [<ffffffff8296f9ae>] genl_family_rcv_msg_doit+0x19a/0x23c net/netlink/genetlink.c:731
->> [<ffffffff82970420>] genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
->> [<ffffffff82970420>] genl_rcv_msg+0x236/0x3ba net/netlink/genetlink.c:792
->> [<ffffffff8296ded2>] netlink_rcv_skb+0xf8/0x2be net/netlink/af_netlink.c:2494
->> [<ffffffff8296ecb2>] genl_rcv+0x36/0x4c net/netlink/genetlink.c:803
->> [<ffffffff8296cbcc>] netlink_unicast_kernel net/netlink/af_netlink.c:1317 [inline]
->> [<ffffffff8296cbcc>] netlink_unicast+0x40e/0x5fe net/netlink/af_netlink.c:1343
->> [<ffffffff8296d29c>] netlink_sendmsg+0x4e0/0x994 net/netlink/af_netlink.c:1919
->> [<ffffffff826d264e>] sock_sendmsg_nosec net/socket.c:705 [inline]
->> [<ffffffff826d264e>] sock_sendmsg+0xa0/0xc4 net/socket.c:725
->> [<ffffffff826d4dd4>] ____sys_sendmsg+0x46e/0x484 net/socket.c:2413
->> [<ffffffff826d8bca>] ___sys_sendmsg+0x16c/0x1f6 net/socket.c:2467
->> [<ffffffff826d8e78>] __sys_sendmsg+0xba/0x150 net/socket.c:2496
->> [<ffffffff826d8f3a>] __do_sys_sendmsg net/socket.c:2505 [inline]
->> [<ffffffff826d8f3a>] sys_sendmsg+0x2c/0x3a net/socket.c:2503
->> [<ffffffff80005716>] ret_from_syscall+0x0/0x2
->>
->> Allocated by task 7946:
->>  stack_trace_save+0xa6/0xd8 kernel/stacktrace.c:122
->>  kasan_save_stack+0x2c/0x58 mm/kasan/common.c:38
->>  kasan_set_track mm/kasan/common.c:45 [inline]
->>  set_alloc_info mm/kasan/common.c:436 [inline]
->>  ____kasan_kmalloc mm/kasan/common.c:515 [inline]
->>  ____kasan_kmalloc mm/kasan/common.c:474 [inline]
->>  __kasan_kmalloc+0x80/0xb2 mm/kasan/common.c:524
->>  kasan_kmalloc include/linux/kasan.h:270 [inline]
->>  __kmalloc+0x190/0x318 mm/slub.c:4424
->>  kmalloc include/linux/slab.h:586 [inline]
->>  kzalloc include/linux/slab.h:715 [inline]
->>  rfkill_alloc+0x96/0x1aa net/rfkill/core.c:983
->>  nfc_register_device+0xe4/0x29e net/nfc/core.c:1129
->>  nci_register_device+0x538/0x612 net/nfc/nci/core.c:1252
->>  virtual_ncidev_open+0x82/0x12c drivers/nfc/virtual_ncidev.c:143
->>  misc_open+0x272/0x2c8 drivers/char/misc.c:141
->>  chrdev_open+0x1d4/0x478 fs/char_dev.c:414
->>  do_dentry_open+0x2a4/0x7d4 fs/open.c:824
->>  vfs_open+0x52/0x5e fs/open.c:959
->>  do_open fs/namei.c:3476 [inline]
->>  path_openat+0x12b6/0x189e fs/namei.c:3609
->>  do_filp_open+0x10e/0x22a fs/namei.c:3636
->>  do_sys_openat2+0x174/0x31e fs/open.c:1214
->>  do_sys_open fs/open.c:1230 [inline]
->>  __do_sys_openat fs/open.c:1246 [inline]
->>  sys_openat+0xdc/0x164 fs/open.c:1241
->>  ret_from_syscall+0x0/0x2
->>
->> Freed by task 7944:
->>  stack_trace_save+0xa6/0xd8 kernel/stacktrace.c:122
->>  kasan_save_stack+0x2c/0x58 mm/kasan/common.c:38
->>  kasan_set_track+0x1a/0x26 mm/kasan/common.c:45
->>  kasan_set_free_info+0x1e/0x3a mm/kasan/generic.c:370
->>  ____kasan_slab_free mm/kasan/common.c:366 [inline]
->>  ____kasan_slab_free+0x15e/0x180 mm/kasan/common.c:328
->>  __kasan_slab_free+0x10/0x18 mm/kasan/common.c:374
->>  kasan_slab_free include/linux/kasan.h:236 [inline]
->>  slab_free_hook mm/slub.c:1728 [inline]
->>  slab_free_freelist_hook+0x8e/0x1cc mm/slub.c:1754
->>  slab_free mm/slub.c:3509 [inline]
->>  kfree+0xe0/0x3e4 mm/slub.c:4562
->>  rfkill_release+0x20/0x2a net/rfkill/core.c:831
->>  device_release+0x66/0x148 drivers/base/core.c:2229
->>  kobject_cleanup lib/kobject.c:705 [inline]
->>  kobject_release lib/kobject.c:736 [inline]
->>  kref_put include/linux/kref.h:65 [inline]
->>  kobject_put+0x1bc/0x38e lib/kobject.c:753
->>  put_device+0x28/0x3a drivers/base/core.c:3512
->>  rfkill_destroy+0x2a/0x3c net/rfkill/core.c:1142
->>  nfc_unregister_device+0xac/0x232 net/nfc/core.c:1167
->>  nci_unregister_device+0x168/0x182 net/nfc/nci/core.c:1298
->>  virtual_ncidev_close+0x9c/0xbc drivers/nfc/virtual_ncidev.c:163
 
-There were several issues found recently in virtual NCI driver, so this
-might be one of them. There is no reproducer, though...
 
-Best regards,
-Krzysztof
+> -----Original Message-----
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Sent: Tuesday, November 22, 2022 10:52 PM
+> To: linux-wireless@vger.kernel.org
+> Cc: Neo Jou <neojou@gmail.com>; Hans Ulli Kroll <linux@ulli-kroll.de>; Ping-Ke Shih <pkshih@realtek.com>;
+> Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
+> kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
+> Da Xue <da@libre.computer>; Bernie Huang <phhuang@realtek.com>; Viktor Petrenko <g0000ga@gmail.com>;
+> Sascha Hauer <s.hauer@pengutronix.de>; neo_jou <neo_jou@realtek.com>
+> Subject: [PATCH v3 07/11] rtw88: Add common USB chip support
+> 
+> Add the common bits and pieces to add USB support to the RTW88 driver.
+> This is based on https://github.com/ulli-kroll/rtw88-usb.git which
+> itself is first written by Neo Jou.
+> 
+> Signed-off-by: neo_jou <neo_jou@realtek.com>
+> Signed-off-by: Hans Ulli Kroll <linux@ulli-kroll.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+> 
+> Notes:
+>     Changes since v2:
+>     - Fix buffer length for aggregated tx packets
+>     - Increase maximum transmit buffer size to 20KiB as found in downstream drivers
+>     - Change register write functions to synchronous accesses instead of just firing
+>       a URB without waiting for its completion
+>     - requeue rx URBs directly in completion handler rather than having a workqueue
+>       for it.
+> 
+>     Changes since v1:
+>     - Make checkpatch.pl clean
+>     - Drop WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL flag
+>     - Use 'ret' as variable name for return values
+>     - Sort variable declarations in reverse Xmas tree order
+>     - Change potentially endless loop to a limited loop
+>     - Change locking to be more obviously correct
+>     - drop unnecessary check for !rtwdev
+>     - make sure the refill workqueue is not restarted again after we have
+>       cancelled it
+> 
+>  drivers/net/wireless/realtek/rtw88/Kconfig  |   3 +
+>  drivers/net/wireless/realtek/rtw88/Makefile |   2 +
+>  drivers/net/wireless/realtek/rtw88/mac.c    |   3 +
+>  drivers/net/wireless/realtek/rtw88/main.c   |   4 +
+>  drivers/net/wireless/realtek/rtw88/main.h   |   4 +
+>  drivers/net/wireless/realtek/rtw88/reg.h    |   1 +
+>  drivers/net/wireless/realtek/rtw88/tx.h     |  31 +
+>  drivers/net/wireless/realtek/rtw88/usb.c    | 918 ++++++++++++++++++++
+>  drivers/net/wireless/realtek/rtw88/usb.h    | 107 +++
+>  9 files changed, 1073 insertions(+)
+>  create mode 100644 drivers/net/wireless/realtek/rtw88/usb.c
+>  create mode 100644 drivers/net/wireless/realtek/rtw88/usb.h
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+> index e3d7cb6c12902..1624c5db69bac 100644
+> --- a/drivers/net/wireless/realtek/rtw88/Kconfig
+> +++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+> @@ -16,6 +16,9 @@ config RTW88_CORE
+>  config RTW88_PCI
+>  	tristate
+> 
+> +config RTW88_USB
+> +	tristate
+> +
+>  config RTW88_8822B
+>  	tristate
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
+> index 834c66ec0af9e..9e095f8181483 100644
+> --- a/drivers/net/wireless/realtek/rtw88/Makefile
+> +++ b/drivers/net/wireless/realtek/rtw88/Makefile
+> @@ -45,4 +45,6 @@ obj-$(CONFIG_RTW88_8821CE)	+= rtw88_8821ce.o
+>  rtw88_8821ce-objs		:= rtw8821ce.o
+> 
+>  obj-$(CONFIG_RTW88_PCI)		+= rtw88_pci.o
+> +obj-$(CONFIG_RTW88_USB)		+= rtw88_usb.o
+>  rtw88_pci-objs			:= pci.o
+> +rtw88_usb-objs			:= usb.o
+
+nit: I prefer not interleaving with PCI.
+
+
+[...]
+
+> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> new file mode 100644
+> index 0000000000000..4a12934d20712
+> --- /dev/null
+> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+
+[...]
+
+> +static u32 rtw_usb_read(struct rtw_dev *rtwdev, u32 addr, u16 len)
+> +{
+> +	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+> +	struct usb_device *udev = rtwusb->udev;
+> +	__le32 *data;
+> +	unsigned long flags;
+> +	int ret;
+> +	static int count;
+> +
+> +	spin_lock_irqsave(&rtwusb->usb_lock, flags);
+> +
+> +	rtwusb->usb_data_index++;
+> +	rtwusb->usb_data_index &= (RTW_USB_MAX_RXTX_COUNT - 1);
+> +
+> +	spin_unlock_irqrestore(&rtwusb->usb_lock, flags);
+> +
+> +	data = &rtwusb->usb_data[rtwusb->usb_data_index];
+
+Don't you need to hold &rtwusb->usb_lock to access rtwusb->usb_data_index?
+rtw_usb_write() has similar code.
+
+> +
+> +	ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+> +			      RTW_USB_CMD_REQ, RTW_USB_CMD_READ, addr,
+> +			      RTW_USB_VENQT_CMD_IDX, data, len, 1000);
+> +	if (ret < 0 && ret != -ENODEV && count++ < 4)
+> +		rtw_err(rtwdev, "read register 0x%x failed with %d\n",
+> +			addr, ret);
+> +
+> +	return le32_to_cpu(*data);
+> +}
+> +
+
+[...]
+
+> +
+> +static void rtw_usb_write_port_tx_complete(struct urb *urb)
+> +{
+> +	struct rtw_usb_txcb *txcb = urb->context;
+> +	struct rtw_dev *rtwdev = txcb->rtwdev;
+> +	struct ieee80211_hw *hw = rtwdev->hw;
+> +
+> +	while (true) {
+
+Is it possible to have a hard limit to prevent unexpected infinite loop?
+
+> +		struct sk_buff *skb = skb_dequeue(&txcb->tx_ack_queue);
+> +		struct ieee80211_tx_info *info;
+> +		struct rtw_usb_tx_data *tx_data;
+> +
+> +		if (!skb)
+> +			break;
+> +
+> +		info = IEEE80211_SKB_CB(skb);
+> +		tx_data = rtw_usb_get_tx_data(skb);
+> +
+> +		/* enqueue to wait for tx report */
+> +		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
+> +			rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+> +			continue;
+> +		}
+> +
+> +		/* always ACK for others, then they won't be marked as drop */
+> +		ieee80211_tx_info_clear_status(info);
+> +		if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+> +			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+> +		else
+> +			info->flags |= IEEE80211_TX_STAT_ACK;
+> +
+> +		ieee80211_tx_status_irqsafe(hw, skb);
+> +	}
+> +
+> +	kfree(txcb);
+> +}
+> +
+
+[...]
+
+> +
+> +static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list)
+> +{
+> +	struct rtw_dev *rtwdev = rtwusb->rtwdev;
+> +	struct rtw_usb_txcb *txcb;
+> +	struct sk_buff *skb_head;
+> +	struct sk_buff *skb_iter;
+> +	u8 *data_ptr;
+> +	int agg_num = 0;
+> +	unsigned int align_next = 0;
+> +
+> +	if (skb_queue_empty(list))
+> +		return false;
+> +
+> +	txcb = kmalloc(sizeof(*txcb), GFP_ATOMIC);
+> +	if (!txcb)
+> +		return false;
+> +
+> +	txcb->rtwdev = rtwdev;
+> +	skb_queue_head_init(&txcb->tx_ack_queue);
+> +
+> +	skb_iter = skb_dequeue(list);
+> +
+> +	if (skb_queue_empty(list)) {
+> +		skb_head = skb_iter;
+> +		goto queue;
+> +	}
+> +
+> +	skb_head = dev_alloc_skb(RTW_USB_MAX_XMITBUF_SZ);
+> +	if (!skb_head) {
+> +		skb_head = skb_iter;
+> +		goto queue;
+> +	}
+> +
+> +	data_ptr = skb_head->data;
+> +
+> +	while (skb_iter) {
+> +		unsigned long flags;
+> +
+> +		memcpy(data_ptr, skb_iter->data, skb_iter->len);
+> +		skb_put(skb_head, skb_iter->len + align_next);
+
+skb_put(skb_head, align_next);
+skb_put_data(skb_head, skb_iter->data, skb_iter->len);
+
+Then, don't need to maintain 'data_ptr'.
+
+> +
+> +		align_next = ALIGN(skb_iter->len, 8) - skb_iter->len;
+> +		data_ptr += skb_iter->len + align_next;
+> +
+> +		agg_num++;
+> +
+> +		skb_queue_tail(&txcb->tx_ack_queue, skb_iter);
+> +
+> +		spin_lock_irqsave(&list->lock, flags);
+> +
+> +		skb_iter = skb_peek(list);
+> +
+> +		if (skb_iter && skb_iter->len + skb_head->len <= RTW_USB_MAX_XMITBUF_SZ)
+> +			__skb_unlink(skb_iter, list);
+> +		else
+> +			skb_iter = NULL;
+> +		spin_unlock_irqrestore(&list->lock, flags);
+> +	}
+> +
+> +	if (agg_num > 1)
+> +		rtw_usb_fill_tx_checksum(rtwusb, skb_head, agg_num);
+> +
+> +queue:
+> +	skb_queue_tail(&txcb->tx_ack_queue, skb_head);
+> +
+> +	rtw_usb_write_port(rtwdev, GET_TX_DESC_QSEL(skb_head->data), skb_head,
+> +			   rtw_usb_write_port_tx_complete, txcb);
+> +
+> +	return true;
+> +}
+> +
+
+[...]
+
+> +
+> +static void rtw_usb_rx_resubmit(struct rtw_usb *rtwusb, struct rx_usb_ctrl_block *rxcb)
+> +{
+> +	struct rtw_dev *rtwdev = rtwusb->rtwdev;
+> +	int error;
+> +
+> +	rxcb->rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, GFP_ATOMIC);
+> +	if (!rxcb->rx_skb)
+> +		return;
+> +
+> +	usb_fill_bulk_urb(rxcb->rx_urb, rtwusb->udev,
+> +			  usb_rcvbulkpipe(rtwusb->udev, rtwusb->pipe_in),
+> +			  rxcb->rx_skb->data, RTW_USB_MAX_RECVBUF_SZ,
+> +			  rtw_usb_read_port_complete, rxcb);
+> +
+> +	error = usb_submit_urb(rxcb->rx_urb, GFP_ATOMIC);
+> +	if (error) {
+> +		kfree_skb(rxcb->rx_skb);
+> +		if (error != -ENODEV)
+> +			rtw_err(rtwdev, "Err sending rx data urb %d\n",
+> +				error);
+
+nit: straighten rtw_err()
+
+> +	}
+> +}
+> +
+
+[...]
+
+> diff --git a/drivers/net/wireless/realtek/rtw88/usb.h b/drivers/net/wireless/realtek/rtw88/usb.h
+> new file mode 100644
+> index 0000000000000..e26f8afb09f29
+> --- /dev/null
+> +++ b/drivers/net/wireless/realtek/rtw88/usb.h
+
+[...]
+
+> +
+> +static inline struct rtw_usb_tx_data *rtw_usb_get_tx_data(struct sk_buff *skb)
+> +{
+> +	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+> +
+> +	BUILD_BUG_ON(sizeof(struct rtw_usb_tx_data) >
+> +		sizeof(info->status.status_driver_data));
+
+coding style: 
+
+align the open parenthesis 
+
+	BUILD_BUG_ON(sizeof(struct rtw_usb_tx_data) >
+		     sizeof(info->status.status_driver_data));
+
+> +
+> +	return (struct rtw_usb_tx_data *)info->status.status_driver_data;
+> +}
+> +
+> +int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id);
+> +void rtw_usb_disconnect(struct usb_interface *intf);
+> +
+> +#endif
+> --
+> 2.30.2
 
