@@ -2,189 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C31763AB46
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 15:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FA2963ABA8
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 15:56:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232560AbiK1Okh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 09:40:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33036 "EHLO
+        id S232190AbiK1O4X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 09:56:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232590AbiK1Okf (ORCPT
+        with ESMTP id S231934AbiK1O4W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 09:40:35 -0500
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CB2222A3
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:40:32 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id d3so13402517ljl.1
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:40:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rxl7YrMvA0F9XMtLgK6+hpZFxRBfqgt+eTWoNu6iRo8=;
-        b=NF3MUsLO+B6UNx8ExIv7IuRKSaM0xTVI3KgPrPUJQrbRqxLFD/3YZjeE6FP35wcoCP
-         YHsCeFThsTdhZLMIOY8ClukFneGUA70nkSiNjcICbs9vVrXf0o6apXuVxh3AVE2wA55h
-         57XgK4oF1DosZhWCtO12W0hd3mWrhY+jDRm2uvzJSa3FHPF95eB/JkKZ6iOVUIhBpvVM
-         RFsMt4uenAXgLsm72nL8xuWoa9A91tJuHUJ4ioOTGcNZrcLD1YieyWMeWy7Isg+sbjPs
-         /d4VB5tSa6mfjZfOzTeWIV85dBsGVY7Cmd8cZWckqQFZjW2gofi2ESsrLMFt6LKmZU8m
-         tAew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rxl7YrMvA0F9XMtLgK6+hpZFxRBfqgt+eTWoNu6iRo8=;
-        b=xSLqu9aaT0S5sfStZNtFkyhs26TYxVUD4d/SHSaJz7wuefSyjuSIrOWqY1i2VPJYGe
-         KPx4stqq1oTumEP7YQH8luqR/CQg1DFTZTGEGOCaSzUh4pKcdrOJLJpA6IAMjeTuQ1Hp
-         nH1VynQtAXDNGmn9B9XMrFTM45X/6Ty+hpyNKYxD8lpFzgV564nCUcxkTa8dzzgglThe
-         NVvvamfHJ9KYE+rGzPemLvDPDIrgQ0KfnGpe0N3z2W2U0AnI4ZGP1D/HNaQzhWFgNe7j
-         5GhfWKnKWXt+i32XqASNpD5wtfAw6nytOwZtxM0xprn49Cik6LkoBsrH8LGRIWnLe2SS
-         fmMg==
-X-Gm-Message-State: ANoB5pnwQ1OtCo4ArlyMF5unLJ+c6wsvssFqeNzP4mKh/jjy/zwsNsWE
-        1PMgJtIKJ1LCOXJcj2fSeqiRqw==
-X-Google-Smtp-Source: AA0mqf48AqNNUd1yKamAjh8q6tpCyrE7XgdMx5TWOco6SlMkf2Yjc+7xVsRjJ9kEtkN47K+bUqOc+A==
-X-Received: by 2002:a2e:9611:0:b0:276:b134:b04c with SMTP id v17-20020a2e9611000000b00276b134b04cmr11149799ljh.492.1669646431213;
-        Mon, 28 Nov 2022 06:40:31 -0800 (PST)
-Received: from [192.168.1.101] (95.49.125.236.neoplus.adsl.tpnet.pl. [95.49.125.236])
-        by smtp.gmail.com with ESMTPSA id q21-20020a05651232b500b004ac980a1ba1sm1754473lfe.24.2022.11.28.06.40.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Nov 2022 06:40:30 -0800 (PST)
-Message-ID: <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
-Date:   Mon, 28 Nov 2022 15:40:27 +0100
+        Mon, 28 Nov 2022 09:56:22 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD80D1F9C7
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:56:21 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 591BE611E8
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 14:56:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31415C433C1;
+        Mon, 28 Nov 2022 14:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669647380;
+        bh=aat0ISTc8H75TcGqw7ZrDDhs3u11WJYKdL8R2eM6hvc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=SUhiHQvPemU/u1sPz11mDd+CDVOLH8UkBSK0YUmQsmjUiV/+zlJCwAqI32gDNONDI
+         GLHSr8htMhpDLxb/Aoxmewjl9bESRP/KC4/w4Ol1Am5TPZjXBMqn0IAJ9d2hajSnhO
+         I3fJFcabsmssTA+HTCBil2LUM2GznDyfx0uV3zjGKgNqYuhJh4sr49HEwP4Rv3fk7j
+         8iYO57gvfdh7wC0EwSYB43FossKG+evWHq3PwVSsErt7jAZ2cfG00MicIVJVHAjUYv
+         ZTWT/sNdhddIGoTWyuNXndRXfeyFbtAIvUUnv5Zuwh6QIuT7WWw/IFEcDdelA+RRW7
+         Zc0pTrMzNZhCw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     ath12k@lists.infradead.org
+Subject: Re: [PATCH v2 00/50] wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices
+References: <20221116163902.24996-1-kvalo@kernel.org>
+Date:   Mon, 28 Nov 2022 16:56:16 +0200
+In-Reply-To: <20221116163902.24996-1-kvalo@kernel.org> (Kalle Valo's message
+        of "Wed, 16 Nov 2022 18:38:12 +0200")
+Message-ID: <878rjv5drj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
-        Hector Martin <marcan@marcan.st>,
-        "~postmarketos/upstreaming@lists.sr.ht" 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        "martin.botka@somainline.org" <martin.botka@somainline.org>,
-        "angelogioacchino.delregno@somainline.org" 
-        <angelogioacchino.delregno@somainline.org>,
-        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
-        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Soon Tak Lee <soontak.lee@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
- <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
- <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
- <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
- <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
- <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
- <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
- <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
- <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
- <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
- <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
-Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Kalle Valo <kvalo@kernel.org> writes:
 
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+>
+> ath12k is a new mac80211 driver for Qualcomm Wi-Fi 7 devices, first
+> supporting QCN9274 and WCN7850 PCI devices.  QCN9274 supports both AP
+> and station; WCN7850 supports only station mode. Monitor mode is not
+> (yet) supported. Only PCI bus devices are supported.
+>
+> ath12k is forked from an earlier version of ath11k. It was simpler to
+> have a "clean start" for the new generation and not try to share the
+> code with ath11k. This makes maintenance easier and avoids major
+> changes in ath11k, which would have significantly increased the risk
+> of regressions in existing setups.
+>
+> ath12k uses le32 and cpu_to_le32() macros to handle endian
+> conversions, instead of using the firmware byte swap feature utilized
+> by ath11k. There is only one kernel module, named ath12k.ko.
+>
+> Currently ath12k only supports HE mode (IEEE 802.11ax) or older, but
+> work is ongoing to add EHT mode (IEEE 802.11be) support.
+>
+> The size of the driver is ~41 kLOC and 45 files. To make the review
+> easier, this initial version of ath12k does not support Device Tree,
+> debugfs or any other extra features. Those will be added later, after
+> ath12k is accepted to upstream.
+>
+> The driver is build tested by Intel's kernel test robot with both GCC
+> and Clang. Sparse reports no warnings. The driver is mostly free of
+> checkpatch warnings, albeit few of the warnings are omitted on
+> purpose, list of them here:
+>
+> https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/ath12k/ath12k-check#L52
+>
+> The driver has had multiple authors who are listed in alphabetical
+> order below.
+>
+> Co-developed-by: Balamurugan S <quic_bselvara@quicinc.com>
+> Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+> Co-developed-by: Balamurugan Selvarajan <quic_bselvara@quicinc.com>
+> Signed-off-by: Balamurugan Selvarajan <quic_bselvara@quicinc.com>
 
-On 26.11.2022 22:45, Linus Walleij wrote:
-> On Fri, Nov 25, 2022 at 1:25 PM Kalle Valo <kvalo@kernel.org> wrote:
->> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
->>
->>> On 25.11.2022 12:53, Kalle Valo wrote:
->>>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
->>>>
->>>>> On 21.11.2022 14:56, Linus Walleij wrote:
->>>>>> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
->>>>>>
->>>>>>> I can think of a couple of hacky ways to force use of 43596 fw, but I
->>>>>>> don't think any would be really upstreamable..
->>>>>>
->>>>>> If it is only known to affect the Sony Xperias mentioned then
->>>>>> a thing such as:
->>>>>>
->>>>>> if (of_machine_is_compatible("sony,xyz") ||
->>>>>>     of_machine_is_compatible("sony,zzz")... ) {
->>>>>>    // Enforce FW version
->>>>>> }
->>>>>>
->>>>>> would be completely acceptable in my book. It hammers the
->>>>>> problem from the top instead of trying to figure out itsy witsy
->>>>>> details about firmware revisions.
->>>>>>
->>>>>> Yours,
->>>>>> Linus Walleij
->>>>>
->>>>> Actually, I think I came up with a better approach by pulling a page
->>>>> out of Asahi folks' book - please take a look and tell me what you
->>>>> think about this:
->>>>>
->>>>> [1]
->>>>> https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
->>>>> [2]
->>>>> https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
-> 
-> Something in this direction works too.
-> 
-> The upside is that it tells all operating systems how to deal
-> with the firmware for this hardware.
-> 
->>>> Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
->>>> just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
->>>> have directory names in Device Tree.
->>>
->>> I think it's common practice to include a full $FIRMWARE_DIR-relative
->>> path when specifying firmware in DT, though here I left out the board
->>> name bit as that's assigned dynamically anyway. That said, if you don't
->>> like it, I can change it.
->>
->> It's just that I have understood that Device Tree is supposed to
->> describe hardware and to me a firmware directory "brcm/" is a software
->> property, not a hardware property. But this is really for the Device
->> Tree maintainers to decide, they know this best :)
-> 
-> I would personally just minimize the amount of information
-> put into the device tree to be exactly what is needed to find
-> the right firmware.
-> 
-> brcm,firmware-compatible = "43596";
-> 
-> since the code already knows how to conjure the rest of the string.
-> 
-> But check with Rob/Krzysztof.
-> 
-> Yours,
-> Linus Walleij
+I noticed that Balamurugan is twice here, fixed in the pending branch:
 
-Krzysztof, Rob [added to CC] - can I have your opinions?
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=master-pending&id=b644733d58cb65d2e319bad0e0f89a852021c5c2
 
-Konrad
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
