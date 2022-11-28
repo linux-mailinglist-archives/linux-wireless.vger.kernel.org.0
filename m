@@ -2,46 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED0263A987
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 14:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3152363A9C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 14:41:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230199AbiK1NbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 08:31:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56340 "EHLO
+        id S231815AbiK1Nlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 08:41:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232016AbiK1Nap (ORCPT
+        with ESMTP id S229870AbiK1Nlm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 08:30:45 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41781DDC2
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 05:30:44 -0800 (PST)
+        Mon, 28 Nov 2022 08:41:42 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8CFEB49C;
+        Mon, 28 Nov 2022 05:41:41 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 2BFAFCE0E5F
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 13:30:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC04C433D6;
-        Mon, 28 Nov 2022 13:30:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6530361178;
+        Mon, 28 Nov 2022 13:41:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F13C433D6;
+        Mon, 28 Nov 2022 13:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669642241;
-        bh=cFLTvkUZGozT8K94l2UKTO6K59u2aEegCDKf+0pnPn0=;
+        s=k20201202; t=1669642900;
+        bh=c9KYmmV9Jd7E1V1b9Z2sFp2dehpiB3Gp3kkqi97DJjw=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Htkc59AnsJ2JU4o+amGjltr9Be0EhWSf+TZYJmearP6kfRDvT27OSga6VESSipAxG
-         3iwS72p3F9Qx2xCkL6oF3V7R06HkQ59khGer+G3ndw7hfsA9+WQEccxsGNSUG1vasv
-         Z8l37RoAVgWkjJraPK8OVY7VK+KkIpo4P40C3jnP6w5qGo70BvFyXxb02ZSo6pV0rM
-         OAEAFeoA2558St1w7Nih3zm5Js7WF7W8KTJ+fypz6BTgYSGnAWEV+YtY0TWZ8zIWe0
-         +j7YN+PM/RBheJBRlwx9kSXjSAKnsjFoKxiKqfVZAWQBRlsQudWkOxRg+E0dZX4sg1
-         ZVDyUvXdr9T+Q==
+        b=pq2koBUPfrVFR5bI4zQUHJja9jhYBHuJ8E33Ed1D0ngr92jT+Bn+6TAJ4EIY2U78K
+         KYFfQmjNQtzjXo+Sfl3dfVjWJq/UmptNWxAVfa73FuFn5sBoutzgtIxDfSHpt2tefB
+         xF6wZhuI+N0GRsLBk5dz5iqElLk4+u97LrkiDstg1FAyxrbFR5RsLj2LWvmA5pIgID
+         Wagn5RsiRRjHMu1Eh2MmmdK9Ozg2Y9XuPaqvw/l4LHOuAmNtn6Uj1i2uv98kPXKOFG
+         v8V/nI7/dbuuKYVMUHgcWayHMtwuHHiJgVt/F5+OC65ZgMyWMIQpp86/TGoIeHWQgG
+         O5mzVgBtsOJKQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 4/6] wifi: rtw89: mac: process MCC related C2H
-References: <20221118051042.29968-1-pkshih@realtek.com>
-        <20221118051042.29968-5-pkshih@realtek.com>
-Date:   Mon, 28 Nov 2022 15:30:38 +0200
-In-Reply-To: <20221118051042.29968-5-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 18 Nov 2022 13:10:40 +0800")
-Message-ID: <87o7sr5hq9.fsf@kernel.org>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Neo Jou <neojou@gmail.com>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "kernel\@pengutronix.de" <kernel@pengutronix.de>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Alexander Hochbaum <alex@appudo.com>,
+        Da Xue <da@libre.computer>, Bernie Huang <phhuang@realtek.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        neo_jou <neo_jou@realtek.com>
+Subject: Re: [PATCH v3 07/11] rtw88: Add common USB chip support
+References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
+        <20221122145226.4065843-8-s.hauer@pengutronix.de>
+        <1f7aa964766c4f65b836f7e1d716a1e3@realtek.com>
+        <20221128103000.GC29728@pengutronix.de>
+Date:   Mon, 28 Nov 2022 15:41:32 +0200
+In-Reply-To: <20221128103000.GC29728@pengutronix.de> (Sascha Hauer's message
+        of "Mon, 28 Nov 2022 11:30:00 +0100")
+Message-ID: <87k03f5h83.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -54,30 +69,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+>> > +static void rtw_usb_write_port_tx_complete(struct urb *urb)
+>> > +{
+>> > +	struct rtw_usb_txcb *txcb = urb->context;
+>> > +	struct rtw_dev *rtwdev = txcb->rtwdev;
+>> > +	struct ieee80211_hw *hw = rtwdev->hw;
+>> > +
+>> > +	while (true) {
+>> 
+>> Is it possible to have a hard limit to prevent unexpected infinite loop?
 >
-> Process C2H(s) related to MCC (multi-channel concurrency). These handling,
-> which either call rtw89_complete_cond() or show message in debug mode, can
-> be considered atomic/lock-free. So, they should be safe to be processed
-> directly after C2H pre-check in previous patch.
->
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Yes, that would be possible, but do you think it's necessary?
 
-[...]
+It's a common advice to have a limit for loops in kernel.
 
-> +static
-> +void (* const rtw89_mac_c2h_mcc_handler[])(struct rtw89_dev *rtwdev,
-> +					   struct sk_buff *c2h, u32 len) = {
-> +	[RTW89_MAC_C2H_FUNC_MCC_RCV_ACK] = rtw89_mac_c2h_mcc_rcv_ack,
-> +	[RTW89_MAC_C2H_FUNC_MCC_REQ_ACK] = rtw89_mac_c2h_mcc_req_ack,
-> +	[RTW89_MAC_C2H_FUNC_MCC_TSF_RPT] = rtw89_mac_c2h_mcc_tsf_rpt,
-> +	[RTW89_MAC_C2H_FUNC_MCC_STATUS_RPT] = rtw89_mac_c2h_mcc_status_rpt,
-> +};
+> Each *txcb is used only once, It's allocated in rtw_usb_tx_agg_skb() and
+> &txcb->tx_ack_queue is filled with a limited number of skbs there. These
+> skbs is then iterated over in rtw_usb_write_port_tx_complete(), so I don't
+> see a way how we could end up in an infinite loop here.
 
-static const?
+Everyone always say that their code is bugfree ;) More seriously though,
+even if it would be bugfree now someone else can add buggy code later.
+So much better to have a limit for the loop.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
