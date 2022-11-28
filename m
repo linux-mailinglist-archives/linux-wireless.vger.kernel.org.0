@@ -2,91 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9A663A90E
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 14:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40E1663A975
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 14:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbiK1NMu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 08:12:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38774 "EHLO
+        id S231777AbiK1N3R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 08:29:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231203AbiK1NMl (ORCPT
+        with ESMTP id S231773AbiK1N3O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 08:12:41 -0500
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2364210FD
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 05:12:40 -0800 (PST)
-Received: by mail-ua1-x942.google.com with SMTP id m5so3813037uah.3
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 05:12:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=I7MxYSVo2j2ZE5Wh++x/F1OVW4FaYUp3c+xE+poUGY0=;
-        b=MVth4lhuJelVkdbmAbMktW43ymHD8ano2+g8vWKZFAEzLwhu8MZVQtcO9yRn+FmmUg
-         q7t1fZlHXM5jZfUJv2ScCJ8e17vPFb+koP2DJmJ8srr/hQkBxRIk+LGYi+zVfydC6Prn
-         HhzCJtQAmE8xR3pTvmzLnamIBqwhFQ8qJAAFcRx8x183LI4yRbKdecYC1h/YIMv2egTg
-         jLg/LlT1jZoIFmFmirB1GAVZgerAHlHy78AIAmX/GgpejsqAX383jvpLqDicZtFPFggL
-         ap27OA1m1J2+akthAU93DJWESPzJhus8s8ggILJFy+eH9//b0oNqpgOOKPnuOP/INJu0
-         7oKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I7MxYSVo2j2ZE5Wh++x/F1OVW4FaYUp3c+xE+poUGY0=;
-        b=F3JVJvQnwjEMilqlxlyQwC/nK5B3jMhi/DNQDFzRM/j7Jf5RNqibAyqGKDNEjSdBbB
-         N6vMjZwgFbhty5yG90xPD2sw/QDxS4sKE1XjUmj7GgRv+7fQXsKL+FUHd0yT4wXk2HXS
-         Q11q8f4C0txVrtc2wIhyGSOyc1uV3rCsZ1Jc1Bob3yhyLLYUpBst8h1wzy+YAoeApJZb
-         ydkji6rjxqMOUqiAAY74sEizoB9UyK+ZWFt8/wfEGF51/dUMk/VkjZCpTdLD+UGRxddG
-         bpnjHAvzNjN9vrW24L0BLONvxtoahm1IfxS4HeT3rGYw5qmbL+uEHMSIhOeOCbXTxbNz
-         yvAg==
-X-Gm-Message-State: ANoB5pmZrqdIFEuUSHCGxjHD9aJwfgSNpmGMSEUAqwpioQSdQ7GOigbK
-        0TFO0eYeB3tjuQepAbS60OZz/0GnPa/gD8cGzyk+NRn3hn0=
-X-Google-Smtp-Source: AA0mqf4jw691AV/HuigQunCOrZhrj4CaWGdL7hAA6xvDVdo6ByVo3Qs+J33rVnUGjzN1OIErIgL7DbTMr08uVvHNRjs=
-X-Received: by 2002:a25:324c:0:b0:6f2:7d38:3342 with SMTP id
- y73-20020a25324c000000b006f27d383342mr16196441yby.69.1669633726467; Mon, 28
- Nov 2022 03:08:46 -0800 (PST)
+        Mon, 28 Nov 2022 08:29:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495D71CFCD
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 05:29:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 02CB1B80BA6
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 13:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD332C433C1;
+        Mon, 28 Nov 2022 13:29:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669642149;
+        bh=YzLvejoEX32ZSiRN/J9lyWo8MYx3z7PhhgVHuNta2TY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=AFN3WKv1EwrTajpkqhqUPx6VFiAzPSKr/3T7ZBn5X4NaUCNEEKzgZ7bADEtAlzp7C
+         4gNZ5i6lC9IJOz2CIH7Bio5Dnt75ryY+Iq/InMgDqgs64KaQEvK47rNeppLvomE47M
+         Ptgl3NmeqSV54zreWMSXAvyZHH70u8k110UKMYRXH0LOSGvY50ncRhIu5hR9AhYkDT
+         oEfeMLa0UWSY+49fF2Jx3Yj/2yD7WHCc5pbm3zIxPHLSvjAEZqRtgRSTzBbHtRWH+I
+         4jUgGVSVF6rb9AzKJ7D5DOosKKB0o7C6EDhujrXBhFl5Syy2zwAXcb0/z0n4f13C9h
+         nL+U+0xv5khvQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 3/6] wifi: rtw89: introduce helpers to wait/complete on condition
+References: <20221118051042.29968-1-pkshih@realtek.com>
+        <20221118051042.29968-4-pkshih@realtek.com>
+Date:   Mon, 28 Nov 2022 15:29:05 +0200
+In-Reply-To: <20221118051042.29968-4-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 18 Nov 2022 13:10:39 +0800")
+Message-ID: <87sfi35hsu.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a05:6919:2e88:b0:ef:e5c2:4f99 with HTTP; Mon, 28 Nov 2022
- 03:08:46 -0800 (PST)
-Reply-To: susanklatten0411@gmail.com
-From:   Susanne Klatten <musikoyomariciana55@gmail.com>
-Date:   Mon, 28 Nov 2022 03:08:46 -0800
-Message-ID: <CAPPqpA9DsKYWkQU5H06_yymGwDxRqwZx1C25APjL1MA+cKueHg@mail.gmail.com>
-Subject: Kredit ?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Hallo
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Ich bin Susanne Klatten und komme aus Deutschland, ich kann Ihre
-finanziellen Probleme ohne R=C3=BCckgriff auf Banken im Bereich Kreditgeld
-in den Griff bekommen. Wir bieten Privatkredite und Gesch=C3=A4ftskredite
-an, ich bin ein zugelassener und zertifizierter Kreditgeber mit
-jahrelanger Erfahrung in der Kreditvergabe und wir vergeben besicherte
-und unbesicherte Kreditbetr=C3=A4ge von 10.000,00 =E2=82=AC ($) bis maximal
-500.000.000,00 =E2=82=AC mit einem festen Zinssatz von 3 % j=C3=A4hrlich. B=
-rauchen
-Sie einen Kredit?
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+>
+> MCC (multi-channel concurrency) related H2Cs require to wait for C2H
+> responses to judge the execution result and data. We introduce helpers
+> to assist this process. Besides, we would like the helpers to be generic
+> for use in driver even outside of MCC H2C/C2H, so we make a independent
+> patch for them.
+>
+> In the following, I describe the things first.
+> ```
+> (A)	C2H is generated by FW, and then transferred upto driver. Hence,
+> 	driver cannot get it immediately without a bit waitting/blocking.
+> 	For this, we choose to use wait_for_completion_*() instead of
+> 	busy polling.
+> (B)	From the driver management perspective, a scenario, e.g. MCC,
+> 	may have mulitple kind of H2C functions requiring this process
+> 	to wait for corresponding C2Hs. But, the driver management flow
+> 	uses mutex to protect each behavior. So, one scenario triggers
+> 	one H2C function at one time. To avoid rampant instances of
+> 	struct completion for each H2C function, we choose to use one
+> 	struct completion with one condition flag for one scenario.
+> (C)	C2Hs, which H2Cs will be waitting for, cannot be ordered with
+> 	driver management flow, i.e. cannot enqueue work to the same
+> 	ordered workqueue and cannot lock by the same mutex, to prevent
+> 	H2C side from getting no C2H responses. So, those C2Hs are parsed
+> 	in interrupt context directly as done in previous commit.
+> (D)	Following (C), the above underline H2Cs and C2Hs will be handled
+> 	in different contexts without sync. So, we use atomic_cmpxchg()
+> 	to compare and change the condition in atomic.
+> ```
+>
+> So, we introduce struct rtw89_wait_info which combines struct completion
+> and atomic_t. Then, the below are the descriptions for helper functions.
+> * rtw89_wait_for_cond() to wait for a completion based on a condition.
+> * rtw89_complete_cond() to complete a given condition and carry data.
+> Each rtw89_wait_info instance independently determines the meaning of
+> its waitting conditions. But, RTW89_WAIT_COND_IDLE (UINT_MAX) is reserved.
+>
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Um mehr zu lesen, klicken Sie auf den Link unten.
+Just nitpicking a couple of items:
 
-https://en.wikipedia.org/wiki/Susanne_Klatten
-https://www.forbes.com/profile/susanne-klatten
+Otherwise an excellent commit log but the meaning of C2H and H2C is not
+clear for me. I guess they mean "chip to host" and "host to chip", but
+would be good to clarify that in the beginning.
 
-Unterschrift,
-Vorstandsvorsitzender
-Susanne Klatten.
+> --- a/drivers/net/wireless/realtek/rtw89/core.h
+> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> @@ -2802,6 +2802,34 @@ struct rtw89_mac_info {
+>  	u8 cpwm_seq_num;
+>  };
+>  
+> +struct rtw89_completion_data {
+> +	bool err;
+> +#define RTW89_COMPLETION_BUF_SIZE 24
+> +	u8 buf[RTW89_COMPLETION_BUF_SIZE];
+> +};
+
+Having a define withing a struct looks odd to me, I would prefer to have
+it outside of the struct.
+
+> +#define rtw89_completion_cast(cmpl_data, ptr)				\
+> +({									\
+> +	typecheck(struct rtw89_completion_data *, cmpl_data);		\
+> +	BUILD_BUG_ON(sizeof(*(ptr)) > RTW89_COMPLETION_BUF_SIZE);	\
+> +	(typeof(ptr))(cmpl_data)->buf;					\
+> +})
+
+Wouldn't this be cleaner as a static inline function?
+
+> +struct rtw89_wait_info {
+> +#define RTW89_WAIT_COND_IDLE UINT_MAX
+> +	atomic_t cond;
+> +	struct completion completion;
+> +	struct rtw89_completion_data data;
+> +};
+
+Also here would prefer the define outside the struct.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
