@@ -2,183 +2,189 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C88363AA79
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 15:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C31763AB46
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 15:40:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232295AbiK1OHK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 09:07:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34418 "EHLO
+        id S232560AbiK1Okh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 09:40:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232413AbiK1OGp (ORCPT
+        with ESMTP id S232590AbiK1Okf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 09:06:45 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B56CD2188E
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:06:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669644400; x=1701180400;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=/1WCFhPajmqnoJf77wAV90n/werd1G/acKN4q9qpP5M=;
-  b=dLFa/2atdkQEm0c8Wdo8rMdSZ9Yn9Ro8uivNYk2I9pi7RXPaybmr6E/p
-   THFF3AUsx/yN9bWFT8QjCzLY5FSfbDUOnRsU3HvQUWvB3QXCBb9i1YFPa
-   xA+pmJT03/NWMrk0RT1SqDWp1MTr5OV8Zy8bwBv8Fjo266VJJm1t1WiOl
-   uUq9BKPD/hnQaJHcORBkA5Dbye3kSXKNmqJonnCG9TA038sUgaRGBgofG
-   g2uO0zYGXs7j/QyAmczJvq90Ui2GlNGIkIbmwWGet7PtyG+LipW8R1rl4
-   gzqiJ6CA+7JDjwcEZvshLs9gXTP+lazJVeA1sitDrdR4oUYOqHcYweM0G
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10545"; a="302417316"
-X-IronPort-AV: E=Sophos;i="5.96,200,1665471600"; 
-   d="scan'208";a="302417316"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2022 06:05:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10545"; a="817833593"
-X-IronPort-AV: E=Sophos;i="5.96,200,1665471600"; 
-   d="scan'208";a="817833593"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga005.jf.intel.com with ESMTP; 28 Nov 2022 06:05:48 -0800
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Mon, 28 Nov 2022 06:05:48 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Mon, 28 Nov 2022 06:05:48 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Mon, 28 Nov 2022 06:05:48 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.105)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Mon, 28 Nov 2022 06:05:47 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CADwRG9Q3UWQ30HrbC3wXvG5B60+o8eppVVrVgncKH+1eEBPxdrujjLV1aVHDjPB3s7JyO09j5Co/ti8S82nJmR+klrMWk5u2cfHqjNxc1m7nsu3KVexdWfNMgJbCwUh2M7zarPXF61Vp46n+rhmvVJYmaooYR4uofF7Gn5vfusZje4BH7Aca4eD5Zsb1VaOxyVipC2+Koa+pSA5Hw1NPNJnaZuzwFmTNJMpV72WSFTpRaUBZ4ExlAOFQwBLt22Tk688+TUZUrU5DL2UfhSw7OZX4IfQpq1xn6YcnbxGXuu25ehFnx47twRQbH6FOcrmm0i9F2ocLDa7WMFxKY5pnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/1WCFhPajmqnoJf77wAV90n/werd1G/acKN4q9qpP5M=;
- b=Giq/ebXotRnn/y6DOBlv5NjcbXVH0QNbbZqZsz8dAc1OOMZSQeP0XYDn43RoFKQIfpP+/f/wkfwT+tOXKEam5S2P4IaPEEEaLS8Ola1B4i//Bmbj8JNopkqd4eTlnZ2g7lvPuZ/CytsbYZrexluVhDOQCEp4BwzVC2kQZF//XFAofiK431xfJrx7Zegk07KTonIK2oAyJUqjkgV2f07pc02MBPPlLox3rbyT92KAipB1pj61CpE5U/j/E5+6YYBUK9pL7b/BVEv1+uVyHRIAt77X1zt61kKvAxSj+DHJ48D6Vw/f6JUgUpceokYsnGdYpa9rRUx5gBX6RroUhV1sbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB3897.namprd11.prod.outlook.com (2603:10b6:5:4::26) by
- MW5PR11MB5787.namprd11.prod.outlook.com (2603:10b6:303:192::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5857.23; Mon, 28 Nov 2022 14:05:45 +0000
-Received: from DM6PR11MB3897.namprd11.prod.outlook.com
- ([fe80::f4a9:cfb1:932a:438f]) by DM6PR11MB3897.namprd11.prod.outlook.com
- ([fe80::f4a9:cfb1:932a:438f%5]) with mapi id 15.20.5857.023; Mon, 28 Nov 2022
- 14:05:45 +0000
-From:   "Otcheretianski, Andrei" <andrei.otcheretianski@intel.com>
-To:     Wen Gong <quic_wgong@quicinc.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Peer, Ilan" <ilan.peer@intel.com>
-CC:     "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-Subject: RE: wifi: hostapd:/wpa_supplicant MLO Re: [PATCH 00/27] another set
- of MLO patches
-Thread-Topic: wifi: hostapd:/wpa_supplicant MLO Re: [PATCH 00/27] another set
- of MLO patches
-Thread-Index: AQHYwcdECXMEe3QNQ0ujvgfkz4HwEK3SFYGAgAm29vCALOJTMYANEhCAgD7HAYCAAABK4A==
-Date:   Mon, 28 Nov 2022 14:05:44 +0000
-Message-ID: <DM6PR11MB3897D1DE6EB7A89F4F6A6A16F5139@DM6PR11MB3897.namprd11.prod.outlook.com>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <6175bc95-201c-cfab-2ae6-9ba77e830394@quicinc.com>
- <09556b33ad998ad243cf75dbc230f3b07349a87e.camel@sipsolutions.net>
- <935ef9e9-2092-e3f0-0edd-4aa29f4fa775@quicinc.com>
- <e01e75013f71ede7b29f2751238935e7147796f2.camel@sipsolutions.net>
- <f3afceb8-8120-12c7-74b9-caa3abce5cb8@quicinc.com>
- <DM6PR11MB3897D1A4E13419D9F938F559F5449@DM6PR11MB3897.namprd11.prod.outlook.com>
- <96bcc467-c530-46de-8f91-c5eb0af7a368@quicinc.com>
- <776991f3-384e-f487-83b7-e1fbfd40cc4f@quicinc.com>
- <de54f4e0-810b-70a0-7629-39a2957ecd3d@quicinc.com>
- <a3edddb2-82e4-2c79-564f-1918b59aead9@quicinc.com>
-In-Reply-To: <a3edddb2-82e4-2c79-564f-1918b59aead9@quicinc.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB3897:EE_|MW5PR11MB5787:EE_
-x-ms-office365-filtering-correlation-id: 26a552f2-48d1-4fd1-2997-08dad149a48a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QMtiqHzf07JXmPFtusyBl9fZ8uf44tGEwKl3+8iLZB3u5ERSfvLpcuA312JTW6E0pDgJ9JhQWTpOMw8F08pnRsDoLJVDODArPvfZ68htwjWISQNyfkbD7yqlsHdy80ujhI6C9tHqc0gZ/bjFjPpOIP5SpMZOHseNUwmVzSQYkuiPO0SOud4Gn6Zu1uNznYqa5QN2GiR/FV17vfYhhvYaRzIDwFnetsAXs9umXoPYY+ymKJEd8PM1VbY4vci/GsuhlrYSOlFQZWWlfCmFoO2c/+jWVdA3Rc4u0Y45wFhQd/S4q1Eeaam/12I/4KWCEj5+4cQjKh8GDNrCS1Ze0oaGkSIS75vpTpigYi4pkwx4ax8mCxQistZydQBK7UuC6tesaHsWFgdeJZgLx5rF/6iz2l0chwiSGuZJ8I6TINdCqp22UgKSgSVvGWentSh2fzMlUwMRjkH89Eu0zUf/gMSAZMrEuzjxhruoL0TOkmjg79HsJwPmohpWkTQ6UQhov1ltPJkXBIS8VIWtJju6S1rYUrGFVBVPrIsVLNaYaqwNHKGfHppiIu3xlgguvoHyZwLL/LmJBgVfWImJU5dsO7tFjkiqaFPHdfrlGRx4xjGJm1tacFYWsofJCH1LASGk+/n2BgYEjhFyRDpoiBjzVC967KJ5cr/ZquTm/HWOpaAGMVmmrfSpZcilp7suUnhAb5NDO5zKZCUwxB8ChLQ/NgW25w==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3897.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(39860400002)(376002)(346002)(136003)(366004)(396003)(451199015)(33656002)(122000001)(38070700005)(2906002)(82960400001)(41300700001)(4744005)(38100700002)(86362001)(76116006)(66946007)(66556008)(66446008)(66476007)(6636002)(64756008)(110136005)(8676002)(316002)(9686003)(71200400001)(478600001)(55016003)(4326008)(8936002)(5660300002)(52536014)(26005)(186003)(6506007)(7696005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?KzhaNDIwZFFvbitaWjJXVEFwZjJXcE5jSys1YkV5SnZ6UkJ3V0lQMGI3aFVC?=
- =?utf-8?B?T0JPUFQ4R0tqZk5ldi90eDNNR0xmZGY3d0pObHFDTTB2Y1hxVGlaa0tSLzhR?=
- =?utf-8?B?a1YwTmhUM2VCeVp5VFBCaEVVbDhLTkhuSTNsYWxlVkEzZjdoWk9HMmViSUw3?=
- =?utf-8?B?aFBITnFSZzZ0QU1wSnJxakJSa1ExRmFvdlYrQWhpaEhpcitKM2hIMW8rU1VM?=
- =?utf-8?B?bXNZV09IcWpkRUkvM2RmNWJDbXBkekJLZEt1ZXhTays1cWJuZjZHVGx3czVG?=
- =?utf-8?B?WTNRVXY1VGRkTUE1d3VPak0rTDNDaXlpRVk4VHVNSm5MeU9uQTJkWFM3N2h3?=
- =?utf-8?B?NFB4UlpxY3kyQU51VTAwZGJYQnBIVTUrTW5kWWZuUDFiV1NmbEtCNXZ2QzJK?=
- =?utf-8?B?ZkpRdkNrbVl5YUdPRTVXNkppMnJPTDNidDgrWFJPQzJ0NWlxSGZZS0srRDlW?=
- =?utf-8?B?UG1ySVR6UGhFTUJHaXpaNjhqR1MyemZoRGFTeTlSamhKVDdjekNOYmhYYit1?=
- =?utf-8?B?WEJFVkhDYkhiV1BqMnFibkw4dkRIRG1wYnZSSXZLU2ZjdGI5eXZQQjFYOG9U?=
- =?utf-8?B?RU5LREVSQjN6dGo2QlZ4NUtyMm96Mm5rVGdMTURlU01PSjN6LzR3SnpHZEY4?=
- =?utf-8?B?U0dzd0hUYmdOWUVtaFY1RzhNVksxU1NLdDg4OFowVW5hbENnMEhRM2QwYVli?=
- =?utf-8?B?TnJjVFdteUVLUUN0QmxmVkptbFpaNWpiQWRtbng2WXVhY3lkb2xTR3pFcS9p?=
- =?utf-8?B?cWJpQmg2OVl1cFExQzJaVVltV25MYnZGbEd5Mjd6TE85R2dCOWc1cWZ4WDdZ?=
- =?utf-8?B?TXBqR1k2YUcvMUZ6UWYwUWdlNmVZckk1cDM2TjlUcHpqSno5OVZyUXJJeW05?=
- =?utf-8?B?Z1E0cVRneWxqNHprK3JkMlhGNW4rSW1XMi8rWVVVNU1nUUI1Z0Q0djR2dlV2?=
- =?utf-8?B?RlY1TDJRMnpiaEJoZzhQSGRrOUdXZmZCYXJaai80a25rWkc3THJUSmRrSGtr?=
- =?utf-8?B?cVJUNmVSbTEwdkk4aEhoS212U0ZEa0NYdHFFUmxMOUtyYnc0TDVIWE5YYy9X?=
- =?utf-8?B?ekIxS0hJUUMvb25ZWkh2U0owbk5EM2V0WUhVWFArZS9CY1k3cmlhM3AvZWJx?=
- =?utf-8?B?OHZPa0EwTmJPaFk1TWo1ZXlzakZyV2VwM0xMOUNaRkRMbEdtc2VsVXNEejVW?=
- =?utf-8?B?UStuU1JJVnZoZHRSUE5USnExM0JJdENJb250QlVNZU5aY1pzaGQ5VklBYkpt?=
- =?utf-8?B?ZFp6QzcyUW4vTUFwcVBLZ0R6Qys1eTBUS3ZTY3JXd2huazlGWnZaUHBXL3dy?=
- =?utf-8?B?STJwcTZCVlZGRWNlcUE5T2doY0xCTzFuYVlOdEhDb2gvS3hoWkQ1a1lBNjFU?=
- =?utf-8?B?V0xiMVVJSWk5alNUVFF5WFNFTGlMYXFydlY4TjdsQ3RnNTc2bEd3ZW92OW9C?=
- =?utf-8?B?OGNMbC9YWm4wcTFWOUt6UzJMRDFFNGppNXdoajZsTjJOS0wvSWN2YnRmWDJB?=
- =?utf-8?B?S1FUUkh6d2dKRWpBQXlobHJ1WUNJc2hhbm1qSlMxQTZoQ0JKNVdPTGJpdCt2?=
- =?utf-8?B?bDFyQmNWNk9vSzNHZWRhWVdmZG1rdFVsamlrQTJINXhBNVlMTnRweGUzMUxn?=
- =?utf-8?B?WnJWK3h0LzZIWXJwbm1mRTVRNEFtOGF0b0lPWlVUZ3lBL1pGbzJLYkZwOGoz?=
- =?utf-8?B?SGFoa0lOZHp6TnZ0SlpvYzBvT3ZCVUh1dGNrSktPakdBK3BCbXZTcVJQSjNU?=
- =?utf-8?B?UjVnL0V6TG03MmFpakswb2hWdThYUW5uRkd1T2FxbWExZ2hVazdkbEQ5S0kv?=
- =?utf-8?B?ZFJnaUQydWhaR0tjL0lmV2ZKeU1MM0xxZ3E2MFM5R1FJOUc2Z3lFVWJSdmpi?=
- =?utf-8?B?a08wQVF6ZVU5Y2JYeVprTFV1VDc5R3k5cXlFdGFiZlJOWUlPM1hwZ09ybU5a?=
- =?utf-8?B?OVNEYndCZG00YWhZNm5XWER2eEZ2cytzQWJpZHZmbkY0eklTdklFN1ZVeXlV?=
- =?utf-8?B?RDN5b3NYYkJsWjZBMGk3dldjWlVnbmt0a3VHMUVTY0ZudVN5SmxlWi9NRFNj?=
- =?utf-8?B?RVB0Y2tqNHIwU0pwRUx3bmN4OE5hY2NXMVhsaUFzZWV3UWI0ZHBqSytSRFow?=
- =?utf-8?B?dWJYNHM4WWpyYjR2SDFkb2xaaE1ZeFZ0RUo0SDRDSHhja0MzaVNUM0FJVU9q?=
- =?utf-8?B?WFE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 28 Nov 2022 09:40:35 -0500
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CB2222A3
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:40:32 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id d3so13402517ljl.1
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:40:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rxl7YrMvA0F9XMtLgK6+hpZFxRBfqgt+eTWoNu6iRo8=;
+        b=NF3MUsLO+B6UNx8ExIv7IuRKSaM0xTVI3KgPrPUJQrbRqxLFD/3YZjeE6FP35wcoCP
+         YHsCeFThsTdhZLMIOY8ClukFneGUA70nkSiNjcICbs9vVrXf0o6apXuVxh3AVE2wA55h
+         57XgK4oF1DosZhWCtO12W0hd3mWrhY+jDRm2uvzJSa3FHPF95eB/JkKZ6iOVUIhBpvVM
+         RFsMt4uenAXgLsm72nL8xuWoa9A91tJuHUJ4ioOTGcNZrcLD1YieyWMeWy7Isg+sbjPs
+         /d4VB5tSa6mfjZfOzTeWIV85dBsGVY7Cmd8cZWckqQFZjW2gofi2ESsrLMFt6LKmZU8m
+         tAew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rxl7YrMvA0F9XMtLgK6+hpZFxRBfqgt+eTWoNu6iRo8=;
+        b=xSLqu9aaT0S5sfStZNtFkyhs26TYxVUD4d/SHSaJz7wuefSyjuSIrOWqY1i2VPJYGe
+         KPx4stqq1oTumEP7YQH8luqR/CQg1DFTZTGEGOCaSzUh4pKcdrOJLJpA6IAMjeTuQ1Hp
+         nH1VynQtAXDNGmn9B9XMrFTM45X/6Ty+hpyNKYxD8lpFzgV564nCUcxkTa8dzzgglThe
+         NVvvamfHJ9KYE+rGzPemLvDPDIrgQ0KfnGpe0N3z2W2U0AnI4ZGP1D/HNaQzhWFgNe7j
+         5GhfWKnKWXt+i32XqASNpD5wtfAw6nytOwZtxM0xprn49Cik6LkoBsrH8LGRIWnLe2SS
+         fmMg==
+X-Gm-Message-State: ANoB5pnwQ1OtCo4ArlyMF5unLJ+c6wsvssFqeNzP4mKh/jjy/zwsNsWE
+        1PMgJtIKJ1LCOXJcj2fSeqiRqw==
+X-Google-Smtp-Source: AA0mqf48AqNNUd1yKamAjh8q6tpCyrE7XgdMx5TWOco6SlMkf2Yjc+7xVsRjJ9kEtkN47K+bUqOc+A==
+X-Received: by 2002:a2e:9611:0:b0:276:b134:b04c with SMTP id v17-20020a2e9611000000b00276b134b04cmr11149799ljh.492.1669646431213;
+        Mon, 28 Nov 2022 06:40:31 -0800 (PST)
+Received: from [192.168.1.101] (95.49.125.236.neoplus.adsl.tpnet.pl. [95.49.125.236])
+        by smtp.gmail.com with ESMTPSA id q21-20020a05651232b500b004ac980a1ba1sm1754473lfe.24.2022.11.28.06.40.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Nov 2022 06:40:30 -0800 (PST)
+Message-ID: <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
+Date:   Mon, 28 Nov 2022 15:40:27 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3897.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26a552f2-48d1-4fd1-2997-08dad149a48a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2022 14:05:44.9526
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uU9/ChzazCVaHR0r+IRgTNhBw2lBYEZz9D6bl2ak5KAjQabqlZOlYV16XZgW+uhoY16iGyUfPxXm7DGvXU/fEMv2pr1jyLEKPg8N5lWEQDM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5787
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
+        Hector Martin <marcan@marcan.st>,
+        "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "martin.botka@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno@somainline.org" 
+        <angelogioacchino.delregno@somainline.org>,
+        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Soon Tak Lee <soontak.lee@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
+ <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+ <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
+ <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+ <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+ <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
+ <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
+ <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
+ <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
+ <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
+ <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IEhpIEFuZHJlaSwNCj4gDQo+IElzIGJlbG93IGFsbCB5b3VyIHBhdGNoZXMgZm9yIE1MTyBp
-biB3cGFfc3VwcHBsaWNhbnQgZm9yIHN0YXRpb24gbW9kZT8NCg0KSGkgV2VuLA0KV2UgaGF2ZSBm
-ZXcgbW9yZSBmb3Igc3RhdGlvbiBzaWRlLCBsaWtlIFNBRS9QTUtTQSBzdXBwb3J0IGFuZCBzb21l
-IGFkZGl0aW9uYWwgY29uZmlncyAtIGJ1dCB0aGlzIGlzIG1vc3RseSB3aGF0IEkgaGF2ZS4NClNB
-RSBzdXBwb3J0IHBhdGNoIGlzIHNvbWV3aGF0IHNpbWlsYXIgdG8gcGF0Y2hlcyBzZW50IGJ5IFZl
-ZXJlbmRyYW5hdGguDQpXZSBoYXZlIG1vcmUgc3R1ZmYgZm9yIEFQIHNpZGUgKG1vc3RseSBmb3Ig
-dGVzdGluZyBwdXJwb3NlcyksIGh3c2ltIHRlc3RzIGV0Yy4uIEknbSBzdGFydGluZyB0byBjbGVh
-biB0aGlzIHVwIGFuZCB3aWxsIHNlbmQgaXQgYXMgd2VsbC4NCg0KQW5kcmVpDQo=
+
+
+On 26.11.2022 22:45, Linus Walleij wrote:
+> On Fri, Nov 25, 2022 at 1:25 PM Kalle Valo <kvalo@kernel.org> wrote:
+>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
+>>
+>>> On 25.11.2022 12:53, Kalle Valo wrote:
+>>>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
+>>>>
+>>>>> On 21.11.2022 14:56, Linus Walleij wrote:
+>>>>>> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
+>>>>>>
+>>>>>>> I can think of a couple of hacky ways to force use of 43596 fw, but I
+>>>>>>> don't think any would be really upstreamable..
+>>>>>>
+>>>>>> If it is only known to affect the Sony Xperias mentioned then
+>>>>>> a thing such as:
+>>>>>>
+>>>>>> if (of_machine_is_compatible("sony,xyz") ||
+>>>>>>     of_machine_is_compatible("sony,zzz")... ) {
+>>>>>>    // Enforce FW version
+>>>>>> }
+>>>>>>
+>>>>>> would be completely acceptable in my book. It hammers the
+>>>>>> problem from the top instead of trying to figure out itsy witsy
+>>>>>> details about firmware revisions.
+>>>>>>
+>>>>>> Yours,
+>>>>>> Linus Walleij
+>>>>>
+>>>>> Actually, I think I came up with a better approach by pulling a page
+>>>>> out of Asahi folks' book - please take a look and tell me what you
+>>>>> think about this:
+>>>>>
+>>>>> [1]
+>>>>> https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
+>>>>> [2]
+>>>>> https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
+> 
+> Something in this direction works too.
+> 
+> The upside is that it tells all operating systems how to deal
+> with the firmware for this hardware.
+> 
+>>>> Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
+>>>> just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
+>>>> have directory names in Device Tree.
+>>>
+>>> I think it's common practice to include a full $FIRMWARE_DIR-relative
+>>> path when specifying firmware in DT, though here I left out the board
+>>> name bit as that's assigned dynamically anyway. That said, if you don't
+>>> like it, I can change it.
+>>
+>> It's just that I have understood that Device Tree is supposed to
+>> describe hardware and to me a firmware directory "brcm/" is a software
+>> property, not a hardware property. But this is really for the Device
+>> Tree maintainers to decide, they know this best :)
+> 
+> I would personally just minimize the amount of information
+> put into the device tree to be exactly what is needed to find
+> the right firmware.
+> 
+> brcm,firmware-compatible = "43596";
+> 
+> since the code already knows how to conjure the rest of the string.
+> 
+> But check with Rob/Krzysztof.
+> 
+> Yours,
+> Linus Walleij
+
+Krzysztof, Rob [added to CC] - can I have your opinions?
+
+Konrad
+
+
