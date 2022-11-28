@@ -2,111 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7DE63A015
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 04:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1591A63A031
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 04:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbiK1D2z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Nov 2022 22:28:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38380 "EHLO
+        id S229901AbiK1Dqj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Nov 2022 22:46:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiK1D2y (ORCPT
+        with ESMTP id S229614AbiK1Dqi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Nov 2022 22:28:54 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D26791180E
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Nov 2022 19:28:48 -0800 (PST)
-X-UUID: 2ba1b438f9684ee0992ca22d91a5c592-20221128
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=MaefGZzEjKv+zTIher4rYDK3FE8d4+BhG7NM2LZp8rA=;
-        b=PPOQNUXRDNTRvzPg+evCKYNaI9HJ05e/x8qB3smqGVwtPZx8lLHqjoPljaZxgn4jpUy0Q/vwP3IARNPUzBT3COYB6UGXQdbZMlH9IXoQlu1NdKTXsKDka9xkC0DVrQHFZydiXB8Gk6hcagxjIWdgxs6V1TtDQvjmOMBQZ8SIPVk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:a0feb8e4-02f6-4067-bd18-ffe809df729c,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:dcaaed0,CLOUDID:1807fa2f-2938-482e-aafd-98d66723b8a9,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 2ba1b438f9684ee0992ca22d91a5c592-20221128
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 440216695; Mon, 28 Nov 2022 11:28:43 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Mon, 28 Nov 2022 11:28:42 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Mon, 28 Nov 2022 11:28:42 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7996: add missing argument in mt7996_queue_rx_skb()
-Date:   Mon, 28 Nov 2022 11:28:26 +0800
-Message-ID: <20221128032826.9696-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sun, 27 Nov 2022 22:46:38 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0D52C10FC1;
+        Sun, 27 Nov 2022 19:46:36 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AS3jD5D1019835, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AS3jD5D1019835
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 28 Nov 2022 11:45:13 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Mon, 28 Nov 2022 11:45:58 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 28 Nov 2022 11:45:57 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Mon, 28 Nov 2022 11:45:57 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Alexander Hochbaum <alex@appudo.com>,
+        Da Xue <da@libre.computer>,
+        "Bernie Huang" <phhuang@realtek.com>,
+        Viktor Petrenko <g0000ga@gmail.com>
+Subject: RE: [PATCH v3 00/11] RTW88: Add support for USB variants
+Thread-Topic: [PATCH v3 00/11] RTW88: Add support for USB variants
+Thread-Index: AQHY/oI6X+HeQwQE6E+5y32AEGOa3q5TucCA
+Date:   Mon, 28 Nov 2022 03:45:57 +0000
+Message-ID: <71b14558ff904382a77b6b21982c078e@realtek.com>
+References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
+In-Reply-To: <20221122145226.4065843-1-s.hauer@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/28_=3F=3F_12:28:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-An argument has been added in .rx_skb driver ops callback after
-introducing WED RX support. Align it to fix the following compile error:
 
->> drivers/net/wireless/mediatek/mt76/mt7996/mmio.c:328:13: error: incompatible function pointer types initializing 'void (*)(struct mt76_dev *, enum mt76_rxq_id, struct sk_buff *, u32 *)' (aka 'void (*)(struct mt76_dev *, enum mt76_rxq_id, struct sk_buff *, unsigned int *)') with an expression of type 'void (struct mt76_dev *, enum mt76_rxq_id, struct sk_buff *)' [-Werror,-Wincompatible-function-pointer-types]
-                   .rx_skb = mt7996_queue_rx_skb,
-                             ^~~~~~~~~~~~~~~~~~~
-   1 error generated.
+> -----Original Message-----
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Sent: Tuesday, November 22, 2022 10:52 PM
+> To: linux-wireless@vger.kernel.org
+> Cc: Neo Jou <neojou@gmail.com>; Hans Ulli Kroll <linux@ulli-kroll.de>; Ping-Ke Shih <pkshih@realtek.com>;
+> Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
+> kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
+> Da Xue <da@libre.computer>; Bernie Huang <phhuang@realtek.com>; Viktor Petrenko <g0000ga@gmail.com>;
+> Sascha Hauer <s.hauer@pengutronix.de>
+> Subject: [PATCH v3 00/11] RTW88: Add support for USB variants
+> 
+> This is the third round of adding support for the USB variants to the
+> RTW88 driver. There are a few changes to the last version which make it
+> worth looking at this version.
+> 
+> First of all RTL8723du and RTL8821cu are tested working now. The issue
+> here was that the txdesc checksum calculation was wrong. I found the
+> correct calculation in various downstream drivers found on github.
+> 
+> The second big issue was that TX packet aggregation was wrong. When
+> aggregating packets each packet start has to be aligned to eight bytes.
+> The necessary alignment was added to the total URB length before
+> checking if there is another packet to aggregate, so the URB length
+> included that padding after the last packet, which is wrong.  Fixing
+> this makes the driver work much more reliably.
+> 
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
-@Felix, could you please help to fold this patch? Thanks.
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Thanks for your finding and fixes on this driver. I have reviewed this 
+patchset and written some comments. No big problem.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 9650590a5d4b..c9c9b82352eb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1514,7 +1514,7 @@ bool mt7996_rx_check(struct mt76_dev *mdev, void *data, int len)
- }
- 
- void mt7996_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
--			 struct sk_buff *skb)
-+			 struct sk_buff *skb, u32 *info)
- {
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
- 	__le32 *rxd = (__le32 *)skb->data;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 371195e4597d..167f615f099e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -489,7 +489,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- void mt7996_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
- void mt7996_tx_token_put(struct mt7996_dev *dev);
- void mt7996_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
--			 struct sk_buff *skb);
-+			 struct sk_buff *skb, u32 *info);
- bool mt7996_rx_check(struct mt76_dev *mdev, void *data, int len);
- void mt7996_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
- void mt7996_stats_work(struct work_struct *work);
--- 
-2.25.1
+
+> 
+> Sascha Hauer (11):
+>   rtw88: print firmware type in info message
+>   rtw88: Call rtw_fw_beacon_filter_config() with rtwdev->mutex held
+>   rtw88: Drop rf_lock
+>   rtw88: Drop h2c.lock
+>   rtw88: Drop coex mutex
+>   rtw88: iterate over vif/sta list non-atomically
+>   rtw88: Add common USB chip support
+>   rtw88: Add rtw8821cu chipset support
+>   rtw88: Add rtw8822bu chipset support
+>   rtw88: Add rtw8822cu chipset support
+>   rtw88: Add rtw8723du chipset support
+
+Please use "wifi: rtw88: " as prefix in next version.
+
+--
+Ping-Ke
+
 
