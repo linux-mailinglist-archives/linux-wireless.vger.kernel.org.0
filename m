@@ -2,48 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FA2963ABA8
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 15:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B159A63AED7
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 18:25:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232190AbiK1O4X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 09:56:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45914 "EHLO
+        id S233035AbiK1RZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 12:25:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231934AbiK1O4W (ORCPT
+        with ESMTP id S232984AbiK1RZR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 09:56:22 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD80D1F9C7
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 06:56:21 -0800 (PST)
+        Mon, 28 Nov 2022 12:25:17 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D61B20349;
+        Mon, 28 Nov 2022 09:25:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 591BE611E8
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 14:56:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31415C433C1;
-        Mon, 28 Nov 2022 14:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669647380;
-        bh=aat0ISTc8H75TcGqw7ZrDDhs3u11WJYKdL8R2eM6hvc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=SUhiHQvPemU/u1sPz11mDd+CDVOLH8UkBSK0YUmQsmjUiV/+zlJCwAqI32gDNONDI
-         GLHSr8htMhpDLxb/Aoxmewjl9bESRP/KC4/w4Ol1Am5TPZjXBMqn0IAJ9d2hajSnhO
-         I3fJFcabsmssTA+HTCBil2LUM2GznDyfx0uV3zjGKgNqYuhJh4sr49HEwP4Rv3fk7j
-         8iYO57gvfdh7wC0EwSYB43FossKG+evWHq3PwVSsErt7jAZ2cfG00MicIVJVHAjUYv
-         ZTWT/sNdhddIGoTWyuNXndRXfeyFbtAIvUUnv5Zuwh6QIuT7WWw/IFEcDdelA+RRW7
-         Zc0pTrMzNZhCw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     ath12k@lists.infradead.org
-Subject: Re: [PATCH v2 00/50] wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices
-References: <20221116163902.24996-1-kvalo@kernel.org>
-Date:   Mon, 28 Nov 2022 16:56:16 +0200
-In-Reply-To: <20221116163902.24996-1-kvalo@kernel.org> (Kalle Valo's message
-        of "Wed, 16 Nov 2022 18:38:12 +0200")
-Message-ID: <878rjv5drj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B6D92B80E90;
+        Mon, 28 Nov 2022 17:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002F2C433D6;
+        Mon, 28 Nov 2022 17:25:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1669656311;
+        bh=wZlmYJl8LMxMeefdCbrE5viQuX+AZVgF+lHUSAzV8mA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jklUVBk1mHdNx5UwNOVAyoL9FcfwZD4B7KDGLSBvRl5IAv16CCb++ynZ+TPs/2xnW
+         Y09yfkYWX7Zusj8ufWXnQv3O5+iO2GnPgg5dqoMaQRFD7eFKipOag5+WZBxv2B/3hS
+         npOJ5H5324elD5m0VsViiZtApWHVqoGlQ7+jDW9I=
+Date:   Mon, 28 Nov 2022 18:25:09 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Johan Hovold <johan@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Raed Salem <raeds@nvidia.com>,
+        Chen Zhongjin <chenzhongjin@huawei.com>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Avihai Horon <avihaih@nvidia.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jakob Koschel <jakobkoschel@gmail.com>,
+        Antoine Tenart <atenart@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Wang Yufen <wangyufen@huawei.com>, linux-block@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-nvme@lists.infradead.org,
+        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 1/5] driver core: make struct class.dev_uevent() take a
+ const *
+Message-ID: <Y4Tu9UUGGiEdFcVw@kroah.com>
+References: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
+ <d448b944-708a-32d4-37d7-0be16ee5f73c@acm.org>
+ <Y4NqAJW5V0tAP8ax@kroah.com>
+ <5b14cdea-1bbe-1900-0004-a218ba97bbcb@acm.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b14cdea-1bbe-1900-0004-a218ba97bbcb@acm.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,53 +89,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+On Sun, Nov 27, 2022 at 06:38:39PM -0800, Bart Van Assche wrote:
+> On 11/27/22 05:45, Greg Kroah-Hartman wrote:
+> > On Fri, Nov 25, 2022 at 03:51:11PM -0800, Bart Van Assche wrote:
+> > > On 11/23/22 04:25, Greg Kroah-Hartman wrote:
+> > > > diff --git a/include/linux/mISDNif.h b/include/linux/mISDNif.h
+> > > > index 7dd1f01ec4f9..7aab4a769736 100644
+> > > > --- a/include/linux/mISDNif.h
+> > > > +++ b/include/linux/mISDNif.h
+> > > > @@ -586,7 +586,7 @@ extern struct mISDNclock *mISDN_register_clock(char *, int, clockctl_func_t *,
+> > > >    						void *);
+> > > >    extern void	mISDN_unregister_clock(struct mISDNclock *);
+> > > > -static inline struct mISDNdevice *dev_to_mISDN(struct device *dev)
+> > > > +static inline struct mISDNdevice *dev_to_mISDN(const struct device *dev)
+> > > >    {
+> > > >    	if (dev)
+> > > >    		return dev_get_drvdata(dev);
+> > > 
+> > > Why does the dev_to_mISDN() function drop constness? I haven't found an
+> > > explanation for this in the cover letter.
+> > 
+> > I agree, this is going to be fixed up, see the thread starting here:
+> > 	https://lore.kernel.org/r/Y34+V2bCDdqujBDk@kroah.com
+> > 
+> > I'll work on making a const / non const version for these so that we
+> > don't loose the marking.
+> > 
+> > Oh wait, no, this function is fine, it's not modifying the device
+> > structure at all, and only returning the pointer in the private data
+> > stored in the device.  There is no loss of const-ness here.
+> 
+> Hi Greg,
+> 
+> This is what I found in include/linux/mISDNif.h:
+> 
+> struct mISDNdevice {
+> 	struct mISDNchannel	D;
+> 	u_int			id;
+> 	u_int			Dprotocols;
+> 	u_int			Bprotocols;
+> 	u_int			nrbchan;
+> 	u_char			channelmap[MISDN_CHMAP_SIZE];
+> 	struct list_head	bchannels;
+> 	struct mISDNchannel	*teimgr;
+> 	struct device		dev;
+> };
+> 
+> As one can see 'dev' is a member of struct mISDNdevice. I still think that
+> dev_to_mISDN() drops constness. Did I perhaps overlook something?
 
-> From: Kalle Valo <quic_kvalo@quicinc.com>
->
-> ath12k is a new mac80211 driver for Qualcomm Wi-Fi 7 devices, first
-> supporting QCN9274 and WCN7850 PCI devices.  QCN9274 supports both AP
-> and station; WCN7850 supports only station mode. Monitor mode is not
-> (yet) supported. Only PCI bus devices are supported.
->
-> ath12k is forked from an earlier version of ath11k. It was simpler to
-> have a "clean start" for the new generation and not try to share the
-> code with ath11k. This makes maintenance easier and avoids major
-> changes in ath11k, which would have significantly increased the risk
-> of regressions in existing setups.
->
-> ath12k uses le32 and cpu_to_le32() macros to handle endian
-> conversions, instead of using the firmware byte swap feature utilized
-> by ath11k. There is only one kernel module, named ath12k.ko.
->
-> Currently ath12k only supports HE mode (IEEE 802.11ax) or older, but
-> work is ongoing to add EHT mode (IEEE 802.11be) support.
->
-> The size of the driver is ~41 kLOC and 45 files. To make the review
-> easier, this initial version of ath12k does not support Device Tree,
-> debugfs or any other extra features. Those will be added later, after
-> ath12k is accepted to upstream.
->
-> The driver is build tested by Intel's kernel test robot with both GCC
-> and Clang. Sparse reports no warnings. The driver is mostly free of
-> checkpatch warnings, albeit few of the warnings are omitted on
-> purpose, list of them here:
->
-> https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/ath12k/ath12k-check#L52
->
-> The driver has had multiple authors who are listed in alphabetical
-> order below.
->
-> Co-developed-by: Balamurugan S <quic_bselvara@quicinc.com>
-> Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
-> Co-developed-by: Balamurugan Selvarajan <quic_bselvara@quicinc.com>
-> Signed-off-by: Balamurugan Selvarajan <quic_bselvara@quicinc.com>
+I think you are missing that dev_to_mISDN() is doing something different
+than most dev_to_FOO() functions do (i.e. there is no container_of()
+call here at all):
 
-I noticed that Balamurugan is twice here, fixed in the pending branch:
+static inline struct mISDNdevice *dev_to_mISDN(struct device *dev)
+{
+	if (dev)
+		return dev_get_drvdata(dev);
+	else
+		return NULL;
+}
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=master-pending&id=b644733d58cb65d2e319bad0e0f89a852021c5c2
+See, no pointer mess or anything else here, all that happens is the
+driver data pointer in struct device is returned.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+If this was a "normal" dev_to_FOO() function, then yes, the const-ness
+of the pointer would be called into question as the thread I linked to
+discusses.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+thanks,
+
+greg k-h
