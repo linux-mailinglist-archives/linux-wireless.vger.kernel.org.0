@@ -2,63 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA2463A617
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 11:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC3B63A6DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 12:14:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbiK1KaN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 05:30:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
+        id S230363AbiK1LO2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 06:14:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229968AbiK1KaK (ORCPT
+        with ESMTP id S230376AbiK1LO2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 05:30:10 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CD615FEC
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 02:30:05 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1ozbOl-0006ch-65; Mon, 28 Nov 2022 11:30:03 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1ozbOi-0000Jf-Qm; Mon, 28 Nov 2022 11:30:00 +0100
-Date:   Mon, 28 Nov 2022 11:30:00 +0100
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Neo Jou <neojou@gmail.com>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Hochbaum <alex@appudo.com>,
-        Da Xue <da@libre.computer>, Bernie Huang <phhuang@realtek.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        neo_jou <neo_jou@realtek.com>
-Subject: Re: [PATCH v3 07/11] rtw88: Add common USB chip support
-Message-ID: <20221128103000.GC29728@pengutronix.de>
-References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
- <20221122145226.4065843-8-s.hauer@pengutronix.de>
- <1f7aa964766c4f65b836f7e1d716a1e3@realtek.com>
+        Mon, 28 Nov 2022 06:14:28 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62601193CE;
+        Mon, 28 Nov 2022 03:14:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F347261118;
+        Mon, 28 Nov 2022 11:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BFBC433D7;
+        Mon, 28 Nov 2022 11:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669634066;
+        bh=2dBnazs7c83SCuppqPo/hbSVH4BqaPDHbb54lLbEdxc=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=tbJVYSG8rk9C2aLZqbZ+0t3j/esiEwW4Qnkmn4QfodwLuj6WYKcKBm2lcVKsjEZSF
+         nkn/q9kQL4TVlyRgrwrkiANbkEUTZUctgkPH4FKtmn2gWwxVT3oqpePRnQGNrAuJ2m
+         xNwFJvBKXsFBEXf9xlpOiepYM5hooZKaG9dnW344aG+F24ZKEmU1H4nG4hB2E8/qEG
+         fxMo+jh8opB72Vqo4Ub0wRk5t6FE2RcRpAcVfsySF2U4EEsAB/wAKNl37MaynjyMPl
+         J8I3GkPuoV1Dge2A4nuOfhbXOlsmjY64gY2+wGN/wArIBF/fiG2EYlMa6/AwOFXxkl
+         2uHmWJmL7fOyg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "zhangxiaoxu \(A\)" <zhangxiaoxu5@huawei.com>
+Cc:     <Ajay.Kathat@microchip.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <Claudiu.Beznea@microchip.com>
+Subject: Re: [PATCH wireless] wifi: wilc1000: Fix UAF in wilc_netdev_cleanup() when iterator the RCU list
+In-Reply-To: <88650c25-5358-1f03-dc96-fb7fc550fb18@huawei.com> (zhangxiaoxu's
+        message of "Sat, 26 Nov 2022 16:14:43 +0800")
+References: <20221124151349.2386077-1-zhangxiaoxu5@huawei.com>
+        <a6d8f548-bcf4-4a02-df25-3a06aa8f2b42@microchip.com>
+        <88650c25-5358-1f03-dc96-fb7fc550fb18@huawei.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Mon, 28 Nov 2022 13:14:19 +0200
+Message-ID: <871qpn72lw.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1f7aa964766c4f65b836f7e1d716a1e3@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,181 +58,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Nov 28, 2022 at 02:00:54AM +0000, Ping-Ke Shih wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Tuesday, November 22, 2022 10:52 PM
-> > To: linux-wireless@vger.kernel.org
-> > Cc: Neo Jou <neojou@gmail.com>; Hans Ulli Kroll <linux@ulli-kroll.de>; Ping-Ke Shih <pkshih@realtek.com>;
-> > Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; netdev@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
-> > kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
-> > Da Xue <da@libre.computer>; Bernie Huang <phhuang@realtek.com>; Viktor Petrenko <g0000ga@gmail.com>;
-> > Sascha Hauer <s.hauer@pengutronix.de>; neo_jou <neo_jou@realtek.com>
-> > Subject: [PATCH v3 07/11] rtw88: Add common USB chip support
-> > 
-> > Add the common bits and pieces to add USB support to the RTW88 driver.
-> > This is based on https://github.com/ulli-kroll/rtw88-usb.git which
-> > itself is first written by Neo Jou.
-> > 
-> > Signed-off-by: neo_jou <neo_jou@realtek.com>
-> > Signed-off-by: Hans Ulli Kroll <linux@ulli-kroll.de>
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> > 
-> > Notes:
-> >     Changes since v2:
-> >     - Fix buffer length for aggregated tx packets
-> >     - Increase maximum transmit buffer size to 20KiB as found in downstream drivers
-> >     - Change register write functions to synchronous accesses instead of just firing
-> >       a URB without waiting for its completion
-> >     - requeue rx URBs directly in completion handler rather than having a workqueue
-> >       for it.
-> > 
-> >     Changes since v1:
-> >     - Make checkpatch.pl clean
-> >     - Drop WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL flag
-> >     - Use 'ret' as variable name for return values
-> >     - Sort variable declarations in reverse Xmas tree order
-> >     - Change potentially endless loop to a limited loop
-> >     - Change locking to be more obviously correct
-> >     - drop unnecessary check for !rtwdev
-> >     - make sure the refill workqueue is not restarted again after we have
-> >       cancelled it
-> > 
-> >  drivers/net/wireless/realtek/rtw88/Kconfig  |   3 +
-> >  drivers/net/wireless/realtek/rtw88/Makefile |   2 +
-> >  drivers/net/wireless/realtek/rtw88/mac.c    |   3 +
-> >  drivers/net/wireless/realtek/rtw88/main.c   |   4 +
-> >  drivers/net/wireless/realtek/rtw88/main.h   |   4 +
-> >  drivers/net/wireless/realtek/rtw88/reg.h    |   1 +
-> >  drivers/net/wireless/realtek/rtw88/tx.h     |  31 +
-> >  drivers/net/wireless/realtek/rtw88/usb.c    | 918 ++++++++++++++++++++
-> >  drivers/net/wireless/realtek/rtw88/usb.h    | 107 +++
-> >  9 files changed, 1073 insertions(+)
-> >  create mode 100644 drivers/net/wireless/realtek/rtw88/usb.c
-> >  create mode 100644 drivers/net/wireless/realtek/rtw88/usb.h
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
-> > index e3d7cb6c12902..1624c5db69bac 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/Kconfig
-> > +++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-> > @@ -16,6 +16,9 @@ config RTW88_CORE
-> >  config RTW88_PCI
-> >  	tristate
-> > 
-> > +config RTW88_USB
-> > +	tristate
-> > +
-> >  config RTW88_8822B
-> >  	tristate
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-> > index 834c66ec0af9e..9e095f8181483 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/Makefile
-> > +++ b/drivers/net/wireless/realtek/rtw88/Makefile
-> > @@ -45,4 +45,6 @@ obj-$(CONFIG_RTW88_8821CE)	+= rtw88_8821ce.o
-> >  rtw88_8821ce-objs		:= rtw8821ce.o
-> > 
-> >  obj-$(CONFIG_RTW88_PCI)		+= rtw88_pci.o
-> > +obj-$(CONFIG_RTW88_USB)		+= rtw88_usb.o
-> >  rtw88_pci-objs			:= pci.o
-> > +rtw88_usb-objs			:= usb.o
-> 
-> nit: I prefer not interleaving with PCI.
+"zhangxiaoxu (A)" <zhangxiaoxu5@huawei.com> writes:
 
-Ok.
+> On 2022/11/26 0:17, Ajay.Kathat@microchip.com wrote:
+>>
+>> On 24/11/22 20:43, Zhang Xiaoxu wrote:
+>>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+>>>
+>>> There is a UAF read when remove the wilc1000_spi module:
+>>>
+>>>   BUG: KASAN: use-after-free in wilc_netdev_cleanup.cold+0xc4/0xe0 [wilc1000]
+>>>   Read of size 8 at addr ffff888116846900 by task rmmod/386
+>>>
+>>>   CPU: 2 PID: 386 Comm: rmmod Tainted: G                 N 6.1.0-rc6+ #8
+>>>   Call Trace:
+>>>    dump_stack_lvl+0x68/0x85
+>>>    print_report+0x16c/0x4a3
+>>>    kasan_report+0x95/0x190
+>>>    wilc_netdev_cleanup.cold+0xc4/0xe0
+>>>    wilc_bus_remove+0x52/0x60
+>>>    spi_remove+0x46/0x60
+>>>    device_remove+0x73/0xc0
+>>>    device_release_driver_internal+0x12d/0x210
+>>>    driver_detach+0x84/0x100
+>>>    bus_remove_driver+0x90/0x120
+>>>    driver_unregister+0x4f/0x80
+>>>    __x64_sys_delete_module+0x2fc/0x440
+>>>    do_syscall_64+0x38/0x90
+>>>    entry_SYSCALL_64_after_hwframe+0x63/0xcd
+>>>
+>>> Since set 'needs_free_netdev=true' when initialize the net device, the
+>>> net device will be freed when unregister, then use the freed 'vif' to
+>>> find the next will UAF read.
+>>
+>>
+>> Did you test this behaviour on the real device. I am seeing a kernel
+>> crash when the module is unloaded after the connection with an AP.
+>
+> Thanks Ajay, I have no real device, what kind of crash about your
+> scenario?
 
-> > +static u32 rtw_usb_read(struct rtw_dev *rtwdev, u32 addr, u16 len)
-> > +{
-> > +	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
-> > +	struct usb_device *udev = rtwusb->udev;
-> > +	__le32 *data;
-> > +	unsigned long flags;
-> > +	int ret;
-> > +	static int count;
-> > +
-> > +	spin_lock_irqsave(&rtwusb->usb_lock, flags);
-> > +
-> > +	rtwusb->usb_data_index++;
-> > +	rtwusb->usb_data_index &= (RTW_USB_MAX_RXTX_COUNT - 1);
-> > +
-> > +	spin_unlock_irqrestore(&rtwusb->usb_lock, flags);
-> > +
-> > +	data = &rtwusb->usb_data[rtwusb->usb_data_index];
-> 
-> Don't you need to hold &rtwusb->usb_lock to access rtwusb->usb_data_index?
-> rtw_usb_write() has similar code.
+If you don't have a real device to test on, please state that clearly in
+the commit log. For example, "Compile tested only" or something like
+that.
 
-Right. Will rewrite to:
-
-	spin_lock_irqsave(&rtwusb->usb_lock, flags);
-
-	idx = rtwusb->usb_data_index;
-	rtwusb->usb_data_index = (idx + 1) & (RTW_USB_MAX_RXTX_COUNT - 1);
-
-	spin_unlock_irqrestore(&rtwusb->usb_lock, flags);
-
-	data = &rtwusb->usb_data[idx];
-
-> > +static void rtw_usb_write_port_tx_complete(struct urb *urb)
-> > +{
-> > +	struct rtw_usb_txcb *txcb = urb->context;
-> > +	struct rtw_dev *rtwdev = txcb->rtwdev;
-> > +	struct ieee80211_hw *hw = rtwdev->hw;
-> > +
-> > +	while (true) {
-> 
-> Is it possible to have a hard limit to prevent unexpected infinite loop?
-
-Yes, that would be possible, but do you think it's necessary?
-
-Each *txcb is used only once, It's allocated in rtw_usb_tx_agg_skb() and
-&txcb->tx_ack_queue is filled with a limited number of skbs there. These
-skbs is then iterated over in rtw_usb_write_port_tx_complete(), so I don't
-see a way how we could end up in an infinite loop here.
-
-It's not that &txcb->tx_ack_queue is filled in a concurrent thread while we
-try to catch up in rtw_usb_write_port_tx_complete().
-
-> > +	skb_head = dev_alloc_skb(RTW_USB_MAX_XMITBUF_SZ);
-> > +	if (!skb_head) {
-> > +		skb_head = skb_iter;
-> > +		goto queue;
-> > +	}
-> > +
-> > +	data_ptr = skb_head->data;
-> > +
-> > +	while (skb_iter) {
-> > +		unsigned long flags;
-> > +
-> > +		memcpy(data_ptr, skb_iter->data, skb_iter->len);
-> > +		skb_put(skb_head, skb_iter->len + align_next);
-> 
-> skb_put(skb_head, align_next);
-> skb_put_data(skb_head, skb_iter->data, skb_iter->len);
-> 
-> Then, don't need to maintain 'data_ptr'.
-
-Right. Looks much better this way.
-
-> > +	error = usb_submit_urb(rxcb->rx_urb, GFP_ATOMIC);
-> > +	if (error) {
-> > +		kfree_skb(rxcb->rx_skb);
-> > +		if (error != -ENODEV)
-> > +			rtw_err(rtwdev, "Err sending rx data urb %d\n",
-> > +				error);
-> 
-> nit: straighten rtw_err()
-
-Ok.
-
-Sascha
+We get way too much untested patches where there's no indication that
+they have had no testing. I'm really concerned about this trend, I'm
+even considering should I just start dropping these kind of untested
+cleanup patches?
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
