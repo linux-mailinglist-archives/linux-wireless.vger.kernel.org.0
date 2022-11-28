@@ -2,74 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1591A63A031
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 04:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C40C163A0E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 06:49:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229901AbiK1Dqj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Nov 2022 22:46:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
+        id S229730AbiK1Ftm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 00:49:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbiK1Dqi (ORCPT
+        with ESMTP id S229711AbiK1Ftl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Nov 2022 22:46:38 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0D52C10FC1;
-        Sun, 27 Nov 2022 19:46:36 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AS3jD5D1019835, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AS3jD5D1019835
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 28 Nov 2022 11:45:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Mon, 28 Nov 2022 11:45:58 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 28 Nov 2022 11:45:57 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Mon, 28 Nov 2022 11:45:57 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Hochbaum <alex@appudo.com>,
-        Da Xue <da@libre.computer>,
-        "Bernie Huang" <phhuang@realtek.com>,
-        Viktor Petrenko <g0000ga@gmail.com>
-Subject: RE: [PATCH v3 00/11] RTW88: Add support for USB variants
-Thread-Topic: [PATCH v3 00/11] RTW88: Add support for USB variants
-Thread-Index: AQHY/oI6X+HeQwQE6E+5y32AEGOa3q5TucCA
-Date:   Mon, 28 Nov 2022 03:45:57 +0000
-Message-ID: <71b14558ff904382a77b6b21982c078e@realtek.com>
-References: <20221122145226.4065843-1-s.hauer@pengutronix.de>
-In-Reply-To: <20221122145226.4065843-1-s.hauer@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/28_=3F=3F_12:28:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 28 Nov 2022 00:49:41 -0500
+X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 27 Nov 2022 21:49:33 PST
+Received: from feh.colobox.com (feh.colobox.com [IPv6:2607:f188:0:20::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB406B853;
+        Sun, 27 Nov 2022 21:49:33 -0800 (PST)
+Received: from [IPV6:2600:6c51:483f:c100:f0c5:c187:a91c:cebb] (unknown [IPv6:2600:6c51:483f:c100:f0c5:c187:a91c:cebb])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by feh.colobox.com (Postfix) with ESMTPSA id 4638B761F26;
+        Mon, 28 Nov 2022 05:39:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=finnie.org; s=mail;
+        t=1669613973; bh=zx+ut35DVq/7ZsKQ3zxcMjVSrpDd86XtF0rFa+b4jKU=;
+        h=Date:To:Cc:References:Subject:From:In-Reply-To:From;
+        b=EalYKxseawCGL2KKSXACWzL65JfNAyfc/wGr4iD6uDP4zebnBfQt9abb9xHEdIR/e
+         5Kk3OtCgReYZRLf25pH8UeLWh2WTazgwQU3ByrArWM6ljI6gU2ORS+h2fqSdIHCA//
+         Et9fVuAMmF7Rpr2jQLsN69QSGhS/CvsrmvrPiOiQzh/VBLn0ywMeLb8DUzsZAL9lOB
+         ZJp7PEc1cfMaLrV8dwkS26AoBvTJWQkXoevJRffCs3AYe2D55OuVuO0l1DpyOrHVdI
+         1X0fZ+g2ao66dEvT76LFyCSpo2aSN9jvSclkFitk7sWP9e6NkXLoejL4VnJdTL5il2
+         OGus7HH8RM1kQ==
+Message-ID: <2e833d1a-e1d1-cf32-3dea-c4ef2995e452@finnie.org>
+Date:   Sun, 27 Nov 2022 21:39:32 -0800
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+To:     s.hauer@pengutronix.de
+Cc:     alex@appudo.com, da@libre.computer, g0000ga@gmail.com,
+        johannes@sipsolutions.net, kernel@pengutronix.de, kvalo@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux@ulli-kroll.de, martin.blumenstingl@googlemail.com,
+        neojou@gmail.com, netdev@vger.kernel.org, phhuang@realtek.com,
+        pkshih@realtek.com, tony0620emma@gmail.com
+References: <20221122145226.4065843-10-s.hauer@pengutronix.de>
+Subject: Re: [PATCH v3 09/11] rtw88: Add rtw8822bu chipset support
+Content-Language: en-US
+From:   Ryan Finnie <ryan@finnie.org>
+In-Reply-To: <20221122145226.4065843-10-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.6 at feh
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,56 +61,14 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x012e, 0xff, 0xff, 0xff),
+> +	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* TP-LINK */
 
-> -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Tuesday, November 22, 2022 10:52 PM
-> To: linux-wireless@vger.kernel.org
-> Cc: Neo Jou <neojou@gmail.com>; Hans Ulli Kroll <linux@ulli-kroll.de>; Ping-Ke Shih <pkshih@realtek.com>;
-> Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
-> kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
-> Da Xue <da@libre.computer>; Bernie Huang <phhuang@realtek.com>; Viktor Petrenko <g0000ga@gmail.com>;
-> Sascha Hauer <s.hauer@pengutronix.de>
-> Subject: [PATCH v3 00/11] RTW88: Add support for USB variants
-> 
-> This is the third round of adding support for the USB variants to the
-> RTW88 driver. There are a few changes to the last version which make it
-> worth looking at this version.
-> 
-> First of all RTL8723du and RTL8821cu are tested working now. The issue
-> here was that the txdesc checksum calculation was wrong. I found the
-> correct calculation in various downstream drivers found on github.
-> 
-> The second big issue was that TX packet aggregation was wrong. When
-> aggregating packets each packet start has to be aligned to eight bytes.
-> The necessary alignment was added to the total URB length before
-> checking if there is another packet to aggregate, so the URB length
-> included that padding after the last packet, which is wrong.  Fixing
-> this makes the driver work much more reliably.
-> 
+This device is confirmed in the wild as "TP-LINK Archer T3U Nano", and
+is a miniaturized version of 0x012d.
 
-Thanks for your finding and fixes on this driver. I have reviewed this 
-patchset and written some comments. No big problem.
+(I have not personally tested this patchset, but have verified against
+the DKMS tree at https://github.com/cilynx/rtl88x2bu with 0x012e added.)
 
-
-> 
-> Sascha Hauer (11):
->   rtw88: print firmware type in info message
->   rtw88: Call rtw_fw_beacon_filter_config() with rtwdev->mutex held
->   rtw88: Drop rf_lock
->   rtw88: Drop h2c.lock
->   rtw88: Drop coex mutex
->   rtw88: iterate over vif/sta list non-atomically
->   rtw88: Add common USB chip support
->   rtw88: Add rtw8821cu chipset support
->   rtw88: Add rtw8822bu chipset support
->   rtw88: Add rtw8822cu chipset support
->   rtw88: Add rtw8723du chipset support
-
-Please use "wifi: rtw88: " as prefix in next version.
-
---
-Ping-Ke
-
-
+Thank you,
+Ryan Finnie
