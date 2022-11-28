@@ -2,88 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB9963A6EA
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 12:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F93163A73E
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 12:35:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbiK1LRR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 06:17:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
+        id S230289AbiK1LfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 06:35:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbiK1LRQ (ORCPT
+        with ESMTP id S229764AbiK1LfR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 06:17:16 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3754E6172;
-        Mon, 28 Nov 2022 03:17:15 -0800 (PST)
+        Mon, 28 Nov 2022 06:35:17 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93FBE12616;
+        Mon, 28 Nov 2022 03:35:16 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD4316106C;
-        Mon, 28 Nov 2022 11:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DD3C433D7;
-        Mon, 28 Nov 2022 11:17:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 419EFB80D59;
+        Mon, 28 Nov 2022 11:35:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F459C433C1;
+        Mon, 28 Nov 2022 11:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669634234;
-        bh=xJRkcM/s19gYAXNwC6geD/5BTDYu4MnGAhHKzNufA+0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Zc3z3ZpSWt3HdcyaFQb77lXWXGjgErqrJLoSYdVZXy55Aku3lOHxFJeoyY+mqiho9
-         FpATB+axPKq/E+U+UnKlRr+Z6LW3qFLAwE3sQgQO5PEL+DJmn9VpqYxW7ujWqypOgv
-         SRFrEK4IkYwYcrQSVYVpdZyynw163vlOh2qv4cHcMmxWkojKIeSrpsrxc13CndztAO
-         EDWWNA7nvxDsYGAxW0IOKWxq7S3E+8/cV0OLh5Ehj5/XskASIiV1w4RNcqqNWs/31u
-         WY8q5uxsB6ch/bCuMWP6ZDQnuifHYj6zXndMSfeu38QkSPTW71cgLsdtk43eW+2p+i
-         d7fB78QwN1GfA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0iprag?= =?utf-8?Q?a?= 
-        <ALSI@bang-olufsen.dk>, Hector Martin <marcan@marcan.st>,
-        "~postmarketos\/upstreaming\@lists.sr.ht" 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        "martin.botka\@somainline.org" <martin.botka@somainline.org>,
-        "angelogioacchino.delregno\@somainline.org" 
-        <angelogioacchino.delregno@somainline.org>,
-        "marijn.suijten\@somainline.org" <marijn.suijten@somainline.org>,
-        "jamipkettunen\@somainline.org" <jamipkettunen@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao\, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>,
-        Soon Tak Lee <soontak.lee@cypress.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl\@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list\@infineon.com" 
-        <SHA-cyfmac-dev-list@infineon.com>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
-        <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
-        <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
-        <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
-        <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
-        <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
-        <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk>
-        <87sfke32pc.fsf@kernel.org>
-        <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
-        <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
-        <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org>
-        <87fse76yig.fsf@kernel.org>
-        <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org>
-        <87bkov6x1q.fsf@kernel.org>
-        <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
-Date:   Mon, 28 Nov 2022 13:17:06 +0200
-In-Reply-To: <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
-        (Linus Walleij's message of "Sat, 26 Nov 2022 22:45:33 +0100")
-Message-ID: <87wn7f5nwt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1669635314;
+        bh=ZkIZfPnaLcuA/RaAoaCVtaq1MX5bTLkRHY/vKivsiG8=;
+        h=From:Subject:To:Cc:Date:From;
+        b=h18736wmHeS+bd2tolnynxk2I/nj1FMGa6Wg5620SlaSsTgkP9w6q2SYT8BUSYLTP
+         9N3vdoIhWHz+QtRLSw099OPkf/EEctQxu0tPNzR3XSxT7TJHcNt8EkGQgC22K2+KAT
+         TVFou+H7W8PaSesqZJ7GoXVIJp2AhcPY5fBImy2+BEoDSorDa2zIeFFmlRBuKAA6ih
+         tIOd4olKnKTJ0VNmwub+Y7AFvRWyOmCSIsFzoHLyC2jeTQzYMctMCoENssr6qKs3jn
+         sUyQqkP7n3nid2Fny1wzmry5UqjXb7G86VL1yn+9Hjv33Jl79+beC/XbSPjqPqAPbm
+         gjmjjGBYJydMw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2022-11-28
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20221128113513.6F459C433C1@smtp.kernel.org>
+Date:   Mon, 28 Nov 2022 11:35:13 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -93,37 +50,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Linus Walleij <linus.walleij@linaro.org> writes:
+Hi,
 
->> >> Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
->> >> just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
->> >> have directory names in Device Tree.
->> >
->> > I think it's common practice to include a full $FIRMWARE_DIR-relative
->> > path when specifying firmware in DT, though here I left out the board
->> > name bit as that's assigned dynamically anyway. That said, if you don't
->> > like it, I can change it.
->>
->> It's just that I have understood that Device Tree is supposed to
->> describe hardware and to me a firmware directory "brcm/" is a software
->> property, not a hardware property. But this is really for the Device
->> Tree maintainers to decide, they know this best :)
->
-> I would personally just minimize the amount of information
-> put into the device tree to be exactly what is needed to find
-> the right firmware.
->
-> brcm,firmware-compatible = "43596";
->
-> since the code already knows how to conjure the rest of the string.
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-FWIW I like this.
+Kalle
 
-> But check with Rob/Krzysztof.
+The following changes since commit 91018bbcc664b6c9410ddccacd2239a4acadcfc9:
 
-Indeed, they are the experts here.
+  Merge tag 'wireless-2022-11-03' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2022-11-03 21:07:40 -0700)
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+are available in the Git repository at:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-11-28
+
+for you to fetch changes up to 3e8f7abcc3473bc9603323803aeaed4ffcc3a2ab:
+
+  wifi: mac8021: fix possible oob access in ieee80211_get_rate_duration (2022-11-25 12:45:53 +0100)
+
+----------------------------------------------------------------
+wireless fixes for v6.1
+
+Third, and hopefully final, set of fixes for v6.1. We are marking the
+rsi driver as orphan, have some Information Element parsing fixes to
+wilc1000 driver and three small fixes to the stack.
+
+----------------------------------------------------------------
+Johannes Berg (2):
+      wifi: cfg80211: fix buffer overflow in elem comparison
+      wifi: cfg80211: don't allow multi-BSSID in S1G
+
+Lorenzo Bianconi (1):
+      wifi: mac8021: fix possible oob access in ieee80211_get_rate_duration
+
+Marek Vasut (1):
+      MAINTAINERS: mark rsi wifi driver as orphan
+
+Phil Turnbull (4):
+      wifi: wilc1000: validate pairwise and authentication suite offsets
+      wifi: wilc1000: validate length of IEEE80211_P2P_ATTR_OPER_CHANNEL attribute
+      wifi: wilc1000: validate length of IEEE80211_P2P_ATTR_CHANNEL_LIST attribute
+      wifi: wilc1000: validate number of channels
+
+ MAINTAINERS                                        |  4 +--
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 39 +++++++++++++++++-----
+ drivers/net/wireless/microchip/wilc1000/hif.c      | 21 +++++++++---
+ net/mac80211/airtime.c                             |  3 ++
+ net/wireless/scan.c                                | 10 ++++--
+ 5 files changed, 58 insertions(+), 19 deletions(-)
