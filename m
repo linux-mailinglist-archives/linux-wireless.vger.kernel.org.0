@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E1663A975
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 14:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DED0263A987
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Nov 2022 14:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbiK1N3R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 08:29:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
+        id S230199AbiK1NbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 08:31:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbiK1N3O (ORCPT
+        with ESMTP id S232016AbiK1Nap (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 08:29:14 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495D71CFCD
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 05:29:12 -0800 (PST)
+        Mon, 28 Nov 2022 08:30:45 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41781DDC2
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 05:30:44 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02CB1B80BA6
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 13:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD332C433C1;
-        Mon, 28 Nov 2022 13:29:08 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 2BFAFCE0E5F
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 13:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC04C433D6;
+        Mon, 28 Nov 2022 13:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669642149;
-        bh=YzLvejoEX32ZSiRN/J9lyWo8MYx3z7PhhgVHuNta2TY=;
+        s=k20201202; t=1669642241;
+        bh=cFLTvkUZGozT8K94l2UKTO6K59u2aEegCDKf+0pnPn0=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=AFN3WKv1EwrTajpkqhqUPx6VFiAzPSKr/3T7ZBn5X4NaUCNEEKzgZ7bADEtAlzp7C
-         4gNZ5i6lC9IJOz2CIH7Bio5Dnt75ryY+Iq/InMgDqgs64KaQEvK47rNeppLvomE47M
-         Ptgl3NmeqSV54zreWMSXAvyZHH70u8k110UKMYRXH0LOSGvY50ncRhIu5hR9AhYkDT
-         oEfeMLa0UWSY+49fF2Jx3Yj/2yD7WHCc5pbm3zIxPHLSvjAEZqRtgRSTzBbHtRWH+I
-         4jUgGVSVF6rb9AzKJ7D5DOosKKB0o7C6EDhujrXBhFl5Syy2zwAXcb0/z0n4f13C9h
-         nL+U+0xv5khvQ==
+        b=Htkc59AnsJ2JU4o+amGjltr9Be0EhWSf+TZYJmearP6kfRDvT27OSga6VESSipAxG
+         3iwS72p3F9Qx2xCkL6oF3V7R06HkQ59khGer+G3ndw7hfsA9+WQEccxsGNSUG1vasv
+         Z8l37RoAVgWkjJraPK8OVY7VK+KkIpo4P40C3jnP6w5qGo70BvFyXxb02ZSo6pV0rM
+         OAEAFeoA2558St1w7Nih3zm5Js7WF7W8KTJ+fypz6BTgYSGnAWEV+YtY0TWZ8zIWe0
+         +j7YN+PM/RBheJBRlwx9kSXjSAKnsjFoKxiKqfVZAWQBRlsQudWkOxRg+E0dZX4sg1
+         ZVDyUvXdr9T+Q==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 3/6] wifi: rtw89: introduce helpers to wait/complete on condition
+Subject: Re: [PATCH 4/6] wifi: rtw89: mac: process MCC related C2H
 References: <20221118051042.29968-1-pkshih@realtek.com>
-        <20221118051042.29968-4-pkshih@realtek.com>
-Date:   Mon, 28 Nov 2022 15:29:05 +0200
-In-Reply-To: <20221118051042.29968-4-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 18 Nov 2022 13:10:39 +0800")
-Message-ID: <87sfi35hsu.fsf@kernel.org>
+        <20221118051042.29968-5-pkshih@realtek.com>
+Date:   Mon, 28 Nov 2022 15:30:38 +0200
+In-Reply-To: <20221118051042.29968-5-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 18 Nov 2022 13:10:40 +0800")
+Message-ID: <87o7sr5hq9.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,83 +58,26 @@ Ping-Ke Shih <pkshih@realtek.com> writes:
 
 > From: Zong-Zhe Yang <kevin_yang@realtek.com>
 >
-> MCC (multi-channel concurrency) related H2Cs require to wait for C2H
-> responses to judge the execution result and data. We introduce helpers
-> to assist this process. Besides, we would like the helpers to be generic
-> for use in driver even outside of MCC H2C/C2H, so we make a independent
-> patch for them.
->
-> In the following, I describe the things first.
-> ```
-> (A)	C2H is generated by FW, and then transferred upto driver. Hence,
-> 	driver cannot get it immediately without a bit waitting/blocking.
-> 	For this, we choose to use wait_for_completion_*() instead of
-> 	busy polling.
-> (B)	From the driver management perspective, a scenario, e.g. MCC,
-> 	may have mulitple kind of H2C functions requiring this process
-> 	to wait for corresponding C2Hs. But, the driver management flow
-> 	uses mutex to protect each behavior. So, one scenario triggers
-> 	one H2C function at one time. To avoid rampant instances of
-> 	struct completion for each H2C function, we choose to use one
-> 	struct completion with one condition flag for one scenario.
-> (C)	C2Hs, which H2Cs will be waitting for, cannot be ordered with
-> 	driver management flow, i.e. cannot enqueue work to the same
-> 	ordered workqueue and cannot lock by the same mutex, to prevent
-> 	H2C side from getting no C2H responses. So, those C2Hs are parsed
-> 	in interrupt context directly as done in previous commit.
-> (D)	Following (C), the above underline H2Cs and C2Hs will be handled
-> 	in different contexts without sync. So, we use atomic_cmpxchg()
-> 	to compare and change the condition in atomic.
-> ```
->
-> So, we introduce struct rtw89_wait_info which combines struct completion
-> and atomic_t. Then, the below are the descriptions for helper functions.
-> * rtw89_wait_for_cond() to wait for a completion based on a condition.
-> * rtw89_complete_cond() to complete a given condition and carry data.
-> Each rtw89_wait_info instance independently determines the meaning of
-> its waitting conditions. But, RTW89_WAIT_COND_IDLE (UINT_MAX) is reserved.
+> Process C2H(s) related to MCC (multi-channel concurrency). These handling,
+> which either call rtw89_complete_cond() or show message in debug mode, can
+> be considered atomic/lock-free. So, they should be safe to be processed
+> directly after C2H pre-check in previous patch.
 >
 > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Just nitpicking a couple of items:
+[...]
 
-Otherwise an excellent commit log but the meaning of C2H and H2C is not
-clear for me. I guess they mean "chip to host" and "host to chip", but
-would be good to clarify that in the beginning.
-
-> --- a/drivers/net/wireless/realtek/rtw89/core.h
-> +++ b/drivers/net/wireless/realtek/rtw89/core.h
-> @@ -2802,6 +2802,34 @@ struct rtw89_mac_info {
->  	u8 cpwm_seq_num;
->  };
->  
-> +struct rtw89_completion_data {
-> +	bool err;
-> +#define RTW89_COMPLETION_BUF_SIZE 24
-> +	u8 buf[RTW89_COMPLETION_BUF_SIZE];
+> +static
+> +void (* const rtw89_mac_c2h_mcc_handler[])(struct rtw89_dev *rtwdev,
+> +					   struct sk_buff *c2h, u32 len) = {
+> +	[RTW89_MAC_C2H_FUNC_MCC_RCV_ACK] = rtw89_mac_c2h_mcc_rcv_ack,
+> +	[RTW89_MAC_C2H_FUNC_MCC_REQ_ACK] = rtw89_mac_c2h_mcc_req_ack,
+> +	[RTW89_MAC_C2H_FUNC_MCC_TSF_RPT] = rtw89_mac_c2h_mcc_tsf_rpt,
+> +	[RTW89_MAC_C2H_FUNC_MCC_STATUS_RPT] = rtw89_mac_c2h_mcc_status_rpt,
 > +};
 
-Having a define withing a struct looks odd to me, I would prefer to have
-it outside of the struct.
-
-> +#define rtw89_completion_cast(cmpl_data, ptr)				\
-> +({									\
-> +	typecheck(struct rtw89_completion_data *, cmpl_data);		\
-> +	BUILD_BUG_ON(sizeof(*(ptr)) > RTW89_COMPLETION_BUF_SIZE);	\
-> +	(typeof(ptr))(cmpl_data)->buf;					\
-> +})
-
-Wouldn't this be cleaner as a static inline function?
-
-> +struct rtw89_wait_info {
-> +#define RTW89_WAIT_COND_IDLE UINT_MAX
-> +	atomic_t cond;
-> +	struct completion completion;
-> +	struct rtw89_completion_data data;
-> +};
-
-Also here would prefer the define outside the struct.
+static const?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
