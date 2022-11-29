@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8744D63C183
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 14:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A20B63C184
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 14:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234323AbiK2NzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Nov 2022 08:55:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32768 "EHLO
+        id S234481AbiK2NzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Nov 2022 08:55:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbiK2NzW (ORCPT
+        with ESMTP id S232415AbiK2NzX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Nov 2022 08:55:22 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 060E356565
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:20 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id j5-20020a05600c410500b003cfa9c0ea76so10865708wmi.3
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:19 -0800 (PST)
+        Tue, 29 Nov 2022 08:55:23 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C325B56EEF
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:21 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id x17so22187656wrn.6
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZxZsk7YcRcS9kXdBNSSMk4N8sM6dPLSaYoukJqUP66o=;
-        b=eyZ37007ncfAnYK8JTqOAgv0NIV0KVHW+GJwmXPxASRwKbiJW8d7x1PUoXLTrR5B/V
-         eBryQ65mcXSlgW27pFT11Bs7bdLVernOB1++9H/Ggu3Ky6XAXvxv8HbQyFrzfmV2ZNvw
-         MHYgyrAehuDJ9EAsUtxxj1bkZrmtoadI9XUw0=
+        bh=+xx9KeJ585Iqv7hOUO0YZtymPwDApgXhYGIbV4fHlbk=;
+        b=UqWNCUcs+8z+GAR5rKH8U9FplEUMzgD91rUWrQIvJWCrcH6BUqxEM6JGNZBIe5Kzea
+         xuegJekPke8dcte8Tsf6XYyo3Mx/nGg4QdbjTwUcND95OtjbkUIdZlHJdOE7S9NK9nbP
+         6btenutUaPiYzqqdIczPVzJmZpktkPv7fn3N0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZxZsk7YcRcS9kXdBNSSMk4N8sM6dPLSaYoukJqUP66o=;
-        b=LRlBJH2sJ/+zrXkblM1sJVjQEVoiQYKMN/vmuL6kCUuZ+rFM+ufbKZsd1KmeKI1jr7
-         lxaJJDf3GeD1i2OVNZM0vVz7vEh9XOC0ni1lc/06jlVnC8Q9vxslzyuuDRLUwhWyqJ2+
-         qtRXe+/fk13c2AYQnVUuLNV4D1PA7ht9DjbB4TTRb0/4VZERxKo4xyX0UQTjIEnqGesp
-         XpMjxXo9BGKGv6mGdgWZKVldKDd3bIcfZwrnwubylc9lmHN7+u5EwcSgLnRDV6mrbOK+
-         glkOSofoNwZE8uh5BbbILaxnoN78dtZOZd7Tj6IJyYScJcmIfFohlFws2unw6wlA8fsV
-         sbpg==
-X-Gm-Message-State: ANoB5pkPBjnQE0gQ+xNNzYXba4VnB4MnDXPGwT9sO573e/UITtm+LyNT
-        /4k+CvGPhhZeURtHoK6ef+w4Rw==
-X-Google-Smtp-Source: AA0mqf4SHiaMLMDj4x23hgHwtC5fO0gYi9V6Tn2xQmNaq55hLzY0zoYuEPXW4N+imq+leyhN6pESNA==
-X-Received: by 2002:a7b:cbc3:0:b0:3cf:a83d:28d1 with SMTP id n3-20020a7bcbc3000000b003cfa83d28d1mr45889386wmi.57.1669730118514;
-        Tue, 29 Nov 2022 05:55:18 -0800 (PST)
+        bh=+xx9KeJ585Iqv7hOUO0YZtymPwDApgXhYGIbV4fHlbk=;
+        b=P3Od2mz88+fUoMzIaC2Dk8laHJSMeMHKb1/A4kZ65sDBHg2zhGJneuTuFIZ+5s5Z7D
+         YGshRiUw3Elsl7NDZnP1uq+ialE3ECzhHN5iQeCi00Nf/itRfRWeH20ZUTbNillKlwbf
+         mYAlksRaf/SQXDMHMMfN2kBZqfOXMYryytxIaywdH0WhVGHyPOppyQqW3W4+fwL7y2/g
+         MAbxsesg9OD0C/Egfcq/2oGQmOrdwaChuuct2R8yJCUXhuCTNwO7VZeKMK7X+W6RdQXj
+         PC7fxi7xTU1CheKvx2W3ax+9FI+mLovgwzliFk/cE3Ph92q6Ps8SKIdGbIX98F0hPVgX
+         j9EQ==
+X-Gm-Message-State: ANoB5pn7DsresMyo0ZyA4QrhCzanXEYEbdaZFkOTxqUq8mJUKQHu1tJB
+        r84pYpcLvuYQuYHgb4rx05oaGw==
+X-Google-Smtp-Source: AA0mqf4aAmCnsvufUaPMze1Kre+sO59ezTe/h9O2f8GsviDLVlplyWi1ATiJ3nwpdSorcJQrbYznug==
+X-Received: by 2002:a5d:5611:0:b0:241:cfa5:20d9 with SMTP id l17-20020a5d5611000000b00241cfa520d9mr28224425wrv.451.1669730120348;
+        Tue, 29 Nov 2022 05:55:20 -0800 (PST)
 Received: from bld-bun-02.bun.broadcom.com ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id hn25-20020a05600ca39900b003b4935f04a4sm2472005wmb.5.2022.11.29.05.55.17
+        by smtp.gmail.com with ESMTPSA id hn25-20020a05600ca39900b003b4935f04a4sm2472005wmb.5.2022.11.29.05.55.18
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Nov 2022 05:55:17 -0800 (PST)
+        Tue, 29 Nov 2022 05:55:18 -0800 (PST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 To:     kvalo@kernel.org
 Cc:     linux-wireless@vger.kernel.org,
@@ -52,15 +52,15 @@ Cc:     linux-wireless@vger.kernel.org,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>
-Subject: [PATCH V2 6/7] brcmfmac: add vendor name in revinfo debugfs file
-Date:   Tue, 29 Nov 2022 14:54:45 +0100
-Message-Id: <20221129135446.151065-7-arend.vanspriel@broadcom.com>
+Subject: [PATCH V2 7/7] brcmfmac: introduce BRCMFMAC exported symbols namespace
+Date:   Tue, 29 Nov 2022 14:54:46 +0100
+Message-Id: <20221129135446.151065-8-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221129135446.151065-1-arend.vanspriel@broadcom.com>
 References: <20221129135446.151065-1-arend.vanspriel@broadcom.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000994bd205ee9c563f"
+        boundary="000000000000b4c9ba05ee9c56b6"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -70,66 +70,106 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000994bd205ee9c563f
+--000000000000b4c9ba05ee9c56b6
 Content-Transfer-Encoding: 8bit
 
-Upon probe the driver determines the vendor supporting the device.
-Expose this information in the revinfo debugfs file.
+Using a namespace variant to make clear it is only intended to be used
+by the vendor-specific modules. The symbol will only truly export the
+symbols when the driver and consequently the vendor-specific part are
+built as kernel modules.
 
 Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
 Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
 Reviewed-by: Franky Lin <franky.lin@broadcom.com>
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c  | 3 ++-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c | 5 +++++
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h | 1 +
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c   | 1 +
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h     | 6 ++++++
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c   | 1 +
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c    | 4 ++--
+ .../net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c   | 1 +
+ 5 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index 584431150f7c..83ea251cfcec 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -1136,7 +1136,8 @@ static int brcmf_revinfo_read(struct seq_file *s, void *data)
- 	seq_printf(s, "vendorid: 0x%04x\n", ri->vendorid);
- 	seq_printf(s, "deviceid: 0x%04x\n", ri->deviceid);
- 	seq_printf(s, "radiorev: %s\n", brcmu_dotrev_str(ri->radiorev, drev));
--	seq_printf(s, "chip: %s\n", ri->chipname);
-+	seq_printf(s, "chip: %s (%s)\n", ri->chipname,
-+		   brcmf_fwvid_vendor_name(bus_if->drvr));
- 	seq_printf(s, "chippkg: %u\n", ri->chippkg);
- 	seq_printf(s, "corerev: %u\n", ri->corerev);
- 	seq_printf(s, "boardid: 0x%04x\n", ri->boardid);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+index 790116a735c7..d55f3271d619 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+@@ -21,6 +21,7 @@ static void __exit brcmf_bca_exit(void)
+ }
+ 
+ MODULE_LICENSE("Dual BSD/GPL");
++MODULE_IMPORT_NS(BRCMFMAC);
+ 
+ module_init(brcmf_bca_init);
+ module_exit(brcmf_bca_exit);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
+index a98b86982502..e4f911dd414b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
+@@ -13,6 +13,12 @@
+ #include <net/cfg80211.h>
+ #include "fweh.h"
+ 
++#if IS_MODULE(CONFIG_BRCMFMAC)
++#define BRCMF_EXPORT_SYMBOL_GPL(__sym)	EXPORT_SYMBOL_NS_GPL(__sym, BRCMFMAC)
++#else
++#define BRCMF_EXPORT_SYMBOL_GPL(__sym)
++#endif
++
+ #define TOE_TX_CSUM_OL		0x00000001
+ #define TOE_RX_CSUM_OL		0x00000002
+ 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+index 34294724a1f8..f82fbbe3ecef 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+@@ -21,6 +21,7 @@ static void __exit brcmf_cyw_exit(void)
+ }
+ 
+ MODULE_LICENSE("Dual BSD/GPL");
++MODULE_IMPORT_NS(BRCMFMAC);
+ 
+ module_init(brcmf_cyw_init);
+ module_exit(brcmf_cyw_exit);
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-index 274d512cbdad..6f16157a8a4e 100644
+index 6f16157a8a4e..86eafdb40541 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-@@ -192,3 +192,8 @@ void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr)
+@@ -109,7 +109,7 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *vmod,
  
- 	mutex_unlock(&fwvid_list_lock);
+ 	return 0;
  }
-+
-+const char *brcmf_fwvid_vendor_name(struct brcmf_pub *drvr)
-+{
-+	return fwvid_list[drvr->bus_if->fwvid].name;
-+}
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-index 6b3aec190023..43df58bb70ad 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-@@ -22,6 +22,7 @@ int brcmf_fwvid_unregister_vendor(enum brcmf_fwvendor fwvid, struct module *mod)
- /* core driver functions */
- int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr);
- void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr);
-+const char *brcmf_fwvid_vendor_name(struct brcmf_pub *drvr);
+-EXPORT_SYMBOL(brcmf_fwvid_register_vendor);
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_fwvid_register_vendor);
  
- static inline int brcmf_fwvid_attach(struct brcmf_pub *drvr)
+ int brcmf_fwvid_unregister_vendor(enum brcmf_fwvendor fwvid, struct module *mod)
  {
+@@ -142,7 +142,7 @@ int brcmf_fwvid_unregister_vendor(enum brcmf_fwvendor fwvid, struct module *mod)
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(brcmf_fwvid_unregister_vendor);
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_fwvid_unregister_vendor);
+ #else
+ static inline int brcmf_fwvid_request_module(enum brcmf_fwvendor fwvid)
+ {
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c
+index 23e3a4557880..02918d434556 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c
+@@ -21,6 +21,7 @@ static void __exit brcmf_wcc_exit(void)
+ }
+ 
+ MODULE_LICENSE("Dual BSD/GPL");
++MODULE_IMPORT_NS(BRCMFMAC);
+ 
+ module_init(brcmf_wcc_init);
+ module_exit(brcmf_wcc_exit);
 -- 
 2.35.1
 
 
---000000000000994bd205ee9c563f
+--000000000000b4c9ba05ee9c56b6
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -200,14 +240,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCJwagvYOPrvY8MG55O
-f9B4s/2xIHbpZEWM+dRKbpFcmTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjExMjkxMzU1MThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCs1Ub3oZ/4Fl2Aa2Do
+LJdpd//M1TtoQLKq7R05/DzbDDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjExMjkxMzU1MjBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAmHXWmXnATrx2KCKU6NrnsWFsGpn2EAVUFQDu
-mY0czDd//vbvHEpxH7WGyj2cE2Nkl1ZJIyvW9X6BUqdphNLy7D7oSW3/oD7X5Mm48NQJHcdj36cY
-MXXc3Dbp943oHWraKuObFflH+44iTWxWZLOddWvkPYwDtWQ6gWzJGFb/mC1XpgP0EaxWGes2Aagt
-qi0oJwRxxKKzAxTC87BTifWt2uGWGvbM86q9NFhoYyYK3Bqk2jqSg81+M6ReJ0j4i/uE6LpP/IB7
-ASSTkV81CQI0pYfXAwN21PLvRMVUYajkPwkFM1t8vvFcHylw6JxfhxU3YyWl250cWln5LOipGWAR
-Sw==
---000000000000994bd205ee9c563f--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAhd7pZDxJifzJ6DANsaRhfa4cPwSibYs5aa43
+/S+Mu540OmO4Ok7aP/eW5TXwVZb5/rYiFgife/rDf+8ghd2tmd5i2nzd2mtnBYpCkucIJMptFq+a
+LCR5c11e+GKMJlJYqDq5p2MvfYW0AvcQ0+bLQaXIc0pYvfPj2j63c4r+Vbc0mhyF7264w8NVqLw7
+0F5PbaHpjLxb/wgOrr4KXPKJR6hsWfXGzCThENV7vNzmIN37p+laWsxPZpF+a9RoN7zFm1RLglHG
+5P4EUjqx2DA3S9ZEGRwYMJu5Z09bZZ7VzFF0iPzsx9SBvbmxWLYfwaSUEHkMYHasF8vK62XkMd6l
+3Q==
+--000000000000b4c9ba05ee9c56b6--
