@@ -2,58 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E59E563C335
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 15:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD30263C343
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 15:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234682AbiK2Ozi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Nov 2022 09:55:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
+        id S234201AbiK2O74 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Nov 2022 09:59:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231225AbiK2Ozh (ORCPT
+        with ESMTP id S232155AbiK2O7y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Nov 2022 09:55:37 -0500
-Received: from pv50p00im-ztdg10011901.me.com (pv50p00im-ztdg10011901.me.com [17.58.6.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC2318C
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 06:55:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
-        s=sig1; t=1669733735;
-        bh=7VHgYyrts87O0uqb1nQ28K/+qcn3F8Gj517nlgJXqpk=;
-        h=From:To:Subject:Date:Message-Id:MIME-Version;
-        b=Rm7Ax+eVh9lfS8kpvuuyYRlhN/frni+KjidqvZMcxViExaL5qGlE401G5AAZTOzEM
-         UUzS5Xq7bhKedTJR0gE2wJu61+dRco67dat+1kYqlOgYKN1dPEvyluzbKCpgBg7sTV
-         keXVRHq8cicNur+BsIcETo8jKU6hthbT1Al0oGG6zIIWU/nDr8D6fdAhO9xqQc3YCD
-         aeYzsUUfFsCRXWh4atvDGGiX39dz7wLUVc2IfUlAh18qOXnMQ/MgIAdRxidFgf/HoF
-         O12E7jflHUci6/Zn2T6A4+jOSLrA2vb5Jkdzunk+efhlGEIr1YTlV+6vEGCFT+gba9
-         QEPZLMm8/EIgA==
-Received: from vanilla.lan (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-        by pv50p00im-ztdg10011901.me.com (Postfix) with ESMTPSA id 6EA163A06A5;
-        Tue, 29 Nov 2022 14:55:32 +0000 (UTC)
-From:   JunASAKA <JunASAKA@zzy040330.moe>
-To:     rtl8821cerfe2@gmail.com, Jes.Sorensen@gmail.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: reply to Bitterblue Smith
-Date:   Tue, 29 Nov 2022 22:55:28 +0800
-Message-Id: <20221129145528.377371-1-JunASAKA@zzy040330.moe>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
-References: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
+        Tue, 29 Nov 2022 09:59:54 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77B4D2E7
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 06:59:47 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id h193so13231985pgc.10
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 06:59:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=yonsei-ac-kr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8gf5GhpcBACNp2wOH1j1vhVHJDChLCkVB3EAvyR7WlI=;
+        b=Aifo53vDWDBlkXYnnaaPYQlj7uYCMvWuIYL9E6mBknAgDBzM8JOx7lti6Lx3NU2Ghs
+         Kg62HBegg/fKY3hfvTP+jQnpmQx5KmidQBbYTNLxo/FqTJ0rktdgSw0/9cAsSbZpt8DP
+         nRbH0Sq6ZlnEriaWOcLAG3mF3B9nhYX2oAtGVQQAKKspNsUpO4509ESmfYVm9hxkRziL
+         4MDEgt0pxE6AG4m4G7c2Vef4EAulgjYrNQS8rTvn4VIpeaz/kX9SKlHxcTf1JQstzTID
+         K2E29n+PTey5xeODpnu7Gr3KFJheVCMCwjr5PrHuJu9b4rzZicwXi/y6ZftPmiUPmoOt
+         hTGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8gf5GhpcBACNp2wOH1j1vhVHJDChLCkVB3EAvyR7WlI=;
+        b=M7fJDiz2LV+XPa+dsGLmMd/BKYjMtMY6N8VFOHuEQ5Rl9m+E4jg2qE1WAV4/NYbbjL
+         6FbQyebQMSyCVoOscAP7YovIoTnSPtEraa5A1OrHLqSa7h3A6ke1Mikrd3cuyJ1JPIs3
+         u4fEMBxPDVsXlF7ech4W7en3D2ev8+RHv6uigNZQ4jN2w9mCVfN4LdPXBkTD5IDxryhB
+         oM7DUHwkTEK1KfeWSardqzMAo7btAqT6932Jgi5DKNEOol+ZZU0pXmyidzR49nZ7KQku
+         pZdHByTrLS2/rVHbynG+d/VDq0ck54fKYNgR9wbgtgRL2x6wriAwBgGDTE26kLkztYa1
+         Ic9Q==
+X-Gm-Message-State: ANoB5pncEIeupaOR/RLXUjmQMOvJ3R7oVIZA74HTF9CkXM3mAKjgknAd
+        JKrwcyFPYX7SMKChQiRSYn0U2g==
+X-Google-Smtp-Source: AA0mqf768WPeTA/3rMLdwnDBQlLdt9Yb7LX75yqTsPsxfW1iEaIGCfnQH6FNTl8PX6taydQlAC3Q0g==
+X-Received: by 2002:a62:be16:0:b0:56b:676e:1815 with SMTP id l22-20020a62be16000000b0056b676e1815mr38765144pff.66.1669733987460;
+        Tue, 29 Nov 2022 06:59:47 -0800 (PST)
+Received: from localhost.localdomain ([165.132.118.52])
+        by smtp.gmail.com with ESMTPSA id u11-20020a17090341cb00b00186b55e3cd6sm11052781ple.133.2022.11.29.06.59.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Nov 2022 06:59:47 -0800 (PST)
+From:   Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+To:     arend.vanspriel@broadcom.com
+Cc:     linux-wireless@vger.kernel.org, kvalo@kernel.org,
+        dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Subject: Re: [PATCH v2] wifi: brcmfmac: Check the count value of channel spec to prevent out-of-bounds reads
+Date:   Tue, 29 Nov 2022 23:56:33 +0900
+Message-Id: <20221129145632.1072379-1-linuxlovemin@yonsei.ac.kr>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221116142952.518241-1-linuxlovemin@yonsei.ac.kr>
+References: <20221116142952.518241-1-linuxlovemin@yonsei.ac.kr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: cljaZqDiDt2T0ayp4P5SmdB21H1zrx5-
-X-Proofpoint-ORIG-GUID: cljaZqDiDt2T0ayp4P5SmdB21H1zrx5-
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.11.64.514.0000000_definitions?=
- =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2022-02-23?=
- =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=4 malwarescore=0 clxscore=1030
- adultscore=0 spamscore=4 mlxlogscore=134 suspectscore=0 phishscore=0
- bulkscore=0 mlxscore=4 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2211290084
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,13 +72,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Bitterblue Smith,
+Minsuk Kang <linuxlovemin@yonsei.ac.kr> wrote:
 
- 	I have seen the patch you've mentioned. Actually, when I was trying to address the rtl8192eu problem, I saw that patch and
-considered it would tackle my problem, but it turns out that it doesn't work for me. And I found this rtl8xxxu_queue_select() 
-function which has a *hdr parameter that can be gained from skb since skb is indeed neccessary for this function to work.
-	What do you think of these? And please take a look of my problem above on your convenience, thanks a lot.
+> v1->v2: Added a macro BRCMF_MAX_CHANSPEC_LIST
+> 
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index ae9507dec74a..bff3128c2f26 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -101,6 +101,9 @@
+>  #define BRCMF_ASSOC_PARAMS_FIXED_SIZE \
+>  	(sizeof(struct brcmf_assoc_params_le) - sizeof(u16))
+>  
+> +#define BRCMF_MAX_CHANSPEC_LIST \
+> +	(BRCMF_DCMD_MEDLEN / sizeof(__le32) - 1)
+> +
+>  struct brcmf_dump_survey {
+>  	u32 obss;
+>  	u32 ibss;
+> @@ -6840,6 +6843,13 @@ static int brcmf_construct_chaninfo(struct brcmf_cfg80211_info *cfg,
+>  			band->channels[i].flags = IEEE80211_CHAN_DISABLED;
+>  
+>  	total = le32_to_cpu(list->count);
+> +	if (total > BRCMF_MAX_CHANSPEC_LIST) {
+> +		bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
+> +			 total);
+> +		err = -EINVAL;
+> +		goto fail_pbuf;
+> +	}
+> +
+>  	for (i = 0; i < total; i++) {
+>  		ch.chspec = (u16)le32_to_cpu(list->element[i]);
+>  		cfg->d11inf.decchspec(&ch);
+> @@ -6985,6 +6995,13 @@ static int brcmf_enable_bw40_2g(struct brcmf_cfg80211_info *cfg)
+>  		band = cfg_to_wiphy(cfg)->bands[NL80211_BAND_2GHZ];
+>  		list = (struct brcmf_chanspec_list *)pbuf;
+>  		num_chan = le32_to_cpu(list->count);
+> +		if (num_chan > BRCMF_MAX_CHANSPEC_LIST) {
+> +			bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
+> +				 num_chan);
+> +			kfree(pbuf);
+> +			return -EINVAL;
+> +		}
+> +
+>  		for (i = 0; i < num_chan; i++) {
+>  			ch.chspec = (u16)le32_to_cpu(list->element[i]);
+>  			cfg->d11inf.decchspec(&ch);
 
-Thanks and Regards,
-Jun ASAKA.
-
+I have incorporated your review in this patch.
+Please let me know if any further changes are needed.
