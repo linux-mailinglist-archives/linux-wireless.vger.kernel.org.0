@@ -2,175 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BECB63B910
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 05:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C58963B92A
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 05:41:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235259AbiK2ESb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Nov 2022 23:18:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50748 "EHLO
+        id S235239AbiK2Elz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Nov 2022 23:41:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbiK2ES3 (ORCPT
+        with ESMTP id S234820AbiK2Elt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Nov 2022 23:18:29 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C831EBE4
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 20:18:27 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AT4HS6x8028673, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AT4HS6x8028673
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 29 Nov 2022 12:17:28 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Tue, 29 Nov 2022 12:18:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 29 Nov 2022 12:18:12 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Tue, 29 Nov 2022 12:18:12 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     Kevin Yang <kevin_yang@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 3/6] wifi: rtw89: introduce helpers to wait/complete on condition
-Thread-Topic: [PATCH 3/6] wifi: rtw89: introduce helpers to wait/complete on
- condition
-Thread-Index: AQHY+wxGkFx0DY+dqU+L+TRf49zoQK5UZLq/gAD3tKA=
-Date:   Tue, 29 Nov 2022 04:18:12 +0000
-Message-ID: <019c1e3d4fb54b189b98e8b238fe3c9c@realtek.com>
-References: <20221118051042.29968-1-pkshih@realtek.com>
-        <20221118051042.29968-4-pkshih@realtek.com> <87sfi35hsu.fsf@kernel.org>
-In-Reply-To: <87sfi35hsu.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/28_=3F=3F_11:42:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 28 Nov 2022 23:41:49 -0500
+X-Greylist: delayed 373 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Nov 2022 20:41:48 PST
+Received: from pv50p00im-zteg10011501.me.com (pv50p00im-zteg10011501.me.com [17.58.6.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3523D90D
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Nov 2022 20:41:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
+        s=sig1; t=1669696535;
+        bh=gqMG1+v4/My2KUXkGkqNVJ/uFJ0mxXw/w4pdKkF5idQ=;
+        h=From:To:Subject:Date:Message-Id:MIME-Version;
+        b=AGL7RMNR+K4S6h4eHYj5m0WHMR5igxt7ZDGSdhNCOOKMyDK7TqHYe/Hz9m3SJ6XfV
+         wk+2gCzytBPmsJPfG7ujGYdezsLayiwFzYIlZ7O5cdFSeC3n5ezcBiN9qdlVO5iYh2
+         xpjVHuIQDAe0FqRdOPUmiPnLMYNbLPhS1iKwN5GG39o/DJifB59aZSHw4Tm6FMfn/H
+         g7fGKZR0ArhrCHxXggpK8pbZbQPr3vz+lPAhWWJkf/T6fTOhxF2ererJKRmCm7tOpg
+         s6dKzvxia15jczGE259VJlBqcrSfs+rNqdlZ96eq9lsbu26LqcEQm5O+h5buMf6K7H
+         gHYVvaW0nb17Q==
+Received: from vanilla.lan (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+        by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id 1A03E2E0A11;
+        Tue, 29 Nov 2022 04:35:31 +0000 (UTC)
+From:   JunASAKA <JunASAKA@zzy040330.moe>
+To:     Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        JunASAKA <JunASAKA@zzy040330.moe>
+Subject: [PATCH] drivers: rewrite and remove a superfluous parameter.
+Date:   Tue, 29 Nov 2022 12:34:42 +0800
+Message-Id: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: O2CodvTiGlUoqhNMPHn2VKKzHfLnRfAk
+X-Proofpoint-GUID: O2CodvTiGlUoqhNMPHn2VKKzHfLnRfAk
+X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.11.64.514.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2022-02-23?=
+ =?UTF-8?Q?=5F01_signatures=3D0?=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=602
+ bulkscore=0 phishscore=0 mlxscore=0 spamscore=0 clxscore=1030
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2209130000 definitions=main-2211290029
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+I noticed there is a superfluous "*hdr" parameter in rtl8xxxu module
+when I am trying to fix some bugs for the rtl8192eu wifi dongle. This
+parameter can be removed and then gained from the skb object to make the
+function more beautiful.
 
-> -----Original Message-----
-> From: Kalle Valo <kvalo@kernel.org>
-> Sent: Monday, November 28, 2022 9:29 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kevin Yang <kevin_yang@realtek.com>; linux-wireless@vger.kernel.org
-> Subject: Re: [PATCH 3/6] wifi: rtw89: introduce helpers to wait/complete on condition
-> 
-> Ping-Ke Shih <pkshih@realtek.com> writes:
-> 
-> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
-> >
-> > MCC (multi-channel concurrency) related H2Cs require to wait for C2H
-> > responses to judge the execution result and data. We introduce helpers
-> > to assist this process. Besides, we would like the helpers to be generic
-> > for use in driver even outside of MCC H2C/C2H, so we make a independent
-> > patch for them.
-> >
-> > In the following, I describe the things first.
-> > ```
-> > (A)	C2H is generated by FW, and then transferred upto driver. Hence,
-> > 	driver cannot get it immediately without a bit waitting/blocking.
-> > 	For this, we choose to use wait_for_completion_*() instead of
-> > 	busy polling.
-> > (B)	From the driver management perspective, a scenario, e.g. MCC,
-> > 	may have mulitple kind of H2C functions requiring this process
-> > 	to wait for corresponding C2Hs. But, the driver management flow
-> > 	uses mutex to protect each behavior. So, one scenario triggers
-> > 	one H2C function at one time. To avoid rampant instances of
-> > 	struct completion for each H2C function, we choose to use one
-> > 	struct completion with one condition flag for one scenario.
-> > (C)	C2Hs, which H2Cs will be waitting for, cannot be ordered with
-> > 	driver management flow, i.e. cannot enqueue work to the same
-> > 	ordered workqueue and cannot lock by the same mutex, to prevent
-> > 	H2C side from getting no C2H responses. So, those C2Hs are parsed
-> > 	in interrupt context directly as done in previous commit.
-> > (D)	Following (C), the above underline H2Cs and C2Hs will be handled
-> > 	in different contexts without sync. So, we use atomic_cmpxchg()
-> > 	to compare and change the condition in atomic.
-> > ```
-> >
-> > So, we introduce struct rtw89_wait_info which combines struct completion
-> > and atomic_t. Then, the below are the descriptions for helper functions.
-> > * rtw89_wait_for_cond() to wait for a completion based on a condition.
-> > * rtw89_complete_cond() to complete a given condition and carry data.
-> > Each rtw89_wait_info instance independently determines the meaning of
-> > its waitting conditions. But, RTW89_WAIT_COND_IDLE (UINT_MAX) is reserved.
-> >
-> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> Just nitpicking a couple of items:
-> 
-> Otherwise an excellent commit log but the meaning of C2H and H2C is not
-> clear for me. I guess they mean "chip to host" and "host to chip", but
-> would be good to clarify that in the beginning.
+Signed-off-by: JunASAKA <JunASAKA@zzy040330.moe>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-will add them by v2.
-
-> 
-> > --- a/drivers/net/wireless/realtek/rtw89/core.h
-> > +++ b/drivers/net/wireless/realtek/rtw89/core.h
-> > @@ -2802,6 +2802,34 @@ struct rtw89_mac_info {
-> >  	u8 cpwm_seq_num;
-> >  };
-> >
-> > +struct rtw89_completion_data {
-> > +	bool err;
-> > +#define RTW89_COMPLETION_BUF_SIZE 24
-> > +	u8 buf[RTW89_COMPLETION_BUF_SIZE];
-> > +};
-> 
-> Having a define withing a struct looks odd to me, I would prefer to have
-> it outside of the struct.
-
-will fix it by v2.
-
-> 
-> > +#define rtw89_completion_cast(cmpl_data, ptr)				\
-> > +({									\
-> > +	typecheck(struct rtw89_completion_data *, cmpl_data);		\
-> > +	BUILD_BUG_ON(sizeof(*(ptr)) > RTW89_COMPLETION_BUF_SIZE);	\
-> > +	(typeof(ptr))(cmpl_data)->buf;					\
-> > +})
-> 
-> Wouldn't this be cleaner as a static inline function?
-
-inline function isn't suitable, because 'ptr' could be various type.
-We plan to do casting barely at callers.
-
-> 
-> > +struct rtw89_wait_info {
-> > +#define RTW89_WAIT_COND_IDLE UINT_MAX
-> > +	atomic_t cond;
-> > +	struct completion completion;
-> > +	struct rtw89_completion_data data;
-> > +};
-> 
-> Also here would prefer the define outside the struct.
-
-will fix it by v2.
-
-Thank you
-Ping-Ke
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index ac641a56efb0..4c3d97e8e51f 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4767,9 +4767,10 @@ static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
+ 	return rtlqueue;
+ }
+ 
+-static u32 rtl8xxxu_queue_select(struct ieee80211_hdr *hdr, struct sk_buff *skb)
++static u32 rtl8xxxu_queue_select(struct sk_buff *skb)
+ {
+ 	u32 queue;
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 
+ 	if (ieee80211_is_mgmt(hdr->frame_control))
+ 		queue = TXDESC_QUEUE_MGNT;
+@@ -5118,7 +5119,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+ 	if (control && control->sta)
+ 		sta = control->sta;
+ 
+-	queue = rtl8xxxu_queue_select(hdr, skb);
++	queue = rtl8xxxu_queue_select(skb);
+ 
+ 	tx_desc = skb_push(skb, tx_desc_size);
+ 
+-- 
+2.38.1
 
