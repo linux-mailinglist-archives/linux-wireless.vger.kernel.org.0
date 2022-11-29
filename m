@@ -2,75 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A7463CB2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 23:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F00B663CBAB
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 00:20:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236711AbiK2WtQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Nov 2022 17:49:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37634 "EHLO
+        id S235992AbiK2XUK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Nov 2022 18:20:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236570AbiK2WtP (ORCPT
+        with ESMTP id S231322AbiK2XUJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Nov 2022 17:49:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBA02339E
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 14:48:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1669762107;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HGikrnX364rCVWywnwVxKwVfVWGtIZ6vltliqWh6T0Y=;
-        b=e1YIzMNX0N/4pfYxwCCeV/8Sy9uz4Bhghmcj+WsVyU0GcwrMg7U4j07rdif43qeesqRGOm
-        rA6BSBkPQ9+t1PZNTVqpczNTukPcmwtVf1GaDLrNnGj18O0712RPiT3Fo7CHbjo6YqaNsr
-        UmGLLTuY8ZKics3WW2lLRSRmwj1yggg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-624-jPivghd9PsO6geSKUF7Vmw-1; Tue, 29 Nov 2022 17:48:19 -0500
-X-MC-Unique: jPivghd9PsO6geSKUF7Vmw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CBC1A84ACA0;
-        Tue, 29 Nov 2022 22:48:12 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.22.50.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BC26F140EBF5;
-        Tue, 29 Nov 2022 22:48:09 +0000 (UTC)
-Message-ID: <8b11568a8022cdb759a43f34fdcddf33d9abc37c.camel@redhat.com>
-Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
-From:   Dan Williams <dcbw@redhat.com>
-To:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Maciej =?UTF-8?Q?=C5=BBenczykowski?= <maze@google.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        =?UTF-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Ilja Van Sprundel <ivansprundel@ioactive.com>,
-        Joseph Tartaro <joseph.tartaro@ioactive.com>
-Date:   Tue, 29 Nov 2022 16:48:07 -0600
-In-Reply-To: <04ea37cc-d97a-3e00-8a99-135ab38860f2@green-communications.fr>
-References: <04ea37cc-d97a-3e00-8a99-135ab38860f2@green-communications.fr>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        Tue, 29 Nov 2022 18:20:09 -0500
+X-Greylist: delayed 496 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 29 Nov 2022 15:20:07 PST
+Received: from ms11p00im-qufo17281501.me.com (ms11p00im-qufo17281501.me.com [17.58.38.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E92F31EE1
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 15:20:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
+        s=sig1; t=1669763510;
+        bh=bDVPnjP7mjPXDaFoBo3SoljB9WhJu/n4uw9Ly0kVEtU=;
+        h=From:To:Subject:Date:Message-Id:MIME-Version;
+        b=Wi0SExB7cuLKfOonD+An46v0F3xQuLUn/oS32MZHR847ObgEwUlIDdim1SXYiT1nF
+         pwcd98Hj/anf8fvkETQISnhfY1Hm4KJfSAOC2SceYxA7iFskJ8/HJJp+pNqJJxyc6r
+         T4xUsMUqVPdMxKRXdDF+sRUTFHigM4bxGwNSgSLSdFrSQuMQWaHQWmSj+2mvstR5eZ
+         CgG3mYCisCeeg1zHsdmeMpb1nEhNK12AER4tJTmIj6wfq1laPVmcCOJx4hCcMi79Xb
+         p4z7nIWFaXVgPhV1A0XG2MWw6E/hi+gk64VkdDbXy4yXtD8R1p3+J4bl9IpH6jSVL4
+         +NH2GL6nMWgiA==
+Received: from vanilla.lan (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
+        by ms11p00im-qufo17281501.me.com (Postfix) with ESMTPSA id 78E88B61D2E;
+        Tue, 29 Nov 2022 23:11:48 +0000 (UTC)
+From:   JunASAKA <JunASAKA@zzy040330.moe>
+To:     w@1wt.eu, Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: rewrite and remove a superfluous parameter.
+Date:   Wed, 30 Nov 2022 07:11:44 +0800
+Message-Id: <20221129231144.416668-1-JunASAKA@zzy040330.moe>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
+References: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+X-Proofpoint-GUID: sl2gg6b7_mkxDy_nmgFk31M2hs6XfKo0
+X-Proofpoint-ORIG-GUID: sl2gg6b7_mkxDy_nmgFk31M2hs6XfKo0
+X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.0.605.474.0000000_definitions?=
+ =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2020-01-23?=
+ =?UTF-8?Q?=5F02_signatures=3D0?=
+X-Proofpoint-Spam-Details: rule=probablespam policy=default score=59 spamscore=59 malwarescore=0
+ adultscore=0 clxscore=1030 bulkscore=0 suspectscore=0 mlxlogscore=-15
+ phishscore=0 mlxscore=59 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2211290139
+X-Suspected-Spam: true
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,52 +63,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-11-23 at 16:40 +0100, Nicolas Cavallari wrote:
-> On 23/11/2022 13:46, Greg Kroah-Hartman wrote:
-> > The Microsoft RNDIS protocol is, as designed, insecure and
-> > vulnerable on
-> > any system that uses it with untrusted hosts or devices.  Because
-> > the
-> > protocol is impossible to make secure, just disable all rndis
-> > drivers to
-> > prevent anyone from using them again.
-> > 
-> > Windows only needed this for XP and newer systems, Windows systems
-> > older
-> > than that can use the normal USB class protocols instead, which do
-> > not
-> > have these problems.
-> > 
-> > Android has had this disabled for many years so there should not be
-> > any
-> > real systems that still need this.
-> 
-> I kind of disagree here. I have seen plenty of android devices that
-> only 
-> support rndis for connection sharing, including my android 11 phone 
-> released in Q3 2020. I suspect the qualcomm's BSP still enable it by 
-> default.
-> 
-> There are also probably cellular dongles that uses rndis by default. 
-> Maybe ask the ModemManager people ?
+I see. Sorry for that.
 
-Yes, there are.
-
-Another class of WWAN dongles presented as USB RNDIS to the host, had
-an onboard DHCP server, and "bridged" that (for lack of a better term)
-to the WWAN. And like a home router exposed HTTP based management on
-192.168.1.1 to control the WWAN stuff.
-
-https://openwrt.org/docs/guide-user/network/wan/wwan/ethernetoverusb_rndis
-
-RE Wifi, (echoing Johannes) there was one Broadcom chipset, but a bunch
-of devices used it. I have some though I don't actively use them. But
-they still work...
-
-Dan
-
-> 
-> I'm also curious if reimplementing it in userspace would solve the 
-> security problem.
-> 
+Jun ASAKA.
 
