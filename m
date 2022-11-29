@@ -2,141 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 282B963C17D
+	by mail.lfdr.de (Postfix) with ESMTP id 741AE63C17E
 	for <lists+linux-wireless@lfdr.de>; Tue, 29 Nov 2022 14:55:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbiK2NzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S233282AbiK2NzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 29 Nov 2022 08:55:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60908 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233282AbiK2NzL (ORCPT
+        with ESMTP id S233699AbiK2NzL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 29 Nov 2022 08:55:11 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C70751C15
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:09 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id d1so22207642wrs.12
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:09 -0800 (PST)
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE6352882
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:11 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id a11-20020a05600c2d4b00b003cf6f5fd9f1so10885457wmg.2
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Nov 2022 05:55:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=K6BxC9Few1unoYyEXS7ken2ZfO5fb2GBQ1okhO96VMI=;
-        b=HsS/+s+6iRC++8iMVshLhVTq0/PWkWtSIG++WJkKKv4tkaKOE6n3sFr8/kCg66Xtag
-         YTRJ1azyL9Pd9Z1Dz5KWReQAe/NgUKsU/CqxxUqh0fjQOyeZHxmRvcpPjqspuRa7EX3K
-         Qanca+hcl5J4N6cbj607isJg5xzXYhkjWdAvQ=
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aNtzi8yZHlSqMmGKalLdQ4hIVQsroXq3Q5p1VzoZBPo=;
+        b=CF9Qh26NifcWpfMs58JyQQQ7/aD00OyqdOl8BQYl9af/eg1qDXZmg0nQcCWh1rZqFq
+         5IXOmt8XXoLisNUVYRFFmar5IKPyVVxr+ZZrAeBu36OEWMtRETqOtsDpLXBTHAlLFfs/
+         +y0Hjjiwa1lrccPDru5diFrNvYfIPUEn/otSc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K6BxC9Few1unoYyEXS7ken2ZfO5fb2GBQ1okhO96VMI=;
-        b=PrwLQnYnV1gUlHg4kIfRUy1mrtXkJ3pMk2N3V+YAlbZUWpq4Kz+L7IAEYnCsYaoQil
-         93Dz5Bc2SBpBZIosHzc9pQR3StmiEp/ovnp2MXuqZcY/naS3UjZNhQiH6KeuXpueaSEn
-         nnt2817opE/m3RYQaI4zc4NaG/Q9sIHjWbw27uOXkgtDlVT4GUbYvQ1nv07vRwL835rt
-         2Iyw/aGpWRV++e50lGX1tF9fP2cUs7cjjbCa2tgNcbrvTtDhw6sNChFset+95wXq4x/p
-         CSe68H6FGux8j7CXVwRpQ6mXIsz8ZwJFZxghzPkNJydNqA6KRVjeomZe5gjnuyArEw1J
-         owaw==
-X-Gm-Message-State: ANoB5pma1i3pGaMk+ReJYaxyLLp+Vts2kL+UYjXN9hTV3S9Gmh/FNXcI
-        oU5iiHTbNZ4pjaGaKshgvDKWsw==
-X-Google-Smtp-Source: AA0mqf7tycQ08NQXyWtWPLMBKiyo2QZBSy7Tcu05qN6Co8XESEwprHEN48E2ILFzQlkcNJeLAw7Y3A==
-X-Received: by 2002:a5d:5611:0:b0:241:cfa5:20d9 with SMTP id l17-20020a5d5611000000b00241cfa520d9mr28223918wrv.451.1669730108052;
-        Tue, 29 Nov 2022 05:55:08 -0800 (PST)
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aNtzi8yZHlSqMmGKalLdQ4hIVQsroXq3Q5p1VzoZBPo=;
+        b=kxwyUgcIkMTUe0HITztXpvxfvSlVSkVIktklj0GXY/OYG/KsAYom/OaCqPL/LvZ3+X
+         mlB/C7akIBHCSfKgvxa7mzI+KKhE7iWfZqFIvP9nGdDPop0sHgZ9iPXTDQSYWAbtRxjA
+         AP5leSuzUBesuSYBrcGXqe8UKkiQibr/X3lWUH+WnMNn2Ud3LQw2MyisfaAaNGfKgDMO
+         IltdMx1sFSuxyMdoO7mMnQCpHk8jX37yq7w+ZMkDS+zUvgihByOlPsS5TLky4JmkyUZJ
+         xpCTLnSloHcHTWLJBvhmURZQWebETCMQHkFD9zjGoAloWirkkS+Jr24qWkZru65jPcnS
+         SDvA==
+X-Gm-Message-State: ANoB5pmvftJ3jOXayP62vtgjXvuw6mnpfqGEMXtFX4kDbTEASh7W4Nh3
+        6CEoasuTNKA4EfgZ698ZtUT9RaB+vCWCQcRcuqw=
+X-Google-Smtp-Source: AA0mqf6prsR1w9/us3nJ5s1iKjYwxcm0iVKdLVfn0JJAT9raJNiYvjxegpU6FgpIsGnpIkeFJFFW7Q==
+X-Received: by 2002:a05:600c:3ba1:b0:3d0:47c:9ff5 with SMTP id n33-20020a05600c3ba100b003d0047c9ff5mr34906789wms.121.1669730109663;
+        Tue, 29 Nov 2022 05:55:09 -0800 (PST)
 Received: from bld-bun-02.bun.broadcom.com ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id hn25-20020a05600ca39900b003b4935f04a4sm2472005wmb.5.2022.11.29.05.55.06
+        by smtp.gmail.com with ESMTPSA id hn25-20020a05600ca39900b003b4935f04a4sm2472005wmb.5.2022.11.29.05.55.08
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Nov 2022 05:55:07 -0800 (PST)
+        Tue, 29 Nov 2022 05:55:08 -0800 (PST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 To:     kvalo@kernel.org
 Cc:     linux-wireless@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH V2 0/7] brcmfmac: support devices from multiple vendors
-Date:   Tue, 29 Nov 2022 14:54:39 +0100
-Message-Id: <20221129135446.151065-1-arend.vanspriel@broadcom.com>
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>
+Subject: [PATCH V2 1/7] brcmfmac: add function to unbind device to bus layer api
+Date:   Tue, 29 Nov 2022 14:54:40 +0100
+Message-Id: <20221129135446.151065-2-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221129135446.151065-1-arend.vanspriel@broadcom.com>
+References: <20221129135446.151065-1-arend.vanspriel@broadcom.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000f9fd5f05ee9c554a"
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.6
+        boundary="000000000000119f3205ee9c56f2"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000f9fd5f05ee9c554a
+--000000000000119f3205ee9c56f2
 Content-Transfer-Encoding: 8bit
 
-Took my sweet time coming with this follow-up series, but here
-it is. Hopefully, sending patches is working for me now.
+Introduce a new bus callback .remove() which will unbind the device
+from the driver. This allows the common driver layer to stop handling
+a device.
 
-The bcm43xx family of wifi chipsets found its way to different
-groups inside and outside Broadcom. For the fullmac devices this
-means that in those difference groups firmware is being developed
-and the firmware api is bound to diverge. This series introduces
-a design change to accomodate supporting multiple firmware api's.
-The vender-specific support can be compiled in brcmfmac or
-built as a separate module. Currently the vendor-specific support
-does not have any real effect. At the momemt looking into SAE support
-which appear to be different for Cypress devices so that might be a
-first use-case.
+Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+---
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bus.h  | 13 +++++++++++++
+ .../net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 12 +++++++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-The patches apply to the main branch of the wireless-next repository.
-
-Arend van Spriel (7):
-  brcmfmac: add function to unbind device to bus layer api
-  brcmfmac: add firmware vendor info in driver data
-  brcmfmac: add support for vendor-specific firmware api
-  brcmfmac: add support for Cypress firmware api
-  brcmfmac: add support Broadcom BCA firmware api
-  brcmfmac: add vendor name in revinfo debugfs file
-  brcmfmac: introduce BRCMFMAC exported symbols namespace
-
- .../broadcom/brcm80211/brcmfmac/Makefile      |  11 +
- .../broadcom/brcm80211/brcmfmac/bca/Makefile  |  12 ++
- .../broadcom/brcm80211/brcmfmac/bca/core.c    |  27 +++
- .../broadcom/brcm80211/brcmfmac/bca/module.c  |  27 +++
- .../broadcom/brcm80211/brcmfmac/bca/vops.h    |  11 +
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  52 ++---
- .../broadcom/brcm80211/brcmfmac/bus.h         |  30 ++-
- .../broadcom/brcm80211/brcmfmac/core.c        |  12 +-
- .../broadcom/brcm80211/brcmfmac/core.h        |   8 +
- .../broadcom/brcm80211/brcmfmac/cyw/Makefile  |  12 ++
- .../broadcom/brcm80211/brcmfmac/cyw/core.c    |  27 +++
- .../broadcom/brcm80211/brcmfmac/cyw/module.c  |  27 +++
- .../broadcom/brcm80211/brcmfmac/cyw/vops.h    |  11 +
- .../broadcom/brcm80211/brcmfmac/fwvid.c       | 199 ++++++++++++++++++
- .../broadcom/brcm80211/brcmfmac/fwvid.h       |  47 +++++
- .../broadcom/brcm80211/brcmfmac/pcie.c        |  70 +++---
- .../broadcom/brcm80211/brcmfmac/sdio.c        |  12 +-
- .../broadcom/brcm80211/brcmfmac/usb.c         |  27 ++-
- .../broadcom/brcm80211/brcmfmac/wcc/Makefile  |  12 ++
- .../broadcom/brcm80211/brcmfmac/wcc/core.c    |  27 +++
- .../broadcom/brcm80211/brcmfmac/wcc/module.c  |  27 +++
- .../broadcom/brcm80211/brcmfmac/wcc/vops.h    |  11 +
- 22 files changed, 634 insertions(+), 65 deletions(-)
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/Makefile
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/vops.h
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/Makefile
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/vops.h
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/Makefile
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/vops.h
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
+index 60f5645aead3..256456e38108 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/firmware.h>
++#include <linux/device.h>
+ #include "debug.h"
+ 
+ /* IDs of the 6 default common rings of msgbuf protocol */
+@@ -74,6 +75,7 @@ struct brcmf_bus_dcmd {
+  * @get_ramsize: obtain size of device memory.
+  * @get_memdump: obtain device memory dump in provided buffer.
+  * @get_blob: obtain a firmware blob.
++ * @remove: initiate unbind of the device.
+  *
+  * This structure provides an abstract interface towards the
+  * bus specific driver. For control messages to common driver
+@@ -94,6 +96,7 @@ struct brcmf_bus_ops {
+ 			enum brcmf_blob_type type);
+ 	void (*debugfs_create)(struct device *dev);
+ 	int (*reset)(struct device *dev);
++	void (*remove)(struct device *dev);
+ };
+ 
+ 
+@@ -257,6 +260,16 @@ int brcmf_bus_reset(struct brcmf_bus *bus)
+ 	return bus->ops->reset(bus->dev);
+ }
+ 
++static inline void brcmf_bus_remove(struct brcmf_bus *bus)
++{
++	if (!bus->ops->remove) {
++		device_release_driver(bus->dev);
++		return;
++	}
++
++	bus->ops->remove(bus->dev);
++}
++
+ /*
+  * interface functions from common layer
+  */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 244ba48cc304..c949051c4bc4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -4171,6 +4171,15 @@ static int brcmf_sdio_bus_reset(struct device *dev)
+ 	return 0;
+ }
+ 
++static void brcmf_sdio_bus_remove(struct device *dev)
++{
++	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
++	struct brcmf_sdio_dev *sdiod = bus_if->bus_priv.sdio;
++
++	device_release_driver(&sdiod->func2->dev);
++	device_release_driver(&sdiod->func1->dev);
++}
++
+ static const struct brcmf_bus_ops brcmf_sdio_bus_ops = {
+ 	.stop = brcmf_sdio_bus_stop,
+ 	.preinit = brcmf_sdio_bus_preinit,
+@@ -4183,7 +4192,8 @@ static const struct brcmf_bus_ops brcmf_sdio_bus_ops = {
+ 	.get_memdump = brcmf_sdio_bus_get_memdump,
+ 	.get_blob = brcmf_sdio_get_blob,
+ 	.debugfs_create = brcmf_sdio_debugfs_create,
+-	.reset = brcmf_sdio_bus_reset
++	.reset = brcmf_sdio_bus_reset,
++	.remove = brcmf_sdio_bus_remove,
+ };
+ 
+ #define BRCMF_SDIO_FW_CODE	0
 -- 
 2.35.1
 
 
---000000000000f9fd5f05ee9c554a
+--000000000000119f3205ee9c56f2
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -207,14 +236,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA1A2/9ikp+y793pWz6
-z891mNLrjm5osiG7TZJnHxH+vzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjExMjkxMzU1MDhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBe50nRg0mhJlUQNp/1
+XKunJKXEL0KIAv2FQdM/ibwEnjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjExMjkxMzU1MDlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEARaS7xoO3pW+IicY9DE4d6MmuW7aq6MH34naI
-OGOAQoTXELchIQzN8k0B9mrhcUbb0JQub0EVlBljASweYupckqei0vi0GFjNKS6ciFoAez5y+ozO
-C43wlcMNfw1HYWFpwRL4IYHuMnIW+TdTF6t+GIRsCApHI5R60QjKJ8Zj1KUWQjditL5xzcY8TbFt
-dinXmSayJo7oo37igcCN8fn/R185X/l4dZhDbNTGlD1w/CpKge57RPTPPUxUmR3zmviZCo0qdjIZ
-Fg5yVw7wEXnv5fpDYBBHn7xHN1QPUCQkWv6VQXRyvP1+yyF486xIuqFqRO3ahRFvm9aAsbbgco4a
-PQ==
---000000000000f9fd5f05ee9c554a--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAaqCkux3F/16blqyxrdkSkHQaJyW0y+SSuthg
+yz0rkFgCJSCUhEAE1jpvYE55PFgr5gWbhmkE/mNJ+4s0BKV2PIX6OzAOLU4pvbgtV1XWNplM7Thc
+s6auva6vPCmxRKOGNsOsm+lF7g7ctBQ/zeA5e+ARYP4il3jbNCSN8OLSG3hrWzIDGVkrL5IhHbjt
+IWvZWusWHm5ZumInuCGHPR+nbrqH9lyqmsITTSwnTF/ed/wKmGa1+p7ICv/PyPUKEJSJ+szRx03k
+CvlqmaKcb/iTRXxB9HiDCRopAk5Z568VytIx5zAM88n0i2LOEVpqXi/1ioots8+jlCz+wu7pjYzt
+CQ==
+--000000000000119f3205ee9c56f2--
