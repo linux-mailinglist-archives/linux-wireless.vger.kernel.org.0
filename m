@@ -2,70 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E64363DBAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 18:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0548263DBCD
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 18:19:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230390AbiK3RNf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 12:13:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39644 "EHLO
+        id S229468AbiK3RTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 12:19:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230455AbiK3RND (ORCPT
+        with ESMTP id S229629AbiK3RS5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 12:13:03 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332908B18E
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 09:09:36 -0800 (PST)
+        Wed, 30 Nov 2022 12:18:57 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C22A624B
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 09:18:52 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DC6FCB81C37
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 17:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08056C433D7;
-        Wed, 30 Nov 2022 17:09:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B444161D0D
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 17:18:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5769AC433C1;
+        Wed, 30 Nov 2022 17:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669828173;
-        bh=egobHfAE82ERuhdrxaZwV1hKFHc2d2ZHkUMGyEs1SHo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fhMphUQUpRIjtXcmvOl5pDwhSRhlkxjIRqFcCVq1eyQ599mqwohh2HAfeR9OMJ6Dp
-         QXmWZcCZBm/Fy2PjE4iX3Mp0Lz4eTAcFi0u8J9Zfv+jFSiheb8238fvku+5JAmoFjo
-         lVEkqP7vZ+ztftxEV8lxq16qgSCRVriZlB/p0B68xlfcI8/fXlamgcM7Q7nQUy51Oy
-         m+sIsPC0YFKwzYFlofn3qnDnyFe/a0HviIJqrwACEwMPbKaFRIoTTum3PQ66LF6sfd
-         sqhnCcynPhzMCwUdNKOW7Gq+sCvyCQ1HNq6KMBKo54R8+haFMBKoOmz/OjvFKFRyL9
-         OQ90QJSDDoIHA==
-Date:   Wed, 30 Nov 2022 18:09:29 +0100
-From:   "lorenzo@kernel.org" <lorenzo@kernel.org>
-To:     Deren Wu =?utf-8?B?KOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
-Cc:     Evelyn Tsai =?utf-8?B?KOiUoeePiumIuik=?= 
-        <Evelyn.Tsai@mediatek.com>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        Leon Yen =?utf-8?B?KOmhj+iJr+WEkik=?= <Leon.Yen@mediatek.com>,
-        Shayne Chen =?utf-8?B?KOmZs+i7kuS4nik=?= 
-        <Shayne.Chen@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
-        Stella Chang =?utf-8?B?KOW8teabieS9qSk=?= 
-        <Stella.Chang@mediatek.com>, Sean Wang <Sean.Wang@mediatek.com>,
-        KM Lin =?utf-8?B?KOael+aYhuawkSk=?= <km.lin@mediatek.com>,
-        Soul Huang =?utf-8?B?KOm7g+iHs+aYtik=?= 
-        <Soul.Huang@mediatek.com>,
-        YN Chen =?utf-8?B?KOmZs+W9peWvpyk=?= <YN.Chen@mediatek.com>,
-        Posh Sun =?utf-8?B?KOWtq+eRnuW7tyk=?= <posh.sun@mediatek.com>,
-        Eric-SY Chang =?utf-8?B?KOW8teabuOa6kCk=?= 
-        <Eric-SY.Chang@mediatek.com>,
-        CH Yeh =?utf-8?B?KOiRieW/l+ixqik=?= <ch.yeh@mediatek.com>,
-        Robin Chiu =?utf-8?B?KOmCseWci+a/sSk=?= 
-        <robin.chiu@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: mt76: mt7921s: fix slab-out-of-bounds access in
- sdio host
-Message-ID: <Y4eOSUzLAW8x802i@lore-desk>
-References: <631e6a06fb640ec4f81c92b57d31eb0f7b23c351.1669814212.git.deren.wu@mediatek.com>
- <Y4dsznJ+GBalfzvx@lore-desk>
- <5b41c02ace6538122ebd656db5bec748fcd6e14e.camel@mediatek.com>
+        s=k20201202; t=1669828731;
+        bh=xh6HipE9Jb75qlFWvlf55aInyFX0fmqtese0m4gUxyY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=smgNIQC+mExQfP3XN3yjEnkpKTZGwN0HmfDTTSoWjynnlArhTQf8nkqWwSNcsgJ5i
+         cgfafBBUOSKZIWzk0JTjyAI4bIC9DjY9g68M11VVxyie0w7omkaie/9C/qkrUhTtfg
+         fJnq4d1koVf+afndK1pxoftAN1koA0EreP1hon09ksAA/tIgj+/mjuTYs+o74Pa+td
+         FyD8op6Ae17r1yWzORt6qncqwM6AwZhgEscF+yOFTr2LRHLaT5fPHO5Ao3oiz8lI5m
+         v98YONYUHsqmyN9JjLtsfGzUZAHA/u/OBI7ZOMDnMu1APjOiFWAJrEY8YiatMm13Oo
+         EvMGlDW2arG0g==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: ath11k vs ar_qrtr?
+References: <20221130122807.GA31720@lst.de> <87o7so4nr2.fsf@kernel.org>
+        <20221130125236.GA865@lst.de> <87k03c4mdb.fsf@kernel.org>
+        <20221130132244.GB3055@lst.de>
+Date:   Wed, 30 Nov 2022 19:18:47 +0200
+In-Reply-To: <20221130132244.GB3055@lst.de> (Christoph Hellwig's message of
+        "Wed, 30 Nov 2022 14:22:44 +0100")
+Message-ID: <875yewnyx4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="IsI5c3S3RXYk6V18"
-Content-Disposition: inline
-In-Reply-To: <5b41c02ace6538122ebd656db5bec748fcd6e14e.camel@mediatek.com>
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -75,98 +55,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Christoph Hellwig <hch@lst.de> writes:
 
---IsI5c3S3RXYk6V18
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Wed, Nov 30, 2022 at 03:12:32PM +0200, Kalle Valo wrote:
+>> Heh, I'm learning something new here. But I wonder why nobody else has
+>> seen this?
+>
+> Good question.  How common is the ath11k hardware, especially on latptop
+> where it is required for installation given that only installers tend
+> to split up driver is non-standard ways.
 
-> Hi Lore,
->=20
-> On Wed, 2022-11-30 at 15:46 +0100, Lorenzo Bianconi wrote:
-> > > SDIO may need addtional 512 bytes to align bus operation. If the
-> > > tailroom
-> > > of this skb is not big enough, we would access invalid memory
-> > > region.
-> > > For low level operation, take xmit_buf instead of skb to keep valid
-> > > memory
-> > > access in SDIO.
-> > > Note: xmit_buf is big enough for single skb size
-> > >=20
-> > > Fixes: 764dee47e2c1 ("mt76: sdio: move common code in mt76_sdio
-> > > module")
-> > > Tested-by: YN Chen <YN.Chen@mediatek.com>
-> > > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> > > ---
-> > >  drivers/net/wireless/mediatek/mt76/sdio_txrx.c | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> > > b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> > > index bfc4de50a4d2..ebea5c4e8da5 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> > > @@ -254,7 +254,8 @@ static int mt76s_tx_run_queue(struct mt76_dev
-> > > *dev, struct mt76_queue *q)
-> > > =20
-> > >  		if (!test_bit(MT76_STATE_MCU_RUNNING, &dev->phy.state))=20
-> > > {
-> > >  			__skb_put_zero(e->skb, 4);
-> > > -			err =3D __mt76s_xmit_queue(dev, e->skb->data,
-> > > +			memcpy(sdio->xmit_buf, e->skb->data, e->skb-
-> > > >len);
-> >=20
-> > (even if it is not critical for performance) iirc the skb from the
-> > mcu is
-> > always linear, I guess we can use __skb_grow() instead. What do you
-> > think?
-> >=20
-> > Regards,
-> > Lorenzo
-> >=20
->=20
-> _skb_grow() looks good for me. It's a balance solution for this case.
-> If you have no concern about the patch below, I will post v2 after UT.
-> :)
->=20
->         if (!test_bit(MT76_STATE_MCU_RUNNING, &dev->phy.state)) {
->                 __skb_put_zero(e->skb, 4);
-> +               err =3D __skb_grow(e->skb, roundup(e->skb->len,
-> +                                                sdio->func-
-> >cur_blksize));
+I'm not sure about exact numbers, but not very common. I have seen
+something like 4-5 different laptop models with either QCA6390 or
+WCN6855 (both ath11k PCI devices). The PCI support was added to ath11k
+in v5.10 (released Dec 2020) so maybe installers haven't caught up yet?
+Just guessing though.
 
-can we merge __skb_put_zero() and __skb_grow()? Does sdio chip require the 4
-last bytes to be 0?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Regards,
-Lorenzo
-
-> +               if (err)
-> +                       return err;
->                 err =3D __mt76s_xmit_queue(dev, e->skb->data,
->                                                  e->skb->len);
->=20
->=20
-> Regards,
-> Deren
->=20
-> > > +			err =3D __mt76s_xmit_queue(dev, sdio->xmit_buf,
-> > >  						 e->skb->len);
-> > >  			if (err)
-> > >  				return err;
-> > > --=20
-> > > 2.18.0
-> > >=20
-
---IsI5c3S3RXYk6V18
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY4eOSQAKCRA6cBh0uS2t
-rIE7AQDEqCVfDhShTRqXBb5ZtxyFKVj/QHV60c8Gz7LUNX07SAEA15WjsxxuSzBQ
-utdndpZ+ufqI77vcexMCLwUaQ03cbQY=
-=4eey
------END PGP SIGNATURE-----
-
---IsI5c3S3RXYk6V18--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
