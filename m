@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A6063DE21
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 19:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D67A663DD3A
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 19:25:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbiK3SeV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 13:34:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
+        id S230217AbiK3SZl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 13:25:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230396AbiK3SeA (ORCPT
+        with ESMTP id S230123AbiK3SZg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 13:34:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 795DE91C35;
-        Wed, 30 Nov 2022 10:33:58 -0800 (PST)
+        Wed, 30 Nov 2022 13:25:36 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE7B6314;
+        Wed, 30 Nov 2022 10:25:29 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CFDC61D59;
-        Wed, 30 Nov 2022 18:33:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FE5C433D6;
-        Wed, 30 Nov 2022 18:33:57 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 058E7CE1ACC;
+        Wed, 30 Nov 2022 18:25:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D68C433C1;
+        Wed, 30 Nov 2022 18:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1669833238;
-        bh=y5UgD859p+CTJ4HK6UJ4KZu6Bn1Py07EItTPJ2LfZvU=;
+        s=korg; t=1669832726;
+        bh=62Fqnu0SpwoA4vK91A3SZ3ETuJz1j4DVnrjfKEssupE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pXUV4FesDcLoWvZD8LnqAwNoF4hxYTp1PCJBfJL9wweQ8J63s8QI24wsy0M5VCblZ
-         zU5bH7peKVPPZRcDZDRS9HOIzYbHp0o2H0p/K3EjLTtLVapOjB6hsHtOzD2NNrh7np
-         zpMoV2xl/o9fCUxol7JVya9IHayrAGCbZNudPtU4=
+        b=TkODjCpudfDhF+W3v5wVNN0s2cMZERDF3zqrCCpxNTimPBGEP0hLDKiefO70fms5O
+         8oqSVh8EAO+GboYd+i1fGbGpUPeprUaZ/RrPjUI6B5ZHj6NdOvQvk4ZoBk/M7HaefE
+         gUibNnexdysWD8LY3He/l0B0I6hd6ROB72zgwjjc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-wireless@vger.kernel.org,
         "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/206] wifi: airo: do not assign -1 to unsigned char
-Date:   Wed, 30 Nov 2022 19:21:27 +0100
-Message-Id: <20221130180533.885730215@linuxfoundation.org>
+Subject: [PATCH 5.10 019/162] wifi: airo: do not assign -1 to unsigned char
+Date:   Wed, 30 Nov 2022 19:21:40 +0100
+Message-Id: <20221130180529.017718295@linuxfoundation.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221130180532.974348590@linuxfoundation.org>
-References: <20221130180532.974348590@linuxfoundation.org>
+In-Reply-To: <20221130180528.466039523@linuxfoundation.org>
+References: <20221130180528.466039523@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index 65dd8cff1b01..fc19ecbc4c08 100644
+index 0569f37e9ed5..8c9c6bfbaeee 100644
 --- a/drivers/net/wireless/cisco/airo.c
 +++ b/drivers/net/wireless/cisco/airo.c
-@@ -5233,7 +5233,7 @@ static int get_wep_tx_idx(struct airo_info *ai)
+@@ -5236,7 +5236,7 @@ static int get_wep_tx_idx(struct airo_info *ai)
  	return -1;
  }
  
@@ -88,7 +88,7 @@ index 65dd8cff1b01..fc19ecbc4c08 100644
  		       u16 keylen, int perm, int lock)
  {
  	static const unsigned char macaddr[ETH_ALEN] = { 0x01, 0, 0, 0, 0, 0 };
-@@ -5284,7 +5284,7 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
+@@ -5287,7 +5287,7 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
  	struct net_device *dev = PDE_DATA(inode);
  	struct airo_info *ai = dev->ml_priv;
  	int i, rc;
@@ -97,7 +97,7 @@ index 65dd8cff1b01..fc19ecbc4c08 100644
  	u16 index = 0;
  	int j = 0;
  
-@@ -5312,12 +5312,22 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
+@@ -5315,12 +5315,22 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
  	}
  
  	for (i = 0; i < 16*3 && data->wbuffer[i+j]; i++) {
