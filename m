@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0548263DBCD
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 18:19:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F6663DF07
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 19:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbiK3RTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 12:19:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45074 "EHLO
+        id S231197AbiK3SnO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 13:43:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbiK3RS5 (ORCPT
+        with ESMTP id S231263AbiK3Sm5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 12:18:57 -0500
+        Wed, 30 Nov 2022 13:42:57 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C22A624B
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 09:18:52 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C67B6168;
+        Wed, 30 Nov 2022 10:42:56 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B444161D0D
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 17:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5769AC433C1;
-        Wed, 30 Nov 2022 17:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669828731;
-        bh=xh6HipE9Jb75qlFWvlf55aInyFX0fmqtese0m4gUxyY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=smgNIQC+mExQfP3XN3yjEnkpKTZGwN0HmfDTTSoWjynnlArhTQf8nkqWwSNcsgJ5i
-         cgfafBBUOSKZIWzk0JTjyAI4bIC9DjY9g68M11VVxyie0w7omkaie/9C/qkrUhTtfg
-         fJnq4d1koVf+afndK1pxoftAN1koA0EreP1hon09ksAA/tIgj+/mjuTYs+o74Pa+td
-         FyD8op6Ae17r1yWzORt6qncqwM6AwZhgEscF+yOFTr2LRHLaT5fPHO5Ao3oiz8lI5m
-         v98YONYUHsqmyN9JjLtsfGzUZAHA/u/OBI7ZOMDnMu1APjOiFWAJrEY8YiatMm13Oo
-         EvMGlDW2arG0g==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: ath11k vs ar_qrtr?
-References: <20221130122807.GA31720@lst.de> <87o7so4nr2.fsf@kernel.org>
-        <20221130125236.GA865@lst.de> <87k03c4mdb.fsf@kernel.org>
-        <20221130132244.GB3055@lst.de>
-Date:   Wed, 30 Nov 2022 19:18:47 +0200
-In-Reply-To: <20221130132244.GB3055@lst.de> (Christoph Hellwig's message of
-        "Wed, 30 Nov 2022 14:22:44 +0100")
-Message-ID: <875yewnyx4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE1BE61D4F;
+        Wed, 30 Nov 2022 18:42:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2429C433C1;
+        Wed, 30 Nov 2022 18:42:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1669833775;
+        bh=m6MOVYM1TiX79ZuuE2JOpGw4gj4kiQANSSH0ufvIg7k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=bdPmq2eUKN4leuXjeeTVoz4Qo88T96QwEdNoGnsJjrEjjh3jO0B83Y75bA+9IC6aY
+         KlQmB+6ZYjt3N3z4HvvLrQkn0vKjkmmon/6Csrt5Owey7Ax/ri91+JaOD+YRiAbHEP
+         n60qa6GxDg+x9fA/IbDbcl2G2Ms8Ll/YhjDazBb4=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.0 010/289] wifi: airo: do not assign -1 to unsigned char
+Date:   Wed, 30 Nov 2022 19:19:55 +0100
+Message-Id: <20221130180544.364976944@linuxfoundation.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221130180544.105550592@linuxfoundation.org>
+References: <20221130180544.105550592@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,23 +55,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christoph Hellwig <hch@lst.de> writes:
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-> On Wed, Nov 30, 2022 at 03:12:32PM +0200, Kalle Valo wrote:
->> Heh, I'm learning something new here. But I wonder why nobody else has
->> seen this?
->
-> Good question.  How common is the ath11k hardware, especially on latptop
-> where it is required for installation given that only installers tend
-> to split up driver is non-standard ways.
+[ Upstream commit e6cb8769452e8236b52134e5cb4a18b8f5986932 ]
 
-I'm not sure about exact numbers, but not very common. I have seen
-something like 4-5 different laptop models with either QCA6390 or
-WCN6855 (both ath11k PCI devices). The PCI support was added to ath11k
-in v5.10 (released Dec 2020) so maybe installers haven't caught up yet?
-Just guessing though.
+With char becoming unsigned by default, and with `char` alone being
+ambiguous and based on architecture, we get a warning when assigning the
+unchecked output of hex_to_bin() to that unsigned char. Mark `key` as a
+`u8`, which matches the struct's type, and then check each call to
+hex_to_bin() before casting.
 
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20221024162843.535921-1-Jason@zx2c4.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/cisco/airo.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index 10daef81c355..fb2c35bd73bb 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -5232,7 +5232,7 @@ static int get_wep_tx_idx(struct airo_info *ai)
+ 	return -1;
+ }
+ 
+-static int set_wep_key(struct airo_info *ai, u16 index, const char *key,
++static int set_wep_key(struct airo_info *ai, u16 index, const u8 *key,
+ 		       u16 keylen, int perm, int lock)
+ {
+ 	static const unsigned char macaddr[ETH_ALEN] = { 0x01, 0, 0, 0, 0, 0 };
+@@ -5283,7 +5283,7 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
+ 	struct net_device *dev = pde_data(inode);
+ 	struct airo_info *ai = dev->ml_priv;
+ 	int i, rc;
+-	char key[16];
++	u8 key[16];
+ 	u16 index = 0;
+ 	int j = 0;
+ 
+@@ -5311,12 +5311,22 @@ static void proc_wepkey_on_close(struct inode *inode, struct file *file)
+ 	}
+ 
+ 	for (i = 0; i < 16*3 && data->wbuffer[i+j]; i++) {
++		int val;
++
++		if (i % 3 == 2)
++			continue;
++
++		val = hex_to_bin(data->wbuffer[i+j]);
++		if (val < 0) {
++			airo_print_err(ai->dev->name, "WebKey passed invalid key hex");
++			return;
++		}
+ 		switch(i%3) {
+ 		case 0:
+-			key[i/3] = hex_to_bin(data->wbuffer[i+j])<<4;
++			key[i/3] = (u8)val << 4;
+ 			break;
+ 		case 1:
+-			key[i/3] |= hex_to_bin(data->wbuffer[i+j]);
++			key[i/3] |= (u8)val;
+ 			break;
+ 		}
+ 	}
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.35.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+
