@@ -2,94 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCFAD63CD12
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 03:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B4E63CEA2
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 06:15:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232100AbiK3CAp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Nov 2022 21:00:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59888 "EHLO
+        id S233369AbiK3FPN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 00:15:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbiK3CAm (ORCPT
+        with ESMTP id S233497AbiK3FOd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Nov 2022 21:00:42 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775AD716D3;
-        Tue, 29 Nov 2022 18:00:40 -0800 (PST)
-Received: from canpemm500010.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NMMlb1pjJzJp3B;
-        Wed, 30 Nov 2022 09:57:15 +0800 (CST)
-Received: from [10.174.179.191] (10.174.179.191) by
- canpemm500010.china.huawei.com (7.192.105.118) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 30 Nov 2022 10:00:37 +0800
-Message-ID: <4e61f6e5-94bd-9e29-d12f-d5928f00c8a8@huawei.com>
-Date:   Wed, 30 Nov 2022 10:00:37 +0800
+        Wed, 30 Nov 2022 00:14:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8603A1658B;
+        Tue, 29 Nov 2022 21:14:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 247F061A0D;
+        Wed, 30 Nov 2022 05:14:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC373C433D6;
+        Wed, 30 Nov 2022 05:14:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669785251;
+        bh=CqrmiuOOxenDGqbbJzSkLOlZlAOT8xZfVDi8NlAoucg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=X5LsRBBmSdMxilT7u1kEOnYe1lcKIhr0qRADdbDRXYrFsTm6sVEujTgKxCUkNV3rQ
+         +qWzWRJ1xa7zhDoS4Ce94E10R+Zry4YJOWhaWl0snQqpJH0pvDRX0dGRV2SxKvX0W1
+         yqA2ZqCaHXV96Wv1cJU/IRHBQCJ7HsykzNNBaHN86cAvwq8/OkiJG908gRR4J5f0/g
+         TbaX/DWOeTEz1oOg8Tx5qrgv2wWSQF0sQshbq5UFeizM21Mro4wD5smfET6tLOFnT2
+         mHQTtOusPTzAzsuU8OjlXoeJ9XvH1FP8dB/ZLlkjXS5NSyASvHjago/qe2MjgUi5z7
+         FQIEBOEoV7Kgw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     Youghandhar Chintala <quic_youghand@quicinc.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quic_mpubbise@quicinc.com,
+        rameshn@qti.qualcomm.com
+Subject: Re: [PATCH v4] wifi: ath10k: Store WLAN firmware version in SMEM image table
+In-Reply-To: <Y4YsyaIW+CPdHWv3@dev-arch.thelio-3990X> (Nathan Chancellor's
+        message of "Tue, 29 Nov 2022 09:01:13 -0700")
+References: <20221117180534.2267-1-quic_youghand@quicinc.com>
+        <Y4YsyaIW+CPdHWv3@dev-arch.thelio-3990X>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Wed, 30 Nov 2022 07:14:05 +0200
+Message-ID: <87sfi13tya.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH] wifi: brcmfmac: Fix error return code in
- brcmf_sdio_download_firmware()
-To:     Franky Lin <franky.lin@broadcom.com>
-CC:     <aspriel@gmail.com>, <hante.meuleman@broadcom.com>,
-        <kvalo@kernel.org>, <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <arend@broadcom.com>
-References: <1669716458-15327-1-git-send-email-wangyufen@huawei.com>
- <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
-From:   wangyufen <wangyufen@huawei.com>
-In-Reply-To: <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.191]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- canpemm500010.china.huawei.com (7.192.105.118)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Nathan Chancellor <nathan@kernel.org> writes:
 
-
-在 2022/11/30 1:41, Franky Lin 写道:
-> On Tue, Nov 29, 2022 at 1:47 AM Wang Yufen <wangyufen@huawei.com> wrote:
->>
->> Fix to return a negative error code -EINVAL instead of 0.
->>
->> Compile tested only.
->>
->> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
->> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+> On Thu, Nov 17, 2022 at 11:35:34PM +0530, Youghandhar Chintala wrote:
+>
+>> In a SoC based solution, it would be useful to know the versions of the
+>> various binary firmware blobs the system is running on. On a QCOM based
+>> SoC, this info can be obtained from socinfo debugfs infrastructure. For
+>> this to work, respective subsystem drivers have to export the firmware
+>> version information to an SMEM based version information table.
+>> 
+>> Having firmware version information at one place will help quickly
+>> figure out the firmware versions of various subsystems on the device
+>> instead of going through builds/logs in an event of a system crash.
+>> 
+>> Fill WLAN firmware version information in SMEM version table to be
+>> printed as part of socinfo debugfs infrastructure on a Qualcomm based
+>> SoC.
+>> 
+>> This change is applicable only for SNOC/QMI based targets.
+>> 
+>> Example:
+>> cat /sys/kernel/debug/qcom_socinfo/cnss/name
+>> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+>> 
+>> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+>> 
+>> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
 >> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> index 465d95d..329ec8ac 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> @@ -3414,6 +3414,7 @@ static int brcmf_sdio_download_firmware(struct brcmf_sdio *bus,
->>          /* Take arm out of reset */
->>          if (!brcmf_chip_set_active(bus->ci, rstvec)) {
->>                  brcmf_err("error getting out of ARM core reset\n");
->> +               bcmerror = -EINVAL;
-> 
-> ENODEV seems more appropriate here.
+>> Changes from v3:
+>>  - Changed patch title
+>>  - Changed naming conventions
+>>  - Removed MAX_BUILD_ID_LEN usuage
+>>  - Added condition to call API
+>>  - Changed depends on QCOM_SMEM to select QCOM_SMEM
+>
+> You cannot blindly select user configurable symbols that have
+> dependencies, otherwise you end up with Kconfig warnings. I see the
+> following warning in -next when CONFIG_HWSPINLOCK is disabled:
+>
+>   WARNING: unmet direct dependencies detected for QCOM_SMEM
+>     Depends on [n]: (ARCH_QCOM [=y] || COMPILE_TEST [=n]) && HWSPINLOCK [=n]
+>     Selected by [m]:
+>     - ATH10K_SNOC [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && ATH10K [=m] && (ARCH_QCOM [=y] || COMPILE_TEST [=n])
+>
+> That should likely be changed back to 'depends on'. The reason the other
+> QCOM symbols are selected is because they are not user-selectable, so
+> they have to be selected by the configurations that need them.
 
-However, if brcmf_chip_set_active()  fails in 
-brcmf_pcie_exit_download_state(), "-EINVAL" is returned.
-Is it necessary to keep consistent?
+Thanks, I didn't realise this. I'll send a patch changing it to 'depends
+on'.
 
-> 
->>                  goto err;
->>          }
->>
->> --
->> 1.8.3.1
->>
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
