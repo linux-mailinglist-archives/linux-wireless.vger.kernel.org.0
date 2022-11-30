@@ -2,294 +2,248 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E68363D19C
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 10:19:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D88D63D20B
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 10:33:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232752AbiK3JTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 04:19:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50264 "EHLO
+        id S234303AbiK3Jdq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 04:33:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232741AbiK3JSz (ORCPT
+        with ESMTP id S234332AbiK3JdR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 04:18:55 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0115F3206B
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 01:18:41 -0800 (PST)
-X-UUID: 10f454a7e9f24239a6f943db84b105d9-20221130
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=A+j1WlVFAlxceA8Z1ko6iUPE1JtVzSjuVngJ6nY1cqY=;
-        b=EX3NODdF1W6Y1ctNgW9idRG0jgKYqMC39LepBtr3YEqedFx4HVpR1xeq0/a480MxKN+PyKVI/Mpd9VOm0puk1WgsFBFgylYldMn3X4OLMTC3HLtY35pTCdQ/le74UojNxMT/1AwAGl7vj2HUm3fZ1XPUQtpBsPcBEjhX7hJIsrA=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:54118f9f-5fbe-44d6-8e09-17b1727cc33b,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.14,REQID:54118f9f-5fbe-44d6-8e09-17b1727cc33b,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:dcaaed0,CLOUDID:5a16236c-41fe-47b6-8eb4-ec192dedaf7d,B
-        ulkID:2211301718383JFKQX0R,BulkQuantity:0,Recheck:0,SF:28|17|19|48,TC:nil,
-        Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 10f454a7e9f24239a6f943db84b105d9-20221130
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-        (envelope-from <sujuan.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1621526227; Wed, 30 Nov 2022 17:18:35 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Wed, 30 Nov 2022 17:18:34 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 30 Nov 2022 17:18:33 +0800
-From:   Sujuan Chen <sujuan.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <bo.jiao@mediatek.com>,
-        Haitao Shang <haitao.shang@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        "Sujuan Chen" <sujuan.chen@mediatek.com>
-Subject: [PATCH,v2] wifi: mt76: mt7915: add wds support when wed is enabled
-Date:   Wed, 30 Nov 2022 17:18:31 +0800
-Message-ID: <e603722d58079af98c57a3dc117274d824d1d832.1669798063.git.sujuan.chen@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Wed, 30 Nov 2022 04:33:17 -0500
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4DA72082
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 01:32:26 -0800 (PST)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-14279410bf4so20289681fac.8
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 01:32:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nmp/KXSWp7j/op7rlj+32saQZGYoAszbSHX9jQ3Ehj4=;
+        b=NIK6BO/R+llQL/gldiQMtwfKTmOU7KJ4vyiAKg1zESF7S1YjqfZi+EJTfTbjc6oJhb
+         auKWhVr5AbnOeWDhyX5/Gt0Ro1ky0OuD5Mo30iOvhG6Zz1BZUIUXSs13xucfD8+mlnei
+         mZAq2igF4uP4X6ZEiutxj2zcW8dXM4v3Qn58EKMNBnetOI+GVfGDjET6KTcgT+MfK2hS
+         M7zzOeJOI+UQs5w93k0IeoPo0Xuhun/Tx0BhsPYAOOuLup3+mdQ7/5jRAv6kbKE14TTf
+         lUhe1wqKw8QyNtwxsabgOekRy6d9YDjSBajrXGJ/CcHnjG/r//DYbn06L4rU5LPUcZ7T
+         DsMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nmp/KXSWp7j/op7rlj+32saQZGYoAszbSHX9jQ3Ehj4=;
+        b=ABHTHW6Bg6LNuZP0/DkFG3KdqJuHd1yZJYHA+h/47myGDHLm7vfUwEogsj+7XcBIbJ
+         7yj7Xr4axDvzIV3pIgDdv5wRMuWJnbWxos03FWMLeYicsHEr83yB8t1gFGK9uYAST39b
+         4GGtF02fMKr56WDgcpAGIxR81HMxeKaFUHnl4KUhutkeUlNYPsUzWnsMaf4FkbDy2N20
+         XsuVbVJdvu2evdgcMeVODpIHOAjBpIPJZW16LiMbK5vwtdZD+ooJ8QGYqYqJ5IoHwWZN
+         invNImfIjsaKT4o15PxUZc2D/L37sBcWHgeUhkmF00UB0NpvKDWk4MAS0qBtGZwCgMYN
+         JnBg==
+X-Gm-Message-State: ANoB5pnSrJl0uw4jngI+SLKuweadQf9cAaX0GHGUfLpV/576lYbTTfpc
+        LxugIXOIYtoIscJa2Q5TooTvgNXKsdDhOS/p5MmKMA==
+X-Google-Smtp-Source: AA0mqf7AB6sBWSMI+8Ehf8sccDG+HagnJt5P39Z6LikaoYVGS3f19+SeEcRUvP+EXYmaXlOcavz7RwnDhKwOdLC7de4=
+X-Received: by 2002:a05:6871:4609:b0:143:955d:ed7 with SMTP id
+ nf9-20020a056871460900b00143955d0ed7mr10432917oab.233.1669800745480; Wed, 30
+ Nov 2022 01:32:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <000000000000790da005ee3175a8@google.com> <26b9771db88198ff982476e3e24f411277cd213b.camel@sipsolutions.net>
+ <0ee688ac-5c34-1592-23d3-fe100cadc570@linaro.org> <CACT4Y+bxoaskRKAwFGLh7zVNKY7TszJNhLyAo4MrKaWSzyA8wg@mail.gmail.com>
+ <1a6abe2b-c382-a283-74a0-5869d2ba102e@linaro.org>
+In-Reply-To: <1a6abe2b-c382-a283-74a0-5869d2ba102e@linaro.org>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Wed, 30 Nov 2022 10:32:14 +0100
+Message-ID: <CACT4Y+bB+FvP1QFUadF=ExMjxPKs4GPYGzbU7hpKya+jUwLKaQ@mail.gmail.com>
+Subject: Re: [syzbot] KASAN: use-after-free Read in rfkill_blocked
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        =?UTF-8?B?6ams6bqf?= <kylin.formalin@gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        syzbot <syzbot+0299462c067009827b2a@syzkaller.appspotmail.com>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current WED only supports 256 wcid, whereas mt7986 can support up to 512 entries,
-so firmware provides a rule to get sta_info by DA when wcid is set to 0x3ff by txd.
-Also, WED provides a register to overwrite txd wcid, that is, wcid[9:8] can
-be overwritten by 0x3 and wcid[7:0] is set to 0xff by host driver.
+On Mon, 28 Nov 2022 at 11:15, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 28/11/2022 11:07, Dmitry Vyukov wrote:
+> > On Sun, 27 Nov 2022 at 20:59, Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> wrote:
+> >>
+> >> On 25/11/2022 10:09, Johannes Berg wrote:
+> >>> Looks like an NFC issue to me, Krzysztof?
+> >>>
+> >>> I mean, rfkill got allocated by nfc_register_device(), freed by
+> >>> nfc_unregister_device(), and then used by nfc_dev_up(). Seems like the
+> >>> last bit shouldn't be possible after nfc_unregister_device()?
+> >>>
+> >>> johannes
+> >>>
+> >>> On Wed, 2022-11-23 at 22:24 -0800, syzbot wrote:
+> >>>> Hello,
+> >>>>
+> >>>> syzbot found the following issue on:
+> >>>>
+> >>>> HEAD commit:    0966d385830d riscv: Fix auipc+jalr relocation range checks
+> >>>> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git fixes
+> >>>> console output: https://syzkaller.appspot.com/x/log.txt?x=11196d0d880000
+> >>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=6295d67591064921
+> >>>> dashboard link: https://syzkaller.appspot.com/bug?extid=0299462c067009827b2a
+> >>>> compiler:       riscv64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+> >>>> userspace arch: riscv64
+> >>>>
+> >>>> Unfortunately, I don't have any reproducer for this issue yet.
+> >>>>
+> >>>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> >>>> Reported-by: syzbot+0299462c067009827b2a@syzkaller.appspotmail.com
+> >>>>
+> >>>> ==================================================================
+> >>>> BUG: KASAN: use-after-free in __lock_acquire+0x8ee/0x333e kernel/locking/lockdep.c:4897
+> >>>> Read of size 8 at addr ffffaf8024249018 by task syz-executor.0/7946
+> >>>>
+> >>>> CPU: 0 PID: 7946 Comm: syz-executor.0 Not tainted 5.17.0-rc1-syzkaller-00002-g0966d385830d #0
+> >>>> Hardware name: riscv-virtio,qemu (DT)
+> >>>> Call Trace:
+> >>>> [<ffffffff8000a228>] dump_backtrace+0x2e/0x3c arch/riscv/kernel/stacktrace.c:113
+> >>>> [<ffffffff831668cc>] show_stack+0x34/0x40 arch/riscv/kernel/stacktrace.c:119
+> >>>> [<ffffffff831756ba>] __dump_stack lib/dump_stack.c:88 [inline]
+> >>>> [<ffffffff831756ba>] dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:106
+> >>>> [<ffffffff8047479e>] print_address_description.constprop.0+0x2a/0x330 mm/kasan/report.c:255
+> >>>> [<ffffffff80474d4c>] __kasan_report mm/kasan/report.c:442 [inline]
+> >>>> [<ffffffff80474d4c>] kasan_report+0x184/0x1e0 mm/kasan/report.c:459
+> >>>> [<ffffffff80475b20>] check_region_inline mm/kasan/generic.c:183 [inline]
+> >>>> [<ffffffff80475b20>] __asan_load8+0x6e/0x96 mm/kasan/generic.c:256
+> >>>> [<ffffffff80112b70>] __lock_acquire+0x8ee/0x333e kernel/locking/lockdep.c:4897
+> >>>> [<ffffffff80116582>] lock_acquire.part.0+0x1d0/0x424 kernel/locking/lockdep.c:5639
+> >>>> [<ffffffff8011682a>] lock_acquire+0x54/0x6a kernel/locking/lockdep.c:5612
+> >>>> [<ffffffff831afa2c>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+> >>>> [<ffffffff831afa2c>] _raw_spin_lock_irqsave+0x3e/0x62 kernel/locking/spinlock.c:162
+> >>>> [<ffffffff83034f0a>] rfkill_blocked+0x22/0x62 net/rfkill/core.c:941
+> >>>> [<ffffffff830b8862>] nfc_dev_up+0x8e/0x26c net/nfc/core.c:102
+> >>>> [<ffffffff830bb742>] nfc_genl_dev_up+0x5e/0x8a net/nfc/netlink.c:770
+> >>>> [<ffffffff8296f9ae>] genl_family_rcv_msg_doit+0x19a/0x23c net/netlink/genetlink.c:731
+> >>>> [<ffffffff82970420>] genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
+> >>>> [<ffffffff82970420>] genl_rcv_msg+0x236/0x3ba net/netlink/genetlink.c:792
+> >>>> [<ffffffff8296ded2>] netlink_rcv_skb+0xf8/0x2be net/netlink/af_netlink.c:2494
+> >>>> [<ffffffff8296ecb2>] genl_rcv+0x36/0x4c net/netlink/genetlink.c:803
+> >>>> [<ffffffff8296cbcc>] netlink_unicast_kernel net/netlink/af_netlink.c:1317 [inline]
+> >>>> [<ffffffff8296cbcc>] netlink_unicast+0x40e/0x5fe net/netlink/af_netlink.c:1343
+> >>>> [<ffffffff8296d29c>] netlink_sendmsg+0x4e0/0x994 net/netlink/af_netlink.c:1919
+> >>>> [<ffffffff826d264e>] sock_sendmsg_nosec net/socket.c:705 [inline]
+> >>>> [<ffffffff826d264e>] sock_sendmsg+0xa0/0xc4 net/socket.c:725
+> >>>> [<ffffffff826d4dd4>] ____sys_sendmsg+0x46e/0x484 net/socket.c:2413
+> >>>> [<ffffffff826d8bca>] ___sys_sendmsg+0x16c/0x1f6 net/socket.c:2467
+> >>>> [<ffffffff826d8e78>] __sys_sendmsg+0xba/0x150 net/socket.c:2496
+> >>>> [<ffffffff826d8f3a>] __do_sys_sendmsg net/socket.c:2505 [inline]
+> >>>> [<ffffffff826d8f3a>] sys_sendmsg+0x2c/0x3a net/socket.c:2503
+> >>>> [<ffffffff80005716>] ret_from_syscall+0x0/0x2
+> >>>>
+> >>>> Allocated by task 7946:
+> >>>>  stack_trace_save+0xa6/0xd8 kernel/stacktrace.c:122
+> >>>>  kasan_save_stack+0x2c/0x58 mm/kasan/common.c:38
+> >>>>  kasan_set_track mm/kasan/common.c:45 [inline]
+> >>>>  set_alloc_info mm/kasan/common.c:436 [inline]
+> >>>>  ____kasan_kmalloc mm/kasan/common.c:515 [inline]
+> >>>>  ____kasan_kmalloc mm/kasan/common.c:474 [inline]
+> >>>>  __kasan_kmalloc+0x80/0xb2 mm/kasan/common.c:524
+> >>>>  kasan_kmalloc include/linux/kasan.h:270 [inline]
+> >>>>  __kmalloc+0x190/0x318 mm/slub.c:4424
+> >>>>  kmalloc include/linux/slab.h:586 [inline]
+> >>>>  kzalloc include/linux/slab.h:715 [inline]
+> >>>>  rfkill_alloc+0x96/0x1aa net/rfkill/core.c:983
+> >>>>  nfc_register_device+0xe4/0x29e net/nfc/core.c:1129
+> >>>>  nci_register_device+0x538/0x612 net/nfc/nci/core.c:1252
+> >>>>  virtual_ncidev_open+0x82/0x12c drivers/nfc/virtual_ncidev.c:143
+> >>>>  misc_open+0x272/0x2c8 drivers/char/misc.c:141
+> >>>>  chrdev_open+0x1d4/0x478 fs/char_dev.c:414
+> >>>>  do_dentry_open+0x2a4/0x7d4 fs/open.c:824
+> >>>>  vfs_open+0x52/0x5e fs/open.c:959
+> >>>>  do_open fs/namei.c:3476 [inline]
+> >>>>  path_openat+0x12b6/0x189e fs/namei.c:3609
+> >>>>  do_filp_open+0x10e/0x22a fs/namei.c:3636
+> >>>>  do_sys_openat2+0x174/0x31e fs/open.c:1214
+> >>>>  do_sys_open fs/open.c:1230 [inline]
+> >>>>  __do_sys_openat fs/open.c:1246 [inline]
+> >>>>  sys_openat+0xdc/0x164 fs/open.c:1241
+> >>>>  ret_from_syscall+0x0/0x2
+> >>>>
+> >>>> Freed by task 7944:
+> >>>>  stack_trace_save+0xa6/0xd8 kernel/stacktrace.c:122
+> >>>>  kasan_save_stack+0x2c/0x58 mm/kasan/common.c:38
+> >>>>  kasan_set_track+0x1a/0x26 mm/kasan/common.c:45
+> >>>>  kasan_set_free_info+0x1e/0x3a mm/kasan/generic.c:370
+> >>>>  ____kasan_slab_free mm/kasan/common.c:366 [inline]
+> >>>>  ____kasan_slab_free+0x15e/0x180 mm/kasan/common.c:328
+> >>>>  __kasan_slab_free+0x10/0x18 mm/kasan/common.c:374
+> >>>>  kasan_slab_free include/linux/kasan.h:236 [inline]
+> >>>>  slab_free_hook mm/slub.c:1728 [inline]
+> >>>>  slab_free_freelist_hook+0x8e/0x1cc mm/slub.c:1754
+> >>>>  slab_free mm/slub.c:3509 [inline]
+> >>>>  kfree+0xe0/0x3e4 mm/slub.c:4562
+> >>>>  rfkill_release+0x20/0x2a net/rfkill/core.c:831
+> >>>>  device_release+0x66/0x148 drivers/base/core.c:2229
+> >>>>  kobject_cleanup lib/kobject.c:705 [inline]
+> >>>>  kobject_release lib/kobject.c:736 [inline]
+> >>>>  kref_put include/linux/kref.h:65 [inline]
+> >>>>  kobject_put+0x1bc/0x38e lib/kobject.c:753
+> >>>>  put_device+0x28/0x3a drivers/base/core.c:3512
+> >>>>  rfkill_destroy+0x2a/0x3c net/rfkill/core.c:1142
+> >>>>  nfc_unregister_device+0xac/0x232 net/nfc/core.c:1167
+> >>>>  nci_unregister_device+0x168/0x182 net/nfc/nci/core.c:1298
+> >>>>  virtual_ncidev_close+0x9c/0xbc drivers/nfc/virtual_ncidev.c:163
+> >>
+> >> There were several issues found recently in virtual NCI driver, so this
+> >> might be one of them. There is no reproducer, though...
+> >
+> >
+> > Hi Krzysztof,
+> >
+> > Do you think it's related specifically to the virtual driver?
+>
+> Both, although maybe not this particular issue. There were like five
+> separate reports last few days...
+>
+> >
+> > I would assume it's a bug in the NCI core itself related to dynamic
+> > device destructions. This should affect e.g. USB devices as well.
+>
+> Earlier this year there was a bigger fix for unregister path in NFC -
+> see commits:
+> da5c0f119203 (nfc_unregister_device+nfc_fw_download
+> ef27324e2c (nci_unregister_device+nci_cmd_work)
+> 1b0e81416 (rfkill related)
+> and these pointed out inherent issues in locking/synchronization of NFC
+> core modules. I don't think we fixed all of the core issues, rather only
+> what was reported, so some specific scenarios.
+>
+> > It's an issue only in the virtual driver. It means that the virtual
+> > driver uses the NCI core incorrectly, not the way all real drivers use
+> > it. If so the question is: what is the difference? We need to fix it.
+> > It's not useful to have unrealistic test drivers -- we both get false
+> > positives and don't get true positives.
+> >
+> > I think the issue may be localized from the KASAN report itself w/o a
+> > reproducer.
+> > Is there proper synchronization between
+> > nfc_unregister_device/rfkill_destroy and nfc_dev_up/rfkill_blocked?
+> > Something that prevents rfkill_blocked to be called after
+> > rfkill_destroy? If not, then that's the issue.
+>
+> Mentioned 1b0e81416a tried to do this and that time I had impression fix
+> is correct. However it seems it is not... (or not enough)
+>
+> Best regards,
+> Krzysztof
 
-However, firmware is unable to get sta_info from DA as DA != RA for 4addr cases,
-so firmware and wifi host driver both use wcid (256 - 271) and (768 ~ 783)
-for sync up to get correct sta_info
 
-Tested-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Co-developed-by: Bo Jiao <bo.jiao@mediatek.com>
-Signed-off-by: Bo Jiao <bo.jiao@mediatek.com>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
----
-v2: 
- - drop duplicate settings
- - reduce the patch size by redefining mt76_wcid_alloc
----
- drivers/net/wireless/mediatek/mt76/mt76.h     |  6 +++
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 24 +++++++++--
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 13 +++++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
- drivers/net/wireless/mediatek/mt76/util.c     | 40 +++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/util.h     |  7 +++-
- 6 files changed, 82 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 32a77a0ae9da..4726378fd0ad 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -60,6 +60,12 @@ enum mt76_wed_type {
- 	MT76_WED_Q_RX,
- };
- 
-+enum mt76_wed_state {
-+	MT76_WED_DEFAULT,
-+	MT76_WED_ACTIVE,
-+	MT76_WED_WDS_ACTIVE,
-+};
-+
- struct mt76_bus_ops {
- 	u32 (*rr)(struct mt76_dev *dev, u32 offset);
- 	void (*wr)(struct mt76_dev *dev, u32 offset, u32 val);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index c40b6098f19a..46a9e4f0396e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -660,8 +660,15 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	bool ext_phy = mvif->phy != &dev->phy;
- 	int ret, idx;
-+	u8 flags = MT76_WED_DEFAULT;
- 
--	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
-+	if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
-+	    !is_mt7915(&dev->mt76)) {
-+		flags = test_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags) ?
-+		       MT76_WED_WDS_ACTIVE : MT76_WED_ACTIVE;
-+	}
-+
-+	idx = __mt76_wcid_alloc(mdev->wcid_mask, MT7915_WTBL_STA, flags);
- 	if (idx < 0)
- 		return -ENOSPC;
- 
-@@ -1115,6 +1122,13 @@ static void mt7915_sta_set_4addr(struct ieee80211_hw *hw,
- 	else
- 		clear_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags);
- 
-+	if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
-+	    !is_mt7915(&dev->mt76)) {
-+		mt7915_sta_remove(hw, vif, sta);
-+		mt76_sta_pre_rcu_remove(hw, vif, sta);
-+		mt7915_sta_add(hw, vif, sta);
-+	}
-+
- 	mt76_connac_mcu_wtbl_update_hdr_trans(&dev->mt76, vif, sta);
- }
- 
-@@ -1479,15 +1493,19 @@ mt7915_net_fill_forward_path(struct ieee80211_hw *hw,
- 	if (!mtk_wed_device_active(wed))
- 		return -ENODEV;
- 
--	if (msta->wcid.idx > 0xff)
-+	if (msta->wcid.idx > MT7915_WTBL_STA)
- 		return -EIO;
- 
- 	path->type = DEV_PATH_MTK_WDMA;
- 	path->dev = ctx->dev;
- 	path->mtk_wdma.wdma_idx = wed->wdma_idx;
- 	path->mtk_wdma.bss = mvif->mt76.idx;
--	path->mtk_wdma.wcid = is_mt7915(&dev->mt76) ? msta->wcid.idx : 0x3ff;
- 	path->mtk_wdma.queue = phy != &dev->phy;
-+	if (test_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags) ||
-+	    is_mt7915(&dev->mt76))
-+		path->mtk_wdma.wcid = msta->wcid.idx;
-+	else
-+		path->mtk_wdma.wcid = 0x3ff;
- 
- 	ctx->dev = NULL;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 9e479d41eab5..3e73a95ff029 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2307,8 +2307,17 @@ int mt7915_mcu_init_firmware(struct mt7915_dev *dev)
- 	if (ret)
- 		return ret;
- 
--	if (mtk_wed_device_active(&dev->mt76.mmio.wed) && is_mt7915(&dev->mt76))
--		mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(CAPABILITY), 0, 0, 0);
-+	if (mtk_wed_device_active(&dev->mt76.mmio.wed)) {
-+		if (is_mt7915(&dev->mt76))
-+			ret = mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(CAPABILITY),
-+						0, 0, 0);
-+		else
-+			ret = mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET),
-+						MCU_WA_PARAM_WED_VERSION,
-+						dev->mt76.mmio.wed.rev_id, 0);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ret = mt7915_mcu_set_mwds(dev, 1);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 46c517e50ae4..b0e5c0e9fa67 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -271,6 +271,7 @@ enum {
- 	MCU_WA_PARAM_PDMA_RX = 0x04,
- 	MCU_WA_PARAM_CPU_UTIL = 0x0b,
- 	MCU_WA_PARAM_RED = 0x0e,
-+	MCU_WA_PARAM_WED_VERSION = 0x32,
- };
- 
- enum mcu_mmps_mode {
-diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wireless/mediatek/mt76/util.c
-index 581964425468..5cd5ede0438f 100644
---- a/drivers/net/wireless/mediatek/mt76/util.c
-+++ b/drivers/net/wireless/mediatek/mt76/util.c
-@@ -42,9 +42,14 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
- }
- EXPORT_SYMBOL_GPL(__mt76_poll_msec);
- 
--int mt76_wcid_alloc(u32 *mask, int size)
-+int __mt76_wcid_alloc(u32 *mask, int size, u8 flag)
- {
-+#define MT76_WED_WDS_MIN    256
-+#define MT76_WED_WDS_CNT    16
-+
- 	int i, idx = 0, cur;
-+	int min = MT76_WED_WDS_MIN;
-+	int max = min + MT76_WED_WDS_CNT;
- 
- 	for (i = 0; i < DIV_ROUND_UP(size, 32); i++) {
- 		idx = ffs(~mask[i]);
-@@ -53,16 +58,45 @@ int mt76_wcid_alloc(u32 *mask, int size)
- 
- 		idx--;
- 		cur = i * 32 + idx;
--		if (cur >= size)
-+
-+		switch (flag) {
-+		case MT76_WED_ACTIVE:
-+			if (cur >= min && cur < max)
-+				continue;
-+
-+			if (cur >= size) {
-+				u32 end = MT76_WED_WDS_CNT - 1;
-+
-+				i = min / 32;
-+				idx = ffs(~mask[i] & GENMASK(end, 0));
-+				if (!idx)
-+					goto error;
-+				idx--;
-+				cur = min + idx;
-+			}
-+
- 			break;
-+		case MT76_WED_WDS_ACTIVE:
-+			if (cur < min)
-+				continue;
-+			if (cur >= max)
-+				goto error;
-+
-+			break;
-+		default:
-+			if (cur >= size)
-+				goto error;
-+			break;
-+		}
- 
- 		mask[i] |= BIT(idx);
- 		return cur;
- 	}
- 
-+error:
- 	return -1;
- }
--EXPORT_SYMBOL_GPL(mt76_wcid_alloc);
-+EXPORT_SYMBOL_GPL(__mt76_wcid_alloc);
- 
- int mt76_get_min_avg_rssi(struct mt76_dev *dev, bool ext_phy)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wireless/mediatek/mt76/util.h
-index 260965dde94c..99b7263c0a20 100644
---- a/drivers/net/wireless/mediatek/mt76/util.h
-+++ b/drivers/net/wireless/mediatek/mt76/util.h
-@@ -27,7 +27,12 @@ enum {
- #define MT76_INCR(_var, _size) \
- 	(_var = (((_var) + 1) % (_size)))
- 
--int mt76_wcid_alloc(u32 *mask, int size);
-+int __mt76_wcid_alloc(u32 *mask, int size, u8 flags);
-+
-+static inline int mt76_wcid_alloc(u32 *mask, int size)
-+{
-+	return __mt76_wcid_alloc(mask, size, 0);
-+}
- 
- static inline void
- mt76_wcid_mask_set(u32 *mask, int idx)
--- 
-2.18.0
-
+#syz dup: WARNING in nci_send_cmd
