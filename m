@@ -2,188 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B383E63D878
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 15:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1388163D96A
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 16:28:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229457AbiK3Oqu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 09:46:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44294 "EHLO
+        id S229618AbiK3P2K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 10:28:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbiK3Oqq (ORCPT
+        with ESMTP id S229456AbiK3P2J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 09:46:46 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F6D46666
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 06:46:44 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5E637B81B83
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 14:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F324C433D6;
-        Wed, 30 Nov 2022 14:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669819601;
-        bh=YVchIPb+wlDzlDK920Vs4DKwioM3oS1YihgCiriHvzU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RQ1iULdoEhZOi07uGkG7h6xg4lNrKADKjoRlYhmO+6Jvw55SVfLEwyUiNqVILfid7
-         fC3Emr52JAvDKTxypUhovKJLTGOVHRobU3D3xyrq5BKxQAIQWiwXPGPoXXiEZsUs32
-         cfDW+dInt7VaMk6aVBM15nWaAWCacgbtYleca69AF4VEl+tlvjYYgHXAVyZDnEoWwT
-         y9+3UAQexlx7ovJejTMmUp1FEsIA2FWqXbW6pRcrqryzUyAmWHSAPe3TWzaaOpq4GI
-         onYlRQorqRWOqwkeQXXckR2lUHoSXL4Wz5zFn4s1zfXFhMLMYbif/Amn2YSwl9Gv4r
-         dOrudNanIRLTg==
-Date:   Wed, 30 Nov 2022 15:46:38 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Deren Wu <deren.wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] wifi: mt76: mt7921s: fix slab-out-of-bounds access in
- sdio host
-Message-ID: <Y4dsznJ+GBalfzvx@lore-desk>
-References: <631e6a06fb640ec4f81c92b57d31eb0f7b23c351.1669814212.git.deren.wu@mediatek.com>
+        Wed, 30 Nov 2022 10:28:09 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1605748763
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 07:28:08 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id fy37so42139581ejc.11
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 07:28:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=54TAPFfJ8uPjFjvPV9iyvnp+RskK6ie4izbT7lZlwmM=;
+        b=Eebu/fa617gAKUwxuOrXYyzns96eQPqUaNhAjxMq3Vq1EuUj6YyhrohOXNKd6LDZTK
+         rpSFPYOJvb+EFzPBR4uNxmvU6aQOk/vRFEmTG1iVqA3Oe7IxDMg8AzAQHQkg4qKS/MKU
+         0CzqRvOVNJwv5JGVNnLYJzpbSxiCBQMQ+6gWR8+qaWQY7V/1qYXyMdz36iAUlBKUrG+1
+         zPGiTRG0BUTDnqnPbCRBkVUM46LHO8G3ux3YaD3CISbWKcsKfi31+uPs0x35k/SIuYtB
+         u2M8ysWFpUEEraI9Wsq2MubCqcNWdgL/LdwAiLKQ+NlArg7baNOaYTw2TlnKJGKZjOGv
+         fcYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=54TAPFfJ8uPjFjvPV9iyvnp+RskK6ie4izbT7lZlwmM=;
+        b=TjbrzDhv17yOTaVMJjzdHRN3PGTFpNeiMAoJzBb45alm/HcYLVLhQw8mrHTVq1+1/Q
+         8Z5mHUJ7wMgqGMM3RiCssFYOxKcAN6epCAKIom+UMb9DoqHhvcpk0OwLMm3WgzwBlfWp
+         Ii79HKclZzCX1ezRhG+Sbq1qBft9WqXT00pgJ6V3hULujbUYU9fMNtWwOwShSmvKy+E8
+         CU/wspIvqzqoAG36pAxh5L5NUFdylpgvqrO2LfxhdgXfL8KVDQMGLLTXfXo0NPx54lWo
+         a7A6P0Qxwv4c9hBEBqDsIm5/OsWXz8kq7xfZ6h9k8GhHcFeU7uBfrweV/oRn0MBS/isL
+         +/bg==
+X-Gm-Message-State: ANoB5pmW2QOGmgDuUXFashda6rL9XF41BHt1ovY8K1JglyN2fC9UKg56
+        kySdeW6uwo3nwbWc90NNxwo=
+X-Google-Smtp-Source: AA0mqf71YyYdTNXbKyByKiaWwMpoiwcLPMwHUxLmqdECrNLlRlDdFW/04MBg6BAYJ/hUBV7KGkGGxA==
+X-Received: by 2002:a17:906:2345:b0:7ad:adfe:1ceb with SMTP id m5-20020a170906234500b007adadfe1cebmr44274622eja.89.1669822086590;
+        Wed, 30 Nov 2022 07:28:06 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.254])
+        by smtp.gmail.com with ESMTPSA id f26-20020a170906495a00b0077205dd15basm752487ejt.66.2022.11.30.07.28.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Nov 2022 07:28:05 -0800 (PST)
+Message-ID: <cc380eb0-cf44-5273-5340-c80cd001aaf8@gmail.com>
+Date:   Wed, 30 Nov 2022 17:27:58 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="5xJ5KHOAxWbSzZPZ"
-Content-Disposition: inline
-In-Reply-To: <631e6a06fb640ec4f81c92b57d31eb0f7b23c351.1669814212.git.deren.wu@mediatek.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH v3 2/3] wifi: rtl8xxxu: Fix the channel width reporting
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
+References: <ba821a9d-af25-3ade-9fa8-0d3f4b58aec5@gmail.com>
+ <aa0afff7-eccd-eac6-9b0d-6d5e94fb2c06@gmail.com>
+ <4959ded326514badbb7bbfbf60e353d4@realtek.com>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <4959ded326514badbb7bbfbf60e353d4@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 30/11/2022 02:38, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Wednesday, November 30, 2022 3:06 AM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>
+>> Subject: [PATCH v3 2/3] wifi: rtl8xxxu: Fix the channel width reporting
+>>
+>> The gen 2 chips RTL8192EU and RTL8188FU periodically send the driver
+>> reports about the TX rate, and the driver passes these reports to
+>> sta_statistics. The reports from RTL8192EU may or may not include the
+>> channel width. The reports from RTL8188FU do not include it.
+>>
+>> Only access the c2h->ra_report.bw field if the report (skb) is big
+>> enough.
+>>
+>> The other problem fixed here is that the code was actually never
+>> changing the channel width initially reported by
+>> rtl8xxxu_bss_info_changed because the value of RATE_INFO_BW_20 is 0.
+>>
+>> Fixes: 0985d3a410ac ("rtl8xxxu: Feed current txrate information for mac80211")
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>> v3:
+>>  - Don't assume bw will always be 1 byte.
+>>
+>> v2:
+>>  - Eliminate the magic numbers.
+>> ---
+>>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 11 ++++++++---
+>>  1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> index 28f136064297..9799bc5ed60a 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> @@ -5569,7 +5569,6 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
+>>  			rarpt->txrate.flags = 0;
+>>  			rate = c2h->ra_report.rate;
+>>  			sgi = c2h->ra_report.sgi;
+>> -			bw = c2h->ra_report.bw;
+>>
+>>  			if (rate < DESC_RATE_MCS0) {
+>>  				rarpt->txrate.legacy =
+>> @@ -5586,8 +5585,14 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
+>>  						RATE_INFO_FLAGS_SHORT_GI;
+>>  				}
+>>
+>> -				if (bw == RATE_INFO_BW_20)
+>> -					rarpt->txrate.bw |= RATE_INFO_BW_20;
+>> +				if (skb->len >= offsetof(typeof(*c2h), ra_report.bw) +
+>> +						sizeof(c2h->ra_report.bw)) {
+> 
+> Today, I look up if we have a better choice, and offsetofend() can make thing simple.
+> 
+> if (skb->len >= offsetofend(typeof(*c2h), ra_report.bw))
+> 
+> Sorry for the late.
+> 
 
---5xJ5KHOAxWbSzZPZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Even better. Thank you.
 
-> SDIO may need addtional 512 bytes to align bus operation. If the tailroom
-> of this skb is not big enough, we would access invalid memory region.
-> For low level operation, take xmit_buf instead of skb to keep valid memory
-> access in SDIO.
-> Note: xmit_buf is big enough for single skb size
->=20
-> Error message:
-> [69.951] BUG: KASAN: slab-out-of-bounds in sg_copy_buffer+0xe9/0x1a0
-> [69.951] Read of size 64 at addr ffff88811c9cf000 by task kworker/u16:7/4=
-51
-> [69.951] CPU: 4 PID: 451 Comm: kworker/u16:7 Tainted: G W  OE  6.1.0-rc5 =
-#1
-> [69.951] Workqueue: kvub300c vub300_cmndwork_thread [vub300]
-> [69.951] Call Trace:
-> [69.951]  <TASK>
-> [69.952]  dump_stack_lvl+0x49/0x63
-> [69.952]  print_report+0x171/0x4a8
-> [69.952]  kasan_report+0xb4/0x130
-> [69.952]  kasan_check_range+0x149/0x1e0
-> [69.952]  memcpy+0x24/0x70
-> [69.952]  sg_copy_buffer+0xe9/0x1a0
-> [69.952]  sg_copy_to_buffer+0x12/0x20
-> [69.952]  __command_write_data.isra.0+0x23c/0xbf0 [vub300]
-> [69.952]  vub300_cmndwork_thread+0x17f3/0x58b0 [vub300]
-> [69.952]  process_one_work+0x7ee/0x1320
-> [69.952]  worker_thread+0x53c/0x1240
-> [69.952]  kthread+0x2b8/0x370
-> [69.952]  ret_from_fork+0x1f/0x30
-> [69.952]  </TASK>
->=20
-> [69.952] Allocated by task 854:
-> [69.952]  kasan_save_stack+0x26/0x50
-> [69.952]  kasan_set_track+0x25/0x30
-> [69.952]  kasan_save_alloc_info+0x1b/0x30
-> [69.952]  __kasan_kmalloc+0x87/0xa0
-> [69.952]  __kmalloc_node_track_caller+0x63/0x150
-> [69.952]  kmalloc_reserve+0x31/0xd0
-> [69.952]  __alloc_skb+0xfc/0x2b0
-> [69.952]  __mt76_mcu_msg_alloc+0xbf/0x230 [mt76]
-> [69.952]  mt76_mcu_send_and_get_msg+0xab/0x110 [mt76]
-> [69.952]  __mt76_mcu_send_firmware.cold+0x94/0x15d [mt76]
-> [69.952]  mt76_connac_mcu_send_ram_firmware+0x415/0x54d [mt76_connac_lib]
-> [69.952]  mt76_connac2_load_ram.cold+0x118/0x4bc [mt76_connac_lib]
-> [69.952]  mt7921_run_firmware.cold+0x2e9/0x405 [mt7921_common]
-> [69.952]  mt7921s_mcu_init+0x45/0x80 [mt7921s]
-> [69.953]  mt7921_init_work+0xe1/0x2a0 [mt7921_common]
-> [69.953]  process_one_work+0x7ee/0x1320
-> [69.953]  worker_thread+0x53c/0x1240
-> [69.953]  kthread+0x2b8/0x370
-> [69.953]  ret_from_fork+0x1f/0x30
-> [69.953] The buggy address belongs to the object at ffff88811c9ce800
->              which belongs to the cache kmalloc-2k of size 2048
-> [69.953] The buggy address is located 0 bytes to the right of
->              2048-byte region [ffff88811c9ce800, ffff88811c9cf000)
->=20
-> [69.953] Memory state around the buggy address:
-> [69.953]  ffff88811c9cef00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 =
-00
-> [69.953]  ffff88811c9cef80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 =
-00
-> [69.953] >ffff88811c9cf000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc
-> [69.953]                    ^
-> [69.953]  ffff88811c9cf080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc
-> [69.953]  ffff88811c9cf100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc
->=20
-> Fixes: 764dee47e2c1 ("mt76: sdio: move common code in mt76_sdio module")
-> Tested-by: YN Chen <YN.Chen@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/sdio_txrx.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net=
-/wireless/mediatek/mt76/sdio_txrx.c
-> index bfc4de50a4d2..ebea5c4e8da5 100644
-> --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> @@ -254,7 +254,8 @@ static int mt76s_tx_run_queue(struct mt76_dev *dev, s=
-truct mt76_queue *q)
-> =20
->  		if (!test_bit(MT76_STATE_MCU_RUNNING, &dev->phy.state)) {
->  			__skb_put_zero(e->skb, 4);
-> -			err =3D __mt76s_xmit_queue(dev, e->skb->data,
-> +			memcpy(sdio->xmit_buf, e->skb->data, e->skb->len);
-
-(even if it is not critical for performance) iirc the skb from the mcu is
-always linear, I guess we can use __skb_grow() instead. What do you think?
-
-Regards,
-Lorenzo
-
-> +			err =3D __mt76s_xmit_queue(dev, sdio->xmit_buf,
->  						 e->skb->len);
->  			if (err)
->  				return err;
-> --=20
-> 2.18.0
->=20
-
---5xJ5KHOAxWbSzZPZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY4dszgAKCRA6cBh0uS2t
-rAgTAPwMIJ9KUCyWclUFy5IDZIpNv5DeKfZeKOYQaRjRj6mtWAEAjPCYaotcj+uz
-bP2qte9vjlIvKenXO0LYTwhIpkYc8AQ=
-=ffuc
------END PGP SIGNATURE-----
-
---5xJ5KHOAxWbSzZPZ--
