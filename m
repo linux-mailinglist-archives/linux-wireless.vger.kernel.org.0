@@ -2,70 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D88D63D20B
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 10:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B2163D451
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 12:21:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234303AbiK3Jdq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 04:33:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33794 "EHLO
+        id S234228AbiK3LU4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 06:20:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234332AbiK3JdR (ORCPT
+        with ESMTP id S234890AbiK3LT7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 04:33:17 -0500
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4DA72082
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 01:32:26 -0800 (PST)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-14279410bf4so20289681fac.8
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 01:32:26 -0800 (PST)
+        Wed, 30 Nov 2022 06:19:59 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A757876165
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 03:19:25 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id 130so16501552pfu.8
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 03:19:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nmp/KXSWp7j/op7rlj+32saQZGYoAszbSHX9jQ3Ehj4=;
-        b=NIK6BO/R+llQL/gldiQMtwfKTmOU7KJ4vyiAKg1zESF7S1YjqfZi+EJTfTbjc6oJhb
-         auKWhVr5AbnOeWDhyX5/Gt0Ro1ky0OuD5Mo30iOvhG6Zz1BZUIUXSs13xucfD8+mlnei
-         mZAq2igF4uP4X6ZEiutxj2zcW8dXM4v3Qn58EKMNBnetOI+GVfGDjET6KTcgT+MfK2hS
-         M7zzOeJOI+UQs5w93k0IeoPo0Xuhun/Tx0BhsPYAOOuLup3+mdQ7/5jRAv6kbKE14TTf
-         lUhe1wqKw8QyNtwxsabgOekRy6d9YDjSBajrXGJ/CcHnjG/r//DYbn06L4rU5LPUcZ7T
-         DsMA==
+        d=broadcom.com; s=google;
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=er7Z7//7/23+NViCyoH+J3EceXOFCiGeA1zGMbo50rw=;
+        b=JHOYFi4min7M6hhEzW4MQyFrHS6DRVBGA/PYBhPrK2mE0hAKBRHJOJ3ixVs72ZXA9H
+         rCwddCxM8pH6Nr3ae99eBdQIvW2Bn9RuH6Ea8ehIDVQc9+GvV585uHgXMxPwqU0dj81T
+         cSeELuFWDSDxQ/xCw87mCFhweh4+sOoef4MFw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Nmp/KXSWp7j/op7rlj+32saQZGYoAszbSHX9jQ3Ehj4=;
-        b=ABHTHW6Bg6LNuZP0/DkFG3KdqJuHd1yZJYHA+h/47myGDHLm7vfUwEogsj+7XcBIbJ
-         7yj7Xr4axDvzIV3pIgDdv5wRMuWJnbWxos03FWMLeYicsHEr83yB8t1gFGK9uYAST39b
-         4GGtF02fMKr56WDgcpAGIxR81HMxeKaFUHnl4KUhutkeUlNYPsUzWnsMaf4FkbDy2N20
-         XsuVbVJdvu2evdgcMeVODpIHOAjBpIPJZW16LiMbK5vwtdZD+ooJ8QGYqYqJ5IoHwWZN
-         invNImfIjsaKT4o15PxUZc2D/L37sBcWHgeUhkmF00UB0NpvKDWk4MAS0qBtGZwCgMYN
-         JnBg==
-X-Gm-Message-State: ANoB5pnSrJl0uw4jngI+SLKuweadQf9cAaX0GHGUfLpV/576lYbTTfpc
-        LxugIXOIYtoIscJa2Q5TooTvgNXKsdDhOS/p5MmKMA==
-X-Google-Smtp-Source: AA0mqf7AB6sBWSMI+8Ehf8sccDG+HagnJt5P39Z6LikaoYVGS3f19+SeEcRUvP+EXYmaXlOcavz7RwnDhKwOdLC7de4=
-X-Received: by 2002:a05:6871:4609:b0:143:955d:ed7 with SMTP id
- nf9-20020a056871460900b00143955d0ed7mr10432917oab.233.1669800745480; Wed, 30
- Nov 2022 01:32:25 -0800 (PST)
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=er7Z7//7/23+NViCyoH+J3EceXOFCiGeA1zGMbo50rw=;
+        b=twVkOhbaSYKcBo0a3Qh/KBFwjCpe5vsVeLtFXHrIEK8ClQW08f1ke8ZM1qo41XpGB6
+         xIruB/VXQIhTuolQjpFR648nFPsg1sfRqCaUnvq6sA2v8v/J7TaWjbdWF5H1ctTrNCV+
+         k7nDwWGoWQmECn99EHeAPEAJmrP+gWqhjS4DY0X8wrR/fnZjL2/Db+gt3AYkgmzjUrXM
+         pAG38OgM/pUM+UfbydedURa6OU32nGSNfgrfN/T90K7Hp80+XJJHbHih9vwq9H9YaSvi
+         IIPczjYmJ7pk4mFOCtuvm/542tx2uQy7AP3kwdkru9W8DCj5IufEunh/vOKqW21MNo75
+         VF1w==
+X-Gm-Message-State: ANoB5pk83clxGlimemw5rBwphZnKfO3MQqfRUEDfbISJQKcx20kIJBF9
+        fZOPs+7U1kl9XGtZ4dqaH8w9QA==
+X-Google-Smtp-Source: AA0mqf6GfeizFOxjdUEK0t8yOhJf+S8ShnkJ+2BBmKG96QfKtVntB7o3EvQ9sd4uWQD1VLfzTe4kig==
+X-Received: by 2002:a63:1965:0:b0:464:a9a6:5717 with SMTP id 37-20020a631965000000b00464a9a65717mr38526715pgz.584.1669807164931;
+        Wed, 30 Nov 2022 03:19:24 -0800 (PST)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id ik6-20020a170902ab0600b001885d15e3c1sm1207250plb.26.2022.11.30.03.19.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Nov 2022 03:19:22 -0800 (PST)
+Message-ID: <5dd42599-ace7-42cb-8b3c-90704d18fc21@broadcom.com>
+Date:   Wed, 30 Nov 2022 12:19:18 +0100
 MIME-Version: 1.0
-References: <000000000000790da005ee3175a8@google.com> <26b9771db88198ff982476e3e24f411277cd213b.camel@sipsolutions.net>
- <0ee688ac-5c34-1592-23d3-fe100cadc570@linaro.org> <CACT4Y+bxoaskRKAwFGLh7zVNKY7TszJNhLyAo4MrKaWSzyA8wg@mail.gmail.com>
- <1a6abe2b-c382-a283-74a0-5869d2ba102e@linaro.org>
-In-Reply-To: <1a6abe2b-c382-a283-74a0-5869d2ba102e@linaro.org>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 30 Nov 2022 10:32:14 +0100
-Message-ID: <CACT4Y+bB+FvP1QFUadF=ExMjxPKs4GPYGzbU7hpKya+jUwLKaQ@mail.gmail.com>
-Subject: Re: [syzbot] KASAN: use-after-free Read in rfkill_blocked
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        =?UTF-8?B?6ams6bqf?= <kylin.formalin@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        syzbot <syzbot+0299462c067009827b2a@syzkaller.appspotmail.com>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] wifi: brcmfmac: Fix error return code in
+ brcmf_sdio_download_firmware()
+To:     wangyufen <wangyufen@huawei.com>,
+        Franky Lin <franky.lin@broadcom.com>
+Cc:     aspriel@gmail.com, hante.meuleman@broadcom.com, kvalo@kernel.org,
+        davem@davemloft.net, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        arend@broadcom.com
+References: <1669716458-15327-1-git-send-email-wangyufen@huawei.com>
+ <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
+ <4e61f6e5-94bd-9e29-d12f-d5928f00c8a8@huawei.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <4e61f6e5-94bd-9e29-d12f-d5928f00c8a8@huawei.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000ed374a05eeae46f8"
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,177 +77,131 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 28 Nov 2022 at 11:15, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 28/11/2022 11:07, Dmitry Vyukov wrote:
-> > On Sun, 27 Nov 2022 at 20:59, Krzysztof Kozlowski
-> > <krzysztof.kozlowski@linaro.org> wrote:
-> >>
-> >> On 25/11/2022 10:09, Johannes Berg wrote:
-> >>> Looks like an NFC issue to me, Krzysztof?
-> >>>
-> >>> I mean, rfkill got allocated by nfc_register_device(), freed by
-> >>> nfc_unregister_device(), and then used by nfc_dev_up(). Seems like the
-> >>> last bit shouldn't be possible after nfc_unregister_device()?
-> >>>
-> >>> johannes
-> >>>
-> >>> On Wed, 2022-11-23 at 22:24 -0800, syzbot wrote:
-> >>>> Hello,
-> >>>>
-> >>>> syzbot found the following issue on:
-> >>>>
-> >>>> HEAD commit:    0966d385830d riscv: Fix auipc+jalr relocation range checks
-> >>>> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git fixes
-> >>>> console output: https://syzkaller.appspot.com/x/log.txt?x=11196d0d880000
-> >>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=6295d67591064921
-> >>>> dashboard link: https://syzkaller.appspot.com/bug?extid=0299462c067009827b2a
-> >>>> compiler:       riscv64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-> >>>> userspace arch: riscv64
-> >>>>
-> >>>> Unfortunately, I don't have any reproducer for this issue yet.
-> >>>>
-> >>>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> >>>> Reported-by: syzbot+0299462c067009827b2a@syzkaller.appspotmail.com
-> >>>>
-> >>>> ==================================================================
-> >>>> BUG: KASAN: use-after-free in __lock_acquire+0x8ee/0x333e kernel/locking/lockdep.c:4897
-> >>>> Read of size 8 at addr ffffaf8024249018 by task syz-executor.0/7946
-> >>>>
-> >>>> CPU: 0 PID: 7946 Comm: syz-executor.0 Not tainted 5.17.0-rc1-syzkaller-00002-g0966d385830d #0
-> >>>> Hardware name: riscv-virtio,qemu (DT)
-> >>>> Call Trace:
-> >>>> [<ffffffff8000a228>] dump_backtrace+0x2e/0x3c arch/riscv/kernel/stacktrace.c:113
-> >>>> [<ffffffff831668cc>] show_stack+0x34/0x40 arch/riscv/kernel/stacktrace.c:119
-> >>>> [<ffffffff831756ba>] __dump_stack lib/dump_stack.c:88 [inline]
-> >>>> [<ffffffff831756ba>] dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:106
-> >>>> [<ffffffff8047479e>] print_address_description.constprop.0+0x2a/0x330 mm/kasan/report.c:255
-> >>>> [<ffffffff80474d4c>] __kasan_report mm/kasan/report.c:442 [inline]
-> >>>> [<ffffffff80474d4c>] kasan_report+0x184/0x1e0 mm/kasan/report.c:459
-> >>>> [<ffffffff80475b20>] check_region_inline mm/kasan/generic.c:183 [inline]
-> >>>> [<ffffffff80475b20>] __asan_load8+0x6e/0x96 mm/kasan/generic.c:256
-> >>>> [<ffffffff80112b70>] __lock_acquire+0x8ee/0x333e kernel/locking/lockdep.c:4897
-> >>>> [<ffffffff80116582>] lock_acquire.part.0+0x1d0/0x424 kernel/locking/lockdep.c:5639
-> >>>> [<ffffffff8011682a>] lock_acquire+0x54/0x6a kernel/locking/lockdep.c:5612
-> >>>> [<ffffffff831afa2c>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-> >>>> [<ffffffff831afa2c>] _raw_spin_lock_irqsave+0x3e/0x62 kernel/locking/spinlock.c:162
-> >>>> [<ffffffff83034f0a>] rfkill_blocked+0x22/0x62 net/rfkill/core.c:941
-> >>>> [<ffffffff830b8862>] nfc_dev_up+0x8e/0x26c net/nfc/core.c:102
-> >>>> [<ffffffff830bb742>] nfc_genl_dev_up+0x5e/0x8a net/nfc/netlink.c:770
-> >>>> [<ffffffff8296f9ae>] genl_family_rcv_msg_doit+0x19a/0x23c net/netlink/genetlink.c:731
-> >>>> [<ffffffff82970420>] genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
-> >>>> [<ffffffff82970420>] genl_rcv_msg+0x236/0x3ba net/netlink/genetlink.c:792
-> >>>> [<ffffffff8296ded2>] netlink_rcv_skb+0xf8/0x2be net/netlink/af_netlink.c:2494
-> >>>> [<ffffffff8296ecb2>] genl_rcv+0x36/0x4c net/netlink/genetlink.c:803
-> >>>> [<ffffffff8296cbcc>] netlink_unicast_kernel net/netlink/af_netlink.c:1317 [inline]
-> >>>> [<ffffffff8296cbcc>] netlink_unicast+0x40e/0x5fe net/netlink/af_netlink.c:1343
-> >>>> [<ffffffff8296d29c>] netlink_sendmsg+0x4e0/0x994 net/netlink/af_netlink.c:1919
-> >>>> [<ffffffff826d264e>] sock_sendmsg_nosec net/socket.c:705 [inline]
-> >>>> [<ffffffff826d264e>] sock_sendmsg+0xa0/0xc4 net/socket.c:725
-> >>>> [<ffffffff826d4dd4>] ____sys_sendmsg+0x46e/0x484 net/socket.c:2413
-> >>>> [<ffffffff826d8bca>] ___sys_sendmsg+0x16c/0x1f6 net/socket.c:2467
-> >>>> [<ffffffff826d8e78>] __sys_sendmsg+0xba/0x150 net/socket.c:2496
-> >>>> [<ffffffff826d8f3a>] __do_sys_sendmsg net/socket.c:2505 [inline]
-> >>>> [<ffffffff826d8f3a>] sys_sendmsg+0x2c/0x3a net/socket.c:2503
-> >>>> [<ffffffff80005716>] ret_from_syscall+0x0/0x2
-> >>>>
-> >>>> Allocated by task 7946:
-> >>>>  stack_trace_save+0xa6/0xd8 kernel/stacktrace.c:122
-> >>>>  kasan_save_stack+0x2c/0x58 mm/kasan/common.c:38
-> >>>>  kasan_set_track mm/kasan/common.c:45 [inline]
-> >>>>  set_alloc_info mm/kasan/common.c:436 [inline]
-> >>>>  ____kasan_kmalloc mm/kasan/common.c:515 [inline]
-> >>>>  ____kasan_kmalloc mm/kasan/common.c:474 [inline]
-> >>>>  __kasan_kmalloc+0x80/0xb2 mm/kasan/common.c:524
-> >>>>  kasan_kmalloc include/linux/kasan.h:270 [inline]
-> >>>>  __kmalloc+0x190/0x318 mm/slub.c:4424
-> >>>>  kmalloc include/linux/slab.h:586 [inline]
-> >>>>  kzalloc include/linux/slab.h:715 [inline]
-> >>>>  rfkill_alloc+0x96/0x1aa net/rfkill/core.c:983
-> >>>>  nfc_register_device+0xe4/0x29e net/nfc/core.c:1129
-> >>>>  nci_register_device+0x538/0x612 net/nfc/nci/core.c:1252
-> >>>>  virtual_ncidev_open+0x82/0x12c drivers/nfc/virtual_ncidev.c:143
-> >>>>  misc_open+0x272/0x2c8 drivers/char/misc.c:141
-> >>>>  chrdev_open+0x1d4/0x478 fs/char_dev.c:414
-> >>>>  do_dentry_open+0x2a4/0x7d4 fs/open.c:824
-> >>>>  vfs_open+0x52/0x5e fs/open.c:959
-> >>>>  do_open fs/namei.c:3476 [inline]
-> >>>>  path_openat+0x12b6/0x189e fs/namei.c:3609
-> >>>>  do_filp_open+0x10e/0x22a fs/namei.c:3636
-> >>>>  do_sys_openat2+0x174/0x31e fs/open.c:1214
-> >>>>  do_sys_open fs/open.c:1230 [inline]
-> >>>>  __do_sys_openat fs/open.c:1246 [inline]
-> >>>>  sys_openat+0xdc/0x164 fs/open.c:1241
-> >>>>  ret_from_syscall+0x0/0x2
-> >>>>
-> >>>> Freed by task 7944:
-> >>>>  stack_trace_save+0xa6/0xd8 kernel/stacktrace.c:122
-> >>>>  kasan_save_stack+0x2c/0x58 mm/kasan/common.c:38
-> >>>>  kasan_set_track+0x1a/0x26 mm/kasan/common.c:45
-> >>>>  kasan_set_free_info+0x1e/0x3a mm/kasan/generic.c:370
-> >>>>  ____kasan_slab_free mm/kasan/common.c:366 [inline]
-> >>>>  ____kasan_slab_free+0x15e/0x180 mm/kasan/common.c:328
-> >>>>  __kasan_slab_free+0x10/0x18 mm/kasan/common.c:374
-> >>>>  kasan_slab_free include/linux/kasan.h:236 [inline]
-> >>>>  slab_free_hook mm/slub.c:1728 [inline]
-> >>>>  slab_free_freelist_hook+0x8e/0x1cc mm/slub.c:1754
-> >>>>  slab_free mm/slub.c:3509 [inline]
-> >>>>  kfree+0xe0/0x3e4 mm/slub.c:4562
-> >>>>  rfkill_release+0x20/0x2a net/rfkill/core.c:831
-> >>>>  device_release+0x66/0x148 drivers/base/core.c:2229
-> >>>>  kobject_cleanup lib/kobject.c:705 [inline]
-> >>>>  kobject_release lib/kobject.c:736 [inline]
-> >>>>  kref_put include/linux/kref.h:65 [inline]
-> >>>>  kobject_put+0x1bc/0x38e lib/kobject.c:753
-> >>>>  put_device+0x28/0x3a drivers/base/core.c:3512
-> >>>>  rfkill_destroy+0x2a/0x3c net/rfkill/core.c:1142
-> >>>>  nfc_unregister_device+0xac/0x232 net/nfc/core.c:1167
-> >>>>  nci_unregister_device+0x168/0x182 net/nfc/nci/core.c:1298
-> >>>>  virtual_ncidev_close+0x9c/0xbc drivers/nfc/virtual_ncidev.c:163
-> >>
-> >> There were several issues found recently in virtual NCI driver, so this
-> >> might be one of them. There is no reproducer, though...
-> >
-> >
-> > Hi Krzysztof,
-> >
-> > Do you think it's related specifically to the virtual driver?
->
-> Both, although maybe not this particular issue. There were like five
-> separate reports last few days...
->
-> >
-> > I would assume it's a bug in the NCI core itself related to dynamic
-> > device destructions. This should affect e.g. USB devices as well.
->
-> Earlier this year there was a bigger fix for unregister path in NFC -
-> see commits:
-> da5c0f119203 (nfc_unregister_device+nfc_fw_download
-> ef27324e2c (nci_unregister_device+nci_cmd_work)
-> 1b0e81416 (rfkill related)
-> and these pointed out inherent issues in locking/synchronization of NFC
-> core modules. I don't think we fixed all of the core issues, rather only
-> what was reported, so some specific scenarios.
->
-> > It's an issue only in the virtual driver. It means that the virtual
-> > driver uses the NCI core incorrectly, not the way all real drivers use
-> > it. If so the question is: what is the difference? We need to fix it.
-> > It's not useful to have unrealistic test drivers -- we both get false
-> > positives and don't get true positives.
-> >
-> > I think the issue may be localized from the KASAN report itself w/o a
-> > reproducer.
-> > Is there proper synchronization between
-> > nfc_unregister_device/rfkill_destroy and nfc_dev_up/rfkill_blocked?
-> > Something that prevents rfkill_blocked to be called after
-> > rfkill_destroy? If not, then that's the issue.
->
-> Mentioned 1b0e81416a tried to do this and that time I had impression fix
-> is correct. However it seems it is not... (or not enough)
->
-> Best regards,
-> Krzysztof
+--000000000000ed374a05eeae46f8
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 11/30/2022 3:00 AM, wangyufen wrote:
+> 
+> 
+> 在 2022/11/30 1:41, Franky Lin 写道:
+>> On Tue, Nov 29, 2022 at 1:47 AM Wang Yufen <wangyufen@huawei.com> wrote:
+>>>
+>>> Fix to return a negative error code -EINVAL instead of 0.
+>>>
+>>> Compile tested only.
+>>>
+>>> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
+>>> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+>>> ---
+>>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c 
+>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> index 465d95d..329ec8ac 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> @@ -3414,6 +3414,7 @@ static int brcmf_sdio_download_firmware(struct 
+>>> brcmf_sdio *bus,
+>>>          /* Take arm out of reset */
+>>>          if (!brcmf_chip_set_active(bus->ci, rstvec)) {
+>>>                  brcmf_err("error getting out of ARM core reset\n");
+>>> +               bcmerror = -EINVAL;
+>>
+>> ENODEV seems more appropriate here.
+> 
+> However, if brcmf_chip_set_active()  fails in 
+> brcmf_pcie_exit_download_state(), "-EINVAL" is returned.
+> Is it necessary to keep consistent?
 
-#syz dup: WARNING in nci_send_cmd
+If we can not get the ARM on the chip out of reset things will fail soon 
+enough further down the road. Anyway, the other function calls return 
+-EIO so let's do the same here.
+
+Thanks,
+Arend
+
+--000000000000ed374a05eeae46f8
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDIlQ4YiigSaKaWZtKc
+ytl5EOvrcgeqDKJC/qJ0sFbUPDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjExMzAxMTE5MjVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA4V8aXH1/h5KKpZKBEcUI8qmW2OuEgjNHxE62
+WyzoS8th7uG3Rc8Acpt7AO4kwVhtVLSfRdy+TJQFx0QaEbSKL68kqQVILDkZM4rhQ90W9AsbfKvx
+Y8NSnOi6r80pGBalMZw5bPypStnln4bVIrkaBVTn39zQlwTx09cQd56fYSlHisORZioi1JcU+hTH
+fTAkOqdNk2tGfBOmHtGqnAPq1pdCF95/sZz43OdKfI6agNTcCGUC2XXmVtAjq6k8yBWhE3EP5JDr
+cZMH7kPnhEuzafmUxaJmGSAij3VnO6KuIqLOjDGVVQ9cy8Wo+8jpZzrhwh82/jsyGzktm/Zj1KSR
+NQ==
+--000000000000ed374a05eeae46f8--
