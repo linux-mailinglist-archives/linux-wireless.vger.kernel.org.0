@@ -2,77 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EADC63CCF6
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 02:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFAD63CD12
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Nov 2022 03:02:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231769AbiK3Blc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Nov 2022 20:41:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49540 "EHLO
+        id S232100AbiK3CAp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Nov 2022 21:00:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231314AbiK3Bl3 (ORCPT
+        with ESMTP id S229448AbiK3CAm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Nov 2022 20:41:29 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5EA0C7343B;
-        Tue, 29 Nov 2022 17:41:25 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2AU1dqjiF025207, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2AU1dqjiF025207
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 30 Nov 2022 09:39:52 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+        Tue, 29 Nov 2022 21:00:42 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775AD716D3;
+        Tue, 29 Nov 2022 18:00:40 -0800 (PST)
+Received: from canpemm500010.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NMMlb1pjJzJp3B;
+        Wed, 30 Nov 2022 09:57:15 +0800 (CST)
+Received: from [10.174.179.191] (10.174.179.191) by
+ canpemm500010.china.huawei.com (7.192.105.118) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Wed, 30 Nov 2022 09:40:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 30 Nov 2022 09:40:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Wed, 30 Nov 2022 09:40:36 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Hochbaum <alex@appudo.com>,
-        Da Xue <da@libre.computer>,
-        "Bernie Huang" <phhuang@realtek.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        neo_jou <neo_jou@realtek.com>
-Subject: RE: [PATCH v4 07/11] wifi: rtw88: Add common USB chip support
-Thread-Topic: [PATCH v4 07/11] wifi: rtw88: Add common USB chip support
-Thread-Index: AQHZA9rfU40VmmVRiUGte21yFx1HBa5WonIA
-Date:   Wed, 30 Nov 2022 01:40:36 +0000
-Message-ID: <4eee82341ef84d4aa063edeb6f23a70d@realtek.com>
-References: <20221129100754.2753237-1-s.hauer@pengutronix.de>
- <20221129100754.2753237-8-s.hauer@pengutronix.de>
-In-Reply-To: <20221129100754.2753237-8-s.hauer@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/11/29_=3F=3F_10:00:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ 15.1.2375.31; Wed, 30 Nov 2022 10:00:37 +0800
+Message-ID: <4e61f6e5-94bd-9e29-d12f-d5928f00c8a8@huawei.com>
+Date:   Wed, 30 Nov 2022 10:00:37 +0800
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH] wifi: brcmfmac: Fix error return code in
+ brcmf_sdio_download_firmware()
+To:     Franky Lin <franky.lin@broadcom.com>
+CC:     <aspriel@gmail.com>, <hante.meuleman@broadcom.com>,
+        <kvalo@kernel.org>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
+        <arend@broadcom.com>
+References: <1669716458-15327-1-git-send-email-wangyufen@huawei.com>
+ <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
+From:   wangyufen <wangyufen@huawei.com>
+In-Reply-To: <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.191]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500010.china.huawei.com (7.192.105.118)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -81,123 +57,39 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 
 
-> -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Tuesday, November 29, 2022 6:08 PM
-> To: linux-wireless@vger.kernel.org
-> Cc: Neo Jou <neojou@gmail.com>; Hans Ulli Kroll <linux@ulli-kroll.de>; Ping-Ke Shih <pkshih@realtek.com>;
-> Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
-> kernel@pengutronix.de; Johannes Berg <johannes@sipsolutions.net>; Alexander Hochbaum <alex@appudo.com>;
-> Da Xue <da@libre.computer>; Bernie Huang <phhuang@realtek.com>; Viktor Petrenko <g0000ga@gmail.com>;
-> Sascha Hauer <s.hauer@pengutronix.de>; neo_jou <neo_jou@realtek.com>
-> Subject: [PATCH v4 07/11] wifi: rtw88: Add common USB chip support
+在 2022/11/30 1:41, Franky Lin 写道:
+> On Tue, Nov 29, 2022 at 1:47 AM Wang Yufen <wangyufen@huawei.com> wrote:
+>>
+>> Fix to return a negative error code -EINVAL instead of 0.
+>>
+>> Compile tested only.
+>>
+>> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
+>> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+>> ---
+>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> index 465d95d..329ec8ac 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> @@ -3414,6 +3414,7 @@ static int brcmf_sdio_download_firmware(struct brcmf_sdio *bus,
+>>          /* Take arm out of reset */
+>>          if (!brcmf_chip_set_active(bus->ci, rstvec)) {
+>>                  brcmf_err("error getting out of ARM core reset\n");
+>> +               bcmerror = -EINVAL;
 > 
-> Add the common bits and pieces to add USB support to the RTW88 driver.
-> This is based on https://github.com/ulli-kroll/rtw88-usb.git which
-> itself is first written by Neo Jou.
+> ENODEV seems more appropriate here.
+
+However, if brcmf_chip_set_active()  fails in 
+brcmf_pcie_exit_download_state(), "-EINVAL" is returned.
+Is it necessary to keep consistent?
+
 > 
-> Signed-off-by: neo_jou <neo_jou@realtek.com>
-> Signed-off-by: Hans Ulli Kroll <linux@ulli-kroll.de>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> 
-> Notes:
->     Changes since v3:
->     - Add sanity break out of potentially endless loop
->     - Do not interleave PCI and USB support in Makefile
->     - fix rtwusb->usb_data_index locking
->     - make data_ptr variable in rtw_usb_tx_agg_skb() unnecessary
->     - Some coding style fixup
->     - drop set-but-unused variable in rtw_usb_write_data()
->     - Increase RTW_USB_MAX_RXQ_LEN to 512. I've seen "failed to get rx_queue, overflow\n"
->       trigger otherwise
-> 
->     Changes since v2:
->     - Fix buffer length for aggregated tx packets
->     - Increase maximum transmit buffer size to 20KiB as found in downstream drivers
->     - Change register write functions to synchronous accesses instead of just firing
->       a URB without waiting for its completion
->     - requeue rx URBs directly in completion handler rather than having a workqueue
->       for it.
-> 
->     Changes since v1:
->     - Make checkpatch.pl clean
->     - Drop WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL flag
->     - Use 'ret' as variable name for return values
->     - Sort variable declarations in reverse Xmas tree order
->     - Change potentially endless loop to a limited loop
->     - Change locking to be more obviously correct
->     - drop unnecessary check for !rtwdev
->     - make sure the refill workqueue is not restarted again after we have
->       cancelled it
-> 
->  drivers/net/wireless/realtek/rtw88/Kconfig  |   3 +
->  drivers/net/wireless/realtek/rtw88/Makefile |   3 +
->  drivers/net/wireless/realtek/rtw88/mac.c    |   3 +
->  drivers/net/wireless/realtek/rtw88/main.c   |   4 +
->  drivers/net/wireless/realtek/rtw88/main.h   |   4 +
->  drivers/net/wireless/realtek/rtw88/reg.h    |   1 +
->  drivers/net/wireless/realtek/rtw88/tx.h     |  31 +
->  drivers/net/wireless/realtek/rtw88/usb.c    | 917 ++++++++++++++++++++
->  drivers/net/wireless/realtek/rtw88/usb.h    | 107 +++
->  9 files changed, 1073 insertions(+)
->  create mode 100644 drivers/net/wireless/realtek/rtw88/usb.c
->  create mode 100644 drivers/net/wireless/realtek/rtw88/usb.h
-> 
-
-[...]
-
-> +static void rtw_usb_write_port_tx_complete(struct urb *urb)
-> +{
-> +	struct rtw_usb_txcb *txcb = urb->context;
-> +	struct rtw_dev *rtwdev = txcb->rtwdev;
-> +	struct ieee80211_hw *hw = rtwdev->hw;
-> +	int max_iter = RTW_USB_MAX_XMITBUF_SZ;
-> +
-> +	while (true) {
-> +		struct sk_buff *skb = skb_dequeue(&txcb->tx_ack_queue);
-> +		struct ieee80211_tx_info *info;
-> +		struct rtw_usb_tx_data *tx_data;
-> +
-> +		if (!skb)
-> +			break;
-> +
-> +		if (!--max_iter) {
-
-Don't you need to free 'skb'? or you should not dequeue skb in this situation?
-
-> +			rtw_err(rtwdev, "failed to empty TX ack queue\n");
-> +			break;
-> +		}
-> +
-> +		info = IEEE80211_SKB_CB(skb);
-> +		tx_data = rtw_usb_get_tx_data(skb);
-> +
-> +		/* enqueue to wait for tx report */
-> +		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
-> +			rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
-> +			continue;
-> +		}
-> +
-> +		/* always ACK for others, then they won't be marked as drop */
-> +		ieee80211_tx_info_clear_status(info);
-> +		if (info->flags & IEEE80211_TX_CTL_NO_ACK)
-> +			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
-> +		else
-> +			info->flags |= IEEE80211_TX_STAT_ACK;
-> +
-> +		ieee80211_tx_status_irqsafe(hw, skb);
-> +	}
-> +
-> +	kfree(txcb);
-> +}
-> +
-
-[...]
-
-I have reviewed patchset v4, and only one comment.
-
---
-Ping-Ke
-
+>>                  goto err;
+>>          }
+>>
+>> --
+>> 1.8.3.1
+>>
