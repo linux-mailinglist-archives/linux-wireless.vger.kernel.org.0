@@ -2,105 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759BB63EB9C
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 09:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 540C263ED66
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 11:15:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbiLAIwJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Dec 2022 03:52:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54004 "EHLO
+        id S230153AbiLAKO4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Dec 2022 05:14:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbiLAIwG (ORCPT
+        with ESMTP id S230035AbiLAKOs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Dec 2022 03:52:06 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18833BC87
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 00:52:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9C75FB81E4E
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 08:52:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD25C433D6;
-        Thu,  1 Dec 2022 08:52:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669884722;
-        bh=LoX5pwqgBqd/+18b/OaxIvbdapL+th5ckV8FMt+jX8M=;
-        h=From:To:Cc:Subject:Date:From;
-        b=T8fM6AFXljmDv4ut/vEc9aK9CZE9F0xWxDv+eMxDYZGRwVKZTjGSJrZSooZnwQ2vs
-         ZsHrhSXGcz0TFeWdEKOh9M/Kk/cEYpmxGvI95+sylpUJ+WXoOziJTDE4zG/9RM5BRI
-         xo3YPvRs5nZslqUOOSGAiQ/e9CwkHOO+S1j1yGctlwSmXpAhLg7JmNE3ep0mcem9mS
-         Q5Yh9/Cfi/fSr12y2A7CTwweq/2IRB0xSqbWQzafczPxY+e72i6kuPKQINA4cyhY1q
-         RTaqYlg/q+Oz8P6D9AGDQRY+q5T0FAHqD3jcMZXe8mn9ESEPjAyVS2bF7CCtorgpYi
-         oiHq6tjwWzYJQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7915: mmio: fix naming convention
-Date:   Thu,  1 Dec 2022 09:51:55 +0100
-Message-Id: <9db00e67dd4310885215ea765032e310d68b6abe.1669884630.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.38.1
+        Thu, 1 Dec 2022 05:14:48 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1445A934DB;
+        Thu,  1 Dec 2022 02:14:41 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1p0gaU-0007Pe-IB; Thu, 01 Dec 2022 11:14:38 +0100
+Message-ID: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
+Date:   Thu, 1 Dec 2022 11:14:38 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Content-Language: en-US, de-DE
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     Luca Coelho <luciano.coelho@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        LKML <linux-kernel@vger.kernel.org>, Dave <chiluk@ubuntu.com>
+Subject: =?UTF-8?Q?=5bregression=5d_Bug=c2=a0216753_-_6e_6_ghz_bands_are_dis?=
+ =?UTF-8?Q?abled_since_5=2e16_on_intel_ax211?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1669889681;2c4e8b72;
+X-HE-SMSGID: 1p0gaU-0007Pe-IB
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_PDS_OTHER_BAD_TLD autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rename mt7915_wed_release_rx_buf in mt7915_mmio_wed_release_rx_buf,
-mt7915_wed_init_rx_buf in mt7915_mmio_wed_init_rx_buf and
-mt7915_wed_release_rx_buf in mt7915_mmio_wed_release_rx_buf
+Hi, this is your Linux kernel regression tracker.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Luca, I noticed a regression report in bugzilla where I'd like your
+advice on. To quote https://bugzilla.kernel.org/show_bug.cgi?id=216753
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 3b4ede3b85ea..d63779c50276 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -591,7 +591,7 @@ static void mt7915_mmio_wed_offload_disable(struct mtk_wed_device *wed)
- 			   MT_AGG_ACR_PPDU_TXS2H);
- }
- 
--static void mt7915_wed_release_rx_buf(struct mtk_wed_device *wed)
-+static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
- {
- 	struct mt7915_dev *dev;
- 	struct page *page;
-@@ -621,7 +621,7 @@ static void mt7915_wed_release_rx_buf(struct mtk_wed_device *wed)
- 	memset(&wed->rx_buf_ring.rx_page, 0, sizeof(wed->rx_buf_ring.rx_page));
- }
- 
--static u32 mt7915_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
-+static u32 mt7915_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- {
- 	struct mtk_rxbm_desc *desc = wed->rx_buf_ring.desc;
- 	struct mt7915_dev *dev;
-@@ -661,7 +661,7 @@ static u32 mt7915_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- 	return 0;
- 
- unmap:
--	mt7915_wed_release_rx_buf(wed);
-+	mt7915_mmio_wed_release_rx_buf(wed);
- 	return -ENOMEM;
- }
- 
-@@ -768,8 +768,8 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
- 	wed->wlan.init_buf = mt7915_wed_init_buf;
- 	wed->wlan.offload_enable = mt7915_mmio_wed_offload_enable;
- 	wed->wlan.offload_disable = mt7915_mmio_wed_offload_disable;
--	wed->wlan.init_rx_buf = mt7915_wed_init_rx_buf;
--	wed->wlan.release_rx_buf = mt7915_wed_release_rx_buf;
-+	wed->wlan.init_rx_buf = mt7915_mmio_wed_init_rx_buf;
-+	wed->wlan.release_rx_buf = mt7915_mmio_wed_release_rx_buf;
- 	wed->wlan.update_wo_rx_stats = mt7915_mmio_wed_update_rx_stats;
- 
- 	dev->mt76.rx_token_size = wed->wlan.rx_npkt;
--- 
-2.38.1
+> It looks like the self-managed regulatory information is causing the 6ghz band to be disabled on my AX211 (in the US).  
+> iw reg get shows no 6ghz bands (output at the bottom).
+> 
+> $ sudo iw phy0 channel 
+> ...
+> Band 4:
+> 	* 5955 MHz [1] (disabled)
+> 	* 5975 MHz [5] (disabled)
+> 	* 5995 MHz [9] (disabled)
+>         ....(continues with all disabled 
+>         * 7115 MHz [233] (disabled)
+> ...
+> 
+> I was able to narrow this down to having been introduced during the 5.16 development window, as 5.15.79 linux-stable kernel works and the 5.16.12 does 
+> not (earlier builds of 5.16 kernel fail to boot on my machine for some reason). 
+> 
+> I found https://community.frame.work/t/kernel-5-16-6ghz-disabled-ax210/15675/5
+> and they imply that this regression was introduced by 
+> 698b166ed3464e1604a0e6a3e23cc1b529a5adc1
+> I haven't independently verified this commit as the definitive issue.
 
+You authored 698b166ed346 ("iwlwifi: mvm: read 6E enablement flags from
+DSM and pass to FW"). As it is a regressions is ideally should be dealt
+with. But this area in tricky due to the legal implications. Hence I
+wonder: is there anything we can do about this, or is this simply a case
+where we have to bite the bullet and live with this regression?
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I deal with a lot of
+reports and sometimes miss something important when writing mails like
+this. If that's the case here, don't hesitate to tell me in a public
+reply, it's in everyone's interest to set the public record straight.
