@@ -2,208 +2,295 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F7563EF87
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 12:33:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01FEC63EFE7
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 12:51:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230467AbiLALdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Dec 2022 06:33:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50314 "EHLO
+        id S230266AbiLALvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Dec 2022 06:51:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230337AbiLALdi (ORCPT
+        with ESMTP id S231238AbiLALvO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Dec 2022 06:33:38 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780F2D2E1;
-        Thu,  1 Dec 2022 03:33:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669894417; x=1701430417;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=BGJX4G1SOAz02AQOQ4vzQlT6NCP3BqUUW6zN9dtN5kM=;
-  b=eqIvZcn9+0Z7F4bfwHbIJ9N3XrnuhrwvQ3CdSR+nn+DWtrx8IqXBseEO
-   ehadbMKVgg50Cv0ArriKrsRBJq8wDTJIcZkw1QEeppAwxOc3zuYKcHGIm
-   SfIZob9KRdVa2xZ9flvaw1njT2Wi3bUpputw5DQ+rINIWbQwurmKQs8jw
-   /PScPXtKxdN1KE68mdp0QeuRdPq/YsQZcqp5EIDg7u6kloFazx4qltiA0
-   LBgnrM74LD64hgWwPYhiWDmGywlBdwu4ELOIrLBsDY92aU9815idlNcUp
-   Q1dSWa/VwDFyGg+c+EdR8diINBeuVPiiTgUUAnsZ8OJ9l0hxXiTDkvfMC
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="313291445"
-X-IronPort-AV: E=Sophos;i="5.96,209,1665471600"; 
-   d="scan'208";a="313291445"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2022 03:33:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="769203207"
-X-IronPort-AV: E=Sophos;i="5.96,209,1665471600"; 
-   d="scan'208";a="769203207"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga004.jf.intel.com with ESMTP; 01 Dec 2022 03:33:36 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Thu, 1 Dec 2022 03:33:36 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Thu, 1 Dec 2022 03:33:35 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Thu, 1 Dec 2022 03:33:35 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.175)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Thu, 1 Dec 2022 03:33:35 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VU4ogi9utDsxDbzr9ctwdrbCVT6+/Xu9U/X3u7CJRXVVKnA9H+u6pHyG6Dkk73fYawSn6Eki+sZ+3o0kXxzNgUEBFIeoiK7cDhkGxhLft01GSa69N+nPYDHHhmOCTIeOaHSTZ2ps/08SFLrlJcdszLMkPpU8nCBTYCYMSxxv3z87JvVteAJu8OcfdM5JfrFwhWYqclJpViGAR4yuD8Aee7H6LyjbByUfv9FQk+QFGQ06so7XCzee0LDpg4vtPabjP3llckAc91qiyjArgrFDgTNiNu9DSQp8O8S5rSWWhAAoy/ikwjRrDx/YHY4uoF6g2ZdIROZq6Voa1BzT8J9FKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BGJX4G1SOAz02AQOQ4vzQlT6NCP3BqUUW6zN9dtN5kM=;
- b=bveI1zabHB/wEMIqxIEmuKgb8HvDCbuVoW2tyVEMassmZGPKUOIPMGg9eFHqX0yuFQpSIK9kGKwviRBwEfp24fFcazuQ+6AOWli4ppFKCowz7SWBxcX+ZskOUMNgNqsFXn5bAHgZdlxSsrj1sn7zT9QH7XN+YIMX2UUDMXnrKbGY/MuwX5KE2ep057SO+BoRTFkv571RjvDvyr8LXI/nBKGSIgl/gi3OLLjTCLAolWB7v3OOoGL3+fOL2K0tU5nMxL5494K9SJHzsEQpkaqFIaDH2VsGRdLA6nGIKWKE3KCCMUrRuyrkBPNec9VEKT9CEXAEn8h31witSdkb4WKnxA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BYAPR11MB3207.namprd11.prod.outlook.com (2603:10b6:a03:7c::14)
- by DS7PR11MB7807.namprd11.prod.outlook.com (2603:10b6:8:e3::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5857.17; Thu, 1 Dec 2022 11:33:34 +0000
-Received: from BYAPR11MB3207.namprd11.prod.outlook.com
- ([fe80::5546:ea97:1beb:cb5f]) by BYAPR11MB3207.namprd11.prod.outlook.com
- ([fe80::5546:ea97:1beb:cb5f%4]) with mapi id 15.20.5857.023; Thu, 1 Dec 2022
- 11:33:34 +0000
-From:   "Coelho, Luciano" <luciano.coelho@intel.com>
-To:     "regressions@leemhuis.info" <regressions@leemhuis.info>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "chiluk@ubuntu.com" <chiluk@ubuntu.com>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: =?utf-8?B?UmU6IFtyZWdyZXNzaW9uXSBCdWfCoDIxNjc1MyAtIDZlIDYgZ2h6IGJhbmRz?=
- =?utf-8?Q?_are_disabled_since_5.16_on_intel_ax211?=
-Thread-Topic: =?utf-8?B?W3JlZ3Jlc3Npb25dIEJ1Z8KgMjE2NzUzIC0gNmUgNiBnaHogYmFuZHMgYXJl?=
- =?utf-8?Q?_disabled_since_5.16_on_intel_ax211?=
-Thread-Index: AQHZBW3Y4tDtN+8h6UGgIKzpmYEhcq5Y5p8A
-Date:   Thu, 1 Dec 2022 11:33:34 +0000
-Message-ID: <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
-References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
-In-Reply-To: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.46.1-1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR11MB3207:EE_|DS7PR11MB7807:EE_
-x-ms-office365-filtering-correlation-id: 612f9f11-c7dd-44f7-142e-08dad38fe164
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fMX/k23C4T+r6HFkUj2jDdCycj+Ad3c3tCam23+YKpWSuB3abIifDm/O6jI6/+bVEfmJFtn1XRgZc66FqhWFdfJQHveC5Q7if9dex9oCOPXw5oxps0YwrT08PZ+BHtkYIjorKxjG+MMSqBsIirkREvVX+GN16P4J2qo2w6gWj3g67D//ACSlKd5Bo5uZpOWVuHGDFnKmUoSSZuQD1JX5omBYoW/F50xKHbr2lPM99zzplrNzbfLSVrkNk1KOpbrlRHOkCF1T8Tn4L+hcA/GkzCLVEdCwfnF2gXU1OyJExtjjTKkMO5EFrkcpuuXt4b9gSm5Jsyh4qim+8bKQKYLUE1OSroadTzY3K3Hf/W8RGlB37gtHay9u0mRzX34Ss5XxdvrxMUtp29EYzfqV3Sho4ob1DHpQjPSyWemPkYFR+ftV2vd5JsshbixMZJBbMtFFj/BQRZpVDUuHrT4ylM//wOy67eMoXTiA8k9AyFhxr1lmrXPDQhI9MkgAuIl8fqdJr1PGCZNblAr54pYRw3VosIPu53wVhcHZnTcTT3l7j1kn8bbw44ZAAIdqu3nRFoSjyCoheeCEcIPsQpPDf43NEVuZMxOZWbXMsqHYKCxASoPNYngaqIvV0F0VUhloaQmnFefQLoA24xhV+MI67aC8ywMflCyA+1Nk+UxwDIdxleFAg/7dQgz4q4G8Ae3IYujRaEJIaUZ5JWw3jVOEo+7IfFLbIFgtl/ToQxq9wmHAS0s=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3207.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(376002)(136003)(366004)(346002)(39860400002)(396003)(451199015)(66476007)(66446008)(66556008)(4326008)(64756008)(110136005)(41300700001)(5660300002)(66946007)(76116006)(316002)(8936002)(36756003)(2616005)(966005)(6486002)(6506007)(186003)(26005)(6512007)(71200400001)(478600001)(91956017)(6636002)(54906003)(38070700005)(83380400001)(38100700002)(122000001)(86362001)(82960400001)(2906002)(66899015);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NWF2b3h3OG5Ba2ZJZFlvRDR4R1QxeVdlU0QvSmRLSkIraU9KbE9HT1dVdUVD?=
- =?utf-8?B?Z1hKa1ptbWRyT1d4dmZkZ0Z5VFVTWjJBZTdCT0cybWR3OGtJZkhpaFFsUFRp?=
- =?utf-8?B?Z0kzcUFnZzBxVVN2b3ZMQkdtOFRtaTMxc2NmazRDNSs0ZUtLOVhZWG1pZzJ0?=
- =?utf-8?B?ODlWODZpL2NCZ0RlNmlxaXVGNEtUTnJhTFhxLzcwa0N5NEh2REMxVFZod0dV?=
- =?utf-8?B?WWd6TWlTNXhyR3E1alhIcjc4QUJqT09ETlZCMUVad3BhWk0ybkRJdjdDS2Fv?=
- =?utf-8?B?YTNXUEhUWks4STFySk5sSzh2Mm41c3lkUGdvaXA2U1Zocm0rNllyYzF3Nm1H?=
- =?utf-8?B?SE9hbC8raVh2Mm5VdlF4UDBrREFsMXBFYVNyR0lobUNVOWdDWE9SWFZ0a1hZ?=
- =?utf-8?B?eUlSaWpNcWJmMC8yU3ArL0FaZDhsMGxhVmllUSttclVpM3RNdlpoQU5BKytE?=
- =?utf-8?B?N292SG9NY1NOMDIyYUVvUXNpY0IvK3Bka0pndjQwaFdJeXgzdXZPOUJVbmhX?=
- =?utf-8?B?ZGE2ejBnMnpHWE5qZ3VWSjB4bDhOdHFRVDc1SldvOGF3QmI4MjQ5NjdQVFNT?=
- =?utf-8?B?RGtEZWZQeGNBSGhtbUxEckYyWE9sVFVoY1ZoYmttNkZDdWo4dXFhN3BiMVZ5?=
- =?utf-8?B?a2pBS2JtaTU0S2NJc3dwd1RKcFU4dHlwbW9yRklWdDkwcVphNjRJSndBY3Nx?=
- =?utf-8?B?QzljbjAxaWk3UlUxSE9CYmhKV0lHM3ZHY3hQRUlFbWlabmNHRzJDUXJVYWRq?=
- =?utf-8?B?MHdsd3lScVA5NG5vN0s0Q1cyQ01yeG1FUGszS05vOU9MUlJZb3RuWHBRVzRL?=
- =?utf-8?B?Sm1JbzVxMmJiQnVLeDdJRTU3MEJpRC9Ja1VFNUFET1dIK3hQU01DYThIeXZ2?=
- =?utf-8?B?ekVJdHlDSDUycllEK29JN0tvYnhvTnVNOURlM25UVk1BdTZqV0ZTTXFlWCsw?=
- =?utf-8?B?ZmlVSFRYZENpWDRlbk02NEpoQ3dsNHJqczc3QkZLL2ZSTWZYWFJmaU9DM0dk?=
- =?utf-8?B?Q0FPOEQyb2ZsL1BNZytEUDJCMFRWQ01TZXVrYnV0Z3p5bUNYT3FMWVhzT3Jr?=
- =?utf-8?B?S2xreXhKelY5MzZBT0pVbmsrSjRFUVRnUUdnQWJDbmloR3N2WUZoRnJUcFFv?=
- =?utf-8?B?TkZEZFI2UnlqaXJMRGh4UGFKc1ZQdkN6U1pVUCs0eGd2Z2g3blFaaUhmejhF?=
- =?utf-8?B?U0F2ZzdOZjNSOXJGeFUxUkhxSmMvbzEwOTBuK0lMYXdQeHhsK0NFUnZCMEtl?=
- =?utf-8?B?bWg0Y2w1RFQzeE9FTkhTWCsrTk1hYUdOWURESzlIOG5sMElnRElvblc5UWR4?=
- =?utf-8?B?cU9tclRDNTh4dDdFQVU1cjlCaXh0QnM4WnZvVU5ucFBHdTRuWGpjWmg1RG1s?=
- =?utf-8?B?WDg2Nm9BTkF6S0xXNEZhQkdGUVJyKzNEUVYwVE9ZL25mdVBROHV6ZEdPOW5i?=
- =?utf-8?B?RGpiTzRYSXcrYUVKdjBiQWRNQ0tpNW51WkN5eG5kVlpEWEt0eU1rL0dDT0g0?=
- =?utf-8?B?VTRLZ243Y2c0cG9wVmdHUUR5dEFaR3A4a21ib0JOaUhQY0tuL0JLZkFVRVZY?=
- =?utf-8?B?QmNZNDlwZ2pPRVRNemRhczljMW5UdlJIRW05SkN2aC9sOWljWW1IYnpBeWw4?=
- =?utf-8?B?eitFbkV6SGF0Vk53Nko1ZE9QV01qbW12UTBLSWpjb1pFNXNFT2lzS3U3VzNU?=
- =?utf-8?B?bDhkTWQxc0ZMa2JCWDVOWHJkeTV6YWgrTHBuVUFHLzM3QXBKYlhmUFk2QmJY?=
- =?utf-8?B?WnE3MFd2Q01SQ3RrVGlieDlKbitSL3A2R2l1cG1DZWp5TnFHQWlxWUcxQ0pD?=
- =?utf-8?B?Qm5BeU1UVGErL0dQMWRYUDU5ak00MnJPNnlPWGJ2OU5PNjBzS0hCbmVjMXFU?=
- =?utf-8?B?RThBVmt0NWxGbDRtTlJNZkNIQjRJaUZVNitSdi95NHpwVlNkaGVZRUZ3QWN3?=
- =?utf-8?B?eW1LUEZ6S3UvNGlXOXc2SUdwNzN4L2l2ckU3TmxGeEFJci8zNEVIcG5GSUNG?=
- =?utf-8?B?ZmZFSFFUbUtaM3FXWFNWRS84M3ZlSVhqWUpQRms0MUd6cFZyWEhxNU1FYzds?=
- =?utf-8?B?MUxhOGM3eVhDWmcrV3Uxa3VNUTVTd1EvTFVuWitKOWt1Y2lUTmZSbHpJYldp?=
- =?utf-8?B?alh0aTVJZ1dLOVhVRGZtaEtrMFJPbFJXWWdobmV6Y3JjRzFjQnRiRXJOd1VB?=
- =?utf-8?B?Smc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0DE32209E3DEA04AAA1C181F49A55A69@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Thu, 1 Dec 2022 06:51:14 -0500
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91994A5549
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 03:51:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=4lP7Yn9wUl+tGx2yMIEseUPFFyQyEUEveanhnx7qxoM=; b=Osk/c+kLQy7whqJ9xzmsntpOFX
+        dgnEtcH2GnsKaH1PRHt+aI7v8oQap5HtKdFBADP0xczE5gDQkxYaerdE/pjTvNpCl6fqpvEXp9EfE
+        y6Me73d8VaN3HTQUcABz2PBwAhVE076Z5rqAQTuCoalrb54Dg1LweVLNvSE1YQsuFpmc=;
+Received: from p200300daa7225c08186973351f2f7021.dip0.t-ipconnect.de ([2003:da:a722:5c08:1869:7335:1f2f:7021] helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1p0i5r-005eBj-Mt; Thu, 01 Dec 2022 12:51:07 +0100
+Message-ID: <f5088d4d-5768-6de3-6dab-06f0776a93bd@nbd.name>
+Date:   Thu, 1 Dec 2022 12:51:07 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3207.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 612f9f11-c7dd-44f7-142e-08dad38fe164
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2022 11:33:34.1094
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: On4y6S8Grz/AcNmquTV7ji/MmvedX7xBSiH1Pbg1YjxO2A/l99Ze2AC/X18A+6PbolK/oLZOSMCEfemAjK7+3dObAqxUr0hYVZfMCaR4a9Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7807
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_PDS_OTHER_BAD_TLD autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.0
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2022-12-01
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIyLTEyLTAxIGF0IDExOjE0ICswMTAwLCBUaG9yc3RlbiBMZWVtaHVpcyB3cm90
-ZToNCj4gSGksIHRoaXMgaXMgeW91ciBMaW51eCBrZXJuZWwgcmVncmVzc2lvbiB0cmFja2VyLg0K
-PiANCj4gTHVjYSwgSSBub3RpY2VkIGEgcmVncmVzc2lvbiByZXBvcnQgaW4gYnVnemlsbGEgd2hl
-cmUgSSdkIGxpa2UgeW91cg0KPiBhZHZpY2Ugb24uIFRvIHF1b3RlIGh0dHBzOi8vYnVnemlsbGEu
-a2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE2NzUzDQoNCkhpIFRob3JzdGVuIHdlYXJpbmct
-dGhlLXJlZ3Jlc3Npb24taGF0LCDwn5mCDQoNCkknbSBub3QgdGhlIG1haW50YWluZXIgb2YgaXds
-d2lmaSBhbnltb3JlLCBzbyBJJ20gYWRkaW5nIHRoZSBuZXcNCm1haW50YWluZXIgaGVyZSwgR3Jl
-Z29yeSBHcmVlbm1hbi4NCg0KR3JlZ29yeSwgY2FuIHlvdSB0YWtlIGEgbG9vaz8NCg0KDQo+ID4g
-SXQgbG9va3MgbGlrZSB0aGUgc2VsZi1tYW5hZ2VkIHJlZ3VsYXRvcnkgaW5mb3JtYXRpb24gaXMg
-Y2F1c2luZyB0aGUgNmdoeiBiYW5kIHRvIGJlIGRpc2FibGVkIG9uIG15IEFYMjExIChpbiB0aGUg
-VVMpLiAgDQo+ID4gaXcgcmVnIGdldCBzaG93cyBubyA2Z2h6IGJhbmRzIChvdXRwdXQgYXQgdGhl
-IGJvdHRvbSkuDQo+ID4gDQo+ID4gJCBzdWRvIGl3IHBoeTAgY2hhbm5lbCANCj4gPiAuLi4NCj4g
-PiBCYW5kIDQ6DQo+ID4gCSogNTk1NSBNSHogWzFdIChkaXNhYmxlZCkNCj4gPiAJKiA1OTc1IE1I
-eiBbNV0gKGRpc2FibGVkKQ0KPiA+IAkqIDU5OTUgTUh6IFs5XSAoZGlzYWJsZWQpDQo+ID4gICAg
-ICAgICAuLi4uKGNvbnRpbnVlcyB3aXRoIGFsbCBkaXNhYmxlZCANCj4gPiAgICAgICAgICogNzEx
-NSBNSHogWzIzM10gKGRpc2FibGVkKQ0KPiA+IC4uLg0KPiA+IA0KPiA+IEkgd2FzIGFibGUgdG8g
-bmFycm93IHRoaXMgZG93biB0byBoYXZpbmcgYmVlbiBpbnRyb2R1Y2VkIGR1cmluZyB0aGUgNS4x
-NiBkZXZlbG9wbWVudCB3aW5kb3csIGFzIDUuMTUuNzkgbGludXgtc3RhYmxlIGtlcm5lbCB3b3Jr
-cyBhbmQgdGhlIDUuMTYuMTIgZG9lcyANCj4gPiBub3QgKGVhcmxpZXIgYnVpbGRzIG9mIDUuMTYg
-a2VybmVsIGZhaWwgdG8gYm9vdCBvbiBteSBtYWNoaW5lIGZvciBzb21lIHJlYXNvbikuIA0KPiA+
-IA0KPiA+IEkgZm91bmQgaHR0cHM6Ly9jb21tdW5pdHkuZnJhbWUud29yay90L2tlcm5lbC01LTE2
-LTZnaHotZGlzYWJsZWQtYXgyMTAvMTU2NzUvNQ0KPiA+IGFuZCB0aGV5IGltcGx5IHRoYXQgdGhp
-cyByZWdyZXNzaW9uIHdhcyBpbnRyb2R1Y2VkIGJ5IA0KPiA+IDY5OGIxNjZlZDM0NjRlMTYwNGEw
-ZTZhM2UyM2NjMWI1MjlhNWFkYzENCj4gPiBJIGhhdmVuJ3QgaW5kZXBlbmRlbnRseSB2ZXJpZmll
-ZCB0aGlzIGNvbW1pdCBhcyB0aGUgZGVmaW5pdGl2ZSBpc3N1ZS4NCj4gDQo+IFlvdSBhdXRob3Jl
-ZCA2OThiMTY2ZWQzNDYgKCJpd2x3aWZpOiBtdm06IHJlYWQgNkUgZW5hYmxlbWVudCBmbGFncyBm
-cm9tDQo+IERTTSBhbmQgcGFzcyB0byBGVyIpLiBBcyBpdCBpcyBhIHJlZ3Jlc3Npb25zIGlzIGlk
-ZWFsbHkgc2hvdWxkIGJlIGRlYWx0DQo+IHdpdGguIEJ1dCB0aGlzIGFyZWEgaW4gdHJpY2t5IGR1
-ZSB0byB0aGUgbGVnYWwgaW1wbGljYXRpb25zLiBIZW5jZSBJDQo+IHdvbmRlcjogaXMgdGhlcmUg
-YW55dGhpbmcgd2UgY2FuIGRvIGFib3V0IHRoaXMsIG9yIGlzIHRoaXMgc2ltcGx5IGEgY2FzZQ0K
-PiB3aGVyZSB3ZSBoYXZlIHRvIGJpdGUgdGhlIGJ1bGxldCBhbmQgbGl2ZSB3aXRoIHRoaXMgcmVn
-cmVzc2lvbj8NCj4gDQo+IENpYW8sIFRob3JzdGVuICh3ZWFyaW5nIGhpcyAndGhlIExpbnV4IGtl
-cm5lbCdzIHJlZ3Jlc3Npb24gdHJhY2tlcicgaGF0KQ0KPiANCj4gUC5TLjogQXMgdGhlIExpbnV4
-IGtlcm5lbCdzIHJlZ3Jlc3Npb24gdHJhY2tlciBJIGRlYWwgd2l0aCBhIGxvdCBvZg0KPiByZXBv
-cnRzIGFuZCBzb21ldGltZXMgbWlzcyBzb21ldGhpbmcgaW1wb3J0YW50IHdoZW4gd3JpdGluZyBt
-YWlscyBsaWtlDQo+IHRoaXMuIElmIHRoYXQncyB0aGUgY2FzZSBoZXJlLCBkb24ndCBoZXNpdGF0
-ZSB0byB0ZWxsIG1lIGluIGEgcHVibGljDQo+IHJlcGx5LCBpdCdzIGluIGV2ZXJ5b25lJ3MgaW50
-ZXJlc3QgdG8gc2V0IHRoZSBwdWJsaWMgcmVjb3JkIHN0cmFpZ2h0Lg0K
+Hi Kalle,
+
+here's a new replacement for my first pull request for 6.2
+It adds some more fixes and fixes the "Fixes" tags.
+
+- Felix
+
+The following changes since commit eceb024ee3eed1bacb5c32a4847269f2685e2ea4:
+
+   Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2022-11-28 16:58:28 +0200)
+
+are available in the Git repository at:
+
+   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-12-01
+
+for you to fetch changes up to 93a44153c4aca9d5faf7f2b3c64016e2c09b20e3:
+
+   wifi: mt76: mt7921e: add pci .shutdown() support (2022-12-01 12:33:00 +0100)
+
+----------------------------------------------------------------
+mt76 patches for 6.2
+
+- fixes
+- WED support for mt7986 + mt7915 for flow offloading
+- new driver for the mt7996 wifi-7 chipset
+
+----------------------------------------------------------------
+Ben Greear (2):
+       wifi: mt76: mt7915: fix bounds checking for tx-free-done command
+       Revert "mt76: use IEEE80211_OFFLOAD_ENCAP_ENABLED instead of MT_DRV_AMSDU_OFFLOAD"
+
+Bo Jiao (2):
+       wifi: mt76: mt7915: rework mt7915_dma_reset()
+       wifi: mt76: mt7915: enable full system reset support
+
+Deren Wu (3):
+       wifi: mt76: fix coverity overrun-call in mt76_get_txpower()
+       wifi: mt76: mt7921: Add missing __packed annotation of struct mt7921_clc
+       wifi: mt76: do not send firmware FW_FEATURE_NON_DL region
+
+Evelyn Tsai (2):
+       wifi: mt76: mt7915: reserve 8 bits for the index of rf registers
+       wifi: mt76: connac: update nss calculation in txs
+
+Felix Fietkau (2):
+       wifi: mt76: move mt76_rate_power from core to mt76x02 driver code
+       wifi: mt76: mt76x02: simplify struct mt76x02_rate_power
+
+Gaosheng Cui (1):
+       wifi: mt76: Remove unused inline function mt76_wcid_mask_test()
+
+Leon Yen (1):
+       wifi: mt76: mt7921e: add pci .shutdown() support
+
+Lorenzo Bianconi (14):
+       wifi: mt76: mt7915: move wed init routines in mmio.c
+       wifi: mt76: mt7915: enable wed for mt7986 chipset
+       wifi: mt76: mt7915: enable wed for mt7986-wmac chipset
+       wifi: mt76: mt7915: fix reporting of TX AGGR histogram
+       wifi: mt76: mt7921: fix reporting of TX AGGR histogram
+       wifi: mt76: mt7615: rely on mt7615_phy in mt7615_mac_reset_counters
+       wifi: mt76: move aggr_stats array in mt76_phy
+       wifi: mt76: do not run mt76u_status_worker if the device is not running
+       wifi: mt76: add WED RX support to mt76_dma_{add,get}_buf
+       wifi: mt76: add WED RX support to mt76_dma_rx_fill
+       wifi: mt76: add WED RX support to dma queue alloc
+       wifi: mt76: mt7915: enable WED RX support
+       wifi: mt76: mt76x0: remove dead code in mt76x0_phy_get_target_power
+       wifi: mt76: mt7915: mmio: fix naming convention
+
+Ming Yen Hsieh (1):
+       wifi: mt76: fix bandwidth 80MHz link fail in 6GHz band
+
+Nicolas Cavallari (3):
+       wifi: mt76: mt7915: Fix chainmask calculation on mt7915 DBDC
+       wifi: mt76: mt7915: Fix VHT beamforming capabilities with DBDC
+       wifi: mt76: mt7915: don't claim 160MHz support with mt7915 DBDC
+
+Peter Chiu (1):
+       wifi: mt76: mt7915: deal with special variant of mt7916
+
+Quan Zhou (1):
+       wifi: mt76: mt7921: add unified ROC cmd/event support
+
+Ryder Lee (18):
+       wifi: mt76: mt7915: fix mt7915_mac_set_timing()
+       wifi: mt76: mt7915: improve accuracy of time_busy calculation
+       wifi: mt76: mt7915: add ack signal support
+       wifi: mt76: mt7915: enable use_cts_prot support
+       wifi: mt76: mt7615: enable use_cts_prot support
+       wifi: mt76: mt7915: add full system reset into debugfs
+       wifi: mt76: mt7915: enable coredump support
+       wifi: mt76: mt7915: add missing MODULE_PARM_DESC
+       wifi: mt76: mt7915: add support to configure spatial reuse parameter set
+       wifi: mt76: mt7915: add basedband Txpower info into debugfs
+       wifi: mt76: mt7915: enable .sta_set_txpwr support
+       wifi: mt76: mt7915: fix band_idx usage
+       wifi: mt76: mt7915: introduce mt7915_get_power_bound()
+       wifi: mt76: mt7915: enable per bandwidth power limit support
+       wifi: mt76: mt7915: rely on band_idx of mt76_phy
+       wifi: mt76: mt7996: enable use_cts_prot support
+       wifi: mt76: mt7996: enable ack signal support
+       wifi: mt76: mt7996: add support to configure spatial reuse parameter set
+
+Sean Wang (7):
+       wifi: mt76: mt7921: fix antenna signal are way off in monitor mode
+       wifi: mt76: connac: add mt76_connac_mcu_uni_set_chctx
+       wifi: mt76: mt7921: add chanctx parameter to mt76_connac_mcu_uni_add_bss signature
+       wifi: mt76: mt7921: drop ieee80211_[start, stop]_queues in driver
+       wifi: mt76: connac: accept hw scan request at a time
+       wifi: mt76: mt7921: introduce remain_on_channel support
+       wifi: mt76: mt7921: introduce chanctx support
+
+Shayne Chen (14):
+       wifi: mt76: mt7915: rework eeprom tx paths and streams init
+       wifi: mt76: mt7915: rework testmode tx antenna setting
+       wifi: mt76: connac: introduce mt76_connac_spe_idx()
+       wifi: mt76: mt7915: add spatial extension index support
+       wifi: mt76: mt7915: set correct antenna for radar detection on MT7915D
+       wifi: mt76: connac: rework macros for unified command
+       wifi: mt76: connac: update struct sta_rec_phy
+       wifi: mt76: connac: rework fields for larger bandwidth support in sta_rec_bf
+       wifi: mt76: connac: add more unified command IDs
+       wifi: mt76: connac: introduce unified event table
+       wifi: mt76: connac: add more bss info command tags
+       wifi: mt76: connac: add more starec command tags
+       wifi: mt76: connac: introduce helper for mt7996 chipset
+       wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices
+
+Sujuan Chen (4):
+       wifi: mt76: introduce rxwi and rx token utility routines
+       wifi: mt76: add info parameter to rx_skb signature
+       wifi: mt76: connac: introduce mt76_connac_mcu_sta_wed_update utility routine
+       wifi: mt76: mt7915: enable WED RX stats
+
+Xiongfeng Wang (1):
+       mt76: mt7915: Fix PCI device refcount leak in mt7915_pci_init_hif2()
+
+YN Chen (1):
+       wifi: mt76: mt7921: fix wrong power after multiple SAR set
+
+  drivers/net/wireless/mediatek/mt76/Kconfig           |    1 +
+  drivers/net/wireless/mediatek/mt76/Makefile          |    1 +
+  drivers/net/wireless/mediatek/mt76/debugfs.c         |   19 -
+  drivers/net/wireless/mediatek/mt76/dma.c             |  244 ++++++++--
+  drivers/net/wireless/mediatek/mt76/dma.h             |    8 +
+  drivers/net/wireless/mediatek/mt76/mac80211.c        |   27 +-
+  drivers/net/wireless/mediatek/mt76/mt76.h            |   50 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c  |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/dma.c      |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h   |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c  |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |   34 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/main.c     |    7 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/regs.h     |    2 +
+  drivers/net/wireless/mediatek/mt76/mt76_connac.h     |   16 +
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |   17 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  214 ++++++---
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |   99 +++-
+  drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c   |   28 +-
+  drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.h   |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x0/init.c     |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x0/phy.c      |   13 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02.h         |   16 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c |   19 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h  |    2 -
+  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c     |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_phy.c     |   22 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_phy.h     |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c    |   14 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c   |   16 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h   |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/init.c     |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/phy.c      |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/Kconfig    |    1 +
+  drivers/net/wireless/mediatek/mt76/mt7915/Makefile   |    3 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/coredump.c |  410 ++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7915/coredump.h |  136 ++++++
+  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c  |  307 ++++++++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/dma.c      |  207 +++++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |   66 ++-
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h   |    5 -
+  drivers/net/wireless/mediatek/mt76/mt7915/init.c     |  135 ++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c      |  635 ++++++++++++++++++-------
+  drivers/net/wireless/mediatek/mt76/mt7915/main.c     |  142 ++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  495 ++++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h      |   60 ++-
+  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c     |  414 +++++++++++++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |   65 ++-
+  drivers/net/wireless/mediatek/mt76/mt7915/pci.c      |  106 +----
+  drivers/net/wireless/mediatek/mt76/mt7915/regs.h     |   88 +++-
+  drivers/net/wireless/mediatek/mt76/mt7915/soc.c      |   21 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c |   71 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c  |    2 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |   91 +++-
+  drivers/net/wireless/mediatek/mt76/mt7921/mac.c      |   56 +--
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c     |  233 +++++++++-
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      |  161 ++++++-
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |   74 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |   59 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c     |   31 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/usb.c      |   22 +-
+  drivers/net/wireless/mediatek/mt76/mt7996/Kconfig    |   12 +
+  drivers/net/wireless/mediatek/mt76/mt7996/Makefile   |    6 +
+  drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c  |  851 ++++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/dma.c      |  360 ++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c   |  229 +++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h   |   75 +++
+  drivers/net/wireless/mediatek/mt76/mt7996/init.c     |  823 ++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.c      | 2498 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.h      |  398 ++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/main.c     | 1334 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      | 3607 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.h      |  669 ++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mmio.c     |  386 +++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h   |  523 +++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/pci.c      |  222 +++++++++
+  drivers/net/wireless/mediatek/mt76/mt7996/regs.h     |  542 ++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/sdio.c            |    2 +-
+  drivers/net/wireless/mediatek/mt76/tx.c              |   30 ++
+  drivers/net/wireless/mediatek/mt76/usb.c             |   13 +-
+  drivers/net/wireless/mediatek/mt76/util.h            |    6 -
+  84 files changed, 16572 insertions(+), 1031 deletions(-)
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/Makefile
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/init.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/main.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/regs.h
