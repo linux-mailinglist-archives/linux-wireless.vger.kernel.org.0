@@ -2,108 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE24C63E81D
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 04:01:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A4363E868
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 04:44:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbiLADBg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Nov 2022 22:01:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55590 "EHLO
+        id S229601AbiLADo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Nov 2022 22:44:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229811AbiLADBX (ORCPT
+        with ESMTP id S229461AbiLADo4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Nov 2022 22:01:23 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 475479580E;
-        Wed, 30 Nov 2022 19:01:21 -0800 (PST)
-Received: from canpemm500010.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NN13724flzJp2q;
-        Thu,  1 Dec 2022 10:57:55 +0800 (CST)
-Received: from [10.174.179.191] (10.174.179.191) by
- canpemm500010.china.huawei.com (7.192.105.118) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 1 Dec 2022 11:01:15 +0800
-Message-ID: <14e5c329-03c4-e82e-8ae2-97d30d53e4fd@huawei.com>
-Date:   Thu, 1 Dec 2022 11:01:14 +0800
+        Wed, 30 Nov 2022 22:44:56 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49979075D
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Nov 2022 19:44:50 -0800 (PST)
+X-UUID: 8c95f5e5ed2145bab913468e825b0803-20221201
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=pdn4ilndUShBfEwJMZoAT9iAd2cV94PGdSIcoqPHRE4=;
+        b=recSrXoG8HhQNWeTqz8JSf2no+oYqsNzFH7Zz64zWHemfgDDV6X+j+2ETqHmdWvSM2/Gdy3XPZxnOa2hxJr9s3E8DfJ6oDc0zUNh7e/huFYhM5dTCTU3I55M0os5ctA49acGHmoyBX9TZnK9BwHJ4ok6BcmOAZMV1YlyHz1Sop4=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:7c0a6aa3-e1e0-49a6-bba2-95cb9c2a3eb0,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.14,REQID:7c0a6aa3-e1e0-49a6-bba2-95cb9c2a3eb0,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:dcaaed0,CLOUDID:e8aa376c-41fe-47b6-8eb4-ec192dedaf7d,B
+        ulkID:221201114448OXBOAR4B,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 8c95f5e5ed2145bab913468e825b0803-20221201
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1655589162; Thu, 01 Dec 2022 11:44:45 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Thu, 1 Dec 2022 11:44:45 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Thu, 1 Dec 2022 11:44:45 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/5] wifi: mt76: mt7915: fix scene detection flow of spatial reuse
+Date:   Thu, 1 Dec 2022 11:44:40 +0800
+Message-ID: <d1c11adff6b57c9104bb16df19f62700e2505473.1669861862.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH] wifi: brcmfmac: Fix error return code in
- brcmf_sdio_download_firmware()
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>
-CC:     <aspriel@gmail.com>, <hante.meuleman@broadcom.com>,
-        <kvalo@kernel.org>, <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <arend@broadcom.com>
-References: <1669716458-15327-1-git-send-email-wangyufen@huawei.com>
- <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
- <4e61f6e5-94bd-9e29-d12f-d5928f00c8a8@huawei.com>
- <5dd42599-ace7-42cb-8b3c-90704d18fc21@broadcom.com>
-From:   wangyufen <wangyufen@huawei.com>
-In-Reply-To: <5dd42599-ace7-42cb-8b3c-90704d18fc21@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.191]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- canpemm500010.china.huawei.com (7.192.105.118)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Firmware is in the driving seat while sr_scene_detect is enabled,
+so driver needs to skip operation to avoid mangling scene detection
+algorithm.
 
+Fixes: a633503 ("wifi: mt76: mt7915: add support to configure spatial reuse parameter set")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-在 2022/11/30 19:19, Arend van Spriel 写道:
-> On 11/30/2022 3:00 AM, wangyufen wrote:
->>
->>
->> 在 2022/11/30 1:41, Franky Lin 写道:
->>> On Tue, Nov 29, 2022 at 1:47 AM Wang Yufen <wangyufen@huawei.com> wrote:
->>>>
->>>> Fix to return a negative error code -EINVAL instead of 0.
->>>>
->>>> Compile tested only.
->>>>
->>>> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
->>>> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
->>>> ---
->>>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
->>>>   1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c 
->>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>>> index 465d95d..329ec8ac 100644
->>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>>> @@ -3414,6 +3414,7 @@ static int brcmf_sdio_download_firmware(struct 
->>>> brcmf_sdio *bus,
->>>>          /* Take arm out of reset */
->>>>          if (!brcmf_chip_set_active(bus->ci, rstvec)) {
->>>>                  brcmf_err("error getting out of ARM core reset\n");
->>>> +               bcmerror = -EINVAL;
->>>
->>> ENODEV seems more appropriate here.
->>
->> However, if brcmf_chip_set_active()  fails in 
->> brcmf_pcie_exit_download_state(), "-EINVAL" is returned.
->> Is it necessary to keep consistent?
-> 
-> If we can not get the ARM on the chip out of reset things will fail soon 
-> enough further down the road. Anyway, the other function calls return 
-> -EIO so let's do the same here.
-> 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 9e479d41eab5..718e52744994 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3535,22 +3535,22 @@ int mt7915_mcu_add_obss_spr(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 	if (ret)
+ 		return ret;
+ 
++	/* firmware dynamically adjusts PD threshold so skip manual control */
++	if (sr_scene_detect && !he_obss_pd->enable)
++		return 0;
++
+ 	/* enable spatial reuse */
+ 	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE, he_obss_pd->enable);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (!he_obss_pd->enable)
++	if (sr_scene_detect || !he_obss_pd->enable)
+ 		return 0;
+ 
+ 	ret = mt7915_mcu_enable_obss_spr(phy, SPR_ENABLE_TX, true);
+ 	if (ret)
+ 		return ret;
+ 
+-	/* firmware dynamically adjusts PD threshold so skip manual control */
+-	if (sr_scene_detect)
+-		return 0;
+-
+ 	/* set SRG/non-SRG OBSS PD threshold */
+ 	ret = mt7915_mcu_set_obss_spr_pd(phy, he_obss_pd);
+ 	if (ret)
+-- 
+2.18.0
 
-So -EIO is better?  Anyone else have any other opinions? 😄
-
-Thanks,
-Wang
-
-> Thanks,
-> Arend
