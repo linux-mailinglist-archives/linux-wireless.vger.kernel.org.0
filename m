@@ -2,264 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F0663F32E
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 15:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 824F463F48A
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 16:54:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbiLAOzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Dec 2022 09:55:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36678 "EHLO
+        id S231638AbiLAPyJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Dec 2022 10:54:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbiLAOzM (ORCPT
+        with ESMTP id S230129AbiLAPyH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Dec 2022 09:55:12 -0500
-Received: from pv50p00im-tydg10011801.me.com (pv50p00im-tydg10011801.me.com [17.58.6.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57812BB7F4
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 06:55:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
-        s=sig1; t=1669906509;
-        bh=oePzCzcF1KaeFXaC0c5LiRsfVNle+HuTiOtUnu25ps4=;
-        h=From:To:Subject:Date:Message-Id:MIME-Version;
-        b=UFuibB81cQvwE7MekjSjnjR/Md0PBwu2kxqq6cCexagJyBf0C+j8IoTFjJWBSR9No
-         nCUjeSqnq6/MEwVoWJTcb8mDxOjz1UgxuoHQRheCMOyxuV7Un+X3cO4xXCpWlj/QLe
-         WIYlgshLK8C0vF6uW/4QxyOJb1L6M4kUDNAxxnKSd2EU/VLFpmMuVibYUHBr5zZ//W
-         7Og+eWNcBJXj4P0GjLdX9ylFVhbFHTjaUW/6XBO+vdkT5iREkwsg5k2u0bzMo6BTJ4
-         x3rGPvJDQorztYtx1sRTaScs7hQnyPiqsFfouGQSlT9i/Lag/srKF5qNe7r4QPcJov
-         G8NKalUpzUUJA==
-Received: from vanilla.lan (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-        by pv50p00im-tydg10011801.me.com (Postfix) with ESMTPSA id CEAB4800710;
-        Thu,  1 Dec 2022 14:55:06 +0000 (UTC)
-From:   Jun ASAKA <JunASAKA@zzy040330.moe>
-To:     Jes.Sorensen@gmail.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jun ASAKA <JunASAKA@zzy040330.moe>
-Subject: [PATCH v3] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
-Date:   Thu,  1 Dec 2022 22:55:00 +0800
-Message-Id: <20221201145500.7832-1-JunASAKA@zzy040330.moe>
-X-Mailer: git-send-email 2.38.1
+        Thu, 1 Dec 2022 10:54:07 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9F92BB2F
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 07:54:00 -0800 (PST)
+X-UUID: f6c52028c763489cb8be71c6b1e51a9b-20221201
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=poouuqyeI1m5HVOs1wvpGYZufzXSznZNfD82HnANEHw=;
+        b=VjJLkTPglransAqiAW82Q4IFpQ8wkujLJeAQfp8C/iqYWyA7ESnmV0ZZZAE79sVFgSbAIvFaX3cSCjOWumy+V+5dRA+sp7aTP1NuC2Wt/Y0dSTDmMii6WF+myZMTlLTS+I8K/Pni5iih//j8bjYwe+y90PqcXTcgt3KuZF1pzCs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:fb0b17c9-c2b0-40a2-98fc-560a0b09a6d5,IP:0,U
+        RL:0,TC:0,Content:-20,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:75
+X-CID-INFO: VERSION:1.1.14,REQID:fb0b17c9-c2b0-40a2-98fc-560a0b09a6d5,IP:0,URL
+        :0,TC:0,Content:-20,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
+        ON:quarantine,TS:75
+X-CID-META: VersionHash:dcaaed0,CLOUDID:3b77e21e-5e1d-4ab5-ab8e-3e04efc02b30,B
+        ulkID:22120123535679OIF5Z3,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
+        il,Content:1,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: f6c52028c763489cb8be71c6b1e51a9b-20221201
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 883000931; Thu, 01 Dec 2022 23:53:56 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Thu, 1 Dec 2022 23:53:54 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Thu, 1 Dec 2022 23:53:54 +0800
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        "Ryder Lee" <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt7921s: fix slab-out-of-bounds access in sdio host
+Date:   Thu, 1 Dec 2022 23:53:37 +0800
+Message-ID: <0cb01834f0cbcefddfd6facc27568178c139839e.1669909513.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 6Lh-bhhTIurwZuWWtBs7Nzxq-JXkmDEH
-X-Proofpoint-GUID: 6Lh-bhhTIurwZuWWtBs7Nzxq-JXkmDEH
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.11.64.514.0000000_definitions?=
- =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2022-02-23?=
- =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030 spamscore=0
- mlxlogscore=655 phishscore=0 malwarescore=0 mlxscore=0 suspectscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2212010108
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixing "Path A RX IQK failed" and "Path B RX IQK failed"
-issues for rtl8192eu chips by replacing the arguments with
-the ones in the updated official driver as shown below.
-1. https://github.com/Mange/rtl8192eu-linux-driver
-2. vendor driver version: 5.6.4
+SDIO may need addtional 511 bytes to align bus operation. If the tailroom
+of this skb is not big enough, we would access invalid memory region.
+For low level operation, increase skb size to keep valid memory access in
+SDIO host.
 
-Tested-by: Jun ASAKA <JunASAKA@zzy040330.moe>
-Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
----
-v3: 
- - add detailed info about the newer version this patch used.
- - no functional update.
----
- .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 76 +++++++++++++------
- 1 file changed, 54 insertions(+), 22 deletions(-)
+Error message:
+[69.951] BUG: KASAN: slab-out-of-bounds in sg_copy_buffer+0xe9/0x1a0
+[69.951] Read of size 64 at addr ffff88811c9cf000 by task kworker/u16:7/451
+[69.951] CPU: 4 PID: 451 Comm: kworker/u16:7 Tainted: G W  OE  6.1.0-rc5 #1
+[69.951] Workqueue: kvub300c vub300_cmndwork_thread [vub300]
+[69.951] Call Trace:
+[69.951]  <TASK>
+[69.952]  dump_stack_lvl+0x49/0x63
+[69.952]  print_report+0x171/0x4a8
+[69.952]  kasan_report+0xb4/0x130
+[69.952]  kasan_check_range+0x149/0x1e0
+[69.952]  memcpy+0x24/0x70
+[69.952]  sg_copy_buffer+0xe9/0x1a0
+[69.952]  sg_copy_to_buffer+0x12/0x20
+[69.952]  __command_write_data.isra.0+0x23c/0xbf0 [vub300]
+[69.952]  vub300_cmndwork_thread+0x17f3/0x58b0 [vub300]
+[69.952]  process_one_work+0x7ee/0x1320
+[69.952]  worker_thread+0x53c/0x1240
+[69.952]  kthread+0x2b8/0x370
+[69.952]  ret_from_fork+0x1f/0x30
+[69.952]  </TASK>
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-index b06508d0cd..82346500f2 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -734,6 +734,12 @@ static int rtl8192eu_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	 */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00180);
-+
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_WE_LUT, 0x800a0);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RCK_OS, 0x20000);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G1, 0x0000f);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0x07f77);
-+
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
+[69.952] Allocated by task 854:
+[69.952]  kasan_save_stack+0x26/0x50
+[69.952]  kasan_set_track+0x25/0x30
+[69.952]  kasan_save_alloc_info+0x1b/0x30
+[69.952]  __kasan_kmalloc+0x87/0xa0
+[69.952]  __kmalloc_node_track_caller+0x63/0x150
+[69.952]  kmalloc_reserve+0x31/0xd0
+[69.952]  __alloc_skb+0xfc/0x2b0
+[69.952]  __mt76_mcu_msg_alloc+0xbf/0x230 [mt76]
+[69.952]  mt76_mcu_send_and_get_msg+0xab/0x110 [mt76]
+[69.952]  __mt76_mcu_send_firmware.cold+0x94/0x15d [mt76]
+[69.952]  mt76_connac_mcu_send_ram_firmware+0x415/0x54d [mt76_connac_lib]
+[69.952]  mt76_connac2_load_ram.cold+0x118/0x4bc [mt76_connac_lib]
+[69.952]  mt7921_run_firmware.cold+0x2e9/0x405 [mt7921_common]
+[69.952]  mt7921s_mcu_init+0x45/0x80 [mt7921s]
+[69.953]  mt7921_init_work+0xe1/0x2a0 [mt7921_common]
+[69.953]  process_one_work+0x7ee/0x1320
+[69.953]  worker_thread+0x53c/0x1240
+[69.953]  kthread+0x2b8/0x370
+[69.953]  ret_from_fork+0x1f/0x30
+[69.953] The buggy address belongs to the object at ffff88811c9ce800
+             which belongs to the cache kmalloc-2k of size 2048
+[69.953] The buggy address is located 0 bytes to the right of
+             2048-byte region [ffff88811c9ce800, ffff88811c9cf000)
+
+[69.953] Memory state around the buggy address:
+[69.953]  ffff88811c9cef00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[69.953]  ffff88811c9cef80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[69.953] >ffff88811c9cf000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[69.953]                    ^
+[69.953]  ffff88811c9cf080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[69.953]  ffff88811c9cf100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+
+Fixes: 764dee47e2c1 ("mt76: sdio: move common code in mt76_sdio module")
+Suggested-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: YN Chen <YN.Chen@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+v2:
+  - use __skb_grow to increase skb size
+  - add suggested by Lorenzo
+---
+ drivers/net/wireless/mediatek/mt76/sdio_txrx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+index bfc4de50a4d2..ddd8c0cc744d 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+@@ -254,6 +254,10 @@ static int mt76s_tx_run_queue(struct mt76_dev *dev, struct mt76_queue *q)
  
- 	/* Path A IQK setting */
-@@ -779,11 +785,16 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_WE_LUT, 0x800a0);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RCK_OS, 0x30000);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G1, 0x0000f);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf117b);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf1173);
-+
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x30000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G1, 0x0000f);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf1173);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x51000);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x511e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -798,14 +809,14 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
- 
--	rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x82160c1f);
--	rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x68160c1f);
-+	rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x8216031f);
-+	rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x6816031f);
- 
- 	/* LO calibration setting */
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0046a911);
- 
- 	/* One shot, path A LOK & IQK */
--	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa000000);
-+	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf9000000);
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8000000);
- 
- 	mdelay(10);
-@@ -836,11 +847,16 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_WE_LUT, 0x800a0);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RCK_OS, 0x30000);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G1, 0x0000f);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf7ffa);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf7ff2);
-+
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x30000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G1, 0x0000f);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf7ff2);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x51000);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x510e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -854,14 +870,14 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
- 
--	rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x82160c1f);
--	rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x28160c1f);
-+	rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x821608ff);
-+	rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x281608ff);
- 
- 	/* LO calibration setting */
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0046a891);
- 
- 	/* One shot, path A LOK & IQK */
--	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa000000);
-+	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf9000000);
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8000000);
- 
- 	mdelay(10);
-@@ -891,22 +907,28 @@ static int rtl8192eu_iqk_path_b(struct rtl8xxxu_priv *priv)
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00180);
--	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
- 
--	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x20000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G1, 0x0000f);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0x07f77);
-+
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
- 
-+	// rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
-+	// rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-+
- 	/* Path B IQK setting */
- 	rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x38008c1c);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x38008c1c);
- 	rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x18008c1c);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
- 
--	rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x821403e2);
-+	rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x82140303);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_PI_B, 0x68160000);
- 
- 	/* LO calibration setting */
--	rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x00492911);
-+	rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x00462911);
- 
- 	/* One shot, path A LOK & IQK */
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa000000);
-@@ -942,11 +964,16 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x30000);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G1, 0x0000f);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf117b);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf1173);
-+
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_WE_LUT, 0x800a0);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RCK_OS, 0x30000);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G1, 0x0000f);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf1173);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x51000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x511e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -961,8 +988,8 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x18008c1c);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
- 
--	rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x82160c1f);
--	rtl8xxxu_write32(priv, REG_RX_IQK_PI_B, 0x68160c1f);
-+	rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x8216031f);
-+	rtl8xxxu_write32(priv, REG_RX_IQK_PI_B, 0x6816031f);
- 
- 	/* LO calibration setting */
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0046a911);
-@@ -1002,11 +1029,16 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x30000);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G1, 0x0000f);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf7ffa);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf7ff2);
-+
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x30000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G1, 0x0000f);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf7ff2);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x51000);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x510e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -1020,8 +1052,8 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
- 	rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x18008c1c);
- 
--	rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x82160c1f);
--	rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x28160c1f);
-+	rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x821608ff);
-+	rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x281608ff);
- 
- 	/* LO calibration setting */
- 	rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0046a891);
+ 		if (!test_bit(MT76_STATE_MCU_RUNNING, &dev->phy.state)) {
+ 			__skb_put_zero(e->skb, 4);
++			err = __skb_grow(e->skb, roundup(e->skb->len,
++							 sdio->func->cur_blksize));
++			if (err)
++				return err;
+ 			err = __mt76s_xmit_queue(dev, e->skb->data,
+ 						 e->skb->len);
+ 			if (err)
 -- 
-2.38.1
+2.18.0
 
