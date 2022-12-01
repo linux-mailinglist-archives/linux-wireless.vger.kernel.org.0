@@ -2,65 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A4363EF5F
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 12:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D4FA63EF82
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Dec 2022 12:32:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbiLALX1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Dec 2022 06:23:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37796 "EHLO
+        id S230393AbiLALcH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Dec 2022 06:32:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbiLALW4 (ORCPT
+        with ESMTP id S230190AbiLALcG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Dec 2022 06:22:56 -0500
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8889AB7F
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 03:21:41 -0800 (PST)
-Received: by mail-qv1-xf29.google.com with SMTP id o12so1089694qvn.3
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Dec 2022 03:21:41 -0800 (PST)
+        Thu, 1 Dec 2022 06:32:06 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C51477223
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 03:32:05 -0800 (PST)
+Received: by mail-qk1-x735.google.com with SMTP id p18so917034qkg.2
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Dec 2022 03:32:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=uF8vbn0qfh+AmXb6huxRuXphy10JDZIOMSLExJugR/M=;
-        b=BLnu0b4SNTrjyeudRVy1O+2esCvmFE1+hGtWiLGepR8xWFL5YU+r/kVTozXDcx6pQq
-         x1xLYcOhZnG/FmkYy43ndREQ5u+uvIpSuenHkXsKtKC+gmcWI2iV5fAvMYWBYY+M0HML
-         sbfAobOhgXWoCh3X7ZRWlG3EIi/89q9l2GLCc=
+        bh=E8fSJYHOhE4DpdGzB9t2zOv1AdNjpm02NpMqYIwgqZk=;
+        b=HzvHdmv4BIMBNPrwWJJutxYTiuFO2MACu61pN3FCMCtHEf7LtmJrHeodVKjb4Uz368
+         UofABKub3oyF7z+MQkgnkeAj6szE2WnKnuh7O6+rYQpXnLSloklMtE++o1yVsKdhKuHX
+         OjcbkH+36HDyD/LNJQLXI7RPvKna6CxzoHLxc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uF8vbn0qfh+AmXb6huxRuXphy10JDZIOMSLExJugR/M=;
-        b=VQnAI2gezROphiVy1VPm7Ttn9/Z/b5V3N9i22jVOzsSysiowRsK33hhTtFIseKudRW
-         Lr1/ToFGWPZ6DQhWbEnarTmCl1RHb2YvY6OPeRApbYeub/gWeaOq2aKkPvd5525xDVU0
-         krgWNH7M012JNKJLAqZ6XLHfh4e0CIhDGXNY8nzATgyUKWFMLBMVkS5iHPO9rbQnIyuH
-         HxPodePcqcALmmCCc2kjb294Q6rUY13WqP31UYftpi91cL8+Andwrt0Uvz1ulZXWevGV
-         fYHsbEXu96md6bA9kBFe5Ljum3hmFjp6DpG2yWRyfiNh34A2VXD/URnuPvlOj7WSSVii
-         TtqQ==
-X-Gm-Message-State: ANoB5plWTHmF/nWp5lEVB0hGkBVhGqqIqBfg7qfJ93+BqmoTk666/G2N
-        EDWes/k2V41QX9qpvOAdE3qvRg==
-X-Google-Smtp-Source: AA0mqf4l1UKyoCo+iOg/8x5kDF0iK9+ZPZHNlhNfxtH7IRY4OznRTLaInDvuuD+X2kzQwO40HBGJWg==
-X-Received: by 2002:a05:6214:2ccc:b0:4bb:a80f:3f40 with SMTP id lf12-20020a0562142ccc00b004bba80f3f40mr44185039qvb.59.1669893700614;
-        Thu, 01 Dec 2022 03:21:40 -0800 (PST)
+        bh=E8fSJYHOhE4DpdGzB9t2zOv1AdNjpm02NpMqYIwgqZk=;
+        b=b7CprZ57YT2lpMK9Q1k7n8+FvLiaOX2fRWP28FfDE1aPi65XlwG6AyriQRduSe72Mu
+         mzo2jvvko7D/NjD5KcBCmzvpFr8eRtDTFz5QwFowsyq2907WCJ92G+8Q7BLO5jz6q3Fm
+         9+dlUpTp9ko0Cw+VWqmOeve48BGeZA1m6CcB4FPiC0/OWAkrQrORBQ6A+Nic2KgpPxDZ
+         RqyE0YhqMxG3IwG0b64LA0yZJTgMqSu8vudcnyiJxhYincHnSYHFImThEwX+giYsn8vG
+         YsgYhRSkeIK5x53rsNS97TWJaFY2C8PQUYvBK8CLm9nLTV+S3kN2jvXcAnVwAIY574zO
+         Z4Rg==
+X-Gm-Message-State: ANoB5pmDO2XnRgvODIWMte5/QU7Hk0y2YnjN/ctiBF1HqyK4ty3FYkc0
+        uVGxlnwpLaUVsDVsN6oRsaiRuw==
+X-Google-Smtp-Source: AA0mqf7cOFPH72RgtSNCCk5vKVTULqwXYF1K4TEjnN/d9D3hwv5n4rKxRvDY1iW0F3BM+Z0Q2sBt5A==
+X-Received: by 2002:a05:620a:4590:b0:6fa:3b2b:1da3 with SMTP id bp16-20020a05620a459000b006fa3b2b1da3mr58004284qkb.166.1669894324348;
+        Thu, 01 Dec 2022 03:32:04 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id bs17-20020a05620a471100b006bbc3724affsm3237895qkb.45.2022.12.01.03.21.38
+        by smtp.gmail.com with ESMTPSA id j11-20020ac8550b000000b003434d3b5938sm2458924qtq.2.2022.12.01.03.31.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Dec 2022 03:21:39 -0800 (PST)
-Message-ID: <15fc022f-61ac-8a73-7e96-a5d53342c354@broadcom.com>
-Date:   Thu, 1 Dec 2022 12:21:38 +0100
+        Thu, 01 Dec 2022 03:32:02 -0800 (PST)
+Message-ID: <c83d7496-7547-2ab4-571a-60e16aa2aa3d@broadcom.com>
+Date:   Thu, 1 Dec 2022 12:31:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.0
-Subject: Re: [PATCH V2 0/7] brcmfmac: support devices from multiple vendors
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <20221129135446.151065-1-arend.vanspriel@broadcom.com>
- <9dfeb220-b81b-83de-db91-9bb57014309f@broadcom.com>
- <87fsdz4btu.fsf@kernel.org>
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
+        Hector Martin <marcan@marcan.st>,
+        "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "martin.botka@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno@somainline.org" 
+        <angelogioacchino.delregno@somainline.org>,
+        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Soon Tak Lee <soontak.lee@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
+ <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
+ <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
+ <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+ <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+ <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
+ <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
+ <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
+ <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
+ <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
+ <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
+ <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <87fsdz4btu.fsf@kernel.org>
+In-Reply-To: <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000daaf1e05eec26c78"
+        boundary="00000000000008e36805eec292d7"
 X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -71,43 +109,94 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000daaf1e05eec26c78
+--00000000000008e36805eec292d7
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/1/2022 12:12 PM, Kalle Valo wrote:
-> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+On 11/28/2022 3:40 PM, Konrad Dybcio wrote:
 > 
->> On 11/29/2022 2:54 PM, Arend van Spriel wrote:
->>> Took my sweet time coming with this follow-up series, but here
->>> it is. Hopefully, sending patches is working for me now.
+> 
+> On 26.11.2022 22:45, Linus Walleij wrote:
+>> On Fri, Nov 25, 2022 at 1:25 PM Kalle Valo <kvalo@kernel.org> wrote:
+>>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
 >>>
->>> The bcm43xx family of wifi chipsets found its way to different
->>> groups inside and outside Broadcom. For the fullmac devices this
->>> means that in those difference groups firmware is being developed
->>> and the firmware api is bound to diverge. This series introduces
->>> a design change to accomodate supporting multiple firmware api's.
->>> The vender-specific support can be compiled in brcmfmac or
->>> built as a separate module. Currently the vendor-specific support
->>> does not have any real effect. At the momemt looking into SAE support
->>> which appear to be different for Cypress devices so that might be a
->>> first use-case.
->>>
->>> The patches apply to the main branch of the wireless-next repository.
+>>>> On 25.11.2022 12:53, Kalle Valo wrote:
+>>>>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
+>>>>>
+>>>>>> On 21.11.2022 14:56, Linus Walleij wrote:
+>>>>>>> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
+>>>>>>>
+>>>>>>>> I can think of a couple of hacky ways to force use of 43596 fw, but I
+>>>>>>>> don't think any would be really upstreamable..
+>>>>>>>
+>>>>>>> If it is only known to affect the Sony Xperias mentioned then
+>>>>>>> a thing such as:
+>>>>>>>
+>>>>>>> if (of_machine_is_compatible("sony,xyz") ||
+>>>>>>>      of_machine_is_compatible("sony,zzz")... ) {
+>>>>>>>     // Enforce FW version
+>>>>>>> }
+>>>>>>>
+>>>>>>> would be completely acceptable in my book. It hammers the
+>>>>>>> problem from the top instead of trying to figure out itsy witsy
+>>>>>>> details about firmware revisions.
+>>>>>>>
+>>>>>>> Yours,
+>>>>>>> Linus Walleij
+>>>>>>
+>>>>>> Actually, I think I came up with a better approach by pulling a page
+>>>>>> out of Asahi folks' book - please take a look and tell me what you
+>>>>>> think about this:
+>>>>>>
+>>>>>> [1]
+>>>>>> https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
+>>>>>> [2]
+>>>>>> https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
 >>
->> Just realized I forgot the 'wifi:' prefix. Hopefully you can forgive
->> me this time? If not, I can resend.
+>> Something in this direction works too.
+>>
+>> The upside is that it tells all operating systems how to deal
+>> with the firmware for this hardware.
+>>
+>>>>> Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
+>>>>> just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
+>>>>> have directory names in Device Tree.
+>>>>
+>>>> I think it's common practice to include a full $FIRMWARE_DIR-relative
+>>>> path when specifying firmware in DT, though here I left out the board
+>>>> name bit as that's assigned dynamically anyway. That said, if you don't
+>>>> like it, I can change it.
+>>>
+>>> It's just that I have understood that Device Tree is supposed to
+>>> describe hardware and to me a firmware directory "brcm/" is a software
+>>> property, not a hardware property. But this is really for the Device
+>>> Tree maintainers to decide, they know this best :)
+>>
+>> I would personally just minimize the amount of information
+>> put into the device tree to be exactly what is needed to find
+>> the right firmware.
+>>
+>> brcm,firmware-compatible = "43596";
+>>
+>> since the code already knows how to conjure the rest of the string.
+>>
+>> But check with Rob/Krzysztof.
+>>
+>> Yours,
+>> Linus Walleij
 > 
-> Yeah, I can add that. When we switched to using "wifi:" I was mentally
-> (and in my tools) prepared to adding those the next couple of years :)
+> Krzysztof, Rob [added to CC] - can I have your opinions?
 
- From my side I will try to shorten that period ;-D
+I tried catching up on this thread. Reading it I am not sure what the 
+issue is, but I am happy to dive in. If you can provide a boot log with 
+brcmfmac loaded with module parameter 'debug=0x1416' I can try and make 
+sense of the chipid/devid confusion.
 
-Gr. AvS
+Regards,
+Arend
 
-
---000000000000daaf1e05eec26c78
+--00000000000008e36805eec292d7
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -178,14 +267,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA/5xp2CgMaHPS+qsGT
-lgq1pI9gW5KG6lDDPiPeoIocrTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMDExMTIxNDBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA8kcc27C1FOd5qS+Tr
+SwJUqCYLufez/BB/ywEBsR8XlzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjEyMDExMTMyMDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAohmq5Yd7AK5CBPitKQUThTY2Qyruii7a+W7p
-ByXhgIXOUjNKsIZmuMhj0QuChaRemTj7l0U+06SHrYOCYwWe2zs23KWX2mTCmEYD4v2XwttDMwH/
-EC7il/cYMk6eBvyJ+3jLtR1/6H0cK75MBj7PZldZ32sZhAKf4VtYonu7kdxcYh4lJOBi70e995px
-fVt5uWctIS5AwxgkvOmLSy2/f0GNPTY8emRrKmqgXVPyvLOZM1qUS9yQwJGgpWl6kjUoDcuetIPw
-1SQc9GIEfP5tdKB56D+EjbDOIcV86/VrHm8p1vocOJwzjR5piDZCTzKoOVUyG3BLJ3TQKM/9N9RK
-rw==
---000000000000daaf1e05eec26c78--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAUtJKd/wU80CTF8z1yDMo+iyyucwcLONzrNgy
+86MxRv6xDgOAGjxzmp4eCdJ5TYowl6Nt7Bisn92rFbaiug9XFjUHLvkGwuGRPRJjzrmg4swkdt64
+8au4wsZsIm3LaQuDtaMukJ98BhRgenwieBi9FFEmhSTrxMpttxubskDr+o7D+GdyYzJgqSYM4I0W
+/pLbWY8wrufwmmbhOJmTfzO4+Su2c0y7Iqf+YO+07zKXpjjtwDu2mofT1dHLwQJaJHQ7yD1hTSOG
+nVIrtXNqM03DEbliPH7P8Zz0Gq0fWRDlEtfFBeFlntGJEQf87YSZgXVLol9mw0RqnhsCqMSpHbDa
+6w==
+--00000000000008e36805eec292d7--
