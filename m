@@ -2,180 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90EF2640E3D
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 20:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E61640E64
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 20:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234230AbiLBTOG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 14:14:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38834 "EHLO
+        id S234750AbiLBTZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 14:25:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233926AbiLBTOD (ORCPT
+        with ESMTP id S234751AbiLBTZJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 14:14:03 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B2FE465B
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 11:14:01 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id l11so7719124edb.4
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Dec 2022 11:14:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5FpbylU4bEWOOBwY1H+IvyG77Ka88RgfP6GqC11vGZA=;
-        b=RTMIYL+odSJ79Ci+JXBgFQ1a/FEGnDToKtzyMwGkRTT1Nm5jPWyyvsRB5YlILqC1IM
-         JN1X5u73iDtv6fb5dxyGGRtGGTsFaiWMVojP3P96KdhGVPybPXFFhzsUwXauqrj8L8aQ
-         p90UQTYSSG+8gqCZfGFCUa5bncdDuAsuX8APc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5FpbylU4bEWOOBwY1H+IvyG77Ka88RgfP6GqC11vGZA=;
-        b=tonE/Gcmh3rmMGgNee2Zy0gBuN0XxeITs6ir67nn0ngWWGUbyI9+nJnICfDDjyV+6O
-         FBtEME0b4PGPUpt7KzLvx10ywAYzCGstYh/UXudyx1AOBMBKKlcyNvT7Rpu/eZqe6YKR
-         x8BiRB/jzKdsBwKjQW9jB/blXT/wqwjLPiXzY2dlrNgDK1X2mBif3iEm8L9LLEflM7dI
-         BcviltcgoLH3kUKrr/QnJp5s5r74Xo1n+Nt4HZWV5hymIKlqZ2uAFgs4RAPQ3KkuALZr
-         x+dZtJCMLCFa9IhCkXfOAlen8oI89n5WAASNRQIAtk3jki8ZLkge/SdCP7/y4Gm1H2eV
-         OCDQ==
-X-Gm-Message-State: ANoB5pmw74jP3Wk87guw6RqyyQ96ZL7y1oTZ1ttVAoBZyxIksxOBUCY7
-        qO1+bhB1P1toaEtPvOatob7kaQ==
-X-Google-Smtp-Source: AA0mqf6n9nRSJ6hrDdUtTllL9sxCC0q0x3MM43FVFuX6FNI34AXJ09iZunRrHMxnCYolNmTEC5PGkA==
-X-Received: by 2002:aa7:d555:0:b0:464:6485:419b with SMTP id u21-20020aa7d555000000b004646485419bmr51635405edr.382.1670008440085;
-        Fri, 02 Dec 2022 11:14:00 -0800 (PST)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id h23-20020a1709060f5700b007bfacaea851sm3302683ejj.88.2022.12.02.11.13.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Dec 2022 11:13:59 -0800 (PST)
-Message-ID: <c2fef52d-3e93-8489-f4f0-6d67d9f15ba1@broadcom.com>
-Date:   Fri, 2 Dec 2022 20:13:57 +0100
+        Fri, 2 Dec 2022 14:25:09 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3364BF2885
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 11:25:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA66D6204E
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 19:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350D1C433C1;
+        Fri,  2 Dec 2022 19:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670009107;
+        bh=niygrwuNu2LXyVpVbjfZ+XaxCkwfGwDgvy/CzSUqj0g=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=UtxFBmSgu1DXB/qeIQqJvddL4RclbJPhoqtlG00cBHMg3R9vzxVGWNf9zL5cESk68
+         nuYs7XJI53icZ2Yh4JUTvvLdVGuisJhdCcdBDYcgD6AZa1Yrc8iZqlFyxM5KGZrSIt
+         kuLDD07etFrGd46zb8CJzuFcDj5GomwjsB9ZjNJWB0WNk0/lMA+gPzrLK9WPTcPLNh
+         4pP9HICiaPD7Z3NihQm3//ZSQEjIO0kNHzkU9Lde+1K7msqo+zATCt63nP5SAy/cqb
+         Lk2JARSItaS2zdmLWfvrnggCaN1Y/dZjRZ75ajBS5RBf0AOko7r1wRws3nvBQmArXL
+         9fSOuzHT81skA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Sriram R <quic_srirrama@quicinc.com>
+Subject: Re: [PATCHv2 1/8] wifi: dt: bindings: net: add IPQ5018 compatible entry for ath11k
+References: <20221122132152.17771-1-quic_kathirve@quicinc.com>
+        <20221122132152.17771-2-quic_kathirve@quicinc.com>
+Date:   Fri, 02 Dec 2022 21:25:03 +0200
+In-Reply-To: <20221122132152.17771-2-quic_kathirve@quicinc.com> (Karthikeyan
+        Kathirvel's message of "Tue, 22 Nov 2022 18:51:45 +0530")
+Message-ID: <87o7sl38xc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2] wifi: brcmfmac: Fix error return code in
- brcmf_sdio_download_firmware()
-To:     Wang Yufen <wangyufen@huawei.com>, aspriel@gmail.com,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        kvalo@kernel.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        arend@broadcom.com
-References: <1669959342-27144-1-git-send-email-wangyufen@huawei.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <1669959342-27144-1-git-send-email-wangyufen@huawei.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000db227e05eedd23ba"
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000db227e05eedd23ba
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Karthikeyan Kathirvel <quic_kathirve@quicinc.com> writes:
 
-On 12/2/2022 6:35 AM, Wang Yufen wrote:
-> Fix to return a negative error code instead of 0 when
-> brcmf_chip_set_active() fails. In addition, change the return
-> value for brcmf_pcie_exit_download_state() to keep consistent.
-> 
-> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-> ---
-> v2: change the error code from EINVAL to EIO, as Arend suggessted
+> From: Sriram R <quic_srirrama@quicinc.com>
+>
+> Add IPQ5018 device support for ath11k.
+>
+> Tested-on : IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
 
-Thanks.
+It should be
 
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 2 +-
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
->   2 files changed, 2 insertions(+), 1 deletion(-)
+Tested-on: ....
 
---000000000000db227e05eedd23ba
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+But no point of having it in a documentation patch anyway, so I just
+removed it.
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBglswumQ1/Mv84IQdY
-Rt2v1u6puKuBTaUOtDV/b/eFADAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMDIxOTE0MDBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAa+bY/mMRzm1dnCtoo0HHN9go4KqrYEYYIGlm
-MoPXWgAMUGWSQMsEwJDnl6iVZ7/e96KNsQp9iL+JstCL9QlnfzIHiuoKjnx0WwWXucsQcmZus/m7
-otxLvibk8Y6OBgVAQT7M0qTYp2vG+WvNlgAehtHCOvDtiwRXy7+vQr3ofvJ9Cd66gKoTjqr9kiHq
-TXGVBsi2CvOGia/aapM6FvoxN/oiLfpmOCqqWGpSjTyJ0/1KVejFpwZBHXwF4Ui5eU6TsjSXwjS2
-erga2Y2dWRRckjimuqrSeMAj3BL6VisJNKl1oqBcbGLcFoS4W+Uaf74eu2e9W9UL3yc4/A+8DDdX
-Wg==
---000000000000db227e05eedd23ba--
+I also changed the subject to:
+
+dt: bindings: net: ath11k: add IPQ5018 compatible
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
