@@ -2,49 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3EC26404C9
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 11:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D28C16406E8
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 13:36:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233036AbiLBKfk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 05:35:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
+        id S233525AbiLBMgw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 07:36:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232415AbiLBKfa (ORCPT
+        with ESMTP id S233521AbiLBMgw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 05:35:30 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F6AC4CDE;
-        Fri,  2 Dec 2022 02:35:29 -0800 (PST)
+        Fri, 2 Dec 2022 07:36:52 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E44A519C;
+        Fri,  2 Dec 2022 04:36:51 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D07166222D;
-        Fri,  2 Dec 2022 10:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A634BC433D6;
-        Fri,  2 Dec 2022 10:35:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFE8D622A8;
+        Fri,  2 Dec 2022 12:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A557C433C1;
+        Fri,  2 Dec 2022 12:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669977328;
-        bh=gy4BSJ76mh0HAcCurbowxB8Nozc4FwfIp6+iriE3IcY=;
+        s=k20201202; t=1669984610;
+        bh=JrVlUhmbfEf3yx1LFj69LbM293k8DEwjw6TruUjw5Dc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TFDHsTSV63ZHWA+a23ObzI3TB0iF2nAR6DIY2CdrxIJTyxBhG+TFfoj7+khPxCPvY
-         UTRIh1CnqeQ5OwxFjKirUvSvBj16lRSy8mnH/wBZm5gtY6NCFzNev6X1Et37H9ygoB
-         SIyfjs4qfBeyYEhUF2mhzkHu7TyJCWM9XlSlZOMDFDaf88Y+Uq1Mm7m5XoT5X3bHWA
-         77f94e64K13ROczPc16BVrhrM9zcv+zYNsWQZZTPDNVSyl8Fqcac9bXQyDRIRQ6qHj
-         5aqo66RA7JeW+ydCYQEH4o6BjhriwIAVk3raDG29rZN8SpHBzP26b+IwMIM9nkJq14
-         4mT7XHDsPOTzw==
+        b=Npr23a1vBexZkiiLKy3Pnz3Iv7m20sJySy1/QsAPyn4jy1rtCIBih+QtA4/i/Siqi
+         EsmR4Q5KzFygb4fiirPAavuVoN/7n9P2jJucnF4TQeJae8V9diRcZEdGelA8LV+n40
+         jWoXOF15N3xo3S3zSiA8m4aldXk6wcbJQZyisL3JAGqDTD/2RgYfOCaoOxLJ6HfSS3
+         4f2aWS7tp4sK+Tp+MSO3GJys4fHRh/DAnb7w1xPfjbNSTGqVh6E+3zeueJpTreyetK
+         pNkwvLJyYM9vB3bmWfrLmICwMVuuDx3H07qZpaBbQPvypokaJyfSyzuZ3/W8eDNoEZ
+         DymCxv0z3rMbA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Youghandhar Chintala <quic_youghand@quicinc.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_mpubbise@quicinc.com,
-        rameshn@qti.qualcomm.com
-Subject: Re: [PATCH v4] wifi: ath10k: Store WLAN firmware version in SMEM image table
-References: <20221117180534.2267-1-quic_youghand@quicinc.com>
-        <Y4YsyaIW+CPdHWv3@dev-arch.thelio-3990X> <87sfi13tya.fsf@kernel.org>
-Date:   Fri, 02 Dec 2022 12:35:24 +0200
-In-Reply-To: <87sfi13tya.fsf@kernel.org> (Kalle Valo's message of "Wed, 30 Nov
-        2022 07:14:05 +0200")
-Message-ID: <877cza3xg3.fsf@kernel.org>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        Neo Jou <neojou@gmail.com>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>,
+        Alexander Hochbaum <alex@appudo.com>,
+        Da Xue <da@libre.computer>, Po-Hao Huang <phhuang@realtek.com>,
+        Viktor Petrenko <g0000ga@gmail.com>
+Subject: Re: [PATCH v4 08/11] wifi: rtw88: Add rtw8821cu chipset support
+References: <20221129100754.2753237-1-s.hauer@pengutronix.de>
+        <20221129100754.2753237-9-s.hauer@pengutronix.de>
+        <20221129081753.087b7a35@kernel.org>
+        <20221202080952.GG9130@pengutronix.de>
+Date:   Fri, 02 Dec 2022 14:36:41 +0200
+In-Reply-To: <20221202080952.GG9130@pengutronix.de> (Sascha Hauer's message of
+        "Fri, 2 Dec 2022 09:09:52 +0100")
+Message-ID: <87359y3rty.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,62 +66,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-> Nathan Chancellor <nathan@kernel.org> writes:
+> On Tue, Nov 29, 2022 at 08:17:53AM -0800, Jakub Kicinski wrote:
+>> On Tue, 29 Nov 2022 11:07:51 +0100 Sascha Hauer wrote:
+>> > +config RTW88_8821CU
+>> > +	tristate "Realtek 8821CU USB wireless network adapter"
+>> > +	depends on USB
+>> > +	select RTW88_CORE
+>> > +	select RTW88_USB
+>> > +	select RTW88_8821C
+>> > +	help
+>> > +	  Select this option will enable support for 8821CU chipset
+>> > +
+>> > +	  802.11ac USB wireless network adapter
+>> 
+>> Those kconfig knobs add so little code, why not combine them all into
+>> one? No point bothering the user with 4 different questions with amount
+>> to almost nothing.
 >
->> On Thu, Nov 17, 2022 at 11:35:34PM +0530, Youghandhar Chintala wrote:
->>
->>> In a SoC based solution, it would be useful to know the versions of the
->>> various binary firmware blobs the system is running on. On a QCOM based
->>> SoC, this info can be obtained from socinfo debugfs infrastructure. For
->>> this to work, respective subsystem drivers have to export the firmware
->>> version information to an SMEM based version information table.
->>> 
->>> Having firmware version information at one place will help quickly
->>> figure out the firmware versions of various subsystems on the device
->>> instead of going through builds/logs in an event of a system crash.
->>> 
->>> Fill WLAN firmware version information in SMEM version table to be
->>> printed as part of socinfo debugfs infrastructure on a Qualcomm based
->>> SoC.
->>> 
->>> This change is applicable only for SNOC/QMI based targets.
->>> 
->>> Example:
->>> cat /sys/kernel/debug/qcom_socinfo/cnss/name
->>> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->>> 
->>> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->>> 
->>> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
->>> ---
->>> Changes from v3:
->>>  - Changed patch title
->>>  - Changed naming conventions
->>>  - Removed MAX_BUILD_ID_LEN usuage
->>>  - Added condition to call API
->>>  - Changed depends on QCOM_SMEM to select QCOM_SMEM
->>
->> You cannot blindly select user configurable symbols that have
->> dependencies, otherwise you end up with Kconfig warnings. I see the
->> following warning in -next when CONFIG_HWSPINLOCK is disabled:
->>
->>   WARNING: unmet direct dependencies detected for QCOM_SMEM
->>     Depends on [n]: (ARCH_QCOM [=y] || COMPILE_TEST [=n]) && HWSPINLOCK [=n]
->>     Selected by [m]:
->>     - ATH10K_SNOC [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && ATH10K [=m] && (ARCH_QCOM [=y] || COMPILE_TEST [=n])
->>
->> That should likely be changed back to 'depends on'. The reason the other
->> QCOM symbols are selected is because they are not user-selectable, so
->> they have to be selected by the configurations that need them.
+> I tend to agree here. I followed the pattern used with PCI support here,
+> but I also think that we don't need to be able to select all chips
+> individually. The following should be enough:
 >
-> Thanks, I didn't realise this. I'll send a patch changing it to 'depends
-> on'.
+> config RTW88_PCI
+> 	tristate
+> 	depends on PCI
+> 	default y
+>
+> config RTW88_USB
+> 	tristate
+> 	depends on USB
+> 	default y
+>
+> Still I'd like to continue with the current pattern to not block merging
+> of the USB support with this topic.
+>
+> I could create a follow up patch though if that's desired.
 
-Here's the patch:
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20221202103027.25974-1-kvalo@kernel.org/
+Yeah, a follow up patch is a good idea. Best to get USB support commited
+first, after that we can discuss improvements.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
