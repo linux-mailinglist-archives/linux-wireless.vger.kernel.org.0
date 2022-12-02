@@ -2,73 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB5F640ADC
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 17:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5179E640B01
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 17:44:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233880AbiLBQcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 11:32:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53718 "EHLO
+        id S233255AbiLBQor (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 11:44:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233332AbiLBQcc (ORCPT
+        with ESMTP id S232315AbiLBQoq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 11:32:32 -0500
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CB1F24A5AD
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 08:32:29 -0800 (PST)
-Received: from smtpclient.apple (p4fefca0f.dip0.t-ipconnect.de [79.239.202.15])
-        by mail.holtmann.org (Postfix) with ESMTPSA id C899DCECFF;
-        Fri,  2 Dec 2022 17:32:28 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: Bug report: Can connect with 'wext', but not 'nl80211'
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20221202131315.GD444432@w1.fi>
-Date:   Fri, 2 Dec 2022 17:32:28 +0100
-Cc:     "Matthias G." <maps4711@gmx.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, hostap@lists.infradead.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <B2ABE23B-1D1C-4105-A9AD-D5E5E4027E97@holtmann.org>
-References: <1235df2ba1757a5917dc21455fa8c1d0a48bb2c4.camel@gmx.de>
- <f694e9d9dbf36b870f278f8eabed14d5dede55aa.camel@sipsolutions.net>
- <f8dea92e4fa8e26bd1cc7ff8c6ba6ccd4843d8eb.camel@gmx.de>
- <20221202131315.GD444432@w1.fi>
-To:     Jouni Malinen <j@w1.fi>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 2 Dec 2022 11:44:46 -0500
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF7AC7267
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 08:44:44 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.w1.fi (Postfix) with ESMTP id D7D86110C5;
+        Fri,  2 Dec 2022 16:44:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id tNY8Uyut8I8P; Fri,  2 Dec 2022 16:44:41 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Fri, 02 Dec 2022 18:44:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+        t=1669999481; bh=r8HZ2bS5cqJ1/VBGbj5m3zZI2CByFc+wP085tk0/fJY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PWEacge6g37eRxsJxSN0S2InxkIiqKeLybSsB6LDmDL4RLvwipy/I/0mvoxf3BoiN
+         vn+NUtyYpZgxDx6K08wiSD9MfFmXnDyclXcDjSnsS/rJ00gObLHcHyPNkLU021T3Oq
+         lSRGtYT9XF2kowpMLAnr/0/tkPmNM3OznUQWRkIoIYvmfawn6nuP/wJlCTrHHYvQ3W
+         CB34HM3x76j/e3sWgwUU4ip5A0hsdXcbCpBEI5zq+hJDIzRCatS1UE2jXJM9u/VUDu
+         iu61kyz/QDTYJPW/hd/1Xj0RTbmfvD9jjyR+EHa8OAcz3vgjl380kjbd3f4WHRwyO4
+         VWXM9jEq/e/gg==
+Date:   Fri, 2 Dec 2022 18:44:39 +0200
+From:   Jouni Malinen <j@w1.fi>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 01/10] mac80211: generate EMA beacons in AP mode
+Message-ID: <20221202164439.GA700414@w1.fi>
+References: <20221114201912.22893-1-quic_alokad@quicinc.com>
+ <20221114201912.22893-2-quic_alokad@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221114201912.22893-2-quic_alokad@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Matthias,
+On Mon, Nov 14, 2022 at 12:19:03PM -0800, Aloka Dixit wrote:
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> @@ -3338,7 +3338,8 @@ cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
+>  	len = beacon->head_len + beacon->tail_len + beacon->beacon_ies_len +
+>  	      beacon->proberesp_ies_len + beacon->assocresp_ies_len +
+>  	      beacon->probe_resp_len + beacon->lci_len + beacon->civicloc_len +
+> -	      ieee80211_get_mbssid_beacon_len(beacon->mbssid_ies);
+> +	      ieee80211_get_mbssid_beacon_len(beacon->mbssid_ies,
+> +					      beacon->mbssid_ies->cnt);
 
->>> Sounds like the AP is broken and doesn't like some elements wpa_s
->>> includes when nl80211 has certain capabilities ...
-> 
->> Just for reference, both my Windows 10 and my Android phone can connect
->> to this 'Congstar'-labelled device without further configuration. I
->> don't know what Windows and Android are doing behind the scenes though.
-> 
-> If you have a means for capturing wireless sniffer traces of the frames
-> exchanged between the AP and these various station devices, it would be
-> useful to take a look at what the exact differences in the Association
-> Request frame contents. For the nl80211 interface case itself, it would
-> be interesting to see what is the exact information element that makes
-> the AP misbehave, e.g., by removing them one by one (this might be
-> either in wpa_supplicant or kernel) until the association succeeds.
+beacon->mbssid_ies can be NULL here and that is going to result in a
+kernel panic. For example, check with hostap.git test case
+ap_ht_20_to_40_csa.
 
-you can run iwmon (from iwd package) to capture the nl80211 traffic and
-it will decode the frames for you.
-
-You might want to also compare it to running iwd instead of wpa_supplicant
-since I have some vague memory we had this kind of issue and handled it
-somehow.
-
-Regards
-
-Marcel
-
+-- 
+Jouni Malinen                                            PGP id EFC895FA
