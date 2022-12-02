@@ -2,115 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72280640C80
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 18:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC67640D0D
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 19:24:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234273AbiLBRrj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 12:47:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37494 "EHLO
+        id S234273AbiLBSYv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 13:24:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234336AbiLBRrW (ORCPT
+        with ESMTP id S233783AbiLBSYu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 12:47:22 -0500
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1C4D8E1195;
-        Fri,  2 Dec 2022 09:46:39 -0800 (PST)
-Received: from smtpclient.apple (p4fefca0f.dip0.t-ipconnect.de [79.239.202.15])
-        by mail.holtmann.org (Postfix) with ESMTPSA id 9FA51CED00;
-        Fri,  2 Dec 2022 18:46:38 +0100 (CET)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [regression] Bug 216753 - 6e 6 ghz bands are disabled since 5.16
- on intel ax211
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <CAMfi-DQfuro4c_VUrFHBTv8sPnwuV8XhTV_W7qswGeCC2t-wzg@mail.gmail.com>
-Date:   Fri, 2 Dec 2022 18:46:38 +0100
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <457D8649-B855-43BB-B3AD-334E166FED31@holtmann.org>
-References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
- <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
- <CAMfi-DRE-u5TNu2zAL-7A-ENHM9EiJeYJ38BL_FMdk6QmW7c9w@mail.gmail.com>
- <9a03c244-adff-afaf-7385-d8e89cd3f338@leemhuis.info>
- <02F8DDF1-EC0D-4EBD-88F5-7E000841C337@holtmann.org>
- <CAMfi-DQfuro4c_VUrFHBTv8sPnwuV8XhTV_W7qswGeCC2t-wzg@mail.gmail.com>
-To:     Dave Chiluk <chiluk@ubuntu.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 2 Dec 2022 13:24:50 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D25CCEFB8
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 10:24:50 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C27D7B80A09
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 18:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0A1C433D6;
+        Fri,  2 Dec 2022 18:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670005487;
+        bh=daFI3VrqJ1nxDaMH4ZCDmVBTFhL9mnMuXznIP5kTJ/g=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=W2lyL0VGcY4Ji15/vMmd/Y43cIiQn05WSZ7EP3qeqeg2NXexle/dhSlwf6U10JiYJ
+         r54RZlxCKngzGoHJLVAPjNrRzPnd2yydl7azuL3KAJ16k9LnSXIQqLOR2Rz+apsuvy
+         PM/L/IO7zT/iN3RHy/3jYfEbyMTl+8SWNCBOWnao6wnAisy9iW0f6sBfncMRJtVJAI
+         Ya6Uh74NuUxyDKUlhsjTZN9kLblyXyy5cUGueUg0aG76FxiiE7xDsNKrKnNhTX3Vfo
+         KagHHr9enK6XH20wrhkvZIuahD7Yssw3ntlrELZGihYtmDFoheoHMt8tqulWwPxfYO
+         dkMy+BSmHEsjQ==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath10k: fix QCOM_SMEM dependency
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20221202103027.25974-1-kvalo@kernel.org>
+References: <20221202103027.25974-1-kvalo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167000548228.19912.958966715275438470.kvalo@kernel.org>
+Date:   Fri,  2 Dec 2022 18:24:46 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> Running
-> $ iw reg set US
-> or
-> $ iw reg set DE
-> do not result in the bands becoming enabled.  I should have included
-> that in the initial bug report.   Additionally shouldn't the country
-> code should be getting gathered through 802.11d from the broadcast APs
-> within region?
+> From: Kalle Valo <quic_kvalo@quicinc.com>
 > 
-> Also crda is now disabled in both debian and Ubuntu.
-> https://bugs.debian.org/1003903
-> https://bugs.launchpad.net/ubuntu/jammy/+source/crda/+bug/1958918
+> Nathan noticed that when HWSPINLOCK is disabled there's a Kconfig warning:
 > 
-> I'm specifically on 22.04, and the 6ghz band works on the 5.15 ubuntu
-> kernel and the 5.15.79 linux-stable kernel.
-> The 6ghz band becomes disabled as soon as I upgrade to the 5.16+
-> linux-stable kernels. So from a user perspective this really is a case
-> of a kernel upgrade breaking user-space.  This is what led me down
-> this rabbit hole here.
+>   WARNING: unmet direct dependencies detected for QCOM_SMEM
+>     Depends on [n]: (ARCH_QCOM [=y] || COMPILE_TEST [=n]) && HWSPINLOCK [=n]
+>     Selected by [m]:
+>     - ATH10K_SNOC [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && ATH10K [=m] && (ARCH_QCOM [=y] || COMPILE_TEST [=n])
 > 
-> If there's something that needs to be done differently from a
-> userspace perspective I'm all ears, but this seems as if it's a hard
-> disable by the above mentioned commit.
+> The problem here is that QCOM_SMEM depends on HWSPINLOCK so we cannot select
+> QCOM_SMEM and instead we neeed to use 'depends on'.
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Link: https://lore.kernel.org/all/Y4YsyaIW+CPdHWv3@dev-arch.thelio-3990X/
+> Fixes: 4d79f6f34bbb ("wifi: ath10k: Store WLAN firmware version in SMEM image table")
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-can you run iwd and set Country=DE (or US) in its main.conf. I think
-most distros have a 2.0 package of iwd available. With iwd we have
-implemented all the handling and re-scanning to make sure we actually
-get to use 6Ghz is available.
+Patch applied to wireless-next.git, thanks.
 
-Btw. you can run iwd from its source tree. No need to install it if
-You don’t want to mess up your system. Just make sure to disable
-wpa_supplicant so it doesn’t interfere.
+d03407183d97 wifi: ath10k: fix QCOM_SMEM dependency
 
-I have this working on 6.0 kernel (not with ax211 hardware though) and
-it needed some help to get the regdom loaded correctly. I think the key
-part was to install crda on Fedora.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20221202103027.25974-1-kvalo@kernel.org/
 
-$ iw reg get
-global
-country DE: DFS-ETSI
-	(2400 - 2483 @ 40), (N/A, 20), (N/A)
-	(5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
-	(5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
-	(5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
-	(5725 - 5875 @ 80), (N/A, 13), (N/A)
-	(5945 - 6425 @ 160), (N/A, 23), (N/A), NO-OUTDOOR
-	(57000 - 66000 @ 2160), (N/A, 40), (N/A)
-
-Unless you see it available in iw reg get, then it is also not available,
-but I remember that you also have per PHY regdom and other fun stuff. As
-I said, it was a breath to get it running with iwd once you set your
-country code in the config file.
-
-On a note, you could run iwmon and see what nl80211 related calls to
-regdom handling actually happen.
-
-Regards
-
-Marcel
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
