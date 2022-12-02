@@ -2,111 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E489E63FCEF
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 01:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D25963FD19
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 01:32:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232213AbiLBAYk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Dec 2022 19:24:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33940 "EHLO
+        id S231201AbiLBAcX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Dec 2022 19:32:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232202AbiLBAYI (ORCPT
+        with ESMTP id S232262AbiLBAbp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Dec 2022 19:24:08 -0500
-Received: from pv50p00im-tydg10011801.me.com (pv50p00im-tydg10011801.me.com [17.58.6.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C900D4256
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 16:20:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
-        s=sig1; t=1669940400;
-        bh=/w9TPf3NSlEwGn40lxKF4FT1gfTJedo6HFbvr7MYF64=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-        b=GTlfj7VmIx0UJ793HT9AXvGwH31UcMAYs0EaDlknb+h+4S1YbjajjzoqauelwiBMs
-         PINq0kGd8OL1gVaewn4llwFIuYGLwv961ul3aByYTMxTtpjVC99ia50AzGejB+UZkF
-         SWHjv0fLCElwtyMPCM+Jk+Cm+1YQuxyrctMYseooAS+wq03f4mNoBOyhGbsk0cTTS0
-         ZnKUCmZGgx3MinZX1tEzFWO8NTtymjtygJA95QN2TPBr7tD8cu1iFqw3eNqV41lP0s
-         49hYXLDPbo5ESfOf+JYTXutiSuiReahtFIPzNb7/ghPcTP2C/fxSkANpDQG3P04Khp
-         REhtVWF+kU3/g==
-Received: from [10.8.0.2] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-        by pv50p00im-tydg10011801.me.com (Postfix) with ESMTPSA id 9DF238008D0;
-        Fri,  2 Dec 2022 00:19:56 +0000 (UTC)
-Message-ID: <d647052f-47d2-55f7-ed75-15323c820b5e@zzy040330.moe>
-Date:   Fri, 2 Dec 2022 08:19:53 +0800
+        Thu, 1 Dec 2022 19:31:45 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0D31493A5A
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 16:28:12 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B20RNc74011007, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B20RNc74011007
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 2 Dec 2022 08:27:23 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 2 Dec 2022 08:28:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 2 Dec 2022 08:28:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Fri, 2 Dec 2022 08:28:08 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: RE: [PATCH v4 1/3] wifi: rtl8xxxu: Add __packed to struct rtl8723bu_c2h
+Thread-Topic: [PATCH v4 1/3] wifi: rtl8xxxu: Add __packed to struct
+ rtl8723bu_c2h
+Thread-Index: AQHZBY8qD/kmmxy1Pk6uOftd/g6rAq5ZvqZw
+Date:   Fri, 2 Dec 2022 00:28:08 +0000
+Message-ID: <66b8f61cd52147efa2bd58daee9e340d@realtek.com>
+References: <1a270918-da22-ff5f-29fc-7855f740c5ba@gmail.com>
+In-Reply-To: <1a270918-da22-ff5f-29fc-7855f740c5ba@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzEg5LiL5Y2IIDEwOjA4OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v4] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221201161453.16800-1-JunASAKA@zzy040330.moe>
- <48d5141e5b2f4309bde78cacb67341a3@realtek.com>
-Content-Language: en-GB
-From:   Jun ASAKA <JunASAKA@zzy040330.moe>
-In-Reply-To: <48d5141e5b2f4309bde78cacb67341a3@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: QtRiEshMkjg48dELrj5FgmqmYgRcNqQi
-X-Proofpoint-ORIG-GUID: QtRiEshMkjg48dELrj5FgmqmYgRcNqQi
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.11.64.514.0000000_definitions?=
- =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2022-02-23?=
- =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
- suspectscore=0 clxscore=1030 phishscore=0 mlxlogscore=460 bulkscore=0
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2212020000
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02/12/2022 8:14 am, Ping-Ke Shih wrote:
-
->
->> -----Original Message-----
->> From: Jun ASAKA <JunASAKA@zzy040330.moe>
->> Sent: Friday, December 2, 2022 12:15 AM
->> To: Jes.Sorensen@gmail.com
->> Cc: kvalo@kernel.org; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
->> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Jun ASAKA
->> <JunASAKA@zzy040330.moe>
->> Subject: [PATCH v4] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
->>
->> Fixing "Path A RX IQK failed" and "Path B RX IQK failed"
->> issues for rtl8192eu chips by replacing the arguments with
->> the ones in the updated official driver as shown below.
->> 1. https://github.com/Mange/rtl8192eu-linux-driver
->> 2. vendor driver version: 5.6.4
->>
->> Tested-by: Jun ASAKA <JunASAKA@zzy040330.moe>
->> Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
->
->> ---
->> v4:
->>   - fixed some mistakes.
->> v3:
->>   - add detailed info about the newer version this patch used.
->>   - no functional update.
->> ---
->>   .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 73 +++++++++++++------
->>   1 file changed, 51 insertions(+), 22 deletions(-)
->>
-> [...]
->
-Thanks for your review!
-
-
-Jun ASAKA.
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBEZWNlbWJlciAx
+LCAyMDIyIDEwOjE0IFBNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4g
+Q2M6IEplcyBTb3JlbnNlbiA8SmVzLlNvcmVuc2VuQGdtYWlsLmNvbT47IFBpbmctS2UgU2hpaCA8
+cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0ggdjQgMS8zXSB3aWZpOiBydGw4
+eHh4dTogQWRkIF9fcGFja2VkIHRvIHN0cnVjdCBydGw4NzIzYnVfYzJoDQo+IA0KPiBUaGlzIHN0
+cnVjdCBpcyB1c2VkIHRvIGFjY2VzcyBhIHNlcXVlbmNlIG9mIGJ5dGVzIHJlY2VpdmVkIGZyb20g
+dGhlDQo+IHdpZmkgY2hpcC4gSXQgbXVzdCBub3QgaGF2ZSBhbnkgcGFkZGluZyBieXRlcyBiZXR3
+ZWVuIHRoZSBtZW1iZXJzLg0KPiANCj4gVGhpcyBkb2Vzbid0IGNoYW5nZSBhbnl0aGluZyBvbiBt
+eSBzeXN0ZW0sIHBvc3NpYmx5IGJlY2F1c2UgY3VycmVudGx5DQo+IG5vbmUgb2YgdGhlIG1lbWJl
+cnMgbmVlZCBtb3JlIHRoYW4gYnl0ZSBhbGlnbm1lbnQuDQo+IA0KPiBGaXhlczogYjJiNDNiNzgz
+N2JhICgicnRsOHh4eHU6IEluaXRpYWwgZnVuY3Rpb25hbGl0eSB0byBoYW5kbGUgQzJIIGV2ZW50
+cyBmb3IgODcyM2J1IikNCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgy
+MWNlcmZlMkBnbWFpbC5jb20+DQoNClJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEBy
+ZWFsdGVrLmNvbT4NCg0KPiAtLS0NCj4gdjQ6DQo+ICAtIE5vIGNoYW5nZS4NCj4gDQo+IHYzOg0K
+PiAgLSBObyBjaGFuZ2UuDQo+IA0KPiB2MjoNCj4gIC0gUGF0Y2ggaXMgbmV3IGluIHYyLg0KPiAt
+LS0NCg0KWy4uLl0NCg0K
