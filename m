@@ -2,117 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFDA640DC7
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 19:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90EF2640E3D
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 20:14:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233989AbiLBSrg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 13:47:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54304 "EHLO
+        id S234230AbiLBTOG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 14:14:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234749AbiLBSrC (ORCPT
+        with ESMTP id S233926AbiLBTOD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 13:47:02 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB487D826D
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 10:46:51 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D7DC6237E
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 18:46:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A63C433D7;
-        Fri,  2 Dec 2022 18:46:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670006810;
-        bh=1A9oppjyFCLaD25OsGPdEgZGbHr5BCt2AbllX8MIjgA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=S/Zvz3aOcZzMFwPPZAKpo64sxIfJKLb+t3GAw8NYiVibQ9KqDMQJrFPVmT3Gc7Mrv
-         qr5Vaf+a0u4G4HWpnGzLNd8Hy6uVw6l/5gZmec0iM+TTFrPrLG26FYvZwJoXokGKto
-         pO7EP1Yq8kszCDu991NmIMaMPt3dbSgV0mGAi6cPEgpP+yNiaLewQVDua8U73hERGs
-         MpqRoY9ESMzu0qYpgvNh+LJIfETp3Q+A93SpvhdVEOJGptcdFghCpbD4Nkyqse9a3w
-         8IW82NHjIsAh9IMG7hXVKt4J5+NcZdtQPJyMwHxrdRmRfd9VZ1QJQjW7v9D2khN54y
-         k2aqXbK6FWgaQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: failed to insert STA entry for the AP (error -2)
-References: <20221130122807.GA31720@lst.de> <87o7so4nr2.fsf@kernel.org>
-        <20221130125236.GA865@lst.de> <87k03c4mdb.fsf@kernel.org>
-        <20221130133016.GC3055@lst.de>
-Date:   Fri, 02 Dec 2022 20:46:45 +0200
-In-Reply-To: <20221130133016.GC3055@lst.de> (Christoph Hellwig's message of
-        "Wed, 30 Nov 2022 14:30:16 +0100")
-Message-ID: <87sfhx3ap6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 2 Dec 2022 14:14:03 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B2FE465B
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 11:14:01 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id l11so7719124edb.4
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Dec 2022 11:14:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=5FpbylU4bEWOOBwY1H+IvyG77Ka88RgfP6GqC11vGZA=;
+        b=RTMIYL+odSJ79Ci+JXBgFQ1a/FEGnDToKtzyMwGkRTT1Nm5jPWyyvsRB5YlILqC1IM
+         JN1X5u73iDtv6fb5dxyGGRtGGTsFaiWMVojP3P96KdhGVPybPXFFhzsUwXauqrj8L8aQ
+         p90UQTYSSG+8gqCZfGFCUa5bncdDuAsuX8APc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5FpbylU4bEWOOBwY1H+IvyG77Ka88RgfP6GqC11vGZA=;
+        b=tonE/Gcmh3rmMGgNee2Zy0gBuN0XxeITs6ir67nn0ngWWGUbyI9+nJnICfDDjyV+6O
+         FBtEME0b4PGPUpt7KzLvx10ywAYzCGstYh/UXudyx1AOBMBKKlcyNvT7Rpu/eZqe6YKR
+         x8BiRB/jzKdsBwKjQW9jB/blXT/wqwjLPiXzY2dlrNgDK1X2mBif3iEm8L9LLEflM7dI
+         BcviltcgoLH3kUKrr/QnJp5s5r74Xo1n+Nt4HZWV5hymIKlqZ2uAFgs4RAPQ3KkuALZr
+         x+dZtJCMLCFa9IhCkXfOAlen8oI89n5WAASNRQIAtk3jki8ZLkge/SdCP7/y4Gm1H2eV
+         OCDQ==
+X-Gm-Message-State: ANoB5pmw74jP3Wk87guw6RqyyQ96ZL7y1oTZ1ttVAoBZyxIksxOBUCY7
+        qO1+bhB1P1toaEtPvOatob7kaQ==
+X-Google-Smtp-Source: AA0mqf6n9nRSJ6hrDdUtTllL9sxCC0q0x3MM43FVFuX6FNI34AXJ09iZunRrHMxnCYolNmTEC5PGkA==
+X-Received: by 2002:aa7:d555:0:b0:464:6485:419b with SMTP id u21-20020aa7d555000000b004646485419bmr51635405edr.382.1670008440085;
+        Fri, 02 Dec 2022 11:14:00 -0800 (PST)
+Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id h23-20020a1709060f5700b007bfacaea851sm3302683ejj.88.2022.12.02.11.13.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Dec 2022 11:13:59 -0800 (PST)
+Message-ID: <c2fef52d-3e93-8489-f4f0-6d67d9f15ba1@broadcom.com>
+Date:   Fri, 2 Dec 2022 20:13:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2] wifi: brcmfmac: Fix error return code in
+ brcmf_sdio_download_firmware()
+To:     Wang Yufen <wangyufen@huawei.com>, aspriel@gmail.com,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        kvalo@kernel.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        arend@broadcom.com
+References: <1669959342-27144-1-git-send-email-wangyufen@huawei.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <1669959342-27144-1-git-send-email-wangyufen@huawei.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000db227e05eedd23ba"
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christoph Hellwig <hch@lst.de> writes:
+--000000000000db227e05eedd23ba
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> I'm seeing this fun churn of warns when trying to connect to my AP
-> with a brand new Thinkpad T14s Gen3 AMD that I'm trying to install
-> Debian on.
->
-> The kernel is linux-image-6.0.0-5-amd64 from Debian unstable, which is
-> identical to the latest 6.0-stable for ath11k.
->
-> [ 280.585881] ath11k_pci 0000:01:00.0: BAR 0: assigned [mem
-> 0x98000000-0x981fffff 64bit]
-> [  280.586362] ath11k_pci 0000:01:00.0: MSI vectors: 32
-> [  280.586368] ath11k_pci 0000:01:00.0: wcn6855 hw2.1
-> [  280.741846] mhi mhi0: Requested to power ON
-> [  280.741860] mhi mhi0: Power on setup success
-> [ 280.743578] mhi mhi0: firmware: direct-loading firmware
-> ath11k/WCN6855/hw2.1/amss.bin
-> [  280.834744] mhi mhi0: Wait for device to enter SBL or Mission mode
-> [ 281.468934] ath11k_pci 0000:01:00.0: chip_id 0x12 chip_family 0xb
-> board_id 0xff soc_id 0x400c1211
-> [ 281.468944] ath11k_pci 0000:01:00.0: fw_version 0x11090c35
-> fw_build_timestamp 2022-04-18 20:23 fw_build_id
-> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
-> [ 281.469461] ath11k_pci 0000:01:00.0: firmware: direct-loading
-> firmware ath11k/WCN6855/hw2.1/board-2.bin
-> [ 281.469544] ath11k_pci 0000:01:00.0: firmware: direct-loading
-> firmware ath11k/WCN6855/hw2.1/regdb.bin
-> [ 281.479138] ath11k_pci 0000:01:00.0: firmware: direct-loading
-> firmware ath11k/WCN6855/hw2.1/board-2.bin
-> [ 281.510539] ath11k_pci 0000:01:00.0: firmware: direct-loading
-> firmware ath11k/WCN6855/hw2.1/m3.bin
-> [  281.802394] ath11k_pci 0000:01:00.0 wlp1s0: renamed from wlan0
-> [  341.715380] wlp1s0: authenticate with 0c:70:4a:89:bc:64
-> [  341.730641] wlp1s0: Invalid HE elem, Disable HE
-> [  341.769475] ath11k_pci 0000:01:00.0: failed to setup rx defrag context
+On 12/2/2022 6:35 AM, Wang Yufen wrote:
+> Fix to return a negative error code instead of 0 when
+> brcmf_chip_set_active() fails. In addition, change the return
+> value for brcmf_pcie_exit_download_state() to keep consistent.
+> 
+> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+> ---
+> v2: change the error code from EINVAL to EIO, as Arend suggessted
 
-Haven't seen this before either. Really unfortunate that the warning
-message message is not printing the error value (missed that during
-review), but I suspect the error is coming from crypto_alloc_shash()
-call:
+Thanks.
 
-int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id)
-{
-	struct ath11k_base *ab = ar->ab;
-	struct crypto_shash *tfm;
-	struct ath11k_peer *peer;
-	struct dp_rx_tid *rx_tid;
-	int i;
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 2 +-
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+>   2 files changed, 2 insertions(+), 1 deletion(-)
 
-	tfm = crypto_alloc_shash("michael_mic", 0, 0);
-	if (IS_ERR(tfm))
-		return PTR_ERR(tfm);
+--000000000000db227e05eedd23ba
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Any chance you could check that? Also please check that
-CONFIG_CRYPTO_MICHAEL_MIC is enabled (it should be as CONFIG_ATH11K
-depends on it).
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBglswumQ1/Mv84IQdY
+Rt2v1u6puKuBTaUOtDV/b/eFADAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjEyMDIxOTE0MDBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAa+bY/mMRzm1dnCtoo0HHN9go4KqrYEYYIGlm
+MoPXWgAMUGWSQMsEwJDnl6iVZ7/e96KNsQp9iL+JstCL9QlnfzIHiuoKjnx0WwWXucsQcmZus/m7
+otxLvibk8Y6OBgVAQT7M0qTYp2vG+WvNlgAehtHCOvDtiwRXy7+vQr3ofvJ9Cd66gKoTjqr9kiHq
+TXGVBsi2CvOGia/aapM6FvoxN/oiLfpmOCqqWGpSjTyJ0/1KVejFpwZBHXwF4Ui5eU6TsjSXwjS2
+erga2Y2dWRRckjimuqrSeMAj3BL6VisJNKl1oqBcbGLcFoS4W+Uaf74eu2e9W9UL3yc4/A+8DDdX
+Wg==
+--000000000000db227e05eedd23ba--
