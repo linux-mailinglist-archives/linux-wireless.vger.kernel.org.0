@@ -2,112 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D28C16406E8
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 13:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C758640772
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 14:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233525AbiLBMgw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 07:36:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
+        id S233668AbiLBNGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 08:06:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbiLBMgw (ORCPT
+        with ESMTP id S232399AbiLBNGN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 07:36:52 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E44A519C;
-        Fri,  2 Dec 2022 04:36:51 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFE8D622A8;
-        Fri,  2 Dec 2022 12:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A557C433C1;
-        Fri,  2 Dec 2022 12:36:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669984610;
-        bh=JrVlUhmbfEf3yx1LFj69LbM293k8DEwjw6TruUjw5Dc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Npr23a1vBexZkiiLKy3Pnz3Iv7m20sJySy1/QsAPyn4jy1rtCIBih+QtA4/i/Siqi
-         EsmR4Q5KzFygb4fiirPAavuVoN/7n9P2jJucnF4TQeJae8V9diRcZEdGelA8LV+n40
-         jWoXOF15N3xo3S3zSiA8m4aldXk6wcbJQZyisL3JAGqDTD/2RgYfOCaoOxLJ6HfSS3
-         4f2aWS7tp4sK+Tp+MSO3GJys4fHRh/DAnb7w1xPfjbNSTGqVh6E+3zeueJpTreyetK
-         pNkwvLJyYM9vB3bmWfrLmICwMVuuDx3H07qZpaBbQPvypokaJyfSyzuZ3/W8eDNoEZ
-         DymCxv0z3rMbA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Sascha Hauer <s.hauer@pengutronix.de>
-Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
-        Neo Jou <neojou@gmail.com>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Hochbaum <alex@appudo.com>,
-        Da Xue <da@libre.computer>, Po-Hao Huang <phhuang@realtek.com>,
-        Viktor Petrenko <g0000ga@gmail.com>
-Subject: Re: [PATCH v4 08/11] wifi: rtw88: Add rtw8821cu chipset support
-References: <20221129100754.2753237-1-s.hauer@pengutronix.de>
-        <20221129100754.2753237-9-s.hauer@pengutronix.de>
-        <20221129081753.087b7a35@kernel.org>
-        <20221202080952.GG9130@pengutronix.de>
-Date:   Fri, 02 Dec 2022 14:36:41 +0200
-In-Reply-To: <20221202080952.GG9130@pengutronix.de> (Sascha Hauer's message of
-        "Fri, 2 Dec 2022 09:09:52 +0100")
-Message-ID: <87359y3rty.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 2 Dec 2022 08:06:13 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB72D9B13;
+        Fri,  2 Dec 2022 05:06:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=R7QSmaJ8mKSkWjHTNr6g3I7WTgaE9twKd2xR5v0EOJM=; b=0zqpUrnwH6ek6MQcUQKJ/QEUBV
+        +Qwxfz2UJhHMR26ym5AzDDx8ejmsdzlHvV8LEUcOfWcCiNzkmV1R9g00DZRm+qNffE468omt76Z+O
+        7tnCTGC/ajA1ZinI5Xs3Cb65Yv/Bn3r7G2fKpmFk0jN2gTjpP8akuMWzIa9SaQG08ICZ6VdVfxDw0
+        UxVmdrv8esqswPrLNg0vy/hLPoloNlrNuGzKsJ5D53ms2N4PuCxUbeFYY9ZOiYNADyTS+6IRUaSrH
+        Bn39EevQ4+/rGq8no5eGQ0q1+2HIvT6Qh3F0NIyNRPoqLeUFO1k6dPFM1U88tNka1SOgofKn4K9fm
+        JOsZfCHQ==;
+Received: from [2001:4bb8:192:26e7:bcd3:7e81:e7de:56fd] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1p15jv-00GY2K-VG; Fri, 02 Dec 2022 13:06:04 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH] wifi: ath11k_pci: add a soft dependency on qrtr-mhi
+Date:   Fri,  2 Dec 2022 14:06:00 +0100
+Message-Id: <20221202130600.883174-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+While ath11k_pci can load without qrtr-mhi, probing the actual hardware
+will fail when qrtr and qrtr-mhi aren't loaded with
 
-> On Tue, Nov 29, 2022 at 08:17:53AM -0800, Jakub Kicinski wrote:
->> On Tue, 29 Nov 2022 11:07:51 +0100 Sascha Hauer wrote:
->> > +config RTW88_8821CU
->> > +	tristate "Realtek 8821CU USB wireless network adapter"
->> > +	depends on USB
->> > +	select RTW88_CORE
->> > +	select RTW88_USB
->> > +	select RTW88_8821C
->> > +	help
->> > +	  Select this option will enable support for 8821CU chipset
->> > +
->> > +	  802.11ac USB wireless network adapter
->> 
->> Those kconfig knobs add so little code, why not combine them all into
->> one? No point bothering the user with 4 different questions with amount
->> to almost nothing.
->
-> I tend to agree here. I followed the pattern used with PCI support here,
-> but I also think that we don't need to be able to select all chips
-> individually. The following should be enough:
->
-> config RTW88_PCI
-> 	tristate
-> 	depends on PCI
-> 	default y
->
-> config RTW88_USB
-> 	tristate
-> 	depends on USB
-> 	default y
->
-> Still I'd like to continue with the current pattern to not block merging
-> of the USB support with this topic.
->
-> I could create a follow up patch though if that's desired.
+   failed to initialize qmi handle: -517
 
-Yeah, a follow up patch is a good idea. Best to get USB support commited
-first, after that we can discuss improvements.
+Add a MODULE_SOFTDEP statement to bring the module in (and as a hint
+for kernel packaging) for those cases where it isn't autoloaded already
+for some reason.
 
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/net/wireless/ath/ath11k/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 99cf3357c66e16..9d58856cbf8a94 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -1037,6 +1037,8 @@ module_exit(ath11k_pci_exit);
+ MODULE_DESCRIPTION("Driver support for Qualcomm Technologies 802.11ax WLAN PCIe devices");
+ MODULE_LICENSE("Dual BSD/GPL");
+ 
++MODULE_SOFTDEP("pre: qrtr-mhi");
++
+ /* QCA639x 2.0 firmware files */
+ MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_BOARD_API2_FILE);
+ MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_AMSS_FILE);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.30.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
