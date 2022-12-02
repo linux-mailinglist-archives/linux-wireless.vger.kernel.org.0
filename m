@@ -2,81 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C758640772
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 14:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1459F64079D
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 14:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233668AbiLBNGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 08:06:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
+        id S232745AbiLBNVD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 08:21:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232399AbiLBNGN (ORCPT
+        with ESMTP id S229530AbiLBNVC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 08:06:13 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB72D9B13;
-        Fri,  2 Dec 2022 05:06:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=R7QSmaJ8mKSkWjHTNr6g3I7WTgaE9twKd2xR5v0EOJM=; b=0zqpUrnwH6ek6MQcUQKJ/QEUBV
-        +Qwxfz2UJhHMR26ym5AzDDx8ejmsdzlHvV8LEUcOfWcCiNzkmV1R9g00DZRm+qNffE468omt76Z+O
-        7tnCTGC/ajA1ZinI5Xs3Cb65Yv/Bn3r7G2fKpmFk0jN2gTjpP8akuMWzIa9SaQG08ICZ6VdVfxDw0
-        UxVmdrv8esqswPrLNg0vy/hLPoloNlrNuGzKsJ5D53ms2N4PuCxUbeFYY9ZOiYNADyTS+6IRUaSrH
-        Bn39EevQ4+/rGq8no5eGQ0q1+2HIvT6Qh3F0NIyNRPoqLeUFO1k6dPFM1U88tNka1SOgofKn4K9fm
-        JOsZfCHQ==;
-Received: from [2001:4bb8:192:26e7:bcd3:7e81:e7de:56fd] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1p15jv-00GY2K-VG; Fri, 02 Dec 2022 13:06:04 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH] wifi: ath11k_pci: add a soft dependency on qrtr-mhi
-Date:   Fri,  2 Dec 2022 14:06:00 +0100
-Message-Id: <20221202130600.883174-1-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
+        Fri, 2 Dec 2022 08:21:02 -0500
+X-Greylist: delayed 460 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 02 Dec 2022 05:21:01 PST
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B062A431D
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 05:21:01 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.w1.fi (Postfix) with ESMTP id 362D9110C2;
+        Fri,  2 Dec 2022 13:13:19 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 5Eolp4VQP3Ph; Fri,  2 Dec 2022 13:13:17 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Fri, 02 Dec 2022 15:13:15 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+        t=1669986797; bh=MIHRH2XreRgFV9QnIbRn96BvIEylyoYXEacluIlgLzA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=z1MV3q0XpSpdfzwN9aQSCDa39eJh0X0RTHwDv3XvVUHGWXDumIoBV8/AzsMA0TuJj
+         sQGoj9pPCpPjTzJ/uxUekmnW8D/Klo3ZP3Hmm5r9UTmUR0wyhLFwagFSkdxxxn/JdY
+         GX9d+msl7EDgVRgswBGI4ANzQ5fLNw0UcbOqYqM15QzDhpupt/j4xozyc5SHXx/m9u
+         TARv0ChxeNlNlso5Red8s1QRdARySWgAgFpXMjnpEQWBRjHGMvudjh5sxad+2rjkbf
+         SZ+BHkCSos5tlDllICCZCKxrLNK8THgqFFNla5HCUC2ciSxmDOaHjoweU9XAARrMV4
+         bh5gIO4WVjy9w==
+Date:   Fri, 2 Dec 2022 15:13:15 +0200
+From:   Jouni Malinen <j@w1.fi>
+To:     "Matthias G." <maps4711@gmx.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, hostap@lists.infradead.org
+Subject: Re: Bug report: Can connect with 'wext', but not 'nl80211'
+Message-ID: <20221202131315.GD444432@w1.fi>
+References: <1235df2ba1757a5917dc21455fa8c1d0a48bb2c4.camel@gmx.de>
+ <f694e9d9dbf36b870f278f8eabed14d5dede55aa.camel@sipsolutions.net>
+ <f8dea92e4fa8e26bd1cc7ff8c6ba6ccd4843d8eb.camel@gmx.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8dea92e4fa8e26bd1cc7ff8c6ba6ccd4843d8eb.camel@gmx.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-While ath11k_pci can load without qrtr-mhi, probing the actual hardware
-will fail when qrtr and qrtr-mhi aren't loaded with
+On Thu, Dec 01, 2022 at 06:45:01PM +0100, Matthias G. wrote:
+> On Wed, 2022-11-30 at 21:29 +0100, Johannes Berg wrote:
+> > Sounds like the AP is broken and doesn't like some elements wpa_s
+> > includes when nl80211 has certain capabilities ...
 
-   failed to initialize qmi handle: -517
+> Just for reference, both my Windows 10 and my Android phone can connect
+> to this 'Congstar'-labelled device without further configuration. I
+> don't know what Windows and Android are doing behind the scenes though.
 
-Add a MODULE_SOFTDEP statement to bring the module in (and as a hint
-for kernel packaging) for those cases where it isn't autoloaded already
-for some reason.
+If you have a means for capturing wireless sniffer traces of the frames
+exchanged between the AP and these various station devices, it would be
+useful to take a look at what the exact differences in the Association
+Request frame contents. For the nl80211 interface case itself, it would
+be interesting to see what is the exact information element that makes
+the AP misbehave, e.g., by removing them one by one (this might be
+either in wpa_supplicant or kernel) until the association succeeds.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/net/wireless/ath/ath11k/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 99cf3357c66e16..9d58856cbf8a94 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -1037,6 +1037,8 @@ module_exit(ath11k_pci_exit);
- MODULE_DESCRIPTION("Driver support for Qualcomm Technologies 802.11ax WLAN PCIe devices");
- MODULE_LICENSE("Dual BSD/GPL");
- 
-+MODULE_SOFTDEP("pre: qrtr-mhi");
-+
- /* QCA639x 2.0 firmware files */
- MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_BOARD_API2_FILE);
- MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_AMSS_FILE);
 -- 
-2.30.2
-
+Jouni Malinen                                            PGP id EFC895FA
