@@ -2,70 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5179E640B01
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 17:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 748B9640B61
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 17:56:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233255AbiLBQor (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 11:44:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40266 "EHLO
+        id S234284AbiLBQ4L convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 11:56:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232315AbiLBQoq (ORCPT
+        with ESMTP id S234209AbiLBQzg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 11:44:46 -0500
-Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF7AC7267
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 08:44:44 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.w1.fi (Postfix) with ESMTP id D7D86110C5;
-        Fri,  2 Dec 2022 16:44:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from mail.w1.fi ([127.0.0.1])
-        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id tNY8Uyut8I8P; Fri,  2 Dec 2022 16:44:41 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Fri, 02 Dec 2022 18:44:39 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
-        t=1669999481; bh=r8HZ2bS5cqJ1/VBGbj5m3zZI2CByFc+wP085tk0/fJY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PWEacge6g37eRxsJxSN0S2InxkIiqKeLybSsB6LDmDL4RLvwipy/I/0mvoxf3BoiN
-         vn+NUtyYpZgxDx6K08wiSD9MfFmXnDyclXcDjSnsS/rJ00gObLHcHyPNkLU021T3Oq
-         lSRGtYT9XF2kowpMLAnr/0/tkPmNM3OznUQWRkIoIYvmfawn6nuP/wJlCTrHHYvQ3W
-         CB34HM3x76j/e3sWgwUU4ip5A0hsdXcbCpBEI5zq+hJDIzRCatS1UE2jXJM9u/VUDu
-         iu61kyz/QDTYJPW/hd/1Xj0RTbmfvD9jjyR+EHa8OAcz3vgjl380kjbd3f4WHRwyO4
-         VWXM9jEq/e/gg==
-Date:   Fri, 2 Dec 2022 18:44:39 +0200
-From:   Jouni Malinen <j@w1.fi>
-To:     Aloka Dixit <quic_alokad@quicinc.com>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 01/10] mac80211: generate EMA beacons in AP mode
-Message-ID: <20221202164439.GA700414@w1.fi>
-References: <20221114201912.22893-1-quic_alokad@quicinc.com>
- <20221114201912.22893-2-quic_alokad@quicinc.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221114201912.22893-2-quic_alokad@quicinc.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 2 Dec 2022 11:55:36 -0500
+X-Greylist: delayed 554 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 02 Dec 2022 08:55:34 PST
+Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DB24EDA7E6;
+        Fri,  2 Dec 2022 08:55:34 -0800 (PST)
+Received: from smtpclient.apple (p4fefca0f.dip0.t-ipconnect.de [79.239.202.15])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 4E9A4CECFF;
+        Fri,  2 Dec 2022 17:46:19 +0100 (CET)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [regression] Bug 216753 - 6e 6 ghz bands are disabled since 5.16
+ on intel ax211
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <9a03c244-adff-afaf-7385-d8e89cd3f338@leemhuis.info>
+Date:   Fri, 2 Dec 2022 17:46:18 +0100
+Cc:     Dave Chiluk <chiluk@ubuntu.com>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <02F8DDF1-EC0D-4EBD-88F5-7E000841C337@holtmann.org>
+References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
+ <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
+ <CAMfi-DRE-u5TNu2zAL-7A-ENHM9EiJeYJ38BL_FMdk6QmW7c9w@mail.gmail.com>
+ <9a03c244-adff-afaf-7385-d8e89cd3f338@leemhuis.info>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 12:19:03PM -0800, Aloka Dixit wrote:
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> @@ -3338,7 +3338,8 @@ cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
->  	len = beacon->head_len + beacon->tail_len + beacon->beacon_ies_len +
->  	      beacon->proberesp_ies_len + beacon->assocresp_ies_len +
->  	      beacon->probe_resp_len + beacon->lci_len + beacon->civicloc_len +
-> -	      ieee80211_get_mbssid_beacon_len(beacon->mbssid_ies);
-> +	      ieee80211_get_mbssid_beacon_len(beacon->mbssid_ies,
-> +					      beacon->mbssid_ies->cnt);
+Hi Thorsten,
 
-beacon->mbssid_ies can be NULL here and that is going to result in a
-kernel panic. For example, check with hostap.git test case
-ap_ht_20_to_40_csa.
+>> The other possibility is that this is actually a bios bug, as the DSM
+>> is being read out of ACPI.  In which case that would be Dell's fault.
+> 
+> Yes and no, but no:
+> 
+> A kernel change exposed this problem, hence it doesn't matter if the
+> BIOS is faulty: it's makes it a kernel regression and those are not
+> allowed. For more on this see
+> https://docs.kernel.org/admin-guide/reporting-issues.html
+> 
+> That at least would be the normal approach. But the thing is: the legal
+> implications when it comes to things like wifi make this somewhat
+> trickier. :-/
 
--- 
-Jouni Malinen                                            PGP id EFC895FA
+so you need to set your country code first before any of the regulatory
+enabled channels on 6Ghz get used. Otherwise you are stuck in the world
+domain that doesn’t allow 6Ghz at all.
+
+Two choices, either you run iwd and just set Country=DE where this than
+would be persistent; see iwd.config(5). Or you do this via iw reg set DE
+manually. wpa_supplicant has a set_country wrapper, but I don’t see it
+being used anywhere, so I assume you have to do this manually when using
+wpa_supplicant.
+
+And of course tools like crda etc. need to be fully functional to load
+the appropriate regulatory information. Since any 6Ghz operation is
+blocked by default.
+
+Regards
+
+Marcel
+
