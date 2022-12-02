@@ -2,104 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ACCC6400FF
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 08:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA4B640192
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 09:09:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232152AbiLBHZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 02:25:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
+        id S232227AbiLBIJI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 03:09:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbiLBHZK (ORCPT
+        with ESMTP id S232506AbiLBIJF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 02:25:10 -0500
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94922AC6F1
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 23:25:08 -0800 (PST)
-Received: by mail-qv1-xf36.google.com with SMTP id i12so2937496qvs.2
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Dec 2022 23:25:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dkxAZ6i0a46NYva8Tu5LZq5jw3SaAMYQxWXgmzM9ieU=;
-        b=hfluDAzwKX/IXE/smnV7yY66FtJhs1rotB6hNAzmGY1C/SMzEzzPWzkKsqlCaehRdm
-         ieS3yhGnliSM52kxsjmYSTFD0ivaIWWmqPjLZ2Ej+skI3ejY2fwHDtqayUjHS8JpSmiT
-         pGXlgLELtFg9xrBkbS/t8bJvYZdihRSJYyZtM4N4abCZrQDDa7TVSpCaLqjAuDf6pTon
-         CTQjNdHRtYHn3GldCJXU1O3RofnkBnGUgn5Oj5+oRuCeF4dpN4BJWLI5TkqWfMeYtV7i
-         4Qc0yso4j1EtgapIt8Z33cim8wHDYGQGs4VHoFGh887I7zecurJ3w0lJ+PxxgUl1dQ4E
-         kksw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dkxAZ6i0a46NYva8Tu5LZq5jw3SaAMYQxWXgmzM9ieU=;
-        b=7wyYRjrIX0A1wjrQ0wEQrSbFqtd2+yawDAFieyK35RfpMtFjCEP2r2Fh1MxYrIYm+W
-         SOoi2lfnxHAt8opvJwL85upcYd0GizqQMu39MmczYqJraPS9eqjjJGC2OQXY/JCcSBER
-         II7pna7u79zffhfQJUhTCUi3TewNVkgZ3eP83GC9N0qkFV74P0TRzJIa230YlF11xAjP
-         mjtueGAHLi8V4AvKKIEtpTKjcAWAvJDaVqwhpagXRbLNSkGQmL1ub/gRzmOXJhii9Lws
-         2FAFQO+jH3lgxEfCpKrbmiKTH2DBwUUwKuo911o3Qw0u4jGWgrZvE6a/DU/JtpDD14j1
-         JKLQ==
-X-Gm-Message-State: ANoB5pmtWncBjs6hEEd2840SW7ZZaDvkdeZ2tM6dWjaGwSGqu+TMMp/x
-        PB6hL2N7FzpgXlpKSsbe93Uv5h2+Co5k0KglU5ljvD2ijAQ=
-X-Google-Smtp-Source: AA0mqf7Yh0y8Tz0BsDAkzOm9ODSpehe++0JeuBF5D/YyrQeKHUC+5kjvT7zsRMt9uvyvr9gowTNvfrY1+KK6L5wwWTc=
-X-Received: by 2002:a05:6214:170d:b0:4c7:4add:6123 with SMTP id
- db13-20020a056214170d00b004c74add6123mr186580qvb.100.1669965907704; Thu, 01
- Dec 2022 23:25:07 -0800 (PST)
+        Fri, 2 Dec 2022 03:09:05 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA4A70DF5
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 00:09:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669968544; x=1701504544;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OwGEXXRIykiCe0qOHbcGCsOwWNPhq0fJwE75iZNKixQ=;
+  b=JZlIgM6CvR7qwRSZlQl//S8IpMaV65eyeDZeuymosmjqcAtZZkiACctb
+   ijsdKoqly8lH+peo9JAHSeMSz0b6fW/QJ0wznM+iD7Jx4XLbc2xYoJXEY
+   BzO31APFzoHsb2pHDB2+5yKibOArsqQ+sgtXZu085xiEc7FM4At/cOpte
+   HSgIuFhXO7wZIYUfPhzAbWPb1TMobOQgeYfAoYUXaLTuFKX/qEMILp+yG
+   WRB+JQl2eTE6+PwDLSYP3F3dS/lhcBYBGkHtvD3yoJmWPOvgc+h8Abo0i
+   XEgslTTM3p5htkgO0MzWg7LCnuCzpC1tq3yeBYnJ+nFdzUrq7y/OcwQha
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="317759917"
+X-IronPort-AV: E=Sophos;i="5.96,210,1665471600"; 
+   d="scan'208";a="317759917"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2022 00:09:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="890062543"
+X-IronPort-AV: E=Sophos;i="5.96,210,1665471600"; 
+   d="scan'208";a="890062543"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 02 Dec 2022 00:09:02 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p116U-000DPf-0t;
+        Fri, 02 Dec 2022 08:09:02 +0000
+Date:   Fri, 02 Dec 2022 16:08:48 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ e9ab0b2e680b069437f54bf4076310f636af05e6
+Message-ID: <6389b290.OGADqyskY4CjVylN%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <b48efa92-9eee-d491-1149-a7cee08300c0@airpost.net>
- <80556c56e69405d7c8f8bc3d57e2ba697074c660.camel@sipsolutions.net> <9093c08e-302d-578c-3e16-619d238b4022@airpost.net>
-In-Reply-To: <9093c08e-302d-578c-3e16-619d238b4022@airpost.net>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Fri, 2 Dec 2022 18:24:56 +1100
-Message-ID: <CAGRGNgVGsii7+jdN3PnMWdCSeRyCDF96ivVOfxzi8xDufUigNw@mail.gmail.com>
-Subject: Re: every other wireless scan shows bogus (too low) signal strengths
-To:     Bruno Dantas <dantas@airpost.net>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Bruno,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: e9ab0b2e680b069437f54bf4076310f636af05e6  Merge tag 'iwlwifi-next-for-kalle-2022-11-28' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
 
-On Fri, Dec 2, 2022 at 7:08 AM Bruno Dantas <dantas@airpost.net> wrote:
->
-> Hi, Johannes. Thank you for your help.
->
-> To exclude a bad network card, I replaced my laptop's card with a differe=
-nt one (with the same Intel AC 7265 chipset). The replacement card fared no=
- better. Therefore, I put the original card back and ensured that the two a=
-ntenna wires are securely connected. There is no doubt now that the wires a=
-re secure, but the problem persists.
+elapsed time: 843m
 
-Stupid question, is there any chance that one of the antennas is damaged?
+configs tested: 59
+configs skipped: 2
 
-You might get slightly different behaviour if you swap them - if your
-X230 is anything like my X200, there should be enough slack do that.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-If it turns out that one of them is bad, you might be able to find
-replacements on eBay or Aliexpress, or in the worst case scenario just
-install a generic antenna.
+gcc tested configs:
+um                           x86_64_defconfig
+x86_64                    rhel-8.3-kselftests
+um                             i386_defconfig
+x86_64                          rhel-8.3-func
+arc                                 defconfig
+alpha                               defconfig
+s390                                defconfig
+s390                             allmodconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+s390                             allyesconfig
+m68k                             allyesconfig
+ia64                             allmodconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+mips                             allyesconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+powerpc                          allmodconfig
+x86_64                           rhel-8.3-kvm
+s390                 randconfig-r044-20221201
+arc                  randconfig-r043-20221201
+riscv                randconfig-r042-20221201
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a006
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+i386                                defconfig
+x86_64                            allnoconfig
+i386                             allyesconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
 
-Hardware Maintenance Manual is here:
-https://support.lenovo.com/us/en/manuals/um014928-hardware-maintenance-manu=
-al
-and the steps to replace the antennas don't look too onerous.
+clang tested configs:
+hexagon              randconfig-r041-20221201
+hexagon              randconfig-r045-20221201
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
 
-Thanks,
-
---=20
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
