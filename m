@@ -2,156 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F1C640D5E
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 19:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EFDA640DC7
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 19:47:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234204AbiLBSgP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 13:36:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43190 "EHLO
+        id S233989AbiLBSrg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 13:47:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234398AbiLBSgM (ORCPT
+        with ESMTP id S234749AbiLBSrC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 13:36:12 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4D7ECE72
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 10:36:11 -0800 (PST)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B2FjjZc012919;
-        Fri, 2 Dec 2022 18:36:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=PhSFr3fIHFf/Bv/iCYFZyFk7T1iHwFRdGBGffgNAH0o=;
- b=FmBooLxr79KvC8+5jBIkoQ4jJm1v+2pNdDlpcjAAzbraYIGVT82wdcg72gFwdnOxwZWM
- YS5ZUXNWmAyTvC7hL7+zyDAp3D4kIV0JCaGaGhclbmP1iNovwnVaArgboCSFBuSFJGB2
- x+A/zO3HYnWEBPbtBkayuHkSmUbSwg0zxmTb3cOs2mnbZ3Z4kYzOZEz9Kd5Z9moCSODI
- 2RebQRWwwODr0KugBy2BAS0ZEFobTB7SQ89qt2XHMXMlsXgyULn6YO2qbV4WBFcK+5yp
- lWDFQxGZLfQ8+f09kzdOB5lfPvlzz1gJcbxJpPr8mtz6sutUzlI/LXA6m7nS7iCT3B3Z Yw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m7f2dsby3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Dec 2022 18:36:09 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2B2Ia8nn022504
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 2 Dec 2022 18:36:08 GMT
-Received: from msinada-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Fri, 2 Dec 2022 10:36:07 -0800
-From:   Muna Sinada <quic_msinada@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Muna Sinada <quic_msinada@quicinc.com>
-Subject: [RFC 4/4] wifi: mac80211: Handle RU Puncturing information
-Date:   Fri, 2 Dec 2022 10:35:54 -0800
-Message-ID: <1670006154-6092-5-git-send-email-quic_msinada@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1670006154-6092-1-git-send-email-quic_msinada@quicinc.com>
-References: <1670006154-6092-1-git-send-email-quic_msinada@quicinc.com>
+        Fri, 2 Dec 2022 13:47:02 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB487D826D
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 10:46:51 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D7DC6237E
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 18:46:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A63C433D7;
+        Fri,  2 Dec 2022 18:46:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670006810;
+        bh=1A9oppjyFCLaD25OsGPdEgZGbHr5BCt2AbllX8MIjgA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=S/Zvz3aOcZzMFwPPZAKpo64sxIfJKLb+t3GAw8NYiVibQ9KqDMQJrFPVmT3Gc7Mrv
+         qr5Vaf+a0u4G4HWpnGzLNd8Hy6uVw6l/5gZmec0iM+TTFrPrLG26FYvZwJoXokGKto
+         pO7EP1Yq8kszCDu991NmIMaMPt3dbSgV0mGAi6cPEgpP+yNiaLewQVDua8U73hERGs
+         MpqRoY9ESMzu0qYpgvNh+LJIfETp3Q+A93SpvhdVEOJGptcdFghCpbD4Nkyqse9a3w
+         8IW82NHjIsAh9IMG7hXVKt4J5+NcZdtQPJyMwHxrdRmRfd9VZ1QJQjW7v9D2khN54y
+         k2aqXbK6FWgaQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: failed to insert STA entry for the AP (error -2)
+References: <20221130122807.GA31720@lst.de> <87o7so4nr2.fsf@kernel.org>
+        <20221130125236.GA865@lst.de> <87k03c4mdb.fsf@kernel.org>
+        <20221130133016.GC3055@lst.de>
+Date:   Fri, 02 Dec 2022 20:46:45 +0200
+In-Reply-To: <20221130133016.GC3055@lst.de> (Christoph Hellwig's message of
+        "Wed, 30 Nov 2022 14:30:16 +0100")
+Message-ID: <87sfhx3ap6.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: E75943Ip1VuEHzExDZTv6YXC3wqoOYPj
-X-Proofpoint-ORIG-GUID: E75943Ip1VuEHzExDZTv6YXC3wqoOYPj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-02_10,2022-12-01_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 malwarescore=0 spamscore=0
- clxscore=1015 suspectscore=0 impostorscore=0 mlxlogscore=733 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2212020147
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Handle RU Puncturing information received from user space.
-RU Puncturing bitmap is initially received during
-ieee80211_change_iface() and stored. During AP chanwidth setting,
-the bitmap is validated. In addition driver is notified of new bitmap
-value.
+Christoph Hellwig <hch@lst.de> writes:
 
-Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
----
- net/mac80211/cfg.c  |  8 ++++++++
- net/mac80211/chan.c | 14 ++++++++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+> I'm seeing this fun churn of warns when trying to connect to my AP
+> with a brand new Thinkpad T14s Gen3 AMD that I'm trying to install
+> Debian on.
+>
+> The kernel is linux-image-6.0.0-5-amd64 from Debian unstable, which is
+> identical to the latest 6.0-stable for ath11k.
+>
+> [ 280.585881] ath11k_pci 0000:01:00.0: BAR 0: assigned [mem
+> 0x98000000-0x981fffff 64bit]
+> [  280.586362] ath11k_pci 0000:01:00.0: MSI vectors: 32
+> [  280.586368] ath11k_pci 0000:01:00.0: wcn6855 hw2.1
+> [  280.741846] mhi mhi0: Requested to power ON
+> [  280.741860] mhi mhi0: Power on setup success
+> [ 280.743578] mhi mhi0: firmware: direct-loading firmware
+> ath11k/WCN6855/hw2.1/amss.bin
+> [  280.834744] mhi mhi0: Wait for device to enter SBL or Mission mode
+> [ 281.468934] ath11k_pci 0000:01:00.0: chip_id 0x12 chip_family 0xb
+> board_id 0xff soc_id 0x400c1211
+> [ 281.468944] ath11k_pci 0000:01:00.0: fw_version 0x11090c35
+> fw_build_timestamp 2022-04-18 20:23 fw_build_id
+> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
+> [ 281.469461] ath11k_pci 0000:01:00.0: firmware: direct-loading
+> firmware ath11k/WCN6855/hw2.1/board-2.bin
+> [ 281.469544] ath11k_pci 0000:01:00.0: firmware: direct-loading
+> firmware ath11k/WCN6855/hw2.1/regdb.bin
+> [ 281.479138] ath11k_pci 0000:01:00.0: firmware: direct-loading
+> firmware ath11k/WCN6855/hw2.1/board-2.bin
+> [ 281.510539] ath11k_pci 0000:01:00.0: firmware: direct-loading
+> firmware ath11k/WCN6855/hw2.1/m3.bin
+> [  281.802394] ath11k_pci 0000:01:00.0 wlp1s0: renamed from wlan0
+> [  341.715380] wlp1s0: authenticate with 0c:70:4a:89:bc:64
+> [  341.730641] wlp1s0: Invalid HE elem, Disable HE
+> [  341.769475] ath11k_pci 0000:01:00.0: failed to setup rx defrag context
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c848fe04dd44..d82060d8fd4e 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -213,6 +213,12 @@ static int ieee80211_change_iface(struct wiphy *wiphy,
- 	struct sta_info *sta;
- 	int ret;
- 
-+	sdata->vif.bss_conf.ru_punct_bitmap = params->ru_punct_bitmap;
-+	sdata->vif.bss_conf.ru_punct_bitmap_supp_he = params->ru_punct_bitmap_supp_he;
-+
-+	if (!sdata->vif.bss_conf.ru_punct_bitmap)
-+		sdata_dbg(sdata, "RU Puncturing Bitmap was not set by user\n");
-+
- 	ret = ieee80211_if_change_type(sdata, type);
- 	if (ret)
- 		return ret;
-@@ -1251,6 +1257,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	prev_beacon_int = link_conf->beacon_int;
- 	link_conf->beacon_int = params->beacon_interval;
- 
-+	sdata->vif.bss_conf.ru_punct_bitmap = dev->ieee80211_ptr->ru_punct_bitmap;
-+
- 	if (params->he_cap && params->he_oper) {
- 		link_conf->he_support = true;
- 		link_conf->htc_trig_based_pkt_ext =
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index e72cf0749d49..55a1f8bb309c 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -838,6 +838,7 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_chanctx_conf *conf;
- 	struct ieee80211_chanctx *curr_ctx = NULL;
-+	u64 changed;
- 	int ret = 0;
- 
- 	if (WARN_ON(sdata->vif.type == NL80211_IFTYPE_NAN))
-@@ -882,8 +883,10 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
- 	}
- 
- 	if (sdata->vif.type != NL80211_IFTYPE_P2P_DEVICE &&
--	    sdata->vif.type != NL80211_IFTYPE_MONITOR)
--		ieee80211_vif_cfg_change_notify(sdata, BSS_CHANGED_IDLE);
-+	    sdata->vif.type != NL80211_IFTYPE_MONITOR) {
-+		changed |= BSS_CHANGED_IDLE | BSS_CHANGED_EHT_PUNCTURING;
-+		ieee80211_vif_cfg_change_notify(sdata, changed);
-+	}
- 
- 	ieee80211_check_fast_xmit_iface(sdata);
- 
-@@ -1942,6 +1945,13 @@ int ieee80211_link_change_bandwidth(struct ieee80211_link_data *link,
- 		goto out;
- 	}
- 
-+	if (!ieee80211_valid_disable_subchannel_bitmap(
-+					   &sdata->vif.bss_conf.ru_punct_bitmap,
-+					   chandef->width)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	conf = rcu_dereference_protected(link_conf->chanctx_conf,
- 					 lockdep_is_held(&local->chanctx_mtx));
- 	if (!conf) {
+Haven't seen this before either. Really unfortunate that the warning
+message message is not printing the error value (missed that during
+review), but I suspect the error is coming from crypto_alloc_shash()
+call:
+
+int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id)
+{
+	struct ath11k_base *ab = ar->ab;
+	struct crypto_shash *tfm;
+	struct ath11k_peer *peer;
+	struct dp_rx_tid *rx_tid;
+	int i;
+
+	tfm = crypto_alloc_shash("michael_mic", 0, 0);
+	if (IS_ERR(tfm))
+		return PTR_ERR(tfm);
+
+Any chance you could check that? Also please check that
+CONFIG_CRYPTO_MICHAEL_MIC is enabled (it should be as CONFIG_ATH11K
+depends on it).
+
 -- 
-2.7.4
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
