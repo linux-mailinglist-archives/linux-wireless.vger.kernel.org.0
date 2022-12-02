@@ -2,101 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA45563FF7C
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 05:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E10A963FFAE
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 05:59:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbiLBE3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Dec 2022 23:29:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42722 "EHLO
+        id S232385AbiLBE7o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Dec 2022 23:59:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbiLBE3m (ORCPT
+        with ESMTP id S232299AbiLBE7Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Dec 2022 23:29:42 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE4BBF669;
-        Thu,  1 Dec 2022 20:29:41 -0800 (PST)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NNg1h5QMXzmWK1;
-        Fri,  2 Dec 2022 12:28:56 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
- (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 2 Dec
- 2022 12:29:39 +0800
-From:   Zhengchao Shao <shaozhengchao@huawei.com>
-To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC:     <sara.sharon@intel.com>, <luciano.coelho@intel.com>,
-        <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
-        <shaozhengchao@huawei.com>
-Subject: [PATCH v2] wifi: mac80211: fix memory leak in ieee80211_register_hw()
-Date:   Fri, 2 Dec 2022 12:38:38 +0800
-Message-ID: <20221202043838.2324539-1-shaozhengchao@huawei.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 1 Dec 2022 23:59:16 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A4BBCCEE6;
+        Thu,  1 Dec 2022 20:59:13 -0800 (PST)
+Received: from canpemm500010.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4NNggn0swqz15N2X;
+        Fri,  2 Dec 2022 12:58:29 +0800 (CST)
+Received: from [10.174.179.191] (10.174.179.191) by
+ canpemm500010.china.huawei.com (7.192.105.118) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 2 Dec 2022 12:59:10 +0800
+Message-ID: <b146653a-4113-ea8f-4204-770c7fb5e1cb@huawei.com>
+Date:   Fri, 2 Dec 2022 12:59:10 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500026.china.huawei.com (7.185.36.106)
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH] wifi: brcmfmac: Fix error return code in
+ brcmf_sdio_download_firmware()
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>
+CC:     <aspriel@gmail.com>, <hante.meuleman@broadcom.com>,
+        <kvalo@kernel.org>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
+        <arend@broadcom.com>
+References: <1669716458-15327-1-git-send-email-wangyufen@huawei.com>
+ <CA+8PC_czBYZUsOH7brTh4idjg3ps58PtanqtmTD0mPN3Sp9Xhw@mail.gmail.com>
+ <4e61f6e5-94bd-9e29-d12f-d5928f00c8a8@huawei.com>
+ <5dd42599-ace7-42cb-8b3c-90704d18fc21@broadcom.com>
+ <14e5c329-03c4-e82e-8ae2-97d30d53e4fd@huawei.com>
+ <184cc562ed8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From:   wangyufen <wangyufen@huawei.com>
+In-Reply-To: <184cc562ed8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.191]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ canpemm500010.china.huawei.com (7.192.105.118)
 X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When ieee80211_init_rate_ctrl_alg() failed in ieee80211_register_hw(),
-it doesn't release local->fq. The memory leakage information is as
-follows:
-unreferenced object 0xffff888109cad400 (size 512):
-  comm "insmod", pid 15145, jiffies 4295005736 (age 3670.100s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<00000000d1eb4a9f>] __kmalloc+0x3e/0xb0
-    [<00000000befc3e34>] ieee80211_txq_setup_flows+0x1fe/0xa10
-    [<00000000b13f1457>] ieee80211_register_hw+0x1b64/0x3950
-    [<00000000ba9f4e99>] 0xffffffffa02214db
-    [<00000000833435c0>] 0xffffffffa024048d
-    [<00000000a4ddd6ef>] do_one_initcall+0x10f/0x630
-    [<0000000068f29e16>] do_init_module+0x19f/0x5e0
-    [<00000000f52609b6>] load_module+0x64b7/0x6eb0
-    [<00000000b628a5b3>] __do_sys_finit_module+0x140/0x200
-    [<00000000c7f35d15>] do_syscall_64+0x35/0x80
-    [<0000000044d8d0fd>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-Fixes: a50e5fb8db83 ("mac80211: fix a kernel panic when TXing after TXQ teardown")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
----
-v2: Don't remove flows clear action in ieee80211_remove_interfaces()
----
- net/mac80211/main.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 02b5abc7326b..18edf0591c2e 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1326,6 +1326,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 					      hw->rate_control_algorithm);
- 	rtnl_unlock();
- 	if (result < 0) {
-+		ieee80211_txq_teardown_flows(local);
- 		wiphy_debug(local->hw.wiphy,
- 			    "Failed to initialize rate control algorithm\n");
- 		goto fail_rate;
-@@ -1364,6 +1365,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 
- 		sband = kmemdup(sband, sizeof(*sband), GFP_KERNEL);
- 		if (!sband) {
-+			ieee80211_txq_teardown_flows(local);
- 			result = -ENOMEM;
- 			goto fail_rate;
- 		}
--- 
-2.34.1
+在 2022/12/1 14:18, Arend Van Spriel 写道:
+> On December 1, 2022 4:01:39 AM wangyufen <wangyufen@huawei.com> wrote:
+> 
+>> 在 2022/11/30 19:19, Arend van Spriel 写道:
+>>> On 11/30/2022 3:00 AM, wangyufen wrote:
+>>>>
+>>>>
+>>>> 在 2022/11/30 1:41, Franky Lin 写道:
+>>>>> On Tue, Nov 29, 2022 at 1:47 AM Wang Yufen <wangyufen@huawei.com> 
+>>>>> wrote:
+>>>>>>
+>>>>>> Fix to return a negative error code -EINVAL instead of 0.
+>>>>>>
+>>>>>> Compile tested only.
+>>>>>>
+>>>>>> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
+>>>>>> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+>>>>>> ---
+>>>>>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+>>>>>>  1 file changed, 1 insertion(+)
+>>>>>>
+>>>>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>>>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>>>>> index 465d95d..329ec8ac 100644
+>>>>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>>>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>>>>> @@ -3414,6 +3414,7 @@ static int brcmf_sdio_download_firmware(struct
+>>>>>> brcmf_sdio *bus,
+>>>>>>         /* Take arm out of reset */
+>>>>>>         if (!brcmf_chip_set_active(bus->ci, rstvec)) {
+>>>>>>                 brcmf_err("error getting out of ARM core reset\n");
+>>>>>> +               bcmerror = -EINVAL;
+>>>>>
+>>>>> ENODEV seems more appropriate here.
+>>>>
+>>>> However, if brcmf_chip_set_active()  fails in
+>>>> brcmf_pcie_exit_download_state(), "-EINVAL" is returned.
+>>>> Is it necessary to keep consistent?
+>>>
+>>> If we can not get the ARM on the chip out of reset things will fail soon
+>>> enough further down the road. Anyway, the other function calls return
+>>> -EIO so let's do the same here.
+>>
+>> So -EIO is better?  Anyone else have any other opinions? 😄
+> 
+> Obviously it is no better than -EINVAL when you look at the behavior. It 
+> is just a feeble attempt to be a little bit more consistent. Feel free 
+> to change the return value for brcmf_pcie_exit_download_state() as well.
+> 
+All right, I'll send a v2 and change the error return values on both 
+sides to -EIO.
 
+Thanks，
+Wang
+> Regards,
+> Arend
+>>>
+> 
+> 
+> 
