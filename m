@@ -2,97 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 771D7640032
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 07:16:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ACCC6400FF
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 08:25:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231386AbiLBGQo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 01:16:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
+        id S232152AbiLBHZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 02:25:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231499AbiLBGQl (ORCPT
+        with ESMTP id S230094AbiLBHZK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 01:16:41 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AE00CA8969
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 22:16:40 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B26FnFkA006338, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B26FnFkA006338
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 2 Dec 2022 14:15:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 2 Dec 2022 14:16:34 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 2 Dec 2022
- 14:16:34 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/4] wifi: rtw89: add join info upon create interface
-Date:   Fri, 2 Dec 2022 14:15:27 +0800
-Message-ID: <20221202061527.505668-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221202061527.505668-1-pkshih@realtek.com>
-References: <20221202061527.505668-1-pkshih@realtek.com>
+        Fri, 2 Dec 2022 02:25:10 -0500
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94922AC6F1
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Dec 2022 23:25:08 -0800 (PST)
+Received: by mail-qv1-xf36.google.com with SMTP id i12so2937496qvs.2
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Dec 2022 23:25:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dkxAZ6i0a46NYva8Tu5LZq5jw3SaAMYQxWXgmzM9ieU=;
+        b=hfluDAzwKX/IXE/smnV7yY66FtJhs1rotB6hNAzmGY1C/SMzEzzPWzkKsqlCaehRdm
+         ieS3yhGnliSM52kxsjmYSTFD0ivaIWWmqPjLZ2Ej+skI3ejY2fwHDtqayUjHS8JpSmiT
+         pGXlgLELtFg9xrBkbS/t8bJvYZdihRSJYyZtM4N4abCZrQDDa7TVSpCaLqjAuDf6pTon
+         CTQjNdHRtYHn3GldCJXU1O3RofnkBnGUgn5Oj5+oRuCeF4dpN4BJWLI5TkqWfMeYtV7i
+         4Qc0yso4j1EtgapIt8Z33cim8wHDYGQGs4VHoFGh887I7zecurJ3w0lJ+PxxgUl1dQ4E
+         kksw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dkxAZ6i0a46NYva8Tu5LZq5jw3SaAMYQxWXgmzM9ieU=;
+        b=7wyYRjrIX0A1wjrQ0wEQrSbFqtd2+yawDAFieyK35RfpMtFjCEP2r2Fh1MxYrIYm+W
+         SOoi2lfnxHAt8opvJwL85upcYd0GizqQMu39MmczYqJraPS9eqjjJGC2OQXY/JCcSBER
+         II7pna7u79zffhfQJUhTCUi3TewNVkgZ3eP83GC9N0qkFV74P0TRzJIa230YlF11xAjP
+         mjtueGAHLi8V4AvKKIEtpTKjcAWAvJDaVqwhpagXRbLNSkGQmL1ub/gRzmOXJhii9Lws
+         2FAFQO+jH3lgxEfCpKrbmiKTH2DBwUUwKuo911o3Qw0u4jGWgrZvE6a/DU/JtpDD14j1
+         JKLQ==
+X-Gm-Message-State: ANoB5pmtWncBjs6hEEd2840SW7ZZaDvkdeZ2tM6dWjaGwSGqu+TMMp/x
+        PB6hL2N7FzpgXlpKSsbe93Uv5h2+Co5k0KglU5ljvD2ijAQ=
+X-Google-Smtp-Source: AA0mqf7Yh0y8Tz0BsDAkzOm9ODSpehe++0JeuBF5D/YyrQeKHUC+5kjvT7zsRMt9uvyvr9gowTNvfrY1+KK6L5wwWTc=
+X-Received: by 2002:a05:6214:170d:b0:4c7:4add:6123 with SMTP id
+ db13-20020a056214170d00b004c74add6123mr186580qvb.100.1669965907704; Thu, 01
+ Dec 2022 23:25:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/02/2022 06:00:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzIgpFekyCAwMToyMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <b48efa92-9eee-d491-1149-a7cee08300c0@airpost.net>
+ <80556c56e69405d7c8f8bc3d57e2ba697074c660.camel@sipsolutions.net> <9093c08e-302d-578c-3e16-619d238b4022@airpost.net>
+In-Reply-To: <9093c08e-302d-578c-3e16-619d238b4022@airpost.net>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Fri, 2 Dec 2022 18:24:56 +1100
+Message-ID: <CAGRGNgVGsii7+jdN3PnMWdCSeRyCDF96ivVOfxzi8xDufUigNw@mail.gmail.com>
+Subject: Re: every other wireless scan shows bogus (too low) signal strengths
+To:     Bruno Dantas <dantas@airpost.net>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+Hi Bruno,
 
-To support multiple vifs, fw need more information of each role.
-Send this info to make things work as expected.
+On Fri, Dec 2, 2022 at 7:08 AM Bruno Dantas <dantas@airpost.net> wrote:
+>
+> Hi, Johannes. Thank you for your help.
+>
+> To exclude a bad network card, I replaced my laptop's card with a differe=
+nt one (with the same Intel AC 7265 chipset). The replacement card fared no=
+ better. Therefore, I put the original card back and ensured that the two a=
+ntenna wires are securely connected. There is no doubt now that the wires a=
+re secure, but the problem persists.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Stupid question, is there any chance that one of the antennas is damaged?
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 12cbf41590bbe..cf9a0a3120a79 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3980,6 +3980,10 @@ int rtw89_mac_vif_init(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- 	if (ret)
- 		return ret;
- 
-+	ret = rtw89_fw_h2c_join_info(rtwdev, rtwvif, NULL, true);
-+	if (ret)
-+		return ret;
-+
- 	ret = rtw89_cam_init(rtwdev, rtwvif);
- 	if (ret)
- 		return ret;
--- 
-2.25.1
+You might get slightly different behaviour if you swap them - if your
+X230 is anything like my X200, there should be enough slack do that.
 
+If it turns out that one of them is bad, you might be able to find
+replacements on eBay or Aliexpress, or in the worst case scenario just
+install a generic antenna.
+
+Hardware Maintenance Manual is here:
+https://support.lenovo.com/us/en/manuals/um014928-hardware-maintenance-manu=
+al
+and the steps to replace the antennas don't look too onerous.
+
+Thanks,
+
+--=20
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
