@@ -2,302 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0712164094B
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 16:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E253C64097A
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Dec 2022 16:38:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233505AbiLBP0x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Dec 2022 10:26:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59826 "EHLO
+        id S233711AbiLBPiM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Dec 2022 10:38:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233353AbiLBP0w (ORCPT
+        with ESMTP id S233073AbiLBPiL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Dec 2022 10:26:52 -0500
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67FB2CFE61
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 07:26:50 -0800 (PST)
-Received: by mail-ed1-x52b.google.com with SMTP id s5so6870112edc.12
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Dec 2022 07:26:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tv6IVA3JG7DFJzCezwz0go6cfZLNQ9kagJBITXg5Bp0=;
-        b=RNdVX1vZ+SlboruEYagMKLfyoPBjOG87Abj1aMofaF4cvC/vtWNI5bSqTSbT0faz6b
-         fPcid/zjK4ALm8nhpulfqkqApCfnm1JxCYS9NB7p054J25I9Iqx//mThHh2G0W+ZKiHU
-         7NyldsKoV/NvrxE0fNVQfkbJzjfPAOmBGM9qk=
+        Fri, 2 Dec 2022 10:38:11 -0500
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC53E8EE68;
+        Fri,  2 Dec 2022 07:38:09 -0800 (PST)
+Received: by mail-lf1-f52.google.com with SMTP id c1so7941385lfi.7;
+        Fri, 02 Dec 2022 07:38:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tv6IVA3JG7DFJzCezwz0go6cfZLNQ9kagJBITXg5Bp0=;
-        b=ILzfusj8lF6PSNclsdAU9iXJouJ/Dcqf4MeIj3jKnFEA5fdPoXLs1NzvDkaAKDI8U2
-         +xRoKtn7lAs2NOFCaBDuxLjsNh4icQgk5NCpZDSM3Vuezcc5xVA5iMLMvCdEjbk7Eus7
-         Sf5U4z1Q/pvP9HDdoswMsDcXAyemc4lJJcQZB3a9sI6R54S9VlcC1ABKSHpSeK2EhvJk
-         xPltYgJdM3PMCeVCO1QMhWPlOS7CCzZhJimqLT4nkUnC+5FVCKksrfqEI888MZ+f4HW/
-         4uCPFTO5lSmg/XjaD/l+j9s/hnlXgR6YO9I09R3/djmnD1I1UvOAoCR06tnoPF/O8s6W
-         +X2Q==
-X-Gm-Message-State: ANoB5pn+DHFvxy8rNII5/4mSO5a+9HXo2LHHN/w0+0mMbtzJLhfeW5X5
-        bPyeUw0im1dGHG6xBO3W3mQluQ==
-X-Google-Smtp-Source: AA0mqf5LN1NccbvZur20OjSw1oMoYUPvDX7/sOsWtl8G5C5hwrldrYGMLbi4HICuXi2lHK/nDPwX2Q==
-X-Received: by 2002:a05:6402:110d:b0:469:dd6:bfee with SMTP id u13-20020a056402110d00b004690dd6bfeemr48989845edv.330.1669994808886;
-        Fri, 02 Dec 2022 07:26:48 -0800 (PST)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 9-20020a170906210900b0073de0506745sm3070147ejt.197.2022.12.02.07.26.46
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vhdW6X1bGFq1GUdOEe+pRgDK494GKVDs9c7r4mfiruQ=;
+        b=LxxZ7FlWH8XL/kaWszGQrGzeF4XG459tvGqgl6Kvw8m3N17fUZIz2Q0oqoopaCVjpj
+         V4EnP8zR6O39C27o4qS6tNx1LCSZmPJWy4UK7ggUgPReIpf6qOkaF37SNhRihWdJv8I1
+         EQDri6tcxZEk13oe8XDikUw6cTp3R7TtDbxEzCc3wD1dfyO/Z2CUhJLZXaauOx5uiImt
+         MxAx1j/ZIT4accfojEVgKx0NQaT/+1lDleX93KEwX/MB8KjspTrYyTDgb8UJ2qa3ROfS
+         t/uq4yycFTHcWWMsvAYDm7pBeEgsxteg+WqUhWXs2G/u57fXc9+iPrkN3i+e+zj4Xqgz
+         Nlfw==
+X-Gm-Message-State: ANoB5pk1u+e69VhCGd26FtS5s9yJxxby186uscHNwShoVCKg93axVXJH
+        rWnKUYnvDg5OiS0cHhgWRzLTJvaUr4x1oyNH
+X-Google-Smtp-Source: AA0mqf6WtGjNW0sRh9DgNZgKPJR9GAncVUIOvYTF7gw1mwIYgjb8GDaohcd0uwrycY5073j2BrJa2g==
+X-Received: by 2002:a05:6512:2983:b0:4b4:d338:4d8e with SMTP id du3-20020a056512298300b004b4d3384d8emr17761989lfb.512.1669995486840;
+        Fri, 02 Dec 2022 07:38:06 -0800 (PST)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
+        by smtp.gmail.com with ESMTPSA id bi37-20020a05651c232500b0027708c94c9bsm6705ljb.79.2022.12.02.07.38.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Dec 2022 07:26:47 -0800 (PST)
-Message-ID: <af489711-6849-6f87-8ea3-6c8216f0007b@broadcom.com>
-Date:   Fri, 2 Dec 2022 16:26:46 +0100
+        Fri, 02 Dec 2022 07:38:05 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id a19so5862765ljk.0;
+        Fri, 02 Dec 2022 07:38:04 -0800 (PST)
+X-Received: by 2002:a05:651c:200c:b0:279:3d7a:c240 with SMTP id
+ s12-20020a05651c200c00b002793d7ac240mr19420636ljo.289.1669995484289; Fri, 02
+ Dec 2022 07:38:04 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
-        Hector Martin <marcan@marcan.st>,
-        "~postmarketos/upstreaming@lists.sr.ht" 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        "martin.botka@somainline.org" <martin.botka@somainline.org>,
-        "angelogioacchino.delregno@somainline.org" 
-        <angelogioacchino.delregno@somainline.org>,
-        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
-        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Soon Tak Lee <soontak.lee@cypress.com>,
+References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info> <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
+In-Reply-To: <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
+From:   Dave Chiluk <chiluk@ubuntu.com>
+Date:   Fri, 2 Dec 2022 09:37:51 -0600
+X-Gmail-Original-Message-ID: <CAMfi-DRE-u5TNu2zAL-7A-ENHM9EiJeYJ38BL_FMdk6QmW7c9w@mail.gmail.com>
+Message-ID: <CAMfi-DRE-u5TNu2zAL-7A-ENHM9EiJeYJ38BL_FMdk6QmW7c9w@mail.gmail.com>
+Subject: Re: [regression] Bug 216753 - 6e 6 ghz bands are disabled since 5.16
+ on intel ax211
+To:     "Coelho, Luciano" <luciano.coelho@intel.com>
+Cc:     "regressions@leemhuis.info" <regressions@leemhuis.info>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <83b90478-3974-28e6-cf13-35fc4f62e0db@marcan.st>
- <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org>
- <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
- <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
- <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
- <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
- <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
- <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
- <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
- <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
- <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
- <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
- <c83d7496-7547-2ab4-571a-60e16aa2aa3d@broadcom.com>
- <6e4f1795-08b5-7644-d1fa-102d6d6b47fb@linaro.org>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <6e4f1795-08b5-7644-d1fa-102d6d6b47fb@linaro.org>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000608fa005eed9f762"
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_PDS_OTHER_BAD_TLD autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000608fa005eed9f762
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+The other possibility is that this is actually a bios bug, as the DSM
+is being read out of ACPI.  In which case that would be Dell's fault.
+Either way I appreciate any guidance you can provide.
 
-On 12/2/2022 11:33 AM, Konrad Dybcio wrote:
-> 
-> 
-> On 1.12.2022 12:31, Arend van Spriel wrote:
->> On 11/28/2022 3:40 PM, Konrad Dybcio wrote:
->>>
->>>
->>> On 26.11.2022 22:45, Linus Walleij wrote:
->>>> On Fri, Nov 25, 2022 at 1:25 PM Kalle Valo <kvalo@kernel.org> wrote:
->>>>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
->>>>>
->>>>>> On 25.11.2022 12:53, Kalle Valo wrote:
->>>>>>> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
->>>>>>>
->>>>>>>> On 21.11.2022 14:56, Linus Walleij wrote:
->>>>>>>>> On Fri, Nov 18, 2022 at 5:47 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
->>>>>>>>>
->>>>>>>>>> I can think of a couple of hacky ways to force use of 43596 fw, but I
->>>>>>>>>> don't think any would be really upstreamable..
->>>>>>>>>
->>>>>>>>> If it is only known to affect the Sony Xperias mentioned then
->>>>>>>>> a thing such as:
->>>>>>>>>
->>>>>>>>> if (of_machine_is_compatible("sony,xyz") ||
->>>>>>>>>       of_machine_is_compatible("sony,zzz")... ) {
->>>>>>>>>      // Enforce FW version
->>>>>>>>> }
->>>>>>>>>
->>>>>>>>> would be completely acceptable in my book. It hammers the
->>>>>>>>> problem from the top instead of trying to figure out itsy witsy
->>>>>>>>> details about firmware revisions.
->>>>>>>>>
->>>>>>>>> Yours,
->>>>>>>>> Linus Walleij
->>>>>>>>
->>>>>>>> Actually, I think I came up with a better approach by pulling a page
->>>>>>>> out of Asahi folks' book - please take a look and tell me what you
->>>>>>>> think about this:
->>>>>>>>
->>>>>>>> [1]
->>>>>>>> https://github.com/SoMainline/linux/commit/4b6fccc995cd79109b0dae4e4ab2e48db97695e7
->>>>>>>> [2]
->>>>>>>> https://github.com/SoMainline/linux/commit/e3ea1dc739634f734104f37fdbed046873921af7
->>>>
->>>> Something in this direction works too.
->>>>
->>>> The upside is that it tells all operating systems how to deal
->>>> with the firmware for this hardware.
->>>>
->>>>>>> Instead of a directory path ("brcm/brcmfmac43596-pcie") why not provide
->>>>>>> just the chipset name ("brcmfmac43596-pcie")? IMHO it's unnecessary to
->>>>>>> have directory names in Device Tree.
->>>>>>
->>>>>> I think it's common practice to include a full $FIRMWARE_DIR-relative
->>>>>> path when specifying firmware in DT, though here I left out the board
->>>>>> name bit as that's assigned dynamically anyway. That said, if you don't
->>>>>> like it, I can change it.
->>>>>
->>>>> It's just that I have understood that Device Tree is supposed to
->>>>> describe hardware and to me a firmware directory "brcm/" is a software
->>>>> property, not a hardware property. But this is really for the Device
->>>>> Tree maintainers to decide, they know this best :)
->>>>
->>>> I would personally just minimize the amount of information
->>>> put into the device tree to be exactly what is needed to find
->>>> the right firmware.
->>>>
->>>> brcm,firmware-compatible = "43596";
->>>>
->>>> since the code already knows how to conjure the rest of the string.
->>>>
->>>> But check with Rob/Krzysztof.
->>>>
->>>> Yours,
->>>> Linus Walleij
->>>
->>> Krzysztof, Rob [added to CC] - can I have your opinions?
->>
->> I tried catching up on this thread. Reading it I am not sure what the issue is, but I am happy to dive in. If you can provide a boot log with brcmfmac loaded with module parameter 'debug=0x1416' I can try and make sense of the chipid/devid confusion.
-> 
-> Hope this helps, thanks! https://hastebin.com/xidagekuge.yaml
+Thanks,
+Dave.
 
-It does to some extent. It is basically a 4359 revision 9:
 
-[   25.898782] brcmfmac: brcmf_chip_recognition found AXI chip: BCM4359/9
-
-The 4359 entry in pcie.c is applicable for revision 0 and higher 
-(doubtful but that is in the code):
-
-	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
-
-We need to change the mask above to 0x000001FF and add a new entry with 
-mask 0xFFFFFE00. All we need is come up with a reasonable firmware 
-filename. So can you run the strings command on the firmware you use:
-
-$ strings fw.bin | tail -1
-
-and let me know the output.
-
-Regards,
-Arend
-So for rev 9 we need a new entry
-
---000000000000608fa005eed9f762
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBrB+iC+qHHPIbGEKYo
-Dg0ogOepqZJOnqU4lOYxRoO/UzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMDIxNTI2NDlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAZsjgK6A4Hl/2F49NP4yysfMBn+mxFpiv+6yg
-9j4+xg19QdnsgQLRjo2Fe5TxsgaJg49BCVoyWgGkw/HTuKGXN0xrwi4MqQJBbo3qMx21JWKMZNFq
-0Qkt7j8KMS+1MFCp9ENzNF1KFvW926MnWeqPSkEuqxQ1dUQPMMvWm8QRIGlrs4LX31H0sYDVqpSX
-rJiTyXZVGI2Nhydpa8uxSiZtWD/UJu0db0lUxO2/JVQzaFUhcFxcLsvdovc/6rtYok4011DyW1JU
-mgDwaPNE7DsEmLRfGtDnuwfnzZiAXBC+zvUqKfKR7sg23x0nwtSgLbFqx8z6eEIv6Nuaf4IhiEVP
-vw==
---000000000000608fa005eed9f762--
+On Thu, Dec 1, 2022 at 5:33 AM Coelho, Luciano <luciano.coelho@intel.com> wrote:
+>
+> On Thu, 2022-12-01 at 11:14 +0100, Thorsten Leemhuis wrote:
+> > Hi, this is your Linux kernel regression tracker.
+> >
+> > Luca, I noticed a regression report in bugzilla where I'd like your
+> > advice on. To quote https://bugzilla.kernel.org/show_bug.cgi?id=216753
+>
+> Hi Thorsten wearing-the-regression-hat, 🙂
+>
+> I'm not the maintainer of iwlwifi anymore, so I'm adding the new
+> maintainer here, Gregory Greenman.
+>
+> Gregory, can you take a look?
+>
+>
+> > > It looks like the self-managed regulatory information is causing the 6ghz band to be disabled on my AX211 (in the US).
+> > > iw reg get shows no 6ghz bands (output at the bottom).
+> > >
+> > > $ sudo iw phy0 channel
+> > > ...
+> > > Band 4:
+> > >     * 5955 MHz [1] (disabled)
+> > >     * 5975 MHz [5] (disabled)
+> > >     * 5995 MHz [9] (disabled)
+> > >         ....(continues with all disabled
+> > >         * 7115 MHz [233] (disabled)
+> > > ...
+> > >
+> > > I was able to narrow this down to having been introduced during the 5.16 development window, as 5.15.79 linux-stable kernel works and the 5.16.12 does
+> > > not (earlier builds of 5.16 kernel fail to boot on my machine for some reason).
+> > >
+> > > I found https://community.frame.work/t/kernel-5-16-6ghz-disabled-ax210/15675/5
+> > > and they imply that this regression was introduced by
+> > > 698b166ed3464e1604a0e6a3e23cc1b529a5adc1
+> > > I haven't independently verified this commit as the definitive issue.
+> >
+> > You authored 698b166ed346 ("iwlwifi: mvm: read 6E enablement flags from
+> > DSM and pass to FW"). As it is a regressions is ideally should be dealt
+> > with. But this area in tricky due to the legal implications. Hence I
+> > wonder: is there anything we can do about this, or is this simply a case
+> > where we have to bite the bullet and live with this regression?
+> >
+> > Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> >
+> > P.S.: As the Linux kernel's regression tracker I deal with a lot of
+> > reports and sometimes miss something important when writing mails like
+> > this. If that's the case here, don't hesitate to tell me in a public
+> > reply, it's in everyone's interest to set the public record straight.
