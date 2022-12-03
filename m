@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2F0641894
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Dec 2022 20:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70B44641940
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Dec 2022 22:33:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbiLCT3e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Dec 2022 14:29:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
+        id S229680AbiLCVdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Dec 2022 16:33:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbiLCT3d (ORCPT
+        with ESMTP id S229691AbiLCVde (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Dec 2022 14:29:33 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC761B7AC
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Dec 2022 11:29:27 -0800 (PST)
-X-UUID: e73743a7582041c48d4d69d8cec8cdfd-20221204
+        Sat, 3 Dec 2022 16:33:34 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE57210B71
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Dec 2022 13:33:29 -0800 (PST)
+X-UUID: 0c663f3cf4c540d0909a7586b921a53b-20221204
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Dkqrim5MMKDqnuM1SehC9SWivtj3cFY8upiktgS3Xn4=;
-        b=NFQ4vKKGDuE7txP71cniMD9muOZLj4N77SPUcqn/1Q7JXfboybcFltQ9GLYDEBFA26nYCoHI7suWr4JOSOKVGZ3zejzPj5qyIu9ZrwB1Jww3acbxlb/hv+EPMPP+vdYcB/UKTJWqhyLj2hYedv/QkisnzPSzarIWqqbw5BL7IPM=;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=CWwG02TSaInKtmUV+WNqTAMV/tocxbg7bIfdefA8Tso=;
+        b=Gs0+MCCH1uX7Gb6HzSSg12LsyxSNpmKfM6TPYhv06b63E8UUkqjIa1beYkengrJwPv8nwONbujGwsgIzN6ekI2H891hhMkkPzo5WtAl10mCN6M7n3q2jsXjfHmovYyjmq4lImw9sg9tKs3gwuas6g4BETZbaQfVYfDGUQh+Llmw=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:d02710d4-4fc9-47c6-a6b9-62137077016f,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.14,REQID:d02710d4-4fc9-47c6-a6b9-62137077016f,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:dcaaed0,CLOUDID:fd2a766c-41fe-47b6-8eb4-ec192dedaf7d,B
-        ulkID:221204032924B55VSVO2,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: e73743a7582041c48d4d69d8cec8cdfd-20221204
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+X-CID-O-INFO: VERSION:1.1.14,REQID:d42b8f6f-c37e-4857-ab01-4517e47cb523,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:90
+X-CID-INFO: VERSION:1.1.14,REQID:d42b8f6f-c37e-4857-ab01-4517e47cb523,IP:0,URL
+        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:90
+X-CID-META: VersionHash:dcaaed0,CLOUDID:bff59330-2938-482e-aafd-98d66723b8a9,B
+        ulkID:221204053324YYIDDYKS,BulkQuantity:1,Recheck:0,SF:38|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:43,QS:nil,BEC:nil,COL:0
+X-UUID: 0c663f3cf4c540d0909a7586b921a53b-20221204
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1389504256; Sun, 04 Dec 2022 03:29:24 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Sun, 4 Dec 2022 03:29:23 +0800
+        with ESMTP id 1633810790; Sun, 04 Dec 2022 05:33:21 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Sun, 4 Dec 2022 05:33:20 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sun, 4 Dec 2022 03:29:23 +0800
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Sun, 4 Dec 2022 05:33:20 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -48,18 +48,16 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         <linux-mediatek@lists.infradead.org>,
         Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 3/3] wifi: mt76: mt7915: check the correctness of event data first
-Date:   Sun, 4 Dec 2022 03:29:19 +0800
-Message-ID: <57af9227896a13eadc062b52d238f179d4ebd049.1670095617.git.ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/3] wifi: mt76: mt7915: check return value before accessing free_block_num
+Date:   Sun, 4 Dec 2022 05:33:17 +0800
+Message-ID: <3fec8b8c618a78d1197f4060f89fa8bdd836b425.1670102099.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <ba197e342d4d99d2e1be2e731ae989f57f5cf8a9.1670095617.git.ryder.lee@mediatek.com>
-References: <ba197e342d4d99d2e1be2e731ae989f57f5cf8a9.1670095617.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,70 +65,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The mcu event might not be reliable, so check the correctness of data
-before handling it.
+Check return value of mt7915_mcu_get_eeprom_free_block() first before
+accessing free_block_num.
 
+Fixes: bbc1d4154ec1 ("mt76: mt7915: add default calibrated data support")
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 21 +++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+change since v2 - check return value of mt7915_mcu_get_eeprom() as well.
+---
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 19 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 10 ++++++----
+ 2 files changed, 18 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 59069fb86414..24efa280dd86 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -110,18 +110,23 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 	} else {
+ 		u8 free_block_num;
+ 		u32 block_num, i;
++		u32 eeprom_blk_size = MT7915_EEPROM_BLOCK_SIZE;
+ 
+-		mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
+-		/* efuse info not enough */
++		ret = mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
++		if (ret < 0)
++			return ret;
++
++		/* efuse info isn't enough */
+ 		if (free_block_num >= 29)
+ 			return -EINVAL;
+ 
+ 		/* read eeprom data from efuse */
+-		block_num = DIV_ROUND_UP(eeprom_size,
+-					 MT7915_EEPROM_BLOCK_SIZE);
+-		for (i = 0; i < block_num; i++)
+-			mt7915_mcu_get_eeprom(dev,
+-					      i * MT7915_EEPROM_BLOCK_SIZE);
++		block_num = DIV_ROUND_UP(eeprom_size, eeprom_blk_size);
++		for (i = 0; i < block_num; i++) {
++			ret = mt7915_mcu_get_eeprom(dev, i * eeprom_blk_size);
++			if (ret < 0)
++				return ret;
++		}
+ 	}
+ 
+ 	return mt7915_check_eeprom(dev);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index f9e4c3e80af0..7cb45cd55ada 100644
+index ca315af3905b..86ec767266cc 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -232,8 +232,11 @@ mt7915_mcu_rx_csa_notify(struct mt7915_dev *dev, struct sk_buff *skb)
+@@ -2792,8 +2792,9 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
+ 	int ret;
+ 	u8 *buf;
  
- 	c = (struct mt7915_mcu_csa_notify *)skb->data;
+-	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(EFUSE_ACCESS), &req,
+-				sizeof(req), true, &skb);
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
++					MCU_EXT_QUERY(EFUSE_ACCESS),
++					&req, sizeof(req), true, &skb);
+ 	if (ret)
+ 		return ret;
  
-+	if (c->band_idx > MT_BAND1)
-+		return;
-+
- 	if ((c->band_idx && !dev->phy.mt76->band_idx) &&
--	     dev->mt76.phys[MT_BAND1])
-+	    dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
+@@ -2818,8 +2819,9 @@ int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num)
+ 	struct sk_buff *skb;
+ 	int ret;
  
- 	ieee80211_iterate_active_interfaces_atomic(mphy->hw,
-@@ -252,8 +255,11 @@ mt7915_mcu_rx_thermal_notify(struct mt7915_dev *dev, struct sk_buff *skb)
- 	if (t->ctrl.ctrl_id != THERMAL_PROTECT_ENABLE)
- 		return;
+-	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(EFUSE_FREE_BLOCK), &req,
+-					sizeof(req), true, &skb);
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
++					MCU_EXT_QUERY(EFUSE_FREE_BLOCK),
++					&req, sizeof(req), true, &skb);
+ 	if (ret)
+ 		return ret;
  
-+	if (t->ctrl.band_idx > MT_BAND1)
-+		return;
-+
- 	if ((t->ctrl.band_idx && !dev->phy.mt76->band_idx) &&
--	     dev->mt76.phys[MT_BAND1])
-+	    dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
- 
- 	phy = (struct mt7915_phy *)mphy->priv;
-@@ -268,8 +274,11 @@ mt7915_mcu_rx_radar_detected(struct mt7915_dev *dev, struct sk_buff *skb)
- 
- 	r = (struct mt7915_mcu_rdd_report *)skb->data;
- 
-+	if (r->band_idx > MT_BAND1)
-+		return;
-+
- 	if ((r->band_idx && !dev->phy.mt76->band_idx) &&
--	     dev->mt76.phys[MT_BAND1])
-+	    dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
- 
- 	if (r->band_idx == MT_RX_SEL2)
-@@ -326,7 +335,11 @@ mt7915_mcu_rx_bcc_notify(struct mt7915_dev *dev, struct sk_buff *skb)
- 
- 	b = (struct mt7915_mcu_bcc_notify *)skb->data;
- 
--	if ((b->band_idx && !dev->phy.mt76->band_idx) && dev->mt76.phys[MT_BAND1])
-+	if (b->band_idx > MT_BAND1)
-+		return;
-+
-+	if ((b->band_idx && !dev->phy.mt76->band_idx) &&
-+	    dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
- 
- 	ieee80211_iterate_active_interfaces_atomic(mphy->hw,
 -- 
 2.18.0
 
