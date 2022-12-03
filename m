@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A58E56416C4
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Dec 2022 13:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CCA16416C5
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Dec 2022 13:57:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbiLCMzB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Dec 2022 07:55:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
+        id S229555AbiLCM4A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Dec 2022 07:56:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiLCMzA (ORCPT
+        with ESMTP id S229462AbiLCMz7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Dec 2022 07:55:00 -0500
+        Sat, 3 Dec 2022 07:55:59 -0500
 Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E80B1AF07
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Dec 2022 04:54:59 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id ay27-20020a05600c1e1b00b003d070f4060bso6423554wmb.2
-        for <linux-wireless@vger.kernel.org>; Sat, 03 Dec 2022 04:54:59 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15041AF07
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Dec 2022 04:55:58 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id ay27-20020a05600c1e1b00b003d070f4060bso6424736wmb.2
+        for <linux-wireless@vger.kernel.org>; Sat, 03 Dec 2022 04:55:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7iZLbj/0LA/5WX181I6xzw8Ag37adaCwn9reU61rJy0=;
-        b=ko9o9HIjwLaWDCBC/d/OlezbL0XGt4W2ywxvuB07QWd9R4jkoGlzOL8USB8ifAgK7G
-         zSvOyc0cKSPvulD+NvbYUeNw6iZu9Ck27kI3WQG1qdVCxWq1vOqabMEV1yIjht+9OJ9z
-         gZqIkvUeV8obWS7vPx7Qt1OhQd6N0MXh3vq656YK4BbaZ5kJ5wtr4h0trx88gsJc2CxW
-         DCfC6i2WUSFhpToLZlqZnxr3F0mou387TeU6PetuS6ChhAgw803qisgR6ef/Gp35a1yk
-         Y1vJPLhHBLcWToVO7mcfENCcmlDdDPzdO/CR8H4sGYxm1JTx6YcrY1jI2Bw5uyFM9jeI
-         eYyw==
+        bh=FoIrF7kCNUtvu8wYA9TbwcdtJkwsf3xKM7GSL38E1UY=;
+        b=B/A+yde22CoSRt1erNSW9PIkw5uDNbCXjfPiWd6DgUkYxprrUD0GWDbRlPdmwKogdt
+         xnv176ctbxHL+wa5NuovkgoRvGr81JimgEtVPgvGFhO9sQzcr5sWGf2QtI9/KOXgSOY7
+         go7rFA1A90ed3w+OtFc8Cg/spmN0CvT20zWj60Ti1CGfDwuemjXrJo1B+/WnM1ylvak5
+         6YPwneMzBadTLqnyHIf1SGyUOWNf6ElPY4EyfMmyMn0nr+uX5QJaasG9bjQR7ucRCPhM
+         mGvJ7DsPfNnkZIkIMR2ATHC0sCG1XhmL+J9usIviSMIWt3w2pFpCbL9U47RDffZCmvWu
+         c1SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7iZLbj/0LA/5WX181I6xzw8Ag37adaCwn9reU61rJy0=;
-        b=oQaMuvTR05yU6BebOguuiE0Ojl86pQrqupZ77iZYjUA+SkC0SzgkVhhUAF7db+5nA5
-         RThNyfpEMTc/KJ3GqOEW/Zqbr1Q2OVMV8HZ8+yHEbEs/FU1Q8wQy9TgT/2EFM2xzD4jg
-         JU4N/hGiTATdP2gznMfVlgm8l6ey9n0oUNnIlLX9BhPuFpc0T9srzZUItElcrO301SMV
-         WlA/GRPwQ/3kMw6O+dr7WDWxq3qj4zCu18O6RY/JXPs0WvmrJ++PphJBJq/drGOSa7Ir
-         t8UzAr05KQVWkDNN2iDAgUIOPWelf94rdVIqHJm+Lhjl5OW43I8VTcppS9eRQUw+sodt
-         6INQ==
-X-Gm-Message-State: ANoB5pngRgsU+Nkj/Vr5nMC7ZHjBH1peqnGN2Fxi0tnRE1rc4GzjeCHL
-        sQ04l3xn3OEk/bp6I6sjRnI=
-X-Google-Smtp-Source: AA0mqf4vRyqthvBgCEePEVOfTmYEo5q8/NMcFBzFddHlvq7JwuSjiCRImSTIrtO31QXqYJjflgb8zw==
-X-Received: by 2002:a05:600c:3586:b0:3cf:a3b0:df6a with SMTP id p6-20020a05600c358600b003cfa3b0df6amr57459613wmq.126.1670072097765;
-        Sat, 03 Dec 2022 04:54:57 -0800 (PST)
+        bh=FoIrF7kCNUtvu8wYA9TbwcdtJkwsf3xKM7GSL38E1UY=;
+        b=ZQKwDzIU4hlz8iFC/JzdzhMTG8qXpgo7zvamGoxp6oc/AY3xZ4ibtbDxggxH89YpAR
+         5aBYNh88g9eisFdf+g+4ukX7VmmpXqorfc4D0wyfZMcL4sYoFt7o05UiBikMvMJMhh1v
+         imNoW1NdoE2P7oJN+aqsZ4AeRjm2dZQxkUI98n7S6i+2qPaH6tDCqcSSb6ANVY/M6ugV
+         yPaAAxORK55GCdkxuVKn0fiBBmV2nVm9zHxK5KqR2lgtFEOTq9uiSy9nNk/Up4swLN85
+         o4e5Lwlvw9sNUdf88dtGZNGBbBEXFxoTW9VQskm3Nb2/3ixMQosIqJhP3ZdYw78hzIE1
+         6XZQ==
+X-Gm-Message-State: ANoB5pk5SXrHQO+KYf+mhq8bAZJ6KRMC0Zn1WuH6eX3N6nbpmqtKzvxB
+        EbgR25DOCNQPlwqacXWlo9E=
+X-Google-Smtp-Source: AA0mqf68LQWYxzcpEE4UyZ1RNDhyoFlE9YQyZCuImQDl33nlRfA943Xd2rrT4EGiTuC72/qHAVYx4w==
+X-Received: by 2002:a05:600c:3d08:b0:3cf:e84d:6010 with SMTP id bh8-20020a05600c3d0800b003cfe84d6010mr45826052wmb.197.1670072157348;
+        Sat, 03 Dec 2022 04:55:57 -0800 (PST)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id r10-20020a05600c458a00b003cfd4a50d5asm17320643wmo.34.2022.12.03.04.54.56
+        by smtp.gmail.com with ESMTPSA id j3-20020adfd203000000b002366c3eefccsm9546293wrh.109.2022.12.03.04.55.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Dec 2022 04:54:57 -0800 (PST)
-Date:   Sat, 3 Dec 2022 15:54:53 +0300
+        Sat, 03 Dec 2022 04:55:56 -0800 (PST)
+Date:   Sat, 3 Dec 2022 15:55:53 +0300
 From:   Dan Carpenter <error27@gmail.com>
 To:     shayne.chen@mediatek.com
 Cc:     linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
 Subject: [bug report] wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7
  (802.11be) devices
-Message-ID: <Y4tHHYLPX/6x6ztK@kili>
+Message-ID: <Y4tHWWBKBU4GaMkX@kili>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -74,25 +74,42 @@ The patch 98686cd21624: "wifi: mt76: mt7996: add driver for MediaTek
 Wi-Fi 7 (802.11be) devices" from Nov 22, 2022, leads to the following
 Smatch static checker warning:
 
-	drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c:657 mt7996_rf_regval_set()
-	warn: passing casted pointer '&val' to 'mt7996_mcu_rf_regval()' 64 vs 32.
+	drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c:72 mt7996_eeprom_load()
+	error: uninitialized symbol 'free_block_num'.
 
-drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
-    652 static int
-    653 mt7996_rf_regval_set(void *data, u64 val)
-    654 {
-    655         struct mt7996_dev *dev = data;
-    656 
---> 657         return mt7996_mcu_rf_regval(dev, dev->mt76.debugfs_reg, (u32 *)&val, true);
-                                                                        ^^^^^^^^^^^
-This code only "works" on little endian systems.  You have to do
-something like:
+drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+    55 static int mt7996_eeprom_load(struct mt7996_dev *dev)
+    56 {
+    57         int ret;
+    58 
+    59         ret = mt76_eeprom_init(&dev->mt76, MT7996_EEPROM_SIZE);
+    60         if (ret < 0)
+    61                 return ret;
+    62 
+    63         if (ret) {
+    64                 dev->flash_mode = true;
+    65         } else {
+    66                 u8 free_block_num;
+    67                 u32 block_num, i;
+    68 
+    69                 /* TODO: check free block event */
+    70                 mt7996_mcu_get_eeprom_free_block(dev, &free_block_num);
 
-	u32 u32_val = val;
+free_block_num is not initialized if mt7996_mcu_get_eeprom_free_block()
+fails.
 
-	return mt7996_mcu_rf_regval(dev, dev->mt76.debugfs_reg, &u32_val, true);
-
-    658 }
+    71                 /* efuse info not enough */
+--> 72                 if (free_block_num >= 59)
+    73                         return -EINVAL;
+    74 
+    75                 /* read eeprom data from efuse */
+    76                 block_num = DIV_ROUND_UP(MT7996_EEPROM_SIZE, MT7996_EEPROM_BLOCK_SIZE);
+    77                 for (i = 0; i < block_num; i++)
+    78                         mt7996_mcu_get_eeprom(dev, i * MT7996_EEPROM_BLOCK_SIZE);
+    79         }
+    80 
+    81         return mt7996_check_eeprom(dev);
+    82 }
 
 regards,
 dan carpenter
