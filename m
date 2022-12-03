@@ -2,153 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A9E6414C4
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Dec 2022 08:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B93641686
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Dec 2022 13:07:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbiLCHiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Dec 2022 02:38:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47174 "EHLO
+        id S229557AbiLCMH5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Dec 2022 07:07:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbiLCHiL (ORCPT
+        with ESMTP id S229462AbiLCMHz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Dec 2022 02:38:11 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7156F15815
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Dec 2022 23:38:03 -0800 (PST)
-X-UUID: 5e9ef8983a284c308246157671120e6d-20221203
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=G7PaMZS6/hyIDt9quG3UjPne+lkluujZYa1twV0Y0Dg=;
-        b=Qks8/xxEbvJhIVi8jsnTiO69tob6igurHc5hX31nJymR5hcrd0Ho289NZX/nf+R1gzZ+DtLTTLB76XSbWgbl8z9HlJTuOgxLKE8UhttKVLETo8WxkgRYD0Tb7E0lUCuOE1BAdfZCXlRuxWTZJfzK/3Lc/diAg0IIlewy6qYAgss=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:cea4f620-fe09-4d6d-92c4-35e80277b31e,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:dcaaed0,CLOUDID:8641091f-5e1d-4ab5-ab8e-3e04efc02b30,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 5e9ef8983a284c308246157671120e6d-20221203
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1675924302; Sat, 03 Dec 2022 15:37:57 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Sat, 3 Dec 2022 15:37:56 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sat, 3 Dec 2022 15:37:56 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7915: split mcu chan_mib array up
-Date:   Sat, 3 Dec 2022 15:37:54 +0800
-Message-ID: <51130dcbc200962672540cb726dd9841c5ad7fe9.1670049959.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sat, 3 Dec 2022 07:07:55 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D58F59E
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Dec 2022 04:07:54 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id x28so7382236qtv.13
+        for <linux-wireless@vger.kernel.org>; Sat, 03 Dec 2022 04:07:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y78y67RVw2uXG9RJFp2RuKu+RlnDrDe0ymn8WGfSUUs=;
+        b=kmTuH1yfWEtEJpbBD/xa9Sg88Cg+XmnHYSSp4e+YtC1cVhidrzviHxzMmKpaDgIooe
+         /QYaikhOzBUYSE9wjd/SnehDyLnM751feiz/CRPJZ78MNJ2hTiDqiUpnCdIldtqH3oSe
+         jQ9a5UKkFMYsHQqpzuxelLJZ8MALS20HWDxDbtLdOUxnViE97EWzWcaCY4tsc0uJHJGv
+         o2IMjYAonyqgbe5FH5WWPV4d6DuOvJoH6frgG9se9ysw55ZTqr1lEym4lQXA0Ka5reKI
+         UbbFTpH7PNQFrkgjxQMjTpP3Pxe+ubGpu+dfLD9cQoGrcjgH4tu9laYRw34Nws7HEQlK
+         O24g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y78y67RVw2uXG9RJFp2RuKu+RlnDrDe0ymn8WGfSUUs=;
+        b=b3nxY/7ByM5GGLgoyfe7r0K3CGYalXl820k1azPxMAu9Q/uxL1rsEgpiemWafZT0kJ
+         HlxUcMVuqR76EcSvRL+Rc05O+LbGOSmyZRGHZp2yL1Ld05Vx4kYtJDAx/v/gGMytNHfS
+         8r1LfyYRahztahisRF9OAkH56kaF55q15+RUl3V9RAUc+jlvsV8Gpstg9ACzqUxVJgv7
+         hogU2pR5ZdWCbBQdSdg4hG7o2PJTk49d1COKwbMQRiXcMWyPOtML9vaBi0tW9L86yoqJ
+         +bsXeCzEZpEannYWj2xEXnnqodl9MKwCIfzQlBxegueM2VMiPn7pwMYW0iGEaYQ5cTyB
+         wNrg==
+X-Gm-Message-State: ANoB5pkpjmkw5v0RpjKyBs7W3ZVIZYjeBk5vKfd5eGJ7oRUNx9FR1+Uk
+        kSsTAnUfvtNZL6CGzduckf935/1v9CUlaKdSQQw=
+X-Google-Smtp-Source: AA0mqf7BtUVC0q9YZM2WCqyYbzF7Mu6sJWF4rC/PadsxLe3wJooZo6H5DzLxPWV1kIfpkvNNtV0NFHKakvcXFPEe59Q=
+X-Received: by 2002:ac8:4a1a:0:b0:3a6:a61e:8c01 with SMTP id
+ x26-20020ac84a1a000000b003a6a61e8c01mr1439549qtq.214.1670069273229; Sat, 03
+ Dec 2022 04:07:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,MAY_BE_FORGED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
-        version=3.4.6
+Sender: alimahazem02@gmail.com
+Received: by 2002:a05:622a:1041:b0:3a5:252c:1bdc with HTTP; Sat, 3 Dec 2022
+ 04:07:52 -0800 (PST)
+From:   Doris David <mrs.doris.david02@gmail.com>
+Date:   Sat, 3 Dec 2022 04:07:52 -0800
+X-Google-Sender-Auth: XJ3GLEV6kbOnBEShQJbF-FE0Ja4
+Message-ID: <CABBDEbj0RMov=6gWG+0aQhs+ZGhAZfRSkMydWAENvyiJfNBBFQ@mail.gmail.com>
+Subject: Re: Greetings My Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:82d listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5041]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alimahazem02[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrs.doris.david02[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  3.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current flow confuses coverity check that leads to false reporting,
-so split the offs[] into two pieces according to chipset revision to
-silence coverity tool.
+Greetings,
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 50 ++++++++++---------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+I sent this mail praying it will find you in a good condition, since I
+myself am in a very critical health condition in which I sleep every
+night  without knowing if I may be alive to see the next day. I am
+Mrs.David Doris, a widow suffering from a long time illness. I have
+some funds I  inherited from my late husband, the sum of
+($11,000,000,00) my Doctor told me recently that I have serious
+sickness which is a cancer problem. What disturbs me most is my stroke
+sickness. Having known my condition, I decided to donate this fund to
+a good person that will utilize it the way I am going to instruct
+herein. I need a very Honest God.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index b2652de082ba..ca315af3905b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2974,38 +2974,42 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
- 
- int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch)
- {
--	/* strict order */
--	static const u32 offs[] = {
--		MIB_NON_WIFI_TIME,
--		MIB_TX_TIME,
--		MIB_RX_TIME,
--		MIB_OBSS_AIRTIME,
--		MIB_TXOP_INIT_COUNT,
--		/* v2 */
--		MIB_NON_WIFI_TIME_V2,
--		MIB_TX_TIME_V2,
--		MIB_RX_TIME_V2,
--		MIB_OBSS_AIRTIME_V2
--	};
- 	struct mt76_channel_state *state = phy->mt76->chan_state;
- 	struct mt76_channel_state *state_ts = &phy->state_ts;
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt7915_mcu_mib *res, req[5];
- 	struct sk_buff *skb;
--	int i, ret, start = 0, ofs = 20;
-+	static const u32 *offs;
-+	int i, ret, len, offs_cc;
- 	u64 cc_tx;
- 
--	if (!is_mt7915(&dev->mt76)) {
--		start = 5;
--		ofs = 0;
-+	/* strict order */
-+	if (is_mt7915(&dev->mt76)) {
-+		static const u32 chip_offs[] = {
-+			MIB_NON_WIFI_TIME,
-+			MIB_TX_TIME,
-+			MIB_RX_TIME,
-+			MIB_OBSS_AIRTIME,
-+			MIB_TXOP_INIT_COUNT,
-+		};
-+		len = ARRAY_SIZE(chip_offs);
-+		offs = chip_offs;
-+		offs_cc = 20;
-+	} else {
-+		static const u32 chip_offs[] = {
-+			MIB_NON_WIFI_TIME_V2,
-+			MIB_TX_TIME_V2,
-+			MIB_RX_TIME_V2,
-+			MIB_OBSS_AIRTIME_V2
-+		};
-+		len = ARRAY_SIZE(chip_offs);
-+		offs = chip_offs;
-+		offs_cc = 0;
- 	}
- 
--	for (i = 0; i < 5; i++) {
-+	for (i = 0; i < len; i++) {
- 		req[i].band = cpu_to_le32(phy->mt76->band_idx);
--		req[i].offs = cpu_to_le32(offs[i + start]);
--
--		if (!is_mt7915(&dev->mt76) && i == 3)
--			break;
-+		req[i].offs = cpu_to_le32(offs[i]);
- 	}
- 
- 	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_CMD(GET_MIB_INFO),
-@@ -3013,7 +3017,7 @@ int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch)
- 	if (ret)
- 		return ret;
- 
--	res = (struct mt7915_mcu_mib *)(skb->data + ofs);
-+	res = (struct mt7915_mcu_mib *)(skb->data + offs_cc);
- 
- #define __res_u64(s) le64_to_cpu(res[s].data)
- 	/* subtract Tx backoff time from Tx duration */
--- 
-2.18.0
+fearing a person who can claim this money and use it for Charity
+works, for orphanages, widows and also build schools for less
+privileges that will be named after my late husband if possible and to
+promote the word of God and the effort that the house of God is
+maintained. I do not want a situation where this money will be used in
+an ungodly manner. That's why I'making this decision. I'm not afraid
+of death so I know where I'm going. I accept this decision because I
+do not have any child who will inherit this money after I die. Please
+I want your sincere and urgent answer to know if you will be able to
+execute this project, and I will give you more information on how
+thunder will be transferred to your bank account. I am waiting for
+your reply.
 
+May God Bless you,
+Mrs.David Doris,
