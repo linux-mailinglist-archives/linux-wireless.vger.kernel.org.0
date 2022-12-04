@@ -2,103 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DBFA641B48
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Dec 2022 08:18:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B097F641C11
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Dec 2022 10:37:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbiLDHSe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Dec 2022 02:18:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
+        id S229960AbiLDJhw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Dec 2022 04:37:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbiLDHSc (ORCPT
+        with ESMTP id S229834AbiLDJhv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Dec 2022 02:18:32 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0644A12AEA
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Dec 2022 23:18:26 -0800 (PST)
-X-UUID: 9cda0bfe1a724a138270192ad2db7d99-20221204
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=3WsJ0K3ycmeFnfDgWNcOE8ZHRRc2nrQGDlBBOlFXtNE=;
-        b=b5RYeBO/aBH0/3a35QyLB62ZSeOZxuqMvJHByyrUzLOzzah9Zovr/xWHKYr746MKZSzPAnlV2t9iUVOEh+5a2ppKb7BQm5IvyZt1G0qBvXvEjxQoFaWgXWyc9YmX09/aOIvOYxObpgrxBVu/5xCaXJiN9+NjaoMMIq5ZnjMOLHY=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:4705fac4-e21a-469a-bd70-01ca0795f5ea,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-META: VersionHash:dcaaed0,CLOUDID:71ab131f-5e1d-4ab5-ab8e-3e04efc02b30,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 9cda0bfe1a724a138270192ad2db7d99-20221204
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1933055902; Sun, 04 Dec 2022 15:18:18 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Sun, 4 Dec 2022 15:18:17 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sun, 4 Dec 2022 15:18:17 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7996: drop always true condition of __mt7996_reg_addr()
-Date:   Sun, 4 Dec 2022 15:18:15 +0800
-Message-ID: <50f23916e9ec9082ab209fbb7ded9e211ad50384.1670137513.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <c7a43d2a715d0ed911780712edc60c7adbee806d.1670137513.git.ryder.lee@mediatek.com>
-References: <c7a43d2a715d0ed911780712edc60c7adbee806d.1670137513.git.ryder.lee@mediatek.com>
+        Sun, 4 Dec 2022 04:37:51 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6425BE0D;
+        Sun,  4 Dec 2022 01:37:47 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1p1lRP-0005zX-FS; Sun, 04 Dec 2022 10:37:43 +0100
+Message-ID: <0611323c-2088-e6f3-1c38-7cf742dfb60d@leemhuis.info>
+Date:   Sun, 4 Dec 2022 10:37:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [regression] Bug 216753 - 6e 6 ghz bands are disabled since 5.16
+ on intel ax211
+Content-Language: en-US, de-DE
+To:     mbizon@freebox.fr, Dave Chiluk <chiluk@ubuntu.com>,
+        Marcel Holtmann <marcel@holtmann.org>
+Cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
+ <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
+ <CAMfi-DRE-u5TNu2zAL-7A-ENHM9EiJeYJ38BL_FMdk6QmW7c9w@mail.gmail.com>
+ <9a03c244-adff-afaf-7385-d8e89cd3f338@leemhuis.info>
+ <02F8DDF1-EC0D-4EBD-88F5-7E000841C337@holtmann.org>
+ <CAMfi-DQfuro4c_VUrFHBTv8sPnwuV8XhTV_W7qswGeCC2t-wzg@mail.gmail.com>
+ <19ea39c87df3c54cbc487466f806bc157d0bf563.camel@freebox.fr>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <19ea39c87df3c54cbc487466f806bc157d0bf563.camel@freebox.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1670146668;829b5fee;
+X-HE-SMSGID: 1p1lRP-0005zX-FS
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-addr <= MT_CBTOP2_PHY_END(0xffffffff) is always true (<= u32max),
-so drop it.
+On 02.12.22 18:42, Maxime Bizon wrote:
+> On Fri, 2022-12-02 at 11:18 -0600, Dave Chiluk wrote:
+> 
+>> The 6ghz band becomes disabled as soon as I upgrade to the 5.16+
+>> linux-stable kernels. So from a user perspective this really is a
+>> case of a kernel upgrade breaking user-space.  This is what led me
+>> down this rabbit hole here.
+>  
+> FWIW
+> 
+> I have the same issue on a Lenovo T14 gen2 laptop with built-in ax210
+> card, and sold as Wifi-6E compliant.
+> 
+> The exact patch you mention causes the issue, so it seems my bios does
+> not return the correct values either.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/regs.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+That makes me (as a outsider that has no real knowledge about the inner
+workings of the Linux Wifi subsystem) wonder: Does it work in Windows?
+Because if that's the case I wonder how Windows ensures everything
+confirms to regulatory requirements & standards. If that handled on the
+software level if the info is missing in the firmware? Or is there a
+another place in the firmware structures where Windows looks for details
+(and we don't).
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index 521769eb6b0e..60781d046216 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -149,7 +149,7 @@ static u32 __mt7996_reg_addr(struct mt7996_dev *dev, u32 addr)
- 
- 	if (dev_is_pci(dev->mt76.dev) &&
- 	    ((addr >= MT_CBTOP1_PHY_START && addr <= MT_CBTOP1_PHY_END) ||
--	     (addr >= MT_CBTOP2_PHY_START && addr <= MT_CBTOP2_PHY_END)))
-+	    addr >= MT_CBTOP2_PHY_START))
- 		return mt7996_reg_map_l1(dev, addr);
- 
- 	/* CONN_INFRA: covert to phyiscal addr and use layer 1 remap */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-index 794f61b93a46..42980b97b4d4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-@@ -463,7 +463,6 @@ enum base_rev {
- #define MT_CBTOP1_PHY_START			0x70000000
- #define MT_CBTOP1_PHY_END			0x77ffffff
- #define MT_CBTOP2_PHY_START			0xf0000000
--#define MT_CBTOP2_PHY_END			0xffffffff
- #define MT_INFRA_MCU_START			0x7c000000
- #define MT_INFRA_MCU_END			0x7c3fffff
- 
--- 
-2.18.0
+Or is that a Linux-only machine that might even use a different firmware?
 
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I deal with a lot of
+reports and sometimes miss something important when writing mails like
+this. If that's the case here, don't hesitate to tell me in a public
+reply, it's in everyone's interest to set the public record straight.
