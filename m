@@ -2,48 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 059026437AF
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Dec 2022 23:08:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 129FC6437B8
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Dec 2022 23:09:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232053AbiLEWIV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Dec 2022 17:08:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40536 "EHLO
+        id S233178AbiLEWJ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Dec 2022 17:09:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231191AbiLEWIU (ORCPT
+        with ESMTP id S233046AbiLEWJ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Dec 2022 17:08:20 -0500
+        Mon, 5 Dec 2022 17:09:27 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F55C558F
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Dec 2022 14:08:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D2EBE00
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Dec 2022 14:09:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D655461477
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Dec 2022 22:08:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB43C433D6;
-        Mon,  5 Dec 2022 22:08:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53B0861484
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Dec 2022 22:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA9DC433C1;
+        Mon,  5 Dec 2022 22:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670278095;
-        bh=gHqtxLNinWHlwCLy2Fxuy4wHAPCR+sLgYbAsrBrnwNY=;
+        s=k20201202; t=1670278165;
+        bh=60NlLFX+EDU05h3PfVBbqUOSwhIMzkLYZPYAqEyh4c8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c9Gn9u0XRw4YZzhpJ2snv19QxiKCQca0JVqEPJiL70BcZzaxs9RV1OG9tqtUvR7Kq
-         yJeEjCcKSrTpoRL9bSMOsIIB8HmK4VqrqPBhLwyrSdj2CpQVN0A8YI6e3x+ujG5yF/
-         M52q2+QUW75E2GZn4aGZueRntodSkrelTxlL0srZyzmNkHau0ON1TKBqANkf6QDU4I
-         LdnSwl96+792l2Wt3rBG3ZuSj3bmh7XVAVhgfPxc7fFkMtnGFcAI3sZlvI59yAJIQs
-         4+ATOeGwRqLF3/z1d6QnvsAHIjhVwiOjG81ayCZHnpVtgnbIoOvtJX2/0rF9h1Txn4
-         WMMEnC4zlntZA==
-Date:   Mon, 5 Dec 2022 16:08:13 -0600
+        b=U6+AE79FTTV5QgHBExtZ2Gr78p+6x9Z7eFIp9i8sNGedsVe/WbOcbsj+TjtYFa2ND
+         K2rlVvRinpFt2oVQM5/VyYkmjNjYpPzTHzd/oPpaLR79GlQmEADFTbH3QgKrA2sgqh
+         ATKRbhWK0rscpaLQy6oy8fkxMmy1dmUVM9xBj30qn2pJlG77XAX6CszZcd4zjYE4HP
+         JbT0888aI9YdwDbyKFJm16w8I4FkMXTZ8nsPDwilSlXFMC8CaDPGOSj81Pzpat3tOv
+         z3YPGldZeislAGh1hY5Mq/+uMHCGb7UMRfspdIEq8XMdXLtwaSak56PmK3eqQY4JgD
+         ffcL5oGcHDh8Q==
+Date:   Mon, 5 Dec 2022 16:09:24 -0600
 From:   Seth Forshee <sforshee@kernel.org>
-To:     JUN-KYU SHIN <jk.shin@newratek.com>
+To:     CaffeeLake <pascalcoffeelake@gmail.com>
 Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wireless-regdb: add support for KR S1G channels
-Message-ID: <Y45rzTlZvlFrqao/@ubuntu-x1>
-References: <20221122024550.11415-1-jk.shin@newratek.com>
+Subject: Re: wireless-regdb: Update regulatory rules for Japan (JP) on 5GHz
+Message-ID: <Y45sFNcWYpISRYXa@ubuntu-x1>
+References: <20221017025204.1370004-1-PascalCoffeeLake@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221122024550.11415-1-jk.shin@newratek.com>
+In-Reply-To: <20221017025204.1370004-1-PascalCoffeeLake@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,47 +52,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 11:45:52AM +0900, JUN-KYU SHIN wrote:
-> The 917-923.5MHz band is KR USN 1 band, so follows
-> the emmision limists described in part 8.4.4
+On Mon, Oct 17, 2022 at 11:52:04AM +0900, CaffeeLake wrote:
+> Support 144ch for JP Region.
 > 
-> The 925-931MHz band is KR USN 5 band, so follows
-> the emmision limists described in part 8.8.1
+> The Ministry of Internal Affairs and Communications has approved 144ch in Japan.
 > 
-> Signed-off-by: JUN-KYU SHIN <jk.shin@newratek.com>
+> Source: https://www.soumu.go.jp/main_content/000635492.pdf
+> 
+> Signed-off-by: CaffeeLake <PascalCoffeeLake@gmail.com>
 
-Thanks for the patch. I have some questions and comments, below.
+Applied, thanks!
 
 > ---
->  db.txt | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  db.txt | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
 > diff --git a/db.txt b/db.txt
-> index 012824f..1b4fe11 100644
+> index 012824f..8b3827a 100644
 > --- a/db.txt
 > +++ b/db.txt
-> @@ -950,7 +950,14 @@ country KP: DFS-JP
->  # https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000205195
->  # https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000205187
->  # https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000206568
-> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000211335
->  country KR: DFS-JP
-> +	# S1G Channel USN 1 (917 - 923.5)
-> +	(920.5 - 921.5 @ 1), (10)
-> +	(921.5 – 922.5 @ 1), (14)
-
-I don't know anything about S1G channels in Korea so I'm curious -- are
-these the only 2 channels defined in the 917-923.5 range?
-
-> +	# S1G Channel USN 5 (925 - 931)
-> +	(926 - 930 @ 1), (17)
-> +	(926 - 930 @ 2), (20)
-
-This unfortunately doesn't work. While it's possible to have both rules
-in the database, to the best of my recollection the kernel only ends up
-using the one with the larger bandwidth to set the power limit. So then
-the higher power limit would also be used for 1MHz channels.
-
-Thanks,
-Seth
-
+> @@ -907,13 +907,15 @@ country JO: DFS-JP
+>  	(5170 - 5250 @ 80), (23)
+>  	(5735 - 5835 @ 80), (23)
+> 
+> +# Source:
+> +# https://www.soumu.go.jp/main_content/000635492.pdf
+>  country JP: DFS-JP
+>  	(2402 - 2482 @ 40), (20)
+>  	(2474 - 2494 @ 20), (20), NO-OFDM
+>  	(4910 - 4990 @ 40), (23)
+>  	(5170 - 5250 @ 80), (20), AUTO-BW
+>  	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+> -	(5490 - 5710 @ 160), (23), DFS
+> +	(5490 - 5730 @ 160), (23), DFS
+>  	# 60 GHz band channels 2-4 at 10mW,
+>  	# ref: http://www.arib.or.jp/english/html/overview/doc/1-STD-T74v1_1.pdf
+>  	(57000 - 66000 @ 2160), (10 mW)
+> --
+> 2.37.3
+> 
