@@ -2,235 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21DC5644B24
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 19:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C161644BF0
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 19:40:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbiLFST6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Dec 2022 13:19:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33584 "EHLO
+        id S229683AbiLFSks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Dec 2022 13:40:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbiLFSTr (ORCPT
+        with ESMTP id S229507AbiLFSkr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Dec 2022 13:19:47 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD88C9FCB
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 10:19:46 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id k7so14738274pll.6
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Dec 2022 10:19:46 -0800 (PST)
+        Tue, 6 Dec 2022 13:40:47 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 417A830F4C;
+        Tue,  6 Dec 2022 10:40:44 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id d1so24757187wrs.12;
+        Tue, 06 Dec 2022 10:40:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cSfhPQpFDB2Oh/dXEYISHFJYga0x3KEHfbWND/sD6No=;
-        b=EyO7UiVslhjD2J9Pk86BjAGlGIPoKMiuVmsgpDWDrFQv+bAxBBM7dbVY4PLR6Y/Aij
-         /ASBgKiyWfEsW9pUkfiXpyYOs6bpMYeR+yjU/CYoGfjPwT7pt5n3LY2P9FaRq5lO7yfi
-         uUzq28bWpj2ezOGWfy2gZ6jp8zEf1sabXLQAE=
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jC9GDyGbPYsUpaA1vd85seN1hS5MLlrIfa/P+yli9b8=;
+        b=EcogxmYpd/Pu16hs6PJNVrTMNv6QNhPa9CdJr84SHIEjpyPobvWDb2SiYlk4ae29aS
+         Emae6QO0/zV4BNAEHPZrN4bt71mZWjSA2MCP7Z4bG15hLhViXAptUHu4X6Ge1VeyaPsC
+         6M8HSXQooWHvho/TVVozvC0Fv/QrBKnwqUEx9KWGr0l8ssSXT/5QPSkLivW+ZZqa0Six
+         JYhupWD+2Fx0t5y2048eMIQrfgVS3l2SJwUksSkMayyIRcadvIOtw8v2yAo3A7SZbYs8
+         gfJHfQKPRNiCxmnLa6EGlF1NX2ahafhUPVBpfvfZd0RuXiQPZfXSl+YT6JQENso38A9o
+         sEbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cSfhPQpFDB2Oh/dXEYISHFJYga0x3KEHfbWND/sD6No=;
-        b=tGxAxlafH3jL9YINY69ZRE+LhGle0wgU68nedNKMg4KnqeO2LoBieJqVvvI66UZOUn
-         SiVb2/P/8HTnz+kc5MPTeX2Nt/doE4xmoJmHJzbAnvCtTxqc9hK4km0Cr/hkyqXECc5I
-         ZpEb6xjOalEBZWqFMIjhOiaTth4mAv2GfeQHz/vLhPe/RIvc/fWIXM7JvlJLnTVulaho
-         SxTfmoh5Vz2G+/5WfiKk7jeQU7DirtAgglq6UvMXjVZ6KH3aqCqlOEm2Npeojpu1AQpL
-         1Uj5EhDxtkKwPJ4XCwGJsYYexj3r6plx/F5gBd3xvvio4oWeIDJbFzUR3CegPrYjAPdw
-         CTxw==
-X-Gm-Message-State: ANoB5pml9Q2umAm9WeUKelqf2as3PU4tqhS4xVOhi85TFv5VW7zkH8jY
-        U49ey52q88j8B6L4462xebvWgA==
-X-Google-Smtp-Source: AA0mqf49jcJyVboO+FFu4CdGEXj1OUeh9B3nBloKVWiBokj13rudzyWR/VHcd+bDDsx7bzKUoZZtLA==
-X-Received: by 2002:a17:902:dacd:b0:189:6889:c309 with SMTP id q13-20020a170902dacd00b001896889c309mr54175119plx.3.1670350786288;
-        Tue, 06 Dec 2022 10:19:46 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id fa13-20020a17090af0cd00b00218abadb6a8sm11118786pjb.49.2022.12.06.10.19.41
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Dec 2022 10:19:45 -0800 (PST)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        JunASAKA <JunASAKA@zzy040330.moe>, <Jes.Sorensen@gmail.com>
-CC:     <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Date:   Tue, 06 Dec 2022 19:19:39 +0100
-Message-ID: <184e8aa3278.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <184e897cf70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jC9GDyGbPYsUpaA1vd85seN1hS5MLlrIfa/P+yli9b8=;
+        b=jQcjaMZ3MM1icDdJOW+7Ej7/xYcz+REcFZskLClOrlBrGjmC/pMWS3jROkyvSfxMFw
+         W3TsgmLh5ngkiRRteC5w0SXhEYL6ITk0ZLLMOom/3j7JMTjdDkjv3SGbc6MWwbjB6QPq
+         s9EQabL/H5AzNHiZzbT1PgpPNuTRMgjrqXp/5sqhjeySvrOhjTKKZ6f/KCAGAyJZBaAJ
+         BLbl4dSTNgJGVzpjaLpN9/qjmw2gZKQ0p6Rwg7gWxXVdYIcBl4unLChbw+Kgkho0IJrX
+         9gOQBwvHDNXgEMoyztMcrG6ILUR8+S/2VgZ2KirDQNYkO8hokIoG+zwIOw2Vx2bBH/hN
+         F63w==
+X-Gm-Message-State: ANoB5pnKMKzrJT0ZmewqIU33agywFPXyPF3OPYpAAqPiEEZgVtbgJkzH
+        jO90nSMLcidMOxoK/d5T3PI=
+X-Google-Smtp-Source: AA0mqf7qfkCOK+SDCnsG4JqjH2FqBPUZS3idNcfuEbfo6t9dEgt+C3XW6U5WvxMMYR7merp+tlOMlA==
+X-Received: by 2002:adf:de08:0:b0:242:1d2c:9d78 with SMTP id b8-20020adfde08000000b002421d2c9d78mr23507497wrm.490.1670352042744;
+        Tue, 06 Dec 2022 10:40:42 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.254])
+        by smtp.gmail.com with ESMTPSA id t5-20020a5d5345000000b0022cc3e67fc5sm17135332wrv.65.2022.12.06.10.40.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Dec 2022 10:40:42 -0800 (PST)
+Message-ID: <312341d3-67b5-3de7-e4a7-ee94191c15b0@gmail.com>
+Date:   Tue, 6 Dec 2022 20:40:26 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH] drivers: rewrite and remove a superfluous parameter.
+Content-Language: en-US
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        JunASAKA <JunASAKA@zzy040330.moe>, Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
  <9dc328a1-1d76-6b8b-041e-d20479f4ff56@gmail.com>
  <184e897cf70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-User-Agent: AquaMail/1.40.1 (build: 104001224)
-Subject: Re: [PATCH] drivers: rewrite and remove a superfluous parameter.
-MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000049d79b05ef2cd92d"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+ <184e8aa3278.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <184e8aa3278.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000049d79b05ef2cd92d
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-
-On December 6, 2022 6:59:36 PM Arend Van Spriel 
-<arend.vanspriel@broadcom.com> wrote:
-
-> On November 29, 2022 3:06:37 PM Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> wrote:
->
->> On 29/11/2022 06:34, JunASAKA wrote:
->>> I noticed there is a superfluous "*hdr" parameter in rtl8xxxu module
->>> when I am trying to fix some bugs for the rtl8192eu wifi dongle. This
->>> parameter can be removed and then gained from the skb object to make the
->>> function more beautiful.
->>>
->>> Signed-off-by: JunASAKA <JunASAKA@zzy040330.moe>
->>> ---
->>> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 +++--
->>> 1 file changed, 3 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> index ac641a56efb0..4c3d97e8e51f 100644
->>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> @@ -4767,9 +4767,10 @@ static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
->>> return rtlqueue;
->>> }
->>>
->>> -static u32 rtl8xxxu_queue_select(struct ieee80211_hdr *hdr, struct sk_buff
->>> *skb)
->>> +static u32 rtl8xxxu_queue_select(struct sk_buff *skb)
->>> {
->>> u32 queue;
->>> + struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
->>>
->>> if (ieee80211_is_mgmt(hdr->frame_control))
->>> queue = TXDESC_QUEUE_MGNT;
->>> @@ -5118,7 +5119,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->>> if (control && control->sta)
->>> sta = control->sta;
->>>
->>> - queue = rtl8xxxu_queue_select(hdr, skb);
->>> + queue = rtl8xxxu_queue_select(skb);
->>>
->>> tx_desc = skb_push(skb, tx_desc_size);
+On 06/12/2022 20:19, Arend Van Spriel wrote:
+> On December 6, 2022 6:59:36 PM Arend Van Spriel <arend.vanspriel@broadcom.com> wrote:
+> 
+>> On November 29, 2022 3:06:37 PM Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> wrote:
 >>
->> See the recent discussion about this here:
->> https://lore.kernel.org/linux-wireless/acd30174-4541-7343-e49a-badd199f4151@gmail.com/
->> https://lore.kernel.org/linux-wireless/2af44c28-1c12-46b9-85b9-011560bf7f7e@gmail.com/
->
-> Not sure why I looked but I did. You may want to look at rtl8xxxu_tx()
-> which is the .tx callback that mac80211 uses and the first statement in
-> there is also assuming skb->data points to the 802.11 header.
-
-Here the documentation of the .tx callback:
-
-@tx: Handler that 802.11 module calls for each transmitted frame.
- * skb contains the buffer *starting from the IEEE 802.11 header*.
- * The low-level driver should send the frame out based on
- * configuration in the TX control data. This handler should,
- * preferably, never fail and stop queues appropriately.
- * Must be atomic.
-
-I don't see any pushes or pulls before the queue select so that would mean 
-mac80211 is not complying to the described behavior.
-
-Regards,
-Arend
-
->
+>>> On 29/11/2022 06:34, JunASAKA wrote:
+>>>> I noticed there is a superfluous "*hdr" parameter in rtl8xxxu module
+>>>> when I am trying to fix some bugs for the rtl8192eu wifi dongle. This
+>>>> parameter can be removed and then gained from the skb object to make the
+>>>> function more beautiful.
+>>>>
+>>>> Signed-off-by: JunASAKA <JunASAKA@zzy040330.moe>
+>>>> ---
+>>>> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 +++--
+>>>> 1 file changed, 3 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> index ac641a56efb0..4c3d97e8e51f 100644
+>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> @@ -4767,9 +4767,10 @@ static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
+>>>> return rtlqueue;
+>>>> }
+>>>>
+>>>> -static u32 rtl8xxxu_queue_select(struct ieee80211_hdr *hdr, struct sk_buff
+>>>> *skb)
+>>>> +static u32 rtl8xxxu_queue_select(struct sk_buff *skb)
+>>>> {
+>>>> u32 queue;
+>>>> + struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+>>>>
+>>>> if (ieee80211_is_mgmt(hdr->frame_control))
+>>>> queue = TXDESC_QUEUE_MGNT;
+>>>> @@ -5118,7 +5119,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>> if (control && control->sta)
+>>>> sta = control->sta;
+>>>>
+>>>> - queue = rtl8xxxu_queue_select(hdr, skb);
+>>>> + queue = rtl8xxxu_queue_select(skb);
+>>>>
+>>>> tx_desc = skb_push(skb, tx_desc_size);
+>>>
+>>> See the recent discussion about this here:
+>>> https://lore.kernel.org/linux-wireless/acd30174-4541-7343-e49a-badd199f4151@gmail.com/
+>>> https://lore.kernel.org/linux-wireless/2af44c28-1c12-46b9-85b9-011560bf7f7e@gmail.com/
+>>
+>> Not sure why I looked but I did. You may want to look at rtl8xxxu_tx()
+>> which is the .tx callback that mac80211 uses and the first statement in
+>> there is also assuming skb->data points to the 802.11 header.
+> 
+> Here the documentation of the .tx callback:
+> 
+> @tx: Handler that 802.11 module calls for each transmitted frame.
+> * skb contains the buffer *starting from the IEEE 802.11 header*.
+> * The low-level driver should send the frame out based on
+> * configuration in the TX control data. This handler should,
+> * preferably, never fail and stop queues appropriately.
+> * Must be atomic.
+> 
+> I don't see any pushes or pulls before the queue select so that would mean mac80211 is not complying to the described behavior.
+> 
 > Regards,
 > Arend
+> 
 >>
-
-
-
-
---00000000000049d79b05ef2cd92d
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBlSFpOXydLUwTPKe/9
-tpt/z6MfbWOhBDyzHtXWpinWwTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMDYxODE5NDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA6944+6OQPpdSrm/tQp+NJi1U1fuCaFAz3+Xb
-OoiqiLSKPUtYrm8aOiCpuzgx1volHxJ7BLNOBx3RJveL9/fu8EorjutG01vqyR0FGNhGJwVRUDTz
-mVb8PscEz0T2w9tbO6HvYKe+fMy9dO6vXrBlGL5nnoeTni2tFvT33/2U98r1Vap00SL/mi5HTPnz
-DrQviNIDL2srzpOShhX0l0k0Q6MBgxfscS8+uCTbgQEx5YkAabZbzrxI1tNW/+qYb+uriUhPH+0J
-VeJAjRQ8rPc2uRkqUyvrbPl1tRtlhTT26rxxjbByrg3LSshQhtG7JvGSO+ZIjoJG0kFcyE3YQsrx
-2A==
---00000000000049d79b05ef2cd92d--
+>> Regards,
+>> Arend
+>>>
+> 
+> 
+> 
+mac80211 is behaving as described in the documentation, as far as I know.
+Technically, rtl8xxxu_queue_select's hdr parameter is not needed.
