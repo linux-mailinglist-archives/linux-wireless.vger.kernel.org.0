@@ -2,76 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F1F6445B0
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 15:31:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7876E6445CF
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 15:37:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234611AbiLFObn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Dec 2022 09:31:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38254 "EHLO
+        id S231274AbiLFOhj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Dec 2022 09:37:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230230AbiLFObl (ORCPT
+        with ESMTP id S233742AbiLFOhh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Dec 2022 09:31:41 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0611EC6C
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 06:31:40 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id b13-20020a17090a5a0d00b0021906102d05so14931321pjd.5
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Dec 2022 06:31:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7NgRHXVnEISkXMqWfVgd9bPaNDbTrsT8BuxpGskPtjc=;
-        b=g7lBWEAJmE0JjBe6hm+lSm7BghYfVMeyFQfSvq9vq1u2jz0GQXRSziPzQLER19i+IU
-         1AO/Qa6fpSlg0KCChA80ohn57gXhGy31XBfW2AfxDH11lOaJD/nYQAzDa6yx14nm6DA4
-         PGQqfx/jZHR3RFFJbc6Vxn+gNPZ3jfOj7K9WIfn5Jnh6Q1zvpnrqCBdwviDs12NRL5zN
-         4h9Dfp9Io/8xw4RBgHyN4ZOyAm4Lr04/JQjwgqL0NX1M9eVNnVaAgEFBBdxfIZA49s0P
-         CT3fVi676G6cfrm3pr1wqtcCsp3raL9wTVZ56bqheY0qE646XRsugCfApZaxeYNdPX1p
-         j8yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7NgRHXVnEISkXMqWfVgd9bPaNDbTrsT8BuxpGskPtjc=;
-        b=IuhMQyibsHmeeiKP5fVzdkf/lKh7st2XPDFwmTOvR71IbaJVQJq3ej4xgEihnWOzUv
-         XpMeO7J/O2JBfmxKJB/N+xB5acSrYMAnknz3gwlbSTYhGTRgtBJmS7ioxdeGDUmKlyEW
-         GLXs5OVf/OpYKT6SPfaqyBp072kS9B/Ov8KZloganbdQD+pUljrEjVa/p96U+tOxa9Gg
-         ssMr3TDGNpCNjNJr35SvdPKtgtEJ1RtgpIIWGPbfg3yEdqdnVUljoqiCCeFdn4Z3ALJY
-         1swiSnXJJdJ2s3ez6H8ferRPdZnWveAc6NA7YtxFsDjG5YD8ZVN9K0EBDXAldmblN7LY
-         KLlQ==
-X-Gm-Message-State: ANoB5pndQyEPc7ktfhh60ghB/40fW6uHxDNsG6X4nPk0zzNMv2vt5wqX
-        Avf59sGfOGZI8ElR1uQEsANkkYO494PUc2Ooctg=
-X-Google-Smtp-Source: AA0mqf6BRhWXBHfzTDbS9mopIbxoUO8hPLYvU42aOT2o+y3L/vkFfjqc5Y53Hu5wRK7hq3XFSUuhIxHGA1vXDA9+oAo=
-X-Received: by 2002:a17:902:e0cd:b0:189:b0a3:cf49 with SMTP id
- e13-20020a170902e0cd00b00189b0a3cf49mr27204334pla.77.1670337100050; Tue, 06
- Dec 2022 06:31:40 -0800 (PST)
+        Tue, 6 Dec 2022 09:37:37 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E66A2724
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 06:37:35 -0800 (PST)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B6DwxWJ026416;
+        Tue, 6 Dec 2022 14:37:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=1Wk/A2pEaenrPwN3TLLBYBK8jk1iR/qbLM9RsUBRO/Y=;
+ b=BnpHNoqIXan+lGfwpxKrA+pTIfKcx2zJdOVNWhcAyDolVLtJtHUbhDmuhjixnBpEVJ5K
+ 7aYy3Do0ODZVRKj5HREGkLoXWB3V8Vysm6G+tRUzqSahJsoKSuKykCF9th1AigzWIPKb
+ G6+1D7+fF/lm0pKHBMCMcDFUQk2BDCakE11nYAcbsApa7IIECYUw4AG6ro9ikTVqh8xG
+ pwQ95/4xtudMm/h9d8zy2FKlKYe4cM8Ihl7TWblGoB1SxpmcAB4KfLm7El43m7ka4RsS
+ l3qHrD8kA2ppYHkqCUSLLlfMGJD4QOJNp9NOp6OQpERcyaJjjuPl+W0Mdr8TsxP8hWA4 lQ== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m9qyn222y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 06 Dec 2022 14:37:32 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2B6EbVU8031083
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 6 Dec 2022 14:37:31 GMT
+Received: from cnss-mw-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Tue, 6 Dec 2022 06:37:30 -0800
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/2] wifi: Support higher length KCK key in GTK offload
+Date:   Tue, 6 Dec 2022 20:07:13 +0530
+Message-ID: <20221206143715.1802987-1-quic_vjakkam@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:7300:b90f:b0:89:8a1b:3aa2 with HTTP; Tue, 6 Dec 2022
- 06:31:39 -0800 (PST)
-Reply-To: halabighina00@gmail.com
-From:   Ghina Halabi <hidayatoumoussa11@gmail.com>
-Date:   Tue, 6 Dec 2022 14:31:39 +0000
-Message-ID: <CABCvUkj0DNmnsxyag09okdchNGy4ZXB0sJ28eJNwKeEpqJTFAQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: GJkmpXGKkvVark0qPZsk-FYHZUiGQo0Q
+X-Proofpoint-ORIG-GUID: GJkmpXGKkvVark0qPZsk-FYHZUiGQo0Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-06_09,2022-12-06_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ suspectscore=0 adultscore=0 phishscore=0 mlxlogscore=476 malwarescore=0
+ bulkscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212060119
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This series contains changes needed to allow KCK key with more than 16
+bytes length in NL80211_CMD_SET_REKEY_OFFLOAD.
+
+Shivani Baranwal (2):
+  wifi: cfg80211: Fix extended KCK key length check in
+    nl80211_set_rekey_data()
+  wifi: cfg80211: Support 32 bytes KCK key in GTK rekey offload
+
+ include/net/cfg80211.h       | 3 ++-
+ include/uapi/linux/nl80211.h | 1 +
+ net/wireless/nl80211.c       | 6 ++++--
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
 -- 
-Hello good day,I am happy to be together with you, My name is Ghina
-Halabi, I am a military nurse working with  Israeli defense force.
-Please don't let my profession, race or nationality enter your mind,
-there is something very important which I would like us to discuss.Can
-we talk about friendship and partnership? please if you really want to
-have a good and prosperous communication with me please kindly respond
-to me positively.
+2.25.1
+
