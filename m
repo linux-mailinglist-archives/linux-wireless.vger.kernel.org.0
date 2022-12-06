@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F41A2644AB5
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 18:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DC5644B24
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 19:20:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbiLFR7k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Dec 2022 12:59:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49280 "EHLO
+        id S229900AbiLFST6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Dec 2022 13:19:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbiLFR7j (ORCPT
+        with ESMTP id S229819AbiLFSTr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Dec 2022 12:59:39 -0500
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F5930551
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 09:59:38 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id ay32so6263975qtb.11
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Dec 2022 09:59:38 -0800 (PST)
+        Tue, 6 Dec 2022 13:19:47 -0500
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD88C9FCB
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 10:19:46 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id k7so14738274pll.6
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Dec 2022 10:19:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6zmwMKUsvhsmLo58IKQM+/+QOhiwl+O1ZO04liQD4ZU=;
-        b=Ifjhm/8IOYGo2UJaOXdkEFFwf9uIE5oAVwUDzGxvS4aG1f8aDf5iwVwwJ2Buepr3wx
-         158fv6fTYUBKm1tnXkcvYcGfBHBDkHlZJpFcgAV4xZ6JZMpiZ+MwgkEPJ+euGstH4cFj
-         eh6COeDQxS0NwTdGGBDEang8yX+9HX/I8OmlM=
+        bh=cSfhPQpFDB2Oh/dXEYISHFJYga0x3KEHfbWND/sD6No=;
+        b=EyO7UiVslhjD2J9Pk86BjAGlGIPoKMiuVmsgpDWDrFQv+bAxBBM7dbVY4PLR6Y/Aij
+         /ASBgKiyWfEsW9pUkfiXpyYOs6bpMYeR+yjU/CYoGfjPwT7pt5n3LY2P9FaRq5lO7yfi
+         uUzq28bWpj2ezOGWfy2gZ6jp8zEf1sabXLQAE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6zmwMKUsvhsmLo58IKQM+/+QOhiwl+O1ZO04liQD4ZU=;
-        b=y2xCQtmJDSHbvBX4zHujJVmin2th4JSWzBtNlG7vZX9S2sTOeen1+/69pDcaLsD8a/
-         ViD94KtZjEsf8CS/8I4CUjou5vr161N8Dx04agsDoigiFgCnf++YOETaS9N2HxO8zEdu
-         XnAHQmDc82BIYnrgBfsiMP7IMD4pLSV+Dk0pmOOwiFrj2DlYhlZl0JVKdAi4Tpfv6nRh
-         uJEaDhBdl30sGh3t2gWLSBY2NaQ236UvAQK5xkgE4uoYF62WW7zPUvYDu8SQQUYYl/TL
-         XMP+cJiXk63lE9bgMOD3i1ZlVUf8t5ozMZIHEnaBOMPWUg+rr349nwYnBsBwTOnjhKRD
-         EZTg==
-X-Gm-Message-State: ANoB5plCx5ZiudSzCeM4+mt/138Z70W321MJmYWnIz4cN3P2e4rFKJ0R
-        kb2EkSLIbhheEVDA2OrxvTy61A==
-X-Google-Smtp-Source: AA0mqf7Jzo8AgHdqRGU3jT5FCVWxoy++yIUB66HHyvUo5CsSAhW7E8r7QqqMZ3BqyRAG1+1EzEWowA==
-X-Received: by 2002:a05:622a:a08:b0:3a5:83eb:a3ab with SMTP id bv8-20020a05622a0a0800b003a583eba3abmr79574411qtb.120.1670349577781;
-        Tue, 06 Dec 2022 09:59:37 -0800 (PST)
+        bh=cSfhPQpFDB2Oh/dXEYISHFJYga0x3KEHfbWND/sD6No=;
+        b=tGxAxlafH3jL9YINY69ZRE+LhGle0wgU68nedNKMg4KnqeO2LoBieJqVvvI66UZOUn
+         SiVb2/P/8HTnz+kc5MPTeX2Nt/doE4xmoJmHJzbAnvCtTxqc9hK4km0Cr/hkyqXECc5I
+         ZpEb6xjOalEBZWqFMIjhOiaTth4mAv2GfeQHz/vLhPe/RIvc/fWIXM7JvlJLnTVulaho
+         SxTfmoh5Vz2G+/5WfiKk7jeQU7DirtAgglq6UvMXjVZ6KH3aqCqlOEm2Npeojpu1AQpL
+         1Uj5EhDxtkKwPJ4XCwGJsYYexj3r6plx/F5gBd3xvvio4oWeIDJbFzUR3CegPrYjAPdw
+         CTxw==
+X-Gm-Message-State: ANoB5pml9Q2umAm9WeUKelqf2as3PU4tqhS4xVOhi85TFv5VW7zkH8jY
+        U49ey52q88j8B6L4462xebvWgA==
+X-Google-Smtp-Source: AA0mqf49jcJyVboO+FFu4CdGEXj1OUeh9B3nBloKVWiBokj13rudzyWR/VHcd+bDDsx7bzKUoZZtLA==
+X-Received: by 2002:a17:902:dacd:b0:189:6889:c309 with SMTP id q13-20020a170902dacd00b001896889c309mr54175119plx.3.1670350786288;
+        Tue, 06 Dec 2022 10:19:46 -0800 (PST)
 Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id w3-20020ac87183000000b0039cd4d87aacsm11719525qto.15.2022.12.06.09.59.35
+        by smtp.gmail.com with ESMTPSA id fa13-20020a17090af0cd00b00218abadb6a8sm11118786pjb.49.2022.12.06.10.19.41
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Dec 2022 09:59:36 -0800 (PST)
+        Tue, 06 Dec 2022 10:19:45 -0800 (PST)
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
 To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
         JunASAKA <JunASAKA@zzy040330.moe>, <Jes.Sorensen@gmail.com>
@@ -53,16 +53,17 @@ CC:     <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>,
         <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Date:   Tue, 06 Dec 2022 18:59:34 +0100
-Message-ID: <184e897cf70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <9dc328a1-1d76-6b8b-041e-d20479f4ff56@gmail.com>
+Date:   Tue, 06 Dec 2022 19:19:39 +0100
+Message-ID: <184e8aa3278.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <184e897cf70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 References: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
  <9dc328a1-1d76-6b8b-041e-d20479f4ff56@gmail.com>
+ <184e897cf70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 User-Agent: AquaMail/1.40.1 (build: 104001224)
 Subject: Re: [PATCH] drivers: rewrite and remove a superfluous parameter.
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000004041a905ef2c912d"
+        boundary="00000000000049d79b05ef2cd92d"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -72,68 +73,86 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000004041a905ef2c912d
+--00000000000049d79b05ef2cd92d
 Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 
-On November 29, 2022 3:06:37 PM Bitterblue Smith <rtl8821cerfe2@gmail.com> 
-wrote:
+On December 6, 2022 6:59:36 PM Arend Van Spriel 
+<arend.vanspriel@broadcom.com> wrote:
 
-> On 29/11/2022 06:34, JunASAKA wrote:
->> I noticed there is a superfluous "*hdr" parameter in rtl8xxxu module
->> when I am trying to fix some bugs for the rtl8192eu wifi dongle. This
->> parameter can be removed and then gained from the skb object to make the
->> function more beautiful.
->>
->> Signed-off-by: JunASAKA <JunASAKA@zzy040330.moe>
->> ---
->> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 +++--
->> 1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c 
->> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->> index ac641a56efb0..4c3d97e8e51f 100644
->> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->> @@ -4767,9 +4767,10 @@ static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
->> return rtlqueue;
->> }
->>
->> -static u32 rtl8xxxu_queue_select(struct ieee80211_hdr *hdr, struct sk_buff 
->> *skb)
->> +static u32 rtl8xxxu_queue_select(struct sk_buff *skb)
->> {
->> u32 queue;
->> + struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
->>
->> if (ieee80211_is_mgmt(hdr->frame_control))
->> queue = TXDESC_QUEUE_MGNT;
->> @@ -5118,7 +5119,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->> if (control && control->sta)
->> sta = control->sta;
->>
->> - queue = rtl8xxxu_queue_select(hdr, skb);
->> + queue = rtl8xxxu_queue_select(skb);
->>
->> tx_desc = skb_push(skb, tx_desc_size);
+> On November 29, 2022 3:06:37 PM Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> wrote:
 >
-> See the recent discussion about this here:
-> https://lore.kernel.org/linux-wireless/acd30174-4541-7343-e49a-badd199f4151@gmail.com/
-> https://lore.kernel.org/linux-wireless/2af44c28-1c12-46b9-85b9-011560bf7f7e@gmail.com/
+>> On 29/11/2022 06:34, JunASAKA wrote:
+>>> I noticed there is a superfluous "*hdr" parameter in rtl8xxxu module
+>>> when I am trying to fix some bugs for the rtl8192eu wifi dongle. This
+>>> parameter can be removed and then gained from the skb object to make the
+>>> function more beautiful.
+>>>
+>>> Signed-off-by: JunASAKA <JunASAKA@zzy040330.moe>
+>>> ---
+>>> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 +++--
+>>> 1 file changed, 3 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> index ac641a56efb0..4c3d97e8e51f 100644
+>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> @@ -4767,9 +4767,10 @@ static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
+>>> return rtlqueue;
+>>> }
+>>>
+>>> -static u32 rtl8xxxu_queue_select(struct ieee80211_hdr *hdr, struct sk_buff
+>>> *skb)
+>>> +static u32 rtl8xxxu_queue_select(struct sk_buff *skb)
+>>> {
+>>> u32 queue;
+>>> + struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+>>>
+>>> if (ieee80211_is_mgmt(hdr->frame_control))
+>>> queue = TXDESC_QUEUE_MGNT;
+>>> @@ -5118,7 +5119,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>> if (control && control->sta)
+>>> sta = control->sta;
+>>>
+>>> - queue = rtl8xxxu_queue_select(hdr, skb);
+>>> + queue = rtl8xxxu_queue_select(skb);
+>>>
+>>> tx_desc = skb_push(skb, tx_desc_size);
+>>
+>> See the recent discussion about this here:
+>> https://lore.kernel.org/linux-wireless/acd30174-4541-7343-e49a-badd199f4151@gmail.com/
+>> https://lore.kernel.org/linux-wireless/2af44c28-1c12-46b9-85b9-011560bf7f7e@gmail.com/
+>
+> Not sure why I looked but I did. You may want to look at rtl8xxxu_tx()
+> which is the .tx callback that mac80211 uses and the first statement in
+> there is also assuming skb->data points to the 802.11 header.
 
-Not sure why I looked but I did. You may want to look at rtl8xxxu_tx() 
-which is the .tx callback that mac80211 uses and the first statement in 
-there is also assuming skb->data points to the 802.11 header.
+Here the documentation of the .tx callback:
+
+@tx: Handler that 802.11 module calls for each transmitted frame.
+ * skb contains the buffer *starting from the IEEE 802.11 header*.
+ * The low-level driver should send the frame out based on
+ * configuration in the TX control data. This handler should,
+ * preferably, never fail and stop queues appropriately.
+ * Must be atomic.
+
+I don't see any pushes or pulls before the queue select so that would mean 
+mac80211 is not complying to the described behavior.
 
 Regards,
 Arend
+
 >
+> Regards,
+> Arend
+>>
 
 
 
 
-
---0000000000004041a905ef2c912d
+--00000000000049d79b05ef2cd92d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -204,14 +223,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC4DyGuC8bjL+upTAjy
-Tbl66dY9eL+hVzBq0fQ5N51GUzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMDYxNzU5MzhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBlSFpOXydLUwTPKe/9
+tpt/z6MfbWOhBDyzHtXWpinWwTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjEyMDYxODE5NDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAOvxdA4tqws7e5LssruOs2Cz7T1Gavg0tYMrT
-g016uUtKpSExwB4rbQok2hmbupra1hidDnLaC5/xF8XTkWD1myMGvEePMcMYEsOWIUktv4Y6vRh3
-TQmJ3fDG68vG/2xn0w+QqLHXgUVDCDurO+VUaIuyph8fKMmcVFw5RCfDTxLxH/K/ZxM4inZOK132
-YVAapBNJaV7OFhfjpAtt1iPWtpQ7m0VgzuxBm08frRE+MU8BnO+pDn3REpWk6uoUdlmPM4t647Nn
-jzphUKf6G4dATNrUivhM4FxbkRRi11tnkPIKu9sYgDP8IOvNHh7qHVcmFtuAH4oZY9zFMPE+OZkK
-dQ==
---0000000000004041a905ef2c912d--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA6944+6OQPpdSrm/tQp+NJi1U1fuCaFAz3+Xb
+OoiqiLSKPUtYrm8aOiCpuzgx1volHxJ7BLNOBx3RJveL9/fu8EorjutG01vqyR0FGNhGJwVRUDTz
+mVb8PscEz0T2w9tbO6HvYKe+fMy9dO6vXrBlGL5nnoeTni2tFvT33/2U98r1Vap00SL/mi5HTPnz
+DrQviNIDL2srzpOShhX0l0k0Q6MBgxfscS8+uCTbgQEx5YkAabZbzrxI1tNW/+qYb+uriUhPH+0J
+VeJAjRQ8rPc2uRkqUyvrbPl1tRtlhTT26rxxjbByrg3LSshQhtG7JvGSO+ZIjoJG0kFcyE3YQsrx
+2A==
+--00000000000049d79b05ef2cd92d--
