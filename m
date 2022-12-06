@@ -2,91 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F795644AB4
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 18:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F41A2644AB5
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Dec 2022 18:59:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbiLFR7g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Dec 2022 12:59:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49246 "EHLO
+        id S229605AbiLFR7k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Dec 2022 12:59:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiLFR7e (ORCPT
+        with ESMTP id S229507AbiLFR7j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Dec 2022 12:59:34 -0500
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5A82873F
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 09:59:33 -0800 (PST)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.124])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D45691A0083;
-        Tue,  6 Dec 2022 17:59:26 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A6BE3940084;
-        Tue,  6 Dec 2022 17:59:26 +0000 (UTC)
-Received: from [10.0.0.50] (cpe-98-151-114-119.hawaii.res.rr.com [98.151.114.119])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id EF54B13C2B0;
-        Tue,  6 Dec 2022 09:59:25 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com EF54B13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1670349566;
-        bh=8HOIkMGH1VwRGYr3vsQkOV2Swe7y0a7QrZwb2O72FSo=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=nt30aMaLSCkvr84T4yume3CVImzokcLSjp3QMPnxSytasc7iDQ1A6vCU5bIdo3y1L
-         JWNvX+R1KmoqWlIgBIyRKLCz4Kf4rzzQuxzbXQ9HYWatwOU0LJmXEKeDDLLxlrhjPl
-         4e28NJfGbF3Ev7w+vkdXFUrxHWxDc0xc1URr0OxM=
-Message-ID: <413cbc75-14e8-f80d-e536-e1d72c5d1605@candelatech.com>
-Date:   Tue, 6 Dec 2022 09:59:25 -0800
+        Tue, 6 Dec 2022 12:59:39 -0500
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F5930551
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 09:59:38 -0800 (PST)
+Received: by mail-qt1-x833.google.com with SMTP id ay32so6263975qtb.11
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Dec 2022 09:59:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6zmwMKUsvhsmLo58IKQM+/+QOhiwl+O1ZO04liQD4ZU=;
+        b=Ifjhm/8IOYGo2UJaOXdkEFFwf9uIE5oAVwUDzGxvS4aG1f8aDf5iwVwwJ2Buepr3wx
+         158fv6fTYUBKm1tnXkcvYcGfBHBDkHlZJpFcgAV4xZ6JZMpiZ+MwgkEPJ+euGstH4cFj
+         eh6COeDQxS0NwTdGGBDEang8yX+9HX/I8OmlM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6zmwMKUsvhsmLo58IKQM+/+QOhiwl+O1ZO04liQD4ZU=;
+        b=y2xCQtmJDSHbvBX4zHujJVmin2th4JSWzBtNlG7vZX9S2sTOeen1+/69pDcaLsD8a/
+         ViD94KtZjEsf8CS/8I4CUjou5vr161N8Dx04agsDoigiFgCnf++YOETaS9N2HxO8zEdu
+         XnAHQmDc82BIYnrgBfsiMP7IMD4pLSV+Dk0pmOOwiFrj2DlYhlZl0JVKdAi4Tpfv6nRh
+         uJEaDhBdl30sGh3t2gWLSBY2NaQ236UvAQK5xkgE4uoYF62WW7zPUvYDu8SQQUYYl/TL
+         XMP+cJiXk63lE9bgMOD3i1ZlVUf8t5ozMZIHEnaBOMPWUg+rr349nwYnBsBwTOnjhKRD
+         EZTg==
+X-Gm-Message-State: ANoB5plCx5ZiudSzCeM4+mt/138Z70W321MJmYWnIz4cN3P2e4rFKJ0R
+        kb2EkSLIbhheEVDA2OrxvTy61A==
+X-Google-Smtp-Source: AA0mqf7Jzo8AgHdqRGU3jT5FCVWxoy++yIUB66HHyvUo5CsSAhW7E8r7QqqMZ3BqyRAG1+1EzEWowA==
+X-Received: by 2002:a05:622a:a08:b0:3a5:83eb:a3ab with SMTP id bv8-20020a05622a0a0800b003a583eba3abmr79574411qtb.120.1670349577781;
+        Tue, 06 Dec 2022 09:59:37 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id w3-20020ac87183000000b0039cd4d87aacsm11719525qto.15.2022.12.06.09.59.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Dec 2022 09:59:36 -0800 (PST)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        JunASAKA <JunASAKA@zzy040330.moe>, <Jes.Sorensen@gmail.com>
+CC:     <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Date:   Tue, 06 Dec 2022 18:59:34 +0100
+Message-ID: <184e897cf70.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <9dc328a1-1d76-6b8b-041e-d20479f4ff56@gmail.com>
+References: <20221129043442.14717-1-JunASAKA@zzy040330.moe>
+ <9dc328a1-1d76-6b8b-041e-d20479f4ff56@gmail.com>
+User-Agent: AquaMail/1.40.1 (build: 104001224)
+Subject: Re: [PATCH] drivers: rewrite and remove a superfluous parameter.
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: ax210: Ability to report noise floor?
-Content-Language: en-MW
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <a8a2c506-96c8-1850-0585-cda09d4b31f0@candelatech.com>
- <00a4d194f70c4f4c7b7df38b79c0df40ba87f0aa.camel@intel.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <00a4d194f70c4f4c7b7df38b79c0df40ba87f0aa.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1670349567-inZfQFBNVo0Y
-X-MDID-O: us5-ut7-1670349567-inZfQFBNVo0Y
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000004041a905ef2c912d"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/6/22 06:10, Greenman, Gregory wrote:
-> Hi Ben,
-> 
-> On Mon, 2022-12-05 at 07:49 -0800, Ben Greear wrote:
->> Hello,
->>
->> Is there any way to get Intel ax210 to report the noise floor?
->>
->> Thanks,
->> Ben
->>
-> 
-> No, unfortunately we don't have this information in the driver.
-> 
-> Regards,
-> Gregory
-> 
+--0000000000004041a905ef2c912d
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Someone told me the Windows driver had support for noise floor...so maybe just need some new
-API to be implemented to the firmware?
+On November 29, 2022 3:06:37 PM Bitterblue Smith <rtl8821cerfe2@gmail.com> 
+wrote:
 
-Thanks,
-Ben
+> On 29/11/2022 06:34, JunASAKA wrote:
+>> I noticed there is a superfluous "*hdr" parameter in rtl8xxxu module
+>> when I am trying to fix some bugs for the rtl8192eu wifi dongle. This
+>> parameter can be removed and then gained from the skb object to make the
+>> function more beautiful.
+>>
+>> Signed-off-by: JunASAKA <JunASAKA@zzy040330.moe>
+>> ---
+>> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 +++--
+>> 1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c 
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> index ac641a56efb0..4c3d97e8e51f 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> @@ -4767,9 +4767,10 @@ static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
+>> return rtlqueue;
+>> }
+>>
+>> -static u32 rtl8xxxu_queue_select(struct ieee80211_hdr *hdr, struct sk_buff 
+>> *skb)
+>> +static u32 rtl8xxxu_queue_select(struct sk_buff *skb)
+>> {
+>> u32 queue;
+>> + struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+>>
+>> if (ieee80211_is_mgmt(hdr->frame_control))
+>> queue = TXDESC_QUEUE_MGNT;
+>> @@ -5118,7 +5119,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>> if (control && control->sta)
+>> sta = control->sta;
+>>
+>> - queue = rtl8xxxu_queue_select(hdr, skb);
+>> + queue = rtl8xxxu_queue_select(skb);
+>>
+>> tx_desc = skb_push(skb, tx_desc_size);
+>
+> See the recent discussion about this here:
+> https://lore.kernel.org/linux-wireless/acd30174-4541-7343-e49a-badd199f4151@gmail.com/
+> https://lore.kernel.org/linux-wireless/2af44c28-1c12-46b9-85b9-011560bf7f7e@gmail.com/
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Not sure why I looked but I did. You may want to look at rtl8xxxu_tx() 
+which is the .tx callback that mac80211 uses and the first statement in 
+there is also assuming skb->data points to the 802.11 header.
+
+Regards,
+Arend
+>
+
+
+
+
+
+--0000000000004041a905ef2c912d
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC4DyGuC8bjL+upTAjy
+Tbl66dY9eL+hVzBq0fQ5N51GUzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjEyMDYxNzU5MzhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAOvxdA4tqws7e5LssruOs2Cz7T1Gavg0tYMrT
+g016uUtKpSExwB4rbQok2hmbupra1hidDnLaC5/xF8XTkWD1myMGvEePMcMYEsOWIUktv4Y6vRh3
+TQmJ3fDG68vG/2xn0w+QqLHXgUVDCDurO+VUaIuyph8fKMmcVFw5RCfDTxLxH/K/ZxM4inZOK132
+YVAapBNJaV7OFhfjpAtt1iPWtpQ7m0VgzuxBm08frRE+MU8BnO+pDn3REpWk6uoUdlmPM4t647Nn
+jzphUKf6G4dATNrUivhM4FxbkRRi11tnkPIKu9sYgDP8IOvNHh7qHVcmFtuAH4oZY9zFMPE+OZkK
+dQ==
+--0000000000004041a905ef2c912d--
