@@ -2,111 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D629B645A22
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 13:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F583645A8C
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 14:17:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbiLGMtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 07:49:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
+        id S229815AbiLGNRa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 08:17:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbiLGMtt (ORCPT
+        with ESMTP id S229575AbiLGNR3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 07:49:49 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23B04732D
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 04:49:46 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Wed, 7 Dec 2022 08:17:29 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F35B56EED
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 05:17:28 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1121DB80D10
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 12:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F79C433B5;
-        Wed,  7 Dec 2022 12:49:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670417383;
-        bh=AXicRcbMt6Q30lfd1HklcIN6z+8S6e+8Nbh/BfqFBgk=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=pL0sNtJOp87husA4rUHe1JkHAF5bZpQn6WhCXER45b1lPOOWP2E8Fqy91f2H7rTGz
-         7ErSGTb+xM03Wpi7FpRBIgy9Jxgm5LZdVAfKORVVadtJCJk5Fk1MCRAOOd3LgY+YgW
-         D7G9fqQVuOYzOvu7qNj3Tr6AYd5w0iW44m4biLt6hozci1WwTu/9VmMG4IajRn8/hp
-         QsHDEsQiStayrMlq/yk8OQa4RkwhRxMgr7lptyzAWNBzTPWfaONWQoSALeGKLXbrgQ
-         XcmEKKc5B/w5bpqqkrtD0kCqG8RNi2raNKSY17DtwOeKdUFoR7uZyJraecbdHHe1wK
-         GCLPzv1eSS7DA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: failed to insert STA entry for the AP (error -2)
-In-Reply-To: <20221203155227.GA13254@lst.de> (Christoph Hellwig's message of
-        "Sat, 3 Dec 2022 16:52:27 +0100")
-References: <20221130122807.GA31720@lst.de> <87o7so4nr2.fsf@kernel.org>
-        <20221130125236.GA865@lst.de> <87k03c4mdb.fsf@kernel.org>
-        <20221130133016.GC3055@lst.de> <87sfhx3ap6.fsf@kernel.org>
-        <20221203155227.GA13254@lst.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Wed, 07 Dec 2022 14:49:37 +0200
-Message-ID: <87cz8v2xb2.fsf@kernel.org>
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 6F2AA6602BB7;
+        Wed,  7 Dec 2022 13:17:26 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1670419047;
+        bh=Ixv5+2qeipyxLWYB1z8spcuWJvLJCGXY957CuqQgBIw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Mb2zWX/28qChejNSI8AEV0tS+7vWceaGq5aLBoz/oWC82SHmAvXagin9+1d679RHC
+         yA8UUQfhW8kigNyr5VSv1hSHkzXLb1xG2jKyKeTHBNeUMFjLR5q09NLH2JW0pZ46VZ
+         zPgfghMMAQR09ndN8JbmRfj/4SROTZxl5XxwbbDZoH7MgLVHSaCGtpY7tfDLZOOFX9
+         B3YCCGx2ZLlUdRMllQgTck2zfKSltOsmIIKFBxkDbBBqwPXr0qGBj4TwoxcNKW1f5h
+         ZuRP5DKpvQSPRih/NFMf3ocftNzA/K6mB9LPZcIeZa84Im51aB6Q4r6MCqkDEhcRO4
+         BqQUNjAfAliOA==
+Message-ID: <65220c33-dc2d-9f3d-578b-dc973b9c043a@collabora.com>
+Date:   Wed, 7 Dec 2022 14:17:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] wifi: mt76: fix coverity uninit_use_in_call in
+ mt76_connac2_reverse_frag0_hdr_trans()
+Content-Language: en-US
+To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <200ea97407b6f121da7ccd4567fde4b0426c5d9c.1670404791.git.deren.wu@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <200ea97407b6f121da7ccd4567fde4b0426c5d9c.1670404791.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Christoph,
+Il 07/12/22 10:22, Deren Wu ha scritto:
+> The default case for frame_contorl is invalid. We should always
+> assign addr3 of this frame properly.
+> 
+> Coverity error message:
+> if (ieee80211_has_a4(hdr.frame_control))
+> (19) Event uninit_use_in_call:	Using uninitialized value "hdr".
+> Field "hdr.addr3" is uninitialized when calling "memcpy".
+> 	memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
+> else
+> 	memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
+> 
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 
-Sorry for the delay, it was Finland's Independence Day so I was offline
-for a long weekend.
+Please add the appropriate Fixes tag to this commit.
 
-Christoph Hellwig <hch@lst.de> writes:
+Thanks,
+Angelo
 
-> On Fri, Dec 02, 2022 at 08:46:45PM +0200, Kalle Valo wrote:
->> Haven't seen this before either. Really unfortunate that the warning
->> message message is not printing the error value (missed that during
->> review), but I suspect the error is coming from crypto_alloc_shash()
->> call:
->
->> Any chance you could check that? Also please check that
->> CONFIG_CRYPTO_MICHAEL_MIC is enabled (it should be as CONFIG_ATH11K
->> depends on it).
->
-> So, this is the debian-installer case onc again.  CONFIG_CRYPTO_MICHAEL_MIC
-> is enabled in the kernel config, but michael_mic.ko is not present on
-> the installation media. Once I side-load it, the problem goes away.
->
-> I guess I'll respind the MODULE_SOFTDEP patch to include michael_mic,
-
-Thanks. But this makes me wonder is it sensible to randomly install a
-set of .ko files and drop the rest, like Debian's installer apparently
-does? The dependency for drivers is pretty well documented in Kconfig
-files, thanks to build testers testing with random configurations, but
-if the installer omits all that there will be problems just like you are
-experiencing. So for me MODULE_SOFTDEP() feels just like a band aid and
-not a robust solution.
-
-Though I am happy to take your MODULE_SOFTDEP() patch, just wondering if
-there is a better way to solve this. For example net/mac80211 (the
-802.11 stack) has a lot of crypto dependencies:
-
-	select CRYPTO
-	select CRYPTO_LIB_ARC4
-	select CRYPTO_AES
-	select CRYPTO_CCM
-	select CRYPTO_GCM
-	select CRYPTO_CMAC
-	select CRC32
-
-And it's not using MODULE_SOFTDEP() at all.
-
-> but if you have a good idea to make the error reporting more useful that
-> would be appreciated as well.
-
-I'll send a patch to improve the error messages in this case.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
