@@ -2,70 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B67256452CA
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 05:01:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67774645320
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 05:41:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229671AbiLGEBk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Dec 2022 23:01:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44804 "EHLO
+        id S229705AbiLGEl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Dec 2022 23:41:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbiLGEBj (ORCPT
+        with ESMTP id S229683AbiLGElY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Dec 2022 23:01:39 -0500
-Received: from pv50p00im-ztdg10012101.me.com (pv50p00im-ztdg10012101.me.com [17.58.6.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7454854B01
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 20:01:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
-        s=sig1; t=1670385696;
-        bh=RH16D7d4KZWO1+9ckND1BBAhK2hU1iiMrJQe/a56u8k=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-        b=XWzr9wllFyCncqLTw2WwfDhjlvlp1/HW3q4qRBRTnE2jweuQnruh87GmLd4lVexY9
-         bAz5325C4MnPUzk7BhvyDtjVEDmILTAOeyAHt9Vnrk0xaWTq6YoGUIVElw+GtGXyxM
-         LcS9fJpl+FspSu49rX4stwcbXZflAvEJUDfeot3VeTwUI6BuVOwUpIYnz1vx39hNTJ
-         gg7ZyHnBhPmJHjn8+nggtbq881Hx5voTV1dMuG/ylZZrH2RbDAp9QsNl9BcVmxHMPl
-         M5IZnLv1dNihic+I1W5gcIp88ZP5vTgNqLl/ezZ9M5TM6c3gZEsVyxWb3rPMx/zPu3
-         loqgE8yX4rPOQ==
-Received: from [192.168.1.28] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-        by pv50p00im-ztdg10012101.me.com (Postfix) with ESMTPSA id 1ED2C74064F;
-        Wed,  7 Dec 2022 04:01:32 +0000 (UTC)
-Message-ID: <363010d3-b9f4-cf83-11d1-20174e7c0d14@zzy040330.moe>
-Date:   Wed, 7 Dec 2022 12:01:30 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v5] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
-Content-Language: en-US
+        Tue, 6 Dec 2022 23:41:24 -0500
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F11356EDC
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 20:41:22 -0800 (PST)
+Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4NRl2k3YmJzRplj;
+        Wed,  7 Dec 2022 12:40:30 +0800 (CST)
+Received: from [10.174.178.174] (10.174.178.174) by
+ dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 7 Dec 2022 12:41:20 +0800
+Subject: Re: [PATCH resend 1/3] rtlwifi: rtl8821ae: don't call kfree_skb()
+ under spin_lock_irqsave()
 To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221207033926.11777-1-JunASAKA@zzy040330.moe>
- <2ac07b1d6e06443b95befb79d27549d2@realtek.com>
- <b4b65c74-792f-4df1-18bf-5c6f80845814@zzy040330.moe>
- <159ac3a296164b05b319bfb254a7901b@realtek.com>
-From:   Jun ASAKA <JunASAKA@zzy040330.moe>
-In-Reply-To: <159ac3a296164b05b319bfb254a7901b@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: iAiE7nLz3jMdDG1L84geIUJloUJCSIjn
-X-Proofpoint-ORIG-GUID: iAiE7nLz3jMdDG1L84geIUJloUJCSIjn
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.11.64.514.0000000_definitions?=
- =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2022-02-23?=
- =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 bulkscore=0
- clxscore=1030 mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=277
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2212070029
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        <yangyingliang@huawei.com>
+References: <20221206131249.2181693-1-yangyingliang@huawei.com>
+ <20221206131249.2181693-2-yangyingliang@huawei.com>
+ <758b8caa9e8243bb84471baf50706e6d@realtek.com>
+ <c9096bc2-8765-8bf5-484b-da949c99e236@huawei.com>
+ <1bbd83a4cd6f48e5878c256c3e8f6334@realtek.com>
+From:   Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <0fa6cc09-80b6-94bc-6d0a-dffacf896617@huawei.com>
+Date:   Wed, 7 Dec 2022 12:41:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <1bbd83a4cd6f48e5878c256c3e8f6334@realtek.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.174.178.174]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,44 +57,40 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 07/12/2022 11:55, Ping-Ke Shih wrote:
->
+On 2022/12/7 11:52, Ping-Ke Shih wrote:
 >> -----Original Message-----
->> From: Jun ASAKA <JunASAKA@zzy040330.moe>
->> Sent: Wednesday, December 7, 2022 11:51 AM
->> To: Ping-Ke Shih <pkshih@realtek.com>; Jes.Sorensen@gmail.com
->> Cc: kvalo@kernel.org; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
->> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org
->> Subject: Re: [PATCH v5] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
+>> From: Yang Yingliang <yangyingliang@huawei.com>
+>> Sent: Wednesday, December 7, 2022 11:44 AM
+>> To: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org
+>> Cc: linux-wireless@vger.kernel.org; yangyingliang@huawei.com
+>> Subject: Re: [PATCH resend 1/3] rtlwifi: rtl8821ae: don't call kfree_skb() under spin_lock_irqsave()
 >>
->> On 07/12/2022 11:43, Ping-Ke Shih wrote:
+>>
+>> On 2022/12/7 11:31, Ping-Ke Shih wrote:
 >>>> -----Original Message-----
->>>> From: Jun ASAKA <JunASAKA@zzy040330.moe>
->>>> Sent: Wednesday, December 7, 2022 11:39 AM
->>>> To: Jes.Sorensen@gmail.com
->>>> Cc: kvalo@kernel.org; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
->>>> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Jun ASAKA
->>>> <JunASAKA@zzy040330.moe>; Ping-Ke Shih <pkshih@realtek.com>
->>>> Subject: [PATCH v5] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
+>>>> From: Yang Yingliang <yangyingliang@huawei.com>
+>>>> Sent: Tuesday, December 6, 2022 9:13 PM
+>>>> To: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org
+>>>> Cc: linux-wireless@vger.kernel.org; yangyingliang@huawei.com
+>>>> Subject: [PATCH resend 1/3] rtlwifi: rtl8821ae: don't call kfree_skb() under spin_lock_irqsave()
 >>>>
->>>> Fixing "Path A RX IQK failed" and "Path B RX IQK failed"
->>>> issues for rtl8192eu chips by replacing the arguments with
->>>> the ones in the updated official driver as shown below.
->>>> 1. https://github.com/Mange/rtl8192eu-linux-driver
->>>> 2. vendor driver version: 5.6.4
->>>>
->>>> Tested-by: Jun ASAKA <JunASAKA@zzy040330.moe>
->>>> Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
->>>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
->>>> ---
->>>> v5:
->>>>    - no modification.
->>> Then, why do you need v5?
->> Well,  I just want to add the "Reviewed-By" line to the commit message.
->> Sorry for the noise if there is no need to do that.
+>>>> It is not allowed to call kfree_skb() from hardware interrupt
+>>>> context or with interrupts being disabled. So add all skb to
+>>>> a free list, then free them after spin_unlock_irqrestore() at
+>>>> once.
+>>> The patch doesn't change logic, so it should work. But, I would like to know
+>>> if there is a comment about this in kernel code. Could you point it out?
+>> You can see comment of dev_kfree_skb_irq() in include/linux/netdevice.h
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/netdevice.h?h=v6
+>> .1-rc8
 >>
-> No need to add "Reviewed-By". Kalle will add it when this patch gets merged.
+> It seems like we can replace kfree_skb() by dev_kfree_skb_irq(), right?
+> But your method is more efficient. Is that your point?
+Yes, the SKBs have already been dequeued from the queue, so they can be 
+freed together at once.
+
+Thanks,
+Yang
 >
 > Ping-Ke
 >
-Oh, I see. Sorry for bothering you.
