@@ -2,52 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA3C1645CF2
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 15:54:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC0E9645C3F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 15:19:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbiLGOyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 09:54:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42876 "EHLO
+        id S230137AbiLGOTI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 09:19:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbiLGOym (ORCPT
+        with ESMTP id S229936AbiLGOTD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 09:54:42 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30454E6AB;
-        Wed,  7 Dec 2022 06:54:40 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 556FEB81E6F;
-        Wed,  7 Dec 2022 14:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35015C433D6;
-        Wed,  7 Dec 2022 14:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670424878;
-        bh=mtEarKHCsxRpEvBu4Wfxw0tEXAYjUKCgGEcgBv28W94=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dfHya90T74mUPQAbcMZ9qyxCYFJM3wGN+GhKK5MKDc1SUkfXtxhDI+SedftI/pnK5
-         RsTRZUkNtAieJ+rkV/W6MzyWPOtgY26kdjl6PLNGMNf/sPOmQkOAz3VfOr/ejxseMj
-         5O7Pd2FQFvY+u2Y07dq8rbrm4Jb67Qz9914h8qXT9MDc0KltsI4kvPM/oa+Qo/vBl+
-         HoJTJrA6A5mmA2YSPTSMMcFXTQV3czwQmzECvo2oR5MaxzpqZQf9P2A0NBhngMtmTL
-         FmzoKQ6lGAHNKZWWOFNy6Qb0TRFLdehps2YPlKlRUusJccakPdMMAgVhNXiLqw2R4k
-         3I0uWDzXQnhaw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.1-rc8
-References: <CAHk-=wgyXu4D44b8wQU9dpTYUft6WhZ0wr3nV1fziy6k0GwCCw@mail.gmail.com>
-        <20221206085158.349363-1-geert@linux-m68k.org>
-        <alpine.DEB.2.22.394.2212060957480.648028@ramsan.of.borg>
-Date:   Wed, 07 Dec 2022 16:54:31 +0200
-In-Reply-To: <alpine.DEB.2.22.394.2212060957480.648028@ramsan.of.borg> (Geert
-        Uytterhoeven's message of "Tue, 6 Dec 2022 09:59:43 +0100 (CET)")
-Message-ID: <87cz8vmfh4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 7 Dec 2022 09:19:03 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEF755C94;
+        Wed,  7 Dec 2022 06:19:02 -0800 (PST)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NRzsG1HM3zmWSZ;
+        Wed,  7 Dec 2022 22:18:10 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemi500012.china.huawei.com
+ (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 7 Dec
+ 2022 22:18:59 +0800
+From:   Li Zetao <lizetao1@huawei.com>
+To:     <pkshih@realtek.com>, <kvalo@kernel.org>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <lizetao1@huawei.com>, <Larry.Finger@lwfinger.net>,
+        <linville@tuxdriver.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
+Date:   Wed, 7 Dec 2022 23:23:19 +0800
+Message-ID: <20221207152319.3135500-1-lizetao1@huawei.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,24 +47,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
+There is a global-out-of-bounds reported by KASAN:
 
-> On Tue, 6 Dec 2022, Geert Uytterhoeven wrote:
->> JFYI, when comparing v6.1-rc8[1] to v6.1-rc7[3], the summaries are:
->>  - build errors: +1/-3
->
->   + /kisskb/src/drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]:  => 6152:45
->
-> sh4-gcc11/sh-allmodconfig
->
-> Looks like a real issue, albeit not new (but never seen before?).
+  BUG: KASAN: global-out-of-bounds in
+  _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
+  Read of size 1 at addr ffffffffa0773c43 by task NetworkManager/411
 
-Weird, I can't find any recent change which would affect this function.
-So you have seen this warning only on v6.1-rc8?
+  CPU: 6 PID: 411 Comm: NetworkManager Tainted: G      D
+  6.1.0-rc8+ #144 e15588508517267d37
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+  Call Trace:
+   <TASK>
+   ...
+   kasan_report+0xbb/0x1c0
+   _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
+   rtl8821ae_phy_bb_config.cold+0x346/0x641 [rtl8821ae]
+   rtl8821ae_hw_init+0x1f5e/0x79b0 [rtl8821ae]
+   ...
+   </TASK>
 
-Anyway, could someone send a patch to fix this?
+The root cause of the problem is that the comparison order of
+"prate_section" in _rtl8812ae_phy_set_txpower_limit() is wrong. The
+_rtl8812ae_eq_n_byte() is used to compare the first n bytes of the two
+strings, so this requires the length of the two strings be greater
+than or equal to n. In the  _rtl8812ae_phy_set_txpower_limit(), it was
+originally intended to meet this requirement by carefully designing
+the comparison order. For example, "pregulation" and "pbandwidth" are
+compared in order of length from small to large, first is 3 and last
+is 4. However, the comparison order of "prate_section" dose not obey
+such order requirement, therefore when "prate_section" is "HT", it will
+lead to access out of bounds in _rtl8812ae_eq_n_byte().
 
+Fix it by adding a length check in _rtl8812ae_eq_n_byte(). Although it
+can be fixed by adjusting the comparison order of "prate_section", this
+may cause the value of "rate_section" to not be from 0 to 5. In
+addition, commit "21e4b0726dc6" not only moved driver from staging to
+regular tree, but also added setting txpower limit function during the
+driver config phase, so the problem was introduced by this commit.
+
+Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index a29321e2fa72..720114a9ddb2 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -1600,7 +1600,7 @@ static bool _rtl8812ae_get_integer_from_string(const char *str, u8 *pint)
+ 
+ static bool _rtl8812ae_eq_n_byte(const char *str1, const char *str2, u32 num)
+ {
+-	if (num == 0)
++	if (num == 0 || strlen(str1) < num)
+ 		return false;
+ 	while (num > 0) {
+ 		num--;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.31.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
