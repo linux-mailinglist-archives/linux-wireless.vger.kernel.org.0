@@ -2,110 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6766D6455D7
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 09:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7F964565E
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 10:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbiLGI5Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 03:57:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49126 "EHLO
+        id S229619AbiLGJWo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 04:22:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbiLGI5W (ORCPT
+        with ESMTP id S229489AbiLGJWn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 03:57:22 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DB8F6B
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 00:57:19 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id d14so18991331edj.11
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Dec 2022 00:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aFUuCOOiYpWargj2Hxx4wMeTG9+2i0xp4Xulr1tAh5I=;
-        b=w+PrcUPZV5sQabnMiIjAHQDYVNHUfAPdie62LtsU7xJVmWCqBHqmOGKPerEgg+vvNz
-         mLFwsVRbBZ5gwsYkcq2TYQU7k2mNOdwJ9DkxT1Cs3DSlF4s9xTENQ9r4S5qFlPHChMjZ
-         0WIHZpgVFkK16I1RvSRdIbPYeef37f6IoXnvz20e8wYuojNZBXNApPZMHf0Ap912GY4L
-         0umkAAwOSC9Pr3VEBXC4COkjJNDxSYs9qtWbKFuPdf48Ow52XVLbdD+o++GqUz0DZRMv
-         xTH24BUAzw7D7biqvLbG7ffVAN5QCKfYrtFaDWY52vPor4OVlbud/TgfSOgRAqaY1S4x
-         TiwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aFUuCOOiYpWargj2Hxx4wMeTG9+2i0xp4Xulr1tAh5I=;
-        b=UliRFLwRQM1QLendp71HM/S35IkZ/KXSzVVCnA4lnCrAK18Paf6EP2+VC2y9VgwWjk
-         2vSFhkEH1yG264P1XSINjN51jheUMRNwaOQt6WEIweCNCA/G85B92XWnT0zS7K4KO3Hi
-         DQamkwpaCwR5vlZcaRFRkQENBOl5FSQBxFDNVcdEdWsfLxpdyOaRm/pPF4r1Kbh3HdcF
-         2cAdVxuIbKjXDnPh43jLfy61XiC6TE3lkW8kv5bxg9MdM5SAEIj5w+uTYrLmO2qtAiDr
-         CK1uRI0fcJUnJI5s+Y0G7V0ZFYVZrtnKKD/mWb5GvdS65k88EGlwWQQblbEh+HPBwk7/
-         TiCA==
-X-Gm-Message-State: ANoB5pkSUlBpnl889AeuOMi8O+oPWUBrKV+K8dUQ4mY+U7xWVAwb54MO
-        hwLl92OtNZqH8DpzMoUL6Jcrag==
-X-Google-Smtp-Source: AA0mqf5WMrbilNVw4TizQyBbN02+ie9mlbjBtzYdH/RCctyU33On5vtBjilGIpk2xE+JkGW6CsVFqA==
-X-Received: by 2002:a05:6402:e9c:b0:458:d064:a8c2 with SMTP id h28-20020a0564020e9c00b00458d064a8c2mr8428952eda.346.1670403437959;
-        Wed, 07 Dec 2022 00:57:17 -0800 (PST)
-Received: from [192.168.31.208] ([194.29.137.22])
-        by smtp.gmail.com with ESMTPSA id 2-20020a170906218200b007be886f0db5sm8175707eju.209.2022.12.07.00.57.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Dec 2022 00:57:17 -0800 (PST)
-Message-ID: <0a340c21-7794-dd50-0e5c-90abb37423f2@linaro.org>
-Date:   Wed, 7 Dec 2022 09:57:12 +0100
+        Wed, 7 Dec 2022 04:22:43 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BC963C1
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 01:22:37 -0800 (PST)
+X-UUID: f88f35b2bcdf403ab9291a4998d6baeb-20221207
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=a3mBRnex0obN49gtiGqTGE61Mg5/hxAN1h+K09U3AdY=;
+        b=a3sMS3jjntd41xMZUGvZZRNzUnso4ApccNilhXizuu+ZHDJB4/YdJfLbQIbD4H6wFgTAVcdRPX259PCg+Es8O9puF8dCb482r7LD0LQQ6oGK+RGleDX2a6x62drp0J0I8vs7zM0IRRcbo5S9CE+yqsdDZ3RcAHWSo1xr5wGywq4=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:de6d2a8f-211f-487e-91f8-9ef8f522d0cf,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.14,REQID:de6d2a8f-211f-487e-91f8-9ef8f522d0cf,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:dcaaed0,CLOUDID:5a0be7d1-652d-43fd-a13a-a5dd3c69a43d,B
+        ulkID:221207172230W9DPRXEO,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: f88f35b2bcdf403ab9291a4998d6baeb-20221207
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 252215892; Wed, 07 Dec 2022 17:22:27 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Wed, 7 Dec 2022 17:22:26 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Wed, 7 Dec 2022 17:22:26 +0800
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        "Ryder Lee" <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] wifi: mt76: fix coverity uninit_use_in_call in mt76_connac2_reverse_frag0_hdr_trans()
+Date:   Wed, 7 Dec 2022 17:22:06 +0800
+Message-ID: <200ea97407b6f121da7ccd4567fde4b0426c5d9c.1670404791.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.5.0
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Arend Van Spriel <aspriel@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
-        Hector Martin <marcan@marcan.st>,
-        "martin.botka@somainline.org" <martin.botka@somainline.org>,
-        "angelogioacchino.delregno@somainline.org" 
-        <angelogioacchino.delregno@somainline.org>,
-        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
-        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
- <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
- <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
- <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
- <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
- <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
- <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
- <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
- <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
- <c83d7496-7547-2ab4-571a-60e16aa2aa3d@broadcom.com>
- <6e4f1795-08b5-7644-d1fa-102d6d6b47fb@linaro.org>
- <af489711-6849-6f87-8ea3-6c8216f0007b@broadcom.com>
- <62566987-6bd2-eed3-7c2f-ec13c5d34d1b@gmail.com>
- <21fc5c0e-f880-7a14-7007-2d28d5e66c7d@linaro.org>
- <CACRpkdbNssF5c7oJnm-EbjAJnD25kv2V7wp+TCKQZnVHJsni-g@mail.gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <CACRpkdbNssF5c7oJnm-EbjAJnD25kv2V7wp+TCKQZnVHJsni-g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -113,61 +75,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The default case for frame_contorl is invalid. We should always
+assign addr3 of this frame properly.
 
+Coverity error message:
+if (ieee80211_has_a4(hdr.frame_control))
+(19) Event uninit_use_in_call:	Using uninitialized value "hdr".
+Field "hdr.addr3" is uninitialized when calling "memcpy".
+	memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
+else
+	memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
 
-On 07/12/2022 00:37, Linus Walleij wrote:
-> On Tue, Dec 6, 2022 at 10:59 AM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
-> 
->> Yes, it does seem to work just fine! The kernel now looks for
->> brcm/brcmfmac4359c-pcie.sony,kagura-row.bin as we would expect.
-> 
-> So the Sony kagura needs a special brcmfmac firmware like so many
-> other mobile phones. There are a few Samsungs with custom firmware
-> as well.
-FWIW, Sony did a great job and agreed to license calibration files under 
-CC0-1.0 [1] and the firmwares itself [2] have a Broadcom license 
-attached to it.
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Konrad
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index fd60123fb284..c8d0c84e688b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -930,7 +930,7 @@ int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,
+ 		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
+ 		break;
+ 	default:
+-		break;
++		return -EINVAL;
+ 	}
+ 
+ 	skb_pull(skb, hdr_offset + sizeof(struct ethhdr) - 2);
+-- 
+2.18.0
 
-[1] 
-https://github.com/sonyxperiadev/device-sony-kagura/commit/1f633325a3890864503b5e19f581d1b6a538996c
-[2] 
-https://github.com/sonyxperiadev/vendor-broadcom-wlan/tree/master/bcmdhd/firmware
-> 
-> Arend: what is the legal situation with these custom firmwares?
-> 
-> I was under the impression that Broadcom actually made these,
-> so they could in theory be given permission for redistribution in
-> linux-firmware?
-> 
-> Some that I have are newer versions than what is in Linux-firmware,
-> e.g this from linux-firmware:
-> 
-> brcm/brcmfmac4330-sdio.bin
-> 4330b2-roml/sdio-ag-pool-ccx-btamp-p2p-idsup-idauth-proptxstatus-pno-aoe-toe-pktfilter-keepalive
-> Version: 5.90.125.104 CRC: 2570e6a3 Date: Tue 2011-10-25 19:34:26 PDT
-> 
-> There is this found in Samsung Codina GT-I8160:
-> 4330b2-roml/sdio-g-p2p-aoe-pktfilter-keepalive-pno-ccx-wepso Version:
-> 5.99.10.0 CRC: 4f7fccf Date: Wed 2012-12-05 01:02:50 PST FWID
-> 01-52653ba9
-> 
-> Or:
-> brcmfmac4334-sdio.bin
-> 4334b1min-roml/sdio-ag-pno-p2p-ccx-extsup-proptxstatus-dmatxrc-rxov-pktfilter-keepalive-aoe-vsdb-wapi-wl11d
-> Version: 6.10.0.0 CRC: 31410dd4 Date: Tue 2012-06-26 11:33:07 PDT FWID
-> 01-8ee3be86
-> 
-> There is this found in Samsung Golden GT-I8190N:
-> 4334b1-roml/sdio-ag-p2p-extsup-aoe-pktfilter-keepalive-pno-dmatxrc-rxov-proptxstatus-vsdb-mchan-okc-rcc-fmc-wepso-txpwr-autoabn-sr
-> Version: 6.10.58.99 CRC: 828f9174 Date: Mon 2013-08-26 02:13:44 PDT
-> FWID 01-e39d4d77
-> 
-> So in some cases more than a year newer firmware versions
-> compared to linux-firmware, I guess also customized for the
-> phones, but I can't really tell because we don't have anything
-> of similar date in linux-firmware.
-> 
-> Yours,
-> Linus Walleij
