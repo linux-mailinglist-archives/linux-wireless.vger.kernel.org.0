@@ -2,139 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C05C64554F
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 09:16:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6766D6455D7
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 09:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbiLGIQA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 03:16:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56560 "EHLO
+        id S229589AbiLGI5Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 03:57:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiLGIP7 (ORCPT
+        with ESMTP id S229538AbiLGI5W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 03:15:59 -0500
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150F631DFF
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 00:15:57 -0800 (PST)
-Received: from [192.168.0.203] ([151.127.53.97]) by mrelayeu.kundenserver.de
- (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MJVU0-1pMYKa1hhw-00JoZC; Wed, 07 Dec 2022 09:15:40 +0100
-Message-ID: <8e8cfe60-c040-bf02-665b-a980852864aa@green-communications.fr>
-Date:   Wed, 7 Dec 2022 09:15:32 +0100
+        Wed, 7 Dec 2022 03:57:22 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DB8F6B
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 00:57:19 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id d14so18991331edj.11
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Dec 2022 00:57:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aFUuCOOiYpWargj2Hxx4wMeTG9+2i0xp4Xulr1tAh5I=;
+        b=w+PrcUPZV5sQabnMiIjAHQDYVNHUfAPdie62LtsU7xJVmWCqBHqmOGKPerEgg+vvNz
+         mLFwsVRbBZ5gwsYkcq2TYQU7k2mNOdwJ9DkxT1Cs3DSlF4s9xTENQ9r4S5qFlPHChMjZ
+         0WIHZpgVFkK16I1RvSRdIbPYeef37f6IoXnvz20e8wYuojNZBXNApPZMHf0Ap912GY4L
+         0umkAAwOSC9Pr3VEBXC4COkjJNDxSYs9qtWbKFuPdf48Ow52XVLbdD+o++GqUz0DZRMv
+         xTH24BUAzw7D7biqvLbG7ffVAN5QCKfYrtFaDWY52vPor4OVlbud/TgfSOgRAqaY1S4x
+         TiwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aFUuCOOiYpWargj2Hxx4wMeTG9+2i0xp4Xulr1tAh5I=;
+        b=UliRFLwRQM1QLendp71HM/S35IkZ/KXSzVVCnA4lnCrAK18Paf6EP2+VC2y9VgwWjk
+         2vSFhkEH1yG264P1XSINjN51jheUMRNwaOQt6WEIweCNCA/G85B92XWnT0zS7K4KO3Hi
+         DQamkwpaCwR5vlZcaRFRkQENBOl5FSQBxFDNVcdEdWsfLxpdyOaRm/pPF4r1Kbh3HdcF
+         2cAdVxuIbKjXDnPh43jLfy61XiC6TE3lkW8kv5bxg9MdM5SAEIj5w+uTYrLmO2qtAiDr
+         CK1uRI0fcJUnJI5s+Y0G7V0ZFYVZrtnKKD/mWb5GvdS65k88EGlwWQQblbEh+HPBwk7/
+         TiCA==
+X-Gm-Message-State: ANoB5pkSUlBpnl889AeuOMi8O+oPWUBrKV+K8dUQ4mY+U7xWVAwb54MO
+        hwLl92OtNZqH8DpzMoUL6Jcrag==
+X-Google-Smtp-Source: AA0mqf5WMrbilNVw4TizQyBbN02+ie9mlbjBtzYdH/RCctyU33On5vtBjilGIpk2xE+JkGW6CsVFqA==
+X-Received: by 2002:a05:6402:e9c:b0:458:d064:a8c2 with SMTP id h28-20020a0564020e9c00b00458d064a8c2mr8428952eda.346.1670403437959;
+        Wed, 07 Dec 2022 00:57:17 -0800 (PST)
+Received: from [192.168.31.208] ([194.29.137.22])
+        by smtp.gmail.com with ESMTPSA id 2-20020a170906218200b007be886f0db5sm8175707eju.209.2022.12.07.00.57.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Dec 2022 00:57:17 -0800 (PST)
+Message-ID: <0a340c21-7794-dd50-0e5c-90abb37423f2@linaro.org>
+Date:   Wed, 7 Dec 2022 09:57:12 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH v2 1/3] wifi: mt76: mt7915: rework
- mt7915_thermal_set_cur_throttle_state()
-To:     Howard Hsu <howard-yh.hsu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.Lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20221207052500.10855-1-howard-yh.hsu@mediatek.com>
- <20221207052500.10855-2-howard-yh.hsu@mediatek.com>
-Content-Language: fr, en-US
-From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-In-Reply-To: <20221207052500.10855-2-howard-yh.hsu@mediatek.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.0
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Arend Van Spriel <aspriel@gmail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
+        Hector Martin <marcan@marcan.st>,
+        "martin.botka@somainline.org" <martin.botka@somainline.org>,
+        "angelogioacchino.delregno@somainline.org" 
+        <angelogioacchino.delregno@somainline.org>,
+        "marijn.suijten@somainline.org" <marijn.suijten@somainline.org>,
+        "jamipkettunen@somainline.org" <jamipkettunen@somainline.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org>
+ <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+ <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
+ <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
+ <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
+ <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
+ <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
+ <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
+ <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
+ <c83d7496-7547-2ab4-571a-60e16aa2aa3d@broadcom.com>
+ <6e4f1795-08b5-7644-d1fa-102d6d6b47fb@linaro.org>
+ <af489711-6849-6f87-8ea3-6c8216f0007b@broadcom.com>
+ <62566987-6bd2-eed3-7c2f-ec13c5d34d1b@gmail.com>
+ <21fc5c0e-f880-7a14-7007-2d28d5e66c7d@linaro.org>
+ <CACRpkdbNssF5c7oJnm-EbjAJnD25kv2V7wp+TCKQZnVHJsni-g@mail.gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <CACRpkdbNssF5c7oJnm-EbjAJnD25kv2V7wp+TCKQZnVHJsni-g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:FpWw88GeqX3jW6EjsKRsQ73rCjXuWJGpYRlKHXjjjCHzaZj9tKl
- EuBXx162xQHqn3voRUIYTkbZ+6b0nmSXBG+1St3QklfsLLYlNaoDuwPPdY6dexSqAMMj22R
- uetPcijNsuDN1dZ1iKDxDwofFu/0EpqD3RBN5bDQwDXbJFxTvXtE1t3IsQ/cG+0XLUcg+nl
- A0xitxqqXFGFrahNdRfTQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AIrAURp8oE8=:ILMB5225nDfqxkLO62IAZV
- 6qiwG3ZGy/hKS6pYnW6InsejwiX1RwWUiG3UFpWdza3t5VefnXfC8VF/ffkHfqJceD5yybrIB
- jhOmSXRuY5w/SQg3CjmNcQ7zfxCJKs7k3lq5TzwIgCYTIl8+KLnS+h77dkIOdu8nI7yRAiCZa
- pRbyg+C6pKxdwLNnKvIbuHNPbySwIyihxQRvU0UI7Fr3sdg5X1jgLFZpkLcAL4H1E97hr2jGJ
- D1GuWcImU/Bcy0stSGzqisnz/TaXMYwYeh7Owj6ETjgQErNzATAlWQzzU+IlpH1OwZP/HVTkY
- Wfg3ZABJ2QRs0q8s+pIrLac5+LTstInQNJoGVLmEd7VWT1u6IvxFO9Mm1qIZwQebANnCRxKMs
- 0Vi4kdJHLR8y9qiVvN0nqdc69+DSTW7y33aFRZd9RXHfP6tiFPKLkQCPxMFfFzpeqvaRR44wE
- kqM9rcoRHH0LhaZ3rDXjrAiJuu6IXUbYZy9PIBKVmnLEfMn4zkjSIf68w86uegfeodPRpNrce
- 4K9HJh+LsJT+c4aMBAC+dKe+xSEkLIsE59aLIj2hLU6nYp9QU7UErNrSfhttylkA6/bxmgS0l
- 4hwVVyyyI5gsA/pa/WfCCHsjSfC2JtybYWpl4CAgNNbm0EduvWv6LtMZUBxfPSH0PrUpVVqPI
- IL7iJSdyReNWQKF5m0X59CAVeAZkQ0wVBbF9h2kY1xf0xy+3508VrOouiiGF1FEUP9KqbxiZa
- qMVQsy1PIAFTTpoWgRkKMCdDpQminrit3mGzogbdFSDVaBT9wE0A40uI0U80DXpXBtjlpsk1K
- Owg1zttKDcUTEucXTogPfgRrBnt4ReiTxXyFy5H/YNR/NZW65o=
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07/12/2022 06:24, Howard Hsu wrote:
-> This patch includes 3 changes:
-> 1. The maximum throttle state can be set to 100 to fix the problem that
-> thermal_protect_disable can never be triggered.
 
-You are modifying the cooling_device part.  The cooling_device is 
-explicitly configured to have a max state of MT7915_CDEV_THROTTLE_MAX 
-(=99), so the thermal subsystem will probably prevent 
-mt7915_thermal_set_cur_throttle_state from being called with a higher 
-value.  It will also probably complain if get_cur_state starts returning 
-values above MT7915_CDEV_THROTTLE_MAX.
 
-And, as the comment below indicates, the thermal subsystem expect that a 
-higher state provide more cooling.  So if 99 means "maximum cooling", 
-100 cannot mean "disable cooling".
-
-Also, last time I tried, thermal_protect_disable didn't work; It didn't 
-disable anything, the previous thermal throttle kept being applied. 
-Maybe a new firmware fixed this, but the kernel cannot simply expect the 
-firmware to be up to date.
-
-> 2. Throttle state do not need to be different from the previous state.
-> This will make it is impossible for users to just change the
-> trigger/restore temp but not the throttle state.
-
-The throttle state is mostly set by the kernel's thermal governor and 
-the user has only very little control over it.  The thermal governor 
-runs every X seconds and will change the state if it thinks it is too 
-low or too high.
-
-The default step_wise governor will aggressively set it to zero if the 
-system isn't overheating, for example.
-
-> 3. Add dev_err so that it is easier to see invalid setting while looking at dmesg.
+On 07/12/2022 00:37, Linus Walleij wrote:
+> On Tue, Dec 6, 2022 at 10:59 AM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
 > 
-> Fixes: 771cd8d4c369 ("mt76: mt7915e: Fix degraded performance after temporary overheat")
-> Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-> ---
->   .../net/wireless/mediatek/mt76/mt7915/init.c   | 18 ++++++++++--------
->   1 file changed, 10 insertions(+), 8 deletions(-)
+>> Yes, it does seem to work just fine! The kernel now looks for
+>> brcm/brcmfmac4359c-pcie.sony,kagura-row.bin as we would expect.
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> index c810c31fbd6e..abeecf15f1c8 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> @@ -131,14 +131,17 @@ mt7915_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
->   	u8 throttling = MT7915_THERMAL_THROTTLE_MAX - state;
->   	int ret;
->   
-> -	if (state > MT7915_CDEV_THROTTLE_MAX)
-> +	if (state > MT7915_THERMAL_THROTTLE_MAX) {
-> +		dev_err(phy->dev->mt76.dev,
-> +			"please specify a valid throttling state\n");
->   		return -EINVAL;
-> +	}
->   
-> -	if (phy->throttle_temp[0] > phy->throttle_temp[1])
-> -		return 0;
-> -
-> -	if (state == phy->cdev_state)
-> -		return 0;
-> +	if (phy->throttle_temp[0] > phy->throttle_temp[1]) {
-> +		dev_err(phy->dev->mt76.dev,
-> +			"temp1_crit shall not be greater than temp1_max\n");
-> +		return -EINVAL;
-> +	}
->   
->   	/*
->   	 * cooling_device convention: 0 = no cooling, more = more cooling
-            ^^^^^^^^^^^^^^^^^^^^^^^^^
+> So the Sony kagura needs a special brcmfmac firmware like so many
+> other mobile phones. There are a few Samsungs with custom firmware
+> as well.
+FWIW, Sony did a great job and agreed to license calibration files under 
+CC0-1.0 [1] and the firmwares itself [2] have a Broadcom license 
+attached to it.
 
+Konrad
+
+[1] 
+https://github.com/sonyxperiadev/device-sony-kagura/commit/1f633325a3890864503b5e19f581d1b6a538996c
+[2] 
+https://github.com/sonyxperiadev/vendor-broadcom-wlan/tree/master/bcmdhd/firmware
+> 
+> Arend: what is the legal situation with these custom firmwares?
+> 
+> I was under the impression that Broadcom actually made these,
+> so they could in theory be given permission for redistribution in
+> linux-firmware?
+> 
+> Some that I have are newer versions than what is in Linux-firmware,
+> e.g this from linux-firmware:
+> 
+> brcm/brcmfmac4330-sdio.bin
+> 4330b2-roml/sdio-ag-pool-ccx-btamp-p2p-idsup-idauth-proptxstatus-pno-aoe-toe-pktfilter-keepalive
+> Version: 5.90.125.104 CRC: 2570e6a3 Date: Tue 2011-10-25 19:34:26 PDT
+> 
+> There is this found in Samsung Codina GT-I8160:
+> 4330b2-roml/sdio-g-p2p-aoe-pktfilter-keepalive-pno-ccx-wepso Version:
+> 5.99.10.0 CRC: 4f7fccf Date: Wed 2012-12-05 01:02:50 PST FWID
+> 01-52653ba9
+> 
+> Or:
+> brcmfmac4334-sdio.bin
+> 4334b1min-roml/sdio-ag-pno-p2p-ccx-extsup-proptxstatus-dmatxrc-rxov-pktfilter-keepalive-aoe-vsdb-wapi-wl11d
+> Version: 6.10.0.0 CRC: 31410dd4 Date: Tue 2012-06-26 11:33:07 PDT FWID
+> 01-8ee3be86
+> 
+> There is this found in Samsung Golden GT-I8190N:
+> 4334b1-roml/sdio-ag-p2p-extsup-aoe-pktfilter-keepalive-pno-dmatxrc-rxov-proptxstatus-vsdb-mchan-okc-rcc-fmc-wepso-txpwr-autoabn-sr
+> Version: 6.10.58.99 CRC: 828f9174 Date: Mon 2013-08-26 02:13:44 PDT
+> FWID 01-e39d4d77
+> 
+> So in some cases more than a year newer firmware versions
+> compared to linux-firmware, I guess also customized for the
+> phones, but I can't really tell because we don't have anything
+> of similar date in linux-firmware.
+> 
+> Yours,
+> Linus Walleij
