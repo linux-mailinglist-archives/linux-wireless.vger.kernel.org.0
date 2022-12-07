@@ -2,51 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E35646452A1
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 04:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF246452AD
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 04:51:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbiLGDor (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Dec 2022 22:44:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35842 "EHLO
+        id S229835AbiLGDvH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Dec 2022 22:51:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiLGDoq (ORCPT
+        with ESMTP id S229820AbiLGDvB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Dec 2022 22:44:46 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E091B57
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 19:44:45 -0800 (PST)
-Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NRjjY4QmbznTdX;
-        Wed,  7 Dec 2022 11:40:33 +0800 (CST)
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 7 Dec 2022 11:44:13 +0800
-Subject: Re: [PATCH resend 1/3] rtlwifi: rtl8821ae: don't call kfree_skb()
- under spin_lock_irqsave()
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        <yangyingliang@huawei.com>
-References: <20221206131249.2181693-1-yangyingliang@huawei.com>
- <20221206131249.2181693-2-yangyingliang@huawei.com>
- <758b8caa9e8243bb84471baf50706e6d@realtek.com>
-From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <c9096bc2-8765-8bf5-484b-da949c99e236@huawei.com>
-Date:   Wed, 7 Dec 2022 11:44:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Tue, 6 Dec 2022 22:51:01 -0500
+Received: from pv50p00im-tydg10021701.me.com (pv50p00im-tydg10021701.me.com [17.58.6.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF19A55CA1
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Dec 2022 19:51:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
+        s=sig1; t=1670385060;
+        bh=71uvVBupzBmhVolaLTaYiI0Q+gs7E/uZmUCOc93n0ds=;
+        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+        b=btxlYPgQDKIbbDMBWBe3w40hLfCMEw/fx6yn/ZldxumpVJaWhjwz9HCfxcYvE9JO4
+         uU/2Li1j7GV5p4O5ZpBy9X7ZSAw87pePAsJML2mUChq5pOGhggIycitskVbSgpoOrn
+         jHD2O1Tp4wdY4SCr18obi0O+8aiIt68spKkw7TSrsxSiTlSPr1mbPBQUhYBaayxqOp
+         d1+OTCg9tIAvtsUFbVq1F9X8I/PuDOKII12HMxWhZ09xNQbBMU3cFSRkMmO9QFHpSA
+         68VK3wlqnjUHs/3bazPKyBpE8HTP7aBCoRiwYXjhV6Z74RL93Kz5gv6avXne26BUYo
+         RBvOxUEE7BnfA==
+Received: from [192.168.1.28] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+        by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id 4105A3A1608;
+        Wed,  7 Dec 2022 03:50:56 +0000 (UTC)
+Message-ID: <b4b65c74-792f-4df1-18bf-5c6f80845814@zzy040330.moe>
+Date:   Wed, 7 Dec 2022 11:50:49 +0800
 MIME-Version: 1.0
-In-Reply-To: <758b8caa9e8243bb84471baf50706e6d@realtek.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v5] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
 Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20221207033926.11777-1-JunASAKA@zzy040330.moe>
+ <2ac07b1d6e06443b95befb79d27549d2@realtek.com>
+From:   Jun ASAKA <JunASAKA@zzy040330.moe>
+In-Reply-To: <2ac07b1d6e06443b95befb79d27549d2@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: 3Fi4maIF69Wve_KeGqvRrpZLKDZ8-2oh
+X-Proofpoint-ORIG-GUID: 3Fi4maIF69Wve_KeGqvRrpZLKDZ8-2oh
+X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.0.605.474.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2020-01-23?=
+ =?UTF-8?Q?=5F02_signatures=3D0?=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 bulkscore=0
+ clxscore=1030 spamscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=422 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2212070027
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,65 +72,29 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 2022/12/7 11:31, Ping-Ke Shih wrote:
->> -----Original Message-----
->> From: Yang Yingliang <yangyingliang@huawei.com>
->> Sent: Tuesday, December 6, 2022 9:13 PM
->> To: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org
->> Cc: linux-wireless@vger.kernel.org; yangyingliang@huawei.com
->> Subject: [PATCH resend 1/3] rtlwifi: rtl8821ae: don't call kfree_skb() under spin_lock_irqsave()
->>
->> It is not allowed to call kfree_skb() from hardware interrupt
->> context or with interrupts being disabled. So add all skb to
->> a free list, then free them after spin_unlock_irqrestore() at
->> once.
-> The patch doesn't change logic, so it should work. But, I would like to know
-> if there is a comment about this in kernel code. Could you point it out?
-You can see comment of dev_kfree_skb_irq() in include/linux/netdevice.h
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/netdevice.h?h=v6.1-rc8
-
-Thanks,
-Yang
+On 07/12/2022 11:43, Ping-Ke Shih wrote:
 >
->> Fixes: 5c99f04fec93 ("rtlwifi: rtl8723be: Update driver to match Realtek release of 06/28/14")
->> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>> -----Original Message-----
+>> From: Jun ASAKA <JunASAKA@zzy040330.moe>
+>> Sent: Wednesday, December 7, 2022 11:39 AM
+>> To: Jes.Sorensen@gmail.com
+>> Cc: kvalo@kernel.org; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
+>> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Jun ASAKA
+>> <JunASAKA@zzy040330.moe>; Ping-Ke Shih <pkshih@realtek.com>
+>> Subject: [PATCH v5] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
+>>
+>> Fixing "Path A RX IQK failed" and "Path B RX IQK failed"
+>> issues for rtl8192eu chips by replacing the arguments with
+>> the ones in the updated official driver as shown below.
+>> 1. https://github.com/Mange/rtl8192eu-linux-driver
+>> 2. vendor driver version: 5.6.4
+>>
+>> Tested-by: Jun ASAKA <JunASAKA@zzy040330.moe>
+>> Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
+>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 >> ---
->>   drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
->> index 7e0f62d59fe1..a7e3250957dc 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
->> @@ -26,8 +26,10 @@ static void _rtl8821ae_return_beacon_queue_skb(struct ieee80211_hw *hw)
->>   	struct rtl_priv *rtlpriv = rtl_priv(hw);
->>   	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
->>   	struct rtl8192_tx_ring *ring = &rtlpci->tx_ring[BEACON_QUEUE];
->> +	struct sk_buff_head free_list;
->>   	unsigned long flags;
->>
->> +	skb_queue_head_init(&free_list);
->>   	spin_lock_irqsave(&rtlpriv->locks.irq_th_lock, flags);
->>   	while (skb_queue_len(&ring->queue)) {
->>   		struct rtl_tx_desc *entry = &ring->desc[ring->idx];
->> @@ -37,10 +39,12 @@ static void _rtl8821ae_return_beacon_queue_skb(struct ieee80211_hw *hw)
->>   				 rtlpriv->cfg->ops->get_desc(hw, (u8 *)entry,
->>   						true, HW_DESC_TXBUFF_ADDR),
->>   				 skb->len, DMA_TO_DEVICE);
->> -		kfree_skb(skb);
->> +		__skb_queue_tail(&free_list, skb);
->>   		ring->idx = (ring->idx + 1) % ring->entries;
->>   	}
->>   	spin_unlock_irqrestore(&rtlpriv->locks.irq_th_lock, flags);
->> +
->> +	__skb_queue_purge(&free_list);
->>   }
->>
->>   static void _rtl8821ae_set_bcn_ctrl_reg(struct ieee80211_hw *hw,
->> --
->> 2.25.1
->>
->>
->> ------Please consider the environment before printing this e-mail.
-> .
+>> v5:
+>>   - no modification.
+> Then, why do you need v5?
+Well,  I just want to add the "Reviewed-By" line to the commit message. 
+Sorry for the noise if there is no need to do that.
