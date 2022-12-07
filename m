@@ -2,101 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F131646404
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 23:26:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9C46464BF
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 00:06:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbiLGW0Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 17:26:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60304 "EHLO
+        id S229656AbiLGXGR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 18:06:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiLGW0X (ORCPT
+        with ESMTP id S229456AbiLGXGP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 17:26:23 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62502716DB
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 14:26:22 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id v13-20020a17090a6b0d00b00219c3be9830so3106698pjj.4
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Dec 2022 14:26:22 -0800 (PST)
+        Wed, 7 Dec 2022 18:06:15 -0500
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA26A63B9B
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 15:06:12 -0800 (PST)
+Received: by mail-qv1-xf2f.google.com with SMTP id u10so13764819qvp.4
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Dec 2022 15:06:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=zMLTxCatAzsOc3NogQstaWUFukQMYiaUMTdgP/7+7TI=;
-        b=SGoqP4wsqZWA2QoxX9dWVZzP2J8q48shTV2lNsRpvSbdmq1LriZiIsv+0/3TeG+RRT
-         mKKGg3oGDENYjmgx3RdkN2XqFOyZttemz9A8W1oanlX7RcMhA7HG0MOFMnfYLEEO4WUo
-         yGaxTPFFhk7lGcXUtbBOGs6zxal2z8Lof8EA8=
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ftnSJFAPgFYfmcuE5MUmzFYVAC6vfvYZbCyUb5r912Q=;
+        b=H+eW/yd98H29AGnIteE+1S9VKrMEFHgy1abzkivt7/sf5cp+4kabsxduGgUP3YDtRK
+         TTwDw4vqrXZPLbsEZhv3cT4P2MO0e5dls3rH35aP8erOOPUVI+b/YYL7cT+PALVj/M+A
+         0n3ugjY4AojYmfdB9ETDiFaYY0qChOneDQSk4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zMLTxCatAzsOc3NogQstaWUFukQMYiaUMTdgP/7+7TI=;
-        b=2I6nf+IFWf47Hk3mfYiQ43HjsejJS+DQTLrwId5w14PR9JVzCprBkw7OCoA42VPyx4
-         rvAVC3/3huWHPyziP5qU4/aa+GHrS8TG/OXzGiinraC1aoVO/MsgYa/AwHC1mRBl3TVR
-         Og9wiuSDn2XTbHwJ4uta3gDPaos/BedBXHhBVrJOQ1wRtv0vva+WsYd+EWixrqTXJs2J
-         reZU0dD2S4ccrpkZFAb8CMRdbLGNM1UPAJB27q7hkTvV7LvN8z/vPG263OcDmCGuRa+6
-         B2frWpa6Oph/N/GqH3bGebOGuL3WCCx4BoVuf3oLIxoziEYIRibFbRfKYzwMQfKt6yQ3
-         tcJA==
-X-Gm-Message-State: ANoB5plt8yQPpck/WnZOMUfD4axKzz4et7A4INstqZpdF73+gRmQ3L0l
-        DWdACdS7I5ZJHR1ak9nnwnLDLw==
-X-Google-Smtp-Source: AA0mqf4ahjoqPBEMN5wOBYW+4b36ba+kFS4XUa1yc5zU8itN8n18bjR3B3fNhCC1QW2/278jaDyYzA==
-X-Received: by 2002:a17:902:788e:b0:189:efe7:df8d with SMTP id q14-20020a170902788e00b00189efe7df8dmr871691pll.43.1670451981809;
-        Wed, 07 Dec 2022 14:26:21 -0800 (PST)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id q12-20020a170902dacc00b00185402cfedesm15155650plx.246.2022.12.07.14.26.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Dec 2022 14:26:20 -0800 (PST)
-Message-ID: <920ab027-d4db-92b7-36a0-5bb86e693fea@broadcom.com>
-Date:   Wed, 7 Dec 2022 23:26:11 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Arend Van Spriel <aspriel@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
-        Hector Martin <marcan@marcan.st>, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, jamipkettunen@somainline.org,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org
-References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
- <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
- <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org>
- <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
- <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
- <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
- <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
- <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org>
- <c83d7496-7547-2ab4-571a-60e16aa2aa3d@broadcom.com>
- <6e4f1795-08b5-7644-d1fa-102d6d6b47fb@linaro.org>
- <af489711-6849-6f87-8ea3-6c8216f0007b@broadcom.com>
- <62566987-6bd2-eed3-7c2f-ec13c5d34d1b@gmail.com>
- <21fc5c0e-f880-7a14-7007-2d28d5e66c7d@linaro.org>
- <CACRpkdbNssF5c7oJnm-EbjAJnD25kv2V7wp+TCKQZnVHJsni-g@mail.gmail.com>
- <184eb88b1b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CACRpkdYzRFYMMydtSGiPLWiLywt9jtY89vPz8cdZcvwczo5=dA@mail.gmail.com>
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ftnSJFAPgFYfmcuE5MUmzFYVAC6vfvYZbCyUb5r912Q=;
+        b=hNs2kdj8+95C9fJhk0bTP4E6RnbLrSRgbzKIWfB2K7Y/CY4ORZvzAKXQLshWU/4w4Z
+         kJV4aiw61qYdGYMhGTxkV7jl/FvRx3hCc78DXfKb6LC9QxTE3VFs866ZI0/xQhwgevaq
+         jCCG6uadqFPoow6LnN7ol6Tl6b6DB/VYRNHVOpglZ4LR8hoIa51QwjD6fZb3o7TnRHw8
+         +ttfwYLcMnXnwKrg1VVhwsUcDoaS+fpIqoO32tVM1o9vX4gudOWXx+EGR877Ru9H845C
+         lTpdmGP92Z0ZvgOpA78wgCmBFFF8ZzRgIEF2yTS66pE3wvCk9qehs7D9lm5HNlARj4NL
+         vxZQ==
+X-Gm-Message-State: ANoB5pkRp36jf181Obe1pTXGqt298dCcYd0G95+YN16/Rdxj9jzmVwhH
+        oItfbP5ecCRxB5CRRSwyI4g4eA==
+X-Google-Smtp-Source: AA0mqf72M32euHc0O471r43XzrWr7mG/mXw/6r0Zgv0hZaaTwr/6d3DCaJZT2FJU31klbqtNx/pScg==
+X-Received: by 2002:a0c:fc0f:0:b0:4c7:1d69:5533 with SMTP id z15-20020a0cfc0f000000b004c71d695533mr1450445qvo.34.1670454371783;
+        Wed, 07 Dec 2022 15:06:11 -0800 (PST)
+Received: from bld-bun-02.bun.broadcom.com ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id s11-20020a05620a0bcb00b006fcab4da037sm15118534qki.39.2022.12.07.15.06.08
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 07 Dec 2022 15:06:09 -0800 (PST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <CACRpkdYzRFYMMydtSGiPLWiLywt9jtY89vPz8cdZcvwczo5=dA@mail.gmail.com>
+To:     linux-firmware@kernel.org
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 0/8] brcm: add firmware files for brcmfmac driver
+Date:   Thu,  8 Dec 2022 00:05:48 +0100
+Message-Id: <20221207230556.383935-1-arend.vanspriel@broadcom.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000002004105ef446930"
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        boundary="000000000000754c3805ef44f767"
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -104,27 +66,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000002004105ef446930
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--000000000000754c3805ef44f767
+Content-Transfer-Encoding: 8bit
 
-On 12/7/2022 2:42 PM, Linus Walleij wrote:
-> On Wed, Dec 7, 2022 at 8:42 AM Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
-> 
->> I am actually preparing series of firmware patches. As most chips are EOL
->> those are newer, but not recent.
-> 
-> Excellent, I'll test them on my specimen and see what happens!
+update and add a number of firmware files that were long overdue.
 
-I posted the patch but it bounced on the linux-wireless list. I think I 
-will repost and split it up in individual patches.
+Arend van Spriel (8):
+  brcm: update bcm43241 firmware file
+  brcm: update bcm4329 firmware file
+  brcm: update bcm4330 firmware file
+  brcm: update bcm4358 firmware file
+  brcm: add firmware file for bcm4339
+  brcm: add firmware file for bcm4354
+  brcm: add firmware file for bcm4356 PCIe device
+  brcm: add firmware file for bcm4356 SDIO device
 
-Regards,
-Arend
+ WHENCE                        |   4 ++++
+ brcm/brcmfmac43241b0-sdio.bin | Bin 455745 -> 459988 bytes
+ brcm/brcmfmac4329-sdio.bin    | Bin 253748 -> 246791 bytes
+ brcm/brcmfmac4330-sdio.bin    | Bin 222126 -> 223581 bytes
+ brcm/brcmfmac4339-sdio.bin    | Bin 0 -> 562183 bytes
+ brcm/brcmfmac4354-sdio.bin    | Bin 0 -> 627021 bytes
+ brcm/brcmfmac4356-pcie.bin    | Bin 0 -> 662895 bytes
+ brcm/brcmfmac4356-sdio.bin    | Bin 0 -> 526383 bytes
+ brcm/brcmfmac4358-pcie.bin    | Bin 633817 -> 634361 bytes
+ 9 files changed, 4 insertions(+)
+ create mode 100644 brcm/brcmfmac4339-sdio.bin
+ create mode 100755 brcm/brcmfmac4354-sdio.bin
+ create mode 100644 brcm/brcmfmac4356-pcie.bin
+ create mode 100644 brcm/brcmfmac4356-sdio.bin
 
---00000000000002004105ef446930
+-- 
+2.35.1
+
+
+--000000000000754c3805ef44f767
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -195,14 +171,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBQeB9FKsFUsJgfv0g1
-IGAxoS9QXTjRL+2pbF9If45zTTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMDcyMjI2MjJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBPEqYK/7nHY9RBwjLs
+McbUyfyqNihICqfma1A0AN3wUDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjEyMDcyMzA2MTJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA0wGB5df/4M8Lmk5unlt4r+WJNddKnoCYRq7t
-kJwPdLbPnCtvlg/xe3LaIlNpZv9qupDcS1JTIw7xFprj55vm6m87hGWhuY+buroWPd2J50XHU2n+
-FIxmITX6SvYkZHnq1xJQhHXFH6G7EO5/BqfMEMDag1PMTFzwtau8xTWLYX3LU/aE1MJJ8JQvLLOM
-QDC0b26ViKxNuEgrGABZAQ3fllFgu9jlynIsYYsFAB8bSWqV/0zz6eeC2+ke3Z2LG57odEPt2SS2
-svOWxsIN+5B7vvbnyd1htQv742DebzwJ7fVuJjNAIj9BktJy9MAsDoHexsloWuDWOL27eJhAV7yH
-6g==
---00000000000002004105ef446930--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA3E8mZi4SueCz21Zq8B7D6cxrnUldkrmZVyIO
+xr3HiwWJBT8pfsFTVZxqSO6OnoxRgsuEfK/EYzikGemL2Ri+aNXcYUR5QvsWb7MbVoK2Qzs8ngDk
+TubpijMgTdFyw2MFYQgEfgq7jw91lHTY1fkGbpCs23t5vbMtMsz595Xho6/ck78kAos4kGHrCUVH
+1jVNLcCPGzKLo3IbH3CQ+Mk/GzQILrBqgnH8hf228gpW8xnoF+sRCJVOKliDcB5ycjyC0FqB6hUq
+TDF9ub3DVH7zQv3ijhwK+EnMCjsr3RV+NxX+mwO316FimAKkVefg5sTLEJGBV2xCcxcZpnHenv+C
+LA==
+--000000000000754c3805ef44f767--
