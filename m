@@ -2,49 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04944646040
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 18:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E93064637C
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Dec 2022 22:50:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbiLGRak (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 12:30:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38422 "EHLO
+        id S229521AbiLGVuH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 16:50:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbiLGRai (ORCPT
+        with ESMTP id S229828AbiLGVtu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 12:30:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA0C25C5
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 09:30:38 -0800 (PST)
+        Wed, 7 Dec 2022 16:49:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 359FF84DFC
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 13:49:46 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E5C48B81F86
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 17:30:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4930C433C1;
-        Wed,  7 Dec 2022 17:30:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5BF461BA9
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 21:49:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67A7C433D6;
+        Wed,  7 Dec 2022 21:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670434235;
-        bh=30i1vXqRb3fMeCdIQOP0sPfJGVmd4GE1adx1PgZVO/s=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=iQX7AiLw9v9RLbs4vo2ck/Iu5vCrtRiV8NS1Ilt8Ei9zPMslNDkCxditq5nGKeLCE
-         O5WeZHJ5XMlJQ1UuF1z9fAMV9loazCwDy/0jCvoWCLhKaOOA2qtJzQm3152u7EiC1R
-         ukXYpViDd19MQbKJJzjDboEW7PY51mTQ1NFIalnBzNtYPU7Qh294eXLbCzx9ZUMqXJ
-         OGijK9BwEvDPZkXfe17YldjKpD7X6qgrRv54aA9cmpx1/iS1bgfI+21TRtC64JD3YJ
-         dGNag5BYmwld2n7oBLoHifVVMcnZfojwt1za/zgs5ZTsLQCaiSt9X8SMi1EXI4AGkj
-         qLEPoT6hw5XHA==
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1670449785;
+        bh=JPyR7kJE0F9V4gJHkVVxoF2SCZqNKMoTORT5ZAfIvjA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bw6BFnLHV19ceU9vPPziu/Oi8y84RGW+IR6iJ1I0QuT+KZi4KvHrMXx8GGt8EZUaJ
+         W9K9fZVFdowOXx6fTyMqKJ2N44S9uY7TGeG6ZVryoGgW2AZiAoTOzQq5ghkX5uObKD
+         WsmP0Y7NVSpRYiDwqlaqrwARH2xcBdnJ16s9ef/VwPyYfkFJmPs1MSb35KDpAyZpGB
+         0yjRuTYRMWytfbLU5OkWXsYQsoSCJgM1yemB2Qh86ywLs5IP/OchrKlBhmr2h/Xxin
+         lhq98qMeZZX2VzTxiQl3cDPLW1ztIDPzIxagyZ5o5SHrmNuGICi949fkWVrbIvnWHh
+         g1jzAk/PDToeQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mt76: dma: do not increment queue head if mt76_dma_add_buf fails
+Date:   Wed,  7 Dec 2022 22:49:31 +0100
+Message-Id: <f310ce138445668315571e94ee92b932ed685194.1670448547.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Fix scan request param frame size warning
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221205192125.13533-1-quic_kathirve@quicinc.com>
-References: <20221205192125.13533-1-quic_kathirve@quicinc.com>
-To:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167043423029.3611.17612431328299564721.kvalo@kernel.org>
-Date:   Wed,  7 Dec 2022 17:30:34 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,30 +50,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Karthikeyan Kathirvel <quic_kathirve@quicinc.com> wrote:
+Do not increment queue head if mt76_dma_add_buf fails for Wireless
+Ethernet Dispatcher rx queues.
 
-> Following warning was observed
-> 
-> drivers/net/wireless/ath/ath11k/mac.c:2351:1: warning: the frame
-> size of 1184 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-> 
-> A local variable is declared with a size larger than 1024 bytes
-> this causing a compilation warning. Change the local variable to
-> heap memory to fix the warning.
-> 
-> Tested-on: IPQ8074 AHB WLAN.HK.2.7.0.1-01701-QCAHKSWPL_SILICONZ-1 v2
-> 
-> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Fixes: cd372b8c99c5 ("wifi: mt76: add WED RX support to mt76_dma_{add,get}_buf")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/dma.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-"wifi:" prefix missing, I added that in the pending branch.
-
-Also fixed one warning:
-
-drivers/net/wireless/ath/ath11k/mac.c:3677: Alignment should match open parenthesis
-
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 8dca8d2447b7..e017d7529c2a 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -212,14 +212,14 @@ mt76_dma_add_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ {
+ 	struct mt76_queue_entry *entry;
+ 	struct mt76_desc *desc;
+-	u32 ctrl;
+ 	int i, idx = -1;
++	u32 ctrl, next;
+ 
+ 	for (i = 0; i < nbufs; i += 2, buf += 2) {
+ 		u32 buf0 = buf[0].addr, buf1 = 0;
+ 
+ 		idx = q->head;
+-		q->head = (q->head + 1) % q->ndesc;
++		next = (q->head + 1) % q->ndesc;
+ 
+ 		desc = &q->desc[idx];
+ 		entry = &q->entry[idx];
+@@ -239,8 +239,8 @@ mt76_dma_add_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ 			       MT_DMA_CTL_TO_HOST;
+ 		} else {
+ 			if (txwi) {
+-				q->entry[q->head].txwi = DMA_DUMMY_DATA;
+-				q->entry[q->head].skip_buf0 = true;
++				q->entry[next].txwi = DMA_DUMMY_DATA;
++				q->entry[next].skip_buf0 = true;
+ 			}
+ 
+ 			if (buf[0].skip_unmap)
+@@ -271,6 +271,7 @@ mt76_dma_add_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ 		WRITE_ONCE(desc->info, cpu_to_le32(info));
+ 		WRITE_ONCE(desc->ctrl, cpu_to_le32(ctrl));
+ 
++		q->head = next;
+ 		q->queued++;
+ 	}
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221205192125.13533-1-quic_kathirve@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.38.1
 
