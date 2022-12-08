@@ -2,126 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B5FA6466AF
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 02:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5D8E64680F
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 05:01:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbiLHB63 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Dec 2022 20:58:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37010 "EHLO
+        id S229635AbiLHEBY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Dec 2022 23:01:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiLHB62 (ORCPT
+        with ESMTP id S229586AbiLHEBX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Dec 2022 20:58:28 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23CD4532C7
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 17:58:27 -0800 (PST)
-Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NSHNG6XD9zmWSC;
-        Thu,  8 Dec 2022 09:57:34 +0800 (CST)
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 8 Dec 2022 09:58:25 +0800
-Subject: Re: [PATCH] wifi: rtl8xxxu: don't call dev_kfree_skb() under
- spin_lock_irqsave()
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        <yangyingliang@huawei.com>
-References: <20221207143738.67721-1-yangyingliang@huawei.com>
- <0cfea9eaf08446d5a7dfcb85da34dcf2@realtek.com>
- <c3ca010a-3c1a-5c64-a58a-a66d31f5869b@huawei.com>
- <594be2636427488785b244e5b5725c95@realtek.com>
-From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <5093c939-754d-8351-4266-1f744bcfc3eb@huawei.com>
-Date:   Thu, 8 Dec 2022 09:58:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Wed, 7 Dec 2022 23:01:23 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3150286E9
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Dec 2022 20:01:22 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B82HZ37029861;
+        Thu, 8 Dec 2022 04:01:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=IAfD93YvuHRHqZxR0OQJnD75LCz/6DNBBfzcU269lhA=;
+ b=c4C2ivM3MhO3QwQsiQ2cCG1yC+su/vNs5yTcb2Rrvkmlb4qiLJc3Z7D3KS71GdmUN28F
+ B5HrvJTq16Ws5E7ueSY84AwLOlqjCthmlVHkC/Rx0YMDLN3ecLMAv5yKEnLuMU+2TeZc
+ kQBtJk//cXOT6poM1pUyBkfGm8LT2bzlrzimqILJhOPA+PmDXxShIdKrfOcVY6HS7o8t
+ EdRi3nla4SGMoMi8Y8+UaGb1LWOwtzTS0fMn/KqgFj4RdqiRo7P+XpodsqGuh8YAUOl6
+ LdV5AotJo71CDpYFzUbFXyoRiFqvLytqhi6IoqeqLoFJT4ILGxO9vivWBHhCUGYjm8kz Tw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3marj0t91k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 08 Dec 2022 04:01:14 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2B841D9b031817
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 8 Dec 2022 04:01:13 GMT
+Received: from srirrama-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Wed, 7 Dec 2022 20:01:11 -0800
+From:   Sriram R <quic_srirrama@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Sriram R <quic_srirrama@quicinc.com>
+Subject: [PATCH] mac80211: Fix MLO address translation for multiple bss case
+Date:   Thu, 8 Dec 2022 09:30:50 +0530
+Message-ID: <20221208040050.25922-1-quic_srirrama@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <594be2636427488785b244e5b5725c95@realtek.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Fd5QLZ5Tnc7UKEsLilAtaD_ZDBjY7yCc
+X-Proofpoint-GUID: Fd5QLZ5Tnc7UKEsLilAtaD_ZDBjY7yCc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-08_01,2022-12-07_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=845 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2212080031
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When multiple interfaces are present in the local interface
+list, new skb copy is taken before rx processing except for
+the first interface. The address translation happens each
+time only on the original skb since the hdr pointer is not
+updated properly to the newly created skb.
 
-On 2022/12/8 9:41, Ping-Ke Shih wrote:
->> -----Original Message-----
->> From: Yang Yingliang <yangyingliang@huawei.com>
->> Sent: Thursday, December 8, 2022 9:26 AM
->> To: Ping-Ke Shih <pkshih@realtek.com>; Jes.Sorensen@gmail.com; kvalo@kernel.org
->> Cc: linux-wireless@vger.kernel.org; yangyingliang@huawei.com
->> Subject: Re: [PATCH] wifi: rtl8xxxu: don't call dev_kfree_skb() under spin_lock_irqsave()
->>
->>
->> On 2022/12/8 8:38, Ping-Ke Shih wrote:
->>>> -----Original Message-----
->>>> From: Yang Yingliang <yangyingliang@huawei.com>
->>>> Sent: Wednesday, December 7, 2022 10:38 PM
->>>> To: Jes.Sorensen@gmail.com; kvalo@kernel.org
->>>> Cc: linux-wireless@vger.kernel.org
->>>> Subject: [PATCH] wifi: rtl8xxxu: don't call dev_kfree_skb() under spin_lock_irqsave()
->>>>
->>>> It is not allowed to call consume_skb() from hardware interrupt context
->>>                               ^^^^^^^^^^^^^ kfree_skb()?
->>> because this patch is to replace dev_kfree_skb().
->>>
->>>> or with interrupts being disabled. So replace dev_kfree_skb() with
->>>> dev_consume_skb_irq() under spin_lock_irqsave(). Compile tested only.
->>>>
->>>> Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
->>>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
->>>> ---
->>>>    drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> index ac641a56efb0..d0600af5bef4 100644
->>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> @@ -5274,7 +5274,7 @@ static void rtl8xxxu_queue_rx_urb(struct rtl8xxxu_priv *priv,
->>>>    		pending = priv->rx_urb_pending_count;
->>>>    	} else {
->>>>    		skb = (struct sk_buff *)rx_urb->urb.context;
->>>> -		dev_kfree_skb(skb);
->>>> +		dev_consume_skb_irq(skb);
->>> Why not dev_kfree_skb_irq() instead? any reason?
->> #define dev_kfree_skb(a)        consume_skb(a)
->> dev_kfree_skb() is consume_skb(), so use dev_consume_skb_irq() instead.
->>
->> static inline void dev_kfree_skb_irq(struct sk_buff *skb)
->> {
->>           __dev_kfree_skb_irq(skb, SKB_REASON_DROPPED);
->> }
->>
->> static inline void dev_consume_skb_irq(struct sk_buff *skb)
->> {
->>           __dev_kfree_skb_irq(skb, SKB_REASON_CONSUMED);
->> }
->> They have different free reasons.
->>
-> It falls into this case because of 'priv->shutdown', so DROPPED reason makes
-> sense, no? Or I misunderstand the reason?
-Because the origin call is dev_kfree_skb() which is same as 
-consume_skb(), I called
-dev_consume_skb_irq() instead here.
+As a result frames start to drop in userspace when address
+based checks or search fails.
 
-Thanks,
-Yang
->
-> --
-> Ping-Ke
->
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+---
+ net/mac80211/rx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 8dcd67d..3206b42 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5072,6 +5072,9 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+ 		 */
+ 		shwt = skb_hwtstamps(rx->skb);
+ 		shwt->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
++
++		/* Update the hdr pointer to the new skb for translation below */
++		hdr = (struct ieee80211_hdr *)rx->skb->data;
+ 	}
+ 
+ 	if (unlikely(link_sta)) {
+-- 
+2.17.1
+
