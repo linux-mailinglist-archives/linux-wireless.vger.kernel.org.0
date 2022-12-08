@@ -2,49 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E9464754A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 19:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79EB86475B9
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 19:44:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiLHSFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Dec 2022 13:05:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33444 "EHLO
+        id S229564AbiLHSoS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Dec 2022 13:44:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiLHSFv (ORCPT
+        with ESMTP id S229517AbiLHSoR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Dec 2022 13:05:51 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDDE2FBC2
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 10:05:50 -0800 (PST)
+        Thu, 8 Dec 2022 13:44:17 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2B48424D
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 10:44:15 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AA3B8B825BF
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 18:05:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E68BC433D2;
-        Thu,  8 Dec 2022 18:05:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34ACC6201E
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 18:44:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655C3C433D2;
+        Thu,  8 Dec 2022 18:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670522748;
-        bh=CbhWdDa6UuOwMfhI/T9OOlup8bU3/ProUo82bONAmYc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=cNTa8FqkJPlXJ4gLzLL4TvqUIydmeB8aJ38/olddUcJCecYP6bE5znCMCbx3L9+Wv
-         nvDawSWJIAbWQvIViaABdFZhMFojvOqVcot4sjqpb0l2Qt1Rou8MXDUcUq1AAdENDw
-         1Bvi3c682EXcRV0rUh5FTUqE40giwfOvIxBS6xd7t1LbQ2X8dZfVjLiNen4u8BKJrA
-         xiI0K547B2iUdLIDd0YgeS9+cCoGTcAnFW9dFD2kgMAw8yTJV0HeO1IFJPKaOfaL/n
-         RdujKsL0gw4A3a5RsPV7BNMkwiYxI3RoPwUTSRvHSqXf9Icj46rxhFueeCLybYvqVH
-         bFBlCabQ/xlXg==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi:ath11k: fix monitor mode bringup crash
+        s=k20201202; t=1670525054;
+        bh=qu6zltMr3RVYYbEm2nNXjyjuc34po3m1owsgFYOCZUM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=T9vyuAC7cmiVOb0Cb5iTXgHIlW2f8QDkg2myfhF7a6kf8n85tkthzEYQruT3iAOI+
+         UPXuRaGxxrMjmM+YoR5BP6mB9/fxSfYzNzlb97MtjXFCr3+31LLDEZC7Fc8s5VN3LM
+         EgOwpdZof6MFSHgzurgGAQqw4qDJfQuYX8EhaF2225fTClwsgI/Qr6R5sDnJHPoV1q
+         BQFG+iWk53WVu+WJP6GvrJmqo3xUh590u9xzhv9X0EnYO7zF1q+tYQaiGpSrC8NgJ5
+         pdRDW+HF8gVbWh8uYqUHnU9uINTi1rd2OQzI9kTtw/r7b2vpTegWMIcCwQqWhtE/lI
+         ypdDwMoWYAEUw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221129142532.23421-1-quic_nmaran@quicinc.com>
-References: <20221129142532.23421-1-quic_nmaran@quicinc.com>
-To:     Nagarajan Maran <quic_nmaran@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Nagarajan Maran <quic_nmaran@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167052274389.20906.12708398332244220304.kvalo@kernel.org>
-Date:   Thu,  8 Dec 2022 18:05:47 +0000 (UTC)
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        debian-kernel@lists.debian.org, debian-boot@lists.debian.org
+Subject: Re: failed to insert STA entry for the AP (error -2)
+References: <20221130122807.GA31720@lst.de> <87o7so4nr2.fsf@kernel.org>
+        <20221130125236.GA865@lst.de> <87k03c4mdb.fsf@kernel.org>
+        <20221130133016.GC3055@lst.de> <87sfhx3ap6.fsf@kernel.org>
+        <20221203155227.GA13254@lst.de> <87cz8v2xb2.fsf@kernel.org>
+        <20221207134025.GA21691@lst.de>
+Date:   Thu, 08 Dec 2022 20:44:11 +0200
+In-Reply-To: <20221207134025.GA21691@lst.de> (Christoph Hellwig's message of
+        "Wed, 7 Dec 2022 14:40:25 +0100")
+Message-ID: <87lenh20sk.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,74 +58,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nagarajan Maran <quic_nmaran@quicinc.com> wrote:
+Christoph Hellwig <hch@lst.de> writes:
 
-> When the interface is brought up in monitor mode, it leads
-> to NULL pointer dereference crash. This crash happens when
-> the packet type is extracted for a SKB. This extraction
-> which is present in the received msdu delivery path,is
-> not needed for the monitor ring packets since they are
-> all RAW packets. Hence appending the flags with
-> "RX_FLAG_ONLY_MONITOR" to skip that extraction.
-> 
-> Observed calltrace:
-> 
-> Unable to handle kernel NULL pointer dereference at virtual address
-> 0000000000000064
-> Mem abort info:
->   ESR = 0x0000000096000004
->   EC = 0x25: DABT (current EL), IL = 32 bits
->   SET = 0, FnV = 0
->   EA = 0, S1PTW = 0
->   FSC = 0x04: level 0 translation fault
-> Data abort info:
->   ISV = 0, ISS = 0x00000004
->   CM = 0, WnR = 0
-> user pgtable: 4k pages, 48-bit VAs, pgdp=0000000048517000
-> [0000000000000064] pgd=0000000000000000, p4d=0000000000000000
-> Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-> Modules linked in: ath11k_pci ath11k qmi_helpers
-> CPU: 2 PID: 1781 Comm: napi/-271 Not tainted
-> 6.1.0-rc5-wt-ath-656295-gef907406320c-dirty #6
-> Hardware name: Qualcomm Technologies, Inc. IPQ8074/AP-HK10-C2 (DT)
-> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> pc : ath11k_hw_qcn9074_rx_desc_get_decap_type+0x34/0x60 [ath11k]
-> lr : ath11k_hw_qcn9074_rx_desc_get_decap_type+0x5c/0x60 [ath11k]
-> sp : ffff80000ef5bb10
-> x29: ffff80000ef5bb10 x28: 0000000000000000 x27: ffff000007baafa0
-> x26: ffff000014a91ed0 x25: 0000000000000000 x24: 0000000000000000
-> x23: ffff800002b77378 x22: ffff000014a91ec0 x21: ffff000006c8d600
-> x20: 0000000000000000 x19: ffff800002b77740 x18: 0000000000000006
-> x17: 736564203634343a x16: 656e694c20657079 x15: 0000000000000143
-> x14: 00000000ffffffea x13: ffff80000ef5b8b8 x12: ffff80000ef5b8c8
-> x11: ffff80000a591d30 x10: ffff80000a579d40 x9 : c0000000ffffefff
-> x8 : 0000000000000003 x7 : 0000000000017fe8 x6 : ffff80000a579ce8
-> x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-> x2 : 3a35ec12ed7f8900 x1 : 0000000000000000 x0 : 0000000000000052
-> Call trace:
->  ath11k_hw_qcn9074_rx_desc_get_decap_type+0x34/0x60 [ath11k]
->  ath11k_dp_rx_deliver_msdu.isra.42+0xa4/0x3d0 [ath11k]
->  ath11k_dp_rx_mon_deliver.isra.43+0x2f8/0x458 [ath11k]
->  ath11k_dp_rx_process_mon_rings+0x310/0x4c0 [ath11k]
->  ath11k_dp_service_srng+0x234/0x338 [ath11k]
->  ath11k_pcic_ext_grp_napi_poll+0x30/0xb8 [ath11k]
->  __napi_poll+0x5c/0x190
->  napi_threaded_poll+0xf0/0x118
->  kthread+0xf4/0x110
->  ret_from_fork+0x10/0x20
-> 
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> Reported-by: Florian Schmidt <florian@fls.name>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216573
-> Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> adding the debian-kernel list due to issues with using debian-installer
+> daily snapshot to install on my brand new laptop with an ath11k_pci
+> supported wifi chip.
+>
+> It turns out that while d-i comes with the ath11k and ath11k_pci
+> drivers, but misses the qrtr, qrtr-mki and michael_mic modules that
+> are needed for the driver to actually work and not just load.
 
-Patch applied to ath-next branch of ath.git, thanks.
+s/qrtr-mki/qrtr-mhi/
 
-950b43f8bd8a wifi: ath11k: fix monitor mode bringup crash
+And also CRYPTO_MICHAEL_MIC is needed. This the copy from Kconfig file
+which should be an accurate list of dependencies:
+
+config ATH11K
+	tristate "Qualcomm Technologies 802.11ax chipset support"
+	depends on MAC80211 && HAS_DMA
+	depends on CRYPTO_MICHAEL_MIC
+	select ATH_COMMON
+	select QCOM_QMI_HELPERS
+...
+config ATH11K_PCI
+	tristate "Atheros ath11k PCI support"
+	depends on ATH11K && PCI
+	select MHI_BUS
+	select QRTR
+	select QRTR_MHI
+
+> On Wed, Dec 07, 2022 at 02:49:37PM +0200, Kalle Valo wrote:
+>> Thanks. But this makes me wonder is it sensible to randomly install a
+>> set of .ko files and drop the rest, like Debian's installer apparently
+>> does? The dependency for drivers is pretty well documented in Kconfig
+>> files, thanks to build testers testing with random configurations, but
+>> if the installer omits all that there will be problems just like you are
+>> experiencing. So for me MODULE_SOFTDEP() feels just like a band aid and
+>> not a robust solution.
+>
+> I think a driver that a driver that has a runtime depedency on a
+> certain module, but doesn't import symbols is always going to be
+> somewhat problematic.  But I also agree that the arbitrary splitting
+> of kernel modules into separate packages for the installer, or
+> in fact not packaging them at all for the installer is rather
+> problematic.  I'm not sure what the rationale is behind that, but
+> I've added the debian-kernel and debian-boot lists.
+>
+>> Though I am happy to take your MODULE_SOFTDEP() patch, just wondering if
+>> there is a better way to solve this. For example net/mac80211 (the
+>> 802.11 stack) has a lot of crypto dependencies:
+>> 
+>> 	select CRYPTO
+>> 	select CRYPTO_LIB_ARC4
+>> 	select CRYPTO_AES
+>> 	select CRYPTO_CCM
+>> 	select CRYPTO_GCM
+>> 	select CRYPTO_CMAC
+>> 	select CRC32
+>> 
+>> And it's not using MODULE_SOFTDEP() at all.
+>
+> Yes.  I'm not quite sure how the packages for d-i select which
+> modules to include where, but given that other wifi hardware
+> seems to work in the installer they must have figured this out
+> somehow.
+
+For older ath driver (ath6kl, ath9k, ath10k) the dependencies were quite
+simple. ath11k was the first driver requiring MHI and QRTR for PCI
+devices, so in that regard it's not surprising that this problem comes
+up only now.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221129142532.23421-1-quic_nmaran@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
