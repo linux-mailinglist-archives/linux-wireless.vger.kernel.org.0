@@ -2,41 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91BB1647204
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 15:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C05C264720E
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 15:43:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbiLHOlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Dec 2022 09:41:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34636 "EHLO
+        id S229888AbiLHOnn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Dec 2022 09:43:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbiLHOlQ (ORCPT
+        with ESMTP id S229836AbiLHOnj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Dec 2022 09:41:16 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AD7698EBC
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 06:41:14 -0800 (PST)
-Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NScJP5QXLzmWSp;
-        Thu,  8 Dec 2022 22:40:21 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 8 Dec
- 2022 22:40:42 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <stas.yakovlev@gmail.com>, <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <yangyingliang@huawei.com>
-Subject: [PATCH v2] wifi: ipw2x00: don't call dev_kfree_skb() under spin_lock_irqsave()
-Date:   Thu, 8 Dec 2022 22:38:26 +0800
-Message-ID: <20221208143826.2385218-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 8 Dec 2022 09:43:39 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04FBBE005;
+        Thu,  8 Dec 2022 06:43:39 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9532061F76;
+        Thu,  8 Dec 2022 14:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFD0C433B5;
+        Thu,  8 Dec 2022 14:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670510618;
+        bh=sD0s4IIdSrrNRlhHdPxHzyAWp+1KIvfPID1XtU0Xqio=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=bOzwrZUUnRGulB6xeNZh2ueB1liBkMB7lL+f/ntzIQ93EMrJ0PMnaqu9JLsJuZNVr
+         yhG6hxjVbchQXHTAc9RVlvLrdv/y+DI5hlfD58u/t0Et4NLalKBnPWR4ht05fe6jJY
+         INaSb7NDJWbvs5zQqjpJDlHmI/v2VaHPeN+yxTvq5IVqW9hH/4y+TCBmL6kAZ+N7rM
+         Z/R95++k85JZG+XPZNAuJI7wJUtpwGOOikgopw17K6nCd+BGBovuy5VvoptdVNFAQC
+         lHfIli48F+XjE7FX1Rbqpn2P0nUfJosff3kC7Gzulz4dq/nSLCSLpvqUhRd6WcuWor
+         umxy/AjaNIPeA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7bit
+Subject: Re: wifi: ipw2x00: Remove some unused functions
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20221129062407.83157-1-jiapeng.chong@linux.alibaba.com>
+References: <20221129062407.83157-1-jiapeng.chong@linux.alibaba.com>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167051061112.9839.16237027810191457541.kvalo@kernel.org>
+Date:   Thu,  8 Dec 2022 14:43:35 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,40 +57,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It is not allowed to call kfree_skb() or consume_skb() from hardware
-interrupt context or with hardware interrupts being disabled.
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
 
-It should use dev_kfree_skb_irq() or dev_consume_skb_irq() instead.
-The difference between them is free reason, dev_kfree_skb_irq() means
-the SKB is dropped in error and dev_consume_skb_irq() means the SKB
-is consumed in normal.
+> Functions write_nic_auto_inc_address() and write_nic_dword_auto_inc() are
+> defined in the ipw2100.c file, but not called elsewhere, so remove these
+> unused functions.
+> 
+> drivers/net/wireless/intel/ipw2x00/ipw2100.c:427:20: warning: unused function 'write_nic_dword_auto_inc'.
+> 
+> Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3285
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-In this case, dev_kfree_skb() is called to free and drop the SKB when
-it's reset, so replace it with dev_kfree_skb_irq(). Compile tested
-only.
+Patch applied to wireless-next.git, thanks.
 
-Fixes: 43f66a6ce8da ("Add ipw2200 wireless driver.")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
-v1 -> v2:
-  Update commit message, and change to use dev_kfree_skb_irq().
----
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+5107778d0061 wifi: ipw2x00: Remove some unused functions
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index 5b483de18c81..9ec1d6b2e5f8 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -3441,7 +3441,7 @@ static void ipw_rx_queue_reset(struct ipw_priv *priv,
- 			dma_unmap_single(&priv->pci_dev->dev,
- 					 rxq->pool[i].dma_addr,
- 					 IPW_RX_BUF_SIZE, DMA_FROM_DEVICE);
--			dev_kfree_skb(rxq->pool[i].skb);
-+			dev_kfree_skb_irq(rxq->pool[i].skb);
- 			rxq->pool[i].skb = NULL;
- 		}
- 		list_add_tail(&rxq->pool[i].list, &rxq->rx_used);
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20221129062407.83157-1-jiapeng.chong@linux.alibaba.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
