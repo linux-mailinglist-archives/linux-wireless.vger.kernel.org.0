@@ -2,54 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF50647224
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 15:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C6D5647226
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 15:47:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229907AbiLHOrH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Dec 2022 09:47:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38814 "EHLO
+        id S229888AbiLHOrt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Dec 2022 09:47:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229898AbiLHOrF (ORCPT
+        with ESMTP id S229758AbiLHOrr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Dec 2022 09:47:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3070A27CC7;
-        Thu,  8 Dec 2022 06:47:05 -0800 (PST)
+        Thu, 8 Dec 2022 09:47:47 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00770BC18
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 06:47:44 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAABF61F6E;
-        Thu,  8 Dec 2022 14:47:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0173C433C1;
-        Thu,  8 Dec 2022 14:47:01 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 96690B82407
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 14:47:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8A1C433D7;
+        Thu,  8 Dec 2022 14:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670510824;
-        bh=DGZdBg2k+c0lbYP2UZKfn7NakVnAY+qm3K+z9ZUzG1A=;
+        s=k20201202; t=1670510862;
+        bh=9vrFXw+w9zyJeuVoJgnWYnTSEQu1EDA2aAQctMsJb88=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=akW5tSpk2A9DJbUBKaMSgnTCK+d5lj5cplVyp4CCWolM45SCzt+7Z5Sff+yTZy/CU
-         3YlGC3HjEsbcSMYytNmwW/hADadUkbN3/jGx6xckGK3LDuLHE3BZk0+X9no7E1aS9r
-         j9opLw+A4vY+u9Gr2D6GLvypcvo1VV4P0J9w0S1N8qZFPP9TCOTrcsqYwLoL62Ks0b
-         k1Co4f3OJTPSAwjWa3b9HyUf+Lb0x5GxtJb+72gOKdzLYgiehMxk+JR43Z3HYioUcg
-         aHWRZhozrd1qtrOniKVF9J83z9WGbTMalLbZE9F45L/lyAWxHLBKBI9qMLLDzpNNMh
-         EpoVhlHKJ9NKQ==
+        b=qh7K3RoGM9l1buurT7g9uArwz1JWurE3D4rmQY7jqrfSKhw/9j6V8WTWPjRWXpn/9
+         LstEe3r492yx8eJW5Qk6lfLNO1O7hixc53OhwOEo146lvsfk7+ocYYEAYSVpR0sBaa
+         tw1YdgnZvzRy8hZfJ8EXM5fKRYkltFAqdtbbaRnyyEvd7R1ZOIWGvR3qVjQx2WerQJ
+         6WvuGvN8Fz7BeFj+cfhlqtRt+BQJyGUNbJpyLFMl5+o9XQQfq5G/y6zH5BExEd/bUj
+         YCCjviSB4VDhZ3XmPnoRDjHI+6vM0FSe9yBGeQBUSOZ2t+70zHa5fJICMKQU9nzgwf
+         mDaJy6Im5UwmA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: brcmfmac: Fix error return code in
- brcmf_sdio_download_firmware()
+Subject: Re: [PATCH 1/2] wifi: rtw89: don't request partial firmware if
+ SECURITY_LOADPIN_ENFORCE
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1669959342-27144-1-git-send-email-wangyufen@huawei.com>
-References: <1669959342-27144-1-git-send-email-wangyufen@huawei.com>
-To:     Wang Yufen <wangyufen@huawei.com>
-Cc:     <aspriel@gmail.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <arend@broadcom.com>, Wang Yufen <wangyufen@huawei.com>
+In-Reply-To: <20221202060521.501512-2-pkshih@realtek.com>
+References: <20221202060521.501512-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167051081967.9839.17101667158820995353.kvalo@kernel.org>
-Date:   Thu,  8 Dec 2022 14:47:01 +0000 (UTC)
+Message-ID: <167051085972.9839.9335859470213768636.kvalo@kernel.org>
+Date:   Thu,  8 Dec 2022 14:47:41 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,22 +54,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wang Yufen <wangyufen@huawei.com> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Fix to return a negative error code instead of 0 when
-> brcmf_chip_set_active() fails. In addition, change the return
-> value for brcmf_pcie_exit_download_state() to keep consistent.
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > 
-> Fixes: d380ebc9b6fb ("brcmfmac: rename chip download functions")
-> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Kernel logs on platform enabling SECURITY_LOADPIN_ENFORCE
+> ------
+> ```
+> LoadPin: firmware old-api-denied obj=<unknown> pid=810 cmdline="modprobe -q -- rtw89_8852ce"
+> rtw89_8852ce 0000:01:00.0: loading /lib/firmware/rtw89/rtw8852c_fw.bin failed with error -1
+> rtw89_8852ce 0000:01:00.0: Direct firmware load for rtw89/rtw8852c_fw.bin failed with error -1
+> rtw89_8852ce 0000:01:00.0: failed to early request firmware: -1
+> ```
+> 
+> Trace
+> ------
+> ```
+> request_partial_firmware_into_buf()
+> > _request_firmware()
+> >> fw_get_filesystem_firmware()
+> >>> kernel_read_file_from_path_initns()
+> >>>> kernel_read_file()
+> >>>>> security_kernel_read_file()
+> // It will iterate enabled LSMs' hooks for kernel_read_file.
+> // With loadpin, it hooks loadpin_read_file.
+> ```
+> 
+> If SECURITY_LOADPIN_ENFORCE is enabled, doing kernel_read_file() on partial
+> files will be denied and return -EPERM (-1). Then, the outer API based on it,
+> e.g. request_partial_firmware_into_buf(), will get the error.
+> 
+> In the case, we cannot get the firmware stuffs right, even though there might
+> be no error other than a permission issue on reading a partial file. So we have
+> to request full firmware if SECURITY_LOADPIN_ENFORCE is enabled. It makes us
+> still have a chance to do early firmware work on this kind of platforms.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+2 patches applied to wireless-next.git, thanks.
 
-c2f2924bc7f9 wifi: brcmfmac: Fix error return code in brcmf_sdio_download_firmware()
+3ddfe3bdd3cf wifi: rtw89: don't request partial firmware if SECURITY_LOADPIN_ENFORCE
+13eb07e0be1b wifi: rtw89: request full firmware only once if it's early requested
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1669959342-27144-1-git-send-email-wangyufen@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221202060521.501512-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
