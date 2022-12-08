@@ -2,144 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EEB86475DD
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 20:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 834AF64763A
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Dec 2022 20:32:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbiLHTB6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Dec 2022 14:01:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33468 "EHLO
+        id S229543AbiLHTca (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Dec 2022 14:32:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiLHTB4 (ORCPT
+        with ESMTP id S229470AbiLHTc3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Dec 2022 14:01:56 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4DD84B5E
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 11:01:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670526115; x=1702062115;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uGbUoaBnj4f68UOeyHPufSg+UCLS3hvtA6Gvai5XuvM=;
-  b=Pghhk0T4Myz54AucOqsKuhekY705bMgT0iEPFNv0zoHqTjyuhjPaUsSz
-   82w3F9n0sRnH6qCC8zhg/8dsPiL6DiEUPWpNUxOgdximF8S6c6SBc3obc
-   nwuOy7SYOW24NYWHh0VN4HWUhZyYAmDKMd6dtIwIegcI2+X605ZQCKc8x
-   i9J4BM8OZOgvtOsFPcEdFJHK6maGdZvz/oITY07icUJFEgvAlNxuJmec5
-   v+ePIkSHJh3qaiVy46CqB5NJ//C7F/rxf0IJgSu1bd326vJWkuyeI4Jy4
-   dwCi/Vwi1fIBwBD6j5rvw2Xfj5Uyx9TeDDB6hs0KP93ZFlw4yU3Uc9yzC
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="403524186"
-X-IronPort-AV: E=Sophos;i="5.96,227,1665471600"; 
-   d="scan'208";a="403524186"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2022 11:01:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="821453604"
-X-IronPort-AV: E=Sophos;i="5.96,227,1665471600"; 
-   d="scan'208";a="821453604"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 08 Dec 2022 11:01:52 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p3M9X-0001M3-2A;
-        Thu, 08 Dec 2022 19:01:51 +0000
-Date:   Fri, 09 Dec 2022 03:00:59 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:pending] BUILD SUCCESS
- ce3c43789a232d5c7255e50658810be07e6f1a02
-Message-ID: <6392346b.M8J3r3LPF8yafDEm%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 8 Dec 2022 14:32:29 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A7969E474
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 11:32:28 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id c66so218304edf.5
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Dec 2022 11:32:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4NYG9lYEZ9wsyuwGTuamr3MpqAUVMVxHSEFMBUyZQg4=;
+        b=m9UY/ppuM6so+aDHm+3TIwuNG7HnrZ3nIcDPo9V1AwCuSkmep2GCi6PfDDOXcWMyjw
+         GIhZjgXZTyDVsaX9chD/htfVDFQdiwd3BJP13/sQj/ELrxyQ6309pqxaUjXKq6Zr+myA
+         u1fALcmv+4XVfPzadmEctOhpe7mUXDrybcQtp2+woNTAngBw33V1wUEtvjYcIcQlUkh9
+         AFR+iVuyQ/Xp4rXMTKTI8AdrZoKYh3tMV/11HXQAUODiAvkK/ZQbkmmP3tvBbgPBcGDH
+         2GXAcPxs+Q+75EiqwC92o4R0/IW4aff19D0AGehn6eMpyF6oGo2yUtjxWOH6L69bQiah
+         4/QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4NYG9lYEZ9wsyuwGTuamr3MpqAUVMVxHSEFMBUyZQg4=;
+        b=z3llIwyxQHJYroQvvO95UsaRZ+/BB0Crz34+U9VoW4bbcz9V950FrmNH0fZmGdfy6I
+         FPs/SKzUqwl6dk2tZtMt08Lcl7jDqlFZYOTboPqQo4d9jxqrG85ZUKDs7u1lwxAN4wrx
+         49UQh90pzNzdYlo020UpW7ZyIVlfNdttHmvbMHZCora/O0bTDYEG1AoxMXRMEjs0Fg91
+         NwKb3Oau0zVcxKkXqLb6dsu+WAdq/qCg2ANQ7XbvJ3Wrub53evHog0fnYAVqUYUuWK6O
+         whtMbpcZvtN94iRLb8Gm0zZg/oGe5duzr+VBR5GpJ+YsK8pFJF7zjQ1G6bTFpzeDmD9z
+         mCQA==
+X-Gm-Message-State: ANoB5pk0LPehpt0kJR7ejRWbGWMhTgiI+urYSpKWeD0WlLMLR3vvP2Cj
+        3xuEROzPwf1j9esqcVM0UZi9YlbSm78=
+X-Google-Smtp-Source: AA0mqf7s3PQBOGhiXPe+M67kdRx9kXAsTrBDKpZII3ME4oRMm0U9+AXjPkPk8ZnhiXdxUQ0+U2PD6w==
+X-Received: by 2002:aa7:c844:0:b0:461:9faf:6895 with SMTP id g4-20020aa7c844000000b004619faf6895mr2710687edt.16.1670527946592;
+        Thu, 08 Dec 2022 11:32:26 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.254])
+        by smtp.gmail.com with ESMTPSA id g3-20020aa7c843000000b0046c5baa1f58sm3682864edt.97.2022.12.08.11.32.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Dec 2022 11:32:25 -0800 (PST)
+Message-ID: <4368d585-11ec-d3c7-ec12-7f0afdcedfda@gmail.com>
+Date:   Thu, 8 Dec 2022 21:32:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Content-Language: en-US
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH 1/2] wifi: rtl8xxxu: Fix assignment to bit field
+ priv->pi_enabled
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: ce3c43789a232d5c7255e50658810be07e6f1a02  Merge tag 'iwlwifi-next-for-kalle-2022-12-07' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next into pending
+Just because priv->pi_enabled is only one bit doesn't mean it works
+like a bool. The value assigned to it loses all bits except bit 0,
+so only assign 0 or 1 to it.
 
-elapsed time: 721m
+This affects the RTL8188FU, but fixing the assignment didn't make
+a difference for my device.
 
-configs tested: 61
-configs skipped: 2
+Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-powerpc                           allnoconfig
-i386                          randconfig-a014
-i386                          randconfig-a012
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-arc                  randconfig-r043-20221207
-x86_64                              defconfig
-i386                                defconfig
-m68k                             allyesconfig
-x86_64                           rhel-8.3-syz
-i386                          randconfig-a001
-x86_64                         rhel-8.3-kunit
-m68k                             allmodconfig
-arc                              allyesconfig
-i386                          randconfig-a003
-i386                          randconfig-a016
-alpha                            allyesconfig
-riscv                randconfig-r042-20221207
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-sh                               allmodconfig
-s390                 randconfig-r044-20221207
-i386                          randconfig-a005
-s390                                defconfig
-x86_64                               rhel-8.3
-s390                             allyesconfig
-x86_64                        randconfig-a013
-x86_64                           allyesconfig
-x86_64                        randconfig-a011
-mips                             allyesconfig
-i386                             allyesconfig
-x86_64                        randconfig-a006
-ia64                             allmodconfig
-powerpc                          allmodconfig
-x86_64                        randconfig-a015
-x86_64                          rhel-8.3-rust
-arm                                 defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-arm                              allyesconfig
-arm64                            allyesconfig
-x86_64                            allnoconfig
-
-clang tested configs:
-i386                          randconfig-a013
-i386                          randconfig-a011
-arm                  randconfig-r046-20221207
-hexagon              randconfig-r041-20221207
-hexagon              randconfig-r045-20221207
-i386                          randconfig-a002
-i386                          randconfig-a015
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a003
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index 2c4f403ba68f..97e7ff7289fa 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -1122,7 +1122,7 @@ static void rtl8188fu_phy_iqcalibrate(struct rtl8xxxu_priv *priv,
+ 
+ 	if (t == 0) {
+ 		val32 = rtl8xxxu_read32(priv, REG_FPGA0_XA_HSSI_PARM1);
+-		priv->pi_enabled = val32 & FPGA0_HSSI_PARM1_PI;
++		priv->pi_enabled = u32_get_bits(val32, FPGA0_HSSI_PARM1_PI);
+ 	}
+ 
+ 	/* save RF path */
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.38.0
