@@ -2,106 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D096A6488ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 20:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 401D7648976
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 21:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229847AbiLITWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Dec 2022 14:22:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54426 "EHLO
+        id S229913AbiLIUVc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Dec 2022 15:21:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbiLITWF (ORCPT
+        with ESMTP id S229847AbiLIUVZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Dec 2022 14:22:05 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05CA478BA7;
-        Fri,  9 Dec 2022 11:22:05 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id jn7so5860963plb.13;
-        Fri, 09 Dec 2022 11:22:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BhRGeJWGrl0tr2bjnWyizth/nhOim0rSCX/mVsf4FsI=;
-        b=jdzNMVpr4uHxXDO6uF6Z+4fuId1VRik3H9I3yGfzwXeRXAMfacAtS2iG+grTIwxiee
-         6bMVyhr8xa6JdiZyypIERaCGtlmS77PHs8tHVkTwFWA6/GgShNry8csPojRQL2LmzLOU
-         QZhPHUlv/ltOFMmIGh6B+2lpHCfCI7EyxlSu7MlYTkdhRwNvoeNApleDxmPl2wsOKnKt
-         pXBImU/vsPCAFdHByYxONpKDX8jghKpHo4suCZge3VNpFhlzpmS4qsq/Ih/n7uwkkV1W
-         nmLklSSr2mTHQw8Lh9kEmYTv1XTTidafb++TuFK4cV3oZVmkt0vZM7QRVQip70GisfHt
-         XSGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BhRGeJWGrl0tr2bjnWyizth/nhOim0rSCX/mVsf4FsI=;
-        b=KQmCoxz1BUeXKE1dFhS80S3nQY4P39jwGeRqtfXXonA8qmeeE/HdmhxRmvRIdr+pl0
-         PVow0fSUf9npJJVA1xxC8GR087Yl8NOC7NN1E2KVXx0ISKL+ztapK0L0shG7wUyi78g1
-         jAemPteh2OQ8gO4et1h1kR9qHJNZRCo4rJ2cjwZ1hTAlg0kBStF+MwfCYvxEWTyutg3z
-         Fg0Zjwxu++K9hElMPb35DSBvG+Ar5/R1GpjvXUCrSpEmlJHAXavuA+TJaDLL1hg+rVtf
-         nXJ7xht+KJHz4kSEIOO1q90Y2dh3zDYdZq5gq8ApceIP7RcsCMseS3M7LHPLmAE2fEea
-         k4CQ==
-X-Gm-Message-State: ANoB5plXpZcwWc47zd/QP8ibf3uQ/yxrrup68biU+oYFc2bfJvZgqIQU
-        Tiuz+2E1v4Xg+Zfme9HUAdA=
-X-Google-Smtp-Source: AA0mqf4wdfMIqGQEHLdJxiXpEjHBSnTL5Tg00ntUG/Fa/LRlZHT0p2nb7uxswyrXWf6WqayH3/tOgA==
-X-Received: by 2002:a17:902:ccd2:b0:185:441e:4cfc with SMTP id z18-20020a170902ccd200b00185441e4cfcmr7857718ple.44.1670613724242;
-        Fri, 09 Dec 2022 11:22:04 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:5853:f1e8:694c:1488])
-        by smtp.gmail.com with ESMTPSA id x22-20020a170902821600b00183e2a96414sm1658778pln.121.2022.12.09.11.22.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Dec 2022 11:22:03 -0800 (PST)
-Date:   Fri, 9 Dec 2022 11:22:00 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wireless: ti: remove obsolete lines in the Makefile
-Message-ID: <Y5OK2AvJGhgHXepf@google.com>
-References: <20221209095937.17773-1-lukas.bulwahn@gmail.com>
+        Fri, 9 Dec 2022 15:21:25 -0500
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0299B8D195
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 12:21:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=kBTvEwwPYkhDgOHZgqMsIladGgyNsgcuwtJJruzv6is=; b=j6TZCyADyXzKu2jOeCgIkdOZVa
+        NKRjNfXb1arzQOkVoJT8J0kMeCUzrB9uBEO1eZxKv1qGO54LJWDf0qma1UKO/l+5JGgpbzcAfGqL/
+        ACjSEdwQQfwROy5CXPbq/MWNRxKL22NbP8O7WR22hhU3i40lnLE9ihRymAD7MtZ4iT/8=;
+Received: from p200300daa71613018d4aa8a5d898f578.dip0.t-ipconnect.de ([2003:da:a716:1301:8d4a:a8a5:d898:f578] helo=Maecks.lan)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1p3js1-007Tjz-Mb; Fri, 09 Dec 2022 21:21:21 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [RFC 1/5] wifi: cfg80211: move A-MSDU check in ieee80211_data_to_8023_exthdr
+Date:   Fri,  9 Dec 2022 21:21:17 +0100
+Message-Id: <20221209202121.55951-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221209095937.17773-1-lukas.bulwahn@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 09, 2022 at 10:59:37AM +0100, Lukas Bulwahn wrote:
-> Commit 06463f6e98df ("wifi: wl1251: drop support for platform data")
-> removes TI WiLink platform data, but leaves some dead lines in the
-> Makefile.
-> 
-> Remove these obsolete lines in the Makefile.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+When parsing the outer A-MSDU header, don't check for inner bridge tunnel
+or RFC1042 headers. This is handled by ieee80211_amsdu_to_8023s already.
 
-Thanks for spotting this.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/wireless/util.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-
-> ---
->  drivers/net/wireless/ti/Makefile | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ti/Makefile b/drivers/net/wireless/ti/Makefile
-> index 0530dd744275..05ee016594f8 100644
-> --- a/drivers/net/wireless/ti/Makefile
-> +++ b/drivers/net/wireless/ti/Makefile
-> @@ -3,6 +3,3 @@ obj-$(CONFIG_WLCORE)			+= wlcore/
->  obj-$(CONFIG_WL12XX)			+= wl12xx/
->  obj-$(CONFIG_WL1251)			+= wl1251/
->  obj-$(CONFIG_WL18XX)			+= wl18xx/
-> -
-> -# small builtin driver bit
-> -obj-$(CONFIG_WILINK_PLATFORM_DATA)	+= wilink_platform_data.o
-> -- 
-> 2.17.1
-> 
-
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 8f403f9fe816..6848e26707e8 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -631,8 +631,9 @@ int ieee80211_data_to_8023_exthdr(struct sk_buff *skb, struct ethhdr *ehdr,
+ 		break;
+ 	}
+ 
+-	if (likely(skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) == 0 &&
+-	           ((!is_amsdu && ether_addr_equal(payload.hdr, rfc1042_header) &&
++	if (likely(!is_amsdu &&
++		   skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) == 0 &&
++	           ((ether_addr_equal(payload.hdr, rfc1042_header) &&
+ 		     payload.proto != htons(ETH_P_AARP) &&
+ 		     payload.proto != htons(ETH_P_IPX)) ||
+ 		    ether_addr_equal(payload.hdr, bridge_tunnel_header)))) {
 -- 
-Dmitry
+2.38.1
+
