@@ -2,181 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7CBD648586
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 16:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 100966485E2
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 16:49:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbiLIP3H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Dec 2022 10:29:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49624 "EHLO
+        id S230512AbiLIPtR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Dec 2022 10:49:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiLIP2x (ORCPT
+        with ESMTP id S231137AbiLIPsu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Dec 2022 10:28:53 -0500
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED57CA19E
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 07:28:50 -0800 (PST)
-Received: by mail-ej1-x62c.google.com with SMTP id qk9so12342109ejc.3
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Dec 2022 07:28:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pqrs.dk; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CBIx7WhayGl8L5UnKkWTZlh8ccP3yQ9V2VOk1LDfuU=;
-        b=g3vLufSXkk6Bd3BbnBSvYEhasj4ZRFzeqITPpY1spDMrZTTsgQWtZjx0r+YQmw17sX
-         ZMkDKy6mms6/tQjTrYstAp0/HovfK/Wdhi7W+nl3VNNxpyBkOEG+0tB0gUOQ2tzglGPc
-         dYprSHDOKFiY7kDDop4pYjHpFp/ylftdANH3w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/CBIx7WhayGl8L5UnKkWTZlh8ccP3yQ9V2VOk1LDfuU=;
-        b=47O15w8OTUwCrYLuaEzpWRMHlvHkmKLqnaUdNPm4SSrvkG/a2BOOGROHD9PD/DovNJ
-         GTjaZCQXH23boIK3HDTz/gPOX9+q3I/EXhtazysz4QJ450cGhzsRUVv/j4udWhoj4k7F
-         LxwYIwSStHnhRE2aRCYJTfjSJSbLFvP8rRiNfBO1q2k3EyLfmsDQPtTFO342RPXyPSmt
-         vwyEaK67bhAWxeVsHd7brOmhF4Y4TVUztzYeCBqmVm8bHGU4darGUmlfd/PIhlobfQSf
-         UVGR5aRtYfOldsx7lla84q5SISLq+Z2yXl1NOf+1SfpQZ146MOTthHOJX7wqlrXjmjAq
-         qgSQ==
-X-Gm-Message-State: ANoB5plpkZbSoaMfJV1qoZKRtECwDJzhFOY+loBactl4GJjnYphr0ThF
-        RnmPyGBKTpBNXaCRIIRgVKILug==
-X-Google-Smtp-Source: AA0mqf5/vEoKDQ/I1fRr88dwfhK6CwIW9Llpcvbo3r/hM0pGFZJgqq3o3VphKB2jSTzL6JamOXrW0A==
-X-Received: by 2002:a17:906:2881:b0:7ad:d835:e822 with SMTP id o1-20020a170906288100b007add835e822mr4899301ejd.42.1670599729472;
-        Fri, 09 Dec 2022 07:28:49 -0800 (PST)
-Received: from localhost.localdomain (80.71.142.18.ipv4.parknet.dk. [80.71.142.18])
-        by smtp.gmail.com with ESMTPSA id o20-20020a170906769400b0077a11b79b9bsm24901ejm.133.2022.12.09.07.28.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Dec 2022 07:28:49 -0800 (PST)
-From:   =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin@pqrs.dk>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH next] wifi: nl80211: emit CMD_START_AP on multicast group when an AP is started
-Date:   Fri,  9 Dec 2022 16:28:36 +0100
-Message-Id: <20221209152836.1667196-1-alvin@pqrs.dk>
-X-Mailer: git-send-email 2.37.3
+        Fri, 9 Dec 2022 10:48:50 -0500
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D63A5C755
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 07:47:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=64ya3NDZlK80gtDu7HsFyY2Eau2xhqet+iOWTD3QZAQ=; b=SOq0yAh5jbdZiJ0QGgW1jxVMeA
+        efyHUFXHEafEhWNIl7jzZk0CRc+P28diU8qwnNauVRiyLCieepfmcL4B7NlGWdE/UQku+rtLy7NOJ
+        t55HcEMMqviK43HGIFVuSCZT6KC94XYiL9Buv9/+QdYo2cfvbYpggU0hXWZcQ/3mKoxg=;
+Received: from p200300daa7161300207339adb4444dbf.dip0.t-ipconnect.de ([2003:da:a716:1300:2073:39ad:b444:4dbf] helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1p3fbO-007Qdw-9v; Fri, 09 Dec 2022 16:47:54 +0100
+Message-ID: <fb35ede5-73c6-6d0b-34d1-8aa639a9adb0@nbd.name>
+Date:   Fri, 9 Dec 2022 16:47:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.1
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2022-12-09
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alvin Šipraga <alsi@bang-olufsen.dk>
+Hi Kalle,
 
-Userspace processes such as network daemons may wish to be informed when
-any AP interface is brought up on the system, for example to initiate a
-(re)configuration of IP settings or to start a DHCP server.
+here's my second request for 6.2
 
-Currently nl80211 does not broadcast any such event on its multicast
-groups, leaving userspace only two options:
+- Felix
 
-1. the process must be the one that actually issued the
-   NL80211_CMD_START_AP request, so that it can react on the response to
-   that request;
+The following changes since commit 832c3f66f53f1eb20f424b916a311ad82074ef0d:
 
-2. the process must react to RTM_NEWLINK events indicating a change in
-   carrier state, and may query for further information about the AP and
-   react accordingly.
+   Merge tag 'iwlwifi-next-for-kalle-2022-12-07' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2022-12-08 16:54:33 +0200)
 
-Option (1) is robust, but it does not cover all scenarios. It is easy to
-imagine a situation where this is not the case (e.g. hostapd +
-systemd-networkd).
+are available in the Git repository at:
 
-Option (2) is not robust, because RTM_NEWLINK events may be silently
-discarded by the linkwatch logic (cf. linkwatch_fire_event()).
-Concretely, consider a scenario in which the carrier state flip-flops in
-the following way:
+   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-12-09
 
- ^ carrier state (high/low = carrier/no carrier)
- |
- |        _______      _______ ...
- |       |       |    |
- | ______| "foo" |____| "bar"             (SSID in "quotes")
- |
- +-------A-------B----C---------> time
+for you to fetch changes up to d878d3dc126db05b075147456644bd2d2ab1fb5e:
 
-If the time interval between (A) and (C) is less than 1 second, then
-linkwatch may emit only a single RTM_NEWLINK event indicating carrier
-gain.
+   wifi: mt76: mt7915: get rid of wed rx_buf_ring page_frag_cache (2022-12-09 16:46:28 +0100)
 
-This is problematic because it is possible that the network
-configuration that should be applied is a function of the AP's
-properties such as SSID (cf. SSID= in systemd.network(5)). As
-illustrated in the above diagram, it may be that the AP with SSID "bar"
-ends up being configured as though it had SSID "foo".
+----------------------------------------------------------------
+mt76 patches for 6.2
 
-Address the above issue by having nl80211 emit an NL80211_CMD_START_AP
-message on the MLME nl80211 multicast group. This allows for arbitrary
-processes to be reliably informed.
+- fixes
+- per-PHY LED support
 
-Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
----
- net/wireless/nl80211.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+----------------------------------------------------------------
+Deren Wu (2):
+       wifi: mt76: mt7921s: fix slab-out-of-bounds access in sdio host
+       wifi: mt76: fix coverity uninit_use_in_call in mt76_connac2_reverse_frag0_hdr_trans()
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 33a82ecab9d5..323b7e40d855 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -5770,6 +5770,39 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
- 	}
- }
- 
-+static void nl80211_send_ap_started(struct wireless_dev *wdev)
-+{
-+	struct wiphy *wiphy = wdev->wiphy;
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	struct sk_buff *msg;
-+	void *hdr;
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!msg)
-+		return;
-+
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_START_AP);
-+	if (!hdr)
-+		goto out;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
-+	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, wdev->netdev->ifindex) ||
-+	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
-+			      NL80211_ATTR_PAD) ||
-+	    (wdev->u.ap.ssid_len &&
-+	     nla_put(msg, NL80211_ATTR_SSID, wdev->u.ap.ssid_len,
-+		     wdev->u.ap.ssid)))
-+		goto out;
-+
-+	genlmsg_end(msg, hdr);
-+
-+	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(wiphy), msg, 0,
-+				NL80211_MCGRP_MLME, GFP_KERNEL);
-+	return;
-+out:
-+	nlmsg_free(msg);
-+}
-+
- static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-@@ -6050,6 +6083,8 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 
- 		if (info->attrs[NL80211_ATTR_SOCKET_OWNER])
- 			wdev->conn_owner_nlportid = info->snd_portid;
-+
-+		nl80211_send_ap_started(wdev);
- 	}
- out_unlock:
- 	wdev_unlock(wdev);
--- 
-2.37.3
+Lorenzo Bianconi (10):
+       wifi: mt76: mt7996: fix endianness warning in mt7996_mcu_sta_he_tlv
+       wifi: mt76: mt76x0: fix oob access in mt76x0_phy_get_target_power
+       wifi: mt76: move leds field in leds struct
+       wifi: mt76: move leds struct in mt76_phy
+       wifi: mt76: mt7915: enable per-phy led support
+       wifi: mt76: mt7615: enable per-phy led support
+       wifi: mt76: dma: do not increment queue head if mt76_dma_add_buf fails
+       wifi: mt76: handle possible mt76_rx_token_consume failures
+       wifi: mt76: dma: rely on queue page_frag_cache for wed rx queues
+       wifi: mt76: mt7915: get rid of wed rx_buf_ring page_frag_cache
 
+Quan Zhou (1):
+       wifi: mt76: mt7921: add support to update fw capability with MTFG table
+
+Ryder Lee (12):
+       wifi: mt76: mt7915: fix mt7915_rate_txpower_get() resource leaks
+       wifi: mt76: mt7996: fix insecure data handling of mt7996_mcu_ie_countdown()
+       wifi: mt76: mt7996: fix insecure data handling of mt7996_mcu_rx_radar_detected()
+       wifi: mt76: mt7996: fix integer handling issue of mt7996_rf_regval_set()
+       wifi: mt76: mt7915: split mcu chan_mib array up
+       wifi: mt76: mt7915: check return value before accessing free_block_num
+       wifi: mt76: mt7996: check return value before accessing free_block_num
+       wifi: mt76: mt7915: check the correctness of event data
+       wifi: mt76: mt7915: drop always true condition of __mt7915_reg_addr()
+       wifi: mt76: mt7996: drop always true condition of __mt7996_reg_addr()
+       wifi: mt76: mt7996: fix unintended sign extension of mt7996_hw_queue_read()
+       wifi: mt76: mt7915: fix unintended sign extension of mt7915_hw_queue_read()
+
+Sean Wang (1):
+       wifi: mt76: mt7921: resource leaks at mt7921_check_offload_capability()
+
+Wang Yufen (1):
+       wifi: mt76: mt7915: add missing of_node_put()
+
+  drivers/net/wireless/mediatek/mt76/debugfs.c         |   2 +-
+  drivers/net/wireless/mediatek/mt76/dma.c             |  35 +++++++++------------
+  drivers/net/wireless/mediatek/mt76/mac80211.c        |  56 +++++++++++++++++++++-------------
+  drivers/net/wireless/mediatek/mt76/mt76.h            |  12 +++++---
+  drivers/net/wireless/mediatek/mt76/mt7603/init.c     |  34 ++++++++++-----------
+  drivers/net/wireless/mediatek/mt76/mt7615/init.c     |  85 +++++++++++++++++++++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c     |  16 ----------
+  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |   6 ++++
+  drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c |  62 ++------------------------------------
+  drivers/net/wireless/mediatek/mt76/mt7615/regs.h     |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x0/phy.c      |   7 ++++-
+  drivers/net/wireless/mediatek/mt76/mt76x02_util.c    |  35 +++++++++++----------
+  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c  |   6 ++--
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |  19 +++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7915/init.c     | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  81 ++++++++++++++++++++++++++++++-------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c     |  32 +++++++++++---------
+  drivers/net/wireless/mediatek/mt76/mt7915/regs.h     |  13 ++++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/soc.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c |  55 +++++++++++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h |  12 ++++++++
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |   3 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      |   4 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |   7 +++++
+  drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c  |   5 +--
+  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c   |  18 +++++++----
+  drivers/net/wireless/mediatek/mt76/mt7996/init.c     |  14 ++++-----
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      |  15 ++++++---
+  drivers/net/wireless/mediatek/mt76/mt7996/mmio.c     |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7996/regs.h     |   1 -
+  drivers/net/wireless/mediatek/mt76/sdio_txrx.c       |   4 +++
+  drivers/net/wireless/mediatek/mt76/tx.c              |   7 +++--
+  include/linux/soc/mediatek/mtk_wed.h                 |   1 -
+  34 files changed, 503 insertions(+), 274 deletions(-)
