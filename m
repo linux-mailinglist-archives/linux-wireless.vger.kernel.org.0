@@ -2,106 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDAC647F15
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 09:15:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AA364808A
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 11:00:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbiLIIPs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Dec 2022 03:15:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36404 "EHLO
+        id S229658AbiLIKAC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Dec 2022 05:00:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiLIIPp (ORCPT
+        with ESMTP id S229605AbiLIKAA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Dec 2022 03:15:45 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 20B30F5AB
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 00:15:43 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B98EqEoA027728, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B98EqEoA027728
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 9 Dec 2022 16:14:52 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Fri, 9 Dec 2022 16:15:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 9 Dec 2022 16:15:39 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Fri, 9 Dec 2022 16:15:39 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH 2/2] wifi: rtl8xxxu: Fix assignment to bit field priv->cck_agc_report_type
-Thread-Topic: [PATCH 2/2] wifi: rtl8xxxu: Fix assignment to bit field
- priv->cck_agc_report_type
-Thread-Index: AQHZCzwLzlcfXo+M2UKmlR0PzI/maa5lNlEg
-Date:   Fri, 9 Dec 2022 08:15:39 +0000
-Message-ID: <620a128bf71b4161b85ee6e9a8d7761c@realtek.com>
-References: <4368d585-11ec-d3c7-ec12-7f0afdcedfda@gmail.com>
- <7bb4858c-5cef-9cae-5e08-7e8444e8ba89@gmail.com>
-In-Reply-To: <7bb4858c-5cef-9cae-5e08-7e8444e8ba89@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzkg5LiK5Y2IIDA3OjIzOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 9 Dec 2022 05:00:00 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 763CC3D90B;
+        Fri,  9 Dec 2022 01:59:59 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id d20so2481519edn.0;
+        Fri, 09 Dec 2022 01:59:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uV6wgLLBJq+5PmPft7u7+V4YEJPvc3umfQt0xK4OsN4=;
+        b=Sr0b5P0r6WV8j9QfllEgNWYMdbyORZX9LDzGOued1mvnVNaz84U+JWTDP13ZDZ4JcK
+         iFNDGKKZqX9klGBP8ba3/3vqFBrVv05jXbU/sW07X7GhZkznwt7GM0S3PGzxqeF17GU0
+         8Ywkcvwp4OK34DzwOTmA4xp+w6BTNLXOhR7S8vxO5gD5NDvnVMOFiYAF9WE4RUorBo1q
+         wGLTTLAGt95Rpwiw07chOrweuYcKLGVQP5ZFdqOWA4EoGpFkJZTLY6yZkhgsdqBsALOg
+         i3whDws+6YA6URMuDH49bIPbrBku0LccK/ECTnybUEG0M6hcjvEEH9z0xl5tkjtBsGFO
+         TqSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uV6wgLLBJq+5PmPft7u7+V4YEJPvc3umfQt0xK4OsN4=;
+        b=vWOagpRUQaJVXsOkyr/JrsN75HEVS3RidQjwQ2Ooxq38Q/5x8D0tAfdMxjdx7HpfI5
+         w/OQFaDj0vmfnO9F4+0+iWZT9TkVHhVc8mNCtkwSlbZ+iZtMbNiekRJdKW8eqzvYZQzL
+         KTh/NXQDGJ53aL/0wbJpFBjf5sQ+85cTrD2lHCVBK9duyM6UuMu/bp6zstyJwmhStrVE
+         ozM8GShKdBoIdvh3yxqZFRikWv8BJ98A+Pk6VmjohqnPiIePP5kp8XMXu9tRzjimzRin
+         DzCBGCYfO1SwGpLzdHNh+Vzr5VXu7Pzg4PcDjNQunvQBy2u/h3DpfSggL/dWsOREkbC7
+         93+A==
+X-Gm-Message-State: ANoB5pl4U+Ei4BTXEQM0DlzYkQReyNg1nPnifvskPYmT7PpBAdzwS4dH
+        YZBbu9ysHBeloUJ6r3xhpmQbU+/P7gw=
+X-Google-Smtp-Source: AA0mqf6J/oH42DT3d9Mda8adYRV2Kqcr5cWYXHtAYgSBKt+zP95FdUIdqjsGVskC+Cy1mbSAi4Tr0Q==
+X-Received: by 2002:a05:6402:5299:b0:461:7c4e:c437 with SMTP id en25-20020a056402529900b004617c4ec437mr4188667edb.1.1670579997645;
+        Fri, 09 Dec 2022 01:59:57 -0800 (PST)
+Received: from felia.fritz.box (200116b826756500611a29889499a521.dip.versatel-1u1.de. [2001:16b8:2675:6500:611a:2988:9499:a521])
+        by smtp.gmail.com with ESMTPSA id f5-20020aa7d845000000b00461a6997c5dsm426890eds.83.2022.12.09.01.59.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Dec 2022 01:59:57 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] wireless: ti: remove obsolete lines in the Makefile
+Date:   Fri,  9 Dec 2022 10:59:37 +0100
+Message-Id: <20221209095937.17773-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgRGVjZW1iZXIgOSwg
-MjAyMiAzOjM0IEFNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6
-IEplcyBTb3JlbnNlbiA8SmVzLlNvcmVuc2VuQGdtYWlsLmNvbT47IFBpbmctS2UgU2hpaCA8cGtz
-aGloQHJlYWx0ZWsuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0ggMi8yXSB3aWZpOiBydGw4eHh4dTog
-Rml4IGFzc2lnbm1lbnQgdG8gYml0IGZpZWxkIHByaXYtPmNja19hZ2NfcmVwb3J0X3R5cGUNCj4g
-DQo+IEp1c3QgYmVjYXVzZSBwcml2LT5jY2tfYWdjX3JlcG9ydF90eXBlIGlzIG9ubHkgb25lIGJp
-dCBkb2Vzbid0IG1lYW4NCj4gaXQgd29ya3MgbGlrZSBhIGJvb2wuIFRoZSB2YWx1ZSBhc3NpZ25l
-ZCB0byBpdCBsb3NlcyBhbGwgYml0cyBleGNlcHQNCj4gYml0IDAsIHNvIG9ubHkgYXNzaWduIDAg
-b3IgMSB0byBpdC4NCj4gDQo+IFRoaXMgYWZmZWN0cyB0aGUgUlRMODE5MkVVLCBidXQgcnRsOHh4
-eHUgYWxyZWFkeSBjYW4ndCBjb25uZWN0IHRvIGFueQ0KPiBuZXR3b3JrcyB3aXRoIHRoaXMgY2hp
-cCwgc28gaXQgcHJvYmFibHkgZGlkbid0IGJvdGhlciBhbnlvbmUuDQo+IA0KPiBGaXhlczogMmFk
-MmE4MTNiODAzICgid2lmaTogcnRsOHh4eHU6IEZpeCB0aGUgQ0NLIFJTU0kgY2FsY3VsYXRpb24i
-KQ0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWls
-LmNvbT4NCg0KUmV2aWV3ZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0K
-DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4
-dV9jb3JlLmMgfCA2ICsrKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwg
-MiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5jDQo+IGluZGV4IDNlZDQzNTQwMWU1Ny4u
-Nzk5YjAzZWMxOTgwIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
-L3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYw0KPiBAQCAtNDIwOCwxMCArNDIwOCwxMiBA
-QCBzdGF0aWMgaW50IHJ0bDh4eHh1X2luaXRfZGV2aWNlKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3
-KQ0KPiAgCQkgKiBzaG91bGQgYmUgZXF1YWwgb3IgQ0NLIFJTU0kgcmVwb3J0IG1heSBiZSBpbmNv
-cnJlY3QNCj4gIAkJICovDQo+ICAJCXZhbDMyID0gcnRsOHh4eHVfcmVhZDMyKHByaXYsIFJFR19G
-UEdBMF9YQV9IU1NJX1BBUk0yKTsNCj4gLQkJcHJpdi0+Y2NrX2FnY19yZXBvcnRfdHlwZSA9IHZh
-bDMyICYgRlBHQTBfSFNTSV9QQVJNMl9DQ0tfSElHSF9QV1I7DQo+ICsJCXByaXYtPmNja19hZ2Nf
-cmVwb3J0X3R5cGUgPQ0KPiArCQkJdTMyX2dldF9iaXRzKHZhbDMyLCBGUEdBMF9IU1NJX1BBUk0y
-X0NDS19ISUdIX1BXUik7DQo+IA0KPiAgCQl2YWwzMiA9IHJ0bDh4eHh1X3JlYWQzMihwcml2LCBS
-RUdfRlBHQTBfWEJfSFNTSV9QQVJNMik7DQo+IC0JCWlmIChwcml2LT5jY2tfYWdjX3JlcG9ydF90
-eXBlICE9IChib29sKSh2YWwzMiAmIEZQR0EwX0hTU0lfUEFSTTJfQ0NLX0hJR0hfUFdSKSkgew0K
-PiArCQlpZiAocHJpdi0+Y2NrX2FnY19yZXBvcnRfdHlwZSAhPQ0KPiArCQkgICAgdTMyX2dldF9i
-aXRzKHZhbDMyLCBGUEdBMF9IU1NJX1BBUk0yX0NDS19ISUdIX1BXUikpIHsNCj4gIAkJCWlmIChw
-cml2LT5jY2tfYWdjX3JlcG9ydF90eXBlKQ0KPiAgCQkJCXZhbDMyIHw9IEZQR0EwX0hTU0lfUEFS
-TTJfQ0NLX0hJR0hfUFdSOw0KPiAgCQkJZWxzZQ0KPiAtLQ0KPiAyLjM4LjANCj4gDQo+IC0tLS0t
-LVBsZWFzZSBjb25zaWRlciB0aGUgZW52aXJvbm1lbnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1t
-YWlsLg0K
+Commit 06463f6e98df ("wifi: wl1251: drop support for platform data")
+removes TI WiLink platform data, but leaves some dead lines in the
+Makefile.
+
+Remove these obsolete lines in the Makefile.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+ drivers/net/wireless/ti/Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/Makefile b/drivers/net/wireless/ti/Makefile
+index 0530dd744275..05ee016594f8 100644
+--- a/drivers/net/wireless/ti/Makefile
++++ b/drivers/net/wireless/ti/Makefile
+@@ -3,6 +3,3 @@ obj-$(CONFIG_WLCORE)			+= wlcore/
+ obj-$(CONFIG_WL12XX)			+= wl12xx/
+ obj-$(CONFIG_WL1251)			+= wl1251/
+ obj-$(CONFIG_WL18XX)			+= wl18xx/
+-
+-# small builtin driver bit
+-obj-$(CONFIG_WILINK_PLATFORM_DATA)	+= wilink_platform_data.o
+-- 
+2.17.1
+
