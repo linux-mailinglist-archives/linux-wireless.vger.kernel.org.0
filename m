@@ -2,64 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B213647CC3
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 05:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E13647D28
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 06:14:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230036AbiLIDrF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Dec 2022 22:47:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59044 "EHLO
+        id S229591AbiLIFN6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Dec 2022 00:13:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230033AbiLIDrA (ORCPT
+        with ESMTP id S229460AbiLIFN5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Dec 2022 22:47:00 -0500
-Received: from pv50p00im-ztdg10011301.me.com (pv50p00im-ztdg10011301.me.com [17.58.6.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6EBB2EDE
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 19:46:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zzy040330.moe;
-        s=sig1; t=1670557610;
-        bh=M/NG7opl2pujEn6z9UDdCBRv6DyefkxjNT4PBlqOqow=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-        b=XF4ycNDW5H6Kq22yeIMT0Jcr8/J9AUu9e8Om+8L+oXYC7T79bnoZuesN9ZPYeD6hY
-         9gK7eUCwwQLgOQqfLB96xu/FBLjr7nwsy2dNx3o2t03Ppb2SwY1J5vOiCro87A8ieo
-         phnJHz+vqC7Ih+ui69Sbp3FX62rz4eFi3Hsd2X0DHUZwSxKeWxATDWVMEBxu2iPSF2
-         fazzY+3a4419W1K2Lsx5AyLPTxvkvHp7Y1InNLLMh/r7JZ54MDZawOJznw+G/5na/G
-         4b0z91Qc2YpDTd9fVeGA1aytj0NID+IYRUSnrwrmnxMUCHbCTcgK+IYP0l6eqwEHJ1
-         Y2bxfBirPnm6Q==
-Received: from [192.168.1.28] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-        by pv50p00im-ztdg10011301.me.com (Postfix) with ESMTPSA id 7B3331806D3;
-        Fri,  9 Dec 2022 03:46:47 +0000 (UTC)
-Message-ID: <08319f41-b745-23f4-a3b4-42d2bffbb471@zzy040330.moe>
-Date:   Fri, 9 Dec 2022 11:46:44 +0800
+        Fri, 9 Dec 2022 00:13:57 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 27D5B87417;
+        Thu,  8 Dec 2022 21:13:52 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B95B1n44016358, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B95B1n44016358
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 9 Dec 2022 13:11:01 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Fri, 9 Dec 2022 13:11:48 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 9 Dec 2022 13:11:48 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Fri, 9 Dec 2022 13:11:48 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Li Zetao <lizetao1@huawei.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>
+CC:     "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "linville@tuxdriver.com" <linville@tuxdriver.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
+Thread-Topic: [PATCH] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in
+ _rtl8812ae_phy_set_txpower_limit()
+Thread-Index: AQHZCkbbXqqj5E4pa0em0g/eG4ORkq5lAS7w
+Date:   Fri, 9 Dec 2022 05:11:48 +0000
+Message-ID: <e985ead3ea7841b8b3a94201dfb18776@realtek.com>
+References: <20221207152319.3135500-1-lizetao1@huawei.com>
+In-Reply-To: <20221207152319.3135500-1-lizetao1@huawei.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/12/9_=3F=3F_02:22:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [v5] wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <20221207033926.11777-1-JunASAKA@zzy040330.moe>
- <167051122141.9839.8256110387408123706.kvalo@kernel.org>
-Content-Language: en-US
-From:   Jun ASAKA <JunASAKA@zzy040330.moe>
-In-Reply-To: <167051122141.9839.8256110387408123706.kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: q2am-jmUu2iUbxjGiqeLqVwO3UyDX8p3
-X-Proofpoint-ORIG-GUID: q2am-jmUu2iUbxjGiqeLqVwO3UyDX8p3
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.0.605.474.0000000_definitions?=
- =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2020-01-23?=
- =?UTF-8?Q?=5F02_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
- bulkscore=0 clxscore=1030 malwarescore=0 adultscore=0 suspectscore=0
- mlxlogscore=420 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2212090030
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -67,19 +76,89 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 08/12/2022 22:53, Kalle Valo wrote:
-> Jun ASAKA <JunASAKA@zzy040330.moe> wrote:
->
->> Fixing "Path A RX IQK failed" and "Path B RX IQK failed"
->> issues for rtl8192eu chips by replacing the arguments with
->> the ones in the updated official driver as shown below.
->> 1. https://github.com/Mange/rtl8192eu-linux-driver
->> 2. vendor driver version: 5.6.4
->>
->> Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
->> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> Patch applied to wireless-next.git, thanks.
->
-> 695c5d3a8055 wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
->
-Thanks!
+
+> -----Original Message-----
+> From: Li Zetao <lizetao1@huawei.com>
+> Sent: Wednesday, December 7, 2022 11:23 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com
+> Cc: lizetao1@huawei.com; Larry.Finger@lwfinger.net; linville@tuxdriver.com;
+> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
+> 
+> There is a global-out-of-bounds reported by KASAN:
+> 
+>   BUG: KASAN: global-out-of-bounds in
+>   _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
+>   Read of size 1 at addr ffffffffa0773c43 by task NetworkManager/411
+> 
+>   CPU: 6 PID: 411 Comm: NetworkManager Tainted: G      D
+>   6.1.0-rc8+ #144 e15588508517267d37
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+>   Call Trace:
+>    <TASK>
+>    ...
+>    kasan_report+0xbb/0x1c0
+>    _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
+>    rtl8821ae_phy_bb_config.cold+0x346/0x641 [rtl8821ae]
+>    rtl8821ae_hw_init+0x1f5e/0x79b0 [rtl8821ae]
+>    ...
+>    </TASK>
+> 
+> The root cause of the problem is that the comparison order of
+> "prate_section" in _rtl8812ae_phy_set_txpower_limit() is wrong. The
+> _rtl8812ae_eq_n_byte() is used to compare the first n bytes of the two
+> strings, so this requires the length of the two strings be greater
+> than or equal to n. In the  _rtl8812ae_phy_set_txpower_limit(), it was
+> originally intended to meet this requirement by carefully designing
+> the comparison order. For example, "pregulation" and "pbandwidth" are
+> compared in order of length from small to large, first is 3 and last
+> is 4. However, the comparison order of "prate_section" dose not obey
+> such order requirement, therefore when "prate_section" is "HT", it will
+> lead to access out of bounds in _rtl8812ae_eq_n_byte().
+> 
+> Fix it by adding a length check in _rtl8812ae_eq_n_byte(). Although it
+> can be fixed by adjusting the comparison order of "prate_section", this
+> may cause the value of "rate_section" to not be from 0 to 5. In
+> addition, commit "21e4b0726dc6" not only moved driver from staging to
+> regular tree, but also added setting txpower limit function during the
+> driver config phase, so the problem was introduced by this commit.
+> 
+> Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
+> Signed-off-by: Li Zetao <lizetao1@huawei.com>
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> index a29321e2fa72..720114a9ddb2 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> @@ -1600,7 +1600,7 @@ static bool _rtl8812ae_get_integer_from_string(const char *str, u8 *pint)
+> 
+>  static bool _rtl8812ae_eq_n_byte(const char *str1, const char *str2, u32 num)
+>  {
+
+This can causes problem because it compares characters from tail to head, and
+we can't simply replace this by strncmp() that does similar work. But, I also
+don't like strlen() to loop 'str1' constantly.
+
+How about having a simple loop to compare characters forward:
+
+for (i = 0; i < num; i++)
+    if (str1[i] != str2[i])
+         return false;
+
+return true;
+
+> -	if (num == 0)
+> +	if (num == 0 || strlen(str1) < num)
+>  		return false;
+>  	while (num > 0) {
+>  		num--;
+> --
+> 2.31.1
+> 
+> 
+> ------Please consider the environment before printing this e-mail.
