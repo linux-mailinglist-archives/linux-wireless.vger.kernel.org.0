@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D686647C06
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 03:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4EA2647C07
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 03:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbiLICLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S229634AbiLICLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 8 Dec 2022 21:11:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiLICK6 (ORCPT
+        with ESMTP id S229517AbiLICK6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 8 Dec 2022 21:10:58 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 14EC1659D
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 155CC7665
         for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 18:10:54 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B929xqwE005376, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B929xqwE005376
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B929xGX2005371, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B929xGX2005371
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
         Fri, 9 Dec 2022 10:09:59 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 9 Dec 2022 10:10:47 +0800
+ 15.1.2507.9; Fri, 9 Dec 2022 10:10:47 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 9 Dec 2022
- 10:10:45 +0800
+ 10:10:46 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 0/3] wifi: rtw89: 8852c: correct some RFK settings to improve RF performance
-Date:   Fri, 9 Dec 2022 10:09:37 +0800
-Message-ID: <20221209020940.9573-1-pkshih@realtek.com>
+Subject: [PATCH 1/3] wifi: rtw89: 8852c: rfk: correct DACK setting
+Date:   Fri, 9 Dec 2022 10:09:38 +0800
+Message-ID: <20221209020940.9573-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221209020940.9573-1-pkshih@realtek.com>
+References: <20221209020940.9573-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -53,10 +55,6 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzkgpFekyCAxMjoyMzowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,21 +63,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-First two patches are to correct register settings that can slightly
-improve RF performance, so not very urgent to pick to wireless.git right
-away. The last patch is to redo RX DCK if it failed to calibrate, since
-driver only triggers it and polls completion but calibration result can be
-possibly negative.
+After filling calibration parameters, set BIT(0) to enable the hardware
+circuit, but original set incorrect bit that affects a little TX
+performance.
 
-Ping-Ke Shih (3):
-  wifi: rtw89: 8852c: rfk: correct DACK setting
-  wifi: rtw89: 8852c: rfk: correct DPK settings
-  wifi: rtw89: 8852c: rfk: recover RX DCK failure
+Fixes: 76599a8d0b7d ("rtw89: 8852c: rfk: add DACK")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/net/wireless/realtek/rtw89/reg.h      |  12 +
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 264 +++++++++++++++++-
- 2 files changed, 263 insertions(+), 13 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+index 60cd676fe22c9..f5b0b57f33207 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+@@ -337,7 +337,7 @@ static void _dack_reload_by_path(struct rtw89_dev *rtwdev,
+ 		(dack->dadck_d[path][index] << 14);
+ 	addr = 0xc210 + offset;
+ 	rtw89_phy_write32(rtwdev, addr, val32);
+-	rtw89_phy_write32_set(rtwdev, addr, BIT(1));
++	rtw89_phy_write32_set(rtwdev, addr, BIT(0));
+ }
+ 
+ static void _dack_reload(struct rtw89_dev *rtwdev, enum rtw89_rf_path path)
 -- 
 2.25.1
 
