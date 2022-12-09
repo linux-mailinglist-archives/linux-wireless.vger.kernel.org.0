@@ -2,149 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A017E6484A7
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 16:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7CBD648586
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 16:29:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbiLIPIE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Dec 2022 10:08:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58108 "EHLO
+        id S230136AbiLIP3H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Dec 2022 10:29:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230233AbiLIPHh (ORCPT
+        with ESMTP id S230153AbiLIP2x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Dec 2022 10:07:37 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF98DF1
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 07:07:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 717AECE296E
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 15:07:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F777C433D2;
-        Fri,  9 Dec 2022 15:07:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670598451;
-        bh=Go1iCvpGf5EArbvavY1vUavUR6cKJOkJP1aZ66MvMZ8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=fgHmmVZFOIDneTxBNyp2V34U15VnDnLpKJoe3fdTlQiLT51umemHcq58VQpLb4RpM
-         42P/kVB4fklEpBSF+Bvu21Sa1lruE9SRJbDXeBe33xbMXVhmrtYdtqXzMjRI+J7gLP
-         tQx6k1rkMGbrAfnFBMcCNHSKH1P+62p1m0kBRNpxhDG9rq+W2Q2aOEd5DmckMRdbRs
-         uKr4VIuxWP5/HbGo7UBh3KrmWVusll5vbrWNsTIp1jKR6laS6YgXiXTTVl/crNmDYU
-         AdcR2sZVVbxmKLmHxxP2uNySpw2uzPMuUF6h26eBmNNGQcpOUJ4Yi8EWeAwUoWnRyn
-         Ug8CFRoDRNfYw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7915: get rid of wed rx_buf_ring page_frag_cache
-Date:   Fri,  9 Dec 2022 16:07:22 +0100
-Message-Id: <93c012b0ec130f28e71f31f2361d8131be6ca05a.1670598097.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.38.1
+        Fri, 9 Dec 2022 10:28:53 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED57CA19E
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Dec 2022 07:28:50 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id qk9so12342109ejc.3
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Dec 2022 07:28:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pqrs.dk; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/CBIx7WhayGl8L5UnKkWTZlh8ccP3yQ9V2VOk1LDfuU=;
+        b=g3vLufSXkk6Bd3BbnBSvYEhasj4ZRFzeqITPpY1spDMrZTTsgQWtZjx0r+YQmw17sX
+         ZMkDKy6mms6/tQjTrYstAp0/HovfK/Wdhi7W+nl3VNNxpyBkOEG+0tB0gUOQ2tzglGPc
+         dYprSHDOKFiY7kDDop4pYjHpFp/ylftdANH3w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/CBIx7WhayGl8L5UnKkWTZlh8ccP3yQ9V2VOk1LDfuU=;
+        b=47O15w8OTUwCrYLuaEzpWRMHlvHkmKLqnaUdNPm4SSrvkG/a2BOOGROHD9PD/DovNJ
+         GTjaZCQXH23boIK3HDTz/gPOX9+q3I/EXhtazysz4QJ450cGhzsRUVv/j4udWhoj4k7F
+         LxwYIwSStHnhRE2aRCYJTfjSJSbLFvP8rRiNfBO1q2k3EyLfmsDQPtTFO342RPXyPSmt
+         vwyEaK67bhAWxeVsHd7brOmhF4Y4TVUztzYeCBqmVm8bHGU4darGUmlfd/PIhlobfQSf
+         UVGR5aRtYfOldsx7lla84q5SISLq+Z2yXl1NOf+1SfpQZ146MOTthHOJX7wqlrXjmjAq
+         qgSQ==
+X-Gm-Message-State: ANoB5plpkZbSoaMfJV1qoZKRtECwDJzhFOY+loBactl4GJjnYphr0ThF
+        RnmPyGBKTpBNXaCRIIRgVKILug==
+X-Google-Smtp-Source: AA0mqf5/vEoKDQ/I1fRr88dwfhK6CwIW9Llpcvbo3r/hM0pGFZJgqq3o3VphKB2jSTzL6JamOXrW0A==
+X-Received: by 2002:a17:906:2881:b0:7ad:d835:e822 with SMTP id o1-20020a170906288100b007add835e822mr4899301ejd.42.1670599729472;
+        Fri, 09 Dec 2022 07:28:49 -0800 (PST)
+Received: from localhost.localdomain (80.71.142.18.ipv4.parknet.dk. [80.71.142.18])
+        by smtp.gmail.com with ESMTPSA id o20-20020a170906769400b0077a11b79b9bsm24901ejm.133.2022.12.09.07.28.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Dec 2022 07:28:49 -0800 (PST)
+From:   =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin@pqrs.dk>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH next] wifi: nl80211: emit CMD_START_AP on multicast group when an AP is started
+Date:   Fri,  9 Dec 2022 16:28:36 +0100
+Message-Id: <20221209152836.1667196-1-alvin@pqrs.dk>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since wed rx_buf_ring page_frag_cache is no longer used in a hot path,
-remove it and rely on page allocation APIs in
-mt7915_mmio_wed_init_rx_buf() and mt7915_mmio_wed_release_rx_buf()
+From: Alvin Šipraga <alsi@bang-olufsen.dk>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Userspace processes such as network daemons may wish to be informed when
+any AP interface is brought up on the system, for example to initiate a
+(re)configuration of IP settings or to start a DHCP server.
+
+Currently nl80211 does not broadcast any such event on its multicast
+groups, leaving userspace only two options:
+
+1. the process must be the one that actually issued the
+   NL80211_CMD_START_AP request, so that it can react on the response to
+   that request;
+
+2. the process must react to RTM_NEWLINK events indicating a change in
+   carrier state, and may query for further information about the AP and
+   react accordingly.
+
+Option (1) is robust, but it does not cover all scenarios. It is easy to
+imagine a situation where this is not the case (e.g. hostapd +
+systemd-networkd).
+
+Option (2) is not robust, because RTM_NEWLINK events may be silently
+discarded by the linkwatch logic (cf. linkwatch_fire_event()).
+Concretely, consider a scenario in which the carrier state flip-flops in
+the following way:
+
+ ^ carrier state (high/low = carrier/no carrier)
+ |
+ |        _______      _______ ...
+ |       |       |    |
+ | ______| "foo" |____| "bar"             (SSID in "quotes")
+ |
+ +-------A-------B----C---------> time
+
+If the time interval between (A) and (C) is less than 1 second, then
+linkwatch may emit only a single RTM_NEWLINK event indicating carrier
+gain.
+
+This is problematic because it is possible that the network
+configuration that should be applied is a function of the AP's
+properties such as SSID (cf. SSID= in systemd.network(5)). As
+illustrated in the above diagram, it may be that the AP with SSID "bar"
+ends up being configured as though it had SSID "foo".
+
+Address the above issue by having nl80211 emit an NL80211_CMD_START_AP
+message on the MLME nl80211 multicast group. This allows for arbitrary
+processes to be reliably informed.
+
+Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 25 ++++++++-----------
- include/linux/soc/mediatek/mtk_wed.h          |  1 -
- 2 files changed, 11 insertions(+), 15 deletions(-)
+ net/wireless/nl80211.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 8388e2a65853..7ae5277922f3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -594,10 +594,13 @@ static void mt7915_mmio_wed_offload_disable(struct mtk_wed_device *wed)
- static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
- {
- 	struct mt7915_dev *dev;
--	struct page *page;
-+	u32 length;
- 	int i;
- 
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
-+	length = SKB_DATA_ALIGN(NET_SKB_PAD + wed->wlan.rx_size +
-+				sizeof(struct skb_shared_info));
-+
- 	for (i = 0; i < dev->mt76.rx_token_size; i++) {
- 		struct mt76_txwi_cache *t;
- 
-@@ -607,18 +610,11 @@ static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
- 
- 		dma_unmap_single(dev->mt76.dma_dev, t->dma_addr,
- 				 wed->wlan.rx_size, DMA_FROM_DEVICE);
--		skb_free_frag(t->ptr);
-+		__free_pages(virt_to_page(t->ptr), get_order(length));
- 		t->ptr = NULL;
- 
- 		mt76_put_rxwi(&dev->mt76, t);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 33a82ecab9d5..323b7e40d855 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5770,6 +5770,39 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
  	}
--
--	if (!wed->rx_buf_ring.rx_page.va)
--		return;
--
--	page = virt_to_page(wed->rx_buf_ring.rx_page.va);
--	__page_frag_cache_drain(page, wed->rx_buf_ring.rx_page.pagecnt_bias);
--	memset(&wed->rx_buf_ring.rx_page, 0, sizeof(wed->rx_buf_ring.rx_page));
  }
  
- static u32 mt7915_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
-@@ -635,19 +631,20 @@ static u32 mt7915_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- 	for (i = 0; i < size; i++) {
- 		struct mt76_txwi_cache *t = mt76_get_rxwi(&dev->mt76);
- 		dma_addr_t phy_addr;
-+		struct page *page;
- 		int token;
- 		void *ptr;
++static void nl80211_send_ap_started(struct wireless_dev *wdev)
++{
++	struct wiphy *wiphy = wdev->wiphy;
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++	struct sk_buff *msg;
++	void *hdr;
++
++	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!msg)
++		return;
++
++	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_START_AP);
++	if (!hdr)
++		goto out;
++
++	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
++	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, wdev->netdev->ifindex) ||
++	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
++			      NL80211_ATTR_PAD) ||
++	    (wdev->u.ap.ssid_len &&
++	     nla_put(msg, NL80211_ATTR_SSID, wdev->u.ap.ssid_len,
++		     wdev->u.ap.ssid)))
++		goto out;
++
++	genlmsg_end(msg, hdr);
++
++	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(wiphy), msg, 0,
++				NL80211_MCGRP_MLME, GFP_KERNEL);
++	return;
++out:
++	nlmsg_free(msg);
++}
++
+ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+@@ -6050,6 +6083,8 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
  
--		ptr = page_frag_alloc(&wed->rx_buf_ring.rx_page, length,
--				      GFP_KERNEL);
--		if (!ptr)
-+		page = __dev_alloc_pages(GFP_KERNEL, get_order(length));
-+		if (!page)
- 			goto unmap;
- 
-+		ptr = page_address(page);
- 		phy_addr = dma_map_single(dev->mt76.dma_dev, ptr,
- 					  wed->wlan.rx_size,
- 					  DMA_TO_DEVICE);
- 		if (unlikely(dma_mapping_error(dev->mt76.dev, phy_addr))) {
--			skb_free_frag(ptr);
-+			__free_pages(page, get_order(length));
- 			goto unmap;
- 		}
- 
-@@ -656,7 +653,7 @@ static u32 mt7915_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- 		if (token < 0) {
- 			dma_unmap_single(dev->mt76.dma_dev, phy_addr,
- 					 wed->wlan.rx_size, DMA_TO_DEVICE);
--			skb_free_frag(ptr);
-+			__free_pages(page, get_order(length));
- 			goto unmap;
- 		}
- 
-diff --git a/include/linux/soc/mediatek/mtk_wed.h b/include/linux/soc/mediatek/mtk_wed.h
-index 8294978f4bca..98469ff88dad 100644
---- a/include/linux/soc/mediatek/mtk_wed.h
-+++ b/include/linux/soc/mediatek/mtk_wed.h
-@@ -100,7 +100,6 @@ struct mtk_wed_device {
- 
- 	struct {
- 		int size;
--		struct page_frag_cache rx_page;
- 		struct mtk_rxbm_desc *desc;
- 		dma_addr_t desc_phys;
- 	} rx_buf_ring;
+ 		if (info->attrs[NL80211_ATTR_SOCKET_OWNER])
+ 			wdev->conn_owner_nlportid = info->snd_portid;
++
++		nl80211_send_ap_started(wdev);
+ 	}
+ out_unlock:
+ 	wdev_unlock(wdev);
 -- 
-2.38.1
+2.37.3
 
