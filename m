@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5022C647B4A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 02:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1000647B4D
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Dec 2022 02:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbiLIBW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Dec 2022 20:22:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58580 "EHLO
+        id S229571AbiLIBXY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Dec 2022 20:23:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiLIBWZ (ORCPT
+        with ESMTP id S229530AbiLIBXX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Dec 2022 20:22:25 -0500
+        Thu, 8 Dec 2022 20:23:23 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4E0FFAC6F5
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 17:22:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3FDB72FBCB
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Dec 2022 17:23:22 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B91LMvfC002912, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B91LMvfC002912
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2B91MQYI0003761, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2B91MQYI0003761
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 9 Dec 2022 09:21:22 +0800
+        Fri, 9 Dec 2022 09:22:26 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 9 Dec 2022 09:22:09 +0800
+ 15.1.2507.9; Fri, 9 Dec 2022 09:23:14 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 9 Dec 2022
- 09:22:09 +0800
+ 09:23:13 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: consider ER SU as a TX capability
-Date:   Fri, 9 Dec 2022 09:21:10 +0800
-Message-ID: <20221209012110.7242-1-pkshih@realtek.com>
+Subject: [PATCH] wifi: rtw89: fw: adapt to new firmware format of security section
+Date:   Fri, 9 Dec 2022 09:22:15 +0800
+Message-ID: <20221209012215.7342-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -53,10 +53,6 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzggpFWkyCAwNzoyOTowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,111 +61,98 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ER (Extended Range) SU is to have a larger coverage. We set this as a RA
-capability, and then firmware can choose ER SU to transmit packets to
-reception at cell edge. For 8852C, it needs to fill this capability in
-TXWD, so update rtw89_build_txwd_info0_v1().
+Normally, system image should ensure firmware integrity, but we provide
+an advance feature to ensure this by security section along with firmware.
+To enable this feature, custom ID is programmed into efuse, and driver
+will download proper security section to firmware.
+
+Since I don't have this kind hardware modules on hand yet, but new format
+is used by newer firmware. Therefore, I prepare this patch in advance to
+consider size of security section as a factor of checking rule of firmware
+size, but don't actually download security section to firmware.
+
+This patch is backward compatible, so it will be safe to have this change
+before adding an new format firmware to linux-firmware repository.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 13 ++++++++++++-
- drivers/net/wireless/realtek/rtw89/core.h |  2 ++
- drivers/net/wireless/realtek/rtw89/phy.c  |  1 +
- drivers/net/wireless/realtek/rtw89/txrx.h |  2 ++
- 4 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 11 ++++++++++-
+ drivers/net/wireless/realtek/rtw89/fw.h | 13 +++++++++++--
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 931aff8b5dc95..adc961752a291 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -689,7 +689,9 @@ rtw89_core_tx_update_data_info(struct rtw89_dev *rtwdev,
- 			       struct rtw89_core_tx_request *tx_req)
- {
- 	struct ieee80211_vif *vif = tx_req->vif;
-+	struct ieee80211_sta *sta = tx_req->sta;
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-+	struct rtw89_sta *rtwsta = sta_to_rtwsta_safe(sta);
- 	struct rtw89_phy_rate_pattern *rate_pattern = &rtwvif->rate_pattern;
- 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	struct rtw89_tx_desc_info *desc_info = &tx_req->desc_info;
-@@ -707,6 +709,7 @@ rtw89_core_tx_update_data_info(struct rtw89_dev *rtwdev,
- 	desc_info->qsel = qsel;
- 	desc_info->mac_id = rtw89_core_tx_get_mac_id(rtwdev, tx_req);
- 	desc_info->port = desc_info->hiq ? rtwvif->port : 0;
-+	desc_info->er_cap = rtwsta ? rtwsta->er_cap : false;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index de1f23779fc62..65b6bd44c5ac7 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -91,6 +91,7 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
+ 	const u8 *fwdynhdr;
+ 	const u8 *bin;
+ 	u32 base_hdr_len;
++	u32 mssc_len = 0;
+ 	u32 i;
  
- 	/* enable wd_info for AMPDU */
- 	desc_info->en_wd_info = true;
-@@ -1006,7 +1009,9 @@ static __le32 rtw89_build_txwd_info0(struct rtw89_tx_desc_info *desc_info)
- static __le32 rtw89_build_txwd_info0_v1(struct rtw89_tx_desc_info *desc_info)
- {
- 	u32 dword = FIELD_PREP(RTW89_TXWD_INFO0_DISDATAFB, desc_info->dis_data_fb) |
--		    FIELD_PREP(RTW89_TXWD_INFO0_MULTIPORT_ID, desc_info->port);
-+		    FIELD_PREP(RTW89_TXWD_INFO0_MULTIPORT_ID, desc_info->port) |
-+		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_ER, desc_info->er_cap) |
-+		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_BW_ER, 0);
- 
- 	return cpu_to_le32(dword);
- }
-@@ -2585,6 +2590,12 @@ int rtw89_core_sta_assoc(struct rtw89_dev *rtwdev,
- 	rtw89_mac_bf_monitor_calc(rtwdev, sta, false);
- 
- 	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
-+		struct ieee80211_bss_conf *bss_conf = &vif->bss_conf;
+ 	if (!info)
+@@ -120,6 +121,14 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
+ 	fw += RTW89_FW_HDR_SIZE;
+ 	section_info = info->section_info;
+ 	for (i = 0; i < info->section_num; i++) {
++		section_info->type = GET_FWSECTION_HDR_SECTIONTYPE(fw);
++		if (section_info->type == FWDL_SECURITY_SECTION_TYPE) {
++			section_info->mssc = GET_FWSECTION_HDR_MSSC(fw);
++			mssc_len += section_info->mssc * FWDL_SECURITY_SIGLEN;
++		} else {
++			section_info->mssc = 0;
++		}
 +
-+		if (bss_conf->he_support &&
-+		    !(bss_conf->he_oper.params & IEEE80211_HE_OPERATION_ER_SU_DISABLE))
-+			rtwsta->er_cap = true;
-+
- 		rtw89_btc_ntfy_role_info(rtwdev, rtwvif, rtwsta,
- 					 BTC_ROLE_MSTS_STA_CONN_END);
- 		rtw89_core_get_no_ul_ofdma_htc(rtwdev, &rtwsta->htc_template);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 2badb96d2ae35..800ede1d69c75 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -816,6 +816,7 @@ struct rtw89_tx_desc_info {
- #define RTW89_MGMT_HW_SEQ_MODE	1
- 	bool hiq;
- 	u8 port;
-+	bool er_cap;
- };
- 
- struct rtw89_core_tx_request {
-@@ -2194,6 +2195,7 @@ struct rtw89_sec_cam_entry {
- struct rtw89_sta {
- 	u8 mac_id;
- 	bool disassoc;
-+	bool er_cap;
- 	struct rtw89_dev *rtwdev;
- 	struct rtw89_vif *rtwvif;
- 	struct rtw89_ra_info ra;
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 017710c580c72..5dc617a0a47a7 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -367,6 +367,7 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
+ 		section_info->len = GET_FWSECTION_HDR_SEC_SIZE(fw);
+ 		if (GET_FWSECTION_HDR_CHECKSUM(fw))
+ 			section_info->len += FWDL_SECTION_CHKSUM_LEN;
+@@ -132,7 +141,7 @@ static int rtw89_fw_hdr_parser(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
+ 		section_info++;
  	}
  
- 	ra->bw_cap = bw_mode;
-+	ra->er_cap = rtwsta->er_cap;
- 	ra->mode_ctrl = mode;
- 	ra->macid = rtwsta->mac_id;
- 	ra->stbc_cap = stbc_en;
-diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
-index 9d4c6b6fa1250..98eb9607cd218 100644
---- a/drivers/net/wireless/realtek/rtw89/txrx.h
-+++ b/drivers/net/wireless/realtek/rtw89/txrx.h
-@@ -75,7 +75,9 @@
- #define RTW89_TXWD_INFO0_DATA_BW GENMASK(29, 28)
- #define RTW89_TXWD_INFO0_GI_LTF GENMASK(27, 25)
- #define RTW89_TXWD_INFO0_DATA_RATE GENMASK(24, 16)
-+#define RTW89_TXWD_INFO0_DATA_ER BIT(15)
- #define RTW89_TXWD_INFO0_DISDATAFB BIT(10)
-+#define RTW89_TXWD_INFO0_DATA_BW_ER BIT(8)
- #define RTW89_TXWD_INFO0_MULTIPORT_ID GENMASK(6, 4)
+-	if (fw_end != bin) {
++	if (fw_end != bin + mssc_len) {
+ 		rtw89_err(rtwdev, "[ERR]fw bin size\n");
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 4d2f9ea9e0022..4326e0ede54b8 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -171,6 +171,8 @@ struct rtw89_fw_hdr_section_info {
+ 	const u8 *addr;
+ 	u32 len;
+ 	u32 dladdr;
++	u32 mssc;
++	u8 type;
+ };
  
- /* TX WD INFO DWORD 1 */
+ struct rtw89_fw_bin_info {
+@@ -480,14 +482,21 @@ static inline void RTW89_SET_EDCA_PARAM(void *cmd, u32 val)
+ #define FW_EDCA_PARAM_CWMIN_MSK GENMASK(11, 8)
+ #define FW_EDCA_PARAM_AIFS_MSK GENMASK(7, 0)
+ 
++#define FWDL_SECURITY_SECTION_TYPE 9
++#define FWDL_SECURITY_SIGLEN 512
++
++#define GET_FWSECTION_HDR_DL_ADDR(fwhdr)	\
++	le32_get_bits(*((const __le32 *)(fwhdr)), GENMASK(31, 0))
++#define GET_FWSECTION_HDR_SECTIONTYPE(fwhdr)	\
++	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(27, 24))
+ #define GET_FWSECTION_HDR_SEC_SIZE(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(23, 0))
+ #define GET_FWSECTION_HDR_CHECKSUM(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), BIT(28))
+ #define GET_FWSECTION_HDR_REDL(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), BIT(29))
+-#define GET_FWSECTION_HDR_DL_ADDR(fwhdr)	\
+-	le32_get_bits(*((const __le32 *)(fwhdr)), GENMASK(31, 0))
++#define GET_FWSECTION_HDR_MSSC(fwhdr)	\
++	le32_get_bits(*((const __le32 *)(fwhdr) + 2), GENMASK(31, 0))
+ 
+ #define GET_FW_HDR_MAJOR_VERSION(fwhdr)	\
+ 	le32_get_bits(*((const __le32 *)(fwhdr) + 1), GENMASK(7, 0))
 -- 
 2.25.1
 
