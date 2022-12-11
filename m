@@ -2,198 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A536C648F6A
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Dec 2022 16:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82AFF6493DD
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Dec 2022 12:23:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbiLJPTv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 10 Dec 2022 10:19:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59250 "EHLO
+        id S230182AbiLKLXx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Dec 2022 06:23:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbiLJPTu (ORCPT
+        with ESMTP id S229969AbiLKLXw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 10 Dec 2022 10:19:50 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF6412AB9;
-        Sat, 10 Dec 2022 07:19:48 -0800 (PST)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4NTs3w3X5qzJqKw;
-        Sat, 10 Dec 2022 23:18:52 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemi500012.china.huawei.com
- (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Sat, 10 Dec
- 2022 23:19:16 +0800
-From:   Li Zetao <lizetao1@huawei.com>
-To:     <pkshih@realtek.com>
-CC:     <Larry.Finger@lwfinger.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <kvalo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linville@tuxdriver.com>, <lizetao1@huawei.com>,
-        <netdev@vger.kernel.org>, <pabeni@redhat.com>
-Subject: [PATCH v2] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
-Date:   Sun, 11 Dec 2022 00:23:36 +0800
-Message-ID: <20221210162336.1383856-1-lizetao1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <e985ead3ea7841b8b3a94201dfb18776@realtek.com>
+        Sun, 11 Dec 2022 06:23:52 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F0D4E11440;
+        Sun, 11 Dec 2022 03:23:49 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BBBKqkoE023444, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BBBKqkoE023444
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Sun, 11 Dec 2022 19:20:52 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Sun, 11 Dec 2022 19:21:40 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Sun, 11 Dec 2022 19:21:40 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Sun, 11 Dec 2022 19:21:40 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "lizetao1@huawei.com" <lizetao1@huawei.com>
+CC:     "davem@davemloft.net" <davem@davemloft.net>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "linville@tuxdriver.com" <linville@tuxdriver.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
+Thread-Topic: [PATCH v2] rtlwifi: rtl8821ae: Fix global-out-of-bounds bug in
+ _rtl8812ae_phy_set_txpower_limit()
+Thread-Index: AQHZDKrastVORUysJkWvN+uEktLLx65oBcKA
+Date:   Sun, 11 Dec 2022 11:21:40 +0000
+Message-ID: <66c119cc4e184a36d525a07f2fbd092348839610.camel@realtek.com>
 References: <e985ead3ea7841b8b3a94201dfb18776@realtek.com>
+         <20221210162336.1383856-1-lizetao1@huawei.com>
+In-Reply-To: <20221210162336.1383856-1-lizetao1@huawei.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.72.88]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzExIOS4iuWNiCAwOTo1MzowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A5CD149AE5DE1D4D8C943FC2C919FAFB@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a global-out-of-bounds reported by KASAN:
-
-  BUG: KASAN: global-out-of-bounds in
-  _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
-  Read of size 1 at addr ffffffffa0773c43 by task NetworkManager/411
-
-  CPU: 6 PID: 411 Comm: NetworkManager Tainted: G      D
-  6.1.0-rc8+ #144 e15588508517267d37
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-  Call Trace:
-   <TASK>
-   ...
-   kasan_report+0xbb/0x1c0
-   _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
-   rtl8821ae_phy_bb_config.cold+0x346/0x641 [rtl8821ae]
-   rtl8821ae_hw_init+0x1f5e/0x79b0 [rtl8821ae]
-   ...
-   </TASK>
-
-The root cause of the problem is that the comparison order of
-"prate_section" in _rtl8812ae_phy_set_txpower_limit() is wrong. The
-_rtl8812ae_eq_n_byte() is used to compare the first n bytes of the two
-strings from tail to head, which causes the problem. In the
-_rtl8812ae_phy_set_txpower_limit(), it was originally intended to meet
-this requirement by carefully designing the comparison order.
-For example, "pregulation" and "pbandwidth" are compared in order of
-length from small to large, first is 3 and last is 4. However, the
-comparison order of "prate_section" dose not obey such order requirement,
-therefore when "prate_section" is "HT", when comparing from tail to head,
-it will lead to access out of bounds in _rtl8812ae_eq_n_byte(). As
-mentioned above, the _rtl8812ae_eq_n_byte() has the same function as
-strcmp(), so just strcmp() is enough.
-
-Fix it by replacing _rtl8812ae_eq_n_byte() with strcmp(). Although it
-can be fixed by adjusting the comparison order of "prate_section", this
-may cause the value of "rate_section" to not be from 0 to 5. In
-addition, commit "21e4b0726dc6" not only moved driver from staging to
-regular tree, but also added setting txpower limit function during the
-driver config phase, so the problem was introduced by this commit.
-
-Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
----
-v1 was posted at: https://lore.kernel.org/all/20221207152319.3135500-1-lizetao1@huawei.com/
-v1 -> v2: delete the third parameter of _rtl8812ae_eq_n_byte() and use
-strcmp to replace loop comparison.
-
- .../wireless/realtek/rtlwifi/rtl8821ae/phy.c  | 51 ++++++++-----------
- 1 file changed, 22 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index a29321e2fa72..14b569d7d8fa 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -1598,16 +1598,9 @@ static bool _rtl8812ae_get_integer_from_string(const char *str, u8 *pint)
- 	return true;
- }
- 
--static bool _rtl8812ae_eq_n_byte(const char *str1, const char *str2, u32 num)
-+static bool _rtl8812ae_eq_n_byte(const char *str1, const char *str2)
- {
--	if (num == 0)
--		return false;
--	while (num > 0) {
--		num--;
--		if (str1[num] != str2[num])
--			return false;
--	}
--	return true;
-+	return strcmp(str1, str2) == 0;
- }
- 
- static s8 _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(struct ieee80211_hw *hw,
-@@ -1659,42 +1652,42 @@ static void _rtl8812ae_phy_set_txpower_limit(struct ieee80211_hw *hw,
- 	power_limit = power_limit > MAX_POWER_INDEX ?
- 		      MAX_POWER_INDEX : power_limit;
- 
--	if (_rtl8812ae_eq_n_byte(pregulation, "FCC", 3))
-+	if (_rtl8812ae_eq_n_byte(pregulation, "FCC"))
- 		regulation = 0;
--	else if (_rtl8812ae_eq_n_byte(pregulation, "MKK", 3))
-+	else if (_rtl8812ae_eq_n_byte(pregulation, "MKK"))
- 		regulation = 1;
--	else if (_rtl8812ae_eq_n_byte(pregulation, "ETSI", 4))
-+	else if (_rtl8812ae_eq_n_byte(pregulation, "ETSI"))
- 		regulation = 2;
--	else if (_rtl8812ae_eq_n_byte(pregulation, "WW13", 4))
-+	else if (_rtl8812ae_eq_n_byte(pregulation, "WW13"))
- 		regulation = 3;
- 
--	if (_rtl8812ae_eq_n_byte(prate_section, "CCK", 3))
-+	if (_rtl8812ae_eq_n_byte(prate_section, "CCK"))
- 		rate_section = 0;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "OFDM", 4))
-+	else if (_rtl8812ae_eq_n_byte(prate_section, "OFDM"))
- 		rate_section = 1;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "HT", 2) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "1T", 2))
-+	else if (_rtl8812ae_eq_n_byte(prate_section, "HT") &&
-+		 _rtl8812ae_eq_n_byte(prf_path, "1T"))
- 		rate_section = 2;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "HT", 2) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "2T", 2))
-+	else if (_rtl8812ae_eq_n_byte(prate_section, "HT") &&
-+		 _rtl8812ae_eq_n_byte(prf_path, "2T"))
- 		rate_section = 3;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "VHT", 3) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "1T", 2))
-+	else if (_rtl8812ae_eq_n_byte(prate_section, "VHT") &&
-+		 _rtl8812ae_eq_n_byte(prf_path, "1T"))
- 		rate_section = 4;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "VHT", 3) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "2T", 2))
-+	else if (_rtl8812ae_eq_n_byte(prate_section, "VHT") &&
-+		 _rtl8812ae_eq_n_byte(prf_path, "2T"))
- 		rate_section = 5;
- 
--	if (_rtl8812ae_eq_n_byte(pbandwidth, "20M", 3))
-+	if (_rtl8812ae_eq_n_byte(pbandwidth, "20M"))
- 		bandwidth = 0;
--	else if (_rtl8812ae_eq_n_byte(pbandwidth, "40M", 3))
-+	else if (_rtl8812ae_eq_n_byte(pbandwidth, "40M"))
- 		bandwidth = 1;
--	else if (_rtl8812ae_eq_n_byte(pbandwidth, "80M", 3))
-+	else if (_rtl8812ae_eq_n_byte(pbandwidth, "80M"))
- 		bandwidth = 2;
--	else if (_rtl8812ae_eq_n_byte(pbandwidth, "160M", 4))
-+	else if (_rtl8812ae_eq_n_byte(pbandwidth, "160M"))
- 		bandwidth = 3;
- 
--	if (_rtl8812ae_eq_n_byte(pband, "2.4G", 4)) {
-+	if (_rtl8812ae_eq_n_byte(pband, "2.4G")) {
- 		ret = _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(hw,
- 							       BAND_ON_2_4G,
- 							       channel);
-@@ -1718,7 +1711,7 @@ static void _rtl8812ae_phy_set_txpower_limit(struct ieee80211_hw *hw,
- 			regulation, bandwidth, rate_section, channel_index,
- 			rtlphy->txpwr_limit_2_4g[regulation][bandwidth]
- 				[rate_section][channel_index][RF90_PATH_A]);
--	} else if (_rtl8812ae_eq_n_byte(pband, "5G", 2)) {
-+	} else if (_rtl8812ae_eq_n_byte(pband, "5G")) {
- 		ret = _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(hw,
- 							       BAND_ON_5G,
- 							       channel);
--- 
-2.31.1
-
+T24gU3VuLCAyMDIyLTEyLTExIGF0IDAwOjIzICswODAwLCBMaSBaZXRhbyB3cm90ZToNCj4gVGhl
+cmUgaXMgYSBnbG9iYWwtb3V0LW9mLWJvdW5kcyByZXBvcnRlZCBieSBLQVNBTjoNCj4gDQo+ICAg
+QlVHOiBLQVNBTjogZ2xvYmFsLW91dC1vZi1ib3VuZHMgaW4NCj4gICBfcnRsODgxMmFlX2VxX25f
+Ynl0ZS5wYXJ0LjArMHgzZC8weDg0IFtydGw4ODIxYWVdDQo+ICAgUmVhZCBvZiBzaXplIDEgYXQg
+YWRkciBmZmZmZmZmZmEwNzczYzQzIGJ5IHRhc2sgTmV0d29ya01hbmFnZXIvNDExDQo+IA0KPiAg
+IENQVTogNiBQSUQ6IDQxMSBDb21tOiBOZXR3b3JrTWFuYWdlciBUYWludGVkOiBHICAgICAgRA0K
+PiAgIDYuMS4wLXJjOCsgIzE0NCBlMTU1ODg1MDg1MTcyNjdkMzcNCj4gICBIYXJkd2FyZSBuYW1l
+OiBRRU1VIFN0YW5kYXJkIFBDIChRMzUgKyBJQ0g5LCAyMDA5KSwNCj4gICBDYWxsIFRyYWNlOg0K
+PiAgICA8VEFTSz4NCj4gICAgLi4uDQo+ICAgIGthc2FuX3JlcG9ydCsweGJiLzB4MWMwDQo+ICAg
+IF9ydGw4ODEyYWVfZXFfbl9ieXRlLnBhcnQuMCsweDNkLzB4ODQgW3J0bDg4MjFhZV0NCj4gICAg
+cnRsODgyMWFlX3BoeV9iYl9jb25maWcuY29sZCsweDM0Ni8weDY0MSBbcnRsODgyMWFlXQ0KPiAg
+ICBydGw4ODIxYWVfaHdfaW5pdCsweDFmNWUvMHg3OWIwIFtydGw4ODIxYWVdDQo+ICAgIC4uLg0K
+PiAgICA8L1RBU0s+DQo+IA0KPiBUaGUgcm9vdCBjYXVzZSBvZiB0aGUgcHJvYmxlbSBpcyB0aGF0
+IHRoZSBjb21wYXJpc29uIG9yZGVyIG9mDQo+ICJwcmF0ZV9zZWN0aW9uIiBpbiBfcnRsODgxMmFl
+X3BoeV9zZXRfdHhwb3dlcl9saW1pdCgpIGlzIHdyb25nLiBUaGUNCj4gX3J0bDg4MTJhZV9lcV9u
+X2J5dGUoKSBpcyB1c2VkIHRvIGNvbXBhcmUgdGhlIGZpcnN0IG4gYnl0ZXMgb2YgdGhlIHR3bw0K
+PiBzdHJpbmdzIGZyb20gdGFpbCB0byBoZWFkLCB3aGljaCBjYXVzZXMgdGhlIHByb2JsZW0uIElu
+IHRoZQ0KPiBfcnRsODgxMmFlX3BoeV9zZXRfdHhwb3dlcl9saW1pdCgpLCBpdCB3YXMgb3JpZ2lu
+YWxseSBpbnRlbmRlZCB0byBtZWV0DQo+IHRoaXMgcmVxdWlyZW1lbnQgYnkgY2FyZWZ1bGx5IGRl
+c2lnbmluZyB0aGUgY29tcGFyaXNvbiBvcmRlci4NCj4gRm9yIGV4YW1wbGUsICJwcmVndWxhdGlv
+biIgYW5kICJwYmFuZHdpZHRoIiBhcmUgY29tcGFyZWQgaW4gb3JkZXIgb2YNCj4gbGVuZ3RoIGZy
+b20gc21hbGwgdG8gbGFyZ2UsIGZpcnN0IGlzIDMgYW5kIGxhc3QgaXMgNC4gSG93ZXZlciwgdGhl
+DQo+IGNvbXBhcmlzb24gb3JkZXIgb2YgInByYXRlX3NlY3Rpb24iIGRvc2Ugbm90IG9iZXkgc3Vj
+aCBvcmRlciByZXF1aXJlbWVudCwNCj4gdGhlcmVmb3JlIHdoZW4gInByYXRlX3NlY3Rpb24iIGlz
+ICJIVCIsIHdoZW4gY29tcGFyaW5nIGZyb20gdGFpbCB0byBoZWFkLA0KPiBpdCB3aWxsIGxlYWQg
+dG8gYWNjZXNzIG91dCBvZiBib3VuZHMgaW4gX3J0bDg4MTJhZV9lcV9uX2J5dGUoKS4gQXMNCj4g
+bWVudGlvbmVkIGFib3ZlLCB0aGUgX3J0bDg4MTJhZV9lcV9uX2J5dGUoKSBoYXMgdGhlIHNhbWUg
+ZnVuY3Rpb24gYXMNCj4gc3RyY21wKCksIHNvIGp1c3Qgc3RyY21wKCkgaXMgZW5vdWdoLg0KPiAN
+Cj4gRml4IGl0IGJ5IHJlcGxhY2luZyBfcnRsODgxMmFlX2VxX25fYnl0ZSgpIHdpdGggc3RyY21w
+KCkuIEFsdGhvdWdoIGl0DQo+IGNhbiBiZSBmaXhlZCBieSBhZGp1c3RpbmcgdGhlIGNvbXBhcmlz
+b24gb3JkZXIgb2YgInByYXRlX3NlY3Rpb24iLCB0aGlzDQo+IG1heSBjYXVzZSB0aGUgdmFsdWUg
+b2YgInJhdGVfc2VjdGlvbiIgdG8gbm90IGJlIGZyb20gMCB0byA1LiBJbg0KPiBhZGRpdGlvbiwg
+Y29tbWl0ICIyMWU0YjA3MjZkYzYiIG5vdCBvbmx5IG1vdmVkIGRyaXZlciBmcm9tIHN0YWdpbmcg
+dG8NCj4gcmVndWxhciB0cmVlLCBidXQgYWxzbyBhZGRlZCBzZXR0aW5nIHR4cG93ZXIgbGltaXQg
+ZnVuY3Rpb24gZHVyaW5nIHRoZQ0KPiBkcml2ZXIgY29uZmlnIHBoYXNlLCBzbyB0aGUgcHJvYmxl
+bSB3YXMgaW50cm9kdWNlZCBieSB0aGlzIGNvbW1pdC4NCj4gDQo+IEZpeGVzOiAyMWU0YjA3MjZk
+YzYgKCJydGx3aWZpOiBydGw4ODIxYWU6IE1vdmUgZHJpdmVyIGZyb20gc3RhZ2luZyB0byByZWd1
+bGFyIHRyZWUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBMaSBaZXRhbyA8bGl6ZXRhbzFAaHVhd2VpLmNv
+bT4NCj4gLS0tDQo+IHYxIHdhcyBwb3N0ZWQgYXQ6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2Fs
+bC8yMDIyMTIwNzE1MjMxOS4zMTM1NTAwLTEtbGl6ZXRhbzFAaHVhd2VpLmNvbS8NCj4gdjEgLT4g
+djI6IGRlbGV0ZSB0aGUgdGhpcmQgcGFyYW1ldGVyIG9mIF9ydGw4ODEyYWVfZXFfbl9ieXRlKCkg
+YW5kIHVzZQ0KPiBzdHJjbXAgdG8gcmVwbGFjZSBsb29wIGNvbXBhcmlzb24uDQo+IA0KPiAgLi4u
+L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4ODIxYWUvcGh5LmMgIHwgNTEgKysrKysrKyst
+LS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDI5IGRlbGV0
+aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnRsd2lmaS9ydGw4ODIxYWUvcGh5LmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0bHdpZmkvcnRsODgyMWFlL3BoeS5jDQo+IGluZGV4IGEyOTMyMWUyZmE3Mi4uMTRiNTY5ZDdk
+OGZhIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkv
+cnRsODgyMWFlL3BoeS5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
+d2lmaS9ydGw4ODIxYWUvcGh5LmMNCj4gQEAgLTE1OTgsMTYgKzE1OTgsOSBAQCBzdGF0aWMgYm9v
+bCBfcnRsODgxMmFlX2dldF9pbnRlZ2VyX2Zyb21fc3RyaW5nKGNvbnN0IGNoYXIgKnN0ciwgdTgg
+KnBpbnQpDQo+ICAJcmV0dXJuIHRydWU7DQo+ICB9DQo+ICANCj4gLXN0YXRpYyBib29sIF9ydGw4
+ODEyYWVfZXFfbl9ieXRlKGNvbnN0IGNoYXIgKnN0cjEsIGNvbnN0IGNoYXIgKnN0cjIsIHUzMiBu
+dW0pDQo+ICtzdGF0aWMgYm9vbCBfcnRsODgxMmFlX2VxX25fYnl0ZShjb25zdCBjaGFyICpzdHIx
+LCBjb25zdCBjaGFyICpzdHIyKQ0KPiAgew0KPiAtCWlmIChudW0gPT0gMCkNCj4gLQkJcmV0dXJu
+IGZhbHNlOw0KPiAtCXdoaWxlIChudW0gPiAwKSB7DQo+IC0JCW51bS0tOw0KPiAtCQlpZiAoc3Ry
+MVtudW1dICE9IHN0cjJbbnVtXSkNCj4gLQkJCXJldHVybiBmYWxzZTsNCj4gLQl9DQo+IC0JcmV0
+dXJuIHRydWU7DQo+ICsJcmV0dXJuIHN0cmNtcChzdHIxLCBzdHIyKSA9PSAwOw0KPiAgfQ0KDQpJ
+IHN1Z2dlc3QgdG8gcmVtb3ZlIF9ydGw4ODEyYWVfZXFfbl9ieXRlKCkgYW5kIHVzZSBzdHJjbXAo
+KSBiYXJlbHkuDQpUaGF0IHdvdWxkIGJlIG1vcmUgY2xlYXIsIGFuZCBwZW9wbGUgZG9uJ3QgbmVl
+ZCB0byBjaGVjayBkZXRhaWwgb2YNCnVubmVjZXNzYXJ5IF9ydGw4ODEyYWVfZXFfbl9ieXRlKCku
+DQoNCg0KPiAgDQo+ICBzdGF0aWMgczggX3J0bDg4MTJhZV9waHlfZ2V0X2NobmxfaWR4X29mX3R4
+cHdyX2xtdChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywNCj4gQEAgLTE2NTksNDIgKzE2NTIsNDIg
+QEAgc3RhdGljIHZvaWQgX3J0bDg4MTJhZV9waHlfc2V0X3R4cG93ZXJfbGltaXQoc3RydWN0IGll
+ZWU4MDIxMV9odyAqaHcsDQo+ICAJcG93ZXJfbGltaXQgPSBwb3dlcl9saW1pdCA+IE1BWF9QT1dF
+Ul9JTkRFWCA/DQo+ICAJCSAgICAgIE1BWF9QT1dFUl9JTkRFWCA6IHBvd2VyX2xpbWl0Ow0KPiAg
+DQo+IC0JaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZWd1bGF0aW9uLCAiRkNDIiwgMykpDQo+
+ICsJaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZWd1bGF0aW9uLCAiRkNDIikpDQo+ICAJCXJl
+Z3VsYXRpb24gPSAwOw0KPiAtCWVsc2UgaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZWd1bGF0
+aW9uLCAiTUtLIiwgMykpDQo+ICsJZWxzZSBpZiAoX3J0bDg4MTJhZV9lcV9uX2J5dGUocHJlZ3Vs
+YXRpb24sICJNS0siKSkNCj4gIAkJcmVndWxhdGlvbiA9IDE7DQo+IC0JZWxzZSBpZiAoX3J0bDg4
+MTJhZV9lcV9uX2J5dGUocHJlZ3VsYXRpb24sICJFVFNJIiwgNCkpDQo+ICsJZWxzZSBpZiAoX3J0
+bDg4MTJhZV9lcV9uX2J5dGUocHJlZ3VsYXRpb24sICJFVFNJIikpDQo+ICAJCXJlZ3VsYXRpb24g
+PSAyOw0KPiAtCWVsc2UgaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZWd1bGF0aW9uLCAiV1cx
+MyIsIDQpKQ0KPiArCWVsc2UgaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZWd1bGF0aW9uLCAi
+V1cxMyIpKQ0KPiAgCQlyZWd1bGF0aW9uID0gMzsNCj4gIA0KPiAtCWlmIChfcnRsODgxMmFlX2Vx
+X25fYnl0ZShwcmF0ZV9zZWN0aW9uLCAiQ0NLIiwgMykpDQo+ICsJaWYgKF9ydGw4ODEyYWVfZXFf
+bl9ieXRlKHByYXRlX3NlY3Rpb24sICJDQ0siKSkNCj4gIAkJcmF0ZV9zZWN0aW9uID0gMDsNCj4g
+LQllbHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwcmF0ZV9zZWN0aW9uLCAiT0ZETSIsIDQp
+KQ0KPiArCWVsc2UgaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByYXRlX3NlY3Rpb24sICJPRkRN
+IikpDQo+ICAJCXJhdGVfc2VjdGlvbiA9IDE7DQo+IC0JZWxzZSBpZiAoX3J0bDg4MTJhZV9lcV9u
+X2J5dGUocHJhdGVfc2VjdGlvbiwgIkhUIiwgMikgJiYNCj4gLQkJIF9ydGw4ODEyYWVfZXFfbl9i
+eXRlKHByZl9wYXRoLCAiMVQiLCAyKSkNCj4gKwllbHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0
+ZShwcmF0ZV9zZWN0aW9uLCAiSFQiKSAmJg0KPiArCQkgX3J0bDg4MTJhZV9lcV9uX2J5dGUocHJm
+X3BhdGgsICIxVCIpKQ0KPiAgCQlyYXRlX3NlY3Rpb24gPSAyOw0KPiAtCWVsc2UgaWYgKF9ydGw4
+ODEyYWVfZXFfbl9ieXRlKHByYXRlX3NlY3Rpb24sICJIVCIsIDIpICYmDQo+IC0JCSBfcnRsODgx
+MmFlX2VxX25fYnl0ZShwcmZfcGF0aCwgIjJUIiwgMikpDQo+ICsJZWxzZSBpZiAoX3J0bDg4MTJh
+ZV9lcV9uX2J5dGUocHJhdGVfc2VjdGlvbiwgIkhUIikgJiYNCj4gKwkJIF9ydGw4ODEyYWVfZXFf
+bl9ieXRlKHByZl9wYXRoLCAiMlQiKSkNCj4gIAkJcmF0ZV9zZWN0aW9uID0gMzsNCj4gLQllbHNl
+IGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwcmF0ZV9zZWN0aW9uLCAiVkhUIiwgMykgJiYNCj4g
+LQkJIF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZl9wYXRoLCAiMVQiLCAyKSkNCj4gKwllbHNlIGlm
+IChfcnRsODgxMmFlX2VxX25fYnl0ZShwcmF0ZV9zZWN0aW9uLCAiVkhUIikgJiYNCj4gKwkJIF9y
+dGw4ODEyYWVfZXFfbl9ieXRlKHByZl9wYXRoLCAiMVQiKSkNCj4gIAkJcmF0ZV9zZWN0aW9uID0g
+NDsNCj4gLQllbHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwcmF0ZV9zZWN0aW9uLCAiVkhU
+IiwgMykgJiYNCj4gLQkJIF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZl9wYXRoLCAiMlQiLCAyKSkN
+Cj4gKwllbHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwcmF0ZV9zZWN0aW9uLCAiVkhUIikg
+JiYNCj4gKwkJIF9ydGw4ODEyYWVfZXFfbl9ieXRlKHByZl9wYXRoLCAiMlQiKSkNCj4gIAkJcmF0
+ZV9zZWN0aW9uID0gNTsNCj4gIA0KPiAtCWlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwYmFuZHdp
+ZHRoLCAiMjBNIiwgMykpDQo+ICsJaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHBiYW5kd2lkdGgs
+ICIyME0iKSkNCj4gIAkJYmFuZHdpZHRoID0gMDsNCj4gLQllbHNlIGlmIChfcnRsODgxMmFlX2Vx
+X25fYnl0ZShwYmFuZHdpZHRoLCAiNDBNIiwgMykpDQo+ICsJZWxzZSBpZiAoX3J0bDg4MTJhZV9l
+cV9uX2J5dGUocGJhbmR3aWR0aCwgIjQwTSIpKQ0KPiAgCQliYW5kd2lkdGggPSAxOw0KPiAtCWVs
+c2UgaWYgKF9ydGw4ODEyYWVfZXFfbl9ieXRlKHBiYW5kd2lkdGgsICI4ME0iLCAzKSkNCj4gKwll
+bHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwYmFuZHdpZHRoLCAiODBNIikpDQo+ICAJCWJh
+bmR3aWR0aCA9IDI7DQo+IC0JZWxzZSBpZiAoX3J0bDg4MTJhZV9lcV9uX2J5dGUocGJhbmR3aWR0
+aCwgIjE2ME0iLCA0KSkNCj4gKwllbHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwYmFuZHdp
+ZHRoLCAiMTYwTSIpKQ0KPiAgCQliYW5kd2lkdGggPSAzOw0KPiAgDQo+IC0JaWYgKF9ydGw4ODEy
+YWVfZXFfbl9ieXRlKHBiYW5kLCAiMi40RyIsIDQpKSB7DQo+ICsJaWYgKF9ydGw4ODEyYWVfZXFf
+bl9ieXRlKHBiYW5kLCAiMi40RyIpKSB7DQo+ICAJCXJldCA9IF9ydGw4ODEyYWVfcGh5X2dldF9j
+aG5sX2lkeF9vZl90eHB3cl9sbXQoaHcsDQo+ICAJCQkJCQkJICAgICAgIEJBTkRfT05fMl80RywN
+Cj4gIAkJCQkJCQkgICAgICAgY2hhbm5lbCk7DQo+IEBAIC0xNzE4LDcgKzE3MTEsNyBAQCBzdGF0
+aWMgdm9pZCBfcnRsODgxMmFlX3BoeV9zZXRfdHhwb3dlcl9saW1pdChzdHJ1Y3QgaWVlZTgwMjEx
+X2h3ICpodywNCj4gIAkJCXJlZ3VsYXRpb24sIGJhbmR3aWR0aCwgcmF0ZV9zZWN0aW9uLCBjaGFu
+bmVsX2luZGV4LA0KPiAgCQkJcnRscGh5LT50eHB3cl9saW1pdF8yXzRnW3JlZ3VsYXRpb25dW2Jh
+bmR3aWR0aF0NCj4gIAkJCQlbcmF0ZV9zZWN0aW9uXVtjaGFubmVsX2luZGV4XVtSRjkwX1BBVEhf
+QV0pOw0KPiAtCX0gZWxzZSBpZiAoX3J0bDg4MTJhZV9lcV9uX2J5dGUocGJhbmQsICI1RyIsIDIp
+KSB7DQo+ICsJfSBlbHNlIGlmIChfcnRsODgxMmFlX2VxX25fYnl0ZShwYmFuZCwgIjVHIikpIHsN
+Cj4gIAkJcmV0ID0gX3J0bDg4MTJhZV9waHlfZ2V0X2NobmxfaWR4X29mX3R4cHdyX2xtdChodywN
+Cj4gIAkJCQkJCQkgICAgICAgQkFORF9PTl81RywNCj4gIAkJCQkJCQkgICAgICAgY2hhbm5lbCk7
+DQo+IC0tIA0KPiAyLjMxLjENCj4gDQo+IA0KPiAtLS0tLS1QbGVhc2UgY29uc2lkZXIgdGhlIGVu
+dmlyb25tZW50IGJlZm9yZSBwcmludGluZyB0aGlzIGUtbWFpbC4NCg==
