@@ -2,96 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED81649C63
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 11:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6051649D89
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 12:26:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232142AbiLLKl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Dec 2022 05:41:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33736 "EHLO
+        id S231160AbiLLL0c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Dec 2022 06:26:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231756AbiLLKkj (ORCPT
+        with ESMTP id S231394AbiLLL0M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Dec 2022 05:40:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D668EFCF7;
-        Mon, 12 Dec 2022 02:34:44 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7310360F40;
-        Mon, 12 Dec 2022 10:34:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38DD8C433D2;
-        Mon, 12 Dec 2022 10:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670841283;
-        bh=vrFxeli8F3EO2DuQDN+jCz2CjmUYhcY2TDhvXHFi1sY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ih/zua0q5zv06/kPWeiWPGYMeRX+Z4H3lNCbZs3KtqqI2GB2fJomdYLYtmCf9vsvY
-         kP6LB990E27y5DI3Ihs1NK9+n17LsSiMnZ0InA6FBEpmKs4J6WPUBzVINC5nfDU6F0
-         cPeqVZ6e38b2ETLg8HW4bsSTv0VKIQtrKWlH3si7Npx/YlVPbnUPbFvfdl2f9GqdzB
-         bIDwXvwKIxRpWuY6nACaWV3zt0ynOCy0yDsX3HfzHVLrf5iXGAcxueXUIpw6jzD7Vo
-         0Lb5efMzUWHXTwRt2DP++//CX8VK89BF6xcJaef1FCUli5EOxuPwvsuQG1RasWxHCx
-         tY4seVfMFg7Iw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-next-2022-12-12
-References: <20221212093026.5C5AEC433D2@smtp.kernel.org>
-Date:   Mon, 12 Dec 2022 12:34:39 +0200
-In-Reply-To: <20221212093026.5C5AEC433D2@smtp.kernel.org> (Kalle Valo's
-        message of "Mon, 12 Dec 2022 09:30:26 +0000 (UTC)")
-Message-ID: <877cywnc5c.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 12 Dec 2022 06:26:12 -0500
+X-Greylist: delayed 904 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Dec 2022 03:26:07 PST
+Received: from sender4-of-o56.zoho.com (sender4-of-o56.zoho.com [136.143.188.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F837E2C
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Dec 2022 03:26:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1670843460; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=P8ATCRNeS7CrZpiqS/5D6g/Rmg2kXyo3Me81MC8jqcrE4G6DRzaoLA+e/NuXH+NPlKYfWbuV85s0FIbJwA6JrOGeNv3mzK4CShcGUkeYfpj/xqPYEf01v9UF3jtCZCSwDgSg30+eZ0GKBnWHFt7LM1kyNK67WJeJKYZuKYJ6tYM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1670843460; h=Content-Type:Content-Transfer-Encoding:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=8YjlatOgfim3c4e1yzqSgNvBF1L6HS4j6nLCp2C8Rak=; 
+        b=hvOj4TlNXLdtCJpzKfPj0EyI0zChKGxU7ajEGnidO/lrggbr7e2JlTF5Dl8XZADc35/7VSPAXmdxeivOJGt9jG4kZdzpSIa/eHwBJueKH8Mk6FzmZhwCgPJVnUOQDDC9+wjOw7+d4LBkifwBs7xxybrmbHzv//3JhLQeoghrAxY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=charlespiekarski.com;
+        spf=pass  smtp.mailfrom=contact@charlespiekarski.com;
+        dmarc=pass header.from=<contact@charlespiekarski.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1670843460;
+        s=zoho; d=charlespiekarski.com; i=contact@charlespiekarski.com;
+        h=Message-ID:Date:Date:MIME-Version:To:To:From:From:Subject:Subject:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+        bh=8YjlatOgfim3c4e1yzqSgNvBF1L6HS4j6nLCp2C8Rak=;
+        b=F9NUTwH+0auImIGocO+z+DeGI7x3UBJoHr93G/kSjkDT3hUONrUL2MgEL/X88Z39
+        1bUfOZ/PCcIEp/XWwjPPPNYtyjdyFS6l/Q4hyEm2YZL0iUuffWeDCaVX/dqHLx4gdGa
+        +AmIk3t67D85n7tQaugty+zeeJse7wQnnrHZjkCI=
+Received: from [192.168.100.145] (195-166-223-48.fibre.u-mee.com [195.166.223.48]) by mx.zohomail.com
+        with SMTPS id 1670843460132151.13554411423263; Mon, 12 Dec 2022 03:11:00 -0800 (PST)
+Message-ID: <a2a454c5-3940-52d0-77b7-e5f8376720ae@charlespiekarski.com>
+Date:   Mon, 12 Dec 2022 12:10:58 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+To:     linux-wireless@vger.kernel.org
+Content-Language: en-GB
+From:   Charles Piekarski <contact@charlespiekarski.com>
+Subject: Realtek 8852BE support
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Spam-Status: No, score=2.6 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Dear Sir or Madam,
 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
->
-> Kalle
->
-> The following changes since commit 65e6af6cebefbf7d8d8ac52b71cd251c2071ad00:
->
->   net: ethernet: mtk_wed: fix sleep while atomic in mtk_wed_wo_queue_refill (2022-12-02 21:23:02 -0800)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2022-12-12
->
-> for you to fetch changes up to 832c3f66f53f1eb20f424b916a311ad82074ef0d:
->
->   Merge tag 'iwlwifi-next-for-kalle-2022-12-07' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2022-12-08 16:54:33 +0200)
->
-> ----------------------------------------------------------------
-> wireless-next patches for v6.2
->
-> Fourth set of patches for v6.2. Few final patches, a big change is
-> that rtw88 now has USB support.
->
-> Major changes:
->
-> rtw88
->
-> * support USB devices rtw8821cu, rtw8822bu, rtw8822cu and rtw8723du
->
-> ----------------------------------------------------------------
+I would like to kindly ask for information if Realtek 8852BE Wi-Fi 6 
+module is supported or will be supported by the Linux kernel. 
+Regrettably, the module does not work under Ubuntu 22.04.1 and 22.10, at 
+least out of the box, and I was unable to find any useful information to 
+get it working in a safe way (with Secure Boot enabled).
 
-Sorry for sending this so late, I was supposed to send it on Friday but
-didn't manage to. All the patches have been in wireless-next since
-Thursday so this should be safe to merge. But if it's too late please do
-drop this, I'll then submit these again for v6.3.
+Kind regards,
+Charles Piekarski
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+This email (including any attachments) is private, confidential and may 
+contain privileged material. If you have received this email in error, 
+please notify the sender and delete it (including any attachments) 
+immediately. If you are not the addressee of this email, you must not 
+copy, forward, distribute, disclose or use any of the information in it 
+or any attachments.
