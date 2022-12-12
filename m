@@ -2,47 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED39D6497C9
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 02:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D944E649A05
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 09:31:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230463AbiLLByB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Dec 2022 20:54:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35440 "EHLO
+        id S231289AbiLLIbr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Dec 2022 03:31:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbiLLByA (ORCPT
+        with ESMTP id S230105AbiLLIbq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Dec 2022 20:54:00 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A640B1F2;
-        Sun, 11 Dec 2022 17:53:58 -0800 (PST)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4NVl5D237HzJqSJ;
-        Mon, 12 Dec 2022 09:53:04 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemi500012.china.huawei.com
- (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 12 Dec
- 2022 09:53:55 +0800
-From:   Li Zetao <lizetao1@huawei.com>
-To:     <pkshih@realtek.com>
-CC:     <Larry.Finger@lwfinger.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <kvalo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linville@tuxdriver.com>, <lizetao1@huawei.com>,
-        <netdev@vger.kernel.org>, <pabeni@redhat.com>
-Subject: [PATCH v4] wifi: rtlwifi: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
-Date:   Mon, 12 Dec 2022 10:58:12 +0800
-Message-ID: <20221212025812.1541311-1-lizetao1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <58dbf9a4aa57417bb40cbabc8ae9cd17@realtek.com>
-References: <58dbf9a4aa57417bb40cbabc8ae9cd17@realtek.com>
+        Mon, 12 Dec 2022 03:31:46 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB23BB7F7
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Dec 2022 00:31:45 -0800 (PST)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BC4vmaF001093;
+        Mon, 12 Dec 2022 08:31:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=uLukQXnW7qTf2gG7t76e726ocOVRjK3PcZw8x4yvRXM=;
+ b=g47ILgnLAlMsFq3QOmT5lv+oh/S4/DNke22RVTUVZCqqf69an0mRpWzAon3rsrS90G5i
+ b/bKPlCQIYHEMNj5B2w25VxRu9KR/y4tUh+vqqX4myyxtpoulngkALByPCiqX4wfdspQ
+ YaLaj+DXuyt6JeRWcvtoVnSQLZJhTdiOaVB/qj2kyqeWunaMb/n9EtViF7Zg+P5li6xN
+ +vovgp+zTkij8gzcNCSF2P5CEwlfbuXfHVET2K8C5nn3HYc9eRrrDN80kEt+/Se8pFXJ
+ eG28lIg4LejADh6vNaAxbJKRN9CK2uc7gSCa+0TDX20Z49T/cYk1DEf89WE55jsxNpxI Ow== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mch30kjp4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 12 Dec 2022 08:31:30 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BC8VUPi005923
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 12 Dec 2022 08:31:30 GMT
+Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 12 Dec
+ 2022 00:31:28 -0800
+Message-ID: <e42f6580-b113-46ed-2fc0-cf3cdc099c7b@quicinc.com>
+Date:   Mon, 12 Dec 2022 16:31:26 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH 4/5] mac80211: run late dequeue late tx handlers without
+ holding fq->lock
+Content-Language: en-US
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>,
+        <johannes.berg@intel.com>
+References: <20190316170634.13125-1-nbd@nbd.name>
+ <20190316170634.13125-4-nbd@nbd.name>
+ <9bce39db-1de4-f129-8d2f-77f51a64a5db@quicinc.com>
+ <a918d3ee-edc7-b6a2-d15a-e0d77f0683e2@quicinc.com>
+In-Reply-To: <a918d3ee-edc7-b6a2-d15a-e0d77f0683e2@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 8UBPuGyZ2_LT_8FAqRHHpFs0Xa2ULh09
+X-Proofpoint-GUID: 8UBPuGyZ2_LT_8FAqRHHpFs0Xa2ULh09
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-12_01,2022-12-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ adultscore=0 phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=892
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212120079
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,153 +82,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a global-out-of-bounds reported by KASAN:
+I will send a patch for it to avoid the potential user-after-free risk.
 
-  BUG: KASAN: global-out-of-bounds in
-  _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
-  Read of size 1 at addr ffffffffa0773c43 by task NetworkManager/411
-
-  CPU: 6 PID: 411 Comm: NetworkManager Tainted: G      D
-  6.1.0-rc8+ #144 e15588508517267d37
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-  Call Trace:
-   <TASK>
-   ...
-   kasan_report+0xbb/0x1c0
-   _rtl8812ae_eq_n_byte.part.0+0x3d/0x84 [rtl8821ae]
-   rtl8821ae_phy_bb_config.cold+0x346/0x641 [rtl8821ae]
-   rtl8821ae_hw_init+0x1f5e/0x79b0 [rtl8821ae]
-   ...
-   </TASK>
-
-The root cause of the problem is that the comparison order of
-"prate_section" in _rtl8812ae_phy_set_txpower_limit() is wrong. The
-_rtl8812ae_eq_n_byte() is used to compare the first n bytes of the two
-strings from tail to head, which causes the problem. In the
-_rtl8812ae_phy_set_txpower_limit(), it was originally intended to meet
-this requirement by carefully designing the comparison order.
-For example, "pregulation" and "pbandwidth" are compared in order of
-length from small to large, first is 3 and last is 4. However, the
-comparison order of "prate_section" dose not obey such order requirement,
-therefore when "prate_section" is "HT", when comparing from tail to head,
-it will lead to access out of bounds in _rtl8812ae_eq_n_byte(). As
-mentioned above, the _rtl8812ae_eq_n_byte() has the same function as
-strcmp(), so just strcmp() is enough.
-
-Fix it by removing _rtl8812ae_eq_n_byte() and use strcmp() barely.
-Although it can be fixed by adjusting the comparison order of
-"prate_section", this may cause the value of "rate_section" to not be
-from 0 to 5. In addition, commit "21e4b0726dc6" not only moved driver
-from staging to regular tree, but also added setting txpower limit
-function during the driver config phase, so the problem was introduced
-by this commit.
-
-Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v1 -> v2: delete the third parameter of _rtl8812ae_eq_n_byte() and use
-strcmp to replace loop comparison.
-v2 -> v3: remove _rtl8812ae_eq_n_byte() and use strcmp() barely.
-v3 -> v4: fix subject prefix.
-
- .../wireless/realtek/rtlwifi/rtl8821ae/phy.c  | 52 +++++++------------
- 1 file changed, 20 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index a29321e2fa72..5323ead30db0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -1598,18 +1598,6 @@ static bool _rtl8812ae_get_integer_from_string(const char *str, u8 *pint)
- 	return true;
- }
- 
--static bool _rtl8812ae_eq_n_byte(const char *str1, const char *str2, u32 num)
--{
--	if (num == 0)
--		return false;
--	while (num > 0) {
--		num--;
--		if (str1[num] != str2[num])
--			return false;
--	}
--	return true;
--}
--
- static s8 _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(struct ieee80211_hw *hw,
- 					      u8 band, u8 channel)
- {
-@@ -1659,42 +1647,42 @@ static void _rtl8812ae_phy_set_txpower_limit(struct ieee80211_hw *hw,
- 	power_limit = power_limit > MAX_POWER_INDEX ?
- 		      MAX_POWER_INDEX : power_limit;
- 
--	if (_rtl8812ae_eq_n_byte(pregulation, "FCC", 3))
-+	if (strcmp(pregulation, "FCC") == 0)
- 		regulation = 0;
--	else if (_rtl8812ae_eq_n_byte(pregulation, "MKK", 3))
-+	else if (strcmp(pregulation, "MKK") == 0)
- 		regulation = 1;
--	else if (_rtl8812ae_eq_n_byte(pregulation, "ETSI", 4))
-+	else if (strcmp(pregulation, "ETSI") == 0)
- 		regulation = 2;
--	else if (_rtl8812ae_eq_n_byte(pregulation, "WW13", 4))
-+	else if (strcmp(pregulation, "WW13") == 0)
- 		regulation = 3;
- 
--	if (_rtl8812ae_eq_n_byte(prate_section, "CCK", 3))
-+	if (strcmp(prate_section, "CCK") == 0)
- 		rate_section = 0;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "OFDM", 4))
-+	else if (strcmp(prate_section, "OFDM") == 0)
- 		rate_section = 1;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "HT", 2) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "1T", 2))
-+	else if (strcmp(prate_section, "HT") == 0 &&
-+		 strcmp(prf_path, "1T") == 0)
- 		rate_section = 2;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "HT", 2) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "2T", 2))
-+	else if (strcmp(prate_section, "HT") == 0 &&
-+		 strcmp(prf_path, "2T") == 0)
- 		rate_section = 3;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "VHT", 3) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "1T", 2))
-+	else if (strcmp(prate_section, "VHT") == 0 &&
-+		 strcmp(prf_path, "1T") == 0)
- 		rate_section = 4;
--	else if (_rtl8812ae_eq_n_byte(prate_section, "VHT", 3) &&
--		 _rtl8812ae_eq_n_byte(prf_path, "2T", 2))
-+	else if (strcmp(prate_section, "VHT") == 0 &&
-+		 strcmp(prf_path, "2T") == 0)
- 		rate_section = 5;
- 
--	if (_rtl8812ae_eq_n_byte(pbandwidth, "20M", 3))
-+	if (strcmp(pbandwidth, "20M") == 0)
- 		bandwidth = 0;
--	else if (_rtl8812ae_eq_n_byte(pbandwidth, "40M", 3))
-+	else if (strcmp(pbandwidth, "40M") == 0)
- 		bandwidth = 1;
--	else if (_rtl8812ae_eq_n_byte(pbandwidth, "80M", 3))
-+	else if (strcmp(pbandwidth, "80M") == 0)
- 		bandwidth = 2;
--	else if (_rtl8812ae_eq_n_byte(pbandwidth, "160M", 4))
-+	else if (strcmp(pbandwidth, "160M") == 0)
- 		bandwidth = 3;
- 
--	if (_rtl8812ae_eq_n_byte(pband, "2.4G", 4)) {
-+	if (strcmp(pband, "2.4G") == 0) {
- 		ret = _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(hw,
- 							       BAND_ON_2_4G,
- 							       channel);
-@@ -1718,7 +1706,7 @@ static void _rtl8812ae_phy_set_txpower_limit(struct ieee80211_hw *hw,
- 			regulation, bandwidth, rate_section, channel_index,
- 			rtlphy->txpwr_limit_2_4g[regulation][bandwidth]
- 				[rate_section][channel_index][RF90_PATH_A]);
--	} else if (_rtl8812ae_eq_n_byte(pband, "5G", 2)) {
-+	} else if (strcmp(pband, "5G") == 0) {
- 		ret = _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(hw,
- 							       BAND_ON_5G,
- 							       channel);
--- 
-2.31.1
-
+On 12/7/2022 2:30 PM, Wen Gong wrote:
+> Hi Johannes,
+>
+> do you know it?
+>
+> On 12/5/2022 5:46 PM, Wen Gong wrote:
+>> On 3/17/2019 1:06 AM, Felix Fietkau wrote:
+>>> Reduces lock contention on enqueue/dequeue of iTXQ packets
+>>>
+>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>>> ---
+>>>   net/mac80211/tx.c | 10 ++++++++--
+>>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+>>> index 8127e43e12b1..f85344c9af62 100644
+>>> --- a/net/mac80211/tx.c
+>>> +++ b/net/mac80211/tx.c
+>>> @@ -3544,6 +3544,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct 
+>>> ieee80211_hw *hw,
+>>>       ieee80211_tx_result r;
+>>>       struct ieee80211_vif *vif = txq->vif;
+>>>   +begin:
+>>>       spin_lock_bh(&fq->lock);
+>> Maybe use-after-free will happened?
+>>
+>> You can see ieee80211_tx_dequeue() in tx.c as below, after 
+>> ieee80211_free_txskb(), it will goto begin,
+>> If goto out happened in below check, then the skb which is freed will 
+>> be returned, and use-after-free will happen.
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/tree/net/mac80211/tx.c?id=ded4698b58cb23c22b0dcbd829ced19ce4e6ce02#n3538 
+>>
+>> begin:
+>>     spin_lock_bh(&fq->lock);
+>>
+>>     if (test_bit(IEEE80211_TXQ_STOP, &txqi->flags) ||
+>>         test_bit(IEEE80211_TXQ_STOP_NETIF_TX, &txqi->flags))
+>>         goto out;
+>>
+>>     if (vif->txqs_stopped[ieee80211_ac_from_tid(txq->tid)]) {
+>>         set_bit(IEEE80211_TXQ_STOP_NETIF_TX, &txqi->flags);
+>>         goto out;
+>>     }
+>>
+>>     /* Make sure fragments stay together. */
+>>     skb = __skb_dequeue(&txqi->frags);
+>>     if (skb)
+>>         goto out;
+>>
+>>     skb = fq_tin_dequeue(fq, tin, fq_tin_dequeue_func);
+>>     if (!skb)
+>>         goto out;
+>>
+>>     spin_unlock_bh(&fq->lock);
+>>
+>> Maybe "skb = NULL;" should be added after "begin:".
+>>
+>> ...
+>>
