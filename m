@@ -2,113 +2,262 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A85A649A23
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 09:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A39649B2B
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 10:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231603AbiLLIhB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Dec 2022 03:37:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49572 "EHLO
+        id S231693AbiLLJay (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Dec 2022 04:30:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231593AbiLLIgu (ORCPT
+        with ESMTP id S231908AbiLLJab (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Dec 2022 03:36:50 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E2BDFC8
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Dec 2022 00:36:49 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BC7Smn4011817;
-        Mon, 12 Dec 2022 08:36:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=zSsSrMavnr2QQ0fZ6L2RfBsL+8OLTpE4t6Xwq6UO/Ys=;
- b=lH7DQEzIIxzdhQg1ZP+E2ETtELdwzCYTFN6dkOcW+5cI6Lx6fPjSf9XDRvyyPI4XUVBt
- 4BidInjcwcReyMaCRMDM+0UYgP02BzhM2WJ3HoK93Zn73uBJEtwdsOW2Ih0gQdlvY+U7
- htcrY3ehgC8hYJ1RIRdSHYrNDB/qxr6fv64ilrKSa7HAC+bfyHK3gNr+fWe1QuDhC9tG
- E9l6L9UZmgsLIeCAnBJaniYEmyOk8TkPQGBb6va3bdIp766Xe27XRepK8WEZrwAE+Ntb
- yNyBYlDYZPy/rQ9CA4Ec8WztLONx4e8XekRk5wg4dijSpTB++XyelmxD0TSK95Vygy1z pA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mch4euk3t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 12 Dec 2022 08:36:43 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BC8agro020750
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 12 Dec 2022 08:36:42 GMT
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Mon, 12 Dec 2022 00:36:40 -0800
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH] wifi: mac80211: change initialize for sk_buff in ieee80211_tx_dequeue()
-Date:   Mon, 12 Dec 2022 03:36:07 -0500
-Message-ID: <20221212083607.21536-1-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.31.1
+        Mon, 12 Dec 2022 04:30:31 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8917A6435;
+        Mon, 12 Dec 2022 01:30:29 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 42BE7B80BE8;
+        Mon, 12 Dec 2022 09:30:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5AEC433D2;
+        Mon, 12 Dec 2022 09:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670837426;
+        bh=yOb3x1WaiL7gvgdAJPPGuqahy5lGVVX2BBG2Zalqifs=;
+        h=From:Subject:To:Cc:Date:From;
+        b=qq3SrtfymrFJcI+z7Ud8MTkALa5Ivso5364pfJrxoHsVz/GEbYTh6OJFi6LAhQ3v5
+         HgkaBKLfrU0+vEFGiMv5lKf4auOMxhpQ3AmN2U2dMfT4dEiB4vZUWbMKvzcv0gFBcp
+         ZdplXaLehH6Xrdo6AvgoY9EEbk8twGWeiTr0VjSgnFeAGWnI17W6vYzwPzX5r8vPGO
+         SpOWM/R8lAfp/ea5BiKYBaMnZORb26aMobhrxxIk2Wlfh/w4g5QLJCKvTInYKsRQDv
+         QCTmK8dG6ouiUcncB5DVzu09DwL3eUhKYDZMadG8ScrrkLI7xiSjKfBIE5a7Cl4Duy
+         WpSr8MHa2ZaXQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: pEZLZMwcyTKWKV-QH7rnipQFVdDzOJW6
-X-Proofpoint-ORIG-GUID: pEZLZMwcyTKWKV-QH7rnipQFVdDzOJW6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-12_01,2022-12-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 adultscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 spamscore=0 mlxlogscore=697
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2212120080
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-next-2022-12-12
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20221212093026.5C5AEC433D2@smtp.kernel.org>
+Date:   Mon, 12 Dec 2022 09:30:26 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The sk_buff is only set to NULL when initialize, sometimes it will goto
-label "begin" after ieee80211_free_txskb(), then it points to a sk_buff
-which is already freed. If it run into the "goto out" after arrived to
-label "begin", then it will return a sk_buff which is freed, it is a
-risk for use-after-free.
+Hi,
 
-Fixes: ded4698b58cb ("mac80211: run late dequeue late tx handlers without holding fq->lock")
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
----
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+here's a pull request to net-next tree, more info below. Please let me know if
+there are any problems.
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 2171cd1ca807..0b23cc9ab9c7 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3776,7 +3776,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	struct ieee80211_local *local = hw_to_local(hw);
- 	struct txq_info *txqi = container_of(txq, struct txq_info, txq);
- 	struct ieee80211_hdr *hdr;
--	struct sk_buff *skb = NULL;
-+	struct sk_buff *skb;
- 	struct fq *fq = &local->fq;
- 	struct fq_tin *tin = &txqi->tin;
- 	struct ieee80211_tx_info *info;
-@@ -3790,6 +3790,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 		return NULL;
- 
- begin:
-+	skb = NULL;
-+
- 	spin_lock_bh(&fq->lock);
- 
- 	if (test_bit(IEEE80211_TXQ_STOP, &txqi->flags) ||
+Kalle
 
-base-commit: 922932ca02191a390f7f52fb6e21c44b50e14025
--- 
-2.31.1
+The following changes since commit 65e6af6cebefbf7d8d8ac52b71cd251c2071ad00:
 
+  net: ethernet: mtk_wed: fix sleep while atomic in mtk_wed_wo_queue_refill (2022-12-02 21:23:02 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2022-12-12
+
+for you to fetch changes up to 832c3f66f53f1eb20f424b916a311ad82074ef0d:
+
+  Merge tag 'iwlwifi-next-for-kalle-2022-12-07' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2022-12-08 16:54:33 +0200)
+
+----------------------------------------------------------------
+wireless-next patches for v6.2
+
+Fourth set of patches for v6.2. Few final patches, a big change is
+that rtw88 now has USB support.
+
+Major changes:
+
+rtw88
+
+* support USB devices rtw8821cu, rtw8822bu, rtw8822cu and rtw8723du
+
+----------------------------------------------------------------
+Arend van Spriel (7):
+      wifi: brcmfmac: add function to unbind device to bus layer api
+      wifi: brcmfmac: add firmware vendor info in driver info
+      wifi: brcmfmac: add support for vendor-specific firmware api
+      wifi: brcmfmac: add support for Cypress firmware api
+      wifi: brcmfmac: add support Broadcom BCA firmware api
+      wifi: brcmfmac: add vendor name in revinfo debugfs file
+      wifi: brcmfmac: introduce BRCMFMAC exported symbols namespace
+
+Bitterblue Smith (3):
+      wifi: rtl8xxxu: Add __packed to struct rtl8723bu_c2h
+      wifi: rtl8xxxu: Fix the channel width reporting
+      wifi: rtl8xxxu: Introduce rtl8xxxu_update_ra_report
+
+Jakob Koschel (1):
+      wifi: iwlwifi: mvm: replace usage of found with dedicated list iterator variable
+
+Jiapeng Chong (1):
+      wifi: ipw2x00: Remove some unused functions
+
+Johannes Berg (3):
+      wifi: iwlwifi: nvm-parse: enable WiFi7 for Fm radio for now
+      wifi: iwlwifi: modify new queue allocation command
+      wifi: iwlwifi: fw: use correct IML/ROM status register
+
+Jun ASAKA (1):
+      wifi: rtl8xxxu: fixing IQK failures for rtl8192eu
+
+Kalle Valo (1):
+      Merge tag 'iwlwifi-next-for-kalle-2022-12-07' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
+
+Miri Korenblit (1):
+      wifi: iwlwifi: mvm: Don't use deprecated register
+
+Mordechay Goodstein (1):
+      wifi: iwlwifi: mvm: don't access packet before checking len
+
+Mukesh Sisodiya (3):
+      wifi: iwlwifi: dump: Update check for valid FW address
+      wifi: iwlwifi: pcie: Add reading and storing of crf and cdb id.
+      wifi: iwlwifi: dump: Update check for UMAC valid FW address
+
+Naftali Goldstein (1):
+      wifi: iwlwifi: mvm: d3: add TKIP to the GTK iterator
+
+Peter Kosyh (2):
+      wifi: rtlwifi: rtl8192se: remove redundant rtl_get_bbreg() call
+      wifi: rtlwifi: btcoexist: fix conditions branches that are never executed
+
+Po-Hao Huang (4):
+      wifi: rtw89: add mac TSF sync function
+      wifi: rtw89: stop mac port function when stop_ap()
+      wifi: rtw89: fix unsuccessful interface_add flow
+      wifi: rtw89: add join info upon create interface
+
+Sascha Hauer (11):
+      wifi: rtw88: print firmware type in info message
+      wifi: rtw88: Call rtw_fw_beacon_filter_config() with rtwdev->mutex held
+      wifi: rtw88: Drop rf_lock
+      wifi: rtw88: Drop h2c.lock
+      wifi: rtw88: Drop coex mutex
+      wifi: rtw88: iterate over vif/sta list non-atomically
+      wifi: rtw88: Add common USB chip support
+      wifi: rtw88: Add rtw8821cu chipset support
+      wifi: rtw88: Add rtw8822bu chipset support
+      wifi: rtw88: Add rtw8822cu chipset support
+      wifi: rtw88: Add rtw8723du chipset support
+
+Tom Rix (1):
+      wifi: iwlwifi: mei: clean up comments
+
+Wang Yufen (1):
+      wifi: brcmfmac: Fix error return code in brcmf_sdio_download_firmware()
+
+Zong-Zhe Yang (2):
+      wifi: rtw89: don't request partial firmware if SECURITY_LOADPIN_ENFORCE
+      wifi: rtw89: request full firmware only once if it's early requested
+
+ .../wireless/broadcom/brcm80211/brcmfmac/Makefile  |  11 +
+ .../broadcom/brcm80211/brcmfmac/bca/Makefile       |  12 +
+ .../broadcom/brcm80211/brcmfmac/bca/core.c         |  27 +
+ .../broadcom/brcm80211/brcmfmac/bca/module.c       |  27 +
+ .../broadcom/brcm80211/brcmfmac/bca/vops.h         |  11 +
+ .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  |  52 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bus.h |  30 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/core.c    |  12 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/core.h    |   8 +
+ .../broadcom/brcm80211/brcmfmac/cyw/Makefile       |  12 +
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c         |  27 +
+ .../broadcom/brcm80211/brcmfmac/cyw/module.c       |  27 +
+ .../broadcom/brcm80211/brcmfmac/cyw/vops.h         |  11 +
+ .../wireless/broadcom/brcm80211/brcmfmac/fwvid.c   | 199 +++++
+ .../wireless/broadcom/brcm80211/brcmfmac/fwvid.h   |  47 ++
+ .../wireless/broadcom/brcm80211/brcmfmac/pcie.c    |  72 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |  13 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c |  27 +-
+ .../broadcom/brcm80211/brcmfmac/wcc/Makefile       |  12 +
+ .../broadcom/brcm80211/brcmfmac/wcc/core.c         |  27 +
+ .../broadcom/brcm80211/brcmfmac/wcc/module.c       |  27 +
+ .../broadcom/brcm80211/brcmfmac/wcc/vops.h         |  11 +
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c       |  11 -
+ .../net/wireless/intel/iwlwifi/fw/api/datapath.h   |  16 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c       |   7 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |   2 +
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |   4 +
+ drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h   |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mei/main.c      |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mei/sap.h       |  10 +-
+ .../net/wireless/intel/iwlwifi/mei/trace-data.h    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mei/trace.h     |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |   9 +-
+ .../net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |  12 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |  38 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |  26 +-
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c    |   7 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |  33 +-
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |   2 +-
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c |  73 +-
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 101 +--
+ .../realtek/rtlwifi/btcoexist/halbtc8723b1ant.c    |   5 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c   |   3 -
+ drivers/net/wireless/realtek/rtw88/Kconfig         |  47 ++
+ drivers/net/wireless/realtek/rtw88/Makefile        |  15 +
+ drivers/net/wireless/realtek/rtw88/coex.c          |   3 +-
+ drivers/net/wireless/realtek/rtw88/debug.c         |  15 +
+ drivers/net/wireless/realtek/rtw88/fw.c            |  13 +-
+ drivers/net/wireless/realtek/rtw88/hci.h           |   9 +-
+ drivers/net/wireless/realtek/rtw88/mac.c           |   3 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c      |   2 +-
+ drivers/net/wireless/realtek/rtw88/main.c          |  12 +-
+ drivers/net/wireless/realtek/rtw88/main.h          |  12 +-
+ drivers/net/wireless/realtek/rtw88/phy.c           |   6 +-
+ drivers/net/wireless/realtek/rtw88/ps.c            |   2 +-
+ drivers/net/wireless/realtek/rtw88/reg.h           |   1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c      |  28 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h      |  13 +-
+ drivers/net/wireless/realtek/rtw88/rtw8723du.c     |  36 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c      |  18 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h      |  21 +
+ drivers/net/wireless/realtek/rtw88/rtw8821cu.c     |  50 ++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c      |  19 +
+ drivers/net/wireless/realtek/rtw88/rtw8822bu.c     |  90 ++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c      |  24 +
+ drivers/net/wireless/realtek/rtw88/rtw8822cu.c     |  44 +
+ drivers/net/wireless/realtek/rtw88/tx.h            |  31 +
+ drivers/net/wireless/realtek/rtw88/usb.c           | 911 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/usb.h           | 107 +++
+ drivers/net/wireless/realtek/rtw88/util.c          | 103 +++
+ drivers/net/wireless/realtek/rtw88/util.h          |  12 +-
+ drivers/net/wireless/realtek/rtw89/core.c          |   6 +-
+ drivers/net/wireless/realtek/rtw89/fw.c            |  60 +-
+ drivers/net/wireless/realtek/rtw89/fw.h            |  22 +-
+ drivers/net/wireless/realtek/rtw89/mac.c           |  64 +-
+ drivers/net/wireless/realtek/rtw89/mac.h           |   3 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c      |   3 +
+ drivers/net/wireless/realtek/rtw89/reg.h           |  17 +
+ 80 files changed, 2613 insertions(+), 297 deletions(-)
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/Makefile
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/vops.h
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/Makefile
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/vops.h
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/Makefile
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/vops.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723du.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cu.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/usb.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/usb.h
