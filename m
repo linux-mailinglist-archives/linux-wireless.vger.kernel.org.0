@@ -2,93 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 162E164A80B
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 20:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8196764A8B8
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Dec 2022 21:30:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232154AbiLLTTu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Dec 2022 14:19:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
+        id S233015AbiLLUaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Dec 2022 15:30:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbiLLTTt (ORCPT
+        with ESMTP id S232576AbiLLUaY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Dec 2022 14:19:49 -0500
-Received: from titan.fastwww.net (titan.fastwww.net [15.235.10.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCBD0B92
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Dec 2022 11:19:43 -0800 (PST)
-Comment: DomainKeys? See http://domainkeys.sourceforge.net/
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=default; d=lockie.ca;
-  b=Hwmj2QWXtHO98DJPQZOnQfkTtYl7gPPFbzhe2kovrg4ZQz5fYQdRMq2o7P5YtBdJybnaF09ZjcnkS16tD0WtIYr4a1STOfV7r0tDZeWdxp7i4sIC/H9f1Vwk3RRaMyZl3SBMJpfdw2RZ2WVayYzmpHw2Kv1FJfdu3BQCeFChfbq+90Yjd9zMz9kd//oVmjPz/1kLl0Q4+XzfFnVWhvGwVjulpgt9ZUE0vSsr3oYfGzkKrdmJPimDvxbS//3wvU1e0qi2rAzybCPD5VgmF3+4CMzblSo5D3KXZwc4ky6R8/LFW8V0lRGOdPd59/KJjNj17u5ugEqWg1H2gl6YYHPyYQ==;
-  h=Received:Received:Received:Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Correlation-ID;
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=lockie.ca; h=date:from:to
-        :cc:message-id:in-reply-to:references:subject:mime-version
-        :content-type:content-transfer-encoding; s=default; bh=vjRZOlPbG
-        eNrlXc60+ZOGkAGSpI=; b=wf3VBMTyn8v1OOPQG+QNWRfMS6mt0ydk3acVVxF1g
-        umnl6WraPgLyy34oNIebPGojsh3zT6+3mjAlf6j4AQoJD/HrstU5WgdHpr5ndStX
-        Ls5DiSxH0HjEnxD1VkB7y5T5aFvZe2Vla7N3TQcqWjY78dFqZ/KPIYBM9sQd1zle
-        jE6d2LMGOo1XuaoM6Fy1+YCWJoqawbvGdULRKADBNW1mSSs6BCqRJ7o4d+Ku+npn
-        JlBFzdVTcYOKExTxK+9JB4v4iGK3umrUvs62ErrNZimqEaMK49a307QCZN7DyTI+
-        CY66D2UxSiEwtgiTzUtswEWUq46zpfy4jvqWOGDWay4KA==
-Received: (qmail 24918 invoked by uid 108); 12 Dec 2022 19:19:41 +0000
-Received: from unknown (HELO titan.fastwww.net) (127.0.0.1)
-  by titan.fastwww.net with SMTP; 12 Dec 2022 19:19:41 +0000
-Received: from dummy.faircode.eu ([76.75.122.26])
-        by titan.fastwww.net with ESMTPSA
-        id Nvz7M81+l2NUYQAApSktOw
-        (envelope-from <bjlockie@lockie.ca>); Mon, 12 Dec 2022 19:19:41 +0000
-Date:   Mon, 12 Dec 2022 14:19:39 -0500 (EST)
-From:   James <bjlockie@lockie.ca>
-To:     Joshua Richenhagen <richenhagen@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Message-ID: <27bdcf85-ed2f-40f6-a285-76879a8fbc6a@lockie.ca>
-In-Reply-To: <CAJZ9B5tdZxqBG8pZhEKdzfaNqrR=8jGdNuMXJ7cYCitL7eatKw@mail.gmail.com>
-References: <CAJZ9B5tdZxqBG8pZhEKdzfaNqrR=8jGdNuMXJ7cYCitL7eatKw@mail.gmail.com>
-Subject: Re: Realtek 1d3e:c826 not working
+        Mon, 12 Dec 2022 15:30:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748C215837;
+        Mon, 12 Dec 2022 12:30:21 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06C2F61214;
+        Mon, 12 Dec 2022 20:30:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5C214C433F0;
+        Mon, 12 Dec 2022 20:30:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670877020;
+        bh=ezBkCmQhN4P/me21fhlPnht/P5oZYQ5ye14VOe3W280=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=CltFt9NDXz1zvIX3AwZmbftj7Gg47rs/8LfdFSc8urxNhqtX4t3agE0tqlwUfxGov
+         qK4R3tnLHfApBXxqJYdXZWdexr/Fa8Un7ke+QalfpfCDq/oB5o1JkM3CNxbBVOVOK9
+         inoelLqOz1r6FEx7zHuY8kpgXnWD994DbDlqByUo3cS8eEZES4vM2Vuh0pXzrdbuhV
+         RcxwNetPWlCvmQ5BNA6OVhvpr8wlmJZ83cfCuWcmnOEyFLxZv0E1uUw0U66lRZYfYs
+         x5ut8sj81zQii1CKCg93Tc12h/ggf4FdrGlB6katZe1tUxrGhi2i6dmVP/XkdYqiWg
+         +hQhbg30ORklQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 34CCBC00448;
+        Mon, 12 Dec 2022 20:30:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <27bdcf85-ed2f-40f6-a285-76879a8fbc6a@lockie.ca>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_SOFTFAIL
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2022-12-12
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <167087702021.6337.6994775534614645395.git-patchwork-notify@kernel.org>
+Date:   Mon, 12 Dec 2022 20:30:20 +0000
+References: <20221212093026.5C5AEC433D2@smtp.kernel.org>
+In-Reply-To: <20221212093026.5C5AEC433D2@smtp.kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-https://askubuntu.com/questions/1412450/network-driver-for-realtek-10ecb852
+Hello:
 
-Dec. 12, 2022 11:43:59 Joshua Richenhagen <richenhagen@gmail.com>:
+This pull request was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> Hello,
->=20
-> on my new Xiaomi Book Pro 14 Ryzen with Realtek b852 using newest
-> kernel Linux 6.1 Wifi is not recognized at all. Is the PCIe device ID
-> missing in the rtw89 driver?
->=20
-> 01:00.0 Network controller: Realtek Semiconductor Co., Ltd. Device b852
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Subsystem: Device 1d3e:c826
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Flags: fast devsel, IRQ 255, I=
-OMMU group 11
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 I/O ports at 2000 [disabled] [=
-size=3D256]
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Memory at c0900000 (64-bit, no=
-n-prefetchable) [disabled] [size=3D1M]
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [40] Power Manag=
-ement version 3
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [50] MSI: Enable=
-- Count=3D1/1 Maskable- 64bit+
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [70] Express End=
-point, MSI 00
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [100] Advanced E=
-rror Reporting
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [148] Device Ser=
-ial Number 00-e0-4c-ff-fe-88-52-01
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [158] Latency To=
-lerance Reporting
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Capabilities: [160] L1 PM Subs=
-tates
->=20
-> Kinds regards
-> Joshua Richenhagen
+On Mon, 12 Dec 2022 09:30:26 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-next-2022-12-12
+    https://git.kernel.org/netdev/net-next/c/fba119cee141
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
