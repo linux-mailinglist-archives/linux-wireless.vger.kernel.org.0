@@ -2,75 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1072764B02E
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Dec 2022 08:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D828964B235
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Dec 2022 10:21:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234414AbiLMHHW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Dec 2022 02:07:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42934 "EHLO
+        id S234641AbiLMJVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Dec 2022 04:21:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230052AbiLMHHV (ORCPT
+        with ESMTP id S234745AbiLMJUg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Dec 2022 02:07:21 -0500
-Received: from out30-6.freemail.mail.aliyun.com (out30-6.freemail.mail.aliyun.com [115.124.30.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6076BFCF4;
-        Mon, 12 Dec 2022 23:07:19 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R901e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=jiapeng.chong@linux.alibaba.com;NM=0;PH=DS;RN=11;SR=0;TI=SMTPD_---0VXCoiVi_1670915230;
-Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VXCoiVi_1670915230)
-          by smtp.aliyun-inc.com;
-          Tue, 13 Dec 2022 15:07:16 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     gregory.greenman@intel.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH] iwlwifi: mvm: Remove the unused function iwl_dbgfs_is_match()
-Date:   Tue, 13 Dec 2022 15:07:08 +0800
-Message-Id: <20221213070708.13619-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        Tue, 13 Dec 2022 04:20:36 -0500
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6CF5F0A
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 01:20:35 -0800 (PST)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id A8FF486409; Tue, 13 Dec 2022 09:18:49 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1670923188; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=FPui+Frfm9p59AnrsXrS3RPxXxIYDHvHeDRoVTydMa+rfWrzLRXkQVpnvIOwYzXWa
+         MtgMNmVt11iiQocBLdx/VZyboCuv52CHQpPs/d32F11ulpwbpGovPFUwYv7PZ0UkCa
+         HMNyD3QIrlLEp7CGaf850C2PufUGHEvtRRHX7Fba+iCuK2HonJ52ZF1Rq6BSXhqjgH
+         Szu84IUEaWaPp9uN0GMxjRjlTxS/i0Hpsxm0Hnbu4Sj/fvZiGuQfboK20+2iupi8ih
+         rIA3tczd0mWgNTlAd6myKeN7rIwYRwPPxZg3kdAA9ldRw+Xm5wLEu4Bqky70C/bhoK
+         9BRIu8sQ9Bm8Q==
+Received: by mail.lokoho.com for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 09:17:13 GMT
+Message-ID: <20221213074501-0.1.2s.96ni.0.30fb4i2uan@lokoho.com>
+Date:   Tue, 13 Dec 2022 09:17:13 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The function iwl_dbgfs_is_match is defined in the debugfs-vif.c file,
-but not called elsewhere, so remove this unused function.
+Dzie=C5=84 dobry,
 
-drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c:441:21: warning: unused function 'iwl_dbgfs_is_match'.
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3433
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c | 7 -------
- 1 file changed, 7 deletions(-)
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-index 78d8b37eb71a..3779ac040ba0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-@@ -438,13 +438,6 @@ static ssize_t iwl_dbgfs_bf_params_read(struct file *file,
- 	return simple_read_from_buffer(user_buf, count, ppos, buf, pos);
- }
- 
--static inline char *iwl_dbgfs_is_match(char *name, char *buf)
--{
--	int len = strlen(name);
--
--	return !strncmp(name, buf, len) ? buf + len : NULL;
--}
--
- static ssize_t iwl_dbgfs_os_device_timediff_read(struct file *file,
- 						 char __user *user_buf,
- 						 size_t count, loff_t *ppos)
--- 
-2.20.1.7.g153144c
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
+
+Pozdrawiam
+Adam Charachuta
