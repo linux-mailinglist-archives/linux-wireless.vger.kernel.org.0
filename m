@@ -2,42 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF4A64C243
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 03:28:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C485564C321
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 05:20:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236903AbiLNC2b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Dec 2022 21:28:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39910 "EHLO
+        id S236745AbiLNEUO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Dec 2022 23:20:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbiLNC23 (ORCPT
+        with ESMTP id S236626AbiLNEUM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Dec 2022 21:28:29 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A769A1F9F3
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 18:28:28 -0800 (PST)
-X-UUID: f301869136394011a3be5bb182399f41-20221214
+        Tue, 13 Dec 2022 23:20:12 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9600E26D9
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 20:20:07 -0800 (PST)
+X-UUID: 3bc3e67eef7647bab818e84cf62c54e2-20221214
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=qAl+m1OTr5en6yAHBXyL88TpRTYUyea0S1uSD/4DSXE=;
-        b=vBzqekjkuFQbKIc5ALOS5OjaaPKfDPIRe5h89BnAaK0besoWChudU39KOMMfIbeZH8A+NjN8iPOqeWwoKJIQjiezpkm+JWXxgUrxls8Swvy9rjkCz0EV+a4GFr8Qt/AtnlaEGmENIGg+w74/Rc8HhUbF75ySvpsNULXd9mVLhjI=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=gjgWf+nNweGdAjzb9i9IUL2kpUv96rq6qUQ5X2JeHOA=;
+        b=clUUy7FpfF8rZYcMgwpxdWNB72omvPVQmgPCyXf1rAHEQZA/LQxsva7o57so2iLniK6yFMFwjaDdACvxaUI2jjIQw4uO0IDzYGKcckunAHA6RTgkpOhIgH5liHkum6Sd/Tx8WY5zDpvqi/bT/OWJ3VjFkKPFlfmkpQ2hh4Tobdw=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:cde0644f-65e0-49b5-9d2c-451da0731650,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:dcaaed0,CLOUDID:02173625-4387-4253-a41d-4f6f2296b154,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: f301869136394011a3be5bb182399f41-20221214
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+X-CID-O-INFO: VERSION:1.1.14,REQID:5aa9340c-a688-48a0-9b28-94f685c9b351,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:90
+X-CID-INFO: VERSION:1.1.14,REQID:5aa9340c-a688-48a0-9b28-94f685c9b351,IP:0,URL
+        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:90
+X-CID-META: VersionHash:dcaaed0,CLOUDID:f8938ed2-652d-43fd-a13a-a5dd3c69a43d,B
+        ulkID:2212141028171DVSOJSK,BulkQuantity:7,Recheck:0,SF:28|17|19|48,TC:nil,
+        Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0
+X-UUID: 3bc3e67eef7647bab818e84cf62c54e2-20221214
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
         (envelope-from <howard-yh.hsu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 206152887; Wed, 14 Dec 2022 10:28:25 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+        with ESMTP id 2104895415; Wed, 14 Dec 2022 12:20:04 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
+ Wed, 14 Dec 2022 04:20:00 +0000
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
  mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Wed, 14 Dec 2022 10:28:24 +0800
+ 15.2.792.15; Wed, 14 Dec 2022 10:28:14 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 14 Dec 2022 10:28:24 +0800
+ 15.2.792.15 via Frontend Transport; Wed, 14 Dec 2022 10:28:14 +0800
 From:   Howard Hsu <howard-yh.hsu@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -46,11 +52,10 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        Howard Hsu <howard-yh.hsu@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v3 4/4] wifi: mt76: mt7915: add error message in mt7915_thermal_set_cur_throttle_state()
-Date:   Wed, 14 Dec 2022 10:28:09 +0800
-Message-ID: <20221214022809.32087-5-howard-yh.hsu@mediatek.com>
+        Howard Hsu <howard-yh.hsu@mediatek.com>
+Subject: [PATCH v3 1/4] wifi: mt76: mt7915: call mt7915_mcu_set_thermal_throttling() only after init_work
+Date:   Wed, 14 Dec 2022 10:28:06 +0800
+Message-ID: <20221214022809.32087-2-howard-yh.hsu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20221214022809.32087-1-howard-yh.hsu@mediatek.com>
 References: <20221214022809.32087-1-howard-yh.hsu@mediatek.com>
@@ -59,83 +64,57 @@ Content-Type: text/plain
 X-MTK:  N
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add dev_err so that it is easier to see invalid setting while looking at
-dmesg.
+Enable thermal management by default shall not be executed during mcu
+init. This causes thermal configuration being reset to the firmware
+default settings.
 
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Fixes: 0063b86c9120 ("mt76: mt7915e: Enable thermal management by default")
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
 Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   | 12 +++++++-----
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h |  2 ++
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 3 +--
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 6 ++++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 0ab9e1320fac..a89b37a320c0 100644
+index 571c94835942..11407e18e56a 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -145,8 +145,11 @@ mt7915_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
- 	u8 throttling = MT7915_THERMAL_THROTTLE_MAX - state;
- 	int ret;
+@@ -201,8 +201,7 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
+ 	phy->throttle_temp[0] = 110;
+ 	phy->throttle_temp[1] = 120;
  
--	if (state > MT7915_CDEV_THROTTLE_MAX)
-+	if (state > MT7915_CDEV_THROTTLE_MAX) {
-+		dev_err(phy->dev->mt76.dev,
-+			"please specify a valid throttling state\n");
- 		return -EINVAL;
-+	}
- 
- 	if (state == phy->cdev_state)
- 		return 0;
-@@ -175,7 +178,7 @@ static void mt7915_unregister_thermal(struct mt7915_phy *phy)
- 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
- 
- 	if (!phy->cdev)
--	    return;
-+		return;
- 
- 	sysfs_remove_link(&wiphy->dev.kobj, "cooling_device");
- 	thermal_cooling_device_unregister(phy->cdev);
-@@ -209,8 +212,8 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
- 		return PTR_ERR(hwmon);
- 
- 	/* initialize critical/maximum high temperature */
--	phy->throttle_temp[MT7915_CRIT_TEMP_IDX] = 110;
--	phy->throttle_temp[MT7915_MAX_TEMP_IDX] = 120;
-+	phy->throttle_temp[MT7915_CRIT_TEMP_IDX] = MT7915_CRIT_TEMP;
-+	phy->throttle_temp[MT7915_MAX_TEMP_IDX] = MT7915_MAX_TEMP;
- 
- 	return 0;
- }
-@@ -1182,7 +1185,6 @@ static void mt7915_stop_hardware(struct mt7915_dev *dev)
- 		mt7986_wmac_disable(dev);
+-	return mt7915_mcu_set_thermal_throttling(phy,
+-						 MT7915_THERMAL_THROTTLE_MAX);
++	return 0;
  }
  
--
- int mt7915_register_device(struct mt7915_dev *dev)
- {
- 	struct mt7915_phy *phy2;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index e58650bbbd14..942d70c53825 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -72,6 +72,8 @@
+ static void mt7915_led_set_config(struct led_classdev *led_cdev,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 0511d6a505b0..98af032eba09 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -57,6 +57,12 @@ int mt7915_run(struct ieee80211_hw *hw)
+ 		mt7915_mac_enable_nf(dev, phy->mt76->band_idx);
+ 	}
  
- #define MT7915_CRIT_TEMP_IDX		0
- #define MT7915_MAX_TEMP_IDX		1
-+#define MT7915_CRIT_TEMP		110
-+#define MT7915_MAX_TEMP			120
- 
- struct mt7915_vif;
- struct mt7915_sta;
++	ret = mt7915_mcu_set_thermal_throttling(phy,
++						MT7915_THERMAL_THROTTLE_MAX);
++
++	if (ret)
++		goto out;
++
+ 	ret = mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b,
+ 					     phy->mt76->band_idx);
+ 	if (ret)
 -- 
 2.18.0
 
