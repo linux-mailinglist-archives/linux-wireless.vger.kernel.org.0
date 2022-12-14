@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4B664C8F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 13:24:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5C664C8F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 13:24:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238457AbiLNMX6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Dec 2022 07:23:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59902 "EHLO
+        id S238358AbiLNMYo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Dec 2022 07:24:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238275AbiLNMXh (ORCPT
+        with ESMTP id S238117AbiLNMYV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Dec 2022 07:23:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4CBA286FD
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 04:20:55 -0800 (PST)
+        Wed, 14 Dec 2022 07:24:21 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00BE926AD0
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 04:21:37 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 357E9619F3
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 12:20:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3B2C433D2;
-        Wed, 14 Dec 2022 12:20:53 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 1E06BCE1867
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 12:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AE6C433EF;
+        Wed, 14 Dec 2022 12:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671020454;
-        bh=FIbizz3j4Isj8O3HMtFWrcONWJGGZ0kuFae3I8pYgP4=;
+        s=k20201202; t=1671020494;
+        bh=a5ReCZw6A9g0RhWDRWu/w5e3rqlfxW02iE6V7iVb1X0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=u2SYoj6n0Bv5mBAPZ6DmGM9KyNlYGlwwMb+ggEgWiHRL4N9eTqxQ0Pk4aQrFqlV6r
-         6W9ZlQnSavLlACmh5Ux/oljW6qpZBzPBW7xtyaxFGKoJVINZ8ATNsgN6y0n8JI5Att
-         rWHvuh9sDRmqjidnsn8L7Xz3DF3meE2Sq//N81guGZeZ6dFNyEHBKO8LHk8Jstuy/P
-         geDt7vPYl07pQdKxjHrTBrCnSl/l0BHjCu/l9gLyazx4QYUnN7qLSu1VVhcMRkAza5
-         bKc1ZoG146Wnr2j6ZdIssSg8dAmFpPZKkoXYLhmEuODkLj56w2MYdDpyI2gg2TxMgO
-         gvKPMwg9yQCfw==
+        b=L3PkEXwoJcydCVOIARyxPlHVNwO+RBOWVEA4D7wAmhrdRaERG9bujQY2t9WlCYNnb
+         38+KBkQvtlggvUWEeerbuJQ2sphsgZyVSKkC53/8Bojq1TzkZJBnWRVRa/2/+bTdv3
+         M8qiAS+plAlbjZQgWzLpmyF3NOy1igAdhRbJ73DXQKBi7tcSX7CwqIghg+AFw055Zy
+         VzAsd+5gNa7j7cacFHncTF/I6lT46yGq+JNSrqxWNCua2vKO9cwbHyunTRaIaYINAP
+         9YEmZRx5/1QdD40BLMeZ+6Hmx5wX+ezp/ztQ28Cs5BOfv4zLI5jJU2Z8zx87ObBfS0
+         /x0GX5VYLLaJg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/3] wifi: rtlwifi: rtl8821ae: don't call kfree_skb()
- under
+Subject: Re: [PATCH] wifi: iwlegacy: common: don't call dev_kfree_skb() under
  spin_lock_irqsave()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221207141411.46098-2-yangyingliang@huawei.com>
-References: <20221207141411.46098-2-yangyingliang@huawei.com>
+In-Reply-To: <20221207144013.70210-1-yangyingliang@huawei.com>
+References: <20221207144013.70210-1-yangyingliang@huawei.com>
 To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
+Cc:     <stf_xl@wp.pl>, <linux-wireless@vger.kernel.org>,
         <yangyingliang@huawei.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167102045149.7997.14610961603029156010.kvalo@kernel.org>
-Date:   Wed, 14 Dec 2022 12:20:53 +0000 (UTC)
+Message-ID: <167102049109.7997.1710189431829876997.kvalo@kernel.org>
+Date:   Wed, 14 Dec 2022 12:21:33 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,24 +57,20 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Yang Yingliang <yangyingliang@huawei.com> wrote:
 
-> It is not allowed to call kfree_skb() from hardware interrupt
-> context or with interrupts being disabled. All the SKBs have
-> been dequeued from the old queue, so it's safe to enqueue these
-> SKBs to a free queue, then free them after spin_unlock_irqrestore()
-> at once. Compile tested only.
+> It is not allowed to call consume_skb() from hardware interrupt context
+> or with interrupts being disabled. So replace dev_kfree_skb() with
+> dev_consume_skb_irq() under spin_lock_irqsave(). Compile tested only.
 > 
-> Fixes: 5c99f04fec93 ("rtlwifi: rtl8723be: Update driver to match Realtek release of 06/28/14")
+> Fixes: 4bc85c1324aa ("Revert "iwlwifi: split the drivers for agn and legacy devices 3945/4965"")
 > Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-3 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-106031c1f4a8 wifi: rtlwifi: rtl8821ae: don't call kfree_skb() under spin_lock_irqsave()
-2611687fa7ff wifi: rtlwifi: rtl8188ee: don't call kfree_skb() under spin_lock_irqsave()
-313950c2114e wifi: rtlwifi: rtl8723be: don't call kfree_skb() under spin_lock_irqsave()
+0c1528675d7a wifi: iwlegacy: common: don't call dev_kfree_skb() under spin_lock_irqsave()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221207141411.46098-2-yangyingliang@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221207144013.70210-1-yangyingliang@huawei.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
