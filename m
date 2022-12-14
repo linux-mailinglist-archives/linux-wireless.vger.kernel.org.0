@@ -2,117 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB5A64C5C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 10:22:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A0FB64C626
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 10:41:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237773AbiLNJVG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Dec 2022 04:21:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
+        id S237926AbiLNJki (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Dec 2022 04:40:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237878AbiLNJVF (ORCPT
+        with ESMTP id S237919AbiLNJkY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Dec 2022 04:21:05 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3B0EC60C1
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 01:21:04 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BE9K6410006763, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BE9K6410006763
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 14 Dec 2022 17:20:06 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 14 Dec 2022 17:20:55 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 14 Dec
- 2022 17:20:55 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: refine 6 GHz scanning dwell time
-Date:   Wed, 14 Dec 2022 17:19:52 +0800
-Message-ID: <20221214091952.42792-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 14 Dec 2022 04:40:24 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7588C1EAC7
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 01:40:05 -0800 (PST)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BE9R793004237;
+        Wed, 14 Dec 2022 09:39:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=89ZQ6jkpZxUnRtX/ZZVOfblWawR1yYrS+8jEyYqsKIc=;
+ b=nx+dW6EI1IfVjKPumz0NzCjK1m3uTCktvSIdioxfmDU1Juc5sWGFE3Mea80Oz01KjEu4
+ uzHIFuxxIdLJg2vNssdH3/qH8949khxf2Q+0xD7OadhBMR0V1sTbq3jfotPSwJUl3DIo
+ +hUBZycaXMOC9r83anX230kTcTg+ltEmHEbvVs0A6mbZHLspKEqVTKA7PRGma/JdZw++
+ hvw7ZSfh+x0zhroAb8EJmCP/6VLyoBYpbmhfR5/ZaoK5L9KL+/09hYZBPgtYb9O2cLS8
+ pO6HozScDEPSMoJ6uQszV1XQhPn5myiH7T1/TC0G3sva+HSz3uznPIjJG+lMesJN8DZf Tw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mf6rvrk2h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 14 Dec 2022 09:39:54 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BE9drLh021902
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 14 Dec 2022 09:39:53 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Wed, 14 Dec 2022 01:39:52 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] wifi: cfg80211: call reg_notifier for self managed wiphy from driver hint
+Date:   Wed, 14 Dec 2022 04:39:37 -0500
+Message-ID: <20221214093937.14987-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/14/2022 09:05:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzE0IKRXpMggMDc6NDI6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ropPHB8IANkwUPI808U-jB35xs3zp7gV
+X-Proofpoint-ORIG-GUID: ropPHB8IANkwUPI808U-jB35xs3zp7gV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-14_03,2022-12-13_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
+ suspectscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2212140075
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+Currently the regulatory driver does not call the regulatory callback
+reg_notifier for self managed wiphys. Sometimes driver needs cfg80211
+to calculate the info of ieee80211_channel such as flags and power,
+and driver needs to get the info of ieee80211_channel after hint of
+driver, but driver does not know when calculation of the info of
+ieee80211_channel become finished, so add notify to driver after
+reg_process_self_managed_hint() from cfg80211 is a good way, then
+driver could get the correct info in callback of reg_notifier.
 
-Reduce dwell time to improve scan duration in 6 GHz. This is required
-for scan requests that does not include RNR parsing and does full
-channel scan.
-
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 5 +++--
- drivers/net/wireless/realtek/rtw89/fw.h | 1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ net/wireless/reg.c | 39 +++++++++++++++++++++++++++------------
+ 1 file changed, 27 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index de1f23779fc62..3655dfd4ab7ea 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2738,7 +2738,7 @@ static void rtw89_hw_scan_add_chan(struct rtw89_dev *rtwdev, int chan_type,
- 		if (ssid_num == 1 && req->ssids[0].ssid_len == 0) {
- 			ch_info->tx_pkt = false;
- 			if (!req->duration_mandatory)
--				ch_info->period -= RTW89_DWELL_TIME;
-+				ch_info->period -= RTW89_DWELL_TIME_6G;
- 		}
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 4f3f31244e8b..e3f500832427 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -3085,6 +3085,18 @@ static void reg_process_hint(struct regulatory_request *reg_request)
+ 	reg_free_request(reg_request);
+ }
+ 
++static void queue_regulatory_request(struct regulatory_request *request)
++{
++	request->alpha2[0] = toupper(request->alpha2[0]);
++	request->alpha2[1] = toupper(request->alpha2[1]);
++
++	spin_lock(&reg_requests_lock);
++	list_add_tail(&request->list, &reg_requests_list);
++	spin_unlock(&reg_requests_lock);
++
++	schedule_work(&reg_work);
++}
++
+ static void notify_self_managed_wiphys(struct regulatory_request *request)
+ {
+ 	struct cfg80211_registered_device *rdev;
+@@ -3095,6 +3107,13 @@ static void notify_self_managed_wiphys(struct regulatory_request *request)
+ 		if (wiphy->regulatory_flags & REGULATORY_WIPHY_SELF_MANAGED &&
+ 		    request->initiator == NL80211_REGDOM_SET_BY_USER)
+ 			reg_call_notifier(wiphy, request);
++
++		if (wiphy->regulatory_flags & REGULATORY_WIPHY_SELF_MANAGED &&
++		    request->initiator == NL80211_REGDOM_SET_BY_DRIVER &&
++		    request->wiphy_idx == get_wiphy_idx(wiphy)) {
++			reg_call_notifier(wiphy, request);
++			request->wiphy_idx = WIPHY_IDX_INVALID;
++		}
  	}
+ }
  
-@@ -2791,7 +2791,8 @@ static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
- 		if (req->duration_mandatory)
- 			ch_info->period = req->duration;
- 		else if (channel->band == NL80211_BAND_6GHZ)
--			ch_info->period = RTW89_CHANNEL_TIME_6G + RTW89_DWELL_TIME;
-+			ch_info->period = RTW89_CHANNEL_TIME_6G +
-+					  RTW89_DWELL_TIME_6G;
- 		else
- 			ch_info->period = RTW89_CHANNEL_TIME;
+@@ -3172,6 +3191,7 @@ static void reg_process_self_managed_hint(struct wiphy *wiphy)
+ 	const struct ieee80211_regdomain *regd;
+ 	enum nl80211_band band;
+ 	struct regulatory_request request = {};
++	struct regulatory_request *driver_request;
  
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 4d2f9ea9e0022..4ff168937cb91 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -203,6 +203,7 @@ struct rtw89_h2creg_sch_tx_en {
- #define RTW89_DFS_CHAN_TIME 105
- #define RTW89_OFF_CHAN_TIME 100
- #define RTW89_DWELL_TIME 20
-+#define RTW89_DWELL_TIME_6G 10
- #define RTW89_SCAN_WIDTH 0
- #define RTW89_SCANOFLD_MAX_SSID 8
- #define RTW89_SCANOFLD_MAX_IE_LEN 512
+ 	ASSERT_RTNL();
+ 	lockdep_assert_wiphy(wiphy);
+@@ -3199,6 +3219,13 @@ static void reg_process_self_managed_hint(struct wiphy *wiphy)
+ 	request.initiator = NL80211_REGDOM_SET_BY_DRIVER;
+ 
+ 	nl80211_send_wiphy_reg_change_event(&request);
++
++	driver_request = kzalloc(sizeof(struct regulatory_request), GFP_KERNEL);
++	if (!driver_request)
++		return;
++
++	memcpy(driver_request, &request, sizeof(*driver_request));
++	queue_regulatory_request(driver_request);
+ }
+ 
+ static void reg_process_self_managed_hints(void)
+@@ -3225,18 +3252,6 @@ static void reg_todo(struct work_struct *work)
+ 	rtnl_unlock();
+ }
+ 
+-static void queue_regulatory_request(struct regulatory_request *request)
+-{
+-	request->alpha2[0] = toupper(request->alpha2[0]);
+-	request->alpha2[1] = toupper(request->alpha2[1]);
+-
+-	spin_lock(&reg_requests_lock);
+-	list_add_tail(&request->list, &reg_requests_list);
+-	spin_unlock(&reg_requests_lock);
+-
+-	schedule_work(&reg_work);
+-}
+-
+ /*
+  * Core regulatory hint -- happens during cfg80211_init()
+  * and when we restore regulatory settings.
+
+base-commit: 922932ca02191a390f7f52fb6e21c44b50e14025
 -- 
-2.25.1
+2.31.1
 
