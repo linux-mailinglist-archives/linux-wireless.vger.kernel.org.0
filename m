@@ -2,77 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F6364C178
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 01:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 376AF64C23F
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 03:28:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237546AbiLNArv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Dec 2022 19:47:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60710 "EHLO
+        id S236343AbiLNC2W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Dec 2022 21:28:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237333AbiLNArr (ORCPT
+        with ESMTP id S229699AbiLNC2V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Dec 2022 19:47:47 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 674E72705
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 16:47:42 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BE0kj7X3013761, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BE0kj7X3013761
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 14 Dec 2022 08:46:45 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Wed, 14 Dec 2022 08:47:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 14 Dec 2022 08:47:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Wed, 14 Dec 2022 08:47:34 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Charles Piekarski <contact@charlespiekarski.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Realtek 8852BE support
-Thread-Topic: Realtek 8852BE support
-Thread-Index: AQHZDiv7aKh6KT2pxkK2thQIySbvPq5sjl7A
-Date:   Wed, 14 Dec 2022 00:47:34 +0000
-Message-ID: <1f878b2ec793443f96685773c6599591@realtek.com>
-References: <a2a454c5-3940-52d0-77b7-e5f8376720ae@charlespiekarski.com>
-In-Reply-To: <a2a454c5-3940-52d0-77b7-e5f8376720ae@charlespiekarski.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzEzIOS4i+WNiCAxMDowMDowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 13 Dec 2022 21:28:21 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB7A71EEDF
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 18:28:16 -0800 (PST)
+X-UUID: 3139abf548d248a3b5d85a4d003f4ec6-20221214
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=QGUc/lRqRgjWi2rVlEjt4jIndjYYgAmh7BkUd/moSKY=;
+        b=hjUGWs6/dJbq7V5JKtINoehyuBtitPJrTLkt1LfIDfg9zMHhsEbKe1NQv67LYpxrnHPeaDlbi1+9DCJWnmY98zdkf6Jr0svC+JLNJikiLdtrkWsDv7oVLOeVswtq72rUpJcrMLChZfnPd9sYMEt5Z3i9QlLkWWthFzBye82OsPo=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:7309b372-f9df-4f84-a657-c67db676e492,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:90
+X-CID-INFO: VERSION:1.1.14,REQID:7309b372-f9df-4f84-a657-c67db676e492,IP:0,URL
+        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:90
+X-CID-META: VersionHash:dcaaed0,CLOUDID:cbe08ad2-652d-43fd-a13a-a5dd3c69a43d,B
+        ulkID:2212141028143A2ZBL98,BulkQuantity:0,Recheck:0,SF:28|17|19|48,TC:nil,
+        Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 3139abf548d248a3b5d85a4d003f4ec6-20221214
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <howard-yh.hsu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1219106080; Wed, 14 Dec 2022 10:28:12 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Wed, 14 Dec 2022 10:28:11 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Wed, 14 Dec 2022 10:28:11 +0800
+From:   Howard Hsu <howard-yh.hsu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.Lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Howard Hsu <howard-yh.hsu@mediatek.com>
+Subject: [PATCH v3 0/4] rework thermal protection
+Date:   Wed, 14 Dec 2022 10:28:05 +0800
+Message-ID: <20221214022809.32087-1-howard-yh.hsu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DEAR_SOMETHING,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENoYXJsZXMgUGlla2Fyc2tp
-IDxjb250YWN0QGNoYXJsZXNwaWVrYXJza2kuY29tPg0KPiBTZW50OiBNb25kYXksIERlY2VtYmVy
-IDEyLCAyMDIyIDc6MTEgUE0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0K
-PiBTdWJqZWN0OiBSZWFsdGVrIDg4NTJCRSBzdXBwb3J0DQo+IA0KPiBEZWFyIFNpciBvciBNYWRh
-bSwNCj4gDQo+IEkgd291bGQgbGlrZSB0byBraW5kbHkgYXNrIGZvciBpbmZvcm1hdGlvbiBpZiBS
-ZWFsdGVrIDg4NTJCRSBXaS1GaSA2DQo+IG1vZHVsZSBpcyBzdXBwb3J0ZWQgb3Igd2lsbCBiZSBz
-dXBwb3J0ZWQgYnkgdGhlIExpbnV4IGtlcm5lbC4NCj4gUmVncmV0dGFibHksIHRoZSBtb2R1bGUg
-ZG9lcyBub3Qgd29yayB1bmRlciBVYnVudHUgMjIuMDQuMSBhbmQgMjIuMTAsIGF0DQo+IGxlYXN0
-IG91dCBvZiB0aGUgYm94LCBhbmQgSSB3YXMgdW5hYmxlIHRvIGZpbmQgYW55IHVzZWZ1bCBpbmZv
-cm1hdGlvbiB0bw0KPiBnZXQgaXQgd29ya2luZyBpbiBhIHNhZmUgd2F5ICh3aXRoIFNlY3VyZSBC
-b290IGVuYWJsZWQpLg0KPiANCg0KODg1MkJFIGdvdCBtZXJnZWQgaW50byBrZXJuZWwgNi4yIHRo
-YXQgd2lsbCByZWxlYXNlIGFib3V0IDMgbW9udGhzIGxhdGVyLg0KDQpQaW5nLUtlDQoNCg==
+Rework thermal protection with the following changes:
+1. Send thermal fw commands only after mcu init done.
+2. Firmware expects to disable thermal protect before reconfiguring thermal protect.
+3. Send fw commands through mt7915_thermal_temp_store() to update firmware
+temperature directly.
+4. Add error messages for invalid setting.
+
+Howard Hsu (4):
+  wifi: mt76: mt7915: call mt7915_mcu_set_thermal_throttling() only
+    after init_work
+  wifi: mt76: mt7915: rework mt7915_mcu_set_thermal_throttling
+  wifi: mt76: mt7915: rework mt7915_thermal_temp_store()
+  wifi: mt76: mt7915: add error message in
+    mt7915_thermal_set_cur_throttle_state()
+
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 32 +++++++----
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 11 ++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 54 +++++++++++--------
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  6 +++
+ 4 files changed, 70 insertions(+), 33 deletions(-)
+
+-- 
+2.18.0
+
