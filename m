@@ -2,99 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A529F64BE40
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Dec 2022 22:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7F6364C178
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 01:47:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236288AbiLMVQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Dec 2022 16:16:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59528 "EHLO
+        id S237546AbiLNArv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Dec 2022 19:47:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235112AbiLMVQj (ORCPT
+        with ESMTP id S237333AbiLNArr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Dec 2022 16:16:39 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE5522291
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 13:16:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670966198; x=1702502198;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wutIuhJXADgcp6849lC/HVvOwY1qXDl19M5ZK3UW/M0=;
-  b=EJqOVNrJEBqRlsapyu/CVrGWgX6JIp7U5VOCU7A2RpNbJJpVTocG5ljE
-   rs3v7ZUz58bBlGJW56Pfvy6eNZxoVqm/aH+aGRM+YBZJOjSreW7y9MAOW
-   CB+tP4s8YVobxQsOYyKqjYoN0v//5JmrXxGIIcMSFKYCYWj4z4LAfXS1v
-   DsFQAJd4Y99Wo2o2UoNtYbzTJn4m7SctmfEox2rV80XOb7eAUFogK1s0N
-   PxcMhchyXcNM5Ns1UgpMMx+DuSN62nAV5isb7KsrTszs66rX6hP12x9YG
-   OoXtDJ8ntzrRw5W3faZvuc8N7Gcu08vgiuk/6p4dYrUtpgV1TV3MfJU2P
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="345305506"
-X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
-   d="scan'208";a="345305506"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 13:16:19 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="679436154"
-X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
-   d="scan'208";a="679436154"
-Received: from szamir-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.251.183.161])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 13:16:16 -0800
-From:   gregory.greenman@intel.com
-To:     kvalo@kernel.org, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH] wifi: iwlwifi: fw: skip PPAG for JF
-Date:   Tue, 13 Dec 2022 23:15:04 +0200
-Message-Id: <20221213225723.2a43415d8990.I9ac210740a45b41f1b2e15274e1daf4284f2808a@changeid>
-X-Mailer: git-send-email 2.38.1
+        Tue, 13 Dec 2022 19:47:47 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 674E72705
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Dec 2022 16:47:42 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BE0kj7X3013761, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BE0kj7X3013761
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 14 Dec 2022 08:46:45 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Wed, 14 Dec 2022 08:47:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 14 Dec 2022 08:47:34 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Wed, 14 Dec 2022 08:47:34 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Charles Piekarski <contact@charlespiekarski.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Realtek 8852BE support
+Thread-Topic: Realtek 8852BE support
+Thread-Index: AQHZDiv7aKh6KT2pxkK2thQIySbvPq5sjl7A
+Date:   Wed, 14 Dec 2022 00:47:34 +0000
+Message-ID: <1f878b2ec793443f96685773c6599591@realtek.com>
+References: <a2a454c5-3940-52d0-77b7-e5f8376720ae@charlespiekarski.com>
+In-Reply-To: <a2a454c5-3940-52d0-77b7-e5f8376720ae@charlespiekarski.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzEzIOS4i+WNiCAxMDowMDowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DEAR_SOMETHING,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-For JF RFs we don't support PPAG, but many firmware
-images lie about it. Always skip support for JF to
-avoid firmware errors when sending the command.
-
-Reported-and-tested-by: Íñigo Huguet <ihuguet@redhat.com>
-Link: https://lore.kernel.org/linux-wireless/CACT4oufQsqHGp6bah2c4+jPn2wG1oZqY=UKa_TmPx=F6Lxng8Q@mail.gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
-
-This is a fix for a firmware assert. It can wait until the next RC of v6.2.
-Kalle - should I send a pull request for it? Thanks!
-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index e6d64152c81a..a02e5a67b706 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -1106,6 +1106,11 @@ int iwl_read_ppag_table(struct iwl_fw_runtime *fwrt, union iwl_ppag_table_cmd *c
-         int i, j, num_sub_bands;
-         s8 *gain;
- 
-+	/* many firmware images for JF lie about this */
-+	if (CSR_HW_RFID_TYPE(fwrt->trans->hw_rf_id) ==
-+	    CSR_HW_RFID_TYPE(CSR_HW_RF_ID_TYPE_JF))
-+		return -EOPNOTSUPP;
-+
-         if (!fw_has_capa(&fwrt->fw->ucode_capa, IWL_UCODE_TLV_CAPA_SET_PPAG)) {
-                 IWL_DEBUG_RADIO(fwrt,
-                                 "PPAG capability not supported by FW, command not sent.\n");
--- 
-2.38.1
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENoYXJsZXMgUGlla2Fyc2tp
+IDxjb250YWN0QGNoYXJsZXNwaWVrYXJza2kuY29tPg0KPiBTZW50OiBNb25kYXksIERlY2VtYmVy
+IDEyLCAyMDIyIDc6MTEgUE0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0K
+PiBTdWJqZWN0OiBSZWFsdGVrIDg4NTJCRSBzdXBwb3J0DQo+IA0KPiBEZWFyIFNpciBvciBNYWRh
+bSwNCj4gDQo+IEkgd291bGQgbGlrZSB0byBraW5kbHkgYXNrIGZvciBpbmZvcm1hdGlvbiBpZiBS
+ZWFsdGVrIDg4NTJCRSBXaS1GaSA2DQo+IG1vZHVsZSBpcyBzdXBwb3J0ZWQgb3Igd2lsbCBiZSBz
+dXBwb3J0ZWQgYnkgdGhlIExpbnV4IGtlcm5lbC4NCj4gUmVncmV0dGFibHksIHRoZSBtb2R1bGUg
+ZG9lcyBub3Qgd29yayB1bmRlciBVYnVudHUgMjIuMDQuMSBhbmQgMjIuMTAsIGF0DQo+IGxlYXN0
+IG91dCBvZiB0aGUgYm94LCBhbmQgSSB3YXMgdW5hYmxlIHRvIGZpbmQgYW55IHVzZWZ1bCBpbmZv
+cm1hdGlvbiB0bw0KPiBnZXQgaXQgd29ya2luZyBpbiBhIHNhZmUgd2F5ICh3aXRoIFNlY3VyZSBC
+b290IGVuYWJsZWQpLg0KPiANCg0KODg1MkJFIGdvdCBtZXJnZWQgaW50byBrZXJuZWwgNi4yIHRo
+YXQgd2lsbCByZWxlYXNlIGFib3V0IDMgbW9udGhzIGxhdGVyLg0KDQpQaW5nLUtlDQoNCg==
