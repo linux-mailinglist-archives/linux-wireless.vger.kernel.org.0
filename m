@@ -2,150 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15AA864C8AD
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 13:04:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B74EF64C8DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 13:22:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238200AbiLNMEx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Dec 2022 07:04:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38214 "EHLO
+        id S238227AbiLNMWH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Dec 2022 07:22:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238406AbiLNME1 (ORCPT
+        with ESMTP id S238421AbiLNMVa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Dec 2022 07:04:27 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A109427CF6
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 04:02:54 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id a14so4290048pfa.1
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 04:02:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=peaw+2jBoexT/V/OL/klaMSfRkpK0w1QubB8hlHtjKU=;
-        b=IffZpvmos6IFA8F2Mu7UX03vFoZdzSvAl4wArexI2TJ+mCg8LYPObJ0caqqBk6KELc
-         7e96IX0TGhm3EbfxrnJUHspRY4C5kzZjXA8RPZhE2bOdCe6tjVnt+Z3CF0kf/nY0nL+5
-         zhLxH/gVF/oPszrMxuCbjkfNqT6s3OZYE50HYnrLZ7oMjvbFnJ2FU0kVIkcZhH46wiwl
-         wLPAdUYt+VKJPhUoSBgt566qcUxTJYhAUxZrXrKHxPKFY8264tYoNHL+XtQdD6DjNdwK
-         dtgAPPBovln+d78d738YPXAKKoU4rCSJQNQzmoESEN0DTVhkyEgeq7ajtPDj3m1qgn+h
-         UaHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=peaw+2jBoexT/V/OL/klaMSfRkpK0w1QubB8hlHtjKU=;
-        b=RoqbBwAQNX+VSgn950QmhtOOZv1P23tKoVOGsKUDUKlvLzy1UACUaDKqsEY42qpvl7
-         wW+4Cp4pMEw7NOMJKb3OFeWzeuioL/erKx9cXD+CZp+5CpEbt91m2eE75uxOjmuMICL+
-         Pwag70jZj88r1xx8EWWk9coN7K6GK/vFUUkjzqMWT9db/voG9Wt3Pi5+uZSOxjZqumPU
-         FjVJ0mmEHfoS1DO2Tl3eRJLtwfhErbdKz2ia7Qbg+3pPkq+9qShCc44bM/fdNWGX6Bcm
-         Ug+6EsqmN9RoPhqxk+gxA83WPn8y3gM9HphbiB7U/ds6oFp5bq9nsfpp97h+8AZwwJbo
-         Tnlw==
-X-Gm-Message-State: ANoB5plqDdUd8PfVXbB7MlHjNlNZcuy7falqMWNVXI0u9K78ydv/jlw2
-        GBbp1onYfi2K9swxDWtVgUPJDeCpMnSAg+2kIMHb8A==
-X-Google-Smtp-Source: AA0mqf6ACT1hXHaNkKcTvIqqDuxXiD+Qw3prO4hyGi38uOl9IwijS+lvf8GiQLNL3EwGrPbufcxLrNNbvCYdwt6fqnk=
-X-Received: by 2002:a62:8409:0:b0:575:1168:a970 with SMTP id
- k9-20020a628409000000b005751168a970mr54638196pfd.54.1671019373770; Wed, 14
- Dec 2022 04:02:53 -0800 (PST)
+        Wed, 14 Dec 2022 07:21:30 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3C3AE68;
+        Wed, 14 Dec 2022 04:18:44 -0800 (PST)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BEB8bmP003728;
+        Wed, 14 Dec 2022 12:18:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=VKgXddCuJHt694aHL5xNxcn6XUOHhgtdeMPLJff4LNI=;
+ b=jKxblBUgVD5fZmWVUEcFrUFbhj5IXQp0WFeECZ6FWv0fHZWL9RwFcnP0AOt1ACCcqbic
+ Dnp/EtTx0WF3gfcVfq96aJdTufc8qQJofrNHNlpBYkn6vvT/jmgi0LFP+NT0PtlHWqwC
+ rCmBpJ2Agg7fRbwrpj87uiTirlyFiD4iROuFpiJgAYreXEzxbE28fA2y0QlmfwNWEpt8
+ sPt4dhpIe/lbGRsfGm21/34uNwtjCvUosS7Tt25xuNkjD8fkyS49MruJIOLlES45NU58
+ QsNMBsJ0U2JkFrVit48W7ab8Ed2Vb836GtCrU3qFYWxJATa9UZ8NeKc+NDuOwiCKEjDy uQ== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mf6rkh25u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 14 Dec 2022 12:18:38 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BECIbDk005432
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 14 Dec 2022 12:18:37 GMT
+Received: from youghand-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Wed, 14 Dec 2022 04:18:35 -0800
+From:   Youghandhar Chintala <quic_youghand@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>
+Subject: [PATCH 0/2] dt: bindings: add dt entry for XO calibration support 
+Date:   Wed, 14 Dec 2022 17:48:16 +0530
+Message-ID: <20221214121818.12928-1-quic_youghand@quicinc.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-References: <20221105194943.826847-1-robimarko@gmail.com> <20221105194943.826847-2-robimarko@gmail.com>
- <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org> <877czn8c2n.fsf@kernel.org>
-In-Reply-To: <877czn8c2n.fsf@kernel.org>
-From:   Robert Marko <robert.marko@sartura.hr>
-Date:   Wed, 14 Dec 2022 13:02:42 +0100
-Message-ID: <CA+HBbNFCFtJwzN=6SCsWnDmAjPkmxE4guH1RrLc+-HByLcVVXA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        gregkh@linuxfoundation.org, elder@linaro.org,
-        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
-        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
-        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, ansuelsmth@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: jCoQs_KUp_QuFbQeEEF5SDV2-Zin86V1
+X-Proofpoint-GUID: jCoQs_KUp_QuFbQeEEF5SDV2-Zin86V1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-14_05,2022-12-14_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 clxscore=1011 phishscore=0 malwarescore=0
+ mlxlogscore=832 spamscore=0 suspectscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2212140096
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 12:26 PM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Kalle Valo <kvalo@kernel.org> writes:
->
-> > Manivannan Sadhasivam <mani@kernel.org> writes:
-> >
-> >> On Sat, Nov 05, 2022 at 08:49:43PM +0100, Robert Marko wrote:
-> >>> Currently, trying to use AHB + PCI/MHI cards or multiple PCI/MHI cards
-> >>> will cause a clash in the QRTR instance node ID and prevent the driver
-> >>> from talking via QMI to the card and thus initializing it with:
-> >>> [    9.836329] ath11k c000000.wifi: host capability request failed: 1 90
-> >>> [    9.842047] ath11k c000000.wifi: failed to send qmi host cap: -22
-> >>>
-> >>
-> >> There is still an outstanding issue where you cannot connect two WLAN modules
-> >> with same node id.
-> >>
-> >>> So, in order to allow for this combination of cards, especially AHB + PCI
-> >>> cards like IPQ8074 + QCN9074 (Used by me and tested on) set the desired
-> >>> QRTR instance ID offset by calculating a unique one based on PCI domain
-> >>> and bus ID-s and writing it to bits 7-0 of BHI_ERRDBG2 MHI register by
-> >>> using the SBL state callback that is added as part of the series.
-> >>> We also have to make sure that new QRTR offset is added on top of the
-> >>> default QRTR instance ID-s that are currently used in the driver.
-> >>>
-> >>
-> >> Register BHI_ERRDBG2 is listed as Read only from Host as per the BHI spec.
-> >> So I'm not sure if this solution is going to work on all ath11k supported
-> >> chipsets.
-> >>
-> >> Kalle, can you confirm?
-> >
-> > I can't look at this in detail right now, but hopefully in few days.
-> > I'll get back to you.
->
-> The solution we have been thinking internally would not use
-> MHI_CB_EE_SBL_MODE at all, it's not clear for me yet why the mode was
-> not needed in our solution. Maybe there are firmware modifications? I
-> think it's best that we submit our proposal as well, then we can then
-> compare implementations and see what is the best course of action.
+Add dt binding to get XO calibration data support for Wi-Fi RF clock.
 
-Kalle, any ETA when you will post your idea?
-I am constantly hitting this crazy limitation and my idea does not work on cards
-like QCA6390 so it's not a viable workaround at all.
+Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
 
-Regards,
-Robert
->
-> But it looks that not all ath11k hardware and firmware releases support
-> this feature, we would need meta data information from the firmware to
-> detect it. I am working on adding firmware meta data support[1] to
-> ath11k, will post patches for that "soon".
->
-> [1] similar to firmware-N.bin support ath10k has
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
->
-> --
-> ath11k mailing list
-> ath11k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath11k
+Youghandhar Chintala (2):
+  dt: bindings: add dt entry for XO calibration support
+  wifi: ath11k: PMIC XO cal data support
 
-
+ .../bindings/net/wireless/qcom,ath11k.yaml    |  4 ++++
+ drivers/net/wireless/ath/ath11k/ahb.c         |  8 +++++++
+ drivers/net/wireless/ath/ath11k/core.h        |  3 +++
+ drivers/net/wireless/ath/ath11k/qmi.c         | 24 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/qmi.h         |  4 +++-
+ 5 files changed, 42 insertions(+), 1 deletion(-)
 
 -- 
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura Ltd.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+2.38.0
+
