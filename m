@@ -2,179 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40AAA64CFEB
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Dec 2022 20:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC9F64D50C
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Dec 2022 02:38:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238879AbiLNTMF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Dec 2022 14:12:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39542 "EHLO
+        id S229471AbiLOBih (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Dec 2022 20:38:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238759AbiLNTMD (ORCPT
+        with ESMTP id S229463AbiLOBig (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Dec 2022 14:12:03 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8313DD2CD
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 11:12:02 -0800 (PST)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BED0c9d015741;
-        Wed, 14 Dec 2022 19:11:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=VmYn0nF98o1hFZDIhGZsX8MSP0m1DzS0uyEiSZyrj0w=;
- b=a4MykyloGwc2qeQQSg4OZdDE4TboTl5FNfDUpKLpTA07Oz+AgLnpzn+SzcL3xMuonUKl
- cL0h35yEAtBks2OA0FUmcXuwEy4eyqQLsedkcVzYbm8tk53oQaysDBgaOmEVc4ZdlmGp
- +FNguYSn3hPTjRHRWjc9SOmgYCsFFHNn0WpSoFXnLjNP9AxnTKCicF1CA734tExr/oJf
- XW6x9kggPkosJf8SwPPnDqDj3UgdFq020IRdMZu5GAsK2mssGxVKuv+kuntpqALNmjEa
- SSRoaa8mImAKTnrttXpNciwf1IBBn51XigP+WJ1CS9DzbuDNcjWoE16vBxOyZLk99Q6u Sw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mf6rfa4pu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 14 Dec 2022 19:11:56 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BEJBtja012060
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 14 Dec 2022 19:11:55 GMT
-Received: from [10.110.90.156] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Wed, 14 Dec
- 2022 11:11:54 -0800
-Message-ID: <530e48f5-b504-06f6-a09b-e0a36ab637f0@quicinc.com>
-Date:   Wed, 14 Dec 2022 11:11:54 -0800
+        Wed, 14 Dec 2022 20:38:36 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD421FF94
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Dec 2022 17:38:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671068315; x=1702604315;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=62rw4zWRNNaJlvChX3jYjS8GrrUvQxHXqJ/9iWf0Obo=;
+  b=Dzn/ReWmoS3uvsicYrd3f2vvllAkmi8EK8r0EpZuoYBCI6tKJ6mGuohE
+   Pg24R0R8XCR0RMGQauQmnXqlHx22sbsCXlG/LelXFCB5XCYPkejOcRzZJ
+   vHni3JrSdXPBGDSdWLPmmTKyAn6lkW1WtKuJuKUmHmoZhLRWJ76YmNY89
+   hWvydCpqblz7D9FxEBgi/TRQen5DxR7NfT/s+0G+GWE11TLBJlokKyOks
+   UTeVDUTOR4D8Qr0swM37rqV8v1zm/dlJ4rBb/x5y1vWGu5/tdiNZBH9uf
+   TVJGae9ol6W8g08isMc1RTx9czZVb6XiyKs4Usgz47Q+3ZwpfHbF7KIBb
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10561"; a="382862693"
+X-IronPort-AV: E=Sophos;i="5.96,246,1665471600"; 
+   d="scan'208";a="382862693"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2022 17:38:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10561"; a="894539200"
+X-IronPort-AV: E=Sophos;i="5.96,246,1665471600"; 
+   d="scan'208";a="894539200"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 14 Dec 2022 17:38:34 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p5dCj-0005wg-1P;
+        Thu, 15 Dec 2022 01:38:33 +0000
+Date:   Thu, 15 Dec 2022 09:37:37 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 117dbeda22ec5ea0918254d03b540ef8b8a64d53
+Message-ID: <639a7a61.P/3sNzEBae1vYMXX%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [RFC PATCH] mac80211: mlme: Handle Puncturing information
- received from the AP
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kang Yang <quic_kangyang@quicinc.com>,
-        <linux-wireless@vger.kernel.org>
-CC:     Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        "Carl Huang (QUIC)" <quic_cjhuang@quicinc.com>,
-        Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
-References: <20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
- <e4db49e4-6363-0c8d-10dd-a1a564da2542@quicinc.com>
- <95ad4207e62b4990476d867bd240fef3ede31369.camel@sipsolutions.net>
- <76266a0b-d371-53c1-9ad0-fbff7a506d0c@quicinc.com>
- <5729983cd02a82d36fed42dcd133e7713fe3aa53.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <5729983cd02a82d36fed42dcd133e7713fe3aa53.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: X2sCP0fTI-0ot43-9vv6xWNP-PXgYavN
-X-Proofpoint-ORIG-GUID: X2sCP0fTI-0ot43-9vv6xWNP-PXgYavN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-14_10,2022-12-14_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 mlxscore=0 impostorscore=0 adultscore=0 spamscore=0
- phishscore=0 mlxlogscore=959 malwarescore=0 suspectscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212140156
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/23/2022 12:56 AM, Johannes Berg wrote:
->>> Anyway the more fundamental thing we have to figure out here (and thanks
->>> for bringing this back) is how we treat the puncturing - QCOM's AP-side
->>> puncturing patch treated it as part of the chandef, but that's not
->>> working well for client side ...
->>>
->>
->>
->> Yes, to my understanding, I think it's more appropriate to define it
->> like you in "ieee80211_bss_conf".
-> 
-> Well Aloka is back - Aloka maybe you have some comments?
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 117dbeda22ec5ea0918254d03b540ef8b8a64d53  wifi: rtlwifi: Fix global-out-of-bounds bug in _rtl8812ae_phy_set_txpower_limit()
 
-Added few comments below.
-> 
-> 
-> I can somewhat understand why you might want puncturing to be part of
-> the chandef for an AP, especially for configuration, though I'm honestly
-> not sure what the use cases are; perhaps some other use for that
-> bandwidth (perhaps cellular?), but then does that really mean we should
-> refuse configurations that aren't in line with it?
-> 
-> If we put puncturing into the chandef that might not even mean we
-> *refuse* configurations, it would initially just mean we need another
-> channel context (if supported, otherwise refused) when we add two.
-> 
-> 
-> But given that the primary use case seems to be different use for the
-> part of the spectrum that's being punctured - maybe we should set it up
-> in a wholly different way and have some way of "carving out" reserved
-> spectrum?
-> 
+elapsed time: 720m
 
-The primary use case from AP side is trying to get maximum bandwidth in 
-a noisy environment. Without puncturing AP has to downgrade from 80 MHz 
-to to 40/20 Mhz but now it can use 60 Mhz if only 20 Mhz in the given 
-channel width has a lot of interference.
-As puncturing bitmap is tightly coupled with the channel and bandwidth, 
-it made sense to put it in chandef and the channel switch case was 
-covered inherently because it uses chandef.
+configs tested: 83
+configs skipped: 2
 
-But I see that doesn't work for client wanting to connect to two APs in 
-multi-BSS case.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> So you could, say, reserve channel 40, and then to have an 80 MHz AP on
-> channels 36-48 you'd have to puncture 40 there. We wouldn't have to
-> store it as part of the chandef/chanctx because the validation is now
-> done against the reservation; or we could even store it as part of the
-> chandef/chanctx but say it only applies to beaconing modes or such, and
-> not handle it as part of the chandef equality comparison.
-> 
+gcc tested configs:
+ia64                             allmodconfig
+arc                  randconfig-r043-20221214
+x86_64                        randconfig-a004
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a002
+i386                          randconfig-a014
+x86_64                        randconfig-a015
+s390                 randconfig-r044-20221214
+i386                          randconfig-a012
+i386                          randconfig-a016
+i386                          randconfig-a001
+riscv                randconfig-r042-20221214
+i386                          randconfig-a003
+x86_64                        randconfig-a006
+i386                          randconfig-a005
+um                           x86_64_defconfig
+um                             i386_defconfig
+i386                             allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-rust
+x86_64                            allnoconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+powerpc                           allnoconfig
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
+sh                               allmodconfig
+powerpc                         wii_defconfig
+arm                          pxa3xx_defconfig
+sh                                  defconfig
+powerpc                     rainier_defconfig
+sh                           se7705_defconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+arc                                 defconfig
+s390                             allmodconfig
+i386                                defconfig
+alpha                               defconfig
+s390                                defconfig
+s390                             allyesconfig
+sh                           se7751_defconfig
+arm64                            alldefconfig
+sh                           sh2007_defconfig
+powerpc                   currituck_defconfig
+arc                         haps_hs_defconfig
+i386                          randconfig-c001
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+xtensa                         virt_defconfig
+sparc                       sparc64_defconfig
+mips                             allmodconfig
 
-Unless we know for sure that the punctured bandwidth is going to be used 
-for some other purpose, the above mentioned approach seems little 
-complicated and unnecessary.
+clang tested configs:
+arm                  randconfig-r046-20221214
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+x86_64                        randconfig-a012
+hexagon              randconfig-r041-20221214
+x86_64                        randconfig-a001
+hexagon              randconfig-r045-20221214
+i386                          randconfig-a011
+x86_64                        randconfig-a003
+x86_64                        randconfig-a016
+i386                          randconfig-a015
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-k001
 
-> And really that's the thing that matters to the client here, the client
-> never has a choice, so if it's part of the equality comparison on the
-> client, then the client might not be able to simultaneously connect to
-> two BSSes (or need two chanctxs to do it) if both have 80 MHz on channel
-> 36, but one has puncturing and the other doesn't. That doesn't really
-> make sense IMHO.
->
-> If we treat the puncturing as a more global "reserved spectrum" case,
-> then we can still put the puncturing into the chandef, say it applies to
-> beaconing modes only (I suppose AP is the only relevant one, perhaps
-> someone will care about mesh in the future?), not have it as part of the
-> == comparison. All APs would have to adhere to that.
-> 
-
-I agree that cfg80211_chandef_identical() should return true if the 
-bitmap is different but other basic channel parameters are same for AP 
-mode too.
-
-
-> That still leaves a corner case of concurrent client + AP functionality
-> which can only be handled if hardware can deal with different puncturing
-> settings per interface? Which again argues for *not* storing it as part
-> of the chandef, I'd say.
-> 
-
-Muna sent a AP mode follow-up based on this current patch - 
-https://patchwork.kernel.org/project/linux-wireless/list/?series=701342&state=%2A&archive=both
-
-Please note that we missed to include some compilation error fixes while 
-sending, will send a new version soon.
-
-This approach needs little extra NL80211 attribute processing in case of 
-channel switch along with start_ap() and SET_INTERFACE but it works.
-
-Thanks.
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
