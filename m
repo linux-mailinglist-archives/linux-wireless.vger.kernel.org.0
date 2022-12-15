@@ -2,74 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF04564DD85
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Dec 2022 16:14:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A1F64DEB2
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Dec 2022 17:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbiLOPOJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Dec 2022 10:14:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42254 "EHLO
+        id S230031AbiLOQcG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Dec 2022 11:32:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230208AbiLOPNb (ORCPT
+        with ESMTP id S230166AbiLOQbm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Dec 2022 10:13:31 -0500
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 164FB31346
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Dec 2022 07:12:51 -0800 (PST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1671117166; bh=quFkZLSHrE3H5lruIvxnUkQvAV1bY8ca9zq/RSidpP4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=cH1QITlRwEbTcZ5hzV/sOqcIXRP6u41MlUFLbgK69awQxl5BKpmm+YXN0bZiG/30e
-         n8aweqmsvxSRtgNWN+cnhToDt0G4L8yUbPNTF68IFgMkoTWGV1YcIazvWdTmF8O7k7
-         9fZhayHNzvt4uALWU2/V++UzoteIem/CChZ2cYLgYstaTm8PrYoOEVvjVKqjF0WoE0
-         1jS9WOAlf5uAXql95zjW7BoCa2whCUYK2BpsCcV1qh5+VVS/uDaxolBGIXy9U0Y26+
-         E0Sq4oZD9+56CEvvNX4dtIYuPtklQ5Mx4sNjV/VcChea1Yq1UXf/M2rpPTomgU+ApI
-         HW4p2Y/tUwuow==
-To:     Wenli Looi <wlooi@ucalgary.ca>
-Cc:     linux-wireless@vger.kernel.org,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH] ath9k: remove most hidden macro dependencies on ah
-In-Reply-To: <c8369317-cf84-f0e3-fe8-9b6e22e43a6a@ucalgary.ca>
-References: <c8369317-cf84-f0e3-fe8-9b6e22e43a6a@ucalgary.ca>
-Date:   Thu, 15 Dec 2022 16:12:46 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87v8mcd7kh.fsf@toke.dk>
+        Thu, 15 Dec 2022 11:31:42 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A327B879;
+        Thu, 15 Dec 2022 08:31:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 160A061E61;
+        Thu, 15 Dec 2022 16:31:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2E4C433EF;
+        Thu, 15 Dec 2022 16:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671121900;
+        bh=gAwB+Fty7Ew2vwNk/+gFvPZ/aMvqgMJxojNhd2obFPk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ad6Tic/c9OuhNFSGaN0ipRjCWQ5gEmHBwzSrL5oizW40pHFZJ5Pw1qPk54qYonN8x
+         SH42GkPJG0KrUHsxQBEiv7HDCMMhVa3h5Rtsm4bbXsbZX6xWIHS9LKY8hnP9/VkKVQ
+         ZBvMuO9GFoHroiClO3AbfNzys7Z5tNBD+AuT5MrHRUvoFGr8YdYql4ezaN4cKOqWzn
+         AKiKUq3oC66S9P9FoA/CuQezAg6lcRiUEhjYMsoT01KcnuPyf7W+s8q6ENPYShhfhu
+         p5QXvIeF/EMH0NusScO0b3xG843jmY1Zu0fdxcjm8k8lIzPJowtxdZVLPTXSAjzrFI
+         2zC9pClpXmtqQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt7996: select CONFIG_RELAY
+Date:   Thu, 15 Dec 2022 17:31:10 +0100
+Message-Id: <20221215163133.4152299-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wenli Looi <wlooi@ucalgary.ca> writes:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> Adds an explicit _ah parameter to most macros that previously had a
-> hidden dependency on ah. This makes the code more compliant with the
-> style guide.
->
-> This change does not appear to affect the final binary.
->
-> Signed-off-by: Wenli Looi <wlooi@ucalgary.ca>
+Without CONFIG_RELAY, the driver fails to link:
 
-Thanks for doing the conversion! Confirmed that this does not affect the
-generated .text - without patch applied:
+ERROR: modpost: "relay_flush" [drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko] undefined!
+ERROR: modpost: "relay_switch_subbuf" [drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko] undefined!
+ERROR: modpost: "relay_open" [drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko] undefined!
+ERROR: modpost: "relay_reset" [drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko] undefined!
+ERROR: modpost: "relay_file_operations" [drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko] undefined!
 
-$ for f in *.ko; do printf "%-15s: " "$f"; objdump -d $f | sha1sum; done
-ath9k_common.ko: c06d542df4af8c0e7508bc6bd31fe4c826d37054  -
-ath9k_hw.ko    : 23cf6dd88aa548fa21b724c5e78835481c6c5a80  -
-ath9k.ko       : eaeb3016b236aafc06f2397b8e41ba85389085e6  -
+The same change was done in mt7915 for the corresponding copy of the code.
 
-after applying & rebuilding:
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+See-also: 988845c9361a ("mt76: mt7915: add support for passing chip/firmware debug data to user space")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-$ for f in *.ko; do printf "%-15s: " "$f"; objdump -d $f | sha1sum; done
-ath9k_common.ko: c06d542df4af8c0e7508bc6bd31fe4c826d37054  -
-ath9k_hw.ko    : 23cf6dd88aa548fa21b724c5e78835481c6c5a80  -
-ath9k.ko       : eaeb3016b236aafc06f2397b8e41ba85389085e6  -
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+index 5c5fc569e6d5..79fb47a73c91 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+@@ -2,6 +2,7 @@
+ config MT7996E
+ 	tristate "MediaTek MT7996 (PCIe) support"
+ 	select MT76_CONNAC_LIB
++	select RELAY
+ 	depends on MAC80211
+ 	depends on PCI
+ 	help
+-- 
+2.35.1
 
-
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
