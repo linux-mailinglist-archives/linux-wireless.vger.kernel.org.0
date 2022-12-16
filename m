@@ -2,92 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C527F64E5FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 03:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC2D64E620
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 04:09:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbiLPCaN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Dec 2022 21:30:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35476 "EHLO
+        id S229695AbiLPDJM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Dec 2022 22:09:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbiLPCaM (ORCPT
+        with ESMTP id S229537AbiLPDJJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Dec 2022 21:30:12 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208923FBA7
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Dec 2022 18:30:06 -0800 (PST)
-X-UUID: 8e00e8a18b1a49a08e8cab6c7ecf3be2-20221216
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=23KUXDJdBgZTEKi7SidofKO0o5BuEsUkq/IELsxruIQ=;
-        b=qRrxCiWkx3i2ubrhFInjJ2xigOxzFNKhEqfGYYWyK++R2kfMJcmjqaPIz1bEUQfs9jr/1c7jcsNfH2Qc9Ql9tjlFxZD0fGybjySwzlzzgkLfNSoQwlA1lpU4xH8U1dSNXURqBZPjNWhFbzc/iUZLWLoA+LAYBplBwFJb0K3iySA=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:d2aa975e-865f-4022-a879-96f18a9d1a44,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-        ON:release,TS:95
-X-CID-INFO: VERSION:1.1.14,REQID:d2aa975e-865f-4022-a879-96f18a9d1a44,IP:0,URL
-        :0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
-        ON:quarantine,TS:95
-X-CID-META: VersionHash:dcaaed0,CLOUDID:2294c9af-9f02-4d44-9c44-6e4bb4e4f412,B
-        ulkID:221216103002DF1F6HBY,BulkQuantity:0,Recheck:0,SF:28|17|19|48,TC:nil,
-        Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 8e00e8a18b1a49a08e8cab6c7ecf3be2-20221216
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 87263650; Fri, 16 Dec 2022 10:30:01 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 16 Dec 2022 10:30:00 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 16 Dec 2022 10:29:59 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH] wifi: mt76: fix potential memory leakage
-Date:   Fri, 16 Dec 2022 10:29:55 +0800
-Message-ID: <c663e984077ae903d8d4d34ed470986c6ccb4757.1671157658.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Thu, 15 Dec 2022 22:09:09 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EF6826549
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Dec 2022 19:09:01 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BG2KnhS012413;
+        Fri, 16 Dec 2022 03:08:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=v8Aymr4G+mfcPgVDJEuCZ392GczaMpgm6BxnebUW0Xg=;
+ b=XD5DTLFTHcrvhq2cH9LBUtq9PhVSZRasaS6bGXw8kNB+anUDzYPkhlpVziCFxuc/WUlw
+ zCwdZLKBoW0l8o58v7UKgFKc86q4kJPcoCd/sj6eDhm2z8Au0J8AN9aXM2ITajI4LWbA
+ i2ty7IevQ0gj7YCefB95LBhPiZCoIAo+AUOiRxkbOm7Z4Jn1I4ay5faTiO3AARiGIV2Y
+ 4zdDDokDj5IwLiuIDPjGF/+wRAQQQsSGjcO1kZQ168QfkfgLUOvXNBiEMPHSPzwymbJM
+ noag0Xow+PKobbQTRYfqm+xs7Jk4Wsgu7hdz9e3GySSdieEOZEDQ3v7ZRo6gtBZ4nlKt xQ== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mfyyu3a1r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 16 Dec 2022 03:08:55 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BG38s4C018200
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 16 Dec 2022 03:08:54 GMT
+Received: from [10.253.8.132] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Thu, 15 Dec
+ 2022 19:08:53 -0800
+Message-ID: <7bcd1a12-fb60-98cd-1a29-f55efa8d1499@quicinc.com>
+Date:   Fri, 16 Dec 2022 11:08:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH v3 2/2] wifi: ath11k: reduce the timeout value back for hw
+ scan from 10 seconds to 1 second
+Content-Language: en-US
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20221011072408.23731-1-quic_wgong@quicinc.com>
+ <20221011072408.23731-3-quic_wgong@quicinc.com> <8735atg335.fsf@kernel.org>
+ <cd96eea8-dce0-bcb9-e8ce-05fa0e0f22fb@quicinc.com>
+ <e7e34c3d-8b73-f7d5-9ce8-5ed346ca9d28@quicinc.com>
+In-Reply-To: <e7e34c3d-8b73-f7d5-9ce8-5ed346ca9d28@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: OM3ARP3Le7q85pOff2XFlA-mmfjKExnv
+X-Proofpoint-GUID: OM3ARP3Le7q85pOff2XFlA-mmfjKExnv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-15_12,2022-12-15_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ adultscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 clxscore=1011 suspectscore=0 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2212160027
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+Hi Kalle,
 
-fix potential memory leakage, recycle rxwi when mt76_dma_add_buf() call fails.
+Should I change commit log with below explanation and send v4?
 
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/dma.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index fc24b35..9053344 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -592,6 +592,7 @@ mt76_dma_rx_fill(struct mt76_dev *dev, struct mt76_queue *q)
- 		qbuf.len = len - offset;
- 		qbuf.skip_unmap = false;
- 		if (mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, t) < 0) {
-+			mt76_put_rxwi(dev, t);
- 			dma_unmap_single(dev->dma_dev, addr, len,
- 					 DMA_FROM_DEVICE);
- 			skb_free_frag(buf);
--- 
-2.18.0
-
+On 11/23/2022 11:41 AM, Wen Gong wrote:
+> On 11/18/2022 6:29 PM, Wen Gong wrote:
+>> On 11/8/2022 6:20 PM, Kalle Valo wrote:
+>>> Wen Gong <quic_wgong@quicinc.com> writes:
+>>>
+>> ...
+>>> [...]
+>>>
+>>>> @@ -3682,7 +3677,12 @@ static int ath11k_mac_op_hw_scan(struct 
+>>>> ieee80211_hw *hw,
+>>>>         ret = ath11k_start_scan(ar, &arg);
+>>>>       if (ret) {
+>>>> -        ath11k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
+>>>> +        if (ret == -EBUSY)
+>>>> +            ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
+>>>> +                   "scan engine is busy 11d state %d\n", 
+>>>> ar->state_11d);
+>>>> +        else
+>>>> +            ath11k_warn(ar->ab, "failed to start hw scan: %d\n", 
+>>>> ret);
+>>>> +
+>>>>           spin_lock_bh(&ar->data_lock);
+>>>>           ar->scan.state = ATH11K_SCAN_IDLE;
+>>>>           spin_unlock_bh(&ar->data_lock);
+>>> This feels like a hack to me, for example will these failed scans now
+>>> cause delays is connection establishment? IMHO it's crucial from user's
+>>> point of view that we don't delay that in any way.
+>> It will not delay connection.
+>> After wlan load, the 1st hw scan will arrived to ath11k, and then 11d
+>> scan will be sent to firmware after the 1st hw scan. It means the hw
+>> scan for connection is run before 11d scan, and then connection could
+>> be started immediately after the 1st hw scan finished. It means no
+>> delay for connection.
+>>> I would rather fix the root cause, do we know what's causing this?
+>> In firmware, hw scan and 11d scan are all running in the same queue,
+>> they can not be run parallel.
+>>
+>> When 6 GHz enabled, the 1st hw scan cost about 7s and finished, and
+>> then 11d scan cost the next 7s. After the 14s, the each hw scan arrived
+>> to ath11k will be run immediately. If the 2nd hw scan arrived before
+>> the 11d scan finished, for example, it arrived 7.1 seconds after the
+>> 1st hw scan, at this moment, the 11d scan is still running in firmware,
+>> then the 2nd hw scan will not receive scan started event untill the 11d
+>> scan finished, and meanwhile, the 2nd hw scan is holding the 
+>> ar->conf_mutex
+>> in ath11k_mac_op_hw_scan(), it is not good to hold a lock for some
+>> seconds because ar->conf_mutex is widely used. So reduce the 10s to 1s
+>> to avoid holding ar->conf_mutex for long time.
+>
+> Hi Kalle,
+>
+> Should I change commit log with above explanation and send v4?
+>
