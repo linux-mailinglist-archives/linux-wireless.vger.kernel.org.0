@@ -2,54 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B11364EFB2
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 17:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC3F664F22B
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 21:11:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230429AbiLPQsc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Dec 2022 11:48:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47826 "EHLO
+        id S231678AbiLPULl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Dec 2022 15:11:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiLPQs1 (ORCPT
+        with ESMTP id S230448AbiLPULk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Dec 2022 11:48:27 -0500
+        Fri, 16 Dec 2022 15:11:40 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBE018E1D
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 08:48:27 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26AA032B82;
+        Fri, 16 Dec 2022 12:11:39 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BD938B81DD1
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 16:48:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA999C433D2;
-        Fri, 16 Dec 2022 16:48:23 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C3A9EB81DFF;
+        Fri, 16 Dec 2022 20:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359ADC433EF;
+        Fri, 16 Dec 2022 20:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671209304;
-        bh=jyl/zC15tNhZDmBGJE+3qLmjSeuFuNsHM8XNNGU5gQ8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mMnE57b0hxgZX7IWHY/j8UL+kmKQ24u24QvVKoQ2xy7jZAGERfkdn9XlHDaWH6s1k
-         QfPOzaNEYXOqjhvO6cJA80XBKT93kVnZD/0tAL0g4DTeRhmoRzmR0T3hwvQKh7QMFY
-         nanEVY9vpLxUBUi9E5tqrVozSx782+aL733UaAdf2dYPPUuv6Wr45C1pOj9od2gBSx
-         B9ytBTqj4U12GIEmHfFZOz5NnobreAsCcA+7hjVOOaMH8uX1aTYghLiqXLW/nlGgmD
-         CGmtjq1CZSshYJbPiKYMKErOKMyC/F2sYhXJdSLx0OVrQvpTVcFqNgaGSItnK0I9nA
-         isctU2UWnCMUw==
-Date:   Fri, 16 Dec 2022 17:48:20 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Bo Jiao <bo.jiao@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] wifi: mt76: fix potential memory leakage
-Message-ID: <Y5yhVN0lwPOyq6oP@lore-desk>
-References: <c663e984077ae903d8d4d34ed470986c6ccb4757.1671157658.git.Bo.Jiao@mediatek.com>
+        s=k20201202; t=1671221496;
+        bh=c36cyYZ6f9o0WhZCEckS0zAx9IQ/4jg44Mug8y2mRQU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=iFQs0uGzwd6R1tS+LzZe4DWr011uE8YAZeSx+qLLd1tjTLz5I29/zRqumOrv9DMwg
+         yXdPXhzPgS2PLcjkMqri/HDiFuC0CNwkkIAD3i7y41TK1aQK6FqFqNkmXv1pf5U9Y+
+         mVZ9BuNNndHYesCrnZG3g+TziBTW4G4kdJbBeubuSIfyhrvdEwPnqtwQJjjTXacUdp
+         r6oqm2XNchVhXqfqmIBQjaL6I2/ca/ynMqEfgbifWYnidZlT9tHlunAbnzptNjTP13
+         Rk6hGIWXR4mIGQiweb0SiSNhQa4Y0aYcIfMR7RLggD8Vnx9E63MNUJHZ2qR9DABAG/
+         E//NS/7qZtcjw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath9k: use proper statements in conditionals
+References: <20221215165553.1950307-1-arnd@kernel.org>
+        <87cz8jbeq8.fsf@toke.dk>
+Date:   Fri, 16 Dec 2022 22:11:29 +0200
+In-Reply-To: <87cz8jbeq8.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
+ \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
+        "Fri, 16 Dec 2022 15:33:19 +0100")
+Message-ID: <87359fkt1q.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kytPndXVJDl+F4EW"
-Content-Disposition: inline
-In-Reply-To: <c663e984077ae903d8d4d34ed470986c6ccb4757.1671157658.git.Bo.Jiao@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,55 +65,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
 
---kytPndXVJDl+F4EW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Arnd Bergmann <arnd@kernel.org> writes:
+>
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> A previous cleanup patch accidentally broke some conditional
+>> expressions by replacing the safe "do {} while (0)" constructs
+>> with empty macros. gcc points this out when extra warnings
+>> are enabled:
+>>
+>> drivers/net/wireless/ath/ath9k/hif_usb.c: In function 'ath9k_skb_queue_c=
+omplete':
+>> drivers/net/wireless/ath/ath9k/hif_usb.c:251:57: error: suggest braces a=
+round empty body in an 'else' statement [-Werror=3Dempty-body]
+>>   251 |                         TX_STAT_INC(hif_dev, skb_failed);
+>>
+>> Make both sets of macros proper expressions again.
+>>
+>> Fixes: d7fc76039b74 ("ath9k: htc: clean up statistics macros")
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 
-> From: Bo Jiao <Bo.Jiao@mediatek.com>
->=20
-> fix potential memory leakage, recycle rxwi when mt76_dma_add_buf() call f=
-ails.
->=20
-> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/dma.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wirel=
-ess/mediatek/mt76/dma.c
-> index fc24b35..9053344 100644
-> --- a/drivers/net/wireless/mediatek/mt76/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-> @@ -592,6 +592,7 @@ mt76_dma_rx_fill(struct mt76_dev *dev, struct mt76_qu=
-eue *q)
->  		qbuf.len =3D len - offset;
->  		qbuf.skip_unmap =3D false;
->  		if (mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, t) < 0) {
-> +			mt76_put_rxwi(dev, t);
+I'll queue this to v6.2.
 
-I think we should add it even if page_frag_alloc or dma_map_single fail.
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Regards,
-Lorenzo
-
->  			dma_unmap_single(dev->dma_dev, addr, len,
->  					 DMA_FROM_DEVICE);
->  			skb_free_frag(buf);
-> --=20
-> 2.18.0
->=20
-
---kytPndXVJDl+F4EW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY5yhVAAKCRA6cBh0uS2t
-rBTHAP9ya7XWNqF0ld0OIGv50h74+PKRugcN9VCTYk8bV6qaUQEA+wPVmG/pCeCn
-jNfS+uiMW1sWTJOALvATPDJm+kvLswg=
-=3NtI
------END PGP SIGNATURE-----
-
---kytPndXVJDl+F4EW--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
