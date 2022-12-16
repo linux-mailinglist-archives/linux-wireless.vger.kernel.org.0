@@ -2,72 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0581A64E79E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 08:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7080164E933
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 11:11:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbiLPHNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Dec 2022 02:13:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41140 "EHLO
+        id S230318AbiLPKLG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Dec 2022 05:11:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiLPHMn (ORCPT
+        with ESMTP id S230317AbiLPKK4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Dec 2022 02:12:43 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A8A63DB
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Dec 2022 23:09:45 -0800 (PST)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BG6Eslt006900;
-        Fri, 16 Dec 2022 07:09:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=nKyh0uFz/ljdjBnoozXbUnYyuBFJYtSCJNST2jHi4J8=;
- b=GmzUCvgiz4pM7Sfgj8oLpCHd2oV+aTPN0r8Bvi8Q+xz5ZE1G1VvZ56sy3O6JBmT0ZQ1s
- NQLoDoo68TXdmbWR3ExbjSPTSg5j3a0kw78A9zrS0vTkTCCXDJfNg4nXPV6nb1MxrC8s
- G/2b01A6Ru76iiw2unBOpi4xZBnYBYgGA/kKY6RM11m4RNtdEKRQC1OTWPn+gqLYS3Tc
- klYpPu6cQBdh/g4OeQM79Vz0fB8tjxNqq8pqLhuaMD6lIilooyBF5L6lPK7nYBhBg8kI
- gOE6ODCAFvbIE5R9roMRFdmx4fku4dlbzEpIuCpC5oBnuEvV94L8QlIovks1IV/bDFBJ ng== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mg6tet9t1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Dec 2022 07:09:39 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BG79c53009555
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Dec 2022 07:09:38 GMT
-Received: from nmaran-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Thu, 15 Dec 2022 23:09:36 -0800
-From:   Nagarajan Maran <quic_nmaran@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Nagarajan Maran <quic_nmaran@quicinc.com>
-Subject: [PATCH 2/2] wifi: mac80211: radar bitmap support during radar detection.
-Date:   Fri, 16 Dec 2022 12:39:18 +0530
-Message-ID: <20221216070918.5969-3-quic_nmaran@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221216070918.5969-1-quic_nmaran@quicinc.com>
-References: <20221216070918.5969-1-quic_nmaran@quicinc.com>
+        Fri, 16 Dec 2022 05:10:56 -0500
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F3812099
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 02:10:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=twlxG8om1PLrXEeoHrSQ+MTXjg2/nvbVxRoJx5kMWfc=; b=DNqBKFq3uM7snPPSLwjceyA0wx
+        TVqtCIVC2qa5G55m5AugS5TCdRf4UEJEh+6J5C4b0W8JK+TVtNtVu8sAfy82dH43mmXgOSApWnUHc
+        U4hzQJ3cxUqZBsWUHWHub6Kx4fIfYvGkBM57rAlNhDBWU+3CUQQipygGYSHDwL3twg08=;
+Received: from p200300daa7420a02090f62f75c4aa0ce.dip0.t-ipconnect.de ([2003:da:a742:a02:90f:62f7:5c4a:a0ce] helo=Maecks.lan)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1p67g4-009IOp-DI; Fri, 16 Dec 2022 11:10:52 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH v2] wifi: mac80211: fix initialization of rx->link and rx->link_sta
+Date:   Fri, 16 Dec 2022 11:10:51 +0100
+Message-Id: <20221216101051.13613-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: _Wuf1WXCROkNdTFeOxFCoZk4RSeef8Kb
-X-Proofpoint-GUID: _Wuf1WXCROkNdTFeOxFCoZk4RSeef8Kb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-16_03,2022-12-15_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 clxscore=1015 adultscore=0 mlxscore=0 bulkscore=0
- spamscore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212160061
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,280 +47,412 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With the current implementation when radar is detected, the whole
-configured DFS channels are moved to "unavailable" state(NOL).
-However to move only the radar affected channels alone to NOL,
-introducing two unsigned 16bit variables "cf1_radar_bitmap" and
-"cf2_radar_bitmap" which denotes the radar(with a granularity of
-20 MHz) in the first and the second part of the channel respectively.
+There are some codepaths that do not initialize rx->link_sta properly. This
+causes a crash in places which assume that rx->link_sta is valid if rx->sta
+is valid.
+One known instance is triggered by __ieee80211_rx_h_amsdu being called from
+fast-rx.
 
-The LSB of the radar bitmap corresponds to the lowest 20 MHz channel
-of the configured channel bandwidth. Each bit set to "1" in this radar
-bitmap indicates that radar is detected in that sub-channel. Pass
-these radar bitmaps from driver to cfg80211 through the existing radar
-detected workqueue, to move the affected channels alone to NOL. Change
-the "ieee80211_radar_detected" API calls in drivers to address the new
-parameters. With these radar bitmaps, we can support bandwidth
-reduction and RX puncturing in the DFS Channels.
+Since the initialization of rx->link and rx->link_sta is rather convoluted
+and duplicated in many places, clean it up by using a helper function to
+set it.
 
-Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+Fixes: ccdde7c74ffd ("wifi: mac80211: properly implement MLO key handling")
+Fixes: b320d6c456ff ("wifi: mac80211: use correct rx link_sta instead of default")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/ath/ath10k/debug.c          |  2 +-
- drivers/net/wireless/ath/ath10k/mac.c            |  2 +-
- drivers/net/wireless/ath/ath10k/wmi.c            |  2 +-
- drivers/net/wireless/ath/ath11k/wmi.c            |  2 +-
- drivers/net/wireless/ath/ath12k/wmi.c            |  2 +-
- drivers/net/wireless/ath/ath9k/dfs.c             |  2 +-
- drivers/net/wireless/ath/ath9k/dfs_debug.c       |  2 +-
- drivers/net/wireless/mac80211_hwsim.c            |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c  |  2 +-
- drivers/net/wireless/ti/wl18xx/event.c           |  2 +-
- include/net/mac80211.h                           |  5 ++++-
- net/mac80211/ieee80211_i.h                       |  2 ++
- net/mac80211/util.c                              | 10 +++++++++-
- 16 files changed, 29 insertions(+), 16 deletions(-)
+v2: fix uninitialized variable
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index b9aea1510f7b..55bdd9daf451 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1773,7 +1773,7 @@ static ssize_t ath10k_write_simulate_radar(struct file *file,
- 	if (!arvif->is_started)
- 		return -EINVAL;
- 
--	ieee80211_radar_detected(ar->hw);
-+	ieee80211_radar_detected(ar->hw, 0, 0);
- 
- 	return count;
- }
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index ec8d5b29bc72..12c284d578a0 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -1442,7 +1442,7 @@ static void ath10k_recalc_radar_detection(struct ath10k *ar)
- 		 * by indicating that radar was detected.
- 		 */
- 		ath10k_warn(ar, "failed to start CAC: %d\n", ret);
--		ieee80211_radar_detected(ar->hw);
-+		ieee80211_radar_detected(ar->hw, 0, 0);
- 	}
+ net/mac80211/rx.c | 217 ++++++++++++++++++++--------------------------
+ 1 file changed, 94 insertions(+), 123 deletions(-)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 3fa7b36d4324..a48dd85c6e4d 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4091,6 +4091,55 @@ static void ieee80211_invoke_rx_handlers(struct ieee80211_rx_data *rx)
+ #undef CALL_RXH
  }
  
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 980d4124fa28..b99ece354584 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -3969,7 +3969,7 @@ static void ath10k_radar_detected(struct ath10k *ar)
- 	if (ar->dfs_block_radar_events)
- 		ath10k_info(ar, "DFS Radar detected, but ignored as requested\n");
- 	else
--		ieee80211_radar_detected(ar->hw);
-+		ieee80211_radar_detected(ar->hw, 0, 0);
- }
- 
- static void ath10k_radar_confirmation_work(struct work_struct *work)
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 2a8a3e3dcff6..7e1215d8988d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7738,7 +7738,7 @@ ath11k_wmi_pdev_dfs_radar_detected_event(struct ath11k_base *ab, struct sk_buff
- 	if (ar->dfs_block_radar_events)
- 		ath11k_info(ab, "DFS Radar detected, but ignored as requested\n");
- 	else
--		ieee80211_radar_detected(ar->hw);
-+		ieee80211_radar_detected(ar->hw, 0, 0);
- 
- exit:
- 	kfree(tb);
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 338082719631..d6769d0adecc 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6192,7 +6192,7 @@ ath12k_wmi_pdev_dfs_radar_detected_event(struct ath12k_base *ab, struct sk_buff
- 	if (ar->dfs_block_radar_events)
- 		ath12k_info(ab, "DFS Radar detected, but ignored as requested\n");
- 	else
--		ieee80211_radar_detected(ar->hw);
-+		ieee80211_radar_detected(ar->hw, 0, 0);
- 
- exit:
- 	kfree(tb);
-diff --git a/drivers/net/wireless/ath/ath9k/dfs.c b/drivers/net/wireless/ath/ath9k/dfs.c
-index 11349218bc21..f98f025cbb9c 100644
---- a/drivers/net/wireless/ath/ath9k/dfs.c
-+++ b/drivers/net/wireless/ath/ath9k/dfs.c
-@@ -280,7 +280,7 @@ ath9k_dfs_process_radar_pulse(struct ath_softc *sc, struct pulse_event *pe)
- 	if (!pd->add_pulse(pd, pe, NULL))
- 		return;
- 	DFS_STAT_INC(sc, radar_detected);
--	ieee80211_radar_detected(sc->hw);
-+	ieee80211_radar_detected(sc->hw, 0, 0);
- }
- 
- /*
-diff --git a/drivers/net/wireless/ath/ath9k/dfs_debug.c b/drivers/net/wireless/ath/ath9k/dfs_debug.c
-index 2a79c2fa8415..779844e8504c 100644
---- a/drivers/net/wireless/ath/ath9k/dfs_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/dfs_debug.c
-@@ -122,7 +122,7 @@ static ssize_t write_file_simulate_radar(struct file *file,
- {
- 	struct ath_softc *sc = file->private_data;
- 
--	ieee80211_radar_detected(sc->hw);
-+	ieee80211_radar_detected(sc->hw, 0, 0);
- 
- 	return count;
- }
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index c57c8903b7c0..872396a43bbc 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1008,7 +1008,7 @@ static int hwsim_write_simulate_radar(void *dat, u64 val)
- {
- 	struct mac80211_hwsim_data *data = dat;
- 
--	ieee80211_radar_detected(data->hw);
-+	ieee80211_radar_detected(data->hw, 0, 0);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 83f30305414d..6979c4bbefa5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -394,7 +394,7 @@ mt7615_mcu_rx_radar_detected(struct mt7615_dev *dev, struct sk_buff *skb)
- 	if (mt76_phy_dfs_state(mphy) < MT_DFS_STATE_CAC)
- 		return;
- 
--	ieee80211_radar_detected(mphy->hw);
-+	ieee80211_radar_detected(mphy->hw, 0, 0);
- 	dev->hw_pattern++;
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
-index 024a5c0a5a57..0c6d7b93c585 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
-@@ -630,7 +630,7 @@ static void mt76x02_dfs_tasklet(struct tasklet_struct *t)
- 		radar_detected = mt76x02_dfs_check_detection(dev);
- 		if (radar_detected) {
- 			/* sw detector rx radar pattern */
--			ieee80211_radar_detected(dev->mt76.hw);
-+			ieee80211_radar_detected(dev->mt76.hw, 0, 0);
- 			mt76x02_dfs_detector_reset(dev);
- 
- 			return;
-@@ -658,7 +658,7 @@ static void mt76x02_dfs_tasklet(struct tasklet_struct *t)
- 
- 		/* hw detector rx radar pattern */
- 		dfs_pd->stats[i].hw_pattern++;
--		ieee80211_radar_detected(dev->mt76.hw);
-+		ieee80211_radar_detected(dev->mt76.hw, 0, 0);
- 		mt76x02_dfs_detector_reset(dev);
- 
- 		return;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index b2652de082ba..d45550d8bdb6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -277,7 +277,7 @@ mt7915_mcu_rx_radar_detected(struct mt7915_dev *dev, struct sk_buff *skb)
- 						&dev->rdd2_chandef,
- 						GFP_ATOMIC);
- 	else
--		ieee80211_radar_detected(mphy->hw);
-+		ieee80211_radar_detected(mphy->hw, 0, 0);
- 	dev->hw_pattern++;
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 04e1d10bbd21..05ca90ed06e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -344,7 +344,7 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
- 						&dev->rdd2_chandef,
- 						GFP_ATOMIC);
- 	else
--		ieee80211_radar_detected(mphy->hw);
-+		ieee80211_radar_detected(mphy->hw, 0, 0);
- 	dev->hw_pattern++;
- }
- 
-diff --git a/drivers/net/wireless/ti/wl18xx/event.c b/drivers/net/wireless/ti/wl18xx/event.c
-index 34d95f458e1a..a382fb8a26ae 100644
---- a/drivers/net/wireless/ti/wl18xx/event.c
-+++ b/drivers/net/wireless/ti/wl18xx/event.c
-@@ -142,7 +142,7 @@ int wl18xx_process_mailbox_events(struct wl1271 *wl)
- 			    wl18xx_radar_type_decode(mbox->radar_type));
- 
- 		if (!wl->radar_debug_mode)
--			ieee80211_radar_detected(wl->hw);
-+			ieee80211_radar_detected(wl->hw, 0, 0);
- 	}
- 
- 	if (vector & PERIODIC_SCAN_REPORT_EVENT_ID) {
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 689da327ce2e..233905187132 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6396,8 +6396,11 @@ void ieee80211_cqm_beacon_loss_notify(struct ieee80211_vif *vif, gfp_t gfp);
-  * ieee80211_radar_detected - inform that a radar was detected
-  *
-  * @hw: pointer as obtained from ieee80211_alloc_hw()
-+ * @cf1_radar_bitmap: denotes the bitmap of radar in the first part of channel.
-+ * @cf2_radar_bitmap: denotes the bitmap of radar in the second part of channel.
-  */
--void ieee80211_radar_detected(struct ieee80211_hw *hw);
-+void ieee80211_radar_detected(struct ieee80211_hw *hw, u16 cf1_radar_bitmap,
-+			      u16 cf2_radar_bitmap);
- 
- /**
-  * ieee80211_chswitch_done - Complete channel switch process
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 63ff0d2524b6..6eacc3325660 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1552,6 +1552,8 @@ struct ieee80211_local {
- 	/* virtual monitor interface */
- 	struct ieee80211_sub_if_data __rcu *monitor_sdata;
- 	struct cfg80211_chan_def monitor_chandef;
-+	u16 cf1_radar_bitmap;
-+	u16 cf2_radar_bitmap;
- 
- 	/* extended capabilities provided by mac80211 */
- 	u8 ext_capa[8];
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 6f5407038459..1c5109adff1b 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -4247,6 +4247,11 @@ void ieee80211_dfs_radar_detected_work(struct work_struct *work)
- 	ieee80211_dfs_cac_cancel(local);
- 	wiphy_unlock(local->hw.wiphy);
- 
-+	chandef.cf1_radar_bitmap = local->cf1_radar_bitmap;
-+	chandef.cf2_radar_bitmap = local->cf2_radar_bitmap;
-+	local->cf1_radar_bitmap = 0;
-+	local->cf2_radar_bitmap = 0;
++static bool
++ieee80211_rx_is_valid_sta_link_id(struct ieee80211_sta *sta, u8 link_id)
++{
++	if (!sta->mlo)
++		return false;
 +
- 	if (num_chanctx > 1)
- 		/* XXX: multi-channel is not supported yet */
- 		WARN_ON(1);
-@@ -4254,9 +4259,12 @@ void ieee80211_dfs_radar_detected_work(struct work_struct *work)
- 		cfg80211_radar_event(local->hw.wiphy, &chandef, GFP_KERNEL);
++	return !!(sta->valid_links & BIT(link_id));
++}
++
++static bool ieee80211_rx_data_set_link(struct ieee80211_rx_data *rx,
++				       u8 link_id)
++{
++	if (!ieee80211_rx_is_valid_sta_link_id(&rx->sta->sta, link_id))
++		return false;
++
++	rx->link_id = link_id;
++	rx->link = rcu_dereference(rx->sdata->link[link_id]);
++	rx->link_sta = rcu_dereference(rx->sta->link[link_id]);
++
++	return rx->link && rx->link_sta;
++}
++
++static bool ieee80211_rx_data_set_sta(struct ieee80211_rx_data *rx,
++				      struct ieee80211_sta *pubsta,
++				      int link_id)
++{
++	struct sta_info *sta;
++
++	sta = container_of(pubsta, struct sta_info, sta);
++
++	rx->link_id = link_id;
++	rx->sta = sta;
++
++	if (sta) {
++		rx->local = sta->sdata->local;
++		rx->sdata = sta->sdata;
++		rx->link_sta = &sta->deflink;
++
++		if (link_id >= 0 &&
++		    !ieee80211_rx_data_set_link(rx, link_id))
++			return false;
++	}
++
++	if (link_id < 0)
++		rx->link = &rx->sdata->deflink;
++
++	return true;
++}
++
+ /*
+  * This function makes calls into the RX path, therefore
+  * it has to be invoked under RCU read lock.
+@@ -4099,16 +4148,19 @@ void ieee80211_release_reorder_timeout(struct sta_info *sta, int tid)
+ {
+ 	struct sk_buff_head frames;
+ 	struct ieee80211_rx_data rx = {
+-		.sta = sta,
+-		.sdata = sta->sdata,
+-		.local = sta->local,
+ 		/* This is OK -- must be QoS data frame */
+ 		.security_idx = tid,
+ 		.seqno_idx = tid,
+-		.link_id = -1,
+ 	};
+ 	struct tid_ampdu_rx *tid_agg_rx;
+-	u8 link_id;
++	int link_id = -1;
++
++	/* FIXME: statistics won't be right with this */
++	if (sta->sta.valid_links)
++		link_id = ffs(sta->sta.valid_links) - 1;
++
++	if (!ieee80211_rx_data_set_sta(&rx, &sta->sta, link_id))
++		return;
+ 
+ 	tid_agg_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
+ 	if (!tid_agg_rx)
+@@ -4128,10 +4180,6 @@ void ieee80211_release_reorder_timeout(struct sta_info *sta, int tid)
+ 		};
+ 		drv_event_callback(rx.local, rx.sdata, &event);
+ 	}
+-	/* FIXME: statistics won't be right with this */
+-	link_id = sta->sta.valid_links ? ffs(sta->sta.valid_links) - 1 : 0;
+-	rx.link = rcu_dereference(sta->sdata->link[link_id]);
+-	rx.link_sta = rcu_dereference(sta->link[link_id]);
+ 
+ 	ieee80211_rx_handlers(&rx, &frames);
+ }
+@@ -4147,7 +4195,6 @@ void ieee80211_mark_rx_ba_filtered_frames(struct ieee80211_sta *pubsta, u8 tid,
+ 		/* This is OK -- must be QoS data frame */
+ 		.security_idx = tid,
+ 		.seqno_idx = tid,
+-		.link_id = -1,
+ 	};
+ 	int i, diff;
+ 
+@@ -4158,10 +4205,8 @@ void ieee80211_mark_rx_ba_filtered_frames(struct ieee80211_sta *pubsta, u8 tid,
+ 
+ 	sta = container_of(pubsta, struct sta_info, sta);
+ 
+-	rx.sta = sta;
+-	rx.sdata = sta->sdata;
+-	rx.link = &rx.sdata->deflink;
+-	rx.local = sta->local;
++	if (!ieee80211_rx_data_set_sta(&rx, pubsta, -1))
++		return;
+ 
+ 	rcu_read_lock();
+ 	tid_agg_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
+@@ -4548,15 +4593,6 @@ void ieee80211_check_fast_rx_iface(struct ieee80211_sub_if_data *sdata)
+ 	mutex_unlock(&local->sta_mtx);
  }
  
--void ieee80211_radar_detected(struct ieee80211_hw *hw)
-+void ieee80211_radar_detected(struct ieee80211_hw *hw, u16 cf1_radar_bitmap,
-+			      u16 cf2_radar_bitmap)
+-static bool
+-ieee80211_rx_is_valid_sta_link_id(struct ieee80211_sta *sta, u8 link_id)
+-{
+-	if (!sta->mlo)
+-		return false;
+-
+-	return !!(sta->valid_links & BIT(link_id));
+-}
+-
+ static void ieee80211_rx_8023(struct ieee80211_rx_data *rx,
+ 			      struct ieee80211_fast_rx *fast_rx,
+ 			      int orig_len)
+@@ -4667,7 +4703,6 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 	struct sk_buff *skb = rx->skb;
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+-	struct sta_info *sta = rx->sta;
+ 	int orig_len = skb->len;
+ 	int hdrlen = ieee80211_hdrlen(hdr->frame_control);
+ 	int snap_offs = hdrlen;
+@@ -4679,7 +4714,6 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 		u8 da[ETH_ALEN];
+ 		u8 sa[ETH_ALEN];
+ 	} addrs __aligned(2);
+-	struct link_sta_info *link_sta;
+ 	struct ieee80211_sta_rx_stats *stats;
+ 
+ 	/* for parallel-rx, we need to have DUP_VALIDATED, otherwise we write
+@@ -4782,18 +4816,10 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+  drop:
+ 	dev_kfree_skb(skb);
+ 
+-	if (rx->link_id >= 0) {
+-		link_sta = rcu_dereference(sta->link[rx->link_id]);
+-		if (!link_sta)
+-			return true;
+-	} else {
+-		link_sta = &sta->deflink;
+-	}
+-
+ 	if (fast_rx->uses_rss)
+-		stats = this_cpu_ptr(link_sta->pcpu_rx_stats);
++		stats = this_cpu_ptr(rx->link_sta->pcpu_rx_stats);
+ 	else
+-		stats = &link_sta->rx_stats;
++		stats = &rx->link_sta->rx_stats;
+ 
+ 	stats->dropped++;
+ 	return true;
+@@ -4811,8 +4837,8 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+ 	struct ieee80211_local *local = rx->local;
+ 	struct ieee80211_sub_if_data *sdata = rx->sdata;
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+-	struct link_sta_info *link_sta = NULL;
+-	struct ieee80211_link_data *link;
++	struct link_sta_info *link_sta = rx->link_sta;
++	struct ieee80211_link_data *link = rx->link;
+ 
+ 	rx->skb = skb;
+ 
+@@ -4834,35 +4860,6 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+ 	if (!ieee80211_accept_frame(rx))
+ 		return false;
+ 
+-	if (rx->link_id >= 0) {
+-		link = rcu_dereference(rx->sdata->link[rx->link_id]);
+-
+-		/* we might race link removal */
+-		if (!link)
+-			return true;
+-		rx->link = link;
+-
+-		if (rx->sta) {
+-			rx->link_sta =
+-				rcu_dereference(rx->sta->link[rx->link_id]);
+-			if (!rx->link_sta)
+-				return true;
+-		}
+-	} else {
+-		if (rx->sta)
+-			rx->link_sta = &rx->sta->deflink;
+-
+-		rx->link = &sdata->deflink;
+-	}
+-
+-	if (unlikely(!is_multicast_ether_addr(hdr->addr1) &&
+-		     rx->link_id >= 0 && rx->sta && rx->sta->sta.mlo)) {
+-		link_sta = rcu_dereference(rx->sta->link[rx->link_id]);
+-
+-		if (WARN_ON_ONCE(!link_sta))
+-			return true;
+-	}
+-
+ 	if (!consume) {
+ 		struct skb_shared_hwtstamps *shwt;
+ 
+@@ -4882,7 +4879,7 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+ 		shwt->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
+ 	}
+ 
+-	if (unlikely(link_sta)) {
++	if (unlikely(rx->sta && rx->sta->sta.mlo)) {
+ 		/* translate to MLD addresses */
+ 		if (ether_addr_equal(link->conf->addr, hdr->addr1))
+ 			ether_addr_copy(hdr->addr1, rx->sdata->vif.addr);
+@@ -4912,6 +4909,7 @@ static void __ieee80211_rx_handle_8023(struct ieee80211_hw *hw,
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_fast_rx *fast_rx;
+ 	struct ieee80211_rx_data rx;
++	int link_id = -1;
+ 
+ 	memset(&rx, 0, sizeof(rx));
+ 	rx.skb = skb;
+@@ -4928,12 +4926,8 @@ static void __ieee80211_rx_handle_8023(struct ieee80211_hw *hw,
+ 	if (!pubsta)
+ 		goto drop;
+ 
+-	rx.sta = container_of(pubsta, struct sta_info, sta);
+-	rx.sdata = rx.sta->sdata;
+-
+-	if (status->link_valid &&
+-	    !ieee80211_rx_is_valid_sta_link_id(pubsta, status->link_id))
+-		goto drop;
++	if (status->link_valid)
++		link_id = status->link_id;
+ 
+ 	/*
+ 	 * TODO: Should the frame be dropped if the right link_id is not
+@@ -4942,19 +4936,8 @@ static void __ieee80211_rx_handle_8023(struct ieee80211_hw *hw,
+ 	 * link_id is used only for stats purpose and updating the stats on
+ 	 * the deflink is fine?
+ 	 */
+-	if (status->link_valid)
+-		rx.link_id = status->link_id;
+-
+-	if (rx.link_id >= 0) {
+-		struct ieee80211_link_data *link;
+-
+-		link =  rcu_dereference(rx.sdata->link[rx.link_id]);
+-		if (!link)
+-			goto drop;
+-		rx.link = link;
+-	} else {
+-		rx.link = &rx.sdata->deflink;
+-	}
++	if (!ieee80211_rx_data_set_sta(&rx, pubsta, link_id))
++		goto drop;
+ 
+ 	fast_rx = rcu_dereference(rx.sta->fast_rx);
+ 	if (!fast_rx)
+@@ -4972,6 +4955,8 @@ static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
  {
- 	struct ieee80211_local *local = hw_to_local(hw);
-+	local->cf1_radar_bitmap = cf1_radar_bitmap;
-+	local->cf2_radar_bitmap = cf2_radar_bitmap;
+ 	struct link_sta_info *link_sta;
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct sta_info *sta;
++	int link_id = -1;
  
- 	trace_api_radar_detected(local);
+ 	/*
+ 	 * Look up link station first, in case there's a
+@@ -4981,24 +4966,19 @@ static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
+ 	 */
+ 	link_sta = link_sta_info_get_bss(rx->sdata, hdr->addr2);
+ 	if (link_sta) {
+-		rx->sta = link_sta->sta;
+-		rx->link_id = link_sta->link_id;
++		sta = link_sta->sta;
++		link_id = link_sta->link_id;
+ 	} else {
+ 		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
  
+-		rx->sta = sta_info_get_bss(rx->sdata, hdr->addr2);
+-		if (rx->sta) {
+-			if (status->link_valid &&
+-			    !ieee80211_rx_is_valid_sta_link_id(&rx->sta->sta,
+-							       status->link_id))
+-				return false;
+-
+-			rx->link_id = status->link_valid ? status->link_id : -1;
+-		} else {
+-			rx->link_id = -1;
+-		}
++		sta = sta_info_get_bss(rx->sdata, hdr->addr2);
++		if (status->link_valid)
++			link_id = status->link_id;
+ 	}
+ 
++	if (!ieee80211_rx_data_set_sta(rx, &sta->sta, link_id))
++		return false;
++
+ 	return ieee80211_prepare_and_rx_handle(rx, skb, consume);
+ }
+ 
+@@ -5057,19 +5037,15 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 
+ 	if (ieee80211_is_data(fc)) {
+ 		struct sta_info *sta, *prev_sta;
+-		u8 link_id = status->link_id;
++		int link_id = -1;
+ 
+-		if (pubsta) {
+-			rx.sta = container_of(pubsta, struct sta_info, sta);
+-			rx.sdata = rx.sta->sdata;
++		if (status->link_valid)
++			link_id = status->link_id;
+ 
+-			if (status->link_valid &&
+-			    !ieee80211_rx_is_valid_sta_link_id(pubsta, link_id))
++		if (pubsta) {
++			if (!ieee80211_rx_data_set_sta(&rx, pubsta, link_id))
+ 				goto out;
+ 
+-			if (status->link_valid)
+-				rx.link_id = status->link_id;
+-
+ 			/*
+ 			 * In MLO connection, fetch the link_id using addr2
+ 			 * when the driver does not pass link_id in status.
+@@ -5087,7 +5063,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 				if (!link_sta)
+ 					goto out;
+ 
+-				rx.link_id = link_sta->link_id;
++				ieee80211_rx_data_set_link(&rx, link_sta->link_id);
+ 			}
+ 
+ 			if (ieee80211_prepare_and_rx_handle(&rx, skb, true))
+@@ -5103,30 +5079,25 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 				continue;
+ 			}
+ 
+-			if ((status->link_valid &&
+-			     !ieee80211_rx_is_valid_sta_link_id(&prev_sta->sta,
+-								link_id)) ||
+-			    (!status->link_valid && prev_sta->sta.mlo))
++			if (!ieee80211_rx_data_set_sta(&rx, &prev_sta->sta,
++						       link_id))
++				goto out;
++
++			if (!status->link_valid && prev_sta->sta.mlo)
+ 				continue;
+ 
+-			rx.link_id = status->link_valid ? link_id : -1;
+-			rx.sta = prev_sta;
+-			rx.sdata = prev_sta->sdata;
+ 			ieee80211_prepare_and_rx_handle(&rx, skb, false);
+ 
+ 			prev_sta = sta;
+ 		}
+ 
+ 		if (prev_sta) {
+-			if ((status->link_valid &&
+-			     !ieee80211_rx_is_valid_sta_link_id(&prev_sta->sta,
+-								link_id)) ||
+-			    (!status->link_valid && prev_sta->sta.mlo))
++			if (!ieee80211_rx_data_set_sta(&rx, &prev_sta->sta,
++						       link_id))
+ 				goto out;
+ 
+-			rx.link_id = status->link_valid ? link_id : -1;
+-			rx.sta = prev_sta;
+-			rx.sdata = prev_sta->sdata;
++			if (!status->link_valid && prev_sta->sta.mlo)
++				goto out;
+ 
+ 			if (ieee80211_prepare_and_rx_handle(&rx, skb, true))
+ 				return;
 -- 
-2.17.1
+2.38.1
 
