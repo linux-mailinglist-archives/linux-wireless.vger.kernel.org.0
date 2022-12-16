@@ -2,75 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E545664E945
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 11:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73FD064E970
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 11:28:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbiLPKTT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Dec 2022 05:19:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51502 "EHLO
+        id S230171AbiLPK2g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Dec 2022 05:28:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbiLPKTD (ORCPT
+        with ESMTP id S229625AbiLPK2f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Dec 2022 05:19:03 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789A650D55
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 02:18:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 34A7AB81B2A
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 10:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705DBC433F0;
-        Fri, 16 Dec 2022 10:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671185927;
-        bh=g7As3RJKNxeu3UYhZWD96CMAWz3efpGPv5RJc9Z9In0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eIxWjeP8l0FY0C2PrYbyJWWs3chDSs0pbEcmCkE5l6/2ln4+X+OjL3P+PZPxsCdde
-         +byg69YCDtw14ujNiOQieugcZczCXND1j7MyTJi32sMlxdbIbmQGDHxI3VyaMTUybQ
-         l16iPj21S/lzjkc3xl9wEXzzwTOndkmJnem0TuBqNHdqWujVvN65mCzcdnA3RJ96ym
-         1mgHvQB6ivf2yotAwSOr+dIlCkmOjupCUQ83Yf6+ytLUc6DZdNfMlnwGQFD0xlBQ20
-         ZCIViIOzQknq5KQ+TKf2sz2BvJ5kwOA6tsXh7n/xihdMARuvU5OUSdNg+0MDXE8QSF
-         uCgl4ulO+IhMQ==
-Date:   Fri, 16 Dec 2022 11:18:42 +0100
-From:   Michael Walle <mwalle@kernel.org>
-To:     Ajay.Kathat@microchip.com
-Cc:     Claudiu.Beznea@microchip.com, linux-wireless@vger.kernel.org,
-        kvalo@kernel.org
-Subject: Re: wilc1000 kernel crash
-Message-ID: <20221216101842.jjz3glyotqbbqlk4@0002.3ffe.de>
-References: <20221024135407.7udo3dwl3mqyv2yj@0002.3ffe.de>
- <6d022f41-85bb-cde2-0b3d-feef0a0711f2@microchip.com>
- <20221026085415.6jgwrhq4sunqaypm@0002.3ffe.de>
- <20221209120343.wvagbfprsgdj74af@0002.3ffe.de>
- <4f279aa2-b5df-0b76-2cdf-ddb339a19cf7@microchip.com>
+        Fri, 16 Dec 2022 05:28:35 -0500
+Received: from email.studentenwerk.mhn.de (mailin.studentenwerk.mhn.de [141.84.225.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E5D32A949;
+        Fri, 16 Dec 2022 02:28:33 -0800 (PST)
+Received: from mailhub.studentenwerk.mhn.de (mailhub.studentenwerk.mhn.de [127.0.0.1])
+        by email.studentenwerk.mhn.de (Postfix) with ESMTPS id 4NYQL75rsLzRhTk;
+        Fri, 16 Dec 2022 11:28:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwm.de; s=stwm-20170627;
+        t=1671186511;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=E+gRcYlkBgTay2aKzTpNSiy4Bv0vPYNnKAOHTra8+TA=;
+        b=KeCzDtlUlzb9pVuW9+EWbOhJxPZLsfG1MAjx5r91bCPgq7EecIJpgyB2pCOZ8fomYF8N9S
+        LtJonhpeAVm/y4oGw6QPyedR+kPd0RzxKllhXm3HsuyuoL6QiXvMpNB2xNV1uRPLucQ4NS
+        xA/J9NpE5Tb5LNIs7O1GxAt1GjR85kLV2N7YxYyVVGhq0Wenpb2NE6S/24/gH9wzoMyX+p
+        a91tGuel322VpHzTVWott7vqhZcjuSojGKf/PEPefE5cjiyWM9QXM8iVB5C5Jddi5jmY63
+        J5PRLEBq/W+yEYaH9Bd/lMZauWtVlDQFm3IIMUJ5jM68h5BWtGO/v2uPX7sVCg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4f279aa2-b5df-0b76-2cdf-ddb339a19cf7@microchip.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Date:   Fri, 16 Dec 2022 11:28:54 +0100
+From:   Wolfgang Walter <linux@stwm.de>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: kernel v6.1: NULL pointer dereference in ieee80211_deliver_skb
+In-Reply-To: <5ef22539-7a99-0c12-a5b0-a5ea643fe635@nbd.name>
+References: <1585238f2dee5e2daafe28ba0606b6a4@stwm.de>
+ <5ef22539-7a99-0c12-a5b0-a5ea643fe635@nbd.name>
+Message-ID: <2eb2bdca943c9acfdbadd6ae44a517dc@stwm.de>
+X-Sender: linux@stwm.de
+Organization: =?UTF-8?Q?Studentenwerk_M=C3=BCnchen?=
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Am 2022-12-15 20:27, schrieb Felix Fietkau:
+> On 15.12.22 18:31, Wolfgang Walter wrote:
+>> Hello,
+>> 
+>> with kernel v6.1 I always get the following oops when running on a 
+>> small
+>> router:
+> Please try this fix that I just posted:
+> https://patchwork.kernel.org/project/linux-wireless/patch/20221215190503.79904-1-nbd@nbd.name/
+> 
+> - Felix
 
-On 22/12/09 02:14, Ajay.Kathat@microchip.com wrote:
-> No progress yet. I tried to simulate the condition a few times but was 
-> unable to see the exact failure in my setup so I need to try more.
+Thanks al lot, that fixed the problem.
 
-Shouldn't it also be possible to see the issue by code reading? I've
-provided the call tree in my previous mail and my concerns regarding
-the locking. Either I'm missing something there or there is no
-locking between these threads which could cause this issue.
-
-> For the other "FW not responding" continuous logs, I got some clue. 
-> Probably, will try to send that patch first.
-
-Ok, let me know if you have some patches, I'm happy to test them.
-
--michael
+Regards
+-- 
+Wolfgang Walter
+Studentenwerk München
+Anstalt des öffentlichen Rechts
