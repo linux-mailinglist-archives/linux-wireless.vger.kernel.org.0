@@ -2,91 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3673164EA15
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 12:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FBD64EB2C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 13:04:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230449AbiLPLQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Dec 2022 06:16:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54252 "EHLO
+        id S229665AbiLPMEp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Dec 2022 07:04:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230463AbiLPLQl (ORCPT
+        with ESMTP id S229469AbiLPMEn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Dec 2022 06:16:41 -0500
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC9B566F2;
-        Fri, 16 Dec 2022 03:16:41 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id 0790732005B5;
-        Fri, 16 Dec 2022 06:16:39 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 16 Dec 2022 06:16:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm1; t=1671189399; x=
-        1671275799; bh=urmZCaqP5uUKG9f3w/5JTsr/NxjJLfj/bS5O5zJbL3k=; b=B
-        P9QPaWyUZsW0J7NWwNNXiRe/NP294gh+txwjjTkkU7clAeWF6FQVMwjQPV++4p1G
-        7zFWR2NZpqnvdtedG0DPxcX0WJ5f1gT450S+q96g0V7/x8i1qpxhKnnQFLO3QAfS
-        sKp/ijlHu1aKWKhWG3rt6l42y1GQxjdALSSObWQH1iPo+1dEBoF/J+lr7N8Sst32
-        fNnN98J8FL767UA7dMHFGUxba6wuqILe4HlKqwngxvEWCfCWVoA70R13rKvAytDa
-        pvY//qtyEeKZvD7dtLw5bG/u6lJl0g/uUEn3PC2rmoremmWGeEnCoTKj+5YVTHuX
-        NTpScNCJLj0Veh/qWENzg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1671189399; x=
-        1671275799; bh=urmZCaqP5uUKG9f3w/5JTsr/NxjJLfj/bS5O5zJbL3k=; b=h
-        JIGQ2wRfu8pouckzEfxNWbPfRSPaO6SywY5VipBipFb0SYlKTf2BU8rQETn7goSG
-        ZuxIpeT9eDYAza2ft8WopgRVO8PQsRJYejVHzw1l/7WrzETdahgwh1dqKoj8gRhk
-        zjKxAnrdOQH1s8vgq1Pcxjf4LkpU1pxVakRPnprG+IurIzY8pMXgmCGII3trEqqF
-        wtuZRnlvP7SXRhNZr4ShfO+zGsYmWpdBQipfyMVfY+BJvoquqpC8ms4Bz6gxQvE6
-        NP/fQPmjyv2ZKdpMCJS1XRSfC0CSylaOVKRkDIK9Ojy1bZad6S25sf36DPHbsl8B
-        kBY6Jv0MDpVr6tNR8VcBQ==
-X-ME-Sender: <xms:llOcYyL18Ft-JhsVdpqThXN3ciCGyoPjree7-ZSiqUKwI-iVCFQiuw>
-    <xme:llOcY6IHI2ErJgRxFa7y5Ta25FW5I7Agjy_16qzgYiZpHjehyclz5LeS3mNiOHVah
-    rSIE1oZntNowtGQ1h0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejgddvgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
-    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:llOcYyskflETP8t1zefHbbyYYHF2Uce1IHgY2irqUlMRMKLH1P3tNA>
-    <xmx:llOcY3Z0u-2oIYML-ikr6AGGk4c9eEZPJQ5z0MSS-3YpDQY39XnCkA>
-    <xmx:llOcY5ZefpA51A6Ke9qK5v6ptX6wpZkzmJzdnzJaNB8W0oLhM2rkWA>
-    <xmx:l1OcY7meDvbcNTtSMtNfYLNJraVZY_-_AxQX_DzFIrNdCymRfxvT_Q>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id D009AB60086; Fri, 16 Dec 2022 06:16:38 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
-Mime-Version: 1.0
-Message-Id: <486f9bc9-408f-4c29-b675-cbd61673f58c@app.fastmail.com>
-In-Reply-To: <87k02sd1uz.fsf@toke.dk>
-References: <20221215165553.1950307-1-arnd@kernel.org>
- <87k02sd1uz.fsf@toke.dk>
-Date:   Fri, 16 Dec 2022 12:16:17 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        "Arnd Bergmann" <arnd@kernel.org>, "Kalle Valo" <kvalo@kernel.org>,
-        "Pavel Skripkin" <paskripkin@gmail.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Tetsuo Handa" <penguin-kernel@i-love.sakura.ne.jp>,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ath9k: use proper statements in conditionals
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        Fri, 16 Dec 2022 07:04:43 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72696B0F
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 04:04:41 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id x66so1643046pfx.3
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 04:04:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=q9mXC3HPGi4SnTUKl47vyKMshaiteCDhTRS81QCs77c=;
+        b=m7cjw8crabx8KlKGQrst9fR8O1t2yxt8m9H3nFETO6imjVmYBLkdbBFU1+EBPQpevT
+         oS0Q6dmT+58ZfalfAMbywVXqSPiF2l51wQ3/pfSedYILOPqAVD1nA1JDoQTluiseP3YR
+         pcfH5oqi58+Id4i9jywkWBOQNdeiMifSpJzMbScizu5i1/Zd6ehw3I3qYPlMRcMpHNIf
+         dqyK6asck4HZyI10daG3zkmLIQIGXQkDErqHWkfBKH+MhI0zJ5jK36WmBeJmgbgZsngp
+         xeJiAtEmujjOg9xOLeNwugydT58GEq17iiPH87kxjmQayt0M0htfyEWLSDMJHwOHDR/z
+         /FsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q9mXC3HPGi4SnTUKl47vyKMshaiteCDhTRS81QCs77c=;
+        b=nFy1ypha3gBeRhV6Ux3yxc8k9wdhep66UVq3ESpVltMq/EPLlMXslV4r8visVVnwoS
+         4QEeLb1Vd9pe7NlnjKqYcQiyjSCyFiFMLXIblCFDVZ3VnQ9mb/3XYKjRi2ZNIorFA/lP
+         nj/rI5A/h6jxucudrrHac3de5NLTGL+pUlbZu04mV+8qj/ZakHNlRTYI23aVJZ9WIp5z
+         p04+hBb4qo1KMFD7ubeQ5n/4uBfGRbv31ngSN5LwklWZqTSEwNVdGR0Kv5tWTilwDcR/
+         mo/1i11Aq3O9bVuYz4HX+GJEtroFsKnrjOoHyA8vKXu1+RH1HEi46mNtsowtuvbyl5Ov
+         vc4g==
+X-Gm-Message-State: ANoB5pn3xG8McNPIemrzyDQffQmGeQ6Olw/8K7N0eZrXiyD1y2clCDqv
+        5/a0Yc+nFNYSwlPLZn+12CxM1To7Uq1CMLtbbmw=
+X-Google-Smtp-Source: AA0mqf5tnzdXarz4cLuC1psT15pF8dbErmLY7pdu3abV30FzMk3Scy0HKxN9Sy0NPEwGh7fuMiea3cItEzmWOvmbZLs=
+X-Received: by 2002:aa7:8c07:0:b0:577:a422:e57d with SMTP id
+ c7-20020aa78c07000000b00577a422e57dmr5559628pfd.74.1671192280935; Fri, 16 Dec
+ 2022 04:04:40 -0800 (PST)
+MIME-Version: 1.0
+References: <CAOMZO5AW4JUEFiaFgr8PvC5x3a5VWA4Ut8cXYYAme5-scgBV6Q@mail.gmail.com>
+ <872024534.20587.1671097586476.JavaMail.zimbra@z.j-2.se>
+In-Reply-To: <872024534.20587.1671097586476.JavaMail.zimbra@z.j-2.se>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Fri, 16 Dec 2022 09:04:23 -0300
+Message-ID: <CAOMZO5Bv+_2CN_CGeFswRCQp1-2fmuFZj26enxEeE5gpva160w@mail.gmail.com>
+Subject: Re: ath10k: IRQ timeout after AP-STA-POLL-OK
+To:     Patrik Arven <patrik.arven@j-2.se>
+Cc:     kvalo@kernel.org, linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k@lists.infradead.org, Bough Chen <haibo.chen@nxp.com>,
+        Kevin Groeneveld <KGroeneveld@lenbrook.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,40 +70,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 15, 2022, at 18:16, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> index 30f0765fb9fd..237f4ec2cffd 100644
->> --- a/drivers/net/wireless/ath/ath9k/htc.h
->> +++ b/drivers/net/wireless/ath/ath9k/htc.h
->> @@ -327,9 +327,9 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB=
-(struct sk_buff *skb)
->>  }
->> =20
->>  #ifdef CONFIG_ATH9K_HTC_DEBUGFS
->> -#define __STAT_SAFE(hif_dev, expr)	((hif_dev)->htc_handle->drv_priv =
-? (expr) : 0)
->> -#define CAB_STAT_INC(priv)		((priv)->debug.tx_stats.cab_queued++)
->> -#define TX_QSTAT_INC(priv, q)		((priv)->debug.tx_stats.queue_stats[q=
-]++)
->> +#define __STAT_SAFE(hif_dev, expr)	do { ((hif_dev)->htc_handle->drv_=
-priv ? (expr) : 0); } while (0)
->> +#define CAB_STAT_INC(priv)		do { ((priv)->debug.tx_stats.cab_queued+=
-+); } while (0)
->> +#define TX_QSTAT_INC(priv, q)		do { ((priv)->debug.tx_stats.queue_st=
-ats[q]++); } while (0)
->
-> Hmm, is it really necessary to wrap these in do/while constructs? AFAI=
-CT
-> they're all simple statements already?
+Hi Patrik,
 
-It's generally safer to do the same thing on both side of the #ifdef.
+On Thu, Dec 15, 2022 at 6:46 AM Patrik Arven <patrik.arven@j-2.se> wrote:
 
-The "do { } while (0)" is an empty statement that is needed to fix
-the bug on the #else side. The expressions you have on the #ifdef
-side can be used as values, and wrapping them in do{}while(0)
-turns them into statements (without a value) as well, so fewer
-things can go wrong when you only test one side.
+> Solution in my case was to revert to a custom(?) qca driver:
 
-I suppose the best solution would be to just use inline functions
-for all of them and get rid of the macros.
+Thanks for your reply.
 
-     Arnd
+Yes, I am aware of this out-of-tree driver, but my intention is to
+keep using the mainline ath10k one.
+
+Does anyone know what triggers the AP-STA-POLL-OK event?
+
+It looks like whenever AP-STA-POLL-OK happens, then the eMMC interrupt
+is no longer handled and causes the interrupt timeout.
