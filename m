@@ -2,75 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73FD064E970
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 11:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7FEA64E98B
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Dec 2022 11:36:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbiLPK2g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Dec 2022 05:28:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
+        id S230110AbiLPKgs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Dec 2022 05:36:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbiLPK2f (ORCPT
+        with ESMTP id S229783AbiLPKgr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Dec 2022 05:28:35 -0500
-Received: from email.studentenwerk.mhn.de (mailin.studentenwerk.mhn.de [141.84.225.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E5D32A949;
-        Fri, 16 Dec 2022 02:28:33 -0800 (PST)
-Received: from mailhub.studentenwerk.mhn.de (mailhub.studentenwerk.mhn.de [127.0.0.1])
-        by email.studentenwerk.mhn.de (Postfix) with ESMTPS id 4NYQL75rsLzRhTk;
-        Fri, 16 Dec 2022 11:28:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwm.de; s=stwm-20170627;
-        t=1671186511;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=E+gRcYlkBgTay2aKzTpNSiy4Bv0vPYNnKAOHTra8+TA=;
-        b=KeCzDtlUlzb9pVuW9+EWbOhJxPZLsfG1MAjx5r91bCPgq7EecIJpgyB2pCOZ8fomYF8N9S
-        LtJonhpeAVm/y4oGw6QPyedR+kPd0RzxKllhXm3HsuyuoL6QiXvMpNB2xNV1uRPLucQ4NS
-        xA/J9NpE5Tb5LNIs7O1GxAt1GjR85kLV2N7YxYyVVGhq0Wenpb2NE6S/24/gH9wzoMyX+p
-        a91tGuel322VpHzTVWott7vqhZcjuSojGKf/PEPefE5cjiyWM9QXM8iVB5C5Jddi5jmY63
-        J5PRLEBq/W+yEYaH9Bd/lMZauWtVlDQFm3IIMUJ5jM68h5BWtGO/v2uPX7sVCg==
-MIME-Version: 1.0
-Date:   Fri, 16 Dec 2022 11:28:54 +0100
-From:   Wolfgang Walter <linux@stwm.de>
+        Fri, 16 Dec 2022 05:36:47 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D9F82EF22
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 02:36:46 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE1C061CFF
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Dec 2022 10:36:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1DEC433EF;
+        Fri, 16 Dec 2022 10:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671187005;
+        bh=QdJPW1es4pIi/AdIHAu/1rzhIl22O8T5oHinECl6AyY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=kVm0Cla2OQY2OAc7Os2BX1R3pEQgzPfty9rBu5IzpqV4d+D3A8FERpqi2Mmsm9w0U
+         sFv29JQ4KK/yXIHJf+uCt9nuypNa/9VeRyoURYDvzYO1GzgRNmUMNUNjKtHW9YBCGN
+         iw1/gDQrpAOohEeo3uoe3+6AwzKVRP5LP+3M1leXOyjLLh5XlxbMapjWJHVggFK1jA
+         sVKBUbB0XJ9AiiKrHfUWdps0ekeAE96nV4x1O0EuteT37jmQVKKRGsu0cbDVZi5uD5
+         BouCNdojSKbFMW0iE8cc8I9HwPGRz3wrjl5nYIvjtjR296i6lksr1u5Eqg+vBLsiz9
+         qkNoPEGnM+fcw==
+From:   Kalle Valo <kvalo@kernel.org>
 To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: kernel v6.1: NULL pointer dereference in ieee80211_deliver_skb
-In-Reply-To: <5ef22539-7a99-0c12-a5b0-a5ea643fe635@nbd.name>
-References: <1585238f2dee5e2daafe28ba0606b6a4@stwm.de>
- <5ef22539-7a99-0c12-a5b0-a5ea643fe635@nbd.name>
-Message-ID: <2eb2bdca943c9acfdbadd6ae44a517dc@stwm.de>
-X-Sender: linux@stwm.de
-Organization: =?UTF-8?Q?Studentenwerk_M=C3=BCnchen?=
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
+Subject: Re: [PATCH] wifi: mac80211: fix initialization of rx->link and rx->link_sta
+References: <20221215190503.79904-1-nbd@nbd.name>
+Date:   Fri, 16 Dec 2022 12:36:42 +0200
+In-Reply-To: <20221215190503.79904-1-nbd@nbd.name> (Felix Fietkau's message of
+        "Thu, 15 Dec 2022 20:05:03 +0100")
+Message-ID: <877cyrljnp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 2022-12-15 20:27, schrieb Felix Fietkau:
-> On 15.12.22 18:31, Wolfgang Walter wrote:
->> Hello,
->> 
->> with kernel v6.1 I always get the following oops when running on a 
->> small
->> router:
-> Please try this fix that I just posted:
-> https://patchwork.kernel.org/project/linux-wireless/patch/20221215190503.79904-1-nbd@nbd.name/
-> 
-> - Felix
+Felix Fietkau <nbd@nbd.name> writes:
 
-Thanks al lot, that fixed the problem.
+> There are some codepaths that do not initialize rx->link_sta properly. This
+> causes a crash in places which assume that rx->link_sta is valid if rx->sta
+> is valid.
+> One known instance is triggered by __ieee80211_rx_h_amsdu being called from
+> fast-rx.
 
-Regards
+An example crash log would be nice to include, it would make it easier
+to find this fix.
+
 -- 
-Wolfgang Walter
-Studentenwerk München
-Anstalt des öffentlichen Rechts
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
