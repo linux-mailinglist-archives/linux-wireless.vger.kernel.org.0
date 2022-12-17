@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20DBE64F92D
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Dec 2022 15:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FFE64F930
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Dec 2022 15:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230327AbiLQONx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Dec 2022 09:13:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38146 "EHLO
+        id S230350AbiLQOP3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Dec 2022 09:15:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbiLQONv (ORCPT
+        with ESMTP id S229921AbiLQOP2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Dec 2022 09:13:51 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1550F13F2F
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Dec 2022 06:13:50 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id t17so12340393eju.1
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Dec 2022 06:13:50 -0800 (PST)
+        Sat, 17 Dec 2022 09:15:28 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831A113F2F
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Dec 2022 06:15:26 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id ay14-20020a05600c1e0e00b003cf6ab34b61so5921410wmb.2
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Dec 2022 06:15:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1Y9FHoNwcDPV8AMOOlEJy2lDdr8m8MESsLDV+1GBLU0=;
-        b=c3HX2RunNKKddKsnkwRotggGzmftm2m/4VL0flWr0WUdf5qImZnJxxKYG90M66Kw/W
-         yyjbQFpvdZ46PX+0r++2DnoQme+u7fulELWbZQ5je5cXRazXwy3Ee6d6g1Okv7khDvhx
-         IIQDIuyqnWlzrwtBekEO2i2bbhhoPvJRQwK6b+OqIDK+fQSyEgHvDPjV5V+IB1x7OZt+
-         FGg4DJxYq4d3IuuA6NDCurlMetlgw05esHs1AIzlEoPMVAcGPQ+L/fWT93ta3LY3gERQ
-         3DvAHx0bwXPkhdQY4259QtYYFbVsxppCPUFmh5PX2B71Th/MBUECm3hGlShS6fwfnK2n
-         YyUg==
+        bh=5XBNtzZIUL6DpeJRGDseDf4I9zzEeOSirZvIImwNMbA=;
+        b=N5rGiLQodNU8eTMbNw3sLEufM5Pp+0Wk1uRKjZ3QkChi/z4f2iG1kBKKdmpmHzx6Vd
+         jLVSsXfvmczuxHnER6j8VLxITUsaHxJozG3gLFQr9OUMkumxqhysHwjmQm6EBro7rX4k
+         hflX/t/kmaZKbcJiswcggDOLTUV0nQtKIvtsB2N7cssbepzxQNv87ziDfuuCVgO7+RBm
+         I54JX1frl/TdtIfHkFhhmBxvpEya+fJKhDxT6F7IeX0LL5edFow1FfKChGLVwGPAyTqh
+         y0DrHUTZq2Yjj05DsMQYEgtLXmwAs50HOOnKdsOSUjTXDW/LMq2SZDffvxDPqsQJe8uB
+         ntZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Y9FHoNwcDPV8AMOOlEJy2lDdr8m8MESsLDV+1GBLU0=;
-        b=OncK/wsaBRkcDGeoIxFcLWA8B2mrI3cADJbPlQtc3SQisgPi8+loJxp4Y7BwI+Jv0Y
-         /zyeJdLiFuid8ofSQ3/+TMzRmDJ+mubOsBxuLI9uynROCnyYDxZDj4kAAkGWxHLrXbUX
-         yaFwWmOiY/EDziiQB64mgJoG+ohi688SaX1NSPuaOiv7bfFtVrPzpJ3oQFDtuEYpJAwG
-         BQZwfPL7ggyBQ9E5yY/8yAEPqXzxeO0hPqqL9cu1exrby8hvUE9aOjA8U3HO5U4WIv2p
-         LTQ7X9jbk/nkcDaaLiV4AUElbpvE4KKE6lJpB3giBoiIKEdmf+EhPJzEqr7hZo4/1AC2
-         e3Ww==
-X-Gm-Message-State: ANoB5plGVWbRi3Tz3uTFyOZzCX/OKu3lZba5ENdLgBQSi79ohBNgj6++
-        75e1PMai0K010VS44K8oh00hReMbp78=
-X-Google-Smtp-Source: AA0mqf739rsov3BdD30ZINY5O1bq9Nj5+YLgdrGXn5qK449mKXYb33yLRmAsZE0EAAYbez4fpq3VUQ==
-X-Received: by 2002:a17:906:c088:b0:7c4:a773:4d72 with SMTP id f8-20020a170906c08800b007c4a7734d72mr17823165ejz.64.1671286428727;
-        Sat, 17 Dec 2022 06:13:48 -0800 (PST)
+        bh=5XBNtzZIUL6DpeJRGDseDf4I9zzEeOSirZvIImwNMbA=;
+        b=PB6dkodYoZMYhQdpHGbJHazt2FVVgGfbB5pQgMazLJ0qpITO9F0i89oGM92dGi4OM5
+         4OVieQLv5KRHQ2dASen9tlxR1K93I2Wq8SlfS7grrj3xMW3G0E4s8nsC4CKmyiwv4rqV
+         D5wkQVLol9neJk4PjaObE+ZRTSjq/vnZahlfkX88f4+M0PMYlhjQW/Q990PXGrnU4J3R
+         G8ay9ua0/h0JckKj245XIRWdPP7xyQMJc9J1/F6qi54aWP20+nPIOr2+kn6mKqoPf/4R
+         GATWhcLy0EpRPGKnYcVadyb92UhTEMFb+oFJdF4GnH+FgZn1pvIm1mXeLmmoKNsnNhrj
+         gmpg==
+X-Gm-Message-State: AFqh2kpAqNbBjI0wgnU0wFbhPHShpyc3y3+Grcql5+zm9fm8rsxRLC/r
+        r3w0fYBJRUhXIGhF5bhS9yxrj+GDdaQ=
+X-Google-Smtp-Source: AMrXdXtYc+gA7RSrQhlnkaf2NpC/Y4cIA9nWTQA5z9n2VvH17CFGZHeC9zGdVSKovPK+YsfanSssyQ==
+X-Received: by 2002:a1c:4b18:0:b0:3d3:39a9:e659 with SMTP id y24-20020a1c4b18000000b003d339a9e659mr7797477wma.21.1671286525037;
+        Sat, 17 Dec 2022 06:15:25 -0800 (PST)
 Received: from [192.168.1.50] ([79.119.240.153])
-        by smtp.gmail.com with ESMTPSA id lx5-20020a170906af0500b007af75e6b6fesm2075094ejb.147.2022.12.17.06.13.47
+        by smtp.gmail.com with ESMTPSA id ja5-20020a05600c556500b003d1e4120700sm6866415wmb.41.2022.12.17.06.15.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Dec 2022 06:13:48 -0800 (PST)
-Message-ID: <361ceac1-cc73-605b-4b63-736bfce80833@gmail.com>
-Date:   Sat, 17 Dec 2022 16:13:47 +0200
+        Sat, 17 Dec 2022 06:15:24 -0800 (PST)
+Message-ID: <cfe79922-efdf-2ed0-7404-263915d19d82@gmail.com>
+Date:   Sat, 17 Dec 2022 16:15:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.3
-Subject: [PATCH v3 2/5] wifi: rtl8xxxu: Make rtl8xxxu_load_firmware take const
- char*
+Subject: [PATCH v3 3/5] wifi: rtl8xxxu: Define masks for cck_agc_rpt bits
 Content-Language: en-US
 From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -78,7 +77,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-And pass const char* to it.
+Define the constants CCK_AGC_RPT_LNA_IDX_MASK and
+CCK_AGC_RPT_VGA_IDX_MASK instead of using the same literals
+in four places.
+
+And get the bits from cck_agc_rpt using u8_get_bits().
+
+It's a cosmetic change only.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
@@ -88,105 +93,70 @@ v3:
 v2:
  - Patch is new in v2.
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h       | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h       | 3 +++
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 4 ++--
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 4 ++--
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 4 ++--
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index d26df4095da0..87758295d618 100644
+index 87758295d618..15bb2b5211a8 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1560,7 +1560,7 @@ int rtl8xxxu_init_phy_rf(struct rtl8xxxu_priv *priv,
- 			 enum rtl8xxxu_rfpath path);
- int rtl8xxxu_init_phy_regs(struct rtl8xxxu_priv *priv,
- 			   const struct rtl8xxxu_reg32val *array);
--int rtl8xxxu_load_firmware(struct rtl8xxxu_priv *priv, char *fw_name);
-+int rtl8xxxu_load_firmware(struct rtl8xxxu_priv *priv, const char *fw_name);
- void rtl8xxxu_firmware_self_reset(struct rtl8xxxu_priv *priv);
- void rtl8xxxu_power_off(struct rtl8xxxu_priv *priv);
- void rtl8xxxu_identify_vendor_1bit(struct rtl8xxxu_priv *priv, u32 vendor);
+@@ -562,6 +562,9 @@ struct phy_rx_agc_info {
+ #endif
+ };
+ 
++#define CCK_AGC_RPT_LNA_IDX_MASK	GENMASK(7, 5)
++#define CCK_AGC_RPT_VGA_IDX_MASK	GENMASK(4, 0)
++
+ struct rtl8723au_phy_stats {
+ 	struct phy_rx_agc_info path_agc[RTL8723A_MAX_RF_PATHS];
+ 	u8	ch_corr[RTL8723A_MAX_RF_PATHS];
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-index ba28a4c00d3b..94fc4647075a 100644
+index 94fc4647075a..54e136c964b4 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-@@ -742,7 +742,7 @@ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+@@ -1682,8 +1682,8 @@ static s8 rtl8188f_cck_rssi(struct rtl8xxxu_priv *priv, u8 cck_agc_rpt)
+ 	s8 rx_pwr_all = 0x00;
+ 	u8 vga_idx, lna_idx;
  
- static int rtl8188fu_load_firmware(struct rtl8xxxu_priv *priv)
- {
--	char *fw_name;
-+	const char *fw_name;
- 	int ret;
+-	lna_idx = (cck_agc_rpt & 0xE0) >> 5;
+-	vga_idx = cck_agc_rpt & 0x1F;
++	lna_idx = u8_get_bits(cck_agc_rpt, CCK_AGC_RPT_LNA_IDX_MASK);
++	vga_idx = u8_get_bits(cck_agc_rpt, CCK_AGC_RPT_VGA_IDX_MASK);
  
- 	fw_name = "rtlwifi/rtl8188fufw.bin";
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-index d43f8afeb876..8981a86c833f 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-@@ -386,7 +386,7 @@ static int rtl8192cu_identify_chip(struct rtl8xxxu_priv *priv)
- 
- static int rtl8192cu_load_firmware(struct rtl8xxxu_priv *priv)
- {
--	char *fw_name;
-+	const char *fw_name;
- 	int ret;
- 
- 	if (!priv->vendor_umc)
+ 	switch (lna_idx) {
+ 	case 7:
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-index 91f018f6fca0..c769d0eaa03c 100644
+index c769d0eaa03c..7ec6d8fb3c2b 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -709,7 +709,7 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+@@ -1717,8 +1717,8 @@ static s8 rtl8192e_cck_rssi(struct rtl8xxxu_priv *priv, u8 cck_agc_rpt)
+ 	u8 vga_idx, lna_idx;
+ 	s8 lna_gain = 0;
  
- static int rtl8192eu_load_firmware(struct rtl8xxxu_priv *priv)
- {
--	char *fw_name;
-+	const char *fw_name;
- 	int ret;
+-	lna_idx = (cck_agc_rpt & 0xE0) >> 5;
+-	vga_idx = cck_agc_rpt & 0x1F;
++	lna_idx = u8_get_bits(cck_agc_rpt, CCK_AGC_RPT_LNA_IDX_MASK);
++	vga_idx = u8_get_bits(cck_agc_rpt, CCK_AGC_RPT_VGA_IDX_MASK);
  
- 	fw_name = "rtlwifi/rtl8192eu_nic.bin";
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-index 707ac48ecc83..e881ee33c6e8 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-@@ -231,7 +231,7 @@ static int rtl8723au_parse_efuse(struct rtl8xxxu_priv *priv)
- 
- static int rtl8723au_load_firmware(struct rtl8xxxu_priv *priv)
- {
--	char *fw_name;
-+	const char *fw_name;
- 	int ret;
- 
- 	switch (priv->chip_cut) {
+ 	if (priv->cck_agc_report_type == 0)
+ 		lna_gain = lna_gain_table_0[lna_idx];
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-index b26737447035..65ebf9dcf5f9 100644
+index 65ebf9dcf5f9..0ed667d5ed25 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-@@ -502,7 +502,7 @@ static int rtl8723bu_parse_efuse(struct rtl8xxxu_priv *priv)
+@@ -1680,8 +1680,8 @@ static s8 rtl8723b_cck_rssi(struct rtl8xxxu_priv *priv, u8 cck_agc_rpt)
+ 	s8 rx_pwr_all = 0x00;
+ 	u8 vga_idx, lna_idx;
  
- static int rtl8723bu_load_firmware(struct rtl8xxxu_priv *priv)
- {
--	char *fw_name;
-+	const char *fw_name;
- 	int ret;
+-	lna_idx = (cck_agc_rpt & 0xE0) >> 5;
+-	vga_idx = cck_agc_rpt & 0x1F;
++	lna_idx = u8_get_bits(cck_agc_rpt, CCK_AGC_RPT_LNA_IDX_MASK);
++	vga_idx = u8_get_bits(cck_agc_rpt, CCK_AGC_RPT_VGA_IDX_MASK);
  
- 	if (priv->enable_bluetooth)
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 7f2adb1a9c70..7aa00442c3a5 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1980,7 +1980,7 @@ static int rtl8xxxu_download_firmware(struct rtl8xxxu_priv *priv)
- 	return ret;
- }
- 
--int rtl8xxxu_load_firmware(struct rtl8xxxu_priv *priv, char *fw_name)
-+int rtl8xxxu_load_firmware(struct rtl8xxxu_priv *priv, const char *fw_name)
- {
- 	struct device *dev = &priv->udev->dev;
- 	const struct firmware *fw;
+ 	switch (lna_idx) {
+ 	case 6:
 -- 
 2.38.0
