@@ -2,57 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3967A6502F2
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Dec 2022 17:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A072650336
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Dec 2022 17:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232921AbiLRQ4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Dec 2022 11:56:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35694 "EHLO
+        id S231948AbiLRQ7x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Dec 2022 11:59:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232238AbiLRQyr (ORCPT
+        with ESMTP id S232764AbiLRQ5v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Dec 2022 11:54:47 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EA901BE9D;
-        Sun, 18 Dec 2022 08:19:15 -0800 (PST)
+        Sun, 18 Dec 2022 11:57:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B24120AA;
+        Sun, 18 Dec 2022 08:20:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A274FB80BA7;
-        Sun, 18 Dec 2022 16:19:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1009BC433EF;
-        Sun, 18 Dec 2022 16:19:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E94660DB4;
+        Sun, 18 Dec 2022 16:20:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1B7C433D2;
+        Sun, 18 Dec 2022 16:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671380352;
-        bh=XkpHaj9eqaKvP0O4Lp0HGAT5XYfLoAu5RyUxI5NKDmU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AgLksztz+ToeziZnMOvf0kKBH90mgnP10vVfAOUmE2bOlAaUUKBA1ffkrFGMlfZVr
-         18PxM4PgZa3ydtePDqH+0Vu/nxuaaCiSN94fFyr9gzyc7cNxliEVkuhFBta/EKn0fy
-         Us0HqXWxsbYWQ/nA4l9q/68GS1Myha7/GwbtJwE4IUL929uBjmfBhRPdBvYoq+3i6A
-         lF5LeKfD9aO04jOB76LQdO1T5mmFZRW1gzFcWXTckbhOGydKvlH5VEHaFSW/uqsTY6
-         aQIYD71YksTDsA8VT3sdW116Mert9BSBi8YSTEvlax2gxdAzqh0qeycAib9STbR7pw
-         vJnfaBJjqWKuA==
+        s=k20201202; t=1671380420;
+        bh=4xmynnMz3+JjRHot5r8wn2MX123cygI6NTvhMupfm0k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=d0TJHzM2TIMNGEqMLr6XSvycRPi7rsiw2I066+Kel0WbbcEFqU0UEoX9jo1fRvDDc
+         tQboEu30oGoxiR90UPX9++2PTO42rOwgVdg/Vnv9VDbCjnmoA5DlbGC97aguC+kOcp
+         ixOsOcBGne4wD+ONVzr3tyaZeD9SOCTZjSNDLS7LkHsm/Imh0PdDzymJHlxjzCai3Y
+         NNuE+a7ON9xBGwJXluDOH4zMq0iXLqnxrTi2VeMZqJz7e2a7tCMDJH42DRuoNTVxC5
+         xymnq0PMUcJ76WxjPb+KGogZNOJP6jEptKmKMBgYgzQsYfOpTvTN0yyEJyg9lh2xiq
+         /CfqciMtNs/1w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-        Dokyung Song <dokyungs@yonsei.ac.kr>,
-        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        marcan@marcan.st, alsi@bang-olufsen.dk, rmk+kernel@armlinux.org.uk,
-        linus.walleij@linaro.org, phil@raspberrypi.com, ardb@kernel.org,
-        wsa+renesas@sang-engineering.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 10/30] wifi: brcmfmac: Fix potential shift-out-of-bounds in brcmf_fw_alloc_request()
-Date:   Sun, 18 Dec 2022 11:18:15 -0500
-Message-Id: <20221218161836.933697-10-sashal@kernel.org>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 01/26] wifi: ath9k: verify the expected usb_endpoints are present
+Date:   Sun, 18 Dec 2022 11:19:51 -0500
+Message-Id: <20221218162016.934280-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221218161836.933697-1-sashal@kernel.org>
-References: <20221218161836.933697-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -65,146 +61,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 81d17f6f3331f03c8eafdacea68ab773426c1e3c ]
+[ Upstream commit 16ef02bad239f11f322df8425d302be62f0443ce ]
 
-This patch fixes a shift-out-of-bounds in brcmfmac that occurs in
-BIT(chiprev) when a 'chiprev' provided by the device is too large.
-It should also not be equal to or greater than BITS_PER_TYPE(u32)
-as we do bitwise AND with a u32 variable and BIT(chiprev). The patch
-adds a check that makes the function return NULL if that is the case.
-Note that the NULL case is later handled by the bus-specific caller,
-brcmf_usb_probe_cb() or brcmf_usb_reset_resume(), for example.
+The bug arises when a USB device claims to be an ATH9K but doesn't
+have the expected endpoints. (In this case there was an interrupt
+endpoint where the driver expected a bulk endpoint.) The kernel
+needs to be able to handle such devices without getting an internal error.
 
-Found by a modified version of syzkaller.
-
-UBSAN: shift-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-shift exponent 151055786 is too large for 64-bit type 'long unsigned int'
-CPU: 0 PID: 1885 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-Workqueue: usb_hub_wq hub_event
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 3 PID: 500 at drivers/usb/core/urb.c:493 usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
+Modules linked in:
+CPU: 3 PID: 500 Comm: kworker/3:2 Not tainted 5.10.135-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+Workqueue: events request_firmware_work_func
+RIP: 0010:usb_submit_urb+0xce2/0x1430 drivers/usb/core/urb.c:493
 Call Trace:
- dump_stack_lvl+0x57/0x7d
- ubsan_epilogue+0x5/0x40
- __ubsan_handle_shift_out_of_bounds.cold+0x53/0xdb
- ? lock_chain_count+0x20/0x20
- brcmf_fw_alloc_request.cold+0x19/0x3ea
- ? brcmf_fw_get_firmwares+0x250/0x250
- ? brcmf_usb_ioctl_resp_wait+0x1a7/0x1f0
- brcmf_usb_get_fwname+0x114/0x1a0
- ? brcmf_usb_reset_resume+0x120/0x120
- ? number+0x6c4/0x9a0
- brcmf_c_process_clm_blob+0x168/0x590
- ? put_dec+0x90/0x90
- ? enable_ptr_key_workfn+0x20/0x20
- ? brcmf_common_pd_remove+0x50/0x50
- ? rcu_read_lock_sched_held+0xa1/0xd0
- brcmf_c_preinit_dcmds+0x673/0xc40
- ? brcmf_c_set_joinpref_default+0x100/0x100
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lock_acquire+0x19d/0x4e0
- ? find_held_lock+0x2d/0x110
- ? brcmf_usb_deq+0x1cc/0x260
- ? mark_held_locks+0x9f/0xe0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? _raw_spin_unlock_irqrestore+0x47/0x50
- ? trace_hardirqs_on+0x1c/0x120
- ? brcmf_usb_deq+0x1a7/0x260
- ? brcmf_usb_rx_fill_all+0x5a/0xf0
- brcmf_attach+0x246/0xd40
- ? wiphy_new_nm+0x1476/0x1d50
- ? kmemdup+0x30/0x40
- brcmf_usb_probe+0x12de/0x1690
- ? brcmf_usbdev_qinit.constprop.0+0x470/0x470
- usb_probe_interface+0x25f/0x710
- really_probe+0x1be/0xa90
- __driver_probe_device+0x2ab/0x460
- ? usb_match_id.part.0+0x88/0xc0
- driver_probe_device+0x49/0x120
- __device_attach_driver+0x18a/0x250
- ? driver_allows_async_probing+0x120/0x120
- bus_for_each_drv+0x123/0x1a0
- ? bus_rescan_devices+0x20/0x20
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? trace_hardirqs_on+0x1c/0x120
- __device_attach+0x207/0x330
- ? device_bind_driver+0xb0/0xb0
- ? kobject_uevent_env+0x230/0x12c0
- bus_probe_device+0x1a2/0x260
- device_add+0xa61/0x1ce0
- ? __mutex_unlock_slowpath+0xe7/0x660
- ? __fw_devlink_link_to_suppliers+0x550/0x550
- usb_set_configuration+0x984/0x1770
- ? kernfs_create_link+0x175/0x230
- usb_generic_driver_probe+0x69/0x90
- usb_probe_device+0x9c/0x220
- really_probe+0x1be/0xa90
- __driver_probe_device+0x2ab/0x460
- driver_probe_device+0x49/0x120
- __device_attach_driver+0x18a/0x250
- ? driver_allows_async_probing+0x120/0x120
- bus_for_each_drv+0x123/0x1a0
- ? bus_rescan_devices+0x20/0x20
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? trace_hardirqs_on+0x1c/0x120
- __device_attach+0x207/0x330
- ? device_bind_driver+0xb0/0xb0
- ? kobject_uevent_env+0x230/0x12c0
- bus_probe_device+0x1a2/0x260
- device_add+0xa61/0x1ce0
- ? __fw_devlink_link_to_suppliers+0x550/0x550
- usb_new_device.cold+0x463/0xf66
- ? hub_disconnect+0x400/0x400
- ? _raw_spin_unlock_irq+0x24/0x30
- hub_event+0x10d5/0x3330
- ? hub_port_debounce+0x280/0x280
- ? __lock_acquire+0x1671/0x5790
- ? wq_calc_node_cpumask+0x170/0x2a0
- ? lock_release+0x640/0x640
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- process_one_work+0x873/0x13e0
- ? lock_release+0x640/0x640
- ? pwq_dec_nr_in_flight+0x320/0x320
- ? rwlock_bug.part.0+0x90/0x90
- worker_thread+0x8b/0xd10
- ? __kthread_parkme+0xd9/0x1d0
- ? process_one_work+0x13e0/0x13e0
- kthread+0x379/0x450
- ? _raw_spin_unlock_irq+0x24/0x30
- ? set_kthread_struct+0x100/0x100
- ret_from_fork+0x1f/0x30
+ ath9k_hif_usb_alloc_rx_urbs drivers/net/wireless/ath/ath9k/hif_usb.c:908 [inline]
+ ath9k_hif_usb_alloc_urbs+0x75e/0x1010 drivers/net/wireless/ath/ath9k/hif_usb.c:1019
+ ath9k_hif_usb_dev_init drivers/net/wireless/ath/ath9k/hif_usb.c:1109 [inline]
+ ath9k_hif_usb_firmware_cb+0x142/0x530 drivers/net/wireless/ath/ath9k/hif_usb.c:1242
+ request_firmware_work_func+0x12e/0x240 drivers/base/firmware_loader/main.c:1097
+ process_one_work+0x9af/0x1600 kernel/workqueue.c:2279
+ worker_thread+0x61d/0x12f0 kernel/workqueue.c:2425
+ kthread+0x3b4/0x4a0 kernel/kthread.c:313
+ ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:299
 
-Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20221024071329.504277-1-linuxlovemin@yonsei.ac.kr
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20221008211532.74583-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index 544ad80629a9..47e33fe53eeb 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -703,6 +703,11 @@ brcmf_fw_alloc_request(u32 chip, u32 chiprev,
- 	u32 i, j;
- 	char end = '\0';
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index c8c7afe0e343..fddfab6b35da 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1330,10 +1330,24 @@ static int send_eject_command(struct usb_interface *interface)
+ static int ath9k_hif_usb_probe(struct usb_interface *interface,
+ 			       const struct usb_device_id *id)
+ {
++	struct usb_endpoint_descriptor *bulk_in, *bulk_out, *int_in, *int_out;
+ 	struct usb_device *udev = interface_to_usbdev(interface);
++	struct usb_host_interface *alt;
+ 	struct hif_device_usb *hif_dev;
+ 	int ret = 0;
  
-+	if (chiprev >= BITS_PER_TYPE(u32)) {
-+		brcmf_err("Invalid chip revision %u\n", chiprev);
-+		return NULL;
++	/* Verify the expected endpoints are present */
++	alt = interface->cur_altsetting;
++	if (usb_find_common_endpoints(alt, &bulk_in, &bulk_out, &int_in, &int_out) < 0 ||
++	    usb_endpoint_num(bulk_in) != USB_WLAN_RX_PIPE ||
++	    usb_endpoint_num(bulk_out) != USB_WLAN_TX_PIPE ||
++	    usb_endpoint_num(int_in) != USB_REG_IN_PIPE ||
++	    usb_endpoint_num(int_out) != USB_REG_OUT_PIPE) {
++		dev_err(&udev->dev,
++			"ath9k_htc: Device endpoint numbers are not the expected ones\n");
++		return -ENODEV;
 +	}
 +
- 	for (i = 0; i < table_size; i++) {
- 		if (mapping_table[i].chipid == chip &&
- 		    mapping_table[i].revmask & BIT(chiprev))
+ 	if (id->driver_info == STORAGE_DEVICE)
+ 		return send_eject_command(interface);
+ 
 -- 
 2.35.1
 
