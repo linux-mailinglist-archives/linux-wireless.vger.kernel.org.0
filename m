@@ -2,53 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3984F6501F6
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Dec 2022 17:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26E90650248
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Dec 2022 17:45:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232513AbiLRQjr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Dec 2022 11:39:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32830 "EHLO
+        id S232698AbiLRQpJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Dec 2022 11:45:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232384AbiLRQjD (ORCPT
+        with ESMTP id S232625AbiLRQoi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Dec 2022 11:39:03 -0500
+        Sun, 18 Dec 2022 11:44:38 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6592DF6;
-        Sun, 18 Dec 2022 08:13:58 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C898F26CA;
+        Sun, 18 Dec 2022 08:15:49 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3C458B803F1;
-        Sun, 18 Dec 2022 16:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB734C433F1;
-        Sun, 18 Dec 2022 16:13:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7F14AB80BE7;
+        Sun, 18 Dec 2022 16:15:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AF5C433D2;
+        Sun, 18 Dec 2022 16:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671380026;
-        bh=ass4gCYR/As3MGly8gfLOlhkSWr7veB4rsKTz0o/lNc=;
+        s=k20201202; t=1671380147;
+        bh=tH6ZpV0L4UGuIzGbBfIQemffggo8wHMlaWF05gu9Ygk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pG0OuRv3yPbk5grgrUVRmXWpjCALRipN+Q2aCNQU6sZvYZE8c2XnnKNGo8JE4ZZt2
-         QSfFcWjLLtX6LlvEy/fveON8q8c1BmMsyuwfO6xQxMeEvdPER8Zp8M6+NT4amk1l8d
-         W2mL8tqA69ZFQwwCbaxAjE6CntrXXsRhyT/vpJYDL4HPcIuZRsCS6OY8cTpaabyUFs
-         xhWcEShER7KV8bv2q/XjxdBZ7hZIEkJJ9vMGoz2UOIp8qiqYJcmcRmQ8QJsxOM2lUd
-         aNeZDHONLEMRwtgxUESlqreJr5WwIX9IiuAkHPLElP4+a0kn/ll6DVi6Y+1UH1R1YA
-         UB57ZenOzbQfg==
+        b=Uasa8E0E+vrLqPUP4ooCXvOouETLtH5ju02CuXX//qnL4NRiFV2s3XrrQeKRvDnkZ
+         Hh3PaKFpAoJe2rs8HUlZd+AI/xWRvVhkBuWoia6trPdtP0RKkkN1K0mg5xYNpw54WH
+         UD9sLS2NcObs5UU1INlCUTljvxISQx+yWI/f3snnQcH1rbvP6rk76jdJdu7HqXilWh
+         flFXObuMmuYGwlQLdpMb/odP6BrmBR8Hf/ZpwMZ9W60tyATLnN1cLf6Ee88cYXsbwm
+         F6PM8dofNw52A9eC6uK3ty8f2R36AJCEYTfOU6XYdOUypNKOHSKIaoLhVt0fnr7Bkk
+         v3vFDxIKTLB2w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
         Dokyung Song <dokyungs@yonsei.ac.kr>,
-        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        marcan@marcan.st, rmk+kernel@armlinux.org.uk, alsi@bang-olufsen.dk,
-        wsa+renesas@sang-engineering.com, ardb@kernel.org,
-        phil@raspberrypi.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 14/46] wifi: brcmfmac: Fix potential shift-out-of-bounds in brcmf_fw_alloc_request()
-Date:   Sun, 18 Dec 2022 11:12:12 -0500
-Message-Id: <20221218161244.930785-14-sashal@kernel.org>
+        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        Sasha Levin <sashal@kernel.org>, ryder.lee@mediatek.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 42/46] wifi: mt76: do not run mt76u_status_worker if the device is not running
+Date:   Sun, 18 Dec 2022 11:12:40 -0500
+Message-Id: <20221218161244.930785-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221218161244.930785-1-sashal@kernel.org>
 References: <20221218161244.930785-1-sashal@kernel.org>
@@ -65,146 +62,104 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 81d17f6f3331f03c8eafdacea68ab773426c1e3c ]
+[ Upstream commit bd5dac7ced5a7c9faa4dc468ac9560c3256df845 ]
 
-This patch fixes a shift-out-of-bounds in brcmfmac that occurs in
-BIT(chiprev) when a 'chiprev' provided by the device is too large.
-It should also not be equal to or greater than BITS_PER_TYPE(u32)
-as we do bitwise AND with a u32 variable and BIT(chiprev). The patch
-adds a check that makes the function return NULL if that is the case.
-Note that the NULL case is later handled by the bus-specific caller,
-brcmf_usb_probe_cb() or brcmf_usb_reset_resume(), for example.
+Fix the following NULL pointer dereference avoiding to run
+mt76u_status_worker thread if the device is not running yet.
 
-Found by a modified version of syzkaller.
-
-UBSAN: shift-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-shift exponent 151055786 is too large for 64-bit type 'long unsigned int'
-CPU: 0 PID: 1885 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-Workqueue: usb_hub_wq hub_event
+KASAN: null-ptr-deref in range
+[0x0000000000000000-0x0000000000000007]
+CPU: 0 PID: 98 Comm: kworker/u2:2 Not tainted 5.14.0+ #78 Hardware
+name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+Workqueue: mt76 mt76u_tx_status_data
+RIP: 0010:mt76x02_mac_fill_tx_status.isra.0+0x82c/0x9e0
+Code: c5 48 b8 00 00 00 00 00 fc ff df 80 3c 02 00 0f 85 94 01 00 00
+48 b8 00 00 00 00 00 fc ff df 4d 8b 34 24 4c 89 f2 48 c1 ea 03 <0f>
+b6
+04 02 84 c0 74 08 3c 03 0f 8e 89 01 00 00 41 8b 16 41 0f b7
+RSP: 0018:ffffc900005af988 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffffc900005afae8 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff832fc661 RDI: ffffc900005afc2a
+RBP: ffffc900005afae0 R08: 0000000000000001 R09: fffff520000b5f3c
+R10: 0000000000000003 R11: fffff520000b5f3b R12: ffff88810b6132d8
+R13: 000000000000ffff R14: 0000000000000000 R15: ffffc900005afc28
+FS:  0000000000000000(0000) GS:ffff88811aa00000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fa0eda6a000 CR3: 0000000118f17000 CR4: 0000000000750ef0
+PKRU: 55555554
 Call Trace:
- dump_stack_lvl+0x57/0x7d
- ubsan_epilogue+0x5/0x40
- __ubsan_handle_shift_out_of_bounds.cold+0x53/0xdb
- ? lock_chain_count+0x20/0x20
- brcmf_fw_alloc_request.cold+0x19/0x3ea
- ? brcmf_fw_get_firmwares+0x250/0x250
- ? brcmf_usb_ioctl_resp_wait+0x1a7/0x1f0
- brcmf_usb_get_fwname+0x114/0x1a0
- ? brcmf_usb_reset_resume+0x120/0x120
- ? number+0x6c4/0x9a0
- brcmf_c_process_clm_blob+0x168/0x590
- ? put_dec+0x90/0x90
- ? enable_ptr_key_workfn+0x20/0x20
- ? brcmf_common_pd_remove+0x50/0x50
- ? rcu_read_lock_sched_held+0xa1/0xd0
- brcmf_c_preinit_dcmds+0x673/0xc40
- ? brcmf_c_set_joinpref_default+0x100/0x100
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lock_acquire+0x19d/0x4e0
- ? find_held_lock+0x2d/0x110
- ? brcmf_usb_deq+0x1cc/0x260
- ? mark_held_locks+0x9f/0xe0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? _raw_spin_unlock_irqrestore+0x47/0x50
- ? trace_hardirqs_on+0x1c/0x120
- ? brcmf_usb_deq+0x1a7/0x260
- ? brcmf_usb_rx_fill_all+0x5a/0xf0
- brcmf_attach+0x246/0xd40
- ? wiphy_new_nm+0x1476/0x1d50
- ? kmemdup+0x30/0x40
- brcmf_usb_probe+0x12de/0x1690
- ? brcmf_usbdev_qinit.constprop.0+0x470/0x470
- usb_probe_interface+0x25f/0x710
- really_probe+0x1be/0xa90
- __driver_probe_device+0x2ab/0x460
- ? usb_match_id.part.0+0x88/0xc0
- driver_probe_device+0x49/0x120
- __device_attach_driver+0x18a/0x250
- ? driver_allows_async_probing+0x120/0x120
- bus_for_each_drv+0x123/0x1a0
- ? bus_rescan_devices+0x20/0x20
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? trace_hardirqs_on+0x1c/0x120
- __device_attach+0x207/0x330
- ? device_bind_driver+0xb0/0xb0
- ? kobject_uevent_env+0x230/0x12c0
- bus_probe_device+0x1a2/0x260
- device_add+0xa61/0x1ce0
- ? __mutex_unlock_slowpath+0xe7/0x660
- ? __fw_devlink_link_to_suppliers+0x550/0x550
- usb_set_configuration+0x984/0x1770
- ? kernfs_create_link+0x175/0x230
- usb_generic_driver_probe+0x69/0x90
- usb_probe_device+0x9c/0x220
- really_probe+0x1be/0xa90
- __driver_probe_device+0x2ab/0x460
- driver_probe_device+0x49/0x120
- __device_attach_driver+0x18a/0x250
- ? driver_allows_async_probing+0x120/0x120
- bus_for_each_drv+0x123/0x1a0
- ? bus_rescan_devices+0x20/0x20
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? trace_hardirqs_on+0x1c/0x120
- __device_attach+0x207/0x330
- ? device_bind_driver+0xb0/0xb0
- ? kobject_uevent_env+0x230/0x12c0
- bus_probe_device+0x1a2/0x260
- device_add+0xa61/0x1ce0
- ? __fw_devlink_link_to_suppliers+0x550/0x550
- usb_new_device.cold+0x463/0xf66
- ? hub_disconnect+0x400/0x400
- ? _raw_spin_unlock_irq+0x24/0x30
- hub_event+0x10d5/0x3330
- ? hub_port_debounce+0x280/0x280
- ? __lock_acquire+0x1671/0x5790
- ? wq_calc_node_cpumask+0x170/0x2a0
- ? lock_release+0x640/0x640
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- process_one_work+0x873/0x13e0
- ? lock_release+0x640/0x640
- ? pwq_dec_nr_in_flight+0x320/0x320
- ? rwlock_bug.part.0+0x90/0x90
- worker_thread+0x8b/0xd10
- ? __kthread_parkme+0xd9/0x1d0
- ? process_one_work+0x13e0/0x13e0
- kthread+0x379/0x450
- ? _raw_spin_unlock_irq+0x24/0x30
- ? set_kthread_struct+0x100/0x100
+ mt76x02_send_tx_status+0x1d2/0xeb0
+ mt76x02_tx_status_data+0x8e/0xd0
+ mt76u_tx_status_data+0xe1/0x240
+ process_one_work+0x92b/0x1460
+ worker_thread+0x95/0xe00
+ kthread+0x3a1/0x480
  ret_from_fork+0x1f/0x30
+Modules linked in:
+--[ end trace 8df5d20fc5040f65 ]--
+RIP: 0010:mt76x02_mac_fill_tx_status.isra.0+0x82c/0x9e0
+Code: c5 48 b8 00 00 00 00 00 fc ff df 80 3c 02 00 0f 85 94 01 00 00
+48 b8 00 00 00 00 00 fc ff df 4d 8b 34 24 4c 89 f2 48 c1 ea 03 <0f>
+b6
+04 02 84 c0 74 08 3c 03 0f 8e 89 01 00 00 41 8b 16 41 0f b7
+RSP: 0018:ffffc900005af988 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffffc900005afae8 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff832fc661 RDI: ffffc900005afc2a
+RBP: ffffc900005afae0 R08: 0000000000000001 R09: fffff520000b5f3c
+R10: 0000000000000003 R11: fffff520000b5f3b R12: ffff88810b6132d8
+R13: 000000000000ffff R14: 0000000000000000 R15: ffffc900005afc28
+FS:  0000000000000000(0000) GS:ffff88811aa00000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fa0eda6a000 CR3: 0000000118f17000 CR4: 0000000000750ef0
+PKRU: 55555554
+
+Moreover move stat_work schedule out of the for loop.
 
 Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20221024071329.504277-1-linuxlovemin@yonsei.ac.kr
+Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/mediatek/mt76/usb.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index dcbe55b56e43..c54d8722e755 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -746,6 +746,11 @@ brcmf_fw_alloc_request(u32 chip, u32 chiprev,
- 	u32 i, j;
- 	char end = '\0';
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 1e9f60bb811a..b47343e321b8 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -814,6 +814,9 @@ static void mt76u_status_worker(struct mt76_worker *w)
+ 	struct mt76_queue *q;
+ 	int i;
  
-+	if (chiprev >= BITS_PER_TYPE(u32)) {
-+		brcmf_err("Invalid chip revision %u\n", chiprev);
-+		return NULL;
-+	}
++	if (!test_bit(MT76_STATE_RUNNING, &dev->phy.state))
++		return;
 +
- 	for (i = 0; i < table_size; i++) {
- 		if (mapping_table[i].chipid == chip &&
- 		    mapping_table[i].revmask & BIT(chiprev))
+ 	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
+ 		q = dev->phy.q_tx[i];
+ 		if (!q)
+@@ -833,11 +836,11 @@ static void mt76u_status_worker(struct mt76_worker *w)
+ 			wake_up(&dev->tx_wait);
+ 
+ 		mt76_worker_schedule(&dev->tx_worker);
+-
+-		if (dev->drv->tx_status_data &&
+-		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state))
+-			queue_work(dev->wq, &dev->usb.stat_work);
+ 	}
++
++	if (dev->drv->tx_status_data &&
++	    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state))
++		queue_work(dev->wq, &dev->usb.stat_work);
+ }
+ 
+ static void mt76u_tx_status_data(struct work_struct *work)
 -- 
 2.35.1
 
