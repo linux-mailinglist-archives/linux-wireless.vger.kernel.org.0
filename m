@@ -2,117 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A967D64FC37
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Dec 2022 21:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81BD464FF43
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Dec 2022 16:25:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbiLQUXu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Dec 2022 15:23:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37548 "EHLO
+        id S230152AbiLRPYa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Dec 2022 10:24:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229951AbiLQUXm (ORCPT
+        with ESMTP id S229865AbiLRPY3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Dec 2022 15:23:42 -0500
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF34EE05
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Dec 2022 12:23:38 -0800 (PST)
-Received: by mail-il1-f200.google.com with SMTP id l16-20020a056e02067000b0030325bbd570so4010558ilt.0
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Dec 2022 12:23:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zhak8b5pECv3WdAuTBYFEI8u4BH4xzgqJb+pR1es1dw=;
-        b=Dvx2d1G2S6Afv2XEhQCh730hhdwmgOilOo8AlTtG1R+ZMfcHIK5ku453pUUhjvK6bC
-         aK7UPlFszK0dJNmw0QtdK0YFegVfy0pkmUPge3/tJFM9viI5Wqmgb/+Z05J7z1UUO6zS
-         dfCiadQu9BdHEcHQsZDbBxPUeduocnXgGIMwLRqxd8fQ2nNFUZLV5iXY1VmlIb5VLap0
-         WNutuPMR5gSE1tZF3ghAoCkfz4p/mvObYlHjlPU21hzcdf7a84vuHjSOyr8UUSBRJaWo
-         9nFcIGKDVREmASLXYm0ccqCaZn+839U8gnB7Ux7CPYaiCTMZlh44eRhBhqfZOnKSgYdN
-         5cXw==
-X-Gm-Message-State: ANoB5plhTYQD2ntTQFHCSCCRZGGSmWA1TVs/REEQKOeiT0/9Ii++gkOK
-        rbpuV7SjwoicLGyjhG0GnTK2/KUxMNNm4sPnfG6DElXmmDyZ
-X-Google-Smtp-Source: AA0mqf4SE3WhaLo0Wqu5rl3EqqzkTQBtaB/iRqHJV5j60PglmweOvVXaL+HWPFGUhuyO9VrWZ1Wx5GLdjlbY/HrWbkGBm2XCzhdO
+        Sun, 18 Dec 2022 10:24:29 -0500
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04BD96340
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Dec 2022 07:24:26 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.w1.fi (Postfix) with ESMTP id 6A5CE110E6;
+        Sun, 18 Dec 2022 15:24:24 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id wDsMYxRTjSwt; Sun, 18 Dec 2022 15:24:22 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Sun, 18 Dec 2022 17:24:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+        t=1671377062; bh=JlFSwwfK+tbEMEPQ+fK6WOXSmFG2G1SQlfEfguxJWmQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=o9d66n4GAk+tpjDXsYNR5xDlLvWgfs2H8Q70WEanJ0zpASuBZj/iKcxFIAg/x1rKh
+         tfntfkl8RJGEmliSOsBNUZHb7xX1DBmmZI5oWV4SWgg87PoJ0JR4nIJC678KafMVFv
+         9kNiJagGjzGSlk6ESaoUsT3fFkJwtLfZoFBFV+VmUeWX6H0Qs9JozWEeA7P8ZVHHgK
+         Ze8982dyZXa1rT2dcyvhEtGrXSZ6TpA8Kt69E82p5zqgrharjGtU8EKGj8VNd54ghq
+         LHK5QzwzxsPFjukQHbfA6D819bWEzBMQVo0hrJFnvlV4yc7KPHIGigajoUu/T5VdBS
+         TrKwPn0NlJ9dg==
+Date:   Sun, 18 Dec 2022 17:24:20 +0200
+From:   Jouni Malinen <j@w1.fi>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v12 2/4] mac80211: MBSSID support in interface handling
+Message-ID: <20221218152420.GA906762@w1.fi>
+References: <20210916025437.29138-1-alokad@codeaurora.org>
+ <20210916025437.29138-3-alokad@codeaurora.org>
 MIME-Version: 1.0
-X-Received: by 2002:a92:bf08:0:b0:302:43b8:d42f with SMTP id
- z8-20020a92bf08000000b0030243b8d42fmr39574908ilh.64.1671308617477; Sat, 17
- Dec 2022 12:23:37 -0800 (PST)
-Date:   Sat, 17 Dec 2022 12:23:37 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000074764e05f00bdc01@google.com>
-Subject: [syzbot] WARNING in drv_link_info_changed
-From:   syzbot <syzbot+224ad65c927c83902f06@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210916025437.29138-3-alokad@codeaurora.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Wed, Sep 15, 2021 at 07:54:35PM -0700, Aloka Dixit wrote:
+> Configure multiple BSSID and enhanced multi-BSSID advertisement (EMA)
+> parameters in mac80211 for AP mode.
+> 
+> For each interface, 'mbssid_tx_vif' points to the transmitting interface of
+> the MBSSID set. The pointer is set to NULL if MBSSID is disabled.
+> 
+> Function ieee80211_stop() is modified to always bring down all the
+> non-transmitting interfaces first and the transmitting interface last.
 
-syzbot found the following issue on:
+This has already been applied, but this has some apparent issues that
+are now showing up with mac80211_hwsim testing being available..
 
-HEAD commit:    e2ca6ba6ba01 Merge tag 'mm-stable-2022-12-13' of git://git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16d4f027880000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a6133b41a9a0f500
-dashboard link: https://syzkaller.appspot.com/bug?extid=224ad65c927c83902f06
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> +static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
+> +					   struct cfg80211_mbssid_config params)
 
-Unfortunately, I don't have any reproducer for this issue yet.
+While that does not really break behavior, why is that params argument
+passed by value instead of by reference? I see no point in copying
+struct cfg80211_mbssid_config members for this call since the function
+is only reading the value.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/be256841c209/disk-e2ca6ba6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/76c90a4cdade/vmlinux-e2ca6ba6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a44766da5515/bzImage-e2ca6ba6.xz
+> +	sdata->vif.mbssid_tx_vif = NULL;
+> +	sdata->vif.bss_conf.bssid_index = 0;
+> +	sdata->vif.bss_conf.nontransmitted = false;
+> +	sdata->vif.bss_conf.ema_ap = false;
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+224ad65c927c83902f06@syzkaller.appspotmail.com
+This cleanup is important, but it is done only here in this helper
+function..
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5553 at net/mac80211/driver-ops.c:416 drv_link_info_changed+0xd2/0x780 net/mac80211/driver-ops.c:416
-Modules linked in:
-CPU: 1 PID: 5553 Comm: kworker/u4:23 Not tainted 6.1.0-syzkaller-09941-ge2ca6ba6ba01 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-Workqueue: phy12 ieee80211_roc_work
-RIP: 0010:drv_link_info_changed+0xd2/0x780 net/mac80211/driver-ops.c:416
-Code: 83 f8 01 0f 84 f6 00 00 00 e8 ea a6 4f f8 83 eb 07 31 ff 83 e3 fb 89 de e8 8b a3 4f f8 85 db 0f 84 da 00 00 00 e8 ce a6 4f f8 <0f> 0b e9 c5 02 00 00 e8 c2 a6 4f f8 4d 8d bc 24 50 1a 00 00 48 b8
-RSP: 0018:ffffc90004befb90 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 00000000fffffffb RCX: 0000000000000000
-RDX: ffff888027601d40 RSI: ffffffff893103a2 RDI: 0000000000000005
-RBP: ffff88807e7e8de0 R08: 0000000000000005 R09: 0000000000000000
-R10: 00000000fffffffb R11: 0000000000000000 R12: ffff88803f4c0c80
-R13: 0000000000000200 R14: 0000000000000000 R15: ffff88803f4c26d0
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f696ff85058 CR3: 000000002991d000 CR4: 0000000000350ee0
-Call Trace:
- <TASK>
- ieee80211_link_info_change_notify+0x17a/0x270 net/mac80211/main.c:290
- ieee80211_offchannel_stop_vifs+0x308/0x4e0 net/mac80211/offchannel.c:121
- _ieee80211_start_next_roc+0x6f7/0x9a0 net/mac80211/offchannel.c:365
- __ieee80211_roc_work+0x190/0x3d0 net/mac80211/offchannel.c:432
- ieee80211_roc_work+0x2f/0x40 net/mac80211/offchannel.c:460
- process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
- worker_thread+0x669/0x1090 kernel/workqueue.c:2436
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
- </TASK>
+> @@ -1105,6 +1135,14 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+> +	if (sdata->vif.type == NL80211_IFTYPE_AP &&
+> +	    params->mbssid_config.tx_wdev) {
+> +		err = ieee80211_set_ap_mbssid_options(sdata,
+> +						      params->mbssid_config);
+> +		if (err)
+> +			return err;
+> +	}
 
+And that is the only place where the help function is called and this
+happens only under the params->mbssid_config.tx_wdev condition. In other
+words, those bssid_index/nontransmitted/ema_ap values are not cleared in
+all cases. This results in issue when the bss_conf (link_conf in the
+current kernel snapshot) is left in the previous mbssid configuration.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+As an example, this will make the following mac80211_hwsim test case
+sequence fail:
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+hostap/tests/hwsim/vm$ ./vm-run.sh he_ap_ema p2p_group_cli_invalid
+
+This happens because ema_ap is set to true in he_ap_ema and then it is
+left set true for p2p_group_cli_invalid and that test case does not
+actually end up sending Beacon frames.
+
+This can be fixed by clearing something in the
+!params->mbssid_config.tx_wdev case in ieee80211_start_ap(). I'm not
+completely sure what is the correct way of doing this, but at least
+ema_ap needs to be cleared to false and likely some other cleanup needs
+to be done as well.
+
+-- 
+Jouni Malinen                                            PGP id EFC895FA
