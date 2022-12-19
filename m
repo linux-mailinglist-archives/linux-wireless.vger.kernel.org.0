@@ -2,131 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3547965127B
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Dec 2022 20:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1A69651299
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Dec 2022 20:16:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232283AbiLSTNX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Dec 2022 14:13:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
+        id S232416AbiLSTQE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Dec 2022 14:16:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232473AbiLSTNK (ORCPT
+        with ESMTP id S232552AbiLSTPX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Dec 2022 14:13:10 -0500
-Received: from CAN01-YQB-obe.outbound.protection.outlook.com (mail-yqbcan01hn2231.outbound.protection.outlook.com [52.100.222.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4065BE02F
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Dec 2022 11:13:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PHDKqhAISoFdKR597dXSwjX7XVYY7GBiQ5A+9iqb083z/fCWXiXo7JuoAWq7p6wIxSKdENK6r5ciaBFOrnPC/8gbuXg924jGRWFOoxoOeeUL6jCmFjtD8M+9oVubtUoP+10rey/yUysv1Seb+56Oh+4YX3NCHGmr3h1rk7/l+i/Gz8nraDC/UuotdKCN2psPIL1LsjaaasRH2634iMGqzcRmwnqQWUS6i2VU4cezi2dibe0glJE11mH0Tvdb9tvfzcZIAUjlgwMwxOUkJBczlwKrqsRtHeuzfai1OHzDXDzI7D21ZMPnNUfE4Fgq1bf2WK/v2kiOE0twiXTI53R4TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lAuY3UpU3IiF+b+XPDQk+8TvBWuH/1CIN3IiPiedtto=;
- b=QGB+y5jQSHr9V2kzX71ONDIfEPpX9YPvSk+qDl/8hhs7PP6/9cIAEPToIbCftHgDjC9M//pYZwVWB2O7FT3159NHadlzrucpR/8H8XlC46YpqY19+8/qftB5Zkl11kWjJhOOjsGkYnCZQOsAjfhE3ORW7+4CoqB4/osr/GQlaVkOCjvGCkYriKyBjwOgD7GDdJMPVt90xRH8QAmuM6v4E29QK0xEzlXVcxH52RLXiEDStfJXsLa8lC873isiG0Nba/Yef6W9dATiZWX/GKXLPTpo5umvcnPgTRMK5vyL2DJMLxCKegLnhMjTrv40ExWhamR44mjnGt1sZDmPYnE9CQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ucalgary.ca; dmarc=pass action=none header.from=ucalgary.ca;
- dkim=pass header.d=ucalgary.ca; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ucalgary.ca;
-Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c00:4a::23)
- by YT1PR01MB8297.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:c0::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.16; Mon, 19 Dec
- 2022 19:12:58 +0000
-Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::a3d2:e86a:1a9a:9cc6]) by YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::a3d2:e86a:1a9a:9cc6%3]) with mapi id 15.20.5924.016; Mon, 19 Dec 2022
- 19:12:58 +0000
-Date:   Mon, 19 Dec 2022 11:12:59 -0800 (PST)
-From:   Wenli Looi <wlooi@ucalgary.ca>
-To:     =?ISO-8859-15?Q?Toke_H=F8iland-J=F8rgensen?= <toke@toke.dk>
-cc:     Wenli Looi <wlooi@ucalgary.ca>, linux-wireless@vger.kernel.org,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH] ath9k: remove most hidden macro dependencies on ah
-In-Reply-To: <87v8mcd7kh.fsf@toke.dk>
-Message-ID: <df8c4daf-7bec-a877-285a-4f690fdc87c@ucalgary.ca>
-References: <c8369317-cf84-f0e3-fe8-9b6e22e43a6a@ucalgary.ca> <87v8mcd7kh.fsf@toke.dk>
-Content-Type: text/plain; charset=US-ASCII
-X-ClientProxiedBy: BY3PR05CA0040.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::15) To YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c00:4a::23)
+        Mon, 19 Dec 2022 14:15:23 -0500
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868571004C
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Dec 2022 11:15:12 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.w1.fi (Postfix) with ESMTP id 09008110E8;
+        Mon, 19 Dec 2022 19:15:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id nn8EnYv_Z51e; Mon, 19 Dec 2022 19:15:07 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Mon, 19 Dec 2022 21:15:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+        t=1671477307; bh=ZCCaiy2VSvy4wVe1VOzWhZ4YhRIyJSj9AbbujOgYnxQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wK7KXXEcFDbbkAJKWAciZhddJKAPwBk8DQ+sjql8Q50ofwaO7HmH8Ugq2PGEjzHeW
+         QluqvBR8dT3z9+BPA83rK70Zau/N35sMy00RzTow+yYuGgkZvLnSw5dfyAA2K7znLY
+         xbkKfGXsuQWARIbAH5EcFQGl24kaDi0RnD/hoTXuhym8FJ28TH0TfIZNicwaKm0YJE
+         UEqXNHgwsWNGw5sL9at11S8v74WCPvQmE3oLs1geNLhBmnh9ilF0u2PP0RJMLeUsMj
+         0uRmYHmNrGY8xryZJqZ6poOwxaCYxPWU4+iIXVpcclmSVjYRIesouzzoWKmrnV1kaF
+         KIz0a0hxcQ3Ug==
+Date:   Mon, 19 Dec 2022 21:15:06 +0200
+From:   Jouni Malinen <j@w1.fi>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v12 2/4] mac80211: MBSSID support in interface handling
+Message-ID: <20221219191506.GA17184@w1.fi>
+References: <20210916025437.29138-1-alokad@codeaurora.org>
+ <20210916025437.29138-3-alokad@codeaurora.org>
+ <20221218152420.GA906762@w1.fi>
+ <441771f8-6269-0ce4-fce8-513f7f3f7d95@quicinc.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YQXPR01MB3302:EE_|YT1PR01MB8297:EE_
-X-MS-Office365-Filtering-Correlation-Id: e841d72d-4be3-4c80-8fc3-08dae1f50a20
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:OSPM;SFS:(13230022)(4636009)(346002)(136003)(396003)(39860400002)(376002)(366004)(451199015)(2616005)(86362001)(38100700002)(26005)(6512007)(2906002)(186003)(6506007)(478600001)(6486002)(36756003)(6916009)(316002)(8936002)(786003)(54906003)(66946007)(66476007)(4326008)(66556008)(41300700001)(4744005)(8676002)(5660300002)(83380400001)(58440200007)(45980500001);DIR:OUT;SFP:1501;
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?KTpSnELNVJLAyZuaMLUmaoxRhuGOIuHdzdMmVx5ol9pcBONSsU1V8YDp6l0L?=
- =?us-ascii?Q?DqmB6fLMbbUm/E+enPHeEGQCIcdjF3kb+EY6MmuEXIjbF8XKes7cDs1/3UNw?=
- =?us-ascii?Q?QykxTIMFpYSUSHPcn124tjEz7D4jUyEQ9t7x13rOq/qnawnXgEK6mZYC7mo0?=
- =?us-ascii?Q?+nW2VgJDtFw9aOeVY0SquvbAsNbOmnIOrcrD6yKUFLWfYKXG7J6Nh8QdaFEQ?=
- =?us-ascii?Q?2q+HImTVRh1rXqQMvS917No04pojsdzsOFrkzpV28+5v9pKJ92sG9xgJROKJ?=
- =?us-ascii?Q?fzBUb9l7A1Phl5ef/dtF4iA6NrLlGcPk67bgXn0P5KClR9STHvqEvxg+iAPG?=
- =?us-ascii?Q?vXo8RC6TrMTA/MS5AviPVNGs8ojSEAZ+1UO3+/9lGYJcNeKTuoiIFZSqV218?=
- =?us-ascii?Q?rcmIRoCCbjE8vIsIDtbl0gIUeqJzRq3TCbE9CKzCavMWFzZ/42zHegfqF4P/?=
- =?us-ascii?Q?EG2M8Kw9gw3+AHrKsDj0Jccd/ZQUcTlpf1AJ1rrBnJsmtdNwW5l1/kjBT7HY?=
- =?us-ascii?Q?aWxFIssKvIX5wz/p6ggsoDvv2hwr3IZkmBn1K0zGEVRTqqAU6GH9NUgJQCYr?=
- =?us-ascii?Q?i76a8XTtVKayTIats6rbiQQ6Zi8B+9oIbKrP+tgFKebgM1SnZqDpqTL66XGU?=
- =?us-ascii?Q?dRIQ9Vo8/53zTzedgkieUqVC7lj4T6xzOdmIgw12NfE6LmlGl3laZ180Gsza?=
- =?us-ascii?Q?pVnu1wSvQSZog4qxk2OsYF5MDzU4HkrJfcYRx5VwqXyzbmWxVS42zhEK67xK?=
- =?us-ascii?Q?JBQyNV09B2y5nevTGSG1XoIKI2NALbTBd5rvJ5SeAUlzCqoM3sJjwRMOG4zz?=
- =?us-ascii?Q?pHuF1HnulRreEHRlD3YdNt4SDXxGCmOgWb1RocIRGT36PVS6sjYvB+O06hpy?=
- =?us-ascii?Q?SpfWzJ5Ile68KwWFOLr0sY1EjJVoRnj3efKhFOdfTxKnB+2nAYdSRCTwxp0/?=
- =?us-ascii?Q?jsTtss29juimZonYrVsqlUYq1Etin+m4Ur/OHwsoR2nl0FT52fZpKFZ9vKQa?=
- =?us-ascii?Q?ew+QCga7x+iYyZ5NT9T5s/bAzPF+kuocr1OrDo20ov+Pz9dE3U3FQgTpG/aF?=
- =?us-ascii?Q?EUym7iatzvRpLkcrFWQKLCnrwq2hfqljjMuXfWPl61ffJ2VhK4E=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?r9TDTzXTVHocBgOUxiE2r3qEHX2WiRAqFikf1XWGRmm+rmHcSksM5ZwvVgkA?=
- =?us-ascii?Q?pqYOs4OFOXvcYST0oDJoAgb89sfAVGkNpCEs5jCR7AenFxovK5kcFn5DyPLJ?=
- =?us-ascii?Q?4/+S7j4hdOsrLlrz/M9x9yIdWX3RAKCXkDIK3OrgR/IXvWWRT+vkT7XBn59J?=
- =?us-ascii?Q?Iiy88b5wr7upDfCarUFwsRI4vJX0ick41AdKBeRmZGLW2nPuJcZd/GB10Ha2?=
- =?us-ascii?Q?1XnoM89kfInEEYSniDyfY1Qle2HBQF+LcUK8AWjp7VPwnBOwm8U8vXINeU8C?=
- =?us-ascii?Q?Jo8ErbU1XG3oOGmmr7Yj4BxKatv7LEqYGwhQ+6iri3bzJjGbDssTEGnIVPil?=
- =?us-ascii?Q?IP6tZ1ykJiBjKvasfPtGh4rG3Omn/E3TVrULTzGCyOCiS7m0LvONdusOtvWz?=
- =?us-ascii?Q?py8/hCIb29xyNmzx/KE3tWBUq7B4VQkd7janzY2khpBhn4OCRHIwyeU0vubf?=
- =?us-ascii?Q?WSgrWcEarj5v1vIPW5Lp6KromT/Be/phQ5GkdNFD480YhfDuI5zzw/uabRKN?=
- =?us-ascii?Q?elR5JDvHhmAbIwlwmxU6DpmB92xvdBqpKqQjlL6ZxxVlxD3+dWjJPClCbipM?=
- =?us-ascii?Q?fD3oTI76rfHLkO/ciGrRfLpmNtFDKdqRdIkRIAsPksDqc7amxL2fhmSwlQU8?=
- =?us-ascii?Q?4ib5uTGJ81OWG3Rr5OcZ3VgRczD+b+qZ2+XBzSQrZsVWQ28KdSScwKBoivBH?=
- =?us-ascii?Q?TkPSMoiXXx00PDwUJIT4Akch1ptQ/WNPze4zxI0AQLfaGel4KEJCH6aXksxf?=
- =?us-ascii?Q?XPpY6XxDR7aF7AikAR9Jk3xPRMsO2IyGfnDCwupjfBuFbF0pii0LnWxg+GpD?=
- =?us-ascii?Q?I7I9txro8QV5WrWinYoF4495BzIIqInqnj4FFXry0r+JSnbwsLB7UaooSyIT?=
- =?us-ascii?Q?2SpompEsBGZ01x6Hk5Zhf741e5TpuH5ceXalN398NZscxZ2wIm6XLyypw6cq?=
- =?us-ascii?Q?1LhAnMOmeX7McyMKXezEM9cX6YPPY+3/ev/An+sILv0nsFKJIkHg60pdVCsb?=
- =?us-ascii?Q?LH2sHrTFrx+7Inv32+q2S2EjK+uEE+kh8JF0gOHpPWvJ4tkoZU1DK+Qm9E/q?=
- =?us-ascii?Q?tYtAIE73l9BtF5XgvsPfIGqXhMg/TMF+JT8tQbLae9GfUMVb0vDcb2MZmsVh?=
- =?us-ascii?Q?acsjN45xmyzLFL47y/voNY1rHC8ghUnkqlB3C3e5EAETQOrqkENc/SaISOGm?=
- =?us-ascii?Q?UQqdjZgowxuZyxFBr3Ctzcmz3nn006hLz7s0UgLHhVtbo0YFcBe6O68cx4wF?=
- =?us-ascii?Q?EAzMbn7960BfdmGB/Uf0yGD4ApcXiVqF6KY4UJq+P7yvCjkFZCEIRbbLNXzp?=
- =?us-ascii?Q?QgZurGTP9/IERZ0lV5MZEWlm3CgNPJsVHmuAWmWyKzEETI0Eq6dqWIzBGzsn?=
- =?us-ascii?Q?fx7f6abIFGZsFISqcS7ob4LQutmw/sQv33LAwg4pgquqANwJ+iVNfY4NnzVU?=
- =?us-ascii?Q?LdO1f8SxpzoNtiSJpG5rD3yNTAvQOsz/OVeBxVGH44CPLxdPEV9VfYKcpSsL?=
- =?us-ascii?Q?4qykmfLcFvTUYcpVIylTP4NMB960fYH9+lv46u0EG898UIiX+xSxs0DrZ3ND?=
- =?us-ascii?Q?7LeBbijkFL4WwVdA5QGkCIFzms8v57AopoFthf3T?=
-X-OriginatorOrg: ucalgary.ca
-X-MS-Exchange-CrossTenant-Network-Message-Id: e841d72d-4be3-4c80-8fc3-08dae1f50a20
-X-MS-Exchange-CrossTenant-AuthSource: YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2022 19:12:58.5583
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: c609a0ec-a5e3-4631-9686-192280bd9151
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DyV1IyU0Gva5XoQJG0VCSyUg4ZuRki7qlRVWpWlry5PR58lmIXTaL1H9C3Pih4r18hKabeHSbBj4F8eFN9/Sag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT1PR01MB8297
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <441771f8-6269-0ce4-fce8-513f7f3f7d95@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-One thing I just noticed is that when compiling with CONFIG_ATH_DEBUG, 
-there is one slight difference in the binary because of this change:
+On Mon, Dec 19, 2022 at 10:53:55AM -0800, Aloka Dixit wrote:
+> On 12/18/2022 7:24 AM, Jouni Malinen wrote:
+> > On Wed, Sep 15, 2021 at 07:54:35PM -0700, Aloka Dixit wrote:
+> > > diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> > > +static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
+> > > +					   struct cfg80211_mbssid_config params)
+> > 
+> > While that does not really break behavior, why is that params argument
+> > passed by value instead of by reference? I see no point in copying
+> > struct cfg80211_mbssid_config members for this call since the function
+> > is only reading the value.
+> 
+> Hi Jouni, the only reason for value instead of reference is that this
+> function does not need to change anything in 'params'. I didn't understand
+> your question. Are you suggesting moving the assignments to
+> ieee80211_start_ap() instead of this separate function?
 
--			"Timeout while waiting for nf to load: AR_PHY_AGC_CONTROL=0x%x\n",
--			REG_READ(ah, AR_PHY_AGC_CONTROL));
-+			"Timeout while waiting for nf to load: AR_PHY_AGC_CONTROL(ah)=0x%x\n",
-+			REG_READ(ah, AR_PHY_AGC_CONTROL(ah)));
+I would use a constant pointer (const struct cfg80211_mbssid_config
+*params) to avoid the need to copy the full contents of that struct
+whenever calling the function.
+
+Maybe the following patch is a clearer way of showing what I was
+thinking of (and testing with):
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index e30b2bdb8f01..b0abd99f006e 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -138,7 +138,7 @@ static int ieee80211_set_mon_options(struct ieee80211_sub_if_data *sdata,
+ }
+ 
+ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
+-					   struct cfg80211_mbssid_config params,
++					   const struct cfg80211_mbssid_config *params,
+ 					   struct ieee80211_bss_conf *link_conf)
+ {
+ 	struct ieee80211_sub_if_data *tx_sdata;
+@@ -148,10 +148,10 @@ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
+ 	link_conf->nontransmitted = false;
+ 	link_conf->ema_ap = false;
+ 
+-	if (sdata->vif.type != NL80211_IFTYPE_AP || !params.tx_wdev)
++	if (sdata->vif.type != NL80211_IFTYPE_AP || !params->tx_wdev)
+ 		return -EINVAL;
+ 
+-	tx_sdata = IEEE80211_WDEV_TO_SUB_IF(params.tx_wdev);
++	tx_sdata = IEEE80211_WDEV_TO_SUB_IF(params->tx_wdev);
+ 	if (!tx_sdata)
+ 		return -EINVAL;
+ 
+@@ -160,9 +160,9 @@ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
+ 	} else {
+ 		sdata->vif.mbssid_tx_vif = &tx_sdata->vif;
+ 		link_conf->nontransmitted = true;
+-		link_conf->bssid_index = params.index;
++		link_conf->bssid_index = params->index;
+ 	}
+-	if (params.ema)
++	if (params->ema)
+ 		link_conf->ema_ap = true;
+ 
+ 	return 0;
+@@ -1268,10 +1268,17 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    params->mbssid_config.tx_wdev) {
+ 		err = ieee80211_set_ap_mbssid_options(sdata,
+-						      params->mbssid_config,
++						      &params->mbssid_config,
+ 						      link_conf);
+ 		if (err)
+ 			return err;
++	} else {
++		/* FIX: Is this the correct thing to do here and under which
++		 * conditions? At least ema_ap needs to be cleared for AP mode
++		 * if mbssid_config.tx_wdev is not set. */
++		link_conf->bssid_index = 0;
++		link_conf->nontransmitted = false;
++		link_conf->ema_ap = false;
+ 	}
+ 
+ 	mutex_lock(&local->mtx);
+
+
+> > This cleanup is important, but it is done only here in this helper
+> > function..
+> > And that is the only place where the help function is called and this
+> > happens only under the params->mbssid_config.tx_wdev condition. In other
+> > words, those bssid_index/nontransmitted/ema_ap values are not cleared in
+> > all cases. This results in issue when the bss_conf (link_conf in the
+> > current kernel snapshot) is left in the previous mbssid configuration.
+> > 
+> 
+> Will send a patch to fix this part.
+
+Thanks.
+
+> Please let me know regarding the first question above so that I can include
+> that in the same patch.
+
+That should not be in the same patch since it is just
+cleanup/optimization while the not clearing parameters in some cases is
+a visible bug that should be fixed on its own first.
+
+-- 
+Jouni Malinen                                            PGP id EFC895FA
