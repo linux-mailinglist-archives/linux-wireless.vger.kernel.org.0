@@ -2,209 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF9686503EC
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Dec 2022 18:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5DBA6506DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Dec 2022 04:40:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233360AbiLRRKv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Dec 2022 12:10:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60106 "EHLO
+        id S231197AbiLSDku (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Dec 2022 22:40:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233525AbiLRRJA (ORCPT
+        with ESMTP id S231254AbiLSDkr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Dec 2022 12:09:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155701EAC4;
-        Sun, 18 Dec 2022 08:23:28 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C6E28B803F1;
-        Sun, 18 Dec 2022 16:23:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F0EC433F2;
-        Sun, 18 Dec 2022 16:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671380605;
-        bh=0fvlt2qaSumLwyFpDicaZhsgRhsod/0PqhqisFA9/kw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R7nwiaa5+/MzOw66GABHmSzoRi9DuWWYEB8tlJlco/6kZSfVZJFPQOD669oV/fFJ1
-         MbN2fr94foLJy/d7MNiBTyPR0ADfhWsYX93L+i9KkmQ8tca7tTcTmJLynWT9WjyBdC
-         y4+fxOtsvaO7zoSZ8uyKPq6UUhgbe6T3s+3YD9UKnnNsiX0mZq2uitxCxupS2n9KgI
-         lP6PEEVBQAEshlQJc2jOPJf0Gu5AaZrtwXDeAjlcjwAS36DTfe5ayHHoamFnlANlzC
-         C9dMrktr3qg+HocPbjRLN+1+DFWwgMsbLcUWHw81fWTfcd7PMN7ZPkvMN/0l1MgncG
-         nwm0G5JqUTSjQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-        Dokyung Song <dokyungs@yonsei.ac.kr>,
-        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        marcan@marcan.st, alsi@bang-olufsen.dk, rmk+kernel@armlinux.org.uk,
-        wsa+renesas@sang-engineering.com, ardb@kernel.org,
-        phil@raspberrypi.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 06/20] wifi: brcmfmac: Fix potential shift-out-of-bounds in brcmf_fw_alloc_request()
-Date:   Sun, 18 Dec 2022 11:22:51 -0500
-Message-Id: <20221218162305.935724-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221218162305.935724-1-sashal@kernel.org>
-References: <20221218162305.935724-1-sashal@kernel.org>
+        Sun, 18 Dec 2022 22:40:47 -0500
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266A7638B
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Dec 2022 19:40:46 -0800 (PST)
+Received: by mail-il1-f200.google.com with SMTP id g3-20020a056e021a2300b00305e3da9585so5925616ile.16
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Dec 2022 19:40:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TkEZ8M+1HG3nvSZ+Xe6iYgKTar5Wi2cWB6DMhdk6aMU=;
+        b=2xJF9shBMieUoo/S+XaK4tZeBu/IECakdvnYOdKp339jDOWebdI889Pbcbx2bnggUb
+         BSUbu1nvfmrXhShKyDDdmFq8vQGj8xxUO98U3DxbXsIpCOAEc8xI+J5JS9ttpLtCLcjK
+         2QA1Z8GOLfnxGj1upaKTPb7WMBn1Ooz8LppUW0LAoyZei9IrYceTHqOR+aNLlPE0GDqV
+         IDVOj4PYG5CcJzPj1wAErqKzp0ZN2EktF3bMtQ9X8+9aFbPoCQ4DVF3tNoG9CTNyGZLH
+         GoPYJWoIHv2pUfqmXW1jPABtQT1DvuJMf+ONLtBDk8bTvEIEzSd1/yOgYMokmyg8pg8+
+         j5bQ==
+X-Gm-Message-State: ANoB5pn9w52ulVn9oUZ9WuSpgRfcFhh78R5ENE/rSxVyVECY40yEkduW
+        wNX8rz8XIzV2nQrpv5xfHiGdxEmCCeYIH6a2h6c0sUkjBsqR
+X-Google-Smtp-Source: AA0mqf4Aa3Kw+wZKikbr83YdL7LJnPPJDgMoH3cjpM4sPJ0iZIkHjs9zKbORUXHaNOkFdGXiPdUEBsAKFWH72O4gdmVSX35qASHt
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a02:6d1a:0:b0:387:eb89:9528 with SMTP id
+ m26-20020a026d1a000000b00387eb899528mr36051793jac.26.1671421245501; Sun, 18
+ Dec 2022 19:40:45 -0800 (PST)
+Date:   Sun, 18 Dec 2022 19:40:45 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000009bb72705f0261578@google.com>
+Subject: [syzbot] memory leak in ath9k_hif_usb_rx_cb
+From:   syzbot <syzbot+e9632e3eb038d93d6bc6@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Hello,
 
-[ Upstream commit 81d17f6f3331f03c8eafdacea68ab773426c1e3c ]
+syzbot found the following issue on:
 
-This patch fixes a shift-out-of-bounds in brcmfmac that occurs in
-BIT(chiprev) when a 'chiprev' provided by the device is too large.
-It should also not be equal to or greater than BITS_PER_TYPE(u32)
-as we do bitwise AND with a u32 variable and BIT(chiprev). The patch
-adds a check that makes the function return NULL if that is the case.
-Note that the NULL case is later handled by the bus-specific caller,
-brcmf_usb_probe_cb() or brcmf_usb_reset_resume(), for example.
+HEAD commit:    6f1f5caed5bf Merge tag 'for-linus-6.2-ofs1' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11a5aa57880000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=aa9d05fc5567240b
+dashboard link: https://syzkaller.appspot.com/bug?extid=e9632e3eb038d93d6bc6
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1138a5c0480000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10d07e77880000
 
-Found by a modified version of syzkaller.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e0b09490fc5c/disk-6f1f5cae.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/2f00e5ef8dce/vmlinux-6f1f5cae.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/78f4c439075f/bzImage-6f1f5cae.xz
 
-UBSAN: shift-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-shift exponent 151055786 is too large for 64-bit type 'long unsigned int'
-CPU: 0 PID: 1885 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- dump_stack_lvl+0x57/0x7d
- ubsan_epilogue+0x5/0x40
- __ubsan_handle_shift_out_of_bounds.cold+0x53/0xdb
- ? lock_chain_count+0x20/0x20
- brcmf_fw_alloc_request.cold+0x19/0x3ea
- ? brcmf_fw_get_firmwares+0x250/0x250
- ? brcmf_usb_ioctl_resp_wait+0x1a7/0x1f0
- brcmf_usb_get_fwname+0x114/0x1a0
- ? brcmf_usb_reset_resume+0x120/0x120
- ? number+0x6c4/0x9a0
- brcmf_c_process_clm_blob+0x168/0x590
- ? put_dec+0x90/0x90
- ? enable_ptr_key_workfn+0x20/0x20
- ? brcmf_common_pd_remove+0x50/0x50
- ? rcu_read_lock_sched_held+0xa1/0xd0
- brcmf_c_preinit_dcmds+0x673/0xc40
- ? brcmf_c_set_joinpref_default+0x100/0x100
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lock_acquire+0x19d/0x4e0
- ? find_held_lock+0x2d/0x110
- ? brcmf_usb_deq+0x1cc/0x260
- ? mark_held_locks+0x9f/0xe0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? _raw_spin_unlock_irqrestore+0x47/0x50
- ? trace_hardirqs_on+0x1c/0x120
- ? brcmf_usb_deq+0x1a7/0x260
- ? brcmf_usb_rx_fill_all+0x5a/0xf0
- brcmf_attach+0x246/0xd40
- ? wiphy_new_nm+0x1476/0x1d50
- ? kmemdup+0x30/0x40
- brcmf_usb_probe+0x12de/0x1690
- ? brcmf_usbdev_qinit.constprop.0+0x470/0x470
- usb_probe_interface+0x25f/0x710
- really_probe+0x1be/0xa90
- __driver_probe_device+0x2ab/0x460
- ? usb_match_id.part.0+0x88/0xc0
- driver_probe_device+0x49/0x120
- __device_attach_driver+0x18a/0x250
- ? driver_allows_async_probing+0x120/0x120
- bus_for_each_drv+0x123/0x1a0
- ? bus_rescan_devices+0x20/0x20
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? trace_hardirqs_on+0x1c/0x120
- __device_attach+0x207/0x330
- ? device_bind_driver+0xb0/0xb0
- ? kobject_uevent_env+0x230/0x12c0
- bus_probe_device+0x1a2/0x260
- device_add+0xa61/0x1ce0
- ? __mutex_unlock_slowpath+0xe7/0x660
- ? __fw_devlink_link_to_suppliers+0x550/0x550
- usb_set_configuration+0x984/0x1770
- ? kernfs_create_link+0x175/0x230
- usb_generic_driver_probe+0x69/0x90
- usb_probe_device+0x9c/0x220
- really_probe+0x1be/0xa90
- __driver_probe_device+0x2ab/0x460
- driver_probe_device+0x49/0x120
- __device_attach_driver+0x18a/0x250
- ? driver_allows_async_probing+0x120/0x120
- bus_for_each_drv+0x123/0x1a0
- ? bus_rescan_devices+0x20/0x20
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- ? trace_hardirqs_on+0x1c/0x120
- __device_attach+0x207/0x330
- ? device_bind_driver+0xb0/0xb0
- ? kobject_uevent_env+0x230/0x12c0
- bus_probe_device+0x1a2/0x260
- device_add+0xa61/0x1ce0
- ? __fw_devlink_link_to_suppliers+0x550/0x550
- usb_new_device.cold+0x463/0xf66
- ? hub_disconnect+0x400/0x400
- ? _raw_spin_unlock_irq+0x24/0x30
- hub_event+0x10d5/0x3330
- ? hub_port_debounce+0x280/0x280
- ? __lock_acquire+0x1671/0x5790
- ? wq_calc_node_cpumask+0x170/0x2a0
- ? lock_release+0x640/0x640
- ? rcu_read_lock_sched_held+0xa1/0xd0
- ? rcu_read_lock_bh_held+0xb0/0xb0
- ? lockdep_hardirqs_on_prepare+0x273/0x3e0
- process_one_work+0x873/0x13e0
- ? lock_release+0x640/0x640
- ? pwq_dec_nr_in_flight+0x320/0x320
- ? rwlock_bug.part.0+0x90/0x90
- worker_thread+0x8b/0xd10
- ? __kthread_parkme+0xd9/0x1d0
- ? process_one_work+0x13e0/0x13e0
- kthread+0x379/0x450
- ? _raw_spin_unlock_irq+0x24/0x30
- ? set_kthread_struct+0x100/0x100
- ret_from_fork+0x1f/0x30
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e9632e3eb038d93d6bc6@syzkaller.appspotmail.com
 
-Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20221024071329.504277-1-linuxlovemin@yonsei.ac.kr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: memory leak
+unreferenced object 0xffff888101f97700 (size 240):
+  comm "softirq", pid 0, jiffies 4294945988 (age 15.200s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff83ac0212>] __alloc_skb+0x202/0x270 net/core/skbuff.c:552
+    [<ffffffff83ac396a>] __netdev_alloc_skb+0x6a/0x220 net/core/skbuff.c:630
+    [<ffffffff82df70d0>] __dev_alloc_skb include/linux/skbuff.h:3165 [inline]
+    [<ffffffff82df70d0>] ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:635 [inline]
+    [<ffffffff82df70d0>] ath9k_hif_usb_rx_cb+0x1d0/0x660 drivers/net/wireless/ath/ath9k/hif_usb.c:686
+    [<ffffffff82fd9d89>] __usb_hcd_giveback_urb+0xf9/0x230 drivers/usb/core/hcd.c:1671
+    [<ffffffff82fda06b>] usb_hcd_giveback_urb+0x1ab/0x1c0 drivers/usb/core/hcd.c:1754
+    [<ffffffff8318c0b4>] dummy_timer+0x8e4/0x14c0 drivers/usb/gadget/udc/dummy_hcd.c:1988
+    [<ffffffff81328243>] call_timer_fn+0x33/0x1f0 kernel/time/timer.c:1700
+    [<ffffffff813284ff>] expire_timers+0xff/0x1d0 kernel/time/timer.c:1751
+    [<ffffffff813286f9>] __run_timers kernel/time/timer.c:2022 [inline]
+    [<ffffffff813286f9>] __run_timers kernel/time/timer.c:1995 [inline]
+    [<ffffffff813286f9>] run_timer_softirq+0x129/0x2f0 kernel/time/timer.c:2035
+    [<ffffffff84c000eb>] __do_softirq+0xeb/0x2ef kernel/softirq.c:571
+    [<ffffffff8126a086>] invoke_softirq kernel/softirq.c:445 [inline]
+    [<ffffffff8126a086>] __irq_exit_rcu+0xc6/0x110 kernel/softirq.c:650
+    [<ffffffff848a7742>] sysvec_apic_timer_interrupt+0xa2/0xd0 arch/x86/kernel/apic/apic.c:1107
+    [<ffffffff84a00cc6>] asm_sysvec_apic_timer_interrupt+0x16/0x20 arch/x86/include/asm/idtentry.h:649
+    [<ffffffff848bd6e9>] native_safe_halt arch/x86/include/asm/irqflags.h:51 [inline]
+    [<ffffffff848bd6e9>] arch_safe_halt arch/x86/include/asm/irqflags.h:89 [inline]
+    [<ffffffff848bd6e9>] acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+    [<ffffffff848bd6e9>] acpi_idle_do_entry+0xc9/0xe0 drivers/acpi/processor_idle.c:570
+    [<ffffffff848bdc00>] acpi_idle_enter+0x150/0x230 drivers/acpi/processor_idle.c:707
+    [<ffffffff83699eb4>] cpuidle_enter_state+0xc4/0x740 drivers/cpuidle/cpuidle.c:239
+
+BUG: memory leak
+unreferenced object 0xffff88810c312800 (size 1024):
+  comm "softirq", pid 0, jiffies 4294945988 (age 15.200s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff814f6467>] __do_kmalloc_node mm/slab_common.c:967 [inline]
+    [<ffffffff814f6467>] __kmalloc_node_track_caller+0x47/0x120 mm/slab_common.c:988
+    [<ffffffff83ac00f1>] kmalloc_reserve net/core/skbuff.c:492 [inline]
+    [<ffffffff83ac00f1>] __alloc_skb+0xe1/0x270 net/core/skbuff.c:565
+    [<ffffffff83ac396a>] __netdev_alloc_skb+0x6a/0x220 net/core/skbuff.c:630
+    [<ffffffff82df70d0>] __dev_alloc_skb include/linux/skbuff.h:3165 [inline]
+    [<ffffffff82df70d0>] ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:635 [inline]
+    [<ffffffff82df70d0>] ath9k_hif_usb_rx_cb+0x1d0/0x660 drivers/net/wireless/ath/ath9k/hif_usb.c:686
+    [<ffffffff82fd9d89>] __usb_hcd_giveback_urb+0xf9/0x230 drivers/usb/core/hcd.c:1671
+    [<ffffffff82fda06b>] usb_hcd_giveback_urb+0x1ab/0x1c0 drivers/usb/core/hcd.c:1754
+    [<ffffffff8318c0b4>] dummy_timer+0x8e4/0x14c0 drivers/usb/gadget/udc/dummy_hcd.c:1988
+    [<ffffffff81328243>] call_timer_fn+0x33/0x1f0 kernel/time/timer.c:1700
+    [<ffffffff813284ff>] expire_timers+0xff/0x1d0 kernel/time/timer.c:1751
+    [<ffffffff813286f9>] __run_timers kernel/time/timer.c:2022 [inline]
+    [<ffffffff813286f9>] __run_timers kernel/time/timer.c:1995 [inline]
+    [<ffffffff813286f9>] run_timer_softirq+0x129/0x2f0 kernel/time/timer.c:2035
+    [<ffffffff84c000eb>] __do_softirq+0xeb/0x2ef kernel/softirq.c:571
+    [<ffffffff8126a086>] invoke_softirq kernel/softirq.c:445 [inline]
+    [<ffffffff8126a086>] __irq_exit_rcu+0xc6/0x110 kernel/softirq.c:650
+    [<ffffffff848a7742>] sysvec_apic_timer_interrupt+0xa2/0xd0 arch/x86/kernel/apic/apic.c:1107
+    [<ffffffff84a00cc6>] asm_sysvec_apic_timer_interrupt+0x16/0x20 arch/x86/include/asm/idtentry.h:649
+    [<ffffffff848bd6e9>] native_safe_halt arch/x86/include/asm/irqflags.h:51 [inline]
+    [<ffffffff848bd6e9>] arch_safe_halt arch/x86/include/asm/irqflags.h:89 [inline]
+    [<ffffffff848bd6e9>] acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+    [<ffffffff848bd6e9>] acpi_idle_do_entry+0xc9/0xe0 drivers/acpi/processor_idle.c:570
+    [<ffffffff848bdc00>] acpi_idle_enter+0x150/0x230 drivers/acpi/processor_idle.c:707
+
+BUG: memory leak
+unreferenced object 0xffff888101f97500 (size 240):
+  comm "softirq", pid 0, jiffies 4294945988 (age 15.200s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff83ac0212>] __alloc_skb+0x202/0x270 net/core/skbuff.c:552
+    [<ffffffff83ac396a>] __netdev_alloc_skb+0x6a/0x220 net/core/skbuff.c:630
+    [<ffffffff82df70d0>] __dev_alloc_skb include/linux/skbuff.h:3165 [inline]
+    [<ffffffff82df70d0>] ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:635 [inline]
+    [<ffffffff82df70d0>] ath9k_hif_usb_rx_cb+0x1d0/0x660 drivers/net/wireless/ath/ath9k/hif_usb.c:686
+    [<ffffffff82fd9d89>] __usb_hcd_giveback_urb+0xf9/0x230 drivers/usb/core/hcd.c:1671
+    [<ffffffff82fda06b>] usb_hcd_giveback_urb+0x1ab/0x1c0 drivers/usb/core/hcd.c:1754
+    [<ffffffff8318c0b4>] dummy_timer+0x8e4/0x14c0 drivers/usb/gadget/udc/dummy_hcd.c:1988
+    [<ffffffff81328243>] call_timer_fn+0x33/0x1f0 kernel/time/timer.c:1700
+    [<ffffffff813284ff>] expire_timers+0xff/0x1d0 kernel/time/timer.c:1751
+    [<ffffffff813286f9>] __run_timers kernel/time/timer.c:2022 [inline]
+    [<ffffffff813286f9>] __run_timers kernel/time/timer.c:1995 [inline]
+    [<ffffffff813286f9>] run_timer_softirq+0x129/0x2f0 kernel/time/timer.c:2035
+    [<ffffffff84c000eb>] __do_softirq+0xeb/0x2ef kernel/softirq.c:571
+    [<ffffffff8126a086>] invoke_softirq kernel/softirq.c:445 [inline]
+    [<ffffffff8126a086>] __irq_exit_rcu+0xc6/0x110 kernel/softirq.c:650
+    [<ffffffff848a7742>] sysvec_apic_timer_interrupt+0xa2/0xd0 arch/x86/kernel/apic/apic.c:1107
+    [<ffffffff84a00cc6>] asm_sysvec_apic_timer_interrupt+0x16/0x20 arch/x86/include/asm/idtentry.h:649
+    [<ffffffff848bd6e9>] native_safe_halt arch/x86/include/asm/irqflags.h:51 [inline]
+    [<ffffffff848bd6e9>] arch_safe_halt arch/x86/include/asm/irqflags.h:89 [inline]
+    [<ffffffff848bd6e9>] acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+    [<ffffffff848bd6e9>] acpi_idle_do_entry+0xc9/0xe0 drivers/acpi/processor_idle.c:570
+    [<ffffffff848bdc00>] acpi_idle_enter+0x150/0x230 drivers/acpi/processor_idle.c:707
+    [<ffffffff83699eb4>] cpuidle_enter_state+0xc4/0x740 drivers/cpuidle/cpuidle.c:239
+
+
+
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 5 +++++
- 1 file changed, 5 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index 33a7378164b8..6675de16e3b9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -572,6 +572,11 @@ int brcmf_fw_map_chip_to_name(u32 chip, u32 chiprev,
- 	u32 i;
- 	char end;
- 
-+	if (chiprev >= BITS_PER_TYPE(u32)) {
-+		brcmf_err("Invalid chip revision %u\n", chiprev);
-+		return NULL;
-+	}
-+
- 	for (i = 0; i < table_size; i++) {
- 		if (mapping_table[i].chipid == chip &&
- 		    mapping_table[i].revmask & BIT(chiprev))
--- 
-2.35.1
-
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
