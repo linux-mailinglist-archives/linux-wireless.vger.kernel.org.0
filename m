@@ -2,223 +2,178 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FE96519FB
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Dec 2022 05:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9C9651A04
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Dec 2022 05:38:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232607AbiLTE0u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Dec 2022 23:26:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40836 "EHLO
+        id S229866AbiLTEit (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Dec 2022 23:38:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbiLTE0s (ORCPT
+        with ESMTP id S229540AbiLTEis (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Dec 2022 23:26:48 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2421261F
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Dec 2022 20:26:40 -0800 (PST)
-X-UUID: db1f512a12304614a71b7bbcc9e30366-20221220
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=xwTnHxu1cSzOidBNxikLbbDeA72ntLcxTunjLbAmp08=;
-        b=KQci5edLo4xPkeG89YEOjRnH/NfiBgyKpg4gm/3IQT0p1MZ7IsMMSAmZoM4KPkpc+71/TocfRaZ4SPV43BuG+sGQv6I5Omnvn42SMVc+YW/Xbwqs8JhYKEN/MhKOYnweVtD9FTezufP3KrxvLVjB/GnSHVIpJiXAhyc8UhT/2nM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:33c012be-b4da-45c1-8652-f5e5c0d50542,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-INFO: VERSION:1.1.14,REQID:33c012be-b4da-45c1-8652-f5e5c0d50542,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-        elease,TS:-5
-X-CID-META: VersionHash:dcaaed0,CLOUDID:70b53d52-dd49-462e-a4be-2143a3ddc739,B
-        ulkID:2212201226376CLDN05S,BulkQuantity:0,Recheck:0,SF:17|19|102,TC:nil,Co
-        ntent:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: db1f512a12304614a71b7bbcc9e30366-20221220
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <sujuan.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1436655350; Tue, 20 Dec 2022 12:26:35 +0800
-Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+        Mon, 19 Dec 2022 23:38:48 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D081261F
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Dec 2022 20:38:47 -0800 (PST)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BK2XkXR001947;
+        Tue, 20 Dec 2022 04:38:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Hid7a/6gAOWFJ9oQxxHZXyvLIaP27YVJK6wI1MCttLg=;
+ b=Q+VeYGQRbj0jZdLtnnAcOfz5tnnA74KnRKRFS3knEdYtCvrA6e2jaZXeXBKFPZk1uzGo
+ qivYYIzkNNyjngNah847mXpkI5UK3C/UVN1X9lWgw9r/GU2TuQIaE1T+Kb5iXl4NVOIv
+ rwrFxFWWHuTqWoMEE+dWfwJS3t9ICt+l5WKLC97kEcoN63zu7xPeQJmlrbaJLdXKk9w6
+ JpfOWU0QI4v+QN81ELhXGP5/4h2pVg/lIBXS3OUd5zM/lUSZ8nCXdc3tHzwxYF/NDw2O
+ ri/NEwwQaWtb8G212xicdzeau+/kMnW9fABGqDJl8PFvpOJps3IbX6N330MYcRuqjxSv Mg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mh72gdn2b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Dec 2022 04:38:41 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BK4ceRY004744
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Dec 2022 04:38:40 GMT
+Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Tue, 20 Dec 2022 12:26:34 +0800
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (172.21.101.239)
- by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Tue, 20 Dec 2022 12:26:34 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fo60v83meZQYk356/VklOMXv2/bJSrUV7g12UZJYBb+1xTpSERZtaDTSoSe4CMEoSZbnznjBhjEqDK4pqBNpBNQdxpUO20bJi/zuu9Y1Pggi8J1lIQynAbdqglCsgUChjiaf8s0w1njtUnHhWgl2+dlIEGRFaW9IRkDWdPDNLAcmDjbKPtn2cTFzfkYunG8bBlDEvp0hFbu8/Z3GwpSLFMskgHc++ne5SIUe7luD/owTBBYPtCEedK0c8P1d8C+nCWkMWeOvO+YuDWBNOBmfd6I7pPYnrFiboC/Nsxa0HraFe787QAdWgI5BAuuJPIOfx4I0gHfrc6b8oG0CPLCIGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xwTnHxu1cSzOidBNxikLbbDeA72ntLcxTunjLbAmp08=;
- b=Jz2VHG/h9tVjIncEoxwtF6zkPp9ttc1786hm53jWSAr+BFRHCnj1d6xsmAqQuxVKtqwFJWVYB/HzqhVZtoPYQhLRB6MdMJlFmsBFqtxZq8VUwQ+h4Z5cj2MVhwxmHnOGO0oI1DUvwzfCvLEHqX50/WhGNDSzpm9bIIkvAIAO7XZbx0B866MWww+Z1M3jeItuI1dxF7ZPJjN5cwlZvbGWT+0ZJFZEbh1h9fTIoPm/4bGXhZIuk9Kn4bnT8r4vAFD9J1OGXkySjBAr65ZT2nt3NxHaQh28lBZ512NEl9bHqOEAgR4+umGyrKzP3D889SuFWfFFjC5LBhdgdsQDjGp8/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xwTnHxu1cSzOidBNxikLbbDeA72ntLcxTunjLbAmp08=;
- b=F2prERaHmWzh1opCfzNIIDh1UIHZ8mEya2WrsDpBlbhoZ663NhaKkr8lAn5hMmAaM60VH+2UzVoCd3hE0nFdO8U/8CyNc7f0vLcc5jCPWxhnbd9O1VlnAJkbqeT1RPwD8lAroxFwqCfYu6B3xXIVETHj0+821B4LTYj3KP5XQRU=
-Received: from PS1PR03MB3461.apcprd03.prod.outlook.com (2603:1096:803:42::12)
- by KL1PR0302MB5298.apcprd03.prod.outlook.com (2603:1096:820:4d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.16; Tue, 20 Dec
- 2022 04:26:32 +0000
-Received: from PS1PR03MB3461.apcprd03.prod.outlook.com
- ([fe80::ea45:323a:2086:43ec]) by PS1PR03MB3461.apcprd03.prod.outlook.com
- ([fe80::ea45:323a:2086:43ec%7]) with mapi id 15.20.5924.016; Tue, 20 Dec 2022
- 04:26:32 +0000
-From:   =?utf-8?B?U3VqdWFuIENoZW4gKOmZiOe0oOWonyk=?= 
-        <Sujuan.Chen@mediatek.com>
-To:     "nbd@nbd.name" <nbd@nbd.name>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        =?utf-8?B?Qm8gSmlhbyAo54Sm5rOiKQ==?= <Bo.Jiao@mediatek.com>,
-        =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
-        <Evelyn.Tsai@mediatek.com>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        Ryder Lee <Ryder.Lee@mediatek.com>,
-        =?utf-8?B?SGFpdGFvIFNoYW5nICjlsJrmtbfmtpsp?= 
-        <haitao.shang@mediatek.com>
-Subject: Re: [PATCH,v2] wifi: mt76: mt7915: add wds support when wed is
- enabled
-Thread-Topic: [PATCH,v2] wifi: mt76: mt7915: add wds support when wed is
- enabled
-Thread-Index: AQHZBJsSgs4JUAwTZkiAm8/HCvdXcK5li14AgAWXSoA=
-Date:   Tue, 20 Dec 2022 04:26:32 +0000
-Message-ID: <6a6d2c7c99306790ebfafbfe3223405d0d726a95.camel@mediatek.com>
-References: <e603722d58079af98c57a3dc117274d824d1d832.1669798063.git.sujuan.chen@mediatek.com>
-         <c4f01e3e-4ae6-3d60-4fd0-b8d8bc5f4573@nbd.name>
-In-Reply-To: <c4f01e3e-4ae6-3d60-4fd0-b8d8bc5f4573@nbd.name>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PS1PR03MB3461:EE_|KL1PR0302MB5298:EE_
-x-ms-office365-filtering-correlation-id: cc4a5336-27ad-41c5-4790-08dae2425f87
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: AIGucMkWKHT3buPNXNsYMIOkRCxerrqWCII2WVecfjsUtzZnszCZQ9fGkA0bkcYDZqnTzQT6iJNxpRdWD22XDlnndB+CfcgEOvqpSwlB2+iM2px+XOg5O17Y/aYja/D9mUC9w/Qr/+gsEUjq2nGeWkXu6yJR3xr+9yg2XReiMGGbSU+BF0bvLDVZaUm2imMG52g4jecGluW3mwE8sie+6ep4S/e2QOvmwMeWMAhx/Fy2ruGwO81C78vXGknp2CGfdJG6EU6f+LvKpSeXF/+B/4z5lfKpq6c9i2b4bRiwf9NSU1hBoyIG7wkaNcL7pI1JZLCSHJb6+o5/a3RJLrS2DFf5T/O+fiNHkOFfmkvi/vzo7dGpDdSWniPGLhSmiY1fk9gia2IqwS3lNU066vMl3yJtd1Zfml3Lf2kx3759b7ViRaC92ZRVZLAu62ltbj2CNgSQZH+7GJEBhcu0Y06XUIgAslQLHK+vr3SvqUFkA+jzxbovG8bzjJTWEuEK1jEvmcDrJWGyTD5PPrj5cbM7mM3gMZdpHXah5BUBLq74eNPfSJSfju0ldwaFvtxQD6JufJnwy5qA6VSuyGVHHLYFmDWNON9JuFKFomUmcsS5g1t7Syiv7FqIRER3wZmLkrrPdr8dnhpmwHX0JrQSOO1zQEkt/W7+POHBzENa1bwV82wE9FpEEP5ed5Hl8vgqu41adVa/aoEXnZimkHCZNftUuA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PS1PR03MB3461.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(136003)(376002)(39860400002)(346002)(396003)(451199015)(85182001)(36756003)(38070700005)(86362001)(6916009)(478600001)(54906003)(316002)(66446008)(71200400001)(66476007)(41300700001)(66946007)(8676002)(4326008)(76116006)(91956017)(66556008)(5660300002)(8936002)(107886003)(64756008)(2906002)(6486002)(26005)(38100700002)(122000001)(6506007)(53546011)(186003)(83380400001)(6512007)(2616005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WXpIL1duNUdTTVdxenZKL0puYXJvY2xwYXZBaHgxSUp4WVNMNmhqNS9lK21I?=
- =?utf-8?B?VDNaRzZ3QnlPbmgxYUZobWRuMFN0WUFxS2dNV2RPNGZZdFVLRHAzZlcvcGpG?=
- =?utf-8?B?ajhQS1EwQTVWblFYNjRNNGxwTXNNN1psOFVyK1dKNWhocDQweG5FNStyNm1v?=
- =?utf-8?B?Ulhwb1d5Rm8yZ0phSjJtQ1RJUXhIQi83bG9OeFZVWmtZeGljUDJXZzNmUFN2?=
- =?utf-8?B?aEFvSG82L0NVMzlPNlJCZDd1VzhwTkdoTUN3enpvdG9rYTdxejgzRmVvK1p0?=
- =?utf-8?B?b3g3UGVWcXpyVkZ3S2Jqd0czZmR5Z1VLeWZNUFplajJPVWd5U2dQaVY3b3Ex?=
- =?utf-8?B?YjNIVGhia21vektpV242VFhmNjJ2RlJTajdXcDBHd0pVZ3JHdUlqVjF1ODVD?=
- =?utf-8?B?NjFnT0hNdFU5SVJyQ0g5VHZaTHZuV1dZUmptL0x4STdrWmx5SFBtVnF2UUQy?=
- =?utf-8?B?WkdwRHY5NU42Kzg3MER1VWZvbzh1blc4cnRuK0FHdzcrMGJVVWYvQkRGaCtv?=
- =?utf-8?B?TWdRSTE3a1lmZGtseHZvcU1ZbjNSQnVXOGo2ckYzT2ZTSHd0MFJkL0JKSDdr?=
- =?utf-8?B?UXFmbzdhNllSRStJRDF3MXhhc25Nb1IzUTlqZ25oTW5MTzFISUVQa21SVDJt?=
- =?utf-8?B?UitaZjZXOHlDT2VmTnJ5R1BwaC9LaGlCSHg3clEzSHdlOVpSWmhZV2dvTjho?=
- =?utf-8?B?S25INDd6cmhtMHpqcEt0dkdJM0x1QzBiT1JNcnBaeEtlSktzQjRjYWhWcW5G?=
- =?utf-8?B?NTZXR3FqdDNERlNYdHpnbUhQSmFBQXUrT3AyMFVmR1dpVUFERzhzREphRW01?=
- =?utf-8?B?MnlSNHdKb2RpeEpGazlPQld1UFEzWHpUMHdTU2ZTRlhrbTlyODdKbnJMZVgv?=
- =?utf-8?B?Y3VndFFKdkdDZWhhQ056SXl3Q2czeUx0RWdvT3FIUEhDTVBKNm9MdC9UQ3Fy?=
- =?utf-8?B?WDE3NzNIS2RNQlY4RG5zU295eVk4R2tPMm0vUVJuY0cxRzdwOXFrTzZsVG1I?=
- =?utf-8?B?MWI3K09UVnJiQW1RL2xCeGFzTVEybjVPbHE5aWk4SmpScHlmWmRmci9LOXFS?=
- =?utf-8?B?a1c5aWVyWU4wYm1nUU96bk9zb1lyZHhzOXFDY0xNbXByZlp1S1lQK09mL2NX?=
- =?utf-8?B?RGRjVkc4N2JDTWt1UzQvZml1RmgyVWJRTVBuZTI1ak52cmM0Umt6K256QVNX?=
- =?utf-8?B?L3U2eGRUTmk2dTlBMmJmamlVcnNnVnVaN3RkY2trT08rSUgwZ0JENXdjL1BY?=
- =?utf-8?B?SGd1SjlWcGJIa0ZiemcwMGtiYjBYSks0REpqRGhyb29MbzUrOXQ0dDJPT2hu?=
- =?utf-8?B?UUhFVkxyWk8yYjB6R3RyOW1RR2hrL04wWlZ0dWtiNTJwZFMvSHFUSGFxaDM3?=
- =?utf-8?B?ejlZMEh0cG41VDZ1b3hBRzRrNGRkUjU3UFFwajdneFg1aEFoMW94Y3U1V3pk?=
- =?utf-8?B?dXZZSXB3UkJvQmJjRi9lalMxSU1NTWZVVXkvVzRXQTczcGpEY2dDaEZUank3?=
- =?utf-8?B?M0tPOFVEeVhXSzk1c0NaNDdTL0xPU2JUam1mZEQ0dGY2YWpoT2lmMkJwcGda?=
- =?utf-8?B?ajNzcDNrVkVWMm1kUEpROWxSSnRuclh1STdJYTNYeENrNlhMOUJXNUp2Ylpj?=
- =?utf-8?B?T3RlZTREanFWVTcwNW5manM3R1p3VklhWGhORE9xYVFCU3dSK2xVcjNhbGQ1?=
- =?utf-8?B?V1owM2xRTFZPVHVKT25XSDdmOFRHVC9YV011SUV6SzlQdllWTlRTWXNReS82?=
- =?utf-8?B?VFh5MHI3NVY1K1loQzhlOTE5bU1VUmNNa1FBZkdUL01TSW9WUEZ1RmJWbFIr?=
- =?utf-8?B?K2VQYTl6Qnh3Uk5lTHVDMHhhQ3FxWGVuZjZ0eFF2VkRIOFo2bFppU2cyaHlW?=
- =?utf-8?B?QTZxU2xqZWZVWFJIdkpkelVPNEpXSXc1ckVaTVJzNDV4N25ZS0ZIbTJ3VjZK?=
- =?utf-8?B?VmVySjlXTm9uY3dUU0piNTgvU3duU3Z4U1F2S1NaUnpvNFhLOVhCTXRyZzlU?=
- =?utf-8?B?N2grcUxrZXl6QThTOEh0MTIwbHVUYVNoK3ozaDFXUFZFZElVUjRSc3BFd0s3?=
- =?utf-8?B?Q0E1SFArVVIyV2U4bFBLeGlkYXVNK29kQVl5b0l4cmx4bG5xSTRQbjVWOEMy?=
- =?utf-8?B?WDg2TDhFeGhvbk16QjlCWituWU5KT3pMdzhhcSt3ZXg2TVZYaitiSEtQTEIw?=
- =?utf-8?B?dWc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BD84E11B5917D946B283D4EFD5B72F77@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ 15.2.986.36; Mon, 19 Dec 2022 20:38:39 -0800
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Subject: [PATCH] wifi: ath11k: Optimize 6 GHz scan time
+Date:   Tue, 20 Dec 2022 10:08:23 +0530
+Message-ID: <20221220043823.20382-1-quic_mpubbise@quicinc.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PS1PR03MB3461.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc4a5336-27ad-41c5-4790-08dae2425f87
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2022 04:26:32.4454
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EAT2CjLCjZJ47URtyEzXRZFtv0lzVKUabxPv2vgdkBMCAoSUzUyOWSe45r1j7cPHRIQsyfkCoOpgwVHVPFucgyrAUVt9atZ8N0f8zZiW2RU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0302MB5298
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9as0-J3TfYDwU07Z9ZR31SLBCMbIP8Qi
+X-Proofpoint-ORIG-GUID: 9as0-J3TfYDwU07Z9ZR31SLBCMbIP8Qi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-19_05,2022-12-15_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
+ suspectscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999 adultscore=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2212200038
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIyLTEyLTA5IGF0IDEzOjMyICswMTAwLCBGZWxpeCBGaWV0a2F1IHdyb3RlOg0K
-PiBPbiAzMC4xMS4yMiAxMDoxOCwgU3VqdWFuIENoZW4gd3JvdGU6DQo+ID4gVGhlIGN1cnJlbnQg
-V0VEIG9ubHkgc3VwcG9ydHMgMjU2IHdjaWQsIHdoZXJlYXMgbXQ3OTg2IGNhbiBzdXBwb3J0DQo+
-ID4gdXAgdG8gNTEyIGVudHJpZXMsDQo+ID4gc28gZmlybXdhcmUgcHJvdmlkZXMgYSBydWxlIHRv
-IGdldCBzdGFfaW5mbyBieSBEQSB3aGVuIHdjaWQgaXMgc2V0DQo+ID4gdG8gMHgzZmYgYnkgdHhk
-Lg0KPiA+IEFsc28sIFdFRCBwcm92aWRlcyBhIHJlZ2lzdGVyIHRvIG92ZXJ3cml0ZSB0eGQgd2Np
-ZCwgdGhhdCBpcywNCj4gPiB3Y2lkWzk6OF0gY2FuDQo+ID4gYmUgb3ZlcndyaXR0ZW4gYnkgMHgz
-IGFuZCB3Y2lkWzc6MF0gaXMgc2V0IHRvIDB4ZmYgYnkgaG9zdCBkcml2ZXIuDQo+ID4gDQo+ID4g
-SG93ZXZlciwgZmlybXdhcmUgaXMgdW5hYmxlIHRvIGdldCBzdGFfaW5mbyBmcm9tIERBIGFzIERB
-ICE9IFJBIGZvcg0KPiA+IDRhZGRyIGNhc2VzLA0KPiA+IHNvIGZpcm13YXJlIGFuZCB3aWZpIGhv
-c3QgZHJpdmVyIGJvdGggdXNlIHdjaWQgKDI1NiAtIDI3MSkgYW5kICg3NjgNCj4gPiB+IDc4MykN
-Cj4gPiBmb3Igc3luYyB1cCB0byBnZXQgY29ycmVjdCBzdGFfaW5mbw0KPiA+IA0KPiA+IFRlc3Rl
-ZC1ieTogU3VqdWFuIENoZW4gPHN1anVhbi5jaGVuQG1lZGlhdGVrLmNvbT4NCj4gPiBDby1kZXZl
-bG9wZWQtYnk6IEJvIEppYW8gPGJvLmppYW9AbWVkaWF0ZWsuY29tPg0KPiA+IFNpZ25lZC1vZmYt
-Ynk6IEJvIEppYW8gPGJvLmppYW9AbWVkaWF0ZWsuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFN1
-anVhbiBDaGVuIDxzdWp1YW4uY2hlbkBtZWRpYXRlay5jb20+DQo+ID4gLS0tDQo+ID4gdjI6DQo+
-ID4gICAtIGRyb3AgZHVwbGljYXRlIHNldHRpbmdzDQo+ID4gICAtIHJlZHVjZSB0aGUgcGF0Y2gg
-c2l6ZSBieSByZWRlZmluaW5nIG10NzZfd2NpZF9hbGxvYw0KPiA+IC0tLQ0KPiA+ICAgZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmggICAgIHwgIDYgKysrDQo+ID4gICAu
-Li4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYyAgfCAyNCArKysrKysr
-KystLQ0KPiA+ICAgLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYyAg
-IHwgMTMgKysrKystDQo+ID4gICAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L21jdS5oICAgfCAgMSArDQo+ID4gICBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L3V0aWwuYyAgICAgfCA0MA0KPiA+ICsrKysrKysrKysrKysrKysrLS0NCj4gPiAgIGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvdXRpbC5oICAgICB8ICA3ICsrKy0NCj4gPiAgIDYg
-ZmlsZXMgY2hhbmdlZCwgODIgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkNCj4gPiANCj4g
-PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
-bWFpbi5jDQo+ID4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9t
-YWluLmMNCj4gPiBpbmRleCBjNDBiNjA5OGYxOWEuLjQ2YTllNGYwMzk2ZSAxMDA2NDQNCj4gPiAt
-LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCj4g
-PiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMN
-Cj4gPiBAQCAtMTExNSw2ICsxMTIyLDEzIEBAIHN0YXRpYyB2b2lkIG10NzkxNV9zdGFfc2V0XzRh
-ZGRyKHN0cnVjdA0KPiA+IGllZWU4MDIxMV9odyAqaHcsDQo+ID4gICAJZWxzZQ0KPiA+ICAgCQlj
-bGVhcl9iaXQoTVRfV0NJRF9GTEFHXzRBRERSLCAmbXN0YS0+d2NpZC5mbGFncyk7DQo+ID4gICAN
-Cj4gPiArCWlmIChtdGtfd2VkX2RldmljZV9hY3RpdmUoJmRldi0+bXQ3Ni5tbWlvLndlZCkgJiYN
-Cj4gPiArCSAgICAhaXNfbXQ3OTE1KCZkZXYtPm10NzYpKSB7DQo+ID4gKwkJbXQ3OTE1X3N0YV9y
-ZW1vdmUoaHcsIHZpZiwgc3RhKTsNCj4gPiArCQltdDc2X3N0YV9wcmVfcmN1X3JlbW92ZShodywg
-dmlmLCBzdGEpOw0KPiA+ICsJCW10NzkxNV9zdGFfYWRkKGh3LCB2aWYsIHN0YSk7DQo+ID4gKwl9
-DQo+ID4gKw0KPiA+ICAgCW10NzZfY29ubmFjX21jdV93dGJsX3VwZGF0ZV9oZHJfdHJhbnMoJmRl
-di0+bXQ3NiwgdmlmLCBzdGEpOw0KPiA+ICAgfQ0KPiA+ICAgDQo+IA0KPiBJIHN1c3BlY3QgdGhh
-dCB0aGlzIG1heSBhIGJpdCByYWN5IGlmIHRoZXJlIGlzIGNvbmN1cnJlbnQgdHgNCj4gYWN0aXZp
-dHkgDQo+IChlLmcuIGZvciBFQVAgYXV0aCkuIE5vdCBzdXJlIGlmIHRoaXMgY291bGQgY2F1c2Ug
-cHJvYmxlbXMgZm9yIHRoZSANCj4gZmlybXdhcmUgb3Igb3RoZXIga2luZHMgb2YgYnVncy4NCj4g
-DQo+IFdoaWxlIG15IGlkZWEgbWF5IG5lZWQgc29tZSByZXdvcmsgb2YgdGhlIGV4aXN0aW5nIGZ1
-bmN0aW9ucywgSSB0aGluaw0KPiBhIA0KPiBiZXR0ZXIgZmxvdyB3b3VsZCBiZToNCj4gDQo+IDEu
-IG10NzZfc3RhX3ByZV9yY3VfcmVtb3ZlDQo+IDIuIHNhdmUgb2xkIHdjaWQNCj4gMy4gbXQ3OTE1
-X3N0YV9hZGQNCj4gNC4gc3luY2hyb25pemVfcmN1KCkNCj4gNS4gcmVtb3ZlIGZpcm13YXJlIHN0
-YXRlIGZvciBvbGQgd2NpZCBlbnRyeQ0KPiANCkhpIEZlbGl4LA0KDQpDYW4gd2UgbW9kaWZ5IGl0
-IGxpa2UgdGhpczoNCg0KMS4gcHJlX3N0YSA9IGt6YWxsb2Moc2l6ZW9mKCpzdGEpICsgc2l6ZW9m
-KCptc3RhKSwgR0ZQX0tFUk5FTCk7DQoyLiBtdDc2X3N0YV9wcmVfcmN1X3JlbW92ZQ0KMy4gbWVt
-bW92ZShvbGRfc3RhLCBzdGEsIHNpemVvZigqc3RhKSArIHNpemVvZigqbXN0YSkpDQo0LiBtdDc5
-MTVfc3RhX2FkZA0KNS4gc3luY2hyb25pemVfcmN1KCkNCjYuIG10NzkxNV9zdGFfcmVtb3ZlKGh3
-LCB2aWYsIHByZV9zdGEpDQo3LiBrZnJlZShwcmVfc3RhKQ0KDQp3ZSBjYW4gcmV1c2UgbXQ3OTE1
-X3N0YV9yZW1vdmUgYW5kIGtlZXAgdGhlIHN0YSBpbmZvIGZvciANCm10NzkxNV9tY3VfYWRkX3N0
-YS4NCg0KaWYgc2F2ZSBvbGQgd2NpZCBvbmx5LCB3ZSBuZWVkIHRvIHJld29yayBfX210NzZfc3Rh
-X3JlbW92ZSBhbmQNCm10NzkxNV9tY3VfYWRkX3N0YSBmdW5jdGlvbnMgYnkgYWRkIHdjaWQgYXMg
-cGFyYW1ldGVyLg0KX19tdDc2X3N0YV9yZW1vdmUgaXMgcmVxdWlyZWQgdG8gZGVsZXRlIGEgd2Np
-ZCwgcmlnaHQ/DQoNCi1zdWp1YW4NCg0KPiAtIEZlbGl4DQo=
+Currently, time taken to scan all supported channels on WCN6750
+is ~8 seconds and connection time is almost 10 seconds. WCN6750
+supports three Wi-Fi bands (i.e., 2.4/5/6 GHz) and the numbers of
+channels for scan come around ~100 channels (default case).
+Since the chip doesn't have support for DBS (Dual Band Simultaneous),
+scans cannot be parallelized resulting in longer scan times.
+
+Among the 100 odd channels, ~60 channels are in 6 GHz band. Therefore,
+optimizing the scan for 6 GHz channels will bring down the overall
+scan time.
+
+WCN6750 firmware has support to scan a 6 GHz channel based on co-located
+AP information i.e., RNR IE which is found in the legacy 2.4/5 GHz scan
+results. When a scan request with all supported channel list is enqueued
+to the firmware, then based on WMI_SCAN_CHAN_FLAG_SCAN_ONLY_IF_RNR_FOUND
+scan channel flag, firmware will scan only those 6 GHz channels for which
+RNR IEs are found in the legacy scan results.
+
+In the proposed design, based on NL80211_SCAN_FLAG_COLOCATED_6GHZ scan
+flag, driver will set the WMI_SCAN_CHAN_FLAG_SCAN_ONLY_IF_RNR_FOUND flag
+for non-PSC channels. Since there is high probability to find 6 GHz APs
+on PSC channels, these channels are always scanned. Only non-PSC channels
+are selectively scanned based on cached RNR information from the legacy
+scan results.
+
+If NL80211_SCAN_FLAG_COLOCATED_6GHZ is not set in the scan flags,
+then scan will happen on all supported channels (default behavior).
+
+With these optimizations, scan time is improved by 1.5-1.8 seconds on
+WCN6750. Similar savings have been observed on WCN6855.
+
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
+
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 25 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/wmi.h |  4 ++++
+ 2 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index b198edba76eb..0332e91c2c1c 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -3681,8 +3681,29 @@ static int ath11k_mac_op_hw_scan(struct ieee80211_hw *hw,
+ 			goto exit;
+ 		}
+ 
+-		for (i = 0; i < arg->num_chan; i++)
+-			arg->chan_list[i] = req->channels[i]->center_freq;
++		for (i = 0; i < arg->num_chan; i++) {
++			if (test_bit(WMI_TLV_SERVICE_SCAN_CONFIG_PER_CHANNEL,
++				     ar->ab->wmi_ab.svc_map)) {
++				arg->chan_list[i] =
++					u32_encode_bits(req->channels[i]->center_freq,
++							WMI_SCAN_CONF_PER_CH_CHANNEL_MASK);
++
++				/* If NL80211_SCAN_FLAG_COLOCATED_6GHZ is set in scan
++				 * flags, then scan all PSC channels in 6 GHz band and
++				 * those non-PSC channels where RNR IE is found during
++				 * the legacy 2.4/5 GHz scan.
++				 * If NL80211_SCAN_FLAG_COLOCATED_6GHZ is not set,
++				 * then all channels in 6 GHz will be scanned.
++				 */
++				if (req->channels[i]->band == NL80211_BAND_6GHZ &&
++				    req->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ &&
++				    !cfg80211_channel_is_psc(req->channels[i]))
++					arg->chan_list[i] |=
++						WMI_SCAN_CH_FLAG_SCAN_ONLY_IF_RNR_FOUND;
++			} else {
++				arg->chan_list[i] = req->channels[i]->center_freq;
++			}
++		}
+ 	}
+ 
+ 	if (req->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 8f2c07d70a4a..90497a93598b 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -2095,6 +2095,7 @@ enum wmi_tlv_service {
+ 
+ 	/* The second 128 bits */
+ 	WMI_MAX_EXT_SERVICE = 256,
++	WMI_TLV_SERVICE_SCAN_CONFIG_PER_CHANNEL = 265,
+ 	WMI_TLV_SERVICE_BIOS_SAR_SUPPORT = 326,
+ 
+ 	/* The third 128 bits */
+@@ -3223,6 +3224,9 @@ struct  wmi_start_scan_cmd {
+ #define WMI_SCAN_DWELL_MODE_MASK 0x00E00000
+ #define WMI_SCAN_DWELL_MODE_SHIFT        21
+ 
++#define WMI_SCAN_CONF_PER_CH_CHANNEL_MASK	GENMASK(19, 0)
++#define WMI_SCAN_CH_FLAG_SCAN_ONLY_IF_RNR_FOUND	BIT(20)
++
+ enum {
+ 	WMI_SCAN_DWELL_MODE_DEFAULT      = 0,
+ 	WMI_SCAN_DWELL_MODE_CONSERVATIVE = 1,
+
+base-commit: 58e4b9df840cad439a4c878f81bc105cac2197a7
+-- 
+2.38.0
+
