@@ -2,55 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F0B76521A3
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Dec 2022 14:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8061A6521AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Dec 2022 14:47:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232093AbiLTNmt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Dec 2022 08:42:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
+        id S231790AbiLTNrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Dec 2022 08:47:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbiLTNmr (ORCPT
+        with ESMTP id S233682AbiLTNrp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Dec 2022 08:42:47 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBFD119C34
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Dec 2022 05:42:43 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id a5-20020a25af05000000b006e450a5e507so14367790ybh.22
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Dec 2022 05:42:43 -0800 (PST)
+        Tue, 20 Dec 2022 08:47:45 -0500
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C971A22D
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Dec 2022 05:47:41 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-3b5da1b3130so142185267b3.5
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Dec 2022 05:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oYAVZngUdmk1RtZxmwOEx5HBTEmaaTCX2EY39AknqTs=;
-        b=bOTaR34OXnc70kInhPqCsbZtNSJhJ6u3rSgmMTqPO+gn7q3iTJI3NcYCZi79+K+Ut9
-         qAXNKGNuYKMqp5KaDU++/mIPuL0DRl7Y54FL4x3Rf7eWtLik/ecRtNj5I1jD/j5eD4OO
-         l9bj14PZFtb9Zq8QK/+bibrlNRnwV+b2uaj9VWvS59omzbFaBKm/6uqDqOZhDSZRyx+u
-         MPcs/PCGBhDWfZUs7gIlPBc9kwl1a/sbgL0kqerkYUeFNWv8Mc0kC02m+KWCx+KV1SKZ
-         mJAMgfwnJM3+UzcFwweLuYGg99/gz2blqyav7f5Q4S9mu1Um6c8++PhOxIsHiPao7TCe
-         Tkzw==
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NcgDWqDheThjRXXFGj0gWh3czRr93SHptgyK9gwkHMs=;
+        b=ZC0+SAETXBB3RZKWhpHbvJX7NhkHhCL7vhPQgpl0xkYEOcxseRdeg1DRJUq6yq5YHo
+         H0WNAbV8DSn/6OPuNZTGmwKJfERguGtCfqHSyyHOPdfmwA/Lyx/opSVBomOXktorCev/
+         x1AsisksBbg1XWv4OZbDzGPQghLLWqBhpGNyv3n9YtfmAQzeq+gsAhyINDxBNzyw2nY0
+         0+qyqS+yH+eUOEClGL3KijmFFtwMB+h8CE8SglNEmXzVJiDmfjzcLJz0rDP5KGlxUC16
+         GGWyPR9IrGIXX7R3NHG1UYn4ZawBytAuhUG2lUfZXg8xIkTXu0CepPQGYyCF+g9IJECW
+         2D7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oYAVZngUdmk1RtZxmwOEx5HBTEmaaTCX2EY39AknqTs=;
-        b=lE0HkcmvHpNZ1bEbyU9GFrK+D0UoYH9f4UqXx+xiwh4GFnY2R6W32ubt4Ne+FA7xFx
-         ogLDI/CGKdX0XTRQLUP+oYBTVJ708RR7P6Kc5hby8GFuBKMJgBl4KLpCLqqaoSBpH7lh
-         NCRvYGFtOnGbvatnqDhQCm21y2Rp/NsPsOuK+/XgjAih66I/jkjv9bZwR2hKPLmCulbd
-         oiIMXCsYSVgIZQ+miBk4awaBiKH5NcRB+PotzWdAnIqssJUxcyj+S9yiaj+0EN7oVk5V
-         ytHX6aPl1nX0QviLYLOtdKFccQ6InKBwUYZE6Xlfocn63XVVjrf20/N47TzN2b/+AXP9
-         mfYw==
-X-Gm-Message-State: ANoB5pk3VDStczXXSN01GqKQYaica7j0hmFcH3hro+rha6JixuqaIOuP
-        uGlIlvjOdwoVlU+D7Ljpp8jvPQcoi5E=
-X-Google-Smtp-Source: AA0mqf4WHxq9rNM4J6ySR5ARSMCFDd45pcwlTs+LPYhODFCWNOWdHl+qkqgEylS1eDWAHlLmp0Hy1q+hjis=
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NcgDWqDheThjRXXFGj0gWh3czRr93SHptgyK9gwkHMs=;
+        b=s+X86A7eu/39GykrQrL3IYQ4/0JRzutdwQl84FHWvhKQbBHOqfkRVAIn2apQouYIHg
+         OxL7RnRvms3m74cnoUtP4AeyoBjw1iqcW5pcp1FW+oV0M8MOGgOwoOhq6mZhnTXwdGkG
+         HtM/vAWsbKVNvAjcyFDc4uHPfPW29KCn/L6qHStI5rwlgF19cSWmysi4JzmDQk2/Jv9j
+         S6WLcpfRGPUiWDWt5QCuTEmjI1ogbH8L7o6SJRHOUa9EV4sp20bf2AvvhH3FAkDMY97L
+         TKoKoEJ3SXf0okkGwSXhG6g0b79Cv/eJ6T/qOpW28KlNeEYgvUnRXr0/mQZbKLhZwzS8
+         rAQw==
+X-Gm-Message-State: ANoB5pn3oUtMzibLLDGRSBDcnlYUBLHKKFyacEVxLjLxucJNm+HqU/aF
+        gahmAsuaIeQauKG4Wt6Z2zOMLG/sK5g=
+X-Google-Smtp-Source: AA0mqf4uhNNTK4lK3stWE/fZpckCiEmSss6Ps+ZyNi1bT6E0nvASeUfEKB7pqIkYZzm1alJEec3ytjKxIDI=
 X-Received: from jaewan.seo.corp.google.com ([2401:fa00:d:11:106a:a96e:332:fe4])
- (user=jaewan job=sendgmr) by 2002:a25:6844:0:b0:6fa:1ef3:d720 with SMTP id
- d65-20020a256844000000b006fa1ef3d720mr38507793ybc.224.1671543763031; Tue, 20
- Dec 2022 05:42:43 -0800 (PST)
-Date:   Tue, 20 Dec 2022 22:42:33 +0900
+ (user=jaewan job=sendgmr) by 2002:a05:690c:386:b0:3ba:2984:8f75 with SMTP id
+ bh6-20020a05690c038600b003ba29848f75mr4309030ywb.222.1671544060440; Tue, 20
+ Dec 2022 05:47:40 -0800 (PST)
+Date:   Tue, 20 Dec 2022 22:47:33 +0900
+In-Reply-To: <20221220134233.2307164-1-jaewan@google.com>
 Mime-Version: 1.0
+References: <20221220134233.2307164-1-jaewan@google.com>
 X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
-Message-ID: <20221220134233.2307164-1-jaewan@google.com>
-Subject: [PATCH] iw: info: fix bug reading preamble and bandwidths
+Message-ID: <20221220134733.2309329-1-jaewan@google.com>
+Subject: [PATCH v2] iw: info: fix bug reading preamble and bandwidths
 From:   Jaewan Kim <jaewan@google.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, Jaewan Kim <jaewan@google.com>
@@ -71,7 +73,7 @@ Signed-off-by: Jaewan Kim <jaewan@google.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git info.c info.c
-index eb257f8..98461a4 100644
+index eb257f8..5229d44 100644
 --- info.c
 +++ info.c
 @@ -197,7 +197,7 @@ static void __print_ftm_capability(struct nlattr *ftm_capa)
@@ -79,7 +81,7 @@ index eb257f8..98461a4 100644
  #define PRINT_PREAMBLE(P, V) \
  	do { \
 -		if (P | NL80211_PREAMBLE_##V) \
-+		if (P | BIT(NL80211_PREAMBLE_##V)) \
++		if (P & BIT(NL80211_PREAMBLE_##V)) \
  			printf(" " #V); \
  	} while (0)
  
@@ -88,7 +90,7 @@ index eb257f8..98461a4 100644
  #define PRINT_BANDWIDTH(B, V) \
  	do { \
 -		if (B | NL80211_CHAN_WIDTH_##V) \
-+		if (B | BIT(NL80211_CHAN_WIDTH_##V)) \
++		if (B & BIT(NL80211_CHAN_WIDTH_##V)) \
  			printf(" " #V); \
  	} while (0)
  
