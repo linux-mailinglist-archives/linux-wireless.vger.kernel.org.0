@@ -2,47 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F17A4652039
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Dec 2022 13:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2BFA65203F
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Dec 2022 13:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbiLTMMk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Dec 2022 07:12:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35454 "EHLO
+        id S232989AbiLTMPB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Dec 2022 07:15:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231434AbiLTMMi (ORCPT
+        with ESMTP id S230179AbiLTMO7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Dec 2022 07:12:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB15186EB
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Dec 2022 04:12:37 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4BFABB8120F
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Dec 2022 12:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3A0C433F0;
-        Tue, 20 Dec 2022 12:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671538354;
-        bh=hYDHwsE9piAh72BiV3VVBIriKByV2pTVruzTBjQPzEk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=h3xR20mUS8l3hWFSdj+iPwT4eX5ykUtEYT75i1NcG3VSqnbOUCeNf7vlpOMi3bL8y
-         g28V7lDRaq4mHpGkjZ2krwcuLQMKt05RaDjQ+DmKiQmhZ1LKwfHSnLGJhigf9MMY0J
-         OxzhMaNGz7SMIc80fQKSmQihT1MBZq/HIUmXrlIRgEuk3k51orUgvjS7e6i7OqhVmg
-         Hy238CvK9G2fP6D0xBZFJgTEE2oBXjnzentm0kA+TkK7EiaIPMfeyAiIMTVhXgG0sB
-         tFcVHIHrTdKPIIoWORtEXoRbIizgmH96vwwOIGLAjmiYeLGjv9XbP9Bx5XjXqUH/SK
-         eoRUjFIG/E+CQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath11k: debugfs: fix to work with multiple PCI devices
-Date:   Tue, 20 Dec 2022 14:12:31 +0200
-Message-Id: <20221220121231.20120-1-kvalo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        Tue, 20 Dec 2022 07:14:59 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D4CF186D0;
+        Tue, 20 Dec 2022 04:14:58 -0800 (PST)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BKABAMI032452;
+        Tue, 20 Dec 2022 12:14:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=wLqDcO+Wsi26P0nos/+8/kSQfghM5ThFrgbZ4/Pqpn8=;
+ b=jVXUPoovH6l3UXbdHTkvrxkegxnp9pGaYIGsoK8PPCPQqIyEgHztqL+dn0fLRDj1dAQu
+ iVegfwcwYkmvD2UQPSwNMS2B2SShNkEtJx7yCngp7RifeS5cWlhdQCF+FkduNx3GfLkx
+ gz4XDNWR8wDM8u/0Fq/+H6MIhFWPntWkzgJRWDCfUxgl+8uhFbY/ouyXdLn+1Jz90cKP
+ Mr/XgXuSbtZ7Ut9LuS3NsGwdI2Rq1YHTM1W8dYwJFjjG/oAPY1HJIQ6OeHTtJWBe4uqT
+ i4s9LMEvJ88oz6PZNOcWWFWHpQMr8MBRmiKlq8nPGGz+YqX2vRiYydjb/+PzzdshSYQZ hQ== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mk39t96pd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Dec 2022 12:14:40 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BKCEdqR003361
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Dec 2022 12:14:39 GMT
+Received: from [10.216.28.180] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 20 Dec
+ 2022 04:14:35 -0800
+Message-ID: <56d4941a-ad35-37ca-48ca-5f1bf7a86d25@quicinc.com>
+Date:   Tue, 20 Dec 2022 17:44:31 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] ath10k: snoc: enable threaded napi on WCN3990
+Content-Language: en-US
+To:     Abhishek Kumar <kuabhs@chromium.org>, <kvalo@kernel.org>
+CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+References: <20221220075215.1.Ic12e347e0d61a618124b742614e82bbd5d770173@changeid>
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+In-Reply-To: <20221220075215.1.Ic12e347e0d61a618124b742614e82bbd5d770173@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: y7oCJvTmlbthnqGTIZ5zOR0qIdiaHjqF
+X-Proofpoint-GUID: y7oCJvTmlbthnqGTIZ5zOR0qIdiaHjqF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-20_05,2022-12-20_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 clxscore=1011 adultscore=0 priorityscore=1501
+ impostorscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2212200101
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,144 +82,189 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+On 12/20/2022 1:25 PM, Abhishek Kumar wrote:
+> NAPI poll can be done in threaded context along with soft irq
+> context. Threaded context can be scheduled efficiently, thus
+> creating less of bottleneck during Rx processing. This patch is
+> to enable threaded NAPI on ath10k driver.
+> 
+> Based on testing, it was observed that on WCN3990, the CPU0 reaches
+> 100% utilization when napi runs in softirq context. At the same
+> time the other CPUs are at low consumption percentage. This
+> does not allow device to reach its maximum throughput potential.
+> After enabling threaded napi, CPU load is balanced across all CPUs
+> and following improvments were observed:
+> - UDP_RX increase by ~22-25%
+> - TCP_RX increase by ~15%
+> 
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
+> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+> ---
+> 
+>   drivers/net/wireless/ath/ath10k/core.c | 16 ++++++++++++++++
+>   drivers/net/wireless/ath/ath10k/hw.h   |  2 ++
+>   drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
+>   3 files changed, 21 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 5eb131ab916fd..ee4b6ba508c81 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -100,6 +100,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA988X_HW_2_0_VERSION,
+> @@ -140,6 +141,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA9887_HW_1_0_VERSION,
+> @@ -181,6 +183,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_3_2_VERSION,
+> @@ -217,6 +220,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_2_1_VERSION,
+> @@ -257,6 +261,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_2_1_VERSION,
+> @@ -297,6 +302,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_3_0_VERSION,
+> @@ -337,6 +343,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_3_2_VERSION,
+> @@ -381,6 +388,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA99X0_HW_2_0_DEV_VERSION,
+> @@ -427,6 +435,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA9984_HW_1_0_DEV_VERSION,
+> @@ -480,6 +489,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA9888_HW_2_0_DEV_VERSION,
+> @@ -530,6 +540,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA9377_HW_1_0_DEV_VERSION,
+> @@ -570,6 +581,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA9377_HW_1_1_DEV_VERSION,
+> @@ -612,6 +624,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA9377_HW_1_1_DEV_VERSION,
+> @@ -645,6 +658,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = QCA4019_HW_1_0_DEV_VERSION,
+> @@ -692,6 +706,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = false,
+>   		.use_fw_tx_credits = true,
+>   		.delay_unmap_buffer = false,
+> +		.enable_threaded_napi = false,
+>   	},
+>   	{
+>   		.id = WCN3990_HW_1_0_DEV_VERSION,
+> @@ -725,6 +740,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.hw_restart_disconnect = true,
+>   		.use_fw_tx_credits = false,
+>   		.delay_unmap_buffer = true,
+> +		.enable_threaded_napi = true,
+>   	},
+>   };
+>   
+> diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+> index 9643031a4427a..adf3076b96503 100644
+> --- a/drivers/net/wireless/ath/ath10k/hw.h
+> +++ b/drivers/net/wireless/ath/ath10k/hw.h
+> @@ -639,6 +639,8 @@ struct ath10k_hw_params {
+>   	bool use_fw_tx_credits;
+>   
+>   	bool delay_unmap_buffer;
+> +
+> +	bool enable_threaded_napi;
+>   };
+>   
+>   struct htt_resp;
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> index cfcb759a87dea..b94150fb6ef06 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -927,6 +927,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+>   
+>   	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+>   
+> +	if (ar->hw_params.enable_threaded_napi)
+> +		dev_set_threaded(&ar->napi_dev, true);
+> +
 
-ath11k fails to load if there are multiple ath11k PCI devices with same name:
+Since this is done in the API specific to WCN3990, we do not need 
+hw_param for this.
 
- ath11k_pci 0000:01:00.0: Hardware name qcn9074 hw1.0
- debugfs: Directory 'ath11k' with parent '/' already present!
- ath11k_pci 0000:01:00.0: failed to create ath11k debugfs
- ath11k_pci 0000:01:00.0: failed to create soc core: -17
- ath11k_pci 0000:01:00.0: failed to init core: -17
- ath11k_pci: probe of 0000:01:00.0 failed with error -17
-
-Fix this by creating a directory for each ath11k device using schema
-<bus>-<devname>, for example "pci-0000:06:00.0". This directory created under
-the top-level ath11k directory, for example /sys/kernel/debug/ath11k.
-
-The reference to the toplevel ath11k directory is not stored anymore within ath11k, instead
-it's retrieved using debugfs_lookup(). If the directory does not exist it will
-be created. After the last directory from the ath11k directory is removed, for
-example when doing rmmod ath11k, the empty ath11k directory is left in place,
-it's a minor cosmetic issue anyway.
-
-Here's an example hierarchy with one WCN6855:
-
-ath11k
-`-- pci-0000:06:00.0
-    |-- mac0
-    |   |-- dfs_block_radar_events
-    |   |-- dfs_simulate_radar
-    |   |-- ext_rx_stats
-    |   |-- ext_tx_stats
-    |   |-- fw_dbglog_config
-    |   |-- fw_stats
-    |   |   |-- beacon_stats
-    |   |   |-- pdev_stats
-    |   |   `-- vdev_stats
-    |   |-- htt_stats
-    |   |-- htt_stats_reset
-    |   |-- htt_stats_type
-    |   `-- pktlog_filter
-    |-- simulate_fw_crash
-    `-- soc_dp_stats
-
-I didn't have a test setup where I could connect multiple ath11k devices to the
-same the host, so I have only tested this with one device.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
-
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.h    |  1 -
- drivers/net/wireless/ath/ath11k/debugfs.c | 48 +++++++++++++++++++----
- 2 files changed, 40 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index a8acb8b7b8d5..beb552108ac3 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -921,7 +921,6 @@ struct ath11k_base {
- 	enum ath11k_dfs_region dfs_region;
- #ifdef CONFIG_ATH11K_DEBUGFS
- 	struct dentry *debugfs_soc;
--	struct dentry *debugfs_ath11k;
- #endif
- 	struct ath11k_soc_dp_stats soc_stats;
- 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index ccdf3d5ba1ab..5bb6fd17fdf6 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -976,10 +976,6 @@ int ath11k_debugfs_pdev_create(struct ath11k_base *ab)
- 	if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
- 		return 0;
- 
--	ab->debugfs_soc = debugfs_create_dir(ab->hw_params.name, ab->debugfs_ath11k);
--	if (IS_ERR(ab->debugfs_soc))
--		return PTR_ERR(ab->debugfs_soc);
--
- 	debugfs_create_file("simulate_fw_crash", 0600, ab->debugfs_soc, ab,
- 			    &fops_simulate_fw_crash);
- 
-@@ -1001,15 +997,51 @@ void ath11k_debugfs_pdev_destroy(struct ath11k_base *ab)
- 
- int ath11k_debugfs_soc_create(struct ath11k_base *ab)
- {
--	ab->debugfs_ath11k = debugfs_create_dir("ath11k", NULL);
-+	struct dentry *root;
-+	bool dput_needed;
-+	char name[64];
-+	int ret;
-+
-+	root = debugfs_lookup("ath11k", NULL);
-+	if (!root) {
-+		root = debugfs_create_dir("ath11k", NULL);
-+		if (IS_ERR_OR_NULL(root))
-+			return PTR_ERR(root);
-+
-+		dput_needed = false;
-+	} else {
-+		/* a dentry from lookup() needs dput() after we don't use it */
-+		dput_needed = true;
-+	}
-+
-+	scnprintf(name, sizeof(name), "%s-%s", ath11k_bus_str(ab->hif.bus),
-+		  dev_name(ab->dev));
-+
-+	ab->debugfs_soc = debugfs_create_dir(name, root);
-+	if (IS_ERR_OR_NULL(ab->debugfs_soc)) {
-+		ret = PTR_ERR(ab->debugfs_soc);
-+		goto out;
-+	}
-+
-+	ret = 0;
- 
--	return PTR_ERR_OR_ZERO(ab->debugfs_ath11k);
-+out:
-+	if (dput_needed)
-+		dput(root);
-+
-+	return ret;
- }
- 
- void ath11k_debugfs_soc_destroy(struct ath11k_base *ab)
- {
--	debugfs_remove_recursive(ab->debugfs_ath11k);
--	ab->debugfs_ath11k = NULL;
-+	debugfs_remove_recursive(ab->debugfs_soc);
-+	ab->debugfs_soc = NULL;
-+
-+	/* We are not removing ath11k directory on purpose, even if it
-+	 * would be empty. This simplifies the directory handling and it's
-+	 * a minor cosmetic issue to leave an empty ath11k directory to
-+	 * debugfs.
-+	 */
- }
- EXPORT_SYMBOL(ath11k_debugfs_soc_destroy);
- 
-
-base-commit: 922932ca02191a390f7f52fb6e21c44b50e14025
--- 
-2.30.2
-
+Thanks,
+Manikanta
