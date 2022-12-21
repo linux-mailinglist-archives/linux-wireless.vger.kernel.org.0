@@ -2,52 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 001E86536A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Dec 2022 19:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E2B6536AA
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Dec 2022 19:53:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234980AbiLUSwC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Dec 2022 13:52:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52968 "EHLO
+        id S234491AbiLUSwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Dec 2022 13:52:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234992AbiLUSwA (ORCPT
+        with ESMTP id S230045AbiLUSw3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Dec 2022 13:52:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98912D4
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Dec 2022 10:51:59 -0800 (PST)
+        Wed, 21 Dec 2022 13:52:29 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73F28D4;
+        Wed, 21 Dec 2022 10:52:28 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3321E618EF
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Dec 2022 18:51:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CE6C433F0;
-        Wed, 21 Dec 2022 18:51:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1AD3CB81C02;
+        Wed, 21 Dec 2022 18:52:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3730C433EF;
+        Wed, 21 Dec 2022 18:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671648718;
-        bh=KVa/AvlxRDVGEqClLcCqRj4GriYElnaUainJpFpPUa8=;
+        s=k20201202; t=1671648745;
+        bh=294I+nc1Z178iGlV8q6cr6b/T9AZgrivgxACLPTLhsE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=MdGhzGIEUwwRXj6ZpWpJGyH6wymDM+n6Ne/tVQRvdrDCtmFZ7T34h6TwDrQOo+FEZ
-         +Ts0zp829LM0AjWmpJZ0IV1aK0GV6zqf9Nkk8pBSEMB9xYiim4hyrQDxOgLIpfej61
-         xirv8z2Jvzv6zjMar6K4HAeGfTJPbyFjGUkLbhO00qYsGh+ZiUQBqTaUN+8vbgHGZw
-         KT9UpRCA1uMg1qCyejs70/2pAqs5kFfsyQwL9RQjk2/yKhn2MKVj+trXDXulyjF6FI
-         Mw2ndbL0ZIgy4wOh45eBcNEOr5+/Vqkq5FRJO/O7Cv+zO06rb6vFIfKooJgqmuDmaY
-         l/yO0///ZWAMg==
+        b=acMuHG+mj1CIE0qfvAYuyyOJJ/sef3xzophyp4Ot1fvuM6MQAE0m7jPfYE28YA5f0
+         kn/QWX1gCkZ7KIZPt3+BNSyW8wk8/u87nLDTQ0F4sZteH+JPiSEUZAR2LeVTYRETcw
+         5RPvJTe/bgWo9/DIT/suwyfO+M4mVo2sgxMsT7htwH7eYAwzkPqn/9fjQ+g9PXJgC/
+         ry4frdr3D3vZslCz8Zv8eW5CxxI1XZDHmdjxNjq0lQjneQAKLGWdV+fnimPtOLk8Kz
+         vVzzx/CAN/1Uc61GpTwTbzk0Yb0Cdlk4suygNOauLCJXjGQoR+a2e8DjqUZkhWV49i
+         g1HL0B2t4ctHQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/5] wifi: rtl8xxxu: Deduplicate the efuse dumping code
+Subject: Re: [PATCH] wifi: rtl8xxxu: fixing transmisison failure for rtl8192eu
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <2aa5200a-ee42-e064-16a1-672bed5708c6@gmail.com>
-References: <2aa5200a-ee42-e064-16a1-672bed5708c6@gmail.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Andrea Merello <andrea.merello@gmail.com>,
-        Taehee Yoo <ap420073@gmail.com>
+In-Reply-To: <20221217030659.12577-1-JunASAKA@zzy040330.moe>
+References: <20221217030659.12577-1-JunASAKA@zzy040330.moe>
+To:     Jun ASAKA <JunASAKA@zzy040330.moe>
+Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jun ASAKA <JunASAKA@zzy040330.moe>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167164871560.5196.478659665415497087.kvalo@kernel.org>
-Date:   Wed, 21 Dec 2022 18:51:57 +0000 (UTC)
+Message-ID: <167164874162.5196.4709849135082513449.kvalo@kernel.org>
+Date:   Wed, 21 Dec 2022 18:52:23 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,29 +56,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+Jun ASAKA <JunASAKA@zzy040330.moe> wrote:
 
-> Every chip family except RTL8723AU has a copy of the efuse dumping
-> code. Remove this and dump the efuse from a single place using a new
-> function rtl8xxxu_dump_efuse().
+> Fixing transmission failure which results in
+> "authentication with ... timed out". This can be
+> fixed by disable the REG_TXPAUSE.
 > 
-> Also, use print_hex_dump() to print the efuse instead of a loop and
-> dev_info(). It shows the ASCII interpretation of the bytes, which is
-> nice.
-> 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
 > Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-5 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-4f198e720eab wifi: rtl8xxxu: Deduplicate the efuse dumping code
-d7a3705c9634 wifi: rtl8xxxu: Make rtl8xxxu_load_firmware take const char*
-b75289e89459 wifi: rtl8xxxu: Define masks for cck_agc_rpt bits
-3dfb8e844fa3 wifi: rtl8xxxu: Support new chip RTL8188EU
-8b9754b28f0f wifi: rtl8xxxu: Add rate control code for RTL8188EU
+c6015bf3ff1f wifi: rtl8xxxu: fixing transmisison failure for rtl8192eu
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/2aa5200a-ee42-e064-16a1-672bed5708c6@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221217030659.12577-1-JunASAKA@zzy040330.moe/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
