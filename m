@@ -2,45 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4631B6535DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Dec 2022 19:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B79653612
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Dec 2022 19:22:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230462AbiLUSIN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Dec 2022 13:08:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59890 "EHLO
+        id S234636AbiLUSWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Dec 2022 13:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbiLUSIM (ORCPT
+        with ESMTP id S234634AbiLUSWQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Dec 2022 13:08:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB93C252A9;
-        Wed, 21 Dec 2022 10:08:11 -0800 (PST)
+        Wed, 21 Dec 2022 13:22:16 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF2D24F20
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Dec 2022 10:22:15 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 85ED4B81BFA;
-        Wed, 21 Dec 2022 18:08:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A8AC433EF;
-        Wed, 21 Dec 2022 18:08:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D4856B81BFC
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Dec 2022 18:22:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE26C433D2;
+        Wed, 21 Dec 2022 18:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671646089;
-        bh=00bwSwJQjokpOlYiSXJU4FxiqgMm0sqr+wA00SCijUI=;
-        h=From:Subject:To:Cc:Date:From;
-        b=akG88HtdZhC8o5m7Xe05GUiAW6LK8il0F6WRGkKn7IE62ueFXwizr4YvdJ1GtzbZc
-         iMvIR5lg74J83eYG/p7fKko99pKV3EQDpgaHwsEbzIHN7HDLhvhGj4eVCZFfuquV+6
-         8+x93BMIyjM4qDGOjeYAoeLfnQcvaQox7qcPUIedZSNYEmevr0M1lGuYAUAUWzr7uw
-         XCg6cE6uh2z3jse3sb0dyHth5/bf7S7YLkLaD7F6Op52Hklv8f/e/ZuRnd6V0hE5be
-         8OI+V3WodKILG1uAt7dMgIVcmgdtvwvV2gSwMA6xUUq7ySH7LBE1pJveijChC7pB03
-         qwyfspyaCJhmA==
+        s=k20201202; t=1671646932;
+        bh=+LgSlK4ejJQuGi97qftXswpa37FC1887GuYlrZ3wCQM=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=q5CBXfVL0VEPW6BMPgK/f2/6Z7kSgZQ4Yaj3QjgzU9qHnjJF5xSbtZTEQiI8PEEjG
+         gD6v9EDBfmVDqPuxbQNLgFjUQmhPxH38lSrh0zgigo6atLdF4OTzMWzirxpqBTt2V2
+         EzBh8hSFug9q1Gl7sUEBCvrylyWMGxKRrUT8X98srRr8FyHCCqI7gN09+h9vQedeJy
+         dyRO/YPwWL6zCUcQx9Wzj+sSuBbrvG/+tJzDI03brRTKLzBIiU7hpRRyaNUxfsAbaO
+         K07k4SDnn88TMofCvUKL9ejctRNMFfuK/0Iv4TepOLj4GtqcsqEm7WNElNRCuwhCvP
+         4kbTZHPkqmSgg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: pull request: mt76 2022-12-09
 From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-2022-12-21
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20221221180808.96A8AC433EF@smtp.kernel.org>
-Date:   Wed, 21 Dec 2022 18:08:08 +0000 (UTC)
+In-Reply-To: <fb35ede5-73c6-6d0b-34d1-8aa639a9adb0@nbd.name>
+References: <fb35ede5-73c6-6d0b-34d1-8aa639a9adb0@nbd.name>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167164692835.5196.9725526641874465812.kvalo@kernel.org>
+Date:   Wed, 21 Dec 2022 18:22:11 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,44 +53,114 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Felix Fietkau <nbd@nbd.name> wrote:
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+> Hi Kalle,
+> 
+> here's my second request for 6.2
+> 
+> - Felix
+> 
+> The following changes since commit 832c3f66f53f1eb20f424b916a311ad82074ef0d:
+> 
+>    Merge tag 'iwlwifi-next-for-kalle-2022-12-07' of http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2022-12-08 16:54:33 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-12-09
+> 
+> for you to fetch changes up to d878d3dc126db05b075147456644bd2d2ab1fb5e:
+> 
+>    wifi: mt76: mt7915: get rid of wed rx_buf_ring page_frag_cache (2022-12-09 16:46:28 +0100)
+> 
+> ----------------------------------------------------------------
+> mt76 patches for 6.2
+> 
+> - fixes
+> - per-PHY LED support
+> 
+> ----------------------------------------------------------------
+> Deren Wu (2):
+>        wifi: mt76: mt7921s: fix slab-out-of-bounds access in sdio host
+>        wifi: mt76: fix coverity uninit_use_in_call in mt76_connac2_reverse_frag0_hdr_trans()
+> 
+> Lorenzo Bianconi (10):
+>        wifi: mt76: mt7996: fix endianness warning in mt7996_mcu_sta_he_tlv
+>        wifi: mt76: mt76x0: fix oob access in mt76x0_phy_get_target_power
+>        wifi: mt76: move leds field in leds struct
+>        wifi: mt76: move leds struct in mt76_phy
+>        wifi: mt76: mt7915: enable per-phy led support
+>        wifi: mt76: mt7615: enable per-phy led support
+>        wifi: mt76: dma: do not increment queue head if mt76_dma_add_buf fails
+>        wifi: mt76: handle possible mt76_rx_token_consume failures
+>        wifi: mt76: dma: rely on queue page_frag_cache for wed rx queues
+>        wifi: mt76: mt7915: get rid of wed rx_buf_ring page_frag_cache
+> 
+> Quan Zhou (1):
+>        wifi: mt76: mt7921: add support to update fw capability with MTFG table
+> 
+> Ryder Lee (12):
+>        wifi: mt76: mt7915: fix mt7915_rate_txpower_get() resource leaks
+>        wifi: mt76: mt7996: fix insecure data handling of mt7996_mcu_ie_countdown()
+>        wifi: mt76: mt7996: fix insecure data handling of mt7996_mcu_rx_radar_detected()
+>        wifi: mt76: mt7996: fix integer handling issue of mt7996_rf_regval_set()
+>        wifi: mt76: mt7915: split mcu chan_mib array up
+>        wifi: mt76: mt7915: check return value before accessing free_block_num
+>        wifi: mt76: mt7996: check return value before accessing free_block_num
+>        wifi: mt76: mt7915: check the correctness of event data
+>        wifi: mt76: mt7915: drop always true condition of __mt7915_reg_addr()
+>        wifi: mt76: mt7996: drop always true condition of __mt7996_reg_addr()
+>        wifi: mt76: mt7996: fix unintended sign extension of mt7996_hw_queue_read()
+>        wifi: mt76: mt7915: fix unintended sign extension of mt7915_hw_queue_read()
+> 
+> Sean Wang (1):
+>        wifi: mt76: mt7921: resource leaks at mt7921_check_offload_capability()
+> 
+> Wang Yufen (1):
+>        wifi: mt76: mt7915: add missing of_node_put()
+> 
+>   drivers/net/wireless/mediatek/mt76/debugfs.c         |   2 +-
+>   drivers/net/wireless/mediatek/mt76/dma.c             |  35 +++++++++------------
+>   drivers/net/wireless/mediatek/mt76/mac80211.c        |  56 +++++++++++++++++++++-------------
+>   drivers/net/wireless/mediatek/mt76/mt76.h            |  12 +++++---
+>   drivers/net/wireless/mediatek/mt76/mt7603/init.c     |  34 ++++++++++-----------
+>   drivers/net/wireless/mediatek/mt76/mt7615/init.c     |  85 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt7615/mmio.c     |  16 ----------
+>   drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |   6 ++++
+>   drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c |  62 ++------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7615/regs.h     |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |   2 +-
+>   drivers/net/wireless/mediatek/mt76/mt76x0/phy.c      |   7 ++++-
+>   drivers/net/wireless/mediatek/mt76/mt76x02_util.c    |  35 +++++++++++----------
+>   drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c  |   6 ++--
+>   drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |  19 +++++++-----
+>   drivers/net/wireless/mediatek/mt76/mt7915/init.c     | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
+>   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  81 ++++++++++++++++++++++++++++++-------------------
+>   drivers/net/wireless/mediatek/mt76/mt7915/mmio.c     |  32 +++++++++++---------
+>   drivers/net/wireless/mediatek/mt76/mt7915/regs.h     |  13 ++++++--
+>   drivers/net/wireless/mediatek/mt76/mt7915/soc.c      |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c |  55 +++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h |  12 ++++++++
+>   drivers/net/wireless/mediatek/mt76/mt7921/init.c     |   3 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      |   4 ++-
+>   drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |   7 +++++
+>   drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c  |   5 +--
+>   drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c   |  18 +++++++----
+>   drivers/net/wireless/mediatek/mt76/mt7996/init.c     |  14 ++++-----
+>   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      |  15 ++++++---
+>   drivers/net/wireless/mediatek/mt76/mt7996/mmio.c     |   2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7996/regs.h     |   1 -
+>   drivers/net/wireless/mediatek/mt76/sdio_txrx.c       |   4 +++
+>   drivers/net/wireless/mediatek/mt76/tx.c              |   7 +++--
+>   include/linux/soc/mediatek/mtk_wed.h                 |   1 -
+>   34 files changed, 503 insertions(+), 274 deletions(-)
 
-Kalle
+Pulled, thanks.
 
-The following changes since commit 7ae9888d6e1ce4062d27367a28e46a26270a3e52:
+33381618d7ed Merge tag 'mt76-for-kvalo-2022-12-09' of https://github.com/nbd168/wireless
 
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf (2022-12-13 19:32:53 -0800)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/fb35ede5-73c6-6d0b-34d1-8aa639a9adb0@nbd.name/
 
-are available in the Git repository at:
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-12-21
-
-for you to fetch changes up to b7dc753fe33a707379e2254317794a4dad6c0fe2:
-
-  wifi: ath9k: use proper statements in conditionals (2022-12-20 15:02:37 +0200)
-
-----------------------------------------------------------------
-wireless fixes for v6.2
-
-First set of fixes for v6.2. Fix for a link error in mt76, fix for an
-iwlwifi firmware crash and two cleanups.
-
-----------------------------------------------------------------
-Arnd Bergmann (2):
-      wifi: mt76: mt7996: select CONFIG_RELAY
-      wifi: ath9k: use proper statements in conditionals
-
-Johannes Berg (1):
-      wifi: iwlwifi: fw: skip PPAG for JF
-
-Lukas Bulwahn (1):
-      wifi: ti: remove obsolete lines in the Makefile
-
- drivers/net/wireless/ath/ath9k/htc.h              | 14 +++++++-------
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c      |  5 +++++
- drivers/net/wireless/mediatek/mt76/mt7996/Kconfig |  1 +
- drivers/net/wireless/ti/Makefile                  |  3 ---
- 4 files changed, 13 insertions(+), 10 deletions(-)
