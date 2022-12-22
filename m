@@ -2,96 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B2BC653C4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 07:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D45AB653C5B
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 08:01:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235152AbiLVGra (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Dec 2022 01:47:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33970 "EHLO
+        id S234634AbiLVHBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Dec 2022 02:01:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234973AbiLVGr3 (ORCPT
+        with ESMTP id S229698AbiLVHBK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Dec 2022 01:47:29 -0500
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8774CE9F;
-        Wed, 21 Dec 2022 22:47:28 -0800 (PST)
-Received: by mail-qt1-x82c.google.com with SMTP id z12so742171qtv.5;
-        Wed, 21 Dec 2022 22:47:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+ihXgDkeg4pVKq7FuFaMDZy+mecm/Oqo0hFC0OXH2w=;
-        b=Yponx0/suKNA+Qo3mfMuMNxBvOCHq0U7moWdM77a+oj6XxWZV9j6cjmrxknQMZaDhu
-         gSpWWNLF81MFHd4kpbk1liLzqMb1xjiUq6Vy+bQkw4gVnpEAUqfIm5iqOC+m6hszwxNy
-         GKRA0dWuc/uUVrLzJInViLfOd4ruUoSLchF/ARKHapHNJBBAfd+OnxgiZDlWK1Cmn6XV
-         8HInSMvGFjlN03VpZvr5Zrj9yAGFOj6SWga3+42Ftn5xD8VeVuNPQmmt4h8LHcSzx9s9
-         ojKiZyiQmb+ueZiQ1jTq2H1cEEpsgIdaA3pka5/F004t0/gOzZ5+J8VIxutmcpQXttmS
-         IZrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D+ihXgDkeg4pVKq7FuFaMDZy+mecm/Oqo0hFC0OXH2w=;
-        b=OyG0fYiXfyXQXPfXv96G3kvV6YYmTuMQZCPob4Z9ca+ImpUOkPJv+C2gCfZjZOMNYn
-         oJgwjawyGCnTs3lMvfCYjgHnSqPCnzo3VuNjx8XKLHJoB6I64Npmml9CX0A8OyXqUnA0
-         x2yX+wXNOB70foM+qQ0bBFdZh3pb8coYkKcu5sD/PVIvmrTgVzZ1JE5kTvu7p0W/zKvf
-         bAHNL9/efgKi5R5T2Nbnuysm7flj/3+RKb4BoHLgF+bux3rLcFSiBBVaczeOcrjtA9mG
-         0qt9ljZr5N0lmSZwSONswE04YASVXix2540TdIJY1e86ary8LPT4N4GFRljiPBCQHhiX
-         I0mg==
-X-Gm-Message-State: AFqh2kq151G6LDCs6er194YTdz1MtqIVsOKlyFNxdiRnsafBa6axqPyI
-        sE47yOZ99JfbwDppNYN49qyLiJo+IP26wKyrZLP2IbF5lN+2ZOO1TcA=
-X-Google-Smtp-Source: AMrXdXsXsHRB8rtOtpDDjfCZumj8MlPYiw1k+gIQ37C/1e2To5Qysz3bDb3cW5jnZ0xHLA3iHM3TzhkoL2kj8A2IYL8=
-X-Received: by 2002:ac8:4412:0:b0:3a8:2d2d:3944 with SMTP id
- j18-20020ac84412000000b003a82d2d3944mr114901qtn.519.1671691647514; Wed, 21
- Dec 2022 22:47:27 -0800 (PST)
+        Thu, 22 Dec 2022 02:01:10 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E143C21259
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Dec 2022 23:01:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671692469; x=1703228469;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Rj/W/FA828kuV+Un2VOf1WSqjEHnhCEUVbCiecO0Byw=;
+  b=OQmi4qE3xJG7GwXaxdGv3sEz0AIW3exdLmadvrNTkp4hxQabEKfWAilW
+   zpSS53oUc8gE3H0wBTX5M/DwTQTcJMuUQPTUZJ51ybJRwkpNVNjW95vcM
+   W4P6/qz0QmUP0eXMOcz970yOrRgV/rI3fKC9hvr4YEMnuyflzyfaADZXh
+   o1ZVakTLZJFZwSDiJ+4fVcA0M7CYyQOzJaejMSwh+U2wy//fkX4PvhuHP
+   5JQOHO+U9NKA3VrfK0hJ/covRniyuXrqz0VdpYkkXHrlQw7k4+MokPJSX
+   Wd6H59fD3OjkZTbv6OAJPAG2EtX7tdjEZhUECxrQcqQXB+N7ntb13c+fp
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="384411112"
+X-IronPort-AV: E=Sophos;i="5.96,264,1665471600"; 
+   d="scan'208";a="384411112"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2022 23:01:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="980477879"
+X-IronPort-AV: E=Sophos;i="5.96,264,1665471600"; 
+   d="scan'208";a="980477879"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 21 Dec 2022 23:01:07 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p8FZi-000BL6-1G;
+        Thu, 22 Dec 2022 07:01:06 +0000
+Date:   Thu, 22 Dec 2022 15:00:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ c6015bf3ff1ffb3caa27eb913797438a0fc634a0
+Message-ID: <63a40083.p+mb1+CAMiJUxknc%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre+XJS_s5FgVteYA@mail.gmail.com>
- <678adc67-9e46-3eef-f274-c951b121570f@nbd.name> <CABXGCsMUbs+bf=tWnx98r4v_JzVmYdVyOos9EhcGJ6jnEwathA@mail.gmail.com>
- <a30d8580-936a-79e4-c1c7-70f3d3b8da35@nbd.name> <CABXGCsNJKy2SQffeU+uaua5SM_77YiGKdPLRdzSF3F+ShpF+5w@mail.gmail.com>
- <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
-In-Reply-To: <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
-From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date:   Thu, 22 Dec 2022 11:47:16 +0500
-Message-ID: <CABXGCsOarWTb9+ofcd14bLGuWEQOTqRQQ0bXP57mhVjnpjcEQQ@mail.gmail.com>
-Subject: Re: [6.2][regression] after commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae
- stopping working wifi mt7921e
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     lorenzo@kernel.org, sujuan.chen@mediatek.com,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 21, 2022 at 10:17 PM Felix Fietkau <nbd@nbd.name> wrote:
->
-> Sorry, I worked on a tree that had other pending fixes applied.
-> Please try this:
->
->
-> --- a/drivers/net/wireless/mediatek/mt76/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-> @@ -205,6 +205,52 @@ mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q)
->         mt76_dma_sync_idx(dev, q);
->   }
-[cutted]
->   EXPORT_SYMBOL_GPL(mt76_rx_token_consume);
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: c6015bf3ff1ffb3caa27eb913797438a0fc634a0  wifi: rtl8xxxu: fixing transmisison failure for rtl8192eu
 
-I confirms after applying this patch the issue was gone (wifi works as
-before commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae).
+elapsed time: 723m
 
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+configs tested: 102
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+s390                             allmodconfig
+s390                                defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+s390                             allyesconfig
+ia64                             allmodconfig
+x86_64                            allnoconfig
+i386                 randconfig-a001-20221219
+i386                 randconfig-a003-20221219
+i386                 randconfig-a002-20221219
+i386                 randconfig-a004-20221219
+i386                 randconfig-a005-20221219
+i386                 randconfig-a006-20221219
+i386                             allyesconfig
+i386                                defconfig
+x86_64                           rhel-8.3-bpf
+m68k                             allyesconfig
+m68k                             allmodconfig
+x86_64                           rhel-8.3-syz
+arc                              allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+alpha                            allyesconfig
+x86_64                           rhel-8.3-kvm
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64               randconfig-a006-20221219
+x86_64               randconfig-a002-20221219
+x86_64               randconfig-a005-20221219
+x86_64               randconfig-a003-20221219
+x86_64               randconfig-a001-20221219
+x86_64               randconfig-a004-20221219
+powerpc                  iss476-smp_defconfig
+sh                           sh2007_defconfig
+powerpc                 linkstation_defconfig
+m68k                        m5307c3_defconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+arm                             pxa_defconfig
+sh                            shmin_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                             ezx_defconfig
+parisc64                            defconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+s390                 randconfig-r044-20221218
+arm                  randconfig-r046-20221219
+arc                  randconfig-r043-20221218
+arc                  randconfig-r043-20221219
+riscv                randconfig-r042-20221218
+loongarch                           defconfig
+loongarch                         allnoconfig
+loongarch                        allmodconfig
+i386                          randconfig-c001
+m68k                         apollo_defconfig
+arm                           viper_defconfig
+sparc                               defconfig
+sh                          sdk7786_defconfig
+nios2                         3c120_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+arm                        multi_v7_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+powerpc                       eiger_defconfig
+xtensa                              defconfig
+m68k                                defconfig
+m68k                            mac_defconfig
+
+clang tested configs:
+x86_64                        randconfig-k001
+i386                 randconfig-a013-20221219
+i386                 randconfig-a014-20221219
+i386                 randconfig-a015-20221219
+i386                 randconfig-a011-20221219
+i386                 randconfig-a016-20221219
+i386                 randconfig-a012-20221219
+powerpc                 mpc832x_rdb_defconfig
+mips                        maltaup_defconfig
+powerpc                     ksi8560_defconfig
+x86_64               randconfig-a015-20221219
+x86_64               randconfig-a013-20221219
+x86_64               randconfig-a012-20221219
+x86_64               randconfig-a016-20221219
+x86_64               randconfig-a014-20221219
+x86_64               randconfig-a011-20221219
+x86_64                          rhel-8.3-rust
+x86_64               randconfig-k001-20221219
+s390                 randconfig-r044-20221221
+riscv                randconfig-r042-20221221
+hexagon              randconfig-r045-20221221
+hexagon              randconfig-r041-20221221
 
 -- 
-Best Regards,
-Mike Gavrilov.
+0-DAY CI Kernel Test Service
+https://01.org/lkp
