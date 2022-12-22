@@ -2,72 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E328D654135
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 13:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A27AD6541A2
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 14:18:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbiLVMnl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Dec 2022 07:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34632 "EHLO
+        id S235486AbiLVNSg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Dec 2022 08:18:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235650AbiLVMnh (ORCPT
+        with ESMTP id S235543AbiLVNSI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Dec 2022 07:43:37 -0500
+        Thu, 22 Dec 2022 08:18:08 -0500
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604AC22BF8;
-        Thu, 22 Dec 2022 04:43:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 196612B273
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 05:17:53 -0800 (PST)
 Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BMAldat005760;
-        Thu, 22 Dec 2022 12:43:22 GMT
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BMD79iA029538;
+        Thu, 22 Dec 2022 13:17:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=n4u0QORlDQIiNmr9PqyeFNaeaGjlinS5DG6hnZGlICQ=;
- b=J+QG8jkl5tAkYHMWziuti+rIE9AH2y+T52mw4Y+TSREMvfnAvrP5rGqEPy/ykrBVl5vC
- YCd6m98k0FGh9gLfBw5/L/KWOF42jyCZxJpNLHDqoLMH2Ll6DPUNHwyzLJN1mPhHZJT4
- dwKpasRvXJgiCSpbKBT6JNzt+BTKrBlyuTn/I3TGZEjENQby9B7iWbcJx49DBfFDS5rd
- aSNVg483Ehx518NtLDwBDjiL7CHdUmmEkCQa50gvIcTpTf7daW8kz/d1mFNCyswLB4aJ
- CjICv0hZBW37CbF1OoLCVXunB6hW994k9Q/HlUZa1BSPGL07vpW2a0sBedLV4ehzc/Ju Sw== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mm0wfjr21-1
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=y3JX71rxIgnm8nw9luwtEjhpjJ1Mu5f9AxtFjcwkcuw=;
+ b=Ns9N7CI5L40fTg5pQYczusZKijOEgv13DpNjJB+1da+dWakSYQrKtYbgkkkXk5aQVwJK
+ nMugtDh04coN24wZoGio2VPTLvd6yvuqzZ+q8TuYJmNRLYsUNmexK4TYQftiXW/rX/gB
+ gUDirQ19HVGA4/sm7Bazu5O+Ut7oqApuMjcpZvqJXkGuzILcVrWsVkU5HlKjtYiACAm+
+ fxMDYQwk7oRoAt4mZ9kQJCaVPVcgnnOicHe1grqxTd5zsx1axlNfCStERUtqOU+vD0jI
+ qylvZz1uENwOSnJEXfGB5Shgw0wPXNK+TyFvvaZpLIacf5G2E3jrMEDwwsoCxrJmASjP 5g== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mm0wfjsnr-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 22 Dec 2022 12:43:22 +0000
+        Thu, 22 Dec 2022 13:17:45 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BMChL4R020922
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BMDHiqJ030920
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 22 Dec 2022 12:43:21 GMT
-Received: from youghand-linux.qualcomm.com (10.80.80.8) by
+        Thu, 22 Dec 2022 13:17:44 GMT
+Received: from tamizhr-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Thu, 22 Dec 2022 04:43:19 -0800
-From:   Youghandhar Chintala <quic_youghand@quicinc.com>
-To:     <ath10k@lists.infradead.org>, <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_mpubbise@quicinc.com>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>
-Subject: [PATCH 2/2] wifi: ath10k: update the channel list if change in channel flags.
-Date:   Thu, 22 Dec 2022 18:12:21 +0530
-Message-ID: <20221222124221.30894-3-quic_youghand@quicinc.com>
-X-Mailer: git-send-email 2.38.0
-In-Reply-To: <20221222124221.30894-1-quic_youghand@quicinc.com>
-References: <20221222124221.30894-1-quic_youghand@quicinc.com>
+ 15.2.986.36; Thu, 22 Dec 2022 05:17:42 -0800
+From:   Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Subject: [PATCH] wifi: ath11k: Set ext passive scan flag to adjust passive scan start time
+Date:   Thu, 22 Dec 2022 18:47:20 +0530
+Message-ID: <20221222131720.11368-1-quic_tamizhr@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: vaiGVMP9aUTPZOxXjkcOTheW1XDqGMo1
-X-Proofpoint-GUID: vaiGVMP9aUTPZOxXjkcOTheW1XDqGMo1
+X-Proofpoint-ORIG-GUID: 2BPrJSY2EgvAWivaEdVY7Yf27wFZvgnG
+X-Proofpoint-GUID: 2BPrJSY2EgvAWivaEdVY7Yf27wFZvgnG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-22_06,2022-12-22_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
+ definitions=2022-12-22_06,2022-12-22_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1011
  spamscore=0 suspectscore=0 phishscore=0 malwarescore=0 impostorscore=0
  priorityscore=1501 mlxscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2212220111
+ definitions=main-2212220116
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -77,55 +72,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are connection failures in hidden SSID case when the device is
-with default reg domain WW.
-For WW reg domain most of the 5 GHz channels are passive. When device
-listens to the beacon on that channel, the driver is updating its
-channel flag but firmware is not aware of it and firmware is not
-sending probes on that channels.
-Due to this, we are seeing connection failures when a device is trying
-to connect with hidden SSID AP.
-Register beacon hint notifier to the regulatory core so that driver get
-notified when there is a change in channel flags. Driver's notifier
-callback will send the updated flags to the firmware.
+Set the WMI_SCAN_FLAG_EXT_PASSIVE_SCAN_START_TIME_ENHANCE flag
+while sending the scan command.  If this flag is enabled when the
+incoming scan request comes with a strict start time and its duration
+overlaps with next TBTT, then target adjust the start time accordingly
+for passive scan. Target supporting this feature will advertise
+WMI_TLV_SERVICE_PASSIVE_SCAN_START_TIME_ENHANCE.
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00174
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++++
+ drivers/net/wireless/ath/ath11k/wmi.h | 3 +++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index ec8d5b29bc72..91a957295456 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3534,6 +3534,15 @@ static void ath10k_mac_update_channel_list(struct ath10k *ar,
- 	}
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 2a8a3e3dcff6..c786c5097ae3 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -2068,6 +2068,11 @@ void ath11k_wmi_start_scan_init(struct ath11k *ar,
+ 				  WMI_SCAN_EVENT_FOREIGN_CHAN |
+ 				  WMI_SCAN_EVENT_DEQUEUED;
+ 	arg->scan_flags |= WMI_SCAN_CHAN_STAT_EVENT;
++
++	if (test_bit(WMI_TLV_SERVICE_PASSIVE_SCAN_START_TIME_ENHANCE,
++		     ar->ab->wmi_ab.svc_map))
++		arg->scan_ctrl_flags_ext |= WMI_SCAN_FLAG_EXT_PASSIVE_SCAN_START_TIME_ENHANCE;
++
+ 	arg->num_bssid = 1;
+ 
+ 	/* fill bssid_list[0] with 0xff, otherwise bssid and RA will be
+@@ -2149,6 +2154,8 @@ ath11k_wmi_copy_scan_event_cntrl_flags(struct wmi_start_scan_cmd *cmd,
+ 	/* for adaptive scan mode using 3 bits (21 - 23 bits) */
+ 	WMI_SCAN_SET_DWELL_MODE(cmd->scan_ctrl_flags,
+ 				param->adaptive_dwell_time_mode);
++
++	cmd->scan_ctrl_flags_ext = param->scan_ctrl_flags_ext;
  }
  
-+static void ath10k_mac_beacon_notifier(struct wiphy *wiphy)
-+{
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+	struct ath10k *ar = hw->priv;
-+
-+	if (ath10k_update_channel_list(ar))
-+		ath10k_warn(ar, "failed to update channel list\n");
-+}
-+
- static void ath10k_reg_notifier(struct wiphy *wiphy,
- 				struct regulatory_request *request)
- {
-@@ -10286,6 +10295,8 @@ int ath10k_mac_register(struct ath10k *ar)
- 			goto err_unregister;
- 	}
+ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 8f2c07d70a4a..5583582b8afa 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -2092,6 +2092,7 @@ enum wmi_tlv_service {
+ 	WMI_TLV_SERVICE_EXT2_MSG = 220,
+ 	WMI_TLV_SERVICE_PEER_POWER_SAVE_DURATION_SUPPORT = 246,
+ 	WMI_TLV_SERVICE_SRG_SRP_SPATIAL_REUSE_SUPPORT = 249,
++	WMI_TLV_SERVICE_PASSIVE_SCAN_START_TIME_ENHANCE = 263,
  
-+	ar->hw->wiphy->beacon_hint_notifier = ath10k_mac_beacon_notifier;
-+
- 	return 0;
+ 	/* The second 128 bits */
+ 	WMI_MAX_EXT_SERVICE = 256,
+@@ -3222,6 +3223,7 @@ struct  wmi_start_scan_cmd {
  
- err_unregister:
+ #define WMI_SCAN_DWELL_MODE_MASK 0x00E00000
+ #define WMI_SCAN_DWELL_MODE_SHIFT        21
++#define WMI_SCAN_FLAG_EXT_PASSIVE_SCAN_START_TIME_ENHANCE   0x00000800
+ 
+ enum {
+ 	WMI_SCAN_DWELL_MODE_DEFAULT      = 0,
+@@ -3269,6 +3271,7 @@ struct scan_req_params {
+ 		};
+ 		u32 scan_events;
+ 	};
++	u32 scan_ctrl_flags_ext;
+ 	u32 dwell_time_active;
+ 	u32 dwell_time_active_2g;
+ 	u32 dwell_time_passive;
 -- 
-2.38.0
+2.17.1
 
