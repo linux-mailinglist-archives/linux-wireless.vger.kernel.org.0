@@ -2,96 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 868BA653D2C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 09:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3A73653D58
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 10:14:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235110AbiLVIwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Dec 2022 03:52:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34698 "EHLO
+        id S229742AbiLVJOK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Dec 2022 04:14:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232013AbiLVIw3 (ORCPT
+        with ESMTP id S229608AbiLVJOI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Dec 2022 03:52:29 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D25F1D2D2;
-        Thu, 22 Dec 2022 00:52:28 -0800 (PST)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Nd3vK4n6hzJqcK;
-        Thu, 22 Dec 2022 16:51:25 +0800 (CST)
-Received: from [10.174.178.66] (10.174.178.66) by
- dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 22 Dec 2022 16:52:25 +0800
-Message-ID: <47236b24-6b47-b03a-c7b8-c46ea07cac6f@huawei.com>
-Date:   Thu, 22 Dec 2022 16:52:25 +0800
+        Thu, 22 Dec 2022 04:14:08 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88CAA101FA
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 01:14:05 -0800 (PST)
+X-UUID: ed6aeb20be984b6abf8a892a569fd4eb-20221222
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=SfWHc6C6T9H/rOjQwAOvsuuY+05MGIFO3rrF7uufH10=;
+        b=m6mqnmH/ZBHBje4RCmGx/Jz9s9d6gYeX4u0EQIg87TkIsGY3dUPG2lOWOd7NHv0Jn0i0ZMImb+SJiRYICKOnDgUEwNsA4H4OnRlc7AYoBFk0MTt9n+E3m4XS+5RA6pU3kD8/wQYlw0f2rjUzApnCE2s1ws5svwXMjdThAHkoM+U=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:3675d2ce-0fac-4928-a7d6-4e577d20da68,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:dcaaed0,CLOUDID:cd70a9f3-ff42-4fb0-b929-626456a83c14,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: ed6aeb20be984b6abf8a892a569fd4eb-20221222
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <michael-cy.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1735073031; Thu, 22 Dec 2022 17:13:58 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Thu, 22 Dec 2022 17:13:57 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Thu, 22 Dec 2022 17:13:57 +0800
+From:   Michael Lee <michael-cy.lee@mediatek.com>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Michael Lee <michael-cy.lee@mediatek.com>
+Subject: [PATCH] wifi: mac80211: check the control channel before downgrading the bandwidth
+Date:   Thu, 22 Dec 2022 17:13:54 +0800
+Message-ID: <20221222091354.14050-1-michael-cy.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0.2
-Subject: Re: [PATCH] wifi: brcmfmac: unmap dma buffer in
- brcmf_msgbuf_alloc_pktid()
-To:     Kalle Valo <kvalo@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC:     <netdev@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <aspriel@gmail.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <wright.feng@cypress.com>,
-        <chi-hsien.lin@cypress.com>, <a.fatoum@pengutronix.de>,
-        <alsi@bang-olufsen.dk>, <pieterpg@broadcom.com>,
-        <dekim@broadcom.com>, <linville@tuxdriver.com>,
-        <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>
-References: <20221207013114.1748936-1-shaozhengchao@huawei.com>
- <167164758059.5196.17408082243455710150.kvalo@kernel.org>
- <Y6QJWPDXglDjUP9p@linutronix.de> <87cz8bkeqp.fsf@kernel.org>
-From:   shaozhengchao <shaozhengchao@huawei.com>
-In-Reply-To: <87cz8bkeqp.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.66]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500026.china.huawei.com (7.185.36.106)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When the link fails to use the channel, chandef's bandwidth will be 
+downgraded without checking the control channel.
+The issue happens when the STA of an extender with limited channel 
+context associates with a root AP operating on a different channel.
 
+Below is an example:
 
-On 2022/12/22 16:46, Kalle Valo wrote:
-> Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
-> 
->> On 2022-12-21 18:33:06 [+0000], Kalle Valo wrote:
->>> Zhengchao Shao <shaozhengchao@huawei.com> wrote:
->>>
->>>> After the DMA buffer is mapped to a physical address, address is stored
->>>> in pktids in brcmf_msgbuf_alloc_pktid(). Then, pktids is parsed in
->>>> brcmf_msgbuf_get_pktid()/brcmf_msgbuf_release_array() to obtain physaddr
->>>> and later unmap the DMA buffer. But when count is always equal to
->>>> pktids->array_size, physaddr isn't stored in pktids and the DMA buffer
->>>> will not be unmapped anyway.
->>>>
->>>> Fixes: 9a1bb60250d2 ("brcmfmac: Adding msgbuf protocol.")
->>>> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
->>>
->>> Can someone review this?
->>
->> After looking at the code, that skb is mapped but not inserted into the
->> ringbuffer in this condition. The function returns with an error and the
->> caller will free that skb (or add to a list for later). Either way the
->> skb remains mapped which is wrong. The unmap here is the right thing to
->> do.
->>
->> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> Thanks for the review, very much appreciated.
-> 
+    ______________           ________________
+   | RootAP(ch36) |         | Extender(ch44) |
+   |              | (ASSOC) |       AP       |
+   |      AP <-------------------- STA       |
+   |______________|         |________________|
 
-Thank you very much.
+- RootAP is operating on channel 36, while Extender is operating
+  on channel 44
+- When associating with RootAP, Extender-STA downgrades the
+  chandef's bandwidth to be compatible with any channels on the phy
+- Finally, chandef's bandwidth is downgraded to 20MHz and 
+  the association fails
 
-Zhengchao Shao
+In this patch, a control channel checking is added to avoid unnecessary
+bandwidth downgrading
+
+Signed-off-by: Michael Lee <michael-cy.lee@mediatek.com>
+---
+ net/mac80211/mlme.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0aee2392dd29..bc435e8508e2 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4616,6 +4616,27 @@ ieee80211_verify_sta_he_mcs_support(struct ieee80211_sub_if_data *sdata,
+ 	return false;
+ }
+ 
++static bool
++ieee80211_check_same_ctrl_channel(struct ieee80211_sub_if_data *sdata,
++				  const struct cfg80211_chan_def *chandef)
++{
++	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_chanctx *ctx;
++
++	mutex_lock(&local->chanctx_mtx);
++	list_for_each_entry(ctx, &local->chanctx_list, list) {
++		if (ctx->replace_state == IEEE80211_CHANCTX_WILL_BE_REPLACED)
++			continue;
++		if (ctx->mode == IEEE80211_CHANCTX_EXCLUSIVE)
++			continue;
++		if (chandef->chan == ctx->conf.def.chan)
++			return true;
++	}
++
++	mutex_unlock(&local->chanctx_mtx);
++	return false;
++}
++
+ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 				  struct ieee80211_link_data *link,
+ 				  struct cfg80211_bss *cbss,
+@@ -4842,6 +4863,9 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 	    chandef.width == NL80211_CHAN_WIDTH_10)
+ 		goto out;
+ 
++	if (!ret || !ieee80211_check_same_ctrl_channel(sdata, &chandef))
++		goto out;
++
+ 	while (ret && chandef.width != NL80211_CHAN_WIDTH_20_NOHT) {
+ 		*conn_flags |=
+ 			ieee80211_chandef_downgrade(&chandef);
+-- 
+2.25.1
+
