@@ -2,91 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6575A653C99
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 08:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E44E653D05
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 09:32:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235059AbiLVHiJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Dec 2022 02:38:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44388 "EHLO
+        id S232013AbiLVIck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Dec 2022 03:32:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234964AbiLVHiG (ORCPT
+        with ESMTP id S229630AbiLVIci (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Dec 2022 02:38:06 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD7219281;
-        Wed, 21 Dec 2022 23:38:05 -0800 (PST)
-Date:   Thu, 22 Dec 2022 08:38:00 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1671694683;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0EWXzDsrAEorzDZh3Kox+mXLrcYjGJT3zppjt5m8lhU=;
-        b=sn1I8WB9AvT6NkaylHOBRIOC4Y5w/Tv0ZzJj6SNP8a2rdvOUkjxYvcI/ZBtNTbIBnU3NTP
-        nYW0j4QB9FjlGTLTpFn1ndOmKwXsyYOUufkwuipI5LNyiHowuCRSCFQ4hUHNJHquVUH25g
-        UQw2FG2y5Z74YcxOwNMTWX59Zg7fXOctBpislhcpLR+USO8lU3AE6GpnvH/+iPvuVhDcAW
-        3NFX4sgFu6CBE/s4LXmVU6Xmg/eySYV9tPUZz9ZO3s75Ifr4utyKavlCJ6lZtG+mvPA/ep
-        Rua1owxnEKeG406OBH2yKzyt2iu56L8uRwlVnAVQyrFfeEdtJYXKW3Y6H6Nq7Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1671694683;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0EWXzDsrAEorzDZh3Kox+mXLrcYjGJT3zppjt5m8lhU=;
-        b=QV6/5UwwuXGdNjEz5DkHhUEQYplmYJIYDz8FTNLBDs+Gt0yKVaclhPkVbEotc/3sWepqy8
-        IZEbt3nT3OEm41DA==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Zhengchao Shao <shaozhengchao@huawei.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, wright.feng@cypress.com,
-        chi-hsien.lin@cypress.com, a.fatoum@pengutronix.de,
-        alsi@bang-olufsen.dk, pieterpg@broadcom.com, dekim@broadcom.com,
-        linville@tuxdriver.com, weiyongjun1@huawei.com,
-        yuehaibing@huawei.com
-Subject: Re: [PATCH] wifi: brcmfmac: unmap dma buffer in
- brcmf_msgbuf_alloc_pktid()
-Message-ID: <Y6QJWPDXglDjUP9p@linutronix.de>
-References: <20221207013114.1748936-1-shaozhengchao@huawei.com>
- <167164758059.5196.17408082243455710150.kvalo@kernel.org>
+        Thu, 22 Dec 2022 03:32:38 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2230AE0C4
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 00:32:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BB5C1B80185
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 08:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F57C433D2;
+        Thu, 22 Dec 2022 08:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671697955;
+        bh=0/K+/h8AKESJVT9RKA6JugiMWpAM4vJLoS7UncID/eA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Hfe5J5UATX0q0Ackta/rUXzKfat7JRTSreqaQXltzapNVMkBlh1Va8va+J+gShUPW
+         UL+tuy66YChnXokLWDSENNLbxH6922FGE6Jtde9PehQotft3TgA8wd7asqMUNhCDkF
+         tabX2BFm5NZmCwsskm4gBulwcsbEYUeRWycqnIYqEWeSj3HYvHKxWCRvhV9vuIiJKn
+         TJ3InP+Cm7xosAL1DpxDn9jjiX/lUcqbmPQYYGC/u2Lb/Jd/z5IaTmi7zHvkLXvCdy
+         gp4ih2fI94ipSVCb6JXpd51rJt3Smux7bvY4gLvS9lCbd5ySZGBa8nQX5vDWOeD5/9
+         BwkXfC2CpUz2Q==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jaewan Kim <jaewan@google.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] iw: info: fix bug reading preamble and bandwidths
+References: <20221220134233.2307164-1-jaewan@google.com>
+        <20221220134733.2309329-1-jaewan@google.com>
+Date:   Thu, 22 Dec 2022 10:32:32 +0200
+In-Reply-To: <20221220134733.2309329-1-jaewan@google.com> (Jaewan Kim's
+        message of "Tue, 20 Dec 2022 22:47:33 +0900")
+Message-ID: <87ili3kfdr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <167164758059.5196.17408082243455710150.kvalo@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022-12-21 18:33:06 [+0000], Kalle Valo wrote:
-> Zhengchao Shao <shaozhengchao@huawei.com> wrote:
-> 
-> > After the DMA buffer is mapped to a physical address, address is stored
-> > in pktids in brcmf_msgbuf_alloc_pktid(). Then, pktids is parsed in
-> > brcmf_msgbuf_get_pktid()/brcmf_msgbuf_release_array() to obtain physaddr
-> > and later unmap the DMA buffer. But when count is always equal to
-> > pktids->array_size, physaddr isn't stored in pktids and the DMA buffer
-> > will not be unmapped anyway.
-> > 
-> > Fixes: 9a1bb60250d2 ("brcmfmac: Adding msgbuf protocol.")
-> > Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-> 
-> Can someone review this?
+Jaewan Kim <jaewan@google.com> writes:
 
-After looking at the code, that skb is mapped but not inserted into the
-ringbuffer in this condition. The function returns with an error and the
-caller will free that skb (or add to a list for later). Either way the
-skb remains mapped which is wrong. The unmap here is the right thing to
-do.
+> Signed-off-by: Jaewan Kim <jaewan@google.com>
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Empty commit logs are frowned upon. Even if the bug is simple there
+should be a some kind of commit log.
 
-Sebastian
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
