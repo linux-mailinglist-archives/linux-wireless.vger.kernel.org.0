@@ -2,94 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 724B6653F1C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 12:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C04653FB8
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Dec 2022 12:50:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235514AbiLVLhM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Dec 2022 06:37:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43832 "EHLO
+        id S235213AbiLVLuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Dec 2022 06:50:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235261AbiLVLhL (ORCPT
+        with ESMTP id S235602AbiLVLsT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Dec 2022 06:37:11 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B421D2716B
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 03:37:09 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id c11so1090225qtn.11
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 03:37:09 -0800 (PST)
+        Thu, 22 Dec 2022 06:48:19 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758F229350
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 03:48:08 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id ay2-20020a05600c1e0200b003d22e3e796dso1090764wmb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 03:48:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1dQZgOjaq/butGvklgYME+yodvrlN+RlYXSIVxjWdk8=;
-        b=B8PIeT37ZEOjiv2hIU/Ng5sTh9CGxDYrQi1RvnDoxLggVQsHD0f8DK7d/DYBjrVgEH
-         Za45dkfhtz+yR4nVlStoNHQrOvn9kQf0g9g/HbO/4VyQD/7ozxL/UmTiEaXVLK6ITVJU
-         UrkRFjhllt4/c2kxyQ3QM4vDyNqxFaNviS4M4=
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/E5LB2c4UxvbhS5/EA5bZiOntCYtat1IHin1Ect54NA=;
+        b=j+WApeRdaz/mz0qlXz9IXN9nsb8xANbRB1Ezv1BaiOKdwGu0zOArKwHRN4P+vxbKYi
+         zvh7ZkCnB40g1oMWzhXlsXPnRVmIhpb/+/hgeRQdmDDdnbdEz8W7N/eVyhFS/+Uny6s3
+         6rlq23nY+vNq+T7IFPWREKNecLoIaeTIjJa/k6md0vdROdbFawRkQ/wDwVA7UOg7LrI4
+         HAeqn8F9m2k/wgwOVSEY+rls0ua0ZLVXBkEc+OfqORR4Tz5tB9RCEBwgE42AzUdU2P+3
+         nXSCYN8K6YA6sdRAHd2ngFE/5JuOritFrGjYNaXaSUtGP8geR4x48WHndSrJGxtOCkCM
+         /IZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1dQZgOjaq/butGvklgYME+yodvrlN+RlYXSIVxjWdk8=;
-        b=bMV6ZtPN430Av7QlOaips1MELWyQdWkD/X1K083TzskoirDa9++BDJlOhMJnzPp5Zp
-         Mnej1/kNitYv/FZOFOzkOa6QEKUVu8adzL4dIni+PfyGmVW67TAcHI9GQ+oxIkqh9pTx
-         lEM6YfexdbIAc2Zyzmk757vE0lFoW3TGeLSwKdSPlpsV8Hnj2enrLDAUeBZV6VZGcU76
-         A33sIXUoysQRRwgyP2H11PUg4/jY5lIM9ikNXnYt6FojmSFjDLWfqAjqNgfo/vT5+A40
-         RNG2jW0bujhng14X/ufdJvTHlNs4SG2WChW+UjlG9G2KEJMdSJIOzWmv/U5IoHgkv3tX
-         Z88g==
-X-Gm-Message-State: AFqh2koRa//kyBJZNgMWg8ieLp1TPajMLkibjMbWWG0vHv2x8hlkfXsX
-        zVj5J+T8OfZg4TfZkg5ZQWcS2g==
-X-Google-Smtp-Source: AMrXdXsgrmSpI1wqz9afmQ1MMfc8bAWQGMhm223lGfvhvC2F3UZxrpozfDbNqJBc0Ye8JsabRlBggg==
-X-Received: by 2002:ac8:4f17:0:b0:3a6:95ff:ffd4 with SMTP id b23-20020ac84f17000000b003a695ffffd4mr6515138qte.52.1671709028795;
-        Thu, 22 Dec 2022 03:37:08 -0800 (PST)
-Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id g8-20020ac81248000000b003a69de747c9sm241955qtj.19.2022.12.22.03.37.05
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/E5LB2c4UxvbhS5/EA5bZiOntCYtat1IHin1Ect54NA=;
+        b=Hjfd87yuRWFgnMqYyqJIVQtfcSdS2TzurhAlhvN4ucDULdD/8g8WNv7bA2UojfRJFc
+         ZkD/sTh53QtVglL2D+STe0x9i4v0U7ke/64MGLiKAPktPqhErW1E+AOimmK8SE1ecBLV
+         nbKsrl3ZYH3lxMqCP1m7T4Et6MwmfSItZusu/H3mn/pY3sAkyiAu7Q1SnmLqBce9Rbhq
+         JcjQOiLDneVDN6aAZ2EbHPX8BCKny057zjg+HkYYXFZAVtcMc2SNWkxgvJNrLbSWH47g
+         UNoHC1oLtTMitf/R9OBmq+81hRmXteKZMtNyRw0cnuPStHFeo5n9J9FFpYywkXp3cepn
+         0oOA==
+X-Gm-Message-State: AFqh2ko+hYdw/Yu1SwQZ5ZySpSdQQnxd8eitzfQ2T+tphw2pxkF0ozuw
+        3vki6GNJLzGIXSAft2HWnWP4Cba9rPQ=
+X-Google-Smtp-Source: AMrXdXtze/ZR9L1DWK0C0J6v72jCnS+69oDoBwSrH7RaN0LgAXNtmlMbjR+52THmmNRil9mE3wynWw==
+X-Received: by 2002:a05:600c:35d0:b0:3d2:3f55:f757 with SMTP id r16-20020a05600c35d000b003d23f55f757mr4084539wmq.20.1671709686933;
+        Thu, 22 Dec 2022 03:48:06 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.153])
+        by smtp.gmail.com with ESMTPSA id iv7-20020a05600c548700b003d35c09d4b9sm6531469wmb.40.2022.12.22.03.48.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Dec 2022 03:37:07 -0800 (PST)
-Message-ID: <58d61ba6-3cd9-cfee-d6d1-2bb800853eb4@broadcom.com>
-Date:   Thu, 22 Dec 2022 12:37:04 +0100
+        Thu, 22 Dec 2022 03:48:06 -0800 (PST)
+Message-ID: <03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com>
+Date:   Thu, 22 Dec 2022 13:48:04 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH] wifi: brcmfmac: unmap dma buffer in
- brcmf_msgbuf_alloc_pktid()
-To:     shaozhengchao <shaozhengchao@huawei.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "aspriel@gmail.com" <aspriel@gmail.com>,
-        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        "wright.feng@cypress.com" <wright.feng@cypress.com>,
-        "chi-hsien.lin@cypress.com" <chi-hsien.lin@cypress.com>,
-        "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
-        "alsi@bang-olufsen.dk" <alsi@bang-olufsen.dk>,
-        "pieterpg@broadcom.com" <pieterpg@broadcom.com>,
-        "dekim@broadcom.com" <dekim@broadcom.com>,
-        "linville@tuxdriver.com" <linville@tuxdriver.com>,
-        "weiyongjun (A)" <weiyongjun1@huawei.com>,
-        yuehaibing <yuehaibing@huawei.com>
-References: <20221207013114.1748936-1-shaozhengchao@huawei.com>
- <167164758059.5196.17408082243455710150.kvalo@kernel.org>
- <Y6QJWPDXglDjUP9p@linutronix.de> <87cz8bkeqp.fsf@kernel.org>
- <47236b24-6b47-b03a-c7b8-c46ea07cac6f@huawei.com>
- <6b529058-3650-72bb-7541-9fbfb8c6ad9b@broadcom.com>
- <fc8a7c6ac335473b901aa9815167754f@huawei.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <fc8a7c6ac335473b901aa9815167754f@huawei.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d853e305f0691608"
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Content-Language: en-US
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtl8xxxu: Fix memory leaks with RTL8723BU, RTL8192EU
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,155 +73,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000d853e305f0691608
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+The wifi + bluetooth combo chip RTL8723BU can leak memory (especially?)
+when it's connected to a bluetooth audio device. The busy bluetooth
+traffic generates lots of C2H (card to host) messages, which are not
+freed correctly.
 
+To fix this, move the dev_kfree_skb() call in rtl8xxxu_c2hcmd_callback()
+inside the loop where skb_dequeue() is called.
 
+The RTL8192EU leaks memory because the C2H messages are added to the
+queue and left there forever. (This was fine in the past because it
+probably wasn't sending any C2H messages until commit e542e66b7c2e
+("wifi: rtl8xxxu: gen2: Turn on the rate control"). Since that commit
+it sends a C2H message when the TX rate changes.)
 
-On 12/22/2022 12:35 PM, shaozhengchao wrote:
-> 
-> 
-> -----Original Message-----
-> From: Arend van Spriel [mailto:arend.vanspriel@broadcom.com]
-> Sent: Thursday, December 22, 2022 7:00 PM
-> To: shaozhengchao <shaozhengchao@huawei.com>; Kalle Valo <kvalo@kernel.org>; Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: netdev@vger.kernel.org; linux-wireless@vger.kernel.org; brcm80211-dev-list.pdl@broadcom.com; SHA-cyfmac-dev-list@infineon.com; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com; aspriel@gmail.com; franky.lin@broadcom.com; hante.meuleman@broadcom.com; wright.feng@cypress.com; chi-hsien.lin@cypress.com; a.fatoum@pengutronix.de; alsi@bang-olufsen.dk; pieterpg@broadcom.com; dekim@broadcom.com; linville@tuxdriver.com; weiyongjun (A) <weiyongjun1@huawei.com>; yuehaibing <yuehaibing@huawei.com>
-> Subject: Re: [PATCH] wifi: brcmfmac: unmap dma buffer in brcmf_msgbuf_alloc_pktid()
-> 
-> On 12/22/2022 9:52 AM, shaozhengchao wrote:
->>
->>
->> On 2022/12/22 16:46, Kalle Valo wrote:
->>> Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
->>>
->>>> On 2022-12-21 18:33:06 [+0000], Kalle Valo wrote:
->>>>> Zhengchao Shao <shaozhengchao@huawei.com> wrote:
->>>>>
->>>>>> After the DMA buffer is mapped to a physical address, address is
->>>>>> stored
->>>>>> in pktids in brcmf_msgbuf_alloc_pktid(). Then, pktids is parsed in
->>>>>> brcmf_msgbuf_get_pktid()/brcmf_msgbuf_release_array() to obtain
->>>>>> physaddr
->>>>>> and later unmap the DMA buffer. But when count is always equal to
->>>>>> pktids->array_size, physaddr isn't stored in pktids and the DMA buffer
->>>>>> will not be unmapped anyway.
->>>>>>
->>>>>> Fixes: 9a1bb60250d2 ("brcmfmac: Adding msgbuf protocol.")
->>>>>> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
->>>>>
->>>>> Can someone review this?
->>>>
->>>> After looking at the code, that skb is mapped but not inserted into the
->>>> ringbuffer in this condition. The function returns with an error and the
->>>> caller will free that skb (or add to a list for later). Either way the
->>>> skb remains mapped which is wrong. The unmap here is the right thing to
->>>> do.
->>>>
->>>> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->>>
->>> Thanks for the review, very much appreciated.
->>>
->>
->> Thank you very much.
-> 
->> Good catch. Has this path been observed or is this found by inspecting
->> the code? Just curious.
-> 
->> Regards,
->> Arend
-> 
-> Hi Arend：
-> 	I review code and find the bug.
+To fix this, delete the check for rf_paths > 1 and the goto. Let the
+function process the C2H messages from RTL8192EU like the ones from
+the other chips.
 
+Theoretically the RTL8188FU could also leak like RTL8723BU, but it
+most likely doesn't send C2H messages frequently enough.
 
-Much appreciated.
+This change was tested with RTL8723BU by Erhard F. I tested it with
+RTL8188FU and RTL8192EU.
 
-Regards,
-Arend
+Reported-by: Erhard F. <erhard_f@mailbox.org>
+Tested-by: Erhard F. <erhard_f@mailbox.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215197
+Fixes: e542e66b7c2e ("rtl8xxxu: add bluetooth co-existence support for single antenna")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-> Zhengchao Shao
-
---000000000000d853e305f0691608
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBn4YmxMlybyTKYUck3
-g+QzvLr7vK/vfo4lClMGCb5t3jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMjIxMTM3MDlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAX9jQ04R+dTyhlWaurcdCKjjNZWGcUf0OZHb0
-QujWNHCexNzmC+LQR+9uhIT0zRK05b4epKWza/lWCm0fi+jUlfJJvcrfeK8NqbJ+nUqmdDyVhBYX
-TzciVBI+L6I5JAga73aUi7cpKgy6poQDrxDkmfyefhrocIiyJUVWVZT2rpBze7M6FVMyjt0Cu9Xo
-X4vWtNfSHUvufAVZ1hRHDitKQYetF4m7DvTVJSvcfL5UBs0+Nwqi9jSLf6Eyxgf/LflRe25M/9B8
-dpM23LjgwiOKQhrzS3giB+YdZmm7G1fBxFSWKF7Wu42Ky+MQvgC9BwYhnibGTVQTa7VzHGduOgGG
-Dg==
---000000000000d853e305f0691608--
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index fd97c040948a..03ffb99da7e2 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -5702,9 +5702,6 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
+ 	btcoex = &priv->bt_coex;
+ 	rarpt = &priv->ra_report;
+ 
+-	if (priv->rf_paths > 1)
+-		goto out;
+-
+ 	while (!skb_queue_empty(&priv->c2hcmd_queue)) {
+ 		skb = skb_dequeue(&priv->c2hcmd_queue);
+ 
+@@ -5737,10 +5734,9 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
+ 		default:
+ 			break;
+ 		}
+-	}
+ 
+-out:
+-	dev_kfree_skb(skb);
++		dev_kfree_skb(skb);
++	}
+ }
+ 
+ static void rtl8723bu_handle_c2h(struct rtl8xxxu_priv *priv,
+-- 
+2.38.0
