@@ -2,69 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A00E654F52
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Dec 2022 11:50:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 928A3654F1E
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Dec 2022 11:21:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbiLWKuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Dec 2022 05:50:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
+        id S229734AbiLWKVH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Dec 2022 05:21:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229930AbiLWKuW (ORCPT
+        with ESMTP id S230311AbiLWKVF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Dec 2022 05:50:22 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55032303D5
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Dec 2022 02:50:18 -0800 (PST)
-X-UUID: daf0f14859cb474cb7fb60edcf779553-20221223
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=g4uPlhoxLdAQhmHGbNEm5ojAY0RU+YdbQcWOPs8ae04=;
-        b=IdLAx5ElG3d7h0GV7ElHknOkQ+nDvLUF8/rEvcPryezTvEX1LoozQEd9kEM+gkGwQRD4dkS2rnPBOmW1LgG/ztGLheFSILrxyvwVw11tkuwbYK4tZdIMoq2hJRYnXd+w4zpUyw0yHYDkid9vOOLd+U48qwszI6uHep1NNNh6CW8=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:97e06359-823b-4ee0-a895-0d2dae29724d,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.14,REQID:97e06359-823b-4ee0-a895-0d2dae29724d,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:dcaaed0,CLOUDID:f445c8f3-ff42-4fb0-b929-626456a83c14,B
-        ulkID:221223181634FZ9F9VWL,BulkQuantity:3,Recheck:0,SF:28|17|19|48,TC:nil,
-        Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0
-X-UUID: daf0f14859cb474cb7fb60edcf779553-20221223
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 762859267; Fri, 23 Dec 2022 18:50:12 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
- Fri, 23 Dec 2022 10:50:00 +0000
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 23 Dec 2022 18:16:30 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Fri, 23 Dec 2022 18:16:30 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 4/4] wifi: mt76: connac: fix POWER_CTRL command name typo
-Date:   Fri, 23 Dec 2022 18:13:48 +0800
-Message-ID: <20221223101348.11504-4-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20221223101348.11504-1-shayne.chen@mediatek.com>
-References: <20221223101348.11504-1-shayne.chen@mediatek.com>
+        Fri, 23 Dec 2022 05:21:05 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56454D2DE;
+        Fri, 23 Dec 2022 02:21:04 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id m4so4599438pls.4;
+        Fri, 23 Dec 2022 02:21:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mccO5ilouRfJn5sBNa6schD4KBFUl4BO3DNqcpmuMnU=;
+        b=H8nrQFqZ+dBwnGND8DBOmO3s+dREzXShgUWq+kar0WMMWgJ1rGjuVbUTveyNz27MZ2
+         kBjWGRuI5VwMY/Crx28FT2bemzzM4PErFE2eVwD5J/Z+7dWiOWjcgbJD4Bf8xiNv+6sN
+         0O0yRG1uao1Vs9Sx1seGVGAg9Vfd8PsSDnxkDh4y7iHv8GeoNXKdxcSPt0Q7Q1rS4+Ln
+         SJAN+ZXvxmYcXp0RLivWvLqbn/w0Ic9EMXzJLkP+HDkp//Sabl7j7oAyDmnR1RH/up7f
+         fmuGuAJPJjQXi7iw9C9p6ETe+c4kDmnUdF0lSikLhyy6c8c3tWuPN8ttQyyiUmv4Kr8H
+         zqlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mccO5ilouRfJn5sBNa6schD4KBFUl4BO3DNqcpmuMnU=;
+        b=pARLbdBYXE+2NqUhvJ253YEK+3YKBz+I66hGW63DWXF8LxDCB0f0cithCzuVAN/PBC
+         VdfBBneoj36AKjNtVMfH6Maz9PyPPFYnZpJVEfLwK/OIhW3OwF07snGi2qfi0YyD0fSO
+         NQPvEaoSwpkeM7eE5AL54gZqsT9vkQNu4WiAka5KTw4JRbbCijtC4BWtcT4iViQK3yxf
+         4zapwqM1uvmwXyxd930QrlrPDpPSf603dhMGefpeOeXbWaqzqIv7ZLDPO+CuhSKwnRsz
+         R79n7BZmdcNSOfvoeeVVQjywFXg1irW6lXdPTrtM88prpKT52BjDQBmwvUnIt2mAtWoe
+         Dk5A==
+X-Gm-Message-State: AFqh2kqRkqT/8IpUARTpH/6yFjnL2itxlUG4W4RbXtT1bqMo9n8xwyGG
+        ypNYaJVI21BBuk8fMvcEDkUrNdu3Qvo=
+X-Google-Smtp-Source: AMrXdXtLPTS/mQ/11Q80UKTLmZyxHRNWRCOQkcZiw97vrTTj2Oc51xgkiTPKmeflg806mQUgeUbyug==
+X-Received: by 2002:a17:902:d647:b0:189:cc58:7784 with SMTP id y7-20020a170902d64700b00189cc587784mr7658369plh.45.1671790863848;
+        Fri, 23 Dec 2022 02:21:03 -0800 (PST)
+Received: from masabert ([202.12.244.3])
+        by smtp.gmail.com with ESMTPSA id q15-20020a17090311cf00b001754fa42065sm2054878plh.143.2022.12.23.02.21.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Dec 2022 02:21:03 -0800 (PST)
+Received: by masabert (Postfix, from userid 1000)
+        id 969DE23603AD; Fri, 23 Dec 2022 19:21:00 +0900 (JST)
+From:   Masanari Iida <standby24x7@gmail.com>
+To:     linux-kernel@vger.kernel.org, pkshih@realtek.com,
+        linux-wireless@vger.kernel.org
+Cc:     Masanari Iida <standby24x7@gmail.com>
+Subject: [PATCH] wifl: rtw89: Fix a typo in debug message
+Date:   Fri, 23 Dec 2022 19:20:58 +0900
+Message-Id: <20221223102058.162179-1-standby24x7@gmail.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,41 +71,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix typo MCU_UNI_CMD_POWER_CREL to MCU_UNI_CMD_POWER_CTRL.
+This patch fixes a spelling typo in debug message.
 
-Fixes: 779d34de055e ("wifi: mt76: connac: add more unified command IDs")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Masanari Iida <standby24x7@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index f1e942b9a887..82fdf6d794bc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1198,7 +1198,7 @@ enum {
- 	MCU_UNI_CMD_REPT_MUAR = 0x09,
- 	MCU_UNI_CMD_WSYS_CONFIG = 0x0b,
- 	MCU_UNI_CMD_REG_ACCESS = 0x0d,
--	MCU_UNI_CMD_POWER_CREL = 0x0f,
-+	MCU_UNI_CMD_POWER_CTRL = 0x0f,
- 	MCU_UNI_CMD_RX_HDR_TRANS = 0x12,
- 	MCU_UNI_CMD_SER = 0x13,
- 	MCU_UNI_CMD_TWT = 0x14,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index a88fc7680b1a..d781c6e0f33a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2399,7 +2399,7 @@ mt7996_mcu_restart(struct mt76_dev *dev)
- 		.power_mode = 1,
- 	};
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index 582ff0d3a9ea..cd6c39b7f802 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -1643,7 +1643,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
  
--	return mt76_mcu_send_msg(dev, MCU_WM_UNI_CMD(POWER_CREL), &req,
-+	return mt76_mcu_send_msg(dev, MCU_WM_UNI_CMD(POWER_CTRL), &req,
- 				 sizeof(req), false);
- }
- 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+-		    "[IQK]==========IQK strat!!!!!==========\n");
++		    "[IQK]==========IQK start!!!!!==========\n");
+ 	iqk_info->iqk_times++;
+ 	iqk_info->kcount = 0;
+ 	iqk_info->version = RTW8852A_IQK_VER;
 -- 
-2.25.1
+2.38.1
 
