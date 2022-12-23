@@ -2,130 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F056654C24
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Dec 2022 06:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8224654C3C
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Dec 2022 06:35:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230050AbiLWFHm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Dec 2022 00:07:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
+        id S229613AbiLWFfG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Dec 2022 00:35:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbiLWFHi (ORCPT
+        with ESMTP id S229483AbiLWFfF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Dec 2022 00:07:38 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1EF12D27
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 21:07:37 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BN50QoH014389;
-        Fri, 23 Dec 2022 05:07:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=PzcgMozoFB9J7s18F/3O449TD2NtEWYM+hSAROjYSHk=;
- b=Kb1fp+hhYrLapX2gQ3gy28y4IO1sDa9KHXadzbQYECrxEB24YXPbrbLcIRmsXLgcFsue
- mbQnrInE/NjUdrcQ/p8wRPWA4safOdR0oifAIex7TX4gf1MrnIseSjUu6h+au3VJBEl+
- o0WRQVHxSick+XMPpUkq9eIWVE6oMrbBvFMT/T5ivFctmAAckz0gHA6VYFzc9Vu/7fJh
- DqYI9Q1owuDxU3C7dvyJS1MbUl8ru+M7GUrWmBqDsW733FQUDnvz0YbAII9fWSOJzmTX
- UtDwgCdDZIXIOISfgVz9e3S93xfW1z2rAtHUmCYazApHov/f884/znSS2ttsnt5/PLG8 Lg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mm5r2ku8h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Dec 2022 05:07:33 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BN57Xek032102
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Dec 2022 05:07:33 GMT
-Received: from dinek-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Thu, 22 Dec 2022 21:07:31 -0800
-From:   Dinesh Karthikeyan <quic_dinek@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Dinesh Karthikeyan <quic_dinek@quicinc.com>
-Subject: [PATCH 3/3] wifi: ath12k: Add support to read EEPROM caldata
-Date:   Fri, 23 Dec 2022 10:36:46 +0530
-Message-ID: <20221223050646.27785-4-quic_dinek@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221223050646.27785-1-quic_dinek@quicinc.com>
-References: <20221223050646.27785-1-quic_dinek@quicinc.com>
+        Fri, 23 Dec 2022 00:35:05 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130421E3F8
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Dec 2022 21:35:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671773705; x=1703309705;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+EPuj2yJgZKhoK4uh3S96CsTaLqJ5VawVKWaPJLFyz0=;
+  b=kegSHo4sb7vcM7UgzAnU0RKYCakSMWB0iaLxMHbWD84PXbgs/WKrPkA5
+   hszb9m2wjfX0N2Ev1gq6Hq2aifbwroGZjS0UDtIALo26+UB2ALm0//A8l
+   hfLGVaXlWH3K4QE39HYOTWfpA5YLq+dyfFyJRXljFgWB84yzCBCXiP2Cc
+   Kn5lcAJx88iWAajewJjs3pzHyyMR6AtGN0lbZkAXjZdlb4joSjC6rEgS4
+   dfRRvRbFSVqzvjOFIhzt2jRKZ8vok3yxqWM01kX5gWYm1F88EeFJyyj4O
+   C5z80dXuA0oRfla/h8oNs+tfez5/59+M0rVvMqL1NCfspwTrl/ITufGeN
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10569"; a="320333851"
+X-IronPort-AV: E=Sophos;i="5.96,267,1665471600"; 
+   d="scan'208";a="320333851"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 21:35:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10569"; a="629734151"
+X-IronPort-AV: E=Sophos;i="5.96,267,1665471600"; 
+   d="scan'208";a="629734151"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 22 Dec 2022 21:35:02 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p8ahx-000CRt-2g;
+        Fri, 23 Dec 2022 05:35:01 +0000
+Date:   Fri, 23 Dec 2022 13:34:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 44bacbdf9066c590423259dbd6d520baac99c1a8
+Message-ID: <63a53e03.yg72BcBtGiO07Tdu%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ga6CoJ12EfL1CtPGaDhhWi_RNAIRg8RF
-X-Proofpoint-ORIG-GUID: ga6CoJ12EfL1CtPGaDhhWi_RNAIRg8RF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-23_02,2022-12-22_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- impostorscore=0 spamscore=0 clxscore=1015 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2212230044
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In current implementation, there is a overhead of maintaining caldata
-in the filesystem manually. To eliminate this overhead, for pci based
-chipsets, if calibration data is present in EEPROM, indicate firmware
-to download and read caldata from EEPROM. If the caldata is present in
-EEPROM, host is notified in the target capability.
-Upon this, the download request for the type ATH12K_QMI_FILE_TYPE_EEPROM
-is sent to firmware.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 44bacbdf9066c590423259dbd6d520baac99c1a8  wifi: wl3501_cs: don't call kfree_skb() under spin_lock_irqsave()
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+elapsed time: 728m
 
-Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/qmi.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+configs tested: 91
+configs skipped: 2
 
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index a69307bea596..979a63f2e2ab 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2371,12 +2371,16 @@ static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
- 			goto out;
- 		}
- 
--		remaining -= req->data_len;
--		temp += req->data_len;
--		req->seg_id++;
--		ath12k_dbg(ab, ATH12K_DBG_QMI,
--			   "qmi bdf download request remaining %i\n",
--			   remaining);
-+		if (type == ATH12K_QMI_FILE_TYPE_EEPROM) {
-+			remaining = 0;
-+		} else {
-+			remaining -= req->data_len;
-+			temp += req->data_len;
-+			req->seg_id++;
-+			ath12k_dbg(ab, ATH12K_DBG_QMI,
-+				   "qmi bdf download request remaining %i\n",
-+				   remaining);
-+		}
- 	}
- 
- out:
-@@ -2422,7 +2426,7 @@ static int ath12k_qmi_load_bdf_qmi(struct ath12k_base *ab,
- 	case ATH12K_QMI_BDF_TYPE_CALIBRATION:
- 
- 		if (ab->qmi.target.eeprom_caldata) {
--			file_type = ATH12K_QMI_FILE_TYPE_CALDATA;
-+			file_type = ATH12K_QMI_FILE_TYPE_EEPROM;
- 			tmp = filename;
- 			fw_size = ATH12K_QMI_MAX_BDF_FILE_NAME_SIZE;
- 		} else {
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+s390                             allmodconfig
+s390                                defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+s390                             allyesconfig
+powerpc                           allnoconfig
+x86_64                              defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+ia64                             allmodconfig
+sh                               allmodconfig
+x86_64               randconfig-a003-20221219
+x86_64               randconfig-a001-20221219
+x86_64               randconfig-a004-20221219
+x86_64               randconfig-a002-20221219
+x86_64               randconfig-a006-20221219
+x86_64               randconfig-a005-20221219
+x86_64                               rhel-8.3
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                                defconfig
+x86_64                           allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a001-20221219
+i386                 randconfig-a003-20221219
+i386                 randconfig-a002-20221219
+i386                 randconfig-a006-20221219
+i386                 randconfig-a005-20221219
+i386                 randconfig-a004-20221219
+arm                                 defconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-bpf
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-kvm
+x86_64                        randconfig-a015
+riscv                randconfig-r042-20221218
+arm64                            allyesconfig
+arm                              allyesconfig
+arc                  randconfig-r043-20221219
+i386                             allyesconfig
+arm                  randconfig-r046-20221219
+arc                  randconfig-r043-20221218
+s390                 randconfig-r044-20221218
+x86_64                            allnoconfig
+i386                          randconfig-c001
+s390                 randconfig-r044-20221222
+arc                  randconfig-r043-20221222
+riscv                randconfig-r042-20221222
+arm                        trizeps4_defconfig
+sh                            shmin_defconfig
+um                               alldefconfig
+powerpc                      makalu_defconfig
+m68k                        mvme147_defconfig
+powerpc                    amigaone_defconfig
+m68k                         amcore_defconfig
+m68k                        m5272c3_defconfig
+sh                           se7724_defconfig
+sh                          rsk7203_defconfig
+arm                            xcep_defconfig
+mips                           xway_defconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+i386                 randconfig-a014-20221219
+i386                 randconfig-a012-20221219
+i386                 randconfig-a013-20221219
+i386                 randconfig-a015-20221219
+i386                 randconfig-a011-20221219
+i386                 randconfig-a016-20221219
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+arm                  randconfig-r046-20221218
+x86_64                        randconfig-a016
+hexagon              randconfig-r041-20221218
+hexagon              randconfig-r045-20221219
+hexagon              randconfig-r041-20221219
+hexagon              randconfig-r045-20221218
+riscv                randconfig-r042-20221219
+s390                 randconfig-r044-20221219
+x86_64               randconfig-a015-20221219
+x86_64               randconfig-a013-20221219
+x86_64               randconfig-a012-20221219
+x86_64               randconfig-a016-20221219
+x86_64               randconfig-a014-20221219
+x86_64               randconfig-a011-20221219
+x86_64                        randconfig-k001
+
 -- 
-2.17.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
