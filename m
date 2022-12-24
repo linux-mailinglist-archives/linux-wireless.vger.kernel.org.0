@@ -2,56 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC1465581D
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Dec 2022 03:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C3C655909
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Dec 2022 08:55:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233459AbiLXCr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Dec 2022 21:47:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
+        id S230176AbiLXHzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Dec 2022 02:55:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230505AbiLXCr0 (ORCPT
+        with ESMTP id S229445AbiLXHzU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Dec 2022 21:47:26 -0500
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F47D1900D;
-        Fri, 23 Dec 2022 18:47:24 -0800 (PST)
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4Nf7kG2Sksz8QrkZ;
-        Sat, 24 Dec 2022 10:47:18 +0800 (CST)
-Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
-        by mse-fl1.zte.com.cn with SMTP id 2BO2lCEK020722;
-        Sat, 24 Dec 2022 10:47:12 +0800 (+08)
-        (envelope-from yang.yang29@zte.com.cn)
-Received: from mapi (szxlzmapp02[null])
-        by mapi (Zmail) with MAPI id mid14;
-        Sat, 24 Dec 2022 10:47:13 +0800 (CST)
-Date:   Sat, 24 Dec 2022 10:47:13 +0800 (CST)
-X-Zmail-TransId: 2b0463a66831ffffffffb7a3b4cd
-X-Mailer: Zmail v1.0
-Message-ID: <202212241047135426119@zte.com.cn>
-In-Reply-To: <Y6XDHRVgKLbDLPNj@bombadil.infradead.org>
-References: 202212231034450492161@zte.com.cn,Y6XDHRVgKLbDLPNj@bombadil.infradead.org
-Mime-Version: 1.0
-From:   <yang.yang29@zte.com.cn>
-To:     <mcgrof@kernel.org>
-Cc:     <jirislaby@kernel.org>, <mickflemm@gmail.com>, <kvalo@kernel.org>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <xu.panda@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXQtbmV4dF0gYXRoNWs6IHVzZSBzdHJzY3B5KCkgdG8gaW5zdGVhZCBvZiBzdHJuY3B5KCk=?=
-Content-Type: text/plain;
-        charset="UTF-8"
-X-MAIL: mse-fl1.zte.com.cn 2BO2lCEK020722
-X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.250.137.novalocal with ID 63A66836.000 by FangMail milter!
-X-FangMail-Envelope: 1671850038/4Nf7kG2Sksz8QrkZ/63A66836.000/10.5.228.132/[10.5.228.132]/mse-fl1.zte.com.cn/<yang.yang29@zte.com.cn>
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 63A66836.000/4Nf7kG2Sksz8QrkZ
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+        Sat, 24 Dec 2022 02:55:20 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4303418687;
+        Fri, 23 Dec 2022 23:55:20 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1p8zNE-0003Re-2D; Sat, 24 Dec 2022 08:55:16 +0100
+Message-ID: <69ccf9f3-ce2e-600d-00b3-51ccc4a73011@leemhuis.info>
+Date:   Sat, 24 Dec 2022 08:55:15 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [6.2][regression] after commit
+ cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
+Content-Language: en-US, de-DE
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>
+Cc:     lorenzo@kernel.org, sujuan.chen@mediatek.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+References: <CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre+XJS_s5FgVteYA@mail.gmail.com>
+ <678adc67-9e46-3eef-f274-c951b121570f@nbd.name>
+ <CABXGCsMUbs+bf=tWnx98r4v_JzVmYdVyOos9EhcGJ6jnEwathA@mail.gmail.com>
+ <a30d8580-936a-79e4-c1c7-70f3d3b8da35@nbd.name>
+ <CABXGCsNJKy2SQffeU+uaua5SM_77YiGKdPLRdzSF3F+ShpF+5w@mail.gmail.com>
+ <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
+ <CABXGCsOarWTb9+ofcd14bLGuWEQOTqRQQ0bXP57mhVjnpjcEQQ@mail.gmail.com>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <CABXGCsOarWTb9+ofcd14bLGuWEQOTqRQQ0bXP57mhVjnpjcEQQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1671868520;e5af03e8;
+X-HE-SMSGID: 1p8zNE-0003Re-2D
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,11 +53,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> According to who? Are you sure you are not just sending stupid commits
-> to get an increase in your kernel commit count? Because this is an old
-> driver and who cares?
 
-This is suggested by Petr Mladek, please see:
-https://lore.kernel.org/all/Y4cz27AbZVVd9pLJ@alley/
 
-And if the driver no one cares, we may stop modify it.
+On 22.12.22 07:47, Mikhail Gavrilov wrote:
+> On Wed, Dec 21, 2022 at 10:17 PM Felix Fietkau <nbd@nbd.name> wrote:
+>>
+>> Sorry, I worked on a tree that had other pending fixes applied.
+>> Please try this:
+>>
+>>
+>> --- a/drivers/net/wireless/mediatek/mt76/dma.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
+>> @@ -205,6 +205,52 @@ mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q)
+>>         mt76_dma_sync_idx(dev, q);
+>>   }
+> [cutted]
+>>   EXPORT_SYMBOL_GPL(mt76_rx_token_consume);
+>>
+> 
+> I confirms after applying this patch the issue was gone (wifi works as
+> before commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae).
+> 
+> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> 
+
+TWIMC, there are two more reports that at least to my eyes look like
+they are about the problem discussed here:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=216829
+https://bugzilla.kernel.org/show_bug.cgi?id=216839
+
+I pointed both reporters to this thread.
+
+Ciao, thorsten
