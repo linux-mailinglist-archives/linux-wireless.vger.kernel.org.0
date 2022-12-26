@@ -2,116 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CD365611C
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Dec 2022 09:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A18E656209
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Dec 2022 12:00:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231810AbiLZId6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Dec 2022 03:33:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44096 "EHLO
+        id S229960AbiLZLAH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Dec 2022 06:00:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbiLZIdy (ORCPT
+        with ESMTP id S229447AbiLZLAF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Dec 2022 03:33:54 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FBE8BB0
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Dec 2022 00:33:53 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BQ5SUlA030390;
-        Mon, 26 Dec 2022 08:33:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=W/BAUuFz1Nwd8KZNQzffNYl5Rqqhtt0te+jAOvUkxbc=;
- b=m5deBAVodVNJtPWxNA5UMP/QvQJSStTX8Nxr3IMSYWdwUrn7H1dSvsEnJAmylq9gJ6dp
- klsSnoM+EG8o5Lfrkubu9CO7evSzHXrIAvG9Iu9IhL1X8KwGOLXUkSvlSBw05VbxOdEg
- 41CHqy/lzWJlEzInJslbnU6C7zi6thbm1d2CQod7T5KWsFwy+DjE5wpAlpj4F44kN2l0
- iCVqP4onUugS9Ysxj7Afv3cZeANFYA+FGAbGbpXKUn1G5i699oy2y1pTz9pBWHPP7CnI
- F/lhdCIoxMAqojNVJH0mTtMEOX2HmsT6aXMTwCAai7Xi2JaeAdshzPuan1qC33oZP0kx bg== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mns18305c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 26 Dec 2022 08:33:47 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BQ8Xke4010793
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 26 Dec 2022 08:33:46 GMT
-Received: from ramess-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Mon, 26 Dec 2022 00:33:44 -0800
-From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Subject: [PATCH 2/2] ath11k: add support to enable/disable BSS color collision detection
-Date:   Mon, 26 Dec 2022 14:03:28 +0530
-Message-ID: <20221226083328.29051-3-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221226083328.29051-1-quic_ramess@quicinc.com>
-References: <20221226083328.29051-1-quic_ramess@quicinc.com>
+        Mon, 26 Dec 2022 06:00:05 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C35602EB;
+        Mon, 26 Dec 2022 03:00:03 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1p9lD5-0007aa-H5; Mon, 26 Dec 2022 11:59:59 +0100
+Message-ID: <35c73172-4e06-3877-56bd-133f9192adc3@leemhuis.info>
+Date:   Mon, 26 Dec 2022 11:59:58 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: VPHDpsAdRot3GJ2I8GX6AFL_U3grNsbW
-X-Proofpoint-GUID: VPHDpsAdRot3GJ2I8GX6AFL_U3grNsbW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-26_04,2022-12-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 suspectscore=0 adultscore=0
- mlxlogscore=990 priorityscore=1501 spamscore=0 mlxscore=0 phishscore=0
- clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212260074
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [6.2][regression] after commit
+ cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>
+Cc:     lorenzo@kernel.org, sujuan.chen@mediatek.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+References: <CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre+XJS_s5FgVteYA@mail.gmail.com>
+ <678adc67-9e46-3eef-f274-c951b121570f@nbd.name>
+ <CABXGCsMUbs+bf=tWnx98r4v_JzVmYdVyOos9EhcGJ6jnEwathA@mail.gmail.com>
+ <a30d8580-936a-79e4-c1c7-70f3d3b8da35@nbd.name>
+ <CABXGCsNJKy2SQffeU+uaua5SM_77YiGKdPLRdzSF3F+ShpF+5w@mail.gmail.com>
+ <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
+ <CABXGCsOarWTb9+ofcd14bLGuWEQOTqRQQ0bXP57mhVjnpjcEQQ@mail.gmail.com>
+ <69ccf9f3-ce2e-600d-00b3-51ccc4a73011@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <69ccf9f3-ce2e-600d-00b3-51ccc4a73011@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1672052403;98b3c717;
+X-HE-SMSGID: 1p9lD5-0007aa-H5
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable/Disable BSS color collision detection based on user
-configuration of collision detection and BSS color feature
-itself.
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+On 24.12.22 08:55, Thorsten Leemhuis wrote:
+> 
+> 
+> On 22.12.22 07:47, Mikhail Gavrilov wrote:
+>> On Wed, Dec 21, 2022 at 10:17 PM Felix Fietkau <nbd@nbd.name> wrote:
+>>>
+>>> Sorry, I worked on a tree that had other pending fixes applied.
+>>> Please try this:
+>>>
+>>>
+>>> --- a/drivers/net/wireless/mediatek/mt76/dma.c
+>>> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
+>>> @@ -205,6 +205,52 @@ mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q)
+>>>         mt76_dma_sync_idx(dev, q);
+>>>   }
+>> [cutted]
+>>>   EXPORT_SYMBOL_GPL(mt76_rx_token_consume);
+>>>
+>>
+>> I confirms after applying this patch the issue was gone (wifi works as
+>> before commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae).
+>>
+>> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+>>
+> 
+> TWIMC, there are two more reports that at least to my eyes look like
+> they are about the problem discussed here:
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=216829
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 9e923ecb0891..6d5290996d9f 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3112,6 +3112,7 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 	u8 rateidx;
- 	u32 rate;
- 	u32 ipv4_cnt;
-+	bool color_collision_detect;
- 
- 	mutex_lock(&ar->conf_mutex);
- 
-@@ -3370,10 +3371,12 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_HE_BSS_COLOR) {
- 		if (vif->type == NL80211_IFTYPE_AP) {
-+			color_collision_detect = (info->he_bss_color.enabled &&
-+						  info->he_bss_color.collision_detection_enabled);
- 			ret = ath11k_wmi_send_obss_color_collision_cfg_cmd(
- 				ar, arvif->vdev_id, info->he_bss_color.color,
- 				ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS,
--				info->he_bss_color.enabled);
-+				color_collision_detect);
- 			if (ret)
- 				ath11k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
- 					    arvif->vdev_id,  ret);
--- 
-2.17.1
+Stupid me, this one...
 
+> https://bugzilla.kernel.org/show_bug.cgi?id=216839
+
+...is about 6.1.y and thus likely something else. Apologies.
+
+FWIW & for completeness, according to a comment from Lorenzo Bianconi
+the latter bug report is fixed by:
+https://patchwork.kernel.org/project/linux-wireless/patch/20221217085624.52077-1-nbd@nbd.name/
+("wifi: mac80211: fix initialization of rx->link and rx->link_sta")
+
+Ciao, Thorsten
