@@ -2,99 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A18E656209
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Dec 2022 12:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAD0656216
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Dec 2022 12:14:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbiLZLAH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Dec 2022 06:00:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52510 "EHLO
+        id S231980AbiLZLOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Dec 2022 06:14:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbiLZLAF (ORCPT
+        with ESMTP id S229960AbiLZLOS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Dec 2022 06:00:05 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C35602EB;
-        Mon, 26 Dec 2022 03:00:03 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1p9lD5-0007aa-H5; Mon, 26 Dec 2022 11:59:59 +0100
-Message-ID: <35c73172-4e06-3877-56bd-133f9192adc3@leemhuis.info>
-Date:   Mon, 26 Dec 2022 11:59:58 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [6.2][regression] after commit
- cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     lorenzo@kernel.org, sujuan.chen@mediatek.com,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-References: <CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre+XJS_s5FgVteYA@mail.gmail.com>
- <678adc67-9e46-3eef-f274-c951b121570f@nbd.name>
- <CABXGCsMUbs+bf=tWnx98r4v_JzVmYdVyOos9EhcGJ6jnEwathA@mail.gmail.com>
- <a30d8580-936a-79e4-c1c7-70f3d3b8da35@nbd.name>
- <CABXGCsNJKy2SQffeU+uaua5SM_77YiGKdPLRdzSF3F+ShpF+5w@mail.gmail.com>
- <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
- <CABXGCsOarWTb9+ofcd14bLGuWEQOTqRQQ0bXP57mhVjnpjcEQQ@mail.gmail.com>
- <69ccf9f3-ce2e-600d-00b3-51ccc4a73011@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <69ccf9f3-ce2e-600d-00b3-51ccc4a73011@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1672052403;98b3c717;
-X-HE-SMSGID: 1p9lD5-0007aa-H5
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Mon, 26 Dec 2022 06:14:18 -0500
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556342DC1;
+        Mon, 26 Dec 2022 03:14:17 -0800 (PST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NgZtH4XSkz4xpyB;
+        Mon, 26 Dec 2022 19:14:15 +0800 (CST)
+Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
+        by mse-fl2.zte.com.cn with SMTP id 2BQBE3HI073008;
+        Mon, 26 Dec 2022 19:14:03 +0800 (+08)
+        (envelope-from yang.yang29@zte.com.cn)
+Received: from mapi (szxlzmapp01[null])
+        by mapi (Zmail) with MAPI id mid14;
+        Mon, 26 Dec 2022 19:14:06 +0800 (CST)
+Date:   Mon, 26 Dec 2022 19:14:06 +0800 (CST)
+X-Zmail-TransId: 2b0363a981fe61526202
+X-Mailer: Zmail v1.0
+Message-ID: <202212261914060599112@zte.com.cn>
+Mime-Version: 1.0
+From:   <yang.yang29@zte.com.cn>
+To:     <kvalo@kernel.org>
+Cc:     <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <xu.panda@zte.com.cn>, <yang.yang29@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHdpcmVsZXNzLW5leHQgdjJdIHdsMTh4eDogdXNlIHN0cnNjcHkoKSB0byBpbnN0ZWFkIG9mIHN0cm5jcHkoKQ==?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2BQBE3HI073008
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 63A98207.001 by FangMail milter!
+X-FangMail-Envelope: 1672053255/4NgZtH4XSkz4xpyB/63A98207.001/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<yang.yang29@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 63A98207.001/4NgZtH4XSkz4xpyB
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Xu Panda <xu.panda@zte.com.cn>
 
+The implementation of strscpy() is more robust and safer.
+That's now the recommended way to copy NUL-terminated strings.
 
-On 24.12.22 08:55, Thorsten Leemhuis wrote:
-> 
-> 
-> On 22.12.22 07:47, Mikhail Gavrilov wrote:
->> On Wed, Dec 21, 2022 at 10:17 PM Felix Fietkau <nbd@nbd.name> wrote:
->>>
->>> Sorry, I worked on a tree that had other pending fixes applied.
->>> Please try this:
->>>
->>>
->>> --- a/drivers/net/wireless/mediatek/mt76/dma.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
->>> @@ -205,6 +205,52 @@ mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q)
->>>         mt76_dma_sync_idx(dev, q);
->>>   }
->> [cutted]
->>>   EXPORT_SYMBOL_GPL(mt76_rx_token_consume);
->>>
->>
->> I confirms after applying this patch the issue was gone (wifi works as
->> before commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae).
->>
->> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
->>
-> 
-> TWIMC, there are two more reports that at least to my eyes look like
-> they are about the problem discussed here:
-> 
-> https://bugzilla.kernel.org/show_bug.cgi?id=216829
+Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
+Signed-off-by: Yang Yang <yang.yang29@zte.com>
+---
+change for v2
+ - use the right tag of wireless-next. 
+---
+ drivers/net/wireless/ti/wl18xx/main.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Stupid me, this one...
+diff --git a/drivers/net/wireless/ti/wl18xx/main.c b/drivers/net/wireless/ti/wl18xx/main.c
+index 0b3cf8477c6c..1e4a430d1543 100644
+--- a/drivers/net/wireless/ti/wl18xx/main.c
++++ b/drivers/net/wireless/ti/wl18xx/main.c
+@@ -1516,12 +1516,9 @@ static int wl18xx_handle_static_data(struct wl1271 *wl,
+ 	struct wl18xx_static_data_priv *static_data_priv =
+ 		(struct wl18xx_static_data_priv *) static_data->priv;
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=216839
+-	strncpy(wl->chip.phy_fw_ver_str, static_data_priv->phy_version,
++	strscpy(wl->chip.phy_fw_ver_str, static_data_priv->phy_version,
+ 		sizeof(wl->chip.phy_fw_ver_str));
 
-...is about 6.1.y and thus likely something else. Apologies.
+-	/* make sure the string is NULL-terminated */
+-	wl->chip.phy_fw_ver_str[sizeof(wl->chip.phy_fw_ver_str) - 1] = '\0';
+-
+ 	wl1271_info("PHY firmware version: %s", static_data_priv->phy_version);
 
-FWIW & for completeness, according to a comment from Lorenzo Bianconi
-the latter bug report is fixed by:
-https://patchwork.kernel.org/project/linux-wireless/patch/20221217085624.52077-1-nbd@nbd.name/
-("wifi: mac80211: fix initialization of rx->link and rx->link_sta")
-
-Ciao, Thorsten
+ 	return 0;
+-- 
+2.15.2
