@@ -2,98 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0D78656B5C
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Dec 2022 14:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CED77656CA6
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Dec 2022 16:42:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbiL0Ndl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Dec 2022 08:33:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58486 "EHLO
+        id S229698AbiL0Pmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Dec 2022 10:42:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbiL0Ndj (ORCPT
+        with ESMTP id S229521AbiL0Pmx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Dec 2022 08:33:39 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1EBEB1D6
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 05:33:38 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id p36so19604682lfa.12
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 05:33:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bell-sw-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+m12+LdV0qVH/ONHii2x67GczAO6pOeoyUweN9nQj+8=;
-        b=Yh2pawf3E16eV1eibSejVl52HAL2p7Re5Bms6BZ67c/er5tRGw9XPoJkVNkO311oGU
-         f/LDznFLGVyKQg09w34+ObEhk0xhg18/jO0xC9BP6ywqOKLAwKvk45UxdQkY6iiR95tu
-         EO9t+XLOXt/gI7wJHPLZkcumb1Y1oyE0TqwcRdTFAeHfBYTheZnmZmz5FFKbpjulhkVR
-         NHW1M8dW1qqWAw/3E+8HGi1OkaOTnxRU36hrQrhGY+mmrh/JDfg7ahG5TKjQiIyZ8bnQ
-         CghNtcfiZcLKhFum4akDeQxKnqJRGNSRkGwFKC/Lhbx/i0HJBJXEq8DsABTkrpGlyiRc
-         J7GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+m12+LdV0qVH/ONHii2x67GczAO6pOeoyUweN9nQj+8=;
-        b=1q2ETuc85nHiOBRwWNDSlAFwkBeqa7Bn5oIO5CoO4InelDmidWjHHa9NTAthYmlekJ
-         IEi4xuphT7aZrUyxv5j2SpwWDYIX/N9q2gXHwU4cF0zBzNgKZf7gPw3G20bzwhmrqdCl
-         O0sFEfcx8N3oJ6I9E+jBFfjmLzJYbM6qcQqtkxkoSoIvYlXyUjVIkxB22zni+FB3fY15
-         Uh2haXXVjzcw9AJ/tRwV2HG0h4OIwz5Dd0CWPM09ay1KtHkDFpGHVbVpJpWdEaOu25Tf
-         JRDu2KPiG/IGqsKUnJCEeAao6ZfLUOVv5Y50mKmcEHVr5VaHb2JNIAQGWz/DKhIg9nmE
-         Fh8Q==
-X-Gm-Message-State: AFqh2ko7Zfpl28HClpJlrnFr+uu7sicqxhODKMdiAZhGRPZKv3VwZS0S
-        /2DG3Rm94GB8t/gwxqHru7OpaQSblc+Ss7Q=
-X-Google-Smtp-Source: AMrXdXuxO6chnnW1CFpDhppoRP6ZUm2gWywbV0j5uxW+15wOrdCQBKTWt5D37SBkmP4uw+TlFmRDOQ==
-X-Received: by 2002:ac2:4d13:0:b0:4b6:e22f:51a6 with SMTP id r19-20020ac24d13000000b004b6e22f51a6mr6277130lfi.53.1672148016909;
-        Tue, 27 Dec 2022 05:33:36 -0800 (PST)
-Received: from localhost.localdomain ([95.161.223.113])
-        by smtp.gmail.com with ESMTPSA id e13-20020a05651236cd00b004b57a810e09sm2268091lfs.288.2022.12.27.05.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Dec 2022 05:33:35 -0800 (PST)
-From:   Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Subject: [PATCH] wifi: orinoco: check return value of hermes_write_wordrec()
-Date:   Tue, 27 Dec 2022 16:33:06 +0300
-Message-Id: <20221227133306.201356-1-aleksei.kodanev@bell-sw.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 27 Dec 2022 10:42:53 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF00DFE4
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 07:42:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=J67c3rAWPH98VZ86a9tvtc5Mk97oFpLjHkqZdMxqAws=;
+        t=1672155772; x=1673365372; b=x8HiWp35+epnt12b7ceYXgEFTAGX8+3xuZAuuXUb4b7cyA4
+        yWfRDVZdqypPeJF1WC3V6GoIAUUGWvs2xlNyjwu80Siifz6D9rHt1EDUgGbjI2u0ZLVksM30Cc6ak
+        oPcFD2sCKAQqlzkI6EilwuZhydhEu6eMnwm3kDRJvlJqR3RLGuY1sHBw9Fn6sHO+MlkkR3WGrc6Ah
+        WdX2FyCTsF6dKIRCkJnxBj9HWsVStPvsMijVpjc8VbCzHdnOzKDwsyoPUJq7kaiWiLCtFLdA/bx+I
+        f3zWo61eBjl0Ys3BhnoCP6xH0jmctnrTAfvDttVpRz9neIfihKX38I8BcvBXIBIw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pAC6L-0026DQ-2T;
+        Tue, 27 Dec 2022 16:42:49 +0100
+Message-ID: <a4507149db27f761e0edb228623103711dd9a6fd.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: Allow NSS change only up to capability
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "Rameshkumar Sundaram (QUIC)" <quic_ramess@quicinc.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Tue, 27 Dec 2022 16:42:48 +0100
+In-Reply-To: <DM6PR02MB4937DDAF64A4880FD81C11CDE9ED9@DM6PR02MB4937.namprd02.prod.outlook.com>
+References: <20221018044341.5453-1-quic_ramess@quicinc.com>
+         <b763a390dedff804015a540f097bf804ed0e1436.camel@sipsolutions.net>
+         <DM6PR02MB4937DDAF64A4880FD81C11CDE9ED9@DM6PR02MB4937.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is currently no return check for writing an authentication
-type (HERMES_AUTH_SHARED_KEY or HERMES_AUTH_OPEN). It looks like
-it was accidentally skipped.
+On Tue, 2022-12-27 at 08:04 +0000, Rameshkumar Sundaram (QUIC) wrote:
+> >=20
+> > > +		if (nss <=3D link_sta->pub->rx_nss) {
+> > > +			link_sta->pub->rx_nss =3D nss;
+> >=20
+> > That, however, doesn't seem right. It means that you can only ever
+> > reduce
+> > the RX NSS, not switch it around within the originally negotiated
+> > range.
+> >=20
+> Not sure if I understood you comment.
+> We reset Sta's rx_nss
 
-This patch adds a return check similar to the other checks in
-__orinoco_hw_setup_enc() for hermes_write_wordrec().
+I don't see where it's being reset?
 
-Detected using the static analysis tool - Svace.
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
----
- drivers/net/wireless/intersil/orinoco/hw.c | 2 ++
- 1 file changed, 2 insertions(+)
+The way I'm reading this, you check nss<=3Drx_nss and then set rx_nss=3Dnss=
+.
+I didn't see any code that sets rx_nss higher, but maybe I missed it?
 
-diff --git a/drivers/net/wireless/intersil/orinoco/hw.c b/drivers/net/wireless/intersil/orinoco/hw.c
-index 0aea35c9c11c..4fcca08e50de 100644
---- a/drivers/net/wireless/intersil/orinoco/hw.c
-+++ b/drivers/net/wireless/intersil/orinoco/hw.c
-@@ -931,6 +931,8 @@ int __orinoco_hw_setup_enc(struct orinoco_private *priv)
- 			err = hermes_write_wordrec(hw, USER_BAP,
- 					HERMES_RID_CNFAUTHENTICATION_AGERE,
- 					auth_flag);
-+			if (err)
-+				return err;
- 		}
- 		err = hermes_write_wordrec(hw, USER_BAP,
- 					   HERMES_RID_CNFWEPENABLED_AGERE,
--- 
-2.25.1
+So if say rx_nss is 4, and nss is 2, then we set rx_nss to 2. But now if
+the AP wants to switch back to 4, nss will be 4, rx_nss will be 2, and
+the change is ignored, no?
 
+johannes
