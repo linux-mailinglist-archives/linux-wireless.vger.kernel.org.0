@@ -2,70 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 482C8656E96
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Dec 2022 21:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A1326570FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Dec 2022 00:30:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbiL0UTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Dec 2022 15:19:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34006 "EHLO
+        id S231630AbiL0Xaj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Dec 2022 18:30:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbiL0UTF (ORCPT
+        with ESMTP id S229583AbiL0Xai (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Dec 2022 15:19:05 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240A132A
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 12:19:04 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id o5so13320031wrm.1
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 12:19:04 -0800 (PST)
+        Tue, 27 Dec 2022 18:30:38 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A52B1D;
+        Tue, 27 Dec 2022 15:30:36 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id m21so20870944edc.3;
+        Tue, 27 Dec 2022 15:30:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RQt3XIgKxG/R1xic9WIjPysoEYr5UvHmYlt3wQmqNls=;
-        b=OflZ1ITPIM1ZkmX2rQJ9oYo9BMykPwng0ATXSqurFLDFalY6ut7xxxo8KIsi5XwvU1
-         Fm0mXeCpIu5afYvmfWAUKWEfyXOo+JzYvkMjmFZEV+vHR4x8GDJPZ/hBs2y1xuUoucw+
-         Z6uO1H4JTwwKV0j5MmOSP8dVxq9LRmqhdViewNKL9bDTR69Yn8A8GSZlCrYk3yXeTI5R
-         IBfdzGjWRjBYC9mkNPNLbzDBfCH0peTUHr1cJMev9YKi9oz8ywQ5zp4LrH9oVgSFu1jp
-         Y59g5IntWFz8MILhQfesOJOMFAe/0k9Auj1vzhxgZ4fsxbHoylbTZUEjatU47KaMY3Jq
-         kcWA==
+        d=googlemail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gNI4glAP8RCHIX0Vc1rrjcz+Kvrw2hTC3GBQO91dTzE=;
+        b=PgAZ5aZt60CG6sLLPDEVEddXtgBvZGHfbo1q7Kaoz+jVwewez6JV0OjWtiLxgYp3go
+         ZB/sbiE+D/1GRwsm29iOS73d+TJblGHu+/6dMjl7e/jSdgsbZ/tGayRqj4SlrwUkN/FZ
+         20AzPMvBQCXMRBBOu0pmzBPTV+LKLIwmHCYIzCZ9Byq6xzVZc808I0LoDRtTCmanS219
+         exX6w96YxESVe38a7SieSwm7goZ0V3nfc3KZvT99EgrQY61Oj4Pn8V5Xk4wj0DchHoqf
+         QTAZxF1fH6HQJ3toICNcXwmpSgvjPw8fM9I8ujGwxoGCvJsV8013XlMduN9sXK9gJDN9
+         Z4tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RQt3XIgKxG/R1xic9WIjPysoEYr5UvHmYlt3wQmqNls=;
-        b=6ccet9NZxgOKBAMuRWqeX7XS6/09dIVsX5MFwEM3yV6iG1dTYueTJbUuj06UTKU9yL
-         bdU09eRjuOuk/KW26feW7rLqPeL2GABbsMm6w5p5Io5qSUtrFUgy+pfzw6kDVyjztnZf
-         WBwDe0axMlG5MsABaDGswQ/59+CSyjLKfvTbV32IRR6FfYnznMclX4YFvSR1whnMpLCr
-         hdveJ9cGcUaYxVsl6GuOktROtF7RdcsbHu9pL0u85rObE4AxPIXZScBHhIpC+p08ji57
-         aCYG1EPE6LhvB/9PWCxUPfwzm8RER+dPHG8h3SSQpfqrx49TQ/k7/EEf285gnkbgctx9
-         ATrw==
-X-Gm-Message-State: AFqh2ko6T1vUzIx8MzOXde/DUlgJfoh+FRaUCAOcU5Oe+M64OsYTvqjp
-        SsYuD8cggQdASWq+Z2HmHGWaknYl5HcjWk1e9x8=
-X-Google-Smtp-Source: AMrXdXtVVZzrYNqFccbbGdtPnM5B5DIdMQ0PM4Qp/J/8OplZFDMqfZVlgBYSgY4CpLR2tlIeoDsMrQ==
-X-Received: by 2002:a5d:54ce:0:b0:242:486:5037 with SMTP id x14-20020a5d54ce000000b0024204865037mr14203711wrv.32.1672172342507;
-        Tue, 27 Dec 2022 12:19:02 -0800 (PST)
-Received: from tp440p.steeds.sam ([2602:fbf6:10:8::2])
-        by smtp.gmail.com with ESMTPSA id d12-20020a5d4f8c000000b002421a8f4fa6sm13098634wru.92.2022.12.27.12.18.58
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gNI4glAP8RCHIX0Vc1rrjcz+Kvrw2hTC3GBQO91dTzE=;
+        b=VOrEV6O+1RjGwO4f3/HGUDBv0qC4KE3TjMviH2gG1xZGiEZCmSnchLvIhWt5ZwTfND
+         IHdpgpN26/moSnH+rCHmt4agaoJGwgToAtyT2oUPypkDvq4olhr+47B0+jGEVAY3Dbz6
+         8H4bsFwv2VZdHwHANy9JYD2AzD7DKdGN9w/oFPIl42yJr7Usy//7ODNmTyHh2ZMKfm74
+         529x9FoIdFhSwwd/ltQvbT+EvcNxg6UPFyDKUMkUtKCcjdpI0rMjxuj1+NSmzuD8BO9y
+         ERvux4ECYoFKuc3wE62owLURxv0CaE5yliHrDIH/k/LjIcNNvvKtJtGofXZ0LDfkyKE7
+         KnXA==
+X-Gm-Message-State: AFqh2kpjcIzhUbpNiXXevs7B73TYFp9mtSj6UueOZdTehN46SwzQ9EqQ
+        wtIoxxp6N3frBG/ufdcyxHAng6jnWVA=
+X-Google-Smtp-Source: AMrXdXtHXTSThumsWgqSjQD28Ytz9upkuh0X8wck3S2bYI+sMZUeOkNp1Rj+Gpe9CHiPCzeYET7Dhg==
+X-Received: by 2002:a50:ec19:0:b0:46c:fabe:837b with SMTP id g25-20020a50ec19000000b0046cfabe837bmr19326490edr.41.1672183834861;
+        Tue, 27 Dec 2022 15:30:34 -0800 (PST)
+Received: from localhost.localdomain (dynamic-2a01-0c23-c4cf-d900-0000-0000-0000-0e63.c23.pool.telefonica.de. [2a01:c23:c4cf:d900::e63])
+        by smtp.googlemail.com with ESMTPSA id r7-20020aa7c147000000b0046cbcc86bdesm6489978edp.7.2022.12.27.15.30.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Dec 2022 12:19:01 -0800 (PST)
-Date:   Tue, 27 Dec 2022 22:18:52 +0200
-From:   Sicelo <absicsz@gmail.com>
-To:     mailto: linux-wireless@vger.kernel.org, ;
-Illegal-Object: Syntax error in To: address found on vger.kernel.org:
-        To:     ;
-                        ^-missing semicolon to end mail group, extraneous tokens in mailbox, missing end of mailbox
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Alexander Wetzel <alexander@wetzel-home.de>
-Subject: WLAN broken on Nokia N900 with v6.2-rc1
-Message-ID: <Y6tTLPvsxh/Im4Ed@tp440p.steeds.sam>
+        Tue, 27 Dec 2022 15:30:34 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
+        Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [RFC PATCH v1 00/19] rtw88: Add SDIO support
+Date:   Wed, 28 Dec 2022 00:30:01 +0100
+Message-Id: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -76,118 +76,107 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+Recently the rtw88 driver has gained locking support for the "slow" bus
+types (USB, SDIO) as part of USB support. Thanks to everyone who helped
+make this happen!
 
-With linux 6.2-rc1, wlan is broken on the Nokia N900 with wl1251, while
-it was working up to at least 6.1-rc7. The driver probes fine and I can
-scan for networks. However it is not possible to connect to any.
+Based on the USB work (especially the locking part and various
+bugfixes) this series adds support for SDIO based cards. It's the
+result of a collaboration between Jernej and myself. Neither of us has
+access to the rtw88 datasheets. All of our work is based on studying
+the RTL8822BS and RTL8822CS vendor drivers and trial and error.
 
-dmesg contains the following:
+Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
+Other users have confirmed that RTL8821CS support is working as well.
+RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
+where needed) but has not been tested at this point.
 
+Jernej's results with a RTL8822BS:
+- Main functionality works
+- Had a case where no traffic got across the link until he issued a
+  scan
 
-[  143.202484] WARNING: CPU: 0 PID: 1300 at net/wireless/core.c:1463 cfg802=
-11_netdev_notifier_call+0x26d/0x30c [cfg80211]
-[  143.203613] Modules linked in: nft_reject_inet nf_reject_ipv4 nf_reject_=
-ipv6 nft_reject nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables=
- nfnetlink bnep cmt_speech nokia_modem ssi_protocol phonet radio_platform_s=
-i4713 joydev mousedev hsi_char wl1251_spi wl1251 mac80211 libarc4 omap3_rom=
-_rng rng_core ir_rx51 pwm_omap_dmtimer rc_core snd_soc_rx51 rx51_battery is=
-p1704_charger cpufreq_dt snd_soc_omap_mcbsp snd_soc_ti_sdma omap_wdt cfg802=
-11 omap3_isp videobuf2_dma_contig videobuf2_memops videobuf2_v4l2 videobuf2=
-_common omap_sham crypto_engine snd_soc_tlv320aic3x_i2c snd_soc_tlv320aic3x=
- snd_soc_tpa6130a2 tsc2005 snd_soc_core regmap_spi snd_pcm_dmaengine tsc200=
-x_core snd_pcm omap_mailbox snd_timer leds_lp5523 bq27xxx_battery_i2c snd s=
-i4713 leds_lp55xx_common bq27xxx_battery soundcore led_class tsl2563 twl403=
-0_wdt hci_nokia rtc_twl hci_uart btbcm bluetooth twl4030_vibra pwm_twl_led =
-pwm_twl ff_memless ecdh_generic twl4030_madc ecc rfkill libaes et8ek8 ad582=
-0 v4l2_fwnode v4l2_async
-[  143.205780]  st_accel_i2c st_sensors_i2c st_accel industrialio_triggered=
-_buffer kfifo_buf st_sensors videodev industrialio omap_ssi mc hsi
-[  143.206146] CPU: 0 PID: 1300 Comm: NetworkManager Tainted: G        W   =
-       6.2.0-rc1-nokia-n900+ #1
-[  143.206207] Hardware name: Nokia RX-51 board
-[  143.206268]  unwind_backtrace from show_stack+0xb/0xc
-[  143.206390]  show_stack from dump_stack_lvl+0x2b/0x34
-[  143.206512]  dump_stack_lvl from __warn+0xdb/0xe8
-[  143.206604]  __warn from warn_slowpath_fmt+0x3f/0x76
-[  143.206726]  warn_slowpath_fmt from cfg80211_netdev_notifier_call+0x26d/=
-0x30c [cfg80211]
-[  143.207519]  cfg80211_netdev_notifier_call [cfg80211] from raw_notifier_=
-call_chain+0x31/0x3c
-[  143.208282]  raw_notifier_call_chain from __dev_notify_flags+0x3f/0x90
-[  143.208404]  __dev_notify_flags from dev_change_flags+0x2d/0x34
-[  143.208496]  dev_change_flags from do_setlink+0x20f/0xa98
-[  143.208587]  do_setlink from rtnl_newlink+0x341/0x5f0
-[  143.208679]  rtnl_newlink from rtnetlink_rcv_msg+0x193/0x218
-[  143.208770]  rtnetlink_rcv_msg from netlink_rcv_skb+0x75/0xb0
-[  143.208892]  netlink_rcv_skb from netlink_unicast+0x113/0x1b4
-[  143.208984]  netlink_unicast from netlink_sendmsg+0x161/0x31c
-[  143.209106]  netlink_sendmsg from ____sys_sendmsg+0x123/0x158
-[  143.209228]  ____sys_sendmsg from ___sys_sendmsg+0x43/0x68
-[  143.209350]  ___sys_sendmsg from sys_sendmsg+0x33/0x60
-[  143.209442]  sys_sendmsg from ret_fast_syscall+0x1/0x5c
-[  143.209564] Exception stack(0xd0149fa8 to 0xd0149ff0)
-[  143.209625] 9fa0:                   00000000 00000000 0000000d beabf550 =
-00000000 00000000
-[  143.209686] 9fc0: 00000000 00000000 00000001 00000128 beabf67c beabf678 =
-00000000 beabf674
-[  143.209747] 9fe0: beabf508 beabf4f8 b6fadcdb b6fad994
-[  143.209808] ---[ end trace 0000000000000000 ]---
-[  143.241180] ------------[ cut here ]------------
-[  143.241241] WARNING: CPU: 0 PID: 25 at net/wireless/scan.c:1021 cfg80211=
-_scan_done+0x6b/0x124 [cfg80211]
-[  143.241912] Modules linked in: nft_reject_inet nf_reject_ipv4 nf_reject_=
-ipv6 nft_reject nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables=
- nfnetlink bnep cmt_speech nokia_modem ssi_protocol phonet radio_platform_s=
-i4713 joydev mousedev hsi_char wl1251_spi wl1251 mac80211 libarc4 omap3_rom=
-_rng rng_core ir_rx51 pwm_omap_dmtimer rc_core snd_soc_rx51 rx51_battery is=
-p1704_charger cpufreq_dt snd_soc_omap_mcbsp snd_soc_ti_sdma omap_wdt cfg802=
-11 omap3_isp videobuf2_dma_contig videobuf2_memops videobuf2_v4l2 videobuf2=
-_common omap_sham crypto_engine snd_soc_tlv320aic3x_i2c snd_soc_tlv320aic3x=
- snd_soc_tpa6130a2 tsc2005 snd_soc_core regmap_spi snd_pcm_dmaengine tsc200=
-x_core snd_pcm omap_mailbox snd_timer leds_lp5523 bq27xxx_battery_i2c snd s=
-i4713 leds_lp55xx_common bq27xxx_battery soundcore led_class tsl2563 twl403=
-0_wdt hci_nokia rtc_twl hci_uart btbcm bluetooth twl4030_vibra pwm_twl_led =
-pwm_twl ff_memless ecdh_generic twl4030_madc ecc rfkill libaes et8ek8 ad582=
-0 v4l2_fwnode v4l2_async
-[  143.243041]  st_accel_i2c st_sensors_i2c st_accel industrialio_triggered=
-_buffer kfifo_buf st_sensors videodev industrialio omap_ssi mc hsi
-[  143.243225] CPU: 0 PID: 25 Comm: kworker/u2:2 Tainted: G        W       =
-   6.2.0-rc1-nokia-n900+ #1
-[  143.243255] Hardware name: Nokia RX-51 board
-[  143.243286] Workqueue: phy0 ieee80211_scan_work [mac80211]
-[  143.243865]  unwind_backtrace from show_stack+0xb/0xc
-[  143.243927]  show_stack from dump_stack_lvl+0x2b/0x34
-[  143.243988]  dump_stack_lvl from __warn+0xdb/0xe8
-[  143.244049]  __warn from warn_slowpath_fmt+0x3f/0x76
-[  143.244110]  warn_slowpath_fmt from cfg80211_scan_done+0x6b/0x124 [cfg80=
-211]
-[  143.244598]  cfg80211_scan_done [cfg80211] from __ieee80211_scan_complet=
-ed+0x85/0x2d8 [mac80211]
-[  143.245269]  __ieee80211_scan_completed [mac80211] from ieee80211_scan_w=
-ork+0xdf/0x3b4 [mac80211]
-[  143.245849]  ieee80211_scan_work [mac80211] from process_one_work+0x153/=
-0x35c
-[  143.246185]  process_one_work from worker_thread+0xd9/0x3d4
-[  143.246246]  worker_thread from kthread+0xad/0xc0
-[  143.246276]  kthread from ret_from_fork+0x11/0x20
-[  143.246337] Exception stack(0xd0085fb0 to 0xd0085ff8)
-[  143.246368] 5fa0:                                     00000000 00000000 =
-00000000 00000000
-[  143.246398] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 =
-00000000 00000000
-[  143.246429] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[  143.246459] ---[ end trace 0000000000000000 ]---
+My results with a RTL8822CS:
+- 2.4GHz and 5GHz bands are both working
+- TX throughput on a 5GHz network is between 50 Mbit/s and 90 Mbit/s
+- RX throughput on a 5GHz network is at 19 Mbit/s
+- Sometimes there are frequent reconnects (once every 1-5 minutes)
+  after the link has been up for a long time (multiple hours). Today
+  I was unable to reproduce this though (I only had reconnect in 8
+  hours).
+
+Why is this an RFC?
+- It needs a through review especially by the rtw88 maintainers
+- It's not clear to me how the "mmc: sdio" patch will be merged (will
+  Ulf take this or can we merge it thorugh the rtw88/linux wireless
+  driver tree?)
+- Any comments / debugging hints on the reconnect / no traffic issues
+  (see above) are welcome
+- My understanding is that there's a discussion about the rtw88 Kconfig
+  symbols. We're adding four new ones within this series. It's not
+  clear to me what the conclusion is on this topic though.
+- As with most patches: testing is very welcome. If things are working
+  fine then a Tested-by is appreciated (with some details about the
+  card, throughput, ...). If something doesn't work for you: please
+  still report back so we can investigate that problem!
 
 
 
-I tried to bisect with v6.2-rc1 as bad and v6.1-rc7 as good commits, and
-it suggested a790cc3a4fad75048295571a350b95b87e022a5a as the first bad
-commit. However I am not entirely sure yet what the real cause is, and
-the correct fix.
+Jernej Skrabec (2):
+  rtw88: ps: Increase LEAVE_LPS_TRY_CNT for SDIO based chipsets
+  rtw88: Add support for the SDIO based RTL8822BS chipset
 
-I will appreciate assistance with this issue, and/or ideas how to
-troubleshoot it further.
+Martin Blumenstingl (17):
+  rtw88: mac: Use existing interface mask macros in rtw_pwr_seq_parser()
+  rtw88: pci: Change type of rtw_hw_queue_mapping() and ac_to_hwq to
+    enum
+  rtw88: pci: Change queue datatype from u8 to enum rtw_tx_queue_type
+  rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
+  mmc: sdio: add Realtek SDIO vendor ID and various wifi device IDs
+  rtw88: rtw8821c: Add support for parsing the RTL8821CS (SDIO) efuse
+  rtw88: rtw8822b: Add support for parsing the RTL8822BS (SDIO) efuse
+  rtw88: rtw8822c: Add support for parsing the RTL8822CS (SDIO) efuse
+  rtw88: hci: Add an optional power_switch() callback to rtw_hci_ops
+  rtw88: mac: Add support for the SDIO HCI in rtw_pwr_seq_parser()
+  rtw88: mac: Add support for the SDIO HCI in the TX/page table setup
+  rtw88: sdio: Add HCI implementation for SDIO based chipsets
+  rtw88: mac: Add support for SDIO specifics in the power on sequence
+  rtw88: main: Add the rpwm_addr and cpwm_addr for SDIO based chipsets
+  rtw88: main: Reserve 8 bytes of extra TX headroom for SDIO based cards
+  rtw88: Add support for the SDIO based RTL8822CS chipset
+  rtw88: Add support for the SDIO based RTL8821CS chipset
 
-Regards
-Sicelo
+ drivers/net/wireless/realtek/rtw88/Kconfig    |   36 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |   12 +
+ drivers/net/wireless/realtek/rtw88/debug.h    |    1 +
+ drivers/net/wireless/realtek/rtw88/hci.h      |    8 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   62 +-
+ drivers/net/wireless/realtek/rtw88/mac.h      |    1 -
+ drivers/net/wireless/realtek/rtw88/main.c     |    9 +-
+ drivers/net/wireless/realtek/rtw88/pci.c      |   50 +-
+ drivers/net/wireless/realtek/rtw88/ps.h       |    2 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |   10 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |    9 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h |    6 +
+ .../net/wireless/realtek/rtw88/rtw8821cs.c    |   34 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |   10 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h |    6 +
+ .../net/wireless/realtek/rtw88/rtw8822bs.c    |   34 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |    9 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |    6 +
+ .../net/wireless/realtek/rtw88/rtw8822cs.c    |   34 +
+ drivers/net/wireless/realtek/rtw88/sdio.c     | 1242 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/sdio.h     |  175 +++
+ drivers/net/wireless/realtek/rtw88/tx.c       |   41 +
+ drivers/net/wireless/realtek/rtw88/tx.h       |    3 +
+ include/linux/mmc/sdio_ids.h                  |    9 +
+ 24 files changed, 1763 insertions(+), 46 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822bs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sdio.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sdio.h
+
+-- 
+2.39.0
+
