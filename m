@@ -2,137 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A135265687A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Dec 2022 09:35:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8A1656A70
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Dec 2022 13:05:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbiL0IfZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Dec 2022 03:35:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36742 "EHLO
+        id S231531AbiL0MFy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Dec 2022 07:05:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbiL0IfW (ORCPT
+        with ESMTP id S231343AbiL0MFb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Dec 2022 03:35:22 -0500
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB2964C6
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 00:35:20 -0800 (PST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:312a:feb:527f:f392])
-        by albert.telenet-ops.be with bizsmtp
-        id 1LbH290023T8eJe06LbH8w; Tue, 27 Dec 2022 09:35:19 +0100
-Received: from geert (helo=localhost)
-        by ramsan.of.borg with local-esmtp (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1pA5Qa-001J4O-Tj; Tue, 27 Dec 2022 09:35:16 +0100
-Date:   Tue, 27 Dec 2022 09:35:16 +0100 (CET)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-X-X-Sender: geert@ramsan.of.borg
-To:     linux-kernel@vger.kernel.org
-cc:     amd-gfx@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
-        linux-xtensa@linux-xtensa.org
-Subject: Re: Build regressions/improvements in v6.2-rc1
-In-Reply-To: <20221227082932.798359-1-geert@linux-m68k.org>
-Message-ID: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com> <20221227082932.798359-1-geert@linux-m68k.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Tue, 27 Dec 2022 07:05:31 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB7FE65
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 04:05:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CAA34B80F91
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Dec 2022 12:05:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F1CC433EF;
+        Tue, 27 Dec 2022 12:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672142719;
+        bh=5LHiqeLynL77VsE/GoSVlk7YcpIs55fn3gYhMzF8/9M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tShXwjDlXzuiHSG5GMl5oy/BOf09ZXBWzQ3K0pCOkkeqRySFYRC/FKJ8P4uyEUGB/
+         8gWvGCrUR+VCejM0qsXH0HHJwcoDTpjWtdpJyMKdfWYS7ye16Nj0gGk92fX3NI/iKn
+         LeHoxGxT8yiq4HiLXWkGhn/FWljh77BF4T5K7dO+0k82OTDrN1x4aDhuCEPhIWPgoU
+         92sLtZlcZfikd4IZr0GmQx7uIlSrRE0/V1n63+6oYei0g3enBOaaWM3y1GIttb3kYw
+         2bHoU0Z+vpgN/Ff1KJU07kS541swKsslxEuupqEArKD8zNps0Hx5S//uPkTM1769EG
+         PL2z/ktZKpm2A==
+Date:   Tue, 27 Dec 2022 13:05:19 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Nick Morrow <morrownr@gmail.com>
+Cc:     nbd@nbd.name, ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+        Sean Wang <sean.wang@mediatek.com>, deren.wu@mediatek.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [bug report} wifi: mt76: mt7612u/mt7610u - 6.1.x hard locking
+ systems
+Message-ID: <Y6rffzYy5hgIQKSE@localhost.localdomain>
+References: <CAFktD2fRnSbNgWRRoGbQzG5_Mw7=zFJKTVBHS_3D+mNUYcv9hQ@mail.gmail.com>
+ <Y6Y3wzSxbTG2aLAo@localhost.localdomain>
+ <CAFktD2fbpUv9X5MY1jozyXoxvNXW=4OfaJ3B1KcZtdrBfiG4NA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1893319093-1672130116=:311423"
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,SUSPICIOUS_RECIPS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2DAAM0Odn3zEz+I6"
+Content-Disposition: inline
+In-Reply-To: <CAFktD2fbpUv9X5MY1jozyXoxvNXW=4OfaJ3B1KcZtdrBfiG4NA@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1893319093-1672130116=:311423
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
+--2DAAM0Odn3zEz+I6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 27 Dec 2022, Geert Uytterhoeven wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v6.2-rc1[1] compared to v6.1[2].
->
-> Summarized:
->  - build errors: +11/-13
+> > > Starting with kernel 6.1 rc1, mt7612u and mt7610u are hard locking
+> > > systems when connection is established. From a report this morning:
+> > >
+> > > "So I'm using a MT7610U based adapter and updated to 6.1.1 in Arch
+> > > Linux and it's a complete lockup a few seconds after connecting as
+> > > other people have said, I'll use the LTS kernel (5.15) in the
+> > > meanwhile but this is probably going to get a lot of people that use
+> > > distros with newer kernels."
+> > >
+> > > Background: Problem first discovered with kernel 6.1 rc1. Bug report
+> > > was seen on linux-wireless around the rc5 timeframe. This is an
+> > > additional bug report.
+> > >
+> > > I don't think additional info is needed as I have tested on several
+> > > distros with various RC's of 6.1 and the problem is 100% reproducible
+> > > and unavoidable. This is a show stopper bug and will result in
+> > > widespread reports as distros upgrade to kernel 6.1.
+> > >
+> > > Regards,
+> >
+> > Hi Nick,
+> >
+> > Can you please try the patch below?
+> > https://patchwork.kernel.org/project/linux-wireless/patch/2022121708562=
+4.52077-1-nbd@nbd.name/
+> >
+> > Regards,
+> > Lorenzo
+>=20
+> Lorenzo,
+>=20
+> Today, I downloaded kernel 6.1.1, applied the above patch and
+> compiled. Once installed, I tested with an Alfa ACM mt7612u based
+> adapter. I no longer see the problem. No system lockups at all. iperf3
+> is showing a consistent performance of around 387 Mb/s. dmesg is
+> clean. The patch appears to have fixed the issue. I can also test with
+> a mt7610u based adapter if you think it is necessary but since that
+> patch was not to mt76, I decided testing only with the mt7612u adapter
+> was probably good enough. Let me know if there is anything else I can
+> do.
 
-amd-gfx@lists.freedesktop.org
-linux-arm-kernel@lists.infradead.org
-linux-media@vger.kernel.org
-linux-wireless@vger.kernel.org
-linux-mips@vger.kernel.org
-linux-sh@vger.kernel.org
-linux-f2fs-devel@lists.sourceforge.net
-linuxppc-dev@lists.ozlabs.org
-kasan-dev@googlegroups.com
-linux-xtensa@linux-xtensa.org
+no, it is not necessary to test with mt7610u as well. Thanks for testing.
 
-   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c: error: the frame size of 2224 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 7082:1
-   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.c: error: the frame size of 2208 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 7127:1
+Regards,
+Lorenzo
 
-arm64-gcc5/arm64-allmodconfig
+>=20
+> Nick
+> https://github.com/morrownr/USB-WiFi
 
-   + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: array subscript 2 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} [-Werror=array-bounds]:  => 641:28
-   + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: array subscript 3 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} [-Werror=array-bounds]:  => 641:28
+--2DAAM0Odn3zEz+I6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-m68k-gcc8/m68k-allmodconfig
-See also https://lore.kernel.org/all/CAMuHMdWpPX2mpqFEWjjbjsQvDBQOXyjjdpKnQu9qURAuVZXmMw@mail.gmail.com
+-----BEGIN PGP SIGNATURE-----
 
-   + /kisskb/src/include/linux/bitfield.h: error: call to '__field_overflow' declared with attribute error: value doesn't fit into mask:  => 151:3
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY6rffAAKCRA6cBh0uS2t
+rFQAAQDBUAU1+aRZXjlYsdB6GSdP6HJXq0VFg3SPTslkxGXWRAEA94QDG/4x4Tcb
+JrynkYJyY3e7yC1naBRyx+pVM5ndbgw=
+=Um+x
+-----END PGP SIGNATURE-----
 
-In function 'u32_encode_bits',
-     inlined from 'ieee80211_mlo_multicast_tx' at /kisskb/src/net/mac80211/tx.c:4435:17,
-     inlined from 'ieee80211_subif_start_xmit' at /kisskb/src/net/mac80211/tx.c:4483:3:
-
-mipsel-gcc5/mips-allmodconfig
-
-   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_262' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
-   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_263' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
-
-In function 'follow_pmd_mask',
-     inlined from 'follow_pud_mask' at /kisskb/src/mm/gup.c:735:9,
-     inlined from 'follow_p4d_mask' at /kisskb/src/mm/gup.c:752:9,
-     inlined from 'follow_page_mask' at /kisskb/src/mm/gup.c:809:9:
-
-sh4-gcc11/sh-defconfig (Günter wondered if pmd_t should use union)
-
-   + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memcpy' offset [0, 127] is out of the bounds [0, 0] [-Werror=array-bounds]:  => 57:33
-
-/kisskb/src/arch/s390/kernel/setup.c: In function 'setup_lowcore_dat_on':
-s390x-gcc11/s390-all{mod,yes}config
-
-   + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memset' pointer overflow between offset [28, 898293814] and size [-898293787, -1] [-Werror=array-bounds]:  => 59:33
-
-/kisskb/src/fs/f2fs/inline.c: In function 'f2fs_move_inline_dirents':
-
-powerpc-gcc11/ppc64_book3e_allmodconfig
-powerpc-gcc11/powerpc-all{mod,yes}config
-
-   + /kisskb/src/kernel/kcsan/kcsan_test.c: error: the frame size of 1680 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 257:1
-
-xtensa-gcc11/xtensa-allmodconfig (patch available)
-
-   + {standard input}: Error: unknown pseudo-op: `.cfi_def_c':  => 1718
-
-sh4-gcc11/sh-allmodconfig (ICE = internal compiler error)
-
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/1b929c02afd37871d5afb9d498426f83432e71c2/ (all 152 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/830b3c68c1fb1e9176028d02ef86f3cf76aa2476/ (all 152 configs)
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
---8323329-1893319093-1672130116=:311423--
+--2DAAM0Odn3zEz+I6--
