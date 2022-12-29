@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58BEE659008
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 18:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22FBA659169
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 21:12:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233839AbiL2Rzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Dec 2022 12:55:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37060 "EHLO
+        id S233881AbiL2UL7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Dec 2022 15:11:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbiL2Rzk (ORCPT
+        with ESMTP id S229598AbiL2UL6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Dec 2022 12:55:40 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EAA1112
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 09:55:35 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id u19so46595670ejm.8
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 09:55:35 -0800 (PST)
+        Thu, 29 Dec 2022 15:11:58 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E772B13D74;
+        Thu, 29 Dec 2022 12:11:56 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id ud5so47306604ejc.4;
+        Thu, 29 Dec 2022 12:11:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=googlemail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYh2NJvWZas8YI4a4QyIuQl5Ayz1JsLDPfcZD8+PXLs=;
-        b=MBHGJH1/ixTYpAHbR/CCk9je2PaztiCDJ20MA1CDaO0YOZ/yEa+DJ7h0bhMKPr89wY
-         NNsHFBRGLBsSB5C7zczmcFLe/0rVsEzzF0rT2PvG6cGQn94DWec0q9xDWaLNUaobVNXh
-         rdOFNEin9pS2Wr8WNVM78+ke7W5GDJLr45hz92Oru0QrGq+JeuTAd+jM8vA79Gw2Xqqs
-         8mTGrpEih0VVy5pNdPQYoHQxKCLtMBZSw3sjHXMQTp1H87kO+X8IJFvcC7eI45oYfFfk
-         ttrwBGKUCE+7OUHB19q39XlmvHENkH2oLK6D8NFJkTYuR5fQR8UTNLcw1nTLFVbmUgNe
-         CP7Q==
+        bh=lXs+PETp5F1sLmKlUpnJ7KVN9WjqhwaoNYx00yCpTSY=;
+        b=f2HwiOKmQSTMlha8bpeMVmXGnoKK5540JbD4UUkSvcj93uWC/JkG9HL41f4TJtyQuW
+         WZcgfexiJSTgVV7RFQND06mUatgFWHTL4fpD+/3uhvZkmdDvgURiCpyGs/L+aVDdFdvN
+         Y9Xt7e/Q76wKUD8cCAIcKw3id8vZqqpFA+yxinET+h4OReZtxNa7HNoj9hTQoOfWMrLX
+         QMum5xjXhaIy4tbZ6zHuS7G3ZaN8mF4VVTxf9RxFG8sESEBrsRZvWM4UnB8/SuV2T8MF
+         vLYGuyLK1OELQ5Eu5RZ4pnA5okn2Ltq6g/fU6CMEwTHJqXlvwVRtRYa0rslxfxJc03is
+         nsxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LYh2NJvWZas8YI4a4QyIuQl5Ayz1JsLDPfcZD8+PXLs=;
-        b=hriWgmop6puy/cYP0TuSnPx4l9ydGwr91LgS/5R7uStpg7gflKQBZIKfRD9jf1KH+A
-         bSjdaZlsStHZN7U/r5Do4DN77hJi8sogd9kcY7+0J5owJ4PrY0SiuBJjHw4O7nwhlaEA
-         LLaFOsA61HkGScZmlRLRm3zgG8DkOZzaZn86fE+Qyl81NGUdBUSbgXZGnP4Hi9IM08j7
-         uHnvNyJ1w7MF4/XH6H49YP5HqR5kUOvfizLv+jIh/7Y1oC3NJz+jg3AgQf86W9mOLvQ8
-         ef0R6ivFaJna3bJ0G6NTuJlXiTKHgcJ5LKHlfU94vRBYie6NMrxqTl06spwSjz6Yjc9l
-         SoKQ==
-X-Gm-Message-State: AFqh2krwR9gZVUGdgFLEYVIXa7ocfH26AW5N4mcJSDuByaUY4sPJTCJl
-        rB3HYN1Nt9dneXSBwxjonWagVls16wPsWKPiWw==
-X-Google-Smtp-Source: AMrXdXu6dRS3u/srGDYhPBnVsq7v/UC7iXVwcN+ZqAsRxsBxkwewgFIXTHo9cBn1W4PhAdmycaMh+6lzKzADQSQrzXU=
-X-Received: by 2002:a17:906:4894:b0:7a6:fc0f:6fe6 with SMTP id
- v20-20020a170906489400b007a6fc0f6fe6mr1734540ejq.694.1672336534454; Thu, 29
- Dec 2022 09:55:34 -0800 (PST)
+        bh=lXs+PETp5F1sLmKlUpnJ7KVN9WjqhwaoNYx00yCpTSY=;
+        b=YHJ/B5DRYmxevrR5bVF2PXbQ/MA1jbYqadvmaDCakswh4yTIOyomig2L7Oq3zWvSsn
+         3dkSQUyJUqIRsiClXUzy0C6KORP/Cl03MV7+z05NGzVEbskhmgajDms0adkdWE/Ll2WW
+         r6ECpYAvUYm98i7cmte7p1tuqh9eZMC/5UoUvWpnR1gqNprVgD2Ody88saq18QSXFz6/
+         7J0vRfu6fUXyPxDP4/I7K4CGnmxDHfv+I7QK1dhKw5RqX3ilEvaY9wzXqjvsAwzb/7YL
+         UKhp1s3hrr55sC8WOQtVFPA/B25MWeIfOxo92OtpqZFuVEhAVsEUNr/daVBGU5YDCGq3
+         n7CQ==
+X-Gm-Message-State: AFqh2koUmPr+b5SuR21/8QQM3Aq5zzrizqa4UBCODxmh+yKmlJM0JeT2
+        p4CSCLC3RRTzKxNaIFICADmdOWMUQHXZDl+03yg=
+X-Google-Smtp-Source: AMrXdXsRFyZO21OsR6MyDEqPE+3QuBmJxj3hiIt8xfTZZTF3BZtZ4kJ3PzB1F5J33iMonRQPeM0Pd2Y/++tDb5LWlgo=
+X-Received: by 2002:a17:906:3989:b0:7c1:1f28:afed with SMTP id
+ h9-20020a170906398900b007c11f28afedmr2446393eje.678.1672344715221; Thu, 29
+ Dec 2022 12:11:55 -0800 (PST)
 MIME-Version: 1.0
-References: <CAMWtyy1sSHc_DYQ3kq+FWMJKK5Wo3QEgO1yd6wQXx3x0Lp4Uog@mail.gmail.com>
- <Y6isrKS7zgMrNe3S@makrotopia.org>
-In-Reply-To: <Y6isrKS7zgMrNe3S@makrotopia.org>
-From:   Vishal Rao <vishalrao@gmail.com>
-Date:   Thu, 29 Dec 2022 23:25:23 +0530
-Message-ID: <CAMWtyy2EhZMd7Yf6CWXpM7f6EbzbYDu+ifpAnwpDiAP8zPoP0g@mail.gmail.com>
-Subject: Re: Wifi 6E 6ghz not working on MediaTek MT7922 (AMD RZ616)
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Vishal Rao <vishalrao@gmail.com>
+References: <20221229124845.1155429-1-martin.blumenstingl@googlemail.com> <d09d2480-a21e-69b3-90e4-5f361947057b@lwfinger.net>
+In-Reply-To: <d09d2480-a21e-69b3-90e4-5f361947057b@lwfinger.net>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Thu, 29 Dec 2022 21:11:43 +0100
+Message-ID: <CAFBinCBYbmrxP7UegAO7n7d1Dd=xo4pG1RE=H5-NVoSRX=Vdvg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] rtw88: Four fixes found while working on SDIO support
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
+        kvalo@kernel.org, pkshih@realtek.com, s.hauer@pengutronix.de,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -68,55 +68,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Daniel !
+Hello Larry,
 
-Thank you for your response - apologies for being slow to follow up -
-I will post the info you asked for soon [tm] but I note there appears
-to be some new firmware for the mt7922 (a few hours ago) which I will
-also try when gathering the info.
-
-Off the top of my head the regulatory info/region is set to US while I
-am located in India and I have tried the latest firmware off git
-master as well as another (?) location suggested by Nick Morrow with
-no luck (same results) but allow me some time (likely this weekend) to
-re-check and get back to you.
-
-Regards,
-Vishal
-
-On Mon, 26 Dec 2022 at 01:34, Daniel Golle <daniel@makrotopia.org> wrote:
+On Thu, Dec 29, 2022 at 6:41 PM Larry Finger <Larry.Finger@lwfinger.net> wrote:
+[...]
+> I do not feel qualified to review these contributions, but I have some suggestions.
 >
-> Hi!
->
-> On Sun, Dec 25, 2022 at 08:19:15PM +0530, Vishal Rao wrote:
-> > Hello!
-> >
-> > Using Ubuntu 22.04 LTS based distro elementary OS 7 with the latest
-> > available Ubuntu mainline kernel 6.1 RC5 build the wifi does not
-> > connect to the 6GHZ band (Wifi 6E) and it only even shows the 6ghz
-> > SSID name *after* I have connected to the 5ghz wifi band.
-> >
-> > This is on a new ASUS ZenBook laptop model UM5302TA with the AMD Ryzen
-> > 6800U CPU platform which includes the AMD-Mediatek co-developed RZ616
-> > wifi chip I believe.
-> >
-> > Pastebin of lspci -vvnn output: https://pastebin.ubuntu.com/p/QwM58ZkptG
-> >
-> > Let me know what further information I should provide - happy to do so!
->
->
-> Please also share the output of `iw list` which will tell if we are
-> dealing with a driver problem or a regulatory/configuration problem.
-> Did you configure the wireless regulatory domain the device is located
-> in?
->
-> To have access to 6 GHz bands the regulatory region needs to be known,
-> I read that on Ubuntu it works like this:
->
-> https://askubuntu.com/questions/701709/how-can-i-change-my-wireless-cards-regulatory-domain-dbm-higher-than-30
+> The first is that the subject should start with wifi: rtw88: .... That is a
+> fairly recent change that you likely did not catch.
+Oh, this is something that I missed. I'll wait until tomorrow to see
+if I can get Ping-Ke's Reviewed-by on patch 1 and then re-send the
+whole series with fixed subjects.
+
+> My second comment is that changed patches should have a version number to
+> identify that they are new patches.
+This series had four patches from the beginning. So no patches were
+added/removed during the lifecycle of this patchset.
+I think the cover-letter subject is a bit misleading as it contains
+the words "SDIO support". In fact the issues (which are fixed by this
+series) were found while working on SDIO support, but they also apply
+to existing PCIe/USB support.
+
+> [...] Once you have generated the patches, you
+> should then edit them to indicate what change was made to each patch in the
+> various versions. Such explanations should go below the --- following the
+> Signed-off-by line, and end with another ---. With these additions, the
+> community, and more importantly Kalle, can keep track of the various versions,
+> and know what reviewer's comments have been addressed.
+Noted. I will take care of this in v3 along with the updated subjects.
+
+> I know of several people that have asked about SDIO versions of these drivers.
+> They will be pleased to see them become available.
+Thanks for the motivating words :-)
 
 
-
--- 
-"The World is a book, and those who do not travel read only a page." -
-St. Augustine.
+Best regards,
+Martin
