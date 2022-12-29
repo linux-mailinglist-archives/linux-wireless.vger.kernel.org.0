@@ -2,271 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B639F6587FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 01:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3AFB658813
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 01:26:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232390AbiL2ACD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Dec 2022 19:02:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
+        id S231351AbiL2A03 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Dec 2022 19:26:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232066AbiL2ABy (ORCPT
+        with ESMTP id S231452AbiL2A01 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Dec 2022 19:01:54 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0418710540
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 16:01:49 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id b192so9044999iof.8
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 16:01:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSCl4VrRDtic4wbVqLsduJfQEHBf/GmAw6cZg1rPlfk=;
-        b=OgHoTU5lLCaBSd9Lo4WB0oc7VYxKwSUFSfRaeVBEZ+3yXqG1xfrkcdMFi7hn1Uu7qF
-         4z9Zh63T9AYWOhg4cBYNavlyR1nu4sprmAwGAtsIR/Mp/i9ZUN5/wMjwhjQ9s9xSLhUt
-         G5ffj0yZtraSD0g3TBkIhVNkeQrilDBDw3lW0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aSCl4VrRDtic4wbVqLsduJfQEHBf/GmAw6cZg1rPlfk=;
-        b=cPYEuya4TwItFqpB+aGvg+zQzuzE8xXXFpwGSIkiwg2hVBbHQKuSRK96HYCvh2K53Y
-         g5LO3gNq2m5XE36KPcRbJNkQK8ataA76HOt0Pm3xByqq8p00kjr6xsAyyT9jk/hComr4
-         G15jqG5nEd+dL9WXIucYhjuyqz1lfuhf6Zi1Scx53sV9nggMhS2dfyF6aGjoTKARfr33
-         nTyk2e4Yb4jaCq/NCGAxzAsd5ehs4x/y2JHrYp0aFFiwmrt/i3u4vqKXvJiTVVlZJPxf
-         Cb92tCGGguZ2yd5mJAPH33TpoCZnWM/9BTDqj5MIsuSd2OzI3Oy9EgfmYmz+a4PazDf1
-         fdEA==
-X-Gm-Message-State: AFqh2kolX6FaXU4aPb+CSCV1DqANYo4QmZ57iL3r7sDA2JaRc4oVBRHI
-        4Nl+5MVpYMkxwLVmf0ZfnuPhajwosEmh8DuTKYaV8w==
-X-Google-Smtp-Source: AMrXdXvdqpX3rGfPS4D6ZdMWIWtfuIXETCsZNb7O7AKN+w3BabEMpLDb+MUFiS0B8afGXCmkbRjSkEo2u/Zb13v/HHw=
-X-Received: by 2002:a02:a696:0:b0:38a:5811:1174 with SMTP id
- j22-20020a02a696000000b0038a58111174mr2036475jam.85.1672272108317; Wed, 28
- Dec 2022 16:01:48 -0800 (PST)
+        Wed, 28 Dec 2022 19:26:27 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B53E2F02D
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 16:26:25 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BT0PLsJ4004068, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BT0PLsJ4004068
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 29 Dec 2022 08:25:21 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Thu, 29 Dec 2022 08:26:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 29 Dec 2022 08:26:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Thu, 29 Dec 2022 08:26:15 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Felix Schwarz <felix.schwarz@oss.schwarz.eu>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: rtw_8821cu: "rfe 38 isn't supported" with Linux 6.2rc1 (0bda:c811)
+Thread-Topic: rtw_8821cu: "rfe 38 isn't supported" with Linux 6.2rc1
+ (0bda:c811)
+Thread-Index: AQHZGwvqAQY1RlZwHUqVG8JwOeMiNa6EATdg
+Date:   Thu, 29 Dec 2022 00:26:14 +0000
+Message-ID: <79ce633c3e274cffb22349b12566d78a@realtek.com>
+References: <a949dfb1-51e9-8f91-bef1-674c78101cc3@oss.schwarz.eu>
+In-Reply-To: <a949dfb1-51e9-8f91-bef1-674c78101cc3@oss.schwarz.eu>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzI4IOS4i+WNiCAxMDoxODowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20221220075215.1.Ic12e347e0d61a618124b742614e82bbd5d770173@changeid>
- <56d4941a-ad35-37ca-48ca-5f1bf7a86d25@quicinc.com>
-In-Reply-To: <56d4941a-ad35-37ca-48ca-5f1bf7a86d25@quicinc.com>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Wed, 28 Dec 2022 16:01:38 -0800
-Message-ID: <CACTWRwt7oQrCyHf=ZF6dW8TtRhOfa14XMZW39cYZWi4hhszcqg@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: snoc: enable threaded napi on WCN3990
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     kvalo@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Apologies for the late reply. Please see my response inline.
-
-On Tue, Dec 20, 2022 at 4:14 AM Manikanta Pubbisetty
-<quic_mpubbise@quicinc.com> wrote:
->
-> On 12/20/2022 1:25 PM, Abhishek Kumar wrote:
-> > NAPI poll can be done in threaded context along with soft irq
-> > context. Threaded context can be scheduled efficiently, thus
-> > creating less of bottleneck during Rx processing. This patch is
-> > to enable threaded NAPI on ath10k driver.
-> >
-> > Based on testing, it was observed that on WCN3990, the CPU0 reaches
-> > 100% utilization when napi runs in softirq context. At the same
-> > time the other CPUs are at low consumption percentage. This
-> > does not allow device to reach its maximum throughput potential.
-> > After enabling threaded napi, CPU load is balanced across all CPUs
-> > and following improvments were observed:
-> > - UDP_RX increase by ~22-25%
-> > - TCP_RX increase by ~15%
-> >
-> > Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
-> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> > ---
-> >
-> >   drivers/net/wireless/ath/ath10k/core.c | 16 ++++++++++++++++
-> >   drivers/net/wireless/ath/ath10k/hw.h   |  2 ++
-> >   drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
-> >   3 files changed, 21 insertions(+)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-> > index 5eb131ab916fd..ee4b6ba508c81 100644
-> > --- a/drivers/net/wireless/ath/ath10k/core.c
-> > +++ b/drivers/net/wireless/ath/ath10k/core.c
-> > @@ -100,6 +100,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA988X_HW_2_0_VERSION,
-> > @@ -140,6 +141,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA9887_HW_1_0_VERSION,
-> > @@ -181,6 +183,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA6174_HW_3_2_VERSION,
-> > @@ -217,6 +220,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA6174_HW_2_1_VERSION,
-> > @@ -257,6 +261,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA6174_HW_2_1_VERSION,
-> > @@ -297,6 +302,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA6174_HW_3_0_VERSION,
-> > @@ -337,6 +343,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA6174_HW_3_2_VERSION,
-> > @@ -381,6 +388,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA99X0_HW_2_0_DEV_VERSION,
-> > @@ -427,6 +435,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA9984_HW_1_0_DEV_VERSION,
-> > @@ -480,6 +489,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA9888_HW_2_0_DEV_VERSION,
-> > @@ -530,6 +540,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA9377_HW_1_0_DEV_VERSION,
-> > @@ -570,6 +581,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA9377_HW_1_1_DEV_VERSION,
-> > @@ -612,6 +624,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA9377_HW_1_1_DEV_VERSION,
-> > @@ -645,6 +658,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = QCA4019_HW_1_0_DEV_VERSION,
-> > @@ -692,6 +706,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = false,
-> >               .use_fw_tx_credits = true,
-> >               .delay_unmap_buffer = false,
-> > +             .enable_threaded_napi = false,
-> >       },
-> >       {
-> >               .id = WCN3990_HW_1_0_DEV_VERSION,
-> > @@ -725,6 +740,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
-> >               .hw_restart_disconnect = true,
-> >               .use_fw_tx_credits = false,
-> >               .delay_unmap_buffer = true,
-> > +             .enable_threaded_napi = true,
-> >       },
-> >   };
-> >
-> > diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-> > index 9643031a4427a..adf3076b96503 100644
-> > --- a/drivers/net/wireless/ath/ath10k/hw.h
-> > +++ b/drivers/net/wireless/ath/ath10k/hw.h
-> > @@ -639,6 +639,8 @@ struct ath10k_hw_params {
-> >       bool use_fw_tx_credits;
-> >
-> >       bool delay_unmap_buffer;
-> > +
-> > +     bool enable_threaded_napi;
-> >   };
-> >
-> >   struct htt_resp;
-> > diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-> > index cfcb759a87dea..b94150fb6ef06 100644
-> > --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> > +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> > @@ -927,6 +927,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
-> >
-> >       bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
-> >
-> > +     if (ar->hw_params.enable_threaded_napi)
-> > +             dev_set_threaded(&ar->napi_dev, true);
-> > +
->
-> Since this is done in the API specific to WCN3990, we do not need
-> hw_param for this.
-Just so that I am clear, are you suggesting to enable this by default
-in snoc.c, similar to what you did in
-https://lore.kernel.org/all/20220905071805.31625-2-quic_mpubbise@quicinc.com/
-. If my understanding is correct and there is no objection, I can
-remove hw_param and enable it by default on snoc.c .
-I used hw_param because, as I see it, threaded NAPI can have some
-adverse effect on the cache utilization and power.
-
-Thanks
-Abhishek
->
-> Thanks,
-> Manikanta
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRmVsaXggU2Nod2FyeiA8
+ZmVsaXguc2Nod2FyekBvc3Muc2Nod2Fyei5ldT4NCj4gU2VudDogVGh1cnNkYXksIERlY2VtYmVy
+IDI5LCAyMDIyIDY6MjYgQU0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0K
+PiBTdWJqZWN0OiBydHdfODgyMWN1OiAicmZlIDM4IGlzbid0IHN1cHBvcnRlZCIgd2l0aCBMaW51
+eCA2LjJyYzEgKDBiZGE6YzgxMSkNCj4gDQo+IEhpLA0KPiANCj4gSSBub3RpY2VkIHRoYXQgc3Vw
+cG9ydCBmb3IgUmVhbHRlaydzIDg4MjFjdSBkZXZpY2VzIHdhcyByZWNlbnRseSBtZXJnZWQgd2l0
+aA0KPiBjb21taXQgYWZmNWZmZDcuIEkgaGF2ZSBhICJSZWFsdGVrIFNlbWljb25kdWN0b3IgQ29y
+cC4gODAyLjExYWMgTklDIiAoSUQNCj4gMGJkYTpjODExKSBzbyBJIGRlY2lkZWQgdG8gdHJ5IDYu
+MnJjMS4NCj4gDQo+IEhvd2V2ZXIgSSBvbmx5IGdldCB0aGVzZSBtZXNzYWdlcyAoYW5kIG5vIG5l
+dyB3aWZpIG5ldHdvcmsgaW50ZXJmYWNlKSB3aGVuDQo+IHRyeWluZyB0byBsb2FkIHRoZSBtb2R1
+bGU6DQo+IA0KPiBydHdfODgyMWN1IDEtNDoxLjA6IEZpcm13YXJlIHZlcnNpb24gMjQuMTEuMCwg
+SDJDIHZlcnNpb24gMTINCj4gcnR3Xzg4MjFjdSAxLTQ6MS4wOiByZmUgMzggaXNuJ3Qgc3VwcG9y
+dGVkDQoNClJGRSB0eXBlIDM4IGlzIHZlcnkgc2ltaWxhciB0byB0eXBlIDYsIHNvIEkgc3VnZ2Vz
+dCB0byB0cnkgdGhpczogDQoNCmRpZmYgLS1naXQgYS9ydHc4ODIxYy5jIGIvcnR3ODgyMWMuYw0K
+aW5kZXggZGQwMWIyMmYuLjlhYzgzNzU2IDEwMDY0NA0KLS0tIGEvcnR3ODgyMWMuYw0KKysrIGIv
+cnR3ODgyMWMuYw0KQEAgLTE1NDcsNiArMTU0Nyw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgcnR3
+X3JmZV9kZWYgcnR3ODgyMWNfcmZlX2RlZnNbXSA9IHsNCiAgICAgICAgWzRdID0gUlRXX0RFRl9S
+RkVfRVhUKDg4MjFjLCAwLCAwLCAyKSwNCiAgICAgICAgWzZdID0gUlRXX0RFRl9SRkUoODgyMWMs
+IDAsIDApLA0KICAgICAgICBbMzRdID0gUlRXX0RFRl9SRkUoODgyMWMsIDAsIDApLA0KKyAgICAg
+ICBbMzhdID0gUlRXX0RFRl9SRkUoODgyMWMsIDAsIDApLA0KIH07DQoNCi0tDQpQaW5nLUtlDQoN
+Cg==
