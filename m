@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F16658918
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 04:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3970A658919
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 04:18:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbiL2DSo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Dec 2022 22:18:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33112 "EHLO
+        id S230421AbiL2DSq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Dec 2022 22:18:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbiL2DSk (ORCPT
+        with ESMTP id S229822AbiL2DSo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Dec 2022 22:18:40 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6030B12AA3
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 19:18:38 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id vm8so35464070ejc.2
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 19:18:38 -0800 (PST)
+        Wed, 28 Dec 2022 22:18:44 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7C712AA3
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 19:18:44 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id c17so25107436edj.13
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 19:18:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=skymem-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NQjOB5B01aZSP+KDmUzckGQ1EdxHEUJXPsuvKdxAAhc=;
-        b=PdjoZsXrAbOS1/xa6TCteBTwDzABnbmV0lgQCWUepOu1u7YAgUf2rP67OmAhJw0S8b
-         gtN81faWTC+JSVcCwIwnjbmKOnk7uEFWFMY/4Q7TjFb43/XY83KTvTmEiQ1YmjEK0u/x
-         qXo+j+86eXYlKTJDb8rKJlMLcj0DCyvvsHaR6B3z3cdb03vKejM66qaRrlWLoLJkAczd
-         O+kW47zD0f3H62acrwMVyiVh1zwvQe3cRsVR6/1adlzOIT5y2u2JPDw/NoA8XfnknCOb
-         pNRsXze2NqQot+ScjCr1nTWU1wSMA1gI6X45HYOMB4xCcdU3iau09WEIBGU6VTLq+FlL
-         DIKw==
+        bh=5AR5wI9VY+5BGe3w/epomFWgBMRz4Pt8+CJ5GyspjEQ=;
+        b=u+qDMyZ3S6BCRuKs4249QFFcEjer3/PpYQ5+D2k/VIDNPSMe/Sm72tMn8ZeXz8FZLB
+         U6/xprTkCpytA1KuzX5+DT9m4Gq/mypwJIgp+Y3LHEv49O1c8NO2SBJu4N23V0OOpbAs
+         AThC6+vOz8wx3UDdx0KImLjuBR9SP9j6llmJyW8UjQkCcWysIB7S9RjYCwkJM4bhAw7M
+         nMfo+Be8ZjoirvuO6gPLpD+0f0bwGRkwecO0uBycggQRmHCy3PgjzCsbeUbFZFVOII5I
+         xNihQ4BMb/sZy67+xXGKJBUia9nEULsQFZofyjHu2RhT9lcE6Py8S9zQUXVJve1T9jMN
+         QjFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NQjOB5B01aZSP+KDmUzckGQ1EdxHEUJXPsuvKdxAAhc=;
-        b=zR4iRpCuwhnkBAerih0zVAW2oAc5gs/SrKTTyY3waHrihWAude5Lz+PzEZK9OtXgmS
-         0oIJzJ+b/8jRB1ZNhZyIjlJ9J8ZfjlWCrAXHIuAqUnO3NL/wri/9aMX+0eaW4I45Lh2B
-         ni1m7gljcUnUvVHllD0oLYp/rXf4Dp9wzD5vuIJ5IMraV+rRuIddXgJwn4v60MpNuV+f
-         JzUcSpDAYptMXPYxxS1ub52zMJ5qvqmX23AbWdKe0SMHDrBH5VukhnfdVKXWY7yvd8mZ
-         cOaCMHLDsT9DNsBVKazaMIikQ2ksYjGeyBjqEHBwOZQjT3EqR0HrPQRvc2i1phyoKhsO
-         nlsw==
-X-Gm-Message-State: AFqh2kpecX8JIqmR/kkHU7atlpdmIATIXBCj0PZ2h+DEsMP11a3icmzG
-        8TGPSSBsQHYb0rjTgECpLzkes38od5dmDm2bUYOhg7PlmEOqZ/CE
-X-Google-Smtp-Source: AMrXdXsGR0Gkta0M+rcBCtwKP3TQYRjYgwljonBWbXrh3h5kDPl7eiToT46pHbkoXVpg+NrpT1TVFZYImRwoqx8LSsM=
-X-Received: by 2002:a17:907:80c6:b0:78d:4cdf:b40a with SMTP id
- io6-20020a17090780c600b0078d4cdfb40amr2057099ejc.102.1672283916982; Wed, 28
- Dec 2022 19:18:36 -0800 (PST)
+        bh=5AR5wI9VY+5BGe3w/epomFWgBMRz4Pt8+CJ5GyspjEQ=;
+        b=k8sOfPN2qNzHUN19bcwLQP90nbto8v5KstpzZp8hXIsGgG/7N3gvPMa5aN54lTr+sh
+         n7WLTZIaXGwTX1WvTeGmrgRmQhCxyPfUzxHLAD26frc5zOcFTLOn25q+GShgg2O846z2
+         OvG8ipd+Gn0GUuvoH7+iBzP/4sgY/tfN9CUHYPeKYucuPwZlOmhD/ptVcWPnIup2smT9
+         xzvFNYUl1CjlDuk9sFxoPhAkU9QQ0eyJV8o/wfxZbEGE0ueFzzxIqQ/nCIiOrbHvQb8c
+         7nIBpD8jhEmAtfH9RdlY3VnDNRNoJEV20H8A+z3iIkh+oEyfFbi12SSISV68xnTq0XEN
+         /ijw==
+X-Gm-Message-State: AFqh2koXo/VF2XvFDdAzRrsY+wyKEXRYlNQVS+mT4Xuwp3l6GpZLL63C
+        wwXdsvARNYCfdqBFHEuIkFoo51ns58E0a4+zhlgvTA==
+X-Google-Smtp-Source: AMrXdXsLM+qz0dmbeVb2Inu2zZSPSsolDeqpW1NCkR+Ao/4lRHuOb4I/jX6xb/iSzcNTAoEeMSXUPVjccI+8U4vmdNU=
+X-Received: by 2002:a05:6402:516b:b0:47e:1b4a:5489 with SMTP id
+ d11-20020a056402516b00b0047e1b4a5489mr3237150ede.262.1672283922633; Wed, 28
+ Dec 2022 19:18:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20221206114609.2006175-1-yangyingliang@huawei.com> <20221206114609.2006175-5-yangyingliang@huawei.com>
-In-Reply-To: <20221206114609.2006175-5-yangyingliang@huawei.com>
+References: <20221206114609.2006175-1-yangyingliang@huawei.com> <20221206114609.2006175-4-yangyingliang@huawei.com>
+In-Reply-To: <20221206114609.2006175-4-yangyingliang@huawei.com>
 From:   Info Skymem <info@skymem.com>
-Date:   Thu, 29 Dec 2022 04:18:25 +0100
-Message-ID: <CAKvd=_ikEBFk080XoegEzH-JNM6ZuCLMzGL2ZqRzxyVLJCX9-Q@mail.gmail.com>
-Subject: Re: [PATCH 4/4] libertas: don't call kfree_skb() under
- spin_lock_irqsave() in lbs_mac_event_disconnected()
+Date:   Thu, 29 Dec 2022 04:18:31 +0100
+Message-ID: <CAKvd=_iVE6nocALPEw8hzTZMm6rAv5PmnBkFiVZ_D-AjRNQeNA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] libertas: don't call kfree_skb() under
+ spin_lock_irqsave() in lbs_stop_iface()
 To:     Yang Yingliang <yangyingliang@huawei.com>
 Cc:     kvalo@kernel.org, libertas-dev@lists.infradead.org,
         linux-wireless@vger.kernel.org
@@ -88,22 +88,22 @@ rote:
 > context or with interrupts being disabled. So replace kfree_skb()
 > with dev_kfree_skb_irq() under spin_lock_irqsave().
 >
-> Fixes: f52b041aed77 ("libertas: Add spinlock to avoid race condition")
+> Fixes: d2e7b3425c47 ("libertas: disable functionality when interface is d=
+own")
 > Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 > ---
->  drivers/net/wireless/marvell/libertas/cmdresp.c | 2 +-
+>  drivers/net/wireless/marvell/libertas/main.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/net/wireless/marvell/libertas/cmdresp.c b/drivers/ne=
-t/wireless/marvell/libertas/cmdresp.c
-> index cb515c5584c1..74cb7551f427 100644
-> --- a/drivers/net/wireless/marvell/libertas/cmdresp.c
-> +++ b/drivers/net/wireless/marvell/libertas/cmdresp.c
-> @@ -48,7 +48,7 @@ void lbs_mac_event_disconnected(struct lbs_private *pri=
-v,
+> diff --git a/drivers/net/wireless/marvell/libertas/main.c b/drivers/net/w=
+ireless/marvell/libertas/main.c
+> index 8f5220cee112..f42d28d99763 100644
+> --- a/drivers/net/wireless/marvell/libertas/main.c
+> +++ b/drivers/net/wireless/marvell/libertas/main.c
+> @@ -216,7 +216,7 @@ int lbs_stop_iface(struct lbs_private *priv)
 >
->         /* Free Tx and Rx packets */
 >         spin_lock_irqsave(&priv->driver_lock, flags);
+>         priv->iface_running =3D false;
 > -       kfree_skb(priv->currenttxskb);
 > +       dev_kfree_skb_irq(priv->currenttxskb);
 >         priv->currenttxskb =3D NULL;
