@@ -2,75 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D63F2658C23
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 12:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41AFE658C3F
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 12:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbiL2LYh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Dec 2022 06:24:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
+        id S230522AbiL2LgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Dec 2022 06:36:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiL2LYg (ORCPT
+        with ESMTP id S229611AbiL2LgS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Dec 2022 06:24:36 -0500
+        Thu, 29 Dec 2022 06:36:18 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BE6286174;
-        Thu, 29 Dec 2022 03:24:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 021BD10BF;
+        Thu, 29 Dec 2022 03:36:17 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BTBNRL10019938, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BTBZ5l94031187, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BTBNRL10019938
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BTBZ5l94031187
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 29 Dec 2022 19:23:27 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+        Thu, 29 Dec 2022 19:35:05 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 29 Dec 2022 19:24:21 +0800
+ 15.1.2375.32; Thu, 29 Dec 2022 19:35:59 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 29 Dec 2022 19:24:21 +0800
+ 15.1.2375.7; Thu, 29 Dec 2022 19:35:59 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
  RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Thu, 29 Dec 2022 19:24:21 +0800
+ 15.01.2375.007; Thu, 29 Dec 2022 19:35:59 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     "martin.blumenstingl@googlemail.com" 
         <martin.blumenstingl@googlemail.com>
-CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "neojou@gmail.com" <neojou@gmail.com>,
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "kvalo@kernel.org" <kvalo@kernel.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "tehuang@realtek.com" <tehuang@realtek.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
         "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "macroalpha82@gmail.com" <macroalpha82@gmail.com>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
-        "nitin.gupta981@gmail.com" <nitin.gupta981@gmail.com>
-Subject: Re: [RFC PATCH v1 13/19] rtw88: mac: Add support for SDIO specifics in the power on sequence
-Thread-Topic: [RFC PATCH v1 13/19] rtw88: mac: Add support for SDIO specifics
- in the power on sequence
-Thread-Index: AQHZGktC3vnvtmQgSkm40YvvOQDovq6ECyLwgAAgvYCAAAmQAA==
-Date:   Thu, 29 Dec 2022 11:24:20 +0000
-Message-ID: <97a2efacecd6d6bb7add6e227a68f7d9e1ed9d0b.camel@realtek.com>
-References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
-         <20221227233020.284266-14-martin.blumenstingl@googlemail.com>
-         <b30273c693fd4868873d9bf4a1b5c0ca@realtek.com>
-         <CAFBinCAzmgwRAzAbXM17nmPw0bo9Mzx6gQQQrR3tPDb+n2jDHA@mail.gmail.com>
-In-Reply-To: <CAFBinCAzmgwRAzAbXM17nmPw0bo9Mzx6gQQQrR3tPDb+n2jDHA@mail.gmail.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
+Thread-Topic: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
+Thread-Index: AQHZGsFtJHlbRNsmYUOpTa0F4ufSPq6EmMng//+OnoCAABBdgA==
+Date:   Thu, 29 Dec 2022 11:35:59 +0000
+Message-ID: <a04c0a270ca095495e24af6950a462142aa199b8.camel@realtek.com>
+References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
+         <20221228133547.633797-2-martin.blumenstingl@googlemail.com>
+         <92eb7dfa8b7d447e966a2751e174b642@realtek.com>
+         <CAFBinCBKuTsK21CxEhth5js4Quyy0iUg6ctZwEQwwarePgghaQ@mail.gmail.com>
+In-Reply-To: <CAFBinCBKuTsK21CxEhth5js4Quyy0iUg6ctZwEQwwarePgghaQ@mail.gmail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 user-agent: Evolution 3.36.1-2 
 x-originating-ip: [172.16.22.50]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
 x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
 x-kse-antivirus-interceptor-info: scan successful
 x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzI5IOS4iuWNiCAwNzoyNTowMA==?=
 x-kse-bulkmessagesfiltering-scan-result: protection disabled
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <DD1688A5F4D2034585A1C182CFEF7173@realtek.com>
+Content-ID: <2951F09D4012FF4B97A1C877A34719AF@realtek.com>
 Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
@@ -85,16 +80,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIyLTEyLTI5IGF0IDExOjQ5ICswMTAwLCBNYXJ0aW4gQmx1bWVuc3RpbmdsIHdy
-b3RlOg0KPiBIaSBQaW5nLUtlLA0KPiANCj4gT24gVGh1LCBEZWMgMjksIDIwMjIgYXQgMjoxNSBB
-TSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6DQo+IFsuLi5dDQo+ID4g
-PiArICAgICAgICAgICAgIGlmIChydHdfc2Rpb19pc19zZGlvMzBfc3VwcG9ydGVkKHJ0d2Rldikp
-DQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgcnR3X3dyaXRlOF9zZXQocnR3ZGV2LCBSRUdf
-SENJX09QVF9DVFJMICsgMiwgQklUKDIpKTsNCj4gPiANCj4gPiBCSVRfVVNCX0xQTV9BQ1RfRU4g
-QklUKDEwKSAgIC8vIHJlZ19hZGRyICsyLCBzbyBiaXQgPj4gOA0KPiBUaGUgb25lcyBhYm92ZSBh
-cmUgY2xlYXIgdG8gbWUsIHRoYW5rIHlvdS4NCj4gQnV0IGZvciB0aGlzIG9uZSBJIGhhdmUgYSBx
-dWVzdGlvbjogZG9uJ3Qgd2UgbmVlZCBCSVQoMTgpIGZvciB0aGlzIG9uZQ0KPiBhbmQgdGhlbiBi
-aXQgPj4gMTY/DQo+IHJlZ19hZGRyICsgMDogYml0cyAwLi43DQo+IHJlZ19hZGRyICsgMTogYml0
-cyA4Li4xNQ0KPiByZWdfYWRkciArIDI6IGJpdHMgMTYuLjIzDQo+IA0KPiANCg0KU29ycnksIG15
-IG1pc3Rha2VzLg0KDQpJdCBzaG91bGQgYmUgICJCSVRfU0RJT19QQURfRTUgQklUKDE4KSIgYW5k
-ID4+IDE2Lg0KDQotLQ0KUGluZy1LZQ0KDQo=
+T24gVGh1LCAyMDIyLTEyLTI5IGF0IDExOjM3ICswMTAwLCBNYXJ0aW4gQmx1bWVuc3RpbmdsIHdy
+b3RlOg0KPiBIaSBQaW5nLUtlLA0KPiANCj4gT24gVGh1LCBEZWMgMjksIDIwMjIgYXQgMTA6MjUg
+QU0gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiBbLi4uXQ0KPiA+
+ID4gQEAgLTQzLDEzICs0MywxMyBAQCBzdHJ1Y3QgcnR3ODgyMWNlX2VmdXNlIHsNCj4gPiA+ICAg
+ICAgIHU4IGxpbmtfY2FwWzRdOw0KPiA+ID4gICAgICAgdTggbGlua19jb250cm9sWzJdOw0KPiA+
+ID4gICAgICAgdTggc2VyaWFsX251bWJlcls4XTsNCj4gPiA+IC0gICAgIHU4IHJlczA6MjsgICAg
+ICAgICAgICAgICAgICAgICAgLyogMHhmNCAqLw0KPiA+ID4gLSAgICAgdTggbHRyX2VuOjE7DQo+
+ID4gPiAtICAgICB1OCByZXMxOjI7DQo+ID4gPiAtICAgICB1OCBvYmZmOjI7DQo+ID4gPiAtICAg
+ICB1OCByZXMyOjM7DQo+ID4gPiAtICAgICB1OCBvYmZmX2NhcDoyOw0KPiA+ID4gLSAgICAgdTgg
+cmVzMzo0Ow0KPiA+ID4gKyAgICAgdTE2IHJlczA6MjsgICAgICAgICAgICAgICAgICAgICAvKiAw
+eGY0ICovDQo+ID4gPiArICAgICB1MTYgbHRyX2VuOjE7DQo+ID4gPiArICAgICB1MTYgcmVzMToy
+Ow0KPiA+ID4gKyAgICAgdTE2IG9iZmY6MjsNCj4gPiA+ICsgICAgIHUxNiByZXMyOjM7DQo+ID4g
+PiArICAgICB1MTYgb2JmZl9jYXA6MjsNCj4gPiA+ICsgICAgIHUxNiByZXMzOjQ7DQo+ID4gDQo+
+ID4gVGhlc2Ugc2hvdWxkIGJlIF9fbGUxNi4gVGhvdWdoIGJpdCBmaWVsZHMgYXJlIHN1aXRhYmxl
+IHRvIGVmdXNlIGxheW91dCwNCj4gPiB3ZSBkb24ndCBhY2Nlc3MgdGhlc2UgZmllbGRzIGZvciBu
+b3cuIEl0IHdvdWxkIGJlIHdlbGwuDQo+IE15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCBpdCBzaG91
+bGQgbG9vayBsaWtlIHRoaXMgKHJlcGxhY2luZyBhbGwgb2YgcmVzMC4ucmVzMyk6DQo+ICAgICBf
+X2xlMTYgc29tZV9maWVsZF9uYW1lOyAgICAgICAgICAgICAgICAgICAgIC8qIDB4ZjQgKi8NCj4g
+SG93IHRvIGNhbGwgdGhhdCBzaW5nbGUgX19sZTE2IGZpZWxkIHRoZW4/DQoNCllvdSBhcmUgcmln
+aHQuIE1heWJlLCB3ZSBjYW4gbmFtZSBpdCAncGNpZV9jYXAnLg0KQnV0LCB3ZSBkb24ndCB1c2Ug
+dGhlbSBmb3Igbm93LCBzbyBpdCBpcyBoYXJtbGVzcyB0byBwcmVzZXJ2ZSB0aGVtIGFzIGlzLiAN
+Cg0KDQo+IA0KPiBJIGFsc28gdHJpZWQgdXNpbmcgYml0LWZpZWxkcyBmb3IgYW4gX19sZTE2IChz
+byBiYXNpY2FsbHkgdGhlIHNhbWUgYXMNCj4gbXkgcGF0Y2ggYnV0IHVzaW5nIF9fbGUxNiBpbnN0
+ZWFkIG9mIHUxNikgYnV0IHRoYXQgbWFrZXMgc3BhcnNlDQo+IGNvbXBsYWluOg0KPiAgIGVycm9y
+OiBpbnZhbGlkIGJpdGZpZWxkIHNwZWNpZmllciBmb3IgdHlwZSByZXN0cmljdGVkIF9fbGUxNg0K
+PiANCj4gDQoNCldlIGNhbiBmaXggaXQgYnk6IA0KDQogICAgICB1OCByZXMwOjI7ICAgICAgICAg
+ICAgICAgICAgICAgIC8qIDB4ZjQgKi8NCiAgICAgIHU4IGx0cl9lbjoxOw0KICAgICAgdTggcmVz
+MToyOw0KICAgICAgdTggb2JmZjoyOw0KLSAgICAgdTggcmVzMjozOw0KKyAgICAgdTggcmVzMl8x
+OjE7DQorICAgICB1OCByZXMyXzI6MjsNCiAgICAgIHU4IG9iZmZfY2FwOjI7DQogICAgICB1OCBy
+ZXMzOjQ7DQoNCkknbSBub3Qgc3VyZSB3aHkgcGVvcGxlIG1lcmdlIGJpdCBmaWVsZHMgcmVzMl8x
+OjEgYW5kIHJlczJfMjoyIHRoYXQNCnNob3VsZCBiZSBpbiBkaWZmZXJlbnQgdTguIEkgaGF2ZSBj
+b25maXJtZWQgdGhpcyB3aXRoIGludGVybmFsIGRhdGEuDQoNCi0tDQpQaW5nLUtlDQoNCg==
