@@ -2,133 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DF32658868
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 02:40:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B4565888F
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 03:12:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232623AbiL2Bkd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Dec 2022 20:40:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36678 "EHLO
+        id S230157AbiL2CMT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Dec 2022 21:12:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230157AbiL2Bkb (ORCPT
+        with ESMTP id S229822AbiL2CMR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Dec 2022 20:40:31 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4FF681183D;
-        Wed, 28 Dec 2022 17:40:30 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BT1dNdR5006250, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BT1dNdR5006250
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 29 Dec 2022 09:39:23 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 29 Dec 2022 09:40:17 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 29 Dec 2022 09:40:16 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Thu, 29 Dec 2022 09:40:16 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Chris Morgan <macroalpha82@gmail.com>,
-        "Nitin Gupta" <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: RE: [RFC PATCH v1 18/19] rtw88: Add support for the SDIO based RTL8822CS chipset
-Thread-Topic: [RFC PATCH v1 18/19] rtw88: Add support for the SDIO based
- RTL8822CS chipset
-Thread-Index: AQHZGktEJugCouG9V0Kgbw48Ihs1066EFpog
-Date:   Thu, 29 Dec 2022 01:40:16 +0000
-Message-ID: <59ab30de2c33438ebad948b0a36aad21@realtek.com>
-References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
- <20221227233020.284266-19-martin.blumenstingl@googlemail.com>
-In-Reply-To: <20221227233020.284266-19-martin.blumenstingl@googlemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/12/28_=3F=3F_10:54:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 28 Dec 2022 21:12:17 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF88DA3
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 18:12:12 -0800 (PST)
+X-UUID: 6956e9e9b28841ec9df3e5cdf42f89e7-20221229
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=7isSX3cY3PmUFv07+6GIMgRM7vpDayp8dpRnd4LPrrM=;
+        b=MzLlqTJvrjNRPcI7TUU6GmuEgfwfl8mCDCBsM7VbsYQIY9lLOSQzb2SeTzl62Sp296K4qAtzeGjD+1MXl811Ccoxy9V+RJFNenoWLypiNkYCNRV56btiv6sP9OnRPH4QCTELnHiSYuTzGwJM7oQ52yNtIw91ksJLbHWYzyUuqWU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.14,REQID:61471ffe-de47-41cb-918b-35ef89a97afc,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:dcaaed0,CLOUDID:a2163ef4-ff42-4fb0-b929-626456a83c14,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 6956e9e9b28841ec9df3e5cdf42f89e7-20221229
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1057577540; Thu, 29 Dec 2022 10:12:05 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Thu, 29 Dec 2022 10:12:04 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Thu, 29 Dec 2022 10:12:04 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: remove BW80+80 support
+Date:   Thu, 29 Dec 2022 10:11:31 +0800
+Message-ID: <20221229021131.9361-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+mt7915 doesn't support bw80+80.
 
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Money Wang<Money.Wang@mediatek.com>
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 38 +++++--------------
+ 1 file changed, 9 insertions(+), 29 deletions(-)
 
-> -----Original Message-----
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Sent: Wednesday, December 28, 2022 7:30 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ulf Hansson
-> <ulf.hansson@linaro.org>; linux-kernel@vger.kernel.org; netdev@vger.kernel.org;
-> linux-mmc@vger.kernel.org; Chris Morgan <macroalpha82@gmail.com>; Nitin Gupta <nitin.gupta981@gmail.com>;
-> Neo Jou <neojou@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
-> Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Subject: [RFC PATCH v1 18/19] rtw88: Add support for the SDIO based RTL8822CS chipset
-> 
-> Wire up RTL8822CS chipset support using the new rtw88 SDIO HCI code as
-> well as the existing RTL8822C chipset code.
-> 
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/Kconfig    | 11 ++++++
->  drivers/net/wireless/realtek/rtw88/Makefile   |  3 ++
->  .../net/wireless/realtek/rtw88/rtw8822cs.c    | 34 +++++++++++++++++++
->  3 files changed, 48 insertions(+)
->  create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cs.c
-> 
-
-[...]
-
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822cs.c
-> b/drivers/net/wireless/realtek/rtw88/rtw8822cs.c
-> new file mode 100644
-> index 000000000000..3d7279d70aa9
-> --- /dev/null
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822cs.c
-> @@ -0,0 +1,34 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-> +// Copyright(c) Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-
-Normally, we should use '/* ... */' style comment. The exception is 
-'// SPDX-License-Identifier: ...' in *.c
-
-Therefore, here should be:
-
-// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-/* Copyright(c) Martin Blumenstingl <martin.blumenstingl@googlemail.com>
- */
-
-As well as other rtw88*s.c
-
---
-Ping-Ke
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 571c94835942..c72d673f02dd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -38,8 +38,7 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ 				       BIT(NL80211_CHAN_WIDTH_20) |
+ 				       BIT(NL80211_CHAN_WIDTH_40) |
+ 				       BIT(NL80211_CHAN_WIDTH_80) |
+-				       BIT(NL80211_CHAN_WIDTH_160) |
+-				       BIT(NL80211_CHAN_WIDTH_80P80),
++				       BIT(NL80211_CHAN_WIDTH_160),
+ 	}
+ };
+ 
+@@ -394,11 +393,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 			phy->mt76->sband_5g.sband.vht_cap.cap |=
+ 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
+ 				IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
+-
+-			if (!dev->dbdc_support)
+-				phy->mt76->sband_5g.sband.vht_cap.cap |=
+-					IEEE80211_VHT_CAP_SHORT_GI_160 |
+-					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ;
+ 		} else {
+ 			phy->mt76->sband_5g.sband.vht_cap.cap |=
+ 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
+@@ -834,13 +828,9 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
+ 	int sts = hweight8(phy->mt76->chainmask);
+ 	u8 c, sts_160 = sts;
+ 
+-	/* Can do 1/2 of STS in 160Mhz mode for mt7915 */
+-	if (is_mt7915(&dev->mt76)) {
+-		if (!dev->dbdc_support)
+-			sts_160 /= 2;
+-		else
+-			sts_160 = 0;
+-	}
++	/* mt7915 doesn't support bw160 */
++	if (is_mt7915(&dev->mt76))
++		sts_160 = 0;
+ 
+ #ifdef CONFIG_MAC80211_MESH
+ 	if (vif == NL80211_IFTYPE_MESH_POINT)
+@@ -894,9 +884,6 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
+ 	elem->phy_cap_info[3] |= IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER;
+ 	elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
+ 
+-	/* num_snd_dim
+-	 * for mt7915, max supported sts is 2 for bw > 80MHz and 0 if dbdc
+-	 */
+ 	c = FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK,
+ 		       sts - 1);
+ 	if (sts_160)
+@@ -944,15 +931,10 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 	int i, idx = 0, nss = hweight8(phy->mt76->antenna_mask);
+ 	u16 mcs_map = 0;
+ 	u16 mcs_map_160 = 0;
+-	u8 nss_160;
++	u8 nss_160 = nss;
+ 
+-	if (!is_mt7915(&dev->mt76))
+-		nss_160 = nss;
+-	else if (!dev->dbdc_support)
+-		/* Can do 1/2 of NSS streams in 160Mhz mode for mt7915 */
+-		nss_160 = nss / 2;
+-	else
+-		/* Can't do 160MHz with mt7915 dbdc */
++	/* Can't do 160MHz with mt7915 */
++	if (is_mt7915(&dev->mt76))
+ 		nss_160 = 0;
+ 
+ 	for (i = 0; i < 8; i++) {
+@@ -1002,8 +984,7 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 		else if (nss_160)
+ 			he_cap_elem->phy_cap_info[0] =
+ 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
+-				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
+-				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G;
++				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
+ 		else
+ 			he_cap_elem->phy_cap_info[0] =
+ 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
+@@ -1075,12 +1056,11 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 			break;
+ 		}
+ 
++		memset(he_mcs, 0, sizeof(*he_mcs));
+ 		he_mcs->rx_mcs_80 = cpu_to_le16(mcs_map);
+ 		he_mcs->tx_mcs_80 = cpu_to_le16(mcs_map);
+ 		he_mcs->rx_mcs_160 = cpu_to_le16(mcs_map_160);
+ 		he_mcs->tx_mcs_160 = cpu_to_le16(mcs_map_160);
+-		he_mcs->rx_mcs_80p80 = cpu_to_le16(mcs_map_160);
+-		he_mcs->tx_mcs_80p80 = cpu_to_le16(mcs_map_160);
+ 
+ 		mt7915_set_stream_he_txbf_caps(phy, he_cap, i);
+ 
+-- 
+2.18.0
 
