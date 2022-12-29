@@ -2,119 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB5F65891B
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 04:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC7CA65895D
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 05:20:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230469AbiL2DT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Dec 2022 22:19:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33286 "EHLO
+        id S231184AbiL2EUI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Dec 2022 23:20:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbiL2DT4 (ORCPT
+        with ESMTP id S230006AbiL2EUG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Dec 2022 22:19:56 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B837512ABF
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 19:19:55 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id r26so19942593edc.5
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Dec 2022 19:19:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=skymem-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d38/b2KTwDAwbScek7qgp9klFDsIPElRWHJr1fH5CaA=;
-        b=cREynCZYh0eCGLSUV6WaSc2VXWktfl+04WGsBPv3yB+nFfdpVncl1wijPH3gxryavX
-         8p1ypg4STZgvP4gt1HHJt3bkEJZGXAsJLKi3QCRwC/mmaTNgwAd3eKjqy4/xAjDwno6Q
-         ysme6jWJDnPn1R5xXGf8Y3OY/kUhLHDR4XndHDxj6NtEJjiy6EPovTggpYFTIckcs1gv
-         VuJ/92he1rF0FveIOjrDgfEBiU1sVrTpag0Szb018HHN5xJ4SJTlaTY5MYQMw8BhKqgW
-         SrY7H7711hoz/q4w536tdPp91txB8bOJExwzpXRzpd8hXzJPay/W9ki7GULUCvV18hb1
-         joqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d38/b2KTwDAwbScek7qgp9klFDsIPElRWHJr1fH5CaA=;
-        b=UqB4d5TYJ60ig7JE2ATH9VN8zV3qv0lEzcVzzT4AkW9gQAkO/9tQfexitbCW/+y9Ph
-         uw91nZgNx7bCedlFva4Z2sFdZvLCZj0XBSb1hUsNta7fIcM3k1uAVxB739cK2E4h7Ql+
-         0HEjy5NpP8G0bl3H17czK1QszKBpSXwb4tKQB0usQwJw79jrL0hAwrFV+Hth4PgB8vSl
-         jGx0D83HKkmth3kQL0I3RhowaDf2OSt+l2yFM9bvR6puxAAkXkqsQmJT6WHHmAGSb6Gd
-         sDh1hpFAczQGs3hLQq3CjeIRRKNYXIkZ+YOLI7S3eQsbXLzN5ZYihGwnDEiubktwcKj4
-         UMmg==
-X-Gm-Message-State: AFqh2kqOQrtmxdoAArl19Cum8t+Ng3YuqtNtw4FFXSBYnySYvYSBL/py
-        sZ7HaHyKoDw6EPjb43N1SSNbvFKb9J8LCrPCAQ5JzA==
-X-Google-Smtp-Source: AMrXdXuSaQB57NI+Muqiqrli3CsYdKvFpvvRKjlfWdHzmxdgaQJb8ftl6kJTP10iGzEKQ5nqGG4ylYtwVFApVUNrCiw=
-X-Received: by 2002:a05:6402:2996:b0:461:c563:defa with SMTP id
- eq22-20020a056402299600b00461c563defamr2261931edb.72.1672283994347; Wed, 28
- Dec 2022 19:19:54 -0800 (PST)
+        Wed, 28 Dec 2022 23:20:06 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4E1BD12087;
+        Wed, 28 Dec 2022 20:20:02 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BT4IrznE022628, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BT4IrznE022628
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 29 Dec 2022 12:18:54 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 29 Dec 2022 12:19:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 29 Dec 2022 12:19:47 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Thu, 29 Dec 2022 12:19:47 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Chris Morgan <macroalpha82@gmail.com>,
+        "Nitin Gupta" <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: RE: [RFC PATCH v1 00/19] rtw88: Add SDIO support
+Thread-Topic: [RFC PATCH v1 00/19] rtw88: Add SDIO support
+Thread-Index: AQHZGks+1Xp5+2HTNk6lcrww/IAcmq6EK72Q
+Date:   Thu, 29 Dec 2022 04:19:47 +0000
+Message-ID: <8fe9b10318994be18934ec41e792af56@realtek.com>
+References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/12/28_=3F=3F_10:54:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20221207150008.111743-1-yangyingliang@huawei.com> <20221207150008.111743-3-yangyingliang@huawei.com>
-In-Reply-To: <20221207150008.111743-3-yangyingliang@huawei.com>
-From:   Info Skymem <info@skymem.com>
-Date:   Thu, 29 Dec 2022 04:19:43 +0100
-Message-ID: <CAKvd=_hycVYc-dh=wWwOh1XrpdmT82TrvYd_bxXu6ou2H6TGDw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] libertas/if_usb: don't call kfree_skb() under spin_lock_irqsave()
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     kvalo@kernel.org, libertas-dev@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-thank you for your information.
 
-On our website you can find email addresses of companies and people.
-https://www.skymem.info
 
-In short, it=E2=80=99s like Google for emails.
+> -----Original Message-----
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Wednesday, December 28, 2022 7:30 AM
+> To: linux-wireless@vger.kernel.org
+> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ulf Hansson
+> <ulf.hansson@linaro.org>; linux-kernel@vger.kernel.org; netdev@vger.kernel.org;
+> linux-mmc@vger.kernel.org; Chris Morgan <macroalpha82@gmail.com>; Nitin Gupta <nitin.gupta981@gmail.com>;
+> Neo Jou <neojou@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
+> Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Subject: [RFC PATCH v1 00/19] rtw88: Add SDIO support
+> 
+> Recently the rtw88 driver has gained locking support for the "slow" bus
+> types (USB, SDIO) as part of USB support. Thanks to everyone who helped
+> make this happen!
+> 
+> Based on the USB work (especially the locking part and various
+> bugfixes) this series adds support for SDIO based cards. It's the
+> result of a collaboration between Jernej and myself. Neither of us has
+> access to the rtw88 datasheets. All of our work is based on studying
+> the RTL8822BS and RTL8822CS vendor drivers and trial and error.
+> 
+> Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
+> Other users have confirmed that RTL8821CS support is working as well.
+> RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
+> where needed) but has not been tested at this point.
+> 
+> Jernej's results with a RTL8822BS:
+> - Main functionality works
+> - Had a case where no traffic got across the link until he issued a
+>   scan
+> 
+> My results with a RTL8822CS:
+> - 2.4GHz and 5GHz bands are both working
+> - TX throughput on a 5GHz network is between 50 Mbit/s and 90 Mbit/s
+> - RX throughput on a 5GHz network is at 19 Mbit/s
 
-Best regards,
-Robert,
-Skymem team
+I have a suggestion about RX throughput, please check below registers with
+vendor driver:
 
-On Wed, Dec 7, 2022 at 4:04 PM Yang Yingliang <yangyingliang@huawei.com> wr=
-ote:
->
-> It is not allowed to call kfree_skb() from hardware interrupt
-> context or with interrupts being disabled. So replace kfree_skb()
-> with dev_kfree_skb_irq() under spin_lock_irqsave(). Compile
-> tested only.
->
-> Fixes: a3128feef6d5 ("libertas: use irqsave() in USB's complete callback"=
-)
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
->  drivers/net/wireless/marvell/libertas/if_usb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/marvell/libertas/if_usb.c b/drivers/net=
-/wireless/marvell/libertas/if_usb.c
-> index 32fdc4150b60..2240b4db8c03 100644
-> --- a/drivers/net/wireless/marvell/libertas/if_usb.c
-> +++ b/drivers/net/wireless/marvell/libertas/if_usb.c
-> @@ -637,7 +637,7 @@ static inline void process_cmdrequest(int recvlength,=
- uint8_t *recvbuff,
->         priv->resp_len[i] =3D (recvlength - MESSAGE_HEADER_LEN);
->         memcpy(priv->resp_buf[i], recvbuff + MESSAGE_HEADER_LEN,
->                 priv->resp_len[i]);
-> -       kfree_skb(skb);
-> +       dev_kfree_skb_irq(skb);
->         lbs_notify_command_response(priv, i);
->
->         spin_unlock_irqrestore(&priv->driver_lock, flags);
-> --
-> 2.25.1
->
->
-> _______________________________________________
-> libertas-dev mailing list
-> libertas-dev@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/libertas-dev
+REG_RXDMA_AGG_PG_TH
+REG_TXDMA_PQ_MAP(0x10c) BIT_RXDMA_AGG_EN (bit2)
+REG_RXDMA_MODE(0290)  BIT_DMA_MODE (bit1)
+
+Try to adjust AGG_PG_TH to see if it can help.
+
+--
+Ping-Ke
+
