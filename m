@@ -2,53 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76591658AF0
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 10:26:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98CFE658AF1
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 10:27:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233090AbiL2J0w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Dec 2022 04:26:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33692 "EHLO
+        id S233116AbiL2J1H convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Dec 2022 04:27:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233109AbiL2J0u (ORCPT
+        with ESMTP id S230416AbiL2J1G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Dec 2022 04:26:50 -0500
-Received: from mail.schwarz.eu (eight.schwarz.eu [IPv6:2a01:4f8:c17:2a56::8:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4882213D35
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 01:26:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=oss.schwarz.eu; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TqKITWH2KzWt4CFinzy2XAYNVXlR7/0RCXnqOB9BDX0=; b=QWf+Cb/bqov/CWfsPGgIaQi6vm
-        8vhcebs54kDqdKNCHv+wLuCsJTAI9/nOzK0TTx0uxiklPK7N/l4aPj6pEi385YsbNtn+ffknqWwfW
-        +jh9tyhR1PIPn4NemblpgHPm5DT9Oca94r11LOIP3M8UQ9tPLdp0kYdNfVtdurnlFoGFdQ77r6dDb
-        VPRKHRmROVK9MANC933/nQHFzp2kJxNObzglGMOHBxzTTPtoNJ2Pxxk+I1kI44weyZcax0OQlxzgo
-        tA1t3loATwRIZAFcbLc5iUtuxcEpbEU7/1W7RRRo/Hxh1EQjXBiWUdzd5rkekN8maLtuHj1SR124x
-        0TJwqlSg==;
-Message-ID: <8c31c09f-68c1-42a8-1db9-1ea98caf8d05@oss.schwarz.eu>
-Date:   Thu, 29 Dec 2022 10:26:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: rtw_8821cu: "rfe 38 isn't supported" with Linux 6.2rc1
- (0bda:c811)
-To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Thu, 29 Dec 2022 04:27:06 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 479AE2EE;
+        Thu, 29 Dec 2022 01:27:05 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BT9Pt6iA029915, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BT9Pt6iA029915
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 29 Dec 2022 17:25:55 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 29 Dec 2022 17:26:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 29 Dec 2022 17:26:49 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Thu, 29 Dec 2022 17:26:49 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <a949dfb1-51e9-8f91-bef1-674c78101cc3@oss.schwarz.eu>
- <79ce633c3e274cffb22349b12566d78a@realtek.com>
-Content-Language: en-US
-From:   Felix Schwarz <felix.schwarz@oss.schwarz.eu>
-In-Reply-To: <79ce633c3e274cffb22349b12566d78a@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Received: by mail.schwarz.eu with esmtpsa (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.96)
-        (envelope-from <felix.schwarz@oss.schwarz.eu>)
-        id 1pApBW-0006L0-1a; Thu, 29 Dec 2022 10:26:46 +0100
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tehuang@realtek.com" <tehuang@realtek.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 0/4] rtw88: Four fixes found while working on SDIO support
+Thread-Topic: [PATCH 0/4] rtw88: Four fixes found while working on SDIO
+ support
+Thread-Index: AQHZGsFtyqvVdb8Ir06VvN9lkSQirK6EmVQw
+Date:   Thu, 29 Dec 2022 09:26:49 +0000
+Message-ID: <84e2f2289e964834b1eaf60d4f9f5255@realtek.com>
+References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/12/29_=3F=3F_07:25:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,42 +76,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ping-Ke,
 
-Am 29.12.22 um 01:26 schrieb Ping-Ke Shih:
-> RFE type 38 is very similar to type 6, so I suggest to try this:
+
+> -----Original Message-----
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Wednesday, December 28, 2022 9:36 PM
+> To: linux-wireless@vger.kernel.org
+> Cc: tony0620emma@gmail.com; kvalo@kernel.org; Ping-Ke Shih <pkshih@realtek.com>; tehuang@realtek.com;
+> s.hauer@pengutronix.de; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Martin Blumenstingl
+> <martin.blumenstingl@googlemail.com>
+> Subject: [PATCH 0/4] rtw88: Four fixes found while working on SDIO support
 > 
-> diff --git a/rtw8821c.c b/rtw8821c.c
-> index dd01b22f..9ac83756 100644
-> --- a/rtw8821c.c
-> +++ b/rtw8821c.c
-> @@ -1547,6 +1547,7 @@ static const struct rtw_rfe_def rtw8821c_rfe_defs[] = {
->          [4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
->          [6] = RTW_DEF_RFE(8821c, 0, 0),
->          [34] = RTW_DEF_RFE(8821c, 0, 0),
-> +       [38] = RTW_DEF_RFE(8821c, 0, 0),
->   };
+> This series consists of three patches which are fixing existing
+> behavior (meaning: it either affects PCIe or USB or both) in the rtw88
+> driver.
+> 
+> The first change adds the packed attribute to the eFuse structs. This
+> was spotted by Ping-Ke while reviewing the SDIO support patches from
+> [0].
+> 
+> The remaining three changes relate to locking (barrier hold) problems.
+> We previously had discussed patches for this for SDIO support, but the
+> problem never ocurred while testing USB cards. It turns out that these
+> are still needed and I think that they also fix the same problems for
+> USB users (it's not clear how often it happens there though).
+> 
+> The issue fixed by the second and third patches have been spotted by a
+> user who tested rtw88 SDIO support. Everything is working fine for him
+> but there are warnings [1] and [2] in the kernel log stating "Voluntary
+> context switch within RCU read-side critical section!".
+> 
+> The solution in the third and fourth patch was actually suggested by
+> Ping-Ke in [3]. Thanks again!
+> 
+> 
+> [0] https://lore.kernel.org/linux-wireless/695c976e02ed44a2b2345a3ceb226fc4@realtek.com/
+> [1] https://github.com/LibreELEC/LibreELEC.tv/pull/7301#issuecomment-1366421445
+> [2] https://github.com/LibreELEC/LibreELEC.tv/pull/7301#issuecomment-1366610249
+> [3] https://lore.kernel.org/lkml/e0aa1ba4336ab130712e1fcb425e6fd0adca4145.camel@realtek.com/
+> 
+> 
+> Martin Blumenstingl (4):
+>   rtw88: Add packed attribute to the eFuse structs
 
-That seems to help. The errors I posted initially are all gone.
+I think this patch depends on another patchset or oppositely.
+Please point that out for reviewers.
 
-Now I see a wifi card in network manager and scanning for wifi networks works as 
-well. Connection to my wireless network does not work though (neither 2.4 Ghz 
-nor 5) - no real errors just endless spinning after I entered my password. 
-(Though running any application is *extremly* slow without an obvious cause when 
-running 6.2rc1, maybe a different bug?)
-
-I should probably debug this without gnome + networkmanager but maybe you have 
-an idea based on these errors?
-
-rtw_8821cu 1-4:1.0: read register 0x5 failed with -110
-rtw_8821cu 1-4:1.0: read register 0x20 failed with -110
-rtw_8821cu 1-4:1.0: read register 0x7c failed with -110
-rtw_8821cu 1-4:1.0: read register 0x1080 failed with -110
-rtw_8821cu 1-4:1.0: write register 0x3 failed with -110
-
-
-I attached the logs produced once I attach the USB device running Linux 6.2rc1 
-with the additional patch for rfe 38.
-
-Felix
+>   rtw88: Configure the registers from rtw_bf_assoc() outside the RCU
+>     lock
+>   rtw88: Use rtw_iterate_vifs() for rtw_vif_watch_dog_iter()
+>   rtw88: Use non-atomic rtw_iterate_stas() in rtw_ra_mask_info_update()
+> 
+>  drivers/net/wireless/realtek/rtw88/bf.c       | 13 ++++++------
+>  drivers/net/wireless/realtek/rtw88/mac80211.c |  4 +++-
+>  drivers/net/wireless/realtek/rtw88/main.c     |  6 ++++--
+>  drivers/net/wireless/realtek/rtw88/main.h     |  6 +++---
+>  drivers/net/wireless/realtek/rtw88/rtw8723d.h |  6 +++---
+>  drivers/net/wireless/realtek/rtw88/rtw8821c.h | 20 +++++++++----------
+>  drivers/net/wireless/realtek/rtw88/rtw8822b.h | 20 +++++++++----------
+>  drivers/net/wireless/realtek/rtw88/rtw8822c.h | 20 +++++++++----------
+>  8 files changed, 50 insertions(+), 45 deletions(-)
+> 
+> --
+> 2.39.0
 
