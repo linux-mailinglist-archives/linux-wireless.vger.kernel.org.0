@@ -2,93 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 018C0658C55
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 12:42:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6876F658CD9
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 13:49:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233151AbiL2Lmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Dec 2022 06:42:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48752 "EHLO
+        id S230221AbiL2MtP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Dec 2022 07:49:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbiL2Lm3 (ORCPT
+        with ESMTP id S229487AbiL2MtO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Dec 2022 06:42:29 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6433A13E81;
-        Thu, 29 Dec 2022 03:42:25 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BTBfErX5002841, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BTBfErX5002841
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 29 Dec 2022 19:41:15 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Thu, 29 Dec 2022 19:42:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 29 Dec 2022 19:42:06 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Thu, 29 Dec 2022 19:42:06 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "martin.blumenstingl@googlemail.com" 
-        <martin.blumenstingl@googlemail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tehuang@realtek.com" <tehuang@realtek.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/4] rtw88: Four fixes found while working on SDIO support
-Thread-Topic: [PATCH 0/4] rtw88: Four fixes found while working on SDIO
- support
-Thread-Index: AQHZGsFtyqvVdb8Ir06VvN9lkSQirK6EmVQw//+PBwCAABEeAA==
-Date:   Thu, 29 Dec 2022 11:42:06 +0000
-Message-ID: <c29eb85527c6834482ecdbb0946ff9b794fe7cb6.camel@realtek.com>
-References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
-         <84e2f2289e964834b1eaf60d4f9f5255@realtek.com>
-         <CAFBinCAvSYgnamMCEBGg5+vt6Uvz+AKapJ+dSfSPBbmtERYsBw@mail.gmail.com>
-In-Reply-To: <CAFBinCAvSYgnamMCEBGg5+vt6Uvz+AKapJ+dSfSPBbmtERYsBw@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.22.50]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEyLzI5IOS4iuWNiCAwNzoyNTowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B7AE489C41B8D24BBD47138620B88D83@realtek.com>
-Content-Transfer-Encoding: base64
+        Thu, 29 Dec 2022 07:49:14 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D47313DC8;
+        Thu, 29 Dec 2022 04:49:13 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id u28so21716320edd.10;
+        Thu, 29 Dec 2022 04:49:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fVKNfEXwGcxUKChJbDDSuR/UJQgliUdMKqkK7jJXH+U=;
+        b=Tui/pCQHLBIRvY6EKMjcdGmm+8e/ZQPCcv7UOnO3rq1RXUyflHudQUG1QUbdmuxIOB
+         ysNrXtZb4qNtnIpjgRBiLaFItKcoRm5B/DfWbeTyc0o/WLHTcpD658WvB2ErecE/iNfN
+         I1RWEmS+Q2QD5mv7YR72CTh9OKWIPJOYkF+uq7xA/8RmEUcPcTnNC1ayPsH5Xsl4YWK2
+         LIXmPBw7F0LkpQrLVrKVAOwxJxt9h8pRP2iMaUzahiEmbqh8EgHxSEFIyKigRznBu/Ms
+         RbmvtHaY1Gy4SPzwF4nj2AMmmrbW9cP/pBHGgww8enrcQNWSrOLLjHJxJDLPw6ETecIJ
+         wdOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fVKNfEXwGcxUKChJbDDSuR/UJQgliUdMKqkK7jJXH+U=;
+        b=bvosCkNeSCOGZ4IWdMgYfbVz/KbmB+vTETPPuEi8sXxv10ILjUUhKw6HDsvAyLVrKd
+         3X2PWypep0qZdALIqGgJS92O2lfRGoVJZJO1xwPdTDe7LEFbf6O6bruEQtGn8Ex6UKan
+         sITHg+bTntOVcZ/sNd5pfxN8qiEXF/TXK+WFiNACbPc9P8sg86qaDDJK8kWwuYBT88BF
+         9dIyfsYqWv900uikrt6ALHPiZi9vv5rSG3QuHXPlvklOpSw3i0HxHM2VLLMoBZx8dsbL
+         8LkyaV5ax8eIDWHpG2f/W4Lfca/nscQnZQAOPbYzz+muV+GAQdtGMFiORaMd+n5OJkJW
+         YLRQ==
+X-Gm-Message-State: AFqh2kpaSDI7ELAjzl+nlWrov26UzGZlsrmFhK7YPQ0Afy9lVEwQ/eAC
+        sHjyvhK33EvNKiJUkxGRYVziF7+wRPs=
+X-Google-Smtp-Source: AMrXdXsOFzoYcoHgQefRpDGL1hr4iSqOxwasH4kU3qYw0tTs5PAzy5oSj2nr16yUXfpV6woxtVN2Qg==
+X-Received: by 2002:a05:6402:1759:b0:46c:f631:c0dc with SMTP id v25-20020a056402175900b0046cf631c0dcmr20929443edx.12.1672318150928;
+        Thu, 29 Dec 2022 04:49:10 -0800 (PST)
+Received: from localhost.localdomain (dynamic-2a01-0c22-7789-6e00-0000-0000-0000-0e63.c22.pool.telefonica.de. [2a01:c22:7789:6e00::e63])
+        by smtp.googlemail.com with ESMTPSA id b12-20020aa7dc0c000000b0046892e493dcsm8166299edu.26.2022.12.29.04.49.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Dec 2022 04:49:10 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     tony0620emma@gmail.com, kvalo@kernel.org, pkshih@realtek.com,
+        s.hauer@pengutronix.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 0/4] rtw88: Four fixes found while working on SDIO support
+Date:   Thu, 29 Dec 2022 13:48:41 +0100
+Message-Id: <20221229124845.1155429-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIyLTEyLTI5IGF0IDExOjQwICswMTAwLCBNYXJ0aW4gQmx1bWVuc3RpbmdsIHdy
-b3RlOg0KPiBIaSBQaW5nLUtlLA0KPiANCj4gT24gVGh1LCBEZWMgMjksIDIwMjIgYXQgMTA6MjYg
-QU0gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiBbLi4uXQ0KPiA+
-ID4gTWFydGluIEJsdW1lbnN0aW5nbCAoNCk6DQo+ID4gPiAgIHJ0dzg4OiBBZGQgcGFja2VkIGF0
-dHJpYnV0ZSB0byB0aGUgZUZ1c2Ugc3RydWN0cw0KPiA+IA0KPiA+IEkgdGhpbmsgdGhpcyBwYXRj
-aCBkZXBlbmRzIG9uIGFub3RoZXIgcGF0Y2hzZXQgb3Igb3Bwb3NpdGVseS4NCj4gPiBQbGVhc2Ug
-cG9pbnQgdGhhdCBvdXQgZm9yIHJldmlld2Vycy4NCj4gVGhlcmUgYXJlIG5vIGRlcGVuZGVuY2ll
-cyBmb3IgdGhpcyBzbWFsbGVyIGluZGl2aWR1YWwgc2VyaWVzIG90aGVyDQo+IHRoYW4gTGludXgg
-Ni4yLXJjMSAoYXMgdGhpcyBoYXMgVVNCIHN1cHBvcnQpLiBJIG1hZGUgc3VyZSB0byBub3QNCj4g
-aW5jbHVkZSBhbnkgb2YgdGhlIFNESU8gY2hhbmdlcyBpbiB0aGlzIHNlcmllcy4NCj4gVGhlIGlk
-ZWEgaXMgdGhhdCBpdCBjYW4gYmUgYXBwbGllZCBpbmRpdmlkdWFsbHkgYW5kIG1ha2UgaXQgZWl0
-aGVyDQo+IGludG8gNi4yLXJjMiAob3IgbmV3ZXIpIG9yIC1uZXh0ICg2LjMpLg0KPiANCg0KSSB0
-aG91Z2h0IHRoaXMgY291bGQgZGVwZW5kIG9uIFNESU8gcGF0Y2hzZXQsIGJlY2F1c2UgeW91IGFk
-ZA0Kc3RydWN0IGZvciBlZnVzZSBsYXlvdXQgbmVhcmJ5LCBzbyB0aGVyZSBtYXkgYmUgbWVyZ2Ug
-Y29uZmxpY3RzLg0KUGxlYXNlIGlnbm9yZSB0aGlzIGNvbW1lbnQsIHRoZW4uDQoNClBpbmctS2UN
-Cg0K
+This series consists of three patches which are fixing existing
+behavior (meaning: it either affects PCIe or USB or both) in the rtw88
+driver.
+
+The first change adds the packed attribute to the eFuse structs. This
+was spotted by Ping-Ke while reviewing the SDIO support patches from
+[0].
+
+The remaining three changes relate to locking (barrier hold) problems.
+We previously had discussed patches for this for SDIO support, but the
+problem never ocurred while testing USB cards. It turns out that these
+are still needed and I think that they also fix the same problems for
+USB users (it's not clear how often it happens there though).
+
+The issue fixed by the second and third patches have been spotted by a
+user who tested rtw88 SDIO support. Everything is working fine for him
+but there are warnings [1] and [2] in the kernel log stating "Voluntary
+context switch within RCU read-side critical section!".
+
+The solution in the third and fourth patch was actually suggested by
+Ping-Ke in [3]. Thanks again!
+
+These fixes are indepdent of my other series adding SDIO support to the
+rtw88 driver, meaning they can be added to the wireless driver tree on
+top of Linux 6.2-rc1 or linux-next.
+
+
+Changes since v1 at [4]:
+- Keep the u8 bitfields in patch 1 but split the res2 field into res2_1
+  and res2_2 as suggested by Ping-Ke
+- Added Ping-Ke's reviewed-by to patches 2-4 - thank you!
+- Added a paragraph in the cover-letter to avoid confusion whether
+  these patches depend on the rtw88 SDIO support series
+
+
+[0] https://lore.kernel.org/linux-wireless/695c976e02ed44a2b2345a3ceb226fc4@realtek.com/
+[1] https://github.com/LibreELEC/LibreELEC.tv/pull/7301#issuecomment-1366421445
+[2] https://github.com/LibreELEC/LibreELEC.tv/pull/7301#issuecomment-1366610249
+[3] https://lore.kernel.org/lkml/e0aa1ba4336ab130712e1fcb425e6fd0adca4145.camel@realtek.com/
+
+
+Martin Blumenstingl (4):
+  rtw88: Add packed attribute to the eFuse structs
+  rtw88: Configure the registers from rtw_bf_assoc() outside the RCU
+    lock
+  rtw88: Use rtw_iterate_vifs() for rtw_vif_watch_dog_iter()
+  rtw88: Use non-atomic rtw_iterate_stas() in rtw_ra_mask_info_update()
+
+ drivers/net/wireless/realtek/rtw88/bf.c       | 13 +++++++------
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  4 +++-
+ drivers/net/wireless/realtek/rtw88/main.c     |  6 ++++--
+ drivers/net/wireless/realtek/rtw88/main.h     |  6 +++---
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h |  6 +++---
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h |  9 +++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h |  9 +++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |  9 +++++----
+ 8 files changed, 35 insertions(+), 27 deletions(-)
+
+-- 
+2.39.0
+
