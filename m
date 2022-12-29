@@ -2,130 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC7CA65895D
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 05:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBD64658A04
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Dec 2022 08:39:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231184AbiL2EUI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Dec 2022 23:20:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46012 "EHLO
+        id S231280AbiL2HjL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Dec 2022 02:39:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230006AbiL2EUG (ORCPT
+        with ESMTP id S232749AbiL2HjA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Dec 2022 23:20:06 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4E1BD12087;
-        Wed, 28 Dec 2022 20:20:02 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2BT4IrznE022628, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2BT4IrznE022628
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 29 Dec 2022 12:18:54 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 29 Dec 2022 12:19:47 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 29 Dec 2022 12:19:47 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Thu, 29 Dec 2022 12:19:47 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Chris Morgan <macroalpha82@gmail.com>,
-        "Nitin Gupta" <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: RE: [RFC PATCH v1 00/19] rtw88: Add SDIO support
-Thread-Topic: [RFC PATCH v1 00/19] rtw88: Add SDIO support
-Thread-Index: AQHZGks+1Xp5+2HTNk6lcrww/IAcmq6EK72Q
-Date:   Thu, 29 Dec 2022 04:19:47 +0000
-Message-ID: <8fe9b10318994be18934ec41e792af56@realtek.com>
-References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
-In-Reply-To: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/12/28_=3F=3F_10:54:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 29 Dec 2022 02:39:00 -0500
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E154BCA0;
+        Wed, 28 Dec 2022 23:38:59 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id d10so11893559pgm.13;
+        Wed, 28 Dec 2022 23:38:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FQszMWeXFPAfmDJi4sx+8Hf/q+9+cLOONIJyAQ7Rc8E=;
+        b=V2xfjPRuzPwskYbvlUUr5aTd84JZ1LVV8WNm9c/hLcgcMTOQqDEmf8KlhkO8wRck8q
+         AwhjEutQlv3Uu+uLoV8+F2CdXQxG1aEqg+4tFI5ne2UxiLYPyrKfZGG5Z0Fejw6sUE/c
+         1z5m3FS2I7M027yFST77lTeTNNUJe3Eu/Lwly2fDXd9jbZzdr+k11oMRATpYktv22ZlK
+         RUOoDlclkWU+nzDMp1a0cGTBV0krvCVw+oTF7F5E+LGQ5PKbIxA7GqZ5b9l60E4TwNHD
+         9WDAQxQXQ4vCXENwZ+smJsrRNNjosZCCnaqalIobNRcricZjpcMiFcxNAMwokSJfySjD
+         oKBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FQszMWeXFPAfmDJi4sx+8Hf/q+9+cLOONIJyAQ7Rc8E=;
+        b=EXW/y3gVy4wQYo59zG0V0PWw9RyFWJBwHNaWkZGNNohy+deHYkpdTKUWPw8ecoEQWb
+         XP4osVbdV6J/i5k7gtopbdAKIPHuOcXSWrftMhkHpZQsHA1QEo5aPQkNuZlVZCrxN+r2
+         Bm/fWNl6LzprRM2LM/LD21qV+lOsj01SiIXbJSix4XMwlwyAhk0CoJ1n7k7+ihALYbdz
+         nu2SQxpqrkog2H3P3vQidB+g7iyb0X2mmwor0NL69B+YTDiG5hh2C/axMiER7gMlY0oM
+         Yfy2MDDVc81UvonJumG2HZEaNGKEz5/p/rtJuSTrkI6lB+n7O3Qs0x2HoSdbycLiajor
+         7nog==
+X-Gm-Message-State: AFqh2krpbCUONH+Dp2MweduH+5s1uwlAx62w2zsT6KYjQTXUdOqyJkjM
+        hKpwgYXTVmuGGMh6hvgLuz0=
+X-Google-Smtp-Source: AMrXdXvPDVBuXn3kzD5VMsb/0gEzdxL2d7QvYlr8LvCQGlr86hiYvkno2m/X49UBYdfgCoiuK7KsTA==
+X-Received: by 2002:aa7:8502:0:b0:576:a500:2c7c with SMTP id v2-20020aa78502000000b00576a5002c7cmr45101601pfn.27.1672299538685;
+        Wed, 28 Dec 2022 23:38:58 -0800 (PST)
+Received: from localhost.localdomain ([202.120.234.246])
+        by smtp.googlemail.com with ESMTPSA id y17-20020a626411000000b00575b6d7c458sm11401168pfb.21.2022.12.28.23.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Dec 2022 23:38:58 -0800 (PST)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] wifi: ath11k: Fix memory leak in ath11k_peer_rx_frag_setup
+Date:   Thu, 29 Dec 2022 11:38:48 +0400
+Message-Id: <20221229073849.1388315-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+crypto_alloc_shash() allocates resources, which should be released by
+crypto_free_shash(). When ath11k_peer_find() fails, there has memory
+leak. Move crypto_alloc_shash() after ath11k_peer_find() to fix this.
 
+Fixes: 243874c64c81 ("ath11k: handle RX fragments")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> -----Original Message-----
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Sent: Wednesday, December 28, 2022 7:30 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ulf Hansson
-> <ulf.hansson@linaro.org>; linux-kernel@vger.kernel.org; netdev@vger.kernel.org;
-> linux-mmc@vger.kernel.org; Chris Morgan <macroalpha82@gmail.com>; Nitin Gupta <nitin.gupta981@gmail.com>;
-> Neo Jou <neojou@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
-> Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Subject: [RFC PATCH v1 00/19] rtw88: Add SDIO support
-> 
-> Recently the rtw88 driver has gained locking support for the "slow" bus
-> types (USB, SDIO) as part of USB support. Thanks to everyone who helped
-> make this happen!
-> 
-> Based on the USB work (especially the locking part and various
-> bugfixes) this series adds support for SDIO based cards. It's the
-> result of a collaboration between Jernej and myself. Neither of us has
-> access to the rtw88 datasheets. All of our work is based on studying
-> the RTL8822BS and RTL8822CS vendor drivers and trial and error.
-> 
-> Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
-> Other users have confirmed that RTL8821CS support is working as well.
-> RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
-> where needed) but has not been tested at this point.
-> 
-> Jernej's results with a RTL8822BS:
-> - Main functionality works
-> - Had a case where no traffic got across the link until he issued a
->   scan
-> 
-> My results with a RTL8822CS:
-> - 2.4GHz and 5GHz bands are both working
-> - TX throughput on a 5GHz network is between 50 Mbit/s and 90 Mbit/s
-> - RX throughput on a 5GHz network is at 19 Mbit/s
-
-I have a suggestion about RX throughput, please check below registers with
-vendor driver:
-
-REG_RXDMA_AGG_PG_TH
-REG_TXDMA_PQ_MAP(0x10c) BIT_RXDMA_AGG_EN (bit2)
-REG_RXDMA_MODE(0290)  BIT_DMA_MODE (bit1)
-
-Try to adjust AGG_PG_TH to see if it can help.
-
---
-Ping-Ke
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index c5a4c34d7749..1297caa2b09a 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -3116,10 +3116,6 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
+ 	struct dp_rx_tid *rx_tid;
+ 	int i;
+ 
+-	tfm = crypto_alloc_shash("michael_mic", 0, 0);
+-	if (IS_ERR(tfm))
+-		return PTR_ERR(tfm);
+-
+ 	spin_lock_bh(&ab->base_lock);
+ 
+ 	peer = ath11k_peer_find(ab, vdev_id, peer_mac);
+@@ -3129,6 +3125,10 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
+ 		return -ENOENT;
+ 	}
+ 
++	tfm = crypto_alloc_shash("michael_mic", 0, 0);
++	if (IS_ERR(tfm))
++		return PTR_ERR(tfm);
++
+ 	for (i = 0; i <= IEEE80211_NUM_TIDS; i++) {
+ 		rx_tid = &peer->rx_tid[i];
+ 		rx_tid->ab = ab;
+-- 
+2.25.1
 
