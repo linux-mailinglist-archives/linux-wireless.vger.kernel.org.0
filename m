@@ -2,197 +2,224 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62FD16595A2
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Dec 2022 08:15:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7670A6595EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Dec 2022 08:51:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234229AbiL3HPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Dec 2022 02:15:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48636 "EHLO
+        id S234158AbiL3Hv4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Dec 2022 02:51:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiL3HPv (ORCPT
+        with ESMTP id S234567AbiL3Hvu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Dec 2022 02:15:51 -0500
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FDF10B6A
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 23:15:48 -0800 (PST)
-Received: by mail-ej1-x636.google.com with SMTP id kw15so49617756ejc.10
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 23:15:48 -0800 (PST)
+        Fri, 30 Dec 2022 02:51:50 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0068E101CE
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 23:51:44 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id w4-20020a17090ac98400b002186f5d7a4cso25185993pjt.0
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 23:51:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6evXtRDnCwyteQpkNSVcOlBlje0lMOYjDii2XOB6tI=;
-        b=eCfibEqtOh15DD0HGgSiq8KLeX3KeHAMNe0x6p/iXr8X1OBxsnPPv5Lgvrhfrei1UW
-         Vt1oI/JMq8rK/Yr7N7z/QyuqNVI5edh9wLNSfKxjqP2Q/1NyUqyKTf8iy+sY+UwkXb1P
-         xQg/1VYOJuK6x+YfSg/MFwFtbsfpoz9JQ86mc=
+        d=yonsei-ac-kr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=q7by/n0x8RjcV+hLyy6EbO9hchX5cHpwYtu2zmfD5vg=;
+        b=p3H8cI8s2FJLvGPMkG6H/o5+xMIgQi9Gz2cmFsKVpoz5BXsPkrmtdbDcqIva/S6m3J
+         SXchT0xkFvqe2fPs+We/8n+UWTMH37yzkDyERN+T9SshB9GdaTOXqEipdLEyQsvpYCGw
+         7pJqwtPUWonDfmGXSupDsPlXHiztVxCJ0ycaRn9L/r5iYOJdpYm2ytloOLaRZGLWNWe+
+         89F9ZdhnIF7QprNGmMd6zykesT+3Y9BqQqv274N8AiT3ZW8NlGV/dlXiKzNxaYbbue13
+         DWV5XUhAjBMMOWcNAwGfOYunWzzp8s4EnSY5OBooaBzFf2hAOEgWdIkgKtu/r0t3zdQn
+         e7BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+6evXtRDnCwyteQpkNSVcOlBlje0lMOYjDii2XOB6tI=;
-        b=A/xjo1TGND5EuYTqdrT6zNio9tUr/5M/M2KCbF2IE1Kz0h2nHdVDzhDVg4Jyk47+vC
-         XcxFkmO8AEzYuYvg3ER+ymAi3JMGjMDHSWBPj9WMODL2i1h+8RUA7aWcA3/PmZpe6ye4
-         BM7Kf64CTNQtZjRVYUnPOb/K49Hm8WDx1XBvRWO/HqmuW+qGiF+p+qxR+IkTqPk6nvdO
-         E3U4JkEmJOle4geB/OXgN3GddtxUKGbEU5/sTAj9A5Q6TDfhqYYlecKvZt+XQC52ntaZ
-         FW8/1YZKYumkwd06sTdirEwmSNZl7quvyy8wh6pwUomO3C9R9Yi1unxS+TF0VtlUiC8h
-         e1ow==
-X-Gm-Message-State: AFqh2kp5XhvskFnieWUDE2i8aH6HqqZyOd0Pv8e8h9cF0Hz28sIcWfY1
-        l8yTTZYkTGwAUJkXRiE+KSiSmQ==
-X-Google-Smtp-Source: AMrXdXtcCNHseA/FA1WCutomJAXUK6srZyclkulWsvk8mDLHF9hfZUNNTUzt5YGDYFMzC708SToWlw==
-X-Received: by 2002:a17:906:140b:b0:7f7:a4ed:f2d4 with SMTP id p11-20020a170906140b00b007f7a4edf2d4mr29096395ejc.77.1672384546716;
-        Thu, 29 Dec 2022 23:15:46 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a1-20020a170906684100b007c0f90a9cc5sm9332320ejs.105.2022.12.29.23.15.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 29 Dec 2022 23:15:45 -0800 (PST)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-        <linux-wireless@vger.kernel.org>
-CC:     <dokyungs@yonsei.ac.kr>, <linuxlovemin@yonsei.ac.kr>
-Date:   Fri, 30 Dec 2022 08:15:43 +0100
-Message-ID: <18561e2f918.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20221223082955.687191-1-jisoo.jang@yonsei.ac.kr>
-References: <20221223082955.687191-1-jisoo.jang@yonsei.ac.kr>
-User-Agent: AquaMail/1.41.0 (build: 104100234)
-Subject: Re: [PATCH] wifi: brcmfmac: ensure CLM version is null-terminated to prevent stack-out-of-bounds
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q7by/n0x8RjcV+hLyy6EbO9hchX5cHpwYtu2zmfD5vg=;
+        b=IMMHhaFcvlWwYcnYO0TQSB1VJDtl5qX0WOSUEZC5i2dc+Y7J/IwAWs+u8AsSuwIZ41
+         /vITif+0hdyXHhYrRsWhEG2tX3onxTZEf1Ptb1xa8/FlCxrWAqgoQUpAbJHbu1FY9qw2
+         J+Ulpz8mmMyPns7WyyCGA0gzqXMZ+vSKDKAv/DoaJ3XYAzWUMTCdokZ7TFmQatE3HHJT
+         5WLU+xFZzrxyAroGW7wCNfNfquWxQxs7v6T5V+hZVOVJwZWEDB0zvOv8NwwbIUc1oAyi
+         zargS6uV4WzfVtdDjPlm2y0MNtzLrro0z1KbK0VBu3bBqDLW59Q1XsUCUloOd8qC8rgD
+         kyYg==
+X-Gm-Message-State: AFqh2kqaIpLD/+5e/5hNL6dqgVN0iHbDU2MxNVYSN4Rj14aG2P86NB0B
+        AFD6CBTCEtyFba4h+e2nVMemPxrgsOZi4pvMqg==
+X-Google-Smtp-Source: AMrXdXsCbJx0GgRs5NY5TakkJx4OPxsfoK9s9Ms3gBUZtxR3BRBnj9/Kjeyc9rYHxKDrO8rMmSDLRQ==
+X-Received: by 2002:a17:903:32ce:b0:192:8d15:350 with SMTP id i14-20020a17090332ce00b001928d150350mr16738653plr.56.1672386704231;
+        Thu, 29 Dec 2022 23:51:44 -0800 (PST)
+Received: from localhost.localdomain ([165.132.118.55])
+        by smtp.gmail.com with ESMTPSA id y2-20020a17090264c200b00192749a5257sm9699776pli.189.2022.12.29.23.51.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Dec 2022 23:51:43 -0800 (PST)
+From:   Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+To:     arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org
+Cc:     dokyungs@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr
+Subject: [PATCH v2] wifi: brcmfmac: ensure CLM version is null-terminated to prevent stack-out-of-bounds
+Date:   Fri, 30 Dec 2022 16:51:39 +0900
+Message-Id: <20221230075139.56591-1-jisoo.jang@yonsei.ac.kr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d8e41805f1065e53"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000d8e41805f1065e53
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Fix a stack-out-of-bounds read in brcmfmac that occurs
+when 'buf' that is not null-terminated is passed as an argument of 
+strreplace() in brcmf_c_preinit_dcmds(). This buffer is filled with
+a CLM version string by memcpy() in brcmf_fil_iovar_data_get().
+Ensure buf is null-terminated.
 
-On December 23, 2022 9:29:59 AM Jisoo Jang <jisoo.jang@yonsei.ac.kr> wrote:
+Found by a modified version of syzkaller.
 
-> Fix a stack-out-of-bounds read in brcmfmac that occurs
-> when 'buf' that is not null-terminated is passed as an argument of
-> strreplace() in brcmf_c_preinit_dcmds(). This buffer is filled with
-> a CLM version string by memcpy() in brcmf_fil_iovar_data_get().
-> Ensure buf is null-terminated.
->
-> Found by a modified version of syzkaller.
+[   33.004414][ T1896] brcmfmac: brcmf_c_process_clm_blob: no clm_blob available (err=-2), device may have limited channels available
+[   33.013486][ T1896] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM43236/3 wl0: Nov 30 2011 17:33:42 version 5.90.188.22
+[   33.021554][ T1896] ==================================================================
+[   33.022379][ T1896] BUG: KASAN: stack-out-of-bounds in strreplace+0xf2/0x110
+[   33.023122][ T1896] Read of size 1 at addr ffffc90001d6efc8 by task kworker/0:2/1896
+[   33.023852][ T1896] 
+[   33.024096][ T1896] CPU: 0 PID: 1896 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #132
+[   33.024927][ T1896] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+[   33.026065][ T1896] Workqueue: usb_hub_wq hub_event
+[   33.026581][ T1896] Call Trace:
+[   33.026896][ T1896]  dump_stack_lvl+0x57/0x7d
+[   33.027372][ T1896]  print_address_description.constprop.0.cold+0xf/0x334
+[   33.028037][ T1896]  ? strreplace+0xf2/0x110
+[   33.028403][ T1896]  ? strreplace+0xf2/0x110
+[   33.028807][ T1896]  kasan_report.cold+0x83/0xdf
+[   33.029283][ T1896]  ? strreplace+0xf2/0x110
+[   33.029666][ T1896]  strreplace+0xf2/0x110
+[   33.029966][ T1896]  brcmf_c_preinit_dcmds+0xab1/0xc40
+[   33.030351][ T1896]  ? brcmf_c_set_joinpref_default+0x100/0x100
+[   33.030787][ T1896]  ? rcu_read_lock_sched_held+0xa1/0xd0
+[   33.031223][ T1896]  ? rcu_read_lock_bh_held+0xb0/0xb0
+[   33.031661][ T1896]  ? lock_acquire+0x19d/0x4e0
+[   33.032091][ T1896]  ? find_held_lock+0x2d/0x110
+[   33.032605][ T1896]  ? brcmf_usb_deq+0x1a7/0x260
+[   33.033087][ T1896]  ? brcmf_usb_rx_fill_all+0x5a/0xf0
+[   33.033582][ T1896]  brcmf_attach+0x246/0xd40
+[   33.034022][ T1896]  ? wiphy_new_nm+0x1476/0x1d50
+[   33.034383][ T1896]  ? kmemdup+0x30/0x40
+[   33.034722][ T1896]  brcmf_usb_probe+0x12de/0x1690
+[   33.035223][ T1896]  ? brcmf_usbdev_qinit.constprop.0+0x470/0x470
+[   33.035833][ T1896]  usb_probe_interface+0x25f/0x710
+[   33.036315][ T1896]  really_probe+0x1be/0xa90
+[   33.036656][ T1896]  __driver_probe_device+0x2ab/0x460
+[   33.037026][ T1896]  ? usb_match_id.part.0+0x88/0xc0
+[   33.037383][ T1896]  driver_probe_device+0x49/0x120
+[   33.037790][ T1896]  __device_attach_driver+0x18a/0x250
+[   33.038300][ T1896]  ? driver_allows_async_probing+0x120/0x120
+[   33.038986][ T1896]  bus_for_each_drv+0x123/0x1a0
+[   33.039906][ T1896]  ? bus_rescan_devices+0x20/0x20
+[   33.041412][ T1896]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+[   33.041861][ T1896]  ? trace_hardirqs_on+0x1c/0x120
+[   33.042330][ T1896]  __device_attach+0x207/0x330
+[   33.042664][ T1896]  ? device_bind_driver+0xb0/0xb0
+[   33.043026][ T1896]  ? kobject_uevent_env+0x230/0x12c0
+[   33.043515][ T1896]  bus_probe_device+0x1a2/0x260
+[   33.043914][ T1896]  device_add+0xa61/0x1ce0
+[   33.044227][ T1896]  ? __mutex_unlock_slowpath+0xe7/0x660
+[   33.044891][ T1896]  ? __fw_devlink_link_to_suppliers+0x550/0x550
+[   33.045531][ T1896]  usb_set_configuration+0x984/0x1770
+[   33.046051][ T1896]  ? kernfs_create_link+0x175/0x230
+[   33.046548][ T1896]  usb_generic_driver_probe+0x69/0x90
+[   33.046931][ T1896]  usb_probe_device+0x9c/0x220
+[   33.047434][ T1896]  really_probe+0x1be/0xa90
+[   33.047760][ T1896]  __driver_probe_device+0x2ab/0x460
+[   33.048134][ T1896]  driver_probe_device+0x49/0x120
+[   33.048516][ T1896]  __device_attach_driver+0x18a/0x250
+[   33.048910][ T1896]  ? driver_allows_async_probing+0x120/0x120
+[   33.049437][ T1896]  bus_for_each_drv+0x123/0x1a0
+[   33.049814][ T1896]  ? bus_rescan_devices+0x20/0x20
+[   33.050164][ T1896]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+[   33.050579][ T1896]  ? trace_hardirqs_on+0x1c/0x120
+[   33.050936][ T1896]  __device_attach+0x207/0x330
+[   33.051399][ T1896]  ? device_bind_driver+0xb0/0xb0
+[   33.051888][ T1896]  ? kobject_uevent_env+0x230/0x12c0
+[   33.052314][ T1896]  bus_probe_device+0x1a2/0x260
+[   33.052688][ T1896]  device_add+0xa61/0x1ce0
+[   33.053121][ T1896]  ? __fw_devlink_link_to_suppliers+0x550/0x550
+[   33.053568][ T1896]  usb_new_device.cold+0x463/0xf66
+[   33.053953][ T1896]  ? hub_disconnect+0x400/0x400
+[   33.054313][ T1896]  ? rwlock_bug.part.0+0x90/0x90
+[   33.054661][ T1896]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+[   33.055094][ T1896]  hub_event+0x10d5/0x3330
+[   33.055530][ T1896]  ? hub_port_debounce+0x280/0x280
+[   33.055934][ T1896]  ? __lock_acquire+0x1671/0x5790
+[   33.056387][ T1896]  ? wq_calc_node_cpumask+0x170/0x2a0
+[   33.056924][ T1896]  ? lock_release+0x640/0x640
+[   33.057383][ T1896]  ? rcu_read_lock_sched_held+0xa1/0xd0
+[   33.057916][ T1896]  ? rcu_read_lock_bh_held+0xb0/0xb0
+[   33.058402][ T1896]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+[   33.059019][ T1896]  process_one_work+0x873/0x13e0
+[   33.059488][ T1896]  ? lock_release+0x640/0x640
+[   33.059932][ T1896]  ? pwq_dec_nr_in_flight+0x320/0x320
+[   33.060446][ T1896]  ? rwlock_bug.part.0+0x90/0x90
+[   33.060898][ T1896]  worker_thread+0x8b/0xd10
+[   33.061348][ T1896]  ? __kthread_parkme+0xd9/0x1d0
+[   33.061810][ T1896]  ? process_one_work+0x13e0/0x13e0
+[   33.062288][ T1896]  kthread+0x379/0x450
+[   33.062660][ T1896]  ? _raw_spin_unlock_irq+0x24/0x30
+[   33.063148][ T1896]  ? set_kthread_struct+0x100/0x100
+[   33.063606][ T1896]  ret_from_fork+0x1f/0x30
+[   33.064070][ T1896] 
+[   33.064313][ T1896] 
+[   33.064545][ T1896] addr ffffc90001d6efc8 is located in stack of task kworker/0:2/1896 at offset 512 in frame:
+[   33.065478][ T1896]  brcmf_c_preinit_dcmds+0x0/0xc40
+[   33.065973][ T1896] 
+[   33.066191][ T1896] this frame has 4 objects:
+[   33.066614][ T1896]  [48, 56) 'ptr'
+[   33.066618][ T1896]  [80, 148) 'revinfo'
+[   33.066957][ T1896]  [192, 210) 'eventmask'
+[   33.067338][ T1896]  [256, 512) 'buf'
+[   33.067742][ T1896] 
+[   33.068304][ T1896] Memory state around the buggy address:
+[   33.068838][ T1896]  ffffc90001d6ee80: f2 00 00 02 f2 f2 f2 f2 f2 00 00 00 00 00 00 00
+[   33.069545][ T1896]  ffffc90001d6ef00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   33.070626][ T1896] >ffffc90001d6ef80: 00 00 00 00 00 00 00 00 00 f3 f3 f3 f3 f3 f3 f3
+[   33.072052][ T1896]                                               ^
+[   33.073043][ T1896]  ffffc90001d6f000: f3 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   33.074230][ T1896]  ffffc90001d6f080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   33.074914][ T1896] ==================================================================
+[   33.075713][ T1896] Disabling lock debugging due to kernel taint
 
-[...]
-
-Thanks for this patch. Minor comment below.
 
 Reviewed-by: Arend van Spriel<arend.vanspriel@broadcom.com>
-> Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
->
-> ---
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 1 +
-> 1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c 
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> index 4a309e5a5707..4b6adb6ce5e3 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> @@ -319,6 +319,7 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
->  if (err) {
->  brcmf_dbg(TRACE, "retrieving clmver failed, %d\n", err);
->  } else {
-> + buf[sizeof(buf) - 1] = '\0';
->  clmver = (char *)buf;
->  /* store CLM version for adding it to revinfo debugfs file */
->  memcpy(ifp->drvr->clmver, clmver, sizeof(ifp->drvr->clmver));
+Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
 
-Can you move the memcpy() after the strreplace() call?
+---
+v1->v2: Move the memcpy() after the strreplace()
 
-Regards,
-Arend
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index 4a309e5a5707..296445946aa4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -319,15 +319,17 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+ 	if (err) {
+ 		brcmf_dbg(TRACE, "retrieving clmver failed, %d\n", err);
+ 	} else {
++		buf[sizeof(buf) - 1] = '\0';
+ 		clmver = (char *)buf;
+-		/* store CLM version for adding it to revinfo debugfs file */
+-		memcpy(ifp->drvr->clmver, clmver, sizeof(ifp->drvr->clmver));
+ 
+ 		/* Replace all newline/linefeed characters with space
+ 		 * character
+ 		 */
+ 		strreplace(clmver, '\n', ' ');
+ 
++		/* store CLM version for adding it to revinfo debugfs file */
++		memcpy(ifp->drvr->clmver, clmver, sizeof(ifp->drvr->clmver));
++
+ 		brcmf_dbg(INFO, "CLM version = %s\n", clmver);
+ 	}
+ 
+-- 
+2.25.1
 
-
---000000000000d8e41805f1065e53
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCevPFfcjJpXLgcsX0t
-jL5zzpFBT4wEJ8cbQimXvDpPBzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjEyMzAwNzE1NDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAejUzIP3zvmjahlVDlfMYdcXi507K0Ez3H1+Y
-kU9Z2HUafGo7j8EcpqTBI7CoG5hbKeT7x1m9810P0x12RAqQlWEFGmEpl6wKwrxABUf1RGqZUjKP
-p57OlvXWaXW4qIjpLKghBIR0E7j8tJ+V6nQRFfdIap58Y9aL7PB4YSFIJinfP2irqy8+Y022GzLL
-Z9q8ezOji3gRn+nRHrnGfMwMXNB5AtHuj7FR/1rA+ibiTl96thuk2PgnUSlYnM/tMN9Y3yVHLfOt
-fquyUlxz7EQWUMmFVcGKr1GjKTkO03vui6CV3MHYnuYyH8gGyMfRkXv9aihHoy51xFwIb45x1dKT
-og==
---000000000000d8e41805f1065e53--
