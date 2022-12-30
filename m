@@ -2,506 +2,197 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FAC6659470
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Dec 2022 04:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62FD16595A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Dec 2022 08:15:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234408AbiL3Dox (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Dec 2022 22:44:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60336 "EHLO
+        id S234229AbiL3HPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Dec 2022 02:15:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbiL3Dov (ORCPT
+        with ESMTP id S229505AbiL3HPv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Dec 2022 22:44:51 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4713BF4E;
-        Thu, 29 Dec 2022 19:44:49 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id o15so14456433wmr.4;
-        Thu, 29 Dec 2022 19:44:49 -0800 (PST)
+        Fri, 30 Dec 2022 02:15:51 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FDF10B6A
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 23:15:48 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id kw15so49617756ejc.10
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Dec 2022 23:15:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g7SCmKb4wHHEPv7jZefX0x45EikS95iCFOxj9ylY5GQ=;
-        b=qkbP+v8Wr3eDhUIwIzxfj6Thg27BrsWR9MnUVJmaKbAQkXlc8eyYQk8z5n+VlAIY+4
-         rgVXR8nNs611TYLbiVeFXA8lMnbtjL4osNlvW5Du5dUMYhIqk0wglltjIHuM1s6a6wPH
-         6/MYJW0Z14RHPCt+bqgfci/WNCLpR8a8WTkrGa/ruPmTewPkDKmUIuJZq9NO++zxES/3
-         CmA+ChXuyTXsyfiUuhcBxuq53IKltMfTNr9j1jM+jDt9FukSn7k65ZgeNR4fWLX8ehkt
-         SvKKEaok9EJHCSV5871rgRTM23guNRMpZE38KFVMkeHU397n+G1gqzlSVKwlhiqqc0hJ
-         +kwQ==
+        d=broadcom.com; s=google;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+6evXtRDnCwyteQpkNSVcOlBlje0lMOYjDii2XOB6tI=;
+        b=eCfibEqtOh15DD0HGgSiq8KLeX3KeHAMNe0x6p/iXr8X1OBxsnPPv5Lgvrhfrei1UW
+         Vt1oI/JMq8rK/Yr7N7z/QyuqNVI5edh9wLNSfKxjqP2Q/1NyUqyKTf8iy+sY+UwkXb1P
+         xQg/1VYOJuK6x+YfSg/MFwFtbsfpoz9JQ86mc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g7SCmKb4wHHEPv7jZefX0x45EikS95iCFOxj9ylY5GQ=;
-        b=kH1N0gX+FAtHZIX4KkcPavhjMn/9eaDHdxF3s0ghewzpn84uWF30eoC6yy3WqU29NY
-         RyJPmmKXOQJKafdDr7kTRv65XN2d51luja4mE0dm7v9zCHqKf5YJb1g5tDvfXGoFbRYI
-         atpSAeCSV8qoJ8gWOrfoBmg8joX1neQJIQs7qgdag3NxmC1bekfJ/kSNnUzc7omnFUZ1
-         qHc+RHKEqMfoLRZoour7LYs5WUfpPpubpp+Dany+UOVh9JAw2AiSp/sTkP4KPo/m8EKz
-         SioAxlCNrZ5p/8RcJxYQFZN/3cffIfIg+gvZ2vQvnwCBsNL7K/gAv6AoJDC5Y+ZESoJ1
-         rqPg==
-X-Gm-Message-State: AFqh2ko8EQxkxbW1+uwwHPh1f6VbxR4VrjW+p8bxezNDzjyx2c7xo9OL
-        pIEv7kHvud7NydzJYUzcbCKvhUK0aHmaPBoZzmc=
-X-Google-Smtp-Source: AMrXdXtFUt9nEK16pycfL/VTD+3snIKXgDN1OoGLn1Jjz2sRtINOWv9sW+AznG+6syBwc9foQg3ykJR3fStof4wVK60=
-X-Received: by 2002:a05:600c:2f17:b0:3cf:a6e8:b59b with SMTP id
- r23-20020a05600c2f1700b003cfa6e8b59bmr2068434wmn.128.1672371887959; Thu, 29
- Dec 2022 19:44:47 -0800 (PST)
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+6evXtRDnCwyteQpkNSVcOlBlje0lMOYjDii2XOB6tI=;
+        b=A/xjo1TGND5EuYTqdrT6zNio9tUr/5M/M2KCbF2IE1Kz0h2nHdVDzhDVg4Jyk47+vC
+         XcxFkmO8AEzYuYvg3ER+ymAi3JMGjMDHSWBPj9WMODL2i1h+8RUA7aWcA3/PmZpe6ye4
+         BM7Kf64CTNQtZjRVYUnPOb/K49Hm8WDx1XBvRWO/HqmuW+qGiF+p+qxR+IkTqPk6nvdO
+         E3U4JkEmJOle4geB/OXgN3GddtxUKGbEU5/sTAj9A5Q6TDfhqYYlecKvZt+XQC52ntaZ
+         FW8/1YZKYumkwd06sTdirEwmSNZl7quvyy8wh6pwUomO3C9R9Yi1unxS+TF0VtlUiC8h
+         e1ow==
+X-Gm-Message-State: AFqh2kp5XhvskFnieWUDE2i8aH6HqqZyOd0Pv8e8h9cF0Hz28sIcWfY1
+        l8yTTZYkTGwAUJkXRiE+KSiSmQ==
+X-Google-Smtp-Source: AMrXdXtcCNHseA/FA1WCutomJAXUK6srZyclkulWsvk8mDLHF9hfZUNNTUzt5YGDYFMzC708SToWlw==
+X-Received: by 2002:a17:906:140b:b0:7f7:a4ed:f2d4 with SMTP id p11-20020a170906140b00b007f7a4edf2d4mr29096395ejc.77.1672384546716;
+        Thu, 29 Dec 2022 23:15:46 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a1-20020a170906684100b007c0f90a9cc5sm9332320ejs.105.2022.12.29.23.15.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 29 Dec 2022 23:15:45 -0800 (PST)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        <linux-wireless@vger.kernel.org>
+CC:     <dokyungs@yonsei.ac.kr>, <linuxlovemin@yonsei.ac.kr>
+Date:   Fri, 30 Dec 2022 08:15:43 +0100
+Message-ID: <18561e2f918.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20221223082955.687191-1-jisoo.jang@yonsei.ac.kr>
+References: <20221223082955.687191-1-jisoo.jang@yonsei.ac.kr>
+User-Agent: AquaMail/1.41.0 (build: 104100234)
+Subject: Re: [PATCH] wifi: brcmfmac: ensure CLM version is null-terminated to prevent stack-out-of-bounds
 MIME-Version: 1.0
-References: <20221220075215.1.Ic12e347e0d61a618124b742614e82bbd5d770173@changeid>
- <CAA93jw7Qi1rfBRxaG=5ARshDwepO=b_Qg3BXFi2AHSG7cO44uw@mail.gmail.com>
- <CACTWRwva2ukMkoyztYtC7vNEzbWvfgashF_OhT3T=giyixVUXg@mail.gmail.com>
- <CAA93jw7GCUnVjHNkxCfaP76d3HH8Rqm2EOq0FSY8a0tVXkKrDw@mail.gmail.com> <CAHb6Lvpta1fJef-M1LasR5zzzudJ2+CNyWwrSo3DU9OoeiFfzA@mail.gmail.com>
-In-Reply-To: <CAHb6Lvpta1fJef-M1LasR5zzzudJ2+CNyWwrSo3DU9OoeiFfzA@mail.gmail.com>
-From:   Dave Taht <dave.taht@gmail.com>
-Date:   Thu, 29 Dec 2022 19:44:36 -0800
-Message-ID: <CAA93jw6F1WLDu=Fq2pDt+gswWkJpygv4CDswD06v=yoCMgHo6A@mail.gmail.com>
-Subject: Re: [Make-wifi-fast] [PATCH] ath10k: snoc: enable threaded napi on WCN3990
-To:     Bob McMahon <bob.mcmahon@broadcom.com>
-Cc:     Abhishek Kumar <kuabhs@chromium.org>, netdev@vger.kernel.org,
-        kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
-        Eric Dumazet <edumazet@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000d8e41805f1065e53"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-thx for leaning in bob! (for those of you that don't know, he's the
-iperf2 maintainer, and if you haven't updated your distro/os/test
-environment to 2.1.8 that came out in august, yet there's all kinds of
-nifty new stuff in there: https://sourceforge.net/projects/iperf2 -
-too much to list, and the -i 1 -e option is just the start of it....
+--000000000000d8e41805f1065e53
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Iperf2's principal flaw is that people think iperf3 is the successor
-to it, and no, they are very different codebases, with very different
-features. iperf =3D iperf2, for most, but not all.
+On December 23, 2022 9:29:59 AM Jisoo Jang <jisoo.jang@yonsei.ac.kr> wrote:
 
-On Wed, Dec 28, 2022 at 9:54 PM Bob McMahon <bob.mcmahon@broadcom.com> wrot=
-e:
+> Fix a stack-out-of-bounds read in brcmfmac that occurs
+> when 'buf' that is not null-terminated is passed as an argument of
+> strreplace() in brcmf_c_preinit_dcmds(). This buffer is filled with
+> a CLM version string by memcpy() in brcmf_fil_iovar_data_get().
+> Ensure buf is null-terminated.
 >
-> A bit of a tangent but iperf 2's enhanced option provides sampled RTT and=
- CWND in the interval output. I requires -e. It also provide the connect ti=
-me, the icwnd, irtt and the mss per the connect.
->
-> [rjmcmahon@rjm-nas ~]$ iperf -c 192.168.1.85 -i 1 -e
-> ------------------------------------------------------------
-> Client connecting to 192.168.1.85, TCP port 5001 with pid 20041 (1 flows)
-> Write buffer size: 131072 Byte
-> TOS set to 0x0 (Nagle on)
-> TCP window size: 16.0 KByte (default)
-> ------------------------------------------------------------
-> [  1] local 192.168.1.73%eno1 port 38822 connected with 192.168.1.85 port=
- 5001 (sock=3D3) (icwnd/mss/irtt=3D14/1448/246) (ct=3D0.32 ms) on 2022-12-2=
-8 21:51:13 (PST)
-> [ ID] Interval        Transfer    Bandwidth       Write/Err  Rtry     Cwn=
-d/RTT(var)        NetPwr
-> [  1] 0.00-1.00 sec   114 MBytes   952 Mbits/sec  908/0         3      35=
-3K/1901(59) us  62606
-> [  1] 1.00-2.00 sec   111 MBytes   932 Mbits/sec  889/0         0      35=
-4K/2029(115) us  57429
-> [  1] 2.00-3.00 sec   112 MBytes   937 Mbits/sec  894/0         3      35=
-4K/2061(84) us  56855
-> [  1] 3.00-4.00 sec   112 MBytes   938 Mbits/sec  895/0         3      35=
-4K/2027(115) us  57873
-> [  1] 4.00-5.00 sec   112 MBytes   938 Mbits/sec  895/0         6      35=
-4K/2046(68) us  57336
-> [  1] 5.00-6.00 sec   112 MBytes   937 Mbits/sec  894/0         0      37=
-4K/2160(109) us  54249
-> [  1] 6.00-7.00 sec   111 MBytes   933 Mbits/sec  890/0         2      37=
-4K/2155(115) us  54132
-> [  1] 7.00-8.00 sec   111 MBytes   934 Mbits/sec  891/0         2      37=
-4K/2139(120) us  54598
-> [  1] 8.00-9.00 sec   112 MBytes   938 Mbits/sec  895/0         0      37=
-4K/2129(126) us  55101
-> [  1] 9.00-10.00 sec   112 MBytes   935 Mbits/sec  892/0         1      3=
-74K/2200(102) us  53144
-> [  1] 0.00-10.03 sec  1.09 GBytes   935 Mbits/sec  8944/0        20      =
-374K/4082(4010) us  28632
+> Found by a modified version of syzkaller.
 
-This is a wonderful new feature, much simpler than relying on packet
-captures. However! this test result above is on a decent, ethernet,
-network, where on wifi, or anything bufferbloated, you would see the
-cwnd and rtt inflate and/or bounce around horribly.
+[...]
 
+Thanks for this patch. Minor comment below.
 
+Reviewed-by: Arend van Spriel<arend.vanspriel@broadcom.com>
+> Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
 >
+> ---
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 1 +
+> 1 file changed, 1 insertion(+)
 >
-> Bob
->
-> On Wed, Dec 28, 2022 at 4:49 PM Dave Taht via Make-wifi-fast <make-wifi-f=
-ast@lists.bufferbloat.net> wrote:
->>
->> On Wed, Dec 28, 2022 at 3:53 PM Abhishek Kumar <kuabhs@chromium.org> wro=
-te:
->> >
->> > Apologies for the late reply, Thanks Dave for your comment. My answer =
-is inline.
->> >
->> > On Tue, Dec 20, 2022 at 7:10 AM Dave Taht <dave.taht@gmail.com> wrote:
->> > >
->> > > I am always interested in flent.org tcp_nup, tcp_ndown, and rrul_be
->> > > tests on wifi hardware. In AP mode, especially, against a few client=
-s
->> > > in rtt_fair on the "ending the anomaly" test suite at the bottom of
->> > > this link: https://www.cs.kau.se/tohojo/airtime-fairness/ . Of these=
-,
->> > > it's trying to optimize bandwidth more fairly and keep latencies low
->> > > when 4 or more stations are trying to transmit (in a world with 16 o=
-r
->> > > more stations online), that increasingly bothers me the most. I'm
->> > > seeing 5+ seconds on some rtt_fair-like tests nowadays.
->> > I used testing using iperf and conductive setup and fetched the
->> > throughput data(mentioned below).
->> > >
->> > > I was also seeing huge simultaneous upload vs download disparities o=
-n
->> > > the latest kernels, on various threads over here:
->> > > https://forum.openwrt.org/t/aql-and-the-ath10k-is-lovely/59002 and
->> > > more recently here:
->> > > https://forum.openwrt.org/t/reducing-multiplexing-latencies-still-fu=
-rther-in-wifi/133605
->> > Interesting, thanks for the pointer and probably the Qualcomm team is
->> > aware of it.
->> > >
->> > > I don't understand why napi with the default budget (64) is even
->> > > needed on the ath10k, as a single txop takes a minimum of ~200us, bu=
-t
->> > > perhaps your patch will help. Still, measuring the TCP statistics
->> > > in-band would be nice to see. Some new tools are appearing that can =
-do
->> > > this, Apple's goresponsiveness, crusader... that are simpler to use
->> > > than flent.
->> > Here are some of the additional raw data with and without threaded nap=
-i:
->> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
->> > udp_rx(Without threaded NAPI)
->> > 435.98+-5.16 : Channel 44
->> > 439.06+-0.66 : Channel 157
->> >
->> > udp_rx(With threaded NAPI)
->> > 509.73+-41.03 : Channel 44
->> > 549.97+-7.62 : Channel 157
->> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->> > udp_tx(Without threaded NAPI)
->> > 461.31+-0.69  : Channel 44
->> > 461.46+-0.78 : Channel 157
->> >
->> > udp_tx(With threaded NAPI)
->> > 459.20+-0.77 : Channel 44
->> > 459.78+-1.08 : Channel 157
->> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->> > tcp_rx(Without threaded NAPI)
->> > 472.63+-2.35 : Channel 44
->> > 469.29+-6.31 : Channel 157
->> >
->> > tcp_rx(With threaded NAPI)
->> > 498.49+-2.44 : Channel 44
->> > 541.14+-40.65 : Channel 157
->> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->> > tcp_tx(Without threaded NAPI)
->> > 317.34+-2.37 : Channel 44
->> > 317.01+-2.56 : Channel 157
->> >
->> > tcp_tx(With threaded NAPI)
->> > 371.34+-2.36 : Channel 44
->> > 376.95+-9.40 : Channel 157
->>
->> My concern is primarily with the induced tcp latency on this test. A
->> way to check that is to run wireshark on your test client driving the
->> test, capture the iperf traffic, and then plot the "Statistics->TCP
->> stream statistics for both throughput and rtt. Would it be possible
->> for you to do that and put up those plots somewhere?
->>
->> The worst case test is a tcp bidirectional test which I don't know if
->> older iperfs can do. (iperf2 has new bounceback and bidir tests)
->>
->> Ideally stuff going in either direction, would not look as horrible,
->> as it did, back in 2016, documented in this linuxplumbers presentation
->> here: https://blog.linuxplumbersconf.org/2016/ocw/system/presentations/3=
-963/original/linuxplumbers_wifi_latency-3Nov.pdf
->> and discussed on lwn, here: https://lwn.net/Articles/705884/
->>
->> I worry about folk achieving slightly better tcp throughput at the
->> expense of clobbering in-tcp-stream latency. Back then we were
->> shooting for no more than 40ms extra latency under load on this chip,
->> down from (unusable) seconds. Presently elsewhere, on other chips,
->> we're getting 8ms with stuff that's not in tree for the ath10k, there
->> is a slight cost in single stream throughput but when multiple streams
->> are in use, on multiple stations, things like web pages fly,
->> irrespective of load.
->>
->>
->> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
->> >
->> > >
->> > > On Tue, Dec 20, 2022 at 12:17 AM Abhishek Kumar <kuabhs@chromium.org=
-> wrote:
->> > > >
->> > > > NAPI poll can be done in threaded context along with soft irq
->> > > > context. Threaded context can be scheduled efficiently, thus
->> > > > creating less of bottleneck during Rx processing. This patch is
->> > > > to enable threaded NAPI on ath10k driver.
->> > > >
->> > > > Based on testing, it was observed that on WCN3990, the CPU0 reache=
-s
->> > > > 100% utilization when napi runs in softirq context. At the same
->> > > > time the other CPUs are at low consumption percentage. This
->> > > > does not allow device to reach its maximum throughput potential.
->> > > > After enabling threaded napi, CPU load is balanced across all CPUs
->> > > > and following improvments were observed:
->> > > > - UDP_RX increase by ~22-25%
->> > > > - TCP_RX increase by ~15%
->> > > >
->> > > > Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
->> > > > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
->> > > > ---
->> > > >
->> > > >  drivers/net/wireless/ath/ath10k/core.c | 16 ++++++++++++++++
->> > > >  drivers/net/wireless/ath/ath10k/hw.h   |  2 ++
->> > > >  drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
->> > > >  3 files changed, 21 insertions(+)
->> > > >
->> > > > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/=
-wireless/ath/ath10k/core.c
->> > > > index 5eb131ab916fd..ee4b6ba508c81 100644
->> > > > --- a/drivers/net/wireless/ath/ath10k/core.c
->> > > > +++ b/drivers/net/wireless/ath/ath10k/core.c
->> > > > @@ -100,6 +100,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA988X_HW_2_0_VERSION,
->> > > > @@ -140,6 +141,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA9887_HW_1_0_VERSION,
->> > > > @@ -181,6 +183,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA6174_HW_3_2_VERSION,
->> > > > @@ -217,6 +220,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA6174_HW_2_1_VERSION,
->> > > > @@ -257,6 +261,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA6174_HW_2_1_VERSION,
->> > > > @@ -297,6 +302,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA6174_HW_3_0_VERSION,
->> > > > @@ -337,6 +343,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA6174_HW_3_2_VERSION,
->> > > > @@ -381,6 +388,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA99X0_HW_2_0_DEV_VERSION,
->> > > > @@ -427,6 +435,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA9984_HW_1_0_DEV_VERSION,
->> > > > @@ -480,6 +489,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA9888_HW_2_0_DEV_VERSION,
->> > > > @@ -530,6 +540,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA9377_HW_1_0_DEV_VERSION,
->> > > > @@ -570,6 +581,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA9377_HW_1_1_DEV_VERSION,
->> > > > @@ -612,6 +624,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA9377_HW_1_1_DEV_VERSION,
->> > > > @@ -645,6 +658,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D QCA4019_HW_1_0_DEV_VERSION,
->> > > > @@ -692,6 +706,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D false,
->> > > >                 .use_fw_tx_credits =3D true,
->> > > >                 .delay_unmap_buffer =3D false,
->> > > > +               .enable_threaded_napi =3D false,
->> > > >         },
->> > > >         {
->> > > >                 .id =3D WCN3990_HW_1_0_DEV_VERSION,
->> > > > @@ -725,6 +740,7 @@ static const struct ath10k_hw_params ath10k_hw=
-_params_list[] =3D {
->> > > >                 .hw_restart_disconnect =3D true,
->> > > >                 .use_fw_tx_credits =3D false,
->> > > >                 .delay_unmap_buffer =3D true,
->> > > > +               .enable_threaded_napi =3D true,
->> > > >         },
->> > > >  };
->> > > >
->> > > > diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wi=
-reless/ath/ath10k/hw.h
->> > > > index 9643031a4427a..adf3076b96503 100644
->> > > > --- a/drivers/net/wireless/ath/ath10k/hw.h
->> > > > +++ b/drivers/net/wireless/ath/ath10k/hw.h
->> > > > @@ -639,6 +639,8 @@ struct ath10k_hw_params {
->> > > >         bool use_fw_tx_credits;
->> > > >
->> > > >         bool delay_unmap_buffer;
->> > > > +
->> > > > +       bool enable_threaded_napi;
->> > > >  };
->> > > >
->> > > >  struct htt_resp;
->> > > > diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/=
-wireless/ath/ath10k/snoc.c
->> > > > index cfcb759a87dea..b94150fb6ef06 100644
->> > > > --- a/drivers/net/wireless/ath/ath10k/snoc.c
->> > > > +++ b/drivers/net/wireless/ath/ath10k/snoc.c
->> > > > @@ -927,6 +927,9 @@ static int ath10k_snoc_hif_start(struct ath10k=
- *ar)
->> > > >
->> > > >         bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
->> > > >
->> > > > +       if (ar->hw_params.enable_threaded_napi)
->> > > > +               dev_set_threaded(&ar->napi_dev, true);
->> > > > +
->> > > >         ath10k_core_napi_enable(ar);
->> > > >         ath10k_snoc_irq_enable(ar);
->> > > >         ath10k_snoc_rx_post(ar);
->> > > > --
->> > > > 2.39.0.314.g84b9a713c41-goog
->> > > >
->> > >
->> > >
->> > > --
->> > > This song goes out to all the folk that thought Stadia would work:
->> > > https://www.linkedin.com/posts/dtaht_the-mushroom-song-activity-6981=
-366665607352320-FXtz
->> > > Dave T=C3=A4ht CEO, TekLibre, LLC
->>
->>
->>
->> --
->> This song goes out to all the folk that thought Stadia would work:
->> https://www.linkedin.com/posts/dtaht_the-mushroom-song-activity-69813666=
-65607352320-FXtz
->> Dave T=C3=A4ht CEO, TekLibre, LLC
->> _______________________________________________
->> Make-wifi-fast mailing list
->> Make-wifi-fast@lists.bufferbloat.net
->> https://lists.bufferbloat.net/listinfo/make-wifi-fast
->
->
-> This electronic communication and the information and any files transmitt=
-ed with it, or attached to it, are confidential and are intended solely for=
- the use of the individual or entity to whom it is addressed and may contai=
-n information that is confidential, legally privileged, protected by privac=
-y laws, or otherwise restricted from disclosure to anyone else. If you are =
-not the intended recipient or the person responsible for delivering the e-m=
-ail to the intended recipient, you are hereby notified that any use, copyin=
-g, distributing, dissemination, forwarding, printing, or copying of this e-=
-mail is strictly prohibited. If you received this e-mail in error, please r=
-eturn the e-mail to the sender, delete it from your computer, and destroy a=
-ny printed copy of it.
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c 
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> index 4a309e5a5707..4b6adb6ce5e3 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> @@ -319,6 +319,7 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+>  if (err) {
+>  brcmf_dbg(TRACE, "retrieving clmver failed, %d\n", err);
+>  } else {
+> + buf[sizeof(buf) - 1] = '\0';
+>  clmver = (char *)buf;
+>  /* store CLM version for adding it to revinfo debugfs file */
+>  memcpy(ifp->drvr->clmver, clmver, sizeof(ifp->drvr->clmver));
+
+Can you move the memcpy() after the strreplace() call?
+
+Regards,
+Arend
 
 
 
---=20
-This song goes out to all the folk that thought Stadia would work:
-https://www.linkedin.com/posts/dtaht_the-mushroom-song-activity-69813666656=
-07352320-FXtz
-Dave T=C3=A4ht CEO, TekLibre, LLC
+--000000000000d8e41805f1065e53
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCevPFfcjJpXLgcsX0t
+jL5zzpFBT4wEJ8cbQimXvDpPBzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjEyMzAwNzE1NDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAejUzIP3zvmjahlVDlfMYdcXi507K0Ez3H1+Y
+kU9Z2HUafGo7j8EcpqTBI7CoG5hbKeT7x1m9810P0x12RAqQlWEFGmEpl6wKwrxABUf1RGqZUjKP
+p57OlvXWaXW4qIjpLKghBIR0E7j8tJ+V6nQRFfdIap58Y9aL7PB4YSFIJinfP2irqy8+Y022GzLL
+Z9q8ezOji3gRn+nRHrnGfMwMXNB5AtHuj7FR/1rA+ibiTl96thuk2PgnUSlYnM/tMN9Y3yVHLfOt
+fquyUlxz7EQWUMmFVcGKr1GjKTkO03vui6CV3MHYnuYyH8gGyMfRkXv9aihHoy51xFwIb45x1dKT
+og==
+--000000000000d8e41805f1065e53--
