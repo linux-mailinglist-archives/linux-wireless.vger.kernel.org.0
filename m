@@ -2,55 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA3865A93F
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Jan 2023 08:44:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E6265A9D0
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Jan 2023 12:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229664AbjAAHoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 1 Jan 2023 02:44:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35548 "EHLO
+        id S230191AbjAALqI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 1 Jan 2023 06:46:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjAAHox (ORCPT
+        with ESMTP id S229479AbjAALqH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 1 Jan 2023 02:44:53 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142FB6241;
-        Sat, 31 Dec 2022 23:44:52 -0800 (PST)
+        Sun, 1 Jan 2023 06:46:07 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B673BB
+        for <linux-wireless@vger.kernel.org>; Sun,  1 Jan 2023 03:46:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A40BB60CFB;
-        Sun,  1 Jan 2023 07:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFEFC433D2;
-        Sun,  1 Jan 2023 07:44:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 90EE0B8090B
+        for <linux-wireless@vger.kernel.org>; Sun,  1 Jan 2023 11:46:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB736C433D2;
+        Sun,  1 Jan 2023 11:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672559091;
-        bh=59eVHOxrFMgU3R7WYLVhvDVwYrTPlF5buBzKHCX931k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=is7+RLaLyADQ4dKsPNK1KChFOHA9VTV9UI3BiJeAitFOZE5tm1gC2gH96BKujzrJH
-         kbPyvzDoO0F3jPcBVykTXOMeDUyHZkBmzje8HI5wd3SJVvsZLxCs/5ijuXtNJnfYfj
-         IGsur9tnSLdBN/pjo/LCmp+8jyqBjzLKsCmUFzKgfb7tZAboXyT5qWWag8ldq07yU5
-         8l3k3E83rhuXlfQgslr82WtPB5bpuOntF6uV2t7S3263CNKSxPBPkp8byDwekjW7Mx
-         NfNJMbKyIYszXDt8vnyiHwUWyRNIYLQyW3OMmKrTKFO84RENpDWF8IRvMUGQc9nZ0/
-         8MxfZt+3KLXJw==
-Date:   Sun, 1 Jan 2023 09:44:46 +0200
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Miaoqian Lin <linmq006@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath11k: Fix memory leak in
- ath11k_peer_rx_frag_setup
-Message-ID: <Y7E57sQ9LiJWefoj@unreal>
-References: <20221229073849.1388315-1-linmq006@gmail.com>
+        s=k20201202; t=1672573561;
+        bh=pOqEo970+Hpcx5K/JvSUDCduSwws39YY7NGpWSzQ7tY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MyKqT63YfUGQRm2o+qCQUMiHE0n8gFmdR+r+0wARDhK1J+oWkS1loQ4u4M28dwgdg
+         9U3JNu9e9bg6YtVNO5obAGjKYpUxcpEquh0g+IPSPY/0HvSi1BdIjziLIQc2V8q8w2
+         izw7pzg4lsxtbnq529saSSC29arP+83j+bMIo9iKG6G9NqHt/TYsZcMylDPwXBWj1e
+         FJZrkthF275sWUIaSLKMqA+3shTiuo6j93MXzaFwN7OMmKNaXYinZcttvj+olM8B/Y
+         +1MoY0TsnxR6Ia+fPw0DEwilePC45jgXVCGdxP0ur9r0k4ySAMTOTYPe281acSxDT4
+         j9Ptwzy87uV8w==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mt76: introduce mt76_queue_is_wed_rx utility routine
+Date:   Sun,  1 Jan 2023 12:35:49 +0100
+Message-Id: <73955f97c18eabc82f43c8dcca1240ae09ccc8cd.1672572805.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221229073849.1388315-1-linmq006@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -60,48 +50,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 29, 2022 at 11:38:48AM +0400, Miaoqian Lin wrote:
-> crypto_alloc_shash() allocates resources, which should be released by
-> crypto_free_shash(). When ath11k_peer_find() fails, there has memory
-> leak. Move crypto_alloc_shash() after ath11k_peer_find() to fix this.
-> 
-> Fixes: 243874c64c81 ("ath11k: handle RX fragments")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath11k/dp_rx.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> index c5a4c34d7749..1297caa2b09a 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -3116,10 +3116,6 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
->  	struct dp_rx_tid *rx_tid;
->  	int i;
->  
-> -	tfm = crypto_alloc_shash("michael_mic", 0, 0);
-> -	if (IS_ERR(tfm))
-> -		return PTR_ERR(tfm);
-> -
->  	spin_lock_bh(&ab->base_lock);
->  
->  	peer = ath11k_peer_find(ab, vdev_id, peer_mac);
-> @@ -3129,6 +3125,10 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
->  		return -ENOENT;
->  	}
->  
-> +	tfm = crypto_alloc_shash("michael_mic", 0, 0);
-> +	if (IS_ERR(tfm))
-> +		return PTR_ERR(tfm);
-> +
+This patch does not change any logic, just improve code readability.
 
-You forgot to unlock ab->base_lock.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/dma.c        | 6 ++----
+ drivers/net/wireless/mediatek/mt76/mt76.h       | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 3 +--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-Thanks
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 93a2e8ab64ed..f1368a6aed15 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -218,8 +218,7 @@ mt76_dma_add_rx_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ 
+ 	ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
+ 
+-	if ((q->flags & MT_QFLAG_WED) &&
+-	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
++	if (mt76_queue_is_wed_rx(q)) {
+ 		txwi = mt76_get_rxwi(dev);
+ 		if (!txwi)
+ 			return -ENOMEM;
+@@ -399,8 +398,7 @@ mt76_dma_get_buf(struct mt76_dev *dev, struct mt76_queue *q, int idx,
+ 	if (info)
+ 		*info = le32_to_cpu(desc->info);
+ 
+-	if ((q->flags & MT_QFLAG_WED) &&
+-	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
++	if (mt76_queue_is_wed_rx(q)) {
+ 		u32 token = FIELD_GET(MT_DMA_CTL_TOKEN,
+ 				      le32_to_cpu(desc->buf1));
+ 		struct mt76_txwi_cache *t = mt76_rx_token_release(dev, token);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 1037d23bc4d0..f351a37c47f7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1409,6 +1409,12 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ 			      struct mt76_power_limits *dest,
+ 			      s8 target_power);
+ 
++static inline bool mt76_queue_is_wed_rx(struct mt76_queue *q)
++{
++	return (q->flags & MT_QFLAG_WED) &&
++	       FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX;
++}
++
+ struct mt76_txwi_cache *
+ mt76_token_release(struct mt76_dev *dev, int token, bool *wake);
+ int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index f0d5a3603902..65727ce6c29e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -256,8 +256,7 @@ mt7915_wed_check_ppe(struct mt7915_dev *dev, struct mt76_queue *q,
+ 	if (!msta || !msta->vif)
+ 		return;
+ 
+-	if (!(q->flags & MT_QFLAG_WED) ||
+-	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) != MT76_WED_Q_RX)
++	if (!mt76_queue_is_wed_rx(q))
+ 		return;
+ 
+ 	if (!(info & MT_DMA_INFO_PPE_VLD))
+-- 
+2.38.1
 
->  	for (i = 0; i <= IEEE80211_NUM_TIDS; i++) {
->  		rx_tid = &peer->rx_tid[i];
->  		rx_tid->ab = ab;
-> -- 
-> 2.25.1
-> 
