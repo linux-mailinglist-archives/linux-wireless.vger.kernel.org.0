@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E6265A9D0
+	by mail.lfdr.de (Postfix) with ESMTP id 71E8F65A9CF
 	for <lists+linux-wireless@lfdr.de>; Sun,  1 Jan 2023 12:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbjAALqI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S230094AbjAALqI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sun, 1 Jan 2023 06:46:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjAALqH (ORCPT
+        with ESMTP id S229447AbjAALqH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 1 Jan 2023 06:46:07 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B673BB
-        for <linux-wireless@vger.kernel.org>; Sun,  1 Jan 2023 03:46:03 -0800 (PST)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC1ACE9
+        for <linux-wireless@vger.kernel.org>; Sun,  1 Jan 2023 03:46:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 90EE0B8090B
-        for <linux-wireless@vger.kernel.org>; Sun,  1 Jan 2023 11:46:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB736C433D2;
-        Sun,  1 Jan 2023 11:46:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 846E360C01
+        for <linux-wireless@vger.kernel.org>; Sun,  1 Jan 2023 11:46:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9A9C433EF;
+        Sun,  1 Jan 2023 11:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672573561;
-        bh=pOqEo970+Hpcx5K/JvSUDCduSwws39YY7NGpWSzQ7tY=;
+        s=k20201202; t=1672573565;
+        bh=gf+1dWhONcgKs9nzc+dWswVgyP4V9iPOTVLIE4Ik3TM=;
         h=From:To:Cc:Subject:Date:From;
-        b=MyKqT63YfUGQRm2o+qCQUMiHE0n8gFmdR+r+0wARDhK1J+oWkS1loQ4u4M28dwgdg
-         9U3JNu9e9bg6YtVNO5obAGjKYpUxcpEquh0g+IPSPY/0HvSi1BdIjziLIQc2V8q8w2
-         izw7pzg4lsxtbnq529saSSC29arP+83j+bMIo9iKG6G9NqHt/TYsZcMylDPwXBWj1e
-         FJZrkthF275sWUIaSLKMqA+3shTiuo6j93MXzaFwN7OMmKNaXYinZcttvj+olM8B/Y
-         +1MoY0TsnxR6Ia+fPw0DEwilePC45jgXVCGdxP0ur9r0k4ySAMTOTYPe281acSxDT4
-         j9Ptwzy87uV8w==
+        b=Q9+Zbn/5TkS12fGh72L5eZFI7DsO4YBjn7MgHAFLknS/cKUjTa1vGl/cPRJIcz1e8
+         etxX9u4KZ2asOC0pgTLY5SraOgRK5n9SVjh9kJ+SjSOWgjuPOu1Ha+ZnCcD2Qs8C3I
+         CCR/p2CyS3LiD3R+tYhd/4c4m6tFEEc4kHep94rSM89dp6wHKMaVvZvs9KUVjTR4WY
+         Eyn+rGfmbETqEsTr/9/wvO6B+muJnIHRnFr3rKxxOuiL+9BdDn56mlQ7n2MEiJlPsR
+         +bC1kuIM6/DVG/79mZvtRWdKch6NDvZV6qrnrLC5iNTHUg7fLhiqjP2tG8BvBMt7Bn
+         2NkzgcX5yH0Wg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mt76: introduce mt76_queue_is_wed_rx utility routine
-Date:   Sun,  1 Jan 2023 12:35:49 +0100
-Message-Id: <73955f97c18eabc82f43c8dcca1240ae09ccc8cd.1672572805.git.lorenzo@kernel.org>
+Subject: [PATCH] wifi: mt76: mt7915: fix memory leak in mt7915_mcu_exit
+Date:   Sun,  1 Jan 2023 12:42:04 +0100
+Message-Id: <00b787803dc720980b7c6e5ef6e0203945fadb79.1672573088.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -50,70 +50,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch does not change any logic, just improve code readability.
+Always purge mcu skb queues in mt7915_mcu_exit routine even if
+mt7915_firmware_state fails.
 
+Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c        | 6 ++----
- drivers/net/wireless/mediatek/mt76/mt76.h       | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 3 +--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 93a2e8ab64ed..f1368a6aed15 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -218,8 +218,7 @@ mt76_dma_add_rx_buf(struct mt76_dev *dev, struct mt76_queue *q,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index b2652de082ba..e69ef2828925 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2349,13 +2349,14 @@ void mt7915_mcu_exit(struct mt7915_dev *dev)
+ 	__mt76_mcu_restart(&dev->mt76);
+ 	if (mt7915_firmware_state(dev, false)) {
+ 		dev_err(dev->mt76.dev, "Failed to exit mcu\n");
+-		return;
++		goto out;
+ 	}
  
- 	ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
+ 	mt76_wr(dev, MT_TOP_LPCR_HOST_BAND(0), MT_TOP_LPCR_HOST_FW_OWN);
+ 	if (dev->hif2)
+ 		mt76_wr(dev, MT_TOP_LPCR_HOST_BAND(1),
+ 			MT_TOP_LPCR_HOST_FW_OWN);
++out:
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+ }
  
--	if ((q->flags & MT_QFLAG_WED) &&
--	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
-+	if (mt76_queue_is_wed_rx(q)) {
- 		txwi = mt76_get_rxwi(dev);
- 		if (!txwi)
- 			return -ENOMEM;
-@@ -399,8 +398,7 @@ mt76_dma_get_buf(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 	if (info)
- 		*info = le32_to_cpu(desc->info);
- 
--	if ((q->flags & MT_QFLAG_WED) &&
--	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
-+	if (mt76_queue_is_wed_rx(q)) {
- 		u32 token = FIELD_GET(MT_DMA_CTL_TOKEN,
- 				      le32_to_cpu(desc->buf1));
- 		struct mt76_txwi_cache *t = mt76_rx_token_release(dev, token);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 1037d23bc4d0..f351a37c47f7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1409,6 +1409,12 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 			      struct mt76_power_limits *dest,
- 			      s8 target_power);
- 
-+static inline bool mt76_queue_is_wed_rx(struct mt76_queue *q)
-+{
-+	return (q->flags & MT_QFLAG_WED) &&
-+	       FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX;
-+}
-+
- struct mt76_txwi_cache *
- mt76_token_release(struct mt76_dev *dev, int token, bool *wake);
- int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index f0d5a3603902..65727ce6c29e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -256,8 +256,7 @@ mt7915_wed_check_ppe(struct mt7915_dev *dev, struct mt76_queue *q,
- 	if (!msta || !msta->vif)
- 		return;
- 
--	if (!(q->flags & MT_QFLAG_WED) ||
--	    FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) != MT76_WED_Q_RX)
-+	if (!mt76_queue_is_wed_rx(q))
- 		return;
- 
- 	if (!(info & MT_DMA_INFO_PPE_VLD))
 -- 
 2.38.1
 
