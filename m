@@ -2,150 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9337865AF38
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 11:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E04865AF74
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 11:19:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbjABKCv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 05:02:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59244 "EHLO
+        id S232048AbjABKT0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 05:19:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232412AbjABKCt (ORCPT
+        with ESMTP id S232032AbjABKTZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 05:02:49 -0500
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC14282
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 02:02:47 -0800 (PST)
-Received: by mail-il1-f198.google.com with SMTP id s2-20020a056e02216200b0030bc3be69e5so17840461ilv.20
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 02:02:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PyJN7OJ2YqNiOOnZ+Fq+PsLaoelIj5+JM/BH5hSu9d8=;
-        b=GKSgflnHACQ4Zzzsg06LO7AeaDZKyHCXQmvDktzYf9runFF2x1cjeI2KbMBaCxEnHJ
-         zz249QdHf/vng+sWP7ZQs/F+JMYiNSdiKMuwrPL9+Fg5GOqxaBN+s4FyH1yPhS1qROh9
-         I5qX+SIeB+078M+6gXZz/Qr9XfpFglri6tOy3Dim6/fA7AJ71z4XQAd5EE6ZNhOe8T2U
-         VjxSNOQMRqffDelph1V66XZ7jWfSl6UUWb4ah74jia9ipNivPhVczO8ndHAIbAugxaFP
-         OBvGXfIh+w3oDY7Qbbh3lKwC91YQuhTc1kbAOWxalKnlf9oNAVRoLH8Ei42ZlUFMMoJ7
-         K1DA==
-X-Gm-Message-State: AFqh2kpQAu65x/sYzYGPJHeToXiqhV6j+pzWhgXfjR9F2KBflMwAxlps
-        8RfVNCqzWO8i0ub61RQYmWjpw5y97cr+z7ajgyMfyuSzRR6w
-X-Google-Smtp-Source: AMrXdXuK8BL5XFckTUtiI6cAiKbo7vijg0rMDXz5UPvsraCP28ZDLqVvaqbabsZpbk/BMI1eVrK5QrdvlMBAmLABBIOBZ9ZvIx/F
+        Mon, 2 Jan 2023 05:19:25 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582A8FC7
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 02:19:24 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3029s7Ek008222;
+        Mon, 2 Jan 2023 10:19:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=+Zv5sOl8YOABCxjez9S3ZDFv5g9h+/4swq5f0U6JbLY=;
+ b=h0rZiabgykFRhN+ZZhXZIc/tacAbwSH/dKaJHrEai3YWE4v8Btnkzh/KVaU4k05UvEYV
+ d7Fkb4gpcmkvMCkvknxiAhoxzejxHNzvLIUI9oreKjW15+Hq1xnZSl3URWWmRfLdp5VK
+ vr4E+MPUFLPujQRRsCjOUXL30RAJqSi9hYE+Qww24evt1MrvWHMAJzACr0Wb3vS306XJ
+ KVURz7pudnYkMaupo/DtBdY5ruVJjW12Swa/M27VD0kC2Dq4E59Ih3IG5lfW8auU8W1E
+ FiECEoceod+s4U3woq4U81q8AQiOMQJpwC4UZrii+AwMoZ+neOLsSNyOmqyyg9dz5g/Z aw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mtc3ejwtg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Jan 2023 10:19:14 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 302AJDpw013367
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 2 Jan 2023 10:19:13 GMT
+Received: from [10.216.48.166] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 2 Jan 2023
+ 02:19:11 -0800
+Message-ID: <e11e4312-d373-ba54-6d48-a9c471f78532@quicinc.com>
+Date:   Mon, 2 Jan 2023 15:49:06 +0530
 MIME-Version: 1.0
-X-Received: by 2002:a6b:c817:0:b0:6e0:2427:f72e with SMTP id
- y23-20020a6bc817000000b006e02427f72emr2089330iof.55.1672653767119; Mon, 02
- Jan 2023 02:02:47 -0800 (PST)
-Date:   Mon, 02 Jan 2023 02:02:47 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009f187905f1450d91@google.com>
-Subject: [syzbot] BUG: unable to handle kernel paging request in cfg80211_inform_bss_frame_data
-From:   syzbot <syzbot+6b5032e139299571a3d1@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH] wifi: ath11k: Set ext passive scan flag to adjust passive
+ scan start time
+Content-Language: en-US
+To:     Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+        <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20221222131720.11368-1-quic_tamizhr@quicinc.com>
+From:   Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <20221222131720.11368-1-quic_tamizhr@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XVoUoYgKhPX6OaX72H58ZfiYe7_DAjuZ
+X-Proofpoint-ORIG-GUID: XVoUoYgKhPX6OaX72H58ZfiYe7_DAjuZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-02_06,2022-12-30_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 impostorscore=0 malwarescore=0 spamscore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 suspectscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301020093
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    a5541c0811a0 Merge branch 'for-next/core' into for-kernelci
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=15374118480000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cbd4e584773e9397
-dashboard link: https://syzkaller.appspot.com/bug?extid=6b5032e139299571a3d1
-compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
-userspace arch: arm64
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/4b7702208fb9/disk-a5541c08.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9ec0153ec051/vmlinux-a5541c08.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6f8725ad290a/Image-a5541c08.gz.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6b5032e139299571a3d1@syzkaller.appspotmail.com
-
-Unable to handle kernel paging request at virtual address 002e6f696b6c629f
-Mem abort info:
-  ESR = 0x0000000096000004
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x04: level 0 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000004
-  CM = 0, WnR = 0
-[002e6f696b6c629f] address between user and kernel address ranges
-Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 1 PID: 4479 Comm: kworker/u4:21 Not tainted 6.1.0-rc8-syzkaller-33330-ga5541c0811a0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-Workqueue: phy15 ieee80211_iface_work
-pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __kmem_cache_alloc_node+0x17c/0x350 mm/slub.c:3437
-lr : slab_pre_alloc_hook mm/slab.h:712 [inline]
-lr : slab_alloc_node mm/slub.c:3318 [inline]
-lr : __kmem_cache_alloc_node+0x80/0x350 mm/slub.c:3437
-sp : ffff800015e63890
-x29: ffff800015e638a0 x28: ffff000124078000 x27: ffff0001238ab474
-x26: ffff00010b9e3658 x25: 00000000ffffffff x24: ffff80000bc33670
-x23: 0000000000000048 x22: 622e6f696b6c625f x21: 0000000000000000
-x20: 0000000000000b20 x19: ffff0000c0001200 x18: 00000000000003a6
-x17: 0000000000000075 x16: 0000000000000000 x15: 0000000000000000
-x14: 0000000000000000 x13: 0000000000000005 x12: ffff80000d8f0a90
-x11: 0000000000000001 x10: 0000000000000000 x9 : 0000000000000040
-x8 : 0000000000387011 x7 : ffff80000bcf8a58 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : ffff80000bc33670 x3 : 0000000000387019
-x2 : 0000000000000000 x1 : 0000000000000080 x0 : fffffc000317aa00
-Call trace:
- next_tid mm/slub.c:2349 [inline]
- slab_alloc_node mm/slub.c:3382 [inline]
- __kmem_cache_alloc_node+0x17c/0x350 mm/slub.c:3437
- __do_kmalloc_node mm/slab_common.c:954 [inline]
- __kmalloc+0xb4/0x140 mm/slab_common.c:968
- kmalloc include/linux/slab.h:558 [inline]
- kzalloc include/linux/slab.h:689 [inline]
- cfg80211_inform_single_bss_frame_data net/wireless/scan.c:2471 [inline]
- cfg80211_inform_bss_frame_data+0x29c/0xc40 net/wireless/scan.c:2532
- ieee80211_bss_info_update+0x3f4/0x60c net/mac80211/scan.c:190
- ieee80211_rx_bss_info net/mac80211/ibss.c:1120 [inline]
- ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1609 [inline]
- ieee80211_ibss_rx_queued_mgmt+0xb9c/0x1078 net/mac80211/ibss.c:1638
- ieee80211_iface_process_skb net/mac80211/iface.c:1630 [inline]
- ieee80211_iface_work+0x444/0x68c net/mac80211/iface.c:1684
- process_one_work+0x2d8/0x504 kernel/workqueue.c:2289
- worker_thread+0x340/0x610 kernel/workqueue.c:2436
- kthread+0x12c/0x158 kernel/kthread.c:376
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:863
-Code: 54000ee1 34000eeb b9402a69 91002103 (f8696ada) 
----[ end trace 0000000000000000 ]---
-----------------
-Code disassembly (best guess):
-   0:	54000ee1 	b.ne	0x1dc  // b.any
-   4:	34000eeb 	cbz	w11, 0x1e0
-   8:	b9402a69 	ldr	w9, [x19, #40]
-   c:	91002103 	add	x3, x8, #0x8
-* 10:	f8696ada 	ldr	x26, [x22, x9] <-- trapping instruction
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+On 12/22/2022 6:47 PM, Tamizh Chelvam Raja wrote:
+> Set the WMI_SCAN_FLAG_EXT_PASSIVE_SCAN_START_TIME_ENHANCE flag
+> while sending the scan command.  If this flag is enabled when the
+> incoming scan request comes with a strict start time and its duration
+> overlaps with next TBTT, then target adjust the start time accordingly
+> for passive scan. Target supporting this feature will advertise
+> WMI_TLV_SERVICE_PASSIVE_SCAN_START_TIME_ENHANCE.
+> 
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
+> 
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+If this change fixes any user visible issue, better to include that details.
+
+Other than that, the patch looks good to me.
+
+Vasanth
