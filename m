@@ -2,120 +2,386 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AB365B695
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 19:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DFE65B6F1
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 20:24:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233800AbjABS1h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 13:27:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55178 "EHLO
+        id S236347AbjABTYD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 14:24:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbjABS1g (ORCPT
+        with ESMTP id S236346AbjABTYC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 13:27:36 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A73E60C8
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 10:27:35 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id fc4so68239081ejc.12
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 10:27:35 -0800 (PST)
+        Mon, 2 Jan 2023 14:24:02 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C54B85E
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 11:24:00 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id u9so68759435ejo.0
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 11:24:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wQgsuVVB5BXEqdo7ixI3OELjnDFpM1739xm9BL+J8Os=;
-        b=K3YC+6TfA/jmI3RuwXwYgEepICKRnnkHUaK8PYKSmNJu3sPueHh4CqFzqRA95U2wsy
-         Zy0QCub2GPPPR1IYwKlo4If0cIOKnj9Wswwt4vyjPnoywzoPgaCRyp7caOPC0NMs6TIb
-         7mXSJsIE5HVin5ltOIcaxZaU4nBE45/mrOr7I=
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=F5J7nkXbnOblCH6bNUhXkxF89RTW71Q+ym0sTUv8fAQ=;
+        b=gyKD0zLQS4FTp9HPO4rNPUV5tVrS20PLA1iWBXz24e/o2q1SRsUd2ibWzIG1yxeZWn
+         ZOY+gDgGfxIsapBFD0+ZL4/sU9i9S7b0LVyllj5oj/cXe6Uw98yj58+bLh7A2mvg+3Jb
+         UfoPS3PHYap6PLgI7BIkyovGoAH1jGB/fOKEA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wQgsuVVB5BXEqdo7ixI3OELjnDFpM1739xm9BL+J8Os=;
-        b=aeMKl0ucevc+FaSY0cfSgZV1Wdn+JaZ0wIy6m6zsngXPuF/z4E3BtVCEzLw0DNk1QV
-         U5bsRsa25ooh6EB+fchK1K+QrAy1EtRw/dL9HbxVkWIZzvu7bpsFhVfO+meemscK98jb
-         m1Gem63ArX7LrMWA6sU7E7dv99vw6SVhSpSVuQNHgJjMnP8p4jInS6ZVrB21zwr4n6gb
-         g26CCrE4WoKcfAt+Q7o7ydg5EIA3vaqgvPKBoyh0WH3F2vKA9xt066oSFsmtyMfoo9Dr
-         IdPXvddP6mSqrEO05F5Qlq4OAvv1D8vMERGvNHZDadX/6jqMamwzCamxdspmRZq02g9C
-         YHPg==
-X-Gm-Message-State: AFqh2kovWgUQtOazBkLWSGAYdzwjLBVxXzm6oFYAeC1cHsdB0yeYhG5G
-        nTjVmQ2jUbXss4d09pMZgV1exA==
-X-Google-Smtp-Source: AMrXdXuPdtJjvNeBLkhHExgDD6sthU5G5noinCFOqYgjyR0ccIJ4ls8gwh35k3Bmu8a3ba/EWhkIqQ==
-X-Received: by 2002:a17:907:9b09:b0:849:e96f:521b with SMTP id kn9-20020a1709079b0900b00849e96f521bmr31430902ejc.32.1672684053670;
-        Mon, 02 Jan 2023 10:27:33 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id lb2-20020a170907784200b0084aade9d6b5sm12205006ejc.17.2023.01.02.10.27.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Jan 2023 10:27:32 -0800 (PST)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Hector Martin <marcan@marcan.st>,
-        Aditya Garg <gargaditya08@live.com>, <aspriel@gmail.com>,
-        <hante.meuleman@broadcom.com>, <kvalo@kernel.org>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <lina@asahilina.net>,
-        <franky.lin@broadcom.com>
-CC:     Orlando Chamberlain <redecorating@protonmail.com>,
-        <brcm80211-dev-list@broadcom.com>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Asahi Linux <asahi@lists.linux.dev>
-Date:   Mon, 02 Jan 2023 19:27:31 +0100
-Message-ID: <18573bd1a38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <f36dd8e3-9905-f04a-ed34-4be91ed1fec6@marcan.st>
- <F9EFCCD1-4407-42CC-8316-2F58AAC1AE7F@live.com>
- <ACC0D1F6-7857-4FF0-A474-4EC699572E1B@live.com>
- <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
-User-Agent: AquaMail/1.41.0 (build: 104100234)
-Subject: Re: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware names for Apple OTP chips
+        bh=F5J7nkXbnOblCH6bNUhXkxF89RTW71Q+ym0sTUv8fAQ=;
+        b=Or+Y8t4U59Ej5v98/BFAirOOs0Bwr53O2clGqds01dj+mUDdb1Hc16AG4GYSexqPBA
+         ozSU1/Dy/jjOQ1oVeDmSpgEYD5f8Nq+PTR8rp9aPowONsiNwcz8hUtl/HIkssSNFhi/I
+         Xa6M/+rfX122z/u3qfalheFyHSW4GENs3mcqDXRIXLLZzaSDkFtdroPNJbb9Zad/q2s4
+         b0kOxiic9hOUyT3AKJA/b0dHJjK8HxkJ/I+Ewe5n5KeDzY9C6EMuHfnJ64ez97fG1pmm
+         hNe6Ghafv+6LeOkSl/zfonG0evNt8P3fvW3JGbloutfVl9/ntgzHDHU53d9mj31x4M6Y
+         g33w==
+X-Gm-Message-State: AFqh2kovEp0isdcFrCCdPCkVC8ZY8f6qf9WORnY9L7FXGuo/9Kro9xeB
+        KHHzxo55WiG7x28VVUR+KITAzmy4k8Ufg00w
+X-Google-Smtp-Source: AMrXdXsCEYe9SZSZ0FVAa5RzNYTaJK1ipsh60YPyRwbckWrHftg5vbkpCG9j+MAHtUpnSdmygQBwQA==
+X-Received: by 2002:a17:906:a2d6:b0:7c0:bf7c:19f4 with SMTP id by22-20020a170906a2d600b007c0bf7c19f4mr35092610ejb.74.1672687438861;
+        Mon, 02 Jan 2023 11:23:58 -0800 (PST)
+Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id t15-20020a170906608f00b0078d9cd0d2d6sm13574420ejj.11.2023.01.02.11.23.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jan 2023 11:23:57 -0800 (PST)
+Message-ID: <1f428e2b-f73f-64ff-02d3-eefbcd11db89@broadcom.com>
+Date:   Mon, 2 Jan 2023 20:23:56 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: brcmfmac: Unexpected cfg80211_set_channel: set chanspec ... fail,
+ reason -52
+To:     Stefan Wahren <stefan.wahren@i2se.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d9dace05f14c1a99"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        boundary="000000000000a090c905f14ce465"
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000d9dace05f14c1a99
-Content-Type: text/plain; format=flowed; charset="us-ascii"
+--000000000000a090c905f14ce465
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On January 2, 2023 4:15:41 PM Hector Martin <marcan@marcan.st> wrote:
++ Johannes
 
-> On 02/01/2023 23.40, Aditya Garg wrote:
->> From: Aditya Garg <gargaditya08@live.com>
->>
->> Commit 'dce45ded7619' added support for 89459 chip pcie device. It uses the
->> BRCM4355 chip which is also found in Apple hardware. However this commit
->> causes conflicts in the firmware naming between Apple hardware, which
->> supports OTP and other non-Apple hardwares. So, this patch makes these
->> Apple chips use their own firmware table so as to avoid possible conflicts
->> like these in the future.
->
-> I think my reply to Arend flew over your head.
->
-> My point was that I'd rather have the Broadcom/Cypress people actually
-> answer my question so we can figure out how to do this *properly*,
-> instead of doing "safer-but-dumb" things (like this patch) because we
-> just don't have the information to do it properly.
+On 12/30/2022 6:39 PM, Stefan Wahren wrote:
+> Hi,
+> 
+> since Linux 6.2-rc1 i noticed on my Raspberry Pi 3 B+ 
+> (arm/multi_v7_defconfig) the following new error messages appear, even 
+> if there is no Wifi connection. I suspect this is not a real issue, so 
+> it would nice to get the rid of it:
+> 
+> [   26.303445] brcmfmac: brcmf_fw_alloc_request: using 
+> brcm/brcmfmac43455-sdio for chip BCM4345/6
+> [   26.303554] brcmfmac mmc1:0001:1: Direct firmware load for 
+> brcm/brcmfmac43455-sdio.raspberrypi,3-model-b-plus.bin failed with error -2
+> [   26.516752] brcmfmac_wcc: brcmf_wcc_attach: executing
+> [   26.528264] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6 wl0: 
+> Jan  4 2021 19:56:29 version 7.45.229 (617f1f5 CY) FWID 01-2dbd9d2e
+> [   27.076829] Bluetooth: hci0: BCM: features 0x2f
+> [   27.078592] Bluetooth: hci0: BCM43455 37.4MHz Raspberry Pi 3+
+> [   27.078601] Bluetooth: hci0: BCM4345C0 (003.001.025) build 0342
+> [   30.142104] Adding 102396k swap on /var/swap.  Priority:-2 extents:1 
+> across:102396k SS
+> [   30.590017] Bluetooth: MGMT ver 1.22
+> [  104.897615] brcmfmac: cfg80211_set_channel: set chanspec 0x100e fail, 
+> reason -52
+> [  104.897992] brcmfmac: cfg80211_set_channel: set chanspec 0xd022 fail, 
+> reason -52
+> [  105.007672] brcmfmac: cfg80211_set_channel: set chanspec 0xd026 fail, 
+> reason -52
+> [  105.117654] brcmfmac: cfg80211_set_channel: set chanspec 0xd02a fail, 
+> reason -52
+> [  105.227636] brcmfmac: cfg80211_set_channel: set chanspec 0xd02e fail, 
+> reason -52
+> [  106.987552] brcmfmac: cfg80211_set_channel: set chanspec 0xd090 fail, 
+> reason -52
+> [  106.987911] brcmfmac: cfg80211_set_channel: set chanspec 0xd095 fail, 
+> reason -52
+> [  106.988233] brcmfmac: cfg80211_set_channel: set chanspec 0xd099 fail, 
+> reason -52
+> [  106.988565] brcmfmac: cfg80211_set_channel: set chanspec 0xd09d fail, 
+> reason -52
+> [  106.988909] brcmfmac: cfg80211_set_channel: set chanspec 0xd0a1 fail, 
+> reason -52
+> 
+> All of these 10 errors are repeated every 60 sec.
 
-Fair enough. Can you accurately (re)state your question and I will try to 
-answer it.
+Catching up after the holidays ;-) Above chanspec values are invalid. 
+0x100e = channel 14/bw 20MHz. The 'iw list' output shows all these 
+channels are disabled. So who/what is trying to set these channels. 
+Scanning sets the channel in firmware. Is this initiated from hostapd? 
+Maybe trying ACS? As these are marked as disabled user-space should not 
+use them. What I don't understand is why these pass the cfg80211 layer 
+so adding Johannes here.
 
 Regards,
 Arend
 
-> - Hector
+> If i enable the debugging for brcmf_fil_cmd_data, i'm getting this:
+> 
+> [  107.069199] brcmfmac: Firmware error: BCME_BADCHAN (-20)
+> [  107.069232] brcmfmac: cfg80211_set_channel: set chanspec 0x100e fail, 
+> reason -52
+> [  107.069597] brcmfmac: Firmware error: BCME_BADCHAN (-20)
+> [  107.069610] brcmfmac: cfg80211_set_channel: set chanspec 0xd022 fail, 
+> reason -52
+> ...
+> 
+> Here some additional information:
+> 
+> $ iw info
+> 
+> Interface wlan0
+>      ifindex 4
+>      wdev 0x1
+>      addr b8:27:eb:2e:ec:42
+>      type managed
+>      wiphy 0
+>      channel 140 (5700 MHz), width: 20 MHz, center1: 5700 MHz
+>      txpower 31.00 dBm
+> 
+> $ iw reg get
+> 
+> global
+> country DE: DFS-ETSI
+>      (2400 - 2483 @ 40), (N/A, 20), (N/A)
+>      (5150 - 5250 @ 80), (N/A, 20), (N/A), NO-OUTDOOR, AUTO-BW
+>      (5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
+>      (5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
+>      (5725 - 5875 @ 80), (N/A, 13), (N/A)
+>      (57000 - 66000 @ 2160), (N/A, 40), (N/A)
+> 
+> phy#0
+> country 99: DFS-UNSET
+>      (2402 - 2482 @ 40), (6, 20), (N/A)
+>      (2474 - 2494 @ 20), (6, 20), (N/A)
+>      (5140 - 5360 @ 160), (6, 20), (N/A)
+>      (5460 - 5860 @ 160), (6, 20), (N/A)
+> 
+> $ iw list
+> 
+> Wiphy phy0
+>      max # scan SSIDs: 10
+>      max scan IEs length: 2048 bytes
+>      max # sched scan SSIDs: 16
+>      max # match sets: 16
+>      Retry short limit: 7
+>      Retry long limit: 4
+>      Coverage class: 0 (up to 0m)
+>      Device supports roaming.
+>      Device supports T-DLS.
+>      Supported Ciphers:
+>          * WEP40 (00-0f-ac:1)
+>          * WEP104 (00-0f-ac:5)
+>          * TKIP (00-0f-ac:2)
+>          * CCMP-128 (00-0f-ac:4)
+>          * CMAC (00-0f-ac:6)
+>      Available Antennas: TX 0 RX 0
+>      Supported interface modes:
+>           * IBSS
+>           * managed
+>           * AP
+>           * P2P-client
+>           * P2P-GO
+>           * P2P-device
+>      Band 1:
+>          Capabilities: 0x1062
+>              HT20/HT40
+>              Static SM Power Save
+>              RX HT20 SGI
+>              RX HT40 SGI
+>              No RX STBC
+>              Max AMSDU length: 3839 bytes
+>              DSSS/CCK HT40
+>          Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
+>          Minimum RX AMPDU time spacing: 16 usec (0x07)
+>          HT TX/RX MCS rate indexes supported: 0-7
+>          Bitrates (non-HT):
+>              * 1.0 Mbps
+>              * 2.0 Mbps (short preamble supported)
+>              * 5.5 Mbps (short preamble supported)
+>              * 11.0 Mbps (short preamble supported)
+>              * 6.0 Mbps
+>              * 9.0 Mbps
+>              * 12.0 Mbps
+>              * 18.0 Mbps
+>              * 24.0 Mbps
+>              * 36.0 Mbps
+>              * 48.0 Mbps
+>              * 54.0 Mbps
+>          Frequencies:
+>              * 2412 MHz [1] (20.0 dBm)
+>              * 2417 MHz [2] (20.0 dBm)
+>              * 2422 MHz [3] (20.0 dBm)
+>              * 2427 MHz [4] (20.0 dBm)
+>              * 2432 MHz [5] (20.0 dBm)
+>              * 2437 MHz [6] (20.0 dBm)
+>              * 2442 MHz [7] (20.0 dBm)
+>              * 2447 MHz [8] (20.0 dBm)
+>              * 2452 MHz [9] (20.0 dBm)
+>              * 2457 MHz [10] (20.0 dBm)
+>              * 2462 MHz [11] (20.0 dBm)
+>              * 2467 MHz [12] (20.0 dBm)
+>              * 2472 MHz [13] (20.0 dBm)
+>              * 2484 MHz [14] (disabled)
+>      Band 2:
+>          Capabilities: 0x1062
+>              HT20/HT40
+>              Static SM Power Save
+>              RX HT20 SGI
+>              RX HT40 SGI
+>              No RX STBC
+>              Max AMSDU length: 3839 bytes
+>              DSSS/CCK HT40
+>          Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
+>          Minimum RX AMPDU time spacing: 16 usec (0x07)
+>          HT TX/RX MCS rate indexes supported: 0-7
+>          VHT Capabilities (0x00001020):
+>              Max MPDU length: 3895
+>              Supported Channel Width: neither 160 nor 80+80
+>              short GI (80 MHz)
+>              SU Beamformee
+>          VHT RX MCS set:
+>              1 streams: MCS 0-9
+>              2 streams: not supported
+>              3 streams: not supported
+>              4 streams: not supported
+>              5 streams: not supported
+>              6 streams: not supported
+>              7 streams: not supported
+>              8 streams: not supported
+>          VHT RX highest supported: 0 Mbps
+>          VHT TX MCS set:
+>              1 streams: MCS 0-9
+>              2 streams: not supported
+>              3 streams: not supported
+>              4 streams: not supported
+>              5 streams: not supported
+>              6 streams: not supported
+>              7 streams: not supported
+>              8 streams: not supported
+>          VHT TX highest supported: 0 Mbps
+>          Bitrates (non-HT):
+>              * 6.0 Mbps
+>              * 9.0 Mbps
+>              * 12.0 Mbps
+>              * 18.0 Mbps
+>              * 24.0 Mbps
+>              * 36.0 Mbps
+>              * 48.0 Mbps
+>              * 54.0 Mbps
+>          Frequencies:
+>              * 5170 MHz [34] (disabled)
+>              * 5180 MHz [36] (20.0 dBm)
+>              * 5190 MHz [38] (disabled)
+>              * 5200 MHz [40] (20.0 dBm)
+>              * 5210 MHz [42] (disabled)
+>              * 5220 MHz [44] (20.0 dBm)
+>              * 5230 MHz [46] (disabled)
+>              * 5240 MHz [48] (20.0 dBm)
+>              * 5260 MHz [52] (20.0 dBm) (no IR, radar detection)
+>              * 5280 MHz [56] (20.0 dBm) (no IR, radar detection)
+>              * 5300 MHz [60] (20.0 dBm) (no IR, radar detection)
+>              * 5320 MHz [64] (20.0 dBm) (no IR, radar detection)
+>              * 5500 MHz [100] (20.0 dBm) (no IR, radar detection)
+>              * 5520 MHz [104] (20.0 dBm) (no IR, radar detection)
+>              * 5540 MHz [108] (20.0 dBm) (no IR, radar detection)
+>              * 5560 MHz [112] (20.0 dBm) (no IR, radar detection)
+>              * 5580 MHz [116] (20.0 dBm) (no IR, radar detection)
+>              * 5600 MHz [120] (20.0 dBm) (no IR, radar detection)
+>              * 5620 MHz [124] (20.0 dBm) (no IR, radar detection)
+>              * 5640 MHz [128] (20.0 dBm) (no IR, radar detection)
+>              * 5660 MHz [132] (20.0 dBm) (no IR, radar detection)
+>              * 5680 MHz [136] (20.0 dBm) (no IR, radar detection)
+>              * 5700 MHz [140] (20.0 dBm) (no IR, radar detection)
+>              * 5720 MHz [144] (disabled)
+>              * 5745 MHz [149] (disabled)
+>              * 5765 MHz [153] (disabled)
+>              * 5785 MHz [157] (disabled)
+>              * 5805 MHz [161] (disabled)
+>              * 5825 MHz [165] (disabled)
+>      Supported commands:
+>           * new_interface
+>           * set_interface
+>           * new_key
+>           * start_ap
+>           * join_ibss
+>           * set_pmksa
+>           * del_pmksa
+>           * flush_pmksa
+>           * remain_on_channel
+>           * frame
+>           * set_wiphy_netns
+>           * set_channel
+>           * tdls_oper
+>           * start_sched_scan
+>           * start_p2p_device
+>           * connect
+>           * disconnect
+>           * crit_protocol_start
+>           * crit_protocol_stop
+>           * update_connect_params
+>      software interface modes (can always be added):
+>      valid interface combinations:
+>           * #{ managed } <= 2, #{ P2P-device } <= 1, #{ P2P-client, 
+> P2P-GO } <= 1,
+>             total <= 3, #channels <= 2
+>           * #{ managed } <= 1, #{ AP } <= 1, #{ P2P-client } <= 1, #{ 
+> P2P-device } <= 1,
+>             total <= 4, #channels <= 1
+>      Device supports scan flush.
+>      Device supports randomizing MAC-addr in sched scans.
+>      max # scan plans: 1
+>      max scan plan interval: 508
+>      max scan plan iterations: 0
+>      Supported TX frame types:
+>           * managed: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 
+> 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+>           * AP: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 
+> 0xb0 0xc0 0xd0 0xe0 0xf0
+>           * P2P-client: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 
+> 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+>           * P2P-GO: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 
+> 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+>           * P2P-device: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 
+> 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+>      Supported RX frame types:
+>           * managed: 0x40 0xd0
+>           * AP: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+>           * P2P-client: 0x40 0xd0
+>           * P2P-GO: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+>           * P2P-device: 0x40 0xd0
+>      Supported extended features:
+>          * [ CQM_RSSI_LIST ]: multiple CQM_RSSI_THOLD records
+>          * [ 4WAY_HANDSHAKE_STA_PSK ]: 4-way handshake with PSK in 
+> station mode
+>          * [ 4WAY_HANDSHAKE_STA_1X ]: 4-way handshake with 802.1X in 
+> station mode
+>          * [ DFS_OFFLOAD ]: DFS offload
+> 
 
-
-
-
---000000000000d9dace05f14c1a99
+--000000000000a090c905f14ce465
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -186,14 +452,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBYC8y+Pd6rsqYcGrld
-sRAuLT6oT4u6pwom0HIjNJ0+2TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDIxODI3MzNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB5t6artu2lvpQPd6Il
+B3VDE9dDh2qH09sgt2wr9wlIuzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzAxMDIxOTIzNTlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASWHzsKxnNHmGpkxdEAQ+z/MMOendn9aP6kRV
-2Jceo91TOVxkxesvbuZc3PXz8dbfMND4T2Urde+z2sDa9LCJ9tgbK7+pND9Ch1IR7MxQ/9KvYany
-GIJDW9GjBGfE/iIPMqBwL6OmUfLO1wKZh3fqzItbjY/HZoC7rSgBFZtSXLXHT43vpQijw45igGcr
-ttETLesdItM71OALgTrQZFeT6iRvHuvCxf3qh/epWRj0NFzpYgnz8BazeMNtQbR8ssROZbWKR87o
-15YZyBhn3TdrcdXTxiG301jO6F17OVOXbtwtLf/HsOxqdGQndiQrVmhrToWLKALJWFW4OYpBIz+g
-qw==
---000000000000d9dace05f14c1a99--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAeAqcRfx44//+MBzfhhe00n1uyelMyORXLFrM
+KzQBund0x3LuAWQAbddIj/J277ofdr4T7syL3MDkzVb4hCktZkcWG9xLDXMc6njJyB41vHKBjbP4
+TXptnG7pWLD3tZ8g7JrAnu91lAAF+DeCzO5h1CN4CGC5Jlm1qr/GzjT8JwhKoWxAKJlgfeBgZjxE
+NZPxGYp/9J2ZyoRya+hrOxloXY5uzDPK1/fnH02f1NkYj7CmTNdYC5W9h/9ic+6p/ZbQavq3A9Kf
+1j58xp5ODZtLRj3fc8nj6dmppD8x7LTmfUT/r4AxDmSKG+2atvdTEEt5LebI9edpRlOi/QYjd+iD
+yQ==
+--000000000000a090c905f14ce465--
