@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D04B665B5E7
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 18:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C75B65B5E3
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 18:31:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236069AbjABRag (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 12:30:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36270 "EHLO
+        id S231653AbjABRad (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 12:30:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235937AbjABRaL (ORCPT
+        with ESMTP id S236022AbjABRaL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 2 Jan 2023 12:30:11 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45250B7D0
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E6CAE7C
         for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 09:30:10 -0800 (PST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <p.zabel@pengutronix.de>)
-        id 1pCOdJ-0003fo-Io; Mon, 02 Jan 2023 18:29:57 +0100
+        id 1pCOdK-0003fo-3G; Mon, 02 Jan 2023 18:29:58 +0100
 From:   Philipp Zabel <p.zabel@pengutronix.de>
-Date:   Mon, 02 Jan 2023 18:29:33 +0100
-Subject: [PATCH v2 1/2] dt-bindings: net: Add rfkill-gpio binding
+Date:   Mon, 02 Jan 2023 18:29:34 +0100
+Subject: [PATCH v2 2/2] net: rfkill: gpio: add DT support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230102-rfkill-gpio-dt-v2-1-d1b83758c16d@pengutronix.de>
+Message-Id: <20230102-rfkill-gpio-dt-v2-2-d1b83758c16d@pengutronix.de>
 References: <20230102-rfkill-gpio-dt-v2-0-d1b83758c16d@pengutronix.de>
 In-Reply-To: <20230102-rfkill-gpio-dt-v2-0-d1b83758c16d@pengutronix.de>
 To:     "David S. Miller" <davem@davemloft.net>,
@@ -52,81 +52,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a device tree binding document for GPIO controlled rfkill switches.
-The label and radio-type properties correspond to the name and type
-properties used for ACPI, respectively. The shutdown-gpios property
-is the same as defined for ACPI.
+Allow probing rfkill-gpio via device tree. This hooks up the already
+existing support that was started in commit 262c91ee5e52 ("net:
+rfkill: gpio: prepare for DT and ACPI support") via the "rfkill-gpio"
+compatible, with the "name" and "type" properties renamed to "label"
+and "radio-type", respectively, in the device tree case.
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
 Changes since v1:
-- Drop quotes from $id and $schema (Krzysztof)
-- Use generic label property (Rob, Krzysztof)
-- Rename type property to radio-type (Rob)
-- Reorder list of radio types alphabetically (Krzysztof)
-- Drop reset-gpios property (Rob, Krzysztof)
-- Use generic node name in example (Rob, Krzysztof)
+- Use __maybe_unused instead of #ifdef CONFIG_OF (Krzysztof)
+- Support renamed "label" and "radio-type" property names
 ---
- .../devicetree/bindings/net/rfkill-gpio.yaml       | 51 ++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ net/rfkill/rfkill-gpio.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
-new file mode 100644
-index 000000000000..9630c8466fac
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
-@@ -0,0 +1,51 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/rfkill-gpio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index f5afc9bcdee6..786dbfdad772 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -75,6 +75,8 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill;
+ 	struct gpio_desc *gpio;
++	const char *name_property;
++	const char *type_property;
+ 	const char *type_name;
+ 	int ret;
+ 
+@@ -82,8 +84,15 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+ 	if (!rfkill)
+ 		return -ENOMEM;
+ 
+-	device_property_read_string(&pdev->dev, "name", &rfkill->name);
+-	device_property_read_string(&pdev->dev, "type", &type_name);
++	if (dev_of_node(&pdev->dev)) {
++		name_property = "label";
++		type_property = "radio-type";
++	} else {
++		name_property = "name";
++		type_property = "type";
++	}
++	device_property_read_string(&pdev->dev, name_property, &rfkill->name);
++	device_property_read_string(&pdev->dev, type_property, &type_name);
+ 
+ 	if (!rfkill->name)
+ 		rfkill->name = dev_name(&pdev->dev);
+@@ -157,12 +166,19 @@ static const struct acpi_device_id rfkill_acpi_match[] = {
+ MODULE_DEVICE_TABLE(acpi, rfkill_acpi_match);
+ #endif
+ 
++static const struct of_device_id rfkill_of_match[] __maybe_unused = {
++	{ .compatible = "rfkill-gpio", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, rfkill_of_match);
 +
-+title: GPIO controlled rfkill switch
-+
-+maintainers:
-+  - Johannes Berg <johannes@sipsolutions.net>
-+  - Philipp Zabel <p.zabel@pengutronix.de>
-+
-+properties:
-+  compatible:
-+    const: rfkill-gpio
-+
-+  label:
-+    description: rfkill switch name, defaults to node name
-+
-+  radio-type:
-+    description: rfkill radio type
-+    enum:
-+      - bluetooth
-+      - fm
-+      - gps
-+      - nfc
-+      - ultrawideband
-+      - wimax
-+      - wlan
-+      - wwan
-+
-+  shutdown-gpios:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - radio-type
-+  - shutdown-gpios
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    rfkill {
-+        compatible = "rfkill-gpio";
-+        label = "rfkill-pcie-wlan";
-+        radio-type = "wlan";
-+        shutdown-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>;
-+    };
+ static struct platform_driver rfkill_gpio_driver = {
+ 	.probe = rfkill_gpio_probe,
+ 	.remove = rfkill_gpio_remove,
+ 	.driver = {
+ 		.name = "rfkill_gpio",
+ 		.acpi_match_table = ACPI_PTR(rfkill_acpi_match),
++		.of_match_table = of_match_ptr(rfkill_of_match),
+ 	},
+ };
+ 
 
 -- 
 2.30.2
