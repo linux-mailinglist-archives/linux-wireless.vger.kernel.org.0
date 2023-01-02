@@ -2,100 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F08A65B306
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 15:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B259165B307
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 15:01:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232546AbjABOAT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 09:00:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49468 "EHLO
+        id S232738AbjABOBW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 09:01:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbjABOAR (ORCPT
+        with ESMTP id S230150AbjABOBU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 09:00:17 -0500
-Received: from out20-63.mail.aliyun.com (out20-63.mail.aliyun.com [115.124.20.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A39E263
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 06:00:15 -0800 (PST)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.235798|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0487568-0.0152389-0.936004;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047203;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.QihWJey_1672668011;
-Received: from 192.168.31.192(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.QihWJey_1672668011)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Jan 2023 22:00:12 +0800
-Message-ID: <708fad8b-0419-ae7f-8586-7da58b50d925@aibsd.com>
-Date:   Mon, 2 Jan 2023 22:00:11 +0800
+        Mon, 2 Jan 2023 09:01:20 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4BA6547;
+        Mon,  2 Jan 2023 06:01:18 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id D46B941DF4;
+        Mon,  2 Jan 2023 14:01:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1672668076; bh=8Kw1GfAUqQ8QmT3lnjcfvmkDIJ1W2AProGSJuYR3RcQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=ffpA6x+2RCfk2WgOZ8kPqXz8PQ+g/Ovn6QhPSDJltuOjDK5oozX3eyz7hoDPtqQcb
+         PuTJ644YLic+aP4xlKlSFktCtlASKbtCLGeimd6rz+pBIe/X04tUj6DOzzq22h4Mu6
+         VpNDpJp+to0Jc6O58JmErS9t1pWi9Ru3y0M0XYyi09VCH8Dt1HCi53B0hiG/ks0thX
+         hHvy7Td7qTHsLfY0WbLF7MILLu0s7Gon64uFWZEDs1v9BugsG+zE9GETkfjy6qyQoQ
+         3CwlEx53MS8N/b0qfB5jRmNcWegZKcV0bdQDkR9tlwyB1Pah5gk4JkXr4ebpmiUYJW
+         ddfW9whnyiZ4A==
+Message-ID: <6e204026-d102-6d81-f58b-f4340e7d07ac@marcan.st>
+Date:   Mon, 2 Jan 2023 23:01:10 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 2/2] iwlwifi: pcie: add support for AX101NGW
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-References: <20230102024038.2915-1-aiden.leong@aibsd.com>
- <00a7a47051ead3032f383868248d89e56d3617f4.camel@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 2/4] brcmfmac: Support 89459 pcie
 Content-Language: en-US
-From:   Aiden Leong <aiden.leong@aibsd.com>
-In-Reply-To: <00a7a47051ead3032f383868248d89e56d3617f4.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Aditya Garg <gargaditya08@live.com>
+Cc:     Ian Lin <ian.lin@infineon.com>,
+        "alep@cypress.com" <alep@cypress.com>,
+        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
+        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "Double.Lo@infineon.com" <Double.Lo@infineon.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Asahi Linux <asahi@lists.linux.dev>
+References: <20220922104140.11889-1-ian.lin@infineon.com>
+ <20220922104140.11889-3-ian.lin@infineon.com>
+ <3eb9cc12-db75-8042-4106-fa6521c684a7@marcan.st>
+ <6D6035D7-894B-44F6-B35A-3EC9C57029B5@live.com>
+ <91c8fc96-083d-74b7-3015-e76f1ab59cec@broadcom.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <91c8fc96-083d-74b7-3015-e76f1ab59cec@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-1. Please have a look at the second commit: 
-https://lore.kernel.org/linux-wireless/iwlwifi.20200323151304.ec4f463bde60.I14e9146a99621ff11ce50bc746a4b88af508fee0@changeid/
-
-Find the `goto found;` statement.
-
-The logic was to find the FIRST match then break with `goto found`. The 
-refactor code removed the `goto` statement which is incorrect.
-
-
-2. Let's go back to the first commit: 
-https://lore.kernel.org/linux-wireless/iwlwifi.20211024165252.abd85e1391cb.I7681fe90735044cc1c59f120e8591b7ac125535d@changeid/
-
- > We don't want to change the semantics ("most generic entry must come 
-first")
-
-That `semantics` was mislead by the previous commit.
-
-
-On 2023/1/2 21:35, Greenman, Gregory wrote:
-> On Mon, 2023-01-02 at 10:40 +0800, Aiden Leong wrote:
->> Revert:
->> commit 3f7320428fa4 ("iwlwifi: pcie: simplify iwl_pci_find_dev_info()")
+On 02/01/2023 22.58, Arend van Spriel wrote:
+> On 1/2/2023 10:45 AM, Aditya Garg wrote:
+>> Hi Hector
 >>
->> A bug was introduced by:
->> commit 32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new
->> config table"),
->> where a goto statement was removed.
-> Not sure I undestand what problem reversing the "for" loop solves.
->
->> Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
->> ---
->> Notice:
->> Please run further tests before merging. I'm NOT familiar with device
->> drivers.
->> ---
->>   drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> Is the CYW89459 just a rebrand of the BCM4355, or just a subset? If it
+>>> is a rebrand, it's okay if we call our Apple firmware
+>>> brcmfmac89459-pcie* (note that we use per-board firmware names, so it
+>>> wouldn't conflict with a generic one). However, if CYW89459 only refers
+>>> to specific variants, I think the firmware should be named after the
+>>> overall bcm4355 family.
+>>>
+>>> I'm guessing you intend to ship firmware for this. Would that firmware
+>>> work for all 4355 variants, or only the CYW one? If only the CYW one, is
+>>> it possible to differentiate between them based on PCI revision ID? Note
+>>> that our 4355 has revision ID 12, and Apple specifically calls it 4355C1
+>>> (different chip revisions have different firmware builds, which is why I
+>>> named our firmware brcmfmac4355c1-pcie). If the CYW variant uses other
+>>> revision IDs that do not overlap, maybe we should have different
+>>> firmware entries for them with different masks.
 >>
->> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
->> index a46df1320372..5d74adbd49cf 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
->> @@ -1461,7 +1461,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
->>          if (!num_devices)
->>                  return NULL;
->>   
->> -       for (i = num_devices - 1; i >= 0; i--) {
->> +       for (i = 0; i < num_devices; i++) {
->>                  const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
->>   
->>                  if (dev_info->device != (u16)IWL_CFG_ANY &&
+>>
+>> Can we make a separate table for the OTP Apple chips, something like here :-
+>>
+>> https://github.com/AdityaGarg8/linux/commit/fc41aac9283d2ba653a8b3191e8c0138c13d8ee1
+> 
+> I do not understand from this email thread why you would need separate 
+> tables. Can you explain?
+> 
+
+I think he's proposing we special-case Apple chips into their own
+firmware table just to avoid colliding with non-Apple firmware usage,
+which is honestly kind of tempting as the safe option if nobody from the
+Broadcom/Cypress side is willing to clarify what, exactly, is the
+relationship between these chips and what their respective revision
+numbers are so we can *correctly* represent them and avoid further
+confusion and problems down the line.
+
+You might be able to help with that ;)
+
+- Hector
