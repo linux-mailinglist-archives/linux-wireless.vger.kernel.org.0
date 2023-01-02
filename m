@@ -2,146 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C97465AF08
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 10:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9337865AF38
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 11:03:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjABJsO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 04:48:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48668 "EHLO
+        id S231636AbjABKCv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 05:02:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232532AbjABJry (ORCPT
+        with ESMTP id S232412AbjABKCt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 04:47:54 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F9F60DD
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 01:47:52 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id m18so65474331eji.5
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 01:47:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=798mLQgjXe76IQIl0wr8ZA1qTc0lXDNEYGL1jdAHpGk=;
-        b=NJYpMwRPyko6aCe368eAIO7/g+4UO4uk5POV4brMKD4XZrzurcTUCbhngGOJ2WwhYU
-         7/6R7WMWMmgaQEv+arP/A4wcXTV+q5VSH8h3CIWShHzND4sWQcwl0aaBhzMS8TYcuiEU
-         YeBv792gROYLskzFGF65ti3whrRNQaLc7lJn3xhzo/VkjpmX/T4oHTBsP6SoiAofo5lZ
-         cqFHdW8FJXPol0achK/uxp2oHohFM4bKniyLW1wr6WR3ilEdzDPEWJ7/OapW4SzRKK5c
-         0pdhdkTimsguFKH+8zkhccLhzG2GUI/ONYRjYLYSH/4APdzYK2O1FqgSOaoGoGrcDXjZ
-         X1jg==
+        Mon, 2 Jan 2023 05:02:49 -0500
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC14282
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 02:02:47 -0800 (PST)
+Received: by mail-il1-f198.google.com with SMTP id s2-20020a056e02216200b0030bc3be69e5so17840461ilv.20
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 02:02:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=798mLQgjXe76IQIl0wr8ZA1qTc0lXDNEYGL1jdAHpGk=;
-        b=gnSeKmCPqrQPwPJbsD5fW4YT7kYtLNmnHGqhGKpp7bGqTVlr/Oqzjxt1i2ecquHfJ/
-         d996OAGq8di51+5SlTbl7lfCcj4dmr3aZMf0V6Q+JYsRHJKcvP8bVJCzwCx8IylyfvZ7
-         zcpWk+m1IYyt93DOOvr6RHZt4iefxe8/GZD+BKn7DuacQdhjqtocsTpXXcwV4A3bo3y3
-         nxC+8LMNiB8h/5mcsYQyDCKYEPSgYQqS7nwhnfOohT2mWprkcHy0bvMFv9Igl2urXIUd
-         CxD1ku59HclY5Dgo9T8AI/xytYqj4jsw9K12m9jpZ9/ZuiUmrxaCgyCUa4rWmjbUpX6D
-         Bvvw==
-X-Gm-Message-State: AFqh2kqFXklux6B+91GfAd/UAkjM0tNAN5jaOREFB5FcYj9oz8w6YhJ9
-        ciKLo5BeAOQOtkTIWrWBcKnJPa1B9LzL0vZh0pir8juVekMl
-X-Google-Smtp-Source: AMrXdXsEqTDWE84pn5CWDM7F1VXEJwEbwLqkyP06zh2dhnPk+dBCWaB4caIGgpEh7HZmSdy7ldvk0RuzKgrGbr4DZ0k=
-X-Received: by 2002:a17:906:4894:b0:7a6:fc0f:6fe6 with SMTP id
- v20-20020a170906489400b007a6fc0f6fe6mr2296433ejq.694.1672652870858; Mon, 02
- Jan 2023 01:47:50 -0800 (PST)
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PyJN7OJ2YqNiOOnZ+Fq+PsLaoelIj5+JM/BH5hSu9d8=;
+        b=GKSgflnHACQ4Zzzsg06LO7AeaDZKyHCXQmvDktzYf9runFF2x1cjeI2KbMBaCxEnHJ
+         zz249QdHf/vng+sWP7ZQs/F+JMYiNSdiKMuwrPL9+Fg5GOqxaBN+s4FyH1yPhS1qROh9
+         I5qX+SIeB+078M+6gXZz/Qr9XfpFglri6tOy3Dim6/fA7AJ71z4XQAd5EE6ZNhOe8T2U
+         VjxSNOQMRqffDelph1V66XZ7jWfSl6UUWb4ah74jia9ipNivPhVczO8ndHAIbAugxaFP
+         OBvGXfIh+w3oDY7Qbbh3lKwC91YQuhTc1kbAOWxalKnlf9oNAVRoLH8Ei42ZlUFMMoJ7
+         K1DA==
+X-Gm-Message-State: AFqh2kpQAu65x/sYzYGPJHeToXiqhV6j+pzWhgXfjR9F2KBflMwAxlps
+        8RfVNCqzWO8i0ub61RQYmWjpw5y97cr+z7ajgyMfyuSzRR6w
+X-Google-Smtp-Source: AMrXdXuK8BL5XFckTUtiI6cAiKbo7vijg0rMDXz5UPvsraCP28ZDLqVvaqbabsZpbk/BMI1eVrK5QrdvlMBAmLABBIOBZ9ZvIx/F
 MIME-Version: 1.0
-References: <CAMWtyy1sSHc_DYQ3kq+FWMJKK5Wo3QEgO1yd6wQXx3x0Lp4Uog@mail.gmail.com>
- <Y6isrKS7zgMrNe3S@makrotopia.org> <CAMWtyy2EhZMd7Yf6CWXpM7f6EbzbYDu+ifpAnwpDiAP8zPoP0g@mail.gmail.com>
-In-Reply-To: <CAMWtyy2EhZMd7Yf6CWXpM7f6EbzbYDu+ifpAnwpDiAP8zPoP0g@mail.gmail.com>
-From:   Vishal Rao <vishalrao@gmail.com>
-Date:   Mon, 2 Jan 2023 15:17:39 +0530
-Message-ID: <CAMWtyy21YoW=okaw=rL2OAn49NCT2KzvFGCJLM+1vJg+NpcaMA@mail.gmail.com>
-Subject: Re: Wifi 6E 6ghz not working on MediaTek MT7922 (AMD RZ616)
-To:     Daniel Golle <daniel@makrotopia.org>,
-        Nick Morrow <morrownr@gmail.com>
-Cc:     linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org
+X-Received: by 2002:a6b:c817:0:b0:6e0:2427:f72e with SMTP id
+ y23-20020a6bc817000000b006e02427f72emr2089330iof.55.1672653767119; Mon, 02
+ Jan 2023 02:02:47 -0800 (PST)
+Date:   Mon, 02 Jan 2023 02:02:47 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000009f187905f1450d91@google.com>
+Subject: [syzbot] BUG: unable to handle kernel paging request in cfg80211_inform_bss_frame_data
+From:   syzbot <syzbot+6b5032e139299571a3d1@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Daniel/Nick,
+Hello,
 
-Here's the output you asked for: https://pastebin.ubuntu.com/p/kZGS227rdr
+syzbot found the following issue on:
 
-From my rudimentary/casual reading of the mediatek mt76/mt7921e driver
-code it appears it's loading the 7921 variant (filename 7961) of
-firmware and not 7922 so I tried to patch those few lines to no luck.
+HEAD commit:    a5541c0811a0 Merge branch 'for-next/core' into for-kernelci
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=15374118480000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cbd4e584773e9397
+dashboard link: https://syzkaller.appspot.com/bug?extid=6b5032e139299571a3d1
+compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
+userspace arch: arm64
 
-Also just tried copying over the 7922 files to the 7961 names and
-tried with unmodified kernel (both 6.2rc2 and 6.1.2-xanmod).
+Unfortunately, I don't have any reproducer for this issue yet.
 
-I'm sure I don't know what I'm doing here, so if you have further
-suggestions/info you need let me know?
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/4b7702208fb9/disk-a5541c08.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9ec0153ec051/vmlinux-a5541c08.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6f8725ad290a/Image-a5541c08.gz.xz
 
-Regards!
-Vishal
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6b5032e139299571a3d1@syzkaller.appspotmail.com
 
-On Thu, 29 Dec 2022 at 23:25, Vishal Rao <vishalrao@gmail.com> wrote:
->
-> Hello Daniel !
->
-> Thank you for your response - apologies for being slow to follow up -
-> I will post the info you asked for soon [tm] but I note there appears
-> to be some new firmware for the mt7922 (a few hours ago) which I will
-> also try when gathering the info.
->
-> Off the top of my head the regulatory info/region is set to US while I
-> am located in India and I have tried the latest firmware off git
-> master as well as another (?) location suggested by Nick Morrow with
-> no luck (same results) but allow me some time (likely this weekend) to
-> re-check and get back to you.
->
-> Regards,
-> Vishal
->
-> On Mon, 26 Dec 2022 at 01:34, Daniel Golle <daniel@makrotopia.org> wrote:
-> >
-> > Hi!
-> >
-> > On Sun, Dec 25, 2022 at 08:19:15PM +0530, Vishal Rao wrote:
-> > > Hello!
-> > >
-> > > Using Ubuntu 22.04 LTS based distro elementary OS 7 with the latest
-> > > available Ubuntu mainline kernel 6.1 RC5 build the wifi does not
-> > > connect to the 6GHZ band (Wifi 6E) and it only even shows the 6ghz
-> > > SSID name *after* I have connected to the 5ghz wifi band.
-> > >
-> > > This is on a new ASUS ZenBook laptop model UM5302TA with the AMD Ryzen
-> > > 6800U CPU platform which includes the AMD-Mediatek co-developed RZ616
-> > > wifi chip I believe.
-> > >
-> > > Pastebin of lspci -vvnn output: https://pastebin.ubuntu.com/p/QwM58ZkptG
-> > >
-> > > Let me know what further information I should provide - happy to do so!
-> >
-> >
-> > Please also share the output of `iw list` which will tell if we are
-> > dealing with a driver problem or a regulatory/configuration problem.
-> > Did you configure the wireless regulatory domain the device is located
-> > in?
-> >
-> > To have access to 6 GHz bands the regulatory region needs to be known,
-> > I read that on Ubuntu it works like this:
-> >
-> > https://askubuntu.com/questions/701709/how-can-i-change-my-wireless-cards-regulatory-domain-dbm-higher-than-30
->
->
->
-> --
-> "The World is a book, and those who do not travel read only a page." -
-> St. Augustine.
+Unable to handle kernel paging request at virtual address 002e6f696b6c629f
+Mem abort info:
+  ESR = 0x0000000096000004
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x04: level 0 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000004
+  CM = 0, WnR = 0
+[002e6f696b6c629f] address between user and kernel address ranges
+Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 1 PID: 4479 Comm: kworker/u4:21 Not tainted 6.1.0-rc8-syzkaller-33330-ga5541c0811a0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+Workqueue: phy15 ieee80211_iface_work
+pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __kmem_cache_alloc_node+0x17c/0x350 mm/slub.c:3437
+lr : slab_pre_alloc_hook mm/slab.h:712 [inline]
+lr : slab_alloc_node mm/slub.c:3318 [inline]
+lr : __kmem_cache_alloc_node+0x80/0x350 mm/slub.c:3437
+sp : ffff800015e63890
+x29: ffff800015e638a0 x28: ffff000124078000 x27: ffff0001238ab474
+x26: ffff00010b9e3658 x25: 00000000ffffffff x24: ffff80000bc33670
+x23: 0000000000000048 x22: 622e6f696b6c625f x21: 0000000000000000
+x20: 0000000000000b20 x19: ffff0000c0001200 x18: 00000000000003a6
+x17: 0000000000000075 x16: 0000000000000000 x15: 0000000000000000
+x14: 0000000000000000 x13: 0000000000000005 x12: ffff80000d8f0a90
+x11: 0000000000000001 x10: 0000000000000000 x9 : 0000000000000040
+x8 : 0000000000387011 x7 : ffff80000bcf8a58 x6 : 0000000000000000
+x5 : 0000000000000000 x4 : ffff80000bc33670 x3 : 0000000000387019
+x2 : 0000000000000000 x1 : 0000000000000080 x0 : fffffc000317aa00
+Call trace:
+ next_tid mm/slub.c:2349 [inline]
+ slab_alloc_node mm/slub.c:3382 [inline]
+ __kmem_cache_alloc_node+0x17c/0x350 mm/slub.c:3437
+ __do_kmalloc_node mm/slab_common.c:954 [inline]
+ __kmalloc+0xb4/0x140 mm/slab_common.c:968
+ kmalloc include/linux/slab.h:558 [inline]
+ kzalloc include/linux/slab.h:689 [inline]
+ cfg80211_inform_single_bss_frame_data net/wireless/scan.c:2471 [inline]
+ cfg80211_inform_bss_frame_data+0x29c/0xc40 net/wireless/scan.c:2532
+ ieee80211_bss_info_update+0x3f4/0x60c net/mac80211/scan.c:190
+ ieee80211_rx_bss_info net/mac80211/ibss.c:1120 [inline]
+ ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1609 [inline]
+ ieee80211_ibss_rx_queued_mgmt+0xb9c/0x1078 net/mac80211/ibss.c:1638
+ ieee80211_iface_process_skb net/mac80211/iface.c:1630 [inline]
+ ieee80211_iface_work+0x444/0x68c net/mac80211/iface.c:1684
+ process_one_work+0x2d8/0x504 kernel/workqueue.c:2289
+ worker_thread+0x340/0x610 kernel/workqueue.c:2436
+ kthread+0x12c/0x158 kernel/kthread.c:376
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:863
+Code: 54000ee1 34000eeb b9402a69 91002103 (f8696ada) 
+---[ end trace 0000000000000000 ]---
+----------------
+Code disassembly (best guess):
+   0:	54000ee1 	b.ne	0x1dc  // b.any
+   4:	34000eeb 	cbz	w11, 0x1e0
+   8:	b9402a69 	ldr	w9, [x19, #40]
+   c:	91002103 	add	x3, x8, #0x8
+* 10:	f8696ada 	ldr	x26, [x22, x9] <-- trapping instruction
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
--- 
-"The World is a book, and those who do not travel read only a page." -
-St. Augustine.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
