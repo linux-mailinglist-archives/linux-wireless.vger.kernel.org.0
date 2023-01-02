@@ -2,57 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E901565AE0C
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 09:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C198065AE1A
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 09:29:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjABIWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 03:22:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44814 "EHLO
+        id S231233AbjABI3Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 03:29:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjABIWW (ORCPT
+        with ESMTP id S231794AbjABI3D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 03:22:22 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A89726E2;
-        Mon,  2 Jan 2023 00:21:45 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pCG4f-00088y-RF; Mon, 02 Jan 2023 09:21:37 +0100
-Message-ID: <e780abc0-f8e6-5dd2-0926-05d54d85ccd7@leemhuis.info>
-Date:   Mon, 2 Jan 2023 09:21:37 +0100
+        Mon, 2 Jan 2023 03:29:03 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3811223
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 00:29:00 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id w1so13581981wrt.8
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 00:29:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mind.be; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=14VVxKr6BXixpCLj3St1aTaL7CH8SHLvndLzSdzqHe0=;
+        b=fnvk9LyX2KX17UfsQ1iXatnGH+aQEHamYOhssyFakDZ1HiRgRWtsQGOlMF/RK1ry/U
+         GZ0U80sqlGJGHCPf0bOwyEVU581qj5NuWABzGBi6fXh2Nn/J1Xke0qRz5HyUBG48sExo
+         hNO481Z9mzQvtHkNOE2eALiKkfftOyv1IItE8ZCMs6oaxPT7rRgAtqIVPfDkV9Y2iKuj
+         kkNsyjPq5QUKgzpTlHZaZUZfZbYl3BeqMmRtRmYdVmKoEHto90SLeOM4WhICaHxghKwO
+         8aEeES/eDtbiaO5rYD1nttvgBEgceXHixBXKQyN4FkIsHCX0gaJyuVJ9tTnhYq5JfyOm
+         6Ibw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=14VVxKr6BXixpCLj3St1aTaL7CH8SHLvndLzSdzqHe0=;
+        b=mmIa8xRQy5f1Oxr+eFX8+lLpZTRAoMKA+/erDnkMEkgvIFrW+Vao7OKT19o2XUdfqd
+         3RF2HR11U2u3uEwNypYjcLNQyvojKduV00JGw41WR48sf+xVp9FlvzoD2ivOJ4oGaBUI
+         6DDw1tgI7efQXQkjlthvl/ZRBc3lJj680Sb0+9mJGd2tZEPPZva0Qm6473Ax2h4AAQja
+         UJ6/1CMrH9PRnknhscHMgIRwExiD4yc+LwyhsbkUfTFQ4eZSDCEddsj2x3wMEeyF3Tg7
+         PN5zW4WAGvPWTKuO3caLM0QKYpvQEuVNDbbvYUubqYz4+qrlTy3xamuF5/lFCtA2W9R4
+         6dpw==
+X-Gm-Message-State: AFqh2kr5LEFSFUDAfIInAllGlaDz1X+4X2PvWugDLt+lmJZkA4pzPgBK
+        oO3q2O6Sk4SjSry2VASaEx1ArA==
+X-Google-Smtp-Source: AMrXdXs7LUCcSQ15KkpFP/JPTdg5E95dSy1iQ4KnXrOXSffAGXilpeW1NxxRxZFRDqYjjQgSUsTLWQ==
+X-Received: by 2002:adf:ed51:0:b0:242:659f:9411 with SMTP id u17-20020adfed51000000b00242659f9411mr29246659wro.9.1672648139238;
+        Mon, 02 Jan 2023 00:28:59 -0800 (PST)
+Received: from [192.168.178.20] (213.211.137.251.static.edpnet.net. [213.211.137.251])
+        by smtp.gmail.com with ESMTPSA id f14-20020a5d664e000000b0027f4a7efc54sm19370120wrw.15.2023.01.02.00.28.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jan 2023 00:28:58 -0800 (PST)
+Message-ID: <03b57a68-e28b-52c1-ba26-f6766cf9fa33@mind.be>
+Date:   Mon, 2 Jan 2023 09:28:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [REGRESSION] Wi-Fi fails to work on BCM4364B2 chips since kernel
- 6.1
-Content-Language: en-US, de-DE
-To:     Aditya Garg <gargaditya08@live.com>,
-        "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>,
-        "aspriel@gmail.com" <aspriel@gmail.com>,
-        "ranky.lin@broadcom.com" <ranky.lin@broadcom.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "lina@asahilina.net" <lina@asahilina.net>,
-        "marcan@marcan.st" <marcan@marcan.st>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Orlando Chamberlain <redecorating@protonmail.com>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
-From:   "Linux kernel regression tracking (#info)" 
-        <regressions@leemhuis.info>
-Reply-To: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1672647705;d7e964bf;
-X-HE-SMSGID: 1pCG4f-00088y-RF
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+ Firefox/102.0 Thunderbird/102.3.0
+Subject: Re: [RFC PATCH 1/1] iw: add support for retrieving keys
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+References: <20220822074318.291949-1-raphael.melotte@mind.be>
+ <20220822074318.291949-2-raphael.melotte@mind.be>
+ <a0ae817f24ee6bd2485cd8c722f4cc9cafb1e3f3.camel@sipsolutions.net>
+Content-Language: en-US
+From:   =?UTF-8?B?UmFwaGHDq2wgTcOpbG90dGU=?= <raphael.melotte@mind.be>
+In-Reply-To: <a0ae817f24ee6bd2485cd8c722f4cc9cafb1e3f3.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,41 +76,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; all text you find below is based on a few templates
-paragraphs you might have encountered already already in similar form.
-See link in footer if these mails annoy you.]
+On 12/1/22 14:37, Johannes Berg wrote:
+> The examples don't seem to match the docs:
 
-On 02.01.23 08:46, Aditya Garg wrote:
-> Since kernel 6.1, Wi-Fi is failing to work on Macs with the BCM4364 rev 3 chips and journalctl reports that the firmware has crashed.
+Indeed.. I'll fix it.
+
+> and maybe you should switch pairwise/mac addr since it's not required
+> for pairwise == false I guess? or maybe let you specify the key type
+> instead, so you can retrieve other kinds of keys?
+
+I was actually thinking about removing the pairwise flag entirely.
+
+Since the kernel currently only allows to retrieve pairwise or
+group keys (AFAICT), I was thinking it could be easier to use the
+presence of the MAC address to differentiate between the key
+types.
+
 > 
-> The complete journalctl is given here :- https://gist.github.com/AdityaGarg8/a25b187e7f1462798de87e048f4840db
+> and this seems like it could have some error return in the else or
+> something?
+
+Indeed, I'll add it.
+
 > 
-> This bug has been reported by users of iMac19,1 as well as Macmini8,1.
+> Otherwise seems fine to me, any particular reason you sent it as RFC?
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+I thought there might have been a specific reason why it was not
+there yet, and I also wasn't sure about 'NL80211_KEY_*' vs
+'NL80211_ATTR_KEY_*'.
 
-#regzbot ^introduced v6.0..v6.1
-#regzbot title net: brcmfmac: Wi-Fi is failing to work on Macs with the
-BCM4364 rev 3 chips
-#regzbot ignore-activity
+I'll send a v2 addressing the comments above.
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+Thanks for the review!
 
-Reminder for developers: When fixing the issue, add 'Link:' tags
-pointing to the report (see page linked in footer for details).
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
--- 
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-
-Annoyed by mails like this? Feel free to send them to /dev/null:
-https://linux-regtracking.leemhuis.info/about/#infomails
+Raphaël
