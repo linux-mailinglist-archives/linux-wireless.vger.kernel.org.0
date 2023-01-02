@@ -2,96 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C77365AF88
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 11:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF6DA65B00D
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 11:52:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232336AbjABK1e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 05:27:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43016 "EHLO
+        id S232626AbjABKwx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 05:52:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbjABK1c (ORCPT
+        with ESMTP id S233019AbjABKwT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 05:27:32 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8522FD49;
-        Mon,  2 Jan 2023 02:27:30 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pCI2M-0002SM-Iz; Mon, 02 Jan 2023 11:27:22 +0100
-Message-ID: <0a518ebf-4609-992f-fb00-105c68427967@leemhuis.info>
-Date:   Mon, 2 Jan 2023 11:27:21 +0100
+        Mon, 2 Jan 2023 05:52:19 -0500
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53695617D;
+        Mon,  2 Jan 2023 02:52:12 -0800 (PST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1672656728; bh=6RY7S+y0DfUAy1fUOzzhODWlfsBE1dPJ6/GMcHruOqE=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=HGAfbwaPX15G6g+ykzFUphONZa6cHD4tmr++hWxlm1lwHgmXXniCKyADTnuxISCZy
+         5z2F0DpyjMKdyNOBn5M+WIlTo2bK7wC59R+tsAfyyBfE4Ryc/4J5n8hhXDRFA5/y0I
+         aM08txXOGPq5+rTxc1veknpYjo7aIg1Key8dQjOfJtId5vhMaBzpd42HMLXNLLKxQ3
+         cZjskCGUplKAhv/H56+1G0iBlCbxXpCH+JwAFJq1aT9fvoiPn75IECMoR9xnc1E7gv
+         YPm2tlXoWF9dEG0xJYdi1VQVyLuvcA6dnv5rG3Yl6mhYjy1GgMy3KJbRfnIxvQEBai
+         PALSDZx9vUBCA==
+To:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Zekun Shen <bruceshenzk@gmail.com>,
+        Joe Perches <joe@perches.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH] wifi: ath9k: hif_usb: clean up skbs if
+ ath9k_hif_usb_rx_stream() fails
+In-Reply-To: <20221228224008.146343-1-pchelkin@ispras.ru>
+References: <20221228224008.146343-1-pchelkin@ispras.ru>
+Date:   Mon, 02 Jan 2023 11:52:05 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87h6x95huy.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [REGRESSION] Wi-Fi fails to work on BCM4364B2 chips since kernel
- 6.1
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Aditya Garg <gargaditya08@live.com>,
-        "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>,
-        "aspriel@gmail.com" <aspriel@gmail.com>,
-        "ranky.lin@broadcom.com" <ranky.lin@broadcom.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "lina@asahilina.net" <lina@asahilina.net>,
-        "marcan@marcan.st" <marcan@marcan.st>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Orlando Chamberlain <redecorating@protonmail.com>
-Reply-To: Thorsten Leemhuis <regressions@leemhuis.info>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <e780abc0-f8e6-5dd2-0926-05d54d85ccd7@leemhuis.info>
-In-Reply-To: <e780abc0-f8e6-5dd2-0926-05d54d85ccd7@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1672655250;7b9cf289;
-X-HE-SMSGID: 1pCI2M-0002SM-Iz
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02.01.23 09:21, Linux kernel regression tracking (#info) wrote:
-> [TLDR: I'm adding this report to the list of tracked Linux kernel
-> regressions; all text you find below is based on a few templates
-> paragraphs you might have encountered already already in similar form.
-> See link in footer if these mails annoy you.]
-> 
-> On 02.01.23 08:46, Aditya Garg wrote:
->> Since kernel 6.1, Wi-Fi is failing to work on Macs with the BCM4364 rev 3 chips and journalctl reports that the firmware has crashed.
->>
->> The complete journalctl is given here :- https://gist.github.com/AdityaGarg8/a25b187e7f1462798de87e048f4840db
->>
->> This bug has been reported by users of iMac19,1 as well as Macmini8,1.
-> 
-> Thanks for the report. To be sure the issue doesn't fall through the
-> cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-> tracking bot:
-> 
-> #regzbot ^introduced v6.0..v6.1
-> #regzbot title net: brcmfmac: Wi-Fi is failing to work on Macs with the
-> BCM4364 rev 3 chips
-> #regzbot ignore-activity
+Fedor Pchelkin <pchelkin@ispras.ru> writes:
 
-#regzbot inconclusive: problem happens with a downstream tree that
-patched this driver, hence might not be a upstream issue
+> Syzkaller detected a memory leak of skbs in ath9k_hif_usb_rx_stream().
+> While processing skbs in ath9k_hif_usb_rx_stream(), the already allocated
+> skbs in skb_pool are not freed if ath9k_hif_usb_rx_stream() fails. If we
+> have an incorrect pkt_len or pkt_tag, the skb is dropped and all the
+> associated skb_pool buffers should be cleaned, too.
+>
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+>
+> Fixes: 6ce708f54cc8 ("ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream")
+> Fixes: 44b23b488d44 ("ath9k: hif_usb: Reduce indent 1 column")
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
 
-Sorry for the noise, that wasn't obvious from the report.
+Is this the same issue reported in
+https://lore.kernel.org/r/000000000000f3e5f805f133d3f7@google.com ?
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
+If so, could you please tag the patch appropriately?
 
-Did I miss something or do something stupid? Then reply and tell me:
-https://linux-regtracking.leemhuis.info/about/#stupid
+-Toke
