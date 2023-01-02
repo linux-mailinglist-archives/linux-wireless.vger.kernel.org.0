@@ -2,142 +2,235 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C424165B429
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 16:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F27E265B45A
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jan 2023 16:43:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236379AbjABPZS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 10:25:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33794 "EHLO
+        id S235967AbjABPnJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 10:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236387AbjABPYv (ORCPT
+        with ESMTP id S233483AbjABPnI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 10:24:51 -0500
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2095.outbound.protection.outlook.com [40.92.103.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0236D95A1;
-        Mon,  2 Jan 2023 07:24:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=doLE1T2bDR7c3fPNzLPLveUV03NlxHg4SopQJD5WJt1Es/xMql9PnHtcdW32lWZYSJioaL+pZBO4hQNsqdA8Q7tLm6n31Hpzt22ciUsAR2ftCPb1L+kjXGZOkw9zq2Z+2N0wbySoHQ1LTebDlvf2ZHAXNcr46tUVDro79Z3/WA0OVyA5ZVa59PbKlJ4UT1txXwH5DhWldKd9qMZukmY93kEFUBrXC8rT8v5yJJsAUjBx/xT6EDJRWSBBu76My4PvcnPJ6dfJweFfydjEkETk162yx2KBV8NHwcpsOYraBemD79amZa+ehU3yoANy4yZQkndmjG1PFwnBTY7nio8JJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Egmu33RTdji7w17M+js/NXlaNh7YmftonCNH5CUtxQw=;
- b=jC/+YTrQkkIN3wL5hCDppRfjrs8UEAWVeNUdRv6OY1Oln9HyFpB2kX5yrnVieqs3nF+/dIdmzcba1izbY/flTEbyr+LmL7UrqBSsv+UBmnOwrdgTzjV99lKG0F3KQsSdZn+PnsbwRdrzyWDyQZKbkHXIWm4VyWEDNwu41Qa6w6eEIxznJxMb+8qLV3iKICaa/ZfLWWhKw/prXFQgiUn6NhrlCpkNrcGKHBaZRBN+XSdwnvQ9wahKViDWbBjVbGLdWxasrOBQbFla+l/GNz5fzQSo0IXn6wf3z0fRYc0r4NQxVmdH6ZChQRDEAQuUzTEhNhNst3QzpwF7vhLEQPlEoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Egmu33RTdji7w17M+js/NXlaNh7YmftonCNH5CUtxQw=;
- b=rUdAxgwRXxCCl4Y+slKWqd8fy6Adu7G1pKyfg9yhiYlF1RHPO2wIuFx03lCgZz/+JIQ9iITp6kK9xPEP2BNfUaNrZYgGDZGc2wKzlWHvMYO/WcqkIzDgHeSxxsXos9uudnMDZxRRhCyk+mWuN7V9vDZebKkB6GcDK2+GmJYAb9zvlNaUGl+Bxr0QQcu6hKNyEF3/UpnxGP1jW3bHo4hLKuf4TbHINLT01nICyq6rkgWPcrqpK8wfbBHsJBWY9NDOzoIRi20rx5QfdIsJCst+m9yvdI40h9TyDEPKuWrxfgv5Onar1Oyq5xjw03UAJ/agOeAy/Hh2kFECiXfHPLPYrw==
-Received: from BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:2::9) by
- PN2PR01MB8979.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:15e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Mon, 2 Jan
- 2023 15:24:43 +0000
-Received: from BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::f90e:46bc:7a0f:23bc]) by BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::f90e:46bc:7a0f:23bc%7]) with mapi id 15.20.5944.019; Mon, 2 Jan 2023
- 15:24:43 +0000
-From:   Aditya Garg <gargaditya08@live.com>
-To:     Hector Martin <marcan@marcan.st>
-CC:     "aspriel@gmail.com" <aspriel@gmail.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "lina@asahilina.net" <lina@asahilina.net>,
-        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Orlando Chamberlain <redecorating@protonmail.com>,
-        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Asahi Linux <asahi@lists.linux.dev>
-Subject: Re: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware
- names for Apple OTP chips
-Thread-Topic: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware
- names for Apple OTP chips
-Thread-Index: AQHZHrgZm9h4SMr74UGao8WWrkuTDa6LPK2AgAACgYA=
-Date:   Mon, 2 Jan 2023 15:24:43 +0000
-Message-ID: <89F492BA-38A9-4D2F-AD57-AFD8856363A4@live.com>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <f36dd8e3-9905-f04a-ed34-4be91ed1fec6@marcan.st>
- <F9EFCCD1-4407-42CC-8316-2F58AAC1AE7F@live.com>
- <ACC0D1F6-7857-4FF0-A474-4EC699572E1B@live.com>
- <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
-In-Reply-To: <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [S1P3IzulK8YV+i4+cGwAFegKsl/jbVD1lxPTS5MtfDKp814bwPHS1pD86mrdxohe]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BM1PR01MB0931:EE_|PN2PR01MB8979:EE_
-x-ms-office365-filtering-correlation-id: 9c15b230-f802-4f4b-a3a6-08daecd57965
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Dvt4/39dxTX5LZoQHxM8NdYGemk/mkRS+/QRAYvn70X+3ku9FK/xPNtWaIjjP8eV+blvgikPjoYez6y+Er0zTlnoOg4ghFC9dqNnwHVC1Q9wT73pyKHkSLuIyaQLikZaKo0yJVPpsllzPgB1iYnN2mNTD44Y26GivkgWFbGrQeEkrpBcBK3qVCu7L5TBPkplFTxjagWFeTnub1MreqcA4aVHIln2l4RgNWR+mRZsMJDaonvshdfLl1fimYCl0NiTVEjJCRG/WTmp6pIt+x1Mvab8HCqpISRvVYMTOA3UDO3W+no9oTUuKJLCaaim1cslsZbBiOjLcdR/7dQaGfP5Fj6DI27h/G/BpRSVvJpHRgvlri5bQGWvyHBU0696OdHGHQpt6zsSPO8Gx8HhnH3mMnPOpb+c9kxJ9xPQklFUWotZDm3OHyoUNb/2i8X7iKG3HZcFJ0hH7JmWXoYUaXQ5zhcR5E+/whyylC9B3G3f8oF+mwkR8mv2TAF+yzhRZH7UnbPTOWYt8FoPj2hHaKSTUypVJI15rwSg8Ddf06YsO8umvv+I2qOT71OjX+J3tJZI6UaYBF7Ao0McpyOo3TJ2AT8vFEk1rKesQ1d8OuKDgEp0y6g2ULvIetyeVWgaQLOOrBEjPyIiJ1YuoDIvxk45dw==
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Y9PqMp6HpCHVx0Ij5LBnlmnFFKtAPomhGs10mXwTMtH6roLsk3i/BY530WH5?=
- =?us-ascii?Q?k5N0RY25D2dfcQN1UulMUMqExv31rdM7hnc7TXCJJ0UNzoOUDIokLHsqDwmf?=
- =?us-ascii?Q?Zmpp5DpiTjU11gTZjMHLMgRMwfB+BBAq5zmzH2I15uO42NPlMbVuAquLCp66?=
- =?us-ascii?Q?T9LRpAI6FQCalQd5hnXUIfujtNoDAVGUzL2Cm0Bza7EFhyymXq2na7qJY7Bv?=
- =?us-ascii?Q?s4wgSTsXcKARmV8PqQoOBodLYUR5FIRLhJnd8E5tbVH1+Xr1xcY9KT9HpBEy?=
- =?us-ascii?Q?871I+a1PofhYPIoMEXSIflCzTWSw5jGhtwBoDFm3/rlH4AaY6OuPshwje28h?=
- =?us-ascii?Q?58KIuWDokHSFsetoldT7J6GxT6VPQB+r/C15srhvTlgUK6cWCK0VFO7VvfOS?=
- =?us-ascii?Q?SMgu+soj0GtqOqxVqI+Klt/w2YYbGjcy0WfS9spE+erZXi08Gi2w44Pw40qm?=
- =?us-ascii?Q?msHDocj2HjbzURQ57+VneOsEYfDAUWaL2zhdnVW23Ux9fpYKi2uOcPGMZ1Xu?=
- =?us-ascii?Q?X4X4bj+79s4CHPb4JyzBHbWylCPD4S2aVqtZKEWFu5mw+61JcbEuEWbRZHEu?=
- =?us-ascii?Q?oLF3O1S0vwcDh5lM4nTv48T0QMZ5SjFaSZjvFTuX4PpvrbaxS7jFPwXviF91?=
- =?us-ascii?Q?U/TV5gw6uyacv2pgfpi5/eujmg6lwhIJLYtJDOdkQlWw75XdByXZocJD3CNM?=
- =?us-ascii?Q?dZvk15g20dU3xfQpM3+qIJZRMS0SPGnZYFXtyjbp2QXt4ieog3+x+EMFo0ie?=
- =?us-ascii?Q?7iRLxNguq6HSMVwcCCbvznw9ttXq5uNJw0Dm13TdOaqgazgIE9CZerMqYqT8?=
- =?us-ascii?Q?G8ujvUjwRugyNaCgx/cRyIqNtscg/h9VVacN6OvOqrGSCPVi51WPZvRl45Ws?=
- =?us-ascii?Q?qQC+TGC8yg4RdYB/P083WRxjTRU0MLLDMM9w7cbXwAiYUf7PSqH/u9VyH6Ww?=
- =?us-ascii?Q?I49E6ptBAWTkq12/RL5emeVdCBnMYad/DAlNXuqX/3EuApxVmUcczngDz3Oi?=
- =?us-ascii?Q?6gegJQLvF8nBTE3HAiDxH6zMH6z8zFQY3Op/uSvJviyM7fdLV9SHVTWuKqR0?=
- =?us-ascii?Q?4uPMSi1DJtwl3y3axQOmJsDauujnYggJK9+poORhr1x87iWJ4eNfNFIelo57?=
- =?us-ascii?Q?EtFhAiytQM99kfDlEkFISYPc1BC/AcsYDlmHwvAmwL79w0ZFoZhpUlPYTOqh?=
- =?us-ascii?Q?FVVdZ4tyBOnfdQeAbHj6KCiPsgwlek3MKGos23yFuZ2eGepABtoZj2mOVHQo?=
- =?us-ascii?Q?vzA+N3xl/XiGHa/tcrOcrduVixPwGYZPhKz3laG2jSXKY0uRhtuE9vkdGvPp?=
- =?us-ascii?Q?i09PW/JQdMlrOiif18X7JV6VJy++CCnMhYzGCKmoNIKmHQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <AB51926FC2D28B47B3A1B004EC437E67@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+        Mon, 2 Jan 2023 10:43:08 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1621A1A2
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 07:43:06 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id o2so24787147pjh.4
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Jan 2023 07:43:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=K7Tc8KfqDA09CyJg53HDxe6+/CNGRAWMBOCQwnykW6E=;
+        b=fLJFtdssIVPlLra0ywCOTyDjgvU1gJ+9VlPpgKu7F6mqcadDo2vU/E6dbiJuRe8kK3
+         EQjuZM1kHqOWX20DmvNUh6yU56kuWyKg+WwMi+LZBBM62rSProIYgOxuPOKa0ui0CH4J
+         pchuzU6moRHuXgUVQTr+qBdRl06cm+x+B8JKkPnat+MgpExl/6yMI3clDhFAO+gu/Il+
+         JqbxVSVZFiPhzL+/TokFr1wx63pEFBhwP5sSaFk/Zc7ZmnXukI42mgvMtmXwmuHQP58Z
+         /yrhY+/7C5l64sWC8F/j5VmeCB+oNpSdjx402JO01f5Zp6kj//R/wIRFQHjIWEpsxs4p
+         6K5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K7Tc8KfqDA09CyJg53HDxe6+/CNGRAWMBOCQwnykW6E=;
+        b=oKDhTHyffN8qzxHhZhthtYCkiPW68Tcyc/5F7ociwmxG2pd59+ZkXV3GNc2uR8GrkL
+         2TWfCnkSfbuXDgputHYzFJkUhZW+PeX4p/0TdSMNkUsdJcouf3xC2tJYehsW1s/FxT+r
+         HWSzf+qs30pj1DxitXJ7z8q5/UkCW38NGu70s4IXXb7pMbs8y5EHX7IYVGYNX8I1kqAv
+         N+sgSZHN4mXp608gCr+96K8STRqHjWeqHfaQM29H7QFxDGIi/1xuquzgmiJqU3W82yju
+         RKmIrkFsOu8QhrUn8UhldfHJYgnHBPN3oPUXSpLjgMP3OvtmknnuNE3yY0BB3nuYQPk2
+         xLcw==
+X-Gm-Message-State: AFqh2kpJK9655m/tW5ZxJBMBXcdhPJYJD4HmI4Ma/rBrBBc3cV+TiB3r
+        2tnN/nhK/PeotdTaMxPcgYrvgjpgs7icxYmE1mRGiQ==
+X-Google-Smtp-Source: AMrXdXubp9c9+m3wlm4dSAPFgQrN9UipbkHooolUK3IQnTm9qQY7wYJsIvbC7PvyXyNG4bEFTzgoiL5YGe3Ol3sF7Vk=
+X-Received: by 2002:a17:902:ebc9:b0:189:7372:144c with SMTP id
+ p9-20020a170902ebc900b001897372144cmr2181735plg.106.1672674185948; Mon, 02
+ Jan 2023 07:43:05 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c15b230-f802-4f4b-a3a6-08daecd57965
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jan 2023 15:24:43.4771
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2PR01MB8979
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20221220121231.20120-1-kvalo@kernel.org>
+In-Reply-To: <20221220121231.20120-1-kvalo@kernel.org>
+From:   Robert Marko <robert.marko@sartura.hr>
+Date:   Mon, 2 Jan 2023 16:42:55 +0100
+Message-ID: <CA+HBbNGBKemtF9ZsFBFCe7_1eqMJ80QhEPCsinOJY2LQ4+tiFg@mail.gmail.com>
+Subject: Re: [PATCH] ath11k: debugfs: fix to work with multiple PCI devices
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Dec 20, 2022 at 1:16 PM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+>
+> ath11k fails to load if there are multiple ath11k PCI devices with same name:
+>
+>  ath11k_pci 0000:01:00.0: Hardware name qcn9074 hw1.0
+>  debugfs: Directory 'ath11k' with parent '/' already present!
+>  ath11k_pci 0000:01:00.0: failed to create ath11k debugfs
+>  ath11k_pci 0000:01:00.0: failed to create soc core: -17
+>  ath11k_pci 0000:01:00.0: failed to init core: -17
+>  ath11k_pci: probe of 0000:01:00.0 failed with error -17
+>
+> Fix this by creating a directory for each ath11k device using schema
+> <bus>-<devname>, for example "pci-0000:06:00.0". This directory created under
+> the top-level ath11k directory, for example /sys/kernel/debug/ath11k.
+>
+> The reference to the toplevel ath11k directory is not stored anymore within ath11k, instead
+> it's retrieved using debugfs_lookup(). If the directory does not exist it will
+> be created. After the last directory from the ath11k directory is removed, for
+> example when doing rmmod ath11k, the empty ath11k directory is left in place,
+> it's a minor cosmetic issue anyway.
+>
+> Here's an example hierarchy with one WCN6855:
+>
+> ath11k
+> `-- pci-0000:06:00.0
+>     |-- mac0
+>     |   |-- dfs_block_radar_events
+>     |   |-- dfs_simulate_radar
+>     |   |-- ext_rx_stats
+>     |   |-- ext_tx_stats
+>     |   |-- fw_dbglog_config
+>     |   |-- fw_stats
+>     |   |   |-- beacon_stats
+>     |   |   |-- pdev_stats
+>     |   |   `-- vdev_stats
+>     |   |-- htt_stats
+>     |   |-- htt_stats_reset
+>     |   |-- htt_stats_type
+>     |   `-- pktlog_filter
+>     |-- simulate_fw_crash
+>     `-- soc_dp_stats
+>
+> I didn't have a test setup where I could connect multiple ath11k devices to the
+> same the host, so I have only tested this with one device.
+>
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
 
-> I think my reply to Arend flew over your head.
 
-Sorry. I am not that good in English so sometimes do misinterpret things.
->=20
-> My point was that I'd rather have the Broadcom/Cypress people actually
-> answer my question so we can figure out how to do this *properly*,
-> instead of doing "safer-but-dumb" things (like this patch) because we
-> just don't have the information to do it properly.
->=20
-> - Hector
+I can confirm that this works on a combination of IPQ8074 with an
+external QCN9074 radio which
+would previously clash and error out, so:
 
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+Tested-by: Robert Marko <robert.marko@sartura.hr>
+
+>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath11k/core.h    |  1 -
+>  drivers/net/wireless/ath/ath11k/debugfs.c | 48 +++++++++++++++++++----
+>  2 files changed, 40 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+> index a8acb8b7b8d5..beb552108ac3 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.h
+> +++ b/drivers/net/wireless/ath/ath11k/core.h
+> @@ -921,7 +921,6 @@ struct ath11k_base {
+>         enum ath11k_dfs_region dfs_region;
+>  #ifdef CONFIG_ATH11K_DEBUGFS
+>         struct dentry *debugfs_soc;
+> -       struct dentry *debugfs_ath11k;
+>  #endif
+>         struct ath11k_soc_dp_stats soc_stats;
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+> index ccdf3d5ba1ab..5bb6fd17fdf6 100644
+> --- a/drivers/net/wireless/ath/ath11k/debugfs.c
+> +++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+> @@ -976,10 +976,6 @@ int ath11k_debugfs_pdev_create(struct ath11k_base *ab)
+>         if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
+>                 return 0;
+>
+> -       ab->debugfs_soc = debugfs_create_dir(ab->hw_params.name, ab->debugfs_ath11k);
+> -       if (IS_ERR(ab->debugfs_soc))
+> -               return PTR_ERR(ab->debugfs_soc);
+> -
+>         debugfs_create_file("simulate_fw_crash", 0600, ab->debugfs_soc, ab,
+>                             &fops_simulate_fw_crash);
+>
+> @@ -1001,15 +997,51 @@ void ath11k_debugfs_pdev_destroy(struct ath11k_base *ab)
+>
+>  int ath11k_debugfs_soc_create(struct ath11k_base *ab)
+>  {
+> -       ab->debugfs_ath11k = debugfs_create_dir("ath11k", NULL);
+> +       struct dentry *root;
+> +       bool dput_needed;
+> +       char name[64];
+> +       int ret;
+> +
+> +       root = debugfs_lookup("ath11k", NULL);
+> +       if (!root) {
+> +               root = debugfs_create_dir("ath11k", NULL);
+> +               if (IS_ERR_OR_NULL(root))
+> +                       return PTR_ERR(root);
+> +
+> +               dput_needed = false;
+> +       } else {
+> +               /* a dentry from lookup() needs dput() after we don't use it */
+> +               dput_needed = true;
+> +       }
+> +
+> +       scnprintf(name, sizeof(name), "%s-%s", ath11k_bus_str(ab->hif.bus),
+> +                 dev_name(ab->dev));
+> +
+> +       ab->debugfs_soc = debugfs_create_dir(name, root);
+> +       if (IS_ERR_OR_NULL(ab->debugfs_soc)) {
+> +               ret = PTR_ERR(ab->debugfs_soc);
+> +               goto out;
+> +       }
+> +
+> +       ret = 0;
+>
+> -       return PTR_ERR_OR_ZERO(ab->debugfs_ath11k);
+> +out:
+> +       if (dput_needed)
+> +               dput(root);
+> +
+> +       return ret;
+>  }
+>
+>  void ath11k_debugfs_soc_destroy(struct ath11k_base *ab)
+>  {
+> -       debugfs_remove_recursive(ab->debugfs_ath11k);
+> -       ab->debugfs_ath11k = NULL;
+> +       debugfs_remove_recursive(ab->debugfs_soc);
+> +       ab->debugfs_soc = NULL;
+> +
+> +       /* We are not removing ath11k directory on purpose, even if it
+> +        * would be empty. This simplifies the directory handling and it's
+> +        * a minor cosmetic issue to leave an empty ath11k directory to
+> +        * debugfs.
+> +        */
+>  }
+>  EXPORT_SYMBOL(ath11k_debugfs_soc_destroy);
+>
+>
+> base-commit: 922932ca02191a390f7f52fb6e21c44b50e14025
+> --
+> 2.30.2
+>
+>
+> --
+> ath11k mailing list
+> ath11k@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/ath11k
+
+
+
+-- 
+Robert Marko
+Staff Embedded Linux Engineer
+Sartura Ltd.
+Lendavska ulica 16a
+10000 Zagreb, Croatia
+Email: robert.marko@sartura.hr
+Web: www.sartura.hr
