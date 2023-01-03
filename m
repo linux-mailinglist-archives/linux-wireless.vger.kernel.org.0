@@ -2,79 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6BFE65C0D5
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 14:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C9965C0EF
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 14:37:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237460AbjACNal (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 08:30:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35830 "EHLO
+        id S233256AbjACNgj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 08:36:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237161AbjACNai (ORCPT
+        with ESMTP id S231219AbjACNgg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 08:30:38 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705F51115C
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 05:30:36 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id m26-20020a05600c3b1a00b003d9811fcaafso16563351wms.5
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 05:30:36 -0800 (PST)
+        Tue, 3 Jan 2023 08:36:36 -0500
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD100F00B
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 05:36:35 -0800 (PST)
+Received: by mail-vs1-xe2f.google.com with SMTP id a64so28229644vsc.2
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 05:36:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nHTszZ3uBBHzbgv+bOTF1aB+SNQ0KCdUTTX9FXeUpSI=;
-        b=HgV6wt355Jgq1S+aXgNjq6guZtkzatowxd63zCDCrMrOYz8rkpF2u1+UPfJZZRasLY
-         zXYGQRmlyPMmgrtdCmIlOYSd3dXf4Gdd89UF3nssvjU7tWdapX8qlBCm0boyK7Zv5Bux
-         8/4hHokc2aiiY7EpmetBxxcXjmaPOpznFa7IE=
+        bh=G2byaJVOIRBUChSOZA8ihOOByquK7pIMwll6pHIHnIQ=;
+        b=E4yxunMlp9azojHZWyrDjrUcV6NqhmjcFTn2xv4adxLFTvgCCMTVzgPU/7ldRWkuPc
+         2fapqgro8yam/EXXujUYmeg6UCkIALwzrkCEnNhrcqitxlnWYmvqsOHkLmk95Vo2sbOZ
+         aGokh9pMWmT1iTfTl1F1XqHoIMVMuhTzGIPpc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nHTszZ3uBBHzbgv+bOTF1aB+SNQ0KCdUTTX9FXeUpSI=;
-        b=QfR1s0iS8DU2aiWX4L6mzMBquxrm4U4XszssIvMNtPO0qGyJhKdaAVulmDvekseth1
-         F0hog3C/gx1yv+pB8t0mfxKKS9DoHU/9YuixfmuFm447DtD1IcIthYd1rA+8WhzGODi1
-         BFQ/5i1yZLzjW3xoPhmz9oG4QRwHsD5IuOBkxaInlxo6hZiQGX+0FsZ7GspAcckBWKrR
-         2x/IR/ZCSnHAA3tgsf6uoPsU6Jj7v9nwsThG8RS6bwd+y33YqTYo1RyDyvGIfnqH7sle
-         IRYt1v0w/AjzNhVjcJI6BFqfkJ5xKJf9KE80zi18R99XlNXglOVn6srnKR3spLd7mdJF
-         hd2Q==
-X-Gm-Message-State: AFqh2kp+vl6r4H48eLtXMNynemwBIFpWLPeMzUXQM2L3cbL9Iw0scCLL
-        UFUbV5i/1RYuNvvmsrWuuayzMQ==
-X-Google-Smtp-Source: AMrXdXvn13+SMQFW2Hx/PqVEswlT1NrJKKE2ooIycPif5AU3eCzhpSx0UviTJaUnhQt4ocabda4DRQ==
-X-Received: by 2002:a05:600c:2142:b0:3d5:365b:773e with SMTP id v2-20020a05600c214200b003d5365b773emr38414799wml.39.1672752634873;
-        Tue, 03 Jan 2023 05:30:34 -0800 (PST)
+        bh=G2byaJVOIRBUChSOZA8ihOOByquK7pIMwll6pHIHnIQ=;
+        b=fy0N2BW0gqSeQGW3VA20hHl+JPpJcg/mqPqG50rYmq2jA3eWtgJ1OTjzMZEBx8GEQE
+         ZBlHVz6tjxZDj6dtsTZwBf4o92Eg82daYQujquirP+BY4dbfWaxWRfefwnspTej7jfIf
+         a8gUZYSwaBgY3/EWAPivTyOnsIBV89d7L8JzQXWr+GznFlIyvLzy26+MCUPphwkUmI6X
+         i03CYlbZ0/0zfXHQuMYErJkxOxn9+9NWsajGPuwyW/LovePol95uj2PVmIVH1tDw3gXi
+         LRxQxkZgwJDuzMLu4keP5Jak4YD45r51VGenDd1HEix6dS5VJQBXwvJY8dufw+Ztmb6C
+         IfwA==
+X-Gm-Message-State: AFqh2kqx6Fl/x3I0RUgYsJdWNv6xcRGwRYCj78M5Z4af8mAt78kUxfy4
+        lQhus3D+9V4DWdWUGEXxOoiydHWu8g/yFaO/
+X-Google-Smtp-Source: AMrXdXvbC8LvdkI8bzxg6XszWeKSUZWTqowkEqjN39P1n7ji1oXEVP0abGvZgvUey+arTIlmIbE5og==
+X-Received: by 2002:a05:6102:4427:b0:3c6:7817:4a4e with SMTP id df39-20020a056102442700b003c678174a4emr19281584vsb.35.1672752994825;
+        Tue, 03 Jan 2023 05:36:34 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id l13-20020a05600c2ccd00b003c70191f267sm50001716wmc.39.2023.01.03.05.30.33
+        by smtp.gmail.com with ESMTPSA id w22-20020a05620a0e9600b00704a2a40cf2sm21966994qkm.38.2023.01.03.05.36.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Jan 2023 05:30:33 -0800 (PST)
-Message-ID: <6b30559d-9bcc-f3b3-d9b2-2406e9a044b7@broadcom.com>
-Date:   Tue, 3 Jan 2023 14:30:33 +0100
+        Tue, 03 Jan 2023 05:36:33 -0800 (PST)
+Message-ID: <31fb8fa2-4017-b521-84d6-d72bc62e68d9@broadcom.com>
+Date:   Tue, 3 Jan 2023 14:36:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.1
-Subject: Re: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware
- names for Apple OTP chips
-To:     Hector Martin <marcan@marcan.st>,
-        Aditya Garg <gargaditya08@live.com>, aspriel@gmail.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        lina@asahilina.net, franky.lin@broadcom.com
-Cc:     Orlando Chamberlain <redecorating@protonmail.com>,
-        brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        linux-wireless@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Asahi Linux <asahi@lists.linux.dev>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <f36dd8e3-9905-f04a-ed34-4be91ed1fec6@marcan.st>
- <F9EFCCD1-4407-42CC-8316-2F58AAC1AE7F@live.com>
- <ACC0D1F6-7857-4FF0-A474-4EC699572E1B@live.com>
- <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
- <18573bd1a38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <3785835b-164b-28d1-6905-85454cabb69d@marcan.st>
+Subject: Re: [PATCH for-6.2 2/3] wifi: brcmfmac: avoid NULL-deref in survey
+ dump for 2G only device
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+References: <20230103124117.271988-1-arend.vanspriel@broadcom.com>
+ <20230103124117.271988-3-arend.vanspriel@broadcom.com>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <3785835b-164b-28d1-6905-85454cabb69d@marcan.st>
+In-Reply-To: <20230103124117.271988-3-arend.vanspriel@broadcom.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000009e815905f15c12f1"
+        boundary="00000000000012754a05f15c28cb"
 X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -85,129 +71,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000009e815905f15c12f1
+--00000000000012754a05f15c28cb
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 1/3/2023 4:55 AM, Hector Martin wrote:
-> On 2023/01/03 3:27, Arend Van Spriel wrote:
->> On January 2, 2023 4:15:41 PM Hector Martin <marcan@marcan.st> wrote:
->>
->>> On 02/01/2023 23.40, Aditya Garg wrote:
->>>> From: Aditya Garg <gargaditya08@live.com>
->>>>
->>>> Commit 'dce45ded7619' added support for 89459 chip pcie device. It uses the
->>>> BRCM4355 chip which is also found in Apple hardware. However this commit
->>>> causes conflicts in the firmware naming between Apple hardware, which
->>>> supports OTP and other non-Apple hardwares. So, this patch makes these
->>>> Apple chips use their own firmware table so as to avoid possible conflicts
->>>> like these in the future.
->>>
->>> I think my reply to Arend flew over your head.
->>>
->>> My point was that I'd rather have the Broadcom/Cypress people actually
->>> answer my question so we can figure out how to do this *properly*,
->>> instead of doing "safer-but-dumb" things (like this patch) because we
->>> just don't have the information to do it properly.
->>
->> Fair enough. Can you accurately (re)state your question and I will try to
->> answer it.
-> 
-> As per my original email: Is the CYW89459 just a rebrand of the BCM4355,
-> or just a subset? Can we consider them equivalent, and equivalent to the
-> Apple part (BCM4355C1 / revision 12)?
+On 1/3/2023 1:41 PM, Arend van Spriel wrote:
+> When dealing with a device for 2GHz band only the wiphy->bands for
+> 5GHz will be NULL. This would result in a NULL-deref in the
+> brcmf_cfg80211_dump_survey() function. Rework the code with a
+> for-loop to make it easier to add another band.
 
-There is probably no easy answer. Mainly because Cypress is a separate 
-entity. However, they use the same/similar technology and code base. So 
-let me first start with the chip naming. The wifi chip primarily has a 
-number and revision. The chip number is straighforward and can be read 
-from the device. The chip revision comes in two variants: 1) simple 
-increasing number as read from the device, and 2) a <letter><digit> 
-format. The latter start at a0, which you almost never see in the wild 
-unless we do it "first time right". Whenever spinning a new chip we 
-either increase the digit or the letter depending on type/amount of 
-changes. There is not predictable mapping between the revision variants. 
-Depending on the hurdles in a chip project we may move from a0 to b0, or 
-from b0 to b1 or whatever.
+Forgot the Fixes tag here:
 
-If CYW89459 chip reads chip number 0x4355 than it is a BCM4355. If it is 
-a different revision it may require different firmware. A different 
-letter will always require different firmware. A different digit may 
-work although the firmware can have code paths for a specific revision.
+Fixes: 6c04deae1438 ("brcmfmac: Add dump_survey cfg80211 ops for HostApd 
+AutoChannelSelection")
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++--------
+>   1 file changed, 13 insertions(+), 10 deletions(-)
 
-The firmware tables in pcie.c have the revmask. With our crystal ball 
-being out-of-order we tend to enable a firmware for all revisions 
-(0xFFFFFFFF) unless proven otherwise. If otherwise, we come up with a 
-sensible new name and add a new entry to the firmware table changing the 
-revmasks accordingly.
-
-> More specifically:
-> - What BCM4355 variants exist in the wild, and what are their PCI device
-> IDs and revision IDs?
-
-Who knows. The PCI revision ID always equals the chip revision afaik. 
-The PCI device IDs should be as below.
-
-> - Is a single firmware nominally intended to be compatible with all of
-> those variants? Does that include the CYW89459 branded parts?
-> - If CYW89459 is a rebrand of BCM4355, is it complete, or are there
-> still chips being sold as BCM4355?
-> 
-> Even more specifically, bcmdhd has these device IDs:
-> 
-> #define BCM4355_D11AC_ID    0x43dc  /* 4355 802.11ac dualband device */
-> #define BCM4355_D11AC2G_ID  0x43fc  /* 4355 802.11ac 2.4G device */
-> #define BCM4355_D11AC5G_ID  0x43fd  /* 4355 802.11ac 5G device */
-> 
-> But the patch I'm replying to uses PCI ID 0x4355, which instead should be:
-> 
-> #define BCM43237_D11N_ID    0x4355  /* 43237 802.11n dualband device */
-> #define BCM43237_D11N5G_ID  0x4356  /* 43237 802.11n 5GHz device */
-> 
-> So what's up with the BCM43237? Is that a 4355 variant? Is this what got
-> rebranded as CYW89459? Is it firmware-compatible with the others?
-
-Right. If you have come across a BCM4355 with PCI device ID 0x4355 than 
-my best guess would be that their OTP is corrupted and the PCIe core on 
-the chip uses its default as stored in hardware, which equals the chip 
-number. This is really a fallback for a faulty device (or a device which 
-does not have its OTP programmed).
-
-> <rant>
-> 
-> I'm going to be honest here: I'm quite saddened by the state of brcmfmac
-> and Broadcom's neglect of this driver. Other than the Apple OTP /
-> firmware selection shenanigans, everything else I'm having to implement
-> to support Apple machines are features that Broadcom's downstream bcmdhd
-> driver *already* supports on non-Apple machines, not Apple-specific. Not
-> only that, people are asking for modern WiFi features like newer crypto
-> modes that bcmdhd supports but brcmfmac doesn't. It seems clear that
-> Broadcom isn't interested in maintaining this driver and updating it to
-> support newer chips and features. So I'm basically doing your job for
-> you all. Which is fine, but if I'm going to be in charge of implementing
-> all this stuff for you, *please* help me by at least clarifying the
-> device variant / firmware feature related issues, because getting that
-> wrong will cause regressions or firmware naming scheme breaks down the
-> line, and that sucks for users.
-> 
-> </rant>
-
-Happy New year to you. Thanks for clearly marking the rant. Makes it 
-easier to ignore, but let me get into this. I would not call bcmdhd the 
-downstream driver. It is a separate out-of-tree driver. Indeed resources 
-were pulled from brcm80211 development, but there always have been only 
-2 or 3 people working on it. Me being the constant working mule and 
-these days only for 20% of my working hours to do the job. So you are 
-not really doing our job as we are not assigned to do so. I guess there 
-is no ROI for Broadcom or so it is perceived and there is no customer 
-pushing for it. That said I am always happy to help and clarify whatever 
-I can.
-
-Regards,
-Arend
-
---0000000000009e815905f15c12f1
+--00000000000012754a05f15c28cb
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -278,14 +162,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD17ycuxwTnyz3AaGYE
-RtRdZ+DXmSfiVuCT3vYCYDk2djAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDMxMzMwMzVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBGkBK6U+F5p6rm7Tr8
+yPE9qY2NgyoVOLPe5HOPpOcBfDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzAxMDMxMzM2MzVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA3lEt+Xxr+nJ8AviV847172cYjjtkmLrg8r/b
-pH9HXxqlWlXGXbO+V3pJKFmc/Xls607i3INvERwIgCqPI8LCm2EogriqfQYs5EujylkDwbbtqCdj
-ORts27l2fEUFmvcRBxuqca6wfJWJaFNFEFifLea+OBGTLGzoNS+t7xI0sSl3QcP/3cb2c7zvwvar
-g79q/nmd468+MCD8PhIqw3hNsFCE4LADwZJD+1FwyPmNRexNl10YjlYGN0bgAcRUUVZ2PgtHnzXi
-XguXMe6U9BDR90LmpxhLD84bSi5WRDjot5ypHQHZKN1YKEC6kQeHqWHI354KhhhuVbM8+8lpZ1LX
-3Q==
---0000000000009e815905f15c12f1--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA39H9x0DmFVF1sDcbW5dazP/xzYMRYAApi6jh
+L+jJrUdx7hsMdifMnzSQ1tOW6UkVN97k/++joGfzosi9SpQ0d9C4KVZtWCXyRSqEm5tFrCZAf6FE
+/xnD0Vi7Eih6ru3y8PweMfotyTYxsS5Bl9rHcJiEzfz8a1NcnUZtANbzdV2L+S1VprJat8UwiIG/
+9vEoZlnPt332esitEJwjDkt9xVzvvRoHAQJyOJjZZf7+YF4mAS06Y1+FF5YWlgK5H6jsdg+5xxr0
+g9JqbPtl37C9vROAbXYVieOdXUiIIY1lnOlskG51aKD7Iwijcp21KFHXZLc0ZZb9ZWUUBqOBc4Ya
+ww==
+--00000000000012754a05f15c28cb--
