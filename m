@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90FC865C00A
+	by mail.lfdr.de (Postfix) with ESMTP id 44D4565C009
 	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 13:42:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237544AbjACMlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 07:41:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36822 "EHLO
+        id S237320AbjACMld (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 07:41:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237503AbjACMl3 (ORCPT
+        with ESMTP id S237550AbjACMlc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 07:41:29 -0500
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88EF89FD3
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 04:41:28 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id g7so24431098qts.1
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 04:41:28 -0800 (PST)
+        Tue, 3 Jan 2023 07:41:32 -0500
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 397FEDF6A
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 04:41:31 -0800 (PST)
+Received: by mail-qt1-x82e.google.com with SMTP id bp44so21790884qtb.0
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 04:41:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yZdk8oR+49bqTq5guiux1sDGdmnCiNU4UDcA+2pJa58=;
-        b=NHS/zeyb9qbTELhfZzO70oONF2SW1sxMfY+RpkDKVw11ZaSJFyh/hNDm4CyFfmA6pq
-         m3sTegkWjGLn32COqp8SXiGxD0gdqejycI7FjAFoBkaNPgsnrIa0H4wzISaQlyzPJ8O8
-         WVWk4h3foioWJMm4itUNfzmqxyJQBWyfwKkgQ=
+        bh=cSS8F/rKGNiGpoxFka3z9bGZCT6G8zFruXj9sEzA+6U=;
+        b=VRxXv9j/NR6glaECZl58yhYNS8EjXmEu6/CNn75ortjKfx+XMwjDCr0VSwoLYybilk
+         7Hjd4FJKBeSfxMUGqk4HG10oO0mE13DB/Z8C8sE9y4EVuXYC+L3Xyf30AugHfApruVS1
+         G126+62oGIb123eMVfelp6Fuzvdqz5xawOjJE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yZdk8oR+49bqTq5guiux1sDGdmnCiNU4UDcA+2pJa58=;
-        b=LwIVw0n9KpJz2mak5HUFLLTnI3MgOwl3uDkzPHhEh8ve4XnxQ3rbd4IbFGpgb/foB7
-         7drPM7U8rnYqqOEMJPbgHg74g/fATQnbWiKNDtgE0ET5cLhJAV39M5mEcL7MucsrRFWI
-         eO1G83ansyD158QEKC84QBktSACfq1qGgs7ykK9oVPu79ICkcUsGvyHWsC12OUWXr8Uh
-         rsapgglZlJYQbbEqvdQ4oYS0+DDTOS2/SYexV+41lZfR8BHPzd8viWIOsd9MNMNBFPbT
-         WPdjZIDxmt++vjfv8F3hhz+sqNkxDtW6VgNhNfff6AggHIOpAF0uHE6wf59ygF4l3+dA
-         pjBA==
-X-Gm-Message-State: AFqh2krpcT5zcGh8UUVnnSdpwwY2P79zMNE+/oYJjpKe/Gvu2eDuZdAq
-        ep9ip68hfYJegAN+D4WUbPe8KM+0GwYS+8qG
-X-Google-Smtp-Source: AMrXdXsakFc7YCQFvNU9/9Uu0NhgQIbb7RbnGa+W+uEi2ARnsKvEWyjfyY+v5kwW5C7QLCqaixrlCg==
-X-Received: by 2002:ac8:72c5:0:b0:3a6:a86f:33cd with SMTP id o5-20020ac872c5000000b003a6a86f33cdmr59631220qtp.51.1672749687585;
-        Tue, 03 Jan 2023 04:41:27 -0800 (PST)
+        bh=cSS8F/rKGNiGpoxFka3z9bGZCT6G8zFruXj9sEzA+6U=;
+        b=z9fZpgO7PmTGiYbttjOi0OE15/JfXcfKj+taKbROY78Da42X4JjHVsV69f0xzsKMVq
+         iMTo6m5NxYe6nyGOu7UZK2f5HfCge1n+gQWDlBLQfKf+1SD2SS04FLdBp8j3kLh9X8xj
+         GCQG0kIxV/MsIxJRNJhn2z29cZIpE0K95AbSmWhxniSj43BfhvglOkW0czZrDxn9C/uv
+         YFeAN8p0TxViLPyGTB/yKZRc+pKGIlgtkUeIlQ8tgEJO/eWXasgckEn3Wsp3FZuPeJ3D
+         hGFyK0z5XD8D3LM2ixWYxe65cE/nGvhBusM2h29KCP/Wy6bKuh5E+cT41Vquas8s2jcf
+         OSDg==
+X-Gm-Message-State: AFqh2kpqBhFUeUfFb27ddYh90wBajw/AaRu0+6hQiNpYG6fmQTvHluTb
+        1ADhu52M4+px9aGSXsoNOG+RMu1waCqsIl1I
+X-Google-Smtp-Source: AMrXdXuCOZ9g5WIeevu1s08ELDNaYJItcMTUr7U2LWHojtNcQPu6m4YV2B91rwOIn5/99okVESDY6g==
+X-Received: by 2002:ac8:7778:0:b0:3ab:af31:ee3e with SMTP id h24-20020ac87778000000b003abaf31ee3emr14529394qtu.60.1672749690346;
+        Tue, 03 Jan 2023 04:41:30 -0800 (PST)
 Received: from bld-bun-02.bun.broadcom.com ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id t1-20020ac865c1000000b003a7e4129f83sm18439047qto.85.2023.01.03.04.41.25
+        by smtp.gmail.com with ESMTPSA id t1-20020ac865c1000000b003a7e4129f83sm18439047qto.85.2023.01.03.04.41.27
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Jan 2023 04:41:26 -0800 (PST)
+        Tue, 03 Jan 2023 04:41:29 -0800 (PST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org,
         Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH for-6.2 2/3] wifi: brcmfmac: avoid NULL-deref in survey dump for 2G only device
-Date:   Tue,  3 Jan 2023 13:41:16 +0100
-Message-Id: <20230103124117.271988-3-arend.vanspriel@broadcom.com>
+Subject: [PATCH for-6.2 3/3] wifi: brcmfmac: change cfg80211_set_channel() name and signature
+Date:   Tue,  3 Jan 2023 13:41:17 +0100
+Message-Id: <20230103124117.271988-4-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20230103124117.271988-1-arend.vanspriel@broadcom.com>
 References: <20230103124117.271988-1-arend.vanspriel@broadcom.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000f1b24b05f15b62c4"
+        boundary="0000000000001b111605f15b631b"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -67,70 +67,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000f1b24b05f15b62c4
+--0000000000001b111605f15b631b
 Content-Transfer-Encoding: 8bit
 
-When dealing with a device for 2GHz band only the wiphy->bands for
-5GHz will be NULL. This would result in a NULL-deref in the
-brcmf_cfg80211_dump_survey() function. Rework the code with a
-for-loop to make it easier to add another band.
+The function cfg80211_set_channel() is an static function in brcmfmac
+but the name is misleading. Hence rename it with 'brcmf' prefix. Also
+changing the parameters to avoid additional conversions.
 
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++--------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 478ca3848c64..b115902eb475 100644
+index b115902eb475..a9690ec4c850 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -7964,6 +7964,7 @@ brcmf_cfg80211_dump_survey(struct wiphy *wiphy, struct net_device *ndev,
+@@ -7928,13 +7928,10 @@ brcmf_dump_obss(struct brcmf_if *ifp, struct cca_msrmnt_query req,
+ }
+ 
+ static s32
+-cfg80211_set_channel(struct wiphy *wiphy, struct net_device *dev,
+-		     struct ieee80211_channel *chan,
+-		     enum nl80211_channel_type channel_type)
++brcmf_set_channel(struct brcmf_cfg80211_info *cfg, struct ieee80211_channel *chan)
+ {
+ 	u16 chspec = 0;
+ 	int err = 0;
+-	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
  	struct brcmf_if *ifp = netdev_priv(cfg_to_ndev(cfg));
- 	struct brcmf_dump_survey survey = {};
- 	struct ieee80211_supported_band *band;
-+	enum nl80211_band band_id;
- 	struct cca_msrmnt_query req;
- 	u32 noise;
- 	int err;
-@@ -7976,21 +7977,23 @@ brcmf_cfg80211_dump_survey(struct wiphy *wiphy, struct net_device *ndev,
- 		return -EBUSY;
- 	}
  
--	band = wiphy->bands[NL80211_BAND_2GHZ];
--	if (band && idx >= band->n_channels) {
--		idx -= band->n_channels;
--		band = NULL;
--	}
-+	for (band_id = 0; band_id < NUM_NL80211_BANDS; band_id++) {
-+		band = wiphy->bands[band_id];
-+		if (!band)
-+			continue;
-+		if (idx >= band->n_channels) {
-+			idx -= band->n_channels;
-+			continue;
-+		}
- 
--	if (!band || idx >= band->n_channels) {
--		band = wiphy->bands[NL80211_BAND_5GHZ];
--		if (idx >= band->n_channels)
--			return -ENOENT;
-+		info->channel = &band->channels[idx];
-+		break;
- 	}
-+	if (band_id == NUM_NL80211_BANDS)
-+		return -ENOENT;
+ 	if (chan->flags & IEEE80211_CHAN_DISABLED)
+@@ -7994,7 +7991,7 @@ brcmf_cfg80211_dump_survey(struct wiphy *wiphy, struct net_device *ndev,
  
  	/* Setting current channel to the requested channel */
  	info->filled = 0;
--	info->channel = &band->channels[idx];
- 	if (cfg80211_set_channel(wiphy, ndev, info->channel, NL80211_CHAN_HT20))
+-	if (cfg80211_set_channel(wiphy, ndev, info->channel, NL80211_CHAN_HT20))
++	if (brcmf_set_channel(cfg, info->channel))
  		return 0;
  
+ 	/* Disable mpc */
 -- 
 2.32.0
 
 
---000000000000f1b24b05f15b62c4
+--0000000000001b111605f15b631b
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -201,14 +182,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBuBP5MLM7sUWcPJzBi
-25SN0yTLtos+gY5Zf9DP3yaQtzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDMxMjQxMjdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB1HfwF2vlUYDYE62jV
+A1XAdnp7/fYI6KsOxWMtx7b9qDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzAxMDMxMjQxMzBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAdG5ZIoABui3D6z7ySGK7m5y1+hJHxAMlfrkh
-YvglU00teOfjX8LgfUgpfCuyRI7BysgFJqmmdL0rvsvSooRW2Uug8FWeldN7ZeWUrme5v+QkQgyc
-z51vIGilUWZd1FqFUhyY/3xxmIrcTmHn7NgSJpxDOwuwZqnFTjd23hWlWt86AyGJBmWFYn99cApW
-Gz/3h4fcdpcEVhcLg2YRNRfC85fhgQBuS1zaGpnCBM7eFhzSEot7y1QypaPC44YzjMPMQTEADmz1
-B929yTE6EvBAJ+Gz+4yU8a4duU+gLmGPqCJVKuWV3OCrpewDCyaw6r26/b+uxxsZgVTRHjQY1sDP
-eQ==
---000000000000f1b24b05f15b62c4--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEALsKi0I0Omtg5sIVHsqZuotryw68YZcsw7TPD
+bpnY9bdfybQGSSMFKjPeSjxtpcuXNJcXofc/vSjOPvWCB9MCDhxL3LWYyfivQoZphIXvlANI6b40
+J5az6j/CkmEJaw4QkzUWviAHx8YxzYunMBHoKjW8SAiROCtpF5YXzuZn83ePJDumELJ+qUH2UVjy
+ONZL2SOXHXqdgf/EY0nlfTeivbOG+YctXoB/LpWfMj1PtC+UvENvKGSENU8qbSRSyG3/HT0pf/AW
+Pv8EKMd/0FrkG7XV5NweBHJnVTndM98yNEd7DBY1SIl065Yz22wHPyaNelf5EkMaN8um+pCrPkij
+pw==
+--0000000000001b111605f15b631b--
