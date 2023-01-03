@@ -2,72 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D5D65BA1A
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 05:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A560465BB18
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 08:08:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236581AbjACEml (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 23:42:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39492 "EHLO
+        id S230306AbjACHHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 02:07:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230071AbjACEmk (ORCPT
+        with ESMTP id S230254AbjACHHu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 23:42:40 -0500
-Received: from out20-86.mail.aliyun.com (out20-86.mail.aliyun.com [115.124.20.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E76626F
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 20:42:34 -0800 (PST)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.2781789|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0780417-0.000864095-0.921094;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047213;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.Qj6ro8W_1672720950;
-Received: from localhost.localdomain(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.Qj6ro8W_1672720950)
-          by smtp.aliyun-inc.com;
-          Tue, 03 Jan 2023 12:42:32 +0800
-From:   Aiden Leong <aiden.leong@aibsd.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     gregory.greenman@intel.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Aiden Leong <aiden.leong@aibsd.com>
-Subject: [PATCH] iwlwifi: pcie: fix an indent error reported by checkpatch.pl
-Date:   Tue,  3 Jan 2023 12:41:57 +0800
-Message-Id: <20230103044157.7636-1-aiden.leong@aibsd.com>
-X-Mailer: git-send-email 2.39.0
+        Tue, 3 Jan 2023 02:07:50 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A87DEA3
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 23:07:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=qJZlfWxkp/1m9UXQ4biuXBTqc3b4Hp2gezpakrBy610=;
+        t=1672729669; x=1673939269; b=nsjw6EEffgt76sN1yoqyrY0cK2SFVZe1ZZabrWlTe4arCRe
+        m46+WTugTOB/IvrmHiYa9cjhNcgCH8w+9y9qOFS1ysiIUtQgXr1xRzWK0VsfoMQ3ubJ27OTC9vfs4
+        Zub9xa4r1DHEKrsTCYq2gxEf+1RXbB6pSE9vDBAkIe7i+5oL2gB/lcIrpJCeqN7LIewnUM9dwiNy+
+        +J1WLMQ9s6tVe9gc5Y9CBtoL7WeMG87UjZqoTicQsEx3vav8UzariVe5ixDxiCR+Sfs5DBEkT+qJQ
+        d3l+F4kb2WjsPhvL1pS2PEfVoCIqvkNHdXaLGgzsNYQvHHwxmsUBXJBypmy/jrtw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pCbOh-008b8A-2y;
+        Tue, 03 Jan 2023 08:07:44 +0100
+Message-ID: <ee24c4eda8d389ac7197b6296944e168ccc6b602.camel@sipsolutions.net>
+Subject: Re: brcmfmac: Unexpected cfg80211_set_channel: set chanspec ...
+ fail, reason -52
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Date:   Tue, 03 Jan 2023 08:07:41 +0100
+In-Reply-To: <1f428e2b-f73f-64ff-02d3-eefbcd11db89@broadcom.com>
+References: <2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com>
+         <1f428e2b-f73f-64ff-02d3-eefbcd11db89@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ERROR: switch and case should be at the same indent
-+	switch (REG_CRF_ID_TYPE(val)) {
+Hi,
+
+
+> > [=C2=A0 104.897615] brcmfmac: cfg80211_set_channel: set chanspec 0x100e=
+ fail,=20
+> > reason -52
+
 [...]
-+		case REG_CRF_ID_TYPE_FM:
 
-We should use Git post-commit hooks to avoid such errors.
+>=20
+> > All of these 10 errors are repeated every 60 sec.
+>=20
+> Catching up after the holidays ;-) Above chanspec values are invalid.=20
+> 0x100e =3D channel 14/bw 20MHz. The 'iw list' output shows all these=20
+> channels are disabled. So who/what is trying to set these channels.=20
+> Scanning sets the channel in firmware. Is this initiated from hostapd?=
+=20
 
-Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Yeah, what userspace is running here? Looks like cfg80211_set_channel()
+is only used for survey?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 99768d6a6032..eabbab488e1f 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1416,9 +1416,9 @@ static int map_crf_id(struct iwl_trans *iwl_trans)
- 	case REG_CRF_ID_TYPE_MR:
- 		iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_MR << 12);
- 		break;
--		case REG_CRF_ID_TYPE_FM:
--			iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_FM << 12);
--			break;
-+	case REG_CRF_ID_TYPE_FM:
-+		iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_FM << 12);
-+		break;
- 	default:
- 		ret = -EIO;
- 		IWL_ERR(iwl_trans,
--- 
-2.39.0
+Couple of observations on the side:
+ * might be nice to have some "brcm" indication in that name :P
+ * dump_survey should just dump data, not actually implement the data
+   collection, I think?
 
+
+> Maybe trying ACS?=C2=A0
+>=20
+
+Seems it must be something like that.
+
+> As these are marked as disabled user-space should not=20
+> use them. What I don't understand is why these pass the cfg80211 layer=
+=20
+> so adding Johannes here.
+>=20
+
+Well that goes back to my earlier observation above: dump_survey()
+should just dump all *available* data, not actually try to *collect*
+data. So if userspace requests data for a channel that's disabled,
+that's actually OK, but you shouldn't _have_ any data for that channel
+since it's disabled. Also nl80211 won't send the data out if it exists,
+but there's no check to see if asking the driver makes sense since if
+it's a channel that exists, it should be valid to ask the driver if it
+has data - it just shouldn't have any.
+
+The way it works in mac80211 is that survey data is collected during
+scan, I think?
+
+johannes
