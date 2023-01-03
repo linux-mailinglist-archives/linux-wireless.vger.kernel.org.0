@@ -2,93 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5608C65BDB8
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 11:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DEC665BDD5
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 11:17:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236854AbjACKL4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 05:11:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43796 "EHLO
+        id S237132AbjACKQU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 05:16:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237140AbjACKLc (ORCPT
+        with ESMTP id S237350AbjACKP7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 05:11:32 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC8D5D126
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 02:11:27 -0800 (PST)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 303AA4aR002381;
-        Tue, 3 Jan 2023 10:11:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=ljmQ9bAZPmXSfDHDUrqKM7wdCfMQ9H7Pk1+q5jufEQU=;
- b=Z4CLxw4ZWVM9MARvB/FxbBbMEyCHQhwKEbmZTD2DbrQ1/575tQXaR1R2uR3GQuLKtSwQ
- sFyq4GiaeCtPaUw0kuxLH9A/RqRSW7OITuGXPiSoP/7+eHGnB4a22UTGJPea4nT/dxOt
- 9qOp13FbvGceIx1nPJzJDQnCjsBEAsL+GpAgRd0MDCnoUwOtD+PxfAyE2H6joWfnjMdV
- AzW2KUhFw/QXQ3+JWbkesCNGj9sFMq35GTQg6t23hs3Jtp3MFMdopB64XBQRKOWKMPKi
- oMs+oOHuF3upxpTtYcP7Q17pLzNPI3hhFEXSI8Hq1rgekJLei4egGXmXS0YHkm97NX2T gw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mtd61cfyb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 03 Jan 2023 10:11:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 303ABHhg005249
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 3 Jan 2023 10:11:17 GMT
-Received: from [10.253.13.254] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 3 Jan 2023
- 02:11:15 -0800
-Message-ID: <55142d40-bc76-a67f-9750-1417cdaa0578@quicinc.com>
-Date:   Tue, 3 Jan 2023 18:11:13 +0800
+        Tue, 3 Jan 2023 05:15:59 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD9FF6C
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 02:15:57 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6B492B80E64
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 10:15:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7673C433D2;
+        Tue,  3 Jan 2023 10:15:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672740955;
+        bh=0Y3LOkAwBPu0GXmutmpHI22q7o0KKKn2e6onxQBoxYA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VnNLO2ID5SpLEjXovsf+Jt2mlYct9kn791zsK6AxtD4Mwr1rqxoJcgAl/0Ro4sC93
+         qNi4lEsQR+JtV2SROGJjdlFWMYJrAGZEQgYLLt3+qN2RTJcSawcW4T6MaYWEF1qKOa
+         k9un8imu7R3ErAjo0pby6t5NgCFT7RRJWx00Nm3Dw6YzzZkq6W+YgEFnoGdboeA5Ad
+         VgiT6LskHHrOiJoimpQMJpCXK5OcxK60uYsFOUF8pg449TZ5h2RbHrCJhxcilwl5Vi
+         cxk83NAv4VdeEHHma+xlUCZXIjLU6HopBxpX54lMNZszppqYMFq1gJxUaYf6jK7ao6
+         /VUE/IBFsQRTA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt7915: fix memory leak in mt7915_rate_txpower_get
+Date:   Tue,  3 Jan 2023 11:15:49 +0100
+Message-Id: <2ea534ec17856f65237939f3d437aad37ddc7753.1672740921.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH] wifi: cfg80211: call reg_notifier for self managed wiphy
- from driver hint
-Content-Language: en-US
-To:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20221214093937.14987-1-quic_wgong@quicinc.com>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <20221214093937.14987-1-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: kTXqjwl4NXc6v8YhW3Q0QdkV4aBE7o9p
-X-Proofpoint-ORIG-GUID: kTXqjwl4NXc6v8YhW3Q0QdkV4aBE7o9p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-03_01,2023-01-03_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=736
- clxscore=1015 suspectscore=0 phishscore=0 spamscore=0 adultscore=0
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301030089
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/14/2022 5:39 PM, Wen Gong wrote:
-> Currently the regulatory driver does not call the regulatory callback
-> reg_notifier for self managed wiphys. Sometimes driver needs cfg80211
-> to calculate the info of ieee80211_channel such as flags and power,
-> and driver needs to get the info of ieee80211_channel after hint of
-> driver, but driver does not know when calculation of the info of
-> ieee80211_channel become finished, so add notify to driver after
-> reg_process_self_managed_hint() from cfg80211 is a good way, then
-> driver could get the correct info in callback of reg_notifier.
->
-Hi Johannes,
+Fix possible memory leak in mt7915_rate_txpower_get routine if
+mt7915_mcu_get_txpower_sku() fails.
 
-Could I get your comment for this?
+Fixes: e3296759f347 ("wifi: mt76: mt7915: enable per bandwidth power limit support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index fb46c2c1784f..4730508652af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -990,14 +990,14 @@ mt7915_rate_txpower_get(struct file *file, char __user *user_buf,
+ 	char *buf;
+ 	u32 reg;
+ 
+-	buf = kzalloc(sz, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOMEM;
+-
+ 	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr));
+ 	if (ret)
+ 		return ret;
+ 
++	buf = kzalloc(sz, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
+ 	/* Txpower propagation path: TMAC -> TXV -> BBP */
+ 	len += scnprintf(buf + len, sz - len,
+ 			 "\nPhy%d Tx power table (channel %d)\n",
+-- 
+2.39.0
 
