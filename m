@@ -2,119 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1210565C7C6
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 20:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE19465C7E6
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 21:12:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232967AbjACT73 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 14:59:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
+        id S234534AbjACUMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 15:12:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbjACT71 (ORCPT
+        with ESMTP id S235465AbjACUML (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 14:59:27 -0500
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8AB14094
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 11:59:24 -0800 (PST)
-Received: by mail-il1-x12a.google.com with SMTP id z10so10270077ilq.8
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 11:59:24 -0800 (PST)
+        Tue, 3 Jan 2023 15:12:11 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D5BDE80
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 12:12:08 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id qk9so76711182ejc.3
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 12:12:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=zzywysm.com; s=google;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h5J4EGBEddxLo8G+FzVVns1o6o8CcH7FdeCRkfOCVPQ=;
-        b=FZJz01IvyN5If7qklJzEXMRxUD+IWrKiqM981gedBuGukLcBNdo959ct83OeUVuWc5
-         WIfxx+i8BjXXDD3AUwtJpoDGO1doGzRKZrj/OX6q+hbyAkFV+hy65GHDk/ZgnMtqq3DW
-         pxKwsfRaJdcLJ5+Fb/1sYpEVoq/Uhqo1Gd/LsgOoes0R9u/y8zWhglfbznUKt4VIJol/
-         UcUJ55Rke3EqaBAVO28oFEsPn1K0WZnuuHwbc+5o1LFJvksRLFDTM1f23glujsyf1wiG
-         zNoPgrnYnp7aJdKt6PYlo5+sttwJoHshH7PrYrBjgYiUeAk1aOWjzKl7N74qaoBIzlq1
-         DSFQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0HIUFCwEh9wuq+a1hFljzKi3hoLmgkLbeUjD7nFv6SU=;
+        b=Eec7x4wSUWqH97V1ENqgG/44xGTDk2/0tp1g73HoPMUKOwdNI+FKf7UZyPaRrOuFdR
+         330jOmfQ4YcY1UmSsq7KA54qOpg/lXHmTR/DCKIdbfOsxHASHFuiwfdHcjMytisUhGjI
+         ivmk+tsvxQhBF3D56Q02LIJptFLuxJbPBcc9wk2Rk+80lbgKabgJvZM+qybvTgwWSYI2
+         YtMkvpbsS3TpO/NCnpNMjEItBA8EMHR8bTyMhEmme1KVRUJoODgzf9ssyXk0t9CWIbFj
+         D/HZY+xPkFFirZMIkC9Ghah6oVvwnKwJnkX81DThUQBbNloijozq/9LDuKCh28pg5b0J
+         avPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h5J4EGBEddxLo8G+FzVVns1o6o8CcH7FdeCRkfOCVPQ=;
-        b=fBU29K8ClL8gH63yndqsh77n7b4KTdhH1Iy81TveJcok34x2F9kzRswsIPFJ9xKCW8
-         i5yPfrtempqwWCKXWptLQNmIu/27Bc9pX3Kq1Naz2DeO+LctaUnvt4VwwV1goXZmakYe
-         oSDwZX+ZsYq6v/xUiih5mgQnvaG6CAPnDm+jErKLkyzdnEQxGSVmdkT53udNLwrPz7JS
-         D3GFG2PswcFE6+Lnhp/A5g7SF4wdLrhHCN0adiflbTtHNj4rf6Kilz4qF8+UaWW72So5
-         MF/LBpom7h8NrN6sHRmbBmGBrwa8YqtaJb7gjuamwyUW0m2GR9XKKSNXdW/yK2imRVp6
-         mo4g==
-X-Gm-Message-State: AFqh2kranBKAPAooHYQZo71qrYCCGXadwZtcl5QkYuZV1k7Fy+pIZede
-        GIYGxp8ChSUMWolQaboG/mx+xw==
-X-Google-Smtp-Source: AMrXdXt1iMsOai3p3P8ogoAM3QO55D/rUwTFhoXbmA0E2ODJ6SHAzdoUtwFXUHhR3ao5y1B+AVI6bw==
-X-Received: by 2002:a05:6e02:10d3:b0:30c:5e42:ebcd with SMTP id s19-20020a056e0210d300b0030c5e42ebcdmr1993126ilj.20.1672775963874;
-        Tue, 03 Jan 2023 11:59:23 -0800 (PST)
-Received: from [10.132.115.14] ([143.244.61.131])
-        by smtp.gmail.com with ESMTPSA id o18-20020a056638125200b0039d756fb908sm10259425jas.40.2023.01.03.11.59.21
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Jan 2023 11:59:23 -0800 (PST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
-Subject: Re: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware
- names for Apple OTP chips
-From:   Zzy Wysm <zzy@zzywysm.com>
-In-Reply-To: <6b30559d-9bcc-f3b3-d9b2-2406e9a044b7@broadcom.com>
-Date:   Tue, 3 Jan 2023 14:59:20 -0500
-Cc:     Hector Martin <marcan@marcan.st>,
-        Aditya Garg <gargaditya08@live.com>, aspriel@gmail.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        lina@asahilina.net, franky.lin@broadcom.com,
-        Orlando Chamberlain <redecorating@protonmail.com>,
-        brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        linux-wireless@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Asahi Linux <asahi@lists.linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2CFE1145-8C00-4529-B4A5-E9FA85D95398@zzywysm.com>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <f36dd8e3-9905-f04a-ed34-4be91ed1fec6@marcan.st>
- <F9EFCCD1-4407-42CC-8316-2F58AAC1AE7F@live.com>
- <ACC0D1F6-7857-4FF0-A474-4EC699572E1B@live.com>
- <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
- <18573bd1a38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <3785835b-164b-28d1-6905-85454cabb69d@marcan.st>
- <6b30559d-9bcc-f3b3-d9b2-2406e9a044b7@broadcom.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.7)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0HIUFCwEh9wuq+a1hFljzKi3hoLmgkLbeUjD7nFv6SU=;
+        b=DoYWopGEY6K1Qc02mkJ+EfahVbLt2osUQscEGlPrkKNzeI/hE4ar574aZDExrvatgi
+         OaK/BEl/nXee0WhEWhySOH/SN33mU5+8tjEpiG8yhXoK30o5nXEEuVgnrtpxhJaxHmGn
+         ZhvbCk05orrXL3PpSqKdAPQsT3qVhG8GMueDT1QExOM5ecunsJu9nnXEDycRXqlcKGpX
+         0MzEIlMAGq0q2xjjk7SFkoX4HEO0/7LNoYBllQfHpUOj2NUKUKFqItY8HPPr+Xm6+SAc
+         5F/T94iQFWOSvKCxArMf6Qc+AfXE+5CR05wenxu7uYbMd7uYZaOAiTA1NcYygnmBfoDt
+         4Ciw==
+X-Gm-Message-State: AFqh2krh42t/rNRpPMKeDCLRER1xm4m7OEjt8El1SMWFzMxAYw8L7zPd
+        W6gdPBB6QKqb5UvaTgTfE3y8QhacFWo=
+X-Google-Smtp-Source: AMrXdXu5ViyKdQ/vgU/O0WkJoacLnWN5R8OPlRDORb/EV3SQqOkFdWkSRg9rsirx27POmyPbIUEY1Q==
+X-Received: by 2002:a17:907:c28f:b0:7c1:eb:b2a7 with SMTP id tk15-20020a170907c28f00b007c100ebb2a7mr3502683ejc.13.1672776726540;
+        Tue, 03 Jan 2023 12:12:06 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.153])
+        by smtp.gmail.com with ESMTPSA id fy11-20020a1709069f0b00b0084ca4bd71b8sm5285570ejc.208.2023.01.03.12.12.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Jan 2023 12:12:05 -0800 (PST)
+Message-ID: <7bcb7489-aec1-e20a-44d3-3ba303e5d86f@gmail.com>
+Date:   Tue, 3 Jan 2023 22:12:04 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 2/2] wifi: rtl8xxxu: Use a longer retry limit of 48
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
+References: <6fcaaead-876c-68d1-a049-f1e7f7ff81e7@gmail.com>
+ <55813ec6-b99f-dd25-a1e2-7af9e3be3117@gmail.com>
+ <20da2e492e1e4c6ab00ddc53e7e0a79c@realtek.com>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20da2e492e1e4c6ab00ddc53e7e0a79c@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 03/01/2023 10:13, Ping-Ke Shih wrote:
+> 
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Saturday, December 31, 2022 12:54 AM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>
+>> Subject: [PATCH 2/2] wifi: rtl8xxxu: Use a longer retry limit of 48
+>>
+>> The Realtek rate control algorithm goes back and forth a lot between
+>> the highest and the lowest rate it's allowed to use. This is due to
+>> a lot of frames being dropped because the retry limits set by
+>> IEEE80211_CONF_CHANGE_RETRY_LIMITS are too low. (Experimentally, they
+>> are 4 for long frames and 7 for short frames.)
+>>
+>> The vendor drivers hardcode the value 48 for both retry limits (for
+>> station mode), which makes dropped frames very rare and thus the rate
+>> control is more stable.
+> 
+> I have similar feeling with Realtek 802.11ac chips as well, but I didn't
+> dig further years ago. Maybe, it could have TX EVM problem.
+> 
+>>
+>> Because most Realtek chips handle the rate control in the firmware,
+>> which can't be modified, ignore the limits set by
+>> IEEE80211_CONF_CHANGE_RETRY_LIMITS and use the value 48 (set during
+>> chip initialisation), same as the vendor drivers.
+>>
+>> Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
+> 
+> No sure if "Fixes" is suitable to this patch, because original looks well but
+> bad performance in real.
+> 
 
-> On Jan 3, 2023, at 8:30 AM, Arend van Spriel =
-<arend.vanspriel@broadcom.com> wrote:
->=20
-> On 1/3/2023 4:55 AM, Hector Martin wrote:
->> More specifically:
->> - What BCM4355 variants exist in the wild, and what are their PCI =
-device
->> IDs and revision IDs?
->=20
-> Who knows. The PCI revision ID always equals the chip revision afaik. =
-The PCI device IDs should be as below.
+Mostly I care about the Fixes tag because it gets the patch into the
+stable kernels, but I can use the Cc tag for that instead.
 
-If the day ever came where the FCC inquired about a theoretical spurious =
-radio emissions issue in such a chipset, and asked Broadcom for a list =
-of all affected hardware releases, would the FCC also be told =E2=80=9Cwho=
- knows=E2=80=9D?
-
-I guess the difference is that the FCC has the statutory authority to =
-yank Broadcom=E2=80=99s certifications to sell their product, whereas =
-Hector is merely improving your driver support for no monetary =
-compensation from you.
-
-Maybe the Broadcom drivers should be yanked from Linux if this is what =
-passes for Broadcom release engineering.
-
-zzy
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> 
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+>> ---
+>>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 9 ---------
+>>  1 file changed, 9 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> index f5fd3c448587..9bca5e837583 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> @@ -6184,7 +6184,6 @@ static int rtl8xxxu_config(struct ieee80211_hw *hw, u32 changed)
+>>  {
+>>  	struct rtl8xxxu_priv *priv = hw->priv;
+>>  	struct device *dev = &priv->udev->dev;
+>> -	u16 val16;
+>>  	int ret = 0, channel;
+>>  	bool ht40;
+>>
+>> @@ -6194,14 +6193,6 @@ static int rtl8xxxu_config(struct ieee80211_hw *hw, u32 changed)
+>>  			 __func__, hw->conf.chandef.chan->hw_value,
+>>  			 changed, hw->conf.chandef.width);
+>>
+>> -	if (changed & IEEE80211_CONF_CHANGE_RETRY_LIMITS) {
+>> -		val16 = ((hw->conf.long_frame_max_tx_count <<
+>> -			  RETRY_LIMIT_LONG_SHIFT) & RETRY_LIMIT_LONG_MASK) |
+>> -			((hw->conf.short_frame_max_tx_count <<
+>> -			  RETRY_LIMIT_SHORT_SHIFT) & RETRY_LIMIT_SHORT_MASK);
+>> -		rtl8xxxu_write16(priv, REG_RETRY_LIMIT, val16);
+>> -	}
+>> -
+>>  	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
+>>  		switch (hw->conf.chandef.width) {
+>>  		case NL80211_CHAN_WIDTH_20_NOHT:
+>> --
+>> 2.38.0
+>>
+>> ------Please consider the environment before printing this e-mail.
 
