@@ -2,112 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6152A65C529
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 18:37:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D929465C557
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 18:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233853AbjACRhf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 12:37:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39530 "EHLO
+        id S238006AbjACRsL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 12:48:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbjACRhd (ORCPT
+        with ESMTP id S237578AbjACRsF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 12:37:33 -0500
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D5BF5BE;
-        Tue,  3 Jan 2023 09:37:32 -0800 (PST)
-Received: by mail-qt1-f178.google.com with SMTP id j16so25084990qtv.4;
-        Tue, 03 Jan 2023 09:37:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=snuAeqrKkcnHwzA0AdwomJTJESrNdqyAgQMbGE4/gOc=;
-        b=MLUjX1CWSzh4vyozDvmrLM4VP+jeJo2+HeRWzjfV0QJ3kwCvgXnjhWaDsSao599+0K
-         pD0f8JOssP20mC+PFP19X4iZHMm8FpbOhMLCLpmxUT2U/3VFAmSndNziAeo3Lt/aMpqD
-         xSVdqYMEvIj8YDR5qi1C9si/XlhCmhl3iidKZJM9W+w2dkWT67i6L7PbCdO7hJWOKr/0
-         E+ltpopd7GtecCTGVCMo9gwO3bHYDG88+qMzszcbAUC7n009n02CodjKEAzqSpUeFPeZ
-         wvsrDQAHmLrSobNrn7W7Xf0xEfjUXAHgY05ASUQk8Mj/vIj7ZEvJzJzBTE/yftxcC3b3
-         MCFw==
-X-Gm-Message-State: AFqh2kp5Mu3u/70jJ+O7rPWH6l3+WL4nMVUe5un77Z+rSvuWdqo240rZ
-        XCmrtZtGdhK1cittyEOOlBlO4jdBWhemBQ==
-X-Google-Smtp-Source: AMrXdXtF/8CnV4F3JJN74R9WYXmBw6ZL3IcfMW+KDzrZMKi8hcUNzEoLXE0D+29P4fsCUtH0t5Ra1g==
-X-Received: by 2002:a05:622a:1f14:b0:3a5:43af:d7ac with SMTP id ca20-20020a05622a1f1400b003a543afd7acmr67432419qtb.67.1672767451412;
-        Tue, 03 Jan 2023 09:37:31 -0800 (PST)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id g8-20020ac81248000000b003a69de747c9sm18952564qtj.19.2023.01.03.09.37.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Jan 2023 09:37:30 -0800 (PST)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-482363a1232so291457427b3.3;
-        Tue, 03 Jan 2023 09:37:30 -0800 (PST)
-X-Received: by 2002:a81:ae0e:0:b0:388:941:23a8 with SMTP id
- m14-20020a81ae0e000000b00388094123a8mr5281814ywh.152.1672767450539; Tue, 03
- Jan 2023 09:37:30 -0800 (PST)
-MIME-Version: 1.0
-References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info> <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
-In-Reply-To: <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
-From:   Dave Chiluk <chiluk@ubuntu.com>
-Date:   Tue, 3 Jan 2023 11:37:19 -0600
-X-Gmail-Original-Message-ID: <CAMfi-DTwX2nvP58FRb6NaGMyWO0SBo9W=Fpdtr=XfNRzkqAwHw@mail.gmail.com>
-Message-ID: <CAMfi-DTwX2nvP58FRb6NaGMyWO0SBo9W=Fpdtr=XfNRzkqAwHw@mail.gmail.com>
-Subject: Re: [regression] Bug 216753 - 6e 6 ghz bands are disabled since 5.16
- on intel ax211
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>
-Cc:     "regressions@leemhuis.info" <regressions@leemhuis.info>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>
+        Tue, 3 Jan 2023 12:48:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AF0F00F
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 09:47:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1672768037;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JcDL45STgo7kPl7hgic4aRnVFa75JoH1GQIrzXPMHcU=;
+        b=LSox6UMbW9OfZftPxIXgophWREqcrDnG8nA7vC11KqjqBIH5jcxdv8lB6RgXBR+rGKbZfX
+        eV8g1wttFnBx0uCbJQz9mubaPTC4TY2KeBwYHuswIc+Z8bnGfqc69cERUjp6kEjUxrjTPU
+        EAvutka8Chm9yPGtncUcNLHiVXsxQPY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-611-1d32DzAvNc2sEMUKMsyGeg-1; Tue, 03 Jan 2023 12:47:12 -0500
+X-MC-Unique: 1d32DzAvNc2sEMUKMsyGeg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 81BA7101B44E;
+        Tue,  3 Jan 2023 17:47:11 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.22.50.10])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3C6BF140EBF4;
+        Tue,  3 Jan 2023 17:47:10 +0000 (UTC)
+Message-ID: <657adc8e514d4486853ef90cdf97bd75f55b44fa.camel@redhat.com>
+Subject: Re: [PATCH] wifi: libertas: return consistent length in
+ lbs_add_wpa_tlv()
+From:   Dan Williams <dcbw@redhat.com>
+To:     Doug Brown <doug@schmorgal.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Date:   Tue, 03 Jan 2023 11:47:09 -0600
+In-Reply-To: <20230102234714.169831-1-doug@schmorgal.com>
+References: <20230102234714.169831-1-doug@schmorgal.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.2 (3.46.2-1.fc37) 
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 1, 2022 at 5:33 AM Coelho, Luciano <luciano.coelho@intel.com> wrote:
->
-> On Thu, 2022-12-01 at 11:14 +0100, Thorsten Leemhuis wrote:
-> > Hi, this is your Linux kernel regression tracker.
-> >
-> > Luca, I noticed a regression report in bugzilla where I'd like your
-> > advice on. To quote https://bugzilla.kernel.org/show_bug.cgi?id=216753
->
-> Hi Thorsten wearing-the-regression-hat, 🙂
->
-> I'm not the maintainer of iwlwifi anymore, so I'm adding the new
-> maintainer here, Gregory Greenman.
->
-> Gregory, can you take a look?
->
+On Mon, 2023-01-02 at 15:47 -0800, Doug Brown wrote:
+> The existing code only converts the first IE to a TLV, but it returns
+> a
+> value that takes the length of all IEs into account. When there is
+> more
+> than one IE (which happens with modern wpa_supplicant versions for
+> example), the returned length is too long and extra junk TLVs get
+> sent
+> to the firmware, resulting in an association failure.
+>=20
+> Fix this by returning a length that only factors in the single IE
+> that
+> was converted. The firmware doesn't seem to support the additional
+> IEs,
+> so there is no value in trying to convert them to additional TLVs.
+>=20
+> Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
+> Signed-off-by: Doug Brown <doug@schmorgal.com>
+> ---
+> =C2=A0drivers/net/wireless/marvell/libertas/cfg.c | 7 +++----
+> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/marvell/libertas/cfg.c
+> b/drivers/net/wireless/marvell/libertas/cfg.c
+> index 3e065cbb0af9..fcc5420ec7ea 100644
+> --- a/drivers/net/wireless/marvell/libertas/cfg.c
+> +++ b/drivers/net/wireless/marvell/libertas/cfg.c
+> @@ -432,10 +432,9 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8
+> *ie, u8 ie_len)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*tlv++ =3D 0;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tlv_len =3D *tlv++ =3D *i=
+e++;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*tlv++ =3D 0;
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (tlv_len--)
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0*tlv++ =3D *ie++;
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* the TLV is two bytes larger=
+ than the IE */
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ie_len + 2;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy(tlv, ie, tlv_len);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* the TLV has a four-byte hea=
+der */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return tlv_len + 4;
 
-@Gregory Greenman as I'm sure this got buried over the holidays, can
-you take a look at this and advise?  This is definitely a regression,
-but I don't think a lot of people are noticing it or don't yet have
-6ghz access points.  I can write up a patch removing the offending
-commit (698b166ed), or I can add an iwlwifi option to ignore the 6e
-ACPI bit.  Which would you prefer?
+Since you're removing ie_len usage in the function, you might as well
+remove it from the function's arguments.
 
-Dell has been of little help which I pretty much expected.
+Can you also update the comments to say something like "only copy the
+first IE into the command buffer".
 
-@Luciano, as you were the author of the original change, and I'm not
-familiar enough with ACPI, is the below code reading the enable bits
-from the BIOS ACPI table or is this somehow coming out of the network
-card through some UEFI extensions?  I'm trying to figure out which of
-Dell or Intel need to update their firmware?  I think some Lenovo's
-have similar problems, so I suspect it's a BIOS ACPI table problem.
+Lastly, should you check the IE to make sure you're copying the WPA or
+WMM IE that the firmware expects? What other IEs does
+wpa_supplicant/cfg80211 add these days?
 
- ret = iwl_acpi_get_dsm_u32(mvm->fwrt.dev, 0,
-                                   DSM_FUNC_ENABLE_6E,
-                                   &iwl_guid, &value);
+Dan
 
-Thanks,
-Dave.
+> =C2=A0}
+> =C2=A0
+> =C2=A0/*
+
