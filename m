@@ -2,112 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A560465BB18
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 08:08:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C8765BB94
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 09:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbjACHHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 02:07:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44482 "EHLO
+        id S233092AbjACIGL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 03:06:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230254AbjACHHu (ORCPT
+        with ESMTP id S229716AbjACIGH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 02:07:50 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A87DEA3
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 23:07:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=qJZlfWxkp/1m9UXQ4biuXBTqc3b4Hp2gezpakrBy610=;
-        t=1672729669; x=1673939269; b=nsjw6EEffgt76sN1yoqyrY0cK2SFVZe1ZZabrWlTe4arCRe
-        m46+WTugTOB/IvrmHiYa9cjhNcgCH8w+9y9qOFS1ysiIUtQgXr1xRzWK0VsfoMQ3ubJ27OTC9vfs4
-        Zub9xa4r1DHEKrsTCYq2gxEf+1RXbB6pSE9vDBAkIe7i+5oL2gB/lcIrpJCeqN7LIewnUM9dwiNy+
-        +J1WLMQ9s6tVe9gc5Y9CBtoL7WeMG87UjZqoTicQsEx3vav8UzariVe5ixDxiCR+Sfs5DBEkT+qJQ
-        d3l+F4kb2WjsPhvL1pS2PEfVoCIqvkNHdXaLGgzsNYQvHHwxmsUBXJBypmy/jrtw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pCbOh-008b8A-2y;
-        Tue, 03 Jan 2023 08:07:44 +0100
-Message-ID: <ee24c4eda8d389ac7197b6296944e168ccc6b602.camel@sipsolutions.net>
-Subject: Re: brcmfmac: Unexpected cfg80211_set_channel: set chanspec ...
- fail, reason -52
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Date:   Tue, 03 Jan 2023 08:07:41 +0100
-In-Reply-To: <1f428e2b-f73f-64ff-02d3-eefbcd11db89@broadcom.com>
-References: <2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com>
-         <1f428e2b-f73f-64ff-02d3-eefbcd11db89@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Tue, 3 Jan 2023 03:06:07 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C42842A5
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 00:06:01 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 303851UN0017507, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 303851UN0017507
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 3 Jan 2023 16:05:01 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Tue, 3 Jan 2023 16:05:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 3 Jan 2023 16:05:56 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Tue, 3 Jan 2023 16:05:56 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: RE: [PATCH 1/2] wifi: rtl8xxxu: Report the RSSI to the firmware
+Thread-Topic: [PATCH 1/2] wifi: rtl8xxxu: Report the RSSI to the firmware
+Thread-Index: AQHZHG8dTTwBH5VVDk24fOPPF0Tp666MWl6w
+Date:   Tue, 3 Jan 2023 08:05:56 +0000
+Message-ID: <ec58ba471076464282fdd1ce7d093449@realtek.com>
+References: <6fcaaead-876c-68d1-a049-f1e7f7ff81e7@gmail.com>
+In-Reply-To: <6fcaaead-876c-68d1-a049-f1e7f7ff81e7@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvMyDkuIrljYggMDY6MDA6MDA=?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-
-> > [=C2=A0 104.897615] brcmfmac: cfg80211_set_channel: set chanspec 0x100e=
- fail,=20
-> > reason -52
-
-[...]
-
->=20
-> > All of these 10 errors are repeated every 60 sec.
->=20
-> Catching up after the holidays ;-) Above chanspec values are invalid.=20
-> 0x100e =3D channel 14/bw 20MHz. The 'iw list' output shows all these=20
-> channels are disabled. So who/what is trying to set these channels.=20
-> Scanning sets the channel in firmware. Is this initiated from hostapd?=
-=20
-
-Yeah, what userspace is running here? Looks like cfg80211_set_channel()
-is only used for survey?
-
-Couple of observations on the side:
- * might be nice to have some "brcm" indication in that name :P
- * dump_survey should just dump data, not actually implement the data
-   collection, I think?
-
-
-> Maybe trying ACS?=C2=A0
->=20
-
-Seems it must be something like that.
-
-> As these are marked as disabled user-space should not=20
-> use them. What I don't understand is why these pass the cfg80211 layer=
-=20
-> so adding Johannes here.
->=20
-
-Well that goes back to my earlier observation above: dump_survey()
-should just dump all *available* data, not actually try to *collect*
-data. So if userspace requests data for a channel that's disabled,
-that's actually OK, but you shouldn't _have_ any data for that channel
-since it's disabled. Also nl80211 won't send the data out if it exists,
-but there's no check to see if asking the driver makes sense since if
-it's a channel that exists, it should be valid to ask the driver if it
-has data - it just shouldn't have any.
-
-The way it works in mac80211 is that survey data is collected during
-scan, I think?
-
-johannes
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFNhdHVyZGF5LCBEZWNlbWJlciAz
+MSwgMjAyMiAxMjo1MiBBTQ0KPiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+
+IENjOiBKZXMgU29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+OyBQaW5nLUtlIFNoaWgg
+PHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIDEvMl0gd2lmaTogcnRsOHh4
+eHU6IFJlcG9ydCB0aGUgUlNTSSB0byB0aGUgZmlybXdhcmUNCj4gDQo+IE9yIGluIHRoZSBjYXNl
+IG9mIFJUTDgxODhFVSwgcmVwb3J0IHRoZSBSU1NJIHRvIHRoZSByYXRlIGNvbnRyb2wgY29kZS4N
+Cj4gDQo+IFRoZSByYXRlIGNvbnRyb2wgY29kZSBmb3IgUlRMODE4OEVVIGlzIGxlc3MgbGlrZWx5
+IHRvIHN3aXRjaCB0byBhIGxvd2VyDQo+IHJhdGUgd2hlbiB0aGUgUlNTSSBpcyBoaWdoLiBUaGUg
+ZmlybXdhcmUtYmFzZWQgcmF0ZSBjb250cm9sIGluIHRoZSBvdGhlcg0KPiBjaGlwcyBwcm9iYWJs
+eSB3b3JrcyB0aGUgc2FtZSB3YXkuDQo+IA0KPiBUaGlzIGFmZmVjdHMgYWxsIHRoZSBjaGlwcywg
+YnV0IGl0IHdhcyBvbmx5IHRlc3RlZCB3aXRoIFJUTDgxODhFVSwNCj4gUlRMODE4OEZVLCBhbmQg
+UlRMODE5MkVVLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgy
+MWNlcmZlMkBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgLi4uL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+bDh4eHh1L3J0bDh4eHh1LmggIHwgMjMgKysrKysrKysrKysrKw0KPiAgLi4uL3JlYWx0ZWsvcnRs
+OHh4eHUvcnRsOHh4eHVfODE4OGUuYyAgICAgICAgIHwgIDYgKysrKw0KPiAgLi4uL3JlYWx0ZWsv
+cnRsOHh4eHUvcnRsOHh4eHVfODE4OGYuYyAgICAgICAgIHwgIDEgKw0KPiAgLi4uL3JlYWx0ZWsv
+cnRsOHh4eHUvcnRsOHh4eHVfODE5MmMuYyAgICAgICAgIHwgIDEgKw0KPiAgLi4uL3JlYWx0ZWsv
+cnRsOHh4eHUvcnRsOHh4eHVfODE5MmUuYyAgICAgICAgIHwgIDEgKw0KPiAgLi4uL3JlYWx0ZWsv
+cnRsOHh4eHUvcnRsOHh4eHVfODcyM2EuYyAgICAgICAgIHwgIDEgKw0KPiAgLi4uL3JlYWx0ZWsv
+cnRsOHh4eHUvcnRsOHh4eHVfODcyM2IuYyAgICAgICAgIHwgIDEgKw0KPiAgLi4uL3dpcmVsZXNz
+L3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5jIHwgMzQgKysrKysrKysrKysrKysrKysr
+Kw0KPiAgOCBmaWxlcyBjaGFuZ2VkLCA2OCBpbnNlcnRpb25zKCspDQo+IA0KDQpbLi4uXQ0KDQo+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4
+eHh1X2NvcmUuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRs
+OHh4eHVfY29yZS5jDQo+IGluZGV4IGZkOTdjMDQwOTQ4YS4uZjVmZDNjNDQ4NTg3IDEwMDY0NA0K
+PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2Nv
+cmUuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4
+eHh1X2NvcmUuYw0KPiBAQCAtNDQ2MSw2ICs0NDYxLDM3IEBAIHZvaWQgcnRsOHh4eHVfZ2VuMl9y
+ZXBvcnRfY29ubmVjdChzdHJ1Y3QgcnRsOHh4eHVfcHJpdiAqcHJpdiwNCj4gIAlydGw4eHh4dV9n
+ZW4yX2gyY19jbWQocHJpdiwgJmgyYywgc2l6ZW9mKGgyYy5tZWRpYV9zdGF0dXNfcnB0KSk7DQo+
+ICB9DQo+IA0KPiArdm9pZCBydGw4eHh4dV9nZW4xX3JlcG9ydF9yc3NpKHN0cnVjdCBydGw4eHh4
+dV9wcml2ICpwcml2LCB1OCBtYWNpZCwgdTggcnNzaSkNCj4gK3sNCj4gKwlzdHJ1Y3QgaDJjX2Nt
+ZCBoMmM7DQo+ICsJY29uc3QgaW50IGgyY19zaXplID0gMzsNCg0KU2hvdWxkbid0IGl0IGJlIDQ/
+DQoNCgkJc3RydWN0IHsNCgkJCXU4IGNtZDsNCgkJCXU4IG1hY2lkOw0KCQkJdTggdW5rbm93bjA7
+DQoJCQl1OCByc3NpOyAgLy8geW91IGZpbGwgdGhpcyBmaWVsZC4NCg0KPiArDQo+ICsJbWVtc2V0
+KCZoMmMsIDAsIHNpemVvZihzdHJ1Y3QgaDJjX2NtZCkpOw0KPiArDQo+ICsJaDJjLnJzc2lfcmVw
+b3J0LmNtZCA9IEgyQ19TRVRfUlNTSTsNCj4gKwloMmMucnNzaV9yZXBvcnQubWFjaWQgPSBtYWNp
+ZDsNCj4gKwloMmMucnNzaV9yZXBvcnQucnNzaSA9IHJzc2k7DQo+ICsNCj4gKwlydGw4eHh4dV9n
+ZW4xX2gyY19jbWQocHJpdiwgJmgyYywgaDJjX3NpemUpOw0KPiArfQ0KPiArDQoNClsuLi5dDQoN
+Cg0K
