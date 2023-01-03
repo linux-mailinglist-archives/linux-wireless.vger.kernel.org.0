@@ -2,139 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD5E665B9E3
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 04:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38D5D65BA1A
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 05:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236660AbjACD4N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Jan 2023 22:56:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57012 "EHLO
+        id S236581AbjACEml (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Jan 2023 23:42:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjACD4L (ORCPT
+        with ESMTP id S230071AbjACEmk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Jan 2023 22:56:11 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCBFD105;
-        Mon,  2 Jan 2023 19:56:08 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 6956041DF4;
-        Tue,  3 Jan 2023 03:56:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-        t=1672718166; bh=0co2iDbnvPtc0hBv0PZI8JkI2F1BtjH5BwsUTUdoWwo=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=F/gg5uQz2GRvyTw8JUQ9eD8pT3T7lNap/jZ4jF+9I3v6rKQc8R5NaIqQQRZQHwhwC
-         q2D21Wp9zpgw3YcmU2QA08cc1Qe9auVnTvF97uOoKszA/jeZzPhFz1jU6ijnfy7Hec
-         W5PIKQNBb48WwH1mCKTNLG/MB4PZOZZC2AsPgqDbqKWGpJUPcCgzTx2DB9kzj/lhK9
-         teAKQRabAaukXjSs+bNMcqYiJIB4o31ZfflLmRJqxORwdtrk0mChMtSYFo4nwUEbUw
-         SIgEbbp5nc3UouzEKNk2LtZK/PSP81XlY0rLBtkUUFYVln4ZTer4p1siGsRuCkzCQ+
-         8Hkpn2mrtpOaw==
-Message-ID: <3785835b-164b-28d1-6905-85454cabb69d@marcan.st>
-Date:   Tue, 3 Jan 2023 12:55:59 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware
- names for Apple OTP chips
-Content-Language: en-US
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Aditya Garg <gargaditya08@live.com>, aspriel@gmail.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
+        Mon, 2 Jan 2023 23:42:40 -0500
+Received: from out20-86.mail.aliyun.com (out20-86.mail.aliyun.com [115.124.20.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E76626F
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Jan 2023 20:42:34 -0800 (PST)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.2781789|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0780417-0.000864095-0.921094;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047213;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.Qj6ro8W_1672720950;
+Received: from localhost.localdomain(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.Qj6ro8W_1672720950)
+          by smtp.aliyun-inc.com;
+          Tue, 03 Jan 2023 12:42:32 +0800
+From:   Aiden Leong <aiden.leong@aibsd.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     gregory.greenman@intel.com, kvalo@kernel.org, davem@davemloft.net,
         edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        lina@asahilina.net, franky.lin@broadcom.com
-Cc:     Orlando Chamberlain <redecorating@protonmail.com>,
-        brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        linux-wireless@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Asahi Linux <asahi@lists.linux.dev>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <f36dd8e3-9905-f04a-ed34-4be91ed1fec6@marcan.st>
- <F9EFCCD1-4407-42CC-8316-2F58AAC1AE7F@live.com>
- <ACC0D1F6-7857-4FF0-A474-4EC699572E1B@live.com>
- <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
- <18573bd1a38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <18573bd1a38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Aiden Leong <aiden.leong@aibsd.com>
+Subject: [PATCH] iwlwifi: pcie: fix an indent error reported by checkpatch.pl
+Date:   Tue,  3 Jan 2023 12:41:57 +0800
+Message-Id: <20230103044157.7636-1-aiden.leong@aibsd.com>
+X-Mailer: git-send-email 2.39.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023/01/03 3:27, Arend Van Spriel wrote:
-> On January 2, 2023 4:15:41 PM Hector Martin <marcan@marcan.st> wrote:
-> 
->> On 02/01/2023 23.40, Aditya Garg wrote:
->>> From: Aditya Garg <gargaditya08@live.com>
->>>
->>> Commit 'dce45ded7619' added support for 89459 chip pcie device. It uses the
->>> BRCM4355 chip which is also found in Apple hardware. However this commit
->>> causes conflicts in the firmware naming between Apple hardware, which
->>> supports OTP and other non-Apple hardwares. So, this patch makes these
->>> Apple chips use their own firmware table so as to avoid possible conflicts
->>> like these in the future.
->>
->> I think my reply to Arend flew over your head.
->>
->> My point was that I'd rather have the Broadcom/Cypress people actually
->> answer my question so we can figure out how to do this *properly*,
->> instead of doing "safer-but-dumb" things (like this patch) because we
->> just don't have the information to do it properly.
-> 
-> Fair enough. Can you accurately (re)state your question and I will try to 
-> answer it.
+ERROR: switch and case should be at the same indent
++	switch (REG_CRF_ID_TYPE(val)) {
+[...]
++		case REG_CRF_ID_TYPE_FM:
 
-As per my original email: Is the CYW89459 just a rebrand of the BCM4355,
-or just a subset? Can we consider them equivalent, and equivalent to the
-Apple part (BCM4355C1 / revision 12)?
+We should use Git post-commit hooks to avoid such errors.
 
-More specifically:
-- What BCM4355 variants exist in the wild, and what are their PCI device
-IDs and revision IDs?
-- Is a single firmware nominally intended to be compatible with all of
-those variants? Does that include the CYW89459 branded parts?
-- If CYW89459 is a rebrand of BCM4355, is it complete, or are there
-still chips being sold as BCM4355?
+Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Even more specifically, bcmdhd has these device IDs:
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 99768d6a6032..eabbab488e1f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1416,9 +1416,9 @@ static int map_crf_id(struct iwl_trans *iwl_trans)
+ 	case REG_CRF_ID_TYPE_MR:
+ 		iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_MR << 12);
+ 		break;
+-		case REG_CRF_ID_TYPE_FM:
+-			iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_FM << 12);
+-			break;
++	case REG_CRF_ID_TYPE_FM:
++		iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_FM << 12);
++		break;
+ 	default:
+ 		ret = -EIO;
+ 		IWL_ERR(iwl_trans,
+-- 
+2.39.0
 
-#define BCM4355_D11AC_ID    0x43dc  /* 4355 802.11ac dualband device */
-#define BCM4355_D11AC2G_ID  0x43fc  /* 4355 802.11ac 2.4G device */
-#define BCM4355_D11AC5G_ID  0x43fd  /* 4355 802.11ac 5G device */
-
-But the patch I'm replying to uses PCI ID 0x4355, which instead should be:
-
-#define BCM43237_D11N_ID    0x4355  /* 43237 802.11n dualband device */
-#define BCM43237_D11N5G_ID  0x4356  /* 43237 802.11n 5GHz device */
-
-So what's up with the BCM43237? Is that a 4355 variant? Is this what got
-rebranded as CYW89459? Is it firmware-compatible with the others?
-
-<rant>
-
-I'm going to be honest here: I'm quite saddened by the state of brcmfmac
-and Broadcom's neglect of this driver. Other than the Apple OTP /
-firmware selection shenanigans, everything else I'm having to implement
-to support Apple machines are features that Broadcom's downstream bcmdhd
-driver *already* supports on non-Apple machines, not Apple-specific. Not
-only that, people are asking for modern WiFi features like newer crypto
-modes that bcmdhd supports but brcmfmac doesn't. It seems clear that
-Broadcom isn't interested in maintaining this driver and updating it to
-support newer chips and features. So I'm basically doing your job for
-you all. Which is fine, but if I'm going to be in charge of implementing
-all this stuff for you, *please* help me by at least clarifying the
-device variant / firmware feature related issues, because getting that
-wrong will cause regressions or firmware naming scheme breaks down the
-line, and that sucks for users.
-
-</rant>
-
-- Hector
