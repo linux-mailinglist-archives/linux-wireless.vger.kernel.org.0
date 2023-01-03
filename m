@@ -2,119 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C7965BBBB
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 09:15:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AC1665BD05
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jan 2023 10:21:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236985AbjACIOA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 03:14:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39060 "EHLO
+        id S237080AbjACJVd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 04:21:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236980AbjACIN6 (ORCPT
+        with ESMTP id S233086AbjACJVc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 03:13:58 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 27F46D2F6
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 00:13:55 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3038CuMM2020166, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3038CuMM2020166
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 3 Jan 2023 16:12:56 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Tue, 3 Jan 2023 16:13:51 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 3 Jan 2023 16:13:51 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Tue, 3 Jan 2023 16:13:51 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH 2/2] wifi: rtl8xxxu: Use a longer retry limit of 48
-Thread-Topic: [PATCH 2/2] wifi: rtl8xxxu: Use a longer retry limit of 48
-Thread-Index: AQHZHG9TJJPfpvDatUSgR8SzA9XUZq6MW9bA
-Date:   Tue, 3 Jan 2023 08:13:51 +0000
-Message-ID: <20da2e492e1e4c6ab00ddc53e7e0a79c@realtek.com>
-References: <6fcaaead-876c-68d1-a049-f1e7f7ff81e7@gmail.com>
- <55813ec6-b99f-dd25-a1e2-7af9e3be3117@gmail.com>
-In-Reply-To: <55813ec6-b99f-dd25-a1e2-7af9e3be3117@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvMyDkuIrljYggMDY6MDA6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 3 Jan 2023 04:21:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18873A4;
+        Tue,  3 Jan 2023 01:21:32 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B6141B80E54;
+        Tue,  3 Jan 2023 09:21:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A5EC433F0;
+        Tue,  3 Jan 2023 09:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672737689;
+        bh=UeojPqccHQLunvAMGJSsAkbqVgpgQ+tfNxLVQSSNOZ8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=b/RBp64HRv1JBVg9NRj1UOMrS5fir3u7Q+K58ib+ylvFOOXJsuWyU2+IGBMV6Z/+b
+         quQxCkBLya6xWIS64yUUg56K2vkATqNPHGhnyOsqecTGakav8KH6hf1E8q/RJmrCZP
+         hT+i/RXPZ+oSKwlMZgECssdeP8DwM/DvTzYj6EcvL6fIMhCRw4noK0Vsk0udVM6d4Y
+         7uwbEfeK4CoZGEwQzHMYWI5E7y6h9TVC2ZwWQ76Jwj3U6NUIKdm1WyYxmKQ5I1W7qQ
+         pcRuf3R3zhuTO2HaUXb0q42ZG6b2rdvO3II93dv/eXxed+nA6bLh2Ba97E8dQHdqqx
+         qZCgNjrQpJMMA==
+Date:   Tue, 3 Jan 2023 11:21:25 +0200
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Miaoqian Lin <linmq006@gmail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: ath11k: Fix memory leak in
+ ath11k_peer_rx_frag_setup
+Message-ID: <Y7PzlY3S0B1OBtmE@unreal>
+References: <20230102081142.3937570-1-linmq006@gmail.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230102081142.3937570-1-linmq006@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJpdHRlcmJsdWUgU21pdGgg
-PHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiBTZW50OiBTYXR1cmRheSwgRGVjZW1iZXIgMzEs
-IDIwMjIgMTI6NTQgQU0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBD
-YzogSmVzIFNvcmVuc2VuIDxKZXMuU29yZW5zZW5AZ21haWwuY29tPjsgUGluZy1LZSBTaGloIDxw
-a3NoaWhAcmVhbHRlay5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCAyLzJdIHdpZmk6IHJ0bDh4eHh1
-OiBVc2UgYSBsb25nZXIgcmV0cnkgbGltaXQgb2YgNDgNCj4gDQo+IFRoZSBSZWFsdGVrIHJhdGUg
-Y29udHJvbCBhbGdvcml0aG0gZ29lcyBiYWNrIGFuZCBmb3J0aCBhIGxvdCBiZXR3ZWVuDQo+IHRo
-ZSBoaWdoZXN0IGFuZCB0aGUgbG93ZXN0IHJhdGUgaXQncyBhbGxvd2VkIHRvIHVzZS4gVGhpcyBp
-cyBkdWUgdG8NCj4gYSBsb3Qgb2YgZnJhbWVzIGJlaW5nIGRyb3BwZWQgYmVjYXVzZSB0aGUgcmV0
-cnkgbGltaXRzIHNldCBieQ0KPiBJRUVFODAyMTFfQ09ORl9DSEFOR0VfUkVUUllfTElNSVRTIGFy
-ZSB0b28gbG93LiAoRXhwZXJpbWVudGFsbHksIHRoZXkNCj4gYXJlIDQgZm9yIGxvbmcgZnJhbWVz
-IGFuZCA3IGZvciBzaG9ydCBmcmFtZXMuKQ0KPiANCj4gVGhlIHZlbmRvciBkcml2ZXJzIGhhcmRj
-b2RlIHRoZSB2YWx1ZSA0OCBmb3IgYm90aCByZXRyeSBsaW1pdHMgKGZvcg0KPiBzdGF0aW9uIG1v
-ZGUpLCB3aGljaCBtYWtlcyBkcm9wcGVkIGZyYW1lcyB2ZXJ5IHJhcmUgYW5kIHRodXMgdGhlIHJh
-dGUNCj4gY29udHJvbCBpcyBtb3JlIHN0YWJsZS4NCg0KSSBoYXZlIHNpbWlsYXIgZmVlbGluZyB3
-aXRoIFJlYWx0ZWsgODAyLjExYWMgY2hpcHMgYXMgd2VsbCwgYnV0IEkgZGlkbid0DQpkaWcgZnVy
-dGhlciB5ZWFycyBhZ28uIE1heWJlLCBpdCBjb3VsZCBoYXZlIFRYIEVWTSBwcm9ibGVtLg0KDQo+
-IA0KPiBCZWNhdXNlIG1vc3QgUmVhbHRlayBjaGlwcyBoYW5kbGUgdGhlIHJhdGUgY29udHJvbCBp
-biB0aGUgZmlybXdhcmUsDQo+IHdoaWNoIGNhbid0IGJlIG1vZGlmaWVkLCBpZ25vcmUgdGhlIGxp
-bWl0cyBzZXQgYnkNCj4gSUVFRTgwMjExX0NPTkZfQ0hBTkdFX1JFVFJZX0xJTUlUUyBhbmQgdXNl
-IHRoZSB2YWx1ZSA0OCAoc2V0IGR1cmluZw0KPiBjaGlwIGluaXRpYWxpc2F0aW9uKSwgc2FtZSBh
-cyB0aGUgdmVuZG9yIGRyaXZlcnMuDQo+IA0KPiBGaXhlczogMjZmMWZhZDI5YWQ5ICgiTmV3IGRy
-aXZlcjogcnRsOHh4eHUgKG1hYzgwMjExKSIpDQoNCk5vIHN1cmUgaWYgIkZpeGVzIiBpcyBzdWl0
-YWJsZSB0byB0aGlzIHBhdGNoLCBiZWNhdXNlIG9yaWdpbmFsIGxvb2tzIHdlbGwgYnV0DQpiYWQg
-cGVyZm9ybWFuY2UgaW4gcmVhbC4NCg0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRo
-IDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCg0KUmV2aWV3ZWQtYnk6IFBpbmctS2UgU2hpaCA8
-cGtzaGloQHJlYWx0ZWsuY29tPg0KDQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMgfCA5IC0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNo
-YW5nZWQsIDkgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYw0KPiBpbmRleCBmNWZkM2M0
-NDg1ODcuLjliY2E1ZTgzNzU4MyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMNCj4gQEAgLTYxODQsNyArNjE4
-NCw2IEBAIHN0YXRpYyBpbnQgcnRsOHh4eHVfY29uZmlnKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3
-LCB1MzIgY2hhbmdlZCkNCj4gIHsNCj4gIAlzdHJ1Y3QgcnRsOHh4eHVfcHJpdiAqcHJpdiA9IGh3
-LT5wcml2Ow0KPiAgCXN0cnVjdCBkZXZpY2UgKmRldiA9ICZwcml2LT51ZGV2LT5kZXY7DQo+IC0J
-dTE2IHZhbDE2Ow0KPiAgCWludCByZXQgPSAwLCBjaGFubmVsOw0KPiAgCWJvb2wgaHQ0MDsNCj4g
-DQo+IEBAIC02MTk0LDE0ICs2MTkzLDYgQEAgc3RhdGljIGludCBydGw4eHh4dV9jb25maWcoc3Ry
-dWN0IGllZWU4MDIxMV9odyAqaHcsIHUzMiBjaGFuZ2VkKQ0KPiAgCQkJIF9fZnVuY19fLCBody0+
-Y29uZi5jaGFuZGVmLmNoYW4tPmh3X3ZhbHVlLA0KPiAgCQkJIGNoYW5nZWQsIGh3LT5jb25mLmNo
-YW5kZWYud2lkdGgpOw0KPiANCj4gLQlpZiAoY2hhbmdlZCAmIElFRUU4MDIxMV9DT05GX0NIQU5H
-RV9SRVRSWV9MSU1JVFMpIHsNCj4gLQkJdmFsMTYgPSAoKGh3LT5jb25mLmxvbmdfZnJhbWVfbWF4
-X3R4X2NvdW50IDw8DQo+IC0JCQkgIFJFVFJZX0xJTUlUX0xPTkdfU0hJRlQpICYgUkVUUllfTElN
-SVRfTE9OR19NQVNLKSB8DQo+IC0JCQkoKGh3LT5jb25mLnNob3J0X2ZyYW1lX21heF90eF9jb3Vu
-dCA8PA0KPiAtCQkJICBSRVRSWV9MSU1JVF9TSE9SVF9TSElGVCkgJiBSRVRSWV9MSU1JVF9TSE9S
-VF9NQVNLKTsNCj4gLQkJcnRsOHh4eHVfd3JpdGUxNihwcml2LCBSRUdfUkVUUllfTElNSVQsIHZh
-bDE2KTsNCj4gLQl9DQo+IC0NCj4gIAlpZiAoY2hhbmdlZCAmIElFRUU4MDIxMV9DT05GX0NIQU5H
-RV9DSEFOTkVMKSB7DQo+ICAJCXN3aXRjaCAoaHctPmNvbmYuY2hhbmRlZi53aWR0aCkgew0KPiAg
-CQljYXNlIE5MODAyMTFfQ0hBTl9XSURUSF8yMF9OT0hUOg0KPiAtLQ0KPiAyLjM4LjANCj4gDQo+
-IC0tLS0tLVBsZWFzZSBjb25zaWRlciB0aGUgZW52aXJvbm1lbnQgYmVmb3JlIHByaW50aW5nIHRo
-aXMgZS1tYWlsLg0K
+On Mon, Jan 02, 2023 at 12:11:42PM +0400, Miaoqian Lin wrote:
+> crypto_alloc_shash() allocates resources, which should be released by
+> crypto_free_shash(). When ath11k_peer_find() fails, there has memory
+> leak. Add missing crypto_free_shash() to fix this.
+> 
+> Fixes: 243874c64c81 ("ath11k: handle RX fragments")
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+> change in v2:
+> - add crypto_free_shash() in the error path instead of move
+> crypto_alloc_shash().
+> ---
+>  drivers/net/wireless/ath/ath11k/dp_rx.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
