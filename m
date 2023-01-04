@@ -2,36 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA2565DD60
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 21:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F062065DD7C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 21:15:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235142AbjADUGs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 15:06:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56494 "EHLO
+        id S240012AbjADUPG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 15:15:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231197AbjADUGr (ORCPT
+        with ESMTP id S240128AbjADUO5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 15:06:47 -0500
-Received: from mail.schwarz.eu (eight.schwarz.eu [IPv6:2a01:4f8:c17:2a56::8:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB2CF594
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 12:06:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=oss.schwarz.eu; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=2stL7la/beV9vnoj3SG39DjOHPT+hbqJVKK5Y2G6Ges=; b=q6HFpblNkfVMedDg16XKDDIBW0
-        vLDQp3IgtN1rA311usT6MI8j1e3EQix1PMCHgh6ze+ttuzvnhtJoXRv2n2UiriYZQq9bZVo/iwOu5
-        5t7t5JasM0r8ZsvLz3lEKA8GjpjQUTNKLcSE61hh1NSxbs3bepmeww1CVqusrta1tLWDbHf+yeVef
-        u7uVxpxASbOBdYOIbG5E/PdK+Xg+wlhz8VtIaDQOohLVd4E6V9O9POFQxf8NHahvQU5d+iRL4IjVh
-        ig6xq6yVwXUOUs0MENbywUGdgGljUQ7pMfjfuM4d5XRdsrZzXg2qb8yymsRzDZi6ywAxqJ5S8vOdP
-        txCYWyzg==;
-Message-ID: <37a19225-7f34-e1f1-666f-5d08e6c1ec15@oss.schwarz.eu>
-Date:   Wed, 4 Jan 2023 21:06:41 +0100
+        Wed, 4 Jan 2023 15:14:57 -0500
+Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com [IPv6:2607:f8b0:4864:20::c2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4424085F;
+        Wed,  4 Jan 2023 12:14:50 -0800 (PST)
+Received: by mail-oo1-xc2a.google.com with SMTP id d2-20020a4ab202000000b004ae3035538bso6646980ooo.12;
+        Wed, 04 Jan 2023 12:14:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=w9AQXTfhuAvx8mgdmIzoZOuYPRTvbLKo9WZsNGoB5Hg=;
+        b=o/D/TyNm+9veGTNVvipVJ3IqUM8STerU01fmrnzymh2MV7w0JU618aNmtP7pMuGKgf
+         FS3v6O2cOra9xbs9yHsiw7xzsEejGxB5dE2v/CB6fywQp8OAY4PMGIczMjQatNzcx70D
+         zHAziSMv7/6Dybn5o8fMDdGJwYEelEdHvs6s+dtxABQxipRgVOiugHr7XUt4s6CyMjrb
+         +ziI8a52cqyb6XMbXoralitaXq6rxLEHEBmvaJ6Xr4uk2v6kEzRfQUnex55WBRXkKAd+
+         +Xvuu92szU1cDdsdUTSAuP/MRbwSPpwj1Nfefd8nhgHyNMH+uTpdWHHC4GsIlN5qQAto
+         8O/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w9AQXTfhuAvx8mgdmIzoZOuYPRTvbLKo9WZsNGoB5Hg=;
+        b=yH/+Yg1eLoc/QemZUpBn2IzEKM01QMaTQvF1+0EiBPzMTOrxd76KUkz9K1v8xdZJvC
+         jNzNeg7Np3F7N+fD1Ur0fcXEBRn2tYZRrexSZAPN+69++kBPa+jwTwP8pLLRilI/TakS
+         8YnrXd4cis7oWFO6mQg3oQdsyx1UQ6D0wSLArlRhMJniJQV0cPSEqazskQ5u0N18cxDR
+         JDoO22/dLdf7BbOY/ibFTKGkmH6fit5IgNWq0jjy3+BL6KUwwJw36FfwcBamW1ZbSlLm
+         CZMIG6pdhmEcs/IGId4GfLNfFIwxeh/rEc3gUr09VbQFX5JhW+GCgaJ8znNJ6HJTyGAR
+         6BnQ==
+X-Gm-Message-State: AFqh2kpj8yUYl1lGP+NrIKV1QZz14wFtcmyKWfJZdwu6SnlVvcuzFFG2
+        GAo+oKYE17Ob8QCAy4UB+K8=
+X-Google-Smtp-Source: AMrXdXujoac2ceHnoaup8wqKn8Hcexv8hHFl/dakw7O1iaL19zZiJbqWJa2n54IhFnltABU1drifEQ==
+X-Received: by 2002:a4a:e79a:0:b0:4a0:72aa:4ca8 with SMTP id x26-20020a4ae79a000000b004a072aa4ca8mr26949003oov.7.1672863289757;
+        Wed, 04 Jan 2023 12:14:49 -0800 (PST)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id w9-20020a4ae4c9000000b0049f9731ae1esm5169107oov.41.2023.01.04.12.14.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jan 2023 12:14:49 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <2b839329-7816-722d-cb57-649fc5bf8816@lwfinger.net>
+Date:   Wed, 4 Jan 2023 14:14:47 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
+ Thunderbird/102.6.1
 Subject: Re: [RFC PATCH v1 19/19] rtw88: Add support for the SDIO based
  RTL8821CS chipset
 To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
@@ -50,41 +75,27 @@ References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
  <63b4b3e1.050a0220.791fb.767c@mx.google.com>
  <0acf173d-a425-dcca-ad2f-f0f0f13a9f5e@gmail.com>
 Content-Language: en-US
-From:   Felix Schwarz <felix.schwarz@oss.schwarz.eu>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
 In-Reply-To: <0acf173d-a425-dcca-ad2f-f0f0f13a9f5e@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Received: by mail.schwarz.eu with esmtpsa (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.96)
-        (envelope-from <felix.schwarz@oss.schwarz.eu>)
-        id 1pDA25-0007qQ-2z; Wed, 04 Jan 2023 21:06:42 +0100
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 1/4/23 13:59, Bitterblue Smith wrote:
+> I tested with https://github.com/lwfinger/rtw88/ which should have the
+> same code as wireless-next currently.
 
-Am 04.01.23 um 20:59 schrieb Bitterblue Smith:
-> The USB-based RTL8811CU also doesn't work, with suspiciously similar
-> errors:
-> 
-> Dec 25 21:43:37 home kernel: rtw_8821cu 1-2:1.0: Firmware version 24.11.0, H2C version 12
-> Dec 25 21:43:37 home kernel: rtw_8821cu 1-2:1.0 wlp0s20f0u2: renamed from wlan0
-> Dec 25 21:43:40 home kernel: rtw_8821cu 1-2:1.0: read register 0x5 failed with -110
-> Dec 25 21:43:41 home kernel: rtw_8821cu 1-2:1.0: read register 0x20 failed with -110
-> Dec 25 21:44:11 home kernel: rtw_8821cu 1-2:1.0: write register 0x20 failed with -110
-> Dec 25 21:44:12 home kernel: rtw_8821cu 1-2:1.0: read register 0x7c failed with -110
-> Dec 25 21:44:43 home kernel: rtw_8821cu 1-2:1.0: write register 0x7c failed with -110
-> Dec 25 21:44:44 home kernel: rtw_8821cu 1-2:1.0: read register 0x1080 failed with -110
-> Dec 25 21:45:16 home kernel: rtw_8821cu 1-2:1.0: write register 0x1080 failed with -110
+I just rechecked. My repo was missing some changes from wireless-next. It now 
+matches.
 
-Same for me: I saw very similar read/write failures with my "Realtek 
-Semiconductor Corp. 802.11ac NIC" (ID 0bda:c811) after applying Ping-Ke's patch 
-for rfe 38 (see my message to linux-wireless on Dec 29).
+Larry
 
-Felix
 
