@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99FBB65D43E
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 14:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1965865D468
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 14:37:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230423AbjADNcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 08:32:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34948 "EHLO
+        id S233028AbjADNh1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 08:37:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239405AbjADNbe (ORCPT
+        with ESMTP id S239650AbjADNhD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 08:31:34 -0500
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C64DB1C9
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 05:29:52 -0800 (PST)
-Received: by mail-qt1-x82a.google.com with SMTP id g7so27161246qts.1
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Jan 2023 05:29:52 -0800 (PST)
+        Wed, 4 Jan 2023 08:37:03 -0500
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121143AF3E
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 05:35:25 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id v126so36524977ybv.2
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Jan 2023 05:35:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=G121hfmkxG8KdmdSY0PKZnz8JuDqVG3ofCWSlQ1oF2U=;
-        b=iGWvlqscnz+HmJyG0LhESM7b/1k7plDlVWeEb4ZuaKs/ihRmM7Tx8XeQYahuwndbdv
-         /0dY+QpX9IjseiZwvzgsbKzstXqjWDPpB+0vc2SFZQNPJ0Y5WISwWdtuVZAGGrXwnVfi
-         ZaZiGCgjNTxj5lTGHyUP6u2ieGtR4Y0pA9a6U=
+        bh=km2TIySsiML2ku5cnLAU/eWoDAoVm3xD72carPti8z8=;
+        b=THjanzcV9IKpkazo/D38J1Al7dQoTW3kVwGltPOoQKwa1ikh/ieMP++rVdZNsYnJt1
+         p8z1yj2zinhBErIN7OJBwvYh0datfBSkKt0NmcMmKTSph63Tual78L0CDP7+6Bh7dHTk
+         5Q8hrH1tQktth7ZEwB9EaznGQ8tKRr/CPK1I4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G121hfmkxG8KdmdSY0PKZnz8JuDqVG3ofCWSlQ1oF2U=;
-        b=dPXBCu+E4PaFHJk1uaiizFilSf9gpLuMmUyDXkpcB9cs7wXOIPdpJ8/a867R/zuvHD
-         YsBTFHYvpen82pxGT+6wOnfpr2DB/ErCtEsBl8FvyuIxBxSxPZow2DLMUS7PPLV5EBg+
-         ZH2ZvcTEkZdO2JHgwZc0Mt1cjmr8UMnidUhk9WhCq8YGEaGUqXb+sMcZ4amkz68uSvZa
-         azOdzFCqzQ/+QpZJzfV6ITCfXjnO68/TopbkD+wJRKXgoeNRw9bBuHfIqSHSkSVk/099
-         0UriWQEOASxgKamw/q95wbKanZNGWOFQAA2KlfohjmlNJ4iGC9+muRqE0Jy/AOa61NBt
-         jVSQ==
-X-Gm-Message-State: AFqh2kom4GQxd1gNPjeqaPaY1uzaDzjNeOo9ZckuPeCX0VPeShKpU0VV
-        tWcaI8n+vQlS1Xdw194oRdSQtA==
-X-Google-Smtp-Source: AMrXdXuNrMeMmyT5Y9FM/S/OCcmLKsPp0s1of09EFulAWkHiFXCh+G07PMjOdFdATB84A+Xa0vjaAA==
-X-Received: by 2002:ac8:4454:0:b0:3a7:ffe6:dc60 with SMTP id m20-20020ac84454000000b003a7ffe6dc60mr68704759qtn.42.1672838991368;
-        Wed, 04 Jan 2023 05:29:51 -0800 (PST)
+        bh=km2TIySsiML2ku5cnLAU/eWoDAoVm3xD72carPti8z8=;
+        b=rFjdkXz+y6JGWzSzbJPTC3QIeY0UdjFW6PXW2H16FJNI9TJp0BU41KolXLv3I7s3Zy
+         yssPLOybknnoJ8lIDtBgWn79JwX2WWfwLdw7FOWlelueImq/7cDUHYxMoGQheQfmKD81
+         LuFo1dmfmcRxCnyaysv9rpmU8gDQ10Dds4j9Yx6qsVNfJuEjtqiHLaSAX9tYevtRnfaA
+         xsQObnOSZL83nKgD876EybEySR6CPNMCZu1iGEI0+dRextGxOlLkFt3d/DSaLIQt2zfb
+         3oBizZ8PgwzHCfKnhV2N5bmXECXQX0wL8b6I19gGLx95U/GOZemu7CMv19jbTE/DKdo+
+         Y8Rg==
+X-Gm-Message-State: AFqh2krIjflEW9QQ8V7hd2BJlnjEFBXRQHK0UcfJIcCiHKn1gvz9/mBQ
+        ftrspCNnYeR82dh8+W9T4mFu9w==
+X-Google-Smtp-Source: AMrXdXvSdk/pTLnwct2fKiG81wIGKyhJge7WuOjpbN6ffKtaye4jmtcC1RmdrsNTtpmsVAprp027gg==
+X-Received: by 2002:a25:7dc4:0:b0:777:3dfc:4578 with SMTP id y187-20020a257dc4000000b007773dfc4578mr29947197ybc.51.1672839324171;
+        Wed, 04 Jan 2023 05:35:24 -0800 (PST)
 Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id h19-20020a05620a245300b006f9e103260dsm24039232qkn.91.2023.01.04.05.29.45
+        by smtp.gmail.com with ESMTPSA id bj4-20020a05620a190400b006fa2cc1b0fbsm21403927qkb.11.2023.01.04.05.35.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jan 2023 05:29:50 -0800 (PST)
-Message-ID: <6517b791-1700-970d-ac0a-847f60a6fa6f@broadcom.com>
-Date:   Wed, 4 Jan 2023 14:29:44 +0100
+        Wed, 04 Jan 2023 05:35:23 -0800 (PST)
+Message-ID: <ca904d05-7f11-80dd-cb1c-1cd54c4d7222@broadcom.com>
+Date:   Wed, 4 Jan 2023 14:35:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.1
-Subject: Re: [PATCH v1 1/4] wifi: brcmfmac: Rename Cypress 89459 to BCM4355
+Subject: Re: [PATCH v1 2/4] brcmfmac: pcie: Add IDs/properties for BCM4355
 To:     Hector Martin <marcan@marcan.st>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -74,11 +74,11 @@ Cc:     Alexander Prutskov <alep@cypress.com>,
         SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20230104100116.729-1-marcan@marcan.st>
- <20230104100116.729-2-marcan@marcan.st>
+ <20230104100116.729-3-marcan@marcan.st>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20230104100116.729-2-marcan@marcan.st>
+In-Reply-To: <20230104100116.729-3-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000de73cc05f1702daa"
+        boundary="000000000000b38a7b05f170419e"
 X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -89,83 +89,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000de73cc05f1702daa
+--000000000000b38a7b05f170419e
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2023 11:01 AM, 'Hector Martin' via BRCM80211-DEV-LIST,PDL wrote:
-> The commit that introduced support for this chip incorrectly claimed it
-> is a Cypress-specific part, while in actuality it is just a variant of
-> BCM4355 silicon (as evidenced by the chip ID).
+> This chip is present on at least these Apple T2 Macs:
 > 
-> The relationship between Cypress products and Broadcom products isn't
-> entirely clear, but given what little information is available and prior
-> art in the driver, it seems the convention should be that originally
-> Broadcom parts should retain the Broadcom name.
+> * hawaii: MacBook Air 13" (Late 2018)
+> * hawaii: MacBook Air 13" (True Tone, 2019)
 > 
-> Thus, rename the relevant constants and firmware file. Also rename the
-> specific 89459 PCIe ID to BCM43596, which seems to be the original
-> subvariant name for this PCI ID (as defined in the out-of-tree bcmdhd
-> driver). Also declare the firmware as CLM-capable, since it is.
-> 
-> Fixes: dce45ded7619 ("brcmfmac: Support 89459 pcie")
+> Users report seeing PCI revision ID 12 for this chip, which Arend
+> reports should be revision C2, but Apple has the firmware tagged as
+> revision C1. Assume the right cutoff point for firmware versions is
+> revision ID 11 then, and leave older revisions using the non-versioned
+> firmware filename (Apple only uses C1 firmware builds).
+
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c   | 5 ++---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 8 ++++----
->   .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 6 +++---
->   3 files changed, 9 insertions(+), 10 deletions(-)
+>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 10 +++++++++-
+>   .../wireless/broadcom/brcm80211/include/brcm_hw_ids.h  |  1 +
+>   2 files changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> index 121893bbaa1d..3e42c2bd0d9a 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-
-[...]
-
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index ae57a9a3ab05..3264be485e20 100644
+> index 3264be485e20..bb4faea0f0b6 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 
 [...]
 
-> @@ -2590,6 +2590,7 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
->   	BRCMF_PCIE_DEVICE(BRCM_PCIE_4350_DEVICE_ID, WCC),
->   	BRCMF_PCIE_DEVICE_SUB(0x4355, BRCM_PCIE_VENDOR_ID_BROADCOM, 0x4355, WCC),
->   	BRCMF_PCIE_DEVICE(BRCM_PCIE_4354_RAW_DEVICE_ID, WCC),
-> +	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_RAW_DEVICE_ID, WCC),
+> @@ -1994,6 +1996,11 @@ static int brcmf_pcie_read_otp(struct brcmf_pciedev_info *devinfo)
+>   	int ret;
+>   
+>   	switch (devinfo->ci->chip) {
+> +	case BRCM_CC_4355_CHIP_ID:
+> +		coreid = BCMA_CORE_CHIPCOMMON;
+> +		base = 0x8c0;
+> +		words = 0xb2;
+> +		break;
+>   	case BRCM_CC_4378_CHIP_ID:
+>   		coreid = BCMA_CORE_GCI;
+>   		base = 0x1120;
 
-A bit of a problem here. If Cypress want to support this device, 
-regardless how they branded it, they will provide its firmware. Given 
-that they initially added it (as 89459) I suppose we should mark it with 
-CYW and not WCC. Actually, see my comment below on RAW dev ids.
+This bit is not described in the commit message. Can you remind me why 
+the driver needs to read OTP?
 
->   	BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID, WCC),
->   	BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID, WCC),
->   	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID, WCC),
-
-[...]
-
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-> index f4939cf62767..cacc43db86eb 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-
-[...]
-
-> @@ -72,6 +72,7 @@
->   #define BRCM_PCIE_4350_DEVICE_ID	0x43a3
->   #define BRCM_PCIE_4354_DEVICE_ID	0x43df
->   #define BRCM_PCIE_4354_RAW_DEVICE_ID	0x4354
-> +#define BRCM_PCIE_4355_RAW_DEVICE_ID	0x4355
-
-I would remove all RAW device ids. These should not be observed outside 
-chip vendor walls.
-
-
---000000000000de73cc05f1702daa
+--000000000000b38a7b05f170419e
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -236,14 +207,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAIVHihwhv8QwZDb6lx
-Sf3r6MjuRDnVvT4ZaadIgsubNzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDQxMzI5NTFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCkCgrgWyETX9YXaxB9
+QqW6Bb7pr1i3FTtAmigCcGV3xzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzAxMDQxMzM1MjRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYw91bCKvbqjn+ckD993a+Wj3DKrjru9Oyy2+
-Jzl7dRdqmTMxbHbKYYErsXscbvT904qdUynOANmT0g1Du/coflmtyTlL2F2S/yW0GqDHhpp6Vx++
-sj9qGu5Jh88+7kFfM1pz/Ba1TnWGtUBECA66DI9BKSZg5mgp80tjqmWnP1lZ4S964th4v667gxsq
-QZraT1xFfSYtAgXtBKJM0atsMBLx39pR9o1EyaQv5uLyM83SlWg/LFRfEXLO2ObKDfNBsYdTpeXA
-cd/BpybmycXb/hSg0qsQ4FHXu+T0qfPk0KGfI3HxLGKaKXiky9Tpx2EdY2pTNzgIy4K53Mc1DNkN
-qg==
---000000000000de73cc05f1702daa--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAEBhaM6oHnGImTG33nu5rQbxtYndYrt4U8s4Y
+lzn7LOI4urcYvMYC4Gv1xPU0Vvmf+h3vKbjcBuEZbzUywoWYgoCZMBoC1ZtXg45VMwWkOIsgQvhb
+RCd44HtYreYx+z/Fxw53/bO2RuEYwYxz0OkcSCaP8yOr/wZbVqZA/Y6JZ9FiBs3Zi7gU3ExsSkM0
+Qx+g+pGJYQrwNfn+/hqPY5QJjV0H0IApTtt8skrmXmcib53CsjkRe4NrxCgt3xSFapKrZfChN/Qv
+nsG37tXL6vYD83NNwu2ggOlAum+P8pJNhiaUsJE+Jx98uvAhEZGTngBfxbsnLDqRf1m/o7jqV9mt
+XA==
+--000000000000b38a7b05f170419e--
