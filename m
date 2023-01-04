@@ -2,88 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 771E465D488
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 14:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78D8D65D57D
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 15:20:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239441AbjADNl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 08:41:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
+        id S239341AbjADOU0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 09:20:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239507AbjADNlV (ORCPT
+        with ESMTP id S239264AbjADOUY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 08:41:21 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC1FCB74
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 05:41:13 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id 36so22209481pgp.10
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Jan 2023 05:41:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=40S9JSA2SGS0BlV93Ubb+50MUpKEYP+Bphm7mfwbJ0s=;
-        b=KeBuKRsIVwzDRHYznTBr1rRtSefZ4cfJJ8zNtpt4813XSj35lxMcxd1gyIjRsJAqWk
-         vPX64Q1OW0/WGVIcuxu4lG0/LcpoMJNobgjNR0FwyaPAAtufDG6WJVxy1SsKAB4KqkTy
-         Jx0UyRvZNagyjGiPbVSJiywT7DkZflaNDId6o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=40S9JSA2SGS0BlV93Ubb+50MUpKEYP+Bphm7mfwbJ0s=;
-        b=FB38Ne0ZgkiQIxgDqE1okR226Bwjq3H5R39T3ghBIsBG0wGeN4gugDC+7WeekJLaSU
-         KWxK9cv/V6a1EEhLY83OXmJnA/xzoj9JbNH0Eo8sb0AZPk3ytOg8Y+AUdR0dNsR8WeyZ
-         ePgT55iF6dZhbQyErZNqWhhxcurAblEsnQUmR+iRTOV8FAqtrTVaptvcKWi6G4ty6eIc
-         xAvoFH2zhAUpYHHKEnUPg/QFnJCsHghVyh5kXh3o07hVOBbjenT6h8LZb/H/TWVB2KZD
-         2ba24FXfceNkjhWCdP6VUEzPhM/YvbJQFAa+ZIujrTGlkqzW6JExoIh9DcK6Mz5IQ+HL
-         atXA==
-X-Gm-Message-State: AFqh2kq+4MZSsThyM5TMu1XjmfqW6vXtOZTB1papK9C5lVMHSHaCeF0z
-        I+J20hYNcjswtOkJPtQoZ3/7xg==
-X-Google-Smtp-Source: AMrXdXuuPiUCnLLxpke3KC2E4FkpdrhQWTdsJ5gzfdkHdnHudpMkj7KpV9O3Ndm3VWkOdeeyvUk5yg==
-X-Received: by 2002:a62:e317:0:b0:581:4297:362f with SMTP id g23-20020a62e317000000b005814297362fmr33750377pfh.13.1672839673160;
-        Wed, 04 Jan 2023 05:41:13 -0800 (PST)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 199-20020a6216d0000000b00580f224cdf6sm19043327pfw.203.2023.01.04.05.41.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jan 2023 05:41:12 -0800 (PST)
-Message-ID: <9b385a20-39bd-e064-e0b3-e7f6273d3161@broadcom.com>
-Date:   Wed, 4 Jan 2023 14:41:04 +0100
+        Wed, 4 Jan 2023 09:20:24 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14621EAF6;
+        Wed,  4 Jan 2023 06:20:22 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pD4ct-0007AR-Aa; Wed, 04 Jan 2023 15:20:19 +0100
+Message-ID: <bb480259-2c0f-deab-ab6e-5101e09eb189@leemhuis.info>
+Date:   Wed, 4 Jan 2023 15:20:18 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v1 4/4] brcmfmac: pcie: Perform correct BCM4364 firmware
- selection
-To:     Hector Martin <marcan@marcan.st>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Alexander Prutskov <alep@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Ian Lin <ian.lin@infineon.com>,
-        Soontak Lee <soontak.lee@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        asahi@lists.linux.dev, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-References: <20230104100116.729-1-marcan@marcan.st>
- <20230104100116.729-5-marcan@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20230104100116.729-5-marcan@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000081a9e605f17056b9"
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [6.2][regression] after commit
+ cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
+Content-Language: en-US, de-DE
+To:     Felix Fietkau <nbd@nbd.name>,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc:     lorenzo@kernel.org, sujuan.chen@mediatek.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+References: <CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre+XJS_s5FgVteYA@mail.gmail.com>
+ <678adc67-9e46-3eef-f274-c951b121570f@nbd.name>
+ <CABXGCsMUbs+bf=tWnx98r4v_JzVmYdVyOos9EhcGJ6jnEwathA@mail.gmail.com>
+ <a30d8580-936a-79e4-c1c7-70f3d3b8da35@nbd.name>
+ <CABXGCsNJKy2SQffeU+uaua5SM_77YiGKdPLRdzSF3F+ShpF+5w@mail.gmail.com>
+ <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1672842023;fde0e455;
+X-HE-SMSGID: 1pD4ct-0007AR-Aa
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -91,125 +52,285 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000081a9e605f17056b9
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi, this is your Linux kernel regression tracker. Top-posting for once,
+to make this easily accessible to everyone.
 
-On 1/4/2023 11:01 AM, 'Hector Martin' via BRCM80211-DEV-LIST,PDL wrote:
-> This chip exists in two revisions (B2=r3 and B3=r4) on different
-> platforms, and was added without regard to doing proper firmware
-> selection or differentiating between them. Fix this to have proper
-> per-revision firmwares and support Apple NVRAM selection.
-> 
-> Revision B2 is present on at least these Apple T2 Macs:
-> 
-> kauai:    MacBook Pro 15" (Touch/2018-2019)
-> maui:     MacBook Pro 13" (Touch/2018-2019)
-> lanai:    Mac mini (Late 2018)
-> ekans:    iMac Pro 27" (5K, Late 2017)
-> 
-> And these non-T2 Macs:
-> 
-> nihau:    iMac 27" (5K, 2019)
-> 
-> Revision B3 is present on at least these Apple T2 Macs:
-> 
-> bali:     MacBook Pro 16" (2019)
-> trinidad: MacBook Pro 13" (2020, 4 TB3)
-> borneo:   MacBook Pro 16" (2019, 5600M)
-> kahana:   Mac Pro (2019)
-> kahana:   Mac Pro (2019, Rack)
-> hanauma:  iMac 27" (5K, 2020)
-> kure:     iMac 27" (5K, 2020, 5700/XT)
-> 
-> Fixes: 24f0bd136264 ("brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2")
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 11 +++++++++--
->   1 file changed, 9 insertions(+), 2 deletions(-)
+Felix, Lorenzo, did below fix for the regression Mikhail reported make
+any progress to get mainlined? It doesn't look like it from here, but I
+suspect I missed something, that's why I'm asking.
 
---00000000000081a9e605f17056b9
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Ciao, Thorsten
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDOgbrb3yzGU4TeLjue
-BZ0d6rSV/tfPcSWTYLIUR7aAYjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDQxMzQxMTNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAUP7tKn5fX64Jben4ucQactdTcWsY5TUzF7Jw
-TGfrem4hpvifMgiEaGVcV1jPk0VCC8WadtbfPYRc8vZQcmTb/tO2F5bkM6ezYgiIJFAaL7IbxrmZ
-i5puVlIJtl3rUBlPjD05D8epcMt+YmpdggFBOaO1ijnRQlaSyWwfpH7ahZk0Uwx9B1rs34HtywYQ
-baUe17xiPhvdOhOAVO0iAt1pTDkxlJTvMAfbk3INCbvpgV0Y1iyqGVi39+bEM10yNjFQChFKx2CM
-IPWIfPGw+nB732RHoxav74ruktCc88p+910GV5lUCxOoiZ8uZ+N4YkvN6USihfNKPrT8PHflh7Sm
-og==
---00000000000081a9e605f17056b9--
+#regzbot poke
+
+On 21.12.22 18:17, Felix Fietkau wrote:
+> On 21.12.22 17:46, Mikhail Gavrilov wrote:
+>> On Wed, Dec 21, 2022 at 7:12 PM Felix Fietkau <nbd@nbd.name> wrote:
+>>>
+>>> Thanks! I guess I focused on the wrong part of your kernel log
+>>> initially. After more code review, I found that there is in fact a DMA
+>>> related bug in the commit that your bisection pointed to, which happened
+>>> to uncover and trigger the deadlock fixed by my other patch.
+>>>
+>>> So here's my fix for the DMA issue:
+>>> ---
+>> [cutted]
+>>>                 qbuf.skip_unmap = false;
+>>> -               if (mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, t) < 0) {
+>>> +               if (mt76_dma_add_rx_buf(dev, q, &qbuf, buf) < 0) {
+>>>                         dma_unmap_single(dev->dma_dev, addr, len,
+>>>                                          DMA_FROM_DEVICE);
+>>>                         skb_free_frag(buf);
+>>>
+>>
+>> Sorry for stupid question.
+>>
+>> Do you have a separate branch?
+>> I see that the code is differ between master branch and the patch.
+>>
+>> For example in patch the line:
+>> - if (mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, t) < 0) {
+>> replaced by the line:
+>> + if (mt76_dma_add_rx_buf(dev, q, &qbuf, buf) < 0) {
+>>
+>> But in master branch
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/mediatek/mt76/dma.c?id=b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf#n604
+>> after line:
+>> qbuf.skip_unmap = false;
+>> followed the line:
+>> mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, t);
+>> without if condition.
+>>
+>> So I'm stuck applying the patch :(
+> Sorry, I worked on a tree that had other pending fixes applied.
+> Please try this:
+> 
+> 
+> --- a/drivers/net/wireless/mediatek/mt76/dma.c
+> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
+> @@ -205,6 +205,52 @@ mt76_dma_queue_reset(struct mt76_dev *dev, struct
+> mt76_queue *q)
+>      mt76_dma_sync_idx(dev, q);
+>  }
+>  
+> +static int
+> +mt76_dma_add_rx_buf(struct mt76_dev *dev, struct mt76_queue *q,
+> +            struct mt76_queue_buf *buf, void *data)
+> +{
+> +    struct mt76_desc *desc = &q->desc[q->head];
+> +    struct mt76_queue_entry *entry = &q->entry[q->head];
+> +    struct mt76_txwi_cache *txwi = NULL;
+> +    u32 buf1 = 0, ctrl;
+> +    int idx = q->head;
+> +    int rx_token;
+> +
+> +    ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
+> +
+> +    if ((q->flags & MT_QFLAG_WED) &&
+> +        FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
+> +        txwi = mt76_get_rxwi(dev);
+> +        if (!txwi)
+> +            return -ENOMEM;
+> +
+> +        rx_token = mt76_rx_token_consume(dev, data, txwi, buf->addr);
+> +        if (rx_token < 0) {
+> +            mt76_put_rxwi(dev, txwi);
+> +            return -ENOMEM;
+> +        }
+> +
+> +        buf1 |= FIELD_PREP(MT_DMA_CTL_TOKEN, rx_token);
+> +        ctrl |= MT_DMA_CTL_TO_HOST;
+> +    }
+> +
+> +    WRITE_ONCE(desc->buf0, cpu_to_le32(buf->addr));
+> +    WRITE_ONCE(desc->buf1, cpu_to_le32(buf1));
+> +    WRITE_ONCE(desc->ctrl, cpu_to_le32(ctrl));
+> +    WRITE_ONCE(desc->info, 0);
+> +
+> +    entry->dma_addr[0] = buf->addr;
+> +    entry->dma_len[0] = buf->len;
+> +    entry->txwi = txwi;
+> +    entry->buf = data;
+> +    entry->wcid = 0xffff;
+> +    entry->skip_buf1 = true;
+> +    q->head = (q->head + 1) % q->ndesc;
+> +    q->queued++;
+> +
+> +    return idx;
+> +}
+> +
+>  static int
+>  mt76_dma_add_buf(struct mt76_dev *dev, struct mt76_queue *q,
+>           struct mt76_queue_buf *buf, int nbufs, u32 info,
+> @@ -212,65 +258,51 @@ mt76_dma_add_buf(struct mt76_dev *dev, struct
+> mt76_queue *q,
+>  {
+>      struct mt76_queue_entry *entry;
+>      struct mt76_desc *desc;
+> -    u32 ctrl;
+>      int i, idx = -1;
+> +    u32 ctrl, next;
+> +
+> +    if (txwi) {
+> +        q->entry[q->head].txwi = DMA_DUMMY_DATA;
+> +        q->entry[q->head].skip_buf0 = true;
+> +    }
+>  
+>      for (i = 0; i < nbufs; i += 2, buf += 2) {
+>          u32 buf0 = buf[0].addr, buf1 = 0;
+>  
+>          idx = q->head;
+> -        q->head = (q->head + 1) % q->ndesc;
+> +        next = (q->head + 1) % q->ndesc;
+>  
+>          desc = &q->desc[idx];
+>          entry = &q->entry[idx];
+>  
+> -        if ((q->flags & MT_QFLAG_WED) &&
+> -            FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
+> -            struct mt76_txwi_cache *t = txwi;
+> -            int rx_token;
+> -
+> -            if (!t)
+> -                return -ENOMEM;
+> -
+> -            rx_token = mt76_rx_token_consume(dev, (void *)skb, t,
+> -                             buf[0].addr);
+> -            buf1 |= FIELD_PREP(MT_DMA_CTL_TOKEN, rx_token);
+> -            ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len) |
+> -                   MT_DMA_CTL_TO_HOST;
+> -        } else {
+> -            if (txwi) {
+> -                q->entry[q->head].txwi = DMA_DUMMY_DATA;
+> -                q->entry[q->head].skip_buf0 = true;
+> -            }
+> -
+> -            if (buf[0].skip_unmap)
+> -                entry->skip_buf0 = true;
+> -            entry->skip_buf1 = i == nbufs - 1;
+> -
+> -            entry->dma_addr[0] = buf[0].addr;
+> -            entry->dma_len[0] = buf[0].len;
+> -
+> -            ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
+> -            if (i < nbufs - 1) {
+> -                entry->dma_addr[1] = buf[1].addr;
+> -                entry->dma_len[1] = buf[1].len;
+> -                buf1 = buf[1].addr;
+> -                ctrl |= FIELD_PREP(MT_DMA_CTL_SD_LEN1, buf[1].len);
+> -                if (buf[1].skip_unmap)
+> -                    entry->skip_buf1 = true;
+> -            }
+> -
+> -            if (i == nbufs - 1)
+> -                ctrl |= MT_DMA_CTL_LAST_SEC0;
+> -            else if (i == nbufs - 2)
+> -                ctrl |= MT_DMA_CTL_LAST_SEC1;
+> +        if (buf[0].skip_unmap)
+> +            entry->skip_buf0 = true;
+> +        entry->skip_buf1 = i == nbufs - 1;
+> +
+> +        entry->dma_addr[0] = buf[0].addr;
+> +        entry->dma_len[0] = buf[0].len;
+> +
+> +        ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0, buf[0].len);
+> +        if (i < nbufs - 1) {
+> +            entry->dma_addr[1] = buf[1].addr;
+> +            entry->dma_len[1] = buf[1].len;
+> +            buf1 = buf[1].addr;
+> +            ctrl |= FIELD_PREP(MT_DMA_CTL_SD_LEN1, buf[1].len);
+> +            if (buf[1].skip_unmap)
+> +                entry->skip_buf1 = true;
+>          }
+>  
+> +        if (i == nbufs - 1)
+> +            ctrl |= MT_DMA_CTL_LAST_SEC0;
+> +        else if (i == nbufs - 2)
+> +            ctrl |= MT_DMA_CTL_LAST_SEC1;
+> +
+>          WRITE_ONCE(desc->buf0, cpu_to_le32(buf0));
+>          WRITE_ONCE(desc->buf1, cpu_to_le32(buf1));
+>          WRITE_ONCE(desc->info, cpu_to_le32(info));
+>          WRITE_ONCE(desc->ctrl, cpu_to_le32(ctrl));
+>  
+> +        q->head = next;
+>          q->queued++;
+>      }
+>  
+> @@ -577,17 +609,9 @@ mt76_dma_rx_fill(struct mt76_dev *dev, struct
+> mt76_queue *q)
+>      spin_lock_bh(&q->lock);
+>  
+>      while (q->queued < q->ndesc - 1) {
+> -        struct mt76_txwi_cache *t = NULL;
+>          struct mt76_queue_buf qbuf;
+>          void *buf = NULL;
+>  
+> -        if ((q->flags & MT_QFLAG_WED) &&
+> -            FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX) {
+> -            t = mt76_get_rxwi(dev);
+> -            if (!t)
+> -                break;
+> -        }
+> -
+>          buf = page_frag_alloc(rx_page, q->buf_size, GFP_ATOMIC);
+>          if (!buf)
+>              break;
+> @@ -601,7 +625,12 @@ mt76_dma_rx_fill(struct mt76_dev *dev, struct
+> mt76_queue *q)
+>          qbuf.addr = addr + offset;
+>          qbuf.len = len - offset;
+>          qbuf.skip_unmap = false;
+> -        mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, t);
+> +        if (mt76_dma_add_rx_buf(dev, q, &qbuf, buf) < 0) {
+> +            dma_unmap_single(dev->dma_dev, addr, len,
+> +                     DMA_FROM_DEVICE);
+> +            skb_free_frag(buf);
+> +            break;
+> +        }
+>          frames++;
+>      }
+>  
+> 
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+> @@ -653,6 +653,13 @@ static u32 mt7915_mmio_wed_init_rx_buf(struct
+> mtk_wed_device *wed, int size)
+>  
+>          desc->buf0 = cpu_to_le32(phy_addr);
+>          token = mt76_rx_token_consume(&dev->mt76, ptr, t, phy_addr);
+> +        if (token < 0) {
+> +            dma_unmap_single(dev->mt76.dma_dev, phy_addr,
+> +                     wed->wlan.rx_size, DMA_TO_DEVICE);
+> +            skb_free_frag(ptr);
+> +            goto unmap;
+> +        }
+> +
+>          desc->token |= cpu_to_le32(FIELD_PREP(MT_DMA_CTL_TOKEN,
+>                                token));
+>          desc++;
+> 
+> --- a/drivers/net/wireless/mediatek/mt76/tx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
+> @@ -764,11 +764,12 @@ int mt76_rx_token_consume(struct mt76_dev *dev,
+> void *ptr,
+>      spin_lock_bh(&dev->rx_token_lock);
+>      token = idr_alloc(&dev->rx_token, t, 0, dev->rx_token_size,
+>                GFP_ATOMIC);
+> +    if (token >= 0) {
+> +        t->ptr = ptr;
+> +        t->dma_addr = phys;
+> +    }
+>      spin_unlock_bh(&dev->rx_token_lock);
+>  
+> -    t->ptr = ptr;
+> -    t->dma_addr = phys;
+> -
+>      return token;
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_rx_token_consume);
+> 
