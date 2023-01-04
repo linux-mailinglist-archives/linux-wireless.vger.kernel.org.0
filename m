@@ -2,125 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8CEE65D9DE
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 17:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 058FF65D9F2
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 17:35:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239771AbjADQcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 11:32:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57106 "EHLO
+        id S234813AbjADQfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 11:35:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239681AbjADQbu (ORCPT
+        with ESMTP id S229453AbjADQfK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 11:31:50 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1BB165A5
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 08:31:49 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-115-OKgX2QelNL2C9KzZNLhdvQ-1; Wed, 04 Jan 2023 16:31:47 +0000
-X-MC-Unique: OKgX2QelNL2C9KzZNLhdvQ-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Wed, 4 Jan
- 2023 16:31:45 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Wed, 4 Jan 2023 16:31:45 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Martin Blumenstingl' <martin.blumenstingl@googlemail.com>
-CC:     Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tehuang@realtek.com" <tehuang@realtek.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-Thread-Topic: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-Thread-Index: AQHZGsFtJHlbRNsmYUOpTa0F4ufSPq6EmMnggAOg+qCAALbHgIAAiEwggAT0j0eAAALd0IAAB5IAgAADjxA=
-Date:   Wed, 4 Jan 2023 16:31:45 +0000
-Message-ID: <662e2f820e7a478096dd6e09725c093a@AcuMS.aculab.com>
-References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
- <20221228133547.633797-2-martin.blumenstingl@googlemail.com>
- <92eb7dfa8b7d447e966a2751e174b642@realtek.com>
- <87da8c82dec749dc826b5a1b4c4238aa@AcuMS.aculab.com>
- <eee17e2f4e44a2f38021a839dc39fedc1c1a4141.camel@realtek.com>
- <a86893f11fe64930897473a38226a9a8@AcuMS.aculab.com>
- <5c0c77240e7ddfdffbd771ee7e50d36ef3af9c84.camel@realtek.com>
- <CAFBinCC+1jGJx1McnBY+kr3RTQ-UpxW6JYNpHzStUTredDuCug@mail.gmail.com>
- <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com>
- <CAFBinCC9sNvQJcu-SOSrFmo4sCx29K6KwXnc-O6MX9TJEHtXYg@mail.gmail.com>
-In-Reply-To: <CAFBinCC9sNvQJcu-SOSrFmo4sCx29K6KwXnc-O6MX9TJEHtXYg@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 4 Jan 2023 11:35:10 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 969F4165A5;
+        Wed,  4 Jan 2023 08:35:09 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 3DDA541DF4;
+        Wed,  4 Jan 2023 16:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1672850108; bh=TvncWowxEgTW0bS4kVFjn9GlEGLockSZ0Yom8+Vo6QQ=;
+        h=Date:To:Cc:References:From:Subject:In-Reply-To;
+        b=qRWfTMPYGZs22n13FfjSKlpkWBIpsqiqInet0D7+uDuKajt1tFJYMFgc4VSsKiCx9
+         geK7qhY6yhQ593XoOD/FWWka99dMm4k5L06rwRBe1vU59o3SBC8lCuyGp4B1s3x+xJ
+         CTkAwILwKPeh2sD89tvhrakMRt21M37kr/g4cdDT46O8CS4gKE3NfgId0ZS+IxrKeb
+         k53cdi9eTxRZ8+ky1YsmUZuMc7hHDjDgJpPRjSG4lVF9B83nYqtbH+QHC4u+g0rHI+
+         4e8sfJa8Z3BHMmV848D5uplvmOrP4W1lTL/qpcgcJ5xBxhbuZmRRJPi0ePpNX4F5XY
+         OeXfC8769/otg==
+Message-ID: <d242c9e4-e551-aa7a-0f20-f3f1351648a3@marcan.st>
+Date:   Thu, 5 Jan 2023 01:35:00 +0900
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
 Content-Language: en-US
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Alexander Prutskov <alep@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Ian Lin <ian.lin@infineon.com>,
+        Soontak Lee <soontak.lee@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230104100116.729-1-marcan@marcan.st>
+ <20230104100116.729-2-marcan@marcan.st>
+ <6517b791-1700-970d-ac0a-847f60a6fa6f@broadcom.com>
+From:   Hector Martin <marcan@marcan.st>
+Subject: Re: [PATCH v1 1/4] wifi: brcmfmac: Rename Cypress 89459 to BCM4355
+In-Reply-To: <6517b791-1700-970d-ac0a-847f60a6fa6f@broadcom.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogTWFydGluIEJsdW1lbnN0aW5nbA0KPiBTZW50OiAwNCBKYW51YXJ5IDIwMjMgMTY6MDgN
-Cj4gDQo+IE9uIFdlZCwgSmFuIDQsIDIwMjMgYXQgNDo1MyBQTSBEYXZpZCBMYWlnaHQgPERhdmlk
-LkxhaWdodEBhY3VsYWIuY29tPiB3cm90ZToNCj4gPg0KPiA+IEZyb206IE1hcnRpbiBCbHVtZW5z
-dGluZ2wNCj4gPiA+IFNlbnQ6IDA0IEphbnVhcnkgMjAyMyAxNTozMA0KPiA+ID4NCj4gPiA+IEhp
-IFBpbmctS2UsIEhpIERhdmlkLA0KPiA+ID4NCj4gPiA+IE9uIFN1biwgSmFuIDEsIDIwMjMgYXQg
-MjowOSBQTSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6DQo+ID4gPiBb
-Li4uXQ0KPiA+ID4gPiBZZXMsIGl0IHNob3VsZCBub3QgdXNlIGJpdCBmaWxlZC4gSW5zdGVhZCwg
-dXNlIGEgX19sZTE2IGZvciBhbGwgZmllbGRzLCBzdWNoIGFzDQo+ID4gPiBJIHRoaW5rIHRoaXMg
-Y2FuIGJlIGRvbmUgaW4gYSBzZXBhcmF0ZSBwYXRjaC4NCj4gPiA+IE15IHYyIG9mIHRoaXMgcGF0
-Y2ggaGFzIHJlZHVjZWQgdGhlc2UgY2hhbmdlcyB0byBhIG1pbmltdW0sIHNlZSBbMF0NCj4gPiA+
-DQo+ID4gPiBbLi4uXQ0KPiA+ID4gPiBzdHJ1Y3QgcnR3ODgyMWNlX2VmdXNlIHsNCj4gPiA+ID4g
-ICAgLi4uDQo+ID4gPiA+ICAgIHU4IGRhdGExOyAgICAgICAvLyBvZmZzZXQgMHgxMDANCj4gPiA+
-ID4gICAgX19sZTE2IGRhdGEyOyAgIC8vIG9mZnNldCAweDEwMS0weDEwMg0KPiA+ID4gPiAgICAu
-Li4NCj4gPiA+ID4gfSBfX3BhY2tlZDsNCj4gPiA+ID4NCj4gPiA+ID4gV2l0aG91dCBfX3BhY2tl
-ZCwgY29tcGlsZXIgY291bGQgaGFzIHBhZCBiZXR3ZWVuIGRhdGExIGFuZCBkYXRhMiwNCj4gPiA+
-ID4gYW5kIHRoZW4gZ2V0IHdyb25nIHJlc3VsdC4NCj4gPiA+IE15IHVuZGVyc3RhbmRpbmcgaXMg
-dGhhdCB0aGlzIGlzIHRoZSByZWFzb24gd2h5IHdlIG5lZWQgX19wYWNrZWQuDQo+ID4NCj4gPiBU
-cnVlLCBidXQgZG9lcyBpdCByZWFsbHkgaGF2ZSB0byBsb29rIGxpa2UgdGhhdD8NCj4gPiBJIGNh
-bid0IGZpbmQgdGhhdCB2ZXJzaW9uIChJIGRvbid0IGhhdmUgYSBuZXRfbmV4dCB0cmVlKS4NCj4g
-TXkgdW5kZXJzdGFuZGluZyBpcyB0aGF0IHRoZXJlJ3Mgb25lIGFjdHVhbCBhbmQgb25lIHBvdGVu
-dGlhbCB1c2UtY2FzZS4NCj4gTGV0J3Mgc3RhcnQgd2l0aCB0aGUgYWN0dWFsIG9uZSBpbg0KPiBk
-cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjFjLmg6DQo+ICAgc3RydWN0
-IHJ0dzg4MjFjX2VmdXNlIHsNCj4gICAgICAgX19sZTE2IHJ0bF9pZDsNCj4gICAgICAgdTggcmVz
-MFsweDBlXTsNCj4gICAgICAgLi4uDQo+IA0KPiBUaGUgc2Vjb25kIG9uZSBpcyBhIHBvdGVudGlh
-bCBvbmUsIGFsc28gaW4NCj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4
-ODIxYy5oIGlmIHdlIHJlcGxhY2UgdGhlDQo+IGJpdGZpZWxkcyBieSBhbiBfX2xlMTYgKHdoaWNo
-IGlzIG15IHVuZGVyc3RhbmRpbmcgaG93IHRoZSBkYXRhIGlzDQo+IG1vZGVsZWQgaW4gdGhlIGVG
-dXNlKToNCj4gICBzdHJ1Y3QgcnR3ODgyMWNlX2VmdXNlIHsNCj4gICAgICAgLi4uDQo+ICAgICAg
-IHU4IHNlcmlhbF9udW1iZXJbOF07DQo+ICAgICAgIF9fbGUxNiBjYXBfZGF0YTsgLyogMHhmNCAq
-Lw0KPiAgICAgICAuLi4NCj4gKEknbSBub3Qgc3VyZSBhYm91dCB0aGUgImNhcF9kYXRhIiBuYW1l
-LCBidXQgSSB0aGluayB5b3UgZ2V0IHRoZSBwb2ludCkNCg0KQm90aCB0aG9zZSBzZWVtIHRvIGJl
-IGFsaWduZWQgLSBwcm92aWRlZCB0aGUgc3RydWN0dXJlIGlzIGFsaWduZWQuDQoNCj4gPiBQb3Nz
-aWJseSBpdCBzaG91bGQgYmUgJ3U4IGRhdGEyWzJdOycNCj4gU28geW91J3JlIHNheWluZyB3ZSBz
-aG91bGQgcmVwbGFjZSB0aGUgX19sZTE2IHdpdGggdTggc29tZV9uYW1lWzJdOw0KPiBpbnN0ZWFk
-LCB0aGVuIHdlIGRvbid0IG5lZWQgdGhlIF9fcGFja2VkIGF0dHJpYnV0ZS4NCg0KQnV0IG1heWJl
-IHlvdSBzaG91bGQgbG9vayBhdCBkZWZpbmluZyB0aGUgYml0ZmllbGRzIGRpZmZlcmVudGx5Lg0K
-Q2hhbmdlIHRvIF9fbGUxNiBpcyBwcm9iYWJseSBtYWtpbmcgaXQgaGFyZCBmb3IgeW91cnNlbGYu
-DQpQZXJoYXBzIHlvdSBjb3VsZCAjZGVmaW5lIGEgY29uc3RhbnQgZm9yIGVhY2ggYml0ZmllbGQN
-CnNvIHlvdSBjYW4gd3JpdGUgYW4gYWNjZXNzIGZ1bmN0aW9uIGxpa2U6DQoJI2RlZmluZSBiaXR2
-YWwoZmllbGQsIG4pIChmaWVsZFtuID4+IDE2XSA+PiAoKG4gPj4gOCkgJiA3KSkgJiAobiAmIDB4
-ZmYpKQ0KSWYgJ24nIGlzIGFsd2F5cyBhIGNvbXBpbGUgdGltZSBjb25zdGFudCB0aGUgY29kZSB3
-aWxsIGJlIGZpbmUuDQpUaGVuIGFkZCBhbm90aGVyIGRlZmluZSB0byBjcmVhdGUgdGhlICduJyBi
-YXNlZCBvbiB2YWx1ZXMgZnJvbSB0aGUgc3BlYy4NCihXaGljaCBjb3VsZCBiZSBvZmZzZXRzIG9u
-dG8gMTZiaXQgaXRlbXMgb24gb2RkIGJvdW5kYXJpZXMuKQ0KUHJvdmlkZWQgbm90aGluZyBjcm9z
-c2VzIGJ5dGUgYm91bmRhcmllcyBpdCBzaG91bGQgYmUgZmluZSBhbmQgdGhlDQpzb3VyY2UgY29k
-ZSB3aWxsIGJlIHJlYXNvbmFibHkgcmVhZGFibGUuDQoNCj4gPiBXaGF0IHlvdSBtYXkgd2FudCB0
-byBkbyBpcyBhZGQgY29tcGlsZS10aW1lIGFzc2VydHMgZm9yIHRoZQ0KPiA+IHNpemVzIG9mIHRo
-ZSBzdHJ1Y3R1cmVzLg0KPiBEbyBJIGdldCB5b3UgcmlnaHQgdGhhdCBzb21ldGhpbmcgbGlrZToN
-Cj4gICBCVUlMRF9CVUdfT04oc2l6ZW9mKHJ0dzg4MjFjX2VmdXNlKSAhPSAyNTYpOw0KPiBpcyB3
-aGF0IHlvdSBoYXZlIGluIG1pbmQ/DQoNClRoYXQgbG9va3MgbGlrZSB0aGUgb25lLi4uDQoNCglE
-YXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91
-bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5
-NzM4NiAoV2FsZXMpDQo=
+On 04/01/2023 22.29, Arend van Spriel wrote:
+> On 1/4/2023 11:01 AM, 'Hector Martin' via BRCM80211-DEV-LIST,PDL wrote:
+>> The commit that introduced support for this chip incorrectly claimed it
+>> is a Cypress-specific part, while in actuality it is just a variant of
+>> BCM4355 silicon (as evidenced by the chip ID).
+>>
+>> The relationship between Cypress products and Broadcom products isn't
+>> entirely clear, but given what little information is available and prior
+>> art in the driver, it seems the convention should be that originally
+>> Broadcom parts should retain the Broadcom name.
+>>
+>> Thus, rename the relevant constants and firmware file. Also rename the
+>> specific 89459 PCIe ID to BCM43596, which seems to be the original
+>> subvariant name for this PCI ID (as defined in the out-of-tree bcmdhd
+>> driver). Also declare the firmware as CLM-capable, since it is.
+>>
+>> Fixes: dce45ded7619 ("brcmfmac: Support 89459 pcie")
+>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>> ---
+>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c   | 5 ++---
+>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 8 ++++----
+>>   .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 6 +++---
+>>   3 files changed, 9 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> index 121893bbaa1d..3e42c2bd0d9a 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> 
+> [...]
+> 
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> index ae57a9a3ab05..3264be485e20 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> 
+> [...]
+> 
+>> @@ -2590,6 +2590,7 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
+>>   	BRCMF_PCIE_DEVICE(BRCM_PCIE_4350_DEVICE_ID, WCC),
+>>   	BRCMF_PCIE_DEVICE_SUB(0x4355, BRCM_PCIE_VENDOR_ID_BROADCOM, 0x4355, WCC),
+>>   	BRCMF_PCIE_DEVICE(BRCM_PCIE_4354_RAW_DEVICE_ID, WCC),
+>> +	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_RAW_DEVICE_ID, WCC),
+> 
+> A bit of a problem here. If Cypress want to support this device, 
+> regardless how they branded it, they will provide its firmware. Given 
+> that they initially added it (as 89459) I suppose we should mark it with 
+> CYW and not WCC. Actually, see my comment below on RAW dev ids.
 
+Right, I thought we might wind up with this issue. So then the question
+becomes: can we give responsibility over PCI ID 0x4415 to Cypress and
+mark just that one as CYW (if so it probably makes sense to keep that
+labeled CYW89459 instead of BCM43596), and if not, is there some other
+way to tell apart Cypress and Broadcom products we can use? I believe
+the Apple side firmware is developed by Broadcom, not Cypress.
+
+Note that even if we split by PCI device ID here, we still have a
+problem with firmware selection, since that means we're requesting the
+same firmware filename for both vendors (since that only tests the chip
+ID and revision ID). If Apple is the *only* Broadcom customer using
+these chips then we can get away with this, since I can just make sure
+the fancy Apple firmware selection will never collide with the vanilla
+firmware filename. But if other customers of both companies are both
+shipping the same chip with different and incompatible generic firmware,
+we need some way to tell them apart.
+
+> 
+>>   	BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID, WCC),
+>>   	BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID, WCC),
+>>   	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID, WCC),
+> 
+> [...]
+> 
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+>> index f4939cf62767..cacc43db86eb 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+> 
+> [...]
+> 
+>> @@ -72,6 +72,7 @@
+>>   #define BRCM_PCIE_4350_DEVICE_ID	0x43a3
+>>   #define BRCM_PCIE_4354_DEVICE_ID	0x43df
+>>   #define BRCM_PCIE_4354_RAW_DEVICE_ID	0x4354
+>> +#define BRCM_PCIE_4355_RAW_DEVICE_ID	0x4355
+> 
+> I would remove all RAW device ids. These should not be observed outside 
+> chip vendor walls.
+
+Ack, I'll remove this one instead of renaming it (or I can just drop all
+the existing RAW IDs first in one commit at the head of v2 if you prefer
+that).
+
+- Hector
