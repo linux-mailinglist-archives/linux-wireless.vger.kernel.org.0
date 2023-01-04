@@ -2,103 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89AAD65CC77
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 05:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD7965CD21
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 07:35:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjADE5c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 23:57:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51424 "EHLO
+        id S233344AbjADGfQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 01:35:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjADE5a (ORCPT
+        with ESMTP id S230411AbjADGfP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 23:57:30 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C93017E39
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 20:57:29 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3041OAqv031215;
-        Wed, 4 Jan 2023 04:57:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=KRwAMjnpltsWvxcNtrraxKdFNHuaR97XLM81aAxzojw=;
- b=ftcZHasFZsYO7CYoa2exbDPU0LXmgPktN0tYyB9qR23Z9oMja6sHbctfh9hoew15Ykwv
- AKlLN7HPcf0vIZqEjdXiF9PZsnLYDtyE00uqXyXAH2Y8ts/H2cNVOlZSgGgRrjGs/F3W
- IMPUJUomGjY4syFjvGm3n52c+EDE+80TsNQQP5LY/jGLtrIa0YmZFqhdXMnc300t0Enj
- +DIkL34gAUlpQZqjPF9kyJkjK7DmsezbYWnrRaM7IfJq1aW8OikJF2RGWkI/IBATHfrC
- vp8JaCjtPuF0auMVYeS6cF5uGs1t/582Ab7YMPkHvNhjzRFXLF+pIqLa/cXRczXHxhlW Cg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mvsvv90j8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Jan 2023 04:57:21 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3044vKAJ009183
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 4 Jan 2023 04:57:20 GMT
-Received: from [10.201.165.48] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 3 Jan 2023
- 20:57:19 -0800
-Message-ID: <61261415-b98b-7476-fd55-3141a26d0dd6@quicinc.com>
-Date:   Wed, 4 Jan 2023 10:26:24 +0530
+        Wed, 4 Jan 2023 01:35:15 -0500
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA8714017;
+        Tue,  3 Jan 2023 22:35:14 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id c9so17276002pfj.5;
+        Tue, 03 Jan 2023 22:35:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5i2PAsadZxre+fZA40ApSOO4k6rDBMhHG9OHUSd1jK0=;
+        b=gAU5b++TyEBAGOOaOjV+IHnXy9gGfUTiYm9Ah5+13Veoa4PyVgvxtlUrJbzk1V5sa8
+         AcmbmoM63BK7EcMazLZ+5+ksoUUBV4oKeYdzfMi/cjQJlqjA+Ozr1k/UUT0bugDyccfv
+         Ws5ridHBCE+02PZxSg8qgC+RdpMVR7YW8LaNn4UAUqkUlTRVO426XC2NlSmJ0QoDZWbG
+         UbtWr4etQF+jokXd1g4um6O/bTDPKAK2WoE1WcQ7lxR2KB1+gyC3PkD5y7vkWifaubjb
+         jtvlU7Uq0JfA4iU1+NqoukvI0jAXDKOszVV7xPRs4BDXNHp6N9caWLIzFyo86ylzz7dn
+         P9JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5i2PAsadZxre+fZA40ApSOO4k6rDBMhHG9OHUSd1jK0=;
+        b=w1lqCgewXT7EUqUNCW1bHjtvArWbrdRxQP696NhRtUHIhS7dAjjgm/93BvW58qKXls
+         WO5l2dsuYfi6Hz87Zvwi1uTumgDdtr8JV3QbeC1BVNy2ta1/4p4Y0Qhsa/H7oaGn4uiI
+         vS/cuG22SclnHQdx400jS2pAIfC67WijgPvmoRwsAe5WdLC/fu3JZmLFt3CbzKntoJSF
+         jgTj1HeUdVwU5RdV30SOqUwCfexcU2KfX2d7Z1ohg3GIh7+arAWU5vsaBowjFpcIDOX3
+         s5alXgg7ywNnh25jr5bSYUjVfsDRps7QsFxzHT0fZX/9Wqk8F+Zy24OvrUJvltXRR0Ll
+         /7/A==
+X-Gm-Message-State: AFqh2kqTp/GDGhKotQqrdAMioV0LD/lmZ4WJRfCB0y9mnE1DrCJQxsAM
+        kq+STjhhfyiOIRPGORJAaKnS2nVIdHAYirpU
+X-Google-Smtp-Source: AMrXdXvi6Dj8Q8jPRtltXyZIDqYzpi3IkyqsCHG995ldQ2iwyBQ2irb4AHPBwcV/AwV9CgE0Jc2w3A==
+X-Received: by 2002:a05:6a00:21ce:b0:581:26c2:aa0a with SMTP id t14-20020a056a0021ce00b0058126c2aa0amr43392435pfj.30.1672814112856;
+        Tue, 03 Jan 2023 22:35:12 -0800 (PST)
+Received: from guoguo-thinkbook.lan ([240e:379:964:5365:9621:efdc:4c9e:b465])
+        by smtp.gmail.com with ESMTPSA id 67-20020a621446000000b0056d98e359a5sm20378439pfu.165.2023.01.03.22.35.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jan 2023 22:35:11 -0800 (PST)
+From:   Chuanhong Guo <gch981213@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Chuanhong Guo <gch981213@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Ben Greear <greearb@candelatech.com>,
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC
+        support),
+        linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC
+        support), linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] wifi: mt76: mt7921u: add support for Comfast CF-952AX
+Date:   Wed,  4 Jan 2023 14:33:38 +0800
+Message-Id: <20230104063341.18863-1-gch981213@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH] wifi: ath11k: Set ext passive scan flag to adjust passive
- scan start time
-Content-Language: en-US
-To:     Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
-        <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20221222131720.11368-1-quic_tamizhr@quicinc.com>
- <e11e4312-d373-ba54-6d48-a9c471f78532@quicinc.com>
-From:   Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-In-Reply-To: <e11e4312-d373-ba54-6d48-a9c471f78532@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: iHN3Wh0SyweoBDP85HYxumxN58BqfBXo
-X-Proofpoint-GUID: iHN3Wh0SyweoBDP85HYxumxN58BqfBXo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-04_02,2023-01-03_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- impostorscore=0 adultscore=0 bulkscore=0 mlxlogscore=982
- priorityscore=1501 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2301040040
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/2/2023 3:49 PM, Vasanthakumar Thiagarajan wrote:
-> 
-> 
-> On 12/22/2022 6:47 PM, Tamizh Chelvam Raja wrote:
->> Set the WMI_SCAN_FLAG_EXT_PASSIVE_SCAN_START_TIME_ENHANCE flag
->> while sending the scan command.  If this flag is enabled when the
->> incoming scan request comes with a strict start time and its duration
->> overlaps with next TBTT, then target adjust the start time accordingly
->> for passive scan. Target supporting this feature will advertise
->> WMI_TLV_SERVICE_PASSIVE_SCAN_START_TIME_ENHANCE.
->>
->> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
->>
-> 
-> If this change fixes any user visible issue, better to include that details.
-> 
-There are no user visible issues without this change.
+Comfast CF-952AX is a MT7921 based USB WiFi dongle with custom
+VID/PID. Add an entry for it.
 
+Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 5321d20dcdcb..a0778ecdb995 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -15,6 +15,9 @@
+ static const struct usb_device_id mt7921u_device_table[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7961, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++	/* Comfast CF-952AX */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3574, 0x6211, 0xff, 0xff, 0xff),
++		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+ 	{ },
+ };
+ 
 -- 
-Regards,
-Tamizh
+2.39.0
+
