@@ -2,139 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 733E765D7E4
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 17:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B8465D9B6
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 17:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235427AbjADQH5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 11:07:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58492 "EHLO
+        id S240032AbjADQ1f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 11:27:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235269AbjADQHy (ORCPT
+        with ESMTP id S239980AbjADQ1U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 11:07:54 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E072818E20;
-        Wed,  4 Jan 2023 08:07:52 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id kw15so83620183ejc.10;
-        Wed, 04 Jan 2023 08:07:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ejNWmUVKzv6qd8rLkoL3Pzd4W2kPQ/FppYN+juVc8Q=;
-        b=J/Rj73/PMMXzGDA1AflmrcliuQUFXdrSsVsCzOeGfL4B0v7eO8LTGTZCNnr6lfNrSZ
-         LtJi4U+zhiGXTC868O0SZO2EgLuHOCNXKKzuypUikmB1RuLq6hpRpo7LVWVjuOumvh0Z
-         AGFEXBq7mZYK8vxYJH0d/1T73DVbWeuCSh+dzMYmFjWRoKAvbGxFFBIHFp3Xlr8uXRgV
-         P23FJV7QxaSQkXE45EhTsAl5qvEkojIZBNSbV1dMoYflNuyKwo2BlIsf+4ZD9efJvjKJ
-         TMtk/gu/zXDWJe49/KQVx+nL3ByIGr3T+3QWNJqqO3A7noqxylSsCtn2NF9Bgt2nwoPj
-         +f8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2ejNWmUVKzv6qd8rLkoL3Pzd4W2kPQ/FppYN+juVc8Q=;
-        b=o/EGvYG67VB+lZt0ILpOkCV7M8J4n4HNOjZXTR1UQA7pZrIU30TiMnyCrbBWdvkI8C
-         yH+j28beKTytEQEhzZya8Yz2UIqlqoqs3we5LQLTjKyG70kiwqcyNb0cfJH4jt1Up46r
-         odQG6DjwS8OQS8+kBdppkxiCWvnV0cDxSxdWm3F/DJ/U7hJwqWmUkcta5dzrRfgN2vnD
-         cu8Sp6Bp4ewaf3NE1qaznEVSVi5+EWnHvya13H+e9bLZzr5A7DFX0bxchBCpMgPmkyzv
-         38E7GW/UU885U8NAzZ04d5+DegWxMPK2s3qt0hHlxu0mB+8zvg96A5YBkqzujk7jA0ML
-         Fihw==
-X-Gm-Message-State: AFqh2kr5NAelW7w0kn/xEA7OmS4NP1WHjE5GeL4aAL2uzrxgi4PkQelr
-        vQpgzAcZjH8iYIRPDzTLWdS+tzF+/FJhV6Dc10o=
-X-Google-Smtp-Source: AMrXdXuQRmCSfRaOEdJCZIrCcUOnz+Xb8K4QYSu4moaSSdC2g9go8yZV9lt4/XJDzHYAz7yGF5eUJncC4Oz8wY6aS9w=
-X-Received: by 2002:a17:906:26d2:b0:7c1:36:8ffe with SMTP id
- u18-20020a17090626d200b007c100368ffemr3304851ejc.725.1672848471417; Wed, 04
- Jan 2023 08:07:51 -0800 (PST)
+        Wed, 4 Jan 2023 11:27:20 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341593F10A;
+        Wed,  4 Jan 2023 08:27:14 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 9FA1A41DF4;
+        Wed,  4 Jan 2023 16:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1672849632; bh=CyB6nBdwWKmnMF5EnKIpG3XVjcUbBPWolPGePYu6aHs=;
+        h=Date:To:Cc:References:From:Subject:In-Reply-To;
+        b=ZFcYfazb5ofGvHpZhd4vo4wCI/Euispc2vhvGew9YeFe0W6od6eOyJfBvn8XX4J14
+         M+OqOZ9tmBNHZEo2BYLybSCDVkcBr4i88ejbzqQd5N/NuRKr4d2tdvkOtVLm8VFtKT
+         nNbbbCXBXPPCL/D0vf0XTB5CVCBbRdEVoiEo+UxpATWG2RhRFHj49Z6wS5VGXt2nbu
+         wJCnQIk/OS3MS+sIiuP33sSoHkgizDyXFZ7Ah5T2MlJX4NtvumXL1+CoKvKbi8eJdr
+         NWydl6B6H41U+laQ1EVo2MSSC1CJ9Usc1R9ZXSDOMI10m50GXKhFFkVassPW9vHcaU
+         Wd8kZ+GXW9uFg==
+Message-ID: <fdc60ff9-78b1-73e8-84d2-f6156a157057@marcan.st>
+Date:   Thu, 5 Jan 2023 01:27:03 +0900
 MIME-Version: 1.0
-References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
- <20221228133547.633797-2-martin.blumenstingl@googlemail.com>
- <92eb7dfa8b7d447e966a2751e174b642@realtek.com> <87da8c82dec749dc826b5a1b4c4238aa@AcuMS.aculab.com>
- <eee17e2f4e44a2f38021a839dc39fedc1c1a4141.camel@realtek.com>
- <a86893f11fe64930897473a38226a9a8@AcuMS.aculab.com> <5c0c77240e7ddfdffbd771ee7e50d36ef3af9c84.camel@realtek.com>
- <CAFBinCC+1jGJx1McnBY+kr3RTQ-UpxW6JYNpHzStUTredDuCug@mail.gmail.com> <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com>
-In-Reply-To: <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Wed, 4 Jan 2023 17:07:40 +0100
-Message-ID: <CAFBinCC9sNvQJcu-SOSrFmo4sCx29K6KwXnc-O6MX9TJEHtXYg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-To:     David Laight <David.Laight@aculab.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tehuang@realtek.com" <tehuang@realtek.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Content-Language: en-US
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Alexander Prutskov <alep@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Ian Lin <ian.lin@infineon.com>,
+        Soontak Lee <soontak.lee@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230104100116.729-1-marcan@marcan.st>
+ <20230104100116.729-3-marcan@marcan.st>
+ <ca904d05-7f11-80dd-cb1c-1cd54c4d7222@broadcom.com>
+From:   Hector Martin <marcan@marcan.st>
+Subject: Re: [PATCH v1 2/4] brcmfmac: pcie: Add IDs/properties for BCM4355
+In-Reply-To: <ca904d05-7f11-80dd-cb1c-1cd54c4d7222@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jan 4, 2023 at 4:53 PM David Laight <David.Laight@aculab.com> wrote:
->
-> From: Martin Blumenstingl
-> > Sent: 04 January 2023 15:30
-> >
-> > Hi Ping-Ke, Hi David,
-> >
-> > On Sun, Jan 1, 2023 at 2:09 PM Ping-Ke Shih <pkshih@realtek.com> wrote:
-> > [...]
-> > > Yes, it should not use bit filed. Instead, use a __le16 for all fields, such as
-> > I think this can be done in a separate patch.
-> > My v2 of this patch has reduced these changes to a minimum, see [0]
-> >
-> > [...]
-> > > struct rtw8821ce_efuse {
-> > >    ...
-> > >    u8 data1;       // offset 0x100
-> > >    __le16 data2;   // offset 0x101-0x102
-> > >    ...
-> > > } __packed;
-> > >
-> > > Without __packed, compiler could has pad between data1 and data2,
-> > > and then get wrong result.
-> > My understanding is that this is the reason why we need __packed.
->
-> True, but does it really have to look like that?
-> I can't find that version (I don't have a net_next tree).
-My understanding is that there's one actual and one potential use-case.
-Let's start with the actual one in
-drivers/net/wireless/realtek/rtw88/rtw8821c.h:
-  struct rtw8821c_efuse {
-      __le16 rtl_id;
-      u8 res0[0x0e];
-      ...
+On 04/01/2023 22.35, Arend van Spriel wrote:
+> On 1/4/2023 11:01 AM, 'Hector Martin' via BRCM80211-DEV-LIST,PDL wrote:
+>> This chip is present on at least these Apple T2 Macs:
+>>
+>> * hawaii: MacBook Air 13" (Late 2018)
+>> * hawaii: MacBook Air 13" (True Tone, 2019)
+>>
+>> Users report seeing PCI revision ID 12 for this chip, which Arend
+>> reports should be revision C2, but Apple has the firmware tagged as
+>> revision C1. Assume the right cutoff point for firmware versions is
+>> revision ID 11 then, and leave older revisions using the non-versioned
+>> firmware filename (Apple only uses C1 firmware builds).
+> 
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>> ---
+>>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 10 +++++++++-
+>>   .../wireless/broadcom/brcm80211/include/brcm_hw_ids.h  |  1 +
+>>   2 files changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> index 3264be485e20..bb4faea0f0b6 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> 
+> [...]
+> 
+>> @@ -1994,6 +1996,11 @@ static int brcmf_pcie_read_otp(struct brcmf_pciedev_info *devinfo)
+>>   	int ret;
+>>   
+>>   	switch (devinfo->ci->chip) {
+>> +	case BRCM_CC_4355_CHIP_ID:
+>> +		coreid = BCMA_CORE_CHIPCOMMON;
+>> +		base = 0x8c0;
+>> +		words = 0xb2;
+>> +		break;
+>>   	case BRCM_CC_4378_CHIP_ID:
+>>   		coreid = BCMA_CORE_GCI;
+>>   		base = 0x1120;
+> 
+> This bit is not described in the commit message. Can you remind me why 
+> the driver needs to read OTP?
 
-The second one is a potential one, also in
-drivers/net/wireless/realtek/rtw88/rtw8821c.h if we replace the
-bitfields by an __le16 (which is my understanding how the data is
-modeled in the eFuse):
-  struct rtw8821ce_efuse {
-      ...
-      u8 serial_number[8];
-      __le16 cap_data; /* 0xf4 */
-      ...
-(I'm not sure about the "cap_data" name, but I think you get the point)
+Apple platforms use a vendor-specific OTP area to store identification
+information used to select the right firmware/txcap/clm/nvram blobs. See
+6bad3eeab6d3d (already upstream) and the immediately preceding commits
+for how this all works.
 
-> Possibly it should be 'u8 data2[2];'
-So you're saying we should replace the __le16 with u8 some_name[2];
-instead, then we don't need the __packed attribute.
+In principle this should just return gracefully if that part of the OTP
+is empty, though when I originally wrote this code we only knew of Apple
+platforms using these chips anyway. If you think this might possibly
+introduce issues to other platforms using the same chips (e.g. if
+reading the OTP fails outright for some reason), we could gate it on the
+presence of a valid devinfo->settings->antenna_sku, which would indicate
+an Apple platform (since that property is specific to the Apple
+firmware-selection process and only populated on those platforms).
 
-> What you may want to do is add compile-time asserts for the
-> sizes of the structures.
-Do I get you right that something like:
-  BUILD_BUG_ON(sizeof(rtw8821c_efuse) != 256);
-is what you have in mind?
-
-
-
-Best regards,
-Martin
+- Hector
