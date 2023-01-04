@@ -2,280 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6D465CF8E
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 10:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C1F765CF93
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 10:34:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234673AbjADJcr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 04:32:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48962 "EHLO
+        id S234683AbjADJeQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 04:34:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234245AbjADJcm (ORCPT
+        with ESMTP id S234245AbjADJeN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 04:32:42 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26827DEF9
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 01:32:41 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id gh17so81246762ejb.6
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Jan 2023 01:32:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=foQ+riDRkK1P9tML5ekwBQ+Qj/euTqfdDAHkJ7NpTzk=;
-        b=DQNLTvbZKRv9xnaR0UrBqiJLQsTksDBBgYD1GqjlJ5mWXeTegpgKViWR7AatlPMBlf
-         YoyOekvJTXbY2YNeBIY+NSzm5aw4pePxg0JLXo4zQKqjbQqN7NhIIqOsPCO/yJ1UyKko
-         V+i+g2INgV/5o4caOUAdg3CVTYpqGOEFhpBO0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=foQ+riDRkK1P9tML5ekwBQ+Qj/euTqfdDAHkJ7NpTzk=;
-        b=HhxH9sSn9wbMzp9CI2NrzG1g1SnOLtrOub9DzWcOCzHS7O1Tu4sE79wGk3wdtk66pP
-         o78FjH7ve/DotqS2UUxI+YclIiOYyxgxYyb5eFIVP6UfqH980pYCZPg5c+Dm/8LAhK33
-         mNy/yFekte9xXPZEjBqCFPRvvKhYpO3xd0IHs4f72FAWiV2GMqKNLONZPnYWFmmCWt43
-         X/Hjp7Q3Tgk7D4BNkaxwJ+vb/T94vHrjSMEiJoMAXsuhGoRSaxZztM/wZ0CfJynh+t47
-         rwF3ggcVNgS3IFYrKAIDoeUzI42yIxJ4eqCNwm+J0KuJ9vUkUV6pqKm2WAn2UuTdYIzu
-         0TIA==
-X-Gm-Message-State: AFqh2kqvrcV9zvgfCO06pS2xZcql+x+j5GNCZKh7zOluo1NzZo3qPF4X
-        Ri6SVxts5BiE24RhMCOMxdvUCg==
-X-Google-Smtp-Source: AMrXdXtxhFnRA3NF/aw4uJjfwhQY0FgQ4qJT5QmjPqPIYGGoPmusQEOeXQvSaRIj0TaT5JQl1QBNpg==
-X-Received: by 2002:a17:906:6d8:b0:844:79b1:ab36 with SMTP id v24-20020a17090606d800b0084479b1ab36mr40859169ejb.25.1672824759583;
-        Wed, 04 Jan 2023 01:32:39 -0800 (PST)
-Received: from [192.168.178.136] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id l9-20020a1709063d2900b0084cc121f49esm4047808ejf.83.2023.01.04.01.32.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jan 2023 01:32:38 -0800 (PST)
-Message-ID: <789c15e4-545c-21f9-70fa-517788df55d1@broadcom.com>
-Date:   Wed, 4 Jan 2023 10:32:36 +0100
+        Wed, 4 Jan 2023 04:34:13 -0500
+Received: from cstnet.cn (smtp23.cstnet.cn [159.226.251.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2E079D7B;
+        Wed,  4 Jan 2023 01:34:11 -0800 (PST)
+Received: from localhost.localdomain (unknown [124.16.138.125])
+        by APP-03 (Coremail) with SMTP id rQCowACHj5cDSLVjCH9tCg--.33466S2;
+        Wed, 04 Jan 2023 17:33:56 +0800 (CST)
+From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
+To:     pkshih@realtek.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Subject: [PATCH] wifi: rtw89: Add missing check for alloc_workqueue
+Date:   Wed,  4 Jan 2023 17:33:53 +0800
+Message-Id: <20230104093353.48239-1-jiasheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/2] brcmfmac: Use separate struct to declare firmware
- names for Apple OTP chips
-To:     Hector Martin <marcan@marcan.st>,
-        Aditya Garg <gargaditya08@live.com>, aspriel@gmail.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        lina@asahilina.net, franky.lin@broadcom.com
-Cc:     Orlando Chamberlain <redecorating@protonmail.com>,
-        brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        linux-wireless@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Asahi Linux <asahi@lists.linux.dev>
-References: <F8829A7C-909E-4A1F-A22C-668220C5C06D@live.com>
- <f36dd8e3-9905-f04a-ed34-4be91ed1fec6@marcan.st>
- <F9EFCCD1-4407-42CC-8316-2F58AAC1AE7F@live.com>
- <ACC0D1F6-7857-4FF0-A474-4EC699572E1B@live.com>
- <9c5bdb0a-0877-ed16-f09f-164a9dab16d4@marcan.st>
- <18573bd1a38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <3785835b-164b-28d1-6905-85454cabb69d@marcan.st>
- <6b30559d-9bcc-f3b3-d9b2-2406e9a044b7@broadcom.com>
- <3659477c-c822-c5d6-868c-ba40c5a80be6@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <3659477c-c822-c5d6-868c-ba40c5a80be6@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000958afa05f16cdd7a"
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: rQCowACHj5cDSLVjCH9tCg--.33466S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XrW5Gry7uF4Utr43Ar45GFg_yoWDurbEgr
+        y2qFy2kry8Gw1akrs09FyfAryFyrykCrnaqa93trW3trWaq3yfAr95ZrZxJwn3Gwnxury7
+        W3yYqFy8A34rWjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbVxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+        6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+        Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+        I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+        n2kIc2xKxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+        0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+        17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+        C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+        6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+        73UjIFyTuYvjfU0xhLUUUUU
+X-Originating-IP: [124.16.138.125]
+X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000958afa05f16cdd7a
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Add check for the return value of alloc_workqueue since it may return
+NULL pointer.
 
-On 1/3/2023 2:46 PM, Hector Martin wrote:
-> On 03/01/2023 22.30, Arend van Spriel wrote:
->> On 1/3/2023 4:55 AM, Hector Martin wrote:
->>> On 2023/01/03 3:27, Arend Van Spriel wrote:
->>>> On January 2, 2023 4:15:41 PM Hector Martin <marcan@marcan.st> wrote:
->>>>
->>>>> On 02/01/2023 23.40, Aditya Garg wrote:
->>>>>> From: Aditya Garg <gargaditya08@live.com>
->>>>>>
->>>>>> Commit 'dce45ded7619' added support for 89459 chip pcie device. It uses the
->>>>>> BRCM4355 chip which is also found in Apple hardware. However this commit
->>>>>> causes conflicts in the firmware naming between Apple hardware, which
->>>>>> supports OTP and other non-Apple hardwares. So, this patch makes these
->>>>>> Apple chips use their own firmware table so as to avoid possible conflicts
->>>>>> like these in the future.
->>>>>
->>>>> I think my reply to Arend flew over your head.
->>>>>
->>>>> My point was that I'd rather have the Broadcom/Cypress people actually
->>>>> answer my question so we can figure out how to do this *properly*,
->>>>> instead of doing "safer-but-dumb" things (like this patch) because we
->>>>> just don't have the information to do it properly.
->>>>
->>>> Fair enough. Can you accurately (re)state your question and I will try to
->>>> answer it.
->>>
->>> As per my original email: Is the CYW89459 just a rebrand of the BCM4355,
->>> or just a subset? Can we consider them equivalent, and equivalent to the
->>> Apple part (BCM4355C1 / revision 12)?
->>
->> There is probably no easy answer. Mainly because Cypress is a separate
->> entity. However, they use the same/similar technology and code base. So
->> let me first start with the chip naming. The wifi chip primarily has a
->> number and revision. The chip number is straighforward and can be read
->> from the device. The chip revision comes in two variants: 1) simple
->> increasing number as read from the device, and 2) a <letter><digit>
->> format. The latter start at a0, which you almost never see in the wild
->> unless we do it "first time right". Whenever spinning a new chip we
->> either increase the digit or the letter depending on type/amount of
->> changes. There is not predictable mapping between the revision variants.
->> Depending on the hurdles in a chip project we may move from a0 to b0, or
->> from b0 to b1 or whatever.
-> 
-> Right, this is standard chip spin numbering, that much I know.
-> 
->> If CYW89459 chip reads chip number 0x4355 than it is a BCM4355. If it is
->> a different revision it may require different firmware. A different
->> letter will always require different firmware. A different digit may
->> work although the firmware can have code paths for a specific revision.
-> 
-> So is it always correct to have the same firmware (in a generic
-> situation, not a customized OEM build) for, say, a BCM4355 rev 12,
-> regardless of what the PCI ID programmed into the OTP is (and what the
-> marketing device name is)?
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Yes.
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 931aff8b5dc9..006fe0499f81 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3124,6 +3124,8 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 	INIT_DELAYED_WORK(&rtwdev->cfo_track_work, rtw89_phy_cfo_track_work);
+ 	INIT_DELAYED_WORK(&rtwdev->forbid_ba_work, rtw89_forbid_ba_work);
+ 	rtwdev->txq_wq = alloc_workqueue("rtw89_tx_wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
++	if (!rtwdev->txq_wq)
++		return -ENOMEM;
+ 	spin_lock_init(&rtwdev->ba_lock);
+ 	spin_lock_init(&rtwdev->rpwm_lock);
+ 	mutex_init(&rtwdev->mutex);
+-- 
+2.25.1
 
-> If so, then my conclusion is that the original patch I replied to is
-> incorrect, all the defines should've been called BCM4355 (not the
-> Cypress part number), and we probably need two firmware table entries
-> since (judging by the revision check elsewhere in that patch) there are
-> other revisions in the wild than the one Apple uses, and therefore there
-> should at the very least be a firmware name split at C1. It would then
-> be very helpful to know what revisions *do* exist and their correct naming.
-
-I can only track down what we have in Broadcom. For the 4355 the 
-revisions B1 (=6), B3 (=8), C0 (=10) and C1 are mentioned as released. 
-Here things get weird, because you mentioned BCM4355 rev12, which would 
-be a C2. So without asking around I can only assume this C2 variant is 
-not different from firmware perspective and can happily run the C1 firmware.
-
-> If different PCI device IDs might need different firmware, then the
-> exiting firmware selection/table mechanism is insufficient.
-> 
->> Happy New year to you. Thanks for clearly marking the rant. Makes it
->> easier to ignore, but let me get into this. I would not call bcmdhd the
->> downstream driver. It is a separate out-of-tree driver. Indeed resources
->> were pulled from brcm80211 development, but there always have been only
->> 2 or 3 people working on it. Me being the constant working mule and
->> these days only for 20% of my working hours to do the job. So you are
->> not really doing our job as we are not assigned to do so. I guess there
->> is no ROI for Broadcom or so it is perceived and there is no customer
->> pushing for it. That said I am always happy to help and clarify whatever
->> I can.
-> 
-> Is there any chance you can provide a list of chips/shipping revisions
-> and revision IDs, so we can stop guessing at the mappings in the
-> firmware table? Because this is effectively breaking userspace ABI every
-> time we make a change to an existing chip, as it can change the firmware
-> file name that userspace loads. This already happened with BCM4364,
-> where (at least) B2 and B3 revisions exist in the wild and we need
-> separate firmwares, yet it was added with a full mask, resulting in
-> people copying "the right firmware for them" manually and my patch to
-> split it into properly named firmwares will break those users.
-
-Userspace is not loading anything these days. AFAIK the kernel is 
-directly accessing the firmware file. Anyway, I never considered this as 
-being a big issue. If people change their installed os to get things 
-working, they can expect the reverse can happen anytime and deal with it 
-once more. If this is considered a real issue we should only set the 
-revmask for the revision we know to be working.
-
-Regards,
-Arend
-
---000000000000958afa05f16cdd7a
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAQ5Y9jK+FF4z39S5uf
-g2vGk6XXS2VKy2qKZpn1x1W4yTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDQwOTMyMzlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEALTWAttLkow/t9f4V5975Mxq5BsvR3wBNRNd/
-EpPRAoBGCgGOgqChPcC0e2gfo8yn0WkEBfLp/wC7qgdRZKpM6pfZV8Lj4sCMvP7aJmWYeK0RdcQF
-dPTOnSDFIxw6k9NjsBzsCxtzrbq0ZgW+dwsHtNePIBFVbXFqzYuFRGX5v7GNh2RekPgYvMOTiy43
-8Y79ImrE2L5gbBDjxSnYPAEfVD+Dwc3RDZkglO2fNY85yyIwQrq9ksWV9gtMsirl1GZ6jNss4/IY
-yHfqLwUSXf30Fhbf56rTbMhChC1MVjs8bglh5xAQDjPUh/rYR7A0vj0nS2RZRbDqLdbTlo2e8XDl
-wA==
---000000000000958afa05f16cdd7a--
