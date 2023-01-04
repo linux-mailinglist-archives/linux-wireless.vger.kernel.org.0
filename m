@@ -2,99 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD0865CA6C
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 00:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CFC65CB45
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 02:13:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233734AbjACXir (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Jan 2023 18:38:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49922 "EHLO
+        id S234091AbjADBNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Jan 2023 20:13:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229685AbjACXiq (ORCPT
+        with ESMTP id S230321AbjADBNQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Jan 2023 18:38:46 -0500
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F3A1DE;
-        Tue,  3 Jan 2023 15:38:44 -0800 (PST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1672789123; bh=ynOWW3LgPvjCduGH9UcbEQT2h4nu+eDS7sALdUj0jpY=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=D8OcQedRKM45liJhzV0Gsvc5J21BGX3cCKwbp0W1Z3Pcf4G0/WaKzIJC1P/gbXrvI
-         FUBeWWB2a+PiWWV9SRxRNNm5AAY3G6ZKKTcYtrDDy6deDufpCTZ+17HGyBdHthZ/gt
-         l1P1B0zw5K/9wRjYjGWCrJ9yJr3tXRQXFCVvUxEkhmHVXJ7+gEx/wzsxz1uYpZTqPU
-         IXbVmvacTjuMt8TOvKKlSVIbzhuEqmUN2u4PWhqVjgumjKZpugEb95qlpu/JxBU9mc
-         qAfz4vD6463ACL1hUzo5bDa8kQy+Rr4/VuCIOdTb+POWYnG+atjhVkK+G63lxCWJ0u
-         SSa3pjuKoTskA==
-To:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        Tue, 3 Jan 2023 20:13:16 -0500
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF23917066
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Jan 2023 17:13:15 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id y19so15416825plb.2
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Jan 2023 17:13:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=schmorgal.com; s=google;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hIyLc4dyPkXfsevHYfCR8hcxUQC7oXgxLFpaOxvgL3A=;
+        b=Z1nT2rJVfw14qKx09CXR+bHhDlwZtDv00v8GubIACTHXAo9/qZrQeUFNDcCe9vUJ21
+         iRSoypU8GfbOgeABcWN+b6D+fAz5jSzEznX+VJC+X2VTO24am4B5oZsTkSAgRs61TBTk
+         CGcbLAmLLj2wmmnwLgLTgJGSTiqPSH/NsdjiM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hIyLc4dyPkXfsevHYfCR8hcxUQC7oXgxLFpaOxvgL3A=;
+        b=kXvOfyqw7vJkoMEsmTwYiswkJjj8HCxIHZPazjWlYM4w5EMi9wickc1NASOw2/5kdi
+         7mSK4tkn8AXcKcOZqvIqMiby4ezp5xvu+GZSnz7QZnIQgfV/ojzsvoqlSzAT75LcM+w5
+         kZbPStdUxqFnZPzllXPzvgQggZ37M/AwNcQPiG5QSAGlWxHzdldvS5At/wEj8O/pGb/J
+         7bBfEcVl0rtK/z5ZHKeivcdi18v/ZBD2MOwuWtdPydM5SFQV4vg/Pvk2sbDlKIuaUHff
+         aYV42TA4vBI7ybvuTDxwRcAoQ/SMkH1D+qy2cYHCpYV6SjpeuA4frHLUG7CVv7QfXQe1
+         56nw==
+X-Gm-Message-State: AFqh2koZq30kZQK/HRs3VwRMwz+A8HJvsGKQ5kWW2/oEXLtIlxzOTrpN
+        EK0oauiRshfPgjIkAQNvHXv1NQ==
+X-Google-Smtp-Source: AMrXdXtnqpa+fEUNJnxX8JUcQMQnBKyvMNuamX6NzYhp56+YodSn/GJNc2vCzANK5oaOeqT4bGb6Hg==
+X-Received: by 2002:a17:90a:7404:b0:219:a8e5:79f5 with SMTP id a4-20020a17090a740400b00219a8e579f5mr49818675pjg.43.1672794794986;
+        Tue, 03 Jan 2023 17:13:14 -0800 (PST)
+Received: from [192.168.1.33] ([192.183.212.197])
+        by smtp.googlemail.com with ESMTPSA id a14-20020a65640e000000b0049c8aa4211asm11304836pgv.8.2023.01.03.17.13.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Jan 2023 17:13:14 -0800 (PST)
+Message-ID: <cc785f92-587c-c260-6369-c2dde9a392ca@schmorgal.com>
+Date:   Tue, 3 Jan 2023 17:13:12 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Content-Language: en-US
+To:     Dan Williams <dcbw@redhat.com>, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Zekun Shen <bruceshenzk@gmail.com>,
-        Joe Perches <joe@perches.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org
-Subject: Re: [PATCH v2] wifi: ath9k: hif_usb: clean up skbs if
- ath9k_hif_usb_rx_stream() fails
-In-Reply-To: <20230103223052.303666-1-pchelkin@ispras.ru>
-References: <20230103223052.303666-1-pchelkin@ispras.ru>
-Date:   Wed, 04 Jan 2023 00:38:42 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87tu172np9.fsf@toke.dk>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <20230102234714.169831-1-doug@schmorgal.com>
+ <657adc8e514d4486853ef90cdf97bd75f55b44fa.camel@redhat.com>
+From:   Doug Brown <doug@schmorgal.com>
+Subject: Re: [PATCH] wifi: libertas: return consistent length in
+ lbs_add_wpa_tlv()
+In-Reply-To: <657adc8e514d4486853ef90cdf97bd75f55b44fa.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fedor Pchelkin <pchelkin@ispras.ru> writes:
+Hi Dan,
 
->> Hmm, so in the other error cases (if SKB allocation fails), we just
->> 'goto err' and call the receive handler for the packets already in
->> skb_pool. Why can't we do the same here?
->
-> If SKB allocation fails, then the packets already in skb_pool should be
-> processed by htc rx handler, yes. About the other two cases: if pkt_tag or
-> pkt_len is invalid, then the whole SKB is considered invalid and dropped.
-> That is what the statistics macros tell. So I think we should not process
-> packets from skb_pool which are associated with a dropped SKB. And so just
-> free them instead.
+Thanks for reviewing my patch! Comments below:
 
-Hmm, okay, but if we're counting packets, your patch is not incrementing
-any drop counters for the extra SKBs it's dropping either? They would
-previously have been counted as 'RX_STAT_INC(hif_dev, skb_allocated)',
-so shouldn't they now be counted as 'skb_dropped' as well? The single
-counter increase inside the err if statements refers to the skb that's
-the function parameter (which AFAICT is a different kind of skb than the
-ones being allocated and processed in that loop? it's being split into
-chunks or?).
+On 1/3/2023 9:47 AM, Dan Williams wrote:
+> On Mon, 2023-01-02 at 15:47 -0800, Doug Brown wrote:
+>> The existing code only converts the first IE to a TLV, but it returns
+>> a
+>> value that takes the length of all IEs into account. When there is
+>> more
+>> than one IE (which happens with modern wpa_supplicant versions for
+>> example), the returned length is too long and extra junk TLVs get
+>> sent
+>> to the firmware, resulting in an association failure.
+>>
+>> Fix this by returning a length that only factors in the single IE
+>> that
+>> was converted. The firmware doesn't seem to support the additional
+>> IEs,
+>> so there is no value in trying to convert them to additional TLVs.
+>>
+>> Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
+>> Signed-off-by: Doug Brown <doug@schmorgal.com>
+>> ---
+>>   drivers/net/wireless/marvell/libertas/cfg.c | 7 +++----
+>>   1 file changed, 3 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/marvell/libertas/cfg.c
+>> b/drivers/net/wireless/marvell/libertas/cfg.c
+>> index 3e065cbb0af9..fcc5420ec7ea 100644
+>> --- a/drivers/net/wireless/marvell/libertas/cfg.c
+>> +++ b/drivers/net/wireless/marvell/libertas/cfg.c
+>> @@ -432,10 +432,9 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8
+>> *ie, u8 ie_len)
+>>          *tlv++ = 0;
+>>          tlv_len = *tlv++ = *ie++;
+>>          *tlv++ = 0;
+>> -       while (tlv_len--)
+>> -               *tlv++ = *ie++;
+>> -       /* the TLV is two bytes larger than the IE */
+>> -       return ie_len + 2;
+>> +       memcpy(tlv, ie, tlv_len);
+>> +       /* the TLV has a four-byte header */
+>> +       return tlv_len + 4;
+> 
+> Since you're removing ie_len usage in the function, you might as well
+> remove it from the function's arguments.
 
->> Also, I think there's another bug in that function, which this change
->> will make worse? Specifically, in the start of that function,
->> hif_dev->remain_skb is moved to skb_pool[0], but not cleared from
->> hif_dev itself. So if we then hit the invalid check and free it, the
->> next time the function is called, we'll get the same remain_skb pointer,
->> which has now been freed.
->
-> Sorry, I missed that somehow.
-> Moving 'hif_dev->rx_remain_len = index - MAX_RX_BUF_SIZE;' after
-> "ath9k_htc: RX memory allocation error\n" error path should be done, too.
-> hif_dev->rx_remain_len is zeroed after remain_skb processing, so we cannot
-> reference hif_dev->remain_skb unless we explicitly allocate successfully a
-> new one (making rx_remain_len non zero).
->
->> So I think we'll need to clear out hif_dev->remain_skb after moving it
->> to skb_pool. Care to add that as well?
->
-> Yes, this must be done. I'll add it to patch v3.
+That's an excellent point. Thinking about it further after your
+questions below, maybe we should keep it around and use it to validate
+how far we are allowed to go into "ie" though...technically the existing
+code could overflow the buffer with a malformed IE.
 
-OK, cool!
+> Can you also update the comments to say something like "only copy the
+> first IE into the command buffer".
+
+Will do.
+
+> Lastly, should you check the IE to make sure you're copying the WPA or
+> WMM IE that the firmware expects? What other IEs does
+> wpa_supplicant/cfg80211 add these days?
+
+I was wondering about that too. I wasn't sure exactly which potential
+IEs are the ones I should be looking for during this check. I've seen
+"RSN Information" = 48 during my testing with WPA2, and assume based on
+the old Marvell driver code that "Vendor Specific" = 221 would be used
+with WPA. Going through the entire IE list and finding a match seems
+safer than just blindly grabbing the first one. This would also be a
+good time to add some bounds checking to make sure not to overrun "ie"
+as well...
+
+The other two IEs that are being added by modern wpa_supplicant are
+"Extended Capabilities" (127) with SCS and mirrored SCS set:
+
+7f 0b 00 00 00 00 00 00 40 00 00 00 20
+
+...and "Supported Operating Classes" (59) with current = 81 and
+supported = 81 and 82:
+
+3b 03 51 51 52
+
+I tried converting these additional IEs to TLVs. It resulted in a
+successful connection, but the firmware didn't pass on these two IEs in
+the association request -- I verified by sniffing packets. So I was
+concerned about passing them onto the firmware if it's not making use of
+them, in case it's interpreting them in some other unexpected way.
+
+Do you have any guidance on which possible IEs I should be looking for
+other than 48 and 221, or where I could find that out?
+
+BTW, modern wpa_supplicant also doesn't work with libertas for one
+additional reason: it violates NL80211_ATTR_MAX_SCAN_IE_LEN on some
+older drivers including this one. But I believe that's a wpa_supplicant
+problem that I can't really address in the kernel...
+
+http://lists.infradead.org/pipermail/hostap/2022-January/040185.html
+
+Thanks!
+Doug
