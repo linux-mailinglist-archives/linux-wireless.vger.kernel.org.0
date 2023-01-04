@@ -2,97 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FA2665D235
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 13:16:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C81C565D281
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 13:24:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234873AbjADMQU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 07:16:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43906 "EHLO
+        id S234726AbjADMYb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 07:24:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234726AbjADMQR (ORCPT
+        with ESMTP id S234923AbjADMY2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 07:16:17 -0500
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A719F016;
-        Wed,  4 Jan 2023 04:16:16 -0800 (PST)
-Received: from fedcomp.. (unknown [46.242.14.200])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 4DF7D419E9CB;
-        Wed,  4 Jan 2023 12:16:10 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 4DF7D419E9CB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1672834570;
-        bh=Z6aS5qwzvrT0EpnS1M75E2ZCaAMxUHd9r+HBXrqbyEI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NGRgfg+jgxe1kSHwci/iiw6fMSJJpkpM1F9rNjloL3XOiDp9BcJ1WsRyqJsIadf/r
-         4koYwwmC1SkBuRFq7fxtghx588QHzzzkJl6muwt/7OYdkWrVesYIScCQizYx+Cyueo
-         cevtkGepSizm2VSYlYfHjKaGQHCbnA14P2TJn5J4=
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sujith <Sujith.Manoharan@atheros.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
-        Senthil Balasubramanian <senthilkumar@atheros.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+e008dccab31bd3647609@syzkaller.appspotmail.com,
-        syzbot+6692c72009680f7c4eb2@syzkaller.appspotmail.com
-Subject: [PATCH v3] wifi: ath9k: htc_hst: free skb in ath9k_htc_rx_msg() if there is no callback function
-Date:   Wed,  4 Jan 2023 15:15:58 +0300
-Message-Id: <20230104121558.38969-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230103224815.304147-1-pchelkin@ispras.ru>
-References: 
+        Wed, 4 Jan 2023 07:24:28 -0500
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A38A27A
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 04:24:25 -0800 (PST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1672835063; bh=IQ6BUtaweM9xtjUfw4eK9Wo0sAFIDVudY5SyeUBdr/Y=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ByRW3CedrslP6oLfom04Us+vSmGOk0CDZMk2sOLdAw1vj/MXAohSpW0oBqU5mfNFF
+         nnpV5fB94wek0e4tz3E/ws3+SwY7ThW/Sw26UUU+4QB8JmduYmn6e4BiymWdeg0loS
+         SVTg4y37BcDBhj37UBsf5xpaMlkJiU/jSXv4fGVTMJonezFw+zyDAym/rtT1cGvhBY
+         NP8I4bKKd6jhGPu3rNUXg26AfHi5MsyPKIir2yG+k9ylQ01suCtMF6u+9orUSawQ0p
+         kdEYFkaJnj4IIr1X25sOTsx731DD41u1Xifg/6MHA2WJ82//pp40GPRkKzVJlC9CAt
+         GaUtmem1+1COg==
+To:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+        linux-wireless@vger.kernel.org
+Cc:     kvalo@kernel.org, dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Subject: Re: [PATCH] ath9k: Fix potential stack-out-of-bounds write in
+ ath9k_wmi_rsp_callback()
+In-Reply-To: <20230104042147.1419030-1-linuxlovemin@yonsei.ac.kr>
+References: <20230104042147.1419030-1-linuxlovemin@yonsei.ac.kr>
+Date:   Wed, 04 Jan 2023 13:24:23 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87h6x632tk.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It is stated that ath9k_htc_rx_msg() either frees the provided skb or
-passes its management to another callback function. However, the skb is
-not freed in case there is no another callback function, and Syzkaller was
-able to cause a memory leak. Also minor comment fix.
+Minsuk Kang <linuxlovemin@yonsei.ac.kr> writes:
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> Fix a stack-out-of-bounds write that occurs in a WMI response callback
+> function that is called after a timeout occurs in ath9k_wmi_cmd().
+> The callback writes to wmi->cmd_rsp_buf, a stack-allocated buffer that
+> could no longer be valid when a timeout occurs. Checking seq_no is
+> insufficient as the bug can occur between the timeout and the next WMI
+> command. Add wmi->timedout to check whether a timeout occurred.
+>
+> Found by a modified version of syzkaller.
+>
+> BUG: KASAN: stack-out-of-bounds in ath9k_wmi_ctrl_rx
+> Write of size 4
+> Call Trace:
+>  memcpy
+>  ath9k_wmi_ctrl_rx
+>  ath9k_htc_rx_msg
+>  ath9k_hif_usb_reg_in_cb
+>  __usb_hcd_giveback_urb
+>  usb_hcd_giveback_urb
+>  dummy_timer
+>  call_timer_fn
+>  run_timer_softirq
+>  __do_softirq
+>  irq_exit_rcu
+>  sysvec_apic_timer_interrupt
+>
+> Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+> ---
+>  drivers/net/wireless/ath/ath9k/wmi.c | 5 ++++-
+>  drivers/net/wireless/ath/ath9k/wmi.h | 1 +
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+> index f315c54bd3ac..f46cbecc12e3 100644
+> --- a/drivers/net/wireless/ath/ath9k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath9k/wmi.c
+> @@ -234,7 +234,8 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
+>  
+>  	/* Check if there has been a timeout. */
+>  	spin_lock_irqsave(&wmi->wmi_lock, flags);
+> -	if (be16_to_cpu(hdr->seq_no) != wmi->last_seq_id) {
+> +	if (be16_to_cpu(hdr->seq_no) != wmi->last_seq_id ||
+> +	    wmi->timedout) {
+>  		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+>  		goto free_skb;
+>  	}
+> @@ -290,6 +291,7 @@ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+>  
+>  	spin_lock_irqsave(&wmi->wmi_lock, flags);
+>  	wmi->last_seq_id = wmi->tx_seq_id;
+> +	wmi->timedout = false;
+>  	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+>  
+>  	return htc_send_epid(wmi->htc, skb, wmi->ctrl_epid);
+> @@ -341,6 +343,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+>  	if (!time_left) {
+>  		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
+>  			wmi_cmd_to_name(cmd_id));
+> +		wmi->timedout = true;
 
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Reported-by: syzbot+e008dccab31bd3647609@syzkaller.appspotmail.com
-Reported-by: syzbot+6692c72009680f7c4eb2@syzkaller.appspotmail.com
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
----
-v1->v2: added Reported-by tag
-v2->v3: use 'goto invalid' instead of freeing skb in place
+Instead of introducing a new 'timedout' field, why not just reset
+last_seq_id to 0 here? That way the existing check should trigger the
+abort in ath9k_wmi_ctrl_rx()... 
 
- drivers/net/wireless/ath/ath9k/htc_hst.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
-index ca05b07a45e6..0c95f6b145ff 100644
---- a/drivers/net/wireless/ath/ath9k/htc_hst.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
-@@ -478,6 +478,8 @@ void ath9k_htc_rx_msg(struct htc_target *htc_handle,
- 		if (endpoint->ep_callbacks.rx)
- 			endpoint->ep_callbacks.rx(endpoint->ep_callbacks.priv,
- 						  skb, epid);
-+		else
-+			goto invalid;
- 	}
- }
- 
--- 
-2.34.1
-
+-Toke
