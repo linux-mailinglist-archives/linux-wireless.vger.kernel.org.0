@@ -2,171 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 028BD65D2DD
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 13:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0C065D2F3
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 13:41:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239191AbjADMhE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 07:37:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S234206AbjADMlx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 07:41:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239277AbjADMgg (ORCPT
+        with ESMTP id S239264AbjADMlv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 07:36:36 -0500
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D235813CDF;
-        Wed,  4 Jan 2023 04:36:35 -0800 (PST)
-Received: from fedcomp.. (unknown [46.242.14.200])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 466DD419E9F5;
-        Wed,  4 Jan 2023 12:36:34 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 466DD419E9F5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1672835794;
-        bh=dc0S1ZC+JXp9Z/sCIUJ7rKnBqUvmEKO7DJxlv7hastk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PB7Z2vnPjVQVqjLXOkVkz0W94WO0xFb1hYlDUFOdlbFTlSr+3TAyaLfo5acwMgkeo
-         IMlbDPynh//gP+nQSxqYj6CdAt3l6kho4vO2i62xBesNW+DHA0HnlWijvWj/OnQRn1
-         LISAdoTGbvZDemANeyr1p/uPXul7+CDHEKUnRa10=
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Zekun Shen <bruceshenzk@gmail.com>,
-        Joe Perches <joe@perches.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+e9632e3eb038d93d6bc6@syzkaller.appspotmail.com
-Subject: [PATCH v3] wifi: ath9k: hif_usb: clean up skbs if ath9k_hif_usb_rx_stream() fails
-Date:   Wed,  4 Jan 2023 15:36:15 +0300
-Message-Id: <20230104123615.51511-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <87tu172np9.fsf@toke.dk>
-References: 
+        Wed, 4 Jan 2023 07:41:51 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3155AE07
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 04:41:50 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id n12so23092588pjp.1
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Jan 2023 04:41:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=yonsei-ac-kr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eYqAuotZakvJbzXu+JOiNvmSNcfzCg1hdPWkKPrWBFI=;
+        b=Ki2ktntELCQCy5wPrCXk9VJXnRfBaarhWGUU1fHT3SXVGGOHGKjlq0eTAaul5yAi7U
+         sOdUKm6bAoIB+nzN8qEO0Nt2Xy8MRRSB35uSiVVfsw56hAkcuv9DRxNTOySlCvpAmlLg
+         l+KDC/CEqwrYkwpf2lxRLtq1D051mJZboFAe1gnW15tVtb35TsTq1WYJuerNHepEcpVJ
+         D4r5C8Y8hZjq4a5+/s2RI85EIhXOPNdageAw7kOWUiLFXWRfcGVheRrkXGJSJryTK/eS
+         ZgRWxKi5zDtukgsqBljrKuNexGlnC2ngrb+qhTy5c0AO6bg1IImhNZJU2V3KCOm7KHe9
+         V81w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eYqAuotZakvJbzXu+JOiNvmSNcfzCg1hdPWkKPrWBFI=;
+        b=fUKFy/3oGi6VWNy1tJU4DAq1FcQaLKuSJo+Mqdvj51trMTR66gW/8RNJQvatoyq/2x
+         frtzP9tcRr6TXNu7rq37K8z8+tcmwlWsFZrRcyBn8D6jSsMuRCnHusXKzDbie0uJHjUu
+         hA1PhUEQtpDi+2WZ55gmgEWX2BI82AVjfjn6lunhOoDgiVYkCdzd2UJxJ+AHtj5jVJqh
+         6nKFyIZVaBLf62tlpoz8ntZI/qb3/nPfYU0c/7ahdmidWez440cir1x/YK2+nv7CbZi4
+         iKW9JSaieXfsV4PuLu8q1Iu0lNF0aTAQ2aiVRrjj5ZytBdyga4EHhS8qWpfeWjJneYSB
+         Lkig==
+X-Gm-Message-State: AFqh2kpcwXBSgAhq7rYoAsawYbhGiNh10UxV4FyZn1oex9URrErctcZ7
+        vTRbw513ObreGC4L8FSTEUYfI3Bfd2kXDJM89aPctQ==
+X-Google-Smtp-Source: AMrXdXtUYW3grFI5DS65MO1EJU5CLzV8RXIAN2NiO371Xw9drsGl1qvewH+6IVgVigfzZ3aRoOZmWw==
+X-Received: by 2002:a05:6a20:d819:b0:b2:3b40:32b1 with SMTP id iv25-20020a056a20d81900b000b23b4032b1mr55335626pzb.57.1672836109414;
+        Wed, 04 Jan 2023 04:41:49 -0800 (PST)
+Received: from localhost.localdomain ([165.132.118.52])
+        by smtp.gmail.com with ESMTPSA id q28-20020aa7983c000000b0057255b7c8easm18570752pfl.33.2023.01.04.04.41.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jan 2023 04:41:49 -0800 (PST)
+From:   Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+To:     linux-wireless@vger.kernel.org, toke@toke.dk
+Cc:     kvalo@kernel.org, dokyungs@yonsei.ac.kr, jisoo.jang@yonsei.ac.kr,
+        Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Subject: [PATCH v2] ath9k: Fix potential stack-out-of-bounds write in ath9k_wmi_rsp_callback()
+Date:   Wed,  4 Jan 2023 21:41:30 +0900
+Message-Id: <20230104124130.10996-1-linuxlovemin@yonsei.ac.kr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Syzkaller detected a memory leak of skbs in ath9k_hif_usb_rx_stream().
-While processing skbs in ath9k_hif_usb_rx_stream(), the already allocated
-skbs in skb_pool are not freed if ath9k_hif_usb_rx_stream() fails. If we
-have an incorrect pkt_len or pkt_tag, the input skb is considered invalid
-and dropped. All the associated packets already in skb_pool should be
-dropped and freed. Added a comment describing this issue.
+Fix a stack-out-of-bounds write that occurs in a WMI response callback
+function that is called after a timeout occurs in ath9k_wmi_cmd().
+The callback writes to wmi->cmd_rsp_buf, a stack-allocated buffer that
+could no longer be valid when a timeout occurs. Set wmi->last_seq_id to
+0 when a timeout occurred.
 
-The patch also makes remain_skb NULL after being processed so that it
-cannot be referenced after potential free. The initialization of hif_dev
-fields which are associated with remain_skb (rx_remain_len,
-rx_transfer_len and rx_pad_len) is moved after a new remain_skb is
-allocated. 
+Found by a modified version of syzkaller.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+BUG: KASAN: stack-out-of-bounds in ath9k_wmi_ctrl_rx
+Write of size 4
+Call Trace:
+ memcpy
+ ath9k_wmi_ctrl_rx
+ ath9k_htc_rx_msg
+ ath9k_hif_usb_reg_in_cb
+ __usb_hcd_giveback_urb
+ usb_hcd_giveback_urb
+ dummy_timer
+ call_timer_fn
+ run_timer_softirq
+ __do_softirq
+ irq_exit_rcu
+ sysvec_apic_timer_interrupt
 
-Fixes: 6ce708f54cc8 ("ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream")
-Fixes: 44b23b488d44 ("ath9k: hif_usb: Reduce indent 1 column")
-Reported-by: syzbot+e9632e3eb038d93d6bc6@syzkaller.appspotmail.com
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 ---
-v1->v2: added Reported-by tag
-v2->v3: added proper remain_skb processing, stat macro, comment 
+v1->v2:
+  Reset wmi->last_seq_id to 0 instead of introducing a new 'timedout'
+  field when a timeout occurred.
 
- drivers/net/wireless/ath/ath9k/hif_usb.c | 31 +++++++++++++++++-------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 1a2e0c7eeb02..de6c0824c9ca 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -561,11 +561,11 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 			memcpy(ptr, skb->data, rx_remain_len);
- 
- 			rx_pkt_len += rx_remain_len;
--			hif_dev->rx_remain_len = 0;
- 			skb_put(remain_skb, rx_pkt_len);
- 
- 			skb_pool[pool_index++] = remain_skb;
--
-+			hif_dev->remain_skb = NULL;
-+			hif_dev->rx_remain_len = 0;
- 		} else {
- 			index = rx_remain_len;
- 		}
-@@ -584,16 +584,21 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 		pkt_len = get_unaligned_le16(ptr + index);
- 		pkt_tag = get_unaligned_le16(ptr + index + 2);
- 
-+		/* It is supposed that if we have an invalid pkt_tag or
-+		 * pkt_len then the whole input SKB is considered invalid
-+		 * and dropped; the associated packets already in skb_pool
-+		 * are dropped, too.
-+		 */
- 		if (pkt_tag != ATH_USB_RX_STREAM_MODE_TAG) {
- 			RX_STAT_INC(hif_dev, skb_dropped);
--			return;
-+			goto invalid_pkt;
- 		}
- 
- 		if (pkt_len > 2 * MAX_RX_BUF_SIZE) {
- 			dev_err(&hif_dev->udev->dev,
- 				"ath9k_htc: invalid pkt_len (%x)\n", pkt_len);
- 			RX_STAT_INC(hif_dev, skb_dropped);
--			return;
-+			goto invalid_pkt;
- 		}
- 
- 		pad_len = 4 - (pkt_len & 0x3);
-@@ -605,11 +610,6 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 
- 		if (index > MAX_RX_BUF_SIZE) {
- 			spin_lock(&hif_dev->rx_lock);
--			hif_dev->rx_remain_len = index - MAX_RX_BUF_SIZE;
--			hif_dev->rx_transfer_len =
--				MAX_RX_BUF_SIZE - chk_idx - 4;
--			hif_dev->rx_pad_len = pad_len;
--
- 			nskb = __dev_alloc_skb(pkt_len + 32, GFP_ATOMIC);
- 			if (!nskb) {
- 				dev_err(&hif_dev->udev->dev,
-@@ -617,6 +617,12 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 				spin_unlock(&hif_dev->rx_lock);
- 				goto err;
- 			}
-+
-+			hif_dev->rx_remain_len = index - MAX_RX_BUF_SIZE;
-+			hif_dev->rx_transfer_len =
-+				MAX_RX_BUF_SIZE - chk_idx - 4;
-+			hif_dev->rx_pad_len = pad_len;
-+
- 			skb_reserve(nskb, 32);
- 			RX_STAT_INC(hif_dev, skb_allocated);
- 
-@@ -654,6 +660,13 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 				 skb_pool[i]->len, USB_WLAN_RX_PIPE);
- 		RX_STAT_INC(hif_dev, skb_completed);
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index f315c54bd3ac..19345b8f7bfd 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -341,6 +341,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	if (!time_left) {
+ 		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
+ 			wmi_cmd_to_name(cmd_id));
++		wmi->last_seq_id = 0;
+ 		mutex_unlock(&wmi->op_mutex);
+ 		return -ETIMEDOUT;
  	}
-+	return;
-+invalid_pkt:
-+	for (i = 0; i < pool_index; i++) {
-+		dev_kfree_skb_any(skb_pool[i]);
-+		RX_STAT_INC(hif_dev, skb_dropped);
-+	}
-+	return;
- }
- 
- static void ath9k_hif_usb_rx_cb(struct urb *urb)
 -- 
-2.34.1
+2.25.1
 
