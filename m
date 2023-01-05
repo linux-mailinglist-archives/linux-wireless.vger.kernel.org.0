@@ -2,312 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D79ED65EEB2
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 15:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A460E65F03F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 16:39:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233384AbjAEO0E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Jan 2023 09:26:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36046 "EHLO
+        id S234158AbjAEPif (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Jan 2023 10:38:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233918AbjAEOZp (ORCPT
+        with ESMTP id S232803AbjAEPiN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Jan 2023 09:25:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7395B551EB
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 06:24:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1672928698;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+vMsyLV1iqqB+rTaHPT3o+p3vbpQRz33shEufuH/iew=;
-        b=A0htvMrjn/3q527ddxdM1fjHonqD1dp5EVA0iG4cixgAGXiv89NmqIt2CzZD9tt4RgDUbP
-        Mf+eAZ15j03kM2glnj7OQjbpLo/2AY4uxVWCPgCLW1d0vhaZSTNMQM1jdgrQW/gfqXfA0/
-        trq6qmbv6lnvD4PILje543xENM7GP3U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-563-xX-8cGwtNL2ZC2Cq3Wv9qw-1; Thu, 05 Jan 2023 09:24:55 -0500
-X-MC-Unique: xX-8cGwtNL2ZC2Cq3Wv9qw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A24F6857A8A;
-        Thu,  5 Jan 2023 14:24:53 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.22.50.10])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 445911415308;
-        Thu,  5 Jan 2023 14:24:52 +0000 (UTC)
-Message-ID: <5e77d02ee84ac41bd8a55e2a0980ada5fba978dc.camel@redhat.com>
-Subject: Re: [PATCH] wifi: libertas: return consistent length in
- lbs_add_wpa_tlv()
-From:   Dan Williams <dcbw@redhat.com>
-To:     Doug Brown <doug@schmorgal.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Thu, 05 Jan 2023 08:24:51 -0600
-In-Reply-To: <133a4655-bafa-a4f1-b9f4-df43cf443e83@schmorgal.com>
-References: <20230102234714.169831-1-doug@schmorgal.com>
-         <657adc8e514d4486853ef90cdf97bd75f55b44fa.camel@redhat.com>
-         <cc785f92-587c-c260-6369-c2dde9a392ca@schmorgal.com>
-         <9d9b16079503d64096b5d16e4552698ccecb9c7f.camel@redhat.com>
-         <133a4655-bafa-a4f1-b9f4-df43cf443e83@schmorgal.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.2 (3.46.2-1.fc37) 
+        Thu, 5 Jan 2023 10:38:13 -0500
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 992724D70C;
+        Thu,  5 Jan 2023 07:38:12 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id l26so26711128wme.5;
+        Thu, 05 Jan 2023 07:38:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JonkN/5yYHnucf2q3jhmBsrrdYdJsV4jujR0sLg/+OQ=;
+        b=lRWu5J2E6bTiOO97Xz7WyLNGbXxJXrHQpicJ5WYrI9O6zTbgogee3hF7N6/AQ7UeQj
+         c3mTqFK5DBYelb6mMNy4EhH/Qxa2sekzj5giEceLkjCrSJhOwZsF1D+dLgVvbnIcmZP2
+         Njy3iGUmW1fxm3+W2PYGsN/2Q5ZP7Jwioy25ZYrg1/+aAIyaK6NAsdr8eJ5SnZJwWdQ4
+         /8ciPe1FMvsN3j1thtnrvKfC0k8Dtpl1M0yOk49DZx/ma758j1XwR5FmJHl9bo4c4HkB
+         olyWtfD9p5hdhbNhJD/InlNXUFhkuMehtmPppzEyrepUV3J565x0be5uxDJkSts0IOxv
+         3P/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JonkN/5yYHnucf2q3jhmBsrrdYdJsV4jujR0sLg/+OQ=;
+        b=LD9qwEGdrF6bxBC7ydLWyLmWZoMeeY4VOnksUwKYlyXMVkCrplxvxNVXTSGCxRExZ3
+         KSTiphph6RS+6iitrHK0MAp4HeyYioa1G0CSx5Ms8Poqk48gIZkOL7VB6AoEdwYUzP/H
+         /kM2Qroykx/q3ZwgLBprMp39I5zaRSNusqvjUykOGXsKojuS4tM6cP8iPIIwbR4NPrE6
+         WoNdwZkqwbfiNNbptYUAyTyUW4VDTZB6LlSHd7MSM0nxVZeB/Wno8ZfCahfQMBAdsZ/g
+         kWFFBjQrSmZN9ldL7JnLyiCbwjRDEkhq0+7jxh9sWPDFGWCkD0crjh0rT36e9rVmhLHS
+         h0EA==
+X-Gm-Message-State: AFqh2kqx6yb/faYlR7gyzobjyL9W/n751ovcs260nRYicFzT8adZw1BD
+        iT2NIllD/U6FhZ4Ja8bz++w=
+X-Google-Smtp-Source: AMrXdXskES35BGhVDGhNRFrHW7Srev49jb9drqf1nYZ5w0pgiciJYQhEhWHVVLIIRYupFQrd8EPrpg==
+X-Received: by 2002:a05:600c:22ca:b0:3d1:ebdf:d586 with SMTP id 10-20020a05600c22ca00b003d1ebdfd586mr36666492wmg.29.1672933091073;
+        Thu, 05 Jan 2023 07:38:11 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id p3-20020a05600c358300b003d1f2c3e571sm3152999wmq.33.2023.01.05.07.38.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Jan 2023 07:38:10 -0800 (PST)
+Message-ID: <7b3e4eaf-258f-bf5c-80f8-68d04d285235@gmail.com>
+Date:   Thu, 5 Jan 2023 17:38:08 +0200
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [RFC PATCH v1 19/19] rtw88: Add support for the SDIO based
+ RTL8821CS chipset
+To:     Sascha Hauer <sha@pengutronix.de>
+Cc:     Chris Morgan <macroalpha82@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+ <20221227233020.284266-20-martin.blumenstingl@googlemail.com>
+ <63b4b3e1.050a0220.791fb.767c@mx.google.com>
+ <0acf173d-a425-dcca-ad2f-f0f0f13a9f5e@gmail.com>
+ <20230105080142.GA15042@pengutronix.de>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20230105080142.GA15042@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-01-04 at 22:43 -0800, Doug Brown wrote:
-> On 1/4/2023 6:47 AM, Dan Williams wrote:
-> > On Tue, 2023-01-03 at 17:13 -0800, Doug Brown wrote:
-> > > Hi Dan,
-> > >=20
-> > > Thanks for reviewing my patch! Comments below:
-> > >=20
-> > > On 1/3/2023 9:47 AM, Dan Williams wrote:
-> > > > On Mon, 2023-01-02 at 15:47 -0800, Doug Brown wrote:
-> > > > > The existing code only converts the first IE to a TLV, but it
-> > > > > returns
-> > > > > a
-> > > > > value that takes the length of all IEs into account. When
-> > > > > there
-> > > > > is
-> > > > > more
-> > > > > than one IE (which happens with modern wpa_supplicant
-> > > > > versions
-> > > > > for
-> > > > > example), the returned length is too long and extra junk TLVs
-> > > > > get
-> > > > > sent
-> > > > > to the firmware, resulting in an association failure.
-> > > > >=20
-> > > > > Fix this by returning a length that only factors in the
-> > > > > single IE
-> > > > > that
-> > > > > was converted. The firmware doesn't seem to support the
-> > > > > additional
-> > > > > IEs,
-> > > > > so there is no value in trying to convert them to additional
-> > > > > TLVs.
-> > > > >=20
-> > > > > Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
-> > > > > Signed-off-by: Doug Brown <doug@schmorgal.com>
-> > > > > ---
-> > > > > =C2=A0=C2=A0=C2=A0drivers/net/wireless/marvell/libertas/cfg.c | 7=
- +++----
-> > > > > =C2=A0=C2=A0=C2=A01 file changed, 3 insertions(+), 4 deletions(-)
-> > > > >=20
-> > > > > diff --git a/drivers/net/wireless/marvell/libertas/cfg.c
-> > > > > b/drivers/net/wireless/marvell/libertas/cfg.c
-> > > > > index 3e065cbb0af9..fcc5420ec7ea 100644
-> > > > > --- a/drivers/net/wireless/marvell/libertas/cfg.c
-> > > > > +++ b/drivers/net/wireless/marvell/libertas/cfg.c
-> > > > > @@ -432,10 +432,9 @@ static int lbs_add_wpa_tlv(u8 *tlv,
-> > > > > const u8
-> > > > > *ie, u8 ie_len)
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*tlv+=
-+ =3D 0;
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tlv_l=
-en =3D *tlv++ =3D *ie++;
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*tlv+=
-+ =3D 0;
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (tlv_len--)
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0*tlv++ =3D *ie++;
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* the TLV is two byte=
-s larger than the IE */
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ie_len + 2;
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy(tlv, ie, tlv_le=
-n);
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* the TLV has a four-=
-byte header */
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return tlv_len + 4;
-> > > >=20
-> > > > Since you're removing ie_len usage in the function, you might
-> > > > as
-> > > > well
-> > > > remove it from the function's arguments.
-> > >=20
-> > > That's an excellent point. Thinking about it further after your
-> > > questions below, maybe we should keep it around and use it to
-> > > validate
-> > > how far we are allowed to go into "ie" though...technically the
-> > > existing
-> > > code could overflow the buffer with a malformed IE.
-> >=20
-> > Yeah, that's a good point, though I'd hope cfg80211 had already
-> > validated the IE structure that gets put into sme->ie. If not, I'd
-> > expect bigger problems. But doesn't hurt.
->=20
-> Ah, I didn't even consider that cfg80211 might be validating it ahead
-> of
-> time, but that would make a lot of sense. I'll do some more digging
-> and
-> figure out if that much validation is really needed in this driver.
->=20
-> > >=20
-> > > > Can you also update the comments to say something like "only
-> > > > copy
-> > > > the
-> > > > first IE into the command buffer".
-> > >=20
-> > > Will do.
-> > >=20
-> > > > Lastly, should you check the IE to make sure you're copying the
-> > > > WPA
-> > > > or
-> > > > WMM IE that the firmware expects? What other IEs does
-> > > > wpa_supplicant/cfg80211 add these days?
-> > >=20
-> > > I was wondering about that too. I wasn't sure exactly which
-> > > potential
-> > > IEs are the ones I should be looking for during this check. I've
-> > > seen
-> > > "RSN Information" =3D 48 during my testing with WPA2, and assume
-> > > based
-> > > on
-> > > the old Marvell driver code that "Vendor Specific" =3D 221 would be
-> > > used
-> > > with WPA. Going through the entire IE list and finding a match
-> > > seems
-> > > safer than just blindly grabbing the first one. This would also
-> > > be a
-> > > good time to add some bounds checking to make sure not to overrun
-> > > "ie"
-> > > as well...
-> >=20
-> > Everything after CMD_802_11_ASSOCIATE's DTIM Period field is just a
-> > bunch of IEs; the command only accepts certain IEs (at least it was
-> > documented to do that, no idea what the actual firmware does). So I
-> > wouldn't be surprised if it ignores some.
-> >=20
-> > So I guess ignore the reasoning I had above, but there's one more
-> > good
-> > reason to filter IEs passed to the firmware: space. We're probably
-> > not
-> > close to overrunning the buffer, but we really don't want to do
-> > that
-> > for security reasons.
->=20
->=20
-> I like that idea a lot. I'll filter and only allow through 48 and 221
-> IEs in lbs_add_wpa_tlv() in the next version of the patch.
->=20
-> > >=20
-> > > The other two IEs that are being added by modern wpa_supplicant
-> > > are
-> > > "Extended Capabilities" (127) with SCS and mirrored SCS set:
-> > >=20
-> > > 7f 0b 00 00 00 00 00 00 40 00 00 00 20
-> > >=20
-> > > ...and "Supported Operating Classes" (59) with current =3D 81 and
-> > > supported =3D 81 and 82:
-> > >=20
-> > > 3b 03 51 51 52
-> > >=20
-> > > I tried converting these additional IEs to TLVs. It resulted in a
-> > > successful connection, but the firmware didn't pass on these two
-> > > IEs
-> > > in
-> > > the association request -- I verified by sniffing packets. So I
-> > > was
-> > > concerned about passing them onto the firmware if it's not making
-> > > use
-> > > of
-> > > them, in case it's interpreting them in some other unexpected
-> > > way.
-> >=20
-> > Yeah, it might.
-> >=20
-> > >=20
-> > > Do you have any guidance on which possible IEs I should be
-> > > looking
-> > > for
-> > > other than 48 and 221, or where I could find that out?
-> >=20
-> > Only those two. The rest that are required get added specifically
-> > in
-> > the driver. There is a way to push unrecognized IEs through
-> > ("passthrough IEs" ID 0x010A) but we never implemented that in the
-> > driver because we never needed it.
->=20
->=20
-> Thanks. Good to know that passthrough is possible if any additional
-> IEs
-> need to be supported in the future. I see that in the old Marvell
-> source
-> code now, thanks.
->=20
-> > >=20
-> > > BTW, modern wpa_supplicant also doesn't work with libertas for
-> > > one
-> > > additional reason: it violates NL80211_ATTR_MAX_SCAN_IE_LEN on
-> > > some
-> > > older drivers including this one. But I believe that's a
-> > > wpa_supplicant
-> > > problem that I can't really address in the kernel...
-> >=20
-> > That's lame... but Jouni's response was that not allowing extra IEs
-> > would break some WPS stuff; CMD_802_11_SCAN does allow adding a TLV
-> > (0x011B) for WPS Enrollee IE contents, so maybe you could just set
-> > max_scan_ie_len to something larger than zero and ignore IEs that
-> > are
-> > not valid in WPS Enrollee Probe Request frames, while adding the
-> > WPS
-> > TLVs?
->=20
->=20
-> I love this idea, and I'm definitely interested in attempting it in
-> another patch in order to fully restore this driver's compatibility
-> with
-> wpa_supplicant. I'll play around with it a bit.
->=20
-> Do you happen to have any more info on how to use this TLV? It isn't
-> documented in the old Marvell driver or this driver. Based on what
-> I'm
-> seeing in wpa_supplicant, it looks like the WPS stuff is encapsulated
-> in
-> Vendor Specific (221) IEs with special OUI/type values for WPS.
-> There's
-> another OUI/type for P2P info that can potentially be added for WPS
-> too.
-> Would I just need to directly convert these IEs into 0x011B TLVs
-> (obviously with a new TLV_TYPE_ #define added for it)?
-
-Kind of. Type =3D 0x11B, Length =3D size of the IEs buffer, and the data is
-just all the IEs you want to shove into the Enrollee Probe Request
-frames. So you don't need to convert anything, you're just wrapping the
-IEs you get into a Marvell-specific TLV.
-
-Dan
-
->=20
-> Thanks,
-> Doug
->=20
-> >=20
-> > Dan
-> >=20
-> > >=20
-> > > http://lists.infradead.org/pipermail/hostap/2022-January/040185.html
-> > >=20
-> > > Thanks!
-> > > Doug
-> > >=20
-> >=20
->=20
-
+On 05/01/2023 10:01, Sascha Hauer wrote:
+> On Wed, Jan 04, 2023 at 09:59:35PM +0200, Bitterblue Smith wrote:
+>> On 04/01/2023 01:01, Chris Morgan wrote:
+>>> On Wed, Dec 28, 2022 at 12:30:20AM +0100, Martin Blumenstingl wrote:
+>>>> Wire up RTL8821CS chipset support using the new rtw88 SDIO HCI code as
+>>>> well as the existing RTL8821C chipset code.
+>>>>
+>>>
+>>> Unfortunately, this doesn't work for me. I applied it on top of 6.2-rc2
+>>> master and I get errors during probe (it appears the firmware never
+>>> loads).
+>>>
+>>> Relevant dmesg logs are as follows:
+>>>
+>>> [    0.989545] mmc2: new high speed SDIO card at address 0001
+>>> [    0.989993] rtw_8821cs mmc2:0001:1: Firmware version 24.8.0, H2C version 12
+>>> [    1.005684] rtw_8821cs mmc2:0001:1: sdio write32 failed (0x14): -110
+>>> [    1.005737] rtw_8821cs mmc2:0001:1: sdio read32 failed (0x1080): -110
+>>> [    1.005789] rtw_8821cs mmc2:0001:1: sdio write32 failed (0x11080): -110
+>>> [    1.005840] rtw_8821cs mmc2:0001:1: sdio read8 failed (0x3): -110
+>>> [    1.005920] rtw_8821cs mmc2:0001:1: sdio read8 failed (0x1103): -110
+>>> [    1.005998] rtw_8821cs mmc2:0001:1: sdio read32 failed (0x80): -110
+>>> [    1.006078] rtw_8821cs mmc2:0001:1: sdio read32 failed (0x1700): -110
+>>>
+>>> The error of "sdio read32 failed (0x1700): -110" then repeats several
+>>> hundred times, then I get this:
+>>>
+>>> [    1.066294] rtw_8821cs mmc2:0001:1: failed to download firmware
+>>> [    1.066367] rtw_8821cs mmc2:0001:1: sdio read16 failed (0x80): -110
+>>> [    1.066417] rtw_8821cs mmc2:0001:1: sdio read8 failed (0x100): -110
+>>> [    1.066697] rtw_8821cs mmc2:0001:1: failed to setup chip efuse info
+>>> [    1.066703] rtw_8821cs mmc2:0001:1: failed to setup chip information
+>>> [    1.066839] rtw_8821cs: probe of mmc2:0001:1 failed with error -16
+>>>
+>>> The hardware I am using is an rtl8821cs that I can confirm was working
+>>> with a previous driver.
+>>>
+>>> Thank you.
+>>>
+>> The USB-based RTL8811CU also doesn't work, with suspiciously similar
+>> errors:
+>>
+>> Dec 25 21:43:37 home kernel: rtw_8821cu 1-2:1.0: Firmware version 24.11.0, H2C version 12
+>> Dec 25 21:43:37 home kernel: rtw_8821cu 1-2:1.0 wlp0s20f0u2: renamed from wlan0
+>> Dec 25 21:43:40 home kernel: rtw_8821cu 1-2:1.0: read register 0x5 failed with -110
+> 
+> Is this the very first register access or are there other register
+> accesses before that actually do work?
+> 
+> Sascha
+> 
+It's not the first register access. rtw_mac_power_switch() runs a few
+times before things fail.
