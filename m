@@ -2,110 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD2965E258
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 02:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 075C665E515
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 06:27:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230072AbjAEBNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 20:13:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50486 "EHLO
+        id S229722AbjAEF1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Jan 2023 00:27:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbjAEBNF (ORCPT
+        with ESMTP id S230307AbjAEF0v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 20:13:05 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9BEC72F7B1;
-        Wed,  4 Jan 2023 17:13:04 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3050tK461028570, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3050tK461028570
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 5 Jan 2023 08:55:20 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Thu, 5 Jan 2023 08:56:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 5 Jan 2023 08:56:16 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Thu, 5 Jan 2023 08:56:16 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        David Laight <David.Laight@aculab.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tehuang@realtek.com" <tehuang@realtek.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-Thread-Topic: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-Thread-Index: AQHZGsFtJHlbRNsmYUOpTa0F4ufSPq6EmMnggAOg+qCAALbHgIAAiEwg//+P14CABN6NgIAABnmAgAAEBACAAAa7gIAAFZaAgAD7MIA=
-Date:   Thu, 5 Jan 2023 00:56:15 +0000
-Message-ID: <27e2909a0bc94177af1afe56da618fba@realtek.com>
-References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
- <20221228133547.633797-2-martin.blumenstingl@googlemail.com>
- <92eb7dfa8b7d447e966a2751e174b642@realtek.com>
- <87da8c82dec749dc826b5a1b4c4238aa@AcuMS.aculab.com>
- <eee17e2f4e44a2f38021a839dc39fedc1c1a4141.camel@realtek.com>
- <a86893f11fe64930897473a38226a9a8@AcuMS.aculab.com>
- <5c0c77240e7ddfdffbd771ee7e50d36ef3af9c84.camel@realtek.com>
- <CAFBinCC+1jGJx1McnBY+kr3RTQ-UpxW6JYNpHzStUTredDuCug@mail.gmail.com>
- <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com>
- <CAFBinCC9sNvQJcu-SOSrFmo4sCx29K6KwXnc-O6MX9TJEHtXYg@mail.gmail.com>
- <662e2f820e7a478096dd6e09725c093a@AcuMS.aculab.com>
- <CAFBinCCTa47SRjNHbMB3t2zjiE5Vh1ZQrgT3G38g9g_-mzvh6w@mail.gmail.com>
-In-Reply-To: <CAFBinCCTa47SRjNHbMB3t2zjiE5Vh1ZQrgT3G38g9g_-mzvh6w@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvNCDkuIvljYggMTE6Mjg6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 5 Jan 2023 00:26:51 -0500
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC86DF41
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Jan 2023 21:26:50 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id 187-20020a4a09c4000000b004d8f3cb09f5so5172689ooa.6
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Jan 2023 21:26:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OejcpZVMfMg3HPzlGve79DiPK6ngwBTotFLTcHuW0S0=;
+        b=J6UJsKf/o83rMEvTny2BngrmRZsqGt+0e84OD41ne1VVCEZHscE+TS70G/Mlm5uvoc
+         9i9uE2bQWTWmP1jE3MMcEGYgbfp54Z1XQvi1BcCDBhA77hvZYTubLqQavXuI2ETnP9Gg
+         LhW50GGL2fAHsBr/50pXJ2zw4lDWVge8aILzWLY/cJ/FSo1weiSTAvUtwgAyDmpBwDlX
+         nSqKmObiT1GXe0uAEYKK9bccQAuwM//Mom226qhJ/6++HYXiYU5ToL8l1qjsWWIP84Da
+         LmlsNlOZ5BVL67/cR4Ibd986+k8QuHJTQhBocivE4jTaWCGAUBwmjS4/wlmPwzl0mEki
+         DC1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OejcpZVMfMg3HPzlGve79DiPK6ngwBTotFLTcHuW0S0=;
+        b=ZeT39gcnJs+JaFJMLtx2f3lOx2keZHUkhC62x5KRbD56uwBf8VHsITbO6FR1jJv6jm
+         HcRFd2LWSJxYvqkX/dBQ8abqiPGKULYMWFG23JhOUBB9O0xPPsG6qSQnBXOzrAaWSrkO
+         BQrVIDeM8n404nDZJxLyvVLH+tOECLTJ48yABWWRRMuto9f/PpePTVR9z0SovyMwddtF
+         0v4vfISeNsHjAEslHkpntrbLqxS4Giifuh8Ustl/qyqHO5WQXl82CDWggUQqqUUuvWU1
+         Cs6BZ0bNMeWRUCnqooan810+DtTjIb/lJTzkIqbAPK6IkX48zZC3AWrAgvbfy292lpjA
+         4aPA==
+X-Gm-Message-State: AFqh2koWXjzp0icgAJMFHmkJ18n0R9+rDlzYyCnSCwCHzrgXqrw0b585
+        fs6bzR+ois/nlsS9HMrihCjtwRwCsKI=
+X-Google-Smtp-Source: AMrXdXttu0b/leqvQ8POfETF0m7gdR0UtPXKHCzV8TzDzqgpBV5fm3PJMcTXvidr7VJaAL6mzGGkOQ==
+X-Received: by 2002:a4a:df0d:0:b0:4a3:e7ac:d31b with SMTP id i13-20020a4adf0d000000b004a3e7acd31bmr26779114oou.5.1672896410090;
+        Wed, 04 Jan 2023 21:26:50 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id f13-20020a4ab64d000000b004ce5d00de73sm12342587ooo.46.2023.01.04.21.26.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jan 2023 21:26:49 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 4 Jan 2023 21:26:47 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     johannes@sipsolutions.net, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: mac80211: change initialize for sk_buff in
+ ieee80211_tx_dequeue()
+Message-ID: <20230105052647.GA2477583@roeck-us.net>
+References: <20221212083607.21536-1-quic_wgong@quicinc.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221212083607.21536-1-quic_wgong@quicinc.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IE1hcnRpbiBCbHVtZW5zdGlu
-Z2wgPG1hcnRpbi5ibHVtZW5zdGluZ2xAZ29vZ2xlbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5
-LCBKYW51YXJ5IDUsIDIwMjMgMTo0OSBBTQ0KPiBUbzogRGF2aWQgTGFpZ2h0IDxEYXZpZC5MYWln
-aHRAYWN1bGFiLmNvbT4NCj4gQ2M6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsg
-bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBrdmFsb0BrZXJuZWwub3JnOw0KPiB0ZWh1
-YW5nQHJlYWx0ZWsuY29tOyBzLmhhdWVyQHBlbmd1dHJvbml4LmRlOyB0b255MDYyMGVtbWFAZ21h
-aWwuY29tOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJu
-ZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMS80XSBydHc4ODogQWRkIHBhY2tlZCBhdHRy
-aWJ1dGUgdG8gdGhlIGVGdXNlIHN0cnVjdHMNCj4gDQo+IE9uIFdlZCwgSmFuIDQsIDIwMjMgYXQg
-NTozMSBQTSBEYXZpZCBMYWlnaHQgPERhdmlkLkxhaWdodEBhY3VsYWIuY29tPiB3cm90ZToNCj4g
-Wy4uLl0NCj4gPiA+ID4gV2hhdCB5b3UgbWF5IHdhbnQgdG8gZG8gaXMgYWRkIGNvbXBpbGUtdGlt
-ZSBhc3NlcnRzIGZvciB0aGUNCj4gPiA+ID4gc2l6ZXMgb2YgdGhlIHN0cnVjdHVyZXMuDQo+ID4g
-PiBEbyBJIGdldCB5b3UgcmlnaHQgdGhhdCBzb21ldGhpbmcgbGlrZToNCj4gPiA+ICAgQlVJTERf
-QlVHX09OKHNpemVvZihydHc4ODIxY19lZnVzZSkgIT0gMjU2KTsNCj4gPiA+IGlzIHdoYXQgeW91
-IGhhdmUgaW4gbWluZD8NCj4gPg0KPiA+IFRoYXQgbG9va3MgbGlrZSB0aGUgb25lLi4uDQo+IEkg
-dHJpZWQgdGhpcyAoc2VlIHRoZSBhdHRhY2hlZCBwYXRjaCAtIGl0J3MganVzdCBtZWFudCB0byBz
-aG93IHdoYXQgSQ0KPiBkaWQsIGl0J3Mgbm90IG1lYW50IHRvIGJlIGFwcGxpZWQgdXBzdHJlYW0p
-Lg0KPiBXaXRoIHRoZSBhdHRhY2hlZCBwYXRjaCBidXQgbm8gb3RoZXIgcGF0Y2hlcyB0aGlzIG1h
-a2VzIHRoZSBydHc4OA0KPiBkcml2ZXIgY29tcGlsZSBmaW5lIG9uIDYuMi1yYzIuDQoNCkkgcHJl
-ZmVyIHRvIHVzZSBzdGF0aWNfYXNzZXJ0KCkgYmVsb3cgdGhlIHN0cnVjdCBpZiB3ZSByZWFsbHkg
-bmVlZCBpdC4NCkluIGZhY3QsIHdlIG9ubHkgbGlzdCBmaWVsZHMgb2YgZWZ1c2UgbWFwIHdlIG5l
-ZWQgaW4gdGhlIHN0cnVjdCwgbm90DQpmdWxsIG1hcC4gDQoNCj4gDQo+IEFkZGluZyBfX3BhY2tl
-ZCB0byBzdHJ1Y3QgcnR3ODcyM2RfZWZ1c2UgY2hhbmdlcyB0aGUgc2l6ZSBvZiB0aGF0DQo+IHN0
-cnVjdCBmb3IgbWUgKEknbSBjb21waWxpbmcgZm9yIEFBcmNoNjQgLyBBUk02NCkuDQo+IFdpdGgg
-dGhlIHBhY2tlZCBhdHRyaWJ1dGUgaXQgaGFzIDI2NyBieXRlcywgd2l0aG91dCAyNjggYnl0ZXMu
-DQoNClRyeSANCg0Kc3RhdGljX2Fzc2VydChvZmZzZXRvZihzdHJ1Y3QgcnR3ODcyM2RfZWZ1c2Us
-IHJmX2FudGVubmFfb3B0aW9uKSA9PSAweGM5KTsNCg0KYW5kIG90aGVyIGZpZWxkcyB0byBiaXNl
-Y3Qgd2hpY2ggZmllbGQgZ2V0cyB3cm9uZy4NCg0KUGluZy1LZQ0KDQo=
+On Mon, Dec 12, 2022 at 03:36:07AM -0500, Wen Gong wrote:
+> The sk_buff is only set to NULL when initialize, sometimes it will goto
+> label "begin" after ieee80211_free_txskb(), then it points to a sk_buff
+> which is already freed. If it run into the "goto out" after arrived to
+> label "begin", then it will return a sk_buff which is freed, it is a
+> risk for use-after-free.
+> 
+> Fixes: ded4698b58cb ("mac80211: run late dequeue late tx handlers without holding fq->lock")
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+
+I don't see any progress on this patch. Is there a problem with it ?
+Did it get lost ?
+
+Thanks,
+Guenter
+
+> ---
+>  net/mac80211/tx.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> 
+> base-commit: 922932ca02191a390f7f52fb6e21c44b50e14025
+> 
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index 2171cd1ca807..0b23cc9ab9c7 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -3776,7 +3776,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+>  	struct ieee80211_local *local = hw_to_local(hw);
+>  	struct txq_info *txqi = container_of(txq, struct txq_info, txq);
+>  	struct ieee80211_hdr *hdr;
+> -	struct sk_buff *skb = NULL;
+> +	struct sk_buff *skb;
+>  	struct fq *fq = &local->fq;
+>  	struct fq_tin *tin = &txqi->tin;
+>  	struct ieee80211_tx_info *info;
+> @@ -3790,6 +3790,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+>  		return NULL;
+>  
+>  begin:
+> +	skb = NULL;
+> +
+>  	spin_lock_bh(&fq->lock);
+>  
+>  	if (test_bit(IEEE80211_TXQ_STOP, &txqi->flags) ||
