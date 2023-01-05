@@ -2,96 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0D065E6DF
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 09:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5539E65E6FD
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 09:42:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231474AbjAEIet (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Jan 2023 03:34:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
+        id S231246AbjAEImu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Jan 2023 03:42:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231449AbjAEIer (ORCPT
+        with ESMTP id S231504AbjAEIme (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Jan 2023 03:34:47 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2D44C719
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 00:34:44 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-108-6ZLZ5sXtNqe3xnp3-GeDRg-1; Thu, 05 Jan 2023 08:34:41 +0000
-X-MC-Unique: 6ZLZ5sXtNqe3xnp3-GeDRg-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 5 Jan
- 2023 08:34:40 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Thu, 5 Jan 2023 08:34:40 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Martin Blumenstingl' <martin.blumenstingl@googlemail.com>
-CC:     Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tehuang@realtek.com" <tehuang@realtek.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-Thread-Topic: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
-Thread-Index: AQHZGsFtJHlbRNsmYUOpTa0F4ufSPq6EmMnggAOg+qCAALbHgIAAiEwggAT0j0eAAALd0IAAB5IAgAADjxCAABjCgIAA9scQ
-Date:   Thu, 5 Jan 2023 08:34:40 +0000
-Message-ID: <4c4551c787ee4fc9ac40b34707d7365a@AcuMS.aculab.com>
-References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
- <20221228133547.633797-2-martin.blumenstingl@googlemail.com>
- <92eb7dfa8b7d447e966a2751e174b642@realtek.com>
- <87da8c82dec749dc826b5a1b4c4238aa@AcuMS.aculab.com>
- <eee17e2f4e44a2f38021a839dc39fedc1c1a4141.camel@realtek.com>
- <a86893f11fe64930897473a38226a9a8@AcuMS.aculab.com>
- <5c0c77240e7ddfdffbd771ee7e50d36ef3af9c84.camel@realtek.com>
- <CAFBinCC+1jGJx1McnBY+kr3RTQ-UpxW6JYNpHzStUTredDuCug@mail.gmail.com>
- <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com>
- <CAFBinCC9sNvQJcu-SOSrFmo4sCx29K6KwXnc-O6MX9TJEHtXYg@mail.gmail.com>
- <662e2f820e7a478096dd6e09725c093a@AcuMS.aculab.com>
- <CAFBinCCTa47SRjNHbMB3t2zjiE5Vh1ZQrgT3G38g9g_-mzvh6w@mail.gmail.com>
-In-Reply-To: <CAFBinCCTa47SRjNHbMB3t2zjiE5Vh1ZQrgT3G38g9g_-mzvh6w@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Thu, 5 Jan 2023 03:42:34 -0500
+Received: from out20-86.mail.aliyun.com (out20-86.mail.aliyun.com [115.124.20.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4CC04C71D
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 00:42:31 -0800 (PST)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.1015252|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.169081-0.000819096-0.8301;FP=0|0|0|0|0|0|0|0;HT=ay29a033018047213;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.Qky.SOh_1672908116;
+Received: from eq59.localnet(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.Qky.SOh_1672908116)
+          by smtp.aliyun-inc.com;
+          Thu, 05 Jan 2023 16:41:57 +0800
+From:   Aiden Leong <aiden.leong@aibsd.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: Re: [PATCH 1/2] iwlwifi: pcie: add support for AX101NGW
+Date:   Thu, 05 Jan 2023 16:41:55 +0800
+Message-ID: <2669054.mvXUDI8C0e@eq59>
+In-Reply-To: <cef2bd45d48127dfb65d8cf7243ec09cfbb30921.camel@intel.com>
+References: <20230102024021.2900-1-aiden.leong@aibsd.com>
+ <b5b67842-17a2-f2b8-3c58-b6242b77e5b7@aibsd.com>
+ <cef2bd45d48127dfb65d8cf7243ec09cfbb30921.camel@intel.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; boundary="nextPart12131945.O9o76ZdvQC";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogTWFydGluIEJsdW1lbnN0aW5nbA0KPiBTZW50OiAwNCBKYW51YXJ5IDIwMjMgMTc6NDkN
-Cj4gDQo+IE9uIFdlZCwgSmFuIDQsIDIwMjMgYXQgNTozMSBQTSBEYXZpZCBMYWlnaHQgPERhdmlk
-LkxhaWdodEBhY3VsYWIuY29tPiB3cm90ZToNCj4gWy4uLl0NCj4gPiA+ID4gV2hhdCB5b3UgbWF5
-IHdhbnQgdG8gZG8gaXMgYWRkIGNvbXBpbGUtdGltZSBhc3NlcnRzIGZvciB0aGUNCj4gPiA+ID4g
-c2l6ZXMgb2YgdGhlIHN0cnVjdHVyZXMuDQo+ID4gPiBEbyBJIGdldCB5b3UgcmlnaHQgdGhhdCBz
-b21ldGhpbmcgbGlrZToNCj4gPiA+ICAgQlVJTERfQlVHX09OKHNpemVvZihydHc4ODIxY19lZnVz
-ZSkgIT0gMjU2KTsNCj4gPiA+IGlzIHdoYXQgeW91IGhhdmUgaW4gbWluZD8NCj4gPg0KPiA+IFRo
-YXQgbG9va3MgbGlrZSB0aGUgb25lLi4uDQo+IEkgdHJpZWQgdGhpcyAoc2VlIHRoZSBhdHRhY2hl
-ZCBwYXRjaCAtIGl0J3MganVzdCBtZWFudCB0byBzaG93IHdoYXQgSQ0KPiBkaWQsIGl0J3Mgbm90
-IG1lYW50IHRvIGJlIGFwcGxpZWQgdXBzdHJlYW0pLg0KPiBXaXRoIHRoZSBhdHRhY2hlZCBwYXRj
-aCBidXQgbm8gb3RoZXIgcGF0Y2hlcyB0aGlzIG1ha2VzIHRoZSBydHc4OA0KPiBkcml2ZXIgY29t
-cGlsZSBmaW5lIG9uIDYuMi1yYzIuDQo+IA0KPiBBZGRpbmcgX19wYWNrZWQgdG8gc3RydWN0IHJ0
-dzg3MjNkX2VmdXNlIGNoYW5nZXMgdGhlIHNpemUgb2YgdGhhdA0KPiBzdHJ1Y3QgZm9yIG1lIChJ
-J20gY29tcGlsaW5nIGZvciBBQXJjaDY0IC8gQVJNNjQpLg0KPiBXaXRoIHRoZSBwYWNrZWQgYXR0
-cmlidXRlIGl0IGhhcyAyNjcgYnl0ZXMsIHdpdGhvdXQgMjY4IGJ5dGVzLg0KPiANCj4gRG8geW91
-IGhhdmUgYW55IGlkZWFzIGFzIHRvIHdoeSB0aGF0IGlzPw0KDQpUYWlsIHBhZGRpbmcgLSB5b3Ug
-d29uJ3QgZ2V0IGFuIG9kZCBsZW5ndGggZm9yIGEgc3RydWN0dXJlDQp0aGF0IGNvbnRhaW5zIGEg
-MTZiaXQgaXRlbS4NCg0KT1RPSCBJIGRvdWJ0IHlvdSBjYXJlIGFib3V0IHRoZSBzaXplIG9mIHRo
-YXQgc3RydWN0dXJlLCBqdXN0DQp0aGUgb2Zmc2V0IG9mIHRoZSB1bmlvbiBhbmQgdGhlIHNpemVz
-IG9mIHRoZSB1bmlvbiBtZW1iZXJzLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNz
-IExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAx
-UFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+--nextPart12131945.O9o76ZdvQC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Aiden Leong <aiden.leong@aibsd.com>
+Subject: Re: [PATCH 1/2] iwlwifi: pcie: add support for AX101NGW
+Date: Thu, 05 Jan 2023 16:41:55 +0800
+Message-ID: <2669054.mvXUDI8C0e@eq59>
+MIME-Version: 1.0
+
+On 2023=E5=B9=B41=E6=9C=885=E6=97=A5=E6=98=9F=E6=9C=9F=E5=9B=9B CST =E4=B8=
+=8B=E5=8D=882:39:52 Greenman, Gregory wrote:
+> On Mon, 2023-01-02 at 22:32 +0800, Aiden Leong wrote:
+>=20
+> > 1. I know nothing about what `tx_with_siso_diversity` is. It's just a=20
+> > hardware flag to me. Main line.
+> >=20
+> > 2. I have the real device. Tested. Two photos was sent to Luca Coelho a=
+s=20
+> > well.
+> >=20
+> > 3. /drivers/net/wireless/intel/iwlwifi/pcie/drv.c#L623
+> >=20
+> >  > IWL_DEV_INFO(0x4DF0, 0x1651, killer1650s_2ax_cfg_qu_b0_hr_b0, NULL),
+> >=20
+> > The device I have is 0x4DF0, 0x0244. They share the same device ID.
+> >=20
+> > 4. I have narrowed down my code with _mac_step, _rf_type, _rf_id,=20
+> > _no_160 and _cores, so it should be safe to other devices.
+> >=20
+> > Happy New Year
+> >=20
+> > Aiden
+> >=20
+> > On 2023/1/2 21:32, Greenman, Gregory wrote:
+> >=20
+> > > On Mon, 2023-01-02 at 10:40 +0800, Aiden Leong wrote:
+> > >=20
+> > > > AX101NGW(0x4DF0, 0x0244) should have tx_with_siso_diversity unset.
+> > >=20
+> > > Why it should be unset? Which kernel do you have?
+> > > Commit 3f910a25839b13436bf0a22186f1698b23eafb91 added AX101 device.
+> > >=20
+> > >=20
+> > > > Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
+> > > > ---
+> > > > Ref Commit: 9352ed0165ff4313ab340c979446c3d64c531f7a
+> > > > Tested on my own device.
+> > > > ---
+> > > >   drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 5 +++++
+> > > >   1 file changed, 5 insertions(+)
+> > > >=20
+> > > > diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > > > b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+ index
+> > > > 99768d6a6032..a46df1320372 100644
+> > > > --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > > > +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > > > @@ -986,6 +986,11 @@ static const struct iwl_dev_info
+> > > > iwl_dev_info_table[] =3D {
+ iwl_qu_c0_hr_b0, iwl_ax201_name),
+> > > >  =20
+> > > >          /* QuZ */
+> > > > +       _IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
+> > > > +                     IWL_CFG_MAC_TYPE_QUZ, SILICON_B_STEP,
+> > > > +                     IWL_CFG_RF_TYPE_HR1, IWL_CFG_RF_ID_HR1,
+> > > > +                     IWL_CFG_NO_160, IWL_CFG_CORES_BT,
+> > > > IWL_CFG_NO_CDB, IWL_CFG_NO_JACKET,
+ +                   =20
+> > > > iwl_cfg_quz_a0_hr_b0, iwl_ax101_name),
+> > > >          _IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
+> > > >                        IWL_CFG_MAC_TYPE_QUZ, IWL_CFG_ANY,
+> > > >                        IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY,
+>=20
+>=20
+> So, still the only thing that this patch does is to *disable*
+> tx_with_siso_diversity flag.=20
+ The configuration one line below it (looking
+> at Linux 6.2-rc2) is essentially the same (but with wildcards instead), t=
+he
+> only thing different is using iwl_quz_a0_hr1_b0 instead of
+> iwl_cfg_quz_a0_hr_b0. These two configurations differ only in setting
+> tx_with_siso_diversity. Thus the question, what is the reason for the
+> change? Did you experienced FW crashes, throughput degardataion?
+
+Correct.
+
+1. The FW crashes with "NMI_INTERRUPT_UNKNOW". Not interface shows up=20
+via `ip a`.
+
+2. With iwl_cfg_quz_a0_hr_b0, it works. However, I get=20
+"NMI_INTERRUPT_UMAC_FATAL " in dmesg. Throughput degardataion not tested.
+
+Please let me know if I should send you more info for further debugging.
+
+Cheers,
+Aiden Leong
+--nextPart12131945.O9o76ZdvQC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEENSNFoSpoTSrmxF9vGvlck5mKYvIFAmO2jVMACgkQGvlck5mK
+YvKgbAf/SSwmTjRzp4inMRqbuiuBPfI00X7JP20gCJq1PQs7nOKx9oMQsnY+4XC/
+dNHsGE2BRQBmwaKR2KndLWZZL6KIsEjCs0kj76UdkJxCWZoC/KnXvhlu9jEQr9GS
+2lKodUjt4Ilnmd4BcJ1ZE37HvMfS/Q9IsRfeBKZZmUIvV2NcUdh7hWn0ta4srwwH
+Wg7PZXX7T8hjvgVfR6x5DvtIbuF6GXaMxWJqzAzMP3vO11eJebTLaAoqPBXDYlEq
+zDTAii4EU6ocvn1QyD/DkZuYdhdpvcOT9ZfHM/Wd/gwM1xBNkf6QLB8fP8OOMX1k
+Gvwij1zSMMFU0gh8Q4i7iHxdqowoNg==
+=keLB
+-----END PGP SIGNATURE-----
+
+--nextPart12131945.O9o76ZdvQC--
+
+
 
