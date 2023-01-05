@@ -2,79 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA7365F2A3
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 18:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6513565F2B3
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 18:30:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234381AbjAER2G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Jan 2023 12:28:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
+        id S234822AbjAERa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Jan 2023 12:30:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235180AbjAER1o (ORCPT
+        with ESMTP id S234360AbjAERa5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Jan 2023 12:27:44 -0500
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CEB260853
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 09:23:51 -0800 (PST)
-Received: by mail-ej1-x642.google.com with SMTP id jo4so91636280ejb.7
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Jan 2023 09:23:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7JT2Gt7y/M3YLHVCyMzZwNsFe1p6EOvnpVpu2gl496w=;
-        b=bnQATo5i7yL1AKzNCNlyfQQX7ALBry+gwEx2JkOVaOoArqS2RgvdbDttRg0yQ3Vm+q
-         AE9WMQGeOcNuG1Fk2HiAKLe7Yk80Rd3Ubohit5v6iEub0oHtI1liH56OHUpsk32Zjg3Y
-         W6L2WuCDqI7MAeeeKFbWK9Iljy7X0BoDzFI0GfLygE8dOg+hkl8ZqVfAAhzH5EkAOvwz
-         lA19307MFKOwGGQ8IH2xxlKr8/C12vJqTpXxogQCfCmU5Wf0JhO+Q+C1ApRo/cb2LSk6
-         sWi5xEvVB+su6kElh2EX1fsLcJR0H/DyU44e0kagAPn/yFvlXtNlEH/I1NU9tmOVgxQo
-         minQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7JT2Gt7y/M3YLHVCyMzZwNsFe1p6EOvnpVpu2gl496w=;
-        b=2B8cC0iqoFMj3An1KOttH9/tDB/SW9xxKwuN8CrKxqA8O7oByZE/uZjBkVNGt72ej3
-         COktacnPbscTFsTXAFHQ96WwuLhOHfggk/pwDyWk2/mZ/v0VfYzMpjJgkQOMDQTgChTl
-         ERXUDSqqnkIx+pmg+caLtoDhWHK6yEBh3yfp0aPe1ImRnxdsn+yDMzPP5zn7sovqKRK+
-         IT1HbdqQoHRB0NGBdiJ3B5h/L4o4878uQrrV7NH1N5XgIVfyMgQ+WgJOzchiqANb5FfQ
-         DDQx6+0amIX5Xe+htgfPjBQFvFIwDkv5kPhdmdRVVWu58kuYTtoiSUbIpJ8TeQ4RiGMm
-         l0EA==
-X-Gm-Message-State: AFqh2kpwpAAX7Lq0ZxdU9hYH2JhkXjuyDB8jLGd/ziKaxTT9NBpza6pf
-        CpPQQXSa1EPrlATjE7KPoWCrQlB7hGbdkrQdzVI=
-X-Google-Smtp-Source: AMrXdXsQrhFfYLpGB4l/W9Ix2jJV0Pv7iduMEbBardu66mNvKSPX8iugcvRk3ZY4dl9qAl/hcC5SZphogmfr9vasHEE=
-X-Received: by 2002:a17:906:86d1:b0:78d:9e77:1f8c with SMTP id
- j17-20020a17090686d100b0078d9e771f8cmr2992774ejy.236.1672939429793; Thu, 05
- Jan 2023 09:23:49 -0800 (PST)
+        Thu, 5 Jan 2023 12:30:57 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8226012AC0
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 09:30:56 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BE9761BB9
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 17:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC40C433D2;
+        Thu,  5 Jan 2023 17:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672939855;
+        bh=6LlaLFbcaL5n7Zyj6ZzafyXC+04ZIaEJXvb8J9x+9mk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UTqJJfZvSSu5m2HqB5jgCos4xwooB12qVIlj23J4TCEu31lUBdEUVXMVf6deQfFV4
+         7jEsVjKRQIEpgr7l0nBGefdS5FSsfQiESt0scELt5oEamfOJ3/E24qbPW/A0lGdQwu
+         go173PyYCf5mj7TzyfN7WxMvkSWAWQmhmT4oEHNDDpqLlm4EUnheYfyRR0BvwfrBMy
+         8Z1Csk4oeHj8hnL/g5o4e0oZup0vBk0di4iDCPHuDV5fFxaESm+tW/MAnKRLEC9SA3
+         fWAcmF/zB5+0ERCUq8SwByriAmm8KyP6IvQu3tGCE5TgA/31d6ZUAqm/xqJHpBqYvt
+         I/0Cqa1oIpkCA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        Sujuan Chen <sujuan.chen@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: release rxwi in mt7915_wed_release_rx_buf
+Date:   Thu,  5 Jan 2023 18:30:49 +0100
+Message-Id: <ba4a2ece87a0ba6488b54118a9f3ba20aa7b920d.1672939797.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Received: by 2002:a17:907:c308:b0:7ff:7876:a6fd with HTTP; Thu, 5 Jan 2023
- 09:23:49 -0800 (PST)
-Reply-To: westernuniontransfer277@gmail.com
-From:   dan Hudson <danhudson5688@gmail.com>
-Date:   Thu, 5 Jan 2023 09:23:49 -0800
-Message-ID: <CAPuvh=WPG21mn2tVHjXwUtQN2OrWS4uzifCR06BKR51JYrw8XA@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good day dear,
+From: Sujuan Chen <sujuan.chen@mediatek.com>
 
-This is to let you know that your payment is ready now, but we need
-your details now so we can complete your transfer today without
-no error, so please try to send us your information now
-so we can continue.
+Free rxwi cache releasing WED rx buffers in mt7915_wed_release_rx_buf
+routine
 
-We hope to confirm your information now.
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/dma.c         | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76.h        | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 ++
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-Cheers,
-Western Union Agent.
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 2284ce4fd7cb..5629b949fac0 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -165,7 +165,7 @@ mt76_free_pending_txwi(struct mt76_dev *dev)
+ 	local_bh_enable();
+ }
+ 
+-static void
++void
+ mt76_free_pending_rxwi(struct mt76_dev *dev)
+ {
+ 	struct mt76_txwi_cache *t;
+@@ -178,6 +178,7 @@ mt76_free_pending_rxwi(struct mt76_dev *dev)
+ 	}
+ 	local_bh_enable();
+ }
++EXPORT_SYMBOL_GPL(mt76_free_pending_rxwi);
+ 
+ static void
+ mt76_dma_sync_idx(struct mt76_dev *dev, struct mt76_queue *q)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 7c3036eea3f8..9037780f9e88 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1268,6 +1268,7 @@ mt76_tx_status_get_hw(struct mt76_dev *dev, struct sk_buff *skb)
+ void mt76_put_txwi(struct mt76_dev *dev, struct mt76_txwi_cache *t);
+ void mt76_put_rxwi(struct mt76_dev *dev, struct mt76_txwi_cache *t);
+ struct mt76_txwi_cache *mt76_get_rxwi(struct mt76_dev *dev);
++void mt76_free_pending_rxwi(struct mt76_dev *dev);
+ void mt76_rx_complete(struct mt76_dev *dev, struct sk_buff_head *frames,
+ 		      struct napi_struct *napi);
+ void mt76_rx_poll_complete(struct mt76_dev *dev, enum mt76_rxq_id q,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index c0e7b30dfd48..76de0ca22c2a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -612,6 +612,8 @@ static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
+ 
+ 		mt76_put_rxwi(&dev->mt76, t);
+ 	}
++
++	mt76_free_pending_rxwi(&dev->mt76);
+ }
+ 
+ static u32 mt7915_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
+-- 
+2.39.0
+
