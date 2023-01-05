@@ -2,48 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6513565F2B3
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 18:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0BD465F648
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 22:55:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234822AbjAERa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Jan 2023 12:30:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45684 "EHLO
+        id S236176AbjAEVzE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Jan 2023 16:55:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234360AbjAERa5 (ORCPT
+        with ESMTP id S236149AbjAEVzA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Jan 2023 12:30:57 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8226012AC0
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 09:30:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BE9761BB9
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 17:30:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC40C433D2;
-        Thu,  5 Jan 2023 17:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672939855;
-        bh=6LlaLFbcaL5n7Zyj6ZzafyXC+04ZIaEJXvb8J9x+9mk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=UTqJJfZvSSu5m2HqB5jgCos4xwooB12qVIlj23J4TCEu31lUBdEUVXMVf6deQfFV4
-         7jEsVjKRQIEpgr7l0nBGefdS5FSsfQiESt0scELt5oEamfOJ3/E24qbPW/A0lGdQwu
-         go173PyYCf5mj7TzyfN7WxMvkSWAWQmhmT4oEHNDDpqLlm4EUnheYfyRR0BvwfrBMy
-         8Z1Csk4oeHj8hnL/g5o4e0oZup0vBk0di4iDCPHuDV5fFxaESm+tW/MAnKRLEC9SA3
-         fWAcmF/zB5+0ERCUq8SwByriAmm8KyP6IvQu3tGCE5TgA/31d6ZUAqm/xqJHpBqYvt
-         I/0Cqa1oIpkCA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        Sujuan Chen <sujuan.chen@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7915: release rxwi in mt7915_wed_release_rx_buf
-Date:   Thu,  5 Jan 2023 18:30:49 +0100
-Message-Id: <ba4a2ece87a0ba6488b54118a9f3ba20aa7b920d.1672939797.git.lorenzo@kernel.org>
+        Thu, 5 Jan 2023 16:55:00 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1EF567BDD
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 13:54:54 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id x11so15668103ljh.12
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Jan 2023 13:54:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0H9VgDunViPVm0c06yXB3KlkmbUAVMrT7+ES0UJHmWc=;
+        b=h7bTmNasTe8rhvHS84E6BpqSYiixrTRoilH4qSYJ8Os01IOxHG1GTFgNewoNQwDzdB
+         X+rfUUnJnJowuvBukL7jY5yHKbjlSng40DodU4pDmAT6cT6XOxShYnaxVe4SURL1Iys+
+         cbC0YvlJt/oag36lbtbQb4BrHAyqsg2Lpd8gJ4V2M9cUUi+R5SE66gtZUVMSVnPQi/Dn
+         agxOGOU+OTQzeaL3VhIoYLjRjPNTf1xtW/gGvMqKnyQ5fYyDUNkQTplZnYkICxaNsbFr
+         W2WsSzVWXtjFBjpV8+Svm/k2jvcXEgy4riWl6ud+vVlwl3gcs3zGT9ok0vC/LDFAWr72
+         EuVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0H9VgDunViPVm0c06yXB3KlkmbUAVMrT7+ES0UJHmWc=;
+        b=Kekssp6Eue2jaqKHbS1w14xE6HlfEVN2tB2dFMUCiL12ggQqV2pEmYIdBUwI/gDGyq
+         76NVR1fIsSy8i2gOrsEmiG7QCIdAYM+OW/a4TL6f7upeqG4OcyotIS6tlZl/gqaMFiAk
+         4XYzMZhKMejtl831zkRVR+sv3v9Eb3gpuvhfgbRstulef+Zk2nrFZJli30Ng+ZznMMXw
+         d7R3OccIaYb8ml2bCTFuV9/8Nz3BgidjpG+SBC9hiDavawn7QRgkYb6htg1xr7bT4tQH
+         tZpKDGm7BfEel6z1hd4w4nakpYIARN/h+isaGHlBRJ15YGDg0K5zpLxkPGYErk7J/cye
+         rtdg==
+X-Gm-Message-State: AFqh2kpZ2uMeJTP97lAy9ToBd7iSRlImJ66cc0ZG1uaE/4/Lo6FzulRC
+        qjimgkvPsyjeCgAEJRNW5+JkLQ==
+X-Google-Smtp-Source: AMrXdXug7mzvYB003Vy5Xw7LB0g5ckikyWB7YaXdSgBlzWZvACXOY1j5xtLffmAXq+H0n8M/440SOQ==
+X-Received: by 2002:a05:651c:168e:b0:281:878:292 with SMTP id bd14-20020a05651c168e00b0028108780292mr1563604ljb.52.1672955693090;
+        Thu, 05 Jan 2023 13:54:53 -0800 (PST)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id p13-20020a2eb98d000000b0027fb9e64bd0sm3471719ljp.86.2023.01.05.13.54.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Jan 2023 13:54:52 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Stefan Hansson <newbyte@disroot.org>
+Subject: Re: [PATCH 0/8] brcm: add firmware files for brcmfmac driver
+Date:   Thu,  5 Jan 2023 22:54:51 +0100
+Message-Id: <20230105215451.135111-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20221207230556.383935-1-arend.vanspriel@broadcom.com>
+References: <20221207230556.383935-1-arend.vanspriel@broadcom.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,67 +72,16 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sujuan Chen <sujuan.chen@mediatek.com>
+Hi Arend,
 
-Free rxwi cache releasing WED rx buffers in mt7915_wed_release_rx_buf
-routine
+thanks for this long due update! I have tested the BCM4330 SDIO
+firmware on the Samsung Janice (GT-I9070) and it works like a
+charm!
 
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/dma.c         | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76.h        | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 ++
- 3 files changed, 5 insertions(+), 1 deletion(-)
+I notice the absence of a new BCM4334 firmware, could you send
+that too, if you have a latest-and-greatest? Some people have
+problems with wireless on the Skomer (GT-S7710) and maybe a
+proper firmware would solve it.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 2284ce4fd7cb..5629b949fac0 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -165,7 +165,7 @@ mt76_free_pending_txwi(struct mt76_dev *dev)
- 	local_bh_enable();
- }
- 
--static void
-+void
- mt76_free_pending_rxwi(struct mt76_dev *dev)
- {
- 	struct mt76_txwi_cache *t;
-@@ -178,6 +178,7 @@ mt76_free_pending_rxwi(struct mt76_dev *dev)
- 	}
- 	local_bh_enable();
- }
-+EXPORT_SYMBOL_GPL(mt76_free_pending_rxwi);
- 
- static void
- mt76_dma_sync_idx(struct mt76_dev *dev, struct mt76_queue *q)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 7c3036eea3f8..9037780f9e88 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1268,6 +1268,7 @@ mt76_tx_status_get_hw(struct mt76_dev *dev, struct sk_buff *skb)
- void mt76_put_txwi(struct mt76_dev *dev, struct mt76_txwi_cache *t);
- void mt76_put_rxwi(struct mt76_dev *dev, struct mt76_txwi_cache *t);
- struct mt76_txwi_cache *mt76_get_rxwi(struct mt76_dev *dev);
-+void mt76_free_pending_rxwi(struct mt76_dev *dev);
- void mt76_rx_complete(struct mt76_dev *dev, struct sk_buff_head *frames,
- 		      struct napi_struct *napi);
- void mt76_rx_poll_complete(struct mt76_dev *dev, enum mt76_rxq_id q,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index c0e7b30dfd48..76de0ca22c2a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -612,6 +612,8 @@ static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
- 
- 		mt76_put_rxwi(&dev->mt76, t);
- 	}
-+
-+	mt76_free_pending_rxwi(&dev->mt76);
- }
- 
- static u32 mt7915_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
--- 
-2.39.0
-
+Thanks,
+Linus Walleij
