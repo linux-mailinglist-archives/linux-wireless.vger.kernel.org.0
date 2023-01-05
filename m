@@ -2,142 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C400D65E033
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jan 2023 23:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B010465E1E2
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jan 2023 01:44:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240486AbjADWpb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Jan 2023 17:45:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54366 "EHLO
+        id S229702AbjAEAoZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Jan 2023 19:44:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235227AbjADWp3 (ORCPT
+        with ESMTP id S240739AbjAEAnX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Jan 2023 17:45:29 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36A742E11;
-        Wed,  4 Jan 2023 14:45:28 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id h185so8202682oif.5;
-        Wed, 04 Jan 2023 14:45:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=n0P1Cn3HY9tpg3++h0RgufbLi9nhgqUDgcarrxGrEhc=;
-        b=CTW47R0r4NmIs6nU+t9MKUeCBx6pEjcnIVkPO0q//i1TLZZf6BtV5PJGbQMXosd++o
-         uSd088mijuoe1rTdoK5ci2YBpW6svSFp89RAkA5F2k4JwTO5NNpS/M0bij6it42iyt82
-         DBrlEb7nHLtbz9YgXUyZ/naOrgjCZVin0M+hgg1Uv6W+FAuWSpIVsXX/QDJdF+GYQqKO
-         H0CVgU0hVh0iBCwn66cSmS2FIMujHwg09VbWzUzC/bz5u8rf6skGiYgxdO4OqBxPsytl
-         P4VUsp35wsnosc94bjTDu3Od7My9UoGXvMCQTuEtMsZWbGdxGnlOKGjTYZ4yZSbuwSSK
-         wHJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n0P1Cn3HY9tpg3++h0RgufbLi9nhgqUDgcarrxGrEhc=;
-        b=Co2bM3jh7Rm9fq4t4xkjT0gX8pFxztVBYh0VeCZjy7oxIQVWZhXo2c66lZOAsI9zeU
-         xiNGbdfAwpVcRAUGpQ/7fQQ8/H2YTn8GLXwvOutj5UfXBuS8J/B+gF34HB5lPBEJXYwW
-         1mLTCbJrqfwjbvKnLkfgn66O880JiPUnde2E0yZVpZ5odMNPY7iJaKhWDNNs6GSMbl+K
-         Id8WV5CCVfZu7//pphJFbsHmY+jYKCukzEpqbfETGnhA9NZI0zO853ssQYTaaChw99RJ
-         YNZbk0sFLjonOeB63tPCArtkdQbOUBY5fqx9flOyPgh8BKhvbcm62tsXkHP6B5TDMd0l
-         oczA==
-X-Gm-Message-State: AFqh2ko+/gd2Jyi0rzisRBcNuRaDC579b+2sWellR8k2NXVkJpKjnXMY
-        z4yVX9hoe3/sfrXvDJ1nJ66QRjw+8Ho=
-X-Google-Smtp-Source: AMrXdXs2r16GJCTizyevH27pi+20ETe7z/MiQjxbt7H7twer0U6M2TcXHj+kjrH1sRwEQ4dCYqNl4w==
-X-Received: by 2002:a05:6808:2898:b0:35e:13d2:ac2f with SMTP id eu24-20020a056808289800b0035e13d2ac2fmr20625764oib.8.1672872328058;
-        Wed, 04 Jan 2023 14:45:28 -0800 (PST)
-Received: from neuromancer. (76-244-6-13.lightspeed.rcsntx.sbcglobal.net. [76.244.6.13])
-        by smtp.gmail.com with ESMTPSA id o189-20020aca41c6000000b00360e46a1edasm14594612oia.22.2023.01.04.14.45.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jan 2023 14:45:27 -0800 (PST)
-Message-ID: <63b60187.ca0a0220.a832f.5d69@mx.google.com>
-X-Google-Original-Message-ID: <Y7YBhOuq6jNaT99m@neuromancer.>
-Date:   Wed, 4 Jan 2023 16:45:24 -0600
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Nitin Gupta <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [RFC PATCH v1 19/19] rtw88: Add support for the SDIO based
- RTL8821CS chipset
-References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
- <20221227233020.284266-20-martin.blumenstingl@googlemail.com>
- <63b4b3e1.050a0220.791fb.767c@mx.google.com>
- <CAFBinCDpMjHPZ4CA-YdyAu=k1F_7DxxYEMSjnBEX2aMWfSCCeA@mail.gmail.com>
- <63b5b1c0.050a0220.a0efc.de06@mx.google.com>
- <CAFBinCCvf8E6jwjtoSgATnBxULgytFsUnphzUuaVPygsO3Prwg@mail.gmail.com>
+        Wed, 4 Jan 2023 19:43:23 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE4EC48598;
+        Wed,  4 Jan 2023 16:42:08 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3050eLabD019011, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3050eLabD019011
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 5 Jan 2023 08:40:21 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 5 Jan 2023 08:41:17 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 5 Jan 2023 08:41:16 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
+ RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
+ 15.01.2375.007; Thu, 5 Jan 2023 08:41:16 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        "leon@kernel.org" <leon@kernel.org>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] wifi: rtw89: Add missing check for alloc_workqueue
+Thread-Topic: [PATCH v2] wifi: rtw89: Add missing check for alloc_workqueue
+Thread-Index: AQHZIEjq9FFtsqr1yEeR9VNNUx0AXa6O/DPw
+Date:   Thu, 5 Jan 2023 00:41:16 +0000
+Message-ID: <dd7d393a20a4498f95ab397ff6bb8a1f@realtek.com>
+References: <20230104142901.1611-1-jiasheng@iscas.ac.cn>
+In-Reply-To: <20230104142901.1611-1-jiasheng@iscas.ac.cn>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2023/1/4_=3F=3F_11:28:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFBinCCvf8E6jwjtoSgATnBxULgytFsUnphzUuaVPygsO3Prwg@mail.gmail.com>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jan 04, 2023 at 06:23:24PM +0100, Martin Blumenstingl wrote:
-> On Wed, Jan 4, 2023 at 6:05 PM Chris Morgan <macroalpha82@gmail.com> wrote:
-> [...]
-> > > > [    0.989545] mmc2: new high speed SDIO card at address 0001
-> > > > [    0.989993] rtw_8821cs mmc2:0001:1: Firmware version 24.8.0, H2C version 12
-> > > > [    1.005684] rtw_8821cs mmc2:0001:1: sdio write32 failed (0x14): -110
-> > > > [    1.005737] rtw_8821cs mmc2:0001:1: sdio read32 failed (0x1080): -110
-> > > > [    1.005789] rtw_8821cs mmc2:0001:1: sdio write32 failed (0x11080): -110
-> > > > [    1.005840] rtw_8821cs mmc2:0001:1: sdio read8 failed (0x3): -110
-> > > > [    1.005920] rtw_8821cs mmc2:0001:1: sdio read8 failed (0x1103): -110
-> > > > [    1.005998] rtw_8821cs mmc2:0001:1: sdio read32 failed (0x80): -110
-> > > > [    1.006078] rtw_8821cs mmc2:0001:1: sdio read32 failed (0x1700): -110
-> > > The error starts with a write to register 0x14 (REG_SDIO_HIMR), which
-> > > happens right after configuring RX aggregation.
-> > > Can you please try two modifications inside
-> > > drivers/net/wireless/realtek/rtw88/sdio.c:
-> > > 1. inside the rtw_sdio_start() function: change
-> > > "rtw_sdio_rx_aggregation(rtwdev, false);" to
-> > > "rtw_sdio_rx_aggregation(rtwdev, true);"
-> >
-> > No change, still receive identical issue.
-> >
-> > > 2. if 1) does not work: remove the call to rtw_sdio_rx_aggregation()
-> > > from rtw_sdio_start()
-> > >
-> >
-> > Same here, still receive identical issue.
-> Thanks for testing and for reporting back!
-> 
-> Looking back at it again: I think I mis-interpreted your error output.
-> I think it's actually failing in __rtw_mac_init_system_cfg()
-> 
-> Can you please try the latest code from [0] (ignoring any changes I
-> recommended previously)?
-> There's two bug fixes in there (compared to this series) which may
-> solve the issue that you are seeing:
-> - fix typos to use "if (!*err_ret ..." (to read the error code)
-> instead of "if (!err_ret ..." (which just checks if a non-null pointer
-> was passed) in rtw_sdio_read_indirect{8,32}
-> - change buf[0] to buf[i] in rtw_sdio_read_indirect_bytes
-> 
-> These fixes will be part of v2 of this series anyways.
 
-That still doesn't fix it, I receive the same error. I'm using an older
-patch series of yours (that I can't seem to find on github anymore),
-so I'll see if I can compare the older series that works with this one
-and find out the root cause.
 
-Thank you.
+> -----Original Message-----
+> From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> Sent: Wednesday, January 4, 2023 10:29 PM
+> To: leon@kernel.org
+> Cc: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> Subject: [PATCH v2] wifi: rtw89: Add missing check for alloc_workqueue
+> 
+> Add check for the return value of alloc_workqueue since it may return
+> NULL pointer.
+> Moreover, add destroy_workqueue when rtw89_load_firmware fails.
+> 
+> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+> ---
+> CHangelog:
 > 
+> v1 -> v2:
 > 
-> Best regards,
-> Martin
+> 1. Add destroy_workqueue when rtw89_load_firmware fails.
+> ---
+>  drivers/net/wireless/realtek/rtw89/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> 
-> [0] https://github.com/xdarklight/linux/tree/d115a8631d208996510822f0805df5dfc8dfb548
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+> index 931aff8b5dc9..e99eccf11c76 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -3124,6 +3124,8 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+>  	INIT_DELAYED_WORK(&rtwdev->cfo_track_work, rtw89_phy_cfo_track_work);
+>  	INIT_DELAYED_WORK(&rtwdev->forbid_ba_work, rtw89_forbid_ba_work);
+>  	rtwdev->txq_wq = alloc_workqueue("rtw89_tx_wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+> +	if (!rtwdev->txq_wq)
+> +		return -ENOMEM;
+>  	spin_lock_init(&rtwdev->ba_lock);
+>  	spin_lock_init(&rtwdev->rpwm_lock);
+>  	mutex_init(&rtwdev->mutex);
+> @@ -3149,6 +3151,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+>  	ret = rtw89_load_firmware(rtwdev);
+>  	if (ret) {
+>  		rtw89_warn(rtwdev, "no firmware loaded\n");
+> +		destroy_workqueue(rtwdev->txq_wq);
+>  		return ret;
+>  	}
+>  	rtw89_ser_init(rtwdev);
+> --
+> 2.25.1
+
