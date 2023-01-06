@@ -2,70 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 807CB65FAD8
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 06:06:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FFB65FBE6
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 08:28:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbjAFFGr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Jan 2023 00:06:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35718 "EHLO
+        id S231289AbjAFH2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Jan 2023 02:28:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjAFFGq (ORCPT
+        with ESMTP id S229636AbjAFH2F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Jan 2023 00:06:46 -0500
-Received: from out20-85.mail.aliyun.com (out20-85.mail.aliyun.com [115.124.20.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04BDA6AD86
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Jan 2023 21:06:43 -0800 (PST)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.5151947|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0646523-0.00917353-0.926174;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047190;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.QlgjGTM_1672981569;
-Received: from localhost.localdomain(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.QlgjGTM_1672981569)
-          by smtp.aliyun-inc.com;
-          Fri, 06 Jan 2023 13:06:10 +0800
-From:   Aiden Leong <aiden.leong@aibsd.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     gregory.greenman@intel.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Aiden Leong <aiden.leong@aibsd.com>
-Subject: [PATCH v2] wifi: iwlwifi: pcie: add support for AX101NGW
-Date:   Fri,  6 Jan 2023 13:05:48 +0800
-Message-Id: <20230106050548.9112-1-aiden.leong@aibsd.com>
-X-Mailer: git-send-email 2.39.0
+        Fri, 6 Jan 2023 02:28:05 -0500
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356516AD84;
+        Thu,  5 Jan 2023 23:28:03 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 3922E244F0;
+        Fri,  6 Jan 2023 07:28:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1672990082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=qcHUiVAjJO3DMY5+VXRQErLJFnEpu+52N7JyRTTtab8=;
+        b=Obnz0JTZbqZVSRu5rHlgGY7Yld96w/YO9gpnshQBxWPxVzcBSGZn0HYGLtbSnYlqH5JBin
+        PwpyF/Wnx/FAL6sYxVRzp78ORRdQfTZyQ7uMO7uerv+zCesMaG1mDu8SWK6YtylZa2Ykqx
+        rQYra1Xo7uoBaiVbwzfK57281Dxf/TM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1672990082;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=qcHUiVAjJO3DMY5+VXRQErLJFnEpu+52N7JyRTTtab8=;
+        b=0n5SWdt2T2a2g8v/Cm3hugx00Bfu6ro6SXuTprzvpAu/F9VDwejNc8vPScqNx6W8QlGW7j
+        ASgXtMZN9+iokUCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 14E5A13596;
+        Fri,  6 Jan 2023 07:28:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id Gg2+BILNt2OMMwAAMHmgww
+        (envelope-from <iivanov@suse.de>); Fri, 06 Jan 2023 07:28:02 +0000
+From:   "Ivan T. Ivanov" <iivanov@suse.de>
+To:     aspriel@gmail.com, marcan@marcan.st
+Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        rmk+kernel@armlinux.org.uk, kvalo@kernel.org, davem@davemloft.net,
+        devicetree@vger.kernel.org, edumazet@google.com,
+        krzysztof.kozlowski+dt@linaro.org, kuba@kernel.org,
+        pabeni@redhat.com, robh+dt@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com,
+        "Ivan T. Ivanov" <iivanov@suse.de>
+Subject: [PATCH] brcmfmac: of: Use board compatible string for board type
+Date:   Fri,  6 Jan 2023 09:27:46 +0200
+Message-Id: <20230106072746.29516-1-iivanov@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix a bug introduced by: 
-commit 32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new
- config table"), so now we pick the FIRST matching config.
+When "brcm,board-type" is not explicitly set in devicetree
+fallback to board compatible string for board type.
 
-Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
+Some of the existing devices rely on the most compatible device
+string to find best firmware files, including Raspberry PI's[1].
+
+Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+
+[1] https://bugzilla.opensuse.org/show_bug.cgi?id=1206697#c13
+
+Signed-off-by: Ivan T. Ivanov <iivanov@suse.de>
 ---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I split patchset v1 to two standalone patches, since there are not that
-strongly related to each other.
-
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index a46df1320372..5d74adbd49cf 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1461,7 +1461,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- 	if (!num_devices)
- 		return NULL;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index a83699de01ec..fdd0c9abc1a1 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -79,7 +79,8 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 	/* Apple ARM64 platforms have their own idea of board type, passed in
+ 	 * via the device tree. They also have an antenna SKU parameter
+ 	 */
+-	if (!of_property_read_string(np, "brcm,board-type", &prop))
++	err = of_property_read_string(np, "brcm,board-type", &prop);
++	if (!err)
+ 		settings->board_type = prop;
  
--	for (i = num_devices - 1; i >= 0; i--) {
-+	for (i = 0; i < num_devices; i++) {
- 		const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
+ 	if (!of_property_read_string(np, "apple,antenna-sku", &prop))
+@@ -87,7 +88,7 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
  
- 		if (dev_info->device != (u16)IWL_CFG_ANY &&
+ 	/* Set board-type to the first string of the machine compatible prop */
+ 	root = of_find_node_by_path("/");
+-	if (root && !settings->board_type) {
++	if (root && err) {
+ 		char *board_type;
+ 		const char *tmp;
+ 
 -- 
-2.39.0
+2.35.3
 
