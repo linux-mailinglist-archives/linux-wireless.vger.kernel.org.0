@@ -2,89 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 528C66602EF
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 16:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F25660368
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 16:38:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234813AbjAFPTB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Jan 2023 10:19:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36180 "EHLO
+        id S235488AbjAFPiL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Jan 2023 10:38:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234496AbjAFPSl (ORCPT
+        with ESMTP id S231374AbjAFPiK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Jan 2023 10:18:41 -0500
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E12C8B743;
-        Fri,  6 Jan 2023 07:18:40 -0800 (PST)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-476e643d1d5so26868567b3.1;
-        Fri, 06 Jan 2023 07:18:40 -0800 (PST)
+        Fri, 6 Jan 2023 10:38:10 -0500
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF41C745A5;
+        Fri,  6 Jan 2023 07:38:08 -0800 (PST)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-482363a1232so27541097b3.3;
+        Fri, 06 Jan 2023 07:38:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oLTT10Q08SvcCsbZuYubvWn2TjFc+1wP3y0ZN/T09Wc=;
-        b=RKjEKEBjR7zbv+AXsvsl9YLEazD1LOHUJYucqol512xauguktXOj6/HU+n6iqsxWm0
-         hjj6YJ2gflxjwQtUAVqiUvnjJ6dz3UmzFB1UpxebYVqfLG/hnR3PONteMaMKP+WsNVNl
-         tuPBpxUsbXrdua/Wn5nRw858KOO1LRwrApKEwduv1kyFmeeInnH9+UW5foP9wBaMKGzs
-         h8dPxv82OrFNm4uHt6Z5qxcDmcjFD2mCBC8DuBeTNkugCympWU7RnJAubyI1OQhTacHa
-         EXq8utlSznSD11aMA+ORTa3k3sGhE7XqfIRs2k/zS2U/xwf5aqcfbjMUNF+9fldkoEAm
-         m+fg==
-X-Gm-Message-State: AFqh2koPd6GE8ygV7C9oydj/3zbObaU/TREB4s+QR+TaZW7eVKXyzzs+
-        VR6Wf5bdnaiFfa71ZJM+nWIpE46lON9pug==
-X-Google-Smtp-Source: AMrXdXubmLBSxEeWEOTXkzNQNH1yY4T0RdkGs7dNm/m+L3Vkn40L98eh7w/lB8z1bzTKRDFEzHxEog==
-X-Received: by 2002:a81:4e89:0:b0:487:b6b9:ff5d with SMTP id c131-20020a814e89000000b00487b6b9ff5dmr29500339ywb.45.1673018319407;
-        Fri, 06 Jan 2023 07:18:39 -0800 (PST)
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com. [209.85.128.174])
-        by smtp.gmail.com with ESMTPSA id j19-20020a05620a411300b00704c1f4e756sm656168qko.14.2023.01.06.07.18.38
+        bh=S+ZK+xldlBv3g2AO74GvzA01lQCjrDMywdlfRiZz/Z0=;
+        b=U0ennM0rkwb/XaDc2ipEFra/aR+/f1YR6uRKcywa23iAUMqmuhTad2DQ9Q95zGLfK9
+         WVXiJb1+oylczNCnzn8WNm7GJ8OvslR7coxntuO1wYNlXVEJEnBd/I4V4zbSFPqF4zyJ
+         VyqE6q6US/7YlCYhPep9B/R27Bsg7rVX+KcSd2KgNj7TWZZ5eo7ninS+BzBKe03UDJ8k
+         FpQyo32R6BWYHj+Lqh66b44u+regFgKk1xfqcsg8OK0bm96eH+GClWXKcyryAXGGJc+0
+         vvUJe7cfQ+2r1v+7ObGG1WJTG/37MC8lxR1ZHB4dQNwZO8fjF3zUoQKkTu+C0aVsmVRo
+         sLYQ==
+X-Gm-Message-State: AFqh2kp9LeLbOIldReU9Y/YHdSaYrFLgqqMsEokFjvt/l/hckW5+W47j
+        F8edSSVB5aa9dFqgsVHCKvf++NF+6hgT2A==
+X-Google-Smtp-Source: AMrXdXtYMhaEy1/bh9OyVeJQX45xZqIrrBhqi0jQJUd8Kx4Ycug8zdLASvql8m6sGHUoCuGjHiRRLw==
+X-Received: by 2002:a05:690c:98b:b0:3c0:405a:bdb2 with SMTP id ce11-20020a05690c098b00b003c0405abdb2mr2550712ywb.51.1673019487673;
+        Fri, 06 Jan 2023 07:38:07 -0800 (PST)
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
+        by smtp.gmail.com with ESMTPSA id u8-20020a37ab08000000b00702311aea78sm662869qke.82.2023.01.06.07.38.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jan 2023 07:18:39 -0800 (PST)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-482363a1232so26741327b3.3;
-        Fri, 06 Jan 2023 07:18:38 -0800 (PST)
-X-Received: by 2002:a81:17ca:0:b0:46f:bd6:957d with SMTP id
- 193-20020a8117ca000000b0046f0bd6957dmr4281773ywx.383.1673018318622; Fri, 06
- Jan 2023 07:18:38 -0800 (PST)
+        Fri, 06 Jan 2023 07:38:07 -0800 (PST)
+Received: by mail-yb1-f174.google.com with SMTP id 16so2304816ybc.0;
+        Fri, 06 Jan 2023 07:38:07 -0800 (PST)
+X-Received: by 2002:a25:8182:0:b0:75a:6c58:ac5d with SMTP id
+ p2-20020a258182000000b0075a6c58ac5dmr6429676ybk.91.1673019486809; Fri, 06 Jan
+ 2023 07:38:06 -0800 (PST)
 MIME-Version: 1.0
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org> <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de> <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
-In-Reply-To: <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 6 Jan 2023 16:18:27 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU8AKSdujbr=nwaBUy4q4z_R=MERnb5CBPPv=A63BVFXA@mail.gmail.com>
-Message-ID: <CAMuHMdU8AKSdujbr=nwaBUy4q4z_R=MERnb5CBPPv=A63BVFXA@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v6.2-rc1
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
-        linux-xtensa@linux-xtensa.org
+References: <14722778-dda0-cb9f-8647-892493d94a5c@leemhuis.info>
+ <2026016246ef719605c9932feeb56b105833593b.camel@intel.com>
+ <CAMfi-DTwX2nvP58FRb6NaGMyWO0SBo9W=Fpdtr=XfNRzkqAwHw@mail.gmail.com> <b5e9c8911a46802ddb017554f266c92a7a0b2605.camel@intel.com>
+In-Reply-To: <b5e9c8911a46802ddb017554f266c92a7a0b2605.camel@intel.com>
+From:   Dave Chiluk <chiluk@ubuntu.com>
+Date:   Fri, 6 Jan 2023 09:37:55 -0600
+X-Gmail-Original-Message-ID: <CAMfi-DQYU3WQk8x-GFieexEE_enRDe4J0AzyZHk9rtRykpUEnA@mail.gmail.com>
+Message-ID: <CAMfi-DQYU3WQk8x-GFieexEE_enRDe4J0AzyZHk9rtRykpUEnA@mail.gmail.com>
+Subject: Re: [regression] Bug 216753 - 6e 6 ghz bands are disabled since 5.16
+ on intel ax211
+To:     "Greenman, Gregory" <gregory.greenman@intel.com>
+Cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "regressions@leemhuis.info" <regressions@leemhuis.info>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "marcel@holtmann.org" <marcel@holtmann.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
         autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 6, 2023 at 4:17 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Thu, Jan 5, 2023 at 12:15 AM Greenman, Gregory
+<gregory.greenman@intel.com> wrote:
 >
-> Hi John,
+> I'll try to explain, the problem here is not technical. After some
+> internal checks, it appears that we (wifi driver) aren't allowed to
+> decide if 6E should be enabled or not. Because of the legal restrictions,
+> OEM should make this decision and enable/disable 6E in the BIOS. This
+> commit only gets the value from the BIOS and configures the firmware
+> accordingly. So, unfortunately, legal restriction is the reason we cannot
+> revert/overwrite 6E enablement...
+>
+Thank you Gregory, I've been reading between the lines, and this is
+pretty much what I expected you to say.  So in the past when
+OEMs/systems manufacturers have been irresponsible/inept like this we
+have implemented flags to force ignore the values coming out of the
+bios.  As it's now obvious that the problem here is a legal/regulatory
+issue, I'd hope that having a force flag would be acceptable from a
+that perspective.  I'm no lawyer, but I expect once a user decides to
+explicitly set a force flag to ignore the bios values I'd suspect the
+responsibility would shift from the manufacturers and back onto the
+user.
 
-Bummer, "Hi Adrian", ofc ;-)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Would such a patch be theoretically acceptable?  If so I'll write up a
+patch to do this and submit it next week hopefully.
