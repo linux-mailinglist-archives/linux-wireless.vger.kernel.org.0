@@ -2,121 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13548660119
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 14:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ECE56602DB
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 16:15:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbjAFNTe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Jan 2023 08:19:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56802 "EHLO
+        id S234899AbjAFPPM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Jan 2023 10:15:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbjAFNT1 (ORCPT
+        with ESMTP id S229472AbjAFPO5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Jan 2023 08:19:27 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1452E7682C;
-        Fri,  6 Jan 2023 05:19:26 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 7C6F026B8B;
-        Fri,  6 Jan 2023 13:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1673011163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=kAERvk5nBFa12V2mZMiTZvP60v0XGkRfhjbzVAQuTyw=;
-        b=KoonKBdqVvpkdxegu6pG4IIpAzTIWP1YVsgfTGDmIEyWBLDkV1vUsCGeEuGagMEymkLlQI
-        1a46Sety7WRP8zuE6rODKmsi/ePQzaMFMnkJGv2FW2OqZAxjMeMWyz4iMIUYHYF+7txIT+
-        QVKX9hfbGiVk4ETEXzBnUwdR4SkknoE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1673011163;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=kAERvk5nBFa12V2mZMiTZvP60v0XGkRfhjbzVAQuTyw=;
-        b=mVOGvsNkU0K+hZCpdmecHUjBvj1vb+B5uiCNA6nsXp0agsu2GmF9XWw5hpwtBKCJOu/bD/
-        saclmeVmvMxVQqCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 59D17139D5;
-        Fri,  6 Jan 2023 13:19:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id +sfIFdsfuGOBWAAAMHmgww
-        (envelope-from <iivanov@suse.de>); Fri, 06 Jan 2023 13:19:23 +0000
-From:   "Ivan T. Ivanov" <iivanov@suse.de>
-To:     aspriel@gmail.com, marcan@marcan.st
-Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        rmk+kernel@armlinux.org.uk, stefan.wahren@i2se.com,
-        pbrobinson@gmail.com, jforbes@fedoraproject.org, kvalo@kernel.org,
-        davem@davemloft.net, devicetree@vger.kernel.org,
-        edumazet@google.com, krzysztof.kozlowski+dt@linaro.org,
-        kuba@kernel.org, pabeni@redhat.com, robh+dt@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        "Ivan T. Ivanov" <iivanov@suse.de>, stable@vger.kernel.org
-Subject: [PATCH v2] brcmfmac: Prefer DT board type over DMI board type
-Date:   Fri,  6 Jan 2023 15:19:05 +0200
-Message-Id: <20230106131905.81854-1-iivanov@suse.de>
-X-Mailer: git-send-email 2.35.3
+        Fri, 6 Jan 2023 10:14:57 -0500
+X-Greylist: delayed 270 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Jan 2023 07:14:56 PST
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666138111F;
+        Fri,  6 Jan 2023 07:14:56 -0800 (PST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pDoMP-002xQU-QR; Fri, 06 Jan 2023 16:10:21 +0100
+Received: from p57bd9807.dip0.t-ipconnect.de ([87.189.152.7] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pDoMP-000ZKo-K4; Fri, 06 Jan 2023 16:10:21 +0100
+Message-ID: <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+Date:   Fri, 6 Jan 2023 16:10:20 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: Build regressions/improvements in v6.2-rc1
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org
+Cc:     amd-gfx@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+        linux-xtensa@linux-xtensa.org
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
+ <20221227082932.798359-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.152.7
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,SUSPICIOUS_RECIPS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The introduction of support for Apple board types inadvertently changed
-the precedence order, causing hybrid SMBIOS+DT platforms to look up the
-firmware using the DMI information instead of the device tree compatible
-to generate the board type. Revert back to the old behavior,
-as affected platforms use firmwares named after the DT compatible.
+Hi Geert!
 
-Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+On 12/27/22 09:35, Geert Uytterhoeven wrote:
+>    + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_262' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
+>    + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_263' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
+> 
+> In function 'follow_pmd_mask',
+>      inlined from 'follow_pud_mask' at /kisskb/src/mm/gup.c:735:9,
+>      inlined from 'follow_p4d_mask' at /kisskb/src/mm/gup.c:752:9,
+>      inlined from 'follow_page_mask' at /kisskb/src/mm/gup.c:809:9:
+> 
+> sh4-gcc11/sh-defconfig (Günter wondered if pmd_t should use union)
 
-[1] https://bugzilla.opensuse.org/show_bug.cgi?id=1206697#c13
+I'm seeing this, too. Also for sh7785lcr_defconfig.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan T. Ivanov <iivanov@suse.de>
-Reviewed-by: Hector Martin <marcan@marcan.st>
----
-Changes since v1
-Rewrite commit message according feedback.
-https://lore.kernel.org/all/20230106072746.29516-1-iivanov@suse.de/
+> sh4-gcc11/sh-allmodconfig (ICE = internal compiler error)
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+I'm not seeing this one, but I am getting this one instead:
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index a83699de01ec..fdd0c9abc1a1 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -79,7 +79,8 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	/* Apple ARM64 platforms have their own idea of board type, passed in
- 	 * via the device tree. They also have an antenna SKU parameter
- 	 */
--	if (!of_property_read_string(np, "brcm,board-type", &prop))
-+	err = of_property_read_string(np, "brcm,board-type", &prop);
-+	if (!err)
- 		settings->board_type = prop;
- 
- 	if (!of_property_read_string(np, "apple,antenna-sku", &prop))
-@@ -87,7 +88,7 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 
- 	/* Set board-type to the first string of the machine compatible prop */
- 	root = of_find_node_by_path("/");
--	if (root && !settings->board_type) {
-+	if (root && err) {
- 		char *board_type;
- 		const char *tmp;
- 
+In file included from ./arch/sh/include/asm/hw_irq.h:6,
+                  from ./include/linux/irq.h:596,
+                  from ./include/asm-generic/hardirq.h:17,
+                  from ./arch/sh/include/asm/hardirq.h:9,
+                  from ./include/linux/hardirq.h:11,
+                  from ./include/linux/interrupt.h:11,
+                  from ./include/linux/serial_core.h:13,
+                  from ./include/linux/serial_sci.h:6,
+                  from arch/sh/kernel/cpu/sh2/setup-sh7619.c:11:
+./include/linux/sh_intc.h:100:63: error: division 'sizeof (void *) / sizeof (void)' does not compute the number of array elements [-Werror=sizeof-pointer-div]
+   100 | #define _INTC_ARRAY(a) a, __same_type(a, NULL) ? 0 : sizeof(a)/sizeof(*a)
+       |                                                               ^
+./include/linux/sh_intc.h:105:31: note: in expansion of macro '_INTC_ARRAY'
+   105 |         _INTC_ARRAY(vectors), _INTC_ARRAY(groups),      \
+       |                               ^~~~~~~~~~~
+
+Adrian
+
 -- 
-2.35.3
+  .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
