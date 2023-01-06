@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE7265FFEF
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 13:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBFA865FFF1
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 13:09:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231845AbjAFMJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Jan 2023 07:09:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48264 "EHLO
+        id S232138AbjAFMJT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Jan 2023 07:09:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjAFMJP (ORCPT
+        with ESMTP id S229597AbjAFMJP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 6 Jan 2023 07:09:15 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1619072880
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Jan 2023 04:09:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6500872886
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Jan 2023 04:09:13 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 306C88WX0028264, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 306C88WX0028264
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 306C898q8028269, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 306C898q8028269
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 6 Jan 2023 20:08:08 +0800
+        Fri, 6 Jan 2023 20:08:09 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Fri, 6 Jan 2023 20:09:05 +0800
+ 15.1.2375.32; Fri, 6 Jan 2023 20:09:06 +0800
 Received: from localhost (172.16.18.220) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 6 Jan 2023
- 20:09:04 +0800
+ 20:09:06 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/7] wifi: rtw89: coex: Packet traffic arbitration hardware owner monitor
-Date:   Fri, 6 Jan 2023 20:08:42 +0800
-Message-ID: <20230106120844.17441-6-pkshih@realtek.com>
+Subject: [PATCH 6/7] wifi: rtw89: coex: Change RTL8852B use v1 TDMA policy
+Date:   Fri, 6 Jan 2023 20:08:43 +0800
+Message-ID: <20230106120844.17441-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230106120844.17441-1-pkshih@realtek.com>
 References: <20230106120844.17441-1-pkshih@realtek.com>
@@ -55,6 +55,10 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvNiCkV6TIIDA5OjMyOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,65 +69,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-Because the difference of the hardware design, RTL8852C can not get the
-PTA owner by the same method with RTL8852B, RTL8852A. Modify the get owner
-API and related logic.
+RTL8852B support the new features like TDMA instant (Change TDMA mechanism
+immediately), Co-RX feature (Wi-Fi/Bluetooth can RX in the same time) and
+so on. The v1 TDMA policy will enable those newer mechanism. It will have
+a better coexistence performance.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c |  7 ++-----
- drivers/net/wireless/realtek/rtw89/mac.c  | 11 +++++++++--
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 03872ac8cced0..ec31dd0751cee 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -4873,7 +4873,7 @@ void rtw89_btc_ntfy_init(struct rtw89_dev *rtwdev, u8 mode)
- 	_write_scbd(rtwdev,
- 		    BTC_WSCB_ACTIVE | BTC_WSCB_ON | BTC_WSCB_BTLOG, true);
- 	_update_bt_scbd(rtwdev, true);
--	if (rtw89_mac_get_ctrl_path(rtwdev) && chip->chip_id == RTL8852A) {
-+	if (rtw89_mac_get_ctrl_path(rtwdev)) {
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): PTA owner warning!!\n",
- 			    __func__);
-@@ -7082,10 +7082,7 @@ static void _show_mreg(struct rtw89_dev *rtwdev, struct seq_file *m)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index b9e5363e524b3..e0f6dfe31bddd 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -2423,7 +2423,7 @@ static const struct rtw89_chip_ops rtw8852b_chip_ops = {
+ 	.btc_update_bt_cnt	= rtw8852b_btc_update_bt_cnt,
+ 	.btc_wl_s1_standby	= rtw8852b_btc_wl_s1_standby,
+ 	.btc_set_wl_rx_gain	= rtw8852b_btc_set_wl_rx_gain,
+-	.btc_set_policy		= rtw89_btc_set_policy,
++	.btc_set_policy		= rtw89_btc_set_policy_v1,
+ };
  
- 	/* To avoid I/O if WL LPS or power-off  */
- 	if (!wl->status.map.lps && !wl->status.map.rf_off) {
--		if (chip->chip_id == RTL8852A)
--			btc->dm.pta_owner = rtw89_mac_get_ctrl_path(rtwdev);
--		else if (chip->chip_id == RTL8852C)
--			btc->dm.pta_owner = 0;
-+		btc->dm.pta_owner = rtw89_mac_get_ctrl_path(rtwdev);
- 
- 		_get_gnt(rtwdev, &gnt_cfg);
- 		gnt = gnt_cfg.band[0];
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index cf9a0a3120a79..5ab0590485e0d 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -4865,9 +4865,16 @@ EXPORT_SYMBOL(rtw89_mac_cfg_ctrl_path_v1);
- 
- bool rtw89_mac_get_ctrl_path(struct rtw89_dev *rtwdev)
- {
--	u8 val = rtw89_read8(rtwdev, R_AX_SYS_SDIO_CTRL + 3);
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	u8 val = 0;
-+
-+	if (chip->chip_id == RTL8852C)
-+		return false;
-+	else if (chip->chip_id == RTL8852A || chip->chip_id == RTL8852B)
-+		val = rtw89_read8_mask(rtwdev, R_AX_SYS_SDIO_CTRL + 3,
-+				       B_AX_LTE_MUX_CTRL_PATH >> 24);
- 
--	return FIELD_GET(B_AX_LTE_MUX_CTRL_PATH >> 24, val);
-+	return !!val;
- }
- 
- u16 rtw89_mac_get_plt_cnt(struct rtw89_dev *rtwdev, u8 band)
+ const struct rtw89_chip_info rtw8852b_chip_info = {
 -- 
 2.25.1
 
