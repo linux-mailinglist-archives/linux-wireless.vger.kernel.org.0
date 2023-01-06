@@ -2,64 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3920660018
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 13:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC60266002A
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jan 2023 13:20:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230075AbjAFMP7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Jan 2023 07:15:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52306 "EHLO
+        id S232453AbjAFMUl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Jan 2023 07:20:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232477AbjAFMPj (ORCPT
+        with ESMTP id S229697AbjAFMUj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Jan 2023 07:15:39 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C8648736C5
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Jan 2023 04:15:37 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 306CEYvS4000743, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 306CEYvS4000743
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 6 Jan 2023 20:14:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 6 Jan 2023 20:15:31 +0800
-Received: from localhost (172.16.18.220) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 6 Jan 2023
- 20:15:31 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <damon.chen@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: set the correct mac_id for management frames
-Date:   Fri, 6 Jan 2023 20:15:17 +0800
-Message-ID: <20230106121517.19841-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230106121517.19841-1-pkshih@realtek.com>
-References: <20230106121517.19841-1-pkshih@realtek.com>
+        Fri, 6 Jan 2023 07:20:39 -0500
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF8C736DA;
+        Fri,  6 Jan 2023 04:20:38 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id BE4CB249EA;
+        Fri,  6 Jan 2023 12:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1673007636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=8QCVLYYjUvcUlvgswB1aZMBn/74NHSJlA341O/hqUaQ=;
+        b=kdIc3vyodJBsRjBnoRoPW/005nFodyT/BRoyKPIEu+vznkdjaUrki6gsZNp+jDsnVe5KuG
+        vony4h/XWFYOg6zJ0R/QZRkGUsHVcG6aJia4bvCZIA5dJABlOXny+s929mXfiyysx0H1dC
+        djK7S2i+L9PT+GrSbU7ulyi8nQep39g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1673007636;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=8QCVLYYjUvcUlvgswB1aZMBn/74NHSJlA341O/hqUaQ=;
+        b=c4e6WO3RFIc/Hvqk/AqGqSKXUqmH/0MfeTEuzObq7xe87k6ov5LsSxpniSW+UdZ2RzFOEo
+        Q40+R1tCWjPtqOBw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A05D213596;
+        Fri,  6 Jan 2023 12:20:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id HkIgJxQSuGMIPAAAMHmgww
+        (envelope-from <iivanov@suse.de>); Fri, 06 Jan 2023 12:20:36 +0000
+Date:   Fri, 6 Jan 2023 14:20:36 +0200
+From:   "Ivan T. Ivanov" <iivanov@suse.de>
+To:     Hector Martin <marcan@marcan.st>
+Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, rmk+kernel@armlinux.org.uk,
+        kvalo@kernel.org, davem@davemloft.net, devicetree@vger.kernel.org,
+        edumazet@google.com, krzysztof.kozlowski+dt@linaro.org,
+        kuba@kernel.org, pabeni@redhat.com, robh+dt@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH] brcmfmac: of: Use board compatible string for board type
+Message-ID: <20230106122036.nrx4ssodwymhao7u@suse>
+References: <20230106072746.29516-1-iivanov@suse.de>
+ <fc6d3c3b-1352-4f75-cbef-d29bd74c0e40@marcan.st>
+ <2711b084-5937-7e0f-26d8-67510da3939c@marcan.st>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.18.220]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 01/06/2023 11:57:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvNiCkV6TIIDA5OjMyOjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2711b084-5937-7e0f-26d8-67510da3939c@marcan.st>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,74 +77,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+On 01-06 21:13, Hector Martin wrote:
 
-The mac_id of management frames should follow rtwvif->mac_id or
-rtwsta->mac_id. Add this patch to set the correct mac_id and
-prevent unexpected behavior.
+> 
+> On 2023/01/06 18:27, Hector Martin wrote:
+> > On 2023/01/06 16:27, Ivan T. Ivanov wrote:
+> >> When "brcm,board-type" is not explicitly set in devicetree
+> >> fallback to board compatible string for board type.
+> >>
+> >> Some of the existing devices rely on the most compatible device
+> >> string to find best firmware files, including Raspberry PI's[1].
+> >>
+> >> Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+> >>
+> >> [1] https://bugzilla.opensuse.org/show_bug.cgi?id=1206697#c13
+> >>
+> >> Signed-off-by: Ivan T. Ivanov <iivanov@suse.de>
+> > 
+> > The existing code already falls back to the compatible string, *as long
+> > as there is no board_type set already*.
+> > 
+> > As far as I can tell, the only way the board_type can get another value
+> > first is if it comes from DMI. This behavior was inadvertently changed
+> > by commit 7682de8b3351 (since I was not expecting platforms to have
+> > *both* DT and DMI information).
+> > 
+> > I'm guessing the Raspberry Pi is one such platform, and
+> > `/sys/devices/virtual/dmi` exists? Hybrid UEFI+ACPI+DT platform I take it?
+> > 
+> > If so, your commit description should probably be something like:
+> > 
+> > ===
+> > brcmfmac: Prefer DT board type over DMI board type
+> > 
+> > The introduction of support for Apple board types inadvertently changed
+> > the precedence order, causing hybrid ACPI+DT platforms to look up the
+> > firmware using the DMI information instead of the device tree compatible
+> > to generate the board type. Revert back to the old behavior,
+> > as affected platforms use firmwares named after the DT compatible.
+> > 
+> > Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+> > ===
+> > 
+> > An also add a Cc: stable@vger.kernel.org to make sure this gets backported.
+> > 
+> > With the fixed description,
+> > 
+> > Reviewed-by: Hector Martin <marcan@marcan.st>
+> > 
+> > - Hector
+> 
+> Looking into this a bit more from what was mentioned in the linked bug,
+> the DMI data comes from the SMBIOS table. We don't have that on Apple
+> platforms even though we also boot via U-Boot+EFI, but I'm guessing you
+> build U-Boot with CONFIG_GENERATE_SMBIOS_TABLE and provide that stuff in
+> the DT?
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 31 ++++++++++++-----------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+Yes, that is the way in openSUSE case.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index f06840634e113..2c66703a7c89e 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -512,6 +512,21 @@ static u16 rtw89_core_get_mgmt_rate(struct rtw89_dev *rtwdev,
- 	return __ffs(vif->bss_conf.basic_rates) + lowest_rate;
- }
- 
-+static u8 rtw89_core_tx_get_mac_id(struct rtw89_dev *rtwdev,
-+				   struct rtw89_core_tx_request *tx_req)
-+{
-+	struct ieee80211_vif *vif = tx_req->vif;
-+	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-+	struct ieee80211_sta *sta = tx_req->sta;
-+	struct rtw89_sta *rtwsta;
-+
-+	if (!sta)
-+		return rtwvif->mac_id;
-+
-+	rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+	return rtwsta->mac_id;
-+}
-+
- static void
- rtw89_core_tx_update_mgmt_info(struct rtw89_dev *rtwdev,
- 			       struct rtw89_core_tx_request *tx_req)
-@@ -528,6 +543,7 @@ rtw89_core_tx_update_mgmt_info(struct rtw89_dev *rtwdev,
- 	desc_info->qsel = qsel;
- 	desc_info->ch_dma = ch_dma;
- 	desc_info->port = desc_info->hiq ? rtwvif->port : 0;
-+	desc_info->mac_id = rtw89_core_tx_get_mac_id(rtwdev, tx_req);
- 	desc_info->hw_ssn_sel = RTW89_MGMT_HW_SSN_SEL;
- 	desc_info->hw_seq_mode = RTW89_MGMT_HW_SEQ_MODE;
- 
-@@ -670,21 +686,6 @@ rtw89_core_tx_update_he_qos_htc(struct rtw89_dev *rtwdev,
- 	desc_info->bk = true;
- }
- 
--static u8 rtw89_core_tx_get_mac_id(struct rtw89_dev *rtwdev,
--				   struct rtw89_core_tx_request *tx_req)
--{
--	struct ieee80211_vif *vif = tx_req->vif;
--	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
--	struct ieee80211_sta *sta = tx_req->sta;
--	struct rtw89_sta *rtwsta;
--
--	if (!sta)
--		return rtwvif->mac_id;
--
--	rtwsta = (struct rtw89_sta *)sta->drv_priv;
--	return rtwsta->mac_id;
--}
--
- static void
- rtw89_core_tx_update_data_info(struct rtw89_dev *rtwdev,
- 			       struct rtw89_core_tx_request *tx_req)
--- 
-2.25.1
+> So s/ACPI/SMBIOS/ would be more accurate in the commit message.
+
+Sure, I will rewrite commit message and repost.
+
+Thanks!
 
