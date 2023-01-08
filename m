@@ -2,108 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B90086614C7
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 12:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF20661530
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 13:49:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233831AbjAHLaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Jan 2023 06:30:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47304 "EHLO
+        id S232900AbjAHMtS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Jan 2023 07:49:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233185AbjAHLaH (ORCPT
+        with ESMTP id S229482AbjAHMtQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Jan 2023 06:30:07 -0500
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5940FD2E3
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Jan 2023 03:30:00 -0800 (PST)
-Received: by mail-ed1-x542.google.com with SMTP id j16so8504118edw.11
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Jan 2023 03:30:00 -0800 (PST)
+        Sun, 8 Jan 2023 07:49:16 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDBE0110C;
+        Sun,  8 Jan 2023 04:49:15 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id qk9so13818304ejc.3;
+        Sun, 08 Jan 2023 04:49:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HcpM41K3Tg/Gq2Sy2fOw39ukTQf5X/VzmfsS+yU67xU=;
-        b=CBHoltcPCly7GiqaZisHIdHagk3j88LH6gwUStENc7TmK8kPc76KHKYcnJY6iDZZMK
-         zeZqsA1ff0w5XpZ+4glFWl1GyviVBRgntqmHO/VUY/3QAM/4BEqATrvB9QC5pUObgew4
-         RetoWbsbhE7vvZNjnWF1ntu6AKusNAqL9LcfNQoL746mMOo+IU62G6AnwXIE1R5hrOEj
-         dbBWRzUB2Prz7lzjeUBado8dQNU+NHa8UO7MHqA6YBhg8o5885TQyc+TTd+AHeQCxRmz
-         W39GCfWxEXJKc5WGkow93s6w0rATs6Z97vg48xEY6ODKjV47q0qZH8Od42jePCVz7O0s
-         3ihQ==
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=txZDWRyk31P/lBn7N7GNRaUrSacN5uRPaibOTmbLa1A=;
+        b=Uh7kSL0OSgThsz0TEpTtOlzWJ7MeghSYYBASK+AoYjyt9B1wa36+KcibIRXBJJMQ6C
+         TWP6ms02REB0zYdfyvfBGyMPWUs1Y6TR0syIdeuP9iBRUQPnW/MC12DW4DIbDfAhGlTx
+         d5l5AZwsKG/KpFRUj5W8by418+MTT3XVX5Kw9e9XN7XlGVEbRdnnX76ncsfu4QufBHcl
+         D9lX4c7QgHQcKcfvgL41/An6V3dco3fZNBEHvRgZ4QbJGz4I05ULqguWJPB7TCkD9Mdd
+         l/stqgILYY0tj61XmGsxbfp3bDvwqfFxS31EA4BrtirH7gGuvscaXHfL22jVdOpqhP7B
+         qsZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HcpM41K3Tg/Gq2Sy2fOw39ukTQf5X/VzmfsS+yU67xU=;
-        b=QUwDoV9AOH1Hf+A2HDK93K8NvRcFFeHB6PFkTZqqv4fYmwyhJe4MxvJZieGosUIJve
-         aR5JGlJRYg8H+VIDtyYg1fvoY1z+LGi49yh7jwl6k8xW0jYWvj65qY7ywDlfIOY4EyDK
-         Fr32BLUnNs+z3tJNDhcQ0IFOeUbAXqUndofozPNL+lPcA6s/U7EGDR+c7vCr4dctNGGb
-         sTvzlzkFWzo8kriIeIeCfDVg85G5g37qOYiIUdmiqfP94Re2c7aYh9581EMmjD2QmX90
-         RGMUsKKDANs6R++lt6JI3DtzLwb3zgqr95P483B18PCMe4G4h1EK6uf3XT/psIhy0J1y
-         0x/A==
-X-Gm-Message-State: AFqh2koevVGgBKtZR+FHSSQvAIIoG3pURNL+O5He/yDx/Ma/JQQyT9J/
-        Ksidu1n0LcJVqbwzM8hvYObQv/eFFWCQBTEyKag=
-X-Google-Smtp-Source: AMrXdXutj5CXRYxZVz1GE2BcugsOWq5HiRWmZepwLQ+buZ49i5JcEFxYxazuCp1lN8B6N2AquQdaKFjZl2R0jiZqGNU=
-X-Received: by 2002:a05:6402:1614:b0:492:7e5f:2b59 with SMTP id
- f20-20020a056402161400b004927e5f2b59mr1165239edv.414.1673177398844; Sun, 08
- Jan 2023 03:29:58 -0800 (PST)
+        bh=txZDWRyk31P/lBn7N7GNRaUrSacN5uRPaibOTmbLa1A=;
+        b=wp4j91zRLbeqj9hSVdmwpV+TfiOPPtqp/3iZdbr/R9gDtvIXiq1H6Cah9CdwXg9832
+         rY7hVGWPdvIIqgSe7CNTWxx6YWIVa3FUdT4ld+2kHnGDu0t2VgY3Ikvegll+x6K+0YTh
+         S0mntCfMfwtvIOxmPaJ9UeCcs1uGE11XlsehViGFgRWBmBg9Jx7b8kOtxz65CGXk+V3Z
+         SfzTg434neeZa0Yc9hG1oCOY3By5Zca8+wljm538it5u27gv8t+XuOm7/2DceNIyc9FG
+         +f3HvMRQBJa0Sb/BsMboDF7Zpe14LYAUmGjWtoYjUZ7lxJ4din4Qd+J/R35jjb7LvGDY
+         3Kgw==
+X-Gm-Message-State: AFqh2kqFkRhYIVv5K5wsRYPY7DHTryH2w2s0OFshvLQcTSeta/uuyp+u
+        i5Wn6oTg8yv71ix8g1q3L+c=
+X-Google-Smtp-Source: AMrXdXvK+6B9KV+f+7A8w8pXkXTnKnzySqCA543UWOEFkjEd3FsD3ZXoLnYY8ZaEpS5yRoGTTS85JQ==
+X-Received: by 2002:a17:906:4e48:b0:7c1:8f78:9562 with SMTP id g8-20020a1709064e4800b007c18f789562mr48946958ejw.50.1673182154344;
+        Sun, 08 Jan 2023 04:49:14 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id s22-20020a170906961600b007815ca7ae57sm2486224ejx.212.2023.01.08.04.49.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Jan 2023 04:49:13 -0800 (PST)
+Message-ID: <4ce57d51-0b53-6258-d003-ebb4a2eb4b82@gmail.com>
+Date:   Sun, 8 Jan 2023 14:49:12 +0200
 MIME-Version: 1.0
-Received: by 2002:a17:906:eca7:b0:7c0:dfb2:c37b with HTTP; Sun, 8 Jan 2023
- 03:29:58 -0800 (PST)
-Reply-To: muhammadabdulrahma999@gmail.com
-From:   muhammad <nnannacollins2019@gmail.com>
-Date:   Sun, 8 Jan 2023 03:29:58 -0800
-Message-ID: <CAPQqOC2UtyuwO9Yiww_0mKLH0x1zZsfAsvJyhsRFqDWmwN2eWw@mail.gmail.com>
-Subject: Re:Re:Inquiry about your products.!!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:542 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nnannacollins2019[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [nnannacollins2019[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [muhammadabdulrahma999[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH] wifi: rtl8xxxu: fixing transmisison failure for rtl8192eu
+To:     Jun ASAKA <JunASAKA@zzy040330.moe>, Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221217030659.12577-1-JunASAKA@zzy040330.moe>
+ <18907e6b-93b4-d850-8a17-95ad43501136@gmail.com>
+ <56a335f1-3558-e496-4b0b-b024a935f881@zzy040330.moe>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <56a335f1-3558-e496-4b0b-b024a935f881@zzy040330.moe>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Sir/Madam,
-
-An open Tender for the supply of your company products to (Doha,
-Qatar). Urgently furnish us in full details about the standard of your
-product. We will appreciate it more if you give us with Details:
-Specification and Catalogs or Price list via Email.To avoid making a
-wrong choice of products before placing an order for it.
-
-Terms of payment:An upfront payment of 80% (T/T) will be made to your
-account for production,While 20% will be paid before shipment.
-
-Thanks and Regards
+On 08/01/2023 11:29, Jun ASAKA wrote:
+> On 07/01/2023 22:17, Bitterblue Smith wrote:
+> 
+>> On 17/12/2022 05:06, Jun ASAKA wrote:
+>>> Fixing transmission failure which results in
+>>> "authentication with ... timed out". This can be
+>>> fixed by disable the REG_TXPAUSE.
+>>>
+>>> Signed-off-by: Jun ASAKA <JunASAKA@zzy040330.moe>
+>>> ---
+>>>   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 5 +++++
+>>>   1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+>>> index a7d76693c02d..9d0ed6760cb6 100644
+>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+>>> @@ -1744,6 +1744,11 @@ static void rtl8192e_enable_rf(struct rtl8xxxu_priv *priv)
+>>>       val8 = rtl8xxxu_read8(priv, REG_PAD_CTRL1);
+>>>       val8 &= ~BIT(0);
+>>>       rtl8xxxu_write8(priv, REG_PAD_CTRL1, val8);
+>>> +
+>>> +    /*
+>>> +     * Fix transmission failure of rtl8192e.
+>>> +     */
+>>> +    rtl8xxxu_write8(priv, REG_TXPAUSE, 0x00);
+>>>   }
+>>>     static s8 rtl8192e_cck_rssi(struct rtl8xxxu_priv *priv, u8 cck_agc_rpt)
+>> By the way, you should get this into the stable kernels too:
+>> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> 
+> I see.
+> 
+> But since this patch has not been merged into Linus' tree yet, so should I wait until this patch is merged or I should issue a v2 patch here and Cc it to "table@vger.kernel.org"?
+> 
+> 
+> Jun ASAKA.
+> 
+Ah, yeah. Wait then.
