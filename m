@@ -2,125 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA1C661421
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 09:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DAC6661426
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 09:50:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232364AbjAHIU1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Jan 2023 03:20:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41594 "EHLO
+        id S230390AbjAHIrI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Jan 2023 03:47:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230419AbjAHIUZ (ORCPT
+        with ESMTP id S230165AbjAHIrH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Jan 2023 03:20:25 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39A0313DEC;
-        Sun,  8 Jan 2023 00:20:24 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pEQuk-00071S-Dt; Sun, 08 Jan 2023 09:20:22 +0100
-Message-ID: <d073942d-f6b6-81c4-5058-04d99185929a@leemhuis.info>
-Date:   Sun, 8 Jan 2023 09:20:21 +0100
+        Sun, 8 Jan 2023 03:47:07 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CC4B16
+        for <linux-wireless@vger.kernel.org>; Sun,  8 Jan 2023 00:47:04 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3088iF26009992;
+        Sun, 8 Jan 2023 08:47:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=kcs6id3qrBsvoMjQ1gVec5Tsn02DIz+0x/mXnJP6M1s=;
+ b=hMbebc78nFalpLthxOsf8yHyTIPJ1uqhiSazq9w84HomwlrlJgrs8piIAYLWKgzaqlQ0
+ /WkJ5m3p8W66jxJZ+tAwYHbGD0kPw2xHT3FmD/LR0k6HhlXKfhEO288kNwaRfuCCzQL/
+ qw4FtmbMZ+vnwtkeig1BDOEs6acMyU1V1iGtM7HtsIDe2STX1JNhgSdvjVQ6v0TYJVXH
+ WiSpdy6nw08cHKOPucOhNIGdtq7VgqDR06edJPNtwCYkOcBMFKCHwo3ZhtOM5/6KoR/R
+ 2qBYXQtG/bSu0l9fkTtelUtwoW+CkfjdzfU6pAhiRnIf4fevyc15m9KOzk2LMFRfJsif wg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3my0ya9aa6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 08 Jan 2023 08:47:01 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3088l0H0017234
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 8 Jan 2023 08:47:00 GMT
+Received: from [10.216.50.201] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Sun, 8 Jan 2023
+ 00:46:59 -0800
+Message-ID: <15beaf63-aba5-0b19-e6f7-368cac8e97f9@quicinc.com>
+Date:   Sun, 8 Jan 2023 14:16:55 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: =?UTF-8?Q?Re=3a_=5bregression=5d_Bug=c2=a0216894_-_brcmfmac_stopped?=
- =?UTF-8?Q?_working_due_to_missing_firmware=3b_brcmf=5fpcie=5finit=5fringbuf?=
- =?UTF-8?Q?fers=3a_invalid_max=5fflowrings=28264=29?=
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Wright Feng <wright.feng@infineon.com>
-Cc:     Ian Lin <ian.lin@infineon.com>, Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        Christian Marillat <marillat@debian.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Double Lo <double.lo@infineon.com>,
-        Kurt Lee <kurt.lee@infineon.com>
-References: <ef8861dc-33df-0e35-4205-c8c666a3f4ba@leemhuis.info>
-In-Reply-To: <ef8861dc-33df-0e35-4205-c8c666a3f4ba@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673166024;38e4f42d;
-X-HE-SMSGID: 1pEQuk-00071S-Dt
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v2 1/3] wifi: nl80211: Add support for randomizing TA of
+ auth and deauth frames
+Content-Language: en-US
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230108071552.2646591-1-quic_vjakkam@quicinc.com>
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+In-Reply-To: <20230108071552.2646591-1-quic_vjakkam@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 35EWO8zKgS2v5xOB5-ZzbtaAwkkv4iIo
+X-Proofpoint-ORIG-GUID: 35EWO8zKgS2v5xOB5-ZzbtaAwkkv4iIo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-08_04,2023-01-06_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=931 adultscore=0
+ malwarescore=0 clxscore=1015 phishscore=0 bulkscore=0 priorityscore=1501
+ mlxscore=0 impostorscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301080060
+X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sending this once more as a reply to myself, as I forgot to CC the
-maintainers for the driver. And now I'm also using the current email
-address for Wright Feng (my earlier mail used the one used for the
-culprit, but that bounced).
 
-Sorry for the noise, seem I need more tea.
+On 1/8/2023 12:45 PM, Veerendranath Jakkam wrote:
+> Add support to use a random local address in authentication and
+> deauthentication frames sent to unassociated peer when the driver
+> supports.
+>
+> The driver needs to configure receive behavior to accept frames with
+> random transmit address specified in TX path authentication frames
+> during the time of the frame exchange is pending and such frames need to
+> be acknowledged similarly to frames sent to the local permanent address
+> when this random address functionality is used.
+>
+> This capability allows use of randomized transmit address for PASN
+> authentication frames to improve privacy of WLAN clients.
+>
+> Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
 
-On 08.01.23 08:59, Thorsten Leemhuis wrote:
-> Hi, this is your Linux kernel regression tracker.
-> 
-> I noticed a regression report in bugzilla.kernel.org. As many (most?)
-> kernel developer don't keep an eye on it, I decided to forward it by
-> mail. Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=216894 :
 
-Subject for that bug report is "Regression in commit
-2aca4f3734bd717e04943ddf340d49ab62299a00"
+The changes submitted in this patch series can be verified with 
+hostap.git HWSIM test case changes submitted in below link
 
->>  Christian Marillat 2023-01-06 10:58:26 UTC
->>
->> Hi,
->>
->> With this commit the kernel doesn't load the firmware and I lost my wifi device, But without this commit the firmware load fine without a kernel panic.
->>
->> kernel 6.0.15/6.1.3
->> brcmfmac 0000:02:00.0: brcmf_pcie_init_ringbuffers: invalid max_flowrings(264)
->>
->> kernel 6.0.17
->> brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac4366c-pcie for chip BCM4366/4
->> brcmfmac: brcmf_c_process_clm_blob: no clm_blob available (err=-2), device may have limited channels available
->> brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4366/4 wl0: Nov  5 2018 03:19:56 version 10.28.2 (r769115) FWID 01-d2cbb8fd
->>
->> PCI info :
->>
->> 02:00.0 Network controller: Broadcom Inc. and subsidiaries Device 43c3 (rev 04)
->> 	Subsystem: ASUSTeK Computer Inc. Device 86fb
->> 	Flags: bus master, fast devsel, latency 0, IRQ 45
->> 	Memory at f7000000 (64-bit, non-prefetchable) [size=32K]
->> 	Memory at f6800000 (64-bit, non-prefetchable) [size=8M]
->> 	Memory at f2400000 (64-bit, prefetchable) [size=4M]
->> 	Capabilities: <access denied>
->> 	Kernel driver in use: brcmfmac
->> 	Kernel modules: brcmfmac
->>
->> Christian
->>
->> [reply] [−] Comment 1 Christian Marillat 2023-01-06 11:00:21 UTC
->>
->> kernel version should be  6.0.17/6.1.3 and 6.0.15
->>
->> Christian
->>
-> 
-> See the ticket for more details.
-> 
-> BTW, let me use this mail to also add the report to the list of tracked
-> regressions to ensure it's doesn't fall through the cracks:
-> 
-> #regzbot introduced: 2aca4f3734bd717e04943
-> https://bugzilla.kernel.org/show_bug.cgi?id=216894
-> #regzbot title: net: wifi: brcmfmac stopped working as firmware is not
-> loaded anymore
-> #regzbot ignore-activity
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
+https://patchwork.ozlabs.org/project/hostap/list/?series=335502&state=*
+
+---
+
+veeru
+
