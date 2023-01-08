@@ -2,66 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 800396619D1
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 22:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27350661A00
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 22:31:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233451AbjAHVOG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Jan 2023 16:14:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
+        id S235924AbjAHVbn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Jan 2023 16:31:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236309AbjAHVNh (ORCPT
+        with ESMTP id S233656AbjAHVbm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Jan 2023 16:13:37 -0500
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09FC5DED8;
-        Sun,  8 Jan 2023 13:13:37 -0800 (PST)
-Received: by mail-ej1-x62d.google.com with SMTP id tz12so15611065ejc.9;
-        Sun, 08 Jan 2023 13:13:36 -0800 (PST)
+        Sun, 8 Jan 2023 16:31:42 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01591BD2;
+        Sun,  8 Jan 2023 13:31:40 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id fc4so15651078ejc.12;
+        Sun, 08 Jan 2023 13:31:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W6iCeauKtAdV4BHRnRbqupjiQnftMeTdF0kVtH3hB+E=;
-        b=G9lcAMCTgFzpB/3Dm9t/28beZyeu4Nte6d9/pPXfwO2I2wqHIopt9W+893yGZNEuNq
-         pCMS7rORqej2jzzTQgup0eL9ELK4CGyo3T7Hyy6y6DP5irJYlcvUT6ywGOnDGA/Btm2w
-         T/++gQMnez8Uz1dh+/G0uMIeZTp1ESuQJQarot7SIiq0KzQmJfszGjmbNrdN9mRV/shc
-         hRhtSvaf9Fpspe6YvBVdV+07wk5aEA8HjbIy/GtPKB5ZMVPT1DRNLgpXYNW4WLXLU/t8
-         uor6zPu8ZZC9L/Aliv9+ux7KY3myaN28Xg3E09mG0SDbLQCM7Vc/T9DCZ5an3evdxc/V
-         o7dQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=17ds/3tpasRi8RnIAMFZ0yeGk76Sd506Y/IMKaXpmhI=;
+        b=fQ08vR5Swm6oSOCLOepmQLeSEcM4HXPkM7i1E/SnU/Oh/Ap1w6TYU7KvaPfyRvu4MG
+         JXbLfK9f55kI0VK3ldz/m2ewNoRtT1WzW0LhwEQQYHexjdElXJbz6LzV7UcrYAmp13mF
+         Ya0Dsh7swoEu8rfj1Xd6fsCqcKHhcR/IG8CV37ovoC2aHXt+Y7OjiDJCR0ApkT4zxfb4
+         NvQgUXoM247JaYlFJJSj7Z6MgNAkIQ1feNa/dp2s3S/uUChUG7OtBdloCSHdZW4NhBNt
+         1QsebvIYlCP9VWrfgfHcBHRk4R8FzrpOo8tmJfPtiTT2CMmRMcZXt+W6cariwJ6chHfb
+         Eb1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W6iCeauKtAdV4BHRnRbqupjiQnftMeTdF0kVtH3hB+E=;
-        b=GhRQlfF5INrn/NVsgryA2sof5D6/DJ0NOq3t5to3UWjpxI+U3wo+Ub11/gRFGQCGZc
-         +GN+8F1jScCFGNU/TnhJRt833fkkT7TUeBeHMulNhTEJnEs9X2VEJDNWUytIZiyVNV6d
-         ls0ZiYfE1MN2K5g6agVbIuJv5imkqpIoz4KWVp1sMGYRM4zxLOUPnc1dJ6uFiA5HQ48h
-         GDu2bqKeOJMFrdtHMXDR+nzUu/Vx5k5UofB5iy0fIQLr8L3roOgOkP0ogtzggqhnYWjV
-         z2c2OLL6bjcwGqE1re3XV+N1OauJpVFyC9uJjS7R7k//YX6cV35UjWxQVhx1y99ZhiH5
-         p7yw==
-X-Gm-Message-State: AFqh2krAgNkaUSLqmNQOY5Tn4TWM4iGZ26Aox36YibhZR1pwjgJfOTkW
-        1Bk0CvhEXdCVVu98FLxZtFpQN4lXmK4=
-X-Google-Smtp-Source: AMrXdXuMazg5jY6xTFm581wcDdAoeMxptf7hyehgj6rhH0L+UWBeBgT6q+wjdyQZNzmOgcG1+O4VLg==
-X-Received: by 2002:a17:907:d68e:b0:7c1:37:421c with SMTP id wf14-20020a170907d68e00b007c10037421cmr55961135ejc.32.1673212415338;
-        Sun, 08 Jan 2023 13:13:35 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=17ds/3tpasRi8RnIAMFZ0yeGk76Sd506Y/IMKaXpmhI=;
+        b=snzXGUlvSDH/fBv08ubchH40sevbP6Dimj/F617WJzS2Po+EpxY6PqgcvUKz1rMJLn
+         uWuvwJ5LAxVqAU7zdlyZYB+5YdzAwZkKZLquw1JJKl0N+wwdvoS1UUEnQ/aMLjEheDLa
+         LAKP3TSXRg45LJn0sDg8zDTVjeK1eRadw2BLKWsr5byhbtLP6YXU9CvU3wgNGtJZi9NG
+         1ZLqaUtNxjvZpNqCy5yJ2SQyhUCFu/UQUKWrNE+GNw/LlmxbheESQxFOjLRHz4bJTq5T
+         aENbEwVNUdRzK0xTjCl/z5NrKW5osTUP1Mq6YZWX70cUCwjkyY4tUBhj0Bvx2tl+IKaY
+         lDNQ==
+X-Gm-Message-State: AFqh2kqF7C94zIZ689GAaDR7G8BKJo44+bvya8RqGKuZgwjoLVCcVqoM
+        RPPOZhfpeGaRsrWkaVNmaszVT8Uxdig=
+X-Google-Smtp-Source: AMrXdXuGDVxgSs0RwHD3OZpABzUzxKRzA+9vom+UpU0rCOYShpgl88byR1MlijIHPPt1okJ7Zfk8jw==
+X-Received: by 2002:a17:907:c48d:b0:7c0:fe60:be12 with SMTP id tp13-20020a170907c48d00b007c0fe60be12mr49425430ejc.25.1673213498311;
+        Sun, 08 Jan 2023 13:31:38 -0800 (PST)
 Received: from localhost.localdomain (dynamic-2a01-0c23-c485-2500-0000-0000-0000-0e63.c23.pool.telefonica.de. [2a01:c23:c485:2500::e63])
-        by smtp.googlemail.com with ESMTPSA id x25-20020a170906b09900b0080345493023sm2847997ejy.167.2023.01.08.13.13.34
+        by smtp.googlemail.com with ESMTPSA id f1-20020a17090631c100b007aea1dc1840sm2917620ejf.111.2023.01.08.13.31.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Jan 2023 13:13:35 -0800 (PST)
+        Sun, 08 Jan 2023 13:31:37 -0800 (PST)
 From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 To:     linux-wireless@vger.kernel.org
-Cc:     tony0620emma@gmail.com, kvalo@kernel.org, pkshih@realtek.com,
-        s.hauer@pengutronix.de, netdev@vger.kernel.org,
+Cc:     tony0620emma@gmail.com, kvalo@kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH v3 3/3] wifi: rtw88: Use non-atomic sta iterator in rtw_ra_mask_info_update()
-Date:   Sun,  8 Jan 2023 22:13:24 +0100
-Message-Id: <20230108211324.442823-4-martin.blumenstingl@googlemail.com>
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        David Laight <David.Laight@aculab.com>
+Subject: [PATCH v1 RFC] wifi: rtw88: Validate the eFuse structs
+Date:   Sun,  8 Jan 2023 22:31:14 +0100
+Message-Id: <20230108213114.547135-1-martin.blumenstingl@googlemail.com>
 X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
-References: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -74,55 +72,98 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-USB and (upcoming) SDIO support may sleep in the read/write handlers.
-Use non-atomic rtw_iterate_stas() in rtw_ra_mask_info_update() because
-the iterator function rtw_ra_mask_info_update_iter() needs to read and
-write registers from within rtw_update_sta_info(). Using the non-atomic
-iterator ensures that we can sleep during USB and SDIO register reads
-and writes. This fixes "scheduling while atomic" or "Voluntary context
-switch within RCU read-side critical section!" warnings as seen by SDIO
-card users (but it also affects USB cards).
+Add static assertions for the PCIe/USB offsets inside the eFuse structs
+to ensure that the compiler doesn't add padding anywhere (relevant)
+inside the structs.
 
-Fixes: 78d5bf925f30 ("wifi: rtw88: iterate over vif/sta list non-atomically")
 Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+Suggested-by: David Laight <David.Laight@aculab.com>
 Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 ---
-v1 -> v2:
-- Added Ping-Ke's Reviewed-by (thank you!)
+This is the continuation of my patch from [0] where initially I added
+__packed attributes to the eFuse structs. David raised concerns that
+this is the "sledgehammer" way of doing things and it can impact
+performance.
 
-v2 -> v3:
-- Added Sascha's Tested-by (thank you!)
-- added "wifi" prefix to the subject and reworded the title accordingly
+So this implementation is my understanding of David's suggestion from
+[1] (and Ping-Ke also suggested a similar approach for debugging a
+size difference I've been seeing with / without __packed).
 
 
- drivers/net/wireless/realtek/rtw88/mac80211.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+[0] https://lore.kernel.org/linux-wireless/20221228133547.633797-2-martin.blumenstingl@googlemail.com/
+[1] https://lore.kernel.org/linux-wireless/4c4551c787ee4fc9ac40b34707d7365a@AcuMS.aculab.com/
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 776a9a9884b5..3b92ac611d3f 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -737,7 +737,7 @@ static void rtw_ra_mask_info_update(struct rtw_dev *rtwdev,
- 	br_data.rtwdev = rtwdev;
- 	br_data.vif = vif;
- 	br_data.mask = mask;
--	rtw_iterate_stas_atomic(rtwdev, rtw_ra_mask_info_update_iter, &br_data);
-+	rtw_iterate_stas(rtwdev, rtw_ra_mask_info_update_iter, &br_data);
- }
+
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h | 5 +++++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h | 5 +++++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h | 5 +++++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h | 5 +++++
+ 4 files changed, 20 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index a356318a5c15..b1747a22135c 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -83,6 +83,11 @@ struct rtw8723d_efuse {
+ 	};
+ };
  
- static int rtw_ops_set_bitrate_mask(struct ieee80211_hw *hw,
-@@ -746,7 +746,9 @@ static int rtw_ops_set_bitrate_mask(struct ieee80211_hw *hw,
++static_assert(offsetof(struct rtw8723d_efuse, e) == 0xd0);
++static_assert(sizeof(struct rtw8723de_efuse) == 14);
++static_assert(offsetof(struct rtw8723d_efuse, u) == 0xd0);
++static_assert(sizeof(struct rtw8723du_efuse) == 59);
++
+ extern const struct rtw_chip_info rtw8723d_hw_spec;
+ 
+ /* phy status page0 */
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+index 1c81260f3a54..70fdc7bf2b64 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+@@ -97,6 +97,11 @@ struct rtw8821c_efuse {
+ 	};
+ };
+ 
++static_assert(offsetof(struct rtw8821c_efuse, e) == 0xd0);
++static_assert(sizeof(struct rtw8821ce_efuse) == 49);
++static_assert(offsetof(struct rtw8821c_efuse, u) == 0xd0);
++static_assert(sizeof(struct rtw8821cu_efuse) == 304);
++
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
  {
- 	struct rtw_dev *rtwdev = hw->priv;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+index 01d3644e0c94..5d24ce7a8943 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+@@ -97,6 +97,11 @@ struct rtw8822b_efuse {
+ 	};
+ };
  
-+	mutex_lock(&rtwdev->mutex);
- 	rtw_ra_mask_info_update(rtwdev, vif, mask);
-+	mutex_unlock(&rtwdev->mutex);
++static_assert(offsetof(struct rtw8822b_efuse, e) == 0xd0);
++static_assert(sizeof(struct rtw8822be_efuse) == 49);
++static_assert(offsetof(struct rtw8822b_efuse, u) == 0xd0);
++static_assert(sizeof(struct rtw8822bu_efuse) == 304);
++
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+index 479d5d769c52..4c5402008387 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+@@ -96,6 +96,11 @@ struct rtw8822c_efuse {
+ 	};
+ };
  
- 	return 0;
- }
++static_assert(offsetof(struct rtw8822c_efuse, e) == 0x120);
++static_assert(sizeof(struct rtw8822ce_efuse) == 47);
++static_assert(offsetof(struct rtw8822c_efuse, u) == 0x120);
++static_assert(sizeof(struct rtw8822cu_efuse) == 122);
++
+ enum rtw8822c_dpk_agc_phase {
+ 	RTW_DPK_GAIN_CHECK,
+ 	RTW_DPK_GAIN_LARGE,
 -- 
 2.39.0
 
