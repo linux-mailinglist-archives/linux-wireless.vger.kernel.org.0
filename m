@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92A596612E9
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 02:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98CD26612EB
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 02:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232417AbjAHBbF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Jan 2023 20:31:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47590 "EHLO
+        id S232419AbjAHBbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Jan 2023 20:31:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232182AbjAHBbC (ORCPT
+        with ESMTP id S232536AbjAHBbM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Jan 2023 20:31:02 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AC637270
-        for <linux-wireless@vger.kernel.org>; Sat,  7 Jan 2023 17:31:01 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id b2so5781156pld.7
-        for <linux-wireless@vger.kernel.org>; Sat, 07 Jan 2023 17:31:01 -0800 (PST)
+        Sat, 7 Jan 2023 20:31:12 -0500
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D9C3B93F
+        for <linux-wireless@vger.kernel.org>; Sat,  7 Jan 2023 17:31:05 -0800 (PST)
+Received: by mail-pg1-x534.google.com with SMTP id g68so2561540pgc.11
+        for <linux-wireless@vger.kernel.org>; Sat, 07 Jan 2023 17:31:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=schmorgal.com; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gauNsz6s5kFu95ogUSHoB2HkvdwI2Yd7FgOC3hoCgaY=;
-        b=d7jWKen1UBmJo4xKDMqEumwrLLmvakr7YusikAYbcgcpPa9q295WFntzAmuHeUN1VD
-         3MID3tH/XlEQesAsft43vpTTBnvQneZz4iQbnKeFUeDpUqIfhyG3khwsXfHRV3dA2IvD
-         5//lOkMbdGQPBHdJxupXrMiBje8XbtNe/sQ6w=
+        bh=F1XsLmyJLSZxFahyH+bnrRO9ogW2CStFBT/wHKkbpOs=;
+        b=dAqKoTa0yqV8w6eb3XT5pFsi9y8g3XfsYIe2rS1/0t5CnqoGNhzHCePXIZGXBaPwI9
+         Ac2oUarTv5SISyiBuG7siLopcI3yQLQnr0h8kfNPf0KPGp09Y9/T+NZ51v2rco+DZTWO
+         k+bZCedKgWMvgnt/bMIgWtPUZTQiRdiqcUf0w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gauNsz6s5kFu95ogUSHoB2HkvdwI2Yd7FgOC3hoCgaY=;
-        b=YuEQxWuAJ09N7mZYJBN2Bl9kgW7M56FK1xLpDdwHqUbXTRSYop71THBK/f07p6kTvf
-         aD0ntYjj9qy/qHm7Jj9dUkxDvssPRB3owVxFjt0x8vQuzR4hCS8uEuTgm4p/bDxgQBD8
-         gb6pE6J8r1Fmk2DAsGy88HTpTRkiY7vF3tO9NTsKsCWeCenIhs5RfEr7cMJMh85w6wqe
-         QCpFdUAk9m2ub20J34i1wKGgI1Rr8LwjHF/O8mwOi49roqbPII5R9LVKFXGhMhOoT0Tb
-         VTaeibZmOIG8hmQLL6GwlyyWCyb239BEP9Vs3uD+c3FWFvhLPBizQVyFMLc0B82Lg5L9
-         zzJA==
-X-Gm-Message-State: AFqh2krtmcWfSyDYCAdrHzOeZlUYunlBEoe/k+uiMQ70sTuNlKX02lXm
-        cXSITbCtDldtP6ixPgy19DBcQw==
-X-Google-Smtp-Source: AMrXdXvcEJL08ILiRjMh3tq2yXtYlomndnblK8Cn6RILuziDx19TkGZBoy724VK5Lx7/9OBtxUuz5A==
-X-Received: by 2002:a05:6a20:3c8f:b0:a3:bdd3:8cb0 with SMTP id b15-20020a056a203c8f00b000a3bdd38cb0mr88573133pzj.56.1673141461188;
-        Sat, 07 Jan 2023 17:31:01 -0800 (PST)
+        bh=F1XsLmyJLSZxFahyH+bnrRO9ogW2CStFBT/wHKkbpOs=;
+        b=N5m0UpCYvouEr0cAnScynbxEkHILge9YBpcj1Xu6Aty+yLuuRBSaFj6HX+LGRgVY9Z
+         F0n76FgVLIAP2YAhtdREZ8crwfKTm9yvX1yjtQgkSS4FVebtTNVTBGs5kLgEgkyyQiGP
+         QxLjH99mi4kDV4TTmdO351MJ8ZlV2Pp62F8OVVoIK0wcIIf0cl/8teBTZtXpw28EVG8e
+         I8bxtgAI0JpsHOC+uRgkoo9xcrZ4U4FYp++ooksBi4igOoK4vpkRCx/scDPhO8pKwYjP
+         m6vsEKtxIK3kjtu88MG1LwTWipZhrvxEjxoNJAL13/FkjP6UAbYLoMzjuBSXyuvUTFeS
+         R5NQ==
+X-Gm-Message-State: AFqh2kp1966vb3i1/uIbfbaCS8q3weTzdgQfzqosP5+4Z01kUzEYlMQD
+        PFNToy/9uO0FdeQRXRwnSpzTZw==
+X-Google-Smtp-Source: AMrXdXvJwd3Tyv51nq/yoDQJehhVAmFPArqq8grbCdGcLQViy06OM3Vpq4nd8kgYVQ7uqUIL6C57yA==
+X-Received: by 2002:a62:2903:0:b0:57f:f2cd:6180 with SMTP id p3-20020a622903000000b0057ff2cd6180mr57052288pfp.0.1673141464818;
+        Sat, 07 Jan 2023 17:31:04 -0800 (PST)
 Received: from doug-ryzen-5700G.. ([192.183.212.197])
-        by smtp.gmail.com with ESMTPSA id x14-20020aa79a4e000000b005811c421e6csm3323714pfj.162.2023.01.07.17.30.59
+        by smtp.gmail.com with ESMTPSA id x14-20020aa79a4e000000b005811c421e6csm3323714pfj.162.2023.01.07.17.31.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Jan 2023 17:31:00 -0800 (PST)
+        Sat, 07 Jan 2023 17:31:04 -0800 (PST)
 From:   Doug Brown <doug@schmorgal.com>
 To:     Dan Williams <dcbw@redhat.com>, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -55,9 +55,9 @@ To:     Dan Williams <dcbw@redhat.com>, Kalle Valo <kvalo@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>
 Cc:     libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Doug Brown <doug@schmorgal.com>
-Subject: [PATCH v2 3/4] wifi: libertas: add new TLV type for WPS enrollee IE
-Date:   Sat,  7 Jan 2023 17:30:15 -0800
-Message-Id: <20230108013016.222494-4-doug@schmorgal.com>
+Subject: [PATCH v2 4/4] wifi: libertas: add support for WPS enrollee IE in probe requests
+Date:   Sat,  7 Jan 2023 17:30:16 -0800
+Message-Id: <20230108013016.222494-5-doug@schmorgal.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230108013016.222494-1-doug@schmorgal.com>
 References: <20230108013016.222494-1-doug@schmorgal.com>
@@ -65,34 +65,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a define for the TLV type that will be used to add WPS enrollee
-information to probe requests.
+Add compatibility with WPS by passing on WPS enrollee information in
+probe requests. Ignore other IEs supplied in the scan request. This also
+has the added benefit of restoring compatibility with newer
+wpa_supplicant versions that always add scan IEs. Previously, with
+max_scan_ie_len set to 0, scans would always fail.
 
 Suggested-by: Dan Williams <dcbw@redhat.com>
 Signed-off-by: Doug Brown <doug@schmorgal.com>
 ---
- drivers/net/wireless/marvell/libertas/types.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/marvell/libertas/cfg.c | 48 +++++++++++++++++++--
+ 1 file changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/types.h b/drivers/net/wireless/marvell/libertas/types.h
-index 398e3272e85f..39deb2b8bc82 100644
---- a/drivers/net/wireless/marvell/libertas/types.h
-+++ b/drivers/net/wireless/marvell/libertas/types.h
-@@ -93,6 +93,7 @@ union ieee_phy_param_set {
- #define TLV_TYPE_TSFTIMESTAMP	    (PROPRIETARY_TLV_BASE_ID + 19)
- #define TLV_TYPE_RSSI_HIGH          (PROPRIETARY_TLV_BASE_ID + 22)
- #define TLV_TYPE_SNR_HIGH           (PROPRIETARY_TLV_BASE_ID + 23)
-+#define TLV_TYPE_WPS_ENROLLEE       (PROPRIETARY_TLV_BASE_ID + 27)
- #define TLV_TYPE_AUTH_TYPE          (PROPRIETARY_TLV_BASE_ID + 31)
- #define TLV_TYPE_MESH_ID            (PROPRIETARY_TLV_BASE_ID + 37)
- #define TLV_TYPE_OLD_MESH_ID        (PROPRIETARY_TLV_BASE_ID + 291)
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 5cd78fefbe4c..ec3f35ae15fd 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -446,6 +446,41 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8 *ie, u8 ie_len)
+ 	return sizeof(struct mrvl_ie_header) + wpaie->datalen;
+ }
+ 
++/* Add WPS enrollee TLV
++ */
++#define LBS_MAX_WPS_ENROLLEE_TLV_SIZE		\
++	(sizeof(struct mrvl_ie_header)		\
++	 + 256)
++
++static int lbs_add_wps_enrollee_tlv(u8 *tlv, const u8 *ie, size_t ie_len)
++{
++	struct mrvl_ie_data *wpstlv = (struct mrvl_ie_data *)tlv;
++	const struct element *wpsie;
++
++	/* Look for a WPS IE and add it to the probe request */
++	wpsie = cfg80211_find_vendor_elem(WLAN_OUI_MICROSOFT,
++					  WLAN_OUI_TYPE_MICROSOFT_WPS,
++					  ie, ie_len);
++	if (!wpsie)
++		return 0;
++
++	/* Convert the WPS IE to a TLV. The IE looks like this:
++	 *   u8      type (WLAN_EID_VENDOR_SPECIFIC)
++	 *   u8      len
++	 *   u8[]    data
++	 * but the TLV will look like this instead:
++	 *   __le16  type (TLV_TYPE_WPS_ENROLLEE)
++	 *   __le16  len
++	 *   u8[]    data
++	 */
++	wpstlv->header.type = TLV_TYPE_WPS_ENROLLEE;
++	wpstlv->header.len = wpsie->datalen;
++	memcpy(wpstlv->data, wpsie->data, wpsie->datalen);
++
++	/* Return the total number of bytes added to the TLV buffer */
++	return sizeof(struct mrvl_ie_header) + wpsie->datalen;
++}
++
+ /*
+  * Set Channel
+  */
+@@ -672,14 +707,15 @@ static int lbs_ret_scan(struct lbs_private *priv, unsigned long dummy,
+ 
+ 
+ /*
+- * Our scan command contains a TLV, consting of a SSID TLV, a channel list
+- * TLV and a rates TLV. Determine the maximum size of them:
++ * Our scan command contains a TLV, consisting of a SSID TLV, a channel list
++ * TLV, a rates TLV, and an optional WPS IE. Determine the maximum size of them:
+  */
+ #define LBS_SCAN_MAX_CMD_SIZE			\
+ 	(sizeof(struct cmd_ds_802_11_scan)	\
+ 	 + LBS_MAX_SSID_TLV_SIZE		\
+ 	 + LBS_MAX_CHANNEL_LIST_TLV_SIZE	\
+-	 + LBS_MAX_RATES_TLV_SIZE)
++	 + LBS_MAX_RATES_TLV_SIZE		\
++	 + LBS_MAX_WPS_ENROLLEE_TLV_SIZE)
+ 
+ /*
+  * Assumes priv->scan_req is initialized and valid
+@@ -728,6 +764,11 @@ static void lbs_scan_worker(struct work_struct *work)
+ 	/* add rates TLV */
+ 	tlv += lbs_add_supported_rates_tlv(tlv);
+ 
++	/* add optional WPS enrollee TLV */
++	if (priv->scan_req->ie && priv->scan_req->ie_len)
++		tlv += lbs_add_wps_enrollee_tlv(tlv, priv->scan_req->ie,
++						priv->scan_req->ie_len);
++
+ 	if (priv->scan_channel < priv->scan_req->n_channels) {
+ 		cancel_delayed_work(&priv->scan_work);
+ 		if (netif_running(priv->dev))
+@@ -2114,6 +2155,7 @@ int lbs_cfg_register(struct lbs_private *priv)
+ 	int ret;
+ 
+ 	wdev->wiphy->max_scan_ssids = 1;
++	wdev->wiphy->max_scan_ie_len = 256;
+ 	wdev->wiphy->signal_type = CFG80211_SIGNAL_TYPE_MBM;
+ 
+ 	wdev->wiphy->interface_modes =
 -- 
 2.34.1
 
