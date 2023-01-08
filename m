@@ -2,72 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57DE9661604
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 16:08:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91F68661677
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 17:18:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjAHPIV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Jan 2023 10:08:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43494 "EHLO
+        id S232956AbjAHQSm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Jan 2023 11:18:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjAHPIT (ORCPT
+        with ESMTP id S229487AbjAHQSk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Jan 2023 10:08:19 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66C1C775
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Jan 2023 07:08:18 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id x10so6124356edd.10
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Jan 2023 07:08:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bfu9Do94+cSM7FBaTDR2jHk7+19bcJfDuKFB0Y2utw4=;
-        b=pyVJI4ARZqSf+BYS76A3jgRVNTWWVNvsB48cqKbLyjjTqGovyFbfsClyIe9mD8B8PZ
-         ZQkVtU4q4Q1XidRWhRvPySRARFJ4I44Wb0j0gh8uxbTHaJ2HEFNOVL4AWOhK06Rf4H3N
-         6syDla3kI+ZnlpiMD2JNAeEpVnISmzOhdrKG/Y+UY//NGba/kfmwOR63A9QHGbnzgV5f
-         pbVggFSX0xfs+db86AFZHhJgui6RpXkNKAUvofC5zHnVDADe14H7AVTfYhiMa7LPZ8xH
-         iYJJbiQ/y946DEQgEiw3gIT2rG0nnJedT8R91VtNh4HjBHyfDHAH8nYNnVEqYWwUNBjr
-         u5jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bfu9Do94+cSM7FBaTDR2jHk7+19bcJfDuKFB0Y2utw4=;
-        b=sXylAqywIanfO5lhy0RgUrZ7zL+BFhDwV4qi8h7KNx8RR7vKn9wbs3DvvsAoSWFeqS
-         HCxcVpNj+LB2vJqJYQzZqIm4croMnsIc5Qk6t+ykCBDv8ygh3UuXUmLoSSL8o6M8LKMm
-         3f4a90VcCTMGE93xYPaVJd9SFOIv68zEyBgZEYbjJD++CyAD4QLEBqtigm1xm9Ms2y3h
-         sNsd34O+jQzckKK5xUVR2bKhs2hBGrMrFseuUSv8vGi/UVobx07b5ocVxIkxaSxLUoZr
-         EAfFIOUh4tV0ni8xTed3Q/4J8qKRvCs0lSHHLuQGTWDRVd7791tBiGrlBOPX7J8sirSy
-         2E1Q==
-X-Gm-Message-State: AFqh2kpLcqKCODF/204D7QheZjdGp9pedNOm09rGIELSOQwG2wYK2H85
-        Gp1NnCGEM4eINctTP2lbkafiPR/BL6Y=
-X-Google-Smtp-Source: AMrXdXuSIB+G5UkEPnNRvPbMsjwDWx9m5YdlLdPckkuOISEOkMJ/d7CHCo8Qs6B17F2FdisVaFKl3Q==
-X-Received: by 2002:a05:6402:2a08:b0:470:4d71:6d43 with SMTP id ey8-20020a0564022a0800b004704d716d43mr57338741edb.25.1673190497244;
-        Sun, 08 Jan 2023 07:08:17 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id qw25-20020a1709066a1900b00781dbdb292asm2574331ejc.155.2023.01.08.07.08.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Jan 2023 07:08:16 -0800 (PST)
-Message-ID: <477d745b-6bac-111d-403c-487fc19aa30d@gmail.com>
-Date:   Sun, 8 Jan 2023 17:08:16 +0200
+        Sun, 8 Jan 2023 11:18:40 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFB0C746;
+        Sun,  8 Jan 2023 08:18:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1673194714; bh=FU9rbHk25+mFU8BoKNbkZeDeFsJK6e8cHJ/ZUq4XqWA=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:Date;
+        b=Hl2k1wlo9QEQbOdkFtv/5SXmtBUgwVpsO+iKvTuGDEZmYkRgbPthhxK9rg/zXfYKQ
+         igOg/fH0QUlVHCaFaEQm/ZQKwGkrgGC1qULPO37FtHRCw+0ZYaOsDW+OuXNu+u/pQO
+         ps1AN04ItlX9ZyhqZnG6zwp/AVQrUOGjkuY/OznLvYEqoBO4hNGNc+e0RKP5i9QqOE
+         KVgUPwsVnF4bOFh7oGF1CIp11DRu0MoEYAB31uFi+8VRr9vaG7SUWxMgjqxnUT8TDj
+         id0FJQZrie0r8u+n51D67VkoJxZ8WHq/LBT6Z2veeugmTUrqXLGdbRyss6SwZC510c
+         DSohSYXt6oiFA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from homer.fritz.box ([185.191.216.48]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M89Gt-1p9to93Te7-005KsW; Sun, 08
+ Jan 2023 17:18:34 +0100
+Message-ID: <509b8748971fd988c5dd623adc6db97617a50fb5.camel@gmx.de>
+Subject: brcmfmac regression - cfg80211_set_channel: set chanspec 0x????
+ fail, reason -52 spew
+From:   Mike Galbraith <efault@gmx.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Wright Feng <wright.feng@cypress.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Sun, 08 Jan 2023 17:18:34 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: [PATCH v2 2/2] wifi: rtl8xxxu: Use a longer retry limit of 48
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <2aab4f3f-e914-4fe1-f29a-deac91774d05@gmail.com>
-In-Reply-To: <2aab4f3f-e914-4fe1-f29a-deac91774d05@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Provags-ID: V03:K1:UppHptmFmtfaieEaaerob428Bj/3qZaoacinygYOj1QlqfSfAAa
+ mU1da5wuAgj4Zf38XCnK6RgL/sT6o0VydcKJomErCxaICtnDRUARV5Mwp4RrC/zQJfHNs35
+ ET2g96wDqIhYye3qRfOXHyA1w5tAOAv9PoHSndAvXVaNezmmmBJU08nrYRXmNe9yNh2dTN9
+ y36jHxazo31G16wtxQm6w==
+UI-OutboundReport: notjunk:1;M01:P0:VxFEUpf4KRU=;CmfQteOB+rFn51UrrH1z7rgkvkp
+ 8cIoxcaXAiMgy6CG7P3AOV9jMfiy6Hx6gh0RH7E9WTd7jIf/4Mbw9gOlSMRTSbkOYL3BU0mLw
+ 9Gdqbr5n24i1Z+BWpM45TX2FXBcSIqCevFu2x93gTS0t8OiMMcHW1tbj4xphvTKVF/B39a6E/
+ xAcfHDIQF25rQOJFwkhLtQZ61bwACOj/hhPv4hvc3HXoqL/kuAAmu1oeblBvuW6BEN11752qy
+ yY3+baG5fuVOruFgMLAGonKs0SpYAhzl39CNsx0YtbDYXm1BGBUgsNpII62kWRMcGtygrbPy6
+ luGEZ0oLCGNMXVEPLKugb9zikHFxeCpY7TRkKpcE1IXeGRvb7mOMZScc2af0Ttxe+s/X2JH/1
+ WRa9G+WyWXnOOdPL67lXzrW5qWiuEthbgsvXQlOGQ0ESQPX+tMRGratM3BknxWzFTugN3KEI5
+ Dw+X2ArWhtR2cKbKQ8iNbHHaHMuTGWv6BhW91qBcacXlagSfV5wAdfiJ/vvqMA8H25yWg21BC
+ TZco0HWhjAC2aSziSSK/qashHxuFSTJsdnHKXqwX9OSnax2SfrSzLpDSrTdoWkfy6CscjRY5Z
+ 3zDv5z9GbPETwULaQIdYwdWJW1RKhBPtTOsYj7JIiWQdB9Y7T92rNIlD60KijgGOwQz/NhnFY
+ cc9gLFEfy7xZDJb31eqP8FLMJ/0juh8A5JfUufG5XFLvHo2fHCufpgJDDoUtm68RVqkjxipDs
+ xxjKBxZn/Y3NEWHJlznzgnYdem+19Qt93PdPYqqkSUXKozJMyYhWkeMXBl96dGvTMxdiwPWBo
+ g9cuUc5B1NNQh/n8DY5oBaI65vLl5qHvH9AR7B+ghabnJZhz89/8mM1T4oTTb0vhAmhNWBkxC
+ ron50vPGuY/JJa5YTA8Cl/1UURJ1B+wJ9VTfuQwUznmaJ/ixH6mXMTZ5WifUXzRGcPXwXaMRj
+ zo104g==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,56 +69,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The Realtek rate control algorithm goes back and forth a lot between
-the highest and the lowest rate it's allowed to use. This is due to
-a lot of frames being dropped because the retry limits set by
-IEEE80211_CONF_CHANGE_RETRY_LIMITS are too low. (Experimentally, they
-are 4 for long frames and 7 for short frames.)
+Greetings,
 
-The vendor drivers hardcode the value 48 for both retry limits (for
-station mode), which makes dropped frames very rare and thus the rate
-control is more stable.
+6c04deae1438 "brcmfmac: Add dump_survey cfg80211 ops for HostApd AutoChannelSelection"
 
-Because most Realtek chips handle the rate control in the firmware,
-which can't be modified, ignore the limits set by
-IEEE80211_CONF_CHANGE_RETRY_LIMITS and use the value 48 (set during
-chip initialisation), same as the vendor drivers.
+This commit seems to inspire my little raspberrypi 4b to moan
+endlessly, though it seems to work.  Brute force revert silenced it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v2:
- - Use Cc tag instead of Fixes.
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 9 ---------
- 1 file changed, 9 deletions(-)
+[    7.917448] brcmfmac: F1 signature read @0x18000000=0x15264345
+[    7.974270] brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43455-sdio for chip BCM4345/6
+[    8.326846] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6 wl0: Jan  4 2021 19:56:29 version 7.45.229 (617f1f5 CY) FWID 01-2dbd9d2e
+[   10.799571] brcmfmac: brcmf_cfg80211_set_power_mgmt: power save enabled
+[   15.078022] brcmfmac: cfg80211_set_channel: set chanspec 0x100e fail, reason -52
+[   15.078347] brcmfmac: cfg80211_set_channel: set chanspec 0xd022 fail, reason -52
+[   15.185674] brcmfmac: cfg80211_set_channel: set chanspec 0xd026 fail, reason -52
+[   15.289609] brcmfmac: cfg80211_set_channel: set chanspec 0xd02a fail, reason -52
+[   15.393796] brcmfmac: cfg80211_set_channel: set chanspec 0xd02e fail, reason -52
+[   17.066478] brcmfmac: cfg80211_set_channel: set chanspec 0xd090 fail, reason -52
+[   17.066923] brcmfmac: cfg80211_set_channel: set chanspec 0xd095 fail, reason -52
+[   17.070632] brcmfmac: cfg80211_set_channel: set chanspec 0xd099 fail, reason -52
+[   17.071080] brcmfmac: cfg80211_set_channel: set chanspec 0xd09d fail, reason -52
+[   17.071653] brcmfmac: cfg80211_set_channel: set chanspec 0xd0a1 fail, reason -52
+[   17.072197] brcmfmac: cfg80211_set_channel: set chanspec 0xd0a5 fail, reason -52
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 4c76fad67150..ab4074caf191 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6184,7 +6184,6 @@ static int rtl8xxxu_config(struct ieee80211_hw *hw, u32 changed)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
--	u16 val16;
- 	int ret = 0, channel;
- 	bool ht40;
- 
-@@ -6194,14 +6193,6 @@ static int rtl8xxxu_config(struct ieee80211_hw *hw, u32 changed)
- 			 __func__, hw->conf.chandef.chan->hw_value,
- 			 changed, hw->conf.chandef.width);
- 
--	if (changed & IEEE80211_CONF_CHANGE_RETRY_LIMITS) {
--		val16 = ((hw->conf.long_frame_max_tx_count <<
--			  RETRY_LIMIT_LONG_SHIFT) & RETRY_LIMIT_LONG_MASK) |
--			((hw->conf.short_frame_max_tx_count <<
--			  RETRY_LIMIT_SHORT_SHIFT) & RETRY_LIMIT_SHORT_MASK);
--		rtl8xxxu_write16(priv, REG_RETRY_LIMIT, val16);
--	}
--
- 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
- 		switch (hw->conf.chandef.width) {
- 		case NL80211_CHAN_WIDTH_20_NOHT:
--- 
-2.38.0
