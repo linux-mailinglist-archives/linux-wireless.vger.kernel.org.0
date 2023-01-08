@@ -2,118 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA7F6616A4
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 17:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDD62661740
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Jan 2023 18:14:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236118AbjAHQaH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Jan 2023 11:30:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35702 "EHLO
+        id S233071AbjAHROi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Jan 2023 12:14:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236104AbjAHQaE (ORCPT
+        with ESMTP id S233663AbjAHROh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Jan 2023 11:30:04 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2491E1;
-        Sun,  8 Jan 2023 08:30:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1673195397; bh=+49/K2sPatrtd8JAfOCpWQ9VkmDiH7+o75Z1YN8ypjc=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=e7ouvHoHRSMlnqXAECzQXn7Dk8w6gbXMxCEmALVnDnd1MH/77Bi+bFpGbdR7GNQdy
-         mHbv1adhO3d29S9H8VN/KddJ8feBe2cQS1B2Q+od/EqFlahQvgxB+zLRAEZxSGKlE3
-         C5TFlhjkH+YoO2TCau0+YVMeBer7DoMkO+KjVZVA3ZsAKuUNiun2KNpsAPmhrGxOYO
-         u1lclzWBwEyeOz0N1UetcsOxRfz7gYLz2iFZBAgwBxgymO5fvLHeUzztJxDNecOYOp
-         UIhmtBudAnEM6dAp7uSznbLt3C8EydTX1rM2w+qXmnIXCM3Eee1rSpy+DCkIJX89+h
-         4D75Fbx0XjVuw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from homer.fritz.box ([185.191.216.48]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1My36N-1oqyfS1CNb-00zWcP; Sun, 08
- Jan 2023 17:29:57 +0100
-Message-ID: <6ff1691d505630f3cc7bc1d5c128a7252f66bf71.camel@gmx.de>
-Subject: Re: brcmfmac regression - cfg80211_set_channel: set chanspec 0x????
- fail, reason -52 spew
-From:   Mike Galbraith <efault@gmx.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Chi-hsien Lin <chi-hsien.lin@cypress.com>,
-        Ian Lin <ian.lin@infineon.com>, KalleValo <kvalo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Sun, 08 Jan 2023 17:29:56 +0100
-In-Reply-To: <509b8748971fd988c5dd623adc6db97617a50fb5.camel@gmx.de>
-References: <509b8748971fd988c5dd623adc6db97617a50fb5.camel@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZRC5O3trthvLiGdvwZaEbXwbgSM6rQ/lYOZU8IgXvZNW6JR5grj
- Kz0Lgam5kZB9rxuTF3wMY36HQakOKKVgzU+i+wC/361X/XBR5s9+nDK6nyP7gFa0/6oIKCu
- Sk5KcD7Yo+fm9d2bmR0Iy+dw2MICWGr0Y083Z8/xNJyss15AYwkwQs10rEKhIzwAgoBUPi0
- dzOcsrt1gtrYHg6pceliA==
-UI-OutboundReport: notjunk:1;M01:P0:HBTCLLyol5A=;ZBd8zpB5VtIgDea7dP7xTQbOnfq
- Htmh53nnVldvc/ygMIa7EyPg53JHOO3G7EKrMubRoPl0rKJqowylh7wCv+kaVW846GGOHvEVs
- fnsipIgnZKQaqTniqQXrZAwe2l2a/8qnpDOmRkQz2IdGQDoFuouF4tuMPZ2y4/TmICYzODbdr
- cXcu2LJz7IFwgBs5GntekpUbJwQ+2AHMDx3OB1sJ47AkTn/PpjYmeoitPBb9TWd6IKmfpqaO6
- nqzP5d60Gqf/53KdnekGkYTZnzuHW+0Uzg68tNlZrl8KdtV+iG0IRPECQg3yXvQ4N0lTowkRu
- 3a2QRXL0SQ5s6UKtndyyR3VkC1zVDbDJMWQxFxpK2dTzy0IokXi5TQSH05rpq2ZXF1MKwIU0h
- Lve1GjFEjjxXICHH4Z2Sl5tVakxp2SML06a9eJqm1ELdkHFAG2W7f/QC3nEdk5rxM9IJfNCNm
- omPKsRgdgLW/xUpIFT0ZIRHLPCd1FzsCLqcHsKrOTJCoENzs+L7jJlq4UfbsYq2FyynhSgo4+
- DbRf44eovyX5dNQZngGdn+rWqtKWoWOioBTvCA7yb3MTGonvPfTqBIczFJkWffxPawMaJVY/k
- iMwjlLMhXpE21k/Apzmdz9pXxOdD6QX1sMwYdE68d1FcUWiI8q+E629jlLge5nS+3WGbzmClE
- d1UnhsRS8UwD7u3FCJ3PINrRj5/VZDXCT4ejASznml+iQ0EgKJYZhZZ15tqL5d/Vm9J7+zzKZ
- 6/te0sMrDDfL9lrZXuIIQDbi2g2cuXUfa3M92cMcwNYT5qhW7DJmPucDu92cuoUljdyBYlQ+3
- gtqOdWvglO5HUrBye9KPt489U4FR8P8m5D+65MS10AC7P0S+hatZkycRCAEtEh1KtIJxuFjgh
- B5GVPOz9CseiFZ/LOYw8piv9nLbVgy0Mosn5hpBGm/hQqq+ReKXkJaQr7GX5z9DwFMHAAJRRZ
- FpPd6XmrGPdZ0Qd5A1RyknhLsNg=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Sun, 8 Jan 2023 12:14:37 -0500
+X-Greylist: delayed 382 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Jan 2023 09:14:35 PST
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6C2BC03
+        for <linux-wireless@vger.kernel.org>; Sun,  8 Jan 2023 09:14:35 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by mailout2.hostsharing.net (Postfix) with ESMTPS id EE25410189A6F;
+        Sun,  8 Jan 2023 18:08:09 +0100 (CET)
+Received: from localhost (unknown [89.246.108.87])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by h08.hostsharing.net (Postfix) with ESMTPSA id C418E603DB87;
+        Sun,  8 Jan 2023 18:08:09 +0100 (CET)
+X-Mailbox-Line: From e7280be84acda02634bc7cb52c97656182b9c700 Mon Sep 17 00:00:00 2001
+Message-Id: <e7280be84acda02634bc7cb52c97656182b9c700.1673197326.git.lukas@wunner.de>
+From:   Lukas Wunner <lukas@wunner.de>
+Date:   Sun, 8 Jan 2023 18:08:08 +0100
+Subject: [PATCH] wifi: cfg80211: Deduplicate certificate loading
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, David Howells <dhowells@redhat.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Geez.  Sorry for multiple copies, let's see if any of the CCs work.
+load_keys_from_buffer() in net/wireless/reg.c duplicates
+x509_load_certificate_list() in crypto/asymmetric_keys/x509_loader.c
+for no apparent reason.
 
-On Sun, 2023-01-08 at 17:18 +0100, Mike Galbraith wrote:
-> Greetings,
->
-> 6c04deae1438 "brcmfmac: Add dump_survey cfg80211 ops for HostApd AutoCha=
-nnelSelection"
->
-> This commit seems to inspire my little raspberrypi 4b to moan
-> endlessly, though it seems to work.=C2=A0 Brute force revert silenced it=
-.
->
-> [=C2=A0=C2=A0=C2=A0 7.917448] brcmfmac: F1 signature read @0x18000000=3D=
-0x15264345
-> [=C2=A0=C2=A0=C2=A0 7.974270] brcmfmac: brcmf_fw_alloc_request: using br=
-cm/brcmfmac43455-sdio for chip BCM4345/6
-> [=C2=A0=C2=A0=C2=A0 8.326846] brcmfmac: brcmf_c_preinit_dcmds: Firmware:=
- BCM4345/6 wl0: Jan=C2=A0 4 2021 19:56:29 version 7.45.229 (617f1f5 CY) FW=
-ID 01-2dbd9d2e
-> [=C2=A0=C2=A0 10.799571] brcmfmac: brcmf_cfg80211_set_power_mgmt: power =
-save enabled
-> [=C2=A0=C2=A0 15.078022] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-100e fail, reason -52
-> [=C2=A0=C2=A0 15.078347] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d022 fail, reason -52
-> [=C2=A0=C2=A0 15.185674] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d026 fail, reason -52
-> [=C2=A0=C2=A0 15.289609] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d02a fail, reason -52
-> [=C2=A0=C2=A0 15.393796] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d02e fail, reason -52
-> [=C2=A0=C2=A0 17.066478] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d090 fail, reason -52
-> [=C2=A0=C2=A0 17.066923] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d095 fail, reason -52
-> [=C2=A0=C2=A0 17.070632] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d099 fail, reason -52
-> [=C2=A0=C2=A0 17.071080] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d09d fail, reason -52
-> [=C2=A0=C2=A0 17.071653] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d0a1 fail, reason -52
-> [=C2=A0=C2=A0 17.072197] brcmfmac: cfg80211_set_channel: set chanspec 0x=
-d0a5 fail, reason -52
->
+Deduplicate it.  No functional change intended.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: David Howells <dhowells@redhat.com>
+---
+ crypto/asymmetric_keys/x509_loader.c |  1 +
+ net/wireless/reg.c                   | 54 +++++-----------------------
+ 2 files changed, 9 insertions(+), 46 deletions(-)
+
+diff --git a/crypto/asymmetric_keys/x509_loader.c b/crypto/asymmetric_keys/x509_loader.c
+index 1bc169dee22e..a41741326998 100644
+--- a/crypto/asymmetric_keys/x509_loader.c
++++ b/crypto/asymmetric_keys/x509_loader.c
+@@ -55,3 +55,4 @@ int x509_load_certificate_list(const u8 cert_list[],
+ 	pr_err("Problem parsing in-kernel X.509 certificate list\n");
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(x509_load_certificate_list);
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 4f3f31244e8b..af65196c916e 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -737,51 +737,9 @@ static bool valid_country(const u8 *data, unsigned int size,
+ }
+ 
+ #ifdef CONFIG_CFG80211_REQUIRE_SIGNED_REGDB
+-static struct key *builtin_regdb_keys;
+-
+-static void __init load_keys_from_buffer(const u8 *p, unsigned int buflen)
+-{
+-	const u8 *end = p + buflen;
+-	size_t plen;
+-	key_ref_t key;
+-
+-	while (p < end) {
+-		/* Each cert begins with an ASN.1 SEQUENCE tag and must be more
+-		 * than 256 bytes in size.
+-		 */
+-		if (end - p < 4)
+-			goto dodgy_cert;
+-		if (p[0] != 0x30 &&
+-		    p[1] != 0x82)
+-			goto dodgy_cert;
+-		plen = (p[2] << 8) | p[3];
+-		plen += 4;
+-		if (plen > end - p)
+-			goto dodgy_cert;
+-
+-		key = key_create_or_update(make_key_ref(builtin_regdb_keys, 1),
+-					   "asymmetric", NULL, p, plen,
+-					   ((KEY_POS_ALL & ~KEY_POS_SETATTR) |
+-					    KEY_USR_VIEW | KEY_USR_READ),
+-					   KEY_ALLOC_NOT_IN_QUOTA |
+-					   KEY_ALLOC_BUILT_IN |
+-					   KEY_ALLOC_BYPASS_RESTRICTION);
+-		if (IS_ERR(key)) {
+-			pr_err("Problem loading in-kernel X.509 certificate (%ld)\n",
+-			       PTR_ERR(key));
+-		} else {
+-			pr_notice("Loaded X.509 cert '%s'\n",
+-				  key_ref_to_ptr(key)->description);
+-			key_ref_put(key);
+-		}
+-		p += plen;
+-	}
+-
+-	return;
++#include <keys/asymmetric-type.h>
+ 
+-dodgy_cert:
+-	pr_err("Problem parsing in-kernel X.509 certificate list\n");
+-}
++static struct key *builtin_regdb_keys;
+ 
+ static int __init load_builtin_regdb_keys(void)
+ {
+@@ -797,11 +755,15 @@ static int __init load_builtin_regdb_keys(void)
+ 	pr_notice("Loading compiled-in X.509 certificates for regulatory database\n");
+ 
+ #ifdef CONFIG_CFG80211_USE_KERNEL_REGDB_KEYS
+-	load_keys_from_buffer(shipped_regdb_certs, shipped_regdb_certs_len);
++	x509_load_certificate_list(shipped_regdb_certs,
++				   shipped_regdb_certs_len,
++				   builtin_regdb_keys);
+ #endif
+ #ifdef CONFIG_CFG80211_EXTRA_REGDB_KEYDIR
+ 	if (CONFIG_CFG80211_EXTRA_REGDB_KEYDIR[0] != '\0')
+-		load_keys_from_buffer(extra_regdb_certs, extra_regdb_certs_len);
++		x509_load_certificate_list(extra_regdb_certs,
++					   extra_regdb_certs_len,
++					   builtin_regdb_keys);
+ #endif
+ 
+ 	return 0;
+-- 
+2.39.0
 
