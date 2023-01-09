@@ -2,64 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7137B662217
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 10:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B81466223D
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 10:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236921AbjAIJwG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Jan 2023 04:52:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43732 "EHLO
+        id S234032AbjAIJ7C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Jan 2023 04:59:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236907AbjAIJvg (ORCPT
+        with ESMTP id S237085AbjAIJ56 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Jan 2023 04:51:36 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F423FF7
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 01:50:55 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id m3so5847193wmq.0
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Jan 2023 01:50:55 -0800 (PST)
+        Mon, 9 Jan 2023 04:57:58 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BFED21AB
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 01:56:01 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id bn26so7589061wrb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Jan 2023 01:56:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tXxfScEqqdrp8q4bMgoY6opUa2MsZSzFn59crKdioYs=;
-        b=Jns9ct5wbNpzMAKsJN1vWmPRyyRVQA1jSDma4wsXgHvERc3GFfV3DoTRXYOKefkh67
-         WTrraLicFFFvuu9mkqcVelhqpCX7CXnydZV976ecJ25P7WEcXimjSSgGSNVcYeHYpZXs
-         YDYQaHLeZhCaBxb8Q2w0yyP8psVvFxxq0mpuo=
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=J4wqg/VIiIejJQ2c7NYjMlpyehCdLVvjwZeGC2ai3N0=;
+        b=Lni2Y1OwH3kWEyMfLhzSXfwWWALbIBDzAt9La0bC3+8AFXE5khURIr5yCPkbt4u7cZ
+         MM7OzALJjNvXt6dDAi9yzDgaIp4iiEYMXL+YSmS0W0BPBz8cr/7K/W2E2EjJawMllfT8
+         URwl6XalvxZ+ln4AhlL86gKWg4lCw/QnHWOK4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tXxfScEqqdrp8q4bMgoY6opUa2MsZSzFn59crKdioYs=;
-        b=bGbVnDu0764rj4v+CUKwsZdrNiSYUwraKJwef6UGV7j01s8UNfTfrZ9M9CgwZCL0F5
-         eGUDSmQoOH6WcxVX/CRY+P3lFQpcCRlF4V0WqM9qF/flxciLBkxAth8Gsu7Deh/FjTuy
-         djoYXTL9TsbkqNtSYA14KXC0OKs6D+Dvbsm2jbG4e6eqsSFoezq2Ea56c3VD9V9fc5W7
-         4WLu/9Ub8MCgXyC1EgGvxHXXnGYRvmBkljPmvGWlNrfkNisfG8I+OXZD2UiSD3e7u9SH
-         b/3A9p1zfFNp7n7nksD00EqA+4T3t0JVKNkgm+dx80V+K7kt9e2o5bS20Xq0jhIgqczN
-         Zzjg==
-X-Gm-Message-State: AFqh2kp6VeN37lRqaZoj9RUpoPqVQI3zGnuXvO7O0p5byL1iGuTYUoWU
-        oQJ1dBlTTi8gTSE84GGc/+NaOQ==
-X-Google-Smtp-Source: AMrXdXvgsGZp4CZqaCuUBn/YvE5N1du1vGvzU9z9iKMUieDts7mPujOMM8E+NazuWyMOQXG2iBCe9Q==
-X-Received: by 2002:a05:600c:b99:b0:3d9:edd9:20ea with SMTP id fl25-20020a05600c0b9900b003d9edd920eamr2833897wmb.38.1673257853895;
-        Mon, 09 Jan 2023 01:50:53 -0800 (PST)
-Received: from bld-bun-02.bun.broadcom.com ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id i8-20020a05600c354800b003cf894dbc4fsm11480179wmq.25.2023.01.09.01.50.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Jan 2023 01:50:53 -0800 (PST)
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J4wqg/VIiIejJQ2c7NYjMlpyehCdLVvjwZeGC2ai3N0=;
+        b=qgMCdBuFMn8wdqcTgibMsu/v+sWnDSUNa09iNHCnuEXrOjvKZudgrobVJKOfIUWrI1
+         rtKgE8SbuXLXoBz1BfGoa5B+Q4eKI24X44KQNGFvWPxXzGAuAdvHKwQwex1+2mF8rzhS
+         96g+Ahd2hF6WKx9nt7D2fFY842GrxC6C7HXMiH06jdrwwBMPmNa3dO8ujSgaw7oo7ZQd
+         0Y4yqAm3Or5e+scThr7tAUyfumYS8sZSA5p05LzFxcVaxhKzPlyjqkj/nIK13TPOAwjS
+         NUD8Loa7Wib57DTyToZD5dJSwhjEFWIbWmHFNJeVl3sxDDVG3vAxRdWBtCWFio1zqO8V
+         9LBQ==
+X-Gm-Message-State: AFqh2kq2u1MQ01WiAK8lns1KZCmTBzrMRO5UHKf34pF829lWpXJVEdGk
+        +K2wkAXs09VgSxgv84d1bZ7r1Q==
+X-Google-Smtp-Source: AMrXdXtLiFn/TLTJ77arxrg9ItSrUFAwEL69O6StOfmNLf5ubFmXgqq3yiysHiyfT/G11rOHB/q6rg==
+X-Received: by 2002:adf:d22c:0:b0:2bb:eaae:3096 with SMTP id k12-20020adfd22c000000b002bbeaae3096mr2493742wrh.8.1673258159886;
+        Mon, 09 Jan 2023 01:55:59 -0800 (PST)
+Received: from [10.230.42.27] ([192.19.152.250])
+        by smtp.gmail.com with ESMTPSA id f7-20020a5d6647000000b002bbeb700c38sm2996279wrw.91.2023.01.09.01.55.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Jan 2023 01:55:59 -0800 (PST)
+Message-ID: <fb3ad26f-0049-8f16-9075-ecad8f53a86e@broadcom.com>
+Date:   Mon, 9 Jan 2023 10:55:58 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH for-6.2] wifi: brcmfmac: fix regression for Broadcom PCIe
+ wifi devices
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
         chainofflowers <chainofflowers@posteo.net>
-Subject: [PATCH for-6.2] wifi: brcmfmac: fix regression for Broadcom PCIe wifi devices
-Date:   Mon,  9 Jan 2023 10:50:20 +0100
-Message-Id: <20230109095020.412475-1-arend.vanspriel@broadcom.com>
-X-Mailer: git-send-email 2.32.0
-MIME-Version: 1.0
+References: <20230109095020.412475-1-arend.vanspriel@broadcom.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20230109095020.412475-1-arend.vanspriel@broadcom.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000003be5905f1d1b426"
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
+        boundary="00000000000040ac7d05f1d1c6f2"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,42 +71,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000003be5905f1d1b426
-Content-Transfer-Encoding: 8bit
+--00000000000040ac7d05f1d1c6f2
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-A sanity check was introduced by [1] considering maximum flowrings
-above 256 as insane and effectively aborting the device probe. This
-resulted in regression for number of users and it is also tracked
-in bugzilla [2].
+On 1/9/2023 10:50 AM, Arend van Spriel wrote:
+> A sanity check was introduced by [1] considering maximum flowrings
+> above 256 as insane and effectively aborting the device probe. This
+> resulted in regression for number of users and it is also tracked
+> in bugzilla [2].
+> 
+> [1] https://lore.kernel.org/all/20220929031001.9962-3-ian.lin@infineon.com/
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=216894
+> 
+> Fixes: 2aca4f3734bd ("brcmfmac: return error when getting invalid max_flowrings from dongle")
+> Reported-by: chainofflowers <chainofflowers@posteo.net>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> index ae57a9a3ab05..b67f6d0810b6 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> @@ -1228,7 +1228,7 @@ static int brcmf_pcie_init_ringbuffers(struct brcmf_pciedev_info *devinfo)
+>   				BRCMF_NROF_H2D_COMMON_MSGRINGS;
+>   		max_completionrings = BRCMF_NROF_D2H_COMMON_MSGRINGS;
+>   	}
+> -	if (max_flowrings > 256) {
+> +	if (max_flowrings > 512) {
 
-[1] https://lore.kernel.org/all/20220929031001.9962-3-ian.lin@infineon.com/
-[2] https://bugzilla.kernel.org/show_bug.cgi?id=216894
+This check was added to detect firmware init failure. There should be a 
+better way than using this parameter. For now I decided to simply double 
+the limit to get the regression fixed.
 
-Fixes: 2aca4f3734bd ("brcmfmac: return error when getting invalid max_flowrings from dongle")
-Reported-by: chainofflowers <chainofflowers@posteo.net>
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>   		brcmf_err(bus, "invalid max_flowrings(%d)\n", max_flowrings);
+>   		return -EIO;
+>   	}
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index ae57a9a3ab05..b67f6d0810b6 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -1228,7 +1228,7 @@ static int brcmf_pcie_init_ringbuffers(struct brcmf_pciedev_info *devinfo)
- 				BRCMF_NROF_H2D_COMMON_MSGRINGS;
- 		max_completionrings = BRCMF_NROF_D2H_COMMON_MSGRINGS;
- 	}
--	if (max_flowrings > 256) {
-+	if (max_flowrings > 512) {
- 		brcmf_err(bus, "invalid max_flowrings(%d)\n", max_flowrings);
- 		return -EIO;
- 	}
--- 
-2.32.0
-
-
---00000000000003be5905f1d1b426
+--00000000000040ac7d05f1d1c6f2
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -173,14 +182,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAG7tM437h31FCkSWRu
-gqGqVY0dft3NiMpt3HAQMs9UEzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAxMDkwOTUwNTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDs0gU34xGUux7j/z02
+iDXKHp1Iupr5lBMbZOfqghi8CjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzAxMDkwOTU2MDBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAlKFDlFqVrKIZz6xc1ieB0o1d89rcEdGwWr9x
-Mp5ubKfduiPgDDBOAowiqVk6JFzFMMDpPrMUdhsPqqM8ht57ZNCNItzxfr0/NEJf8E4u6GqLdm6v
-8HXjtQAULLOogb7nyBEtRWXac7C8WruoE6e0X5JGGTnbPQRO0/hR+OTHgi2MMc5dK+B49yf0kBrY
-ikoN7maoKbs8aPahQiBALiMghXcZSdyWjnaxH0IuJUx2A/ryVxvpvaS9T6t4ufrXkI85NQ/nHduF
-UA8wOcmK1IYR08lX5n00mFmXtmlZLvTqaxpau8X4SG08n3P/hqjoxeaJAse9VnEtTmiBj4hR9j+S
-Pg==
---00000000000003be5905f1d1b426--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEABpZXSlSn4yU7+d6NDUYHzUU3xcpK1UyOlvWz
+y8YlUYh+L4+yuYb84fbabX7lYiH7zBqMUIZPZr5eFzYSytVykydI9xrfF7SKIf+XwdYgQE4LbcYw
+Sjj5wsZBiCTJhZlYwPV+JeJCjUCh7i7N/J5CU7+bUoM0hdU2FgpbkOMA/OZgfjtFY5/VVtrVSqVA
+3Gl8nx7ghM5iohw2nb2U9tjMvqeidZND73FYwJfJpy5GelTlEKqdO1sS9oFp9ZxTKAUXm9pZzgS0
+ay+FkI7qNQoeg+89rSsOTW8SrlX/AFOn5b9/8z8qjB5YDXt/S+149QSfVK8kuLFwpPOEXo9q1glx
+hw==
+--00000000000040ac7d05f1d1c6f2--
