@@ -2,49 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DE06628B5
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 15:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D08662926
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 15:55:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbjAIOm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Jan 2023 09:42:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33134 "EHLO
+        id S229658AbjAIOzn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Jan 2023 09:55:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjAIOm5 (ORCPT
+        with ESMTP id S229643AbjAIOzi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Jan 2023 09:42:57 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E6061AA07;
-        Mon,  9 Jan 2023 06:42:57 -0800 (PST)
+        Mon, 9 Jan 2023 09:55:38 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935C0D53
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 06:55:37 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A67A61168;
-        Mon,  9 Jan 2023 14:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D93C433D2;
-        Mon,  9 Jan 2023 14:42:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 48BF0B80DFD
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 14:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FCBC433F0;
+        Mon,  9 Jan 2023 14:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673275376;
-        bh=vyhQ5Kv0jvomCtF2wA1v2cv86vfLJ4UcKD5du8lOS44=;
+        s=k20201202; t=1673276134;
+        bh=NW7yo89rJfyNvfdSVQITonIS5Fm1TxvlFiB+mP7asfc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cUs47DELJbya0V+D1JRWcGin6AUwqy93PoasktkKfpnLZbriVm4P/ZxqgcZw9a4Mi
-         HT1mdDbx+UhZP9RsyrmaCCjAYFXtYyGLUl/KTRmzZuUVw3Q3JqHUHicn/tqmQdZlw+
-         5RJTMcyxKssxJCBgbGPmaC2yWTTVhmvy0NfrsosTmMrkKke7vbDIYz7AbNYwOKrkh+
-         wbHGKvoKG8iEEgHTDehxMpumffCkgcpTelnBQkE0LEKYxCg3L0nJU7IsD422rWhXN1
-         hFJxVwScDbRyEN4NBipWYnSMDEWjEqrO0l8ktNb0za5Cl7PDj1DTmJwQRXfmJHTkJ0
-         faHJ7vg7FxbJg==
+        b=kq3nEbU3SKEhhOZSUFCL36MzlqbOD7eqZ8fjzJpybgeraGsUmqXAFyZAfefD7U63v
+         TLKJjcNhx0iNH9GHccE+ycxaYK7R/D/49HltxifMLyKbIkhp4O/Yt2sj1svwWXkmoq
+         1VSDyh5adR7xrH8gfWjAr3ECtdgQlkbmPCSoFb77ODYuLUemWpdOVHp5tGSzHzGD13
+         KMRA/BZYPIsXx7O/3hT4dkN+duK5iWY4r36PmI0UbMFY+9LEgSwV1iYLGI6lk3jSyD
+         UMR83VtXn9kiuxqTxCdTlIt26qNMDcKn0cP8mOn3Pryp79I7VJ2A6ubJJvkTkvkB4F
+         oX1IIVMCPRLqw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Cc:     gregory.greenman@intel.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        luciano.coelho@intel.com, johannes.berg@intel.com,
-        shaul.triebitz@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: Add missing check for alloc_ordered_workqueue
-References: <20230104100059.24987-1-jiasheng@iscas.ac.cn>
-Date:   Mon, 09 Jan 2023 16:42:48 +0200
-In-Reply-To: <20230104100059.24987-1-jiasheng@iscas.ac.cn> (Jiasheng Jiang's
-        message of "Wed, 4 Jan 2023 18:00:59 +0800")
-Message-ID: <87358jixav.fsf@kernel.org>
+To:     Jaewan Kim <jaewan@google.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3] iw: info: fix bug reading preambles and bandwidths
+References: <20221220134733.2309329-1-jaewan@google.com>
+        <20221227010034.1399587-1-jaewan@google.com>
+Date:   Mon, 09 Jan 2023 16:55:32 +0200
+In-Reply-To: <20221227010034.1399587-1-jaewan@google.com> (Jaewan Kim's
+        message of "Tue, 27 Dec 2022 10:00:34 +0900")
+Message-ID: <87tu0zhi57.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,17 +54,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiasheng Jiang <jiasheng@iscas.ac.cn> writes:
+Jaewan Kim <jaewan@google.com> writes:
 
-> Add check for the return value of alloc_ordered_workqueue since it may
-> return NULL pointer.
+> Preambles and bandwidths values are considered as bit shifts
+> when they're are used for capabilities.
 >
-> Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> Signed-off-by: Jaewan Kim <jaewan@google.com>
+> Reviewed-by: Kalle Valo <kvalo@kernel.org>
 
-Your address for linux-wireless was wrong, I manually fixed it (".or" ->
-".org"). But patchwork didn't see this patch now so please resubmit as
-v2 with the correct list address.
+I didn't provide you a Reviewed-by tag[1] during my review, please don't
+create such tags yourself. For example, in this case I didn't review the
+patch in detail so I'm not comfortable giving you my Reviewed-by tag.
+
+The general idea is that you only copy paste the tag when someone gives
+you one, you don't create them on your own. I think Reported-by is only
+exception but there might be others.
+
+[1] https://lore.kernel.org/linux-wireless/87ili3kfdr.fsf@kernel.org/
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
