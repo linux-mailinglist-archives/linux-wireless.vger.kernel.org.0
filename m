@@ -2,145 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D6A0662274
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 11:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD72662290
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 11:10:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236677AbjAIKHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Jan 2023 05:07:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
+        id S233698AbjAIKJj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Jan 2023 05:09:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234182AbjAIKGp (ORCPT
+        with ESMTP id S236518AbjAIKJf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Jan 2023 05:06:45 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E38D186C8
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 02:05:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=WZWeJLEzMsm5772nG/08xGtisx6me5lL7YIJqPjIX/k=;
-        t=1673258712; x=1674468312; b=TjV9yF7mPlksQMbAgCvY9UNEkHAJQOGSE8b6aRO6VT571FW
-        52snoH3W17gE9jbVJMiLaZrnQi09dpMDUCxFTUjyDX5z2P3jCEAnD4Nc9kiAReOoyMgVPEv+filio
-        NvELhVGL87y5nobp7mt0IW5IBvPMZZev/4mWnDs4C3+hos+dyICUdep8eY65quhfc5YPdSwD5Qxuf
-        LRW9dSP+JyPpW1l4gXxWZkUDmvune39KAg5sC9FvNHOkRl2SwCCaG9lmkBpSLL4ib6q61bvs4z/al
-        GqLe5Rj/BoWKQZKhQbtv2vCaXNJdIIQUJTqY3rLdYaUetfcWFMqLbuvn9y6NNUBw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pEp1f-00EE9O-0B;
-        Mon, 09 Jan 2023 11:05:07 +0100
-Message-ID: <6187b1566674ba2e0d7d5413af5475688d8421b3.camel@sipsolutions.net>
-Subject: Re: [PATCH v10 3/5] cfg80211/mac80211: move interface counting for
- combination check to mac80211
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>,
-        Luciano Coelho <luciano.coelho@intel.com>,
-        linux-wireless@vger.kernel.org
-Cc:     michal.kazior@tieto.com, sw@simonwunderlich.de,
-        andrei.otcheretianski@intel.com, eliad@wizery.com,
-        ath11k@lists.infradead.org
-Date:   Mon, 09 Jan 2023 11:05:06 +0100
-In-Reply-To: <4de1f964-b623-2b31-c044-60cc188fc134@quicinc.com>
-References: <1394547394-3910-1-git-send-email-luciano.coelho@intel.com>
-         <1394547394-3910-4-git-send-email-luciano.coelho@intel.com>
-         <4de1f964-b623-2b31-c044-60cc188fc134@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Mon, 9 Jan 2023 05:09:35 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 942D1B6F
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 02:09:34 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pEp5w-0001sh-TM; Mon, 09 Jan 2023 11:09:32 +0100
+Message-ID: <097cb5d3-2756-ad48-bdc2-fef733776387@leemhuis.info>
+Date:   Mon, 9 Jan 2023 11:09:32 +0100
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH for-6.2] wifi: brcmfmac: fix regression for Broadcom PCIe
+ wifi devices
+Content-Language: en-US, de-DE
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        chainofflowers <chainofflowers@posteo.net>
+References: <20230109095020.412475-1-arend.vanspriel@broadcom.com>
+From:   "Linux kernel regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20230109095020.412475-1-arend.vanspriel@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673258974;04cc162c;
+X-HE-SMSGID: 1pEp5w-0001sh-TM
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-01-09 at 17:39 +0800, Wen Gong wrote:
-> On 3/11/2014 10:16 PM, Luciano Coelho wrote:
-> > ...
-> > +int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
-> > +				 const struct cfg80211_chan_def *chandef,
-> > +				 enum ieee80211_chanctx_mode chanmode,
-> > +				 u8 radar_detect)
-> > +{
-> > +	struct ieee80211_local *local =3D sdata->local;
-> > +	struct ieee80211_sub_if_data *sdata_iter;
-> > +	enum nl80211_iftype iftype =3D sdata->wdev.iftype;
-> > +	int num[NUM_NL80211_IFTYPES];
-> > +	struct ieee80211_chanctx *ctx;
-> > +	int num_different_channels =3D 1;
-> > +	int total =3D 1;
-> > +
-> > +	lockdep_assert_held(&local->chanctx_mtx);
-> > +
-> > +	if (WARN_ON(hweight32(radar_detect) > 1))
-> > +		return -EINVAL;
-> > +
-> > +	if (WARN_ON(chanmode =3D=3D IEEE80211_CHANCTX_SHARED && !chandef->cha=
-n))
-> > +		return -EINVAL;
-> > +
-> > +	if (WARN_ON(iftype >=3D NUM_NL80211_IFTYPES))
-> > +		return -EINVAL;
-> > +
-> > +	/* Always allow software iftypes */
-> > +	if (local->hw.wiphy->software_iftypes & BIT(iftype)) {
-> > +		if (radar_detect)
-> > +			return -EINVAL;
-> > +		return 0;
-> > +	}
-> > +
-> > +	memset(num, 0, sizeof(num));
-> > +
-> > +	if (iftype !=3D NL80211_IFTYPE_UNSPECIFIED)
-> > +		num[iftype] =3D 1;
-> > +
-> > +	list_for_each_entry(ctx, &local->chanctx_list, list) {
-> > +		if (ctx->conf.radar_enabled)
-> > +			radar_detect |=3D BIT(ctx->conf.def.width);
-> > +		if (ctx->mode =3D=3D IEEE80211_CHANCTX_EXCLUSIVE) {
-> > +			num_different_channels++;
-> > +			continue;
-> > +		}
-> > +		if ((chanmode =3D=3D IEEE80211_CHANCTX_SHARED) &&
-> > +		    cfg80211_chandef_compatible(chandef,
-> > +						&ctx->conf.def))
-> > +			continue;
-> > +		num_different_channels++;
-> > +	}
-> > +
-> > +	list_for_each_entry_rcu(sdata_iter, &local->interfaces, list) {
-> > +		struct wireless_dev *wdev_iter;
-> > +
-> > +		wdev_iter =3D &sdata_iter->wdev;
-> > +
-> > +		if (sdata_iter =3D=3D sdata ||
-> > +		    rcu_access_pointer(sdata_iter->vif.chanctx_conf) =3D=3D NULL ||
-> > +		    local->hw.wiphy->software_iftypes & BIT(wdev_iter->iftype))
-> > +			continue;
-> > +
-> > +		num[wdev_iter->iftype]++;
-> > +		total++;
-> > +	}
-> > +
-> > +	if (total =3D=3D 1 && !radar_detect)
-> > +		return 0;
-> > +
->=20
-> should also check with cfg80211_check_combinations() when total =3D=3D 1 =
-and=20
-> num_different_channels > 1 ?
->=20
-> When MLO is enabled, it could have 2 channels for one ieee80211_sub_if_da=
-ta.
->=20
+On 09.01.23 10:50, Arend van Spriel wrote:
+> A sanity check was introduced by [1] considering maximum flowrings
+> above 256 as insane and effectively aborting the device probe. This
+> resulted in regression for number of users and it is also tracked
+> in bugzilla [2].
 
-Heh. You're commenting on a patch from 2014, well before MLO :-)
+Many thx for taking care of this. There is one small thing to improve to
+make things easier for future code archaeologists:
 
-Not sure what happens in the code now?
+> [1] https://lore.kernel.org/all/20220929031001.9962-3-ian.lin@infineon.com/
 
-johannes
+The following line...
+
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=216894
+
+...should become...:
+
+> Fixes: 2aca4f3734bd ("brcmfmac: return error when getting invalid max_flowrings from dongle")
+
+...this instead:
+
+Reported-by: Christian Marillat <marillat@debian.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216894 [2]
+
+> Reported-by: chainofflowers <chainofflowers@posteo.net>
+
+Here you afaics want to add something like this:
+
+Link: https://lore.kernel.org/all/4781984.GXAFRqVoOG@luna/
+
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> [...]
+
+To explain: Linus[1] and others considered proper link tags important in
+cases like this, as they allow anyone to look into the backstory of a
+fix weeks or years later. That's nothing new, the documentation[2] for
+some time says to place such tags in cases like this. I care personally
+(and made it a bit more explicit in the docs a while ago), because these
+tags make my regression tracking efforts a whole lot easier, as they
+allow my tracking bot 'regzbot' to automatically connect reports with
+patches posted or committed to fix tracked regressions.
+
+Apropos regzbot, let me tell regzbot to monitor this thread:
+
+#regzbot ^backmonitor: https://bugzilla.kernel.org/show_bug.cgi?id=216894
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+[1] for details, see:
+https://lore.kernel.org/all/CAHk-=wjMmSZzMJ3Xnskdg4+GGz=5p5p+GSYyFBTh0f-DgvdBWg@mail.gmail.com/
+https://lore.kernel.org/all/CAHk-=wgs38ZrfPvy=nOwVkVzjpM3VFU1zobP37Fwd_h9iAD5JQ@mail.gmail.com/
+https://lore.kernel.org/all/CAHk-=wjxzafG-=J8oT30s7upn4RhBs6TX-uVFZ5rME+L5_DoJA@mail.gmail.com/
+
+[2] see Documentation/process/submitting-patches.rst
+(http://docs.kernel.org/process/submitting-patches.html) and
+Documentation/process/5.Posting.rst
+(https://docs.kernel.org/process/5.Posting.html)
+
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
