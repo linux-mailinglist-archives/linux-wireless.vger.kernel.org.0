@@ -2,50 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC3E6641B4
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 14:27:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F279C66438F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 15:47:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233081AbjAJN1f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 08:27:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
+        id S231532AbjAJOrf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 09:47:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233351AbjAJN1U (ORCPT
+        with ESMTP id S238688AbjAJOr2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 08:27:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03DB03BB
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 05:27:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 963EDB8164F
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 13:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCF8C433D2;
-        Tue, 10 Jan 2023 13:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673357235;
-        bh=fLMyic9Kl202nlqpBzKTc0Mqy/BXCOzUfblO7YoPzMI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=T1YvgQMLwp7yUO4KNl6fBvq6w3+ujzpfRBb0KwbOjZ8a+KJI0L3ez+n3gAtRoqIC6
-         4AVN6ibArKnDb7w25SRIh+vK9ww+27L2cdHi+EMJzrRWV8UXFjGgjGn/SRigOITeuy
-         bQECpKYcWzhh/3VkoVqj1t5fypC3Gurfsw/11rW7f2X1zkWzz7AyuT9NMIlcATnIMg
-         1CAZe5Zb+eMsHRPVbEUEorE+e/yGd16uWfzmFw9qH3uVSAOc4LP15wMgZx2vz2k90t
-         q0j14kgEBLZhO2oqOtlodY+f+zxGaxJC1Qh5RxAto0t+ISRA+Ffx4B3mYgmwIXx8Ca
-         6LPzi0pSsNytg==
-Content-Type: text/plain; charset="utf-8"
+        Tue, 10 Jan 2023 09:47:28 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2D31707C
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 06:47:27 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id bg13-20020a05600c3c8d00b003d9712b29d2so12084283wmb.2
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 06:47:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:references:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Na36X1GB51nJZLV+wR9SqcSDYHAa+6yCRZvq/1xVmy0=;
+        b=Z4obp+OiY1ytxl7l/l/UZ9CxhhUw2KWYuCSj702seXCShA8HtfVVZYCN7oqgQJuZ4x
+         j9nQF5T9PfjPqcUG6fADvyCZXEgkabDMGDrDG4wvDldqYexYHO/0bIogwJQXZrdTTDrY
+         oaYzz9/zA4wbvIrQVdjjdiKOMWa4mF8EiGWtVIwrDBbnT1zEbuScAhRP8EjpUDCGwAqi
+         IZ+mphlIuul1XekGoefWkgtteIG4LMck0FuXH87oNbFUQ7n6Kws6J2nv4l2kgTJLybsb
+         G5IKHyl60hg2T+rgsUpX/RGRgphC3E468/acnJJ49MI/8rbURBwFSRdGIOLCjwo2sn9y
+         b8mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:references:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Na36X1GB51nJZLV+wR9SqcSDYHAa+6yCRZvq/1xVmy0=;
+        b=eSrCcrp+h9EDPOjoKaosdw/iQcIF+dXD7U5JF1zl21K81mdEcoLgCLH9VT3KjPEcR5
+         L878oxD4nu+7omJd6FFnxPfHHtX3dWbBToOGLYkWvFE2NxvGpvccarKPy/OwqdTGTJAI
+         j4rkN5PlgzGiaNhcKlmrlCX+O6OpZqtfqZZAxO2wgxQTm3Tjimh5LpL2NwGTA6WqS0N6
+         2LQVlA5AXHh1EIapdeESUZr/lKGUiDtpcEaCqVT7FA9aCebgQEDykN4obLym7aH3bSab
+         PT/FAQeHD/XX0St3wM+GtBY8g3BtycrMCb5uZfGVdGtCGk0qxn3xcA10RHnzApwL72yS
+         Of8g==
+X-Gm-Message-State: AFqh2ko6Cao09yjjfJJIFKPO3er/IjPOJ55aKyS6O387I69x3zQoH2Q1
+        z6jtmCJNDxvVfo5knp1NS/KZRA==
+X-Google-Smtp-Source: AMrXdXtBIb2NrIIUG2tKsL4GAjOZk509zdwPumpZE1VhKtPgS0LGTLF6H/oNnS8YAvhSHX3FWGSf1w==
+X-Received: by 2002:a05:600c:3c88:b0:3d9:69fd:7707 with SMTP id bg8-20020a05600c3c8800b003d969fd7707mr47153368wmb.2.1673362045953;
+        Tue, 10 Jan 2023 06:47:25 -0800 (PST)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id r126-20020a1c2b84000000b003d35c845cbbsm19291934wmr.21.2023.01.10.06.47.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jan 2023 06:47:25 -0800 (PST)
+Message-ID: <cf5e9339-2511-1135-71da-a8342b264414@linaro.org>
+Date:   Tue, 10 Jan 2023 14:47:24 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: debugfs: fix to work with multiple PCI devices
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20221220121231.20120-1-kvalo@kernel.org>
-References: <20221220121231.20120-1-kvalo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167335721814.4132.1940344098269572941.kvalo@kernel.org>
-Date:   Tue, 10 Jan 2023 13:27:14 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: ieee80211_handle_wake_tx_queue and dynamic ps regression
+Content-Language: en-US
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     linux-kernel@vger.kernel.org, alexander@wetzel-home.de,
+        johannes.berg@intel.com, Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+References: <19015168-c747-17b7-f0ae-9d2ee27d221c@linaro.org>
+ <06f76774-1b2e-f563-7128-7d5b9547dfe9@linaro.org>
+In-Reply-To: <06f76774-1b2e-f563-7128-7d5b9547dfe9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,64 +75,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> wrote:
+On 10/01/2023 12:44, Bryan O'Donoghue wrote:
+> + linux-wireless
+> On 10/01/2023 12:35, Bryan O'Donoghue wrote:
+>> commit a790cc3a4fad75048295571a350b95b87e022a5a 
+>> (wake_tx_queue-broken-23-08-01)
+>> Author: Alexander Wetzel <alexander@wetzel-home.de>
+>> Date:   Sun Oct 9 18:30:39 2022 +0200
+>>
+>>      wifi: mac80211: add wake_tx_queue callback to drivers
+>>
+>> is causing a regression with
+>>
+>> - CONF_PS = 1
+>> - CONF_DYNAMIC_PS = 0
+>> - ieee80211_handle_wake_tx_queue
+>>
+>> In this case we get stuck in a loop similar to this
+>>
+>> // IEEE80211_CONF_CHANGE_PS
+>> [   17.255480] wcn36xx: wcn36xx_change_ps/312 enable
+>> [   18.088835] ieee80211_tx_h_dynamic_ps/263 setting 
+>> IEEE80211_QUEUE_STOP_REASON_PS
+>> [   18.088906] ieee80211_handle_wake_tx_queue/334 entry
+>> [   18.091505] ieee80211_dynamic_ps_disable_work/2250 calling 
+>> ieee80211_hw_config()
+>> [   18.095370] ieee80211_handle_wake_tx_queue/338 wake_tx_push_queue
+>>
+>> // IEEE80211_CONF_CHANGE_PS
+>> [   18.102625] wcn36xx: wcn36xx_change_ps/312 disable
+>> [   18.107643] wake_tx_push_queue/303 entry
+>>
+>> // txq is stopped here reason == IEEE80211_QUEUE_STOP_REASON_PS
+>> [   18.107654] wake_tx_push_queue/311 q_stopped bitmask 0x00000002 
+>> IEEE80211_QUEUE_STOP_REASON_PS true
+>> [   18.107661] wake_tx_push_queue/324 exit
+>> [   18.107667] ieee80211_handle_wake_tx_queue/342 exit
+>> [   18.115560] ieee80211_handle_wake_tx_queue/334 entry
+>> [   18.139937] ieee80211_handle_wake_tx_queue/338 wake_tx_push_queue
+>> [   18.145163] wake_tx_push_queue/303 entry
+>> [   18.150016] ieee80211_dynamic_ps_disable_work/2252 completed 
+>> ieee80211_hw_config()
+>>
+>> // now we unset IEEE80211_QUEUE_STOP_REASON_PS but too late
+>> [   18.151145] wake_tx_push_queue/311 q_stopped bitmask 0x00000002 
+>> IEEE80211_QUEUE_STOP_REASON_PS true
+>> [   18.155263] ieee80211_dynamic_ps_disable_work/2254 clearing 
+>> IEEE80211_QUEUE_STOP_REASON_PS
+>> [   18.162531] wake_tx_push_queue/324 exit
+>> [   18.162548] ieee80211_handle_wake_tx_queue/342 exit
+>> [   18.183639] ieee80211_dynamic_ps_disable_work/2259 cleared 
+>> IEEE80211_QUEUE_STOP_REASON_PS
+>>
+>> // IEEE80211_CONF_CHANGE_PS runs again
+>> [   18.215487] wcn36xx: wcn36xx_change_ps/312 enable
+>>
+>> We get stuck in that loop. Packets getting transmitted is a rare 
+>> event, most are dropped.
 
-> ath11k fails to load if there are multiple ath11k PCI devices with same name:
-> 
->  ath11k_pci 0000:01:00.0: Hardware name qcn9074 hw1.0
->  debugfs: Directory 'ath11k' with parent '/' already present!
->  ath11k_pci 0000:01:00.0: failed to create ath11k debugfs
->  ath11k_pci 0000:01:00.0: failed to create soc core: -17
->  ath11k_pci 0000:01:00.0: failed to init core: -17
->  ath11k_pci: probe of 0000:01:00.0 failed with error -17
-> 
-> Fix this by creating a directory for each ath11k device using schema
-> <bus>-<devname>, for example "pci-0000:06:00.0". This directory created under
-> the top-level ath11k directory, for example /sys/kernel/debug/ath11k.
-> 
-> The reference to the toplevel ath11k directory is not stored anymore within ath11k, instead
-> it's retrieved using debugfs_lookup(). If the directory does not exist it will
-> be created. After the last directory from the ath11k directory is removed, for
-> example when doing rmmod ath11k, the empty ath11k directory is left in place,
-> it's a minor cosmetic issue anyway.
-> 
-> Here's an example hierarchy with one WCN6855:
-> 
-> ath11k
-> `-- pci-0000:06:00.0
->     |-- mac0
->     |   |-- dfs_block_radar_events
->     |   |-- dfs_simulate_radar
->     |   |-- ext_rx_stats
->     |   |-- ext_tx_stats
->     |   |-- fw_dbglog_config
->     |   |-- fw_stats
->     |   |   |-- beacon_stats
->     |   |   |-- pdev_stats
->     |   |   `-- vdev_stats
->     |   |-- htt_stats
->     |   |-- htt_stats_reset
->     |   |-- htt_stats_type
->     |   `-- pktlog_filter
->     |-- simulate_fw_crash
->     `-- soc_dp_stats
-> 
-> I didn't have a test setup where I could connect multiple ath11k devices to the
-> same the host, so I have only tested this with one device.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-> 
-> Tested-by: Robert Marko <robert.marko@sartura.hr>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+BTW I considered implementing a wcn36xx specific wake_tx callback - 
+which maybe should be done anyway.
 
-Patch applied to ath-next branch of ath.git, thanks.
+I _don't_ see other drivers checking for q_stopped & 
+IEEE80211_QUEUE_STOP_REASON_PS
 
-323d91d4684d wifi: ath11k: debugfs: fix to work with multiple PCI devices
+Should they be ?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20221220121231.20120-1-kvalo@kernel.org/
+If they should check IEEE80211_QUEUE_STOP_REASON_PS, then right now, 
+they don't. If they shouldn't check IEEE80211_QUEUE_STOP_REASON_PS then 
+neither should the generic replacement ieee80211_handle_wake_tx_queue()
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+---
+bod
