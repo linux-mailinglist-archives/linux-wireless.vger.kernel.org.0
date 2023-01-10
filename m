@@ -2,83 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5561664CE1
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 20:57:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A512664E18
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 22:33:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232833AbjAJT5k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 14:57:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54064 "EHLO
+        id S234007AbjAJVdE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 16:33:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230362AbjAJT5j (ORCPT
+        with ESMTP id S234532AbjAJVcC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 14:57:39 -0500
-X-Greylist: delayed 995 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 Jan 2023 11:57:36 PST
-Received: from metanate.com (unknown [IPv6:2001:8b0:1628:5005::111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6E18D56
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 11:57:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=metanate.com; s=stronger; h=Content-Type:Message-ID:Subject:Cc:To:From:Date
-        :Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-        In-Reply-To:References; bh=UVE4zfkA3qmQHDLZ5T/urzcdkQ22ivqIjkk4IKD9X/g=; b=h1
-        gIJFLbT+8rMNNGzX0plPxlBj0bsQv7o389xk28acN7EfpK24SiROt4ZseThQn/Em2SKAiMfRlNOnp
-        YDoftY4Rwg3qQXmQ5gSdpCF7L4CXEMgTaC47osLkTXHP2JFROABD2h6Pz4rfCJlME5SGfhRi5sQ1u
-        IbxqYc4uFmQL6jvXYP1+pGAC0nF0XPPCx3ivQe8iD9Di2bcf5WqNI4hbUgIz60xivH+R8Qq/3W0ne
-        p17WEglIxdXb7wM6iXpcpB3bqsJxI5d+1f2z3tLxRTNx9ilmI1GO2rPI+ZWY+LcUp13xU1fXnlI5a
-        krqRWlhMzXh496gduD9Do35bJHCMp8aA==;
-Received: from [81.174.171.191] (helo=donbot)
-        by email.metanate.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <john@metanate.com>)
-        id 1pFKUV-0001aS-17;
-        Tue, 10 Jan 2023 19:40:59 +0000
-Date:   Tue, 10 Jan 2023 19:40:57 +0000
-From:   John Keeping <john@metanate.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-firmware@kernel.org
-Subject: brcm: brcmfmac4339 firmware in linux-firmware
-Message-ID: <Y72/Sd/8mMOx13lk@donbot>
+        Tue, 10 Jan 2023 16:32:02 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D1E862187;
+        Tue, 10 Jan 2023 13:30:45 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id x10so16689605edd.10;
+        Tue, 10 Jan 2023 13:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZJnwnc5E+1MLELDC7o5cz4xsXsnNcb/YZtVXOSbVGQM=;
+        b=ffc6MUlkQ0X5tBxAD0ODQUSrf3G4bar1Ib6jYjNkau5gT1LELy0fCeqlRSZw/AetaA
+         TjRdeHzmxmXsxTXqcWStVRXDyuUScfhuoabmo3GIWFofczqAiAdQNkgzN1mcbM/F9fMS
+         IhslGWIqhAbyoxW9+ZXVfxci4SQqA+K0Xb2Zmfho4P1ut+lLhAM1hvbbNJlDNiC/izhr
+         7ZQRDKcp71++pwdfUMUUpknqknG92KLKpkOFJ7dz62gyBqp8e2OJVCJGY3eTpT3QO/Nn
+         Gl7gS8tjs6RAwLVs1wMdL2VThNrX2Sxbvvk9ujao59XLiNcSjHEJEjDOSzrgo7Oi2koU
+         RJKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZJnwnc5E+1MLELDC7o5cz4xsXsnNcb/YZtVXOSbVGQM=;
+        b=HxLK4exN4E7uiHtKqRuadsReC7VMHUjn/+5S9nAev/xFR+YMyMwOhbvxcFJ8ohwD+d
+         N3oTjTGy/8wAw2IzNmvqcBj9FZjFh9OcLlOqOV6Uy8+WbBj9MPTHb2IvmrNJAfMPX1qX
+         n4BfaH3jiTV2d/KxL96WeZHGP9jRTPKlAfNyBDDv2cl1OTf4momhK0eL78sjJNw1XJNU
+         lRakIeVZEPv52p+eKbKOPqaFq6XaHp+B3iaW+5O3cm/hrHV7hRO+B2MkqGcyouWUvgbE
+         ELQoU/qa3K5wYUOYI4HaV3Uw3E9Lsh8grMT1ZsOa3A1+S+EXrpsVdN8VBaR/lJ/oSWd9
+         9eWw==
+X-Gm-Message-State: AFqh2kpm0Ae0rTerEoLGVvkScf/eR4VclDjmK4ailrY9aSbTNb3Kj+76
+        ija2AuB/JcqZmYCWynuMwaYtBWtQQz5CK3nfxN3u17oF
+X-Google-Smtp-Source: AMrXdXusR0El+e7mEpubh+SpbS/bDLXT6q9dk2fGUC3Igm74IVif0Oiaxjfc8AmnsRFJsATqSYMPrPg+Sb8r44KBuCM=
+X-Received: by 2002:aa7:cb03:0:b0:499:c265:752a with SMTP id
+ s3-20020aa7cb03000000b00499c265752amr672040edt.257.1673386234874; Tue, 10 Jan
+ 2023 13:30:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Authenticated: YES
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 10 Jan 2023 22:30:23 +0100
+Message-ID: <CAFBinCCD9mK5_LNRh3aj5sTHOZFfMTbF1zaxCMM8YaqZdKdYhg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] wifi: rtw88: Three locking fixes for existing code
+To:     kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
+        pkshih@realtek.com, s.hauer@pengutronix.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend & all,
+Hi Kalle,
 
-In linux-firmware, commit 0707b2f ("brcm: add/update firmware files for
-brcmfmac driver") adds brcm/brcmfmac4339-sdio.bin with version:
-
-	Firmware: BCM4339/2 wl0: Feb 17 2016 18:29:33 version 6.37.32.RC23.34.42 (r608406)
-
-This restores the version previously removed by commit 0f0aefd ("brcm:
-remove old brcm firmwares that have newer cypress variants").
-
-That was a follow-up to commit 04f71fe ("cypress: add Cypress firmware
-and clm_blob files") which provides cypress/cyfmac4339-sdio.bin and
-links it (via WHENCE) to brcm/brcmfmac4339-sdio.bin and has version:
-
-	Firmware: BCM4339/2 wl0: Sep  5 2019 11:05:52 version 6.37.39.113 (r722271 CY)
-
-
-It looks like the same also applies to a few other firmware, although I
-don't have the hardware to check the relevant versions there.
-
-Should part of 0707b2f ("brcm: add/update firmware files for brcmfmac
-driver") be reverted in favour of the files in cypress/?  (It looks like
-these will already be used due to the order of the file so the symlinks
-to cypress/... will overwrite files installed from brcm/...)
+On Sun, Jan 8, 2023 at 10:13 PM Martin Blumenstingl
+<martin.blumenstingl@googlemail.com> wrote:
+>
+> This series consists of three patches which are fixing existing
+> behavior (meaning: it either affects PCIe or USB or both) in the rtw88
+> driver.
+In reply to an earlier version of this series you wrote [0]:
+> BTW wireless-next or wireless-testing are the preferred baselines for
+> wireless patches. Of course you can use other trees if you really want,
+> but please try to make sure they apply to wireless-next. Conflicts are
+> always extra churn I would prefer to avoid.
+Noted.
+Additionally I just tested it and can confirm that these patches apply
+fine (without any fuzz) on top of the wireless tree.
 
 
-Thanks,
-John
+Best regards,
+Martin
+
+
+[0] https://lore.kernel.org/linux-wireless/87mt6qfvb1.fsf@kernel.org/
