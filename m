@@ -2,100 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF794662E6B
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jan 2023 19:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EE1E6636E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 02:49:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236279AbjAISNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Jan 2023 13:13:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35856 "EHLO
+        id S233142AbjAJBtL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Jan 2023 20:49:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236276AbjAISMd (ORCPT
+        with ESMTP id S230235AbjAJBtJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Jan 2023 13:12:33 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC4C58818
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 10:10:09 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pEwb1-0003wQ-2Q; Mon, 09 Jan 2023 19:10:07 +0100
-Message-ID: <45db74d9-0f5f-2948-3d51-a10dc34be593@leemhuis.info>
-Date:   Mon, 9 Jan 2023 19:10:06 +0100
+        Mon, 9 Jan 2023 20:49:09 -0500
+Received: from cstnet.cn (smtp23.cstnet.cn [159.226.251.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B52AEDEBB;
+        Mon,  9 Jan 2023 17:49:07 -0800 (PST)
+Received: from localhost.localdomain (unknown [124.16.138.125])
+        by APP-03 (Coremail) with SMTP id rQCowAC3v5cBxLxjIrxLCw--.1581S2;
+        Tue, 10 Jan 2023 09:48:49 +0800 (CST)
+From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
+To:     kvalo@kernel.org
+Cc:     gregory.greenman@intel.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        luciano.coelho@intel.com, johannes.berg@intel.com,
+        shaul.triebitz@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Subject: [PATCH v2] iwlwifi: Add missing check for alloc_ordered_workqueue
+Date:   Tue, 10 Jan 2023 09:48:48 +0800
+Message-Id: <20230110014848.28226-1-jiasheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: Regression in brcmfmac for 6.1/6.2-rc1 for SDIO devices
-Content-Language: en-US, de-DE
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Peter Robinson <pbrobinson@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, regressions@lists.linux.dev,
-        "Justin M. Forbes" <jforbes@fedoraproject.org>
-References: <CALeDE9O1+qgn_9z=zTVKbWx3FphEa4y8Dn9f5ORoQgW_gL1dqg@mail.gmail.com>
- <7bbfd1b7-4615-0766-76e4-086861f68a08@leemhuis.info>
- <877cxvixok.fsf@kernel.org>
-From:   "Linux kernel regression tracking (#update)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <877cxvixok.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673287809;e4986b6f;
-X-HE-SMSGID: 1pEwb1-0003wQ-2Q
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: rQCowAC3v5cBxLxjIrxLCw--.1581S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF45Gw4xCr4DWw4rtF4Utwb_yoW8tryxpF
+        sxuryjqFW5tw1jgFy8GFWkZas8Ww1UJrnrGFZ2gw45uFn7Aw1rJa10gryYqFyDGry0gr15
+        CrWjyF15Wr4qqrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+        6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+        0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+        6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+        0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+        8cxan2IY04v7MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+        vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+        nxnUUI43ZEXa7VUbNzVUUUUUU==
+X-Originating-IP: [124.16.138.125]
+X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Add check for the return value of alloc_ordered_workqueue since it may
+return NULL pointer.
 
+Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+---
+Changelog:
 
-On 09.01.23 15:34, Kalle Valo wrote:
-> "Linux kernel regression tracking (#info)" <regressions@leemhuis.info>
-> writes:
-> 
->> [TLDR: I'm adding this report to the list of tracked Linux kernel
->> regressions; all text you find below is based on a few templates
->> paragraphs you might have encountered already already in similar form.]
->>
->> On 31.12.22 02:00, Peter Robinson wrote:
->>>
->>> I'm seeing a regression in the brcmfmac driver which appeared in the
->>> 6.1 dev cycle, I didn't pick it up until around rc8 but with deadlines
->>> and travel I've not had a chance to bisect it but wanted to report it
->>> to make people aware. I've seen in on a number of devices with
->>> brcmfmac wifi over SDIO including at least the Raspberry Pi (zero2w,
->>> rpi4, rpi400, rpi3B+) and other devices like  the Rock960, Pinebook
->>> Pro etc.
->>> [...]
->>
->> Thanks for the report. To be sure the issue doesn't fall through the
->> cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
->> tracking bot:
->>
->> #regzbot introduced v6.0..v6.1 ^
->> https://bugzilla.suse.com/show_bug.cgi?id=1206697
->> #regzbot title net: wifi: brcmfmac over SDIO broken on various Raspberry Pi
->> #regzbot ignore-activity
-> 
-> This commit should fix the issue:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=a5a36720c3f650f859f5e9535dd62d06f13f4f3b
+v1 -> v2:
 
-Great, thx for letting me know!
+1. CC "linux-wireless@vger.kernel.org".
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-#regzbot fix: a5a36720c3f65
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
-
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index a873be109f43..b490a88b97ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1048,9 +1048,11 @@ static void iwl_bg_restart(struct work_struct *data)
+  *
+  *****************************************************************************/
+ 
+-static void iwl_setup_deferred_work(struct iwl_priv *priv)
++static int iwl_setup_deferred_work(struct iwl_priv *priv)
+ {
+ 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
++	if (!priv->workqueue)
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&priv->restart, iwl_bg_restart);
+ 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
+@@ -1067,6 +1069,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
+ 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
+ 
+ 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
++
++	return 0;
+ }
+ 
+ void iwl_cancel_deferred_work(struct iwl_priv *priv)
+@@ -1456,7 +1460,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	iwl_setup_deferred_work(priv);
++	if (iwl_setup_deferred_work(priv))
++		goto out_uninit_drv;
++
+ 	iwl_setup_rx_handlers(priv);
+ 
+ 	iwl_power_initialize(priv);
+@@ -1494,6 +1500,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	iwl_cancel_deferred_work(priv);
+ 	destroy_workqueue(priv->workqueue);
+ 	priv->workqueue = NULL;
++out_uninit_drv:
+ 	iwl_uninit_drv(priv);
+ out_free_eeprom_blob:
+ 	kfree(priv->eeprom_blob);
+-- 
+2.25.1
 
