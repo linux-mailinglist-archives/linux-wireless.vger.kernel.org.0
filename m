@@ -2,71 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F26146646F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 18:05:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6859666476F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 18:30:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbjAJRFt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 12:05:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42098 "EHLO
+        id S232952AbjAJRan (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 12:30:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbjAJRFf (ORCPT
+        with ESMTP id S231901AbjAJRam (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 12:05:35 -0500
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E5BBC0C
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 09:05:32 -0800 (PST)
-Received: by mail-pg1-x534.google.com with SMTP id e10so8658368pgc.9
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 09:05:32 -0800 (PST)
+        Tue, 10 Jan 2023 12:30:42 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB6F57929;
+        Tue, 10 Jan 2023 09:30:41 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id m6so19567628lfj.11;
+        Tue, 10 Jan 2023 09:30:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=P7VqYujN76bTRmrMaoEIHiHeEhQrUIdz6GC94wtp4J8=;
-        b=oakdv63xlZhd+vcuUCU8xc0JKkQZ3pIx+6U4d3EjnHUwJSmH087Wffbk5LRMaRk1Gr
-         P1oSg6d1Z5T2acqHnD1VgEWJprQPK+fmjFEK5H4uaVgpX2wBEo5OPvJwZ+zopI2DiRTL
-         pkhw6NSvcs+pkqb0g2VVaPI/dQdqIfgiMtnz9Mvt7ANEVQO++yRpd5Mo/b1W2uNwzCPv
-         4JRDleHMpUSbDdwm6gpGhvp6oGvkxEYOtdiWCYPGFyEmgvb1li794YYirYKKUw/6MTMy
-         UXyWmbsyyK7dKWPq4iVQkwbQn2wGvrkr4FQIovTMTLrtpJUjUPcTXa5gzdH4EELuL3SB
-         vQWg==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J5rZ8/tNfpG3TEwcidbczu4hDRSvpGy5F76n5awGo8o=;
+        b=T6GwdqnJLjArN3uFAv+O1gTybIISG2qQBlxbIafRhcmrJ/YLmI/XtaYMW9KKTZthqg
+         w5hKNmGSWQRLWpmz+poUOycy3rVflWhVaghFVdbHWThjhOqcdnNQlfG3a2FUBruUUnrR
+         FIhj6xOBSKSit0ng31l5Q0EQg8VqBEjeuBPxLH+l3R5mCsMb1FOlmQZYVXvnc18zjvQ8
+         xZkvfmgeKgU/cOLfIlE0aAim9ZG1ZGPsO4G/2CclZox6n6nXDAOeqMXWyw4so5NKSDr5
+         rXM9/HcTsGHlZ4NiXIeCt4Vz2WCNOqXJ9MajLGZtqQJ87e4ZYgT58R1VKbhbUUeGvmuc
+         KhnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P7VqYujN76bTRmrMaoEIHiHeEhQrUIdz6GC94wtp4J8=;
-        b=OsHOtXlPNpJZfsICP+beLCwy8xQUdUGyyf+vOytuhUBpVE7Yjm556ZAaAv3gWcqz7R
-         o31rYPx2IoNVPtt89c3hEBrdQt6VPV8nT225JBq01pfvwH7N4eK4MDJQBeBoXJh8tEox
-         R3mCx6bnL5Y1t5g+U33YebIdy0U4csuHzduXE9waHht3c35OxSoyLio9YIot/FiqPXlC
-         W35Toh0uSpuW8xnF3vQfUWp954YXK8w6DNeColMuI5A11OCzaqnsW7IfWNk9jqP5B814
-         ntUbnlFy5d9Kh4Dk7cLd27CfYcfEYhEPtkD48WEFrWSCP5TGZcgxetyCmJEvDMFBxZJt
-         uNRA==
-X-Gm-Message-State: AFqh2kpZ5k3Mqa6RUA8JIq2lvImsVXh5+Ryp4CVWBr5FtOcJr94EPIlt
-        ne4J+Pj63OQtJwXQaSW02zQ=
-X-Google-Smtp-Source: AMrXdXs+VL0xrwwY1lY317Ko3FUXiqiprqFoQCSiYZmoRgaKA/w5pnLHFlxCog/EiNC00Wdzw/mU8A==
-X-Received: by 2002:aa7:8209:0:b0:581:3328:b468 with SMTP id k9-20020aa78209000000b005813328b468mr48635107pfi.6.1673370331500;
-        Tue, 10 Jan 2023 09:05:31 -0800 (PST)
-Received: from [192.168.254.20] ([50.39.160.234])
-        by smtp.gmail.com with ESMTPSA id i8-20020a056a00004800b00576145a9bd0sm8302689pfk.127.2023.01.10.09.05.30
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J5rZ8/tNfpG3TEwcidbczu4hDRSvpGy5F76n5awGo8o=;
+        b=rgY3c1sQBqa8oIjh+Ebq9BrZJx4ki8tQKZGvfJV0FZFcnDrD0t/czuBrM81pkAkxOO
+         w7IAn270dN1y0kNvqqdgDu1h2D7mrgrUzitvyXwu6xUvcFjlXg8hUhmysME0jutW9G2E
+         mOhfBkQYT00cqbs6ubd0RvtI105aGE1c0gspyZrbvZDeV6acXW2I3MG33Fuo32pom34i
+         ifUmSSurg82AOa3ynZTvhUebidemxp8PwR1PcCa55850/dLynOjt1S3/Y/4qugpsy6Z7
+         oYoU3xTuJMPuiWWAGW/8OIRp2NKOvgKwnfOnF7kUKeAGpNZAlYfVhmYVRBe0W624N5Q+
+         DdzQ==
+X-Gm-Message-State: AFqh2krf8Cxhzkl1p9GCvOYmkFJ1oDFfnoQzA+11+dSwLzZDh1eSo83c
+        /A3GzqPPTfmYx9bWGqZwJ9U=
+X-Google-Smtp-Source: AMrXdXtrRuuwihn11CDfXbGo3Sb3ualVTvefUHOm5bJTCXH3EiMVo93xbvKu4nmxDPIqYgPq7PtqAQ==
+X-Received: by 2002:ac2:5b41:0:b0:4a4:68b8:9c5b with SMTP id i1-20020ac25b41000000b004a468b89c5bmr19056278lfp.67.1673371839263;
+        Tue, 10 Jan 2023 09:30:39 -0800 (PST)
+Received: from localhost.localdomain (077222238029.warszawa.vectranet.pl. [77.222.238.29])
+        by smtp.googlemail.com with ESMTPSA id p20-20020a056512235400b004cb430b5b38sm2264272lfu.185.2023.01.10.09.30.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jan 2023 09:05:31 -0800 (PST)
-Message-ID: <0e7644cbfa9e4ba0d534681166ca467ea1684719.camel@gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: Optimize 6 GHz scan time
-From:   James Prestwood <prestwoj@gmail.com>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        Marcel Holtmann <marcel@holtmann.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Date:   Tue, 10 Jan 2023 09:05:30 -0800
-In-Reply-To: <0b06dea9-d5be-1edc-62ca-576398d1bcd8@quicinc.com>
-References: <20221220043823.20382-1-quic_mpubbise@quicinc.com>
-         <5DAEA8B2-2B44-4A91-9E57-12B6C6B6C1FC@holtmann.org>
-         <2861463e-a097-7efe-bc75-f13c8faf9547@quicinc.com>
-         <378a1d63b3752ace7384c44d6f5184753fa7795d.camel@gmail.com>
-         <0b06dea9-d5be-1edc-62ca-576398d1bcd8@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-5.fc34) 
+        Tue, 10 Jan 2023 09:30:38 -0800 (PST)
+From:   Szymon Heidrich <szymon.heidrich@gmail.com>
+To:     kvalo@kernel.org, jussi.kivilinna@iki.fi, davem@davemloft.net
+Cc:     edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        szymon.heidrich@gmail.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rndis_wlan: Prevent buffer overflow in rndis_query_oid
+Date:   Tue, 10 Jan 2023 18:30:07 +0100
+Message-Id: <20230110173007.57110-1-szymon.heidrich@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -77,61 +70,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-01-10 at 10:49 +0530, Manikanta Pubbisetty wrote:
-> On 12/29/2022 2:52 AM, James Prestwood wrote:
-> > Hi Manikanta,
-> > > By the way, userspace itself selects the frequencies to scan, not
-> > > the
-> > > driver.
-> > > 
-> > > If we see the split scan implementation in cfg80211, this is the
-> > > how
-> > > it
-> > > is implemented. If NL80211_SCAN_FLAG_COLOCATED_6GHZ is set, it
-> > > selects
-> > > all PSC channels and those non-PSC channels where RNR IE
-> > > information
-> > > is
-> > > found in the legacy scan results. If this flag is not set, all
-> > > channels
-> > > in 6 GHz are included in the scan freq list. It is upto userspace
-> > > to
-> > > decide what it wants.
-> > 
-> > 
-> > This isn't your problem, but it needs to be said:
-> > 
-> > The nl80211 docs need and update to reflect this behavior (or
-> > remove
-> > the PSC logic). IMO this is really weird that the kernel selects
-> > PSC's
-> > based on the co-located flag. The docs don't describe this behavior
-> > and
-> > the flag's name is misleading (its not
-> > SCAN_FLAG_COLOCATED_AND_PSC_6GHZ) :)
-> > 
-> 
-> Sorry for the late reply, I was on vacation.
-> 
-> What you said make sense. The existing flag should not add PSC
-> channels 
-> according to the flag description.
-> 
-> We can add another flag something like you pointed out 
-> SCAN_FLAG_COLOCATED_AND_PSC_6GHZ and include PSC channels if this
-> flag 
-> is set. What do you say?
+Since resplen and respoffs are signed integers sufficiently
+large values of unsigned int len and offset members of RNDIS
+response will result in negative values of prior variables.
+This may be utilized to bypass implemented security checks
+to either extract memory contents by manipulating offset or
+overflow the data buffer via memcpy by manipulating both
+offset and len.
 
-I'm no authority here, just wanted to point this out. This is something
-that would need to be in mac80211 though, not just a specific driver.
-It would be up to the maintainers and would require changing the
-behavior of the existing flag, which then changes behavior in
-wpa_supplicant/hostapd. So its somewhat intrusive.
+Additionally assure that sum of resplen and respoffs does not
+overflow so buffer boundaries are kept.
 
-But personally I'd be for it. And just require userspace include PSC's
-like any other channels if they need those.
+Fixes: 80f8c5b434f9 ("rndis_wlan: copy only useful data from rndis_command respond")
+Signed-off-by: Szymon Heidrich <szymon.heidrich@gmail.com>
+---
+ drivers/net/wireless/rndis_wlan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-James
-
+diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
+index 82a7458e0..d7fc05328 100644
+--- a/drivers/net/wireless/rndis_wlan.c
++++ b/drivers/net/wireless/rndis_wlan.c
+@@ -697,7 +697,7 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
+ 		struct rndis_query_c	*get_c;
+ 	} u;
+ 	int ret, buflen;
+-	int resplen, respoffs, copylen;
++	u32 resplen, respoffs, copylen;
+ 
+ 	buflen = *len + sizeof(*u.get);
+ 	if (buflen < CONTROL_BUFFER_SIZE)
+@@ -740,7 +740,7 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
+ 			goto exit_unlock;
+ 		}
+ 
+-		if ((resplen + respoffs) > buflen) {
++		if (resplen > (buflen - respoffs)) {
+ 			/* Device would have returned more data if buffer would
+ 			 * have been big enough. Copy just the bits that we got.
+ 			 */
+-- 
+2.38.2
 
