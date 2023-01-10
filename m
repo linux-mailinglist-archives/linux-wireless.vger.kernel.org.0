@@ -2,101 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8390664519
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 16:42:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56968664521
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 16:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238249AbjAJPmp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 10:42:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48076 "EHLO
+        id S234748AbjAJPoM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 10:44:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233939AbjAJPmo (ORCPT
+        with ESMTP id S238372AbjAJPn3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 10:42:44 -0500
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6974E3FC91
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 07:42:42 -0800 (PST)
-Received: by mail-ej1-x62c.google.com with SMTP id u9so29802933ejo.0
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 07:42:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fvskllAMxjpoYxy8x91Ay3wHk+edHsNAvSmQ+G4D/28=;
-        b=M2e2m0o/SO/SkR3TdYczdGi2OcFE75a0cGVpRPpAa2m46IVI7Qm+RJMd40tKr9NkOv
-         aDgbggUcO6WLqPeAzzFJyxJOj0rH6TShM3P6kuX7JDoJdvhJS+ArBylpnTcKQxZDU4Ew
-         nyJ2oB3P2G696Q+OSNAu1iJ3/uPgZnKBejr6LOnzf3FE8xlolX5Z9EsA9vcXRDU6JZpd
-         Yd52sjZ7FQ+a4RcGuJu3+Va5w4ryQav7io9PU+z+oskKPlO9uwO7kCTTmAd4FwfGnQxV
-         oeTHSVVPOXvHO4P7Zi5T1DUsnPp2KYb7e0iiLqL8AnudNV81dvocETbhECDRFu+fCegz
-         bWOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fvskllAMxjpoYxy8x91Ay3wHk+edHsNAvSmQ+G4D/28=;
-        b=JCNMfUqAfbzU/nhpfMrW9j9bEzRATuGLWdqycDNFPqWa4Kgqr+dn//71wyyIN5kkdY
-         Pb7uj+I1x56QmKqQ4XDbPxZHpEf5UygNaUsA8S5/zeWnbLKmOpGGAD2KEktUBcFe4soM
-         TuxLW7RCCsvTt5415NTS1pzfiqP+TZqPrutky9Qz9XIGV0nlx4x1UakEjsr2UjDa84zv
-         aO94DSu+DPNyF7Kp5JiIrGQD69InaUca1GvNa0B/UbcpYQj3InXU44XxrK9fCct0evqC
-         wAw7VA53GOoDqF17mH4S0wpRvZTJo6VqeNlgkrKxLG5fm4FmXZk9/ee/cHDpRImxYcfa
-         D7nQ==
-X-Gm-Message-State: AFqh2krA4WKakqXEQCvZj0j9Cei5HQwViqahYYMMcIFffBjkt7SUi7RT
-        UK4E1mbSVa8X/dZwKaJ/n+HUxZjhBfU=
-X-Google-Smtp-Source: AMrXdXt+aaSr6VwSZxQEJnkNjMobBX+aSAP9U/9qLFQ/g0DsUuI8SYYf5/qh5ZaABEQlfAGpD0d/Sw==
-X-Received: by 2002:a17:906:d205:b0:7c1:51ee:a2ec with SMTP id w5-20020a170906d20500b007c151eea2ecmr58517152ejz.46.1673365361039;
-        Tue, 10 Jan 2023 07:42:41 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id v10-20020a170906292a00b00782fbb7f5f7sm5114950ejd.113.2023.01.10.07.42.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jan 2023 07:42:40 -0800 (PST)
-Message-ID: <d53fcf97-d6d2-3c75-14d5-97b58a5f3a6c@gmail.com>
-Date:   Tue, 10 Jan 2023 17:42:39 +0200
+        Tue, 10 Jan 2023 10:43:29 -0500
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C4B7DE010;
+        Tue, 10 Jan 2023 07:43:28 -0800 (PST)
+Message-ID: <53b23ee9-a333-120e-8b58-cfa3a9bdaefc@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1673365407;
+        bh=joeZ0isSpFWCfJo9bP7lRZdTrlAemheFG8yfUEmmw0s=;
+        h=Date:Subject:From:To:References:In-Reply-To;
+        b=oBfHQ7QJtk5sWEMyXs1jUUCKUM6vy9bmoUBwseZQqoOK64dyvDGQpalE18Lze85HU
+         O3zZ2NDPT4JWbsFu0S/zYsjJKHaNdL1lcjq/5NZcsMJOB/MKuWC6F+aXbM6XEYX79/
+         MNaJ350fvM8rvdfGcW86uzJUkUbDRnoMansGYTzg=
+Date:   Tue, 10 Jan 2023 16:43:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: [PATCH 2/2] wifi: rtl8xxxu: Dump the efuse only for untested devices
+ Thunderbird/102.6.0
+Subject: Re: ieee80211_handle_wake_tx_queue and dynamic ps regression
 Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <add46396-95af-1164-2033-7d4eb4d0b554@gmail.com>
-In-Reply-To: <add46396-95af-1164-2033-7d4eb4d0b554@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        linux-kernel@vger.kernel.org, johannes.berg@intel.com,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+References: <19015168-c747-17b7-f0ae-9d2ee27d221c@linaro.org>
+ <06f76774-1b2e-f563-7128-7d5b9547dfe9@linaro.org>
+ <cf5e9339-2511-1135-71da-a8342b264414@linaro.org>
+ <205fb221-f7ad-8f03-2c16-54dcbf5ecaf9@wetzel-home.de>
+In-Reply-To: <205fb221-f7ad-8f03-2c16-54dcbf5ecaf9@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It appears this was the intention all along, but commit 3307d84024d2
-("rtl8xxxu: Add initial code to parse rtl8192eu efuse") initialised
-rtl8xxxu_debug with RTL8XXXU_DEBUG_EFUSE for no apparent reason, which
-made it dump the efuse for all devices, even the tested ones.
+On 10.01.23 16:23, Alexander Wetzel wrote:
+> On 10.01.23 15:47, Bryan O'Donoghue wrote:
+>> On 10/01/2023 12:44, Bryan O'Donoghue wrote:
+>>> + linux-wireless
+>>> On 10/01/2023 12:35, Bryan O'Donoghue wrote:
+>>>> commit a790cc3a4fad75048295571a350b95b87e022a5a 
+>>>> (wake_tx_queue-broken-23-08-01)
+>>>> Author: Alexander Wetzel <alexander@wetzel-home.de>
+>>>> Date:   Sun Oct 9 18:30:39 2022 +0200
+>>>>
+>>>>      wifi: mac80211: add wake_tx_queue callback to drivers
+>>>>
+>>>> is causing a regression with
+>>>>
+>>>> - CONF_PS = 1
+>>>> - CONF_DYNAMIC_PS = 0
+>>>> - ieee80211_handle_wake_tx_queue
+>>>>
+>>>> In this case we get stuck in a loop similar to this
+>>>>
+>>>> // IEEE80211_CONF_CHANGE_PS
+>>>> [   17.255480] wcn36xx: wcn36xx_change_ps/312 enable
+>>>> [   18.088835] ieee80211_tx_h_dynamic_ps/263 setting 
+>>>> IEEE80211_QUEUE_STOP_REASON_PS
+>>>> [   18.088906] ieee80211_handle_wake_tx_queue/334 entry
+>>>> [   18.091505] ieee80211_dynamic_ps_disable_work/2250 calling 
+>>>> ieee80211_hw_config()
+>>>> [   18.095370] ieee80211_handle_wake_tx_queue/338 wake_tx_push_queue
+>>>>
+>>>> // IEEE80211_CONF_CHANGE_PS
+>>>> [   18.102625] wcn36xx: wcn36xx_change_ps/312 disable
+>>>> [   18.107643] wake_tx_push_queue/303 entry
+>>>>
+>>>> // txq is stopped here reason == IEEE80211_QUEUE_STOP_REASON_PS
+>>>> [   18.107654] wake_tx_push_queue/311 q_stopped bitmask 0x00000002 
+>>>> IEEE80211_QUEUE_STOP_REASON_PS true
+>>>> [   18.107661] wake_tx_push_queue/324 exit
+>>>> [   18.107667] ieee80211_handle_wake_tx_queue/342 exit
+>>>> [   18.115560] ieee80211_handle_wake_tx_queue/334 entry
+>>>> [   18.139937] ieee80211_handle_wake_tx_queue/338 wake_tx_push_queue
+>>>> [   18.145163] wake_tx_push_queue/303 entry
+>>>> [   18.150016] ieee80211_dynamic_ps_disable_work/2252 completed 
+>>>> ieee80211_hw_config()
+>>>>
+>>>> // now we unset IEEE80211_QUEUE_STOP_REASON_PS but too late
+>>>> [   18.151145] wake_tx_push_queue/311 q_stopped bitmask 0x00000002 
+>>>> IEEE80211_QUEUE_STOP_REASON_PS true
+>>>> [   18.155263] ieee80211_dynamic_ps_disable_work/2254 clearing 
+>>>> IEEE80211_QUEUE_STOP_REASON_PS
+>>>> [   18.162531] wake_tx_push_queue/324 exit
+>>>> [   18.162548] ieee80211_handle_wake_tx_queue/342 exit
+>>>> [   18.183639] ieee80211_dynamic_ps_disable_work/2259 cleared 
+>>>> IEEE80211_QUEUE_STOP_REASON_PS
+>>>>
+>>>> // IEEE80211_CONF_CHANGE_PS runs again
+>>>> [   18.215487] wcn36xx: wcn36xx_change_ps/312 enable
+>>>>
+>>>> We get stuck in that loop. Packets getting transmitted is a rare 
+>>>> event, most are dropped.
+>>
+> 
+> I'll need some time digest that... I report back once I get it.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Looks like the the commit 
+https://patchwork.kernel.org/project/linux-wireless/patch/20221230121850.218810-1-alexander@wetzel-home.de/
+has a good chance to solve the issue:
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index d521435e1c07..07c3af5d0374 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -34,7 +34,7 @@
- 
- #define DRIVER_NAME "rtl8xxxu"
- 
--int rtl8xxxu_debug = RTL8XXXU_DEBUG_EFUSE;
-+int rtl8xxxu_debug;
- static bool rtl8xxxu_ht40_2g;
- static bool rtl8xxxu_dma_aggregation;
- static int rtl8xxxu_dma_agg_timeout = -1;
--- 
-2.38.0
+1) Queues are stopped due to PS
+2) Then there is a TX attempt. But due to the (PS) queue stop
+    wake_tx_push_queue() aborts the queue run
+3) Then we hit the bug the patch fixes: The queue is not marked to
+    have pending packets and thus packets on it are not transmitted.
+
+Packets get only send when you happen to try tx when the queue is 
+operational. (And then you will get all the packets sitting in the queue.)
+
+Does that make sense? And more crucial, is the patch fixing that for you?
+
+> 
+>> BTW I considered implementing a wcn36xx specific wake_tx callback - 
+>> which maybe should be done anyway.
+>>
+>> I _don't_ see other drivers checking for q_stopped & 
+>> IEEE80211_QUEUE_STOP_REASON_PS
+>>
+>> Should they be ?
+>>
+> 
+> No, they should not.
+> 
+> My take is, that this is a bug in mac80211. I submitted patches to 
+> fixing that, they have just been accepted:
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20221230121850.218810-1-alexander@wetzel-home.de/
+> 
+> and
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20230106223141.98696-1-alexander@wetzel-home.de/
+> 
+> 
+> Can you test if these also help here?
+> 
+> 
+> 
+>> If they should check IEEE80211_QUEUE_STOP_REASON_PS, then right now, 
+>> they don't. If they shouldn't check IEEE80211_QUEUE_STOP_REASON_PS 
+>> then neither should the generic replacement 
+>> ieee80211_handle_wake_tx_queue()
+>>
+>> ---
+>> bod
+> 
+
