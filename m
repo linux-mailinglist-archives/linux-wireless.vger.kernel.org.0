@@ -2,123 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EE1E6636E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 02:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96419663887
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 06:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233142AbjAJBtL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Jan 2023 20:49:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33870 "EHLO
+        id S229719AbjAJFUE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 00:20:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230235AbjAJBtJ (ORCPT
+        with ESMTP id S229635AbjAJFUD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Jan 2023 20:49:09 -0500
-Received: from cstnet.cn (smtp23.cstnet.cn [159.226.251.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B52AEDEBB;
-        Mon,  9 Jan 2023 17:49:07 -0800 (PST)
-Received: from localhost.localdomain (unknown [124.16.138.125])
-        by APP-03 (Coremail) with SMTP id rQCowAC3v5cBxLxjIrxLCw--.1581S2;
-        Tue, 10 Jan 2023 09:48:49 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     kvalo@kernel.org
-Cc:     gregory.greenman@intel.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        luciano.coelho@intel.com, johannes.berg@intel.com,
-        shaul.triebitz@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: [PATCH v2] iwlwifi: Add missing check for alloc_ordered_workqueue
-Date:   Tue, 10 Jan 2023 09:48:48 +0800
-Message-Id: <20230110014848.28226-1-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        Tue, 10 Jan 2023 00:20:03 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A067678
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Jan 2023 21:20:01 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30A5FUFd021053;
+        Tue, 10 Jan 2023 05:19:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=3gqZAOAujEYkFiUKx/24Z83ZKWFv0qHC4gnwhRZhOc4=;
+ b=hxk/tYAFE4/SfP6JC6pHzg0unAxRFg86c6xdNeURlXMEqlj0VfcNqzjgWXpcO1bGKRUb
+ A/rR4mv91rx/O9Oe2AcCIg6AgVTx7dskCYQc1MOBjDSdEpZCh7qRwoYQUymYkCjKmyLt
+ uovVlsXcXM23LvNk8P9/9QqXcqPgCg5xHyoyuMTTE2VU9InRuXKSW2xUVTqSbIcfjyZt
+ QrXcNwYfiMO55DgDDXTBesoRFzO2UZnmlsQe8qThVlK8B1TLmdaOpFkEOi37jb6TybpD
+ PZmD5r+f4ItskZ7yR5ep4xRKRbOI+A8wsqYBypwVnRK0Xf9IxRqDPcu4DEwDnuHM18Dn lg== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n0q6es5nv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Jan 2023 05:19:52 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30A5JpK5001401
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Jan 2023 05:19:51 GMT
+Received: from [10.216.51.52] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 9 Jan 2023
+ 21:19:49 -0800
+Message-ID: <0b06dea9-d5be-1edc-62ca-576398d1bcd8@quicinc.com>
+Date:   Tue, 10 Jan 2023 10:49:46 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: rQCowAC3v5cBxLxjIrxLCw--.1581S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF45Gw4xCr4DWw4rtF4Utwb_yoW8tryxpF
-        sxuryjqFW5tw1jgFy8GFWkZas8Ww1UJrnrGFZ2gw45uFn7Aw1rJa10gryYqFyDGry0gr15
-        CrWjyF15Wr4qqrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-        0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-        6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-        0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-        8cxan2IY04v7MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-        vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-        nxnUUI43ZEXa7VUbNzVUUUUUU==
-X-Originating-IP: [124.16.138.125]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] wifi: ath11k: Optimize 6 GHz scan time
+Content-Language: en-US
+To:     James Prestwood <prestwoj@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20221220043823.20382-1-quic_mpubbise@quicinc.com>
+ <5DAEA8B2-2B44-4A91-9E57-12B6C6B6C1FC@holtmann.org>
+ <2861463e-a097-7efe-bc75-f13c8faf9547@quicinc.com>
+ <378a1d63b3752ace7384c44d6f5184753fa7795d.camel@gmail.com>
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+In-Reply-To: <378a1d63b3752ace7384c44d6f5184753fa7795d.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: y_Aa44rV7LHfrgpiK6cllbkIQJ-faya1
+X-Proofpoint-ORIG-GUID: y_Aa44rV7LHfrgpiK6cllbkIQJ-faya1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-09_16,2023-01-09_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=806
+ clxscore=1011 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301100033
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_SBL_CSS,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add check for the return value of alloc_ordered_workqueue since it may
-return NULL pointer.
+On 12/29/2022 2:52 AM, James Prestwood wrote:
+> Hi Manikanta,
+>> By the way, userspace itself selects the frequencies to scan, not the
+>> driver.
+>>
+>> If we see the split scan implementation in cfg80211, this is the how
+>> it
+>> is implemented. If NL80211_SCAN_FLAG_COLOCATED_6GHZ is set, it
+>> selects
+>> all PSC channels and those non-PSC channels where RNR IE information
+>> is
+>> found in the legacy scan results. If this flag is not set, all
+>> channels
+>> in 6 GHz are included in the scan freq list. It is upto userspace to
+>> decide what it wants.
+> 
+> 
+> This isn't your problem, but it needs to be said:
+> 
+> The nl80211 docs need and update to reflect this behavior (or remove
+> the PSC logic). IMO this is really weird that the kernel selects PSC's
+> based on the co-located flag. The docs don't describe this behavior and
+> the flag's name is misleading (its not
+> SCAN_FLAG_COLOCATED_AND_PSC_6GHZ) :)
+>
 
-Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
----
-Changelog:
+Sorry for the late reply, I was on vacation.
 
-v1 -> v2:
+What you said make sense. The existing flag should not add PSC channels 
+according to the flag description.
 
-1. CC "linux-wireless@vger.kernel.org".
----
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+We can add another flag something like you pointed out 
+SCAN_FLAG_COLOCATED_AND_PSC_6GHZ and include PSC channels if this flag 
+is set. What do you say?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index a873be109f43..b490a88b97ca 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1048,9 +1048,11 @@ static void iwl_bg_restart(struct work_struct *data)
-  *
-  *****************************************************************************/
- 
--static void iwl_setup_deferred_work(struct iwl_priv *priv)
-+static int iwl_setup_deferred_work(struct iwl_priv *priv)
- {
- 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
-+	if (!priv->workqueue)
-+		return -ENOMEM;
- 
- 	INIT_WORK(&priv->restart, iwl_bg_restart);
- 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
-@@ -1067,6 +1069,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
- 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
- 
- 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
-+
-+	return 0;
- }
- 
- void iwl_cancel_deferred_work(struct iwl_priv *priv)
-@@ -1456,7 +1460,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	/********************
- 	 * 6. Setup services
- 	 ********************/
--	iwl_setup_deferred_work(priv);
-+	if (iwl_setup_deferred_work(priv))
-+		goto out_uninit_drv;
-+
- 	iwl_setup_rx_handlers(priv);
- 
- 	iwl_power_initialize(priv);
-@@ -1494,6 +1500,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	iwl_cancel_deferred_work(priv);
- 	destroy_workqueue(priv->workqueue);
- 	priv->workqueue = NULL;
-+out_uninit_drv:
- 	iwl_uninit_drv(priv);
- out_free_eeprom_blob:
- 	kfree(priv->eeprom_blob);
--- 
-2.25.1
+> If userspace doesn't specify a channel list then the kernel can do
+> whatever it wants, but otherwise it should stick to the requested
+> channels and scan only for co-located APs if the flag was set, not
+> PSC's too.
+> 
+> This basically adds ~3x the time to IWD's quick scan's for 6GHz capable
+> cards regardless if there are any co-located AP's. ugh.
 
+True.
+
+Thanks,
+Manikanta
