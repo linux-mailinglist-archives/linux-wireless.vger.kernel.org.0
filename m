@@ -2,48 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75284663F2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 12:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E3F663F2C
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 12:19:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235744AbjAJLS0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 06:18:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
+        id S231455AbjAJLTc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 06:19:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231149AbjAJLSU (ORCPT
+        with ESMTP id S231254AbjAJLTX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 06:18:20 -0500
-Received: from mail1.systemli.org (mail1.systemli.org [93.190.126.36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E98186EA
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 03:18:18 -0800 (PST)
-Message-ID: <cc230245-2599-7665-3785-150dee0bf873@systemli.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemli.org;
-        s=default; t=1673349497;
-        bh=C3fLBTMIkJ1r+D80WAu/Bl6JUyrL0QY7t/SpIufZNaQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=4gIXcdmyd15f6XxF6vb8JIoXFfsdq6UrDZ6XQPMf70CEV0l3Gd90+aKRS4noDKLzw
-         mW0pkeAbZIIu5ucucEC4TGb6b4HDu8tIttWDiMSDQSZR6VHV1swMl69Kq2yMQehnVx
-         EjwJrRUGvMZKwLgKPN2xfML7L9Ynadfe+g3zDiN98qory5AxKMmig59BFzk74Yaipw
-         1gsr15sI1GZRV4j9tWHDUrVHG1RUJ4M1/y8GFG2kQwPnxcV1Vu8Q+7JUZ1y6dl3B3O
-         kWtKEhqU3DT7HsSUllSNpbi9UzE4i9+57VkmtnbSbCYg2XxaDUqQgcUHp93k5vs+JZ
-         1H+qYdUtNqT/w==
-Date:   Tue, 10 Jan 2023 12:18:14 +0100
-MIME-Version: 1.0
+        Tue, 10 Jan 2023 06:19:23 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94CC32E9C
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 03:19:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=tcsF9TIMC9ldeudeDdAxgoPCWacET2ZdjuAZwZxID2U=;
+        t=1673349562; x=1674559162; b=lsaZRihZXbjWINKLCrMTW+7h1B8cv0VVhKB4nwfups2JFJr
+        hilbZBYRSf0hXp8m7XAoAgXXTgleJwuB5OCj6a/Meu7r5Y0ZqRRgaAJarAKLHWJNuKu49Sqcd9npl
+        sRyPJcSoj+7eZFwPqomXDhpQFGIQaSX8MIhQyEmbj0PsBxPcwHLOSzj0vbc3d/raAGAMVW7FyI+Sh
+        K/W+3eongEvrRrCWnTLYJeFV9Ul8JOWBmQ9DPtjMBkiVgpcmxLSWJ+j+9iyF6YKyZZNVB4pVfUKc+
+        D2D7UpOkpf+HfMmmrSys0TBeP5m2O55KjXzbwNKjuU5jPz5rzfRRoAAhLxEB6xnQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pFCf2-00FCnJ-12;
+        Tue, 10 Jan 2023 12:19:20 +0100
+Message-ID: <e41d9701282ba434871e3c3e28798fa4f16c582b.camel@sipsolutions.net>
 Subject: Re: [PATCH] wifi: mac80211: add support for scanning in ap mode
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Nick <vincent@systemli.org>, linux-wireless@vger.kernel.org
 Cc:     nbd@nbd.name, "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>
+Date:   Tue, 10 Jan 2023 12:19:18 +0100
+In-Reply-To: <cc230245-2599-7665-3785-150dee0bf873@systemli.org>
 References: <20230110110524.511258-1-vincent@systemli.org>
- <a7ccf0e6a1481f592fa9ff81f7b6545a4f4a653f.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Nick <vincent@systemli.org>
-In-Reply-To: <a7ccf0e6a1481f592fa9ff81f7b6545a4f4a653f.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+         <a7ccf0e6a1481f592fa9ff81f7b6545a4f4a653f.camel@sipsolutions.net>
+         <cc230245-2599-7665-3785-150dee0bf873@systemli.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,21 +57,10 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks for your feedback. Can you suggest a better way to do this?
+On Tue, 2023-01-10 at 12:18 +0100, Nick wrote:
+> Thanks for your feedback. Can you suggest a better way to do this?
+>=20
 
-Bests
-Nick
+Well there already is NL80211_SCAN_FLAG_AP?
 
-On 1/10/23 12:07, Johannes Berg wrote:
-> On Tue, 2023-01-10 at 12:05 +0100, Nick Hainke wrote:
->> OpenWRT has shipped a patch since 2011 that allows it to perform a scan
->> in AP mode, whether it is supported by the driver or not. In certain
->> situations, it may be desirable to scan an interface that is currently
->> in AP mode regardless of whether frames are missed. The patch adds a
->> module parameter "allow_ap_scan" that, if set to true, allows the behavior
->> described above.
->>
-> I must say - not really in favour of throwing around random module
-> parameters like that :)
->
-> johannes
+johannes
