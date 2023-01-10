@@ -2,107 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9272663B76
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 09:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE35D663EF0
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 12:07:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237945AbjAJIlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 03:41:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
+        id S231738AbjAJLGl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 06:06:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238004AbjAJIlS (ORCPT
+        with ESMTP id S237994AbjAJLF5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 03:41:18 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7CC4DCD;
-        Tue, 10 Jan 2023 00:41:15 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pFABy-0001qE-SY; Tue, 10 Jan 2023 09:41:10 +0100
-Message-ID: <0078a5ff-2bc5-4b14-2735-1641feb46544@leemhuis.info>
-Date:   Tue, 10 Jan 2023 09:41:10 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [6.2][regression] after commit
- cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
-Content-Language: en-US, de-DE
-To:     Felix Fietkau <nbd@nbd.name>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-        lorenzo@kernel.org, sujuan.chen@mediatek.com,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        Tue, 10 Jan 2023 06:05:57 -0500
+Received: from mail1.systemli.org (mail1.systemli.org [93.190.126.36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3812D12AFA
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 03:05:47 -0800 (PST)
+From:   Nick Hainke <vincent@systemli.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemli.org;
+        s=default; t=1673348743;
+        bh=fVE7VUuYXMA8XRUUXdGvwE2xRu8C7zt1YgYXmiRmJBo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZToH6qzPk6uSaYZ8uVL8YR33ivhvX2ARkVR4mFQXosVLWIKquzPbETr+4kUxj2fAa
+         l6KMWEW6AzWdBgcIzmJmSkKiyFrrOcJECTkQjdGKpZ5xKgIvU0K55gJSs9BRLzD2Lh
+         hXl873lJytv9zrpAve5RqZUUePNaXdDuNAUabq4/UI2UkwbMGMAnFS0bY2iBwYsFLD
+         JmizsPCwMyaYG57nHAxjMRHss+7sn+Za+CpGOrldjsAD3qBTfV9lqobAxnO8NF1enP
+         fSZp0PfMXSOHzbr+nlarVmWUGmO6akRZjrpwYPcelG5yU9OZwxPYBIanssdt8D/jkh
+         Sxy5RtAUcTrig==
+To:     linux-wireless@vger.kernel.org
+Cc:     nbd@nbd.name, Nick Hainke <vincent@systemli.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, spasswolf@web.de
-References: <252b1fe4-ccc2-4ea8-1da5-9a60f7378fd6@leemhuis.info>
- <BD7074C5-20BE-4D70-824B-0994892C995D@nbd.name>
-From:   "Linux kernel regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <BD7074C5-20BE-4D70-824B-0994892C995D@nbd.name>
-Content-Type: text/plain; charset=UTF-8
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH] wifi: mac80211: add support for scanning in ap mode
+Date:   Tue, 10 Jan 2023 12:05:24 +0100
+Message-Id: <20230110110524.511258-1-vincent@systemli.org>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673340075;8c646eff;
-X-HE-SMSGID: 1pFABy-0001qE-SY
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+OpenWRT has shipped a patch since 2011 that allows it to perform a scan
+in AP mode, whether it is supported by the driver or not. In certain
+situations, it may be desirable to scan an interface that is currently
+in AP mode regardless of whether frames are missed. The patch adds a
+module parameter "allow_ap_scan" that, if set to true, allows the behavior
+described above.
 
+Tested-on: TP Link Archer C7 V2 (Qualcomm Atheros QCA9558,
+           Qualcomm Atheros QCA9880-BR4A) with OpenWrt Linux 5.15.86
 
-On 10.01.23 09:00, Felix Fietkau wrote:
-> 
->> On 10. Jan 2023, at 08:17, Linux kernel regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info> wrote:
->>
->> ﻿[CCing spasswolf@web.de]
->>
->>> On 09.01.23 08:32, Linux kernel regression tracking (Thorsten Leemhuis)
->>> wrote:
->>>> On 04.01.23 15:20, Thorsten Leemhuis wrote:
->>>> Hi, this is your Linux kernel regression tracker. Top-posting for once,
->>>> to make this easily accessible to everyone.
->>>>
->>>> Felix, Lorenzo, did below fix for the regression
->>>
->>> There is another report about an issue with mediatek wifi in 6.2-rc:
->>> https://bugzilla.kernel.org/show_bug.cgi?id=216901
->>
->> FWIW, "spasswolf" in that ticket posted a patch that according to the
->> reporter of that bug fixes the issue:
->> https://bugzilla.kernel.org/show_bug.cgi?id=216901#c5
->>
->> I only took a brief look, but it seems it does a subset of what Felix
->> patch does.
->>
->>> To me this looks like a duplicate of the report that started this thread.
->>>
->>> (side note: there was another, earlier report that might be a dupe, too:
->>> https://bugzilla.kernel.org/show_bug.cgi?id=216829 )>
->>>> Mikhail reported make
->>>> any progress to get mainlined? It doesn't look like it from here, but I
->>>> suspect I missed something, that's why I'm asking.
->>>
->>> No reply. :-((
->>
->> Still no reply. I wonder if I'm holding things wrong. But well, let's
->> wait one more day before escalating this further.
-> 
-> Johannes told me on IRC that he will review my patch soon. He simply has too many things to do at the moment.
+Signed-off-by: Nick Hainke <vincent@systemli.org>
+---
+ net/mac80211/cfg.c         | 3 +++
+ net/mac80211/ieee80211_i.h | 3 +++
+ net/mac80211/main.c        | 5 +++++
+ 3 files changed, 11 insertions(+)
 
-Great, thx. And sorry for prodding so much, but that is part of the job
-when it takes so long to fix regressions -- even in cases where that's
-mainly caused by a holiday season (which I took into account, otherwise
-I likely would have made more noise earlier already).
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 8f9a2ab502b3..04730fb0f621 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2723,6 +2723,9 @@ static int ieee80211_scan(struct wiphy *wiphy,
+ 		 */
+ 		fallthrough;
+ 	case NL80211_IFTYPE_AP:
++		/* Support scanning in AP mode regardless of driver support. */
++		if (allow_ap_scan)
++			break;
+ 		/*
+ 		 * If the scan has been forced (and the driver supports
+ 		 * forcing), don't care about being beaconing already.
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 63ff0d2524b6..d48c7dd00dd4 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2566,4 +2566,7 @@ ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
+ 				    const struct ieee80211_eht_cap_elem *eht_cap_ie_elem,
+ 				    u8 eht_cap_len,
+ 				    struct link_sta_info *link_sta);
++
++extern bool allow_ap_scan;
++
+ #endif /* IEEE80211_I_H */
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 846528850612..c33d99717cd0 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -33,6 +33,11 @@
+ #include "led.h"
+ #include "debugfs.h"
+ 
++bool allow_ap_scan;
++module_param(allow_ap_scan, bool, 0644);
++MODULE_PARM_DESC(allow_ap_scan,
++		 "Support scanning in AP mode regardless of driver support.");
++
+ void ieee80211_configure_filter(struct ieee80211_local *local)
+ {
+ 	u64 mc;
+-- 
+2.39.0
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
