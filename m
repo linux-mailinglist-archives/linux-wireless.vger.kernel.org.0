@@ -2,75 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39685663F30
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 12:20:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6AA663FA5
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 13:03:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjAJLUo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 06:20:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59566 "EHLO
+        id S238177AbjAJMDB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 07:03:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbjAJLUn (ORCPT
+        with ESMTP id S238096AbjAJMC7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 06:20:43 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA5FC52
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 03:20:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=3/Zjpyu/hL6l1jAce40mRGZ15IHg2m4Iv5XWRyxjQLg=;
-        t=1673349642; x=1674559242; b=FxDsfFAjQNQiI2LkWE7Z83rV3EhxpRLadoRJHKHtRLoFfLk
-        IuUow7JBUnAhNJ2uU9xVl8NZUzSiYTQjtV50+IPKEoQirEfXULFgWcTWEZVx7UoyLrfzKlh0jvp1i
-        Xz8Or1avpLCDXk+eP2u5f7l0qWU/gLvJEBAYaWB+O0/ZzC9wNb8I3T/gMEtIi8+nE3IUrm6PnYENB
-        y3rdEzd/IOFVuFEPyMPkwaUn+Y4JD/T9vI7h74JEojCJ48/60kaiYD4sV77nrt/2EX4QPtNv5IkuS
-        FuhK7MwnO79v32ONakaRoWMFg10azvA5o58oLbCHEkffgC7FiZ/7UUnjULL3uKxg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pFCgI-00FCpZ-1J;
-        Tue, 10 Jan 2023 12:20:38 +0100
-Message-ID: <9a2e054444a84e2645cf6397934313b0c41fb725.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: add support for scanning in ap mode
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Nick <vincent@systemli.org>, linux-wireless@vger.kernel.org
-Cc:     nbd@nbd.name, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Date:   Tue, 10 Jan 2023 12:20:37 +0100
-In-Reply-To: <e41d9701282ba434871e3c3e28798fa4f16c582b.camel@sipsolutions.net>
-References: <20230110110524.511258-1-vincent@systemli.org>
-         <a7ccf0e6a1481f592fa9ff81f7b6545a4f4a653f.camel@sipsolutions.net>
-         <cc230245-2599-7665-3785-150dee0bf873@systemli.org>
-         <e41d9701282ba434871e3c3e28798fa4f16c582b.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Tue, 10 Jan 2023 07:02:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A3458815;
+        Tue, 10 Jan 2023 04:02:58 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F6A9615FC;
+        Tue, 10 Jan 2023 12:02:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B720FC433EF;
+        Tue, 10 Jan 2023 12:02:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673352177;
+        bh=EdO98tQGWdd8FP7Cv/xRaOAbpnwXx0RZv8wSewtpx0U=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=eDX7n8NIKp3k4tBl5QI9uYztz6wSxIGZ5KxvhxsyTKW5U0kBh+02AdXqHfpYw28jf
+         nc/C3+G8qOml6qV5OvP1M5Oyw/15pNRUA8jLOlu0aaoqiNX8DT5tgncs+JoicNIRpc
+         lDEK1SH+ofJMsJ2f4RqV7PqVotTIk8B5nIAv+RLIsB0us4v6mgcCyraT3+f98n/u+l
+         CfrFvwGxDzfEVYUbd0SHaNAkwPQ8vW6PTpgiHDDMzUGFQFriApcN0HaRJl6rcaF2Tg
+         ZSjnbOKMYgiSafIyUt8xSocATIutNSXDP1Njrr1T5ufGY5Gkc2BPDgwNnvcWBfbETk
+         cqXHkxON5IwCQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     'Martin Blumenstingl' <martin.blumenstingl@googlemail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "tehuang\@realtek.com" <tehuang@realtek.com>,
+        "s.hauer\@pengutronix.de" <s.hauer@pengutronix.de>,
+        "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] rtw88: Add packed attribute to the eFuse structs
+References: <20221228133547.633797-1-martin.blumenstingl@googlemail.com>
+        <20221228133547.633797-2-martin.blumenstingl@googlemail.com>
+        <92eb7dfa8b7d447e966a2751e174b642@realtek.com>
+        <87da8c82dec749dc826b5a1b4c4238aa@AcuMS.aculab.com>
+        <eee17e2f4e44a2f38021a839dc39fedc1c1a4141.camel@realtek.com>
+        <a86893f11fe64930897473a38226a9a8@AcuMS.aculab.com>
+        <5c0c77240e7ddfdffbd771ee7e50d36ef3af9c84.camel@realtek.com>
+        <CAFBinCC+1jGJx1McnBY+kr3RTQ-UpxW6JYNpHzStUTredDuCug@mail.gmail.com>
+        <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com>
+Date:   Tue, 10 Jan 2023 14:02:52 +0200
+In-Reply-To: <ec6a0988f3f943128e0122d50959185a@AcuMS.aculab.com> (David
+        Laight's message of "Wed, 4 Jan 2023 15:53:17 +0000")
+Message-ID: <87r0w2fvgz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-01-10 at 12:19 +0100, Johannes Berg wrote:
-> On Tue, 2023-01-10 at 12:18 +0100, Nick wrote:
-> > Thanks for your feedback. Can you suggest a better way to do this?
-> >=20
->=20
-> Well there already is NL80211_SCAN_FLAG_AP?
->=20
+David Laight <David.Laight@ACULAB.COM> writes:
 
-Oh sorry you want it independent of the driver.
+> From: Martin Blumenstingl
+>> Sent: 04 January 2023 15:30
+>> 
+>> Hi Ping-Ke, Hi David,
+>> 
+>> On Sun, Jan 1, 2023 at 2:09 PM Ping-Ke Shih <pkshih@realtek.com> wrote:
+>> [...]
+>> > Yes, it should not use bit filed. Instead, use a __le16 for all fields, such as
+>> I think this can be done in a separate patch.
+>> My v2 of this patch has reduced these changes to a minimum, see [0]
+>> 
+>> [...]
+>> > struct rtw8821ce_efuse {
+>> >    ...
+>> >    u8 data1;       // offset 0x100
+>> >    __le16 data2;   // offset 0x101-0x102
+>> >    ...
+>> > } __packed;
+>> >
+>> > Without __packed, compiler could has pad between data1 and data2,
+>> > and then get wrong result.
+>> My understanding is that this is the reason why we need __packed.
+>
+> True, but does it really have to look like that?
+> I can't find that version (I don't have a net_next tree).
+> Possibly it should be 'u8 data2[2];'
+>
+> Most hardware definitions align everything.
+>
+> What you may want to do is add compile-time asserts for the
+> sizes of the structures.
+>
+> Remember that if you have 16/32 bit fields in packed structures
+> on some architectures the compile has to generate code that does
+> byte loads and shifts.
+>
+> The 'misaligned' property is lost when you take the address - so
+> you can easily generate a fault.
+>
+> Adding __packed to a struct is a sledgehammer you really shouldn't need.
 
-But why? This was primarily a thing for "does the firmware even support
-this".
+Avoiding use of __packed is news to me, but is this really a safe rule?
+Most of the wireless engineers are no compiler experts (myself included)
+so I'm worried. For example, in ath10k and ath11k I try to use __packed
+for all structs which are accessing hardware or firmware just to make
+sure that the compiler is not changing anything.
 
-So really then your driver should set it?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
