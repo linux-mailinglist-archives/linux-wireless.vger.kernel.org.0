@@ -2,102 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D04466406B
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 13:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E11A7664081
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 13:31:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234969AbjAJM0F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 07:26:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40956 "EHLO
+        id S233090AbjAJMbw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 07:31:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238551AbjAJMZZ (ORCPT
+        with ESMTP id S232502AbjAJMbu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 07:25:25 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 088BDCC1
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 04:25:15 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AF74AB8159E
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 12:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F064CC433EF;
-        Tue, 10 Jan 2023 12:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673353511;
-        bh=pQwKNKpoYxfyOYyA77pv++Up4PIdhs6brRmSfFIGtU0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ISITD6RE2QyOVyjBTuIxcB4IQ7u1cI0t8rTv+BmKm0gbA3UaQBmtNK1gMAobar+IK
-         I1C7lXDrZ9W2RTuGjZqSS4uGqhDG7Bd5CdNQ0GzCabG83UXx8QWjLbDEAmcMC1GuAe
-         JKe0TkRXlGuvBEfeIzmf55XENfO6rkRnwv/DCG+pE+rHNRWQFKUWTSnscHOmj1f5za
-         FvZ0hWdpRLa5dY0SHWQXG3USYMDPZNOmMv0DT4doTc5cViKTJNuxD9YxjKxt4nISi+
-         wsGk+d3bNqWi8OaAd4+Mfqi26H4xiNhbhOKB+mnF6PgyR1Y8rsAy7eO6It9rYw+ASG
-         CGz0fMduSmDcQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-        linux-wireless@vger.kernel.org, dokyungs@yonsei.ac.kr,
-        jisoo.jang@yonsei.ac.kr
-Subject: Re: [PATCH v2] ath9k: Fix potential stack-out-of-bounds write in ath9k_wmi_rsp_callback()
-References: <20230104124130.10996-1-linuxlovemin@yonsei.ac.kr>
-        <87zgay1ho0.fsf@toke.dk>
-Date:   Tue, 10 Jan 2023 14:25:06 +0200
-In-Reply-To: <87zgay1ho0.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
- \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
-        "Wed, 04 Jan 2023 15:46:39 +0100")
-Message-ID: <87ilhefufx.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 10 Jan 2023 07:31:50 -0500
+Received: from mail1.systemli.org (mail1.systemli.org [93.190.126.36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A4017040
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 04:31:48 -0800 (PST)
+Message-ID: <3a9c2bae-6c33-2211-1368-85d839680de8@systemli.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemli.org;
+        s=default; t=1673353905;
+        bh=8MrIVoSwNKEoib1mQqEtGP64FkBi7pmFZVrt0/+zocE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=F881JbGt8xXGWF1vszUshRpo1fS9YOqXtgGpCROdKXLCKoP0XwlhOxVlmZE44yai+
+         626HylZzCY4wiUrBdkm5hUQUrClcXcnUKl7Y8RHe9DcL2k2CHVrXiATrjSfHfosOlh
+         NmNGEWQTsUNn1gmnoVCkXqQK+sq/wqKyVL5frroNoTNj8LjACSTSGXZY+C7dOiqvrJ
+         vJp3+IETewPv5N7jhzSCYYupUA8mL51MU0SYMaL9mO0x5NJJegEWNo1HG72cMSaBB3
+         t1o1I2v19/qbawEMtD78qMoKS63g2Xb4v1JHgEjZMs0bz5Mtjn8YMoUMr+aL1Q/+pt
+         UQIz+Yostp7gw==
+Date:   Tue, 10 Jan 2023 13:31:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] wifi: mac80211: add support for scanning in ap mode
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     nbd@nbd.name, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+References: <20230110110524.511258-1-vincent@systemli.org>
+ <a7ccf0e6a1481f592fa9ff81f7b6545a4f4a653f.camel@sipsolutions.net>
+ <cc230245-2599-7665-3785-150dee0bf873@systemli.org>
+ <e41d9701282ba434871e3c3e28798fa4f16c582b.camel@sipsolutions.net>
+ <9a2e054444a84e2645cf6397934313b0c41fb725.camel@sipsolutions.net>
+Content-Language: en-US
+From:   Nick <vincent@systemli.org>
+In-Reply-To: <9a2e054444a84e2645cf6397934313b0c41fb725.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+Sorry, I made a mistake. NL80211_SCAN_FLAG_AP seems to do everything I 
+want. Initially I thought there was something special about the 
+"NL80211_FEATURE_AP_SCAN" that was also needed, since it is not being 
+set by the ath9k. Also, the OpenWrt patch does not test for 
+"NL80211_FEATURE_AP_SCAN", so I thought it was necessary to skip this 
+check as well. However, I just noticed that this flag is set for ath9k 
+in mac80211. I have just tested it again with ath9k (iw dev wlan0 scan 
+ap-force) and it works as expected.
 
-> Minsuk Kang <linuxlovemin@yonsei.ac.kr> writes:
->
->> Fix a stack-out-of-bounds write that occurs in a WMI response callback
->> function that is called after a timeout occurs in ath9k_wmi_cmd().
->> The callback writes to wmi->cmd_rsp_buf, a stack-allocated buffer that
->> could no longer be valid when a timeout occurs. Set wmi->last_seq_id to
->> 0 when a timeout occurred.
+As far as I know, tools like iwinfo do not include this "force" option. 
+OpenWrt's Luci interface heavily relies on iwinfo. So far this is not an 
+issue, as the default behavior of mac80211 in OpenWrt currently allows 
+scanning regardless of "NL80211_FEATURE_AP_SCAN" or 
+"NL80211_SCAN_FLAG_AP". So if I want to get rid of this downstream patch 
+I have to rewrite the iwinfo logic and maybe always include 
+NL80211_SCAN_FLAG_AP as default.
+
+Thank you very much for your time and feedback.
+
+Bests
+Nick
+
+On 1/10/23 12:20, Johannes Berg wrote:
+> On Tue, 2023-01-10 at 12:19 +0100, Johannes Berg wrote:
+>> On Tue, 2023-01-10 at 12:18 +0100, Nick wrote:
+>>> Thanks for your feedback. Can you suggest a better way to do this?
+>>>
+>> Well there already is NL80211_SCAN_FLAG_AP?
 >>
->> Found by a modified version of syzkaller.
->>
->> BUG: KASAN: stack-out-of-bounds in ath9k_wmi_ctrl_rx
->> Write of size 4
->> Call Trace:
->>  memcpy
->>  ath9k_wmi_ctrl_rx
->>  ath9k_htc_rx_msg
->>  ath9k_hif_usb_reg_in_cb
->>  __usb_hcd_giveback_urb
->>  usb_hcd_giveback_urb
->>  dummy_timer
->>  call_timer_fn
->>  run_timer_softirq
->>  __do_softirq
->>  irq_exit_rcu
->>  sysvec_apic_timer_interrupt
->>
->> Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+> Oh sorry you want it independent of the driver.
 >
-> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> But why? This was primarily a thing for "does the firmware even support
+> this".
 >
-> Also (Kalle, I assume you can just add this):
+> So really then your driver should set it?
 >
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-
-Yes, will add.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+> johannes
