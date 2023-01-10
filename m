@@ -2,105 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12282664C9A
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 20:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 286CD664CAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jan 2023 20:39:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbjAJTfe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Jan 2023 14:35:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41318 "EHLO
+        id S232769AbjAJTj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Jan 2023 14:39:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232715AbjAJTf0 (ORCPT
+        with ESMTP id S232043AbjAJTjU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Jan 2023 14:35:26 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D73355660
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 11:35:24 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id az7so12890634wrb.5
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 11:35:24 -0800 (PST)
+        Tue, 10 Jan 2023 14:39:20 -0500
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7B8759D08;
+        Tue, 10 Jan 2023 11:39:19 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id c85so6392108pfc.8;
+        Tue, 10 Jan 2023 11:39:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexus-software-ie.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W24t1awpfKB6ptxeY9TlNfgzwEwkCjaMQOvWbmqbT58=;
-        b=kORZaBLpDatAoNPlGskCQ8mg+EYXm+S31KKByi2e00YCZitmdPiOHo6Kr+g8y5SN6W
-         uhJTEspGLyzuirEW5ym7lnhrb5GfQKyKWFngCvdSxZtVcw3wWdxn7GoWHIC4TeI8Joqd
-         AdMzx+2pqM5L+2ZCTP6ZR6QSDJiUskPbWHH+MDYp+bsvm0PrCx+vt+iA+BpefakcwsvM
-         +H8nY7sVgaWRnGrUh8W2BZq5JOe1tR/JIwjt2IZXDZk2XVtdZX1Ini9GonoVhPw7SMZv
-         V+od0PMF9axaqqXfH09Y84XTHbLzl5ps3dYx+/yDL5/fgraHyrFtUGnbiIpI2djQD9ag
-         taLQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ytahM6TFxHypZxetqkfCVkmffXauXXQEJdKgL56HxD8=;
+        b=cLQVTlSTOs39qtQ0dnDnsMGOF2nWqvYy0tBAWrDodUfcO2hYGHXR6Rls1NWfsiWiaJ
+         xWBx2Pen6pk7Eyi1dmP1oPexDEe3bC5TvwmE60+XlzJp1FZBgTRmkxtfWI0vVBNS9bZr
+         5czwEFxIzO2N96iCcd65u7Nakz+jyX3vBVAXZSFX0zh3Q+c3dk55R8YZJm7QDwp3gv98
+         HFzvbWpC2xC2+is963zwUaHaxcVIKB6gze0MT8Xzs0QVcLRPTUdI/Buvukyr25nsZZ71
+         qnnwnH8D6xb6rp4eyI/0uUaqi3YEh6QHXrq1DjOmyEBD8JyHcApnVXWaDXl0+lT9LjBU
+         1AQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W24t1awpfKB6ptxeY9TlNfgzwEwkCjaMQOvWbmqbT58=;
-        b=ySfnAwQVg9ke/YjRhX63snh1H36dRntnTHU2iP+TNuaB/tt7wFYEKOwkeeoX6occuG
-         I9ePmzoN3AIy7xQ0qYta31tWzmIp74S+W/crDf98MW6PpF5KLK15TCtiUS83yu0LyfqC
-         WwSG46D2i3gIwK/2vxdUbVJgKmQAbqlheOVSTtW+f3S4aGqgtEn3W8LW1s5lCa7FdBvT
-         sd1TGezfs1QaHwx3l/O2zWtR5Zyt1RRukvUBZJEKOD6+/nM90sUyUJQStjVU75W8SKtO
-         JLhLcfzFNmSTXtxwTWW3acDP4nauqFum9PyUpCJ8+nYhaj7+Vq8ViaWsz7Suls8UWlS+
-         JKhQ==
-X-Gm-Message-State: AFqh2krm8SfcD1Mqgq4+NIuPIc6aLUqFn+byC7x5cBOwOkAHr/5w9ADD
-        o7Zy30zYftKczXdNBrNDIS8Rzg==
-X-Google-Smtp-Source: AMrXdXt0ppqWzXs7iXoPKHx68lESAtM8EYIoOvNlvARbzlOQnBDHSBCcqzN0lr9nxr7oS8Igv0d6Og==
-X-Received: by 2002:adf:e6ce:0:b0:293:1089:d6a with SMTP id y14-20020adfe6ce000000b0029310890d6amr24950195wrm.39.1673379323138;
-        Tue, 10 Jan 2023 11:35:23 -0800 (PST)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id az20-20020a05600c601400b003d96bdddd3dsm16454705wmb.15.2023.01.10.11.35.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jan 2023 11:35:22 -0800 (PST)
-Message-ID: <aace6523-0941-903e-6b80-399dc1cfc751@nexus-software.ie>
-Date:   Tue, 10 Jan 2023 19:35:22 +0000
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ytahM6TFxHypZxetqkfCVkmffXauXXQEJdKgL56HxD8=;
+        b=Fv5Yu2FOO0/7QhhAYmJIxAi9RkTfX4fH5hst8tXOABjVX025Jd6tesaBmYwkr+MRa1
+         6ujNiSRUwsRsaGRd6NGcorW82e15LSWk4PyLxcFrnQxpwLB5Uas7PwOAMcK6uxWACw8F
+         5Y1bBhCxDPR5WzUk05vRWhX5AYX8ggv8RZ342CXaKWxhDNsXZuc3bJ5iZBNl8SLzrTHB
+         3kQZPwOpI+td6xhf8GHG/m+GfFpmryZC5RaWQKH5wEHT8g3VGMKFp37qSJ5VskpiC4QV
+         9QMZdTnOgF0dJcSIaxfKtJXHR+icnWl34+JLw1k8dDg1vo0NrXjSi1hyIozOafuofETP
+         Zhng==
+X-Gm-Message-State: AFqh2koa3qpJDFluu2gLfjwIH//rf60L03NsQ99jSAKmbA/e61qGBtYs
+        /E9rN9/C9usXbxMrSHyDcJg=
+X-Google-Smtp-Source: AMrXdXt1oOoeLlqdvX3/g8ylTfFh+uA1SzU8WaZTxdBuoR5ZfNp6simBasPTzyxGkApbzqHk9W3CpQ==
+X-Received: by 2002:aa7:9683:0:b0:581:a8dc:8f94 with SMTP id f3-20020aa79683000000b00581a8dc8f94mr46012963pfk.27.1673379559143;
+        Tue, 10 Jan 2023 11:39:19 -0800 (PST)
+Received: from [192.168.0.128] ([98.97.37.136])
+        by smtp.googlemail.com with ESMTPSA id u5-20020a626005000000b005815017d348sm1757469pfb.179.2023.01.10.11.39.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jan 2023 11:39:18 -0800 (PST)
+Message-ID: <ece5f6a7fad9eb55d0fbf97c6227571e887c2c33.camel@gmail.com>
+Subject: Re: [PATCH] rndis_wlan: Prevent buffer overflow in rndis_query_oid
+From:   Alexander H Duyck <alexander.duyck@gmail.com>
+To:     Szymon Heidrich <szymon.heidrich@gmail.com>, kvalo@kernel.org,
+        jussi.kivilinna@iki.fi, davem@davemloft.net
+Cc:     edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 10 Jan 2023 11:39:17 -0800
+In-Reply-To: <20230110173007.57110-1-szymon.heidrich@gmail.com>
+References: <20230110173007.57110-1-szymon.heidrich@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: ieee80211_handle_wake_tx_queue and dynamic ps regression
-Content-Language: en-US
-To:     Alexander Wetzel <alexander@wetzel-home.de>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        linux-kernel@vger.kernel.org, johannes.berg@intel.com,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-References: <19015168-c747-17b7-f0ae-9d2ee27d221c@linaro.org>
- <06f76774-1b2e-f563-7128-7d5b9547dfe9@linaro.org>
- <cf5e9339-2511-1135-71da-a8342b264414@linaro.org>
- <205fb221-f7ad-8f03-2c16-54dcbf5ecaf9@wetzel-home.de>
- <53b23ee9-a333-120e-8b58-cfa3a9bdaefc@wetzel-home.de>
-From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
-In-Reply-To: <53b23ee9-a333-120e-8b58-cfa3a9bdaefc@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/01/2023 15:43, Alexander Wetzel wrote:
->>
-> 
-> Looks like the the commit 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20221230121850.218810-1-alexander@wetzel-home.de/
-> has a good chance to solve the issue:
-> 
-> 1) Queues are stopped due to PS
-> 2) Then there is a TX attempt. But due to the (PS) queue stop
->     wake_tx_push_queue() aborts the queue run
-> 3) Then we hit the bug the patch fixes: The queue is not marked to
->     have pending packets and thus packets on it are not transmitted.
-> 
-> Packets get only send when you happen to try tx when the queue is 
-> operational. (And then you will get all the packets sitting in the queue.)
-> 
-> Does that make sense? And more crucial, is the patch fixing that for you?
+On Tue, 2023-01-10 at 18:30 +0100, Szymon Heidrich wrote:
+> Since resplen and respoffs are signed integers sufficiently
+> large values of unsigned int len and offset members of RNDIS
+> response will result in negative values of prior variables.
+> This may be utilized to bypass implemented security checks
+> to either extract memory contents by manipulating offset or
+> overflow the data buffer via memcpy by manipulating both
+> offset and len.
+>=20
+> Additionally assure that sum of resplen and respoffs does not
+> overflow so buffer boundaries are kept.
+>=20
+> Fixes: 80f8c5b434f9 ("rndis_wlan: copy only useful data from rndis_comman=
+d respond")
+> Signed-off-by: Szymon Heidrich <szymon.heidrich@gmail.com>
+> ---
+>  drivers/net/wireless/rndis_wlan.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rnd=
+is_wlan.c
+> index 82a7458e0..d7fc05328 100644
+> --- a/drivers/net/wireless/rndis_wlan.c
+> +++ b/drivers/net/wireless/rndis_wlan.c
+> @@ -697,7 +697,7 @@ static int rndis_query_oid(struct usbnet *dev, u32 oi=
+d, void *data, int *len)
+>  		struct rndis_query_c	*get_c;
+>  	} u;
+>  	int ret, buflen;
+> -	int resplen, respoffs, copylen;
+> +	u32 resplen, respoffs, copylen;
 
-Ok works for me.
+Rather than a u32 why not just make it an size_t? The advantage is that
+is the native type for all the memory allocation and copying that takes
+place in the function so it would avoid having to cast between u32 and
+size_t.
 
-Good job.
+Also why not move buflen over to the unsigned integer category with the
+other values you stated were at risk of overflow?
 
----
-bod
+> =20
+>  	buflen =3D *len + sizeof(*u.get);
+>  	if (buflen < CONTROL_BUFFER_SIZE)
+
+For example, this line here is comparing buflen to a fixed constant. If
+we are concerned about overflows this could be triggering an integer
+overflow resulting in truncation assuming *len is close to the roll-
+over threshold.
+
+By converting to a size_t we would most likely end up blowing up on the
+kmalloc and instead returning an -ENOMEM.
+
+> @@ -740,7 +740,7 @@ static int rndis_query_oid(struct usbnet *dev, u32 oi=
+d, void *data, int *len)
+
+Also with any type change such as this I believe you would also need to
+update the netdev_dbg statement that displays respoffs and the like to
+account for the fact that you are now using an unsigned value.
+Otherwise I believe %d will display the value as a signed integer
+value.
+
+>  			goto exit_unlock;
+>  		}
+> =20
+> -		if ((resplen + respoffs) > buflen) {
+> +		if (resplen > (buflen - respoffs)) {
+>  			/* Device would have returned more data if buffer would
+>  			 * have been big enough. Copy just the bits that we got.
+>  			 */
+
+Actually you should be able to simplfy this further. Assuming resplen,
+buflen and respoffs all the same type this entire if statement could be
+broken down into:
+		copylen =3D min(resplen, buflen - respoffs);
+
+
