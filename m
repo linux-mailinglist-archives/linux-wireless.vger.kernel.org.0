@@ -2,121 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8CD1665580
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 08:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A9B766563E
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 09:39:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230124AbjAKHyw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 02:54:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56748 "EHLO
+        id S231997AbjAKIjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Jan 2023 03:39:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235865AbjAKHym (ORCPT
+        with ESMTP id S231846AbjAKIjj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 02:54:42 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663F76272
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jan 2023 23:54:16 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pFVw5-00048B-Ez; Wed, 11 Jan 2023 08:54:13 +0100
-Message-ID: <b8a3fa69-a4c2-51b5-d193-d4d933cf6627@leemhuis.info>
-Date:   Wed, 11 Jan 2023 08:54:12 +0100
+        Wed, 11 Jan 2023 03:39:39 -0500
+X-Greylist: delayed 60 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 11 Jan 2023 00:39:37 PST
+Received: from h2.cmg1.smtp.forpsi.com (h2.cmg1.smtp.forpsi.com [81.2.195.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66BA7C763
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 00:39:37 -0800 (PST)
+Received: from lenoch ([91.218.190.200])
+        by cmgsmtp with ESMTPSA
+        id FWczpL4n6Pm6CFWd0pWYif; Wed, 11 Jan 2023 09:38:34 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
+        t=1673426314; bh=l0RcFkzmMrH/bSRzXQpFt7Km/jg+S8OLp9WMGVak8jc=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=fH1rchVtm/DD6WTNt1La7P/QChltZnruCmWEw/zqFwredTnosyIGpgY65RN+GSrvh
+         b/bvPB8hBV1LeRBUzXJMMUULywGd3okF8Dt/enzonWtkGXx+weUlpskjum/Bcrhf33
+         +cu7m/tJfVjBlJdwtMgEF1hQ5+oXjEZ25GeYOhfAH4yBPiqkkbx3sqs575wfXz1seP
+         9cs8FXQ1yxv3icHjl7/8vzHyLNqgcd2m0ZskfvT5ijsAfWEk0NdrcqiYcChqH2rTEB
+         9XpVltMCwrJlnFNs7Lh/3Do/YtOobShX/WSvDGC1CPNb5jJXdszXVvZaI6qBTRNUWP
+         yq35hAgUEVaOQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
+        t=1673426314; bh=l0RcFkzmMrH/bSRzXQpFt7Km/jg+S8OLp9WMGVak8jc=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=fH1rchVtm/DD6WTNt1La7P/QChltZnruCmWEw/zqFwredTnosyIGpgY65RN+GSrvh
+         b/bvPB8hBV1LeRBUzXJMMUULywGd3okF8Dt/enzonWtkGXx+weUlpskjum/Bcrhf33
+         +cu7m/tJfVjBlJdwtMgEF1hQ5+oXjEZ25GeYOhfAH4yBPiqkkbx3sqs575wfXz1seP
+         9cs8FXQ1yxv3icHjl7/8vzHyLNqgcd2m0ZskfvT5ijsAfWEk0NdrcqiYcChqH2rTEB
+         9XpVltMCwrJlnFNs7Lh/3Do/YtOobShX/WSvDGC1CPNb5jJXdszXVvZaI6qBTRNUWP
+         yq35hAgUEVaOQ==
+Date:   Wed, 11 Jan 2023 09:38:33 +0100
+From:   Ladislav Michl <oss-lists@triops.cz>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [BUG] wifi: mac80211: Unable to handle kernel paging request
+Message-ID: <Y751ia5Mub0J3RXF@lenoch>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 6.2-rc3] wifi: mt76: fix dma error
-Content-Language: en-US, de-DE
-To:     Bert Karwatzki <spasswolf@web.de>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <45e57883822389266ab67f7e0b6aa737db047cdd.camel@web.de>
-From:   "Linux kernel regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <45e57883822389266ab67f7e0b6aa737db047cdd.camel@web.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673423657;34bad227;
-X-HE-SMSGID: 1pFVw5-00048B-Ez
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-CMAE-Envelope: MS4wfHar6EHWuZ7W+FaZ2uxLc+GqWtLr2v009ulmEavPfMIV2pE1uZaziiPvyTAoR7KChQDD7zuA59Qwkf4gEMI9DfLI422Ou8dAaq92IqhmL5otWShv0CiP
+ qQvPhGvEGAEeZJEUPsxc9M2EcfQF5e4K7GTjwM0uwsgoAURwnP31fRzzm19/ccfWdablcx5uowPXUEOiTbEg4d7u3SgwvSli2jc=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing Felix]
+Hi,
 
-On 10.01.23 23:39, Bert Karwatzki wrote:
-> Since linux-6.2-rc1 the mediatek mt76 wlan driver suffers from problems
-> https://bugzilla.kernel.org/show_bug.cgi?id=216901. I bisected this to
-> commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae and noticed that the
-> 
-> 	if (txwi) {
-> 		q->entry[q->head].txwi = DMA_DUMMY_DATA;
-> 		q->entry[q->head].skip_buf0 = true;
-> 	}
-> 
-> part is moved from the beginning of mt76_dma_add_buf to the
-> inside of the for loop. But q->head is modified at the beginning of
-> this loop.
+following issue was triggered while debugging xHCI on custom Cavium
+Octeon III (MIPS) board with linux-6.1.4.
 
-Thx for your patch. TWIMC, a earlier (and tested) patch to address that
-regression can afaics be found here:
+Ralink 802.11n WLAN dongle is inserted into USB port:
+usb 1-1: new high-speed USB device number 29 using xhci-hcd
+usb 1-1: New USB device found, idVendor=148f, idProduct=5370, bcdDevice= 1.01
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1: Product: 802.11 n WLAN
+usb 1-1: Manufacturer: Ralink
+usb 1-1: SerialNumber: 1.0
+usb 1-1: reset high-speed USB device number 29 using xhci-hcd
+ieee80211 phy16785: rt2x00_set_rt: Info - RT chipset 5390, rev 0502 detected
+ieee80211 phy16785: rt2x00_set_rf: Info - RF chipset 5370 detected
+and a script is periodically enabling and disabling it. After a few rounds
+kernel panics:
+Unable to handle kernel paging request at virtual address ffffffff8117ca0c
+...
+Call Trace:
+ [<ffffffff8117ca0c>] del_timer+0x14/0x68
+ [<ffffffff8158dd30>] led_blink_set+0x30/0x80
+ [<ffffffff8158f4d0>] led_trigger_blink+0x48/0x78
+ [<ffffffff818b265c>] tpt_trig_timer+0x10c/0x120
+ [<ffffffff8117c48c>] call_timer_fn.constprop.0+0x24/0x98
+ [<ffffffff8117c908>] run_timer_softirq+0x318/0x3a0
+ [<ffffffff818ed580>] __do_softirq+0x100/0x2b0
+ [<ffffffff81104940>] plat_irq_dispatch+0xb0/0xd0
+ [<ffffffff811131a0>] handle_int+0x140/0x14c
+ [<ffffffff81113020>] __r4k_wait+0x20/0x40
+ [<ffffffff818ed3f8>] default_idle_call+0x30/0x48
+ [<ffffffff8115b85c>] do_idle+0x74/0xe0
+ [<ffffffff8115bb68>] cpu_startup_entry+0x18/0x28
+ [<ffffffff818e4640>] kernel_init+0x0/0x110
 
-https://lore.kernel.org/lkml/3cb53fbd-0bee-22f9-bba2-6ac4a87db521@nbd.name/
+It seems timer is still running at the time device is removed. Disabling
+MAC80211_LEDS makes issue dissapear. Does it ring a bell?
 
-Makes me wonder: Felix, btw, did you ever properly submit that patch for
-inclusion? Where? I can't find it with lore. :-/ Or will it be addressed
-by a different patch?
-
-/me really hopes we can get this resolved this week before rc4 ships, as
-it seems this regressions bothers quite a few people
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
-
-P.S.:
-
-#regzbot ^backmonitor: https://bugzilla.kernel.org/show_bug.cgi?id=216901
-
->  This patch puts at the beginning of mt76_dma_add_buf
-> diff -aur linux-6.2-rc3.old/drivers/net/wireless/mediatek/mt76/dma.c
-> linux-6.2-rc3/drivers/net/wireless/mediatek/mt76/dma.c
-> --- linux-6.2-rc3.old/drivers/net/wireless/mediatek/mt76/dma.c	2023-
-> 01-08 18:49:43.000000000 +0100
-> +++ linux-6.2-rc3/drivers/net/wireless/mediatek/mt76/dma.c	2023-
-> 01-09 22:07:29.533248047 +0100
-> @@ -215,6 +215,11 @@
->  	u32 ctrl;
->  	int i, idx = -1;
->  
-> +	if (txwi) {
-> +		q->entry[q->head].txwi = DMA_DUMMY_DATA;
-> +		q->entry[q->head].skip_buf0 = true;
-> +	}
-> +
->  	for (i = 0; i < nbufs; i += 2, buf += 2) {
->  		u32 buf0 = buf[0].addr, buf1 = 0;
->  
-> @@ -238,11 +243,6 @@
->  			ctrl = FIELD_PREP(MT_DMA_CTL_SD_LEN0,
-> buf[0].len) |
->  			       MT_DMA_CTL_TO_HOST;
->  		} else {
-> -			if (txwi) {
-> -				q->entry[q->head].txwi =
-> DMA_DUMMY_DATA;
-> -				q->entry[q->head].skip_buf0 = true;
-> -			}
-> -
->  			if (buf[0].skip_unmap)
->  				entry->skip_buf0 = true;
->  			entry->skip_buf1 = i == nbufs - 1; 
-> 
-> Bert Karwatzki
+	ladis
