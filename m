@@ -2,227 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 960D3665EF8
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 16:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0926A665F9D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 16:49:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235266AbjAKPUy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 10:20:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50084 "EHLO
+        id S238445AbjAKPs7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Jan 2023 10:48:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232575AbjAKPUw (ORCPT
+        with ESMTP id S239657AbjAKPsi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 10:20:52 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 698BBFCE9
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 07:20:50 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30BDSZxW009906;
-        Wed, 11 Jan 2023 15:20:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=/YvBClGX/zmnvgpUhJlAbnaIFEHh8kuj/QmimjZlJVQ=;
- b=inIFMVHoHpNTCEfh/wxSElz80IpwzPvExgVeHgU8tTolg92Ar0hGjGlPVoI+bjOzFhV+
- PnDABswuvCIlrCqa8bQ3T9UHiUCU7dX2mvspo6q8PAB85abjocjFVhXb5gWuZnzx8GnE
- SELtV1D19p93ecyzidUdt3iUaQb8a8afGuw8XOYG3AePP8GqM5kfmxxfChOzSRQmkJzI
- 5oTAhrz0xeNSjsYqc4sS1uqSNUtBWVzZdW0X+RkKQW0UE8q65CKcZ4hfxj+P/BlFnVcJ
- SCSzwqIvX8AgL0Aw2j6D57LT1c6kAlKWb2VJAghY54dJFW7iuZ9NRd3WT5wVluMIbGCc 3A== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n1k9j1kct-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 Jan 2023 15:20:36 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30BFKa4c006670
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 Jan 2023 15:20:36 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Wed, 11 Jan
- 2023 07:20:35 -0800
-Message-ID: <7d692402-3fc1-3b4c-9697-25e722e94539@quicinc.com>
-Date:   Wed, 11 Jan 2023 08:20:34 -0700
+        Wed, 11 Jan 2023 10:48:38 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F21C34774;
+        Wed, 11 Jan 2023 07:47:51 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id c8-20020a17090a4d0800b00225c3614161so20433439pjg.5;
+        Wed, 11 Jan 2023 07:47:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gj+rHUQSHl08kG5q/y5nClhBM+nXgO1wjgjAshKqRk4=;
+        b=BA2MTP8TRivv5ERqEnO+FDXOnY5MGer/9WLPAKaw8wQUvIBNxsRh57uL9s8vhJ+qCy
+         Fxv4LGKl0dzupA/mFiJLV5n5+xaz7/oUy05rIzAPz7STFw4Ux0B1+zO37hSvsC1CmTcK
+         KUawJMgPgHd4ZqdnQSK24z2zfBI4u0R8kcqkmKKjnmaXgYRmm2TYPUbm6yNxKo7N/tC+
+         55QpGyiz+5yliIiBlZt/zss5KKUAJE/9I44xCllcy/POmvOH8Jj4Tpfl5UWD/IP0u/li
+         +fCvkAA7fC5op6sbxMc7KqGTF5ixYoVjf+MlkoJRSqMADNTAIs/tOP7pPKiQmL3pgtW8
+         /UlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gj+rHUQSHl08kG5q/y5nClhBM+nXgO1wjgjAshKqRk4=;
+        b=4y9iAXoWzHKU/OBMqIjBNH5t9tQHgG6Pya412TS7CqLa2mLEcUrNoCY/gGBzoc2F+L
+         kywwS3/enEJC+95EP0Qs44Tazf+wZaeIZKaQ164ilAU2dNPdAe5nIWYAaB6IM5OmWh37
+         8Brc0I8o8UI8ufBkqDVD0QtFPOcNNpzT8Y+MAKa4zB19nb75iNo7k66UOaogsMMOgQgQ
+         UXGEoanN+Se4jTgKHJsfVZXcj9DlqPwOCs64A3X/FeR11VvT3KBGRYTe3x1MW62810Tz
+         KGwZ02akC4yyXPrjJLvWjQ0+8+fPqX/TG4k5ni3mpdFitQk9HUS0iWCWGUbSxQvnjn9s
+         pUYQ==
+X-Gm-Message-State: AFqh2kroQe2/2T5A/HpglP7rCi9uyWqs63kcIGzuHqZKjM5tE2yQwRkS
+        ckaqB5RWv2XaTS84dGSnEEAs9cwwY4YYHmcxKio=
+X-Google-Smtp-Source: AMrXdXugVy81scU/ovy38kPXgK2XTNp3pAqYobSDJPO7mipFqeXtmPEHSEe24ieDNYOyCaNvXpZLQPLAHrSNv76ck3E=
+X-Received: by 2002:a17:902:8a8f:b0:190:fc28:8cb6 with SMTP id
+ p15-20020a1709028a8f00b00190fc288cb6mr4195582plo.144.1673452070938; Wed, 11
+ Jan 2023 07:47:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH 1/3] mhi: allow MHI client drivers to provide the firmware
- via a pointer
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230111092547.21425-1-kvalo@kernel.org>
- <20230111092547.21425-2-kvalo@kernel.org>
-From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <20230111092547.21425-2-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: bLQ0-FWqS3L6vY3jUhzMrUFMm8iU8d26
-X-Proofpoint-ORIG-GUID: bLQ0-FWqS3L6vY3jUhzMrUFMm8iU8d26
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-11_07,2023-01-11_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- mlxlogscore=999 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2301110112
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230110173007.57110-1-szymon.heidrich@gmail.com>
+ <ece5f6a7fad9eb55d0fbf97c6227571e887c2c33.camel@gmail.com> <d06d2e44-7403-7e7e-1936-588139bf448e@gmail.com>
+In-Reply-To: <d06d2e44-7403-7e7e-1936-588139bf448e@gmail.com>
+From:   Alexander Duyck <alexander.duyck@gmail.com>
+Date:   Wed, 11 Jan 2023 07:47:39 -0800
+Message-ID: <CAKgT0UePq+Gg5mpvD7ag=ern9JN5JyAFv5RPc05Zn9jSh4W+0g@mail.gmail.com>
+Subject: Re: [PATCH] rndis_wlan: Prevent buffer overflow in rndis_query_oid
+To:     Szymon Heidrich <szymon.heidrich@gmail.com>
+Cc:     kvalo@kernel.org, jussi.kivilinna@iki.fi, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Greg KH <greg@kroah.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/11/2023 2:25 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Currently MHI loads the firmware image from the path provided by client
-> devices. ath11k needs to support firmware image embedded along with meta data
-> (named as firmware-2.bin). So allow the client driver to request the firmware
-> file from user space on it's own and provide the firmware image data and size
-> to MHI via a pointer struct mhi_controller::fw_data.
-> 
-> This is an optional feature, if fw_data is NULL MHI load the firmware using the
-> name from struct mhi_controller::fw_image string as before.
-> 
-> Tested with ath11k and WCN6855 hw2.0.
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> ---
->   drivers/bus/mhi/host/boot.c | 27 +++++++++++++++++++--------
->   include/linux/mhi.h         |  6 ++++++
->   2 files changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
-> index 1c69feee1703..d6d5f424491e 100644
-> --- a/drivers/bus/mhi/host/boot.c
-> +++ b/drivers/bus/mhi/host/boot.c
-> @@ -365,12 +365,10 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
->   }
->   
->   static void mhi_firmware_copy(struct mhi_controller *mhi_cntrl,
-> -			      const struct firmware *firmware,
-> +			      const u8 *buf, size_t remainder,
->   			      struct image_info *img_info)
->   {
-> -	size_t remainder = firmware->size;
->   	size_t to_cpy;
-> -	const u8 *buf = firmware->data;
->   	struct mhi_buf *mhi_buf = img_info->mhi_buf;
->   	struct bhi_vec_entry *bhi_vec = img_info->bhi_vec;
->   
-> @@ -392,9 +390,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	const struct firmware *firmware = NULL;
->   	struct device *dev = &mhi_cntrl->mhi_dev->dev;
->   	const char *fw_name;
-> +	const u8 *fw_data;
->   	void *buf;
->   	dma_addr_t dma_addr;
-> -	size_t size;
-> +	size_t size, fw_sz;
->   	int i, ret;
->   
->   	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
-> @@ -424,6 +423,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	fw_name = (mhi_cntrl->ee == MHI_EE_EDL) ?
->   		mhi_cntrl->edl_image : mhi_cntrl->fw_image;
->   
-> +	if (!fw_name && mhi_cntrl->fbc_download &&
-> +	    mhi_cntrl->fw_data && mhi_cntrl->fw_sz) {
-> +		size = mhi_cntrl->sbl_size;
-> +		fw_data = mhi_cntrl->fw_data;
-> +		fw_sz = mhi_cntrl->fw_sz;
-> +		goto skip_req_fw;
-> +	}
-> +
->   	if (!fw_name || (mhi_cntrl->fbc_download && (!mhi_cntrl->sbl_size ||
->   						     !mhi_cntrl->seg_len))) {
->   		dev_err(dev,
-> @@ -443,6 +450,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	if (size > firmware->size)
->   		size = firmware->size;
->   
-> +	fw_data = firmware->data;
-> +	fw_sz = firmware->size;
-> +
-> +skip_req_fw:
->   	buf = dma_alloc_coherent(mhi_cntrl->cntrl_dev, size, &dma_addr,
->   				 GFP_KERNEL);
->   	if (!buf) {
-> @@ -451,7 +462,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	}
->   
->   	/* Download image using BHI */
-> -	memcpy(buf, firmware->data, size);
-> +	memcpy(buf, fw_data, size);
->   	ret = mhi_fw_load_bhi(mhi_cntrl, dma_addr, size);
->   	dma_free_coherent(mhi_cntrl->cntrl_dev, size, buf, dma_addr);
->   
-> @@ -463,7 +474,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	}
->   
->   	/* Wait for ready since EDL image was loaded */
-> -	if (fw_name == mhi_cntrl->edl_image) {
-> +	if (fw_name && fw_name == mhi_cntrl->edl_image) {
->   		release_firmware(firmware);
->   		goto fw_load_ready_state;
->   	}
-> @@ -478,14 +489,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->   	 */
->   	if (mhi_cntrl->fbc_download) {
->   		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image,
-> -					   firmware->size);
-> +					   fw_sz);
+On Wed, Jan 11, 2023 at 1:54 AM Szymon Heidrich
+<szymon.heidrich@gmail.com> wrote:
+>
+> On 10/01/2023 20:39, Alexander H Duyck wrote:
+> > On Tue, 2023-01-10 at 18:30 +0100, Szymon Heidrich wrote:
+> >> Since resplen and respoffs are signed integers sufficiently
+> >> large values of unsigned int len and offset members of RNDIS
+> >> response will result in negative values of prior variables.
+> >> This may be utilized to bypass implemented security checks
+> >> to either extract memory contents by manipulating offset or
+> >> overflow the data buffer via memcpy by manipulating both
+> >> offset and len.
+> >>
+> >> Additionally assure that sum of resplen and respoffs does not
+> >> overflow so buffer boundaries are kept.
+> >>
+> >> Fixes: 80f8c5b434f9 ("rndis_wlan: copy only useful data from rndis_command respond")
+> >> Signed-off-by: Szymon Heidrich <szymon.heidrich@gmail.com>
+> >> ---
+> >>  drivers/net/wireless/rndis_wlan.c | 4 ++--
+> >>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
+> >> index 82a7458e0..d7fc05328 100644
+> >> --- a/drivers/net/wireless/rndis_wlan.c
+> >> +++ b/drivers/net/wireless/rndis_wlan.c
+> >> @@ -697,7 +697,7 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
+> >>              struct rndis_query_c    *get_c;
+> >>      } u;
+> >>      int ret, buflen;
+> >> -    int resplen, respoffs, copylen;
+> >> +    u32 resplen, respoffs, copylen;
+> >
+> > Rather than a u32 why not just make it an size_t? The advantage is that
+> > is the native type for all the memory allocation and copying that takes
+> > place in the function so it would avoid having to cast between u32 and
+> > size_t.
+>
+> My sole intention with this patch was to address the exploitable overflow
+> with minimal chance of introducing any extra issues.
+> Sure some things probably could be done differently, but I would stick to
+> the choices made by original authors of this driver, especially since Greg
+> mentioned that RNDIS support generally should be dropped at some point.
 
-Minor nit, but it seems like this could be all on one line.
+My main concern was that your change will introduce a comparison
+between signed and unsigned integer expressions. If you build with W=3
+you should find that your changes add new warnings when they trigger
+the "-Wsign-compare" check. Based on the comment earlier that you were
+concerned about integer roll-over I thought that it might be good to
+address that as well.
 
->   		if (ret) {
->   			release_firmware(firmware);
->   			goto error_fw_load;
->   		}
->   
->   		/* Load the firmware into BHIE vec table */
-> -		mhi_firmware_copy(mhi_cntrl, firmware, mhi_cntrl->fbc_image);
-> +		mhi_firmware_copy(mhi_cntrl, fw_data, fw_sz, mhi_cntrl->fbc_image);
->   	}
->   
->   	release_firmware(firmware);
-> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-> index a5441ad33c74..0d11fe22633e 100644
-> --- a/include/linux/mhi.h
-> +++ b/include/linux/mhi.h
-> @@ -299,6 +299,10 @@ struct mhi_controller_config {
->    * @iova_start: IOMMU starting address for data (required)
->    * @iova_stop: IOMMU stop address for data (required)
->    * @fw_image: Firmware image name for normal booting (optional)
-> + * @fw_data: Firmware image data content for normal booting, used only
-> + *           if fw_image is NULL (optional)
+Basically my initial thought was that buflen should be a u32, but I
+had opted to suggest size_t since that is the native type for the size
+of memory regions in the kernel.
 
-The implementation requires fbc_download to be set, which is not a 
-requirement for fw_image.  That is not apparent here.
+> > Also why not move buflen over to the unsigned integer category with the
+> > other values you stated were at risk of overflow?
+> >
+> >>
+> >>      buflen = *len + sizeof(*u.get);
+> >>      if (buflen < CONTROL_BUFFER_SIZE)
+> >
+> > For example, this line here is comparing buflen to a fixed constant. If
+> > we are concerned about overflows this could be triggering an integer
+> > overflow resulting in truncation assuming *len is close to the roll-
+> > over threshold.
+>
+> I'm not sure how this would be exploitable since len is controlled by the
+> developer rather than potential attacker, at least in existing code. Please
+> correct me in case I'm wrong.
 
-> + * @fw_sz: Firmware image data size for normal booting, used only if fw_image
-> + *         is NULL (optional)
->    * @edl_image: Firmware image name for emergency download mode (optional)
->    * @rddm_size: RAM dump size that host should allocate for debugging purpose
->    * @sbl_size: SBL image size downloaded through BHIe (optional)
-> @@ -384,6 +388,8 @@ struct mhi_controller {
->   	dma_addr_t iova_start;
->   	dma_addr_t iova_stop;
->   	const char *fw_image;
-> +	const u8 *fw_data;
-> +	size_t fw_sz;
+The fact that w/ buflen signed and your other variables unsigned it
+can lead to mix-ups between the comparisons below as it has to promote
+one side or the other so that the types match before making the
+comparison.
 
-Did you run pahole?  I remember this struct being well packed, and I 
-think this will add a compiler hole but I have not actually verified.
+> > By converting to a size_t we would most likely end up blowing up on the
+> > kmalloc and instead returning an -ENOMEM.
+> >
+> >> @@ -740,7 +740,7 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
+> >
+> > Also with any type change such as this I believe you would also need to
+> > update the netdev_dbg statement that displays respoffs and the like to
+> > account for the fact that you are now using an unsigned value.
+> > Otherwise I believe %d will display the value as a signed integer
+> > value.
+> >
+> >>                      goto exit_unlock;
+> >>              }
+> >>
+> >> -            if ((resplen + respoffs) > buflen) {
+> >> +            if (resplen > (buflen - respoffs)) {
+> >>                      /* Device would have returned more data if buffer would
+> >>                       * have been big enough. Copy just the bits that we got.
+> >>                       */
+> >
+> > Actually you should be able to simplfy this further. Assuming resplen,
+> > buflen and respoffs all the same type this entire if statement could be
+> > broken down into:
+> >               copylen = min(resplen, buflen - respoffs);
+> >
+> >
+>
+> Agree, yet I would prefer to avoid any non-essential changes to keep the risk
+> of introducing errors as low as possible. I intentionally refrained from any
+> additional modifications. Is this acceptable?
+>
+> Thank you for your review, I really appreciate all the suggestions.
 
->   	const char *edl_image;
->   	size_t rddm_size;
->   	size_t sbl_size;
+What I was getting at is that with this change the use of min should
+result in almost exactly the same assembler code. If you look at the
+min macro all it is doing is a comparison followed by an assignment,
+and in your case you are working with only the two values "resplen"
+and "buflen - respoffs" so it just saves space to make use of the
+macro.
 
+If you opt to not use the macro at a minimum you can get rid of the
+parenthesis around "(buflen - respoffs)" since the order of operations
+will complete the subtraction first before the comparison.
