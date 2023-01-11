@@ -2,119 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 588E1666178
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 18:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 955E166623F
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 18:44:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233779AbjAKRLG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 12:11:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40618 "EHLO
+        id S232271AbjAKRo0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Jan 2023 12:44:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233864AbjAKRKz (ORCPT
+        with ESMTP id S234061AbjAKRoI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 12:10:55 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75AD5DB4
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 09:10:50 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id b17so9938495pld.7
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 09:10:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wbn0wOToWYz8Hqus0qOCdl65fCabjHuCUD8bFfQCj64=;
-        b=PfTiVUep3xEEXd1CwcCgWM/skOcA1SOl2c2pnoewwiTXqAFMRGYHEl3tAboy/P89Sx
-         hesN2lBOF8VTEH1Qp04k02SidAjeJqkEOnIdXRBOxY48WBLosMNAJFvvum8BhHb7e1CR
-         zVf+o46D6GdR5hmPJEV50J31C38Ei+Sfa3W6CkKm19IakoKwdFz00D4Xz59YhYvmM8DR
-         0hnmQK79ppN6iRtRvzIHPNacgW//0PM9q0amW3hax1NyiAEG3XZ4J/8oVlG6Dli1Extt
-         zAj40+jCRt9lbx4zbAELmflze88AdQgaPX3RLOW67JGhc24wPdAYagNZ815W6G1ltHnN
-         UpNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wbn0wOToWYz8Hqus0qOCdl65fCabjHuCUD8bFfQCj64=;
-        b=s6RUMKqgOfsSO1AhRjnlYiYaD/CQ8QPAyrylDtu2jIeyihXt4Aq+HQYZc0suMsy581
-         /05adFdidRfu4VBGGYw+FBHO7IDpMhaGpLSJHY0GByVKsoHMxALk4tYBxY/zPEYJFApB
-         LWnrHkTGif22ArmDPhyv+0iy0hnwA+ke+rATXDlrMr4SLX65hF2siWw4rDpVlQods1Nr
-         s2D2AzbCrYHzrX2yi83eRot8LgH9Hg6V5B8Kf8ldiBKuNrxPCHjwneSuJpqZW8Npv+0P
-         rZBn0X4N2TAjeHjmv56TplipHP4Y1ScspJCDQ4GQ3LRf5Hkx6Lj4swfgiTx9girrQpwj
-         /O4Q==
-X-Gm-Message-State: AFqh2koud2Zy8rUSQsoHUqcVgQ4sLjcL7OZ9SuBzGjhkYMum3LkYCdM4
-        ovxmRscI/e96C8lXMJJU6dJKvEaEskU7au1lE7hbRQ==
-X-Google-Smtp-Source: AMrXdXuyLrj3KOt2zYA3aATYluNcRvTg5OCBMB3qKOVlm/93ZiJeMguzrue9ZVjvaNF+I7+L+/kGDr2M31vnIlaQdGE=
-X-Received: by 2002:a17:902:8643:b0:192:ca49:4c50 with SMTP id
- y3-20020a170902864300b00192ca494c50mr2809774plt.36.1673457049979; Wed, 11 Jan
- 2023 09:10:49 -0800 (PST)
+        Wed, 11 Jan 2023 12:44:08 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502AF1868F
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 09:44:05 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pFf8s-0001z2-GB; Wed, 11 Jan 2023 18:44:02 +0100
+Message-ID: <df34778b-3bae-f4dd-32dd-b874654e6fbe@leemhuis.info>
+Date:   Wed, 11 Jan 2023 18:44:02 +0100
 MIME-Version: 1.0
-References: <20221105194943.826847-1-robimarko@gmail.com> <20221105194943.826847-2-robimarko@gmail.com>
- <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
- <877czn8c2n.fsf@kernel.org> <CA+HBbNFCFtJwzN=6SCsWnDmAjPkmxE4guH1RrLc+-HByLcVVXA@mail.gmail.com>
- <87k02jzgkz.fsf@kernel.org> <CA+HBbNHi0zTeV0DRmwLjZu+XzUQEZQNnSpBMeQeUPiBu3v-2BQ@mail.gmail.com>
- <87358hyp3x.fsf@kernel.org>
-In-Reply-To: <87358hyp3x.fsf@kernel.org>
-From:   Robert Marko <robert.marko@sartura.hr>
-Date:   Wed, 11 Jan 2023 18:10:38 +0100
-Message-ID: <CA+HBbNGdOrOiCxhSouZ6uRPRnZmsBSAL+wWpLkczMK9cO8Mczg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        gregkh@linuxfoundation.org, elder@linaro.org,
-        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
-        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
-        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, ansuelsmth@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: WLAN broken on Nokia N900 with v6.2-rc1
+Content-Language: en-US, de-DE
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        Sicelo <absicsz@gmail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <Y6tTLPvsxh/Im4Ed@tp440p.steeds.sam>
+ <a115fbb8-1048-9ae9-fcfb-ac1fd7d33449@wetzel-home.de>
+ <Y7RdQqBQx58dIMAP@tp440p.steeds.sam>
+ <f528de6f-2737-8560-3542-051d2d8f3654@wetzel-home.de>
+ <Y723mvhkubsvuA3R@tp440p.steeds.sam>
+ <6a21d548-9833-0f4d-c3fe-61e28fc66da5@wetzel-home.de>
+ <be5db3aa-d284-f77c-9870-a702633a5a2a@wetzel-home.de>
+From:   "Linux kernel regression tracking (#update)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <be5db3aa-d284-f77c-9870-a702633a5a2a@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673459046;40ff94b9;
+X-HE-SMSGID: 1pFf8s-0001z2-GB
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jan 11, 2023 at 6:10 PM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Robert Marko <robert.marko@sartura.hr> writes:
->
-> >> Really sorry, I just didn't manage to get this finalised due to other
-> >> stuff and now I'm leaving for a two week vacation :(
-> >
-> > Any news regarding this, I have a PR for ipq807x support in OpenWrt
-> > and the current workaround for supporting AHB + PCI or multiple PCI
-> > cards is breaking cards like QCA6390 which are obviously really
-> > popular.
->
-> Sorry, came back only on Monday and trying to catch up slowly. But I
-> submitted the RFC now:
->
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230111170033.32454-1-kvalo@kernel.org/
-
-Great, thanks for that.
-
-Does it depend on firmware-2 being available?
-
-Regards,
-Robert
->
-> Please take a look and let me know what you think.
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
+On 11.01.23 17:49, Alexander Wetzel wrote:
+> For regression tracking only:
+> 
+> +CC regressions@lists.linux.dev
+> 
+> Issue is solved with a patch already on the way into mainline.
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20230111&id=4444bc2116aecdcde87dce80373540adc8bd478b
+> 
+> Issue was found and fixed independently of the regression report, so no
+> regression tags in the commit.
 
--- 
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura Ltd.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+Happens, thx for letting me know. Now regzbot will know about it as well:
+
+#regzbot fix: wifi: mac80211: Proper mark iTXQs for resumption
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
+
+> On 11.01.23 17:21, Alexander Wetzel wrote:
+>> On 10.01.23 20:08, Sicelo wrote:
+>>> Hello
+>>>
+>>> On Tue, Jan 10, 2023 at 07:59:24PM +0100, Alexander Wetzel wrote:
+>>>> Should have seen the potential sooner, but can you please check if the
+>>>> following patch fixes the issue?
+>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20221230121850.218810-1-alexander@wetzel-home.de/
+>>>>
+>>>> This patch seems to be a perfect fit to what you are describing...
+>>>>
+>>>
+>>> Yes, someone pointed me to this patch a day ago, and it does fix the
+>>> issue indeed.
+>>>
+>>> Apologies for not responding sooner.
+>>>
+>> That was fast:-)
+>> Thanks for testing and reporting back.
+>>
+>>>> FYI:
+>>>> There is another regression report which has that as a very likely
+>>>> but not
+>>>> yet confirmed fix:
+>>>> https://lore.kernel.org/linux-wireless/7cff27f8-d363-bbfb-241e-8d6fc0009c40@leemhuis.info/T/#t
+>>>>
+>>>> (The discussion above has another patch you really want to have when
+>>>> AMPDU
+>>>> is supported.)
+>>>>
+>>>
+>>> I will give this a try as well during the course of the week. I noticed
+>>> the speeds were low, but that could just be the weak hardware itself
+>>> (1x600MHz ARM CPU), and I have not had time to compare performance from
+>>> before the commits in question.
+>>
+>> Please keep me posted on the outcome. I expect no relevant change but
+>> then I did not test the patch on weak HW so far...
+>>
+>> Alexander
+>>
+>>
+> 
+> 
+> 
