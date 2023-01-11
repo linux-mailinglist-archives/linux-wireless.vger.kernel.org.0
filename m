@@ -2,97 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A9B766563E
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 09:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A916866574C
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 10:22:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231997AbjAKIjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 03:39:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52494 "EHLO
+        id S235794AbjAKJVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Jan 2023 04:21:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbjAKIjj (ORCPT
+        with ESMTP id S238303AbjAKJV2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 03:39:39 -0500
-X-Greylist: delayed 60 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 11 Jan 2023 00:39:37 PST
-Received: from h2.cmg1.smtp.forpsi.com (h2.cmg1.smtp.forpsi.com [81.2.195.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66BA7C763
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 00:39:37 -0800 (PST)
-Received: from lenoch ([91.218.190.200])
-        by cmgsmtp with ESMTPSA
-        id FWczpL4n6Pm6CFWd0pWYif; Wed, 11 Jan 2023 09:38:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
-        t=1673426314; bh=l0RcFkzmMrH/bSRzXQpFt7Km/jg+S8OLp9WMGVak8jc=;
-        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-        b=fH1rchVtm/DD6WTNt1La7P/QChltZnruCmWEw/zqFwredTnosyIGpgY65RN+GSrvh
-         b/bvPB8hBV1LeRBUzXJMMUULywGd3okF8Dt/enzonWtkGXx+weUlpskjum/Bcrhf33
-         +cu7m/tJfVjBlJdwtMgEF1hQ5+oXjEZ25GeYOhfAH4yBPiqkkbx3sqs575wfXz1seP
-         9cs8FXQ1yxv3icHjl7/8vzHyLNqgcd2m0ZskfvT5ijsAfWEk0NdrcqiYcChqH2rTEB
-         9XpVltMCwrJlnFNs7Lh/3Do/YtOobShX/WSvDGC1CPNb5jJXdszXVvZaI6qBTRNUWP
-         yq35hAgUEVaOQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
-        t=1673426314; bh=l0RcFkzmMrH/bSRzXQpFt7Km/jg+S8OLp9WMGVak8jc=;
-        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-        b=fH1rchVtm/DD6WTNt1La7P/QChltZnruCmWEw/zqFwredTnosyIGpgY65RN+GSrvh
-         b/bvPB8hBV1LeRBUzXJMMUULywGd3okF8Dt/enzonWtkGXx+weUlpskjum/Bcrhf33
-         +cu7m/tJfVjBlJdwtMgEF1hQ5+oXjEZ25GeYOhfAH4yBPiqkkbx3sqs575wfXz1seP
-         9cs8FXQ1yxv3icHjl7/8vzHyLNqgcd2m0ZskfvT5ijsAfWEk0NdrcqiYcChqH2rTEB
-         9XpVltMCwrJlnFNs7Lh/3Do/YtOobShX/WSvDGC1CPNb5jJXdszXVvZaI6qBTRNUWP
-         yq35hAgUEVaOQ==
-Date:   Wed, 11 Jan 2023 09:38:33 +0100
-From:   Ladislav Michl <oss-lists@triops.cz>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [BUG] wifi: mac80211: Unable to handle kernel paging request
-Message-ID: <Y751ia5Mub0J3RXF@lenoch>
+        Wed, 11 Jan 2023 04:21:28 -0500
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C1F60C1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 01:21:25 -0800 (PST)
+Received: by mail-pj1-x1034.google.com with SMTP id o13so11759306pjg.2
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 01:21:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BDAYJ0rba9Lt9b0XJjJxh+A0UhRZ127T1rCwiGZHjnc=;
+        b=x2XQxLUwZR2yYsRMaInf7HWF92ZLD+A8Ta/XpfOy9ltRTG81C6B4t3CzTcmvP7jz3/
+         lWh6f2dtGJ219/jUuv2iH7m/U4NGBjFHzp4071AJBOgyXRI1ViS2OKfAS8IL4VqJH41J
+         Sy8z6MGyzL59k+PLtxV0hmjP4lkCDie1EJO1VFeVSeJqtTm1ierzThCCy4zhfPI1bJJq
+         WFxrtIqvv7HqOo8fSEqABusv8jmYDrsdBNamTK0v9HWaNAQhTdj17J1A/NH1zrh3/0Vf
+         IZODWNH23nkOj9DJvhqo5rr6LJGyKBZnO2cbdGaE+ivTzuOeqxf0C3NlLLut3Tsm9Dtq
+         uu5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BDAYJ0rba9Lt9b0XJjJxh+A0UhRZ127T1rCwiGZHjnc=;
+        b=4tnGTuF+RgtwFcI4yCrzpL0hnvDTwDHLmRbRNIuE/VkKpDX75/wrbeM1/BbtgeGKq2
+         lILiEkMl8tjwAkfTcwKazaBxjbwoGOZ2GUCUMUX4o0If3/N9ID6bhzkbkyZmTwRyw2O3
+         oE/Fw1xikmPI9Hdm8Ab8pZEqkrNzGEA3akl1cU/QwjQWKarcY2lRyACnPu3jYjOVI0zq
+         NXwOnnPVHYe1wY634gi+YCt3xc5+cWzNjNQas072dYxKMPHAofuG2RB9wt0BDPRQCOvy
+         73yXS5Ae8d6oIKlVrPihdQDmMaZH5VivypTX8GzPQ9JSAb1SgY2F+g1d4IC3fkjj/lS/
+         Q8gg==
+X-Gm-Message-State: AFqh2kpvSaooKi3XyAmtBGWowRhrdoo+vaNGuk6kN2tSmS4uYm7ZnB9E
+        6syyp8DqUxDDRewozKj2T6dYcqdutTNxs28h+fmhGg==
+X-Google-Smtp-Source: AMrXdXs1BfLQg12NC/c7gfJ2HOmIPIiSva1z4dPZByoL2IWMaM3TOIFUfRduiYyr0b0soYPNL3Jt1Ey8jdQq4xjQLaw=
+X-Received: by 2002:a17:90b:48cf:b0:226:164f:522e with SMTP id
+ li15-20020a17090b48cf00b00226164f522emr3628516pjb.22.1673428885353; Wed, 11
+ Jan 2023 01:21:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-CMAE-Envelope: MS4wfHar6EHWuZ7W+FaZ2uxLc+GqWtLr2v009ulmEavPfMIV2pE1uZaziiPvyTAoR7KChQDD7zuA59Qwkf4gEMI9DfLI422Ou8dAaq92IqhmL5otWShv0CiP
- qQvPhGvEGAEeZJEUPsxc9M2EcfQF5e4K7GTjwM0uwsgoAURwnP31fRzzm19/ccfWdablcx5uowPXUEOiTbEg4d7u3SgwvSli2jc=
+References: <20221105194943.826847-1-robimarko@gmail.com> <20221105194943.826847-2-robimarko@gmail.com>
+ <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
+ <877czn8c2n.fsf@kernel.org> <CA+HBbNFCFtJwzN=6SCsWnDmAjPkmxE4guH1RrLc+-HByLcVVXA@mail.gmail.com>
+ <87k02jzgkz.fsf@kernel.org>
+In-Reply-To: <87k02jzgkz.fsf@kernel.org>
+From:   Robert Marko <robert.marko@sartura.hr>
+Date:   Wed, 11 Jan 2023 10:21:14 +0100
+Message-ID: <CA+HBbNHi0zTeV0DRmwLjZu+XzUQEZQNnSpBMeQeUPiBu3v-2BQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Manivannan Sadhasivam <mani@kernel.org>,
+        Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        gregkh@linuxfoundation.org, elder@linaro.org,
+        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
+        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
+        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, ansuelsmth@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+> Really sorry, I just didn't manage to get this finalised due to other
+> stuff and now I'm leaving for a two week vacation :(
 
-following issue was triggered while debugging xHCI on custom Cavium
-Octeon III (MIPS) board with linux-6.1.4.
+Any news regarding this, I have a PR for ipq807x support in OpenWrt
+and the current workaround for supporting AHB + PCI or multiple PCI
+cards is breaking cards like QCA6390 which are obviously really
+popular.
 
-Ralink 802.11n WLAN dongle is inserted into USB port:
-usb 1-1: new high-speed USB device number 29 using xhci-hcd
-usb 1-1: New USB device found, idVendor=148f, idProduct=5370, bcdDevice= 1.01
-usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-usb 1-1: Product: 802.11 n WLAN
-usb 1-1: Manufacturer: Ralink
-usb 1-1: SerialNumber: 1.0
-usb 1-1: reset high-speed USB device number 29 using xhci-hcd
-ieee80211 phy16785: rt2x00_set_rt: Info - RT chipset 5390, rev 0502 detected
-ieee80211 phy16785: rt2x00_set_rf: Info - RF chipset 5370 detected
-and a script is periodically enabling and disabling it. After a few rounds
-kernel panics:
-Unable to handle kernel paging request at virtual address ffffffff8117ca0c
-...
-Call Trace:
- [<ffffffff8117ca0c>] del_timer+0x14/0x68
- [<ffffffff8158dd30>] led_blink_set+0x30/0x80
- [<ffffffff8158f4d0>] led_trigger_blink+0x48/0x78
- [<ffffffff818b265c>] tpt_trig_timer+0x10c/0x120
- [<ffffffff8117c48c>] call_timer_fn.constprop.0+0x24/0x98
- [<ffffffff8117c908>] run_timer_softirq+0x318/0x3a0
- [<ffffffff818ed580>] __do_softirq+0x100/0x2b0
- [<ffffffff81104940>] plat_irq_dispatch+0xb0/0xd0
- [<ffffffff811131a0>] handle_int+0x140/0x14c
- [<ffffffff81113020>] __r4k_wait+0x20/0x40
- [<ffffffff818ed3f8>] default_idle_call+0x30/0x48
- [<ffffffff8115b85c>] do_idle+0x74/0xe0
- [<ffffffff8115bb68>] cpu_startup_entry+0x18/0x28
- [<ffffffff818e4640>] kernel_init+0x0/0x110
-
-It seems timer is still running at the time device is removed. Disabling
-MAC80211_LEDS makes issue dissapear. Does it ring a bell?
-
-	ladis
+Regards,
+Robert
+-- 
+Robert Marko
+Staff Embedded Linux Engineer
+Sartura Ltd.
+Lendavska ulica 16a
+10000 Zagreb, Croatia
+Email: robert.marko@sartura.hr
+Web: www.sartura.hr
