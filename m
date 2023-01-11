@@ -2,52 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 955E166623F
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 18:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C0666624D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 18:51:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232271AbjAKRo0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 12:44:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
+        id S232344AbjAKRvn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Jan 2023 12:51:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234061AbjAKRoI (ORCPT
+        with ESMTP id S229672AbjAKRvk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 12:44:08 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502AF1868F
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 09:44:05 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pFf8s-0001z2-GB; Wed, 11 Jan 2023 18:44:02 +0100
-Message-ID: <df34778b-3bae-f4dd-32dd-b874654e6fbe@leemhuis.info>
-Date:   Wed, 11 Jan 2023 18:44:02 +0100
+        Wed, 11 Jan 2023 12:51:40 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 226EA55AB;
+        Wed, 11 Jan 2023 09:51:39 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id m6so24698388lfj.11;
+        Wed, 11 Jan 2023 09:51:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rCPqy95C6Ull1wAoxhY/6/ppbJBtfCJsPETF3WTR/qM=;
+        b=JXouJcKGqRGXex2GF1mRZOeE2BvpKEr56XxDdtewRXWzaWfoUbjaMpCx6HReF3qCXZ
+         UJTj9PEkMIWvH0T8IWGnJ7iBOGSnhDavXUgGotmUL2A1CbN5m3dYj/7qEUjr/4diCvec
+         ZF9pFIRX4ZwAJhQAfwLwyZVlQdcYGnadRYvHCPKFt97gRzyHde48HGvP3vKbK8bnmOV/
+         zOL8B490gdPzWsjEVbfSeogsg1cEsD0aPkaAwloKOSqOZM3xWyOrwPca9OXFKd8ReUP8
+         iJ9fjMKgbNbt9NIQ6jXUAs87TvuCFn7LSQMnAr2NBk2t0vLLxvcuUY7uT6kicmd8fzml
+         u+3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rCPqy95C6Ull1wAoxhY/6/ppbJBtfCJsPETF3WTR/qM=;
+        b=TA81zgqMzvZTDEgJknB4GKmxiHRotkneKdpQPHIouEA9XwjfKLmxELUMAOPlV+EKnR
+         tIF/3A/oHILza/fNgTeMLr/jGkuV39E5duD1tKehdq9Exy8o3Npx2SbmLDfoQ0oQEY/J
+         WbQGtWcAGUEDdWPewzHjJDTt+45ORT6AORepDRIZFrNvyvqiJQpyceGY8kKVrUIcEejY
+         FQ4eXQKlWVwBowraqfBapQsP06skj9FAVszxWEQnJPaLj0mjehgA0ekECqcCip66zA75
+         IAy0Z3gD8i7JIF2GYNnzCKD0phDXgB3bc1tuC6BNCLOCWyimKKKHX5/baFJ0fhUSy733
+         2yxw==
+X-Gm-Message-State: AFqh2kpmWxrDuesQcJND6JKANxALGmar9PLzXd9WPppmVV3JEaNhHCk0
+        aETAVidsITlDbmxBPz9jrvQ=
+X-Google-Smtp-Source: AMrXdXsMLWhBweFdqHouGzNOfy2FLpER7WmQEJnvZO69e/RhuTihl8FAgTinoHWUAeuExYNdhUwTQA==
+X-Received: by 2002:a05:6512:6d4:b0:4cb:1e1:f380 with SMTP id u20-20020a05651206d400b004cb01e1f380mr19853095lff.40.1673459497379;
+        Wed, 11 Jan 2023 09:51:37 -0800 (PST)
+Received: from localhost.localdomain (077222238029.warszawa.vectranet.pl. [77.222.238.29])
+        by smtp.googlemail.com with ESMTPSA id x2-20020a056512130200b004a8f824466bsm2817098lfu.188.2023.01.11.09.51.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jan 2023 09:51:36 -0800 (PST)
+From:   Szymon Heidrich <szymon.heidrich@gmail.com>
+To:     alexander.duyck@gmail.com
+Cc:     kvalo@kernel.org, jussi.kivilinna@iki.fi, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        greg@kroah.com, szymon.heidrich@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rndis_wlan: Prevent buffer overflow in rndis_query_oid
+Date:   Wed, 11 Jan 2023 18:50:31 +0100
+Message-Id: <20230111175031.7049-1-szymon.heidrich@gmail.com>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <CAKgT0UePq+Gg5mpvD7ag=ern9JN5JyAFv5RPc05Zn9jSh4W+0g@mail.gmail.com>
+References: <CAKgT0UePq+Gg5mpvD7ag=ern9JN5JyAFv5RPc05Zn9jSh4W+0g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: WLAN broken on Nokia N900 with v6.2-rc1
-Content-Language: en-US, de-DE
-To:     Alexander Wetzel <alexander@wetzel-home.de>,
-        Sicelo <absicsz@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <Y6tTLPvsxh/Im4Ed@tp440p.steeds.sam>
- <a115fbb8-1048-9ae9-fcfb-ac1fd7d33449@wetzel-home.de>
- <Y7RdQqBQx58dIMAP@tp440p.steeds.sam>
- <f528de6f-2737-8560-3542-051d2d8f3654@wetzel-home.de>
- <Y723mvhkubsvuA3R@tp440p.steeds.sam>
- <6a21d548-9833-0f4d-c3fe-61e28fc66da5@wetzel-home.de>
- <be5db3aa-d284-f77c-9870-a702633a5a2a@wetzel-home.de>
-From:   "Linux kernel regression tracking (#update)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <be5db3aa-d284-f77c-9870-a702633a5a2a@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673459046;40ff94b9;
-X-HE-SMSGID: 1pFf8s-0001z2-GB
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,71 +75,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Since resplen and respoffs are signed integers sufficiently
+large values of unsigned int len and offset members of RNDIS
+response will result in negative values of prior variables.
+This may be utilized to bypass implemented security checks
+to either extract memory contents by manipulating offset or
+overflow the data buffer via memcpy by manipulating both
+offset and len.
 
+Additionally assure that sum of resplen and respoffs does not
+overflow so buffer boundaries are kept.
 
-On 11.01.23 17:49, Alexander Wetzel wrote:
-> For regression tracking only:
-> 
-> +CC regressions@lists.linux.dev
-> 
-> Issue is solved with a patch already on the way into mainline.
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20230111&id=4444bc2116aecdcde87dce80373540adc8bd478b
-> 
-> Issue was found and fixed independently of the regression report, so no
-> regression tags in the commit.
+Fixes: 80f8c5b434f9 ("rndis_wlan: copy only useful data from rndis_command respond")
+Signed-off-by: Szymon Heidrich <szymon.heidrich@gmail.com>
+---
+V1 -> V2: Use size_t and min macro, fix netdev_dbg format
 
-Happens, thx for letting me know. Now regzbot will know about it as well:
+ drivers/net/wireless/rndis_wlan.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-#regzbot fix: wifi: mac80211: Proper mark iTXQs for resumption
+diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
+index 82a7458e0..bf72e5fd3 100644
+--- a/drivers/net/wireless/rndis_wlan.c
++++ b/drivers/net/wireless/rndis_wlan.c
+@@ -696,8 +696,8 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
+ 		struct rndis_query	*get;
+ 		struct rndis_query_c	*get_c;
+ 	} u;
+-	int ret, buflen;
+-	int resplen, respoffs, copylen;
++	int ret;
++	size_t buflen, resplen, respoffs, copylen;
+ 
+ 	buflen = *len + sizeof(*u.get);
+ 	if (buflen < CONTROL_BUFFER_SIZE)
+@@ -732,22 +732,15 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
+ 
+ 		if (respoffs > buflen) {
+ 			/* Device returned data offset outside buffer, error. */
+-			netdev_dbg(dev->net, "%s(%s): received invalid "
+-				"data offset: %d > %d\n", __func__,
+-				oid_to_string(oid), respoffs, buflen);
++			netdev_dbg(dev->net,
++				   "%s(%s): received invalid data offset: %zu > %zu\n",
++				   __func__, oid_to_string(oid), respoffs, buflen);
+ 
+ 			ret = -EINVAL;
+ 			goto exit_unlock;
+ 		}
+ 
+-		if ((resplen + respoffs) > buflen) {
+-			/* Device would have returned more data if buffer would
+-			 * have been big enough. Copy just the bits that we got.
+-			 */
+-			copylen = buflen - respoffs;
+-		} else {
+-			copylen = resplen;
+-		}
++		copylen = min(resplen, buflen - respoffs);
+ 
+ 		if (copylen > *len)
+ 			copylen = *len;
+-- 
+2.39.0
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
-
-> On 11.01.23 17:21, Alexander Wetzel wrote:
->> On 10.01.23 20:08, Sicelo wrote:
->>> Hello
->>>
->>> On Tue, Jan 10, 2023 at 07:59:24PM +0100, Alexander Wetzel wrote:
->>>> Should have seen the potential sooner, but can you please check if the
->>>> following patch fixes the issue?
->>>> https://patchwork.kernel.org/project/linux-wireless/patch/20221230121850.218810-1-alexander@wetzel-home.de/
->>>>
->>>> This patch seems to be a perfect fit to what you are describing...
->>>>
->>>
->>> Yes, someone pointed me to this patch a day ago, and it does fix the
->>> issue indeed.
->>>
->>> Apologies for not responding sooner.
->>>
->> That was fast:-)
->> Thanks for testing and reporting back.
->>
->>>> FYI:
->>>> There is another regression report which has that as a very likely
->>>> but not
->>>> yet confirmed fix:
->>>> https://lore.kernel.org/linux-wireless/7cff27f8-d363-bbfb-241e-8d6fc0009c40@leemhuis.info/T/#t
->>>>
->>>> (The discussion above has another patch you really want to have when
->>>> AMPDU
->>>> is supported.)
->>>>
->>>
->>> I will give this a try as well during the course of the week. I noticed
->>> the speeds were low, but that could just be the weak hardware itself
->>> (1x600MHz ARM CPU), and I have not had time to compare performance from
->>> before the commits in question.
->>
->> Please keep me posted on the outcome. I expect no relevant change but
->> then I did not test the patch on weak HW so far...
->>
->> Alexander
->>
->>
-> 
-> 
-> 
