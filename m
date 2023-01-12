@@ -2,45 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEE23666F9E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 11:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F4F666FCA
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 11:37:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239674AbjALK34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Jan 2023 05:29:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58468 "EHLO
+        id S234973AbjALKhl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Jan 2023 05:37:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239923AbjALK3C (ORCPT
+        with ESMTP id S232257AbjALKhC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Jan 2023 05:29:02 -0500
+        Thu, 12 Jan 2023 05:37:02 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7070332192
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 02:26:18 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072F85564F
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 02:31:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=3ZD8s7Jbcvn0ZhGwbWeAY8+NiThfyRdrFFr7bggYdFA=;
-        t=1673519178; x=1674728778; b=fWeGJJ86ExKvmB8Jw8s6AD86b/murYmkFs5BiTnI75iqPRz
-        qofr94yVUb+1a54EbGYbnqsUx5ubtP6DPQ7yq0LYGcBrNa00ogXRG57zMCxhim4WZ8d2oi3yLtivj
-        Xg/PFgFYU4OUtTwiAq6g7Mms7lKxQLlFeY405LnvKBbS2Lom9V5eiQA3Tr7rywMYGfp5DncOOBelU
-        uNtkHwAkGt15UM2ZZAFj2rZlef69ockPpmuow0dPMv3eNCm5ts9bJ8IpBQTELbIGpKyhIHZ/D0x1F
-        MgT7gZq6vwCpdnZvhrFQjX3RBHnbQ9ptvI+x4/W79ZJjKzzKGLl+RbjzNjSIY5KA==;
+        Resent-Cc:Resent-Message-ID; bh=luEXFw626dhG8za41fmR6A1vogQGB2NTKy3LMejrliQ=;
+        t=1673519468; x=1674729068; b=Nd0gB7cppRDHBKklMkzEk8P2tdyytbx3/wI5tjk8VrAzj+5
+        T2Qu0e2AT8g+0XkuVxFgWE5JbKyFbtTaaIj6h6XuiPz1vc515EtxkC4Ex4c5pqspXRz8fHxNkbJw4
+        jHhxR2ywnx8DENQkr+jtEkfHW7g62+3lobeqVnd2vglWaehWHlsCc9bkb+0orLSiML1Ny1WRR3hQs
+        Wb848rZ5xoIFsPOvLVpgN1cUHi0Yi0dvkSAUHqg6Xx0j6X/j3q2wc/h7sklWOYG6rC2NkI7DfSGIQ
+        /7TmcfZke86lcbEeuxBg+TfGLJaltKjaCeS3zvobPkdR6nDxiyFN8ITzIonHR4vw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pFumm-00H3Av-22;
-        Thu, 12 Jan 2023 11:26:16 +0100
-Message-ID: <64731257b957f50b0f66e4d2fcd8c24dea8d70ff.camel@sipsolutions.net>
-Subject: Re: [RFC v2 4/6] mac80211: add utility function for tx_rate -
- rate_info conversion
+        id 1pFurS-00H3Id-0f;
+        Thu, 12 Jan 2023 11:31:06 +0100
+Message-ID: <5d15d193c76dcc2cbd59b26912973e3bce34c776.camel@sipsolutions.net>
+Subject: Re: [RFC v2 5/6] mac80211_hwsim: add TPC per packet support
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Jonas Jelonek <jelonek.jonas@gmail.com>,
         linux-wireless@vger.kernel.org
 Cc:     nbd@nbd.name
-Date:   Thu, 12 Jan 2023 11:26:15 +0100
-In-Reply-To: <20220920104032.496697-5-jelonek.jonas@gmail.com>
+Date:   Thu, 12 Jan 2023 11:31:05 +0100
+In-Reply-To: <20220920104032.496697-6-jelonek.jonas@gmail.com>
 References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
-         <20220920104032.496697-5-jelonek.jonas@gmail.com>
+         <20220920104032.496697-6-jelonek.jonas@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -56,69 +55,110 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Tue, 2022-09-20 at 12:40 +0200, Jonas Jelonek wrote:
-> This patch adds an utility function to mac80211 for conversion between
-> ieee80211_tx_rate (mac80211.h) and rate_info (cfg80211.h).
->=20
-> struct ieee80211_tx_rate is space limited to annotate rates up to IEEE
-> 802.11ac. The new struct rate_info is able to annotate IEEE 802.11ax
-> rates and beyond. Several drivers internally still use ieee80211_tx_rate
-> but mac80211 expects rate_info in struct ieee80211_rate_status. This
-> struct is in turn required to allow, e.g., tx-power status report or
-> dynamic number of mrr stages.
+> Enable RC_TABLE in hwsim for TPC support and replace the
+> ieee80211_tx_status_irqsafe calls with regular ieee80211_tx_status_ext
+> calls to be able to pass additional information, i.e., tx-power.
+> Add some variables, members and functions in both tx control and tx
+> status path to pass and process tx-power.
 >=20
 > Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 > ---
->  include/net/mac80211.h |  4 ++++
->  net/mac80211/util.c    | 35 +++++++++++++++++++++++++++++++++++
->  2 files changed, 39 insertions(+)
+>  drivers/net/wireless/mac80211_hwsim.c | 175 ++++++++++++++++++++++++--
+>  drivers/net/wireless/mac80211_hwsim.h |   1 +
+>  2 files changed, 168 insertions(+), 8 deletions(-)
 >=20
-> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-> index c4b55c7273ed..f17a03caa361 100644
-> --- a/include/net/mac80211.h
-> +++ b/include/net/mac80211.h
-> @@ -1051,6 +1051,10 @@ ieee80211_rate_get_vht_nss(const struct ieee80211_=
-tx_rate *rate)
->  	return (rate->idx >> 4) + 1;
->  }
+> diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless=
+/mac80211_hwsim.c
+> index df51b5b1f171..a56fb2505047 100644
+> --- a/drivers/net/wireless/mac80211_hwsim.c
+> +++ b/drivers/net/wireless/mac80211_hwsim.c
+> @@ -57,10 +57,15 @@ static bool paged_rx =3D false;
+>  module_param(paged_rx, bool, 0644);
+>  MODULE_PARM_DESC(paged_rx, "Use paged SKBs for RX instead of linear ones=
+");
 > =20
-> +void ieee80211_rate_get_rate_info(const struct ieee80211_tx_rate *rate,
-> +				  struct wiphy *wiphy, u8 band,
-> +				  struct rate_info *rate_info);
-> +
->  /**
->   * struct ieee80211_tx_info - skb transmit information
->   *
-> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-> index 0ea5d50091dc..c76dc255bec3 100644
-> --- a/net/mac80211/util.c
-> +++ b/net/mac80211/util.c
-> @@ -4867,3 +4867,38 @@ void ieee80211_fragment_element(struct sk_buff *sk=
-b, u8 *len_pos)
+> -static bool rctbl =3D false;
+> +static bool rctbl =3D true;
+
+should we really change the default?
+
+Is there a netlink control to set it for newly created wiphys?
+
+>  module_param(rctbl, bool, 0444);
 > =20
->  	*len_pos =3D elem_len;
->  }
+> +static int tpc =3D 0;
+> +module_param(tpc, int, 0444);
+> +MODULE_PARM_DESC(tpc, "Support transmit power control (TPC) (0 =3D no,\
+> +		1 =3D per packet, 2 =3D per mrr stage)");
+
+Not sure I like this either - I think we should probably create the
+wiphys dynamically for most features these days?
+
+
+> +static inline u8
+> +hwsim_rate_get_vht_mcs(const struct hwsim_tx_rate *rate) {
+> +	return rate->idx & 0xf;
+> +}
 > +
-> +
+> +static inline u8
+> +hwsim_rate_get_vht_nss(const struct hwsim_tx_rate *rate) {
+> +	return (rate->idx >> 4) + 1;
+> +}
 
-nit: use just one blank line.
+odd indentation for functions - should have linebreak before {
 
-johannes
-
-> +void ieee80211_rate_get_rate_info(const struct ieee80211_tx_rate *rate,
-> +				  struct wiphy *wiphy, u8 band,
-> +				  struct rate_info *rate_info)
+> +static void trans_tx_rate_to_rate_info(const struct hwsim_tx_rate *rate,
+> +				       const struct hwsim_tx_rate_flag *rate_flags,
+> +				       struct wiphy *wiphy, u8 band,
+> +				       struct rate_info *rate_info)
 > +{
 > +	memset(rate_info, 0, sizeof(struct rate_info));
 > +
-> +	if (rate->flags & IEEE80211_TX_RC_MCS) { /* 802.11n */
+> +	if (rate_flags->flags & MAC80211_HWSIM_TX_RC_MCS) { /* 802.11n */
 > +		rate_info->flags |=3D RATE_INFO_FLAGS_MCS;
 > +		rate_info->mcs =3D rate->idx;
-> +	} else if (rate->flags & IEEE80211_TX_RC_VHT_MCS) { /* 802.11ac */
+> +	} else if (rate_flags->flags & MAC80211_HWSIM_TX_RC_VHT_MCS) { /* 802.1=
+1ac */
 > +		rate_info->flags |=3D RATE_INFO_FLAGS_VHT_MCS;
-> +		rate_info->mcs =3D ieee80211_rate_get_vht_mcs(rate);
-> +		rate_info->nss =3D ieee80211_rate_get_vht_nss(rate);
+> +		rate_info->mcs =3D hwsim_rate_get_vht_mcs(rate);
+> +		rate_info->nss =3D hwsim_rate_get_vht_nss(rate);
 > +	} else { /* 802.11a/b/g */
 
-what about HE/EHT?
+again what about HE/EHT?
+
+> +static void mac80211_hwsim_get_txpower(struct ieee80211_hw *hw,
+> +				       struct ieee80211_sta *sta,
+> +				       struct sk_buff *skb,
+> +				       s16 *txpower)
+> +{
+> +	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+> +	bool tpc_per_pkt =3D ieee80211_hw_check(hw, SUPPORTS_TPC_PER_PACKET);
+> +	bool tpc_per_mrr =3D ieee80211_hw_check(hw, SUPPORTS_TPC_PER_MRR);
+> +	u8 i =3D 0;
+> +
+> +	if (sta && sta->rates && !info->control.skip_table &&
+> +	    ieee80211_hw_check(hw, SUPPORTS_RC_TABLE))
+> +	{
+
+misplaced {, should be at end of previous line
+
+> +		struct ieee80211_sta_rates *ratetbl =3D rcu_dereference(sta->rates);
+> +
+> +		for (; i < IEEE80211_TX_MAX_RATES; i++) {
+
+those loops are weird - prefer to spell out 'i =3D 0' in the loops rather
+than common initialization above (and remove the =3D0 from the init then)
+
+> @@ -4846,16 +4989,32 @@ static int hwsim_tx_info_frame_received_nl(struct=
+ sk_buff *skb_2,
+> =20
+>  	tx_attempts =3D (struct hwsim_tx_rate *)nla_data(
+>  		       info->attrs[HWSIM_ATTR_TX_INFO]);
+> +	tx_attempts_flags =3D (struct hwsim_tx_rate_flag *)nla_data(
+> +			     info->attrs[HWSIM_ATTR_TX_INFO_FLAGS]);
+> +	sta =3D (struct ieee80211_sta *)txi->rate_driver_data[1];
+
+That seems dangerous - what if the STA was freed already? You don't walk
+the pending list or something if the STA goes away.
 
 johannes
