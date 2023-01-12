@@ -2,48 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E96666E2A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 10:28:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6469666E7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 10:42:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240207AbjALJ2T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Jan 2023 04:28:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
+        id S239866AbjALJmv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Jan 2023 04:42:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240124AbjALJ1W (ORCPT
+        with ESMTP id S239842AbjALJlV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Jan 2023 04:27:22 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46159BB2
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 01:19:25 -0800 (PST)
+        Thu, 12 Jan 2023 04:41:21 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0834C719;
+        Thu, 12 Jan 2023 01:40:31 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D93E561F7D
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 09:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53958C433F0;
-        Thu, 12 Jan 2023 09:19:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 214CB61F8B;
+        Thu, 12 Jan 2023 09:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D73C433EF;
+        Thu, 12 Jan 2023 09:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673515164;
-        bh=HYOhnv+T+iftwKLs538Ljw0Pj6fCRNz21LxLxNvbQcA=;
+        s=k20201202; t=1673516430;
+        bh=SCtzrnBNYnhocbWJE9NRFOmFwapY2gNywzGDKeHtHEc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LoHoi02IfYVHDYDXF2YLK3ow7L3x8tp5xd96iP74uYzMabaZ98minm6khDeaVXUeH
-         NkACXi0UMzJYufaMN6vK8po4PEsPgUsggd9C+y1IQy7J911Mm5J+VtFUjRrHHyZCKG
-         Kad+uqgcNT/gZ/blvigyro3qf7C7Lg1buT4DAIkwrwyZuEJR3CQUhQUMUO6ZtabW7O
-         YG+PUsFfUfYq4bZhTERISpr1FtaRjl1TjPjJr+AWG9pGE3lGmLPG08+Da44n/Qi9Dn
-         BRNrOJoQ2wVXbh6Ffsk6D2MOPK2G3N3jdoHX2whipZCgYR9sA3/uHDMTUQLBXDlS27
-         Lmpl8TIBuUx6A==
+        b=qHZbYqFjTpM/FZ6AmwD+/w8oBegPrJpSdNscwGTK3e+2/+kTqP/6+qHgemqB7Y0Gq
+         CNDTpp7dN2MnTP+LLvotqldVq0jvzUm6PSuHqp6Spgv38hq00m2ZXBVrZgTr8utPfe
+         NM7tjjJeupSXzWMm/Kc3UXL1zfuHTxwBOQq7WqhudZkosTRvWkEuC+l+A7Sz67iLeJ
+         PDrr4Qy8YGYrObtHq48dCulgFtWkyKMd6hg9SLCgvmQWcLHBpn1FpLEjkHg4Cs0d7G
+         vDXW550ll/hUyAyQc1mufcSGwKSEzDqxNUBNRvjtkZCv1g/avQ/IOgEezfBC1hwzZx
+         FKpVpZ15lS5Yg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jeffrey Hugo <quic_jhugo@quicinc.com>
-Cc:     <mhi@lists.linux.dev>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 1/3] mhi: allow MHI client drivers to provide the firmware via a pointer
-References: <20230111092547.21425-1-kvalo@kernel.org>
-        <20230111092547.21425-2-kvalo@kernel.org>
-        <7d692402-3fc1-3b4c-9697-25e722e94539@quicinc.com>
-Date:   Thu, 12 Jan 2023 11:19:21 +0200
-In-Reply-To: <7d692402-3fc1-3b4c-9697-25e722e94539@quicinc.com> (Jeffrey
-        Hugo's message of "Wed, 11 Jan 2023 08:20:34 -0700")
-Message-ID: <87bkn4ds9y.fsf@kernel.org>
+To:     Robert Marko <robert.marko@sartura.hr>
+Cc:     Manivannan Sadhasivam <mani@kernel.org>,
+        Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        gregkh@linuxfoundation.org, elder@linaro.org,
+        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
+        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
+        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, ansuelsmth@gmail.com
+Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
+References: <20221105194943.826847-1-robimarko@gmail.com>
+        <20221105194943.826847-2-robimarko@gmail.com>
+        <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
+        <877czn8c2n.fsf@kernel.org>
+        <CA+HBbNFCFtJwzN=6SCsWnDmAjPkmxE4guH1RrLc+-HByLcVVXA@mail.gmail.com>
+        <87k02jzgkz.fsf@kernel.org>
+        <CA+HBbNHi0zTeV0DRmwLjZu+XzUQEZQNnSpBMeQeUPiBu3v-2BQ@mail.gmail.com>
+        <87358hyp3x.fsf@kernel.org>
+        <CA+HBbNGdOrOiCxhSouZ6uRPRnZmsBSAL+wWpLkczMK9cO8Mczg@mail.gmail.com>
+Date:   Thu, 12 Jan 2023 11:40:22 +0200
+In-Reply-To: <CA+HBbNGdOrOiCxhSouZ6uRPRnZmsBSAL+wWpLkczMK9cO8Mczg@mail.gmail.com>
+        (Robert Marko's message of "Wed, 11 Jan 2023 18:10:38 +0100")
+Message-ID: <877cxsdrax.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -56,63 +69,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeffrey Hugo <quic_jhugo@quicinc.com> writes:
+Robert Marko <robert.marko@sartura.hr> writes:
 
-> On 1/11/2023 2:25 AM, Kalle Valo wrote:
->> From: Kalle Valo <quic_kvalo@quicinc.com>
+> On Wed, Jan 11, 2023 at 6:10 PM Kalle Valo <kvalo@kernel.org> wrote:
 >>
->> Currently MHI loads the firmware image from the path provided by client
->> devices. ath11k needs to support firmware image embedded along with meta data
->> (named as firmware-2.bin). So allow the client driver to request the firmware
->> file from user space on it's own and provide the firmware image data and size
->> to MHI via a pointer struct mhi_controller::fw_data.
+>> Robert Marko <robert.marko@sartura.hr> writes:
 >>
->> This is an optional feature, if fw_data is NULL MHI load the firmware using the
->> name from struct mhi_controller::fw_image string as before.
+>> >> Really sorry, I just didn't manage to get this finalised due to other
+>> >> stuff and now I'm leaving for a two week vacation :(
+>> >
+>> > Any news regarding this, I have a PR for ipq807x support in OpenWrt
+>> > and the current workaround for supporting AHB + PCI or multiple PCI
+>> > cards is breaking cards like QCA6390 which are obviously really
+>> > popular.
 >>
->> Tested with ath11k and WCN6855 hw2.0.
+>> Sorry, came back only on Monday and trying to catch up slowly. But I
+>> submitted the RFC now:
 >>
->> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-[...]
-
->> @@ -478,14 +489,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->>   	 */
->>   	if (mhi_cntrl->fbc_download) {
->>   		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image,
->> -					   firmware->size);
->> +					   fw_sz);
+>> https://patchwork.kernel.org/project/linux-wireless/patch/20230111170033.32454-1-kvalo@kernel.org/
 >
-> Minor nit, but it seems like this could be all on one line.
-
-Will fix in v2.
-
->> --- a/include/linux/mhi.h
->> +++ b/include/linux/mhi.h
->> @@ -299,6 +299,10 @@ struct mhi_controller_config {
->>    * @iova_start: IOMMU starting address for data (required)
->>    * @iova_stop: IOMMU stop address for data (required)
->>    * @fw_image: Firmware image name for normal booting (optional)
->> + * @fw_data: Firmware image data content for normal booting, used only
->> + *           if fw_image is NULL (optional)
+> Great, thanks for that.
 >
-> The implementation requires fbc_download to be set, which is not a
-> requirement for fw_image.  That is not apparent here.
+> Does it depend on firmware-2 being available?
 
-Ah, I had missed that. Will mention that in v2.
-
->> @@ -384,6 +388,8 @@ struct mhi_controller {
->>   	dma_addr_t iova_start;
->>   	dma_addr_t iova_stop;
->>   	const char *fw_image;
->> +	const u8 *fw_data;
->> +	size_t fw_sz;
->
-> Did you run pahole?  I remember this struct being well packed, and I
-> think this will add a compiler hole but I have not actually verified.
-
-I actually haven't used pahole for ages. I will run it and check how
-this structure is packed.
+The final solution for the users will require firmware-2.bin. But for a
+quick test you can omit the feature bit test by replacing
+"test_bit(ATH11K_FW_FEATURE_MULTI_QRTR_ID, ab->fw.fw_features)" with
+"true". Just make sure that the firmware release you are using supports
+this feature, I believe only recent QCN9074 releases do that.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
