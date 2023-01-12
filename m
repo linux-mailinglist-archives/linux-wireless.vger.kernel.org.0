@@ -2,152 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B5B7666348
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jan 2023 20:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF78666858
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 02:24:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235562AbjAKTMv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 14:12:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58238 "EHLO
+        id S234039AbjALBYv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Jan 2023 20:24:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231972AbjAKTMu (ORCPT
+        with ESMTP id S229995AbjALBYt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 14:12:50 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F709F5B5;
-        Wed, 11 Jan 2023 11:12:48 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id bt23so24981970lfb.5;
-        Wed, 11 Jan 2023 11:12:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8EiI9R96gCdmCFi5CyO8T9qRDKhT2cs8fqWKf1z80Mk=;
-        b=mzP921o8SwxZAZEKBG9QuzQEM4g4HTRqQDGWD4Vvl3pIdF397Tspd5R6U95sNohcI8
-         q/6G2gGVJmOcxtpKysysfTOLz/6C4+6L1BnMZ3tkSck7mz6F+FgsTbB0Ohq/6Z4Nf0D4
-         F6ZJi2yDRRh1Eww9vuARHHI3KHG4fli1oWQtI4EXzQeslYlt9HzXKC/4XZw1LXGMKa42
-         RlQj1YFfC+HRTIOYHb6PZXn20IhxjxeY9LLEwiPC9oh1TY+lacjhYV7m7eKE0ab4hxnV
-         EW6XFKwWKpM1fY+T98H1uhQx8dOHNhfmKi1rOs8d6F4MygvO42BRgUhLTttJ6ocGw+wG
-         xk/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8EiI9R96gCdmCFi5CyO8T9qRDKhT2cs8fqWKf1z80Mk=;
-        b=dIzgBPFo0WncW90A2cBuvctgpQVevNLC9PmKd+GENH9uh0LIh1w2S8HO6cSNv+x2H9
-         I4oroIhCgqcDhAsLqvuCqsZR5pr4X/h8y4cOOCqWYTCeVb2QKmlmC4EKf6tRhZXCewOw
-         UxbyxE0uIsf35mY+dCF8VWJKzHxCHknOq4+yOGx+BqfwYbmIepqeps0/fOo6cZIFn4ST
-         exBg622BtPN6yO8VGCKKTyVB76c8nChvYRnrni0fd6gypkFtZ9UttKINeTda4vEvMe5h
-         8jaFWkg4zJ4UM+bXFojgLWec/CsbLAMFpz/gimRIzJLJFKybjnGE80hVXPxyITE/Elhc
-         RKsA==
-X-Gm-Message-State: AFqh2kr8uutLbTeMY0qc7m7qf7C9y7kucuQ9sinSwsVhVnvdyZoFOoU+
-        gWAPKG2z9/mPBIjRtT09uXU=
-X-Google-Smtp-Source: AMrXdXs3/hbAhL+hlD/dNGWChGW0aOZpS9pbfNrVsjqJj+ib+NAPcZVYUPYFwJ4N128WPlpSgS67RQ==
-X-Received: by 2002:a05:6512:3901:b0:4c7:d0ed:9605 with SMTP id a1-20020a056512390100b004c7d0ed9605mr19183485lfu.6.1673464366599;
-        Wed, 11 Jan 2023 11:12:46 -0800 (PST)
-Received: from [192.168.50.20] (077222238029.warszawa.vectranet.pl. [77.222.238.29])
-        by smtp.gmail.com with ESMTPSA id s28-20020a056512203c00b004cb0e527515sm2831407lfs.249.2023.01.11.11.12.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jan 2023 11:12:45 -0800 (PST)
-Message-ID: <f8471471-3b9f-526c-b8d0-88bd3de6d409@gmail.com>
-Date:   Wed, 11 Jan 2023 20:12:44 +0100
+        Wed, 11 Jan 2023 20:24:49 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3137440850
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 17:24:48 -0800 (PST)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30C1G9Dq031565;
+        Thu, 12 Jan 2023 01:24:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=t8wCcgD1DqD50x/M2WGJy5UeLUd3j4PxOJf/BXBgXAU=;
+ b=Ar/6R/l4y2J+Utz5sopoNms45/8hT7H0ExsLUBuxDoVaLBXYRBXyKyTqtZOSLouWoGgS
+ QiFxCRk84sDKXDOZeKAh+rvV1JzNrp/9OosSYkFEida7Nt1Yh6hXF3hsz4TiEVu1JH7d
+ IRXjjoksBPfTIoprIXb/JwhPG4+0f269jGsKxBC6CKAvK9u9UuoYC92oTNbL5z9oFvV6
+ Myq3XPkFoPx7dRjlPal/UJLVB9OgbXoCW9plIDy94H8e5PwVC44RMhY5dIrZPFtzFS4v
+ P4BUJrglvKgddh04I04w0x6hrUpyf6AzLQ3SLP5yO7/ZXivCK1vrqaONePjXGhf3f58X xA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n1k5k2ks9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 12 Jan 2023 01:24:43 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30C1OgWO003918
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 12 Jan 2023 01:24:42 GMT
+Received: from cnss-mw-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Wed, 11 Jan 2023 17:24:40 -0800
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <quic_vjakkam@quicinc.com>
+Subject: [PATCH v3 0/3] Add support for randomizing TA of auth and deauth frames
+Date:   Thu, 12 Jan 2023 06:54:12 +0530
+Message-ID: <20230112012415.167556-1-quic_vjakkam@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: [PATCH v2] rndis_wlan: Prevent buffer overflow in rndis_query_oid
-To:     Alexander Duyck <alexander.duyck@gmail.com>
-Cc:     kvalo@kernel.org, jussi.kivilinna@iki.fi, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        greg@kroah.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <CAKgT0UePq+Gg5mpvD7ag=ern9JN5JyAFv5RPc05Zn9jSh4W+0g@mail.gmail.com>
- <20230111175031.7049-1-szymon.heidrich@gmail.com>
- <CAKgT0UeiFGyttyQg_yWHA5L6ZPy9W8__b6DFSQe0-CNnLEvY7w@mail.gmail.com>
-Content-Language: en-US
-From:   Szymon Heidrich <szymon.heidrich@gmail.com>
-In-Reply-To: <CAKgT0UeiFGyttyQg_yWHA5L6ZPy9W8__b6DFSQe0-CNnLEvY7w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: evOUOeeV-PlgtAu0HXHymil0R8SwbyZv
+X-Proofpoint-GUID: evOUOeeV-PlgtAu0HXHymil0R8SwbyZv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-11_10,2023-01-11_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 adultscore=0 mlxlogscore=583
+ clxscore=1015 bulkscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301120007
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/01/2023 19:28, Alexander Duyck wrote:
-> On Wed, Jan 11, 2023 at 9:51 AM Szymon Heidrich
-> <szymon.heidrich@gmail.com> wrote:
->>
->> Since resplen and respoffs are signed integers sufficiently
->> large values of unsigned int len and offset members of RNDIS
->> response will result in negative values of prior variables.
->> This may be utilized to bypass implemented security checks
->> to either extract memory contents by manipulating offset or
->> overflow the data buffer via memcpy by manipulating both
->> offset and len.
->>
->> Additionally assure that sum of resplen and respoffs does not
->> overflow so buffer boundaries are kept.
->>
->> Fixes: 80f8c5b434f9 ("rndis_wlan: copy only useful data from rndis_command respond")
->> Signed-off-by: Szymon Heidrich <szymon.heidrich@gmail.com>
->> ---
->> V1 -> V2: Use size_t and min macro, fix netdev_dbg format
->>
->>  drivers/net/wireless/rndis_wlan.c | 19 ++++++-------------
->>  1 file changed, 6 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
->> index 82a7458e0..bf72e5fd3 100644
->> --- a/drivers/net/wireless/rndis_wlan.c
->> +++ b/drivers/net/wireless/rndis_wlan.c
->> @@ -696,8 +696,8 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
->>                 struct rndis_query      *get;
->>                 struct rndis_query_c    *get_c;
->>         } u;
->> -       int ret, buflen;
->> -       int resplen, respoffs, copylen;
->> +       int ret;
->> +       size_t buflen, resplen, respoffs, copylen;
->>
->>         buflen = *len + sizeof(*u.get);
->>         if (buflen < CONTROL_BUFFER_SIZE)
->> @@ -732,22 +732,15 @@ static int rndis_query_oid(struct usbnet *dev, u32 oid, void *data, int *len)
->>
->>                 if (respoffs > buflen) {
->>                         /* Device returned data offset outside buffer, error. */
->> -                       netdev_dbg(dev->net, "%s(%s): received invalid "
->> -                               "data offset: %d > %d\n", __func__,
->> -                               oid_to_string(oid), respoffs, buflen);
->> +                       netdev_dbg(dev->net,
->> +                                  "%s(%s): received invalid data offset: %zu > %zu\n",
->> +                                  __func__, oid_to_string(oid), respoffs, buflen);
->>
->>                         ret = -EINVAL;
->>                         goto exit_unlock;
->>                 }
->>
->> -               if ((resplen + respoffs) > buflen) {
->> -                       /* Device would have returned more data if buffer would
->> -                        * have been big enough. Copy just the bits that we got.
->> -                        */
->> -                       copylen = buflen - respoffs;
->> -               } else {
->> -                       copylen = resplen;
->> -               }
->> +               copylen = min(resplen, buflen - respoffs);
->>
->>                 if (copylen > *len)
->>                         copylen = *len;
-> 
-> Looks good to me.
-> 
-> Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+This patch series is to add support for randomizing transmit address of
+the authentication and deauthentication frames.
 
-Awesome, thank you very much.
+The changes submitted in this patch series can be verified with
+hostap.git HWSIM test case changes submitted in below link
+https://patchwork.ozlabs.org/project/hostap/list/?series=335502&state=*
+
+Veerendranath Jakkam (3):
+  wifi: nl80211: Add support for randomizing TA of auth and deauth
+    frames
+  wifi: mac80211: Add support to randomize TA of auth and deauth frames
+  wifi: mac80211_hwsim: Add support for randomizing auth and deauth
+    frames TA
+
+ drivers/net/wireless/mac80211_hwsim.c | 26 +++++++++++++
+ include/net/mac80211.h                | 12 ++++++
+ include/uapi/linux/nl80211.h          |  5 +++
+ net/mac80211/main.c                   |  3 +-
+ net/mac80211/offchannel.c             | 38 ++++++++++++++++++
+ net/mac80211/rx.c                     | 18 +++++++--
+ net/mac80211/util.c                   |  7 +++-
+ net/wireless/mlme.c                   | 55 ++++++++++++++++++---------
+ 8 files changed, 139 insertions(+), 25 deletions(-)
+
+-- 
+2.25.1
 
