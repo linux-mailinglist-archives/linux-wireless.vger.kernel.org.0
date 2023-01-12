@@ -2,46 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CAB8666DE9
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 10:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E96666E2A
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 10:28:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239938AbjALJRZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Jan 2023 04:17:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35482 "EHLO
+        id S240207AbjALJ2T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Jan 2023 04:28:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240008AbjALJQs (ORCPT
+        with ESMTP id S240124AbjALJ1W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Jan 2023 04:16:48 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA3250052
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 01:09:25 -0800 (PST)
+        Thu, 12 Jan 2023 04:27:22 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46159BB2
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 01:19:25 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEE4161FAB
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 09:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93078C433D2;
-        Thu, 12 Jan 2023 09:09:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D93E561F7D
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Jan 2023 09:19:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53958C433F0;
+        Thu, 12 Jan 2023 09:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673514564;
-        bh=rrrY0mwZBiE2S9b+NOyUnVV3BWYMdajkh1hhqZrk2vE=;
+        s=k20201202; t=1673515164;
+        bh=HYOhnv+T+iftwKLs538Ljw0Pj6fCRNz21LxLxNvbQcA=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dGILvNc5uMcKYgPlrMWrBZnl+YW5fWCeWcMxMYJ01CrHU2xR5Owyniz+3EpXmeCav
-         vO7RkxlJlLga/N/qKBEiFfKaKbNnCOzadCESjovjUln8qmMD3bW3X5q8VISDEb/mm3
-         NFyEXVj/fVJV45ZqgkD1ec1uszwIkhnISsyWIdWKna0AP/ASa+ySMhl07Rosq5B6a+
-         4h2hmdsQ02tBk8kYdzaRRDerRs7rKQz1e22FRPpSas/lOG5oh52S0Cdr49NopQZNm8
-         E1cqGU3jUd6CJ+/PC2Ssu5+mguj8WDMEgE5GEyxbWu7lxFnI8HQn3xZsc1vVGbqBHG
-         mSXG8UN4p8FKw==
+        b=LoHoi02IfYVHDYDXF2YLK3ow7L3x8tp5xd96iP74uYzMabaZ98minm6khDeaVXUeH
+         NkACXi0UMzJYufaMN6vK8po4PEsPgUsggd9C+y1IQy7J911Mm5J+VtFUjRrHHyZCKG
+         Kad+uqgcNT/gZ/blvigyro3qf7C7Lg1buT4DAIkwrwyZuEJR3CQUhQUMUO6ZtabW7O
+         YG+PUsFfUfYq4bZhTERISpr1FtaRjl1TjPjJr+AWG9pGE3lGmLPG08+Da44n/Qi9Dn
+         BRNrOJoQ2wVXbh6Ffsk6D2MOPK2G3N3jdoHX2whipZCgYR9sA3/uHDMTUQLBXDlS27
+         Lmpl8TIBuUx6A==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Robert Marko <robert.marko@sartura.hr>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath11k: debugfs: fix to work with multiple PCI devices
-References: <20221220121231.20120-1-kvalo@kernel.org>
-        <CA+HBbNGBKemtF9ZsFBFCe7_1eqMJ80QhEPCsinOJY2LQ4+tiFg@mail.gmail.com>
-Date:   Thu, 12 Jan 2023 11:09:21 +0200
-In-Reply-To: <CA+HBbNGBKemtF9ZsFBFCe7_1eqMJ80QhEPCsinOJY2LQ4+tiFg@mail.gmail.com>
-        (Robert Marko's message of "Mon, 2 Jan 2023 16:42:55 +0100")
-Message-ID: <87k01sdsqm.fsf@kernel.org>
+To:     Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc:     <mhi@lists.linux.dev>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 1/3] mhi: allow MHI client drivers to provide the firmware via a pointer
+References: <20230111092547.21425-1-kvalo@kernel.org>
+        <20230111092547.21425-2-kvalo@kernel.org>
+        <7d692402-3fc1-3b4c-9697-25e722e94539@quicinc.com>
+Date:   Thu, 12 Jan 2023 11:19:21 +0200
+In-Reply-To: <7d692402-3fc1-3b4c-9697-25e722e94539@quicinc.com> (Jeffrey
+        Hugo's message of "Wed, 11 Jan 2023 08:20:34 -0700")
+Message-ID: <87bkn4ds9y.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -54,67 +56,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Robert Marko <robert.marko@sartura.hr> writes:
+Jeffrey Hugo <quic_jhugo@quicinc.com> writes:
 
-> On Tue, Dec 20, 2022 at 1:16 PM Kalle Valo <kvalo@kernel.org> wrote:
->>
+> On 1/11/2023 2:25 AM, Kalle Valo wrote:
 >> From: Kalle Valo <quic_kvalo@quicinc.com>
 >>
->> ath11k fails to load if there are multiple ath11k PCI devices with same name:
+>> Currently MHI loads the firmware image from the path provided by client
+>> devices. ath11k needs to support firmware image embedded along with meta data
+>> (named as firmware-2.bin). So allow the client driver to request the firmware
+>> file from user space on it's own and provide the firmware image data and size
+>> to MHI via a pointer struct mhi_controller::fw_data.
 >>
->>  ath11k_pci 0000:01:00.0: Hardware name qcn9074 hw1.0
->>  debugfs: Directory 'ath11k' with parent '/' already present!
->>  ath11k_pci 0000:01:00.0: failed to create ath11k debugfs
->>  ath11k_pci 0000:01:00.0: failed to create soc core: -17
->>  ath11k_pci 0000:01:00.0: failed to init core: -17
->>  ath11k_pci: probe of 0000:01:00.0 failed with error -17
+>> This is an optional feature, if fw_data is NULL MHI load the firmware using the
+>> name from struct mhi_controller::fw_image string as before.
 >>
->> Fix this by creating a directory for each ath11k device using schema
->> <bus>-<devname>, for example "pci-0000:06:00.0". This directory created under
->> the top-level ath11k directory, for example /sys/kernel/debug/ath11k.
+>> Tested with ath11k and WCN6855 hw2.0.
 >>
->> The reference to the toplevel ath11k directory is not stored anymore within ath11k, instead
->> it's retrieved using debugfs_lookup(). If the directory does not exist it will
->> be created. After the last directory from the ath11k directory is removed, for
->> example when doing rmmod ath11k, the empty ath11k directory is left in place,
->> it's a minor cosmetic issue anyway.
->>
->> Here's an example hierarchy with one WCN6855:
->>
->> ath11k
->> `-- pci-0000:06:00.0
->>     |-- mac0
->>     |   |-- dfs_block_radar_events
->>     |   |-- dfs_simulate_radar
->>     |   |-- ext_rx_stats
->>     |   |-- ext_tx_stats
->>     |   |-- fw_dbglog_config
->>     |   |-- fw_stats
->>     |   |   |-- beacon_stats
->>     |   |   |-- pdev_stats
->>     |   |   `-- vdev_stats
->>     |   |-- htt_stats
->>     |   |-- htt_stats_reset
->>     |   |-- htt_stats_type
->>     |   `-- pktlog_filter
->>     |-- simulate_fw_crash
->>     `-- soc_dp_stats
->>
->> I didn't have a test setup where I could connect multiple ath11k devices to the
->> same the host, so I have only tested this with one device.
->>
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
->
->
-> I can confirm that this works on a combination of IPQ8074 with an
-> external QCN9074 radio which would previously clash and error out, so:
->
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-> Tested-by: Robert Marko <robert.marko@sartura.hr>
+>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Great, thank you for testing this. Very much appreciated. I added the
-tags tags to the commit.
+[...]
+
+>> @@ -478,14 +489,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
+>>   	 */
+>>   	if (mhi_cntrl->fbc_download) {
+>>   		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image,
+>> -					   firmware->size);
+>> +					   fw_sz);
+>
+> Minor nit, but it seems like this could be all on one line.
+
+Will fix in v2.
+
+>> --- a/include/linux/mhi.h
+>> +++ b/include/linux/mhi.h
+>> @@ -299,6 +299,10 @@ struct mhi_controller_config {
+>>    * @iova_start: IOMMU starting address for data (required)
+>>    * @iova_stop: IOMMU stop address for data (required)
+>>    * @fw_image: Firmware image name for normal booting (optional)
+>> + * @fw_data: Firmware image data content for normal booting, used only
+>> + *           if fw_image is NULL (optional)
+>
+> The implementation requires fbc_download to be set, which is not a
+> requirement for fw_image.  That is not apparent here.
+
+Ah, I had missed that. Will mention that in v2.
+
+>> @@ -384,6 +388,8 @@ struct mhi_controller {
+>>   	dma_addr_t iova_start;
+>>   	dma_addr_t iova_stop;
+>>   	const char *fw_image;
+>> +	const u8 *fw_data;
+>> +	size_t fw_sz;
+>
+> Did you run pahole?  I remember this struct being well packed, and I
+> think this will add a compiler hole but I have not actually verified.
+
+I actually haven't used pahole for ages. I will run it and check how
+this structure is packed.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
