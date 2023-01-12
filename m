@@ -2,152 +2,415 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF3B966685A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 02:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E182C666B66
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jan 2023 08:10:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235573AbjALBY4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Jan 2023 20:24:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49110 "EHLO
+        id S236370AbjALHKI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Jan 2023 02:10:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjALBYz (ORCPT
+        with ESMTP id S236414AbjALHKA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Jan 2023 20:24:55 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12D004086C
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 17:24:54 -0800 (PST)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30BNxRqt030913;
-        Thu, 12 Jan 2023 01:24:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=UO96Uw4BEMBBuMbf/pDEd3SPzLFgwpGvtMFqid7G4uw=;
- b=p5IpwQ4oqSOwJtcM2iOGIyk6kH4XTxLud+hDSmQnPA913oZgf2DRBlAYMSrvtltuLXLu
- ETUD3+Kf4cKXS0REAiiD5bg9vasOJYn81zvyuxJ2BYZFRNcu+STkKz3zaMSn7lDidEQf
- aYM7PfZ6o23DVQxeYcGqkN3fQkLutv74qkqw6x/ixLbHliwsTZ+FHQY2bYdUs1AeZFzE
- 9eq/TVRgnxwstSPrDxx+dQyui16uG0GcDCCF4yHzc/t/tIMB/46542CVOupmsqUx/TCs
- rMR3F7GVbuLOPd8yEqJzCsWPsJV5m6F23yM7T2uaS8zk+fQxPSgbevuAMRzLy4avUEMs yg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n1k5k2ksb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Jan 2023 01:24:48 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30C1OlKH001659
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Jan 2023 01:24:47 GMT
-Received: from cnss-mw-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Wed, 11 Jan 2023 17:24:45 -0800
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>, <quic_vjakkam@quicinc.com>
-Subject: [PATCH v3 3/3] wifi: mac80211_hwsim: Add support for randomizing auth and deauth frames TA
-Date:   Thu, 12 Jan 2023 06:54:15 +0530
-Message-ID: <20230112012415.167556-4-quic_vjakkam@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230112012415.167556-1-quic_vjakkam@quicinc.com>
-References: <20230112012415.167556-1-quic_vjakkam@quicinc.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: KMFtHWMwSgqz0dfk85NJ9V0WE-3shAE7
-X-Proofpoint-GUID: KMFtHWMwSgqz0dfk85NJ9V0WE-3shAE7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-11_10,2023-01-11_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- priorityscore=1501 suspectscore=0 adultscore=0 mlxlogscore=999
- clxscore=1015 bulkscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301120007
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 12 Jan 2023 02:10:00 -0500
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 608A94E435
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 23:09:56 -0800 (PST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-4d1ef31a677so76700467b3.9
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jan 2023 23:09:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=t4V7pYVoaTFXcMpi7v7A48sHh3bcpF9cVqlXeOaLXAs=;
+        b=eLNne6oWRSd/6X5Bwl87Hplk1isnW7cD9GhCMP3LCFtNmi7qofjK/XTRGg3h64QuGk
+         eLIQjCHCn5Gk2RzKyIjlUadv2J16d0DRC/VcqYov9CYUZyAyiJkdqK4MIgKmOo3g4cYH
+         TH2yt+pM9QN4pxtGtB6bZvR4kkqUP4QBTBp/HykQwh6fIn45hQoJ0wpfgSoHiv9wQKHM
+         m8Kp+gbiBEagRjcfEqopMMjYlOfUTM3J4lh8XnQy1cMqlENlAeZG21N2fGnH6AEmVAac
+         j3cg+RyadRK/9Gwo18ZWpZQzE4EJNeEce8gtgMHBaCqN1fSzqz+2XfvQfBfnSpPZgxIa
+         dFUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t4V7pYVoaTFXcMpi7v7A48sHh3bcpF9cVqlXeOaLXAs=;
+        b=1vukW7leVWpLPzJ0DtSbXWOlufngX9eCgFGRWOC4Wuc//hM3slP5nMBY6nkciCnnH5
+         amsaOffWv5gWLLO5aiPphlrjO4qsqy5Nxr5JZ1MdEUedJV0EoF3mSRZIMSU4KSRliDAU
+         nM5bE9IN1ODuKwi4giPfQWVsTrPvBARiHhiHgrGrTvmAbcO5SLF2SqbQkxgq/QqyAfRg
+         FH3EKTzQvqVt8jPfMsKXbKXs27NdirxN7/eAqffJLV83bZtE2SMMkQZSvQP7oaZgAOEk
+         +NzMe59q93pp0xMwH/WoWND109aKCw0UwniXJiiaD/bkFsUGLZzhrwQsjjmnN5rJ4plY
+         2iiw==
+X-Gm-Message-State: AFqh2kqLfWGiqRXO3jQUWZSbsT3mA+n22AuY0XpLOlu4Z7jEWK2lRgtM
+        Lt1Ald/Y2ViA912gL3SPpRT749E3QRg=
+X-Google-Smtp-Source: AMrXdXtXDQN6TTg4GG1oIU3AY7Sj9mqjCEbk8nFK++ZeYXkZP6xMlLREIpW9ku5qoqJlebHX/l/8ENpQgl8=
+X-Received: from jaewan.seo.corp.google.com ([2401:fa00:d:11:3a48:6b85:be4d:d602])
+ (user=jaewan job=sendgmr) by 2002:a5b:446:0:b0:7c9:4ccf:ff77 with SMTP id
+ s6-20020a5b0446000000b007c94ccfff77mr97366ybp.393.1673507395585; Wed, 11 Jan
+ 2023 23:09:55 -0800 (PST)
+Date:   Thu, 12 Jan 2023 16:09:46 +0900
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
+Message-ID: <20230112070947.1168555-1-jaewan@google.com>
+Subject: [RESEND v3 1/2] mac80211_hwsim: add PMSR capability support
+From:   Jaewan Kim <jaewan@google.com>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     kernel-team@android.com, adelva@google.com,
+        Jaewan Kim <jaewan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add changes to support randomizing TA of the authentication and
-deauthentication frames and indicate the support to upper layers.
+Add HWSIM_ATTR_PMSR_SUPPORT to configure PMSR support.
 
-Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Signed-off-by: Jaewan Kim <jaewan@google.com>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/net/wireless/mac80211_hwsim.c | 159 +++++++++++++++++++++++++-
+ drivers/net/wireless/mac80211_hwsim.h |   2 +
+ include/net/cfg80211.h                |  10 ++
+ net/wireless/nl80211.c                |  17 ++-
+ 4 files changed, 182 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index c57c8903b7c0..40469d2723e5 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -720,6 +720,9 @@ struct mac80211_hwsim_data {
+diff --git drivers/net/wireless/mac80211_hwsim.c drivers/net/wireless/mac80211_hwsim.c
+index c57c8903b7c0..0d5b7b5d3121 100644
+--- drivers/net/wireless/mac80211_hwsim.c
++++ drivers/net/wireless/mac80211_hwsim.c
+@@ -719,6 +719,9 @@ struct mac80211_hwsim_data {
+ 	/* RSSI in rx status of the receiver */
  	int rx_rssi;
  
- 	struct mac80211_hwsim_link_data link_data[IEEE80211_MLD_MAX_NUM_LINKS];
++	/* only used when pmsr capability is supplied */
++	struct cfg80211_pmsr_capabilities pmsr_capa;
 +
-+	/* Ack the frames with RA as configured temporary address */
-+	u8 temp_addr[ETH_ALEN];
+ 	struct mac80211_hwsim_link_data link_data[IEEE80211_MLD_MAX_NUM_LINKS];
  };
  
- static const struct rhashtable_params hwsim_rht_params = {
-@@ -1237,6 +1240,10 @@ static bool mac80211_hwsim_addr_match(struct mac80211_hwsim_data *data,
- 	if (data->scanning && memcmp(addr, data->scan_addr, ETH_ALEN) == 0)
- 		return true;
+@@ -760,6 +763,37 @@ static const struct genl_multicast_group hwsim_mcgrps[] = {
  
-+	if (!is_zero_ether_addr(data->temp_addr) &&
-+	    ether_addr_equal(addr, data->temp_addr))
-+		return true;
+ /* MAC80211_HWSIM netlink policy */
+ 
++static const struct nla_policy
++hwsim_ftm_capa_policy[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1] = {
++	[NL80211_PMSR_FTM_CAPA_ATTR_ASAP] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_CAPA_ATTR_NON_ASAP] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_CAPA_ATTR_REQ_LCI] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_CAPA_ATTR_REQ_CIVICLOC] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES] = { .type = NLA_U32 },
++	[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS] = { .type = NLA_U32 },
++	[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT] =
++		NLA_POLICY_MAX(NLA_U8, 15),
++	[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST] =
++		NLA_POLICY_MAX(NLA_U8, 31),
++	[NL80211_PMSR_FTM_CAPA_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_CAPA_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
++};
 +
- 	memcpy(md.addr, addr, ETH_ALEN);
- 
- 	ieee80211_iterate_active_interfaces_atomic(data->hw,
-@@ -2285,6 +2292,7 @@ static void mac80211_hwsim_vif_info_changed(struct ieee80211_hw *hw,
- 					    u64 changed)
- {
- 	struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
-+	struct mac80211_hwsim_data *hwsim = hw->priv;
- 
- 	hwsim_check_magic(vif);
- 
-@@ -2297,6 +2305,22 @@ static void mac80211_hwsim_vif_info_changed(struct ieee80211_hw *hw,
- 		vp->assoc = vif->cfg.assoc;
- 		vp->aid = vif->cfg.aid;
- 	}
++static const struct nla_policy
++hwsim_pmsr_type_policy[NL80211_PMSR_TYPE_MAX + 1] = {
++	[NL80211_PMSR_TYPE_FTM] = NLA_POLICY_NESTED(hwsim_ftm_capa_policy),
++};
 +
-+	if (changed & BSS_CHANGED_TEMP_ADDR) {
-+		wiphy_dbg(hw->wiphy, "  TMP_ADDR: vif->cfg.temp_addr=%pM\n",
-+			  vif->cfg.temp_addr);
++static const struct nla_policy
++hwsim_pmsr_capa_policy[NL80211_PMSR_ATTR_MAX + 1] = {
++	[NL80211_PMSR_ATTR_MAX_PEERS] = { .type = NLA_U32 },
++	[NL80211_PMSR_ATTR_REPORT_AP_TSF] = { .type = NLA_FLAG },
++	[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR] = { .type = NLA_FLAG },
++	[NL80211_PMSR_ATTR_TYPE_CAPA] =
++		NLA_POLICY_NESTED(hwsim_pmsr_type_policy),
++	[NL80211_PMSR_ATTR_PEERS] = { .type = NLA_REJECT }, // only for request.
++};
 +
-+		if (!is_zero_ether_addr(hwsim->temp_addr))
-+			mac80211_hwsim_config_mac_nl(hw, hwsim->temp_addr,
-+						     false);
-+		if (!is_zero_ether_addr(vif->cfg.temp_addr)) {
-+			ether_addr_copy(hwsim->temp_addr, vif->cfg.temp_addr);
-+			mac80211_hwsim_config_mac_nl(hw, hwsim->temp_addr,
-+						     true);
-+		} else {
-+			eth_zero_addr(hwsim->temp_addr);
-+		}
-+	}
+ static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
+ 	[HWSIM_ATTR_ADDR_RECEIVER] = NLA_POLICY_ETH_ADDR_COMPAT,
+ 	[HWSIM_ATTR_ADDR_TRANSMITTER] = NLA_POLICY_ETH_ADDR_COMPAT,
+@@ -788,6 +822,7 @@ static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
+ 	[HWSIM_ATTR_IFTYPE_SUPPORT] = { .type = NLA_U32 },
+ 	[HWSIM_ATTR_CIPHER_SUPPORT] = { .type = NLA_BINARY },
+ 	[HWSIM_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
++	[HWSIM_ATTR_PMSR_SUPPORT] = NLA_POLICY_NESTED(hwsim_pmsr_capa_policy),
+ };
+ 
+ #if IS_REACHABLE(CONFIG_VIRTIO)
+@@ -3107,6 +3142,18 @@ static int mac80211_hwsim_change_sta_links(struct ieee80211_hw *hw,
+ 	return 0;
  }
  
- static void mac80211_hwsim_link_info_changed(struct ieee80211_hw *hw,
-@@ -4445,6 +4469,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 			      NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS);
- 	wiphy_ext_feature_set(hw->wiphy,
- 			      NL80211_EXT_FEATURE_BEACON_RATE_LEGACY);
-+	wiphy_ext_feature_set(hw->wiphy,
-+			      NL80211_EXT_FEATURE_AUTH_AND_DEAUTH_RANDOM_TA);
++static int mac80211_hwsim_start_pmsr(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++				     struct cfg80211_pmsr_request *request)
++{
++	return -EOPNOTSUPP;
++}
++
++static void mac80211_hwsim_abort_pmsr(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++				      struct cfg80211_pmsr_request *request)
++{
++	// Do nothing for now.
++}
++
+ #define HWSIM_COMMON_OPS					\
+ 	.tx = mac80211_hwsim_tx,				\
+ 	.wake_tx_queue = ieee80211_handle_wake_tx_queue,	\
+@@ -3129,7 +3176,9 @@ static int mac80211_hwsim_change_sta_links(struct ieee80211_hw *hw,
+ 	.flush = mac80211_hwsim_flush,				\
+ 	.get_et_sset_count = mac80211_hwsim_get_et_sset_count,	\
+ 	.get_et_stats = mac80211_hwsim_get_et_stats,		\
+-	.get_et_strings = mac80211_hwsim_get_et_strings,
++	.get_et_strings = mac80211_hwsim_get_et_strings,	\
++	.start_pmsr = mac80211_hwsim_start_pmsr,		\
++	.abort_pmsr = mac80211_hwsim_abort_pmsr,
  
- 	hw->wiphy->interface_modes = param->iftypes;
+ #define HWSIM_NON_MLO_OPS					\
+ 	.sta_add = mac80211_hwsim_sta_add,			\
+@@ -3186,6 +3235,7 @@ struct hwsim_new_radio_params {
+ 	u32 *ciphers;
+ 	u8 n_ciphers;
+ 	bool mlo;
++	const struct cfg80211_pmsr_capabilities *pmsr_capa;
+ };
  
+ static void hwsim_mcast_config_msg(struct sk_buff *mcast_skb,
+@@ -3260,6 +3310,13 @@ static int append_radio_msg(struct sk_buff *skb, int id,
+ 			return ret;
+ 	}
+ 
++	if (param->pmsr_capa) {
++		ret = cfg80211_send_pmsr_capa(param->pmsr_capa, skb);
++
++		if (ret < 0)
++			return ret;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -4606,6 +4663,11 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 				    data->debugfs,
+ 				    data, &hwsim_simulate_radar);
+ 
++	if (param->pmsr_capa) {
++		data->pmsr_capa = *param->pmsr_capa;
++		hw->wiphy->pmsr_capa = &data->pmsr_capa;
++	}
++
+ 	spin_lock_bh(&hwsim_radio_lock);
+ 	err = rhashtable_insert_fast(&hwsim_radios_rht, &data->rht,
+ 				     hwsim_rht_params);
+@@ -4715,6 +4777,7 @@ static int mac80211_hwsim_get_radio(struct sk_buff *skb,
+ 	param.regd = data->regd;
+ 	param.channels = data->channels;
+ 	param.hwname = wiphy_name(data->hw->wiphy);
++	param.pmsr_capa = &data->pmsr_capa;
+ 
+ 	res = append_radio_msg(skb, data->idx, &param);
+ 	if (res < 0)
+@@ -5053,6 +5116,83 @@ static bool hwsim_known_ciphers(const u32 *ciphers, int n_ciphers)
+ 	return true;
+ }
+ 
++static int parse_ftm_capa(const struct nlattr *ftm_capa,
++			  struct cfg80211_pmsr_capabilities *out)
++{
++	struct nlattr *tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1];
++	int ret = nla_parse_nested(tb, NL80211_PMSR_FTM_CAPA_ATTR_MAX,
++				   ftm_capa, hwsim_ftm_capa_policy, NULL);
++	if (ret) {
++		pr_err("mac80211_hwsim: malformed FTM capability");
++		return -EINVAL;
++	}
++
++	out->ftm.supported = 1;
++	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES])
++		out->ftm.preambles =
++			nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES]);
++	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS])
++		out->ftm.bandwidths =
++			nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS]);
++	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT])
++		out->ftm.max_bursts_exponent =
++			nla_get_u8(tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT]);
++	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST])
++		out->ftm.max_ftms_per_burst =
++			nla_get_u8(tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST]);
++	out->ftm.asap =
++		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_ASAP];
++	out->ftm.non_asap =
++		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_NON_ASAP];
++	out->ftm.request_lci =
++		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_REQ_LCI];
++	out->ftm.request_civicloc =
++		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_REQ_CIVICLOC];
++	out->ftm.trigger_based =
++		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_TRIGGER_BASED];
++	out->ftm.non_trigger_based =
++		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_NON_TRIGGER_BASED];
++
++	return 0;
++}
++
++static int parse_pmsr_capa(const struct nlattr *pmsr_capa,
++			   struct cfg80211_pmsr_capabilities *out)
++{
++	struct nlattr *tb[NL80211_PMSR_ATTR_MAX + 1];
++	struct nlattr *nla;
++	int size;
++	int ret = nla_parse_nested(tb, NL80211_PMSR_ATTR_MAX, pmsr_capa,
++				   hwsim_pmsr_capa_policy, NULL);
++	if (ret) {
++		pr_err("mac80211_hwsim: malformed PMSR capability");
++		return -EINVAL;
++	}
++
++	if (tb[NL80211_PMSR_ATTR_MAX_PEERS])
++		out->max_peers =
++			nla_get_u32(tb[NL80211_PMSR_ATTR_MAX_PEERS]);
++	out->report_ap_tsf = !!tb[NL80211_PMSR_ATTR_REPORT_AP_TSF];
++	out->randomize_mac_addr =
++		!!tb[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR];
++
++	if (!tb[NL80211_PMSR_ATTR_TYPE_CAPA]) {
++		pr_err("mac80211_hwsim: malformed PMSR type");
++		return -EINVAL;
++	}
++
++	nla_for_each_nested(nla, tb[NL80211_PMSR_ATTR_TYPE_CAPA], size) {
++		switch (nla_type(nla)) {
++		case NL80211_PMSR_TYPE_FTM:
++			parse_ftm_capa(nla, out);
++			break;
++		default:
++			pr_warn("mac80211_hwsim: Unknown PMSR type\n");
++		}
++	}
++	return 0;
++}
++
+ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
+ {
+ 	struct hwsim_new_radio_params param = { 0 };
+@@ -5173,8 +5313,24 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
+ 		param.hwname = hwname;
+ 	}
+ 
++	if (info->attrs[HWSIM_ATTR_PMSR_SUPPORT]) {
++		struct cfg80211_pmsr_capabilities *pmsr_capa =
++			kmalloc(sizeof(struct cfg80211_pmsr_capabilities),
++				GFP_KERNEL);
++		if (!pmsr_capa)
++			return -ENOMEM;
++		ret = parse_pmsr_capa(info->attrs[HWSIM_ATTR_PMSR_SUPPORT],
++				      pmsr_capa);
++		if (ret)
++			goto out_free;
++		param.pmsr_capa = pmsr_capa;
++	}
++
+ 	ret = mac80211_hwsim_new_radio(info, &param);
++
++out_free:
+ 	kfree(hwname);
++	kfree(param.pmsr_capa);
+ 	return ret;
+ }
+ 
+@@ -5419,7 +5575,6 @@ static struct notifier_block hwsim_netlink_notifier = {
+ static int __init hwsim_init_netlink(void)
+ {
+ 	int rc;
+-
+ 	printk(KERN_INFO "mac80211_hwsim: initializing netlink\n");
+ 
+ 	rc = genl_register_family(&hwsim_genl_family);
+diff --git drivers/net/wireless/mac80211_hwsim.h drivers/net/wireless/mac80211_hwsim.h
+index 527799b2de0f..81cd02d2555c 100644
+--- drivers/net/wireless/mac80211_hwsim.h
++++ drivers/net/wireless/mac80211_hwsim.h
+@@ -142,6 +142,7 @@ enum {
+  * @HWSIM_ATTR_CIPHER_SUPPORT: u32 array of supported cipher types
+  * @HWSIM_ATTR_MLO_SUPPORT: claim MLO support (exact parameters TBD) for
+  *	the new radio
++ * @HWSIM_ATTR_PMSR_SUPPORT: claim peer measurement support
+  * @__HWSIM_ATTR_MAX: enum limit
+  */
+ 
+@@ -173,6 +174,7 @@ enum {
+ 	HWSIM_ATTR_IFTYPE_SUPPORT,
+ 	HWSIM_ATTR_CIPHER_SUPPORT,
+ 	HWSIM_ATTR_MLO_SUPPORT,
++	HWSIM_ATTR_PMSR_SUPPORT,
+ 	__HWSIM_ATTR_MAX,
+ };
+ #define HWSIM_ATTR_MAX (__HWSIM_ATTR_MAX - 1)
+diff --git include/net/cfg80211.h include/net/cfg80211.h
+index 03d4f4deadae..33f775b0f0b0 100644
+--- include/net/cfg80211.h
++++ include/net/cfg80211.h
+@@ -8751,6 +8751,16 @@ void cfg80211_pmsr_complete(struct wireless_dev *wdev,
+ 			    struct cfg80211_pmsr_request *req,
+ 			    gfp_t gfp);
+ 
++/**
++ * cfg80211_send_pmsr_capa - send the pmsr capabilities.
++ * @cap: peer measurement capabilities
++ * @skb: The skb to send pmsr capa
++ *
++ * Send the peer measurement capabilities to skb.
++ */
++int cfg80211_send_pmsr_capa(const struct cfg80211_pmsr_capabilities *cap,
++			    struct sk_buff *msg);
++
+ /**
+  * cfg80211_iftype_allowed - check whether the interface can be allowed
+  * @wiphy: the wiphy
+diff --git net/wireless/nl80211.c net/wireless/nl80211.c
+index 33a82ecab9d5..b972a2135654 100644
+--- net/wireless/nl80211.c
++++ net/wireless/nl80211.c
+@@ -2152,10 +2152,9 @@ nl80211_send_pmsr_ftm_capa(const struct cfg80211_pmsr_capabilities *cap,
+ 	return 0;
+ }
+ 
+-static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
+-				  struct sk_buff *msg)
++int cfg80211_send_pmsr_capa(const struct cfg80211_pmsr_capabilities *cap,
++			    struct sk_buff *msg)
+ {
+-	const struct cfg80211_pmsr_capabilities *cap = rdev->wiphy.pmsr_capa;
+ 	struct nlattr *pmsr, *caps;
+ 
+ 	if (!cap)
+@@ -2193,6 +2192,13 @@ static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(cfg80211_send_pmsr_capa);
++
++static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
++				  struct sk_buff *msg)
++{
++	return cfg80211_send_pmsr_capa(rdev->wiphy.pmsr_capa, msg);
++}
+ 
+ static int
+ nl80211_put_iftype_akm_suites(struct cfg80211_registered_device *rdev,
+@@ -3181,8 +3187,11 @@ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 	struct nlattr **attrs = info->attrs;
+ 	u32 control_freq;
+ 
+-	if (!attrs[NL80211_ATTR_WIPHY_FREQ])
++	if (!attrs[NL80211_ATTR_WIPHY_FREQ]) {
++		NL_SET_ERR_MSG_ATTR(extack, attrs[NL80211_ATTR_WIPHY_FREQ],
++				    "Frequency is missing");
+ 		return -EINVAL;
++	}
+ 
+ 	control_freq = MHZ_TO_KHZ(
+ 			nla_get_u32(info->attrs[NL80211_ATTR_WIPHY_FREQ]));
 -- 
-2.25.1
+2.39.0.314.g84b9a713c41-goog
 
