@@ -2,107 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D585669909
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 14:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 304C76699AE
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 15:14:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241812AbjAMNun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 08:50:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50200 "EHLO
+        id S241214AbjAMOOJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 09:14:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239173AbjAMNuW (ORCPT
+        with ESMTP id S241958AbjAMONi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 08:50:22 -0500
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6479E736D9
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 05:45:10 -0800 (PST)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-4a263c4ddbaso285318197b3.0
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 05:45:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N9gSuTuOIeRoyvXTslypN3S9Y3n9ZhQxFv0DvHbjXOo=;
-        b=XUWtnSngwMqp0UV7+YoSQSR43zlVXU4xZV+OghNp2zfKJqKNZSWd+UoXUp9v9V9uvB
-         ffGPgkM6bVmmhPDO8sh0LaGP514Je2D3rR9qM6QE9iWzkKJY7KKgxtXraU1tkwAy9s0Q
-         SiybHuuvqpsSllMrAUzECDUxWETqLcic3sRQ09XfY/HkTdOTJFnzTV/T4IW9cG/r3Clu
-         dWjoFsMVpqnqojQgsNhZfLDf38ymkZZ8mdyq+4YHqzoreBb3gQDswu46hWUfdIrqNG3H
-         TathLmKvrjhS7oOIJ1AwWwFFDhO50clncGTZuQpI880Km2p4YABs/aZZY2fgvA3/EgUM
-         znzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N9gSuTuOIeRoyvXTslypN3S9Y3n9ZhQxFv0DvHbjXOo=;
-        b=rJXvtkWADmESIj14ddQIWft6aJ0HM50xDSMajnlt/Gidiyqdm6PhR+8mnW1oExhNtG
-         6vrq/hoE+moMOBX5tR/vH6hLmbKbb74wt7EO99ciAyNbn6kan6p1AQuvvmPp9JEkYM1D
-         pnYSKEh0L0eJ0hiHu//KfGxgEJEeWHhwEtjVn7lLT6cWFYnEeiMuJCTF68Ihya0wMk/A
-         UNMjIvea82V1VNcovfNgYX3dB2rMYfU68svbzO2CHefeHD/d0u+NNKNqvVbukmzT6K3N
-         NgAElfQvez4pg0lhGA7QJTFj6vKMPil/pD57RM22eV0eghqILlewDIzsHkYrSuDn0Kkd
-         j2dg==
-X-Gm-Message-State: AFqh2kqo/FDWWvwEfCTi4qsnXXLDDmkPQ9O9K+umZM2Zn8Y28xYeoVo7
-        yrvTJzdg2xd1mO3Y9UFPSSKWjLJK+8nUFMgTE1kHqA==
-X-Google-Smtp-Source: AMrXdXtJH9fhqngsU/znGp5Pce6WNzdeRxElK/cgmqsxhsBn2wn0OeFj/fgiLxP0V8CiM2Wny3plPb1rZ6Kc6GkYCFs=
-X-Received: by 2002:a05:690c:313:b0:37e:6806:a5f9 with SMTP id
- bg19-20020a05690c031300b0037e6806a5f9mr3612977ywb.47.1673617509336; Fri, 13
- Jan 2023 05:45:09 -0800 (PST)
+        Fri, 13 Jan 2023 09:13:38 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E975E096;
+        Fri, 13 Jan 2023 06:11:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93F3861E5D;
+        Fri, 13 Jan 2023 14:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCDAC433D2;
+        Fri, 13 Jan 2023 14:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673619078;
+        bh=/6SY5e2kNWppkEIR3acALAnQslTESItpdK+KN1H9IXg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=T1gOx8LPBJsOyUYJmRb65xURUnZhWEotYE4Yvx5yXVs74Df+ODWOogKlyWQgJik7C
+         jhAvPsMHo4dUkwyQhzUNnrMNB9TJBIbsgcoS5oOAUgQYLn3gHzwcl0r828iLCq0062
+         gemUb4fGGZtmjAiLd5/k5jTwfzmkYQF4/hT4q9IhrOOoeerf6aVZZA0RWK2YHuXA3z
+         ff/n0K5hh3Hk8e6id/fL85KwPP5+YNnAiA07/CI1XYRIgcFcUpqBoIZ9OfuTS2XLLo
+         ididtk00E2oWpK1nkKFqU3lHNlE0Z9pV1hhfS7WQt0qDgp3PEdWgL3Bf/KwS3SQ619
+         MtXPTXnmRDwzg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Linux kernel regression tracking \(Thorsten Leemhuis\)" 
+        <regressions@leemhuis.info>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+        lorenzo@kernel.org, sujuan.chen@mediatek.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, spasswolf@web.de
+Subject: Re: [6.2][regression] after commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
+References: <252b1fe4-ccc2-4ea8-1da5-9a60f7378fd6@leemhuis.info>
+        <BD7074C5-20BE-4D70-824B-0994892C995D@nbd.name>
+        <0078a5ff-2bc5-4b14-2735-1641feb46544@leemhuis.info>
+Date:   Fri, 13 Jan 2023 16:11:10 +0200
+In-Reply-To: <0078a5ff-2bc5-4b14-2735-1641feb46544@leemhuis.info> (Linux
+        kernel regression tracking's message of "Tue, 10 Jan 2023 09:41:10
+        +0100")
+Message-ID: <87358ecyo1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20230113133503.58336-1-sensor1010@163.com>
-In-Reply-To: <20230113133503.58336-1-sensor1010@163.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Fri, 13 Jan 2023 14:44:58 +0100
-Message-ID: <CANn89iKDXQ_nvnXBp5Q99P67AW-jFTNkpEmYdESDWitf0Nt4vw@mail.gmail.com>
-Subject: Re: [PATCH v1] wireless/at76c50x-usb.c : Use devm_kzalloc replaces kmalloc
-To:     Lizhe <sensor1010@163.com>
-Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, johannes.berg@intel.com,
-        alexander@wetzel-home.de, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 2:35 PM Lizhe <sensor1010@163.com> wrote:
->
-> use devm_kzalloc replaces kamlloc
->
-> Signed-off-by: Lizhe <sensor1010@163.com>
-> ---
->  drivers/net/wireless/atmel/at76c50x-usb.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
-> index 009bca34ece3..ebd8ef525557 100644
-> --- a/drivers/net/wireless/atmel/at76c50x-usb.c
-> +++ b/drivers/net/wireless/atmel/at76c50x-usb.c
-> @@ -2444,7 +2444,7 @@ static int at76_probe(struct usb_interface *interface,
->
->         udev = usb_get_dev(interface_to_usbdev(interface));
->
-> -       fwv = kmalloc(sizeof(*fwv), GFP_KERNEL);
-> +       fwv = devm_kzalloc(sizeof(*fwv), GFP_KERNEL);
+"Linux kernel regression tracking (Thorsten Leemhuis)"
+<regressions@leemhuis.info> writes:
 
-Have you compiled this patch ?
+> On 10.01.23 09:00, Felix Fietkau wrote:
+>
+>>> Still no reply. I wonder if I'm holding things wrong. But well, let's
+>>> wait one more day before escalating this further.
+>> 
+>> Johannes told me on IRC that he will review my patch soon. He simply has too many things to do at the moment.
+>
+> Great, thx. And sorry for prodding so much, but that is part of the job
+> when it takes so long to fix regressions -- even in cases where that's
+> mainly caused by a holiday season (which I took into account, otherwise
+> I likely would have made more noise earlier already).
 
->         if (!fwv) {
->                 ret = -ENOMEM;
->                 goto exit;
-> @@ -2535,7 +2535,6 @@ static int at76_probe(struct usb_interface *interface,
->                 at76_delete_device(priv);
->
->  exit:
-> -       kfree(fwv);
->         if (ret < 0)
->                 usb_put_dev(udev);
->         return ret;
-> --
-> 2.17.1
->
+Thorsten, I value your work A LOT, tracking regressions is important and
+makes our work easier. Thank you for that. But when tracking bugs please
+be reasonable as well. Most of the people in the community are
+volunteers, we have our normal lives/work as well and things don't
+always move so fast. For example, I just came from a long vacation this
+Monday and have a lot to catch up. That's why the release cycle is so
+long as it is.
+
+We are in -rc3 at the moment and I don't see the need to push the panic
+button so early in the cycle. If we take fixes in a rush that might
+break even more stuff. And anyone using release candidates ("rc") should
+understand that things can be broken and it might take some time to get
+them fixed, especially on holiday periods.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
