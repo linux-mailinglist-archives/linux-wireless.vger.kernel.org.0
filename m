@@ -2,147 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2457D6697C9
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 13:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B45B16698EC
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 14:44:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241452AbjAMM4j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 07:56:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
+        id S233277AbjAMNoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 08:44:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230079AbjAMM4J (ORCPT
+        with ESMTP id S240277AbjAMNmk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:56:09 -0500
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146C9869E0
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:43:29 -0800 (PST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-482d3bf0266so224913457b3.3
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:43:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5zAds6dJ80mrhRnoDvYbKky5GBmXWKQesPl/8EhCvZk=;
-        b=h2Dut6VZC2FqtL7oy/fvWGe/VTIVL+k6LwYHLR2FkVFuVGXc3s0WV8eY31lqZDwWKh
-         +GZLiPkAzcL+WRcGMcM7/MNA/W1MzNsqmHDTlcp2g95VFjPUv/130qntwrd++Hz7+n/0
-         iZYxyp7+ZrspVHOMvxGO85TKD4Iznpe/vI3GpjvAvL9qLOVM9ZSXwFFWV+d8wHpoXbUO
-         CZAzbLnoiWCQPxE0T5CqWFwGi1m1Ht81MH0GAUgOX5M5vAeX3Hh1+fxUUweQp2u1q/t9
-         m1hzUZx3l+xCSQ+983nb8XM5F7kA7K7nZWbEQEKhZYTBpxIzVnvsg1dvyY+VU/IHQ7dV
-         7B1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5zAds6dJ80mrhRnoDvYbKky5GBmXWKQesPl/8EhCvZk=;
-        b=BHYY7+qjgxbbyiuZ7yxgcf5torxHyaHpss4jzHu64m+CuFVGTzx3LHfz1kHZ7l3v1D
-         uNN4T3HlN1FgYCBXxEmVRP0kOY6LiMVQrnfNWMW5Ikw0B6Gr1+lL3ME13X+aQtXms6+P
-         KyjTWx6NnNLfWcheuWZfRk5/vN/O5BkJASoTNcRJYUjMpcmeOO+zcs2Ve3jUdifoQST+
-         UVHC4u5hAienDaiPLRuunOexgHxZP1LRAoSVcZ1SPqdWx/FPNAF32pwbYJg/zt7r/BOE
-         tNA8CLq35EydQ3VL2XGLdby36ZkyHViAT6dGkdaagHFQpIZB3MNuVtgLZOpPed0Db/cc
-         yjOg==
-X-Gm-Message-State: AFqh2kodmdPzr5EBsICEFXW8H74XSxPRrLPUQS6xNxx92l6CZ2cQuAXE
-        hJ0yqr84YqK8g8Y4ANN1h2nnr/P/U2MaIA==
-X-Google-Smtp-Source: AMrXdXu04letNP3n73i7G20TfRIAC6TF031htVYWaFLgpui/0FS1FY93V0Q8WqhjcO0QluWLvFi3P5GqGgGR+Q==
-X-Received: from edumazet1.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:395a])
- (user=edumazet job=sendgmr) by 2002:a25:da92:0:b0:7cb:aadd:68e2 with SMTP id
- n140-20020a25da92000000b007cbaadd68e2mr362884ybf.266.1673613808344; Fri, 13
- Jan 2023 04:43:28 -0800 (PST)
-Date:   Fri, 13 Jan 2023 12:43:26 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
-Message-ID: <20230113124326.3533978-1-edumazet@google.com>
-Subject: [PATCH net] Revert "wifi: mac80211: fix memory leak in ieee80211_if_add()"
-From:   Eric Dumazet <edumazet@google.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>
+        Fri, 13 Jan 2023 08:42:40 -0500
+Received: from m12.mail.163.com (m12.mail.163.com [123.126.96.234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0714F249;
+        Fri, 13 Jan 2023 05:36:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=5R8MW5PsrFpUHW2/Qs
+        o1Ea/UZDqrP1AU/pa+y91SHfc=; b=i34dA0h1bYou2dmJ0i8xL4wac/UEIJTh2c
+        ZrR19AzAxyKn1dyPwzDxUEyxRltsoWTQ3FROg6F5klG+LYAXg6Te6ntK8IuWyAgy
+        +pjS/OgbcKFwTelRZiI8PFZJ7shsndqYDeSUD2pBXfmcs8wcoz6DIlenHdNfjwd8
+        TLT+SYQCc=
+Received: from localhost.localdomain (unknown [114.107.204.148])
+        by smtp20 (Coremail) with SMTP id H91pCgDnZMAKXsFj1Gk1AQ--.2429S4;
+        Fri, 13 Jan 2023 21:35:46 +0800 (CST)
+From:   Lizhe <sensor1010@163.com>
+To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, johannes.berg@intel.com,
+        alexander@wetzel-home.de
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        linux-kernel@vger.kernel.org, Lizhe <sensor1010@163.com>
+Subject: [PATCH v1] wireless/at76c50x-usb.c : Use devm_kzalloc replaces kmalloc
+Date:   Fri, 13 Jan 2023 05:35:03 -0800
+Message-Id: <20230113133503.58336-1-sensor1010@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: H91pCgDnZMAKXsFj1Gk1AQ--.2429S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrWkXF4DCFWxJr43tw43Jrb_yoWfZFc_uF
+        4Igrn7JFWUJFs2gry7Cr47ZFySkF1xXFn7uanxKay3uw12vrW8ZrZ5ZFyavFZrurWfAFy3
+        Ar1DtFy5ZayvgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRXtxfUUUUUU==
+X-Originating-IP: [114.107.204.148]
+X-CM-SenderInfo: 5vhq20jurqiii6rwjhhfrp/1tbiSBT1q1+FgsklaAABsf
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 13e5afd3d773c6fc6ca2b89027befaaaa1ea7293.
+use devm_kzalloc replaces kamlloc
 
-ieee80211_if_free() is already called from free_netdev(ndev)
-because ndev->priv_destructor == ieee80211_if_free
-
-syzbot reported:
-
-general protection fault, probably for non-canonical address 0xdffffc0000000004: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-CPU: 0 PID: 10041 Comm: syz-executor.0 Not tainted 6.2.0-rc2-syzkaller-00388-g55b98837e37d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-RIP: 0010:pcpu_get_page_chunk mm/percpu.c:262 [inline]
-RIP: 0010:pcpu_chunk_addr_search mm/percpu.c:1619 [inline]
-RIP: 0010:free_percpu mm/percpu.c:2271 [inline]
-RIP: 0010:free_percpu+0x186/0x10f0 mm/percpu.c:2254
-Code: 80 3c 02 00 0f 85 f5 0e 00 00 48 8b 3b 48 01 ef e8 cf b3 0b 00 48 ba 00 00 00 00 00 fc ff df 48 8d 78 20 48 89 f9 48 c1 e9 03 <80> 3c 11 00 0f 85 3b 0e 00 00 48 8b 58 20 48 b8 00 00 00 00 00 fc
-RSP: 0018:ffffc90004ba7068 EFLAGS: 00010002
-RAX: 0000000000000000 RBX: ffff88823ffe2b80 RCX: 0000000000000004
-RDX: dffffc0000000000 RSI: ffffffff81c1f4e7 RDI: 0000000000000020
-RBP: ffffe8fffe8fc220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 1ffffffff2179ab2 R12: ffff8880b983d000
-R13: 0000000000000003 R14: 0000607f450fc220 R15: ffff88823ffe2988
-FS: 00007fcb349de700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b32220000 CR3: 000000004914f000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-netdev_run_todo+0x6bf/0x1100 net/core/dev.c:10352
-ieee80211_register_hw+0x2663/0x4040 net/mac80211/main.c:1411
-mac80211_hwsim_new_radio+0x2537/0x4d80 drivers/net/wireless/mac80211_hwsim.c:4583
-hwsim_new_radio_nl+0xa09/0x10f0 drivers/net/wireless/mac80211_hwsim.c:5176
-genl_family_rcv_msg_doit.isra.0+0x1e6/0x2d0 net/netlink/genetlink.c:968
-genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
-genl_rcv_msg+0x4ff/0x7e0 net/netlink/genetlink.c:1065
-netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2564
-genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
-netlink_unicast_kernel net/netlink/af_netlink.c:1330 [inline]
-netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1356
-netlink_sendmsg+0x91b/0xe10 net/netlink/af_netlink.c:1932
-sock_sendmsg_nosec net/socket.c:714 [inline]
-sock_sendmsg+0xd3/0x120 net/socket.c:734
-____sys_sendmsg+0x712/0x8c0 net/socket.c:2476
-___sys_sendmsg+0x110/0x1b0 net/socket.c:2530
-__sys_sendmsg+0xf7/0x1c0 net/socket.c:2559
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Fixes: 13e5afd3d773 ("wifi: mac80211: fix memory leak in ieee80211_if_add()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Zhengchao Shao <shaozhengchao@huawei.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Lizhe <sensor1010@163.com>
 ---
- net/mac80211/iface.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/atmel/at76c50x-usb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index e20c3fe9a0b19439794a5b6fb9f696ee6b87ce8d..23ed13f150675d1ffa869796c857f5905fb8dae8 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -2197,7 +2197,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
+index 009bca34ece3..ebd8ef525557 100644
+--- a/drivers/net/wireless/atmel/at76c50x-usb.c
++++ b/drivers/net/wireless/atmel/at76c50x-usb.c
+@@ -2444,7 +2444,7 @@ static int at76_probe(struct usb_interface *interface,
  
- 		ret = cfg80211_register_netdevice(ndev);
- 		if (ret) {
--			ieee80211_if_free(ndev);
- 			free_netdev(ndev);
- 			return ret;
- 		}
+ 	udev = usb_get_dev(interface_to_usbdev(interface));
+ 
+-	fwv = kmalloc(sizeof(*fwv), GFP_KERNEL);
++	fwv = devm_kzalloc(sizeof(*fwv), GFP_KERNEL);
+ 	if (!fwv) {
+ 		ret = -ENOMEM;
+ 		goto exit;
+@@ -2535,7 +2535,6 @@ static int at76_probe(struct usb_interface *interface,
+ 		at76_delete_device(priv);
+ 
+ exit:
+-	kfree(fwv);
+ 	if (ret < 0)
+ 		usb_put_dev(udev);
+ 	return ret;
 -- 
-2.39.0.314.g84b9a713c41-goog
+2.17.1
 
