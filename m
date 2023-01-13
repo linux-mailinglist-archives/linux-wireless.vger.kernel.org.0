@@ -2,107 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1416696B3
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 13:14:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4FA6696CD
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 13:21:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241096AbjAMMOJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 07:14:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51084 "EHLO
+        id S241283AbjAMMVc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 07:21:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241117AbjAMMNV (ORCPT
+        with ESMTP id S240584AbjAMMVJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:13:21 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A42AAE7A
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:07:56 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pGIqh-0007Sr-8b; Fri, 13 Jan 2023 13:07:55 +0100
-Message-ID: <ce9a1141-810a-491a-1293-67beb46efb1f@leemhuis.info>
-Date:   Fri, 13 Jan 2023 13:07:54 +0100
+        Fri, 13 Jan 2023 07:21:09 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9244180609
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:14:48 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 41F50B82137
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 12:14:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D1FC433EF;
+        Fri, 13 Jan 2023 12:14:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673612085;
+        bh=YAoO+Byw1unrROhiBcYVj0kEzsOoVTbw5Y49ArPv5bY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=PHuymldC+LboDEJcHh9DFgK4OZkao77NPNEzZ01qnNHdotw94NaiSXQI1JAsO7UBw
+         rG1OW8Hv82z2CmcWNNRn5rWfGRv/t1uPn4tstpTFE+5ZR81Xk6byqmUn9hLlv5oJWD
+         aEi10g+PQnGB9XnK0ilY+E6Xh9/8A7sKYLnYDFAWrUT4KrHEEhMRHe3FoeBEVx/WqQ
+         sCRsG0Wi2wM1GkcCmdbnd6TYi6O/F2N+mndqz3UUocjKbS/IVUSEQ65/gyZPV+pVXc
+         I84rac7nGzKYoXkGvAbpZUmf0qRw8V9Yhyi+yl3UiRuEtX+y/0MyM+uZEEsTUjvlZY
+         obnVjEQdIkcaw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] wifi: ath11k: reduce the timeout value back for hw scan from 10 seconds to 1 second
+References: <20221011072408.23731-1-quic_wgong@quicinc.com>
+        <20221011072408.23731-3-quic_wgong@quicinc.com>
+        <8735atg335.fsf@kernel.org>
+        <cd96eea8-dce0-bcb9-e8ce-05fa0e0f22fb@quicinc.com>
+        <e7e34c3d-8b73-f7d5-9ce8-5ed346ca9d28@quicinc.com>
+        <7bcd1a12-fb60-98cd-1a29-f55efa8d1499@quicinc.com>
+        <73908049-4a69-e65c-665b-97d068f1fef7@quicinc.com>
+Date:   Fri, 13 Jan 2023 14:14:41 +0200
+In-Reply-To: <73908049-4a69-e65c-665b-97d068f1fef7@quicinc.com> (Wen Gong's
+        message of "Fri, 13 Jan 2023 14:54:50 +0800")
+Message-ID: <87k01qd426.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH wireless 3/3] wifi: mt76: dma: fix a regression in adding
- rx buffers
-Content-Language: en-US, de-DE
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230113105848.34642-1-nbd@nbd.name>
- <20230113105848.34642-3-nbd@nbd.name>
-From:   "Linux kernel regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230113105848.34642-3-nbd@nbd.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1673611680;7f227252;
-X-HE-SMSGID: 1pGIqh-0007Sr-8b
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 13.01.23 11:58, Felix Fietkau wrote:
-> When adding WED support, mt76_dma_add_buf was accidentally changed to set
-> the skip_buf0 flag for tx buffers on the wrong queue descriptor entry.
-> Additionally, there is a rxwi leak when rx buffer allocation fails.
+Wen Gong <quic_wgong@quicinc.com> writes:
 
-thx for working on this
+> Should I change commit log with below explanation and send v4?
 
-> Fix this and make the code more readable by adding a separate function for
-> adding rx buffers.
-> 
-> Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Please stop spamming the same question over and over, it's really
+annoying. If I don't have time to look at something, spamming me won't
+help, quite the opposite. It would be a lot better if you would help
+with the other upstream related tasks we have, that way I might have
+more time to look at your patches.
 
-Many thx for taking care of this. There is one small thing to improve,
-please add the following tags here to make things easier for future code
-archaeologists and give proper credit:
+To answer your question I need to look at this patchset in detail and I
+don't know when I'm able to do that. But at this moment I don't trust
+this patchset is the right approach and I'm not willing to take it.
 
-Link:
-https://lore.kernel.org/r/CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre%2BXJS_s5FgVteYA@mail.gmail.com/
-Reported-by: Mike Lothian <mike@fireburn.co.uk>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216829
-Reported-by: AngeloGioacchino Del Regno
-Link:
-https://lore.kernel.org/lkml/20230112171706.294550-1-angelogioacchino.delregno@collabora.com/
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-To explain: Linus[1] and others considered proper link tags important in
-cases like this, as they allow anyone to look into the backstory of a
-fix weeks or years later. That's nothing new, the documentation[2] for
-some time says to place such tags in cases like this. I care personally
-(and made it a bit more explicit in the docs a while ago), because these
-tags make my regression tracking efforts a whole lot easier, as they
-allow my tracking bot 'regzbot' to automatically connect reports with
-patches posted or committed to fix tracked regressions.
-
-Apropos regzbot, let me tell regzbot to monitor this thread:
-
-#regzbot ^backmonitor:
-https://lore.kernel.org/r/CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre%2BXJS_s5FgVteYA@mail.gmail.com/
-
-> [...]
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-
-[1] for details, see:
-https://lore.kernel.org/all/CAHk-=wjMmSZzMJ3Xnskdg4+GGz=5p5p+GSYyFBTh0f-DgvdBWg@mail.gmail.com/
-https://lore.kernel.org/all/CAHk-=wgs38ZrfPvy=nOwVkVzjpM3VFU1zobP37Fwd_h9iAD5JQ@mail.gmail.com/
-https://lore.kernel.org/all/CAHk-=wjxzafG-=J8oT30s7upn4RhBs6TX-uVFZ5rME+L5_DoJA@mail.gmail.com/
-
-[2] see Documentation/process/submitting-patches.rst
-(http://docs.kernel.org/process/submitting-patches.html) and
-Documentation/process/5.Posting.rst
-(https://docs.kernel.org/process/5.Posting.html)
-
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
