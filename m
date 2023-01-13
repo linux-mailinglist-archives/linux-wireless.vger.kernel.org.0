@@ -2,107 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBDD266978C
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 13:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2457D6697C9
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 13:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241455AbjAMMlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 07:41:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51624 "EHLO
+        id S241452AbjAMM4j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 07:56:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241577AbjAMMku (ORCPT
+        with ESMTP id S230079AbjAMM4J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:40:50 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F2C840AA
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:34:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 345FA6150E
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 12:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F53DC433EF;
-        Fri, 13 Jan 2023 12:34:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673613259;
-        bh=XP7ELr/LV2NXiee4p7xuSDJGbblVNPXN0TlgLpZgcIE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Bn0w/TnJdLBor9PQDumi9Q23SdCu6qt+3gH3kLnq72WrlX4vmxEGjLKpxRp57/PkK
-         y5icRNwk0UW/cOAh7FTETakjRTshPjttLpPVGNb533fEHkcfXTOt0g29OxiUNEK17p
-         6Cr4/xO1Wzz/UkYoPhprsGEFKUReT8Zr1MjD/D8CMGO+3PXvctZNJvrW33uyLs5h83
-         u6wLRgwOiqeW/n9Q3qMuiihbpXBUOmOw9t+NkEFBA9h0UVYM9Ll69+FjkNLbO+gPfQ
-         ZzFWDFUhoyJ6kkeL1P9sxB8DS8ojUYpRamIG4+JOyjkZx+4yB/k2eSYA8vNfp7hn30
-         o6VShmEMZAF6A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     ath11k@lists.infradead.org, mhi@lists.linux.dev,
-        linux-wireless@vger.kernel.org, robert.marko@sartura.hr
-Subject: Re: [PATCH RFC] ath11k: Add multiple QCN9074 devices support
-References: <20230111170033.32454-1-kvalo@kernel.org>
-        <20230112103824.GD4782@thinkpad>
-Date:   Fri, 13 Jan 2023 14:34:15 +0200
-In-Reply-To: <20230112103824.GD4782@thinkpad> (Manivannan Sadhasivam's message
-        of "Thu, 12 Jan 2023 16:08:24 +0530")
-Message-ID: <87edryd35k.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 13 Jan 2023 07:56:09 -0500
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146C9869E0
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:43:29 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-482d3bf0266so224913457b3.3
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 04:43:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5zAds6dJ80mrhRnoDvYbKky5GBmXWKQesPl/8EhCvZk=;
+        b=h2Dut6VZC2FqtL7oy/fvWGe/VTIVL+k6LwYHLR2FkVFuVGXc3s0WV8eY31lqZDwWKh
+         +GZLiPkAzcL+WRcGMcM7/MNA/W1MzNsqmHDTlcp2g95VFjPUv/130qntwrd++Hz7+n/0
+         iZYxyp7+ZrspVHOMvxGO85TKD4Iznpe/vI3GpjvAvL9qLOVM9ZSXwFFWV+d8wHpoXbUO
+         CZAzbLnoiWCQPxE0T5CqWFwGi1m1Ht81MH0GAUgOX5M5vAeX3Hh1+fxUUweQp2u1q/t9
+         m1hzUZx3l+xCSQ+983nb8XM5F7kA7K7nZWbEQEKhZYTBpxIzVnvsg1dvyY+VU/IHQ7dV
+         7B1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5zAds6dJ80mrhRnoDvYbKky5GBmXWKQesPl/8EhCvZk=;
+        b=BHYY7+qjgxbbyiuZ7yxgcf5torxHyaHpss4jzHu64m+CuFVGTzx3LHfz1kHZ7l3v1D
+         uNN4T3HlN1FgYCBXxEmVRP0kOY6LiMVQrnfNWMW5Ikw0B6Gr1+lL3ME13X+aQtXms6+P
+         KyjTWx6NnNLfWcheuWZfRk5/vN/O5BkJASoTNcRJYUjMpcmeOO+zcs2Ve3jUdifoQST+
+         UVHC4u5hAienDaiPLRuunOexgHxZP1LRAoSVcZ1SPqdWx/FPNAF32pwbYJg/zt7r/BOE
+         tNA8CLq35EydQ3VL2XGLdby36ZkyHViAT6dGkdaagHFQpIZB3MNuVtgLZOpPed0Db/cc
+         yjOg==
+X-Gm-Message-State: AFqh2kodmdPzr5EBsICEFXW8H74XSxPRrLPUQS6xNxx92l6CZ2cQuAXE
+        hJ0yqr84YqK8g8Y4ANN1h2nnr/P/U2MaIA==
+X-Google-Smtp-Source: AMrXdXu04letNP3n73i7G20TfRIAC6TF031htVYWaFLgpui/0FS1FY93V0Q8WqhjcO0QluWLvFi3P5GqGgGR+Q==
+X-Received: from edumazet1.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:395a])
+ (user=edumazet job=sendgmr) by 2002:a25:da92:0:b0:7cb:aadd:68e2 with SMTP id
+ n140-20020a25da92000000b007cbaadd68e2mr362884ybf.266.1673613808344; Fri, 13
+ Jan 2023 04:43:28 -0800 (PST)
+Date:   Fri, 13 Jan 2023 12:43:26 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
+Message-ID: <20230113124326.3533978-1-edumazet@google.com>
+Subject: [PATCH net] Revert "wifi: mac80211: fix memory leak in ieee80211_if_add()"
+From:   Eric Dumazet <edumazet@google.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+This reverts commit 13e5afd3d773c6fc6ca2b89027befaaaa1ea7293.
 
-> On Wed, Jan 11, 2023 at 07:00:33PM +0200, Kalle Valo wrote:
->> From: P Praneesh <quic_ppranees@quicinc.com>
->> 
->> On platforms with two or more QCN9074 devices, the QMI service will run with
->> identical QRTR ids. qmi_add_lookup() is called with same qmi.service_ins_id.
->
-> identical QRTR instance ID.
+ieee80211_if_free() is already called from free_netdev(ndev)
+because ndev->priv_destructor == ieee80211_if_free
 
-Will fix.
+syzbot reported:
 
->> Kalle's comments:
->> 
->> Depends on: https://patchwork.kernel.org/project/linux-wireless/list/?series=710862&order=date
->> 
->> It's also possible to do a simple test by just changing the test
->> "test_bit(ATH11K_FW_FEATURE_MULTI_QRTR_ID, ab->fw.fw_features)" to true, no
->> extra patches should be needed.
->> 
->> I don't have a test setup for this so compile tested only. But I assume Praneesh has tested this.
->> 
->> This is alternative approach to Robert's patchset:
->> 
->> https://patchwork.kernel.org/project/linux-wireless/list/?series=692423&state=*&order=date
->> 
->
-> For what devices the compatible firmware is available?
+general protection fault, probably for non-canonical address 0xdffffc0000000004: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+CPU: 0 PID: 10041 Comm: syz-executor.0 Not tainted 6.2.0-rc2-syzkaller-00388-g55b98837e37d #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+RIP: 0010:pcpu_get_page_chunk mm/percpu.c:262 [inline]
+RIP: 0010:pcpu_chunk_addr_search mm/percpu.c:1619 [inline]
+RIP: 0010:free_percpu mm/percpu.c:2271 [inline]
+RIP: 0010:free_percpu+0x186/0x10f0 mm/percpu.c:2254
+Code: 80 3c 02 00 0f 85 f5 0e 00 00 48 8b 3b 48 01 ef e8 cf b3 0b 00 48 ba 00 00 00 00 00 fc ff df 48 8d 78 20 48 89 f9 48 c1 e9 03 <80> 3c 11 00 0f 85 3b 0e 00 00 48 8b 58 20 48 b8 00 00 00 00 00 fc
+RSP: 0018:ffffc90004ba7068 EFLAGS: 00010002
+RAX: 0000000000000000 RBX: ffff88823ffe2b80 RCX: 0000000000000004
+RDX: dffffc0000000000 RSI: ffffffff81c1f4e7 RDI: 0000000000000020
+RBP: ffffe8fffe8fc220 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 1ffffffff2179ab2 R12: ffff8880b983d000
+R13: 0000000000000003 R14: 0000607f450fc220 R15: ffff88823ffe2988
+FS: 00007fcb349de700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32220000 CR3: 000000004914f000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+netdev_run_todo+0x6bf/0x1100 net/core/dev.c:10352
+ieee80211_register_hw+0x2663/0x4040 net/mac80211/main.c:1411
+mac80211_hwsim_new_radio+0x2537/0x4d80 drivers/net/wireless/mac80211_hwsim.c:4583
+hwsim_new_radio_nl+0xa09/0x10f0 drivers/net/wireless/mac80211_hwsim.c:5176
+genl_family_rcv_msg_doit.isra.0+0x1e6/0x2d0 net/netlink/genetlink.c:968
+genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+genl_rcv_msg+0x4ff/0x7e0 net/netlink/genetlink.c:1065
+netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2564
+genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+netlink_unicast_kernel net/netlink/af_netlink.c:1330 [inline]
+netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1356
+netlink_sendmsg+0x91b/0xe10 net/netlink/af_netlink.c:1932
+sock_sendmsg_nosec net/socket.c:714 [inline]
+sock_sendmsg+0xd3/0x120 net/socket.c:734
+____sys_sendmsg+0x712/0x8c0 net/socket.c:2476
+___sys_sendmsg+0x110/0x1b0 net/socket.c:2530
+__sys_sendmsg+0xf7/0x1c0 net/socket.c:2559
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Currently only recent QCN9074 firmware releases support this, but I
-don't from which release onwards.
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 13e5afd3d773 ("wifi: mac80211: fix memory leak in ieee80211_if_add()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Zhengchao Shao <shaozhengchao@huawei.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/iface.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> Any plan to fix the devices with old firmware?
-
-In my opinion all ath11k PCI firmwares should support this, but AFAIK
-they do not. I'll push the firmware teams to implement this but it's
-another story if I succeed :)
-
->> +static void ath11k_pci_update_qrtr_node_id(struct ath11k_base *ab)
->
-> The function name says update node_id but instance_id is what getting
-> updated.
-
-Will fix.
-
-Thanks for the review!
-
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index e20c3fe9a0b19439794a5b6fb9f696ee6b87ce8d..23ed13f150675d1ffa869796c857f5905fb8dae8 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -2197,7 +2197,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 		ret = cfg80211_register_netdevice(ndev);
+ 		if (ret) {
+-			ieee80211_if_free(ndev);
+ 			free_netdev(ndev);
+ 			return ret;
+ 		}
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.39.0.314.g84b9a713c41-goog
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
