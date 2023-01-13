@@ -2,75 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB33669081
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 09:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F21C669161
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 09:42:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjAMIS5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 03:18:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32882 "EHLO
+        id S233845AbjAMImr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 03:42:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240757AbjAMIRz (ORCPT
+        with ESMTP id S230079AbjAMImo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 03:17:55 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B28F3AB3C;
-        Fri, 13 Jan 2023 00:15:18 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id k22-20020a05600c1c9600b003d1ee3a6289so16799001wms.2;
-        Fri, 13 Jan 2023 00:15:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lDH2r+aaMVDaTXe1cqxFgeM1gF0GH9kuOcqbkmIJc7g=;
-        b=CO7lmyYPjib1vcKA4kDkfTCt6tAJQap9PeYr9Sepjp3b1cgq5d15zZGEVk9RIoJRUO
-         2idOaK+2Ea/XCj2Zku0uZSGLlZItx3KVZPUSCaHFIdJI7djnUbsKcGsZK/BKLXqVHV/1
-         XTXJ7KK0M041H8fT0+bj1QG1M1cnThB/Qy0Sy6l6Dq4x7aSRvZQ1xNn2R6xXjBUrAQyQ
-         /Whk4pCa+zYztlX1ikcUUvQrhlzqeix6k409un8WAdcrHILvQNt7dbfFdcFpkY8zgdkX
-         PF9Vnculzi95GIY1s6N826Ie6GnepwfIDGx29akm/e/oAYJtKY+EPEwMyPtioIQcFft9
-         pUBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lDH2r+aaMVDaTXe1cqxFgeM1gF0GH9kuOcqbkmIJc7g=;
-        b=k853k8WDS2b+2Jq5L/X49Em+dh8XB+Fd/iS3I0z8/A1sGeDyAmcgkX+0AjJKo9fvGV
-         eYliw4nYGrnsXy8gzKnTtI94OiWqaNF+75a+SYqDPjFk9y+hcclcyfpKQ+hTaj/RwEIV
-         mN+VA6M8xNcBskpm4eqkK3FR1TIMXrAIeI/BiWgyB8kCPMNl0fcKBpLKUkcZKJatFm8w
-         2HAm1xuvVmsZ5edd1kClJgZAeuSkfVV+T3ifRHk3JmhdDaR9NPxSch4BUfuN2ChwYO0C
-         YsdxW3+1WWNJ7/7dqVGPbf5J9fMWNd4Sa1o1c1CV5k6Apf3OI8WnKvy4BWcBnAUnXmvw
-         /bnQ==
-X-Gm-Message-State: AFqh2koVEUarGa2Z2nMhnJ4tbRu9FbyIWMzcGsG7gucL2l4K6+1pKYum
-        CcihtWTGuWyjjlLr0k4et1Ty+CnbHd0=
-X-Google-Smtp-Source: AMrXdXtNghofGnEbWo9JKqxJeXxWHJk4LRlHecbMzJteV00KOBfZi1377H8QiJ2JmuKainsvpXz9VQ==
-X-Received: by 2002:a1c:4b04:0:b0:3c6:f0b8:74e6 with SMTP id y4-20020a1c4b04000000b003c6f0b874e6mr58720117wma.4.1673597716762;
-        Fri, 13 Jan 2023 00:15:16 -0800 (PST)
-Received: from [10.0.0.13] ([37.166.131.240])
-        by smtp.gmail.com with ESMTPSA id n14-20020a05600c3b8e00b003b49bd61b19sm32553847wms.15.2023.01.13.00.15.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jan 2023 00:15:16 -0800 (PST)
-Message-ID: <b5ad26c3-fa10-b056-d79d-8bebb8795a90@gmail.com>
-Date:   Fri, 13 Jan 2023 09:15:14 +0100
+        Fri, 13 Jan 2023 03:42:44 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A4A03F440;
+        Fri, 13 Jan 2023 00:42:43 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 194845F9CE;
+        Fri, 13 Jan 2023 08:42:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1673599361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Tn3pIfSFHMAaGKQ0wQUSfqNv0AGtcMDyvx2yhx14BF0=;
+        b=MBsoXy0wcYRuu5Kue6BMjCgXARbLAQJk/VqHt/iRhBK/bRgiyNe3k4gp7pxwcWeA9Prop8
+        0LWEQCTjczPkK6TNNGra7mg+eBfY55utQL9Jn6L51VSgQbXfGxhIbgKJVvsCSotb6xj7PO
+        MzBrd1PP9y6Cw1gLuSs/QaesbmCQqdM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1673599361;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Tn3pIfSFHMAaGKQ0wQUSfqNv0AGtcMDyvx2yhx14BF0=;
+        b=KMHxhaL8EgbXJidfcT6tY9VYHXtg6yeHkf4K0/qQRdT4IXh1TR+M3BSMDznQC/FV3qw32A
+        SabK8ITT6F9QxHBw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F046713913;
+        Fri, 13 Jan 2023 08:42:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 8zonOoAZwWMhXQAAMHmgww
+        (envelope-from <cahu@suse.de>); Fri, 13 Jan 2023 08:42:40 +0000
+Message-ID: <5ab09d55233d1ba5969bd6a02214046c24145527.camel@suse.de>
+Subject: Re: [PATCH] rndis_wlan: Prevent buffer overflow in rndis_query_oid
+From:   cahu <cahu@suse.de>
+To:     Szymon Heidrich <szymon.heidrich@gmail.com>, kvalo@kernel.org,
+        jussi.kivilinna@iki.fi, davem@davemloft.net
+Cc:     edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 13 Jan 2023 09:42:40 +0100
+In-Reply-To: <20230110173007.57110-1-szymon.heidrich@gmail.com>
+References: <20230110173007.57110-1-szymon.heidrich@gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-VPz1AUbM/19UkYX6m/ao"
+User-Agent: Evolution 3.46.3 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH] wifi: mac80211: fix memory leak in ieee80211_if_add()
-To:     Zhengchao Shao <shaozhengchao@huawei.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Cc:     weiyongjun1@huawei.com, yuehaibing@huawei.com
-References: <20221117064500.319983-1-shaozhengchao@huawei.com>
-Content-Language: en-US
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-In-Reply-To: <20221117064500.319983-1-shaozhengchao@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,32 +72,69 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 11/17/22 07:45, Zhengchao Shao wrote:
-> When register_netdevice() failed in ieee80211_if_add(), ndev->tstats
-> isn't released. Fix it.
->
-> Fixes: 5a490510ba5f ("mac80211: use per-CPU TX/RX statistics")
-> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-> ---
->   net/mac80211/iface.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index dd9ac1f7d2ea..46f08ec5ed76 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
-> @@ -2258,6 +2258,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
->   
->   		ret = cfg80211_register_netdevice(ndev);
->   		if (ret) {
-> +			ieee80211_if_free(ndev);
->   			free_netdev(ndev);
->   			return ret;
->   		}
+--=-VPz1AUbM/19UkYX6m/ao
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+TWl0cmUgYXNzaWduZWQgQ1ZFLTIwMjMtMjM1NTkgZm9yIHRoaXMuCgpPbiBUdWUsIDIwMjMtMDEt
+MTAgYXQgMTg6MzAgKzAxMDAsIFN6eW1vbiBIZWlkcmljaCB3cm90ZToKPiBTaW5jZSByZXNwbGVu
+IGFuZCByZXNwb2ZmcyBhcmUgc2lnbmVkIGludGVnZXJzIHN1ZmZpY2llbnRseQo+IGxhcmdlIHZh
+bHVlcyBvZiB1bnNpZ25lZCBpbnQgbGVuIGFuZCBvZmZzZXQgbWVtYmVycyBvZiBSTkRJUwo+IHJl
+c3BvbnNlIHdpbGwgcmVzdWx0IGluIG5lZ2F0aXZlIHZhbHVlcyBvZiBwcmlvciB2YXJpYWJsZXMu
+Cj4gVGhpcyBtYXkgYmUgdXRpbGl6ZWQgdG8gYnlwYXNzIGltcGxlbWVudGVkIHNlY3VyaXR5IGNo
+ZWNrcwo+IHRvIGVpdGhlciBleHRyYWN0IG1lbW9yeSBjb250ZW50cyBieSBtYW5pcHVsYXRpbmcg
+b2Zmc2V0IG9yCj4gb3ZlcmZsb3cgdGhlIGRhdGEgYnVmZmVyIHZpYSBtZW1jcHkgYnkgbWFuaXB1
+bGF0aW5nIGJvdGgKPiBvZmZzZXQgYW5kIGxlbi4KPiAKPiBBZGRpdGlvbmFsbHkgYXNzdXJlIHRo
+YXQgc3VtIG9mIHJlc3BsZW4gYW5kIHJlc3BvZmZzIGRvZXMgbm90Cj4gb3ZlcmZsb3cgc28gYnVm
+ZmVyIGJvdW5kYXJpZXMgYXJlIGtlcHQuCj4gCj4gRml4ZXM6IDgwZjhjNWI0MzRmOSAoInJuZGlz
+X3dsYW46IGNvcHkgb25seSB1c2VmdWwgZGF0YSBmcm9tCj4gcm5kaXNfY29tbWFuZCByZXNwb25k
+IikKPiBTaWduZWQtb2ZmLWJ5OiBTenltb24gSGVpZHJpY2ggPHN6eW1vbi5oZWlkcmljaEBnbWFp
+bC5jb20+Cj4gLS0tCj4gwqBkcml2ZXJzL25ldC93aXJlbGVzcy9ybmRpc193bGFuLmMgfCA0ICsr
+LS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4g
+Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JuZGlzX3dsYW4uYwo+IGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3Mvcm5kaXNfd2xhbi5jCj4gaW5kZXggODJhNzQ1OGUwLi5kN2ZjMDUz
+MjggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mvcm5kaXNfd2xhbi5jCj4gKysr
+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mvcm5kaXNfd2xhbi5jCj4gQEAgLTY5Nyw3ICs2OTcsNyBA
+QCBzdGF0aWMgaW50IHJuZGlzX3F1ZXJ5X29pZChzdHJ1Y3QgdXNibmV0ICpkZXYsCj4gdTMyIG9p
+ZCwgdm9pZCAqZGF0YSwgaW50ICpsZW4pCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBzdHJ1Y3Qgcm5kaXNfcXVlcnlfY8KgwqDCoMKgKmdldF9jOwo+IMKgwqDCoMKgwqDCoMKgwqB9
+IHU7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCByZXQsIGJ1ZmxlbjsKPiAtwqDCoMKgwqDCoMKgwqBp
+bnQgcmVzcGxlbiwgcmVzcG9mZnMsIGNvcHlsZW47Cj4gK8KgwqDCoMKgwqDCoMKgdTMyIHJlc3Bs
+ZW4sIHJlc3BvZmZzLCBjb3B5bGVuOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGJ1ZmxlbiA9ICps
+ZW4gKyBzaXplb2YoKnUuZ2V0KTsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKGJ1ZmxlbiA8IENPTlRS
+T0xfQlVGRkVSX1NJWkUpCj4gQEAgLTc0MCw3ICs3NDAsNyBAQCBzdGF0aWMgaW50IHJuZGlzX3F1
+ZXJ5X29pZChzdHJ1Y3QgdXNibmV0ICpkZXYsCj4gdTMyIG9pZCwgdm9pZCAqZGF0YSwgaW50ICps
+ZW4pCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZ290
+byBleGl0X3VubG9jazsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoAo+
+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoKHJlc3BsZW4gKyByZXNwb2Zmcykg
+PiBidWZsZW4pIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHJlc3BsZW4g
+PiAoYnVmbGVuIC0gcmVzcG9mZnMpKSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgLyogRGV2aWNlIHdvdWxkIGhhdmUgcmV0dXJuZWQgbW9yZSBkYXRh
+IGlmCj4gYnVmZmVyIHdvdWxkCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgICogaGF2ZSBiZWVuIGJpZyBlbm91Z2guIENvcHkganVzdCB0aGUgYml0cwo+
+IHRoYXQgd2UgZ290Lgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCAqLwoK
 
 
-Note: I will send a revert of this buggy patch, this was adding a double 
-free.
+--=-VPz1AUbM/19UkYX6m/ao
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCAAdFiEEWHPP0YwOptScu/bEBioQFhUFoIoFAmPBGYAACgkQBioQFhUF
+oIq8Fw/7B0kVO8rQxfWzvp1yuDw5oZzC7LfD+HqZA+YuXPFVXN14QADsJ3In8pqY
+xm212/XkTvexbrERAn/G9YsdaBTqLd8ewZu26Jv8qX2dsCv/TB2+3bNcmNd4LjBI
+zE3IQkHZ2qfNHjjfJE4smlvB0xzdlDCzTSHsFMvWVkhDbsxmKtzT5nMUhBKLLTxi
+xa+MBrBDk6D+O/XVo1K0iqAQ1yYBa+gja3Eri1Grr94KlIZV4WndqjzhuBGNRqH3
+qDxtimX02jtO8hNuIAVHBOlVsrR5HhDLNf98LPynmoNP6e+q7grKSzS2AeXxCJpc
+UfTy1x4ble2rQSluMQMvQsV8ljp5Gq1ZD5hZF3xWn+t4UV8zVWeekTXdIvpCQkWL
+MlcBnRhKpTeq8QB/jlHMb9ca/IbYb6/TQcOUaEjl2ArZS9/hmPfbpZsUqnqaj/gF
+AlMejXU9jJvGjv9K/30lRwwc0suRvx74RE80/2OaPHtDulIQNQcZ/oykPFlucHNa
++/tE8+GANHzZMbd0FeW4UTeiqPC1UeiBnu0le/zyRaxoOWBAH4se2iJ4Ze/nDUi/
+JW6v0AfY5JZjV0P39PZ8e7E8eouZkIf/9/E3iSbNyol+VtqzyInGjo+9IwVZXzo+
+U4XL9M2JdBl5LxISS0YW3UwUWB8Muurts2oqaV/ZCaPnC6Kazhk=
+=ktM3
+-----END PGP SIGNATURE-----
 
+--=-VPz1AUbM/19UkYX6m/ao--
