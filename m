@@ -2,56 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80054669D24
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 17:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99C92669D2A
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jan 2023 17:05:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230194AbjAMQFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 11:05:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
+        id S229634AbjAMQFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 11:05:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbjAMQEu (ORCPT
+        with ESMTP id S229808AbjAMQFP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 11:04:50 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709A282BAD
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 07:54:57 -0800 (PST)
+        Fri, 13 Jan 2023 11:05:15 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08798FD28
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 07:57:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 20987B82179
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 15:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC11C433D2;
-        Fri, 13 Jan 2023 15:54:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 996F862230
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 15:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3436C433EF;
+        Fri, 13 Jan 2023 15:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673625294;
-        bh=GaMnPMMF5o9mQCCOGCpjR99NUUYdN/DNhPo8XX3bs7M=;
+        s=k20201202; t=1673625440;
+        bh=5Xi3jJguTbfN6z9+ujVfjfTlpKMjauoUdyDcaQ9FkGE=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=GMTkNIjg3PERwatGvqddUv2lgblrjdazr35po1grjwDv92OmvNyLwLXVdVKclMzAq
-         Bqo60nwkW45kGp9h61r4+pDdfMZCYso5zwvBM67xBjCNzCjKW8O09O0KcFX1+rCHd6
-         J6dcn2E5BA/cKoqjNEYOrPdnpx4JWZAca3YAQdE+F/dJuRUfRXrArU659/kfDbvoX0
-         w46lVlXJECQSF3Z/CiFkQk/yLvNxskfMlYGljPIsG3LfwOk8bBzEsTNKKXWEpVnplY
-         cpwmbkN6giqfAKt1LSDtg+/M3l3/xRGDq8x/Cx5vhv/wtMw5TjgcYDvOzbngcrMyEA
-         xbOjXUFzCWzGg==
+        b=gp1uYNiAvFINOEHcRLkS5XOFZcVYheztXteNuAV7j8wqo5Pntd/LUq/4yyD5EA9OH
+         40Nt4cYOp9sXV8lbk58D0xQAkkKwruhQ/3M0SH9toGwme8b0GCMN3ajN1YPpNW8QQf
+         hcyCQRsV2cBYMphae5GD3Mgo5mxXrhXdFcHPlgW5jNXGOYVCQJ3+GOyRq8M+z5gWBi
+         YVMR95lKMimxd8BM+4MTiYvbhvq8fzgiZw1D4aFWLlW4PFzqUC2asGYoSq7A6Hehqj
+         UwjHbs1L6fM+7xFu9tbPHRnlCMebmOpG5Xe5r3kxAGD5Aq5JIAO8maTAXyMRuYdJze
+         lvJfDaDWMOPag==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>
-Subject: Re: brcmfmac: Unexpected cfg80211_set_channel: set chanspec ... fail, reason -52
-References: <2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com>
-        <1f428e2b-f73f-64ff-02d3-eefbcd11db89@broadcom.com>
-        <ee24c4eda8d389ac7197b6296944e168ccc6b602.camel@sipsolutions.net>
-        <878ri6d0aw.fsf@kernel.org>
-        <185abb29a58.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Date:   Fri, 13 Jan 2023 17:54:46 +0200
-In-Reply-To: <185abb29a58.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-        (Arend Van Spriel's message of "Fri, 13 Jan 2023 16:14:47 +0100")
-Message-ID: <87wn5qbfax.fsf@kernel.org>
+To:     "Linux kernel regression tracking \(Thorsten Leemhuis\)" 
+        <regressions@leemhuis.info>
+Cc:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: Re: [PATCH wireless 3/3] wifi: mt76: dma: fix a regression in adding rx buffers
+References: <20230113105848.34642-1-nbd@nbd.name>
+        <20230113105848.34642-3-nbd@nbd.name>
+        <ce9a1141-810a-491a-1293-67beb46efb1f@leemhuis.info>
+Date:   Fri, 13 Jan 2023 17:57:17 +0200
+In-Reply-To: <ce9a1141-810a-491a-1293-67beb46efb1f@leemhuis.info> (Linux
+        kernel regression tracking's message of "Fri, 13 Jan 2023 13:07:54
+        +0100")
+Message-ID: <87sfgebf6q.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,44 +59,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+"Linux kernel regression tracking (Thorsten Leemhuis)"
+<regressions@leemhuis.info> writes:
 
-> On January 13, 2023 2:35:58 PM Kalle Valo <kvalo@kernel.org> wrote:
+> On 13.01.23 11:58, Felix Fietkau wrote:
+>> When adding WED support, mt76_dma_add_buf was accidentally changed to set
+>> the skip_buf0 flag for tx buffers on the wrong queue descriptor entry.
+>> Additionally, there is a rxwi leak when rx buffer allocation fails.
 >
->> Johannes Berg <johannes@sipsolutions.net> writes:
->>
->>>>> [  104.897615] brcmfmac: cfg80211_set_channel: set chanspec 0x100e fail,
->>>>> reason -52
->>>
->>> [...]
->>>
->>>>
->>>>> All of these 10 errors are repeated every 60 sec.
->>>>
->>>> Catching up after the holidays ;-) Above chanspec values are invalid.
->>>> 0x100e = channel 14/bw 20MHz. The 'iw list' output shows all these
->>>> channels are disabled. So who/what is trying to set these channels.
->>>> Scanning sets the channel in firmware. Is this initiated from hostapd?
->>>
->>> Yeah, what userspace is running here? Looks like cfg80211_set_channel()
->>> is only used for survey?
->>>
->>> Couple of observations on the side:
->>> * might be nice to have some "brcm" indication in that name :P
->>
->> Indeed, having a function cfg80211_set_channel() in brcmfmac/cfg80211.c
->> is VERY misleading. I first though that is a cfg80211 function and
->> didn't understand Johannes' comment until I started grepping :) Can
->> someone fix that, please?
+> thx for working on this
 >
-> It is already on your queue for wireless-next. That was the 3rd patch
-> for which you sent yourself a reminder earlier this week. You
-> remember? ;-p
+>> Fix this and make the code more readable by adding a separate function for
+>> adding rx buffers.
+>> 
+>> Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+>> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+>
+> Many thx for taking care of this. There is one small thing to improve,
+> please add the following tags here to make things easier for future code
+> archaeologists and give proper credit:
 
-Heh. No, I don't even try to remember all the patches, there's just too
-much of them :)
+I can add those.
 
-But very good that the fix is in queue, thanks!
+> Link:
+> https://lore.kernel.org/r/CABXGCsMEnQd=gYKTd1knRsWuxCb=Etv5nAre%2BXJS_s5FgVteYA@mail.gmail.com/
+> Reported-by: Mike Lothian <mike@fireburn.co.uk>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216829
+> Reported-by: AngeloGioacchino Del Regno
+
+But the email is missing for AngeloGioacchino.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
