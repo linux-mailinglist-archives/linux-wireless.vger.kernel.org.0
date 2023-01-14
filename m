@@ -2,72 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2ED66A94B
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Jan 2023 05:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EBB866A978
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Jan 2023 06:41:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjANE5U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 23:57:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54020 "EHLO
+        id S229505AbjANFlp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Jan 2023 00:41:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjANE5R (ORCPT
+        with ESMTP id S229494AbjANFln (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 23:57:17 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F4935AC
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 20:57:12 -0800 (PST)
-X-UUID: e3ac375293c711ed945fc101203acc17-20230114
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=3q8eUrFQGCvox/fCQJWQXBx4k/sv4dLG8kGb0Zo/4+Q=;
-        b=Up0mH1Zwf+c+0EcNO6N2xtbU4tdlYqaaiMRv2V9n6WavO2IV7Q+6C1uOLJpGDPzkqSOumW1DGLc97uC8d64qWSeuZVlh6/ZAWxi17KYAzu9oZzy7Rwj3T5othniMLGzbPssFTphxTzJtl7QeZImraeq/RSWpIantBhfSQ4jM34Q=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.17,REQID:df60f65a-1add-4ac5-9922-77f67b415d21,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:543e81c,CLOUDID:660a3a8c-8530-4eff-9f77-222cf6e2895b,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
-X-CID-BVR: 0,NGT
-X-UUID: e3ac375293c711ed945fc101203acc17-20230114
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1340597885; Sat, 14 Jan 2023 12:57:04 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Sat, 14 Jan 2023 12:57:03 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sat, 14 Jan 2023 12:57:03 +0800
-From:   Deren Wu <deren.wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7921: reduce polling time in pmctrl
-Date:   Sat, 14 Jan 2023 12:56:47 +0800
-Message-ID: <09ec100ccffd791acba8ad0521e486e309ff4644.1673670759.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <4113f5787a4e15271698219c61367d5105109c92.1673670759.git.deren.wu@mediatek.com>
-References: <4113f5787a4e15271698219c61367d5105109c92.1673670759.git.deren.wu@mediatek.com>
+        Sat, 14 Jan 2023 00:41:43 -0500
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10olkn2106.outbound.protection.outlook.com [40.92.41.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF37A35B5
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 21:41:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YD4F56P6dafcAJTXipuyxHu1p1xUwP29yBnZIyJoGbNizwDIv9AXdk4DzqBbbkn5Dazot5ZHWREYwzEI0FlkCF9NOQj57OiaucqgLVfYLY3rkcQub0YnW48cc5Vp0Aey68o/9dw/Z9RVsJP7hKBEbrhDvFy5ZHjbzGOI6dWQixM9tg71MKPBpRYpdBvy2wsPmjL+c/t2N/EC6UI0f4pVag/eaZCtHCRoavsHekWA15ltkI2DyrrZWd1IJekAqVGZA/wdydtcp0lNnN4qqScrChMuoZFjpz9bTnFvmRHAl6BlFDqd6BcHo1TNI+WxGyEYAlNLapgFAEYxeQWlJZwnsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7T4goZEsZCEJeqlSTdxBZdpfQ7BIpgeQ88jPd45zZTw=;
+ b=XhJp7waMdq3Q4s+z27wIYetcoOSos+m4Le6qsYJgP2qcNz7KQNUxZig5rZLaf/k3ss8+z0bYuY0DiAWnGVx7MTdtAuRdjXP8KeV4P4svKWEKVRcDSL/SntaEMjzRk6kedgi7haj/P1xkiFkkCxqwOFNDXPO9YiBZlxej6XGXePIONMvijcmP5q+X9whIa6Ic6k8V/yE02rLF4nfAVlcSGGHy8X7xQqpmrDSQz//+on9ziJxrRPCayEgzhmqXSDaB++aHIVtpOrizqjz747oObLbYKrUrXehevVniKPDJFHnV+SJmWm24Pv1VspgYmHDU2Tp2gHaxP8O74iGG4gpOSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7T4goZEsZCEJeqlSTdxBZdpfQ7BIpgeQ88jPd45zZTw=;
+ b=tuG7GzvZDY754m/5vKbsY6cVB/84dgBUE61jtXSG6DKpcRj+ZY8HCB5jYz6ABVIQovPPPFaDkqECWb8ZuSpTu/11vkUWiBFFLD2JJlWin3TJgWDLqSkjAJDoKsPSbIUFpQvzDNeEkW/NhUaIFWUDmCWKr/CQwTPAp5oCXNCYJLocPKx8PK/C2rwTMNLtupIFDXerVMAKJyCZcqOA05mtJDVM+slrOaDjRg/YaFf3DImXLSW6GnS678i4I51ndT/6qL0jRFICoNgy1ggDBMwwJZwzQZQxjDqit79BjWY8aNUDVQGftSbYLNGi6vQguCMrypTIU0mii+VuA/RdKiTqEA==
+Received: from CY4PR1001MB2375.namprd10.prod.outlook.com
+ (2603:10b6:910:47::35) by PH0PR10MB4567.namprd10.prod.outlook.com
+ (2603:10b6:510:33::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.12; Sat, 14 Jan
+ 2023 05:41:41 +0000
+Received: from CY4PR1001MB2375.namprd10.prod.outlook.com
+ ([fe80::5090:bf77:f059:b858]) by CY4PR1001MB2375.namprd10.prod.outlook.com
+ ([fe80::5090:bf77:f059:b858%5]) with mapi id 15.20.6002.012; Sat, 14 Jan 2023
+ 05:41:41 +0000
+Message-ID: <CY4PR1001MB237594C816BB0C957FC7CF9CC9C39@CY4PR1001MB2375.namprd10.prod.outlook.com>
+Date:   Fri, 13 Jan 2023 21:41:38 -0800
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Content-Language: en-US
+To:     linuxwifi@intel.com, linux-wireless@vger.kernel.org
+From:   Chris <powersurge69@hotmail.com>
+Subject: Wireless 7260 on Debian 11
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TMN:  [FIoqHRMQR24nMfXE+2hEcnmdSs+eURsW]
+X-ClientProxiedBy: BY5PR16CA0008.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::21) To CY4PR1001MB2375.namprd10.prod.outlook.com
+ (2603:10b6:910:47::35)
+X-Microsoft-Original-Message-ID: <9e28a0c5-f0b2-f9a5-bdfb-b16cfe06a592@hotmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
-        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=no
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PR1001MB2375:EE_|PH0PR10MB4567:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3451dd13-5748-4b12-f23d-08daf5f2030c
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: STRnaNqsibQsPHtW8bw1KyFV508zroR8sNyXmiQy8sjF9ecH2YvQA3TRQ0T64mdijod6XNa3pX3rLYX1FG/CpmWcS/+EzfEmQieFJelkW02I7AKU9HnFUh+0CyC8QOWNdBc/Q9BqxACAslKDy/cBWnbdjdiSUKmxApLbL4dZt0Vr9OaF8FlXV0MSUMK5bqHhj6OycuJGZ7jVnnhnIPtXh7mnqexxDkbyKj1OFrdud843vRH7xVvyc8+DEwZA1aJF7XjBd9MWkCi3gSeNBSJH4zfmpdg80wJpIjFo7T6sVt+6r1mof9/uY9VuRQyrtG2HzjCSZRqd00rPZKOeAiXtGcYsx4loEsYINoxeg9CDRL/rPKMiTKwfdWuJa81BzTyyYue0wpmnpQx/mx45WIfL0BFxusxev5BXUWX6V6g2++EWoFSirkTQFrih4bn6Tw8P+Bi5eT5g35UEtiJgOdIH9tbS5M99f330PAaDw9TvZ+wCPjuJIpKSTBwQcO4OE/07YiAOSkPIt4Wi6acYEU3tOxXpeWDCT8nzr1oyFn68BEPfRy29T9l/GkKy/+Cl6wp/qgXwMzMvZMOd8Y959ycWhQ==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UXJBejdRQi9PeXdYenpVM011Y1FhTGQ5QklTcTlMclVvdzBmM083dVlMc1hQ?=
+ =?utf-8?B?eW1HcFhTdWVWZE83bjBkOTVGY0huUnduMEpHTFo0clNTQmFrZDBqQnN2R0pY?=
+ =?utf-8?B?TnhTZEMzMDRWUFNKcmZjTm52SjNmdWVTWlBYSVI2Z3lBY2hNcWo1VkdhdE9B?=
+ =?utf-8?B?bmR6UFhYT3dUZnljczBoMWlPUktQblVLd1RXdjFzK2twRTNoQkQ1RGVNOUVR?=
+ =?utf-8?B?ZlhSUW8yZ2RJekhLblIxZWdPTXgxVFl6dWNoaWpScnpiOWY2OFB5VDVTdEM5?=
+ =?utf-8?B?L290cXJUU3M0bDVNaGVtbkZQQURPM0RmcnFvMDZxdkd1MzZObHVIZUVHK1Zx?=
+ =?utf-8?B?RlE3blBLdHBBcHNaZ2oxZ05zbVNyNnF4bnZIeHBKcjE2S3IyWXlQRE5iWkNW?=
+ =?utf-8?B?V0YyZVpteGJSZW9vWk1IMUNXNHRDWUhsc210bUN6U2lZdGt6OWp1di9qaVJt?=
+ =?utf-8?B?MHBiK08rOTlrajl3bmNjRmw4QVNKK3NPOVU4T0llWmx3VW9McThnWHZ2azV6?=
+ =?utf-8?B?V0E5NFhKR3RQc3FWZktBOVVlRzN6TXBtSzJCbTh0SUR0TFFCQVNLcjNqTFVy?=
+ =?utf-8?B?WWZiS0oyY1lYVy9WSGFyVXRRcHRnWk5ScSs3VHZKblZBazlTVG9mR3JoakY5?=
+ =?utf-8?B?a3M4UXU3S3hPYzJncWE5ZHZhVVJSU3FZQU9OcWFLSkRSMFVrSlBQMVpRU0dQ?=
+ =?utf-8?B?b081Z3ZiQ3VuRWhnaHY4UGQzREY5Q09Ub0JMOWhrZlJqcHFhZUVYQ3hrenZT?=
+ =?utf-8?B?YVVvNU9xZ0ZUQm40RHlCVFJ1aEoyMHNkU1hxQ1A0TkNrSlVaWWhwSmZrWVl6?=
+ =?utf-8?B?TGV3c0JMNzJTN0UvQWNBY0FTUk9RK2hXUUo4eDAxeFdNL3lPSjI4T1dqb1kw?=
+ =?utf-8?B?WkJuM2cyZXNLUDRaRWxhOTQzMEhBNUptanBTaGJVczNidzhjN2VTYVhseG5a?=
+ =?utf-8?B?QnJ3Y2JuRFk2S21yeHNVNTdDdi9YQlhIZFBxdzkvdHRkY2tZM1dwQllzbjNI?=
+ =?utf-8?B?SHlYSWVoVmFPRzJFdjV3UDFkR1F0eDBmSGt1ckU1N0s2dWVBMTRYQTNVRlVq?=
+ =?utf-8?B?RFdnR0FYQWp0MFhQMkZkbm1HK3paT3BKelN4czVVVW1lUXU4djVqazBoZ1p5?=
+ =?utf-8?B?dnhrTGZNZjY1Wi9YdlhUSXVSRjNiTGsxci92YWVjYkYyaVd2R0RFd0REMnFu?=
+ =?utf-8?B?c0s2UzZHeHlEK29pT09Hd3RkQmVLTStIVmpvb1A0aUpQbCtQWVA0dkpad2Ev?=
+ =?utf-8?B?Q1FpRlZxK1N6WklobzdacFM0R01Sek1RaEdHQlVHNk1iUkJwanZCaFllVmUr?=
+ =?utf-8?B?K0IybDRVc1J0QlFvdS8wdFFDT1N2SUZWcC9BTldpTHdMdS9GTitOcTZrc0Ew?=
+ =?utf-8?B?ZFg0OWx5Z2x5dnhLZ2pucUJPNUhJYlNjSFJLclVodjVaR2J4dW5WM1U0M0h3?=
+ =?utf-8?B?T0M2bnpvb2ZIOS9HYUN0bG1xOU51UmVUYmRZUTlnRThCcjNwZFVhd1BNZ0RG?=
+ =?utf-8?B?YXNNSWQ4U1hXak9sZW1uempSeHlQNGpGYnBpN00zSmwrY0lmdEw4UDNPSFVk?=
+ =?utf-8?B?bzBzeDBsdGwvMXBUdWd4cVdJSTdKc2JYSWhCaHNacTdpS3JJYU9CMU9GYVVk?=
+ =?utf-8?B?eXFCNFBEdTdkWjNSYXZLdlNpRndCZnhyV0hiMENwYVc4ckczZ09Jem9lblZE?=
+ =?utf-8?B?dUVuOHMzeHZqMWg3VU43ekVTRXh6VW54TXhmMS9yQWhpQkxTanVyT3VUa0Qz?=
+ =?utf-8?Q?ueIQ4ZHd76LfuJjwqc=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-28291.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3451dd13-5748-4b12-f23d-08daf5f2030c
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2375.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2023 05:41:41.3729
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4567
+X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_MUA_MOZILLA,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,43 +112,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Due to the polling tick is 10ms, the wake up flow in the status waiting
-would cause more 10~20ms than the real HW response time. Reduce
-tick-interval from 10ms to 1ms to get better network performance, such
-as ping latency, in low power mode.
+Hi,
 
-Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+I just purchased a Dell Latitude 3340 on eBay and I tried installing 
+Debian 11 on it but I am unable to get the wireless network to enable. 
+The wireless was working perfectly in Windows 10. According to lshw the 
+laptop uses a Wireless 7260. I first tried running 'apt install 
+firmware-iwlwifi', but Network Manager just says that the wireless 
+network is unavailable. I then tried downloading 
+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/iwlwifi-7260-17.ucode 
+and copying it into the /lib/firmware folder, but that didn't work 
+either. Is there anything else that I can try? Thank you in advance for 
+your assistance.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-index 86340d3205c5..288caa728afc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-@@ -69,8 +69,8 @@ int __mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
- 
- 	for (i = 0; i < MT7921_DRV_OWN_RETRY_COUNT; i++) {
- 		mt76_wr(dev, MT_CONN_ON_LPCTL, PCIE_LPCR_HOST_CLR_OWN);
--		if (mt76_poll_msec(dev, MT_CONN_ON_LPCTL,
--				   PCIE_LPCR_HOST_OWN_SYNC, 0, 50))
-+		if (mt76_poll_msec_tick(dev, MT_CONN_ON_LPCTL,
-+					PCIE_LPCR_HOST_OWN_SYNC, 0, 50, 1))
- 			break;
- 	}
- 
-@@ -110,8 +110,8 @@ int mt7921e_mcu_fw_pmctrl(struct mt7921_dev *dev)
- 
- 	for (i = 0; i < MT7921_DRV_OWN_RETRY_COUNT; i++) {
- 		mt76_wr(dev, MT_CONN_ON_LPCTL, PCIE_LPCR_HOST_SET_OWN);
--		if (mt76_poll_msec(dev, MT_CONN_ON_LPCTL,
--				   PCIE_LPCR_HOST_OWN_SYNC, 4, 50))
-+		if (mt76_poll_msec_tick(dev, MT_CONN_ON_LPCTL,
-+					PCIE_LPCR_HOST_OWN_SYNC, 4, 50, 1))
- 			break;
- 	}
- 
--- 
-2.18.0
+Sincerely,
+
+Chris
 
