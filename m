@@ -2,167 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3C3066A77B
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Jan 2023 01:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C78B66A8C5
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Jan 2023 03:53:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjANAZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Jan 2023 19:25:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32848 "EHLO
+        id S231214AbjANCxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Jan 2023 21:53:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbjANAZO (ORCPT
+        with ESMTP id S230482AbjANCxj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Jan 2023 19:25:14 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC4B72D2F
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 16:25:13 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id s13-20020a17090a6e4d00b0022900843652so7014569pjm.1
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Jan 2023 16:25:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=schmorgal.com; s=google;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=73NRCJrLD416/Hi20U2Q4TjapbewKZUuWd9n2Q1rdXo=;
-        b=J+pc8BWI++mjIkGf9+Ufg4UetjhEkq6RJDj7NAgmsx6bqLqKsU9dzLJpPEGyR1cAPT
-         8X1ttEZyOwdX126X9LfSk2NhDYEQghA06o+a3x0qXzC7Lv04CbtXhBPeWh3VXm5/LB6F
-         Dp4qDsSSLsnIaiKeJR9NcZvDiCdZLccZ8zlyc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=73NRCJrLD416/Hi20U2Q4TjapbewKZUuWd9n2Q1rdXo=;
-        b=IwPWIdTpR6gpMKwBBexW6Hn4DEYzTJsHqnybp6g3SUUbE8SY+7rD+Q9NErHpYkW0hh
-         p3v5u0QR+QV1tRPXdrHI2ThvC21VHB40fA4e5x3FZpMEVx52kfxksFXBJRxIwAj2RHTw
-         5Prn3Kup+5ergh9JyyNUgzOWLt6RDMtLgEg38bQB/Bgfbewj7jXnjgomuc12e+NZM2U5
-         +LWWLG9am5hPtmnbhPLoKsdLWqqbrYSGH9VXv/yQYTVB0sto4jYZUUG8s15yAtWq9/LY
-         Nyf/HoWo03QcJTSCdB3cz52KOt1MTdoKn6NL7a2yhyBB0UYy6s/S5ooNXcs6IYr4rJyE
-         JIvA==
-X-Gm-Message-State: AFqh2krOSJFFWFr1CMaPJ1QIY1j0oLbjF2HpcO1WOyD0whs/h2T5XAYP
-        HP8FSzRQw7vCLg87D0wVo0xSAQ==
-X-Google-Smtp-Source: AMrXdXv+eskL5UGF7aUYBOE7CjneSuw8PDPKPtUoppz0e4clDGq3+5K7tfp+KxBNLCIzpt5zGyIVcg==
-X-Received: by 2002:a05:6a20:a887:b0:b8:2e75:c973 with SMTP id ca7-20020a056a20a88700b000b82e75c973mr1324301pzb.49.1673655912701;
-        Fri, 13 Jan 2023 16:25:12 -0800 (PST)
-Received: from [192.168.1.33] ([192.183.212.197])
-        by smtp.googlemail.com with ESMTPSA id u13-20020a63f64d000000b00499bc49fb9csm12195367pgj.41.2023.01.13.16.25.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jan 2023 16:25:11 -0800 (PST)
-Message-ID: <1d917ac3-4bc7-2f1d-a0af-1148417c0565@schmorgal.com>
-Date:   Fri, 13 Jan 2023 16:25:09 -0800
+        Fri, 13 Jan 2023 21:53:39 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6E765ACE;
+        Fri, 13 Jan 2023 18:53:38 -0800 (PST)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Nv2qv4QkMznVKG;
+        Sat, 14 Jan 2023 10:51:55 +0800 (CST)
+Received: from [10.174.178.66] (10.174.178.66) by
+ dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Sat, 14 Jan 2023 10:53:34 +0800
+Message-ID: <f420615f-2b3c-90c2-4e14-f06ed4cac3eb@huawei.com>
+Date:   Sat, 14 Jan 2023 10:53:33 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Content-Language: en-US
-To:     Simon Horman <simon.horman@corigine.com>
-Cc:     Dan Williams <dcbw@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20230108013016.222494-1-doug@schmorgal.com>
- <20230108013016.222494-3-doug@schmorgal.com> <Y8Ep3yTp61h0GD2A@corigine.com>
-From:   Doug Brown <doug@schmorgal.com>
-Subject: Re: [PATCH v2 2/4] wifi: libertas: only add RSN/WPA IE in
- lbs_add_wpa_tlv
-In-Reply-To: <Y8Ep3yTp61h0GD2A@corigine.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ Thunderbird/102.0.2
+Subject: Re: [PATCH] wifi: mac80211: fix memory leak in ieee80211_if_add()
+To:     Eric Dumazet <eric.dumazet@gmail.com>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <johannes@sipsolutions.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>
+References: <20221117064500.319983-1-shaozhengchao@huawei.com>
+ <b5ad26c3-fa10-b056-d79d-8bebb8795a90@gmail.com>
+From:   shaozhengchao <shaozhengchao@huawei.com>
+In-Reply-To: <b5ad26c3-fa10-b056-d79d-8bebb8795a90@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.66]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Simon,
 
-On 1/13/2023 1:52 AM, Simon Horman wrote:
-> On Sat, Jan 07, 2023 at 05:30:14PM -0800, Doug Brown wrote:
->> The existing code only converts the first IE to a TLV, but it returns a
->> value that takes the length of all IEs into account. When there is more
->> than one IE (which happens with modern wpa_supplicant versions for
->> example), the returned length is too long and extra junk TLVs get sent
->> to the firmware, resulting in an association failure.
+
+On 2023/1/13 16:15, Eric Dumazet wrote:
+> 
+> On 11/17/22 07:45, Zhengchao Shao wrote:
+>> When register_netdevice() failed in ieee80211_if_add(), ndev->tstats
+>> isn't released. Fix it.
 >>
->> Fix this by finding the first RSN or WPA IE and only adding that. This
->> has the extra benefit of working properly if the RSN/WPA IE isn't the
->> first one in the IE buffer.
->>
->> While we're at it, clean up the code to use the available structs like
->> the other lbs_add_* functions instead of directly manipulating the TLV
->> buffer.
->>
->> Signed-off-by: Doug Brown <doug@schmorgal.com>
+>> Fixes: 5a490510ba5f ("mac80211: use per-CPU TX/RX statistics")
+>> Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
 >> ---
->>   drivers/net/wireless/marvell/libertas/cfg.c | 28 +++++++++++++--------
->>   1 file changed, 18 insertions(+), 10 deletions(-)
+>>   net/mac80211/iface.c | 1 +
+>>   1 file changed, 1 insertion(+)
 >>
->> diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
->> index 3e065cbb0af9..5cd78fefbe4c 100644
->> --- a/drivers/net/wireless/marvell/libertas/cfg.c
->> +++ b/drivers/net/wireless/marvell/libertas/cfg.c
->> @@ -416,10 +416,20 @@ static int lbs_add_cf_param_tlv(u8 *tlv)
->>   
->>   static int lbs_add_wpa_tlv(u8 *tlv, const u8 *ie, u8 ie_len)
->>   {
->> -	size_t tlv_len;
->> +	struct mrvl_ie_data *wpatlv = (struct mrvl_ie_data *)tlv;
->> +	const struct element *wpaie;
->> +
->> +	/* Find the first RSN or WPA IE to use */
->> +	wpaie = cfg80211_find_elem(WLAN_EID_RSN, ie, ie_len);
->> +	if (!wpaie)
->> +		wpaie = cfg80211_find_vendor_elem(WLAN_OUI_MICROSOFT,
->> +						  WLAN_OUI_TYPE_MICROSOFT_WPA,
->> +						  ie, ie_len);
->> +	if (!wpaie || wpaie->datalen > 128)
->> +		return 0;
->>   
->>   	/*
->> -	 * We need just convert an IE to an TLV. IEs use u8 for the header,
->> +	 * Convert the found IE to a TLV. IEs use u8 for the header,
->>   	 *   u8      type
->>   	 *   u8      len
->>   	 *   u8[]    data
->> @@ -428,14 +438,12 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8 *ie, u8 ie_len)
->>   	 *   __le16  len
->>   	 *   u8[]    data
->>   	 */
->> -	*tlv++ = *ie++;
->> -	*tlv++ = 0;
->> -	tlv_len = *tlv++ = *ie++;
->> -	*tlv++ = 0;
->> -	while (tlv_len--)
->> -		*tlv++ = *ie++;
->> -	/* the TLV is two bytes larger than the IE */
->> -	return ie_len + 2;
->> +	wpatlv->header.type = wpaie->id;
->> +	wpatlv->header.len = wpaie->datalen;
+>> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+>> index dd9ac1f7d2ea..46f08ec5ed76 100644
+>> --- a/net/mac80211/iface.c
+>> +++ b/net/mac80211/iface.c
+>> @@ -2258,6 +2258,7 @@ int ieee80211_if_add(struct ieee80211_local 
+>> *local, const char *name,
+>>           ret = cfg80211_register_netdevice(ndev);
+>>           if (ret) {
+>> +            ieee80211_if_free(ndev);
+>>               free_netdev(ndev);
+>>               return ret;
+>>           }
 > 
-> Hi Doug,
 > 
-> For correctness should type and len be converted to little endian,
-> f.e. using cpu_to_le16() ?
+> Note: I will send a revert of this buggy patch, this was adding a double 
+> free.
 > 
-> Likewise in patch 4/4.
+> 
+Hi Eric：
+	Thank you very much for pointing out my problem. I'll be more
+rigorous in the future.
 
-Thank you for reviewing my changes. You are absolutely right -- this
-would be broken on big-endian systems. That was a major oversight on my
-part. Not sure how I missed it because all of the other functions do it
-correctly. Nice catch! I'll fix it in the next version of the series.
-
+Zhengchao Shao
 > 
->> +	memcpy(wpatlv->data, wpaie->data, wpaie->datalen);
->> +
->> +	/* Return the total number of bytes added to the TLV buffer */
->> +	return sizeof(struct mrvl_ie_header) + wpaie->datalen;
->>   }
->>   
->>   /*
->> -- 
->> 2.34.1
->>
