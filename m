@@ -2,58 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 926E666C38E
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 16:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21B0A66C3CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 16:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232156AbjAPPWW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Jan 2023 10:22:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39904 "EHLO
+        id S230240AbjAPP0z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Jan 2023 10:26:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjAPPVo (ORCPT
+        with ESMTP id S230183AbjAPP0U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Jan 2023 10:21:44 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEF4E22A1D;
-        Mon, 16 Jan 2023 07:18:41 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 16 Jan 2023 10:26:20 -0500
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9310423C44;
+        Mon, 16 Jan 2023 07:22:54 -0800 (PST)
+Received: from localhost.localdomain (unknown [222.129.38.177])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8A9A6B80FEE;
-        Mon, 16 Jan 2023 15:18:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276E9C433F0;
-        Mon, 16 Jan 2023 15:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673882319;
-        bh=vmGFW004UDwsmgRU4Zufg89JY7mnDaECKq1b+4Q7dW8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=P7EsXdVtcWoVtSQUl+9hIOkc1Lqa6E2dCm9xSqlpzYBgAbdky9aRY85PjXEhRq8/Z
-         Hay1qBB/3wovNYTx6blXLJNJBzIgX+nKzvNFMC66+r12zXg8d15cGd5pPMEZfiubi6
-         u0Pg8Ba5SpFM1DiMV9ULRiCrTDFToS/SDUJd+ro+sVbjLt5CRgHUYvG36d/up89Mce
-         ZViAQXOLasukY7nsYa4myRp4RCupUFW7CDYtsPl2ubaJPnFxRViYCSAKkLW3sYySNX
-         yFh5T1/VHiF4wZmnCcIxoXy69RPTtkWCf5FiZ9EMof143ok8xRZ6O1+1YRbRcydrW0
-         1hRjaPEpjZKyA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     yang.yang29@zte.com.cn, aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        sha-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, xu.panda@zte.com.cn
-Subject: Re: [PATCH net-next] brcm80211: use strscpy() to instead of strncpy()
-References: <202212231037210142246@zte.com.cn>
-        <167387451256.32134.6493247488948126794.kvalo@kernel.org>
-        <Y8VRpzodki/YAcvC@unreal>
-Date:   Mon, 16 Jan 2023 17:18:32 +0200
-In-Reply-To: <Y8VRpzodki/YAcvC@unreal> (Leon Romanovsky's message of "Mon, 16
-        Jan 2023 15:31:19 +0200")
-Message-ID: <87y1q2y0c7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id D5AC53F177;
+        Mon, 16 Jan 2023 15:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1673882572;
+        bh=WShhfjt/HHh0NshNOvMg+g+72tOEAis9r62sjM//RqY=;
+        h=From:To:Subject:Date:Message-Id:MIME-Version;
+        b=ipYD4Y0OQQUCmjI0C9LbgmGfDgYwAkymK/5e/Hm2HEncGkBXrPt6rWG4g2D5mZJw9
+         Jgh33MGAUY9aRlbwCPMOzuLugGeO2D+8C3MtWLMv2RhFihPvI2moS5LaKJxYRfGeou
+         unqi8CB9nANne05yDdaF+DFbXVvI2a+poruvmdBKVNmVhi3I5oq7Sxk+cKkNGRNH35
+         nyl19EjLjhj5l8xQuiJlovuSohVQKYp/TQXmWquO4QakI2KX0eFlKVYxpFjSXCsGcJ
+         HgXeiX8euL1TqKoq7Cz/Xb/edl4DhoproU6nP75142a2fzH77iLu3OQE4RF0S7cl96
+         3vcYvYlnmWQQQ==
+From:   Aaron Ma <aaron.ma@canonical.com>
+To:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, matthias.bgg@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        aaron.ma@canonical.com
+Subject: [PATCH] wifi: mt76: mt7921: fix error code of return in mt7921_acpi_read
+Date:   Mon, 16 Jan 2023 23:22:35 +0800
+Message-Id: <20230116152235.1433484-1-aaron.ma@canonical.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,35 +55,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Leon Romanovsky <leon@kernel.org> writes:
+Kernel NULL pointer dereference when ACPI SAR table isn't implemented well.
+Fix the error code of return to mark the ACPI SAR table as invalid.
 
-> On Mon, Jan 16, 2023 at 01:08:36PM +0000, Kalle Valo wrote:
->> <yang.yang29@zte.com.cn> wrote:
->> 
->> > From: Xu Panda <xu.panda@zte.com.cn>
->> > 
->> > The implementation of strscpy() is more robust and safer.
->> > That's now the recommended way to copy NUL-terminated strings.
->> > 
->> > Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
->> > Signed-off-by: Yang Yang <yang.yang29@zte.com>
->> 
->> Mismatch email in From and Signed-off-by lines:
->> 
->> From: <yang.yang29@zte.com.cn>
->> Signed-off-by: Yang Yang <yang.yang29@zte.com>
->> 
->> Patch set to Changes Requested.
->
-> Kalle, please be aware of this response
-> https://lore.kernel.org/netdev/20230113112817.623f58fa@kernel.org/
->
-> "I don't trust that you know what you're doing. So please don't send
-> any more strncpy() -> strscpy() conversions for networking."
+[    5.077128] mt7921e 0000:06:00.0: sar cnt = 0
+[    5.077381] BUG: kernel NULL pointer dereference, address:
+0000000000000004
+[    5.077630] #PF: supervisor read access in kernel mode
+[    5.077883] #PF: error_code(0x0000) - not-present page
+[    5.078138] PGD 0 P4D 0
+[    5.078398] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[    5.079202] RIP: 0010:mt7921_init_acpi_sar+0x106/0x220
+[mt7921_common]
+...
+[    5.080786] Call Trace:
+[    5.080786]  <TASK>
+[    5.080786]  mt7921_register_device+0x37d/0x490 [mt7921_common]
+[    5.080786]  mt7921_pci_probe.part.0+0x2ee/0x310 [mt7921e]
+[    5.080786]  mt7921_pci_probe+0x52/0x70 [mt7921e]
+[    5.080786]  local_pci_probe+0x47/0x90
+[    5.080786]  pci_call_probe+0x55/0x190
+[    5.080786]  pci_device_probe+0x84/0x120
 
-Good to know, thanks.
+Fixes: f965333e491e ("mt76: mt7921: introduce ACPI SAR support")
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
+index 47e034a9b003..ed9241d4aa64 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
+@@ -33,14 +33,17 @@ mt7921_acpi_read(struct mt7921_dev *dev, u8 *method, u8 **tbl, u32 *len)
+ 	    sar_root->package.elements[0].type != ACPI_TYPE_INTEGER) {
+ 		dev_err(mdev->dev, "sar cnt = %d\n",
+ 			sar_root->package.count);
++		ret = -EINVAL;
+ 		goto free;
+ 	}
+ 
+ 	if (!*tbl) {
+ 		*tbl = devm_kzalloc(mdev->dev, sar_root->package.count,
+ 				    GFP_KERNEL);
+-		if (!*tbl)
++		if (!*tbl) {
++			ret = -ENOMEM;
+ 			goto free;
++		}
+ 	}
+ 	if (len)
+ 		*len = sar_root->package.count;
+@@ -52,9 +55,9 @@ mt7921_acpi_read(struct mt7921_dev *dev, u8 *method, u8 **tbl, u32 *len)
+ 			break;
+ 		*(*tbl + i) = (u8)sar_unit->integer.value;
+ 	}
+-free:
+ 	ret = (i == sar_root->package.count) ? 0 : -EINVAL;
+ 
++free:
+ 	kfree(sar_root);
+ 
+ 	return ret;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
