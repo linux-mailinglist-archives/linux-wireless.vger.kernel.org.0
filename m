@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 525C666BFE9
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 14:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E3266BFEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 14:37:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231173AbjAPNgf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Jan 2023 08:36:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52702 "EHLO
+        id S231202AbjAPNhg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Jan 2023 08:37:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231135AbjAPNgb (ORCPT
+        with ESMTP id S231397AbjAPNhY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Jan 2023 08:36:31 -0500
+        Mon, 16 Jan 2023 08:37:24 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B70621E1C3;
-        Mon, 16 Jan 2023 05:36:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C88020046
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 05:37:22 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7BFEBB80E96;
-        Mon, 16 Jan 2023 13:36:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CEFC433EF;
-        Mon, 16 Jan 2023 13:36:25 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C94F1B80E86
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 13:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18A8C433EF;
+        Mon, 16 Jan 2023 13:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673876188;
-        bh=eyYIBkTc+aU5rlU29lHgxKy0T+h5OUzw65jzZNbXujU=;
+        s=k20201202; t=1673876239;
+        bh=qb7hkP6yPmmftgP6nX4eNwpSpkptFmXBLZgNTHd5Vxw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Bm5O53gFx9vK77BY7dGcTm1p1nvPvVgjuWT4h3LdiJmqXPT9r5FUBTBWJSAAzr3lt
-         bwTtIQqPnlPOw7qTszmAKbXG8W1YgTnawhilcjbsjrshDf99JmJeDp2r/MaRfcekc+
-         wMLfX4rr72LPcZik9OZgn/IE7Jwz84LM1XJZqjTZ1VPZ+z0m/rIfC9mKlmU3rZnpDM
-         8+IOoCZ0KvNEESQzaRd4J89u6E6KDzf1+tN8JPZ9sgOTDnkLEoRlnt/IzNmPT1HF+U
-         UfN45rcf418e7Zn4E328UTljRqZQm7N2FkSoXpg8bg/JtbDEaOAP1rG+mfLQXALQ9t
-         sMsFOdZZN1ewA==
+        b=hjSDz8oGf4v38/Mc6JWYbSXswHEt7kozLZDNIuuxf7cEw6hDfSP3cIz1E26chk8Fg
+         HWti0EvS/KY5QGhHzqD4d0CeIris48Af0811O+mjswAKa0SVQDnM+2bwEP/UtTm4fr
+         m2+8RLHAMoTI8+qcTOyt9IYzpElp/XRrSvJio2LZ2q6WEW2ICiFd4e2z28CTfRep/N
+         3QDFrrlpo3kfV3XUYxov1Qt8oTk1BNlaUkhOLR0B4VFCFcmT4gRlyJ+aoGW5wgIQyp
+         mIBRvXAlSYZsVVXo1dt12d5Ex9okZnRTau6XFg2/+S8jZGTXWJ+ByHkQ+h1hHxlywY
+         v4WxQ8dcqI36Q==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: rtw89: Add missing check for alloc_workqueue
+Subject: Re: [PATCH 1/7] wifi: rtw89: coex: Add version code for Wi-Fi
+ firmware
+ coexistence control
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230104142901.1611-1-jiasheng@iscas.ac.cn>
-References: <20230104142901.1611-1-jiasheng@iscas.ac.cn>
-To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Cc:     leon@kernel.org, pkshih@realtek.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>
+In-Reply-To: <20230106120844.17441-2-pkshih@realtek.com>
+References: <20230106120844.17441-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167387618418.32134.12212618077257685528.kvalo@kernel.org>
-Date:   Mon, 16 Jan 2023 13:36:25 +0000 (UTC)
+Message-ID: <167387623706.32134.17008406743102231322.kvalo@kernel.org>
+Date:   Mon, 16 Jan 2023 13:37:18 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,23 +55,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiasheng Jiang <jiasheng@iscas.ac.cn> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Add check for the return value of alloc_workqueue since it may return
-> NULL pointer.
-> Moreover, add destroy_workqueue when rtw89_load_firmware fails.
+> From: Ching-Te Ku <ku920601@realtek.com>
 > 
-> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+> The newer Wi-Fi firmware are all changed to "Not to send H2C to
+> mention firmware how many call flow step should firmware trace".
+> The structure had removed the member, and define the steps number
+> at newer version firmware.
+> 
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+7 patches applied to wireless-next.git, thanks.
 
-ed9e6166eb09 wifi: rtw89: Add missing check for alloc_workqueue
+72f8b0461b4a wifi: rtw89: coex: Add version code for Wi-Fi firmware coexistence control
+3d929f075d3b wifi: rtw89: coex: Change Wi-Fi Null data report to version separate
+2626ccefe615 wifi: rtw89: coex: Change firmware steps report to version separate
+2ce43be34850 wifi: rtw89: coex: refactor debug log of slot list
+ae4e1adbb1be wifi: rtw89: coex: Packet traffic arbitration hardware owner monitor
+447a3267cbed wifi: rtw89: coex: Change RTL8852B use v1 TDMA policy
+fbc2caf19914 wifi: rtw89: coex: Change Wi-Fi role info related logic to version separate
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230104142901.1611-1-jiasheng@iscas.ac.cn/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230106120844.17441-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
