@@ -2,51 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75CF066C7B4
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 17:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7969166C7D2
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 17:35:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233148AbjAPQd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Jan 2023 11:33:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48472 "EHLO
+        id S233436AbjAPQfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Jan 2023 11:35:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233333AbjAPQdN (ORCPT
+        with ESMTP id S233404AbjAPQeS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Jan 2023 11:33:13 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 055BE21A14
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 08:21:09 -0800 (PST)
+        Mon, 16 Jan 2023 11:34:18 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592AF3B0FC;
+        Mon, 16 Jan 2023 08:22:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AFDCDB80DC7
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 16:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7332FC433EF;
-        Mon, 16 Jan 2023 16:21:05 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id A2E4CCE1281;
+        Mon, 16 Jan 2023 16:22:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF34C433F0;
+        Mon, 16 Jan 2023 16:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673886066;
-        bh=cqaDJ41YVlRONlaI0b6RAJYyi38MN0BUVuklxz49TD8=;
+        s=k20201202; t=1673886120;
+        bh=8SvgBpmKMDLhVuZQZo6HjdX+P6mQwUkiuy8oY6EYlcg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=MxolUrj1xJOMU+dZu6tM/MRNbHsjym/6kOH5DLz9o0jLAsmiu/Q6tB+Qovhe+M6aP
-         9Vtb3AmPy9r2XsQ+IvFMJ8ynihfTG6FEJnDWo9hCEuYeYCKy5nDI0Lp210K1ptHPHl
-         N1bDgoZ+YpcIe6hZ5+LphQYcuHLDiLpm/YeIHfQiSibtvtRfIwiXUZwD+L07zXbAOy
-         dP36a5n9pxlrpRhAr1i8vsZFa7amh2GLluOR1c95EqAmTYQmztU5gWEpPTpprO0cqy
-         UV981lOstAZqmOLQZluTXEyvCbjJYGdgVzVnDzYiNxeG0qw41nmWKjgthpWDyD9RDr
-         eMMzBIFv7D2rQ==
+        b=BUmg4wcDKcg3E8azwwVmhQGhtped4mjwsf80KUoZ/03nHWtApp8eZsxr6VT+kh4Tt
+         00YTqSjm2Dq/S//3jnjkymwT5BGWQSe6AdnHFjdFcRGeS58+dNCtKmTTK3Fyuel8yQ
+         03LHnUwU9pGs0XvWbP4m0IMCE8X1Wy2hYSDFh1SGnQX7fxd79KTwarRPHFXdpyOZ4q
+         icBfV2nxfLEekzYHkOEaWX7pTiIMVuATLEUVAB0LIbIcPoMIRnI4b3mr5kju6KL6lx
+         iDAgILLoYGEk4QgjFHF7U+oiV/8lPkydj3dBGvjgEMY1kh4iSnoJ8/wruFC1C7xKuL
+         WVVfRknTNSWDA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtl8xxxu: Fix memory leaks with RTL8723BU,
- RTL8192EU
+Subject: Re: [PATCH v2] wifi: rtlwifi: rtl8723ae: fix obvious spelling error
+ tyep->type
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com>
-References: <03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
+In-Reply-To: <20221222-rtl8723ae-typo-fix-v2-1-71b6b67df3f5@mricon.com>
+References: <20221222-rtl8723ae-typo-fix-v2-1-71b6b67df3f5@mricon.com>
+To:     Konstantin Ryabitsev via B4 Submission Endpoint 
+        <devnull+icon.mricon.com@kernel.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jens Schleusener <Jens.Schleusener@fossies.org>,
+        Konstantin Ryabitsev <mricon@kernel.org>,
+        Konstantin Ryabitsev <icon@mricon.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167388606133.5321.1497309013061929727.kvalo@kernel.org>
-Date:   Mon, 16 Jan 2023 16:21:05 +0000 (UTC)
+Message-ID: <167388611656.5321.6986629423832015340.kvalo@kernel.org>
+Date:   Mon, 16 Jan 2023 16:21:58 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,45 +64,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+Konstantin Ryabitsev via B4 Submission Endpoint
+        <devnull+icon.mricon.com@kernel.org> wrote:
 
-> The wifi + bluetooth combo chip RTL8723BU can leak memory (especially?)
-> when it's connected to a bluetooth audio device. The busy bluetooth
-> traffic generates lots of C2H (card to host) messages, which are not
-> freed correctly.
+> From: Konstantin Ryabitsev <icon@mricon.com>
 > 
-> To fix this, move the dev_kfree_skb() call in rtl8xxxu_c2hcmd_callback()
-> inside the loop where skb_dequeue() is called.
+> This appears to be an obvious spelling error, initially identified in a
+> codespell report and never addressed.
 > 
-> The RTL8192EU leaks memory because the C2H messages are added to the
-> queue and left there forever. (This was fine in the past because it
-> probably wasn't sending any C2H messages until commit e542e66b7c2e
-> ("wifi: rtl8xxxu: gen2: Turn on the rate control"). Since that commit
-> it sends a C2H message when the TX rate changes.)
-> 
-> To fix this, delete the check for rf_paths > 1 and the goto. Let the
-> function process the C2H messages from RTL8192EU like the ones from
-> the other chips.
-> 
-> Theoretically the RTL8188FU could also leak like RTL8723BU, but it
-> most likely doesn't send C2H messages frequently enough.
-> 
-> This change was tested with RTL8723BU by Erhard F. I tested it with
-> RTL8188FU and RTL8192EU.
-> 
-> Reported-by: Erhard F. <erhard_f@mailbox.org>
-> Tested-by: Erhard F. <erhard_f@mailbox.org>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215197
-> Fixes: e542e66b7c2e ("rtl8xxxu: add bluetooth co-existence support for single antenna")
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+> Reported-by: Jens Schleusener <Jens.Schleusener@fossies.org>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=205891
+> Signed-off-by: Konstantin Ryabitsev <icon@mricon.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-next.git, thanks.
 
-b39f662ce164 wifi: rtl8xxxu: Fix memory leaks with RTL8723BU, RTL8192EU
+cb689109d9d7 wifi: rtlwifi: rtl8723ae: fix obvious spelling error tyep->type
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20221222-rtl8723ae-typo-fix-v2-1-71b6b67df3f5@mricon.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
