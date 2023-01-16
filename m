@@ -2,56 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C30366C517
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 17:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75CF066C7B4
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 17:34:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbjAPQBk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Jan 2023 11:01:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43640 "EHLO
+        id S233148AbjAPQd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Jan 2023 11:33:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjAPQBQ (ORCPT
+        with ESMTP id S233333AbjAPQdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Jan 2023 11:01:16 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 024241E2AF;
-        Mon, 16 Jan 2023 08:01:13 -0800 (PST)
+        Mon, 16 Jan 2023 11:33:13 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 055BE21A14
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 08:21:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5458961044;
-        Mon, 16 Jan 2023 16:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F5C433F0;
-        Mon, 16 Jan 2023 16:01:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AFDCDB80DC7
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 16:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7332FC433EF;
+        Mon, 16 Jan 2023 16:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673884872;
-        bh=lcl2R3pBBULheZnPnqkp9w7w3lh8SVthhQOMeD8+CMY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qnXAgwjBaQY/MqV5GwGJQGJOulcc60Mn5DuSzpZZ4/RHlB9wJf8CI8ZP6lkz5UVyj
-         3NYPiG03hagIIOXfGwVBbS0lCt15SnEe2mJyxkV7JXEYjmwWfoYj9sCcym5UUF2AD0
-         RxDHhrke2L3PCikrENmXTrhN6BDIJOnq43K+Bhu5bF0cEJvAGZz64rIIKdei5LZZH7
-         A4/LPEDCk8HmwsWr1Uaz3i1LDjtOnYedeSaK9r1pKSaKV4TjuZx3DpnCCq5Lmbsfla
-         T8SxT4BtPlSUTDTDh/N3Lua9Exa95zHJ0+YdY7p4pco5OCquRc7jr4Lf/MOXRaNVY8
-         cxtdB3xiIuT2A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
-        Nitin Gupta <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [RFC PATCH v1 00/19] rtw88: Add SDIO support
-References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
-Date:   Mon, 16 Jan 2023 18:01:05 +0200
-In-Reply-To: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
-        (Martin Blumenstingl's message of "Wed, 28 Dec 2022 00:30:01 +0100")
-Message-ID: <87y1q28o5a.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1673886066;
+        bh=cqaDJ41YVlRONlaI0b6RAJYyi38MN0BUVuklxz49TD8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=MxolUrj1xJOMU+dZu6tM/MRNbHsjym/6kOH5DLz9o0jLAsmiu/Q6tB+Qovhe+M6aP
+         9Vtb3AmPy9r2XsQ+IvFMJ8ynihfTG6FEJnDWo9hCEuYeYCKy5nDI0Lp210K1ptHPHl
+         N1bDgoZ+YpcIe6hZ5+LphQYcuHLDiLpm/YeIHfQiSibtvtRfIwiXUZwD+L07zXbAOy
+         dP36a5n9pxlrpRhAr1i8vsZFa7amh2GLluOR1c95EqAmTYQmztU5gWEpPTpprO0cqy
+         UV981lOstAZqmOLQZluTXEyvCbjJYGdgVzVnDzYiNxeG0qw41nmWKjgthpWDyD9RDr
+         eMMzBIFv7D2rQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: rtl8xxxu: Fix memory leaks with RTL8723BU,
+ RTL8192EU
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com>
+References: <03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167388606133.5321.1497309013061929727.kvalo@kernel.org>
+Date:   Mon, 16 Jan 2023 16:21:05 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,49 +56,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(Jakub, a question for you below)
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-Martin Blumenstingl <martin.blumenstingl@googlemail.com> writes:
+> The wifi + bluetooth combo chip RTL8723BU can leak memory (especially?)
+> when it's connected to a bluetooth audio device. The busy bluetooth
+> traffic generates lots of C2H (card to host) messages, which are not
+> freed correctly.
+> 
+> To fix this, move the dev_kfree_skb() call in rtl8xxxu_c2hcmd_callback()
+> inside the loop where skb_dequeue() is called.
+> 
+> The RTL8192EU leaks memory because the C2H messages are added to the
+> queue and left there forever. (This was fine in the past because it
+> probably wasn't sending any C2H messages until commit e542e66b7c2e
+> ("wifi: rtl8xxxu: gen2: Turn on the rate control"). Since that commit
+> it sends a C2H message when the TX rate changes.)
+> 
+> To fix this, delete the check for rf_paths > 1 and the goto. Let the
+> function process the C2H messages from RTL8192EU like the ones from
+> the other chips.
+> 
+> Theoretically the RTL8188FU could also leak like RTL8723BU, but it
+> most likely doesn't send C2H messages frequently enough.
+> 
+> This change was tested with RTL8723BU by Erhard F. I tested it with
+> RTL8188FU and RTL8192EU.
+> 
+> Reported-by: Erhard F. <erhard_f@mailbox.org>
+> Tested-by: Erhard F. <erhard_f@mailbox.org>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215197
+> Fixes: e542e66b7c2e ("rtl8xxxu: add bluetooth co-existence support for single antenna")
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-> Recently the rtw88 driver has gained locking support for the "slow" bus
-> types (USB, SDIO) as part of USB support. Thanks to everyone who helped
-> make this happen!
->
-> Based on the USB work (especially the locking part and various
-> bugfixes) this series adds support for SDIO based cards. It's the
-> result of a collaboration between Jernej and myself. Neither of us has
-> access to the rtw88 datasheets. All of our work is based on studying
-> the RTL8822BS and RTL8822CS vendor drivers and trial and error.
->
-> Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
-> Other users have confirmed that RTL8821CS support is working as well.
-> RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
-> where needed) but has not been tested at this point.
+Patch applied to wireless-next.git, thanks.
 
-Very nice, good work.
-
-Our recommendation is to have maximum of 10-12 patches per patchset to
-make it easier for us maintainers, any chance to split the patchset into
-two? For example, get the easy preparation patches into wireless-next
-first and later submit the actual SDIO support.
-
-[...]
-
-> Why is this an RFC?
-
-[...]
-
-> - My understanding is that there's a discussion about the rtw88 Kconfig
->   symbols. We're adding four new ones within this series. It's not
->   clear to me what the conclusion is on this topic though.
-
-Yeah, there were no conclusions about that. Jakub, do you have any
-opinions? For example, do we keep per device Kconfig options (eg.
-CONFIG_RTW88_8822BS, RTW88_8822CS and so on) or should we have only one
-more bus level option (eg. CONFIG_RTW88_SDIO)? rtw88 now uses the former
-and IIRC so does mt76. ath10k/ath11k/ath12k again use the latter :)
+b39f662ce164 wifi: rtl8xxxu: Fix memory leaks with RTL8723BU, RTL8192EU
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/03b099c1-c671-d252-36f4-57b70d721f9d@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
