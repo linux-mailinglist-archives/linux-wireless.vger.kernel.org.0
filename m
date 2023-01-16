@@ -2,51 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B244C66C428
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 16:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C30366C517
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jan 2023 17:01:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230527AbjAPPlt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Jan 2023 10:41:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S232010AbjAPQBk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Jan 2023 11:01:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230349AbjAPPlr (ORCPT
+        with ESMTP id S231953AbjAPQBQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Jan 2023 10:41:47 -0500
+        Mon, 16 Jan 2023 11:01:16 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1693F16AFB;
-        Mon, 16 Jan 2023 07:41:47 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 024241E2AF;
+        Mon, 16 Jan 2023 08:01:13 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A788C61025;
-        Mon, 16 Jan 2023 15:41:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60DDC433F0;
-        Mon, 16 Jan 2023 15:41:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5458961044;
+        Mon, 16 Jan 2023 16:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F5C433F0;
+        Mon, 16 Jan 2023 16:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673883706;
-        bh=ZAViVdWgWJF2xmiwYZ5ME7mFHym9Ugm2BLe34iIjMPk=;
+        s=k20201202; t=1673884872;
+        bh=lcl2R3pBBULheZnPnqkp9w7w3lh8SVthhQOMeD8+CMY=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dMH7mLuDJED385miiPcmZui2MMipffpOYZLVMFlgYt+J0LHn4x7BzYXP0IJp0U+Mi
-         3+pKG3Xsy7QGTiGDR8PRnbQtFNx7TgjO7fGywaiQn6NjspzxIgB+NTgcSJaZRo0NHv
-         AfgY2todl2oUgYybgRXTpRStH8kEUTGAdeN41W+cgDgIq22exEafl1n2IEmGgRZiVh
-         7z4ZHQG93HkzDjMa7GXOiVe7UWlUdyqG9jr1+QD4hMo+yQ2E5XjgjcpuV1zl5yJzJr
-         gIOX4OVbd6BjkxhqtNIZjr3NZN4RDtDG91Be6RjDAXRysW3IbqHXslLWJrmQ7myoUI
-         08VguV/vAOl+w==
+        b=qnXAgwjBaQY/MqV5GwGJQGJOulcc60Mn5DuSzpZZ4/RHlB9wJf8CI8ZP6lkz5UVyj
+         3NYPiG03hagIIOXfGwVBbS0lCt15SnEe2mJyxkV7JXEYjmwWfoYj9sCcym5UUF2AD0
+         RxDHhrke2L3PCikrENmXTrhN6BDIJOnq43K+Bhu5bF0cEJvAGZz64rIIKdei5LZZH7
+         A4/LPEDCk8HmwsWr1Uaz3i1LDjtOnYedeSaK9r1pKSaKV4TjuZx3DpnCCq5Lmbsfla
+         T8SxT4BtPlSUTDTDh/N3Lua9Exa95zHJ0+YdY7p4pco5OCquRc7jr4Lf/MOXRaNVY8
+         cxtdB3xiIuT2A==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Aaron Ma <aaron.ma@canonical.com>
-Cc:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, matthias.bgg@gmail.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix error code of return in mt7921_acpi_read
-References: <20230116152235.1433484-1-aaron.ma@canonical.com>
-Date:   Mon, 16 Jan 2023 17:41:39 +0200
-In-Reply-To: <20230116152235.1433484-1-aaron.ma@canonical.com> (Aaron Ma's
-        message of "Mon, 16 Jan 2023 23:22:35 +0800")
-Message-ID: <87tu0qxz9o.fsf@kernel.org>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
+        Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: Re: [RFC PATCH v1 00/19] rtw88: Add SDIO support
+References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+Date:   Mon, 16 Jan 2023 18:01:05 +0200
+In-Reply-To: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+        (Martin Blumenstingl's message of "Wed, 28 Dec 2022 00:30:01 +0100")
+Message-ID: <87y1q28o5a.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,34 +61,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aaron Ma <aaron.ma@canonical.com> writes:
+(Jakub, a question for you below)
 
-> Kernel NULL pointer dereference when ACPI SAR table isn't implemented well.
-> Fix the error code of return to mark the ACPI SAR table as invalid.
->
-> [    5.077128] mt7921e 0000:06:00.0: sar cnt = 0
-> [    5.077381] BUG: kernel NULL pointer dereference, address:
-> 0000000000000004
-> [    5.077630] #PF: supervisor read access in kernel mode
-> [    5.077883] #PF: error_code(0x0000) - not-present page
-> [    5.078138] PGD 0 P4D 0
-> [    5.078398] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [    5.079202] RIP: 0010:mt7921_init_acpi_sar+0x106/0x220
-> [mt7921_common]
-> ...
-> [    5.080786] Call Trace:
-> [    5.080786]  <TASK>
-> [    5.080786]  mt7921_register_device+0x37d/0x490 [mt7921_common]
-> [    5.080786]  mt7921_pci_probe.part.0+0x2ee/0x310 [mt7921e]
-> [    5.080786]  mt7921_pci_probe+0x52/0x70 [mt7921e]
-> [    5.080786]  local_pci_probe+0x47/0x90
-> [    5.080786]  pci_call_probe+0x55/0x190
-> [    5.080786]  pci_device_probe+0x84/0x120
->
-> Fixes: f965333e491e ("mt76: mt7921: introduce ACPI SAR support")
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> writes:
 
-Felix, if this is ok should this go to v6.2?
+> Recently the rtw88 driver has gained locking support for the "slow" bus
+> types (USB, SDIO) as part of USB support. Thanks to everyone who helped
+> make this happen!
+>
+> Based on the USB work (especially the locking part and various
+> bugfixes) this series adds support for SDIO based cards. It's the
+> result of a collaboration between Jernej and myself. Neither of us has
+> access to the rtw88 datasheets. All of our work is based on studying
+> the RTL8822BS and RTL8822CS vendor drivers and trial and error.
+>
+> Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
+> Other users have confirmed that RTL8821CS support is working as well.
+> RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
+> where needed) but has not been tested at this point.
+
+Very nice, good work.
+
+Our recommendation is to have maximum of 10-12 patches per patchset to
+make it easier for us maintainers, any chance to split the patchset into
+two? For example, get the easy preparation patches into wireless-next
+first and later submit the actual SDIO support.
+
+[...]
+
+> Why is this an RFC?
+
+[...]
+
+> - My understanding is that there's a discussion about the rtw88 Kconfig
+>   symbols. We're adding four new ones within this series. It's not
+>   clear to me what the conclusion is on this topic though.
+
+Yeah, there were no conclusions about that. Jakub, do you have any
+opinions? For example, do we keep per device Kconfig options (eg.
+CONFIG_RTW88_8822BS, RTW88_8822CS and so on) or should we have only one
+more bus level option (eg. CONFIG_RTW88_SDIO)? rtw88 now uses the former
+and IIRC so does mt76. ath10k/ath11k/ath12k again use the latter :)
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
