@@ -2,92 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 975D566E463
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 18:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6D666E4C9
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 18:22:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232300AbjAQRGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 12:06:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
+        id S235261AbjAQRWr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 12:22:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230254AbjAQRGL (ORCPT
+        with ESMTP id S230284AbjAQRWM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 12:06:11 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824FB2A98C;
-        Tue, 17 Jan 2023 09:06:10 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pHpPU-001nMn-Ss; Tue, 17 Jan 2023 18:06:08 +0100
-Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pHpPT-002tRa-PS; Tue, 17 Jan 2023 18:06:08 +0100
-Message-ID: <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
-Date:   Tue, 17 Jan 2023 18:06:07 +0100
+        Tue, 17 Jan 2023 12:22:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB964C6E9;
+        Tue, 17 Jan 2023 09:21:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 114DFB81928;
+        Tue, 17 Jan 2023 17:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E2CC433D2;
+        Tue, 17 Jan 2023 17:21:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673976075;
+        bh=skvQqBc/hwy9a+RMCgjlCVkjG/y6LmVz/zErbnp5Lc8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=sdJmhwj6QVo0M9LgC8ByvkE7SKmZchZKL/UR8b7SRvTMUsbWup3siR35ELAIvWeLj
+         Q2lauiIXU98vjbpakY7/TzlJcGYPwmN3lOS8bLLK9bdrZoOAxHl4PBHBT/gV0Eonaj
+         HwuEPrz09kSA3gk4PAYMO8MPnaXrU9sU1T7qS1cWVZHb3D7BgVMnGfpOcuOZ97E8uA
+         MwrFy5zysH7MaZIc84G9KSmSnL2O+gjMbiSeyK+fu0nV85rsM4lnyxL0DSdARR5WZF
+         BLCAJMmgob6uAuvsTtH/Awl0R5/AfV6D5Venh81Mmkd844xRH6tDAa3dxZ65ArPT3w
+         0zG/bcLxXYEWQ==
+Date:   Tue, 17 Jan 2023 09:21:14 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
+        Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: Re: [RFC PATCH v1 00/19] rtw88: Add SDIO support
+Message-ID: <20230117092114.62ba2f66@kernel.org>
+In-Reply-To: <87y1q28o5a.fsf@kernel.org>
+References: <20221227233020.284266-1-martin.blumenstingl@googlemail.com>
+        <87y1q28o5a.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
-        linux-xtensa@linux-xtensa.org,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
- <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
- <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
- <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.148.100
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,SUSPICIOUS_RECIPS autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
-
-On 1/17/23 18:01, Geert Uytterhoeven wrote:
-> The issue is that some of the parameters are not arrays, but
-> NULL. E.g.:
+On Mon, 16 Jan 2023 18:01:05 +0200 Kalle Valo wrote:
+> > - My understanding is that there's a discussion about the rtw88 Kconfig
+> >   symbols. We're adding four new ones within this series. It's not
+> >   clear to me what the conclusion is on this topic though.  
 > 
-> arch/sh/kernel/cpu/sh2/setup-sh7619.c:static
-> DECLARE_INTC_DESC(intc_desc, "sh7619", vectors, NULL,
-> arch/sh/kernel/cpu/sh2/setup-sh7619.c-                   NULL,
-> prio_registers, NULL);
+> Yeah, there were no conclusions about that. Jakub, do you have any
+> opinions? For example, do we keep per device Kconfig options (eg.
+> CONFIG_RTW88_8822BS, RTW88_8822CS and so on) or should we have only one
+> more bus level option (eg. CONFIG_RTW88_SDIO)? rtw88 now uses the former
+> and IIRC so does mt76. ath10k/ath11k/ath12k again use the latter :)
 
-Isn't this supposed to be caught by this check:
-
-	a, __same_type(a, NULL)
-
-?
-
-Adrian
-
--- 
-  .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+No strong feelings. Larry (IIRC) provided a fair justification for 
+the RTW symbols. If the module binary grows noticeably then having 
+the kconfig does indeed make sense.
