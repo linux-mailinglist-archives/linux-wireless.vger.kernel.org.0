@@ -2,186 +2,575 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC30966D90B
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 10:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C78EE66DB7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 11:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236020AbjAQJA4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 04:00:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58276 "EHLO
+        id S236173AbjAQKtg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 05:49:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235874AbjAQI76 (ORCPT
+        with ESMTP id S235843AbjAQKtb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 03:59:58 -0500
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2104.outbound.protection.outlook.com [40.107.237.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F0F51D91F;
-        Tue, 17 Jan 2023 00:59:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RN7Z0a0XIfFrpeb7E0y2RRaC89x0bXK8OG1jjF5s3wxj8gtdxHMdD6XFgd+NdPlUOL0POdhP8BtF50mYcEUvt0nsLMyIBOSH6OuRr54gpirlbemYMrAhBRpzU0aFFptOZCBVu/we4W/5TuEfzUM1N5K24gJq2BLZ9CumilMtUNMdOoKu+U9GwZe76GlG8tfr3BtdbDbWs864OYJ/BkUPGZlahbfVRabJklUE7HwZ7dHH8PYTItolWUhbRdWX8K+DYRBkdNFsA/ZSaPV30YI8tFVX40HMD8kdX+YhTIR6JDhbgQZaeRM2oLdg+TfI25ZbaQQi/GmYlBXfqf/rbavaGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LzkQowbY7n4G/e1S7ouqM8pPZO4R4Ng1SmH8pKMgouU=;
- b=im0jvMkUFDjI4T6rsv6W+IR+QbJje0ex5TvWztO9xr8zgGslSP2L3mi2guV4RmTwgYu/ZzdaqXLg50f+q44VdLS/im4lNH8gVNc2FkyMmq/h39UgBPygG2VXwVZxdW4wR+9aqkq+pcKI7BzUkVqDc62zypUbu080dxBOgI47zJsDWn5gYD/GyF1xOLrsfSeCTu90zZl4KfKknNu38/1Oh/TePmeD7MiVK/X9qUZo/qedICoIb1kUHt1iNSFK90Grln+ZPAxgtFl4eF7LckDToh7zhswInpTBoq4T47007BRn5d1H3VSJFFykwYjT/Kb5tgud/IdtxPjz0/bTvTbC+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Tue, 17 Jan 2023 05:49:31 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908AE2FCE7;
+        Tue, 17 Jan 2023 02:49:29 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id mp20so27777832ejc.7;
+        Tue, 17 Jan 2023 02:49:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LzkQowbY7n4G/e1S7ouqM8pPZO4R4Ng1SmH8pKMgouU=;
- b=lM5ThGS8VHl+4ss+iq7BkgAtkCgSlQW0mD5ReEVqupDUkg+ZBlZmh20iIMsq3hI19Pklat0vL2XjpGhrgN8mdZxnR+RaVBbhZa3oLBrwH9N6ed5RF8qEt88XQmMa3Who2y6N+vq8PIYkML8VxRA+NlaT9ZkVAL6qCNsqYGiwTqE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BN0PR13MB4647.namprd13.prod.outlook.com (2603:10b6:408:129::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Tue, 17 Jan
- 2023 08:59:43 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb5c:910f:3730:fd65]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb5c:910f:3730:fd65%6]) with mapi id 15.20.5986.023; Tue, 17 Jan 2023
- 08:59:43 +0000
-Date:   Tue, 17 Jan 2023 09:59:36 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Doug Brown <doug@schmorgal.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Dan Williams <dcbw@redhat.com>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] wifi: libertas: only add RSN/WPA IE in
- lbs_add_wpa_tlv
-Message-ID: <Y8ZjeKeNx0eHxt7f@corigine.com>
-References: <20230116202126.50400-1-doug@schmorgal.com>
- <20230116202126.50400-3-doug@schmorgal.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230116202126.50400-3-doug@schmorgal.com>
-X-ClientProxiedBy: AM3PR07CA0086.eurprd07.prod.outlook.com
- (2603:10a6:207:6::20) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eajR2KK8xbEcuNnBxGhpFEig62CBir2kuGO6pt8byXk=;
+        b=dO+kdtoOGzvSe3CeeeiuGs7mYHozpM/Far80wlLz939v7aCOCSEg94/b32IonZDs03
+         EtSuR6aM2id3hQr0m7CO3ADSYGWug62GOHwwAK4SzryV15Xjul8gGmayZXGwVqsYGgnd
+         gdDeTg2apmww3UbnqF5m8c2cTB8y6headFSHW24agFQpjZ0cyZy1XvsnedrickB4ysIX
+         DmrCxPm02XpNld5k4Oqnw4q1HtMCsXI7pnWuRoVrnhy2Av/sEKpuj6DRnAjJc8cXIc9V
+         Q2y9VPWEFYBC7TWR0goLu7MQFCcE5tn/TkC/cvh+e4H0vPdXXT+O8ilE0Qc4BfaX2UGC
+         ruoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eajR2KK8xbEcuNnBxGhpFEig62CBir2kuGO6pt8byXk=;
+        b=6nYnRDcktjYwZmkn91nzdWeWeSoz5Sz+T/kl0sgI24GkjCwz7AOKO5Ed47hu6zInpA
+         QvSeSBFQs3RHe3dEP7miSpdC3T+/7FbDZ1hyUQEYVBS/T4RBrTistF1Bz9gMEw7TV9l5
+         EsAKqJWxQdMTthic/3yk4TetevLqRIziqiWDZvZXlSa5rHst75+brfkhrNJ0CemQhVyT
+         l9ijyZffFTjzNpbU5e8LNeenOAwxToKEg6HuSs27TZf+cNJqivDGj6vns/OhzuqAgsAn
+         nOXKsML5Dadm1unCHlT23hK30OoscCgGkREXXh91RrQU3HRdKnMZPdYITGPCaIkzb/IH
+         KNSg==
+X-Gm-Message-State: AFqh2kox2lNxriZaY8AEnqdLKKYXRiUR66+Pj84GaQzHbbNmjqhr8wZI
+        ZgFRBAoJ1uLyAfaWj/OThgU=
+X-Google-Smtp-Source: AMrXdXs1+Pg6t+yznezZ4aRwCFrmxmKMkxDNefJwYCsb7ybl5e6/TEKj+28xtuDgE6NksKqcvKTwmQ==
+X-Received: by 2002:a17:907:8b08:b0:86e:e403:4f2e with SMTP id sz8-20020a1709078b0800b0086ee4034f2emr2367667ejc.76.1673952567926;
+        Tue, 17 Jan 2023 02:49:27 -0800 (PST)
+Received: from [0.0.0.0] (tor-exit-13.zbau.f3netze.de. [2a0b:f4c0:16c:13::1])
+        by smtp.gmail.com with ESMTPSA id o19-20020a17090611d300b008373f9ea148sm12991655eja.71.2023.01.17.02.49.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jan 2023 02:49:27 -0800 (PST)
+From:   Edward Chow <persmule@gmail.com>
+X-Google-Original-From: Edward Chow <equu@openmail.cc>
+To:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org
+Cc:     linux-pci@vger.kernel.org, robh@kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Edward Chow <equu@openmail.cc>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH 1/3] PCI: of: Match pci devices or drivers against OF DT nodes
+Date:   Tue, 17 Jan 2023 17:27:27 +0800
+Message-Id: <20230117092727.1149125-1-equu@openmail.cc>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <ea4e2fed-383d-829d-8a2a-9239768ccd94@openmail.cc>
+References: <ea4e2fed-383d-829d-8a2a-9239768ccd94@openmail.cc>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BN0PR13MB4647:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10491783-affb-428d-56b7-08daf8692c7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZQlPW+2hLLYIlNwv6j1Ky0NDlHaebisa6urcMbNl+oAjdtOzWEDn11aeW25J5HHXUsxd+IcaMem2xlUTH5StZsUkuB6lh70wZ0H8Jq1dwPeR5ss9QnuxFEtXC32boTDOcVD4hgGwBvkdGt7OFqtR66bNVNVWndlw9V8mcz0M3H7uDt8hQP/3cnIrmlh2h/QLSQeNcI60Jiw+Jv8GSiFF/kfJiPwdUM0BNoi3jm4Z5D6+4zZ3L8PZs3yFJNDdM+6BgghgzRXCmh9jsh3gQnzvIEwM2EXCMPR1c6VssHqDVZXKt+RXrSXGRglU0QTKSo9N0clAZ2EeItn85ciiSXA24tTSxsaqgIlfZvicij0pO3LWBRI3SzkwRO1W5ZLSDFaiev6buIn9z7iW/Qchr5spo52ILfIQCMUa6UqoW5LH7FZt3TJBbRExSWvlGSrkFmKUqq7wVUms19pJFeDCOqzoWKjEJykf3lIti+DPVpT0VXfnmnvI77PcQfMN+pMdhgwRJzr61HGJwquHuWyMJhbpuAkGIq4OfYNc36KbW/8RHRRk5v6UR+LThH++x4L9BPWFSp59pIOkgP5sV55aNGmBdJz5Wq87jqby1ycNSTdJvxfhXVbLSQVkTxsLfOQq/RphdLUru1GQYy35HHzdj02vcA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39830400003)(376002)(366004)(346002)(136003)(396003)(451199015)(6486002)(478600001)(41300700001)(966005)(6512007)(38100700002)(186003)(86362001)(316002)(54906003)(2616005)(66476007)(66556008)(66946007)(4326008)(5660300002)(36756003)(6506007)(2906002)(7416002)(6666004)(44832011)(6916009)(83380400001)(8936002)(8676002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?g8blp8j6k8C89JmiBAF5G4FNee+VyTGsJztRgVkoHnpXr3f8EawGqVYR2HM+?=
- =?us-ascii?Q?bzBRv20FQhRYlAtzw53cQo3ojkEXpHAZES31eOEA2BBKBDva5L8BU5cwsb86?=
- =?us-ascii?Q?kx8V9MWzQlL8j7RgWeqLzB7Yemdt4x78O/WkVzaAPtM3IWJDes9TPheBJNVT?=
- =?us-ascii?Q?1a5B7LnknWh6bmDypwi9iBK9hozBnBVDB6NHdShQh+wMM5WDYPv1v7iNMe2U?=
- =?us-ascii?Q?hL4kUFDV7K5LVOG5VJR0fMLo6JdaEo+ZAk8xJ/U+9L5xq5+Inv8jLhpmNY+G?=
- =?us-ascii?Q?Gw0qDf0rYf2bceC7t6MWRlj0+CoQ3djcmLSs2doLvVfCPB+05LqOvEz3O7mQ?=
- =?us-ascii?Q?HXcAM6+0kUWtYvkuenYy3lf6lLrgarOxzHspPpQXs12mJAi1MZZIxPG95jtk?=
- =?us-ascii?Q?PUSnyt3FCfkqgWTuNDyddOoQ2wSJAtyPHoyu3sDfoZIBGv0s1eZcLVhVT69k?=
- =?us-ascii?Q?BegYmWea6QUR2i2qmzm4Jf/KiwJ5+ER27UfPM2BfL0NeW4URoIn4WugjbcHq?=
- =?us-ascii?Q?CexxrLRecgJW5rx9zDD+QcDd/JsG5vZ2b8ysItgO8vFh0R1B9M32xo00G9ag?=
- =?us-ascii?Q?FR+4xxE++d/OhPFGWFmwd8t/t1JKKkeWKwaRp9mx6gpXNWxQ2lqu2nzPO2FN?=
- =?us-ascii?Q?lpnOHIyf0TVwMoTZF6Q8YWATUiQXzHo0JSpt5D0WVY4KS0Dv4uUF5wnxPDBV?=
- =?us-ascii?Q?V8KHoyWBvzreRu0G/rCyXgBC8AZ3FR1MUSi+r0FF/DgTL3dT5IIoQOMmUBKu?=
- =?us-ascii?Q?U/F02bbPG+79FHPWNqanX4mfNZOwkkf8Un+1Am5plRB2hOMvMBuu5hY3V2cK?=
- =?us-ascii?Q?IAAbwnTVLyf/JMBoJj5vjgcimfMxbELG9OqMaDsn1g9NPv5Hq2beoaFZgeyp?=
- =?us-ascii?Q?n/MljP1vt+//yisj1zZIPUDV7NA7jrTUvQA6H5N3lRKKrUYGs0YPmXuKyYR+?=
- =?us-ascii?Q?yo7xQ4D4aEAvDfpYrmnMJ+gddcmdcAkmvAo6x8xmZhD8vv18FqcufYVjObeN?=
- =?us-ascii?Q?49jh37V5DbJS8zsQeF6oKW67k/dF8+EXokH3znMvPUqZ9iAlTm13EQL3+caw?=
- =?us-ascii?Q?andUd4IK6qXY4kfc+4o/q3cG+ZGX8gvtLWQosf7pSau0icPKVmKn8wQyOmQk?=
- =?us-ascii?Q?EwnJc58nNcFXZiODSeaUaCuokpoBXuRQygA7yn6rnSUk0abegTSg5dtsnl7U?=
- =?us-ascii?Q?5J7bFdoRnwNUzwRHeDe1S05WRVGCZZdtxE0ztNJTKrWjZJz0vOyUBbTPaN0A?=
- =?us-ascii?Q?kieXsPqNbDS49CSzwvc8SuxGd+J4/TIIBBQMQcd3ypzrKmVqkiDEOiDJkBRr?=
- =?us-ascii?Q?AL6j96mQtwaSfTjayHby3OYmbeCqbeUcYeALnRtm0vDfOYoznBiTw10heI9v?=
- =?us-ascii?Q?QhRTJCUy+IypnsmEYAwuj/wRLPImksob/vdw/Ri/wNXhggYiuRu/aRoqiH+T?=
- =?us-ascii?Q?YQl1sBA+ORTTPZw6Wa3czya7w/7Xuo3KavMfJUzBzs7h/g9Qx81jhkpbkr0O?=
- =?us-ascii?Q?oLzeD2eivuVuTuaHKhyzYuJdqL93gC2K36Vxb+NK0qeF+ad1CaR1R3oL8R7w?=
- =?us-ascii?Q?GrcAaxnBFSljWWLhFwz1rum67qBPQQH63I/w8eOpW7CccS9OXWCtdBbitsFz?=
- =?us-ascii?Q?E/Jq+KglzzO6g8Zsk0qGAoIhzNuSxw1uNnJafnMNORGI1Px8hAEc1E+kQgWr?=
- =?us-ascii?Q?y03dDw=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10491783-affb-428d-56b7-08daf8692c7b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2023 08:59:43.0225
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I3mo/j2Vl3EhQ67wWqyA7dYKPOFMCpXX4i+9xeFtCo1OufLhxDanh0/sNU+OqV5MlEbqjm3zLCZjpBOQr4JJKJrHsnuaVPZujDupWGcpOUw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR13MB4647
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 12:21:24PM -0800, Doug Brown wrote:
-> [You don't often get email from doug@schmorgal.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> The existing code only converts the first IE to a TLV, but it returns a
-> value that takes the length of all IEs into account. When there is more
-> than one IE (which happens with modern wpa_supplicant versions for
-> example), the returned length is too long and extra junk TLVs get sent
-> to the firmware, resulting in an association failure.
-> 
-> Fix this by finding the first RSN or WPA IE and only adding that. This
-> has the extra benefit of working properly if the RSN/WPA IE isn't the
-> first one in the IE buffer.
-> 
-> While we're at it, clean up the code to use the available structs like
-> the other lbs_add_* functions instead of directly manipulating the TLV
-> buffer.
-> 
-> Signed-off-by: Doug Brown <doug@schmorgal.com>
-> ---
->  drivers/net/wireless/marvell/libertas/cfg.c | 28 +++++++++++++--------
->  1 file changed, 18 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-> index 3e065cbb0af9..3f35dc7a1d7d 100644
-> --- a/drivers/net/wireless/marvell/libertas/cfg.c
-> +++ b/drivers/net/wireless/marvell/libertas/cfg.c
+Currently, whether a compatibility string within an OF DT node for a
+PCI device (whose spec is at
+https://www.devicetree.org/open-firmware/bindings/pci/ ) matches the
+vendor and device id of either the PCI device installed on the
+corresponding location or the driver suggested by the compatibility
+string is not supported.
 
-...
+This patch introduces a function to decode a compatibility string into
+a struct pci_device_id, which could further be matched against PCI
+devices or drivers, as well as functions to match a compatibility
+string or OF DT node against PCI devices or drivers.
 
-> @@ -428,14 +438,12 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8 *ie, u8 ie_len)
->          *   __le16  len
->          *   u8[]    data
->          */
-> -       *tlv++ = *ie++;
-> -       *tlv++ = 0;
-> -       tlv_len = *tlv++ = *ie++;
-> -       *tlv++ = 0;
-> -       while (tlv_len--)
-> -               *tlv++ = *ie++;
-> -       /* the TLV is two bytes larger than the IE */
-> -       return ie_len + 2;
-> +       wpatlv->header.type = cpu_to_le16(wpaie->id);
-> +       wpatlv->header.len = cpu_to_le16(wpaie->datalen);
-> +       memcpy(wpatlv->data, wpaie->data, wpaie->datalen);
+Signed-off-by: Edward Chow <equu@openmail.cc>
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+---
+ drivers/pci/of.c         | 299 +++++++++++++++++++++++++++++++++++++++
+ drivers/pci/pci-driver.c |   5 -
+ drivers/pci/pci.h        |  56 ++++++++
+ include/linux/of_pci.h   |  25 ++++
+ include/linux/pci.h      |   6 +
+ 5 files changed, 386 insertions(+), 5 deletions(-)
 
-Hi Doug,
+diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+index 196834ed44fe..edb61195ea53 100644
+--- a/drivers/pci/of.c
++++ b/drivers/pci/of.c
+@@ -13,6 +13,8 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_address.h>
+ #include <linux/of_pci.h>
++#include <linux/string.h>
++#include <linux/kstrtox.h>
+ #include "pci.h"
+ 
+ #ifdef CONFIG_PCI
+@@ -251,6 +253,303 @@ void of_pci_check_probe_only(void)
+ }
+ EXPORT_SYMBOL_GPL(of_pci_check_probe_only);
+ 
++/**
++ * of_pci_compat_to_device_id() - Decode an OF compatibility string into a
++ * pci_device_id structure.
++ * @compat: the compatibility string to decode, could be NULL
++ * @id: pointer to a struct pci_device_id, to store the result
++ * @rev: pointer to output revision info, PCI_ANY_ID if no revision in @compat
++ * @req_pcie: pointer to output whether @compat mandates PCIe compatibility
++ *
++ * returns 0 when success, -EINVAL when failed.
++ */
++int of_pci_compat_to_device_id(const char *compat, struct pci_device_id *id,
++			       u32 *rev, u32 *req_pcie)
++{
++	union {
++		u8 u8;
++		u16 u16;
++		u32 u32;
++	} res = {0};
++	*req_pcie = 0;
++	*rev = PCI_ANY_ID;
++	if (!compat || strncasecmp(compat, "pci", 3) != 0)
++		return -EINVAL;
++	compat += 3;
++
++	if (strncasecmp(compat, "class,", 6) == 0) {
++		/* pciclass,CCSSPP */
++		compat += 6;
++		if ((strlen(compat) < 4)
++		   || kstrtouint(compat, 16, &id->class))
++			return -EINVAL;
++		if (id->class < 0x10000) {
++			id->class <<= 8;
++			id->class_mask = 0xFFFF00;
++		} else {
++			id->class_mask = PCI_ANY_ID;
++		}
++		id->vendor = PCI_ANY_ID;
++		id->device = PCI_ANY_ID;
++		id->subvendor = PCI_ANY_ID;
++		id->subdevice = PCI_ANY_ID;
++		return 0
++	}
++
++	if (strncasecmp(compat, "ex", 2) == 0) {
++		/* pciex...  */
++		*req_pcie = 1;
++		compat += 2;
++	}
++	if (kstrtou16(compat, 16, &res.u16))
++		return -EINVAL;
++	id->vendor = res.u16;
++	compat = strchr(compat, ',');
++	if (!compat)
++		return -EINVAL;
++	compat++;
++	if (kstrtou16(compat, 16, &res.u16))
++		return -EINVAL;
++	id->device = res.u16;
++	compat = strchr(compat, '.');
++	if (compat == NULL) {
++		/* pciVVVV,DDDD */
++		id->subvendor = PCI_ANY_ID;
++		id->subdevice = PCI_ANY_ID;
++		return 0
++	}
++
++	compat++;
++	if (strlen(compat) == 2) {
++		/* pciVVVV,DDDD.RR */
++		if (kstrtou8(compat, 16, &res.u8))
++			return -EINVAL;
++		*rev = res.u8;
++		id->subvendor = PCI_ANY_ID;
++		id->subdevice = PCI_ANY_ID;
++		return 0
++	}
++
++	if (kstrtou16(compat, 16, &res.u16))
++		return -EINVAL;
++	id->subvendor = res.u16;
++	compat = strchr(compat, '.');
++	if (!compat)
++		return -EINVAL;
++	compat++;
++	if (kstrtou16(compat, 16, &res.u16))
++		return -EINVAL;
++	id->subdevice = res.u16;
++	compat = strchr(compat, '.');
++	if (compat == NULL)
++		/* pciVVVV,DDDD.SSSS.ssss */
++		return 0
++
++	compat++;
++	if (strlen(compat) == 2) {
++		/* pciVVVV,DDDD.SSSS.ssss.RR */
++		if (kstrtou8(compat, 16, &res.u8))
++			return -EINVAL;
++		*rev = res.u8;
++	}
++	return 0;
++}
++
++/**
++ * of_pci_compat_match_device() - Tell whether a PCI device structure matches
++ * a given OF compatibility string
++ * @compat: single OF compatibility string to match, could be NULL
++ * @dev the PCI device structure to match against
++ *
++ * Returns whether they match.
++ */
++bool of_pci_compat_match_device(const char *compat, const struct pci_dev *dev)
++{
++	__u32 rev = PCI_ANY_ID;
++	__u32 req_pcie = 0;
++	struct pci_device_id id = {0};
++
++	if (of_pci_compat_to_device_id(compat, &id, &rev, &req_pcie))
++		return false;
++	return pci_match_one_device(&id, dev) &&
++		(rev == PCI_ANY_ID || rev == dev->revision) &&
++		req_pcie ? dev->pcie_cap : true;
++}
++
++/**
++ * of_pci_node_match_device() - Tell whether an OF device tree node
++ * matches the given pci device
++ * @node: single OF device tree node to match, could be NULL
++ * @dev: the PCI device structure to match against, could be NULL
++ *
++ * Returns whether they match.
++ */
++bool of_pci_node_match_device(const struct device_node *node,
++			      const struct pci_dev *dev)
++{
++	struct property *prop;
++	const char *cp;
++
++	if (!node || !dev)
++		return false;
++	prop = of_find_property(node, "compatible", NULL);
++	for (cp = of_prop_next_string(prop, NULL); cp;
++	     cp = of_prop_next_string(prop, cp)) {
++		if (of_pci_compat_match_device(cp, dev))
++			return true;
++	}
++	return false;
++}
++EXPORT_SYMBOL_GPL(of_pci_node_match_device);
++
++/**
++ * of_pci_compat_match_one_id() - Tell whether a PCI device ID structure matches
++ * a given OF compatibility string, note that there is no revision nor PCIe
++ * capability info in PCI device ID structures
++ *
++ * @compat: single OF compatibility string to match, could be NULL
++ * @id the PCI device ID structure to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure pointed by ID
++ * or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_compat_match_one_id(const char *compat, const struct pci_device_id *id)
++{
++	__u32 rev = PCI_ANY_ID;
++	__u32 req_pcie = 0;
++	struct pci_device_id pr = {0};
++
++	if (!compat || !id ||
++	    of_pci_compat_to_device_id(compat, &pr, &rev, &req_pcie))
++		return NULL;
++	return pci_match_one_id(id, &pr);
++}
++
++/**
++ * of_pci_compat_match_id_table() - Tell whether a given OF compatibility string
++ * matches a given pci_id table
++ *
++ * @compat: single OF compatibility string to match, could be NULL
++ * @table the PCI device ID table to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_compat_match_id_table(const char *compat, const struct pci_device_id *table)
++{
++	if (compat && table) {
++		while (table->vendor || table->subvendor || table->class_mask) {
++			if (of_pci_compat_match_one_id(compat, table))
++				return table;
++			table++;
++		}
++	}
++	return NULL;
++}
++
++/**
++ * of_pci_node_match_id_table() - Tell whether an OF device tree node
++ * matches the given pci_id table
++ * @node: single OF device tree node to match, could be NULL
++ * @table: the PCI device ID table to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure
++ * or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_node_match_id_table(const struct device_node *node,
++			   const struct pci_device_id *table)
++{
++	struct property *prop;
++	const char *cp;
++	const struct pci_device_id *id;
++
++	if (!node || !table)
++		return NULL;
++	prop = of_find_property(node, "compatible", NULL);
++	for (cp = of_prop_next_string(prop, NULL); cp;
++	     cp = of_prop_next_string(prop, cp)) {
++		id = of_pci_compat_match_id_table(cp, table);
++		if (id)
++			return id;
++	}
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(of_pci_node_match_id_table);
++
++/**
++ * of_pci_compat_match_driver - See if a given OF compatibility string matches
++ * a driver's list of IDs
++ * @compat: single OF compatibility string to match, could be NULL
++ * @drv: the PCI driver to match against, could be NULL
++ *
++ * Used by a driver to check whether an OF compatibility string matches one of
++ * (dynamically) supported devices, which may have been augmented
++ * via the sysfs "new_id" file.  Returns the matching pci_device_id
++ * structure or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_compat_match_driver(const char *compat, struct pci_driver *drv)
++{
++	struct pci_dynid *dynid;
++	const struct pci_device_id *found_id = NULL, *ids;
++
++	if (!compat || !drv)
++		return NULL;
++	/* Look at the dynamic ids first, before the static ones */
++	spin_lock(&drv->dynids.lock);
++	list_for_each_entry(dynid, &drv->dynids.list, node) {
++		if (of_pci_compat_match_one_id(compat, &dynid->id)) {
++			found_id = &dynid->id;
++			break;
++		}
++	}
++	spin_unlock(&drv->dynids.lock);
++
++	if (found_id)
++		return found_id;
++
++	for (ids = drv->id_table; (found_id = of_pci_compat_match_one_id(compat, ids));
++	     ids = found_id + 1) {
++		/* exclude ids in id_table with override_only */
++		if (!found_id->override_only)
++			return found_id;
++	}
++
++	return NULL;
++}
++
++/**
++ * of_pci_node_match_driver() - Tell whether an OF device tree node
++ * matches the given pci driver
++ * @node: single OF device tree node to match, could be NULL
++ * @drv: the PCI driver structure to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure
++ * or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_node_match_driver(const struct device_node *node,
++			 struct pci_driver *drv)
++{
++	struct property *prop;
++	const char *cp;
++	const struct pci_device_id *id;
++
++	if (!node || !drv)
++		return NULL;
++	prop = of_find_property(node, "compatible", NULL);
++	for (cp = of_prop_next_string(prop, NULL); cp;
++	     cp = of_prop_next_string(prop, cp)) {
++		id = of_pci_compat_match_driver(cp, drv);
++		if (id)
++			return id;
++	}
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(of_pci_node_match_driver);
++
+ /**
+  * devm_of_pci_get_host_bridge_resources() - Resource-managed parsing of PCI
+  *                                           host bridge resources from DT
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index a2ceeacc33eb..aa212d12353f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -24,11 +24,6 @@
+ #include "pci.h"
+ #include "pcie/portdrv.h"
+ 
+-struct pci_dynid {
+-	struct list_head node;
+-	struct pci_device_id id;
+-};
+-
+ /**
+  * pci_add_dynid - add a new PCI device ID to this driver and re-probe devices
+  * @drv: target pci driver
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 9ed3b5550043..e30652021a63 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -204,6 +204,29 @@ pci_match_one_device(const struct pci_device_id *id, const struct pci_dev *dev)
+ 	return NULL;
+ }
+ 
++/**
++ * pci_match_one_id - Tell if a PCI device id structure matches another
++ *			  PCI device id structure
++ * @id: single PCI device id structure to match, usually in a list or array
++ * @pr: the probing PCI device id structure to match against, usually converted from
++ *      other format
++ *
++ * Returns the matching pci_device_id structure pointed by id
++ * or %NULL if there is no match.
++ */
++static inline const struct pci_device_id *
++pci_match_one_id(const struct pci_device_id *id, const struct pci_device_id *pr)
++{
++	if ((id->vendor == pr->vendor) &&
++	    (id->device == pr->device) &&
++	    (id->subvendor == pr->subvendor) &&
++	    (id->subdevice == pr->subdevice) &&
++	    (id->class == pr->class) &&
++	    (id->class_mask == pr->class_mask))
++		return id;
++	return NULL;
++}
++
+ /* PCI slot sysfs helper code */
+ #define to_pci_slot(s) container_of(s, struct pci_slot, kobj)
+ 
+@@ -638,6 +661,15 @@ void pci_release_bus_of_node(struct pci_bus *bus);
+ 
+ int devm_of_pci_bridge_init(struct device *dev, struct pci_host_bridge *bridge);
+ 
++int of_pci_compat_to_device_id(const char *compat, struct pci_device_id *id,
++			       __u32 *rev, __u32 *req_pcie);
++bool of_pci_compat_match_device(const char *compat, const struct pci_dev *dev);
++const struct pci_device_id *
++of_pci_compat_match_one_id(const char *compat, const struct pci_device_id *id);
++const struct pci_device_id *
++of_pci_compat_match_id_table(const char *compat, const struct pci_device_id *table);
++const struct pci_device_id *
++of_pci_compat_match_driver(const char *compat, struct pci_driver *drv);
+ #else
+ static inline int
+ of_pci_parse_bus_range(struct device_node *node, struct resource *res)
+@@ -679,6 +711,30 @@ static inline int devm_of_pci_bridge_init(struct device *dev, struct pci_host_br
+ 	return 0;
+ }
+ 
++static inline int of_pci_compat_to_device_id(const char *compat, struct pci_device_id *id,
++			       __u32 *rev, __u32 *req_pcie)
++{
++	return -EINVAL;
++}
++static inline bool of_pci_compat_match_device(const char *compat, const struct pci_dev *dev)
++{
++	return false;
++}
++static inline const struct pci_device_id *
++of_pci_compat_match_one_id(const char *compat, const struct pci_device_id *id)
++{
++	return NULL;
++}
++static inline const struct pci_device_id *
++of_pci_compat_match_id_table(const char *compat, const struct pci_device_id *table)
++{
++	return NULL;
++}
++static inline const struct pci_device_id *
++of_pci_compat_match_driver(const char *compat, struct pci_driver *drv)
++{
++	return NULL;
++}
+ #endif /* CONFIG_OF */
+ 
+ #ifdef CONFIG_PCIEAER
+diff --git a/include/linux/of_pci.h b/include/linux/of_pci.h
+index 29658c0ee71f..eef1eaafc03d 100644
+--- a/include/linux/of_pci.h
++++ b/include/linux/of_pci.h
+@@ -13,6 +13,14 @@ struct device_node *of_pci_find_child_device(struct device_node *parent,
+ 					     unsigned int devfn);
+ int of_pci_get_devfn(struct device_node *np);
+ void of_pci_check_probe_only(void);
++bool of_pci_node_match_device(const struct device_node *node,
++			      const struct pci_dev *dev);
++const struct pci_device_id *
++of_pci_node_match_id_table(const struct device_node *node,
++			   const struct pci_device_id *table);
++const struct pci_device_id *
++of_pci_node_match_driver(const struct device_node *node,
++			 struct pci_driver *drv);
+ #else
+ static inline struct device_node *of_pci_find_child_device(struct device_node *parent,
+ 					     unsigned int devfn)
+@@ -26,6 +34,23 @@ static inline int of_pci_get_devfn(struct device_node *np)
+ }
+ 
+ static inline void of_pci_check_probe_only(void) { }
++static inline bool of_pci_node_match_device(const struct device_node *node,
++			      const struct pci_dev *dev)
++{
++	return false;
++}
++static inline const struct pci_device_id *
++of_pci_node_match_id_table(const struct device_node *node,
++			   const struct pci_device_id *table)
++{
++	return NULL;
++}
++static inline const struct pci_device_id *
++of_pci_node_match_driver(const struct device_node *node,
++			 struct pci_driver *drv)
++{
++	return NULL;
++}
+ #endif
+ 
+ #if IS_ENABLED(CONFIG_OF_IRQ)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index adffd65e84b4..04c908d84b90 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1513,6 +1513,12 @@ void pci_unregister_driver(struct pci_driver *dev);
+ 	builtin_driver(__pci_driver, pci_register_driver)
+ 
+ struct pci_driver *pci_dev_driver(const struct pci_dev *dev);
++
++struct pci_dynid {
++	struct list_head node;
++	struct pci_device_id id;
++};
++
+ int pci_add_dynid(struct pci_driver *drv,
+ 		  unsigned int vendor, unsigned int device,
+ 		  unsigned int subvendor, unsigned int subdevice,
+-- 
+2.39.0
 
-Thanks for fixing the endiness issues with cpu_to_le16()
-This part looks good to me now. Likewise for patch 4/4.
-
-One suggestion I have, which is probably taking things to far,
-is a helper for what seems to be repeated code-pattern.
-But I don't feel strongly about that.
-
-> +
-> +       /* Return the total number of bytes added to the TLV buffer */
-> +       return sizeof(struct mrvl_ie_header) + wpaie->datalen;
->  }
-> 
->  /*
-> --
-> 2.34.1
-> 
