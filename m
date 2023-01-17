@@ -2,283 +2,574 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E772066DA01
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 10:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E307C66DA95
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 11:08:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236496AbjAQJdV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 04:33:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
+        id S236168AbjAQKIY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 05:08:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236106AbjAQJco (ORCPT
+        with ESMTP id S236148AbjAQKIW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 04:32:44 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3680FA5EC
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 01:31:40 -0800 (PST)
-X-UUID: bb385a9c964911eda06fc9ecc4dadd91-20230117
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=8oVfLaW56c/kNrNce8+es3cYvqc2J6QaPeCdRq6UxJs=;
-        b=IxMI8gT0e8z7+P6lur2X4AXS4XgtyW6DDsEepLgyj6Gs6SNsPfNA261gIfvLbhLTdzj8mxE2YV/pNAxd1DklsvnILTXq9kfqztmD81bzPLmN4xhJ3Nfz5GQlrsh7GIB23g+xocIrOmtytaE0iuCp0+W1lFxVHJ8YC7f0K21Erck=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.18,REQID:9fa54733-21c1-4e7e-8e64-a19266be1d4c,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:3ca2d6b,CLOUDID:06d80df6-ff42-4fb0-b929-626456a83c14,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
-X-CID-BVR: 0
-X-UUID: bb385a9c964911eda06fc9ecc4dadd91-20230117
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2107484675; Tue, 17 Jan 2023 17:31:33 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Tue, 17 Jan 2023 17:31:32 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Tue, 17 Jan 2023 17:31:32 +0800
-From:   Deren Wu <deren.wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Neil Chen <yn.chen@mediatek.com>,
-        "Deren Wu" <deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921: fix rx filter incorrect by drv/fw inconsistent
-Date:   Tue, 17 Jan 2023 17:30:59 +0800
-Message-ID: <b9ebeda5d445f66fceb17c48c8251093dfe94c57.1673947063.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 17 Jan 2023 05:08:22 -0500
+Received: from smtp161.vfemail.net (smtp161.vfemail.net [146.59.185.161])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A88513C1D
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 02:08:19 -0800 (PST)
+Received: (qmail 4799 invoked from network); 17 Jan 2023 10:01:37 +0000
+Received: from localhost (HELO nl101-3.vfemail.net) ()
+  by smtpout.vfemail.net with ESMTPS (ECDHE-RSA-AES256-GCM-SHA384 encrypted); 17 Jan 2023 10:01:37 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=vfemail.net; h=message-id
+        :date:mime-version:from:subject:to:cc:references:in-reply-to
+        :content-type:content-transfer-encoding; s=2018; bh=2bP9qx6s30zi
+        oPg76k/6WJbCmn0UlZhBcVuSoMZmBUg=; b=E7m3yBmw1khStbDOaByL3bVuihRX
+        hmBYH4S/L74Rsg5x2OVv/+nXD2bciwnaBk9hKZ/qKdIGFVjtQ/i7QH3eWjb+GD98
+        favYAg9/TEf7ve1avd/ZHcVQV6lQucLwndBvssXnzUCOvLAJUtfVpq91q+BuTO2j
+        k4Q8WiuSjQXJkGg=
+Received: (qmail 65935 invoked from network); 17 Jan 2023 10:01:37 -0000
+Received: by simscan 1.4.0 ppid: 65810, pid: 65899, t: 0.6732s
+         scanners:none
+Received: from unknown (HELO bmwxMDEudmZlbWFpbC5uZXQ=) (ZXF1dUBvcGVubWFpbC5jYw==@MTkyLjE2OC4xLjE5Mg==)
+  by nl101.vfemail.net with ESMTPA; 17 Jan 2023 10:01:36 -0000
+Message-ID: <47958543-e90a-578d-94ea-facee04ac8c6@openmail.cc>
+Date:   Tue, 17 Jan 2023 18:01:30 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+From:   Mad Horse <equu@openmail.cc>
+Subject: [PATCH 1/3] PCI: of: Match pci devices or drivers against OF DT nodes
+To:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org
+Cc:     linux-pci@vger.kernel.org, robh@kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Edward Chow <equu@openmail.cc>,
+        Bjorn Helgaas <helgaas@kernel.org>
+References: <ea4e2fed-383d-829d-8a2a-9239768ccd94@openmail.cc>
+Content-Language: en-US
+In-Reply-To: <ea4e2fed-383d-829d-8a2a-9239768ccd94@openmail.cc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Neil Chen <yn.chen@mediatek.com>
+Currently, whether a compatibility string within an OF DT node for a
+PCI device (whose spec is at
+https://www.devicetree.org/open-firmware/bindings/pci/ ) matches the
+vendor and device id of either the PCI device installed on the
+corresponding location or the driver suggested by the compatibility
+string is not supported.
 
-The rx filter, in mt7921 series, may be changed in fw operation. There is
-a racing problem if rx filter controlled by both driver and firmware at
-the same time. To avoid this issue, let mt7921 driver set rx filter by new
-command MCU_CE_CMD_SET_RX_FILTER and allow the firmware controlling it
-only.
+This patch introduces a function to decode a compatibility string into
+a struct pci_device_id, which could further be matched against PCI
+devices or drivers, as well as functions to match a compatibility
+string or OF DT node against PCI devices or drivers.
 
-Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Neil Chen <yn.chen@mediatek.com>
+Signed-off-by: Edward Chow <equu@openmail.cc>
+Cc: Bjorn Helgaas <helgaas@kernel.org>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  2 -
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 48 ++-----------------
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 36 +++++++++++++-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +
- .../wireless/mediatek/mt76/mt7921/testmode.c  |  1 -
- 6 files changed, 40 insertions(+), 50 deletions(-)
+drivers/pci/of.c | 299 +++++++++++++++++++++++++++++++++++++++
+drivers/pci/pci-driver.c | 5 -
+drivers/pci/pci.h | 56 ++++++++
+include/linux/of_pci.h | 25 ++++
+include/linux/pci.h | 6 +
+5 files changed, 386 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index f1e942b9a887..1baea5d5bdb1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1238,6 +1238,7 @@ enum {
- 	MCU_CE_CMD_TEST_CTRL = 0x01,
- 	MCU_CE_CMD_START_HW_SCAN = 0x03,
- 	MCU_CE_CMD_SET_PS_PROFILE = 0x05,
-+	MCU_CE_CMD_SET_RX_FILTER = 0x0a,
- 	MCU_CE_CMD_SET_CHAN_DOMAIN = 0x0f,
- 	MCU_CE_CMD_SET_BSS_CONNECTED = 0x16,
- 	MCU_CE_CMD_SET_BSS_ABORT = 0x17,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index d4b681d7e1d2..4b935867c2b2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -229,8 +229,6 @@ int mt7921_mac_init(struct mt7921_dev *dev)
- 	for (i = 0; i < 2; i++)
- 		mt7921_mac_init_band(dev, i);
- 
--	dev->mt76.rxfilter = mt76_rr(dev, MT_WF_RFCR(0));
--
- 	return mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b, 0);
- }
- EXPORT_SYMBOL_GPL(mt7921_mac_init);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 76ac5069638f..df7bd84b28d2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -681,7 +681,6 @@ static int mt7921_config(struct ieee80211_hw *hw, u32 changed)
- 		ieee80211_iterate_active_interfaces(hw,
- 						    IEEE80211_IFACE_ITER_RESUME_ALL,
- 						    mt7921_sniffer_interface_iter, dev);
--		dev->mt76.rxfilter = mt76_rr(dev, MT_WF_RFCR(0));
- 	}
- 
- out:
-@@ -710,53 +709,12 @@ static void mt7921_configure_filter(struct ieee80211_hw *hw,
- 				    u64 multicast)
- {
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
--	u32 ctl_flags = MT_WF_RFCR1_DROP_ACK |
--			MT_WF_RFCR1_DROP_BF_POLL |
--			MT_WF_RFCR1_DROP_BA |
--			MT_WF_RFCR1_DROP_CFEND |
--			MT_WF_RFCR1_DROP_CFACK;
--	u32 flags = 0;
--
--#define MT76_FILTER(_flag, _hw) do {					\
--		flags |= *total_flags & FIF_##_flag;			\
--		dev->mt76.rxfilter &= ~(_hw);				\
--		dev->mt76.rxfilter |= !(flags & FIF_##_flag) * (_hw);	\
--	} while (0)
- 
- 	mt7921_mutex_acquire(dev);
--
--	dev->mt76.rxfilter &= ~(MT_WF_RFCR_DROP_OTHER_BSS |
--				MT_WF_RFCR_DROP_OTHER_BEACON |
--				MT_WF_RFCR_DROP_FRAME_REPORT |
--				MT_WF_RFCR_DROP_PROBEREQ |
--				MT_WF_RFCR_DROP_MCAST_FILTERED |
--				MT_WF_RFCR_DROP_MCAST |
--				MT_WF_RFCR_DROP_BCAST |
--				MT_WF_RFCR_DROP_DUPLICATE |
--				MT_WF_RFCR_DROP_A2_BSSID |
--				MT_WF_RFCR_DROP_UNWANTED_CTL |
--				MT_WF_RFCR_DROP_STBC_MULTI);
--
--	MT76_FILTER(OTHER_BSS, MT_WF_RFCR_DROP_OTHER_TIM |
--			       MT_WF_RFCR_DROP_A3_MAC |
--			       MT_WF_RFCR_DROP_A3_BSSID);
--
--	MT76_FILTER(FCSFAIL, MT_WF_RFCR_DROP_FCSFAIL);
--
--	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
--			     MT_WF_RFCR_DROP_RTS |
--			     MT_WF_RFCR_DROP_CTL_RSV |
--			     MT_WF_RFCR_DROP_NDPA);
--
--	*total_flags = flags;
--	mt76_wr(dev, MT_WF_RFCR(0), dev->mt76.rxfilter);
--
--	if (*total_flags & FIF_CONTROL)
--		mt76_clear(dev, MT_WF_RFCR1(0), ctl_flags);
--	else
--		mt76_set(dev, MT_WF_RFCR1(0), ctl_flags);
--
-+	mt7921_mcu_set_rxfilter(dev, *total_flags, 0, 0);
- 	mt7921_mutex_release(dev);
-+
-+	*total_flags &= (FIF_OTHER_BSS | FIF_FCSFAIL | FIF_CONTROL);
- }
- 
- static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 8930b5a4467c..8aeb030fb763 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1019,6 +1019,8 @@ int mt7921_mcu_set_beacon_filter(struct mt7921_dev *dev,
- 				 struct ieee80211_vif *vif,
- 				 bool enable)
- {
-+#define MT7921_FIF_BIT_CLR		BIT(1)
-+#define MT7921_FIF_BIT_SET		BIT(0)
- 	int err;
- 
- 	if (enable) {
-@@ -1026,7 +1028,11 @@ int mt7921_mcu_set_beacon_filter(struct mt7921_dev *dev,
- 		if (err)
- 			return err;
- 
--		mt76_set(dev, MT_WF_RFCR(0), MT_WF_RFCR_DROP_OTHER_BEACON);
-+		err = mt7921_mcu_set_rxfilter(dev, 0,
-+					      MT7921_FIF_BIT_SET,
-+					      MT_WF_RFCR_DROP_OTHER_BEACON);
-+		if (err)
-+			return err;
- 
- 		return 0;
- 	}
-@@ -1035,7 +1041,11 @@ int mt7921_mcu_set_beacon_filter(struct mt7921_dev *dev,
- 	if (err)
- 		return err;
- 
--	mt76_clear(dev, MT_WF_RFCR(0), MT_WF_RFCR_DROP_OTHER_BEACON);
-+	err = mt7921_mcu_set_rxfilter(dev, 0,
-+				      MT7921_FIF_BIT_CLR,
-+				      MT_WF_RFCR_DROP_OTHER_BEACON);
-+	if (err)
-+		return err;
- 
- 	return 0;
- }
-@@ -1255,3 +1265,25 @@ int mt7921_mcu_set_clc(struct mt7921_dev *dev, u8 *alpha2,
- 	}
- 	return 0;
- }
-+
-+int mt7921_mcu_set_rxfilter(struct mt7921_dev *dev, u32 fif,
-+			    u8 bit_op, u32 bit_map)
+diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+index 196834ed44fe..edb61195ea53 100644
+--- a/drivers/pci/of.c
++++ b/drivers/pci/of.c
+@@ -13,6 +13,8 @@
+#include <linux/of_irq.h>
+#include <linux/of_address.h>
+#include <linux/of_pci.h>
++#include <linux/string.h>
++#include <linux/kstrtox.h>
+#include "pci.h"
+#ifdef CONFIG_PCI
+@@ -251,6 +253,303 @@ void of_pci_check_probe_only(void)
+}
+EXPORT_SYMBOL_GPL(of_pci_check_probe_only);
++/**
++ * of_pci_compat_to_device_id() - Decode an OF compatibility string into a
++ * pci_device_id structure.
++ * @compat: the compatibility string to decode, could be NULL
++ * @id: pointer to a struct pci_device_id, to store the result
++ * @rev: pointer to output revision info, PCI_ANY_ID if no revision in 
+@compat
++ * @req_pcie: pointer to output whether @compat mandates PCIe compatibility
++ *
++ * returns 0 when success, -EINVAL when failed.
++ */
++int of_pci_compat_to_device_id(const char *compat, struct pci_device_id 
+*id,
++ u32 *rev, u32 *req_pcie)
 +{
-+	struct {
-+		u8 rsv[4];
-+		u8 mode;
-+		u8 rsv2[3];
-+		__le32 fif;
-+		__le32 bit_map; /* bit_* for bitmap update */
-+		u8 bit_op;
-+		u8 pad[51];
-+	} __packed data = {
-+		.mode = fif ? 1 : 2,
-+		.fif = cpu_to_le32(fif),
-+		.bit_map = cpu_to_le32(bit_map),
-+		.bit_op = bit_op,
-+	};
++ union {
++ u8 u8;
++ u16 u16;
++ u32 u32;
++ } res = {0};
++ *req_pcie = 0;
++ *rev = PCI_ANY_ID;
++ if (!compat || strncasecmp(compat, "pci", 3) != 0)
++ return -EINVAL;
++ compat += 3;
 +
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_RX_FILTER),
-+				 &data, sizeof(data), false);
++ if (strncasecmp(compat, "class,", 6) == 0) {
++ /* pciclass,CCSSPP */
++ compat += 6;
++ if ((strlen(compat) < 4)
++ || kstrtouint(compat, 16, &id->class))
++ return -EINVAL;
++ if (id->class < 0x10000) {
++ id->class <<= 8;
++ id->class_mask = 0xFFFF00;
++ } else {
++ id->class_mask = PCI_ANY_ID;
++ }
++ id->vendor = PCI_ANY_ID;
++ id->device = PCI_ANY_ID;
++ id->subvendor = PCI_ANY_ID;
++ id->subdevice = PCI_ANY_ID;
++ return 0
++ }
++
++ if (strncasecmp(compat, "ex", 2) == 0) {
++ /* pciex... */
++ *req_pcie = 1;
++ compat += 2;
++ }
++ if (kstrtou16(compat, 16, &res.u16))
++ return -EINVAL;
++ id->vendor = res.u16;
++ compat = strchr(compat, ',');
++ if (!compat)
++ return -EINVAL;
++ compat++;
++ if (kstrtou16(compat, 16, &res.u16))
++ return -EINVAL;
++ id->device = res.u16;
++ compat = strchr(compat, '.');
++ if (compat == NULL) {
++ /* pciVVVV,DDDD */
++ id->subvendor = PCI_ANY_ID;
++ id->subdevice = PCI_ANY_ID;
++ return 0
++ }
++
++ compat++;
++ if (strlen(compat) == 2) {
++ /* pciVVVV,DDDD.RR */
++ if (kstrtou8(compat, 16, &res.u8))
++ return -EINVAL;
++ *rev = res.u8;
++ id->subvendor = PCI_ANY_ID;
++ id->subdevice = PCI_ANY_ID;
++ return 0
++ }
++
++ if (kstrtou16(compat, 16, &res.u16))
++ return -EINVAL;
++ id->subvendor = res.u16;
++ compat = strchr(compat, '.');
++ if (!compat)
++ return -EINVAL;
++ compat++;
++ if (kstrtou16(compat, 16, &res.u16))
++ return -EINVAL;
++ id->subdevice = res.u16;
++ compat = strchr(compat, '.');
++ if (compat == NULL)
++ /* pciVVVV,DDDD.SSSS.ssss */
++ return 0
++
++ compat++;
++ if (strlen(compat) == 2) {
++ /* pciVVVV,DDDD.SSSS.ssss.RR */
++ if (kstrtou8(compat, 16, &res.u8))
++ return -EINVAL;
++ *rev = res.u8;
++ }
++ return 0;
 +}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index efff4d43d796..248a4bc30955 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -383,6 +383,8 @@ int mt7921_mcu_get_rx_rate(struct mt7921_phy *phy, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta, struct rate_info *rate);
- int mt7921_mcu_fw_log_2_host(struct mt7921_dev *dev, u8 ctrl);
- void mt7921_mcu_rx_event(struct mt7921_dev *dev, struct sk_buff *skb);
-+int mt7921_mcu_set_rxfilter(struct mt7921_dev *dev, u32 fif,
-+			    u8 bit_op, u32 bit_map);
- 
- static inline void mt7921_irq_enable(struct mt7921_dev *dev, u32 mask)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-index bdec8684ce94..7f408212e716 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-@@ -59,7 +59,6 @@ mt7921_tm_set(struct mt7921_dev *dev, struct mt7921_tm_cmd *req)
- 		cancel_work_sync(&pm->wake_work);
- 		__mt7921_mcu_drv_pmctrl(dev);
- 
--		mt76_wr(dev, MT_WF_RFCR(0), dev->mt76.rxfilter);
- 		phy->test.state = MT76_TM_STATE_ON;
- 	}
- 
++
++/**
++ * of_pci_compat_match_device() - Tell whether a PCI device structure 
+matches
++ * a given OF compatibility string
++ * @compat: single OF compatibility string to match, could be NULL
++ * @dev the PCI device structure to match against
++ *
++ * Returns whether they match.
++ */
++bool of_pci_compat_match_device(const char *compat, const struct 
+pci_dev *dev)
++{
++ __u32 rev = PCI_ANY_ID;
++ __u32 req_pcie = 0;
++ struct pci_device_id id = {0};
++
++ if (of_pci_compat_to_device_id(compat, &id, &rev, &req_pcie))
++ return false;
++ return pci_match_one_device(&id, dev) &&
++ (rev == PCI_ANY_ID || rev == dev->revision) &&
++ req_pcie ? dev->pcie_cap : true;
++}
++
++/**
++ * of_pci_node_match_device() - Tell whether an OF device tree node
++ * matches the given pci device
++ * @node: single OF device tree node to match, could be NULL
++ * @dev: the PCI device structure to match against, could be NULL
++ *
++ * Returns whether they match.
++ */
++bool of_pci_node_match_device(const struct device_node *node,
++ const struct pci_dev *dev)
++{
++ struct property *prop;
++ const char *cp;
++
++ if (!node || !dev)
++ return false;
++ prop = of_find_property(node, "compatible", NULL);
++ for (cp = of_prop_next_string(prop, NULL); cp;
++ cp = of_prop_next_string(prop, cp)) {
++ if (of_pci_compat_match_device(cp, dev))
++ return true;
++ }
++ return false;
++}
++EXPORT_SYMBOL_GPL(of_pci_node_match_device);
++
++/**
++ * of_pci_compat_match_one_id() - Tell whether a PCI device ID 
+structure matches
++ * a given OF compatibility string, note that there is no revision nor PCIe
++ * capability info in PCI device ID structures
++ *
++ * @compat: single OF compatibility string to match, could be NULL
++ * @id the PCI device ID structure to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure pointed by ID
++ * or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_compat_match_one_id(const char *compat, const struct 
+pci_device_id *id)
++{
++ __u32 rev = PCI_ANY_ID;
++ __u32 req_pcie = 0;
++ struct pci_device_id pr = {0};
++
++ if (!compat || !id ||
++ of_pci_compat_to_device_id(compat, &pr, &rev, &req_pcie))
++ return NULL;
++ return pci_match_one_id(id, &pr);
++}
++
++/**
++ * of_pci_compat_match_id_table() - Tell whether a given OF 
+compatibility string
++ * matches a given pci_id table
++ *
++ * @compat: single OF compatibility string to match, could be NULL
++ * @table the PCI device ID table to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure or %NULL if there is no 
+match.
++ */
++const struct pci_device_id *
++of_pci_compat_match_id_table(const char *compat, const struct 
+pci_device_id *table)
++{
++ if (compat && table) {
++ while (table->vendor || table->subvendor || table->class_mask) {
++ if (of_pci_compat_match_one_id(compat, table))
++ return table;
++ table++;
++ }
++ }
++ return NULL;
++}
++
++/**
++ * of_pci_node_match_id_table() - Tell whether an OF device tree node
++ * matches the given pci_id table
++ * @node: single OF device tree node to match, could be NULL
++ * @table: the PCI device ID table to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure
++ * or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_node_match_id_table(const struct device_node *node,
++ const struct pci_device_id *table)
++{
++ struct property *prop;
++ const char *cp;
++ const struct pci_device_id *id;
++
++ if (!node || !table)
++ return NULL;
++ prop = of_find_property(node, "compatible", NULL);
++ for (cp = of_prop_next_string(prop, NULL); cp;
++ cp = of_prop_next_string(prop, cp)) {
++ id = of_pci_compat_match_id_table(cp, table);
++ if (id)
++ return id;
++ }
++ return NULL;
++}
++EXPORT_SYMBOL_GPL(of_pci_node_match_id_table);
++
++/**
++ * of_pci_compat_match_driver - See if a given OF compatibility string 
+matches
++ * a driver's list of IDs
++ * @compat: single OF compatibility string to match, could be NULL
++ * @drv: the PCI driver to match against, could be NULL
++ *
++ * Used by a driver to check whether an OF compatibility string matches 
+one of
++ * (dynamically) supported devices, which may have been augmented
++ * via the sysfs "new_id" file. Returns the matching pci_device_id
++ * structure or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_compat_match_driver(const char *compat, struct pci_driver *drv)
++{
++ struct pci_dynid *dynid;
++ const struct pci_device_id *found_id = NULL, *ids;
++
++ if (!compat || !drv)
++ return NULL;
++ /* Look at the dynamic ids first, before the static ones */
++ spin_lock(&drv->dynids.lock);
++ list_for_each_entry(dynid, &drv->dynids.list, node) {
++ if (of_pci_compat_match_one_id(compat, &dynid->id)) {
++ found_id = &dynid->id;
++ break;
++ }
++ }
++ spin_unlock(&drv->dynids.lock);
++
++ if (found_id)
++ return found_id;
++
++ for (ids = drv->id_table; (found_id = 
+of_pci_compat_match_one_id(compat, ids));
++ ids = found_id + 1) {
++ /* exclude ids in id_table with override_only */
++ if (!found_id->override_only)
++ return found_id;
++ }
++
++ return NULL;
++}
++
++/**
++ * of_pci_node_match_driver() - Tell whether an OF device tree node
++ * matches the given pci driver
++ * @node: single OF device tree node to match, could be NULL
++ * @drv: the PCI driver structure to match against, could be NULL
++ *
++ * Returns the matching pci_device_id structure
++ * or %NULL if there is no match.
++ */
++const struct pci_device_id *
++of_pci_node_match_driver(const struct device_node *node,
++ struct pci_driver *drv)
++{
++ struct property *prop;
++ const char *cp;
++ const struct pci_device_id *id;
++
++ if (!node || !drv)
++ return NULL;
++ prop = of_find_property(node, "compatible", NULL);
++ for (cp = of_prop_next_string(prop, NULL); cp;
++ cp = of_prop_next_string(prop, cp)) {
++ id = of_pci_compat_match_driver(cp, drv);
++ if (id)
++ return id;
++ }
++ return NULL;
++}
++EXPORT_SYMBOL_GPL(of_pci_node_match_driver);
++
+/**
+* devm_of_pci_get_host_bridge_resources() - Resource-managed parsing of PCI
+* host bridge resources from DT
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index a2ceeacc33eb..aa212d12353f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -24,11 +24,6 @@
+#include "pci.h"
+#include "pcie/portdrv.h"
+-struct pci_dynid {
+- struct list_head node;
+- struct pci_device_id id;
+-};
+-
+/**
+* pci_add_dynid - add a new PCI device ID to this driver and re-probe 
+devices
+* @drv: target pci driver
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 9ed3b5550043..e30652021a63 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -204,6 +204,29 @@ pci_match_one_device(const struct pci_device_id 
+*id, const struct pci_dev *dev)
+return NULL;
+}
++/**
++ * pci_match_one_id - Tell if a PCI device id structure matches another
++ * PCI device id structure
++ * @id: single PCI device id structure to match, usually in a list or array
++ * @pr: the probing PCI device id structure to match against, usually 
+converted from
++ * other format
++ *
++ * Returns the matching pci_device_id structure pointed by id
++ * or %NULL if there is no match.
++ */
++static inline const struct pci_device_id *
++pci_match_one_id(const struct pci_device_id *id, const struct 
+pci_device_id *pr)
++{
++ if ((id->vendor == pr->vendor) &&
++ (id->device == pr->device) &&
++ (id->subvendor == pr->subvendor) &&
++ (id->subdevice == pr->subdevice) &&
++ (id->class == pr->class) &&
++ (id->class_mask == pr->class_mask))
++ return id;
++ return NULL;
++}
++
+/* PCI slot sysfs helper code */
+#define to_pci_slot(s) container_of(s, struct pci_slot, kobj)
+@@ -638,6 +661,15 @@ void pci_release_bus_of_node(struct pci_bus *bus);
+int devm_of_pci_bridge_init(struct device *dev, struct pci_host_bridge 
+*bridge);
++int of_pci_compat_to_device_id(const char *compat, struct pci_device_id 
+*id,
++ __u32 *rev, __u32 *req_pcie);
++bool of_pci_compat_match_device(const char *compat, const struct 
+pci_dev *dev);
++const struct pci_device_id *
++of_pci_compat_match_one_id(const char *compat, const struct 
+pci_device_id *id);
++const struct pci_device_id *
++of_pci_compat_match_id_table(const char *compat, const struct 
+pci_device_id *table);
++const struct pci_device_id *
++of_pci_compat_match_driver(const char *compat, struct pci_driver *drv);
+#else
+static inline int
+of_pci_parse_bus_range(struct device_node *node, struct resource *res)
+@@ -679,6 +711,30 @@ static inline int devm_of_pci_bridge_init(struct 
+device *dev, struct pci_host_br
+return 0;
+}
++static inline int of_pci_compat_to_device_id(const char *compat, struct 
+pci_device_id *id,
++ __u32 *rev, __u32 *req_pcie)
++{
++ return -EINVAL;
++}
++static inline bool of_pci_compat_match_device(const char *compat, const 
+struct pci_dev *dev)
++{
++ return false;
++}
++static inline const struct pci_device_id *
++of_pci_compat_match_one_id(const char *compat, const struct 
+pci_device_id *id)
++{
++ return NULL;
++}
++static inline const struct pci_device_id *
++of_pci_compat_match_id_table(const char *compat, const struct 
+pci_device_id *table)
++{
++ return NULL;
++}
++static inline const struct pci_device_id *
++of_pci_compat_match_driver(const char *compat, struct pci_driver *drv)
++{
++ return NULL;
++}
+#endif /* CONFIG_OF */
+#ifdef CONFIG_PCIEAER
+diff --git a/include/linux/of_pci.h b/include/linux/of_pci.h
+index 29658c0ee71f..eef1eaafc03d 100644
+--- a/include/linux/of_pci.h
++++ b/include/linux/of_pci.h
+@@ -13,6 +13,14 @@ struct device_node *of_pci_find_child_device(struct 
+device_node *parent,
+unsigned int devfn);
+int of_pci_get_devfn(struct device_node *np);
+void of_pci_check_probe_only(void);
++bool of_pci_node_match_device(const struct device_node *node,
++ const struct pci_dev *dev);
++const struct pci_device_id *
++of_pci_node_match_id_table(const struct device_node *node,
++ const struct pci_device_id *table);
++const struct pci_device_id *
++of_pci_node_match_driver(const struct device_node *node,
++ struct pci_driver *drv);
+#else
+static inline struct device_node *of_pci_find_child_device(struct 
+device_node *parent,
+unsigned int devfn)
+@@ -26,6 +34,23 @@ static inline int of_pci_get_devfn(struct device_node 
+*np)
+}
+static inline void of_pci_check_probe_only(void) { }
++static inline bool of_pci_node_match_device(const struct device_node *node,
++ const struct pci_dev *dev)
++{
++ return false;
++}
++static inline const struct pci_device_id *
++of_pci_node_match_id_table(const struct device_node *node,
++ const struct pci_device_id *table)
++{
++ return NULL;
++}
++static inline const struct pci_device_id *
++of_pci_node_match_driver(const struct device_node *node,
++ struct pci_driver *drv)
++{
++ return NULL;
++}
+#endif
+#if IS_ENABLED(CONFIG_OF_IRQ)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index adffd65e84b4..04c908d84b90 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1513,6 +1513,12 @@ void pci_unregister_driver(struct pci_driver *dev);
+builtin_driver(__pci_driver, pci_register_driver)
+struct pci_driver *pci_dev_driver(const struct pci_dev *dev);
++
++struct pci_dynid {
++ struct list_head node;
++ struct pci_device_id id;
++};
++
+int pci_add_dynid(struct pci_driver *drv,
+unsigned int vendor, unsigned int device,
+unsigned int subvendor, unsigned int subdevice,
+
 -- 
-2.18.0
+2.39.0
 
