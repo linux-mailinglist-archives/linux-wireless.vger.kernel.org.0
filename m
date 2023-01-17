@@ -2,90 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C1A66DE5F
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 14:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F3966DE6F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 14:13:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236971AbjAQNGj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 08:06:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
+        id S236954AbjAQNNf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 08:13:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236954AbjAQNGh (ORCPT
+        with ESMTP id S236563AbjAQNN1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 08:06:37 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D741C32E5F
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 05:06:34 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id f12-20020a7bc8cc000000b003daf6b2f9b9so4775882wml.3
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 05:06:34 -0800 (PST)
+        Tue, 17 Jan 2023 08:13:27 -0500
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4761136095;
+        Tue, 17 Jan 2023 05:13:26 -0800 (PST)
+Received: by mail-qt1-x829.google.com with SMTP id z9so4413918qtv.5;
+        Tue, 17 Jan 2023 05:13:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Npy3U/eZWyM9T/Kmww/ZrXNueAspTQ1LP+2PKf6yneo=;
-        b=RFtslpJ7KRKn2bYGTbtJextn+UGM4mtNrMhRWixO2pfaCdIvTTXXGA38dxc+SYJHHl
-         xXmAHg0T2kqWM22T/k2AXwb87xaMw+SPA6cWkEvZF8CGMtw/j0y6quZY/VMPZuP5CG5E
-         YWGvuS0KTkZcrmfCvTMEhxqBNO5VY0l5BUah0E37Cz/a0xVrVAICgNxNM8Uv5KFSPMS4
-         Z60H4tYn7mGUygxYSSBcwQLfOV9Eh/tCm8Snm4pCSC53AtPPqsoyhwqrD5+3LU4ypRYQ
-         WzZ5uQ24GehGDSjXei+MkSwaP0bMIL+P6pDLzObBxUwS79niJ99SAUgBAOWmoNGmkcOJ
-         CVFg==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7b79N7KJMhxkT+qW/OfYVFkH/B+UqS+gV4VbsqmLlPs=;
+        b=Br4CJJdkJhXYVJrBL9kTCUPwZ2UWWoW8o/zZKTOKTu5HjOJJPT5DAXrg0kyd+PCez5
+         gfNPaS9pIgO1lxRgNOdMv3flCpFAwS7VljdqxyfGvPQto1xMPpkFytUWwjR3XMasQtvV
+         5+IwTFVmZTGfUVVpAalM2I73pBA0R6Mpbp3GZbQlW1Wj1VWy/lkLH0I4TWOh8I0Cjiz2
+         GZSBYHKn1RMLy5ocN2T6waHqYhvWWdJ2XzbkO9C0SAQRS6hrEUk9f15KNYvZSOr4wDCY
+         7laeNbgQnvpcRrvRt0qIsQaeKtNHSuWPip5/pAUsQAfvRaE7CLiiYcbQutf0hAWj4IPH
+         bqqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Npy3U/eZWyM9T/Kmww/ZrXNueAspTQ1LP+2PKf6yneo=;
-        b=Gh2Z+b4c5XnloZPCXGV1g2hRfrxmwqg2DEldGtEGiajxkt8eH5EV/1y3ckKcFpnhFe
-         pLqIr4+VuE6xYBtx5ypfZaRDSX8KTAi95LdIjuMTX7+lzPc0n+nYKPTK0qRiAbrUKB21
-         VBxuUxCy0b5xuy5gNQY+rkF5V4sDv2SnknK1r0BeVQvRkN2riXCqcra2bGRhXsmDFdvM
-         nIRDZDqgVPqCOepeNUxdUARRRo6h8vl8KQLdQO8gkS1aSWLuKpw96yqbaGR4kbafEaez
-         8XcbtHwOhD9V/qIECAa0VIEprdLjW5q8XjnqOn+ZgRS0ExDA653i2qKl0t3EbPzkKxjx
-         iGpQ==
-X-Gm-Message-State: AFqh2koimNC2OVo6xj3hrYnDoaEiADd/E5qZcXcBSCyUVROwV4TOWg65
-        TeLltIpWE4n95tBXOtYMr7GzQ8i3zN7Vc1pe+D1Sfw==
-X-Google-Smtp-Source: AMrXdXvsLUtQeT2KROa0BenoYzT46G87UjLYkCB2o4dJPV5189ihVusp8v/w7FWcour9HN319fS+iPpC6rIMDSA2bLU=
-X-Received: by 2002:a05:600c:1d97:b0:3da:f53b:9b9f with SMTP id
- p23-20020a05600c1d9700b003daf53b9b9fmr119654wms.101.1673960793363; Tue, 17
- Jan 2023 05:06:33 -0800 (PST)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7b79N7KJMhxkT+qW/OfYVFkH/B+UqS+gV4VbsqmLlPs=;
+        b=1kRsBdxaXWiOSdvfTwepnh+yELpdDu+KlSMEluWDXT2Br5OdOQFiz8oq6Wifv5X9Hz
+         fBCW8YXqL4NRgb1E2DzOer+OzAXU+v9w7eppdsdxpVKyHYsNy7WgGJhaFewUafkhznTQ
+         H4w7VP9y3Ahyxgphdyt9N9fl3SBuSjuT57AuljJt7milpgWZfxBQFBKNPCA48og9uHLZ
+         iDCDSAtvQAdy9h50gc2dtj/lCXWhClyD47qw5Ofo5TzDTNcxA00P+Z+G8IYaDhr1vlDk
+         3oKxZ+xJHPoDBTXGSmcf24LPCVJYlsZeU4g45k4Z6J8y4+pabOf129a1Yd5BPqYOW01W
+         g1Ww==
+X-Gm-Message-State: AFqh2kqk7XKiwyT9zC9ghBeeiw/AjUeUNmpKR7vKfZBs18CQgYvx7GS6
+        lxNT2XCX4dIkANfDtxC6UVISkyx0niq2Gtub48o=
+X-Google-Smtp-Source: AMrXdXvYbvRHhebhi05nP88q/h3NPgYCbBXJwUUlkKDkoWULG81efNjQrD4K3ofikMz29ir7lkW3G41nLnl80hcVhxE=
+X-Received: by 2002:a05:622a:229f:b0:3a9:8c90:dce3 with SMTP id
+ ay31-20020a05622a229f00b003a98c90dce3mr86701qtb.39.1673961205133; Tue, 17 Jan
+ 2023 05:13:25 -0800 (PST)
 MIME-Version: 1.0
 References: <CAHbf0-EHP0cRDhOD_3Mf4aRzndoVYGbd3j3vxwUOh9_cHp+h1Q@mail.gmail.com>
- <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
-In-Reply-To: <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
-From:   Mike Lothian <mike@fireburn.co.uk>
-Date:   Tue, 17 Jan 2023 13:06:22 +0000
-Message-ID: <CAHbf0-FzLyQeWN0ii2-2TqMg+5ptVsaoAjqrNe4ceXG_MtNeqA@mail.gmail.com>
+ <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com> <CAHbf0-FzLyQeWN0ii2-2TqMg+5ptVsaoAjqrNe4ceXG_MtNeqA@mail.gmail.com>
+In-Reply-To: <CAHbf0-FzLyQeWN0ii2-2TqMg+5ptVsaoAjqrNe4ceXG_MtNeqA@mail.gmail.com>
+From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date:   Tue, 17 Jan 2023 18:13:14 +0500
+Message-ID: <CABXGCsNDYNGVKHh50SneQwdd5A4oWT2=Fb1r5YsO=N9W5aGA_A@mail.gmail.com>
 Subject: Re: [6.2][regression] after commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae
  stopping working wifi mt7921e
-To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To:     Mike Lothian <mike@fireburn.co.uk>
 Cc:     nbd@nbd.name,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-wireless@vger.kernel.org, lorenzo@kernel.org,
         sujuan.chen@mediatek.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 17 Jan 2023 at 05:43, Mikhail Gavrilov
-<mikhail.v.gavrilov@gmail.com> wrote:
+On Tue, Jan 17, 2023 at 6:06 PM Mike Lothian <mike@fireburn.co.uk> wrote:
 >
-> On Tue, Jan 17, 2023 at 5:33 AM Mike Lothian <mike@fireburn.co.uk> wrote:
-> >
-> > Hi
-> >
-> > I'm struggling to find these patches on Patchwork, or apply the saved
-> > raw patches to rc4
-> >
-> > If I'm missing them, would you mind posting the link
->
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230113105848.34642-3-nbd@nbd.name/
->
-> --
-> Best Regards,
-> Mike Gavrilov.
+> I can confirm this fixes things for me, thanks
 
-I can confirm this fixes things for me, thanks
+Sorry for offtop.
+Maybe somebody knows, is it possible to extend channel width to 160MHz
+on this chip?
+
+=E2=9D=AF sudo iw wlp5s0 info
+Interface wlp5s0
+ifindex 3
+wdev 0x1
+addr 48:e7:da:57:9a:33
+type managed
+wiphy 0
+channel 44 (5220 MHz), width: 80 MHz, center1: 5210 MHz
+txpower 3.00 dBm
+multicast TXQ:
+qsz-byt qsz-pkt flows drops marks overlmt hashcol tx-bytes tx-packets
+0 0 0 0 0 0 0 0 0
+
+=E2=9D=AF sudo iw wlp5s0 set channel 36 160MHz
+Usage: iw [options] dev <devname> set channel <channel>
+[NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]
+Options:
+--debug enable netlink debugging
+
+--=20
+Best Regards,
+Mike Gavrilov.
