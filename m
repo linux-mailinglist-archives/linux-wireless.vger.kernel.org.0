@@ -2,158 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D6F66E792
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 21:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B25766E867
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 22:28:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232550AbjAQURB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 15:17:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47970 "EHLO
+        id S229702AbjAQV2f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 16:28:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234766AbjAQUOD (ORCPT
+        with ESMTP id S229691AbjAQV0z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 15:14:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97049CDD1
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 11:06:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1673982365;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MpsO+POA9H7W62udMYHKZqv0nL/aJQ/9aqwMH3QSJQo=;
-        b=BgpbT1sjY3inCEEuQvJ+659JPr/sMYfuo453X8L7f+ghlqBa/Y//0h1Qa6yV68xjXMBypw
-        hhVCPMOWDaA4O6Uwo6qIhfQ5YYrfK5zXUY781rXnQ3iHhT4ZywJRpMMzMXozzkyuw7ZV8m
-        TlG4va2V+x9/W5EykNWZSzriM3YiemA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-448-1fxyaWpqOuWDTz3jLaNqEA-1; Tue, 17 Jan 2023 14:06:01 -0500
-X-MC-Unique: 1fxyaWpqOuWDTz3jLaNqEA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Tue, 17 Jan 2023 16:26:55 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F43303F8;
+        Tue, 17 Jan 2023 11:46:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6CE691C189A5;
-        Tue, 17 Jan 2023 19:06:00 +0000 (UTC)
-Received: from localhost.localdomain (ovpn-0-29.rdu2.redhat.com [10.22.0.29])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F3373492B00;
-        Tue, 17 Jan 2023 19:05:58 +0000 (UTC)
-Message-ID: <bce510429d60852b6589b8b9fb1a5c93665a8ec9.camel@redhat.com>
-Subject: Re: [PATCH v3 4/4] wifi: libertas: add support for WPS enrollee IE
- in probe requests
-From:   Dan Williams <dcbw@redhat.com>
-To:     Doug Brown <doug@schmorgal.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Simon Horman <simon.horman@corigine.com>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Tue, 17 Jan 2023 13:05:58 -0600
-In-Reply-To: <20230116202126.50400-5-doug@schmorgal.com>
-References: <20230116202126.50400-1-doug@schmorgal.com>
-         <20230116202126.50400-5-doug@schmorgal.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88ADB6127C;
+        Tue, 17 Jan 2023 19:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3EAC433D2;
+        Tue, 17 Jan 2023 19:46:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673984775;
+        bh=xnGXOoNgDFnCfGFqkYWtMg89FKyKMFlSJejrent0z50=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=itmvIkkVnXQD3R7IotNEycsLmC3O4tBaQYU5mOCcXZqCOMI7i9dA0geFJippxBuCK
+         /aBw2JY3GAwurtKKME1uROUPqbpNjCmCzq1L5+G7uRfkOB+BYO02iVCR9oTp8qP4I3
+         V9CkPwOEPS6E7i+oygkth6Eb9ynfobPtAIzEe3ExtTIxSTzs1pCrz3uycYQXEVywoW
+         ptJNobblHKki+s3DSFOrtSw4sFyb5xy1SOSUtzyrKTRpKj2fdDPAI2qSz1lBb0M2hV
+         se8QXiRH5Cc2WqjoHsheaHMf7gy12LBFc+kB4M/OPAigSFuPHHWjc1eytqydHO16hc
+         ZRopnLwgpukPQ==
+Date:   Tue, 17 Jan 2023 13:46:14 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Edward Chow <persmule@gmail.com>
+Cc:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org,
+        linux-pci@vger.kernel.org, robh@kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Edward Chow <equu@openmail.cc>
+Subject: Re: [PATCH 2/3] wifi: ath9k: stop loading incompatible DT cal data
+Message-ID: <20230117194614.GA135447@bhelgaas>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230117092746.1149155-1-equu@openmail.cc>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIzLTAxLTE2IGF0IDEyOjIxIC0wODAwLCBEb3VnIEJyb3duIHdyb3RlOgo+IEFk
-ZCBjb21wYXRpYmlsaXR5IHdpdGggV1BTIGJ5IHBhc3Npbmcgb24gV1BTIGVucm9sbGVlIGluZm9y
-bWF0aW9uIGluCj4gcHJvYmUgcmVxdWVzdHMuIElnbm9yZSBvdGhlciBJRXMgc3VwcGxpZWQgaW4g
-dGhlIHNjYW4gcmVxdWVzdC4gVGhpcwo+IGFsc28KPiBoYXMgdGhlIGFkZGVkIGJlbmVmaXQgb2Yg
-cmVzdG9yaW5nIGNvbXBhdGliaWxpdHkgd2l0aCBuZXdlcgo+IHdwYV9zdXBwbGljYW50IHZlcnNp
-b25zIHRoYXQgYWx3YXlzIGFkZCBzY2FuIElFcy4gUHJldmlvdXNseSwgd2l0aAo+IG1heF9zY2Fu
-X2llX2xlbiBzZXQgdG8gMCwgc2NhbnMgd291bGQgYWx3YXlzIGZhaWwuCj4gCj4gU3VnZ2VzdGVk
-LWJ5OiBEYW4gV2lsbGlhbXMgPGRjYndAcmVkaGF0LmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBEb3Vn
-IEJyb3duIDxkb3VnQHNjaG1vcmdhbC5jb20+CgpSZXZpZXdlZC1ieTogRGFuIFdpbGxpYW1zIDxk
-Y2J3QHJlZGhhdC5jb20+CgooZG9uJ3Qga25vdyBpZiBJIGNhbi9zaG91bGQgYWNrIGFueXRoaW5n
-IGFueW1vcmUsIGdpdmVuIEkgaGF2ZW4ndAp0b3VjaGVkIHRoZSBkcml2ZXIgaW4gbGlrZSA0IHll
-YXJzLi4uKQoKPiAtLS0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL21hcnZlbGwvbGliZXJ0YXMv
-Y2ZnLmMgfCA0OAo+ICsrKysrKysrKysrKysrKysrKystLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDQ1
-IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL21hcnZlbGwvbGliZXJ0YXMvY2ZnLmMKPiBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL21hcnZlbGwvbGliZXJ0YXMvY2ZnLmMKPiBpbmRleCAzZjM1ZGM3YTFkN2QuLmI3MDBjMjEz
-ZDEwYyAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tYXJ2ZWxsL2xpYmVydGFz
-L2NmZy5jCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWFydmVsbC9saWJlcnRhcy9jZmcu
-Ywo+IEBAIC00NDYsNiArNDQ2LDQxIEBAIHN0YXRpYyBpbnQgbGJzX2FkZF93cGFfdGx2KHU4ICp0
-bHYsIGNvbnN0IHU4Cj4gKmllLCB1OCBpZV9sZW4pCj4gwqDCoMKgwqDCoMKgwqDCoHJldHVybiBz
-aXplb2Yoc3RydWN0IG1ydmxfaWVfaGVhZGVyKSArIHdwYWllLT5kYXRhbGVuOwo+IMKgfQo+IMKg
-Cj4gKy8qIEFkZCBXUFMgZW5yb2xsZWUgVExWCj4gKyAqLwo+ICsjZGVmaW5lIExCU19NQVhfV1BT
-X0VOUk9MTEVFX1RMVl9TSVpFwqDCoMKgwqDCoMKgwqDCoMKgwqBcCj4gK8KgwqDCoMKgwqDCoMKg
-KHNpemVvZihzdHJ1Y3QgbXJ2bF9pZV9oZWFkZXIpwqDCoMKgwqDCoMKgwqDCoMKgwqBcCj4gK8Kg
-wqDCoMKgwqDCoMKgICsgMjU2KQo+ICsKPiArc3RhdGljIGludCBsYnNfYWRkX3dwc19lbnJvbGxl
-ZV90bHYodTggKnRsdiwgY29uc3QgdTggKmllLCBzaXplX3QKPiBpZV9sZW4pCj4gK3sKPiArwqDC
-oMKgwqDCoMKgwqBzdHJ1Y3QgbXJ2bF9pZV9kYXRhICp3cHN0bHYgPSAoc3RydWN0IG1ydmxfaWVf
-ZGF0YSAqKXRsdjsKPiArwqDCoMKgwqDCoMKgwqBjb25zdCBzdHJ1Y3QgZWxlbWVudCAqd3BzaWU7
-Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoC8qIExvb2sgZm9yIGEgV1BTIElFIGFuZCBhZGQgaXQgdG8g
-dGhlIHByb2JlIHJlcXVlc3QgKi8KPiArwqDCoMKgwqDCoMKgwqB3cHNpZSA9IGNmZzgwMjExX2Zp
-bmRfdmVuZG9yX2VsZW0oV0xBTl9PVUlfTUlDUk9TT0ZULAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoAo+IFdMQU5fT1VJX1RZUEVfTUlDUk9TT0ZUX1dQUywKPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgaWUsIGllX2xlbik7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKCF3cHNpZSkKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIDA7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoC8q
-IENvbnZlcnQgdGhlIFdQUyBJRSB0byBhIFRMVi4gVGhlIElFIGxvb2tzIGxpa2UgdGhpczoKPiAr
-wqDCoMKgwqDCoMKgwqAgKsKgwqAgdTjCoMKgwqDCoMKgIHR5cGUgKFdMQU5fRUlEX1ZFTkRPUl9T
-UEVDSUZJQykKPiArwqDCoMKgwqDCoMKgwqAgKsKgwqAgdTjCoMKgwqDCoMKgIGxlbgo+ICvCoMKg
-wqDCoMKgwqDCoCAqwqDCoCB1OFtdwqDCoMKgIGRhdGEKPiArwqDCoMKgwqDCoMKgwqAgKiBidXQg
-dGhlIFRMViB3aWxsIGxvb2sgbGlrZSB0aGlzIGluc3RlYWQ6Cj4gK8KgwqDCoMKgwqDCoMKgICrC
-oMKgIF9fbGUxNsKgIHR5cGUgKFRMVl9UWVBFX1dQU19FTlJPTExFRSkKPiArwqDCoMKgwqDCoMKg
-wqAgKsKgwqAgX19sZTE2wqAgbGVuCj4gK8KgwqDCoMKgwqDCoMKgICrCoMKgIHU4W13CoMKgwqAg
-ZGF0YQo+ICvCoMKgwqDCoMKgwqDCoCAqLwo+ICvCoMKgwqDCoMKgwqDCoHdwc3Rsdi0+aGVhZGVy
-LnR5cGUgPSBjcHVfdG9fbGUxNihUTFZfVFlQRV9XUFNfRU5ST0xMRUUpOwo+ICvCoMKgwqDCoMKg
-wqDCoHdwc3Rsdi0+aGVhZGVyLmxlbiA9IGNwdV90b19sZTE2KHdwc2llLT5kYXRhbGVuKTsKPiAr
-wqDCoMKgwqDCoMKgwqBtZW1jcHkod3BzdGx2LT5kYXRhLCB3cHNpZS0+ZGF0YSwgd3BzaWUtPmRh
-dGFsZW4pOwo+ICsKPiArwqDCoMKgwqDCoMKgwqAvKiBSZXR1cm4gdGhlIHRvdGFsIG51bWJlciBv
-ZiBieXRlcyBhZGRlZCB0byB0aGUgVExWIGJ1ZmZlcgo+ICovCj4gK8KgwqDCoMKgwqDCoMKgcmV0
-dXJuIHNpemVvZihzdHJ1Y3QgbXJ2bF9pZV9oZWFkZXIpICsgd3BzaWUtPmRhdGFsZW47Cj4gK30K
-PiArCj4gwqAvKgo+IMKgICogU2V0IENoYW5uZWwKPiDCoCAqLwo+IEBAIC02NzIsMTQgKzcwNywx
-NSBAQCBzdGF0aWMgaW50IGxic19yZXRfc2NhbihzdHJ1Y3QgbGJzX3ByaXZhdGUKPiAqcHJpdiwg
-dW5zaWduZWQgbG9uZyBkdW1teSwKPiDCoAo+IMKgCj4gwqAvKgo+IC0gKiBPdXIgc2NhbiBjb21t
-YW5kIGNvbnRhaW5zIGEgVExWLCBjb25zdGluZyBvZiBhIFNTSUQgVExWLCBhCj4gY2hhbm5lbCBs
-aXN0Cj4gLSAqIFRMViBhbmQgYSByYXRlcyBUTFYuIERldGVybWluZSB0aGUgbWF4aW11bSBzaXpl
-IG9mIHRoZW06Cj4gKyAqIE91ciBzY2FuIGNvbW1hbmQgY29udGFpbnMgYSBUTFYsIGNvbnNpc3Rp
-bmcgb2YgYSBTU0lEIFRMViwgYQo+IGNoYW5uZWwgbGlzdAo+ICsgKiBUTFYsIGEgcmF0ZXMgVExW
-LCBhbmQgYW4gb3B0aW9uYWwgV1BTIElFLiBEZXRlcm1pbmUgdGhlIG1heGltdW0KPiBzaXplIG9m
-IHRoZW06Cj4gwqAgKi8KPiDCoCNkZWZpbmUgTEJTX1NDQU5fTUFYX0NNRF9TSVpFwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgXAo+IMKgwqDCoMKgwqDCoMKgwqAoc2l6ZW9mKHN0
-cnVjdCBjbWRfZHNfODAyXzExX3NjYW4pwqDCoMKgwqDCoMKgXAo+IMKgwqDCoMKgwqDCoMKgwqAg
-KyBMQlNfTUFYX1NTSURfVExWX1NJWkXCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoFwK
-PiDCoMKgwqDCoMKgwqDCoMKgICsgTEJTX01BWF9DSEFOTkVMX0xJU1RfVExWX1NJWkXCoMKgwqDC
-oMKgwqDCoMKgXAo+IC3CoMKgwqDCoMKgwqDCoCArIExCU19NQVhfUkFURVNfVExWX1NJWkUpCj4g
-K8KgwqDCoMKgwqDCoMKgICsgTEJTX01BWF9SQVRFU19UTFZfU0laRcKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoFwKPiArwqDCoMKgwqDCoMKgwqAgKyBMQlNfTUFYX1dQU19FTlJPTExFRV9U
-TFZfU0laRSkKPiDCoAo+IMKgLyoKPiDCoCAqIEFzc3VtZXMgcHJpdi0+c2Nhbl9yZXEgaXMgaW5p
-dGlhbGl6ZWQgYW5kIHZhbGlkCj4gQEAgLTcyOCw2ICs3NjQsMTEgQEAgc3RhdGljIHZvaWQgbGJz
-X3NjYW5fd29ya2VyKHN0cnVjdCB3b3JrX3N0cnVjdAo+ICp3b3JrKQo+IMKgwqDCoMKgwqDCoMKg
-wqAvKiBhZGQgcmF0ZXMgVExWICovCj4gwqDCoMKgwqDCoMKgwqDCoHRsdiArPSBsYnNfYWRkX3N1
-cHBvcnRlZF9yYXRlc190bHYodGx2KTsKPiDCoAo+ICvCoMKgwqDCoMKgwqDCoC8qIGFkZCBvcHRp
-b25hbCBXUFMgZW5yb2xsZWUgVExWICovCj4gK8KgwqDCoMKgwqDCoMKgaWYgKHByaXYtPnNjYW5f
-cmVxLT5pZSAmJiBwcml2LT5zY2FuX3JlcS0+aWVfbGVuKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqB0bHYgKz0gbGJzX2FkZF93cHNfZW5yb2xsZWVfdGx2KHRsdiwgcHJpdi0+c2Nh
-bl9yZXEtCj4gPmllLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJp
-di0+c2Nhbl9yZXEtCj4gPmllX2xlbik7Cj4gKwo+IMKgwqDCoMKgwqDCoMKgwqBpZiAocHJpdi0+
-c2Nhbl9jaGFubmVsIDwgcHJpdi0+c2Nhbl9yZXEtPm5fY2hhbm5lbHMpIHsKPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNhbmNlbF9kZWxheWVkX3dvcmsoJnByaXYtPnNjYW5fd29y
-ayk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAobmV0aWZfcnVubmluZyhw
-cml2LT5kZXYpKQo+IEBAIC0yMTE0LDYgKzIxNTUsNyBAQCBpbnQgbGJzX2NmZ19yZWdpc3Rlcihz
-dHJ1Y3QgbGJzX3ByaXZhdGUgKnByaXYpCj4gwqDCoMKgwqDCoMKgwqDCoGludCByZXQ7Cj4gwqAK
-PiDCoMKgwqDCoMKgwqDCoMKgd2Rldi0+d2lwaHktPm1heF9zY2FuX3NzaWRzID0gMTsKPiArwqDC
-oMKgwqDCoMKgwqB3ZGV2LT53aXBoeS0+bWF4X3NjYW5faWVfbGVuID0gMjU2Owo+IMKgwqDCoMKg
-wqDCoMKgwqB3ZGV2LT53aXBoeS0+c2lnbmFsX3R5cGUgPSBDRkc4MDIxMV9TSUdOQUxfVFlQRV9N
-Qk07Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgd2Rldi0+d2lwaHktPmludGVyZmFjZV9tb2RlcyA9
-Cgo=
+On Tue, Jan 17, 2023 at 05:27:46PM +0800, Edward Chow wrote:
+> Loading calibration data from an OF device tree node not declared
+> compatible with the device (e.g. a PCI device with calibration data
+> from corresponding DT node gets replaced, so the newly installed
+> device become incompatible with the node) or driver may lead to fatal
+> result, e.g. kernel panic.
 
+Please include a link to a bug report and include a few lines of the
+oops or panic directly in the commit log so when users see this
+problem, they can search for the text and possibly find this fix.
+
+> The driver should check whether the DT node corresponding to the
+> device compatible with it, and load calibration data only from
+> compatible node.
+
+If you read this commit log carefully, it doesn't actually say what
+this patch *does*.  It has some background and this assertion about
+what drivers *should* do, but it doesn't say what this patch does.
+
+Suggest structure like this (flesh out with the relevant DT property
+names, etc):
+
+  For PCI ath9k devices, load calibration data only if there is a DT
+  node corresponding to the device with XXX ...
+
+More details: https://chris.beams.io/posts/git-commit/
+
+> Signed-off-by: Edward Chow <equu@openmail.cc>
+> ---
+>  drivers/net/wireless/ath/ath9k/ath9k.h |  1 +
+>  drivers/net/wireless/ath/ath9k/init.c  | 26 ++++++++++++++++++++++++++
+>  drivers/net/wireless/ath/ath9k/pci.c   |  2 +-
+>  3 files changed, 28 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+> index 2cc23605c9fc..4f6f0383a5f8 100644
+> --- a/drivers/net/wireless/ath/ath9k/ath9k.h
+> +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+> @@ -35,6 +35,7 @@ struct ath_node;
+>  struct ath_vif;
+>  
+>  extern struct ieee80211_ops ath9k_ops;
+> +extern struct pci_driver ath_pci_driver;
+>  extern int ath9k_modparam_nohwcrypt;
+>  extern int ath9k_led_blink;
+>  extern bool is_ath9k_unloaded;
+> diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+> index 4f00400c7ffb..f88a48e8456b 100644
+> --- a/drivers/net/wireless/ath/ath9k/init.c
+> +++ b/drivers/net/wireless/ath/ath9k/init.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_net.h>
+> +#include <linux/pci.h>
+>  #include <linux/nvmem-consumer.h>
+>  #include <linux/relay.h>
+>  #include <linux/dmi.h>
+> @@ -577,6 +578,31 @@ static int ath9k_nvmem_request_eeprom(struct ath_softc *sc)
+>  	size_t len;
+>  	int err;
+>  
+> +	/* devm_nvmem_cell_get() will get a cell first from the OF
+> +	 * DT node representing the given device with nvmem-cell-name
+> +	 * "calibration", and from the global lookup table as a fallback,
+> +	 * and an ath9k device could be either a pci one or a platform one.
+> +	 *
+> +	 * If the OF DT node is not compatible with the real device, the
+> +	 * calibration data got from the node should not be applied.
+> +	 *
+> +	 * dev_is_pci(sc->dev) && ( no OF node || caldata not from node
+> +	 * || not compatible ) -> do not use caldata .
+> +	 *
+> +	 * !dev_is_pci(sc->dev) -> always use caldata .
+> +	 */
+> +	if (dev_is_pci(sc->dev) &&
+> +	    (!sc->dev->of_node ||
+> +	     !of_property_match_string(sc->dev->of_node,
+> +				       "nvmem-cell-names",
+> +				       "calibration") ||
+> +	     !of_pci_node_match_driver(sc->dev->of_node,
+> +				       &ath_pci_driver)))
+> +		/* follow the "just return 0;" convention as
+> +		 * noted below.
+> +		 */
+> +		return 0;
+> +
+>  	cell = devm_nvmem_cell_get(sc->dev, "calibration");
+>  	if (IS_ERR(cell)) {
+>  		err = PTR_ERR(cell);
+> diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+> index a074e23013c5..fcb19761e60d 100644
+> --- a/drivers/net/wireless/ath/ath9k/pci.c
+> +++ b/drivers/net/wireless/ath/ath9k/pci.c
+> @@ -1074,7 +1074,7 @@ static SIMPLE_DEV_PM_OPS(ath9k_pm_ops, ath_pci_suspend, ath_pci_resume);
+>  
+>  MODULE_DEVICE_TABLE(pci, ath_pci_id_table);
+>  
+> -static struct pci_driver ath_pci_driver = {
+> +struct pci_driver ath_pci_driver = {
+>  	.name       = "ath9k",
+>  	.id_table   = ath_pci_id_table,
+>  	.probe      = ath_pci_probe,
+> -- 
+> 2.39.0
+> 
