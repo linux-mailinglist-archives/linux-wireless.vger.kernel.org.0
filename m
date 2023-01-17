@@ -2,78 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF95466D65E
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 07:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7975A66D666
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 07:42:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235560AbjAQGhX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 01:37:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41948 "EHLO
+        id S235603AbjAQGmn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 01:42:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235535AbjAQGhW (ORCPT
+        with ESMTP id S235589AbjAQGmk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 01:37:22 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EA1A1E28A
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 22:37:21 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id d8so201104pjc.3
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Jan 2023 22:37:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=schmorgal.com; s=google;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IswnaFn7cR4ZkSdf9jjOPE9ALLrECiM1CkBW098zMK4=;
-        b=Hwq3JCVqHbksgwzF1n2KC4NM9H8CbNGLrWlhZ/s2xbnBadSNKbr592/YLYqR51OdlS
-         nE9HZqlYdZ+yimozFk+f53Wat126xAqiz6FDZi1LwsFA/JlOv//LWpYzetyQnt8pTApL
-         vyhmEsuWP4YQCsTrdptHJ4t5cil1jTQJh2954=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IswnaFn7cR4ZkSdf9jjOPE9ALLrECiM1CkBW098zMK4=;
-        b=Ni1uaBqj01c9NfrzzjjvffASR6pMbqmTUvCiKjHLXMJjPelaqYXqiS64JNu3gO50PP
-         hjjq8Q10Vzaa6NMkLAKv5G6n7BVpvmU1SiOpOt0lKtx2o6jEZJOxJyxLjNVuj9N1k8rd
-         eQBQ3QrFTjxNKH8AhDm2M9OcTN2Zwjq7di49oE09ETYAYCA4rqqjy8B1QulKJzvCiABu
-         Ek0gwj2QhOYvIg3G4Xb94cMN+1X7XvkqBCmDF04D+E29ysApfP1XENMCbTEfno7r+igz
-         dR08pxB718YBu2sldFUu5Gt2NvhodXm4X75Bns0+22PyfdZSzoA9vQK33CZFCPMc1nXl
-         FUCA==
-X-Gm-Message-State: AFqh2kqBh6Tf9v0t0kGzQZSt8jDYeOadiVHRYFXP8BCMXqGGXSz8NAgZ
-        r5UCVDGeh0QCD++7sP1+1FwaEg==
-X-Google-Smtp-Source: AMrXdXu0ottuuiFGoJumE1YUuFKMjIxw/VEdlVjsUgyAMFsb3uU2qwF4vrTGQYZ6JAjJFK2A8+Zk5A==
-X-Received: by 2002:a05:6a21:2d88:b0:ad:79bb:a417 with SMTP id ty8-20020a056a212d8800b000ad79bba417mr2169798pzb.9.1673937440887;
-        Mon, 16 Jan 2023 22:37:20 -0800 (PST)
-Received: from [192.168.1.33] ([192.183.212.197])
-        by smtp.googlemail.com with ESMTPSA id h22-20020a17090acf1600b00228e0a8478csm10257616pju.41.2023.01.16.22.37.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jan 2023 22:37:20 -0800 (PST)
-Message-ID: <dc527fe5-d182-37fa-2ee2-8ee5ac9f4882@schmorgal.com>
-Date:   Mon, 16 Jan 2023 22:37:18 -0800
+        Tue, 17 Jan 2023 01:42:40 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A9C1DB8E;
+        Mon, 16 Jan 2023 22:42:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6146611C0;
+        Tue, 17 Jan 2023 06:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E68C433D2;
+        Tue, 17 Jan 2023 06:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673937757;
+        bh=yzPP1cFlzSh+Kd/LjYuGaEr0HJCT+IzujClRJbeEUaM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Jss2Pyn9eMrzihH6JtMtc/G592WrcDR1Xv29P0Ty2NF0m/3I9A0/SA0D8xBrbEg33
+         RofaH84/Z18wVoKcpknXiiGKoZv7i1T4aoW4s4HPL9xmulSYXqB8cN3ePTs/lduWRz
+         53owCw418EanPtY17c1kc5bRbdAmIyM9ntjwf26WRK3nCc45cgbMoDJ1WJJAFn6OZL
+         zAawNfRYSZD4/GceW5KObifpK0vw/bI8kpMO33s/V38hlpMrCmyzYY2sFXHMQZl4u9
+         8gy8co85KcbSQOpiRTKc7f36kIuNMl1kO2MXcmv6vN3OffNvEePkjIgAFXQLjCEGJu
+         thy3eOyPDvVOg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc:     Mike Lothian <mike@fireburn.co.uk>, nbd@nbd.name,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, lorenzo@kernel.org,
+        sujuan.chen@mediatek.com
+Subject: Re: [6.2][regression] after commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
+References: <CAHbf0-EHP0cRDhOD_3Mf4aRzndoVYGbd3j3vxwUOh9_cHp+h1Q@mail.gmail.com>
+        <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
+Date:   Tue, 17 Jan 2023 08:42:31 +0200
+In-Reply-To: <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
+        (Mikhail Gavrilov's message of "Tue, 17 Jan 2023 10:42:55 +0500")
+Message-ID: <87r0vt8xwo.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Dan Williams <dcbw@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "libertas-dev@lists.infradead.org" <libertas-dev@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20230116202126.50400-1-doug@schmorgal.com>
- <20230116202126.50400-2-doug@schmorgal.com>
- <651627a8399f4cb49feb336e6f5bd9dc@realtek.com>
-From:   Doug Brown <doug@schmorgal.com>
-Subject: Re: [PATCH v3 1/4] wifi: libertas: fix capitalization in mrvl_ie_data
- struct
-In-Reply-To: <651627a8399f4cb49feb336e6f5bd9dc@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,53 +57,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/16/2023 7:39 PM, Ping-Ke Shih wrote:
-> 
-> 
->> -----Original Message-----
->> From: Doug Brown <doug@schmorgal.com>
->> Sent: Tuesday, January 17, 2023 4:21 AM
->> To: Kalle Valo <kvalo@kernel.org>; David S. Miller <davem@davemloft.net>; Eric Dumazet
->> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>
->> Cc: Dan Williams <dcbw@redhat.com>; Simon Horman <simon.horman@corigine.com>;
->> libertas-dev@lists.infradead.org; linux-wireless@vger.kernel.org; netdev@vger.kernel.org; Doug Brown
->> <doug@schmorgal.com>
->> Subject: [PATCH v3 1/4] wifi: libertas: fix capitalization in mrvl_ie_data struct
->>
->> This struct is currently unused, but it will be used in future patches.
->> Fix the code style to not use camel case.
->>
->> Signed-off-by: Doug Brown <doug@schmorgal.com>
->> ---
->>   drivers/net/wireless/marvell/libertas/types.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/marvell/libertas/types.h
->> b/drivers/net/wireless/marvell/libertas/types.h
->> index cd4ceb6f885d..398e3272e85f 100644
->> --- a/drivers/net/wireless/marvell/libertas/types.h
->> +++ b/drivers/net/wireless/marvell/libertas/types.h
->> @@ -105,7 +105,7 @@ struct mrvl_ie_header {
->>
->>   struct mrvl_ie_data {
->>   	struct mrvl_ie_header header;
->> -	u8 Data[1];
->> +	u8 data[1];
-> 
-> data[]. see [1]
-> 
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays
+Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com> writes:
 
-Hi Ping-Ke,
-
-Thanks for the link. There are several other cases of this same syntax
-for flexible trailing arrays in this file, so I will update this patch
-in the next version of the series to fix them all.
-
-> 
->>   } __packed;
+> On Tue, Jan 17, 2023 at 5:33 AM Mike Lothian <mike@fireburn.co.uk> wrote:
 >>
->>   struct mrvl_ie_rates_param_set {
->> --
->> 2.34.1
-> 
+>> Hi
+>>
+>> I'm struggling to find these patches on Patchwork, or apply the saved
+>> raw patches to rc4
+>>
+>> If I'm missing them, would you mind posting the link
+>
+> https://patchwork.kernel.org/project/linux-wireless/patch/20230113105848.34642-3-nbd@nbd.name/
+
+And the patches are now applied to the wireless tree:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
