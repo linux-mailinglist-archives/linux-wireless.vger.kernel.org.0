@@ -2,110 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D32B766DBC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 12:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C51C666DBD3
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 12:06:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235999AbjAQLEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 06:04:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
+        id S236800AbjAQLGZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 06:06:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235897AbjAQLEU (ORCPT
+        with ESMTP id S236724AbjAQLFd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 06:04:20 -0500
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CDA2A99B;
-        Tue, 17 Jan 2023 03:04:18 -0800 (PST)
-Received: by air.basealt.ru (Postfix, from userid 490)
-        id 7CAC82F2022C; Tue, 17 Jan 2023 11:04:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-Received: from localhost (broadband-188-32-10-232.ip.moscow.rt.ru [188.32.10.232])
-        by air.basealt.ru (Postfix) with ESMTPSA id 6CF1B2F2022A;
-        Tue, 17 Jan 2023 11:04:14 +0000 (UTC)
-Date:   Tue, 17 Jan 2023 14:04:14 +0300
-From:   "Alexey V. Vissarionov" <gremlin@altlinux.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        Tue, 17 Jan 2023 06:05:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FB8D33452;
+        Tue, 17 Jan 2023 03:05:32 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87D2661259;
+        Tue, 17 Jan 2023 11:05:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CDEC433F0;
+        Tue, 17 Jan 2023 11:05:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673953532;
+        bh=Ws6bYjktfAa3ykUB/mBwXFuiIGGLxks20tludXizU5M=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=QzlVWCb6Kmn/hKx29anWubOoL56OGBUDszmyH7SNrupgL1fkYrwLi7kL1gYpVS2Yi
+         HwhFa0juD82m7f1LzKRFF693iFYGFvecRXVJwPdQpYjSxJpcanyPDxkllToSk7wED4
+         68bJlGzZjKN7n9+E4FtVbH5t4j1QXJ62PrRSmbh5sCioxcIf6eGFHkcd3E9e/GT7Cy
+         kiqsYatPwBI52MH8BQLp7bAmzb+6B/TWY0k6iHslUz+90bHfyfMB5MRiBsQ3iyWTvp
+         46qKiIHGvxsTkqnQ1IPTiN3ZoH50i8FYMEWbzM8ONqK/REL7SnUxJx9WOAWT340gl7
+         sDXzOWFxDvLRw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Alexey V. Vissarionov" <gremlin@altlinux.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Vasanthakumar Thiagarajan <vthiagar@qca.qualcomm.com>,
-        Raja Mani <rmani@qca.qualcomm.com>,
-        Suraj Sumangala <surajs@qca.qualcomm.com>,
-        Vivek Natarajan <nataraja@qca.qualcomm.com>,
-        Joe Perches <joe@perches.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, lvc-project@linuxtesting.org,
-        "Alexey V. Vissarionov" <gremlin@altlinux.org>
-Subject: [PATCH] ath6kl: minor fix for allocation size
-Message-ID: <20230117110414.GC12547@altlinux.org>
+        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        Chi-hsien Lin <chi-hsien.lin@cypress.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Wataru Gohda <wataru.gohda@cypress.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH] wifi: brcmfmac: Fix allocation size
+In-Reply-To: <20230117104508.GB12547@altlinux.org> (Alexey V. Vissarionov's
+        message of "Tue, 17 Jan 2023 13:45:08 +0300")
+References: <20230117104508.GB12547@altlinux.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Tue, 17 Jan 2023 13:05:24 +0200
+Message-ID: <87o7qxxvyj.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KFztAG8eRSV9hGtP"
-Content-Disposition: inline
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+"Alexey V. Vissarionov" <gremlin@altlinux.org> writes:
 
---KFztAG8eRSV9hGtP
-Content-Type: text/plain; charset=koi8-r
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The "pkt" is a pointer to struct sk_buff, so it's just 4 or 8
+> bytes, while the structure itself is much bigger.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Fixes: bbd1f932e7c45ef1 ("brcmfmac: cleanup ampdu-rx host reorder code")
+> Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
+>
+> diff --git
+> a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+> index 36af81975855c525..0d283456da331464 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+> @@ -1711,7 +1711,7 @@ void brcmf_fws_rxreorder(struct brcmf_if *ifp,
+> struct sk_buff *pkt)
+>  		buf_size = sizeof(*rfi);
+>  		max_idx = reorder_data[BRCMF_RXREORDER_MAXIDX_OFFSET];
+>  
+> -		buf_size += (max_idx + 1) * sizeof(pkt);
+> +		buf_size += (max_idx + 1) * sizeof(struct sk_buff);
 
-Although the "param" pointer occupies more or equal space compared
-to "*param", the allocation size should use the size of variable
-itself.
+Wouldn't sizeof(*pkt) be better? Just like with sizeof(*rfi) few lines
+above.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Fixes: bdcd81707973cf8a ("Add ath6kl cleaned up driver")
-Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
-
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/a=
-th/ath6kl/bmi.c
-index bde5a10d470c8e74..af98e871199d317f 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -246,7 +246,7 @@ int ath6kl_bmi_execute(struct ath6kl *ar, u32 addr, u32=
- *param)
- 		return -EACCES;
- 	}
-=20
--	size =3D sizeof(cid) + sizeof(addr) + sizeof(param);
-+	size =3D sizeof(cid) + sizeof(addr) + sizeof(*param);
- 	if (size > ar->bmi.max_cmd_size) {
- 		WARN_ON(1);
- 		return -EINVAL;
-
-
-
---=20
-Alexey V. Vissarionov
-gremlin =F0=F2=E9 altlinux =F4=FE=EB org; +vii-cmiii-ccxxix-lxxix-xlii
-GPG: 0D92F19E1C0DC36E27F61A29CD17E2B43D879005 @ hkp://keys.gnupg.net
-
---KFztAG8eRSV9hGtP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCgAGBQJjxoCuAAoJEFv2F9znRj5KRfIQAKOtCsMbHx5QVZZ5ciUVwZCP
-2xcj4qRP7/GVJ8w87ip8n8QzRcMVaYposz3eLLGrXqUtb5UzWLCCpknXydwyXcsG
-JMeR3l05cJzA7q2oyN3gtwwO37cA78U+vj5zCM1kooLuVdtlvZkBI6lIPIkUtgLz
-VXsthfQbf2GRAMMHuJdZz8trH3xo8/FDAeEZKi6/r9lOc3v+cLewnQ+cUO85HSB7
-lf4r0/cge8vFcDdMLq6WOO9X+zIeVvTYndo6ji1PUlf4mBOZbagWLsyIYjAxbvv/
-W9l8N4K5AFX2ns/7kw8/ubf3Zx1e9H7iEHquAuMLPIh9knBuzIhLOQlfFG6b7zgs
-6DF6I5HxX6ok20P62MoTbXNJF4I9JHWSEsg1Hr5D2Phvn3QRoGF5gu/L0IBxanRi
-BUHKZzq+L6R013Wx/T3O7ifU3gHO9BidBIWLhU8+uAZ3VBB0DPUxPpO+dnNWoVtM
-9ObMF5ecbwN9xsnIR+mNq4cK4pfd7YQeQ7PAN5fGK3Jq+fV8w79msRef4VQFOnmQ
-GcNInjCp91KOdRoZBujkvZJmMy3cWOAvOIninLO3wIwHDHOPCrDc/KeWUWYayj8i
-lzEE4GYNgdYb10l3GceadGV4m8EOguvF2Dnascwj+blBDNLFMxTzhpPOOxlSYJf/
-rFtQugNyq60h3LY1TtDi
-=V3e7
------END PGP SIGNATURE-----
-
---KFztAG8eRSV9hGtP--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
