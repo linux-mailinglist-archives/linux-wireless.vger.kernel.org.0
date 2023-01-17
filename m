@@ -2,49 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7975A66D666
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 07:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 267CB66D67A
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 07:44:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235603AbjAQGmn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 01:42:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
+        id S235781AbjAQGoQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 01:44:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235589AbjAQGmk (ORCPT
+        with ESMTP id S235731AbjAQGoE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 01:42:40 -0500
+        Tue, 17 Jan 2023 01:44:04 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A9C1DB8E;
-        Mon, 16 Jan 2023 22:42:38 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 605942005F;
+        Mon, 16 Jan 2023 22:44:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6146611C0;
-        Tue, 17 Jan 2023 06:42:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E68C433D2;
-        Tue, 17 Jan 2023 06:42:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F033260F75;
+        Tue, 17 Jan 2023 06:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77024C433D2;
+        Tue, 17 Jan 2023 06:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673937757;
-        bh=yzPP1cFlzSh+Kd/LjYuGaEr0HJCT+IzujClRJbeEUaM=;
+        s=k20201202; t=1673937843;
+        bh=Udx4r/gXUNGK85PWEZcekLE/XqdTwwDIDXtajpnNYVI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Jss2Pyn9eMrzihH6JtMtc/G592WrcDR1Xv29P0Ty2NF0m/3I9A0/SA0D8xBrbEg33
-         RofaH84/Z18wVoKcpknXiiGKoZv7i1T4aoW4s4HPL9xmulSYXqB8cN3ePTs/lduWRz
-         53owCw418EanPtY17c1kc5bRbdAmIyM9ntjwf26WRK3nCc45cgbMoDJ1WJJAFn6OZL
-         zAawNfRYSZD4/GceW5KObifpK0vw/bI8kpMO33s/V38hlpMrCmyzYY2sFXHMQZl4u9
-         8gy8co85KcbSQOpiRTKc7f36kIuNMl1kO2MXcmv6vN3OffNvEePkjIgAFXQLjCEGJu
-         thy3eOyPDvVOg==
+        b=buBlts+XQqKp13V+BFgCkpNF388yQyubFLcLITHOOXcUAPFff2l8KpxcsyLtTD/tq
+         tqhHAJM51MrZrEujZHxyFChV6stIEjmgGvKeh7RqOfaVfw/bhCaprzk3sDFhK+9hvH
+         Tx4ORdY2v8qOTuH/FViR7CBDUGHgpLtGrhJUtm9cvcF0laqaIy/NpaaPrFr35YND0c
+         EzNMVlxaS8s1tX6enWKJEMRaahRAv4laQR24fMBlzoLb2s4UvtQ3ohU5XTMUHXXLJQ
+         YAbcQpawWwH0P+DX7Ph3cxxiWO5C9HMaSbncin6p5d78c6oRqpl/dZ93JKbeItqUqi
+         sxDqgW/WC0Tiw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc:     Mike Lothian <mike@fireburn.co.uk>, nbd@nbd.name,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, lorenzo@kernel.org,
-        sujuan.chen@mediatek.com
-Subject: Re: [6.2][regression] after commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae stopping working wifi mt7921e
-References: <CAHbf0-EHP0cRDhOD_3Mf4aRzndoVYGbd3j3vxwUOh9_cHp+h1Q@mail.gmail.com>
-        <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
-Date:   Tue, 17 Jan 2023 08:42:31 +0200
-In-Reply-To: <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
-        (Mikhail Gavrilov's message of "Tue, 17 Jan 2023 10:42:55 +0500")
-Message-ID: <87r0vt8xwo.fsf@kernel.org>
+To:     Peter Lafreniere <peter@n8pjl.ca>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] wifi: rsi: Avoid defines prefixed with CONFIG
+References: <20230117032729.9578-1-peter@n8pjl.ca>
+Date:   Tue, 17 Jan 2023 08:44:00 +0200
+In-Reply-To: <20230117032729.9578-1-peter@n8pjl.ca> (Peter Lafreniere's
+        message of "Mon, 16 Jan 2023 22:27:29 -0500")
+Message-ID: <87mt6h8xu7.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,22 +54,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com> writes:
+Peter Lafreniere <peter@n8pjl.ca> writes:
 
-> On Tue, Jan 17, 2023 at 5:33 AM Mike Lothian <mike@fireburn.co.uk> wrote:
->>
->> Hi
->>
->> I'm struggling to find these patches on Patchwork, or apply the saved
->> raw patches to rc4
->>
->> If I'm missing them, would you mind posting the link
+> To avoid confusion, it is best to only define CONFIG_* macros in Kconfig
+> files. Here we change the name of one define, which causes no change to
+> functionality.
 >
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230113105848.34642-3-nbd@nbd.name/
+> Signed-off-by: Peter Lafreniere <peter@n8pjl.ca>
+> ---
 
-And the patches are now applied to the wireless tree:
+[...]
 
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/
+> --- a/drivers/net/wireless/rsi/rsi_hal.h
+> +++ b/drivers/net/wireless/rsi/rsi_hal.h
+> @@ -69,7 +69,7 @@
+>  #define EOF_REACHED			'E'
+>  #define CHECK_CRC			'K'
+>  #define POLLING_MODE			'P'
+> -#define CONFIG_AUTO_READ_MODE		'R'
+> +#define CONFIGURE_AUTO_READ_MODE	'R'
+
+I would prefer to add a prefix instead, for example
+RSI_CONFIG_AUTO_READ_MODE or something like that.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
