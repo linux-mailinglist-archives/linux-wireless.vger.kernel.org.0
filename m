@@ -2,91 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B24566DE2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 13:54:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24C1A66DE5F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jan 2023 14:06:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236850AbjAQMyk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 07:54:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41144 "EHLO
+        id S236971AbjAQNGj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 08:06:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236980AbjAQMy1 (ORCPT
+        with ESMTP id S236954AbjAQNGh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 07:54:27 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D46D305E5
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 04:54:24 -0800 (PST)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 9FD246602D6D;
-        Tue, 17 Jan 2023 12:54:22 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1673960063;
-        bh=ybDJyEsG2p+R9ociVobtOJpRk9E5EtsX4W0/x3OP+ew=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Vnk4EWG8K9v1Y/gB9LAZUAnVWTN/KJw6vtAnMJq2914rYBX45sPCTMx970KDY53tN
-         C4JuKvANepXMZk5MGNea4SwAhoyURhJ/Ok0sdKyHx7+i/pP0wu0qgdgYAVQLNln+ln
-         Ut6mVSv/A+avgThCmZqSzlIojxXjruBFgyvBntBwgjF6u9QbvFIyedY4I2xcT0Av3u
-         k1py8FSEGIktQ+Zi8UQi3wg6D52iwlR8Jo44UdPRvpQLnLR5D0yvpgnj6OJHE3sux0
-         N6mO97U0bLN3RisFepHXpT1jAYbasmWnqCYz1gIyUigCjYvUVraduFKxz5xwIjZrg8
-         dY5IK6+IFwg3g==
-Message-ID: <6e95eb4f-614b-7b09-38ad-d23212ef81b3@collabora.com>
-Date:   Tue, 17 Jan 2023 13:54:19 +0100
+        Tue, 17 Jan 2023 08:06:37 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D741C32E5F
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 05:06:34 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id f12-20020a7bc8cc000000b003daf6b2f9b9so4775882wml.3
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 05:06:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fireburn-co-uk.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Npy3U/eZWyM9T/Kmww/ZrXNueAspTQ1LP+2PKf6yneo=;
+        b=RFtslpJ7KRKn2bYGTbtJextn+UGM4mtNrMhRWixO2pfaCdIvTTXXGA38dxc+SYJHHl
+         xXmAHg0T2kqWM22T/k2AXwb87xaMw+SPA6cWkEvZF8CGMtw/j0y6quZY/VMPZuP5CG5E
+         YWGvuS0KTkZcrmfCvTMEhxqBNO5VY0l5BUah0E37Cz/a0xVrVAICgNxNM8Uv5KFSPMS4
+         Z60H4tYn7mGUygxYSSBcwQLfOV9Eh/tCm8Snm4pCSC53AtPPqsoyhwqrD5+3LU4ypRYQ
+         WzZ5uQ24GehGDSjXei+MkSwaP0bMIL+P6pDLzObBxUwS79niJ99SAUgBAOWmoNGmkcOJ
+         CVFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Npy3U/eZWyM9T/Kmww/ZrXNueAspTQ1LP+2PKf6yneo=;
+        b=Gh2Z+b4c5XnloZPCXGV1g2hRfrxmwqg2DEldGtEGiajxkt8eH5EV/1y3ckKcFpnhFe
+         pLqIr4+VuE6xYBtx5ypfZaRDSX8KTAi95LdIjuMTX7+lzPc0n+nYKPTK0qRiAbrUKB21
+         VBxuUxCy0b5xuy5gNQY+rkF5V4sDv2SnknK1r0BeVQvRkN2riXCqcra2bGRhXsmDFdvM
+         nIRDZDqgVPqCOepeNUxdUARRRo6h8vl8KQLdQO8gkS1aSWLuKpw96yqbaGR4kbafEaez
+         8XcbtHwOhD9V/qIECAa0VIEprdLjW5q8XjnqOn+ZgRS0ExDA653i2qKl0t3EbPzkKxjx
+         iGpQ==
+X-Gm-Message-State: AFqh2koimNC2OVo6xj3hrYnDoaEiADd/E5qZcXcBSCyUVROwV4TOWg65
+        TeLltIpWE4n95tBXOtYMr7GzQ8i3zN7Vc1pe+D1Sfw==
+X-Google-Smtp-Source: AMrXdXvsLUtQeT2KROa0BenoYzT46G87UjLYkCB2o4dJPV5189ihVusp8v/w7FWcour9HN319fS+iPpC6rIMDSA2bLU=
+X-Received: by 2002:a05:600c:1d97:b0:3da:f53b:9b9f with SMTP id
+ p23-20020a05600c1d9700b003daf53b9b9fmr119654wms.101.1673960793363; Tue, 17
+ Jan 2023 05:06:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix rx filter incorrect by drv/fw
- inconsistent
-Content-Language: en-US
-To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-References: <b9ebeda5d445f66fceb17c48c8251093dfe94c57.1673947063.git.deren.wu@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <b9ebeda5d445f66fceb17c48c8251093dfe94c57.1673947063.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CAHbf0-EHP0cRDhOD_3Mf4aRzndoVYGbd3j3vxwUOh9_cHp+h1Q@mail.gmail.com>
+ <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
+In-Reply-To: <CABXGCsMz6qs0qSMoF6F3B_kJt+UwULtfpp2pCNxUuWAqAryniA@mail.gmail.com>
+From:   Mike Lothian <mike@fireburn.co.uk>
+Date:   Tue, 17 Jan 2023 13:06:22 +0000
+Message-ID: <CAHbf0-FzLyQeWN0ii2-2TqMg+5ptVsaoAjqrNe4ceXG_MtNeqA@mail.gmail.com>
+Subject: Re: [6.2][regression] after commit cd372b8c99c5a5cf6a464acebb7e4a79af7ec8ae
+ stopping working wifi mt7921e
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc:     nbd@nbd.name,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, lorenzo@kernel.org,
+        sujuan.chen@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Il 17/01/23 10:30, Deren Wu ha scritto:
-> From: Neil Chen <yn.chen@mediatek.com>
-> 
-> The rx filter, in mt7921 series, may be changed in fw operation. There is
-> a racing problem if rx filter controlled by both driver and firmware at
-> the same time. To avoid this issue, let mt7921 driver set rx filter by new
-> command MCU_CE_CMD_SET_RX_FILTER and allow the firmware controlling it
-> only.
-> 
-> Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Neil Chen <yn.chen@mediatek.com>
+On Tue, 17 Jan 2023 at 05:43, Mikhail Gavrilov
+<mikhail.v.gavrilov@gmail.com> wrote:
+>
+> On Tue, Jan 17, 2023 at 5:33 AM Mike Lothian <mike@fireburn.co.uk> wrote:
+> >
+> > Hi
+> >
+> > I'm struggling to find these patches on Patchwork, or apply the saved
+> > raw patches to rc4
+> >
+> > If I'm missing them, would you mind posting the link
+>
+> https://patchwork.kernel.org/project/linux-wireless/patch/20230113105848.34642-3-nbd@nbd.name/
+>
+> --
+> Best Regards,
+> Mike Gavrilov.
 
-For MT7921E:
-
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
-
+I can confirm this fixes things for me, thanks
