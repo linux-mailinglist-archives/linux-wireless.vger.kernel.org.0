@@ -2,45 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F831671990
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 11:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A51671ABC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 12:35:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjARKr3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 05:47:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
+        id S229735AbjARLfN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 06:35:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230421AbjARKp1 (ORCPT
+        with ESMTP id S229602AbjARLeO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 05:45:27 -0500
+        Wed, 18 Jan 2023 06:34:14 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 088BA613D2
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 01:51:59 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0EF4DCFB
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 02:53:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=4e16ZFcjZ7IAtZTWYVwwuj1PGSePX6yjNLpGdjr2cvQ=;
-        t=1674035519; x=1675245119; b=Qz+xeMH8kx5mf/fj6Hhg7ajOnoBsm5OEGO8apyJSej3XEj7
-        4XoQYYysOHWMulMQNkn2q+Pg/MEIYTdzmBlLoW8xavDIXwvAbuBqs4nFywH0rQuyd/xrUYjDxgFny
-        C2vkQ6pQGukYrID3g7cSbfUY8I4m90z4RNY1p1m4b7BZuq3M9gkvQD7abdzka3ARcbGno+kdq4nxM
-        lklxNeFOj7KuuBrUY1GtJ8u7y/ZvYk7qNBGniI3k8QKQS/UlEsg0mrKKKHCjrhUp8quydbLCQYKQ2
-        eLDlu5rVVpsxRhDNvOHMdk31x6v0vV625vFDbt3R71PDN92bAN2yBFsflsp9Dmjw==;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=oZoPdiTOmK+YZDFTEkEdEkd0/Ts0fuzEBPP7u3AXbhM=;
+        t=1674039196; x=1675248796; b=HobQOa4ZPJBoieCQNxBWZ1h13cSDkbmoJFiC9El6hk9MwOz
+        Jmhnjqb5dQNUM5MpZK6YtEOg3BtpVTMWFURl6qQgSpN+hxeFp5l3SjZEnqwz4S5sF51q2pDwPYOZF
+        eUxvBswBK5exVC+Lq3dwJCGyTq+QACy94X17bUFZdMue/hs0YeGgXpQudIT2Ke1kmvCq2auRsOHhv
+        APACMBJKQ+1ZWlppAleUs6ZFRTzxP7un98No+TxIc6nNLtejGDlFKvM2ypBR8tebxyTy7Ly2bgC64
+        LqaQ5jkTm1JvtnGqdY1WnPcH3ZTuq9xb5FV4puiUuhLHogvfJJNVU2tuaGh3RojQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pI56q-005YFT-1r;
-        Wed, 18 Jan 2023 10:51:56 +0100
+        id 1pI644-005ZMX-2x
+        for linux-wireless@vger.kernel.org;
+        Wed, 18 Jan 2023 11:53:09 +0100
+Message-ID: <0d48910607d61e86380b88c61ad1b9c542527c3e.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] mac80211: remove
+ ieee80211_tx_h_check_control_port_protocol()
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/2] wifi: wireless: deny wireless extensions on MLO-capable devices
-Date:   Wed, 18 Jan 2023 10:51:53 +0100
-Message-Id: <20230118105152.45f85078a1e0.Ib9eabc2ec5bf6b0244e4d973e93baaa3d8c91bd8@changeid>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230118105152.a7158a929a6f.Ifcf30eeeb8fc7019e4dcf2782b04515254d165e1@changeid>
-References: <20230118105152.a7158a929a6f.Ifcf30eeeb8fc7019e4dcf2782b04515254d165e1@changeid>
+Date:   Wed, 18 Jan 2023 11:53:08 +0100
+In-Reply-To: <20200326155333.05f411833f60.Ibf3dccc8aea73ae868da352811e5f1a3aef72ee0@changeid> (sfid-20200326_155343_424401_D7EC8810)
+References: <20200326155333.f183f52b02f0.I4054e2a8c11c2ddcb795a0103c87be3538690243@changeid>
+         <20200326155333.05f411833f60.Ibf3dccc8aea73ae868da352811e5f1a3aef72ee0@changeid>
+         (sfid-20200326_155343_424401_D7EC8810)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -50,46 +55,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Thu, 2020-03-26 at 15:53 +0100, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+>=20
+> This code is actually not ever effective, since the skb->protocol
+> isn't set up correctly (or at all) on outgoing frames. Also, we
+> already set the flags (except for IEEE80211_TX_CTL_USE_MINRATE)
+> in other code paths, and rate control already handles the frames
+> specially. Just remove it entirely.
+>=20
 
-These are WiFi 7 devices that will be introduced into the market
-in 2023, with new drivers. Wireless extensions haven't been in
-real development since 2006. Since wireless has evolved a lot,
-and continues to evolve significantly with Multi-Link Operation,
-there's really no good way to still support wireless extensions
-for devices that do MLO.
+Thread necromancy alert ...
 
-Stop supporting wireless extensions for new devices. We don't
-consider this a regression since no such devices (apart from
-hwsim) exist yet.
+But for my own information (and everyone else who cares):
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/wext-core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This breaks a couple of hwsim test cases, for example
+ap_wpa2_psk_no_control_port.
 
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 6e5f5ea92ddb..13a72b17248e 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -662,6 +662,8 @@ struct iw_statistics *get_wireless_stats(struct net_device *dev)
- 	    dev->ieee80211_ptr->wiphy->wext &&
- 	    dev->ieee80211_ptr->wiphy->wext->get_wireless_stats) {
- 		wireless_warn_cfg80211_wext();
-+		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
-+			return NULL;
- 		return dev->ieee80211_ptr->wiphy->wext->get_wireless_stats(dev);
- 	}
- #endif
-@@ -702,6 +704,8 @@ static iw_handler get_handler(struct net_device *dev, unsigned int cmd)
- #ifdef CONFIG_CFG80211_WEXT
- 	if (dev->ieee80211_ptr && dev->ieee80211_ptr->wiphy) {
- 		wireless_warn_cfg80211_wext();
-+		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
-+			return NULL;
- 		handlers = dev->ieee80211_ptr->wiphy->wext;
- 	}
- #endif
--- 
-2.39.0
-
+johannes
