@@ -2,91 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CCBB670D63
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 00:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 774D5670F26
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 01:53:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229996AbjAQX2f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Jan 2023 18:28:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47664 "EHLO
+        id S229978AbjARAxT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Jan 2023 19:53:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjAQX1n (ORCPT
+        with ESMTP id S230215AbjARAvX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Jan 2023 18:27:43 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCF15B474;
-        Tue, 17 Jan 2023 13:28:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=0pP+pN1M5uU+rh2BuIa07VvA0EQmkYWSfKV/yjrljRU=;
-        t=1673990894; x=1675200494; b=yIfEx+dXdtMUSaUaWXJ0nyjAMqBqQ4jwhC2bYMGl37FB8N3
-        0gAed30N1xGlDu8kTtnU5Jas47j9GKE8gALGQXuUm4VxdA2Yby9W+lreC+SA2mTwxf4b7nO+VLIDT
-        7PVkrLtOdvYPMKyl0WzJB6TV7Uzgxbm221b5i7jNoK+CJYcvx/MgcDprLK/bOT2sdzSiEWMXHVjX4
-        xYru9cLH55Hp/2ba4vn+0LMR00njs2/kr5W5My2hZUJZOYgGNednjRhhWGnEdNLfA+h1O8LOwMpwn
-        c4+UHnQsvOY9hnyHcedF4XPU00AYjHW1bIxdw0oAwBBP4AeiA28/KMOYq8022W/A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pHtUs-004p1v-37;
-        Tue, 17 Jan 2023 22:27:59 +0100
-Message-ID: <a81cb8cd088e715936895ec6bb07cfdc8fec37c1.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next] wifi: airo: use strscpy() to instead of
- strncpy()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     yang.yang29@zte.com.cn, kvalo@kernel.org
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, akpm@linux-foundation.org,
-        songmuchun@bytedance.com, brauner@kernel.org,
-        julia.lawall@inria.fr, gustavoars@kernel.org, jason@zx2c4.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, xu.panda@zte.com.cn
-Date:   Tue, 17 Jan 2023 22:27:57 +0100
-In-Reply-To: <202212231052044562664@zte.com.cn>
-References: <202212231052044562664@zte.com.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Tue, 17 Jan 2023 19:51:23 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8393EFEA
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Jan 2023 16:40:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674002416; x=1705538416;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xDR6m/pSBNKiRdVaK1S6j9zPiM9EWa2l44L82WIHpkc=;
+  b=Tvpj5Y8kE+8J8nAeSzofEhUOpiU0F4OErvyXGHTPQTC7SyFXrF7Fse9F
+   4CHJo6rRVS/pSxSDYjCdJtTGHU3b1Fmy1Ryyo8B76xXamz/4v2P1fav1b
+   QSfVldQGP2mZTpugrsEmtd7+8ZUUE2jr22c7epaB8WwfG1oofFi3SBqt6
+   RFRZyjNlhSqyiZaXn7YpznLG1OuN5dt7RKXnmvIA+mGhr/9Wtn6MX/YFF
+   gV2Yc+1M3yqVQs/ERkLQT67Yj4VAnBvEABL3yQ1gBr7RQXt86aL8jnvM6
+   ng8rGmHMT/mxIvQ4hLE3QjzLHPRbu6TyaGy8TTrtRleAPEJ3Fs2oJcx58
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="387210720"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="387210720"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 16:39:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="833355975"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="833355975"
+Received: from lkp-server02.sh.intel.com (HELO f57cd993bc73) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 17 Jan 2023 16:39:27 -0800
+Received: from kbuild by f57cd993bc73 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pHwUB-0001VE-0H;
+        Wed, 18 Jan 2023 00:39:27 +0000
+Date:   Wed, 18 Jan 2023 08:38:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:pending] BUILD SUCCESS
+ d0e99511834b6828c960e978d9a8cb6e5731250d
+Message-ID: <63c73f9b.eb0M0AkhXTpQqW1C%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-12-23 at 10:52 +0800, yang.yang29@zte.com.cn wrote:
-> From: Xu Panda <xu.panda@zte.com.cn>
->=20
-> The implementation of strscpy() is more robust and safer.
-> That's now the recommended way to copy NUL-terminated strings.
->=20
-> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-> Signed-off-by: Yang Yang <yang.yang29@zte.com>
-> ---
->  drivers/net/wireless/cisco/airo.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cis=
-co/airo.c
-> index 7c4cc5f5e1eb..600a64f671ce 100644
-> --- a/drivers/net/wireless/cisco/airo.c
-> +++ b/drivers/net/wireless/cisco/airo.c
-> @@ -6067,8 +6067,7 @@ static int airo_get_nick(struct net_device *dev,
->  	struct airo_info *local =3D dev->ml_priv;
->=20
->  	readConfigRid(local, 1);
-> -	strncpy(extra, local->config.nodeName, 16);
-> -	extra[16] =3D '\0';
-> +	strscpy(extra, local->config.nodeName, 17);
->  	dwrq->length =3D strlen(extra);
->=20
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: d0e99511834b6828c960e978d9a8cb6e5731250d  Merge wireless into wireless-next
 
-Again, why bother. But is this even correct/identical behaviour?
-Wouldn't it potentially read 17 input bytes before forcing NUL-
-termination?
+elapsed time: 723m
 
-johannes
+configs tested: 116
+configs skipped: 5
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+x86_64                            allnoconfig
+x86_64                              defconfig
+arm                                 defconfig
+i386                                defconfig
+x86_64                               rhel-8.3
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+arc                                 defconfig
+alpha                            allyesconfig
+s390                             allmodconfig
+alpha                               defconfig
+m68k                             allyesconfig
+x86_64                           allyesconfig
+s390                                defconfig
+sh                               allmodconfig
+riscv                randconfig-r042-20230116
+m68k                             allmodconfig
+x86_64                           rhel-8.3-bpf
+arm64                            allyesconfig
+s390                             allyesconfig
+arm                              allyesconfig
+x86_64                           rhel-8.3-syz
+arc                              allyesconfig
+ia64                             allmodconfig
+arc                  randconfig-r043-20230116
+x86_64               randconfig-a011-20230116
+x86_64                         rhel-8.3-kunit
+i386                             allyesconfig
+x86_64               randconfig-a013-20230116
+mips                             allyesconfig
+x86_64               randconfig-a012-20230116
+x86_64                           rhel-8.3-kvm
+powerpc                          allmodconfig
+i386                 randconfig-a014-20230116
+arm                  randconfig-r046-20230117
+x86_64               randconfig-a015-20230116
+i386                 randconfig-a013-20230116
+arc                  randconfig-r043-20230117
+i386                 randconfig-a012-20230116
+x86_64               randconfig-a014-20230116
+s390                 randconfig-r044-20230116
+x86_64               randconfig-a016-20230116
+i386                 randconfig-a015-20230116
+i386                 randconfig-a011-20230116
+i386                 randconfig-a016-20230116
+arc                  randconfig-r043-20230115
+arm                  randconfig-r046-20230115
+i386                 randconfig-c001-20230116
+i386                          randconfig-c001
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+riscv                randconfig-r042-20230118
+s390                 randconfig-r044-20230118
+arc                  randconfig-r043-20230118
+xtensa                  cadence_csp_defconfig
+sh                             shx3_defconfig
+sh                          kfr2r09_defconfig
+sh                     magicpanelr2_defconfig
+m68k                            q40_defconfig
+ia64                      gensparse_defconfig
+mips                  decstation_64_defconfig
+m68k                          multi_defconfig
+powerpc                    sam440ep_defconfig
+sh                         ap325rxa_defconfig
+riscv                            allyesconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+x86_64               randconfig-a001-20230116
+x86_64               randconfig-a003-20230116
+x86_64               randconfig-a004-20230116
+x86_64               randconfig-a002-20230116
+x86_64               randconfig-a005-20230116
+x86_64               randconfig-a006-20230116
+hexagon              randconfig-r041-20230116
+hexagon              randconfig-r045-20230117
+s390                 randconfig-r044-20230117
+hexagon              randconfig-r041-20230117
+i386                 randconfig-a002-20230116
+arm                  randconfig-r046-20230116
+i386                 randconfig-a004-20230116
+hexagon              randconfig-r045-20230116
+i386                 randconfig-a003-20230116
+i386                 randconfig-a005-20230116
+i386                 randconfig-a001-20230116
+riscv                randconfig-r042-20230117
+i386                 randconfig-a006-20230116
+x86_64                        randconfig-k001
+arm                          sp7021_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                        fsp2_defconfig
+mips                           rs90_defconfig
+powerpc                 mpc836x_rdk_defconfig
+hexagon              randconfig-r045-20230115
+hexagon              randconfig-r041-20230115
+riscv                randconfig-r042-20230115
+s390                 randconfig-r044-20230115
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+powerpc                      acadia_defconfig
+arm                        magician_defconfig
+riscv                             allnoconfig
+arm                         hackkit_defconfig
+mips                          malta_defconfig
+mips                        qi_lb60_defconfig
+powerpc                     tqm8560_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                     kmeter1_defconfig
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
