@@ -2,48 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F4D671AFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 12:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBDF6671E98
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 14:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbjARLot (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 06:44:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52866 "EHLO
+        id S230338AbjARN4m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 08:56:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229930AbjARLn7 (ORCPT
+        with ESMTP id S230339AbjARN4V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 06:43:59 -0500
+        Wed, 18 Jan 2023 08:56:21 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3D2656E3
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 03:03:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC428A0E5
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 05:27:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=i+jNHfWQzgTfi+BnkS8RcYvK0RyjD+V5VmuI4yXlum0=;
-        t=1674039848; x=1675249448; b=Y1h+RcZL3/M2jH17r9ifvtXHnpN9toebbCEDdWkw3GuONy2
-        Rr+AAiMbzhsMXGAOACl5gH4GJwcPryupwMd+13HBcMaSdJdm9UqgqBKzSlF8FJCEHU2qqHTwK9MW4
-        6lhOKuAfT9JDJ7/9W6+8gh43hbXQIJNJr/D9bnDrczEo0sVVqz0xh8+xWjI0mEKkZwOJV/xDwcBGg
-        ivmywqlh+v9Zt4yIP9OF1JqA/9TOF74uFh1yliwEtBtMYQo3zXYKOwUSpYxzefB5Z1oFRlgYF7ala
-        CU293c8pDXtU5PptWRCy0ZZPgpAs72/Nf+RhqH8+VdSHMeu2AoigAfHFhQ4D+v4w==;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=p88w6JdWixDyXYvlXtLNFZyDrA1Y7UXK4Bm2ZWR7EOo=; t=1674048423; x=1675258023; 
+        b=souN5W8nHFG1FBXhZck+0tQzcuPpLdDX4+A2WxWAVH5skFPjT/wzHFfrqVLwwi20KIiKeS6p1SA
+        A34p/7u/qVl5YGgeVk65L4qw3Cvd4gwZxT7Z9WV3XV6HUEt5X4yrNH0Y7T1tE4Dbq0I34QlbovSxT
+        tY/VFxO4t9P4oQBLyJfRr8tBYRbPA5BniluwizbPWA+JApIBn1M1V8JAzE2v862qReg6/h/0KTlGq
+        C4dW+YPO8xpmnyPL557QYDywmSjpdrSpZgTL3Y5VGqUv7QOiBJGCCYVLDMD19e51cEohNRKVhohDd
+        kjqxPOCAHRB4jMASYwMmUgnbxRcJq6TvfYVg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pI6Dx-005ZZs-2n;
-        Wed, 18 Jan 2023 12:03:21 +0100
-Message-ID: <0ed850ac7d13fc5d40545aff1d59d710374bfcf4.camel@sipsolutions.net>
-Subject: Re: [PATCH 6/7] cfg80211: rework nl80211_parse_chandef for 6 GHz
+        id 1pI8Sw-005c2r-2C;
+        Wed, 18 Jan 2023 14:26:59 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 18 Jan 2023 12:03:21 +0100
-In-Reply-To: <20220704102341.5692-7-quic_adisi@quicinc.com>
-References: <20220704102341.5692-1-quic_adisi@quicinc.com>
-         <20220704102341.5692-7-quic_adisi@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] bitfield: add FIELD_PREP_CONST()
+Date:   Wed, 18 Jan 2023 14:26:53 +0100
+Message-Id: <20230118142652.53f20593504b.Iaeea0aee77a6493d70e573b4aa55c91c00e01e4b@changeid>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -53,22 +49,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-07-04 at 15:53 +0530, Aditya Kumar Singh wrote:
->=20
-> +	/* For APs, 6 GHz power mode is taken from the user configured
-> +	 * value. However, for clients, power mode is also dependent
-> +	 * upon the APs power mode to which this client has associated.
-> +	 * Hence for client, need to take power mode of asscoiated AP,
+From: Johannes Berg <johannes.berg@intel.com>
 
+Neither FIELD_PREP() nor *_encode_bits() can be used
+in constant contexts (such as initializers), but we
+don't want to define shift constants for all masks
+just for use in initializers, and having checks that
+the values fit is also useful.
 
-typo - associated
+Therefore, add FIELD_PREP_CONST() which is a smaller
+version of FIELD_PREP() that can only take constant
+arguments and has less friendly (but not less strict)
+error checks, and expands to a constant value.
 
-But anyway, were you going to resubmit this with comments from the first
-patches addressed?
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/linux/bitfield.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-Honestly I'd also like to see a bit more discussion (in the cover letter
-I guess) about the solution with "multiple channel spaces" and all that.
-And ideally about alternatives considered - why not for example keep a
-single space with flags indicating support for the power mode, etc.
+diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
+index c9be1657f03d..ebfa12f69501 100644
+--- a/include/linux/bitfield.h
++++ b/include/linux/bitfield.h
+@@ -115,6 +115,32 @@
+ 		((typeof(_mask))(_val) << __bf_shf(_mask)) & (_mask);	\
+ 	})
+ 
++#define __BF_CHECK_POW2(n)	BUILD_BUG_ON_ZERO(((n) & ((n) - 1)) != 0)
++
++/**
++ * FIELD_PREP_CONST() - prepare a constant bitfield element
++ * @_mask: shifted mask defining the field's length and position
++ * @_val:  value to put in the field
++ *
++ * FIELD_PREP_CONST() masks and shifts up the value.  The result should
++ * be combined with other fields of the bitfield using logical OR.
++ *
++ * Unlike FIELD_PREP() this is a constant expression and can therefore
++ * be used in initializers. Error checking is less comfortable for this
++ * version, and non-constant masks cannot be used.
++ */
++#define FIELD_PREP_CONST(_mask, _val)					\
++	(								\
++		/* mask must be non-zero */				\
++		BUILD_BUG_ON_ZERO((_mask) == 0) +			\
++		/* check if value fits */				\
++		BUILD_BUG_ON_ZERO(~((_mask) >> __bf_shf(_mask)) & (_val)) + \
++		/* check if mask is contiguous */			\
++		__BF_CHECK_POW2((_mask) + (1ULL << __bf_shf(_mask))) +	\
++		/* and create the value */				\
++		(((typeof(_mask))(_val) << __bf_shf(_mask)) & (_mask))	\
++	)
++
+ /**
+  * FIELD_GET() - extract a bitfield element
+  * @_mask: shifted mask defining the field's length and position
+-- 
+2.39.0
 
-johannes
