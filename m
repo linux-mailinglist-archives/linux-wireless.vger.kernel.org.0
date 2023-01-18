@@ -2,325 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30474671679
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 09:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D3DA671893
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 11:09:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbjARIr6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 03:47:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53154 "EHLO
+        id S230115AbjARKIz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 05:08:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjARIqw (ORCPT
+        with ESMTP id S229649AbjARKIc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 03:46:52 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAA0917EC;
-        Wed, 18 Jan 2023 00:00:57 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AAF616E0;
-        Wed, 18 Jan 2023 08:00:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B344C433EF;
-        Wed, 18 Jan 2023 08:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1674028810;
-        bh=MwEEXqoGk56u8LPTYHXLSnpeUnjs6RdCBwU7mIZeA4g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NasmP917JjdtrIualtLpqp4kX3x0RUg9A75XwdwVZEQL4WpHjPzuJ5sOsig1KOf5+
-         bsqffv8GUhra3EXe8qKxIcpllmpV8/H08f5wsVYr2n6GxbMKiP15W1iRj1IW1WuCBj
-         IXX3PEC1asZ/mS0U6dbV6n5UT8HhLm49hDnmr144=
-Date:   Wed, 18 Jan 2023 09:00:08 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jaewan Kim <jaewan@google.com>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-team@android.com, adelva@google.com
-Subject: Re: [RESEND v3 1/2] mac80211_hwsim: add PMSR capability support
-Message-ID: <Y8enCG2zk5b9TCiN@kroah.com>
-References: <20230112070947.1168555-1-jaewan@google.com>
-MIME-Version: 1.0
+        Wed, 18 Jan 2023 05:08:32 -0500
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2115.outbound.protection.outlook.com [40.107.96.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13576656FD;
+        Wed, 18 Jan 2023 01:14:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Af55KP02zbMt8XOXohuJIgkYXpj87Ga0TcoYNSHSLPUEjegc1nTf3SvARJide2IQow+ZEREJo7IooD8QTeFb+BgBrCU57dVlcTP107DptnopQlpafJx8SbqXE9pzc3gqObJ6bfkPRZHu/2Hqw/l/5qnSssUu+XL1DSuCaK0tTpuOIMnV58aFsM0HZ5ug8351/ioaitLuww0w6t6iTL8xEx2AvszI0iAPSLZnqfmmrcmGlRlkG20OSbO+HvidTfXYoVWmGayKbnpHOkeBxlCkHjSfp03bjq1QMRsCx02+GIryxYVtKejoPVYw4kaaPXow0sml1hpF4LX3G5s85UcTkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ruvWeVjNDtmxA2IkxcOHD8Tt7BSEY5ZScBDbF5YJHQA=;
+ b=BbHTB8iWLOzOWHnJ+vWj5sSfEhMladhMivWi1PeW2M24jrQkV2K1aEkKPNxAVS7RUW4KwfgOUBxUcCAcEl7EHdljcJc+CK/8Gb/+6yCyi2sPpPjJZgeVkd5RhjuGZQkFUtwKkYFAUzC0WiCipbNNOIicMcqZASF2p55BPbuHMzBN9hq72Y+7xo+VXtj7ERnyidEcYlfnbYIbd2oYQQXj1/zpTyCNFlg9ukdXoKx8FZcmpBCLMJQQEl8kFIqzXbrPEHC2lZu+vDi3aAfnATpxD4SObklNH5ITvPDZjYOkELimWOZfywAPFHH3q0nhDb44HYFUyZSlHTwWNlEup/ujnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ruvWeVjNDtmxA2IkxcOHD8Tt7BSEY5ZScBDbF5YJHQA=;
+ b=SkXMotBq/ADwYTncXZnuelXBYAYfNpLOL31eLnfd47PnWCBaAmGfSy9qOQRvxGQUSzAOks0opt3Gor4NitOGs5QKrJ1Szjd7ppriPtCvXUe56+Xq/K7dpAuqAV35JmgB8c4oLogG1fcEoGvp3IlmVOEmhET4jyy92o5dlHOPXRY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by BY3PR13MB5028.namprd13.prod.outlook.com (2603:10b6:a03:360::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Wed, 18 Jan
+ 2023 09:14:19 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::eb5c:910f:3730:fd65]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::eb5c:910f:3730:fd65%7]) with mapi id 15.20.6002.024; Wed, 18 Jan 2023
+ 09:14:19 +0000
+Date:   Wed, 18 Jan 2023 10:14:12 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Doug Brown <doug@schmorgal.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Dan Williams <dcbw@redhat.com>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] wifi: libertas: only add RSN/WPA IE in
+ lbs_add_wpa_tlv
+Message-ID: <Y8e4ZB0YzaF6sLuX@corigine.com>
+References: <20230116202126.50400-1-doug@schmorgal.com>
+ <20230116202126.50400-3-doug@schmorgal.com>
+ <Y8ZjeKeNx0eHxt7f@corigine.com>
+ <85128345-4924-c1c9-85f0-7aebc4e40f93@schmorgal.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230112070947.1168555-1-jaewan@google.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <85128345-4924-c1c9-85f0-7aebc4e40f93@schmorgal.com>
+X-ClientProxiedBy: AM0PR06CA0096.eurprd06.prod.outlook.com
+ (2603:10a6:208:fa::37) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY3PR13MB5028:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67ad761e-c9b9-4b08-8a3e-08daf93460fa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: isJpCpM1UjnGcyIvNy/ybtHadzZpKy+cH2j4SP7rSc5rmswYDhbhPw+uRMgs3XZnuDbtmt9574B+pdXNWZSz8wm963iBCN7kWwVr2Zg7n3UXeAm5dv/IsEbvLsiEJsbIe8npKzZ8mOrK6frYeus8vVeGTyA/Ln0lCxBd7y+i+k0+/YfxZlnLsabjEws+R0w5RKFDenXiIEKdZHdOW7ErhTt4ldIw8MpSHRo7S04yfGU3jQiVjzUUbVjJmr7oHNbMz6X/bXSVTayp3lTBnJJc41y6oxk4Dmd9AB5R+uaduVSC0gjJPQGtqQAKcFSFf/6rLBZ/OnGiLI2JnQUwhB6ef0mZFO7C4XVTaG+ew+kGNl2DrdfOOcHA6/0sDEXVigb8pwDPSsN5qHuU6dn/TIB/eCIHZeK+YHE2G2b2I8wh4oHXZu0ivHbOQzIMgKZ09AAsMU/xOdS8RWAFyWasBTMKafJjeGjrH2DaoDr7XiQw6y66wliqMVbq+Cs0Rui7OFdSM5vqnXSZy4ZCm+D4dpxjoRKZ48K5VbI6WwRVEiajvJRzOWMCoFOmcnTepr6DLcc3GIZamgK3sEUWM3OX3Fvz0BsTLJ9hKTRIWe7zxBEQnRiaSChjWXh8ZuZ9N6dY8fM72DUILUCrouhlmajHW7EDb894+ks5JRhjW45RQ49hsd3SEzy/j2LvI5pvjzVYgbPj
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(346002)(396003)(366004)(39840400004)(451199015)(86362001)(66476007)(2906002)(44832011)(7416002)(66556008)(66946007)(5660300002)(8936002)(38100700002)(316002)(54906003)(6666004)(53546011)(6486002)(6506007)(966005)(478600001)(36756003)(41300700001)(8676002)(4326008)(6916009)(186003)(83380400001)(6512007)(2616005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?clvl40sizuFEaQCVKO+1Eot5030XTWV4ptqQL0QJxP92AFhfN0Rxyh5+k4rO?=
+ =?us-ascii?Q?TUPwOiu/fjAb8sf/FVOOOC+yar4kuV/JGgFV1qlufGNKoMo1JE7Iz2Wz8MQM?=
+ =?us-ascii?Q?ONbQ0DFPqkRxzE4wiWtiUu3PenQLrxqnPaz7KbpfhT/RoDFx3ezv2HpCQd5l?=
+ =?us-ascii?Q?+RI+3MoDPp1NYI7WulZOkorEoSf9u2YMqJTISP9NvwUyRABSdetcp02sQwzd?=
+ =?us-ascii?Q?UnCkiHvxPFIO1KkxOeZIiAdiBn1XlvFKKAACCmNnp+oBe3e2u+yQ/4EpGZGk?=
+ =?us-ascii?Q?Pv0K7wSca2aAhfJ1gjsjc11dQ3hDSvPruDiuccMCGBRvNnLhgpsJsFosnoIW?=
+ =?us-ascii?Q?wFD+u9KqJ31X3L4RFpJlJkqob59iam8VNv7OowR4XsKe4pmnd7FY76YCMqjh?=
+ =?us-ascii?Q?bDblbeTY19f3m2bA0lfqX3Coifv3MdoKSD4LrW3A6uUcYRA9PB8yQR15aS/u?=
+ =?us-ascii?Q?0n9MwEPJoy+YPrOmwv65i3xdSurEV/whue19qn9cMjkNMPyalwRrwFeuEtJF?=
+ =?us-ascii?Q?dGZFHYftN4Pi/J3LU4U/hsNmMzuwkeWyp2cckWAkdaL/hX0Ukg5V8yW4D+fY?=
+ =?us-ascii?Q?cvChxtRiD+7iVk2aPWCNt5o23vlWeVNsTr1Gm00smbz26wHQkWozuAtPRZPb?=
+ =?us-ascii?Q?VGcnF256B+4ZgSfeq/1iC2V9Uqn2u9IgVB5lzTZ8W1v1Dh6jTuLTh3Vf+ONj?=
+ =?us-ascii?Q?XxkggatOs3nAutBE41QzRsWAmC+fToPN4yr5n+m4l/dp3PQ4Wb3F8JawrKuu?=
+ =?us-ascii?Q?r/wYZjJl71uii6e4DiBkshRO5YRIkOc76kT91nukPwO3PFXKa12ktYq6VIIg?=
+ =?us-ascii?Q?qvVaIXi2G4AnEuG4icDu+jl6JO/MXgb3mje6Eqp9uLnbI1X2XyPSPKcQKqBx?=
+ =?us-ascii?Q?SlUrnlyrw3yJKrOEbQfnoYco1Ez8QBfPdcuE72v8DKl9vs9sl3Vd/MLBZ40k?=
+ =?us-ascii?Q?15K1tUl68pIn2Itg3qq/jOWYYKhcIZCFM4M6ROj1fGu0OYlAO2A4/ZF+rih0?=
+ =?us-ascii?Q?Mhr5ebmRnMnJvWbvSigUwj+iq6lD8R1UmPKiWXawA38BicLAcbaztqESBuCK?=
+ =?us-ascii?Q?w9r4c78mGy9C4y+F8XbM3BYgUqIDasi/aIVCpf6oprh8md4bkFaVpc9p6fYd?=
+ =?us-ascii?Q?dpVegMnPCWgdJfNqW/D49XB6PUcuWbAr+ATnkQjhnPQH2FSuKcaQKON8pNXI?=
+ =?us-ascii?Q?NMYcWZAYGlRvDpIl4AGVlOhfVrqKUTYDoYgvT27TH2r/ziREo23mrLYEhprP?=
+ =?us-ascii?Q?QZSZS9AnozQYBrTztxbyLLceiTUrXg2/FFw10WT+nICe7K2irdDTH+fkSYZL?=
+ =?us-ascii?Q?gu/4gB0itsEvb69IhS5AZLrMxjUn9VgK3qKnW2DJJhwC+gKkCz26hljUPZ7/?=
+ =?us-ascii?Q?VOEpyNFeASznPNKM/SpqpKKJ/l5Nv4IEYtTHXBOn9jIw7TxJAkm8yvo4XFey?=
+ =?us-ascii?Q?u9MIOLAwJTc0TIk/9zsFlmU/liX0noh7W6Ly+j0l1mFjtA+OzAqsCZraxRNI?=
+ =?us-ascii?Q?YL26lMz8QUdsrfA0jKXWvczZld6vqHB2/qgX1zLewnEE0enzHmQdqum/eS3x?=
+ =?us-ascii?Q?rF1YjxbX0Ht/nHo2fucp5Ddxxh5/mY+gBVhmB/aH2pUUVoTGUsq1ORZHOXYB?=
+ =?us-ascii?Q?8fxO99ayHP9WZUPG5D5im1MlPkSF6Gzoym6XTCp6CZv7jDwDTCPVDBqHaCar?=
+ =?us-ascii?Q?JcKjBQ=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67ad761e-c9b9-4b08-8a3e-08daf93460fa
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2023 09:14:18.8731
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cLIzMOqD5e3RLBdR4b28ce7SSOrTrhfAXO9cf6hmXHYzmcP2ntYIkz9/kJ6Yo1V9htRYrfkEBLCozjhSPmZuLX2PN9EItXlpO4YVYuB1nJs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR13MB5028
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 12, 2023 at 04:09:46PM +0900, Jaewan Kim wrote:
-> Add HWSIM_ATTR_PMSR_SUPPORT to configure PMSR support.
-
-What does this mean?  This is a new feature with almost no information
-about what it is, how it can be used, or what it is for.
-
-Would you accept a patch that was sent to you like this with no
-documentation at all?
-
-
+On Tue, Jan 17, 2023 at 10:35:56PM -0800, Doug Brown wrote:
+> On 1/17/2023 12:59 AM, Simon Horman wrote:
+> > On Mon, Jan 16, 2023 at 12:21:24PM -0800, Doug Brown wrote:
+> > > [You don't often get email from doug@schmorgal.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > > 
+> > > The existing code only converts the first IE to a TLV, but it returns a
+> > > value that takes the length of all IEs into account. When there is more
+> > > than one IE (which happens with modern wpa_supplicant versions for
+> > > example), the returned length is too long and extra junk TLVs get sent
+> > > to the firmware, resulting in an association failure.
+> > > 
+> > > Fix this by finding the first RSN or WPA IE and only adding that. This
+> > > has the extra benefit of working properly if the RSN/WPA IE isn't the
+> > > first one in the IE buffer.
+> > > 
+> > > While we're at it, clean up the code to use the available structs like
+> > > the other lbs_add_* functions instead of directly manipulating the TLV
+> > > buffer.
+> > > 
+> > > Signed-off-by: Doug Brown <doug@schmorgal.com>
+> > > ---
+> > >   drivers/net/wireless/marvell/libertas/cfg.c | 28 +++++++++++++--------
+> > >   1 file changed, 18 insertions(+), 10 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+> > > index 3e065cbb0af9..3f35dc7a1d7d 100644
+> > > --- a/drivers/net/wireless/marvell/libertas/cfg.c
+> > > +++ b/drivers/net/wireless/marvell/libertas/cfg.c
+> > 
+> > ...
+> > 
+> > > @@ -428,14 +438,12 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8 *ie, u8 ie_len)
+> > >           *   __le16  len
+> > >           *   u8[]    data
+> > >           */
+> > > -       *tlv++ = *ie++;
+> > > -       *tlv++ = 0;
+> > > -       tlv_len = *tlv++ = *ie++;
+> > > -       *tlv++ = 0;
+> > > -       while (tlv_len--)
+> > > -               *tlv++ = *ie++;
+> > > -       /* the TLV is two bytes larger than the IE */
+> > > -       return ie_len + 2;
+> > > +       wpatlv->header.type = cpu_to_le16(wpaie->id);
+> > > +       wpatlv->header.len = cpu_to_le16(wpaie->datalen);
+> > > +       memcpy(wpatlv->data, wpaie->data, wpaie->datalen);
+> > 
+> > Hi Doug,
+> > 
+> > Thanks for fixing the endiness issues with cpu_to_le16()
+> > This part looks good to me now. Likewise for patch 4/4.
+> > 
+> > One suggestion I have, which is probably taking things to far,
+> > is a helper for what seems to be repeated code-pattern.
+> > But I don't feel strongly about that.
 > 
-
-> Signed-off-by: Jaewan Kim <jaewan@google.com>
-> ---
->  drivers/net/wireless/mac80211_hwsim.c | 159 +++++++++++++++++++++++++-
->  drivers/net/wireless/mac80211_hwsim.h |   2 +
->  include/net/cfg80211.h                |  10 ++
->  net/wireless/nl80211.c                |  17 ++-
->  4 files changed, 182 insertions(+), 6 deletions(-)
+> Thanks Simon. Is this basically what you're suggesting for a helper?
 > 
-> diff --git drivers/net/wireless/mac80211_hwsim.c drivers/net/wireless/mac80211_hwsim.c
-> index c57c8903b7c0..0d5b7b5d3121 100644
-> --- drivers/net/wireless/mac80211_hwsim.c
-> +++ drivers/net/wireless/mac80211_hwsim.c
-> @@ -719,6 +719,9 @@ struct mac80211_hwsim_data {
->  	/* RSSI in rx status of the receiver */
->  	int rx_rssi;
->  
-> +	/* only used when pmsr capability is supplied */
-> +	struct cfg80211_pmsr_capabilities pmsr_capa;
-> +
->  	struct mac80211_hwsim_link_data link_data[IEEE80211_MLD_MAX_NUM_LINKS];
->  };
->  
-> @@ -760,6 +763,37 @@ static const struct genl_multicast_group hwsim_mcgrps[] = {
->  
->  /* MAC80211_HWSIM netlink policy */
->  
-> +static const struct nla_policy
-> +hwsim_ftm_capa_policy[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1] = {
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_ASAP] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_NON_ASAP] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_REQ_LCI] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_REQ_CIVICLOC] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES] = { .type = NLA_U32 },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS] = { .type = NLA_U32 },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT] =
-> +		NLA_POLICY_MAX(NLA_U8, 15),
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST] =
-> +		NLA_POLICY_MAX(NLA_U8, 31),
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
-> +};
-> +
-> +static const struct nla_policy
-> +hwsim_pmsr_type_policy[NL80211_PMSR_TYPE_MAX + 1] = {
-> +	[NL80211_PMSR_TYPE_FTM] = NLA_POLICY_NESTED(hwsim_ftm_capa_policy),
-> +};
-> +
-> +static const struct nla_policy
-> +hwsim_pmsr_capa_policy[NL80211_PMSR_ATTR_MAX + 1] = {
-> +	[NL80211_PMSR_ATTR_MAX_PEERS] = { .type = NLA_U32 },
-> +	[NL80211_PMSR_ATTR_REPORT_AP_TSF] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_ATTR_TYPE_CAPA] =
-> +		NLA_POLICY_NESTED(hwsim_pmsr_type_policy),
-> +	[NL80211_PMSR_ATTR_PEERS] = { .type = NLA_REJECT }, // only for request.
-> +};
-> +
->  static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
->  	[HWSIM_ATTR_ADDR_RECEIVER] = NLA_POLICY_ETH_ADDR_COMPAT,
->  	[HWSIM_ATTR_ADDR_TRANSMITTER] = NLA_POLICY_ETH_ADDR_COMPAT,
-> @@ -788,6 +822,7 @@ static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
->  	[HWSIM_ATTR_IFTYPE_SUPPORT] = { .type = NLA_U32 },
->  	[HWSIM_ATTR_CIPHER_SUPPORT] = { .type = NLA_BINARY },
->  	[HWSIM_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
-> +	[HWSIM_ATTR_PMSR_SUPPORT] = NLA_POLICY_NESTED(hwsim_pmsr_capa_policy),
->  };
->  
->  #if IS_REACHABLE(CONFIG_VIRTIO)
-> @@ -3107,6 +3142,18 @@ static int mac80211_hwsim_change_sta_links(struct ieee80211_hw *hw,
->  	return 0;
->  }
->  
-> +static int mac80211_hwsim_start_pmsr(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-> +				     struct cfg80211_pmsr_request *request)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static void mac80211_hwsim_abort_pmsr(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-> +				      struct cfg80211_pmsr_request *request)
-> +{
-> +	// Do nothing for now.
-> +}
-> +
->  #define HWSIM_COMMON_OPS					\
->  	.tx = mac80211_hwsim_tx,				\
->  	.wake_tx_queue = ieee80211_handle_wake_tx_queue,	\
-> @@ -3129,7 +3176,9 @@ static int mac80211_hwsim_change_sta_links(struct ieee80211_hw *hw,
->  	.flush = mac80211_hwsim_flush,				\
->  	.get_et_sset_count = mac80211_hwsim_get_et_sset_count,	\
->  	.get_et_stats = mac80211_hwsim_get_et_stats,		\
-> -	.get_et_strings = mac80211_hwsim_get_et_strings,
-> +	.get_et_strings = mac80211_hwsim_get_et_strings,	\
-> +	.start_pmsr = mac80211_hwsim_start_pmsr,		\
-> +	.abort_pmsr = mac80211_hwsim_abort_pmsr,
->  
->  #define HWSIM_NON_MLO_OPS					\
->  	.sta_add = mac80211_hwsim_sta_add,			\
-> @@ -3186,6 +3235,7 @@ struct hwsim_new_radio_params {
->  	u32 *ciphers;
->  	u8 n_ciphers;
->  	bool mlo;
-> +	const struct cfg80211_pmsr_capabilities *pmsr_capa;
->  };
->  
->  static void hwsim_mcast_config_msg(struct sk_buff *mcast_skb,
-> @@ -3260,6 +3310,13 @@ static int append_radio_msg(struct sk_buff *skb, int id,
->  			return ret;
->  	}
->  
-> +	if (param->pmsr_capa) {
-> +		ret = cfg80211_send_pmsr_capa(param->pmsr_capa, skb);
-> +
-> +		if (ret < 0)
-> +			return ret;
+> static int lbs_add_ie_tlv(u8 *tlvbuf, const struct element *ie, u16 tlvtype)
+> {
+> 	struct mrvl_ie_data *tlv = (struct mrvl_ie_data *)tlvbuf;
+> 	tlv->header.type = cpu_to_le16(tlvtype);
+> 	tlv->header.len = cpu_to_le16(ie->datalen);
+> 	memcpy(tlv->data, ie->data, ie->datalen);
+> 	return sizeof(struct mrvl_ie_header) + ie->datalen;
+> }
+> 
+> And then in the two functions where I'm doing that, at the bottom:
+> 
+> return lbs_add_ie_tlv(tlv, wpaie, wpaie->id);
+> return lbs_add_ie_tlv(tlv, wpsie, TLV_TYPE_WPS_ENROLLEE);
+> 
+> I could definitely do that to avoid repeating the chunk of code that
+> fills out the struct in the two functions. A lot of the other
+> lbs_add_*_tlv functions follow a similar pattern of setting up a struct
+> pointer and filling out the header, so I don't think it's too crazy to
+> just repeat the code twice. On the other hand, the example above does
+> look pretty darn clean. I don't feel strongly either way myself.
 
-No need for this, just "return ret" below.
+Hi Doug,
 
-> +	}
-> +
->  	return 0;
+yes, I was thinking about something like that.
+And wondering if it might be reused elsewhere (in the same file).
 
-	return ret;
-
-
->  }
->  
-> @@ -4606,6 +4663,11 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
->  				    data->debugfs,
->  				    data, &hwsim_simulate_radar);
->  
-> +	if (param->pmsr_capa) {
-> +		data->pmsr_capa = *param->pmsr_capa;
-> +		hw->wiphy->pmsr_capa = &data->pmsr_capa;
-> +	}
-> +
->  	spin_lock_bh(&hwsim_radio_lock);
->  	err = rhashtable_insert_fast(&hwsim_radios_rht, &data->rht,
->  				     hwsim_rht_params);
-> @@ -4715,6 +4777,7 @@ static int mac80211_hwsim_get_radio(struct sk_buff *skb,
->  	param.regd = data->regd;
->  	param.channels = data->channels;
->  	param.hwname = wiphy_name(data->hw->wiphy);
-> +	param.pmsr_capa = &data->pmsr_capa;
->  
->  	res = append_radio_msg(skb, data->idx, &param);
->  	if (res < 0)
-> @@ -5053,6 +5116,83 @@ static bool hwsim_known_ciphers(const u32 *ciphers, int n_ciphers)
->  	return true;
->  }
->  
-> +static int parse_ftm_capa(const struct nlattr *ftm_capa,
-> +			  struct cfg80211_pmsr_capabilities *out)
-> +{
-> +	struct nlattr *tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1];
-> +	int ret = nla_parse_nested(tb, NL80211_PMSR_FTM_CAPA_ATTR_MAX,
-> +				   ftm_capa, hwsim_ftm_capa_policy, NULL);
-> +	if (ret) {
-> +		pr_err("mac80211_hwsim: malformed FTM capability");
-> +		return -EINVAL;
-> +	}
-> +
-> +	out->ftm.supported = 1;
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES])
-> +		out->ftm.preambles =
-> +			nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES]);
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS])
-> +		out->ftm.bandwidths =
-> +			nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS]);
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT])
-> +		out->ftm.max_bursts_exponent =
-> +			nla_get_u8(tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT]);
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST])
-> +		out->ftm.max_ftms_per_burst =
-> +			nla_get_u8(tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST]);
-> +	out->ftm.asap =
-> +		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_ASAP];
-> +	out->ftm.non_asap =
-> +		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_NON_ASAP];
-> +	out->ftm.request_lci =
-> +		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_REQ_LCI];
-> +	out->ftm.request_civicloc =
-> +		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_REQ_CIVICLOC];
-> +	out->ftm.trigger_based =
-> +		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_TRIGGER_BASED];
-> +	out->ftm.non_trigger_based =
-> +		!!tb[NL80211_PMSR_FTM_CAPA_ATTR_NON_TRIGGER_BASED];
-> +
-> +	return 0;
-> +}
-> +
-> +static int parse_pmsr_capa(const struct nlattr *pmsr_capa,
-> +			   struct cfg80211_pmsr_capabilities *out)
-> +{
-> +	struct nlattr *tb[NL80211_PMSR_ATTR_MAX + 1];
-> +	struct nlattr *nla;
-> +	int size;
-> +	int ret = nla_parse_nested(tb, NL80211_PMSR_ATTR_MAX, pmsr_capa,
-> +				   hwsim_pmsr_capa_policy, NULL);
-> +	if (ret) {
-> +		pr_err("mac80211_hwsim: malformed PMSR capability");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (tb[NL80211_PMSR_ATTR_MAX_PEERS])
-> +		out->max_peers =
-> +			nla_get_u32(tb[NL80211_PMSR_ATTR_MAX_PEERS]);
-> +	out->report_ap_tsf = !!tb[NL80211_PMSR_ATTR_REPORT_AP_TSF];
-> +	out->randomize_mac_addr =
-> +		!!tb[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR];
-> +
-> +	if (!tb[NL80211_PMSR_ATTR_TYPE_CAPA]) {
-> +		pr_err("mac80211_hwsim: malformed PMSR type");
-> +		return -EINVAL;
-> +	}
-> +
-> +	nla_for_each_nested(nla, tb[NL80211_PMSR_ATTR_TYPE_CAPA], size) {
-> +		switch (nla_type(nla)) {
-> +		case NL80211_PMSR_TYPE_FTM:
-> +			parse_ftm_capa(nla, out);
-> +			break;
-> +		default:
-> +			pr_warn("mac80211_hwsim: Unknown PMSR type\n");
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
->  static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
->  {
->  	struct hwsim_new_radio_params param = { 0 };
-> @@ -5173,8 +5313,24 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
->  		param.hwname = hwname;
->  	}
->  
-> +	if (info->attrs[HWSIM_ATTR_PMSR_SUPPORT]) {
-> +		struct cfg80211_pmsr_capabilities *pmsr_capa =
-> +			kmalloc(sizeof(struct cfg80211_pmsr_capabilities),
-> +				GFP_KERNEL);
-> +		if (!pmsr_capa)
-> +			return -ENOMEM;
-
-Did you just leak memory?  What frees hwname now?
-
-> +		ret = parse_pmsr_capa(info->attrs[HWSIM_ATTR_PMSR_SUPPORT],
-> +				      pmsr_capa);
-> +		if (ret)
-> +			goto out_free;
-> +		param.pmsr_capa = pmsr_capa;
-> +	}
-> +
->  	ret = mac80211_hwsim_new_radio(info, &param);
-> +
-> +out_free:
->  	kfree(hwname);
-> +	kfree(param.pmsr_capa);
-
-You just leaked memory (hint, check your error path logic above...)
-
-How did you test this?
-
-greg k-h
+But again, I don't feel strongly about this.
+So perhaps it's something to consider in future.
