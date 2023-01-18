@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1ADC672369
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:33:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D667867236B
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:33:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230070AbjARQds (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 11:33:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36070 "EHLO
+        id S229728AbjARQdv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 11:33:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230354AbjARQdD (ORCPT
+        with ESMTP id S230410AbjARQdF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 11:33:03 -0500
+        Wed, 18 Jan 2023 11:33:05 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DEC2311F
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:31:07 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9298855BF
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:31:11 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1C559B81DA5
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 16:31:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CC1C433D2;
-        Wed, 18 Jan 2023 16:31:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 40AF0B81DA8
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 16:31:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2FAC433F0;
+        Wed, 18 Jan 2023 16:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674059464;
-        bh=xF2DiJLPCoAtFdiGut0siS0ADaiXblCR+ZZv+5ehvcs=;
+        s=k20201202; t=1674059468;
+        bh=e1D/oL0BMEdF3m1VU9uBlqW3UfBr0HH+8OZD37wLSZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=esVG8c3GDH6vd/wROluW+aKjBwFBMY6lVHa4ypLmeAugbMlbomx8GR4RMvGTWVQf+
-         LWO6noAQV9GLS7Py2Qp4dtEUsQ8Ly/jE662PiR694Wkrd5l/U6n8ZXzIgZ6p9xCryi
-         tI4DhGk3StYQCLQv/gSnYKc8lQbxClQ9i3hfheWw/zI5TSNNA4jTjSSgs2engyJCxo
-         yHQG9YC4yTbqwCBdtN7Mw+xKOicDSZOXibM1s8GDejZcio4VT3MW61M0FTqtn/MYpP
-         YgjWzalaYM3f/FOTfLWecD+f2tuSLuUDGCCMBA9dVWx54KNIECPfzb9JdyJEsotv0N
-         6BSJEANFUsDhQ==
+        b=ZcvEO5edvLDfsZYQp2RtBFCSpV/fZlM9G6k5QmsHcEK/2odm0JjTblEMgoK/XMDhx
+         cfk7F+t8qcZ8zJdl69O6DJ0KwNDBr1Ogkt2mUwqNH473urtTkX0LerU3a5bu0q5bNw
+         qzAVVWU5zxksDqsubaXPFhrckJW665WA1E2b9UjpnwGKScMqiUVgyVIwdATej9IehJ
+         xGTmZDTu7jD3G5rGliDepLlF3AS84NcQvjP8AOD0njKEen/ziRwACSgjIKGxXgekhz
+         TGW/XDdAybuhPnrA3tHZXlRI8wvpCmldhxZ4DurgMfDVQgLmLXxLJdZW/EY6b5sNbB
+         8uAa0cRDtNFNA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     ryder.lee@mediatek.com, shayne.chen@mediatek.com,
         linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH 2/4] wifi: mt76: mt7996: rely on mt76_connac_txp_skb_unmap
-Date:   Wed, 18 Jan 2023 17:30:39 +0100
-Message-Id: <fb3800e3c65308846da93f14b707cb702925e554.1674059222.git.lorenzo@kernel.org>
+Subject: [PATCH 3/4] wifi: mt76: mt7996: rely on mt76_connac_tx_complete_skb
+Date:   Wed, 18 Jan 2023 17:30:40 +0100
+Message-Id: <7e7d992e788e835a131e2b97d117cdedc786c51a.1674059222.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <cover.1674059222.git.lorenzo@kernel.org>
 References: <cover.1674059222.git.lorenzo@kernel.org>
@@ -53,46 +53,96 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Drop mt7996_txp_skb_unmap routine since it is equivalent to
-mt76_connac_txp_skb_unmap().
+Drop mt7996_tx_complete_skb routine since it is equivalent to
+mt76_connac_tx_complete_skb().
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 21 -------------------
+ .../net/wireless/mediatek/mt76/mt7996/mac.h   | 13 ------------
+ .../net/wireless/mediatek/mt76/mt7996/mmio.c  |  2 +-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 -
+ 4 files changed, 1 insertion(+), 36 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 4e4b596ea37d..7fefb3f71940 100644
+index 7fefb3f71940..56400331e74e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1168,18 +1168,6 @@ mt7996_tx_check_aggr(struct ieee80211_sta *sta, __le32 *txwi)
- 		ieee80211_start_tx_ba_session(sta, tid, 0);
+@@ -1533,27 +1533,6 @@ void mt7996_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 	}
  }
  
--static void
--mt7996_txp_skb_unmap(struct mt76_dev *dev, struct mt76_txwi_cache *t)
+-void mt7996_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e)
 -{
--	struct mt76_connac_txp_common *txp;
--	int i;
+-	if (!e->txwi) {
+-		dev_kfree_skb_any(e->skb);
+-		return;
+-	}
 -
--	txp = mt7996_txwi_to_txp(dev, t);
--	for (i = 0; i < txp->fw.nbuf; i++)
--		dma_unmap_single(dev->dev, le32_to_cpu(txp->fw.buf[i]),
--				 le16_to_cpu(txp->fw.len[i]), DMA_TO_DEVICE);
+-	/* error path */
+-	if (e->skb == DMA_DUMMY_DATA) {
+-		struct mt76_connac_txp_common *txp;
+-		struct mt76_txwi_cache *t;
+-
+-		txp = mt7996_txwi_to_txp(mdev, e->txwi);
+-		t = mt76_token_put(mdev, le16_to_cpu(txp->fw.token));
+-		e->skb = t ? t->skb : NULL;
+-	}
+-
+-	if (e->skb)
+-		mt76_tx_complete_skb(mdev, e->wcid, e->skb);
 -}
 -
- static void
- mt7996_txwi_free(struct mt7996_dev *dev, struct mt76_txwi_cache *t,
- 		 struct ieee80211_sta *sta, struct list_head *free_list)
-@@ -1189,7 +1177,7 @@ mt7996_txwi_free(struct mt7996_dev *dev, struct mt76_txwi_cache *t,
- 	__le32 *txwi;
- 	u16 wcid_idx;
+ void mt7996_mac_cca_stats_reset(struct mt7996_phy *phy)
+ {
+ 	struct mt7996_dev *dev = phy->dev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+index 10e08d66d474..27184cbac619 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+@@ -371,17 +371,4 @@ struct mt7996_dfs_radar_spec {
+ 	struct mt7996_dfs_pattern radar_pattern[16];
+ };
  
--	mt7996_txp_skb_unmap(mdev, t);
-+	mt76_connac_txp_skb_unmap(mdev, t);
- 	if (!t->skb)
- 		goto out;
- 
+-static inline struct mt76_connac_txp_common *
+-mt7996_txwi_to_txp(struct mt76_dev *dev, struct mt76_txwi_cache *t)
+-{
+-	u8 *txwi;
+-
+-	if (!t)
+-		return NULL;
+-
+-	txwi = mt76_get_txwi_ptr(dev, t);
+-
+-	return (struct mt76_connac_txp_common *)(txwi + MT_TXD_SIZE);
+-}
+-
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 011a55622770..f7492a40ee7e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -325,7 +325,7 @@ struct mt7996_dev *mt7996_mmio_probe(struct device *pdev,
+ 				SURVEY_INFO_TIME_BSS_RX,
+ 		.token_size = MT7996_TOKEN_SIZE,
+ 		.tx_prepare_skb = mt7996_tx_prepare_skb,
+-		.tx_complete_skb = mt7996_tx_complete_skb,
++		.tx_complete_skb = mt76_connac_tx_complete_skb,
+ 		.rx_skb = mt7996_queue_rx_skb,
+ 		.rx_check = mt7996_rx_check,
+ 		.rx_poll_complete = mt7996_rx_poll_complete,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 725344791b4c..9c6823284834 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -493,7 +493,6 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 			  enum mt76_txq_id qid, struct mt76_wcid *wcid,
+ 			  struct ieee80211_sta *sta,
+ 			  struct mt76_tx_info *tx_info);
+-void mt7996_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
+ void mt7996_tx_token_put(struct mt7996_dev *dev);
+ void mt7996_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			 struct sk_buff *skb, u32 *info);
 -- 
 2.39.0
 
