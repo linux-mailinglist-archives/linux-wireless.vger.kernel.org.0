@@ -2,192 +2,302 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F66767241D
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 236AA672596
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 18:54:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbjARQvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 11:51:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
+        id S229854AbjARRyV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 12:54:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230161AbjARQur (ORCPT
+        with ESMTP id S229606AbjARRyU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 11:50:47 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E05258663
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:50:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674060643; x=1705596643;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=VN+49ZSchXllpZUu9HvZtgUV/eTzcL39YQ7TRbcM5SA=;
-  b=Bu8RuQF6e5fugqswAb90snnlF4NzBHGd4lX2yUKTKrJ+KqKG2I8u83L3
-   7SCvUnvuybmjjrb4sSMcVTD0ry96CXDCykAHj+inevPx8+N2UzeM+/Bi8
-   FWXeKynQUd9FTF4xiYdzeo1yJjKB6dm77KjC4sywb7Zldew8sOn0lv1l3
-   GaE+124E0O8A8p0LZcp+Z1VCgPS7wl2bywgq8MWBjmObdrxT+AOD1Pacl
-   /U8sqkUBBOfO8tsE3CScog9rFgF0zZP2+WhcJdWgox2axzLGA2KfYCVdC
-   fRD6iGMuFr8WhL4NYe780xTnlAHVHHT2JWo8jztyjSud2m8Glj/GeaEh4
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="327104118"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="327104118"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 08:49:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="728276142"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="728276142"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga004.fm.intel.com with ESMTP; 18 Jan 2023 08:49:15 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Wed, 18 Jan 2023 08:49:14 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Wed, 18 Jan 2023 08:49:14 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Wed, 18 Jan 2023 08:49:14 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d9+iLphEumpM9WbA7x8xK+vkLmaw37jWNmg5P6Ak9Gp1fXd4fgoSyIyoaVGCuzW3wL5ET21G50IzOSQJzvv2E8ZghZA+Cou8HLMTpg2h63Uyx24Bru5Vr8DekHQuBuBUhKuEcF/JCZOR+XmQbzq8WpI2+s8gnI3AwHH8OKiPxSAd+B5PmGOmu5vTnQ7YdsnJxrhT+6tVihzHuU0I7ahGIRgLfaQ0v6bdSWYMY+SVrP+MeqZ20J9QkccMKbHxbk1eRSqTnk0Oj8RGfSFriWcMe317cafxTDMLnU5wFyT8sE0rn2YxHQlbowEgTHuePyHJO/ZZpk2+FuHf3LP8uZU4xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UGGm2FxvnrLMnK5TJs/DWfsx7Ee+aoAoMPMdAPqZdUs=;
- b=S4dB5IB7KREUswW2E89GgM/klRjmpyE6tEmTO2UtkxuesVv7fLyQ0PZBFHeIAAFQ73oxFORd7SZ06fMPc/ttXAOWl7/wn1Dd0L0WuXzzyoUL0guYBFeaCzw6DroQLHXNH136gE1PNkT+dczdkeiPn/fFwtzsP2le+O6nHTJ68XqlwperRXZkSN2uhZpFpqSZjn+YPvFnD0Nfo5k1pbWYOGrEsz3md3gNGQk30SD64Wb6g6AEHV3h+G+qPgLW4F3PE4nB6ThCE2iMGSlxt2KFBlZljyQHYA7cj1U944Nof+CRYK8vm2lXP/AnYmv6sUa1VYuKAhvm9s1yEm5GK3BmJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM6PR11MB3625.namprd11.prod.outlook.com (2603:10b6:5:13a::21)
- by DS0PR11MB6517.namprd11.prod.outlook.com (2603:10b6:8:d3::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5986.23; Wed, 18 Jan 2023 16:49:13 +0000
-Received: from DM6PR11MB3625.namprd11.prod.outlook.com
- ([fe80::3ff6:ca60:f9fe:6934]) by DM6PR11MB3625.namprd11.prod.outlook.com
- ([fe80::3ff6:ca60:f9fe:6934%3]) with mapi id 15.20.5986.023; Wed, 18 Jan 2023
- 16:49:12 +0000
-Message-ID: <b2c78f45-345b-e3ec-20b1-9d18ee0c9f98@intel.com>
-Date:   Wed, 18 Jan 2023 17:49:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] bitfield: add FIELD_PREP_CONST()
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230118142652.53f20593504b.Iaeea0aee77a6493d70e573b4aa55c91c00e01e4b@changeid>
- <92209c00-7fcf-1592-e97c-f49e7734fdfc@intel.com>
- <3fe52061d5d9e3701f598add5c64f8b3583c31df.camel@sipsolutions.net>
-From:   Alexander Lobakin <alexandr.lobakin@intel.com>
-In-Reply-To: <3fe52061d5d9e3701f598add5c64f8b3583c31df.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0040.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::7) To DM6PR11MB3625.namprd11.prod.outlook.com
- (2603:10b6:5:13a::21)
+        Wed, 18 Jan 2023 12:54:20 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C9A4DE3D
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 09:54:18 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id l41-20020a05600c1d2900b003daf986faaeso2166246wms.3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 09:54:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TWpO1YbgA04yjZBzLFJGZr2Ux7J9tn5oLTa4Qr7uJbk=;
+        b=yPqo3wCU1xKWJPTbuSCKCbqYu6Q+pewK3OQ1KwO4DvrbPw4kUHaYyutclqFtr8rniv
+         rFB6x+jo6VQZ3dIlql4OO3K15gyVQVAKU3AYVC2LM+MZh6yPUdKhf9nv6PA2T845Jgx0
+         7yms/WQF5TaY3zASjHlGhI5n4Bamh23pq1kXrtkbHWpAmcRoSyGmggfj3vgMv2XT0hVc
+         ny3oYDCyascDlK2oamvzZXNSAKXv97QzBO8GY3CF9s0p+ggSH3VBEFKJ7FowVdowCM0s
+         lOyVHWx9INpOjZ9m5zUjoUnY8HVAxBrvv6R0qQ9om98BW0nVvP1h4U8BW7Fog/yjGxf+
+         Wzzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TWpO1YbgA04yjZBzLFJGZr2Ux7J9tn5oLTa4Qr7uJbk=;
+        b=o4n0pOq54KYaE49vHO8M5SELBOzxj7oM1Td10Exnjni520xcJpFWvrWIox0hqs0QaD
+         n8QSRZUautNpafK2C7Imxt1mrNm50GaqTJ+LpTcGBxPfHQuCL56hHvrktPm9h7JjODfE
+         VNPqtVGnmjQhv2eM/zsgU599vEsjfvB/GheYbalILA48UBuLvLiYA7RsZVcJ9mIeYmHs
+         QcCPZ1iRQeEIjHtY22W5XxlMrX8JzQ9gnMQEtw2u7JGsPES23bS/As5XG/YESgSgsBRa
+         BpLwhamvCMFPrCiHJtIgDJhxwzeDujIj+cLhHchRU9UaosnTYwnMI34MIvN6WOEwIkLA
+         w50w==
+X-Gm-Message-State: AFqh2kofN9Ri+nTQ6OP6n45FcHaGgvVA7lm9F+WyZg3ArnKqvF3UWwnD
+        dyfqfW+0NC0cF/KzgVHtMeKCSQ==
+X-Google-Smtp-Source: AMrXdXuVbyarxnAiepfXzbwTR1RHkFZszrKxbE5DGbOdnNgX139UqeLC5+bUZ7kndu3Jzieu7igTOQ==
+X-Received: by 2002:a05:600c:4d93:b0:3d9:efd1:214d with SMTP id v19-20020a05600c4d9300b003d9efd1214dmr7568201wmp.25.1674064457145;
+        Wed, 18 Jan 2023 09:54:17 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id o2-20020a05600c4fc200b003cf894dbc4fsm2730015wmq.25.2023.01.18.09.54.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jan 2023 09:54:16 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>, de Goede <hdegoede@redhat.com>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, ath11k@lists.infradead.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: net: wireless: minor whitespace and name cleanups
+Date:   Wed, 18 Jan 2023 18:54:13 +0100
+Message-Id: <20230118175413.360153-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR11MB3625:EE_|DS0PR11MB6517:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e075682-874d-4783-a63b-08daf973ed23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: H12xtRxsOtzMwH6RtqsWR55/hTXky3vu4t/UkwdXIlFNpEUJVkp4kNw2jWsxtoRTKmgDLbNiNrK0rZSNDwMbLiYhsnO54Ood26ATYwsKtk3vvqULfUy8ZZW3kagtENutV5Ddw+HM+cBNXYAuHZzlbw8ZAvn3zQN2SW8VNin1sriVzoxFdHNmVBRzkIRcdFFDyXznbYpFUHO6ipfBGoIvgXXw7oGgHFRy/6Sin4dvYXcZu+6IEanb/bWUDg/8vfgDTxCU1/rnvAjWdVa7ALs3+CWE9FESRdIgtod690KrhO6+UCvlj61nBNM0EEuhVhi5Dvm0nxwfO0rhxMGU0czEzrr8LOWAWb03EdXfBozuvFw2c/Vt04CJ/LOCQq/eCnnCa69AlnQvuaLLIVAK5Xbi/AkH8bxzsK/hoZQzE2b6+23/Ca708XIMGWTHhvSQCoE3MY40DYu2DYVcMIs70iR7YZOjVEp80dY9FEQiFU/q+uKPpQxTGf+E5r6mG57/02Qgbo0EN3Jiwrx6FMvkxW36QQGT4sPQDvTbY0cCfaRNu9ZIYndfYGHhxAcAg3LuWpfq2ll/mhz+3EKHrz18xXRBruTV/IrE1vE1fzB/dNuUAI3FzrHWqaBg6/VS5QQc/85TnEa++jj2kaKDj6FiNl/gInt7ZPIU7Evd6UHEs4JqyIuqvQn8urMedh3vKFXiXzR7PHWJNtPhs5/FhYs1YtbKGfHHey1Tk2d+NHbK6QewtKQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3625.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(376002)(346002)(39860400002)(366004)(136003)(396003)(451199015)(31686004)(36756003)(86362001)(2906002)(6916009)(8936002)(66556008)(31696002)(4326008)(66476007)(8676002)(66946007)(82960400001)(83380400001)(5660300002)(38100700002)(316002)(6486002)(6666004)(41300700001)(2616005)(478600001)(6512007)(6506007)(186003)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NFRxLzdHWmZ4Qk5VUFRMVHZveEZLQ2wwUWhla1k0UmVDM1FTR1JxSFozYm1j?=
- =?utf-8?B?bzRvVkN0RGp1NldkU2p3V0d1S0ZCUnY1KzQyUWxGUXZMeG4yZkFsZW1DdHFP?=
- =?utf-8?B?b3RQcEFYZnhxVUY4ejhjQk9ZbnVpRURLcHEyRlRJTHhlL2p6ZWF6RGFSU0Y3?=
- =?utf-8?B?UDJkeFJic3B6NVEzdS8xRCtKQkpKYzJQN2dnZFNxNzYyZ2xDRDVGZ3k5WUZY?=
- =?utf-8?B?aUZ2OWF5Z2xRaEw4ZTV2QU9kWDg1Z0xwMkMzUHZvRzlEUFdvUlBhRnljMHBK?=
- =?utf-8?B?bXRJT0pnZGpOVHlvaThLYVpVVm9DYTlidktYSWVpRWYwQ2lvN1NtbFdnRjh2?=
- =?utf-8?B?aG9YS3laRlZMbktta2hBdzVNM05ReWJVc3N0QnhRcVBSNFFRNmpjNVJqc2NX?=
- =?utf-8?B?QjJBQkJBZU0xaE54dVRDc3VQS3QrVGMrSjV5a0xnL3ZGTFNYNFFaVFI4RU0x?=
- =?utf-8?B?SE5NOGJoeEVBN3J6Y1VZcmkydDF2TkVEQ04venQvT2JvVFBMZTRNYm96WVJM?=
- =?utf-8?B?OWtoam5Qem0yZENrdDFJOGtuSW9tZlFLWTFXRFdjcEhXaXpKZytQdENlZTdH?=
- =?utf-8?B?dTdUdXkxR0xVYkxiYzZTRm10bHFPMkZvNksxQkU1cXM3Wm12L2hSdmQ5ZU1p?=
- =?utf-8?B?cm1CUFpYZ3BETG5XQmRqcko4VS82QktpMlhTelFrNmErczdENHNaMDVteUZ5?=
- =?utf-8?B?RTFZQ1VlMmhuKzdLR0tLSmpWd3lRN0JJa1Jhdk93MGU3MHB3UTNXdFlYbWNm?=
- =?utf-8?B?dTNQRlgwYlhPbGtRenVBc28vNFRCNEhGbFk1bTFPNlMzOFhBdGZGL1VhcFpU?=
- =?utf-8?B?M215WVVKVkxqbmprQnEzNlVGYW56NzMrSGVjSDVpK1phL3NWN01qaUNYWlFo?=
- =?utf-8?B?djkzdFdRQ2xkZks5T04yUEtpOEhnNzJFQ0lOWVM0OWduYjMzeUV1MjZWSkIy?=
- =?utf-8?B?Tmt0bkF2dW9GeUNMM0NYRFpYdXNCNlVhZmh1aE4rOTNFY2pIVUkvYzVrR0xE?=
- =?utf-8?B?aDdTZTd5VUxmY05MVFFlb0taNTVJN0NEdHJsQUlEeDhDOVpUejZKK2Y2Undr?=
- =?utf-8?B?T2JSa2w4OHExTU9RcTNhelNwN25XQXZrTFlCbnl4OU5pbkE2MEVGWEhqemll?=
- =?utf-8?B?SzJld0FzUHQ0YUpwdVFyNU81aGxDU1A2blJNWDN1ekh3Y011R2tBTWRiNXZL?=
- =?utf-8?B?ZjBYYnE4d2JTRnd4ZlBBbFI3NjZ1N2dqMG9xQTRhcUtoTkJqU2RHbmU1aXEy?=
- =?utf-8?B?Z2JvS1lkQm5Kdllhc2gxTjYzTzJHdk9Jb1NxaXhYYlBEOUl6aGgzRUl6cVV4?=
- =?utf-8?B?NUZaTUw5dnF5RytyRHNpVm1ONDdIZmhLNkNvd3Y2ZC9oRUtSTEJmaFBJcEdz?=
- =?utf-8?B?M3drQ2E2K0VHQmlOUSs4WVFPWGJORDN3bW00UGJoSHlLK0hzZ3hQc1hMWDN0?=
- =?utf-8?B?LzNRaFlJODEwTVovUkNKMlMrQkdSOVF0Nk56UElQbnJ1K3l4dk1PNTg2aTZs?=
- =?utf-8?B?SUJYWEFjUDAxN3dmcTNydXdacTk2c0hOeFZaTDZoZlhxUkJzdmhzS242RXUw?=
- =?utf-8?B?OFhqNk96UmIxMHRGUGExTzQ1Z0p6bVZjelpWMndCUzRxbTU2RDNDVi9aVDlq?=
- =?utf-8?B?WGFCcmY1SFZkdVYvMFZZVEFzdDMwUnR1eFJ6b3QzVVdxT3F6MjJHbEVtREln?=
- =?utf-8?B?cDhPTm1oNGNzODZobzd3WmZBLzNaZ01uT1g4aXRNNXZRaEhjWG5PRFZNek9Y?=
- =?utf-8?B?L2pEU1RkRDh2T3loZFlCcHRKQlFTbEFTWjZ3U0RwR2E1eVhWQVowRUhuRk84?=
- =?utf-8?B?RHBWaEk3RlNvR0tVT21DdW1kN2JBQkhiSWlUUjVXOFEzUVZFM2ZBWlhSY2h3?=
- =?utf-8?B?M1JodklCNEtsSDJqbEdRUHVualFwZ2tiKy9yZURITzM2cXdCMlgrRTFkMzJT?=
- =?utf-8?B?YXFSbUxwR0RmUk1xcTJPaHNzRmpUYW53RlU1MzJBdnBUaG5IKzhHcHNXcFRs?=
- =?utf-8?B?RmlGUE1mK0JzVTFFdUJMK3hVVDMzSEFWQ0EzS2dVSjlMRHhSRTZuZ1F5azNy?=
- =?utf-8?B?RVVJMWd4MjVDV0ljY0xIWVR5dzFXQldSbmMvdE9ucGdyQnFJK2NFdWR5QWg1?=
- =?utf-8?B?cVFMd3plQ2NZMW5nbGF3Q1VvQzhJNGE1d1lIbUtQSDFidFJqUmFuNUlxdTVD?=
- =?utf-8?B?dmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e075682-874d-4783-a63b-08daf973ed23
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3625.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2023 16:49:12.4250
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RxqqPBAvj8FrfDWO0Ga0jMh4UjfnU6I4JeMET5aERxEA5ZCuJ4fopQyFcNmiuSX6dgUUYVPf+L5VIzMJVogD1gEQ7a6ASiNQAIEvc2Ar1u8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6517
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes@sipsolutions.net>
-Date: Wed, 18 Jan 2023 17:22:30 +0100
+Minor cleanups:
+ - Drop redundant blank lines,
+ - Correct indentaion in examples,
+ - Correct node names in examples to drop underscore and use generic
+   name.
 
-> On Wed, 2023-01-18 at 17:10 +0100, Alexander Lobakin wrote:
->>
->> Have you tried combining it with FIELD_PREP() using
->> __builtin_choose_expr() + __builtin_is_constexpr() (or
->> __builtin_constant_p() depending on which will satisfy the compiler)?
->> I'm not saying it's 100% possible, but worth trying.
->>
-> 
-> I haven't tried it that way, but I tried rewriting FIELD_PREP() itself
-> to be constant-compatible, and as soon as the compiler saw
-> __builtin_constant_p() in the initializer it already complained that it
-> was non-constant...
-> 
-> I didn't think of __builtin_choose_expr, but it doesn't work either
-> because it only promises that the unused expression is not *evaluated*,
-> not that it's not "looked at", so it still complains both ways (in the
-> constant case that you can't have ({ }) braced groups, and in the non-
-> constant case that the _CONST version is bad...
+No functional impact except adjusting to preferred coding style.
 
-Aaaah right. Seems like we can't avoid introducing a separate macro for
-that. I like the idea of your patch anyways!
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../bindings/net/wireless/esp,esp8089.yaml    | 20 +++---
+ .../bindings/net/wireless/ieee80211.yaml      |  1 -
+ .../bindings/net/wireless/mediatek,mt76.yaml  |  1 -
+ .../bindings/net/wireless/qcom,ath11k.yaml    | 11 ++-
+ .../bindings/net/wireless/silabs,wfx.yaml     |  1 -
+ .../bindings/net/wireless/ti,wlcore.yaml      | 70 +++++++++----------
+ 6 files changed, 50 insertions(+), 54 deletions(-)
 
-One note re __BF_CHECK_POW2(): can't we reuse is_power_of_2() anyhow?
-Foe example, by deriving the code of the latter into a macro and then
-using it in both?
+diff --git a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+index 5557676e9d4b..0ea84d6fe73e 100644
+--- a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+@@ -29,15 +29,15 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-      mmc {
+-          #address-cells = <1>;
+-          #size-cells = <0>;
+-
+-          wifi@1 {
+-              compatible = "esp,esp8089";
+-              reg = <1>;
+-              esp,crystal-26M-en = <2>;
+-          };
+-      };
++    mmc {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wifi@1 {
++            compatible = "esp,esp8089";
++            reg = <1>;
++            esp,crystal-26M-en = <2>;
++        };
++    };
+ 
+ ...
+diff --git a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
+index e68ed9423150..d89f7a3f88a7 100644
+--- a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
+@@ -1,6 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ # Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/wireless/ieee80211.yaml#
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index f0c78f994491..7d526ff53fb7 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -1,6 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ # Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/wireless/mediatek,mt76.yaml#
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+index 556eb523606a..5f4b141ba813 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+@@ -1,6 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ # Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k.yaml#
+@@ -262,10 +261,10 @@ allOf:
+ examples:
+   - |
+ 
+-    q6v5_wcss: q6v5_wcss@CD00000 {
++    q6v5_wcss: remoteproc@cd00000 {
+         compatible = "qcom,ipq8074-wcss-pil";
+-        reg = <0xCD00000 0x4040>,
+-              <0x4AB000 0x20>;
++        reg = <0xcd00000 0x4040>,
++              <0x4ab000 0x20>;
+         reg-names = "qdsp6",
+                     "rmb";
+     };
+@@ -386,7 +385,7 @@ examples:
+         #address-cells = <2>;
+         #size-cells = <2>;
+ 
+-        qcn9074_0: qcn9074_0@51100000 {
++        qcn9074_0: wifi@51100000 {
+             no-map;
+             reg = <0x0 0x51100000 0x0 0x03500000>;
+         };
+@@ -463,6 +462,6 @@ examples:
+         qcom,smem-states = <&wlan_smp2p_out 0>;
+         qcom,smem-state-names = "wlan-smp2p-out";
+         wifi-firmware {
+-                iommus = <&apps_smmu 0x1c02 0x1>;
++            iommus = <&apps_smmu 0x1c02 0x1>;
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml b/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+index 583db5d42226..84e5659e50ef 100644
+--- a/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+@@ -2,7 +2,6 @@
+ # Copyright (c) 2020, Silicon Laboratories, Inc.
+ %YAML 1.2
+ ---
+-
+ $id: http://devicetree.org/schemas/net/wireless/silabs,wfx.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+diff --git a/Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml b/Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml
+index e31456730e9f..f799a1e52173 100644
+--- a/Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml
+@@ -90,47 +90,47 @@ examples:
+ 
+     // For wl12xx family:
+     spi1 {
+-            #address-cells = <1>;
+-            #size-cells = <0>;
+-
+-            wlcore1: wlcore@1 {
+-                    compatible = "ti,wl1271";
+-                    reg = <1>;
+-                    spi-max-frequency = <48000000>;
+-                    interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
+-                    vwlan-supply = <&vwlan_fixed>;
+-                    clock-xtal;
+-                    ref-clock-frequency = <38400000>;
+-            };
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wlcore1: wlcore@1 {
++            compatible = "ti,wl1271";
++            reg = <1>;
++            spi-max-frequency = <48000000>;
++            interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
++            vwlan-supply = <&vwlan_fixed>;
++            clock-xtal;
++            ref-clock-frequency = <38400000>;
++        };
+     };
+ 
+     // For wl18xx family:
+     spi2 {
+-            #address-cells = <1>;
+-            #size-cells = <0>;
+-
+-            wlcore2: wlcore@0 {
+-                    compatible = "ti,wl1835";
+-                    reg = <0>;
+-                    spi-max-frequency = <48000000>;
+-                    interrupts = <27 IRQ_TYPE_EDGE_RISING>;
+-                    vwlan-supply = <&vwlan_fixed>;
+-            };
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wlcore2: wlcore@0 {
++            compatible = "ti,wl1835";
++            reg = <0>;
++            spi-max-frequency = <48000000>;
++            interrupts = <27 IRQ_TYPE_EDGE_RISING>;
++            vwlan-supply = <&vwlan_fixed>;
++        };
+     };
+ 
+     // SDIO example:
+     mmc3 {
+-            vmmc-supply = <&wlan_en_reg>;
+-            bus-width = <4>;
+-            cap-power-off-card;
+-            keep-power-in-suspend;
+-
+-            #address-cells = <1>;
+-            #size-cells = <0>;
+-
+-            wlcore3: wlcore@2 {
+-                    compatible = "ti,wl1835";
+-                    reg = <2>;
+-                    interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
+-            };
++        vmmc-supply = <&wlan_en_reg>;
++        bus-width = <4>;
++        cap-power-off-card;
++        keep-power-in-suspend;
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wlcore3: wlcore@2 {
++            compatible = "ti,wl1835";
++            reg = <2>;
++            interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
++        };
+     };
+-- 
+2.34.1
 
-> 
-> johannes
-
-Thanks,
-Olek
