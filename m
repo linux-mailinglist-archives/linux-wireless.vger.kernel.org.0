@@ -2,45 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13A51671ABC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 12:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F4D671AFC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 12:44:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbjARLfN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 06:35:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49202 "EHLO
+        id S229639AbjARLot (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 06:44:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbjARLeO (ORCPT
+        with ESMTP id S229930AbjARLn7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 06:34:14 -0500
+        Wed, 18 Jan 2023 06:43:59 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0EF4DCFB
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 02:53:10 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3D2656E3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 03:03:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=oZoPdiTOmK+YZDFTEkEdEkd0/Ts0fuzEBPP7u3AXbhM=;
-        t=1674039196; x=1675248796; b=HobQOa4ZPJBoieCQNxBWZ1h13cSDkbmoJFiC9El6hk9MwOz
-        Jmhnjqb5dQNUM5MpZK6YtEOg3BtpVTMWFURl6qQgSpN+hxeFp5l3SjZEnqwz4S5sF51q2pDwPYOZF
-        eUxvBswBK5exVC+Lq3dwJCGyTq+QACy94X17bUFZdMue/hs0YeGgXpQudIT2Ke1kmvCq2auRsOHhv
-        APACMBJKQ+1ZWlppAleUs6ZFRTzxP7un98No+TxIc6nNLtejGDlFKvM2ypBR8tebxyTy7Ly2bgC64
-        LqaQ5jkTm1JvtnGqdY1WnPcH3ZTuq9xb5FV4puiUuhLHogvfJJNVU2tuaGh3RojQ==;
+        Resent-Cc:Resent-Message-ID; bh=i+jNHfWQzgTfi+BnkS8RcYvK0RyjD+V5VmuI4yXlum0=;
+        t=1674039848; x=1675249448; b=Y1h+RcZL3/M2jH17r9ifvtXHnpN9toebbCEDdWkw3GuONy2
+        Rr+AAiMbzhsMXGAOACl5gH4GJwcPryupwMd+13HBcMaSdJdm9UqgqBKzSlF8FJCEHU2qqHTwK9MW4
+        6lhOKuAfT9JDJ7/9W6+8gh43hbXQIJNJr/D9bnDrczEo0sVVqz0xh8+xWjI0mEKkZwOJV/xDwcBGg
+        ivmywqlh+v9Zt4yIP9OF1JqA/9TOF74uFh1yliwEtBtMYQo3zXYKOwUSpYxzefB5Z1oFRlgYF7ala
+        CU293c8pDXtU5PptWRCy0ZZPgpAs72/Nf+RhqH8+VdSHMeu2AoigAfHFhQ4D+v4w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pI644-005ZMX-2x
-        for linux-wireless@vger.kernel.org;
-        Wed, 18 Jan 2023 11:53:09 +0100
-Message-ID: <0d48910607d61e86380b88c61ad1b9c542527c3e.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/2] mac80211: remove
- ieee80211_tx_h_check_control_port_protocol()
+        id 1pI6Dx-005ZZs-2n;
+        Wed, 18 Jan 2023 12:03:21 +0100
+Message-ID: <0ed850ac7d13fc5d40545aff1d59d710374bfcf4.camel@sipsolutions.net>
+Subject: Re: [PATCH 6/7] cfg80211: rework nl80211_parse_chandef for 6 GHz
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Date:   Wed, 18 Jan 2023 11:53:08 +0100
-In-Reply-To: <20200326155333.05f411833f60.Ibf3dccc8aea73ae868da352811e5f1a3aef72ee0@changeid> (sfid-20200326_155343_424401_D7EC8810)
-References: <20200326155333.f183f52b02f0.I4054e2a8c11c2ddcb795a0103c87be3538690243@changeid>
-         <20200326155333.05f411833f60.Ibf3dccc8aea73ae868da352811e5f1a3aef72ee0@changeid>
-         (sfid-20200326_155343_424401_D7EC8810)
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        linux-wireless@vger.kernel.org
+Date:   Wed, 18 Jan 2023 12:03:21 +0100
+In-Reply-To: <20220704102341.5692-7-quic_adisi@quicinc.com>
+References: <20220704102341.5692-1-quic_adisi@quicinc.com>
+         <20220704102341.5692-7-quic_adisi@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
@@ -55,21 +53,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-03-26 at 15:53 +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On Mon, 2022-07-04 at 15:53 +0530, Aditya Kumar Singh wrote:
 >=20
-> This code is actually not ever effective, since the skb->protocol
-> isn't set up correctly (or at all) on outgoing frames. Also, we
-> already set the flags (except for IEEE80211_TX_CTL_USE_MINRATE)
-> in other code paths, and rate control already handles the frames
-> specially. Just remove it entirely.
->=20
+> +	/* For APs, 6 GHz power mode is taken from the user configured
+> +	 * value. However, for clients, power mode is also dependent
+> +	 * upon the APs power mode to which this client has associated.
+> +	 * Hence for client, need to take power mode of asscoiated AP,
 
-Thread necromancy alert ...
 
-But for my own information (and everyone else who cares):
+typo - associated
 
-This breaks a couple of hwsim test cases, for example
-ap_wpa2_psk_no_control_port.
+But anyway, were you going to resubmit this with comments from the first
+patches addressed?
+
+Honestly I'd also like to see a bit more discussion (in the cover letter
+I guess) about the solution with "multiple channel spaces" and all that.
+And ideally about alternatives considered - why not for example keep a
+single space with flags indicating support for the power mode, etc.
 
 johannes
