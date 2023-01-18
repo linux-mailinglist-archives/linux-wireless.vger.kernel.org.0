@@ -2,293 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C85D967236A
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F66767241D
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:51:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbjARQdu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 11:33:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35530 "EHLO
+        id S230415AbjARQvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 11:51:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230417AbjARQdF (ORCPT
+        with ESMTP id S230161AbjARQur (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 11:33:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15B511EAF
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:31:13 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80E58618B9
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 16:31:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89558C433EF;
-        Wed, 18 Jan 2023 16:31:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674059472;
-        bh=UHPyKaEU9hYTCTl+5YNdIzzcpOwF2OU5bwbKVkpIF6g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=imIr4XBrAgAjGKW3UZWPAS5HNtfilQikscM4/crlJ6z0mKHkI7Up5X/fxb5JXxsHn
-         r2MA4r+pyUIUsSZJBfLxdqcVPWGI44USsTubkVXFswkgiBNRYU7waiFq37gZz6jdJS
-         AHQqkdAnJyGcNECg8z6ApCxzSgksM1yqIpW7baQRal4gkglntBWzK3KFc2VqjtLNHN
-         Br60RF7PCeBV/z3HTDWvJc2YR93LZGfWLGKRu5Ip0MG5y3aCm9DC7+BjrWatt0HuOA
-         d+FX7/VjSjVZ4AREa63ibWwOtYbh0zvK4iZddSz40WR73f/1AJ9RMG7MnlEngGP/UM
-         7IotBpBC0hh0g==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     ryder.lee@mediatek.com, shayne.chen@mediatek.com,
-        linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH 4/4] wifi: mt76: mt7996: rely on mt76_connac2_mac_decode_he_radiotap
-Date:   Wed, 18 Jan 2023 17:30:41 +0100
-Message-Id: <b6311f14077cc7933519b7e5cbb4b1259ee1d92e.1674059222.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <cover.1674059222.git.lorenzo@kernel.org>
-References: <cover.1674059222.git.lorenzo@kernel.org>
+        Wed, 18 Jan 2023 11:50:47 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E05258663
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:50:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674060643; x=1705596643;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=VN+49ZSchXllpZUu9HvZtgUV/eTzcL39YQ7TRbcM5SA=;
+  b=Bu8RuQF6e5fugqswAb90snnlF4NzBHGd4lX2yUKTKrJ+KqKG2I8u83L3
+   7SCvUnvuybmjjrb4sSMcVTD0ry96CXDCykAHj+inevPx8+N2UzeM+/Bi8
+   FWXeKynQUd9FTF4xiYdzeo1yJjKB6dm77KjC4sywb7Zldew8sOn0lv1l3
+   GaE+124E0O8A8p0LZcp+Z1VCgPS7wl2bywgq8MWBjmObdrxT+AOD1Pacl
+   /U8sqkUBBOfO8tsE3CScog9rFgF0zZP2+WhcJdWgox2axzLGA2KfYCVdC
+   fRD6iGMuFr8WhL4NYe780xTnlAHVHHT2JWo8jztyjSud2m8Glj/GeaEh4
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="327104118"
+X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
+   d="scan'208";a="327104118"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 08:49:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="728276142"
+X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
+   d="scan'208";a="728276142"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga004.fm.intel.com with ESMTP; 18 Jan 2023 08:49:15 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Wed, 18 Jan 2023 08:49:14 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Wed, 18 Jan 2023 08:49:14 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Wed, 18 Jan 2023 08:49:14 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d9+iLphEumpM9WbA7x8xK+vkLmaw37jWNmg5P6Ak9Gp1fXd4fgoSyIyoaVGCuzW3wL5ET21G50IzOSQJzvv2E8ZghZA+Cou8HLMTpg2h63Uyx24Bru5Vr8DekHQuBuBUhKuEcF/JCZOR+XmQbzq8WpI2+s8gnI3AwHH8OKiPxSAd+B5PmGOmu5vTnQ7YdsnJxrhT+6tVihzHuU0I7ahGIRgLfaQ0v6bdSWYMY+SVrP+MeqZ20J9QkccMKbHxbk1eRSqTnk0Oj8RGfSFriWcMe317cafxTDMLnU5wFyT8sE0rn2YxHQlbowEgTHuePyHJO/ZZpk2+FuHf3LP8uZU4xw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UGGm2FxvnrLMnK5TJs/DWfsx7Ee+aoAoMPMdAPqZdUs=;
+ b=S4dB5IB7KREUswW2E89GgM/klRjmpyE6tEmTO2UtkxuesVv7fLyQ0PZBFHeIAAFQ73oxFORd7SZ06fMPc/ttXAOWl7/wn1Dd0L0WuXzzyoUL0guYBFeaCzw6DroQLHXNH136gE1PNkT+dczdkeiPn/fFwtzsP2le+O6nHTJ68XqlwperRXZkSN2uhZpFpqSZjn+YPvFnD0Nfo5k1pbWYOGrEsz3md3gNGQk30SD64Wb6g6AEHV3h+G+qPgLW4F3PE4nB6ThCE2iMGSlxt2KFBlZljyQHYA7cj1U944Nof+CRYK8vm2lXP/AnYmv6sUa1VYuKAhvm9s1yEm5GK3BmJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com (2603:10b6:5:13a::21)
+ by DS0PR11MB6517.namprd11.prod.outlook.com (2603:10b6:8:d3::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5986.23; Wed, 18 Jan 2023 16:49:13 +0000
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::3ff6:ca60:f9fe:6934]) by DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::3ff6:ca60:f9fe:6934%3]) with mapi id 15.20.5986.023; Wed, 18 Jan 2023
+ 16:49:12 +0000
+Message-ID: <b2c78f45-345b-e3ec-20b1-9d18ee0c9f98@intel.com>
+Date:   Wed, 18 Jan 2023 17:49:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] bitfield: add FIELD_PREP_CONST()
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230118142652.53f20593504b.Iaeea0aee77a6493d70e573b4aa55c91c00e01e4b@changeid>
+ <92209c00-7fcf-1592-e97c-f49e7734fdfc@intel.com>
+ <3fe52061d5d9e3701f598add5c64f8b3583c31df.camel@sipsolutions.net>
+From:   Alexander Lobakin <alexandr.lobakin@intel.com>
+In-Reply-To: <3fe52061d5d9e3701f598add5c64f8b3583c31df.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0040.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::7) To DM6PR11MB3625.namprd11.prod.outlook.com
+ (2603:10b6:5:13a::21)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB3625:EE_|DS0PR11MB6517:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e075682-874d-4783-a63b-08daf973ed23
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: H12xtRxsOtzMwH6RtqsWR55/hTXky3vu4t/UkwdXIlFNpEUJVkp4kNw2jWsxtoRTKmgDLbNiNrK0rZSNDwMbLiYhsnO54Ood26ATYwsKtk3vvqULfUy8ZZW3kagtENutV5Ddw+HM+cBNXYAuHZzlbw8ZAvn3zQN2SW8VNin1sriVzoxFdHNmVBRzkIRcdFFDyXznbYpFUHO6ipfBGoIvgXXw7oGgHFRy/6Sin4dvYXcZu+6IEanb/bWUDg/8vfgDTxCU1/rnvAjWdVa7ALs3+CWE9FESRdIgtod690KrhO6+UCvlj61nBNM0EEuhVhi5Dvm0nxwfO0rhxMGU0czEzrr8LOWAWb03EdXfBozuvFw2c/Vt04CJ/LOCQq/eCnnCa69AlnQvuaLLIVAK5Xbi/AkH8bxzsK/hoZQzE2b6+23/Ca708XIMGWTHhvSQCoE3MY40DYu2DYVcMIs70iR7YZOjVEp80dY9FEQiFU/q+uKPpQxTGf+E5r6mG57/02Qgbo0EN3Jiwrx6FMvkxW36QQGT4sPQDvTbY0cCfaRNu9ZIYndfYGHhxAcAg3LuWpfq2ll/mhz+3EKHrz18xXRBruTV/IrE1vE1fzB/dNuUAI3FzrHWqaBg6/VS5QQc/85TnEa++jj2kaKDj6FiNl/gInt7ZPIU7Evd6UHEs4JqyIuqvQn8urMedh3vKFXiXzR7PHWJNtPhs5/FhYs1YtbKGfHHey1Tk2d+NHbK6QewtKQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3625.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(376002)(346002)(39860400002)(366004)(136003)(396003)(451199015)(31686004)(36756003)(86362001)(2906002)(6916009)(8936002)(66556008)(31696002)(4326008)(66476007)(8676002)(66946007)(82960400001)(83380400001)(5660300002)(38100700002)(316002)(6486002)(6666004)(41300700001)(2616005)(478600001)(6512007)(6506007)(186003)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NFRxLzdHWmZ4Qk5VUFRMVHZveEZLQ2wwUWhla1k0UmVDM1FTR1JxSFozYm1j?=
+ =?utf-8?B?bzRvVkN0RGp1NldkU2p3V0d1S0ZCUnY1KzQyUWxGUXZMeG4yZkFsZW1DdHFP?=
+ =?utf-8?B?b3RQcEFYZnhxVUY4ejhjQk9ZbnVpRURLcHEyRlRJTHhlL2p6ZWF6RGFSU0Y3?=
+ =?utf-8?B?UDJkeFJic3B6NVEzdS8xRCtKQkpKYzJQN2dnZFNxNzYyZ2xDRDVGZ3k5WUZY?=
+ =?utf-8?B?aUZ2OWF5Z2xRaEw4ZTV2QU9kWDg1Z0xwMkMzUHZvRzlEUFdvUlBhRnljMHBK?=
+ =?utf-8?B?bXRJT0pnZGpOVHlvaThLYVpVVm9DYTlidktYSWVpRWYwQ2lvN1NtbFdnRjh2?=
+ =?utf-8?B?aG9YS3laRlZMbktta2hBdzVNM05ReWJVc3N0QnhRcVBSNFFRNmpjNVJqc2NX?=
+ =?utf-8?B?QjJBQkJBZU0xaE54dVRDc3VQS3QrVGMrSjV5a0xnL3ZGTFNYNFFaVFI4RU0x?=
+ =?utf-8?B?SE5NOGJoeEVBN3J6Y1VZcmkydDF2TkVEQ04venQvT2JvVFBMZTRNYm96WVJM?=
+ =?utf-8?B?OWtoam5Qem0yZENrdDFJOGtuSW9tZlFLWTFXRFdjcEhXaXpKZytQdENlZTdH?=
+ =?utf-8?B?dTdUdXkxR0xVYkxiYzZTRm10bHFPMkZvNksxQkU1cXM3Wm12L2hSdmQ5ZU1p?=
+ =?utf-8?B?cm1CUFpYZ3BETG5XQmRqcko4VS82QktpMlhTelFrNmErczdENHNaMDVteUZ5?=
+ =?utf-8?B?RTFZQ1VlMmhuKzdLR0tLSmpWd3lRN0JJa1Jhdk93MGU3MHB3UTNXdFlYbWNm?=
+ =?utf-8?B?dTNQRlgwYlhPbGtRenVBc28vNFRCNEhGbFk1bTFPNlMzOFhBdGZGL1VhcFpU?=
+ =?utf-8?B?M215WVVKVkxqbmprQnEzNlVGYW56NzMrSGVjSDVpK1phL3NWN01qaUNYWlFo?=
+ =?utf-8?B?djkzdFdRQ2xkZks5T04yUEtpOEhnNzJFQ0lOWVM0OWduYjMzeUV1MjZWSkIy?=
+ =?utf-8?B?Tmt0bkF2dW9GeUNMM0NYRFpYdXNCNlVhZmh1aE4rOTNFY2pIVUkvYzVrR0xE?=
+ =?utf-8?B?aDdTZTd5VUxmY05MVFFlb0taNTVJN0NEdHJsQUlEeDhDOVpUejZKK2Y2Undr?=
+ =?utf-8?B?T2JSa2w4OHExTU9RcTNhelNwN25XQXZrTFlCbnl4OU5pbkE2MEVGWEhqemll?=
+ =?utf-8?B?SzJld0FzUHQ0YUpwdVFyNU81aGxDU1A2blJNWDN1ekh3Y011R2tBTWRiNXZL?=
+ =?utf-8?B?ZjBYYnE4d2JTRnd4ZlBBbFI3NjZ1N2dqMG9xQTRhcUtoTkJqU2RHbmU1aXEy?=
+ =?utf-8?B?Z2JvS1lkQm5Kdllhc2gxTjYzTzJHdk9Jb1NxaXhYYlBEOUl6aGgzRUl6cVV4?=
+ =?utf-8?B?NUZaTUw5dnF5RytyRHNpVm1ONDdIZmhLNkNvd3Y2ZC9oRUtSTEJmaFBJcEdz?=
+ =?utf-8?B?M3drQ2E2K0VHQmlOUSs4WVFPWGJORDN3bW00UGJoSHlLK0hzZ3hQc1hMWDN0?=
+ =?utf-8?B?LzNRaFlJODEwTVovUkNKMlMrQkdSOVF0Nk56UElQbnJ1K3l4dk1PNTg2aTZs?=
+ =?utf-8?B?SUJYWEFjUDAxN3dmcTNydXdacTk2c0hOeFZaTDZoZlhxUkJzdmhzS242RXUw?=
+ =?utf-8?B?OFhqNk96UmIxMHRGUGExTzQ1Z0p6bVZjelpWMndCUzRxbTU2RDNDVi9aVDlq?=
+ =?utf-8?B?WGFCcmY1SFZkdVYvMFZZVEFzdDMwUnR1eFJ6b3QzVVdxT3F6MjJHbEVtREln?=
+ =?utf-8?B?cDhPTm1oNGNzODZobzd3WmZBLzNaZ01uT1g4aXRNNXZRaEhjWG5PRFZNek9Y?=
+ =?utf-8?B?L2pEU1RkRDh2T3loZFlCcHRKQlFTbEFTWjZ3U0RwR2E1eVhWQVowRUhuRk84?=
+ =?utf-8?B?RHBWaEk3RlNvR0tVT21DdW1kN2JBQkhiSWlUUjVXOFEzUVZFM2ZBWlhSY2h3?=
+ =?utf-8?B?M1JodklCNEtsSDJqbEdRUHVualFwZ2tiKy9yZURITzM2cXdCMlgrRTFkMzJT?=
+ =?utf-8?B?YXFSbUxwR0RmUk1xcTJPaHNzRmpUYW53RlU1MzJBdnBUaG5IKzhHcHNXcFRs?=
+ =?utf-8?B?RmlGUE1mK0JzVTFFdUJMK3hVVDMzSEFWQ0EzS2dVSjlMRHhSRTZuZ1F5azNy?=
+ =?utf-8?B?RVVJMWd4MjVDV0ljY0xIWVR5dzFXQldSbmMvdE9ucGdyQnFJK2NFdWR5QWg1?=
+ =?utf-8?B?cVFMd3plQ2NZMW5nbGF3Q1VvQzhJNGE1d1lIbUtQSDFidFJqUmFuNUlxdTVD?=
+ =?utf-8?B?dmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e075682-874d-4783-a63b-08daf973ed23
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3625.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2023 16:49:12.4250
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RxqqPBAvj8FrfDWO0Ga0jMh4UjfnU6I4JeMET5aERxEA5ZCuJ4fopQyFcNmiuSX6dgUUYVPf+L5VIzMJVogD1gEQ7a6ASiNQAIEvc2Ar1u8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6517
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rely on connac library for radiotap parsing and drop the following routines:
-- mt7996_mac_decode_he_radiotap
-- mt7996_mac_decode_he_mu_radiotap
-- mt7996_mac_decode_he_radiotap_ru
+From: Johannes Berg <johannes@sipsolutions.net>
+Date: Wed, 18 Jan 2023 17:22:30 +0100
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt76_connac_mac.c  |   3 +-
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 179 +-----------------
- 2 files changed, 4 insertions(+), 178 deletions(-)
+> On Wed, 2023-01-18 at 17:10 +0100, Alexander Lobakin wrote:
+>>
+>> Have you tried combining it with FIELD_PREP() using
+>> __builtin_choose_expr() + __builtin_is_constexpr() (or
+>> __builtin_constant_p() depending on which will satisfy the compiler)?
+>> I'm not saying it's 100% possible, but worth trying.
+>>
+> 
+> I haven't tried it that way, but I tried rewriting FIELD_PREP() itself
+> to be constant-compatible, and as soon as the compiler saw
+> __builtin_constant_p() in the initializer it already complained that it
+> was non-constant...
+> 
+> I didn't think of __builtin_choose_expr, but it doesn't work either
+> because it only promises that the unused expression is not *evaluated*,
+> not that it's not "looked at", so it still complains both ways (in the
+> constant case that you can't have ({ }) braced groups, and in the non-
+> constant case that the _CONST version is bad...
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index aed4ee95fb2e..614df85ef66e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -823,6 +823,7 @@ void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
- 			 HE_BITS(DATA2_TXOP_KNOWN),
- 	};
- 	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
-+	u32 txbf_mask = is_mt7996(dev) ? BIT(11) : BIT(10);
- 	struct ieee80211_radiotap_he *he;
- 
- 	status->flag |= RX_FLAG_RADIOTAP_HE;
-@@ -836,7 +837,7 @@ void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
- 	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
- 		    le16_encode_bits(ltf_size,
- 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
--	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
-+	if (le32_to_cpu(rxv[0]) & txbf_mask)
- 		he->data5 |= HE_BITS(DATA5_TXBF);
- 	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
- 		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 56400331e74e..6f5fe47f8a30 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -12,10 +12,6 @@
- 
- #define to_rssi(field, rcpi)	((FIELD_GET(field, rcpi) - 220) / 2)
- 
--#define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
--#define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
--						 IEEE80211_RADIOTAP_HE_##f)
--
- static const struct mt7996_dfs_radar_spec etsi_radar_specs = {
- 	.pulse_th = { 110, -10, -80, 40, 5200, 128, 5200 },
- 	.radar_pattern = {
-@@ -248,178 +244,6 @@ void mt7996_mac_enable_rtscts(struct mt7996_dev *dev,
- 		mt76_clear(dev, addr, BIT(5));
- }
- 
--static void
--mt7996_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
--				 struct ieee80211_radiotap_he *he,
--				 __le32 *rxv)
--{
--	u32 ru_h, ru_l;
--	u8 ru, offs = 0;
--
--	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
--	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
--	ru = (u8)(ru_l | ru_h << 4);
--
--	status->bw = RATE_INFO_BW_HE_RU;
--
--	switch (ru) {
--	case 0 ... 36:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_26;
--		offs = ru;
--		break;
--	case 37 ... 52:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_52;
--		offs = ru - 37;
--		break;
--	case 53 ... 60:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_106;
--		offs = ru - 53;
--		break;
--	case 61 ... 64:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_242;
--		offs = ru - 61;
--		break;
--	case 65 ... 66:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_484;
--		offs = ru - 65;
--		break;
--	case 67:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_996;
--		break;
--	case 68:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
--		break;
--	}
--
--	he->data1 |= HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--	he->data2 |= HE_BITS(DATA2_RU_OFFSET_KNOWN) |
--		     le16_encode_bits(offs,
--				      IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET);
--}
--
--static void
--mt7996_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
--{
--	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	static const struct ieee80211_radiotap_he_mu mu_known = {
--		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
--			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN),
--		.flags2 = HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN),
--	};
--	struct ieee80211_radiotap_he_mu *he_mu = NULL;
--
--	status->flag |= RX_FLAG_RADIOTAP_HE_MU;
--
--	he_mu = skb_push(skb, sizeof(mu_known));
--	memcpy(he_mu, &mu_known, sizeof(mu_known));
--
--#define MU_PREP(f, v)	le16_encode_bits(v, IEEE80211_RADIOTAP_HE_MU_##f)
--
--	he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_MCS, status->rate_idx);
--	if (status->he_dcm)
--		he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_DCM, status->he_dcm);
--
--	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
--			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
--				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
--
--	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
--
--	if (status->bw >= RATE_INFO_BW_40) {
--		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
--	}
--
--	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
--		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
--	}
--}
--
--static void
--mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
--{
--	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	static const struct ieee80211_radiotap_he known = {
--		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
--			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
--			 HE_BITS(DATA1_STBC_KNOWN) |
--			 HE_BITS(DATA1_CODING_KNOWN) |
--			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
--			 HE_BITS(DATA1_DOPPLER_KNOWN) |
--			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
--			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
--		.data2 = HE_BITS(DATA2_GI_KNOWN) |
--			 HE_BITS(DATA2_TXBF_KNOWN) |
--			 HE_BITS(DATA2_PE_DISAMBIG_KNOWN) |
--			 HE_BITS(DATA2_TXOP_KNOWN),
--	};
--	struct ieee80211_radiotap_he *he = NULL;
--	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
--
--	status->flag |= RX_FLAG_RADIOTAP_HE;
--
--	he = skb_push(skb, sizeof(known));
--	memcpy(he, &known, sizeof(known));
--
--	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
--		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
--	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
--	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
--		    le16_encode_bits(ltf_size,
--				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
--	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
--		he->data5 |= HE_BITS(DATA5_TXBF);
--	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
--		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
--
--	switch (mode) {
--	case MT_PHY_TYPE_HE_SU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
--			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
--			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		break;
--	case MT_PHY_TYPE_HE_EXT_SU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		break;
--	case MT_PHY_TYPE_HE_MU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
--
--		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
--		mt7996_mac_decode_he_mu_radiotap(skb, rxv);
--		break;
--	case MT_PHY_TYPE_HE_TB:
--		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
--			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
--			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
--			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
--
--		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
--
--		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
--		break;
--	default:
--		break;
--	}
--}
--
- /* The HW does not translate the mac header to 802.3 for mesh point */
- static int mt7996_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- {
-@@ -843,7 +667,8 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, struct sk_buff *skb)
- 	}
- 
- 	if (rxv && mode >= MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))
--		mt7996_mac_decode_he_radiotap(skb, rxv, mode);
-+		mt76_connac2_mac_decode_he_radiotap(&dev->mt76, skb, rxv,
-+						    mode);
- 
- 	if (!status->wcid || !ieee80211_is_data_qos(fc))
- 		return 0;
--- 
-2.39.0
+Aaaah right. Seems like we can't avoid introducing a separate macro for
+that. I like the idea of your patch anyways!
 
+One note re __BF_CHECK_POW2(): can't we reuse is_power_of_2() anyhow?
+Foe example, by deriving the code of the latter into a macro and then
+using it in both?
+
+> 
+> johannes
+
+Thanks,
+Olek
