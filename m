@@ -2,44 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC9C67228B
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AAE06722B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 17:12:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjARQIv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 11:08:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38382 "EHLO
+        id S229880AbjARQMj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 11:12:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjARQIE (ORCPT
+        with ESMTP id S229692AbjARQLM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 11:08:04 -0500
+        Wed, 18 Jan 2023 11:11:12 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9678A59B71
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:04:29 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408E259273
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 08:06:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=RHicEkJuAKhouUoav7pWmWn+2KgazY4Vbbpdle0tjtU=;
-        t=1674057869; x=1675267469; b=JHcAznSlfHEGbswyFiYMeGBjYMYVNKoZwKCLguKSuoJxUF8
-        22hOuFwsg3B7FruiPK5abpx3EU7kMIoD2zInfry7mH16BRe16JT/tfyG+DfDHW+hVW8XbeGY9BweS
-        VjFIfp296DmfaqosmrROF8NxtF2pJD4MRZ0zgpOlNF/9iJ5SIyiOr67WncRTZvRoU9qRRJGGqpFnX
-        dLInoTRNhtpTapA6TY+Ce3G8GPIYlArAEHuJ7EhPsQM/JK5NfcZvTaGvy9hIFcTudOQHsxsUhAaaT
-        CLrTovrssfLVwThcBDVfZH7ft9zdm4utFEVjJySXASFvAYv3RDa4ziHPRqnPrVQA==;
+        Resent-Cc:Resent-Message-ID; bh=lSCic0QVAa/Up75IQnwSSirrbU/HEIGIdyM0jLbqwms=;
+        t=1674057996; x=1675267596; b=LjmA6GJQRaW9NqtM/z93RbSBrzZCEtFy3x1gdAstEcMetrx
+        EdpQvpoIHyOVymlMgoT1R1DfVcPK1iga858FPBLBVlgYbICwFxmUFDmFGZ+rR3zoeX3sjPyDfJIW4
+        PLnNkEJ/jsZFCqyrZX4XK0f1erv9saAA8l9DYanIn3/l5b0YqXfQQ3BmdB3KVtu4XBb1l1ueqxN8G
+        G3MamLWj03KTYBVs7jy+iHdGbSnOgFGXJZNj6UHVUbylvYja/wOEEutI3xL6nAZI/MP1OekrkfnKc
+        46OGe1yl1a1vQBqTmiEZimkfEIQd1Mtw0j4JTIg9ueOspYs/I5CAfq7Bz3vKqDzg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pIAvL-005ew1-2Y;
-        Wed, 18 Jan 2023 17:04:27 +0100
-Message-ID: <6a81f3d5f25a9a7258587e469209f48bdeac558f.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: handle connection loss in
- __ieee80211_disconnect
+        id 1pIAxO-005f00-26;
+        Wed, 18 Jan 2023 17:06:34 +0100
+Message-ID: <6b963cb79064fb70eeba7fdcc6ff5abb25348144.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/1] Fix __ieee80211_disconnect when not associated
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     James Prestwood <prestwoj@gmail.com>,
         linux-wireless@vger.kernel.org
-Date:   Wed, 18 Jan 2023 17:04:27 +0100
-In-Reply-To: <20221025203443.410121-2-prestwoj@gmail.com>
+Date:   Wed, 18 Jan 2023 17:06:33 +0100
+In-Reply-To: <20221025203443.410121-1-prestwoj@gmail.com>
 References: <20221025203443.410121-1-prestwoj@gmail.com>
-         <20221025203443.410121-2-prestwoj@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
@@ -54,44 +52,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Oh I guess I should read the cover letter too ...
+
 On Tue, 2022-10-25 at 13:34 -0700, James Prestwood wrote:
-> The ieee80211_connection_loss() can be called during times when the
-> kernels state is in flux, such as after a successful authentication
-> but prior to successful association. This can result in the kernel
-> never telling userspace due to __ieee80211_disconnect bailing out
-> if !ifmgd->associated. This has been seen out in the wild on
-> iwlwifi:
->=20
-> [503619.324379] wlan0: disconnect from AP d0:15:a6:70:e1:20 for new auth =
-to d0:15:a6:70:b5:40
-> [503619.367204] wlan0: authenticate with d0:15:a6:70:b5:40
-> [503619.367233] wlan0: bad VHT capabilities, disabling VHT
-> [503619.367236] wlan0: Invalid HE elem, Disable HE
-> [503619.367237] wlan0: 80 MHz not supported, disabling VHT
-> [503619.371184] wlan0: send auth to d0:15:a6:70:b5:40 (try 1/3)
-> [503619.406401] wlan0: authenticated
-> [503620.270833] iwlwifi 0000:00:14.3: Not associated and the session prot=
-ection is over already...
-> [503620.270943] wlan0: Connection to AP d0:15:a6:70:b5:40 lost
->=20
-> At this point userspace has received a CMD_AUTHENTICATE event but
-> nothing else. No disconnect or anything to indicate something is
-> wrong. Userspace supplicants expect _something_ to come after a
-> successful authentication.
+> A user reported some behavior where IWD hangs expecting another event
+> to come and it never does. This was due to the firmware (iwlwifi)
+> timing out after authentication and calling __ieee80211_disconnect
+> which essentially does nothing if not associated. The problem here
+> is userspace expects some event to come after authenticating whether
+> it be an association, disconnect, death etc.
 >=20
 
-I'm not sure I understand this scenario - there's nothing wrong with
-this, is there?
-
-The way I read this is that userspace simply asked for auth, but then
-didn't (quickly enough) ask for assoc? Or got a comeback or something
-(though we would log that too, I think)?
-
-Userspace got a successful NL80211_CMD_AUTHENTICATE event at this point,
-but didn't associate (yet anyway).
-
-You could argue that iwlwifi shouldn't be waiting for an association if
-nobody ever requested association, but that's a driver bug, and
-shouldn't cause any problem with state between userspace and kernel.
+Basically I don't understand why userspace expects some event. It asked
+for authentication, and you got it. That's all. I don't see userspace
+asking for association, or anything else, so what would it be waiting
+for?
 
 johannes
