@@ -2,121 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D3DA671893
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 11:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FF7671904
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jan 2023 11:36:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230115AbjARKIz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 05:08:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44446 "EHLO
+        id S229635AbjARKf6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Jan 2023 05:35:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjARKIc (ORCPT
+        with ESMTP id S229997AbjARKfI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 05:08:32 -0500
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2115.outbound.protection.outlook.com [40.107.96.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13576656FD;
-        Wed, 18 Jan 2023 01:14:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Af55KP02zbMt8XOXohuJIgkYXpj87Ga0TcoYNSHSLPUEjegc1nTf3SvARJide2IQow+ZEREJo7IooD8QTeFb+BgBrCU57dVlcTP107DptnopQlpafJx8SbqXE9pzc3gqObJ6bfkPRZHu/2Hqw/l/5qnSssUu+XL1DSuCaK0tTpuOIMnV58aFsM0HZ5ug8351/ioaitLuww0w6t6iTL8xEx2AvszI0iAPSLZnqfmmrcmGlRlkG20OSbO+HvidTfXYoVWmGayKbnpHOkeBxlCkHjSfp03bjq1QMRsCx02+GIryxYVtKejoPVYw4kaaPXow0sml1hpF4LX3G5s85UcTkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ruvWeVjNDtmxA2IkxcOHD8Tt7BSEY5ZScBDbF5YJHQA=;
- b=BbHTB8iWLOzOWHnJ+vWj5sSfEhMladhMivWi1PeW2M24jrQkV2K1aEkKPNxAVS7RUW4KwfgOUBxUcCAcEl7EHdljcJc+CK/8Gb/+6yCyi2sPpPjJZgeVkd5RhjuGZQkFUtwKkYFAUzC0WiCipbNNOIicMcqZASF2p55BPbuHMzBN9hq72Y+7xo+VXtj7ERnyidEcYlfnbYIbd2oYQQXj1/zpTyCNFlg9ukdXoKx8FZcmpBCLMJQQEl8kFIqzXbrPEHC2lZu+vDi3aAfnATpxD4SObklNH5ITvPDZjYOkELimWOZfywAPFHH3q0nhDb44HYFUyZSlHTwWNlEup/ujnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ruvWeVjNDtmxA2IkxcOHD8Tt7BSEY5ZScBDbF5YJHQA=;
- b=SkXMotBq/ADwYTncXZnuelXBYAYfNpLOL31eLnfd47PnWCBaAmGfSy9qOQRvxGQUSzAOks0opt3Gor4NitOGs5QKrJ1Szjd7ppriPtCvXUe56+Xq/K7dpAuqAV35JmgB8c4oLogG1fcEoGvp3IlmVOEmhET4jyy92o5dlHOPXRY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BY3PR13MB5028.namprd13.prod.outlook.com (2603:10b6:a03:360::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Wed, 18 Jan
- 2023 09:14:19 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb5c:910f:3730:fd65]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb5c:910f:3730:fd65%7]) with mapi id 15.20.6002.024; Wed, 18 Jan 2023
- 09:14:19 +0000
-Date:   Wed, 18 Jan 2023 10:14:12 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Doug Brown <doug@schmorgal.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Dan Williams <dcbw@redhat.com>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] wifi: libertas: only add RSN/WPA IE in
- lbs_add_wpa_tlv
-Message-ID: <Y8e4ZB0YzaF6sLuX@corigine.com>
-References: <20230116202126.50400-1-doug@schmorgal.com>
- <20230116202126.50400-3-doug@schmorgal.com>
- <Y8ZjeKeNx0eHxt7f@corigine.com>
- <85128345-4924-c1c9-85f0-7aebc4e40f93@schmorgal.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <85128345-4924-c1c9-85f0-7aebc4e40f93@schmorgal.com>
-X-ClientProxiedBy: AM0PR06CA0096.eurprd06.prod.outlook.com
- (2603:10a6:208:fa::37) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Wed, 18 Jan 2023 05:35:08 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B28A6C381A
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 01:40:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=DwNWU9H0jlFf7a3RNgRpbLKduCFaN8GBzI42VxtTjDo=;
+        t=1674034815; x=1675244415; b=cdYYMYHzyqTHi/qq9rK+PvbMLyTsmZ72bpP0dtoz1fXuaC8
+        wUt9e4mXNoJsJJll+OM6J/NKBBrt9v0vhEKTJeuXJNw0DKZJQWFkkfoxude2vPi76bthhaY5gxo4x
+        WVBBsvNG8S9uIQKDsZCLZW134RfpSG79b04HhcLd4ifCWXllxkazGbazvegWn7QNohe6qsdz37yiZ
+        AiSlzGAxExymLdlSDMSrHAzPOXkDEcZrwWeswZ6Xl0BFVts0+AiW8Sycc/G+mB2XqcWg3P5OqGtWL
+        8wIFwlKi+62UQtmSZ79OZ6ClEAH0d9QKLQqCew92Y+L6HWy2MKs86yD2Z3JkmZgg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pI4vR-005XzM-08;
+        Wed, 18 Jan 2023 10:40:09 +0100
+Message-ID: <277f8db1f790931aaac0f94ba0ea69efcb6ba3ac.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: check the control channel before
+ downgrading the bandwidth
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Michael Lee <michael-cy.lee@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Date:   Wed, 18 Jan 2023 10:40:07 +0100
+In-Reply-To: <20221222091354.14050-1-michael-cy.lee@mediatek.com>
+References: <20221222091354.14050-1-michael-cy.lee@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY3PR13MB5028:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67ad761e-c9b9-4b08-8a3e-08daf93460fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: isJpCpM1UjnGcyIvNy/ybtHadzZpKy+cH2j4SP7rSc5rmswYDhbhPw+uRMgs3XZnuDbtmt9574B+pdXNWZSz8wm963iBCN7kWwVr2Zg7n3UXeAm5dv/IsEbvLsiEJsbIe8npKzZ8mOrK6frYeus8vVeGTyA/Ln0lCxBd7y+i+k0+/YfxZlnLsabjEws+R0w5RKFDenXiIEKdZHdOW7ErhTt4ldIw8MpSHRo7S04yfGU3jQiVjzUUbVjJmr7oHNbMz6X/bXSVTayp3lTBnJJc41y6oxk4Dmd9AB5R+uaduVSC0gjJPQGtqQAKcFSFf/6rLBZ/OnGiLI2JnQUwhB6ef0mZFO7C4XVTaG+ew+kGNl2DrdfOOcHA6/0sDEXVigb8pwDPSsN5qHuU6dn/TIB/eCIHZeK+YHE2G2b2I8wh4oHXZu0ivHbOQzIMgKZ09AAsMU/xOdS8RWAFyWasBTMKafJjeGjrH2DaoDr7XiQw6y66wliqMVbq+Cs0Rui7OFdSM5vqnXSZy4ZCm+D4dpxjoRKZ48K5VbI6WwRVEiajvJRzOWMCoFOmcnTepr6DLcc3GIZamgK3sEUWM3OX3Fvz0BsTLJ9hKTRIWe7zxBEQnRiaSChjWXh8ZuZ9N6dY8fM72DUILUCrouhlmajHW7EDb894+ks5JRhjW45RQ49hsd3SEzy/j2LvI5pvjzVYgbPj
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(346002)(396003)(366004)(39840400004)(451199015)(86362001)(66476007)(2906002)(44832011)(7416002)(66556008)(66946007)(5660300002)(8936002)(38100700002)(316002)(54906003)(6666004)(53546011)(6486002)(6506007)(966005)(478600001)(36756003)(41300700001)(8676002)(4326008)(6916009)(186003)(83380400001)(6512007)(2616005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?clvl40sizuFEaQCVKO+1Eot5030XTWV4ptqQL0QJxP92AFhfN0Rxyh5+k4rO?=
- =?us-ascii?Q?TUPwOiu/fjAb8sf/FVOOOC+yar4kuV/JGgFV1qlufGNKoMo1JE7Iz2Wz8MQM?=
- =?us-ascii?Q?ONbQ0DFPqkRxzE4wiWtiUu3PenQLrxqnPaz7KbpfhT/RoDFx3ezv2HpCQd5l?=
- =?us-ascii?Q?+RI+3MoDPp1NYI7WulZOkorEoSf9u2YMqJTISP9NvwUyRABSdetcp02sQwzd?=
- =?us-ascii?Q?UnCkiHvxPFIO1KkxOeZIiAdiBn1XlvFKKAACCmNnp+oBe3e2u+yQ/4EpGZGk?=
- =?us-ascii?Q?Pv0K7wSca2aAhfJ1gjsjc11dQ3hDSvPruDiuccMCGBRvNnLhgpsJsFosnoIW?=
- =?us-ascii?Q?wFD+u9KqJ31X3L4RFpJlJkqob59iam8VNv7OowR4XsKe4pmnd7FY76YCMqjh?=
- =?us-ascii?Q?bDblbeTY19f3m2bA0lfqX3Coifv3MdoKSD4LrW3A6uUcYRA9PB8yQR15aS/u?=
- =?us-ascii?Q?0n9MwEPJoy+YPrOmwv65i3xdSurEV/whue19qn9cMjkNMPyalwRrwFeuEtJF?=
- =?us-ascii?Q?dGZFHYftN4Pi/J3LU4U/hsNmMzuwkeWyp2cckWAkdaL/hX0Ukg5V8yW4D+fY?=
- =?us-ascii?Q?cvChxtRiD+7iVk2aPWCNt5o23vlWeVNsTr1Gm00smbz26wHQkWozuAtPRZPb?=
- =?us-ascii?Q?VGcnF256B+4ZgSfeq/1iC2V9Uqn2u9IgVB5lzTZ8W1v1Dh6jTuLTh3Vf+ONj?=
- =?us-ascii?Q?XxkggatOs3nAutBE41QzRsWAmC+fToPN4yr5n+m4l/dp3PQ4Wb3F8JawrKuu?=
- =?us-ascii?Q?r/wYZjJl71uii6e4DiBkshRO5YRIkOc76kT91nukPwO3PFXKa12ktYq6VIIg?=
- =?us-ascii?Q?qvVaIXi2G4AnEuG4icDu+jl6JO/MXgb3mje6Eqp9uLnbI1X2XyPSPKcQKqBx?=
- =?us-ascii?Q?SlUrnlyrw3yJKrOEbQfnoYco1Ez8QBfPdcuE72v8DKl9vs9sl3Vd/MLBZ40k?=
- =?us-ascii?Q?15K1tUl68pIn2Itg3qq/jOWYYKhcIZCFM4M6ROj1fGu0OYlAO2A4/ZF+rih0?=
- =?us-ascii?Q?Mhr5ebmRnMnJvWbvSigUwj+iq6lD8R1UmPKiWXawA38BicLAcbaztqESBuCK?=
- =?us-ascii?Q?w9r4c78mGy9C4y+F8XbM3BYgUqIDasi/aIVCpf6oprh8md4bkFaVpc9p6fYd?=
- =?us-ascii?Q?dpVegMnPCWgdJfNqW/D49XB6PUcuWbAr+ATnkQjhnPQH2FSuKcaQKON8pNXI?=
- =?us-ascii?Q?NMYcWZAYGlRvDpIl4AGVlOhfVrqKUTYDoYgvT27TH2r/ziREo23mrLYEhprP?=
- =?us-ascii?Q?QZSZS9AnozQYBrTztxbyLLceiTUrXg2/FFw10WT+nICe7K2irdDTH+fkSYZL?=
- =?us-ascii?Q?gu/4gB0itsEvb69IhS5AZLrMxjUn9VgK3qKnW2DJJhwC+gKkCz26hljUPZ7/?=
- =?us-ascii?Q?VOEpyNFeASznPNKM/SpqpKKJ/l5Nv4IEYtTHXBOn9jIw7TxJAkm8yvo4XFey?=
- =?us-ascii?Q?u9MIOLAwJTc0TIk/9zsFlmU/liX0noh7W6Ly+j0l1mFjtA+OzAqsCZraxRNI?=
- =?us-ascii?Q?YL26lMz8QUdsrfA0jKXWvczZld6vqHB2/qgX1zLewnEE0enzHmQdqum/eS3x?=
- =?us-ascii?Q?rF1YjxbX0Ht/nHo2fucp5Ddxxh5/mY+gBVhmB/aH2pUUVoTGUsq1ORZHOXYB?=
- =?us-ascii?Q?8fxO99ayHP9WZUPG5D5im1MlPkSF6Gzoym6XTCp6CZv7jDwDTCPVDBqHaCar?=
- =?us-ascii?Q?JcKjBQ=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67ad761e-c9b9-4b08-8a3e-08daf93460fa
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2023 09:14:18.8731
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cLIzMOqD5e3RLBdR4b28ce7SSOrTrhfAXO9cf6hmXHYzmcP2ntYIkz9/kJ6Yo1V9htRYrfkEBLCozjhSPmZuLX2PN9EItXlpO4YVYuB1nJs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR13MB5028
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -124,89 +60,95 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 10:35:56PM -0800, Doug Brown wrote:
-> On 1/17/2023 12:59 AM, Simon Horman wrote:
-> > On Mon, Jan 16, 2023 at 12:21:24PM -0800, Doug Brown wrote:
-> > > [You don't often get email from doug@schmorgal.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> > > 
-> > > The existing code only converts the first IE to a TLV, but it returns a
-> > > value that takes the length of all IEs into account. When there is more
-> > > than one IE (which happens with modern wpa_supplicant versions for
-> > > example), the returned length is too long and extra junk TLVs get sent
-> > > to the firmware, resulting in an association failure.
-> > > 
-> > > Fix this by finding the first RSN or WPA IE and only adding that. This
-> > > has the extra benefit of working properly if the RSN/WPA IE isn't the
-> > > first one in the IE buffer.
-> > > 
-> > > While we're at it, clean up the code to use the available structs like
-> > > the other lbs_add_* functions instead of directly manipulating the TLV
-> > > buffer.
-> > > 
-> > > Signed-off-by: Doug Brown <doug@schmorgal.com>
-> > > ---
-> > >   drivers/net/wireless/marvell/libertas/cfg.c | 28 +++++++++++++--------
-> > >   1 file changed, 18 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-> > > index 3e065cbb0af9..3f35dc7a1d7d 100644
-> > > --- a/drivers/net/wireless/marvell/libertas/cfg.c
-> > > +++ b/drivers/net/wireless/marvell/libertas/cfg.c
-> > 
-> > ...
-> > 
-> > > @@ -428,14 +438,12 @@ static int lbs_add_wpa_tlv(u8 *tlv, const u8 *ie, u8 ie_len)
-> > >           *   __le16  len
-> > >           *   u8[]    data
-> > >           */
-> > > -       *tlv++ = *ie++;
-> > > -       *tlv++ = 0;
-> > > -       tlv_len = *tlv++ = *ie++;
-> > > -       *tlv++ = 0;
-> > > -       while (tlv_len--)
-> > > -               *tlv++ = *ie++;
-> > > -       /* the TLV is two bytes larger than the IE */
-> > > -       return ie_len + 2;
-> > > +       wpatlv->header.type = cpu_to_le16(wpaie->id);
-> > > +       wpatlv->header.len = cpu_to_le16(wpaie->datalen);
-> > > +       memcpy(wpatlv->data, wpaie->data, wpaie->datalen);
-> > 
-> > Hi Doug,
-> > 
-> > Thanks for fixing the endiness issues with cpu_to_le16()
-> > This part looks good to me now. Likewise for patch 4/4.
-> > 
-> > One suggestion I have, which is probably taking things to far,
-> > is a helper for what seems to be repeated code-pattern.
-> > But I don't feel strongly about that.
-> 
-> Thanks Simon. Is this basically what you're suggesting for a helper?
-> 
-> static int lbs_add_ie_tlv(u8 *tlvbuf, const struct element *ie, u16 tlvtype)
-> {
-> 	struct mrvl_ie_data *tlv = (struct mrvl_ie_data *)tlvbuf;
-> 	tlv->header.type = cpu_to_le16(tlvtype);
-> 	tlv->header.len = cpu_to_le16(ie->datalen);
-> 	memcpy(tlv->data, ie->data, ie->datalen);
-> 	return sizeof(struct mrvl_ie_header) + ie->datalen;
-> }
-> 
-> And then in the two functions where I'm doing that, at the bottom:
-> 
-> return lbs_add_ie_tlv(tlv, wpaie, wpaie->id);
-> return lbs_add_ie_tlv(tlv, wpsie, TLV_TYPE_WPS_ENROLLEE);
-> 
-> I could definitely do that to avoid repeating the chunk of code that
-> fills out the struct in the two functions. A lot of the other
-> lbs_add_*_tlv functions follow a similar pattern of setting up a struct
-> pointer and filling out the header, so I don't think it's too crazy to
-> just repeat the code twice. On the other hand, the example above does
-> look pretty darn clean. I don't feel strongly either way myself.
+Hi,
 
-Hi Doug,
+So I've looked at this patch a few times, but it just confuses me ...
 
-yes, I was thinking about something like that.
-And wondering if it might be reused elsewhere (in the same file).
+On Thu, 2022-12-22 at 17:13 +0800, Michael Lee wrote:
+> When the link fails to use the channel, chandef's bandwidth will be=20
+> downgraded without checking the control channel.
+> The issue happens when the STA of an extender with limited channel=20
+> context associates with a root AP operating on a different channel.
+>=20
+> Below is an example:
+>=20
+>     ______________           ________________
+>    | RootAP(ch36) |         | Extender(ch44) |
+>    |              | (ASSOC) |       AP       |
+>    |      AP <-------------------- STA       |
+>    |______________|         |________________|
+>=20
+> - RootAP is operating on channel 36, while Extender is operating
+>   on channel 44
 
-But again, I don't feel strongly about this.
-So perhaps it's something to consider in future.
+What does this matter? The extended is just a STA, no? Or are you saying
+it's important that the extender has a concurrent AP interface that's on
+channel 44?
+
+And if you say "ch36" or "ch44" that's just the control channel (I
+guess), but what's the actual complete channel configuration?
+
+> - When associating with RootAP, Extender-STA downgrades the
+>   chandef's bandwidth to be compatible with any channels on the phy
+
+What do you mean by "on the phy" here? That's not mac80211 terminology,
+so not sure.
+
+> - Finally, chandef's bandwidth is downgraded to 20MHz and=20
+>   the association fails
+>=20
+> In this patch, a control channel checking is added to avoid unnecessary
+> bandwidth downgrading
+>=20
+> Signed-off-by: Michael Lee <michael-cy.lee@mediatek.com>
+> ---
+>  net/mac80211/mlme.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>=20
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index 0aee2392dd29..bc435e8508e2 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -4616,6 +4616,27 @@ ieee80211_verify_sta_he_mcs_support(struct ieee802=
+11_sub_if_data *sdata,
+>  	return false;
+>  }
+> =20
+> +static bool
+> +ieee80211_check_same_ctrl_channel(struct ieee80211_sub_if_data *sdata,
+> +				  const struct cfg80211_chan_def *chandef)
+> +{
+> +	struct ieee80211_local *local =3D sdata->local;
+> +	struct ieee80211_chanctx *ctx;
+> +
+> +	mutex_lock(&local->chanctx_mtx);
+> +	list_for_each_entry(ctx, &local->chanctx_list, list) {
+> +		if (ctx->replace_state =3D=3D IEEE80211_CHANCTX_WILL_BE_REPLACED)
+> +			continue;
+> +		if (ctx->mode =3D=3D IEEE80211_CHANCTX_EXCLUSIVE)
+> +			continue;
+> +		if (chandef->chan =3D=3D ctx->conf.def.chan)
+> +			return true;
+> +	}
+> +
+> +	mutex_unlock(&local->chanctx_mtx);
+> +	return false;
+> +}
+> +
+>  static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+>  				  struct ieee80211_link_data *link,
+>  				  struct cfg80211_bss *cbss,
+> @@ -4842,6 +4863,9 @@ static int ieee80211_prep_channel(struct ieee80211_=
+sub_if_data *sdata,
+>  	    chandef.width =3D=3D NL80211_CHAN_WIDTH_10)
+>  		goto out;
+> =20
+> +	if (!ret || !ieee80211_check_same_ctrl_channel(sdata, &chandef))
+> +		goto out;
+
+Not sure I get how this is any different - you're describing a case
+where "ret !=3D 0" (because if ret =3D=3D 0 nothing happens in the while
+loop), so then you fail _anyway_? So what's the point?
+
+johannes
+
