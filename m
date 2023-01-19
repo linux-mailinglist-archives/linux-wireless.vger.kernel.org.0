@@ -2,154 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69B0C67427B
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 20:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2C36742B8
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 20:23:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231344AbjASTOP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Jan 2023 14:14:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53222 "EHLO
+        id S231199AbjASTXp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 14:23:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231346AbjASTNg (ORCPT
+        with ESMTP id S231252AbjASTX1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Jan 2023 14:13:36 -0500
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9648BA85;
-        Thu, 19 Jan 2023 11:12:37 -0800 (PST)
-Received: by mail-oi1-x22d.google.com with SMTP id r205so2495461oib.9;
-        Thu, 19 Jan 2023 11:12:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=9IUy7GLABZ5KCsScXO19g5oGUisQlGEvz/MbBgHRXn0=;
-        b=UpNfO+fLo0XtRNq+Zjx0IvXDu61ZVqKlEhHq5TH7jefsHQFH8m7qeJvJa5NBXqflIY
-         LiZStuvaYyz9nQAr/njjPZxgqSDCu2HSAA0mu3VEq1BBU2lq0NyzLus46sephBrBwZ+H
-         JB5Nr7nZpyDM4yN0fwHBHqwnWobnYP0T4rFNt0zC4HqfOx2RdoYZTeHyFwSKPbQHqE9Z
-         6Z8ZwBcJlTvUSdionPgEFDNkgujetb30X3cI8j7k7UUbwbrejSwU4cYF1BZSdbEOkbxK
-         PX4j5pT//oReOn/yhDleAzoB2jkD7ef2KKfTicRU3NDTUY4mXcvXo3VVnlJoqLXIofMy
-         Hf9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9IUy7GLABZ5KCsScXO19g5oGUisQlGEvz/MbBgHRXn0=;
-        b=qpCNBOmA/EGtOynr3gbAPVLxMoMKYlxft4xnBcqn6u41wQvpibhBDDA7b8NIjtdJbF
-         qKVuNeyHsqK7kuc8jzAPk3zO+R+U0A8eXQZ7cdTi8PzPFmixvkfPrTuVygGrULbhAumG
-         QOOWPRLkt2546QmjTzbzTJ4MLQKnWeizcxi/mUbzF+e/ou95uuY3ICKkBbAWwGCsEZxW
-         GArg41WBx+oW66hcrsae3aSIQqv1GKf4vmnTxWA/OTDYMTBSRrRmHzGHizM5YSUr7T30
-         QmDv9fgv5OuS08MooYsEDFQzc+jn/IiyzRTH3SUX+Vbg10NG/X2rPPc9eUyQ33DmM2EP
-         mL9A==
-X-Gm-Message-State: AFqh2kq65YNyZNFYTcBTDIKw2GIicB65UdLQ06Egn0UuiEb/3xHzKqll
-        C8+Fv3GolOF4X01EICcCgbg=
-X-Google-Smtp-Source: AMrXdXsz2qG9hNhQ2wRQBsd7Jr3zo+UJhvpVrm4FIJlPBrR9O/h7c7M4pfciMirVcNLa5MRC2rzPcg==
-X-Received: by 2002:aca:3402:0:b0:36a:3a8a:212d with SMTP id b2-20020aca3402000000b0036a3a8a212dmr4224163oia.45.1674155554544;
-        Thu, 19 Jan 2023 11:12:34 -0800 (PST)
-Received: from localhost.localdomain ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id o9-20020a0568080f8900b0035e461d9b1bsm18431209oiw.50.2023.01.19.11.12.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jan 2023 11:12:34 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     gregkh@linuxfoundation.org
-Cc:     phil@philpotter.co.uk, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Gaurav Pathak <gauravpathak129@gmail.com>
-Subject: [PATCH] staging: r8188eu: Fix some endian problems
-Date:   Thu, 19 Jan 2023 13:12:19 -0600
-Message-Id: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.39.0
+        Thu, 19 Jan 2023 14:23:27 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4EFF268C
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 11:22:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=lPcw3wh42izqPHhmTuOAkPASEaPRFwadcy3FCBLeprQ=;
+        t=1674156153; x=1675365753; b=FV1g6PezaBcCUhe+Lo+jhePQI/Z6fAAfmLAEDRHGFIx9UYC
+        WeXtHcTasOMq/oNlHn3DEyg81avzM+8CS9UIeYkYHbyUy04wvGEroXKtrYxNj8cgiGVrGV9H1I+ys
+        teN/OfzzJ7WgJsA9mV3TPXheWayT6lgfLQ/lCva+e1x5QM0JQdqUwlDEI8JaCyVhIDoQI9uQ/pLt7
+        9W+X5lQXCQqclO8WnCBNOntQZfOYOWZpwIxYRzu8HV1tu5xxldpTTy2AXLpb63ccfoH/UqNGwl8U/
+        xiHGLhNxK3SdOAIxqoCuN+jfKC+5x2dChAa74c3untTl7saH6/0OHCN+DKYPO4vw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pIaUX-006coq-29;
+        Thu, 19 Jan 2023 20:22:29 +0100
+Message-ID: <1592b9b4354d67c104d2782915e1a66d0a972b92.camel@sipsolutions.net>
+Subject: Re: every other wireless scan shows bogus (too low) signal strengths
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Bruno Dantas <dantas@airpost.net>,
+        Julian Calaby <julian.calaby@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 19 Jan 2023 20:22:28 +0100
+In-Reply-To: <90bb34e9-4e83-dcc2-91f2-e6f28ddbcc73@airpost.net>
+References: <b48efa92-9eee-d491-1149-a7cee08300c0@airpost.net>
+         <80556c56e69405d7c8f8bc3d57e2ba697074c660.camel@sipsolutions.net>
+         <9093c08e-302d-578c-3e16-619d238b4022@airpost.net>
+         <CAGRGNgVGsii7+jdN3PnMWdCSeRyCDF96ivVOfxzi8xDufUigNw@mail.gmail.com>
+         <90bb34e9-4e83-dcc2-91f2-e6f28ddbcc73@airpost.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sparse lists the following warnings:
+On Fri, 2022-12-02 at 10:21 -0500, Bruno Dantas wrote:
+>=20
+> Maybe doing a wifi network scan requires more power than just
+> authenticating with an AP and using the network? And maybe my after-
+> market 802.11ac adapter requires a bit more power than the 802.11n
+> adapters that were around when this laptop was made? If so, maybe it
+> takes this old laptop's PCI bus two attempts before the 802.11ac
+> adapter has enough power to do an accurate network scan? That's a lot
+> of maybes, but it's my best guess given the behavior I'm observing.
+>=20
 
-  CHECK   drivers/staging/r8188eu/core/rtw_mlme.c
-drivers/staging/r8188eu/core/rtw_mlme.c:1197:49: warning: incorrect type in
-					 argument 2 (different base types)
-drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    expected restricted
-					 __le16 [usertype] mstatus_rpt
-drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    got unsigned short
-					 [assigned] [usertype] media_status_rpt
-drivers/staging/r8188eu/core/rtw_mlme.c:1275:57: warning: incorrect type in
-					 argument 2 (different base types)
-drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    expected restricted
-					 __le16 [usertype] mstatus_rpt
-drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    got unsigned short
-					 [assigned] [usertype] media_status
-  CHECK   drivers/staging/r8188eu/core/rtw_mlme_ext.c
-drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58: warning: incorrect type
-					 in argument 2 (different base types)
-drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    expected restricted
-					 __le16 [usertype] mstatus_rpt
-drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    got unsigned short
-					 [assigned] [usertype] media_status
+FWIW - and sorry I didn't get around to answering here earlier - that
+doesn't really make a lot of sense - we're talking about the report of
+"received signal strength", which is pretty much unrelated to the power
+you need to actually receive.
 
-The second argument of rtl8188e_set_FwMediaStatus_cmd() needs to be in CPU
-order, not little-endian; however, when it uses that value to call
-FillH2CCmd_88E() the parameter must be in little-endian order as that
-value will be sent to the firmware. Note that the conversion from LE to CPU
-order was le16_to_cpu() rather than the correct cpu_to_le16.
+But as to what's actually going on I still have no clue either, sorry.
 
-The definition of FillH2CCmd_88E() is revised, and the proper conversion
-routine is used.
-
-Note that the original code performed one byte swap on the secong argument
-of FillH2CCmd_88E(), and got the correct answer even though the semantics
-were very wrong.
-
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Reportewd-by: Gaurav Pathak <gauravpathak129@gmail.com>
----
-Greg,
-
-I intended this patch as an example for Gaurav, but as it has not been
-resubmitted, I am sending it to you. If you thing he deserves to be the
-author, then please edit the patch before applying. Thanks, Larry
----
-
- drivers/staging/r8188eu/hal/rtl8188e_cmd.c     | 4 ++--
- drivers/staging/r8188eu/include/rtl8188e_cmd.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/r8188eu/hal/rtl8188e_cmd.c b/drivers/staging/r8188eu/hal/rtl8188e_cmd.c
-index 8310d7f53982..788904d4655c 100644
---- a/drivers/staging/r8188eu/hal/rtl8188e_cmd.c
-+++ b/drivers/staging/r8188eu/hal/rtl8188e_cmd.c
-@@ -193,9 +193,9 @@ void rtl8188e_set_FwPwrMode_cmd(struct adapter *adapt, u8 Mode)
- 
- }
- 
--void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, __le16 mstatus_rpt)
-+void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, u16 mstatus_rpt)
- {
--	u16 mst_rpt = le16_to_cpu(mstatus_rpt);
-+	__le16 mst_rpt = cpu_to_le16(mstatus_rpt);
- 
- 	FillH2CCmd_88E(adapt, H2C_COM_MEDIA_STATUS_RPT, sizeof(mst_rpt), (u8 *)&mst_rpt);
- }
-diff --git a/drivers/staging/r8188eu/include/rtl8188e_cmd.h b/drivers/staging/r8188eu/include/rtl8188e_cmd.h
-index 1e01c1662f9a..c785cf8ed683 100644
---- a/drivers/staging/r8188eu/include/rtl8188e_cmd.h
-+++ b/drivers/staging/r8188eu/include/rtl8188e_cmd.h
-@@ -85,6 +85,6 @@ void rtl8188e_Add_RateATid(struct adapter *padapter, u32 bitmap, u8 arg,
- void rtl8188e_set_p2p_ps_offload_cmd(struct adapter *adapt, u8 p2p_ps_state);
- 
- void CheckFwRsvdPageContent(struct adapter *adapt);
--void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, __le16 mstatus_rpt);
-+void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, u16 mstatus_rpt);
- 
- #endif/* __RTL8188E_CMD_H__ */
--- 
-2.39.0
-
+johannes
