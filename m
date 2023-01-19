@@ -2,123 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8417F67327B
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 08:32:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B2C36736E4
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 12:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbjASHcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Jan 2023 02:32:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42790 "EHLO
+        id S230038AbjASLb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 06:31:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbjASHc2 (ORCPT
+        with ESMTP id S230254AbjASLbl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Jan 2023 02:32:28 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0411552B0
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 23:32:26 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id n7so937459wrx.5
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 23:32:26 -0800 (PST)
+        Thu, 19 Jan 2023 06:31:41 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB174EFF
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 03:31:39 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id k16so1273054wms.2
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 03:31:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yOAGtEwwl9ah5X14+fr3xyjQkxYKgtW7wTdmd7LaFEg=;
-        b=vRIRpio+Aom4lroZdxIv5dfYLWZdktfYVL3jHgETXcsxRJ2IKyD1BV36YuWKt8r1nQ
-         +07wunX4ZC3IPo0SiFKP/4cW4rCUCfgTlN/S3oDPCkSQ31hkzmGIEBxm3gnmd4L6UmKl
-         skGsnD6BenqldlGA2OrrmLySBX41OvAjMUQRJ8cUUO+fWk72verQOTsg+UiyW/fjh7X1
-         z5zfL1pWRMbdqXu+TUTUh+4KfrCuKlXZ/i2QJReFETSj/UWiGssDGb/4JCGsPml6Njtc
-         k+zsV+4nZoM+MsAECNOaZY1mX1Eygrw9Sjwbj8l1hy5tTux8/UmnXFK4RdG5XA8ZJ+a4
-         Jxlg==
+        d=gmail.com; s=20210112;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w4MawY+RzZ3a8j/CxqeRFLovjvxW/xeOy10spvpUMXM=;
+        b=kMZSECKZT5G7uazvIJ/L6w7oRt185ee6Eo00hLJLGfjoCZE7T7+WK7GsbdxP0aVzq6
+         Ye+4GeBuXdQrcLPd4Ey4/0HNhAiRnWFsZ2jLNKpV0/bW7t4oW8z4rdpVS422nkHYBa1N
+         TWG7OlL4RnTQJg0Q76ziths3jX0DUkohwq0NSiO49jvDaRumkFl+uN2fZ/0HkUWp9zVu
+         2aeS1b45RkF3FdPy9g/GyrrY8n88cgJ7MnU5kKuVpMTdoV1XgJDshX+k7DNRyx3KYAJ1
+         y8Cu0fq92Nku0n2+xJpmJ3olIrGdq9IBH490IiKFx8aDTMnivc5WMjX4bLtHVQSgk+65
+         lgJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yOAGtEwwl9ah5X14+fr3xyjQkxYKgtW7wTdmd7LaFEg=;
-        b=7ZfEbcEcaZHdNBNE+jVcl02H9y9uWiFgveTR9UqrLjHqrAtR3/ToQpgYzdYJbdVqoR
-         yj7NxjKwnTTeoLJvwbUybW+UXeyInulmwKJIVyZrJT8IUMrVdg+fAecPXNGdwboPi/Ho
-         1qKdgQYmMDnP87iYQtUqHu1BwLKwuOZzgtHq1fUs5OpiX6ERNmVLFLsMMvMRMAArogEf
-         1cL8cFKFvFpDs3Tz3ma+pXdSle0lqNYrHVG5vxoawEjQW66V3V9J4CSYcqaJN/uJ01Iw
-         cXOyCxpI3E9r4dNOCaspVHXbqf8IyevNYTKrZ7RZXlfF4SJ5j5Tkhthyv6Ma9Wv8Mx1M
-         zKwg==
-X-Gm-Message-State: AFqh2krGh6G1MfJPZegbiWF9nWZllpvJxSQ69/bi2XU/p1/NSuFQ/1c6
-        Uq/nJDN9DIkSN1Hk9GKEsBVxfA==
-X-Google-Smtp-Source: AMrXdXsYozDSX5UXzU8eViFCPgDNSOimFqf7m+5mZ3D5VIeY9Dv8lV1BtejtIKH3WhVddwYIOFPnhQ==
-X-Received: by 2002:a5d:4dc9:0:b0:2be:21fc:ae3 with SMTP id f9-20020a5d4dc9000000b002be21fc0ae3mr7080130wru.11.1674113545389;
-        Wed, 18 Jan 2023 23:32:25 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id w10-20020a5d404a000000b00275970a85f4sm32958865wrp.74.2023.01.18.23.32.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 23:32:24 -0800 (PST)
-Message-ID: <0662e292-91b4-0b1a-f012-83cb2f316353@linaro.org>
-Date:   Thu, 19 Jan 2023 08:32:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH] dt-bindings: net: wireless: minor whitespace and name
- cleanups
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        de Goede <hdegoede@redhat.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, ath11k@lists.infradead.org
-References: <20230118175413.360153-1-krzysztof.kozlowski@linaro.org>
- <87bkmv85tb.fsf@kernel.org>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <87bkmv85tb.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w4MawY+RzZ3a8j/CxqeRFLovjvxW/xeOy10spvpUMXM=;
+        b=iJfMO7Y3ED/cC5u2ct4cVWBoIk5qUDhcvkmev0WyzLKwmVCW762RsN/lcnL6ed8aEj
+         Bk2ah7Up43pE5mmjqskChtJjtw9P9y8ShISg3EwDtnHS1HD0/JpZImdtUZLuwJHYOEwN
+         49gRo+Wc3lJlBitBrJnAQjL+xzMIpr9Cdf8oRNPvrj+A3voCqqPbINsw3vgdpYxHZyiu
+         bkXn7/ECoq9vbYFAim4Px1WAPufn9G7jvi+aWt2DR/AakGOa7ET8tOkIBvCmYCUenRKP
+         4eTtGsPbBXer//TPhni1R042f7roLmwBiH3aRTIxoIO6PmINmsy6NmWAKklY1kW4FIoZ
+         JGWw==
+X-Gm-Message-State: AFqh2kop1wjso8xjCUmW0j+KVRSbqYwym+8xVxLhXWsJvVLyrZYwqjsd
+        D8VSMsFCCcdsCT2HnVeERuM=
+X-Google-Smtp-Source: AMrXdXsj9qc8ntDbw0mVkvSOAWchhjLmbjkm6f8uk1Eu0yOCTdGnoiWJ7EnuB97DP9u/b/EiblkKNQ==
+X-Received: by 2002:a05:600c:3d16:b0:3cf:8b22:76b3 with SMTP id bh22-20020a05600c3d1600b003cf8b2276b3mr9635361wmb.0.1674127897946;
+        Thu, 19 Jan 2023 03:31:37 -0800 (PST)
+Received: from smtpclient.apple ([195.37.89.195])
+        by smtp.gmail.com with ESMTPSA id bg14-20020a05600c3c8e00b003dab40f9eafsm5980460wmb.35.2023.01.19.03.31.37
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 19 Jan 2023 03:31:37 -0800 (PST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
+Subject: Re: [RFC v2 4/6] mac80211: add utility function for tx_rate -
+ rate_info conversion
+From:   Jonas Jelonek <jelonek.jonas@gmail.com>
+In-Reply-To: <64731257b957f50b0f66e4d2fcd8c24dea8d70ff.camel@sipsolutions.net>
+Date:   Thu, 19 Jan 2023 12:31:03 +0100
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9AE44A41-6357-4F3A-BF75-8E3B0A381E9B@gmail.com>
+References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
+ <20220920104032.496697-5-jelonek.jonas@gmail.com>
+ <64731257b957f50b0f66e4d2fcd8c24dea8d70ff.camel@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+X-Mailer: Apple Mail (2.3731.300.101.1.3)
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 19/01/2023 06:13, Kalle Valo wrote:
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
-> 
->> Minor cleanups:
->>  - Drop redundant blank lines,
->>  - Correct indentaion in examples,
->>  - Correct node names in examples to drop underscore and use generic
->>    name.
->>
->> No functional impact except adjusting to preferred coding style.
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> ---
->>  .../bindings/net/wireless/esp,esp8089.yaml    | 20 +++---
->>  .../bindings/net/wireless/ieee80211.yaml      |  1 -
->>  .../bindings/net/wireless/mediatek,mt76.yaml  |  1 -
->>  .../bindings/net/wireless/qcom,ath11k.yaml    | 11 ++-
->>  .../bindings/net/wireless/silabs,wfx.yaml     |  1 -
->>  .../bindings/net/wireless/ti,wlcore.yaml      | 70 +++++++++----------
->>  6 files changed, 50 insertions(+), 54 deletions(-)
-> 
-> Thanks for the cleanup. Would you like to me to take this to
-> wireless-next or do you have other plans?
 
-Go ahead and grab it for wireless-next, please. Thanks!
+> On 12. Jan 2023, at 11:26, Johannes Berg <johannes@sipsolutions.net> =
+wrote:
+>=20
+>> +void ieee80211_rate_get_rate_info(const struct ieee80211_tx_rate =
+*rate,
+>> +						struct wiphy *wiphy, u8 =
+band,
+>> + 						struct rate_info =
+*rate_info)
+>> +{
+>> + 	memset(rate_info, 0, sizeof(struct rate_info));
+>> +
+>> + 	if (rate->flags & IEEE80211_TX_RC_MCS) { /* 802.11n */
+>> + 		rate_info->flags |=3D RATE_INFO_FLAGS_MCS;
+>> + 		rate_info->mcs =3D rate->idx;
+>> + 	} else if (rate->flags & IEEE80211_TX_RC_VHT_MCS) { /* 802.11ac =
+*/
+>> + 		rate_info->flags |=3D RATE_INFO_FLAGS_VHT_MCS;
+>> + 		rate_info->mcs =3D ieee80211_rate_get_vht_mcs(rate);
+>> + 		rate_info->nss =3D ieee80211_rate_get_vht_nss(rate);
+>> + 	} else { /* 802.11a/b/g */
+>=20
+> what about HE/EHT?
 
-Best regards,
-Krzysztof
+ieee80211_tx_rate uses an s8 for rate/MCS index, so only up to VHT rates =
+fit in there.
+For rates above VHT, rate_info is needed, thus are are no HE/EHT rates =
+occuring in
+ieee80211_tx_rate. Same applies to your comment on the hwsim conversion.
 
+Jonas=
